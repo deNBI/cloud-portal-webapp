@@ -94,17 +94,17 @@
               [hidden]="!application_details_visible">Hide</span>
               Information
             </button>
-            <button *ngIf="project_application?.Status == application_states.SUBMITTED"
+            <button *ngIf="project_application?.Status == application_states.SUBMITTED || project_application?.Status == application_states.DECLINED"
                     (click)="deleteModal.show();"
                     type="button" style="margin-bottom:5px;"
                     class="btn btn-danger">
               Remove Application
             </button>
-            <button
-              *ngIf="project_application?.Status == application_states.APPROVED || project_application?.Status == application_states.MODIFICATION_DECLINED"
-              (click)="calculateRamCores();extensionModal.show()"
-              class="btn btn-warning"
-              type="button" style="margin-bottom:5px;"
+            <button id="show_extension_modal"
+                    *ngIf="project_application?.Status == application_states.APPROVED || project_application?.Status == application_states.MODIFICATION_DECLINED"
+                    (click)="calculateRamCores();extensionModal.show()"
+                    class="btn btn-warning"
+                    type="button" style="margin-bottom:5px;"
             >
               Request Extension/Modification
             </button>
@@ -168,11 +168,11 @@
 
         <div class="card-body">
           <div class="btn-group col-12">
-            <button
-              (click)="setAddUserInvitationLink(); addUserModal.show();"
+            <button id="add_member_btn_modal"
+                    (click)="setAddUserInvitationLink(); addUserModal.show();"
 
-              type="button" style="margin-bottom:5px;margin-right:5px"
-              class="btn btn-success"><i class="fa fa-plus"></i>&nbsp; Add Member
+                    type="button" style="margin-bottom:5px;margin-right:5px"
+                    class="btn btn-success"><i class="fa fa-plus"></i>&nbsp; Add Member
             </button>
 
             <button
@@ -226,7 +226,8 @@
                                                " class="btn btn-secondary" type="button" style="margin: 2px">
                     <i class="fa fa-minus-circle"></i>&nbsp; Remove Admin status
                   </button>
-                  <button *ngIf=" userinfo?.MemberId != member.MemberId" (click)="removeMember(project?.Id,member.MemberId,member.Username);
+                  <button [id]="'remove_member_' + member.Username" *ngIf=" userinfo?.MemberId != member.MemberId"
+                          (click)="removeMember(project?.Id,member.MemberId,member.Username);
                                                 notificationModal.show();
                                                " class="btn btn-danger" type="button" style="margin: 2px">
 
@@ -267,10 +268,10 @@
           </div>
           <div class="row">
             <div class="col-md-8">
-              <input style="width: 100%" placeholder="" #searchString>
+              <input style="width: 100%" placeholder="" id="add_member_input" #searchString>
             </div>
             <div class="col-md-4">
-              <button type="button" class="btn btn-primary"
+              <button type="button" class="btn btn-primary" id="search_member_btn"
                       (click)="filterMembers(searchString.value )"><i
                 class="fa fa-search"></i> Search Member
               </button>
@@ -317,7 +318,7 @@
               <td>
                 <button
                   (click)="addMember(project?.Id,member['member_id'],member['firstName'],member['lastName']);filteredMembers=null; addUserModal.hide();notificationModal.show();"
-                  class="btn btn-success"><i class="fa fa-plus"></i> Add Member
+                  class="btn btn-success" id="add_member_btn"><i class="fa fa-plus"></i> Add Member
                 </button>
                 <button style="padding-left: 10px;margin-left: 10px"
                         (click)="addAdmin(project?.Id,member['member_id'],member['user_id'],member['firstName'],member['lastName']);filteredMembers=null; addUserModal.hide();notificationModal.show();"
@@ -428,7 +429,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">{{ notificationModalTitle }}</h4>
+        <h4 class="modal-title" id="notification_title">{{ notificationModalTitle }}</h4>
         <button type="button" class="close" style="cursor:pointer" (click)="notificationModal.hide()"
                 aria-label="Close">
           <span aria-hidden="true">&times;</span>
@@ -442,7 +443,7 @@
       <div class="modal-footer">
         <button *ngIf="notificationModalIsClosable == true" type="button"
                 (click)="resetNotificationModal(); notificationModal.hide();" type="reset"
-                class="btn  btn-secondary"> Close
+                class="btn  btn-secondary" id="close_notification"> Close
         </button>
       </div>
     </div><!-- /.modal-content -->
@@ -663,10 +664,10 @@
                     <div class="col">
                       <div class="input-group">
                         <input class="form-control"
-                               name="project_application_{{fl.name}}_old"
-                               type="text"
-                               value="{{project_application?.CurrentFlavors[fl.name]?.counter}}"
-                               placeholder="NA" disabled>
+                        name="project_application_{{fl.name}}_old"
+                        type="text"
+                        value="{{project_application?.CurrentFlavors[fl.name]?.counter}}"
+                        placeholder="0" disabled>
                         <div class="input-group-append"><span class="input-group-text"> VMs</span></div>
                       </div>
                       <span class="help-block">Currently approved of this type </span>
@@ -675,8 +676,8 @@
                       <div class="input-group">
                         <input class="form-control"
                                (change)="valuesChanged(f)"
-                               id="project_application_{{fl.name}}"
-                               name="project_application_{{fl.name}}"
+                               id="id_project_application_renewal_{{fl.name}}"
+                               name="project_application_renewal_{{fl.name}}"
                                type="number" min="0" step="1"
                                placeholder="e.g 1"
                                [ngModel]="project_application?.CurrentFlavors[fl.name]?.counter"
@@ -821,7 +822,7 @@
                 <textarea type="text" id="id_project_application_renewal_comment"
                           name="project_application_renewal_comment" class="form-control"
                           maxlength="8192"
-                          placeholder='' [ngModel]="project_application?.Comment"></textarea>
+                          placeholder='' ngModel></textarea>
               <span class="help-block">Additional information you want to share?</span>
             </div>
           </div>
@@ -861,7 +862,7 @@
             By submitting this application you agree to the cloud usage policy.
           </div>
           <button type="button" class="btn  btn-primary"
-                  form="application_form"
+                  form="application_form" id="submit_renewal_btn"
                   (click)="extension_request=true;filterEnteredData(f); submitModal.show();"
                   [disabled]="f.invalid"><i
             class="fa fa-dot-circle-o">
@@ -925,7 +926,7 @@
       <div class="modal-footer">
 
 
-        <button class="btn btn-success col-md4" type="button"
+        <button id="submit_modal_btn" class="btn btn-success col-md4" type="button"
                 (click)="resultModal.show(); extensionModal.hide(); submitModal.hide();onSubmit(f);">Confirm Application
         </button>
         <button class="btn  btn-primary col-md-4" type="reset"
@@ -962,21 +963,21 @@
         </div>
 
 
-        <div class="alert alert-success" role="alert" *ngIf="extension_status == 1">
+        <div id="extension result" class="alert alert-success" role="alert" *ngIf="extension_status == 1">
 
           Modify request successfully submitted!
         </div>
-        <div class="alert alert-success" role="alert" *ngIf="extension_status == 3">
+        <div id="extension result" class="alert alert-success" role="alert" *ngIf="extension_status == 3">
           Modify request successfully approved!
         </div>
-        <div class="alert alert-success" role="alert" *ngIf="extension_status == 4">
+        <div id="extension result" class="alert alert-success" role="alert" *ngIf="extension_status == 4">
           Modify request successfully declined!
         </div>
-        <div class="alert alert-success" role="alert" *ngIf="extension_status == 5">
+        <div id="extension result" class="alert alert-success" role="alert" *ngIf="extension_status == 5">
           Modify request successfully approved and forwarded to facility!
         </div>
 
-        <div class="alert alert-warning" role="alert" *ngIf="extension_status == 2">
+        <div id="extension result" class="alert alert-warning" role="alert" *ngIf="extension_status == 2">
           An error occured.
 
         </div>

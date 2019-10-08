@@ -19,6 +19,7 @@ import {AccordionModule, BsDropdownModule} from 'ngx-bootstrap';
 import {BiocondaComponent} from './conda/bioconda.component';
 import {HowToConnectComponent} from './shared-modal/how-to-connect.component';
 import {PopoverModule} from 'ngx-smart-popover';
+import {SharedDirectivesModule} from '../shared/shared_modules/shared_directives.module';
 
 /**
  * VM module.
@@ -36,7 +37,8 @@ import {PopoverModule} from 'ngx-smart-popover';
               BsDropdownModule.forRoot(),
               CarouselModule,
               AccordionModule.forRoot(),
-              PopoverModule
+              PopoverModule,
+              SharedDirectivesModule
 
             ],
             declarations: [

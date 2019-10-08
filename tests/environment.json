@@ -1,0 +1,7 @@
+{
+   "password":"",
+   "email":"",
+   "portal":"http://portal-dev.denbi.de:8000",
+   "auth":"",
+   "timeout":10000
+}
