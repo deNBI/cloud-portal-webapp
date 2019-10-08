@@ -501,12 +501,6 @@ export class ApplicationBaseClass extends AbstractBaseClasse {
     if (!this.project_application_report_allowed && !this.extension_request) {
       this.valuesToConfirm.push('Dissemination allowed: No');
     }
-    if (this.project_application_pi_approved) {
-      this.valuesToConfirm.push('Principal Investigator : Yes');
-    } else {
-      this.valuesToConfirm.push('Principal Investigator : No');
-
-    }
 
   }
 

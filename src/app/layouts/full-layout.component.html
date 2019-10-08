@@ -49,7 +49,7 @@
 
         </li>
         <li class="nav-item" *ngFor="let application of project_enumeration">
-          <a class="nav-link" routerLinkActive="active"
+          <a class="nav-link" routerLinkActive="active" [id]="application?.project_name"
              [routerLink]="['/project-management/' + application.application_id]">
             <span *ngIf="application.is_open_stack"
                   style="float:left;background-color: #ED1944; padding: 1px 1px 2px 1px;margin: 0 0.5rem 0 0; border-color: #ED1944"
@@ -67,31 +67,6 @@
             {{application.project_name}}
           </a>
         </li>
-        <!--
-        <li class="nav-item nav-dropdown " appNavDropdown>
-            <a class="nav-link nav-dropdown-toggle" onmouseover="" style="cursor: pointer;"
-               appNavDropdownToggle><i
-                    class="nav-icon icon-pencil"></i> New Application</a>
-            <ul class="nav-dropdown-items">
-                <li class="nav-item">
-                    <a style="padding-left: 25px" class="nav-link" routerLinkActive="active"
-                       [routerLink]="['/applications/newCloudApplication']">
-                        <i class="nav-icon icon-question" onmouseover="" style="cursor: pointer;"
-                           data-toggle="tooltip" data-placement="auto"
-                           title="By choosing this project type you will have your own OpenStack project. This allows you to use any framework available in the cloud computing context."></i>
-                        Cloud Project </a></li>
-                <li class="nav-item">
-                    <a style="padding-left: 25px" class="nav-link" routerLinkActive="active"
-                       [routerLink]="['/applications/newSimpleVmApplication']"><i
-                            class="nav-icon icon-question" onmouseover="" style="cursor: pointer;"
-                            data-toggle="tooltip" data-placement="auto"
-                            title="You will be able to start virtual machines through the portal with minimal effort and access them via ssh. This project type does not demand knowlegde in cloud computing."></i>
-                        Simple VM Project </a></li>
-
-            </ul>
-
-        </li>
-        -->
         <li class="nav-title">
           Virtual Machines
         </li>
@@ -184,11 +159,6 @@
   <main class="main">
 
     <!-- Breadcrumb-->
-    <!--
-      <ol class="breadcrumb">
-        <app-breadcrumbs></app-breadcrumbs>
-      </ol>
-      -->
 
     <cui-breadcrumb>
 

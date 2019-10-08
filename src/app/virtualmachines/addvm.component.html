@@ -50,16 +50,15 @@
 
 
               <div class="col-md-8">
-
-
-                <select required class="form-control" name="selectedProject"
-                        [(ngModel)]="selectedProject"
+                <select required class="form-control" name="projectSelect"
+                        [(ngModel)]="selectedProject" id="projectSelect"
                         (ngModelChange)="getSelectedProjectClient();"
                 >
                   <option value="undefined" disabled selected hidden> Please
                     Select
                   </option>
-                  <option *ngFor="let project of projects" [ngValue]="project">
+                  <option *ngFor="let project of projects" [ngValue]="project"
+                          id="id_option_{{project[0]}}">
                     {{project[0]}}
                   </option>
 
@@ -189,7 +188,7 @@
                     <div class="input-group">
                       <input required id="id_instance_name" name="instance_name"
                              class="form-control"
-                             type="text" placeholder="Instancename" ngModel
+                             type="text" placeholder="Instancename" [(ngModel)]="vm_name"
                              pattern="[a-zA-Z0-9]+"
                              [ngModelOptions]="{updateOn: 'blur'}"
                              [ngClass]="{'is-invalid':f.controls.instance_name?.invalid && (f.controls.instance_name?.dirty || f.controls.instance_name?.touched),
@@ -209,7 +208,8 @@
 
                     <app-flavor-detail [selectedFlavor]="selectedFlavor"
                                        [flavors]="flavors"
-                                       (selectedFlavorChange)="selectedFlavor=$event"></app-flavor-detail>
+                                       (selectedFlavorChange)="selectedFlavor=$event"
+                                       id="id_flavor_detail"></app-flavor-detail>
 
                   </div>
 
@@ -224,15 +224,17 @@
 
                     <app-image-detail [selectedImage]="selectedImage"
                                       [images]="images"
-                                      (selectedImageChange)="selectedImage=$event"></app-image-detail>
+                                      (selectedImageChange)="selectedImage=$event"
+                                      id="id_image_detail"></app-image-detail>
                   </div>
                 </div>
 
 
               </div>
               <accordion class="col-md-12">
-                <accordion-group #optionalGroup
-                                 *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && selectedProjectVmsUsed < selectedProjectVmsMax && flavors.length != 0">
+
+                <accordion-group #optionalGroup id="optional_accordion"
+                                 *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && selectedProjectVmsUsed < selectedProjectVmsMax && (flavors.length != 0 || selectedFlavor)">
                   <div accordion-heading style="width: 100%; cursor: pointer">
                     <strong>Optional parameters</strong>
                     <i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
@@ -256,12 +258,14 @@
                   <div
                     *ngIf="selectedProjectVolumesUsed < selectedProjectVolumesMax && selectedProjectVmsUsed < selectedProjectVmsMax">
                     <div class="form-group row" *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID">
-                      <label *ngIf="diskspace <= 0" class="col-md col-sm col-lg-2 col-xl-2 form-control-label">Volume name</label>
+                      <label *ngIf="diskspace <= 0" class="col-md col-sm col-lg-2 col-xl-2 form-control-label">Volume
+                        name</label>
                       <label *ngIf="diskspace > 0 " class="col-md col-sm col-lg-2 col-xl-2 form-control-label"><strong>Volume
                         name*</strong></label>
 
                       <div class="col-xl-6 col-sm-12 col-md-8">
                         <input type="text" placeholder="Volume name"
+                               id="volume_name"
                                [value]="volumeName"
                                (input)="volumeName = $event.target.value"
                                [ngClass]="{'is-invalid':diskspace > 0 && volumeName == '',
@@ -275,6 +279,7 @@
 
                     class="form-group row">
 
+
                     <label class="col-lg-2 col-sm form-control-label">Storage</label>
 
                     <div class="col-xl-6 col-md-8 col-sm-12">
@@ -282,13 +287,16 @@
                         <div class="input-group col-lg-10 text-lg-right col-sm-12" style="width: 100%">
                           <input min="0" step="1" [value]="diskspace"
                                  style="height: auto"
-                                 id="id_vm_volume_storage" name="vm_volume_storage"
+                                 id="volume_space" name="vm_volume_storage"
                                  class="form-control"
                                  (input)="diskspace = $event.target.value"
                                  type="number" [max]="selectedProjectDiskspaceMax - selectedProjectDiskspaceUsed"
+
                                  placeholder="e.g 8"
                                  [ngModel]="0"
-                                 appMinAmount="0" appMaxAmount="{{selectedProjectDiskspaceMax - selectedProjectDiskspaceUsed}}" appIntegerOrNull
+                                 appMinAmount="0"
+                                 appMaxAmount="{{selectedProjectDiskspaceMax - selectedProjectDiskspaceUsed}}"
+                                 appIntegerOrNull
                                  [ngClass]="{
                                 'is-invalid': f.controls.vm_volume_storage?.invalid && (f.controls.vm_volume_storage?.dirty || f.controls.vm_volume_storage?.touched),
                                 'is-valid': f.controls.vm_volume_storage?.valid && (f.controls.vm_volume_storage?.dirty || f.controls.vm_volume_storage?.touched)
@@ -336,7 +344,7 @@
 
 
                 <accordion-group #autoGroup
-                                 *ngIf="selectedProject && projectDataLoaded && selectedProjectVmsUsed < selectedProjectVmsMax && flavors.length != 0">
+                                 *ngIf="selectedProject && projectDataLoaded && selectedProjectVmsUsed < selectedProjectVmsMax && (flavors.length != 0 || selectedFlavor)">
                   <div accordion-heading style="width: 100%; cursor: pointer">
                     <strong>Tools </strong> powered by <img src="{{conda_img_path}}" alt="Conda® "
                                                             style="height: 12px; width: auto"><span
@@ -378,7 +386,8 @@
                         log into your virtual machine.<br>
                         We install Miniconda3, create a conda environment called 'denbi' and install your chosen
                         tools.<br>
-                        For you convenience we initialize the .bashrc and set an alias, so that you are able to load the environment simply by typing 'denbi'.<br>
+                        For you convenience we initialize the .bashrc and set an alias, so that you are able to load the
+                        environment simply by typing 'denbi'.<br>
                         When the installation is successful we delete our key and put your public key onto your virtual
                         machine.
                       </label>
@@ -392,10 +401,10 @@
         </div>
 
         <div
-          *ngIf="(f.controls.instance_name?.invalid || (!gaveOkay && hasTools) || !selectedImage || !selectedFlavor || (diskspace > 0 && !volumeName))&& projectDataLoaded  && flavors_loaded  && selectedProjectVmsUsed < selectedProjectVmsMax && flavors.length != 0"
+          *ngIf="(!vm_name || (!gaveOkay && hasTools) || !selectedImage || !selectedFlavor || (diskspace > 0 && !volumeName))&& projectDataLoaded  && flavors_loaded  && selectedProjectVmsUsed < selectedProjectVmsMax && flavors.length != 0"
           class="alert alert-danger" role="alert" style="max-width: 600px;margin: 0 auto;">
           <p>Please choose the following before starting a VM:</p>
-          <p *ngIf="f.controls.instance_name?.invalid">- A name for your instance
+          <p *ngIf="!vm_name">- A name for your instance
           </p>
           <p *ngIf="!selectedFlavor">- The flavor type of your VM
           </p>
@@ -412,11 +421,11 @@
 
           <button style=" margin-left: auto;margin-top: 25px;
     margin-right: auto;
-    width: 8em"
+    width: 8em" id="startVMButton"
 
                   type="button"
 
-                  [disabled]="f.invalid || started_machine || !selectedFlavor || !selectedImage|| (diskspace > 0 && volumeName == '')"
+                  [disabled]="!vm_name || started_machine || !selectedFlavor || !selectedImage|| (diskspace > 0 && volumeName == '')"
                   class="btn btn-primary  .btn-lg offset-md-8"
                   data-toggle="modal"
                   (click)="startVM(selectedFlavor.name,selectedImage.name,f.controls.instance_name.value,selectedProject[0],selectedProject[1]);resetData();resetProgressBar;infoModal.show();">
@@ -446,7 +455,8 @@
 
 
 <div bsModal #infoModal="bs-modal" class="modal fade " tabindex="-1" role="dialog"
-     aria-labelledby="myModalLabel" aria-hidden="true">
+     aria-labelledby="myModalLabel" aria-hidden="true"
+     id="info_modal">
   <div class="modal-dialog modal-info" role="document"
        [ngClass]="newVm?.status =='ACTIVE' ? 'modal-lg':''">
 
@@ -481,7 +491,7 @@
           instance overview site</p>
       </div>
       <div class="modal-body" *ngIf="newVm?.status == 'ACTIVE' || newVm?.status == 'DELETED'">
-        <app-how-to-connect [selectedVirtualMachine]="newVm" [playbook_run]="playbook_run"></app-how-to-connect>
+        <app-how-to-connect id="how_to_connect_id" [selectedVirtualMachine]="newVm" [playbook_run]="playbook_run"></app-how-to-connect>
       </div>
       <div class="modal-body" *ngIf="create_error?.error">
         An Error occurred.<br><br>
@@ -489,13 +499,15 @@
       </div>
       <div class="modal-footer">
         <button *ngIf="newVm?.status == 'ACTIVE'"
+                id="goToOverviewButton"
                 routerLinkActive="active"
                 [routerLink]="['/virtualmachines/vmOverview']"
                 type="button" class="btn btn-info nav-link"
                 (click)="infoModal.hide();resetData()">Instance Overview
         </button>
         <button type="button" class="btn btn-secondary"
-                (click)="infoModal.hide();resetData()">Close
+                (click)="infoModal.hide();resetData()"
+                id="close_info_modal">Close
         </button>
       </div>
     </div><!-- /.modal-content -->

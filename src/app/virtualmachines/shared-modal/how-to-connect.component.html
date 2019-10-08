@@ -1,13 +1,14 @@
 <div *ngIf="_selectedVirtualMachine?.status != 'DELETED'">
   <div class="row justify-content-center">
     <button class="btn btn-primary" style="margin-bottom: 5px; width: 100%"
-            (click)="showSshCommando = !showSshCommando">
+            (click)="showSshCommando = !showSshCommando" id="htc_ssh_button">
       <span [hidden]="!showSshCommando">Show: </span>
       <span [hidden]="showSshCommando">Hide: </span>
       How to connect to your vm?
     </button>
   </div>
   <div class="row justify-content-center">
+    <div [hidden]="showSshCommando">The name of your vm is:<div id="htc_vm_name_id">{{_selectedVirtualMachine.name}}</div></div>
     <pre [hidden]="showSshCommando" style="word-wrap: break-word;">{{_selectedVirtualMachine?.ssh_command}}</pre>
   </div>
 </div>

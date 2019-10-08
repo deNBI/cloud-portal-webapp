@@ -53,7 +53,7 @@
   <div *ngFor="  let flavor of flavors" style="cursor: pointer;" class="col-12 " [ngClass]="{'col-xl-3':window_size >= carousel_window_min_xl_9,
        'col-xl-6':window_size >= carousel_window_min_xl6 && window_size<carousel_window_min_xl_8,
        'col-xl-4':window_size <carousel_window_min_xl_9 && window_size>=carousel_window_min_xl_8}">
-    <div (click)="setSelectedFlavor(flavor);" class="card flavor-image-card "
+    <div (click)="setSelectedFlavor(flavor);" class="card flavor-image-card " id="id_flavor_owl_{{flavor.name}}"
     >
       <div
         class="card-header bg-info-flavor text-truncate" data-toggle="tooltip" data-placement="top" title="{{flavor?.name}}">
@@ -156,7 +156,7 @@
     <owl-carousel-o [options]="customOptions">
       <ng-container *ngFor="let flavor of flavors">
         <ng-template carouselSlide>
-          <div (click)="setSelectedFlavor(flavor);" class="card flavor-image-card"
+          <div (click)="setSelectedFlavor(flavor);" class="card flavor-image-card" id="id_flavor_owl_{{flavor.name}}"
           >
             <div
               class="card-header bg-info-flavor text-truncate" data-toggle="tooltip" data-placement="top" title="{{flavor?.name}}">
@@ -214,7 +214,7 @@
     <owl-carousel-o [options]="customOptions">
       <ng-container *ngFor="let flavor of flavors">
         <ng-template carouselSlide>
-          <div (click)="setSelectedFlavor(flavor);" class="card flavor-image-card"
+          <div (click)="setSelectedFlavor(flavor);" class="card flavor-image-card" id="id_flavor_owl_{{flavor.name}}"
           >
             <div
               class="card-header bg-info-flavor text-truncate" data-toggle="tooltip" data-placement="top" title="{{flavor?.name}}">
