@@ -194,6 +194,11 @@
                              [ngClass]="{'is-invalid':f.controls.instance_name?.invalid && (f.controls.instance_name?.dirty || f.controls.instance_name?.touched),
                              'is-valid':f.controls.instance_name?.valid && (f.controls.instance_name?.dirty || f.controls.instance_name?.touched)}">
                     </div>
+                    <div class="alert alert-danger"
+                         style="margin-top: 5px; margin-bottom: 5px"
+                         *ngIf="f.controls.instance_name?.errors && (f.controls.instance_name?.dirty || f.controls.instance_name?.touched)">
+                      Allowed characters are upper and lower case letters (a-z A-Z) and arabic numbers (0-9).
+                    </div>
                     <div class="alert alert-primary" role="alert" style="margin-top: 5px">Info: The instance name will
                       also
                       be the hostname of the vm.
