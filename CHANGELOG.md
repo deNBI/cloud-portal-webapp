@@ -1,3 +1,13 @@
+##  (2019-10-09)
+
+#### Features
+
+* **newsletter:**  added dsgvo info (#747) ([bc01b8f4](bc01b8f4))
+
+### Bug fixes
+
+* **package.json:**  fix coreui/angular to version 2.4.5, fix coreui/coreui to version 2.1.8 
+
 ##  (2019-10-08)
 
 
