@@ -12,6 +12,7 @@ import {ImageTag} from './image-tag';
 export class ImageTagComponent implements OnInit {
   isLoaded: boolean = false;
   alertRed: boolean = false;
+  logoTags: ImageTag[];
   imageTags: ImageTag[];
 
   constructor(private imageService: ImageService) {
@@ -21,6 +22,10 @@ export class ImageTagComponent implements OnInit {
   ngOnInit(): void {
     this.imageService.getImageTags().subscribe((tags: ImageTag[]) => {
       this.imageTags = tags;
+      this.isLoaded = true;
+    })
+    this.imageService.getLogoTags().subscribe((tags: ImageTag[]) => {
+      this.logoTags = tags;
       this.isLoaded = true;
     })
   }

@@ -55,6 +55,13 @@ export class ImageService {
 
   }
 
+    getLogoTags(): Observable<any> {
+    return this.http.get(`${ApiSettings.getApiBaseURL()}imageLogoTags/`, {
+      withCredentials: true
+    })
+
+  }
+
   addImageTags(imageTag: string, description: string): Observable<ImageTag> {
 
     const params: HttpParams = new HttpParams().set('imageTag', imageTag).set('description', description);
