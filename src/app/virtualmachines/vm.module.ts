@@ -20,6 +20,7 @@ import {BiocondaComponent} from './conda/bioconda.component';
 import {HowToConnectComponent} from './shared-modal/how-to-connect.component';
 import {PopoverModule} from 'ngx-smart-popover';
 import {SharedDirectivesModule} from '../shared/shared_modules/shared_directives.module';
+import {ImageCarouselSlideComponent} from './imageCarouselSlide.component';
 
 /**
  * VM module.
@@ -42,6 +43,7 @@ import {SharedDirectivesModule} from '../shared/shared_modules/shared_directives
 
             ],
             declarations: [
+              ImageCarouselSlideComponent,
               ImageDetailComponent,
               VirtualMachineComponent,
               FlavorDetailComponent,

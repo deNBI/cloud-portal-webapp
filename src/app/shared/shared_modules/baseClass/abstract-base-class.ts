@@ -10,6 +10,10 @@ enum Project_States {
 
 }
 
+const ubuntu_logo_url: string = 'https://cloud.denbi.de/wp-content/uploads/2019/10/ubuntu_black-orange_st_hex.png';
+const x2go_logo_url: string = 'https://cloud.denbi.de/wp-content/uploads/2019/10/x2go-logo.png';
+export let ImageLogoTags: { [id: string]: string } = {ubuntu: ubuntu_logo_url, x2go: x2go_logo_url};
+
 export enum Application_States {
   SUBMITTED = 1,
   APPROVED = 2,

@@ -9,39 +9,34 @@
         class="card-header bg-success text-truncate" data-toggle="tooltip" data-placement="top"
         title="{{selectedImage?.name}}">
         <i
-        *ngIf="selectedImage?.is_snapshot"
-        class="fa fa-camera" aria-hidden="true"></i>
+          *ngIf="selectedImage?.is_snapshot"
+          class="fa fa-camera" aria-hidden="true"></i>
         <strong>{{selectedImage?.name}}</strong></div>
       <div class="card-body">
         <div class="scroll-image">
-          <div class="col scroll-image">
+          <div *ngIf="!selectedImage?.logo_url || !image_visible" class="col scroll-image"
+               (mouseleave)="setImageVisible()">
             {{selectedImage?.description}}
           </div>
+          <div *ngIf=" selectedImage?.logo_url && image_visible" (mouseenter)="setImageVisible()"><img
+            src="{{selectedImage?.logo_url}}"
+            [ngStyle]="{'width':10,'height':10}"
+            alt="Logo">
+
+          </div>
+
+
         </div>
       </div>
     </div>
   </div>
-  <div *ngFor="  let image of images" style="cursor: pointer;" class="col-md-12" [ngClass]="{'col-xl-3':window_size > carousel_window_min_xl_9,
+</div>
+<div *ngFor="  let image of images" style="cursor: pointer;" class="col-md-12" [ngClass]="{'col-xl-3':window_size > carousel_window_min_xl_9,
        'col-xl-6':window_size > carousel_window_min_xl6 && window_size<carousel_window_min_xl_8,
        'col-xl-4':window_size <carousel_window_min_xl_9 && window_size>carousel_window_min_xl_8}">
-    <div (click)="setSelectedImage(image);" class="card flavor-image-card" id="id_image_owl_{{image?.name}}"
-    >
-      <div
-        [ngClass]="{'bg-info-image':!image?.is_snapshot,'bg-warning':image?.is_snapshot}"
-
-        class="card-header  text-truncate" data-toggle="tooltip" data-placement="top" title="{{image?.name}}"><i
-        *ngIf="image?.is_snapshot"
-        class="fa fa-camera" aria-hidden="true"></i>
-        <strong>{{image.name}}</strong></div>
-      <div class="card-body">
-        <div class="scroll-image">
-          <div class="col">
-            {{image.description}}
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <app-image-slide *ngIf="images.length <=images_per_row-1 && !carousel_activated" [image]="image"
+                   (selectedImageChange)="    selectedImageChange.emit(image);"
+  ></app-image-slide>
 </div>
 
 <div *ngIf="carousel_activated && images.length >=images_per_row" class="row"
@@ -55,41 +50,36 @@
       <div
         class="card-header bg-success text-truncate" data-toggle="tooltip" data-placement="top"
         title="{{selectedImage?.name}}">
-           <i
-        *ngIf="selectedImage?.is_snapshot"
-        class="fa fa-camera" aria-hidden="true"></i>
+        <i
+          *ngIf="selectedImage?.is_snapshot"
+          class="fa fa-camera" aria-hidden="true"></i>
         <strong>{{selectedImage?.name}}</strong></div>
       <div class="card-body">
         <div class="scroll-image">
-          <div class="col scroll-image">
+          <div *ngIf="!selectedImage?.logo_url || !image_visible" class="col scroll-image"
+               (mouseleave)="setImageVisible()">
             {{selectedImage?.description}}
+          </div>
+          <div *ngIf=" selectedImage?.logo_url && image_visible" (mouseenter)="setImageVisible()"><img
+            src="{{selectedImage?.logo_url}}"
+            [ngStyle]="{'width':img_width,'height':img_height}"
+            alt="{{selectedImage?.description}}">
+
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <div *ngIf="!selectedImage" class="col-md-12" style="border-style: dashed; border-color: lightgray; padding-top: 10px">
+  <div *ngIf="!selectedImage" class="col-md-12"
+       style="border-style: dashed; border-color: lightgray; padding-top: 10px">
     <owl-carousel-o *ngIf="carousel_activated" [options]="customOptions">
       <ng-container *ngFor="let image of images">
         <ng-template carouselSlide>
-          <div (click)="setSelectedImage(image);" class="card flavor-image-card" id="id_image_owl_{{image?.name}}"
-          >
-            <div
-              [ngClass]="{'bg-info-image':!image?.is_snapshot,'bg-warning':image?.is_snapshot}"
+          <app-image-slide [image]="image" (selectedImageChange)="    this.selectedImageChange.emit(image);"
 
-              class="card-header text-truncate" data-toggle="tooltip" data-placement="top"
-              title="{{image?.name}}"><i *ngIf="image?.is_snapshot"
-                                         class="fa fa-camera" aria-hidden="true"></i>
-              <strong>{{image.name}}</strong></div>
-            <div class="card-body">
-              <div class="scroll-image">
-                <div class="col">
-                  {{image.description}}
-                </div>
-              </div>
-            </div>
-          </div>
+          ></app-image-slide>
+
         </ng-template>
       </ng-container>
 
@@ -103,23 +93,8 @@
     <owl-carousel-o *ngIf="carousel_activated" [options]="customOptions">
       <ng-container *ngFor="let image of images">
         <ng-template carouselSlide>
-          <div (click)="setSelectedImage(image);" class="card flavor-image-card" id="id_image_owl_{{image?.name}}"
-          >
-            <div
-              [ngClass]="{'bg-info-image':!image?.is_snapshot,'bg-warning':image?.is_snapshot}"
-
-              class="card-header  text-truncate" data-toggle="tooltip" data-placement="top"
-              title="{{image?.name}}"><i *ngIf="image?.is_snapshot"
-                                         class="fa fa-camera" aria-hidden="true"></i>
-              <strong>{{image.name}}</strong></div>
-            <div class="card-body">
-              <div class="scroll-image">
-                <div class="col">
-                  {{image.description}}
-                </div>
-              </div>
-            </div>
-          </div>
+          <app-image-slide [image]="image" (selectedImageChange)="    selectedImageChange.emit(image);"
+          ></app-image-slide>
         </ng-template>
       </ng-container>
 
