@@ -54,6 +54,11 @@ export class UserInfoComponent implements OnInit {
    */
   emailChange: string;
 
+  /**
+   * Text refering to newsletter registration
+   */
+  dsgvo_text: string = 'By activating this option, you agree that your preferred e-mail address may be used for the newsletter. You will receive the newsletter until you deactivate the option in the settings again.'
+
   constructor(private groupService: GroupService, private userService: UserService, private keyService: KeyService) {
 
   }
@@ -135,7 +140,7 @@ export class UserInfoComponent implements OnInit {
     }
 
   }
-  
+
   validatePublicKey(): boolean {
 
     if (/ssh-rsa AAAA[0-9A-Za-z+/]+[=]{0,3}( [^@]+@[^@]+)?/.test(this.newPublicKey)) {
