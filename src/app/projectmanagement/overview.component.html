@@ -94,10 +94,11 @@
               [hidden]="!application_details_visible">Hide</span>
               Information
             </button>
-            <button *ngIf="project_application?.Status == application_states.SUBMITTED || project_application?.Status == application_states.DECLINED"
-                    (click)="deleteModal.show();"
-                    type="button" style="margin-bottom:5px;"
-                    class="btn btn-danger">
+            <button
+              *ngIf="project_application?.Status == application_states.SUBMITTED || project_application?.Status == application_states.DECLINED"
+              (click)="deleteModal.show();"
+              type="button" style="margin-bottom:5px;"
+              class="btn btn-danger">
               Remove Application
             </button>
             <button id="show_extension_modal"
@@ -177,7 +178,7 @@
 
             <button
               type="button" style="margin-bottom:5px;margin-right:5px"
-              (click)="applicationModal.show();getUserProjectApplications();application_action_done=false;"
+              (click)="applicationModal.show();getUserProjectApplications();"
               class="btn btn-info"><i class="fa fa-list-alt"></i>&nbsp;
               Member Applications
             </button>
@@ -372,7 +373,7 @@
 
             <th>Name</th>
             <th>Date Submitted</th>
-            <th>Actions</th>
+            <th>Actions {{project?.ProjectMemberApplications}}</th>
             </thead>
             <tbody *ngFor="  let application of project?.ProjectMemberApplications">
 
@@ -415,7 +416,7 @@
           Refresh
         </button>
         <button type="button" class="btn btn-secondary"
-                (click)="application_action_error_message=null;application_action_done=false;applicationModal.hide();">
+                (click)="application_action_error_message=null;;applicationModal.hide();">
           Close
         </button>
       </div>
@@ -664,10 +665,10 @@
                     <div class="col">
                       <div class="input-group">
                         <input class="form-control"
-                        name="project_application_{{fl.name}}_old"
-                        type="text"
-                        value="{{project_application?.CurrentFlavors[fl.name]?.counter}}"
-                        placeholder="0" disabled>
+                               name="project_application_{{fl.name}}_old"
+                               type="text"
+                               value="{{project_application?.CurrentFlavors[fl.name]?.counter}}"
+                               placeholder="0" disabled>
                         <div class="input-group-append"><span class="input-group-text"> VMs</span></div>
                       </div>
                       <span class="help-block">Currently approved of this type </span>
