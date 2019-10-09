@@ -120,19 +120,24 @@
         <tr *ngIf="!isSearching">
 
 
-          <td [popover]="namePopover">
-            <popover-content #namePopover placement="right" [title]="vm?.name" [closeOnMouseOutside]="false"
-                             [closeOnClickOutside]="true"
-            >
+          <td >
+            <ng-template #nameTablePopover>
               <table class="table-bordered">
                 <tr>
                   <td>ID</td>
                   <td>{{vm?.openstackid}}</td>
                 </tr>
               </table>
-            </popover-content>
+            </ng-template>
 
-            <strong style="color: #005AA9;">{{vm?.name}}            </strong>
+            <strong style="color: #005AA9;"
+                    [popover]="nameTablePopover"
+                    placement="right"
+                    triggers="mouseenter"
+                    [outsideClick]="true"
+                    [popoverTitle]="vm?.name">
+              {{vm?.name}}
+            </strong>
 
 
           </td>
@@ -141,13 +146,8 @@
           <td style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">
             {{vm.project}}
           </td>
-          <td [popover]="flavorPopover">
-            <popover-content #flavorPopover
-                             [title]="vm?.flavor?.name"
-                             placement="right"
-                             [animation]="true"
-                             [closeOnClickOutside]="false"
-                             [closeOnMouseOutside]="false">
+          <td >
+            <ng-template #flavorPopover>
               <div class="scroll-flavor">
 
                 <div class="col">
@@ -185,9 +185,15 @@
                   </div>
                 </div>
               </div>
-            </popover-content>
+            </ng-template>
 
-            <strong style="color: #005AA9;">{{vm?.flavor?.name}}</strong>
+
+            <strong style="color: #005AA9;"
+                    [popover]="flavorPopover"
+                    placement="right"
+                    triggers="mouseenter"
+                    [outsideClick]="true"
+                    [popoverTitle]="vm?.flavor?.name">{{vm?.flavor?.name}}</strong>
           </td>
           <td style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">
                          <span *ngIf="vm.status == vm_statuses[vm_statuses.DELETED]"
