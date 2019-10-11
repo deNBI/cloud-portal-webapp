@@ -1,7 +1,7 @@
 import {Component, ElementRef, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
 import {BiocondaService} from '../../api-connector/bioconda.service';
 import {Subject} from 'rxjs';
-import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
+import {debounceTime, distinctUntilChanged, switchMap} from 'rxjs/operators';
 import {PaginationComponent} from 'ngx-bootstrap';
 
 export interface IBiocondaTool {
@@ -62,32 +62,48 @@ export class BiocondaComponent implements OnInit {
     this.filternameChanged
       .pipe(
         debounceTime(this.DEBOUNCE_TIME),
-        distinctUntilChanged())
-      .subscribe((filterName: string) => {
-        this.filterToolName = filterName;
-        this.getAllTools(this.FIRST_PAGE)
+        distinctUntilChanged(), switchMap((filterName: string) => {
+          this.isSearching = true;
+
+          this.filterToolName = filterName;
+
+          return this.condaService.getAllTools(1, this.filterToolName, this.filterToolVersion, this.filterToolBuild)
+
+        }))
+      .subscribe(res => {
+        this.setAllTools(res);
 
       });
 
     this.filterVersionChanged
       .pipe(
         debounceTime(this.DEBOUNCE_TIME),
-        distinctUntilChanged())
-      .subscribe((filterVersion: string) => {
-        this.filterToolVersion = filterVersion;
-        this.getAllTools(this.FIRST_PAGE)
+        distinctUntilChanged(), switchMap((filterVersion: string) => {
+          this.isSearching = true;
+
+          this.filterToolVersion = filterVersion;
+
+          return this.condaService.getAllTools(1, this.filterToolName, this.filterToolVersion, this.filterToolBuild)
+
+        }))
+      .subscribe(res => {
+        this.setAllTools(res);
 
       });
 
     this.filterBuildChanged
       .pipe(
         debounceTime(this.DEBOUNCE_TIME),
-        distinctUntilChanged())
-      .subscribe((filterBuild: string) => {
-        this.filterToolBuild = filterBuild;
-        this.getAllTools(this.FIRST_PAGE)
+        distinctUntilChanged(), switchMap((filterToolBuild: string) => {
+          this.isSearching = true;
 
-      });
+          this.filterToolBuild = filterToolBuild;
+
+          return this.condaService.getAllTools(1, this.filterToolName, this.filterToolVersion, this.filterToolBuild)
+        })).subscribe(res => {
+      this.setAllTools(res);
+
+    });
 
   }
 
@@ -113,6 +129,29 @@ export class BiocondaComponent implements OnInit {
         this.pagination.selectPage(this.currentPage);
         this.isSearching = false;
       });
+  }
+
+  setAllTools(res): void {
+    this.isSearching = true;
+
+    this.all_tools = [];
+
+    for (const line of res['packages']) {
+      this.all_tools.push({
+                            name: line['name'],
+                            version: line['version'],
+                            build: line['build']
+                          })
+    }
+    this.toolsPerPage = res['items_per_page'];
+    this.total_pages = res['total_items'];
+    this.toolsStart = 0;
+    this.toolsEnd = this.toolsPerPage;
+
+    this.currentPage = 1;
+    this.pagination.selectPage(this.currentPage);
+    this.isSearching = false;
+
   }
 
   changedNameFilter(text: string): void {

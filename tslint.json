@@ -29,7 +29,7 @@
     "indent":true,
     "arrow-parens":true,
 
-    "template-cyclomatic-complexity": [true, 10],
+    //"template-cyclomatic-complexity": [true, 10],
     "template-conditional-complexity": [true, 4],
      "banana-in-box": true,
     "templates-no-negated-async": true,
@@ -62,7 +62,7 @@
     "pipe-impure": true,
 
     "try-catch-first":true,
-    "newspaper-order":true,
+   // "newspaper-order":true,
     "no-flag-args":true,
     "no-for-each-push":true,
    // "no-feature-envy":true,
@@ -76,7 +76,7 @@
     "label-position": true,
     "match-default-export-name": true,
     "max-func-args": [true, 5],
-    "newspaper-order": true,
+   // "newspaper-order": true,
     "no-any": false,
     "no-arg": true,
     "no-bitwise": true,
@@ -105,7 +105,7 @@
         "no-unsafe-any": false,
         "no-unsafe-finally": true,
         "no-unused-expression": true,
-        "no-use-before-declare": true,
+        //"no-use-before-declare": true,
         "promise-function-async": true,
         "radix": true,
         "restrict-plus-operands": true, // the plus operand should really only be used for strings and numbers
