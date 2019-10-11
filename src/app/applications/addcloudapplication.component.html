@@ -353,7 +353,6 @@
             <div class="form-group row">
               <label class="col-md-4 form-control-label" for="text-input"><strong>Research Topics*
               </strong></label>
-              <div></div>
               <div class="col-md-8">
                 <div [ngClass]="{
                                 'danger-border': selected_ontology_terms?.length <=0,
@@ -768,8 +767,9 @@
           </form>
         </div>
         <div class="card-footer">
-          <div *ngIf="f.invalid || (dissemination_platform_count == 0 && project_application_report_allowed)"
-               class="form-group row alert alert-warning">
+          <div
+            *ngIf="f.invalid || selected_ontology_terms.length == 0  || (dissemination_platform_count == 0 && project_application_report_allowed)"
+            class="form-group row alert alert-warning">
             Some required fields are incorrect or not filled in yet.
             Please check if all required (*) fields are filled in correctly.
           </div>
@@ -783,7 +783,7 @@
           <button id="submit_btn" type="button"
                   (click)="extension_request=false;filterEnteredData(f); submitModal.show();"
                   class="btn btn-sm btn-success"
-                  [disabled]="f.invalid || (dissemination_platform_count == 0 && project_application_report_allowed)">
+                  [disabled]="f.invalid ||selected_ontology_terms.length == 0 || (dissemination_platform_count == 0 && project_application_report_allowed)">
             <i class="fa fa-dot-circle-o"></i>
             Submit Application
           </button>
