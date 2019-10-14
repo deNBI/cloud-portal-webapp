@@ -60,7 +60,7 @@
                          (ngModelChange)="applyFilter();">
               </td>
               <td><input style="width: 110px;" type="text" placeholder="Filter"
-                         name="filterProjectName"
+                         name="filterProjectName" id="filter_project_name"
                          [(ngModel)]="filterProjectName"
                          (ngModelChange)="applyFilter();">
               </td>
@@ -185,7 +185,7 @@
                     *ngIf="project?.Status == project_states.ACTIVE || project?.Status == project_states.SUSPENDED"
                     style="margin-left: 5px"
                     type="button"
-                    class="btn btn-danger"
+                    class="btn btn-danger" [id]="'show_terminate_' + project?.Id"
                     (click)="selectedProject = project;getProjectDetails();terminateModal.show();"
 
                   >
@@ -656,7 +656,7 @@
 
       </div>
       <div class="modal-footer">
-        <button class="btn  btn-success col-md-4"
+        <button class="btn  btn-success col-md-4" id="terminate_project_btn"
                 (click)="terminateProject();terminateModal.hide();notificationModal.show()">
           Yes
         </button>
@@ -669,7 +669,7 @@
 </div><!-- /.modal -->
 
 
-<div bsModal #notificationModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+<div bsModal #notificationModal="bs-modal" class="modal" tabindex="-1" role="dialog"
      aria-labelledby="Label"
      aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -683,24 +683,18 @@
         </button>
       </div>
       <div class="modal-body">
-        <div class="alert alert-{{ notificationModalType }}" role="alert">
+        <div class="alert alert-{{ notificationModalType }}" id="notification_message" role="alert">
           {{ notificationModalMessage }}
 
         </div>
       </div>
       <div class="modal-footer">
-        <button *ngIf="(notificationModalIsClosable == true) && (notificationModalStay==true)"
+        <button id="close_notification"
                 type="button"
-                (click)="notificationModal.hide();resetNotificationModal()"
+                (click)="notificationModal.hide();resetNotificationModal();removeModalOpen();"
                 class="btn  btn-secondary"> Close
         </button>
-        <a *ngIf="(notificationModalIsClosable == true) && (notificationModalStay==false)"
-           [routerLink]="['/applications']">
-          <button type="button"
-                  (click)="notificationModal.hide();resetNotificationModal()" type="reset"
-                  class="btn  btn-secondary"> Close
-          </button>
-        </a>
+
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->

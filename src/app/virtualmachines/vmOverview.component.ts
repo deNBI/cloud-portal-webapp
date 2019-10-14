@@ -112,6 +112,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
   filterNameChanged: Subject<string> = new Subject<string>();
   filterProjectNameChanged: Subject<string> = new Subject<string>();
   filterElixirIdChanged: Subject<string> = new Subject<string>();
+  snapshotSearchTerm: Subject<string> = new Subject<string>();
 
   constructor(private facilityService: FacilityService, private voService: VoService, private imageService: ImageService, private userservice: UserService,
               private virtualmachineservice: VirtualmachineService) {
@@ -617,6 +618,14 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
         distinctUntilChanged())
       .subscribe(() => {
         this.applyFilter();
+      });
+
+    this.snapshotSearchTerm
+      .pipe(
+        debounceTime(this.DEBOUNCE_TIME),
+        distinctUntilChanged())
+      .subscribe((event) => {
+        this.validSnapshotName(event);
       });
   }
 

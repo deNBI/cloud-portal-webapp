@@ -85,7 +85,8 @@
         </li>
 
         <li class="nav-item" *ngFor="let application of project_enumeration">
-          <a *ngIf="!navbar_minimized"class="nav-link" routerLinkActive="active"
+
+          <a *ngIf="!navbar_minimized" class="nav-link" routerLinkActive="active" [id]="application?.project_name"
              [routerLink]="['/project-management/' + application.application_id]">
             <span *ngIf="application.is_open_stack"
                   style="float:left;background-color: #ED1944; padding: 1px 1px 2px 1px;margin: 0 0.5rem 0 0; border-color: #ED1944"
@@ -299,11 +300,6 @@
   <main class="main">
 
     <!-- Breadcrumb-->
-    <!--
-      <ol class="breadcrumb">
-        <app-breadcrumbs></app-breadcrumbs>
-      </ol>
-      -->
 
    <!-- <cui-breadcrumb>
 

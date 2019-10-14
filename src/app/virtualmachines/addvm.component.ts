@@ -64,7 +64,11 @@ export class VirtualMachineComponent implements OnInit {
   client_checked: boolean = false;
   playbook_run: number = 0;
   timeout: number = 0;
+
   title: string = 'New Instance';
+
+  vm_name: string;
+
 
   started_machine: boolean = false;
 
@@ -355,6 +359,7 @@ export class VirtualMachineComponent implements OnInit {
    */
   startVM(flavor: string, image: string, servername: string, project: string, projectid: string | number): void {
     this.create_error = null;
+    this.vm_name = null;
     if (image && flavor && servername && project && (this.diskspace <= 0 || this.diskspace > 0 && this.volumeName.length > 0)) {
       this.create_error = null;
       this.started_machine = true;

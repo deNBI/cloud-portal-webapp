@@ -106,6 +106,9 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit {
       this.application_action = 'approved';
       this.application_member_name = membername;
       this.application_action_done = true;
+      this.getUserProjectApplications();
+      this.getMembersOfTheProject();
+      this.loaded = true;
 
     });
   }
@@ -308,6 +311,7 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit {
                    this.application_member_name = membername;
                    this.application_action_done = true;
                    this.getUserProjectApplications();
+                   this.loaded = true;
 
                  }
       );
@@ -323,6 +327,8 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit {
 
       const newProjectApplications: ProjectMemberApplication[] = [];
       if (applications.length === 0) {
+        this.project.ProjectMemberApplications = [];
+
         this.loaded = true;
 
       }
@@ -336,7 +342,6 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit {
             `${dateApplicationCreated.date()}.${(dateApplicationCreated.month() + 1)}.${dateApplicationCreated.year()}`
           );
         newProjectApplications.push(newMemberApplication);
-
         this.project.ProjectMemberApplications = newProjectApplications;
         this.loaded = true;
 
