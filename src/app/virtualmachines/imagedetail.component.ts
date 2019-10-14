@@ -5,7 +5,8 @@ import {ImageLogoTags} from '../shared/shared_modules/baseClass/abstract-base-cl
 
 @Component({
              selector: 'app-image-detail',
-             templateUrl: 'imagedetail.component.html'
+             templateUrl: 'imagedetail.component.html',
+  styleUrls: ['./imagedetail.component.scss']
 
            })
 export class ImageDetailComponent implements OnInit, OnChanges {

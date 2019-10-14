@@ -5,8 +5,8 @@ import {ImageLogoTags} from '../shared/shared_modules/baseClass/abstract-base-cl
 
 @Component({
              selector: 'app-image-slide',
-             templateUrl: 'imageCarouselSlide.component.html'
-
+             templateUrl: 'imageCarouselSlide.component.html',
+  styleUrls: ['./imagedetail.component.scss']
            })
 export class ImageCarouselSlideComponent implements OnInit {
   @Input() image: Image;
