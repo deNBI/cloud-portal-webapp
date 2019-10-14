@@ -27,7 +27,7 @@
 
 .project-simpleVM_Logo_bluebg .path1:before {
   content: "\e902";
-  color: rgb(0, 90, 169);
+  color: #00adef;
 }
 .project-simpleVM_Logo_bluebg .path2:before {
   content: "\e903";
