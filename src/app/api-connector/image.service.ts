@@ -67,7 +67,7 @@ export class ImageService {
   }
 
   getImageLogos(): Observable<ImageLogo[]> {
-    return this.http.get<ImageLogo[]>(`${ApiSettings.getApiBaseURL()}imageLogos/`, {
+    return this.http.get<ImageLogo[]>(`${ApiSettings.getApiBaseURL()}imageLogoTags/`, {
       withCredentials: true
     })
 
@@ -77,16 +77,16 @@ export class ImageService {
 
     const params: HttpParams = new HttpParams().set('tag', imageTag).set('url', url);
 
-    return this.http.post<ImageLogo>(`${ApiSettings.getApiBaseURL()}imageLogos/`, params, {
+    return this.http.post<ImageLogo>(`${ApiSettings.getApiBaseURL()}imageLogoTags/`, params, {
       withCredentials: true,
       headers: header
     })
 
   }
 
-  deleteImageLogoTag(imageTag: string|number): Observable<IResponseTemplate> {
+  deleteImageLogoTag(imageTag: string | number): Observable<IResponseTemplate> {
 
-    return this.http.delete<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}imageLogos/${imageTag}/`, {
+    return this.http.delete<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}imageLogoTags/${imageTag}/`, {
       withCredentials: true,
       headers: header
     })
