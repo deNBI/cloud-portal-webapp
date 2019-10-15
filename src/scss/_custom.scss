@@ -19,20 +19,32 @@ $deNBI_black: #000000;
 $openstackcolour: #ED1944;
 $simplevmcolour: #00ADEF;
 
-.btn{
+.btn {
   cursor: pointer;
 }
 
 header {
-  color:red;
+  color: red;
 }
 
 #header-help {
   padding-right: 19px;
 }
 
+
+
 .modal {
-  background-color: rgba(0,0,0,0.3);
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+
+.danger-border {
+  border-style: solid;
+  border-color: red;
+}
+.success-border {
+  border-style: solid;
+  border-color: #B0DFC5;
 }
 
 .modal-backdrop {
@@ -44,48 +56,44 @@ header {
   padding: 1.25rem;
 }
 
-.flavor-image-card
-{
-  width: 16rem;margin-right: 5px; cursor: pointer;
+.flavor-image-card {
+  width: 16rem;
+  margin-right: 5px;
+  cursor: pointer;
 }
 
 
-.flavor-card-icons
-{
-    margin: 0px 5px 10px 0px;
-    width: 18px;
-    max-height:18px;
+.flavor-card-icons {
+  margin: 0px 5px 10px 0px;
+  width: 18px;
+  max-height: 18px;
 }
 
-.scroll-flavor
-{
-  max-height:90px;
+.scroll-flavor {
+  max-height: 90px;
   min-height: 90px;
   overflow-y: auto;
 }
 
-.scroll-image
-{
+.scroll-image {
   max-height: 120px;
   min-height: 120px;
   overflow-y: auto;
 }
 
-.collapse_no_margin{
+.collapse_no_margin {
   margin: 0;
 }
 
-.card.border-success
-{
+.card.border-success {
   border-width: 3px;
 }
-.bg-info-flavor
-{
-    background-color: $deNBI_blue;
+
+.bg-info-flavor {
+  background-color: $deNBI_blue;
 }
 
-.bg-info-image
-{
+.bg-info-image {
   background-color: $deNBI_cyan;
 }
 
@@ -93,57 +101,52 @@ header {
   color: $deNBI_white;
 }
 
-.card-header.bg-info-image
-{
+.card-header.bg-info-image {
   color: $deNBI_white;
 }
 
 
 .btn-openstack {
-    @include button-variant($openstackcolour, darken($openstackcolour, 7.5%), darken($openstackcolour, 10%), lighten($openstackcolour,5%), lighten($openstackcolour, 10%), darken($openstackcolour,30%));
+  @include button-variant($openstackcolour, darken($openstackcolour, 7.5%), darken($openstackcolour, 10%), lighten($openstackcolour, 5%), lighten($openstackcolour, 10%), darken($openstackcolour, 30%));
 }
 
 .btn-outline-openstack {
-    @include button-outline-variant($openstackcolour, #222222, lighten($openstackcolour,5%), $openstackcolour);
+  @include button-outline-variant($openstackcolour, #222222, lighten($openstackcolour, 5%), $openstackcolour);
 }
 
 .btn-simplevm {
-    @include button-variant($simplevmcolour, darken($simplevmcolour, 7.5%), darken($simplevmcolour, 10%), lighten($simplevmcolour,5%), lighten($simplevmcolour, 10%), darken($simplevmcolour,30%));
+  @include button-variant($simplevmcolour, darken($simplevmcolour, 7.5%), darken($simplevmcolour, 10%), lighten($simplevmcolour, 5%), lighten($simplevmcolour, 10%), darken($simplevmcolour, 30%));
 }
 
 .btn-outline-simplevm {
-    @include button-outline-variant($simplevmcolour, #222222, lighten($simplevmcolour,5%), $simplevmcolour);
+  @include button-outline-variant($simplevmcolour, #222222, lighten($simplevmcolour, 5%), $simplevmcolour);
 }
 
 
-
-#newsbadge
-{
+#newsbadge {
   margin: 15px !important;
   position: relative !important;
   border-radius: 10px;
-  background-color: rgba(255,255,255, 1);
+  background-color: rgba(255, 255, 255, 1);
   padding: 10px !important;
   max-width: 200px;
 
 }
 
-#newsimage
-{
+#newsimage {
   width: 100%;
   position: relative;
   transition: 0.5s;
 }
 
-#newsbadge:hover
-{
+#newsbadge:hover {
   opacity: 0.8;
   transition: 0.5s;
 
 }
-.modal .table-responsive tbody tr td button
-{
-  width:200px;
+
+.modal .table-responsive tbody tr td button {
+  width: 200px;
 }
 
 

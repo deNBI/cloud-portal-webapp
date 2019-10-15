@@ -352,10 +352,13 @@
               <h5 class="col-md-6 form-control-label">Additional Information</h5>
             </div>
             <div class="form-group row">
-              <label class="col-md-4 form-control-label" for="text-input"><strong>Research Topics
+              <label class="col-md-4 form-control-label" for="text-input"><strong>Research Topics*
               </strong></label>
-              <div class="col-md-8 ">
-                <div class="ng-autocomplete col-md-8">
+              <div class="col-md-8">
+                <div [ngClass]="{
+                                'danger-border': selected_ontology_terms?.length <=0,
+                                'success-border':selected_ontology_terms?.length >0
+                                }">
                   <ng-autocomplete #edam_ontology
                                    [data]="edam_ontology_terms"
                                    [searchKeyword]="ontology_search_keyword"
@@ -373,17 +376,19 @@
                   <ng-template #notFoundTemplate let-notFound>
                     <div [innerHTML]="notFound"></div>
                   </ng-template>
+
+
                 </div>
-                <div>
-                  <h5><span *ngFor="let term of selected_ontology_terms"
-                            style="margin-left: 5px; "
-                            class="badge badge-info">{{term.term}}
-                    <span class="badge" style="cursor: pointer;" (click)="removeEDAMterm(term)">&#10060;</span>
+                <h5><span
+                  *ngFor="let term of selected_ontology_terms"
+                  style="margin-right: 5px; "
+                  class="badge badge-info">{{term.term}}
+                  <span class="badge" style="cursor: pointer;" (click)="removeEDAMterm(term)">&#10060;</span>
  </span>
 
-                  </h5>
-                </div>
+                </h5>
               </div>
+
 
             </div>
             <div class="form-group row">
@@ -763,8 +768,9 @@
           </form>
         </div>
         <div class="card-footer">
-          <div *ngIf="f.invalid || (dissemination_platform_count == 0 && project_application_report_allowed)"
-               class="form-group row alert alert-warning">
+          <div
+            *ngIf="f.invalid || selected_ontology_terms.length == 0  || (dissemination_platform_count == 0 && project_application_report_allowed)"
+            class="form-group row alert alert-warning">
             Some required fields are incorrect or not filled in yet.
             Please check if all required (*) fields are filled in correctly.
           </div>
@@ -778,7 +784,8 @@
           <button id="submit_btn" type="button"
                   (click)="extension_request=false;filterEnteredData(f); submitModal.show();"
                   class="btn btn-sm btn-success"
-                  [disabled]="f.invalid || (dissemination_platform_count == 0 && project_application_report_allowed)">
+                  [disabled]="f.invalid ||selected_ontology_terms.length == 0 || (dissemination_platform_count == 0 && project_application_report_allowed)">
+
             <i class="fa fa-dot-circle-o"></i>
             Submit Application
           </button>
