@@ -202,6 +202,7 @@
                         <div class="input-group-append"><span class="input-group-text">VMs</span></div>
                       </div>
                       <span class="help-block">Number of VMs you would like to run of this particular flavor</span>
+                      <div *ngIf="f?.comment" class="alert alert-info">{{f.comment}}</div>
                     </div>
                   </div>
                 </div>
@@ -784,6 +785,7 @@
                   (click)="extension_request=false;filterEnteredData(f); submitModal.show();"
                   class="btn btn-sm btn-success"
                   [disabled]="f.invalid ||selected_ontology_terms.length == 0 || (dissemination_platform_count == 0 && project_application_report_allowed)">
+
             <i class="fa fa-dot-circle-o"></i>
             Submit Application
           </button>

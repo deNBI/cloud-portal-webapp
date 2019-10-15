@@ -4,86 +4,95 @@ import {FlavorType} from './flavorType';
  * Flavor Class.
  */
 export class Flavor {
-    private _id: string;
-    private _name: string;
-    private _vcpus: number;
-    private _ram: number;
-    private _rootdisk: number;
-    private _gpu: number;
-    private _epheremal_disk: number;
-    private _type: FlavorType;
-    private _simple_vm: boolean;
+  private _id: string;
+  private _name: string;
+  private _vcpus: number;
+  private _ram: number;
+  private _rootdisk: number;
+  private _gpu: number;
+  private _epheremal_disk: number;
+  private _type: FlavorType;
+  private _simple_vm: boolean;
+  private _comment: string;
 
-    get id(): string {
-        return this._id;
-    }
+  get id(): string {
+    return this._id;
+  }
 
-    set id(value: string) {
-        this._id = value;
-    }
+  set id(value: string) {
+    this._id = value;
+  }
 
-    get name(): string {
-        return this._name;
-    }
+  get comment(): string {
+    return this._comment;
+  }
 
-    set name(value: string) {
-        this._name = value;
-    }
+  set comment(value: string) {
+    this._comment = value;
+  }
 
-    get vcpus(): number {
-        return this._vcpus;
-    }
+  get name(): string {
+    return this._name;
+  }
 
-    set vcpus(value: number) {
-        this._vcpus = value;
-    }
+  set name(value: string) {
+    this._name = value;
+  }
 
-    get ram(): number {
-        return this._ram;
-    }
+  get vcpus(): number {
+    return this._vcpus;
+  }
 
-    set ram(value: number) {
-        this._ram = value;
-    }
+  set vcpus(value: number) {
+    this._vcpus = value;
+  }
 
-    get rootdisk(): number {
-        return this._rootdisk;
-    }
+  get ram(): number {
+    return this._ram;
+  }
 
-    set rootdisk(value: number) {
-        this._rootdisk = value;
-    }
+  set ram(value: number) {
+    this._ram = value;
+  }
 
-    get gpu(): number {
-        return this._gpu;
-    }
+  get rootdisk(): number {
+    return this._rootdisk;
+  }
 
-    set gpu(value: number) {
-        this._gpu = value;
-    }
+  set rootdisk(value: number) {
+    this._rootdisk = value;
+  }
 
-    get epheremal_disk(): number {
-        return this._epheremal_disk;
-    }
+  get gpu(): number {
+    return this._gpu;
+  }
 
-    set epheremal_disk(value: number) {
-        this._epheremal_disk = value;
-    }
+  set gpu(value: number) {
+    this._gpu = value;
+  }
 
-    get type(): FlavorType {
-        return this._type;
-    }
+  get epheremal_disk(): number {
+    return this._epheremal_disk;
+  }
 
-    set type(value: FlavorType) {
-        this._type = value;
-    }
+  set epheremal_disk(value: number) {
+    this._epheremal_disk = value;
+  }
 
-    get simple_vm(): boolean {
-        return this._simple_vm;
-    }
+  get type(): FlavorType {
+    return this._type;
+  }
 
-    set simple_vm(value: boolean) {
-        this._simple_vm = value;
-    }
+  set type(value: FlavorType) {
+    this._type = value;
+  }
+
+  get simple_vm(): boolean {
+    return this._simple_vm;
+  }
+
+  set simple_vm(value: boolean) {
+    this._simple_vm = value;
+  }
 
 }
