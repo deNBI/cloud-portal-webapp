@@ -6,7 +6,7 @@ import {Observable} from 'rxjs';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Cookie} from 'ng2-cookies/ng2-cookies';
 import {IResponseTemplate} from './response-template';
-import {ImageTag} from '../facility_manager/image-tag';
+import {ImageLogo, ImageTag} from '../facility_manager/image-tag';
 
 const header: HttpHeaders = new HttpHeaders({
                                               'X-CSRFToken': Cookie.get('csrftoken')
@@ -55,12 +55,38 @@ export class ImageService {
 
   }
 
-
   addImageTags(imageTag: string, description: string): Observable<ImageTag> {
 
     const params: HttpParams = new HttpParams().set('imageTag', imageTag).set('description', description);
 
     return this.http.post<ImageTag>(`${ApiSettings.getApiBaseURL()}imageTags/`, params, {
+      withCredentials: true,
+      headers: header
+    })
+
+  }
+
+  getImageLogos(): Observable<ImageLogo[]> {
+    return this.http.get<ImageLogo[]>(`${ApiSettings.getApiBaseURL()}imageLogos/`, {
+      withCredentials: true
+    })
+
+  }
+
+  addImageLogos(imageTag: string, url: string): Observable<ImageLogo> {
+
+    const params: HttpParams = new HttpParams().set('tag', imageTag).set('url', url);
+
+    return this.http.post<ImageLogo>(`${ApiSettings.getApiBaseURL()}imageLogos/`, params, {
+      withCredentials: true,
+      headers: header
+    })
+
+  }
+
+  deleteImageLogoTag(imageTag: string|number): Observable<IResponseTemplate> {
+
+    return this.http.delete<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}imageLogos/${imageTag}/`, {
       withCredentials: true,
       headers: header
     })

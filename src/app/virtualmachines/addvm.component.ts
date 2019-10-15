@@ -509,17 +509,6 @@ export class VirtualMachineComponent implements OnInit {
   }
 
   setSelectedImage(image: Image): void {
-    console.log('set selected diamge')
-
-    const indexNewSelectedImage: number = this.images.indexOf(image, 0);
-
-    if (this.selectedImage) {
-      console.log('seleceted set')
-      this.images[indexNewSelectedImage] = this.selectedImage;
-    } else {
-      console.log('selected not set')
-      this.images.splice(indexNewSelectedImage, 1);
-    }
 
     this.selectedImage = image;
 

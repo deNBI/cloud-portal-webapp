@@ -1,7 +1,5 @@
 import {Component, EventEmitter, HostListener, Input, OnInit, Output} from '@angular/core';
 import {Image} from './virtualmachinemodels/image'
-import {OwlOptions} from 'ngx-owl-carousel-o';
-import {ImageLogoTags} from '../shared/shared_modules/baseClass/abstract-base-class';
 
 @Component({
              selector: 'app-image-slide',
@@ -10,6 +8,7 @@ import {ImageLogoTags} from '../shared/shared_modules/baseClass/abstract-base-cl
            })
 export class ImageCarouselSlideComponent implements OnInit {
   @Input() image: Image;
+  @Input() selectedImage: Image;
   @Output() readonly selectedImageChange: EventEmitter<Image> = new EventEmitter();
   window_size: number;
   img_height: string = '120px';

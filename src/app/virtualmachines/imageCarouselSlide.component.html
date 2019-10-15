@@ -1,4 +1,5 @@
-<div (click)="selectedImageChange.emit(image);" class="card flavor-image-card" id="id_image_owl_{{image?.name}}"
+<div *ngIf="image !=selectedImage" (click)="selectedImageChange.emit(image);" class="card flavor-image-card"
+     id="id_image_owl_{{image?.name}}"
 >
   <div
     [ngClass]="{'bg-info-image':!image?.is_snapshot,'bg-warning':image?.is_snapshot}"
@@ -18,6 +19,33 @@
         [ngStyle]="{'width':img_width,'height':img_height}"
         alt="{{image?.description}}">
       </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="image == selectedImage" class="card border-success flavor-image-card"
+>
+  <div
+    class="card-header bg-success text-truncate" data-toggle="tooltip" data-placement="top"
+    title="{{selectedImage?.name}}">
+    <i
+      *ngIf="selectedImage?.is_snapshot"
+      class="fa fa-camera" aria-hidden="true"></i>
+    <strong>{{selectedImage?.name}}</strong></div>
+  <div class="card-body">
+    <div class="scroll-image">
+      <div *ngIf="!selectedImage?.logo_url || !image_visible" class="col scroll-image"
+           (mouseleave)="setImageVisible()">
+        {{selectedImage?.description}}
+      </div>
+      <div *ngIf=" selectedImage?.logo_url && image_visible" (mouseenter)="setImageVisible()"><img
+        src="{{selectedImage?.logo_url}}"
+        [ngStyle]="{'width':img_width,'height':img_height}"
+        alt="Logo">
+
+      </div>
+
+
     </div>
   </div>
 </div>

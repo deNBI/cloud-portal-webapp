@@ -1,14 +1,13 @@
 import {Component, EventEmitter, HostListener, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {Image} from './virtualmachinemodels/image'
 import {OwlOptions} from 'ngx-owl-carousel-o';
-import {ImageLogoTags} from '../shared/shared_modules/baseClass/abstract-base-class';
 
 @Component({
              selector: 'app-image-detail',
              templateUrl: 'imagedetail.component.html'
 
            })
-export class ImageDetailComponent implements OnInit, OnChanges {
+export class ImageDetailComponent implements OnInit {
   @Input() selectedImage: Image;
   @Input() images: Image[];
   @Output() readonly selectedImageChange: EventEmitter<Image> = new EventEmitter();
@@ -50,51 +49,8 @@ export class ImageDetailComponent implements OnInit, OnChanges {
     nav: true
   };
 
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log('########');
-    console.log(this.images);
-    console.log('########');
-
-  }
-
   ngOnInit(): void {
     this.window_size = window.innerWidth;
-    this.images.forEach(img => {
-      this.getImageLogoUrl(img)
-    })
-
-  }
-
-  setSelectedImage(image: Image): void {
-    console.log('set selected diamge')
-
-    const indexNewSelectedImage: number = this.images.indexOf(image, 0);
-
-    if (this.selectedImage) {
-      console.log('seleceted set')
-      this.images[indexNewSelectedImage] = this.selectedImage;
-    } else {
-      console.log('selected not set')
-      this.images.splice(indexNewSelectedImage, 1);
-    }
-
-    //this.selectedImage = image;
-    this.selectedImageChange.emit(image);
-
-  }
-
-  /**
-   * Get Url of Image logo (first match)
-   * @param image
-   */
-  getImageLogoUrl(image: Image): void {
-    for (const tag of image.tags) {
-      if (tag in ImageLogoTags) {
-        image.logo_url = ImageLogoTags[tag];
-        break;
-      }
-    }
-
   }
 
   public setImageVisible(): void {

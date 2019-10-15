@@ -80,15 +80,34 @@
                 </tr>
                 <tr>
                   <th>Tag</th>
+                  <th>Url</th>
                   <th>Logo</th>
+                  <th>Actions</th>
 
                 </tr>
                 </thead>
                 <tbody>
-                <tr *ngFor="let item of imageLogoTags  | keyvalue">
-                  <td>{{item.key}}</td>
-                  <td><img src="{{item.value}}"
+                <td><input type="text" placeholder="Tag" [(ngModel)]="imageTag"
+                >
+                </td>
+                <td><input type="url" placeholder="Url" [(ngModel)]="imageUrl">
+                </td>
+                <td><img *ngIf="imageUrl" alt="Not found" src="{{imageUrl}}" style="width:200px;height:100px ">
+                </td>
+                <td>
+                  <button type="button" (click)="addLogoTag()" class=" btn btn-secondary"
+                          [disabled]="!imageTag || !imageUrl || imageLogoTagAvailable()"> Add
+                  </button>
+                </td>
+                <tr *ngFor="let logo of imageLogos ">
+                  <td>{{logo?.tag}}</td>
+                  <td><a href="{{logo?.url}}">{{logo?.url}}</a></td>
+                  <td><img alt="Not found" src="{{logo?.url}}"
                            style="width:200px;height:100px;"></td>
+                  <td>
+                    <button (click)="removeLogoTag(logo)" type="button" class=" btn btn-secondary"> Remove</button>
+
+                  </td>
                 </tr>
 
                 </tbody>
@@ -99,3 +118,4 @@
       </div>
     </div>
   </div>
+</div>

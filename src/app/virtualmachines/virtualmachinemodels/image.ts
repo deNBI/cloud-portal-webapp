@@ -1,4 +1,3 @@
-import {ImageLogoTags} from '../../shared/shared_modules/baseClass/abstract-base-class';
 
 /**
  * Image class.
