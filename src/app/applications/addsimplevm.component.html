@@ -202,6 +202,8 @@
                                     </span></div>
                         </div>
                         <span class="help-block">Number of VMs you would like to run of this particular flavor</span>
+                        <div *ngIf="f?.comment" class="alert alert-info">{{f.comment}}</div>
+
                       </div>
                     </div>
                   </div>
@@ -585,7 +587,8 @@
                   </div>
 
 
-                  <div class="alert-danger alert" *ngIf="dissemination_platform_count == 0 && project_application_report_allowed">
+                  <div class="alert-danger alert"
+                       *ngIf="dissemination_platform_count == 0 && project_application_report_allowed">
                     Please select at least one Platform.
                   </div>
                   <div class="form-group row">
@@ -624,7 +627,7 @@
                     <label class="col-md-4 form-control-label">Portal News</label>
                     <div class="col-md-4">
 
-                      <label class="switch switch-label switch-outline-primary-alt"  id="platform_portal_news_checkbox">
+                      <label class="switch switch-label switch-outline-primary-alt" id="platform_portal_news_checkbox">
                         <input type="checkbox" class="switch-input" name="platform_portal_news" #portal_news
                                [(ngModel)]="application_dissemination.platform_portal_news"
                                (change)="count_platform(portal_news.checked)"
@@ -640,7 +643,7 @@
                     <label class="col-md-4 form-control-label">Twitter</label>
                     <div class="col-md-4">
 
-                      <label class="switch switch-label switch-outline-primary-alt"  id="platform_twitter_checkbox">
+                      <label class="switch switch-label switch-outline-primary-alt" id="platform_twitter_checkbox">
                         <input type="checkbox" class="switch-input" name="platform_twitter" #twitter
                                [(ngModel)]="application_dissemination.platform_twitter"
                                (change)="count_platform(twitter.checked)"
@@ -746,7 +749,8 @@
           <div *ngIf="!min_vm" class="form-group row alert alert-danger">
             Please select at least one flavor.
           </div>
-          <div *ngIf="f.invalid || !min_vm || (dissemination_platform_count == 0 && project_application_report_allowed)" class="form-group row alert alert-warning">
+          <div *ngIf="f.invalid || !min_vm || (dissemination_platform_count == 0 && project_application_report_allowed)"
+               class="form-group row alert alert-warning">
             Some required fields are incorrect or not filled in yet.
             Please check if all required (*) fields are filled in correctly.
           </div>
@@ -787,13 +791,14 @@
         </button>
       </div>
       <div class="modal-body">
-        <div class="alert alert-{{ notificationModalType }}"  id="notification_message" role="alert">
+        <div class="alert alert-{{ notificationModalType }}" id="notification_message" role="alert">
           {{ notificationModalMessage }}
 
         </div>
       </div>
       <div class="modal-footer">
-        <button  id="notification_btn_redirect" *ngIf="(notificationModalIsClosable == true) && (notificationModalStay==true)"
+        <button id="notification_btn_redirect"
+                *ngIf="(notificationModalIsClosable == true) && (notificationModalStay==true)"
                 type="button"
                 (click)="notificationModal.hide();resetNotificationModal()"
                 class="btn  btn-secondary"> Close
@@ -836,7 +841,8 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button id="acknowledge_approve_btn" type="button" (click)="acknowledgemodal.hide(); onSubmit(f); notificationModal.show();"
+        <button id="acknowledge_approve_btn" type="button"
+                (click)="acknowledgemodal.hide(); onSubmit(f); notificationModal.show();"
                 class="btn  btn-success" name="_save" form="application_form">
           Accept
         </button>
