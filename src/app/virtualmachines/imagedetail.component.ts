@@ -4,7 +4,8 @@ import {OwlOptions} from 'ngx-owl-carousel-o';
 
 @Component({
              selector: 'app-image-detail',
-             templateUrl: 'imagedetail.component.html'
+             templateUrl: 'imagedetail.component.html',
+  styleUrls: ['./imagedetail.component.scss']
 
            })
 export class ImageDetailComponent implements OnInit {

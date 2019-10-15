@@ -3,8 +3,8 @@ import {Image} from './virtualmachinemodels/image'
 
 @Component({
              selector: 'app-image-slide',
-             templateUrl: 'imageCarouselSlide.component.html'
-
+             templateUrl: 'imageCarouselSlide.component.html',
+  styleUrls: ['./imagedetail.component.scss']
            })
 export class ImageCarouselSlideComponent implements OnInit {
   @Input() image: Image;
