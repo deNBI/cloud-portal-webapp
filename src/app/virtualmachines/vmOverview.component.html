@@ -1,4 +1,4 @@
-<div class="card">
+<div class="animated fadeIn"><div class="card">
 
   <div class="card-header">
     <i class="icon-refresh icons" style="cursor: pointer;" (click)="getVms()"></i><strong>Instance</strong>
@@ -121,21 +121,25 @@
 
 
           <td >
-            <ng-template #nameTablePopover>
-              <table class="table-bordered">
-                <tr>
-                  <td>ID</td>
-                  <td>{{vm?.openstackid}}</td>
-                </tr>
-              </table>
-            </ng-template>
-
             <strong style="color: #005AA9;"
                     [popover]="nameTablePopover"
                     placement="right"
-                    triggers="mouseenter"
+                    triggers=""
+                    (mouseenter)="popName.show()"
+                    (mouseleave)="startTimer(popName, vm?.name)"
                     [outsideClick]="true"
+                    #popName="bs-popover"
                     [popoverTitle]="vm?.name">
+              <ng-template #nameTablePopover>
+                <table class="table-bordered"
+                       (mouseleave)="resumeTimer(popName, vm?.name)"
+                       (mouseenter)="pauseTimer(vm?.name)">
+                  <tr>
+                    <td>ID</td>
+                    <td>{{vm?.openstackid}}</td>
+                  </tr>
+                </table>
+              </ng-template>
               {{vm?.name}}
             </strong>
 
@@ -148,7 +152,8 @@
           </td>
           <td >
             <ng-template #flavorPopover>
-              <div class="scroll-flavor">
+              <div class="scroll-flavor" (mouseenter)="pauseTimer(vm?.name + '-' + vm?.flavor?.name)"
+              (mouseleave)="resumeTimer(flavorPop, vm?.name + '-' + vm?.flavor?.name)">
 
                 <div class="col">
                   <div class="row">
@@ -190,8 +195,11 @@
 
             <strong style="color: #005AA9;"
                     [popover]="flavorPopover"
+                    #flavorPop="bs-popover"
                     placement="right"
-                    triggers="mouseenter"
+                    triggers=""
+                    (mouseenter)="flavorPop.show()"
+                    (mouseleave)="startTimer(flavorPop, vm?.name + '-' + vm?.flavor?.name)"
                     [outsideClick]="true"
                     [popoverTitle]="vm?.flavor?.name">{{vm?.flavor?.name}}</strong>
           </td>
@@ -694,4 +702,5 @@ id="snapshot_result_modal">
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
+</div>
 </div>

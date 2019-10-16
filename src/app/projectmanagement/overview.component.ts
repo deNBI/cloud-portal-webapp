@@ -68,7 +68,14 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit {
   userinfo: Userinfo;
   allSet: boolean = false;
 
+  title: string = 'Project Overview';
+
   checked_member_list: number[] = [];
+  extensionFlavors: {
+    [id: string]: {
+      counter: number, flavor: Flavor
+    }
+  } = {};
 
   // modal variables for User list
   public project_members: ProjectMember[] = [];
@@ -137,21 +144,31 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit {
     })
   }
 
-  /**
-   * Called whenvalues of the flavor-input-fields are changed and if so changes the values shown at the end of the form.
-   * @param form the form which contains the input-fields
-   */
-  protected valuesChanged(form: NgForm): void {
+  protected valuesChanged(flavor: Flavor, counter: number): void {
+    this.extensionFlavors[flavor.name] = {counter: counter, flavor: flavor};
+    this.calculateRamCores();
+  }
+
+  calculateRamCores(): void {
+    this.resetRamCores();
+    for (const extensionFlavorsKey in this.extensionFlavors) {
+      let fl = this.extensionFlavors[extensionFlavorsKey];
+      this.totalRAM = this.totalRAM + fl.flavor.ram * fl.counter;
+      this.totalNumberOfCores = this.totalNumberOfCores + fl.flavor.vcpus * fl.counter;
+    }
+  }
+
+  resetRamCores(): void {
     this.totalNumberOfCores = 0;
     this.totalRAM = 0;
-    for (const key in form.controls) {
-      if (form.controls[key].value) {
-        const flavor: Flavor = this.isKeyFlavor(key.toString());
-        if (flavor != null) {
-          this.totalNumberOfCores = this.totalNumberOfCores + (flavor.vcpus * form.controls[key].value);
-          this.totalRAM = this.totalRAM + (flavor.ram * form.controls[key].value);
-        }
+    for (const key in this.project_application.CurrentFlavors) {
+      const flavor = this.project_application.CurrentFlavors[key];
+      if (flavor != null) {
+        this.totalNumberOfCores = this.totalNumberOfCores + (flavor.vcpus * flavor.counter);
+        this.totalRAM = this.totalRAM + (flavor.ram * flavor.counter);
+
       }
+
     }
 
   }
@@ -562,20 +579,6 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit {
         }
       });
 
-  }
-
-  calculateRamCores(): void {
-    this.totalNumberOfCores = 0;
-    this.totalRAM = 0;
-    for (const key in this.project_application.CurrentFlavors) {
-      const flavor = this.project_application.CurrentFlavors[key];
-      if (flavor != null) {
-        this.totalNumberOfCores = this.totalNumberOfCores + (flavor.vcpus * flavor.counter);
-        this.totalRAM = this.totalRAM + (flavor.ram * flavor.counter);
-
-      }
-
-    }
   }
 
   public addAdmin(groupId: number, memberId: number, userId: number, firstName: string, lastName: string): void {

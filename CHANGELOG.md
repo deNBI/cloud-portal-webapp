@@ -1,3 +1,21 @@
+##  (2019-10-16)
+
+
+#### Features
+
+* **Edam:** at elast one tag neded ([03c0b610](03c0b610))
+* **Flavor:** when set show comment ([4c404b77](4c404b77))
+* **Image:** added logos ([5f1973b9](5f1973b9))
+* **Instance:** refactored how to connect modal ([1e47e2ca](1e47e2ca))
+
+#### Bug Fixes
+
+* **Modification:** object storage set and core and ram ([4b77278b](4b77278b))
+* **project-icons:**  look better now ([4e83d522](4e83d522))
+* **vm-overview:**  popups vanish after 3 seconds ([c70f03d7](c70f03d7))
+
+
+
 ##  (2019-10-11)
 
 

@@ -11,6 +11,7 @@ import {ApplicationsService} from '../api-connector/applications.service';
 import {ApplicationStatusService} from '../api-connector/application-status.service';
 import {ProjectEnumeration} from '../projectmanagement/project-enumeration';
 
+
 /**
  * FullLayout component.
  */
@@ -30,6 +31,12 @@ export class FullLayoutComponent extends ApplicationBaseClass implements OnInit 
   public login_name: string = '';
   navbar_state: string = 'closed';
   overview_state: string = 'closed';
+  navbar_minimized : boolean = false;
+  brand_logo: string = 'static/webapp/assets/img/denbi_cloud_logo.svg';
+  brand_logo_minimized: string = 'static/webapp/assets/img/minimized_logo.svg';
+
+  TITLE: string = '';
+
   project_enumeration: ProjectEnumeration[] = [];
 
   constructor(private voService: VoService, private groupService: GroupService, userservice: UserService,
@@ -37,6 +44,13 @@ export class FullLayoutComponent extends ApplicationBaseClass implements OnInit 
               applicationstatusservice: ApplicationStatusService,
   ) {
     super(userservice, applicationstatusservice, applicationsservice, facilityService);
+
+  }
+
+  componentAdded(e){
+
+    console.log(e)
+    this.TITLE=e.title;
 
   }
 
@@ -113,4 +127,10 @@ export class FullLayoutComponent extends ApplicationBaseClass implements OnInit 
     });
 
   }
+
+  setSidebarStatus(): void {
+    this.navbar_minimized = !this.navbar_minimized;
+  }
+
+
 }

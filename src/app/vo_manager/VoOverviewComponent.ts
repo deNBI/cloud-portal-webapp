@@ -28,6 +28,7 @@ import {SnapshotModel} from '../virtualmachines/snapshots/snapshot.model';
 
 export class VoOverviewComponent extends FilterBaseClass implements OnInit {
 
+  title: string = 'VO Overview';
   public emailSubject: string;
   public emailReply: string = '';
   public emailText: string;
