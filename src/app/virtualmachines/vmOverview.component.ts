@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-
 import {VirtualmachineService} from '../api-connector/virtualmachine.service';
 import {VirtualMachine} from './virtualmachinemodels/virtualmachine';
 import {FullLayoutComponent} from '../layouts/full-layout.component';
@@ -12,6 +11,7 @@ import {SnapshotModel} from './snapshots/snapshot.model';
 import {FacilityService} from '../api-connector/facility.service';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {Subject} from 'rxjs';
+import {PopoverDirective} from 'ngx-bootstrap';
 
 /**
  * Vm overview componentn.
@@ -30,6 +30,8 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
   vms_content: VirtualMachine[];
   currentPage: number = 1;
   DEBOUNCE_TIME: number = 300;
+
+  private timer: {[key: string]: {timeLeft: number, interval: any}} = {};
 
   filter_status_list: string[] = [this.vm_statuses[this.vm_statuses.ACTIVE], this.vm_statuses[this.vm_statuses.SHUTOFF]];
   isSearching: boolean = true;
@@ -114,7 +116,8 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
   filterElixirIdChanged: Subject<string> = new Subject<string>();
   snapshotSearchTerm: Subject<string> = new Subject<string>();
 
-  constructor(private facilityService: FacilityService, private voService: VoService, private imageService: ImageService, private userservice: UserService,
+  constructor(private facilityService: FacilityService, private voService: VoService,
+              private imageService: ImageService, private userservice: UserService,
               private virtualmachineservice: VirtualmachineService) {
     super()
   }
@@ -196,7 +199,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
    * Check if the snapshot name is valid.
    * @param e
    */
-  validSnapshotName(event) {
+  validSnapshotName(event): any {
     this.snapshotNameCheckDone = false;
     this.imageService.checkSnapshotNameAvailable(this.snapshotName).subscribe((res: IResponseTemplate) => {
 
@@ -661,7 +664,38 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
     })
   }
 
-  logsome(v1, v2) {
-    console.log(v1, v2);
+  startTimer(pop: PopoverDirective, key: string): any {
+    if (key in this.timer) {
+      return;
+    }
+    this.timer[key] = {
+      timeLeft: 3,
+      interval: setInterval(() => {
+                              if (this.timer[key]['timeLeft'] > 0) {
+                                this.timer[key]['timeLeft']--;
+                              } else {
+                                pop.hide();
+                                clearInterval(this.timer[key]['interval']);
+                                delete this.timer[key];
+                              }
+                            },
+                            1000)};
+  }
+
+  pauseTimer(key: string): any {
+    clearInterval(this.timer[key]['interval']);
+  }
+
+  resumeTimer(pop: PopoverDirective, key: string): any {
+    this.timer[key]['interval'] = setInterval(() => {
+                                                if (this.timer[key]['timeLeft'] > 0) {
+                                                  this.timer[key]['timeLeft']--;
+                                                } else {
+                                                  pop.hide();
+                                                  clearInterval(this.timer[key]['interval']);
+                                                  delete this.timer[key];
+                                                }
+                                              },
+                                              1000);
   }
 }

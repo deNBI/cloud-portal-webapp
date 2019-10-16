@@ -21,6 +21,7 @@ $openstackcolour: #ED1944;
 $simplevmcolour: #00ADEF;
 
 
+
 .brand-minimized .app-header .navbar-brand
 {
   margin-left: 0px !important;
@@ -101,22 +102,38 @@ main{
   color: $deNBI_white;
 }
 
-.alert-info, .alert-primary
-{
+.alert-info, .alert-primary {
   background-color: #C9E7F2;
   border-color: #00ADEF;
   color: #336573;
 }
 
+.btn {
+  cursor: pointer;
+}
 
+header {
+  color: red;
 
-
+}
 #header-help {
   padding-right: 19px;
 }
 
+
+
 .modal {
-  background-color: rgba(0,0,0,0.3);
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+
+.danger-border {
+  border-style: solid;
+  border-color: red;
+}
+.success-border {
+  border-style: solid;
+  border-color: #B0DFC5;
 }
 
 .modal-backdrop {
@@ -127,6 +144,7 @@ main{
   flex: 1 1 auto;
   padding: 1.25rem;
 }
+
 
 .collapse_no_margin{
   margin: 0;
@@ -182,15 +200,27 @@ main{
 // Google Font as on landing page.
 @import url('https://fonts.googleapis.com/css?family=Raleway');
 
-.app-body
-{
+.app-body {
   color: $deNBI_darkgrey;
   font-family: 'Raleway', sans-serif;
-
 }
 
-.animated.fadeIn
-{
+.flavor-image-card {
+  width: 16rem;
+  margin-right: 5px;
+  cursor: pointer;
+}
+
+
+.flavor-card-icons {
+  margin: 0px 5px 10px 0px;
+  width: 18px;
+  max-height: 18px;
+}
+
+.scroll-flavor {
+  max-height: 90px;
+  min-height: 90px;
   overflow-y: auto;
   overflow-x: hidden;
   height: calc(100vh - 100px);
@@ -247,6 +277,28 @@ main{
   background-color: $deNBI_cyan;
   color: $deNBI_white;
 }
+.scroll-image {
+  max-height: 120px;
+  min-height: 120px;
+  overflow-y: auto;
+}
+
+.collapse_no_margin {
+  margin: 0;
+}
+
+.card.border-success {
+  border-width: 3px;
+}
+
+.bg-info-flavor {
+  background-color: $deNBI_blue;
+}
+
+.bg-info-image {
+  background-color: $deNBI_cyan;
+  color: $deNBI_white;
+}
 
 .sidebar .nav-item.nav-dropdown:hover
 {
@@ -259,11 +311,14 @@ main{
   color: $deNBI_white;
 }
 
-.sidebar .nav-link.active .nav-icon
-{
+
+.sidebar .nav-link.active .nav-icon {
   color: $deNBI_white;
 }
+.card-header.bg-info-image {
 
+  color: $deNBI_white;
+}
 
 .sidebar .nav-link {
   color: $deNBI_blue;
@@ -278,9 +333,25 @@ main{
   background-color: $deNBI_white;
 }
 
-.sidebar .nav-item .nav-dropdown-toggle:hover{
+.sidebar .nav-item .nav-dropdown-toggle:hover {
   color: $deNBI_white;
   background-color: $deNBI_lightgrey;
+}
+.btn-openstack {
+  @include button-variant($openstackcolour, darken($openstackcolour, 7.5%), darken($openstackcolour, 10%), lighten($openstackcolour, 5%), lighten($openstackcolour, 10%), darken($openstackcolour, 30%));
+}
+
+.btn-outline-openstack {
+  @include button-outline-variant($openstackcolour, #222222, lighten($openstackcolour, 5%), $openstackcolour);
+}
+
+.btn-simplevm {
+  @include button-variant($simplevmcolour, darken($simplevmcolour, 7.5%), darken($simplevmcolour, 10%), lighten($simplevmcolour, 5%), lighten($simplevmcolour, 10%), darken($simplevmcolour, 30%));
+}
+
+.btn-outline-simplevm {
+  @include button-outline-variant($simplevmcolour, #222222, lighten($simplevmcolour, 5%), $simplevmcolour);
+
 }
 
 .sidebar .nav-dropdown.open .nav-link{
@@ -293,33 +364,30 @@ main{
   background-color: $deNBI_white;
 }
 
-#newsbadge
-{
+#newsbadge {
   margin: 15px !important;
   position: relative !important;
   border-radius: 10px;
-  background-color: rgba(255,255,255, 1);
+  background-color: rgba(255, 255, 255, 1);
   padding: 10px !important;
   max-width: 200px;
 
 }
 
-#newsimage
-{
+#newsimage {
   width: 100%;
   position: relative;
   transition: 0.5s;
 }
 
-#newsbadge:hover
-{
+#newsbadge:hover {
   opacity: 0.8;
   transition: 0.5s;
 
 }
-.modal .table-responsive tbody tr td button
-{
-  width:200px;
+
+.modal .table-responsive tbody tr td button {
+  width: 200px;
 }
 
 .brand-minimized .app-header.navbar, .brand-minimized .app-footer
@@ -354,6 +422,3 @@ main{
   width: calc(100vw - 90px);
   margin:auto;
 }
-
-
-

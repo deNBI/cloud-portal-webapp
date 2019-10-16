@@ -1,4 +1,3 @@
-HOSTS = $(shell grep -o ^'127.0.0.1 portal-dev.denbi.de' /etc/hosts)
 NODEENV_VERSION = $(shell nodeenv --version | egrep ^[0-9]*)
 NODEENVRC_VERSION = $(shell egrep -o [0-9].* .nodeenvrc)
 
@@ -25,7 +24,7 @@ else
 	fi
 endif
 
-env: check_nodeenv .nodeenvrc # Creates an env folder if not already existing. Also removes and creates a new env folder if 
+env: check_nodeenv .nodeenvrc # Creates an env folder if not already existing. Also removes and creates a new env folder if
 	@echo ---Checking for env folder and version:; \
 	if ! test -d env; \
 	then echo Env folder does not exist. Creating env folder.; \
@@ -48,7 +47,7 @@ env: check_nodeenv .nodeenvrc # Creates an env folder if not already existing. A
 		fi; \
 	else echo Env folder found and node version same as in the .nodeenvrc.; \
 	fi
-	
+
 clean_env: ## Removes the env folder without asking. Make sure you want to delete the Folder.
 	@echo ---Removing env folder:; \
 	rm -R env; \
