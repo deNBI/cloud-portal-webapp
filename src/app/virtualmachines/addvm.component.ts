@@ -508,6 +508,12 @@ export class VirtualMachineComponent implements OnInit {
 
   }
 
+  setSelectedImage(image: Image): void {
+
+    this.selectedImage = image;
+
+  }
+
   /**
    * Get vms diskpace and used from the selected project.
    */
