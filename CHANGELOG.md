@@ -1,3 +1,22 @@
+##  (2019-10-11)
+
+
+#### Bug Fixes
+
+* **Applications:** fixed spinner ([1d92d917](1d92d917))
+* **Terminate:** compute center will be saved ([410faf35](410faf35))
+* **vm-overview:**  popover arrow aligned, popup on mouseenter, close on mouseenter and clickoutside ([eb3788eb](eb3788eb))
+
+##  (2019-10-09)
+
+#### Features
+
+* **newsletter:**  added dsgvo info (#747) ([bc01b8f4](bc01b8f4))
+
+### Bug fixes
+
+* **package.json:**  fix coreui/angular to version 2.4.5, fix coreui/coreui to version 2.1.8 
+
 ##  (2019-10-08)
 
 

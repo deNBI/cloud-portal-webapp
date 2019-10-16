@@ -120,19 +120,28 @@
         <tr *ngIf="!isSearching">
 
 
-          <td [popover]="namePopover">
-            <popover-content #namePopover placement="right" [title]="vm?.name" [closeOnMouseOutside]="false"
-                             [closeOnClickOutside]="true"
-            >
-              <table class="table-bordered">
-                <tr>
-                  <td>ID</td>
-                  <td>{{vm?.openstackid}}</td>
-                </tr>
-              </table>
-            </popover-content>
-
-            <strong style="color: #005AA9;">{{vm?.name}}            </strong>
+          <td >
+            <strong style="color: #005AA9;"
+                    [popover]="nameTablePopover"
+                    placement="right"
+                    triggers=""
+                    (mouseenter)="popName.show()"
+                    (mouseleave)="startTimer(popName, vm?.name)"
+                    [outsideClick]="true"
+                    #popName="bs-popover"
+                    [popoverTitle]="vm?.name">
+              <ng-template #nameTablePopover>
+                <table class="table-bordered"
+                       (mouseleave)="resumeTimer(popName, vm?.name)"
+                       (mouseenter)="pauseTimer(vm?.name)">
+                  <tr>
+                    <td>ID</td>
+                    <td>{{vm?.openstackid}}</td>
+                  </tr>
+                </table>
+              </ng-template>
+              {{vm?.name}}
+            </strong>
 
 
           </td>
@@ -141,14 +150,10 @@
           <td style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">
             {{vm.project}}
           </td>
-          <td [popover]="flavorPopover">
-            <popover-content #flavorPopover
-                             [title]="vm?.flavor?.name"
-                             placement="right"
-                             [animation]="true"
-                             [closeOnClickOutside]="false"
-                             [closeOnMouseOutside]="false">
-              <div class="scroll-flavor">
+          <td >
+            <ng-template #flavorPopover>
+              <div class="scroll-flavor" (mouseenter)="pauseTimer(vm?.name + '-' + vm?.flavor?.name)"
+              (mouseleave)="resumeTimer(flavorPop, vm?.name + '-' + vm?.flavor?.name)">
 
                 <div class="col">
                   <div class="row">
@@ -185,9 +190,18 @@
                   </div>
                 </div>
               </div>
-            </popover-content>
+            </ng-template>
 
-            <strong style="color: #005AA9;">{{vm?.flavor?.name}}</strong>
+
+            <strong style="color: #005AA9;"
+                    [popover]="flavorPopover"
+                    #flavorPop="bs-popover"
+                    placement="right"
+                    triggers=""
+                    (mouseenter)="flavorPop.show()"
+                    (mouseleave)="startTimer(flavorPop, vm?.name + '-' + vm?.flavor?.name)"
+                    [outsideClick]="true"
+                    [popoverTitle]="vm?.flavor?.name">{{vm?.flavor?.name}}</strong>
           </td>
           <td style="word-wrap: break-word;min-width: 110px; max-width: 110px; white-space: normal">
                          <span *ngIf="vm.status == vm_statuses[vm_statuses.DELETED]"

@@ -18,9 +18,10 @@ import {ClickOutsideModule} from 'ng4-click-outside';
 import {AccordionModule, BsDropdownModule} from 'ngx-bootstrap';
 import {BiocondaComponent} from './conda/bioconda.component';
 import {HowToConnectComponent} from './shared-modal/how-to-connect.component';
-import {PopoverModule} from 'ngx-smart-popover';
 import {SharedDirectivesModule} from '../shared/shared_modules/shared_directives.module';
 import {ImageCarouselSlideComponent} from './imageCarouselSlide.component';
+import {PopoverModule} from 'ngx-bootstrap/popover';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 /**
  * VM module.
@@ -38,8 +39,8 @@ import {ImageCarouselSlideComponent} from './imageCarouselSlide.component';
               BsDropdownModule.forRoot(),
               CarouselModule,
               AccordionModule.forRoot(),
-              PopoverModule,
-              SharedDirectivesModule
+              SharedDirectivesModule,
+              PopoverModule.forRoot(), NgbModule
 
             ],
             declarations: [

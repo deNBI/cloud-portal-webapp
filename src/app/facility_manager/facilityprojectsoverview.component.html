@@ -95,19 +95,25 @@
               </td>
               <tr *ngFor="let project of projects_filtered">
                 <td>
-                                     <span *ngIf="project.OpenStackProject"
-                                           style="background-color: #ED1944; padding: 1px 1px 2px 1px; border-color: #ED1944"
-                                           class="badge"
-                                           data-toggle="tooltip" data-placement="auto"
+                                     <span *ngIf="project?.OpenStackProject"
+                                           style="font-size: 20px"
+                                           class="project-openstack_plain_white_redbg"
+                                           data-toggle="tooltip"
                                            title="This is an Openstack project">
-                                    <span class="icon-openstack" style="color: #FFF; font-size: 2em"></span>
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
                                   </span>
-                  <span *ngIf="!project.OpenStackProject"
-                        style="background-color: #00ADEF; padding: 1px; border-color: #00ADEF" class="badge"
-                        data-toggle="tooltip" data-placement="auto"
+                  <span *ngIf="!project?.OpenStackProject"
+                        style="font-size: 20px"
+                        class="project-simpleVM_Logo_bluebg"
+                        data-toggle="tooltip"
                         title="This is a Simple VM project">
-                                    <span class="icon-simplevm" style="color: #FFF; font-size: 2em"></span>
-                                  </span>
+                      <span class="path1"></span>
+                      <span class="path2"></span>
+                      <span class="path3"></span>
+                      <span class="path4"></span>
+                      <span class="path5"></span>
+                    </span>
                 </td>
                 <td>{{ project.Id }}</td>
                 <td>{{ project.Name }}

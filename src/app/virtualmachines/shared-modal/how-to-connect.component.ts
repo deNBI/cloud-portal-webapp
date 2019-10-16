@@ -1,24 +1,19 @@
-import {Component, Input, OnChanges, SimpleChange, SimpleChanges} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChange, SimpleChanges} from '@angular/core';
 import {VirtualMachine} from '../virtualmachinemodels/virtualmachine';
 import * as JSPDF from 'jspdf';
 import {VirtualmachineService} from '../../api-connector/virtualmachine.service';
 
 @Component({
-  selector: 'app-how-to-connect',
-  templateUrl: 'how-to-connect.component.html',
-  providers: [VirtualmachineService]
+             selector: 'app-how-to-connect',
+             templateUrl: 'how-to-connect.component.html',
+             providers: [VirtualmachineService],
            })
 export class HowToConnectComponent implements OnChanges {
-
-  showSshCommando: boolean = true;
-  showUdpCommando: boolean = true;
-  showLogs: boolean = true;
-
   public _selectedVirtualMachine: VirtualMachine;
 
-  @Input() playbook_run: number = 0;
+  @Input() playbook_run: number;
 
-  logs?: {[selector: string]: string | number};
+  logs?: { [selector: string]: string | number };
 
   doc: JSPDF;
 
@@ -92,27 +87,19 @@ export class HowToConnectComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     const currentItem: SimpleChange = changes.selectedVirtualMachine;
     const current: null | VirtualMachine = currentItem.currentValue;
-    const prev: null | VirtualMachine = currentItem.previousValue;
+    console.log(current);
     if (current === null) {
       return;
-    } else if (prev === null) {
-      this.virtualMachineService.getLogs(this._selectedVirtualMachine.openstackid)
-        .subscribe((logs: {[selector: string]: string | number}) => {
-        if (logs['status'] === null) {
-        } else {
-          this.logs = logs;
-          this.playbook_run = 1;
-        }
-      })
-    } else if (current !== prev) {
-      this.virtualMachineService.getLogs(this._selectedVirtualMachine.openstackid)
-        .subscribe((logs: {[selector: string]: string | number}) => {
-        if (logs['status'] === null) {
-        } else {
-          this.logs = logs;
-          this.playbook_run = 1;
-        }
-      })
+    } else {
+      this.virtualMachineService.getLogs(current.openstackid)
+        .subscribe((logs: { [selector: string]: string | number }) => {
+          if (logs['status'] === null) {
+            this.playbook_run = 0;
+          } else {
+            this.logs = logs;
+            this.playbook_run = 1;
+          }
+        })
     }
   }
 }
