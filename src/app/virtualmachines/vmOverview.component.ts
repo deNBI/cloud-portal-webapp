@@ -23,6 +23,7 @@ import {PopoverDirective} from 'ngx-bootstrap';
            })
 
 export class VmOverviewComponent extends FilterBaseClass implements OnInit {
+  title: string = 'Instance Overview';
   /**
    * All  vms.
    */

@@ -20,6 +20,7 @@ import {IResponseTemplate} from '../../api-connector/response-template';
 
 export class ClientOverviewComponent implements OnInit {
 
+  title: string = 'Client Overview';
   /**
    * All clients.
    */

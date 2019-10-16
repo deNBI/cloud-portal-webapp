@@ -30,7 +30,7 @@
     You are not a member of any Simple VM project.
   </div>
 </div>
-<div *ngIf=" isLoaded && userinfo?.PublicKey != 'None' && projects.length > 0">
+<div *ngIf=" isLoaded && userinfo?.PublicKey != 'None' && projects.length > 0" class="animated fadeIn">
 
   <div class="row">
     <div class="col-md-12">
@@ -167,14 +167,14 @@
 
                 </div>
               </div>
-              <div class="alert alert-warning" role="alert"
+              <div class="alert alert-primary" role="alert"
                    *ngIf="selectedProject && selectedProjectVmsUsed >= selectedProjectVmsMax">
                 The limit for virtual machines has been reached for this project.
                 Your principal investigator can request more
                 resources if necessary.
 
               </div>
-              <div class="alert alert-warning" role="alert"
+              <div class="alert alert-primary" role="alert"
                    *ngIf="selectedProject && selectedProjectVmsUsed < selectedProjectVmsMax && flavors_loaded && flavors.length == 0 && !selectedFlavor">
                 There are too few cores and not enough ram available for this project to start a new machine.
                 Your principal investigator can request more

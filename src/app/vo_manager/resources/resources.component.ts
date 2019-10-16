@@ -16,6 +16,8 @@ import {ExportAsConfig, ExportAsService} from 'ngx-export-as'
 })
 export class ResourcesComponent implements OnInit {
 
+    title: string = 'VO Overview: Resources';
+
     isLoaded: boolean = false;
     voResources: Resources[] = [];
     fileName: string = 'VoResources';

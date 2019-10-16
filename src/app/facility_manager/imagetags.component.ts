@@ -11,6 +11,9 @@ import {forkJoin} from 'rxjs';
              providers: [ImageService]
            })
 export class ImageTagComponent implements OnInit {
+
+  title: string = 'Image Tags';
+
   isLoaded: boolean = false;
   alertRed: boolean = false;
   imageTags: ImageTag[];

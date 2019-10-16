@@ -24,6 +24,7 @@ import {FullLayoutComponent} from '../layouts/full-layout.component';
 
 export class AddcloudapplicationComponent extends ApplicationBaseClass implements OnInit {
 
+  title: string = 'New OpenStack Application';
   /**
    * Fields for getting dissemination options for platforms.
    */

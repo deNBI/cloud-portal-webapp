@@ -20,6 +20,7 @@ import {FacilityService} from '../../api-connector/facility.service';
            })
 
 export class VolumeOverviewComponent extends AbstractBaseClasse implements OnInit {
+  title: string = 'Volume Overview';
   /**
    * Enum of all volume action states.
    */

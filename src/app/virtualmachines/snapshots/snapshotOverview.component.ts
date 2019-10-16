@@ -20,6 +20,10 @@ enum Snapshot_Delete_Statuses {
 
 export class SnapshotOverviewComponent implements OnInit {
 
+
+  title: string = 'Snapshot Overview';
+
+
   showFacilities: boolean = false;
 
   /**
@@ -30,6 +34,7 @@ export class SnapshotOverviewComponent implements OnInit {
    * Chosen facility.
    */
   selectedFacility: [string, number];
+
   /**
    * All snapshots.
    * @type {Array}

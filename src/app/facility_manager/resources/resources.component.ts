@@ -20,6 +20,7 @@ import {forkJoin} from 'rxjs';
            })
 export class ResourcesComponent implements OnInit {
 
+  title: string = 'Resource Overview';
   public managerFacilities: [string, number][];
   /**
    * Chosen facility.

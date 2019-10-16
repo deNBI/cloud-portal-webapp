@@ -67,6 +67,9 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit {
   details_loaded: boolean = false;
   userinfo: Userinfo;
   allSet: boolean = false;
+
+  title: string = 'Project Overview';
+
   checked_member_list: number[] = [];
   extensionFlavors: {
     [id: string]: {

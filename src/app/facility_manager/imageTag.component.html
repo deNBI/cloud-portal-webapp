@@ -2,6 +2,7 @@
 <div *ngIf="isLoaded==false" class="loader"></div>
 
 <div *ngIf="isLoaded" class="animated fadeIn" ng-app>
+
   <div class="row">
     <!--/.col-->
     <div class="col-md-8"><h1>Image tags</h1></div>
@@ -106,7 +107,6 @@
                            style="width:200px;height:100px;"></td>
                   <td>
                     <button (click)="removeLogoTag(logo)" type="button" class=" btn btn-secondary"> Remove</button>
-
                   </td>
                 </tr>
 

@@ -25,6 +25,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 
   @Input() voRegistrationLink: string = environment.voRegistrationLink;
 
+  title: string = 'Projects Overview';
   member_id: number;
   isLoaded: boolean = false;
   projects: Project[] = [];
@@ -63,7 +64,8 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
       this.selectedFacility = this.managerFacilities[0];
       this.emailSubject = `[${this.selectedFacility['Facility']}]`;
 
-      this.getFacilityProjects(this.managerFacilities[0]['FacilityId'])
+      this.getFacilityProjects(this.managerFacilities[0]['FacilityId']);
+      this.title = this.title + ': ' + this.selectedFacility['Facility'];
 
     })
   }

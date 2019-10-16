@@ -1,7 +1,8 @@
 <div class="animated fadeIn">
 
   <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-12">
+      <!--<h1>SimpleVM Application</h1>-->
       <div class="card">
         <div class="card-header">
           <strong>New Simple Vm Application</strong>
@@ -162,7 +163,7 @@
               <ng-container *ngFor="let t of typeList, first as isFirst">
                 <accordion-group *ngIf="checkIfTypeGotSimpleVmFlavor(t)" [isOpen]="isFirst" #groupval>
                   <div accordion-heading style="width: 100%; cursor: pointer">
-                    {{t.long_name}}
+                    <strong>{{t.long_name}}</strong>
                     <i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
                             'icon-arrow-up': groupval.isOpen, 'icon-arrow-down': !groupval.isOpen}"></i>
                   </div>
@@ -691,7 +692,8 @@
 
             </div>
             <div *ngIf="!project_application_pi_approved" class="form-group row justify-content-center">
-              <div class="col-11 alert-info">Only applications approved by a principal investigator
+              <div class="col-md-4"></div>
+              <div class="col-md-8 alert alert-info">Only applications approved by a principal investigator
                 of a german university or research facility will be accepted.
                 You are able to enter an email address of your principal investigator whom
                 we will send an email, containing your name and email address and a link informing him about the
