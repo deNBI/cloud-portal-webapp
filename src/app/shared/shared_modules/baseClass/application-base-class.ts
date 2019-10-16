@@ -179,8 +179,7 @@ export class ApplicationBaseClass extends AbstractBaseClasse {
     newApp.Description = aj['project_application_description'];
     newApp.Lifetime = aj['project_application_lifetime'];
     newApp.EdamTopics = aj['project_application_edam_terms'];
-            newApp.PiAffiliations = aj['pi_affiliations'];
-
+    newApp.PiAffiliations = aj['pi_affiliations'];
 
     newApp.VMsRequested = aj['project_application_vms_requested'];
     newApp.RamPerVM = aj['project_application_ram_per_vm'];
@@ -470,8 +469,6 @@ export class ApplicationBaseClass extends AbstractBaseClasse {
    */
   filterEnteredData(form: NgForm): void {
     this.generateConstants();
-    this.totalNumberOfCores = 0;
-    this.totalRAM = 0;
     this.valuesToConfirm = [];
     for (const key in form.controls) {
       if (form.controls[key].value) {
@@ -488,12 +485,7 @@ export class ApplicationBaseClass extends AbstractBaseClasse {
 
           this.valuesToConfirm.push(this.matchString(key.toString(), form.controls[key].value.toString()));
 
-          const flavor: Flavor = this.isKeyFlavor(key.toString());
-          if (flavor != null) {
-            this.totalNumberOfCores = this.totalNumberOfCores + (flavor.vcpus * form.controls[key].value);
-            const ram: number = flavor.ram * form.controls[key].value;
-            this.totalRAM = this.totalRAM + ram
-          }
+
         }
       }
 
@@ -525,15 +517,15 @@ export class ApplicationBaseClass extends AbstractBaseClasse {
 
     this.constantStrings['project_application_lifetime'] = 'Lifetime of your project: ';
     this.constantStrings['project_application_volume_counter'] = 'Number of volumes for additional storage: ';
-    this.constantStrings['project_application_object_storage'] = 'Additional object storage: ';
-    this.constantStrings['project_application_volume_limit'] = 'Additional storage space for your VMs: ';
+    this.constantStrings['project_application_object_storage'] = 'Object storage: ';
+    this.constantStrings['project_application_volume_limit'] = 'Volume Storage space for your VMs: ';
     this.constantStrings['project_application_comment'] = 'Comment: ';
     this.constantStrings['project_application_renewal_comment'] = 'Comment: ';
 
     this.constantStrings['project_application_renewal_lifetime'] = 'Lifetime of your project: ';
     this.constantStrings['project_application_renewal_volume_counter'] = 'Number of volumes for additional storage: ';
-    this.constantStrings['project_application_renewal_object_storage'] = 'Additional object storage: ';
-    this.constantStrings['project_application_renewal_volume_limit'] = 'Additional storage space for your VMs: ';
+    this.constantStrings['project_application_renewal_object_storage'] = 'Object storage: ';
+    this.constantStrings['project_application_renewal_volume_limit'] = 'Volume Storage space for your VMs: ';
 
     this.constantStrings['project_application_institute'] = 'Your institute: ';
     this.constantStrings['project_application_workgroup'] = 'Your Workgroup: ';
@@ -551,7 +543,9 @@ export class ApplicationBaseClass extends AbstractBaseClasse {
   }
 
   isKeyFlavor(key: string): Flavor {
+    console.log(this.flavorList);
     for (const fkey in this.flavorList) {
+      console.log(fkey);
       if (fkey in this.flavorList) {
         if (this.flavorList[fkey].name === key.substring(20)) {
           return this.flavorList[fkey];

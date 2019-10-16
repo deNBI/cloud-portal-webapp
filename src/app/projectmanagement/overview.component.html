@@ -14,21 +14,21 @@
                data-toggle="tooltip"
                title="This is an Openstack project"
             >
-                                                <a class="path1"></a>
-                                                <a class="path2"></a>
+              <a class="path1"></a>
+              <a class="path2"></a>
             </a>
             <a *ngIf="!project?.OpenStackProject" href="https://cloud.denbi.de/simplevm/" target="_blank"
-                  style="font-size: 2em"
-                  class="project-simpleVM_Logo_bluebg"
-                  data-toggle="tooltip"
-                  title="This is a Simple VM project">
-                      <a class="path1"></a>
-                      <a class="path2"></a>
-                      <a class="path3"></a>
-                      <a class="path4"></a>
-                      <a class="path5"></a>
+               style="font-size: 2em"
+               class="project-simpleVM_Logo_bluebg"
+               data-toggle="tooltip"
+               title="This is a Simple VM project">
+              <a class="path1"></a>
+              <a class="path2"></a>
+              <a class="path3"></a>
+              <a class="path4"></a>
+              <a class="path5"></a>
             </a>
-              {{project?.Name}}
+            {{project?.Name}}
           </h3>
         </div>
         <div class="card-body">
@@ -112,7 +112,7 @@
             </button>
             <button id="show_extension_modal"
                     *ngIf="project_application?.Status == application_states.APPROVED || project_application?.Status == application_states.MODIFICATION_DECLINED"
-                    (click)="calculateRamCores();extensionModal.show()"
+                    (click)="calculateRamCores();extensionFlavors= {};  extensionModal.show()"
                     class="btn btn-warning"
                     type="button" style="margin-bottom:5px;"
             >
@@ -691,7 +691,7 @@
                     <div class="col">
                       <div class="input-group">
                         <input class="form-control"
-                               (change)="valuesChanged(f)"
+                               (change)="valuesChanged(fl,name?.value)"
                                id="id_project_application_renewal_{{fl.name}}"
                                name="project_application_renewal_{{fl.name}}"
                                type="number" min="0" step="1"
@@ -818,7 +818,7 @@
                        id="id_project_application_renewal_object_storage"
                        name="project_application_renewal_object_storage"
                        placeholder="e.g. 8"
-                       value="{{project_application?.ObjectStorage}}"
+                       [ngModel]="project_application?.ObjectStorage"
                        type="number" min="0" step="1" [ngModel]="0"
                        appInteger appMinAmount="0" required
                        [ngClass]="{
