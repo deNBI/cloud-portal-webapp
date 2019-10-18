@@ -1,3 +1,9 @@
+##  (2019-10-18)
+
+#### Bug Fixes
+
+* **Theming:** quickfix for styling issues, typo removed, changed button layout for member overview ([0f9442c](0f9442c)) 
+
 ##  (2019-10-16)
 
 
