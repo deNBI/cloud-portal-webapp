@@ -15,6 +15,7 @@ export class Util {
   private static _VOLUME_SPACE: string = '1';
   private static _LONG_TIMEOUT: number = 420000;
   private static _BASIC_SNAPSHOT_NAME: string = 'PTSnap';
+
   // tslint:disable-next-line:no-require-imports
 
   static get SIMPLE_VM_APPLICATION_NAME(): string {
@@ -68,6 +69,7 @@ export class Util {
   static async waitForPage(url: string): Promise<boolean> {
     const until: ProtractorExpectedConditions = protractor.ExpectedConditions;
     console.log(`Waiting until page contains ${url}`);
+    browser.sleep(2000);
 
     return await browser.driver.wait(until.urlContains(url), this._timeout);
   }
@@ -77,6 +79,14 @@ export class Util {
       console.log(`Send text [${text}] to element ${name}`);
     }
     const elem = element(by.name(name));
+
+    return await elem.sendKeys(text);
+  }
+
+  static async sendTextToElementByElement(elem:any, text: string, show_output: boolean = true): Promise<void> {
+    if (show_output) {
+      this.logInfo(`Send text [${text}] to element  [${elem}]`);
+    }
 
     return await elem.sendKeys(text);
   }
@@ -109,7 +119,7 @@ export class Util {
     return await elem.click();
   }
 
-  static async asyncForEach(array, callback): Promise<any>  {
+  static async asyncForEach(array, callback): Promise<any> {
     for (let index = 0; index < array.length; index++) {
       await callback(array[index], index, array);
     }

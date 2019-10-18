@@ -7,6 +7,7 @@ export class FormularPage {
   private static ACKNOWLEDGE_BTN: string = 'acknowledge_approve_btn';
   private static APPLICATION_SUBMITTED: string = 'The application was submitted';
   private static NOTIFICATION_MESSAGE: string = 'notification_message';
+  private static EDAM_PLACEHOLDER: string = 'Please add your research topics';
 
   static async submitApplication(): Promise<any> {
     console.log('Submit Application');
@@ -46,10 +47,11 @@ export class FormularPage {
     await Util.sendTextToElementByName('project_application_bmbf_project', 'BMBF Project');
     await Util.sendTextToElementByName('project_application_elixir_project', 'Elixir Project');
     await Util.sendTextToElementById('project_application_de.NBI default', '2');
+    await Util.sendTextToElementByElement(element(by.className('input-container')).element(by.tagName('input')), 'Bioinformatics');
+    await Util.clickElementById('<b>Bioinformatics</b>');
     await Util.sendTextToElementByName('project_application_horizon2020', 'Horizon2020Project');
     await Util.sendTextToElementById('id_project_application_volume_limit', '2');
     await Util.clickElementById('id_project_application_report_allowed');
-    //await Util.clickElementById('dissemination_information_accordion');
     await Util.sendTextToElementByName('information_public_title_input', 'A Public Title');
     await Util.clickElementById('public_description_enabled');
     await Util.sendTextToElementByName('information_description', 'A Public Description');
