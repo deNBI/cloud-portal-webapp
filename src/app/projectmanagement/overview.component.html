@@ -1,6 +1,7 @@
 <div *ngIf="isLoaded==false" class="loader"></div>
 
-<div class="container col-12" *ngIf="isLoaded==true">
+
+<div class="animated fadeIn" *ngIf="isLoaded==true">
   <div class="row">
 
     <div class="col-lg-12"
@@ -235,23 +236,26 @@
                 <td>{{ member.MemberId }}</td>
                 <td>{{ member.Username }}</td>
                 <td>
-                  <button *ngIf="!member.IsPi" (click)="promoteAdmin( project?.Id,member.Id,member.Username);
+                  <div class="btn-group-vertical" role="group" style="width:100%;">
+                    <button *ngIf="!member.IsPi" (click)="promoteAdmin( project?.Id,member.Id,member.Username);
                                                 notificationModal.show();
                                                " class="btn btn-secondary" type="button" style="margin: 2px">
-                    <i class="fa fa-plus-circle"></i>&nbsp; Set Admin status
-                  </button>
-                  <button *ngIf="member.IsPi &&  userinfo?.MemberId != member.MemberId" (click)="removeAdmin( project?.Id,member.Id,member.Username);
+                      <i class="fa fa-plus-circle"></i>&nbsp; Set Admin status
+                    </button>
+                    <button *ngIf="member.IsPi &&  userinfo?.MemberId != member.MemberId" (click)="removeAdmin( project?.Id,member.Id,member.Username);
                                                 notificationModal.show();
                                                " class="btn btn-secondary" type="button" style="margin: 2px">
-                    <i class="fa fa-minus-circle"></i>&nbsp; Remove Admin status
-                  </button>
-                  <button [id]="'remove_member_' + member.Username" *ngIf=" userinfo?.MemberId != member.MemberId"
-                          (click)="removeMember(project?.Id,member.MemberId,member.Username);
+                      <i class="fa fa-minus-circle"></i>&nbsp; Remove Admin status
+                    </button>
+                    <button [id]="'remove_member_' + member.Username" *ngIf=" userinfo?.MemberId != member.MemberId"
+                            (click)="removeMember(project?.Id,member.MemberId,member.Username);
                                                 notificationModal.show();
                                                " class="btn btn-danger" type="button" style="margin: 2px">
 
-                    <i class="fa fa-trash"></i>&nbsp; Remove member
-                  </button>
+                      <i class="fa fa-trash"></i>&nbsp; Remove member
+                    </button>
+                  </div>
+
                 </td>
               </tr>
 

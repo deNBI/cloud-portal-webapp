@@ -20,17 +20,17 @@ $deNBI_black: #000000;
 $openstackcolour: #ED1944;
 $simplevmcolour: #00ADEF;
 
-
+.navbar-brand-full
+{
+  padding: 20px;
+  position: relative;
+}
 
 .brand-minimized .app-header .navbar-brand
 {
   margin-left: 0px !important;
 }
 
-.navbar-brand-minimized
-{
-  padding: 6px 6px 6px 6px !important;
-}
 
 
 .sidebar-fixed .app-header + .app-body .sidebar{
@@ -45,7 +45,6 @@ $simplevmcolour: #00ADEF;
 {
   width: 100%;
   margin-right: 10px;
-  margin-left: 10px;
   position: unset !important;
 }
 
