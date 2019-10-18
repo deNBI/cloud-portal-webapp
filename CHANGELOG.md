@@ -4,7 +4,7 @@
 
 * **Theming:** quickfix for styling issues, typo removed, changed button layout for member overview ([0f9442c](0f9442c))
 * **Theming:** webkit-based browser issues fixed ([5f13ed4](5f13ed4))
-+ **Instance:** missing warning for insufficient choices added ([0142e1c](0142e1c))
+* **Instance:** missing warning for insufficient choices added ([0142e1c](0142e1c))
 
 ##  (2019-10-16)
 
