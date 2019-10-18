@@ -338,7 +338,7 @@
                                 'danger-border': selected_ontology_terms?.length <=0,
                                 'success-border':selected_ontology_terms?.length >0
                                 }">
-                  <ng-autocomplete #edam_ontology
+                  <ng-autocomplete #edam_ontology id="edam_input"
                                    [data]="edam_ontology_terms"
                                    [searchKeyword]="ontology_search_keyword"
                                    (selected)='selectEvent($event)'
@@ -349,7 +349,7 @@
                   </ng-autocomplete>
 
                   <ng-template #itemTemplate let-item>
-                    <a [innerHTML]="item.term"></a>
+                    <a [id]="item.term" [innerHTML]="item.term"></a>
                   </ng-template>
 
                   <ng-template #notFoundTemplate let-notFound>

@@ -18,6 +18,22 @@ describe('Simple Application Modification Test', function () {
     await ProjectOverview.navigateToSimpleProjectverview();
   });
 
+  it('should open the modification request modal', async function () {
+    await ProjectOverview.openModificationModal(Util.SIMPLE_VM_APPLICATION_NAME);
+  });
+
+  it('should have old values prefilled', async function () {
+    await ProjectOverview.areDefaultValuesSetOpenstack();
+  });
+
+  it('should fill modification formular', async function () {
+    await ProjectOverview.fillModificationRequest();
+  });
+
+  it('should have total ram and cores right', async function () {
+    await ProjectOverview.checkTotalCoresRam();
+  });
+
   it('should send a modification request', async function () {
     await ProjectOverview.sendModificationRequest(Util.SIMPLE_VM_APPLICATION_NAME);
   });

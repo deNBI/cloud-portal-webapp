@@ -17,6 +17,16 @@ export class ProjectOverview {
   private static EXTENSION_RESULT: string = 'extension result';
   private static EXTENSION_SUCCESSFULLY_SUBMITTED: string = 'Modify request successfully submitted!';
   private static EXTENSION_REQUEST_BTN: string = 'show_extension_modal';
+  private static DENBI_DEFAULT_OLD_ID: string = 'project_application_de.NBI default_old';
+  private static DENBI_DEFAULT_NEW_INPUT: string = 'id_project_application_renewal_de.NBI default';
+  private static OLD_VOLUME_COUNTER_ID: string = 'project_application_volume_counter';
+  private static NEW_VOLUME_COUNTER_ID: string = 'id_project_application_renewal_volume_counter';
+  private static OLD_VOLUME_LIMIT_ID: string = 'project_application_volume_limit';
+  private static NEW_VOLUME_LIMIT_ID: string = 'id_project_application_renewal_volume_limit';
+  private static OLD_OBJECT_STORAGE_ID: string = 'project_application_object_storage';
+  private static NEW_OBJECT_STORAGE_ID: string = 'id_project_application_renewal_object_storage';
+  private static TOTAL_RAM: string = 'total_ram';
+  private static TOTAL_CORES: string = 'total_cores';
 
   static async navigateToSimpleProjectverview(): Promise<any> {
     console.log('Navigating to simple project overview');
@@ -51,20 +61,51 @@ export class ProjectOverview {
 
   }
 
-  static async sendModificationRequest(application_name: string): Promise<any> {
+  static async openModificationModal(appication_name: string): Promise<any> {
     await Util.clickElementById(this.EXTENSION_REQUEST_BTN);
     await Util.waitForVisibilityOfElementById('id_project_application_renewal_lifetime');
-    await this.fillModificationRequest();
+  }
+
+  static async sendModificationRequest(application_name: string): Promise<any> {
     await Util.clickElementById(this.SUBMIT_RENEWAL_BTN);
     await Util.clickElementById(this.SUBMIT_MODEL_BTN);
     await Util.waitForTextPresenceInElementById(this.EXTENSION_RESULT, this.EXTENSION_SUCCESSFULLY_SUBMITTED);
   }
 
+  static async areDefaultValuesSetSimpleVM(): Promise<any> {
+    await Util.checkInputsByIdsGotSameValue(this.DENBI_DEFAULT_OLD_ID, this.DENBI_DEFAULT_NEW_INPUT);
+    await Util.checkInputsByIdsGotSameValue(this.OLD_VOLUME_COUNTER_ID, this.NEW_VOLUME_COUNTER_ID);
+    await Util.checkInputsByIdsGotSameValue(this.OLD_VOLUME_LIMIT_ID, this.NEW_VOLUME_LIMIT_ID);
+
+  }
+
+  static async areDefaultValuesSetOpenstack(): Promise<any> {
+    await Util.checkInputsByIdsGotSameValue(this.DENBI_DEFAULT_OLD_ID, this.DENBI_DEFAULT_NEW_INPUT);
+    await Util.checkInputsByIdsGotSameValue(this.OLD_VOLUME_COUNTER_ID, this.NEW_VOLUME_COUNTER_ID);
+    await Util.checkInputsByIdsGotSameValue(this.OLD_VOLUME_LIMIT_ID, this.NEW_VOLUME_LIMIT_ID);
+    await Util.checkInputsByIdsGotSameValue(this.OLD_OBJECT_STORAGE_ID, this.NEW_OBJECT_STORAGE_ID);
+
+  }
+
+  static async checkTotalCoresRam(): Promise<any> {
+    Util.logMethodCall('Check cores and ram');
+    const counter: string = await Util.getInputValueById(this.DENBI_DEFAULT_NEW_INPUT);
+    const cores: string = await Util.getElemTextById(`${this.DENBI_DEFAULT_NEW_INPUT}_cores`);
+    const ram: string = await Util.getElemTextById(`${this.DENBI_DEFAULT_NEW_INPUT}_ram`);
+    const total_ram: number = parseInt(await Util.getElemTextById(this.TOTAL_RAM), 10);
+    const total_cores: number = parseInt(await Util.getElemTextById(this.TOTAL_CORES), 10);
+    const total_cores_calc: number = parseInt(cores, 10) * parseInt(counter, 10);
+    const total_ram_calc: number = parseInt(ram, 10) * parseInt(counter, 10);
+    expect(total_ram).toEqual(total_ram_calc);
+    expect(total_cores_calc).toEqual(total_cores);
+
+  }
+
   static async fillModificationRequest(): Promise<any> {
     await Util.sendTextToElementById('id_project_application_renewal_lifetime', '1');
-    await Util.sendTextToElementById('id_project_application_renewal_de.NBI default', '2');
-    await Util.sendTextToElementById('id_project_application_renewal_volume_counter', '1');
-    await Util.sendTextToElementById('id_project_application_renewal_volume_limit', '1');
+    await Util.sendTextToElementById(this.DENBI_DEFAULT_NEW_INPUT, '2');
+    await Util.sendTextToElementById(this.NEW_VOLUME_COUNTER_ID, '1');
+    await Util.sendTextToElementById(this.NEW_VOLUME_LIMIT_ID, '1');
     await Util.sendTextToElementById('id_project_application_renewal_comment', 'This is a Protrector test modificatioN!');
   }
 

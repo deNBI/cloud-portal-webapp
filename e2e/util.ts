@@ -15,6 +15,7 @@ export class Util {
   private static _VOLUME_SPACE: string = '1';
   private static _LONG_TIMEOUT: number = 420000;
   private static _BASIC_SNAPSHOT_NAME: string = 'PTSnap';
+
   // tslint:disable-next-line:no-require-imports
 
   static get SIMPLE_VM_APPLICATION_NAME(): string {
@@ -68,6 +69,7 @@ export class Util {
   static async waitForPage(url: string): Promise<boolean> {
     const until: ProtractorExpectedConditions = protractor.ExpectedConditions;
     console.log(`Waiting until page contains ${url}`);
+    browser.sleep(2000);
 
     return await browser.driver.wait(until.urlContains(url), this._timeout);
   }
@@ -77,6 +79,14 @@ export class Util {
       console.log(`Send text [${text}] to element ${name}`);
     }
     const elem = element(by.name(name));
+
+    return await elem.sendKeys(text);
+  }
+
+  static async sendTextToElementByElement(elem: any, text: string, show_output: boolean = true): Promise<void> {
+    if (show_output) {
+      this.logInfo(`Send text [${text}] to element  [${elem}]`);
+    }
 
     return await elem.sendKeys(text);
   }
@@ -100,6 +110,28 @@ export class Util {
     return await elem.click();
   }
 
+  static async checkInputsByIdsGotSameValue(id_1: string, id_2: string, timeout: number = this.timeout): Promise<any> {
+    const val1: any = await this.getInputValueById(id_1);
+    let val2: any = await this.getInputValueById(id_2);
+    this.logInfo(`Val1 [${val1}] | Val2 [${val2}]`);
+    expect(val1).toEqual(val2);
+  }
+
+  static async getInputValueById(id: string, timeout: number = this.timeout): Promise<string> {
+    console.log(`Get input value from ${id}`);
+    await this.waitForVisibilityOfElementById(id, timeout);
+
+    return await element(by.id(id)).getAttribute('value');
+  }
+
+  static async getElemTextById(id: string, timeout: number = this.timeout): Promise<string> {
+    console.log(`Get elem text from ${id}`);
+
+    await this.waitForVisibilityOfElementById(id, timeout);
+
+    return await element(by.id(id)).getText();
+  }
+
   static async clickElementByElement(elem: any,
                                      timeout: number = this.timeout,
                                      id: string = 'Elementfinder'): Promise<void> {
@@ -107,12 +139,6 @@ export class Util {
     this.logInfo(`Clicking element ${id}`);
 
     return await elem.click();
-  }
-
-  static async asyncForEach(array, callback): Promise<any>  {
-    for (let index = 0; index < array.length; index++) {
-      await callback(array[index], index, array);
-    }
   }
 
   static async clickElementById(id: string, timeout: number = this.timeout): Promise<void> {

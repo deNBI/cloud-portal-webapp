@@ -370,7 +370,7 @@
                   </ng-autocomplete>
 
                   <ng-template #itemTemplate let-item>
-                    <a [innerHTML]="item.term"></a>
+                    <a [id]="item.term" [innerHTML]="item.term"></a>
                   </ng-template>
 
                   <ng-template #notFoundTemplate let-notFound>
