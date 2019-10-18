@@ -150,7 +150,8 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit {
   }
 
   calculateRamCores(): void {
-    this.resetRamCores();
+    this.totalNumberOfCores = 0;
+    this.totalRAM = 0;
     for (const extensionFlavorsKey in this.extensionFlavors) {
       let fl = this.extensionFlavors[extensionFlavorsKey];
       this.totalRAM = this.totalRAM + fl.flavor.ram * fl.counter;
@@ -158,7 +159,7 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit {
     }
   }
 
-  resetRamCores(): void {
+  initRamCores(): void {
     this.totalNumberOfCores = 0;
     this.totalRAM = 0;
     for (const key in this.project_application.CurrentFlavors) {
@@ -278,6 +279,7 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit {
       this.project_members = [];
       this.application_id = paramsId.id;
       this.getApplication();
+      this.initRamCores();
 
     });
 
