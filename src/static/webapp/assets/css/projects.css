@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'os_pr';
-  src:  url('../fonts/os_pr.eot?3lb0wt');
-  src:  url('../fonts/os_pr.eot?3lb0wt#iefix') format('embedded-opentype'),
-    url('../fonts/os_pr.ttf?3lb0wt') format('truetype'),
-    url('../fonts/os_pr.woff?3lb0wt') format('woff'),
-    url('../fonts/os_pr.svg?3lb0wt#os_pr') format('svg');
+  src:  url('../fonts/os_pr.eot');
+  src:  url('../fonts/os_pr.eot') format('embedded-opentype'),
+    url('../fonts/os_pr.ttf') format('truetype'),
+    url('../fonts/os_pr.woff') format('woff'),
+    url('../fonts/os_pr.svg') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
