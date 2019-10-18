@@ -17,6 +17,22 @@ describe('Cloud ApplicationModification Test', function () {
     await ProjectOverview.navigateToOpenStackeProjectverview();
   });
 
+  it('should open the modification request modal', async function () {
+    await ProjectOverview.openModificationModal(Util.OPENSTACK_APPLICATION_NAME);
+  });
+
+  it('should have old values prefilled', async function () {
+    await ProjectOverview.areDefaultValuesSetOpenstack();
+  });
+
+  it('should fill modification formular', async function () {
+    await ProjectOverview.fillModificationRequest();
+  });
+
+  it('should have total ram and cores right', async function () {
+    await ProjectOverview.checkTotalCoresRam();
+  });
+
   it('should send a modification request', async function () {
     await ProjectOverview.sendModificationRequest(Util.OPENSTACK_APPLICATION_NAME);
   });

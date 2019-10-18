@@ -116,7 +116,7 @@
             </button>
             <button id="show_extension_modal"
                     *ngIf="project_application?.Status == application_states.APPROVED || project_application?.Status == application_states.MODIFICATION_DECLINED"
-                    (click)="calculateRamCores();extensionFlavors= {};  extensionModal.show()"
+                    (click)="initRamCores();extensionFlavors= {};  extensionModal.show()"
                     class="btn btn-warning"
                     type="button" style="margin-bottom:5px;">
               Request Extension/Modification
@@ -678,12 +678,14 @@
                     *ngIf="fl.type.shortcut == t.shortcut && (fl.simple_vm || project_application?.OpenStackProject)"
                     class="form-group row">
                     <label class="col-md-4 form-control-label"><strong>{{fl.name}}</strong><br>
-                      Number of cores: {{fl.vcpus}}<br>
-                      RAM: {{fl.ram}} GB</label>
+                      Number of cores: <span
+                        id="id_project_application_renewal_{{fl.name}}_cores">{{fl.vcpus}}</span><br>
+                      RAM: <span id="id_project_application_renewal_{{fl.name}}_ram">{{fl.ram}}</span> GB</label>
                     <div class="col">
                       <div class="input-group">
                         <input class="form-control"
                                name="project_application_{{fl.name}}_old"
+                               id="project_application_{{fl.name}}_old"
                                type="text"
                                value="{{project_application?.CurrentFlavors[fl.name]?.counter}}"
                                placeholder="0" disabled>
@@ -729,6 +731,7 @@
               <div class="input-group">
                 <input required class="form-control"
                        name="project_application_volume_counter"
+                       id="project_application_volume_counter"
                        placeholder="NA"
                        value="{{project_application?.VolumeCounter}}"
                        type="text" disabled>
@@ -764,7 +767,8 @@
             <div class="col">
               <div class="input-group">
                 <input class="form-control"
-                       name="project_application_renewal_volume_limit"
+                       name="project_application_volume_limit"
+                       id="project_application_volume_limit"
                        value="{{project_application?.VolumeLimit}}"
                        placeholder="NA"
                        type="text" disabled>
@@ -806,6 +810,7 @@
               <div class="input-group">
                 <input class="form-control"
                        name="project_application_object_storage"
+                       id="project_application_object_storage"
                        placeholder="NA"
                        value="{{project_application?.ObjectStorage}}"
                        type="text" disabled>
@@ -859,11 +864,11 @@
           <strong>
             <div class="form-group row">
               <label #corenumbers id="corenumbers" class="col">Number of total
-                cores: {{totalNumberOfCores}}</label>
+                cores: <span id="total_cores">{{totalNumberOfCores}}</span></label>
             </div>
             <div class="form-group row">
               <label #ramnumbers id="ramnumbers" class="col">Amount of total
-                RAM: {{totalRAM}} </label>
+                RAM: <span id="total_ram">{{totalRAM}}</span> </label>
             </div>
           </strong>
 
