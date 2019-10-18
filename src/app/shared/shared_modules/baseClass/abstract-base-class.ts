@@ -136,4 +136,13 @@ export abstract class AbstractBaseClasse {
 
   }
 
+  copyToClipboard(text: string): void {
+    document.addEventListener('copy', (clipEvent: ClipboardEvent) => {
+      clipEvent.clipboardData.setData('text/plain', (text));
+      clipEvent.preventDefault();
+      document.removeEventListener('copy', null);
+    });
+    document.execCommand('copy');
+  }
+
 }
