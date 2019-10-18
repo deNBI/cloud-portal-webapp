@@ -407,7 +407,7 @@
         </div>
 
         <div
-          *ngIf="(!vm_name || (!gaveOkay && hasTools) || !selectedImage || !selectedFlavor || (diskspace > 0 && !volumeName))&& projectDataLoaded  && flavors_loaded  && selectedProjectVmsUsed < selectedProjectVmsMax && flavors.length != 0"
+          *ngIf="(!vm_name || (!gaveOkay && hasTools) || !selectedImage || !selectedFlavor || (diskspace > 0 && !volumeName))&& projectDataLoaded  && flavors_loaded  && selectedProjectVmsUsed < selectedProjectVmsMax"
           class="alert alert-danger" role="alert" style="max-width: 600px;margin: 0 auto;">
           <p>Please choose the following before starting a VM:</p>
           <p *ngIf="!vm_name">- A name for your instance
