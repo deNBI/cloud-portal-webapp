@@ -32,8 +32,8 @@ export class FullLayoutComponent extends ApplicationBaseClass implements OnInit 
   navbar_state: string = 'closed';
   overview_state: string = 'closed';
   navbar_minimized : boolean = false;
-  brand_logo: string = 'static/webapp/assets/img/denbi_cloud_logo.svg';
-  brand_logo_minimized: string = 'static/webapp/assets/img/minimized_logo.svg';
+  brand_logo: string = 'static/webapp/assets/img/denbi-logo-color.svg';
+  brand_logo_minimized: string = 'static/webapp/assets/img/denbi-logo-minimized.svg';
 
   TITLE: string = '';
 
