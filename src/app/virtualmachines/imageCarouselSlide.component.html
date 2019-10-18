@@ -5,10 +5,10 @@
     [ngClass]="{'bg-info-image':!image?.is_snapshot,'bg-warning':image?.is_snapshot}"
 
     class="card-header  text-truncate" data-toggle="tooltip" data-placement="top"
-    title="{{image?.name}}"><i *ngIf="image?.is_snapshot"
+    title="{{image?.name}}" style="background-color: #00ADEF !important; color: white !important;"><i *ngIf="image?.is_snapshot"
                                class="fa fa-camera" aria-hidden="true"></i>
     <strong>{{image.name}}</strong></div>
-  <div class="card-body">
+  <div class="card-body" style="color:#58595B;">
     <div class="scroll-image">
       <div *ngIf="!image?.logo_url || !image_visible" class="col scroll-image"
            (mouseleave)="setImageVisible()">
@@ -32,7 +32,7 @@
       *ngIf="selectedImage?.is_snapshot"
       class="fa fa-camera" aria-hidden="true"></i>
     <strong>{{selectedImage?.name}}</strong></div>
-  <div class="card-body">
+  <div class="card-body" style="color:#58595B;">
     <div class="scroll-image">
       <div *ngIf="!selectedImage?.logo_url || !image_visible" class="col scroll-image"
            (mouseleave)="setImageVisible()">
