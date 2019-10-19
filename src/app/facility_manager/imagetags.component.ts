@@ -50,7 +50,6 @@ export class ImageTagComponent implements OnInit {
 
   removeLogoTag(logoTag: ImageLogo): void {
     this.imageService.deleteImageLogoTag(logoTag.id).subscribe(() => {
-      console.log('removed');
       const idx: number = this.imageLogos.indexOf(logoTag);
       this.imageLogos.splice(idx, 1);
     })

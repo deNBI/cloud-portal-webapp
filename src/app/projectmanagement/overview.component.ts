@@ -268,10 +268,7 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getApplicationStatus();
-    this.getUserinfo();
-    this.getListOfFlavors();
-    this.getListOfTypes();
+
     this.activatedRoute.params.subscribe(paramsId => {
       this.isLoaded = false;
       this.project = null;
@@ -279,7 +276,10 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit {
       this.project_members = [];
       this.application_id = paramsId.id;
       this.getApplication();
-      this.initRamCores();
+      this.getApplicationStatus();
+      this.getUserinfo();
+      this.getListOfFlavors();
+      this.getListOfTypes();
 
     });
 

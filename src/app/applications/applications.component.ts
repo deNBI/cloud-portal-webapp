@@ -296,9 +296,7 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
       (res: Client) => {
         if (!res['client_available']) {
           // tslint:disable-next-line:forin
-          console.log(res['clients']);
           for (const client of res['clients']) {
-            console.log(client);
             const newClient: Client = new Client(null, null, client['client_location'], null);
             newClient.maxVolumeLimit = client['max_volume_gb'];
             newClient.maxVolumes = client['max_volumes'];
@@ -310,7 +308,6 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
             newClient.newVolumeLimit = client['new_volume_gb'];
             newClient.newVolumes = client['new_volumes'];
             this.notificationClientInfo.push(newClient);
-            console.log(this.notificationClientInfo)
 
           }
           this.updateNotificationModal('Failed', 'No client with the necessary resources online!', true, 'danger');
