@@ -46,21 +46,4 @@ export class PublicKeyComponent extends AbstractBaseClasse {
       this.userinfo.PublicKey = <string>key.value;
     })
   }
-
-  show_key() {
-    if (!this.key_visible) {
-      this.toggleKey();
-    }
-  }
-
-  toggleKey() {
-    if (this.show_key_text === 'Show Public Key') {
-      this.show_key_text = 'Hide Public Key';
-      this.key_visible = true;
-    } else {
-      this.show_key_text = 'Show Public Key';
-      this.key_visible = false;
-    }
-  }
-
 }
