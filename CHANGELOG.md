@@ -1,3 +1,10 @@
+## (2019-10-20)
+
+#### Bug Fixes
+
+* **Projects:** Fixed missing projects in sidebar
+
+
 ##  (2019-10-18)
 
 #### Bug Fixes
