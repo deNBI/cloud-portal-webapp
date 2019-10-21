@@ -19,7 +19,13 @@ $simplevmcolour: #00ADEF;
 
 .navbar-brand-full
 {
-  padding: 20px;
+  bottom:8px;
+  position: relative;
+}
+
+.navbar-brand-minimized
+{
+  left:5px;
   position: relative;
 }
 
@@ -389,6 +395,12 @@ header {
 .brand-minimized .app-header.navbar, .brand-minimized .app-footer
 {
   width: 50px !important;
+}
+
+.brand-minimized .app-header.navbar
+{
+  margin-right: 0px;
+  padding: 1px;
 }
 
 .app-footer
