@@ -430,3 +430,67 @@ header {
   width: calc(100vw - 90px);
   margin:auto;
 }
+
+
+// project-icon part >>>
+
+@font-face {
+  font-family: 'os_pr';
+  src:  url('../static/webapp/assets/fonts/os_pr.eot');
+  src:  url('../static/webapp/assets/fonts/os_pr.eot') format('embedded-opentype'),
+  url('../static/webapp/assets/fonts/os_pr.ttf') format('truetype'),
+  url('../static/webapp/assets/fonts/os_pr.woff') format('woff'),
+  url('../static/webapp/assets/fonts/os_pr.svg') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+[class^="project-"], [class*=" project-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'os_pr' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.project-simpleVM_Logo_bluebg .path1:before {
+  content: "\e902";
+  color: #00adef;
+}
+.project-simpleVM_Logo_bluebg .path2:before {
+  content: "\e903";
+  margin-left: -1em;
+  color: rgb(255, 255, 255);
+}
+.project-simpleVM_Logo_bluebg .path3:before {
+  content: "\e904";
+  margin-left: -1em;
+  color: rgb(255, 255, 255);
+}
+.project-simpleVM_Logo_bluebg .path4:before {
+  content: "\e905";
+  margin-left: -1em;
+  color: rgb(255, 255, 255);
+}
+.project-simpleVM_Logo_bluebg .path5:before {
+  content: "\e906";
+  margin-left: -1em;
+  color: rgb(255, 255, 255);
+}
+.project-openstack_plain_white_redbg .path1:before {
+  content: "\e900";
+  color: rgb(255, 255, 255);
+}
+.project-openstack_plain_white_redbg .path2:before {
+  content: "\e901";
+  margin-left: -1em;
+  color: rgb(255, 0, 0);
+}

@@ -110,13 +110,13 @@
 
           <a *ngIf="navbar_minimized && !application.is_open_stack" class="nav-link" routerLinkActive="active" style="background-color: #00ADEF; text-align: center;"
              [routerLink]="['/project-management/' + application.application_id]" data-toggle="tooltip" data-placement="right" [title]="application.project_name">
-            <i class="icon-simplevm"
+            <i class="project-simpleVM_Logo_bluebg"
                style="color: #FFF; position:relative; left:8px;"></i>
           </a>
 
           <a *ngIf="navbar_minimized && application.is_open_stack" class="nav-link" routerLinkActive="active" style="background-color: #ED1944; text-align: center;"
              [routerLink]="['/project-management/' + application.application_id]" data-toggle="tooltip" data-placement="right" [title]="application.project_name">
-            <i class="icon-openstack"
+            <i class="project-openstack_plain_white_redbg"
                style="color: #FFF; position:relative; left:8px;"></i>
           </a>
 
