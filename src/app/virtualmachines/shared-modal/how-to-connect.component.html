@@ -1,5 +1,5 @@
 <ngb-tabset type="pills">
-  <ngb-tab *ngIf=" !(logs && logs['status'] != 0)">
+  <ngb-tab>
     <ng-template ngbTabTitle><b>SSH</b></ng-template>
 
     <ng-template ngbTabContent>
@@ -9,7 +9,7 @@
 
     </ng-template>
   </ngb-tab>
-  <ngb-tab *ngIf="_selectedVirtualMachine?.udp_command && !(logs && logs['status'] != 0)">
+  <ngb-tab *ngIf="_selectedVirtualMachine?.udp_command">
     <ng-template ngbTabTitle><b>MOSH</b></ng-template>
     <ng-template ngbTabContent>
       <div class="row justify-content-center">
@@ -34,16 +34,15 @@
     <span *ngIf="logs && logs['status'] == 0">
      The installation of the conda packages were successful! <br>
       If you want, take a look at the ansible-playbook logs below. <br>
-       <div class="btn-group">
-          <button class="btn btn-secondary" (click)="downloadFile('pdf')" style="margin: 5px">Download as PDF</button>
-         <button class="btn btn-secondary" (click)="downloadFile('txt')"
-                 style="margin: 5px">Download as txt</button></div>
     </span>
         <span *ngIf="logs && logs['status'] != 0">
       Oh no, something went wrong! <br>
-      Thus we can not provide a working virtual machine and consequently deleted it for you. <br>
       Please take a look at the logs below, to see what went wrong. <br>
     </span>
+        <div class="btn-group">
+          <button class="btn btn-secondary" (click)="downloadFile('pdf')" style="margin: 5px">Download as PDF</button>
+          <button class="btn btn-secondary" (click)="downloadFile('txt')"
+                  style="margin: 5px">Download as txt</button></div>
       </div>
     </ng-template>
   </ngb-tab>
