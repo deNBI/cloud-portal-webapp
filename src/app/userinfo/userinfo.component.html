@@ -38,20 +38,18 @@
                     <tr>
                         <th>Newsletter</th>
                         <td class="col-md-8">
-                            <div class="row">
-                                <div class="col-md-2"><label
-                                        class="switch switch-label switch-outline-primary-alt">
-                                    <input type="checkbox" class="switch-input"
-                                           [(ngModel)]="newsletterSubscribed"
-                                           (change)="setNewsletterSubscription($event)">
-                                    <span class="switch-slider" data-checked="On" data-unchecked="Off"></span>
-                                    <!--<span class="switch-handle"></span>-->
-                                </label></div>
-                              <div class="col-md-8"> Subscribe to our newsletter and get the latest news of upcoming events and current developments in de.NBI Cloud Portal.
-                                <strong>{{dsgvo_text}}</strong></div>
-                            </div>
+
+                               Subscribe to our newsletter and get the latest news of upcoming events and current developments in de.NBI Cloud Portal.
+                                <strong>{{dsgvo_text}}</strong>
                         </td>
-                        <td></td>
+                        <td><div><label
+                          class="switch switch-label switch-outline-primary-alt">
+                          <input type="checkbox" class="switch-input"
+                                 [(ngModel)]="newsletterSubscribed"
+                                 (change)="setNewsletterSubscription($event)">
+                          <span class="switch-slider" data-checked="On" data-unchecked="Off"></span>
+                          <!--<span class="switch-handle"></span>-->
+                        </label></div></td>
                     </tr>
                 </table>
             </div>
