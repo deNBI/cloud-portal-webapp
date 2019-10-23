@@ -121,7 +121,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
   ngOnInit(): void {
     this.getVolumes();
     this.getUserApprovedProjects();
-    this.facilityService.getManagerFacilities().subscribe(result => {
+    this.facilityService.getManagerFacilities().subscribe((result: any) => {
       this.managerFacilities = result;
       this.selectedFacility = this.managerFacilities[0];
     });
@@ -151,7 +151,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
   getFacilityVolumes(): void {
     this.volumes = [];
 
-    this.facilityService.getFacilityVolumes(this.selectedFacility['FacilityId']).subscribe(res => {
+    this.facilityService.getFacilityVolumes(this.selectedFacility['FacilityId']).subscribe((res: any) => {
       this.volumes = res;
     })
   }
@@ -252,7 +252,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
    */
   detachVolume(volume_id: string, instance_id: string): void {
     this.volume_action_status = this.volumeActionStates.DETACHING_VOLUME;
-    this.vmService.deleteVolumeAttachment(volume_id, instance_id).subscribe(result => {
+    this.vmService.deleteVolumeAttachment(volume_id, instance_id).subscribe((result: any) => {
       if (result.value === 'deleted') {
         this.volume_action_status = this.volumeActionStates.SUCCESSFULLY_DETACHED_VOLUME;
       } else {
@@ -290,7 +290,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
    */
   getVolumes(): void {
     this.volumes = [];
-    this.vmService.getVolumesByUser().subscribe(result => {
+    this.vmService.getVolumesByUser().subscribe((result: any) => {
       this.volumes = result;
       for (const volume of this.volumes) {
         this.setCollapseStatus(volume.volume_openstackid, false);
@@ -306,7 +306,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
    * @returns {void}
    */
   getUserApprovedProjects(): void {
-    this.groupService.getSimpleVmByUser().subscribe(membergroups => {
+    this.groupService.getSimpleVmByUser().subscribe((membergroups: any) => {
       for (const project of membergroups) {
         this.projects.push(project);
 
@@ -396,7 +396,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
    * @returns {void}
    */
   getActiveVmsByProject(groupid: number): void {
-    this.vmService.getActiveVmsByProject(groupid.toString()).subscribe(result => {
+    this.vmService.getActiveVmsByProject(groupid.toString()).subscribe((result: any) => {
 
       this.project_vms = result;
     })

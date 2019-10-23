@@ -1,6 +1,9 @@
 import {Util} from '../util';
 import {browser, by, element, protractor} from 'protractor';
 
+/**
+ * Project Overview page.
+ */
 export class ProjectOverview {
 
   private static ADD_MEMBER_BTN_MODAL: string = 'add_member_btn_modal';

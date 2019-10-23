@@ -1,6 +1,9 @@
 import {by, element} from 'protractor';
 import {Util} from '../util';
 
+/**
+ * Facilityoverivew page.
+ */
 export class FacilityOverviewPage {
 
     private static FACILITY_OVERVIEW_URL: string = 'facility-manager/facilityApplications';

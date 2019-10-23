@@ -1,8 +1,11 @@
-import {ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChange, SimpleChanges} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChange, SimpleChanges} from '@angular/core';
 import {VirtualMachine} from '../virtualmachinemodels/virtualmachine';
 import * as JSPDF from 'jspdf';
 import {VirtualmachineService} from '../../api-connector/virtualmachine.service';
 
+/**
+ * How to Connect moda body.
+ */
 @Component({
              selector: 'app-how-to-connect',
              templateUrl: 'how-to-connect.component.html',

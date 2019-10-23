@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
+/**
+ * The type overview of the different project classes.
+ */
 @Component({
     selector: 'app-type-overview',
     templateUrl: './type-overview.component.html',

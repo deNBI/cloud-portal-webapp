@@ -1,6 +1,9 @@
 import {by, element} from 'protractor';
 import {Util} from '../util';
 
+/**
+ * New Instance Page.
+ */
 export class NewInstancePage {
   private static NEW_INSTANCE_URL: string = 'virtualmachines/newVM';
   private static PROJECT_SELECT_ID: string = 'projectSelect';
