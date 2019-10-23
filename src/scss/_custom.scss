@@ -168,7 +168,7 @@ header {
   border-radius: 10px !important;
 }
 
-.sidebar-nav .nav-item:hover
+.sidebar-nav .nav-item:hover, .sidebar-minimized .sidebar .nav-item:hover > .nav-link
 {
   background-color: $deNBI_lightgrey !important;
 }
