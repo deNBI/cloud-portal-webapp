@@ -39,11 +39,16 @@
       Oh no, something went wrong! <br>
       Please take a look at the logs below, to see what went wrong. <br>
     </span>
-        <div class="btn-group">
-          <button class="btn btn-secondary" (click)="downloadFile('pdf')" style="margin: 5px">Download as PDF</button>
-          <button class="btn btn-secondary" (click)="downloadFile('txt')"
-                  style="margin: 5px">Download as txt</button></div>
       </div>
+        <div class="row justify-content-center">
+          <div class="btn-group">
+            <button class="btn btn-secondary" (click)="downloadFile('pdf')" style="margin: 5px">Download as PDF</button>
+            <button class="btn btn-secondary" (click)="downloadFile('txt')"
+                    style="margin: 5px">Download as txt
+            </button>
+          </div>
+        </div>
+
     </ng-template>
   </ngb-tab>
 </ngb-tabset>
