@@ -192,6 +192,8 @@
                                  type="number" min="0" step="1"
                                  placeholder="0"
                                  [ngModel]="0"
+                                 (change)="valuesChanged(f,name?.value)"
+
                                  #name="ngModel"
                                  (ngModelChange)="onChangeFlavor($event)"
                                  appMinAmount="0" appInteger

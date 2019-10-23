@@ -75,6 +75,12 @@ export class ApplicationBaseClass extends AbstractBaseClasse {
    */
   valuesToConfirm: string[];
 
+  newFlavors: {
+    [id: string]: {
+      counter: number, flavor: Flavor
+    }
+  } = {};
+
   extension_request = false;
 
   /**
@@ -152,6 +158,21 @@ export class ApplicationBaseClass extends AbstractBaseClasse {
       }
 
     })
+  }
+
+  valuesChanged(flavor: Flavor, counter: number): void {
+    this.newFlavors[flavor.name] = {counter: counter, flavor: flavor};
+    this.calculateRamCores();
+  }
+
+  calculateRamCores(): void {
+    this.totalNumberOfCores = 0;
+    this.totalRAM = 0;
+    for (const extensionFlavorsKey in this.newFlavors) {
+      let fl = this.newFlavors[extensionFlavorsKey];
+      this.totalRAM = this.totalRAM + fl.flavor.ram * fl.counter;
+      this.totalNumberOfCores = this.totalNumberOfCores + fl.flavor.vcpus * fl.counter;
+    }
   }
 
   public setApplicationStatus(status: number, app: Application): void {
@@ -483,7 +504,6 @@ export class ApplicationBaseClass extends AbstractBaseClasse {
           }
 
           this.valuesToConfirm.push(this.matchString(key.toString(), form.controls[key].value.toString()));
-
 
         }
       }
