@@ -105,7 +105,6 @@
         "no-unsafe-any": false,
         "no-unsafe-finally": true,
         "no-unused-expression": true,
-        //"no-use-before-declare": true,
         "promise-function-async": true,
         "radix": true,
         "restrict-plus-operands": true, // the plus operand should really only be used for strings and numbers
@@ -223,7 +222,6 @@
     "no-switch-case-fall-through": true,
     "no-trailing-whitespace": true,
     "no-unused-expression": true,
-    "no-use-before-declare": true,
     "no-var-keyword": true,
     "object-literal-sort-keys": false,
     "one-line": [

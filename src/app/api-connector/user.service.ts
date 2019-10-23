@@ -79,6 +79,7 @@ export class UserService {
   getLoggedUserWithRedirect(redirect?: string): Observable<any> {
     if (redirect && redirect != '/userinfo' && redirect != 'redirect') {
       const params: HttpParams = new HttpParams().set('redirect_after_login', redirect);
+
       return this.http.get(`${ApiSettings.getApiBaseURL()}users/current/`, {
         withCredentials: true,
         params: params
@@ -86,7 +87,7 @@ export class UserService {
       })
     } else {
       return this.http.get(`${ApiSettings.getApiBaseURL()}users/current/`, {
-        withCredentials: true,
+        withCredentials: true
 
       })
     }
@@ -96,6 +97,7 @@ export class UserService {
   getOnlyLoggedUserWithRedirect(redirect?: string): Observable<any> {
     if (redirect && redirect !== '/userinfo' && redirect !== 'redirect') {
       const params: HttpParams = new HttpParams().set('redirect_after_login', redirect);
+
       return this.http.get(`${ApiSettings.getApiBaseURL()}loggedUser/`, {
         withCredentials: true,
         params: params
@@ -103,7 +105,7 @@ export class UserService {
       })
     } else {
       return this.http.get(`${ApiSettings.getApiBaseURL()}loggedUser/`, {
-        withCredentials: true,
+        withCredentials: true
 
       })
     }

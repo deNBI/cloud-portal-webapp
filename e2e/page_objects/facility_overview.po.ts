@@ -10,7 +10,6 @@ export class FacilityOverviewPage {
     private static EXTENSION_APPROVAL_BTN_PREFIX: string = 'extension_approval_';
     private static EXTENSION_SUCCESSFULLY: string = 'Successfully approved the application modification.';
 
-
     static async navigateToFacilityOverview(): Promise<any> {
         console.log('Navigating to facility overview');
         await Util.navigateToAngularPage(this.FACILITY_OVERVIEW_URL);
@@ -25,6 +24,5 @@ export class FacilityOverviewPage {
         await Util.clickElementById(this.EXTENSION_APPROVAL_BTN_PREFIX + application_name);
         await Util.waitForTextPresenceInElementById(this.NOTIFICATION_MESSAGE, this.EXTENSION_SUCCESSFULLY);
     }
-
 
 }

@@ -19,7 +19,7 @@ export class FlavorDetailComponent implements OnInit {
   carousel_window_min_xl_8: number = 1380;
   carousel_window_min_xl6: number = 1200;
 
-  //icons for graphics within flavor cards:
+  // icons for graphics within flavor cards:
 
   STATIC_IMG_FOLDER: String = 'static/webapp/assets/img/';
 
@@ -60,8 +60,7 @@ export class FlavorDetailComponent implements OnInit {
 
   }
 
-  @HostListener('window:resize', ['$event'])
-  onResize(event): void {
+  @HostListener('window:resize', ['$event']) onResize(event): void {
     this.window_size = window.innerWidth;
   }
 

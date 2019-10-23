@@ -153,7 +153,7 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit {
     this.totalNumberOfCores = 0;
     this.totalRAM = 0;
     for (const extensionFlavorsKey in this.extensionFlavors) {
-      let fl = this.extensionFlavors[extensionFlavorsKey];
+      const fl = this.extensionFlavors[extensionFlavorsKey];
       this.totalRAM = this.totalRAM + fl.flavor.ram * fl.counter;
       this.totalNumberOfCores = this.totalNumberOfCores + fl.flavor.vcpus * fl.counter;
     }

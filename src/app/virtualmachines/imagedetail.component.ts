@@ -58,8 +58,7 @@ export class ImageDetailComponent implements OnInit {
     this.image_visible = !this.image_visible;
   }
 
-  @HostListener('window:resize', ['$event'])
-  onResize(event): void {
+  @HostListener('window:resize', ['$event']) onResize(event): void {
     this.window_size = window.innerWidth;
   }
 

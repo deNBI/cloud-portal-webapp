@@ -39,6 +39,7 @@ export class ImageTagComponent implements OnInit {
         return true;
       }
     }
+
     return false;
   }
 

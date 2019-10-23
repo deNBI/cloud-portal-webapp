@@ -25,7 +25,7 @@ import {forkJoin} from 'rxjs/index';
            })
 export class ApplicationsComponent extends ApplicationBaseClass implements OnInit {
 
-  title: string = "Application Overview";
+  title: string = 'Application Overview';
 
   /**
    * All Applications, just visibile for a vo admin.

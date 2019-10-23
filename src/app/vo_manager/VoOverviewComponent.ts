@@ -42,7 +42,6 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
   public selectedProjectSnapshots: SnapshotModel[] = [];
   computecenters: ComputecenterComponent[] = [];
 
-
   selectedProjectType: string = 'ALL';
   selectedFacility: string | number = 'ALL';
 

@@ -1,10 +1,10 @@
 // spec.js
 import {browser, by, element, protractor} from 'protractor';
 import {LoginPage} from '../page_objects/login.po';
-import {FormularPage} from "../page_objects/application_formular.po";
-import {ApplicationOverviewPage} from "../page_objects/application_overview.po";
-import {Util} from "../util";
-import {FacilityOverviewPage} from "../page_objects/facility_overview.po";
+import {FormularPage} from '../page_objects/application_formular.po';
+import {ApplicationOverviewPage} from '../page_objects/application_overview.po';
+import {Util} from '../util';
+import {FacilityOverviewPage} from '../page_objects/facility_overview.po';
 
 describe('Cloud Application Approval Test', function () {
 
@@ -15,7 +15,6 @@ describe('Cloud Application Approval Test', function () {
 
     it('should navigate to application overview', async function () {
         await ApplicationOverviewPage.navigateToApplicationOverview();
-
 
     });
 
@@ -34,6 +33,5 @@ describe('Cloud Application Approval Test', function () {
     it('should approve cloud application', async function () {
         await FacilityOverviewPage.approveApplication(Util.OPENSTACK_APPLICATION_NAME);
     });
-
 
 });

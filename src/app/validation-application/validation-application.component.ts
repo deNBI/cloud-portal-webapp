@@ -102,6 +102,7 @@ export class ValidationApplicationComponent extends ApplicationBaseClass impleme
       }
 
     }
+
     return false
 
   }

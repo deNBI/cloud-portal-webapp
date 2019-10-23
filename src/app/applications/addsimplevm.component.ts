@@ -22,9 +22,7 @@ import {FullLayoutComponent} from '../layouts/full-layout.component';
            })
 export class AddsimplevmComponent extends ApplicationBaseClass implements OnInit {
 
-
-
-  title: string = "New SimpleVM Application";
+  title: string = 'New SimpleVM Application';
 
   public application_dissemination: ApplicationDissemination = new ApplicationDissemination();
 

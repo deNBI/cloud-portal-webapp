@@ -25,7 +25,7 @@ export class VoOverviewPage {
 
   static async getAllPTProjects(): Promise<any> {
     await Util.logMethodCall('Get all PT projects');
-    let ele = await element(by.buttonText(this.TERMINATE_BUTTON_TEXT));
+    const ele = await element(by.buttonText(this.TERMINATE_BUTTON_TEXT));
     while (await ele.isPresent()) {
       await this.terminateProject(ele);
       await this.navigateToVolumeOverview();

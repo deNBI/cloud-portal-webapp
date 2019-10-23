@@ -71,6 +71,7 @@ export class VMOverviewPage {
     Util.logMethodCall(`Checking if ${name} is active`);
 
     await Util.waitForPresenceOfElementById(this.TABLE_ID);
+
     return await Util.waitForPresenceOfElementById(`${this.ACTIVE_BADGE_PREFIX}${name}`);
   }
 

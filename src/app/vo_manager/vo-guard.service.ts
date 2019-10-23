@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from '@angular/router';
 import {VoService} from '../api-connector/vo.service';
 import {Observable} from 'rxjs';
-import {IResponseTemplate} from "../api-connector/response-template";
+import {IResponseTemplate} from '../api-connector/response-template';
 
 @Injectable()
 export class VoGuardService implements CanActivate {
@@ -24,4 +24,3 @@ export class VoGuardService implements CanActivate {
 
     }
 }
-

@@ -4,6 +4,3 @@
     height: 100px;
     width: 100px;
 }
-.img_bigger figure:hover img {
-    transform: scale(1.3);
-}

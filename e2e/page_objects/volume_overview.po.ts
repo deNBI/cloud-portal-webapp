@@ -74,6 +74,7 @@ export class VolumeOverviewPage {
 
   static async isVolumeAttachedToVM(name: string): Promise<boolean> {
     Util.logMethodCall(` checking if volume attached to ${name}`);
+
     return await Util.waitForPresenceOfElementById(`${this.VM_NAME_CELL_ID_PREFIX}${name}`);
   }
 

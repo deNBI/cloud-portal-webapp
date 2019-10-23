@@ -6,7 +6,7 @@ import {VirtualmachineService} from '../../api-connector/virtualmachine.service'
 @Component({
              selector: 'app-how-to-connect',
              templateUrl: 'how-to-connect.component.html',
-             providers: [VirtualmachineService],
+             providers: [VirtualmachineService]
            })
 export class HowToConnectComponent implements OnChanges {
   public _selectedVirtualMachine: VirtualMachine;

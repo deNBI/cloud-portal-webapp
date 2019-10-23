@@ -25,7 +25,7 @@ describe('Simple Application Test', function () {
   it('should terminate projects', async function () {
         await VoOverviewPage.getAllPTProjects();
 
-    //await VoOverviewPage.terminateProject('show_terminate_12086')
+    // await VoOverviewPage.terminateProject('show_terminate_12086')
 
   });
 

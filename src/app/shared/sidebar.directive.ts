@@ -9,8 +9,7 @@ import { Directive, HostListener } from '@angular/core';
 export class SidebarToggleDirective {
   constructor() { }
 
-  @HostListener('click', ['$event'])
-  toggleOpen($event: any) {
+  @HostListener('click', ['$event']) toggleOpen($event: any) {
     $event.preventDefault();
     document.querySelector('body').classList.toggle('sidebar-hidden');
   }
@@ -22,8 +21,7 @@ export class SidebarToggleDirective {
 export class SidebarMinimizeDirective {
   constructor() { }
 
-  @HostListener('click', ['$event'])
-  toggleOpen($event: any) {
+  @HostListener('click', ['$event']) toggleOpen($event: any) {
     $event.preventDefault();
     document.querySelector('body').classList.toggle('sidebar-minimized');
   }
@@ -40,8 +38,7 @@ export class MobileSidebarToggleDirective {
     return new RegExp('(\\s|^)' + elementClassName + '(\\s|$)').test(target.className);
   }
 
-  @HostListener('click', ['$event'])
-  toggleOpen($event: any) {
+  @HostListener('click', ['$event']) toggleOpen($event: any) {
     $event.preventDefault();
     document.querySelector('body').classList.toggle('sidebar-mobile-show');
   }
@@ -74,8 +71,7 @@ export class SidebarOffCanvasCloseDirective {
     }
   }
 
-  @HostListener('click', ['$event'])
-  toggleOpen($event: any) {
+  @HostListener('click', ['$event']) toggleOpen($event: any) {
     $event.preventDefault();
 
     if (this.hasClass(document.querySelector('body'), 'sidebar-off-canvas')) {

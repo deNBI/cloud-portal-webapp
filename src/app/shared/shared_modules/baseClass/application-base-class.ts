@@ -165,6 +165,7 @@ export class ApplicationBaseClass extends AbstractBaseClasse {
       }
 
     }
+
     return false
 
   }
@@ -432,6 +433,7 @@ export class ApplicationBaseClass extends AbstractBaseClasse {
         return status.application_status_name;
       }
     }
+
     return dummy;
   }
 
@@ -483,7 +485,6 @@ export class ApplicationBaseClass extends AbstractBaseClasse {
           }
 
           this.valuesToConfirm.push(this.matchString(key.toString(), form.controls[key].value.toString()));
-
 
         }
       }

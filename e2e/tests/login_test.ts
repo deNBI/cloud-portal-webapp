@@ -12,14 +12,14 @@ describe('Login test', async function () {
 
     it('should login', async function () {
         LoginPage.login(browser.params.login.email_user, browser.params.login.password_user, browser.params.login.auth_user);
-        let result: boolean = await Util.waitForPage('userinfo');
+        const result: boolean = await Util.waitForPage('userinfo');
         expect(result).toEqual(true);
 
     });
 
     it('should restart', async function () {
         await LoginPage.logOut();
-        let result: boolean = await Util.waitForPage('data:,');
+        const result: boolean = await Util.waitForPage('data:,');
         expect(result).toEqual(true);
 
     })

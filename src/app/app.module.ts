@@ -23,7 +23,7 @@ import {AppAsideModule, AppBreadcrumbModule, AppFooterModule, AppHeaderModule, A
 import {FullLayoutComponent} from './layouts/full-layout.component';
 import {RegistrationInfoComponent} from './registration-info.component';
 import {AsideToggleDirective} from './shared/aside.directive';
-import {SharedModuleModule} from "./shared/shared_modules/shared-module.module";
+import {SharedModuleModule} from './shared/shared_modules/shared-module.module';
 import {PerfectScrollbarModule} from 'ngx-perfect-scrollbar';
 import {BreadcrumbsComponent} from './shared/breadcrumb.component';
 import {
@@ -31,9 +31,8 @@ import {
     SidebarMinimizeDirective,
     SidebarOffCanvasCloseDirective,
     SidebarToggleDirective
-} from "./shared/sidebar.directive";
+} from './shared/sidebar.directive';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MatSnackBarModule} from "@angular/material";
 import {Angulartics2Module} from 'angulartics2';
 import { ErrorHandler } from '@angular/core';
 import {UncaughtExceptionHandler} from './error-handler/UncaughtExceptionHandler.service';
@@ -56,7 +55,6 @@ import {TitleHeadbarComponent} from './shared/title-headbar.component';
         BrowserModule,
         HttpClientModule,
         AppRoutingModule,
-        MatSnackBarModule,
         BsDropdownModule.forRoot(),
         TabsModule.forRoot(),
         ChartsModule,

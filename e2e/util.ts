@@ -112,7 +112,7 @@ export class Util {
 
   static async checkInputsByIdsGotSameValue(id_1: string, id_2: string, timeout: number = this.timeout): Promise<any> {
     const val1: any = await this.getInputValueById(id_1);
-    let val2: any = await this.getInputValueById(id_2);
+    const val2: any = await this.getInputValueById(id_2);
     this.logInfo(`Val1 [${val1}] | Val2 [${val2}]`);
     expect(val1).toEqual(val2);
   }
@@ -146,6 +146,7 @@ export class Util {
     await this.waitForElementToBeClickableById(id, timeout);
     this.logInfo(`Clicking element ${id}`);
     const elem = element(by.id(id));
+
     return await elem.click();
   }
 
@@ -212,6 +213,7 @@ export class Util {
 
     console.log(`Waiting until element is clickable ${id}`);
     const elem = element(by.id(id));
+
     return await browser.driver.wait(until.elementToBeClickable(elem), timeout, 'Element taking too long to be clickable');
   }
 

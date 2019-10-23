@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 
-
 @Component({
     selector: 'app-type-overview',
     templateUrl: './type-overview.component.html',
@@ -34,6 +33,5 @@ export class TypeOverviewComponent implements OnInit {
         this.openstack_conf_logo = `${this.static_img_folder}/openstack-info-page/configuration.svg`;
         this.openstack_scale_logo = `${this.static_img_folder}/openstack-info-page/scale.svg`;
     }
-
 
 }

@@ -40,7 +40,7 @@ export class FullLayoutComponent extends ApplicationBaseClass implements OnInit 
 
   constructor(private voService: VoService, private groupService: GroupService, userservice: UserService,
               facilityService: FacilityService, applicationsservice: ApplicationsService,
-              applicationstatusservice: ApplicationStatusService,
+              applicationstatusservice: ApplicationStatusService
   ) {
     super(userservice, applicationstatusservice, applicationsservice, facilityService);
 

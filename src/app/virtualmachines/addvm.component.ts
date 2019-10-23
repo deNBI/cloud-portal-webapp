@@ -69,7 +69,6 @@ export class VirtualMachineComponent implements OnInit {
 
   vm_name: string;
 
-
   started_machine: boolean = false;
 
   conda_img_path: string = `static/webapp/assets/img/conda_logo.svg`;

@@ -2,7 +2,6 @@ import {AbstractBaseClasse} from './abstract-base-class';
 
 export abstract class FilterBaseClass extends AbstractBaseClasse {
 
-
     filterstatus_list: { [status: string]: boolean } = {
         ACTIVE: true,
         SUSPENDED: true,
