@@ -336,9 +336,9 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
   public createSimpleVmProjectGroup(app: Application, compute_center_id?: string): void {
 
     const application_id: string = <string>app.Id;
-    if (compute_center_id && compute_center_id != 'undefined') {
-      this.groupservice.createGroupByApplication(application_id, compute_center_id).subscribe((res) => {
-        if (!res['client_available']) {
+    if (compute_center_id && compute_center_id !== 'undefined') {
+      this.groupservice.createGroupByApplication(application_id, compute_center_id).subscribe((res: any) => {
+        if (!res['client_available'] && !res['created']) {
           this.setNoResourcesClientNotification(res);
           this.updateNotificationModal('Failed', `The client ${res['client_name']} has not the necessary resources left!`, true, 'danger');
 
