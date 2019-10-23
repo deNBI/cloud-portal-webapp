@@ -72,7 +72,6 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit {
 
   checked_member_list: number[] = [];
 
-
   // modal variables for User list
   public project_members: ProjectMember[] = [];
   public isLoaded: boolean = false;
@@ -140,15 +139,21 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit {
     })
   }
 
-
   initRamCores(): void {
+    console.log('init');
     this.totalNumberOfCores = 0;
     this.totalRAM = 0;
+    // tslint:disable-next-line:forin
     for (const key in this.project_application.CurrentFlavors) {
-      const flavor = this.project_application.CurrentFlavors[key];
+      const flavor: any = this.project_application.CurrentFlavors[key];
       if (flavor != null) {
-        this.totalNumberOfCores = this.totalNumberOfCores + (flavor.vcpus * flavor.counter);
-        this.totalRAM = this.totalRAM + (flavor.ram * flavor.counter);
+        const flav: Flavor = this.flavorList.find(function (fl: Flavor) {
+          return fl.name === key;
+
+        })
+        console.log(flav);
+        this.newFlavors[key] = {counter: flavor.counter, flavor: flav};
+        this.calculateRamCores()
 
       }
 
