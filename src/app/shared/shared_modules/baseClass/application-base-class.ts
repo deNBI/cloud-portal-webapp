@@ -328,7 +328,6 @@ export class ApplicationBaseClass extends AbstractBaseClasse {
         newApp.PerunId = aj['project_application_perun_id'];
 
         if (aj['projectapplicationrenewal']) {
-          console.log('Application is renewal');
           const newExtension: ApplicationExtension = new ApplicationExtension();
           let requestExtensionTotalCores: number = 0;
           let requestExtensionTotalRam: number = 0;
@@ -543,9 +542,7 @@ export class ApplicationBaseClass extends AbstractBaseClasse {
   }
 
   isKeyFlavor(key: string): Flavor {
-    console.log(this.flavorList);
     for (const fkey in this.flavorList) {
-      console.log(fkey);
       if (fkey in this.flavorList) {
         if (this.flavorList[fkey].name === key.substring(20)) {
           return this.flavorList[fkey];

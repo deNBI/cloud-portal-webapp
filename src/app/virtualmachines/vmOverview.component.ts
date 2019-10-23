@@ -299,7 +299,6 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
       () => {
         this.virtualmachineservice.checkVmStatus(vm.openstackid).subscribe((updated_vm: VirtualMachine) => {
           this.selectedVm = updated_vm;
-          console.log(this.selectedVm)
 
           if (updated_vm.status === final_state) {
             this.reboot_done = true;

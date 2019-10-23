@@ -1,3 +1,16 @@
+## (2019-10-21)
+
+#### Bug Fixes
+
+* **New Project:** Marked Reserch Topics as mandatory field
+
+## (2019-10-20)
+
+#### Bug Fixes
+
+* **Projects:** Fixed missing projects in sidebar
+
+
 ##  (2019-10-18)
 
 #### Bug Fixes
