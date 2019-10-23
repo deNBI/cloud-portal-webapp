@@ -2,194 +2,195 @@
 <div *ngIf="isLoaded" class="animated fadeIn">
 
 
-    <div class="card">
-        <div class="card-header">
-            <i class="fa fa-align-justify"></i> Personal Information
-        </div>
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-hover">
-
-                    <tr>
-                        <th>Elixir Login</th>
-                        <td class="col-md-8">{{ userInfo?.UserLogin }}</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <th>Elixir ID</th>
-                        <td class="col-md-8">{{userInfo?.ElxirId}}</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <th>Preferred Email</th>
-                        <td class="col-md-8">{{userInfo?.Email}}
-
-                          <div style="color: red" *ngFor="  let pendingEmail of userInfo?.PendingEmails">You
-                                have pending change
-                                request. Please check inbox of: {{pendingEmail}} for validation email.
-                            </div>
-                        </td>
-                        <td>
-                            <button class="btn btn-primary" (click)="emailChangeModal.show()" type="button">Change</button>
-                        </td>
-                    </tr>
-                    <tr app-public-key [userinfo]="userInfo"></tr>
-
-                    <tr>
-                        <th>Newsletter</th>
-                        <td class="col-md-8">
-                            <div class="row">
-                                <div class="col-md-2"><label
-                                        class="switch switch-label switch-outline-primary-alt">
-                                    <input type="checkbox" class="switch-input"
-                                           [(ngModel)]="newsletterSubscribed"
-                                           (change)="setNewsletterSubscription($event)">
-                                    <span class="switch-slider" data-checked="On" data-unchecked="Off"></span>
-                                    <!--<span class="switch-handle"></span>-->
-                                </label></div>
-                              <div class="col-md-8"> Subscribe to our newsletter and get the latest news of upcoming events and current developments in de.NBI Cloud Portal.
-                                <strong>{{dsgvo_text}}</strong></div>
-                            </div>
-                        </td>
-                        <td></td>
-                    </tr>
-                </table>
-            </div>
-        </div>
+  <div class="card">
+    <div class="card-header">
+      <i class="fa fa-align-justify"></i> Personal Information
     </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-hover">
+
+          <tr>
+            <th>Elixir Login</th>
+            <td class="col-md-8">{{ userInfo?.UserLogin }}</td>
+            <td></td>
+          </tr>
+          <tr>
+            <th>Elixir ID</th>
+            <td class="col-md-8">{{userInfo?.ElxirId}}</td>
+            <td></td>
+          </tr>
+          <tr>
+            <th>Preferred Email</th>
+            <td class="col-md-8">{{userInfo?.Email}}
+
+              <div style="color: red" *ngFor="  let pendingEmail of userInfo?.PendingEmails">You
+                have pending change
+                request. Please check inbox of: {{pendingEmail}} for validation email.
+              </div>
+            </td>
+            <td>
+              <button class="btn btn-primary" (click)="emailChangeModal.show()" type="button">Change</button>
+            </td>
+          </tr>
+          <tr app-public-key [userinfo]="userInfo"></tr>
+
+          <tr>
+            <th>Newsletter</th>
+            <td class="col-md-8">
+
+              Subscribe to our newsletter and get the latest news of upcoming events and current developments in de.NBI
+              Cloud Portal.
+              <p><strong>{{dsgvo_text}}</strong></p>
+            </td>
+            <td>
+              <div><label
+                class="switch switch-label switch-outline-primary-alt">
+                <input type="checkbox" class="switch-input"
+                       [(ngModel)]="newsletterSubscribed"
+                       (change)="setNewsletterSubscription($event)">
+                <span class="switch-slider" data-checked="On" data-unchecked="Off"></span>
+                <!--<span class="switch-handle"></span>-->
+              </label></div>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
 </div>
 
 
 <div bsModal #pubKeyModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
      aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Change public key</h4>
-                <button type="button" class="close" style="cursor: pointer;" (click)="pubKeyModal.hide()"
-                        data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Change public key</h4>
+        <button type="button" class="close" style="cursor: pointer;" (click)="pubKeyModal.hide()"
+                data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
 
-            </div>
-            <div class="modal-body">
-                <alert type="info" *ngIf="newPublicKey?.length ==0 ">
-                    <strong>Info: </strong> Please enter a valid public key!
+      </div>
+      <div class="modal-body">
+        <alert type="info" *ngIf="newPublicKey?.length ==0 ">
+          <strong>Info: </strong> Please enter a valid public key!
 
-                </alert>
-
-
-                <alert type="success" *ngIf="validatePublicKey()">
-                    <strong>Info: </strong> This is a valid public key!
-                </alert>
-                <alert type="danger" *ngIf="!validatePublicKey() && newPublicKey?.length >0">
-                    <strong>Warning</strong> This is not a valid public key!
-                </alert>
-                <textarea rows="8" type="text" class="form-control input-lg"
-                          placeholder="Please enter a new valid public key." name="public_key" [(ngModel)]="newPublicKey"
-                          #publickey></textarea>
-
-                <br>
+        </alert>
 
 
-                <alert *ngIf="validatePublicKey()" type="danger">
-                    <strong>Warning!</strong> Replacing your current public key with a different one will probably
-                    render all your currently running machines inaccessible.
-                </alert>
-            </div>
+        <alert type="success" *ngIf="validatePublicKey()">
+          <strong>Info: </strong> This is a valid public key!
+        </alert>
+        <alert type="danger" *ngIf="!validatePublicKey() && newPublicKey?.length >0">
+          <strong>Warning</strong> This is not a valid public key!
+        </alert>
+        <textarea rows="8" type="text" class="form-control input-lg"
+                  placeholder="Please enter a new valid public key." name="public_key" [(ngModel)]="newPublicKey"
+                  #publickey></textarea>
+
+        <br>
 
 
-            <div class="modal-footer">
+        <alert *ngIf="validatePublicKey()" type="danger">
+          <strong>Warning!</strong> Replacing your current public key with a different one will probably
+          render all your currently running machines inaccessible.
+        </alert>
+      </div>
 
 
-                <button [disabled]="!validatePublicKey()"
-                        class="btn btn-success col-md4" type="button"
-                        (click)="importKey(publickey.value);pubKeyModal.hide();">Set
-                </button>
-                <button class="btn  btn-primary col-md-4" type="reset" (click)="pubKeyModal.hide();">Cancel
-                </button>
+      <div class="modal-footer">
 
-            </div>
-        </div><!-- /.modal-content -->L
-    </div><!-- /.modal-dialog -->
+
+        <button [disabled]="!validatePublicKey()"
+                class="btn btn-success col-md4" type="button"
+                (click)="importKey(publickey.value);pubKeyModal.hide();">Set
+        </button>
+        <button class="btn  btn-primary col-md-4" type="reset" (click)="pubKeyModal.hide();">Cancel
+        </button>
+
+      </div>
+    </div><!-- /.modal-content -->L
+  </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
 <div bsModal #freemiummodal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
      aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Join Freemium</h4>
-                <button type="button" class="close" style="cursor: pointer;" (click)="freemiummodal.hide()"
-                        data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Join Freemium</h4>
+        <button type="button" class="close" style="cursor: pointer;" (click)="freemiummodal.hide()"
+                data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
 
-            </div>
-            <div class="modal-body">
-                <alert type="info">
-                    <strong>Info: </strong>
-                    <p>After joining Freemiun you can reload your page to see a New Instance tab where you are able to
-                        start a virtual machine for a short time.</p>
+      </div>
+      <div class="modal-body">
+        <alert type="info">
+          <strong>Info: </strong>
+          <p>After joining Freemiun you can reload your page to see a New Instance tab where you are able to
+            start a virtual machine for a short time.</p>
 
-                </alert>
+        </alert>
 
-            </div>
-
-
-            <div class="modal-footer">
+      </div>
 
 
-                <button class="btn btn-success col-md4" type="button"
-                        (click)="joinFreemium();freemiummodal.hide();">Join Freemium
-                </button>
-                <button class="btn  btn-primary col-md-4" type="reset" (click)="freemiummodal.hide();">Cancel
-                </button>
+      <div class="modal-footer">
 
-            </div>
-        </div><!-- /.modal-content -->L
-    </div><!-- /.modal-dialog -->
+
+        <button class="btn btn-success col-md4" type="button"
+                (click)="joinFreemium();freemiummodal.hide();">Join Freemium
+        </button>
+        <button class="btn  btn-primary col-md-4" type="reset" (click)="freemiummodal.hide();">Cancel
+        </button>
+
+      </div>
+    </div><!-- /.modal-content -->L
+  </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
 
 <div bsModal #emailChangeModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title"> Request preferred email change</h4>
-                <button type="button" class="close" style="cursor: pointer" (click)="emailChangeModal.hide()"
-                        aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form class="form-horizontal" id="email_form" #f="ngForm">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title"> Request preferred email change</h4>
+        <button type="button" class="close" style="cursor: pointer" (click)="emailChangeModal.hide()"
+                aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal" id="email_form" #f="ngForm">
 
 
-                    <div class="form-group row">
-                        <label class="col-md-12 control-label"><strong>New Email:</strong></label>
-                        <div class="col-md-12">
-                            <input required id="emailChange" name="emailChang" placeholder="" class="form-control"
-                                   type="text" [(ngModel)]="emailChange" #emailChang="ngModel"
-                                   pattern="(?!(^[.-].*|[^@]*[.-]@|.*\.{2,}.*)|^.{254}.)([a-zA-Z0-9!#$%&'*+\/=?^_`{|}~.-]+@)(?!-.*|.*-\.)([a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,15}"
-                                   [ngClass]="{'is-invalid':emailChang.invalid && (emailChang.dirty || emailChang.touched),
+          <div class="form-group row">
+            <label class="col-md-12 control-label"><strong>New Email:</strong></label>
+            <div class="col-md-12">
+              <input required id="emailChange" name="emailChang" placeholder="" class="form-control"
+                     type="text" [(ngModel)]="emailChange" #emailChang="ngModel"
+                     pattern="(?!(^[.-].*|[^@]*[.-]@|.*\.{2,}.*)|^.{254}.)([a-zA-Z0-9!#$%&'*+\/=?^_`{|}~.-]+@)(?!-.*|.*-\.)([a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,15}"
+                     [ngClass]="{'is-invalid':emailChang.invalid && (emailChang.dirty || emailChang.touched),
                     'is-valid':emailChang.valid && (emailChang.dirty || emailChang.touched)
                     }">
 
-                        </div>
-                    </div>
+            </div>
+          </div>
 
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" [disabled]="f.invalid" class="btn btn-primary"
-                        (click)="emailChangeModal.hide();requestChangePreferredMailUser(emailChange);">
-                    Request Change
-                </button>
-                <button type="button" class="btn btn-secondary" (click)="emailChangeModal.hide();">Close
-                </button>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" [disabled]="f.invalid" class="btn btn-primary"
+                (click)="emailChangeModal.hide();requestChangePreferredMailUser(emailChange);">
+          Request Change
+        </button>
+        <button type="button" class="btn btn-secondary" (click)="emailChangeModal.hide();">Close
+        </button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
