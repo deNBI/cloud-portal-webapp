@@ -356,9 +356,11 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
         (res: Client) => {
           if (!res['client_available']) {
             // tslint:disable-next-line:forin
-            for (const client of res['clients']) {
-              this.setNoResourcesClientNotification(client);
+            if (res['clients']) {
+              for (const client of res['clients']) {
+                this.setNoResourcesClientNotification(client);
 
+              }
             }
             this.updateNotificationModal('Failed', 'No client with the necessary resources online!', true, 'danger');
 
