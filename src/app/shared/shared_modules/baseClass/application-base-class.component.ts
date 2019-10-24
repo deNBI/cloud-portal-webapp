@@ -76,7 +76,13 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
    */
   valuesToConfirm: string[];
 
-  extension_request: boolean = false;
+  newFlavors: {
+    [id: string]: {
+      counter: number, flavor: Flavor
+    }
+  } = {};
+
+  extension_request = false;
 
   /**
    * If shortname is valid.
@@ -153,6 +159,21 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
       }
 
     })
+  }
+
+  valuesChanged(flavor: Flavor, counter: number): void {
+    this.newFlavors[flavor.name] = {counter: counter, flavor: flavor};
+    this.calculateRamCores();
+  }
+
+  calculateRamCores(): void {
+    this.totalNumberOfCores = 0;
+    this.totalRAM = 0;
+    for (const extensionFlavorsKey in this.newFlavors) {
+      let fl = this.newFlavors[extensionFlavorsKey];
+      this.totalRAM = this.totalRAM + fl.flavor.ram * fl.counter;
+      this.totalNumberOfCores = this.totalNumberOfCores + fl.flavor.vcpus * fl.counter;
+    }
   }
 
   public setApplicationStatus(status: number, app: Application): void {

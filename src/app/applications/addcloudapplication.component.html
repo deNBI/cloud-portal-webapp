@@ -192,6 +192,7 @@
                                name="project_application_{{f.name}}"
                                type="number" min="0" step="1"
                                placeholder="0"
+                               (change)="valuesChanged(f,name?.value)"
                                [ngModel]="0"
                                #name="ngModel"
                                appMinAmount="0" appInteger

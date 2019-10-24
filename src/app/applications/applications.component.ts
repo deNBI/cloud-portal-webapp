@@ -285,70 +285,101 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
     document.body.classList.remove('modal-open');
   }
 
+  private setNotificationClient(application_id: string): void {
+    this.applicationsservice.getApplicationClient(
+      application_id).subscribe((client: object) => {
+      const newClient: Client = new Client(client['host'], client['port'], client['location'], client['id']);
+      newClient.maxVolumeLimit = client['max_ressources']['maxTotalVolumeGigabytes'];
+      newClient.maxVolumes = client['max_ressources']['maxTotalVolumes'];
+      newClient.maxVMs = client['max_ressources']['maxTotalInstances'];
+      newClient.assignedVMs = client['assigned_ressources']['vms'];
+      newClient.assignedVolumes = client['assigned_ressources']['volumes'];
+      newClient.assignedVolumesStorage = client['assigned_ressources']['volumeLimit'];
+      this.notificationClientInfo.push(newClient);
+      this.updateNotificationModal(
+        'Success', `The new project was created and assigned to ${newClient.location}.`,
+        true,
+        'success');
+
+    });
+  }
+
+  private setNoResourcesClientNotification(client: any): void {
+    const newClient: Client = new Client(null, null, client['client_location'], null);
+    newClient.maxVolumeLimit = client['max_volume_gb'];
+    newClient.maxVolumes = client['max_volumes'];
+    newClient.maxVMs = client['max_instances'];
+    newClient.assignedVMs = client['assigned_instances'];
+    newClient.assignedVolumes = client['assigned_volumes'];
+    newClient.assignedVolumesStorage = client['assigned_volume_gb'];
+    newClient.newVms = client['additional_instances'];
+    newClient.newVolumeLimit = client['new_volume_gb'];
+    newClient.newVolumes = client['new_volumes'];
+    this.notificationClientInfo.push(newClient);
+
+  }
+
+  private reloadApplicationList(application_id: string): void {
+    for (const app of this.all_applications) {
+      if (app.Id.toString() === application_id.toString()) {
+        this.getApplication(app);
+        break;
+
+      }
+    }
+  }
+
   /**
    * Create a new Group in perun with the specific attributes.
    * @param app
    */
-  public createSimpleVmProjectGroup(app: Application): void {
+  public createSimpleVmProjectGroup(app: Application, compute_center_id?: string): void {
 
     const application_id: string = <string>app.Id;
-    this.applicationsservice.getApplicationClientAvaiable(application_id).subscribe(
-      (res: Client) => {
-        if (!res['client_available']) {
-          // tslint:disable-next-line:forin
-          for (const client of res['clients']) {
-            const newClient: Client = new Client(null, null, client['client_location'], null);
-            newClient.maxVolumeLimit = client['max_volume_gb'];
-            newClient.maxVolumes = client['max_volumes'];
-            newClient.maxVMs = client['max_instances'];
-            newClient.assignedVMs = client['assigned_instances'];
-            newClient.assignedVolumes = client['assigned_volumes'];
-            newClient.assignedVolumesStorage = client['assigned_volume_gb'];
-            newClient.newVms = client['additional_instances'];
-            newClient.newVolumeLimit = client['new_volume_gb'];
-            newClient.newVolumes = client['new_volumes'];
-            this.notificationClientInfo.push(newClient);
-
-          }
-          this.updateNotificationModal('Failed', 'No client with the necessary resources online!', true, 'danger');
+    if (compute_center_id && compute_center_id !== 'undefined') {
+      this.groupservice.createGroupByApplication(application_id, compute_center_id).subscribe((res: any) => {
+        if (!res['client_available'] && !res['created']) {
+          this.setNoResourcesClientNotification(res);
+          this.updateNotificationModal('Failed', `The client ${res['client_name']} has not the necessary resources left!`, true, 'danger');
 
         } else {
+          this.setNotificationClient(application_id);
+          this.reloadApplicationList(application_id)
+        }
 
-          this.groupservice.createGroupByApplication(application_id).subscribe(() => {
-            this.applicationsservice.getApplicationClient(
-              application_id).subscribe((client: object) => {
-              const newClient: Client = new Client(client['host'], client['port'], client['location'], client['id']);
-              newClient.maxVolumeLimit = client['max_ressources']['maxTotalVolumeGigabytes'];
-              newClient.maxVolumes = client['max_ressources']['maxTotalVolumes'];
-              newClient.maxVMs = client['max_ressources']['maxTotalInstances'];
-              newClient.assignedVMs = client['assigned_ressources']['vms'];
-              newClient.assignedVolumes = client['assigned_ressources']['volumes'];
-              newClient.assignedVolumesStorage = client['assigned_ressources']['volumeLimit'];
-              this.notificationClientInfo.push(newClient);
-              this.updateNotificationModal(
-                'Success', `The new project was created and assigned to ${newClient.location}.`,
-                true,
-                'success');
-
-            });
-
-            for (const application of this.all_applications) {
-              if (application.Id.toString() === application_id.toString()) {
-                this.getApplication(application);
-                break;
+      }, (error: object) => {
+        console.log(error);
+        this.updateNotificationModal('Failed', 'Project could not be created!', true, 'danger');
+      });
+    } else {
+      this.applicationsservice.getApplicationClientAvaiable(application_id).subscribe(
+        (res: Client) => {
+          if (!res['client_available']) {
+            // tslint:disable-next-line:forin
+            if (res['clients']) {
+              for (const client of res['clients']) {
+                this.setNoResourcesClientNotification(client);
 
               }
             }
+            this.updateNotificationModal('Failed', 'No client with the necessary resources online!', true, 'danger');
 
-          });
+          } else {
 
-        }
+            this.groupservice.createGroupByApplication(application_id).subscribe(() => {
+              this.setNotificationClient(application_id);
+              this.reloadApplicationList(application_id)
 
-      },
-      (error: object) => {
-        console.log(error);
-        this.updateNotificationModal('Failed', 'Project could not be created!', true, 'danger');
-      })
+            });
+
+          }
+
+        },
+        (error: object) => {
+          console.log(error);
+          this.updateNotificationModal('Failed', 'Project could not be created!', true, 'danger');
+        })
+    }
 
   }
 

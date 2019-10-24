@@ -71,11 +71,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   title: string = 'Project Overview';
 
   checked_member_list: number[] = [];
-  extensionFlavors: {
-    [id: string]: {
-      counter: number, flavor: Flavor
-    }
-  } = {};
 
   // modal variables for User list
   public project_members: ProjectMember[] = [];
@@ -144,29 +139,21 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
     })
   }
 
-  protected valuesChanged(flavor: Flavor, counter: number): void {
-    this.extensionFlavors[flavor.name] = {counter: counter, flavor: flavor};
-    this.calculateRamCores();
-  }
-
-  calculateRamCores(): void {
-    this.totalNumberOfCores = 0;
-    this.totalRAM = 0;
-    for (const extensionFlavorsKey in this.extensionFlavors) {
-      const fl = this.extensionFlavors[extensionFlavorsKey];
-      this.totalRAM = this.totalRAM + fl.flavor.ram * fl.counter;
-      this.totalNumberOfCores = this.totalNumberOfCores + fl.flavor.vcpus * fl.counter;
-    }
-  }
-
   initRamCores(): void {
+    console.log('init');
     this.totalNumberOfCores = 0;
     this.totalRAM = 0;
+    // tslint:disable-next-line:forin
     for (const key in this.project_application.CurrentFlavors) {
-      const flavor = this.project_application.CurrentFlavors[key];
+      const flavor: any = this.project_application.CurrentFlavors[key];
       if (flavor != null) {
-        this.totalNumberOfCores = this.totalNumberOfCores + (flavor.vcpus * flavor.counter);
-        this.totalRAM = this.totalRAM + (flavor.ram * flavor.counter);
+        const flav: Flavor = this.flavorList.find(function (fl: Flavor) {
+          return fl.name === key;
+
+        })
+        console.log(flav);
+        this.newFlavors[key] = {counter: flavor.counter, flavor: flav};
+        this.calculateRamCores()
 
       }
 

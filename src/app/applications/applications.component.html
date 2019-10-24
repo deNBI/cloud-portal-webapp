@@ -96,11 +96,11 @@
 
                   <td>
                     <select
-                      [style.display]="application?.OpenStackProject && (application?.Status == application_states.SUBMITTED || application?.Status == application_states.CONFIRMATION_DENIED || (!application?.ComputeCenter?.FacilityId ))? 'inherit' :'none'"
+                      [style.display]=" (application?.Status == application_states.SUBMITTED || application?.Status == application_states.CONFIRMATION_DENIED || (!application?.ComputeCenter?.FacilityId ))? 'inherit' :'none'"
                       class="form-control" [id]="'id_compute_center_option_' + application?.Name"
                       #selectedComputeCenter>
 
-                      <option value="undefined" selected> no center
+                      <option value="undefined" selected> no center selected
                       </option>
                       <option *ngFor="let computeCenter of computeCenters"
                               value="{{computeCenter.FacilityId}}" [id]="computeCenter.Name">
@@ -151,7 +151,7 @@
                       <button
                         *ngIf="application?.Status == application_states.SUBMITTED && !application?.OpenStackProject"
                         style="margin: auto 2.5px" [id]="'approve_' + application?.Shortname"
-                        (click)="resetNotificationModal();createSimpleVmProjectGroup(application); notificationModal.show();"
+                        (click)="resetNotificationModal();createSimpleVmProjectGroup(application,selectedComputeCenter.value); notificationModal.show();"
 
                         type="button"
                         class="btn btn-success">
