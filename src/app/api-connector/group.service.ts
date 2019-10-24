@@ -110,7 +110,7 @@ export class GroupService {
     })
   }
 
-    removeMember(group_id: number | string, member_id: number | string, facility_id?: number | string): Observable<any> {
+  removeMember(group_id: number | string, member_id: number | string, facility_id?: number | string): Observable<any> {
     const params: HttpParams = new HttpParams();
 
     if (facility_id !== null) {
@@ -295,9 +295,9 @@ export class GroupService {
                           })
   }
 
-  createGroupByApplication(application_id: string | number): Observable<any> {
+  createGroupByApplication(application_id: string | number, compute_center_id?: string): Observable<any> {
     const params: HttpParams = new HttpParams()
-      .set('application_id', application_id.toString());
+      .set('application_id', application_id.toString()).set('compute_center_id', compute_center_id);
 
     return this.http.post(`${ApiSettings.getApiBaseURL()}projects/simple_vm/`, params,
                           {
