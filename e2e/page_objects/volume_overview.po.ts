@@ -1,6 +1,9 @@
 import {by, element} from 'protractor';
 import {Util} from '../util';
 
+/**
+ * Volume Overview Page.
+ */
 export class VolumeOverviewPage {
 
   private static VOLUME_OVERVIEW_URL: string = 'virtualmachines/volumeOverview';

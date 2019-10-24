@@ -1,6 +1,9 @@
 import {browser} from 'protractor';
 import {Util} from '../util';
 
+/**
+ * Snapshot Overview page.
+ */
 export class SnapshotOverviewPage {
 
   private static SNAPSHOT_OVERVIEW_URL: string = 'virtualmachines/snapshotOverview';
