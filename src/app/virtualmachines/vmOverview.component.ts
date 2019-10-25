@@ -31,7 +31,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
   currentPage: number = 1;
   DEBOUNCE_TIME: number = 300;
 
-  private timer: {[key: string]: {timeLeft: number, interval: any}} = {};
+  private timer: { [key: string]: { timeLeft: number, interval: any } } = {};
 
   filter_status_list: string[] = [this.vm_statuses[this.vm_statuses.ACTIVE], this.vm_statuses[this.vm_statuses.SHUTOFF]];
   isSearching: boolean = true;
@@ -241,6 +241,17 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
       )
   }
 
+  applyFilterStatus(): void {
+    const vm_content_copy: VirtualMachine[] = [];
+    for (const vm of this.vms_content) {
+      if (vm.status in this.filter_status_list || vm.status !== 'ACTIVE' && vm.status !== 'DELETED' && vm.status !== 'SUSPENDED') {
+        vm_content_copy.push(vm)
+      }
+
+    }
+    this.vms_content = vm_content_copy;
+  }
+
   /**
    * Delete VM.
    * @param {string} openstack_id of instance
@@ -260,7 +271,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
       }
 
       this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
-      this.applyFilter();
+      this.applyFilterStatus();
       if (updated_vm.status === this.vm_statuses[this.vm_statuses.DELETED]) {
         this.status_changed = 1;
       } else {
@@ -678,7 +689,8 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
                                 delete this.timer[key];
                               }
                             },
-                            1000)};
+                            1000)
+    };
   }
 
   pauseTimer(key: string): any {
