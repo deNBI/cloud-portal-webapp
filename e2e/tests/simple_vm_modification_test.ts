@@ -23,7 +23,7 @@ describe('Simple Application Modification Test', function () {
   });
 
   it('should have old values prefilled', async function () {
-    await ProjectOverview.areDefaultValuesSetOpenstack();
+    await ProjectOverview.areDefaultValuesSetSimpleVM();
   });
 
   it('should fill modification formular', async function () {
