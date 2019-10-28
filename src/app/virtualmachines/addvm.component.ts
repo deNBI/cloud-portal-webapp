@@ -69,7 +69,6 @@ export class VirtualMachineComponent implements OnInit {
 
   vm_name: string;
 
-
   started_machine: boolean = false;
 
   conda_img_path: string = `static/webapp/assets/img/conda_logo.svg`;
@@ -395,6 +394,12 @@ export class VirtualMachineComponent implements OnInit {
             }
             this.check_status_loop(newVm.openstackid);
 
+          } else if (newVm.status === 'mutex_locked') {
+            setTimeout(
+              () => {
+                this.startVM(flavor, image, servername, project, projectid)
+              },
+              1000)
           } else if (newVm.status) {
             this.progress_bar_status = this.CREATING_STATUS;
             this.newVm = newVm;
