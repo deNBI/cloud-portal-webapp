@@ -1,3 +1,19 @@
+##  (2019-10-24)
+
+
+#### Bug Fixes
+
+* **Client:** if no client online return ([0bbf9668](0bbf9668))
+* **Theming:**  simplevm icons showing for faciliy manager ([98b20bca](98b20bca))
+* **how-to-connect:**  conda - dl buttons below text ([f7791d1f](f7791d1f))
+* **vm:**  can check status on active vm, show ssh on failed playbooks ([cf79a914](cf79a914))
+
+#### Features
+
+* **Project:** simple vm cc chooseable ([2f3ae85a](2f3ae85a))
+* **Userinfo:**  pubkey always visisble , added copy btn ([7971d8fe](7971d8fe))
+
+
 ## (2019-10-23)
 
 ### Bug Fixes
