@@ -231,6 +231,10 @@ export class Util {
     return await browser.get(`${this.angular_url}/#/${url_suffix}`);
   }
 
+  static async waitForTextInUrl(text: string): Promise<any> {
+    return browser.wait(until.urlContains(text), this.timeout)
+  }
+
   static async clickOptionOfSelect(option: string, selectId: string): Promise<any> {
     console.log(`Getting option ${option} from select ${selectId}`);
     await this.waitForPresenceOfElementById(selectId);

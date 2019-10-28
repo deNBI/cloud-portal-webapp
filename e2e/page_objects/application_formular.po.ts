@@ -7,7 +7,7 @@ export class FormularPage {
   private static ACKNOWLEDGE_BTN: string = 'acknowledge_approve_btn';
   private static APPLICATION_SUBMITTED: string = 'The application was submitted';
   private static NOTIFICATION_MESSAGE: string = 'notification_message';
-  private static EDAM_PLACEHOLDER: string = 'Please add your research topics';
+  public static NOTIFICATION_BTN_REDIRECT: string = 'notification_btn_redirect';
 
   static async submitApplication(): Promise<any> {
     console.log('Submit Application');

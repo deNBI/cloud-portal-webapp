@@ -62,7 +62,7 @@
       <td>Research Topics</td>
       <td><h5><span *ngFor="let term of application?.EdamTopics"
                     style="margin-left: 5px; "
-                    class="badge badge-info">{{term}}
+                    class="badge badge-info"><span id="topic_{{term}}">{{term}}</span>
  </span>
 
       </h5></td>

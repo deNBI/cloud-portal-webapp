@@ -27,6 +27,8 @@ export class ProjectOverview {
   private static NEW_OBJECT_STORAGE_ID: string = 'id_project_application_renewal_object_storage';
   private static TOTAL_RAM: string = 'total_ram';
   private static TOTAL_CORES: string = 'total_cores';
+  private static BIOINFORMATICS_TOPIC: string = 'topic_Bioinformatics';
+  private static SHOW_INFORMATION_BTN: string = 'show_information_btn';
 
   static async navigateToSimpleProjectverview(): Promise<any> {
     console.log('Navigating to simple project overview');
@@ -70,6 +72,11 @@ export class ProjectOverview {
     await Util.clickElementById(this.SUBMIT_RENEWAL_BTN);
     await Util.clickElementById(this.SUBMIT_MODEL_BTN);
     await Util.waitForTextPresenceInElementById(this.EXTENSION_RESULT, this.EXTENSION_SUCCESSFULLY_SUBMITTED);
+  }
+
+  static async isBioinformaticsSet(): Promise<any> {
+    await Util.clickElementById(this.SHOW_INFORMATION_BTN);
+    await Util.waitForPresenceOfElementById(this.BIOINFORMATICS_TOPIC);
   }
 
   static async areDefaultValuesSetSimpleVM(): Promise<any> {
