@@ -43,5 +43,8 @@ describe('Simple Application Test', function () {
   it('should have Bioinformatics in the research topics', async function () {
     await ProjectOverview.isBioinformaticsSet();
   })
+  it('should have dissemination ', async function () {
+    await ProjectOverview.isDisseminationSet();
+  })
 
 });

@@ -42,4 +42,8 @@ describe('Cloud Application Test', function () {
     await ProjectOverview.isBioinformaticsSet();
   })
 
+  it('should have dissemination ', async function () {
+    await ProjectOverview.isDisseminationSet();
+  })
+
 });

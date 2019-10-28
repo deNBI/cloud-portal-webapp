@@ -12,6 +12,7 @@ import {Component} from '@angular/core';
 import {ApplicationStatusService} from '../../../api-connector/application-status.service';
 import {UserService} from '../../../api-connector/user.service';
 import {NgForm} from '@angular/forms';
+import {Dissemination} from '../../../applications/application.model/dissemination';
 
 /**
  * Application base component..
@@ -224,7 +225,7 @@ export class ApplicationBaseClass extends AbstractBaseClasse {
     newApp.UserAffiliations = aj['project_application_user']['profile']['affiliations'];
     newApp.UserEmail = aj['project_application_user']['email'];
     newApp.Status = aj['project_application_status'];
-    newApp.Dissemination = aj['project_application_report_allowed'];
+    newApp.Dissemination = this.createDisseminatenObject(aj['dissemination']);
     newApp.Horizon2020 = aj['project_application_horizon2020'];
     newApp.BMBFProject = aj['project_application_bmbf_project'];
     newApp.ElixirProject = aj['project_application_elixir_project'];
@@ -283,6 +284,21 @@ export class ApplicationBaseClass extends AbstractBaseClasse {
     return newApp
   }
 
+  createDisseminatenObject(obj: any): Dissemination {
+    if (obj) {
+      const newDissemination: Dissemination = new Dissemination(obj['platform_newsletter'], obj['platform_landing_page'],
+                                                                obj['platform_portal_news'], obj['platform_twitter'],
+                                                                obj['information_title'], obj['information_resources'],
+                                                                obj['information_runtime'], obj['information_pi_name'],
+                                                                obj['information_instituition'], obj['information_workgroup'],
+                                                                obj['information_project_type'],
+                                                                obj['information_lifetime'], obj['information_project_affiliation'])
+      return newDissemination
+    } else {
+      return null
+    }
+  }
+
   setNewApplications(res): Application[] {
     const newApplications: Application[] = [];
 
@@ -291,6 +307,7 @@ export class ApplicationBaseClass extends AbstractBaseClasse {
 
         const aj: object = res[key];
         const newApp: Application = new Application();
+        newApp.Dissemination = this.createDisseminatenObject(aj['dissemination']);
         newApp.Id = aj['project_application_id'];
         newApp.Name = aj['project_application_name'];
         newApp.Shortname = aj['project_application_shortname'];
@@ -316,7 +333,6 @@ export class ApplicationBaseClass extends AbstractBaseClasse {
         newApp.UserAffiliations = aj['project_application_user']['profile']['affiliations'];
         newApp.UserEmail = aj['project_application_user']['email'];
         newApp.Status = aj['project_application_status'];
-        newApp.Dissemination = aj['project_application_report_allowed'];
         newApp.Horizon2020 = aj['project_application_horizon2020'];
         newApp.ElixirProject = aj['project_application_elixir_project'];
         newApp.BMBFProject = aj['project_application_bmbf_project'];

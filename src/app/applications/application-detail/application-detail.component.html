@@ -1,5 +1,5 @@
 <div class="table-responsive">
-  <table class="table table-striped">
+  <table class="table table-striped" style="table-layout: fixed">
 
 
     <tr *ngIf="application?.PIApproved">
@@ -58,6 +58,16 @@
       <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
       </td>
     </tr>
+  </table>
+  <br>
+
+  <table class="table table-striped" style="table-layout: fixed">
+    <thead>
+    <tr>
+      <th colspan="2" style="text-align:center"><strong>Information</strong></th>
+    </tr>
+    </thead>
+
     <tr>
       <td>Research Topics</td>
       <td><h5><span *ngFor="let term of application?.EdamTopics"
@@ -101,14 +111,7 @@
       <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
       </td>
     </tr>
-    <tr>
-      <td>Dissemination allowed</td>
-      <td>
-        {{application?.Dissemination}}
-      </td>
-      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
-      </td>
-    </tr>
+
 
     <tr>
       <td>Workgroup</td>
@@ -142,12 +145,44 @@
           application?.ApplicationExtension?.Lifetime}}
       </td>
     </tr>
+  </table>
+  <br>
+  <table class="table table-striped" style="table-layout: fixed">
+    <thead>
     <tr>
-      <td><b>VMs</b>
+      <th colspan="2" style="text-align:center"><strong>Dissemination</strong></th>
+    </tr>
+    </thead>
+    <tr>
+      <td>Platforms</td>
+      <td id="dissemination_platforms">
+        {{application?.Dissemination?.allowed_platforms}}
+      </td>
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
+      </td>
+    </tr>
+    <tr>
+      <td>Information</td>
+      <td id="dissemination_information">
+        {{application?.Dissemination?.allowed_informations}}
+      </td>
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table class="table table-striped" style="table-layout: fixed">
+    <thead>
+    <tr>
+      <th colspan="2" style="text-align:center"><strong>Resources</strong></th>
+    </tr>
+    </thead>
+    <tr>
+      <td>VMs
       </td>
 
       <td>
-        <span>Current:</span>
         {{application?.VMsRequested}}
       </td>
       <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">

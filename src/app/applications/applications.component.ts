@@ -13,7 +13,6 @@ import {Client} from '../virtualmachines/clients/client.model';
 import {ApplicationBaseClass} from '../shared/shared_modules/baseClass/application-base-class';
 import {ComputecenterComponent} from '../projectmanagement/computecenter.component';
 import {IResponseTemplate} from '../api-connector/response-template';
-import {forkJoin} from 'rxjs/index';
 
 /**
  * Application Overview component.
