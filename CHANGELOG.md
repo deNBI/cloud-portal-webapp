@@ -1,3 +1,12 @@
+## (2019-10-23)
+
+### Bug Fixes
+
+* **Theming:** Adjusted scroll area of main part
+* **Theming:** Fixed minimized logo issues
+* **Theming:** Icons for projects now showing in minimized sidebar
+
+
 ## (2019-10-21)
 
 #### Bug Fixes
