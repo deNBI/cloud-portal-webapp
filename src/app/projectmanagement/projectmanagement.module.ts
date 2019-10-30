@@ -7,6 +7,7 @@ import {ModalModule} from 'ngx-bootstrap/modal';
 import {FormsModule} from '@angular/forms';
 import {AccordionModule} from 'ngx-bootstrap';
 import {ApplicationsModule} from '../applications/applications.module';
+import {SharedDirectivesModule} from '../shared/shared_modules/shared_directives.module';
 
 @NgModule({
             imports: [
@@ -16,7 +17,8 @@ import {ApplicationsModule} from '../applications/applications.module';
               FormsModule,
               CommonModule,
               ModalModule.forRoot(),
-              ApplicationsModule
+              ApplicationsModule,
+              SharedDirectivesModule
             ],
             declarations: [
               OverviewComponent
