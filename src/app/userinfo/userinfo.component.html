@@ -6,52 +6,70 @@
     <div class="card-header">
       <i class="fa fa-align-justify"></i> Personal Information
     </div>
-    <div class="card-body">
+    <div class="card-body container-fluid">
       <div class="table-responsive">
         <table class="table table-hover">
 
           <tr>
-            <th>Elixir Login</th>
-            <td class="col-md-8">{{ userInfo?.UserLogin }}</td>
-            <td></td>
+            <th class="col-3">
+              <div class="row" style="margin-bottom: 5px">
+                <strong class="col">Elixir Login</strong>
+              </div>
+              <div class="row"></div>
+            </th>
+            <td class="col-9">{{ userInfo?.UserLogin }}</td>
           </tr>
           <tr>
-            <th>Elixir ID</th>
-            <td class="col-md-8">{{userInfo?.ElxirId}}</td>
-            <td></td>
+            <th class="col-3">
+              <div class="row" style="margin-bottom: 5px">
+                <strong class="col">Elixir ID</strong>
+              </div>
+              <div class="row"></div>
+            </th>
+            <td class="col-9">{{userInfo?.ElxirId}}</td>
           </tr>
           <tr>
-            <th>Preferred Email</th>
-            <td class="col-md-8">{{userInfo?.Email}}
+            <th class="col-3">
+              <div class="row" style="margin-bottom: 5px">
+                <strong class="col">Preferred Email</strong>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <button class="btn btn-primary" (click)="emailChangeModal.show()" type="button">Change</button>
+                </div>
+              </div>
+            </th>
+            <td class="col-9">{{userInfo?.Email}}
 
               <div style="color: red" *ngFor="  let pendingEmail of userInfo?.PendingEmails">You
                 have pending change
                 request. Please check inbox of: {{pendingEmail}} for validation email.
               </div>
             </td>
-            <td>
-              <button class="btn btn-primary" (click)="emailChangeModal.show()" type="button">Change</button>
-            </td>
           </tr>
           <tr app-public-key [userinfo]="userInfo"></tr>
 
           <tr>
-            <th>Newsletter</th>
-            <td class="col-md-8">
+            <th class="col-3">
+              <div class="row" style="margin-bottom: 5px">
+                <strong class="col">Newsletter</strong>
+              </div>
+              <div class="row">
+                <div class="col"><label
+                  class="switch switch-label switch-outline-primary-alt">
+                  <input type="checkbox" class="switch-input"
+                         [(ngModel)]="newsletterSubscribed"
+                         (change)="setNewsletterSubscription($event)">
+                  <span class="switch-slider" data-checked="On" data-unchecked="Off"></span>
+                  <!--<span class="switch-handle"></span>-->
+                </label></div>
+              </div>
+            </th>
+            <td class="col-9">
 
               Subscribe to our newsletter and get the latest news of upcoming events and current developments in de.NBI
               Cloud Portal.
               <p><strong>{{dsgvo_text}}</strong></p>
-            </td>
-            <td>
-              <div><label
-                class="switch switch-label switch-outline-primary-alt">
-                <input type="checkbox" class="switch-input"
-                       [(ngModel)]="newsletterSubscribed"
-                       (change)="setNewsletterSubscription($event)">
-                <span class="switch-slider" data-checked="On" data-unchecked="Off"></span>
-                <!--<span class="switch-handle"></span>-->
-              </label></div>
             </td>
           </tr>
         </table>
