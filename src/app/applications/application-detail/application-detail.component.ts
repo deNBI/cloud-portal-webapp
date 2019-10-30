@@ -15,7 +15,7 @@ import {Subscription} from 'rxjs';
              templateUrl: './application-detail.component.html',
              styleUrls: ['./application-detail.component.scss'],
              providers: [FacilityService, UserService, ApplicationStatusService,
-               ApplicationsService]
+               ApplicationsService, CreditsService]
            })
 export class ApplicationDetailComponent extends ApplicationBaseClass implements OnInit {
   @Input() application: Application;
@@ -31,8 +31,7 @@ export class ApplicationDetailComponent extends ApplicationBaseClass implements 
   ) {
 
     super(userservice, applicationstatusservice, applicationsservice, facilityService);
-    this.creditsService = creditsService
-
+    this.creditsService = creditsService;
   }
 
   ngOnInit(): void {

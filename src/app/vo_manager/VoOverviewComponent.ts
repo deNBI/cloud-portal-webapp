@@ -15,6 +15,7 @@ import {VirtualMachine} from '../virtualmachines/virtualmachinemodels/virtualmac
 import {Volume} from '../virtualmachines/volumes/volume';
 import {FullLayoutComponent} from '../layouts/full-layout.component';
 import {SnapshotModel} from '../virtualmachines/snapshots/snapshot.model';
+import {createUTCDate} from 'ngx-bootstrap/chronos/create/date-from-array';
 
 /**
  * Vo Overview component.
@@ -172,7 +173,8 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
         const dateDayDifference: number = Math.ceil(moment().diff(dateCreated, 'days', true));
         const is_pi: boolean = group['is_pi'];
         const lifetime: number = group['lifetime'];
-
+        const currentCredits: number = Number(group['current_credits']);
+        const approvedCredits: number = Number(group['approved_credits']);
         const groupid: number = group['id'];
         const facility = group['compute_center'];
         let shortname: string = group['shortname'];
@@ -197,10 +199,14 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
           dateDayDifference,
           is_pi,
           true,
-          compute_center);
+          compute_center,
+          currentCredits,
+          approvedCredits
+          );
         newProject.Lifetime = lifetime;
         newProject.Status = group['status'];
         newProject.OpenStackProject = group['openstack_project'];
+
         let expirationDate: string = '';
         if (lifetime !== -1) {
           expirationDate = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format('DD.MM.YYYY');
