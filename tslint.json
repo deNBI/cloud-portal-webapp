@@ -63,7 +63,6 @@
 
     "try-catch-first":true,
    // "newspaper-order":true,
-    "no-flag-args":true,
     "no-for-each-push":true,
    // "no-feature-envy":true,
     "no-map-without-usage":true,
@@ -105,7 +104,6 @@
         "no-unsafe-any": false,
         "no-unsafe-finally": true,
         "no-unused-expression": true,
-        //"no-use-before-declare": true,
         "promise-function-async": true,
         "radix": true,
         "restrict-plus-operands": true, // the plus operand should really only be used for strings and numbers
@@ -129,7 +127,6 @@
         "member-access": true,
         "member-ordering": [true, { "order": "fields-first" }],
         "new-parens": true,
-        "no-commented-out-code": true,
         "no-complex-conditionals": true,
         "no-construct": true,
         "no-default-export": true,
@@ -223,7 +220,6 @@
     "no-switch-case-fall-through": true,
     "no-trailing-whitespace": true,
     "no-unused-expression": true,
-    "no-use-before-declare": true,
     "no-var-keyword": true,
     "object-literal-sort-keys": false,
     "one-line": [

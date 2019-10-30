@@ -10,6 +10,9 @@ export interface IBiocondaTool {
   build: string
 }
 
+/**
+ * Bioconda component.
+ */
 @Component({
              selector: 'app-bioconda',
              templateUrl: 'bioconda.component.html',
@@ -52,7 +55,7 @@ export class BiocondaComponent implements OnInit {
   constructor(private condaService: BiocondaService) {
   }
 
-  pageChanged(event): void {
+  pageChanged(event: any): void {
     this.getAllTools(event.page);
   }
 
@@ -70,7 +73,7 @@ export class BiocondaComponent implements OnInit {
           return this.condaService.getAllTools(1, this.filterToolName, this.filterToolVersion, this.filterToolBuild)
 
         }))
-      .subscribe(res => {
+      .subscribe((res: any) => {
         this.setAllTools(res);
 
       });
@@ -86,7 +89,7 @@ export class BiocondaComponent implements OnInit {
           return this.condaService.getAllTools(1, this.filterToolName, this.filterToolVersion, this.filterToolBuild)
 
         }))
-      .subscribe(res => {
+      .subscribe((res: any) => {
         this.setAllTools(res);
 
       });
@@ -100,7 +103,7 @@ export class BiocondaComponent implements OnInit {
           this.filterToolBuild = filterToolBuild;
 
           return this.condaService.getAllTools(1, this.filterToolName, this.filterToolVersion, this.filterToolBuild)
-        })).subscribe(res => {
+        })).subscribe((res: any) => {
       this.setAllTools(res);
 
     });
@@ -110,7 +113,7 @@ export class BiocondaComponent implements OnInit {
   getAllTools(page: number): void {
     this.isSearching = true;
     this.condaService.getAllTools(page, this.filterToolName, this.filterToolVersion, this.filterToolBuild).subscribe(
-      res => {
+      (res: any) => {
         this.all_tools = [];
 
         for (const line of res['packages']) {
@@ -131,7 +134,7 @@ export class BiocondaComponent implements OnInit {
       });
   }
 
-  setAllTools(res): void {
+  setAllTools(res: any): void {
     this.isSearching = true;
 
     this.all_tools = [];

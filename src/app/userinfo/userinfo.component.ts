@@ -6,17 +6,15 @@ import {UserService} from '../api-connector/user.service';
 import {GroupService} from '../api-connector/group.service';
 import {IResponseTemplate} from '../api-connector/response-template';
 import {forkJoin} from 'rxjs/index';
-import {TitleHeadbarComponent} from '../shared/title-headbar.component';
-
 
 /**
  * UserInformation component.
  */
 @Component({
-  selector: 'app-userinfo',
-  templateUrl: 'userinfo.component.html',
-  providers: [GroupService, UserService, ApiSettings, KeyService]
-})
+             selector: 'app-userinfo',
+             templateUrl: 'userinfo.component.html',
+             providers: [GroupService, UserService, ApiSettings, KeyService]
+           })
 export class UserInfoComponent implements OnInit {
   /**
    * Information of the logged in User
@@ -60,8 +58,8 @@ export class UserInfoComponent implements OnInit {
   /**
    * Text refering to newsletter registration
    */
-  dsgvo_text: string = 'By activating this option, you agree that your preferred e-mail address may be used for the newsletter. You will receive the newsletter until you deactivate the option in the settings again.';
-
+  dsgvo_text: string = 'By activating this option, you agree that your preferred e-mail address may be used for the newsletter. ' +
+    'You will receive the newsletter until you deactivate the option in the settings again.';
 
   constructor(private groupService: GroupService, private userService: UserService, private keyService: KeyService) {
   }
@@ -87,7 +85,7 @@ export class UserInfoComponent implements OnInit {
 
   isFreemiumActive(): void {
     this.groupService.isFreemiumActive().subscribe((result: IResponseTemplate) => {
-      this.freemiumActive = <boolean><Boolean> result.value;
+      this.freemiumActive = <boolean><Boolean>result.value;
 
     });
   }
@@ -111,7 +109,7 @@ export class UserInfoComponent implements OnInit {
   getUserinfo(): void {
     this.userService.getUserInfo().subscribe((userinfo: any) => {
       this.userInfo = new Userinfo(userinfo);
-      this.title = this.title.concat(': ', this.userInfo.FirstName, ' ', this.userInfo.LastName ) ;
+      this.title = this.title.concat(': ', this.userInfo.FirstName, ' ', this.userInfo.LastName);
 
       forkJoin(
         this.userService.getNewsletterSubscription(),
@@ -128,7 +126,7 @@ export class UserInfoComponent implements OnInit {
   }
 
   isUserSimpleVmMember(): void {
-    this.groupService.getSimpleVmByUser().subscribe(result => {
+    this.groupService.getSimpleVmByUser().subscribe((result: any) => {
       if (result.length > 0) {
         this.isProjectMember = true
       } else {

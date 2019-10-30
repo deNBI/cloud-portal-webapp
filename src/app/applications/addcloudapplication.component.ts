@@ -6,7 +6,7 @@ import {FlavorService} from '../api-connector/flavor.service';
 import {Flavor} from '../virtualmachines/virtualmachinemodels/flavor';
 import {FlavorType} from '../virtualmachines/virtualmachinemodels/flavorType';
 import {environment} from '../../environments/environment';
-import {ApplicationBaseClass} from 'app/shared/shared_modules/baseClass/application-base-class';
+import {ApplicationBaseClassComponent} from 'app/shared/shared_modules/baseClass/application-base-class.component';
 import {EdamOntologyTerm} from './edam-ontology-term';
 import {AutocompleteComponent} from 'angular-ng-autocomplete';
 import {ApplicationDissemination} from './application-dissemination';
@@ -22,7 +22,7 @@ import {FullLayoutComponent} from '../layouts/full-layout.component';
              styleUrls: ['addcloudapplication.component.css']
            })
 
-export class AddcloudapplicationComponent extends ApplicationBaseClass implements OnInit {
+export class AddcloudapplicationComponent extends ApplicationBaseClassComponent implements OnInit {
 
   title: string = 'New OpenStack Application';
   /**

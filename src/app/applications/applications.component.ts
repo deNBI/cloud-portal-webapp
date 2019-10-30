@@ -10,20 +10,20 @@ import {FacilityService} from '../api-connector/facility.service';
 import {Flavor} from '../virtualmachines/virtualmachinemodels/flavor';
 import {FlavorService} from '../api-connector/flavor.service';
 import {Client} from '../virtualmachines/clients/client.model';
-import {ApplicationBaseClass} from '../shared/shared_modules/baseClass/application-base-class';
+import {ApplicationBaseClassComponent} from '../shared/shared_modules/baseClass/application-base-class.component';
 import {ComputecenterComponent} from '../projectmanagement/computecenter.component';
 import {IResponseTemplate} from '../api-connector/response-template';
-import {forkJoin} from 'rxjs/index';
 
 /**
  * Application Overview component.
  */
 @Component({
+             selector: 'app-applications-list',
              templateUrl: 'applications.component.html',
              providers: [FacilityService, VoService, UserService, GroupService, ApplicationStatusService,
                ApplicationsService, ApiSettings, FlavorService]
            })
-export class ApplicationsComponent extends ApplicationBaseClass implements OnInit {
+export class ApplicationsComponent extends ApplicationBaseClassComponent implements OnInit {
 
   title: string = 'Application Overview';
 
@@ -136,7 +136,7 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
 
     if (this.is_vo_admin) {
 
-      this.applicationsservice.getAllApplications().subscribe(res => {
+      this.applicationsservice.getAllApplications().subscribe((res: any) => {
         if (Object.keys(res).length === 0) {
           this.isLoaded_userApplication = true;
         }
@@ -174,7 +174,7 @@ export class ApplicationsComponent extends ApplicationBaseClass implements OnIni
 
     if (app.OpenStackProject) {
       if (!app.ComputeCenter) {
-        this.applicationsservice.approveRenewal(app.Id.toString()).subscribe(result => {
+        this.applicationsservice.approveRenewal(app.Id.toString()).subscribe((result: any) => {
           if (result['Error']) {
             this.extension_status = 2;
             this.updateNotificationModal('Failed', 'Failed to approve the application modification.', true, 'danger');

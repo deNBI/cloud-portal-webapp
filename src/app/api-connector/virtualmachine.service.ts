@@ -132,7 +132,7 @@ export class VirtualmachineService {
   getVmsFromFacilitiesOfLoggedUser(facility_id: string | number, page: number, filter_name?: string, filter_project?: string,
                                    filter_status?: string[],
                                    filter_elixir_id?: string,
-                                   filter_created_at?: string, filter_stopped_at?: string,): Observable<VirtualMachine[]> {
+                                   filter_created_at?: string, filter_stopped_at?: string): Observable<VirtualMachine[]> {
     let params: HttpParams = new HttpParams().set('page', page.toString());
     if (filter_name) {
       params = params.set('filter_name', filter_name);

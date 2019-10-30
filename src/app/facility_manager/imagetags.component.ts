@@ -7,6 +7,7 @@ import {forkJoin} from 'rxjs';
  * ImageTag component.
  */
 @Component({
+             selector: 'app-image-tags',
              templateUrl: 'imageTag.component.html',
              providers: [ImageService]
            })
@@ -26,7 +27,7 @@ export class ImageTagComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    forkJoin(this.imageService.getImageTags(), this.imageService.getImageLogos()).subscribe(res => {
+    forkJoin(this.imageService.getImageTags(), this.imageService.getImageLogos()).subscribe((res: any) => {
       this.imageTags = res[0];
       this.imageLogos = res[1];
       this.isLoaded = true;
@@ -39,6 +40,7 @@ export class ImageTagComponent implements OnInit {
         return true;
       }
     }
+
     return false;
   }
 

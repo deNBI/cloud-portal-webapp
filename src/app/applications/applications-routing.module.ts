@@ -46,7 +46,7 @@ const routes: Routes = [
     data: {
       title: 'Application Validation'
     }
-  },
+  }
 
 ];
 

@@ -37,7 +37,6 @@ export class ProjectMember {
         this._IsPi = value;
     }
 
-
     get Id(): number | string {
         return this._Id;
     }

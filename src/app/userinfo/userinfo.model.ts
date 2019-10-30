@@ -10,7 +10,6 @@ export class Userinfo {
   private _Email: string;
   private _PendingEmails: string[];
 
-
   constructor(userInfo: any) {
     this._Id = userInfo.Id;
     this._FirstName = userInfo.FirstName;

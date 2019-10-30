@@ -9,8 +9,7 @@ import { Directive, HostListener } from '@angular/core';
 export class AsideToggleDirective {
   constructor() { }
 
-  @HostListener('click', ['$event'])
-  toggleOpen($event: any) {
+  @HostListener('click', ['$event']) toggleOpen($event: any) {
     $event.preventDefault();
     document.querySelector('body').classList.toggle('aside-menu-hidden');
   }

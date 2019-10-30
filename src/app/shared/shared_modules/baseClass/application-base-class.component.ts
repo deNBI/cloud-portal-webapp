@@ -17,10 +17,11 @@ import {NgForm} from '@angular/forms';
  * Application base component..
  */
 @Component({
+             selector: 'app-base',
              template: '',
              providers: [FacilityService, ApplicationsService, FlavorService]
            })
-export class ApplicationBaseClass extends AbstractBaseClasse {
+export class ApplicationBaseClassComponent extends AbstractBaseClasse {
 
   /**
    * If all Applications are loaded, important for the loader.
@@ -132,7 +133,7 @@ export class ApplicationBaseClass extends AbstractBaseClasse {
    * @returns {number}
    */
   getIdByStatus(name: string): number {
-    const s: number = -1;
+    const dummy: number = -1;
 
     for (const status of this.application_status) {
       if (status.application_status_name === name) {
@@ -140,7 +141,7 @@ export class ApplicationBaseClass extends AbstractBaseClasse {
       }
     }
 
-    return s;
+    return dummy;
   }
 
   /**
@@ -186,11 +187,12 @@ export class ApplicationBaseClass extends AbstractBaseClasse {
       }
 
     }
+
     return false
 
   }
 
-  setNewApplication(aj): Application {
+  setNewApplication(aj: any): Application {
 
     const newApp: Application = new Application();
     newApp.Id = aj['project_application_id'];
@@ -283,7 +285,7 @@ export class ApplicationBaseClass extends AbstractBaseClasse {
     return newApp
   }
 
-  setNewApplications(res): Application[] {
+  setNewApplications(res: any): Application[] {
     const newApplications: Application[] = [];
 
     for (const key in res) {
@@ -453,6 +455,7 @@ export class ApplicationBaseClass extends AbstractBaseClasse {
         return status.application_status_name;
       }
     }
+
     return dummy;
   }
 
