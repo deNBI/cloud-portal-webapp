@@ -43,7 +43,8 @@ export class ApplicationOverviewPage {
   static async approveSimpleVm(application_name: string): Promise<any> {
     await Util.waitForPage('applications');
     await Util.clickElementById(this.APPROVAL_PREFIX + application_name);
-    return await Util.waitForTextPresenceInElementById(this.NOTIFICATION_MESSAGE, this.SIMPLE_VM_CREATED);
+
+    return await Util.waitForTextPresenceInElementById(this.NOTIFICATION_MESSAGE, this.SIMPLE_VM_CREATED, 10000);
   }
 
   static async approveCloudApplication(application_name: string): Promise<any> {
@@ -51,6 +52,7 @@ export class ApplicationOverviewPage {
     await Util.waitForPresenceOfElementById(this.COMPUTE_CENTER_SELECTION_PREFIX + application_name);
     await Util.clickOptionOfSelect(this.DEFAULT_DENBI_COMPUTE_CENTER, this.COMPUTE_CENTER_SELECTION_PREFIX + application_name);
     await Util.clickElementById(this.APPROVAL_PREFIX + application_name);
+
     return await Util.waitForTextPresenceInElementById(this.NOTIFICATION_MESSAGE, this.CLOUD_PROJECT_CREATED);
   }
 }

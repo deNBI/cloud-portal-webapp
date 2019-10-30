@@ -101,7 +101,8 @@ describe('Virtual Machine Tests', async function () {
     await vmOverviewPage.createSnapshotOfBasicVM();
     await SnapshotOverviewPage.navigateToSnapshotOverview();
     const isPresent: boolean = await SnapshotOverviewPage.isBasicSnapshotPresent();
-    expect(isPresent).toBeTruthy();
+    const isActive: boolean = await SnapshotOverviewPage.isBasicSnapshotActive();
+    expect(isPresent && isActive).toBeTruthy();
   });
 
   it('should delete the snapshot of the basic vm', async function() {
@@ -132,7 +133,7 @@ describe('Virtual Machine Tests', async function () {
 
   it('should delete the manually created volume', async function () {
     console.log('Deleting the volume created by attachment');
-    VolumeOverviewPage.navigateToVolumeOverview();
+    await VolumeOverviewPage.navigateToVolumeOverview();
     await VolumeOverviewPage.deleteVolume();
     const deleted: boolean = await VolumeOverviewPage.isVolumeDeleted();
     expect(deleted).toBeTruthy();
