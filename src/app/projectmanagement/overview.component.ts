@@ -233,7 +233,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
     let date1: Date = new Date(Number(approval.substring(0, 4)), Number(approval.substring(5, 7)) - 1, Number(approval.substring(8)));
     const month: number = date1.getMonth();
     if ((month + months) > 11) {
-      date1 = new Date(date1.getFullYear(), (month + months - 12), date1.getDate());
+      date1 = new Date(date1.getFullYear() + 1, (month + months - 12), date1.getDate());
     } else {
       date1.setMonth(date1.getMonth() + months);
     }
