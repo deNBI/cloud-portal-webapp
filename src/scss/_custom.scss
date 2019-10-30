@@ -44,6 +44,18 @@ $simplevmcolour: #00ADEF;
   margin: 15px;
 }
 
+.sidebar .nav .nav-item .nav-link {
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.sidebar .nav .nav-item {
+  width:100%;
+}
+
+
 .app-header .navbar-brand
 {
   width: 100%;
