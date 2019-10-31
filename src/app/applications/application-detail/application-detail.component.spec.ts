@@ -1,6 +1,7 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ApplicationDetailComponent } from './application-detail.component';
+import {ApplicationDetailComponent} from './application-detail.component';
+// tslint:disable
 
 describe('ApplicationDetailComponent', () => {
   let component: ApplicationDetailComponent;
@@ -8,9 +9,9 @@ describe('ApplicationDetailComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ApplicationDetailComponent ]
-    })
-    .compileComponents();
+                                     declarations: [ApplicationDetailComponent]
+                                   })
+      .compileComponents();
   }));
 
   beforeEach(() => {

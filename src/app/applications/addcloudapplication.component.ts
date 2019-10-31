@@ -50,12 +50,6 @@ export class AddcloudapplicationComponent extends ApplicationBaseClassComponent 
   public dissemination_information_open: boolean = true;
 
   /**
-   * Boolean indicating whether platform selection accordion is open or not
-   * @type {boolean}
-   */
-  public dissemination_platforms_open: boolean = false;
-
-  /**
    * List of all collapse booleans.
    */
   public collapseList: boolean[];
@@ -116,7 +110,9 @@ export class AddcloudapplicationComponent extends ApplicationBaseClassComponent 
    * Gets a list of all available types of flavors from the flavorservice and uses them in the function setListOfTypes
    */
   getListOfTypes(): void {
-    this.flavorservice.getListOfTypesAvailable().subscribe((types: FlavorType[]) => this.setListOfTypes(types));
+    this.flavorservice.getListOfTypesAvailable().subscribe((types: FlavorType[]) => {
+      this.setListOfTypes(types)
+    });
   }
 
   /**
@@ -150,7 +146,7 @@ export class AddcloudapplicationComponent extends ApplicationBaseClassComponent 
 
   }
 
-  selectEvent(item) {
+  selectEvent(item: any): void {
     if (this.selected_ontology_terms.indexOf(item) === -1) {
       this.selected_ontology_terms.push(item);
     }
@@ -186,9 +182,10 @@ export class AddcloudapplicationComponent extends ApplicationBaseClassComponent 
         }
       }
       this.applicationsservice.addNewApplication(values).toPromise()
-        .then(application => {
+        .then((application: any) => {
           if (this.project_application_report_allowed) {
-            this.applicationsservice.setApplicationDissemination(application['project_application_id'], this.application_dissemination).subscribe()
+            this.applicationsservice.setApplicationDissemination(application['project_application_id'],
+                                                                 this.application_dissemination).subscribe()
 
           }
           this.new_application_id = application['project_application_id'];

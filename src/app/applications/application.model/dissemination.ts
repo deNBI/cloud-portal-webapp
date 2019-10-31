@@ -1,3 +1,6 @@
+/**
+ * Dissemination class.
+ */
 export class Dissemination {
 
   private _platform_newsletter: boolean;
@@ -16,7 +19,12 @@ export class Dissemination {
   private _allowed_platforms: string[] = [];
   private _allowed_informations: string[] = [];
 
-  constructor(platform_newsletter: boolean, platform_landing_page: boolean, platform_portal_news: boolean, platform_twitter: boolean, information_title: string, information_resources: boolean, information_runtime: boolean, information_pi_name: boolean, information_institution: boolean, information_workgroup: boolean, information_project_type: boolean, information_lifetime: boolean, information_project_affiliation: boolean) {
+  constructor(platform_newsletter: boolean, platform_landing_page: boolean,
+              platform_portal_news: boolean, platform_twitter: boolean,
+              information_title: string, information_resources: boolean,
+              information_runtime: boolean, information_pi_name: boolean,
+              information_institution: boolean, information_workgroup: boolean,
+              information_project_type: boolean, information_lifetime: boolean, information_project_affiliation: boolean) {
     this._platform_newsletter = platform_newsletter;
     this._platform_landing_page = platform_landing_page;
     this._platform_portal_news = platform_portal_news;

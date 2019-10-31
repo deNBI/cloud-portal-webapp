@@ -76,7 +76,6 @@ export class UserService {
     })
   }
 
-
   getOnlyLoggedUserWithRedirect(redirect?: string): Observable<any> {
     if (redirect && redirect !== '/userinfo' && redirect !== 'redirect') {
       const params: HttpParams = new HttpParams().set('redirect_after_login', redirect);
