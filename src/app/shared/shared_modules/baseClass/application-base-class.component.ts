@@ -489,7 +489,7 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
           }
         }
         default: {
-          return (`${this.constantStrings[key]}${val}`;
+          return (`${this.constantStrings[key]}${val}`);
         }
       }
     }
