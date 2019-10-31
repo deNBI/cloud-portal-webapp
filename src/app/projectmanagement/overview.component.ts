@@ -690,6 +690,18 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
       });
   }
 
+  checkIfTypeGotSimpleVmFlavor(type: FlavorType): boolean {
+    for (const flav of this.flavorList) {
+      if (flav.type.shortcut === type.shortcut && flav.simple_vm) {
+        return true
+      }
+
+    }
+
+    return false
+
+  }
+
   /**
    * Delete an application.
    * @param application_id

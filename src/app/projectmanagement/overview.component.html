@@ -614,7 +614,8 @@
           These numbers <strong>will not be added</strong> to your current numbers, but
           will <strong>replace them</strong>.
           <br><br>
-          <strong>Choosing 0 additional months will only change the requested resources and will not prolong your project lifetime.</strong>
+          <strong>Choosing 0 additional months will only change the requested resources and will not prolong your
+            project lifetime.</strong>
         </div>
         <form id="application_form" #f="ngForm" (ngSubmit)="onSubmit(f)"
               class="form-horizontal">
@@ -893,10 +894,10 @@
           <p *ngIf="f.controls.project_application_renewal_volume_limit?.invalid">
             - Storage Limit missing
           </p>
-          <p *ngIf="f.controls.project_application_renewal_object_storage?.invalid" >
+          <p *ngIf="f.controls.project_application_renewal_object_storage?.invalid">
             - Object Storage missing
           </p>
-          <p *ngIf="!min_vm" >
+          <p *ngIf="!min_vm">
             - Select at least one Flavor
           </p>
         </div>
