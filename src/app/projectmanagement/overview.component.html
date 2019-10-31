@@ -707,6 +707,7 @@
                                name="project_application_renewal_{{fl.name}}"
                                type="number" min="0" step="1"
                                placeholder="e.g 1"
+                               (ngModelChange)="onChangeFlavor($event)"
                                [ngModel]="project_application?.CurrentFlavors[fl.name]?.counter"
                                #name="ngModel"
                                appMinAmount="0" appIntegerOrNull
@@ -880,10 +881,24 @@
 
 
         </form>
-        <div *ngIf="f.invalid" class=" form-group row alert alert-warning">
-          Some required fields are incorrect or not filled in yet.
-          Please check if all required (*) fields are filled in correctly.
-
+        <div *ngIf="f.invalid" class="alert alert-warning" role="alert">
+          <p>Some required fields are incorrect or not filled in yet.
+            Please check if all required (*) fields are filled in correctly.</p>
+          <p *ngIf="f.controls.project_application_renewal_lifetime?.invalid">
+            - Lifetime missing
+          </p>
+          <p *ngIf="f.controls.project_application_renewal_volume_counter?.invalid">
+            - Number of storage volumes missing
+          </p>
+          <p *ngIf="f.controls.project_application_renewal_volume_limit?.invalid">
+            - Storage Limit missing
+          </p>
+          <p *ngIf="f.controls.project_application_renewal_object_storage?.invalid" >
+            - Object Storage missing
+          </p>
+          <p *ngIf="!min_vm" >
+            - Select at least one Flavor
+          </p>
         </div>
 
 
