@@ -87,7 +87,7 @@ export class ApplicationsService {
   }
 
   addEdamOntologyTerms(application_id: number | string, data: EdamOntologyTerm[]): Observable<any> {
-    const params = {edam_ontology_terms: data};
+    const params: any = {edam_ontology_terms: data};
 
     return this.http.post(`${ApiSettings.getApiBaseURL()}project_applications/${application_id}/edam_terms/`, params, {
       headers: header,

@@ -1,4 +1,4 @@
-import {Component, ElementRef, Input, OnInit} from '@angular/core';
+import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {Project} from './project.model';
 import {ProjectMember} from './project_member.model'
 import {environment} from '../../environments/environment'
@@ -13,7 +13,7 @@ import {Userinfo} from '../userinfo/userinfo.model';
 import {forkJoin, Observable} from 'rxjs';
 import {ActivatedRoute} from '@angular/router';
 import {Application} from '../applications/application.model/application.model';
-import {ApplicationBaseClass} from '../shared/shared_modules/baseClass/application-base-class';
+import {ApplicationBaseClassComponent} from '../shared/shared_modules/baseClass/application-base-class.component';
 import {ApplicationStatusService} from '../api-connector/application-status.service';
 import {FacilityService} from '../api-connector/facility.service';
 import {ApplicationsService} from '../api-connector/applications.service';
@@ -33,12 +33,20 @@ import {FlavorService} from '../api-connector/flavor.service';
              providers: [FlavorService, ApplicationStatusService, ApplicationsService,
                FacilityService, VoService, UserService, GroupService, ApiSettings]
            })
-export class OverviewComponent extends ApplicationBaseClass implements OnInit {
+export class OverviewComponent extends ApplicationBaseClassComponent implements OnInit {
 
   @Input() invitation_group_post: string = environment.invitation_group_post;
   @Input() voRegistrationLink: string = environment.voRegistrationLink;
   @Input() invitation_group_pre: string = environment.invitation_group_pre;
   @Input() wiki_group_invitation: string = environment.wiki_group_invitations;
+
+  @ViewChild(NgForm) simpleVmForm: NgForm;
+
+  /**
+   * If at least 1 flavor is selected.
+   * @type {boolean}
+   */
+  public min_vm: boolean = true;
 
   project_id: string;
   application_id: string;
@@ -122,7 +130,7 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit {
       if (this.project_application) {
         this.setLifetime();
 
-        this.applicationsservice.getApplicationPerunId(this.application_id).subscribe(id => {
+        this.applicationsservice.getApplicationPerunId(this.application_id).subscribe((id: any) => {
           if (id['perun_id']) {
             this.project_id = id['perun_id'];
 
@@ -147,11 +155,10 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit {
     for (const key in this.project_application.CurrentFlavors) {
       const flavor: any = this.project_application.CurrentFlavors[key];
       if (flavor != null) {
-        const flav: Flavor = this.flavorList.find(function (fl: Flavor) {
+        const flav: Flavor = this.flavorList.find(function (fl: Flavor): boolean {
           return fl.name === key;
 
-        })
-        console.log(flav);
+        });
         this.newFlavors[key] = {counter: flavor.counter, flavor: flav};
         this.calculateRamCores()
 
@@ -233,7 +240,7 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit {
     let date1: Date = new Date(Number(approval.substring(0, 4)), Number(approval.substring(5, 7)) - 1, Number(approval.substring(8)));
     const month: number = date1.getMonth();
     if ((month + months) > 11) {
-      date1 = new Date(date1.getFullYear(), (month + months - 12), date1.getDate());
+      date1 = new Date(date1.getFullYear() + 1, (month + months - 12), date1.getDate());
     } else {
       date1.setMonth(date1.getMonth() + months);
     }
@@ -243,7 +250,8 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit {
 
   setLifetime(): void {
 
-    this.life_time_string = `${this.project_application.DateApproved} - ${this.getEndDate(this.project_application.Lifetime, this.project_application.DateApproved)}`;
+    // tslint:disable-next-line:max-line-length
+    this.life_time_string = `${this.project_application.DateApproved} -  ${this.getEndDate(this.project_application.Lifetime, this.project_application.DateApproved)}`;
 
   }
 
@@ -256,7 +264,7 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit {
 
   ngOnInit(): void {
 
-    this.activatedRoute.params.subscribe(paramsId => {
+    this.activatedRoute.params.subscribe((paramsId: any) => {
       this.isLoaded = false;
       this.project = null;
       this.project_application = null;
@@ -278,7 +286,8 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit {
    */
   getFacilityProject(): void {
 
-    if (!this.project_application.ComputeCenter && this.project_application.Status !== this.application_states.SUBMITTED && this.project_application.Status !== this.application_states.TERMINATED) {
+    if (!this.project_application.ComputeCenter && this.project_application.Status !== this.application_states.SUBMITTED
+      && this.project_application.Status !== this.application_states.TERMINATED) {
       this.groupService.getFacilityByGroup(this.project_application.PerunId.toString()).subscribe((res: object) => {
 
         const login: string = res['Login'];
@@ -438,7 +447,8 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit {
   setAllMembersChecked(): void {
     if (!this.allSet) {
       this.project_members.forEach((member: ProjectMember) => {
-        if (!this.isMemberChecked(parseInt(member.MemberId.toString(), 10)) && this.userinfo.MemberId.toString() !== member.MemberId.toString()) {
+        if (!this.isMemberChecked(parseInt(member.MemberId.toString(), 10))
+          && this.userinfo.MemberId.toString() !== member.MemberId.toString()) {
           this.checked_member_list.push(parseInt(member.MemberId.toString(), 10));
         }
       });
@@ -689,6 +699,7 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit {
       () => {
         this.updateNotificationModal('Success', 'The application has been successfully removed', true, 'success');
         this.fullLayout.getGroupsEnumeration();
+        // tslint:disable:no-floating-promises
         this.router.navigate(['/userinfo'])
       },
       () => {
@@ -699,5 +710,27 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit {
 
   public comingSoon(): void {
     alert('This function will be implemented soon.')
+  }
+
+  onChangeFlavor(value: number): void {
+
+    this.checkIfMinVmIsSelected();
+  }
+
+  checkIfMinVmIsSelected(): void {
+    let nr_vm: number = 0;
+    for (const fl of this.flavorList) {
+      const control: string = `project_application_renewal_${fl.name}`;
+      if (control in this.simpleVmForm.controls) {
+        if (this.simpleVmForm.controls[control].value > 0) {
+          nr_vm += this.simpleVmForm.controls[control].value;
+        }
+      }
+    }
+    if (nr_vm > 0 || this.project_application.OpenStackProject) {
+      this.min_vm = true;
+    } else if (nr_vm === 0) {
+      this.min_vm = false;
+    }
   }
 }

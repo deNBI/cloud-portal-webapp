@@ -186,16 +186,6 @@ export class GroupService {
     })
   }
 
-  setdeNBIDirectAcces(group_id: number, value: boolean): Observable<any> {
-
-    const params: HttpParams = new HttpParams().set('value', value.toString());
-
-    return this.http.post(`${ApiSettings.getApiBaseURL()}projects/${group_id}/attributes/directAccess/`, params, {
-      withCredentials: true,
-      headers: header
-    })
-  }
-
   setName(groupid: string, name: string): Observable<any> {
     const params: HttpParams = new HttpParams().set('name', name);
 

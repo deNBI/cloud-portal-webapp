@@ -97,10 +97,10 @@
         </div>
         <div class="card-body">
           <div class="btn-group col-12">
-            <button
-              (click)="application_details_visible=!application_details_visible;getFacilityProject();"
-              type="button"
-              class="btn btn-info" style="margin-bottom:5px;margin-right:5px">
+            <button id="show_information_btn"
+                    (click)="application_details_visible=!application_details_visible;getFacilityProject();"
+                    type="button"
+                    class="btn btn-info" style="margin-bottom:5px;margin-right:5px">
               <i class="fa fa-info-circle"></i>&nbsp;
               <span
                 [hidden]="application_details_visible">Show</span><span
@@ -613,6 +613,8 @@
           this request will be the numbers you will actually get.
           These numbers <strong>will not be added</strong> to your current numbers, but
           will <strong>replace them</strong>.
+          <br><br>
+          <strong>Choosing 0 additional months will only change the requested resources and will not prolong your project lifetime.</strong>
         </div>
         <form id="application_form" #f="ngForm" (ngSubmit)="onSubmit(f)"
               class="form-horizontal">
@@ -705,6 +707,7 @@
                                name="project_application_renewal_{{fl.name}}"
                                type="number" min="0" step="1"
                                placeholder="e.g 1"
+                               (ngModelChange)="onChangeFlavor($event)"
                                [ngModel]="project_application?.CurrentFlavors[fl.name]?.counter"
                                #name="ngModel"
                                appMinAmount="0" appIntegerOrNull
@@ -878,10 +881,24 @@
 
 
         </form>
-        <div *ngIf="f.invalid" class=" form-group row alert alert-warning">
-          Some required fields are incorrect or not filled in yet.
-          Please check if all required (*) fields are filled in correctly.
-
+        <div *ngIf="f.invalid" class="alert alert-warning" role="alert">
+          <p>Some required fields are incorrect or not filled in yet.
+            Please check if all required (*) fields are filled in correctly.</p>
+          <p *ngIf="f.controls.project_application_renewal_lifetime?.invalid">
+            - Lifetime missing
+          </p>
+          <p *ngIf="f.controls.project_application_renewal_volume_counter?.invalid">
+            - Number of storage volumes missing
+          </p>
+          <p *ngIf="f.controls.project_application_renewal_volume_limit?.invalid">
+            - Storage Limit missing
+          </p>
+          <p *ngIf="f.controls.project_application_renewal_object_storage?.invalid" >
+            - Object Storage missing
+          </p>
+          <p *ngIf="!min_vm" >
+            - Select at least one Flavor
+          </p>
         </div>
 
 

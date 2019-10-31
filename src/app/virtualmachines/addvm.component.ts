@@ -69,7 +69,6 @@ export class VirtualMachineComponent implements OnInit {
 
   vm_name: string;
 
-
   started_machine: boolean = false;
 
   conda_img_path: string = `static/webapp/assets/img/conda_logo.svg`;
@@ -230,7 +229,7 @@ export class VirtualMachineComponent implements OnInit {
 
     this.imageService.getImages(project_id).subscribe((images: Image[]) => {
       this.images = images;
-      this.images.sort((x, y) => Number(x.is_snapshot) - Number(y.is_snapshot));
+      this.images.sort((x_cord: any, y_cord: any) => Number(x_cord.is_snapshot) - Number(y_cord.is_snapshot));
     });
   }
 
@@ -360,6 +359,7 @@ export class VirtualMachineComponent implements OnInit {
   startVM(flavor: string, image: string, servername: string, project: string, projectid: string | number): void {
     this.create_error = null;
     this.vm_name = null;
+    // tslint:disable-next-line:no-complex-conditionals
     if (image && flavor && servername && project && (this.diskspace <= 0 || this.diskspace > 0 && this.volumeName.length > 0)) {
       this.create_error = null;
       this.started_machine = true;
@@ -395,6 +395,12 @@ export class VirtualMachineComponent implements OnInit {
             }
             this.check_status_loop(newVm.openstackid);
 
+          } else if (newVm.status === 'mutex_locked') {
+            setTimeout(
+              () => {
+                this.startVM(flavor, image, servername, project, projectid)
+              },
+              1000)
           } else if (newVm.status) {
             this.progress_bar_status = this.CREATING_STATUS;
             this.newVm = newVm;
@@ -471,10 +477,10 @@ export class VirtualMachineComponent implements OnInit {
    * Gets all groups of the user and his key.
    */
   initializeData(): void {
-    forkJoin(this.groupService.getSimpleVmByUser(), this.userservice.getUserInfo()).subscribe(result => {
+    forkJoin(this.groupService.getSimpleVmByUser(), this.userservice.getUserInfo()).subscribe((result: any) => {
       this.userinfo = new Userinfo(result[1]);
       this.validatePublicKey();
-      const membergroups = result[0];
+      const membergroups: any = result[0];
       for (const project of membergroups) {
         this.projects.push(project);
 
@@ -490,7 +496,7 @@ export class VirtualMachineComponent implements OnInit {
     this.images = [];
     this.selectedImage = undefined;
     this.selectedFlavor = undefined;
-    this.groupService.getGroupResources(this.selectedProject[1].toString()).subscribe(res => {
+    this.groupService.getGroupResources(this.selectedProject[1].toString()).subscribe((res: any) => {
       this.selectedProjectVmsMax = res['number_vms'];
       this.selectedProjectVmsUsed = res['used_vms'];
       this.selectedProjectDiskspaceMax = res['max_volume_storage'];

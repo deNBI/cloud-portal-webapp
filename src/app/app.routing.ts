@@ -5,7 +5,7 @@ import {ConsentInfoComponent} from './consent-info.component';
 import {FullLayoutComponent} from './layouts/full-layout.component';
 import {MemberGuardService} from './member-guard.service';
 import {RegistrationInfoComponent} from './registration-info.component';
-import {ValidationApplicationComponent} from "./validation-application/validation-application.component";
+import {ValidationApplicationComponent} from './validation-application/validation-application.component';
 
 export const routes: Routes = [
   {

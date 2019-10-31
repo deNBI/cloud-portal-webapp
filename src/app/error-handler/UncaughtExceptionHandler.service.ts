@@ -49,7 +49,7 @@ JL().setOptions({
 /**
  * ErrorHandler Class implementing JSNLog
  */
-export class UncaughtExceptionHandler implements ErrorHandler{
+export class UncaughtExceptionHandler implements ErrorHandler {
 
   handleError(error: any): any {
     JL().fatalException('Uncaught Exception', error);

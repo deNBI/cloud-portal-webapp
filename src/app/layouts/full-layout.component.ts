@@ -6,7 +6,7 @@ import {UserService} from '../api-connector/user.service';
 import {GroupService} from '../api-connector/group.service';
 import {VoService} from '../api-connector/vo.service';
 import {IResponseTemplate} from '../api-connector/response-template';
-import {ApplicationBaseClass} from '../shared/shared_modules/baseClass/application-base-class';
+import {ApplicationBaseClassComponent} from '../shared/shared_modules/baseClass/application-base-class.component';
 import {ApplicationsService} from '../api-connector/applications.service';
 import {ApplicationStatusService} from '../api-connector/application-status.service';
 import {ProjectEnumeration} from '../projectmanagement/project-enumeration';
@@ -17,9 +17,16 @@ import {ProjectEnumeration} from '../projectmanagement/project-enumeration';
 @Component({
              selector: 'app-dashboard',
              templateUrl: './full-layout.component.html',
-             providers: [ApplicationsService, ApplicationStatusService, VoService, GroupService, UserService, FacilityService, ClientService, ApiSettings]
+             providers: [ApplicationsService,
+               ApplicationStatusService,
+               VoService,
+               GroupService,
+               UserService,
+               FacilityService,
+               ClientService,
+               ApiSettings]
            })
-export class FullLayoutComponent extends ApplicationBaseClass implements OnInit {
+export class FullLayoutComponent extends ApplicationBaseClassComponent implements OnInit {
 
   public year: number = new Date().getFullYear();
   public disabled: boolean = false;
@@ -40,15 +47,15 @@ export class FullLayoutComponent extends ApplicationBaseClass implements OnInit 
 
   constructor(private voService: VoService, private groupService: GroupService, userservice: UserService,
               facilityService: FacilityService, applicationsservice: ApplicationsService,
-              applicationstatusservice: ApplicationStatusService,
+              applicationstatusservice: ApplicationStatusService
   ) {
     super(userservice, applicationstatusservice, applicationsservice, facilityService);
 
   }
 
-  componentAdded(e) {
+  componentAdded(event: any): void {
 
-    this.TITLE = e.title;
+    this.TITLE = event.title;
 
   }
 
@@ -56,18 +63,8 @@ export class FullLayoutComponent extends ApplicationBaseClass implements OnInit 
     return this.is_vo_admin;
   }
 
-  public toggled(open: boolean): void {
-    console.log('Dropdown is now: ', open);
-  }
-
-  public toggleDropdown($event: MouseEvent): void {
-    $event.preventDefault();
-    $event.stopPropagation();
-    this.status.isopen = !this.status.isopen;
-  }
-
   public get_is_facility_manager(): void {
-    this.facilityService.getManagerFacilities().subscribe(result => {
+    this.facilityService.getManagerFacilities().subscribe((result: any) => {
       if (result.length > 0) {
         this.is_facility_manager = true
       }
@@ -75,31 +72,15 @@ export class FullLayoutComponent extends ApplicationBaseClass implements OnInit 
   }
 
   is_vm_project_member(): void {
-    this.groupService.getSimpleVmByUser().subscribe(result => {
+    this.groupService.getSimpleVmByUser().subscribe((result: any) => {
       if (result.length > 0) {
         this.vm_project_member = true
       }
     })
   }
 
-  toggle_new_application(): void {
-    if (this.navbar_state === 'closed') {
-      this.navbar_state = 'open'
-    } else {
-      this.navbar_state = 'closed'
-    }
-  }
-
-  toggle_overview(): void {
-    if (this.overview_state === 'closed') {
-      this.overview_state = 'open'
-    } else {
-      this.overview_state = 'closed'
-    }
-  }
-
   getGroupsEnumeration(): void {
-    this.groupService.getGroupsEnumeration().subscribe(res => {
+    this.groupService.getGroupsEnumeration().subscribe((res: ProjectEnumeration[]) => {
       this.project_enumeration = res;
     })
   }

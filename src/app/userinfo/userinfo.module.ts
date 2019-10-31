@@ -9,20 +9,23 @@ import {ModalModule} from 'ngx-bootstrap/modal';
 import {AlertModule} from 'ngx-bootstrap';
 import {PublicKeyModule} from '../shared/shared_modules/public-key/public-key.module';
 
+/**
+ * Userinfo module.
+ */
 @NgModule({
-    imports: [
-        PublicKeyModule,
-        UserInfoRoutingModule,
-        TabsModule,
-        CommonModule,
-        FormsModule, ModalModule.forRoot(),
-        AlertModule.forRoot()
-    ],
+            imports: [
+              PublicKeyModule,
+              UserInfoRoutingModule,
+              TabsModule,
+              CommonModule,
+              FormsModule, ModalModule.forRoot(),
+              AlertModule.forRoot()
+            ],
 
-    declarations: [
-        UserInfoComponent
-    ],
-    exports: [UserInfoComponent, UserInfoRoutingModule, TabsModule, CommonModule, FormsModule, ModalModule, AlertModule]
-})
+            declarations: [
+              UserInfoComponent
+            ],
+            exports: [UserInfoComponent, UserInfoRoutingModule, TabsModule, CommonModule, FormsModule, ModalModule, AlertModule]
+          })
 export class UserinfoModule {
 }

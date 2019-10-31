@@ -1,3 +1,41 @@
+##  (2019-10-31)
+
+
+#### Features
+
+* **Instance:**  if mutex locked wait 1 second ([7aaa5a3e](7aaa5a3e))
+* **Tests:** added dissemination test ([3b7c9c9d](3b7c9c9d))
+* **tests:** added edam test ([c1aa6fb5](c1aa6fb5))
+
+#### Bug Fixes
+
+* **Liniting:** fixed linting errors ([bbecbafa](bbecbafa))
+* **e2e:**  vm tests fixed ([7ac504f6](7ac504f6))
+* **mod-request:**  notify what is missing (#830) ([8010ac6e](8010ac6e))
+* **modification:**
+  *  current lifetime wrong year (#823) ([c62166ba](c62166ba))
+  *  notification about modification without prolonging lifetime (#824) ([4c20bd92](4c20bd92))
+* **sidebar:**  truncate project name in case it is to long for sidebar (#827) ([d707f5bb](d707f5bb))
+* **type-overview:**  add back css for hover over image ([a4ce6cff](a4ce6cff))
+* **userinfo:**  change positions and margins (#829) ([01f0e614](01f0e614))
+
+
+##  (2019-10-24)
+
+
+#### Bug Fixes
+
+* **Client:** if no client online return ([0bbf9668](0bbf9668))
+* **Theming:**  simplevm icons showing for faciliy manager ([98b20bca](98b20bca))
+* **how-to-connect:**  conda - dl buttons below text ([f7791d1f](f7791d1f))
+* **vm:**  can check status on active vm, show ssh on failed playbooks ([cf79a914](cf79a914))
+
+#### Features
+
+* **Project:** simple vm cc chooseable ([2f3ae85a](2f3ae85a))
+* **Userinfo:**  pubkey always visisble , added copy btn ([7971d8fe](7971d8fe))
+
+
 ## (2019-10-23)
 
 ### Bug Fixes

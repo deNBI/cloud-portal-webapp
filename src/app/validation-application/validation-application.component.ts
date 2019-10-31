@@ -2,19 +2,22 @@ import {Component, OnInit} from '@angular/core';
 import {ApplicationsService} from '../api-connector/applications.service';
 import {Application} from '../applications/application.model/application.model';
 import {ActivatedRoute} from '@angular/router';
-import {ApplicationBaseClass} from '../shared/shared_modules/baseClass/application-base-class';
+import {ApplicationBaseClassComponent} from '../shared/shared_modules/baseClass/application-base-class.component';
 import {FlavorService} from '../api-connector/flavor.service';
 import {Flavor} from '../virtualmachines/virtualmachinemodels/flavor';
 import {FlavorType} from '../virtualmachines/virtualmachinemodels/flavorType';
 import {FullLayoutComponent} from '../layouts/full-layout.component';
 
+/**
+ * Application validation modal.
+ */
 @Component({
              selector: 'app-validation-application',
              templateUrl: './validation-application.component.html',
              styleUrls: ['./validation-application.component.scss'],
              providers: [ApplicationsService, FlavorService]
            })
-export class ValidationApplicationComponent extends ApplicationBaseClass implements OnInit {
+export class ValidationApplicationComponent extends ApplicationBaseClassComponent implements OnInit {
 
   application: Application;
 
@@ -40,7 +43,7 @@ export class ValidationApplicationComponent extends ApplicationBaseClass impleme
   }
 
   approveApplication(): any {
-    this.applicationsService.validateApplicationAsPIByHash(this.hash).subscribe(res => {
+    this.applicationsService.validateApplicationAsPIByHash(this.hash).subscribe((res: any) => {
       if (res['project_application_pi_approved']) {
         this.validated = true;
         this.fullLayout.getGroupsEnumeration();
@@ -61,20 +64,20 @@ export class ValidationApplicationComponent extends ApplicationBaseClass impleme
     })
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.getListOfFlavors();
     this.getListOfTypes();
-    this.activatedRoute.params.subscribe(paramsId => {
+    this.activatedRoute.params.subscribe((paramsId: any) => {
       this.hash = paramsId.hash;
 
       this.applicationsService.getApplicationValidationByHash(this.hash).subscribe(
-        app => {
+        (app: any) => {
           this.application = this.setNewApplication(app);
           this.calculateRamCores();
           this.isLoaded = true;
 
         },
-        error => {
+        () => {
           this.isLoaded = true;
 
         })
@@ -102,15 +105,17 @@ export class ValidationApplicationComponent extends ApplicationBaseClass impleme
       }
 
     }
+
     return false
 
   }
 
-  calculateRamCores() {
+  calculateRamCores(): void {
     this.totalNumberOfCores = 0;
     this.totalRAM = 0;
+    // tslint:disable-next-line:forin
     for (const key in this.application.CurrentFlavors) {
-      const flavor = this.application.CurrentFlavors[key];
+      const flavor: any = this.application.CurrentFlavors[key];
       if (flavor != null) {
         this.totalNumberOfCores = this.totalNumberOfCores + (flavor.vcpus * flavor.counter);
         this.totalRAM = this.totalRAM + (flavor.ram * flavor.counter);

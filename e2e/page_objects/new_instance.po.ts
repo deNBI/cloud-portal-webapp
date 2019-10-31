@@ -1,6 +1,9 @@
 import {by, element} from 'protractor';
 import {Util} from '../util';
 
+/**
+ * New Instance Page.
+ */
 export class NewInstancePage {
   private static NEW_INSTANCE_URL: string = 'virtualmachines/newVM';
   private static PROJECT_SELECT_ID: string = 'projectSelect';
@@ -22,8 +25,7 @@ export class NewInstancePage {
   private static CLOSE_INFO_MODAL: string = 'close_info_modal';
   private static OPTIONAL_ACCORDION: string = 'optional_accordion';
   private static HOW_TO_CONNECT: string = 'how_to_connect_id';
-  private static HTC_VM_NAME: string = 'htc_vm_name_id';
-  private static HTC_SSH_BUTTON: string = 'htc_ssh_button';
+  private static HTC_VM_NAME: string = 'instance_name';
 
   static async getNewInstanceTab(): Promise<any> {
     Util.logMethodCall('Navigating to New Instance Tab');
@@ -89,8 +91,7 @@ export class NewInstancePage {
   }
 
   static async getVMName(): Promise<string> {
-    await Util.waitForPresenceByElement(element(by.id(this.HOW_TO_CONNECT)).element(by.id(this.HTC_SSH_BUTTON)));
-    await Util.clickElementById(this.HTC_SSH_BUTTON);
+    await Util.waitForPresenceByElement(element(by.id(this.HOW_TO_CONNECT)));
 
     return await element(by.id(this.HOW_TO_CONNECT)).element(by.id(this.HTC_VM_NAME)).getText();
   }

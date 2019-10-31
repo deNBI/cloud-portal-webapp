@@ -1,17 +1,14 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {Http, RequestOptions, XHRBackend} from '@angular/http';
 import {ModalDirective} from 'ngx-bootstrap';
-import {SwUpdate} from '@angular/service-worker';
 import {Angulartics2Piwik} from 'angulartics2/piwik';
 import {ApplicationRef} from '@angular/core';
-import {concat, interval} from 'rxjs';
-import {first} from 'rxjs/operators';
-import {environment} from '../environments/environment';
 
 /**
  * App component.
  */
 @Component({
+             // tslint:disable-next-line:component-selector
              selector: 'body',
              templateUrl: 'app.component.html',
              providers: [{
@@ -21,9 +18,9 @@ import {environment} from '../environments/environment';
            })
 export class AppComponent implements AfterViewInit, OnInit {
 
-  notificationModalTitle = 'Update available';
-  notificationModalMessage = 'A new update is available. Please reload the site to use the new version of the portal.';
-  notificationModalType = 'info';
+  notificationModalTitle: string = 'Update available';
+  notificationModalMessage: string = 'A new update is available. Please reload the site to use the new version of the portal.';
+  notificationModalType: string = 'info';
 
   @ViewChild('notificationModal') modal: ModalDirective;
 
@@ -42,13 +39,8 @@ export class AppComponent implements AfterViewInit, OnInit {
 
   }
 
-  reloadSite() {
+  reloadSite(): void {
     window.location.reload()
-  }
-
-  openNotificationModal() {
-
-    this.modal.show()
   }
 
   ngOnInit(): void {

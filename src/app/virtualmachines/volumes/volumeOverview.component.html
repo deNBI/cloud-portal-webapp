@@ -50,7 +50,7 @@
           <tr *ngFor="let volume of volumes">
             <td>{{volume.volume_project}}</td>
             <td *ngIf="volume.volume_virtualmachine"
-                [id]="'cell_vm_id_' + volume.volume_virtualmachine.name.split('-',1)">
+                [id]="'cell_vm_id_' + volume.volume_virtualmachine.name">
               {{volume.volume_virtualmachine.name}}
             </td>
             <td *ngIf="!volume.volume_virtualmachine"
@@ -417,7 +417,7 @@
               <option value="undefined" disabled selected hidden> Please Select
               </option>
               <option *ngFor="let vm of project_vms" [ngValue]="vm"
-                      [id]="'vm_option_'+ vm.name.split('-',1)"> {{vm.name}}
+                      [id]="'vm_option_'+ vm.name"> {{vm.name}}
               </option>
 
             </select></div>

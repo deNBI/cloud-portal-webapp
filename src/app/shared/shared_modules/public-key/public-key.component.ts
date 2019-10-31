@@ -5,7 +5,11 @@ import {Userinfo} from '../../../userinfo/userinfo.model';
 import {IResponseTemplate} from '../../../api-connector/response-template';
 import {AbstractBaseClasse} from '../baseClass/abstract-base-class';
 
+/**
+ * Public Key component.
+ */
 @Component({
+             // tslint:disable-next-line:component-selector
              selector: '[app-public-key]',
              templateUrl: './public-key.component.html',
              styleUrls: ['./public-key.component.scss'],

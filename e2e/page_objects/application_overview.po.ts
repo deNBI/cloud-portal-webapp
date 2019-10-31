@@ -1,6 +1,9 @@
 import {by, element, browser} from 'protractor';
 import {Util} from '../util';
 
+/**
+ * Applicationoverview page object.
+ */
 export class ApplicationOverviewPage {
   private static OWN_APPLICATION_ID: string = 'own_applications';
   private static EXTENSION_RESULT: string = 'extension result';
@@ -35,7 +38,7 @@ export class ApplicationOverviewPage {
   static async isApplicationRequestPresent(application_name: string): Promise<boolean> {
     await Util.waitForPage('applications');
     await Util.waitForPresenceOfElementById(this.OWN_APPLICATION_ID);
-    const elm = element(by.id(application_name));
+    const elm: any = element(by.id(application_name));
 
     return await elm.isPresent()
   }
@@ -43,7 +46,9 @@ export class ApplicationOverviewPage {
   static async approveSimpleVm(application_name: string): Promise<any> {
     await Util.waitForPage('applications');
     await Util.clickElementById(this.APPROVAL_PREFIX + application_name);
-    return await Util.waitForTextPresenceInElementById(this.NOTIFICATION_MESSAGE, this.SIMPLE_VM_CREATED);
+
+    return await Util.waitForTextPresenceInElementById(this.NOTIFICATION_MESSAGE, this.SIMPLE_VM_CREATED, 10000);
+
   }
 
   static async approveCloudApplication(application_name: string): Promise<any> {
@@ -51,6 +56,7 @@ export class ApplicationOverviewPage {
     await Util.waitForPresenceOfElementById(this.COMPUTE_CENTER_SELECTION_PREFIX + application_name);
     await Util.clickOptionOfSelect(this.DEFAULT_DENBI_COMPUTE_CENTER, this.COMPUTE_CENTER_SELECTION_PREFIX + application_name);
     await Util.clickElementById(this.APPROVAL_PREFIX + application_name);
+
     return await Util.waitForTextPresenceInElementById(this.NOTIFICATION_MESSAGE, this.CLOUD_PROJECT_CREATED);
   }
 }

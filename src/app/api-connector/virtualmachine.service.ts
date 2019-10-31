@@ -22,8 +22,8 @@ export class VirtualmachineService {
   constructor(private http: HttpClient) {
   }
 
-  startVM(flavor: string, image: string, servername: string, project: string, projectid: string, http: boolean, https: boolean, udp: boolean,
-          volumename?: string, diskspace?: string, playbook_information?: string, infos?: string): Observable<any> {
+  startVM(flavor: string, image: string, servername: string, project: string, projectid: string, http: boolean, https: boolean,
+          udp: boolean, volumename?: string, diskspace?: string, playbook_information?: string, infos?: string): Observable<any> {
 
     const params: HttpParams = new HttpParams()
       .set('flavor', flavor)
@@ -132,7 +132,7 @@ export class VirtualmachineService {
   getVmsFromFacilitiesOfLoggedUser(facility_id: string | number, page: number, filter_name?: string, filter_project?: string,
                                    filter_status?: string[],
                                    filter_elixir_id?: string,
-                                   filter_created_at?: string, filter_stopped_at?: string,): Observable<VirtualMachine[]> {
+                                   filter_created_at?: string, filter_stopped_at?: string): Observable<VirtualMachine[]> {
     let params: HttpParams = new HttpParams().set('page', page.toString());
     if (filter_name) {
       params = params.set('filter_name', filter_name);

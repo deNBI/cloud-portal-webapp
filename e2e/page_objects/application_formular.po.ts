@@ -1,13 +1,16 @@
 import {browser, by, element, protractor, ProtractorExpectedConditions} from 'protractor';
 import {Util} from '../util';
 
+/**
+ * Page object for the Application requests.
+ */
 export class FormularPage {
   private static SUBMIT_BTN: string = 'submit_btn';
   private static VERIFICATION_BTN: string = 'verification_btn';
   private static ACKNOWLEDGE_BTN: string = 'acknowledge_approve_btn';
   private static APPLICATION_SUBMITTED: string = 'The application was submitted';
   private static NOTIFICATION_MESSAGE: string = 'notification_message';
-  private static EDAM_PLACEHOLDER: string = 'Please add your research topics';
+  public static NOTIFICATION_BTN_REDIRECT: string = 'notification_btn_redirect';
 
   static async submitApplication(): Promise<any> {
     console.log('Submit Application');

@@ -1,15 +1,18 @@
 import {ApplicationModule, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {ApplicationBaseClass} from './baseClass/application-base-class';
+import {ApplicationBaseClassComponent} from './baseClass/application-base-class.component';
 import {ModalModule} from 'ngx-bootstrap/modal';
 import {ApplicationDetailComponent} from '../../applications/application-detail/application-detail.component';
 
+/**
+ * Shared module.
+ */
 @NgModule({
-            exports: [ApplicationBaseClass],
+            exports: [ApplicationBaseClassComponent],
             imports: [
               CommonModule, ModalModule.forRoot()
             ],
-            declarations: [ApplicationBaseClass]
+            declarations: [ApplicationBaseClassComponent]
 
           })
 export class SharedModuleModule {

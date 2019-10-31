@@ -7,6 +7,7 @@ import {environment} from './environments/environment';
 if (environment.production) {
   enableProdMode();
 }
+// tslint:disable
 
 // Constructing tracking code
 const matomoScript = document.createElement('script');

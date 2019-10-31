@@ -1,4 +1,4 @@
-import { ApplicationDissemination } from './application-dissemination';
+import {ApplicationDissemination} from './application-dissemination';
 
 describe('ApplicationDissemination', () => {
   it('should create an instance', () => {

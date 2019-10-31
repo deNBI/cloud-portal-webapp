@@ -1,3 +1,6 @@
+/**
+ * Application Dissemination class.
+ */
 export class ApplicationDissemination {
 
   private _platform_newsletter: boolean = false;
