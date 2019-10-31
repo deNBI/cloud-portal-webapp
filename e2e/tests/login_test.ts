@@ -4,14 +4,14 @@ import {Util} from '../util';
 
 describe('Login test', async function (): Promise<any> {
 
-  beforeAll(function (): void {
+  beforeAll(async function (): Promise<void> {
     console.log('------------------------------Login test started');
-    browser.waitForAngularEnabled(false);
-    browser.get(browser.params.portal);
+    await browser.waitForAngularEnabled(false);
+    await browser.get(browser.params.portal);
   });
 
   it('should login', async function (): Promise<any> {
-    LoginPage.login(browser.params.login.email_user, browser.params.login.password_user, browser.params.login.auth_user);
+    await LoginPage.login(browser.params.login.email_user, browser.params.login.password_user, browser.params.login.auth_user);
     const result: boolean = await Util.waitForPage('userinfo');
     expect(result).toEqual(true);
 

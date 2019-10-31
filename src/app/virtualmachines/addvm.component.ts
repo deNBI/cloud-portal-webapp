@@ -359,6 +359,7 @@ export class VirtualMachineComponent implements OnInit {
   startVM(flavor: string, image: string, servername: string, project: string, projectid: string | number): void {
     this.create_error = null;
     this.vm_name = null;
+    // tslint:disable-next-line:no-complex-conditionals
     if (image && flavor && servername && project && (this.diskspace <= 0 || this.diskspace > 0 && this.volumeName.length > 0)) {
       this.create_error = null;
       this.started_machine = true;
@@ -394,6 +395,12 @@ export class VirtualMachineComponent implements OnInit {
             }
             this.check_status_loop(newVm.openstackid);
 
+          } else if (newVm.status === 'mutex_locked') {
+            setTimeout(
+              () => {
+                this.startVM(flavor, image, servername, project, projectid)
+              },
+              1000)
           } else if (newVm.status) {
             this.progress_bar_status = this.CREATING_STATUS;
             this.newVm = newVm;

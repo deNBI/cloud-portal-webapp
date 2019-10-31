@@ -9,6 +9,9 @@ const header: HttpHeaders = new HttpHeaders({
                                               'X-CSRFToken': Cookie.get('csrftoken')
                                             });
 
+/**
+ * Bioconda service.
+ */
 @Injectable()
 export class BiocondaService {
 

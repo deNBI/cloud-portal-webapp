@@ -13,6 +13,9 @@ const routes: Routes = [
     }
 ];
 
+/**
+ * Userinfo routing module.
+ */
 @NgModule({
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule]

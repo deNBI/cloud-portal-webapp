@@ -8,6 +8,7 @@ import {ApplicationRef} from '@angular/core';
  * App component.
  */
 @Component({
+             // tslint:disable-next-line:component-selector
              selector: 'body',
              templateUrl: 'app.component.html',
              providers: [{

@@ -337,20 +337,23 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
     const application_id: string = <string>app.Id;
     if (compute_center_id && compute_center_id !== 'undefined') {
-      this.groupservice.createGroupByApplication(application_id, compute_center_id).subscribe((res: any) => {
-        if (!res['client_available'] && !res['created']) {
-          this.setNoResourcesClientNotification(res);
-          this.updateNotificationModal('Failed', `The client ${res['client_name']} has not the necessary resources left!`, true, 'danger');
+      this.groupservice.createGroupByApplication(application_id, compute_center_id).subscribe(
+        (res: any) => {
+          if (!res['client_available'] && !res['created']) {
+            this.setNoResourcesClientNotification(res);
+            this.updateNotificationModal('Failed', `The client ${res['client_name']} has not the necessary resources left!`,
+                                         true, 'danger');
 
-        } else {
-          this.setNotificationClient(application_id);
-          this.reloadApplicationList(application_id)
-        }
+          } else {
+            this.setNotificationClient(application_id);
+            this.reloadApplicationList(application_id)
+          }
 
-      }, (error: object) => {
-        console.log(error);
-        this.updateNotificationModal('Failed', 'Project could not be created!', true, 'danger');
-      });
+        },
+        (error: object) => {
+          console.log(error);
+          this.updateNotificationModal('Failed', 'Project could not be created!', true, 'danger');
+        });
     } else {
       this.applicationsservice.getApplicationClientAvaiable(application_id).subscribe(
         (res: Client) => {

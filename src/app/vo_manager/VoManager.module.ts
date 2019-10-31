@@ -11,23 +11,26 @@ import {VoGuardService} from './vo-guard.service';
 import {VoService} from '../api-connector/vo.service';
 import {ResourcesComponent} from './resources/resources.component';
 
+/**
+ * VO Manager module.
+ */
 @NgModule({
-    imports: [
-        VoManagerRoutingModule,
-        TabsModule,
-        FormsModule,
-        CommonModule,
-        ModalModule.forRoot()
-    ],
-    declarations: [
-        VoOverviewComponent,
-        ResourcesComponent
-    ],
-    providers: [
-        VoService,
-        VoGuardService
+            imports: [
+              VoManagerRoutingModule,
+              TabsModule,
+              FormsModule,
+              CommonModule,
+              ModalModule.forRoot()
+            ],
+            declarations: [
+              VoOverviewComponent,
+              ResourcesComponent
+            ],
+            providers: [
+              VoService,
+              VoGuardService
 
-    ]
-})
+            ]
+          })
 export class VoManagerModule {
 }

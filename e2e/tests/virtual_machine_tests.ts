@@ -11,7 +11,7 @@ describe('Virtual Machine Tests', async function (): Promise<any> {
 
   beforeAll(async function (): Promise<any> {
     console.log('------------------------------All virtual machine tests: started');
-    browser.waitForAngularEnabled(false);
+    await browser.waitForAngularEnabled(false);
     await LoginPage.login(browser.params.login.email_user, browser.params.login.password_user, browser.params.login.auth_user, true);
   });
 
@@ -101,7 +101,8 @@ describe('Virtual Machine Tests', async function (): Promise<any> {
     await vmOverviewPage.createSnapshotOfBasicVM();
     await SnapshotOverviewPage.navigateToSnapshotOverview();
     const isPresent: boolean = await SnapshotOverviewPage.isBasicSnapshotPresent();
-    expect(isPresent).toBeTruthy();
+    const isActive: boolean = await SnapshotOverviewPage.isBasicSnapshotActive();
+    expect(isPresent && isActive).toBeTruthy();
   });
 
   it('should delete the snapshot of the basic vm', async function (): Promise<any> {
@@ -132,7 +133,7 @@ describe('Virtual Machine Tests', async function (): Promise<any> {
 
   it('should delete the manually created volume', async function (): Promise<any> {
     console.log('Deleting the volume created by attachment');
-    VolumeOverviewPage.navigateToVolumeOverview();
+    await VolumeOverviewPage.navigateToVolumeOverview();
     await VolumeOverviewPage.deleteVolume();
     const deleted: boolean = await VolumeOverviewPage.isVolumeDeleted();
     expect(deleted).toBeTruthy();

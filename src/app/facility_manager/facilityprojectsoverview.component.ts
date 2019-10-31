@@ -215,7 +215,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 
   getMembesOfTheProject(projectid: number, projectname: string): void {
     this.facilityservice.getFacilityGroupRichMembers(projectid, this.selectedFacility['FacilityId'])
-      .subscribe(members => {
+      .subscribe((members: any) => {
                    this.usersModalProjectID = projectid;
                    this.usersModalProjectName = projectname;
                    this.usersModalProjectMembers = [];
@@ -224,7 +224,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
                      const user_id: string = member['userId'];
                      const fullName: string = `${member['firstName']} ${member['lastName']}`;
                      const newMember: ProjectMember = new ProjectMember(user_id, fullName, member_id);
-                     newMember.ElixirId = member  ['elixirId'];
+                     newMember.ElixirId = member['elixirId'];
                      newMember.Email = member['email'];
                      this.usersModalProjectMembers.push(newMember);
                    }

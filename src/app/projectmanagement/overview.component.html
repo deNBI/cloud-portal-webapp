@@ -97,10 +97,10 @@
         </div>
         <div class="card-body">
           <div class="btn-group col-12">
-            <button
-              (click)="application_details_visible=!application_details_visible;getFacilityProject();"
-              type="button"
-              class="btn btn-info" style="margin-bottom:5px;margin-right:5px">
+            <button id="show_information_btn"
+                    (click)="application_details_visible=!application_details_visible;getFacilityProject();"
+                    type="button"
+                    class="btn btn-info" style="margin-bottom:5px;margin-right:5px">
               <i class="fa fa-info-circle"></i>&nbsp;
               <span
                 [hidden]="application_details_visible">Show</span><span

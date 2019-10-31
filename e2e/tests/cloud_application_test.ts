@@ -3,6 +3,7 @@ import {browser, by, element, protractor} from 'protractor';
 import {LoginPage} from '../page_objects/login.po';
 import {FormularPage} from '../page_objects/application_formular.po';
 import {Util} from '../util';
+import {ProjectOverview} from '../page_objects/project_overview.po';
 
 describe('Cloud Application Test', function (): void {
 
@@ -32,4 +33,18 @@ describe('Cloud Application Test', function (): void {
     const isPresent: boolean = await FormularPage.isApplicationSubmitted();
     expect(isPresent).toBeTruthy();
   });
+
+  it('should load project overview', async function (): Promise<any> {
+    await Util.clickElementById(FormularPage.NOTIFICATION_BTN_REDIRECT);
+    await Util.waitForTextInUrl('project-management');
+  })
+
+  it('should have Bioinformatics in the research topics', async function (): Promise<any> {
+    await ProjectOverview.isBioinformaticsSet();
+  })
+
+  it('should have dissemination ', async function (): Promise<any> {
+    await ProjectOverview.isDisseminationSet();
+  })
+
 });

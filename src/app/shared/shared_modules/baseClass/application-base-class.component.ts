@@ -12,6 +12,7 @@ import {Component} from '@angular/core';
 import {ApplicationStatusService} from '../../../api-connector/application-status.service';
 import {UserService} from '../../../api-connector/user.service';
 import {NgForm} from '@angular/forms';
+import {Dissemination} from '../../../applications/application.model/dissemination';
 
 /**
  * Application base component..
@@ -82,7 +83,7 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
     }
   } = {};
 
-  extension_request = false;
+  extension_request: boolean = false;
 
   /**
    * If shortname is valid.
@@ -169,27 +170,12 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
   calculateRamCores(): void {
     this.totalNumberOfCores = 0;
     this.totalRAM = 0;
+    // tslint:disable-next-line:forin
     for (const extensionFlavorsKey in this.newFlavors) {
-      let fl = this.newFlavors[extensionFlavorsKey];
+      const fl: any = this.newFlavors[extensionFlavorsKey];
       this.totalRAM = this.totalRAM + fl.flavor.ram * fl.counter;
       this.totalNumberOfCores = this.totalNumberOfCores + fl.flavor.vcpus * fl.counter;
     }
-  }
-
-  public setApplicationStatus(status: number, app: Application): void {
-    this.applicationstatusservice.setApplicationStatus(app.Id.toString(), status.toString()).subscribe()
-  }
-
-  checkIfTypeGotSimpleVmFlavor(type: FlavorType): boolean {
-    for (const flav of this.flavorList) {
-      if (flav.type.shortcut === type.shortcut && flav.simple_vm) {
-        return true
-      }
-
-    }
-
-    return false
-
   }
 
   setNewApplication(aj: any): Application {
@@ -226,7 +212,7 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
     newApp.UserAffiliations = aj['project_application_user']['profile']['affiliations'];
     newApp.UserEmail = aj['project_application_user']['email'];
     newApp.Status = aj['project_application_status'];
-    newApp.Dissemination = aj['project_application_report_allowed'];
+    newApp.Dissemination = this.createDisseminatenObject(aj['dissemination']);
     newApp.Horizon2020 = aj['project_application_horizon2020'];
     newApp.BMBFProject = aj['project_application_bmbf_project'];
     newApp.ElixirProject = aj['project_application_elixir_project'];
@@ -285,6 +271,20 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
     return newApp
   }
 
+  createDisseminatenObject(obj: any): Dissemination {
+    if (obj) {
+      return new Dissemination(obj['platform_newsletter'], obj['platform_landing_page'],
+                               obj['platform_portal_news'], obj['platform_twitter'],
+                               obj['information_title'], obj['information_resources'],
+                               obj['information_runtime'], obj['information_pi_name'],
+                               obj['information_instituition'], obj['information_workgroup'],
+                               obj['information_project_type'],
+                               obj['information_lifetime'], obj['information_project_affiliation'])
+    } else {
+      return null
+    }
+  }
+
   setNewApplications(res: any): Application[] {
     const newApplications: Application[] = [];
 
@@ -292,136 +292,15 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
       if (res.hasOwnProperty(key)) {
 
         const aj: object = res[key];
-        const newApp: Application = new Application();
-        newApp.Id = aj['project_application_id'];
-        newApp.Name = aj['project_application_name'];
-        newApp.Shortname = aj['project_application_shortname'];
-        newApp.Description = aj['project_application_description'];
-        newApp.Lifetime = aj['project_application_lifetime'];
-        newApp.VMsRequested = aj['project_application_vms_requested'];
-        newApp.EdamTopics = aj['project_application_edam_terms'];
-        newApp.PiAffiliations = aj['pi_affiliations'];
-        newApp.RamPerVM = aj['project_application_ram_per_vm'];
-        newApp.TotalRam = aj['project_application_total_ram'];
-        newApp.TotalCores = aj['project_application_total_cores'];
-        newApp.CoresPerVM = aj['project_application_cores_per_vm'];
-        newApp.VolumeLimit = aj['project_application_volume_limit'];
-        newApp.VolumeCounter = aj['project_application_volume_counter'];
-        newApp.ObjectStorage = aj['project_application_object_storage'];
-        newApp.OpenStackProject = aj['project_application_openstack_project'];
-        newApp.Institute = aj['project_application_institute'];
-        newApp.Workgroup = aj['project_application_workgroup'];
-        newApp.DateApproved = aj['project_application_date_approved'];
-        newApp.DateSubmitted = aj['project_application_date_submitted'];
-        newApp.DateStatusChanged = aj['project_application_date_status_changed'];
-        newApp.User = aj['project_application_user']['username'];
-        newApp.UserAffiliations = aj['project_application_user']['profile']['affiliations'];
-        newApp.UserEmail = aj['project_application_user']['email'];
-        newApp.Status = aj['project_application_status'];
-        newApp.Dissemination = aj['project_application_report_allowed'];
-        newApp.Horizon2020 = aj['project_application_horizon2020'];
-        newApp.ElixirProject = aj['project_application_elixir_project'];
-        newApp.BMBFProject = aj['project_application_bmbf_project'];
-        newApp.Comment = aj['project_application_comment'];
-        newApp.PerunId = aj['project_application_perun_id'];
 
-        if (newApp.Status === this.application_states.APPROVED) {
-          newApp.DaysRunning = Math.ceil((Math.abs(Date.now() - new Date(newApp.DateStatusChanged).getTime())) / (1000 * 3600 * 24));
-        }
-
-        newApp.PIApproved = aj['project_application_pi_approved'];
-        if (aj['project_application_pi']) {
-          const firstName: string = (aj['project_application_pi'])['firstName'];
-          const lastName: string = (aj['project_application_pi'])['lastName'];
-          newApp.PI = `${firstName} ${lastName}`;
-          newApp.PIEmail = (aj['project_application_pi'])['email'];
-          newApp.PIElixir = aj['project_application_pi']['elixirId']
-        }
-
-        for (const flavor of aj['flavors']) {
-          newApp.addFlavorToCurrent(
-            flavor.flavor_name, flavor.counter, flavor.tag, flavor.ram,
-            flavor.rootdisk, flavor.vcpus, flavor.gpu, flavor.epheremal_disk)
-
-        }
-
-        newApp.DaysRunning = Math.ceil((Math.abs(Date.now() - new Date(newApp.DateStatusChanged).getTime()))
-                                         / (1000 * 3600 * 24));
-        newApp.Comment = aj['project_application_comment'];
-        newApp.PerunId = aj['project_application_perun_id'];
-
-        if (aj['projectapplicationrenewal']) {
-          const newExtension: ApplicationExtension = new ApplicationExtension();
-          let requestExtensionTotalCores: number = 0;
-          let requestExtensionTotalRam: number = 0;
-
-          newApp.Comment = aj['project_application_comment'];
-          newApp.PerunId = aj['project_application_perun_id'];
-          newApp.OpenStackProject = aj['project_application_openstack_project'];
-
-          for (const flavor of aj['projectapplicationrenewal']['flavors']) {
-            newExtension.addFlavorToRequested(
-              flavor.flavor_name,
-              flavor.counter,
-              flavor.tag,
-              flavor.ram,
-              flavor.rootdisk,
-              flavor.vcpus,
-              flavor.gpu,
-              flavor.epheremal_disk);
-            requestExtensionTotalCores += flavor.vcpus * flavor.counter;
-            requestExtensionTotalRam += flavor.ram * flavor.counter;
-
-          }
-          newExtension.TotalRAM = requestExtensionTotalRam;
-          newExtension.TotalCores = requestExtensionTotalCores;
-
-          newExtension.Id = aj['projectapplicationrenewal']['project_application'];
-          newExtension.Lifetime = aj['projectapplicationrenewal']['project_application_renewal_lifetime'];
-          newExtension.VolumeLimit = aj['projectapplicationrenewal']['project_application_renewal_volume_limit'];
-          newExtension.VolumeCounter = aj['projectapplicationrenewal']['project_application_renewal_volume_counter'];
-          newExtension.VMsRequested = aj['projectapplicationrenewal']['project_application_renewal_vms_requested'];
-          newExtension.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
-          newExtension.CoresPerVM = aj['projectapplicationrenewal']['project_application_renewal_cores_per_vm'];
-          newExtension.ObjectStorage = aj['projectapplicationrenewal']['project_application_renewal_object_storage'];
-          newExtension.RamPerVM = aj['projectapplicationrenewal']['project_application_renewal_ram_per_vm'];
-          newExtension.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
-
-          newApp.ApplicationExtension = newExtension;
-        }
-        newApplications.push(newApp)
+        newApplications.push(this.setNewApplication(aj))
       }
     }
 
     return newApplications
   }
 
-  /**
-   * Get details of member like name and email by elixir.
-   * @param {string} elixir_id
-   * @param {string} collapse_id
-   */
-  public getMemberDetailsByElixirIdIfCollapsed(elixir_id: string, collapse_id: string): void {
-    if (!this.getCollapseStatus(collapse_id)) {
-      if (!(elixir_id in this.application_user)) {
-        this.userservice.getMemberDetailsByElixirId(elixir_id).subscribe((result: { [key: string]: string }) => {
-
-          const name: string = `${result['firstName']} ${result['lastName']}`;
-          const appuser: { [id: string]: string } = {};
-          appuser['name'] = name;
-          appuser['email'] = result['email'];
-          this.application_user[elixir_id] = appuser;
-        })
-      }
-    }
-  }
-
-  /**
-   * Get details of member like name and email by elixir.
-   * @param {string} elixir_id
-   * @param {string} collapse_id
-   */
-  public getMemberDetailsByElixirId(elixir_id: string): void {
+  setApplicationUser(elixir_id: string): void {
     if (!(elixir_id in this.application_user)) {
       this.userservice.getMemberDetailsByElixirId(elixir_id).subscribe((result: { [key: string]: string }) => {
 
@@ -432,6 +311,25 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
         this.application_user[elixir_id] = appuser;
       })
     }
+  }
+
+  /**
+   * Get details of member like name and email by elixir.
+   * @param {string} elixir_id
+   * @param {string} collapse_id
+   */
+  public getMemberDetailsByElixirIdIfCollapsed(elixir_id: string, collapse_id: string): void {
+    if (!this.getCollapseStatus(collapse_id)) {
+      this.setApplicationUser(elixir_id);
+    }
+  }
+
+  /**
+   * Get details of member like name and email by elixir.
+   * @param {string} elixir_id
+   */
+  public getMemberDetailsByElixirId(elixir_id: string): void {
+    this.setApplicationUser(elixir_id);
   }
 
   /**
@@ -519,7 +417,7 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
   }
 
   /**
-   * Check if shortname is valid.
+   * Check if short name is valid.
    * @param {string} shortname
    */
   public checkShortname(shortname: string): void {
@@ -564,19 +462,6 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
     }
   }
 
-  isKeyFlavor(key: string): Flavor {
-    for (const fkey in this.flavorList) {
-      if (fkey in this.flavorList) {
-        if (this.flavorList[fkey].name === key.substring(20)) {
-          return this.flavorList[fkey];
-        }
-      }
-    }
-
-    return null;
-
-  }
-
   /**
    * This function concatenates a given key combined with a given value to a string
    * which is used on the confirmation-modal.
@@ -604,7 +489,7 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
           }
         }
         default: {
-          return (this.constantStrings[key] + val);
+          return (`${this.constantStrings[key]}${val}`);
         }
       }
     }

@@ -86,11 +86,11 @@ export class ClientOverviewComponent implements OnInit {
    * Get all computecenters.
    */
   getComputeCenters(): void {
-    this.facilityService.getComputeCenters().subscribe(result => {
+    this.facilityService.getComputeCenters().subscribe((result: any) => {
       for (const cc of result) {
         const compute_center: ComputecenterComponent = new ComputecenterComponent(
           cc['compute_center_facility_id'], cc['compute_center_name'],
-          cc['compute_center_login'], cc['compute_center_support_mail'])
+          cc['compute_center_login'], cc['compute_center_support_mail']);
         this.computeCenters.push(compute_center)
       }
 

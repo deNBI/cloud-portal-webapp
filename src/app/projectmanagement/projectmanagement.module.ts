@@ -9,6 +9,9 @@ import {AccordionModule} from 'ngx-bootstrap';
 import {ApplicationsModule} from '../applications/applications.module';
 import {SharedDirectivesModule} from '../shared/shared_modules/shared_directives.module';
 
+/**
+ * Projectmanagment module.
+ */
 @NgModule({
             imports: [
               AccordionModule.forRoot(),

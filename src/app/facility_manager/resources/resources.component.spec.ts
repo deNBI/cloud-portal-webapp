@@ -1,6 +1,7 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ResourcesComponent } from './resources.component';
+import {ResourcesComponent} from './resources.component';
+// tslint:disable
 
 describe('ResourcesComponent', () => {
   let component: ResourcesComponent;
@@ -8,9 +9,9 @@ describe('ResourcesComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ResourcesComponent ]
-    })
-    .compileComponents();
+                                     declarations: [ResourcesComponent]
+                                   })
+      .compileComponents();
   }));
 
   beforeEach(() => {
