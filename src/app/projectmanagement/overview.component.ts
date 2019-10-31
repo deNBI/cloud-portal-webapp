@@ -1,4 +1,4 @@
-import {Component, ElementRef, Input, OnInit} from '@angular/core';
+import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {Project} from './project.model';
 import {ProjectMember} from './project_member.model'
 import {environment} from '../../environments/environment'
@@ -39,6 +39,14 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   @Input() voRegistrationLink: string = environment.voRegistrationLink;
   @Input() invitation_group_pre: string = environment.invitation_group_pre;
   @Input() wiki_group_invitation: string = environment.wiki_group_invitations;
+
+  @ViewChild(NgForm) simpleVmForm: NgForm;
+
+  /**
+   * If at least 1 flavor is selected.
+   * @type {boolean}
+   */
+  public min_vm: boolean = true;
 
   project_id: string;
   application_id: string;
@@ -150,8 +158,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
         const flav: Flavor = this.flavorList.find(function (fl: Flavor) {
           return fl.name === key;
 
-        })
-        console.log(flav);
+        });
         this.newFlavors[key] = {counter: flavor.counter, flavor: flav};
         this.calculateRamCores()
 
@@ -699,5 +706,27 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
   public comingSoon(): void {
     alert('This function will be implemented soon.')
+  }
+
+  onChangeFlavor(value: number): void {
+
+    this.checkIfMinVmIsSelected();
+  }
+
+  checkIfMinVmIsSelected(): void {
+    let nr_vm: number = 0;
+    for (const fl of this.flavorList) {
+      const control: string = `project_application_renewal_${fl.name}`;
+      if (control in this.simpleVmForm.controls) {
+        if (this.simpleVmForm.controls[control].value > 0) {
+          nr_vm += this.simpleVmForm.controls[control].value;
+        }
+      }
+    }
+    if (nr_vm > 0 || this.project_application.OpenStackProject) {
+      this.min_vm = true;
+    } else if (nr_vm === 0) {
+      this.min_vm = false;
+    }
   }
 }

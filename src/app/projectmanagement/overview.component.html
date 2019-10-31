@@ -707,6 +707,7 @@
                                name="project_application_renewal_{{fl.name}}"
                                type="number" min="0" step="1"
                                placeholder="e.g 1"
+                               (ngModelChange)="onChangeFlavor($event)"
                                [ngModel]="project_application?.CurrentFlavors[fl.name]?.counter"
                                #name="ngModel"
                                appMinAmount="0" appIntegerOrNull
@@ -895,7 +896,9 @@
           <p *ngIf="f.controls.project_application_renewal_object_storage?.invalid" >
             - Object Storage missing
           </p>
-
+          <p *ngIf="!min_vm" >
+            - Select at least one Flavor
+          </p>
         </div>
 
 
