@@ -48,7 +48,7 @@
               </button>
             </td>
             <td> <span *ngIf="snapshot?.snapshot_status == 'active'"
-                       style="margin-left: 5px"
+                       style="margin-left: 5px" id="snapshot_active_{{snapshot?.snapshot_name}}"
                        class="badge badge-success"> {{snapshot?.snapshot_status | uppercase}} </span>
               <span *ngIf="snapshot?.snapshot_status != 'active'"
                     style="margin-left: 5px"

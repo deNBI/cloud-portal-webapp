@@ -30,6 +30,12 @@ export class ProjectOverview {
   private static NEW_OBJECT_STORAGE_ID: string = 'id_project_application_renewal_object_storage';
   private static TOTAL_RAM: string = 'total_ram';
   private static TOTAL_CORES: string = 'total_cores';
+  private static BIOINFORMATICS_TOPIC: string = 'topic_Bioinformatics';
+  private static SHOW_INFORMATION_BTN: string = 'show_information_btn';
+  private static DISSEMINATION_PLATFORM_LIST: string = 'dissemination_platforms';
+  private static DISSEMINATION_INFORMATION_LIST: string = 'dissemination_information';
+  private static DEFAULT_INFORMATION_DISSEMINATION_STRING: string = 'Project affiliation,Workgroup,Project Type,Title,Resources,Lifetime,PI Name';
+  private static DEFAULT_PLATFORM_DISSEMINATION_STRING: string = 'Newsletter,Landing Page,Portal News,Twitter';
 
   static async navigateToSimpleProjectverview(): Promise<any> {
     console.log('Navigating to simple project overview');
@@ -39,6 +45,12 @@ export class ProjectOverview {
   static async navigateToOpenStackeProjectverview(): Promise<any> {
     console.log('Navigating to openstack project overview');
     await Util.clickElementById(Util.OPENSTACK_APPLICATION_NAME)
+  }
+
+  static async isDisseminationSet(): Promise<any> {
+    await Util.logMethodCall('Check if dissemination is set');
+    await Util.waitForTextPresenceInElementById(this.DISSEMINATION_INFORMATION_LIST, this.DEFAULT_INFORMATION_DISSEMINATION_STRING);
+    await Util.waitForTextPresenceInElementById(this.DISSEMINATION_PLATFORM_LIST, this.DEFAULT_PLATFORM_DISSEMINATION_STRING);
   }
 
   static async addMemberToProject(application_name: string, member: string = this.DEFAULT_MEMBER): Promise<any> {
@@ -73,6 +85,11 @@ export class ProjectOverview {
     await Util.clickElementById(this.SUBMIT_RENEWAL_BTN);
     await Util.clickElementById(this.SUBMIT_MODEL_BTN);
     await Util.waitForTextPresenceInElementById(this.EXTENSION_RESULT, this.EXTENSION_SUCCESSFULLY_SUBMITTED);
+  }
+
+  static async isBioinformaticsSet(): Promise<any> {
+    await Util.clickElementById(this.SHOW_INFORMATION_BTN);
+    await Util.waitForPresenceOfElementById(this.BIOINFORMATICS_TOPIC);
   }
 
   static async areDefaultValuesSetSimpleVM(): Promise<any> {

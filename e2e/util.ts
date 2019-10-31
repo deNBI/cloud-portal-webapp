@@ -6,7 +6,7 @@ export class Util {
   private static angular_url: string = browser.params.angular;
 
   private static _timeout: number = browser.params.timeout;
-  private static auth = browser.params.login.auth;
+  private static auth: string = browser.params.login.auth;
   private static _SIMPLE_VM_APPLICATION_NAME: string = 'PTSimpleVM';
   private static _OPENSTACK_APPLICATION_NAME: string = 'PTOpenStack';
   private static _BASIC_VM_NAME: string = 'PTSIMPLEVM';
@@ -231,6 +231,10 @@ export class Util {
     console.log(`Navigating to ${this.angular_url}/#/${url_suffix}`);
 
     return await browser.get(`${this.angular_url}/#/${url_suffix}`);
+  }
+
+  static async waitForTextInUrl(text: string): Promise<any> {
+    return browser.wait(until.urlContains(text), this.timeout)
   }
 
   static async clickOptionOfSelect(option: string, selectId: string): Promise<any> {

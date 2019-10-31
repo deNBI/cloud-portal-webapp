@@ -1,5 +1,6 @@
 import {ApplicationExtension} from '../application_extension.model';
 import {ComputecenterComponent} from '../../projectmanagement/computecenter.component';
+import {Dissemination} from './dissemination';
 
 /**
  * Application class.
@@ -41,7 +42,7 @@ export class Application {
   private _EdamTopics: string[];
 
   private _ElixirProject: string;
-  private _Dissemination: boolean;
+  private _Dissemination: Dissemination;
   private _PIApproved: boolean;
   private _PI: string;
   private _PIElixir: string;
@@ -95,11 +96,11 @@ export class Application {
     this._PIElixir = value;
   }
 
-  get Dissemination(): boolean {
+  get Dissemination(): Dissemination {
     return this._Dissemination;
   }
 
-  set Dissemination(value: boolean) {
+  set Dissemination(value: Dissemination) {
     this._Dissemination = value;
   }
 
