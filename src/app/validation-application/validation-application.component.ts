@@ -113,8 +113,9 @@ export class ValidationApplicationComponent extends ApplicationBaseClassComponen
   calculateRamCores(): void {
     this.totalNumberOfCores = 0;
     this.totalRAM = 0;
+    // tslint:disable-next-line:forin
     for (const key in this.application.CurrentFlavors) {
-      const flavor = this.application.CurrentFlavors[key];
+      const flavor: any = this.application.CurrentFlavors[key];
       if (flavor != null) {
         this.totalNumberOfCores = this.totalNumberOfCores + (flavor.vcpus * flavor.counter);
         this.totalRAM = this.totalRAM + (flavor.ram * flavor.counter);

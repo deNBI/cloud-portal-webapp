@@ -11,7 +11,7 @@ describe('Virtual Machine Tests', async function (): Promise<any> {
 
   beforeAll(async function (): Promise<any> {
     console.log('------------------------------All virtual machine tests: started');
-    browser.waitForAngularEnabled(false);
+    await browser.waitForAngularEnabled(false);
     await LoginPage.login(browser.params.login.email_user, browser.params.login.password_user, browser.params.login.auth_user, true);
   });
 

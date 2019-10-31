@@ -177,25 +177,6 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
   }
 
   /**
-   * Check status of all inactive vms.
-   */
-  checkInactiveVms(): void {
-    this.virtualmachineservice.checkStatusInactiveVms().subscribe(vms => {
-      this.vms_content = vms;
-      for (const vm of this.vms_content) {
-        if (vm.created_at !== '') {
-          vm.created_at = new Date(parseInt(vm.created_at, 10) * 1000).toLocaleDateString();
-        }
-        if (vm.stopped_at !== '' && vm.stopped_at !== this.vm_statuses[this.vm_statuses.ACTIVE]) {
-          vm.stopped_at = new Date(parseInt(vm.stopped_at, 10) * 1000).toLocaleDateString();
-        } else {
-          vm.stopped_at = ''
-        }
-      }
-    })
-  }
-
-  /**
    * Check if the snapshot name is valid.
    * @param e
    */

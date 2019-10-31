@@ -1,3 +1,6 @@
+/**
+ * Project enumeration class.
+ */
 export class ProjectEnumeration {
 
   private _project_name: string;

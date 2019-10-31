@@ -34,16 +34,16 @@ describe('Simple Application Test', function (): void {
     expect(isPresent).toBeTruthy();
   });
 
-  it('should load project overview', async function () {
+  it('should load project overview', async function (): Promise<any> {
     await Util.clickElementById(FormularPage.NOTIFICATION_BTN_REDIRECT);
 
     await Util.waitForTextInUrl('project-management');
   })
 
-  it('should have Bioinformatics in the research topics', async function () {
+  it('should have Bioinformatics in the research topics', async function (): Promise<any> {
     await ProjectOverview.isBioinformaticsSet();
   })
-  it('should have dissemination ', async function () {
+  it('should have dissemination ', async function (): Promise<any> {
     await ProjectOverview.isDisseminationSet();
   })
 

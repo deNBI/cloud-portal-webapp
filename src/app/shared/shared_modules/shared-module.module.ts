@@ -4,6 +4,9 @@ import {ApplicationBaseClassComponent} from './baseClass/application-base-class.
 import {ModalModule} from 'ngx-bootstrap/modal';
 import {ApplicationDetailComponent} from '../../applications/application-detail/application-detail.component';
 
+/**
+ * Shared module.
+ */
 @NgModule({
             exports: [ApplicationBaseClassComponent],
             imports: [

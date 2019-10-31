@@ -120,7 +120,9 @@ export class AddsimplevmComponent extends ApplicationBaseClassComponent implemen
    * Gets a list of all available types of flavors from the flavorservice and uses them in the function setListOfTypes
    */
   getListOfTypes(): void {
-    this.flavorService.getListOfTypesAvailable().subscribe((types: FlavorType[]) => this.setListOfTypes(types));
+    this.flavorService.getListOfTypesAvailable().subscribe((types: FlavorType[]) => {
+      this.setListOfTypes(types)
+    });
   }
 
   /**

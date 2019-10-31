@@ -45,12 +45,12 @@ export class MemberGuardService implements CanActivate {
       redirect_url = null;
     }
 
-    return this.userservice.getOnlyLoggedUserWithRedirect(redirect_url).pipe(switchMap(res => {
+    return this.userservice.getOnlyLoggedUserWithRedirect(redirect_url).pipe(switchMap((res: any) => {
       if (res['error']) {
         window.location.href = environment.login;
       }
 
-      return this.userservice.getMemberByUser().pipe(map(memberinfo => {
+      return this.userservice.getMemberByUser().pipe(map((memberinfo: any) => {
         if (memberinfo['name'] === 'MemberNotExistsException') {
           return this.router.parseUrl('/registration-info');
 

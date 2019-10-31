@@ -14,7 +14,7 @@ export class VoGuardService implements CanActivate {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-    return new Promise((resolve: any, reject: any) => {
+    return new Promise((resolve: any, reject: any): any => {
       this.voservice.isVo().subscribe(
         (result: IResponseTemplate) => {
           if (<boolean><Boolean>result.value) {

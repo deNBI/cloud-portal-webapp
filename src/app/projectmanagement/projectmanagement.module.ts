@@ -8,6 +8,9 @@ import {FormsModule} from '@angular/forms';
 import {AccordionModule} from 'ngx-bootstrap';
 import {ApplicationsModule} from '../applications/applications.module';
 
+/**
+ * Projectmanagment module.
+ */
 @NgModule({
             imports: [
               AccordionModule.forRoot(),

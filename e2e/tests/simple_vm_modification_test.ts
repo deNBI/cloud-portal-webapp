@@ -34,7 +34,7 @@ describe('Simple Application Modification Test', function (): void {
     await ProjectOverview.checkTotalCoresRam();
   });
 
-  it('should send a modification request', async function () {
+  it('should send a modification request', async function (): Promise<any> {
     await ProjectOverview.sendModificationRequest(Util.SIMPLE_VM_APPLICATION_NAME);
   });
 });

@@ -186,7 +186,6 @@ export class GroupService {
     })
   }
 
-
   setName(groupid: string, name: string): Observable<any> {
     const params: HttpParams = new HttpParams().set('name', name);
 

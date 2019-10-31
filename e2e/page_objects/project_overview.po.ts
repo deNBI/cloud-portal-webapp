@@ -34,7 +34,8 @@ export class ProjectOverview {
   private static SHOW_INFORMATION_BTN: string = 'show_information_btn';
   private static DISSEMINATION_PLATFORM_LIST: string = 'dissemination_platforms';
   private static DISSEMINATION_INFORMATION_LIST: string = 'dissemination_information';
-  private static DEFAULT_INFORMATION_DISSEMINATION_STRING: string = 'Project affiliation,Workgroup,Project Type,Title,Resources,Lifetime,PI Name';
+  private static DEFAULT_INFORMATION_DISSEMINATION_STRING: string = 'Project affiliation,Workgroup,Project Type,' +
+    'Title,Resources,Lifetime,PI Name';
   private static DEFAULT_PLATFORM_DISSEMINATION_STRING: string = 'Newsletter,Landing Page,Portal News,Twitter';
 
   static async navigateToSimpleProjectverview(): Promise<any> {
@@ -48,7 +49,7 @@ export class ProjectOverview {
   }
 
   static async isDisseminationSet(): Promise<any> {
-    await Util.logMethodCall('Check if dissemination is set');
+    Util.logMethodCall('Check if dissemination is set');
     await Util.waitForTextPresenceInElementById(this.DISSEMINATION_INFORMATION_LIST, this.DEFAULT_INFORMATION_DISSEMINATION_STRING);
     await Util.waitForTextPresenceInElementById(this.DISSEMINATION_PLATFORM_LIST, this.DEFAULT_PLATFORM_DISSEMINATION_STRING);
   }
@@ -62,7 +63,7 @@ export class ProjectOverview {
     await Util.waitForTextPresenceInElementById(this.NOTIFICATION_TITLE, this.SUCCESS);
     console.log('Close Modal');
     await Util.clickElementById(this.NOTIFICATION_CLOSE);
-    browser.sleep(1000);
+    await browser.sleep(1000);
 
   }
 
@@ -72,7 +73,7 @@ export class ProjectOverview {
     console.log('Close Modal');
 
     await Util.clickElementById(this.NOTIFICATION_CLOSE);
-    browser.sleep(1000);
+    await browser.sleep(1000);
 
   }
 

@@ -122,7 +122,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
       if (this.project_application) {
         this.setLifetime();
 
-        this.applicationsservice.getApplicationPerunId(this.application_id).subscribe(id => {
+        this.applicationsservice.getApplicationPerunId(this.application_id).subscribe((id: any) => {
           if (id['perun_id']) {
             this.project_id = id['perun_id'];
 
@@ -147,10 +147,10 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
     for (const key in this.project_application.CurrentFlavors) {
       const flavor: any = this.project_application.CurrentFlavors[key];
       if (flavor != null) {
-        const flav: Flavor = this.flavorList.find(function (fl: Flavor) {
+        const flav: Flavor = this.flavorList.find(function (fl: Flavor): boolean {
           return fl.name === key;
 
-        })
+        });
         console.log(flav);
         this.newFlavors[key] = {counter: flavor.counter, flavor: flav};
         this.calculateRamCores()
@@ -243,7 +243,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
   setLifetime(): void {
 
-    this.life_time_string = `${this.project_application.DateApproved} - ${this.getEndDate(this.project_application.Lifetime, this.project_application.DateApproved)}`;
+    // tslint:disable-next-line:max-line-length
+    this.life_time_string = `${this.project_application.DateApproved} -  ${this.getEndDate(this.project_application.Lifetime, this.project_application.DateApproved)}`;
 
   }
 
@@ -256,7 +257,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
   ngOnInit(): void {
 
-    this.activatedRoute.params.subscribe(paramsId => {
+    this.activatedRoute.params.subscribe((paramsId: any) => {
       this.isLoaded = false;
       this.project = null;
       this.project_application = null;
@@ -278,7 +279,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
    */
   getFacilityProject(): void {
 
-    if (!this.project_application.ComputeCenter && this.project_application.Status !== this.application_states.SUBMITTED && this.project_application.Status !== this.application_states.TERMINATED) {
+    if (!this.project_application.ComputeCenter && this.project_application.Status !== this.application_states.SUBMITTED
+      && this.project_application.Status !== this.application_states.TERMINATED) {
       this.groupService.getFacilityByGroup(this.project_application.PerunId.toString()).subscribe((res: object) => {
 
         const login: string = res['Login'];
@@ -438,7 +440,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   setAllMembersChecked(): void {
     if (!this.allSet) {
       this.project_members.forEach((member: ProjectMember) => {
-        if (!this.isMemberChecked(parseInt(member.MemberId.toString(), 10)) && this.userinfo.MemberId.toString() !== member.MemberId.toString()) {
+        if (!this.isMemberChecked(parseInt(member.MemberId.toString(), 10))
+          && this.userinfo.MemberId.toString() !== member.MemberId.toString()) {
           this.checked_member_list.push(parseInt(member.MemberId.toString(), 10));
         }
       });
@@ -689,6 +692,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
       () => {
         this.updateNotificationModal('Success', 'The application has been successfully removed', true, 'success');
         this.fullLayout.getGroupsEnumeration();
+        // tslint:disable:no-floating-promises
         this.router.navigate(['/userinfo'])
       },
       () => {
