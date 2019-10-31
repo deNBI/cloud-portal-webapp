@@ -2,10 +2,13 @@ import {Component, EventEmitter, HostListener, Input, OnChanges, OnInit, Output,
 import {Image} from './virtualmachinemodels/image'
 import {OwlOptions} from 'ngx-owl-carousel-o';
 
+/**
+ * Imagedetail component.
+ */
 @Component({
              selector: 'app-image-detail',
              templateUrl: 'imagedetail.component.html',
-  styleUrls: ['./imagedetail.component.scss']
+             styleUrls: ['./imagedetail.component.scss']
 
            })
 export class ImageDetailComponent implements OnInit {
@@ -58,8 +61,7 @@ export class ImageDetailComponent implements OnInit {
     this.image_visible = !this.image_visible;
   }
 
-  @HostListener('window:resize', ['$event'])
-  onResize(event): void {
+  @HostListener('window:resize', ['$event']) onResize(event: any): void {
     this.window_size = window.innerWidth;
   }
 

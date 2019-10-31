@@ -12,6 +12,9 @@ enum Snapshot_Delete_Statuses {
   ERROR = 2
 }
 
+/**
+ * Snapshot overivew.
+ */
 @Component({
              selector: 'app-snapshot-overview',
              templateUrl: 'snapshotOverview.component.html',
@@ -20,9 +23,7 @@ enum Snapshot_Delete_Statuses {
 
 export class SnapshotOverviewComponent implements OnInit {
 
-
   title: string = 'Snapshot Overview';
-
 
   showFacilities: boolean = false;
 
@@ -48,7 +49,7 @@ export class SnapshotOverviewComponent implements OnInit {
    * All possible statuses when deleting.
    * @type {Snapshot_Delete_Statuses}
    */
-  delete_statuses = Snapshot_Delete_Statuses;
+  delete_statuses: typeof Snapshot_Delete_Statuses = Snapshot_Delete_Statuses;
   /**
    * Actual delete status.
    * @type {Snapshot_Delete_Statuses}
@@ -79,7 +80,7 @@ export class SnapshotOverviewComponent implements OnInit {
    */
   getSnapshots(): void {
     this.snapshots = [];
-    this.imageService.getSnapshotsByUser().subscribe(result => {
+    this.imageService.getSnapshotsByUser().subscribe((result: any) => {
       this.snapshots = result;
       this.isLoaded = true;
       this.checkSnapShotsStatus()
@@ -91,7 +92,7 @@ export class SnapshotOverviewComponent implements OnInit {
 
     setTimeout(
       () => {
-        const observables = [];
+        const observables: any = [];
         for (const snapshot of this.snapshots) {
           if (snapshot.snapshot_status !== 'active') {
 
@@ -99,7 +100,7 @@ export class SnapshotOverviewComponent implements OnInit {
           }
 
         }
-        forkJoin(observables).subscribe(res => {
+        forkJoin(observables).subscribe((res: any) => {
           for (const snap of res) {
             this.snapshots[res.indexOf(snap)].snapshot_status = snap['status'];
             if (snap['status'] !== 'active') {
@@ -120,7 +121,7 @@ export class SnapshotOverviewComponent implements OnInit {
 
   getFacilitySnapshots(): void {
     this.snapshots = [];
-    this.facilityService.getFacilitySnapshots(this.selectedFacility['FacilityId']).subscribe(res => {
+    this.facilityService.getFacilitySnapshots(this.selectedFacility['FacilityId']).subscribe((res: any) => {
       this.snapshots = res;
     })
   }
@@ -150,7 +151,7 @@ export class SnapshotOverviewComponent implements OnInit {
 
   ngOnInit(): void {
     this.getSnapshots();
-    this.facilityService.getManagerFacilities().subscribe(result => {
+    this.facilityService.getManagerFacilities().subscribe((result: any) => {
       this.managerFacilities = result;
       this.selectedFacility = this.managerFacilities[0];
     });

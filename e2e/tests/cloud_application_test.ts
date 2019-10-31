@@ -5,30 +5,32 @@ import {FormularPage} from '../page_objects/application_formular.po';
 import {Util} from '../util';
 import {ProjectOverview} from '../page_objects/project_overview.po';
 
-describe('Cloud Application Test', function () {
+describe('Cloud Application Test', function (): void {
 
-  beforeAll(async function () {
+  beforeAll(async function (): Promise<any> {
     await browser.waitForAngularEnabled(false);
     await LoginPage.login(browser.params.login.email_user, browser.params.login.password_user, browser.params.login.auth_user, true);
   });
 
-  it('should navigate to cloud application form', async function () {
+  it('should navigate to cloud application form', async function (): Promise<any> {
     console.log('Starting send a cloud  application test!');
     await FormularPage.navigateToCloudApplication();
   });
 
-  it('should fill cloud application form', async function () {
+  it('should fill cloud application form', async function (): Promise<any> {
 
     await FormularPage.fillApplicationFormular(Util.OPENSTACK_APPLICATION_NAME);
   });
 
-  it('should submit cloud application ', async function () {
+  it('should submit cloud application ', async function (): Promise<any> {
 
     await FormularPage.submitApplication();
 
   });
 
-  it('should successfully submitted the application', async function () {
+
+  it('should successfully submitted the application', async function (): Promise<any> {
+
     const isPresent: boolean = await FormularPage.isApplicationSubmitted();
     expect(isPresent).toBeTruthy();
   });

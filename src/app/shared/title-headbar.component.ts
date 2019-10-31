@@ -6,5 +6,5 @@ import {Component, Input} from '@angular/core';
 })
 export class TitleHeadbarComponent {
 
-  @Input() page_title:string;
+  @Input() page_title: string;
 }

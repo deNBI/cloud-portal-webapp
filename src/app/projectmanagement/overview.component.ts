@@ -13,7 +13,7 @@ import {Userinfo} from '../userinfo/userinfo.model';
 import {forkJoin, Observable} from 'rxjs';
 import {ActivatedRoute} from '@angular/router';
 import {Application} from '../applications/application.model/application.model';
-import {ApplicationBaseClass} from '../shared/shared_modules/baseClass/application-base-class';
+import {ApplicationBaseClassComponent} from '../shared/shared_modules/baseClass/application-base-class.component';
 import {ApplicationStatusService} from '../api-connector/application-status.service';
 import {FacilityService} from '../api-connector/facility.service';
 import {ApplicationsService} from '../api-connector/applications.service';
@@ -33,7 +33,7 @@ import {FlavorService} from '../api-connector/flavor.service';
              providers: [FlavorService, ApplicationStatusService, ApplicationsService,
                FacilityService, VoService, UserService, GroupService, ApiSettings]
            })
-export class OverviewComponent extends ApplicationBaseClass implements OnInit {
+export class OverviewComponent extends ApplicationBaseClassComponent implements OnInit {
 
   @Input() invitation_group_post: string = environment.invitation_group_post;
   @Input() voRegistrationLink: string = environment.voRegistrationLink;
@@ -233,7 +233,7 @@ export class OverviewComponent extends ApplicationBaseClass implements OnInit {
     let date1: Date = new Date(Number(approval.substring(0, 4)), Number(approval.substring(5, 7)) - 1, Number(approval.substring(8)));
     const month: number = date1.getMonth();
     if ((month + months) > 11) {
-      date1 = new Date(date1.getFullYear(), (month + months - 12), date1.getDate());
+      date1 = new Date(date1.getFullYear() + 1, (month + months - 12), date1.getDate());
     } else {
       date1.setMonth(date1.getMonth() + months);
     }

@@ -19,7 +19,7 @@ export function minAmountValidator(val: number): ValidatorFn {
   return (control: AbstractControl): {[key: string]: any} | null => {
     const less: boolean = control.value < val;
 
-    return less ? {'minVal': {value: control.value}} : null;
+    return less ? {minVal: {value: control.value}} : null;
   };
 }
 
@@ -41,7 +41,7 @@ export function maxAmountValidator(val: number): ValidatorFn {
   return (control: AbstractControl): {[key: string]: any} | null => {
     const more: boolean = control.value > val;
 
-    return more ? {'maxVal': {value: control.value}} : null;
+    return more ? {maxVal: {value: control.value}} : null;
   };
 }
 
@@ -61,7 +61,7 @@ export function integerValidator(): ValidatorFn {
   return (control: AbstractControl): {[key: string]: any} | null => {
     const integer: boolean = Number.isInteger(control.value);
 
-    return integer ? null : {'integer': {value: control.value}};
+    return integer ? null : {integer: {value: control.value}};
   };
 }
 
@@ -81,6 +81,6 @@ export function integerOrNullValidator(): ValidatorFn {
   return (control: AbstractControl): {[key: string]: any} | null => {
     const integer: boolean = (Number.isInteger(control.value) || !control.value);
 
-    return integer ? null : {'integerOrNull': {value: control.value}};
+    return integer ? null : {integerOrNull: {value: control.value}};
   };
 }

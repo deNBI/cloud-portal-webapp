@@ -1,6 +1,9 @@
 import {browser, by, element} from 'protractor';
 import {Util} from '../util';
 
+/**
+ * Instance Overview Page.
+ */
 export class VMOverviewPage {
 
   private VM_OVERVIEW_URL: string = 'virtualmachines/vmOverview';
@@ -71,6 +74,7 @@ export class VMOverviewPage {
     Util.logMethodCall(`Checking if ${name} is active`);
 
     await Util.waitForPresenceOfElementById(this.TABLE_ID);
+
     return await Util.waitForPresenceOfElementById(`${this.ACTIVE_BADGE_PREFIX}${name}`);
   }
 
@@ -82,11 +86,13 @@ export class VMOverviewPage {
     Util.logMethodCall(`Checking active for ${this.name_counter} active vm`);
 
     for (const key in this.vm_names) {
-      const val = this.vm_names[key];
-      console.log(`Key: ${key} Value: ${val}`);
-      this.name_counter -= 1;
-      if (await !this.isVmActive(val)) {
-        return false;
+      if (key in this.vm_names) {
+        const val = this.vm_names[key];
+        console.log(`Key: ${key} Value: ${val}`);
+        this.name_counter -= 1;
+        if (await !this.isVmActive(val)) {
+          return false;
+        }
       }
     }
 

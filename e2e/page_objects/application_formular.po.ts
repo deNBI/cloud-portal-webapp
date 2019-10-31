@@ -1,6 +1,9 @@
 import {browser, by, element, protractor, ProtractorExpectedConditions} from 'protractor';
 import {Util} from '../util';
 
+/**
+ * Page object for the Application requests.
+ */
 export class FormularPage {
   private static SUBMIT_BTN: string = 'submit_btn';
   private static VERIFICATION_BTN: string = 'verification_btn';

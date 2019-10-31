@@ -18,10 +18,11 @@ import {Dissemination} from '../../../applications/application.model/disseminati
  * Application base component..
  */
 @Component({
+             selector: 'app-base',
              template: '',
              providers: [FacilityService, ApplicationsService, FlavorService]
            })
-export class ApplicationBaseClass extends AbstractBaseClasse {
+export class ApplicationBaseClassComponent extends AbstractBaseClasse {
 
   /**
    * If all Applications are loaded, important for the loader.
@@ -82,7 +83,7 @@ export class ApplicationBaseClass extends AbstractBaseClasse {
     }
   } = {};
 
-  extension_request = false;
+  extension_request: boolean = false;
 
   /**
    * If shortname is valid.
@@ -133,7 +134,7 @@ export class ApplicationBaseClass extends AbstractBaseClasse {
    * @returns {number}
    */
   getIdByStatus(name: string): number {
-    const s: number = -1;
+    const dummy: number = -1;
 
     for (const status of this.application_status) {
       if (status.application_status_name === name) {
@@ -141,7 +142,7 @@ export class ApplicationBaseClass extends AbstractBaseClasse {
       }
     }
 
-    return s;
+    return dummy;
   }
 
   /**
@@ -169,8 +170,9 @@ export class ApplicationBaseClass extends AbstractBaseClasse {
   calculateRamCores(): void {
     this.totalNumberOfCores = 0;
     this.totalRAM = 0;
+    // tslint:disable-next-line:forin
     for (const extensionFlavorsKey in this.newFlavors) {
-      let fl = this.newFlavors[extensionFlavorsKey];
+      const fl: any = this.newFlavors[extensionFlavorsKey];
       this.totalRAM = this.totalRAM + fl.flavor.ram * fl.counter;
       this.totalNumberOfCores = this.totalNumberOfCores + fl.flavor.vcpus * fl.counter;
     }
@@ -187,11 +189,12 @@ export class ApplicationBaseClass extends AbstractBaseClasse {
       }
 
     }
+
     return false
 
   }
 
-  setNewApplication(aj): Application {
+  setNewApplication(aj: any): Application {
 
     const newApp: Application = new Application();
     newApp.Id = aj['project_application_id'];
@@ -286,20 +289,19 @@ export class ApplicationBaseClass extends AbstractBaseClasse {
 
   createDisseminatenObject(obj: any): Dissemination {
     if (obj) {
-      const newDissemination: Dissemination = new Dissemination(obj['platform_newsletter'], obj['platform_landing_page'],
-                                                                obj['platform_portal_news'], obj['platform_twitter'],
-                                                                obj['information_title'], obj['information_resources'],
-                                                                obj['information_runtime'], obj['information_pi_name'],
-                                                                obj['information_instituition'], obj['information_workgroup'],
-                                                                obj['information_project_type'],
-                                                                obj['information_lifetime'], obj['information_project_affiliation'])
-      return newDissemination
+      return new Dissemination(obj['platform_newsletter'], obj['platform_landing_page'],
+                               obj['platform_portal_news'], obj['platform_twitter'],
+                               obj['information_title'], obj['information_resources'],
+                               obj['information_runtime'], obj['information_pi_name'],
+                               obj['information_instituition'], obj['information_workgroup'],
+                               obj['information_project_type'],
+                               obj['information_lifetime'], obj['information_project_affiliation'])
     } else {
       return null
     }
   }
 
-  setNewApplications(res): Application[] {
+  setNewApplications(res: any): Application[] {
     const newApplications: Application[] = [];
 
     for (const key in res) {
@@ -469,6 +471,7 @@ export class ApplicationBaseClass extends AbstractBaseClasse {
         return status.application_status_name;
       }
     }
+
     return dummy;
   }
 

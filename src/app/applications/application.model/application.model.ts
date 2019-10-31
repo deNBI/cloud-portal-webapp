@@ -47,7 +47,7 @@ export class Application {
   private _PI: string;
   private _PIElixir: string;
   private _PIEmail: string;
-  //todo own type!!!!!!!!!!!!
+  // todo own type!!!!!!!!!!!!
   private _CurrentFlavors: {
     [id: string]: {
       counter: number, tag: string, ram: number, rootdisk: number,

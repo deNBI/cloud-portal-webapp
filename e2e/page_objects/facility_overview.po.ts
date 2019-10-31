@@ -1,6 +1,9 @@
 import {by, element} from 'protractor';
 import {Util} from '../util';
 
+/**
+ * Facilityoverivew page.
+ */
 export class FacilityOverviewPage {
 
     private static FACILITY_OVERVIEW_URL: string = 'facility-manager/facilityApplications';
@@ -9,7 +12,6 @@ export class FacilityOverviewPage {
     private static NOTIFICATION_MESSAGE: string = 'notification_message';
     private static EXTENSION_APPROVAL_BTN_PREFIX: string = 'extension_approval_';
     private static EXTENSION_SUCCESSFULLY: string = 'Successfully approved the application modification.';
-
 
     static async navigateToFacilityOverview(): Promise<any> {
         console.log('Navigating to facility overview');
@@ -25,6 +27,5 @@ export class FacilityOverviewPage {
         await Util.clickElementById(this.EXTENSION_APPROVAL_BTN_PREFIX + application_name);
         await Util.waitForTextPresenceInElementById(this.NOTIFICATION_MESSAGE, this.EXTENSION_SUCCESSFULLY);
     }
-
 
 }

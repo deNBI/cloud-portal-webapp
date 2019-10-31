@@ -40,10 +40,10 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
 
   STATIC_IMG_FOLDER: String = 'static/webapp/assets/img/';
 
-  CPU_ICON_PATH: string = this.STATIC_IMG_FOLDER + '/new_instance/cpu_icon.svg';
-  RAM_ICON_PATH: string = this.STATIC_IMG_FOLDER + '/new_instance/ram_icon.svg';
-  STORAGE_ICON_PATH: string = this.STATIC_IMG_FOLDER + '/new_instance/storage_icon.svg';
-  GPU_ICON_PATH: string = this.STATIC_IMG_FOLDER + '/new_instance/gpu_icon.svg';
+  CPU_ICON_PATH: string = `${this.STATIC_IMG_FOLDER}/new_instance/cpu_icon.svg`;
+  RAM_ICON_PATH: string = `${this.STATIC_IMG_FOLDER}/new_instance/ram_icon.svg'`;
+  STORAGE_ICON_PATH: string = `${this.STATIC_IMG_FOLDER}/new_instance/storage_icon.svg`;
+  GPU_ICON_PATH: string = `${this.STATIC_IMG_FOLDER}/new_instance/gpu_icon.svg`;
 
   /**
    * Facilitties where the user is manager ['name',id].
@@ -161,7 +161,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
   }
 
   get_is_facility_manager(): void {
-    this.facilityService.getManagerFacilities().subscribe(result => {
+    this.facilityService.getManagerFacilities().subscribe((result: any) => {
       if (result.length > 0) {
         this.is_facility_manager = true;
       }
@@ -199,7 +199,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
    * Check if the snapshot name is valid.
    * @param e
    */
-  validSnapshotName(event): any {
+  validSnapshotName(event: any): any {
     this.snapshotNameCheckDone = false;
     this.imageService.checkSnapshotNameAvailable(this.snapshotName).subscribe((res: IResponseTemplate) => {
 
@@ -429,7 +429,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
    * Load vms depending on page.
    * @param event
    */
-  pageChanged(event): void {
+  pageChanged(event: any): void {
     this.isSearching = true;
 
     this.currentPage = event.page;
@@ -456,7 +456,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
       this.filterVmElixir_id,
       this.filterVmCreated_at,
       this.filterVmStopped_at)
-      .subscribe(vms => {
+      .subscribe((vms: any) => {
                    this.vms_content = vms['vm_list'];
                    this.total_pages = vms['total_items'];
                    this.items_per_page = vms['items_per_page'];
@@ -492,7 +492,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
       this.filterVmElixir_id,
       this.filterVmCreated_at,
       this.filterVmStopped_at)
-      .subscribe(vms => {
+      .subscribe((vms: VirtualMachine[]) => {
                    this.vms_content = vms['vm_list'];
                    this.total_pages = vms['total_items'];
                    this.items_per_page = vms['items_per_page'];
@@ -567,7 +567,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
                                         this.filterVmElixir_id,
                                         this.filterVmCreated_at,
                                         this.filterVmStopped_at)
-      .subscribe(vms => {
+      .subscribe((vms: VirtualMachine[]) => {
                    this.vms_content = vms['vm_list'];
                    this.total_pages = vms['total_items'];
                    this.items_per_page = vms['items_per_page'];
@@ -604,7 +604,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
     this.getVms();
     this.checkVOstatus();
     this.get_is_facility_manager();
-    this.facilityService.getManagerFacilities().subscribe(result => {
+    this.facilityService.getManagerFacilities().subscribe((result: any) => {
       this.managerFacilities = result;
       this.selectedFacility = this.managerFacilities[0];
     });
@@ -637,7 +637,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
       .pipe(
         debounceTime(this.DEBOUNCE_TIME),
         distinctUntilChanged())
-      .subscribe((event) => {
+      .subscribe((event: any) => {
         this.validSnapshotName(event);
       });
   }

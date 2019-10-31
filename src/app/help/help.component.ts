@@ -2,6 +2,9 @@ import {Component} from '@angular/core';
 import {UserService} from '../api-connector/user.service';
 import {IResponseTemplate} from '../api-connector/response-template';
 
+/**
+ * Help component.
+ */
 @Component({
     templateUrl: './help.component.html',
     providers: [UserService]
@@ -16,8 +19,7 @@ export class HelpComponent {
     public emailAdress: string;
     public emailReply: string = '';
 
-  title: string="Help";
-
+  title: string = 'Help';
 
   constructor(private userService: UserService) {
 

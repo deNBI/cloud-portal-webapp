@@ -6,7 +6,7 @@ import {ApiSettings} from '../api-connector/api-settings.service';
 import {Application} from '../applications/application.model/application.model';
 import {ApplicationStatusService} from '../api-connector/application-status.service';
 import {ApplicationsService} from '../api-connector/applications.service';
-import {ApplicationBaseClass} from '../shared/shared_modules/baseClass/application-base-class';
+import {ApplicationBaseClassComponent} from '../shared/shared_modules/baseClass/application-base-class.component';
 
 /**
  * Application component
@@ -19,7 +19,7 @@ import {ApplicationBaseClass} from '../shared/shared_modules/baseClass/applicati
                ApplicationsService, ApiSettings]
 
            })
-export class FacilityApplicationComponent extends ApplicationBaseClass implements OnInit {
+export class FacilityApplicationComponent extends ApplicationBaseClassComponent implements OnInit {
 
   title: string = 'Application Overview';
   /**
@@ -59,7 +59,7 @@ export class FacilityApplicationComponent extends ApplicationBaseClass implement
    */
   public approveExtension(app: Application): void {
 
-    this.applicationsservice.approveRenewal(app.Id).subscribe(result => {
+    this.applicationsservice.approveRenewal(app.Id).subscribe((result: any) => {
       if (result['Error']) {
         this.updateNotificationModal('Failed', 'Failed to approve the application modification.', true, 'danger');
       } else {
@@ -77,7 +77,7 @@ export class FacilityApplicationComponent extends ApplicationBaseClass implement
    */
   getAllApplicationsModifications(facility: number): void {
     this.isLoaded = false;
-    this.facilityService.getFacilityModificationApplicationsWaitingForConfirmation(facility).subscribe(res => {
+    this.facilityService.getFacilityModificationApplicationsWaitingForConfirmation(facility).subscribe((res: any) => {
       if (Object.keys(res).length === 0) {
         this.isLoaded = true;
       }
@@ -98,7 +98,7 @@ export class FacilityApplicationComponent extends ApplicationBaseClass implement
     this.applications_history = [];
 
     // todo check if user is VO Admin
-    this.facilityService.getFacilityApplicationsHistory(facility).subscribe(res => {
+    this.facilityService.getFacilityApplicationsHistory(facility).subscribe((res: any) => {
       if (Object.keys(res).length === 0) {
         this.isLoaded = true;
       }
@@ -115,7 +115,7 @@ export class FacilityApplicationComponent extends ApplicationBaseClass implement
   getAllApplicationsWFC(facility: number): void {
 
     // todo check if user is VO Admin
-    this.facilityService.getFacilityApplicationsWaitingForConfirmation(facility).subscribe(res => {
+    this.facilityService.getFacilityApplicationsWaitingForConfirmation(facility).subscribe((res: any) => {
       if (Object.keys(res).length === 0) {
         this.isLoaded = true;
       }
@@ -196,7 +196,7 @@ export class FacilityApplicationComponent extends ApplicationBaseClass implement
   }
 
   ngOnInit(): void {
-    this.facilityService.getManagerFacilities().subscribe(result => {
+    this.facilityService.getManagerFacilities().subscribe((result: any) => {
       this.managerFacilities = result;
       this.selectedFacility = this.managerFacilities[0];
       this.facilityService.getFacilityResources(this.selectedFacility['FacilityId']).subscribe();

@@ -6,7 +6,7 @@ import {Flavor} from '../virtualmachines/virtualmachinemodels/flavor';
 import {FlavorService} from '../api-connector/flavor.service';
 import {environment} from '../../environments/environment';
 import {FlavorType} from '../virtualmachines/virtualmachinemodels/flavorType';
-import {ApplicationBaseClass} from '../shared/shared_modules/baseClass/application-base-class';
+import {ApplicationBaseClassComponent} from '../shared/shared_modules/baseClass/application-base-class.component';
 import {ApplicationDissemination} from './application-dissemination';
 import {EdamOntologyTerm} from './edam-ontology-term';
 import {AutocompleteComponent} from 'angular-ng-autocomplete';
@@ -20,11 +20,9 @@ import {FullLayoutComponent} from '../layouts/full-layout.component';
              templateUrl: 'addsimplevm.component.html',
              providers: [FlavorService, ApiSettings, ApplicationsService]
            })
-export class AddsimplevmComponent extends ApplicationBaseClass implements OnInit {
+export class AddsimplevmComponent extends ApplicationBaseClassComponent implements OnInit {
 
-
-
-  title: string = "New SimpleVM Application";
+  title: string = 'New SimpleVM Application';
 
   public application_dissemination: ApplicationDissemination = new ApplicationDissemination();
 
@@ -105,7 +103,7 @@ export class AddsimplevmComponent extends ApplicationBaseClass implements OnInit
 
   }
 
-  selectEvent(item) {
+  selectEvent(item: any): void {
     if (this.selected_ontology_terms.indexOf(item) === -1) {
       this.selected_ontology_terms.push(item);
     }
@@ -202,7 +200,7 @@ export class AddsimplevmComponent extends ApplicationBaseClass implements OnInit
       }
 
       this.applicationsservice.addNewApplication(values).toPromise()
-        .then(application => {
+        .then((application: any) => {
           this.new_application_id = application['project_application_id'];
 
           if (this.project_application_report_allowed) {
