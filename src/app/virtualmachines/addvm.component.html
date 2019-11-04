@@ -53,7 +53,7 @@
               <div class="col-md-8">
                 <select required class="form-control" name="projectSelect"
                         [(ngModel)]="selectedProject" id="projectSelect"
-                        (ngModelChange)="getSelectedProjectClient();"
+                        (ngModelChange)="getSelectedProjectClient(); resetChecks();"
                 >
                   <option value="undefined" disabled selected hidden> Please
                     Select
@@ -372,18 +372,17 @@
                   </div>
                   <div *ngIf="hasTools" class="col"
                        [ngClass]="{
-                                'alert-danger': !respCheck.checked,
-                                'alert-success': respCheck.checked
+                                'alert-danger': !gaveOkay,
+                                'alert-success': gaveOkay
                                 }">
                     <div class="form-check">
                       <input class="form-check-input"
                              name="bioconda_need_okay"
                              type="checkbox"
                              id="bioconda_need_okay"
-                             ngModel
+                             [(ngModel)]="gaveOkay"
                              #respCheck
                              required
-                             (click)="setGaveOkay(respCheck.checked)"
                       >
                       <label class="form-check-label" for="bioconda_need_okay">
                         I hereby confirm that I read and acknowledge the following:<br>
@@ -421,6 +420,8 @@
           <p *ngIf="!gaveOkay && hasTools">- Give your okay to the Bioconda install process
 
           </p>
+          <p *ngIf="!gaveOkay">no okay</p>
+          <p *ngIf="hasTools"> tool baby</p>
         </div>
         <div class="form-group row"
              *ngIf="projectDataLoaded && selectedProjectVmsUsed < selectedProjectVmsMax && (flavors?.length > 0  || selectedFlavor)">
