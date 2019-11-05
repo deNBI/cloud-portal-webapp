@@ -256,6 +256,9 @@
 
                 </select></div>
             </div>
+            <div *ngIf="selectedProjectType == 'ALL'" class="alert alert-info" role="alert">
+              Selecting all project members will also post the content of the mail to the news service.
+            </div>
             <div class="form-group row">
               <label class="col-md-12 control-label"><strong>Email
                 subject*</strong></label>
@@ -348,7 +351,11 @@
       </div>
       <div class="modal-footer">
         <button class="btn  btn-success col-md-4"
-                (click)="sendMailToFacility(selectedFacility['FacilityId'],emailSubject,emailText,emailReply);verifyModal.hide();f.reset();resetEmailModal();successModal.show()">
+                (click)="sendMailToFacility(selectedFacility['FacilityId'],emailSubject,emailText,emailReply);
+                verifyModal.hide();
+                f.reset();
+                resetEmailModal();
+                successModal.show()">
           Yes
         </button>
         <button class="btn  btn-danger col-md-4" type="reset"
