@@ -420,8 +420,6 @@
           <p *ngIf="!gaveOkay && hasTools">- Give your okay to the Bioconda install process
 
           </p>
-          <p *ngIf="!gaveOkay">no okay</p>
-          <p *ngIf="hasTools"> tool baby</p>
         </div>
         <div class="form-group row"
              *ngIf="projectDataLoaded && selectedProjectVmsUsed < selectedProjectVmsMax && (flavors?.length > 0  || selectedFlavor)">
