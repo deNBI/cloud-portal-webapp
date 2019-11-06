@@ -199,7 +199,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
 
   /**
    * Check status of vm.
-   * @param {string} openstackid  of the instance
+   * @param {VirtualMachine} vm instance
    */
   checkStatus(vm: VirtualMachine): void {
     this.virtualmachineservice.checkVmStatus(vm.openstackid)
@@ -222,21 +222,16 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
       )
   }
 
-  applyFilterStatus(): void {
-    const vm_content_copy: VirtualMachine[] = [];
-    for (const vm of this.vms_content) {
-      const index: number = this.filter_status_list.indexOf(vm.status);
-      if (index !== -1) {
-        vm_content_copy.push(vm)
-      }
-
+  applyFilterStatus(vm: VirtualMachine): void {
+    const index: number = this.filter_status_list.indexOf(vm.status);
+    if (index === -1) {
+      this.vms_content.splice(this.vms_content.indexOf(vm), 1);
     }
-    this.vms_content = vm_content_copy;
   }
 
   /**
    * Delete VM.
-   * @param {string} openstack_id of instance
+   * @param {VirtualMachine} vm instance
    */
   deleteVm(vm: VirtualMachine): void {
     this.virtualmachineservice.deleteVM(vm.openstackid).subscribe((updated_vm: VirtualMachine) => {
@@ -253,7 +248,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
       }
 
       this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
-      this.applyFilterStatus();
+      this.applyFilterStatus(updated_vm);
       if (updated_vm.status === this.vm_statuses[this.vm_statuses.DELETED]) {
         this.status_changed = 1;
       } else {
