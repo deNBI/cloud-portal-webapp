@@ -90,7 +90,6 @@ export class HowToConnectComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     const currentItem: SimpleChange = changes.selectedVirtualMachine;
     const current: null | VirtualMachine = currentItem.currentValue;
-    console.log(current);
     if (current === null) {
       return;
     } else {
