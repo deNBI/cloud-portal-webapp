@@ -1,6 +1,7 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { TypeOverviewComponent } from './type-overview.component';
+import {TypeOverviewComponent} from './type-overview.component';
+// tslint:disable
 
 describe('TypeOverviewComponent', () => {
   let component: TypeOverviewComponent;
@@ -8,9 +9,9 @@ describe('TypeOverviewComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TypeOverviewComponent ]
-    })
-    .compileComponents();
+                                     declarations: [TypeOverviewComponent]
+                                   })
+      .compileComponents();
   }));
 
   beforeEach(() => {

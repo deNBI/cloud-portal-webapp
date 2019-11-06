@@ -1,3 +1,6 @@
+/**
+ * Userinfo class.
+ */
 export class Userinfo {
 
   private _Id: number;
@@ -9,7 +12,6 @@ export class Userinfo {
   private _UserLogin: string;
   private _Email: string;
   private _PendingEmails: string[];
-
 
   constructor(userInfo: any) {
     this._Id = userInfo.Id;
@@ -75,7 +77,7 @@ export class Userinfo {
     this._ElixirId = value;
   }
 
-  get ElxirId() {
+  get ElxirId(): string {
     return this._ElixirId
   }
 
@@ -83,7 +85,7 @@ export class Userinfo {
     this._PublicKey = value;
   }
 
-  get PublicKey() {
+  get PublicKey(): string {
     return this._PublicKey
   }
 
@@ -92,7 +94,7 @@ export class Userinfo {
     this._UserLogin = value;
   }
 
-  get UserLogin() {
+  get UserLogin(): string {
     return this._UserLogin
   }
 

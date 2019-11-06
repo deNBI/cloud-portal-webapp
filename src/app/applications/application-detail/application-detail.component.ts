@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Application} from '../application.model/application.model';
-import {ApplicationBaseClass} from '../../shared/shared_modules/baseClass/application-base-class';
+import {ApplicationBaseClassComponent} from '../../shared/shared_modules/baseClass/application-base-class.component';
 import {ApplicationsService} from '../../api-connector/applications.service';
 import {ApplicationStatusService} from '../../api-connector/application-status.service';
 import {UserService} from '../../api-connector/user.service';
@@ -10,6 +10,9 @@ import {ApplicationStatus} from '../application_status.model';
 import {ApiSettings} from '../../api-connector/api-settings.service';
 import {Subscription} from 'rxjs';
 
+/**
+ * Class which displays the details of an application.
+ */
 @Component({
              selector: 'app-application-detail',
              templateUrl: './application-detail.component.html',
@@ -17,7 +20,7 @@ import {Subscription} from 'rxjs';
              providers: [FacilityService, UserService, ApplicationStatusService,
                ApplicationsService, CreditsService]
            })
-export class ApplicationDetailComponent extends ApplicationBaseClass implements OnInit {
+export class ApplicationDetailComponent extends ApplicationBaseClassComponent implements OnInit {
   @Input() application: Application;
   @Input() isModification: boolean = false;
   creditsService: CreditsService;

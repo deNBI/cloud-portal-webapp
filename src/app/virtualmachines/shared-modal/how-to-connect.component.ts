@@ -1,12 +1,15 @@
-import {ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChange, SimpleChanges} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChange, SimpleChanges} from '@angular/core';
 import {VirtualMachine} from '../virtualmachinemodels/virtualmachine';
 import * as JSPDF from 'jspdf';
 import {VirtualmachineService} from '../../api-connector/virtualmachine.service';
 
+/**
+ * How to Connect moda body.
+ */
 @Component({
              selector: 'app-how-to-connect',
              templateUrl: 'how-to-connect.component.html',
-             providers: [VirtualmachineService],
+             providers: [VirtualmachineService]
            })
 export class HowToConnectComponent implements OnChanges {
   public _selectedVirtualMachine: VirtualMachine;
@@ -87,7 +90,6 @@ export class HowToConnectComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     const currentItem: SimpleChange = changes.selectedVirtualMachine;
     const current: null | VirtualMachine = currentItem.currentValue;
-    console.log(current);
     if (current === null) {
       return;
     } else {

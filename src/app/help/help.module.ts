@@ -7,18 +7,21 @@ import {FormsModule} from '@angular/forms';
 import {ModalModule} from 'ngx-bootstrap/modal';
 import {AlertModule} from 'ngx-bootstrap';
 
+/**
+ * Help module.
+ */
 @NgModule({
-    imports: [
-        HelpRoutingModule,
-        TabsModule,
-        CommonModule,
-        FormsModule, ModalModule.forRoot(),
-        AlertModule.forRoot()
-    ],
+            imports: [
+              HelpRoutingModule,
+              TabsModule,
+              CommonModule,
+              FormsModule, ModalModule.forRoot(),
+              AlertModule.forRoot()
+            ],
 
-    declarations: [
-        HelpComponent
-    ]
-})
+            declarations: [
+              HelpComponent
+            ]
+          })
 export class HelpModule {
 }

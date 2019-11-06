@@ -1,4 +1,4 @@
-export const environment = {
+export const environment: any = {
   wiki_group_invitations: 'https://cloud.denbi.de/wiki/portal/project_overview/#inviting-members',
   production: true,
   vo: 3335,

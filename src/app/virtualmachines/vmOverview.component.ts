@@ -38,12 +38,12 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
 
   selectedVm: VirtualMachine = null;
 
-  STATIC_IMG_FOLDER: String = 'static/webapp/assets/img/';
+  STATIC_IMG_FOLDER: String = 'static/webapp/assets/img';
 
-  CPU_ICON_PATH: string = this.STATIC_IMG_FOLDER + '/new_instance/cpu_icon.svg';
-  RAM_ICON_PATH: string = this.STATIC_IMG_FOLDER + '/new_instance/ram_icon.svg';
-  STORAGE_ICON_PATH: string = this.STATIC_IMG_FOLDER + '/new_instance/storage_icon.svg';
-  GPU_ICON_PATH: string = this.STATIC_IMG_FOLDER + '/new_instance/gpu_icon.svg';
+  CPU_ICON_PATH: string = `${this.STATIC_IMG_FOLDER}/new_instance/cpu_icon.svg`;
+  RAM_ICON_PATH: string = `${this.STATIC_IMG_FOLDER}/new_instance/ram_icon.svg`;
+  STORAGE_ICON_PATH: string = `${this.STATIC_IMG_FOLDER}/new_instance/storage_icon.svg`;
+  GPU_ICON_PATH: string = `${this.STATIC_IMG_FOLDER}/new_instance/gpu_icon.svg`;
 
   /**
    * Facilitties where the user is manager ['name',id].
@@ -161,7 +161,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
   }
 
   get_is_facility_manager(): void {
-    this.facilityService.getManagerFacilities().subscribe(result => {
+    this.facilityService.getManagerFacilities().subscribe((result: any) => {
       if (result.length > 0) {
         this.is_facility_manager = true;
       }
@@ -177,29 +177,10 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
   }
 
   /**
-   * Check status of all inactive vms.
-   */
-  checkInactiveVms(): void {
-    this.virtualmachineservice.checkStatusInactiveVms().subscribe(vms => {
-      this.vms_content = vms;
-      for (const vm of this.vms_content) {
-        if (vm.created_at !== '') {
-          vm.created_at = new Date(parseInt(vm.created_at, 10) * 1000).toLocaleDateString();
-        }
-        if (vm.stopped_at !== '' && vm.stopped_at !== this.vm_statuses[this.vm_statuses.ACTIVE]) {
-          vm.stopped_at = new Date(parseInt(vm.stopped_at, 10) * 1000).toLocaleDateString();
-        } else {
-          vm.stopped_at = ''
-        }
-      }
-    })
-  }
-
-  /**
    * Check if the snapshot name is valid.
    * @param e
    */
-  validSnapshotName(event): any {
+  validSnapshotName(event: any): any {
     this.snapshotNameCheckDone = false;
     this.imageService.checkSnapshotNameAvailable(this.snapshotName).subscribe((res: IResponseTemplate) => {
 
@@ -218,7 +199,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
 
   /**
    * Check status of vm.
-   * @param {string} openstackid  of the instance
+   * @param {VirtualMachine} vm instance
    */
   checkStatus(vm: VirtualMachine): void {
     this.virtualmachineservice.checkVmStatus(vm.openstackid)
@@ -241,20 +222,16 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
       )
   }
 
-  applyFilterStatus(): void {
-    const vm_content_copy: VirtualMachine[] = [];
-    for (const vm of this.vms_content) {
-      if (vm.status in this.filter_status_list || vm.status !== 'ACTIVE' && vm.status !== 'DELETED' && vm.status !== 'SUSPENDED') {
-        vm_content_copy.push(vm)
-      }
-
+  applyFilterStatus(vm: VirtualMachine): void {
+    const index: number = this.filter_status_list.indexOf(vm.status);
+    if (index === -1) {
+      this.vms_content.splice(this.vms_content.indexOf(vm), 1);
     }
-    this.vms_content = vm_content_copy;
   }
 
   /**
    * Delete VM.
-   * @param {string} openstack_id of instance
+   * @param {VirtualMachine} vm instance
    */
   deleteVm(vm: VirtualMachine): void {
     this.virtualmachineservice.deleteVM(vm.openstackid).subscribe((updated_vm: VirtualMachine) => {
@@ -271,7 +248,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
       }
 
       this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
-      this.applyFilterStatus();
+      this.applyFilterStatus(updated_vm);
       if (updated_vm.status === this.vm_statuses[this.vm_statuses.DELETED]) {
         this.status_changed = 1;
       } else {
@@ -429,7 +406,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
    * Load vms depending on page.
    * @param event
    */
-  pageChanged(event): void {
+  pageChanged(event: any): void {
     this.isSearching = true;
 
     this.currentPage = event.page;
@@ -456,7 +433,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
       this.filterVmElixir_id,
       this.filterVmCreated_at,
       this.filterVmStopped_at)
-      .subscribe(vms => {
+      .subscribe((vms: any) => {
                    this.vms_content = vms['vm_list'];
                    this.total_pages = vms['total_items'];
                    this.items_per_page = vms['items_per_page'];
@@ -492,7 +469,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
       this.filterVmElixir_id,
       this.filterVmCreated_at,
       this.filterVmStopped_at)
-      .subscribe(vms => {
+      .subscribe((vms: VirtualMachine[]) => {
                    this.vms_content = vms['vm_list'];
                    this.total_pages = vms['total_items'];
                    this.items_per_page = vms['items_per_page'];
@@ -567,7 +544,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
                                         this.filterVmElixir_id,
                                         this.filterVmCreated_at,
                                         this.filterVmStopped_at)
-      .subscribe(vms => {
+      .subscribe((vms: VirtualMachine[]) => {
                    this.vms_content = vms['vm_list'];
                    this.total_pages = vms['total_items'];
                    this.items_per_page = vms['items_per_page'];
@@ -604,7 +581,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
     this.getVms();
     this.checkVOstatus();
     this.get_is_facility_manager();
-    this.facilityService.getManagerFacilities().subscribe(result => {
+    this.facilityService.getManagerFacilities().subscribe((result: any) => {
       this.managerFacilities = result;
       this.selectedFacility = this.managerFacilities[0];
     });
@@ -637,7 +614,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
       .pipe(
         debounceTime(this.DEBOUNCE_TIME),
         distinctUntilChanged())
-      .subscribe((event) => {
+      .subscribe((event: any) => {
         this.validSnapshotName(event);
       });
   }

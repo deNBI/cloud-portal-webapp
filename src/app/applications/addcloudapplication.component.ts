@@ -6,7 +6,7 @@ import {FlavorService} from '../api-connector/flavor.service';
 import {Flavor} from '../virtualmachines/virtualmachinemodels/flavor';
 import {FlavorType} from '../virtualmachines/virtualmachinemodels/flavorType';
 import {environment} from '../../environments/environment';
-import {ApplicationBaseClass} from 'app/shared/shared_modules/baseClass/application-base-class';
+import {ApplicationBaseClassComponent} from 'app/shared/shared_modules/baseClass/application-base-class.component';
 import {EdamOntologyTerm} from './edam-ontology-term';
 import {AutocompleteComponent} from 'angular-ng-autocomplete';
 import {ApplicationDissemination} from './application-dissemination';
@@ -22,7 +22,7 @@ import {FullLayoutComponent} from '../layouts/full-layout.component';
              styleUrls: ['addcloudapplication.component.css']
            })
 
-export class AddcloudapplicationComponent extends ApplicationBaseClass implements OnInit {
+export class AddcloudapplicationComponent extends ApplicationBaseClassComponent implements OnInit {
 
   title: string = 'New OpenStack Application';
   /**
@@ -48,12 +48,6 @@ export class AddcloudapplicationComponent extends ApplicationBaseClass implement
    * @type {boolean}
    */
   public dissemination_information_open: boolean = true;
-
-  /**
-   * Boolean indicating whether platform selection accordion is open or not
-   * @type {boolean}
-   */
-  public dissemination_platforms_open: boolean = false;
 
   /**
    * List of all collapse booleans.
@@ -116,7 +110,9 @@ export class AddcloudapplicationComponent extends ApplicationBaseClass implement
    * Gets a list of all available types of flavors from the flavorservice and uses them in the function setListOfTypes
    */
   getListOfTypes(): void {
-    this.flavorservice.getListOfTypesAvailable().subscribe((types: FlavorType[]) => this.setListOfTypes(types));
+    this.flavorservice.getListOfTypesAvailable().subscribe((types: FlavorType[]) => {
+      this.setListOfTypes(types)
+    });
   }
 
   /**
@@ -150,7 +146,7 @@ export class AddcloudapplicationComponent extends ApplicationBaseClass implement
 
   }
 
-  selectEvent(item) {
+  selectEvent(item: any): void {
     if (this.selected_ontology_terms.indexOf(item) === -1) {
       this.selected_ontology_terms.push(item);
     }
@@ -186,9 +182,10 @@ export class AddcloudapplicationComponent extends ApplicationBaseClass implement
         }
       }
       this.applicationsservice.addNewApplication(values).toPromise()
-        .then(application => {
+        .then((application: any) => {
           if (this.project_application_report_allowed) {
-            this.applicationsservice.setApplicationDissemination(application['project_application_id'], this.application_dissemination).subscribe()
+            this.applicationsservice.setApplicationDissemination(application['project_application_id'],
+                                                                 this.application_dissemination).subscribe()
 
           }
           this.new_application_id = application['project_application_id'];

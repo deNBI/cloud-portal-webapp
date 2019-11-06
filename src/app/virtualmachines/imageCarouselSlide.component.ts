@@ -1,6 +1,9 @@
 import {Component, EventEmitter, HostListener, Input, OnInit, Output} from '@angular/core';
 import {Image} from './virtualmachinemodels/image'
 
+/**
+ * Image carousel slide.
+ */
 @Component({
              selector: 'app-image-slide',
              templateUrl: 'imageCarouselSlide.component.html',

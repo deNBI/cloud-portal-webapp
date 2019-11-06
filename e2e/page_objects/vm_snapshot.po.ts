@@ -1,10 +1,14 @@
 import {browser} from 'protractor';
 import {Util} from '../util';
 
+/**
+ * Snapshot Overview page.
+ */
 export class SnapshotOverviewPage {
 
   private static SNAPSHOT_OVERVIEW_URL: string = 'virtualmachines/snapshotOverview';
   private static TABLE_ID: string = 'snapshot_table';
+  private static SNAPSHOT_ACTIVE_PREFIX: string = 'snapshot_active_';
   private static DELETE_BUTTON_PREFIX: string = 'delete_button_';
   private static DELETE_MODAL: string = 'delete_modal';
   private static DELETE_SUCCESS: string = 'delete_success';
@@ -40,6 +44,17 @@ export class SnapshotOverviewPage {
 
   static async isBasicSnapshotPresent(): Promise<boolean> {
     return await this.isSnapshotPresent(Util.BASIC_SNAPSHOT_NAME);
+  }
+
+  static async isSnapshotActive(name: string): Promise<boolean> {
+    Util.logMethodCall(`Checking if snapshot ${name} is active`);
+    await Util.waitForPresenceOfElementById(this.TABLE_ID, 1000000);
+
+    return await Util.waitForPresenceOfElementById(`${this.SNAPSHOT_ACTIVE_PREFIX}${name}`);
+  }
+
+  static async isBasicSnapshotActive(): Promise<boolean> {
+    return await this.isSnapshotActive(Util.BASIC_SNAPSHOT_NAME);
   }
 
   static async deleteSnapshot(name: string): Promise<any> {

@@ -1,3 +1,6 @@
+/**
+ * Edam ontology term class.
+ */
 export class EdamOntologyTerm {
 
   private _name: string;

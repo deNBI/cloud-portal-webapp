@@ -3,7 +3,7 @@ import {Image} from './virtualmachinemodels/image';
 import {Flavor} from './virtualmachinemodels/flavor';
 import {ImageService} from '../api-connector/image.service';
 import {FlavorService} from '../api-connector/flavor.service';
-import {forkJoin, of} from 'rxjs';
+import {forkJoin} from 'rxjs';
 import {VirtualmachineService} from '../api-connector/virtualmachine.service';
 import {ApplicationsService} from '../api-connector/applications.service'
 import {Userinfo} from '../userinfo/userinfo.model';
@@ -59,8 +59,6 @@ export class VirtualMachineComponent implements OnInit {
   is_vo: boolean = false;
   hasTools: boolean = false;
   gaveOkay: boolean = false;
-  informationButton: string = 'Show Details';
-  informationButton2: string = 'Show Details';
   client_checked: boolean = false;
   playbook_run: number = 0;
   timeout: number = 0;
@@ -68,7 +66,6 @@ export class VirtualMachineComponent implements OnInit {
   title: string = 'New Instance';
 
   vm_name: string;
-
 
   started_machine: boolean = false;
 
@@ -160,23 +157,10 @@ export class VirtualMachineComponent implements OnInit {
   client_avaiable: boolean = false;
 
   /**
-   * If the public key is valid.
-   */
-  validPublickey: boolean;
-
-  /**
    * Default volume name.
    * @type {string}
    */
   volumeName: string = '';
-
-  /**
-   * If optional params are shown.
-   * @type {boolean}
-   */
-  optional_params: boolean = false;
-
-  bioconda_show: boolean = false;
 
   /**
    * Default diskspace.
@@ -194,7 +178,7 @@ export class VirtualMachineComponent implements OnInit {
    * All projects of the user.
    * @type {any[]}
    */
-  projects: string[] = new Array();
+  projects: string[] = [];
 
   /**
    * If all project data is loaded.
@@ -230,7 +214,7 @@ export class VirtualMachineComponent implements OnInit {
 
     this.imageService.getImages(project_id).subscribe((images: Image[]) => {
       this.images = images;
-      this.images.sort((x, y) => Number(x.is_snapshot) - Number(y.is_snapshot));
+      this.images.sort((x_cord: any, y_cord: any) => Number(x_cord.is_snapshot) - Number(y_cord.is_snapshot));
     });
   }
 
@@ -252,39 +236,6 @@ export class VirtualMachineComponent implements OnInit {
   validatePublicKey(): boolean {
 
     return /ssh-rsa AAAA[0-9A-Za-z+/]+[=]{0,3}( [^@]+@[^@]+)?/.test(this.userinfo.PublicKey)
-
-  }
-
-  /**
-   * Get the public key of the user.
-   */
-  getUserPublicKey(): void {
-    this.keyservice.getKey().subscribe((key: IResponseTemplate) => {
-      this.userinfo.PublicKey = <string>key.value;
-    })
-  }
-
-  /**
-   * Toggle information button 1.
-   */
-  toggleInformationButton(): void {
-    if (this.informationButton === 'Show Details') {
-      this.informationButton = 'Hide Details';
-    } else {
-      this.informationButton = 'Show Details';
-    }
-
-  }
-
-  /**
-   * Toggle information button 2.
-   */
-  toggleInformationButton2(): void {
-    if (this.informationButton2 === 'Show Details') {
-      this.informationButton2 = 'Hide Details';
-    } else {
-      this.informationButton2 = 'Show Details';
-    }
 
   }
 
@@ -360,6 +311,7 @@ export class VirtualMachineComponent implements OnInit {
   startVM(flavor: string, image: string, servername: string, project: string, projectid: string | number): void {
     this.create_error = null;
     this.vm_name = null;
+    // tslint:disable-next-line:no-complex-conditionals
     if (image && flavor && servername && project && (this.diskspace <= 0 || this.diskspace > 0 && this.volumeName.length > 0)) {
       this.create_error = null;
       this.started_machine = true;
@@ -395,6 +347,12 @@ export class VirtualMachineComponent implements OnInit {
             }
             this.check_status_loop(newVm.openstackid);
 
+          } else if (newVm.status === 'mutex_locked') {
+            setTimeout(
+              () => {
+                this.startVM(flavor, image, servername, project, projectid)
+              },
+              1000)
           } else if (newVm.status) {
             this.progress_bar_status = this.CREATING_STATUS;
             this.newVm = newVm;
@@ -434,7 +392,6 @@ export class VirtualMachineComponent implements OnInit {
   /**
    * Get the client from the selected project.
    * If connected geht vm,volumes etc.
-   * @param {number} groupid
    */
   getSelectedProjectClient(): void {
     this.client_checked = false;
@@ -471,10 +428,10 @@ export class VirtualMachineComponent implements OnInit {
    * Gets all groups of the user and his key.
    */
   initializeData(): void {
-    forkJoin(this.groupService.getSimpleVmByUser(), this.userservice.getUserInfo()).subscribe(result => {
+    forkJoin(this.groupService.getSimpleVmByUser(), this.userservice.getUserInfo()).subscribe((result: any) => {
       this.userinfo = new Userinfo(result[1]);
       this.validatePublicKey();
-      const membergroups = result[0];
+      const membergroups: any = result[0];
       for (const project of membergroups) {
         this.projects.push(project);
 
@@ -490,7 +447,7 @@ export class VirtualMachineComponent implements OnInit {
     this.images = [];
     this.selectedImage = undefined;
     this.selectedFlavor = undefined;
-    this.groupService.getGroupResources(this.selectedProject[1].toString()).subscribe(res => {
+    this.groupService.getGroupResources(this.selectedProject[1].toString()).subscribe((res: any) => {
       this.selectedProjectVmsMax = res['number_vms'];
       this.selectedProjectVmsUsed = res['used_vms'];
       this.selectedProjectDiskspaceMax = res['max_volume_storage'];
@@ -518,45 +475,6 @@ export class VirtualMachineComponent implements OnInit {
 
   }
 
-  /**
-   * Get vms diskpace and used from the selected project.
-   */
-  getSelectedProjectDiskspace(): void {
-    forkJoin(
-      this.groupService.getGroupMaxDiskspace(this.selectedProject[1].toString()),
-      this.groupService.getGroupUsedDiskspace(this.selectedProject[1].toString())).subscribe((res: IResponseTemplate[]) => {
-      this.selectedProjectDiskspaceMax = <number>res[0].value;
-      this.selectedProjectDiskspaceUsed = <number>res[1].value;
-    })
-  }
-
-  /**
-   * Get volumes max and used from the selected project.
-   */
-  getSelectedProjectVolumes(): void {
-    forkJoin(
-      this.groupService.getVolumeCounter(this.selectedProject[1].toString()),
-      this.groupService.getVolumesUsed(this.selectedProject[1].toString())).subscribe((res: IResponseTemplate[]) => {
-      this.selectedProjectVolumesMax = <number>res[0].value;
-      this.selectedProjectVolumesUsed = <number>res[1].value;
-
-    })
-  }
-
-  /**
-   * Get vms max and used from the selected project.
-   */
-  getSelectedProjectVms(): void {
-    forkJoin(
-      this.groupService.getGroupApprovedVms(this.selectedProject[1].toString()),
-      this.groupService.getGroupUsedVms(this.selectedProject[1].toString())).subscribe((res: IResponseTemplate[]) => {
-      this.selectedProjectVmsMax = <number>res[0].value;
-      this.selectedProjectVmsUsed = <number>res[1].value
-
-    })
-
-  }
-
   ngOnInit(): void {
     this.initializeData();
     this.voService.isVo().subscribe((result: IResponseTemplate) => {
@@ -569,11 +487,12 @@ export class VirtualMachineComponent implements OnInit {
     this.hasTools = hasSomeTools;
   }
 
-  setGaveOkay(checked: boolean): void {
-    this.gaveOkay = checked;
-  }
-
   getTimeoutMinutes(): number {
     return Math.ceil(this.timeout / 60);
+  }
+
+  resetChecks(): void {
+    this.gaveOkay = false;
+    this.hasTools = false;
   }
 }

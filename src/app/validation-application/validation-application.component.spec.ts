@@ -1,6 +1,8 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ValidationApplicationComponent } from './validation-application.component';
+import {ValidationApplicationComponent} from './validation-application.component';
+
+// tslint:disable
 
 describe('ValidationApplicationComponent', () => {
   let component: ValidationApplicationComponent;
@@ -8,9 +10,9 @@ describe('ValidationApplicationComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ValidationApplicationComponent ]
-    })
-    .compileComponents();
+                                     declarations: [ValidationApplicationComponent]
+                                   })
+      .compileComponents();
   }));
 
   beforeEach(() => {

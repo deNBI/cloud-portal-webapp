@@ -43,7 +43,6 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
   public selectedProjectSnapshots: SnapshotModel[] = [];
   computecenters: ComputecenterComponent[] = [];
 
-
   selectedProjectType: string = 'ALL';
   selectedFacility: string | number = 'ALL';
 
@@ -65,7 +64,11 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
 
   // public selectedFacility: [string, number];
 
-  constructor(private fullLayout: FullLayoutComponent, private sanitizer: DomSanitizer, private voserice: VoService, private groupservice: GroupService, private facilityService: FacilityService) {
+  constructor(private fullLayout: FullLayoutComponent,
+              private sanitizer: DomSanitizer,
+              private voserice: VoService,
+              private groupservice: GroupService,
+              private facilityService: FacilityService) {
     super();
 
   }
@@ -166,8 +169,8 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
 
   getVoProjects(): void {
     this.projects = [];
-    this.voserice.getAllGroupsWithDetails().subscribe(result => {
-      const vo_projects = result;
+    this.voserice.getAllGroupsWithDetails().subscribe((result: any) => {
+      const vo_projects: any = result;
       for (const group of vo_projects) {
         const dateCreated: moment.Moment = moment.unix(group['createdAt']);
         const dateDayDifference: number = Math.ceil(moment().diff(dateCreated, 'days', true));
@@ -176,7 +179,7 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
         const currentCredits: number = Number(group['current_credits']);
         const approvedCredits: number = Number(group['approved_credits']);
         const groupid: number = group['id'];
-        const facility = group['compute_center'];
+        const facility: any = group['compute_center'];
         let shortname: string = group['shortname'];
         if (!shortname) {
           shortname = group['name']
@@ -252,7 +255,7 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
    * Get all computecenters.
    */
   getComputeCenters(): void {
-    this.facilityService.getComputeCenters().subscribe(result => {
+    this.facilityService.getComputeCenters().subscribe((result: any) => {
       for (const cc of result) {
         const compute_center: ComputecenterComponent = new ComputecenterComponent(
           cc['compute_center_facility_id'], cc['compute_center_name'],
@@ -271,7 +274,7 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
   }
 
   public getProjectDetails(): void {
-    this.voserice.getProjectDetails(this.selectedProject.Id).subscribe(res => {
+    this.voserice.getProjectDetails(this.selectedProject.Id).subscribe((res: any) => {
       this.selectedProjectVms = res['vms'];
       this.selectedProjectVolumes = res['volumes'];
       this.selectedProjectSnapshots = res['snapshots'];
@@ -356,7 +359,7 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
 
   getMembesOfTheProject(projectid: number, projectname: string): void {
     this.voserice.getVoGroupRichMembers(projectid)
-      .subscribe(members => {
+      .subscribe((members: any) => {
                    this.usersModalProjectID = projectid;
                    this.usersModalProjectName = projectname;
                    this.usersModalProjectMembers = new Array();

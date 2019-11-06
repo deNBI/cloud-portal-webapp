@@ -161,8 +161,13 @@ export class FacilityService {
    * @param {string} description
    * @returns {Observable<any>}
    */
+  // tslint:disable-next-line:max-line-length
   addCoresFactor(facility: number | string, cores: number | string, factor: number | string, description: string): Observable<CoreFactor[]> {
-    const params: HttpParams = new HttpParams().set('type', 'cores').set('cores', cores.toString()).set('factor', factor.toString()).set('description', description);
+    const params: HttpParams = new HttpParams()
+      .set('type', 'cores')
+      .set('cores', cores.toString())
+      .set('factor', factor.toString())
+      .set('description', description);
 
     return this.http.post<CoreFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/coreFactors/`, params, {
       withCredentials: true,
@@ -179,7 +184,11 @@ export class FacilityService {
    * @returns {Observable<any>}
    */
   addRamFactor(facility: number | string, ram: number | string, factor: number | string, description: string): Observable<RamFactor[]> {
-    const params: HttpParams = new HttpParams().set('type', 'ram').set('ram', ram.toString()).set('factor', factor.toString()).set('description', description);
+    const params: HttpParams = new HttpParams().
+    set('type', 'ram').
+    set('ram', ram.toString()).
+    set('factor', factor.toString()).
+    set('description', description);
 
     return this.http.post<RamFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/ramFactors/`, params, {
       withCredentials: true,

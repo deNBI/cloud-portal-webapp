@@ -1,6 +1,9 @@
 import {browser, by, element} from 'protractor';
 import {Util} from '../util';
 
+/**
+ * Instance Overview Page.
+ */
 export class VMOverviewPage {
 
   private VM_OVERVIEW_URL: string = 'virtualmachines/vmOverview';
@@ -71,6 +74,7 @@ export class VMOverviewPage {
     Util.logMethodCall(`Checking if ${name} is active`);
 
     await Util.waitForPresenceOfElementById(this.TABLE_ID);
+
     return await Util.waitForPresenceOfElementById(`${this.ACTIVE_BADGE_PREFIX}${name}`);
   }
 
@@ -82,11 +86,13 @@ export class VMOverviewPage {
     Util.logMethodCall(`Checking active for ${this.name_counter} active vm`);
 
     for (const key in this.vm_names) {
-      const val = this.vm_names[key];
-      console.log(`Key: ${key} Value: ${val}`);
-      this.name_counter -= 1;
-      if (await !this.isVmActive(val)) {
-        return false;
+      if (key in this.vm_names) {
+        const val: any = this.vm_names[key];
+        console.log(`Key: ${key} Value: ${val}`);
+        this.name_counter -= 1;
+        if (!this.isVmActive(val)) {
+          return false;
+        }
       }
     }
 
@@ -140,9 +146,9 @@ export class VMOverviewPage {
       this.SHUTOFF_SUCCESS
     );
     await Util.clickElementById(this.CLOSE_STOP_MODAL);
-    browser.sleep(1000);
+    await browser.sleep(1000);
 
-    console.log(`Shutoff method for ${name} completed`)
+    Util.logMethodCall(`Shutoff method for ${name} completed`)
   }
 
   async shutOffBasicVM(): Promise<any> {
@@ -160,8 +166,8 @@ export class VMOverviewPage {
       this.RESUME_SUCCESS
     );
     await Util.clickElementById(this.CLOSE_RESUME_MODAL);
-    browser.sleep(1000);
-    console.log(`Resuming method for ${name} completed`)
+    await browser.sleep(1000);
+    Util.logMethodCall(`Resuming method for ${name} completed`)
   }
 
   async resumeBasicVM(): Promise<any> {

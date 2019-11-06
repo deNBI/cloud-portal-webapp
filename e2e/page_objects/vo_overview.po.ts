@@ -1,6 +1,9 @@
 import {browser, by, element, ElementFinder} from 'protractor';
 import {Util} from '../util';
 
+/**
+ *  Vo Overview Page.
+ */
 export class VoOverviewPage {
 
   private static VO_OVERVIEW_URL: string = 'vo-manager/overview';
@@ -13,19 +16,19 @@ export class VoOverviewPage {
   private static TERMINATE_BUTTON_TEXT: string = 'Terminate Project';
 
   static async navigateToVolumeOverview(): Promise<any> {
-    await Util.logMethodCall('Navigating to vo overview');
+    Util.logMethodCall('Navigating to vo overview');
     await Util.navigateToAngularPage(this.VO_OVERVIEW_URL);
   }
 
   static async filterForPTProjets(): Promise<any> {
-    await Util.logMethodCall('Filter for PT Projects');
+    Util.logMethodCall('Filter for PT Projects');
     await Util.sendTextToElementById(this.FILTER_PROJECT_NAME_INPUT, 'PT');
-    browser.sleep(2000)
+    await browser.sleep(2000)
   }
 
   static async getAllPTProjects(): Promise<any> {
-    await Util.logMethodCall('Get all PT projects');
-    let ele = await element(by.buttonText(this.TERMINATE_BUTTON_TEXT));
+    Util.logMethodCall('Get all PT projects');
+    const ele: any = element(by.buttonText(this.TERMINATE_BUTTON_TEXT));
     while (await ele.isPresent()) {
       await this.terminateProject(ele);
       await this.navigateToVolumeOverview();
@@ -36,13 +39,13 @@ export class VoOverviewPage {
   }
 
   static async terminateProject(terminateBtnId: Element): Promise<any> {
-    await Util.logMethodCall(`Terminate Project ${terminateBtnId}`);
+    Util.logMethodCall(`Terminate Project ${terminateBtnId}`);
 
     await Util.clickElementByElement(terminateBtnId);
     await Util.clickElementById(this.TERMINATE_PROJECT_BTN);
     await Util.waitForTextPresenceInElementById(this.NOTIFICATION_MESSAGE, this.PROJECT_TERMINATED_MESSAGE);
     await Util.clickElementById(this.CLOSE_NOTIFICATION_BTN);
-    browser.sleep(10000)
+    await browser.sleep(10000)
 
   }
 

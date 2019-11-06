@@ -1,184 +1,186 @@
 import {ProjectMemberApplication} from './project_member_application';
 import {ComputecenterComponent} from './computecenter.component';
 
+/**
+ * Project class.
+ */
 export class Project {
-    get UserIsAdmin(): boolean {
-        return this._UserIsAdmin;
-    }
 
-    set UserIsAdmin(value: boolean) {
-        this._UserIsAdmin = value;
-    }
+  get UserIsAdmin(): boolean {
+    return this._UserIsAdmin;
+  }
 
-    private _Id: number | string;
-    private _Name: string;
-    private _Description: string;
-    private _DateCreated: string;
-    private _DateEnd: string;
-    private _DaysRunning: number;
-    private _LifetimeDays: number;
-    private _Lifetime: number | string;
-    private _UserIsAdmin: boolean;
-    private _UserIsPi: boolean;
-    private _Status: number;
-    private _ComputeCenter: ComputecenterComponent;
-    private _PerunId: number;
-    private _ProjectMemberApplications: ProjectMemberApplication[];
-    private _RealName: string;
-    private _OpenStackProject: boolean;
-    private _LifetimeReached: number;
-    private _CurrentCredits: number;
-    private _ApprovedCredits: number;
+  set UserIsAdmin(value: boolean) {
+    this._UserIsAdmin = value;
+  }
 
-    constructor(Id: number | string, Name: string, Description: string, DateCreated: string, DaysRunning: number,
-                UserIsAdmin: boolean, UserIsPi: boolean, ComputeCenter: ComputecenterComponent, CurrentCredits: number, ApprovedCredits: number) {
-        this._Id = Id;
-        this._Name = Name;
-        this._Description = Description;
-        this._DateCreated = DateCreated;
-        this._DaysRunning = DaysRunning;
-        this._UserIsAdmin = UserIsAdmin;
-        this._UserIsPi = UserIsPi;
-        this._ComputeCenter = ComputeCenter;
-        this._ApprovedCredits = ApprovedCredits;
-        this._CurrentCredits = CurrentCredits;
-    }
+  private _Id: number | string;
+  private _Name: string;
+  private _Description: string;
+  private _DateCreated: string;
+  private _DateEnd: string;
+  private _DaysRunning: number;
+  private _LifetimeDays: number;
+  private _Lifetime: number | string;
+  private _UserIsAdmin: boolean;
+  private _UserIsPi: boolean;
+  private _Status: number;
+  private _ComputeCenter: ComputecenterComponent;
+  private _PerunId: number;
+  private _ProjectMemberApplications: ProjectMemberApplication[];
+  private _RealName: string;
+  private _OpenStackProject: boolean;
+  private _LifetimeReached: number;
+
+  private _CurrentCredits: number;
+  private _ApprovedCredits: number;
+
+  constructor(Id: number | string, Name: string, Description: string, DateCreated: string, DaysRunning: number,
+              UserIsAdmin: boolean, UserIsPi: boolean, ComputeCenter: ComputecenterComponent,
+              CurrentCredits: number, ApprovedCredits: number) {
+    this._Id = Id;
+    this._Name = Name;
+    this._Description = Description;
+    this._DateCreated = DateCreated;
+    this._DaysRunning = DaysRunning;
+    this._UserIsAdmin = UserIsAdmin;
+    this._UserIsPi = UserIsPi;
+    this._ComputeCenter = ComputeCenter;
+    this._ApprovedCredits = ApprovedCredits;
+    this._CurrentCredits = CurrentCredits;
+  }
 
 // todo exdend with additional information
 
+  get LifetimeReached(): number {
+    return this._LifetimeReached
+  }
 
+  set LifetimeReached(value: number) {
+    this._LifetimeReached = value;
+  }
 
+  get RealName(): string {
 
-    get LifetimeReached(): number {
-        return this._LifetimeReached
-    }
+    return this._RealName
+  }
 
-    set LifetimeReached(value: number) {
-        this._LifetimeReached = value;
-    }
+  set RealName(value: string) {
+    this._RealName = value;
+  }
 
-    get RealName(): string {
+  get Status(): number {
+    return this._Status;
+  }
 
-        return this._RealName
-    }
+  set Status(value: number) {
+    this._Status = value;
 
-    set RealName(value: string) {
-        this._RealName = value;
-    }
+  }
 
-    get Status(): number {
-        return this._Status;
-    }
+  get ProjectMemberApplications(): ProjectMemberApplication[] {
+    return this._ProjectMemberApplications;
+  }
 
-    set Status(value: number) {
-        this._Status = value;
+  set ProjectMemberApplications(value: ProjectMemberApplication[]) {
+    this._ProjectMemberApplications = value;
+  }
 
-    }
+  get LifetimeDays(): number {
+    return this._LifetimeDays
+  }
 
+  set LifetimeDays(value: number) {
+    this._LifetimeDays = value;
+  }
 
-    get ProjectMemberApplications(): ProjectMemberApplication[] {
-        return this._ProjectMemberApplications;
-    }
+  get OpenStackProject(): boolean {
+    return this._OpenStackProject
+  }
 
-    set ProjectMemberApplications(value: ProjectMemberApplication[]) {
-        this._ProjectMemberApplications = value;
-    }
+  set OpenStackProject(value: boolean) {
+    this._OpenStackProject = value;
+  }
 
-    get LifetimeDays(): number {
-        return this._LifetimeDays
-    }
+  set Lifetime(value: number | string) {
+    this._Lifetime = value;
+  }
 
-    set LifetimeDays(value: number) {
-        this._LifetimeDays = value;
-    }
+  get Lifetime(): number | string {
+    return this._Lifetime;
+  }
 
-    get OpenStackProject(): boolean {
-        return this._OpenStackProject
-    }
+  get ComputeCenter(): ComputecenterComponent {
+    return this._ComputeCenter
+  }
 
-    set OpenStackProject(value: boolean) {
-        this._OpenStackProject = value;
-    }
+  set ComputeCenter(value: ComputecenterComponent) {
+    this._ComputeCenter = value;
+  }
 
-    set Lifetime(value: number | string) {
-        this._Lifetime = value;
-    }
+  get PerunId(): number {
+    return this._PerunId;
+  }
 
-    get Lifetime(): number | string {
-        return this._Lifetime;
-    }
+  set PerunId(value: number) {
+    this._PerunId = value;
+  }
 
-    get ComputeCenter(): ComputecenterComponent {
-        return this._ComputeCenter
-    }
+  set Id(value: number | string) {
+    this._Id = value;
+  }
 
-    set ComputeCenter(value: ComputecenterComponent) {
-        this._ComputeCenter = value;
-    }
+  get Id(): number | string {
+    return this._Id;
+  }
 
-    get PerunId(): number {
-        return this._PerunId;
-    }
+  get Name(): string {
+    return this._Name;
+  }
 
-    set PerunId(value: number) {
-        this._PerunId = value;
-    }
+  set Name(value: string) {
+    this._Name = value;
+  }
 
-    set Id(value: number | string) {
-        this._Id = value;
-    }
+  get Description(): string {
+    return this._Description;
+  }
 
-    get Id(): number | string {
-        return this._Id;
-    }
+  set Description(value: string) {
+    this._Description = value;
+  }
 
-    get Name(): string {
-        return this._Name;
-    }
+  get DateCreated(): string {
+    return this._DateCreated;
+  }
 
-    set Name(value: string) {
-        this._Name = value;
-    }
+  set DateCreated(value: string) {
+    this._DateCreated = value;
+  }
 
-    get Description(): string {
-        return this._Description;
-    }
+  get DateEnd(): string {
+    return this._DateEnd;
+  }
 
-    set Description(value: string) {
-        this._Description = value;
-    }
+  set DateEnd(value: string) {
+    this._DateEnd = value;
+  }
 
-    get DateCreated(): string {
-        return this._DateCreated;
-    }
+  get DaysRunning(): number {
+    return this._DaysRunning;
+  }
 
-    set DateCreated(value: string) {
-        this._DateCreated = value;
-    }
+  set DaysRunning(value: number) {
+    this._DaysRunning = value;
+  }
 
-    get DateEnd(): string {
-        return this._DateEnd;
-    }
+  get UserIsPi(): boolean {
+    return this._UserIsPi;
+  }
 
-    set DateEnd(value: string) {
-        this._DateEnd = value;
-    }
-
-    get DaysRunning(): number {
-        return this._DaysRunning;
-    }
-
-    set DaysRunning(value: number) {
-        this._DaysRunning = value;
-    }
-
-    get UserIsPi(): boolean {
-        return this._UserIsPi;
-    }
-
-    set UserIsPi(value: boolean) {
-        this._UserIsPi = value;
-    }
+  set UserIsPi(value: boolean) {
+    this._UserIsPi = value;
+  }
 
   get CurrentCredits(): number {
     return this._CurrentCredits;

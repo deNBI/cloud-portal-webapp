@@ -33,6 +33,9 @@ enum Vm_Statuses {
   'NOT FOUND' = 7
 }
 
+/**
+ * Abstract class for basic things.
+ */
 export abstract class AbstractBaseClasse {
 
   /**
@@ -50,46 +53,29 @@ export abstract class AbstractBaseClasse {
   lifetime_states: typeof Lifetime_States = Lifetime_States;
   project_states: typeof Project_States = Project_States;
   application_states: typeof Application_States = Application_States;
-  vm_statuses = Vm_Statuses;
+  vm_statuses: typeof Vm_Statuses = Vm_Statuses;
 
   collapse_status: { [id: string]: boolean } = {};
 
   // notification Modal variables
-  public notificationModal;
-  public notificationModalTitle = 'Notification';
-  public notificationModalMessage = 'Please wait...';
-  public notificationModalType = 'info';
-  public notificationModalInfoMessage = '';
-  public notificationModalIsClosable = false;
+  public notificationModalTitle: string = 'Notification';
+  public notificationModalMessage: string = 'Please wait...';
+  public notificationModalType: string = 'info';
+  public notificationModalInfoMessage: string = '';
+  public notificationModalIsClosable: boolean = false;
   public notificationModalStay: boolean;
 
-  public resetNotificationModal() {
+  public resetNotificationModal(): void {
     this.notificationModalTitle = 'Notification';
     this.notificationModalMessage = 'Please wait...';
     this.notificationModalIsClosable = false;
     this.notificationModalType = 'info';
   }
 
-  public updateNotificationModal(title: string, message: string, closable: true, type: string) {
+  public updateNotificationModal(title: string, message: string, closable: true, type: string): void {
     this.notificationModalTitle = title;
     this.notificationModalMessage = message;
     this.notificationModalIsClosable = closable;
-    this.notificationModalType = type;
-  }
-
-  public makeNotificationModalClosable(closable: boolean) {
-    this.notificationModalIsClosable = closable;
-  }
-
-  public changeNotificationModalTitle(title: string) {
-    this.notificationModalTitle = title;
-  }
-
-  public changeNotificationModalMessage(message: string) {
-    this.notificationModalMessage = message;
-  }
-
-  public changeNotificationModalType(type: string) {
     this.notificationModalType = type;
   }
 
@@ -98,7 +84,7 @@ export abstract class AbstractBaseClasse {
    * @param {string} id
    * @returns {boolean}
    */
-  public getCollapseStatus(id: string) {
+  public getCollapseStatus(id: string): boolean {
     if (id in this.collapse_status) {
       return this.collapse_status[id];
     } else {
@@ -118,7 +104,7 @@ export abstract class AbstractBaseClasse {
    * Switch status of collapse.
    * @param {string} id
    */
-  public switchCollapseStatus(id: string) {
+  public switchCollapseStatus(id: string): void {
     this.collapse_status[id] = !this.getCollapseStatus(id);
   }
 
