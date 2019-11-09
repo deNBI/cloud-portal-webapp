@@ -374,6 +374,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
       const groupid: string = group['id'];
       const facility: any = group['compute_center'];
       const shortname: string = group['shortname'];
+      const currentCredits: number = Number(group['current_credits']);
+      const approvedCredits: number = Number(group['approved_credits']);
 
       const realname: string = group['name'];
       let compute_center: ComputecenterComponent = null;
@@ -392,7 +394,9 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
         dateDayDifference,
         is_pi,
         this.isAdmin,
-        compute_center);
+        compute_center,
+        currentCredits,
+        approvedCredits);
       const lifetime: number | string = <number>group['lifetime'];
       if (lifetime !== -1) {
         const expirationDate: string = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format('DD.MM.YYYY');

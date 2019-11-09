@@ -5,6 +5,7 @@ import {ComputecenterComponent} from './computecenter.component';
  * Project class.
  */
 export class Project {
+
   get UserIsAdmin(): boolean {
     return this._UserIsAdmin;
   }
@@ -31,8 +32,12 @@ export class Project {
   private _OpenStackProject: boolean;
   private _LifetimeReached: number;
 
+  private _CurrentCredits: number;
+  private _ApprovedCredits: number;
+
   constructor(Id: number | string, Name: string, Description: string, DateCreated: string, DaysRunning: number,
-              UserIsAdmin: boolean, UserIsPi: boolean, ComputeCenter: ComputecenterComponent) {
+              UserIsAdmin: boolean, UserIsPi: boolean, ComputeCenter: ComputecenterComponent,
+              CurrentCredits: number, ApprovedCredits: number) {
     this._Id = Id;
     this._Name = Name;
     this._Description = Description;
@@ -41,7 +46,8 @@ export class Project {
     this._UserIsAdmin = UserIsAdmin;
     this._UserIsPi = UserIsPi;
     this._ComputeCenter = ComputeCenter;
-
+    this._ApprovedCredits = ApprovedCredits;
+    this._CurrentCredits = CurrentCredits;
   }
 
 // todo exdend with additional information
@@ -176,4 +182,19 @@ export class Project {
     this._UserIsPi = value;
   }
 
+  get CurrentCredits(): number {
+    return this._CurrentCredits;
+  }
+
+  set CurrentCredits(value: number) {
+    this._CurrentCredits = value;
+  }
+
+  get ApprovedCredits(): number {
+    return this._ApprovedCredits;
+  }
+
+  set ApprovedCredits(value: number) {
+    this._ApprovedCredits = value;
+  }
 }
