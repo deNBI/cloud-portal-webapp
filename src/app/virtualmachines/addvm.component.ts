@@ -269,7 +269,6 @@ export class VirtualMachineComponent implements OnInit {
             this.loadProjectData();
           } else if (newVm.status) {
             if (newVm.status === this.PORT_CLOSED) {
-              this.progress_bar_animated = '';
               this.progress_bar_status = this.CHECKING_PORT_STATUS;
               if (this.hasTools) {
                 this.progress_bar_width = this.FIFTY_PERCENT;
@@ -278,12 +277,10 @@ export class VirtualMachineComponent implements OnInit {
               }
 
             } else if (newVm.status === this.PREPARE_PLAYBOOK_BUILD) {
-              this.progress_bar_animated = '';
               this.progress_bar_status = this.PREPARE_PLAYBOOK_STATUS;
               this.progress_bar_width = this.SIXTY_SIX_PERCENT;
 
             } else if (newVm.status === this.BUILD_PLAYBOOK) {
-              this.progress_bar_animated = '';
               this.progress_bar_status = this.BUIDLING_PLAYBOOK_STATUS;
               this.progress_bar_width = this.SEVENTY_FIVE;
             }
