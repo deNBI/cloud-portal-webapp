@@ -232,7 +232,7 @@ export class VmOverviewComponent implements OnInit {
       if (updated_vm.created_at !== '') {
         updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
       }
-      
+
       this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
       this.applyFilterStatus();
       if (updated_vm.status === this.DELETED) {
