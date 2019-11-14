@@ -10,6 +10,7 @@ import {ApplicationBaseClassComponent} from '../shared/shared_modules/baseClass/
 import {ApplicationsService} from '../api-connector/applications.service';
 import {ApplicationStatusService} from '../api-connector/application-status.service';
 import {ProjectEnumeration} from '../projectmanagement/project-enumeration';
+import {environment} from '../../environments/environment';
 
 /**
  * FullLayout component.
@@ -35,6 +36,7 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
   public is_facility_manager: boolean = false;
   public vm_project_member: boolean = false;
   public login_name: string = '';
+  public production: boolean = environment.production;
   navbar_state: string = 'closed';
   overview_state: string = 'closed';
   navbar_minimized: boolean = false;

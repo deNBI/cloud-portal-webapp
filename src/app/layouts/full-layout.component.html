@@ -144,6 +144,13 @@
           <a *ngIf="!navbar_minimized" class="nav-link" routerLinkActive="active" [routerLink]="['/virtualmachines/newVM']">
             <i class="nav-icon icon-screen-desktop" ></i> New Instance</a>
         </li>
+          <li class="nav-item" *ngIf="vm_project_member && !production ">
+          <a *ngIf="navbar_minimized" class="nav-link" routerLinkActive="active" data-toggle="tooltip" data-placement="right" title="New Instance"
+             [routerLink]="['/virtualmachines/newVM']">
+            <i class="nav-icon icon-screen-desktop" ></i> New Cluster</a>
+          <a *ngIf="!navbar_minimized " class="nav-link" routerLinkActive="active" [routerLink]="['/virtualmachines/newCluster']">
+            <i class="nav-icon icon-screen-desktop" ></i> New Cluster</a>
+        </li>
 
         <!-- for full sidebar VM Overviews-->
         <li *ngIf="!navbar_minimized"
