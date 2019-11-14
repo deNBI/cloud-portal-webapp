@@ -21,6 +21,16 @@ export class VirtualMachine {
   private _floating_ip: string;
   private _ssh_command: string;
   private _udp_command: string;
+  private _application_id: string;
+
+
+  get application_id(): string {
+    return this._application_id;
+  }
+
+  set application_id(value: string) {
+    this._application_id = value;
+  }
 
   get udp_command(): string {
     return this._udp_command;
