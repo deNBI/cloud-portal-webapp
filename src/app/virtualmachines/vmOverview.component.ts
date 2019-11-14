@@ -45,10 +45,10 @@ export class VmOverviewComponent implements OnInit {
 
   selectedVm: VirtualMachine = null;
 
-  STATIC_IMG_FOLDER: String = 'static/webapp/assets/img/';
+  STATIC_IMG_FOLDER: String = 'static/webapp/assets/img';
 
   CPU_ICON_PATH: string = `${this.STATIC_IMG_FOLDER}/new_instance/cpu_icon.svg`;
-  RAM_ICON_PATH: string = `${this.STATIC_IMG_FOLDER}/new_instance/ram_icon.svg'`;
+  RAM_ICON_PATH: string = `${this.STATIC_IMG_FOLDER}/new_instance/ram_icon.svg`;
   STORAGE_ICON_PATH: string = `${this.STATIC_IMG_FOLDER}/new_instance/storage_icon.svg`;
   GPU_ICON_PATH: string = `${this.STATIC_IMG_FOLDER}/new_instance/gpu_icon.svg`;
 
@@ -195,7 +195,7 @@ export class VmOverviewComponent implements OnInit {
 
   /**
    * Check status of vm.
-   * @param {string} openstackid  of the instance
+   * @param {VirtualMachine} vm instance
    */
   checkStatus(vm: VirtualMachine): void {
     this.virtualmachineservice.checkVmStatus(vm.openstackid)
@@ -211,6 +211,7 @@ export class VmOverviewComponent implements OnInit {
       )
   }
 
+
   applyFilterStatus(): void {
     const vm_content_copy: VirtualMachine[] = [];
     for (const vm of this.vms_content) {
@@ -219,7 +220,6 @@ export class VmOverviewComponent implements OnInit {
       }
 
     }
-    this.vms_content = vm_content_copy;
   }
 
   /**
@@ -232,7 +232,7 @@ export class VmOverviewComponent implements OnInit {
       if (updated_vm.created_at !== '') {
         updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
       }
-
+      
       this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
       this.applyFilterStatus();
       if (updated_vm.status === this.DELETED) {
@@ -240,7 +240,6 @@ export class VmOverviewComponent implements OnInit {
       } else {
         this.status_changed = 2;
       }
-
     })
   }
 

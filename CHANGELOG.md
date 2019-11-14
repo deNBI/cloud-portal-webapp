@@ -1,3 +1,18 @@
+##  (2019-11-07)
+
+
+#### Bug Fixes
+
+* **ImageTag:** - and _ allowed ([75d88051](75d88051))
+
+##  (2019-11-06)
+
+#### Bug Fixes
+* **Icons:** icons path fixed ([4b29f947](4b29f947))
+* **Placeholder:** NDA to NA ([a8a88e9f](a8a88e9f))
+* **add-vm:**  conda checks working correctly, reset for new proje… (#843) ([a23af7f5](a23af7f5))
+* **instance-overview:**  correct status check after deleting vm ([ba34aff9](ba34aff9))
+
 ##  (2019-10-31)
 
 

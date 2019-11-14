@@ -142,6 +142,9 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
         const dateCreated: moment.Moment = moment.unix(group['createdAt']);
         const dateDayDifference: number = Math.ceil(moment().diff(dateCreated, 'days', true));
         const groupid: string = group['id'];
+
+        const currentCredits: number = Number(group['current_credits']);
+        const approvedCredits: number = Number(group['approved_credits']);
         const tmp_facility: any = group['compute_center'];
         let shortname: string = group['shortname'];
         let compute_center: ComputecenterComponent = null;
@@ -166,7 +169,9 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
           dateDayDifference,
           is_pi,
           is_admin,
-          compute_center);
+          compute_center,
+          currentCredits,
+          approvedCredits);
         newProject.Status = group['status'];
 
         if (lifetime !== -1) {
