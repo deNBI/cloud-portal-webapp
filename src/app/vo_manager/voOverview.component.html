@@ -44,6 +44,7 @@
                 <th>Project Name</th>
                 <th>Details</th>
                 <th>Status</th>
+                <th>Credits</th>
                 <th>Actions</th>
               </tr>
               </thead>
@@ -108,6 +109,17 @@
                     </label>
                   </div>
                 </div>
+                <div class="row">
+                  <div class="checkbox col-sm">
+                    <label>
+                      <input type="checkbox"
+                             (change)="changeFilterStatus(application_states[application_states.WAIT_FOR_CONFIRMATION]);applyFilter();"
+                      />
+                      <span style="margin-left: 5px"
+                            class="badge badge-danger">{{application_states[application_states.WAIT_FOR_CONFIRMATION]}}</span>
+                    </label>
+                  </div>
+                </div>
 
               </td>
               <tr *ngFor="let project of projects_filtered">
@@ -159,8 +171,15 @@
                     *ngIf="project?.Status !=  project_states.SUSPENDED && project?.Status !=  project_states.ACTIVE"
                     style="margin-left: 5px"
                     class="badge badge-danger">NOT SET </span>
+                  <span
+                    *ngIf="project?.Status ==  application_states.WAIT_FOR_CONFIRMATION"
+                    style="margin-left: 5px"
+                    class="badge badge-danger">WAIT FOR CONFIRMATION </span>
                 </td>
 
+                <td>
+                  {{project.CurrentCredits}}/{{project.ApprovedCredits}}
+                </td>
 
                 <td>
                   <button type="button" class="btn btn-info"

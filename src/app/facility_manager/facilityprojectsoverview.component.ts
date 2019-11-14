@@ -48,6 +48,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
   public emailText: string;
   public emailStatus: number = 0;
   public emailReply: string = '';
+  public sendNews: boolean;
 
   public managerFacilities: [string, number][];
   public selectedFacility: [string, number];
@@ -68,6 +69,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
       this.title = `${this.title}:${this.selectedFacility['Facility']}`;
 
     })
+    this.sendNews = true;
   }
 
   applyFilter(): void {
@@ -142,6 +144,9 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
         const dateCreated: moment.Moment = moment.unix(group['createdAt']);
         const dateDayDifference: number = Math.ceil(moment().diff(dateCreated, 'days', true));
         const groupid: string = group['id'];
+
+        const currentCredits: number = Number(group['current_credits']);
+        const approvedCredits: number = Number(group['approved_credits']);
         const tmp_facility: any = group['compute_center'];
         let shortname: string = group['shortname'];
         let compute_center: ComputecenterComponent = null;
@@ -166,7 +171,9 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
           dateDayDifference,
           is_pi,
           is_admin,
-          compute_center);
+          compute_center,
+          currentCredits,
+          approvedCredits);
         newProject.Status = group['status'];
 
         if (lifetime !== -1) {
@@ -192,13 +199,11 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 
   }
 
-  sendMailToFacility(facility: string, subject: string, message: string, reply?: string): void {
+  sendMailToFacility(facility: string, subject: string, message: string, reply?: string, send?: any): void {
     this.facilityservice.sendMailToFacility(
       facility, encodeURIComponent(subject), encodeURIComponent(message), this.selectedProjectType,
-      encodeURIComponent(reply)).subscribe(
+      encodeURIComponent(reply), send).subscribe(
       (result: any) => {
-        this.selectedProjectType = 'ALL';
-
         if (result.status === 201) {
           this.emailStatus = 1;
         } else {
@@ -206,8 +211,6 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
         }
       },
       () => {
-        this.selectedProjectType = 'ALL';
-
         this.emailStatus = 2;
       })
 
@@ -239,12 +242,12 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
   }
 
   public resetEmailModal(): void {
-
-    this.emailSubject = null;
+    this.selectedProjectType = 'ALL';
+    this.emailSubject = `[${this.selectedFacility['Facility']}]`;
     this.emailText = null;
     this.emailReply = null;
     this.emailStatus = 0;
-
+    this.sendNews = true;
   }
 
   public comingSoon(): void {
