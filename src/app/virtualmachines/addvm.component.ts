@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {Image} from './virtualmachinemodels/image';
 import {Flavor} from './virtualmachinemodels/flavor';
 import {ImageService} from '../api-connector/image.service';
@@ -145,6 +145,12 @@ export class VirtualMachineComponent implements OnInit {
 
   selectedProjectGPUsUsed: number;
   selectedProjectGPUsMax: number;
+
+  newVolumes: number = 0;
+  newCores: number = 0;
+  newRam: number = 0;
+  newVms: number = 1;
+  newGpus: number = 0;
 
   /**
    * The selected project ['name',id].
@@ -470,6 +476,13 @@ export class VirtualMachineComponent implements OnInit {
 
     this.selectedImage = image;
 
+  }
+
+  setSelectedFlavor(flavor: Flavor): void {
+    this.selectedFlavor = flavor;
+    this.newCores = this.selectedFlavor.vcpus;
+    this.newRam = this.selectedFlavor.ram / 1024;
+    this.newGpus = this.selectedFlavor.gpu;
   }
 
   ngOnInit(): void {

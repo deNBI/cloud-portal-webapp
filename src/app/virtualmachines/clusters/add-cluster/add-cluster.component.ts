@@ -81,6 +81,8 @@ export class AddClusterComponent implements OnInit {
   /**
    * All flavors of a project.
    */
+  master_flavors: Flavor[] = [];
+  worker_flavors: Flavor[] = [];
   flavors: Flavor[] = [];
 
   /**
@@ -88,12 +90,16 @@ export class AddClusterComponent implements OnInit {
    */
   selectedImage: Image;
   selectedMasterImage: Image;
+  selectedWorkerImage: Image;
 
   /**
    * Selected Flavor.
    */
   selectedMasterFlavor: Flavor;
   selectedFlavor: Flavor;
+  selectedWorkerFlavor: Flavor;
+
+  workerInstancesCount: number;
 
   /**
    * Userinfo from the user.
@@ -224,6 +230,8 @@ export class AddClusterComponent implements OnInit {
    */
   getFlavors(project_id: number): void {
     this.flavorService.getFlavors(project_id).subscribe((flavors: Flavor[]) => {
+      this.master_flavors = flavors;
+      this.worker_flavors = flavors;
       this.flavors = flavors;
       this.flavors_loaded = true;
     });
@@ -295,6 +303,19 @@ export class AddClusterComponent implements OnInit {
         })
       },
       this.checkStatusTimeout);
+  }
+
+  startCluster(): void {
+    const re: RegExp = /\+/gi;
+
+    const masterFlavor: string = this.selectedMasterFlavor.name.replace(re, '%2B');
+    const workerFlavor: string = this.selectedWorkerFlavor.name.replace(re, '%2B');
+
+    this.virtualmachineservice.startCluster(
+      masterFlavor, this.selectedMasterImage.name,
+      workerFlavor, this.selectedWorkerImage.name,
+      this.workerInstancesCount, this.selectedProject[1]).subscribe()
+
   }
 
   /**

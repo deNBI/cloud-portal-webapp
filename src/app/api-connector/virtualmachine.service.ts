@@ -22,6 +22,21 @@ export class VirtualmachineService {
   constructor(private http: HttpClient) {
   }
 
+  startCluster(masterFlavor: string, masterImage: string, workerFlavor: string, workerImage: string, workerCount: string | number, project_id: string | number): Observable<any> {
+    const params: HttpParams = new HttpParams()
+      .set('master_flavor', masterFlavor)
+      .set('master_image', masterImage)
+      .set('worker_image', workerImage)
+      .set('worker_flavor', workerFlavor)
+      .set('worker_count', workerCount.toString())
+      .set('project_id', project_id.toString());
+
+    return this.http.post(`${ApiSettings.getApiBaseURL()}clusters/`, params, {
+      withCredentials: true,
+      headers: header
+    })
+  }
+
   startVM(flavor: string, image: string, servername: string, project: string, projectid: string, http: boolean, https: boolean,
           udp: boolean, volumename?: string, diskspace?: string, playbook_information?: string, infos?: string): Observable<any> {
 

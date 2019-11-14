@@ -17,26 +17,26 @@ $deNBI_black: #000000;
 $openstackcolour: #ED1944;
 $simplevmcolour: #00ADEF;
 
-.navbar-brand-full
-{
-  bottom:8px;
+.navbar-brand-full {
+  bottom: 8px;
   position: relative;
 }
 
-.navbar-brand-minimized
-{
-  left:5px;
+.text-info {
+  color: #17a2b8 !important
+}
+
+.navbar-brand-minimized {
+  left: 5px;
   position: relative;
 }
 
-.brand-minimized .app-header .navbar-brand
-{
+.brand-minimized .app-header .navbar-brand {
   margin-left: 0px !important;
 }
 
 
-
-.sidebar-fixed .app-header + .app-body .sidebar{
+.sidebar-fixed .app-header + .app-body .sidebar {
   height: calc(100vh - 175px);
   border: 20px;
   border-radius: 10px;
@@ -52,48 +52,43 @@ $simplevmcolour: #00ADEF;
 }
 
 .sidebar .nav .nav-item {
-  width:100%;
+  width: 100%;
 }
 
 
-.app-header .navbar-brand
-{
+.app-header .navbar-brand {
   width: 100%;
   margin-right: 10px;
   position: unset !important;
 }
 
-.app-header.navbar
-{
+.app-header.navbar {
   float: left;
   position: fixed;
   width: 200px;
   left: 0px;
 }
 
-#title_headline
-{
+#title_headline {
   font-size: 20px !important;
 }
 
 
-app-dashboard
-{
+app-dashboard {
   position: relative;
 }
 
-.header-fixed .app-header
-{
+.header-fixed .app-header {
   margin: 15px;
   border-radius: 10px;
 }
 
-main{
+main {
   margin-top: 35px !important;
   margin-left: 195px !important;
 }
 
-.btn{
+.btn {
   cursor: pointer;
 }
 
@@ -104,15 +99,13 @@ main{
   border: none;
 }
 
-.btn-secondary, .btn-info
-{
+.btn-secondary, .btn-info {
   background-color: $deNBI_lightgrey;
   border: none;
   color: $deNBI_white;
 }
 
-.btn-primary:hover, .btn-secondary:hover, .btn-info:hover
-{
+.btn-primary:hover, .btn-secondary:hover, .btn-info:hover {
   color: $deNBI_white;
 }
 
@@ -130,10 +123,10 @@ header {
   color: red;
 
 }
+
 #header-help {
   padding-right: 19px;
 }
-
 
 
 .modal {
@@ -145,6 +138,7 @@ header {
   border-style: solid;
   border-color: red;
 }
+
 .success-border {
   border-style: solid;
   border-color: #B0DFC5;
@@ -160,7 +154,7 @@ header {
 }
 
 
-.collapse_no_margin{
+.collapse_no_margin {
   margin: 0;
 }
 
@@ -168,7 +162,7 @@ header {
   background-color: $deNBI_white !important;
   color: $deNBI_cyan !important;
   position: relative !important;
-  border-radius:10px;
+  border-radius: 10px;
 }
 
 .sidebar .sidebar-minimizer:hover {
@@ -176,17 +170,15 @@ header {
   border-radius: 10px;
 }
 
-.nav-item{
+.nav-item {
   border-radius: 10px !important;
 }
 
-.sidebar-nav .nav-item:hover, .sidebar-minimized .sidebar .nav-item:hover > .nav-link
-{
+.sidebar-nav .nav-item:hover, .sidebar-minimized .sidebar .nav-item:hover > .nav-link {
   background-color: $deNBI_lightgrey !important;
 }
 
-.nav
-{
+.nav {
   overflow-x: hidden !important;
   overflow-y: visible;
 }
@@ -197,20 +189,21 @@ header {
 
 
 .btn-openstack {
-    @include button-variant($openstackcolour, darken($openstackcolour, 7.5%), darken($openstackcolour, 10%), lighten($openstackcolour,5%), lighten($openstackcolour, 10%), darken($openstackcolour,30%));
+  @include button-variant($openstackcolour, darken($openstackcolour, 7.5%), darken($openstackcolour, 10%), lighten($openstackcolour, 5%), lighten($openstackcolour, 10%), darken($openstackcolour, 30%));
 }
 
 .btn-outline-openstack {
-    @include button-outline-variant($openstackcolour, #222222, lighten($openstackcolour,5%), $openstackcolour);
+  @include button-outline-variant($openstackcolour, #222222, lighten($openstackcolour, 5%), $openstackcolour);
 }
 
 .btn-simplevm {
-    @include button-variant($simplevmcolour, darken($simplevmcolour, 7.5%), darken($simplevmcolour, 10%), lighten($simplevmcolour,5%), lighten($simplevmcolour, 10%), darken($simplevmcolour,30%));
+  @include button-variant($simplevmcolour, darken($simplevmcolour, 7.5%), darken($simplevmcolour, 10%), lighten($simplevmcolour, 5%), lighten($simplevmcolour, 10%), darken($simplevmcolour, 30%));
 }
 
 .btn-outline-simplevm {
-    @include button-outline-variant($simplevmcolour, #222222, lighten($simplevmcolour,5%), $simplevmcolour);
+  @include button-outline-variant($simplevmcolour, #222222, lighten($simplevmcolour, 5%), $simplevmcolour);
 }
+
 // Google Font as on landing page.
 @import url('https://fonts.googleapis.com/css?family=Raleway');
 
@@ -238,28 +231,25 @@ header {
   overflow-y: auto;
   overflow-x: hidden;
   height: calc(100vh - 100px);
-  border-radius:10px;
+  border-radius: 10px;
 }
 
 
-.main .container-fluid
-{
+.main .container-fluid {
   padding: 0 15px 0 30px;
 }
 
-#title_headline
-{
+#title_headline {
   font-family: Raleway;
   text-align: center;
-  bottom:5px;
+  bottom: 5px;
   color: $deNBI_blue;
   height: 100%;
-  margin-top:15px;
+  margin-top: 15px;
 
 }
 
-.w3-bar-block
-{
+.w3-bar-block {
   background-color: $deNBI_white;
   height: 54px;
   border-radius: 10px;
@@ -268,7 +258,7 @@ header {
   top: 15px;
   right: 15px;
   text-align: center;
-  margin:auto;
+  margin: auto;
   z-index: 100;
 }
 
@@ -276,13 +266,11 @@ header {
   background-color: $deNBI_white;
 }
 
-.sidebar .nav-link:hover
-{
+.sidebar .nav-link:hover {
   background-color: $deNBI_lightgrey;
 }
 
-.sidebar .nav-dropdown.open .nav-link:hover
-{
+.sidebar .nav-dropdown.open .nav-link:hover {
   background-color: $deNBI_lightgrey;
   color: $deNBI_white;
 }
@@ -291,6 +279,7 @@ header {
   background-color: $deNBI_cyan;
   color: $deNBI_white;
 }
+
 .scroll-image {
   max-height: 120px;
   min-height: 120px;
@@ -314,8 +303,7 @@ header {
   color: $deNBI_white;
 }
 
-.sidebar .nav-item.nav-dropdown:hover
-{
+.sidebar .nav-item.nav-dropdown:hover {
   background-color: $deNBI_lightgrey;
   color: $deNBI_white;
 }
@@ -329,6 +317,7 @@ header {
 .sidebar .nav-link.active .nav-icon {
   color: $deNBI_white;
 }
+
 .card-header.bg-info-image {
 
   color: $deNBI_white;
@@ -342,7 +331,7 @@ header {
   color: $deNBI_darkgrey;
 }
 
-.sidebar .nav-item .nav-dropdown-toggle{
+.sidebar .nav-item .nav-dropdown-toggle {
   color: $deNBI_blue;
   background-color: $deNBI_white;
 }
@@ -351,6 +340,7 @@ header {
   color: $deNBI_white;
   background-color: $deNBI_lightgrey;
 }
+
 .btn-openstack {
   @include button-variant($openstackcolour, darken($openstackcolour, 7.5%), darken($openstackcolour, 10%), lighten($openstackcolour, 5%), lighten($openstackcolour, 10%), darken($openstackcolour, 30%));
 }
@@ -368,12 +358,12 @@ header {
 
 }
 
-.sidebar .nav-dropdown.open .nav-link{
+.sidebar .nav-dropdown.open .nav-link {
   color: $deNBI_blue;
   background-color: $deNBI_white;
 }
 
-.sidebar .nav-dropdown-items .nav-item{
+.sidebar .nav-dropdown-items .nav-item {
   color: $deNBI_blue;
   background-color: $deNBI_white;
 }
@@ -404,19 +394,16 @@ header {
   width: 200px;
 }
 
-.brand-minimized .app-header.navbar, .brand-minimized .app-footer
-{
+.brand-minimized .app-header.navbar, .brand-minimized .app-footer {
   width: 50px !important;
 }
 
-.brand-minimized .app-header.navbar
-{
+.brand-minimized .app-header.navbar {
   margin-right: 0px;
   padding: 1px;
 }
 
-.app-footer
-{
+.app-footer {
   background-color: #FFFFFF;
   width: 200px;
   left: -185px;
@@ -427,20 +414,17 @@ header {
   height: 54px;
 }
 
-.sidebar-minimized .app-footer
-{
+.sidebar-minimized .app-footer {
   left: -35px;
 }
 
-.sidebar-minimized .main
-{
+.sidebar-minimized .main {
   margin-left: 45px !important;
 }
 
-.sidebar-minimized .w3-bar-block
-{
+.sidebar-minimized .w3-bar-block {
   width: calc(100vw - 90px);
-  margin:auto;
+  margin: auto;
 }
 
 
@@ -448,8 +432,8 @@ header {
 
 @font-face {
   font-family: 'os_pr';
-  src:  url('../static/webapp/assets/fonts/os_pr.eot');
-  src:  url('../static/webapp/assets/fonts/os_pr.eot') format('embedded-opentype'),
+  src: url('../static/webapp/assets/fonts/os_pr.eot');
+  src: url('../static/webapp/assets/fonts/os_pr.eot') format('embedded-opentype'),
   url('../static/webapp/assets/fonts/os_pr.ttf') format('truetype'),
   url('../static/webapp/assets/fonts/os_pr.woff') format('woff'),
   url('../static/webapp/assets/fonts/os_pr.svg') format('svg');
@@ -477,30 +461,36 @@ header {
   content: "\e902";
   color: #00adef;
 }
+
 .project-simpleVM_Logo_bluebg .path2:before {
   content: "\e903";
   margin-left: -1em;
   color: rgb(255, 255, 255);
 }
+
 .project-simpleVM_Logo_bluebg .path3:before {
   content: "\e904";
   margin-left: -1em;
   color: rgb(255, 255, 255);
 }
+
 .project-simpleVM_Logo_bluebg .path4:before {
   content: "\e905";
   margin-left: -1em;
   color: rgb(255, 255, 255);
 }
+
 .project-simpleVM_Logo_bluebg .path5:before {
   content: "\e906";
   margin-left: -1em;
   color: rgb(255, 255, 255);
 }
+
 .project-openstack_plain_white_redbg .path1:before {
   content: "\e900";
   color: rgb(255, 255, 255);
 }
+
 .project-openstack_plain_white_redbg .path2:before {
   content: "\e901";
   margin-left: -1em;

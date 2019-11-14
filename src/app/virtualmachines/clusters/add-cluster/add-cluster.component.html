@@ -101,18 +101,18 @@
                 <accordion class="col-md-12">
 
                   <accordion-group #masterInstanceGroup
-                                   *ngIf="selectedProject && projectDataLoaded && selectedProjectVmsUsed < selectedProjectVmsMax && (flavors.length != 0 || selectedFlavor)">
+                                   *ngIf="selectedProject && projectDataLoaded && selectedProjectVmsUsed < selectedProjectVmsMax && (master_flavors.length != 0 || selectedFlavor)">
                     <div accordion-heading style="width: 100%; cursor: pointer"><strong>Master Instance</strong>
                       <i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
                             'icon-arrow-up': masterInstanceGroup.isOpen, 'icon-arrow-down': !masterInstanceGroup.isOpen}"></i>
                     </div>
-                    <div *ngIf="selectedProject" class="form-group row col-md-12">
+                    <div class="form-group row col-md-12">
                       <label class="col-md-2 form-control-label"><strong>Flavor*</strong></label>
                       <div class="col-md-10">
 
 
                         <app-flavor-detail [selectedFlavor]="selectedMasterFlavor"
-                                           [flavors]="flavors"
+                                           [flavors]="master_flavors"
                                            (selectedFlavorChange)="selectedMasterFlavor=$event"
                                            id="id_flavor_detail"></app-flavor-detail>
 
@@ -122,7 +122,7 @@
                     </div>
 
 
-                    <div *ngIf="selectedProject" class="form-group row col-md-12">
+                    <div class="form-group row col-md-12">
                       <label class="col-md-2 form-control-label"><strong>Image*</strong></label>
                       <div class="col-md-10">
 
@@ -137,29 +137,79 @@
 
                   </accordion-group>
                 </accordion>
+                <accordion class="col-md-12 ">
+
+                  <accordion-group #workerInstancesGroup
+                                   *ngIf="selectedProject && projectDataLoaded && selectedProjectVmsUsed < selectedProjectVmsMax && (worker_flavors.length != 0 || selectedFlavor)">
+                    <div accordion-heading style="width: 100%; cursor: pointer"><strong>Worker Instances</strong>
+                      <i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
+                            'icon-arrow-up': workerInstancesGroup.isOpen, 'icon-arrow-down': !workerInstancesGroup.isOpen}"></i>
+                    </div>
+                    <div class="form-group row col-md-12">
+                      <label class="col-md-2 form-control-label"><strong>Flavor*</strong></label>
+                      <div class="col-md-10">
+
+
+                        <app-flavor-detail [selectedFlavor]="selectedWorkerFlavor"
+                                           [flavors]="worker_flavors"
+                                           (selectedFlavorChange)="selectedWorkerFlavor=$event"
+                                           id="id_flavor_detail"></app-flavor-detail>
+
+                      </div>
+
+
+                    </div>
+
+
+                    <div class="form-group row col-md-12">
+                      <label class="col-md-2 form-control-label"><strong>Image*</strong></label>
+                      <div class="col-md-10">
+
+
+                        <app-image-detail [selectedImage]="selectedWorkerImage"
+                                          [images]="images"
+                                          (selectedImageChange)="selectedWorkerImage=$event"
+                                          id="id_image_detail"></app-image-detail>
+                      </div>
+                    </div>
+                    <div class="form-group row col-md-12">
+                      <label class="col-md-2 form-control-label"><strong>Count*</strong></label>
+                      <div class="col-md-10">
+
+                        <input type="text" name="workerInstancesCount" [(ngModel)]="workerInstancesCount" min="1"></div>
+
+                    </div>
+
+
+                  </accordion-group>
+                </accordion>
               </div>
             </div>
 
+
           </form>
 
+          <div
+            *ngIf="(!selectedMasterFlavor || !selectedMasterImage || !selectedWorkerFlavor || !selectedWorkerImage ||!workerInstancesCount) && selectedProject && projectDataLoaded"
+            class="alert alert-danger" role="alert" style="max-width: 600px;margin: 0 auto;">
+            <p>Please choose the following before starting a Cluster:</p>
+            <p *ngIf="!selectedMasterFlavor">- The flavor type of your Master VM
+            </p>
+            <p *ngIf="!selectedMasterImage">- The image you want to run on your Master VM
+            </p>
+            <p *ngIf="!selectedWorkerFlavor">- The flavor type of your Worker VMs
+            </p>
+            <p *ngIf="!selectedWorkerImage">- The image you want to run on your Worker VMs
+            </p>
+            <p *ngIf="!workerInstancesCount">- The count of Worker Vms
+            </p>
+
+          </div>
+
         </div>
 
-        <div
-          *ngIf="((!gaveOkay && hasTools) || !selectedImage || (!selectedFlavor && flavors.length != 0 ))&& projectDataLoaded  && flavors_loaded  && selectedProjectVmsUsed < selectedProjectVmsMax"
-          class="alert alert-danger" role="alert" style="max-width: 600px;margin: 0 auto;">
-          <p>Please choose the following before starting a VM:</p>
-          <p *ngIf="!selectedFlavor">- The flavor type of your VM
-          </p>
-          <p *ngIf="!selectedImage">- The image you want to run on your VM
-          </p>
-          <p *ngIf="diskspace > 0 && !volumeName">- A name for your storage volume
-          </p>
-          <p *ngIf="!gaveOkay && hasTools">- Give your okay to the Bioconda install process
-
-          </p>
-        </div>
         <div class="form-group row"
-             *ngIf="projectDataLoaded && selectedProjectVmsUsed < selectedProjectVmsMax && (flavors?.length > 0  || selectedFlavor)">
+             *ngIf="projectDataLoaded && selectedProjectVmsUsed < selectedProjectVmsMax && (master_flavors?.length > 0  || selectedFlavor)">
 
           <button style=" margin-left: auto;margin-top: 25px;
     margin-right: auto;
@@ -167,10 +217,10 @@
 
                   type="button"
 
-                  [disabled]="!vm_name || started_machine || !selectedFlavor || !selectedImage|| (diskspace > 0 && volumeName == '')"
+                  [disabled]="!selectedMasterFlavor || !selectedMasterImage || !selectedWorkerFlavor || !selectedWorkerImage ||!workerInstancesCount "
                   class="btn btn-primary  .btn-lg offset-md-8"
                   data-toggle="modal"
-                  (click)="startVM(selectedFlavor.name,selectedImage.name,f.controls.instance_name.value,selectedProject[0],selectedProject[1]);resetData();resetProgressBar;infoModal.show();">
+                  (click)="startCluster();">
             Start VM
           </button>
         </div>

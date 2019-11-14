@@ -81,7 +81,10 @@
                                      [selectedProjectVmsMax]="selectedProjectVmsMax"
                                      [selectedProjectVmsUsed]="selectedProjectVmsUsed"
                                      [selectedProjectVolumesMax]="selectedProjectVolumesMax"
-                                     [selectedProjectVolumesUsed]="selectedProjectVolumesUsed">
+                                     [selectedProjectVolumesUsed]="selectedProjectVolumesUsed"
+                                     [newVms]="newVms"
+                                     [newCores]="newCores" [newDiskspace]="diskspace" [newGpus]="newGpus"
+                                     [newRam]="newRam" >
 
               </app-resource-overview>
 
@@ -132,7 +135,7 @@
 
                     <app-flavor-detail [selectedFlavor]="selectedFlavor"
                                        [flavors]="flavors"
-                                       (selectedFlavorChange)="selectedFlavor=$event"
+                                       (selectedFlavorChange)="setSelectedFlavor($event)"
                                        id="id_flavor_detail"></app-flavor-detail>
 
                   </div>
