@@ -81,7 +81,9 @@
                                      [selectedProjectVmsMax]="selectedProjectVmsMax"
                                      [selectedProjectVmsUsed]="selectedProjectVmsUsed"
                                      [selectedProjectVolumesMax]="selectedProjectVolumesMax"
-                                     [selectedProjectVolumesUsed]="selectedProjectVolumesUsed"></app-resource-overview>
+                                     [selectedProjectVolumesUsed]="selectedProjectVolumesUsed"
+                                     [newCores]="newCores" [newRam]="newRam" [newGpus]="newGpus"
+                                     [newVms]="newVms"></app-resource-overview>
               <div class="alert alert-primary" role="alert"
                    *ngIf="selectedProject && selectedProjectVmsUsed >= selectedProjectVmsMax">
                 The limit for virtual machines has been reached for this project.
@@ -98,10 +100,11 @@
 
 
               <div *ngIf="selectedProjectVmsUsed < selectedProjectVmsMax && (flavors?.length > 0 || selectedFlavor)">
+
                 <accordion class="col-md-12">
 
                   <accordion-group #masterInstanceGroup
-                                   *ngIf="selectedProject && projectDataLoaded && selectedProjectVmsUsed < selectedProjectVmsMax && (master_flavors.length != 0 || selectedFlavor)">
+                                   *ngIf="selectedProject && projectDataLoaded && selectedProjectVmsUsed < selectedProjectVmsMax && (flavors.length != 0 || selectedFlavor)">
                     <div accordion-heading style="width: 100%; cursor: pointer"><strong>Master Instance</strong>
                       <i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
                             'icon-arrow-up': masterInstanceGroup.isOpen, 'icon-arrow-down': !masterInstanceGroup.isOpen}"></i>
@@ -112,8 +115,8 @@
 
 
                         <app-flavor-detail [selectedFlavor]="selectedMasterFlavor"
-                                           [flavors]="master_flavors"
-                                           (selectedFlavorChange)="selectedMasterFlavor=$event"
+                                           [flavors]="flavors"
+                                           (selectedFlavorChange)="selectedMasterFlavor=$event;calculateNewValues();"
                                            id="id_flavor_detail"></app-flavor-detail>
 
                       </div>
@@ -137,11 +140,18 @@
 
                   </accordion-group>
                 </accordion>
+                <div class="alert alert-info " role="alert" *ngIf="!selectedMasterFlavor || !selectedMasterImage">
+                  Please select a master instance configuration before selecting the worker instances!
+                </div>
                 <accordion class="col-md-12 ">
 
-                  <accordion-group #workerInstancesGroup
-                                   *ngIf="selectedProject && projectDataLoaded && selectedProjectVmsUsed < selectedProjectVmsMax && (worker_flavors.length != 0 || selectedFlavor)">
-                    <div accordion-heading style="width: 100%; cursor: pointer"><strong>Worker Instances</strong>
+                  <accordion-group #workerInstancesGroup [isDisabled]="!selectedMasterFlavor || !selectedMasterImage"
+
+                                   *ngIf="selectedProject && projectDataLoaded && selectedProjectVmsUsed < selectedProjectVmsMax &&
+                  (flavors.length != 0 || selectedFlavor)">
+                    <div accordion-heading style="width: 100%; cursor: pointer"><strong
+                      *ngIf="!selectedMasterFlavor || !selectedMasterImage">Worker Instances [disabled] </strong>
+                      <strong *ngIf="selectedMasterFlavor && selectedMasterImage">Worker Instances </strong>
                       <i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
                             'icon-arrow-up': workerInstancesGroup.isOpen, 'icon-arrow-down': !workerInstancesGroup.isOpen}"></i>
                     </div>
@@ -151,8 +161,8 @@
 
 
                         <app-flavor-detail [selectedFlavor]="selectedWorkerFlavor"
-                                           [flavors]="worker_flavors"
-                                           (selectedFlavorChange)="selectedWorkerFlavor=$event"
+                                           [flavors]="flavors_usable"
+                                           (selectedFlavorChange)="selectedWorkerFlavor=$event;calculateNewValues();"
                                            id="id_flavor_detail"></app-flavor-detail>
 
                       </div>
@@ -168,7 +178,7 @@
 
                         <app-image-detail [selectedImage]="selectedWorkerImage"
                                           [images]="images"
-                                          (selectedImageChange)="selectedWorkerImage=$event"
+                                          (selectedImageChange)="selectedWorkerImage=$event;"
                                           id="id_image_detail"></app-image-detail>
                       </div>
                     </div>
@@ -176,7 +186,19 @@
                       <label class="col-md-2 form-control-label"><strong>Count*</strong></label>
                       <div class="col-md-10">
 
-                        <input type="text" name="workerInstancesCount" [(ngModel)]="workerInstancesCount" min="1"></div>
+
+                        <input class="form-control" id="workerInstancesCount"
+                               name="workerInstancesCount" placeholder="e.g 1"
+
+                               type="number" min="1" max="12" step="1" [(ngModel)]="workerInstancesCount" required
+                               appMinAmount="1" appMaxAmount="12" appInteger (change)="changeCount();"
+                               [ngClass]=" {
+                        'is-invalid': f.controls.workerInstancesCount?.invalid &&
+                        (f.controls.workerInstancesCount?.dirty || f.controls.workerInstancesCount?.touched),
+                        'is-valid': f.controls.workerInstancesCount?.valid && (f.controls.workerInstancesCount?.dirty ||
+                        f.controls.workerInstancesCount?.touched)
+                        }">
+                      </div><div>max flavors</div>
 
                     </div>
 
@@ -209,7 +231,7 @@
         </div>
 
         <div class="form-group row"
-             *ngIf="projectDataLoaded && selectedProjectVmsUsed < selectedProjectVmsMax && (master_flavors?.length > 0  || selectedFlavor)">
+             *ngIf="projectDataLoaded && selectedProjectVmsUsed < selectedProjectVmsMax && (flavors?.length > 0  || selectedFlavor)">
 
           <button style=" margin-left: auto;margin-top: 25px;
     margin-right: auto;

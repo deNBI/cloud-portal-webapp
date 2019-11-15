@@ -146,7 +146,6 @@ export class VirtualMachineComponent implements OnInit {
   selectedProjectGPUsUsed: number;
   selectedProjectGPUsMax: number;
 
-  newVolumes: number = 0;
   newCores: number = 0;
   newRam: number = 0;
   newVms: number = 1;

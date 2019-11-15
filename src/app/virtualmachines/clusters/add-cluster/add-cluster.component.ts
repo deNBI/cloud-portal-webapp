@@ -61,7 +61,7 @@ export class AddClusterComponent implements OnInit {
   playbook_run: number = 0;
   timeout: number = 0;
 
-  title: string = 'New Instance';
+  title: string = 'New Cluster';
 
   vm_name: string;
 
@@ -81,9 +81,9 @@ export class AddClusterComponent implements OnInit {
   /**
    * All flavors of a project.
    */
-  master_flavors: Flavor[] = [];
-  worker_flavors: Flavor[] = [];
   flavors: Flavor[] = [];
+
+  flavors_usable: Flavor[] = [];
 
   /**
    * Selected Image.
@@ -192,11 +192,10 @@ export class AddClusterComponent implements OnInit {
    */
   projectDataLoaded: boolean = false;
 
-  /**
-   * id of the freemium project.
-   * @type {number}
-   */
-  FREEMIUM_ID: number = environment.freemium_project_id;
+  newCores: number = 0;
+  newRam: number = 0;
+  newVms: number = 1;
+  newGpus: number = 0;
 
   /**
    * Time for the check status loop.
@@ -210,6 +209,53 @@ export class AddClusterComponent implements OnInit {
               private flavorService: FlavorService, private virtualmachineservice: VirtualmachineService,
               private keyservice: KeyService, private userservice: UserService,
               private voService: VoService) {
+  }
+
+  changeCount(): void {
+    this.newVms = Number(this.workerInstancesCount) + Number(1);
+    this.calculateNewValues()
+  }
+
+  filterFlavors(): void {
+    console.log(this.flavors)
+    const tmp_flavors: Flavor[] = [];
+    const available_cores: number = this.selectedProjectCoresMax - (this.newCores + this.selectedProjectCoresUsed);
+    const available_ram: number = this.selectedProjectRamMax - (this.newRam + this.selectedProjectRamUsed);
+    const available_gpu: number = this.selectedProjectGPUsMax - (this.newGpus + this.selectedProjectGPUsUsed);
+    for (const fl of this.flavors) {
+      console.log('-----')
+      console.log(fl.vcpus <= available_cores)
+      console.log(fl.ram <= available_ram)
+      console.log(fl.gpu <= available_gpu)
+      console.log('-----')
+
+      if (fl.vcpus <= available_cores && (fl.ram / 1024) <= available_ram && fl.gpu <= available_gpu) {
+        tmp_flavors.push(fl)
+      }
+    }
+    this.flavors_usable = tmp_flavors;
+  }
+
+  calculateNewValues(): void {
+    let tmp_ram: number = 0;
+    let tmp_cores: number = 0;
+    let tmp_gpus: number = 0;
+    if (this.selectedMasterFlavor) {
+      tmp_ram += this.selectedMasterFlavor.ram;
+      tmp_cores += this.selectedMasterFlavor.vcpus;
+      tmp_gpus += this.selectedMasterFlavor.gpu;
+
+    }
+    if (this.selectedWorkerFlavor && this.workerInstancesCount) {
+      tmp_ram += this.selectedWorkerFlavor.ram * this.workerInstancesCount;
+      tmp_cores += this.selectedWorkerFlavor.vcpus * this.workerInstancesCount;
+      tmp_gpus += this.selectedWorkerFlavor.gpu * this.workerInstancesCount;
+
+    }
+    this.newRam = tmp_ram / 1024;
+    this.newCores = tmp_cores;
+    this.newGpus = tmp_gpus;
+    this.filterFlavors()
   }
 
   /**
@@ -230,9 +276,8 @@ export class AddClusterComponent implements OnInit {
    */
   getFlavors(project_id: number): void {
     this.flavorService.getFlavors(project_id).subscribe((flavors: Flavor[]) => {
-      this.master_flavors = flavors;
-      this.worker_flavors = flavors;
       this.flavors = flavors;
+      this.flavors_usable = this.flavors;
       this.flavors_loaded = true;
     });
 
@@ -499,14 +544,6 @@ export class AddClusterComponent implements OnInit {
       this.is_vo = <boolean><Boolean>result.value;
     });
 
-  }
-
-  hasChosenTools(hasSomeTools: boolean): void {
-    this.hasTools = hasSomeTools;
-  }
-
-  getTimeoutMinutes(): number {
-    return Math.ceil(this.timeout / 60);
   }
 
   resetChecks(): void {
