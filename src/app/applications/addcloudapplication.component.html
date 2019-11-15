@@ -783,7 +783,7 @@
           </div>
 
           <button id="submit_btn" type="button"
-                  (click)="extension_request=false;filterEnteredData(f); submitModal.show();"
+                  (click)="extension_request=false;filterEnteredData(f);calculateInitialCredits(f);submitModal.show();"
                   class="btn btn-sm btn-success"
                   [disabled]="f.invalid ||selected_ontology_terms.length == 0 || (dissemination_platform_count == 0 && project_application_report_allowed)">
 
@@ -904,6 +904,10 @@
           <table class="table table-striped">
             <tr *ngFor="let str of valuesToConfirm">
               <td>{{str}}</td>
+            </tr>
+            <tr *ngIf="is_vo_admin">
+              <td><strong>Initial Credits:
+                {{credits.toString()}}</strong></td>
             </tr>
             <tr>
               <td><strong>Number of cores in total:

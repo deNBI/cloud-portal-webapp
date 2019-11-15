@@ -11,6 +11,10 @@ import {EdamOntologyTerm} from './edam-ontology-term';
 import {AutocompleteComponent} from 'angular-ng-autocomplete';
 import {ApplicationDissemination} from './application-dissemination';
 import {FullLayoutComponent} from '../layouts/full-layout.component';
+import {CreditsService} from "../api-connector/credits.service";
+import {IResponseTemplate} from "../api-connector/response-template";
+import {ClientService} from "../api-connector/client.service";
+import {VoService} from "../api-connector/vo.service";
 
 /**
  * This components provides the functions to create a new Cloud Application.
@@ -18,7 +22,7 @@ import {FullLayoutComponent} from '../layouts/full-layout.component';
 @Component({
              selector: 'app-addcloudapplication',
              templateUrl: 'addcloudapplication.component.html',
-             providers: [ApiSettings, ApplicationsService, FlavorService],
+             providers: [ApiSettings, ApplicationsService, FlavorService, CreditsService, VoService],
              styleUrls: ['addcloudapplication.component.css']
            })
 
@@ -88,14 +92,29 @@ export class AddcloudapplicationComponent extends ApplicationBaseClassComponent 
   project_application_openstack_project: boolean = true;
 
   /**
+   * The credit value, computed after the user finished selecting the arguments
+   * @type {number}
+   */
+  credits: number = 0;
+
+  /**
+   * If user is vo.
+   * @type {boolean}
+   */
+  is_vo_admin: boolean = false;
+
+  /**
    * Constructor.
    * Initialize special hardware and gets list of flavor and flavortypes.
    * @param {ApplicationsService} applicationsservice
+   * @param {CreditsService} creditsService
    * @param {FlavorService} flavorservice
+   * @param {FullLayoutComponent} fullLayout
+   * @param {VoService} voservice
    */
-  constructor(applicationsservice: ApplicationsService, private flavorservice: FlavorService, private fullLayout: FullLayoutComponent) {
+  constructor(applicationsservice: ApplicationsService, private creditsService: CreditsService,
+              private flavorservice: FlavorService, private fullLayout: FullLayoutComponent, private voservice: VoService) {
     super(null, null, applicationsservice, null);
-
   }
 
   ngOnInit(): void {
@@ -103,7 +122,8 @@ export class AddcloudapplicationComponent extends ApplicationBaseClassComponent 
     this.getListOfTypes();
     this.applicationsservice.getEdamOntologyTerms().subscribe((terms: EdamOntologyTerm[]) => {
       this.edam_ontology_terms = terms;
-    })
+    });
+    this.checkVOstatus()
   }
 
   /**
@@ -154,6 +174,17 @@ export class AddcloudapplicationComponent extends ApplicationBaseClassComponent 
   }
 
   /**
+   * Sends a request to the BE to get the initital credits for a new application.
+   */
+  calculateInitialCredits(form: NgForm): void {
+    let lifetime = form.controls['project_application_lifetime'].value;
+    this.creditsService.getCreditsForApplication(this.totalNumberOfCores, this.totalRAM, lifetime).toPromise()
+      .then((credits: number) => {
+        this.credits = credits;
+      });
+  }
+
+  /**
    * Submits a new cloud application.
    * Therefore checks if the different values are valid.
    * @param {NgForm} form
@@ -172,6 +203,7 @@ export class AddcloudapplicationComponent extends ApplicationBaseClassComponent 
       const values: { [key: string]: string | number | boolean } = {};
       values['project_application_openstack_project'] = this.project_application_openstack_project;
       values['project_application_pi_approved'] = this.project_application_pi_approved;
+      values['project_application_initial_credits'] = this.credits;
       for (const value in form.controls) {
         if (form.controls[value].disabled) {
           continue;
@@ -181,6 +213,8 @@ export class AddcloudapplicationComponent extends ApplicationBaseClassComponent 
           values[value] = form.controls[value].value;
         }
       }
+
+
       this.applicationsservice.addNewApplication(values).toPromise()
         .then((application: any) => {
           if (this.project_application_report_allowed) {
@@ -234,6 +268,8 @@ export class AddcloudapplicationComponent extends ApplicationBaseClassComponent 
     values['project_application_volume_counter'] = 5;
     values['project_application_volume_limit'] = 20;
     values['project_application_workgroup'] = 'TestApplication';
+    values['project_application_initial_credits'] = 5952;
+
     for (const flavor of this.flavorList) {
       const fname: string = `project_application_${flavor.name}`;
       values[fname] = 1;
@@ -267,5 +303,15 @@ export class AddcloudapplicationComponent extends ApplicationBaseClassComponent 
     } else {
       this.dissemination_platform_count--;
     }
+  }
+
+  /**
+   * Check vm status.
+   * @param {UserService} userservice
+   */
+  checkVOstatus(): void {
+    this.voservice.isVo().subscribe((result: IResponseTemplate) => {
+      this.is_vo_admin = <boolean><Boolean>result.value;
+    })
   }
 }

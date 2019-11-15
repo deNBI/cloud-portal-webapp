@@ -195,6 +195,7 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
 
     newApp.TotalRam = aj['project_application_total_ram'];
     newApp.TotalCores = aj['project_application_total_cores'];
+    newApp.InitialCredits = aj['project_application_initial_credits'];
     newApp.CoresPerVM = aj['project_application_cores_per_vm'];
     newApp.VolumeLimit = aj['project_application_volume_limit'];
     newApp.VolumeCounter = aj['project_application_volume_counter'];
@@ -265,6 +266,7 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
       extension.ObjectStorage = aj['projectapplicationrenewal']['project_application_renewal_object_storage'];
       extension.RamPerVM = aj['projectapplicationrenewal']['project_application_renewal_ram_per_vm'];
       extension.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
+      extension.ExtendedCredits = aj['projectapplicationrenewal']['project_application_renewal_credits'];
       newApp.ApplicationExtension = extension;
     }
 

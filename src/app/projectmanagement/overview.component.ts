@@ -23,6 +23,7 @@ import {NgForm} from '@angular/forms';
 import {Flavor} from '../virtualmachines/virtualmachinemodels/flavor';
 import {FlavorType} from '../virtualmachines/virtualmachinemodels/flavorType';
 import {FlavorService} from '../api-connector/flavor.service';
+import {IResponseTemplate} from "../api-connector/response-template";
 
 /**
  * Projectoverview component.
@@ -31,7 +32,7 @@ import {FlavorService} from '../api-connector/flavor.service';
              selector: 'app-project-overview',
              templateUrl: 'overview.component.html',
              providers: [FlavorService, ApplicationStatusService, ApplicationsService,
-               FacilityService, VoService, UserService, GroupService, ApiSettings]
+               FacilityService, VoService, UserService, GroupService, ApiSettings, VoService]
            })
 export class OverviewComponent extends ApplicationBaseClassComponent implements OnInit {
 
@@ -93,7 +94,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
               userservice: UserService,
               private activatedRoute: ActivatedRoute,
               private fullLayout: FullLayoutComponent,
-              private router: Router) {
+              private router: Router,
+              private voservice: VoService) {
     super(userservice, applicationstatusservice, applicationsservice, facilityService);
   }
 
@@ -275,6 +277,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
       this.getUserinfo();
       this.getListOfFlavors();
       this.getListOfTypes();
+      this.checkVOstatus();
 
     });
 
@@ -748,5 +751,15 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
     } else if (nr_vm === 0) {
       this.min_vm = false;
     }
+  }
+
+  /**
+   * Check vm status.
+   * @param {UserService} userservice
+   */
+  checkVOstatus(): void {
+    this.voservice.isVo().subscribe((result: IResponseTemplate) => {
+      this.is_vo_admin = <boolean><Boolean>result.value;
+    })
   }
 }
