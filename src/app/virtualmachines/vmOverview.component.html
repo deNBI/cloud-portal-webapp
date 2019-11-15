@@ -360,7 +360,8 @@
           <div class="card-footer p-x-1 py-h">
             <div class="row" *ngIf="vm.status != CLIENT_OFFLINE">
               <div class="col-md-2">
-                <a class="font-weight-bold font-xs btn-block text-muted" href="#" onClick="return false;">
+                <a class="font-weight-bold font-xs btn-block text-muted"
+                   (click)="selectedVm=vm;infoModal.show()" href="#" onClick="return false;">
                 Connect <i class="fa fa-angle-right font-lg"></i>
               </a>
             </div>
@@ -376,14 +377,15 @@
                 Delete VM <i class="fa fa-angle-right font-lg"></i>
               </a>
             </div>
-            <div class="col-md-2">
-              <a class="font-weight-bold font-xs btn-block text-muted" href="#" onClick="return false;">
+            <div class="col-md-2" *ngIf="vm.client.features['VM_REBOOT'] && vm.status !=DELETED">
+              <a class="font-weight-bold font-xs btn-block text-muted"
+                 href="#" onClick="return false;">
                 Reboot VM <i class="fa fa-angle-right font-lg"></i> <!-- combine both options into one modal-->
               </a>
             </div>
             <div class="col-md-2" *ngIf="vm.status !=DELETED">
               <a class="font-weight-bold font-xs btn-block text-muted"
-                 (click)="snapshot_vm=vm;resetSnapshotResult();snapshotModal.show();"href="#" onClick="return false;">
+                 (click)="snapshot_vm=vm;resetSnapshotResult();snapshotModal.show(); "href="#" onClick="return false;">
                 Create Snapshot<i class="fa fa-angle-right font-lg"></i>
               </a>
             </div>
