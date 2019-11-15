@@ -358,7 +358,7 @@
             </div>
           </div>
           <div class="card-footer p-x-1 py-h">
-            <div class="row" *ngIf="vm.status != CLIENT_OFFLINE">
+            <div class="row" *ngIf="vm.status != CLIENT_OFFLINE && vm.status != DELETED && vm.status != SHUTOFF">
               <div class="col-md-2">
                 <a class="font-weight-bold font-xs btn-block text-muted"
                    (click)="selectedVm=vm;infoModal.show()" href="#" onClick="return false;">
