@@ -48,6 +48,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
   public emailText: string;
   public emailStatus: number = 0;
   public emailReply: string = '';
+  public sendNews: boolean;
 
   public managerFacilities: [string, number][];
   public selectedFacility: [string, number];
@@ -68,6 +69,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
       this.title = `${this.title}:${this.selectedFacility['Facility']}`;
 
     })
+    this.sendNews = true;
   }
 
   applyFilter(): void {
@@ -197,13 +199,11 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 
   }
 
-  sendMailToFacility(facility: string, subject: string, message: string, reply?: string): void {
+  sendMailToFacility(facility: string, subject: string, message: string, reply?: string, send?: any): void {
     this.facilityservice.sendMailToFacility(
       facility, encodeURIComponent(subject), encodeURIComponent(message), this.selectedProjectType,
-      encodeURIComponent(reply)).subscribe(
+      encodeURIComponent(reply), send).subscribe(
       (result: any) => {
-        this.selectedProjectType = 'ALL';
-
         if (result.status === 201) {
           this.emailStatus = 1;
         } else {
@@ -211,8 +211,6 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
         }
       },
       () => {
-        this.selectedProjectType = 'ALL';
-
         this.emailStatus = 2;
       })
 
@@ -244,12 +242,12 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
   }
 
   public resetEmailModal(): void {
-
-    this.emailSubject = null;
+    this.selectedProjectType = 'ALL';
+    this.emailSubject = `[${this.selectedFacility['Facility']}]`;
     this.emailText = null;
     this.emailReply = null;
     this.emailStatus = 0;
-
+    this.sendNews = true;
   }
 
   public comingSoon(): void {

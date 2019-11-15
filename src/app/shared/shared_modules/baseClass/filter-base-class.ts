@@ -10,7 +10,8 @@ export abstract class FilterBaseClass extends AbstractBaseClasse {
     SUSPENDED: true,
     DELETED: false,
     EXPIRED: false,
-    'EXPIRES SOON': false
+    'EXPIRES SOON': false,
+    WAIT_FOR_CONFIRMATION: false
   };
   filterProjectName: string;
   filterProjectId: number;
@@ -80,6 +81,9 @@ export abstract class FilterBaseClass extends AbstractBaseClasse {
         break;
       case this.project_states.SUSPENDED:
         status = this.project_states[this.project_states.SUSPENDED];
+        break;
+      case this.application_states.WAIT_FOR_CONFIRMATION:
+        status = this.application_states[this.application_states.WAIT_FOR_CONFIRMATION];
         break;
       default:
         break;

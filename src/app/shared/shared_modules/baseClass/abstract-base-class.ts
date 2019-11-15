@@ -6,7 +6,8 @@ enum Lifetime_States {
 
 enum Project_States {
   ACTIVE = 2,
-  SUSPENDED = 9
+  SUSPENDED = 9,
+  WAITING = 10
 
 }
 
