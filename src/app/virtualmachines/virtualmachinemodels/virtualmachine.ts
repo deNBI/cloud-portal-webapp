@@ -22,7 +22,15 @@ export class VirtualMachine {
   private _ssh_command: string;
   private _udp_command: string;
   private _application_id: string;
+  private _showSSHCommand: boolean = false;
 
+  get showSSHCommand(): boolean {
+    return this._showSSHCommand;
+  }
+
+  set showSSHCommand(value: boolean) {
+    this._showSSHCommand = value;
+  }
 
   get application_id(): string {
     return this._application_id;

@@ -11,6 +11,7 @@ import {FacilityService} from '../api-connector/facility.service';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {Subject} from 'rxjs';
 import {PopoverDirective} from 'ngx-bootstrap';
+import {AbstractBaseClasse} from '../shared/shared_modules/baseClass/abstract-base-class';
 
 /**
  * Vm overview componentn.
@@ -143,6 +144,24 @@ export class VmOverviewComponent implements OnInit {
       this.getAllVmsFacilities()
     }
 
+  }
+
+  /**
+   * Copies the ssh-command needed to connect to the virtual machine (vmachine) to the clipboard.
+   * @param vmachine
+   */
+
+  copySSHCommand(vmachine: VirtualMachine): void {
+    this.copyToClipboard((vmachine.ssh_command.substring(65, vmachine.ssh_command.length)));
+  }
+
+  copyToClipboard(text: string): void {
+    document.addEventListener('copy', (clipEvent: ClipboardEvent) => {
+      clipEvent.clipboardData.setData('text/plain', (text));
+      clipEvent.preventDefault();
+      document.removeEventListener('copy', null);
+    });
+    document.execCommand('copy');
   }
 
   changeFilterStatus(status: string): void {

@@ -358,10 +358,13 @@
           <div class="card-footer p-x-1 py-h">
             <div class="row" *ngIf="vm.status != CLIENT_OFFLINE">
               <div class="col-md-2" *ngIf="vm.status != DELETED && vm.status != SHUTOFF">
-                <a class="font-weight-bold font-xs btn-block text-muted"
-                   (click)="selectedVm=vm;infoModal.show()" href="#" onClick="return false;">
-                Connect <i class="fa fa-angle-right font-lg"></i>
-              </a>
+                <a class="font-weight-bold font-xs btn-block text-muted" *ngIf="!vm.showSSHCommand"
+                   (click)="selectedVm=vm; vm.showSSHCommand=!vm.showSSHCommand" href="#" onClick="return false;">
+                How To Connect <i class="fa fa-angle-right font-lg"></i></a>
+
+                <a class="font-weight-bold font-xs btn-block text-muted" *ngIf="vm.showSSHCommand"
+                   (click)="selectedVm=vm; vm.showSSHCommand=!vm.showSSHCommand" href="#" onClick="return false;">
+                  Hide Information <i class="fa fa-angle-down font-lg"></i></a>
             </div>
             <div class="col-md-2" *ngIf="vm.status ==ACTIVE">
               <a class="font-weight-bold font-xs btn-block text-muted"
@@ -400,6 +403,16 @@
                 </a>
               </div>
 
+            </div>
+          </div>
+          <div class="card-footer p-x-1 py-h" *ngIf="vm.status != DELETED && vm.status != SHUTOFF && vm.showSSHCommand">
+            <div class="row">
+              <div class="col-md-10">
+                <span class="font-weight-bold font-xs btn-block text-muted">{{vm?.ssh_command}}</span>
+              </div>
+              <div class="col-md-2"><a (click)="copySSHCommand(vm);" href="#" onClick="return false;"
+              class="font-weight-bold font-xs btn-block text-muted">Copy command <i class="fa fa-angle-right font-lg"></i></a>
+              </div>
             </div>
           </div>
         </div>
