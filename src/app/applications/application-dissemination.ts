@@ -3,10 +3,8 @@
  */
 export class ApplicationDissemination {
 
-  private _platform_newsletter: boolean = false;
   private _platform_twitter: boolean = false;
-  private _platform_landing_page: boolean = false;
-  private _platform_portal_news: boolean = false;
+  private _platform_portal: boolean = false;
   private _information_title: string = '';
   private _information_description: string = '';
   private _information_description_allowed: boolean = false;
@@ -21,6 +19,26 @@ export class ApplicationDissemination {
   constructor() {
   }
 
+  changeAllInformation(): void {
+    this._information_description_allowed = !this._information_description_allowed;
+    this._information_resources = !this._information_resources;
+    this._information_project_affiliation = !this._information_project_affiliation;
+    this._information_lifetime = !this._information_lifetime;
+    this._information_pi_name = !this._information_pi_name;
+    this._information_institution = !this._information_institution;
+    this._information_workgroup = !this._information_workgroup;
+    this._information_project_type = !this._information_project_type;
+
+  }
+
+  get platform_portal(): boolean {
+    return this._platform_portal;
+  }
+
+  set platform_portal(value: boolean) {
+    this._platform_portal = value;
+  }
+
   get information_description_allowed(): boolean {
     return this._information_description_allowed;
   }
@@ -29,36 +47,12 @@ export class ApplicationDissemination {
     this._information_description_allowed = value;
   }
 
-  get platform_newsletter(): boolean {
-    return this._platform_newsletter;
-  }
-
-  set platform_newsletter(value: boolean) {
-    this._platform_newsletter = value;
-  }
-
   get platform_twitter(): boolean {
     return this._platform_twitter;
   }
 
   set platform_twitter(value: boolean) {
     this._platform_twitter = value;
-  }
-
-  get platform_landing_page(): boolean {
-    return this._platform_landing_page;
-  }
-
-  set platform_landing_page(value: boolean) {
-    this._platform_landing_page = value;
-  }
-
-  get platform_portal_news(): boolean {
-    return this._platform_portal_news;
-  }
-
-  set platform_portal_news(value: boolean) {
-    this._platform_portal_news = value;
   }
 
   get information_title(): string {

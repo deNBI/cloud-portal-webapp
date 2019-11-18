@@ -445,6 +445,18 @@
                       <h6><strong>Type of Information</strong></h6>
                     </div>
                   </div>
+                  <div class="form-group row">
+                    <label class="col-md-4 form-control-label"><strong>All</strong></label>
+                    <div class="col-md-2">
+                      <label class="switch switch-label switch-outline-primary-alt">
+                        <input type="checkbox" class="switch-input" name="information_all"
+                               (change)="application_dissemination.changeAllInformation()"
+                        >
+                        <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                        <span class="switch-handle"></span>
+                      </label>
+                    </div>
+                  </div>
 
                   <div class="form-group row">
                     <label class="col-md-4 form-control-label">Project Title</label>
@@ -462,6 +474,7 @@
                                                  [(ngModel)]="application_dissemination.information_title">
                     </div>
                   </div>
+
 
                   <div class="form-group row">
                     <label class="col-md-4 form-control-label">Description</label>
@@ -601,9 +614,9 @@
                     <label class="col-md-4 form-control-label">Newsletter</label>
                     <div class="col-md-4">
 
-                      <label class="switch switch-label switch-outline-primary-alt" id="platform_newsletter_checkbox">
-                        <input type="checkbox" class="switch-input" name="platform_newsletter" #newsletter
-                               [(ngModel)]="application_dissemination.platform_newsletter"
+                      <label class="switch switch-label switch-outline-primary-alt" id="platform_portal_checkbox">
+                        <input type="checkbox" class="switch-input" name="platform_portal" #newsletter
+                               [(ngModel)]="application_dissemination.platform_portal"
                                (change)="count_platform(newsletter.checked)"
                                name="platform_newsletter">
 
