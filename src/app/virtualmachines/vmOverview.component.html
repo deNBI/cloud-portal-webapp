@@ -87,10 +87,7 @@
           <th>Elixir ID</th>
           <th>Stopped at (d/m/y)</th>
           <th>Actions</th>
-
-
         </tr>
-
         </thead>
         <tbody id="vm_overview_table_body">
 
@@ -324,6 +321,7 @@
               <div class="col-md-4">
                 <div class="row" style="margin:1px;">
                   <span *ngIf="vm?.status == 'ACTIVE'"
+
                         style="margin: 2px 5px 0px 2px; padding: 0.4em 0.4em !important;" class="badge badge-success">
                     {{vm?.status}}</span>
                   <span *ngIf="vm?.status == 'SHUTOFF'"
@@ -732,16 +730,17 @@
           </div>
 
 
-          <div class="alert alert-success" role="alert" *ngIf="snapshotDone == 'true' " id="snapshot_done">
-            Successfully queued Snapshot.
-            It might take some minutes till you can use it for starting a new instance.
-            You can see the current status in the<a
-            routerLinkActive="active"
-            [routerLink]="['/virtualmachines/snapshotOverview']"> Snapshot Overview </a>.
-          </div>
-          <div class="alert alert-danger" role="alert"
-               *ngIf="snapshotDone != 'true' && snapshotDone != 'Waiting'">
-            An error occured when creating the snapshot.
+
+        <div class="alert alert-success" role="alert" *ngIf="snapshotDone == 'true' " id="snapshot_done">
+          Successfully queued Snapshot.
+          It might take some minutes till you can use it for starting a new instance at the "New Instance" tab.
+          You can see the current status in the<a
+          routerLinkActive="active"
+          [routerLink]="['/virtualmachines/snapshotOverview']"> Snapshot Overview </a>.
+        </div>
+        <div class="alert alert-danger" role="alert"
+             *ngIf="snapshotDone != 'true' && snapshotDone != 'Waiting'">
+          An error occured when creating the snapshot.
 
             <pre>{{snapshotDone}}</pre>
           </div>
