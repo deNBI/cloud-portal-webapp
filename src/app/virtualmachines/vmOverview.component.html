@@ -40,35 +40,47 @@
 
     </select></div>
     <div>
-      <input style="width: 110px;" type="text" placeholder="Filter" name="filter"
-             [(ngModel)]="filter" (ngModelChange)="filterChanged.next($event)">
-      <div class="checkbox">
-        <label>
+      <div class="row" style="padding:5px;">
+        <div class="col-md-6">
+        <input type="text" placeholder="Filter" name="filter"
+             [(ngModel)]="filter" (ngModelChange)="filterChanged.next($event)" style="width:100%;">
+        </div>
+        <div class="col-md-2">
+        <div class="checkbox">
+        <label style="margin-top: 7px;margin-bottom: 0px !important;">
           <input type="checkbox"
                  (change)="changeFilterStatus(this.ACTIVE);applyFilter();"
                  checked/>
-          <span style="margin-left: 5px"
+          <span style="margin-left: 5px; bottom: 5px; position: relative;"
                 class="badge badge-success">{{ACTIVE}}  </span>
 
         </label>
       </div>
-      <div class="checkbox">
-        <label>
+
+        </div>
+
+        <div class="col-md-2">
+        <div class="checkbox">
+        <label style="margin-top: 7px;margin-bottom: 0px !important;">
           <input type="checkbox"
                  (change)="changeFilterStatus(this.SHUTOFF);applyFilter();"
                  checked/>
-          <span style="margin-left: 5px"
+          <span style="margin-left: 5px; bottom: 5px; position: relative;"
                 class="badge badge-warning">{{SHUTOFF}}</span>
         </label>
       </div>
-      <div class="checkbox">
-        <label>
+        </div>
+
+        <div class="col-md-2">
+        <div class="checkbox">
+        <label style="margin-top: 7px;margin-bottom: 0px !important;">
           <input type="checkbox"
                  (change)="changeFilterStatus(this.DELETED);applyFilter();"
                  id="checkbox_deleted"/>
-          <span style="margin-left: 5px"
+          <span style="margin-left: 5px; bottom: 5px; position: relative;"
                 class="badge badge-danger">{{DELETED}}</span>
         </label>
+      </div>
       </div>
     </div>
 
