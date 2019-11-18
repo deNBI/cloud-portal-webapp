@@ -273,13 +273,13 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
 
   createDisseminatenObject(obj: any): Dissemination {
     if (obj) {
-      return new Dissemination(obj['platform_newsletter'], obj['platform_landing_page'],
-                               obj['platform_portal_news'], obj['platform_twitter'],
-                               obj['information_title'], obj['information_resources'],
-                               obj['information_runtime'], obj['information_pi_name'],
-                               obj['information_instituition'], obj['information_workgroup'],
-                               obj['information_project_type'],
-                               obj['information_lifetime'], obj['information_project_affiliation'])
+      return new Dissemination(
+        obj['platform_denbi'], obj['platform_twitter'],
+        obj['information_title'], obj['information_resources'],
+        obj['information_runtime'], obj['information_pi_name'],
+        obj['information_instituition'], obj['information_workgroup'],
+        obj['information_project_type'],
+        obj['information_lifetime'], obj['information_project_affiliation'])
     } else {
       return null
     }

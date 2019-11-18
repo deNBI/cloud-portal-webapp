@@ -627,13 +627,13 @@
                     Please select at least one Platform.
                   </div>
                   <div class="form-group row">
-                    <label class="col-md-4 form-control-label">Portal</label>
+                    <label class="col-md-4 form-control-label">de.NBI Platforms</label>
                     <div class="col-md-4">
 
                       <label class="switch switch-label switch-outline-primary-alt" id="platform_newsletter_checkbox">
-                        <input type="checkbox" class="switch-input" name="platform_newsletter" #newsletter
-                               [(ngModel)]="application_dissemination.platform_portal"
-                               (change)="count_platform(newsletter.checked)"
+                        <input type="checkbox" class="switch-input" name="platform_denbi" #denbi
+                               [(ngModel)]="application_dissemination.platform_denbi"
+                               (change)="count_platform(denbi.checked)"
                                name="platform_newsletter">
 
                         <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>

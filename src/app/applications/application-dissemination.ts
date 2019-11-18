@@ -4,7 +4,7 @@
 export class ApplicationDissemination {
 
   private _platform_twitter: boolean = false;
-  private _platform_portal: boolean = false;
+  private _platform_denbi: boolean = false;
   private _information_title: string = '';
   private _information_description: string = '';
   private _information_description_allowed: boolean = false;
@@ -31,12 +31,12 @@ export class ApplicationDissemination {
 
   }
 
-  get platform_portal(): boolean {
-    return this._platform_portal;
+  get platform_denbi(): boolean {
+    return this._platform_denbi;
   }
 
-  set platform_portal(value: boolean) {
-    this._platform_portal = value;
+  set platform_denbi(value: boolean) {
+    this._platform_denbi = value;
   }
 
   get information_description_allowed(): boolean {
