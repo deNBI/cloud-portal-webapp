@@ -344,9 +344,9 @@
                   <span *ngIf="vm?.status != 'ACTIVE' && vm?.status != 'SHUTOFF' && vm?.status != 'DELETED'"
                         style="margin: 2px 5px 0px 2px; padding: 0.4em 0.4em !important;" class="badge badge-dark">
                     {{vm?.status}}</span>
-                  <div  data-toggle="tooltip" data-placement="right" title="{{vm?.image?.name}}" class="h5 text-primary mb-0 mt-h">{{vm?.name}}</div>
+                  <div class="h5 text-primary mb-0 mt-h">{{vm?.name}}</div>
                 </div>
-                <div class="row" style="margin:1px;">
+                <div class="row" style="margin:1px; padding:2px;">
                   <span class="text-muted font-weight-bold font-sm">
                     {{vm?.image}}
                   </span>

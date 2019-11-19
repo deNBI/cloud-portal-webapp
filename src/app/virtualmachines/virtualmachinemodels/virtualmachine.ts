@@ -7,7 +7,7 @@ import {Client} from '../clients/client.model';
  */
 export class VirtualMachine {
   private _flavor: Flavor;
-  private _image: Image;
+  private _image: string;
   private _project: string;
   private _status: string;
   private _keyname: string;
@@ -56,11 +56,11 @@ export class VirtualMachine {
     this._flavor = value;
   }
 
-  get image(): Image {
+  get image(): string {
     return this._image;
   }
 
-  set image(value: Image) {
+  set image(value: string) {
     this._image = value;
   }
 
