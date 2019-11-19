@@ -176,7 +176,7 @@ export class AddcloudapplicationComponent extends ApplicationBaseClassComponent 
    * Sends a request to the BE to get the initital credits for a new application.
    */
   calculateInitialCredits(form: NgForm): void {
-    const lifetime = form.controls['project_application_lifetime'].value;
+    const lifetime: number = form.controls['project_application_lifetime'].value;
     this.creditsService.getCreditsForApplication(this.totalNumberOfCores, this.totalRAM, lifetime).toPromise()
       .then((credits: number) => {
         this.credits = credits;
