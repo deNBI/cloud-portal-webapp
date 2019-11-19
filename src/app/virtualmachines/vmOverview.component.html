@@ -373,11 +373,11 @@
             <div class="row" *ngIf="vm.status != CLIENT_OFFLINE">
               <div class="col-md-2" *ngIf="vm.status != DELETED && vm.status != SHUTOFF">
                 <a class="font-weight-bold font-xs btn-block text-muted" *ngIf="!vm.showSSHCommand"
-                   (click)="selectedVm=vm; vm.showSSHCommand=!vm.showSSHCommand" href="#" onClick="return false;">
+                   (click)="selectedVm=vm; vm.showSSHCommand=!vm.showSSHCommand;" href="#" onClick="return false;">
                 How To Connect <i class="fa fa-angle-right font-lg"></i></a>
 
                 <a class="font-weight-bold font-xs btn-block text-muted" *ngIf="vm.showSSHCommand"
-                   (click)="selectedVm=vm; vm.showSSHCommand=!vm.showSSHCommand" href="#" onClick="return false;">
+                   (click)="selectedVm=vm; vm.showSSHCommand=!vm.showSSHCommand;" href="#" onClick="return false;">
                   Hide Information <i class="fa fa-angle-down font-lg"></i></a>
             </div>
             <div class="col-md-2" *ngIf="vm.status ==ACTIVE">
