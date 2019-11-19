@@ -23,7 +23,7 @@ import {NgForm} from '@angular/forms';
 import {Flavor} from '../virtualmachines/virtualmachinemodels/flavor';
 import {FlavorType} from '../virtualmachines/virtualmachinemodels/flavorType';
 import {FlavorService} from '../api-connector/flavor.service';
-import {IResponseTemplate} from "../api-connector/response-template";
+import {IResponseTemplate} from '../api-connector/response-template';
 
 /**
  * Projectoverview component.
