@@ -11,10 +11,9 @@ import {EdamOntologyTerm} from './edam-ontology-term';
 import {AutocompleteComponent} from 'angular-ng-autocomplete';
 import {ApplicationDissemination} from './application-dissemination';
 import {FullLayoutComponent} from '../layouts/full-layout.component';
-import {CreditsService} from "../api-connector/credits.service";
-import {IResponseTemplate} from "../api-connector/response-template";
-import {ClientService} from "../api-connector/client.service";
-import {VoService} from "../api-connector/vo.service";
+import {CreditsService} from '../api-connector/credits.service';
+import {IResponseTemplate} from '../api-connector/response-template';
+import {VoService} from '../api-connector/vo.service';
 
 /**
  * This components provides the functions to create a new Cloud Application.
@@ -177,11 +176,11 @@ export class AddcloudapplicationComponent extends ApplicationBaseClassComponent 
    * Sends a request to the BE to get the initital credits for a new application.
    */
   calculateInitialCredits(form: NgForm): void {
-    let lifetime = form.controls['project_application_lifetime'].value;
+    const lifetime = form.controls['project_application_lifetime'].value;
     this.creditsService.getCreditsForApplication(this.totalNumberOfCores, this.totalRAM, lifetime).toPromise()
       .then((credits: number) => {
         this.credits = credits;
-      });
+      }).catch(err => console.log(err));
   }
 
   /**
@@ -213,7 +212,6 @@ export class AddcloudapplicationComponent extends ApplicationBaseClassComponent 
           values[value] = form.controls[value].value;
         }
       }
-
 
       this.applicationsservice.addNewApplication(values).toPromise()
         .then((application: any) => {

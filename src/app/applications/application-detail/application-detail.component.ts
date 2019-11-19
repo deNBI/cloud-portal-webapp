@@ -5,8 +5,8 @@ import {ApplicationsService} from '../../api-connector/applications.service';
 import {ApplicationStatusService} from '../../api-connector/application-status.service';
 import {UserService} from '../../api-connector/user.service';
 import {FacilityService} from '../../api-connector/facility.service';
-import {IResponseTemplate} from "../../api-connector/response-template";
-import {VoService} from "../../api-connector/vo.service";
+import {IResponseTemplate} from '../../api-connector/response-template';
+import {VoService} from '../../api-connector/vo.service';
 
 /**
  * Class which displays the details of an application.
@@ -21,7 +21,6 @@ import {VoService} from "../../api-connector/vo.service";
 export class ApplicationDetailComponent extends ApplicationBaseClassComponent implements OnInit {
   @Input() application: Application;
   @Input() isModification: boolean = false;
-
 
   /**
    * If user is vo.
