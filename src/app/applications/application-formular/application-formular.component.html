@@ -492,6 +492,18 @@
                       <h6><strong>Type of Information</strong></h6>
                     </div>
                   </div>
+                  <div class="form-group row">
+                    <label class="col-md-4 form-control-label"><strong>All</strong></label>
+                    <div class="col-md-2">
+                      <label class="switch switch-label switch-outline-primary-alt">
+                        <input type="checkbox" class="switch-input" name="information_all"
+                               (change)="application_dissemination.changeAllInformation()"
+                        >
+                        <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                        <span class="switch-handle"></span>
+                      </label>
+                    </div>
+                  </div>
 
                   <div class="form-group row">
                     <label class="col-md-4 form-control-label">Project Title</label>
@@ -645,14 +657,14 @@
                     Please select at least one Platform.
                   </div>
                   <div class="form-group row">
-                    <label class="col-md-4 form-control-label">Newsletter</label>
+                    <label class="col-md-4 form-control-label">de.NBI Platforms</label>
                     <div class="col-md-4">
 
-                      <label class="switch switch-label switch-outline-primary-alt" id="platform_newsletter_checkbox">
-                        <input type="checkbox" class="switch-input" name="platform_newsletter" #newsletter
-                               [(ngModel)]="application_dissemination.platform_newsletter"
-                               (change)="count_platform(newsletter.checked)"
-                               name="platform_newsletter">
+                      <label class="switch switch-label switch-outline-primary-alt" id="platform_denbi_checkbox">
+                         <input type="checkbox" class="switch-input" name="platform_denbi" #denbi
+                                [(ngModel)]="application_dissemination.platform_denbi"
+                               (change)="count_platform(denbi.checked)"
+                               name="platform_denbi">
 
                         <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
                         <span class="switch-handle"></span>
