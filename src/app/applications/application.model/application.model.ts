@@ -36,6 +36,7 @@ export class Application {
   private _PerunId: number | string;
   private _TotalCores: number;
   private _TotalRam: number;
+  private _InitialCredits: number;
   private _DateApproved: string;
   private _Horizon2020: string;
   private _BMBFProject: string;
@@ -400,5 +401,13 @@ export class Application {
 
   set PIEmail(value: string) {
     this._PIEmail = value;
+  }
+
+  get InitialCredits(): number {
+    return this._InitialCredits;
+  }
+
+  set InitialCredits(value: number) {
+    this._InitialCredits = value;
   }
 }

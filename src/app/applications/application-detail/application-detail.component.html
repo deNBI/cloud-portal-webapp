@@ -240,6 +240,18 @@
         {{application?.ApplicationExtension?.TotalRAM}} GB
       </td>
     </tr>
+
+
+    <tr *ngIf="is_vo_admin">
+      <td>Credits</td>
+      <td>{{
+        application?.InitialCredits}}
+      </td>
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
+        {{application?.ApplicationExtension?.ExtendedCredits}} GB
+      </td>
+    </tr>
+
     <tr>
       <td>Storage Limit
       </td>

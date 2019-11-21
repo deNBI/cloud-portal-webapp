@@ -11,14 +11,17 @@ import {ApplicationDissemination} from '../application-dissemination';
 import {ApplicationBaseClassComponent} from '../../shared/shared_modules/baseClass/application-base-class.component';
 import {FullLayoutComponent} from '../../layouts/full-layout.component';
 import {IResponseTemplate} from '../../api-connector/response-template';
-import {CreditsService} from '../api-connector/credits.service';
 import {VoService} from '../../api-connector/vo.service';
+import {CreditsService} from '../../api-connector/credits.service';
 
+/**
+ * Application formular component.
+ */
 @Component({
              selector: 'app-application-formular',
              templateUrl: './application-formular.component.html',
              styleUrls: ['./application-formular.component.scss'],
-             providers: [FlavorService, ApplicationsService, VoService]
+             providers: [FlavorService, ApplicationsService, VoService, CreditsService]
            })
 export class ApplicationFormularComponent extends ApplicationBaseClassComponent implements OnInit, OnChanges {
 
@@ -58,7 +61,9 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
    */
   public collapseList: boolean[];
 
-  constructor(private voService: VoService, private flavorService: FlavorService, private fullLayout: FullLayoutComponent, applicationsservice: ApplicationsService) {
+  constructor(private creditsService: CreditsService, private voService: VoService,
+              private flavorService: FlavorService, private fullLayout: FullLayoutComponent,
+              applicationsservice: ApplicationsService) {
     super(null, null, applicationsservice, null);
 
   }
@@ -274,15 +279,17 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
     }
   }
 
-   /**
+  /**
    * Sends a request to the BE to get the initital credits for a new application.
    */
   calculateInitialCredits(form: NgForm): void {
+
     const lifetime: number = form.controls['project_application_lifetime'].value;
     this.creditsService.getCreditsForApplication(this.totalNumberOfCores, this.totalRAM, lifetime).toPromise()
       .then((credits: number) => {
         this.credits = credits;
-      }).catch(err => console.log(err));
+      }).catch((err: any) => console.log(err));
+
   }
 
   /**
