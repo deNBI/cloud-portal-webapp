@@ -145,6 +145,15 @@
           application?.ApplicationExtension?.Lifetime}}
       </td>
     </tr>
+    <tr>
+      <td>Sensitive Data</td>
+      <td><p *ngIf="application.SensitiveData"> Yes</p>
+        <p *ngIf="!application.SensitiveData"> No</p>
+      </td>
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
+
+      </td>
+    </tr>
   </table>
   <br>
   <table class="table table-striped" style="table-layout: fixed">
@@ -245,7 +254,7 @@
     <tr *ngIf="is_vo_admin">
       <td>Credits</td>
       <td>{{
-        application?.InitialCredits}}
+          application?.InitialCredits}}
       </td>
       <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
         {{application?.ApplicationExtension?.ExtendedCredits}} GB

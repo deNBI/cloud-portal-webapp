@@ -418,52 +418,51 @@
               </div>
             </div>
             <div class="form-group row">
-              <label class="col-md-4 form-control-label" for="text-input"><strong>Horizon
-                2020</strong></label>
-              <div class="col-md-8">
-                <input type="text" id="id_project_application_horizon2020"
-                       name="project_application_horizon2020" class="form-control"
-                       maxlength="2048"
-                       placeholder='Name of the project' [ngModel]="''">
-                <span class="help-block">Is your project part of a Horizon 2020 project?</span>
-              </div>
-            </div>
-            <div class="form-group row">
-              <label class="col-md-4 form-control-label" for="text-input"><strong>Elixir Project</strong></label>
-              <div class="col-md-8">
-                <input type="text" id="id_project_application_elixir_project"
-                       name="project_application_elixir_project" class="form-control"
-                       maxlength="2048"
-                       placeholder='Name of the project' [ngModel]="''">
-                <span class="help-block">Is your project part of an Elixir project?</span>
-              </div>
-            </div>
-            <div class="form-group row">
-              <label class="col-md-4 form-control-label" for="text-input"><strong>BMBF</strong></label>
-              <div class="col-md-8">
-                <input type="text" id="id_project_application_bmbf_project"
-                       name="project_application_bmbf_project" class="form-control"
-                       maxlength="2048"
-                       placeholder='Name of the project' [ngModel]="''">
-                <span class="help-block">Is your project part of a BMBF project?</span>
-              </div>
-            </div>
-
-            <div class="form-group row">
-              <label class="col-md-4 form-control-label" for="text-input"><strong>User Specific Data*</strong></label>
+              <label class="col-md-4 form-control-label" for="text-input"><strong>Sensitive Data*</strong></label>
               <div class="col-md-8">
 
 
-                <label id="id_project_application_user_data"
+                <label id="id_project_application_sensitive_data"
                        class="switch switch-label switch-outline-primary-alt">
                   <input type="checkbox" class="switch-input"
-                         name="project_application_user_data"
-                         [(ngModel)]="project_application_user_data"
+                         name="project_application_sensitive_data"
+                         [(ngModel)]="project_application_sensitive_data"
                   >
                   <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
                   <span class="switch-handle"></span></label>
                 <div class="alert alert-info" role="alert">
                   USER DATA INFO INPUT
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-md-4 form-control-label" for="text-input"><strong>Horizon
+                  2020</strong></label>
+                <div class="col-md-8">
+                  <input type="text" id="id_project_application_horizon2020"
+                         name="project_application_horizon2020" class="form-control"
+                         maxlength="2048"
+                         placeholder='Name of the project' [ngModel]="''">
+                  <span class="help-block">Is your project part of a Horizon 2020 project?</span>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-md-4 form-control-label" for="text-input"><strong>Elixir Project</strong></label>
+                <div class="col-md-8">
+                  <input type="text" id="id_project_application_elixir_project"
+                         name="project_application_elixir_project" class="form-control"
+                         maxlength="2048"
+                         placeholder='Name of the project' [ngModel]="''">
+                  <span class="help-block">Is your project part of an Elixir project?</span>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-md-4 form-control-label" for="text-input"><strong>BMBF</strong></label>
+                <div class="col-md-8">
+                  <input type="text" id="id_project_application_bmbf_project"
+                         name="project_application_bmbf_project" class="form-control"
+                         maxlength="2048"
+                         placeholder='Name of the project' [ngModel]="''">
+                  <span class="help-block">Is your project part of a BMBF project?</span>
                 </div>
               </div>
 

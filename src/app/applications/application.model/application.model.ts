@@ -41,6 +41,7 @@ export class Application {
   private _Horizon2020: string;
   private _BMBFProject: string;
   private _EdamTopics: string[];
+  private _SensitiveData: boolean;
 
   private _ElixirProject: string;
   private _Dissemination: Dissemination;
@@ -71,6 +72,14 @@ export class Application {
       gpu: gpu,
       epheremal_disk: epheremal_disk
     };
+  }
+
+  get SensitiveData(): boolean {
+    return this._SensitiveData;
+  }
+
+  set SensitiveData(value: boolean) {
+    this._SensitiveData = value;
   }
 
   get PiAffiliations(): string[] {

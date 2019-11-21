@@ -189,6 +189,7 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
     newApp.Lifetime = aj['project_application_lifetime'];
     newApp.EdamTopics = aj['project_application_edam_terms'];
     newApp.PiAffiliations = aj['pi_affiliations'];
+    newApp.SensitiveData = aj['project_application_sensitive_data'];
 
     newApp.VMsRequested = aj['project_application_vms_requested'];
     newApp.RamPerVM = aj['project_application_ram_per_vm'];
@@ -385,8 +386,6 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
     }
 
   }
-
-
 
   /**
    * Check if short name is valid.
