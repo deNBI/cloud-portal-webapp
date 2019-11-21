@@ -230,7 +230,6 @@ export class VmOverviewComponent implements OnInit {
       )
   }
 
-
   applyFilterStatus(): void {
     const vm_content_copy: VirtualMachine[] = [];
     for (const vm of this.vms_content) {
@@ -418,10 +417,10 @@ export class VmOverviewComponent implements OnInit {
                    this.items_per_page = vms['items_per_page'];
 
                    for (const vm of this.vms_content) {
-                      vm.username = vm['userlogin'];
-                      if (vm.created_at !== '') {
-                        vm.created_at = new Date(parseInt(vm.created_at, 10) * 1000).toLocaleDateString();
-                      }
+                     vm.username = vm['userlogin'];
+                     if (vm.created_at !== '') {
+                       vm.created_at = new Date(parseInt(vm.created_at, 10) * 1000).toLocaleDateString();
+                     }
                    }
                    this.isSearching = false;
                  }
