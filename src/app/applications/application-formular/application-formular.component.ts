@@ -10,12 +10,15 @@ import {ApplicationsService} from '../../api-connector/applications.service';
 import {ApplicationDissemination} from '../application-dissemination';
 import {ApplicationBaseClassComponent} from '../../shared/shared_modules/baseClass/application-base-class.component';
 import {FullLayoutComponent} from '../../layouts/full-layout.component';
+import {IResponseTemplate} from '../../api-connector/response-template';
+import {CreditsService} from '../api-connector/credits.service';
+import {VoService} from '../../api-connector/vo.service';
 
 @Component({
              selector: 'app-application-formular',
              templateUrl: './application-formular.component.html',
              styleUrls: ['./application-formular.component.scss'],
-             providers: [FlavorService, ApplicationsService]
+             providers: [FlavorService, ApplicationsService, VoService]
            })
 export class ApplicationFormularComponent extends ApplicationBaseClassComponent implements OnInit, OnChanges {
 
@@ -23,6 +26,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
   @Input() simple_vm_project: boolean = false;
   @Input() title: string;
 
+  credits: number = 0;
   dissemination_platform_count: number = 0;
   flavorList: Flavor[] = [];
   production: boolean = environment.production;
@@ -54,7 +58,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
    */
   public collapseList: boolean[];
 
-  constructor(private flavorService: FlavorService, private fullLayout: FullLayoutComponent, applicationsservice: ApplicationsService) {
+  constructor(private voService: VoService, private flavorService: FlavorService, private fullLayout: FullLayoutComponent, applicationsservice: ApplicationsService) {
     super(null, null, applicationsservice, null);
 
   }
@@ -62,6 +66,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
   ngOnInit(): void {
     this.getListOfFlavors();
     this.getListOfTypes();
+    this.checkVOstatus();
     this.applicationsservice.getEdamOntologyTerms().subscribe((terms: EdamOntologyTerm[]) => {
       this.edam_ontology_terms = terms;
     })
@@ -134,6 +139,12 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
       this.valuesToConfirm.push('Dissemination allowed: No');
     }
 
+  }
+
+  checkVOstatus(): void {
+    this.voService.isVo().subscribe((result: IResponseTemplate) => {
+      this.is_vo_admin = <boolean><Boolean>result.value;
+    })
   }
 
   count_platform(checked: boolean): void {
@@ -219,6 +230,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
     } else {
       const values: { [key: string]: string | number | boolean } = {};
       values['project_application_openstack_project'] = this.openstack_project;
+      values['project_application_initial_credits'] = this.credits;
       for (const value in form.controls) {
         if (form.controls[value].disabled) {
           continue;
@@ -260,6 +272,17 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
         this.notificationModalStay = true;
       })
     }
+  }
+
+   /**
+   * Sends a request to the BE to get the initital credits for a new application.
+   */
+  calculateInitialCredits(form: NgForm): void {
+    const lifetime: number = form.controls['project_application_lifetime'].value;
+    this.creditsService.getCreditsForApplication(this.totalNumberOfCores, this.totalRAM, lifetime).toPromise()
+      .then((credits: number) => {
+        this.credits = credits;
+      }).catch(err => console.log(err));
   }
 
   /**
