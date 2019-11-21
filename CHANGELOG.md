@@ -1,3 +1,19 @@
+##  (2019-11-14)
+
+
+#### Bug Fixes
+
+* **add-member:** button layout fixed ([c176951c](c176951c))
+* **userinfo:** same column width for chrome and firefox ([f7b2d6c5](f7b2d6c5))
+* **new instance:** bar animated
+  
+#### Fatures
+
+* **news:** feature(fm-mail): checkbox if post news
+* **vo-overview:** filter wait for confirmation projects
+* **snapshot:** updated info
+
+
 ##  (2019-11-07)
 
 

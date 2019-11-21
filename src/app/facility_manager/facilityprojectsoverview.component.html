@@ -256,6 +256,20 @@
 
                 </select></div>
             </div>
+            <div *ngIf="selectedProjectType == 'ALL'">
+                <div class="col">
+                  <label id="id_send_to_news_allowed_label"
+                         class="switch switch-label switch-outline-primary-alt">
+                    <input type="checkbox" class="switch-input" id="id_send_to_news_allowed"
+                           name="send_to_news_allowed"
+                           [(ngModel)]="sendNews"
+                    >
+                    <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                    <span class="switch-handle"></span></label>
+                  <p>Do you want this Mail also to be posted to the news-service?</p>
+                </div>
+
+            </div>
             <div class="form-group row">
               <label class="col-md-12 control-label"><strong>Email
                 subject*</strong></label>
@@ -264,9 +278,8 @@
                        placeholder="Subject"
                        class="form-control"
                        type="text" [(ngModel)]="emailSubject" minlength="1"
-                       #emailSub="ngModel"
-                       [ngClass]="{'is-invalid':emailSub.invalid && (emailSub.dirty || emailSub.touched),
-                    'is-valid':emailSub.valid && (emailSub.dirty || emailSub.touched)
+                       [ngClass]="{'is-invalid': f.controls.emailSub?.invalid && (f.controls.emailSub?.dirty || f.controls.emailSub?.touched),
+                    'is-valid':f.controls.emailSub?.valid && (f.controls.emailSub?.dirty || f.controls.emailSub?.touched)
                     }">
 
               </div>
@@ -348,11 +361,16 @@
       </div>
       <div class="modal-footer">
         <button class="btn  btn-success col-md-4"
-                (click)="sendMailToFacility(selectedFacility['FacilityId'],emailSubject,emailText,emailReply);verifyModal.hide();f.reset();resetEmailModal();successModal.show()">
+                (click)="sendMailToFacility(selectedFacility['FacilityId'],emailSubject,emailText,emailReply, sendNews);
+                verifyModal.hide();
+                resetEmailModal();
+                successModal.show()">
           Yes
         </button>
         <button class="btn  btn-danger col-md-4" type="reset"
-                (click)="verifyModal.hide();emailModal.show()">Cancel
+                (click)="
+                verifyModal.hide();
+                emailModal.show();">Cancel
         </button>
       </div>
     </div><!-- /.modal-content -->
