@@ -31,6 +31,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 
   credits: number = 0;
   dissemination_platform_count: number = 0;
+  project_application_user_data: false;
   flavorList: Flavor[] = [];
   production: boolean = environment.production;
   dissemination_information_open: boolean = true;

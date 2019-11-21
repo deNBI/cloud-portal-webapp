@@ -450,6 +450,27 @@
             </div>
 
             <div class="form-group row">
+              <label class="col-md-4 form-control-label" for="text-input"><strong>User Specific Data*</strong></label>
+              <div class="col-md-8">
+
+
+                <label id="id_project_application_user_data"
+                       class="switch switch-label switch-outline-primary-alt">
+                  <input type="checkbox" class="switch-input"
+                         name="project_application_user_data"
+                         [(ngModel)]="project_application_user_data"
+                  >
+                  <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                  <span class="switch-handle"></span></label>
+                <div class="alert alert-info" role="alert">
+                  USER DATA INFO INPUT
+                </div>
+              </div>
+
+
+            </div>
+
+            <div class="form-group row">
               <label class="col-md-4 form-control-label" for="text-input"><strong>Dissemination</strong></label>
               <div class="col-md-8">
 
