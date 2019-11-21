@@ -90,21 +90,22 @@
 
     <div class="row" *ngFor="let vm of vms_content">
       <div class="col-md-12">
-        <div class="card instance-card" style="margin-bottom:15px;">
+        <div class="card instance-card" style="margin-bottom:15px;" [id]="'instanceCard_' + vm?.name">
           <div class="card-block clearfix">
             <div class="row">
               <div class="col-md-4">
                 <div class="row" style="margin:1px;">
-                  <span *ngIf="vm?.status == 'ACTIVE'"
+                  <span *ngIf="vm?.status == 'ACTIVE'" [id]="'active_badge_' + vm?.name"
                         style="margin: 2px 5px 0px 2px; padding: 0.4em 0.4em !important;" class="badge badge-success">
                     {{vm?.status}}</span>
-                  <span *ngIf="vm?.status == 'SHUTOFF'"
+                  <span *ngIf="vm?.status == 'SHUTOFF'" [id]="'shutoff_badge_' + vm?.name"
                         style="margin: 2px 5px 0px 2px; padding: 0.4em 0.4em !important;" class="badge badge-warning">
                     {{vm?.status}}</span>
-                  <span *ngIf="vm?.status == 'DELETED'"
+                  <span *ngIf="vm?.status == 'DELETED'" [id]="'deleted_badge_' + vm?.name"
                         style="margin: 2px 5px 0px 2px; padding: 0.4em 0.4em !important;" class="badge badge-danger">
                     {{vm?.status}}</span> <!-- add other states like restarting etc -->
                   <span *ngIf="vm?.status != 'ACTIVE' && vm?.status != 'SHUTOFF' && vm?.status != 'DELETED'"
+                        [id]="'default_badge_' + vm?.name"
                         style="margin: 2px 5px 0px 2px; padding: 0.4em 0.4em !important;" class="badge badge-dark">
                     {{vm?.status}}</span>
                   <div class="h5 text-primary mb-0 mt-h">{{vm?.name}}</div>
@@ -136,45 +137,53 @@
             <div class="row" *ngIf="vm.status != CLIENT_OFFLINE">
               <div class="col-md-2" *ngIf="vm.status != DELETED && vm.status != SHUTOFF">
                 <a class="font-weight-bold font-xs btn-block text-muted" *ngIf="!vm.showSSHCommand"
+                   [id]="'showHowToConnectButton_'+vm?.name"
                    (click)="selectedVm=vm; vm.showSSHCommand=!vm.showSSHCommand;" href="#" onClick="return false;">
                 How To Connect <i class="fa fa-angle-right font-lg"></i></a>
 
                 <a class="font-weight-bold font-xs btn-block text-muted" *ngIf="vm.showSSHCommand"
+                   [id]="'hideHowToConnectButton_'+vm?.name"
                    (click)="selectedVm=vm; vm.showSSHCommand=!vm.showSSHCommand;" href="#" onClick="return false;">
                   Hide Information <i class="fa fa-angle-down font-lg"></i></a>
             </div>
             <div class="col-md-2" *ngIf="vm.status ==ACTIVE">
               <a class="font-weight-bold font-xs btn-block text-muted"
+                 [id]="'stopVMButton_' + vm?.name"
                  (click)="selectedVm=vm;stopVm(vm);stopModal.show();" href="#" onClick="return false;">
                 Stop VM <i class="fa fa-angle-right font-lg"></i>
               </a>
             </div>
             <div class="col-md-2" *ngIf="vm.status !=DELETED">
               <a class="font-weight-bold font-xs btn-block text-muted"
+                 [id]="'deleteVMButton_' + vm?.name"
                  (click)="selectedVm=vm;verifyModal.show();" href="#" onClick="return false;">
                 Delete VM <i class="fa fa-angle-right font-lg"></i>
               </a>
             </div>
             <div class="col-md-2" *ngIf="vm.client.features['VM_REBOOT'] && vm.status !=DELETED">
               <a class="font-weight-bold font-xs btn-block text-muted"
+                 [id]="'chooseRebootVMButton_' + vm?.name"
                  href="#" onClick="return false;" (click)="selectedVm=vm; chooseRebootOptionModal.show();">
                 Reboot VM <i class="fa fa-angle-right font-lg"></i>
               </a>
             </div>
             <div class="col-md-2" *ngIf="vm.status !=DELETED">
               <a class="font-weight-bold font-xs btn-block text-muted"
+                 [id]="'createSnapshotVMButton_' + vm?.name"
                  (click)="snapshot_vm=vm;resetSnapshotResult();snapshotModal.show(); "href="#" onClick="return false;">
                 Create Snapshot<i class="fa fa-angle-right font-lg"></i>
               </a>
             </div>
             <div class="col-md-2" *ngIf="vm.status !=SHUTOFF && vm.status != DELETED">
               <a class="font-weight-bold font-xs btn-block text-muted"
+                 [id]="'checkStatusVMButton_' + vm?.name"
                  (click)="checkStatus(vm);"href="#" onClick="return false;">
                 Check Status <i class="fa fa-angle-right font-lg"></i>
               </a>
             </div>
               <div class="col-md-2" *ngIf="vm.status ==SHUTOFF">
                 <a class="font-weight-bold font-xs btn-block text-muted"
+                   [id]="'restartVMButton_' + vm?.name"
                    (click)="selectedVm=vm;resumeVM(vm);resumeModal.show();" href="#" onClick="return false;">
                   Restart VM <i class="fa fa-angle-right font-lg"></i>
                 </a>
@@ -565,7 +574,7 @@
     </div>&lt;!&ndash; /.modal-dialog &ndash;&gt;
   </div>
 -->
-  <div bsModal #chooseRebootOptionModal="bs-modal" class="modal fade" tabindex="1" role="dialog"
+  <div bsModal #chooseRebootOptionModal="bs-modal" class="modal fade" tabindex="1" role="dialog" [id]="chooseRebootOptionModal"
     aria-labeledby="cromlabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -583,12 +592,14 @@
             <div class="col-md-6">
               <button type="button" class="btn btn-primary"
                       *ngIf="selectedVm?.status != DELETED && selectedVm?.status !=SHUTOFF && selectedVm?.client.features['VM_REBOOT']"
+                      [id]="'softRebootVM_' + selectedVm?.name"
                       (click)="status_check_error=false;reboot_done=false;reboot_type='SOFT';chooseRebootOptionModal.hide();rebootModal.show();">
                 Soft Reboot
               </button>
             </div>
             <div class="col-md-6">
               <button type="button" class="btn btn-primary"
+                      [id]="'hardRebootVM_' + selectedVm?.name"
                       *ngIf="selectedVm?.status != DELETED && selectedVm?.client.features['VM_REBOOT']"
                       (click)="status_check_error=false;reboot_done=false;reboot_type='HARD'; chooseRebootOptionModal.hide(); rebootModal.show();"
               >
@@ -599,7 +610,8 @@
         </div>
 
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" (click)="chooseRebootOptionModal.hide();">Close
+            <button type="button" class="btn btn-secondary" (click)="chooseRebootOptionModal.hide();"
+            [id]="'closeRebootOptionModalButton'">Close
             </button>
         </div>
       </div>
