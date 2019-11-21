@@ -226,7 +226,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
    */
   onSubmit(form: NgForm): void {
     this.error = null;
-    if (this.wronginput) {
+    if (this.invalid_shortname) {
       this.updateNotificationModal(
         'Failed',
         'The application was not submitted, please check the required fields and try again.',
