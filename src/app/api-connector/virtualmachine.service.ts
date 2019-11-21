@@ -23,7 +23,7 @@ export class VirtualmachineService {
   }
 
   startVM(flavor: string, image: string, servername: string, project: string, projectid: string, http: boolean, https: boolean,
-          udp: boolean, volumename?: string, diskspace?: string, playbook_information?: string, infos?: string): Observable<any> {
+          udp: boolean, volumename?: string, diskspace?: string, playbook_information?: string): Observable<any> {
 
     const params: HttpParams = new HttpParams()
       .set('flavor', flavor)
@@ -36,8 +36,7 @@ export class VirtualmachineService {
       .set('http_allowed', http.toString())
       .set('https_allowed', https.toString())
       .set('udp_allowed', udp.toString())
-      .set('playbook_information', playbook_information)
-      .set('infos', infos);
+      .set('playbook_information', playbook_information);
 
     return this.http.post(this.baseVmUrl, params, {
       withCredentials: true,
@@ -124,7 +123,13 @@ export class VirtualmachineService {
   getLogs(openstack_id: string): Observable<any> {
     return this.http.post(`${this.baseVmUrl}${openstack_id}/logs/`, null, {
       withCredentials: true,
+      headers: header
+    })
+  }
 
+  getLocationUrl(openstack_id: string): Observable<any> {
+    return this.http.post(`${this.baseVmUrl}${openstack_id}/location_url/`, null, {
+      withCredentials: true,
       headers: header
     })
   }
