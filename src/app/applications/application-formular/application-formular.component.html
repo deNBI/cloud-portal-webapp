@@ -661,8 +661,8 @@
                     <div class="col-md-4">
 
                       <label class="switch switch-label switch-outline-primary-alt" id="platform_denbi_checkbox">
-                         <input type="checkbox" class="switch-input" name="platform_denbi" #denbi
-                                [(ngModel)]="application_dissemination.platform_denbi"
+                        <input type="checkbox" class="switch-input" name="platform_denbi" #denbi
+                               [(ngModel)]="application_dissemination.platform_denbi"
                                (change)="count_platform(denbi.checked)"
                                name="platform_denbi">
 
@@ -672,37 +672,6 @@
                     </div>
                   </div>
 
-                  <div class="form-group row">
-                    <label class="col-md-4 form-control-label">Landing Page</label>
-                    <div class="col-md-4">
-
-                      <label class="switch switch-label switch-outline-primary-alt" id="platform_landing_page_checkbox">
-                        <input type="checkbox" class="switch-input" name="platform_landing_page" #landing_page
-                               [(ngModel)]="application_dissemination.platform_landing_page"
-                               (change)="count_platform(landing_page.checked)"
-                               name="platform_landing_page"
-                        >
-                        <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
-                        <span class="switch-handle"></span>
-                      </label>
-                    </div>
-                  </div>
-
-                  <div class="form-group row">
-                    <label class="col-md-4 form-control-label">Portal News</label>
-                    <div class="col-md-4">
-
-                      <label class="switch switch-label switch-outline-primary-alt" id="platform_portal_news_checkbox">
-                        <input type="checkbox" class="switch-input" name="platform_portal_news" #portal_news
-                               [(ngModel)]="application_dissemination.platform_portal_news"
-                               (change)="count_platform(portal_news.checked)"
-                               name="platform_portal_news"
-                        >
-                        <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
-                        <span class="switch-handle"></span>
-                      </label>
-                    </div>
-                  </div>
 
                   <div class="form-group row">
                     <label class="col-md-4 form-control-label">Twitter</label>
