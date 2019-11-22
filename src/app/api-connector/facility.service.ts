@@ -275,8 +275,8 @@ export class FacilityService {
    * @param reply reply address
    * @returns {Observable<any>}
    */
-  sendMailToFacility(facility: string, subject: string,
-                     message: string, project_type: string, reply?: string, sendNews?: any): Observable<any> {
+  sendMailToFacility(facility: string, subject: string, message: string, project_type: string,
+                     reply?: string, sendNews?: any): Observable<any> {
     const params: HttpParams = new HttpParams()
       .set('subject', subject)
       .set('facility_id', facility)

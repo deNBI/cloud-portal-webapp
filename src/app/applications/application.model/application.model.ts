@@ -36,10 +36,12 @@ export class Application {
   private _PerunId: number | string;
   private _TotalCores: number;
   private _TotalRam: number;
+  private _InitialCredits: number;
   private _DateApproved: string;
   private _Horizon2020: string;
   private _BMBFProject: string;
   private _EdamTopics: string[];
+  private _SensitiveData: boolean;
 
   private _ElixirProject: string;
   private _Dissemination: Dissemination;
@@ -70,6 +72,14 @@ export class Application {
       gpu: gpu,
       epheremal_disk: epheremal_disk
     };
+  }
+
+  get SensitiveData(): boolean {
+    return this._SensitiveData;
+  }
+
+  set SensitiveData(value: boolean) {
+    this._SensitiveData = value;
   }
 
   get PiAffiliations(): string[] {
@@ -400,5 +410,13 @@ export class Application {
 
   set PIEmail(value: string) {
     this._PIEmail = value;
+  }
+
+  get InitialCredits(): number {
+    return this._InitialCredits;
+  }
+
+  set InitialCredits(value: number) {
+    this._InitialCredits = value;
   }
 }
