@@ -65,6 +65,8 @@
     <thead>
     <tr>
       <th colspan="2" style="text-align:center"><strong>Information</strong></th>
+      <th *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification"></th>
+
     </tr>
     </thead>
 
@@ -76,6 +78,8 @@
  </span>
 
       </h5></td>
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
+
     </tr>
     <tr>
       <td>Description
@@ -160,6 +164,8 @@
     <thead>
     <tr>
       <th colspan="2" style="text-align:center"><strong>Dissemination</strong></th>
+      <th *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification"></th>
+
     </tr>
     </thead>
     <tr>
@@ -185,6 +191,8 @@
     <thead>
     <tr>
       <th colspan="2" style="text-align:center"><strong>Resources</strong></th>
+      <th *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification"></th>
+
     </tr>
     </thead>
     <tr>
