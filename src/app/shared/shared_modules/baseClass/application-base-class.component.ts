@@ -192,6 +192,7 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
     newApp.Lifetime = aj['project_application_lifetime'];
     newApp.EdamTopics = aj['project_application_edam_terms'];
     newApp.PiAffiliations = aj['pi_affiliations'];
+    newApp.SensitiveData = aj['project_application_sensitive_data'];
 
     newApp.VMsRequested = aj['project_application_vms_requested'];
     newApp.RamPerVM = aj['project_application_ram_per_vm'];
@@ -278,13 +279,13 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
 
   createDisseminatenObject(obj: any): Dissemination {
     if (obj) {
-      return new Dissemination(obj['platform_newsletter'], obj['platform_landing_page'],
-                               obj['platform_portal_news'], obj['platform_twitter'],
-                               obj['information_title'], obj['information_resources'],
-                               obj['information_runtime'], obj['information_pi_name'],
-                               obj['information_instituition'], obj['information_workgroup'],
-                               obj['information_project_type'],
-                               obj['information_lifetime'], obj['information_project_affiliation'])
+      return new Dissemination(
+        obj['platform_denbi'], obj['platform_twitter'],
+        obj['information_title'], obj['information_resources'],
+        obj['information_runtime'], obj['information_pi_name'],
+        obj['information_instituition'], obj['information_workgroup'],
+        obj['information_project_type'],
+        obj['information_lifetime'], obj['information_project_affiliation'])
     } else {
       return null
     }
@@ -385,38 +386,6 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
       if (type.long_name === 'Standart Flavor') {
         this.collapseList[this.typeList.indexOf(type)] = true;
       }
-    }
-
-  }
-
-  /**
-   * Uses the data from the application form to fill the confirmation-modal with information.
-   * @param form the application form with corresponding data
-   */
-  filterEnteredData(form: NgForm): void {
-    this.generateConstants();
-    this.valuesToConfirm = [];
-    for (const key in form.controls) {
-      if (form.controls[key].value) {
-        if (key === 'project_application_name') {
-          this.projectName = form.controls[key].value;
-          if (this.projectName.length > 50) {
-            this.projectName = `${this.projectName.substring(0, 50)}...`;
-          }
-        }
-        if (key in this.constantStrings) {
-          if (form.controls[key].disabled) {
-            continue;
-          }
-
-          this.valuesToConfirm.push(this.matchString(key.toString(), form.controls[key].value.toString()));
-
-        }
-      }
-
-    }
-    if (!this.project_application_report_allowed && !this.extension_request) {
-      this.valuesToConfirm.push('Dissemination allowed: No');
     }
 
   }

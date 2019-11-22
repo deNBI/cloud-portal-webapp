@@ -191,7 +191,6 @@
                              class="form-control"
                              type="text" placeholder="Instancename" [(ngModel)]="vm_name"
                              pattern="[a-zA-Z0-9]+"
-                             [ngModelOptions]="{updateOn: 'blur'}"
                              [ngClass]="{'is-invalid':f.controls.instance_name?.invalid && (f.controls.instance_name?.dirty || f.controls.instance_name?.touched),
                              'is-valid':f.controls.instance_name?.valid && (f.controls.instance_name?.dirty || f.controls.instance_name?.touched)}">
                     </div>

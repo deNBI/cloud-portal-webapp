@@ -60,6 +60,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   application_id: string;
   project: Project;
   application_details_visible: boolean = false;
+  credits: number = 0;
 
   /**
    * id of the extension status.
@@ -215,6 +216,16 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
     values['total_ram_new'] = this.totalRAM;
     values['approximate_extra_credits'] = this.extensionCredits;
     this.requestExtension(values);
+
+  }
+
+  /**
+   * Sends a request to the BE to get the initital credits for a new application.
+   */
+  calculateInitialCredits(form: NgForm): void {
+
+    /*todo calculate */
+    this.credits = 0;
 
   }
 
@@ -559,6 +570,38 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   setAddUserInvitationLink(): void {
     const uri: string = this.invitation_group_pre + this.project.RealName + this.invitation_group_post + this.project.RealName;
     this.invitation_link = uri;
+
+  }
+
+  /**
+   * Uses the data from the application form to fill the confirmation-modal with information.
+   * @param form the application form with corresponding data
+   */
+  filterEnteredData(form: NgForm): void {
+    this.generateConstants();
+    this.valuesToConfirm = [];
+    for (const key in form.controls) {
+      if (form.controls[key].value) {
+        if (key === 'project_application_name') {
+          this.projectName = form.controls[key].value;
+          if (this.projectName.length > 50) {
+            this.projectName = `${this.projectName.substring(0, 50)}...`;
+          }
+        }
+        if (key in this.constantStrings) {
+          if (form.controls[key].disabled) {
+            continue;
+          }
+
+          this.valuesToConfirm.push(this.matchString(key.toString(), form.controls[key].value.toString()));
+
+        }
+      }
+
+    }
+    if (!this.project_application_report_allowed) {
+      this.valuesToConfirm.push('Dissemination allowed: No');
+    }
 
   }
 
