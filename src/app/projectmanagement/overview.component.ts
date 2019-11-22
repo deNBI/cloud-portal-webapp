@@ -201,7 +201,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   calculateInitialCredits(form: NgForm): void {
 
     /*todo calculate */
-    return 0;
+    this.credits = 0;
 
   }
 
