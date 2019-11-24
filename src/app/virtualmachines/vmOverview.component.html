@@ -149,7 +149,7 @@
             <div class="col-md-2" *ngIf="vm.status ==ACTIVE">
               <a class="font-weight-bold font-xs btn-block text-muted"
                  [id]="'stopVMButton_' + vm?.name"
-                 (click)="selectedVm=vm;stopVm(vm);stopModal.show();" href="#" onClick="return false;">
+                 (click)="selectedVm=vm;submitStopVmModal.show();" href="#" onClick="return false;">
                 Stop VM <i class="fa fa-angle-right font-lg"></i>
               </a>
             </div>
@@ -184,7 +184,7 @@
               <div class="col-md-2" *ngIf="vm.status ==SHUTOFF">
                 <a class="font-weight-bold font-xs btn-block text-muted"
                    [id]="'restartVMButton_' + vm?.name"
-                   (click)="selectedVm=vm;resumeVM(vm);resumeModal.show();" href="#" onClick="return false;">
+                   (click)="selectedVm=vm;submitRestartModal.show();" href="#" onClick="return false;">
                   Restart VM <i class="fa fa-angle-right font-lg"></i>
                 </a>
               </div>
@@ -193,13 +193,30 @@
           </div>
           <div class="card-footer p-x-1 py-h" *ngIf="vm.status != DELETED && vm.status != SHUTOFF && vm.showSSHCommand">
             <div class="row">
-              <div class="col-md-10">
+              <div class="col-md-1">
+                <span class="font-weight-bold font-xs btn-block text-muted">SSH:</span>
+              </div>
+              <div class="col-md-9">
                 <span class="font-weight-bold font-xs btn-block text-muted">{{vm?.ssh_command}}</span>
               </div>
               <div class="col-md-2"><a (click)="copySSHCommand(vm);" href="#" onClick="return false;"
               class="font-weight-bold font-xs btn-block text-muted">Copy command <i class="fa fa-angle-right font-lg"></i></a>
               </div>
+              </div>
+
+            <div class="row" *ngIf="vm?.udp_command != null">
+              <div class="col-md-1">
+                <span class="font-weight-bold font-xs btn-block text-muted">UDP</span>
+              </div>
+              <div class="col-md-9">
+                <span class="font-weight-bold font-xs btn-block text-muted">{{vm?.udp_command}}</span>
+              </div>
+              <div class="col-md-2"><a (click)="copyUDPCommand(vm);" href="#" onClick="return false;"
+                                       class="font-weight-bold font-xs btn-block text-muted">Copy command <i class="fa fa-angle-right font-lg"></i></a>
+              </div>
             </div>
+            </div>
+
           </div>
         </div>
       </div>
@@ -616,6 +633,70 @@
         </div>
       </div>
     </div>
-
   </div>
+
+    <div bsModal #submitStopVmModal="bs-modal" class="modal fade" tabindex="1" role="dialog" [id]="submitStopVmModal"
+         aria-labeledby="cromlabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Stop VM</h4>
+            <button type="button" class="close" style="cursor: pointer"
+                    (click)="submitStopVmModal.hide()"
+                    aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="alert alert-warning" role="alert">
+              Are you sure you want to stop {{selectedVm?.name}}?
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button class="btn  btn-success col-md-4"
+                    (click)="stopVm(selectedVm);submitStopVmModal.hide();stopModal.show()"
+                    [id]="'verifyStopButton'">
+              Yes
+            </button>
+            <button class="btn  btn-danger col-md-4" type="reset" [id]="'verifyStopCancelButton'"
+                    (click)="submitStopVmModal.hide();">Cancel
+            </button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
+    <div bsModal #submitRestartModal="bs-modal" class="modal fade" tabindex="1" role="dialog" [id]="submitRestartModal"
+         aria-labeledby="cromlabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Restart VM</h4>
+            <button type="button" class="close" style="cursor: pointer"
+                    (click)="submitRestartModal.hide()"
+                    aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="alert alert-warning" role="alert">
+              Are you sure you want to restart {{selectedVm?.name}}?
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button class="btn  btn-success col-md-4"
+                    (click)="resumeVM(selectedVm);submitRestartModal.hide();resumeModal.show()"
+                    [id]="'verifyRestartButton'">
+              Yes
+            </button>
+            <button class="btn  btn-danger col-md-4" type="reset" [id]="'verifyRestartCancelButton'"
+                    (click)="submitRestartModal.hide();">Cancel
+            </button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
 </div>

@@ -154,6 +154,9 @@ export class VmOverviewComponent implements OnInit {
   copySSHCommand(vmachine: VirtualMachine): void {
     this.copyToClipboard((vmachine.ssh_command.substring(65, vmachine.ssh_command.length)));
   }
+  copyUDPCommand(vmachine: VirtualMachine): void {
+    this.copyToClipboard(vmachine.udp_command);
+  }
 
   copyToClipboard(text: string): void {
     document.addEventListener('copy', (clipEvent: ClipboardEvent) => {
