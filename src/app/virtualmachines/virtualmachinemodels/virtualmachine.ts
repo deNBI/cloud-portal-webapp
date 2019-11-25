@@ -7,7 +7,7 @@ import {Client} from '../clients/client.model';
  */
 export class VirtualMachine {
   private _flavor: Flavor;
-  private _image: Image;
+  private _image: string;
   private _project: string;
   private _status: string;
   private _keyname: string;
@@ -21,6 +21,24 @@ export class VirtualMachine {
   private _floating_ip: string;
   private _ssh_command: string;
   private _udp_command: string;
+  private _application_id: string;
+  private _showSSHCommand: boolean = false;
+
+  get showSSHCommand(): boolean {
+    return this._showSSHCommand;
+  }
+
+  set showSSHCommand(value: boolean) {
+    this._showSSHCommand = value;
+  }
+
+  get application_id(): string {
+    return this._application_id;
+  }
+
+  set application_id(value: string) {
+    this._application_id = value;
+  }
 
   get udp_command(): string {
     return this._udp_command;
@@ -38,11 +56,11 @@ export class VirtualMachine {
     this._flavor = value;
   }
 
-  get image(): Image {
+  get image(): string {
     return this._image;
   }
 
-  set image(value: Image) {
+  set image(value: string) {
     this._image = value;
   }
 

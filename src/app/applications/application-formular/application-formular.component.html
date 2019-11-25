@@ -1,0 +1,977 @@
+<div class="animated fadeIn">
+
+  <div class="row">
+    <div class="col-md-12">
+      <!--<h1>SimpleVM Application</h1>-->
+      <div class="card">
+        <div class="card-header">
+          <strong>{{title}}</strong>
+          – Form
+        </div>
+        <div class="card-body">
+          <div class="alert alert-info">
+            <strong>Please be aware:</strong> Only applications approved by a principal
+            investigator of a
+            german university or research facility will be accepted!
+          </div>
+          <div class="alert alert-info" *ngIf="openstack_project">
+            If you would like to learn more about Openstack,
+            <a href="https://cloud.denbi.de/openstack/"
+               target="_blank">Click Here!
+            </a>
+          </div>
+          <div *ngIf="simple_vm_project">
+            <div class="alert alert-info">
+              This project mode is a beta version. Virtual machines might get lost or can
+              not be
+              started
+              temporarily.
+            </div>
+            <div class="alert alert-info">
+              If you would like to learn more about Simple VM, <a href="https://cloud.denbi.de/simplevm/"
+                                                                  target="_blank">Click
+              Here!</a>
+            </div>
+          </div>
+
+          <div *ngIf="!production">
+            <button (click)="sendTestApplication(test_name.value);notificationModal.show();">Test
+              Application
+            </button>
+            <input name="test_name" placeholder="TestAppName" #test_name>
+          </div>
+
+          <form id="application_form" #f="ngForm"
+                class="form-horizontal">
+            <div class="form-group row">
+              <h5 class="col-md-6 form-control-label">General Information</h5>
+            </div>
+            <div class="form-group row" *ngIf="openstack_project">
+              <label class="col-md-4"><strong>Cloud Project <i
+                data-balloon="By choosing this project type you will have your own OpenStack project. This allows you to use any framework available in the cloud computing context."
+                data-balloon-pos="down" data-balloon-length="large"><i
+                class="icon-question menu_links"
+                style="cursor: pointer;"></i></i>
+              </strong>
+              </label>
+              <div class="col-md-8">
+                A cloud project is represented by an Openstack project which allows
+                you to manage your
+                virtual machines, storage and network configurations.
+              </div>
+            </div>
+            <div class="form-group row" *ngIf="simple_vm_project">
+              <label class="col-md-4">
+                <strong>Simple Virtual Machines Project
+
+                  <i data-balloon="You will be able to start virtual machines through the portal with minimal
+                                    effort and access them via ssh. This project type does not demand knowlegde in cloud
+                                    computing." data-balloon-pos="down" data-balloon-length="large"><i
+                    class="icon-question" style="cursor: pointer;"></i></i>
+                </strong>
+
+              </label>
+              <div class="col-md-8">
+                This type of project allows you to start virtual machines with SSH
+                access.
+
+
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-md-4 form-control-label" for="text-input"><strong>Project
+                Name* <i data-balloon="Full name of your project"
+                         data-balloon-pos="down"><i
+                  class="icon-question"
+                  style="cursor: pointer;"></i></i></strong></label>
+              <div class="col-md-8">
+                <input required type="text" id="id_project_application_name"
+                       name="project_application_name"
+                       class="form-control" maxlength="128"
+                       placeholder="e.g. Assembler benchmarking based on A. thaliana genome"
+                       ngModel
+                       [ngClass]="{
+                                'is-invalid': f.controls.project_application_name?.invalid && (f.controls.project_application_name?.dirty || f.controls.project_application_name?.touched),
+                                'is-valid': f.controls.project_application_name?.valid && (f.controls.project_application_name?.dirty || f.controls.project_application_name?.touched)
+                                }">
+                <span class="help-block">Name your project.</span>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-md-4 form-control-label" for="text-input"><strong>Project
+                Short Name* <i
+                  data-balloon="Shortname of your project. This name will be referenced in OpenStack and also when you start a new virtual machine. Use between 5 and 15 characters"
+                  data-balloon-pos="down" data-balloon-length="large"><i
+                  class="icon-question"
+                  style="cursor: pointer;"></i></i></strong></label>
+              <div class="col-md-8">
+                <div *ngIf='invalid_shortname'>
+                  <strong><font color="red">Umlauts and special characters are
+                    prohibited in the
+                    shortname.</font></strong>
+                </div>
+                <input required type="text" id="id_project_application_shortname"
+                       name="project_application_shortname" #shortname
+                       (keyup)="checkShortname(shortname.value)"
+                       class="form-control" maxlength="15"
+                       placeholder="e.g. ThalianaBench" ngModel minlength="5"
+                       pattern="[a-zA-Z0-9]+"
+                       [ngClass]="{
+                                'is-invalid': f.controls.project_application_shortname?.invalid && (f.controls.project_application_shortname?.dirty || f.controls.project_application_shortname?.touched),
+                                'is-valid': f.controls.project_application_shortname?.valid && (f.controls.project_application_shortname?.dirty || f.controls.project_application_shortname?.touched)
+                                }">
+
+
+                <span class="help-block">Enter a short name (between 5 and 15 characters).</span>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-md-4 form-control-label" for="textarea-input"><strong>Project
+                Description* <i
+                  data-balloon="Full description of your project including tools you might are going to use."
+                  data-balloon-pos="down" data-balloon-length="large"><i
+                  class="icon-question"
+                  style="cursor: pointer;"></i></i></strong></label>
+              <div class="col-md-8">
+                                <textarea required id="id_project_application_description"
+                                          name="project_application_description" rows="9"
+                                          class="form-control" maxlength="8192"
+                                          placeholder="Full description. Consider to name tools you want to use."
+                                          ngModel
+                                          [ngClass]="{
+                                'is-invalid': f.controls.project_application_description?.invalid && (f.controls.project_application_description?.dirty || f.controls.project_application_description?.touched),
+                                'is-valid': f.controls.project_application_description?.valid && (f.controls.project_application_description?.dirty || f.controls.project_application_description?.touched)
+                                }"></textarea>
+                <span class="help-block">Describe what would you want to do in your project.</span>
+                <div class="alert alert-info">
+                  As more resources are requested we require a more detailed description of your project, data and used
+                  tools!
+
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-md-4 form-control-label" for="textarea-input"><strong>Desired
+                lifetime* <i data-balloon="Lifetime in months of your project"
+                             data-balloon-pos="down">
+                  <i class="icon-question"
+                     style="cursor: pointer;"></i></i></strong></label>
+              <div class="col-md-8">
+                <div class="input-group">
+                  <input class="form-control" id="id_project_application_lifetime"
+                         name="project_application_lifetime" placeholder="e.g 3"
+                         type="number" min="1" max="12" step="1" ngModel required
+                         appMinAmount="1" appMaxAmount="12" appInteger
+                         pattern="^([1-9]|1[012])$"
+                         [ngClass]="{
+                                'is-invalid': f.controls.project_application_lifetime?.invalid && (f.controls.project_application_lifetime?.dirty || f.controls.project_application_lifetime?.touched),
+                                'is-valid': f.controls.project_application_lifetime?.valid && (f.controls.project_application_lifetime?.dirty || f.controls.project_application_lifetime?.touched)
+                                }">
+                  <div class="input-group-append"><span class="input-group-text"> months
+                                    </span></div>
+                </div>
+                <span class="help-block">How long would you like to run this project (12 month is maximum)?</span>
+              </div>
+            </div>
+
+
+            <div class="form-group row">
+              <h5 class="col-md-12 form-control-label">Resources</h5>
+            </div>
+            <accordion>
+              <ng-container *ngFor="let t of typeList, first as isFirst">
+                <accordion-group *ngIf="checkIfTypeGotSimpleVmFlavor(t)" [isOpen]="isFirst" #groupval>
+                  <div accordion-heading style="width: 100%; cursor: pointer">
+                    <strong>{{t.long_name}}</strong>
+                    <i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
+                            'icon-arrow-up': groupval.isOpen, 'icon-arrow-down': !groupval.isOpen}"></i>
+                  </div>
+                  <div *ngIf="isFirst" class="alert alert-info"> You will have default access to all flavors in the
+                    standard category.<br>
+                    However, your selection will determine how many machines, how many cores and how much RAM will be
+                    available for your project.
+                  </div>
+                  <div *ngFor="let f of flavorList">
+                    <div *ngIf="f.type.shortcut == t.shortcut && f.simple_vm"
+                         class="form-group row">
+
+                      <label class="col-md-4 form-control-label"
+                             for="project_application_{{f.name}}"><strong>{{f.name}}</strong><br>
+                        Number of cores: {{f.vcpus}}<br>
+                        RAM: {{f.ram}} GB<br>
+                        <span *ngIf="f.type.shortcut == 'GPU'">
+                                                GPU: {{f.gpu}}
+                                            </span></label>
+                      <div class="col-md-8">
+
+                        <div class="input-group">
+                          <input class="form-control"
+                                 id="project_application_{{f.name}}"
+                                 name="project_application_{{f.name}}"
+                                 type="number" min="0" step="1"
+                                 placeholder="0"
+                                 [ngModel]="0"
+                                 (change)="valuesChanged(f,name?.value)"
+
+                                 #name="ngModel"
+                                 (ngModelChange)="onChangeFlavor($event)"
+                                 appMinAmount="0" appInteger
+                                 [ngClass]="{
+                                'is-invalid': name?.invalid,
+                                'is-valid': name?.valid
+                                }">
+                          <div class="input-group-append"><span class="input-group-text"> VMs
+                                    </span></div>
+                        </div>
+                        <span class="help-block">Number of VMs you would like to run of this particular flavor</span>
+                        <div *ngIf="f?.comment" class="alert alert-info">{{f.comment}}</div>
+
+                      </div>
+                    </div>
+                  </div>
+                </accordion-group>
+              </ng-container>
+            </accordion>
+            <div class="form-group row">
+              <label class="col-md-4 form-control-label" for="textarea-input"><strong>Number
+                of storage
+                volumes*
+                <i
+                  data-balloon="The number of storage volumes allowed to create. Each vm is allowed to mount only one storage volume. The sum of the volumes size equals the value provided in the sotrage limit field"
+                  data-balloon-pos="down" data-balloon-length="large"><i
+                  class="icon-question"
+                  style="cursor: pointer;"></i></i></strong></label>
+              <div class="col-md-8">
+                <div class="input-group">
+                  <input required class="form-control"
+                         id="id_project_application_volume_counter"
+                         name="project_application_volume_counter"
+                         placeholder="e.g. 20"
+                         type="number" min="0" step="1"
+                         appMinAmount="0" appInteger
+                         [ngModel]="project_application_vms_requested"
+                         [ngClass]="{
+                                'is-invalid': f.controls.project_application_volume_counter?.invalid,
+                                'is-valid': f.controls.project_application_volume_counter?.valid
+                                }">
+                </div>
+                <span class="help-block">How many storage volumes do you want to use?</span>
+              </div>
+            </div>
+            <div class="form-group row" [hidden]="f.controls.project_application_volume_counter?.value == 0">
+              <label class="col-md-4 form-control-label" for="textarea-input"><strong> Volume Storage
+                Limit*
+                <i
+                  data-balloon="Storage limit is the sum of extra storage provided by volumes."
+                  data-balloon-pos="down"
+                  data-balloon-length="large"><i class="icon-question"
+                                                 style="cursor: pointer;"></i></i></strong></label>
+              <div class="col-md-8">
+                <div class="input-group">
+                  <input required class="form-control"
+                         id="id_project_application_volume_limit"
+                         name="project_application_volume_limit"
+                         placeholder="e.g. 20"
+                         type="number" min="1" step="1" [ngModel]="20"
+                         appInteger appMinAmount="1"
+                         [ngClass]="{
+                                'is-invalid': f.controls.project_application_volume_limit?.invalid,
+                                'is-valid': f.controls.project_application_volume_limit?.valid
+                                }"
+                         [disabled]="f.controls.project_application_volume_counter?.value == 0">
+                  <div class="input-group-append"><span class="input-group-text"> GB
+                                    </span></div>
+                </div>
+                <span class="help-block">How much extra storage do you need for your VMs?</span>
+              </div>
+            </div>
+            <div class="form-group row" *ngIf="openstack_project">
+              <label class="col-md-4 form-control-label" for="textarea-input">Object
+                Storage <i
+                  data-balloon="Object storage is a method of storing data that does not use a directory tree internally. Object storage combines files with metadata and places it in a flat structure."
+                  data-balloon-pos="down" data-balloon-length="large"><i
+                  class="icon-question"
+                  style="cursor: pointer;"></i></i></label>
+              <div class="col-md-8">
+                <div class="input-group">
+                  <input class="form-control"
+                         id="id_project_application_object_storage"
+                         name="project_application_object_storage"
+                         placeholder="e.g. 8"
+                         type="number" min="0" step="1" [ngModel]="0"
+                         appInteger appMinAmount="0"
+                         [ngClass]="{
+                                'is-invalid': f.controls.project_application_object_storage?.invalid ,
+                                'is-valid': f.controls.project_application_object_storage?.valid
+                                }">
+                  <div class="input-group-append"><span class="input-group-text"> GB </span></div>
+                </div>
+                <span class="help-block">How much object storage would you need?</span>
+              </div>
+            </div>
+            <br>
+            <div class="form-group row">
+              <label class="col-md-4 form-control-label" for="text-input"><strong>Comment</strong></label>
+              <div class="col-md-8">
+                <textarea type="text" id="id_project_application_comment"
+                          name="project_application_comment" class="form-control" maxlength="8192"
+                          placeholder='' [ngModel]="''"></textarea>
+                <span class="help-block">Additional information you want to share?</span>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-md-4"></label>
+              <div class="col-md-8">
+                <div class="alert alert-primary" role="alert">
+                  In case you need additional and/or special resources, which are not available in the flavour
+                  selection, use the comment field to state so. The same applies to unusually large amounts of
+                  resources.
+                </div>
+              </div>
+            </div>
+            <br>
+            <div class="form-group row">
+              <h5 class="col-md-6 form-control-label">Institutional Information</h5>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-md-4 form-control-label" for="text-input"><strong>Institute
+                Name* <i
+                  data-balloon="Your institute" data-balloon-pos="down"><i
+                  class="icon-question"
+                  style="cursor: pointer;"></i></i></strong></label>
+              <div class="col-md-8">
+                <input required type="text" id="id_project_application_institute"
+                       name="project_application_institute" class="form-control"
+                       placeholder="e.g. Center for Biotechnology, Bielefeld"
+                       ngModel
+                       [ngClass]="{
+                                'is-invalid': f.controls.project_application_institute?.invalid && (f.controls.project_application_institute?.dirty || f.controls.project_application_institute?.touched),
+                                'is-valid': f.controls.project_application_institute?.valid && (f.controls.project_application_institute?.dirty || f.controls.project_application_institute?.touched)
+                                }">
+                <span class="help-block">To which institute do you belong?</span>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-md-4 form-control-label" for="text-input"><strong>Workgroup
+                Name* <i
+                  data-balloon="Your Workgroup"
+                  data-balloon-pos="down"><i class="icon-question"
+                                             style="cursor: pointer;"></i></i></strong></label>
+              <div class="col-md-8">
+                <input required type="text" id="id_project_application_workgroup"
+                       name="project_application_workgroup" class="form-control"
+                       placeholder="e.g. Computational Metagenomics" ngModel
+                       [ngClass]="{
+                                'is-invalid': f.controls.project_application_workgroup?.invalid && (f.controls.project_application_workgroup?.dirty || f.controls.project_application_workgroup?.touched),
+                                'is-valid': f.controls.project_application_workgroup?.valid && (f.controls.project_application_workgroup?.dirty || f.controls.project_application_workgroup?.touched)
+                                }">
+                <span class="help-block">To which workgroup do you belong?</span>
+              </div>
+
+
+            </div>
+            <br>
+            <div class="form-group row">
+              <h5 class="col-md-6 form-control-label">Additional Information</h5>
+            </div>
+            <div class="form-group row">
+              <label class="col-md-4 form-control-label" for="text-input"><strong>Research Topics* </strong></label>
+              <div class="col-md-8">
+                <div [ngClass]="{
+                                'danger-border': selected_ontology_terms?.length <=0,
+                                'success-border':selected_ontology_terms?.length >0
+                                }">
+                  <ng-autocomplete #edam_ontology id="edam_input"
+                                   [data]="edam_ontology_terms"
+                                   [searchKeyword]="ontology_search_keyword"
+                                   (selected)='selectEvent($event)'
+                                   placeHolder="Please add your research topics"
+
+                                   [itemTemplate]="itemTemplate"
+                                   [notFoundTemplate]="notFoundTemplate">
+                  </ng-autocomplete>
+
+                  <ng-template #itemTemplate let-item>
+                    <a [id]="item.term" [innerHTML]="item.term"></a>
+                  </ng-template>
+
+                  <ng-template #notFoundTemplate let-notFound>
+                    <div [innerHTML]="notFound"></div>
+                  </ng-template>
+
+
+                </div>
+                <h5><span
+                  *ngFor="let term of selected_ontology_terms"
+                  style="margin-right: 5px; "
+                  class="badge badge-info">{{term.term}}
+                  <span class="badge" style="cursor: pointer;" (click)="removeEDAMterm(term)">&#10060;</span>
+ </span>
+
+                </h5>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-md-4 form-control-label" for="text-input"><strong>Sensitive Data*</strong></label>
+              <div class="col-md-8">
+
+                <label id="id_project_application_sensitive_data"
+                       class="switch switch-label switch-outline-primary-alt">
+                  <input type="checkbox" class="switch-input"
+                         name="project_application_sensitive_data"
+                         [(ngModel)]="project_application_sensitive_data"
+                  >
+                  <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                  <span class="switch-handle"></span></label>
+                <div class="alert alert-info" role="alert">
+                  According to our usage policy it is not allowed to process person related data in the de.NBI Cloud
+                  with
+                  the exception that an additional agreement is made with the corresponding cloud site operator.
+                  If you want to process person related data please click on the checkbox!
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-md-4 form-control-label" for="text-input"><strong>Horizon
+                2020</strong></label>
+              <div class="col-md-8">
+                <input type="text" id="id_project_application_horizon2020"
+                       name="project_application_horizon2020" class="form-control"
+                       maxlength="2048"
+                       placeholder='Name of the project' [ngModel]="''">
+                <span class="help-block">Is your project part of a Horizon 2020 project?</span>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-md-4 form-control-label" for="text-input"><strong>Elixir Project</strong></label>
+              <div class="col-md-8">
+                <input type="text" id="id_project_application_elixir_project"
+                       name="project_application_elixir_project" class="form-control"
+                       maxlength="2048"
+                       placeholder='Name of the project' [ngModel]="''">
+                <span class="help-block">Is your project part of an Elixir project?</span>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-md-4 form-control-label" for="text-input"><strong>BMBF</strong></label>
+              <div class="col-md-8">
+                <input type="text" id="id_project_application_bmbf_project"
+                       name="project_application_bmbf_project" class="form-control"
+                       maxlength="2048"
+                       placeholder='Name of the project' [ngModel]="''">
+                <span class="help-block">Is your project part of a BMBF project?</span>
+              </div>
+            </div>
+
+
+            <div class="form-group row">
+              <label class="col-md-4 form-control-label" for="text-input"><strong>Dissemination</strong></label>
+              <div class="col-md-8">
+
+
+                <label id="id_project_application_report_allowed"
+                       class="switch switch-label switch-outline-primary-alt">
+                  <input type="checkbox" class="switch-input"
+                         name="project_application_report_allowed"
+                         [(ngModel)]="project_application_report_allowed"
+                  >
+                  <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                  <span class="switch-handle"></span></label>
+                <p> Do you permit the de.NBI Cloud to publicly mention your
+                  project's participation?</p>
+
+              </div>
+
+
+            </div>
+            <div *ngIf="project_application_report_allowed">
+
+              <div class="form-group row col-md-12">
+                <div class="alert alert-info col-md-auto"><span>Please specify which information about your project and which platforms may be used to publish information.
+            Select or deselect options by enabling or disabling the switches within the fields below. To do this, open the Dissemination Options.
+            If publication is permitted, at least the title (or optionally a public title) and at least one platform must be selected.</span>
+                </div>
+              </div>
+
+              <accordion>
+                <accordion-group [isOpen]="dissemination_information_open" id="dissemination_information_accordion"
+                                 #dissemination_information_accordion>
+                  <div accordion-heading style="width: 100%; cursor: pointer">
+                    Dissemination Options
+                    <i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
+                            'icon-arrow-up': dissemination_information_accordion.isOpen, 'icon-arrow-down': !dissemination_information_accordion.isOpen}"></i>
+                  </div>
+
+                  <div class="form-group row">
+                    <div class="col-md-4">
+                      <h6><strong>Type of Information</strong></h6>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-md-4 form-control-label"><strong>All</strong></label>
+                    <div class="col-md-2">
+                      <label class="switch switch-label switch-outline-primary-alt">
+                        <input type="checkbox" class="switch-input" name="information_all"
+                               (change)="application_dissemination.changeAllInformation()"
+                        >
+                        <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                        <span class="switch-handle"></span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label class="col-md-4 form-control-label">Project Title</label>
+                    <div class="col-md-2">
+                      <label class="switch switch-label switch-outline-primary-alt">
+                        <input type="checkbox" class="switch-input" name="information_title" checked
+                               disabled>
+                        <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                        <span class="switch-handle"></span>
+                      </label>
+                    </div>
+                    <div class="col-md-6"><input type="text" class="form-control" name="information_public_title_input"
+                                                 placeholder="Choose a public title - Leave blank for existing title."
+
+                                                 [(ngModel)]="application_dissemination.information_title">
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label class="col-md-4 form-control-label">Description</label>
+                    <div class="col-md-2">
+                      <label class="switch switch-label switch-outline-primary-alt" id="public_description_enabled">
+                        <input type="checkbox" class="switch-input"
+                               [(ngModel)]="application_dissemination.information_description_allowed"
+                               name="information_description_allowed"
+                        >
+                        <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                        <span class="switch-handle"></span>
+                      </label>
+                    </div>
+                    <div *ngIf="application_dissemination.information_description_allowed" class="col-md-6">
+                    <textarea type="text" class="form-control" maxlength="8192"
+                              placeholder="Enter public description. Leave blank for existing description."
+                              name="information_description"
+
+                              [(ngModel)]="application_dissemination.information_description"></textarea>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-md-4 form-control-label">Resources</label>
+                    <div class="col-md-4">
+                      <label class="switch switch-label switch-outline-primary-alt" id="information_resources_checkbox">
+                        <input type="checkbox" class="switch-input" name="information_resources"
+                               [(ngModel)]="application_dissemination.information_resources">
+                        <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                        <span class="switch-handle"></span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label class="col-md-4 form-control-label">Lifetime</label>
+                    <div class="col-md-4">
+                      <label class="switch switch-label switch-outline-primary-alt" id="information_lifetime_checkbox">
+                        <input type="checkbox" class="switch-input" name="information_lifetime"
+                               [(ngModel)]="application_dissemination.information_lifetime"
+
+                        >
+                        <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                        <span class="switch-handle"></span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label class="col-md-4 form-control-label">Project Type</label>
+                    <div class="col-md-4">
+                      <label class="switch switch-label switch-outline-primary-alt"
+                             id="information_project_type_checkbox">
+                        <input type="checkbox" class="switch-input" name="information_project_type"
+                               [(ngModel)]="application_dissemination.information_project_type"
+
+                        >
+                        <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                        <span class="switch-handle"></span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label class="col-md-4 form-control-label">Name of PI</label>
+                    <div class="col-md-4">
+                      <label class="switch switch-label switch-outline-primary-alt" id="information_pi_name_checkbox">
+                        <input type="checkbox" class="switch-input" name="information_pi_name"
+                               [(ngModel)]="application_dissemination.information_pi_name"
+
+                        >
+                        <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                        <span class="switch-handle"></span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label class="col-md-4 form-control-label">Institution</label>
+                    <div class="col-md-4">
+                      <label class="switch switch-label switch-outline-primary-alt"
+                             id="information_institution_checkbox">
+                        <input type="checkbox" class="switch-input" name="information_institution"
+                               [(ngModel)]="application_dissemination.information_institution"
+
+                               name="information_institution"
+                        >
+                        <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                        <span class="switch-handle"></span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label class="col-md-4 form-control-label">Workgroup</label>
+                    <div class="col-md-4">
+                      <label class="switch switch-label switch-outline-primary-alt" id="information_workgroup_checkbox">
+                        <input type="checkbox" class="switch-input" name="information_workgroup"
+                               [(ngModel)]="application_dissemination.information_workgroup"
+
+                               name="information_workgroup"
+                        >
+                        <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                        <span class="switch-handle"></span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label class="col-md-4 form-control-label">Project Affiliation</label>
+                    <div class="col-md-4">
+                      <label class="switch switch-label switch-outline-primary-alt"
+                             id="information_project_affiliation_checkbox">
+                        <input type="checkbox" class="switch-input" name="information_project_affiliation"
+                               [(ngModel)]="application_dissemination.information_project_affiliation"
+
+                        >
+                        <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                        <span class="switch-handle"></span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <hr class="my-4">
+
+                  <div class="form-group row">
+                    <div class="col-md-4">
+                      <h6><strong>Platforms</strong></h6>
+                    </div>
+                  </div>
+
+
+                  <div class="alert-danger alert"
+                       *ngIf="dissemination_platform_count == 0 && project_application_report_allowed">
+                    Please select at least one Platform.
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-md-4 form-control-label">de.NBI Platforms</label>
+                    <div class="col-md-4">
+
+                      <label class="switch switch-label switch-outline-primary-alt" id="platform_denbi_checkbox">
+                        <input type="checkbox" class="switch-input" name="platform_denbi" #denbi
+                               [(ngModel)]="application_dissemination.platform_denbi"
+                               (change)="count_platform(denbi.checked)"
+                               name="platform_denbi">
+
+                        <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                        <span class="switch-handle"></span>
+                      </label>
+                    </div>
+                  </div>
+
+
+                  <div class="form-group row">
+                    <label class="col-md-4 form-control-label">Twitter</label>
+                    <div class="col-md-4">
+
+                      <label class="switch switch-label switch-outline-primary-alt" id="platform_twitter_checkbox">
+                        <input type="checkbox" class="switch-input" name="platform_twitter" #twitter
+                               [(ngModel)]="application_dissemination.platform_twitter"
+                               (change)="count_platform(twitter.checked)"
+                               name="platform_twitter"
+                        >
+                        <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                        <span class="switch-handle"></span>
+                      </label>
+                    </div>
+                  </div>
+
+                </accordion-group>
+
+              </accordion>
+
+
+            </div>
+
+            <div class="form-group row">
+              <label class="col-md-4 form-control-label" for="text-input"><strong>Principal Investigator*
+                <i
+                  data-balloon="Only applications which have been approved/submitted by an principal investigator will be accepted. If you are not a principal investigator please provide his email."
+                  data-balloon-pos="down" data-balloon-length="large"><i
+                  class="icon-question menu_links"
+                  style="cursor: pointer;"></i></i></strong></label>
+              <div class="col-md-8">
+
+
+                <label
+                  class="switch switch-label switch-outline-primary-alt" id="project_application_pi_approved_checkbox">
+                  <input type="checkbox" class="switch-input"
+                         name="project_application_pi_approved"
+                         [(ngModel)]="project_application_pi_approved"
+                  >
+                  <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                  <span class="switch-handle"></span></label>
+
+                <p> Are you a principal investigator?</p>
+
+              </div>
+
+
+            </div>
+            <div *ngIf="!project_application_pi_approved" class="form-group row justify-content-center">
+              <div class="col-md-4"></div>
+              <div class="col-md-8 alert alert-info">Only applications approved by a principal investigator
+                of a german university or research facility will be accepted.
+                You are able to enter an email address of your principal investigator whom
+                we will send an email, containing your name and email address and a link informing him about the
+                requested resources,
+                where he will be able to approve this application.
+              </div>
+            </div>
+            <div *ngIf="!project_application_pi_approved" class="form-group row">
+              <label class="col-md-4 form-control-label" for="text-input"><strong>Principal Investigator Email*
+              </strong></label>
+              <div class="col-md-8">
+
+
+                <input *ngIf="!project_application_pi_approved" required type="text"
+                       id="id_project_application_pi_email"
+                       name="project_application_pi_email"
+                       class="form-control" maxlength="256"
+                       placeholder="example@domain.com"
+                       ngModel
+                       pattern="(?!(^[.-].*|[^@]*[.-]@|.*\.{2,}.*)|^.{254}.)([a-zA-Z0-9!#$%&'*+\/=?^_`{|}~.-]+@)(?!-.*|.*-\.)([a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,15}"
+                       [ngClass]="{
+                                'is-invalid': f.controls.project_application_pi_email?.invalid && (f.controls.project_application_pi_email?.dirty || f.controls.project_application_pi_email?.touched),
+                                'is-valid': f.controls.project_application_pi_email?.valid && (f.controls.project_application_pi_email?.dirty || f.controls.project_application_pi_email?.touched)
+                                }">
+                <p *ngIf="!project_application_pi_approved"> Please insert the email of your principal investigator.
+                  He will get an email with further information how to verify the application.</p>
+              </div>
+            </div>
+            <div *ngIf="project_application_pi_approved" class="form-group row">
+              <label class="col-md-4 form-control-label" for="project_application_responsibility"
+                     id="project_application_responsibility_checkbox">
+                <strong>Confirmation of Responsibility*</strong>
+              </label>
+              <div class="col-md-8"
+                   [ngClass]="{
+                                'alert-danger': !respCheck.checked,
+                                'alert-success': respCheck.checked
+                                }">
+                <div class="form-check">
+                  <input class="form-check-input"
+                         name="project_application_responsibility"
+                         type="checkbox"
+                         id="project_application_responsibility"
+                         ngModel
+                         #respCheck
+                         required
+                  >
+                  <label class="form-check-label" for="project_application_responsibility">
+                    I hereby confirm that I am responsible for the project and any action of the project members in the
+                    de.NBI Cloud.
+                  </label>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="card-footer">
+          <div *ngIf="!simple_vm_min_vm" class="form-group row alert alert-danger">
+            Please select at least one flavor.
+          </div>
+          <div
+            *ngIf="f.invalid ||selected_ontology_terms.length == 0 || !simple_vm_min_vm || (dissemination_platform_count == 0 && project_application_report_allowed)"
+            class="form-group row alert alert-warning">
+            Some required fields are incorrect or not filled in yet.
+            Please check if all required (*) fields are filled in correctly.
+          </div>
+          <div class="form-group row">
+            <p class="col-md-12 form-control-label">By submitting this application you
+              agree to the
+              cloud
+              usage policy.</p>
+          </div>
+
+          <button id="submit_btn" (click)="filterEnteredData(f);calculateInitialCredits(f); submitModal.show();"
+                  [disabled]="f.invalid  ||selected_ontology_terms.length == 0  || !simple_vm_min_vm || (dissemination_platform_count == 0 && project_application_report_allowed)"
+                  class="btn btn-sm btn-success"
+                  type="button"><i
+            class="fa fa-dot-circle-o"></i> Submit
+            Application
+          </button>
+        </div>
+      </div>
+    </div>
+    <!--/.col-->
+  </div>
+
+</div>
+
+
+<div bsModal #notificationModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="Label"
+     aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">{{ notificationModalTitle }}</h4>
+        <button type="button" class="close" style="cursor:pointer"
+                (click)="notificationModal.hide()"
+                aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-{{ notificationModalType }}" id="notification_message" role="alert">
+          {{ notificationModalMessage }}
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="notification_btn_redirect"
+                *ngIf="(notificationModalIsClosable == true) && (notificationModalStay==true)"
+                type="button"
+                (click)="notificationModal.hide();resetNotificationModal()"
+                class="btn  btn-secondary"> Close
+        </button>
+        <a *ngIf="(notificationModalIsClosable == true) && (notificationModalStay==false)"
+           [routerLink]="['/project-management/' + new_application_id]">
+          <button type="button" id="notification_btn_redirect"
+                  (click)="notificationModal.hide();resetNotificationModal()" type="reset"
+                  class="btn  btn-secondary"> Close
+          </button>
+        </a>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div bsModal #acknowledgemodal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="Label"
+     aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title"> {{acknowledgeModalTitle}}</h4>
+        <button type="button" class="close" style="cursor:pointer"
+                (click)="acknowledgemodal.hide()"
+                aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-{{ acknowledgeModalType }}" role="alert">
+          The development and support of the cloud is possible above all through the funding of the cloud infrastructure
+          by the
+          Federal Ministry of Education and Research (BMBF)!
+          We would highly appreciate the following citation in your next publication(s):
+          This work was supported by the BMBF-funded de.NBI Cloud within the German Network for Bioinformatics
+          Infrastructure
+          (de.NBI)
+          (031A537B, 031A533A, 031A538A, 031A533B, 031A535A, 031A537C, 031A534A, 031A532B).
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="acknowledge_approve_btn" type="button"
+                (click)="acknowledgemodal.hide(); onSubmit(f); notificationModal.show();"
+                class="btn  btn-success" name="_save" form="application_form">
+          Accept
+        </button>
+
+
+        <button type="button" (click)="acknowledgemodal.hide();" type="reset"
+                class="btn  btn-danger"> Close
+        </button>
+
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<div bsModal #submitModal="bs-modal" class="modal fade" tabindex="-1"
+     role="dialog" aria-labelledby="Label"
+     aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">{{projectName}}</h4>
+        <button type="button" class="close" style="cursor: pointer;"
+                (click)="submitModal.hide()"
+                data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-info">
+          <strong>Please check the data you have entered and confirm your application
+            below.</strong><br>
+          If the entered data mismatches with your requirements cancel this confirmation
+          and take changes.
+        </div>
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <tr *ngFor="let str of valuesToConfirm">
+              <td>{{str}}</td>
+            </tr>
+            <tr *ngIf="is_vo_admin">
+              <td><strong>Initial Credits:
+                {{credits.toString()}}</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Number of cores in total:
+                {{totalNumberOfCores.toString()}}</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Value of RAM in total: {{totalRAM.toString()}} GBs</strong>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+
+      <div class="modal-footer">
+
+
+        <button class="btn btn-success col-md4" type="button" id="verification_btn"
+                (click)="acknowledgemodal.show(); submitModal.hide();">Confirm Application
+        </button>
+        <button class="btn  btn-warning col-md-4" type="reset"
+                (click)="submitModal.hide();">Cancel
+        </button>
+
+      </div>
+    </div><!-- /.modal-content -->L
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+

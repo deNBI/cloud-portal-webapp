@@ -1,3 +1,21 @@
+
+
+#### Bug Fixes
+
+* **Credits:** fixed in modification and fixed application detail layout ([0204b5a5](0204b5a5))
+
+#### Features
+
+* **Application:** added user data input ([d209e1e6](d209e1e6))
+* **Dissemination:**
+  * merged to denbi platforms ([3688b9d3](3688b9d3))
+  * all btn added ([ff1414e3](ff1414e3))
+* **Instance:**  one filter for all fields ([bebcf425](bebcf425))
+* **application-form:**  add text for sensitive data ([8e6e0f79](8e6e0f79))
+* **instance-overview:**
+  *  quick UDP Connect Information added ([945e4c36](945e4c36))
+  *  Instance overview clearer and faster to use ([3ba32002](3ba32002))
+
 ##  (2019-11-14)
 
 

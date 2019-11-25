@@ -146,11 +146,12 @@ export class FacilityService {
   approveFacilityApplication(facility: number | string, application_id: number | string): Observable<any> {
     const params: HttpParams = new HttpParams().set('action', 'approve');
 
-    return this.http.post(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/applications/${application_id}/status/`, params, {
-      withCredentials: true,
-      headers: header,
-      observe: 'response'
-    })
+    return this.http.post(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/applications/${application_id}/status/`,
+                          params, {
+                            withCredentials: true,
+                            headers: header,
+                            observe: 'response'
+                          })
   }
 
   /**
@@ -274,7 +275,8 @@ export class FacilityService {
    * @param reply reply address
    * @returns {Observable<any>}
    */
-  sendMailToFacility(facility: string, subject: string, message: string, project_type: string, reply?: string, sendNews?: any): Observable<any> {
+  sendMailToFacility(facility: string, subject: string, message: string, project_type: string,
+                     reply?: string, sendNews?: any): Observable<any> {
     const params: HttpParams = new HttpParams()
       .set('subject', subject)
       .set('facility_id', facility)
