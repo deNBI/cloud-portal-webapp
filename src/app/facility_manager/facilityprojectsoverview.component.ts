@@ -49,6 +49,8 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
   public emailStatus: number = 0;
   public emailReply: string = '';
   public sendNews: boolean;
+  public alternative_emailText: string = '';
+  public news_tags: string = '';
 
   public managerFacilities: [string, number][];
   public selectedFacility: [string, number];
@@ -199,10 +201,11 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 
   }
 
-  sendMailToFacility(facility: string, subject: string, message: string, reply?: string, send?: any): void {
+  sendMailToFacility(facility: string, subject: string, message: string, reply?: string,
+                     send?: any, alternative_news_text?: string, news_tags?: string): void {
     this.facilityservice.sendMailToFacility(
       facility, encodeURIComponent(subject), encodeURIComponent(message), this.selectedProjectType,
-      encodeURIComponent(reply), send).subscribe(
+      encodeURIComponent(reply), send, encodeURIComponent(alternative_news_text), encodeURIComponent(news_tags)).subscribe(
       (result: any) => {
         if (result.status === 201) {
           this.emailStatus = 1;
@@ -248,6 +251,8 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
     this.emailReply = null;
     this.emailStatus = 0;
     this.sendNews = true;
+    this.alternative_emailText = '';
+    this.news_tags = '';
   }
 
   public comingSoon(): void {
