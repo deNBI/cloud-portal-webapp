@@ -1,6 +1,6 @@
 {
   "moderate": true,
   "package-manager": "auto",
-  "whitelist": ["ngx-export-as", "compodoc"],
+  "whitelist": ["lodash.merge", "dot"],
   "registry": "https://registry.npmjs.org"
 }
