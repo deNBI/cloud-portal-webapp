@@ -312,4 +312,16 @@ export class FacilityService {
     )
   }
 
+  deleteNews(news_id: string): Observable<any> {
+    const params: HttpParams = new HttpParams()
+      .set('news_id', news_id);
+
+    return this.http.delete(`${ApiSettings.getApiBaseURL()}facilityManagers/current/facilityNews/`, {
+                              withCredentials: true,
+                              headers: header,
+                              params: params
+                            }
+    )
+  }
+
 }
