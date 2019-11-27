@@ -34,9 +34,8 @@ export class ProjectOverview {
   private static SHOW_INFORMATION_BTN: string = 'show_information_btn';
   private static DISSEMINATION_PLATFORM_LIST: string = 'dissemination_platforms';
   private static DISSEMINATION_INFORMATION_LIST: string = 'dissemination_information';
-  private static DEFAULT_INFORMATION_DISSEMINATION_STRING: string = 'Project affiliation,Workgroup,Project Type,' +
-    'Title,Resources,Lifetime,PI Name';
-  private static DEFAULT_PLATFORM_DISSEMINATION_STRING: string = 'Newsletter,Landing Page,Portal News,Twitter';
+  private static DEFAULT_INFORMATION_DISSEMINATION_STRING: string = 'Project affiliation,Workgroup,Project Type,Title,Resources,Lifetime,PI Name';
+  private static DEFAULT_PLATFORM_DISSEMINATION_STRING: string = 'de.NBI Platforms ,Twitter';
 
   static async navigateToSimpleProjectverview(): Promise<any> {
     console.log('Navigating to simple project overview');

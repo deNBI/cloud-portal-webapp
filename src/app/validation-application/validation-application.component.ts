@@ -20,6 +20,7 @@ import {FullLayoutComponent} from '../layouts/full-layout.component';
 export class ValidationApplicationComponent extends ApplicationBaseClassComponent implements OnInit {
 
   application: Application;
+  dissemination_information_open: boolean = true;
 
   isLoaded: boolean = false;
   hash: string;
