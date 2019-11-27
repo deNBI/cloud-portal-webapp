@@ -161,7 +161,7 @@
           <a class="nav-link nav-dropdown-toggle" onmouseover="" style="cursor: pointer;"
              appNavDropdownToggle><i
             class="nav-icon icon-list" onmouseover="" style="cursor: pointer;"></i> Overviews</a>
-          <ul class="nav-dropdown-items">
+          <ul class="nav-dropdown-items" *ngIf="vm_project_member">
             <li class="nav-item">
               <a style="padding-left: 25px" class="nav-link" routerLinkActive="active"
                  [routerLink]="['/virtualmachines/vmOverview']"><i
@@ -189,7 +189,7 @@
 
         <!-- for minimized sidebar  >> -->
 
-        <li class="nav-item" *ngIf="navbar_minimized && vm_project_member || is_vo_admin">
+        <li class="nav-item" *ngIf="navbar_minimized && (vm_project_member || is_vo_admin)">
           <a class="nav-link" routerLinkActive="active" data-toggle="tooltip" data-placement="right" title="Instances"
              [routerLink]="['/virtualmachines/vmOverview']"><i
             class="nav-icon icon-list"></i> Instances</a>
