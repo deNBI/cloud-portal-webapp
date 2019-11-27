@@ -13,6 +13,7 @@ export class Dissemination {
   private _information_workgroup: boolean;
   private _information_project_type: boolean;
   private _information_lifetime: boolean;
+  private _information_description: string;
   private _information_project_affiliation: boolean;
   private _allowed_platforms: string[] = [];
   private _allowed_informations: string[] = [];
@@ -22,7 +23,8 @@ export class Dissemination {
     information_title: string, information_resources: boolean,
     information_runtime: boolean, information_pi_name: boolean,
     information_institution: boolean, information_workgroup: boolean,
-    information_project_type: boolean, information_lifetime: boolean, information_project_affiliation: boolean) {
+    information_project_type: boolean, information_lifetime: boolean,
+    information_project_affiliation: boolean, information_description: string) {
 
     this._platform_denbi = platform_denbi;
     this._platform_twitter = platform_twitter;
@@ -31,12 +33,29 @@ export class Dissemination {
     this._information_runtime = information_runtime;
     this._information_pi_name = information_pi_name;
     this._information_institution = information_institution;
+    this._information_description = information_description;
     this._information_workgroup = information_workgroup;
     this._information_project_type = information_project_type;
     this._information_lifetime = information_lifetime;
     this._information_project_affiliation = information_project_affiliation;
     this.setAllowedPlatforms();
     this.setAllowedInformations();
+  }
+
+  get platform_denbi(): boolean {
+    return this._platform_denbi;
+  }
+
+  set platform_denbi(value: boolean) {
+    this._platform_denbi = value;
+  }
+
+  get information_description(): string {
+    return this._information_description;
+  }
+
+  set information_description(value: string) {
+    this._information_description = value;
   }
 
   private setAllowedPlatforms(): void {
@@ -75,6 +94,9 @@ export class Dissemination {
     }
     if (this._information_pi_name) {
       this._allowed_informations.push('PI Name')
+    }
+    if (this._information_description) {
+      this._allowed_informations.push('Description')
     }
   }
 

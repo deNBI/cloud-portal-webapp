@@ -306,6 +306,38 @@
                 <h5 class="col-md-6 form-control-label">Additional Information</h5>
               </div>
               <div class="form-group row">
+                <label class="col-md-4 form-control-label" for="text-input"><strong>Research Topics* </strong></label>
+                <div class="col-md-8">
+
+                  <h5><span
+                    *ngFor="let term of  application?.EdamTopics"
+                    style="margin-right: 5px; "
+                    class="badge badge-info">{{term}}</span>
+                  </h5>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-md-4 form-control-label" for="text-input"><strong>Sensitive Data*</strong></label>
+                <div class="col-md-8">
+
+                  <label id="id_project_application_sensitive_data"
+                         class="switch switch-label switch-outline-primary-alt">
+                    <input type="checkbox" class="switch-input"
+                           name="project_application_sensitive_data"
+                           [checked]="application?.SensitiveData"
+                           disabled
+                    >
+                    <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                    <span class="switch-handle"></span></label>
+                  <div class="alert alert-info" role="alert">
+                    According to our usage policy it is not allowed to process person related data in the de.NBI Cloud
+                    with
+                    the exception that an additional agreement is made with the corresponding cloud site operator.
+                    If you want to process person related data please click on the checkbox!
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
                 <label class="col-md-4 form-control-label" for="text-input"><strong>Horizon
                   2020</strong></label>
                 <div class="col-md-8">
@@ -340,11 +372,12 @@
                 <div class="col-md-8">
 
 
-                  <label
-                    class="switch switch-label switch-outline-primary-alt">
+                  <label id="id_project_application_report_allowed"
+                         class="switch switch-label switch-outline-primary-alt">
                     <input type="checkbox" class="switch-input"
                            name="project_application_report_allowed"
-                           disabled [checked]="application?.Dissemination"
+                           [checked]="application.Dissemination"
+                           disabled
                     >
                     <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
                     <span class="switch-handle"></span></label>
@@ -352,6 +385,240 @@
                     project's participation?</p>
 
                 </div>
+
+
+              </div>
+              <div *ngIf="application.Dissemination">
+
+                <div class="form-group row col-md-12">
+                  <div class="alert alert-info col-md-auto"><span>Please specify which information about your project and which platforms may be used to publish information.
+            Select or deselect options by enabling or disabling the switches within the fields below. To do this, open the Dissemination Options.
+            If publication is permitted, at least the title (or optionally a public title) and at least one platform must be selected.</span>
+                  </div>
+                </div>
+
+                <accordion>
+                  <accordion-group [isOpen]="dissemination_information_open" id="dissemination_information_accordion"
+                                   #dissemination_information_accordion>
+                    <div accordion-heading style="width: 100%; cursor: pointer">
+                      Dissemination Options
+                      <i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
+                            'icon-arrow-up': dissemination_information_accordion.isOpen, 'icon-arrow-down': !dissemination_information_accordion.isOpen}"></i>
+                    </div>
+
+                    <div class="form-group row">
+                      <div class="col-md-4">
+                        <h6><strong>Type of Information</strong></h6>
+                      </div>
+                    </div>
+
+
+                    <div class="form-group row">
+                      <label class="col-md-4 form-control-label">Project Title</label>
+                      <div class="col-md-2">
+                        <label class="switch switch-label switch-outline-primary-alt">
+                          <input type="checkbox" class="switch-input" name="information_title" checked
+                                 disabled>
+                          <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                          <span class="switch-handle"></span>
+                        </label>
+                      </div>
+                      <div class="col-md-6"><input type="text" class="form-control"
+                                                   name="information_public_title_input"
+                                                   placeholder="Choose a public title - Leave blank for existing title."
+                                                   disabled
+
+                                                   [checked]="application.Dissemination.information_title">
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <label class="col-md-4 form-control-label">Description</label>
+                      <div class="col-md-2">
+                        <label class="switch switch-label switch-outline-primary-alt" id="public_description_enabled">
+                          <input type="checkbox" class="switch-input"
+                                 disabled
+
+                                 [checked]="application.Dissemination.information_description"
+                                 name="information_description_allowed"
+                          >
+                          <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                          <span class="switch-handle"></span>
+                        </label>
+                      </div>
+                      <div *ngIf="application.Dissemination.information_description" class="col-md-6">
+                    <textarea type="text" class="form-control" maxlength="8192"
+                              placeholder="Enter public description. Leave blank for existing description."
+                              name="information_description"
+                              disabled
+
+                              [value]="application.Dissemination.information_description"
+                    ></textarea>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-md-4 form-control-label">Resources</label>
+                      <div class="col-md-4">
+                        <label class="switch switch-label switch-outline-primary-alt"
+                               id="information_resources_checkbox">
+                          <input type="checkbox" class="switch-input" name="information_resources"
+                                 disabled
+
+                                 [checked]="application.Dissemination.information_resources">
+                          <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                          <span class="switch-handle"></span>
+                        </label>
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <label class="col-md-4 form-control-label">Lifetime</label>
+                      <div class="col-md-4">
+                        <label class="switch switch-label switch-outline-primary-alt"
+                               id="information_lifetime_checkbox">
+                          <input type="checkbox" class="switch-input" name="information_lifetime"
+                                 disabled
+
+                                 [checked]="application.Dissemination.information_lifetime"
+
+                          >
+                          <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                          <span class="switch-handle"></span>
+                        </label>
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <label class="col-md-4 form-control-label">Project Type</label>
+                      <div class="col-md-4">
+                        <label class="switch switch-label switch-outline-primary-alt"
+                               id="information_project_type_checkbox">
+                          <input type="checkbox" class="switch-input" name="information_project_type"
+                                 disabled
+
+                                 [checked]="application.Dissemination.information_project_type"
+
+                          >
+                          <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                          <span class="switch-handle"></span>
+                        </label>
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <label class="col-md-4 form-control-label">Name of PI</label>
+                      <div class="col-md-4">
+                        <label class="switch switch-label switch-outline-primary-alt" id="information_pi_name_checkbox">
+                          <input type="checkbox" class="switch-input" name="information_pi_name"
+                                 disabled
+
+                                 [checked]="application.Dissemination.information_pi_name"
+
+                          >
+                          <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                          <span class="switch-handle"></span>
+                        </label>
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <label class="col-md-4 form-control-label">Institution</label>
+                      <div class="col-md-4">
+                        <label class="switch switch-label switch-outline-primary-alt"
+                               id="information_institution_checkbox">
+                          <input type="checkbox" class="switch-input"
+                                 disabled
+
+                                 [checked]="application.Dissemination.information_institution"
+
+                                 name="information_institution"
+                          >
+                          <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                          <span class="switch-handle"></span>
+                        </label>
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <label class="col-md-4 form-control-label">Workgroup</label>
+                      <div class="col-md-4">
+                        <label class="switch switch-label switch-outline-primary-alt"
+                               id="information_workgroup_checkbox">
+                          <input type="checkbox" class="switch-input"
+                                 disabled
+
+                                 [checked]="application.Dissemination.information_workgroup"
+
+                                 name="information_workgroup"
+                          >
+                          <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                          <span class="switch-handle"></span>
+                        </label>
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <label class="col-md-4 form-control-label">Project Affiliation</label>
+                      <div class="col-md-4">
+                        <label class="switch switch-label switch-outline-primary-alt"
+                               id="information_project_affiliation_checkbox">
+                          <input type="checkbox" class="switch-input" name="information_project_affiliation"
+                                 disabled
+
+                                 [checked]="application.Dissemination.information_project_affiliation"
+
+                          >
+                          <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                          <span class="switch-handle"></span>
+                        </label>
+                      </div>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <div class="form-group row">
+                      <div class="col-md-4">
+                        <h6><strong>Platforms</strong></h6>
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <label class="col-md-4 form-control-label">de.NBI Platforms</label>
+                      <div class="col-md-4">
+
+                        <label class="switch switch-label switch-outline-primary-alt" id="platform_denbi_checkbox">
+                          <input type="checkbox" class="switch-input" name="platform_denbi" #denbi
+                                 disabled
+
+                                 [checked]="application.Dissemination.platform_denbi"
+                          >
+
+                          <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                          <span class="switch-handle"></span>
+                        </label>
+                      </div>
+                    </div>
+
+
+                    <div class="form-group row">
+                      <label class="col-md-4 form-control-label">Twitter</label>
+                      <div class="col-md-4">
+
+                        <label class="switch switch-label switch-outline-primary-alt" id="platform_twitter_checkbox">
+                          <input type="checkbox" class="switch-input" name="platform_twitter" #twitter
+                                 disabled
+
+                                 [checked]="application.Dissemination.platform_twitter"
+                          >
+                          <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                          <span class="switch-handle"></span>
+                        </label>
+                      </div>
+                    </div>
+
+                  </accordion-group>
+
+                </accordion>
 
 
               </div>
