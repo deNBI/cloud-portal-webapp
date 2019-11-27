@@ -2,6 +2,16 @@
 
 #### Bug Fixes
 
+* **Dissemination:** all dissemination and edam terms in pi validaiton visibile ([0f39808a](0f39808a))
+* **Layout:** just simple vm member see virtualmachines tab ([02192f22](02192f22))
+
+#### Features
+
+* **Tests:** updated ([9c4d6993](9c4d6993))
+
+
+#### Bug Fixes
+
 * **Credits:** fixed in modification and fixed application detail layout ([0204b5a5](0204b5a5))
 
 #### Features
