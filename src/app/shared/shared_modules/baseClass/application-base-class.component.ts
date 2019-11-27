@@ -190,10 +190,8 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
     newApp.EdamTopics = aj['project_application_edam_terms'];
     newApp.PiAffiliations = aj['pi_affiliations'];
     newApp.SensitiveData = aj['project_application_sensitive_data'];
-
     newApp.VMsRequested = aj['project_application_vms_requested'];
     newApp.RamPerVM = aj['project_application_ram_per_vm'];
-
     newApp.TotalRam = aj['project_application_total_ram'];
     newApp.TotalCores = aj['project_application_total_cores'];
     newApp.InitialCredits = aj['project_application_initial_credits'];
@@ -280,9 +278,10 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
         obj['platform_denbi'], obj['platform_twitter'],
         obj['information_title'], obj['information_resources'],
         obj['information_runtime'], obj['information_pi_name'],
-        obj['information_instituition'], obj['information_workgroup'],
+        obj['information_institution'], obj['information_workgroup'],
         obj['information_project_type'],
-        obj['information_lifetime'], obj['information_project_affiliation'])
+        obj['information_lifetime'], obj['information_project_affiliation'],
+        obj['information_description'])
     } else {
       return null
     }
