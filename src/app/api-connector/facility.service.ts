@@ -185,7 +185,8 @@ export class FacilityService {
    * @returns {Observable<any>}
    */
   addRamFactor(facility: number | string, ram: number | string, factor: number | string, description: string): Observable<RamFactor[]> {
-    const params: HttpParams = new HttpParams().set('type', 'ram').set('ram', ram.toString()).set('factor', factor.toString()).set('description', description);
+    const params: HttpParams = new HttpParams().set('type', 'ram')
+      .set('ram', ram.toString()).set('factor', factor.toString()).set('description', description);
 
     return this.http.post<RamFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/ramFactors/`, params, {
       withCredentials: true,
