@@ -75,6 +75,22 @@ export class ApplicationDissemination {
     }
   }
 
+  get allowed_platforms(): string[] {
+    return this._allowed_platforms;
+  }
+
+  set allowed_platforms(value: string[]) {
+    this._allowed_platforms = value;
+  }
+
+  get allowed_informations(): string[] {
+    return this._allowed_informations;
+  }
+
+  set allowed_informations(value: string[]) {
+    this._allowed_informations = value;
+  }
+
   private setAllowedInformations(): void {
     this._allowed_informations = [];
     if (this._information_project_affiliation) {

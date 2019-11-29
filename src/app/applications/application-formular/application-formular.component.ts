@@ -48,6 +48,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
   project_application_horizon2020: string = '';
   project_application_elixir_project: string = '';
   project_application_bmbf_project: string = '';
+  project_application_comment: string = '';
   application_dissemination: ApplicationDissemination = new ApplicationDissemination();
 
   edam_ontology_terms: EdamOntologyTerm[];
