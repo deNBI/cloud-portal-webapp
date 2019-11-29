@@ -13,6 +13,7 @@ import {FullLayoutComponent} from '../../layouts/full-layout.component';
 import {IResponseTemplate} from '../../api-connector/response-template';
 import {VoService} from '../../api-connector/vo.service';
 import {CreditsService} from '../../api-connector/credits.service';
+import {Application} from '../application.model/application.model';
 
 /**
  * Application formular component.
@@ -28,10 +29,30 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
   @Input() openstack_project: boolean = false;
   @Input() simple_vm_project: boolean = false;
   @Input() title: string;
+  @Input() application: Application;
+  @Input() is_validation: boolean = false;
+
+  project_application_sensitive_data: boolean;
+  project_application_vms_requested: number = 3;
+  project_application_report_allowed: boolean = false;
+  selected_ontology_terms: EdamOntologyTerm[] = [];
+  project_application_name: string;
+  project_application_shortname: string;
+  project_application_description: string;
+  project_application_lifetime: number;
+  project_application_volume_limit: number = 20;
+  project_application_object_storage: number = 0;
+  project_application_institute: string;
+  project_application_workgroup: string;
+  project_application_horizon2020: string = '';
+  project_application_elixir_project: string = '';
+  project_application_bmbf_project: string = '';
+  application_dissemination: ApplicationDissemination = new ApplicationDissemination();
+
+  edam_ontology_terms: EdamOntologyTerm[];
 
   credits: number = 0;
   dissemination_platform_count: number = 0;
-  project_application_sensitive_data: false;
   flavorList: Flavor[] = [];
   production: boolean = environment.production;
   dissemination_information_open: boolean = true;
@@ -39,16 +60,11 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
   invalid_shortname: boolean = false;
   simple_vm_min_vm: boolean = false;
   error: string[];
-  project_application_vms_requested: number = 3;
-  project_application_report_allowed: boolean = false;
 
   acknowledgeModalTitle: string = 'Acknowledge';
   acknowledgeModalType: string = 'info';
 
-  application_dissemination: ApplicationDissemination = new ApplicationDissemination();
-  edam_ontology_terms: EdamOntologyTerm[];
   new_application_id: string | number;
-  selected_ontology_terms: EdamOntologyTerm[] = [];
   ontology_search_keyword: string = 'term';
   @ViewChild('edam_ontology') edam_ontology: AutocompleteComponent;
   @ViewChild(NgForm) application_form: NgForm;
@@ -79,8 +95,38 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+
     if (this.openstack_project) {
       this.simple_vm_min_vm = true;
+    }
+    if (this.application.CurrentFlavors) {
+      this.simple_vm_min_vm = true;
+    }
+    if (this.application) {
+      this.openstack_project = this.application.OpenStackProject;
+      this.simple_vm_project = !this.openstack_project;
+      console.log('Is_validation');
+      if (this.application.Dissemination) {
+        this.application_dissemination = this.application.Dissemination;
+        this.project_application_report_allowed = true;
+
+      }
+      this.application_dissemination = this.application.Dissemination;
+      this.project_application_sensitive_data = this.application.SensitiveData;
+      this.project_application_vms_requested = this.application.VMsRequested;
+      this.selected_ontology_terms = this.application.EdamTopics;
+      this.project_application_name = this.application.Name;
+      this.project_application_shortname = this.application.Shortname;
+      this.project_application_description = this.application.Description;
+      this.project_application_lifetime = this.application.Lifetime;
+      this.project_application_volume_limit = this.application.VolumeLimit;
+      this.project_application_object_storage = this.application.ObjectStorage;
+      this.project_application_institute = this.application.Institute;
+      this.project_application_workgroup = this.application.Workgroup;
+      this.project_application_horizon2020 = this.application.Horizon2020;
+      this.project_application_elixir_project = this.application.ElixirProject;
+      this.project_application_bmbf_project = this.application.BMBFProject;
+
     }
   }
 

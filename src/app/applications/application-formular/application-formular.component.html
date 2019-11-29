@@ -90,7 +90,7 @@
                        name="project_application_name"
                        class="form-control" maxlength="128"
                        placeholder="e.g. Assembler benchmarking based on A. thaliana genome"
-                       ngModel
+                       [(ngModel)]="project_application_name"
                        [ngClass]="{
                                 'is-invalid': f.controls.project_application_name?.invalid && (f.controls.project_application_name?.dirty || f.controls.project_application_name?.touched),
                                 'is-valid': f.controls.project_application_name?.valid && (f.controls.project_application_name?.dirty || f.controls.project_application_name?.touched)
@@ -116,7 +116,8 @@
                        name="project_application_shortname" #shortname
                        (keyup)="checkShortname(shortname.value)"
                        class="form-control" maxlength="15"
-                       placeholder="e.g. ThalianaBench" ngModel minlength="5"
+                       [(ngModel)]="project_application_shortname" minlength="5"
+                       placeholder="e.g. ThalianaBench"
                        pattern="[a-zA-Z0-9]+"
                        [ngClass]="{
                                 'is-invalid': f.controls.project_application_shortname?.invalid && (f.controls.project_application_shortname?.dirty || f.controls.project_application_shortname?.touched),
@@ -140,7 +141,7 @@
                                           name="project_application_description" rows="9"
                                           class="form-control" maxlength="8192"
                                           placeholder="Full description. Consider to name tools you want to use."
-                                          ngModel
+                                          [(ngModel)]="project_application_description"
                                           [ngClass]="{
                                 'is-invalid': f.controls.project_application_description?.invalid && (f.controls.project_application_description?.dirty || f.controls.project_application_description?.touched),
                                 'is-valid': f.controls.project_application_description?.valid && (f.controls.project_application_description?.dirty || f.controls.project_application_description?.touched)
@@ -164,7 +165,8 @@
                 <div class="input-group">
                   <input class="form-control" id="id_project_application_lifetime"
                          name="project_application_lifetime" placeholder="e.g 3"
-                         type="number" min="1" max="12" step="1" ngModel required
+                         [(ngModel)]="project_application_lifetime" max="12" min="1" required step="1"
+                         type="number"
                          appMinAmount="1" appMaxAmount="12" appInteger
                          pattern="^([1-9]|1[012])$"
                          [ngClass]="{
@@ -214,7 +216,7 @@
                                  name="project_application_{{f.name}}"
                                  type="number" min="0" step="1"
                                  placeholder="0"
-                                 [ngModel]="0"
+                                 [ngModel]="application?.CurrentFlavors[f.name]?.counter || 0"
                                  (change)="valuesChanged(f,name?.value)"
 
                                  #name="ngModel"
@@ -253,7 +255,7 @@
                          placeholder="e.g. 20"
                          type="number" min="0" step="1"
                          appMinAmount="0" appInteger
-                         [ngModel]="project_application_vms_requested"
+                         [(ngModel)]="project_application_vms_requested"
                          [ngClass]="{
                                 'is-invalid': f.controls.project_application_volume_counter?.invalid,
                                 'is-valid': f.controls.project_application_volume_counter?.valid
@@ -276,7 +278,8 @@
                          id="id_project_application_volume_limit"
                          name="project_application_volume_limit"
                          placeholder="e.g. 20"
-                         type="number" min="1" step="1" [ngModel]="20"
+                         [(ngModel)]="project_application_volume_limit" min="1" step="1" type="number"
+
                          appInteger appMinAmount="1"
                          [ngClass]="{
                                 'is-invalid': f.controls.project_application_volume_limit?.invalid,
@@ -302,7 +305,7 @@
                          id="id_project_application_object_storage"
                          name="project_application_object_storage"
                          placeholder="e.g. 8"
-                         type="number" min="0" step="1" [ngModel]="0"
+                         [(ngModel)]="project_application_object_storage" min="0" step="1" type="number"
                          appInteger appMinAmount="0"
                          [ngClass]="{
                                 'is-invalid': f.controls.project_application_object_storage?.invalid ,
@@ -348,7 +351,7 @@
                 <input required type="text" id="id_project_application_institute"
                        name="project_application_institute" class="form-control"
                        placeholder="e.g. Center for Biotechnology, Bielefeld"
-                       ngModel
+                       [(ngModel)]="project_application_institute"
                        [ngClass]="{
                                 'is-invalid': f.controls.project_application_institute?.invalid && (f.controls.project_application_institute?.dirty || f.controls.project_application_institute?.touched),
                                 'is-valid': f.controls.project_application_institute?.valid && (f.controls.project_application_institute?.dirty || f.controls.project_application_institute?.touched)
@@ -366,7 +369,8 @@
               <div class="col-md-8">
                 <input required type="text" id="id_project_application_workgroup"
                        name="project_application_workgroup" class="form-control"
-                       placeholder="e.g. Computational Metagenomics" ngModel
+                       [(ngModel)]="project_application_workgroup" placeholder="e.g. Computational Metagenomics"
+
                        [ngClass]="{
                                 'is-invalid': f.controls.project_application_workgroup?.invalid && (f.controls.project_application_workgroup?.dirty || f.controls.project_application_workgroup?.touched),
                                 'is-valid': f.controls.project_application_workgroup?.valid && (f.controls.project_application_workgroup?.dirty || f.controls.project_application_workgroup?.touched)
@@ -408,9 +412,11 @@
 
                 </div>
                 <h5><span
+
                   *ngFor="let term of selected_ontology_terms"
                   style="margin-right: 5px; "
-                  class="badge badge-info">{{term.term}}
+                  class="badge badge-info"> <span *ngIf="term.term; else onlyterm">{{term.term}}</span>
+                  <ng-template #onlyterm>{{term}}</ng-template>
                   <span class="badge" style="cursor: pointer;" (click)="removeEDAMterm(term)">&#10060;</span>
  </span>
 
@@ -444,7 +450,8 @@
                 <input type="text" id="id_project_application_horizon2020"
                        name="project_application_horizon2020" class="form-control"
                        maxlength="2048"
-                       placeholder='Name of the project' [ngModel]="''">
+                       [(ngModel)]="project_application_horizon2020" placeholder='Name of the project'
+                >
                 <span class="help-block">Is your project part of a Horizon 2020 project?</span>
               </div>
             </div>
@@ -454,7 +461,7 @@
                 <input type="text" id="id_project_application_elixir_project"
                        name="project_application_elixir_project" class="form-control"
                        maxlength="2048"
-                       placeholder='Name of the project' [ngModel]="''">
+                       [(ngModel)]="project_application_elixir_project" placeholder='Name of the project'>
                 <span class="help-block">Is your project part of an Elixir project?</span>
               </div>
             </div>
@@ -464,7 +471,7 @@
                 <input type="text" id="id_project_application_bmbf_project"
                        name="project_application_bmbf_project" class="form-control"
                        maxlength="2048"
-                       placeholder='Name of the project' [ngModel]="''">
+                       [(ngModel)]="project_application_bmbf_project" placeholder='Name of the project'>
                 <span class="help-block">Is your project part of a BMBF project?</span>
               </div>
             </div>
@@ -674,7 +681,7 @@
 
 
                   <div class="alert-danger alert"
-                       *ngIf="dissemination_platform_count == 0 && project_application_report_allowed">
+                       *ngIf="!application_dissemination.isPlatformSelected()  && project_application_report_allowed">
                     Please select at least one Platform.
                   </div>
                   <div class="form-group row">
@@ -717,7 +724,7 @@
 
             </div>
 
-            <div class="form-group row">
+            <div class="form-group row" *ngIf="!is_validation">
               <label class="col-md-4 form-control-label" for="text-input"><strong>Principal Investigator*
                 <i
                   data-balloon="Only applications which have been approved/submitted by an principal investigator will be accepted. If you are not a principal investigator please provide his email."
@@ -742,7 +749,8 @@
 
 
             </div>
-            <div *ngIf="!project_application_pi_approved" class="form-group row justify-content-center">
+            <div *ngIf="!project_application_pi_approved && !is_validation"
+                 class="form-group row justify-content-center">
               <div class="col-md-4"></div>
               <div class="col-md-8 alert alert-info">Only applications approved by a principal investigator
                 of a german university or research facility will be accepted.
@@ -752,13 +760,13 @@
                 where he will be able to approve this application.
               </div>
             </div>
-            <div *ngIf="!project_application_pi_approved" class="form-group row">
+            <div *ngIf="!project_application_pi_approved && !is_validation" class="form-group row">
               <label class="col-md-4 form-control-label" for="text-input"><strong>Principal Investigator Email*
               </strong></label>
               <div class="col-md-8">
 
 
-                <input *ngIf="!project_application_pi_approved" required type="text"
+                <input *ngIf="!project_application_pi_approved && !is_validation" required type="text"
                        id="id_project_application_pi_email"
                        name="project_application_pi_email"
                        class="form-control" maxlength="256"
@@ -769,68 +777,83 @@
                                 'is-invalid': f.controls.project_application_pi_email?.invalid && (f.controls.project_application_pi_email?.dirty || f.controls.project_application_pi_email?.touched),
                                 'is-valid': f.controls.project_application_pi_email?.valid && (f.controls.project_application_pi_email?.dirty || f.controls.project_application_pi_email?.touched)
                                 }">
-                <p *ngIf="!project_application_pi_approved"> Please insert the email of your principal investigator.
+                <p *ngIf="!project_application_pi_approved  && !is_validation"> Please insert the email of your
+                  principal investigator.
                   He will get an email with further information how to verify the application.</p>
               </div>
             </div>
-            <div *ngIf="project_application_pi_approved" class="form-group row">
-              <label class="col-md-4 form-control-label" for="project_application_responsibility"
-                     id="project_application_responsibility_checkbox">
-                <strong>Confirmation of Responsibility*</strong>
-              </label>
-              <div class="col-md-8"
-                   [ngClass]="{
-                                'alert-danger': !respCheck.checked,
-                                'alert-success': respCheck.checked
-                                }">
-                <div class="form-check">
-                  <input class="form-check-input"
-                         name="project_application_responsibility"
-                         type="checkbox"
-                         id="project_application_responsibility"
-                         ngModel
-                         #respCheck
-                         required
-                  >
-                  <label class="form-check-label" for="project_application_responsibility">
-                    I hereby confirm that I am responsible for the project and any action of the project members in the
-                    de.NBI Cloud.
-                  </label>
-                </div>
-              </div>
-            </div>
           </form>
+          <div *ngIf="is_validation" class="row">
+            <div class="col-4"></div>
+            <div class="col-8 alert-warning">
+              If you do not approve of this application, please contact cloud@denbi.de
+            </div>
+          </div>
         </div>
         <div class="card-footer">
+
           <div *ngIf="!simple_vm_min_vm" class="form-group row alert alert-danger">
             Please select at least one flavor.
           </div>
           <div
-            *ngIf="f.invalid ||selected_ontology_terms.length == 0 || !simple_vm_min_vm || (dissemination_platform_count == 0 && project_application_report_allowed)"
+            *ngIf="f.invalid ||selected_ontology_terms.length == 0 || !simple_vm_min_vm || (!application_dissemination.isPlatformSelected() && project_application_report_allowed)"
             class="form-group row alert alert-warning">
             Some required fields are incorrect or not filled in yet.
             Please check if all required (*) fields are filled in correctly.
           </div>
-          <div class="form-group row">
+          <div class="form-group row" *ngIf="!is_validation">
             <p class="col-md-12 form-control-label">By submitting this application you
               agree to the
               cloud
               usage policy.</p>
           </div>
+          <div *ngIf="is_validation" class="form-group row">
+            <label class="col-md-4 form-control-label" for="">
+              <strong>Confirmation of Responsibility*</strong>
+            </label>
+            <div class="col-md-8"
+            >
+              <div class="form-check">
+                <input #respCheck
+                       class="form-check-input"
+                       id="project_application_responsibility"
+                       name="project_application_responsibility"
+                       ngModel
+                       required
+                       type="checkbox">
+                <label class="form-check-label" for="project_application_responsibility">
+                  I hereby confirm that I am responsible for the project and any action of the project members in the
+                  de.NBI Cloud.
+                </label>
+              </div>
+            </div>
+            <label class="col-md-4 form-control-label" for="">
+              <button (click)="notificationModal.show();approveApplication();"
+                      [disabled]="!respCheck.checked &&    f.invalid  ||selected_ontology_terms.length == 0  || !simple_vm_min_vm || (!application_dissemination.isPlatformSelected()  && project_application_report_allowed)"
+              
+                      class="btn btn-sm btn-success">
+                <i class="fa fa-dot-circle-o"></i>
+                Approve
+              </button>
+            </label>
 
-          <button id="submit_btn" (click)="filterEnteredData(f);calculateInitialCredits(f); submitModal.show();"
-                  [disabled]="f.invalid  ||selected_ontology_terms.length == 0  || !simple_vm_min_vm || (dissemination_platform_count == 0 && project_application_report_allowed)"
+          </div>
+          <div>
+            <button *ngIf="!is_validation"
+                    (click)="filterEnteredData(f);calculateInitialCredits(f); submitModal.show();"
+                    id="submit_btn"
+                    [disabled]="f.invalid  ||selected_ontology_terms.length == 0  || !simple_vm_min_vm || (!application_dissemination.isPlatformSelected()  && project_application_report_allowed)"
                   class="btn btn-sm btn-success"
                   type="button"><i
             class="fa fa-dot-circle-o"></i> Submit
             Application
-          </button>
+            </button>
+          </div>
         </div>
       </div>
     </div>
     <!--/.col-->
   </div>
-
 </div>
 
 

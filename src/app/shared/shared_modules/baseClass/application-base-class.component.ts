@@ -11,8 +11,7 @@ import {FacilityService} from '../../../api-connector/facility.service';
 import {Component} from '@angular/core';
 import {ApplicationStatusService} from '../../../api-connector/application-status.service';
 import {UserService} from '../../../api-connector/user.service';
-import {NgForm} from '@angular/forms';
-import {Dissemination} from '../../../applications/application.model/dissemination';
+import {ApplicationDissemination} from '../../../applications/application-dissemination';
 
 /**
  * Application base component..
@@ -272,9 +271,10 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
     return newApp
   }
 
-  createDisseminatenObject(obj: any): Dissemination {
+  createDisseminatenObject(obj: any): ApplicationDissemination {
     if (obj) {
-      return new Dissemination(
+      // @ts-ignore
+      return new ApplicationDissemination(
         obj['platform_denbi'], obj['platform_twitter'],
         obj['information_title'], obj['information_resources'],
         obj['information_runtime'], obj['information_pi_name'],
