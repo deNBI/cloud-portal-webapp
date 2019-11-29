@@ -38,6 +38,9 @@ export class ApplicationDissemination {
     this._information_pi_name = information_pi_name;
     this._information_institution = information_institution;
     this._information_description = information_description;
+    if (this._information_description) {
+      this._information_description_allowed = true;
+    }
     this._information_workgroup = information_workgroup;
     this._information_project_type = information_project_type;
     this._information_lifetime = information_lifetime;
