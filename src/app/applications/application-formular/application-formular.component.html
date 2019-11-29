@@ -828,12 +828,12 @@
               </div>
             </div>
             <label class="col-md-4 form-control-label" for="">
-              <button (click)="notificationModal.show();approveApplication();"
-                      [disabled]="!respCheck.checked &&    f.invalid  ||selected_ontology_terms.length == 0  || !simple_vm_min_vm || (!application_dissemination.isPlatformSelected()  && project_application_report_allowed)"
-              
+              <button (click)="notificationModal.show();approveApplication(f);"
+                      [disabled]="!respCheck.checked || f.invalid  ||selected_ontology_terms.length == 0  || !simple_vm_min_vm || (!application_dissemination.isPlatformSelected()  && project_application_report_allowed)"
+
                       class="btn btn-sm btn-success">
                 <i class="fa fa-dot-circle-o"></i>
-                Approve
+                Approve Application
               </button>
             </label>
 
@@ -884,7 +884,7 @@
                 class="btn  btn-secondary"> Close
         </button>
         <a *ngIf="(notificationModalIsClosable == true) && (notificationModalStay==false)"
-           [routerLink]="['/project-management/' + new_application_id]">
+           [routerLink]="['/project-management/' + application_id]">
           <button type="button" id="notification_btn_redirect"
                   (click)="notificationModal.hide();resetNotificationModal()" type="reset"
                   class="btn  btn-secondary"> Close
