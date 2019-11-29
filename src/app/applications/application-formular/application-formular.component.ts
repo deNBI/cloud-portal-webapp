@@ -52,6 +52,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
   application_dissemination: ApplicationDissemination = new ApplicationDissemination();
 
   edam_ontology_terms: EdamOntologyTerm[];
+  initiated_validation: boolean = false;
 
   credits: number = 0;
   dissemination_platform_count: number = 0;
@@ -93,16 +94,24 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
     this.checkVOstatus();
     this.applicationsservice.getEdamOntologyTerms().subscribe((terms: EdamOntologyTerm[]) => {
       this.edam_ontology_terms = terms;
+      this.searchTermsInEdamTerms()
     })
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  searchTermsInEdamTerms(): void {
+    const tmp: EdamOntologyTerm[] = [];
+    // tslint:disable-next-line:no-for-each-push
+    this.selected_ontology_terms.forEach(ele => {
+      // tslint:disable-next-line:typedef
+      const td = this.edam_ontology_terms.find(term => term.term == ele);
+      tmp.push(td)
 
-    if (this.openstack_project) {
-      this.simple_vm_min_vm = true;
-    }
+    })
+    this.selected_ontology_terms = tmp;
+  }
 
-    if (this.application) {
+  initiateFormWithApplication(): void {
+    if (this.application && !this.initiated_validation) {
       this.application_id = this.application.Id;
       if (this.application.CurrentFlavors) {
         this.simple_vm_min_vm = true;
@@ -132,8 +141,19 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
       this.project_application_horizon2020 = this.application.Horizon2020;
       this.project_application_elixir_project = this.application.ElixirProject;
       this.project_application_bmbf_project = this.application.BMBFProject;
+      this.initiated_validation = true
 
     }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+
+    if (this.openstack_project) {
+      this.simple_vm_min_vm = true;
+    }
+    this.initiateFormWithApplication()
+
+
   }
 
   checkIfTypeGotSimpleVmFlavor(type: FlavorType): boolean {
@@ -347,9 +367,9 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
     } else {
       this.applicationsservice.deleteApplicationDissemination(this.application.Id).subscribe()
     }
-    /*this.applicationsservice.addEdamOntologyTerms(this.new_application_id,
+    this.applicationsservice.addEdamOntologyTerms(this.application.Id,
                                                   this.selected_ontology_terms
-    ).subscribe();*/
+    ).subscribe();
     const values: { [key: string]: string | number | boolean } = {};
     values['project_application_openstack_project'] = this.openstack_project;
     values['project_application_initial_credits'] = this.credits;

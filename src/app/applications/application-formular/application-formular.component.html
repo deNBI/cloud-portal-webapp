@@ -415,8 +415,7 @@
 
                   *ngFor="let term of selected_ontology_terms"
                   style="margin-right: 5px; "
-                  class="badge badge-info"> <span *ngIf="term.term; else onlyterm">{{term.term}}</span>
-                  <ng-template #onlyterm>{{term}}</ng-template>
+                  class="badge badge-info"> {{term.term}}
                   <span class="badge" style="cursor: pointer;" (click)="removeEDAMterm(term)">&#10060;</span>
  </span>
 
