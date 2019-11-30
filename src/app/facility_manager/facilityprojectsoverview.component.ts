@@ -49,6 +49,11 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
   public emailStatus: number = 0;
   public emailReply: string = '';
   public sendNews: boolean;
+  public alternative_emailText: string = '';
+  public news_tags: string = '';
+  public news_id: number = 0;
+  public newsStatus: number = 0;
+  public news_error_string: string = ';'
 
   public managerFacilities: [string, number][];
   public selectedFacility: [string, number];
@@ -199,10 +204,12 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 
   }
 
-  sendMailToFacility(facility: string, subject: string, message: string, reply?: string, send?: any): void {
+  sendMailToFacility(facility: string, subject: string, message: string, reply?: string,
+                     send?: any, alternative_news_text?: string, news_tags?: string): void {
+    this.emailStatus = 0;
     this.facilityservice.sendMailToFacility(
       facility, encodeURIComponent(subject), encodeURIComponent(message), this.selectedProjectType,
-      encodeURIComponent(reply), send).subscribe(
+      encodeURIComponent(reply), send, encodeURIComponent(alternative_news_text), encodeURIComponent(news_tags)).subscribe(
       (result: any) => {
         if (result.status === 201) {
           this.emailStatus = 1;
@@ -248,9 +255,30 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
     this.emailReply = null;
     this.emailStatus = 0;
     this.sendNews = true;
+    this.alternative_emailText = '';
+    this.news_tags = '';
   }
 
   public comingSoon(): void {
     alert('This function will be implemented soon.')
+  }
+
+  public delete_news(news_id: number): void {
+    this.newsStatus = 0;
+    this.news_error_string = ''
+    this.facilityservice.deleteNews(news_id.toString())
+      .subscribe(
+        (result: any) => {
+          if (result[0] === 'True') {
+            this.newsStatus = 1;
+          } else {
+            this.newsStatus = 2;
+            this.news_error_string = result;
+          }
+        },
+        (error: any) => {
+          this.newsStatus = 2;
+          this.news_error_string = error;
+        })
   }
 }
