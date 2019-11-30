@@ -19,7 +19,8 @@ import {AbstractBaseClasse} from '../shared/shared_modules/baseClass/abstract-ba
 @Component({
              selector: 'app-vm-overview',
              templateUrl: 'vmOverview.component.html',
-             providers: [FacilityService, VoService, ImageService, UserService, VirtualmachineService, FullLayoutComponent]
+             providers: [FacilityService, VoService, ImageService, UserService, VirtualmachineService, FullLayoutComponent],
+             styleUrls: ['./vmOverview.component.css']
            })
 
 export class VmOverviewComponent implements OnInit {

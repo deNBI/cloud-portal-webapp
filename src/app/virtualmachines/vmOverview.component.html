@@ -39,7 +39,7 @@
       </option>
 
     </select></div>
-    <div>
+    <div class="container-fluid">
       <div class="row" style="padding:5px;">
         <div class="col-md-6">
           <input type="text" placeholder="Filter" name="filter"
@@ -92,8 +92,42 @@
         <div class="col-md-12">
           <div class="card instance-card" style="margin-bottom:15px;" [id]="'instanceCard_' + vm?.name">
             <div class="card-block clearfix">
-              <div class="row">
-                <div class="col-md-4">
+              <div class="row" style="margin-top: 5px">
+                <div class="col-6" style="margin: auto; text-align: center">
+                  <a class="h5 text-primary" style="margin-left: 10px">{{vm?.name}}  </a>
+                  <div *ngIf="vm?.status == 'ACTIVE'" [id]="'active_badge_' + vm?.name"
+                       class="dot-colorless bg-success" style="width: 10px; height: 10px">
+                  </div>
+                  <div *ngIf="vm?.status == 'SHUTOFF'" [id]="'shutoff_badge_' + vm?.name"
+                       class="dot-colorless bg-warning" style="width: 10px; height: 10px">
+                  </div>
+                  <div *ngIf="vm?.status == 'DELETED'" [id]="'deleted_badge_' + vm?.name"
+                       class="dot-colorless bg-danger" style="width: 10px; height: 10px">
+                  </div>
+                  <div *ngIf="vm?.status != 'ACTIVE' && vm?.status != 'SHUTOFF' && vm?.status != 'DELETED'"
+                       [id]="'default_badge_' + vm?.name"
+                       class="dot-colorless bg-black" style="width: 10px; height: 10px">
+                  </div>  {{vm?.status}}
+                </div>
+                <div class="col-3" style="margin: auto; text-align: center">
+                  <a href="/#/project-management/{{vm?.application_id}}">{{vm?.project}}</a>
+                </div>
+                <div class="col-3" style="margin: auto; text-align: center">
+                  {{vm?.username}}
+                  <br>
+                  {{vm?.created_at}}
+                </div>
+              </div>
+              <div class="row" style="margin-top: 10px">
+                <div class="col" style="margin-left: 10px">
+                  <div style="font-size: small">
+                    <strong>{{vm?.flavor?.name}}</strong>: {{vm?.flavor?.vcpus + ' VCPUs - ' }}{{vm?.flavor?.ram + ' GB RAM - '}}{{vm?.flavor?.rootdisk + ' GB root disk'}}
+                      <strong>Image</strong>: {{vm?.image}}
+                  </div>
+                </div>
+              </div>
+<!--              <div class="row">
+                <div class="col-md-5">
                   <div class="row" style="margin:1px;">
                   <span *ngIf="vm?.status == 'ACTIVE'" [id]="'active_badge_' + vm?.name"
                         style="margin: 2px 5px 0px 2px; padding: 0.4em 0.4em !important;" class="badge badge-success">
@@ -103,7 +137,7 @@
                     {{vm?.status}}</span>
                     <span *ngIf="vm?.status == 'DELETED'" [id]="'deleted_badge_' + vm?.name"
                           style="margin: 2px 5px 0px 2px; padding: 0.4em 0.4em !important;" class="badge badge-danger">
-                    {{vm?.status}}</span> <!-- add other states like restarting etc -->
+                    {{vm?.status}}</span> &lt;!&ndash; add other states like restarting etc &ndash;&gt;
                     <span *ngIf="vm?.status != 'ACTIVE' && vm?.status != 'SHUTOFF' && vm?.status != 'DELETED'"
                           [id]="'default_badge_' + vm?.name"
                           style="margin: 2px 5px 0px 2px; padding: 0.4em 0.4em !important;" class="badge badge-dark">
@@ -122,18 +156,19 @@
                     <span>{{vm?.flavor?.rootdisk + ' GB root disk'}}</span>
                   </div>
                 </div>
-                <div class="col-md-2" style="padding: 2px;">
+                <div class="col-md-3" style="padding: 2px;">
                   <span style="margin: auto;top: 25px;position: relative;"><strong>Project: </strong><a
                     href="/#/project-management/{{vm?.application_id}}">{{vm?.project}}</a></span>
                 </div>
-                <div class="col-md-3" style="padding: 2px;">
-                  <span
-                    style="margin: auto;top: 25px;position: relative;"><strong>Created at (d/m/y): </strong>{{vm?.created_at}}</span>
+&lt;!&ndash;                <div class="col-md-3" style="padding: 2px;">&ndash;&gt;
+&lt;!&ndash;                  <span&ndash;&gt;
+&lt;!&ndash;                    style="margin: auto;top: 25px;position: relative;"></span>&ndash;&gt;
+&lt;!&ndash;                </div>&ndash;&gt;
+                <div class="col-md-4" style="padding: 2px;">
+                  <p style="margin: auto;top: 25px;position: relative;"><strong>Created by: </strong>{{vm?.username}}<br>
+                  <strong>        at: </strong>{{vm?.created_at}}</p>
                 </div>
-                <div class="col-md-3" style="padding: 2px;">
-                  <span style="margin: auto;top: 25px;position: relative;"><strong>Started by: </strong>{{vm?.username}}</span>
-                </div>
-              </div>
+              </div>-->
             </div>
             <div class="card-footer p-x-1 py-h">
               <div class="row" *ngIf="vm.status != CLIENT_OFFLINE">
@@ -141,32 +176,32 @@
                   <a class="font-weight-bold font-xs btn-block text-muted" *ngIf="!vm.showSSHCommand"
                      [id]="'showHowToConnectButton_'+vm?.name"
                      (click)="selectedVm=vm; vm.showSSHCommand=!vm.showSSHCommand;" href="#" onClick="return false;">
-                    How To Connect <i class="fa fa-angle-right font-lg"></i></a>
+                    how to connect ></a>
 
                   <a class="font-weight-bold font-xs btn-block text-muted" *ngIf="vm.showSSHCommand"
                      [id]="'hideHowToConnectButton_'+vm?.name"
                      (click)="selectedVm=vm; vm.showSSHCommand=!vm.showSSHCommand;" href="#" onClick="return false;">
-                    Hide Information <i class="fa fa-angle-down font-lg"></i></a>
+                    hide information <</a>
                 </div>
                 <div class="col-md-2" *ngIf="vm.status ==ACTIVE">
                   <a class="font-weight-bold font-xs btn-block text-muted"
                      [id]="'stopVMButton_' + vm?.name"
                      (click)="selectedVm=vm;submitStopVmModal.show();" href="#" onClick="return false;">
-                    Stop VM <i class="fa fa-angle-right font-lg"></i>
+                    &lt;stop vm&gt;
                   </a>
                 </div>
                 <div class="col-md-2" *ngIf="vm.status !=DELETED">
                   <a class="font-weight-bold font-xs btn-block text-muted"
                      [id]="'deleteVMButton_' + vm?.name"
                      (click)="selectedVm=vm;verifyModal.show();" href="#" onClick="return false;">
-                    Delete VM <i class="fa fa-angle-right font-lg"></i>
+                    &lt;delete vm&gt;
                   </a>
                 </div>
                 <div class="col-md-2" *ngIf="vm.client.features['VM_REBOOT'] && vm.status !=DELETED">
                   <a class="font-weight-bold font-xs btn-block text-muted"
                      [id]="'chooseRebootVMButton_' + vm?.name"
                      href="#" onClick="return false;" (click)="selectedVm=vm; chooseRebootOptionModal.show();">
-                    Reboot VM <i class="fa fa-angle-right font-lg"></i>
+                    &lt;reboot vm&gt;
                   </a>
                 </div>
                 <div class="col-md-2" *ngIf="vm.status !=DELETED">
@@ -174,21 +209,21 @@
                      [id]="'createSnapshotVMButton_' + vm?.name"
                      (click)="snapshot_vm=vm;resetSnapshotResult();snapshotModal.show(); " href="#"
                      onClick="return false;">
-                    Create Snapshot<i class="fa fa-angle-right font-lg"></i>
+                    &lt;create snapshot&gt;
                   </a>
                 </div>
                 <div class="col-md-2" *ngIf="vm.status !=SHUTOFF && vm.status != DELETED">
                   <a class="font-weight-bold font-xs btn-block text-muted"
                      [id]="'checkStatusVMButton_' + vm?.name"
                      (click)="checkStatus(vm);" href="#" onClick="return false;">
-                    Check Status <i class="fa fa-angle-right font-lg"></i>
+                    &lt;check status&gt;
                   </a>
                 </div>
                 <div class="col-md-2" *ngIf="vm.status ==SHUTOFF">
                   <a class="font-weight-bold font-xs btn-block text-muted"
                      [id]="'restartVMButton_' + vm?.name"
                      (click)="selectedVm=vm;submitRestartModal.show();" href="#" onClick="return false;">
-                    Restart VM <i class="fa fa-angle-right font-lg"></i>
+                    &lt;restart vm&gt;
                   </a>
                 </div>
 
@@ -197,28 +232,32 @@
             <div class="card-footer p-x-1 py-h"
                  *ngIf="vm.status != DELETED && vm.status != SHUTOFF && vm.showSSHCommand">
               <div class="row">
-                <div class="col-md-1">
+<!--                <div class="col-md-1">
                   <span class="font-weight-bold font-xs btn-block text-muted">SSH:</span>
                 </div>
                 <div class="col-md-9">
                   <span class="font-weight-bold font-xs btn-block text-muted">{{vm?.ssh_command}}</span>
+                </div>-->
+                <div class="col-md-10">
+                  <label style="width: 100%">
+                    SSH:
+                    <textarea style="width: 100%; height: 100%" [(ngModel)]="vm.ssh_command"></textarea>
+                  </label>
                 </div>
-                <div class="col-md-2"><a (click)="copySSHCommand(vm);" href="#" onClick="return false;"
-                                         class="font-weight-bold font-xs btn-block text-muted">Copy command <i
-                  class="fa fa-angle-right font-lg"></i></a>
+                <div class="col-md-2" style="margin: auto"><a (click)="copySSHCommand(vm);" href="#" onClick="return false;"
+                                         class="font-weight-bold font-xs btn-block text-muted">&lt;copy command&gt;</a>
                 </div>
               </div>
 
               <div class="row" *ngIf="vm?.udp_command != null">
-                <div class="col-md-1">
-                  <span class="font-weight-bold font-xs btn-block text-muted">UDP</span>
+                <div class="col-md-10">
+                  <label style="width: 100%">
+                    UDP:
+                    <textarea style="width: 100%; height: 100%" [(ngModel)]="vm.udp_command"></textarea>
+                  </label>
                 </div>
-                <div class="col-md-9">
-                  <span class="font-weight-bold font-xs btn-block text-muted">{{vm?.udp_command}}</span>
-                </div>
-                <div class="col-md-2"><a (click)="copyUDPCommand(vm);" href="#" onClick="return false;"
-                                         class="font-weight-bold font-xs btn-block text-muted">Copy command <i
-                  class="fa fa-angle-right font-lg"></i></a>
+                <div class="col-md-2" style="margin: auto"><a (click)="copyUDPCommand(vm);" href="#" onClick="return false;"
+                                         class="font-weight-bold font-xs btn-block text-muted">&lt;copy command&gt;</a>
                 </div>
               </div>
             </div>
