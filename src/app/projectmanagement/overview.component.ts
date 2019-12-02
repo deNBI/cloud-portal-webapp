@@ -19,11 +19,11 @@ import {FacilityService} from '../api-connector/facility.service';
 import {ApplicationsService} from '../api-connector/applications.service';
 import {Router} from '@angular/router'
 import {FullLayoutComponent} from '../layouts/full-layout.component';
-import {NgForm} from '@angular/forms';
-import {Flavor} from '../virtualmachines/virtualmachinemodels/flavor';
-import {FlavorType} from '../virtualmachines/virtualmachinemodels/flavorType';
-import {FlavorService} from '../api-connector/flavor.service';
-import {IResponseTemplate} from '../api-connector/response-template';
+import {NgForm} from "@angular/forms";
+import {Flavor} from "../virtualmachines/virtualmachinemodels/flavor";
+import {FlavorType} from "../virtualmachines/virtualmachinemodels/flavorType";
+import {FlavorService} from "../api-connector/flavor.service";
+import {IResponseTemplate} from "../api-connector/response-template";
 import {CreditsService} from "../api-connector/credits.service";
 
 /**
