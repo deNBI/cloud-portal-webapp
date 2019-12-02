@@ -214,7 +214,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
     values['project_application_id'] = this.project_application.Id;
     values['total_cores_new'] = this.totalNumberOfCores;
     values['total_ram_new'] = this.totalRAM;
-    values['approximate_extra_credits'] = this.extensionCredits;
+    values['project_application_renewal_credits'] = this.extensionCredits;
     this.requestExtension(values);
 
   }

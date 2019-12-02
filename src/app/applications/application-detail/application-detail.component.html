@@ -264,8 +264,8 @@
       <td>{{
           application?.InitialCredits}}
       </td>
-      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
-        {{application?.ApplicationExtension?.ExtendedCredits}} GB
+      <td *ngIf="is_vo_admin && (application?.Status == application_states.MODIFICATION_REQUESTED || isModification)">
+        {{application?.ApplicationExtension?.ExtendedCredits}}
       </td>
     </tr>
 
