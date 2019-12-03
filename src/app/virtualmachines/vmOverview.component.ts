@@ -20,7 +20,7 @@ import {AbstractBaseClasse} from '../shared/shared_modules/baseClass/abstract-ba
              selector: 'app-vm-overview',
              templateUrl: 'vmOverview.component.html',
              providers: [FacilityService, VoService, ImageService, UserService, VirtualmachineService, FullLayoutComponent],
-             styleUrls: ['./vmOverview.component.css']
+             styleUrls: ['./vmOverview.component.scss']
            })
 
 export class VmOverviewComponent implements OnInit {
@@ -126,6 +126,7 @@ export class VmOverviewComponent implements OnInit {
   filterProjectNameChanged: Subject<string> = new Subject<string>();
   filterElixirIdChanged: Subject<string> = new Subject<string>();
   snapshotSearchTerm: Subject<string> = new Subject<string>();
+  BUILD: any;
 
   constructor(private facilityService: FacilityService, private voService: VoService,
               private imageService: ImageService, private userservice: UserService,
@@ -422,6 +423,7 @@ export class VmOverviewComponent implements OnInit {
 
                    for (const vm of this.vms_content) {
                      vm.username = vm['userlogin'];
+                     vm.cardState = 0;
                      if (vm.created_at !== '') {
                        vm.created_at = new Date(parseInt(vm.created_at, 10) * 1000).toLocaleDateString();
                      }
@@ -444,6 +446,7 @@ export class VmOverviewComponent implements OnInit {
 
                    for (const vm of this.vms_content) {
                      vm.username = vm['userlogin'];
+                     vm.cardState = 0;
                      if (vm.created_at !== '') {
                        vm.created_at = new Date(parseInt(vm.created_at, 10) * 1000).toLocaleDateString();
                      }
@@ -499,6 +502,7 @@ export class VmOverviewComponent implements OnInit {
 
                    for (const vm of this.vms_content) {
                      vm.username = vm['userlogin'];
+                     vm.cardState = 0;
                      if (vm.created_at !== '') {
                        vm.created_at = new Date(parseInt(vm.created_at, 10) * 1000).toLocaleDateString();
                      }

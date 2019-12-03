@@ -22,14 +22,14 @@ export class VirtualMachine {
   private _ssh_command: string;
   private _udp_command: string;
   private _application_id: string;
-  private _showSSHCommand: boolean = false;
+  private _cardState: number;
 
-  get showSSHCommand(): boolean {
-    return this._showSSHCommand;
+  get cardState(): number {
+    return this._cardState;
   }
 
-  set showSSHCommand(value: boolean) {
-    this._showSSHCommand = value;
+  set cardState(value: number) {
+    this._cardState = value;
   }
 
   get application_id(): string {
