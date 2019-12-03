@@ -102,10 +102,12 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 
   searchTermsInEdamTerms(): void {
     const tmp: EdamOntologyTerm[] = [];
-    // tslint:disable-next-line:no-for-each-push
+    // tslint:disable-next-line:no-for-each-push typedef
     this.selected_ontology_terms.forEach(ele => {
       // tslint:disable-next-line:typedef
-      const td = this.edam_ontology_terms.find(term => term.term == ele);
+      // @ts-ignore
+      // tslint:disable-next-line:typedef
+      const td = this.edam_ontology_terms.find(term => term.term === ele);
       tmp.push(td)
 
     })
