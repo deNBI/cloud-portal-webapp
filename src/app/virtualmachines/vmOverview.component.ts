@@ -11,7 +11,6 @@ import {FacilityService} from '../api-connector/facility.service';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {Subject} from 'rxjs';
 import {PopoverDirective} from 'ngx-bootstrap';
-import {AbstractBaseClasse} from '../shared/shared_modules/baseClass/abstract-base-class';
 
 /**
  * Vm overview componentn.
@@ -420,7 +419,6 @@ export class VmOverviewComponent implements OnInit {
                    this.items_per_page = vms['items_per_page'];
 
                    for (const vm of this.vms_content) {
-                     vm.username = vm['userlogin'];
                      if (vm.created_at !== '') {
                        vm.created_at = new Date(parseInt(vm.created_at, 10) * 1000).toLocaleDateString();
                      }
@@ -442,7 +440,6 @@ export class VmOverviewComponent implements OnInit {
                    this.items_per_page = vms['items_per_page'];
 
                    for (const vm of this.vms_content) {
-                     vm.username = vm['userlogin'];
                      if (vm.created_at !== '') {
                        vm.created_at = new Date(parseInt(vm.created_at, 10) * 1000).toLocaleDateString();
                      }
@@ -497,7 +494,6 @@ export class VmOverviewComponent implements OnInit {
                    this.items_per_page = vms['items_per_page'];
 
                    for (const vm of this.vms_content) {
-                     vm.username = vm['userlogin'];
                      if (vm.created_at !== '') {
                        vm.created_at = new Date(parseInt(vm.created_at, 10) * 1000).toLocaleDateString();
                      }
