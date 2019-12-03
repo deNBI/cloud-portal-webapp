@@ -22,6 +22,7 @@ import {SharedDirectivesModule} from '../shared/shared_modules/shared_directives
 import {ImageCarouselSlideComponent} from './imageCarouselSlide.component';
 import {PopoverModule} from 'ngx-bootstrap/popover';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {VmDetailComponent} from "./vmdetail.component";
 
 /**
  * VM module.
@@ -53,7 +54,8 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
               VolumeOverviewComponent,
               SnapshotOverviewComponent,
               HowToConnectComponent,
-              BiocondaComponent
+              BiocondaComponent,
+              VmDetailComponent
             ]
           })
 export class VmModule {

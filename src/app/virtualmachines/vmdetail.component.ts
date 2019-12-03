@@ -11,6 +11,7 @@ import {GroupService} from "../api-connector/group.service";
 import {ApiSettings} from "../api-connector/api-settings.service";
 import {CreditsService} from "../api-connector/credits.service";
 import {AbstractBaseClasse} from "../shared/shared_modules/baseClass/abstract-base-class";
+import {ActivatedRoute} from "@angular/router";
 
 
 @Component({
@@ -20,7 +21,17 @@ import {AbstractBaseClasse} from "../shared/shared_modules/baseClass/abstract-ba
 })
 
 export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
+  vm_id:string;
+  constructor( private activatedRoute: ActivatedRoute) {
+    super();
+  }
   ngOnInit(): void {
     console.log('site loaded');
+    this.activatedRoute.params.subscribe((paramsId: any) => {
+      this.isLoaded = false;
+
+      this.vm_id = paramsId.id;
+
+    });
   }
 }

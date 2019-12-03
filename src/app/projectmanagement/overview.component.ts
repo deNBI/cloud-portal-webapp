@@ -210,6 +210,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
    * @param data
    */
   public requestExtension(data: { [key: string]: string | number | boolean }): void {
+    console.log(data);
     this.applicationsservice.requestRenewal(data).subscribe((result: { [key: string]: string }) => {
       if (result['Error']) {
         this.extension_status = 2

@@ -44,10 +44,6 @@ export const routes: Routes = [
         loadChildren: './projectmanagement/projectmanagement.module#ProjectManagementModule'
       },
       {
-        path: 'vm-detail',
-        loadChildren: './virtualmachines/vmdetail.module#VmDetailModule'
-      },
-      {
         path: 'applications',
         loadChildren: './applications/applications.module#ApplicationsModule'
       },
