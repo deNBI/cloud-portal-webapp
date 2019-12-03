@@ -10,16 +10,16 @@
 
       <button style="margin-right: 5px;margin-left: 5px;margin-top:5px;margin-bottom: 5px"
               class="btn btn-primary"
-              (click)="getVms();toggleTab('own');">Own Machines
+              (click)="toggleTab('own');applyFilter();">Own Machines
       </button>
 
       <button *ngIf="is_vo_admin" style="margin-right: 5px;margin-left: 5px;margin-top: 5px;margin-bottom: 5px"
               class="btn btn-primary"
-              (click)="getAllVms();toggleTab('all')">All Machines
+              (click)="toggleTab('all');applyFilter();">All Machines
       </button>
       <button style="margin-right: 5px;margin-left: 5px;margin-top: 5px;margin-bottom: 5px"
               class="btn btn-primary"
-              (click)="getAllVmsFacilities();toggleTab('facility')">Machines of your facilities
+              (click)="toggleTab('facility');applyFilter();">Machines of your facilities
       </button>
 
 
@@ -30,6 +30,12 @@
         (pageChanged)="pageChanged($event)" [(ngModel)]="currentPage"
         [boundaryLinks]="true" [maxSize]="total_pages" [rotate]="false" #pagination>
       </pagination>
+      <input id="vm_per_site"
+             name="vm_per_site" placeholder="e.g 3"
+             type="number" min="1" max="25" step="1"
+             appMinAmount="1" appMaxAmount="25" appInteger
+             pattern="^([1-9]|1[012])$" [ngModel]="vm_per_site" (ngModelChange)="changeVmPerSite($event)"
+      >
     </div>
     <div *ngIf="tab=='facility'" style="margin-bottom: 10px"><select [(ngModel)]="selectedFacility"
                                                                      class="form-control " name="selectedFacility">
