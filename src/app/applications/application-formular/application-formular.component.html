@@ -443,6 +443,23 @@
               </div>
             </div>
             <div class="form-group row">
+              <label class="col-md-4 form-control-label" for="text-input"><strong>Training</strong></label>
+              <div class="col-md-8">
+
+                <label id="id_project_application_training"
+                       class="switch switch-label switch-outline-primary-alt">
+                  <input type="checkbox" class="switch-input"
+                         name="project_application_training"
+                         [(ngModel)]="project_application_training"
+                  >
+                  <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                  <span class="switch-handle"></span></label>
+                <div class="alert alert-info" role="alert">
+                 Training Info!
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
               <label class="col-md-4 form-control-label" for="text-input"><strong>Horizon
                 2020</strong></label>
               <div class="col-md-8">

@@ -36,6 +36,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
   project_application_sensitive_data: boolean;
   project_application_vms_requested: number = 3;
   project_application_report_allowed: boolean = false;
+  project_application_training: boolean = false;
   selected_ontology_terms: EdamOntologyTerm[] = [];
   project_application_name: string;
   project_application_shortname: string;
@@ -49,6 +50,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
   project_application_elixir_project: string = '';
   project_application_bmbf_project: string = '';
   project_application_comment: string = '';
+
   application_dissemination: ApplicationDissemination = new ApplicationDissemination();
 
   edam_ontology_terms: EdamOntologyTerm[];
@@ -216,7 +218,21 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
     if (!this.project_application_report_allowed) {
       this.valuesToConfirm.push('Dissemination allowed: No');
     }
-
+    if (!this.project_application_sensitive_data) {
+      this.valuesToConfirm.push('Sensitive Data: No');
+    } else {
+      this.valuesToConfirm.push('Sensitive Data: Yes');
+    }
+    if (!this.project_application_training) {
+      this.valuesToConfirm.push('Training: No');
+    } else {
+      this.valuesToConfirm.push('Training: Yes');
+    }
+    let research: string = 'Research Topics: ';
+    for (const term of this.selected_ontology_terms) {
+      research = research.concat(` ${term.term},`);
+    }
+    this.valuesToConfirm.push(research);
   }
 
   checkVOstatus(): void {

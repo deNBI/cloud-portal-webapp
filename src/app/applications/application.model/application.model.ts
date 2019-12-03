@@ -39,6 +39,7 @@ export class Application {
   private _TotalRam: number;
   private _InitialCredits: number;
   private _DateApproved: string;
+  private _Training: boolean;
   private _Horizon2020: string;
   private _BMBFProject: string;
   private _EdamTopics: EdamOntologyTerm[];
@@ -73,6 +74,14 @@ export class Application {
       gpu: gpu,
       epheremal_disk: epheremal_disk
     };
+  }
+
+  get Training(): boolean {
+    return this._Training;
+  }
+
+  set Training(value: boolean) {
+    this._Training = value;
   }
 
   get SensitiveData(): boolean {

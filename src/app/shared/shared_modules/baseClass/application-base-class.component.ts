@@ -197,6 +197,7 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
     newApp.CoresPerVM = aj['project_application_cores_per_vm'];
     newApp.VolumeLimit = aj['project_application_volume_limit'];
     newApp.VolumeCounter = aj['project_application_volume_counter'];
+    newApp.Training = aj['project_application_training'];
 
     newApp.ObjectStorage = aj['project_application_object_storage'];
     newApp.OpenStackProject = aj['project_application_openstack_project'];
@@ -416,7 +417,6 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
     this.constantStrings['project_application_renewal_volume_counter'] = 'Number of volumes for additional storage: ';
     this.constantStrings['project_application_renewal_object_storage'] = 'Object storage: ';
     this.constantStrings['project_application_renewal_volume_limit'] = 'Volume Storage space for your VMs: ';
-
     this.constantStrings['project_application_institute'] = 'Your institute: ';
     this.constantStrings['project_application_workgroup'] = 'Your Workgroup: ';
     this.constantStrings['project_application_horizon2020'] = 'Horizon2020: ';
