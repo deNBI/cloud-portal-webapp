@@ -197,7 +197,7 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
     newApp.CoresPerVM = aj['project_application_cores_per_vm'];
     newApp.VolumeLimit = aj['project_application_volume_limit'];
     newApp.VolumeCounter = aj['project_application_volume_counter'];
-    newApp.Training = aj['project_application_training'];
+    newApp.OpenstackBasicIntroduction = aj['project_application_openstack_basic_introduction'];
 
     newApp.ObjectStorage = aj['project_application_object_storage'];
     newApp.OpenStackProject = aj['project_application_openstack_project'];

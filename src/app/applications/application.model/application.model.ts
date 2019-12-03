@@ -39,12 +39,11 @@ export class Application {
   private _TotalRam: number;
   private _InitialCredits: number;
   private _DateApproved: string;
-  private _Training: boolean;
+  private _OpenstackBasicIntroduction: boolean;
   private _Horizon2020: string;
   private _BMBFProject: string;
   private _EdamTopics: EdamOntologyTerm[];
   private _SensitiveData: boolean;
-
   private _ElixirProject: string;
   private _Dissemination: ApplicationDissemination;
   private _PIApproved: boolean;
@@ -76,12 +75,12 @@ export class Application {
     };
   }
 
-  get Training(): boolean {
-    return this._Training;
+  get OpenstackBasicIntroduction(): boolean {
+    return this._OpenstackBasicIntroduction;
   }
 
-  set Training(value: boolean) {
-    this._Training = value;
+  set OpenstackBasicIntroduction(value: boolean) {
+    this._OpenstackBasicIntroduction = value;
   }
 
   get SensitiveData(): boolean {

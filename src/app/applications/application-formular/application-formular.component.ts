@@ -36,7 +36,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
   project_application_sensitive_data: boolean;
   project_application_vms_requested: number = 3;
   project_application_report_allowed: boolean = false;
-  project_application_training: boolean = false;
+  project_application_openstack_basic_introduction: boolean = false;
   selected_ontology_terms: EdamOntologyTerm[] = [];
   project_application_name: string;
   project_application_shortname: string;
@@ -143,6 +143,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
       this.project_application_institute = this.application.Institute;
       this.project_application_workgroup = this.application.Workgroup;
       this.project_application_horizon2020 = this.application.Horizon2020;
+      this.project_application_openstack_basic_introduction = this.application.OpenstackBasicIntroduction;
       this.project_application_elixir_project = this.application.ElixirProject;
       this.project_application_bmbf_project = this.application.BMBFProject;
       this.initiated_validation = true
@@ -225,10 +226,12 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
     } else {
       this.valuesToConfirm.push('Sensitive Data: Yes');
     }
-    if (!this.project_application_training) {
-      this.valuesToConfirm.push('Training: No');
+    if (this.openstack_project) {
+      if (!this.project_application_openstack_basic_introduction) {
+        this.valuesToConfirm.push('Training: No');
     } else {
-      this.valuesToConfirm.push('Training: Yes');
+        this.valuesToConfirm.push('Training: Yes');
+      }
     }
     let research: string = 'Research Topics: ';
     for (const term of this.selected_ontology_terms) {
@@ -391,6 +394,9 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
     const values: { [key: string]: string | number | boolean } = {};
     values['project_application_openstack_project'] = this.openstack_project;
     values['project_application_initial_credits'] = this.credits;
+    values['project_application_openstack_basic_introduction'] = this.project_application_openstack_basic_introduction;
+    values['project_application_sensitive_data'] = this.project_application_openstack_basic_introduction;
+
     for (const value in form.controls) {
       if (form.controls[value].disabled) {
         continue;

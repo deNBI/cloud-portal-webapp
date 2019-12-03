@@ -158,10 +158,10 @@
 
       </td>
     </tr>
-    <tr>
+    <tr *ngIf="application.OpenStackProject">
       <td>Training</td>
-      <td><p *ngIf="application.Training"> Yes</p>
-        <p *ngIf="!application.Training"> No</p>
+      <td><p *ngIf="application.OpenstackBasicIntroduction"> Yes</p>
+        <p *ngIf="!application.OpenstackBasicIntroduction"> No</p>
       </td>
       <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
 
