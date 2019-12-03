@@ -121,9 +121,9 @@ export class VmOverviewComponent implements OnInit {
    */
   reboot_done: boolean;
 
+  vmPerPageChange: Subject<number> = new Subject<number>();
+
   filterChanged: Subject<string> = new Subject<string>();
-  filterProjectNameChanged: Subject<string> = new Subject<string>();
-  filterElixirIdChanged: Subject<string> = new Subject<string>();
   snapshotSearchTerm: Subject<string> = new Subject<string>();
 
   constructor(private facilityService: FacilityService, private voService: VoService,
@@ -316,11 +316,6 @@ export class VmOverviewComponent implements OnInit {
       this.checkStatusTimeout
     )
     ;
-  }
-
-  changeVmPerSite(event: any): void {
-    this.vm_per_site = event;
-    this.applyFilter()
   }
 
   /**
@@ -526,6 +521,13 @@ export class VmOverviewComponent implements OnInit {
       .pipe(
         debounceTime(this.DEBOUNCE_TIME),
         distinctUntilChanged())
+      .subscribe(() => {
+        this.applyFilter();
+      });
+
+    this.vmPerPageChange.pipe(
+      debounceTime(this.DEBOUNCE_TIME),
+      distinctUntilChanged())
       .subscribe(() => {
         this.applyFilter();
       });
