@@ -1,4 +1,4 @@
-import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {Project} from './project.model';
 import {ProjectMember} from './project_member.model'
 import {environment} from '../../environments/environment'
@@ -6,7 +6,6 @@ import {ApiSettings} from '../api-connector/api-settings.service';
 import {GroupService} from '../api-connector/group.service';
 import {UserService} from '../api-connector/user.service';
 import * as moment from 'moment';
-import {VoService} from '../api-connector/vo.service';
 import {ProjectMemberApplication} from './project_member_application';
 import {ComputecenterComponent} from './computecenter.component';
 import {Userinfo} from '../userinfo/userinfo.model';
@@ -23,8 +22,8 @@ import {NgForm} from '@angular/forms';
 import {Flavor} from '../virtualmachines/virtualmachinemodels/flavor';
 import {FlavorType} from '../virtualmachines/virtualmachinemodels/flavorType';
 import {FlavorService} from '../api-connector/flavor.service';
-import {IResponseTemplate} from '../api-connector/response-template';
 import {CreditsService} from '../api-connector/credits.service';
+import {is_vo} from '../shared/globalvar';
 
 /**
  * Projectoverview component.
@@ -33,7 +32,7 @@ import {CreditsService} from '../api-connector/credits.service';
              selector: 'app-project-overview',
              templateUrl: 'overview.component.html',
              providers: [FlavorService, ApplicationStatusService, ApplicationsService,
-               FacilityService, VoService, UserService, GroupService, ApiSettings, VoService, CreditsService]
+               FacilityService, UserService, GroupService, ApiSettings, CreditsService]
            })
 export class OverviewComponent extends ApplicationBaseClassComponent implements OnInit {
 
@@ -97,7 +96,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
               private activatedRoute: ActivatedRoute,
               private fullLayout: FullLayoutComponent,
               private router: Router,
-              private voservice: VoService, private creditsService: CreditsService) {
+              private creditsService: CreditsService) {
     super(userservice, applicationstatusservice, applicationsservice, facilityService);
   }
 
@@ -291,7 +290,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
       this.getUserinfo();
       this.getListOfFlavors();
       this.getListOfTypes();
-      this.checkVOstatus();
+      this.is_vo_admin = is_vo;
 
     });
 
@@ -799,13 +798,4 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
     }
   }
 
-  /**
-   * Check vm status.
-   * @param {UserService} userservice
-   */
-  checkVOstatus(): void {
-    this.voservice.isVo().subscribe((result: IResponseTemplate) => {
-      this.is_vo_admin = <boolean><Boolean>result.value;
-    })
-  }
 }
