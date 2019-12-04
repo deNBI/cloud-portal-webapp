@@ -17,10 +17,10 @@ import {IResponseTemplate} from '../api-connector/response-template';
 import {Client} from './clients/client.model';
 import {VirtualMachine} from './virtualmachinemodels/virtualmachine';
 import {UserService} from '../api-connector/user.service';
-import {VoService} from '../api-connector/vo.service';
 import {BiocondaComponent} from './conda/bioconda.component';
 import {ResEnvComponent} from './conda/res-env.component';
 import {FormControl, Validators} from '@angular/forms';
+import {is_vo} from '../shared/globalvar';
 
 /**
  * Start virtualmachine component.
@@ -29,7 +29,7 @@ import {FormControl, Validators} from '@angular/forms';
              selector: 'app-new-vm',
              templateUrl: 'addvm.component.html',
              providers: [GroupService, ImageService, KeyService, FlavorService, VirtualmachineService, ApplicationsService,
-               Application, ApiSettings, KeyService, ClientService, UserService, VoService]
+               Application, ApiSettings, KeyService, ClientService, UserService]
            })
 export class VirtualMachineComponent implements OnInit {
 
@@ -207,8 +207,7 @@ export class VirtualMachineComponent implements OnInit {
 
   constructor(private groupService: GroupService, private imageService: ImageService,
               private flavorService: FlavorService, private virtualmachineservice: VirtualmachineService,
-              private keyservice: KeyService, private userservice: UserService,
-              private voService: VoService) {
+              private keyservice: KeyService, private userservice: UserService) {
   }
 
   /**
@@ -496,9 +495,7 @@ export class VirtualMachineComponent implements OnInit {
 
   ngOnInit(): void {
     this.initializeData();
-    this.voService.isVo().subscribe((result: IResponseTemplate) => {
-      this.is_vo = <boolean><Boolean>result.value;
-    });
+    this.is_vo = is_vo;
 
   }
 

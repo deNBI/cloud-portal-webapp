@@ -143,14 +143,15 @@ export class FacilityService {
    * @param {number} application_id
    * @returns {Observable<any>}
    */
-  approveFacilityApplication(facility: number | string, application_id: number): Observable<any> {
+  approveFacilityApplication(facility: number | string, application_id: number | string): Observable<any> {
     const params: HttpParams = new HttpParams().set('action', 'approve');
 
-    return this.http.post(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/applications/${application_id}/status/`, params, {
-      withCredentials: true,
-      headers: header,
-      observe: 'response'
-    })
+    return this.http.post(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/applications/${application_id}/status/`,
+                          params, {
+                            withCredentials: true,
+                            headers: header,
+                            observe: 'response'
+                          })
   }
 
   /**
@@ -184,11 +185,7 @@ export class FacilityService {
    * @returns {Observable<any>}
    */
   addRamFactor(facility: number | string, ram: number | string, factor: number | string, description: string): Observable<RamFactor[]> {
-    const params: HttpParams = new HttpParams().
-    set('type', 'ram').
-    set('ram', ram.toString()).
-    set('factor', factor.toString()).
-    set('description', description);
+    const params: HttpParams = new HttpParams().set('type', 'ram').set('ram', ram.toString()).set('factor', factor.toString()).set('description', description);
 
     return this.http.post<RamFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/ramFactors/`, params, {
       withCredentials: true,
@@ -275,17 +272,24 @@ export class FacilityService {
    * @param facility facility that should be contacted
    * @param subject email subject
    * @param message email message
+   * @param project_type which users to email
    * @param reply reply address
+   * @param sendNews boolean if news should be send
+   * @param alternative_news_text an alternative news text
+   * @param news_tags additional tags
    * @returns {Observable<any>}
    */
-  sendMailToFacility(facility: string, subject: string, message: string, project_type: string, reply?: string, sendNews?: any): Observable<any> {
+  sendMailToFacility(facility: string, subject: string, message: string, project_type: string,
+                     reply?: string, sendNews?: any, alternative_news_text?: string, news_tags?: string): Observable<any> {
     const params: HttpParams = new HttpParams()
       .set('subject', subject)
       .set('facility_id', facility)
       .set('message', message)
       .set('reply', reply)
       .set('type', project_type)
-      .set('sendNews', sendNews);
+      .set('sendNews', sendNews)
+      .set('alternative_message', alternative_news_text)
+      .set('additional_tags', news_tags);
 
     return this.http.post(`${ApiSettings.getApiBaseURL()}facilityManagers/current/facilityMail/`, params, {
                             withCredentials: true,
@@ -305,6 +309,18 @@ export class FacilityService {
     return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/projects/${groupid}/members/`, {
                            withCredentials: true
                          }
+    )
+  }
+
+  deleteNews(news_id: string): Observable<any> {
+    const params: HttpParams = new HttpParams()
+      .set('news_id', news_id);
+
+    return this.http.delete(`${ApiSettings.getApiBaseURL()}facilityManagers/current/facilityNews/`, {
+                              withCredentials: true,
+                              headers: header,
+                              params: params
+                            }
     )
   }
 
