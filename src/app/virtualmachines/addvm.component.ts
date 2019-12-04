@@ -18,6 +18,8 @@ import {Client} from './clients/client.model';
 import {VirtualMachine} from './virtualmachinemodels/virtualmachine';
 import {UserService} from '../api-connector/user.service';
 import {BiocondaComponent} from './conda/bioconda.component';
+import {ResEnvComponent} from './conda/res-env.component';
+import {FormControl, Validators} from '@angular/forms';
 import {is_vo} from '../shared/globalvar';
 
 /**
@@ -62,6 +64,8 @@ export class VirtualMachineComponent implements OnInit {
   client_checked: boolean = false;
   playbook_run: number = 0;
   timeout: number = 0;
+  has_forc: boolean = false;
+  client_id: string;
 
   title: string = 'New Instance';
 
@@ -199,6 +203,7 @@ export class VirtualMachineComponent implements OnInit {
   private checkStatusTimeout: number = 5000;
 
   @ViewChild('bioconda') biocondaComponent: BiocondaComponent;
+  @ViewChild('resEnv') resEnvComponent: ResEnvComponent;
 
   constructor(private groupService: GroupService, private imageService: ImageService,
               private flavorService: FlavorService, private virtualmachineservice: VirtualmachineService,
@@ -328,7 +333,7 @@ export class VirtualMachineComponent implements OnInit {
         flavor_fixed, image, servername,
         project, projectid.toString(), this.http_allowed,
         this.https_allowed, this.udp_allowed, this.volumeName,
-        this.diskspace.toString(), this.biocondaComponent.getChosenTools(), play_information)
+        this.diskspace.toString(), play_information)
         .subscribe((newVm: VirtualMachine) => {
           this.started_machine = false;
 
@@ -382,6 +387,13 @@ export class VirtualMachineComponent implements OnInit {
       this.timeout += this.biocondaComponent.getTimeout();
     }
 
+    if (this.resEnvComponent.selected_template !== 'undefined'
+      && this.resEnvComponent.selected_version !== ''
+      && this.resEnvComponent.user_key_url.errors === null) {
+      playbook_info[this.resEnvComponent.selected_template] = {template_version: this.resEnvComponent.selected_version};
+      playbook_info['user_key_url'] = {user_key_url: this.resEnvComponent.getUserKeyUrl()};
+    }
+
     return JSON.stringify(playbook_info);
   }
 
@@ -399,6 +411,7 @@ export class VirtualMachineComponent implements OnInit {
 
         this.loadProjectData();
         this.client_checked = true;
+        this.getHasForc(client.id);
       } else {
         this.client_avaiable = false;
         this.client_checked = true;
@@ -407,6 +420,15 @@ export class VirtualMachineComponent implements OnInit {
       this.selectedProjectClient = client;
 
     })
+  }
+
+  getHasForc(id: string): void {
+    this.groupService.getClientHasForc(this.selectedProject[1].toString()).subscribe((response: JSON) => {
+      if (response['hasForc'] === 'True') {
+        this.has_forc = true;
+      }
+    });
+    this.client_id = id;
   }
 
   /**
