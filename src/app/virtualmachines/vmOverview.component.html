@@ -99,10 +99,10 @@
                 <div class="col-1"><strong>Select</strong></div>
               </div>
             </div>
-            <div class="card-block">
+            <div class="card-block" *ngIf="vm">
               <div class="row" style="margin-top: 5px">
                 <div class="col-5" style="margin: auto;" [ngSwitch]="vm?.status">
-                  <a class="h5 text-primary" style="margin-left: 10px">{{vm?.name}}  </a>
+                  <a class="h5 text-primary" style="margin-left: 10px" [routerLink]="'/virtualmachines/detail/'+vm.openstackid" [state]="{virtM: vm}">{{vm?.name}} </a>
                   <div *ngSwitchCase="'ACTIVE'" [id]="'active_badge_' + vm?.name"
                        class="dot-colorless bg-success pulseAnim" style="width: 10px; height: 10px">
                   </div>

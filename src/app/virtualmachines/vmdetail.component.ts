@@ -14,6 +14,8 @@ import {ActivatedRoute} from "@angular/router";
 import {VirtualMachine} from "./virtualmachinemodels/virtualmachine";
 import {VirtualmachineService} from "../api-connector/virtualmachine.service";
 import {forEach} from "@angular/router/src/utils/collection";
+import {map} from "rxjs/operators";
+import {Observable} from "rxjs";
 
 
 @Component({
@@ -24,10 +26,13 @@ import {forEach} from "@angular/router/src/utils/collection";
 
 export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
   vm_id: string;
-  vm_to_show: VirtualMachine;
+  vm_to_show: Observable<VirtualMachine>;
   virtualmachineService: VirtualmachineService;
   userService: UserService;
   applicationService: ApplicationsService;
+  title: string;
+  virtualMachine: VirtualMachine;
+
 
   constructor( private activatedRoute: ActivatedRoute,
                virtualmachineService: VirtualmachineService,
@@ -40,14 +45,12 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
 
   }
   ngOnInit(): void {
+
     console.log('site loaded');
-    this.activatedRoute.params.subscribe((paramsId: any) => {
-      this.isLoaded = false;
-
-      this.vm_id = paramsId.id;
-
-      //load vm with openstackID?
-      this.isLoaded =true;
+    this.activatedRoute.params.subscribe((virtM: VirtualMachine) => {
+      this.virtualMachine = virtM;
+      this.title = this.virtualMachine.name;
+      this.isLoaded = true;
     });
   }
 }
