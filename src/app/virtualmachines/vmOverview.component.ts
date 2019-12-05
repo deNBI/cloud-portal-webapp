@@ -11,7 +11,6 @@ import {FacilityService} from '../api-connector/facility.service';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {Subject} from 'rxjs';
 import {PopoverDirective} from 'ngx-bootstrap';
-import {AbstractBaseClasse} from '../shared/shared_modules/baseClass/abstract-base-class';
 
 /**
  * Vm overview componentn.
@@ -46,6 +45,7 @@ export class VmOverviewComponent implements OnInit {
   isSearching: boolean = true;
 
   selectedVm: VirtualMachine = null;
+  vm_per_site: number = 7;
 
   STATIC_IMG_FOLDER: String = 'static/webapp/assets/img';
 
@@ -122,9 +122,9 @@ export class VmOverviewComponent implements OnInit {
    */
   reboot_done: boolean;
 
+  vmPerPageChange: Subject<number> = new Subject<number>();
+
   filterChanged: Subject<string> = new Subject<string>();
-  filterProjectNameChanged: Subject<string> = new Subject<string>();
-  filterElixirIdChanged: Subject<string> = new Subject<string>();
   snapshotSearchTerm: Subject<string> = new Subject<string>();
   BUILD: any;
 
@@ -417,7 +417,7 @@ export class VmOverviewComponent implements OnInit {
   getVms(): void {
 
     this.virtualmachineservice.getVmsFromLoggedInUser(
-      this.currentPage,
+      this.currentPage, this.vm_per_site,
       this.filter, this.filter_status_list)
       .subscribe((vms: any) => {
                    this.vms_content = vms['vm_list'];
@@ -440,7 +440,7 @@ export class VmOverviewComponent implements OnInit {
 
     this.virtualmachineservice.getVmsFromFacilitiesOfLoggedUser(
       this.selectedFacility['FacilityId'],
-      this.currentPage,
+      this.currentPage, this.vm_per_site,
       this.filter, this.filter_status_list)
       .subscribe((vms: VirtualMachine[]) => {
                    this.vms_content = vms['vm_list'];
@@ -496,7 +496,7 @@ export class VmOverviewComponent implements OnInit {
    * Get all vms.
    */
   getAllVms(): void {
-    this.virtualmachineservice.getAllVM(this.currentPage,
+    this.virtualmachineservice.getAllVM(this.currentPage, this.vm_per_site,
                                         this.filter, this.filter_status_list)
       .subscribe((vms: VirtualMachine[]) => {
                    this.vms_content = vms['vm_list'];
@@ -529,6 +529,13 @@ export class VmOverviewComponent implements OnInit {
       .pipe(
         debounceTime(this.DEBOUNCE_TIME),
         distinctUntilChanged())
+      .subscribe(() => {
+        this.applyFilter();
+      });
+
+    this.vmPerPageChange.pipe(
+      debounceTime(this.DEBOUNCE_TIME),
+      distinctUntilChanged())
       .subscribe(() => {
         this.applyFilter();
       });
