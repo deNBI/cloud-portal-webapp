@@ -239,6 +239,7 @@ export class VmOverviewComponent implements OnInit {
     const vm_content_copy: VirtualMachine[] = [];
     for (const vm of this.vms_content) {
       if (vm.status in this.filter_status_list || vm.status !== this.ACTIVE && vm.status !== this.DELETED && vm.status !== this.SHUTOFF) {
+        vm.cardState = 0;
         vm_content_copy.push(vm)
       }
 
@@ -255,7 +256,7 @@ export class VmOverviewComponent implements OnInit {
       if (updated_vm.created_at !== '') {
         updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
       }
-
+      updated_vm.cardState = 0;
       this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
       this.applyFilterStatus();
       if (updated_vm.status === this.DELETED) {
@@ -274,6 +275,7 @@ export class VmOverviewComponent implements OnInit {
   public rebootVm(vm: VirtualMachine, reboot_type: string): void {
     this.virtualmachineservice.rebootVM(vm.openstackid, reboot_type).subscribe((result: IResponseTemplate) => {
       this.status_changed = 0;
+      vm.cardState = 0;
 
       if (<boolean><Boolean>result.value) {
         this.status_changed = 1;
@@ -294,6 +296,7 @@ export class VmOverviewComponent implements OnInit {
     setTimeout(
       () => {
         this.virtualmachineservice.checkVmStatus(vm.openstackid).subscribe((updated_vm: VirtualMachine) => {
+          updated_vm.cardState = 0;
           this.selectedVm = updated_vm;
 
           if (updated_vm.status === final_state) {
@@ -369,7 +372,7 @@ export class VmOverviewComponent implements OnInit {
                    if (updated_vm.created_at !== '') {
                      updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
                    }
-
+                   updated_vm.cardState = 0;
                    this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
                    this.selectedVm = updated_vm;
 
@@ -472,7 +475,7 @@ export class VmOverviewComponent implements OnInit {
       if (updated_vm.created_at !== '') {
         updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
       }
-
+      updated_vm.cardState = 0;
       this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
       switch (updated_vm.status) {
         case this.ACTIVE:

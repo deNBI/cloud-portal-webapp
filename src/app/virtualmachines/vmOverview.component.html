@@ -172,7 +172,7 @@
                      (click)="selectedVm=vm; vm.cardState=0;" href="#" onClick="return false;">
                     Hide information <</a>
                 </div>
-                <div class="col-6" *ngIf="vm.status != DELETED && vm.status != SHUTOFF">
+                <div class="col-6" *ngIf="vm.status != DELETED">
                   <a class="font-weight-bold font-xs btn-block text-muted" *ngIf="vm.cardState!=2"
                      [id]="'showHowToConnectButton_'+vm?.name"
                      (click)="selectedVm=vm; vm.cardState=2;" href="#" onClick="return false;">
@@ -219,6 +219,13 @@
               </div>
               <div *ngIf="vm?.cardState == 2">
                 <div class="row">
+                  <div class="col-md-2" *ngIf="vm.status !=SHUTOFF && vm.status != DELETED">
+                    <a class="font-weight-bold font-xs btn-block text-muted"
+                       [id]="'checkStatusVMButton_' + vm?.name"
+                       (click)="checkStatus(vm);" href="#" onClick="return false;">
+                      &lt;check status&gt;
+                    </a>
+                  </div>
                   <div class="col-md-2" *ngIf="vm.status ==ACTIVE">
                     <a class="font-weight-bold font-xs btn-block text-muted"
                        [id]="'stopVMButton_' + vm?.name"
@@ -226,11 +233,11 @@
                       &lt;stop vm&gt;
                     </a>
                   </div>
-                  <div class="col-md-2" *ngIf="vm.status !=DELETED">
+                  <div class="col-md-2" *ngIf="vm.status ==SHUTOFF">
                     <a class="font-weight-bold font-xs btn-block text-muted"
-                       [id]="'deleteVMButton_' + vm?.name"
-                       (click)="selectedVm=vm;verifyModal.show();" href="#" onClick="return false;">
-                      &lt;delete vm&gt;
+                       [id]="'restartVMButton_' + vm?.name"
+                       (click)="selectedVm=vm;submitRestartModal.show();" href="#" onClick="return false;">
+                      &lt;restart vm&gt;
                     </a>
                   </div>
                   <div class="col-md-2" *ngIf="vm.client.features['VM_REBOOT'] && vm.status !=DELETED">
@@ -248,20 +255,15 @@
                       &lt;create snapshot&gt;
                     </a>
                   </div>
-                  <div class="col-md-2" *ngIf="vm.status !=SHUTOFF && vm.status != DELETED">
+                  <div class="col-md-2" *ngIf="vm.status !=DELETED">
                     <a class="font-weight-bold font-xs btn-block text-muted"
-                       [id]="'checkStatusVMButton_' + vm?.name"
-                       (click)="checkStatus(vm);" href="#" onClick="return false;">
-                      &lt;check status&gt;
+                       [id]="'deleteVMButton_' + vm?.name"
+                       (click)="selectedVm=vm;verifyModal.show();" href="#" onClick="return false;">
+                      &lt;delete vm&gt;
                     </a>
                   </div>
-                  <div class="col-md-2" *ngIf="vm.status ==SHUTOFF">
-                    <a class="font-weight-bold font-xs btn-block text-muted"
-                       [id]="'restartVMButton_' + vm?.name"
-                       (click)="selectedVm=vm;submitRestartModal.show();" href="#" onClick="return false;">
-                      &lt;restart vm&gt;
-                    </a>
-                  </div>
+
+
                 </div>
               </div>
             </div>
