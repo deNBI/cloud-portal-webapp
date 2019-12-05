@@ -50,6 +50,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
   project_application_elixir_project: string = '';
   project_application_bmbf_project: string = '';
   project_application_comment: string = '';
+  all_dissemination_checked: boolean = false;
 
   application_dissemination: ApplicationDissemination = new ApplicationDissemination();
 
@@ -112,6 +113,14 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 
     })
     this.selected_ontology_terms = tmp;
+  }
+
+  onAllDissChange(event: any): void {
+    if (this.all_dissemination_checked) {
+      this.application_dissemination.setAllTrue();
+    } else {
+      this.application_dissemination.setAllFalse();
+    }
   }
 
   initiateFormWithApplication(): void {

@@ -49,6 +49,30 @@ export class ApplicationDissemination {
     this.setAllowedInformations();
   }
 
+  setAllFalse(): void {
+    this._information_description = '';
+    this._information_description_allowed = false;
+    this._information_resources = false;
+    this._information_project_affiliation = false;
+    this._information_lifetime = false;
+    this._information_pi_name = false;
+    this._information_institution = false;
+    this._information_workgroup = false;
+    this._information_project_type = false;
+  }
+
+  setAllTrue(): void {
+    this._information_description_allowed = true;
+    this._information_resources = true;
+    this._information_project_affiliation = true;
+    this._information_lifetime = true;
+    this._information_pi_name = true;
+    this._information_institution = true;
+    this._information_workgroup = true;
+    this._information_project_type = true;
+
+  }
+
   changeAllInformation(): void {
     this._information_description_allowed = !this._information_description_allowed;
     this._information_resources = !this._information_resources;
@@ -147,6 +171,10 @@ export class ApplicationDissemination {
 
   set information_description_allowed(value: boolean) {
     this._information_description_allowed = value;
+    if (!this._information_description_allowed) {
+      this.information_description = '';
+    }
+
   }
 
   get platform_twitter(): boolean {
@@ -170,6 +198,7 @@ export class ApplicationDissemination {
   }
 
   set information_description(value: string) {
+
     this._information_description = value;
   }
 
