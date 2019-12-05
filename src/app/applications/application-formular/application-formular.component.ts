@@ -11,6 +11,7 @@ import {ApplicationDissemination} from '../application-dissemination';
 import {ApplicationBaseClassComponent} from '../../shared/shared_modules/baseClass/application-base-class.component';
 import {FullLayoutComponent} from '../../layouts/full-layout.component';
 import {CreditsService} from '../../api-connector/credits.service';
+import {Application} from '../application.model/application.model';
 import {is_vo} from '../../shared/globalvar';
 
 /**
@@ -27,10 +28,36 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
   @Input() openstack_project: boolean = false;
   @Input() simple_vm_project: boolean = false;
   @Input() title: string;
+  @Input() application: Application;
+  @Input() is_validation: boolean = false;
+  @Input() hash: string;
+
+  project_application_sensitive_data: boolean;
+  project_application_vms_requested: number = 3;
+  project_application_report_allowed: boolean = false;
+  project_application_openstack_basic_introduction: boolean = false;
+  selected_ontology_terms: EdamOntologyTerm[] = [];
+  project_application_name: string;
+  project_application_shortname: string;
+  project_application_description: string;
+  project_application_lifetime: number;
+  project_application_volume_limit: number = 20;
+  project_application_object_storage: number = 0;
+  project_application_institute: string;
+  project_application_workgroup: string;
+  project_application_horizon2020: string = '';
+  project_application_elixir_project: string = '';
+  project_application_bmbf_project: string = '';
+  project_application_comment: string = '';
+  all_dissemination_checked: boolean = false;
+
+  application_dissemination: ApplicationDissemination = new ApplicationDissemination();
+
+  edam_ontology_terms: EdamOntologyTerm[];
+  initiated_validation: boolean = false;
 
   credits: number = 0;
   dissemination_platform_count: number = 0;
-  project_application_sensitive_data: false;
   flavorList: Flavor[] = [];
   production: boolean = environment.production;
   dissemination_information_open: boolean = true;
@@ -38,16 +65,11 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
   invalid_shortname: boolean = false;
   simple_vm_min_vm: boolean = false;
   error: string[];
-  project_application_vms_requested: number = 3;
-  project_application_report_allowed: boolean = false;
 
   acknowledgeModalTitle: string = 'Acknowledge';
   acknowledgeModalType: string = 'info';
 
-  application_dissemination: ApplicationDissemination = new ApplicationDissemination();
-  edam_ontology_terms: EdamOntologyTerm[];
-  new_application_id: string | number;
-  selected_ontology_terms: EdamOntologyTerm[] = [];
+  application_id: string | number;
   ontology_search_keyword: string = 'term';
   @ViewChild('edam_ontology') edam_ontology: AutocompleteComponent;
   @ViewChild(NgForm) application_form: NgForm;
@@ -74,13 +96,77 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
     this.is_vo_admin = is_vo;
     this.applicationsservice.getEdamOntologyTerms().subscribe((terms: EdamOntologyTerm[]) => {
       this.edam_ontology_terms = terms;
+      this.searchTermsInEdamTerms()
     })
   }
 
+  searchTermsInEdamTerms(): void {
+    const tmp: EdamOntologyTerm[] = [];
+    // tslint:disable-next-line:no-for-each-push typedef
+    this.selected_ontology_terms.forEach(ele => {
+      // tslint:disable-next-line:typedef
+      // @ts-ignore
+      // tslint:disable-next-line:typedef
+      const td = this.edam_ontology_terms.find(term => term.term === ele);
+      tmp.push(td)
+
+    })
+    this.selected_ontology_terms = tmp;
+  }
+
+  onAllDissChange(event: any): void {
+    if (this.all_dissemination_checked) {
+      this.application_dissemination.setAllTrue();
+    } else {
+      this.application_dissemination.setAllFalse();
+    }
+  }
+
+  initiateFormWithApplication(): void {
+    if (this.application && !this.initiated_validation) {
+      this.application_id = this.application.Id;
+      if (this.application.CurrentFlavors) {
+        this.simple_vm_min_vm = true;
+      }
+      this.openstack_project = this.application.OpenStackProject;
+      this.simple_vm_project = !this.openstack_project;
+      console.log('Is_validation');
+      if (this.application.Dissemination) {
+        this.application_dissemination = this.application.Dissemination;
+        this.project_application_report_allowed = true;
+
+      } else {
+        this.application.Dissemination = new ApplicationDissemination();
+      }
+      this.application_dissemination = this.application.Dissemination;
+      this.project_application_sensitive_data = this.application.SensitiveData;
+      this.project_application_vms_requested = this.application.VMsRequested;
+      this.selected_ontology_terms = this.application.EdamTopics;
+      this.project_application_name = this.application.Name;
+      this.project_application_shortname = this.application.Shortname;
+      this.project_application_description = this.application.Description;
+      this.project_application_lifetime = this.application.Lifetime;
+      this.project_application_volume_limit = this.application.VolumeLimit;
+      this.project_application_object_storage = this.application.ObjectStorage;
+      this.project_application_institute = this.application.Institute;
+      this.project_application_workgroup = this.application.Workgroup;
+      this.project_application_horizon2020 = this.application.Horizon2020;
+      this.project_application_openstack_basic_introduction = this.application.OpenstackBasicIntroduction;
+      this.project_application_elixir_project = this.application.ElixirProject;
+      this.project_application_bmbf_project = this.application.BMBFProject;
+      this.initiated_validation = true
+
+    }
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
+
     if (this.openstack_project) {
       this.simple_vm_min_vm = true;
     }
+    this.initiateFormWithApplication()
+
+
   }
 
   checkIfTypeGotSimpleVmFlavor(type: FlavorType): boolean {
@@ -143,7 +229,23 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
     if (!this.project_application_report_allowed) {
       this.valuesToConfirm.push('Dissemination allowed: No');
     }
-
+    if (!this.project_application_sensitive_data) {
+      this.valuesToConfirm.push('Sensitive Data: No');
+    } else {
+      this.valuesToConfirm.push('Sensitive Data: Yes');
+    }
+    if (this.openstack_project) {
+      if (!this.project_application_openstack_basic_introduction) {
+        this.valuesToConfirm.push('Training: No');
+    } else {
+        this.valuesToConfirm.push('Training: Yes');
+      }
+    }
+    let research: string = 'Research Topics: ';
+    for (const term of this.selected_ontology_terms) {
+      research = research.concat(` ${term.term},`);
+    }
+    this.valuesToConfirm.push(research);
   }
 
   count_platform(checked: boolean): void {
@@ -219,18 +321,10 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
    */
   onSubmit(form: NgForm): void {
     this.error = null;
-    if (this.invalid_shortname) {
-      this.updateNotificationModal(
-        'Failed',
-        'The application was not submitted, please check the required fields and try again.',
-        true,
-        'danger');
-      this.notificationModalStay = true;
-    } else {
-      const values: { [key: string]: string | number | boolean } = {};
-      values['project_application_openstack_project'] = this.openstack_project;
-      values['project_application_initial_credits'] = this.credits;
-      for (const value in form.controls) {
+    const values: { [key: string]: string | number | boolean } = {};
+    values['project_application_openstack_project'] = this.openstack_project;
+    values['project_application_initial_credits'] = this.credits;
+    for (const value in form.controls) {
         if (form.controls[value].disabled) {
           continue;
         }
@@ -239,23 +333,24 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
         }
       }
 
-      this.applicationsservice.addNewApplication(values).toPromise()
-        .then((application: any) => {
-          this.new_application_id = application['project_application_id'];
+    this.applicationsservice.addNewApplication(values).subscribe(
+      (application: any) => {
+        this.application_id = application['project_application_id'];
 
-          if (this.project_application_report_allowed) {
-            this.applicationsservice.setApplicationDissemination(this.new_application_id, this.application_dissemination).subscribe()
+        if (this.project_application_report_allowed) {
+          this.applicationsservice.setApplicationDissemination(this.application_id, this.application_dissemination).subscribe()
 
           }
-          this.applicationsservice.addEdamOntologyTerms(this.new_application_id,
-                                                        this.selected_ontology_terms
+        this.applicationsservice.addEdamOntologyTerms(this.application_id,
+                                                      this.selected_ontology_terms
           ).subscribe();
 
-          this.updateNotificationModal('Success', 'The application was submitted', true, 'success');
-          this.fullLayout.getGroupsEnumeration();
+        this.updateNotificationModal('Success', 'The application was submitted', true, 'success');
+        this.fullLayout.getGroupsEnumeration();
 
-          this.notificationModalStay = false;
-        }).catch((error: object) => {
+        this.notificationModalStay = false;
+      },
+      (error: object) => {
         const error_json: object = error;
         this.error = [];
         for (const key of Object.keys(error_json)) {
@@ -270,7 +365,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
           'danger');
         this.notificationModalStay = true;
       })
-    }
+
   }
 
   /**
@@ -284,6 +379,52 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
         this.credits = credits;
       }).catch((err: any) => console.log(err));
 
+  }
+
+  approveApplication(form: NgForm): any {
+    this.calculateInitialCredits(form);
+    this.application_id = this.application.Id;
+    if (this.project_application_report_allowed) {
+      this.applicationsservice.setApplicationDissemination(this.application.Id, this.application_dissemination).subscribe()
+
+    } else {
+      this.applicationsservice.deleteApplicationDissemination(this.application.Id).subscribe()
+    }
+    this.applicationsservice.addEdamOntologyTerms(this.application.Id,
+                                                  this.selected_ontology_terms
+    ).subscribe();
+    const values: { [key: string]: string | number | boolean } = {};
+    values['project_application_openstack_project'] = this.openstack_project;
+    values['project_application_initial_credits'] = this.credits;
+    values['project_application_openstack_basic_introduction'] = this.project_application_openstack_basic_introduction;
+    values['project_application_sensitive_data'] = this.project_application_openstack_basic_introduction;
+
+    for (const value in form.controls) {
+      if (form.controls[value].disabled) {
+        continue;
+      }
+      if (form.controls[value].value) {
+        values[value] = form.controls[value].value;
+      }
+    }
+    this.applicationsservice.validateApplicationAsPIByHash(this.hash, values).subscribe((res: any) => {
+      if (res['project_application_pi_approved']) {
+        this.fullLayout.getGroupsEnumeration();
+        this.updateNotificationModal(
+          'Success',
+          'The application was successfully approved.',
+          true,
+          'success');
+        this.notificationModalStay = false;
+      } else {
+        this.updateNotificationModal(
+          'Failed',
+          'The application was not successfully approved.',
+          true,
+          'danger');
+        this.notificationModalStay = true;
+      }
+    })
   }
 
   /**
