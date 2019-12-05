@@ -1,4 +1,8 @@
-<div *ngIf="!isLoaded " class="loader"></div>
+<div *ngIf="errorMessage != null">
+  An Error has occurred. {{errorMessage}}
+</div>
+
+<div *ngIf="!isLoaded && errorMessage == null" class="loader"></div>
 
 
 <div class="animated fadeIn" *ngIf="isLoaded">

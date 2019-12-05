@@ -55,6 +55,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   application_details_visible: boolean = false;
   credits: number = 0;
 
+  errorMessage: string;
+
   /**
    * id of the extension status.
    * @type {number}
@@ -126,28 +128,43 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   }
 
   getApplication(): void {
-    this.applicationsservice.getApplication(this.application_id).subscribe((aj: object) => {
-      const newApp: Application = this.setNewApplication(aj);
+    this.applicationsservice
+      .getApplication(this.application_id)
+      .subscribe(
+        (aj: object) => {
+          if (aj['project_application_name'] === '') {
+            this.isLoaded = false;
+            this.errorMessage = 'Not found';
 
-      this.project_application = newApp;
-      if (this.project_application) {
-        this.setLifetime();
+            return;
+          }
+          const newApp: Application = this.setNewApplication(aj);
 
-        this.applicationsservice.getApplicationPerunId(this.application_id).subscribe((id: any) => {
-          if (id['perun_id']) {
-            this.project_id = id['perun_id'];
+          this.project_application = newApp;
+          if (this.project_application) {
+            this.setLifetime();
 
-            this.getProject();
+            this.applicationsservice.getApplicationPerunId(this.application_id).subscribe((id: any) => {
+              if (id['perun_id']) {
+                this.project_id = id['perun_id'];
 
+                this.getProject();
+
+              } else {
+                this.isLoaded = true;
+              }
+
+            })
           } else {
             this.isLoaded = true;
           }
-
+        },
+        (error: any) => {
+          this.isLoaded = false;
+          this.errorMessage = `Status: ${error.status.toString()},
+                   StatusText: ${error.statusText.toString()},
+                   Error Message: ${error.error.toString()}`;
         })
-      } else {
-        this.isLoaded = true;
-      }
-    })
   }
 
   initRamCores(): void {
@@ -280,6 +297,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   ngOnInit(): void {
 
     this.activatedRoute.params.subscribe((paramsId: any) => {
+      this.errorMessage = null;
       this.isLoaded = false;
       this.project = null;
       this.project_application = null;
