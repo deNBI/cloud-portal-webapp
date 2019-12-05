@@ -10,10 +10,9 @@ import {ApplicationsService} from '../../api-connector/applications.service';
 import {ApplicationDissemination} from '../application-dissemination';
 import {ApplicationBaseClassComponent} from '../../shared/shared_modules/baseClass/application-base-class.component';
 import {FullLayoutComponent} from '../../layouts/full-layout.component';
-import {IResponseTemplate} from '../../api-connector/response-template';
-import {VoService} from '../../api-connector/vo.service';
 import {CreditsService} from '../../api-connector/credits.service';
 import {Application} from '../application.model/application.model';
+import {is_vo} from '../../shared/globalvar';
 
 /**
  * Application formular component.
@@ -22,7 +21,7 @@ import {Application} from '../application.model/application.model';
              selector: 'app-application-formular',
              templateUrl: './application-formular.component.html',
              styleUrls: ['./application-formular.component.scss'],
-             providers: [FlavorService, ApplicationsService, VoService, CreditsService]
+             providers: [FlavorService, ApplicationsService, CreditsService]
            })
 export class ApplicationFormularComponent extends ApplicationBaseClassComponent implements OnInit, OnChanges {
 
@@ -84,7 +83,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
    */
   public collapseList: boolean[];
 
-  constructor(private creditsService: CreditsService, private voService: VoService,
+  constructor(private creditsService: CreditsService,
               private flavorService: FlavorService, private fullLayout: FullLayoutComponent,
               applicationsservice: ApplicationsService) {
     super(null, null, applicationsservice, null);
@@ -94,7 +93,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
   ngOnInit(): void {
     this.getListOfFlavors();
     this.getListOfTypes();
-    this.checkVOstatus();
+    this.is_vo_admin = is_vo;
     this.applicationsservice.getEdamOntologyTerms().subscribe((terms: EdamOntologyTerm[]) => {
       this.edam_ontology_terms = terms;
       this.searchTermsInEdamTerms()
@@ -247,12 +246,6 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
       research = research.concat(` ${term.term},`);
     }
     this.valuesToConfirm.push(research);
-  }
-
-  checkVOstatus(): void {
-    this.voService.isVo().subscribe((result: IResponseTemplate) => {
-      this.is_vo_admin = <boolean><Boolean>result.value;
-    })
   }
 
   count_platform(checked: boolean): void {

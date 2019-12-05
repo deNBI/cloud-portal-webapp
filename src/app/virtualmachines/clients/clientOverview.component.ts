@@ -6,8 +6,8 @@ import {GroupService} from '../../api-connector/group.service';
 import {UserService} from '../../api-connector/user.service';
 import {ComputecenterComponent} from '../../projectmanagement/computecenter.component';
 import {FacilityService} from '../../api-connector/facility.service';
-import {VoService} from '../../api-connector/vo.service';
 import {IResponseTemplate} from '../../api-connector/response-template';
+import {is_vo} from '../../shared/globalvar';
 
 /**
  * Client component.
@@ -15,7 +15,7 @@ import {IResponseTemplate} from '../../api-connector/response-template';
 @Component({
              selector: 'app-client-overview',
              templateUrl: 'clientOverview.html',
-             providers: [FacilityService, VoService, UserService, GroupService, ClientService, ApiSettings]
+             providers: [FacilityService, UserService, GroupService, ClientService, ApiSettings]
            })
 
 export class ClientOverviewComponent implements OnInit {
@@ -56,18 +56,7 @@ export class ClientOverviewComponent implements OnInit {
   isLoaded: boolean = false;
 
   constructor(private facilityService: FacilityService, private userservice: UserService,
-              private clientservice: ClientService, private voservice: VoService) {
-
-  }
-
-  /**
-   * Check vm status.
-   * @param {UserService} userservice
-   */
-  checkVOstatus(): void {
-    this.voservice.isVo().subscribe((result: IResponseTemplate) => {
-      this.is_vo_admin = <boolean><Boolean>result.value;
-    })
+              private clientservice: ClientService) {
 
   }
 
@@ -144,7 +133,7 @@ export class ClientOverviewComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.checkVOstatus();
+    this.is_vo_admin = is_vo;
     this.getClientsChecked();
     this.getComputeCenters();
   }
