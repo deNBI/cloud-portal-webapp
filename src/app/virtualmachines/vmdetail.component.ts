@@ -1,5 +1,4 @@
 import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
-import {Project} from './project.model';
 import {environment} from '../../environments/environment'
 import {FlavorService} from "../api-connector/flavor.service";
 import {ApplicationStatusService} from "../api-connector/application-status.service";
@@ -12,18 +11,33 @@ import {ApiSettings} from "../api-connector/api-settings.service";
 import {CreditsService} from "../api-connector/credits.service";
 import {AbstractBaseClasse} from "../shared/shared_modules/baseClass/abstract-base-class";
 import {ActivatedRoute} from "@angular/router";
+import {VirtualMachine} from "./virtualmachinemodels/virtualmachine";
+import {VirtualmachineService} from "../api-connector/virtualmachine.service";
+import {forEach} from "@angular/router/src/utils/collection";
 
 
 @Component({
   selector: 'app-virtual-machine-detail',
   templateUrl: 'vmdetail.component.html',
-  providers: [FlavorService, FacilityService, VoService, UserService, GroupService, ApiSettings, VoService, CreditsService]
+  providers: [FlavorService, FacilityService, VoService, UserService, GroupService, ApiSettings, VoService, CreditsService, VirtualmachineService]
 })
 
 export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
-  vm_id:string;
-  constructor( private activatedRoute: ActivatedRoute) {
+  vm_id: string;
+  vm_to_show: VirtualMachine;
+  virtualmachineService: VirtualmachineService;
+  userService: UserService;
+  applicationService: ApplicationsService;
+
+  constructor( private activatedRoute: ActivatedRoute,
+               virtualmachineService: VirtualmachineService,
+               userService: UserService,
+               applicationService: ApplicationsService) {
     super();
+    this.virtualmachineService = virtualmachineService;
+    this.userService = userService;
+    this.applicationService = applicationService;
+
   }
   ngOnInit(): void {
     console.log('site loaded');
@@ -32,6 +46,8 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
 
       this.vm_id = paramsId.id;
 
+      //load vm with openstackID?
+      this.isLoaded =true;
     });
   }
 }

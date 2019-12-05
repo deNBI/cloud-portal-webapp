@@ -63,6 +63,7 @@ export class VirtualmachineService {
     })
   }
 
+
   getVmsFromLoggedInUser(page: number, filter?: string, filter_status?: string[]): Observable<VirtualMachine[]> {
     let params: HttpParams = new HttpParams().set('page', page.toString());
     if (filter) {
