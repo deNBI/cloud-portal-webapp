@@ -1,0 +1,6 @@
+{
+  "moderate": true,
+  "package-manager": "auto",
+  "whitelist": ["lodash.merge", "dot"],
+  "registry": "https://registry.npmjs.org"
+}

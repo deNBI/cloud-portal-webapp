@@ -7,7 +7,7 @@ install:
   - npm install -g angular-cli
   - npm install
 script:
-  - if [ "${TRAVIS_PULL_REQUEST}" != "false" ]; then audit-ci --moderate; fi
+  - if [ "${TRAVIS_PULL_REQUEST}" != "false" ]; then audit-ci --config travis/audit-ci.json; fi
   # Check code style
   - ng lint
   - docker build -t webapp  .
