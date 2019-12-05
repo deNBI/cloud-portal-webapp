@@ -43,6 +43,10 @@ describe('Simple Application Test', function (): void {
   it('should have no pi set', async function (): Promise<any> {
     const isAbsent: boolean = await ProjectOverview.hasPi();
     expect(isAbsent).toBeTruthy();
-  })
+  });
+
+  it('should remove the application', async function(): Promise<any> {
+    await ProjectOverview.removeApplication();
+  });
 
 });

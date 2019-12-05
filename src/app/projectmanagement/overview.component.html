@@ -110,7 +110,7 @@
               Information
             </button>
             <button
-
+              id="remove_application_button"
               *ngIf="project_application?.Status == application_states.SUBMITTED || project_application?.Status == application_states.DECLINED"
               (click)="deleteModal.show();"
               type="button" style="margin-bottom:5px;"
@@ -557,7 +557,8 @@
 
 <div bsModal #deleteModal="bs-modal" class="modal fade" tabindex="-1"
      role="dialog" aria-labelledby="Label"
-     aria-hidden="true">
+     aria-hidden="true"
+     id="remove_application_modal">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -575,7 +576,7 @@
 
       </div>
       <div class="modal-footer">
-        <button class="btn  btn-success col-md-4"
+        <button class="btn  btn-success col-md-4" id="confirm_remove_application_button"
                 (click)="deleteApplication();deleteModal.hide();notificationModal.show()">
           Yes
         </button>

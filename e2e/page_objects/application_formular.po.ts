@@ -104,6 +104,5 @@ export class FormularPage {
     await Util.clickElementById('platform_denbi_checkbox');
     await Util.clickElementById('platform_twitter_checkbox');
     await Util.sendTextToElementById('id_project_application_pi_email', Util.PI_EMAIL);
-    await Util.clickElementById('project_application_responsibility_checkbox');
   }
 }
