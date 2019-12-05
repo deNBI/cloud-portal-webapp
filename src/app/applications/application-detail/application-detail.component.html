@@ -158,6 +158,15 @@
 
       </td>
     </tr>
+    <tr *ngIf="application.OpenStackProject">
+      <td>Training</td>
+      <td><p *ngIf="application.OpenstackBasicIntroduction"> Yes</p>
+        <p *ngIf="!application.OpenstackBasicIntroduction"> No</p>
+      </td>
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
+
+      </td>
+    </tr>
   </table>
   <br>
   <table class="table table-striped" style="table-layout: fixed">
