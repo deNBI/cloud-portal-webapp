@@ -3,7 +3,7 @@ import {CarouselModule} from 'ngx-owl-carousel-o';
 import {TabsModule} from 'ngx-bootstrap/tabs';
 import {VmRoutingModule} from './vm_routing.module';
 import {CommonModule} from '@angular/common';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ModalModule} from 'ngx-bootstrap/modal';
 import {ImageDetailComponent} from '../virtualmachines/imagedetail.component';
 import {VirtualMachineComponent} from '../virtualmachines/addvm.component';
@@ -40,7 +40,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
               CarouselModule,
               AccordionModule.forRoot(),
               SharedDirectivesModule,
-              PopoverModule.forRoot(), NgbModule
+              PopoverModule.forRoot(), NgbModule, ReactiveFormsModule
 
             ],
             declarations: [
