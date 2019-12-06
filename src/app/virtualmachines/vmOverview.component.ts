@@ -4,14 +4,13 @@ import {VirtualMachine} from './virtualmachinemodels/virtualmachine';
 import {FullLayoutComponent} from '../layouts/full-layout.component';
 import {UserService} from '../api-connector/user.service';
 import {ImageService} from '../api-connector/image.service';
-import {VoService} from '../api-connector/vo.service';
 import {IResponseTemplate} from '../api-connector/response-template';
 import {SnapshotModel} from './snapshots/snapshot.model';
 import {FacilityService} from '../api-connector/facility.service';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {Subject} from 'rxjs';
 import {PopoverDirective} from 'ngx-bootstrap';
-import {AbstractBaseClasse} from '../shared/shared_modules/baseClass/abstract-base-class';
+import {is_vo} from '../shared/globalvar';
 
 /**
  * Vm overview componentn.
@@ -19,7 +18,7 @@ import {AbstractBaseClasse} from '../shared/shared_modules/baseClass/abstract-ba
 @Component({
              selector: 'app-vm-overview',
              templateUrl: 'vmOverview.component.html',
-             providers: [FacilityService, VoService, ImageService, UserService, VirtualmachineService, FullLayoutComponent]
+             providers: [FacilityService, ImageService, UserService, VirtualmachineService, FullLayoutComponent]
            })
 
 export class VmOverviewComponent implements OnInit {
@@ -126,7 +125,7 @@ export class VmOverviewComponent implements OnInit {
   filterElixirIdChanged: Subject<string> = new Subject<string>();
   snapshotSearchTerm: Subject<string> = new Subject<string>();
 
-  constructor(private facilityService: FacilityService, private voService: VoService,
+  constructor(private facilityService: FacilityService,
               private imageService: ImageService, private userservice: UserService,
               private virtualmachineservice: VirtualmachineService) {
   }
@@ -420,7 +419,6 @@ export class VmOverviewComponent implements OnInit {
                    this.items_per_page = vms['items_per_page'];
 
                    for (const vm of this.vms_content) {
-                     vm.username = vm['userlogin'];
                      if (vm.created_at !== '') {
                        vm.created_at = new Date(parseInt(vm.created_at, 10) * 1000).toLocaleDateString();
                      }
@@ -442,7 +440,6 @@ export class VmOverviewComponent implements OnInit {
                    this.items_per_page = vms['items_per_page'];
 
                    for (const vm of this.vms_content) {
-                     vm.username = vm['userlogin'];
                      if (vm.created_at !== '') {
                        vm.created_at = new Date(parseInt(vm.created_at, 10) * 1000).toLocaleDateString();
                      }
@@ -497,7 +494,6 @@ export class VmOverviewComponent implements OnInit {
                    this.items_per_page = vms['items_per_page'];
 
                    for (const vm of this.vms_content) {
-                     vm.username = vm['userlogin'];
                      if (vm.created_at !== '') {
                        vm.created_at = new Date(parseInt(vm.created_at, 10) * 1000).toLocaleDateString();
                      }
@@ -510,7 +506,7 @@ export class VmOverviewComponent implements OnInit {
 
   ngOnInit(): void {
     this.getVms();
-    this.checkVOstatus();
+    this.is_vo_admin = is_vo;
     this.get_is_facility_manager();
     this.facilityService.getManagerFacilities().subscribe((result: any) => {
       this.managerFacilities = result;
@@ -532,18 +528,6 @@ export class VmOverviewComponent implements OnInit {
       .subscribe((event: any) => {
         this.validSnapshotName(event);
       });
-  }
-
-  /**
-   * Check vm status.
-   * @param {UserService} userservice
-   */
-  checkVOstatus()
-    :
-    void {
-    this.voService.isVo().subscribe((result: IResponseTemplate) => {
-      this.is_vo_admin = <boolean><Boolean>result.value;
-    })
   }
 
   /**

@@ -13,6 +13,7 @@ import {Client} from '../virtualmachines/clients/client.model';
 import {ApplicationBaseClassComponent} from '../shared/shared_modules/baseClass/application-base-class.component';
 import {ComputecenterComponent} from '../projectmanagement/computecenter.component';
 import {IResponseTemplate} from '../api-connector/response-template';
+import {is_vo} from '../shared/globalvar';
 
 /**
  * Application Overview component.
@@ -73,19 +74,15 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
   }
 
   ngOnInit(): void {
-    this.voService.isVo().subscribe((result: IResponseTemplate) => {
-      this.is_vo_admin = <boolean><Boolean>result.value;
-      this.getApplicationStatus();
-      if (this.is_vo_admin) {
-        this.getAllApplications();
-        this.getComputeCenters();
+    this.is_vo_admin = is_vo;
+    this.getApplicationStatus();
+    if (this.is_vo_admin) {
+      this.getAllApplications();
+      this.getComputeCenters();
 
-      } else {
-        this.isLoaded_AllApplication = true;
-
-      }
-
-    });
+    } else {
+      this.isLoaded_AllApplication = true;
+    }
 
   }
 
@@ -162,11 +159,16 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
   public getApplication(application: Application): void {
     const index: number = this.all_applications.indexOf(application);
 
-    this.applicationsservice.getApplication(application.Id.toString()).subscribe((aj: object) => {
-      const newApp: Application = this.setNewApplication(aj);
-      this.all_applications[index] = newApp;
-      this.getFacilityProject(newApp);
-    });
+    this.applicationsservice
+      .getApplication(application.Id.toString())
+      .subscribe((aj: object) => {
+                   const newApp: Application = this.setNewApplication(aj);
+                   this.all_applications[index] = newApp;
+                   this.getFacilityProject(newApp);
+                 },
+                 (error: any) => {
+                   console.log(error);
+                 });
 
   }
 

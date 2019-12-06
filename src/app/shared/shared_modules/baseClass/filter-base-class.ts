@@ -51,7 +51,7 @@ export abstract class FilterBaseClass extends AbstractBaseClasse {
   isFilterLongProjectName(name: string): boolean {
     if (!this.filterProjectLongName) {
       return true;
-    } else if (name.indexOf(this.filterProjectLongName) === 0) {
+    } else if (name != null && name.indexOf(this.filterProjectLongName) === 0) {
       return true;
     } else {
       return false;
@@ -62,7 +62,7 @@ export abstract class FilterBaseClass extends AbstractBaseClasse {
 
     if (!this.filterProjectName) {
       return true;
-    } else if (projectName.indexOf(this.filterProjectName) === 0) {
+    } else if (projectName != null && projectName.indexOf(this.filterProjectName) === 0) {
 
       return true;
 
