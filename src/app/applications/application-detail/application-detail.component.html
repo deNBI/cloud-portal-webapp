@@ -2,7 +2,7 @@
   <table class="table table-striped" style="table-layout: fixed">
 
 
-    <tr *ngIf="application?.PIApproved">
+    <tr *ngIf="application?.PIApproved" id="id_pi_row">
       <td>
         PI Name
       </td>
@@ -65,6 +65,8 @@
     <thead>
     <tr>
       <th colspan="2" style="text-align:center"><strong>Information</strong></th>
+      <th *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification"></th>
+
     </tr>
     </thead>
 
@@ -76,6 +78,8 @@
  </span>
 
       </h5></td>
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
+
     </tr>
     <tr>
       <td>Description
@@ -145,12 +149,32 @@
           application?.ApplicationExtension?.Lifetime}}
       </td>
     </tr>
+    <tr>
+      <td>Sensitive Data</td>
+      <td><p *ngIf="application.SensitiveData"> Yes</p>
+        <p *ngIf="!application.SensitiveData"> No</p>
+      </td>
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
+
+      </td>
+    </tr>
+    <tr *ngIf="application.OpenStackProject">
+      <td>Training</td>
+      <td><p *ngIf="application.OpenstackBasicIntroduction"> Yes</p>
+        <p *ngIf="!application.OpenstackBasicIntroduction"> No</p>
+      </td>
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
+
+      </td>
+    </tr>
   </table>
   <br>
   <table class="table table-striped" style="table-layout: fixed">
     <thead>
     <tr>
       <th colspan="2" style="text-align:center"><strong>Dissemination</strong></th>
+      <th *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification"></th>
+
     </tr>
     </thead>
     <tr>
@@ -176,6 +200,8 @@
     <thead>
     <tr>
       <th colspan="2" style="text-align:center"><strong>Resources</strong></th>
+      <th *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification"></th>
+
     </tr>
     </thead>
     <tr>
@@ -240,6 +266,18 @@
         {{application?.ApplicationExtension?.TotalRAM}} GB
       </td>
     </tr>
+
+
+    <tr *ngIf="is_vo_admin">
+      <td>Credits</td>
+      <td>{{
+          application?.InitialCredits}}
+      </td>
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
+        {{application?.ApplicationExtension?.ExtendedCredits}} GB
+      </td>
+    </tr>
+
     <tr>
       <td>Storage Limit
       </td>

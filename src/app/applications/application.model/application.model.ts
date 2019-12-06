@@ -1,6 +1,7 @@
 import {ApplicationExtension} from '../application_extension.model';
 import {ComputecenterComponent} from '../../projectmanagement/computecenter.component';
-import {Dissemination} from './dissemination';
+import {ApplicationDissemination} from '../application-dissemination';
+import {EdamOntologyTerm} from '../edam-ontology-term';
 
 /**
  * Application class.
@@ -36,13 +37,15 @@ export class Application {
   private _PerunId: number | string;
   private _TotalCores: number;
   private _TotalRam: number;
+  private _InitialCredits: number;
   private _DateApproved: string;
+  private _OpenstackBasicIntroduction: boolean;
   private _Horizon2020: string;
   private _BMBFProject: string;
-  private _EdamTopics: string[];
-
+  private _EdamTopics: EdamOntologyTerm[];
+  private _SensitiveData: boolean;
   private _ElixirProject: string;
-  private _Dissemination: Dissemination;
+  private _Dissemination: ApplicationDissemination;
   private _PIApproved: boolean;
   private _PI: string;
   private _PIElixir: string;
@@ -72,6 +75,22 @@ export class Application {
     };
   }
 
+  get OpenstackBasicIntroduction(): boolean {
+    return this._OpenstackBasicIntroduction;
+  }
+
+  set OpenstackBasicIntroduction(value: boolean) {
+    this._OpenstackBasicIntroduction = value;
+  }
+
+  get SensitiveData(): boolean {
+    return this._SensitiveData;
+  }
+
+  set SensitiveData(value: boolean) {
+    this._SensitiveData = value;
+  }
+
   get PiAffiliations(): string[] {
     return this._PiAffiliations;
   }
@@ -80,11 +99,11 @@ export class Application {
     this._PiAffiliations = value;
   }
 
-  get EdamTopics(): string[] {
+  get EdamTopics(): EdamOntologyTerm[] {
     return this._EdamTopics;
   }
 
-  set EdamTopics(value: string[]) {
+  set EdamTopics(value: EdamOntologyTerm[]) {
     this._EdamTopics = value;
   }
 
@@ -96,11 +115,11 @@ export class Application {
     this._PIElixir = value;
   }
 
-  get Dissemination(): Dissemination {
+  get Dissemination(): ApplicationDissemination {
     return this._Dissemination;
   }
 
-  set Dissemination(value: Dissemination) {
+  set Dissemination(value: ApplicationDissemination) {
     this._Dissemination = value;
   }
 
@@ -400,5 +419,13 @@ export class Application {
 
   set PIEmail(value: string) {
     this._PIEmail = value;
+  }
+
+  get InitialCredits(): number {
+    return this._InitialCredits;
+  }
+
+  set InitialCredits(value: number) {
+    this._InitialCredits = value;
   }
 }

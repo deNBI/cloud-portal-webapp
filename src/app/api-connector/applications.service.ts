@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {ApiSettings} from './api-settings.service'
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Cookie} from 'ng2-cookies/ng2-cookies';
 import {EdamOntologyTerm} from '../applications/edam-ontology-term';
@@ -35,9 +35,9 @@ export class ApplicationsService {
     })
   }
 
-  validateApplicationAsPIByHash(hash: string): Observable<any> {
+  validateApplicationAsPIByHash(hash: string, data: { [key: string]: string | number | boolean }): Observable<any> {
 
-    return this.http.post(`${ApiSettings.getApiBaseURL()}project_applications/validation/${hash}/`, null, {
+    return this.http.post(`${ApiSettings.getApiBaseURL()}project_applications/validation/${hash}/`, data, {
       headers: header,
       withCredentials: true
     })
@@ -49,6 +49,14 @@ export class ApplicationsService {
                             headers: header,
                             withCredentials: true
                           })
+  }
+
+  deleteApplicationDissemination(project_application_id: string | number): Observable<any> {
+    return this.http.delete(`${ApiSettings.getApiBaseURL()}project_applications/${project_application_id}/dissemination/`,
+                            {
+                              headers: header,
+                              withCredentials: true
+                            })
   }
 
   getUserApplication(project_id: string | number): Observable<any> {

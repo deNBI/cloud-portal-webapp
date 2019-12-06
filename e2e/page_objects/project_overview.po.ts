@@ -34,9 +34,13 @@ export class ProjectOverview {
   private static SHOW_INFORMATION_BTN: string = 'show_information_btn';
   private static DISSEMINATION_PLATFORM_LIST: string = 'dissemination_platforms';
   private static DISSEMINATION_INFORMATION_LIST: string = 'dissemination_information';
-  private static DEFAULT_INFORMATION_DISSEMINATION_STRING: string = 'Project affiliation,Workgroup,Project Type,' +
-    'Title,Resources,Lifetime,PI Name';
-  private static DEFAULT_PLATFORM_DISSEMINATION_STRING: string = 'Newsletter,Landing Page,Portal News,Twitter';
+  private static DEFAULT_INFORMATION_DISSEMINATION_STRING: string = 'Project affiliation,Institution,Workgroup,Project Type,' +
+    'Title,Resources,Lifetime,PI Name,Description';
+  private static DEFAULT_PLATFORM_DISSEMINATION_STRING: string = 'de.NBI Platforms ,Twitter';
+  private static PI_ROW: string = 'id_pi_row';
+  private static REMOVE_APPLICATION_BUTTON: string = 'remove_application_button';
+  private static REMOVE_APPLICATION_MODAL: string = 'remove_application_modal';
+  private static CONFIRM_REMOVE_APPLICATION_BUTTON: string = 'confirm_remove_application_button';
 
   static async navigateToSimpleProjectverview(): Promise<any> {
     console.log('Navigating to simple project overview');
@@ -52,6 +56,13 @@ export class ProjectOverview {
     Util.logMethodCall('Check if dissemination is set');
     await Util.waitForTextPresenceInElementById(this.DISSEMINATION_INFORMATION_LIST, this.DEFAULT_INFORMATION_DISSEMINATION_STRING);
     await Util.waitForTextPresenceInElementById(this.DISSEMINATION_PLATFORM_LIST, this.DEFAULT_PLATFORM_DISSEMINATION_STRING);
+  }
+
+  static async hasPi(): Promise<boolean> {
+    Util.logMethodCall('Check if pi is set');
+    await Util.clickElementById(this.SHOW_INFORMATION_BTN);
+
+    return await Util.waitForAbsenceOfElementById(this.PI_ROW);
   }
 
   static async addMemberToProject(application_name: string, member: string = this.DEFAULT_MEMBER): Promise<any> {
@@ -128,6 +139,12 @@ export class ProjectOverview {
     await Util.sendTextToElementById(this.NEW_VOLUME_COUNTER_ID, '1');
     await Util.sendTextToElementById(this.NEW_VOLUME_LIMIT_ID, '1');
     await Util.sendTextToElementById('id_project_application_renewal_comment', 'This is a Protrector test modificatioN!');
+  }
+
+  static async removeApplication(): Promise<any> {
+    await Util.clickElementById(this.REMOVE_APPLICATION_BUTTON);
+    await Util.waitForPresenceOfElementById(this.REMOVE_APPLICATION_MODAL);
+    await Util.clickElementById(this.CONFIRM_REMOVE_APPLICATION_BUTTON);
   }
 
 }

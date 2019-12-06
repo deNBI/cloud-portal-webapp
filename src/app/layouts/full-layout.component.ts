@@ -11,6 +11,7 @@ import {ApplicationsService} from '../api-connector/applications.service';
 import {ApplicationStatusService} from '../api-connector/application-status.service';
 import {ProjectEnumeration} from '../projectmanagement/project-enumeration';
 import {environment} from '../../environments/environment';
+import {is_vo} from '../shared/globalvar';
 
 /**
  * FullLayout component.
@@ -87,19 +88,13 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
     })
   }
 
-  checkVOstatus(): void {
-    this.voService.isVo().subscribe((result: IResponseTemplate) => {
-      this.is_vo_admin = <boolean><Boolean>result.value;
-    })
-  }
-
   ngOnInit(): void {
     this.getGroupsEnumeration();
     this.is_vm_project_member();
     this.get_is_facility_manager();
     this.getLoginName();
 
-    this.checkVOstatus();
+    this.is_vo_admin = is_vo;
   }
 
   getLoginName(): void {

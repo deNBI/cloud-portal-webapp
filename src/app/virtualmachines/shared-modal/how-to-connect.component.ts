@@ -18,6 +18,8 @@ export class HowToConnectComponent implements OnChanges {
 
   logs?: { [selector: string]: string | number };
 
+  location_url?: string = '';
+
   doc: JSPDF;
 
   constructor(private virtualMachineService: VirtualmachineService) {
@@ -101,7 +103,12 @@ export class HowToConnectComponent implements OnChanges {
             this.logs = logs;
             this.playbook_run = 1;
           }
-        })
+        });
+      this.virtualMachineService.getLocationUrl(current.openstackid)
+        .subscribe((url: any) => {
+          console.log(url);
+          this.location_url = url;
+        });
     }
   }
 }

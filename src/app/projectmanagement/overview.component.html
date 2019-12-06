@@ -1,4 +1,8 @@
-<div *ngIf="!isLoaded " class="loader"></div>
+<div *ngIf="errorMessage != null">
+  An Error has occurred. {{errorMessage}}
+</div>
+
+<div *ngIf="!isLoaded && errorMessage == null" class="loader"></div>
 
 
 <div class="animated fadeIn" *ngIf="isLoaded">
@@ -44,6 +48,7 @@
                 <th>Date created (d/m/y)</th>
                 <th>Expiration Date (d/m/y)</th>
                 <th>Days running</th>
+                <th *ngIf="is_vo_admin">Current Credits</th>
                 <th>Lifetime in Days</th>
                 <th>Facility</th>
 
@@ -66,6 +71,7 @@
                 <td>{{ project?.DateCreated }}</td>
                 <td>{{project?.DateEnd}}</td>
                 <td>{{ project?.DaysRunning }}</td>
+                <th *ngIf="is_vo_admin">{{project?.CurrentCredits}}/{{project?.ApprovedCredits}}</th>
                 <td>{{project?.LifetimeDays}}</td>
 
                 <td>
@@ -108,7 +114,7 @@
               Information
             </button>
             <button
-
+              id="remove_application_button"
               *ngIf="project_application?.Status == application_states.SUBMITTED || project_application?.Status == application_states.DECLINED"
               (click)="deleteModal.show();"
               type="button" style="margin-bottom:5px;"
@@ -340,8 +346,8 @@
               <tbody *ngFor="  let member of filteredMembers">
               <td>
                 <button style="padding: 5px; margin: 5px"
-                  (click)="addMember(project?.Id,member['member_id'],member['firstName'],member['lastName']);filteredMembers=null; addUserModal.hide();notificationModal.show();"
-                  class="btn btn-success" id="add_member_btn"><i class="fa fa-plus"></i> Add Member
+                        (click)="addMember(project?.Id,member['member_id'],member['firstName'],member['lastName']);filteredMembers=null; addUserModal.hide();notificationModal.show();"
+                        class="btn btn-success" id="add_member_btn"><i class="fa fa-plus"></i> Add Member
                 </button>
                 <button style="padding: 5px; margin: 5px"
                         (click)="addAdmin(project?.Id,member['member_id'],member['user_id'],member['firstName'],member['lastName']);filteredMembers=null; addUserModal.hide();notificationModal.show();"
@@ -555,7 +561,8 @@
 
 <div bsModal #deleteModal="bs-modal" class="modal fade" tabindex="-1"
      role="dialog" aria-labelledby="Label"
-     aria-hidden="true">
+     aria-hidden="true"
+     id="remove_application_modal">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -573,7 +580,7 @@
 
       </div>
       <div class="modal-footer">
-        <button class="btn  btn-success col-md-4"
+        <button class="btn  btn-success col-md-4" id="confirm_remove_application_button"
                 (click)="deleteApplication();deleteModal.hide();notificationModal.show()">
           Yes
         </button>
@@ -909,7 +916,7 @@
           </div>
           <button type="button" class="btn  btn-primary"
                   form="application_form" id="submit_renewal_btn"
-                  (click)="extension_request=true;filterEnteredData(f); submitModal.show();"
+                  (click)="extension_request=true;filterEnteredData(f);calculateInitialCredits(f); submitModal.show();"
                   [disabled]="f.invalid"><i
             class="fa fa-dot-circle-o">
 

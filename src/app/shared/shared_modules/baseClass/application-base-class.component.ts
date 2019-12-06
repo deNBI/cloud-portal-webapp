@@ -11,8 +11,7 @@ import {FacilityService} from '../../../api-connector/facility.service';
 import {Component} from '@angular/core';
 import {ApplicationStatusService} from '../../../api-connector/application-status.service';
 import {UserService} from '../../../api-connector/user.service';
-import {NgForm} from '@angular/forms';
-import {Dissemination} from '../../../applications/application.model/dissemination';
+import {ApplicationDissemination} from '../../../applications/application-dissemination';
 
 /**
  * Application base component..
@@ -189,15 +188,16 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
     newApp.Lifetime = aj['project_application_lifetime'];
     newApp.EdamTopics = aj['project_application_edam_terms'];
     newApp.PiAffiliations = aj['pi_affiliations'];
-
+    newApp.SensitiveData = aj['project_application_sensitive_data'];
     newApp.VMsRequested = aj['project_application_vms_requested'];
     newApp.RamPerVM = aj['project_application_ram_per_vm'];
-
     newApp.TotalRam = aj['project_application_total_ram'];
     newApp.TotalCores = aj['project_application_total_cores'];
+    newApp.InitialCredits = aj['project_application_initial_credits'];
     newApp.CoresPerVM = aj['project_application_cores_per_vm'];
     newApp.VolumeLimit = aj['project_application_volume_limit'];
     newApp.VolumeCounter = aj['project_application_volume_counter'];
+    newApp.OpenstackBasicIntroduction = aj['project_application_openstack_basic_introduction'];
 
     newApp.ObjectStorage = aj['project_application_object_storage'];
     newApp.OpenStackProject = aj['project_application_openstack_project'];
@@ -265,21 +265,24 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
       extension.ObjectStorage = aj['projectapplicationrenewal']['project_application_renewal_object_storage'];
       extension.RamPerVM = aj['projectapplicationrenewal']['project_application_renewal_ram_per_vm'];
       extension.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
+      extension.ExtendedCredits = aj['projectapplicationrenewal']['project_application_renewal_credits'];
       newApp.ApplicationExtension = extension;
     }
 
     return newApp
   }
 
-  createDisseminatenObject(obj: any): Dissemination {
+  createDisseminatenObject(obj: any): ApplicationDissemination {
     if (obj) {
-      return new Dissemination(obj['platform_newsletter'], obj['platform_landing_page'],
-                               obj['platform_portal_news'], obj['platform_twitter'],
-                               obj['information_title'], obj['information_resources'],
-                               obj['information_runtime'], obj['information_pi_name'],
-                               obj['information_instituition'], obj['information_workgroup'],
-                               obj['information_project_type'],
-                               obj['information_lifetime'], obj['information_project_affiliation'])
+      // @ts-ignore
+      return new ApplicationDissemination(
+        obj['platform_denbi'], obj['platform_twitter'],
+        obj['information_title'], obj['information_resources'],
+        obj['information_runtime'], obj['information_pi_name'],
+        obj['information_institution'], obj['information_workgroup'],
+        obj['information_project_type'],
+        obj['information_lifetime'], obj['information_project_affiliation'],
+        obj['information_description'])
     } else {
       return null
     }
@@ -385,38 +388,6 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
   }
 
   /**
-   * Uses the data from the application form to fill the confirmation-modal with information.
-   * @param form the application form with corresponding data
-   */
-  filterEnteredData(form: NgForm): void {
-    this.generateConstants();
-    this.valuesToConfirm = [];
-    for (const key in form.controls) {
-      if (form.controls[key].value) {
-        if (key === 'project_application_name') {
-          this.projectName = form.controls[key].value;
-          if (this.projectName.length > 50) {
-            this.projectName = `${this.projectName.substring(0, 50)}...`;
-          }
-        }
-        if (key in this.constantStrings) {
-          if (form.controls[key].disabled) {
-            continue;
-          }
-
-          this.valuesToConfirm.push(this.matchString(key.toString(), form.controls[key].value.toString()));
-
-        }
-      }
-
-    }
-    if (!this.project_application_report_allowed && !this.extension_request) {
-      this.valuesToConfirm.push('Dissemination allowed: No');
-    }
-
-  }
-
-  /**
    * Check if short name is valid.
    * @param {string} shortname
    */
@@ -446,7 +417,6 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
     this.constantStrings['project_application_renewal_volume_counter'] = 'Number of volumes for additional storage: ';
     this.constantStrings['project_application_renewal_object_storage'] = 'Object storage: ';
     this.constantStrings['project_application_renewal_volume_limit'] = 'Volume Storage space for your VMs: ';
-
     this.constantStrings['project_application_institute'] = 'Your institute: ';
     this.constantStrings['project_application_workgroup'] = 'Your Workgroup: ';
     this.constantStrings['project_application_horizon2020'] = 'Horizon2020: ';

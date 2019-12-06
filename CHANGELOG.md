@@ -1,3 +1,53 @@
+##  (2019-12-06)
+
+
+#### Features
+
+* **Application:**
+  * pi can change ([844eef6e](844eef6e))
+  * pi can change ([7dafe292](7dafe292))
+* **Audit:** added whitelist ([404ba467](404ba467))
+* **Training:** updated with trainin field ([6ddb9ea9](6ddb9ea9))
+* **application:**  Training description added ([349e92ca](349e92ca))
+
+#### Bug Fixes
+
+* **Instance:** username now always there ([78118b97](78118b97))
+* **app-overview:**
+  *  catch some non int requests (#926) ([492c24d6](492c24d6))
+  *  catch some non int requests ([746b08a4](746b08a4))
+* **filter:**
+  *  check projectname(-long) for null (#924) ([c3e7e9ca](c3e7e9ca))
+  *  check projectname(-long) for null ([72b82823](72b82823))
+
+##  (2019-11-14)
+
+#### Bug Fixes
+
+* **Dissemination:** all dissemination and edam terms in pi validaiton visibile ([0f39808a](0f39808a))
+* **Layout:** just simple vm member see virtualmachines tab ([02192f22](02192f22))
+
+#### Features
+
+* **Tests:** updated ([9c4d6993](9c4d6993))
+
+
+#### Bug Fixes
+
+* **Credits:** fixed in modification and fixed application detail layout ([0204b5a5](0204b5a5))
+
+#### Features
+
+* **Application:** added user data input ([d209e1e6](d209e1e6))
+* **Dissemination:**
+  * merged to denbi platforms ([3688b9d3](3688b9d3))
+  * all btn added ([ff1414e3](ff1414e3))
+* **Instance:**  one filter for all fields ([bebcf425](bebcf425))
+* **application-form:**  add text for sensitive data ([8e6e0f79](8e6e0f79))
+* **instance-overview:**
+  *  quick UDP Connect Information added ([945e4c36](945e4c36))
+  *  Instance overview clearer and faster to use ([3ba32002](3ba32002))
+
 ##  (2019-11-14)
 
 

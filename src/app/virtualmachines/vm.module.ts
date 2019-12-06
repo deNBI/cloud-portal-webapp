@@ -3,7 +3,7 @@ import {CarouselModule} from 'ngx-owl-carousel-o';
 import {TabsModule} from 'ngx-bootstrap/tabs';
 import {VmRoutingModule} from './vm_routing.module';
 import {CommonModule} from '@angular/common';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ModalModule} from 'ngx-bootstrap/modal';
 import {ImageDetailComponent} from '../virtualmachines/imagedetail.component';
 import {VirtualMachineComponent} from '../virtualmachines/addvm.component';
@@ -24,6 +24,7 @@ import {PopoverModule} from 'ngx-bootstrap/popover';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { AddClusterComponent } from './clusters/add-cluster/add-cluster.component';
 import { ResourceOverviewComponent } from './resource-overview/resource-overview.component';
+import {ResEnvComponent} from './conda/res-env.component';
 
 /**
  * VM module.
@@ -42,7 +43,8 @@ import { ResourceOverviewComponent } from './resource-overview/resource-overview
               CarouselModule,
               AccordionModule.forRoot(),
               SharedDirectivesModule,
-              PopoverModule.forRoot(), NgbModule
+              PopoverModule.forRoot(), NgbModule,
+              ReactiveFormsModule
 
             ],
             declarations: [
@@ -56,8 +58,12 @@ import { ResourceOverviewComponent } from './resource-overview/resource-overview
               SnapshotOverviewComponent,
               HowToConnectComponent,
               BiocondaComponent,
+<<<<<<< HEAD
               AddClusterComponent,
               ResourceOverviewComponent
+=======
+              ResEnvComponent
+>>>>>>> dev
             ]
           })
 export class VmModule {

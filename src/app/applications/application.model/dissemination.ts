@@ -3,9 +3,7 @@
  */
 export class Dissemination {
 
-  private _platform_newsletter: boolean;
-  private _platform_landing_page: boolean;
-  private _platform_portal_news: boolean;
+  private _platform_denbi: boolean = false;
   private _platform_twitter: boolean;
   private _information_title: string;
   private _information_resources: boolean;
@@ -15,25 +13,27 @@ export class Dissemination {
   private _information_workgroup: boolean;
   private _information_project_type: boolean;
   private _information_lifetime: boolean;
+  private _information_description: string;
   private _information_project_affiliation: boolean;
   private _allowed_platforms: string[] = [];
   private _allowed_informations: string[] = [];
 
-  constructor(platform_newsletter: boolean, platform_landing_page: boolean,
-              platform_portal_news: boolean, platform_twitter: boolean,
-              information_title: string, information_resources: boolean,
-              information_runtime: boolean, information_pi_name: boolean,
-              information_institution: boolean, information_workgroup: boolean,
-              information_project_type: boolean, information_lifetime: boolean, information_project_affiliation: boolean) {
-    this._platform_newsletter = platform_newsletter;
-    this._platform_landing_page = platform_landing_page;
-    this._platform_portal_news = platform_portal_news;
+  constructor(
+    platform_denbi: boolean, platform_twitter: boolean,
+    information_title: string, information_resources: boolean,
+    information_runtime: boolean, information_pi_name: boolean,
+    information_institution: boolean, information_workgroup: boolean,
+    information_project_type: boolean, information_lifetime: boolean,
+    information_project_affiliation: boolean, information_description: string) {
+
+    this._platform_denbi = platform_denbi;
     this._platform_twitter = platform_twitter;
     this._information_title = information_title;
     this._information_resources = information_resources;
     this._information_runtime = information_runtime;
     this._information_pi_name = information_pi_name;
     this._information_institution = information_institution;
+    this._information_description = information_description;
     this._information_workgroup = information_workgroup;
     this._information_project_type = information_project_type;
     this._information_lifetime = information_lifetime;
@@ -42,16 +42,27 @@ export class Dissemination {
     this.setAllowedInformations();
   }
 
+  get platform_denbi(): boolean {
+    return this._platform_denbi;
+  }
+
+  set platform_denbi(value: boolean) {
+    this._platform_denbi = value;
+  }
+
+  get information_description(): string {
+    return this._information_description;
+  }
+
+  set information_description(value: string) {
+    this._information_description = value;
+  }
+
   private setAllowedPlatforms(): void {
     this._allowed_platforms = [];
-    if (this._platform_newsletter) {
-      this._allowed_platforms.push('Newsletter')
-    }
-    if (this._platform_landing_page) {
-      this._allowed_platforms.push('Landing Page')
-    }
-    if (this._platform_portal_news) {
-      this._allowed_platforms.push('Portal News')
+
+    if (this._platform_denbi) {
+      this._allowed_platforms.push('de.NBI Platforms ')
     }
     if (this._platform_twitter) {
       this._allowed_platforms.push('Twitter')
@@ -84,6 +95,9 @@ export class Dissemination {
     if (this._information_pi_name) {
       this._allowed_informations.push('PI Name')
     }
+    if (this._information_description) {
+      this._allowed_informations.push('Description')
+    }
   }
 
   get allowed_platforms(): string[] {
@@ -92,30 +106,6 @@ export class Dissemination {
 
   get allowed_informations(): string[] {
     return this._allowed_informations;
-  }
-
-  get platform_newsletter(): boolean {
-    return this._platform_newsletter;
-  }
-
-  set platform_newsletter(value: boolean) {
-    this._platform_newsletter = value;
-  }
-
-  get platform_landing_page(): boolean {
-    return this._platform_landing_page;
-  }
-
-  set platform_landing_page(value: boolean) {
-    this._platform_landing_page = value;
-  }
-
-  get platform_portal_news(): boolean {
-    return this._platform_portal_news;
-  }
-
-  set platform_portal_news(value: boolean) {
-    this._platform_portal_news = value;
   }
 
   get platform_twitter(): boolean {

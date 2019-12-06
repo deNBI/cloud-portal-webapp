@@ -4,14 +4,13 @@ import {VirtualMachine} from './virtualmachinemodels/virtualmachine';
 import {FullLayoutComponent} from '../layouts/full-layout.component';
 import {UserService} from '../api-connector/user.service';
 import {ImageService} from '../api-connector/image.service';
-import {FilterBaseClass} from '../shared/shared_modules/baseClass/filter-base-class';
-import {VoService} from '../api-connector/vo.service';
 import {IResponseTemplate} from '../api-connector/response-template';
 import {SnapshotModel} from './snapshots/snapshot.model';
 import {FacilityService} from '../api-connector/facility.service';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {Subject} from 'rxjs';
 import {PopoverDirective} from 'ngx-bootstrap';
+import {is_vo} from '../shared/globalvar';
 
 /**
  * Vm overview componentn.
@@ -19,11 +18,19 @@ import {PopoverDirective} from 'ngx-bootstrap';
 @Component({
              selector: 'app-vm-overview',
              templateUrl: 'vmOverview.component.html',
-             providers: [FacilityService, VoService, ImageService, UserService, VirtualmachineService, FullLayoutComponent]
+             providers: [FacilityService, ImageService, UserService, VirtualmachineService, FullLayoutComponent]
            })
 
-export class VmOverviewComponent extends FilterBaseClass implements OnInit {
+export class VmOverviewComponent implements OnInit {
   title: string = 'Instance Overview';
+  ACTIVE: string = 'ACTIVE';
+  DELETED: string = 'DELETED';
+  SHUTOFF: string = 'SHUTOFF';
+  POWERING_OFF: string = 'POWERING OFF';
+  NOT_FOUND: string = 'NOT FOUND';
+  CLIENT_OFFLINE: string = 'CLIENT OFFLINE';
+  RESTARTING: string = 'RESTARTING';
+
   /**
    * All  vms.
    */
@@ -33,7 +40,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
 
   private timer: { [key: string]: { timeLeft: number, interval: any } } = {};
 
-  filter_status_list: string[] = [this.vm_statuses[this.vm_statuses.ACTIVE], this.vm_statuses[this.vm_statuses.SHUTOFF]];
+  filter_status_list: string[] = [this.ACTIVE, this.SHUTOFF];
   isSearching: boolean = true;
 
   selectedVm: VirtualMachine = null;
@@ -53,6 +60,8 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
    * Chosen facility.
    */
   public selectedFacility: [string, number];
+
+  filter: string;
 
   total_pages: number;
   /**
@@ -111,27 +120,14 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
    */
   reboot_done: boolean;
 
-  filterNameChanged: Subject<string> = new Subject<string>();
+  filterChanged: Subject<string> = new Subject<string>();
   filterProjectNameChanged: Subject<string> = new Subject<string>();
   filterElixirIdChanged: Subject<string> = new Subject<string>();
   snapshotSearchTerm: Subject<string> = new Subject<string>();
 
-  constructor(private facilityService: FacilityService, private voService: VoService,
+  constructor(private facilityService: FacilityService,
               private imageService: ImageService, private userservice: UserService,
               private virtualmachineservice: VirtualmachineService) {
-    super()
-  }
-
-  /**
-   * Check if vm corresponds the filter.
-   * @param {VirtualMachine} vm vm which is checked
-   * @returns {boolean} True if it matches the filter
-   */
-  checkFilter(vm: VirtualMachine): boolean {
-    return this.isFilterstatus(vm.status) && this.isFilterProjectName(vm.project) && this.isFilterCreated_at(vm.created_at)
-      && this.isFilterElixir_id(vm.elixir_id) && this.isFilterName(vm.name) && this.isFilterStopped_at(vm.stopped_at)
-      && this.isFilterUsername(vm.username)
-
   }
 
   /**
@@ -147,6 +143,27 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
       this.getAllVmsFacilities()
     }
 
+  }
+
+  /**
+   * Copies the ssh-command needed to connect to the virtual machine (vmachine) to the clipboard.
+   * @param vmachine
+   */
+
+  copySSHCommand(vmachine: VirtualMachine): void {
+    this.copyToClipboard((vmachine.ssh_command.substring(65, vmachine.ssh_command.length)));
+  }
+  copyUDPCommand(vmachine: VirtualMachine): void {
+    this.copyToClipboard(vmachine.udp_command);
+  }
+
+  copyToClipboard(text: string): void {
+    document.addEventListener('copy', (clipEvent: ClipboardEvent) => {
+      clipEvent.clipboardData.setData('text/plain', (text));
+      clipEvent.preventDefault();
+      document.removeEventListener('copy', null);
+    });
+    document.execCommand('copy');
   }
 
   changeFilterStatus(status: string): void {
@@ -205,15 +222,8 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
     this.virtualmachineservice.checkVmStatus(vm.openstackid)
       .subscribe((updated_vm: VirtualMachine) => {
 
-                   this.setCollapseStatus(updated_vm.openstackid, false);
-
                    if (updated_vm.created_at !== '') {
                      updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
-                   }
-                   if (updated_vm.stopped_at !== '' && updated_vm.stopped_at !== this.vm_statuses[this.vm_statuses.ACTIVE]) {
-                     updated_vm.stopped_at = new Date(parseInt(updated_vm.stopped_at, 10) * 1000).toLocaleDateString();
-                   } else {
-                     updated_vm.stopped_at = ''
                    }
 
                    this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
@@ -222,45 +232,40 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
       )
   }
 
-  applyFilterStatus(vm: VirtualMachine): void {
-    const index: number = this.filter_status_list.indexOf(vm.status);
-    if (index === -1) {
-      this.vms_content.splice(this.vms_content.indexOf(vm), 1);
+  applyFilterStatus(): void {
+    const vm_content_copy: VirtualMachine[] = [];
+    for (const vm of this.vms_content) {
+      if (vm.status in this.filter_status_list || vm.status !== this.ACTIVE && vm.status !== this.DELETED && vm.status !== this.SHUTOFF) {
+        vm_content_copy.push(vm)
+      }
+
     }
   }
 
   /**
    * Delete VM.
-   * @param {VirtualMachine} vm instance
+   * @param vm which will be deleted
    */
   deleteVm(vm: VirtualMachine): void {
     this.virtualmachineservice.deleteVM(vm.openstackid).subscribe((updated_vm: VirtualMachine) => {
 
-      this.setCollapseStatus(updated_vm.openstackid, false);
-
       if (updated_vm.created_at !== '') {
         updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
       }
-      if (updated_vm.stopped_at !== '' && updated_vm.stopped_at !== this.vm_statuses[this.vm_statuses.ACTIVE]) {
-        updated_vm.stopped_at = new Date(parseInt(updated_vm.stopped_at, 10) * 1000).toLocaleDateString();
-      } else {
-        updated_vm.stopped_at = ''
-      }
 
       this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
-      this.applyFilterStatus(updated_vm);
-      if (updated_vm.status === this.vm_statuses[this.vm_statuses.DELETED]) {
+      this.applyFilterStatus();
+      if (updated_vm.status === this.DELETED) {
         this.status_changed = 1;
       } else {
         this.status_changed = 2;
       }
-
     })
   }
 
   /**
    * Reboot a vm.
-   * @param {string} openstack_id of the instance
+   * @param vm which will be rebooted
    * @param {string} reboot_type HARD|SOFT
    */
   public rebootVm(vm: VirtualMachine, reboot_type: string): void {
@@ -290,15 +295,8 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
 
           if (updated_vm.status === final_state) {
             this.reboot_done = true;
-            this.setCollapseStatus(updated_vm.openstackid, false);
-
             if (updated_vm.created_at !== '') {
               updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
-            }
-            if (updated_vm.stopped_at !== '' && updated_vm.stopped_at !== final_state) {
-              updated_vm.stopped_at = new Date(parseInt(updated_vm.stopped_at, 10) * 1000).toLocaleDateString();
-            } else {
-              updated_vm.stopped_at = ''
             }
 
             this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
@@ -321,7 +319,7 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
 
   /**
    * Check Status of vm in loop till active.
-   * @param {string} id of instance.
+   * @param vm
    */
   check_status_loop_when_reboot(vm: VirtualMachine): void {
 
@@ -329,17 +327,11 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
       () => {
         this.virtualmachineservice.checkVmStatusWhenReboot(vm.openstackid).subscribe((updated_vm: VirtualMachine) => {
 
-          if (updated_vm.status === this.vm_statuses[this.vm_statuses.ACTIVE]) {
+          if (updated_vm.status === this.ACTIVE) {
             this.reboot_done = true;
-            this.setCollapseStatus(updated_vm.openstackid, false);
 
             if (updated_vm.created_at !== '') {
               updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
-            }
-            if (updated_vm.stopped_at !== '' && updated_vm.stopped_at !== this.vm_statuses[this.vm_statuses.ACTIVE]) {
-              updated_vm.stopped_at = new Date(parseInt(updated_vm.stopped_at, 10) * 1000).toLocaleDateString();
-            } else {
-              updated_vm.stopped_at = ''
             }
 
             this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
@@ -371,26 +363,19 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
 
                    this.status_changed = 0;
 
-                   this.setCollapseStatus(updated_vm.openstackid, false);
-
                    if (updated_vm.created_at !== '') {
                      updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
-                   }
-                   if (updated_vm.stopped_at !== '' && updated_vm.stopped_at !== this.vm_statuses[this.vm_statuses.ACTIVE]) {
-                     updated_vm.stopped_at = new Date(parseInt(updated_vm.stopped_at, 10) * 1000).toLocaleDateString();
-                   } else {
-                     updated_vm.stopped_at = ''
                    }
 
                    this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
                    this.selectedVm = updated_vm;
 
                    switch (updated_vm.status) {
-                     case this.vm_statuses[this.vm_statuses.SHUTOFF]:
+                     case this.SHUTOFF:
                        this.status_changed = 1;
                        break;
                      case 'POWERING OFF':
-                       this.check_status_loop(updated_vm, this.vm_statuses[this.vm_statuses.SHUTOFF]);
+                       this.check_status_loop(updated_vm, this.SHUTOFF);
                        break;
                      default:
                        this.status_changed = 2;
@@ -427,33 +412,18 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
 
     this.virtualmachineservice.getVmsFromLoggedInUser(
       this.currentPage,
-      this.filterVmName,
-      this.filterProjectName,
-      this.filter_status_list,
-      this.filterVmElixir_id,
-      this.filterVmCreated_at,
-      this.filterVmStopped_at)
+      this.filter, this.filter_status_list)
       .subscribe((vms: any) => {
                    this.vms_content = vms['vm_list'];
                    this.total_pages = vms['total_items'];
                    this.items_per_page = vms['items_per_page'];
 
                    for (const vm of this.vms_content) {
-                     this.setCollapseStatus(vm.openstackid, false);
-
                      if (vm.created_at !== '') {
                        vm.created_at = new Date(parseInt(vm.created_at, 10) * 1000).toLocaleDateString();
                      }
-
-                     if (vm.stopped_at !== '' && vm.stopped_at !== this.vm_statuses[this.vm_statuses.ACTIVE]) {
-                       vm.stopped_at = new Date(parseInt(vm.stopped_at, 10) * 1000).toLocaleDateString();
-                     } else {
-                       vm.stopped_at = ''
-                     }
                    }
-                   this.isLoaded = true;
                    this.isSearching = false;
-
                  }
       );
   }
@@ -463,31 +433,18 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
     this.virtualmachineservice.getVmsFromFacilitiesOfLoggedUser(
       this.selectedFacility['FacilityId'],
       this.currentPage,
-      this.filterVmName,
-      this.filterProjectName,
-      this.filter_status_list,
-      this.filterVmElixir_id,
-      this.filterVmCreated_at,
-      this.filterVmStopped_at)
+      this.filter, this.filter_status_list)
       .subscribe((vms: VirtualMachine[]) => {
                    this.vms_content = vms['vm_list'];
                    this.total_pages = vms['total_items'];
                    this.items_per_page = vms['items_per_page'];
 
                    for (const vm of this.vms_content) {
-                     this.setCollapseStatus(vm.openstackid, false);
-
                      if (vm.created_at !== '') {
                        vm.created_at = new Date(parseInt(vm.created_at, 10) * 1000).toLocaleDateString();
                      }
 
-                     if (vm.stopped_at !== '' && vm.stopped_at !== this.vm_statuses[this.vm_statuses.ACTIVE]) {
-                       vm.stopped_at = new Date(parseInt(vm.stopped_at, 10) * 1000).toLocaleDateString();
-                     } else {
-                       vm.stopped_at = ''
-                     }
                    }
-                   this.isLoaded = true;
                    this.isSearching = false;
 
                  }
@@ -504,24 +461,18 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
     this.virtualmachineservice.resumeVM(vm.openstackid).subscribe((updated_vm: VirtualMachine) => {
 
       this.status_changed = 0;
-      this.setCollapseStatus(updated_vm.openstackid, false);
 
       if (updated_vm.created_at !== '') {
         updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
       }
-      if (updated_vm.stopped_at !== '' && vm.stopped_at !== this.vm_statuses[this.vm_statuses.ACTIVE]) {
-        updated_vm.stopped_at = new Date(parseInt(updated_vm.stopped_at, 10) * 1000).toLocaleDateString();
-      } else {
-        updated_vm.stopped_at = ''
-      }
 
       this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
       switch (updated_vm.status) {
-        case this.vm_statuses[this.vm_statuses.ACTIVE]:
+        case this.ACTIVE:
           this.status_changed = 1;
           break;
-        case this.vm_statuses[this.vm_statuses.RESTARTING]:
-          this.check_status_loop(updated_vm, this.vm_statuses[this.vm_statuses.ACTIVE]);
+        case this.RESTARTING:
+          this.check_status_loop(updated_vm, this.ACTIVE);
           break;
         default:
           this.status_changed = 2;
@@ -534,33 +485,18 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
   /**
    * Get all vms.
    */
-  getAllVms()
-    :
-    void {
+  getAllVms(): void {
     this.virtualmachineservice.getAllVM(this.currentPage,
-                                        this.filterVmName,
-                                        this.filterProjectName,
-                                        this.filter_status_list,
-                                        this.filterVmElixir_id,
-                                        this.filterVmCreated_at,
-                                        this.filterVmStopped_at)
+                                        this.filter, this.filter_status_list)
       .subscribe((vms: VirtualMachine[]) => {
                    this.vms_content = vms['vm_list'];
                    this.total_pages = vms['total_items'];
                    this.items_per_page = vms['items_per_page'];
 
                    for (const vm of this.vms_content) {
-                     this.setCollapseStatus(vm.openstackid, false);
-
                      if (vm.created_at !== '') {
                        vm.created_at = new Date(parseInt(vm.created_at, 10) * 1000).toLocaleDateString();
                      }
-                     if (vm.stopped_at !== '' && vm.stopped_at !== this.vm_statuses[this.vm_statuses.ACTIVE]) {
-                       vm.stopped_at = new Date(parseInt(vm.stopped_at, 10) * 1000).toLocaleDateString();
-                     } else {
-                       vm.stopped_at = ''
-                     }
-
                    }
                    this.isSearching = false;
 
@@ -568,41 +504,16 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
       );
   }
 
-  changedNameFilter(text
-                      :
-                      string
-  ):
-    void {
-    this.filterNameChanged.next(text);
-
-  }
-
   ngOnInit(): void {
     this.getVms();
-    this.checkVOstatus();
+    this.is_vo_admin = is_vo;
     this.get_is_facility_manager();
     this.facilityService.getManagerFacilities().subscribe((result: any) => {
       this.managerFacilities = result;
       this.selectedFacility = this.managerFacilities[0];
     });
 
-    this.filterNameChanged
-      .pipe(
-        debounceTime(this.DEBOUNCE_TIME),
-        distinctUntilChanged())
-      .subscribe(() => {
-        this.applyFilter();
-      });
-
-    this.filterProjectNameChanged
-      .pipe(
-        debounceTime(this.DEBOUNCE_TIME),
-        distinctUntilChanged())
-      .subscribe(() => {
-        this.applyFilter();
-      });
-
-    this.filterElixirIdChanged
+    this.filterChanged
       .pipe(
         debounceTime(this.DEBOUNCE_TIME),
         distinctUntilChanged())
@@ -617,18 +528,6 @@ export class VmOverviewComponent extends FilterBaseClass implements OnInit {
       .subscribe((event: any) => {
         this.validSnapshotName(event);
       });
-  }
-
-  /**
-   * Check vm status.
-   * @param {UserService} userservice
-   */
-  checkVOstatus()
-    :
-    void {
-    this.voService.isVo().subscribe((result: IResponseTemplate) => {
-      this.is_vo_admin = <boolean><Boolean>result.value;
-    })
   }
 
   /**

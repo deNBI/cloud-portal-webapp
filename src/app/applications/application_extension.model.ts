@@ -17,6 +17,7 @@ export class ApplicationExtension {
     private _OpenStackProject: boolean;
     private _TotalCores: number;
     private _TotalRAM: number;
+    private _ExtendedCredits: number;
     private _RequestedFlavors: {
         [id: string]: {
             counter: number, tag: string, ram: number, rootdisk: number,
@@ -183,4 +184,11 @@ export class ApplicationExtension {
         this._DateSubmitted = value;
     }
 
+    get ExtendedCredits(): number {
+      return this._ExtendedCredits;
+    }
+
+    set ExtendedCredits(value: number) {
+      this._ExtendedCredits = value;
+    }
 }

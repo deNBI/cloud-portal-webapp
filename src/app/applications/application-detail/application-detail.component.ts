@@ -5,10 +5,7 @@ import {ApplicationsService} from '../../api-connector/applications.service';
 import {ApplicationStatusService} from '../../api-connector/application-status.service';
 import {UserService} from '../../api-connector/user.service';
 import {FacilityService} from '../../api-connector/facility.service';
-import {CreditsService} from '../../api-connector/credits.service';
-import {ApplicationStatus} from '../application_status.model';
-import {ApiSettings} from '../../api-connector/api-settings.service';
-import {Subscription} from 'rxjs';
+import {is_vo} from '../../shared/globalvar';
 
 /**
  * Class which displays the details of an application.
@@ -18,34 +15,29 @@ import {Subscription} from 'rxjs';
              templateUrl: './application-detail.component.html',
              styleUrls: ['./application-detail.component.scss'],
              providers: [FacilityService, UserService, ApplicationStatusService,
-               ApplicationsService, CreditsService]
+               ApplicationsService]
            })
 export class ApplicationDetailComponent extends ApplicationBaseClassComponent implements OnInit {
   @Input() application: Application;
   @Input() isModification: boolean = false;
-  creditsService: CreditsService;
-  credits: number = 0;
+
+  /**
+   * If user is vo.
+   * @type {boolean}
+   */
+  is_vo_admin: boolean = false;
 
   constructor(applicationsservice: ApplicationsService,
               applicationstatusservice: ApplicationStatusService,
               userservice: UserService,
-              facilityService: FacilityService,
-              creditsService: CreditsService
-  ) {
+              facilityService: FacilityService) {
 
     super(userservice, applicationstatusservice, applicationsservice, facilityService);
-    this.creditsService = creditsService;
   }
 
   ngOnInit(): void {
     this.getMemberDetailsByElixirId(this.application.User);
-  }
-
-  getExpectedCredits(): void {
-    this.creditsService.getCreditsForApplication(this.application.TotalCores,
-                                                 this.application.TotalRam, this.application.Lifetime).subscribe((result: number ) => {
-      this.credits = result
-    })
+    this.is_vo_admin = is_vo;
   }
 
 }

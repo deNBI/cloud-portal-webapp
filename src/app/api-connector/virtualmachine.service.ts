@@ -38,7 +38,7 @@ export class VirtualmachineService {
   }
 
   startVM(flavor: string, image: string, servername: string, project: string, projectid: string, http: boolean, https: boolean,
-          udp: boolean, volumename?: string, diskspace?: string, playbook_information?: string, infos?: string): Observable<any> {
+          udp: boolean, volumename?: string, diskspace?: string, playbook_information?: string): Observable<any> {
 
     const params: HttpParams = new HttpParams()
       .set('flavor', flavor)
@@ -51,8 +51,7 @@ export class VirtualmachineService {
       .set('http_allowed', http.toString())
       .set('https_allowed', https.toString())
       .set('udp_allowed', udp.toString())
-      .set('playbook_information', playbook_information)
-      .set('infos', infos);
+      .set('playbook_information', playbook_information);
 
     return this.http.post(this.baseVmUrl, params, {
       withCredentials: true,
@@ -60,34 +59,14 @@ export class VirtualmachineService {
     })
   }
 
-  getAllVM(page: number, filter_name?: string, filter_project?: string,
-           filter_status?: string[],
-           filter_elixir_id?: string,
-           filter_created_at?: string, filter_stopped_at?: string): Observable<VirtualMachine[]> {
+  getAllVM(page: number, filter?: string, filter_status?: string[]): Observable<VirtualMachine[]> {
     let params: HttpParams = new HttpParams().set('page', page.toString());
-    if (filter_name) {
-      params = params.set('filter_name', filter_name);
-
-    }
-    if (filter_project) {
-      params = params.set('filter_project', filter_project);
+    if (filter) {
+      params = params.set('filter', filter);
 
     }
     if (filter_status) {
       params = params.append('filter_status', JSON.stringify(filter_status));
-
-    }
-    if (filter_elixir_id) {
-      params = params.set('filter_elixir_id', filter_elixir_id);
-
-    }
-    if (filter_created_at) {
-      params = params.set('filter_created_at', filter_created_at);
-
-    }
-
-    if (filter_stopped_at) {
-      params = params.set('filter_stopped_at', filter_stopped_at);
 
     }
 
@@ -98,34 +77,14 @@ export class VirtualmachineService {
     })
   }
 
-  getVmsFromLoggedInUser(page: number, filter_name?: string, filter_project?: string,
-                         filter_status?: string[],
-                         filter_elixir_id?: string,
-                         filter_created_at?: string, filter_stopped_at?: string): Observable<VirtualMachine[]> {
+  getVmsFromLoggedInUser(page: number, filter?: string, filter_status?: string[]): Observable<VirtualMachine[]> {
     let params: HttpParams = new HttpParams().set('page', page.toString());
-    if (filter_name) {
-      params = params.set('filter_name', filter_name);
-
-    }
-    if (filter_project) {
-      params = params.set('filter_project', filter_project);
+    if (filter) {
+      params = params.set('filter', filter);
 
     }
     if (filter_status) {
       params = params.append('filter_status', JSON.stringify(filter_status));
-
-    }
-    if (filter_elixir_id) {
-      params = params.set('filter_elixir_id', filter_elixir_id);
-
-    }
-    if (filter_created_at) {
-      params = params.set('filter_created_at', filter_created_at);
-
-    }
-
-    if (filter_stopped_at) {
-      params = params.set('filter_stopped_at', filter_stopped_at);
 
     }
 
@@ -139,39 +98,26 @@ export class VirtualmachineService {
   getLogs(openstack_id: string): Observable<any> {
     return this.http.post(`${this.baseVmUrl}${openstack_id}/logs/`, null, {
       withCredentials: true,
-
       headers: header
     })
   }
 
-  getVmsFromFacilitiesOfLoggedUser(facility_id: string | number, page: number, filter_name?: string, filter_project?: string,
-                                   filter_status?: string[],
-                                   filter_elixir_id?: string,
-                                   filter_created_at?: string, filter_stopped_at?: string): Observable<VirtualMachine[]> {
-    let params: HttpParams = new HttpParams().set('page', page.toString());
-    if (filter_name) {
-      params = params.set('filter_name', filter_name);
+  getLocationUrl(openstack_id: string): Observable<any> {
+    return this.http.post(`${this.baseVmUrl}${openstack_id}/location_url/`, null, {
+      withCredentials: true,
+      headers: header
+    })
+  }
 
-    }
-    if (filter_project) {
-      params = params.set('filter_project', filter_project);
+  getVmsFromFacilitiesOfLoggedUser(facility_id: string | number,
+                                   page: number, filter?: string, filter_status?: string[]): Observable<VirtualMachine[]> {
+    let params: HttpParams = new HttpParams().set('page', page.toString());
+    if (filter) {
+      params = params.set('filter', filter);
 
     }
     if (filter_status) {
       params = params.append('filter_status', JSON.stringify(filter_status));
-
-    }
-    if (filter_elixir_id) {
-      params = params.set('filter_elixir_id', filter_elixir_id);
-
-    }
-    if (filter_created_at) {
-      params = params.set('filter_created_at', filter_created_at);
-
-    }
-
-    if (filter_stopped_at) {
-      params = params.set('filter_stopped_at', filter_stopped_at);
 
     }
 
