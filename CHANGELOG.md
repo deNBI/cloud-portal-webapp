@@ -1,4 +1,26 @@
+##  (2019-12-06)
 
+
+#### Features
+
+* **Application:**
+  * pi can change ([844eef6e](844eef6e))
+  * pi can change ([7dafe292](7dafe292))
+* **Audit:** added whitelist ([404ba467](404ba467))
+* **Training:** updated with trainin field ([6ddb9ea9](6ddb9ea9))
+* **application:**  Training description added ([349e92ca](349e92ca))
+
+#### Bug Fixes
+
+* **Instance:** username now always there ([78118b97](78118b97))
+* **app-overview:**
+  *  catch some non int requests (#926) ([492c24d6](492c24d6))
+  *  catch some non int requests ([746b08a4](746b08a4))
+* **filter:**
+  *  check projectname(-long) for null (#924) ([c3e7e9ca](c3e7e9ca))
+  *  check projectname(-long) for null ([72b82823](72b82823))
+
+##  (2019-11-14)
 
 #### Bug Fixes
 

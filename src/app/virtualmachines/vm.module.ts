@@ -22,6 +22,7 @@ import {SharedDirectivesModule} from '../shared/shared_modules/shared_directives
 import {ImageCarouselSlideComponent} from './imageCarouselSlide.component';
 import {PopoverModule} from 'ngx-bootstrap/popover';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {ResEnvComponent} from './conda/res-env.component';
 
 /**
  * VM module.
@@ -40,9 +41,8 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
               CarouselModule,
               AccordionModule.forRoot(),
               SharedDirectivesModule,
-              PopoverModule.forRoot(), NgbModule, ReactiveFormsModule
-
-            ],
+              PopoverModule.forRoot(), NgbModule,
+              ReactiveFormsModule],
             declarations: [
               ImageCarouselSlideComponent,
               ImageDetailComponent,
@@ -53,7 +53,8 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
               VolumeOverviewComponent,
               SnapshotOverviewComponent,
               HowToConnectComponent,
-              BiocondaComponent
+              BiocondaComponent,
+              ResEnvComponent
             ]
           })
 export class VmModule {

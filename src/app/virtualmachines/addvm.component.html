@@ -189,7 +189,7 @@
                     <div class="input-group">
                       <input required id="id_instance_name" name="instance_name"
                              class="form-control"
-                             type="text" placeholder="Instancename" [(ngModel)]="vm_name"
+                             type="text" placeholder="Instance name" [(ngModel)]="vm_name"
                              pattern="[a-zA-Z0-9]+"
                              [ngClass]="{'is-invalid':f.controls.instance_name?.invalid && (f.controls.instance_name?.dirty || f.controls.instance_name?.touched),
                              'is-valid':f.controls.instance_name?.valid && (f.controls.instance_name?.dirty || f.controls.instance_name?.touched)}">
@@ -398,6 +398,15 @@
                     </div>
                   </div>
                 </accordion-group>
+                <accordion-group #resEnvGroup *ngIf="has_forc && is_vo">
+                  <div accordion-heading style="width: 100%; cursor: pointer">
+                    <strong>Research Environment </strong><span
+                    class="badge badge-primary">EXPERIMENTAL</span>
+                    <i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
+                            'icon-arrow-up': resEnvGroup.isOpen, 'icon-arrow-down': !resEnvGroup.isOpen}"></i>
+                  </div>
+                  <app-res-env #resEnv [clientid]="client_id"></app-res-env>
+                </accordion-group>
               </accordion>
             </div>
           </form>
@@ -429,7 +438,12 @@
 
                   type="button"
 
-                  [disabled]="!vm_name || started_machine || !selectedFlavor || !selectedImage|| (diskspace > 0 && volumeName == '')"
+                  [disabled]="!vm_name ||
+                  started_machine ||
+                  !selectedFlavor ||
+                  !selectedImage||
+                  (diskspace > 0 && volumeName == '') ||
+                  (!gaveOkay && hasTools)"
                   class="btn btn-primary  .btn-lg offset-md-8"
                   data-toggle="modal"
                   (click)="startVM(selectedFlavor.name,selectedImage.name,f.controls.instance_name.value,selectedProject[0],selectedProject[1]);resetData();resetProgressBar;infoModal.show();">
