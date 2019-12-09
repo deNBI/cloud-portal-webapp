@@ -24,7 +24,7 @@ import {is_vo} from '../shared/globalvar';
 
            })
 
-export class VmOverviewComponent implements OnInit{
+export class VmOverviewComponent implements OnInit {
   title: string = 'Instance Overview';
   ACTIVE: string = 'ACTIVE';
   DELETED: string = 'DELETED';
@@ -33,6 +33,7 @@ export class VmOverviewComponent implements OnInit{
   NOT_FOUND: string = 'NOT FOUND';
   CLIENT_OFFLINE: string = 'CLIENT OFFLINE';
   RESTARTING: string = 'RESTARTING';
+  actionPopupOpen: boolean = false;
 
   /**
    * All  vms.
