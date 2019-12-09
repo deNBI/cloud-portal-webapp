@@ -8,9 +8,9 @@ export class VMOverviewPage {
 
   private VM_OVERVIEW_URL: string = 'virtualmachines/vmOverview';
   private TABLE_ID: string = 'vm_overview_table';
-  private ROW_PREFIX: string = 'id_table_row_';
   private LONG_TIMEOUT: number = Util.LONG_TIMEOUT;
 
+  private SHOW_ACTIONS_PREFIX: string = 'showActionsButton_';
   private ACTIVE_BADGE_PREFIX: string = 'active_badge_';
   private SHUTOFF_BADGE_PREFIX: string = 'shutoff_badge_';
   private DELETED_BADGE_PREFIX: string = 'delete_badge_';
@@ -43,6 +43,8 @@ export class VMOverviewPage {
   private CONFIRM_DELETE_BUTTON: string = 'confirm_delete_button';
   private DELETE_SUCCESS: string = 'delete_success_div';
   private CLOSE_DELETE_MODAL: string = 'close_delete_modal';
+  private VERIFY_RESTART_MODAL: string = 'submitRestartModal'
+  private SUBMIT_STOP_MODAL: string = 'submitStopModal'
 
   private SEARCH_SPINNER: string = 'search_spinner';
 
@@ -134,8 +136,12 @@ export class VMOverviewPage {
 
   async shutoffVM(name: string): Promise<any> {
     Util.logMethodCall(`Shutting off ${name}`);
-
+    await Util.clickElementById(`${this.ACTIVE_BADGE_PREFIX}${name}`);
+    if (element(by.id(`${this.SHOW_ACTIONS_PREFIX}${name}`)).isPresent()) {
+      await Util.clickElementById(`${this.SHOW_ACTIONS_PREFIX}${name}`);
+    }
     await Util.clickElementById(`${this.SHUTOFF_BUTTON_PREFIX}${name}`);
+    await Util.waitForPresenceOfElementById(this.SUBMIT_STOP_MODAL);
     await Util.clickElementById(this.VERIFY_STOP_BTN);
     await Util.waitForPresenceByElement(
       element(by.id(this.STOP_MODAL)).element(by.id(this.SHUTOFF_SUCCESS)),
@@ -153,9 +159,14 @@ export class VMOverviewPage {
   }
 
   async resumeVM(name: string): Promise<any> {
-    Util.logMethodCall(`Resuming ${name}`);
-
+    if (element(by.id(`${this.ACTIVE_BADGE_PREFIX}${name}`)).isPresent()) {
+      await Util.clickElementById(`${this.ACTIVE_BADGE_PREFIX}${name}`);
+    }
+    if (element(by.id(`${this.SHOW_ACTIONS_PREFIX}${name}`)).isPresent()) {
+      await Util.clickElementById(`${this.SHOW_ACTIONS_PREFIX}${name}`);
+    }
     await Util.clickElementById(`${this.RESUME_BUTTON_PREFIX}${name}`);
+    await Util.waitForPresenceOfElementById(this.VERIFY_RESTART_MODAL);
     await Util.clickElementById(this.VERIFY_RESTART_BTN),
       await Util.waitForPresenceByElement(
         element(by.id(this.RESUME_MODAL)).element(by.id(this.RESUME_SUCCESS)),
@@ -189,9 +200,11 @@ export class VMOverviewPage {
 
   async deleteVM(name: string): Promise<any> {
     Util.logMethodCall(`Deleting ${name}`);
+    if (element(by.id(`${this.SHOW_ACTIONS_PREFIX}${name}`)).isPresent()) {
+      await Util.clickElementById(`${this.SHOW_ACTIONS_PREFIX}${name}`);
+    }
 
     await Util.clickElementById(`${this.DELETE_BUTTON_PREFIX}${name}`);
-
     await Util.waitForPresenceOfElementById(this.VERIFY_MODAL);
     await Util.clickElementById(this.CONFIRM_DELETE_BUTTON);
     await Util.waitForPresenceOfElementById(this.DELETE_SUCCESS, this.LONG_TIMEOUT);
@@ -210,6 +223,9 @@ export class VMOverviewPage {
   async createSnapshotOfVM(name: string): Promise<any> {
     Util.logMethodCall(`Creating snapshot of ${name}`);
 
+    if (element(by.id(`${this.SHOW_ACTIONS_PREFIX}${name}`)).isPresent()) {
+      await Util.clickElementById(`${this.SHOW_ACTIONS_PREFIX}${name}`);
+    }
     await Util.clickElementById(`${this.SNAPSHOT_BUTTON_PREFIX}${name}`);
     await Util.waitForPresenceOfElementById(this.SNAPSHOT_NAME_MODAL);
     await Util.sendTextToElementById(this.SNAPSHOT_NAME_INPUT, Util.BASIC_SNAPSHOT_NAME);
