@@ -121,8 +121,6 @@ export class VmOverviewComponent implements OnInit {
   reboot_done: boolean;
 
   filterChanged: Subject<string> = new Subject<string>();
-  filterProjectNameChanged: Subject<string> = new Subject<string>();
-  filterElixirIdChanged: Subject<string> = new Subject<string>();
   snapshotSearchTerm: Subject<string> = new Subject<string>();
 
   constructor(private facilityService: FacilityService,
@@ -291,22 +289,20 @@ export class VmOverviewComponent implements OnInit {
     setTimeout(
       () => {
         this.virtualmachineservice.checkVmStatus(vm.openstackid).subscribe((updated_vm: VirtualMachine) => {
-          this.selectedVm = updated_vm;
-
+          this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
           if (updated_vm.status === final_state) {
-            this.reboot_done = true;
             if (updated_vm.created_at !== '') {
               updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
             }
-
             this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
+
 
           } else {
             if (vm['error']) {
               this.status_check_error = true
 
             }
-            this.check_status_loop(vm, final_state)
+            this.check_status_loop(updated_vm, final_state)
           }
 
         })
@@ -424,8 +420,17 @@ export class VmOverviewComponent implements OnInit {
                      }
                    }
                    this.isSearching = false;
+        this.checkVmTillActive()
                  }
       );
+  }
+
+  checkVmTillActive(): void {
+    this.vms_content.forEach((vm: VirtualMachine) => {
+      if (vm.status !== this.ACTIVE && vm.status !== this.SHUTOFF && vm.status !== this.DELETED) {
+        this.check_status_loop(vm, this.ACTIVE);
+      }
+    })
   }
 
   getAllVmsFacilities(): void {
@@ -446,7 +451,7 @@ export class VmOverviewComponent implements OnInit {
 
                    }
                    this.isSearching = false;
-
+        this.checkVmTillActive()
                  }
       );
   }
@@ -499,6 +504,8 @@ export class VmOverviewComponent implements OnInit {
                      }
                    }
                    this.isSearching = false;
+        this.checkVmTillActive()
+
 
                  }
       );

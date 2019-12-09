@@ -107,7 +107,7 @@
                     <span *ngIf="vm?.status != 'ACTIVE' && vm?.status != 'SHUTOFF' && vm?.status != 'DELETED'"
                           [id]="'default_badge_' + vm?.name"
                           style="margin: 2px 5px 0px 2px; padding: 0.4em 0.4em !important;" class="badge badge-dark">
-                    {{vm?.status}}</span>
+                    {{vm?.status}}  <i class="fa fa-spinner fa-spin" ></i></span>
                     <div class="h5 text-primary mb-0 mt-h">{{vm?.name}}</div>
                   </div>
                   <div class="row" style="margin-left:1px; margin-top:3px; padding:2px;">
