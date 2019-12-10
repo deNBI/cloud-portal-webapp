@@ -43,8 +43,8 @@ export class VMOverviewPage {
   private CONFIRM_DELETE_BUTTON: string = 'confirm_delete_button';
   private DELETE_SUCCESS: string = 'delete_success_div';
   private CLOSE_DELETE_MODAL: string = 'close_delete_modal';
-  private VERIFY_RESTART_MODAL: string = 'submitRestartModal'
-  private SUBMIT_STOP_MODAL: string = 'submitStopModal'
+  private VERIFY_RESTART_MODAL: string = 'submitRestartModal';
+  private SUBMIT_STOP_MODAL: string = 'submitStopVmModal';
 
   private SEARCH_SPINNER: string = 'search_spinner';
 
