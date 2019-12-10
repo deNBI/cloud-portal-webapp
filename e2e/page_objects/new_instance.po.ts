@@ -58,10 +58,10 @@ export class NewInstancePage {
     Util.logMethodCall('Fill new instance mandatory form');
 
     await Util.waitForPresenceOfElementById(this.ID_INSTANCE_NAME);
-    await element(by.id(this.ID_INSTANCE_NAME)).sendKeys(instance_name);
+    await Util.sendTextToElementById(this.ID_INSTANCE_NAME, instance_name);
     await Util.waitForPresenceOfElementById(this.FLAVOR_ID);
     await element(by.id(this.FLAVOR_ID)).element(by.id(`${this.FLAVOR_PREFIX}${flavor}`)).click();
-    await Util.waitForPresenceOfElementById(this.IMAGE_ID);
+    await Util.waitForPresenceOfElementById(this.IMAGE_ID, Util.LONG_TIMEOUT);
     await element(by.id(this.IMAGE_ID)).element(by.id(`${this.IMAGE_PREFIX}${image}`)).click();
   }
 
