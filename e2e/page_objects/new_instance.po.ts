@@ -1,4 +1,4 @@
-import {browser, by, element} from 'protractor';
+import {by, element} from 'protractor';
 import {Util} from '../util';
 
 /**
@@ -61,7 +61,7 @@ export class NewInstancePage {
     await Util.sendTextToElementById(this.ID_INSTANCE_NAME, instance_name);
     await Util.waitForPresenceOfElementById(this.FLAVOR_ID);
     await element(by.id(this.FLAVOR_ID)).element(by.id(`${this.FLAVOR_PREFIX}${flavor}`)).click();
-    await Util.waitForPresenceOfElementById(this.IMAGE_ID);
+    await Util.waitForPresenceOfElementById(this.IMAGE_ID, Util.LONG_TIMEOUT);
     await element(by.id(this.IMAGE_ID)).element(by.id(`${this.IMAGE_PREFIX}${image}`)).click();
   }
 

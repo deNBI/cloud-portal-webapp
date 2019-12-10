@@ -136,10 +136,8 @@ export class VMOverviewPage {
 
   async shutoffVM(name: string): Promise<any> {
     Util.logMethodCall(`Shutting off ${name}`);
-    await Util.clickElementById(`${this.ACTIVE_BADGE_PREFIX}${name}`);
-    if (element(by.id(`${this.SHOW_ACTIONS_PREFIX}${name}`)).isPresent()) {
-      await Util.clickElementById(`${this.SHOW_ACTIONS_PREFIX}${name}`);
-    }
+    await Util.waitForPresenceOfElementById(`${this.ACTIVE_BADGE_PREFIX}${name}`);
+    await Util.clickElementById(`${this.SHOW_ACTIONS_PREFIX}${name}`);
     await Util.clickElementById(`${this.SHUTOFF_BUTTON_PREFIX}${name}`);
     await Util.waitForPresenceOfElementById(this.SUBMIT_STOP_MODAL);
     await Util.clickElementById(this.VERIFY_STOP_BTN);
@@ -159,16 +157,13 @@ export class VMOverviewPage {
   }
 
   async resumeVM(name: string): Promise<any> {
-    if (element(by.id(`${this.ACTIVE_BADGE_PREFIX}${name}`)).isPresent()) {
-      await Util.clickElementById(`${this.ACTIVE_BADGE_PREFIX}${name}`);
-    }
-    if (element(by.id(`${this.SHOW_ACTIONS_PREFIX}${name}`)).isPresent()) {
-      await Util.clickElementById(`${this.SHOW_ACTIONS_PREFIX}${name}`);
-    }
+    Util.logMethodCall(`Resume vm ${name}`);
+    await Util.waitForPresenceOfElementById(`${this.SHUTOFF_BADGE_PREFIX}${name}`);
+    await Util.clickElementById(`${this.SHOW_ACTIONS_PREFIX}${name}`);
     await Util.clickElementById(`${this.RESUME_BUTTON_PREFIX}${name}`);
     await Util.waitForPresenceOfElementById(this.VERIFY_RESTART_MODAL);
-    await Util.clickElementById(this.VERIFY_RESTART_BTN),
-      await Util.waitForPresenceByElement(
+    await Util.clickElementById(this.VERIFY_RESTART_BTN);
+    await Util.waitForPresenceByElement(
         element(by.id(this.RESUME_MODAL)).element(by.id(this.RESUME_SUCCESS)),
         this.LONG_TIMEOUT,
         this.RESUME_SUCCESS
