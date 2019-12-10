@@ -265,7 +265,7 @@
           application?.InitialCredits}}
       </td>
       <td *ngIf="is_vo_admin && (application?.Status == application_states.MODIFICATION_REQUESTED || isModification)">
-        {{application?.ApplicationExtension?.ExtendedCredits}}({{application?.TotalExtensionCredits}})
+        Extra: {{application?.ApplicationExtension?.ExtendedCredits}} (Total: {{application?.TotalExtensionCredits}})
       </td>
     </tr>
 
