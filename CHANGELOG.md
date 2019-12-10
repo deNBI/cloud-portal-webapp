@@ -1,3 +1,20 @@
+##  (2019-12-10)
+
+
+#### Bug Fixes
+
+* **application:**  removed typo ([acde565f](acde565f))
+* **instance-overview:**
+  *  removed typo ([305f7af7](305f7af7))
+  *  restructured overloaded layout ([e2e6d9d1](e2e6d9d1))
+* **instance_overview:**  layout problems ([de7e5c81](de7e5c81))
+* **io:**  smaller black dot, footer vanish after action ([3446aaf4](3446aaf4))
+
+#### Features
+
+* **Instance:** added vm_per_site ([292e285f](292e285f))
+
+
 ##  (2019-12-06)
 
 
