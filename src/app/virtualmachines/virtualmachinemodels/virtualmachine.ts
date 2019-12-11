@@ -1,11 +1,12 @@
-import {Image} from './image';
 import {Flavor} from './flavor';
 import {Client} from '../clients/client.model';
+import {VirtualMachineStates} from './virtualmachinestates';
 
 /**
  * Virtualmachine class.
  */
 export class VirtualMachine {
+
   private _flavor: Flavor;
   private _image: string;
   private _project: string;
