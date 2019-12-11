@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {Flavor} from '../../virtualmachines/virtualmachinemodels/flavor';
 import {FlavorService} from '../../api-connector/flavor.service';
@@ -23,7 +23,7 @@ import {is_vo} from '../../shared/globalvar';
              styleUrls: ['./application-formular.component.scss'],
              providers: [FlavorService, ApplicationsService, CreditsService]
            })
-export class ApplicationFormularComponent extends ApplicationBaseClassComponent implements OnInit, OnChanges {
+export class ApplicationFormularComponent extends ApplicationBaseClassComponent implements OnInit {
 
   @Input() openstack_project: boolean = false;
   @Input() simple_vm_project: boolean = false;
@@ -45,6 +45,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
   project_application_object_storage: number = 0;
   project_application_institute: string;
   project_application_workgroup: string;
+  project_application_volume_counter: number = 3;
   project_application_horizon2020: string = '';
   project_application_elixir_project: string = '';
   project_application_bmbf_project: string = '';
@@ -94,8 +95,13 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
     this.getListOfFlavors();
     this.getListOfTypes();
     this.is_vo_admin = is_vo;
+
+    if (this.openstack_project) {
+      this.simple_vm_min_vm = true;
+    }
     this.applicationsservice.getEdamOntologyTerms().subscribe((terms: EdamOntologyTerm[]) => {
       this.edam_ontology_terms = terms;
+      this.initiateFormWithApplication();
       this.searchTermsInEdamTerms()
     })
   }
@@ -154,19 +160,10 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
       this.project_application_openstack_basic_introduction = this.application.OpenstackBasicIntroduction;
       this.project_application_elixir_project = this.application.ElixirProject;
       this.project_application_bmbf_project = this.application.BMBFProject;
+      this.project_application_volume_counter = this.application.VolumeCounter;
       this.initiated_validation = true
 
     }
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-
-    if (this.openstack_project) {
-      this.simple_vm_min_vm = true;
-    }
-    this.initiateFormWithApplication()
-
-
   }
 
   checkIfTypeGotSimpleVmFlavor(type: FlavorType): boolean {
