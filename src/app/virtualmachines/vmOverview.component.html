@@ -57,10 +57,10 @@
           <div class="checkbox">
             <label style="margin-top: 7px;margin-bottom: 0px !important;">
               <input type="checkbox"
-                     (change)="changeFilterStatus(this.ACTIVE);applyFilter();"
+                     (change)="changeFilterStatus(VirtualMachineStates.staticACTIVE);applyFilter();"
                      checked/>
               <span style="margin-left: 5px; bottom: 5px; position: relative;"
-                    class="badge badge-success">{{ACTIVE}}  </span>
+                    class="badge badge-success">{{VirtualMachineStates.staticACTIVE}}  </span>
 
             </label>
           </div>
@@ -71,10 +71,10 @@
           <div class="checkbox">
             <label style="margin-top: 7px;margin-bottom: 0px !important;">
               <input type="checkbox"
-                     (change)="changeFilterStatus(this.SHUTOFF);applyFilter();"
+                     (change)="changeFilterStatus(VirtualMachineStates.staticSHUTOFF);applyFilter();"
                      checked/>
               <span style="margin-left: 5px; bottom: 5px; position: relative;"
-                    class="badge badge-warning">{{SHUTOFF}}</span>
+                    class="badge badge-warning">{{VirtualMachineStates.staticSHUTOFF}}</span>
             </label>
           </div>
         </div>
@@ -83,10 +83,10 @@
           <div class="checkbox">
             <label style="margin-top: 7px;margin-bottom: 0px !important;">
               <input type="checkbox"
-                     (change)="changeFilterStatus(this.DELETED);applyFilter();"
+                     (change)="changeFilterStatus(VirtualMachineStates.staticDELETED);applyFilter();"
                      id="checkbox_deleted"/>
               <span style="margin-left: 5px; bottom: 5px; position: relative;"
-                    class="badge badge-danger">{{DELETED}}</span>
+                    class="badge badge-danger">{{VirtualMachineStates.staticDELETED}}</span>
             </label>
           </div>
         </div>
@@ -129,34 +129,40 @@
               <div class="row" style="margin-top: 5px">
                 <div class="col-5" style="margin: auto;" [ngSwitch]="vm?.status">
                   <a class="h5 text-primary" style="margin-left: 10px">{{vm?.name}}  </a>
-                  <div *ngSwitchCase="'ACTIVE'" [id]="'active_badge_' + vm?.name"
+                  <div *ngSwitchCase="this.VirtualMachineStates.staticACTIVE" [id]="'active_badge_' + vm?.name"
                        class="dot-colorless bg-success pulseAnim" style="width: 10px; height: 10px">
                   </div>
-                  <div *ngSwitchCase="'SHUTOFF'" [id]="'shutoff_badge_' + vm?.name"
+                  <div *ngSwitchCase="this.VirtualMachineStates.staticSHUTOFF" [id]="'shutoff_badge_' + vm?.name"
                        class="dot-colorless bg-warning" style="width: 10px; height: 10px">
                   </div>
-                  <div *ngSwitchCase="'DELETED'" [id]="'deleted_badge_' + vm?.name"
+                  <div *ngSwitchCase="this.VirtualMachineStates.staticDELETED" [id]="'deleted_badge_' + vm?.name"
                        class="dot-colorless bg-danger" style="width: 10px; height: 10px">
                   </div>
-                  <div *ngSwitchCase="'BUILD'" [id]="'build_badge_' + vm?.name"
+                  <div *ngSwitchCase="this.VirtualMachineStates.staticBUILD" [id]="'build_badge_' + vm?.name"
                        class="dot-colorless bg-dark">
                   </div>
-                  <div *ngSwitchCase="'PREPARE_PLAYBOOK_BUILD'" [id]="'ppb_badge_' + vm?.name"
+                  <div *ngSwitchCase="this.VirtualMachineStates.staticPREPARE_PLAYBOOK_BUILD"
+                       [id]="'ppb_badge_' + vm?.name"
                        class="dot-colorless bg-dark">
                   </div>
-                  <div *ngSwitchCase="'BUILD_PLAYBOOK'" [id]="'build_playbook_badge_' + vm?.name"
+                  <div *ngSwitchCase="this.VirtualMachineStates.staticBUILD_PLAYBOOK"
+                       [id]="'build_playbook_badge_' + vm?.name"
                        class="dot-colorless bg-dark" >
                   </div>
-                  <div *ngSwitchCase="'RESTARTING'" [id]="'restarting_badge_' + vm?.name"
+                  <div *ngSwitchCase="this.VirtualMachineStates.staticRESTARTING" [id]="'restarting_badge_' + vm?.name"
                        class="dot-colorless bg-dark">
                   </div>
-                  <div *ngSwitchCase="'POWERING OFF'" [id]="'powering_off_badge_' + vm?.name"
+                  <div *ngSwitchCase="this.VirtualMachineStates.staticPOWERING_OFF"
+                       [id]="'powering_off_badge_' + vm?.name"
                        class="dot-colorless bg-dark">
                   </div>
                   <div *ngSwitchDefault
                        [id]="'default_badge_' + vm?.name"
                        class="dot-colorless bg-dark" style="width: 10px; height: 10px">
-                  </div>  {{vm?.status}}  <i *ngIf="vm?.status != 'ACTIVE' && vm?.status != 'SHUTOFF' && vm?.status != 'DELETED'" class="fa fa-spinner fa-spin" ></i></span>
+                  </div>
+                  {{vm?.status}}  <i
+                  *ngIf="vm?.status != this.VirtualMachineStates.staticACTIVE && vm?.status != this.VirtualMachineStates.staticSHUTOFF && vm?.status != this.VirtualMachineStates.staticDELETED"
+                  class="fa fa-spinner fa-spin"></i>
                 </div>
                 <div class="col-3" style="margin: auto; text-align: center">
                   <a href="/#/project-management/{{vm?.application_id}}"><strong>{{vm?.project}}</strong></a>
@@ -189,9 +195,11 @@
                 </div>
               </div>
             </div>
-            <div class="card-footer p-x-1 py-h" *ngIf="vm?.status == ACTIVE || vm?.status == SHUTOFF">
+            <div class="card-footer p-x-1 py-h"
+                 *ngIf="vm?.status == this.VirtualMachineStates.staticACTIVE || vm?.status == this.VirtualMachineStates.staticSHUTOFF">
               <div class="row">
-                <div class="col-6" *ngIf="vm.status != DELETED && vm.status != SHUTOFF">
+                <div class="col-6"
+                     *ngIf="vm.status != this.VirtualMachineStates.staticDELETED && vm.status != this.VirtualMachineStates.staticSHUTOFF">
                   <a class="font-weight-bold font-xs btn-block text-muted" *ngIf="vm.cardState!= 1"
                      [id]="'showHowToConnectButton_'+vm?.name"
                      (click)="selectedVm=vm; vm.cardState=1" href="#" onClick="return false;">
@@ -202,7 +210,7 @@
                      (click)="selectedVm=vm; vm.cardState=0;" href="#" onClick="return false;">
                     Hide information <</a>
                 </div>
-                <div class="col-6" *ngIf="vm.status != DELETED">
+                <div class="col-6" *ngIf="vm.status != this.VirtualMachineStates.staticDELETED">
                   <a class="font-weight-bold font-xs btn-block text-muted" *ngIf="vm.cardState!=2"
                      [id]="'showActionsButton_'+vm?.name"
                      (click)="selectedVm=vm; vm.cardState=2;" href="#" onClick="return false;">
@@ -218,7 +226,7 @@
               </div>
             </div>
             <div class="card-footer p-x-1 py-h"
-                 *ngIf="(vm?.status == ACTIVE || vm?.status == SHUTOFF) && vm?.cardState != 0">
+                 *ngIf="(vm?.status ==  this.VirtualMachineStates.staticACTIVE|| vm?.status == this.VirtualMachineStates.staticSHUTOFF) && vm?.cardState != 0">
               <div *ngIf="vm?.cardState == 1">
                 <div class="row">
                   <div class="col-md-1">
@@ -249,35 +257,37 @@
               </div>
               <div *ngIf="vm?.cardState == 2">
                 <div class="row">
-                  <div class="col-md-2" *ngIf="vm.status !=SHUTOFF && vm.status != DELETED">
+                  <div class="col-md-2"
+                       *ngIf="vm.status != this.VirtualMachineStates.staticSHUTOFF && vm.status != this.VirtualMachineStates.staticDELETED">
                     <a class="font-weight-bold font-xs btn-block text-muted"
                        [id]="'checkStatusVMButton_' + vm?.name"
                        (click)="checkStatus(vm);" href="#" onClick="return false;">
                       &lt;check status&gt;
                     </a>
                   </div>
-                  <div class="col-md-2" *ngIf="vm.status ==ACTIVE">
+                  <div class="col-md-2" *ngIf="vm.status ==this.VirtualMachineStates.staticACTIVE">
                     <a class="font-weight-bold font-xs btn-block text-muted"
                        [id]="'stopVMButton_' + vm?.name"
                        (click)="selectedVm=vm;submitStopVmModal.show();" href="#" onClick="return false;">
                       &lt;stop vm&gt;
                     </a>
                   </div>
-                  <div class="col-md-2" *ngIf="vm.status ==SHUTOFF">
+                  <div class="col-md-2" *ngIf="vm.status ==this.VirtualMachineStates.staticSHUTOFF">
                     <a class="font-weight-bold font-xs btn-block text-muted"
                        [id]="'restartVMButton_' + vm?.name"
                        (click)="selectedVm=vm;submitRestartModal.show();" href="#" onClick="return false;">
                       &lt;restart vm&gt;
                     </a>
                   </div>
-                  <div class="col-md-2" *ngIf="vm.client.features['VM_REBOOT'] && vm.status !=DELETED">
+                  <div class="col-md-2"
+                       *ngIf="vm.client.features['VM_REBOOT'] && vm.status != this.VirtualMachineStates.staticDELETED">
                     <a class="font-weight-bold font-xs btn-block text-muted"
                        [id]="'chooseRebootVMButton_' + vm?.name"
                        href="#" onClick="return false;" (click)="selectedVm=vm; chooseRebootOptionModal.show();">
                       &lt;reboot vm&gt;
                     </a>
                   </div>
-                  <div class="col-md-2" *ngIf="vm.status !=DELETED">
+                  <div class="col-md-2" *ngIf="vm.status != this.VirtualMachineStates.staticDELETED">
                     <a class="font-weight-bold font-xs btn-block text-muted"
                        [id]="'createSnapshotVMButton_' + vm?.name"
                        (click)="snapshot_vm=vm;resetSnapshotResult();snapshotModal.show(); " href="#"
@@ -285,7 +295,7 @@
                       &lt;create snapshot&gt;
                     </a>
                   </div>
-                  <div class="col-md-2" *ngIf="vm.status !=DELETED">
+                  <div class="col-md-2" *ngIf="vm.status != this.VirtualMachineStates.staticDELETED">
                     <a class="font-weight-bold font-xs btn-block text-muted"
                        [id]="'deleteVMButton_' + vm?.name"
                        (click)="selectedVm=vm;verifyModal.show();" href="#" onClick="return false;">
@@ -322,11 +332,13 @@
           </button>
         </div>
         <div class="modal-body">
-          <div class="alert alert-info" role="alert" *ngIf="status_changed == 0 &&  selectedVm?.status != 'SHUTOFF'">
+          <div class="alert alert-info" role="alert"
+               *ngIf="status_changed == 0 &&  selectedVm?.status != this.VirtualMachineStates.staticSHUTOFF">
             Stopping {{selectedVm?.name}}... <i class="fa fa-spinner fa-spin"
                                                 style="font-size:24px"></i>
           </div>
-          <div class="alert alert-success" role="alert" *ngIf="status_changed == 1 || selectedVm?.status == 'SHUTOFF'"
+          <div class="alert alert-success" role="alert"
+               *ngIf="status_changed == 1 || selectedVm?.status == this.VirtualMachineStates.staticSHUTOFF"
                id="stop_success_div">
             {{selectedVm?.name}} was successfully stopped.
           </div>
@@ -445,11 +457,13 @@
           </button>
         </div>
         <div class="modal-body">
-          <div class="alert alert-info" role="alert" *ngIf="status_changed == 0  && selectedVm?.status !== 'ACTIVE'">
+          <div class="alert alert-info" role="alert"
+               *ngIf="status_changed == 0  && selectedVm?.status !== this.VirtualMachineStates.staticACTIVE">
             Starting {{selectedVm?.name}}... <i class="fa fa-spinner fa-spin"
                                                 style="font-size:24px"></i>
           </div>
-          <div class="alert alert-success" role="alert" *ngIf="status_changed == 1  || selectedVm?.status == 'ACTIVE'"
+          <div class="alert alert-success" role="alert"
+               *ngIf="status_changed == 1  || selectedVm?.status == this.VirtualMachineStates.staticACTIVE"
                id="resume_success_div">
             {{selectedVm?.name}} was successfully started.
           </div>
@@ -766,7 +780,7 @@
           <div class="row" style="margin:5px; text-align: center; padding: 10px;">
             <div class="col-md-6">
               <button type="button" class="btn btn-primary"
-                      *ngIf="selectedVm?.status != DELETED && selectedVm?.status !=SHUTOFF && selectedVm?.client.features['VM_REBOOT']"
+                      *ngIf="selectedVm?.status != this.VirtualMachineStates.staticDELETED && selectedVm?.status != this.VirtualMachineStates.staticSHUTOFF && selectedVm?.client.features['VM_REBOOT']"
                       [id]="'softRebootVM_' + selectedVm?.name"
                       (click)="status_check_error=false;reboot_done=false;reboot_type='SOFT';chooseRebootOptionModal.hide();rebootModal.show();">
                 Soft Reboot
@@ -775,7 +789,7 @@
             <div class="col-md-6">
               <button type="button" class="btn btn-primary"
                       [id]="'hardRebootVM_' + selectedVm?.name"
-                      *ngIf="selectedVm?.status != DELETED && selectedVm?.client.features['VM_REBOOT']"
+                      *ngIf="selectedVm?.status != this.VirtualMachineStates.staticDELETED && selectedVm?.client.features['VM_REBOOT']"
                       (click)="status_check_error=false;reboot_done=false;reboot_type='HARD'; chooseRebootOptionModal.hide(); rebootModal.show();"
               >
                 Hard Reboot

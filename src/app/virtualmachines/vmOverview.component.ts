@@ -1,4 +1,4 @@
-import {Component, OnChanges, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {VirtualmachineService} from '../api-connector/virtualmachine.service';
 import {VirtualMachine} from './virtualmachinemodels/virtualmachine';
 import {FullLayoutComponent} from '../layouts/full-layout.component';
@@ -10,8 +10,8 @@ import {FacilityService} from '../api-connector/facility.service';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {Subject} from 'rxjs';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {PopoverDirective} from 'ngx-bootstrap';
 import {is_vo} from '../shared/globalvar';
+import {VirtualMachineStates} from './virtualmachinemodels/virtualmachinestates';
 
 /**
  * Vm overview componentn.
@@ -26,14 +26,9 @@ import {is_vo} from '../shared/globalvar';
 
 export class VmOverviewComponent implements OnInit {
   title: string = 'Instance Overview';
-  ACTIVE: string = 'ACTIVE';
-  DELETED: string = 'DELETED';
-  SHUTOFF: string = 'SHUTOFF';
-  POWERING_OFF: string = 'POWERING OFF';
-  NOT_FOUND: string = 'NOT FOUND';
-  CLIENT_OFFLINE: string = 'CLIENT OFFLINE';
-  RESTARTING: string = 'RESTARTING';
+
   actionPopupOpen: boolean = false;
+  VirtualMachineStates: VirtualMachineStates = new VirtualMachineStates();
 
   /**
    * All  vms.
@@ -42,7 +37,7 @@ export class VmOverviewComponent implements OnInit {
   currentPage: number = 1;
   DEBOUNCE_TIME: number = 300;
 
-  filter_status_list: string[] = [this.ACTIVE, this.SHUTOFF];
+  filter_status_list: string[] = [VirtualMachineStates.ACTIVE, VirtualMachineStates.SHUTOFF];
   isSearching: boolean = true;
 
   selectedVm: VirtualMachine = null;
@@ -250,7 +245,7 @@ export class VmOverviewComponent implements OnInit {
   applyFilterStatus(): void {
     const vm_content_copy: VirtualMachine[] = [];
     for (const vm of this.vms_content) {
-      if (vm.status in this.filter_status_list || vm.status !== this.ACTIVE && vm.status !== this.DELETED && vm.status !== this.SHUTOFF) {
+      if (vm.status in this.filter_status_list || vm.status !== VirtualMachineStates.ACTIVE && vm.status !== VirtualMachineStates.DELETED && vm.status !== VirtualMachineStates.SHUTOFF) {
         vm.cardState = 0;
         vm_content_copy.push(vm)
       }
@@ -271,7 +266,7 @@ export class VmOverviewComponent implements OnInit {
       updated_vm.cardState = 0;
       this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
       this.applyFilterStatus();
-      if (updated_vm.status === this.DELETED) {
+      if (updated_vm.status === VirtualMachineStates.DELETED) {
         this.status_changed = 1;
       } else {
         this.status_changed = 2;
@@ -300,15 +295,21 @@ export class VmOverviewComponent implements OnInit {
   }
 
   /**
-   * Check Status of vm in loop till active.
-   * @param {string} id of instance.
+   * Check Status of vm in loop till final state is reached.
+   * @param vm
+   * @param final_state
+   * @param is_selected_vm If the vm should be the selected vm
    */
-  check_status_loop(vm: VirtualMachine, final_state: string): void {
+  check_status_loop(vm: VirtualMachine, final_state: string, is_selected_vm?: boolean): void {
 
     setTimeout(
       () => {
         this.virtualmachineservice.checkVmStatus(vm.openstackid).subscribe((updated_vm: VirtualMachine) => {
           this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
+          if (is_selected_vm) {
+            this.selectedVm = updated_vm;
+          }
+
           updated_vm.cardState = 0;
 
           if (updated_vm.status === final_state) {
@@ -323,7 +324,7 @@ export class VmOverviewComponent implements OnInit {
               this.status_check_error = true
 
             }
-            this.check_status_loop(updated_vm, final_state)
+            this.check_status_loop(updated_vm, final_state, is_selected_vm)
           }
 
         })
@@ -344,7 +345,7 @@ export class VmOverviewComponent implements OnInit {
       () => {
         this.virtualmachineservice.checkVmStatusWhenReboot(vm.openstackid).subscribe((updated_vm: VirtualMachine) => {
 
-          if (updated_vm.status === this.ACTIVE) {
+          if (updated_vm.status === VirtualMachineStates.ACTIVE) {
             this.reboot_done = true;
 
             if (updated_vm.created_at !== '') {
@@ -388,11 +389,11 @@ export class VmOverviewComponent implements OnInit {
                    this.selectedVm = updated_vm;
 
                    switch (updated_vm.status) {
-                     case this.SHUTOFF:
+                     case VirtualMachineStates.SHUTOFF:
                        this.status_changed = 1;
                        break;
-                     case 'POWERING OFF':
-                       this.check_status_loop(updated_vm, this.SHUTOFF);
+                     case VirtualMachineStates.POWERING_OFF:
+                       this.check_status_loop(updated_vm, VirtualMachineStates.SHUTOFF, true);
                        break;
                      default:
                        this.status_changed = 2;
@@ -440,7 +441,7 @@ export class VmOverviewComponent implements OnInit {
                    this.vms_content.forEach((vm: VirtualMachine, index: number) => {
                      vm.username = vm['userlogin'];
                      vm.cardState = 0;
-                     if (vm.status !== this.DELETED) {
+                     if (vm.status !== VirtualMachineStates.DELETED) {
                        this.vmActions.push({id: vm, name: vm.name});
                      }
                      if (vm.created_at !== '') {
@@ -468,8 +469,8 @@ export class VmOverviewComponent implements OnInit {
 
   checkVmTillActive(): void {
     this.vms_content.forEach((vm: VirtualMachine) => {
-      if (vm.status !== this.ACTIVE && vm.status !== this.SHUTOFF && vm.status !== this.DELETED) {
-        this.check_status_loop(vm, this.ACTIVE);
+      if (vm.status !== VirtualMachineStates.ACTIVE && vm.status !== VirtualMachineStates.SHUTOFF && vm.status !== VirtualMachineStates.DELETED) {
+        this.check_status_loop(vm, VirtualMachineStates.ACTIVE);
       }
     })
   }
@@ -489,7 +490,7 @@ export class VmOverviewComponent implements OnInit {
                    this.vms_content.forEach((vm: VirtualMachine, index: number) => {
                      vm.username = vm['userlogin'];
                      vm.cardState = 0;
-                     if (vm.status !== this.DELETED) {
+                     if (vm.status !== VirtualMachineStates.DELETED) {
                        this.vmActions.push({id: vm, name: vm.name});
                      }
                      if (vm.created_at !== '') {
@@ -515,10 +516,6 @@ export class VmOverviewComponent implements OnInit {
       );
   }
 
-  /**
-   * Resume a vm.
-   * @param {string} openstack_id of instance.
-   */
   resumeVM(vm: VirtualMachine):
     void {
 
@@ -532,11 +529,11 @@ export class VmOverviewComponent implements OnInit {
       updated_vm.cardState = 0;
       this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
       switch (updated_vm.status) {
-        case this.ACTIVE:
+        case VirtualMachineStates.ACTIVE:
           this.status_changed = 1;
           break;
-        case this.RESTARTING:
-          this.check_status_loop(updated_vm, this.ACTIVE);
+        case VirtualMachineStates.RESTARTING:
+          this.check_status_loop(updated_vm, VirtualMachineStates.ACTIVE, true);
           break;
         default:
           this.status_changed = 2;
@@ -562,7 +559,7 @@ export class VmOverviewComponent implements OnInit {
                    this.vms_content.forEach((vm: VirtualMachine, index: number) => {
                      vm.username = vm['userlogin'];
                      vm.cardState = 0;
-                     if (vm.status !== this.DELETED) {
+                     if (vm.status !== VirtualMachineStates.DELETED) {
                        this.vmActions.push({id: vm, name: vm.name});
                      }
                      if (vm.created_at !== '') {
