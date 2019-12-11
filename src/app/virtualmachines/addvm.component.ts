@@ -19,7 +19,6 @@ import {VirtualMachine} from './virtualmachinemodels/virtualmachine';
 import {UserService} from '../api-connector/user.service';
 import {BiocondaComponent} from './conda/bioconda.component';
 import {ResEnvComponent} from './conda/res-env.component';
-import {FormControl, Validators} from '@angular/forms';
 import {is_vo} from '../shared/globalvar';
 
 /**
@@ -387,7 +386,7 @@ export class VirtualMachineComponent implements OnInit {
       this.timeout += this.biocondaComponent.getTimeout();
     }
 
-    if (this.resEnvComponent.selected_template !== 'undefined'
+    if (this.resEnvComponent && this.resEnvComponent.selected_template !== 'undefined'
       && this.resEnvComponent.selected_version !== ''
       && this.resEnvComponent.user_key_url.errors === null) {
       playbook_info[this.resEnvComponent.selected_template] = {template_version: this.resEnvComponent.selected_version};

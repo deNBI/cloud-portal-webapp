@@ -181,6 +181,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 
   }
 
+
   selectEvent(item: any): void {
     if (this.selected_ontology_terms.indexOf(item) === -1) {
       this.selected_ontology_terms.push(item);

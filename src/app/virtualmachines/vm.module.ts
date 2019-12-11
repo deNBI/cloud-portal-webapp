@@ -42,9 +42,7 @@ import {ResEnvComponent} from './conda/res-env.component';
               AccordionModule.forRoot(),
               SharedDirectivesModule,
               PopoverModule.forRoot(), NgbModule,
-              ReactiveFormsModule
-
-            ],
+              ReactiveFormsModule],
             declarations: [
               ImageCarouselSlideComponent,
               ImageDetailComponent,
