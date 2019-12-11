@@ -304,30 +304,55 @@ export class VmOverviewComponent implements OnInit {
 
     setTimeout(
       () => {
-        this.virtualmachineservice.checkVmStatus(vm.openstackid).subscribe((updated_vm: VirtualMachine) => {
-          this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
-          if (is_selected_vm) {
-            this.selectedVm = updated_vm;
-          }
-
-          updated_vm.cardState = 0;
-
-          if (updated_vm.status === final_state) {
-            if (updated_vm.created_at !== '') {
-              updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
-            }
+        if (vm.openstackid) {
+          this.virtualmachineservice.checkVmStatus(vm.openstackid).subscribe((updated_vm: VirtualMachine) => {
             this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
-
-
-          } else {
-            if (vm['error']) {
-              this.status_check_error = true
-
+            if (is_selected_vm) {
+              this.selectedVm = updated_vm;
             }
-            this.check_status_loop(updated_vm, final_state, is_selected_vm)
-          }
 
-        })
+            updated_vm.cardState = 0;
+
+            if (updated_vm.status === final_state) {
+              if (updated_vm.created_at !== '') {
+                updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
+              }
+              this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
+
+            } else {
+              if (vm['error']) {
+                this.status_check_error = true
+
+              }
+              this.check_status_loop(updated_vm, final_state, is_selected_vm)
+            }
+
+          })
+        } else {
+          this.virtualmachineservice.checkVmStatus(vm.name).subscribe((updated_vm: VirtualMachine) => {
+            this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
+            if (is_selected_vm) {
+              this.selectedVm = updated_vm;
+            }
+
+            updated_vm.cardState = 0;
+
+            if (updated_vm.status === final_state) {
+              if (updated_vm.created_at !== '') {
+                updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
+              }
+              this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
+
+            } else {
+              if (vm['error']) {
+                this.status_check_error = true
+
+              }
+              this.check_status_loop(updated_vm, final_state, is_selected_vm)
+            }
+
+          })
+        }
       }
       ,
       this.checkStatusTimeout
