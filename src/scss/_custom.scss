@@ -17,6 +17,17 @@ $deNBI_black: #000000;
 $openstackcolour: #ED1944;
 $simplevmcolour: #00ADEF;
 
+@media (max-width: 992px)
+{
+  .app-header .navbar-brand
+  {
+    position:unset !important;
+    left:0% !important;
+    margin-left:0px !important;
+  }
+}
+
+
 .navbar-brand-full
 {
   bottom:8px;
@@ -66,7 +77,6 @@ $simplevmcolour: #00ADEF;
 {
   width: 100%;
   margin-right: 10px;
-  position: unset !important;
 }
 
 .app-header.navbar
