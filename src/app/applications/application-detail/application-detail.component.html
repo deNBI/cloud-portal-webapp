@@ -2,7 +2,7 @@
   <table class="table table-striped" style="table-layout: fixed">
 
 
-    <tr *ngIf="application?.PIApproved">
+    <tr *ngIf="application?.PIApproved" id="id_pi_row">
       <td>
         PI Name
       </td>
@@ -153,6 +153,15 @@
       <td>Sensitive Data</td>
       <td><p *ngIf="application.SensitiveData"> Yes</p>
         <p *ngIf="!application.SensitiveData"> No</p>
+      </td>
+      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
+
+      </td>
+    </tr>
+    <tr *ngIf="application.OpenStackProject">
+      <td>Training</td>
+      <td><p *ngIf="application.OpenstackBasicIntroduction"> Yes</p>
+        <p *ngIf="!application.OpenstackBasicIntroduction"> No</p>
       </td>
       <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED || isModification">
 

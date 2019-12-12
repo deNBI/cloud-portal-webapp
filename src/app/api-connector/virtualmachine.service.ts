@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {ApiSettings} from './api-settings.service'
-import {Observable, of} from 'rxjs';
+import {Observable} from 'rxjs';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Cookie} from 'ng2-cookies/ng2-cookies';
 import {VirtualMachine} from '../virtualmachines/virtualmachinemodels/virtualmachine';
@@ -23,7 +23,7 @@ export class VirtualmachineService {
   }
 
   startVM(flavor: string, image: string, servername: string, project: string, projectid: string, http: boolean, https: boolean,
-          udp: boolean, volumename?: string, diskspace?: string, playbook_information?: string, infos?: string): Observable<any> {
+          udp: boolean, volumename?: string, diskspace?: string, playbook_information?: string): Observable<any> {
 
     const params: HttpParams = new HttpParams()
       .set('flavor', flavor)
@@ -36,8 +36,7 @@ export class VirtualmachineService {
       .set('http_allowed', http.toString())
       .set('https_allowed', https.toString())
       .set('udp_allowed', udp.toString())
-      .set('playbook_information', playbook_information)
-      .set('infos', infos);
+      .set('playbook_information', playbook_information);
 
     return this.http.post(this.baseVmUrl, params, {
       withCredentials: true,
@@ -45,8 +44,8 @@ export class VirtualmachineService {
     })
   }
 
-  getAllVM(page: number, filter?: string, filter_status?: string[]): Observable<VirtualMachine[]> {
-    let params: HttpParams = new HttpParams().set('page', page.toString());
+  getAllVM(page: number, vm_per_site: number, filter?: string, filter_status?: string[]): Observable<VirtualMachine[]> {
+    let params: HttpParams = new HttpParams().set('page', page.toString()).set('vm_per_site', vm_per_site.toString());
     if (filter) {
       params = params.set('filter', filter);
 
@@ -63,8 +62,8 @@ export class VirtualmachineService {
     })
   }
 
-  getVmsFromLoggedInUser(page: number, filter?: string, filter_status?: string[]): Observable<VirtualMachine[]> {
-    let params: HttpParams = new HttpParams().set('page', page.toString());
+  getVmsFromLoggedInUser(page: number, vm_per_site: number, filter?: string, filter_status?: string[]): Observable<VirtualMachine[]> {
+    let params: HttpParams = new HttpParams().set('page', page.toString()).set('vm_per_site', vm_per_site.toString());
     if (filter) {
       params = params.set('filter', filter);
 
@@ -84,14 +83,21 @@ export class VirtualmachineService {
   getLogs(openstack_id: string): Observable<any> {
     return this.http.post(`${this.baseVmUrl}${openstack_id}/logs/`, null, {
       withCredentials: true,
+      headers: header
+    })
+  }
 
+  getLocationUrl(openstack_id: string): Observable<any> {
+    return this.http.post(`${this.baseVmUrl}${openstack_id}/location_url/`, null, {
+      withCredentials: true,
       headers: header
     })
   }
 
   getVmsFromFacilitiesOfLoggedUser(facility_id: string | number,
-                                   page: number, filter?: string, filter_status?: string[]): Observable<VirtualMachine[]> {
-    let params: HttpParams = new HttpParams().set('page', page.toString());
+                                   page: number, vm_per_site: number,
+                                   filter?: string, filter_status?: string[]): Observable<VirtualMachine[]> {
+    let params: HttpParams = new HttpParams().set('page', page.toString()).set('vm_per_site', vm_per_site.toString());
     if (filter) {
       params = params.set('filter', filter);
 

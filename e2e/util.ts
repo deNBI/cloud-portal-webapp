@@ -11,8 +11,10 @@ export class Util {
 
   private static _timeout: number = browser.params.timeout;
   private static auth: string = browser.params.login.auth;
-  private static _SIMPLE_VM_APPLICATION_NAME: string = 'PTSimpleVM';
+  private static _SIMPLE_VM_APPLICATION_NAME_NO_PI: string = 'PTSimpleVMNoPi';
   private static _OPENSTACK_APPLICATION_NAME: string = 'PTOpenStack';
+  private static _SIMPLE_VM_APPLICATION_NAME: string = 'PTSimpleVM';
+  private static _PI_EMAIL: string = 'test@test.com';
   private static _BASIC_VM_NAME: string = 'PTSIMPLEVM';
   private static _VOLUME_VM_NAME: string = 'ProtractorVMVolume';
   private static _VOLUME_NAME: string = 'ProtractorVolume';
@@ -21,6 +23,13 @@ export class Util {
   private static _BASIC_SNAPSHOT_NAME: string = 'PTSnap';
 
   // tslint:disable-next-line:no-require-imports
+  static get PI_EMAIL(): string {
+    return this._PI_EMAIL;
+  }
+
+  static get SIMPLE_VM_APPLICATION_NAME_NO_PI(): string {
+    return this._SIMPLE_VM_APPLICATION_NAME_NO_PI;
+  }
 
   static get SIMPLE_VM_APPLICATION_NAME(): string {
     return this._SIMPLE_VM_APPLICATION_NAME;
