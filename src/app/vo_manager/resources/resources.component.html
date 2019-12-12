@@ -1,8 +1,13 @@
 <div *ngIf="isLoaded==false" class="loader"></div>
 
-<div *ngIf="isLoaded" class="animated fadeIn" ng-app>
-    <div>
-        <div class="card" style="width:100%;">
+<div *ngIf="isLoaded" class="animated fadeIn" ng-app style="width: 100%">
+    <div class="row">
+        <!--/.col-->
+        <h1 class="col-12-md" *ngIf="selectedFacility">Vo Resources Overview
+
+
+        </h1>
+        <div class="card" style="width: 100%">
             <div class="card-header">
                 <i class="fa fa-align-justify"></i> Resources
 
