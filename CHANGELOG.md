@@ -1,3 +1,16 @@
+#  (2019-12-12)
+
+
+#### Features
+
+* **Instance:** status loop implemented ([00bd3011](00bd3011))
+
+#### Bug Fixes
+
+* **applications_overview:**  button-size jumping for smaller screens (#940) ([e111331b](e111331b))
+* **fm_resources:**  adjusted modal size and added pattern to inputs (#937) ([804cdfd0](804cdfd0))
+
+
 ##  (2019-12-10)
 
 
