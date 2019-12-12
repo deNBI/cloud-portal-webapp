@@ -17,6 +17,27 @@ $deNBI_black: #000000;
 $openstackcolour: #ED1944;
 $simplevmcolour: #00ADEF;
 
+//media-query for applications-overview buttons
+
+@media (max-width: 1350px)
+{
+  .applicationActionsButton
+  {
+    display: none;
+  }
+}
+
+.navbar-brand-full
+{
+  bottom:8px;
+  position: relative;
+}
+
+.instance-card{
+  margin-top: 10px;
+  margin-bottom:5px;
+}
+
 
 //modals
 
