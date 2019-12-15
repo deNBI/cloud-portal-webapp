@@ -578,14 +578,16 @@
           </button>
         </div>
         <div class="modal-body">
-          <div class="alert alert-info" role="alert" *ngIf="status_changed == 0">
-            Deleting... <i class="fa fa-spinner fa-spin"
-                                                style="font-size:24px"></i>
-          </div>
-          <div class="alert alert-success" role="alert" *ngIf="status_changed == 1"
-               id="delete_all_success_div">
-            Was successfully deleted.
-          </div>
+          Deletion status:
+          <ng-container *ngFor="let vm of selectedMachines">
+            <div class="alert alert-warning" *ngIf="vm?.status != this.VirtualMachineStates.staticDELETED">
+              Deleting {{vm?.name}} <i class="fa fa-spinner fa-spin"
+                             style="font-size:24px"></i>
+            </div>
+            <div class="alert alert-success" *ngIf="vm?.status == this.VirtualMachineStates.staticDELETED">
+              Deleted {{vm?.name}}
+            </div>
+          </ng-container>
         </div>
 
 
