@@ -306,9 +306,13 @@ export class VmOverviewComponent implements OnInit {
       () => {
         if (vm.openstackid) {
           this.virtualmachineservice.checkVmStatus(vm.openstackid).subscribe((updated_vm: VirtualMachine) => {
-            this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
-            if (is_selected_vm) {
-              this.selectedVm = updated_vm;
+            if (!updated_vm['error']) {
+              this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
+              if (is_selected_vm) {
+                this.selectedVm = updated_vm;
+              }
+            } else {
+              updated_vm = vm
             }
 
             updated_vm.cardState = 0;
