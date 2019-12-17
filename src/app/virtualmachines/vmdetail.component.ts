@@ -19,6 +19,7 @@ import {Client} from "./clients/client.model";
 @Component({
   selector: 'app-virtual-machine-detail',
   templateUrl: 'vmdetail.component.html',
+  styleUrls: ['./vmdetail.component.scss'],
   providers: [FlavorService, FacilityService, VoService, UserService, GroupService, ApiSettings, VoService, CreditsService, VirtualmachineService]
 })
 
@@ -109,6 +110,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
     newFlavor.rootdisk = aj['rootdisk'];
     newFlavor.simple_vm = aj['simple_vm']
     newFlavor.type = this.createFlavorType(aj['type']);
+    newFlavor.vcpus = aj['vcpus'];
 
     return newFlavor;
   }

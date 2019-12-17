@@ -4,48 +4,125 @@
   <div class="row">
     <div class="col-12">
       <div class="card">
+        <div class="card-header"><span class="font-weight-bold text-muted">{{virtualMachine?.name}}</span></div>
         <div class="card-body">
-          <div>{{virtualMachine?.name}}</div>
           <div class="row">
-            <div class="col-2" style="margin: auto;" [ngSwitch]="virtualMachine?.status">
+            <div class="col-4" style="margin:auto">
+            <div [ngSwitch]="virtualMachine?.status">
               <div *ngSwitchCase="'ACTIVE'" [id]="'active_badge_' + virtualMachine?.name"
-                   class="dot-colorless bg-success pulseAnim" style="width: 10px; height: 10px">
+                   class="dot-colorless bg-success pulseAnim" style="width: 15px; height: 15px;">
               </div>
               <div *ngSwitchCase="'SHUTOFF'" [id]="'shutoff_badge_' + virtualMachine?.name"
-                   class="dot-colorless bg-warning" style="width: 10px; height: 10px">
+                   class="dot-colorless bg-warning" style="width: 15px; height: 15px">
               </div>
               <div *ngSwitchCase="'DELETED'" [id]="'deleted_badge_' + virtualMachine?.name"
-                   class="dot-colorless bg-danger" style="width: 10px; height: 10px">
+                   class="dot-colorless bg-danger" style="width: 15px; height: 15px">
               </div>
               <div *ngSwitchCase="'BUILD'" [id]="'build_badge_' + virtualMachine.name"
-                   class="dot-colorless bg-dark">
+                   class="dot-colorless bg-dark" style="width: 15px; height: 15px">
               </div>
               <div *ngSwitchCase="'PREPARE_PLAYBOOK_BUILD'" [id]="'ppb_badge_' + virtualMachine?.name"
-                   class="dot-colorless bg-dark">
+                   class="dot-colorless bg-dark" style="width: 15px; height: 15px">
               </div>
               <div *ngSwitchCase="'BUILD_PLAYBOOK'" [id]="'build_playbook_badge_' + virtualMachine?.name"
-                   class="dot-colorless bg-dark" >
+                   class="dot-colorless bg-dark" style="width: 15px; height: 15px" >
               </div>
               <div *ngSwitchCase="'RESTARTING'" [id]="'restarting_badge_' + virtualMachine.name"
-                   class="dot-colorless bg-dark">
+                   class="dot-colorless bg-dark" style="width: 15px; height: 15px">
               </div>
               <div *ngSwitchCase="'POWERING OFF'" [id]="'powering_off_badge_' + virtualMachine?.name"
-                   class="dot-colorless bg-dark">
+                   class="dot-colorless bg-dark" style="width: 15px; height: 15px">
               </div>
-              <div *ngSwitchDefault
+                <div *ngSwitchDefault
                    [id]="'default_badge_' + virtualMachine?.name"
-                   class="dot-colorless bg-dark" style="width: 10px; height: 10px">
-              </div>  {{virtualMachine?.status}}
+                   class="dot-colorless bg-dark" style="width: 15px; height: 15px">
+                </div><span style="margin-left:15px;"class="text-muted font-weight-bold">Status: {{virtualMachine?.status}}</span>
+              </div>
             </div>
-            <div class="col-2 font-weight-bold font-xs text-muted">action</div>
-            <div class="col-2 font-weight-bold font-xs text-muted">action</div>
-            <div class="col-2 font-weight-bold font-xs text-muted">action</div>
-            <div class="col-2 font-weight-bold font-xs text-muted">action2</div>
-            <div class="col-2 font-weight-bold font-xs text-muted">a3</div>
+            <div class="col-2" *ngIf="!virtualMachine?.stopped_at">
+              <div class="callout callout-success" >
+                <small class="text-muted">Created at</small><br>
+                <strong class="text-muted">{{virtualMachine?.created_at}}</strong>
+              </div>
+            </div>
+            <div class="col-2" *ngIf="virtualMachine?.stopped_at">
+              <div class="callout callout-warning">
+                <small class="text-muted">Stopped at</small><br>
+                <strong class="text-muted">{{virtualMachine?.stopped_at}}</strong>
+              </div>
+            </div>
+            <div class="col-2">
+              <div class="callout">
+                <small class="text-muted">Part of</small><br>
+                <a href="/#/project-management/{{virtualMachine?.application_id}}">
+                  <strong class="text-muted">{{virtualMachine?.project}}</strong></a>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="callout">
+                <small class="text-muted">Openstack-ID</small><br>
+                <strong class="text-muted">{{virtualMachine?.openstackid}}</strong>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4">
+              <div class="callout">
+                <small class="text-muted">Created by</small><br>
+                <strong class="text-muted">{{virtualMachine?.username}}</strong>
+              </div>
+            </div>
+            <div class="col-8">
+              <div class="callout">
+                <small class="text-muted">Elixir-ID of {{virtualMachine?.username}}</small><br>
+                <strong class="text-muted">{{virtualMachine?.elixir_id}}</strong>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><span class="font-weight-bold text-muted">Flavor Information</span></div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-4">
+              <div class="callout">
+                <small class="text-muted">Name</small><br>
+                <strong class="text-muted">{{virtualMachine?.flavor?.name}}</strong>
+              </div>
+            </div>
+            <div class="col-2">
+              <div class="callout">
+                <small class="text-muted">Number of VCPUs</small><br>
+                <strong class="text-muted">{{virtualMachine?.flavor?.vcpus}}</strong>
+              </div>
+            </div>
+            <div class="col-2">
+              <div class="callout">
+                <small class="text-muted">RAM</small><br>
+                <strong class="text-muted">{{virtualMachine?.flavor?.ram}} GB</strong>
+              </div>
+            </div>
+            <div class="col-2">
+              <div class="callout">
+                <small class="text-muted">Rootdisk</small><br>
+                <strong class="text-muted">{{virtualMachine?.flavor?.rootdisk}} GB</strong>
+              </div>
+            </div>
+            <div class="col-2">
+              <div class="callout">
+                <small class="text-muted">Ephemeral disk</small><br>
+                <strong class="text-muted">{{virtualMachine?.flavor?.epheremal_disk}} GB</strong>
+              </div>
+            </div>
 
           </div>
         </div>
       </div>
+
+
     </div>
   </div>
 </div>
