@@ -51,6 +51,14 @@
 
     </ng-template>
   </ngb-tab>
+  <ngb-tab *ngIf="location_url != ''">
+    <ng-template ngbTabTitle><b>Res-Env</b></ng-template>
+    <ng-template ngbTabContent>
+      <div class="row justify-content-center">
+    {{location_url}}
+      </div>
+    </ng-template>
+  </ngb-tab>
 </ngb-tabset>
 <div><strong>Instance: <span id="instance_name"> {{selectedVirtualMachine.name}}</span></strong></div>
 

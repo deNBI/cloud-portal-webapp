@@ -3,7 +3,7 @@ import {CarouselModule} from 'ngx-owl-carousel-o';
 import {TabsModule} from 'ngx-bootstrap/tabs';
 import {VmRoutingModule} from './vm_routing.module';
 import {CommonModule} from '@angular/common';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ModalModule} from 'ngx-bootstrap/modal';
 import {ImageDetailComponent} from '../virtualmachines/imagedetail.component';
 import {VirtualMachineComponent} from '../virtualmachines/addvm.component';
@@ -22,7 +22,9 @@ import {SharedDirectivesModule} from '../shared/shared_modules/shared_directives
 import {ImageCarouselSlideComponent} from './imageCarouselSlide.component';
 import {PopoverModule} from 'ngx-bootstrap/popover';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {VmDetailComponent} from "./vmdetail.component";
+import {VmDetailComponent} from './vmdetail.component';
+import {ResEnvComponent} from './conda/res-env.component';
+
 
 /**
  * VM module.
@@ -41,9 +43,8 @@ import {VmDetailComponent} from "./vmdetail.component";
               CarouselModule,
               AccordionModule.forRoot(),
               SharedDirectivesModule,
-              PopoverModule.forRoot(), NgbModule
-
-            ],
+              PopoverModule.forRoot(), NgbModule,
+              ReactiveFormsModule],
             declarations: [
               ImageCarouselSlideComponent,
               ImageDetailComponent,
@@ -55,7 +56,8 @@ import {VmDetailComponent} from "./vmdetail.component";
               SnapshotOverviewComponent,
               HowToConnectComponent,
               BiocondaComponent,
-              VmDetailComponent
+              VmDetailComponent,
+              ResEnvComponent
             ]
           })
 export class VmModule {

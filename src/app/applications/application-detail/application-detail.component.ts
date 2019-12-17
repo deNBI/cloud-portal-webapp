@@ -5,8 +5,7 @@ import {ApplicationsService} from '../../api-connector/applications.service';
 import {ApplicationStatusService} from '../../api-connector/application-status.service';
 import {UserService} from '../../api-connector/user.service';
 import {FacilityService} from '../../api-connector/facility.service';
-import {IResponseTemplate} from '../../api-connector/response-template';
-import {VoService} from '../../api-connector/vo.service';
+import {is_vo} from '../../shared/globalvar';
 
 /**
  * Class which displays the details of an application.
@@ -16,7 +15,7 @@ import {VoService} from '../../api-connector/vo.service';
              templateUrl: './application-detail.component.html',
              styleUrls: ['./application-detail.component.scss'],
              providers: [FacilityService, UserService, ApplicationStatusService,
-               ApplicationsService, VoService]
+               ApplicationsService]
            })
 export class ApplicationDetailComponent extends ApplicationBaseClassComponent implements OnInit {
   @Input() application: Application;
@@ -31,25 +30,14 @@ export class ApplicationDetailComponent extends ApplicationBaseClassComponent im
   constructor(applicationsservice: ApplicationsService,
               applicationstatusservice: ApplicationStatusService,
               userservice: UserService,
-              facilityService: FacilityService,
-              private voservice: VoService) {
+              facilityService: FacilityService) {
 
     super(userservice, applicationstatusservice, applicationsservice, facilityService);
   }
 
   ngOnInit(): void {
     this.getMemberDetailsByElixirId(this.application.User);
-    this.checkVOstatus()
-  }
-
-  /**
-   * Check vm status.
-   * @param {UserService} userservice
-   */
-  checkVOstatus(): void {
-    this.voservice.isVo().subscribe((result: IResponseTemplate) => {
-      this.is_vo_admin = <boolean><Boolean>result.value;
-    })
+    this.is_vo_admin = is_vo;
   }
 
 }

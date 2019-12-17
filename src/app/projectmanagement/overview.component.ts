@@ -1,4 +1,4 @@
-import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {Project} from './project.model';
 import {ProjectMember} from './project_member.model'
 import {environment} from '../../environments/environment'
@@ -6,7 +6,6 @@ import {ApiSettings} from '../api-connector/api-settings.service';
 import {GroupService} from '../api-connector/group.service';
 import {UserService} from '../api-connector/user.service';
 import * as moment from 'moment';
-import {VoService} from '../api-connector/vo.service';
 import {ProjectMemberApplication} from './project_member_application';
 import {ComputecenterComponent} from './computecenter.component';
 import {Userinfo} from '../userinfo/userinfo.model';
@@ -23,8 +22,8 @@ import {NgForm} from '@angular/forms';
 import {Flavor} from '../virtualmachines/virtualmachinemodels/flavor';
 import {FlavorType} from '../virtualmachines/virtualmachinemodels/flavorType';
 import {FlavorService} from '../api-connector/flavor.service';
-import {IResponseTemplate} from '../api-connector/response-template';
 import {CreditsService} from '../api-connector/credits.service';
+import {is_vo} from '../shared/globalvar';
 
 /**
  * Projectoverview component.
@@ -33,7 +32,7 @@ import {CreditsService} from '../api-connector/credits.service';
              selector: 'app-project-overview',
              templateUrl: 'overview.component.html',
              providers: [FlavorService, ApplicationStatusService, ApplicationsService,
-               FacilityService, VoService, UserService, GroupService, ApiSettings, VoService, CreditsService]
+               FacilityService, UserService, GroupService, ApiSettings, CreditsService]
            })
 export class OverviewComponent extends ApplicationBaseClassComponent implements OnInit {
 
@@ -50,11 +49,19 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
    */
   public min_vm: boolean = true;
 
+
+  /**
+   * The credits for the extension.
+   */
+  private extensionCredits: number = 0;
+
   project_id: string;
   application_id: string;
   project: Project;
   application_details_visible: boolean = false;
   credits: number = 0;
+
+  errorMessage: string;
 
   /**
    * id of the extension status.
@@ -97,8 +104,26 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
               private activatedRoute: ActivatedRoute,
               private fullLayout: FullLayoutComponent,
               private router: Router,
-              private voservice: VoService, private creditsService: CreditsService) {
+              private creditsService: CreditsService) {
     super(userservice, applicationstatusservice, applicationsservice, facilityService);
+  }
+
+  calculateCredits(lifetimeString?: string): void {
+    let lifetime: number;
+    if (Number(lifetimeString) == undefined) {
+      lifetime = 0
+    } else {
+      lifetime = Number(lifetimeString)
+    }
+    let total_lifetime = (Math.round(((this.project.LifetimeDays-this.project.DaysRunning)/31)*100)/100) + lifetime;
+    this.creditsService.getCreditsForApplication(this.totalNumberOfCores, this.totalRAM, total_lifetime).toPromise()
+      .then((credits: number) => {
+        var extraCredits:number = credits - Math.round(this.project.ApprovedCredits * ((this.project.LifetimeDays-this.project.DaysRunning) / this.project.LifetimeDays))
+        if (extraCredits < 0) {
+          extraCredits = 0
+        }
+        this.extensionCredits = extraCredits;
+      }).catch((err: Error) => console.log(err.message));
   }
 
   approveMemberApplication(project: number, application: number, membername: string): void {
@@ -127,28 +152,43 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   }
 
   getApplication(): void {
-    this.applicationsservice.getApplication(this.application_id).subscribe((aj: object) => {
-      const newApp: Application = this.setNewApplication(aj);
+    this.applicationsservice
+      .getApplication(this.application_id)
+      .subscribe(
+        (aj: object) => {
+          if (aj['project_application_name'] === '') {
+            this.isLoaded = false;
+            this.errorMessage = 'Not found';
 
-      this.project_application = newApp;
-      if (this.project_application) {
-        this.setLifetime();
+            return;
+          }
+          const newApp: Application = this.setNewApplication(aj);
 
-        this.applicationsservice.getApplicationPerunId(this.application_id).subscribe((id: any) => {
-          if (id['perun_id']) {
-            this.project_id = id['perun_id'];
+          this.project_application = newApp;
+          if (this.project_application) {
+            this.setLifetime();
 
-            this.getProject();
+            this.applicationsservice.getApplicationPerunId(this.application_id).subscribe((id: any) => {
+              if (id['perun_id']) {
+                this.project_id = id['perun_id'];
 
+                this.getProject();
+
+              } else {
+                this.isLoaded = true;
+              }
+
+            })
           } else {
             this.isLoaded = true;
           }
-
+        },
+        (error: any) => {
+          this.isLoaded = false;
+          this.errorMessage = `Status: ${error.status.toString()},
+                   StatusText: ${error.statusText.toString()},
+                   Error Message: ${error.error.toString()}`;
         })
-      } else {
-        this.isLoaded = true;
-      }
-    })
   }
 
   initRamCores(): void {
@@ -189,8 +229,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
     values['project_application_id'] = this.project_application.Id;
     values['total_cores_new'] = this.totalNumberOfCores;
     values['total_ram_new'] = this.totalRAM;
-    values['project_application_renewal_credits'] = this.credits;
-
+    values['project_application_renewal_credits'] = this.extensionCredits;
     this.requestExtension(values);
 
   }
@@ -282,6 +321,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   ngOnInit(): void {
 
     this.activatedRoute.params.subscribe((paramsId: any) => {
+      this.errorMessage = null;
       this.isLoaded = false;
       this.project = null;
       this.project_application = null;
@@ -292,7 +332,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
       this.getUserinfo();
       this.getListOfFlavors();
       this.getListOfTypes();
-      this.checkVOstatus();
+      this.is_vo_admin = is_vo;
 
     });
 
@@ -800,13 +840,4 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
     }
   }
 
-  /**
-   * Check vm status.
-   * @param {UserService} userservice
-   */
-  checkVOstatus(): void {
-    this.voservice.isVo().subscribe((result: IResponseTemplate) => {
-      this.is_vo_admin = <boolean><Boolean>result.value;
-    })
-  }
 }

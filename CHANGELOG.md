@@ -1,4 +1,56 @@
+#  (2019-12-12)
 
+
+#### Features
+
+* **Instance:** status loop implemented ([00bd3011](00bd3011))
+
+#### Bug Fixes
+
+* **applications_overview:**  button-size jumping for smaller screens (#940) ([e111331b](e111331b))
+* **fm_resources:**  adjusted modal size and added pattern to inputs (#937) ([804cdfd0](804cdfd0))
+
+
+##  (2019-12-10)
+
+
+#### Bug Fixes
+
+* **application:**  removed typo ([acde565f](acde565f))
+* **instance-overview:**
+  *  removed typo ([305f7af7](305f7af7))
+  *  restructured overloaded layout ([e2e6d9d1](e2e6d9d1))
+* **instance_overview:**  layout problems ([de7e5c81](de7e5c81))
+* **io:**  smaller black dot, footer vanish after action ([3446aaf4](3446aaf4))
+
+#### Features
+
+* **Instance:** added vm_per_site ([292e285f](292e285f))
+
+
+##  (2019-12-06)
+
+
+#### Features
+
+* **Application:**
+  * pi can change ([844eef6e](844eef6e))
+  * pi can change ([7dafe292](7dafe292))
+* **Audit:** added whitelist ([404ba467](404ba467))
+* **Training:** updated with trainin field ([6ddb9ea9](6ddb9ea9))
+* **application:**  Training description added ([349e92ca](349e92ca))
+
+#### Bug Fixes
+
+* **Instance:** username now always there ([78118b97](78118b97))
+* **app-overview:**
+  *  catch some non int requests (#926) ([492c24d6](492c24d6))
+  *  catch some non int requests ([746b08a4](746b08a4))
+* **filter:**
+  *  check projectname(-long) for null (#924) ([c3e7e9ca](c3e7e9ca))
+  *  check projectname(-long) for null ([72b82823](72b82823))
+
+##  (2019-11-14)
 
 #### Bug Fixes
 

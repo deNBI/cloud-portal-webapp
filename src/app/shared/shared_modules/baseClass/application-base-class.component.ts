@@ -11,8 +11,7 @@ import {FacilityService} from '../../../api-connector/facility.service';
 import {Component} from '@angular/core';
 import {ApplicationStatusService} from '../../../api-connector/application-status.service';
 import {UserService} from '../../../api-connector/user.service';
-import {NgForm} from '@angular/forms';
-import {Dissemination} from '../../../applications/application.model/dissemination';
+import {ApplicationDissemination} from '../../../applications/application-dissemination';
 
 /**
  * Application base component..
@@ -162,9 +161,12 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
     })
   }
 
-  valuesChanged(flavor: Flavor, counter: number): void {
+  valuesChanged(flavor: Flavor, counter: number, lifetime?: string): void {
     this.newFlavors[flavor.name] = {counter: counter, flavor: flavor};
     this.calculateRamCores();
+    if (lifetime == undefined) {
+      lifetime = "0";
+    }
   }
 
   calculateRamCores(): void {
@@ -198,6 +200,7 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
     newApp.CoresPerVM = aj['project_application_cores_per_vm'];
     newApp.VolumeLimit = aj['project_application_volume_limit'];
     newApp.VolumeCounter = aj['project_application_volume_counter'];
+    newApp.OpenstackBasicIntroduction = aj['project_application_openstack_basic_introduction'];
 
     newApp.ObjectStorage = aj['project_application_object_storage'];
     newApp.OpenStackProject = aj['project_application_openstack_project'];
@@ -272,9 +275,10 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
     return newApp
   }
 
-  createDisseminatenObject(obj: any): Dissemination {
+  createDisseminatenObject(obj: any): ApplicationDissemination {
     if (obj) {
-      return new Dissemination(
+      // @ts-ignore
+      return new ApplicationDissemination(
         obj['platform_denbi'], obj['platform_twitter'],
         obj['information_title'], obj['information_resources'],
         obj['information_runtime'], obj['information_pi_name'],
@@ -416,7 +420,6 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
     this.constantStrings['project_application_renewal_volume_counter'] = 'Number of volumes for additional storage: ';
     this.constantStrings['project_application_renewal_object_storage'] = 'Object storage: ';
     this.constantStrings['project_application_renewal_volume_limit'] = 'Volume Storage space for your VMs: ';
-
     this.constantStrings['project_application_institute'] = 'Your institute: ';
     this.constantStrings['project_application_workgroup'] = 'Your Workgroup: ';
     this.constantStrings['project_application_horizon2020'] = 'Horizon2020: ';
