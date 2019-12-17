@@ -12,8 +12,7 @@ import {AbstractBaseClasse} from "../shared/shared_modules/baseClass/abstract-ba
 import {ActivatedRoute} from "@angular/router";
 import {VirtualMachine} from "./virtualmachinemodels/virtualmachine";
 import {VirtualmachineService} from "../api-connector/virtualmachine.service";
-import {Observable} from "rxjs";
-import {is_vo} from "../shared/globalvar";
+
 
 
 @Component({
@@ -58,6 +57,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
         console.log(aj['name']);
         const newVM: VirtualMachine = this.setNewVirtualMachine(aj);
         this.vm_to_show = newVM;
+        this.isLoaded = true;
       },
       (error: any) => {
           this.isLoaded = false;

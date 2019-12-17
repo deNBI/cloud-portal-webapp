@@ -134,7 +134,7 @@
                 <div class="col-5" style="margin: auto;" [ngSwitch]="vm?.status">
 
                   <a class="h5 text-primary" style="margin-left: 10px"
-                    href="/#/virtualmachines/{{vm?.openstackid}}">{{vm?.name}}  </a>
+                    href="/#/virtualmachines/detail/{{vm?.openstackid}}">{{vm?.name}}  </a>
                   <div *ngSwitchCase="this.VirtualMachineStates.staticACTIVE" [id]="'active_badge_' + vm?.name"
                        class="dot-colorless bg-success pulseAnim" style="width: 10px; height: 10px">
                   </div>
