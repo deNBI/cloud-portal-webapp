@@ -5,6 +5,7 @@
     <div class="col-12">
       <div class="card">
         <div class="card-body">
+          <div>{{virtualMachine?.name}}</div>
           <div class="row">
             <div class="col-2" style="margin: auto;" [ngSwitch]="virtualMachine?.status">
               <div *ngSwitchCase="'ACTIVE'" [id]="'active_badge_' + virtualMachine?.name"
