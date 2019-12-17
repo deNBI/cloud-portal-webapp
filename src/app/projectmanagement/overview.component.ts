@@ -49,6 +49,12 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
    */
   public min_vm: boolean = true;
 
+
+  /**
+   * The credits for the extension.
+   */
+  private extensionCredits: number = 0;
+
   project_id: string;
   application_id: string;
   project: Project;
@@ -100,6 +106,24 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
               private router: Router,
               private creditsService: CreditsService) {
     super(userservice, applicationstatusservice, applicationsservice, facilityService);
+  }
+
+  calculateCredits(lifetimeString?: string): void {
+    let lifetime: number;
+    if (Number(lifetimeString) == undefined) {
+      lifetime = 0
+    } else {
+      lifetime = Number(lifetimeString)
+    }
+    let total_lifetime = (Math.round(((this.project.LifetimeDays-this.project.DaysRunning)/31)*100)/100) + lifetime;
+    this.creditsService.getCreditsForApplication(this.totalNumberOfCores, this.totalRAM, total_lifetime).toPromise()
+      .then((credits: number) => {
+        var extraCredits:number = credits - Math.round(this.project.ApprovedCredits * ((this.project.LifetimeDays-this.project.DaysRunning) / this.project.LifetimeDays))
+        if (extraCredits < 0) {
+          extraCredits = 0
+        }
+        this.extensionCredits = extraCredits;
+      }).catch((err: Error) => console.log(err.message));
   }
 
   approveMemberApplication(project: number, application: number, membername: string): void {
@@ -205,8 +229,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
     values['project_application_id'] = this.project_application.Id;
     values['total_cores_new'] = this.totalNumberOfCores;
     values['total_ram_new'] = this.totalRAM;
-    values['project_application_renewal_credits'] = this.credits;
-
+    values['project_application_renewal_credits'] = this.extensionCredits;
     this.requestExtension(values);
 
   }

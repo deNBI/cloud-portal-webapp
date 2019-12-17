@@ -449,6 +449,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
     values['project_application_volume_counter'] = 5;
     values['project_application_volume_limit'] = 20;
     values['project_application_workgroup'] = 'TestApplication';
+    values['project_application_initial_credits'] = 5952;
 
     this.applicationsservice.addNewApplication(values).toPromise()
       .then(() => {
