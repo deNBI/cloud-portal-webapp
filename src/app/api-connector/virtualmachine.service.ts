@@ -63,11 +63,9 @@ export class VirtualmachineService {
   }
 
   getVmById(openstackId: string): Observable<VirtualMachine> {
-    const params: HttpParams = new HttpParams().set('openstackid', openstackId);
 
-    return this.http.get<VirtualMachine>(this.baseVmUrl, {
+    return this.http.get<VirtualMachine>(`${this.baseVmUrl}${openstackId}/details/`, {
       withCredentials: true,
-      params: params
     })
   }
 
