@@ -3,7 +3,6 @@
 
     <div class="card-header">
       <div class="row">
-        <i class="icon-refresh icons" style="cursor: pointer; margin:2px;" (click)="getVms()"></i><strong> Instances</strong>
         <div *ngIf="is_vo_admin || is_facility_manager" class="col-6">
 
 
@@ -34,18 +33,23 @@
       </div>
 
     </div>
-
-    <div class="col-8 row container-fluid" style="margin: 10px 0 0 0;">
+    <div class="row">
+    <div class="col-4 container-fluid" style="margin: 10px 0 0 0;">
       <pagination
         [totalItems]="total_items" [itemsPerPage]="items_per_page"
         (pageChanged)="pageChanged($event)" [(ngModel)]="currentPage"
         [boundaryLinks]="true" [maxSize]="total_pages" [rotate]="false" #pagination>
       </pagination>
-      <input id="vm_per_site" class="form-control" style="width: 80px; margin-left: 10px"
+    </div>
+      <div class="input-group mb-3 col-2">
+      <input id="vm_per_site" class="form-control" style="margin: 10px 0 0 0;"
              name="vm_per_site" placeholder="e.g 3"
              type="number" min="1" max="25" step="1"
              appMinAmount="1" appMaxAmount="25" appInteger
              pattern="^([1-9]|1[012])$" [(ngModel)]="vm_per_site" (ngModelChange)="vmPerPageChange.next($event)">
+      <div class="input-group-append" style="margin: 10px 0 0 0;"><span class="input-group-text"> VMs per page
+                                    </span></div>
+      </div>
     </div>
     <div class="container-fluid">
       <div class="row">
@@ -129,7 +133,8 @@
               <div class="row" style="margin-top: 5px">
                 <div class="col-5" style="margin: auto;" [ngSwitch]="vm?.status">
 
-                  <a class="h5 text-primary" style="margin-left: 10px">{{vm?.name}}  </a>
+                  <a class="h5 text-primary" style="margin-left: 10px"
+                    href="/#/virtualmachines/{{vm?.openstackid}}">{{vm?.name}}  </a>
                   <div *ngSwitchCase="this.VirtualMachineStates.staticACTIVE" [id]="'active_badge_' + vm?.name"
                        class="dot-colorless bg-success pulseAnim" style="width: 10px; height: 10px">
                   </div>

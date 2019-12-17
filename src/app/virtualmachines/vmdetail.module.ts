@@ -4,22 +4,22 @@ import {TabsModule} from "ngx-bootstrap/tabs";
 import {FormsModule} from "@angular/forms";
 import {CommonModule} from "@angular/common";
 import {ModalModule} from "ngx-bootstrap/modal";
-import {ApplicationsModule} from "../applications/applications.module";
 import {SharedDirectivesModule} from "../shared/shared_modules/shared_directives.module";
-import {VmDetailComponent} from "./vmdetail.component";
+import {VmDetailRoutingModule} from "./vmdetail-routing.module";
+import {VmOverviewComponent} from "./vmOverview.component";
 
 @NgModule({
   imports: [
     AccordionModule.forRoot(),
+    VmDetailRoutingModule,
     TabsModule,
     FormsModule,
     CommonModule,
     ModalModule.forRoot(),
-    ApplicationsModule,
     SharedDirectivesModule
   ],
   declarations: [
-    VmDetailComponent
+    VmOverviewComponent
   ]
 })
 

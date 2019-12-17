@@ -1,7 +1,6 @@
 import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {environment} from '../../environments/environment'
 import {FlavorService} from "../api-connector/flavor.service";
-import {ApplicationStatusService} from "../api-connector/application-status.service";
 import {ApplicationsService} from "../api-connector/applications.service";
 import {FacilityService} from "../api-connector/facility.service";
 import {VoService} from "../api-connector/vo.service";
@@ -13,9 +12,8 @@ import {AbstractBaseClasse} from "../shared/shared_modules/baseClass/abstract-ba
 import {ActivatedRoute} from "@angular/router";
 import {VirtualMachine} from "./virtualmachinemodels/virtualmachine";
 import {VirtualmachineService} from "../api-connector/virtualmachine.service";
-import {forEach} from "@angular/router/src/utils/collection";
-import {map} from "rxjs/operators";
 import {Observable} from "rxjs";
+import {is_vo} from "../shared/globalvar";
 
 
 @Component({
@@ -26,7 +24,7 @@ import {Observable} from "rxjs";
 
 export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
   vm_id: string;
-  vm_to_show: Observable<VirtualMachine>;
+  vm_to_show: VirtualMachine;
   virtualmachineService: VirtualmachineService;
   userService: UserService;
   applicationService: ApplicationsService;
@@ -47,10 +45,29 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
   ngOnInit(): void {
 
     console.log('site loaded');
-    this.activatedRoute.params.subscribe((virtM: VirtualMachine) => {
-      this.virtualMachine = virtM;
-      this.title = this.virtualMachine.name;
-      this.isLoaded = true;
+    this.activatedRoute.params.subscribe((paramsId: any) => {
+     this.vm_id = paramsId.id;
+     this.getVmById();
+
     });
+  }
+
+  getVmById(): void {
+    this.virtualmachineService.getVmById(this.vm_id).subscribe(
+      (aj: object) => {
+        console.log(aj['name']);
+        const newVM: VirtualMachine = this.setNewVirtualMachine(aj);
+        this.vm_to_show = newVM;
+      },
+      (error: any) => {
+          this.isLoaded = false;
+          console.log(error.error.toString());
+          console.log('error loading vm with id');
+      }
+    );
+  }
+
+  setNewVirtualMachine(aj: any): VirtualMachine {
+    return null;
   }
 }
