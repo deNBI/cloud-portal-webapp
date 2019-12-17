@@ -703,9 +703,9 @@ export class VmOverviewComponent implements OnInit {
         }
         updated_vm.cardState = 0;
         this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
+        this.selectedMachines[this.selectedMachines.indexOf(vm)] = updated_vm;
+        this.applyFilterStatus();
       })
     }
-    this.applyFilterStatus();
-    this.status_changed = 1;
   }
 }

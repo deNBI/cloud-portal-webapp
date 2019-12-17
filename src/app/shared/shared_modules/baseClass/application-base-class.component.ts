@@ -161,9 +161,12 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
     })
   }
 
-  valuesChanged(flavor: Flavor, counter: number): void {
+  valuesChanged(flavor: Flavor, counter: number, lifetime?: string): void {
     this.newFlavors[flavor.name] = {counter: counter, flavor: flavor};
     this.calculateRamCores();
+    if (lifetime == undefined) {
+      lifetime = "0";
+    }
   }
 
   calculateRamCores(): void {
