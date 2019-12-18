@@ -15,12 +15,14 @@ import {VirtualmachineService} from "../api-connector/virtualmachine.service";
 import {Flavor} from "./virtualmachinemodels/flavor";
 import {FlavorType} from "./virtualmachinemodels/flavorType";
 import {Client} from "./clients/client.model";
+import {ImageService} from "../api-connector/image.service";
+import {Image} from "./virtualmachinemodels/image";
 
 @Component({
   selector: 'app-virtual-machine-detail',
   templateUrl: 'vmdetail.component.html',
   styleUrls: ['./vmdetail.component.scss'],
-  providers: [FlavorService, FacilityService, VoService, UserService, GroupService, ApiSettings, VoService, CreditsService, VirtualmachineService]
+  providers: [FlavorService, FacilityService, VoService, UserService, GroupService, ApiSettings, VoService, CreditsService, VirtualmachineService, ImageService]
 })
 
 export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
@@ -31,17 +33,21 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
   applicationService: ApplicationsService;
   title: string = 'Instance Detail';
   flavorService: FlavorService;
+  imageService: ImageService;
+  image: Image;
 
   constructor( private activatedRoute: ActivatedRoute,
                virtualmachineService: VirtualmachineService,
                userService: UserService,
                applicationService: ApplicationsService,
-               flavorService: FlavorService) {
+               flavorService: FlavorService,
+               imageService: ImageService) {
     super();
     this.virtualmachineService = virtualmachineService;
     this.userService = userService;
     this.applicationService = applicationService;
     this.flavorService = flavorService;
+    this.imageService = imageService;
 
   }
   ngOnInit(): void {
@@ -72,7 +78,6 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
     newVm.application_id = aj['application_id'];
     newVm.created_at = aj['created_at'];
     newVm.elixir_id = aj['elixir_id'];
-    newVm.image = aj['image'];
     newVm.openstackid = aj['openstackid'];
     newVm.project = aj['project'];
     newVm.ssh_command = aj['ssh_command'];
@@ -80,9 +85,26 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
     newVm.username = aj['userlogin'];
     newVm.stopped_at = aj['stopped_at'];
     newVm.udp_command = aj['udp_command'];
+    newVm.image = aj['image'];
+    this.image = this.createImage(aj['projectid']);
     newVm.flavor = this.createFlavor(aj['flavor']);
     newVm.client = this.createClient(aj['client']);
     this.virtualMachine = newVm;
+  }
+
+  createImage (aj: any): Image {
+    const newImage: Image = new Image();
+    this.imageService.getImages(aj).subscribe(
+      (bj: object) => {
+        console.log(bj);
+        // TODO: add information about image to image object - procedure may change with new enpoint
+      },
+      (error: any) => {
+        this.isLoaded = false;
+    }
+    );
+
+    return newImage;
   }
 
   createClient(aj: any): Client {
@@ -122,6 +144,22 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
     newFType.long_name = aj['long_name'];
 
     return newFType;
+  }
+
+  copySSHCommand(): void {
+    this.copyToClipboard(this.virtualMachine.ssh_command.substring(65, this.virtualMachine.ssh_command.length));
+  }
+  copyUDPCommand(): void {
+    this.copyToClipboard(this.virtualMachine.udp_command);
+  }
+
+  copyToClipboard(text: string): void {
+    document.addEventListener('copy', (clipEvent: ClipboardEvent) => {
+      clipEvent.clipboardData.setData('text/plain', (text));
+      clipEvent.preventDefault();
+      document.removeEventListener('copy', null);
+    });
+    document.execCommand('copy');
   }
 
 }

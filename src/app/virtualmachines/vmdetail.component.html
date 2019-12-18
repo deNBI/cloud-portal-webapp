@@ -79,6 +79,39 @@
               </div>
             </div>
           </div>
+        </div>
+        <div class="card-body">
+          <div class="card-title">
+            <strong>Connect Information</strong>
+          </div>
+          <div class="form-group">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <div class="input-group-text">SSH</div></div>
+              <input type="text" class="form-control" readonly
+                     placeholder="{{virtualMachine?.ssh_command}}" (click)="this.copySSHCommand()">
+            <div class="input-group-append" (click)="this.copySSHCommand()">
+              <div class="input-group-text">
+                Copy command
+              </div>
+            </div>
+
+          </div>
+          </div>
+
+          <div class="form-group" *ngIf="virtualMachine?.udp_command">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <div class="input-group-text">SSH</div></div>
+              <input type="button" class="form-control" readonly
+                     placeholder="{{virtualMachine?.udp_command}}">
+            <div class="input-group-append">
+              <div class="input-group-text">
+                Copy command
+              </div>
+            </div>
+          </div>
+          </div>
 
         </div>
       </div>
@@ -117,7 +150,64 @@
                 <strong class="text-muted">{{virtualMachine?.flavor?.epheremal_disk}} GB</strong>
               </div>
             </div>
+          </div>
 
+          <div class="row">
+            <div class="col-4">
+              <div class="callout">
+                <small class="text-muted">Flavor type</small><br>
+                <strong class="text-muted">{{virtualMachine?.flavor?.type?.long_name}}</strong>
+              </div>
+            </div>
+            <div class="col-2" *ngIf="virtualMachine?.flavor?.type.shortcut === 'GPU' && virtualMachine?.flavor?.gpu > 0">
+              <div class="callout">
+                <small class="text-muted">GPU cores</small><br>
+                <strong class="text-muted">{{virtualMachine?.flavor?.gpu}}</strong>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-6" *ngIf="virtualMachine?.flavor?.comment">
+              <div class="callout">
+                <small class="text-muted">Comment</small><br>
+                <strong><small class="text-muted">{{virtualMachine?.flavor?.comment}}</small></strong>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><span class="font-weight-bold text-muted">Image Information</span></div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-2">
+              <div class="callout">
+                <small class="text-muted">Name (will be replaced by logo)</small><br>
+                <strong class="text-muted">{{virtualMachine?.image}}</strong>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="callout">
+                <small class="text-muted">Name</small><br>
+                <strong class="text-muted">{{virtualMachine?.image}}</strong>
+              </div>
+            </div>
+            <div class="col-2" *ngIf="image?.is_snapshot">
+              <div class="callout callout-warning">
+                <small class="text-muted"></small>Image-Type<br>
+                <strong class="text-muted">Snapshot</strong>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+            <div class="callout">
+              <small class="text-muted">Description</small><br>
+              <small class="text-muted font-weight-bold">{{image?.description}}</small>
+            </div>
+          </div>
           </div>
         </div>
       </div>
