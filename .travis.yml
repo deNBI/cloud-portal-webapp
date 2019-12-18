@@ -8,7 +8,7 @@ install:
   - npm install
 script:
   - if [ "${TRAVIS_PULL_REQUEST}" != "false" ]; then audit-ci --config travis/audit-ci.json; fi
-  - bash src/check_links.sh
+  - bash src/links/check_links.sh
   # Check code style
   - ng lint
   - docker build -t webapp  .
