@@ -80,8 +80,8 @@
             </div>
           </div>
         </div>
-        <hr>
-        <div class="card-body" *ngIf="virtualMachine?.status === 'ACTIVE'">
+        <hr *ngIf="virtualMachine?.status === virtualMachineStates.staticACTIVE">
+        <div class="card-body" *ngIf="virtualMachine?.status === virtualMachineStates.staticACTIVE">
           <div class="card-title">
             <strong>Connect Information</strong>
           </div>
@@ -96,7 +96,6 @@
                 Copy command
               </div>
             </div>
-
           </div>
           </div>
 
@@ -221,16 +220,15 @@
         <div class="card-header"><span class="font-weight-bold text-muted">Image Information</span></div>
         <div class="card-body">
           <div class="row">
-            <div class="col-2">
+            <div class="col-4" *ngIf="image?.logo_url">
               <div class="callout">
-                <small class="text-muted">Name (will be replaced by logo)</small><br>
-                <strong class="text-muted">{{virtualMachine?.image}}</strong>
+                <img src="{{image?.logo_url}}" style="height: 42px;">
               </div>
             </div>
-            <div class="col-4">
+            <div class="col-6">
               <div class="callout">
                 <small class="text-muted">Name</small><br>
-                <strong class="text-muted">{{virtualMachine?.image}}</strong>
+                <strong class="text-muted">{{image?.name}}</strong>
               </div>
             </div>
             <div class="col-2" *ngIf="image?.is_snapshot">

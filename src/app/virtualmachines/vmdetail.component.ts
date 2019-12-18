@@ -92,18 +92,23 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
     newVm.image = aj['image'];
     this.startDate = parseInt(newVm.created_at, 10) * 1000;
     this.stopDate = parseInt(newVm.stopped_at, 10) * 1000;
-    this.image = this.createImage(aj['projectid']);
+    this.image = this.createImage(aj['projectid'], newVm.image);
     newVm.flavor = this.createFlavor(aj['flavor']);
     newVm.client = this.createClient(aj['client']);
     this.virtualMachine = newVm;
   }
 
-  createImage (aj: any): Image {
+  createImage (project_id: number, name: string): Image {
     const newImage: Image = new Image();
-    this.imageService.getImages(aj).subscribe(
+    this.imageService.getImageByProjectAndName(project_id, name).subscribe(
       (bj: object) => {
         console.log(bj);
-        // TODO: add information about image to image object - procedure may change with new enpoint
+        newImage.description = bj['description'];
+        newImage.is_snapshot = bj['is_snapshot'];
+        newImage.name = bj['name'];
+        newImage.logo_url = bj['logo_url'];
+        newImage.id = bj['id'];
+        newImage.tags = bj['tags'];
       },
       (error: any) => {
         this.isLoaded = false;
@@ -167,5 +172,31 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
     });
     document.execCommand('copy');
   }
+
+  // vm actions
+
+  checkStatus(vm: VirtualMachine): void {
+    this.virtualmachineService.checkVmStatus(vm.openstackid)
+      .subscribe((updated_vm: VirtualMachine) => {
+
+          if (updated_vm.created_at !== '') {
+            updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
+          }
+        }
+      )
+  }
+
+  deleteVm(vm: VirtualMachine): void {
+    this.virtualmachineService.deleteVM(vm.openstackid).subscribe((updated_vm: VirtualMachine) => {
+
+      if (updated_vm.created_at !== '') {
+        updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
+      }
+      this.virtualMachine = updated_vm;
+      console.log('test');
+    })
+  }
+
+
 
 }
