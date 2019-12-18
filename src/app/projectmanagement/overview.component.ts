@@ -49,7 +49,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
    */
   public min_vm: boolean = true;
 
-
   /**
    * The credits for the extension.
    */
@@ -110,15 +109,16 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
   calculateCredits(lifetimeString?: string): void {
     let lifetime: number;
-    if (Number(lifetimeString) == undefined) {
+    if (Number(lifetimeString) === undefined) {
       lifetime = 0
     } else {
       lifetime = Number(lifetimeString)
     }
-    let total_lifetime = (Math.round(((this.project.LifetimeDays-this.project.DaysRunning)/31)*100)/100) + lifetime;
+    const total_lifetime: number = (Math.round(((this.project.LifetimeDays - this.project.DaysRunning) / 31) * 100) / 100) + lifetime;
     this.creditsService.getCreditsForApplication(this.totalNumberOfCores, this.totalRAM, total_lifetime).toPromise()
       .then((credits: number) => {
-        var extraCredits:number = credits - Math.round(this.project.ApprovedCredits * ((this.project.LifetimeDays-this.project.DaysRunning) / this.project.LifetimeDays))
+        // tslint:disable-next-line:max-line-length
+        let extraCredits: number = credits - Math.round(this.project.ApprovedCredits * ((this.project.LifetimeDays - this.project.DaysRunning) / this.project.LifetimeDays))
         if (extraCredits < 0) {
           extraCredits = 0
         }

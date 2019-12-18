@@ -2,12 +2,15 @@ import {Component, Input, OnInit} from '@angular/core';
 import {FormControl, Validators} from '@angular/forms';
 import {BiocondaService} from '../../api-connector/bioconda.service';
 
+/**
+ * ResEnv.
+ */
 @Component({
              selector: 'app-res-env',
              templateUrl: 'res-env.component.html',
              providers: [BiocondaService]
            })
-export class ResEnvComponent implements OnInit{
+export class ResEnvComponent implements OnInit {
 
   playbooks: {[pl_name: string]: {
       [var_name: string]: string

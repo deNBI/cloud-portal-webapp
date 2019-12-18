@@ -40,7 +40,6 @@ export class ValidationApplicationComponent extends ApplicationBaseClassComponen
 
   }
 
-
   ngOnInit(): void {
     this.activatedRoute.params.subscribe((paramsId: any) => {
       this.hash = paramsId.hash;
