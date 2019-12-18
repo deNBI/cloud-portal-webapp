@@ -19,7 +19,6 @@ import {VmOverviewComponent} from "./vmOverview.component";
     SharedDirectivesModule
   ],
   declarations: [
-    VmOverviewComponent
   ]
 })
 

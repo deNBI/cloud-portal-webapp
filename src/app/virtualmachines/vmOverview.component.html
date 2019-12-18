@@ -134,7 +134,13 @@
                 <div class="col-5" style="margin: auto;" [ngSwitch]="vm?.status">
 
                   <a class="h5 text-primary" style="margin-left: 10px"
+                     *ngIf="vm?.status != VirtualMachineStates.staticDELETED &&
+                      vm?.status != VirtualMachineStates.staticNOT_FOUND"
                     href="/#/virtualmachines/detail/{{vm?.openstackid}}">{{vm?.name}}  </a>
+                  <span class="h5 text-primary" style="margin-left: 10px"
+                     *ngIf="vm?.status === VirtualMachineStates.staticDELETED ||
+                      vm?.status === VirtualMachineStates.staticNOT_FOUND"
+                     >{{vm?.name}}  </span>
                   <div *ngSwitchCase="this.VirtualMachineStates.staticACTIVE" [id]="'active_badge_' + vm?.name"
                        class="dot-colorless bg-success pulseAnim" style="width: 10px; height: 10px">
                   </div>

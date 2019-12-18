@@ -17,6 +17,7 @@ import {FlavorType} from "./virtualmachinemodels/flavorType";
 import {Client} from "./clients/client.model";
 import {ImageService} from "../api-connector/image.service";
 import {Image} from "./virtualmachinemodels/image";
+import {VirtualMachineStates} from "./virtualmachinemodels/virtualmachinestates";
 
 @Component({
   selector: 'app-virtual-machine-detail',
@@ -35,6 +36,9 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
   flavorService: FlavorService;
   imageService: ImageService;
   image: Image;
+  startDate: number;
+  stopDate: number;
+  virtualMachineStates: VirtualMachineStates = new VirtualMachineStates();
 
   constructor( private activatedRoute: ActivatedRoute,
                virtualmachineService: VirtualmachineService,
@@ -86,6 +90,8 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
     newVm.stopped_at = aj['stopped_at'];
     newVm.udp_command = aj['udp_command'];
     newVm.image = aj['image'];
+    this.startDate = parseInt(newVm.created_at, 10) * 1000;
+    this.stopDate = parseInt(newVm.stopped_at, 10) * 1000;
     this.image = this.createImage(aj['projectid']);
     newVm.flavor = this.createFlavor(aj['flavor']);
     newVm.client = this.createClient(aj['client']);

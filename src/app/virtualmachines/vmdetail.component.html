@@ -41,14 +41,14 @@
             </div>
             <div class="col-2" *ngIf="!virtualMachine?.stopped_at">
               <div class="callout callout-success" >
-                <small class="text-muted">Created at</small><br>
-                <strong class="text-muted">{{virtualMachine?.created_at}}</strong>
+                <small class="text-muted">Created at (y-m-d)</small><br>
+                <strong class="text-muted">{{startDate | date: 'yyyy.MM.dd HH:mm'}}</strong>
               </div>
             </div>
             <div class="col-2" *ngIf="virtualMachine?.stopped_at">
               <div class="callout callout-warning">
-                <small class="text-muted">Stopped at</small><br>
-                <strong class="text-muted">{{virtualMachine?.stopped_at}}</strong>
+                <small class="text-muted">Stopped at (y-m-d)</small><br>
+                <strong class="text-muted">{{stopDate | date: 'yyyy.MM.dd HH:mm'}}</strong>
               </div>
             </div>
             <div class="col-2">
@@ -80,15 +80,16 @@
             </div>
           </div>
         </div>
-        <div class="card-body">
+        <hr>
+        <div class="card-body" *ngIf="virtualMachine?.status === 'ACTIVE'">
           <div class="card-title">
             <strong>Connect Information</strong>
           </div>
-          <div class="form-group">
+          <div class="form-group" style="cursor:pointer;">
           <div class="input-group">
             <div class="input-group-prepend">
               <div class="input-group-text">SSH</div></div>
-              <input type="text" class="form-control" readonly
+              <input type="text" class="form-control" readonly style="cursor:pointer;"
                      placeholder="{{virtualMachine?.ssh_command}}" (click)="this.copySSHCommand()">
             <div class="input-group-append" (click)="this.copySSHCommand()">
               <div class="input-group-text">
@@ -99,12 +100,12 @@
           </div>
           </div>
 
-          <div class="form-group" *ngIf="virtualMachine?.udp_command">
+          <div class="form-group" *ngIf="virtualMachine?.udp_command" style="cursor:pointer;">
           <div class="input-group">
             <div class="input-group-prepend">
               <div class="input-group-text">SSH</div></div>
-              <input type="button" class="form-control" readonly
-                     placeholder="{{virtualMachine?.udp_command}}">
+              <input type="button" class="form-control" readonly style="cursor:pointer;"
+                     placeholder="{{virtualMachine?.udp_command}}" (click)="this.copyUDPCommand()">
             <div class="input-group-append">
               <div class="input-group-text">
                 Copy command
@@ -112,8 +113,46 @@
             </div>
           </div>
           </div>
-
         </div>
+        <hr>
+        <div class="card-body">
+          <div class="card-title"><strong>Actions</strong></div>
+          <div class="row">
+            <div class="col-2">
+              <button type="button" class="btn btn-secondary" style="width:100%;">
+                <strong>(Re-)Check Status</strong></button>
+            </div>
+            <div class="col-2" *ngIf="virtualMachine?.status === virtualMachineStates.staticACTIVE">
+              <button type="button" class="btn btn-warning" style="width:100%;">
+                <strong>Stop VM</strong>
+              </button>
+            </div>
+            <div class="col-2" *ngIf="virtualMachine?.status === virtualMachineStates.staticACTIVE ||
+            virtualMachine?.status === virtualMachineStates.staticSHUTOFF">
+              <button type="button" class="btn btn-secondary" style="width:100%;">
+                <strong>Reboot VM</strong>
+              </button>
+            </div>
+            <div class="col-2" *ngIf="virtualMachine?.status === virtualMachineStates.staticACTIVE ||
+            virtualMachine?.status === virtualMachineStates.staticSHUTOFF">
+              <button type="button" class="btn btn-secondary" style="width:100%;">
+                <strong>Create Snapshot</strong>
+              </button>
+            </div>
+            <div class="col-2" *ngIf="virtualMachine?.status === virtualMachineStates.staticACTIVE ||
+            virtualMachine?.status === virtualMachineStates.staticSHUTOFF">
+              <button type="button" class="btn btn-danger" style="width:100%;">
+                <strong>Delete VM</strong>
+              </button>
+            </div>
+            <div class="col-2" *ngIf="virtualMachine?.status === virtualMachineStates.staticACTIVE">
+              <button type="button" class="btn btn-success" style="width:100%;">
+                <strong>Restart VM</strong>
+              </button>
+            </div>
+          </div>
+        </div>
+
       </div>
 
       <div class="card">
@@ -153,7 +192,7 @@
           </div>
 
           <div class="row">
-            <div class="col-4">
+            <div class="col-4" *ngIf="virtualMachine?.flavor?.type?.long_name != 'Standard Flavours'">
               <div class="callout">
                 <small class="text-muted">Flavor type</small><br>
                 <strong class="text-muted">{{virtualMachine?.flavor?.type?.long_name}}</strong>
@@ -202,13 +241,20 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-12">
+            <div class="col-12" *ngIf="image?.description">
             <div class="callout">
               <small class="text-muted">Description</small><br>
               <small class="text-muted font-weight-bold">{{image?.description}}</small>
             </div>
           </div>
           </div>
+        </div>
+      </div>
+
+      <div class="card" *ngIf="false">  <!--need additional field to check if vm was started with packages-->
+        <div class="card-header"><span class="font-weight-bold text-muted">Conda Information</span></div>
+        <div class="card-body">
+          <!-- show packages etc here -->
         </div>
       </div>
 
