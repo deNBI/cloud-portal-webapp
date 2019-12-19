@@ -1,6 +1,5 @@
 import {Flavor} from './flavor';
 import {Client} from '../clients/client.model';
-import {VirtualMachineStates} from './virtualmachinestates';
 
 /**
  * Virtualmachine class.
@@ -24,6 +23,15 @@ export class VirtualMachine {
   private _udp_command: string;
   private _application_id: string;
   private _cardState: number;
+  private _projectid: number;
+
+  get projectid(): number {
+    return this._projectid;
+  }
+
+  set projectid(value: number) {
+    this._projectid = value;
+  }
 
   get cardState(): number {
     return this._cardState;
