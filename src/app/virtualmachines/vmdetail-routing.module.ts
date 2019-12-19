@@ -5,21 +5,18 @@ import {VmDetailComponent} from './vmdetail.component';
 
 const routes: Routes = [
   {
-    path: '',
+    path: ':id',
     component: VmDetailComponent,
     data: {
       title: 'Virtual Machine Details'
     }
-
-  }
-  , {
-    path: ':id',
-    component: VmDetailComponent,
+  },
+  {
+    path: 'error',
+    component: VmOverviewComponent,
     data: {
-      title: 'Virtua Machine Details'
     }
   }
-
 ];
 
 /**

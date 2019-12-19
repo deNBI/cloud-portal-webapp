@@ -18,6 +18,8 @@ import {IResponseTemplate} from '../api-connector/response-template';
 import {SnapshotModel} from './snapshots/snapshot.model';
 import {Subject} from 'rxjs';
 
+
+
 @Component({
   selector: 'app-virtual-machine-detail',
   templateUrl: 'vmdetail.component.html',
@@ -34,8 +36,8 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
   stopDate: number;
   virtualMachineStates: VirtualMachineStates = new VirtualMachineStates();
   virtualMachine: VirtualMachine;
-
   snapshotSearchTerm: Subject<string> = new Subject<string>();
+
 
   /**
    * The changed status.
@@ -75,6 +77,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
    * name of the snapshot.
    */
   snapshotName: string = '';
+  // @ts-ignore
   /**
    * Tab which is shown own|all.
    * @type {string}
@@ -87,7 +90,6 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
               private flavorService: FlavorService,
               private imageService: ImageService) {
     super();
-
   }
   ngOnInit(): void {
 
@@ -97,7 +99,6 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
 
     });
   }
-
 
   // from vmOverview.component.ts - may be refactored in the future
   /**
@@ -347,7 +348,6 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
 
       } else {
         this.snapshotDone = 'error';
-
       }
 
     })
@@ -356,15 +356,18 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
   getVmById(): void {
     this.virtualmachineService.getVmById(this.vm_id).subscribe(
       (vm: VirtualMachine) => {
-        this.title = vm['name'];
-        this.virtualMachine = vm;
-        this.startDate = parseInt(this.virtualMachine.created_at, 10) * 1000;
-        this.stopDate = parseInt(this.virtualMachine.stopped_at, 10) * 1000;
-        this.getImageDetails(this.virtualMachine.projectid, this.virtualMachine.image);
-        this.isLoaded = true;
-      },
-      (error: any) => {
-          this.isLoaded = false;
+        if (vm == null) {
+          this.isLoaded = false
+          // TODO: Redirect back to overview
+        } else {
+          this.title = vm['name'];
+          this.virtualMachine = vm;
+          this.startDate = parseInt(this.virtualMachine.created_at, 10) * 1000;
+          this.stopDate = parseInt(this.virtualMachine.stopped_at, 10) * 1000;
+          this.stopDate = parseInt(this.virtualMachine.stopped_at, 10) * 1000;
+          this.getImageDetails(this.virtualMachine.projectid, this.virtualMachine.image);
+          this.isLoaded = true;
+        }
       }
     );
   }
