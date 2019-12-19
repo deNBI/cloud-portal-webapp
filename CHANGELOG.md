@@ -1,3 +1,10 @@
+##  (2019-12-19)
+
+
+#### Features
+
+* **Links:** added travis check ([0895055b](0895055b))
+* **resenv:**  theiaide, guacamole working ([03456b64](03456b64))
 
 ##  (2019-12-17)
 
