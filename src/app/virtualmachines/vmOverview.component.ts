@@ -245,7 +245,8 @@ export class VmOverviewComponent implements OnInit {
   applyFilterStatus(): void {
     const vm_content_copy: VirtualMachine[] = [];
     for (const vm of this.vms_content) {
-      if (vm.status in this.filter_status_list || vm.status !== VirtualMachineStates.ACTIVE && vm.status !== VirtualMachineStates.DELETED && vm.status !== VirtualMachineStates.SHUTOFF) {
+      if (vm.status in this.filter_status_list || vm.status !== VirtualMachineStates.ACTIVE
+        && vm.status !== VirtualMachineStates.DELETED && vm.status !== VirtualMachineStates.SHUTOFF) {
         vm.cardState = 0;
         vm_content_copy.push(vm)
       }
@@ -491,14 +492,15 @@ export class VmOverviewComponent implements OnInit {
                                                     });
                    this.onChanges();
                    this.isSearching = false;
-        this.checkVmTillActive()
+                   this.checkVmTillActive()
                  }
       );
   }
 
   checkVmTillActive(): void {
     this.vms_content.forEach((vm: VirtualMachine) => {
-      if (vm.status !== VirtualMachineStates.ACTIVE && vm.status !== VirtualMachineStates.SHUTOFF && vm.status !== VirtualMachineStates.DELETED) {
+      if (vm.status !== VirtualMachineStates.ACTIVE && vm.status !== VirtualMachineStates.SHUTOFF
+        && vm.status !== VirtualMachineStates.DELETED) {
         this.check_status_loop(vm, VirtualMachineStates.ACTIVE);
       }
     })
@@ -540,7 +542,7 @@ export class VmOverviewComponent implements OnInit {
                                                     });
                    this.onChanges();
                    this.isSearching = false;
-        this.checkVmTillActive()
+                   this.checkVmTillActive()
                  }
       );
   }
@@ -609,8 +611,7 @@ export class VmOverviewComponent implements OnInit {
                                                     });
                    this.onChanges();
                    this.isSearching = false;
-        this.checkVmTillActive()
-
+                   this.checkVmTillActive()
 
                  }
       );
