@@ -4,7 +4,8 @@ WIKI_GROUP_INVITATIONS=https://cloud.denbi.de/wiki/portal/project_overview/#invi
 WIKI_SNAPSHOTS=https://cloud.denbi.de/wiki/portal/snapshots/
 WIKI=https://cloud.denbi.de/wiki/
 WIKI_GENERATE_KEYS=https://cloud.denbi.de/wiki/quickstart/#generate-ssh-keys
-WIKI_LNKS=("$WIKI_VOLUME" "$WIKI_GROUP_INVITATIONS" "$WIKI_SNAPSHOTS" "$WIKI" "$WIKI_GENERATE_KEYS")
+NEWS=https://cloud.denbi.de/news/
+WIKI_LNKS=("$WIKI_VOLUME" "$WIKI_GROUP_INVITATIONS" "$WIKI_SNAPSHOTS" "$WIKI" "$WIKI_GENERATE_KEYS" "$NEWS")
 for i in "${WIKI_LNKS[@]}"; do
   echo "$i"
   status_code=$(curl -o /dev/null -Isw '%{http_code}\n' "$i")
