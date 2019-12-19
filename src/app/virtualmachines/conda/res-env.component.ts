@@ -3,12 +3,20 @@ import {FormControl, Validators} from '@angular/forms';
 import {BiocondaService} from '../../api-connector/bioconda.service';
 import {GroupService} from '../../api-connector/group.service';
 
+/**
+ * ResEnv.
+ */
 @Component({
              selector: 'app-res-env',
              templateUrl: 'res-env.component.html',
              providers: [BiocondaService, GroupService]
            })
 export class ResEnvComponent implements OnInit {
+
+
+  playbooks: {[pl_name: string]: {
+      [var_name: string]: string
+    }} = {};
 
   @Input() clientid: string;
 

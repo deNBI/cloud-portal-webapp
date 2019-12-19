@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {UserService} from '../api-connector/user.service';
 import {IResponseTemplate} from '../api-connector/response-template';
+import {WIKI} from '../../links/links';
 
 /**
  * Help component.
@@ -13,6 +14,8 @@ import {IResponseTemplate} from '../api-connector/response-template';
            })
 
 export class HelpComponent {
+
+  WIKI: string = WIKI;
 
   public emailSubject: string;
   public emailText: string;

@@ -8,6 +8,7 @@ import {VolumeActionStates} from './volume-action-states.enum';
 import {VolumeRequestStates} from './volume-request-states.enum';
 import {IResponseTemplate} from '../../api-connector/response-template';
 import {FacilityService} from '../../api-connector/facility.service';
+import {WIKI_VOLUME} from '../../../links/links';
 
 /**
  * Volume overview component.
@@ -20,7 +21,9 @@ import {FacilityService} from '../../api-connector/facility.service';
            })
 
 export class VolumeOverviewComponent extends AbstractBaseClasse implements OnInit {
+  VOLUME_WIKI: string = WIKI_VOLUME;
   title: string = 'Volume Overview';
+
   /**
    * Enum of all volume action states.
    */
