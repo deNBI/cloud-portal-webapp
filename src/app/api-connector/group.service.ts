@@ -46,6 +46,15 @@ export class GroupService {
 
   }
 
+  getClientForcUrl(groupid: string): Observable<any> {
+
+    return this.http.get<Client>(`${ApiSettings.getApiBaseURL()}projects/${groupid}/client/forcUrl/`, {
+      withCredentials: true,
+      headers: header
+    })
+
+  }
+
   assignGroupToResource(groupid: string, computecenter: string): Observable<any> {
     const params: HttpParams = new HttpParams().set('compute_center', computecenter);
 
