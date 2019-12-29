@@ -274,7 +274,9 @@
 
   </div>
   <div class="row">
-    <div class="col-6">
+    <div class="col-6"
+         *ngIf="project && (project_application?.Status ==  application_states.APPROVED || project_application?.Status ==  application_states.MODIFICATION_REQUESTED  || project_application?.Status ==  application_states.MODIFICATION_DECLINED || project_application?.Status ==  application_states.MODIFICATION_DECLINED)">
+      
 
       <div class="card">
         <div class="card-header">
