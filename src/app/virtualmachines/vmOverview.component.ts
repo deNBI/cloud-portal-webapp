@@ -724,10 +724,12 @@ export class VmOverviewComponent implements OnInit {
       if (response['forc_url'] !== 'None') {
         this.virtualmachineservice.getLocationUrl(vm.openstackid)
           .subscribe((url: any) => {
-            vm.res_env_url = `${response['forc_url']}${url}/`;
+            if (url !== '') {
+              vm.res_env_url = `${response['forc_url']}${url}/`;
+            } else {
+              vm.res_env_url = '';
+            }
           });
-      } else {
-        vm.res_env_url = '';
       }
     });
   }
