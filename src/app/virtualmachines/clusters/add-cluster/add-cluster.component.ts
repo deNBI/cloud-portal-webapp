@@ -16,7 +16,6 @@ import {IResponseTemplate} from '../../../api-connector/response-template';
 import {Flavor} from '../../virtualmachinemodels/flavor';
 import {Userinfo} from '../../../userinfo/userinfo.model';
 import {Client} from '../../clients/client.model';
-import {environment} from '../../../../environments/environment';
 import {BiocondaComponent} from '../../conda/bioconda.component';
 import {forkJoin} from 'rxjs';
 
@@ -91,6 +90,7 @@ export class AddClusterComponent implements OnInit {
   selectedImage: Image;
   selectedMasterImage: Image;
   selectedWorkerImage: Image;
+  maxWorkerInstances: number;
 
   /**
    * Selected Flavor.
@@ -217,23 +217,23 @@ export class AddClusterComponent implements OnInit {
   }
 
   filterFlavors(): void {
-    console.log(this.flavors)
     const tmp_flavors: Flavor[] = [];
     const available_cores: number = this.selectedProjectCoresMax - (this.newCores + this.selectedProjectCoresUsed);
     const available_ram: number = this.selectedProjectRamMax - (this.newRam + this.selectedProjectRamUsed);
     const available_gpu: number = this.selectedProjectGPUsMax - (this.newGpus + this.selectedProjectGPUsUsed);
     for (const fl of this.flavors) {
-      console.log('-----')
-      console.log(fl.vcpus <= available_cores)
-      console.log(fl.ram <= available_ram)
-      console.log(fl.gpu <= available_gpu)
-      console.log('-----')
-
       if (fl.vcpus <= available_cores && (fl.ram / 1024) <= available_ram && fl.gpu <= available_gpu) {
         tmp_flavors.push(fl)
       }
     }
     this.flavors_usable = tmp_flavors;
+  }
+
+  calcMaxWorkerInstancesByFlavor(): void {
+    const ram_max_vms: number = (this.selectedProjectRamMax - this.selectedProjectRamUsed - (this.selectedMasterFlavor.ram / 1024)) / (this.selectedWorkerFlavor.ram / 1024);
+    const cpu_max_vms: number = (this.selectedProjectCoresMax - this.selectedProjectCoresUsed - this.selectedMasterFlavor.vcpus) / this.selectedWorkerFlavor.vcpus;
+
+    this.maxWorkerInstances = Math.min(ram_max_vms, cpu_max_vms)
   }
 
   calculateNewValues(): void {

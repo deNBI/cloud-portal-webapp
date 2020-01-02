@@ -164,7 +164,7 @@
 
                         <app-flavor-detail [selectedFlavor]="selectedWorkerFlavor"
                                            [flavors]="flavors_usable"
-                                           (selectedFlavorChange)="selectedWorkerFlavor=$event;calculateNewValues();"
+                                           (selectedFlavorChange)="selectedWorkerFlavor=$event;calculateNewValues();calcMaxWorkerInstancesByFlavor();"
                                            id="id_flavor_detail"></app-flavor-detail>
 
                       </div>
@@ -185,22 +185,25 @@
                       </div>
                     </div>
                     <div class="form-group row col-md-12">
-                      <label class="col-md-2 form-control-label"><strong>Count*</strong></label>
+                      <label class="col-md-2 form-control-label"><strong>Count*
+                        <span *ngIf="maxWorkerInstances">(max {{maxWorkerInstances}})</span></strong></label>
                       <div class="col-md-10">
 
 
                         <input class="form-control" id="workerInstancesCount"
                                name="workerInstancesCount" placeholder="e.g 1"
 
-                               type="number" min="1" max="12" step="1" [(ngModel)]="workerInstancesCount" required
-                               appMinAmount="1" appMaxAmount="12" appInteger (change)="changeCount();"
+                               type="number" min="1" [max]="maxWorkerInstances" step="1"
+                               [(ngModel)]="workerInstancesCount" required
+                               appMinAmount="1" appMaxAmount="{{maxWorkerInstances}}"
+                               appInteger (change)="changeCount();"
                                [ngClass]=" {
                         'is-invalid': f.controls.workerInstancesCount?.invalid &&
                         (f.controls.workerInstancesCount?.dirty || f.controls.workerInstancesCount?.touched),
                         'is-valid': f.controls.workerInstancesCount?.valid && (f.controls.workerInstancesCount?.dirty ||
                         f.controls.workerInstancesCount?.touched)
                         }">
-                      </div><div>max flavors</div>
+                      </div>
 
                     </div>
 
@@ -241,7 +244,7 @@
 
                   type="button"
 
-                  [disabled]="!selectedMasterFlavor || !selectedMasterImage || !selectedWorkerFlavor || !selectedWorkerImage ||!workerInstancesCount "
+                  [disabled]="(workerInstancesCount > maxWorkerInstances) || !selectedMasterFlavor || !selectedMasterImage || !selectedWorkerFlavor || !selectedWorkerImage || !workerInstancesCount "
                   class="btn btn-primary  .btn-lg offset-md-8"
                   data-toggle="modal"
                   (click)="startCluster();">
