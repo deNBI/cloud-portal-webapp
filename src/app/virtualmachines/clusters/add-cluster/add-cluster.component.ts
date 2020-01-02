@@ -194,7 +194,7 @@ export class AddClusterComponent implements OnInit {
 
   newCores: number = 0;
   newRam: number = 0;
-  newVms: number = 1;
+  newVms: number = 2;
   newGpus: number = 0;
 
   /**

@@ -85,9 +85,10 @@
                                      [newCores]="newCores" [newRam]="newRam" [newGpus]="newGpus"
                                      [newVms]="newVms"></app-resource-overview>
               <div class="alert alert-primary" role="alert"
-                   *ngIf="selectedProject && selectedProjectVmsUsed >= selectedProjectVmsMax">
-                The limit for virtual machines has been reached for this project.
-                Your principal investigator can request more
+                   *ngIf="selectedProject && (selectedProjectVmsUsed + 2 ) >= selectedProjectVmsMax">
+                The limit for virtualmachines is too low for your project to start a new cluster.
+                Your principal
+                investigator can request more
                 resources if necessary.
 
               </div>
@@ -99,7 +100,8 @@
               </div>
 
 
-              <div *ngIf="selectedProjectVmsUsed < selectedProjectVmsMax && (flavors?.length > 0 || selectedFlavor)">
+              <div
+                *ngIf="(selectedProjectVmsUsed +2) <= selectedProjectVmsMax && (flavors?.length > 0 || selectedFlavor)">
 
                 <accordion class="col-md-12">
 
@@ -212,7 +214,7 @@
           </form>
 
           <div
-            *ngIf="(!selectedMasterFlavor || !selectedMasterImage || !selectedWorkerFlavor || !selectedWorkerImage ||!workerInstancesCount) && selectedProject && projectDataLoaded"
+            *ngIf="(selectedProjectVmsUsed +2) <= selectedProjectVmsMax && (!selectedMasterFlavor || !selectedMasterImage || !selectedWorkerFlavor || !selectedWorkerImage ||!workerInstancesCount) && selectedProject && projectDataLoaded"
             class="alert alert-danger" role="alert" style="max-width: 600px;margin: 0 auto;">
             <p>Please choose the following before starting a Cluster:</p>
             <p *ngIf="!selectedMasterFlavor">- The flavor type of your Master VM
@@ -231,7 +233,7 @@
         </div>
 
         <div class="form-group row"
-             *ngIf="projectDataLoaded && selectedProjectVmsUsed < selectedProjectVmsMax && (flavors?.length > 0  || selectedFlavor)">
+             *ngIf="projectDataLoaded && (selectedProjectVmsUsed +2) <= selectedProjectVmsMax && (flavors?.length > 0  || selectedFlavor)">
 
           <button style=" margin-left: auto;margin-top: 25px;
     margin-right: auto;
