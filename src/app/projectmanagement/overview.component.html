@@ -123,7 +123,7 @@
             </button>
             <button id="show_extension_modal"
                     *ngIf="project_application?.Status == application_states.APPROVED || project_application?.Status == application_states.MODIFICATION_DECLINED"
-                    (click)="newFlavors= {};initRamCores();  extensionModal.show()"
+                    (click)="newFlavors= {};initRamCores();calculateCredits(f.controls.project_application_renewal_lifetime.value);extensionModal.show()"
                     class="btn btn-warning"
                     type="button" style="margin-bottom:5px;">
               Request Extension/Modification
@@ -330,7 +330,7 @@
               </ul>
               <br>
               After the user registered for ELIXIR/de.NBI and applied for your group, you can approve his application.
-              Read more about the process <a target="_blank" href="{{wiki_group_invitation}}">here</a>.
+              Read more about the process <a target="_blank" href="{{WIKI_GROUP_INVITATIONS}}">here</a>.
             </div>
           </div>
 
@@ -652,9 +652,10 @@
             <div class="col">
               <div class="input-group">
                 <input class="form-control"
+                       (change)="calculateCredits(f.controls.project_application_renewal_lifetime.value);"
                        id="id_project_application_renewal_lifetime"
                        name="project_application_renewal_lifetime"
-                       placeholder="e.g 3"
+                       placeholder="e.g. 3"
                        type="number" min="0" max="12" step="1" ngModel required
                        appInteger appMinAmount="0" appMaxAmount="12"
                        [ngClass]="{
@@ -710,7 +711,8 @@
                     <div class="col">
                       <div class="input-group">
                         <input class="form-control"
-                               (change)="valuesChanged(fl,name?.value)"
+                               (change)="valuesChanged(fl,name?.value);
+                               calculateCredits(f.controls.project_application_renewal_lifetime.value);"
                                id="id_project_application_renewal_{{fl.name}}"
                                name="project_application_renewal_{{fl.name}}"
                                type="number" min="0" step="1"
@@ -877,6 +879,9 @@
 
 
           <strong>
+            <div *ngIf="is_vo_admin" class="form-group row">
+              <label #corenumbers id="creditnumber" class="col">Expected number of extra credits: <span id="extension_credits">{{extensionCredits}}</span></label>
+            </div>
             <div class="form-group row">
               <label #corenumbers id="corenumbers" class="col">Number of total
                 cores: <span id="total_cores">{{totalNumberOfCores}}</span></label>
@@ -962,6 +967,11 @@
           <table class="table table-striped">
             <tr *ngFor="let str of valuesToConfirm">
               <td>{{str}}</td>
+            </tr>
+
+            <tr *ngIf="is_vo_admin" >
+              <td><strong>Approximate number of extra credits:
+                {{extensionCredits.toString()}}</strong></td>
             </tr>
             <tr>
               <td><strong>Number of cores in total:

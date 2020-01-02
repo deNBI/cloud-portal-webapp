@@ -44,9 +44,7 @@ import {ResEnvComponent} from './conda/res-env.component';
               AccordionModule.forRoot(),
               SharedDirectivesModule,
               PopoverModule.forRoot(), NgbModule,
-              ReactiveFormsModule
-
-            ],
+              ReactiveFormsModule],
             declarations: [
               ImageCarouselSlideComponent,
               ImageDetailComponent,
@@ -58,12 +56,9 @@ import {ResEnvComponent} from './conda/res-env.component';
               SnapshotOverviewComponent,
               HowToConnectComponent,
               BiocondaComponent,
-<<<<<<< HEAD
               AddClusterComponent,
-              ResourceOverviewComponent
-=======
+              ResourceOverviewComponent,
               ResEnvComponent
->>>>>>> dev
             ]
           })
 export class VmModule {

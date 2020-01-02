@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {ApiSettings} from './api-settings.service'
-import {Observable, of} from 'rxjs';
+import {Observable} from 'rxjs';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Cookie} from 'ng2-cookies/ng2-cookies';
 import {VirtualMachine} from '../virtualmachines/virtualmachinemodels/virtualmachine';
@@ -59,8 +59,8 @@ export class VirtualmachineService {
     })
   }
 
-  getAllVM(page: number, filter?: string, filter_status?: string[]): Observable<VirtualMachine[]> {
-    let params: HttpParams = new HttpParams().set('page', page.toString());
+  getAllVM(page: number, vm_per_site: number, filter?: string, filter_status?: string[]): Observable<VirtualMachine[]> {
+    let params: HttpParams = new HttpParams().set('page', page.toString()).set('vm_per_site', vm_per_site.toString());
     if (filter) {
       params = params.set('filter', filter);
 
@@ -77,8 +77,8 @@ export class VirtualmachineService {
     })
   }
 
-  getVmsFromLoggedInUser(page: number, filter?: string, filter_status?: string[]): Observable<VirtualMachine[]> {
-    let params: HttpParams = new HttpParams().set('page', page.toString());
+  getVmsFromLoggedInUser(page: number, vm_per_site: number, filter?: string, filter_status?: string[]): Observable<VirtualMachine[]> {
+    let params: HttpParams = new HttpParams().set('page', page.toString()).set('vm_per_site', vm_per_site.toString());
     if (filter) {
       params = params.set('filter', filter);
 
@@ -110,8 +110,9 @@ export class VirtualmachineService {
   }
 
   getVmsFromFacilitiesOfLoggedUser(facility_id: string | number,
-                                   page: number, filter?: string, filter_status?: string[]): Observable<VirtualMachine[]> {
-    let params: HttpParams = new HttpParams().set('page', page.toString());
+                                   page: number, vm_per_site: number,
+                                   filter?: string, filter_status?: string[]): Observable<VirtualMachine[]> {
+    let params: HttpParams = new HttpParams().set('page', page.toString()).set('vm_per_site', vm_per_site.toString());
     if (filter) {
       params = params.set('filter', filter);
 

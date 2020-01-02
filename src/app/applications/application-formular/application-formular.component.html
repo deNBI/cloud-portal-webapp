@@ -255,7 +255,7 @@
                          placeholder="e.g. 20"
                          type="number" min="0" step="1"
                          appMinAmount="0" appInteger
-                         [(ngModel)]="project_application_vms_requested"
+                         [(ngModel)]="project_application_volume_counter"
                          [ngClass]="{
                                 'is-invalid': f.controls.project_application_volume_counter?.invalid,
                                 'is-valid': f.controls.project_application_volume_counter?.valid
@@ -455,7 +455,7 @@
                   <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
                   <span class="switch-handle"></span></label>
                 <div class="alert alert-info" role="alert">
-                  Are you interested in an one day OpenStack introduction workshop? You and your project members will be
+                  Are you interested in a short OpenStack introduction workshop? You and your project members will be
                   notified as soon as a workshop is organized.
                 </div>
               </div>
@@ -766,6 +766,32 @@
 
 
             </div>
+            <div *ngIf="project_application_pi_approved" class="form-group row">
+              <label class="col-md-4 form-control-label" for="project_application_responsibility"
+                     id="project_application_responsibility_checkbox">
+                <strong>Confirmation of Responsibility*</strong>
+              </label>
+              <div class="col-md-8"
+                   [ngClass]="{
+                                'alert-danger': !respCheck.checked,
+                                'alert-success': respCheck.checked
+                                }">
+                <div class="form-check">
+                  <input class="form-check-input"
+                         name="project_application_responsibility"
+                         type="checkbox"
+                         id="project_application_responsibility"
+                         ngModel
+                         #respCheck
+                         required
+                  >
+                  <label class="form-check-label" for="project_application_responsibility">
+                    I hereby confirm that I am responsible for the project and any action of the project members in the
+                    de.NBI Cloud.
+                  </label>
+                </div>
+              </div>
+            </div>
             <div *ngIf="!project_application_pi_approved && !is_validation"
                  class="form-group row justify-content-center">
               <div class="col-md-4"></div>
@@ -824,7 +850,7 @@
               cloud
               usage policy.</p>
           </div>
-          <div *ngIf="is_validation" class="form-group row">
+          <div *ngIf="is_validation " class="form-group row">
             <label class="col-md-4 form-control-label" for="">
               <strong>Confirmation of Responsibility*</strong>
             </label>

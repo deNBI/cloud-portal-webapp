@@ -1,11 +1,12 @@
-import {Image} from './image';
 import {Flavor} from './flavor';
 import {Client} from '../clients/client.model';
+import {VirtualMachineStates} from './virtualmachinestates';
 
 /**
  * Virtualmachine class.
  */
 export class VirtualMachine {
+
   private _flavor: Flavor;
   private _image: string;
   private _project: string;
@@ -17,19 +18,19 @@ export class VirtualMachine {
   private _created_at: string;
   private _stopped_at: string;
   private _elixir_id: string;
-  private _userlogin: string;
+  private _username: string;
   private _floating_ip: string;
   private _ssh_command: string;
   private _udp_command: string;
   private _application_id: string;
-  private _showSSHCommand: boolean = false;
+  private _cardState: number;
 
-  get showSSHCommand(): boolean {
-    return this._showSSHCommand;
+  get cardState(): number {
+    return this._cardState;
   }
 
-  set showSSHCommand(value: boolean) {
-    this._showSSHCommand = value;
+  set cardState(value: number) {
+    this._cardState = value;
   }
 
   get application_id(): string {
@@ -136,12 +137,12 @@ export class VirtualMachine {
     this._elixir_id = value;
   }
 
-  get userlogin(): string {
-    return this._userlogin;
+  get username(): string {
+    return this._username;
   }
 
-  set userlogin(value: string) {
-    this._userlogin = value;
+  set username(value: string) {
+    this._username = value;
   }
 
   get floating_ip(): string {

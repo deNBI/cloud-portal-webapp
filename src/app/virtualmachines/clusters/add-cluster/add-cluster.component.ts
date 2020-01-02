@@ -395,7 +395,7 @@ export class AddClusterComponent implements OnInit {
         flavor_fixed, image, servername,
         project, projectid.toString(), this.http_allowed,
         this.https_allowed, this.udp_allowed, this.volumeName,
-        this.diskspace.toString(), this.biocondaComponent.getChosenTools(), play_information)
+        this.diskspace.toString(), play_information)
         .subscribe((newVm: VirtualMachine) => {
           this.started_machine = false;
 

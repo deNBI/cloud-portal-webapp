@@ -1,3 +1,57 @@
+##  (2019-12-19)
+
+
+#### Features
+
+* **Links:** added travis check ([0895055b](0895055b))
+* **resenv:**  theiaide, guacamole working ([03456b64](03456b64))
+
+##  (2019-12-17)
+
+
+#### Bug Fixes
+
+* **Instance:** reload fixed ([30b56474](30b56474))
+
+##  (2019-12-17)
+
+
+#### Bug Fixes
+
+* **EdamTags:** fixed race condition when pi approves ([3023ae62](3023ae62))
+* **vm-overview:**  show deletion status when deleting all vms ([1fc2cbb6](1fc2cbb6))
+
+
+#  (2019-12-12)
+
+
+#### Features
+
+* **Instance:** status loop implemented ([00bd3011](00bd3011))
+
+#### Bug Fixes
+
+* **applications_overview:**  button-size jumping for smaller screens (#940) ([e111331b](e111331b))
+* **fm_resources:**  adjusted modal size and added pattern to inputs (#937) ([804cdfd0](804cdfd0))
+
+
+##  (2019-12-10)
+
+
+#### Bug Fixes
+
+* **application:**  removed typo ([acde565f](acde565f))
+* **instance-overview:**
+  *  removed typo ([305f7af7](305f7af7))
+  *  restructured overloaded layout ([e2e6d9d1](e2e6d9d1))
+* **instance_overview:**  layout problems ([de7e5c81](de7e5c81))
+* **io:**  smaller black dot, footer vanish after action ([3446aaf4](3446aaf4))
+
+#### Features
+
+* **Instance:** added vm_per_site ([292e285f](292e285f))
+
+
 ##  (2019-12-06)
 
 

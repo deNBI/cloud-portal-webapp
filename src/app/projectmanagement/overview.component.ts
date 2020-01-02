@@ -10,13 +10,12 @@ import {ProjectMemberApplication} from './project_member_application';
 import {ComputecenterComponent} from './computecenter.component';
 import {Userinfo} from '../userinfo/userinfo.model';
 import {forkJoin, Observable} from 'rxjs';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Application} from '../applications/application.model/application.model';
 import {ApplicationBaseClassComponent} from '../shared/shared_modules/baseClass/application-base-class.component';
 import {ApplicationStatusService} from '../api-connector/application-status.service';
 import {FacilityService} from '../api-connector/facility.service';
 import {ApplicationsService} from '../api-connector/applications.service';
-import {Router} from '@angular/router'
 import {FullLayoutComponent} from '../layouts/full-layout.component';
 import {NgForm} from '@angular/forms';
 import {Flavor} from '../virtualmachines/virtualmachinemodels/flavor';
@@ -24,6 +23,7 @@ import {FlavorType} from '../virtualmachines/virtualmachinemodels/flavorType';
 import {FlavorService} from '../api-connector/flavor.service';
 import {CreditsService} from '../api-connector/credits.service';
 import {is_vo} from '../shared/globalvar';
+import {WIKI_GROUP_INVITATIONS} from '../../links/links';
 
 /**
  * Projectoverview component.
@@ -39,7 +39,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   @Input() invitation_group_post: string = environment.invitation_group_post;
   @Input() voRegistrationLink: string = environment.voRegistrationLink;
   @Input() invitation_group_pre: string = environment.invitation_group_pre;
-  @Input() wiki_group_invitation: string = environment.wiki_group_invitations;
+  WIKI_GROUP_INVITATIONS: string = WIKI_GROUP_INVITATIONS;
 
   @ViewChild(NgForm) simpleVmForm: NgForm;
 
@@ -48,6 +48,11 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
    * @type {boolean}
    */
   public min_vm: boolean = true;
+
+  /**
+   * The credits for the extension.
+   */
+  private extensionCredits: number = 0;
 
   project_id: string;
   application_id: string;
@@ -100,6 +105,25 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
               private router: Router,
               private creditsService: CreditsService) {
     super(userservice, applicationstatusservice, applicationsservice, facilityService);
+  }
+
+  calculateCredits(lifetimeString?: string): void {
+    let lifetime: number;
+    if (Number(lifetimeString) === undefined) {
+      lifetime = 0
+    } else {
+      lifetime = Number(lifetimeString)
+    }
+    const total_lifetime: number = (Math.round(((this.project.LifetimeDays - this.project.DaysRunning) / 31) * 100) / 100) + lifetime;
+    this.creditsService.getCreditsForApplication(this.totalNumberOfCores, this.totalRAM, total_lifetime).toPromise()
+      .then((credits: number) => {
+        // tslint:disable-next-line:max-line-length
+        let extraCredits: number = credits - Math.round(this.project.ApprovedCredits * ((this.project.LifetimeDays - this.project.DaysRunning) / this.project.LifetimeDays))
+        if (extraCredits < 0) {
+          extraCredits = 0
+        }
+        this.extensionCredits = extraCredits;
+      }).catch((err: Error) => console.log(err.message));
   }
 
   approveMemberApplication(project: number, application: number, membername: string): void {
@@ -205,8 +229,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
     values['project_application_id'] = this.project_application.Id;
     values['total_cores_new'] = this.totalNumberOfCores;
     values['total_ram_new'] = this.totalRAM;
-    values['project_application_renewal_credits'] = this.credits;
-
+    values['project_application_renewal_credits'] = this.extensionCredits;
     this.requestExtension(values);
 
   }
