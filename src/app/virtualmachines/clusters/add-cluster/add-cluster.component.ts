@@ -84,6 +84,9 @@ export class AddClusterComponent implements OnInit {
 
   flavors_usable: Flavor[] = [];
 
+  cluster_id: string;
+  cluster_error: string;
+
   /**
    * Selected Image.
    */
@@ -359,7 +362,14 @@ export class AddClusterComponent implements OnInit {
     this.virtualmachineservice.startCluster(
       masterFlavor, this.selectedMasterImage.name,
       workerFlavor, this.selectedWorkerImage.name,
-      this.workerInstancesCount, this.selectedProject[1]).subscribe()
+      this.workerInstancesCount, this.selectedProject[1]).subscribe(
+      (res: any) => {
+        this.cluster_id = res['id'];
+      },
+      (error: any) => {
+        console.log(error)
+        this.cluster_error = error;
+      })
 
   }
 

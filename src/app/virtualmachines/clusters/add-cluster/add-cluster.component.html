@@ -247,7 +247,7 @@
                   [disabled]="(workerInstancesCount > maxWorkerInstances) || !selectedMasterFlavor || !selectedMasterImage || !selectedWorkerFlavor || !selectedWorkerImage || !workerInstancesCount "
                   class="btn btn-primary  .btn-lg offset-md-8"
                   data-toggle="modal"
-                  (click)="startCluster();">
+                  (click)="startCluster();infoModal.show()">
             Start VM
           </button>
         </div>
@@ -271,4 +271,26 @@
   </div>
 
 </div>
+
+<div bsModal #infoModal="bs-modal" class="modal fade " tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true"
+     id="info_modal">
+  <div class="modal-dialog modal-info" role="document"
+  >
+
+    <div class="modal-content">
+      <div class="modal-header">
+        Cluster Start
+      </div>
+      <div class="modal-body">
+        <span *ngIf="!cluster_id">        Starting Cluster..
+</span>
+        <span *ngIf="cluster_id"> The ID of your new cluster is <strong>{{cluster_id}}</strong>.</span>
+        <span *ngIf="cluster_error">  {{cluster_error}}.</span>
+
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 
