@@ -355,6 +355,8 @@ export class AddClusterComponent implements OnInit {
 
   startCluster(): void {
     const re: RegExp = /\+/gi;
+    this.cluster_error = null;
+    this.cluster_id = null;
 
     const masterFlavor: string = this.selectedMasterFlavor.name.replace(re, '%2B');
     const workerFlavor: string = this.selectedWorkerFlavor.name.replace(re, '%2B');
@@ -364,10 +366,20 @@ export class AddClusterComponent implements OnInit {
       workerFlavor, this.selectedWorkerImage.name,
       this.workerInstancesCount, this.selectedProject[1]).subscribe(
       (res: any) => {
-        this.cluster_id = res['id'];
-      },
+        if (res['status'] && res['status'] === 'mutex_locked') {
+          setTimeout(
+            () => {
+              this.startCluster()
+            },
+            1000)
+        } else {
+          this.cluster_id = res['id'];
+        }
+
+      }
+      ,
       (error: any) => {
-        console.log(error)
+        console.log(error);
         this.cluster_error = error;
       })
 
