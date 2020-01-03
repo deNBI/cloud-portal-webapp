@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {ImageService} from '../../api-connector/image.service';
 import {SnapshotModel} from './snapshot.model';
-import {forkJoin, Observable} from 'rxjs';
+import {forkJoin} from 'rxjs';
 import {IResponseTemplate} from '../../api-connector/response-template';
-import {VolumeRequestStates} from '../volumes/volume-request-states.enum';
 import {FacilityService} from '../../api-connector/facility.service';
+import {WIKI_SNAPSHOTS} from '../../../links/links';
 
 enum Snapshot_Delete_Statuses {
   WAITING = 0,
@@ -22,6 +22,7 @@ enum Snapshot_Delete_Statuses {
            })
 
 export class SnapshotOverviewComponent implements OnInit {
+  WIKI_SNAPSHOTS: string = WIKI_SNAPSHOTS;
 
   title: string = 'Snapshot Overview';
 

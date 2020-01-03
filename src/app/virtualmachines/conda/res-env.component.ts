@@ -1,13 +1,18 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormControl, Validators} from '@angular/forms';
 import {BiocondaService} from '../../api-connector/bioconda.service';
+import {GroupService} from '../../api-connector/group.service';
 
+/**
+ * ResEnv.
+ */
 @Component({
              selector: 'app-res-env',
              templateUrl: 'res-env.component.html',
-             providers: [BiocondaService]
+             providers: [BiocondaService, GroupService]
            })
-export class ResEnvComponent implements OnInit{
+export class ResEnvComponent implements OnInit {
+
 
   playbooks: {[pl_name: string]: {
       [var_name: string]: string
@@ -23,26 +28,14 @@ export class ResEnvComponent implements OnInit{
   user_key_url: FormControl = new FormControl('',
                                               [Validators.required, Validators.pattern('[a-zA-Z]*')]);
 
-  constructor(private condaService: BiocondaService) {
-  }
-
-  addPlaybook(name: string): void {
-    this.playbooks = {};
-    this.playbooks[name] = {template_version: '2'};
+  constructor(private condaService: BiocondaService, private groupService: GroupService) {
   }
 
   addNothing(): void {
-    console.log(this.user_key_url.errors);
-  }
-
-  getPlaybooks(): {[pl_name: string]: {
-      [var_name: string]: string
-    }} {
-    return this.playbooks;
-  }
-
-  hasPlaybook(): boolean {
-    return Object.keys(this.playbooks).length > 0;
+    console.log(this.clientid);
+    this.groupService.getClientForcUrl(this.clientid).subscribe((response: JSON) => {
+      console.log(response);
+    });
   }
 
   getUserKeyUrl(): string {

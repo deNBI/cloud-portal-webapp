@@ -1,3 +1,27 @@
+##  (2019-12-19)
+
+
+#### Features
+
+* **Links:** added travis check ([0895055b](0895055b))
+* **resenv:**  theiaide, guacamole working ([03456b64](03456b64))
+
+##  (2019-12-17)
+
+
+#### Bug Fixes
+
+* **Instance:** reload fixed ([30b56474](30b56474))
+
+##  (2019-12-17)
+
+
+#### Bug Fixes
+
+* **EdamTags:** fixed race condition when pi approves ([3023ae62](3023ae62))
+* **vm-overview:**  show deletion status when deleting all vms ([1fc2cbb6](1fc2cbb6))
+
+
 #  (2019-12-12)
 
 

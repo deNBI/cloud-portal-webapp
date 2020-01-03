@@ -429,7 +429,6 @@ export class Application {
     this._InitialCredits = value;
   }
 
-
   get TotalExtensionCredits(): number {
     if (this.ApplicationExtension != null) {
       return Number(this.InitialCredits) + Number(this.ApplicationExtension.ExtendedCredits)
