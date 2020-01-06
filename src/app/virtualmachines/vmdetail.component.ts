@@ -17,6 +17,7 @@ import {VirtualMachineStates} from './virtualmachinemodels/virtualmachinestates'
 import {IResponseTemplate} from '../api-connector/response-template';
 import {SnapshotModel} from './snapshots/snapshot.model';
 import {Subject} from 'rxjs';
+import {PlaybookService} from '../api-connector/playbook.service';
 
 
 @Component({
@@ -24,7 +25,7 @@ import {Subject} from 'rxjs';
   templateUrl: 'vmdetail.component.html',
   styleUrls: ['./vmdetail.component.scss'],
              providers: [FlavorService, FacilityService, VoService, UserService, GroupService, ApiSettings,
-               VoService, CreditsService, VirtualmachineService, ImageService]
+               VoService, CreditsService, VirtualmachineService, ImageService, PlaybookService]
 })
 
 export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
@@ -87,7 +88,8 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
               private userService: UserService,
               private applicationService: ApplicationsService,
               private flavorService: FlavorService,
-              private imageService: ImageService) {
+              private imageService: ImageService,
+              private playbookService: PlaybookService) {
     super();
   }
   ngOnInit(): void {
@@ -95,7 +97,6 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
     this.activatedRoute.params.subscribe((paramsId: any) => {
      this.vm_id = paramsId.id;
      this.getVmById();
-
     });
   }
 
@@ -355,7 +356,6 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
   getVmById(): void {
     this.virtualmachineService.getVmById(this.vm_id).subscribe(
       (vm: VirtualMachine) => {
-        console.log(vm);
         if (vm == null) {
           this.isLoaded = false
           // TODO: Redirect back to overview
@@ -366,6 +366,15 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
           this.stopDate = parseInt(this.virtualMachine.stopped_at, 10) * 1000;
           this.stopDate = parseInt(this.virtualMachine.stopped_at, 10) * 1000;
           this.getImageDetails(this.virtualMachine.projectid, this.virtualMachine.image);
+          this.playbookService.getPlaybookForVM(this.virtualMachine).subscribe((playbook: Object) => {
+            console.log(playbook)
+            if (!playbook) {
+              console.log('no playbook');
+            } else {
+              console.log('izz da');
+            }
+          }
+          );
           this.isLoaded = true;
         }
       }
