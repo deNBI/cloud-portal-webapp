@@ -14,3 +14,11 @@ export interface ImageLogo {
   tag: string;
   url: string;
 }
+
+/**
+ * Blocked Image tag interface.
+ */
+export interface BlockedImageTag {
+  name: string;
+  compute_center_facility_id: number;
+}

@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormControl, Validators} from '@angular/forms';
 import {BiocondaService} from '../../api-connector/bioconda.service';
-import {GroupService} from '../../api-connector/group.service';
+import {ResearchEnvironment} from '../virtualmachinemodels/res-env';
 
 /**
  * ResEnv.
@@ -9,48 +9,55 @@ import {GroupService} from '../../api-connector/group.service';
 @Component({
              selector: 'app-res-env',
              templateUrl: 'res-env.component.html',
-             providers: [BiocondaService, GroupService]
+             providers: [BiocondaService]
            })
 export class ResEnvComponent implements OnInit {
 
-
-  playbooks: {[pl_name: string]: {
-      [var_name: string]: string
-    }} = {};
-
   @Input() clientid: string;
-
-  templates: {[template_name: string]: string[]} = {};
-
-  selected_template: string = 'undefined';
-  selected_version: string = '';
+  @Input() onlyNamespace: boolean = false;
 
   user_key_url: FormControl = new FormControl('',
                                               [Validators.required, Validators.pattern('[a-zA-Z]*')]);
 
-  constructor(private condaService: BiocondaService, private groupService: GroupService) {
-  }
+  selectedTemplate: ResearchEnvironment = null;
 
-  addNothing(): void {
-    console.log(this.clientid);
-    this.groupService.getClientForcUrl(this.clientid).subscribe((response: JSON) => {
-      console.log(response);
-    });
+  templates: ResearchEnvironment[] = [];
+
+  undefinedTemplate: ResearchEnvironment = new ResearchEnvironment();
+
+  constructor(private condaService: BiocondaService) {
   }
 
   getUserKeyUrl(): string {
     return this.user_key_url.value;
   }
 
+  setSelectedTemplate(template: ResearchEnvironment): void {
+    if (template === null) {
+      this.selectedTemplate = this.undefinedTemplate;
+
+      return;
+    }
+    this.selectedTemplate = template;
+  }
+
   ngOnInit(): void {
+    this.undefinedTemplate.template_name = 'undefined';
+    this.setSelectedTemplate(null);
     this.condaService.getForcTemplates(this.clientid).subscribe((templates: any) => {
       for (const dict of templates) {
-        if (this.templates[dict['name']] === undefined || this.templates[dict['name']].length === 0) {
-          this.templates[dict['name']] = [];
-          this.templates[dict['name']].push(dict['version']);
-        } else {
-          this.templates[dict['name']].push(dict['version']);
+        const resenv: ResearchEnvironment = new ResearchEnvironment();
+        resenv.template_name = dict['name'];
+        resenv.template_version = dict['version'];
+        if (resenv.template_name === 'rstudio') {
+          resenv.template_logo_url = `static/webapp/assets/img/RStudio-Logo-flat.svg`;
+          resenv.template_description = 'RStudio is an integrated development environment (IDE) for R. ' +
+            'It includes a console, syntax-highlighting editor that supports direct code execution, ' +
+            'as well as tools for plotting, history, ' +
+            'debugging and workspace management.';
+          resenv.template_info_url = 'https://rstudio.com/products/rstudio/features/';
         }
+        this.templates.push(resenv);
       }
     });
   }

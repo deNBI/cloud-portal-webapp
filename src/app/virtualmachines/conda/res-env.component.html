@@ -1,43 +1,93 @@
 <form>
   <div class="row">
-    <label>
+    <div class="col"><label>
       Namespace:
       <input type="text" class="form-control col" [formControl]="user_key_url"
              [ngClass]="{
            'is-invalid':user_key_url?.invalid && (user_key_url?.dirty || user_key_url?.touched),
            'is-valid':user_key_url?.valid && (user_key_url?.dirty || user_key_url?.touched)}">
     </label>
-    <div *ngIf="user_key_url.invalid && (user_key_url?.dirty || user_key_url?.touched)">
-      <div class="alert alert-warning" *ngIf="user_key_url.errors.pattern">Allowed characters are upper and lower case
-        letters (a-z A-Z).
+      <div *ngIf="user_key_url.invalid && (user_key_url?.dirty || user_key_url?.touched)">
+        <div class="alert alert-warning" *ngIf="user_key_url.errors.pattern">Allowed characters are upper and lower case
+          letters (a-z A-Z).
+        </div>
       </div>
     </div>
   </div>
-<div class="row">
-    <label>
-      Choose a Research Environment:
-      <select class="form-control col" name="selected_name"
-              [(ngModel)]="selected_template">
-        <option value="undefined" selected>Please Select</option>
-        <option *ngFor="let template of templates | keyvalue" [ngValue]="template.key"> {{template.key}}
-        </option>
-      </select>
-    </label>
-</div>
+  <div *ngIf="!onlyNamespace">
   <div class="row">
+    <div *ngIf="selectedTemplate.template_name !== 'undefined'" class="col">
+      <div class="card border-success flavor-image-card" style="cursor: default;">
+        <div class="card-header bg-success text-truncate" data-toggle="tooltip" data-placement="top"
+             title="{{selectedTemplate.template_name}}" (click)="setSelectedTemplate(null)" style="cursor: pointer;">
+          <strong>{{selectedTemplate.template_name}}</strong>
+          <button type="button" class="close"
+                  aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button></div>
+        <div class="card-body">
+          <div class="scroll-image">
+            <p>
+              <img src="{{selectedTemplate?.template_logo_url}}" alt="{{selectedTemplate.template_name}}® "
+                   style="width: 70px;">
+            </p>
+            <p>
+              {{selectedTemplate?.template_description}}
+            </p>
+            <p *ngIf="selectedTemplate.template_info_url">
+              <a href="{{selectedTemplate?.template_info_url}}" target="_blank">Click here for more Information.</a>
+            </p>
+          </div>
+        </div>
+      </div>
 
-    <div *ngIf="selected_template != 'undefined'">
-      <label>
-        Choose a version:
-        <select class="form-control col" name="selected_version"
-                [(ngModel)]="selected_version">
-          <option value="undefined" hidden disabled selected>Please Select</option>
-          <option *ngFor="let version of templates[selected_template]" [ngValue]="version"> {{version}}
-          </option>
-        </select>
-      </label>
+    </div>
+    <div *ngIf="selectedTemplate.template_name === 'undefined'" class="col">
+      <div class="card border-info flavor-image-card" style="cursor: default;">
+        <div class="card-header bg-info text-truncate" data-toggle="tooltip" data-placement="top"
+             title="Please choose a research environment">
+          <strong>Choose a research environment</strong></div>
+        <div class="card-body">
+          <div class="scroll-image">For more information, please visit <a href="https://cloud.denbi.de/wiki/"
+                                                                          target="_blank">the Wiki</a>.
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
+  <div class="row">
+    <ng-container *ngFor="let template of templates">
 
-  <button (click)="addNothing()">Was anderes</button>
+      <div *ngIf="template.template_name !== selectedTemplate.template_name" class="col">
+        <div class="card flavor-image-card" id="id_template_owl_{{template.template_name}}" style="cursor: default;">
+          <div (click)="setSelectedTemplate(template)"
+               class="card-header bg-info-flavor text-truncate" data-toggle="tooltip" data-placement="top"
+               title="{{template.template_name}}"
+               style="background-color: #005AA9 !important; color: white !important; cursor: pointer"> <!-- quickfix -->
+            <strong>{{template.template_name}}</strong>
+            <button type="button" class="close"
+                    aria-label="Close">
+              <span aria-hidden="true">+</span>
+            </button></div>
+          <div class="card-body">
+            <div class="scroll-image">
+              <p>
+                <img src="{{template?.template_logo_url}}" alt="{{template.template_name}}® " style="width: 70px;">
+              </p>
+              <p>
+                {{template?.template_description}}
+              </p>
+              <p *ngIf="template.template_info_url">
+                <a href="{{template?.template_info_url}}" target="_blank">Click here for more Information.</a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+  </div>
+
+
 </form>

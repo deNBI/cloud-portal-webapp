@@ -1,3 +1,27 @@
+##  (2020-01-06)
+
+
+#### Features
+
+* **DOI:**
+  * added placeholder doi example ([4aef389c](4aef389c))
+  * added option to add doi ([901826a7](901826a7))
+  * added option to add doi ([1b1d77e2](1b1d77e2))
+* **Links:** added news ([d49c8b93](d49c8b93))
+* **images:**
+  *  cc specific tag blacklist, checks for resenv tags (#960) ([852f9541](852f9541))
+  *  cc specific tag blacklist, checks for resenv tags ([a14dd837](a14dd837))
+* **resenv:**
+  *  envs as cards, fix faviconpath, add rstudio logo a… (#957) ([8a096a8b](8a096a8b))
+  *  envs as cards, fix faviconpath, add rstudio logo and description ([6d621fa3](6d621fa3))
+* **vm-overview:**  show res-env link ([74c02fc6](74c02fc6))
+
+#### Bug Fixes
+
+* **VM:**
+  * fixed the created by name (#958) ([968b88fe](968b88fe))
+  * fixed the created by name ([bb0d7702](bb0d7702))
+
 ##  (2019-12-19)
 
 

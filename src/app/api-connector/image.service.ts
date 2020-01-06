@@ -6,7 +6,7 @@ import {Observable} from 'rxjs';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Cookie} from 'ng2-cookies/ng2-cookies';
 import {IResponseTemplate} from './response-template';
-import {ImageLogo, ImageTag} from '../facility_manager/image-tag';
+import {BlockedImageTag, ImageLogo, ImageTag} from '../facility_manager/image-tag';
 
 const header: HttpHeaders = new HttpHeaders({
                                               'X-CSRFToken': Cookie.get('csrftoken')
@@ -55,6 +55,13 @@ export class ImageService {
 
   }
 
+  getBlockedImageTags(facility_id: number): Observable<any> {
+    return this.http.get(`${ApiSettings.getApiBaseURL()}blockedImageTags/`, {
+      withCredentials: true,
+      params: {facility_id: facility_id.toString()}
+    })
+  }
+
   addImageTags(imageTag: string, description: string): Observable<ImageTag> {
 
     const params: HttpParams = new HttpParams().set('imageTag', imageTag).set('description', description);
@@ -64,6 +71,15 @@ export class ImageService {
       headers: header
     })
 
+  }
+
+  addBlockedImageTag(imageTag: string, facility_id: number): Observable<BlockedImageTag> {
+    const params: HttpParams = new HttpParams().set('imageTag', imageTag).set('facility_id', facility_id.toString());
+
+    return this.http.post<BlockedImageTag>(`${ApiSettings.getApiBaseURL()}blockedImageTags/`, params, {
+      withCredentials: true,
+      headers: header
+    })
   }
 
   getImageLogos(): Observable<ImageLogo[]> {
@@ -98,6 +114,17 @@ export class ImageService {
     return this.http.delete<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}imageTags/${imageTag}/`, {
       withCredentials: true,
       headers: header
+    })
+
+  }
+
+  deleteBlockedImageTag(imageTag: string, facility_id: number): Observable<IResponseTemplate> {
+    const params: HttpParams = new HttpParams().set('facility_id', facility_id.toString());
+
+    return this.http.delete<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}blockedImageTags/${imageTag}/`, {
+      withCredentials: true,
+      headers: header,
+      params: params
     })
 
   }

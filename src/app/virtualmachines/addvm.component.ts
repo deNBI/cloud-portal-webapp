@@ -328,11 +328,17 @@ export class VirtualMachineComponent implements OnInit {
       if (play_information !== '{}') {
         this.playbook_run = 1;
       }
+      let tags: string = null;
+      let user_key_url: string = null;
+      if (this.selectedImage.tags.indexOf('resenv') !== -1) {
+        tags = this.selectedImage.tags.toString();
+        user_key_url = this.resEnvComponent.getUserKeyUrl();
+      }
       this.virtualmachineservice.startVM(
         flavor_fixed, image, servername,
         project, projectid.toString(), this.http_allowed,
         this.https_allowed, this.udp_allowed, this.volumeName,
-        this.diskspace.toString(), play_information)
+        this.diskspace.toString(), play_information, tags, user_key_url)
         .subscribe((newVm: VirtualMachine) => {
           this.started_machine = false;
 
@@ -386,10 +392,10 @@ export class VirtualMachineComponent implements OnInit {
       this.timeout += this.biocondaComponent.getTimeout();
     }
 
-    if (this.resEnvComponent && this.resEnvComponent.selected_template !== 'undefined'
-      && this.resEnvComponent.selected_version !== ''
+    if (this.resEnvComponent && this.resEnvComponent.selectedTemplate !== null
       && this.resEnvComponent.user_key_url.errors === null) {
-      playbook_info[this.resEnvComponent.selected_template] = {template_version: this.resEnvComponent.selected_version};
+      playbook_info[this.resEnvComponent.selectedTemplate.template_name] = {template_version:
+        this.resEnvComponent.selectedTemplate.template_version};
       playbook_info['user_key_url'] = {user_key_url: this.resEnvComponent.getUserKeyUrl()};
     }
 

@@ -406,7 +406,13 @@
                     <i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
                             'icon-arrow-up': resEnvGroup.isOpen, 'icon-arrow-down': !resEnvGroup.isOpen}"></i>
                   </div>
-                  <app-res-env #resEnv [clientid]="client_id"></app-res-env>
+                  <app-res-env *ngIf="selectedImage !== undefined && selectedImage.tags.indexOf('resenv') != -1"
+                               #resEnv
+                               [clientid]="client_id"
+                               [onlyNamespace]="true"></app-res-env>
+                  <app-res-env *ngIf="selectedImage === undefined || selectedImage?.tags.indexOf('resenv') == -1"
+                               #resEnv
+                               [clientid]="client_id"></app-res-env>
                 </accordion-group>
               </accordion>
             </div>
@@ -427,8 +433,8 @@
           <p *ngIf="diskspace > 0 && !volumeName">- A name for your storage volume
           </p>
           <p *ngIf="!gaveOkay && hasTools">- Give your okay to the Bioconda install process
-
           </p>
+
         </div>
         <div class="form-group row"
              *ngIf="projectDataLoaded && selectedProjectVmsUsed < selectedProjectVmsMax && (flavors?.length > 0  || selectedFlavor)">
