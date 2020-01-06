@@ -6,8 +6,8 @@ import {VirtualMachineStates} from './virtualmachinestates';
  * Virtualmachine class.
  */
 export class VirtualMachine {
-
   private _flavor: Flavor;
+
   private _image: string;
   private _project: string;
   private _status: string;
@@ -24,6 +24,15 @@ export class VirtualMachine {
   private _udp_command: string;
   private _application_id: string;
   private _cardState: number;
+  private _res_env_url: string;
+
+  get res_env_url(): string {
+    return this._res_env_url;
+  }
+
+  set res_env_url(value: string) {
+    this._res_env_url = value;
+  }
 
   get cardState(): number {
     return this._cardState;
