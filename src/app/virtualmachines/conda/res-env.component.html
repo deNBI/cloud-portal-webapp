@@ -55,20 +55,6 @@
       </div>
 
     </div>
-    <div class="row">
-
-      <div *ngIf="selected_template != 'undefined'">
-        <label>
-          Choose a version:
-          <select class="form-control col" name="selected_version"
-                  [(ngModel)]="selected_version">
-            <option value="undefined" hidden disabled selected>Please Select</option>
-            <option *ngFor="let version of templates[selected_template]" [ngValue]="version"> {{version}}
-            </option>
-          </select>
-        </label>
-      </div>
-    </div>
   </div>
   <div class="row">
     <ng-container *ngFor="let template of templates">
@@ -101,81 +87,7 @@
       </div>
     </ng-container>
   </div>
-  <!--
-    <div *ngIf="carousel_activated && templates.length >=templates_per_row" class="row">
-      <div [hidden]="!selectedTemplate" class="col-12" style="cursor: pointer; padding-top: 10px" [ngClass]="{'col-xl-3':window_size >= carousel_window_min_xl_9,
-         'col-xl-6':window_size >= carousel_window_min_xl6 && window_size<carousel_window_min_xl_8,
-         'col-xl-4':window_size <carousel_window_min_xl_9 && window_size>=carousel_window_min_xl_8}">
-        <div class="card border-success flavor-image-card"
-        >
-          <div
-            class="card-header bg-success text-truncate" data-toggle="tooltip" data-placement="top"
-            title="{{selectedTemplate}}">
-            <strong>{{selectedTemplate}}</strong></div>
-          <div class="card-body">
-          </div>
-        </div>
-      </div>
-      <div *ngIf="!selectedTemplate" class="col-12 "
-           style="border-style: dashed; border-color: lightgray; padding-top: 10px">
-        <owl-carousel-o [options]="customOptions">
-          <ng-container *ngFor="let template of templates">
-            <ng-template carouselSlide>
-              <div (click)="setSelectedTemplate(template);" class="card flavor-image-card" id="id_template_owl_{{template}}"
-              >
-                <div
-                  class="card-header bg-info-flavor text-truncate" data-toggle="tooltip" data-placement="top"
-                  title="{{template}}"
-                  style="background-color: #005AA9 !important; color: white !important;"> &lt;!&ndash; quickfix &ndash;&gt;
-                  <strong>{{template}}</strong></div>
-                <div class="card-body">
-                </div>
-              </div>
-            </ng-template>
-          </ng-container>
-
-        </owl-carousel-o>
-      </div>
-      <div *ngIf="selectedTemplate" class="col-lg-12"
-           [ngClass]="{'col-xl-9':window_size >= carousel_window_min_xl_9,
-         'col-xl-6':window_size >= carousel_window_min_xl6 && window_size<carousel_window_min_xl_8,
-         'col-xl-8':window_size <carousel_window_min_xl_9 && window_size>=carousel_window_min_xl_8}"
-           style="border-style: dashed; border-color: lightgray; padding-top: 10px">
-        <owl-carousel-o [options]="customOptions">
-          <ng-container *ngFor="let template of templates">
-            <ng-template carouselSlide>
-              <div (click)="setSelectedTemplate(template);" class="card flavor-image-card" id="id_template_owl_{{template}}"
-              >
-                <div
-                  class="card-header bg-info-flavor text-truncate" data-toggle="tooltip" data-placement="top"
-                  title="{{template}}" style="background-color: #005AA9 !important; color: white !important;">
-                  <strong>{{template}}</strong></div>
-                <div class="card-body">
-                </div>
-              </div>
-            </ng-template>
-          </ng-container>
-
-        </owl-carousel-o>
-      </div>
-    </div>
-  -->
-
-
-  <!--
-    <div class="row ">
-      <div class="ml-auto mr-3"
-           *ngIf="carousel_activated && (!selectedTemplate &&templates.length > templates_per_row || selectedTemplate
-           &&templates.length > templates_per_row-1)  "
-           (click)="carousel_activated=false;" style="cursor: pointer;"><strong class="text-info">Show
-        all
-        Templates</strong></div>
-      <div class="ml-auto mr-3"
-           *ngIf="!carousel_activated && (!selectedTemplate &&templates.length > templates_per_row || selectedTemplate &&templates.length > templates_per_row-1)"
-           (click)="carousel_activated=true;" style="cursor: pointer;"><strong class="text-info">Hide
-        Templates</strong></div>
-    </div>
-  -->
+  </div>
 
 
 </form>
