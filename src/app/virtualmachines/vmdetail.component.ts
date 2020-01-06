@@ -37,6 +37,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
   virtualMachineStates: VirtualMachineStates = new VirtualMachineStates();
   virtualMachine: VirtualMachine;
   snapshotSearchTerm: Subject<string> = new Subject<string>();
+  errorMessage: boolean = false;
 
 
   /**
@@ -358,6 +359,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
       (vm: VirtualMachine) => {
         if (vm == null) {
           this.isLoaded = false
+          this.errorMessage = true;
           // TODO: Redirect back to overview
         } else {
           this.title = vm['name'];
@@ -366,7 +368,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
           this.stopDate = parseInt(this.virtualMachine.stopped_at, 10) * 1000;
           this.stopDate = parseInt(this.virtualMachine.stopped_at, 10) * 1000;
           this.getImageDetails(this.virtualMachine.projectid, this.virtualMachine.image);
-          this.playbookService.getPlaybookForVM(this.virtualMachine).subscribe((playbook: Object) => {
+          /*this.playbookService.getPlaybookForVM(this.virtualMachine).subscribe((playbook: Object) => {
             console.log(playbook)
             if (!playbook) {
               console.log('no playbook');
@@ -374,7 +376,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
               console.log('izz da');
             }
           }
-          );
+          );*/
           this.isLoaded = true;
         }
       }

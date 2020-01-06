@@ -1,4 +1,8 @@
-<div *ngIf="!isLoaded " class="loader"></div>
+<div *ngIf="errorMessage" class="alert alert-info">
+  <strong>The Virtual Machine could not be found.</strong>
+</div>
+
+<div *ngIf="!isLoaded && !errorMessage" class="loader"></div>
 
 <div class="animated fadeIn" *ngIf="isLoaded">
   <div class="row">
