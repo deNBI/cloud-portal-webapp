@@ -12,6 +12,7 @@ import {Subject} from 'rxjs';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {is_vo} from '../shared/globalvar';
 import {VirtualMachineStates} from './virtualmachinemodels/virtualmachinestates';
+import {GroupService} from '../api-connector/group.service';
 
 /**
  * Vm overview componentn.
@@ -20,7 +21,7 @@ import {VirtualMachineStates} from './virtualmachinemodels/virtualmachinestates'
              selector: 'app-vm-overview',
              templateUrl: 'vmOverview.component.html',
              styleUrls: ['./vmOverview.component.scss'],
-             providers: [FacilityService, ImageService, UserService, VirtualmachineService, FullLayoutComponent]
+             providers: [FacilityService, ImageService, UserService, VirtualmachineService, FullLayoutComponent, GroupService]
 
            })
 
@@ -131,7 +132,8 @@ export class VmOverviewComponent implements OnInit {
   constructor(private facilityService: FacilityService,
 
               private imageService: ImageService, private userservice: UserService,
-              private virtualmachineservice: VirtualmachineService, private fb: FormBuilder) {
+              private virtualmachineservice: VirtualmachineService, private fb: FormBuilder,
+              private groupService: GroupService) {
     this.actionsForm = fb.group({
                                   title: fb.control('initial value', Validators.required)
                                 });
@@ -471,6 +473,7 @@ export class VmOverviewComponent implements OnInit {
                    this.vms_content.forEach((vm: VirtualMachine, index: number) => {
                      vm.username = vm['userlogin'];
                      vm.cardState = 0;
+                     this.setForcUrl(vm);
                      if (vm.status !== VirtualMachineStates.DELETED) {
                        this.vmActions.push({id: vm, name: vm.name});
                      }
@@ -521,6 +524,7 @@ export class VmOverviewComponent implements OnInit {
                    this.vms_content.forEach((vm: VirtualMachine, index: number) => {
                      vm.username = vm['userlogin'];
                      vm.cardState = 0;
+                     this.setForcUrl(vm);
                      if (vm.status !== VirtualMachineStates.DELETED) {
                        this.vmActions.push({id: vm, name: vm.name});
                      }
@@ -590,6 +594,7 @@ export class VmOverviewComponent implements OnInit {
                    this.vms_content.forEach((vm: VirtualMachine, index: number) => {
                      vm.username = vm['userlogin'];
                      vm.cardState = 0;
+                     this.setForcUrl(vm);
                      if (vm.status !== VirtualMachineStates.DELETED) {
                        this.vmActions.push({id: vm, name: vm.name});
                      }
@@ -712,5 +717,20 @@ export class VmOverviewComponent implements OnInit {
         this.applyFilterStatus();
       })
     }
+  }
+
+  setForcUrl(vm: VirtualMachine): void {
+    this.groupService.getClientForcUrl(vm.client.id).subscribe((response: JSON) => {
+      if (response['forc_url'] !== 'None') {
+        this.virtualmachineservice.getLocationUrl(vm.openstackid)
+          .subscribe((url: any) => {
+            if (url !== '') {
+              vm.res_env_url = `${response['forc_url']}${url}/`;
+            } else {
+              vm.res_env_url = '';
+            }
+          });
+      }
+    });
   }
 }
