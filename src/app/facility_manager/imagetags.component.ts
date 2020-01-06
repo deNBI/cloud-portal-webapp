@@ -1,7 +1,8 @@
 import {ImageService} from '../api-connector/image.service';
 import {Component, OnInit} from '@angular/core';
-import {ImageLogo, ImageTag} from './image-tag';
+import {BlockedImageTag, ImageLogo, ImageTag} from './image-tag';
 import {forkJoin} from 'rxjs';
+import {FacilityService} from '../api-connector/facility.service';
 
 /**
  * ImageTag component.
@@ -9,7 +10,7 @@ import {forkJoin} from 'rxjs';
 @Component({
              selector: 'app-image-tags',
              templateUrl: 'imageTag.component.html',
-             providers: [ImageService]
+             providers: [ImageService, FacilityService]
            })
 export class ImageTagComponent implements OnInit {
 
@@ -17,21 +18,41 @@ export class ImageTagComponent implements OnInit {
 
   isLoaded: boolean = false;
   alertRed: boolean = false;
+  alertRed_blocked: boolean = false;
   imageTags: ImageTag[];
   imageLogos: ImageLogo[];
+  blockedImageTags: BlockedImageTag[];
   imageTag: string;
   imageUrl: string;
 
-  constructor(private imageService: ImageService) {
+  /**
+   * Facilitties where the user is manager ['name',id].
+   */
+  public managerFacilities: [string, number][];
+  /**
+   * Chosen facility.
+   */
+  public selectedFacility: [string, number];
+
+  constructor(private imageService: ImageService, private facilityService: FacilityService) {
 
   }
 
   ngOnInit(): void {
-    forkJoin(this.imageService.getImageTags(), this.imageService.getImageLogos()).subscribe((res: any) => {
-      this.imageTags = res[0];
-      this.imageLogos = res[1];
-      this.isLoaded = true;
-    })
+    this.facilityService.getManagerFacilities().subscribe((result: any) => {
+      this.managerFacilities = result;
+      this.selectedFacility = this.managerFacilities[0];
+      forkJoin(
+        this.imageService.getImageTags(),
+        this.imageService.getImageLogos(),
+        this.imageService.getBlockedImageTags(this.selectedFacility['FacilityId']))
+        .subscribe((res: any) => {
+          this.imageTags = res[0];
+          this.imageLogos = res[1];
+          this.blockedImageTags = res[2];
+          this.isLoaded = true;
+        })
+    });
   }
 
   imageLogoTagAvailable(): boolean {
@@ -73,6 +94,25 @@ export class ImageTagComponent implements OnInit {
     this.imageService.deleteImageTag(tag).subscribe(() => {
       this.imageService.getImageTags().subscribe((tags: ImageTag[]) => {
         this.imageTags = tags;
+      })
+    })
+  }
+
+  addBlockedTag(tag: string, input: HTMLInputElement): void {
+    if (input.validity.valid) {
+      this.imageService.addBlockedImageTag(tag.trim(), this.selectedFacility['FacilityId']).subscribe((newTag: BlockedImageTag) => {
+        this.blockedImageTags.push(newTag)
+      });
+      this.alertRed_blocked = false;
+    } else {
+      this.alertRed_blocked = true;
+    }
+  }
+
+  deleteBlockedTag(tag: string, facility_id: number): void {
+    this.imageService.deleteBlockedImageTag(tag, facility_id).subscribe(() => {
+      this.imageService.getBlockedImageTags(facility_id).subscribe((tags: BlockedImageTag[]) => {
+        this.blockedImageTags = tags;
       })
     })
   }

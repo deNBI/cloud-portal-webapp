@@ -14,6 +14,7 @@
       </div>
     </div>
   </div>
+  <div *ngIf="!onlyNamespace">
   <div class="row">
     <div *ngIf="selectedTemplate.template_name !== 'undefined'" class="col">
       <div class="card border-success flavor-image-card" style="cursor: default;">
@@ -53,6 +54,20 @@
         </div>
       </div>
 
+    </div>
+    <div class="row">
+
+      <div *ngIf="selected_template != 'undefined'">
+        <label>
+          Choose a version:
+          <select class="form-control col" name="selected_version"
+                  [(ngModel)]="selected_version">
+            <option value="undefined" hidden disabled selected>Please Select</option>
+            <option *ngFor="let version of templates[selected_template]" [ngValue]="version"> {{version}}
+            </option>
+          </select>
+        </label>
+      </div>
     </div>
   </div>
   <div class="row">
