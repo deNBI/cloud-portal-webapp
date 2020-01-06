@@ -19,7 +19,6 @@ import {SnapshotModel} from './snapshots/snapshot.model';
 import {Subject} from 'rxjs';
 
 
-
 @Component({
   selector: 'app-virtual-machine-detail',
   templateUrl: 'vmdetail.component.html',
@@ -356,6 +355,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
   getVmById(): void {
     this.virtualmachineService.getVmById(this.vm_id).subscribe(
       (vm: VirtualMachine) => {
+        console.log(vm);
         if (vm == null) {
           this.isLoaded = false
           // TODO: Redirect back to overview

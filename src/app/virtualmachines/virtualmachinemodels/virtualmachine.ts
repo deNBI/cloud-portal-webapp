@@ -24,6 +24,25 @@ export class VirtualMachine {
   private _application_id: string;
   private _cardState: number;
   private _projectid: number;
+  private _volume_id: string;
+  private _diskspace: string;
+
+
+  get volume_id(): string {
+    return this._volume_id;
+  }
+
+  set volume_id(value: string) {
+    this._volume_id = value;
+  }
+
+  get diskspace(): string {
+    return this._diskspace;
+  }
+
+  set diskspace(value: string) {
+    this._diskspace = value;
+  }
 
   get projectid(): number {
     return this._projectid;
