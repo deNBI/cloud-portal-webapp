@@ -245,7 +245,8 @@ export class VmOverviewComponent implements OnInit {
   applyFilterStatus(): void {
     const vm_content_copy: VirtualMachine[] = [];
     for (const vm of this.vms_content) {
-      if (vm.status in this.filter_status_list || vm.status !== VirtualMachineStates.ACTIVE && vm.status !== VirtualMachineStates.DELETED && vm.status !== VirtualMachineStates.SHUTOFF) {
+      if (vm.status in this.filter_status_list || vm.status !== VirtualMachineStates.ACTIVE
+        && vm.status !== VirtualMachineStates.DELETED && vm.status !== VirtualMachineStates.SHUTOFF) {
         vm.cardState = 0;
         vm_content_copy.push(vm)
       }
@@ -306,9 +307,13 @@ export class VmOverviewComponent implements OnInit {
       () => {
         if (vm.openstackid) {
           this.virtualmachineservice.checkVmStatus(vm.openstackid).subscribe((updated_vm: VirtualMachine) => {
-            this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
-            if (is_selected_vm) {
-              this.selectedVm = updated_vm;
+            if (!updated_vm['error']) {
+              this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
+              if (is_selected_vm) {
+                this.selectedVm = updated_vm;
+              }
+            } else {
+              updated_vm = vm
             }
 
             updated_vm.cardState = 0;
@@ -487,14 +492,15 @@ export class VmOverviewComponent implements OnInit {
                                                     });
                    this.onChanges();
                    this.isSearching = false;
-        this.checkVmTillActive()
+                   this.checkVmTillActive()
                  }
       );
   }
 
   checkVmTillActive(): void {
     this.vms_content.forEach((vm: VirtualMachine) => {
-      if (vm.status !== VirtualMachineStates.ACTIVE && vm.status !== VirtualMachineStates.SHUTOFF && vm.status !== VirtualMachineStates.DELETED) {
+      if (vm.status !== VirtualMachineStates.ACTIVE && vm.status !== VirtualMachineStates.SHUTOFF
+        && vm.status !== VirtualMachineStates.DELETED) {
         this.check_status_loop(vm, VirtualMachineStates.ACTIVE);
       }
     })
@@ -536,7 +542,7 @@ export class VmOverviewComponent implements OnInit {
                                                     });
                    this.onChanges();
                    this.isSearching = false;
-        this.checkVmTillActive()
+                   this.checkVmTillActive()
                  }
       );
   }
@@ -605,8 +611,7 @@ export class VmOverviewComponent implements OnInit {
                                                     });
                    this.onChanges();
                    this.isSearching = false;
-        this.checkVmTillActive()
-
+                   this.checkVmTillActive()
 
                  }
       );
@@ -703,9 +708,9 @@ export class VmOverviewComponent implements OnInit {
         }
         updated_vm.cardState = 0;
         this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
+        this.selectedMachines[this.selectedMachines.indexOf(vm)] = updated_vm;
+        this.applyFilterStatus();
       })
     }
-    this.applyFilterStatus();
-    this.status_changed = 1;
   }
 }

@@ -2,6 +2,7 @@ import {Component, Input, OnChanges, OnInit, SimpleChange, SimpleChanges} from '
 import {VirtualMachine} from '../virtualmachinemodels/virtualmachine';
 import * as JSPDF from 'jspdf';
 import {VirtualmachineService} from '../../api-connector/virtualmachine.service';
+import {GroupService} from '../../api-connector/group.service';
 
 /**
  * How to Connect moda body.
@@ -9,7 +10,7 @@ import {VirtualmachineService} from '../../api-connector/virtualmachine.service'
 @Component({
              selector: 'app-how-to-connect',
              templateUrl: 'how-to-connect.component.html',
-             providers: [VirtualmachineService]
+             providers: [VirtualmachineService, GroupService]
            })
 export class HowToConnectComponent implements OnChanges {
   public _selectedVirtualMachine: VirtualMachine;
@@ -22,7 +23,9 @@ export class HowToConnectComponent implements OnChanges {
 
   doc: JSPDF;
 
-  constructor(private virtualMachineService: VirtualmachineService) {
+  forc_url: string = '';
+
+  constructor(private virtualMachineService: VirtualmachineService, private groupService: GroupService) {
   }
 
   downloadFile(type: string): any {
@@ -104,11 +107,19 @@ export class HowToConnectComponent implements OnChanges {
             this.playbook_run = 1;
           }
         });
+      this.getForcUrl();
       this.virtualMachineService.getLocationUrl(current.openstackid)
         .subscribe((url: any) => {
-          console.log(url);
-          this.location_url = url;
+          this.location_url = `${this.forc_url}${url}/`;
         });
     }
+  }
+
+  getForcUrl(): void {
+    this.groupService.getClientForcUrl(this.selectedVirtualMachine.client.id).subscribe((response: JSON) => {
+      if (response['forc_url'] !== 'None') {
+        this.forc_url = response['forc_url'];
+      }
+    });
   }
 }
