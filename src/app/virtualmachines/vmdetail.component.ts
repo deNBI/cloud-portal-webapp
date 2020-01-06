@@ -312,7 +312,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
   resumeVM(): void {
     this.virtualmachineService.resumeVM(this.virtualMachine.openstackid).subscribe((updated_vm: VirtualMachine) => {
       this.status_changed = 0;
-      if (updated_vm.created_at !== '') {
+      if (updated_vm.created_at === '') {
         updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
       }
       updated_vm.cardState = 0;

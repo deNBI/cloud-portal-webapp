@@ -176,11 +176,16 @@
                   *ngIf="vm?.status != this.VirtualMachineStates.staticACTIVE && vm?.status != this.VirtualMachineStates.staticSHUTOFF && vm?.status != this.VirtualMachineStates.staticDELETED"
                   class="fa fa-spinner fa-spin"></i>
                 </div>
-                <div class="col-3" style="margin: auto; text-align: center">
+                <div class="col-3" style="margin: auto; text-align: center"
+                     *ngIf="vm?.status === VirtualMachineStates.staticACTIVE || vm?.status === VirtualMachineStates.staticSHUTOFF">
                   <a href="/#/project-management/{{vm?.application_id}}"><strong>{{vm?.project}}</strong></a>
                 </div>
+                <div class="col-3" style="margin: auto; text-align: center"
+                     *ngIf="vm?.status !== VirtualMachineStates.staticACTIVE && vm?.status !== VirtualMachineStates.staticSHUTOFF">
+                  <a><strong>{{vm?.project}}</strong></a>
+                </div>
                 <div class="col-2" style="margin: auto; text-align: center">
-                  {{vm?.username}}
+                  {{vm?.userlogin}}
                   <br>
                   {{vm?.created_at}}
                 </div>

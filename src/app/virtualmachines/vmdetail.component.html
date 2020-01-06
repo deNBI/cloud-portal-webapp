@@ -39,13 +39,13 @@
                 </div><span style="margin-left:15px;"class="text-muted font-weight-bold">Status: {{virtualMachine?.status}}</span>
               </div>
             </div>
-            <div class="col-2" *ngIf="!virtualMachine?.stopped_at">
-              <div class="callout callout-success" >
+            <div class="col-2" *ngIf="virtualMachine.status === virtualMachineStates.staticACTIVE">
+              <div class="callout callout-success">
                 <small class="text-muted">Created at (y-m-d)</small><br>
                 <strong class="text-muted">{{startDate | date: 'yyyy.MM.dd HH:mm'}}</strong>
               </div>
             </div>
-            <div class="col-2" *ngIf="virtualMachine?.stopped_at">
+            <div class="col-2" *ngIf="virtualMachine?.stopped_at && virtualMachine?.status === virtualMachineStates.staticSHUTOFF">
               <div class="callout callout-warning">
                 <small class="text-muted">Stopped at (y-m-d)</small><br>
                 <strong class="text-muted">{{stopDate | date: 'yyyy.MM.dd HH:mm'}}</strong>
@@ -69,12 +69,12 @@
             <div class="col-4">
               <div class="callout">
                 <small class="text-muted">Created by</small><br>
-                <strong class="text-muted">{{virtualMachine?.username}}</strong>
+                <strong class="text-muted">{{virtualMachine?.userlogin}}</strong>
               </div>
             </div>
             <div class="col-8">
               <div class="callout">
-                <small class="text-muted">Elixir-ID of {{virtualMachine?.username}}</small><br>
+                <small class="text-muted">Elixir-ID of {{virtualMachine?.userlogin}}</small><br>
                 <strong class="text-muted">{{virtualMachine?.elixir_id}}</strong>
               </div>
             </div>
