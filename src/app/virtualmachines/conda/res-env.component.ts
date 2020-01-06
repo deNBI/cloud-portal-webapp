@@ -19,6 +19,7 @@ export class ResEnvComponent implements OnInit {
     }} = {};
 
   @Input() clientid: string;
+  @Input() onlyNamespace: boolean = false;
 
   templates: {[template_name: string]: string[]} = {};
 
@@ -32,10 +33,6 @@ export class ResEnvComponent implements OnInit {
   }
 
   addNothing(): void {
-    console.log(this.clientid);
-    this.groupService.getClientForcUrl(this.clientid).subscribe((response: JSON) => {
-      console.log(response);
-    });
   }
 
   getUserKeyUrl(): string {

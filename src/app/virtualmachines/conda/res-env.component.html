@@ -13,29 +13,31 @@
       </div>
     </div>
   </div>
-<div class="row">
-    <label>
-      Choose a Research Environment:
-      <select class="form-control col" name="selected_name"
-              [(ngModel)]="selected_template">
-        <option value="undefined" selected>Please Select</option>
-        <option *ngFor="let template of templates | keyvalue" [ngValue]="template.key"> {{template.key}}
-        </option>
-      </select>
-    </label>
-</div>
-  <div class="row">
-
-    <div *ngIf="selected_template != 'undefined'">
+  <div *ngIf="!onlyNamespace">
+    <div class="row">
       <label>
-        Choose a version:
-        <select class="form-control col" name="selected_version"
-                [(ngModel)]="selected_version">
-          <option value="undefined" hidden disabled selected>Please Select</option>
-          <option *ngFor="let version of templates[selected_template]" [ngValue]="version"> {{version}}
+        Choose a Research Environment:
+        <select class="form-control col" name="selected_name"
+                [(ngModel)]="selected_template">
+          <option value="undefined" selected>Please Select</option>
+          <option *ngFor="let template of templates | keyvalue" [ngValue]="template.key"> {{template.key}}
           </option>
         </select>
       </label>
+    </div>
+    <div class="row">
+
+      <div *ngIf="selected_template != 'undefined'">
+        <label>
+          Choose a version:
+          <select class="form-control col" name="selected_version"
+                  [(ngModel)]="selected_version">
+            <option value="undefined" hidden disabled selected>Please Select</option>
+            <option *ngFor="let version of templates[selected_template]" [ngValue]="version"> {{version}}
+            </option>
+          </select>
+        </label>
+      </div>
     </div>
   </div>
 
