@@ -167,7 +167,7 @@
                   <a href="/#/project-management/{{vm?.application_id}}"><strong>{{vm?.project}}</strong></a>
                 </div>
                 <div class="col-2" style="margin: auto; text-align: center">
-                  {{vm?.username}}
+                  {{vm?.userlogin}}
                   <br>
                   {{vm?.created_at}}
                 </div>
@@ -253,7 +253,16 @@
                     command&gt;</a>
                   </div>
                 </div>
-              </div>
+
+                <div class="row" *ngIf="vm?.res_env_url != ''">
+                  <div class="col-md-1">
+                    <span class="font-weight-bold font-xs btn-block text-muted">Res-Env:</span>
+                  </div>
+                  <div class="col-md-11">
+                    <a class="font-weight-bold font-xs btn-block text-muted" href="{{vm?.res_env_url}}" target="_blank">{{vm?.res_env_url}}</a></div>
+                  </div>
+                </div>
+
               <div *ngIf="vm?.cardState == 2">
                 <div class="row">
                   <div class="col-md-2"
@@ -305,6 +314,7 @@
 
                 </div>
               </div>
+            </div>
             </div>
 
           </div>
@@ -871,5 +881,3 @@
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
   </div>
-
-</div>

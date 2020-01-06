@@ -392,10 +392,10 @@ export class VirtualMachineComponent implements OnInit {
       this.timeout += this.biocondaComponent.getTimeout();
     }
 
-    if (this.resEnvComponent && this.resEnvComponent.selected_template !== 'undefined'
-      && this.resEnvComponent.selected_version !== ''
+    if (this.resEnvComponent && this.resEnvComponent.selectedTemplate !== null
       && this.resEnvComponent.user_key_url.errors === null) {
-      playbook_info[this.resEnvComponent.selected_template] = {template_version: this.resEnvComponent.selected_version};
+      playbook_info[this.resEnvComponent.selectedTemplate.template_name] = {template_version:
+        this.resEnvComponent.selectedTemplate.template_version};
       playbook_info['user_key_url'] = {user_key_url: this.resEnvComponent.getUserKeyUrl()};
     }
 
