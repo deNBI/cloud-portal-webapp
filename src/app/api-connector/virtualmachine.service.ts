@@ -6,6 +6,7 @@ import {Cookie} from 'ng2-cookies/ng2-cookies';
 import {VirtualMachine} from '../virtualmachines/virtualmachinemodels/virtualmachine';
 import {Volume} from '../virtualmachines/volumes/volume';
 import {IResponseTemplate} from './response-template';
+import {Clusterinfo} from '../virtualmachines/clusters/clusterinfo';
 
 const header: HttpHeaders = new HttpHeaders({
                                               'X-CSRFToken': Cookie.get('csrftoken')
@@ -32,6 +33,13 @@ export class VirtualmachineService {
       .set('project_id', project_id.toString());
 
     return this.http.post(`${ApiSettings.getApiBaseURL()}clusters/`, params, {
+      withCredentials: true,
+      headers: header
+    })
+  }
+
+  getClusterInfo(cluster_id: string): Observable<Clusterinfo> {
+    return this.http.get<Clusterinfo>(`${ApiSettings.getApiBaseURL()}clusters/${cluster_id}/`, {
       withCredentials: true,
       headers: header
     })

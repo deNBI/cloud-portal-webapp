@@ -283,9 +283,10 @@
         Cluster Start
       </div>
       <div class="modal-body">
-        <span *ngIf="!cluster_id">        Starting Cluster..
+        <span *ngIf="!cluster_started">        Starting Cluster..
 </span>
-        <span *ngIf="cluster_id"> The ID of your new cluster is <strong>{{cluster_id}}</strong>.</span>
+        <span
+          *ngIf="cluster_id && cluster_started"> The ID of your new cluster is <strong>{{cluster_id}}</strong>.</span>
         <span *ngIf="cluster_error">  {{cluster_error}}.</span>
 
       </div>

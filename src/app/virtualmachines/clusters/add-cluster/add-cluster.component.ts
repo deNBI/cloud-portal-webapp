@@ -18,6 +18,7 @@ import {Userinfo} from '../../../userinfo/userinfo.model';
 import {Client} from '../../clients/client.model';
 import {BiocondaComponent} from '../../conda/bioconda.component';
 import {forkJoin} from 'rxjs';
+import {Clusterinfo} from '../clusterinfo';
 
 @Component({
              selector: 'app-add-cluster',
@@ -63,7 +64,7 @@ export class AddClusterComponent implements OnInit {
   title: string = 'New Cluster';
 
   vm_name: string;
-
+  cluster_info: Clusterinfo;
   started_machine: boolean = false;
 
   conda_img_path: string = `static/webapp/assets/img/conda_logo.svg`;
@@ -86,6 +87,7 @@ export class AddClusterComponent implements OnInit {
 
   cluster_id: string;
   cluster_error: string;
+  cluster_started: boolean = false;
 
   /**
    * Selected Image.
@@ -304,6 +306,24 @@ export class AddClusterComponent implements OnInit {
     this.progress_bar_width = 0;
   }
 
+  checkClusterStatusLoop(): void {
+    setTimeout(
+      () => {
+        this.virtualmachineservice.getClusterInfo(this.cluster_id).subscribe((cluster_info: Clusterinfo) => {
+          this.cluster_info = cluster_info;
+          console.log(this.cluster_info)
+          if (!this.cluster_info['public_ip']) {
+            this.checkClusterStatusLoop()
+          } else {
+            this.cluster_started = true;
+
+          }
+
+        })
+      },
+      this.checkStatusTimeout);
+  }
+
   /**
    * Check the status of the started vm in a loop.
    * @param {string} id
@@ -374,6 +394,7 @@ export class AddClusterComponent implements OnInit {
             1000)
         } else {
           this.cluster_id = res['id'];
+          this.checkClusterStatusLoop();
         }
 
       }
