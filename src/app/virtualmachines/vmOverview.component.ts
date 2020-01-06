@@ -471,7 +471,7 @@ export class VmOverviewComponent implements OnInit {
                    this.vmActions = [];
 
                    this.vms_content.forEach((vm: VirtualMachine, index: number) => {
-                     vm.username = vm['userlogin'];
+                     vm.userlogin = vm['userlogin'];
                      vm.cardState = 0;
                      this.setForcUrl(vm);
                      if (vm.status !== VirtualMachineStates.DELETED) {
@@ -522,7 +522,7 @@ export class VmOverviewComponent implements OnInit {
                    this.total_pages = vms['num_pages'];
                    this.vmActions = [];
                    this.vms_content.forEach((vm: VirtualMachine, index: number) => {
-                     vm.username = vm['userlogin'];
+                     vm.userlogin = vm['userlogin'];
                      vm.cardState = 0;
                      this.setForcUrl(vm);
                      if (vm.status !== VirtualMachineStates.DELETED) {
@@ -592,7 +592,7 @@ export class VmOverviewComponent implements OnInit {
                    this.vmActions = [];
 
                    this.vms_content.forEach((vm: VirtualMachine, index: number) => {
-                     vm.username = vm['userlogin'];
+                     vm.userlogin = vm['userlogin'];
                      vm.cardState = 0;
                      this.setForcUrl(vm);
                      if (vm.status !== VirtualMachineStates.DELETED) {

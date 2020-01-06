@@ -18,7 +18,7 @@ export class VirtualMachine {
   private _created_at: string;
   private _stopped_at: string;
   private _elixir_id: string;
-  private _username: string;
+  private _userlogin: string;
   private _floating_ip: string;
   private _ssh_command: string;
   private _udp_command: string;
@@ -146,12 +146,12 @@ export class VirtualMachine {
     this._elixir_id = value;
   }
 
-  get username(): string {
-    return this._username;
+  get userlogin(): string {
+    return this._userlogin;
   }
 
-  set username(value: string) {
-    this._username = value;
+  set userlogin(value: string) {
+    this._userlogin = value;
   }
 
   get floating_ip(): string {
