@@ -1,13 +1,17 @@
-import {browser} from 'protractor';
+import {browser, by, element} from 'protractor';
 import {NewInstancePage} from '../page_objects/new_instance.po';
 import {LoginPage} from '../page_objects/login.po';
 import {VolumeOverviewPage} from '../page_objects/volume_overview.po';
 import {VMOverviewPage} from '../page_objects/vm_overview.po';
 import {SnapshotOverviewPage} from '../page_objects/vm_snapshot.po';
+import {VMDetailPage} from '../page_objects/vm_detail.po';
+import {VirtualMachine} from "../../src/app/virtualmachines/virtualmachinemodels/virtualmachine";
+
 
 describe('Virtual Machine Tests', async function (): Promise<any> {
 
   const vmOverviewPage: VMOverviewPage = new VMOverviewPage();
+  const vmDetailPage: VMDetailPage = new VMDetailPage();
 
   beforeAll(async function (): Promise<any> {
     console.log('------------------------------All virtual machine tests: started');
@@ -137,6 +141,35 @@ describe('Virtual Machine Tests', async function (): Promise<any> {
     await VolumeOverviewPage.deleteVolume();
     const deleted: boolean = await VolumeOverviewPage.isVolumeDeleted();
     expect(deleted).toBeTruthy();
+  });
+
+  it('should start a new vm', async function (): Promise<any> {
+    console.log('Starting new machine for VM Detail page');
+    console.log('Trying to start a new vm with denbi default and Ubuntu 18.04.');
+    await NewInstancePage.getNewInstanceTab();
+    console.log('Choosing project');
+    await NewInstancePage.chooseProject();
+    console.log('Filling Form');
+    await NewInstancePage.fillBasicForm();
+    console.log('Starting');
+    await NewInstancePage.submitAndStartVM();
+    console.log('Waiting for confirmation');
+    const isPresent: boolean = await NewInstancePage.waitForConfirmation();
+    expect(isPresent).toBeTruthy();
+    console.log('Saving basic vm name');
+    const vm_name: string = await NewInstancePage.getVMName();
+    await vmOverviewPage.setBasicVMName(vm_name);
+    await vmDetailPage.setBasicVMName(vm_name);
+    await NewInstancePage.closeInfoModal();
+  });
+
+  it('should show vm detail page', async function (): Promise<any> {
+    console.log('showing instance detail page');
+    await vmOverviewPage.navigateToOverview();
+    await vmDetailPage
+      .setFullURL(element(by
+        .cssContainingText("a", vmDetailPage.getVmName())).getAttribute('href'));
+    // TODO: test stop, restart and other basic functions of virtual machines on the vmDetailPage
   });
 
 });

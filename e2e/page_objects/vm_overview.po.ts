@@ -233,5 +233,7 @@ export class VMOverviewPage {
 
   async createSnapshotOfBasicVM(): Promise<any> {
     return await this.createSnapshotOfVM(this.vm_names[this.BASIC_VM_NAME_KEY]);
+
   }
+
 }

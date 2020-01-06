@@ -122,33 +122,33 @@
           <div class="card-title"><strong>Actions</strong></div>
           <div class="row">
             <div class="col-2" *ngIf="virtualMachine?.status === virtualMachineStates.staticACTIVE">
-              <button type="button" class="btn btn-warning" style="width:100%;"
+              <button type="button" class="btn btn-warning" style="width:100%;" id="stopVMButton"
               (click)="submitStopVmModal.show();">
                 <strong>Stop VM</strong>
               </button>
             </div>
             <div class="col-2" *ngIf="virtualMachine?.status === virtualMachineStates.staticACTIVE">
-              <button type="button" class="btn btn-secondary" style="width:100%;"
+              <button type="button" class="btn btn-secondary" style="width:100%;" id="RebootVMButton"
               (click)="chooseRebootOptionModal.show();">
                 <strong>Reboot VM</strong>
               </button>
             </div>
             <div class="col-2" *ngIf="virtualMachine?.status === virtualMachineStates.staticACTIVE ||
             virtualMachine?.status === virtualMachineStates.staticSHUTOFF">
-              <button type="button" class="btn btn-secondary" style="width:100%;"
+              <button type="button" class="btn btn-secondary" style="width:100%;" id="createSnaphotButton"
                       (click)="snapshotModal.show();">
                 <strong>Create Snapshot</strong>
               </button>
             </div>
             <div class="col-2" *ngIf="virtualMachine?.status === virtualMachineStates.staticACTIVE ||
             virtualMachine?.status === virtualMachineStates.staticSHUTOFF">
-              <button type="button" class="btn btn-danger" style="width:100%;"
+              <button type="button" class="btn btn-danger" style="width:100%;" id="deleteVMButton"
               (click)="verifyModal.show();">
                 <strong>Delete VM</strong>
               </button>
             </div>
             <div class="col-2" *ngIf="virtualMachine?.status === virtualMachineStates.staticSHUTOFF">
-              <button type="button" class="btn btn-success" style="width:100%;"
+              <button type="button" class="btn btn-success" style="width:100%;" id="restartVMButton"
                       (click)="submitRestartModal.show();">
                 <strong>Restart VM</strong>
               </button>
