@@ -276,7 +276,7 @@
   <div class="row">
     <div class="col-6"
          *ngIf="project && (project_application?.Status ==  application_states.APPROVED || project_application?.Status ==  application_states.MODIFICATION_REQUESTED  || project_application?.Status ==  application_states.MODIFICATION_DECLINED || project_application?.Status ==  application_states.MODIFICATION_DECLINED)">
-      
+
 
       <div class="card">
         <div class="card-header">
@@ -306,7 +306,7 @@
               </ng-container>
 
               <tr>
-                <td><input style="width: 100%" type="text" required placeholder="DOI"
+                <td><input style="width: 100%" type="text" required placeholder="e.g. 10.1000/182"
                            pattern="10.\d{4,9}\/[-._;()\/:a-zA-Z0-9]+" [(ngModel)]="newDoi" #doiInput></td>
 
                 <td>
