@@ -121,6 +121,13 @@
               class="btn btn-danger">
               Remove Application
             </button>
+            <button id="show_credits_extension_modal"
+                    *ngIf="project_application?.Status == application_states.APPROVED || project_application?.Status == application_states.MODIFICATION_DECLINED"
+                    (click)="newFlavors= {};creditsExtensionModal.show()"
+                    class="btn btn-success"
+                    type="button" style="margin-bottom:5px;margin-right:5px">
+              Request More Credits
+            </button>
             <button id="show_extension_modal"
                     *ngIf="project_application?.Status == application_states.APPROVED || project_application?.Status == application_states.MODIFICATION_DECLINED"
                     (click)="newFlavors= {};initRamCores();calculateCredits(f.controls.project_application_renewal_lifetime.value);extensionModal.show()"
@@ -941,6 +948,91 @@
   </div><!-- /.modal -->
 </div>
 
+<div bsModal #creditsExtensionModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="Label"
+     aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4>Extra credits request for {{project_application?.Shortname}}</h4>
+        <button type="button" class="close" style="cursor: pointer"
+                (click)="extensionModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="credits_application_form" #f="ngForm" (ngSubmit)="onSubmit(f)"
+              class="form-horizontal">
+
+          <div class="form-group row">
+            <label class="col-md-4 form-control-label"
+                   for="text-input"><strong>Reasons for Extension</strong></label>
+            <div class="col-md-8">
+                <textarea type="text" id="id_project_application_extra_credits_comment"
+                          name="project_application_renewal_comment" class="form-control"
+                          maxlength="8192"
+                          placeholder='' ngModel></textarea>
+              <span class="help-block">Please state why you need extra credits.</span>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-4 form-control-label" for="textarea-input"><strong>Amount of extra credits needed.</strong></label>
+            <div class="col-md-8">
+
+            <div class="input-group">
+              <input required class="form-control"
+                     id="project_application_extra_credits"
+                     name="project_application_extra_credits"
+                     placeholder="e.g. 5000"
+                     [(ngModel)]="project_application_extra_credits" min="100" step="100" type="number"
+
+                     appInteger appMinAmount="100"
+                     [ngClass]="{
+                                'is-invalid': f.controls.project_application_extra_credits?.invalid,
+                                'is-valid': f.controls.project_application_extra_credits?.valid
+                                }">
+              <div class="input-group-append"><span class="input-group-text"> Credits
+                                    </span></div>
+            </div>
+            <span class="help-block">How many credits do you need for your project?</span>
+            </div>
+          </div>
+
+        </form>
+        <div *ngIf="f.invalid" class="alert alert-warning" role="alert">
+          <p>Some required fields are incorrect or not filled in yet.
+            Please check if all required (*) fields are filled in correctly.</p>
+          <p *ngIf="f.controls.project_application_extra_credits?.invalid">
+            - Number of extra credits not specified
+          </p>
+        </div>
+
+
+        <div class="modal-footer">
+          <div class="label">
+            By submitting this application you agree to the cloud usage policy.
+          </div>
+          <button type="button" class="btn  btn-primary"adm
+                  form="credits_application_form" id="submit_extra_credits_btn"
+                  (click)="extension_request=true;filterEnteredData(f);calculateInitialCredits(f); submitModal.show();"
+                  [disabled]="f.invalid"><i
+            class="fa fa-dot-circle-o">
+
+          </i>
+            Submit
+          </button>
+          <button type="button" class="btn btn-danger"
+                  (click)="extensionModal.hide();    totalRAM = 0;
+    totalNumberOfCores = 0;">
+            Close
+          </button>
+
+        </div>
+
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+</div>
 
 <div bsModal #submitModal="bs-modal" class="modal fade" tabindex="-1"
      role="dialog" aria-labelledby="Label"

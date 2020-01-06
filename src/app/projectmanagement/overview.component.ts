@@ -93,6 +93,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   public project_members: ProjectMember[] = [];
   public isLoaded: boolean = false;
   public showLink: boolean = true;
+  private project_application_extra_credits: number;
 
   constructor(private flavorService: FlavorService,
               private groupService: GroupService,
