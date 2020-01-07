@@ -14,6 +14,7 @@ import {ResearchEnvironment} from '../virtualmachinemodels/res-env';
 export class ResEnvComponent implements OnInit {
 
   @Input() clientid: string;
+  @Input() onlyNamespace: boolean = false;
 
   user_key_url: FormControl = new FormControl('',
                                               [Validators.required, Validators.pattern('[a-zA-Z]*')]);
