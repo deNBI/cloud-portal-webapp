@@ -130,7 +130,7 @@
             </button>
             <button id="show_extension_modal"
                     *ngIf="project_application?.Status == application_states.APPROVED || project_application?.Status == application_states.MODIFICATION_DECLINED"
-                    (click)="newFlavors= {};initRamCores();calculateCredits(f.controls.project_application_renewal_lifetime.value);extensionModal.show()"
+                    (click)="newFlavors= {};initRamCores();extensionModal.show()"
                     class="btn btn-warning"
                     type="button" style="margin-bottom:5px;">
               Request Extension/Modification
@@ -631,7 +631,7 @@
           <strong>Choosing 0 additional months will only change the requested resources and will not prolong your
             project lifetime.</strong>
         </div>
-        <form id="application_form" #f="ngForm" (ngSubmit)="onSubmit(f)"
+        <form id="application_form" #f="ngForm" (ngSubmit)="onSubmit(f, false)"
               class="form-horizontal">
 
 
@@ -956,20 +956,20 @@
       <div class="modal-header">
         <h4>Extra credits request for {{project_application?.Shortname}}</h4>
         <button type="button" class="close" style="cursor: pointer"
-                (click)="extensionModal.hide()" aria-label="Close">
+                (click)="creditsExtensionModal.hide()" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <form id="credits_application_form" #f="ngForm" (ngSubmit)="onSubmit(f)"
+        <form id="credits_application_form" #f="ngForm" (ngSubmit)="onSubmit(f, true)"
               class="form-horizontal">
 
           <div class="form-group row">
             <label class="col-md-4 form-control-label"
                    for="text-input"><strong>Reasons for Extension</strong></label>
             <div class="col-md-8">
-                <textarea type="text" id="id_project_application_extra_credits_comment"
-                          name="project_application_renewal_comment" class="form-control"
+                <textarea type="text" id="project_application_extra_credits_comment"
+                          name="project_application_extra_credits_comment" class="form-control"
                           maxlength="8192"
                           placeholder='' ngModel></textarea>
               <span class="help-block">Please state why you need extra credits.</span>
@@ -1005,6 +1005,9 @@
           <p *ngIf="f.controls.project_application_extra_credits?.invalid">
             - Number of extra credits not specified
           </p>
+          <p *ngIf="f.controls.project_application_extra_credits_comment.value != null">
+            - No reason specified
+          </p>
         </div>
 
 
@@ -1014,7 +1017,7 @@
           </div>
           <button type="button" class="btn  btn-primary"adm
                   form="credits_application_form" id="submit_extra_credits_btn"
-                  (click)="extension_request=true;filterEnteredData(f);calculateInitialCredits(f); submitModal.show();"
+                  (click)="filterEnteredData(f);onSubmit(f, true);extension_request=true;creditsExtensionModal.hide()"
                   [disabled]="f.invalid"><i
             class="fa fa-dot-circle-o">
 
@@ -1022,8 +1025,7 @@
             Submit
           </button>
           <button type="button" class="btn btn-danger"
-                  (click)="extensionModal.hide();    totalRAM = 0;
-    totalNumberOfCores = 0;">
+                  (click)="creditsExtensionModal.hide();">
             Close
           </button>
 
@@ -1082,7 +1084,7 @@
 
 
         <button id="submit_modal_btn" class="btn btn-success col-md4" type="button"
-                (click)="resultModal.show(); extensionModal.hide(); submitModal.hide();onSubmit(f);">Confirm Application
+                (click)="resultModal.show(); extensionModal.hide(); submitModal.hide();onSubmit(f, false);">Confirm Application
         </button>
         <button class="btn  btn-primary col-md-4" type="reset"
                 (click)="submitModal.hide();">Cancel

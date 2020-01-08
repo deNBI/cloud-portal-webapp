@@ -94,6 +94,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   public isLoaded: boolean = false;
   public showLink: boolean = true;
   private project_application_extra_credits: number;
+  public project_application_extra_credits_comment: string;
 
   constructor(private flavorService: FlavorService,
               private groupService: GroupService,
@@ -216,21 +217,29 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   /**
    * Submits an renewal request for an application.
    * @param {NgForm} form
+   * @param {boolean} isExtraCreditsApplication: whether or not only extra credits are applied for
    */
-  onSubmit(form: NgForm): void {
+  onSubmit(form: NgForm, isExtraCreditsApplication: boolean): void {
     const values: { [key: string]: string | number | boolean } = {};
-    for (const value in form.controls) {
-      if (form.controls[value].disabled) {
-        continue;
-      }
-      if (form.controls[value].value) {
-        values[value] = form.controls[value].value;
-      }
-    }
     values['project_application_id'] = this.project_application.Id;
-    values['total_cores_new'] = this.totalNumberOfCores;
-    values['total_ram_new'] = this.totalRAM;
-    values['project_application_renewal_credits'] = this.extensionCredits;
+    if (isExtraCreditsApplication) {
+      values['is_only_extra_credits_application'] = isExtraCreditsApplication;
+      values['project_application_renewal_comment'] = form.controls['project_application_extra_credits_comment'].value;
+      values['project_application_renewal_credits'] = form.controls['project_application_extra_credits'].value;
+    } else {
+      for (const value in form.controls) {
+        if (form.controls[value].disabled) {
+          continue;
+        }
+        if (form.controls[value].value) {
+          values[value] = form.controls[value].value;
+        }
+      }
+      values['total_cores_new'] = this.totalNumberOfCores;
+      values['total_ram_new'] = this.totalRAM;
+      values['project_application_renewal_credits'] = this.extensionCredits;
+      values['is_only_extra_credits_application'] = isExtraCreditsApplication;
+    }
     this.requestExtension(values);
 
   }
