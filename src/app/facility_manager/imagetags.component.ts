@@ -1,6 +1,6 @@
 import {ImageService} from '../api-connector/image.service';
 import {Component, OnInit} from '@angular/core';
-import {BlockedImageTag, ImageLogo, ImageTag} from './image-tag';
+import {BlockedImageTag, ImageLogo, ImageMode, ImageTag} from './image-tag';
 import {forkJoin} from 'rxjs';
 import {FacilityService} from '../api-connector/facility.service';
 
@@ -20,7 +20,9 @@ export class ImageTagComponent implements OnInit {
   alertRed: boolean = false;
   alertRed_blocked: boolean = false;
   imageTags: ImageTag[];
+  imageModes: ImageMode[];
   imageLogos: ImageLogo[];
+  checkedModes: ImageMode[] = [];
   blockedImageTags: BlockedImageTag[];
   imageTag: string;
   imageUrl: string;
@@ -38,18 +40,31 @@ export class ImageTagComponent implements OnInit {
 
   }
 
+  checkMode(mode: ImageMode): void {
+    const idx: number = this.checkedModes.indexOf(mode);
+
+    if (idx === -1) {
+      this.checkedModes.push(mode)
+    } else {
+      this.checkedModes.splice(idx, 1)
+    }
+    console.log(this.checkedModes)
+  }
+
   ngOnInit(): void {
     this.facilityService.getManagerFacilities().subscribe((result: any) => {
       this.managerFacilities = result;
       this.selectedFacility = this.managerFacilities[0];
       forkJoin(
-        this.imageService.getImageTags(),
+        this.imageService.getImageTags(this.selectedFacility['FacilityId']),
         this.imageService.getImageLogos(),
-        this.imageService.getBlockedImageTags(this.selectedFacility['FacilityId']))
+        this.imageService.getBlockedImageTags(this.selectedFacility['FacilityId']),
+        this.imageService.getImageModes(this.selectedFacility['FacilityId']))
         .subscribe((res: any) => {
           this.imageTags = res[0];
           this.imageLogos = res[1];
           this.blockedImageTags = res[2];
+          this.imageModes = res[3];
           this.isLoaded = true;
         })
     });
@@ -92,7 +107,7 @@ export class ImageTagComponent implements OnInit {
 
   deleteTag(tag: string): void {
     this.imageService.deleteImageTag(tag).subscribe(() => {
-      this.imageService.getImageTags().subscribe((tags: ImageTag[]) => {
+      this.imageService.getImageTags(this.selectedFacility['FacilityId']).subscribe((tags: ImageTag[]) => {
         this.imageTags = tags;
       })
     })

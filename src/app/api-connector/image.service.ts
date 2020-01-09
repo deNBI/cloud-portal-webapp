@@ -48,9 +48,22 @@ export class ImageService {
 
   }
 
-  getImageTags(): Observable<any> {
+  getImageTags(facility: number): Observable<any> {
+    const params: HttpParams = new HttpParams().set('facility', facility.toString());
+
     return this.http.get(`${ApiSettings.getApiBaseURL()}imageTags/`, {
-      withCredentials: true
+      withCredentials: true,
+      params: params
+    })
+
+  }
+
+  getImageModes(facility: number): Observable<any> {
+    const params: HttpParams = new HttpParams().set('facility', facility.toString());
+
+    return this.http.get(`${ApiSettings.getApiBaseURL()}imageModes/`, {
+      withCredentials: true,
+      params: params
     })
 
   }
