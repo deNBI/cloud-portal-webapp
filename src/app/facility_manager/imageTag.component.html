@@ -28,7 +28,7 @@
                 <td><span *ngFor="let mode of imageTag.mode">{{mode.name}}  </span></td>
                 <td>
                   <button type="button" class="btn btn-primary"
-                          (click)="deleteTag(imageTag['name']);">Delete Tag
+                          (click)="deleteTag(imageTag);">Delete Tag
                   </button>
                 </td>
               </tr>
@@ -36,12 +36,13 @@
                 <td><input type="text" placeholder="Tag" #tag pattern="[0-9a-zA-Z-_]*" required></td>
                 <td>
                   <span *ngFor="let mode of imageModes"><input type="checkbox" name="{{mode.name}}"
+                                                               [checked]="checkedModes.indexOf(mode) !== -1"
 
                                                                (change)="checkMode(mode)"
                   > {{mode.name}}<br></span>
                 </td>
                 <td>
-                  <button type="button" class="btn btn-primary">Add Tag
+                  <button type="button" (click)="addTag(tag.value,tag)" class="btn btn-primary">Add Tag
                   </button>
                 </td>
 

@@ -93,9 +93,10 @@ export class ImageTagComponent implements OnInit {
     })
   }
 
-  addTag(tag: string, description: string, input: HTMLInputElement): void {
+  addTag(tag: string, input: HTMLInputElement): void {
     if (input.validity.valid) {
-      this.imageService.addImageTags(tag.trim(), description).subscribe((newTag: ImageTag) => {
+      this.imageService.addImageTags(tag.trim(), this.checkedModes, this.selectedFacility['FacilityId']).subscribe((newTag: ImageTag) => {
+        this.checkedModes = [];
         this.imageTags.push(newTag)
 
       });
@@ -105,8 +106,8 @@ export class ImageTagComponent implements OnInit {
     }
   }
 
-  deleteTag(tag: string): void {
-    this.imageService.deleteImageTag(tag).subscribe(() => {
+  deleteTag(tag: ImageTag): void {
+    this.imageService.deleteImageTag(tag.id).subscribe(() => {
       this.imageService.getImageTags(this.selectedFacility['FacilityId']).subscribe((tags: ImageTag[]) => {
         this.imageTags = tags;
       })

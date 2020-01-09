@@ -6,7 +6,7 @@ import {Observable} from 'rxjs';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Cookie} from 'ng2-cookies/ng2-cookies';
 import {IResponseTemplate} from './response-template';
-import {BlockedImageTag, ImageLogo, ImageTag} from '../facility_manager/image-tag';
+import {BlockedImageTag, ImageLogo, ImageMode, ImageTag} from '../facility_manager/image-tag';
 
 const header: HttpHeaders = new HttpHeaders({
                                               'X-CSRFToken': Cookie.get('csrftoken')
@@ -75,9 +75,9 @@ export class ImageService {
     })
   }
 
-  addImageTags(imageTag: string, description: string): Observable<ImageTag> {
+  addImageTags(imageTag: string, imageModes: ImageMode[], facility: number): Observable<ImageTag> {
 
-    const params: HttpParams = new HttpParams().set('imageTag', imageTag).set('description', description);
+    const params: HttpParams = new HttpParams().set('imageTag', imageTag).set('facility', facility).set('imageModes', JSON.stringify(imageModes));
 
     return this.http.post<ImageTag>(`${ApiSettings.getApiBaseURL()}imageTags/`, params, {
       withCredentials: true,
@@ -122,9 +122,9 @@ export class ImageService {
 
   }
 
-  deleteImageTag(imageTag: string): Observable<IResponseTemplate> {
+  deleteImageTag(id: string): Observable<IResponseTemplate> {
 
-    return this.http.delete<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}imageTags/${imageTag}/`, {
+    return this.http.delete<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}imageTags/${id}/`, {
       withCredentials: true,
       headers: header
     })
