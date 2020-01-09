@@ -4,6 +4,7 @@
  */
 export class Image {
   private _id: string;
+  private _openstackid: string;
   private _name: string;
   private _status: string;
   private _tags: string[];
@@ -18,6 +19,14 @@ export class Image {
 
   set logo_url(value: string) {
     this._logo_url = value;
+  }
+
+  get openstackid(): string {
+    return this._openstackid;
+  }
+
+  set openstackid(value: string) {
+    this._openstackid = value;
   }
 
   get id(): string {

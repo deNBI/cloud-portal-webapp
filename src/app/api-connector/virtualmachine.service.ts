@@ -7,6 +7,7 @@ import {VirtualMachine} from '../virtualmachines/virtualmachinemodels/virtualmac
 import {Volume} from '../virtualmachines/volumes/volume';
 import {IResponseTemplate} from './response-template';
 import {Clusterinfo} from '../virtualmachines/clusters/clusterinfo';
+import {Image} from '../virtualmachines/virtualmachinemodels/image';
 
 const header: HttpHeaders = new HttpHeaders({
                                               'X-CSRFToken': Cookie.get('csrftoken')
@@ -45,13 +46,13 @@ export class VirtualmachineService {
     })
   }
 
-  startVM(flavor: string, image: string, servername: string, project: string, projectid: string, http: boolean, https: boolean,
+  startVM(flavor: string, image: Image, servername: string, project: string, projectid: string, http: boolean, https: boolean,
           udp: boolean, volumename?: string, diskspace?: string, playbook_information?: string, resenvTags?: string,
           user_key_url?: string): Observable<any> {
 
     const params: HttpParams = new HttpParams()
       .set('flavor', flavor)
-      .set('image', image)
+      .set('image', JSON.stringify(image))
       .set('servername', servername)
       .set('project', project)
       .set('projectid', projectid)
