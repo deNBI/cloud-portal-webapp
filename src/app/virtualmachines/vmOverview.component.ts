@@ -319,6 +319,7 @@ export class VmOverviewComponent implements OnInit {
             }
 
             updated_vm.cardState = 0;
+            this.setForcUrl(updated_vm);
 
             if (updated_vm.status === final_state) {
               if (updated_vm.created_at !== '') {
@@ -343,6 +344,7 @@ export class VmOverviewComponent implements OnInit {
             }
 
             updated_vm.cardState = 0;
+            this.setForcUrl(updated_vm);
 
             if (updated_vm.status === final_state) {
               if (updated_vm.created_at !== '') {

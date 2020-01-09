@@ -1,36 +1,33 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
-import {Image} from './virtualmachinemodels/image';
-import {Flavor} from './virtualmachinemodels/flavor';
-import {ImageService} from '../api-connector/image.service';
-import {FlavorService} from '../api-connector/flavor.service';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {GroupService} from '../../../api-connector/group.service';
+import {ImageService} from '../../../api-connector/image.service';
+import {KeyService} from '../../../api-connector/key.service';
+import {FlavorService} from '../../../api-connector/flavor.service';
+import {VirtualmachineService} from '../../../api-connector/virtualmachine.service';
+import {ApplicationsService} from '../../../api-connector/applications.service';
+import {Application} from '../../../applications/application.model/application.model';
+import {ApiSettings} from '../../../api-connector/api-settings.service';
+import {ClientService} from '../../../api-connector/client.service';
+import {UserService} from '../../../api-connector/user.service';
+import {VoService} from '../../../api-connector/vo.service';
+import {VirtualMachine} from '../../virtualmachinemodels/virtualmachine';
+import {Image} from '../../virtualmachinemodels/image';
+import {IResponseTemplate} from '../../../api-connector/response-template';
+import {Flavor} from '../../virtualmachinemodels/flavor';
+import {Userinfo} from '../../../userinfo/userinfo.model';
+import {Client} from '../../clients/client.model';
+import {BiocondaComponent} from '../../conda/bioconda.component';
 import {forkJoin} from 'rxjs';
-import {VirtualmachineService} from '../api-connector/virtualmachine.service';
-import {ApplicationsService} from '../api-connector/applications.service'
-import {Userinfo} from '../userinfo/userinfo.model';
-import {ApiSettings} from '../api-connector/api-settings.service';
-import {ClientService} from '../api-connector/client.service';
-import {Application} from '../applications/application.model/application.model';
-import {KeyService} from '../api-connector/key.service';
-import {GroupService} from '../api-connector/group.service';
-import {environment} from '../../environments/environment';
-import {IResponseTemplate} from '../api-connector/response-template';
-import {Client} from './clients/client.model';
-import {VirtualMachine} from './virtualmachinemodels/virtualmachine';
-import {UserService} from '../api-connector/user.service';
-import {BiocondaComponent} from './conda/bioconda.component';
-import {ResEnvComponent} from './conda/res-env.component';
-import {is_vo} from '../shared/globalvar';
+import {Clusterinfo} from '../clusterinfo';
 
-/**
- * Start virtualmachine component.
- */
 @Component({
-             selector: 'app-new-vm',
-             templateUrl: 'addvm.component.html',
+             selector: 'app-add-cluster',
+             templateUrl: './add-cluster.component.html',
+             styleUrls: ['./add-cluster.component.scss'],
              providers: [GroupService, ImageService, KeyService, FlavorService, VirtualmachineService, ApplicationsService,
-               Application, ApiSettings, KeyService, ClientService, UserService]
+               Application, ApiSettings, KeyService, ClientService, UserService, VoService]
            })
-export class VirtualMachineComponent implements OnInit {
+export class AddClusterComponent implements OnInit {
 
   TWENTY_FIVE_PERCENT: number = 25;
   FIFTY_PERCENT: number = 50;
@@ -63,13 +60,11 @@ export class VirtualMachineComponent implements OnInit {
   client_checked: boolean = false;
   playbook_run: number = 0;
   timeout: number = 0;
-  has_forc: boolean = false;
-  client_id: string;
 
-  title: string = 'New Instance';
+  title: string = 'New Cluster';
 
   vm_name: string;
-
+  cluster_info: Clusterinfo;
   started_machine: boolean = false;
 
   conda_img_path: string = `static/webapp/assets/img/conda_logo.svg`;
@@ -88,15 +83,28 @@ export class VirtualMachineComponent implements OnInit {
    */
   flavors: Flavor[] = [];
 
+  flavors_usable: Flavor[] = [];
+
+  cluster_id: string;
+  cluster_error: string;
+  cluster_started: boolean = false;
+
   /**
    * Selected Image.
    */
   selectedImage: Image;
+  selectedMasterImage: Image;
+  selectedWorkerImage: Image;
+  maxWorkerInstances: number;
 
   /**
    * Selected Flavor.
    */
+  selectedMasterFlavor: Flavor;
   selectedFlavor: Flavor;
+  selectedWorkerFlavor: Flavor;
+
+  workerInstancesCount: number;
 
   /**
    * Userinfo from the user.
@@ -149,11 +157,6 @@ export class VirtualMachineComponent implements OnInit {
   selectedProjectGPUsUsed: number;
   selectedProjectGPUsMax: number;
 
-  newCores: number = 0;
-  newRam: number = 0;
-  newVms: number = 1;
-  newGpus: number = 0;
-
   /**
    * The selected project ['name',id].
    */
@@ -194,11 +197,10 @@ export class VirtualMachineComponent implements OnInit {
    */
   projectDataLoaded: boolean = false;
 
-  /**
-   * id of the freemium project.
-   * @type {number}
-   */
-  FREEMIUM_ID: number = environment.freemium_project_id;
+  newCores: number = 0;
+  newRam: number = 0;
+  newVms: number = 2;
+  newGpus: number = 0;
 
   /**
    * Time for the check status loop.
@@ -207,11 +209,58 @@ export class VirtualMachineComponent implements OnInit {
   private checkStatusTimeout: number = 5000;
 
   @ViewChild('bioconda') biocondaComponent: BiocondaComponent;
-  @ViewChild('resEnv') resEnvComponent: ResEnvComponent;
 
   constructor(private groupService: GroupService, private imageService: ImageService,
               private flavorService: FlavorService, private virtualmachineservice: VirtualmachineService,
-              private keyservice: KeyService, private userservice: UserService) {
+              private keyservice: KeyService, private userservice: UserService,
+              private voService: VoService) {
+  }
+
+  changeCount(): void {
+    this.newVms = Number(this.workerInstancesCount) + Number(1);
+    this.calculateNewValues()
+  }
+
+  filterFlavors(): void {
+    const tmp_flavors: Flavor[] = [];
+    const available_cores: number = this.selectedProjectCoresMax - (this.newCores + this.selectedProjectCoresUsed);
+    const available_ram: number = this.selectedProjectRamMax - (this.newRam + this.selectedProjectRamUsed);
+    const available_gpu: number = this.selectedProjectGPUsMax - (this.newGpus + this.selectedProjectGPUsUsed);
+    for (const fl of this.flavors) {
+      if (fl.vcpus <= available_cores && (fl.ram / 1024) <= available_ram && fl.gpu <= available_gpu) {
+        tmp_flavors.push(fl)
+      }
+    }
+    this.flavors_usable = tmp_flavors;
+  }
+
+  calcMaxWorkerInstancesByFlavor(): void {
+    const ram_max_vms: number = (this.selectedProjectRamMax - this.selectedProjectRamUsed - (this.selectedMasterFlavor.ram / 1024)) / (this.selectedWorkerFlavor.ram / 1024);
+    const cpu_max_vms: number = (this.selectedProjectCoresMax - this.selectedProjectCoresUsed - this.selectedMasterFlavor.vcpus) / this.selectedWorkerFlavor.vcpus;
+
+    this.maxWorkerInstances = Math.min(ram_max_vms, cpu_max_vms)
+  }
+
+  calculateNewValues(): void {
+    let tmp_ram: number = 0;
+    let tmp_cores: number = 0;
+    let tmp_gpus: number = 0;
+    if (this.selectedMasterFlavor) {
+      tmp_ram += this.selectedMasterFlavor.ram;
+      tmp_cores += this.selectedMasterFlavor.vcpus;
+      tmp_gpus += this.selectedMasterFlavor.gpu;
+
+    }
+    if (this.selectedWorkerFlavor && this.workerInstancesCount) {
+      tmp_ram += this.selectedWorkerFlavor.ram * this.workerInstancesCount;
+      tmp_cores += this.selectedWorkerFlavor.vcpus * this.workerInstancesCount;
+      tmp_gpus += this.selectedWorkerFlavor.gpu * this.workerInstancesCount;
+
+    }
+    this.newRam = tmp_ram / 1024;
+    this.newCores = tmp_cores;
+    this.newGpus = tmp_gpus;
+    this.filterFlavors()
   }
 
   /**
@@ -233,6 +282,7 @@ export class VirtualMachineComponent implements OnInit {
   getFlavors(project_id: number): void {
     this.flavorService.getFlavors(project_id).subscribe((flavors: Flavor[]) => {
       this.flavors = flavors;
+      this.flavors_usable = this.flavors;
       this.flavors_loaded = true;
     });
 
@@ -254,6 +304,24 @@ export class VirtualMachineComponent implements OnInit {
     this.progress_bar_status = this.CREATING_STATUS;
     this.progress_bar_animated = this.ANIMATED_PROGRESS_BAR;
     this.progress_bar_width = 0;
+  }
+
+  checkClusterStatusLoop(): void {
+    setTimeout(
+      () => {
+        this.virtualmachineservice.getClusterInfo(this.cluster_id).subscribe((cluster_info: Clusterinfo) => {
+          this.cluster_info = cluster_info;
+          console.log(this.cluster_info)
+          if (!this.cluster_info['public_ip']) {
+            this.checkClusterStatusLoop()
+          } else {
+            this.cluster_started = true;
+
+          }
+
+        })
+      },
+      this.checkStatusTimeout);
   }
 
   /**
@@ -305,6 +373,39 @@ export class VirtualMachineComponent implements OnInit {
       this.checkStatusTimeout);
   }
 
+  startCluster(): void {
+    const re: RegExp = /\+/gi;
+    this.cluster_error = null;
+    this.cluster_id = null;
+
+    const masterFlavor: string = this.selectedMasterFlavor.name.replace(re, '%2B');
+    const workerFlavor: string = this.selectedWorkerFlavor.name.replace(re, '%2B');
+
+    this.virtualmachineservice.startCluster(
+      masterFlavor, this.selectedMasterImage.name,
+      workerFlavor, this.selectedWorkerImage.name,
+      this.workerInstancesCount, this.selectedProject[1]).subscribe(
+      (res: any) => {
+        if (res['status'] && res['status'] === 'mutex_locked') {
+          setTimeout(
+            () => {
+              this.startCluster()
+            },
+            1000)
+        } else {
+          this.cluster_id = res['id'];
+          this.checkClusterStatusLoop();
+        }
+
+      }
+      ,
+      (error: any) => {
+        console.log(error);
+        this.cluster_error = error;
+      })
+
+  }
+
   /**
    * Start a virtual machine with specific params.
    * @param {string} flavor
@@ -333,17 +434,11 @@ export class VirtualMachineComponent implements OnInit {
       if (play_information !== '{}') {
         this.playbook_run = 1;
       }
-      let tags: string = null;
-      let user_key_url: string = null;
-      if (this.selectedImage.tags.indexOf('resenv') !== -1) {
-        tags = this.selectedImage.tags.toString();
-        user_key_url = this.resEnvComponent.getUserKeyUrl();
-      }
       this.virtualmachineservice.startVM(
         flavor_fixed, image, servername,
         project, projectid.toString(), this.http_allowed,
         this.https_allowed, this.udp_allowed, this.volumeName,
-        this.diskspace.toString(), play_information, tags, user_key_url)
+        this.diskspace.toString(), play_information)
         .subscribe((newVm: VirtualMachine) => {
           this.started_machine = false;
 
@@ -397,13 +492,6 @@ export class VirtualMachineComponent implements OnInit {
       this.timeout += this.biocondaComponent.getTimeout();
     }
 
-    if (this.resEnvComponent && this.resEnvComponent.selectedTemplate !== null
-      && this.resEnvComponent.user_key_url.errors === null) {
-      playbook_info[this.resEnvComponent.selectedTemplate.template_name] = {template_version:
-        this.resEnvComponent.selectedTemplate.template_version};
-      playbook_info['user_key_url'] = {user_key_url: this.resEnvComponent.getUserKeyUrl()};
-    }
-
     return JSON.stringify(playbook_info);
   }
 
@@ -421,7 +509,6 @@ export class VirtualMachineComponent implements OnInit {
 
         this.loadProjectData();
         this.client_checked = true;
-        this.getHasForc(client.id);
       } else {
         this.client_avaiable = false;
         this.client_checked = true;
@@ -430,15 +517,6 @@ export class VirtualMachineComponent implements OnInit {
       this.selectedProjectClient = client;
 
     })
-  }
-
-  getHasForc(id: string): void {
-    this.groupService.getClientHasForc(this.selectedProject[1].toString()).subscribe((response: JSON) => {
-      if (response['hasForc'] === 'True') {
-        this.has_forc = true;
-      }
-    });
-    this.client_id = id;
   }
 
   /**
@@ -503,25 +581,12 @@ export class VirtualMachineComponent implements OnInit {
 
   }
 
-  setSelectedFlavor(flavor: Flavor): void {
-    this.selectedFlavor = flavor;
-    this.newCores = this.selectedFlavor.vcpus;
-    this.newRam = this.selectedFlavor.ram / 1024;
-    this.newGpus = this.selectedFlavor.gpu;
-  }
-
   ngOnInit(): void {
     this.initializeData();
-    this.is_vo = is_vo;
+    this.voService.isVo().subscribe((result: IResponseTemplate) => {
+      this.is_vo = <boolean><Boolean>result.value;
+    });
 
-  }
-
-  hasChosenTools(hasSomeTools: boolean): void {
-    this.hasTools = hasSomeTools;
-  }
-
-  getTimeoutMinutes(): number {
-    return Math.ceil(this.timeout / 60);
   }
 
   resetChecks(): void {
