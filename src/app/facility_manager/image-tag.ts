@@ -2,7 +2,7 @@
  * Image tag interface.
  */
 export interface ImageTag {
-  id: string;
+  id?: string;
   name: string;
   mode: ImageMode[];
 }
@@ -11,7 +11,7 @@ export interface ImageTag {
  * Image mode interface.
  */
 export interface ImageMode {
-  id: string
+  id?: string
   name: string;
   description: string;
   copy_field: string;

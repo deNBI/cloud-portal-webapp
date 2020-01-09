@@ -106,10 +106,27 @@ export class ImageTagComponent implements OnInit {
     }
   }
 
+  addImageMode(name: string, description: string, copy_field: string): void {
+    const newMode: ImageMode = {name: name, description: description, copy_field: copy_field};
+    this.imageService.addImageMode(newMode, this.selectedFacility['FacilityId']).subscribe((createdMode: ImageMode) => {
+      this.imageModes.push(createdMode)
+
+    });
+
+  }
+
   deleteTag(tag: ImageTag): void {
     this.imageService.deleteImageTag(tag.id).subscribe(() => {
       this.imageService.getImageTags(this.selectedFacility['FacilityId']).subscribe((tags: ImageTag[]) => {
         this.imageTags = tags;
+      })
+    })
+  }
+
+  deleteMode(mode: ImageMode): void {
+    this.imageService.deleteImageMode(mode.id).subscribe(() => {
+      this.imageService.getImageModes(this.selectedFacility['FacilityId']).subscribe((tags: ImageMode[]) => {
+        this.imageModes = tags;
       })
     })
   }

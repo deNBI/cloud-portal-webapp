@@ -75,9 +75,20 @@ export class ImageService {
     })
   }
 
+  addImageMode(mode: ImageMode, facility: number): Observable<ImageMode> {
+
+    const params: HttpParams = new HttpParams().set('facility', facility.toString()).set('mode', JSON.stringify(mode));
+
+    return this.http.post<ImageMode>(`${ApiSettings.getApiBaseURL()}imageModes/`, params, {
+      withCredentials: true,
+      headers: header
+    })
+
+  }
+
   addImageTags(imageTag: string, imageModes: ImageMode[], facility: number): Observable<ImageTag> {
 
-    const params: HttpParams = new HttpParams().set('imageTag', imageTag).set('facility', facility).set('imageModes', JSON.stringify(imageModes));
+    const params: HttpParams = new HttpParams().set('imageTag', imageTag).set('facility', facility.toString()).set('imageModes', JSON.stringify(imageModes));
 
     return this.http.post<ImageTag>(`${ApiSettings.getApiBaseURL()}imageTags/`, params, {
       withCredentials: true,
@@ -125,6 +136,15 @@ export class ImageService {
   deleteImageTag(id: string): Observable<IResponseTemplate> {
 
     return this.http.delete<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}imageTags/${id}/`, {
+      withCredentials: true,
+      headers: header
+    })
+
+  }
+
+  deleteImageMode(id: string): Observable<IResponseTemplate> {
+
+    return this.http.delete<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}imageModes/${id}/`, {
       withCredentials: true,
       headers: header
     })
