@@ -1,3 +1,15 @@
+##  (2020-01-09)
+
+
+#### Features
+
+* **Cluster:** mutex check ([f500700c](f500700c))
+
+#### Bug Fixes
+
+* **font:**  download and woff errors ([edea3ea4](edea3ea4))
+* **webapp:**  getForc in ngOninit, fix denbi-loader, tab not breaking imageslider ([c83f234b](c83f234b))
+
 ##  (2020-01-06)
 
 
