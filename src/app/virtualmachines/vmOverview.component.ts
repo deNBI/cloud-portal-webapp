@@ -106,7 +106,7 @@ export class VmOverviewComponent implements OnInit {
    * Timeout for checking vm status.
    * @type {number}
    */
-  private checkStatusTimeout: number = 1500;
+  private checkStatusTimeout: number = 5000;
   /**
    * Type of reboot HARD|SOFT.
    */

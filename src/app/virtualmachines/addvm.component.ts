@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Image} from './virtualmachinemodels/image';
 import {Flavor} from './virtualmachinemodels/flavor';
 import {ImageService} from '../api-connector/image.service';
@@ -412,6 +412,9 @@ export class VirtualMachineComponent implements OnInit {
    * If connected geht vm,volumes etc.
    */
   getSelectedProjectClient(): void {
+    this.newCores = 0;
+    this.newGpus = 0;
+    this.newVms = 1;
     this.client_checked = false;
     this.projectDataLoaded = false;
 
