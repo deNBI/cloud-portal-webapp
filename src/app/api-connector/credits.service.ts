@@ -30,4 +30,17 @@ export class CreditsService {
     });
   }
 
+  /**
+   * Get credits for project application.
+   * @returns {int} The expected credits for the credits.
+   */
+  public getExtraCreditsForExtension(cpus: number, ram: number, months: number, projectApplicationId: number): Observable<number> {
+    const params: HttpParams = new HttpParams().set('new_cpu', cpus.toString()).set('new_ram', ram.toString())
+      .set('new_lifetime', months.toString()).set('project_application_id', projectApplicationId.toString());
+
+    return this.http.get<number>(`${ApiSettings.getApiBaseURL()}creditManager/getExtraCreditsNumber/`, {
+      withCredentials: true,
+      params: params
+    });
+  }
 }

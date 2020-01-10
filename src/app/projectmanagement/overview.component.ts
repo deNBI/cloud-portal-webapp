@@ -110,12 +110,16 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   }
 
   calculateCredits(lifetimeString?: string): void {
+    const lifetime: number = this.project_application.Lifetime;
+/*
     let lifetime: number;
     if (Number(lifetimeString) === undefined) {
       lifetime = 0
     } else {
       lifetime = Number(lifetimeString)
     }
+
+ */
     const total_lifetime: number = (Math.round(((this.project.LifetimeDays - this.project.DaysRunning) / 31) * 100) / 100) + lifetime;
     this.creditsService.getCreditsForApplication(this.totalNumberOfCores, this.totalRAM, total_lifetime).toPromise()
       .then((credits: number) => {

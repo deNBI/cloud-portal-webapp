@@ -422,7 +422,7 @@ export class Application {
   }
 
   get InitialCredits(): number {
-    return this._InitialCredits;
+    return Number(this._InitialCredits);
   }
 
   set InitialCredits(value: number) {

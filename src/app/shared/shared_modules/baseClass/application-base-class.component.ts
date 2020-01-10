@@ -269,6 +269,7 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
       extension.RamPerVM = aj['projectapplicationrenewal']['project_application_renewal_ram_per_vm'];
       extension.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
       extension.ExtendedCredits = aj['projectapplicationrenewal']['project_application_renewal_credits'];
+      extension.IsOnlyExtraCreditsApplication = aj['projectapplicationrenewal']['is_only_extra_credits_application'];
       newApp.ApplicationExtension = extension;
     }
 
