@@ -272,6 +272,18 @@
             class="nav-icon icon-tag"></i> Image Tags</a>
         </li>
 
+        <li *ngIf="!navbar_minimized  && (is_facility_manager || is_vo_admin)" class="nav-item">
+          <a class="nav-link" routerLinkActive="active"
+             [routerLink]="['/facility-manager/news-manager']"><i
+            class="nav-icon icon-tag"></i> News Management</a>
+        </li>
+
+        <li *ngIf="navbar_minimized  && (is_facility_manager || is_vo_admin)" class="nav-item">
+          <a class="nav-link" routerLinkActive="active" data-toggle="tooltip" data-placement="right" title="News Management"
+             [routerLink]="['/facility-manager/news-manager']"><i
+            class="nav-icon icon-tag"></i> News Management</a>
+        </li>
+
 
         <li class="nav-title" *ngIf="is_vo_admin">
           Vo Manager
