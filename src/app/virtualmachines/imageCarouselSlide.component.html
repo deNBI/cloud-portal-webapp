@@ -8,14 +8,14 @@
     title="{{image?.name}}" style="background-color: #00ADEF !important; color: white !important;"><i *ngIf="image?.is_snapshot"
                                class="fa fa-camera" aria-hidden="true"></i>
     <strong>{{image.name}}</strong></div>
-  <div class="card-body" style="color:#58595B;">
-    <div class="scroll-image">
-      <div *ngIf="!image?.logo_url || !image_visible" class="col scroll-image"
+  <div class="card-body" style="color:#58595B;" tabindex="-1">
+    <div class="scroll-image" tabindex="-1">
+      <div *ngIf="!image?.logo_url || !image_visible" class="col" tabindex="-1"
            (mouseleave)="setImageVisible()">
         {{image?.description}}
       </div>
-      <div *ngIf=" image?.logo_url && image_visible" (mouseenter)="setImageVisible()"><img
-        src="{{image?.logo_url}}"
+      <div *ngIf=" image?.logo_url && image_visible" (mouseenter)="setImageVisible()" tabindex="-1"><img
+        src="{{image?.logo_url}}" tabindex="-1"
         [ngStyle]="{'width':img_width,'height':img_height}"
         alt="{{image?.description}}">
       </div>
@@ -32,13 +32,13 @@
       *ngIf="selectedImage?.is_snapshot"
       class="fa fa-camera" aria-hidden="true"></i>
     <strong>{{selectedImage?.name}}</strong></div>
-  <div class="card-body" style="color:#58595B;">
-    <div class="scroll-image">
-      <div *ngIf="!selectedImage?.logo_url || !image_visible" class="col scroll-image"
+  <div class="card-body" style="color:#58595B;" tabindex="-1" >
+    <div class="scroll-image" tabindex="-1">
+      <div *ngIf="!selectedImage?.logo_url || !image_visible" class="col" tabindex="-1"
            (mouseleave)="setImageVisible()">
         {{selectedImage?.description}}
       </div>
-      <div *ngIf=" selectedImage?.logo_url && image_visible" (mouseenter)="setImageVisible()"><img
+      <div *ngIf=" selectedImage?.logo_url && image_visible" (mouseenter)="setImageVisible()" tabindex="-1"><img
         src="{{selectedImage?.logo_url}}"
         [ngStyle]="{'width':img_width,'height':img_height}"
         alt="Logo">
