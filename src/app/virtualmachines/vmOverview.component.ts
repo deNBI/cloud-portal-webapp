@@ -162,6 +162,8 @@ export class VmOverviewComponent implements OnInit {
    * @param vmachine
    */
 
+
+
   copySSHCommand(vmachine: VirtualMachine): void {
     this.copyToClipboard((vmachine.ssh_command.substring(65, vmachine.ssh_command.length)));
   }
