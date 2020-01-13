@@ -26,6 +26,7 @@ export class ImageTagComponent implements OnInit {
   blockedImageTags: BlockedImageTag[];
   imageTag: string;
   imageUrl: string;
+  show_html: boolean = false;
 
   /**
    * Facilitties where the user is manager ['name',id].

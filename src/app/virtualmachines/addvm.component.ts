@@ -361,7 +361,7 @@ export class VirtualMachineComponent implements OnInit {
           } else if (newVm.status === 'mutex_locked') {
             setTimeout(
               () => {
-                this.startVM(flavor, image, servername, project, projectid)
+                this.startVM(flavor, servername, project, projectid)
               },
               1000)
           } else if (newVm.status) {
