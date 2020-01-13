@@ -35,6 +35,7 @@ export class NewsManagerComponent implements OnInit {
   allChecked: boolean = true;
   deletionStatus: number = 0;
   patchingStatus: number = 0;
+  addingStatus: number = 0;
   error_string: string = '';
   reg1: RegExp = /\[/g;
   reg2: RegExp = /]/g;
@@ -63,9 +64,21 @@ export class NewsManagerComponent implements OnInit {
 
   add(news: DenbiNews): void {
     this.controlToNews();
-    this.newsService.addNews(news).subscribe((result: any) => {
-      this.list();
-    });
+    this.newsService.addNews(news).subscribe(
+      (result: any) => {
+        if (result[0] === `The article: '${this.selectedNews.title}' was added.`) {
+          this.addingStatus = 1;
+        } else {
+          this.addingStatus = 2;
+          this.error_string = result[0];
+        }
+        this.list();
+      },
+      (error: any) => {
+        this.addingStatus = 2;
+        this.error_string = error[0];
+      }
+    );
   }
 
   patch(news: DenbiNews): void {

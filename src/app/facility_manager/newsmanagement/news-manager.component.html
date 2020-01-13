@@ -139,7 +139,7 @@ we are happy to inform..."
               </button>
               <button class="btn btn-success"
                       style="margin: 5px"
-                      (click)="add(selectedNews)"
+                      (click)="add(selectedNews); addModal.show();"
                       [disabled]="selectedNewsForm.invalid || facilitiesToPost.length == 0"
                       *ngIf="selectedNews.id == null && selectedNews.editable">Add news
               </button>
@@ -301,6 +301,46 @@ we are happy to inform..."
           <button type="button" class="btn btn-secondary"
                   (click)="setNews();patchModal.hide()"
                   id="close_patch_modal">Close
+          </button>
+        </div>
+
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div>
+  <div bsModal #addModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+       aria-labelledby="Label"
+       aria-hidden="true"
+       id="add_modal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" *ngIf="addingStatus == 0"> Waiting </h4>
+          <h4 class="modal-title" *ngIf="addingStatus == 1"> Success </h4>
+          <h4 class="modal-title" *ngIf="addingStatus == 2"> Error </h4>
+          <button type="button" class="close" style="cursor:pointer"
+                  (click)="setNews(); addModal.hide()"
+                  aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="alert alert-info" role="alert" *ngIf="addingStatus == 0">
+            Posting '{{selectedNews.title}}'... <i class="fa fa-spinner fa-spin"
+                                                    style="font-size:24px"></i>
+          </div>
+          <div class="alert alert-success" role="alert" *ngIf="addingStatus == 1"
+               id="adding_success_div">
+            '{{selectedNews.title}}' was successfully posted.
+          </div>
+        </div>
+        <div class="alert alert-warning" role="alert" *ngIf="addingStatus == 2">
+          When adding '{{selectedNews.title}}' an error occured.<br>
+          Error message: {{error_string}}.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary"
+                  (click)="setNews();addModal.hide()"
+                  id="close_adding_modal">Close
           </button>
         </div>
 
