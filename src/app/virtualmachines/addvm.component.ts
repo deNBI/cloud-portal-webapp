@@ -65,6 +65,7 @@ export class VirtualMachineComponent implements OnInit {
   timeout: number = 0;
   has_forc: boolean = false;
   client_id: string;
+  mosh_mode_available: boolean = false;
 
   title: string = 'New Instance';
 
@@ -503,6 +504,22 @@ export class VirtualMachineComponent implements OnInit {
   setSelectedImage(image: Image): void {
 
     this.selectedImage = image;
+    this.isMoshModeAvailable()
+
+  }
+
+  isMoshModeAvailable(): void {
+    for (const mode of this.selectedImage.modes) {
+      if (mode.name === 'MOSH') {
+        this.mosh_mode_available = true;
+
+        return
+      }
+
+    }
+    this.mosh_mode_available = false;
+
+    return
 
   }
 

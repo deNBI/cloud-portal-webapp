@@ -247,8 +247,8 @@
                     *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && selectedProjectVmsUsed < selectedProjectVmsMax"
                     class="form-group row">
 
-                    <label class="col-md-2 form-control-label">Open Ports</label>
-                    <div class="col-6"><label><strong style="padding-right: 10px; bottom: 15px;position: relative;">UDP
+                    <label class="col-md-2 form-control-label" *ngIf="mosh_mode_available">Open Ports</label>
+                    <div class="col-6" *ngIf="mosh_mode_available" ><label><strong style="padding-right: 10px; bottom: 15px;position: relative;">UDP
                       <i
                         data-balloon="This selection is necessary for using mosh"
                         data-balloon-pos="down" data-balloon-length="large"><i

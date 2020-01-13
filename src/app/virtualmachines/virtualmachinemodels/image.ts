@@ -1,7 +1,8 @@
-
 /**
  * Image class.
  */
+import {ImageMode} from '../../facility_manager/image-tag';
+
 export class Image {
   private _id: string;
   private _openstackid: string;
@@ -11,6 +12,15 @@ export class Image {
   private _description: string;
   private _is_snapshot: boolean;
   private _logo_url: string;
+  private _modes: ImageMode[];
+
+  get modes(): ImageMode[] {
+    return this._modes;
+  }
+
+  set modes(value: ImageMode[]) {
+    this._modes = value;
+  }
 
   get logo_url(): string {
     return this._logo_url
