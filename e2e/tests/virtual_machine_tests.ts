@@ -5,8 +5,6 @@ import {VolumeOverviewPage} from '../page_objects/volume_overview.po';
 import {VMOverviewPage} from '../page_objects/vm_overview.po';
 import {SnapshotOverviewPage} from '../page_objects/vm_snapshot.po';
 import {VMDetailPage} from '../page_objects/vm_detail.po';
-import {VirtualMachine} from "../../src/app/virtualmachines/virtualmachinemodels/virtualmachine";
-
 
 describe('Virtual Machine Tests', async function (): Promise<any> {
 
@@ -163,13 +161,17 @@ describe('Virtual Machine Tests', async function (): Promise<any> {
     await NewInstancePage.closeInfoModal();
   });
 
-  it('should show vm detail page', async function (): Promise<any> {
+  it('should show vm detail page with base functions for virtual machines working',
+     async function (): Promise<any> {
     console.log('showing instance detail page');
     await vmOverviewPage.navigateToOverview();
-    await vmDetailPage
-      .setFullURL(element(by
-        .cssContainingText("a", vmDetailPage.getVmName())).getAttribute('href'));
+    await vmOverviewPage.goToVmDetail();
     // TODO: test stop, restart and other basic functions of virtual machines on the vmDetailPage
+    await vmDetailPage.setBasicVMName((await vmOverviewPage.getBasicVMName());
+    await vmDetailPage.stopBasicVM();
+    await vmDetailPage.restartBasicVM();
+    await vmDetailPage.createSnapshotBasicVM();
+    await vmDetailPage.deleteBasicVM();
   });
 
 });

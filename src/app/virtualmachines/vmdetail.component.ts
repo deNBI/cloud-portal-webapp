@@ -18,7 +18,7 @@ import {IResponseTemplate} from '../api-connector/response-template';
 import {SnapshotModel} from './snapshots/snapshot.model';
 import {Subject} from 'rxjs';
 import {PlaybookService} from '../api-connector/playbook.service';
-
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 
 @Component({
   selector: 'app-virtual-machine-detail',
@@ -39,6 +39,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
   snapshotSearchTerm: Subject<string> = new Subject<string>();
   errorMessage: boolean = false;
 
+  DEBOUNCE_TIME: number = 300;
 
   /**
    * The changed status.
@@ -63,7 +64,6 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
    */
   reboot_done: boolean;
 
-  snapshot_vm: VirtualMachine;
   /**
    * If the snapshot name is valid.
    */
@@ -78,11 +78,6 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
    * name of the snapshot.
    */
   snapshotName: string = '';
-  // @ts-ignore
-  /**
-   * Tab which is shown own|all.
-   * @type {string}
-   */
 
   constructor(private activatedRoute: ActivatedRoute,
               private virtualmachineService: VirtualmachineService,
@@ -98,6 +93,13 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
     this.activatedRoute.params.subscribe((paramsId: any) => {
      this.vm_id = paramsId.id;
      this.getVmById();
+     this.snapshotSearchTerm
+        .pipe(
+          debounceTime(this.DEBOUNCE_TIME),
+          distinctUntilChanged())
+        .subscribe((event: any) => {
+          this.validSnapshotName(event);
+        });
     });
   }
 
@@ -334,7 +336,6 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
     })
   }
 
-
   /**
    * Create snapshot.
    * @param {string} snapshot_instance which is used for creating the snapshot
@@ -368,15 +369,6 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
           this.stopDate = parseInt(this.virtualMachine.stopped_at, 10) * 1000;
           this.stopDate = parseInt(this.virtualMachine.stopped_at, 10) * 1000;
           this.getImageDetails(this.virtualMachine.projectid, this.virtualMachine.image);
-          /*this.playbookService.getPlaybookForVM(this.virtualMachine).subscribe((playbook: Object) => {
-            console.log(playbook)
-            if (!playbook) {
-              console.log('no playbook');
-            } else {
-              console.log('izz da');
-            }
-          }
-          );*/
           this.isLoaded = true;
         }
       }
