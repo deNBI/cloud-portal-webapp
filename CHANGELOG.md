@@ -1,3 +1,14 @@
+##  (2020-01-14)
+
+
+#### Bug Fixes
+
+* **mod-request:**  resource comparison correctly shown ([75053fca](75053fca))
+* **vm:**
+  *  better vm states, unsubscribe statuscheck on destroy ([638711b0](638711b0))
+  *  show if client activated, instance overview correct project link, get forc-url by client ([bc83c4c6](bc83c4c6))
+
+
 ##  (2020-01-09)
 
 
