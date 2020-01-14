@@ -38,18 +38,26 @@ export class GroupService {
 
   }
 
-  getClientHasForc(groupid: string): Observable<any> {
+  getClientHasForc(groupid: string, isClient?: string): Observable<any> {
+    if (isClient) {
+      const params: HttpParams = new HttpParams().set('client', isClient);
 
-    return this.http.get<Client>(`${ApiSettings.getApiBaseURL()}projects/${groupid}/client/hasForc/`, {
-      withCredentials: true,
-      headers: header
-    })
-
+      return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/client/hasForc/`, {
+        withCredentials: true,
+        headers: header,
+        params: params
+      })
+    } else {
+      return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/client/hasForc/`, {
+        withCredentials: true,
+        headers: header
+      })
+    }
   }
 
   getClientForcUrl(groupid: string): Observable<any> {
 
-    return this.http.get<Client>(`${ApiSettings.getApiBaseURL()}projects/${groupid}/client/forcUrl/`, {
+    return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/client/forcUrl/`, {
       withCredentials: true,
       headers: header
     })

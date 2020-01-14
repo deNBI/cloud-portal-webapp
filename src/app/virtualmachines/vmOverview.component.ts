@@ -13,6 +13,9 @@ import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angul
 import {is_vo} from '../shared/globalvar';
 import {VirtualMachineStates} from './virtualmachinemodels/virtualmachinestates';
 import {GroupService} from '../api-connector/group.service';
+import {environment} from '../../environments/environment';
+import {ClientService} from '../api-connector/client.service';
+import {Client} from './clients/client.model';
 
 /**
  * Vm overview componentn.
@@ -21,8 +24,8 @@ import {GroupService} from '../api-connector/group.service';
              selector: 'app-vm-overview',
              templateUrl: 'vmOverview.component.html',
              styleUrls: ['./vmOverview.component.scss'],
-             providers: [FacilityService, ImageService, UserService, VirtualmachineService, FullLayoutComponent, GroupService]
-
+             providers: [FacilityService, ImageService, UserService,
+               VirtualmachineService, FullLayoutComponent, GroupService, ClientService]
            })
 
 export class VmOverviewComponent implements OnInit {
@@ -45,6 +48,7 @@ export class VmOverviewComponent implements OnInit {
   vm_per_site: number = 7;
 
   STATIC_IMG_FOLDER: String = 'static/webapp/assets/img';
+  site_path: string = environment.webapp;
 
   CPU_ICON_PATH: string = `${this.STATIC_IMG_FOLDER}/new_instance/cpu_icon.svg`;
   RAM_ICON_PATH: string = `${this.STATIC_IMG_FOLDER}/new_instance/ram_icon.svg`;
@@ -129,11 +133,14 @@ export class VmOverviewComponent implements OnInit {
   vmActions: any[] = [];
   selectedMachines: VirtualMachine[] = [];
 
+  clientsForcUrls: {[client_id: string]: [string]} = {};
+
   constructor(private facilityService: FacilityService,
 
               private imageService: ImageService, private userservice: UserService,
               private virtualmachineservice: VirtualmachineService, private fb: FormBuilder,
-              private groupService: GroupService) {
+              private groupService: GroupService,
+              private clientService: ClientService) {
     this.actionsForm = fb.group({
                                   title: fb.control('initial value', Validators.required)
                                 });
@@ -625,6 +632,7 @@ export class VmOverviewComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getClientForcUrls();
     this.getVms();
     this.is_vo_admin = is_vo;
     this.get_is_facility_manager();
@@ -722,17 +730,33 @@ export class VmOverviewComponent implements OnInit {
   }
 
   setForcUrl(vm: VirtualMachine): void {
-    this.groupService.getClientForcUrl(vm.client.id).subscribe((response: JSON) => {
-      if (response['forc_url'] !== 'None') {
-        this.virtualmachineservice.getLocationUrl(vm.openstackid)
-          .subscribe((url: any) => {
-            if (url !== '') {
-              vm.res_env_url = `${response['forc_url']}${url}/`;
-            } else {
-              vm.res_env_url = '';
-            }
-          });
-      }
+    this.virtualmachineservice.getLocationUrl(vm.openstackid)
+      .subscribe((url: any) => {
+        if (url !== '') {
+          if (this.clientsForcUrls.hasOwnProperty(vm.client.id)) {
+            vm.res_env_url = `${this.clientsForcUrls[vm.client.id]}${url}/`;
+          } else {
+            vm.res_env_url = '';
+          }
+        } else {
+          vm.res_env_url = '';
+        }
+      });
+  }
+
+  getClientForcUrls(): void {
+    this.clientService.getClientsChecked().subscribe((clients: Client[]) => {
+      clients.forEach((client: Client) => {
+        this.groupService.getClientHasForc(client.id, 'true').subscribe((hasForc: JSON) => {
+          if (hasForc['hasForc'] === 'True') {
+            this.groupService.getClientForcUrl(client.id).subscribe((response: JSON) => {
+              if (response['forc_url'] !== 'None') {
+                this.clientsForcUrls[client.id] = response['forc_url'];
+              }
+            });
+          }
+        });
+      });
     });
   }
 }

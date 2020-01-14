@@ -164,7 +164,7 @@
                   class="fa fa-spinner fa-spin"></i>
                 </div>
                 <div class="col-3" style="margin: auto; text-align: center">
-                  <a href="/#/project-management/{{vm?.application_id}}"><strong>{{vm?.project}}</strong></a>
+                  <a href="{{site_path}}#/project-management/{{vm?.application_id}}"><strong>{{vm?.project}}</strong></a>
                 </div>
                 <div class="col-2" style="margin: auto; text-align: center">
                   {{vm?.userlogin}}
@@ -254,7 +254,7 @@
                   </div>
                 </div>
 
-                <div class="row" *ngIf="vm?.res_env_url != ''">
+                <div class="row" *ngIf="vm?.res_env_url != '' && vm?.res_env_url != null && vm?.res_env_url != undefined">
                   <div class="col-md-1">
                     <span class="font-weight-bold font-xs btn-block text-muted">Res-Env:</span>
                   </div>
