@@ -14,6 +14,23 @@ export class VirtualMachineStates {
   private static readonly _PREPARE_PLAYBOOK_BUILD: string = 'PREPARE_PLAYBOOK_BUILD';
   private static readonly _BUILD_PLAYBOOK: string = 'BUILD_PLAYBOOK';
 
+  private static readonly _GETTING_STATUS: string = 'GETTING STATUS';
+
+  private static readonly _IN_PROCESS_STATES: string[] = [
+    VirtualMachineStates._BUILD,
+    VirtualMachineStates._POWERING_OFF,
+    VirtualMachineStates._RESTARTING,
+    VirtualMachineStates._PREPARE_PLAYBOOK_BUILD,
+    VirtualMachineStates._BUILD_PLAYBOOK];
+
+  private static readonly _NOT_IN_PROCESS_STATES: string[] = [
+    VirtualMachineStates._ACTIVE,
+    VirtualMachineStates._DELETED,
+    VirtualMachineStates._SHUTOFF,
+    VirtualMachineStates._NOT_FOUND,
+    VirtualMachineStates._CLIENT_OFFLINE
+  ];
+
   public get staticPREPARE_PLAYBOOK_BUILD(): string {
     return VirtualMachineStates.PREPARE_PLAYBOOK_BUILD;
   }
@@ -54,6 +71,14 @@ export class VirtualMachineStates {
     return VirtualMachineStates.RESTARTING;
   }
 
+  public get staticGETTING_STATUS(): string {
+    return VirtualMachineStates.GETTING_STATUS;
+  }
+
+  public get staticNOT_IN_PROCESS_STATE(): string[] {
+    return VirtualMachineStates.NOT_IN_PROCESS_STATES;
+  }
+
   static get BUILD(): string {
     return this._BUILD;
   }
@@ -92,6 +117,18 @@ export class VirtualMachineStates {
 
   static get RESTARTING(): string {
     return this._RESTARTING;
+  }
+
+  static get GETTING_STATUS(): string {
+    return this._GETTING_STATUS;
+  }
+
+  static get IN_PROCESS_STATES(): string[] {
+    return this._IN_PROCESS_STATES;
+  }
+
+  static get NOT_IN_PROCESS_STATES(): string[] {
+    return this._NOT_IN_PROCESS_STATES;
   }
 
 }

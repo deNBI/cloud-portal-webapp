@@ -2,6 +2,7 @@
  * Clientclass
  */
 export class Client {
+
   private _id: string;
   private _host: string;
   private _status: string;
@@ -18,6 +19,8 @@ export class Client {
   private _newVolumes: number;
   private _newVms: number;
   private _newVolumeLimit: number;
+  private _activated: boolean;
+  private _forc_url: string;
 
   constructor(host: string, port: string, location: string, id: string) {
     this._host = host;
@@ -152,5 +155,21 @@ export class Client {
 
   set assignedVolumesStorage(value: number) {
     this._assignedVolumesStorage = value;
+  }
+
+  get activated(): boolean {
+    return this._activated;
+  }
+
+  set activated(value: boolean) {
+    this._activated = value;
+  }
+
+  get forc_url(): string {
+    return this._forc_url;
+  }
+
+  set forc_url(value: string) {
+    this._forc_url = value;
   }
 }

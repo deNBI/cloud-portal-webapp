@@ -15,6 +15,7 @@ export const environment: any = {
   apiBaseUrl: 'http://localhost:8000/api/v0/',
   voRegistrationLink: 'https://perun.elixir-czech.cz/registrar/?vo=denbi-dev',
   login: 'http://localhost:8000',
+  webapp: 'http://localhost:8001/',
   matomoServer: ''
 
 };

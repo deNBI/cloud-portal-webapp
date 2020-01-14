@@ -9,5 +9,6 @@ export const environment: any = {
   apiBaseUrl: 'https://portal-dev.denbi.de/portal/api/v0/',
   voRegistrationLink: 'https://perun.elixir-czech.cz/registrar/?vo=denbi-dev',
   login: 'https://portal-dev.denbi.de/portal/',
+  webapp: 'https://portal-dev.denbi.de/portal/webapp/',
   matomoServer: '//cloud.denbi.de/matomo/'
 };
