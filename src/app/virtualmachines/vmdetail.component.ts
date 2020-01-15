@@ -364,13 +364,12 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
           // TODO: Redirect back to overview
         } else {
           // not working properly yet
-           /*this.playbookService.getPlaybookForVM(vm['name']).subscribe((pb: Object) => {
-            if (pb != null) {
-            console.log(pb);
-            }
-          }); */
+           this.playbookService.getPlaybookForVM(this.vm_id).subscribe((pb: Object) => {
+             if (pb != null) {
+               console.log(pb);
+             }
+           });
           this.title = vm['name'];
-          console.log(vm);
           this.virtualMachine = vm;
           this.startDate = parseInt(this.virtualMachine.created_at, 10) * 1000;
           this.stopDate = parseInt(this.virtualMachine.stopped_at, 10) * 1000;

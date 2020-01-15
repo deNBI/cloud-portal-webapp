@@ -1,11 +1,8 @@
 import {Injectable} from '@angular/core';
 import {ApiSettings} from './api-settings.service'
 import {Observable} from 'rxjs';
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Cookie} from 'ng2-cookies/ng2-cookies';
-import {VirtualMachine} from '../virtualmachines/virtualmachinemodels/virtualmachine';
-import {Volume} from '../virtualmachines/volumes/volume';
-import {IResponseTemplate} from './response-template';
 
 const header: HttpHeaders = new HttpHeaders({
   'X-CSRFToken': Cookie.get('csrftoken')
@@ -23,14 +20,12 @@ export class PlaybookService {
   constructor(private http: HttpClient) {
   }
 
-  getPlaybookForVM(vm_name: string): Observable<any> {
- const params: HttpParams = new HttpParams().set('vm_id', vm_name);
+  getPlaybookForVM(vm_id: string): Observable<any> {
 
- return this.http.get<Object>(this.baseUrl, {
-   withCredentials: true,
-   headers: header,
-   params: params
- });
-}
+    return this.http.get<Object>(`${this.baseUrl}${vm_id}/`, {
+      withCredentials: true,
+      headers: header
+    });
+  }
 
 }
