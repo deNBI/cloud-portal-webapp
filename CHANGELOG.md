@@ -1,3 +1,19 @@
+##  (2020-01-15)
+
+
+#### Features
+
+* **Modi:**
+  * update imag emode implemented ([9a1b9325](9a1b9325))
+  * added modi tables ([d9fa1780](d9fa1780))
+* **Projects:**  information about use cases added (#989) ([c659a661](c659a661))
+* **news:**  place to add, patch, delete news ([d56c98ab](d56c98ab))
+* **newsmanagement:**  add modal, different news management icon ([04a01cf1](04a01cf1))
+* **resenv:**
+  *  add title instead of template name (#975) ([8ece6be4](8ece6be4))
+  *  add title instead of template name ([8ef6037b](8ef6037b))
+
+
 ##  (2020-01-14)
 
 
