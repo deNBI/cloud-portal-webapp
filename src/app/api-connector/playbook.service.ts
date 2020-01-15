@@ -18,13 +18,13 @@ const header: HttpHeaders = new HttpHeaders({
 @Injectable()
 export class PlaybookService {
   data: string;
-  baseUrl: string = `${ApiSettings.getApiBaseURL()}playbooks`;
+  baseUrl: string = `${ApiSettings.getApiBaseURL()}playbooks/`;
 
   constructor(private http: HttpClient) {
   }
 
-  getPlaybookForVM(vm: VirtualMachine): Observable<Object> {
- const params: HttpParams = new HttpParams().set('vm_id', vm.name);
+  getPlaybookForVM(vm_name: string): Observable<any> {
+ const params: HttpParams = new HttpParams().set('vm_id', vm_name);
 
  return this.http.get<Object>(this.baseUrl, {
    withCredentials: true,

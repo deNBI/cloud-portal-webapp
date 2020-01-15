@@ -167,7 +167,7 @@ describe('Virtual Machine Tests', async function (): Promise<any> {
     await vmOverviewPage.navigateToOverview();
     await vmOverviewPage.goToVmDetail();
     // TODO: test stop, restart and other basic functions of virtual machines on the vmDetailPage
-    await vmDetailPage.setBasicVMName((await vmOverviewPage.getBasicVMName());
+    await vmDetailPage.setBasicVMName((await vmOverviewPage.getBasicVMName()));
     await vmDetailPage.stopBasicVM();
     await vmDetailPage.restartBasicVM();
     await vmDetailPage.createSnapshotBasicVM();
