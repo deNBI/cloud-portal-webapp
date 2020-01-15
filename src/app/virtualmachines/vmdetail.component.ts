@@ -19,6 +19,8 @@ import {SnapshotModel} from './snapshots/snapshot.model';
 import {Subject} from 'rxjs';
 import {PlaybookService} from '../api-connector/playbook.service';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
+import {CondaPackage} from "./condaPackage.model";
+import {forEach} from "@angular/router/src/utils/collection";
 
 @Component({
   selector: 'app-virtual-machine-detail',
@@ -38,6 +40,15 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
   virtualMachine: VirtualMachine;
   snapshotSearchTerm: Subject<string> = new Subject<string>();
   errorMessage: boolean = false;
+  private _packages: CondaPackage[];
+
+  get packages(): CondaPackage[] {
+    return this._packages;
+  }
+
+  set packages(value: CondaPackage[]) {
+    this._packages = value;
+  }
 
   DEBOUNCE_TIME: number = 300;
 
@@ -363,19 +374,31 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
           this.errorMessage = true;
           // TODO: Redirect back to overview
         } else {
-          // not working properly yet
            this.playbookService.getPlaybookForVM(this.vm_id).subscribe((pb: Object) => {
              if (pb != null) {
-               console.log(pb);
+               let pbs: string = pb['playbooks'].toString();
+               if (pbs != null) {
+                 pbs = pbs.replace(/\\/g, '');
+                 pbs = pbs.replace('"[', '[');
+                 pbs = pbs.replace(']"', ']');
+                 let pkgs: Object = JSON.parse(pbs);
+                 /* TODO: get running
+                    if (pkgs != null) {
+                   let pkgs_l = pkgs['bioconda'];
+                   for (let elem in pkgs_l) {
+                     this._packages.push(new CondaPackage(elem['name'], elem['version'], elem['build']));
+                   }
+                 } */
+               }
              }
            });
-          this.title = vm['name'];
-          this.virtualMachine = vm;
-          this.startDate = parseInt(this.virtualMachine.created_at, 10) * 1000;
-          this.stopDate = parseInt(this.virtualMachine.stopped_at, 10) * 1000;
-          this.stopDate = parseInt(this.virtualMachine.stopped_at, 10) * 1000;
-          this.getImageDetails(this.virtualMachine.projectid, this.virtualMachine.image);
-          this.isLoaded = true;
+           this.title = vm['name'];
+           this.virtualMachine = vm;
+           this.startDate = parseInt(this.virtualMachine.created_at, 10) * 1000;
+           this.stopDate = parseInt(this.virtualMachine.stopped_at, 10) * 1000;
+           this.stopDate = parseInt(this.virtualMachine.stopped_at, 10) * 1000;
+           this.getImageDetails(this.virtualMachine.projectid, this.virtualMachine.image);
+           this.isLoaded = true;
         }
       }
     );
