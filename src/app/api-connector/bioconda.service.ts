@@ -41,4 +41,15 @@ export class BiocondaService {
       params: params
     })
   }
+
+  getAllowedForcTemplates(facility_id?: string): Observable<any> {
+    const params: HttpParams = new HttpParams()
+      .set('facility_id', facility_id);
+
+    return this.http.get(`${ApiSettings.getApiBaseURL()}forc/templates/allowed/`, {
+      headers: header,
+      withCredentials: true,
+      params: params
+    })
+  }
 }

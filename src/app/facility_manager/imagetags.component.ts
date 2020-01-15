@@ -3,6 +3,7 @@ import {Component, OnInit} from '@angular/core';
 import {BlockedImageTag, ImageLogo, ImageMode, ImageTag} from './image-tag';
 import {forkJoin} from 'rxjs';
 import {FacilityService} from '../api-connector/facility.service';
+import {BiocondaService} from '../api-connector/bioconda.service';
 
 /**
  * ImageTag component.
@@ -10,7 +11,7 @@ import {FacilityService} from '../api-connector/facility.service';
 @Component({
              selector: 'app-image-tags',
              templateUrl: 'imageTag.component.html',
-             providers: [ImageService, FacilityService]
+             providers: [ImageService, FacilityService, BiocondaService]
            })
 export class ImageTagComponent implements OnInit {
 
@@ -28,6 +29,7 @@ export class ImageTagComponent implements OnInit {
   imageUrl: string;
   show_html: boolean = false;
   selectedMode: ImageMode;
+  suggestedModes: string[] = [];
 
   /**
    * Facilitties where the user is manager ['name',id].
@@ -38,7 +40,7 @@ export class ImageTagComponent implements OnInit {
    */
   public selectedFacility: [string, number];
 
-  constructor(private imageService: ImageService, private facilityService: FacilityService) {
+  constructor(private imageService: ImageService, private facilityService: FacilityService, private biocondaService: BiocondaService) {
 
   }
 
@@ -57,6 +59,7 @@ export class ImageTagComponent implements OnInit {
     this.facilityService.getManagerFacilities().subscribe((result: any) => {
       this.managerFacilities = result;
       this.selectedFacility = this.managerFacilities[0];
+      this.getTagModeSuggestions();
       forkJoin(
         this.imageService.getImageTags(this.selectedFacility['FacilityId']),
         this.imageService.getImageLogos(),
@@ -99,8 +102,7 @@ export class ImageTagComponent implements OnInit {
     if (input.validity.valid) {
       this.imageService.addImageTags(tag.trim(), this.checkedModes, this.selectedFacility['FacilityId']).subscribe((newTag: ImageTag) => {
         this.checkedModes = [];
-        this.imageTags.push(newTag)
-
+        this.imageTags.push(newTag);
       });
       this.alertRed = false;
     } else {
@@ -111,8 +113,8 @@ export class ImageTagComponent implements OnInit {
   addImageMode(name: string, description: string, copy_field: string): void {
     const newMode: ImageMode = {name: name, description: description, copy_field: copy_field};
     this.imageService.addImageMode(newMode, this.selectedFacility['FacilityId']).subscribe((createdMode: ImageMode) => {
-      this.imageModes.push(createdMode)
-
+      this.imageModes.push(createdMode);
+      this.getTagModeSuggestions();
     });
 
   }
@@ -133,7 +135,7 @@ export class ImageTagComponent implements OnInit {
     update_mode.name = name;
     this.imageService.updateImageMode(update_mode).subscribe((updated_mode: ImageMode) => {
       this.imageModes[idx] = updated_mode;
-
+      this.getTagModeSuggestions();
     })
   }
 
@@ -162,6 +164,14 @@ export class ImageTagComponent implements OnInit {
         this.blockedImageTags = tags;
       })
     })
+  }
+
+  getTagModeSuggestions(): void {
+    this.biocondaService
+      .getAllowedForcTemplates(this.selectedFacility['FacilityId'].toString())
+      .subscribe((response: any[]) => {
+        this.suggestedModes = response.map((template: any) => template['name']);
+      });
   }
 
 }

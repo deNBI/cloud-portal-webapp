@@ -327,13 +327,9 @@
                     <i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
                             'icon-arrow-up': resEnvGroup.isOpen, 'icon-arrow-down': !resEnvGroup.isOpen}"></i>
                   </div>
-                  <app-res-env *ngIf="selectedImage !== undefined && selectedImage.tags.indexOf('resenv') != -1"
-                               #resEnv
+                  <app-res-env #resEnv
                                [clientid]="client_id"
-                               [onlyNamespace]="true"></app-res-env>
-                  <app-res-env *ngIf="selectedImage === undefined || selectedImage?.tags.indexOf('resenv') == -1"
-                               #resEnv
-                               [clientid]="client_id"></app-res-env>
+                               [onlyNamespace]="resenvSelected"></app-res-env>
                 </accordion-group>
               </accordion>
             </div>

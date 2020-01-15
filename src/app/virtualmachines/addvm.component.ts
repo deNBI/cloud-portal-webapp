@@ -20,6 +20,7 @@ import {UserService} from '../api-connector/user.service';
 import {BiocondaComponent} from './conda/bioconda.component';
 import {ResEnvComponent} from './conda/res-env.component';
 import {is_vo} from '../shared/globalvar';
+import {TemplateNames} from './conda/template-names';
 
 /**
  * Start virtualmachine component.
@@ -66,6 +67,7 @@ export class VirtualMachineComponent implements OnInit {
   has_forc: boolean = false;
   client_id: string;
   mosh_mode_available: boolean = false;
+  resenvSelected: boolean = false;
 
   title: string = 'New Instance';
 
@@ -330,21 +332,21 @@ export class VirtualMachineComponent implements OnInit {
       } else {
         this.progress_bar_width = this.THIRTY_THIRD_PERCENT;
       }
-      const play_information: string = this.getPlaybookInformation();
+      let play_information: string = this.getPlaybookInformation();
       if (play_information !== '{}') {
         this.playbook_run = 1;
+      } else {
+        play_information = null;
       }
-      let tags: string = null;
       let user_key_url: string = null;
-      if (this.selectedImage.tags.indexOf('resenv') !== -1) {
-        tags = this.selectedImage.tags.toString();
+      if (this.resenvSelected) {
         user_key_url = this.resEnvComponent.getUserKeyUrl();
       }
       this.virtualmachineservice.startVM(
         flavor_fixed, this.selectedImage, servername,
         project, projectid.toString(), this.http_allowed,
         this.https_allowed, this.udp_allowed, this.volumeName,
-        this.diskspace.toString(), play_information, tags, user_key_url)
+        this.diskspace.toString(), play_information, user_key_url)
         .subscribe((newVm: VirtualMachine) => {
           this.started_machine = false;
 
@@ -504,7 +506,8 @@ export class VirtualMachineComponent implements OnInit {
   setSelectedImage(image: Image): void {
 
     this.selectedImage = image;
-    this.isMoshModeAvailable()
+    this.isMoshModeAvailable();
+    this.hasImageResenv();
 
   }
 
@@ -521,6 +524,17 @@ export class VirtualMachineComponent implements OnInit {
 
     return
 
+  }
+
+  hasImageResenv(): void {
+    for (const mode of this.selectedImage.modes) {
+      if (TemplateNames.ALL_TEMPLATE_NAMES.indexOf(mode.name) !== -1) {
+        this.resenvSelected = true;
+
+        return;
+      }
+    }
+    this.resenvSelected = false;
   }
 
   setSelectedFlavor(flavor: Flavor): void {
