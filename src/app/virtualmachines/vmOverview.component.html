@@ -254,32 +254,20 @@
             <div class="card-footer p-x-1 py-h"
                  *ngIf="(vm?.status ==  this.VirtualMachineStates.staticACTIVE|| vm?.status == this.VirtualMachineStates.staticSHUTOFF) && vm?.cardState != 0">
               <div *ngIf="vm?.cardState == 1">
-                <div class="row">
+                 <div class="row" *ngFor="let mode of vm?.modes">
                   <div class="col-md-1">
-                    <span class="font-weight-bold font-xs btn-block text-muted">SSH:</span>
+                    <span class="font-weight-bold font-xs btn-block text-muted">{{mode.name}}:</span>
                   </div>
                   <div class="col-md-9">
-                    <span class="font-weight-bold font-xs btn-block text-muted">{{vm?.ssh_command}}</span></div>
+                    <span class="font-weight-bold font-xs btn-block text-muted"  [innerHTML]="mode.description"></span></div>
 
-                  <div class="col-md-2" style="margin: auto"><a (click)="copySSHCommand(vm);" href="#"
+                  <div class="col-md-2" style="margin: auto" *ngIf="mode.copy_field"><a (click)="copyToClipboard(mode.copy_field);" href="#"
                                                                 onClick="return false;"
                                                                 class="font-weight-bold font-xs btn-block text-muted">&lt;copy
                     command&gt;</a>
                   </div>
                 </div>
 
-                <div class="row" *ngIf="vm?.udp_command != null">
-                  <div class="col-md-1">
-                    <span class="font-weight-bold font-xs btn-block text-muted">UDP:</span>
-                  </div>
-                  <div class="col-md-9">
-                    <span class="font-weight-bold font-xs btn-block text-muted">{{vm?.udp_command}}</span></div>
-                  <div class="col-md-2" style="margin: auto"><a (click)="copyUDPCommand(vm);" href="#"
-                                                                onClick="return false;"
-                                                                class="font-weight-bold font-xs btn-block text-muted">&lt;copy
-                    command&gt;</a>
-                  </div>
-                </div>
 
                 <div class="row" *ngIf="vm?.res_env_url != '' && vm?.res_env_url != null && vm?.res_env_url != undefined">
                   <div class="col-md-1">

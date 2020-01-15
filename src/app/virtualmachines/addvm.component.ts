@@ -65,6 +65,7 @@ export class VirtualMachineComponent implements OnInit {
   timeout: number = 0;
   has_forc: boolean = false;
   client_id: string;
+  mosh_mode_available: boolean = false;
 
   title: string = 'New Instance';
 
@@ -313,11 +314,11 @@ export class VirtualMachineComponent implements OnInit {
    * @param {string} project
    * @param {string} projectid
    */
-  startVM(flavor: string, image: string, servername: string, project: string, projectid: string | number): void {
+  startVM(flavor: string, servername: string, project: string, projectid: string | number): void {
     this.create_error = null;
     this.vm_name = null;
     // tslint:disable-next-line:no-complex-conditionals
-    if (image && flavor && servername && project && (this.diskspace <= 0 || this.diskspace > 0 && this.volumeName.length > 0)) {
+    if (this.selectedImage && flavor && servername && project && (this.diskspace <= 0 || this.diskspace > 0 && this.volumeName.length > 0)) {
       this.create_error = null;
       this.started_machine = true;
 
@@ -340,7 +341,7 @@ export class VirtualMachineComponent implements OnInit {
         user_key_url = this.resEnvComponent.getUserKeyUrl();
       }
       this.virtualmachineservice.startVM(
-        flavor_fixed, image, servername,
+        flavor_fixed, this.selectedImage, servername,
         project, projectid.toString(), this.http_allowed,
         this.https_allowed, this.udp_allowed, this.volumeName,
         this.diskspace.toString(), play_information, tags, user_key_url)
@@ -361,7 +362,7 @@ export class VirtualMachineComponent implements OnInit {
           } else if (newVm.status === 'mutex_locked') {
             setTimeout(
               () => {
-                this.startVM(flavor, image, servername, project, projectid)
+                this.startVM(flavor, servername, project, projectid)
               },
               1000)
           } else if (newVm.status) {
@@ -503,6 +504,22 @@ export class VirtualMachineComponent implements OnInit {
   setSelectedImage(image: Image): void {
 
     this.selectedImage = image;
+    this.isMoshModeAvailable()
+
+  }
+
+  isMoshModeAvailable(): void {
+    for (const mode of this.selectedImage.modes) {
+      if (mode.name === 'MOSH') {
+        this.mosh_mode_available = true;
+
+        return
+      }
+
+    }
+    this.mosh_mode_available = false;
+
+    return
 
   }
 

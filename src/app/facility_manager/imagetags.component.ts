@@ -1,6 +1,6 @@
 import {ImageService} from '../api-connector/image.service';
 import {Component, OnInit} from '@angular/core';
-import {BlockedImageTag, ImageLogo, ImageTag} from './image-tag';
+import {BlockedImageTag, ImageLogo, ImageMode, ImageTag} from './image-tag';
 import {forkJoin} from 'rxjs';
 import {FacilityService} from '../api-connector/facility.service';
 
@@ -20,10 +20,13 @@ export class ImageTagComponent implements OnInit {
   alertRed: boolean = false;
   alertRed_blocked: boolean = false;
   imageTags: ImageTag[];
+  imageModes: ImageMode[];
   imageLogos: ImageLogo[];
+  checkedModes: ImageMode[] = [];
   blockedImageTags: BlockedImageTag[];
   imageTag: string;
   imageUrl: string;
+  show_html: boolean = false;
 
   /**
    * Facilitties where the user is manager ['name',id].
@@ -38,18 +41,31 @@ export class ImageTagComponent implements OnInit {
 
   }
 
+  checkMode(mode: ImageMode): void {
+    const idx: number = this.checkedModes.indexOf(mode);
+
+    if (idx === -1) {
+      this.checkedModes.push(mode)
+    } else {
+      this.checkedModes.splice(idx, 1)
+    }
+    console.log(this.checkedModes)
+  }
+
   ngOnInit(): void {
     this.facilityService.getManagerFacilities().subscribe((result: any) => {
       this.managerFacilities = result;
       this.selectedFacility = this.managerFacilities[0];
       forkJoin(
-        this.imageService.getImageTags(),
+        this.imageService.getImageTags(this.selectedFacility['FacilityId']),
         this.imageService.getImageLogos(),
-        this.imageService.getBlockedImageTags(this.selectedFacility['FacilityId']))
+        this.imageService.getBlockedImageTags(this.selectedFacility['FacilityId']),
+        this.imageService.getImageModes(this.selectedFacility['FacilityId']))
         .subscribe((res: any) => {
           this.imageTags = res[0];
           this.imageLogos = res[1];
           this.blockedImageTags = res[2];
+          this.imageModes = res[3];
           this.isLoaded = true;
         })
     });
@@ -78,9 +94,10 @@ export class ImageTagComponent implements OnInit {
     })
   }
 
-  addTag(tag: string, description: string, input: HTMLInputElement): void {
+  addTag(tag: string, input: HTMLInputElement): void {
     if (input.validity.valid) {
-      this.imageService.addImageTags(tag.trim(), description).subscribe((newTag: ImageTag) => {
+      this.imageService.addImageTags(tag.trim(), this.checkedModes, this.selectedFacility['FacilityId']).subscribe((newTag: ImageTag) => {
+        this.checkedModes = [];
         this.imageTags.push(newTag)
 
       });
@@ -90,10 +107,27 @@ export class ImageTagComponent implements OnInit {
     }
   }
 
-  deleteTag(tag: string): void {
-    this.imageService.deleteImageTag(tag).subscribe(() => {
-      this.imageService.getImageTags().subscribe((tags: ImageTag[]) => {
+  addImageMode(name: string, description: string, copy_field: string): void {
+    const newMode: ImageMode = {name: name, description: description, copy_field: copy_field};
+    this.imageService.addImageMode(newMode, this.selectedFacility['FacilityId']).subscribe((createdMode: ImageMode) => {
+      this.imageModes.push(createdMode)
+
+    });
+
+  }
+
+  deleteTag(tag: ImageTag): void {
+    this.imageService.deleteImageTag(tag.id).subscribe(() => {
+      this.imageService.getImageTags(this.selectedFacility['FacilityId']).subscribe((tags: ImageTag[]) => {
         this.imageTags = tags;
+      })
+    })
+  }
+
+  deleteMode(mode: ImageMode): void {
+    this.imageService.deleteImageMode(mode.id).subscribe(() => {
+      this.imageService.getImageModes(this.selectedFacility['FacilityId']).subscribe((tags: ImageMode[]) => {
+        this.imageModes = tags;
       })
     })
   }

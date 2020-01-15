@@ -2,8 +2,19 @@
  * Image tag interface.
  */
 export interface ImageTag {
+  id?: string;
+  name: string;
+  mode: ImageMode[];
+}
+
+/**
+ * Image mode interface.
+ */
+export interface ImageMode {
+  id?: string
   name: string;
   description: string;
+  copy_field: string;
 }
 
 /**
