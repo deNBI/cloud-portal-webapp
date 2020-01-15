@@ -15,6 +15,7 @@ export interface ImageMode {
   name: string;
   description: string;
   copy_field: string;
+  virtualmachines_counter: number;
 }
 
 /**
