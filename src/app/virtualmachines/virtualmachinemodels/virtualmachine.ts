@@ -1,12 +1,14 @@
 import {Flavor} from './flavor';
 import {Client} from '../clients/client.model';
+import {ImageMode} from '../../facility_manager/image-tag';
+
 
 /**
  * Virtualmachine class.
  */
 export class VirtualMachine {
-
   private _flavor: Flavor;
+
   private _image: string;
   private _project: string;
   private _status: string;
@@ -23,9 +25,13 @@ export class VirtualMachine {
   private _udp_command: string;
   private _application_id: string;
   private _cardState: number;
+
   private _projectid: number;
   private _volume_id: string;
   private _diskspace: string;
+
+  private _res_env_url: string;
+  private _modes: ImageMode[];
 
 
   get volume_id(): string {
@@ -50,6 +56,22 @@ export class VirtualMachine {
 
   set projectid(value: number) {
     this._projectid = value;
+  }
+
+  get modes(): ImageMode[] {
+    return this._modes;
+  }
+
+  set modes(value: ImageMode[]) {
+    this._modes = value;
+  }
+
+  get res_env_url(): string {
+    return this._res_env_url;
+  }
+
+  set res_env_url(value: string) {
+    this._res_env_url = value;
   }
 
   get cardState(): number {

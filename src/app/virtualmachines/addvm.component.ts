@@ -65,6 +65,7 @@ export class VirtualMachineComponent implements OnInit {
   timeout: number = 0;
   has_forc: boolean = false;
   client_id: string;
+  mosh_mode_available: boolean = false;
 
   title: string = 'New Instance';
 
@@ -148,6 +149,11 @@ export class VirtualMachineComponent implements OnInit {
 
   selectedProjectGPUsUsed: number;
   selectedProjectGPUsMax: number;
+
+  newCores: number = 0;
+  newRam: number = 0;
+  newVms: number = 1;
+  newGpus: number = 0;
 
   /**
    * The selected project ['name',id].
@@ -308,11 +314,11 @@ export class VirtualMachineComponent implements OnInit {
    * @param {string} project
    * @param {string} projectid
    */
-  startVM(flavor: string, image: string, servername: string, project: string, projectid: string | number): void {
+  startVM(flavor: string, servername: string, project: string, projectid: string | number): void {
     this.create_error = null;
     this.vm_name = null;
     // tslint:disable-next-line:no-complex-conditionals
-    if (image && flavor && servername && project && (this.diskspace <= 0 || this.diskspace > 0 && this.volumeName.length > 0)) {
+    if (this.selectedImage && flavor && servername && project && (this.diskspace <= 0 || this.diskspace > 0 && this.volumeName.length > 0)) {
       this.create_error = null;
       this.started_machine = true;
 
@@ -328,11 +334,17 @@ export class VirtualMachineComponent implements OnInit {
       if (play_information !== '{}') {
         this.playbook_run = 1;
       }
+      let tags: string = null;
+      let user_key_url: string = null;
+      if (this.selectedImage.tags.indexOf('resenv') !== -1) {
+        tags = this.selectedImage.tags.toString();
+        user_key_url = this.resEnvComponent.getUserKeyUrl();
+      }
       this.virtualmachineservice.startVM(
-        flavor_fixed, image, servername,
+        flavor_fixed, this.selectedImage, servername,
         project, projectid.toString(), this.http_allowed,
         this.https_allowed, this.udp_allowed, this.volumeName,
-        this.diskspace.toString(), play_information)
+        this.diskspace.toString(), play_information, tags, user_key_url)
         .subscribe((newVm: VirtualMachine) => {
           this.started_machine = false;
 
@@ -350,7 +362,7 @@ export class VirtualMachineComponent implements OnInit {
           } else if (newVm.status === 'mutex_locked') {
             setTimeout(
               () => {
-                this.startVM(flavor, image, servername, project, projectid)
+                this.startVM(flavor, servername, project, projectid)
               },
               1000)
           } else if (newVm.status) {
@@ -386,10 +398,10 @@ export class VirtualMachineComponent implements OnInit {
       this.timeout += this.biocondaComponent.getTimeout();
     }
 
-    if (this.resEnvComponent && this.resEnvComponent.selected_template !== 'undefined'
-      && this.resEnvComponent.selected_version !== ''
+    if (this.resEnvComponent && this.resEnvComponent.selectedTemplate !== null
       && this.resEnvComponent.user_key_url.errors === null) {
-      playbook_info[this.resEnvComponent.selected_template] = {template_version: this.resEnvComponent.selected_version};
+      playbook_info[this.resEnvComponent.selectedTemplate.template_name] = {template_version:
+        this.resEnvComponent.selectedTemplate.template_version};
       playbook_info['user_key_url'] = {user_key_url: this.resEnvComponent.getUserKeyUrl()};
     }
 
@@ -401,6 +413,9 @@ export class VirtualMachineComponent implements OnInit {
    * If connected geht vm,volumes etc.
    */
   getSelectedProjectClient(): void {
+    this.newCores = 0;
+    this.newGpus = 0;
+    this.newVms = 1;
     this.client_checked = false;
     this.projectDataLoaded = false;
 
@@ -489,7 +504,30 @@ export class VirtualMachineComponent implements OnInit {
   setSelectedImage(image: Image): void {
 
     this.selectedImage = image;
+    this.isMoshModeAvailable()
 
+  }
+
+  isMoshModeAvailable(): void {
+    for (const mode of this.selectedImage.modes) {
+      if (mode.name === 'MOSH') {
+        this.mosh_mode_available = true;
+
+        return
+      }
+
+    }
+    this.mosh_mode_available = false;
+
+    return
+
+  }
+
+  setSelectedFlavor(flavor: Flavor): void {
+    this.selectedFlavor = flavor;
+    this.newCores = this.selectedFlavor.vcpus;
+    this.newRam = this.selectedFlavor.ram / 1024;
+    this.newGpus = this.selectedFlavor.gpu;
   }
 
   ngOnInit(): void {

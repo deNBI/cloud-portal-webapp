@@ -1,15 +1,26 @@
-
 /**
  * Image class.
  */
+import {ImageMode} from '../../facility_manager/image-tag';
+
 export class Image {
   private _id: string;
+  private _openstackid: string;
   private _name: string;
   private _status: string;
   private _tags: string[];
   private _description: string;
   private _is_snapshot: boolean;
   private _logo_url: string;
+  private _modes: ImageMode[];
+
+  get modes(): ImageMode[] {
+    return this._modes;
+  }
+
+  set modes(value: ImageMode[]) {
+    this._modes = value;
+  }
 
   get logo_url(): string {
     return this._logo_url
@@ -18,6 +29,14 @@ export class Image {
 
   set logo_url(value: string) {
     this._logo_url = value;
+  }
+
+  get openstackid(): string {
+    return this._openstackid;
+  }
+
+  set openstackid(value: string) {
+    this._openstackid = value;
   }
 
   get id(): string {

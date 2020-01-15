@@ -70,103 +70,24 @@
 
             </div>
             <div *ngIf="client_avaiable && projectDataLoaded">
-              <div class="form-group row"
-                   *ngIf="selectedProject[1] != FREEMIUM_ID">
-                <label class="col-md-2 form-control-label"><strong>Overview</strong></label>
+              <app-resource-overview [selectedProjectCoresMax]="selectedProjectCoresMax"
+                                     [selectedProjectCoresUsed]="selectedProjectCoresUsed"
+                                     [selectedProjectDiskspaceMax]="selectedProjectDiskspaceMax"
+                                     [selectedProjectDiskspaceUsed]="selectedProjectDiskspaceUsed"
+                                     [selectedProjectGPUsMax]="selectedProjectGPUsMax"
+                                     [selectedProjectGPUsUsed]="selectedProjectGPUsUsed"
+                                     [selectedProjectRamMax]="selectedProjectRamMax"
+                                     [selectedProjectRamUsed]="selectedProjectRamUsed"
+                                     [selectedProjectVmsMax]="selectedProjectVmsMax"
+                                     [selectedProjectVmsUsed]="selectedProjectVmsUsed"
+                                     [selectedProjectVolumesMax]="selectedProjectVolumesMax"
+                                     [selectedProjectVolumesUsed]="selectedProjectVolumesUsed"
+                                     [newVms]="newVms"
+                                     [newCores]="newCores" [newDiskspace]="diskspace" [newGpus]="newGpus"
+                                     [newRam]="newRam" >
 
+              </app-resource-overview>
 
-                <div class="row text-center col-md-10">
-
-                  <div class="col-sm-12 col-md">
-                    <div class="text-muted">Vms</div>
-                    <strong>{{selectedProjectVmsUsed}} |
-                      {{selectedProjectVmsMax}}</strong>
-                    <div style="background-color: darkgray;" class="progress progress-xs mt-2"
-
-                    >
-                      <div class="progress-bar " role="progressbar"
-                           [ngStyle]="{'width.%': selectedProjectVmsUsed/selectedProjectVmsMax *100}"
-                           [ngClass]=" {'bg-success':(selectedProjectVmsUsed / selectedProjectVmsMax) < 0.5 ,
-                         'bg-warning':(selectedProjectVmsUsed / selectedProjectVmsMax) > 0.5 &&   selectedProjectVmsUsed < selectedProjectVmsMax,
-                         'bg-danger': selectedProjectVmsUsed >= selectedProjectVmsMax}"
-
-                           aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                  </div>
-
-
-                  <div class="col-sm-12 col-md">
-                    <div class="text-muted">Ram [GB]</div>
-                    <strong> {{selectedProjectRamUsed}} | {{selectedProjectRamMax}}</strong>
-                    <div style="background-color: darkgray;" class="progress progress-xs mt-2">
-                      <div class="progress-bar " role="progressbar"
-                           [ngStyle]="{'width.%': selectedProjectRamUsed/selectedProjectRamMax *100 }" aria-valuenow="0"
-                           [ngClass]=" {'bg-success':(selectedProjectRamUsed / selectedProjectRamMax) < 0.5 ,
-                         'bg-warning':(selectedProjectRamUsed / selectedProjectRamMax) > 0.5 &&   selectedProjectRamUsed < selectedProjectRamMax,
-                         'bg-danger': selectedProjectRamUsed >= selectedProjectRamMax}"
-                           aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                  </div>
-
-                  <div class="col-sm-12 col-md ">
-                    <div class="text-muted">Cores</div>
-                    <strong> {{selectedProjectCoresUsed}} | {{selectedProjectCoresMax}}</strong>
-                    <div style="background-color: darkgray;" class="progress progress-xs mt-2">
-                      <div class="progress-bar " role="progressbar"
-                           [ngStyle]="{'width.%': selectedProjectCoresUsed/selectedProjectCoresMax *100 }"
-                           [ngClass]=" {'bg-success':(selectedProjectCoresUsed / selectedProjectCoresMax) < 0.5 ,
-                         'bg-warning':(selectedProjectCoresUsed / selectedProjectCoresMax) > 0.5 &&   selectedProjectCoresUsed < selectedProjectCoresMax,
-                         'bg-danger': selectedProjectCoresUsed >= selectedProjectCoresMax}"
-                           aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                  </div>
-
-                  <div class="col-sm-12 col-md ">
-                    <div class="text-muted">Storage Volumes</div>
-                    <strong> {{selectedProjectVolumesUsed}} | {{selectedProjectVolumesMax}}</strong>
-                    <div style="background-color: darkgray;" class="progress progress-xs mt-2">
-                      <div class="progress-bar" role="progressbar"
-                           [ngStyle]="{'width.%': selectedProjectVolumesUsed/selectedProjectVolumesMax *100 }"
-                           [ngClass]=" {'bg-success':(selectedProjectVolumesUsed / selectedProjectVolumesMax) < 0.5 ,
-                         'bg-warning':(selectedProjectVolumesUsed / selectedProjectVolumesMax) > 0.5 &&   selectedProjectVolumesUsed < selectedProjectVolumesMax,
-                         'bg-danger': selectedProjectVolumesUsed >= selectedProjectVolumesMax}"
-                           aria-valuenow="0"
-                           aria-valuenow="60"
-                           aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                  </div>
-
-                  <div class="col-sm-12 col-md ">
-                    <div class="text-muted">Volumes Storage [GB]</div>
-                    <strong> {{selectedProjectDiskspaceUsed}} | {{selectedProjectDiskspaceMax}}</strong>
-                    <div style="background-color: darkgray;" class="progress progress-xs mt-2">
-                      <div class="progress-bar" role="progressbar"
-                           [ngStyle]="{'width.%': selectedProjectDiskspaceUsed/selectedProjectDiskspaceMax *100 }"
-                           [ngClass]=" {'bg-success':(selectedProjectDiskspaceUsed / selectedProjectDiskspaceMax) < 0.5 ,
-                         'bg-warning':(selectedProjectDiskspaceUsed / selectedProjectDiskspaceMax) > 0.5 &&   selectedProjectDiskspaceUsed < selectedProjectDiskspaceMax,
-                         'bg-danger': selectedProjectDiskspaceUsed >= selectedProjectDiskspaceMax}"
-
-                           aria-valuemin="0" aria-valuemax="[selectedProjectDiskspaceMax]"></div>
-                    </div>
-                  </div>
-
-                  <div class="col-sm-12 col-md ">
-                    <div class="text-muted">GPUs</div>
-                    <strong> {{selectedProjectGPUsUsed}} | {{selectedProjectGPUsMax}}</strong>
-                    <div style="background-color: darkgray;" class="progress progress-xs mt-2">
-                      <div class="progress-bar" role="progressbar"
-                           [ngStyle]="{'width.%': selectedProjectGPUsUsed/selectedProjectGPUsMax *100 }"
-                           [ngClass]=" {'bg-success':(selectedProjectGPUsUsed / selectedProjectGPUsMax) < 0.5 ,
-                         'bg-warning':(selectedProjectGPUsUsed / selectedProjectGPUsMax) > 0.5 &&   selectedProjectGPUsUsed < selectedProjectGPUsMax,
-                         'bg-danger': selectedProjectGPUsUsed >= selectedProjectGPUsMax}"
-
-                           aria-valuemin="0" aria-valuemax="[selectedProjectGPUsMax]"></div>
-                    </div>
-                  </div>
-
-
-                </div>
-              </div>
               <div class="alert alert-primary" role="alert"
                    *ngIf="selectedProject && selectedProjectVmsUsed >= selectedProjectVmsMax">
                 The limit for virtual machines has been reached for this project.
@@ -213,7 +134,7 @@
 
                     <app-flavor-detail [selectedFlavor]="selectedFlavor"
                                        [flavors]="flavors"
-                                       (selectedFlavorChange)="selectedFlavor=$event"
+                                       (selectedFlavorChange)="setSelectedFlavor($event)"
                                        id="id_flavor_detail"></app-flavor-detail>
 
                   </div>
@@ -326,8 +247,8 @@
                     *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && selectedProjectVmsUsed < selectedProjectVmsMax"
                     class="form-group row">
 
-                    <label class="col-md-2 form-control-label">Open Ports</label>
-                    <div class="col-6"><label><strong style="padding-right: 10px; bottom: 15px;position: relative;">UDP
+                    <label class="col-md-2 form-control-label" *ngIf="mosh_mode_available">Open Ports</label>
+                    <div class="col-6" *ngIf="mosh_mode_available" ><label><strong style="padding-right: 10px; bottom: 15px;position: relative;">UDP
                       <i
                         data-balloon="This selection is necessary for using mosh"
                         data-balloon-pos="down" data-balloon-length="large"><i
@@ -406,7 +327,13 @@
                     <i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
                             'icon-arrow-up': resEnvGroup.isOpen, 'icon-arrow-down': !resEnvGroup.isOpen}"></i>
                   </div>
-                  <app-res-env #resEnv [clientid]="client_id"></app-res-env>
+                  <app-res-env *ngIf="selectedImage !== undefined && selectedImage.tags.indexOf('resenv') != -1"
+                               #resEnv
+                               [clientid]="client_id"
+                               [onlyNamespace]="true"></app-res-env>
+                  <app-res-env *ngIf="selectedImage === undefined || selectedImage?.tags.indexOf('resenv') == -1"
+                               #resEnv
+                               [clientid]="client_id"></app-res-env>
                 </accordion-group>
               </accordion>
             </div>
@@ -427,8 +354,8 @@
           <p *ngIf="diskspace > 0 && !volumeName">- A name for your storage volume
           </p>
           <p *ngIf="!gaveOkay && hasTools">- Give your okay to the Bioconda install process
-
           </p>
+
         </div>
         <div class="form-group row"
              *ngIf="projectDataLoaded && selectedProjectVmsUsed < selectedProjectVmsMax && (flavors?.length > 0  || selectedFlavor)">
@@ -447,7 +374,7 @@
                   (!gaveOkay && hasTools)"
                   class="btn btn-primary  .btn-lg offset-md-8"
                   data-toggle="modal"
-                  (click)="startVM(selectedFlavor.name,selectedImage.name,f.controls.instance_name.value,selectedProject[0],selectedProject[1]);resetData();resetProgressBar;infoModal.show();">
+                  (click)="startVM(selectedFlavor.name,f.controls.instance_name.value,selectedProject[0],selectedProject[1]);resetData();resetProgressBar;infoModal.show();">
             Start VM
           </button>
         </div>

@@ -23,8 +23,9 @@ import {ImageCarouselSlideComponent} from './imageCarouselSlide.component';
 import {PopoverModule} from 'ngx-bootstrap/popover';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {VmDetailComponent} from './vmdetail.component';
+import { AddClusterComponent } from './clusters/add-cluster/add-cluster.component';
+import { ResourceOverviewComponent } from './resource-overview/resource-overview.component';
 import {ResEnvComponent} from './conda/res-env.component';
-
 
 /**
  * VM module.
@@ -57,6 +58,8 @@ import {ResEnvComponent} from './conda/res-env.component';
               HowToConnectComponent,
               BiocondaComponent,
               VmDetailComponent,
+              AddClusterComponent,
+              ResourceOverviewComponent,
               ResEnvComponent
             ]
           })
