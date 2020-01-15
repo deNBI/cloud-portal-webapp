@@ -253,10 +253,29 @@
         </div>
       </div>
 
-      <div class="card" *ngIf="false"> <!-- remove "false" as soon as request ist working -->
-        <div class="card-header"><span class="font-weight-bold text-muted">Conda Information</span></div>
+      <div class="card" *ngIf="this.condaPackages.length > 0"> <!-- remove "false" as soon as request ist working -->
+        <div class="card-header"><span class="font-weight-bold text-muted">Installed Conda Packages</span></div>
         <div class="card-body">
-          <!-- show packages etc here -->
+          <div class="row" *ngFor="let pkg of this.condaPackages">
+            <div class="col-4">
+              <div class="callout">
+                <small class="text-muted">Package name</small><br>
+                <strong class="text-muted">{{pkg.name}}</strong>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="callout">
+                <small class="text-muted">Version</small><br>
+                <strong class="text-muted">{{pkg.version}}</strong>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="callout">
+                <small class="text-muted">Build</small><br>
+                <strong class="text-muted">{{pkg.build}}</strong>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 

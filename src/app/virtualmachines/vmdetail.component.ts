@@ -31,6 +31,7 @@ import {forEach} from "@angular/router/src/utils/collection";
 })
 
 export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
+
   vm_id: string;
   title: string = 'Instance Detail';
   image: Image;
@@ -40,15 +41,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
   virtualMachine: VirtualMachine;
   snapshotSearchTerm: Subject<string> = new Subject<string>();
   errorMessage: boolean = false;
-  private _packages: CondaPackage[];
-
-  get packages(): CondaPackage[] {
-    return this._packages;
-  }
-
-  set packages(value: CondaPackage[]) {
-    this._packages = value;
-  }
+  private _condaPackages: CondaPackage[] = [];
 
   DEBOUNCE_TIME: number = 300;
 
@@ -99,6 +92,15 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
               private playbookService: PlaybookService) {
     super();
   }
+
+  get condaPackages(): CondaPackage[] {
+    return this._condaPackages;
+  }
+
+  set condaPackages(value: CondaPackage[]) {
+    this._condaPackages = value;
+  }
+
   ngOnInit(): void {
 
     this.activatedRoute.params.subscribe((paramsId: any) => {
@@ -381,14 +383,17 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
                  pbs = pbs.replace(/\\/g, '');
                  pbs = pbs.replace('"[', '[');
                  pbs = pbs.replace(']"', ']');
-                 let pkgs: Object = JSON.parse(pbs);
-                 /* TODO: get running
-                    if (pkgs != null) {
-                   let pkgs_l = pkgs['bioconda'];
-                   for (let elem in pkgs_l) {
-                     this._packages.push(new CondaPackage(elem['name'], elem['version'], elem['build']));
+                 const pkgs: Object = JSON.parse(pbs);
+                 if (pkgs != null) {
+                   const package_list: Object = pkgs['bioconda'];
+                   if (package_list != null) {
+                     for (const packageObject in package_list['packages']) {
+                       const c_index: string = packageObject;
+                       const c_package: any = package_list['packages'][c_index];
+                       this._condaPackages.push(new CondaPackage(c_package.name, c_package.version, c_package.build));
+                     }
                    }
-                 } */
+                 }
                }
              }
            });
