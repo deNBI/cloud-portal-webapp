@@ -67,14 +67,14 @@
               </tr>
 
               <tr *ngFor="let mode of imageModes">
-                <td>{{mode.name}}</td>
+                <td>{{mode.name}} <br>(used by {{mode.virtualmachines_counter}} VMs)</td>
 
                 <td *ngIf="show_html" [innerHTML]="mode.description"></td>
                 <td *ngIf="!show_html">{{mode.description}}</td>
                 <td> {{mode.copy_field}}</td>
                 <td>
                   <button type="button" class="btn btn-primary"
-                          (click)="deleteMode(mode);">Delete Tag
+                          (click)="selectedMode=mode;updateModal.show();">Update Tag
                   </button>
                 </td>
               </tr>
@@ -220,3 +220,70 @@
     </div>
   </div>
 </div>
+
+
+<div bsModal #updateModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="Label"
+     aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Update Mode </h4>
+        <button type="button" class="close" style="cursor:pointer"
+                (click)="updateModal.hide()"
+                aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+            <tr>
+              <th>Name</th>
+
+              <th>Description
+                <button *ngIf="show_html" (click)="show_html=false;" class="btn btn-primary">Plain Text</button>
+                <button class="btn btn-info " *ngIf="!show_html" (click)="show_html=true;">HTML Formatted</button>
+              </th>
+              <th>Copy Field</th>
+
+
+            </tr>
+
+            </thead>
+            <tbody>
+            <tr>
+              <td><input type="text" placeholder="Name" #name [ngModel]="selectedMode?.name"></td>
+              <td><textarea [hidden]="show_html" type="text" placeholder="Description" #description
+                            class="form-control input-lg"
+                            [ngModel]="selectedMode?.description"></textarea>
+                <span [innerHTML]="description.value" [hidden]="!show_html"></span>
+              </td>
+              <td><textarea [hidden]="show_html" type="text" placeholder="Copy Field" #copy_field
+                            class="form-control input-lg"
+                            [ngModel]="selectedMode?.copy_field"></textarea>
+                <span [innerHTML]="copy_field.value" [hidden]="!show_html"></span>
+
+              </td>
+
+            </tbody>
+          </table>
+        </div>
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary navbar-inverse"
+                (click)="updateMode(name.value,description.value,copy_field.value);updateModal.hide();">Update
+        </button>
+        <button class="btn  btn-danger col-md-4" type="reset"
+                (click)="updateModal.hide()">Cancel
+        </button>
+
+
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+

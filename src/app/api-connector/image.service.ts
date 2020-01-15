@@ -86,9 +86,21 @@ export class ImageService {
 
   }
 
+  updateImageMode(mode: ImageMode): Observable<ImageMode> {
+
+    const params: HttpParams = new HttpParams().set('mode', JSON.stringify(mode));
+
+    return this.http.patch<ImageMode>(`${ApiSettings.getApiBaseURL()}imageModes/${mode.id}/`, params, {
+      withCredentials: true,
+      headers: header
+    })
+
+  }
+
   addImageTags(imageTag: string, imageModes: ImageMode[], facility: number): Observable<ImageTag> {
 
-    const params: HttpParams = new HttpParams().set('imageTag', imageTag).set('facility', facility.toString()).set('imageModes', JSON.stringify(imageModes));
+    const params: HttpParams = new HttpParams()
+      .set('imageTag', imageTag).set('facility', facility.toString()).set('imageModes', JSON.stringify(imageModes));
 
     return this.http.post<ImageTag>(`${ApiSettings.getApiBaseURL()}imageTags/`, params, {
       withCredentials: true,

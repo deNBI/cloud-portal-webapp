@@ -27,6 +27,7 @@ export class ImageTagComponent implements OnInit {
   imageTag: string;
   imageUrl: string;
   show_html: boolean = false;
+  selectedMode: ImageMode;
 
   /**
    * Facilitties where the user is manager ['name',id].
@@ -121,6 +122,18 @@ export class ImageTagComponent implements OnInit {
       this.imageService.getImageTags(this.selectedFacility['FacilityId']).subscribe((tags: ImageTag[]) => {
         this.imageTags = tags;
       })
+    })
+  }
+
+  updateMode(name: string, description: string, copy_field: string): void {
+    const idx: number = this.imageModes.indexOf(this.selectedMode);
+    const update_mode: ImageMode = Object.assign({}, this.selectedMode);
+    update_mode.description = description;
+    update_mode.copy_field = copy_field;
+    update_mode.name = name;
+    this.imageService.updateImageMode(update_mode).subscribe((updated_mode: ImageMode) => {
+      this.imageModes[idx] = updated_mode;
+
     })
   }
 
