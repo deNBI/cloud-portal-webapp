@@ -83,7 +83,8 @@
                                      [selectedProjectVolumesMax]="selectedProjectVolumesMax"
                                      [selectedProjectVolumesUsed]="selectedProjectVolumesUsed"
                                      [newCores]="newCores" [newRam]="newRam" [newGpus]="newGpus"
-                                     [newVms]="newVms"></app-resource-overview>
+                                     [newVms]="newVms"
+                                     [showAdditionalRes]="true"></app-resource-overview>
               <div class="alert alert-primary" role="alert"
                    *ngIf="selectedProject && (selectedProjectVmsUsed + 2 ) >= selectedProjectVmsMax">
                 The limit for virtualmachines is too low for your project to start a new cluster.
