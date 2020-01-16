@@ -28,6 +28,9 @@ export class ImageTagComponent implements OnInit {
   imageUrl: string;
   show_html: boolean = false;
   selectedMode: ImageMode;
+  updateModeName: string;
+  updateModeDescription: string;
+  updateModeCopy: string;
   newModeName: string;
   newModeDescription: string;
   newModeCopy: string;
@@ -131,12 +134,12 @@ export class ImageTagComponent implements OnInit {
     })
   }
 
-  updateMode(name: string, description: string, copy_field: string): void {
+  updateMode(): void {
     const idx: number = this.imageModes.indexOf(this.selectedMode);
     const update_mode: ImageMode = Object.assign({}, this.selectedMode);
-    update_mode.description = description;
-    update_mode.copy_field = copy_field;
-    update_mode.name = name;
+    update_mode.description = this.updateModeDescription;
+    update_mode.copy_field = this.updateModeDescription;
+    update_mode.name = this.updateModeName;
     this.imageService.updateImageMode(update_mode).subscribe((updated_mode: ImageMode) => {
       this.imageModes[idx] = updated_mode;
 
