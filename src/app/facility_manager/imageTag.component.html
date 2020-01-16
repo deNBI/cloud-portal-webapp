@@ -79,23 +79,24 @@
                 </td>
               </tr>
               <tr>
-                <td><input type="text" placeholder="Tag" #name pattern="[0-9a-zA-Z-_]*" required></td>
+                <td><input type="text" placeholder="Tag" #name [(ngModel)]="newModeName" pattern="[0-9a-zA-Z-_]*"
+                           required></td>
                 <td>
                <textarea [hidden]="show_html" class="form-control input-lg"
-                         placeholder="Description"
+                         placeholder="Description" required [(ngModel)]="newModeDescription"
                          #description></textarea>
-                  <span [hidden]="!show_html" [innerHTML]="description.value">
+                  <span [hidden]="!show_html" [innerHTML]="newModeDescription">
 
                 </span>
                 </td>
 
                 <td>
                 <textarea class="form-control input-lg"
-                          placeholder="Description"
+                          placeholder="Copy" [(ngModel)]="newModeCopy"
                           #copy></textarea>
                 </td>
                 <td>
-                  <button type="button" (click)="addImageMode(name.value,description.value,copy.value)"
+                  <button type="button" [disabled]="!newModeName || !newModeDescription" (click)="addImageMode()"
                           class="btn btn-primary">Add Tag
                   </button>
                 </td>
