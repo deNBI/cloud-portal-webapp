@@ -19,8 +19,8 @@
     <div *ngIf="selectedTemplate.template_name !== 'undefined'" class="col">
       <div class="card border-success flavor-image-card" style="cursor: default;">
         <div class="card-header bg-success text-truncate" data-toggle="tooltip" data-placement="top"
-             title="{{selectedTemplate.template_name}}" (click)="setSelectedTemplate(null)" style="cursor: pointer;">
-          <strong>{{selectedTemplate.template_name}}</strong>
+             title="{{selectedTemplate.template_title}}" (click)="setSelectedTemplate(null)" style="cursor: pointer;">
+          <strong>{{selectedTemplate.template_title}}</strong>
           <button type="button" class="close"
                   aria-label="Close">
             <span aria-hidden="true">&times;</span>
@@ -28,7 +28,7 @@
         <div class="card-body">
           <div class="scroll-image">
             <p>
-              <img src="{{selectedTemplate?.template_logo_url}}" alt="{{selectedTemplate.template_name}}® "
+              <img src="{{selectedTemplate?.template_logo_url}}" alt="{{selectedTemplate.template_title}}® "
                    style="width: 70px;">
             </p>
             <p>
@@ -50,6 +50,7 @@
         <div class="card-body">
           <div class="scroll-image">For more information, please visit <a href="https://cloud.denbi.de/wiki/"
                                                                           target="_blank">the Wiki</a>.
+            <p>You can choose from the research environments below <i class="fa fa-arrow-down"></i></p>
           </div>
         </div>
       </div>
@@ -63,9 +64,9 @@
         <div class="card flavor-image-card" id="id_template_owl_{{template.template_name}}" style="cursor: default;">
           <div (click)="setSelectedTemplate(template)"
                class="card-header bg-info-flavor text-truncate" data-toggle="tooltip" data-placement="top"
-               title="{{template.template_name}}"
+               title="{{template.template_title}}"
                style="background-color: #005AA9 !important; color: white !important; cursor: pointer"> <!-- quickfix -->
-            <strong>{{template.template_name}}</strong>
+            <strong>{{template.template_title}}</strong>
             <button type="button" class="close"
                     aria-label="Close">
               <span aria-hidden="true">+</span>
@@ -73,7 +74,7 @@
           <div class="card-body">
             <div class="scroll-image">
               <p>
-                <img src="{{template?.template_logo_url}}" alt="{{template.template_name}}® " style="width: 70px;">
+                <img src="{{template?.template_logo_url}}" alt="{{template.template_title}}® " style="width: 70px;">
               </p>
               <p>
                 {{template?.template_description}}

@@ -1,6 +1,6 @@
 import {Flavor} from './flavor';
 import {Client} from '../clients/client.model';
-import {VirtualMachineStates} from './virtualmachinestates';
+import {ImageMode} from '../../facility_manager/image-tag';
 
 /**
  * Virtualmachine class.
@@ -25,6 +25,15 @@ export class VirtualMachine {
   private _application_id: string;
   private _cardState: number;
   private _res_env_url: string;
+  private _modes: ImageMode[];
+
+  get modes(): ImageMode[] {
+    return this._modes;
+  }
+
+  set modes(value: ImageMode[]) {
+    this._modes = value;
+  }
 
   get res_env_url(): string {
     return this._res_env_url;
