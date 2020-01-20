@@ -59,6 +59,21 @@ export class ImageTagComponent implements OnInit {
     console.log(this.checkedModes)
   }
 
+  reloadData(): void {
+    forkJoin(
+      this.imageService.getImageTags(this.selectedFacility['FacilityId']),
+      this.imageService.getImageLogos(),
+      this.imageService.getBlockedImageTags(this.selectedFacility['FacilityId']),
+      this.imageService.getImageModes(this.selectedFacility['FacilityId']))
+      .subscribe((res: any) => {
+        this.imageTags = res[0];
+        this.imageLogos = res[1];
+        this.blockedImageTags = res[2];
+        this.imageModes = res[3];
+        this.isLoaded = true;
+      })
+  }
+
   ngOnInit(): void {
     this.facilityService.getManagerFacilities().subscribe((result: any) => {
       this.managerFacilities = result;

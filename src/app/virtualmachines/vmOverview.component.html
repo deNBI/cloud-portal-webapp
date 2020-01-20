@@ -261,9 +261,10 @@
                   <div class="col-md-9">
                     <span class="font-weight-bold font-xs btn-block text-muted"  [innerHTML]="mode.description"></span></div>
 
-                  <div class="col-md-2" style="margin: auto" *ngIf="mode.copy_field"><a (click)="copyToClipboard(mode.copy_field);" href="#"
-                                                                onClick="return false;"
-                                                                class="font-weight-bold font-xs btn-block text-muted">&lt;copy
+                  <div class="col-md-2" style="margin: auto" *ngIf="mode.copy_field && mode.copy_field!=''"><a
+                    (click)="copyToClipboard(mode.copy_field);" href="#"
+                    onClick="return false;"
+                    class="font-weight-bold font-xs btn-block text-muted">&lt;copy
                     command&gt;</a>
                   </div>
                 </div>
