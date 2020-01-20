@@ -30,6 +30,12 @@ export class ImageTagComponent implements OnInit {
   show_html: boolean = false;
   selectedMode: ImageMode;
   suggestedModes: string[] = [];
+  updateModeName: string;
+  updateModeDescription: string;
+  updateModeCopy: string;
+  newModeName: string;
+  newModeDescription: string;
+  newModeCopy: string;
 
   /**
    * Facilitties where the user is manager ['name',id].
@@ -110,11 +116,16 @@ export class ImageTagComponent implements OnInit {
     }
   }
 
-  addImageMode(name: string, description: string, copy_field: string): void {
-    const newMode: ImageMode = {name: name, description: description, copy_field: copy_field};
+  addImageMode(): void {
+    const newMode: ImageMode = {name: this.newModeName, description: this.newModeDescription, copy_field: this.newModeCopy};
     this.imageService.addImageMode(newMode, this.selectedFacility['FacilityId']).subscribe((createdMode: ImageMode) => {
+
+      this.newModeName = '';
+      this.newModeDescription = '';
+      this.newModeCopy = '';
       this.imageModes.push(createdMode);
       this.getTagModeSuggestions();
+
     });
 
   }
@@ -127,12 +138,12 @@ export class ImageTagComponent implements OnInit {
     })
   }
 
-  updateMode(name: string, description: string, copy_field: string): void {
+  updateMode(): void {
     const idx: number = this.imageModes.indexOf(this.selectedMode);
     const update_mode: ImageMode = Object.assign({}, this.selectedMode);
-    update_mode.description = description;
-    update_mode.copy_field = copy_field;
-    update_mode.name = name;
+    update_mode.description = this.updateModeDescription;
+    update_mode.copy_field = this.updateModeDescription;
+    update_mode.name = this.updateModeName;
     this.imageService.updateImageMode(update_mode).subscribe((updated_mode: ImageMode) => {
       this.imageModes[idx] = updated_mode;
       this.getTagModeSuggestions();
