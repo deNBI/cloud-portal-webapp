@@ -1,3 +1,9 @@
+##  (2020-01-20)
+
+
+#### Bug Fixes
+
+* **ImageTags:** select fac ([3ac0c54c](3ac0c54c))
 
 ##  (2020-01-20)
 
