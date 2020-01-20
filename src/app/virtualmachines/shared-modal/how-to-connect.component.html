@@ -1,30 +1,13 @@
 <ngb-tabset type="pills">
-  <ngb-tab>
-    <ng-template ngbTabTitle><b>SSH</b></ng-template>
+  <ngb-tab *ngFor="let mode of selectedVirtualMachine.modes">
+    <ng-template ngbTabTitle><b>{{mode.name}}</b></ng-template>
 
     <ng-template ngbTabContent>
-      <div class="row justify-content-center">
-        <pre style="word-wrap: break-word;"><code>{{_selectedVirtualMachine?.ssh_command}}</code></pre>
+      <div  [innerHTML]="mode.description">
+
       </div>
 
-    </ng-template>
-  </ngb-tab>
-  <ngb-tab *ngIf="_selectedVirtualMachine?.udp_command">
-    <ng-template ngbTabTitle><b>MOSH</b></ng-template>
-    <ng-template ngbTabContent>
-      <div class="row justify-content-center">
-                <pre>
-            1. You need to install mosh on your virtual Machine.
-               Connect with the ssh command above and run: <br>
-               (On Ubuntu) sudo apt-get install mosh
-               or <a href="https://mosh.org/#getting" target="_blank">Click Here for different OS</a> <br>
-            2. You need to install mosh on your Computer:
-               <a href="https://mosh.org/#getting" target="_blank">Click Here for different OS</a>
-               or on Ubuntu run: <br>
-               sudo apt-get install mosh <br>
-            3. Connect with mosh to your virtual Machine:
-                  {{_selectedVirtualMachine?.udp_command}}</pre>
-      </div>
+
     </ng-template>
   </ngb-tab>
   <ngb-tab *ngIf="playbook_run == 1">
@@ -51,7 +34,7 @@
 
     </ng-template>
   </ngb-tab>
-  <ngb-tab *ngIf="location_url != ''">
+  <ngb-tab *ngIf="location_url != '/'">
     <ng-template ngbTabTitle><b>Res-Env</b></ng-template>
     <ng-template ngbTabContent>
       <div class="row justify-content-center">

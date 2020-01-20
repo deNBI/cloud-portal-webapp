@@ -280,6 +280,60 @@
     </div>
 
   </div>
+  <div class="row">
+    <div class="col-6"
+         *ngIf="project && (project_application?.Status ==  application_states.APPROVED || project_application?.Status ==  application_states.MODIFICATION_REQUESTED  || project_application?.Status ==  application_states.MODIFICATION_DECLINED || project_application?.Status ==  application_states.MODIFICATION_DECLINED)">
+
+
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i>Digital object identifier (DOI)
+        </div>
+
+
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table ">
+
+              <tbody>
+              <ng-container
+                *ngFor="let doi of dois">
+                <tr>
+                  <td><a target="_blank" [href]="'https://doi.org/' + doi.identifier">{{doi.identifier}}</a></td>
+
+                  <td>
+                    <button
+                      class="btn btn-danger" type="button" (click)="deleteDoi(doi);">
+
+                      <i class="fa fa-trash"></i>&nbsp;
+                    </button>
+                  </td>
+
+                </tr>
+              </ng-container>
+
+              <tr>
+                <td><input style="width: 100%" type="text" required placeholder="e.g. 10.1000/182"
+                           pattern="10.\d{4,9}\/[-._;()\/:a-zA-Z0-9]+" [(ngModel)]="newDoi" #doiInput></td>
+
+                <td>
+                  <button id="add_doi_btn"
+                          (click)="addDoi();"
+                          [disabled]="!doiInput.validity.valid"
+                          type="button"
+                          class="btn btn-success"><i class="fa fa-plus"></i>&nbsp;
+                  </button>
+                </td>
+
+              </tr>
+              </tbody>
+            </table>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col"></div>
 </div>
 
 

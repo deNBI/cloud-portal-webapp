@@ -210,7 +210,8 @@
                   <app-application-detail
                     [class.collapse_no_margin]="getCollapseStatus('application_review-' + application?.Id)"
                     [class.collapse]="getCollapseStatus('application_review-' + application?.Id)"
-                    [application]="application"></app-application-detail>
+                    [application]="application"
+                  [isModification]="application.ApplicationExtension != null && application.ApplicationExtension != undefined"></app-application-detail>
                 </td>
               </ng-container>
 

@@ -6,7 +6,7 @@ import {Observable} from 'rxjs';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Cookie} from 'ng2-cookies/ng2-cookies';
 import {IResponseTemplate} from './response-template';
-import {ImageLogo, ImageTag} from '../facility_manager/image-tag';
+import {BlockedImageTag, ImageLogo, ImageMode, ImageTag} from '../facility_manager/image-tag';
 
 const header: HttpHeaders = new HttpHeaders({
                                               'X-CSRFToken': Cookie.get('csrftoken')
@@ -48,22 +48,74 @@ export class ImageService {
 
   }
 
-  getImageTags(): Observable<any> {
+  getImageTags(facility: number): Observable<any> {
+    const params: HttpParams = new HttpParams().set('facility', facility.toString());
+
     return this.http.get(`${ApiSettings.getApiBaseURL()}imageTags/`, {
-      withCredentials: true
+      withCredentials: true,
+      params: params
     })
 
   }
 
-  addImageTags(imageTag: string, description: string): Observable<ImageTag> {
+  getImageModes(facility: number): Observable<any> {
+    const params: HttpParams = new HttpParams().set('facility', facility.toString());
 
-    const params: HttpParams = new HttpParams().set('imageTag', imageTag).set('description', description);
+    return this.http.get(`${ApiSettings.getApiBaseURL()}imageModes/`, {
+      withCredentials: true,
+      params: params
+    })
+
+  }
+
+  getBlockedImageTags(facility_id: number): Observable<any> {
+    return this.http.get(`${ApiSettings.getApiBaseURL()}blockedImageTags/`, {
+      withCredentials: true,
+      params: {facility_id: facility_id.toString()}
+    })
+  }
+
+  addImageMode(mode: ImageMode, facility: number): Observable<ImageMode> {
+
+    const params: HttpParams = new HttpParams().set('facility', facility.toString()).set('mode', JSON.stringify(mode));
+
+    return this.http.post<ImageMode>(`${ApiSettings.getApiBaseURL()}imageModes/`, params, {
+      withCredentials: true,
+      headers: header
+    })
+
+  }
+
+  updateImageMode(mode: ImageMode): Observable<ImageMode> {
+
+    const params: HttpParams = new HttpParams().set('mode', JSON.stringify(mode));
+
+    return this.http.patch<ImageMode>(`${ApiSettings.getApiBaseURL()}imageModes/${mode.id}/`, params, {
+      withCredentials: true,
+      headers: header
+    })
+
+  }
+
+  addImageTags(imageTag: string, imageModes: ImageMode[], facility: number): Observable<ImageTag> {
+
+    const params: HttpParams = new HttpParams()
+      .set('imageTag', imageTag).set('facility', facility.toString()).set('imageModes', JSON.stringify(imageModes));
 
     return this.http.post<ImageTag>(`${ApiSettings.getApiBaseURL()}imageTags/`, params, {
       withCredentials: true,
       headers: header
     })
 
+  }
+
+  addBlockedImageTag(imageTag: string, facility_id: number): Observable<BlockedImageTag> {
+    const params: HttpParams = new HttpParams().set('imageTag', imageTag).set('facility_id', facility_id.toString());
+
+    return this.http.post<BlockedImageTag>(`${ApiSettings.getApiBaseURL()}blockedImageTags/`, params, {
+      withCredentials: true,
+      headers: header
+    })
   }
 
   getImageLogos(): Observable<ImageLogo[]> {
@@ -93,11 +145,31 @@ export class ImageService {
 
   }
 
-  deleteImageTag(imageTag: string): Observable<IResponseTemplate> {
+  deleteImageTag(id: string): Observable<IResponseTemplate> {
 
-    return this.http.delete<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}imageTags/${imageTag}/`, {
+    return this.http.delete<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}imageTags/${id}/`, {
       withCredentials: true,
       headers: header
+    })
+
+  }
+
+  deleteImageMode(id: string): Observable<IResponseTemplate> {
+
+    return this.http.delete<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}imageModes/${id}/`, {
+      withCredentials: true,
+      headers: header
+    })
+
+  }
+
+  deleteBlockedImageTag(imageTag: string, facility_id: number): Observable<IResponseTemplate> {
+    const params: HttpParams = new HttpParams().set('facility_id', facility_id.toString());
+
+    return this.http.delete<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}blockedImageTags/${imageTag}/`, {
+      withCredentials: true,
+      headers: header,
+      params: params
     })
 
   }

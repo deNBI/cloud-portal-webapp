@@ -24,6 +24,7 @@ import {FlavorService} from '../api-connector/flavor.service';
 import {CreditsService} from '../api-connector/credits.service';
 import {is_vo} from '../shared/globalvar';
 import {WIKI_GROUP_INVITATIONS} from '../../links/links';
+import {Doi} from '../applications/doi/doi';
 
 /**
  * Projectoverview component.
@@ -67,9 +68,10 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
    * @type {number}
    */
   extension_status: number = 0;
+  newDoi: string;
   remove_members_clicked: boolean;
   life_time_string: string;
-
+  dois: Doi[];
   isAdmin: boolean = false;
   invitation_link: string;
   filteredMembers: any = null;
@@ -389,6 +391,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
       this.getUserinfo();
       this.getListOfFlavors();
       this.getListOfTypes();
+      this.getDois();
       this.is_vo_admin = is_vo;
       this.startUpdateCreditUsageLoop();
     });
@@ -397,6 +400,38 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
   ngOnDestroy(): void {
     clearInterval(this.updateCreditsUsedIntervals);
+  }
+
+  getDois(): void {
+    this.groupService.getGroupDois(this.application_id).subscribe((dois: Doi[]) => {
+      this.dois = dois;
+    })
+  }
+
+  isNewDoi(): boolean {
+    for (const doi of this.dois) {
+      if (doi.identifier === this.newDoi) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  deleteDoi(doi: Doi): void {
+    this.groupService.deleteGroupDoi(doi.id).subscribe((dois: Doi[]) => {
+      this.dois = dois;
+    })
+  }
+
+  addDoi(): void {
+    if (this.isNewDoi()) {
+      this.groupService.addGroupDoi(this.application_id, this.newDoi).subscribe((dois: Doi[]) => {
+        this.newDoi = null;
+        this.dois = dois;
+      })
+    }
+
   }
 
   /**

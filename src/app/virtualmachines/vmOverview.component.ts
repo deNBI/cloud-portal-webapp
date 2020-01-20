@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {VirtualmachineService} from '../api-connector/virtualmachine.service';
 import {VirtualMachine} from './virtualmachinemodels/virtualmachine';
 import {FullLayoutComponent} from '../layouts/full-layout.component';
@@ -8,10 +8,14 @@ import {IResponseTemplate} from '../api-connector/response-template';
 import {SnapshotModel} from './snapshots/snapshot.model';
 import {FacilityService} from '../api-connector/facility.service';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
-import {Subject} from 'rxjs';
+import {Subject, Subscription} from 'rxjs';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {is_vo} from '../shared/globalvar';
 import {VirtualMachineStates} from './virtualmachinemodels/virtualmachinestates';
+import {GroupService} from '../api-connector/group.service';
+import {environment} from '../../environments/environment';
+import {ClientService} from '../api-connector/client.service';
+import {Client} from './clients/client.model';
 
 /**
  * Vm overview componentn.
@@ -20,12 +24,14 @@ import {VirtualMachineStates} from './virtualmachinemodels/virtualmachinestates'
              selector: 'app-vm-overview',
              templateUrl: 'vmOverview.component.html',
              styleUrls: ['./vmOverview.component.scss'],
-             providers: [FacilityService, ImageService, UserService, VirtualmachineService, FullLayoutComponent]
-
+             providers: [FacilityService, ImageService, UserService,
+               VirtualmachineService, FullLayoutComponent, GroupService, ClientService]
            })
 
-export class VmOverviewComponent implements OnInit {
+export class VmOverviewComponent implements OnInit, OnDestroy {
   title: string = 'Instance Overview';
+
+  private subscription: Subscription = new Subscription();
 
   actionPopupOpen: boolean = false;
   VirtualMachineStates: VirtualMachineStates = new VirtualMachineStates();
@@ -44,6 +50,7 @@ export class VmOverviewComponent implements OnInit {
   vm_per_site: number = 7;
 
   STATIC_IMG_FOLDER: String = 'static/webapp/assets/img';
+  site_path: string = environment.webapp;
 
   CPU_ICON_PATH: string = `${this.STATIC_IMG_FOLDER}/new_instance/cpu_icon.svg`;
   RAM_ICON_PATH: string = `${this.STATIC_IMG_FOLDER}/new_instance/ram_icon.svg`;
@@ -105,7 +112,7 @@ export class VmOverviewComponent implements OnInit {
    * Timeout for checking vm status.
    * @type {number}
    */
-  private checkStatusTimeout: number = 1500;
+  private checkStatusTimeout: number = 5000;
   /**
    * Type of reboot HARD|SOFT.
    */
@@ -128,10 +135,14 @@ export class VmOverviewComponent implements OnInit {
   vmActions: any[] = [];
   selectedMachines: VirtualMachine[] = [];
 
+  clientsForcUrls: {[client_id: string]: [string]} = {};
+
   constructor(private facilityService: FacilityService,
 
               private imageService: ImageService, private userservice: UserService,
-              private virtualmachineservice: VirtualmachineService, private fb: FormBuilder) {
+              private virtualmachineservice: VirtualmachineService, private fb: FormBuilder,
+              private groupService: GroupService,
+              private clientService: ClientService) {
     this.actionsForm = fb.group({
                                   title: fb.control('initial value', Validators.required)
                                 });
@@ -159,6 +170,8 @@ export class VmOverviewComponent implements OnInit {
    * Copies the ssh-command needed to connect to the virtual machine (vmachine) to the clipboard.
    * @param vmachine
    */
+
+
 
   copySSHCommand(vmachine: VirtualMachine): void {
     this.copyToClipboard((vmachine.ssh_command.substring(65, vmachine.ssh_command.length)));
@@ -301,12 +314,12 @@ export class VmOverviewComponent implements OnInit {
    * @param final_state
    * @param is_selected_vm If the vm should be the selected vm
    */
-  check_status_loop(vm: VirtualMachine, final_state: string, is_selected_vm?: boolean): void {
+  check_status_loop(vm: VirtualMachine, final_state?: string, is_selected_vm?: boolean): void {
 
     setTimeout(
       () => {
         if (vm.openstackid) {
-          this.virtualmachineservice.checkVmStatus(vm.openstackid).subscribe((updated_vm: VirtualMachine) => {
+          this.subscription.add(this.virtualmachineservice.checkVmStatus(vm.openstackid).subscribe((updated_vm: VirtualMachine) => {
             if (!updated_vm['error']) {
               this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
               if (is_selected_vm) {
@@ -317,52 +330,78 @@ export class VmOverviewComponent implements OnInit {
             }
 
             updated_vm.cardState = 0;
-
-            if (updated_vm.status === final_state) {
+            if ((final_state && updated_vm.status === final_state)) {
+              this.setForcUrl(updated_vm);
               if (updated_vm.created_at !== '') {
                 updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
               }
               this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
 
+            } else if (VirtualMachineStates.IN_PROCESS_STATES.indexOf(updated_vm.status) !== -1) {
+              if (vm['error']) {
+                this.status_check_error = true
+              }
+              if (updated_vm.created_at !== '') {
+                updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
+              }
+              this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
+              this.check_status_loop(updated_vm, final_state, is_selected_vm)
+            } else if (VirtualMachineStates.NOT_IN_PROCESS_STATES.indexOf(updated_vm.status) !== -1) {
+              this.setForcUrl(updated_vm);
+              if (updated_vm.created_at !== '') {
+                updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
+              }
+              this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
             } else {
               if (vm['error']) {
                 this.status_check_error = true
-
               }
               this.check_status_loop(updated_vm, final_state, is_selected_vm)
             }
 
-          })
+          }));
         } else {
-          this.virtualmachineservice.checkVmStatus(vm.name).subscribe((updated_vm: VirtualMachine) => {
+          this.subscription.add(this.virtualmachineservice.checkVmStatus(vm.name).subscribe((updated_vm: VirtualMachine) => {
             this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
             if (is_selected_vm) {
               this.selectedVm = updated_vm;
             }
 
             updated_vm.cardState = 0;
-
-            if (updated_vm.status === final_state) {
+            if ((final_state && updated_vm.status === final_state)) {
+              this.setForcUrl(updated_vm);
               if (updated_vm.created_at !== '') {
                 updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
               }
               this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
 
+            } else if (VirtualMachineStates.IN_PROCESS_STATES.indexOf(updated_vm.status) !== -1) {
+              if (vm['error']) {
+                this.status_check_error = true
+              }
+              if (updated_vm.created_at !== '') {
+                updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
+              }
+              this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
+              this.check_status_loop(updated_vm, final_state, is_selected_vm)
+            } else if (VirtualMachineStates.NOT_IN_PROCESS_STATES.indexOf(updated_vm.status) !== -1) {
+              this.setForcUrl(updated_vm);
+              if (updated_vm.created_at !== '') {
+                updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
+              }
+              this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
             } else {
               if (vm['error']) {
                 this.status_check_error = true
-
               }
               this.check_status_loop(updated_vm, final_state, is_selected_vm)
             }
 
-          })
+          }));
         }
-      }
-      ,
+      },
       this.checkStatusTimeout
-    )
-    ;
+    );
   }
 
   /**
@@ -462,48 +501,9 @@ export class VmOverviewComponent implements OnInit {
       this.currentPage, this.vm_per_site,
       this.filter, this.filter_status_list)
       .subscribe((vms: any) => {
-                   this.vms_content = vms['vm_list'];
-                   this.total_items = vms['total_items'];
-                   this.items_per_page = vms['items_per_page'];
-                   this.total_pages = vms['num_pages'];
-                   this.vmActions = [];
-
-                   this.vms_content.forEach((vm: VirtualMachine, index: number) => {
-                     vm.username = vm['userlogin'];
-                     vm.cardState = 0;
-                     if (vm.status !== VirtualMachineStates.DELETED) {
-                       this.vmActions.push({id: vm, name: vm.name});
-                     }
-                     if (vm.created_at !== '') {
-                       vm.created_at = new Date(parseInt(vm.created_at, 10) * 1000).toLocaleDateString();
-                     }
-                   });
-
-                   // Create a FormControl for each available music preference, initialize them as unchecked, and put them in an array
-                   const formControls: any = this.vmActions.map((control: any) => new FormControl(false));
-
-                   // Create a FormControl for the select/unselect all checkbox
-                   const selectAllControl: any = new FormControl(false);
-
-                   // Simply add the list of FormControls to the FormGroup as a FormArray, add the selectAllControl separetely
-                   this.actionsForm = this.fb.group({
-                                                      vmActions: new FormArray(formControls),
-                                                      selectAll: selectAllControl
-                                                    });
-                   this.onChanges();
-                   this.isSearching = false;
-                   this.checkVmTillActive()
+                   this.prepareVMS(vms);
                  }
       );
-  }
-
-  checkVmTillActive(): void {
-    this.vms_content.forEach((vm: VirtualMachine) => {
-      if (vm.status !== VirtualMachineStates.ACTIVE && vm.status !== VirtualMachineStates.SHUTOFF
-        && vm.status !== VirtualMachineStates.DELETED) {
-        this.check_status_loop(vm, VirtualMachineStates.ACTIVE);
-      }
-    })
   }
 
   getAllVmsFacilities(): void {
@@ -513,38 +513,66 @@ export class VmOverviewComponent implements OnInit {
       this.currentPage, this.vm_per_site,
       this.filter, this.filter_status_list)
       .subscribe((vms: VirtualMachine[]) => {
-                   this.vms_content = vms['vm_list'];
-                   this.total_items = vms['total_items'];
-                   this.items_per_page = vms['items_per_page'];
-                   this.total_pages = vms['num_pages'];
-                   this.vmActions = [];
-                   this.vms_content.forEach((vm: VirtualMachine, index: number) => {
-                     vm.username = vm['userlogin'];
-                     vm.cardState = 0;
-                     if (vm.status !== VirtualMachineStates.DELETED) {
-                       this.vmActions.push({id: vm, name: vm.name});
-                     }
-                     if (vm.created_at !== '') {
-                       vm.created_at = new Date(parseInt(vm.created_at, 10) * 1000).toLocaleDateString();
-                     }
-                   });
-
-                   // Create a FormControl for each available music preference, initialize them as unchecked, and put them in an array
-                   const formControls: any = this.vmActions.map((control: any) => new FormControl(false));
-
-                   // Create a FormControl for the select/unselect all checkbox
-                   const selectAllControl: any = new FormControl(false);
-
-                   // Simply add the list of FormControls to the FormGroup as a FormArray, add the selectAllControl separetely
-                   this.actionsForm = this.fb.group({
-                                                      vmActions: new FormArray(formControls),
-                                                      selectAll: selectAllControl
-                                                    });
-                   this.onChanges();
-                   this.isSearching = false;
-                   this.checkVmTillActive()
+                   this.prepareVMS(vms);
                  }
       );
+  }
+
+  /**
+   * Get all vms.
+   */
+  getAllVms(): void {
+    this.virtualmachineservice.getAllVM(this.currentPage, this.vm_per_site,
+                                        this.filter, this.filter_status_list)
+      .subscribe((vms: VirtualMachine[]) => {
+                   this.prepareVMS(vms);
+                 }
+      );
+  }
+
+  prepareVMS(vms: VirtualMachine[]): void {
+
+    this.vms_content = vms['vm_list'];
+    this.total_items = vms['total_items'];
+    this.items_per_page = vms['items_per_page'];
+    this.total_pages = vms['num_pages'];
+    this.vmActions = [];
+
+    this.vms_content.forEach((vm: VirtualMachine, index: number) => {
+      vm.userlogin = vm['userlogin'];
+      vm.cardState = 0;
+      this.setForcUrl(vm);
+      if (vm.status !== VirtualMachineStates.DELETED) {
+        this.vmActions.push({id: vm, name: vm.name});
+      }
+      if (vm.created_at !== '') {
+        vm.created_at = new Date(parseInt(vm.created_at, 10) * 1000).toLocaleDateString();
+      }
+    });
+
+    // Create a FormControl for each available music preference, initialize them as unchecked, and put them in an array
+    const formControls: any = this.vmActions.map((control: any) => new FormControl(false));
+
+    // Create a FormControl for the select/unselect all checkbox
+    const selectAllControl: any = new FormControl(false);
+
+    // Simply add the list of FormControls to the FormGroup as a FormArray, add the selectAllControl separetely
+    this.actionsForm = this.fb.group({
+                                       vmActions: new FormArray(formControls),
+                                       selectAll: selectAllControl
+                                     });
+    this.onChanges();
+    this.isSearching = false;
+    this.checkVmTillActive()
+  }
+
+  checkVmTillActive(): void {
+    this.vms_content.forEach((vm: VirtualMachine) => {
+      if (vm.status !== VirtualMachineStates.ACTIVE && vm.status !== VirtualMachineStates.SHUTOFF
+        && vm.status !== VirtualMachineStates.DELETED) {
+        this.check_status_loop(vm);
+      }
+    })
   }
 
   resumeVM(vm: VirtualMachine):
@@ -574,50 +602,8 @@ export class VmOverviewComponent implements OnInit {
     })
   }
 
-  /**
-   * Get all vms.
-   */
-  getAllVms(): void {
-    this.virtualmachineservice.getAllVM(this.currentPage, this.vm_per_site,
-                                        this.filter, this.filter_status_list)
-      .subscribe((vms: VirtualMachine[]) => {
-                   this.vms_content = vms['vm_list'];
-                   this.total_items = vms['total_items'];
-                   this.items_per_page = vms['items_per_page'];
-                   this.total_pages = vms['num_pages'];
-                   this.vmActions = [];
-
-                   this.vms_content.forEach((vm: VirtualMachine, index: number) => {
-                     vm.username = vm['userlogin'];
-                     vm.cardState = 0;
-                     if (vm.status !== VirtualMachineStates.DELETED) {
-                       this.vmActions.push({id: vm, name: vm.name});
-                     }
-                     if (vm.created_at !== '') {
-                       vm.created_at = new Date(parseInt(vm.created_at, 10) * 1000).toLocaleDateString();
-                     }
-                   });
-
-                   // Create a FormControl for each available music preference, initialize them as unchecked, and put them in an array
-                   const formControls: any = this.vmActions.map((control: any) => new FormControl(false));
-
-                   // Create a FormControl for the select/unselect all checkbox
-                   const selectAllControl: any = new FormControl(false);
-
-                   // Simply add the list of FormControls to the FormGroup as a FormArray, add the selectAllControl separetely
-                   this.actionsForm = this.fb.group({
-                                                      vmActions: new FormArray(formControls),
-                                                      selectAll: selectAllControl
-                                                    });
-                   this.onChanges();
-                   this.isSearching = false;
-                   this.checkVmTillActive()
-
-                 }
-      );
-  }
-
   ngOnInit(): void {
+    this.getClientForcUrls();
     this.getVms();
     this.is_vo_admin = is_vo;
     this.get_is_facility_manager();
@@ -648,6 +634,10 @@ export class VmOverviewComponent implements OnInit {
       .subscribe((event: any) => {
         this.validSnapshotName(event);
       });
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   onChanges(): void {
@@ -712,5 +702,36 @@ export class VmOverviewComponent implements OnInit {
         this.applyFilterStatus();
       })
     }
+  }
+
+  setForcUrl(vm: VirtualMachine): void {
+    this.virtualmachineservice.getLocationUrl(vm.openstackid)
+      .subscribe((url: any) => {
+        if (url !== '') {
+          if (this.clientsForcUrls.hasOwnProperty(vm.client.id)) {
+            vm.res_env_url = `${this.clientsForcUrls[vm.client.id]}${url}/`;
+          } else {
+            vm.res_env_url = '';
+          }
+        } else {
+          vm.res_env_url = '';
+        }
+      });
+  }
+
+  getClientForcUrls(): void {
+    this.clientService.getClientsChecked().subscribe((clients: Client[]) => {
+      clients.forEach((client: Client) => {
+        this.groupService.getClientHasForc(client.id, 'true').subscribe((hasForc: JSON) => {
+          if (hasForc['hasForc'] === 'True') {
+            this.groupService.getClientForcUrl(client.id).subscribe((response: JSON) => {
+              if (response['forc_url'] !== 'None') {
+                this.clientsForcUrls[client.id] = response['forc_url'];
+              }
+            });
+          }
+        });
+      });
+    });
   }
 }

@@ -4,11 +4,11 @@
  * Copyright (c) 2017 creativeLabs Łukasz Holeczek
  * @license MIT
  */
-// If you want to override variables do it here
-@import "custom-variables";
-
 // Import styles
 @import "~@coreui/coreui/scss/coreui";
+
+// If you want to override variables do it here
+@import "custom-variables";
 
 // Custom styles
 @import "custom";

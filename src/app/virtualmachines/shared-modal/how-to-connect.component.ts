@@ -12,7 +12,7 @@ import {GroupService} from '../../api-connector/group.service';
              templateUrl: 'how-to-connect.component.html',
              providers: [VirtualmachineService, GroupService]
            })
-export class HowToConnectComponent implements OnChanges {
+export class HowToConnectComponent implements OnChanges, OnInit {
   public _selectedVirtualMachine: VirtualMachine;
 
   @Input() playbook_run: number;
@@ -92,6 +92,10 @@ export class HowToConnectComponent implements OnChanges {
     this._selectedVirtualMachine = vm;
   }
 
+  ngOnInit(): void {
+    this.getForcUrl();
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
     const currentItem: SimpleChange = changes.selectedVirtualMachine;
     const current: null | VirtualMachine = currentItem.currentValue;
@@ -107,7 +111,6 @@ export class HowToConnectComponent implements OnChanges {
             this.playbook_run = 1;
           }
         });
-      this.getForcUrl();
       this.virtualMachineService.getLocationUrl(current.openstackid)
         .subscribe((url: any) => {
           this.location_url = `${this.forc_url}${url}/`;
