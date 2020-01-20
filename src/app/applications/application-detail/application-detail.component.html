@@ -280,12 +280,21 @@
 
 
     <tr *ngIf="is_vo_admin">
-      <td>Credits</td>
+      <td>Initial Credits</td>
       <td>{{
           application?.InitialCredits}}
       </td>
       <td *ngIf="(application?.Status == application_states.MODIFICATION_REQUESTED || isModification) && !application.ApplicationExtension?.IsOnlyExtraCreditsApplication">
         Extra: {{application?.ApplicationExtension?.ExtendedCredits}} (Total: {{application?.TotalExtensionCredits}})
+      </td>
+    </tr>
+
+    <tr *ngIf="is_vo_admin">
+      <td>Used Credits</td>
+      <td>{{current_credits}}
+      </td>
+      <td *ngIf="(application?.Status == application_states.MODIFICATION_REQUESTED || isModification) && !application.ApplicationExtension?.IsOnlyExtraCreditsApplication">
+        Credits left (with Extra Credits): {{credits_left_with_extra}}
       </td>
     </tr>
 
