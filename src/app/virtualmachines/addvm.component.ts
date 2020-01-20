@@ -66,6 +66,7 @@ export class VirtualMachineComponent implements OnInit {
   has_forc: boolean = false;
   client_id: string;
   mosh_mode_available: boolean = false;
+  data_loaded: boolean = false;
 
   title: string = 'New Instance';
 
@@ -79,6 +80,7 @@ export class VirtualMachineComponent implements OnInit {
    * All image of a project.
    */
   images: Image[];
+  image_loaded: boolean = false;
 
   flavors_loaded: boolean = false;
 
@@ -224,6 +226,9 @@ export class VirtualMachineComponent implements OnInit {
     this.imageService.getImages(project_id).subscribe((images: Image[]) => {
       this.images = images;
       this.images.sort((x_cord: any, y_cord: any) => Number(x_cord.is_snapshot) - Number(y_cord.is_snapshot));
+      this.image_loaded = true;
+      this.checkProjectDataLoaded()
+
     });
   }
 
@@ -235,6 +240,8 @@ export class VirtualMachineComponent implements OnInit {
     this.flavorService.getFlavors(project_id).subscribe((flavors: Flavor[]) => {
       this.flavors = flavors;
       this.flavors_loaded = true;
+      this.checkProjectDataLoaded()
+
     });
 
   }
@@ -472,9 +479,17 @@ export class VirtualMachineComponent implements OnInit {
     })
   }
 
+  checkProjectDataLoaded(): void {
+    if (this.image_loaded && this.flavors_loaded && this.data_loaded) {
+      this.projectDataLoaded = true;
+    }
+  }
+
   loadProjectData(): void {
     this.projectDataLoaded = false;
     this.flavors = [];
+    this.image_loaded = false;
+    this.data_loaded = false;
     this.flavors_loaded = false;
     this.images = [];
     this.selectedImage = undefined;
@@ -492,8 +507,8 @@ export class VirtualMachineComponent implements OnInit {
       this.selectedProjectRamUsed = res['ram_used'];
       this.selectedProjectGPUsMax = res['gpus_max'];
       this.selectedProjectGPUsUsed = res['gpus_used'];
-      this.projectDataLoaded = true;
-
+      this.data_loaded = true;
+      this.checkProjectDataLoaded()
     });
 
     this.getImages(this.selectedProject[1]);
