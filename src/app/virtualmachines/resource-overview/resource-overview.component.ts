@@ -19,6 +19,7 @@ export class ResourceOverviewComponent implements OnInit, OnChanges {
   @Input() selectedProjectVmsUsed: number;
   @Input() selectedProjectGPUsUsed: number;
   @Input() selectedProjectGPUsMax: number;
+  @Input() showAdditionalRes: boolean = false;
 
   @Input() newDiskspace: number = 0;
   newVolumes: number = 0;

@@ -74,28 +74,32 @@
                 <td> {{mode.copy_field}}</td>
                 <td>
                   <button type="button" class="btn btn-primary"
-                          (click)="selectedMode=mode;updateModal.show();">Update Tag
+                          (click)="selectedMode=mode;updateModeDescription=selectedMode.description;
+                          updateModeCopy=selectedMode.copy_field;
+                          updateModeName=selectedMode.name;updateModal.show();">
+                    Update Tag
                   </button>
                 </td>
               </tr>
               <tr>
-                <td><input type="text" placeholder="Tag" #name pattern="[0-9a-zA-Z-_]*" required></td>
+                <td><input type="text" placeholder="Tag" #name [(ngModel)]="newModeName" pattern="[0-9a-zA-Z-_]*"
+                           required></td>
                 <td>
                <textarea [hidden]="show_html" class="form-control input-lg"
-                         placeholder="Description"
+                         placeholder="Description" required [(ngModel)]="newModeDescription"
                          #description></textarea>
-                  <span [hidden]="!show_html" [innerHTML]="description.value">
+                  <span [hidden]="!show_html" [innerHTML]="newModeDescription">
 
                 </span>
                 </td>
 
                 <td>
                 <textarea class="form-control input-lg"
-                          placeholder="Description"
+                          placeholder="Copy" [(ngModel)]="newModeCopy"
                           #copy></textarea>
                 </td>
                 <td>
-                  <button type="button" (click)="addImageMode(name.value,description.value,copy.value)"
+                  <button type="button" [disabled]="!newModeName || !newModeDescription" (click)="addImageMode()"
                           class="btn btn-primary">Add Tag
                   </button>
                 </td>
@@ -254,15 +258,18 @@
             </thead>
             <tbody>
             <tr>
-              <td><input type="text" placeholder="Name" #name [ngModel]="selectedMode?.name"></td>
-              <td><textarea [hidden]="show_html" type="text" placeholder="Description" #description
+              <td><input type="text" placeholder="Name" required #name
+                         [(ngModel)]="updateModeName">
+              </td>
+              <td><textarea [hidden]="show_html" type="text" required placeholder="Description" #description
+                            [(ngModel)]="updateModeDescription"
                             class="form-control input-lg"
-                            [ngModel]="selectedMode?.description"></textarea>
-                <span [innerHTML]="description.value" [hidden]="!show_html"></span>
+              ></textarea>
+                <span [innerHTML]="updateModeDescription" [hidden]="!show_html"></span>
               </td>
               <td><textarea [hidden]="show_html" type="text" placeholder="Copy Field" #copy_field
                             class="form-control input-lg"
-                            [ngModel]="selectedMode?.copy_field"></textarea>
+                            [(ngModel)]="updateModeCopy"></textarea>
                 <span [innerHTML]="copy_field.value" [hidden]="!show_html"></span>
 
               </td>
@@ -275,7 +282,8 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary navbar-inverse"
-                (click)="updateMode(name.value,description.value,copy_field.value);updateModal.hide();">Update
+                [disabled]="!updateModeName || !updateModeDescription"
+                (click)="updateMode();updateModal.hide();">Update
         </button>
         <button class="btn  btn-danger col-md-4" type="reset"
                 (click)="updateModal.hide()">Cancel

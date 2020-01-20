@@ -1,3 +1,15 @@
+
+##  (2020-01-20)
+
+
+
+
+#### Bug Fixes
+
+* **VM:** removed additional ressource view ([ebbdbfe7](ebbdbfe7))
+* **Modes:** descirption mandatory ([83c1c7a2](83c1c7a2))
+
+
 ##  (2020-01-15)
 
 
