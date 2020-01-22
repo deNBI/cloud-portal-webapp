@@ -123,7 +123,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   }
 
   calculateCredits(lifetime: number): void {
-    if (lifetime === undefined) {
+    // tslint:disable-next-line:triple-equals
+    if (lifetime == null || isNaN(lifetime)) {
       lifetime = 0;
     }
     // tslint:disable-next-line:max-line-length
