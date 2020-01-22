@@ -44,36 +44,44 @@ export class ResEnvComponent implements OnInit {
   ngOnInit(): void {
     this.undefinedTemplate.template_name = 'undefined';
     this.setSelectedTemplate(null);
-    this.condaService.getForcTemplates(this.clientid).subscribe((templates: any) => {
-      for (const dict of templates) {
-        const resenv: ResearchEnvironment = new ResearchEnvironment();
-        resenv.template_name = dict['name'];
-        resenv.template_version = dict['version'];
-        switch (resenv.template_name) {
-          case 'rstudio':
-            resenv.template_logo_url = `static/webapp/assets/img/RStudio-Logo-flat.svg`;
-            resenv.template_description = 'RStudio is an integrated development environment (IDE) for R. ' +
-              'It includes a console, syntax-highlighting editor that supports direct code execution, ' +
-              'as well as tools for plotting, history, ' +
-              'debugging and workspace management.';
-            resenv.template_info_url = 'https://rstudio.com/products/rstudio/features/';
-            resenv.template_title = 'RStudio';
-            break;
-          case 'theiaide':
-            resenv.template_title = 'Theia';
-            break;
-          case 'guacamole':
-            resenv.template_title = 'Guacamole';
-            break;
-          case 'jupyternotebook':
-            resenv.template_title = 'Jupyter Notebook';
-            break;
-          default:
-            resenv.template_title = resenv.template_name;
-            break;
-        }
-        this.templates.push(resenv);
-      }
+    this.condaService.getForcTemplates(this.clientid).subscribe((templates: ResearchEnvironment[]) => {
+      this.templates = templates;
     });
+  }
+
+  isValid(): boolean {
+    if (this.onlyNamespace) {
+
+      return this.user_key_url.errors === null;
+    } else {
+      if (this.selectedTemplate.template_name === 'undefined') {
+
+        return this.user_key_url.value.length === 0;
+      } else {
+
+        return this.user_key_url.errors === null;
+      }
+    }
+  }
+
+  needsName(): boolean {
+    if (this.onlyNamespace || this.selectedTemplate.template_name !== 'undefined') {
+      return this.user_key_url.errors !== null;
+    }
+  }
+
+  needsTemplate(): boolean {
+    if (this.user_key_url.value.length !== 0 && !this.onlyNamespace) {
+      return this.selectedTemplate.template_name === 'undefined';
+    }
+  }
+
+  setOnlyNamespace(): void {
+    this.onlyNamespace = true;
+    this.setSelectedTemplate(null);
+  }
+
+  unsetOnlyNamespace(): void {
+    this.onlyNamespace = false;
   }
 }

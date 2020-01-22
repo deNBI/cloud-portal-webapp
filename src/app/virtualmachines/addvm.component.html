@@ -338,9 +338,19 @@
         </div>
 
         <div
-          *ngIf="((!vm_name || (!gaveOkay && hasTools) || !selectedImage || (!selectedFlavor && flavors.length != 0 ) || (diskspace > 0 && !volumeName))) && flavors.length > 0 && projectDataLoaded  && flavors_loaded  && (selectedProjectVmsUsed < selectedProjectVmsMax)"
+          *ngIf="
+          ( !vm_name
+            || (!gaveOkay && hasTools)
+            || !resEnvValid
+            || !selectedImage
+            || (!selectedFlavor && flavors.length != 0 )
+            || (diskspace > 0 && !volumeName) )
+          && flavors.length > 0
+          && projectDataLoaded
+          && flavors_loaded
+          && (selectedProjectVmsUsed < selectedProjectVmsMax)"
           class="alert alert-danger" role="alert" style="max-width: 600px;margin: 0 auto;">
-          <p>Please choose the following before starting a VM:</p>
+          <p>The following is missing before starting a VM:</p>
           <p *ngIf="!vm_name">- A name for your instance
           </p>
           <p *ngIf="!selectedFlavor">- The flavor type of your VM
@@ -350,6 +360,10 @@
           <p *ngIf="diskspace > 0 && !volumeName">- A name for your storage volume
           </p>
           <p *ngIf="!gaveOkay && hasTools">- Give your okay to the Bioconda install process
+          </p>
+          <p *ngIf="resEnvNeedsName">- An url name for your Research-Environment
+          </p>
+          <p *ngIf="resEnvNeedsTemplate">- A Research-Environment template
           </p>
 
         </div>
@@ -367,7 +381,8 @@
                   !selectedFlavor ||
                   !selectedImage||
                   (diskspace > 0 && volumeName == '') ||
-                  (!gaveOkay && hasTools)"
+                  (!gaveOkay && hasTools) ||
+                  !resEnvValid"
                   class="btn btn-primary  .btn-lg offset-md-8"
                   data-toggle="modal"
                   (click)="startVM(selectedFlavor.name,f.controls.instance_name.value,selectedProject[0],selectedProject[1]);resetData();resetProgressBar;infoModal.show();">
