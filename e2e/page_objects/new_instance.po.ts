@@ -1,5 +1,7 @@
 import {by, element} from 'protractor';
 import {Util} from '../util';
+import {VirtualMachine} from "../../src/app/virtualmachines/virtualmachinemodels/virtualmachine";
+import {VirtualMachineComponent} from "../../src/app/virtualmachines/addvm.component";
 
 /**
  * New Instance Page.
@@ -92,7 +94,7 @@ export class NewInstancePage {
 
   static async getVMName(): Promise<string> {
     await Util.waitForPresenceByElement(element(by.id(this.HOW_TO_CONNECT)));
-
     return await element(by.id(this.HOW_TO_CONNECT)).element(by.id(this.HTC_VM_NAME)).getText();
   }
+
 }

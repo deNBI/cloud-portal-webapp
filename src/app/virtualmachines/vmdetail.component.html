@@ -1,0 +1,761 @@
+<div *ngIf="errorMessage" class="alert alert-info">
+  <strong>The Virtual Machine could not be found.</strong>
+</div>
+
+<div *ngIf="!isLoaded && !errorMessage" class="loader"></div>
+
+<div class="animated fadeIn" *ngIf="isLoaded">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header"><span class="font-weight-bold text-muted">{{virtualMachine?.name}}</span></div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-4" style="margin:auto">
+            <div [ngSwitch]="virtualMachine?.status">
+              <div *ngSwitchCase="'ACTIVE'" [id]="'active_badge_' + virtualMachine?.name"
+                   class="dot-colorless bg-success pulseAnim" style="width: 15px; height: 15px;">
+              </div>
+              <div *ngSwitchCase="'SHUTOFF'" [id]="'shutoff_badge_' + virtualMachine?.name"
+                   class="dot-colorless bg-warning" style="width: 15px; height: 15px">
+              </div>
+              <div *ngSwitchCase="'DELETED'" [id]="'deleted_badge_' + virtualMachine?.name"
+                   class="dot-colorless bg-danger" style="width: 15px; height: 15px">
+              </div>
+              <div *ngSwitchCase="'BUILD'" [id]="'build_badge_' + virtualMachine.name"
+                   class="dot-colorless bg-dark" style="width: 15px; height: 15px">
+              </div>
+              <div *ngSwitchCase="'PREPARE_PLAYBOOK_BUILD'" [id]="'ppb_badge_' + virtualMachine?.name"
+                   class="dot-colorless bg-dark" style="width: 15px; height: 15px">
+              </div>
+              <div *ngSwitchCase="'BUILD_PLAYBOOK'" [id]="'build_playbook_badge_' + virtualMachine?.name"
+                   class="dot-colorless bg-dark" style="width: 15px; height: 15px" >
+              </div>
+              <div *ngSwitchCase="'RESTARTING'" [id]="'restarting_badge_' + virtualMachine.name"
+                   class="dot-colorless bg-dark" style="width: 15px; height: 15px">
+              </div>
+              <div *ngSwitchCase="'POWERING OFF'" [id]="'powering_off_badge_' + virtualMachine?.name"
+                   class="dot-colorless bg-dark" style="width: 15px; height: 15px">
+              </div>
+                <div *ngSwitchDefault
+                   [id]="'default_badge_' + virtualMachine?.name"
+                   class="dot-colorless bg-dark" style="width: 15px; height: 15px">
+                </div><span style="margin-left:15px;"class="text-muted font-weight-bold">Status: {{virtualMachine?.status}}</span>
+              </div>
+            </div>
+            <div class="col-2" *ngIf="virtualMachine.status === virtualMachineStates.staticACTIVE">
+              <div class="callout callout-success">
+                <small class="text-muted">Created at (y-m-d)</small><br>
+                <strong class="text-muted">{{startDate | date: 'yyyy.MM.dd HH:mm'}}</strong>
+              </div>
+            </div>
+            <div class="col-2" *ngIf="virtualMachine?.stopped_at && virtualMachine?.status === virtualMachineStates.staticSHUTOFF">
+              <div class="callout callout-warning">
+                <small class="text-muted">Stopped at (y-m-d)</small><br>
+                <strong class="text-muted">{{stopDate | date: 'yyyy.MM.dd HH:mm'}}</strong>
+              </div>
+            </div>
+            <div class="col-2">
+              <div class="callout">
+                <small class="text-muted">Part of</small><br>
+                <a href="/#/project-management/{{virtualMachine?.application_id}}">
+                  <strong class="text-muted">{{virtualMachine?.project}}</strong></a>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="callout">
+                <small class="text-muted">Openstack-ID</small><br>
+                <strong class="text-muted">{{virtualMachine?.openstackid}}</strong>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4">
+              <div class="callout">
+                <small class="text-muted">Created by</small><br>
+                <strong class="text-muted">{{virtualMachine?.userlogin}}</strong>
+              </div>
+            </div>
+            <div class="col-8">
+              <div class="callout">
+                <small class="text-muted">Elixir-ID of {{virtualMachine?.userlogin}}</small><br>
+                <strong class="text-muted">{{virtualMachine?.elixir_id}}</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr *ngIf="virtualMachine?.status === virtualMachineStates.staticACTIVE">
+        <div class="card-body" *ngIf="virtualMachine?.status === virtualMachineStates.staticACTIVE">
+          <div class="card-title">
+            <strong>Connect Information</strong>
+          </div>
+          <div class="card-footer p-x-1 py-h">
+
+            <div class="row" *ngFor="let mode of virtualMachine?.modes">
+              <div class="col-md-1">
+                <span class="font-weight-bold font-xs btn-block text-muted">{{mode.name}}:</span>
+              </div>
+              <div class="col-md-9">
+                <span class="font-weight-bold font-xs btn-block text-muted" [innerHTML]="mode.description"></span></div>
+
+              <div class="col-md-2" style="margin: auto" *ngIf="mode.copy_field && mode.copy_field != ''"><a
+                (click)="copyToClipboard(mode.copy_field);" href="#"
+                onClick="return false;"
+                class="font-weight-bold font-xs btn-block text-muted">&lt;copy
+                command&gt;</a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <hr>
+        <div class="card-body">
+          <div class="card-title"><strong>Actions</strong></div>
+          <div class="row">
+            <div class="col-2" *ngIf="virtualMachine?.status === virtualMachineStates.staticACTIVE">
+              <button type="button" class="btn btn-warning" style="width:100%;" id="stopVMButton"
+              (click)="submitStopVmModal.show();">
+                <strong>Stop VM</strong>
+              </button>
+            </div>
+            <div class="col-2" *ngIf="virtualMachine?.status === virtualMachineStates.staticACTIVE">
+              <button type="button" class="btn btn-secondary" style="width:100%;" id="RebootVMButton"
+              (click)="chooseRebootOptionModal.show();">
+                <strong>Reboot VM</strong>
+              </button>
+            </div>
+            <div class="col-2" *ngIf="virtualMachine?.status === virtualMachineStates.staticACTIVE ||
+            virtualMachine?.status === virtualMachineStates.staticSHUTOFF">
+              <button type="button" class="btn btn-secondary" style="width:100%;" id="createSnaphotButton"
+                      (click)="snapshotModal.show();">
+                <strong>Create Snapshot</strong>
+              </button>
+            </div>
+            <div class="col-2" *ngIf="virtualMachine?.status === virtualMachineStates.staticACTIVE ||
+            virtualMachine?.status === virtualMachineStates.staticSHUTOFF">
+              <button type="button" class="btn btn-danger" style="width:100%;" id="deleteVMButton"
+              (click)="verifyModal.show();">
+                <strong>Delete VM</strong>
+              </button>
+            </div>
+            <div class="col-2" *ngIf="virtualMachine?.status === virtualMachineStates.staticSHUTOFF">
+              <button type="button" class="btn btn-success" style="width:100%;" id="restartVMButton"
+                      (click)="submitRestartModal.show();">
+                <strong>Restart VM</strong>
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="card">
+        <div class="card-header"><span class="font-weight-bold text-muted">Flavor Information</span></div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-4">
+              <div class="callout">
+                <small class="text-muted">Name</small><br>
+                <strong class="text-muted">{{virtualMachine?.flavor?.name}}</strong>
+              </div>
+            </div>
+            <div class="col-2">
+              <div class="callout">
+                <small class="text-muted">Number of VCPUs</small><br>
+                <strong class="text-muted">{{virtualMachine?.flavor?.vcpus}}</strong>
+              </div>
+            </div>
+            <div class="col-2">
+              <div class="callout">
+                <small class="text-muted">RAM</small><br>
+                <strong class="text-muted">{{virtualMachine?.flavor?.ram}} GB</strong>
+              </div>
+            </div>
+            <div class="col-2">
+              <div class="callout">
+                <small class="text-muted">Rootdisk</small><br>
+                <strong class="text-muted">{{virtualMachine?.flavor?.rootdisk}} GB</strong>
+              </div>
+            </div>
+            <div class="col-2">
+              <div class="callout">
+                <small class="text-muted">Ephemeral disk</small><br>
+                <strong class="text-muted">{{virtualMachine?.flavor?.epheremal_disk}} GB</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-4" *ngIf="virtualMachine?.flavor?.type?.long_name != 'Standard Flavours'">
+              <div class="callout">
+                <small class="text-muted">Flavor type</small><br>
+                <strong class="text-muted">{{virtualMachine?.flavor?.type?.long_name}}</strong>
+              </div>
+            </div>
+            <div class="col-2" *ngIf="virtualMachine?.flavor?.type.shortcut === 'GPU' && virtualMachine?.flavor?.gpu > 0">
+              <div class="callout">
+                <small class="text-muted">GPU cores</small><br>
+                <strong class="text-muted">{{virtualMachine?.flavor?.gpu}}</strong>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-6" *ngIf="virtualMachine?.flavor?.comment">
+              <div class="callout">
+                <small class="text-muted">Comment</small><br>
+                <strong><small class="text-muted">{{virtualMachine?.flavor?.comment}}</small></strong>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><span class="font-weight-bold text-muted">Image Information</span></div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-4" *ngIf="image?.logo_url">
+              <div class="callout">
+                <img src="{{image?.logo_url}}" style="height: 42px;">
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="callout">
+                <small class="text-muted">Name</small><br>
+                <strong class="text-muted">{{image?.name}}</strong>
+              </div>
+            </div>
+            <div class="col-2" *ngIf="image?.is_snapshot">
+              <div class="callout callout-warning">
+                <small class="text-muted"></small>Image-Type<br>
+                <strong class="text-muted">Snapshot</strong>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12" *ngIf="image?.description">
+              <div class="callout">
+                <small class="text-muted">Description</small><br>
+                <small class="text-muted font-weight-bold">{{image?.description}}</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" *ngIf="this.condaPackages?.length > 0"> <!-- remove "false" as soon as request ist working -->
+        <div class="card-header"><span class="font-weight-bold text-muted">Installed Conda Packages</span></div>
+        <div class="card-body">
+          <div class="row" *ngFor="let pkg of this.condaPackages">
+            <div class="col-4">
+              <div class="callout">
+                <small class="text-muted">Package name</small><br>
+                <strong class="text-muted">{{pkg.name}}</strong>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="callout">
+                <small class="text-muted">Version</small><br>
+                <strong class="text-muted">{{pkg.version}}</strong>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="callout">
+                <small class="text-muted">Build</small><br>
+                <strong class="text-muted">{{pkg.build}}</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" *ngIf="virtualMachine.volume_id">
+        <div class="card-header"><span class="font-weight-bold text-muted">Attached Volumes</span></div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-6">
+              <div class="callout">
+                <small class="text-muted">Volume ID</small><br>
+                <strong class="text-muted">{{virtualMachine?.volume_id}}</strong>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="callout">
+                <small class="text-muted">Diskspace</small><br>
+                <strong class="text-muted">{{virtualMachine?.diskspace}} GB</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+
+  <div bsModal #stopModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+       aria-labelledby="Label"
+       aria-hidden="true"
+       id="stop_modal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" *ngIf="status_changed == 0"> Waiting </h4>
+          <h4 class="modal-title" *ngIf="status_changed == 1"> Success </h4>
+          <h4 class="modal-title" *ngIf="status_changed == 2"> Error </h4>
+          <button type="button" class="close" style="cursor:pointer"
+                  (click)="stopModal.hide()"
+                  aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="alert alert-info" role="alert"
+               *ngIf="status_changed == 0 && this.virtualMachine.status !=
+                this.virtualMachineStates.staticSHUTOFF">
+            Stopping {{this.virtualMachine?.name}}... <i class="fa fa-spinner fa-spin"
+                                                style="font-size:24px"></i>
+          </div>
+          <div class="alert alert-success" role="alert"
+               *ngIf="status_changed == 1 || this.virtualMachine?.status == this.virtualMachineStates.staticSHUTOFF"
+               id="stop_success_div">
+            {{this.virtualMachine?.name}} was successfully stopped.
+          </div>
+        </div>
+        <div class="alert alert-warning" role="alert" *ngIf="status_changed == 2">
+          When stopping {{this.virtualMachine?.name}} an error occurred.
+        </div>
+
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="close_stop_modal"
+                  (click)="status_changed=0;stopModal.hide()">Close
+          </button>
+        </div>
+
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
+  <div bsModal #rebootModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+       aria-labelledby="Label"
+       aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title"><strong>{{reboot_type}}</strong> reboot
+            {{this.virtualMachine?.name}} </h4>
+
+          <button type="button" class="close" style="cursor:pointer"
+                  (click)="rebootModal.hide()"
+                  aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="alert alert-warning" role="alert">
+
+            Restarted instances will lose any data not saved in persistent storage.
+            Are you sure to <strong>{{reboot_type}}</strong> reboot {{this.virtualMachine.name}}?
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn  btn-success col-md-4"
+                  (click)="rebootVm(reboot_type);rebootModal.hide();rebootResultModal.show()">
+            Yes
+          </button>
+          <button class="btn  btn-danger col-md-4" type="reset"
+                  (click)="rebootModal.hide();">Cancel
+          </button>
+        </div>
+
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
+  <div bsModal #rebootResultModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+       aria-labelledby="Label"
+       aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title"><strong>{{reboot_type}}</strong> reboot
+            {{this.virtualMachine?.name}} </h4>
+
+          <button type="button" class="close" style="cursor:pointer"
+                  (click)="rebootResultModal.hide()"
+                  aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div *ngIf="!reboot_done">
+            <div class="alert alert-info" role="alert">
+
+              Waiting until rebooted..
+            </div>
+          </div>
+          <div *ngIf="reboot_done">
+            <div class="alert alert-success" role="alert">
+
+              Successfully {{reboot_type}} rebooted {{this.virtualMachine?.name}}.
+            </div>
+          </div>
+          <div *ngIf="status_check_error">
+            <div class="alert alert-warning" role="alert">
+
+              An error occurred when checking the status of {{this.virtualMachine?.name}}.
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn  btn-success col-md-4"
+                  (click)="rebootResultModal.hide();">
+            Close
+          </button>
+        </div>
+
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
+  <div bsModal #resumeModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+       aria-labelledby="Label"
+       aria-hidden="true"
+       id="resume_modal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" *ngIf="status_changed == 0"> Waiting </h4>
+          <h4 class="modal-title" *ngIf="status_changed == 1"> Success </h4>
+          <h4 class="modal-title" *ngIf="status_changed == 2"> Error </h4>
+          <button type="button" class="close" style="cursor:pointer"
+                  (click)="resumeModal.hide()"
+                  aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="alert alert-info" role="alert"
+               *ngIf="status_changed == 0  && this.virtualMachine?.status !==
+               this.virtualMachineStates.staticACTIVE">
+            Starting {{this.virtualMachine?.name}}... <i class="fa fa-spinner fa-spin"
+                                                style="font-size:24px"></i>
+          </div>
+          <div class="alert alert-success" role="alert"
+               *ngIf="status_changed == 1  ||
+               this.virtualMachine?.status == this.virtualMachineStates.staticACTIVE"
+               id="resume_success_div">
+            {{this.virtualMachine?.name}} was successfully started.
+          </div>
+        </div>
+        <div class="alert alert-warning" role="alert" *ngIf="status_changed == 2">
+          When starting {{this.virtualMachine?.name}} an error occurred.
+        </div>
+
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="close_resume_modal"
+                  (click)="status_changed=0;resumeModal.hide()">Close
+          </button>
+        </div>
+
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
+  <div bsModal #deleteModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+       aria-labelledby="Label"
+       aria-hidden="true"
+       id="delete_modal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" *ngIf="status_changed == 0"> Waiting </h4>
+          <h4 class="modal-title" *ngIf="status_changed == 1"> Success </h4>
+          <h4 class="modal-title" *ngIf="status_changed == 2"> Error </h4>
+          <button type="button" class="close" style="cursor:pointer"
+                  (click)="deleteModal.hide()"
+                  aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="alert alert-info" role="alert" *ngIf="status_changed == 0">
+            Deleting {{this.virtualMachine?.name}}... <i class="fa fa-spinner fa-spin"
+                                                style="font-size:24px"></i>
+          </div>
+          <div class="alert alert-success" role="alert" *ngIf="status_changed == 1"
+               id="delete_success_div">
+            {{this.virtualMachine?.name}} was succesfully deleted.
+          </div>
+        </div>
+        <div class="alert alert-warning" role="alert" *ngIf="status_changed == 2">
+          When deleting {{this.virtualMachine?.name}} an error occured.
+        </div>
+
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary"
+                  (click)="status_changed=0;deleteModal.hide()"
+                  id="close_delete_modal">Close
+          </button>
+        </div>
+
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
+  <div bsModal #verifyModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+       aria-labelledby="Label"
+       aria-hidden="true"
+       id="verify_modal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Delete VM</h4>
+          <button type="button" class="close" style="cursor: pointer"
+                  (click)="verifyModal.hide()"
+                  aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="alert alert-warning" role="alert">
+            Are you sure you want to delete {{this.virtualMachine?.name}}?
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button class="btn  btn-success col-md-4"
+                  (click)="deleteVm();verifyModal.hide();deleteModal.show()"
+                  id="confirm_delete_button">
+            Yes
+          </button>
+          <button class="btn  btn-danger col-md-4" type="reset"
+                  (click)="verifyModal.hide();">Cancel
+          </button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
+  <div bsModal #snapshotModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+       aria-labelledby="Label"
+       aria-hidden="true"
+       id="snapshot_name_modal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Create Snapshot</h4>
+          <button type="button" class="close" style="cursor:pointer"
+                  (click)="snapshotModal.hide()"
+                  aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+          <div
+          ><strong>Snapshot Name*</strong></div>
+
+          <div>
+            <input type="text" style="width: 100%" placeholder="Snapshot Name" [(ngModel)]="snapshotName"
+                   (ngModelChange)="snapshotSearchTerm.next($event);" id="snapshot_name_input">
+
+          </div>
+          <div>
+            <p *ngIf="!validSnapshotNameBool && snapshotName.length > 0 && snapshotNameCheckDone"
+               style="color: red">This name is already in use, please use a different
+              one.</p></div>
+
+          <br>
+          <div
+          ><strong>Description</strong></div>
+          <div><textarea style="width: 100%" type="textfield" placeholder="Description"
+                         #snapshotDescription></textarea></div>
+          <div class="alert alert-info" role="alert">
+            A snapshot is an image which preserves the disk state of a running instance.
+          </div>
+
+
+        </div>
+        <div class="modal-footer">
+          <button class="btn  btn-success col-md-4" id="snapshot_create_modal_button"
+                  [disabled]="!validSnapshotNameBool"
+                  (click)="createSnapshot(virtualMachine.openstackid ,snapshotName,snapshotDescription.value);snapshotModal.hide();snapshotResult.show()">
+            Create Snapshot
+          </button>
+          <button class="btn  btn-danger col-md-4" type="reset"
+                  (click)="snapshotName=''; validSnapshotNameBool=false;snapshotModal.hide()">
+            Cancel
+          </button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
+
+  <div bsModal #snapshotResult="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+       aria-labelledby="Label"
+       aria-hidden="true"
+       id="snapshot_result_modal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Snapshot</h4>
+          <button type="button" class="close" style="cursor:pointer"
+                  (click)="snapshotResult.hide()"
+                  aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="alert alert-info" role="alert" *ngIf="snapshotDone == 'Waiting' ">
+            Wait until Snapshot is queued....
+          </div>
+
+
+          <div class="alert alert-success" role="alert" *ngIf="snapshotDone == 'true' " id="snapshot_done">
+            Successfully queued Snapshot.
+            It might take some minutes till you can use it for starting a new instance at the "New Instance" tab.
+            You can see the current status in the<a
+            routerLinkActive="active"
+            [routerLink]="['/virtualmachines/snapshotOverview']"> Snapshot Overview </a>.
+          </div>
+          <div class="alert alert-danger" role="alert"
+               *ngIf="snapshotDone != 'true' && snapshotDone != 'Waiting'">
+            An error occured when creating the snapshot.
+
+            <pre>{{snapshotDone}}</pre>
+          </div>
+
+
+        </div>
+        <div class="modal-footer">
+          <button class="btn  btn-danger col-md-4" type="reset" id="snapshot_result_modal_close"
+                  (click)="snapshotName=''; validSnapshotNameBool=false;snapshotResult.hide();">
+            Close
+          </button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
+
+  <div bsModal #chooseRebootOptionModal="bs-modal" class="modal fade" tabindex="1" role="dialog"
+       [id]="chooseRebootOptionModal"
+       aria-labeledby="cromlabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Choose Reboot Type for: {{this.virtualMachine?.name}}</h4>
+          <button type="button" class="close" style="cursor:pointer"
+                  (click)="chooseRebootOptionModal.hide();" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <div class="modal-body">
+          <div class="row" style="margin:auto; text-align:left; padding: 5px;">The following Reboot types are available
+            for machine {{this.virtualMachine?.name}}:
+          </div>
+          <div class="row" style="margin:5px; text-align: center; padding: 10px;">
+            <div class="col-md-6">
+              <button type="button" class="btn btn-primary"
+                      *ngIf="this.virtualMachine?.status != this.virtualMachineStates.staticDELETED &&
+                      this.virtualMachine?.status != this.virtualMachineStates.staticSHUTOFF &&
+                       this.virtualMachine?.client.features['VM_REBOOT']"
+                      id="softRebootVM"
+                      (click)="status_check_error=false;reboot_done=false;reboot_type='SOFT';chooseRebootOptionModal.hide();rebootModal.show();">
+                Soft Reboot
+              </button>
+            </div>
+            <div class="col-md-6">
+              <button type="button" class="btn btn-primary"
+                      id="hardRebootVM"
+                      *ngIf="this.virtualMachine?.status != this.virtualMachineStates.staticDELETED &&
+                      this.virtualMachine.client.features['VM_REBOOT']"
+                      (click)="status_check_error=false;reboot_done=false;reboot_type='HARD'; chooseRebootOptionModal.hide(); rebootModal.show();"
+              >
+                Hard Reboot
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="chooseRebootOptionModal.hide();"
+                  [id]="'closeRebootOptionModalButton'">Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div bsModal #submitStopVmModal="bs-modal" class="modal fade" tabindex="1" role="dialog" id="submitStopVmModal"
+       aria-labeledby="cromlabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Stop VM</h4>
+          <button type="button" class="close" style="cursor: pointer"
+                  (click)="submitStopVmModal.hide()"
+                  aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="alert alert-warning" role="alert">
+            Are you sure you want to stop {{this.virtualMachine?.name}}?
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button class="btn  btn-success col-md-4"
+                  (click)="stopVm();submitStopVmModal.hide();stopModal.show()"
+                  [id]="'verifyStopButton'">
+            Yes
+          </button>
+          <button class="btn  btn-danger col-md-4" type="reset" [id]="'verifyStopCancelButton'"
+                  (click)="submitStopVmModal.hide();">Cancel
+          </button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div>
+
+  <div bsModal #submitRestartModal="bs-modal" class="modal fade" tabindex="1" role="dialog" id="submitRestartModal"
+       aria-labeledby="cromlabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Restart VM</h4>
+          <button type="button" class="close" style="cursor: pointer"
+                  (click)="submitRestartModal.hide()"
+                  aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="alert alert-warning" role="alert">
+            Are you sure you want to restart {{this.virtualMachine?.name}}?
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button class="btn  btn-success col-md-4"
+                  (click)="resumeVM();submitRestartModal.hide();resumeModal.show()"
+                  [id]="'verifyRestartButton'">
+            Yes
+          </button>
+          <button class="btn  btn-danger col-md-4" type="reset" [id]="'verifyRestartCancelButton'"
+                  (click)="submitRestartModal.hide();">Cancel
+          </button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div>
+
+</div>

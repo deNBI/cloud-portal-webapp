@@ -502,6 +502,37 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
       this.currentPage, this.vm_per_site,
       this.filter, this.filter_status_list)
       .subscribe((vms: any) => {
+                   this.vms_content = vms['vm_list'];
+                   this.total_items = vms['total_items'];
+                   this.items_per_page = vms['items_per_page'];
+                   this.total_pages = vms['num_pages'];
+                   this.vmActions = [];
+
+                   this.vms_content.forEach((vm: VirtualMachine, index: number) => {
+                     vm.userlogin = vm['userlogin'];
+                     vm.cardState = 0;
+                     if (vm.status !== VirtualMachineStates.DELETED) {
+                       this.vmActions.push({id: vm, name: vm.name});
+                     }
+                     if (vm.created_at !== '') {
+                       vm.created_at = new Date(parseInt(vm.created_at, 10) * 1000).toLocaleDateString();
+                     }
+                   });
+
+                   // Create a FormControl for each available music preference, initialize them as unchecked, and put them in an array
+                   const formControls: any = this.vmActions.map((control: any) => new FormControl(false));
+
+                   // Create a FormControl for the select/unselect all checkbox
+                   const selectAllControl: any = new FormControl(false);
+
+                   // Simply add the list of FormControls to the FormGroup as a FormArray, add the selectAllControl separetely
+                   this.actionsForm = this.fb.group({
+                                                      vmActions: new FormArray(formControls),
+                                                      selectAll: selectAllControl
+                                                    });
+                   this.onChanges();
+                   this.isSearching = false;
+                   this.checkVmTillActive();
                    this.prepareVMS(vms);
                  }
       );
@@ -514,18 +545,36 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
       this.currentPage, this.vm_per_site,
       this.filter, this.filter_status_list)
       .subscribe((vms: VirtualMachine[]) => {
-                   this.prepareVMS(vms);
-                 }
-      );
-  }
+                   this.vms_content = vms['vm_list'];
+                   this.total_items = vms['total_items'];
+                   this.items_per_page = vms['items_per_page'];
+                   this.total_pages = vms['num_pages'];
+                   this.vmActions = [];
+                   this.vms_content.forEach((vm: VirtualMachine, index: number) => {
+                     vm.userlogin = vm['userlogin'];
+                     vm.cardState = 0;
+                     if (vm.status !== VirtualMachineStates.DELETED) {
+                       this.vmActions.push({id: vm, name: vm.name});
+                     }
+                     if (vm.created_at !== '') {
+                       vm.created_at = new Date(parseInt(vm.created_at, 10) * 1000).toLocaleDateString();
+                     }
+                   });
 
-  /**
-   * Get all vms.
-   */
-  getAllVms(): void {
-    this.virtualmachineservice.getAllVM(this.currentPage, this.vm_per_site,
-                                        this.filter, this.filter_status_list)
-      .subscribe((vms: VirtualMachine[]) => {
+                   // Create a FormControl for each available music preference, initialize them as unchecked, and put them in an array
+                   const formControls: any = this.vmActions.map((control: any) => new FormControl(false));
+
+                   // Create a FormControl for the select/unselect all checkbox
+                   const selectAllControl: any = new FormControl(false);
+
+                   // Simply add the list of FormControls to the FormGroup as a FormArray, add the selectAllControl separetely
+                   this.actionsForm = this.fb.group({
+                                                      vmActions: new FormArray(formControls),
+                                                      selectAll: selectAllControl
+                                                    });
+                   this.onChanges();
+                   this.isSearching = false;
+                   this.checkVmTillActive();
                    this.prepareVMS(vms);
                  }
       );
@@ -601,6 +650,49 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 
       }
     })
+  }
+
+  /**
+   * Get all vms.
+   */
+  getAllVms(): void {
+    this.virtualmachineservice.getAllVM(this.currentPage, this.vm_per_site,
+                                        this.filter, this.filter_status_list)
+      .subscribe((vms: VirtualMachine[]) => {
+                   this.vms_content = vms['vm_list'];
+                   this.total_items = vms['total_items'];
+                   this.items_per_page = vms['items_per_page'];
+                   this.total_pages = vms['num_pages'];
+                   this.vmActions = [];
+
+                   this.vms_content.forEach((vm: VirtualMachine, index: number) => {
+                     vm.userlogin = vm['userlogin'];
+                     vm.cardState = 0;
+                     if (vm.status !== VirtualMachineStates.DELETED) {
+                       this.vmActions.push({id: vm, name: vm.name});
+                     }
+                     if (vm.created_at !== '') {
+                       vm.created_at = new Date(parseInt(vm.created_at, 10) * 1000).toLocaleDateString();
+                     }
+                   });
+
+                   // Create a FormControl for each available music preference, initialize them as unchecked, and put them in an array
+                   const formControls: any = this.vmActions.map((control: any) => new FormControl(false));
+
+                   // Create a FormControl for the select/unselect all checkbox
+                   const selectAllControl: any = new FormControl(false);
+
+                   // Simply add the list of FormControls to the FormGroup as a FormArray, add the selectAllControl separetely
+                   this.actionsForm = this.fb.group({
+                                                      vmActions: new FormArray(formControls),
+                                                      selectAll: selectAllControl
+                                                    });
+                   this.onChanges();
+                   this.isSearching = false;
+                   this.checkVmTillActive();
+                   this.prepareVMS(vms);
+                 }
+      );
   }
 
   ngOnInit(): void {

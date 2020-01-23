@@ -21,10 +21,15 @@ export class Util {
   private static _VOLUME_SPACE: string = '1';
   private static _LONG_TIMEOUT: number = 420000;
   private static _BASIC_SNAPSHOT_NAME: string = 'PTSnap';
+  private static _ALTERNATIVE_SNAPSHOT_NAME: string = 'PTSnapTwo';
 
   // tslint:disable-next-line:no-require-imports
   static get PI_EMAIL(): string {
     return this._PI_EMAIL;
+  }
+
+  static get ALTERNATIVE_SNAPSHOT_NAME(): string {
+    return this._ALTERNATIVE_SNAPSHOT_NAME;
   }
 
   static get SIMPLE_VM_APPLICATION_NAME_NO_PI(): string {

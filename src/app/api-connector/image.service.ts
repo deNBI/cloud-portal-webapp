@@ -30,6 +30,16 @@ export class ImageService {
 
   }
 
+  getImageByProjectAndName(project_id: number, name: string): Observable<Image> {
+    const params: HttpParams = new HttpParams().set('name', name);
+
+    return this.http.get<Image>(`${ApiSettings.getApiBaseURL()}images/project/${project_id}/`, {
+      withCredentials: true,
+      params: params
+    })
+
+  }
+
   checkSnapshotNameAvailable(snapshot_name: string): Observable<IResponseTemplate> {
 
     return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}snapshots/names/`, {
