@@ -47,8 +47,7 @@ export class VirtualmachineService {
   }
 
   startVM(flavor: string, image: Image, servername: string, project: string, projectid: string, http: boolean, https: boolean,
-          udp: boolean, volumename?: string, diskspace?: string, playbook_information?: string, resenvTags?: string,
-          user_key_url?: string): Observable<any> {
+          udp: boolean, volumename?: string, diskspace?: string, playbook_information?: string, user_key_url?: string): Observable<any> {
 
     const params: HttpParams = new HttpParams()
       .set('flavor', flavor)
@@ -62,7 +61,6 @@ export class VirtualmachineService {
       .set('https_allowed', https.toString())
       .set('udp_allowed', udp.toString())
       .set('playbook_information', playbook_information)
-      .set('resenvTags', resenvTags)
       .set('user_key_url', user_key_url);
 
     return this.http.post(this.baseVmUrl, params, {

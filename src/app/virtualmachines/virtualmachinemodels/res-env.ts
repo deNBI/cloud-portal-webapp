@@ -4,25 +4,25 @@
 export class ResearchEnvironment {
   private _template_name: string;
   private _template_version: string;
-  private _template_description: string;
-  private _template_logo_url: string;
-  private _template_info_url: string;
-  private _template_title: string;
+  private _description: string;
+  private _logo_url: string;
+  private _info_url: string;
+  private _title: string;
 
-  get template_title(): string {
-    return this._template_title;
+  get title(): string {
+    return this._title;
   }
 
-  set template_title(value: string) {
-    this._template_title = value;
+  set title(value: string) {
+    this._title = value;
   }
 
-  get template_info_url(): string {
-    return this._template_info_url;
+  get info_url(): string {
+    return this._info_url;
   }
 
-  set template_info_url(value: string) {
-    this._template_info_url = value;
+  set info_url(value: string) {
+    this._info_url = value;
   }
 
   get template_name(): string {
@@ -41,18 +41,18 @@ export class ResearchEnvironment {
     this._template_version = value;
   }
 
-  get template_description(): string {
-    return this._template_description;
+  get description(): string {
+    return this._description;
   }
 
-  set template_description(value: string) {
-    this._template_description = value;
+  set description(value: string) {
+    this._description = value;
   }
 
-  get template_logo_url(): string {
-    return this._template_logo_url;
+  get logo_url(): string {
+    return this._logo_url;
   }
-  set template_logo_url(value: string) {
-    this._template_logo_url = value;
+  set logo_url(value: string) {
+    this._logo_url = value;
   }
 }

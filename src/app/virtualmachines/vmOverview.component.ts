@@ -16,6 +16,7 @@ import {GroupService} from '../api-connector/group.service';
 import {environment} from '../../environments/environment';
 import {ClientService} from '../api-connector/client.service';
 import {Client} from './clients/client.model';
+import {TemplateNames} from './conda/template-names';
 
 /**
  * Vm overview componentn.
@@ -733,5 +734,15 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
         });
       });
     });
+  }
+
+  resenv_by_play(vm: VirtualMachine): boolean {
+    for (const mode of vm.modes) {
+      if (TemplateNames.ALL_TEMPLATE_NAMES.indexOf(mode.name) !== -1) {
+        return false;
+      }
+    }
+
+    return true;
   }
 }
