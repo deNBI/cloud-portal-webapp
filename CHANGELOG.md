@@ -1,3 +1,16 @@
+##  (2020-01-23)
+
+
+#### Features
+
+* **vm:**  added instance detail view ([8815fc2a](8815fc2a))
+
+#### Bug Fixes
+
+* **type-overview:**  changed information ([eb61796e](eb61796e))
+
+
+
 ##  (2020-01-20)
 
 
