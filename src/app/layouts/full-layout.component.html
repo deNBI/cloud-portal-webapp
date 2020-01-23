@@ -154,6 +154,13 @@
              [routerLink]="['/virtualmachines/newVM']">
             <i class="nav-icon icon-screen-desktop"></i> New Instance</a>
         </li>
+          <li class="nav-item" *ngIf="vm_project_member && !production ">
+          <a *ngIf="navbar_minimized" class="nav-link" routerLinkActive="active" data-toggle="tooltip" data-placement="right" title="New Instance"
+             [routerLink]="['/virtualmachines/newVM']">
+            <i class="nav-icon icon-screen-desktop" ></i> New Cluster</a>
+          <a *ngIf="!navbar_minimized " class="nav-link" routerLinkActive="active" [routerLink]="['/virtualmachines/newCluster']">
+            <i class="nav-icon icon-screen-desktop" ></i> New Cluster</a>
+        </li>
 
         <!-- for full sidebar VM Overviews-->
         <li *ngIf="!navbar_minimized && vm_project_member"
@@ -263,6 +270,18 @@
           <a class="nav-link" routerLinkActive="active" data-toggle="tooltip" data-placement="right" title="Image Tags"
              [routerLink]="['/facility-manager/imageTags']"><i
             class="nav-icon icon-tag"></i> Image Tags</a>
+        </li>
+
+        <li *ngIf="!navbar_minimized  && (is_facility_manager || is_vo_admin)" class="nav-item">
+          <a class="nav-link" routerLinkActive="active"
+             [routerLink]="['/facility-manager/news-manager']"><i
+            class="nav-icon icon-event"></i> News Management</a>
+        </li>
+
+        <li *ngIf="navbar_minimized  && (is_facility_manager || is_vo_admin)" class="nav-item">
+          <a class="nav-link" routerLinkActive="active" data-toggle="tooltip" data-placement="right" title="News Management"
+             [routerLink]="['/facility-manager/news-manager']"><i
+            class="nav-icon icon-event"></i> News Management</a>
         </li>
 
 

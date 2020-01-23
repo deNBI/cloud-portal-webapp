@@ -1,13 +1,14 @@
 import {Flavor} from './flavor';
 import {Client} from '../clients/client.model';
-import {VirtualMachineStates} from './virtualmachinestates';
+import {ImageMode} from '../../facility_manager/image-tag';
+
 
 /**
  * Virtualmachine class.
  */
 export class VirtualMachine {
-
   private _flavor: Flavor;
+
   private _image: string;
   private _project: string;
   private _status: string;
@@ -18,12 +19,60 @@ export class VirtualMachine {
   private _created_at: string;
   private _stopped_at: string;
   private _elixir_id: string;
-  private _username: string;
+  private _userlogin: string;
   private _floating_ip: string;
   private _ssh_command: string;
   private _udp_command: string;
   private _application_id: string;
   private _cardState: number;
+
+  private _projectid: number;
+  private _volume_id: string;
+  private _diskspace: string;
+
+  private _res_env_url: string;
+  private _modes: ImageMode[];
+
+
+  get volume_id(): string {
+    return this._volume_id;
+  }
+
+  set volume_id(value: string) {
+    this._volume_id = value;
+  }
+
+  get diskspace(): string {
+    return this._diskspace;
+  }
+
+  set diskspace(value: string) {
+    this._diskspace = value;
+  }
+
+  get projectid(): number {
+    return this._projectid;
+  }
+
+  set projectid(value: number) {
+    this._projectid = value;
+  }
+
+  get modes(): ImageMode[] {
+    return this._modes;
+  }
+
+  set modes(value: ImageMode[]) {
+    this._modes = value;
+  }
+
+  get res_env_url(): string {
+    return this._res_env_url;
+  }
+
+  set res_env_url(value: string) {
+    this._res_env_url = value;
+  }
 
   get cardState(): number {
     return this._cardState;
@@ -137,12 +186,12 @@ export class VirtualMachine {
     this._elixir_id = value;
   }
 
-  get username(): string {
-    return this._username;
+  get userlogin(): string {
+    return this._userlogin;
   }
 
-  set username(value: string) {
-    this._username = value;
+  set userlogin(value: string) {
+    this._userlogin = value;
   }
 
   get floating_ip(): string {

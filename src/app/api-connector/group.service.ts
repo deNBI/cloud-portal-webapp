@@ -6,6 +6,7 @@ import {Cookie} from 'ng2-cookies/ng2-cookies';
 import {IResponseTemplate} from './response-template';
 import {Client} from '../virtualmachines/clients/client.model';
 import {ProjectEnumeration} from '../projectmanagement/project-enumeration';
+import {Doi} from '../applications/doi/doi';
 
 const header: HttpHeaders = new HttpHeaders({
                                               'X-CSRFToken': Cookie.get('csrftoken')
@@ -37,9 +38,26 @@ export class GroupService {
 
   }
 
-  getClientHasForc(groupid: string): Observable<any> {
+  getClientHasForc(groupid: string, isClient?: string): Observable<any> {
+    if (isClient) {
+      const params: HttpParams = new HttpParams().set('client', isClient);
 
-    return this.http.get<Client>(`${ApiSettings.getApiBaseURL()}projects/${groupid}/client/hasForc/`, {
+      return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/client/hasForc/`, {
+        withCredentials: true,
+        headers: header,
+        params: params
+      })
+    } else {
+      return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/client/hasForc/`, {
+        withCredentials: true,
+        headers: header
+      })
+    }
+  }
+
+  getClientForcUrl(groupid: string): Observable<any> {
+
+    return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/client/forcUrl/`, {
       withCredentials: true,
       headers: header
     })
@@ -276,6 +294,35 @@ export class GroupService {
   getSimpleVmByUser(): Observable<any> {
 
     return this.http.get(`${ApiSettings.getApiBaseURL()}projects/simpleVm/`, {
+      withCredentials: true,
+      headers: header
+
+    })
+  }
+
+  getGroupDois(application_id: string | number): Observable<Doi[]> {
+    const params: HttpParams = new HttpParams()
+      .set('application', application_id.toString());
+
+    return this.http.get<Doi[]>(`${ApiSettings.getApiBaseURL()}doi/`, {
+      withCredentials: true,
+      params: params
+    })
+  }
+
+  addGroupDoi(application_id: string | number, doi: string): Observable<Doi[]> {
+    const params: HttpParams = new HttpParams()
+      .set('application', application_id.toString()).set('doi', doi);
+
+    return this.http.post<Doi[]>(`${ApiSettings.getApiBaseURL()}doi/`, params, {
+      withCredentials: true,
+      headers: header
+
+    })
+  }
+
+  deleteGroupDoi(id: string | number): Observable<Doi[]> {
+    return this.http.delete<Doi[]>(`${ApiSettings.getApiBaseURL()}doi/${id}/`, {
       withCredentials: true,
       headers: header
 

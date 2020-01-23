@@ -74,14 +74,6 @@ export class FlavorDetailComponent implements OnInit {
    */
   setSelectedFlavor(flavor: Flavor): void {
 
-    const indexNewSelectedFlavor: number = this.flavors.indexOf(flavor, 0);
-
-    if (this.selectedFlavor) {
-      this.flavors[indexNewSelectedFlavor] = this.selectedFlavor;
-    } else {
-      this.flavors.splice(indexNewSelectedFlavor, 1);
-    }
-
     this.selectedFlavor = flavor;
 
     this.selectedFlavorChange.emit(this.selectedFlavor);

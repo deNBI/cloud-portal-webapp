@@ -44,7 +44,8 @@ exports.config = {
     'tests/terminate_all_pt.ts'
   ],
   capabilities: {
-    'browserName': 'chrome',
+    browserName: 'chrome',
+    acceptInsecureCerts: true,
     chromeOptions: {
       args: ["--incognito"]
     }

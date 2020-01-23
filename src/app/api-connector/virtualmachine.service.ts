@@ -6,6 +6,8 @@ import {Cookie} from 'ng2-cookies/ng2-cookies';
 import {VirtualMachine} from '../virtualmachines/virtualmachinemodels/virtualmachine';
 import {Volume} from '../virtualmachines/volumes/volume';
 import {IResponseTemplate} from './response-template';
+import {Clusterinfo} from '../virtualmachines/clusters/clusterinfo';
+import {Image} from '../virtualmachines/virtualmachinemodels/image';
 
 const header: HttpHeaders = new HttpHeaders({
                                               'X-CSRFToken': Cookie.get('csrftoken')
@@ -22,12 +24,34 @@ export class VirtualmachineService {
   constructor(private http: HttpClient) {
   }
 
-  startVM(flavor: string, image: string, servername: string, project: string, projectid: string, http: boolean, https: boolean,
-          udp: boolean, volumename?: string, diskspace?: string, playbook_information?: string): Observable<any> {
+  startCluster(masterFlavor: string, masterImage: string, workerFlavor: string, workerImage: string, workerCount: string | number, project_id: string | number): Observable<any> {
+    const params: HttpParams = new HttpParams()
+      .set('master_flavor', masterFlavor)
+      .set('master_image', masterImage)
+      .set('worker_image', workerImage)
+      .set('worker_flavor', workerFlavor)
+      .set('worker_count', workerCount.toString())
+      .set('project_id', project_id.toString());
+
+    return this.http.post(`${ApiSettings.getApiBaseURL()}clusters/`, params, {
+      withCredentials: true,
+      headers: header
+    })
+  }
+
+  getClusterInfo(cluster_id: string): Observable<Clusterinfo> {
+    return this.http.get<Clusterinfo>(`${ApiSettings.getApiBaseURL()}clusters/${cluster_id}/`, {
+      withCredentials: true,
+      headers: header
+    })
+  }
+
+  startVM(flavor: string, image: Image, servername: string, project: string, projectid: string, http: boolean, https: boolean,
+          udp: boolean, volumename?: string, diskspace?: string, playbook_information?: string, user_key_url?: string): Observable<any> {
 
     const params: HttpParams = new HttpParams()
       .set('flavor', flavor)
-      .set('image', image)
+      .set('image', JSON.stringify(image))
       .set('servername', servername)
       .set('project', project)
       .set('projectid', projectid)
@@ -36,7 +60,8 @@ export class VirtualmachineService {
       .set('http_allowed', http.toString())
       .set('https_allowed', https.toString())
       .set('udp_allowed', udp.toString())
-      .set('playbook_information', playbook_information);
+      .set('playbook_information', playbook_information)
+      .set('user_key_url', user_key_url);
 
     return this.http.post(this.baseVmUrl, params, {
       withCredentials: true,
@@ -62,8 +87,16 @@ export class VirtualmachineService {
     })
   }
 
+  getVmById(openstackId: string): Observable<VirtualMachine> {
+
+    return this.http.get<VirtualMachine>(`${this.baseVmUrl}${openstackId}/details/`, {
+      withCredentials: true
+    })
+  }
+
   getVmsFromLoggedInUser(page: number, vm_per_site: number, filter?: string, filter_status?: string[]): Observable<VirtualMachine[]> {
     let params: HttpParams = new HttpParams().set('page', page.toString()).set('vm_per_site', vm_per_site.toString());
+
     if (filter) {
       params = params.set('filter', filter);
 

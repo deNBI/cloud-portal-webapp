@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, DoCheck, OnInit, ViewChild} from '@angular/core';
 import {Image} from './virtualmachinemodels/image';
 import {Flavor} from './virtualmachinemodels/flavor';
 import {ImageService} from '../api-connector/image.service';
@@ -20,6 +20,7 @@ import {UserService} from '../api-connector/user.service';
 import {BiocondaComponent} from './conda/bioconda.component';
 import {ResEnvComponent} from './conda/res-env.component';
 import {is_vo} from '../shared/globalvar';
+import {TemplateNames} from './conda/template-names';
 
 /**
  * Start virtualmachine component.
@@ -30,7 +31,7 @@ import {is_vo} from '../shared/globalvar';
              providers: [GroupService, ImageService, KeyService, FlavorService, VirtualmachineService, ApplicationsService,
                Application, ApiSettings, KeyService, ClientService, UserService]
            })
-export class VirtualMachineComponent implements OnInit {
+export class VirtualMachineComponent implements OnInit, DoCheck {
 
   TWENTY_FIVE_PERCENT: number = 25;
   FIFTY_PERCENT: number = 50;
@@ -65,6 +66,12 @@ export class VirtualMachineComponent implements OnInit {
   timeout: number = 0;
   has_forc: boolean = false;
   client_id: string;
+  mosh_mode_available: boolean = false;
+  resenvSelected: boolean = false;
+  resEnvValid: boolean = false;
+  resEnvNeedsName: boolean = false;
+  resEnvNeedsTemplate: boolean = false;
+  data_loaded: boolean = false;
 
   title: string = 'New Instance';
 
@@ -78,6 +85,7 @@ export class VirtualMachineComponent implements OnInit {
    * All image of a project.
    */
   images: Image[];
+  image_loaded: boolean = false;
 
   flavors_loaded: boolean = false;
 
@@ -149,6 +157,11 @@ export class VirtualMachineComponent implements OnInit {
   selectedProjectGPUsUsed: number;
   selectedProjectGPUsMax: number;
 
+  newCores: number = 0;
+  newRam: number = 0;
+  newVms: number = 1;
+  newGpus: number = 0;
+
   /**
    * The selected project ['name',id].
    */
@@ -218,6 +231,9 @@ export class VirtualMachineComponent implements OnInit {
     this.imageService.getImages(project_id).subscribe((images: Image[]) => {
       this.images = images;
       this.images.sort((x_cord: any, y_cord: any) => Number(x_cord.is_snapshot) - Number(y_cord.is_snapshot));
+      this.image_loaded = true;
+      this.checkProjectDataLoaded()
+
     });
   }
 
@@ -229,6 +245,8 @@ export class VirtualMachineComponent implements OnInit {
     this.flavorService.getFlavors(project_id).subscribe((flavors: Flavor[]) => {
       this.flavors = flavors;
       this.flavors_loaded = true;
+      this.checkProjectDataLoaded()
+
     });
 
   }
@@ -308,11 +326,12 @@ export class VirtualMachineComponent implements OnInit {
    * @param {string} project
    * @param {string} projectid
    */
-  startVM(flavor: string, image: string, servername: string, project: string, projectid: string | number): void {
+  startVM(flavor: string, servername: string, project: string, projectid: string | number): void {
     this.create_error = null;
     this.vm_name = null;
     // tslint:disable-next-line:no-complex-conditionals
-    if (image && flavor && servername && project && (this.diskspace <= 0 || this.diskspace > 0 && this.volumeName.length > 0)) {
+    if (this.selectedImage && flavor && servername && project &&
+      (this.diskspace <= 0 || this.diskspace > 0 && this.volumeName.length > 0)) {
       this.create_error = null;
       this.started_machine = true;
 
@@ -324,15 +343,23 @@ export class VirtualMachineComponent implements OnInit {
       } else {
         this.progress_bar_width = this.THIRTY_THIRD_PERCENT;
       }
-      const play_information: string = this.getPlaybookInformation();
+      // Playbook and Research-Environment stuff
+      let play_information: string = this.getPlaybookInformation();
       if (play_information !== '{}') {
         this.playbook_run = 1;
+      } else {
+        play_information = null;
       }
+      let user_key_url: string = null;
+      if (this.resenvSelected) {
+        user_key_url = this.resEnvComponent.getUserKeyUrl();
+      }
+
       this.virtualmachineservice.startVM(
-        flavor_fixed, image, servername,
+        flavor_fixed, this.selectedImage, servername,
         project, projectid.toString(), this.http_allowed,
         this.https_allowed, this.udp_allowed, this.volumeName,
-        this.diskspace.toString(), play_information)
+        this.diskspace.toString(), play_information, user_key_url)
         .subscribe((newVm: VirtualMachine) => {
           this.started_machine = false;
 
@@ -350,7 +377,7 @@ export class VirtualMachineComponent implements OnInit {
           } else if (newVm.status === 'mutex_locked') {
             setTimeout(
               () => {
-                this.startVM(flavor, image, servername, project, projectid)
+                this.startVM(flavor, servername, project, projectid)
               },
               1000)
           } else if (newVm.status) {
@@ -386,10 +413,9 @@ export class VirtualMachineComponent implements OnInit {
       this.timeout += this.biocondaComponent.getTimeout();
     }
 
-    if (this.resEnvComponent && this.resEnvComponent.selected_template !== 'undefined'
-      && this.resEnvComponent.selected_version !== ''
+    if (this.resEnvComponent && this.resEnvComponent.selectedTemplate.template_name !== 'undefined'
       && this.resEnvComponent.user_key_url.errors === null) {
-      playbook_info[this.resEnvComponent.selected_template] = {template_version: this.resEnvComponent.selected_version};
+      playbook_info[this.resEnvComponent.selectedTemplate.template_name] = {};
       playbook_info['user_key_url'] = {user_key_url: this.resEnvComponent.getUserKeyUrl()};
     }
 
@@ -401,6 +427,9 @@ export class VirtualMachineComponent implements OnInit {
    * If connected geht vm,volumes etc.
    */
   getSelectedProjectClient(): void {
+    this.newCores = 0;
+    this.newGpus = 0;
+    this.newVms = 1;
     this.client_checked = false;
     this.projectDataLoaded = false;
 
@@ -457,9 +486,17 @@ export class VirtualMachineComponent implements OnInit {
     })
   }
 
+  checkProjectDataLoaded(): void {
+    if (this.image_loaded && this.flavors_loaded && this.data_loaded) {
+      this.projectDataLoaded = true;
+    }
+  }
+
   loadProjectData(): void {
     this.projectDataLoaded = false;
     this.flavors = [];
+    this.image_loaded = false;
+    this.data_loaded = false;
     this.flavors_loaded = false;
     this.images = [];
     this.selectedImage = undefined;
@@ -477,8 +514,8 @@ export class VirtualMachineComponent implements OnInit {
       this.selectedProjectRamUsed = res['ram_used'];
       this.selectedProjectGPUsMax = res['gpus_max'];
       this.selectedProjectGPUsUsed = res['gpus_used'];
-      this.projectDataLoaded = true;
-
+      this.data_loaded = true;
+      this.checkProjectDataLoaded()
     });
 
     this.getImages(this.selectedProject[1]);
@@ -489,13 +526,58 @@ export class VirtualMachineComponent implements OnInit {
   setSelectedImage(image: Image): void {
 
     this.selectedImage = image;
+    this.isMoshModeAvailable();
+    this.hasImageResenv();
 
+  }
+
+  isMoshModeAvailable(): void {
+    for (const mode of this.selectedImage.modes) {
+      if (mode.name === 'MOSH') {
+        this.mosh_mode_available = true;
+
+        return
+      }
+
+    }
+    this.mosh_mode_available = false;
+
+    return
+
+  }
+
+  hasImageResenv(): void {
+    for (const mode of this.selectedImage.modes) {
+      if (TemplateNames.ALL_TEMPLATE_NAMES.indexOf(mode.name) !== -1) {
+        this.resenvSelected = true;
+        this.resEnvComponent.setOnlyNamespace();
+
+        return;
+      }
+    }
+    this.resenvSelected = false;
+    this.resEnvComponent.unsetOnlyNamespace();
+  }
+
+  setSelectedFlavor(flavor: Flavor): void {
+    this.selectedFlavor = flavor;
+    this.newCores = this.selectedFlavor.vcpus;
+    this.newRam = this.selectedFlavor.ram / 1024;
+    this.newGpus = this.selectedFlavor.gpu;
   }
 
   ngOnInit(): void {
     this.initializeData();
     this.is_vo = is_vo;
 
+  }
+
+  ngDoCheck(): void {
+    if (this.resEnvComponent !== undefined) {
+      this.resEnvValid = this.resEnvComponent.isValid();
+      this.resEnvNeedsName = this.resEnvComponent.needsName();
+      this.resEnvNeedsTemplate = this.resEnvComponent.needsTemplate();
+    }
   }
 
   hasChosenTools(hasSomeTools: boolean): void {

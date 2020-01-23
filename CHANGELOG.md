@@ -1,3 +1,134 @@
+##  (2020-01-23)
+
+
+#### Features
+
+* **vm:**  added instance detail view ([8815fc2a](8815fc2a))
+
+#### Bug Fixes
+
+* **type-overview:**  changed information ([eb61796e](eb61796e))
+
+
+
+##  (2020-01-20)
+
+
+#### Bug Fixes
+
+* **ImageTags:** select fac ([3ac0c54c](3ac0c54c))
+
+##  (2020-01-20)
+
+
+
+
+#### Bug Fixes
+
+* **VM:** removed additional ressource view ([ebbdbfe7](ebbdbfe7))
+* **Modes:** descirption mandatory ([83c1c7a2](83c1c7a2))
+
+
+##  (2020-01-15)
+
+
+#### Features
+
+* **Modi:**
+  * update imag emode implemented ([9a1b9325](9a1b9325))
+  * added modi tables ([d9fa1780](d9fa1780))
+* **Projects:**  information about use cases added (#989) ([c659a661](c659a661))
+* **news:**  place to add, patch, delete news ([d56c98ab](d56c98ab))
+* **newsmanagement:**  add modal, different news management icon ([04a01cf1](04a01cf1))
+* **resenv:**
+  *  add title instead of template name (#975) ([8ece6be4](8ece6be4))
+  *  add title instead of template name ([8ef6037b](8ef6037b))
+
+
+##  (2020-01-14)
+
+
+#### Bug Fixes
+
+* **mod-request:**  resource comparison correctly shown ([75053fca](75053fca))
+* **vm:**
+  *  better vm states, unsubscribe statuscheck on destroy ([638711b0](638711b0))
+  *  show if client activated, instance overview correct project link, get forc-url by client ([bc83c4c6](bc83c4c6))
+
+
+##  (2020-01-09)
+
+
+#### Features
+
+* **Cluster:** mutex check ([f500700c](f500700c))
+
+#### Bug Fixes
+
+* **font:**  download and woff errors ([edea3ea4](edea3ea4))
+* **webapp:**  getForc in ngOninit, fix denbi-loader, tab not breaking imageslider ([c83f234b](c83f234b))
+
+##  (2020-01-06)
+
+
+#### Features
+
+* **DOI:**
+  * added placeholder doi example ([4aef389c](4aef389c))
+  * added option to add doi ([901826a7](901826a7))
+  * added option to add doi ([1b1d77e2](1b1d77e2))
+* **Links:** added news ([d49c8b93](d49c8b93))
+* **images:**
+  *  cc specific tag blacklist, checks for resenv tags (#960) ([852f9541](852f9541))
+  *  cc specific tag blacklist, checks for resenv tags ([a14dd837](a14dd837))
+* **resenv:**
+  *  envs as cards, fix faviconpath, add rstudio logo a… (#957) ([8a096a8b](8a096a8b))
+  *  envs as cards, fix faviconpath, add rstudio logo and description ([6d621fa3](6d621fa3))
+* **vm-overview:**  show res-env link ([74c02fc6](74c02fc6))
+
+#### Bug Fixes
+
+* **VM:**
+  * fixed the created by name (#958) ([968b88fe](968b88fe))
+  * fixed the created by name ([bb0d7702](bb0d7702))
+
+##  (2019-12-19)
+
+
+#### Features
+
+* **Links:** added travis check ([0895055b](0895055b))
+* **resenv:**  theiaide, guacamole working ([03456b64](03456b64))
+
+##  (2019-12-17)
+
+
+#### Bug Fixes
+
+* **Instance:** reload fixed ([30b56474](30b56474))
+
+##  (2019-12-17)
+
+
+#### Bug Fixes
+
+* **EdamTags:** fixed race condition when pi approves ([3023ae62](3023ae62))
+* **vm-overview:**  show deletion status when deleting all vms ([1fc2cbb6](1fc2cbb6))
+
+
+#  (2019-12-12)
+
+
+#### Features
+
+* **Instance:** status loop implemented ([00bd3011](00bd3011))
+
+#### Bug Fixes
+
+* **applications_overview:**  button-size jumping for smaller screens (#940) ([e111331b](e111331b))
+* **fm_resources:**  adjusted modal size and added pattern to inputs (#937) ([804cdfd0](804cdfd0))
+
+
 ##  (2019-12-10)
 
 

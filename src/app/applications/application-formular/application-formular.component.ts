@@ -178,7 +178,6 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 
   }
 
-
   selectEvent(item: any): void {
     if (this.selected_ontology_terms.indexOf(item) === -1) {
       this.selected_ontology_terms.push(item);
@@ -388,9 +387,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
     } else {
       this.applicationsservice.deleteApplicationDissemination(this.application.Id).subscribe()
     }
-    this.applicationsservice.addEdamOntologyTerms(this.application.Id,
-                                                  this.selected_ontology_terms
-    ).subscribe();
+
     const values: { [key: string]: string | number | boolean } = {};
     values['project_application_openstack_project'] = this.openstack_project;
     values['project_application_initial_credits'] = this.credits;
@@ -408,6 +405,9 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
     this.applicationsservice.validateApplicationAsPIByHash(this.hash, values).subscribe((res: any) => {
       if (res['project_application_pi_approved']) {
         this.fullLayout.getGroupsEnumeration();
+        this.applicationsservice.addEdamOntologyTerms(this.application.Id,
+                                                      this.selected_ontology_terms
+        ).subscribe();
         this.updateNotificationModal(
           'Success',
           'The application was successfully approved.',
@@ -448,6 +448,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
     values['project_application_volume_counter'] = 5;
     values['project_application_volume_limit'] = 20;
     values['project_application_workgroup'] = 'TestApplication';
+    values['project_application_initial_credits'] = 5952;
 
     this.applicationsservice.addNewApplication(values).toPromise()
       .then(() => {

@@ -45,9 +45,7 @@
       <ng-container *ngFor="let image of images">
         <ng-template carouselSlide>
           <app-image-slide [selectedImage]="selectedImage" [image]="image"
-                           (selectedImageChange)="    this.selectedImageChange.emit(image);"
-
-          ></app-image-slide>
+                           (selectedImageChange)="selectedImageChange.emit(image);"></app-image-slide>
 
         </ng-template>
       </ng-container>
@@ -84,4 +82,3 @@
        (click)="carousel_activated=true;"><strong class="text-info">Hide
     images</strong></div>
 </div>
-

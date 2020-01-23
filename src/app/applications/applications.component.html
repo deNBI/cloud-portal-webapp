@@ -123,7 +123,7 @@
                         type="button"
                         class="btn btn-secondary">
                         <i class="fa fa-check"></i>&nbsp;
-                        Assign
+                        <span class="applicationActionsButton">Assign</span>
                       </button>
                       <button
                         *ngIf="application?.Status == application_states.WAIT_FOR_CONFIRMATION && application?.ComputeCenter?.FacilityId"
@@ -134,7 +134,7 @@
                         type="button"
                         class="btn btn-secondary">
                         <i class="fa fa-check"></i>&nbsp;
-                        Reassign
+                        <span class="applicationActionsButton">Reassign</span>
                       </button>
                       <button
                         *ngIf="application?.Status == application_states.SUBMITTED && application?.OpenStackProject"
@@ -144,8 +144,8 @@
                         type="button"
                         class="btn btn-success">
                         <i class="fa fa-check"></i>&nbsp;
-                        Approve
-                        & Create
+                        <span class="applicationActionsButton">Approve
+                          & Create </span>
                       </button>
 
                       <button
@@ -156,8 +156,8 @@
                         type="button"
                         class="btn btn-success">
                         <i class="fa fa-check"></i>&nbsp;
-                        Approve
-                        & Create
+                        <span class="applicationActionsButton">Approve
+                          & Create </span>
                       </button>
                       <button [id]="'extension_approval_' + application.Shortname"
                               *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED"
@@ -166,8 +166,8 @@
                               type="button"
                               class="btn btn-success">
                         <i class="fa fa-check"></i>&nbsp;
-                        Approve
-                        Modification
+                        <span class="applicationActionsButton">Approve
+                          Modification </span>
                       </button>
 
                       <button *ngIf="application?.Status == application_states.SUBMITTED"
@@ -176,7 +176,7 @@
                               class="btn btn-danger"
                               style="margin: auto 2.5px">
                         <i class="fa fa-close"></i>&nbsp;
-                        Decline
+                        <span class="applicationActionsButton">Decline</span>
                       </button>
                       <button
                         *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED"
@@ -186,7 +186,7 @@
                         (click)="setSelectedApplication(application);declineExtension(application?.Id);resultModal.show();">
                         <i
                           class="fa fa-close"></i>&nbsp;
-                        Decline Modification
+                        <span class="applicationActionsButton">Decline Modification</span>
                       </button>
 
 
@@ -196,10 +196,11 @@
                         class="btn btn-secondary"
                         style="margin: auto 2.5px">
                         <i class="fa fa-info-circle"></i>&nbsp;
-                        <span
-                          [hidden]="!getCollapseStatus('application_review-' + application?.Id)">Show</span><span
+                        <span class="applicationActionsButton"
+                          [hidden]="!getCollapseStatus('application_review-' + application?.Id)">Show</span>
+                        <span class="applicationActionsButton"
                         [hidden]="getCollapseStatus('application_review-' + application?.Id)">Hide</span>
-                        Information
+                        <span class="applicationActionsButton">Information </span>
                       </button>
                     </div>
                   </td>
@@ -209,7 +210,8 @@
                   <app-application-detail
                     [class.collapse_no_margin]="getCollapseStatus('application_review-' + application?.Id)"
                     [class.collapse]="getCollapseStatus('application_review-' + application?.Id)"
-                    [application]="application"></app-application-detail>
+                    [application]="application"
+                  [isModification]="application.ApplicationExtension != null && application.ApplicationExtension != undefined"></app-application-detail>
                 </td>
               </ng-container>
 

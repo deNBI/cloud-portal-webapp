@@ -1,5 +1,4 @@
 export const environment: any = {
-  wiki_group_invitations: 'https://cloud.denbi.de/wiki/portal/project_overview/#inviting-members',
   production: true,
   vo: 3335,
   freemium_project_id: -1,
@@ -10,6 +9,7 @@ export const environment: any = {
   apiBaseUrl: 'https://cloud.denbi.de/portal/api/v0/',
   voRegistrationLink: 'https://perun.elixir-czech.cz/registrar/?vo=denbi',
   login: 'https://cloud.denbi.de/portal/',
+  webapp: 'https://cloud.denbi.de/portal/webapp/',
   matomoServer: '//cloud.denbi.de/matomo/'
 
 };

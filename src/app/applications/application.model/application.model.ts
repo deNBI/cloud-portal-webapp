@@ -428,4 +428,12 @@ export class Application {
   set InitialCredits(value: number) {
     this._InitialCredits = value;
   }
+
+  get TotalExtensionCredits(): number {
+    if (this.ApplicationExtension != null) {
+      return Number(this.InitialCredits) + Number(this.ApplicationExtension.ExtendedCredits)
+    } else {
+      return this.InitialCredits
+    }
+  }
 }

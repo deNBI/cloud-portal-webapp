@@ -204,7 +204,7 @@ export class VMOverviewPage {
     await Util.clickElementById(this.CONFIRM_DELETE_BUTTON);
     await Util.waitForPresenceOfElementById(this.DELETE_SUCCESS, this.LONG_TIMEOUT);
     await Util.clickElementById(this.CLOSE_DELETE_MODAL);
-    console.log(`Deletion method for ${name} completed`)
+    Util.logMethodCall(`Deletion method for ${name} completed`)
   }
 
   async deleteBasicVM(): Promise<any> {
@@ -233,5 +233,14 @@ export class VMOverviewPage {
 
   async createSnapshotOfBasicVM(): Promise<any> {
     return await this.createSnapshotOfVM(this.vm_names[this.BASIC_VM_NAME_KEY]);
+
   }
+
+  async goToVmDetail(): Promise<any> {
+    Util.logMethodCall('Going to VM Detail page for ' + this.vm_names[this.BASIC_VM_NAME_KEY]);
+    const vm_name: string = await this.getBasicVMName();
+
+    return await Util.clickElementByElement(element(by.cssContainingText('.h5', vm_name)));
+  }
+
 }
