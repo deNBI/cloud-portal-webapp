@@ -1,14 +1,14 @@
-##  (2020-01-23)
+##  (2020-01-24)
 
+
+#### Bug Fixes
+
+* **layout:**  sidebar bottom end aligned for smaller screens ([fd023926](fd023926))
+* **type-overview:**  changed information ([eb61796e](eb61796e))
 
 #### Features
 
 * **vm:**  added instance detail view ([8815fc2a](8815fc2a))
-
-#### Bug Fixes
-
-* **type-overview:**  changed information ([eb61796e](eb61796e))
-
 
 
 ##  (2020-01-20)
