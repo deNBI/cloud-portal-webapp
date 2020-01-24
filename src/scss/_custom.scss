@@ -499,6 +499,14 @@ $simplevmcolour: #00ADEF;
     padding: 1px;
   }
 
+  @media(max-width: 575px) {
+    .app-footer
+    {
+      left: 15px !important;
+    }
+
+  }
+
   .app-footer
   {
     background-color: #FFFFFF;
