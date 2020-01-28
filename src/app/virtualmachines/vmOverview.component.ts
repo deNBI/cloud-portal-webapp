@@ -33,6 +33,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
   title: string = 'Instance Overview';
 
   private subscription: Subscription = new Subscription();
+  private prod: boolean = environment.production;
 
   actionPopupOpen: boolean = false;
   VirtualMachineStates: VirtualMachineStates = new VirtualMachineStates();

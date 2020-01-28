@@ -179,7 +179,8 @@
                 </div>
                 <div class="col-3" style="margin: auto; text-align: center"
                      *ngIf="vm?.status === VirtualMachineStates.staticACTIVE || vm?.status === VirtualMachineStates.staticSHUTOFF">
-                  <a href="/#/project-management/{{vm?.application_id}}"><strong>{{vm?.project}}</strong></a>
+                  <a *ngIf="prod" href="/portal/webapp/#/project-management/{{vm?.application_id}}"><strong>{{vm?.project}}</strong></a>
+                  <a *ngIf="!prod" href="/#/project-management/{{vm?.application_id}}"><strong>{{vm?.project}}</strong></a>
                 </div>
                 <div class="col-3" style="margin: auto; text-align: center"
                      *ngIf="vm?.status !== VirtualMachineStates.staticACTIVE && vm?.status !== VirtualMachineStates.staticSHUTOFF">
