@@ -214,7 +214,7 @@
                 <div class="col-1">
                   <div class="form-check">
                     <ng-container formArrayName="vmActions" *ngFor="let genre of actionsForm.controls['vmActions'].controls; let i = index">
-                      <input type="checkbox" [formControlName]="i" *ngIf="vmActions[i].name == vm?.name
+                      <input type="checkbox" [formControlName]="i.toString()" *ngIf="vmActions[i].name == vm?.name
                       && (vm?.status == VirtualMachineStates.staticACTIVE || vm?.status == VirtualMachineStates.staticSHUTOFF)"
                              [id]="'selectCheckBox_'+ i">
                     </ng-container>

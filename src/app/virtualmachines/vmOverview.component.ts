@@ -124,7 +124,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
   snapshotSearchTerm: Subject<string> = new Subject<string>();
 
   actionsForm: FormGroup;
-  vmActions: any[] = [];
+  vmActions: {id: VirtualMachine, name: string}[] = [];
   selectedMachines: VirtualMachine[] = [];
 
   clientsForcUrls: {[client_id: string]: [string]} = {};

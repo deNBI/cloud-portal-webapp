@@ -19,9 +19,11 @@ import {SnapshotModel} from './snapshots/snapshot.model';
 import {Subject} from 'rxjs';
 import {PlaybookService} from '../api-connector/playbook.service';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
-import {CondaPackage} from "./condaPackage.model";
-import {forEach} from "@angular/router/src/utils/collection";
+import {CondaPackage} from './condaPackage.model';
 
+/**
+ * VM Detail page component
+ */
 @Component({
   selector: 'app-virtual-machine-detail',
   templateUrl: 'vmdetail.component.html',
@@ -388,9 +390,11 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
                    const package_list: Object = pkgs['bioconda'];
                    if (package_list != null) {
                      for (const packageObject in package_list['packages']) {
-                       const c_index: string = packageObject;
-                       const c_package: any = package_list['packages'][c_index];
-                       this._condaPackages.push(new CondaPackage(c_package.name, c_package.version, c_package.build));
+                       if (package_list['packages'].hasOwnProperty(packageObject)) {
+                         const c_index: string = packageObject;
+                         const c_package: any = package_list['packages'][c_index];
+                         this._condaPackages.push(new CondaPackage(c_package.name, c_package.version, c_package.build));
+                       }
                      }
                    }
                  }

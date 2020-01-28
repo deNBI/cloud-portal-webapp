@@ -8,7 +8,6 @@ const header: HttpHeaders = new HttpHeaders({
   'X-CSRFToken': Cookie.get('csrftoken')
 });
 
-
 /**
  * Service which provides playbooks from database
  */

@@ -1,3 +1,6 @@
+/**
+ * Class containing all FORC Template names
+ */
 export class TemplateNames {
   private static _RSTUDIO: string = 'rstudio';
   private static _THEIA: string = 'theiaide';

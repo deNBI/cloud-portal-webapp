@@ -2,7 +2,6 @@ import {Flavor} from './flavor';
 import {Client} from '../clients/client.model';
 import {ImageMode} from '../../facility_manager/image-tag';
 
-
 /**
  * Virtualmachine class.
  */
@@ -32,7 +31,6 @@ export class VirtualMachine {
 
   private _res_env_url: string;
   private _modes: ImageMode[];
-
 
   get volume_id(): string {
     return this._volume_id;

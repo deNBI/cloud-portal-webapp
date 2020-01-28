@@ -1,8 +1,8 @@
+import {ImageMode} from '../../facility_manager/image-tag';
+
 /**
  * Image class.
  */
-import {ImageMode} from '../../facility_manager/image-tag';
-
 export class Image {
   private _id: string;
   private _openstackid: string;

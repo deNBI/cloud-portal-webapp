@@ -1,6 +1,4 @@
-import {browser, by, element} from 'protractor';
 import {Util} from '../util';
-
 
 /**
  * Instance Detail Page.
@@ -44,19 +42,17 @@ export class VMDetailPage {
   private VERIFY_RESTART_MODAL: string = 'submitRestartModal';
   private SUBMIT_STOP_MODAL: string = 'submitStopVmModal';
 
-
   async setBasicVMName(name: string): Promise<any> {
     Util.logMethodCall(`Setting basic vm name as ${name}`);
     this.VM_NAME = name;
   }
-
 
   getVmName(): string {
     return this.VM_NAME;
   }
 
   async stopBasicVM(): Promise<any> {
-    Util.logMethodCall('Stopping Bacic vm ' + this.VM_NAME);
+    Util.logMethodCall(`Stopping Basic vm ${this.VM_NAME}`);
     await Util.waitForElementToBeClickableById(this.SHUTOFF_BUTTON, Util.LONG_TIMEOUT);
     await Util.clickElementById(this.SHUTOFF_BUTTON);
     await Util.waitForElementToBeClickableById(this.VERIFY_STOP_BTN, Util.LONG_TIMEOUT);

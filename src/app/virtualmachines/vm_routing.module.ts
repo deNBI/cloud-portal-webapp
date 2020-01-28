@@ -8,7 +8,6 @@ import {SnapshotOverviewComponent} from './snapshots/snapshotOverview.component'
 import {VmDetailComponent} from './vmdetail.component';
 import {AddClusterComponent} from './clusters/add-cluster/add-cluster.component';
 
-
 const routes: Routes = [
     {
         path: 'newVM',

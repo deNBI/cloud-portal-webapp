@@ -20,6 +20,9 @@ import {BiocondaComponent} from '../../conda/bioconda.component';
 import {forkJoin} from 'rxjs';
 import {Clusterinfo} from '../clusterinfo';
 
+/**
+ * Cluster Component
+ */
 @Component({
              selector: 'app-add-cluster',
              templateUrl: './add-cluster.component.html',
@@ -235,8 +238,10 @@ export class AddClusterComponent implements OnInit {
   }
 
   calcMaxWorkerInstancesByFlavor(): void {
-    const ram_max_vms: number = (this.selectedProjectRamMax - this.selectedProjectRamUsed - (this.selectedMasterFlavor.ram / 1024)) / (this.selectedWorkerFlavor.ram / 1024);
-    const cpu_max_vms: number = (this.selectedProjectCoresMax - this.selectedProjectCoresUsed - this.selectedMasterFlavor.vcpus) / this.selectedWorkerFlavor.vcpus;
+    const ram_max_vms: number = (this.selectedProjectRamMax - this.selectedProjectRamUsed - (this.selectedMasterFlavor.ram / 1024))
+      / (this.selectedWorkerFlavor.ram / 1024);
+    const cpu_max_vms: number = (this.selectedProjectCoresMax - this.selectedProjectCoresUsed - this.selectedMasterFlavor.vcpus)
+      / this.selectedWorkerFlavor.vcpus;
 
     this.maxWorkerInstances = Math.min(ram_max_vms, cpu_max_vms)
   }
