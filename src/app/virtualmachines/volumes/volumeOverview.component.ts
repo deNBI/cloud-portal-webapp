@@ -398,7 +398,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
    * @param {number} groupid id of the perun group from the project.
    * @returns {void}
    */
-  getActiveVmsByProject(groupid: number): void {
+  getActiveVmsByProject(groupid: number | string): void {
     this.vmService.getActiveVmsByProject(groupid.toString()).subscribe((result: any) => {
 
       this.project_vms = result;

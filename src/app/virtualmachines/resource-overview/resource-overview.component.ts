@@ -1,5 +1,8 @@
 import {Component, Input, OnChanges, OnInit} from '@angular/core';
 
+/**
+ * Resource Overview Component
+ */
 @Component({
              selector: 'app-resource-overview',
              templateUrl: './resource-overview.component.html',

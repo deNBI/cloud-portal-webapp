@@ -58,7 +58,7 @@
             <div class="col-2">
               <div class="callout">
                 <small class="text-muted">Part of</small><br>
-                <a href="/#/project-management/{{virtualMachine?.application_id}}">
+                <a [routerLink]="['/project-management/' + virtualMachine?.application_id]" target="_blank">
                   <strong class="text-muted">{{virtualMachine?.project}}</strong></a>
               </div>
             </div>
@@ -126,7 +126,7 @@
             </div>
             <div class="col-2" *ngIf="virtualMachine?.status === virtualMachineStates.staticACTIVE ||
             virtualMachine?.status === virtualMachineStates.staticSHUTOFF">
-              <button type="button" class="btn btn-secondary" style="width:100%;" id="createSnaphotButton"
+              <button type="button" class="btn btn-secondary" style="width:100%;" id="createSnapshotVMButton"
                       (click)="snapshotModal.show();">
                 <strong>Create Snapshot</strong>
               </button>

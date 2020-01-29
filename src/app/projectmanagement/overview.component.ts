@@ -194,7 +194,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   }
 
   initRamCores(): void {
-    console.log('init');
     this.totalNumberOfCores = 0;
     this.totalRAM = 0;
     // tslint:disable-next-line:forin
@@ -251,7 +250,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
    * @param data
    */
   public requestExtension(data: { [key: string]: string | number | boolean }): void {
-    console.log(data);
     this.applicationsservice.requestRenewal(data).subscribe((result: { [key: string]: string }) => {
       if (result['Error']) {
         this.extension_status = 2

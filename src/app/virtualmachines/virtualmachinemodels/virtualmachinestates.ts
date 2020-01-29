@@ -14,7 +14,7 @@ export class VirtualMachineStates {
   private static readonly _PREPARE_PLAYBOOK_BUILD: string = 'PREPARE_PLAYBOOK_BUILD';
   private static readonly _BUILD_PLAYBOOK: string = 'BUILD_PLAYBOOK';
 
-  private static readonly _GETTING_STATUS: string = 'GETTING STATUS';
+  private static readonly _GETTING_STATUS: string = 'CHECKING STATUS';
 
   private static readonly _IN_PROCESS_STATES: string[] = [
     VirtualMachineStates._BUILD,
