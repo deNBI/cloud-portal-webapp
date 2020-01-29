@@ -114,13 +114,17 @@ export class FacilityService {
 
   /**
    * Gets all volumes from a specific facility.
-   * @param {number} facility
+   * @param {number | string} facility
+   * @param {number} currentPage
+   * @param {number} snapsPerSite
    * @returns {Observable<any>}
    */
-  getFacilitySnapshots(facility: number | string): Observable<any> {
+  getFacilitySnapshots(facility: number | string, currentPage: number, snapsPerSite: number): Observable<any> {
+    const params: HttpParams = new HttpParams().set('page', currentPage.toString()).set('snaps_per_site', snapsPerSite.toString());
 
     return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/snapshots/`, {
-      withCredentials: true
+      withCredentials: true,
+      params: params
     })
 
   }

@@ -1,10 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {ImageService} from '../../api-connector/image.service';
 import {SnapshotModel} from './snapshot.model';
-import {forkJoin} from 'rxjs';
+import {forkJoin, Subject} from 'rxjs';
 import {IResponseTemplate} from '../../api-connector/response-template';
 import {FacilityService} from '../../api-connector/facility.service';
 import {WIKI_SNAPSHOTS} from '../../../links/links';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 
 enum Snapshot_Delete_Statuses {
   WAITING = 0,
@@ -64,6 +65,15 @@ export class SnapshotOverviewComponent implements OnInit {
 
   private checkStatusTimeout: number = 5000;
 
+  currentPage: number = 1;
+  snaps_per_site: number = 7;
+  total_pages: number;
+  total_items: number;
+  items_per_page: number = 7;
+  snapshotsPerPageChange: Subject<number> = new Subject<number>();
+  isSearching: boolean = true;
+  DEBOUNCE_TIME: number = 300;
+
   constructor(private facilityService: FacilityService, private imageService: ImageService) {
 
   }
@@ -81,10 +91,14 @@ export class SnapshotOverviewComponent implements OnInit {
    */
   getSnapshots(): void {
     this.snapshots = [];
-    this.imageService.getSnapshotsByUser().subscribe((result: any) => {
-      this.snapshots = result;
+    this.imageService.getSnapshotsByUser(this.currentPage, this.snaps_per_site).subscribe((result: any) => {
+      this.snapshots = result['snapshot_list'];
+      this.total_items = result['total_items'];
+      this.items_per_page = result['items_per_page'];
+      this.total_pages = result['num_pages'];
       this.isLoaded = true;
-      this.checkSnapShotsStatus()
+      this.checkSnapShotsStatus();
+      this.isSearching = false;
     })
   }
 
@@ -122,9 +136,14 @@ export class SnapshotOverviewComponent implements OnInit {
 
   getFacilitySnapshots(): void {
     this.snapshots = [];
-    this.facilityService.getFacilitySnapshots(this.selectedFacility['FacilityId']).subscribe((res: any) => {
-      this.snapshots = res;
-    })
+    this.facilityService.getFacilitySnapshots(this.selectedFacility['FacilityId'], this.currentPage, this.snaps_per_site)
+      .subscribe((res: any) => {
+        this.snapshots = res['snapshot_list'];
+        this.total_items = res['total_items'];
+        this.items_per_page = res['items_per_page'];
+        this.total_pages = res['num_pages'];
+        this.isSearching = false;
+      })
   }
 
   /**
@@ -152,11 +171,45 @@ export class SnapshotOverviewComponent implements OnInit {
 
   ngOnInit(): void {
     this.getSnapshots();
+
+    this.snapshotsPerPageChange.pipe(
+      debounceTime(this.DEBOUNCE_TIME),
+      distinctUntilChanged())
+      .subscribe(() => {
+        this.reset();
+        if (this.showFacilities) {
+          this.getFacilitySnapshots();
+        } else {
+          this.getSnapshots();
+        }
+      });
     this.facilityService.getManagerFacilities().subscribe((result: any) => {
       this.managerFacilities = result;
       this.selectedFacility = this.managerFacilities[0];
     });
 
+  }
+
+  /**
+   * Load vms depending on page.
+   * @param event
+   */
+  pageChanged(event: any): void {
+    this.isSearching = true;
+
+    this.currentPage = event.page;
+    if (this.showFacilities) {
+      this.getFacilitySnapshots();
+    } else {
+      this.getSnapshots();
+    }
+  }
+
+  reset(): void {
+    this.isSearching = true;
+    this.currentPage = 1;
+    this.total_pages = null;
+    this.total_items = null;
   }
 
 }
