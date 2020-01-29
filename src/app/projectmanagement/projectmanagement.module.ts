@@ -8,6 +8,7 @@ import {FormsModule} from '@angular/forms';
 import {AccordionModule} from 'ngx-bootstrap';
 import {ApplicationsModule} from '../applications/applications.module';
 import {SharedDirectivesModule} from '../shared/shared_modules/shared_directives.module';
+import {ChartsModule} from 'ng2-charts';
 
 /**
  * Projectmanagment module.
@@ -21,7 +22,8 @@ import {SharedDirectivesModule} from '../shared/shared_modules/shared_directives
               CommonModule,
               ModalModule.forRoot(),
               ApplicationsModule,
-              SharedDirectivesModule
+              SharedDirectivesModule,
+              ChartsModule
             ],
             declarations: [
               OverviewComponent

@@ -109,6 +109,18 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   project_application_renewal_lifetime: number;
   private updateCreditsUsedIntervals: number;
 
+  chartOptions = {
+    responsive: true
+  };
+
+  chartData = [
+    { data: [330, 600, 260, 700], label: 'Account A' },
+    { data: [120, 455, 100, 340], label: 'Account B' },
+    { data: [45, 67, 800, 500], label: 'Account C' }
+  ];
+
+  chartLabels = ['January', 'February', 'Mars', 'April'];
+
   constructor(private flavorService: FlavorService,
               private groupService: GroupService,
               applicationstatusservice: ApplicationStatusService,
@@ -132,6 +144,17 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
       .then((credits: number) => {
         this.extensionCredits = credits;
       }).catch((err: Error) => console.log(err.message));
+  }
+
+  onChartClick(event): void {
+    console.log(event);
+  }
+
+  fetchCreditHistoryOfProject(): void {
+    this.creditsService.getCreditsUsageHistoryOfProject(Number(this.project.Id.toString)).toPromise()
+      .then((response: {}) =>
+        this.chartData["timestamps"]
+      )
   }
 
   updateExampleCredits(numberOfCredits: number): void {
