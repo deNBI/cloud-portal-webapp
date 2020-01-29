@@ -138,7 +138,7 @@
                      *ngIf="vm?.status == VirtualMachineStates.staticACTIVE
                      || vm?.status == VirtualMachineStates.staticSHUTOFF;
                       else statusElseBlock"
-                     [routerLink]="['/virtualmachines/detail/' + vm?.openstackid]" target="_blank">{{vm?.name}}  </a>
+                     [routerLink]="['/virtualmachines/detail/' + vm?.openstackid]">{{vm?.name}}  </a>
                   <ng-template #statusElseBlock><span class="h5 text-primary"
                                       style="margin-left: 10px">{{vm?.name}}  </span></ng-template>
                   <ng-container *ngSwitchCase="VirtualMachineStates.staticACTIVE">
