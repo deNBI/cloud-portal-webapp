@@ -136,7 +136,6 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
       }
       this.openstack_project = this.application.OpenStackProject;
       this.simple_vm_project = !this.openstack_project;
-      console.log('Is_validation');
       if (this.application.Dissemination) {
         this.application_dissemination = this.application.Dissemination;
         this.project_application_report_allowed = true;

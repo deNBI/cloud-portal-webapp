@@ -46,7 +46,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
   BUILD_PLAYBOOK: string = 'BUILD_PLAYBOOK';
   CREATING_STATUS: string = 'Creating...';
   BUILD_STATUS: string = 'Building..';
-  CHECKING_PORT_STATUS: string = 'Checking port..';
+  CHECKING_PORT_STATUS: string = 'Checking Connection..';
   PREPARE_PLAYBOOK_STATUS: string = 'Prepare Playbook Build...';
   BUIDLING_PLAYBOOK_STATUS: string = 'Building Playbook...';
   ANIMATED_PROGRESS_BAR: string = 'progress-bar-animated';

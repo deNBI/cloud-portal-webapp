@@ -1,3 +1,17 @@
+##  (2020-01-29)
+
+
+#### Features
+
+* **VM:** Checking Port changed to Checking Connection ([79521ad3](79521ad3))
+
+#### Bug Fixes
+
+* **vm:**  remove detail in new tab for e2e tests ([be78b446](be78b446))
+* **vm:**  overview/detail: routerLink instead href, volume buttons to pointer, reverse merge errors
+* **linting:**  some linting done
+
+
 ##  (2020-01-24)
 
 

@@ -58,7 +58,6 @@ export class ImageTagComponent implements OnInit {
     } else {
       this.checkedModes.splice(idx, 1)
     }
-    console.log(this.checkedModes)
   }
 
   reloadData(): void {

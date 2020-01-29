@@ -24,7 +24,8 @@ export class VirtualmachineService {
   constructor(private http: HttpClient) {
   }
 
-  startCluster(masterFlavor: string, masterImage: string, workerFlavor: string, workerImage: string, workerCount: string | number, project_id: string | number): Observable<any> {
+  startCluster(masterFlavor: string, masterImage: string, workerFlavor: string, workerImage: string, workerCount: string | number,
+               project_id: string | number): Observable<any> {
     const params: HttpParams = new HttpParams()
       .set('master_flavor', masterFlavor)
       .set('master_image', masterImage)
