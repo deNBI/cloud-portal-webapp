@@ -37,6 +37,8 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
   project_application_report_allowed: boolean = false;
   project_application_openstack_basic_introduction: boolean = false;
   selected_ontology_terms: EdamOntologyTerm[] = [];
+    edam_ontology_terms: EdamOntologyTerm[];
+
   project_application_name: string;
   project_application_shortname: string;
   project_application_description: string;
@@ -54,7 +56,6 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 
   application_dissemination: ApplicationDissemination = new ApplicationDissemination();
 
-  edam_ontology_terms: EdamOntologyTerm[];
   initiated_validation: boolean = false;
 
   credits: number = 0;
