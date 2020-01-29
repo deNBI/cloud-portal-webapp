@@ -20,7 +20,8 @@
       <div class="card border-success flavor-image-card" style="cursor: default;">
         <div class="card-header bg-success text-truncate" data-toggle="tooltip" data-placement="top"
              title="{{selectedTemplate.title}}" (click)="setSelectedTemplate(null)" style="cursor: pointer;">
-          <strong>{{selectedTemplate.title}}</strong>
+          <strong *ngIf="selectedTemplate.title != null">{{selectedTemplate.title}}</strong>
+          <strong *ngIf="selectedTemplate.title == null">{{selectedTemplate.template_name}}</strong>
           <button type="button" class="close"
                   aria-label="Close">
             <span aria-hidden="true">&times;</span>
@@ -28,7 +29,9 @@
         <div class="card-body">
           <div class="scroll-image">
             <p>
-              <img src="{{selectedTemplate?.logo_url}}" alt="{{selectedTemplate.title}}® "
+              <img src="{{selectedTemplate?.logo_url}}" alt="{{selectedTemplate.title}}®" *ngIf="selectedTemplate.title != null"
+                   style="width: 70px;">
+              <img src="{{selectedTemplate?.logo_url}}" alt="{{selectedTemplate.template_name}}®" *ngIf="selectedTemplate.title == null"
                    style="width: 70px;">
             </p>
             <p>
@@ -66,7 +69,8 @@
                class="card-header bg-info-flavor text-truncate" data-toggle="tooltip" data-placement="top"
                title="{{template.title}}"
                style="background-color: #005AA9 !important; color: white !important; cursor: pointer"> <!-- quickfix -->
-            <strong>{{template.title}}</strong>
+            <strong *ngIf="template.title != null">{{template.title}}</strong>
+            <strong *ngIf="template.title == null">{{template.template_name}}</strong>
             <button type="button" class="close"
                     aria-label="Close">
               <span aria-hidden="true">+</span>
@@ -74,7 +78,10 @@
           <div class="card-body">
             <div class="scroll-image">
               <p>
-                <img src="{{template?.logo_url}}" alt="{{template.title}}® " style="width: 70px;">
+                <img src="{{template?.logo_url}}" alt="{{template.title}}®" *ngIf="template.title != null"
+                     style="width: 70px;">
+                <img src="{{template?.logo_url}}" alt="{{template.template_name}}®" *ngIf="template.title == null"
+                     style="width: 70px;">
               </p>
               <p>
                 {{template?.description}}
