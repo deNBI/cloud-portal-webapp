@@ -1014,6 +1014,9 @@
           <p *ngIf="!min_vm">
             - Select at least one Flavor
           </p>
+          <p  *ngIf="!project_application.EdamTopics && selected_ontology_terms.length < 1">
+            - Select at least one Research Topic
+          </p>
         </div>
 
 
@@ -1024,7 +1027,7 @@
           <button type="button" class="btn  btn-primary"
                   form="application_form" id="submit_renewal_btn"
                   (click)="extension_request=true;filterEnteredData(f);calculateInitialCredits(f); doiModal.show();"
-                  [disabled]="f.invalid || (!project_application.EdamTopics && selected_ontology_terms.length <= 1)"><i
+                  [disabled]="f.invalid || (!project_application.EdamTopics && selected_ontology_terms.length < 1)"><i
             class="fa fa-dot-circle-o">
 
           </i>
