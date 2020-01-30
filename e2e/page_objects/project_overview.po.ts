@@ -1,5 +1,5 @@
 import {Util} from '../util';
-import {browser, by, element, protractor} from 'protractor';
+import {browser} from 'protractor';
 
 /**
  * Project Overview page.
@@ -16,6 +16,7 @@ export class ProjectOverview {
   private static NOTIFICATION_TITLE: string = 'notification_title';
   private static NOTIFICATION_CLOSE: string = 'close_notification';
   private static SUBMIT_MODEL_BTN: string = 'submit_modal_btn';
+  private static DOI_MODAL_BTN: string = 'doi_modal_btn';
   private static SUBMIT_RENEWAL_BTN: string = 'submit_renewal_btn';
   private static EXTENSION_RESULT: string = 'extension result';
   private static EXTENSION_SUCCESSFULLY_SUBMITTED: string = 'Modify request successfully submitted!';
@@ -95,6 +96,7 @@ export class ProjectOverview {
 
   static async sendModificationRequest(application_name: string): Promise<any> {
     await Util.clickElementById(this.SUBMIT_RENEWAL_BTN);
+    await Util.clickElementById(this.DOI_MODAL_BTN);
     await Util.clickElementById(this.SUBMIT_MODEL_BTN);
     await Util.waitForTextPresenceInElementById(this.EXTENSION_RESULT, this.EXTENSION_SUCCESSFULLY_SUBMITTED);
   }
