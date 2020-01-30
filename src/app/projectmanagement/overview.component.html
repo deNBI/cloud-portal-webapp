@@ -123,7 +123,7 @@
             </button>
             <button id="show_extension_modal"
                     *ngIf="project_application?.Status == application_states.APPROVED || project_application?.Status == application_states.MODIFICATION_DECLINED"
-                    (click)="newFlavors= {};initRamCores();calculateCredits(f.controls.project_application_renewal_lifetime.value);extensionModal.show()"
+                    (click)="newFlavors= {};selected_ontology_terms=[];initRamCores();calculateCredits(f.controls.project_application_renewal_lifetime.value);extensionModal.show()"
                     class="btn btn-warning"
                     type="button" style="margin-bottom:5px;">
               Request Extension/Modification
