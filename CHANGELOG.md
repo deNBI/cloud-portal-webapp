@@ -1,3 +1,11 @@
+##  (2020-01-30)
+
+
+#### Bug Fixes
+
+* **vm:**  deactivate forc in new instance ([8a4e978b](8a4e978b))
+
+
 ##  (2020-01-29)
 
 
