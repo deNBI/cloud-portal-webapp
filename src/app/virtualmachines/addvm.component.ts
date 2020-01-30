@@ -31,7 +31,7 @@ import {TemplateNames} from './conda/template-names';
              providers: [GroupService, ImageService, KeyService, FlavorService, VirtualmachineService, ApplicationsService,
                Application, ApiSettings, KeyService, ClientService, UserService]
            })
-export class VirtualMachineComponent implements OnInit, DoCheck {
+export class VirtualMachineComponent implements OnInit {
 
   TWENTY_FIVE_PERCENT: number = 25;
   FIFTY_PERCENT: number = 50;
@@ -208,6 +208,8 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
    */
   FREEMIUM_ID: number = environment.freemium_project_id;
 
+  prod: boolean = environment.production;
+
   /**
    * Time for the check status loop.
    * @type {number}
@@ -215,7 +217,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
   private checkStatusTimeout: number = 5000;
 
   @ViewChild('bioconda') biocondaComponent: BiocondaComponent;
-  @ViewChild('resEnv') resEnvComponent: ResEnvComponent;
+  // @ViewChild('resEnv') resEnvComponent: ResEnvComponent;
 
   constructor(private groupService: GroupService, private imageService: ImageService,
               private flavorService: FlavorService, private virtualmachineservice: VirtualmachineService,
@@ -350,10 +352,10 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
       } else {
         play_information = null;
       }
-      let user_key_url: string = null;
-      if (this.resenvSelected) {
-        user_key_url = this.resEnvComponent.getUserKeyUrl();
-      }
+      const user_key_url: string = null;
+      // if (this.resenvSelected) {
+      //   user_key_url = this.resEnvComponent.getUserKeyUrl();
+      // }
 
       this.virtualmachineservice.startVM(
         flavor_fixed, this.selectedImage, servername,
@@ -413,11 +415,11 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
       this.timeout += this.biocondaComponent.getTimeout();
     }
 
-    if (this.resEnvComponent && this.resEnvComponent.selectedTemplate.template_name !== 'undefined'
+/*    if (this.resEnvComponent && this.resEnvComponent.selectedTemplate.template_name !== 'undefined'
       && this.resEnvComponent.user_key_url.errors === null) {
       playbook_info[this.resEnvComponent.selectedTemplate.template_name] = {};
       playbook_info['user_key_url'] = {user_key_url: this.resEnvComponent.getUserKeyUrl()};
-    }
+    }*/
 
     return JSON.stringify(playbook_info);
   }
@@ -439,7 +441,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 
         this.loadProjectData();
         this.client_checked = true;
-        this.getHasForc(client.id);
+        // this.getHasForc(client.id);
       } else {
         this.client_avaiable = false;
         this.client_checked = true;
@@ -450,14 +452,14 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
     })
   }
 
-  getHasForc(id: string): void {
+/*  getHasForc(id: string): void {
     this.groupService.getClientHasForc(this.selectedProject[1].toString()).subscribe((response: JSON) => {
       if (response['hasForc'] === 'True') {
         this.has_forc = true;
       }
     });
     this.client_id = id;
-  }
+  }*/
 
   /**
    * Reset the data attribute.
@@ -527,7 +529,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 
     this.selectedImage = image;
     this.isMoshModeAvailable();
-    this.hasImageResenv();
+    // this.hasImageResenv();
 
   }
 
@@ -561,6 +563,8 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
     }
   }
 
+  
+
   setSelectedFlavor(flavor: Flavor): void {
     this.selectedFlavor = flavor;
     this.newCores = this.selectedFlavor.vcpus;
@@ -576,6 +580,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 
   ngDoCheck(): void {
     if (this.resEnvComponent) {
+
       this.resEnvValid = this.resEnvComponent.isValid();
       this.resEnvNeedsName = this.resEnvComponent.needsName();
       this.resEnvNeedsTemplate = this.resEnvComponent.needsTemplate();
