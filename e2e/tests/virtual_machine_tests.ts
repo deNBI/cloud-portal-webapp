@@ -5,6 +5,7 @@ import {VolumeOverviewPage} from '../page_objects/volume_overview.po';
 import {VMOverviewPage} from '../page_objects/vm_overview.po';
 import {SnapshotOverviewPage} from '../page_objects/vm_snapshot.po';
 import {VMDetailPage} from '../page_objects/vm_detail.po';
+import {Util} from '../util';
 
 describe('Virtual Machine Tests', async function (): Promise<any> {
 
@@ -105,6 +106,22 @@ describe('Virtual Machine Tests', async function (): Promise<any> {
     const isPresent: boolean = await SnapshotOverviewPage.isBasicSnapshotPresent();
     const isActive: boolean = await SnapshotOverviewPage.isBasicSnapshotActive();
     expect(isPresent && isActive).toBeTruthy();
+  });
+  it('should start  a  vm with the  snapshot', async function (): Promise<any> {
+    Util.logHeader('Trying to start a vm with denbi default and Ubuntu 18.04 and a volume');
+    await NewInstancePage.getNewInstanceTab();
+    Util.logInfo('Choosing project');
+    await NewInstancePage.chooseProject();
+    Util.logInfo('Filling Form');
+    await NewInstancePage.fillBasicForm(Util.BASIC_SNAPSHOT_NAME);
+
+    Util.logInfo('Starting');
+    await NewInstancePage.submitAndStartVM();
+    Util.logInfo('Waiting for confirmation');
+    const isVMPresent: boolean = await NewInstancePage.waitForConfirmation();
+    expect(isVMPresent).toBeTruthy();
+    await NewInstancePage.closeInfoModal();
+    Util.logInfo('------------------------------Start virtual machine with snapshot ended');
   });
 
   it('should delete the snapshot of the basic vm', async function (): Promise<any> {

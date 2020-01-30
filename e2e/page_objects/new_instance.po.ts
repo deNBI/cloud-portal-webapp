@@ -42,10 +42,10 @@ export class NewInstancePage {
     await Util.clickOptionOfSelect(this.PROJECT_NAME, this.PROJECT_SELECT_ID);
   }
 
-  static async fillBasicForm(): Promise<any> {
+  static async fillBasicForm(name:string=this.BASIC_VM_NAME): Promise<any> {
     Util.logMethodCall('Fill new instance basic form');
 
-    await this.fillMandatoryFormWith(this.BASIC_VM_NAME, this.DEFAULT_FLAVOR_TITLE, this.UBUNTU_18_TITLE);
+    await this.fillMandatoryFormWith(name, this.DEFAULT_FLAVOR_TITLE, this.UBUNTU_18_TITLE);
   }
 
   static async fillBasicVolumeForm(): Promise<any> {
