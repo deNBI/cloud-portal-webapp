@@ -42,6 +42,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
   vms_content: VirtualMachine[] = [];
   currentPage: number = 1;
   DEBOUNCE_TIME: number = 300;
+  FILTER_DEBOUNCE_TIME: number = 2000;
 
   filter_status_list: string[] = [VirtualMachineStates.ACTIVE, VirtualMachineStates.SHUTOFF];
   isSearching: boolean = true;
@@ -591,7 +592,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 
     this.filterChanged
       .pipe(
-        debounceTime(this.DEBOUNCE_TIME),
+        debounceTime(this.FILTER_DEBOUNCE_TIME),
         distinctUntilChanged())
       .subscribe(() => {
         this.applyFilter();
