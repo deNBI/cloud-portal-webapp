@@ -507,7 +507,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
       vm.userlogin = vm['userlogin'];
       vm.cardState = 0;
       this.setForcUrl(vm);
-      if (vm.status !== VirtualMachineStates.DELETED) {
+      if (vm.status === VirtualMachineStates.ACTIVE || vm.status === VirtualMachineStates.SHUTOFF) {
         this.vmActions.push({id: vm, name: vm.name});
       }
       if (vm.created_at !== '') {
