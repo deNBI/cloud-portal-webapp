@@ -1,4 +1,4 @@
-import {browser, by, element} from 'protractor';
+import {browser} from 'protractor';
 import {NewInstancePage} from '../page_objects/new_instance.po';
 import {LoginPage} from '../page_objects/login.po';
 import {VolumeOverviewPage} from '../page_objects/volume_overview.po';
@@ -108,7 +108,7 @@ describe('Virtual Machine Tests', async function (): Promise<any> {
     expect(isPresent && isActive).toBeTruthy();
   });
   it('should start  a  vm with the  snapshot', async function (): Promise<any> {
-    Util.logHeader('Trying to start a vm with denbi default and Ubuntu 18.04 and a volume');
+    Util.logHeader('Trying to start a vm with snapshot and Ubuntu 18.04 and a volume');
     await NewInstancePage.getNewInstanceTab();
     Util.logInfo('Choosing project');
     await NewInstancePage.chooseProject();
@@ -124,13 +124,6 @@ describe('Virtual Machine Tests', async function (): Promise<any> {
     Util.logInfo('------------------------------Start virtual machine with snapshot ended');
   });
 
-  it('should delete the snapshot of the basic vm', async function (): Promise<any> {
-    console.log('Deleting the snapshot of the basic vm');
-    await SnapshotOverviewPage.deleteBasicSnapshot();
-    const isDeleted: boolean = await SnapshotOverviewPage.isBasicSnapshotDeleted();
-    expect(isDeleted).toBeTruthy();
-  });
-
   it('should create and attach a volume to basic vm', async function (): Promise<any> {
     console.log('Creating and attaching a volume to basic vm');
     await VolumeOverviewPage.navigateToVolumeOverview();
@@ -140,6 +133,13 @@ describe('Virtual Machine Tests', async function (): Promise<any> {
     expect(present && attached).toBeTruthy();
   });
 
+  it('should delete the snapshot of the basic vm', async function (): Promise<any> {
+    console.log('Deleting the snapshot of the basic vm');
+    await SnapshotOverviewPage.deleteBasicSnapshot();
+    const isDeleted: boolean = await SnapshotOverviewPage.isBasicSnapshotDeleted();
+    expect(isDeleted).toBeTruthy();
+  });
+   
   it('should should delete the basic vm without deleting the volume', async function (): Promise<any> {
     console.log('Deleting the volume vm');
     await vmOverviewPage.navigateToOverview();

@@ -341,7 +341,7 @@
           *ngIf="
           ( !vm_name
             || (!gaveOkay && hasTools)
-            || !resEnvValid
+            || (!resEnvValid && resEnvComponent)
             || !selectedImage
             || (!selectedFlavor && flavors.length != 0 )
             || (diskspace > 0 && !volumeName) )
@@ -382,7 +382,7 @@
                   !selectedImage||
                   (diskspace > 0 && volumeName == '') ||
                   (!gaveOkay && hasTools) ||
-                  !resEnvValid"
+                   (!resEnvValid && resEnvComponent)  "
                   class="btn btn-primary  .btn-lg offset-md-8"
                   data-toggle="modal"
                   (click)="startVM(selectedFlavor.name,f.controls.instance_name.value,selectedProject[0],selectedProject[1]);resetData();resetProgressBar;infoModal.show();">
