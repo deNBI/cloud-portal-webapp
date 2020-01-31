@@ -8,12 +8,11 @@ import {IResponseTemplate} from '../api-connector/response-template';
 import {SnapshotModel} from './snapshots/snapshot.model';
 import {FacilityService} from '../api-connector/facility.service';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
-import {Subject, Subscription} from 'rxjs';
+import {forkJoin, Observable, Subject, Subscription} from 'rxjs';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {is_vo} from '../shared/globalvar';
 import {VirtualMachineStates} from './virtualmachinemodels/virtualmachinestates';
 import {GroupService} from '../api-connector/group.service';
-import {environment} from '../../environments/environment';
 import {ClientService} from '../api-connector/client.service';
 import {Client} from './clients/client.model';
 import {TemplateNames} from './conda/template-names';
@@ -48,7 +47,6 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
   isSearching: boolean = true;
 
   selectedVm: VirtualMachine = null;
-  vm_per_site: number = 7;
 
   /**
    * Facilitties where the user is manager ['name',id].
@@ -60,6 +58,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
   public selectedFacility: [string, number];
 
   filter: string;
+  vm_per_site: number = 7;
 
   total_pages: number;
   total_items: number;
@@ -251,6 +250,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
    * @param vm which will be deleted
    */
   deleteVm(vm: VirtualMachine): void {
+    vm.status = VirtualMachineStates.DELETING;
     this.virtualmachineservice.deleteVM(vm.openstackid).subscribe((updated_vm: VirtualMachine) => {
 
       if (updated_vm.created_at !== '') {
@@ -655,7 +655,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
     })
   }
 
-  getToBeDeleted(): any {
+  setToBeDeletedVms(): any {
     // Filter out the unselected ids
 
     const selectedMachines: VirtualMachine[] = this.actionsForm.value.vmActions
@@ -664,22 +664,29 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 
     this.selectedMachines = selectedMachines;
 
-    return selectedMachines;
   }
 
   deleteAll(): void {
-    for (const vm of this.getToBeDeleted()) {
-      this.virtualmachineservice.deleteVM(vm.openstackid).subscribe((updated_vm: VirtualMachine) => {
+    const observableBatch: Observable<VirtualMachine>[] = [];
 
+    // tslint:disable-next-line:no-for-each-push
+    this.selectedMachines.forEach((vm: VirtualMachine) => {
+      vm.status = VirtualMachineStates.DELETING;
+      observableBatch.push(this.virtualmachineservice.deleteVM(vm.openstackid))
+    });
+    forkJoin(observableBatch).subscribe((vms: VirtualMachine[]) => {
+      console.log(vms)
+      for (let idx: number = 0; idx < vms.length; idx++) {
+        const updated_vm: VirtualMachine = vms[idx];
+        console.log(idx)
         if (updated_vm.created_at !== '') {
           updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
         }
-        updated_vm.cardState = 0;
-        this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
-        this.selectedMachines[this.selectedMachines.indexOf(vm)] = updated_vm;
-        this.applyFilterStatus();
-      })
-    }
+        this.vms_content[this.vms_content.indexOf(this.selectedMachines[idx])] = updated_vm;
+        this.selectedMachines[idx] = updated_vm;
+
+      }
+    })
   }
 
   setForcUrl(vm: VirtualMachine): void {

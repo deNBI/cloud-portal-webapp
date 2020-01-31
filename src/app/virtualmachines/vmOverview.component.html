@@ -102,7 +102,7 @@
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenu" role="menu" *dropdownMenu>
               <button class="dropdown-item btn btn-secondary" id="deleteAllSelectedVMsButton"
-                      (click)="getToBeDeleted(); verifyAllModal.show()">Delete selected VMs</button>
+                      (click)="setToBeDeletedVms(); verifyAllModal.show()">Delete selected VMs</button>
             </div>
           </div>
 
@@ -187,6 +187,12 @@
                          class="dot-colorless bg-dark">
                     </div>
                     {{VirtualMachineStates.staticBUILD_PLAYBOOK}}
+                  </ng-container>
+                   <ng-container *ngSwitchCase="VirtualMachineStates.staticDELETING">
+                    <div [id]="'deleting_badge_' + vm?.name"
+                         class="dot-colorless bg-dark">
+                    </div>
+                    {{VirtualMachineStates.staticDELETING}}
                   </ng-container>
                   <ng-container *ngSwitchCase="VirtualMachineStates.staticRESTARTING">
                     <div [id]="'restarting_badge_' + vm?.name"
@@ -595,7 +601,7 @@
       </div>
       <div class="modal-footer">
         <button class="btn  btn-success col-md-4"
-                (click)="deleteAll();verifyAllModal.hide();deleteAllModal.show()"
+                (click)="deleteAll();verifyAllModal.hide();"
                 id="confirm_delete_all_button">
           Yes
         </button>
@@ -669,7 +675,7 @@
       </div>
       <div class="modal-footer">
         <button class="btn  btn-success col-md-4"
-                (click)="deleteVm(selectedVm);verifyModal.hide();deleteModal.show()"
+                (click)="deleteVm(selectedVm);verifyModal.hide();"
                 id="confirm_delete_button">
           Yes
         </button>

@@ -14,6 +14,7 @@ export class VirtualMachineStates {
   private static readonly _RESTARTING: string = 'RESTARTING';
   private static readonly _PREPARE_PLAYBOOK_BUILD: string = 'PREPARE_PLAYBOOK_BUILD';
   private static readonly _BUILD_PLAYBOOK: string = 'BUILD_PLAYBOOK';
+  private static readonly _DELETING: string = 'DELETING';
 
   private static readonly _GETTING_STATUS: string = 'CHECKING STATUS';
 
@@ -22,7 +23,8 @@ export class VirtualMachineStates {
     VirtualMachineStates._POWERING_OFF,
     VirtualMachineStates._RESTARTING,
     VirtualMachineStates._PREPARE_PLAYBOOK_BUILD,
-    VirtualMachineStates._BUILD_PLAYBOOK];
+    VirtualMachineStates._BUILD_PLAYBOOK,
+    VirtualMachineStates._DELETING];
 
   private static readonly _NOT_IN_PROCESS_STATES: string[] = [
     VirtualMachineStates._ACTIVE,
@@ -32,6 +34,10 @@ export class VirtualMachineStates {
     VirtualMachineStates._CLIENT_OFFLINE,
     VirtualMachineStates._ERROR
   ];
+
+  public get staticDELETING(): string {
+    return VirtualMachineStates.DELETING;
+  }
 
   public get staticPREPARE_PLAYBOOK_BUILD(): string {
     return VirtualMachineStates.PREPARE_PLAYBOOK_BUILD;
@@ -95,6 +101,10 @@ export class VirtualMachineStates {
 
   static get BUILD_PLAYBOOK(): string {
     return this._BUILD_PLAYBOOK;
+  }
+
+  static get DELETING(): string {
+    return this._DELETING;
   }
 
   static get ACTIVE(): string {
