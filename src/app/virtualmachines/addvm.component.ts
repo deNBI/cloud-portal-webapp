@@ -441,7 +441,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 
         this.loadProjectData();
         this.client_checked = true;
-        // this.getHasForc(client.id);
+        this.getHasForc(client.id);
       } else {
         this.client_avaiable = false;
         this.client_checked = true;
