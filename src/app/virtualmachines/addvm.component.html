@@ -319,7 +319,6 @@
                     </div>
                   </div>
                 </accordion-group>
-<!--
                 <accordion-group #resEnvGroup *ngIf="has_forc && is_vo &&( selectedProject && projectDataLoaded &&
                 selectedProjectVmsUsed < selectedProjectVmsMax && (flavors?.length > 0 || selectedFlavor))">
                   <div accordion-heading style="width: 100%; cursor: pointer">
@@ -332,7 +331,6 @@
                                [clientid]="client_id"
                                [onlyNamespace]="resenvSelected"></app-res-env>
                 </accordion-group>
--->
               </accordion>
             </div>
           </form>
@@ -345,7 +343,8 @@
             || (!gaveOkay && hasTools)
             || !selectedImage
             || (!selectedFlavor && flavors.length != 0 )
-            || (diskspace > 0 && !volumeName) )
+            || (diskspace > 0 && !volumeName)
+            || (!resEnvValid && resEnvComponent))
           && flavors.length > 0
           && projectDataLoaded
           && flavors_loaded
@@ -382,7 +381,8 @@
                   !selectedFlavor ||
                   !selectedImage||
                   (diskspace > 0 && volumeName == '') ||
-                  (!gaveOkay && hasTools)"
+                  (!gaveOkay && hasTools) ||
+                  (!resEnvValid && resEnvComponent)"
                   class="btn btn-primary  .btn-lg offset-md-8"
                   data-toggle="modal"
                   (click)="startVM(selectedFlavor.name,f.controls.instance_name.value,selectedProject[0],selectedProject[1]);resetData();resetProgressBar;infoModal.show();">
