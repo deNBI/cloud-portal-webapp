@@ -1,6 +1,15 @@
 ##  (2020-01-31)
 
 
+#### Bug Fixes
+
+* **forc:**
+  *  enable again and fix ([c214a319](c214a319))
+
+
+##  (2020-01-31)
+
+
 #### Features
 
 * **snapshot:**  add pagination ([fa2d00e3](fa2d00e3))
