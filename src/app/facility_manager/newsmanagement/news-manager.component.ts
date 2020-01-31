@@ -18,6 +18,7 @@ export class NewsManagerComponent implements OnInit {
   title: string = 'News Management';
 
   public production: boolean = environment.production;
+  showMotdUsage: boolean = false;
 
   public managerFacilities: [string, number][];
   public managerFacilitiesIdOnly: number[];
@@ -30,6 +31,7 @@ export class NewsManagerComponent implements OnInit {
                                                                        Validators.required),
                                                 text: new FormControl({value: this.selectedNews.text, disabled: false},
                                                                       Validators.required),
+                                                motd: new FormControl({value: this.selectedNews.motd, disabled: false}),
                                                 tag: new FormControl({value: this.selectedNews.tag, disabled: false})
                                               });
   allChecked: boolean = true;
@@ -59,6 +61,7 @@ export class NewsManagerComponent implements OnInit {
   controlToNews(): void {
     this.selectedNews.title = this.selectedNewsForm.controls['title'].value;
     this.selectedNews.text = this.selectedNewsForm.controls['text'].value;
+    this.selectedNews.motd = this.selectedNewsForm.controls['motd'].value;
     this.selectedNews.tag = this.selectedNewsForm.controls['tag'].value;
   }
 
@@ -183,6 +186,8 @@ export class NewsManagerComponent implements OnInit {
                                               {value: this.selectedNews.title, disabled: false}, Validators.required),
                                             text: new FormControl(
                                               {value: this.selectedNews.text, disabled: false}, Validators.required),
+                                            motd: new FormControl(
+                                              {value: this.selectedNews.motd, disabled: false}),
                                             tag: new FormControl(
                                               {value: this.selectedNews.tag, disabled: false})
                                           });
@@ -219,6 +224,7 @@ export class NewsManagerComponent implements OnInit {
     news.tag = 'testTag1, testTag2';
     news.facility_id = [3385, 1234];
     news.text = 'You will not be able to edit this news\nBecause it contains a fac_id you are no manager of';
+    news.motd = 'MOTD';
     news.id = 123;
     news.author = 'Jesus';
     news.time = '01.01.0 00:00';
