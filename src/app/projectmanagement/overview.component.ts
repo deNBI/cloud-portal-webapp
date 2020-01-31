@@ -25,6 +25,8 @@ import {CreditsService} from '../api-connector/credits.service';
 import {is_vo} from '../shared/globalvar';
 import {WIKI_GROUP_INVITATIONS} from '../../links/links';
 import {Doi} from '../applications/doi/doi';
+import {EdamOntologyTerm} from '../applications/edam-ontology-term';
+import {AutocompleteComponent} from 'angular-ng-autocomplete';
 
 /**
  * Projectoverview component.
@@ -41,6 +43,9 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   @Input() voRegistrationLink: string = environment.voRegistrationLink;
   @Input() invitation_group_pre: string = environment.invitation_group_pre;
   WIKI_GROUP_INVITATIONS: string = WIKI_GROUP_INVITATIONS;
+  selected_ontology_terms: EdamOntologyTerm[] = [];
+  edam_ontology_terms: EdamOntologyTerm[];
+  ontology_search_keyword: string = 'term';
 
   @ViewChild(NgForm) simpleVmForm: NgForm;
 
@@ -88,6 +93,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   allSet: boolean = false;
 
   title: string = 'Project Overview';
+  @ViewChild('edam_ontology') edam_ontology: AutocompleteComponent;
 
   checked_member_list: number[] = [];
 
@@ -107,6 +113,19 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
               private router: Router,
               private creditsService: CreditsService) {
     super(userservice, applicationstatusservice, applicationsservice, facilityService);
+  }
+
+  removeEDAMterm(term: EdamOntologyTerm): void {
+    const indexOf: number = this.selected_ontology_terms.indexOf(term);
+    this.selected_ontology_terms.splice(indexOf, 1);
+
+  }
+
+  selectEvent(item: any): void {
+    if (this.selected_ontology_terms.indexOf(item) === -1) {
+      this.selected_ontology_terms.push(item);
+    }
+    this.edam_ontology.clear();
   }
 
   calculateCredits(lifetimeString?: string): void {
@@ -232,6 +251,11 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
     values['total_ram_new'] = this.totalRAM;
     values['project_application_renewal_credits'] = this.extensionCredits;
     this.requestExtension(values);
+    if (this.selected_ontology_terms.length > 0) {
+      this.applicationsservice.addEdamOntologyTerms(this.application_id,
+                                                    this.selected_ontology_terms
+      ).subscribe();
+    }
 
   }
 
@@ -319,6 +343,10 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   }
 
   ngOnInit(): void {
+    this.applicationsservice.getEdamOntologyTerms().subscribe((terms: EdamOntologyTerm[]) => {
+      this.edam_ontology_terms = terms;
+      this.searchTermsInEdamTerms()
+    })
 
     this.activatedRoute.params.subscribe((paramsId: any) => {
       this.errorMessage = null;
@@ -353,6 +381,20 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
     }
 
     return true;
+  }
+
+  searchTermsInEdamTerms(): void {
+    const tmp: EdamOntologyTerm[] = [];
+    // tslint:disable-next-line:no-for-each-push typedef
+    this.selected_ontology_terms.forEach(ele => {
+      // tslint:disable-next-line:typedef
+      // @ts-ignore
+      // tslint:disable-next-line:typedef
+      const td = this.edam_ontology_terms.find(term => term.term === ele);
+      tmp.push(td)
+
+    })
+    this.selected_ontology_terms = tmp;
   }
 
   deleteDoi(doi: Doi): void {

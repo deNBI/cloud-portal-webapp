@@ -8,6 +8,7 @@ import {FormsModule} from '@angular/forms';
 import {AccordionModule} from 'ngx-bootstrap';
 import {ApplicationsModule} from '../applications/applications.module';
 import {SharedDirectivesModule} from '../shared/shared_modules/shared_directives.module';
+import {AutocompleteLibModule} from 'angular-ng-autocomplete';
 
 /**
  * Projectmanagment module.
@@ -21,7 +22,9 @@ import {SharedDirectivesModule} from '../shared/shared_modules/shared_directives
               CommonModule,
               ModalModule.forRoot(),
               ApplicationsModule,
-              SharedDirectivesModule
+              SharedDirectivesModule,
+              AutocompleteLibModule,
+
             ],
             declarations: [
               OverviewComponent

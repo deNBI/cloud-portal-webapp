@@ -176,6 +176,12 @@
                     </div>
                     {{VirtualMachineStates.staticNOT_FOUND}}
                   </ng-container>
+                  <ng-container *ngSwitchCase="VirtualMachineStates.staticERROR">
+                    <div [id]="'error_badge_' + vm?.name"
+                         class="dot-colorless bg-danger">
+                    </div>
+                    {{VirtualMachineStates.staticERROR}}
+                  </ng-container>
                   <ng-container *ngSwitchCase="VirtualMachineStates.staticBUILD_PLAYBOOK">
                     <div [id]="'build_playbook_badge_' + vm?.name"
                          class="dot-colorless bg-dark">

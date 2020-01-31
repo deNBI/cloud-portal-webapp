@@ -123,7 +123,7 @@
             </button>
             <button id="show_extension_modal"
                     *ngIf="project_application?.Status == application_states.APPROVED || project_application?.Status == application_states.MODIFICATION_DECLINED"
-                    (click)="newFlavors= {};initRamCores();calculateCredits(f.controls.project_application_renewal_lifetime.value);extensionModal.show()"
+                    (click)="newFlavors= {};selected_ontology_terms=[];initRamCores();calculateCredits(f.controls.project_application_renewal_lifetime.value);extensionModal.show()"
                     class="btn btn-warning"
                     type="button" style="margin-bottom:5px;">
               Request Extension/Modification
@@ -702,6 +702,16 @@
               </div>
               <span class="help-block">Current lifetime</span>
             </div>
+            <div class="col">
+              <div class="input-group">
+                <input class="form-control"
+                       name="project_application_lifetime" placeholder="NA"
+                       type="text" value="{{life_time_string}}"
+                       disabled>
+
+              </div>
+              <span class="help-block">Current lifetime</span>
+            </div>
 
             <div class="col">
               <div class="input-group">
@@ -720,7 +730,45 @@
                   <span class="input-group-text"> months</span>
                 </div>
               </div>
-              <span class="help-block">Number of months you want to extend the project</span>
+              <span class="help-block">Number of months you want to extend the project </span>
+            </div>
+          </div>
+          <div class="form-group row" *ngIf="project_application?.EdamTopics.length == 0 ">
+            <label class="col-md-4 form-control-label" for="text-input"><strong>Research Topics* </strong></label>
+            <div class="col-md-8">
+              <div [ngClass]="{
+                                'danger-border': selected_ontology_terms?.length <=0,
+                                'success-border':selected_ontology_terms?.length >0
+                                }">
+                <ng-autocomplete #edam_ontology id="edam_input"
+                                 [data]="edam_ontology_terms"
+                                 [searchKeyword]="ontology_search_keyword"
+                                 (selected)='selectEvent($event)'
+                                 placeHolder="Please add your research topics"
+
+                                 [itemTemplate]="itemTemplate"
+                                 [notFoundTemplate]="notFoundTemplate">
+                </ng-autocomplete>
+
+                <ng-template #itemTemplate let-item>
+                  <a [id]="item.term" [innerHTML]="item.term"></a>
+                </ng-template>
+
+                <ng-template #notFoundTemplate let-notFound>
+                  <div [innerHTML]="notFound"></div>
+                </ng-template>
+
+
+              </div>
+              <h5><span
+
+                *ngFor="let term of selected_ontology_terms"
+                style="margin-right: 5px; "
+                class="badge badge-info"> {{term.term}}
+                <span class="badge" style="cursor: pointer;" (click)="removeEDAMterm(term)">&#10060;</span>
+ </span>
+
+              </h5>
             </div>
           </div>
 
@@ -966,6 +1014,9 @@
           <p *ngIf="!min_vm">
             - Select at least one Flavor
           </p>
+          <p  *ngIf="project_application.EdamTopics.length == 0 && selected_ontology_terms.length < 1">
+            - Select at least one Research Topic
+          </p>
         </div>
 
 
@@ -975,8 +1026,8 @@
           </div>
           <button type="button" class="btn  btn-primary"
                   form="application_form" id="submit_renewal_btn"
-                  (click)="extension_request=true;filterEnteredData(f);calculateInitialCredits(f); submitModal.show();"
-                  [disabled]="f.invalid"><i
+                  (click)="extension_request=true;filterEnteredData(f);calculateInitialCredits(f); doiModal.show();"
+                  [disabled]="f.invalid || (!project_application.EdamTopics && selected_ontology_terms.length < 1)"><i
             class="fa fa-dot-circle-o">
 
           </i>
@@ -1054,61 +1105,137 @@
     </div><!-- /.modal-content -->L
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-
-
-<div bsModal #resultModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
-     aria-labelledby="Label"
-     aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title" *ngIf="extension_status == 0">
-          Waiting </h4>
-        <h4 class="modal-title" *ngIf="extension_status == 1"> Success </h4>
-        <h4 class="modal-title" *ngIf="extension_status == 2"> Error </h4>
-        <button type="button" class="close" style="cursor: pointer"
-                (click)="resultModal.hide();extension_status= 0;removeModalOpen();"
-                aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-
-      <div class="modal-body">
-        <div class="alert alert-info" role="alert" *ngIf="extension_status==0">
-          Waiting... <i class="fa fa-spinner fa-spin"
-                        style="font-size:24px"></i>
-        </div>
-
-
-        <div id="extension result" class="alert alert-success" role="alert" *ngIf="extension_status == 1">
-
-          Modify request successfully submitted!
-        </div>
-        <div id="extension result" class="alert alert-success" role="alert" *ngIf="extension_status == 3">
-          Modify request successfully approved!
-        </div>
-        <div id="extension result" class="alert alert-success" role="alert" *ngIf="extension_status == 4">
-          Modify request successfully declined!
-        </div>
-        <div id="extension result" class="alert alert-success" role="alert" *ngIf="extension_status == 5">
-          Modify request successfully approved and forwarded to facility!
-        </div>
-
-        <div id="extension result" class="alert alert-warning" role="alert" *ngIf="extension_status == 2">
-          An error occured.
-
-        </div>
-
-
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary"
-                  (click)="resultModal.hide();extension_status= 0;removeModalOpen();">
-            Close
+  <div bsModal #doiModal="bs-modal" class="modal fade" tabindex="-1"
+       role="dialog" aria-labelledby="Label"
+       aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Digital object identifier (DOI)</h4>
+          <button type="button" class="close" style="cursor: pointer;"
+                  (click)="doiModal.hide()"
+                  data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
           </button>
-        </div>
 
-      </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-  </div><!-- /.modal -->
-</div>
+        </div>
+        <div class="modal-body">
+          <div class="alert alert-info">
+            <strong> If you have new publications associated with the de.NBI Cloud please add their DOIs here.
+            </strong><br> Look <a
+            href="https://cloud.denbi.de/wiki/portal/project_overview/#adding-a-doi-digital-object-identifier"
+            target="_blank">here</a> for more information about DOIs.
+          </div>
+          <div class="table-responsive">
+            <table class="table ">
+
+              <tbody>
+              <ng-container
+                *ngFor="let doi of dois">
+                <tr>
+                  <td><a target="_blank" [href]="'https://doi.org/' + doi.identifier">{{doi.identifier}}</a></td>
+
+                  <td>
+                    <button
+                      class="btn btn-danger" type="button" (click)="deleteDoi(doi);">
+
+                      <i class="fa fa-trash"></i>&nbsp;
+                    </button>
+                  </td>
+
+                </tr>
+              </ng-container>
+
+              <tr>
+                <td><input style="width: 100%" type="text" required placeholder="e.g. 10.1000/182"
+                           pattern="10.\d{4,9}\/[-._;()\/:a-zA-Z0-9]+" [(ngModel)]="newDoi" #doiInput></td>
+
+                <td>
+                  <button id="add_doi_btn"
+                          (click)="addDoi();"
+                          [disabled]="!doiInput.validity.valid"
+                          type="button"
+                          class="btn btn-success"><i class="fa fa-plus"></i>&nbsp;
+                  </button>
+                </td>
+
+              </tr>
+              </tbody>
+            </table>
+
+          </div>
+
+          <div class="modal-footer">
+
+
+            <button id="doi_modal_btn" class="btn btn-success col-md4" type="button"
+                    (click)="extensionModal.hide();doiModal.hide(); submitModal.show();onSubmit(f);">Confirm
+
+            </button>
+            <button class="btn  btn-primary col-md-4" type="reset"
+                    (click)="doiModal.hide();">Cancel
+            </button>
+
+          </div>
+        </div><!-- /.modal-content -->L
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+  </div>
+
+
+    <div bsModal #resultModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+         aria-labelledby="Label"
+         aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" *ngIf="extension_status == 0">
+              Waiting </h4>
+            <h4 class="modal-title" *ngIf="extension_status == 1"> Success </h4>
+            <h4 class="modal-title" *ngIf="extension_status == 2"> Error </h4>
+            <button type="button" class="close" style="cursor: pointer"
+                    (click)="resultModal.hide();extension_status= 0;removeModalOpen();"
+                    aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+
+          <div class="modal-body">
+            <div class="alert alert-info" role="alert" *ngIf="extension_status==0">
+              Waiting... <i class="fa fa-spinner fa-spin"
+                            style="font-size:24px"></i>
+            </div>
+
+
+            <div id="extension result" class="alert alert-success" role="alert" *ngIf="extension_status == 1">
+
+              Modify request successfully submitted!
+            </div>
+            <div id="extension result" class="alert alert-success" role="alert" *ngIf="extension_status == 3">
+              Modify request successfully approved!
+            </div>
+            <div id="extension result" class="alert alert-success" role="alert" *ngIf="extension_status == 4">
+              Modify request successfully declined!
+            </div>
+            <div id="extension result" class="alert alert-success" role="alert" *ngIf="extension_status == 5">
+              Modify request successfully approved and forwarded to facility!
+            </div>
+
+            <div id="extension result" class="alert alert-warning" role="alert" *ngIf="extension_status == 2">
+              An error occured.
+
+            </div>
+
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary"
+                      (click)="resultModal.hide();extension_status= 0;removeModalOpen();">
+                Close
+              </button>
+            </div>
+
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div><!-- /.modal -->
+    </div>
 
