@@ -341,15 +341,8 @@
             <i class="fa fa-align-justify"></i> Credit Usage history of {{project?.Name }}
           </div>
           <div class="card-body">
-            <canvas
-              id="myChart" width="400" height="400"
-              baseChart
-              [chartType]="'line'"
-              [datasets]="chartData"
-              [labels]="chartLabels"
-              [options]="chartOptions"
-              [legend]="true"
-              (chartClick)="onChartClick($event)"
+            <canvas #creditsChart
+              id="creditsChart" width="400" height="400"
             >
             </canvas>
           </div>

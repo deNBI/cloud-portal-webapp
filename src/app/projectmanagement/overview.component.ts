@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, OnDestroy, ViewChild} from '@angular/core';
+import {Component, Input, OnInit, OnDestroy, ViewChild, ViewChildren, ElementRef} from '@angular/core';
 import {Project} from './project.model';
 import {ProjectMember} from './project_member.model'
 import {environment} from '../../environments/environment'
@@ -25,6 +25,7 @@ import {CreditsService} from '../api-connector/credits.service';
 import {is_vo} from '../shared/globalvar';
 import {WIKI_GROUP_INVITATIONS} from '../../links/links';
 import {Doi} from '../applications/doi/doi';
+import {Chart} from 'chart.js';
 
 /**
  * Projectoverview component.
@@ -43,6 +44,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   WIKI_GROUP_INVITATIONS: string = WIKI_GROUP_INVITATIONS;
 
   @ViewChild(NgForm) simpleVmForm: NgForm;
+  @ViewChild('creditsChart')
+  creditsCanvas: ElementRef;
 
   /**
    * If at least 1 flavor is selected.
@@ -109,17 +112,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   project_application_renewal_lifetime: number;
   private updateCreditsUsedIntervals: number;
 
-  chartOptions = {
-    responsive: true
-  };
-
-  chartData = [
-    { data: [330, 600, 260, 700], label: 'Account A' },
-    { data: [120, 455, 100, 340], label: 'Account B' },
-    { data: [45, 67, 800, 500], label: 'Account C' }
-  ];
-
-  chartLabels = ['January', 'February', 'Mars', 'April'];
+  creditsChart: any;
 
   constructor(private flavorService: FlavorService,
               private groupService: GroupService,
@@ -151,10 +144,29 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   }
 
   fetchCreditHistoryOfProject(): void {
-    this.creditsService.getCreditsUsageHistoryOfProject(Number(this.project.Id.toString)).toPromise()
-      .then((response: {}) =>
-        this.chartData["timestamps"]
-      )
+    console.log(this.project.Id);
+    console.log(Number(this.project_application.Id.toString()));
+    this.creditsService.getCreditsUsageHistoryOfProject(Number(this.project.Id.toString())).toPromise()
+      .then((response: {}) => {
+              console.log(response['data_points']);
+              console.log(response['time_points']);
+              this.chartData = [{data: response['data_points'], label: 'Credit Usage'}];
+              this.chartLabels = response['time_points'];
+              console.log(response);
+              this.creditsChart = new Chart(this.creditsCanvas.nativeElement, {
+                type: 'line',
+                data: {
+                  labels: response['time_points'],
+                  datasets: [{
+                    label: 'Credit Usage',
+                    data: response['data_points'],
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)'
+                  }]
+                }
+              })
+            }
+      ).catch((err: Error) => console.log(err.message));
   }
 
   updateExampleCredits(numberOfCredits: number): void {
@@ -418,6 +430,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
       this.getDois();
       this.is_vo_admin = is_vo;
       this.startUpdateCreditUsageLoop();
+      setTimeout(() => this.fetchCreditHistoryOfProject(), 4000);
     });
 
   }
