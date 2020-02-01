@@ -4,6 +4,7 @@ import {FacilityService} from '../../api-connector/facility.service';
 import {DenbiNews} from './news';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {environment} from '../../../environments/environment';
+import {BehaviorSubject} from 'rxjs';
 
 /**
  * News-Manager Class.
@@ -18,7 +19,6 @@ export class NewsManagerComponent implements OnInit {
   title: string = 'News Management';
 
   public production: boolean = environment.production;
-  showMotdUsage: boolean = false;
 
   public managerFacilities: [string, number][];
   public managerFacilitiesIdOnly: number[];
@@ -42,6 +42,8 @@ export class NewsManagerComponent implements OnInit {
   reg1: RegExp = /\[/g;
   reg2: RegExp = /]/g;
   reg3: RegExp = /'/g;
+
+  public motdLength: BehaviorSubject<number> = new BehaviorSubject(0);
 
   constructor(private newsService: NewsService,
               private facilityService: FacilityService) {
@@ -172,10 +174,14 @@ export class NewsManagerComponent implements OnInit {
           this.facilitiesToPost.push(facility_id);
         }
       }
+      this.motdLength.next(this.selectedNews.motd.length);
     } else {
       this.selectedNews = new DenbiNews();
+      this.motdLength.next(0);
     }
     this.deletionStatus = 0;
+    this.patchingStatus = 0;
+    this.addingStatus = 0;
     this.error_string = '';
     this.setFormGroup();
   }
@@ -191,6 +197,9 @@ export class NewsManagerComponent implements OnInit {
                                             tag: new FormControl(
                                               {value: this.selectedNews.tag, disabled: false})
                                           });
+    this.selectedNewsForm.controls['motd'].valueChanges.subscribe((value: any) => {
+      this.motdLength.next(value.length);
+    });
   }
 
   setFacility(facility: [string, number]): void {
