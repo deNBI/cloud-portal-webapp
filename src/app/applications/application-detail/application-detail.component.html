@@ -232,11 +232,11 @@
     <tr *ngFor="let item of application?.CurrentFlavors | keyvalue">
       <td>Flavor: {{item.key}}</td>
       <td>{{item.value.counter}}</td>
-      <td *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED  || isModification">
+      <td *ngIf="(application?.Status == application_states.MODIFICATION_REQUESTED  || isModification)  && !application.ApplicationExtension?.IsOnlyExtraCreditsApplication">
                                                             <span
                                                               *ngIf="application?.ApplicationExtension?.RequestedFlavors[item.key]">
                                                                 {{application?.ApplicationExtension?.RequestedFlavors[item.key]?.counter}}</span>
-        <span *ngIf="!application?.ApplicationExtension?.RequestedFlavors[item.key]">
+        <span *ngIf="!application?.ApplicationExtension?.RequestedFlavors[item.key] && !application.ApplicationExtension?.IsOnlyExtraCreditsApplication">
                                                                0</span></td>
     </tr>
     <ng-container
