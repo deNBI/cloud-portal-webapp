@@ -33,18 +33,23 @@
       </div>
 
     </div>
-
-    <div class="col-8 row container-fluid" style="margin: 10px 0 0 0;">
-      <pagination
-        [totalItems]="total_items" [itemsPerPage]="items_per_page"
-        (pageChanged)="pageChanged($event)" [(ngModel)]="currentPage"
-        [boundaryLinks]="true" [maxSize]="total_pages" [rotate]="false" #pagination>
-      </pagination>
-      <input id="vm_per_site" class="form-control" style="width: 80px; margin-left: 10px"
-             name="vm_per_site" placeholder="e.g 3"
-             type="number" min="1" max="25" step="1"
-             appMinAmount="1" appMaxAmount="25" appInteger
-             pattern="^([1-9]|1[012])$" [(ngModel)]="vm_per_site" (ngModelChange)="vmPerPageChange.next($event)">
+    <div class="row">
+      <div class="col-4 container-fluid" style="margin: 10px 0 0 0;">
+        <pagination
+          [totalItems]="total_items" [itemsPerPage]="items_per_page"
+          (pageChanged)="pageChanged($event)" [(ngModel)]="currentPage"
+          [boundaryLinks]="true" [maxSize]="total_pages" [rotate]="false" #pagination>
+        </pagination>
+      </div>
+      <div class="input-group mb-3 col-2">
+        <input id="vm_per_site" class="form-control" style="margin: 10px 0 0 0;"
+               name="vm_per_site" placeholder="e.g 3"
+               type="number" min="1" max="25" step="1"
+               appMinAmount="1" appMaxAmount="25" appInteger
+               pattern="^([1-9]|1[012])$" [(ngModel)]="vm_per_site" (ngModelChange)="vmPerPageChange.next($event)">
+        <div class="input-group-append" style="margin: 10px 0 0 0;"><span class="input-group-text"> VMs per page
+                                    </span></div>
+      </div>
     </div>
     <div class="container-fluid">
       <div class="row">
@@ -124,74 +129,88 @@
 
               </div>
             </div>
-            <div class="card-block">
+            <div class="card-block" *ngIf="vm">
               <div class="row" style="margin-top: 5px">
                 <div class="col-5" style="margin: auto;" [ngSwitch]="vm?.status">
-                  <a class="h5 text-primary" style="margin-left: 10px">{{vm?.name}}  </a>
-                  <ng-container *ngSwitchCase="this.VirtualMachineStates.staticACTIVE">
+
+
+                  <a class="h5 text-primary" style="margin-left: 10px"
+                     *ngIf="vm?.status == VirtualMachineStates.staticACTIVE
+                     || vm?.status == VirtualMachineStates.staticSHUTOFF;
+                      else statusElseBlock"
+                     [routerLink]="['/virtualmachines/detail/' + vm?.openstackid]">{{vm?.name}}  </a>
+                  <ng-template #statusElseBlock><span class="h5 text-primary"
+                                      style="margin-left: 10px">{{vm?.name}}  </span></ng-template>
+                  <ng-container *ngSwitchCase="VirtualMachineStates.staticACTIVE">
                     <div [id]="'active_badge_' + vm?.name"
                          class="dot-colorless bg-success pulseAnim" style="width: 10px; height: 10px">
                     </div>
-                    {{this.VirtualMachineStates.staticACTIVE}}
+                    {{VirtualMachineStates.staticACTIVE}}
                   </ng-container>
-                  <ng-container *ngSwitchCase="this.VirtualMachineStates.staticSHUTOFF" >
+                  <ng-container *ngSwitchCase="VirtualMachineStates.staticSHUTOFF" >
                     <div [id]="'shutoff_badge_' + vm?.name" class="dot-colorless bg-warning" style="width: 10px; height: 10px">
                     </div>
-                    {{this.VirtualMachineStates.staticSHUTOFF}}
+                    {{VirtualMachineStates.staticSHUTOFF}}
                   </ng-container>
-                  <ng-container *ngSwitchCase="this.VirtualMachineStates.staticDELETED">
+                  <ng-container *ngSwitchCase="VirtualMachineStates.staticDELETED">
                     <div [id]="'deleted_badge_' + vm?.name"
                          class="dot-colorless bg-danger" style="width: 10px; height: 10px">
                     </div>
-                    {{this.VirtualMachineStates.staticDELETED}}
+                    {{VirtualMachineStates.staticDELETED}}
                   </ng-container>
-                  <ng-container *ngSwitchCase="this.VirtualMachineStates.staticBUILD">
+                  <ng-container *ngSwitchCase="VirtualMachineStates.staticBUILD">
                     <div [id]="'build_badge_' + vm?.name"
                          class="dot-colorless bg-dark">
                     </div>
-                    {{this.VirtualMachineStates.staticBUILD}}
+                    {{VirtualMachineStates.staticBUILD}}
                   </ng-container>
-                  <ng-container *ngSwitchCase="this.VirtualMachineStates.staticPREPARE_PLAYBOOK_BUILD">
+                  <ng-container *ngSwitchCase="VirtualMachineStates.staticPREPARE_PLAYBOOK_BUILD">
                     <div [id]="'ppb_badge_' + vm?.name"
                          class="dot-colorless bg-dark">
                     </div>
-                    {{this.VirtualMachineStates.staticBUILD}}
+                    {{VirtualMachineStates.staticBUILD}}
                   </ng-container>
-                  <ng-container *ngSwitchCase="this.VirtualMachineStates.staticNOT_FOUND">
+                  <ng-container *ngSwitchCase="VirtualMachineStates.staticNOT_FOUND">
                     <div [id]="'not_found_badge_' + vm?.name"
                          class="dot-colorless bg-dark">
                     </div>
-                    {{this.VirtualMachineStates.staticNOT_FOUND}}
+                    {{VirtualMachineStates.staticNOT_FOUND}}
                   </ng-container>
-                  <ng-container *ngSwitchCase="this.VirtualMachineStates.staticBUILD_PLAYBOOK">
+                  <ng-container *ngSwitchCase="VirtualMachineStates.staticERROR">
+                    <div [id]="'error_badge_' + vm?.name"
+                         class="dot-colorless bg-danger">
+                    </div>
+                    {{VirtualMachineStates.staticERROR}}
+                  </ng-container>
+                  <ng-container *ngSwitchCase="VirtualMachineStates.staticBUILD_PLAYBOOK">
                     <div [id]="'build_playbook_badge_' + vm?.name"
                          class="dot-colorless bg-dark">
                     </div>
-                    {{this.VirtualMachineStates.staticBUILD_PLAYBOOK}}
+                    {{VirtualMachineStates.staticBUILD_PLAYBOOK}}
                   </ng-container>
-                  <ng-container *ngSwitchCase="this.VirtualMachineStates.staticRESTARTING">
+                  <ng-container *ngSwitchCase="VirtualMachineStates.staticRESTARTING">
                     <div [id]="'restarting_badge_' + vm?.name"
                          class="dot-colorless bg-dark">
                     </div>
-                    {{this.VirtualMachineStates.staticRESTARTING}}
+                    {{VirtualMachineStates.staticRESTARTING}}
                   </ng-container>
-                  <ng-container *ngSwitchCase="this.VirtualMachineStates.staticPOWERING_OFF">
+                  <ng-container *ngSwitchCase="VirtualMachineStates.staticPOWERING_OFF">
                     <div [id]="'powering_off_badge_' + vm?.name"
                          class="dot-colorless bg-dark">
                     </div>
-                    {{this.VirtualMachineStates.staticPOWERING_OFF}}
+                    {{VirtualMachineStates.staticPOWERING_OFF}}
                   </ng-container>
                   <ng-container *ngSwitchDefault>
                     <div [id]="'default_badge_' + vm?.name"
                          class="dot-colorless bg-dark" style="width: 10px; height: 10px">
                     </div>
-                    {{this.VirtualMachineStates.staticGETTING_STATUS}}
+                    {{VirtualMachineStates.staticGETTING_STATUS}}
                   </ng-container>
-                  <i *ngIf="this.VirtualMachineStates.staticNOT_IN_PROCESS_STATE.indexOf(vm?.status) === -1"
-                  class="fa fa-spinner fa-spin"></i>
+                  <i *ngIf="VirtualMachineStates.staticNOT_IN_PROCESS_STATE.indexOf(vm?.status) === -1"
+                     class="fa fa-spinner fa-spin"></i>
                 </div>
                 <div class="col-3" style="margin: auto; text-align: center">
-                  <a href="{{site_path}}#/project-management/{{vm?.application_id}}"><strong>{{vm?.project}}</strong></a>
+                  <a [routerLink]="['/project-management/' + vm?.application_id]" target="_blank"><strong>{{vm?.project}}</strong></a>
                 </div>
                 <div class="col-2" style="margin: auto; text-align: center">
                   {{vm?.userlogin}}
@@ -201,7 +220,8 @@
                 <div class="col-1">
                   <div class="form-check">
                     <ng-container formArrayName="vmActions" *ngFor="let genre of actionsForm.controls['vmActions'].controls; let i = index">
-                      <input type="checkbox" [formControlName]="i" *ngIf="vmActions[i].name == vm?.name"
+                      <input type="checkbox" [formControlName]="i.toString()" *ngIf="vmActions[i].name == vm?.name
+                      && (vm?.status == VirtualMachineStates.staticACTIVE || vm?.status == VirtualMachineStates.staticSHUTOFF)"
                              [id]="'selectCheckBox_'+ i">
                     </ng-container>
                   </div>
@@ -254,7 +274,7 @@
             <div class="card-footer p-x-1 py-h"
                  *ngIf="(vm?.status ==  this.VirtualMachineStates.staticACTIVE|| vm?.status == this.VirtualMachineStates.staticSHUTOFF) && vm?.cardState != 0">
               <div *ngIf="vm?.cardState == 1">
-                 <div class="row" *ngFor="let mode of vm?.modes">
+                <div class="row" *ngFor="let mode of vm?.modes">
                   <div class="col-md-1">
                     <span class="font-weight-bold font-xs btn-block text-muted">{{mode.name}}:</span>
                   </div>
@@ -270,12 +290,12 @@
                 </div>
 
 
-                <div class="row" *ngIf="vm?.res_env_url != '' && vm?.res_env_url != null && vm?.res_env_url != undefined">
+                <div class="row" *ngIf="vm?.res_env_url != '' && vm?.res_env_url != null && vm?.res_env_url != undefined && resenv_by_play(vm)">
                   <div class="col-md-1">
                     <span class="font-weight-bold font-xs btn-block text-muted">Res-Env:</span>
                   </div>
                   <div class="col-md-11">
-                    <a class="font-weight-bold font-xs btn-block text-muted" href="{{vm?.res_env_url}} | async" target="_blank">{{vm?.res_env_url}}</a></div>
+                    <a class="font-weight-bold font-xs btn-block text-muted" href="{{vm?.res_env_url}}" target="_blank">{{vm?.res_env_url}}</a></div>
                 </div>
               </div>
 

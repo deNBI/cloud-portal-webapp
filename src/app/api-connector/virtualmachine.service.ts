@@ -24,7 +24,8 @@ export class VirtualmachineService {
   constructor(private http: HttpClient) {
   }
 
-  startCluster(masterFlavor: string, masterImage: string, workerFlavor: string, workerImage: string, workerCount: string | number, project_id: string | number): Observable<any> {
+  startCluster(masterFlavor: string, masterImage: string, workerFlavor: string, workerImage: string, workerCount: string | number,
+               project_id: string | number): Observable<any> {
     const params: HttpParams = new HttpParams()
       .set('master_flavor', masterFlavor)
       .set('master_image', masterImage)
@@ -47,8 +48,7 @@ export class VirtualmachineService {
   }
 
   startVM(flavor: string, image: Image, servername: string, project: string, projectid: string, http: boolean, https: boolean,
-          udp: boolean, volumename?: string, diskspace?: string, playbook_information?: string, resenvTags?: string,
-          user_key_url?: string): Observable<any> {
+          udp: boolean, volumename?: string, diskspace?: string, playbook_information?: string, user_key_url?: string): Observable<any> {
 
     const params: HttpParams = new HttpParams()
       .set('flavor', flavor)
@@ -62,7 +62,6 @@ export class VirtualmachineService {
       .set('https_allowed', https.toString())
       .set('udp_allowed', udp.toString())
       .set('playbook_information', playbook_information)
-      .set('resenvTags', resenvTags)
       .set('user_key_url', user_key_url);
 
     return this.http.post(this.baseVmUrl, params, {
@@ -89,8 +88,16 @@ export class VirtualmachineService {
     })
   }
 
+  getVmById(openstackId: string): Observable<VirtualMachine> {
+
+    return this.http.get<VirtualMachine>(`${this.baseVmUrl}${openstackId}/details/`, {
+      withCredentials: true
+    })
+  }
+
   getVmsFromLoggedInUser(page: number, vm_per_site: number, filter?: string, filter_status?: string[]): Observable<VirtualMachine[]> {
     let params: HttpParams = new HttpParams().set('page', page.toString()).set('vm_per_site', vm_per_site.toString());
+
     if (filter) {
       params = params.set('filter', filter);
 

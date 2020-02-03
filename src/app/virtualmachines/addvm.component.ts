@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, DoCheck, OnInit, ViewChild} from '@angular/core';
 import {Image} from './virtualmachinemodels/image';
 import {Flavor} from './virtualmachinemodels/flavor';
 import {ImageService} from '../api-connector/image.service';
@@ -20,6 +20,7 @@ import {UserService} from '../api-connector/user.service';
 import {BiocondaComponent} from './conda/bioconda.component';
 import {ResEnvComponent} from './conda/res-env.component';
 import {is_vo} from '../shared/globalvar';
+import {TemplateNames} from './conda/template-names';
 
 /**
  * Start virtualmachine component.
@@ -30,7 +31,7 @@ import {is_vo} from '../shared/globalvar';
              providers: [GroupService, ImageService, KeyService, FlavorService, VirtualmachineService, ApplicationsService,
                Application, ApiSettings, KeyService, ClientService, UserService]
            })
-export class VirtualMachineComponent implements OnInit {
+export class VirtualMachineComponent implements OnInit, DoCheck {
 
   TWENTY_FIVE_PERCENT: number = 25;
   FIFTY_PERCENT: number = 50;
@@ -45,7 +46,7 @@ export class VirtualMachineComponent implements OnInit {
   BUILD_PLAYBOOK: string = 'BUILD_PLAYBOOK';
   CREATING_STATUS: string = 'Creating...';
   BUILD_STATUS: string = 'Building..';
-  CHECKING_PORT_STATUS: string = 'Checking port..';
+  CHECKING_PORT_STATUS: string = 'Checking Connection..';
   PREPARE_PLAYBOOK_STATUS: string = 'Prepare Playbook Build...';
   BUIDLING_PLAYBOOK_STATUS: string = 'Building Playbook...';
   ANIMATED_PROGRESS_BAR: string = 'progress-bar-animated';
@@ -66,6 +67,10 @@ export class VirtualMachineComponent implements OnInit {
   has_forc: boolean = false;
   client_id: string;
   mosh_mode_available: boolean = false;
+  resenvSelected: boolean = false;
+  resEnvValid: boolean = true;
+  resEnvNeedsName: boolean = false;
+  resEnvNeedsTemplate: boolean = false;
   data_loaded: boolean = false;
 
   title: string = 'New Instance';
@@ -203,6 +208,8 @@ export class VirtualMachineComponent implements OnInit {
    */
   FREEMIUM_ID: number = environment.freemium_project_id;
 
+  prod: boolean = environment.production;
+
   /**
    * Time for the check status loop.
    * @type {number}
@@ -325,7 +332,8 @@ export class VirtualMachineComponent implements OnInit {
     this.create_error = null;
     this.vm_name = null;
     // tslint:disable-next-line:no-complex-conditionals
-    if (this.selectedImage && flavor && servername && project && (this.diskspace <= 0 || this.diskspace > 0 && this.volumeName.length > 0)) {
+    if (this.selectedImage && flavor && servername && project &&
+      (this.diskspace <= 0 || this.diskspace > 0 && this.volumeName.length > 0)) {
       this.create_error = null;
       this.started_machine = true;
 
@@ -337,21 +345,23 @@ export class VirtualMachineComponent implements OnInit {
       } else {
         this.progress_bar_width = this.THIRTY_THIRD_PERCENT;
       }
-      const play_information: string = this.getPlaybookInformation();
+      // Playbook and Research-Environment stuff
+      let play_information: string = this.getPlaybookInformation();
       if (play_information !== '{}') {
         this.playbook_run = 1;
+      } else {
+        play_information = null;
       }
-      let tags: string = null;
       let user_key_url: string = null;
-      if (this.selectedImage.tags.indexOf('resenv') !== -1) {
-        tags = this.selectedImage.tags.toString();
+      if (this.resenvSelected) {
         user_key_url = this.resEnvComponent.getUserKeyUrl();
       }
+
       this.virtualmachineservice.startVM(
         flavor_fixed, this.selectedImage, servername,
         project, projectid.toString(), this.http_allowed,
         this.https_allowed, this.udp_allowed, this.volumeName,
-        this.diskspace.toString(), play_information, tags, user_key_url)
+        this.diskspace.toString(), play_information, user_key_url)
         .subscribe((newVm: VirtualMachine) => {
           this.started_machine = false;
 
@@ -405,10 +415,9 @@ export class VirtualMachineComponent implements OnInit {
       this.timeout += this.biocondaComponent.getTimeout();
     }
 
-    if (this.resEnvComponent && this.resEnvComponent.selectedTemplate !== null
+    if (this.resEnvComponent && this.resEnvComponent.selectedTemplate.template_name !== 'undefined'
       && this.resEnvComponent.user_key_url.errors === null) {
-      playbook_info[this.resEnvComponent.selectedTemplate.template_name] = {template_version:
-        this.resEnvComponent.selectedTemplate.template_version};
+      playbook_info[this.resEnvComponent.selectedTemplate.template_name] = {};
       playbook_info['user_key_url'] = {user_key_url: this.resEnvComponent.getUserKeyUrl()};
     }
 
@@ -519,7 +528,8 @@ export class VirtualMachineComponent implements OnInit {
   setSelectedImage(image: Image): void {
 
     this.selectedImage = image;
-    this.isMoshModeAvailable()
+    this.isMoshModeAvailable();
+    this.hasImageResenv();
 
   }
 
@@ -538,6 +548,22 @@ export class VirtualMachineComponent implements OnInit {
 
   }
 
+  hasImageResenv(): void {
+    if (!this.resEnvComponent) {
+      return;
+    }
+    for (const mode of this.selectedImage.modes) {
+      if (TemplateNames.ALL_TEMPLATE_NAMES.indexOf(mode.name) !== -1) {
+        this.resenvSelected = true;
+        this.resEnvComponent.setOnlyNamespace();
+
+        return;
+      }
+    }
+    this.resenvSelected = false;
+    this.resEnvComponent.unsetOnlyNamespace();
+  }
+
   setSelectedFlavor(flavor: Flavor): void {
     this.selectedFlavor = flavor;
     this.newCores = this.selectedFlavor.vcpus;
@@ -549,6 +575,14 @@ export class VirtualMachineComponent implements OnInit {
     this.initializeData();
     this.is_vo = is_vo;
 
+  }
+
+  ngDoCheck(): void {
+    if (this.resEnvComponent) {
+      this.resEnvValid = this.resEnvComponent.isValid();
+      this.resEnvNeedsName = this.resEnvComponent.needsName();
+      this.resEnvNeedsTemplate = this.resEnvComponent.needsTemplate();
+    }
   }
 
   hasChosenTools(hasSomeTools: boolean): void {

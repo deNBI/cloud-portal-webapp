@@ -16,6 +16,7 @@ import {GroupService} from '../api-connector/group.service';
 import {environment} from '../../environments/environment';
 import {ClientService} from '../api-connector/client.service';
 import {Client} from './clients/client.model';
+import {TemplateNames} from './conda/template-names';
 
 /**
  * Vm overview componentn.
@@ -33,7 +34,6 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 
   private subscription: Subscription = new Subscription();
 
-  actionPopupOpen: boolean = false;
   VirtualMachineStates: VirtualMachineStates = new VirtualMachineStates();
 
   /**
@@ -42,20 +42,13 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
   vms_content: VirtualMachine[] = [];
   currentPage: number = 1;
   DEBOUNCE_TIME: number = 300;
+  FILTER_DEBOUNCE_TIME: number = 2000;
 
   filter_status_list: string[] = [VirtualMachineStates.ACTIVE, VirtualMachineStates.SHUTOFF];
   isSearching: boolean = true;
 
   selectedVm: VirtualMachine = null;
   vm_per_site: number = 7;
-
-  STATIC_IMG_FOLDER: String = 'static/webapp/assets/img';
-  site_path: string = environment.webapp;
-
-  CPU_ICON_PATH: string = `${this.STATIC_IMG_FOLDER}/new_instance/cpu_icon.svg`;
-  RAM_ICON_PATH: string = `${this.STATIC_IMG_FOLDER}/new_instance/ram_icon.svg`;
-  STORAGE_ICON_PATH: string = `${this.STATIC_IMG_FOLDER}/new_instance/storage_icon.svg`;
-  GPU_ICON_PATH: string = `${this.STATIC_IMG_FOLDER}/new_instance/gpu_icon.svg`;
 
   /**
    * Facilitties where the user is manager ['name',id].
@@ -132,7 +125,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
   snapshotSearchTerm: Subject<string> = new Subject<string>();
 
   actionsForm: FormGroup;
-  vmActions: any[] = [];
+  vmActions: {id: VirtualMachine, name: string}[] = [];
   selectedMachines: VirtualMachine[] = [];
 
   clientsForcUrls: {[client_id: string]: [string]} = {};
@@ -164,20 +157,6 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
       this.getAllVmsFacilities()
     }
 
-  }
-
-  /**
-   * Copies the ssh-command needed to connect to the virtual machine (vmachine) to the clipboard.
-   * @param vmachine
-   */
-
-
-
-  copySSHCommand(vmachine: VirtualMachine): void {
-    this.copyToClipboard((vmachine.ssh_command.substring(65, vmachine.ssh_command.length)));
-  }
-  copyUDPCommand(vmachine: VirtualMachine): void {
-    this.copyToClipboard(vmachine.udp_command);
   }
 
   copyToClipboard(text: string): void {
@@ -218,7 +197,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 
   /**
    * Check if the snapshot name is valid.
-   * @param e
+   * @param event: name of snapshot
    */
   validSnapshotName(event: any): any {
     this.snapshotNameCheckDone = false;
@@ -442,7 +421,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 
   /**
    * Stop a vm.
-   * @param {string} openstack_id of instance.
+   * @param {VirtualMachine} vm: virtual machine to stop.
    */
   stopVm(vm: VirtualMachine): void {
     this.virtualmachineservice.stopVM(vm.openstackid)
@@ -493,7 +472,6 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 
   /**
    * Get all vms of user.
-   * @param {string} elixir_id of user
    */
   getVms(): void {
 
@@ -518,18 +496,6 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
       );
   }
 
-  /**
-   * Get all vms.
-   */
-  getAllVms(): void {
-    this.virtualmachineservice.getAllVM(this.currentPage, this.vm_per_site,
-                                        this.filter, this.filter_status_list)
-      .subscribe((vms: VirtualMachine[]) => {
-                   this.prepareVMS(vms);
-                 }
-      );
-  }
-
   prepareVMS(vms: VirtualMachine[]): void {
 
     this.vms_content = vms['vm_list'];
@@ -542,7 +508,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
       vm.userlogin = vm['userlogin'];
       vm.cardState = 0;
       this.setForcUrl(vm);
-      if (vm.status !== VirtualMachineStates.DELETED) {
+      if (vm.status === VirtualMachineStates.ACTIVE || vm.status === VirtualMachineStates.SHUTOFF) {
         this.vmActions.push({id: vm, name: vm.name});
       }
       if (vm.created_at !== '') {
@@ -602,6 +568,18 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
     })
   }
 
+  /**
+   * Get all vms.
+   */
+  getAllVms(): void {
+    this.virtualmachineservice.getAllVM(this.currentPage, this.vm_per_site,
+                                        this.filter, this.filter_status_list)
+      .subscribe((vms: VirtualMachine[]) => {
+                   this.prepareVMS(vms);
+                 }
+      );
+  }
+
   ngOnInit(): void {
     this.getClientForcUrls();
     this.getVms();
@@ -614,7 +592,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 
     this.filterChanged
       .pipe(
-        debounceTime(this.DEBOUNCE_TIME),
+        debounceTime(this.FILTER_DEBOUNCE_TIME),
         distinctUntilChanged())
       .subscribe(() => {
         this.applyFilter();
@@ -733,5 +711,15 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
         });
       });
     });
+  }
+
+  resenv_by_play(vm: VirtualMachine): boolean {
+    for (const mode of vm.modes) {
+      if (TemplateNames.ALL_TEMPLATE_NAMES.indexOf(mode.name) !== -1) {
+        return false;
+      }
+    }
+
+    return true;
   }
 }

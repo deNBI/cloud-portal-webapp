@@ -1,6 +1,9 @@
 import {VirtualMachine} from '../virtualmachinemodels/virtualmachine';
 import {Client} from '../clients/client.model';
 
+/**
+ * Clusterinfo
+ */
 export class Clusterinfo {
   private _master_instance: VirtualMachine;
   private _worker_instances: VirtualMachine[];
@@ -93,4 +96,3 @@ export class Clusterinfo {
     this._key_name = value;
   }
 }
-

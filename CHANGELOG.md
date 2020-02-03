@@ -1,3 +1,61 @@
+##  (2020-01-31)
+
+
+#### Bug Fixes
+
+* **forc:**
+  *  enable again and fix ([c214a319](c214a319))
+
+
+##  (2020-01-31)
+
+
+#### Features
+
+* **snapshot:**  add pagination ([fa2d00e3](fa2d00e3))
+
+#### Bug Fixes
+
+* **vm-overview:**
+  *  show error state ([133587ee](133587ee))
+  *  set debounce time to 2s ([0b8a4672](0b8a4672))
+
+
+##  (2020-01-30)
+
+
+#### Bug Fixes
+
+* **vm:**  deactivate forc in new instance ([8a4e978b](8a4e978b))
+
+
+##  (2020-01-29)
+
+
+#### Features
+
+* **VM:** Checking Port changed to Checking Connection ([79521ad3](79521ad3))
+
+#### Bug Fixes
+
+* **vm:**  remove detail in new tab for e2e tests ([be78b446](be78b446))
+* **vm:**  overview/detail: routerLink instead href, volume buttons to pointer, reverse merge errors
+* **linting:**  some linting done
+
+
+##  (2020-01-24)
+
+
+#### Bug Fixes
+
+* **layout:**  sidebar bottom end aligned for smaller screens ([fd023926](fd023926))
+* **type-overview:**  changed information ([eb61796e](eb61796e))
+
+#### Features
+
+* **vm:**  added instance detail view ([8815fc2a](8815fc2a))
+
+
 ##  (2020-01-20)
 
 

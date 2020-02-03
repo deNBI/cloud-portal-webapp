@@ -27,10 +27,10 @@ import {SharedModuleModule} from './shared/shared_modules/shared-module.module';
 import {PerfectScrollbarModule} from 'ngx-perfect-scrollbar';
 import {BreadcrumbsComponent} from './shared/breadcrumb.component';
 import {
-    MobileSidebarToggleDirective,
-    SidebarMinimizeDirective,
-    SidebarOffCanvasCloseDirective,
-    SidebarToggleDirective
+  MobileSidebarToggleDirective,
+  SidebarMinimizeDirective,
+  SidebarOffCanvasCloseDirective,
+  SidebarToggleDirective
 } from './shared/sidebar.directive';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {Angulartics2Module} from 'angulartics2';
@@ -45,54 +45,54 @@ import {TitleHeadbarComponent} from './shared/title-headbar.component';
  */
 @NgModule({
 
-    imports: [
-        AppAsideModule,
-        AppBreadcrumbModule.forRoot(),
-        AppHeaderModule,
-        AppFooterModule,
-        AppSidebarModule,
-        PerfectScrollbarModule,
-        BrowserModule,
-        HttpClientModule,
-        AppRoutingModule,
-        BsDropdownModule.forRoot(),
-        TabsModule.forRoot(),
-        ChartsModule,
-        ModalModule.forRoot(),
-        PopoverModule,
-        PaginationModule.forRoot(),
-        ExportAsModule,
-        SharedModuleModule,
-        Angulartics2Module.forRoot(),
-        BrowserAnimationsModule
-    ],
-    declarations: [
-        AppComponent,
-        FullLayoutComponent,
-        AsideToggleDirective,
-        RegistrationInfoComponent,
-        ConsentInfoComponent,
-        BreadcrumbsComponent,
-        SidebarToggleDirective,
-        SidebarMinimizeDirective,
-        MobileSidebarToggleDirective,
-        SidebarOffCanvasCloseDirective,
-        TitleHeadbarComponent
-    ],
-    providers: [
-      {
-        provide: LocationStrategy,
-        useClass: HashLocationStrategy
-      },
-      {
-        provide: ErrorHandler,
-        useClass: UncaughtExceptionHandler
-      },
-        ApiSettings,
-        UserService,
-        CookieService
-    ],
-    bootstrap: [AppComponent]
-})
+            imports: [
+              AppAsideModule,
+              AppBreadcrumbModule.forRoot(),
+              AppHeaderModule,
+              AppFooterModule,
+              AppSidebarModule,
+              PerfectScrollbarModule,
+              BrowserModule,
+              HttpClientModule,
+              AppRoutingModule,
+              BsDropdownModule.forRoot(),
+              TabsModule.forRoot(),
+              ChartsModule,
+              ModalModule.forRoot(),
+              PopoverModule,
+              PaginationModule.forRoot(),
+              ExportAsModule,
+              SharedModuleModule,
+              Angulartics2Module.forRoot(),
+              BrowserAnimationsModule
+            ],
+            declarations: [
+              AppComponent,
+              FullLayoutComponent,
+              AsideToggleDirective,
+              RegistrationInfoComponent,
+              ConsentInfoComponent,
+              BreadcrumbsComponent,
+              SidebarToggleDirective,
+              SidebarMinimizeDirective,
+              MobileSidebarToggleDirective,
+              SidebarOffCanvasCloseDirective,
+              TitleHeadbarComponent
+            ],
+            providers: [
+              {
+                provide: LocationStrategy,
+                useClass: HashLocationStrategy
+              },
+              {
+                provide: ErrorHandler,
+                useClass: UncaughtExceptionHandler
+              },
+              ApiSettings,
+              UserService,
+              CookieService
+            ],
+            bootstrap: [AppComponent]
+          })
 export class AppModule {
 }

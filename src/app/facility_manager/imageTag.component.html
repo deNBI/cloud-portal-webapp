@@ -62,7 +62,13 @@
           </div>
         </div>
 
+
         <div class="card-body">
+          <div class="alert alert-info">Suggested modes:<br>
+            <ng-container *ngFor="let mode of suggestedModes">
+              {{mode}}
+            </ng-container>
+          </div>
 
           <div class="table-responsive">
             <table class="table table-striped table-bordered">
@@ -144,6 +150,10 @@
               <tr>
                 <td class="text-center">&#123;COPY&#125;</td>
                 <td class="text-center">Inserts the text in the description from the COPY FIELD.</td>
+              </tr>
+              <tr>
+                <td class="text-center">&#123;RESENV_URL&#125;</td>
+                <td class="text-center">Returns the Research-Environment URL of the Virtual Machine.</td>
               </tr>
               </tbody>
             </table>

@@ -37,6 +37,8 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
   project_application_report_allowed: boolean = false;
   project_application_openstack_basic_introduction: boolean = false;
   selected_ontology_terms: EdamOntologyTerm[] = [];
+    edam_ontology_terms: EdamOntologyTerm[];
+
   project_application_name: string;
   project_application_shortname: string;
   project_application_description: string;
@@ -54,7 +56,6 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 
   application_dissemination: ApplicationDissemination = new ApplicationDissemination();
 
-  edam_ontology_terms: EdamOntologyTerm[];
   initiated_validation: boolean = false;
 
   credits: number = 0;
@@ -136,7 +137,6 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
       }
       this.openstack_project = this.application.OpenStackProject;
       this.simple_vm_project = !this.openstack_project;
-      console.log('Is_validation');
       if (this.application.Dissemination) {
         this.application_dissemination = this.application.Dissemination;
         this.project_application_report_allowed = true;

@@ -24,8 +24,37 @@ export class VirtualMachine {
   private _udp_command: string;
   private _application_id: string;
   private _cardState: number;
+
+  private _projectid: number;
+  private _volume_id: string;
+  private _diskspace: string;
+
   private _res_env_url: string;
   private _modes: ImageMode[];
+
+  get volume_id(): string {
+    return this._volume_id;
+  }
+
+  set volume_id(value: string) {
+    this._volume_id = value;
+  }
+
+  get diskspace(): string {
+    return this._diskspace;
+  }
+
+  set diskspace(value: string) {
+    this._diskspace = value;
+  }
+
+  get projectid(): number {
+    return this._projectid;
+  }
+
+  set projectid(value: number) {
+    this._projectid = value;
+  }
 
   get modes(): ImageMode[] {
     return this._modes;
