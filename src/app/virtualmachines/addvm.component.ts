@@ -21,6 +21,7 @@ import {BiocondaComponent} from './conda/bioconda.component';
 import {ResEnvComponent} from './conda/res-env.component';
 import {is_vo} from '../shared/globalvar';
 import {TemplateNames} from './conda/template-names';
+import {RandomNameGenerator} from '../shared/randomNameGenerator';
 
 /**
  * Start virtualmachine component.
@@ -80,6 +81,8 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
   started_machine: boolean = false;
 
   conda_img_path: string = `static/webapp/assets/img/conda_logo.svg`;
+
+  singleProject: boolean = false;
 
   /**
    * All image of a project.
@@ -484,13 +487,24 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
         this.projects.push(project);
 
       }
-      this.isLoaded = true;
+      console.log(this.projects);
+      if (this.projects.length === 1) {
+        const prjString: string = this.projects[0][0];
+        const prjID: number = + this.projects[0][1];
+        this.selectedProject = [prjString, prjID];
+        this.getSelectedProjectClient();
+        this.singleProject = true;
+      } else {
+        this.isLoaded = true;
+      }
     })
   }
 
   checkProjectDataLoaded(): void {
     if (this.image_loaded && this.flavors_loaded && this.data_loaded) {
+      this.generateRandomName();
       this.projectDataLoaded = true;
+      this.isLoaded = true;
     }
   }
 
@@ -517,12 +531,17 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
       this.selectedProjectGPUsMax = res['gpus_max'];
       this.selectedProjectGPUsUsed = res['gpus_used'];
       this.data_loaded = true;
-      this.checkProjectDataLoaded()
+      this.checkProjectDataLoaded();
     });
 
     this.getImages(this.selectedProject[1]);
     this.getFlavors(this.selectedProject[1]);
 
+  }
+
+  generateRandomName(): void {
+    const rng: RandomNameGenerator = new RandomNameGenerator();
+    this.vm_name = rng.randomName();
   }
 
   setSelectedImage(image: Image): void {
