@@ -147,7 +147,10 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
           this.current_credits = credits;
         }
       ).catch((err: Error) => console.log(err.message))
+    } else {
+      console.log(this.project_application)
     }
+    this.fetchCreditHistoryOfProject();
   }
 
   fetchCreditHistoryOfProject(): void {
@@ -218,8 +221,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 }
 
   startUpdateCreditUsageLoop(): void {
-    this.updateCreditsUsedIntervals = setInterval(() => this.fetchCurrentCreditsOfProject, 5000);
-    this.updateCreditHistoryIntervals = setInterval(() => this.fetchCreditHistoryOfProject(), 5000);
+    this.updateCreditsUsedIntervals = setInterval(() => this.fetchCurrentCreditsOfProject(), 5000);
   }
 
   initExampleFlavors(): void {
@@ -457,7 +459,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
   ngOnDestroy(): void {
     clearInterval(this.updateCreditsUsedIntervals);
-    clearInterval(this.updateCreditHistoryIntervals)
   }
 
   getDois(): void {
