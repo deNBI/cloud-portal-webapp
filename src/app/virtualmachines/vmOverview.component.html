@@ -175,6 +175,9 @@
                          class="dot-colorless bg-dark">
                     </div>
                     {{VirtualMachineStates.staticNOT_FOUND}}
+                      <div class="alert alert-warning" role="alert"> Please contact cloud@denbi.de.</div>
+
+
                   </ng-container>
                   <ng-container *ngSwitchCase="VirtualMachineStates.staticERROR">
                     <div [id]="'error_badge_' + vm?.name"
