@@ -89,14 +89,14 @@
               </app-resource-overview>
 
               <div class="alert alert-primary" role="alert"
-                   *ngIf="selectedProject && selectedProjectVmsUsed >= selectedProjectVmsMax">
+                   *ngIf="selectedProject && selectedProjectVmsUsed >= selectedProjectVmsMax && client_avaiable && client_checked">
                 The limit for virtual machines has been reached for this project.
                 Your principal investigator can request more
                 resources if necessary.
 
               </div>
               <div class="alert alert-primary" role="alert"
-                   *ngIf="selectedProject && selectedProjectVmsUsed < selectedProjectVmsMax && flavors_loaded && flavors.length == 0 && !selectedFlavor">
+                   *ngIf="client_avaiable && client_checked && selectedProject && selectedProjectVmsUsed < selectedProjectVmsMax && flavors_loaded && flavors.length == 0 && !selectedFlavor">
                 There are too few cores and not enough ram available for this project to start a new machine.
                 Your principal investigator can request more
                 resources if necessary.
