@@ -194,7 +194,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
    * All projects of the user.
    * @type {any[]}
    */
-  projects: string[] = [];
+  projects: [string, number][] = [];
 
   /**
    * If all project data is loaded.
@@ -431,7 +431,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
   getSelectedProjectClient(): void {
     this.newCores = 0;
     this.newGpus = 0;
-    this.newVms = 1;
+    this.newVms = 0;
     this.client_checked = false;
     this.projectDataLoaded = false;
 
@@ -483,6 +483,11 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
       for (const project of membergroups) {
         this.projects.push(project);
 
+      }
+      if (this.projects.length === 1) {
+        this.resetChecks();
+        this.selectedProject = this.projects[0];
+        this.getSelectedProjectClient()
       }
       this.isLoaded = true;
     })
