@@ -159,7 +159,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 
   newCores: number = 0;
   newRam: number = 0;
-  newVms: number = 1;
+  newVms: number = 0;
   newGpus: number = 0;
 
   /**
