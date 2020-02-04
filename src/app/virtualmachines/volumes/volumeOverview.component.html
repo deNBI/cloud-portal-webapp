@@ -39,6 +39,7 @@
             <th>Project</th>
             <th>Virtual Machine</th>
             <th>Name</th>
+            <th>Status</th>
             <th>Size</th>
             <th>Actions</th>
             <!-- th>Client</th-->
@@ -56,6 +57,10 @@
             <td *ngIf="!volume.volume_virtualmachine"
                 id="cell_vm_free_id"></td>
             <td id="cell_name_id_{{volume.volume_name}}">{{volume.volume_name}}</td>
+            <td> <span class="badge bg-info">{{volume.volume_status}}</span>
+                                  <div *ngIf="volume.volume_status == 'NOT FOUND'" class="alert alert-danger col" role="alert"> Please contact cloud@denbi.de.</div>
+</td>
+
             <td>{{volume.volume_size }} GB</td>
             <td>
               <div *ngIf="volume.volume_created_by_user || showFacilities" class="btn-group" dropdown>
