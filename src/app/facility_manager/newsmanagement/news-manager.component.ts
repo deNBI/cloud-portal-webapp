@@ -4,6 +4,7 @@ import {FacilityService} from '../../api-connector/facility.service';
 import {DenbiNews} from './news';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {environment} from '../../../environments/environment';
+import {BehaviorSubject} from 'rxjs';
 
 /**
  * News-Manager Class.
@@ -30,6 +31,7 @@ export class NewsManagerComponent implements OnInit {
                                                                        Validators.required),
                                                 text: new FormControl({value: this.selectedNews.text, disabled: false},
                                                                       Validators.required),
+                                                motd: new FormControl({value: this.selectedNews.motd, disabled: false}),
                                                 tag: new FormControl({value: this.selectedNews.tag, disabled: false})
                                               });
   allChecked: boolean = true;
@@ -40,6 +42,8 @@ export class NewsManagerComponent implements OnInit {
   reg1: RegExp = /\[/g;
   reg2: RegExp = /]/g;
   reg3: RegExp = /'/g;
+
+  public motdLength: BehaviorSubject<number> = new BehaviorSubject(0);
 
   constructor(private newsService: NewsService,
               private facilityService: FacilityService) {
@@ -59,6 +63,7 @@ export class NewsManagerComponent implements OnInit {
   controlToNews(): void {
     this.selectedNews.title = this.selectedNewsForm.controls['title'].value;
     this.selectedNews.text = this.selectedNewsForm.controls['text'].value;
+    this.selectedNews.motd = this.selectedNewsForm.controls['motd'].value;
     this.selectedNews.tag = this.selectedNewsForm.controls['tag'].value;
   }
 
@@ -169,10 +174,14 @@ export class NewsManagerComponent implements OnInit {
           this.facilitiesToPost.push(facility_id);
         }
       }
+      this.motdLength.next(this.selectedNews.motd.length);
     } else {
       this.selectedNews = new DenbiNews();
+      this.motdLength.next(0);
     }
     this.deletionStatus = 0;
+    this.patchingStatus = 0;
+    this.addingStatus = 0;
     this.error_string = '';
     this.setFormGroup();
   }
@@ -183,9 +192,14 @@ export class NewsManagerComponent implements OnInit {
                                               {value: this.selectedNews.title, disabled: false}, Validators.required),
                                             text: new FormControl(
                                               {value: this.selectedNews.text, disabled: false}, Validators.required),
+                                            motd: new FormControl(
+                                              {value: this.selectedNews.motd, disabled: false}),
                                             tag: new FormControl(
                                               {value: this.selectedNews.tag, disabled: false})
                                           });
+    this.selectedNewsForm.controls['motd'].valueChanges.subscribe((value: any) => {
+      this.motdLength.next(value.length);
+    });
   }
 
   setFacility(facility: [string, number]): void {
@@ -219,6 +233,7 @@ export class NewsManagerComponent implements OnInit {
     news.tag = 'testTag1, testTag2';
     news.facility_id = [3385, 1234];
     news.text = 'You will not be able to edit this news\nBecause it contains a fac_id you are no manager of';
+    news.motd = 'MOTD';
     news.id = 123;
     news.author = 'Jesus';
     news.time = '01.01.0 00:00';
