@@ -221,9 +221,11 @@ export class VirtualmachineService {
 
   }
 
-  getVolumesByUser(): Observable<Volume[]> {
+  getVolumesByUser(items_per_page: number): Observable<Volume[]> {
+    const params: HttpParams = new HttpParams().set('items_per_page', items_per_page.toString());
     return this.http.get<Volume[]>(`${ApiSettings.getApiBaseURL()}volumes/`, {
-      withCredentials: true
+      withCredentials: true,
+      params: params
     })
 
   }

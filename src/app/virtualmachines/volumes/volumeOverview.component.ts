@@ -9,8 +9,9 @@ import {VolumeRequestStates} from './volume-request-states.enum';
 import {IResponseTemplate} from '../../api-connector/response-template';
 import {FacilityService} from '../../api-connector/facility.service';
 import {WIKI_VOLUME} from '../../../links/links';
-import {Subscription} from 'rxjs';
+import {Subject, Subscription} from 'rxjs';
 import {VolumeStates} from './volume_states';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 
 /**
  * Volume overview component.
@@ -122,10 +123,16 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
   private subscription: Subscription = new Subscription();
   private checkStatusTimeout: number = 5000;
   VolumeStates: VolumeStates = new VolumeStates();
+  items_per_page: number = 7;
+  total_pages: number;
+  total_items: number;
+  volumePerPageChange: Subject<number> = new Subject<number>();
+  DEBOUNCE_TIME: number = 300;
+  currentPage: number = 1;
+  isSearching: boolean = true;
 
   constructor(private facilityService: FacilityService, private groupService: GroupService, private vmService: VirtualmachineService) {
     super();
-
 
   }
 
@@ -140,6 +147,17 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
       this.managerFacilities = result;
       this.selectedFacility = this.managerFacilities[0];
     });
+    this.volumePerPageChange.pipe(
+      debounceTime(this.DEBOUNCE_TIME),
+      distinctUntilChanged())
+      .subscribe(() => {
+        if (this.showFacilities) {
+          this.getFacilityVolumes()
+        } else {
+          this.getVolumes()
+        }
+
+      });
 
   }
 
@@ -166,6 +184,21 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
         this.check_status_loop(volume, 0)
       }
     )
+  }
+
+  /**
+   * Load volumes depending on page.
+   * @param event
+   */
+  pageChanged(event: any): void {
+    this.isSearching = true;
+
+    this.currentPage = event.page;
+    if (this.showFacilities) {
+      this.getFacilityVolumes()
+    } else {
+      this.getVolumes()
+    }
   }
 
   getFacilityVolumes(): void {
@@ -334,7 +367,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
    */
   getVolumes(): void {
     this.volumes = [];
-    this.vmService.getVolumesByUser().subscribe((result: any) => {
+    this.vmService.getVolumesByUser(this.items_per_page).subscribe((result: any) => {
       this.volumes = result;
       for (const volume of this.volumes) {
         this.setCollapseStatus(volume.volume_openstackid, false);
