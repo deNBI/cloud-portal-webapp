@@ -10,6 +10,7 @@ import {IResponseTemplate} from '../../api-connector/response-template';
 import {FacilityService} from '../../api-connector/facility.service';
 import {WIKI_VOLUME} from '../../../links/links';
 import {Subscription} from 'rxjs';
+import {VolumeStates} from './volume_states';
 
 /**
  * Volume overview component.
@@ -18,7 +19,9 @@ import {Subscription} from 'rxjs';
 
              selector: 'app-volume-overview',
              templateUrl: 'volumeOverview.component.html',
-             providers: [FacilityService, GroupService, VirtualmachineService]
+             providers: [FacilityService, GroupService, VirtualmachineService],
+             styleUrls: ['../vmOverview.component.scss']
+
            })
 
 export class VolumeOverviewComponent extends AbstractBaseClasse implements OnInit, OnDestroy {
@@ -118,9 +121,11 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
   request_status: number;
   private subscription: Subscription = new Subscription();
   private checkStatusTimeout: number = 5000;
+  VolumeStates: VolumeStates = new VolumeStates();
 
   constructor(private facilityService: FacilityService, private groupService: GroupService, private vmService: VirtualmachineService) {
     super();
+
 
   }
 
@@ -144,18 +149,23 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
    * @param {string} instance_id openstack_id of the instance
    * @returns {void}
    */
-  attachVolume(volume_id: string, instance_id: string): void {
-    this.volume_action_status = this.volumeActionStates.ATTACHING;
+  attachVolume(volume: Volume, instance_id: string): void {
 
-    this.vmService.attachVolumetoServer(volume_id, instance_id).subscribe((result: IResponseTemplate) => {
+    volume.volume_status = VolumeStates.ATTACHING;
+    this.vmService.attachVolumetoServer(volume.volume_openstackid, instance_id).subscribe(
+      (result: IResponseTemplate) => {
 
-      if (result.value === 'attached') {
-        this.volume_action_status = this.volumeActionStates.ATTACHING_SUCCESSFULL;
-      } else {
-        this.volume_action_status = this.volumeActionStates.ERROR;
+        if (result.value === 'attached') {
+          this.volume_action_status = this.volumeActionStates.ATTACHING_SUCCESSFULL;
+        } else {
+          this.volume_action_status = this.volumeActionStates.ERROR;
+        }
+        this.check_status_loop(volume, 0)
+      },
+      () => {
+        this.check_status_loop(volume, 0)
       }
-      this.getVolumes();
-    })
+    )
   }
 
   getFacilityVolumes(): void {
@@ -176,10 +186,14 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
   createAndAttachvolume(volume_name: string, diskspace: number, instance_id: string): void {
     this.volume_action_status = 7;
     this.vmService.createVolume(volume_name, diskspace.toString(), instance_id).subscribe((newVolume: Volume) => {
-      this.volumes.push(newVolume);
+      newVolume.volume_created_by_user = true;
 
       if (newVolume.volume_openstackid) {
+        newVolume.volume_status = VolumeStates.ATTACHING;
+        this.volumes.push(newVolume);
+
         this.volume_action_status = this.volumeActionStates.ATTACHING;
+
         this.vmService.attachVolumetoServer(newVolume.volume_openstackid, instance_id).subscribe((res: IResponseTemplate) => {
 
           if (res.value === 'attached') {
@@ -187,7 +201,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
           } else {
             this.volume_action_status = this.volumeActionStates.ERROR;
           }
-          this.check_status_loop(newVolume)
+          this.check_status_loop(newVolume, 0)
         })
       } else {
         this.volume_action_status = this.volumeActionStates.ERROR;
@@ -217,61 +231,79 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
 
   /**
    * Delete Volume (detach first if attached).
-   * @param {string} volume_id openstack_id of volume
+   * @param {Volume} Volume
    * @param {string} instance_id oopenstack_id of instance
    * @returns {void}
    */
   deleteVolume(volume: Volume, instance_id?: string): void {
-    this.volume_action_status = this.volumeActionStates.WAITING;
     const idx: number = this.volumes.indexOf(volume);
 
     if (instance_id) {
-      this.volume_action_status = this.volumeActionStates.DETACHING_VOLUME;
-      this.vmService.deleteVolumeAttachment(volume.volume_openstackid, instance_id).subscribe((res: IResponseTemplate) => {
-        if (res.value === 'deleted') {
-          this.volume_action_status = this.volumeActionStates.WAITING;
-        }
+      volume.volume_status = VolumeStates.DETACHING;
+      this.vmService.deleteVolumeAttachment(volume.volume_openstackid, instance_id).subscribe(
+        (res: IResponseTemplate) => {
+          if (res.value === 'deleted') {
+            this.volume_action_status = this.volumeActionStates.WAITING;
+          }
+          volume.volume_status = VolumeStates.DELETING;
 
-        this.vmService.deleteVolume(volume.volume_openstackid).subscribe((result: IResponseTemplate) => {
+          this.vmService.deleteVolume(volume.volume_openstackid).subscribe((result: IResponseTemplate) => {
+            if (result.value === 'deleted') {
+              this.volume_action_status = this.volumeActionStates.SUCCESS;
+            } else {
+              this.volume_action_status = this.volumeActionStates.ERROR;
+            }
+            this.volumes.splice(idx, 1)
+          })
+        },
+        () => {
+          this.check_status_loop(volume, 0)
+        }
+      )
+
+    } else {
+      volume.volume_status = VolumeStates.DELETING;
+      console.log(volume.volume_status);
+      console.log(VolumeStates.DELETING)
+
+      this.vmService.deleteVolume(volume.volume_openstackid).subscribe(
+        (result: IResponseTemplate) => {
           if (result.value === 'deleted') {
             this.volume_action_status = this.volumeActionStates.SUCCESS;
           } else {
             this.volume_action_status = this.volumeActionStates.ERROR;
           }
-          this.volumes.slice(idx, 1)
+          this.volumes.splice(idx, 1)
+
+        },
+        () => {
+          this.check_status_loop(volume, 0);
         })
-      })
-
-    } else {
-      this.vmService.deleteVolume(volume.volume_openstackid).subscribe((result: IResponseTemplate) => {
-        if (result.value === 'deleted') {
-          this.volume_action_status = this.volumeActionStates.SUCCESS;
-        } else {
-          this.volume_action_status = this.volumeActionStates.ERROR;
-        }
-        this.volumes.slice(idx, 1)
-
-      })
     }
   }
 
   /**
    * Detach volume from instance.
-   * @param {string} volume_id openstack_id of the volume
+   * @param {Volume} volume
    * @param {string} instance_id openstack_id of the  instance
    * @returns {void}
    */
   detachVolume(volume: Volume, instance_id: string): void {
 
     this.volume_action_status = this.volumeActionStates.DETACHING_VOLUME;
-    this.vmService.deleteVolumeAttachment(volume.volume_openstackid, instance_id).subscribe((result: any) => {
-      if (result.value === 'deleted') {
-        this.volume_action_status = this.volumeActionStates.SUCCESSFULLY_DETACHED_VOLUME;
-      } else {
-        this.volume_action_status = this.volumeActionStates.ERROR;
-      }
-      this.check_status_loop(volume)
-    })
+    volume.volume_status = VolumeStates.DETACHING;
+    this.vmService.deleteVolumeAttachment(volume.volume_openstackid, instance_id).subscribe(
+      (result: any) => {
+        if (result.value === 'deleted') {
+          this.volume_action_status = this.volumeActionStates.SUCCESSFULLY_DETACHED_VOLUME;
+        } else {
+          this.volume_action_status = this.volumeActionStates.ERROR;
+        }
+        this.check_status_loop(volume, 0)
+      },
+      () => {
+        this.check_status_loop(volume, 0)
+      })
   }
 
   /**
@@ -328,7 +360,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
     })
   }
 
-  check_status_loop(volume: Volume, final_state?: string): void {
+  check_status_loop(volume: Volume, initial_timeout: number = this.checkStatusTimeout, final_state?: string): void {
     const created: boolean = volume.volume_created_by_user;
 
     setTimeout(
@@ -340,12 +372,13 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
             vol.volume_created_by_user = created;
             this.volumes[idx] = vol;
           }
+          // tslint:disable-next-line:max-line-length
           if (vol.volume_status !== 'available' && vol.volume_status !== 'NOT FOUND' && vol.volume_status !== 'in-use' && vol.volume_status !== final_state) {
-            this.check_status_loop(this.volumes[idx], final_state)
+            this.check_status_loop(this.volumes[idx], this.checkStatusTimeout, final_state)
           }
         }))
       },
-      this.checkStatusTimeout
+      initial_timeout
     )
   }
 
