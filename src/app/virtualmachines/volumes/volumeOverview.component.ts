@@ -54,7 +54,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
   /**
    * Array of all volumes.
    */
-  volumes: Volume[];
+  volumes: Volume[] = [];
   /**
    * Array of volumes from the selected Project.
    */
@@ -120,14 +120,15 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
    * Type of request.
    */
   request_status: number;
-  private subscription: Subscription = new Subscription();
+  private checkStatusSubscription: Subscription = new Subscription();
+  private getVolumesSubscription: Subscription = new Subscription();
   private checkStatusTimeout: number = 5000;
   VolumeStates: VolumeStates = new VolumeStates();
   items_per_page: number = 7;
   total_pages: number;
   total_items: number;
   volumePerPageChange: Subject<number> = new Subject<number>();
-  DEBOUNCE_TIME: number = 300;
+  DEBOUNCE_TIME: number = 1000;
   currentPage: number = 1;
   isSearching: boolean = true;
 
@@ -137,7 +138,8 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    this.checkStatusSubscription.unsubscribe();
+    this.getVolumesSubscription.unsubscribe();
   }
 
   ngOnInit(): void {
@@ -151,11 +153,12 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
       debounceTime(this.DEBOUNCE_TIME),
       distinctUntilChanged())
       .subscribe(() => {
+        if (this.items_per_page && this.items_per_page >0){
         if (this.showFacilities) {
           this.getFacilityVolumes()
         } else {
           this.getVolumes()
-        }
+        }}
 
       });
 
@@ -202,11 +205,31 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
   }
 
   getFacilityVolumes(): void {
-    this.volumes = [];
+    this.isSearching = true;
+    this.getVolumesSubscription.unsubscribe();
+    this.getVolumesSubscription = new Subscription();
 
-    this.facilityService.getFacilityVolumes(this.selectedFacility['FacilityId']).subscribe((res: any) => {
-      this.volumes = res;
-    })
+    this.getVolumesSubscription.add(
+      this.facilityService.getFacilityVolumes(
+        this.selectedFacility['FacilityId'], this.items_per_page, this.currentPage).subscribe((result: any) => {
+        this.volumes = result['volume_list'];
+        this.total_pages = result['num_pages'];
+        this.total_items = result['total_items'];
+        this.items_per_page = result['items_per_page'];
+        for (const volume of this.volumes) {
+          this.setCollapseStatus(volume.volume_openstackid, false);
+        }
+
+        this.isLoaded = true;
+        this.isSearching = false;
+        this.volumes.forEach((vol: Volume) => {
+          // tslint:disable-next-line:max-line-length
+          if (vol.volume_status !== VolumeStates.AVAILABLE && vol.volume_status !== VolumeStates.NOT_FOUND && vol.volume_status !== VolumeStates.IN_USE) {
+
+            this.check_status_loop(vol)
+          }
+        })
+      }))
   }
 
   /**
@@ -366,22 +389,29 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
    * @returns {void}
    */
   getVolumes(): void {
-    this.volumes = [];
-    this.vmService.getVolumesByUser(this.items_per_page).subscribe((result: any) => {
-      this.volumes = result;
+    this.isSearching = true;
+    this.getVolumesSubscription.unsubscribe();
+    this.getVolumesSubscription = new Subscription();
+    this.getVolumesSubscription.add(this.vmService.getVolumesByUser(this.items_per_page, this.currentPage).subscribe((result: any) => {
+      this.volumes = result['volume_list'];
+      this.total_pages = result['num_pages'];
+      this.total_items = result['total_items'];
+      this.items_per_page = result['items_per_page'];
       for (const volume of this.volumes) {
         this.setCollapseStatus(volume.volume_openstackid, false);
       }
 
       this.isLoaded = true;
+      this.isSearching = false;
       this.volumes.forEach((vol: Volume) => {
-        if (vol.volume_status !== 'available' && vol.volume_status !== 'in-use') {
+        // tslint:disable-next-line:max-line-length
+        if (vol.volume_status !== VolumeStates.AVAILABLE && vol.volume_status !== VolumeStates.NOT_FOUND && vol.volume_status !== VolumeStates.IN_USE) {
 
           this.check_status_loop(vol)
         }
       })
 
-    })
+    }))
 
   }
 
@@ -400,7 +430,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
       () => {
         const idx: number = this.volumes.indexOf(volume);
 
-        this.subscription.add(this.vmService.getVolumeById(volume.volume_openstackid).subscribe((vol: Volume) => {
+        this.checkStatusSubscription.add(this.vmService.getVolumeById(volume.volume_openstackid).subscribe((vol: Volume) => {
           if (idx > -1) {
             vol.volume_created_by_user = created;
             this.volumes[idx] = vol;

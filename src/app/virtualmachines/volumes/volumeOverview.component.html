@@ -31,26 +31,31 @@
 
   </select></div>
   <div class="card-body">
-    <div class="row">
-      <div class="col-4" *ngIf="total_items > items_per_page">
+
+    <div class="row justify-content-end">
+      <div class="col" [hidden]="total_pages < 2">
         <pagination
           [totalItems]="total_items" [itemsPerPage]="items_per_page"
           (pageChanged)="pageChanged($event)" [(ngModel)]="currentPage"
           [boundaryLinks]="true" [maxSize]="total_pages" [rotate]="false" #pagination>
         </pagination>
       </div>
-      <div class="input-group mb-3 col-2" *ngIf="total_items > items_per_page || items_per_page > 7">
-        <input id="vm_per_site" class="form-control"
+      <div class="input-group col-3">
+        <input id="vm_per_site" class="form-control" [disabled]="isSearching"
                name="vm_per_site" placeholder="e.g 3"
                type="number" min="1" max="10" step="1"
                appMinAmount="1" appMaxAmount="10" appInteger
                pattern="^([1-9]|1[012])$" [(ngModel)]="items_per_page"
                (ngModelChange)="volumePerPageChange.next($event)">
-        <div class="input-group-append"><span class="input-group-text"> Snapshots per page
+        <div class="input-group-append mb-3 "><span class="input-group-text"> Volumes per page
                                     </span></div>
       </div>
     </div>
     <div>
+
+      <div *ngIf="isSearching" id="search_spinner" style="margin:10px; padding:10px;">
+        <div class="spinner-border text-primary" style="display:block; margin:auto;"></div>
+      </div>
       <div class="table-responsive" style="overflow-x: visible; overflow-y: visible">
         <table class="table table-hover">
           <thead>

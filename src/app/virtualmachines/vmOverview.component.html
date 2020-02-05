@@ -33,21 +33,21 @@
       </div>
 
     </div>
-    <div class="row" style="margin-bottom: 5px !important;">
-      <div class="col-4 container-fluid" style="margin: 10px 0 0 0;" *ngIf="total_items > items_per_page">>
+    <div class="row justify-content-end " style="margin-bottom: 5px !important;">
+      <div class="col container-fluid" style="margin: 10px 0 0 0;" *ngIf="total_pages > 1">
         <pagination
           [totalItems]="total_items" [itemsPerPage]="items_per_page"
           (pageChanged)="pageChanged($event)" [(ngModel)]="currentPage"
           [boundaryLinks]="true" [maxSize]="total_pages" [rotate]="false" #pagination>
         </pagination>
       </div>
-      <div class="input-group mb-3 col-2"  *ngIf="total_items > items_per_page || items_per_page > 7">
+      <div class="input-group  col-3">
         <input id="vm_per_site" class="form-control" style="margin: 10px 0 0 0;"
                name="vm_per_site" placeholder="e.g 3"
                type="number" min="1" max="25" step="1"
                appMinAmount="1" appMaxAmount="25" appInteger
                pattern="^([1-9]|1[012])$" [(ngModel)]="vm_per_site" (ngModelChange)="vmPerPageChange.next($event)">
-        <div class="input-group-append" style="margin: 10px 0 0 0;"><span class="input-group-text"> VMs per page
+        <div class="input-group-append mb-3" style="margin: 10px 0 0 0;"><span class="input-group-text"> VMs per page
                                     </span></div>
       </div>
     </div>
