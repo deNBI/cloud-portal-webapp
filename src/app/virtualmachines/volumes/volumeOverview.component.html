@@ -63,7 +63,8 @@
 
             <td>{{volume.volume_size }} GB</td>
             <td>
-              <div *ngIf="volume.volume_created_by_user || showFacilities" class="btn-group" dropdown>
+              <div *ngIf="(volume.volume_created_by_user || showFacilities) && volume.volume_status != 'NOT FOUND'"
+                   class="btn-group" dropdown>
                 <button class="btn btn-secondary"
                         (click)="setRequestStatus(0);setSelectedVolume(volume);verifyModal.show();"
                         type="button" id="delete_button">Delete Volume
@@ -231,11 +232,11 @@
       <div class="modal-footer">
         <button id="verify_deletion_button"
                 *ngIf="request_status==volumeRequestStates.DELETE;" class="btn  btn-success col-md-4"
-                (click)="deleteVolume(selected_volume.volume_openstackid,selected_volume.volume_virtualmachine?.openstackid);verifyModal.hide();resultModal.show()">
+                (click)="deleteVolume(selected_volume,selected_volume.volume_virtualmachine?.openstackid);verifyModal.hide();resultModal.show()">
           Yes
         </button>
         <button *ngIf="request_status==volumeRequestStates.DETACH;" class="btn  btn-success col-md-4"
-                (click)="detachVolume(selected_volume.volume_openstackid,selected_volume.volume_virtualmachine.openstackid);verifyModal.hide();resultModal.show()">
+                (click)="detachVolume(selected_volume,selected_volume.volume_virtualmachine.openstackid);verifyModal.hide();resultModal.show()">
           Yes
         </button>
 

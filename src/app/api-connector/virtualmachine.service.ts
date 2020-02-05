@@ -228,6 +228,13 @@ export class VirtualmachineService {
 
   }
 
+  getVolumeById(id: string): Observable<Volume> {
+    return this.http.get<Volume>(`${ApiSettings.getApiBaseURL()}volumes/${id}/`, {
+      withCredentials: true
+    })
+
+  }
+
   createVolume(volume_name: string, volume_diskspace: string, vm_openstackid: string): Observable<Volume> {
     const params: HttpParams = new HttpParams().set('volume_name', volume_name)
       .set('volume_diskspace', volume_diskspace)
