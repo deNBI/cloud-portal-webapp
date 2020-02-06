@@ -104,10 +104,12 @@ export class FacilityService {
    * @param {number} facility
    * @returns {Observable<any>}
    */
-  getFacilityVolumes(facility: number | string): Observable<any> {
+  getFacilityVolumes(facility: number | string, items_per_page: number, current_page: number): Observable<any> {
+    const params: HttpParams = new HttpParams().set('items_per_page', items_per_page.toString()).set('page', current_page.toString());
 
     return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/volumes/`, {
-      withCredentials: true
+      withCredentials: true,
+      params: params
     })
 
   }

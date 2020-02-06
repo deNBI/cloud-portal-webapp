@@ -251,11 +251,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
     values['total_ram_new'] = this.totalRAM;
     values['project_application_renewal_credits'] = this.extensionCredits;
     this.requestExtension(values);
-    if (this.selected_ontology_terms.length > 0) {
-      this.applicationsservice.addEdamOntologyTerms(this.application_id,
-                                                    this.selected_ontology_terms
-      ).subscribe();
-    }
 
   }
 
@@ -280,7 +275,16 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
       } else {
         this.extension_status = 1;
       }
-      this.getApplication()
+      if (this.selected_ontology_terms.length > 0) {
+        this.applicationsservice.addEdamOntologyTerms(this.application_id,
+                                                      this.selected_ontology_terms
+        ).subscribe(() => {
+          this.getApplication()
+
+        });
+      } else {
+        this.getApplication()
+      }
 
     })
 

@@ -726,7 +726,7 @@
                                 'is-invalid': f.controls.project_application_renewal_lifetime?.invalid && (f.controls.project_application_renewal_lifetime?.dirty || f.controls.project_application_renewal_lifetime?.touched),
                                 'is-valid': f.controls.project_application_renewal_lifetime?.valid && (f.controls.project_application_renewal_lifetime?.dirty || f.controls.project_application_renewal_lifetime?.touched)
                                 }">
-                <div class="input-group-append">
+                <div class="input-group-append mb-3">
                   <span class="input-group-text"> months</span>
                 </div>
               </div>
@@ -1169,7 +1169,7 @@
 
 
             <button id="doi_modal_btn" class="btn btn-success col-md4" type="button"
-                    (click)="extensionModal.hide();doiModal.hide(); submitModal.show();onSubmit(f);">Confirm
+                    (click)="extensionModal.hide();doiModal.hide(); submitModal.show();">Confirm
 
             </button>
             <button class="btn  btn-primary col-md-4" type="reset"

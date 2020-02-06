@@ -89,14 +89,14 @@
               </app-resource-overview>
 
               <div class="alert alert-primary" role="alert"
-                   *ngIf="selectedProject && selectedProjectVmsUsed >= selectedProjectVmsMax">
+                   *ngIf="selectedProject && selectedProjectVmsUsed >= selectedProjectVmsMax && client_avaiable && client_checked">
                 The limit for virtual machines has been reached for this project.
                 Your principal investigator can request more
                 resources if necessary.
 
               </div>
               <div class="alert alert-primary" role="alert"
-                   *ngIf="selectedProject && selectedProjectVmsUsed < selectedProjectVmsMax && flavors_loaded && flavors.length == 0 && !selectedFlavor">
+                   *ngIf="client_avaiable && client_checked && selectedProject && selectedProjectVmsUsed < selectedProjectVmsMax && flavors_loaded && flavors.length == 0 && !selectedFlavor">
                 There are too few cores and not enough ram available for this project to start a new machine.
                 Your principal investigator can request more
                 resources if necessary.
@@ -319,7 +319,6 @@
                     </div>
                   </div>
                 </accordion-group>
-<!--
                 <accordion-group #resEnvGroup *ngIf="has_forc && is_vo &&( selectedProject && projectDataLoaded &&
                 selectedProjectVmsUsed < selectedProjectVmsMax && (flavors?.length > 0 || selectedFlavor))">
                   <div accordion-heading style="width: 100%; cursor: pointer">
@@ -332,7 +331,6 @@
                                [clientid]="client_id"
                                [onlyNamespace]="resenvSelected"></app-res-env>
                 </accordion-group>
--->
               </accordion>
             </div>
           </form>
@@ -346,7 +344,8 @@
             || (!resEnvValid && resEnvComponent)
             || !selectedImage
             || (!selectedFlavor && flavors.length != 0 )
-            || (diskspace > 0 && !volumeName) )
+            || (diskspace > 0 && !volumeName)
+            || (!resEnvValid && resEnvComponent))
           && flavors.length > 0
           && projectDataLoaded
           && flavors_loaded
@@ -384,7 +383,7 @@
                   !selectedImage||
                   (diskspace > 0 && volumeName == '') ||
                   (!gaveOkay && hasTools) ||
-                   (!resEnvValid && resEnvComponent)  "
+                  (!resEnvValid && resEnvComponent)"
                   class="btn btn-primary  .btn-lg offset-md-8"
                   data-toggle="modal"
                   (click)="startVM(selectedFlavor.name,f.controls.instance_name.value,selectedProject[0],selectedProject[1]);resetData();resetProgressBar;infoModal.show();">

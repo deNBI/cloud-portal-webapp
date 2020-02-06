@@ -9,6 +9,7 @@ export class VirtualMachineStates {
   private static readonly _BUILD: string = 'BUILD';
   private static readonly _POWERING_OFF: string = 'POWERING OFF';
   private static readonly _NOT_FOUND: string = 'NOT FOUND';
+  private static readonly _ERROR: string = 'ERROR';
   private static readonly _CLIENT_OFFLINE: string = 'CLIENT OFFLINE';
   private static readonly _RESTARTING: string = 'RESTARTING';
   private static readonly _PREPARE_PLAYBOOK_BUILD: string = 'PREPARE_PLAYBOOK_BUILD';
@@ -28,7 +29,8 @@ export class VirtualMachineStates {
     VirtualMachineStates._DELETED,
     VirtualMachineStates._SHUTOFF,
     VirtualMachineStates._NOT_FOUND,
-    VirtualMachineStates._CLIENT_OFFLINE
+    VirtualMachineStates._CLIENT_OFFLINE,
+    VirtualMachineStates._ERROR
   ];
 
   public get staticPREPARE_PLAYBOOK_BUILD(): string {
@@ -61,6 +63,10 @@ export class VirtualMachineStates {
 
   public get staticNOT_FOUND(): string {
     return VirtualMachineStates.NOT_FOUND;
+  }
+
+  public get staticERROR(): string {
+    return VirtualMachineStates.ERROR;
   }
 
   public get staticCLIENT_OFFLINE(): string {
@@ -109,6 +115,10 @@ export class VirtualMachineStates {
 
   static get NOT_FOUND(): string {
     return this._NOT_FOUND;
+  }
+
+  static get ERROR(): string {
+    return this._ERROR;
   }
 
   static get CLIENT_OFFLINE(): string {

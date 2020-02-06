@@ -1,3 +1,26 @@
+##  (2020-01-31)
+
+
+#### Bug Fixes
+
+* **forc:**
+  *  enable again and fix ([c214a319](c214a319))
+
+
+##  (2020-01-31)
+
+
+#### Features
+
+* **snapshot:**  add pagination ([fa2d00e3](fa2d00e3))
+
+#### Bug Fixes
+
+* **vm-overview:**
+  *  show error state ([133587ee](133587ee))
+  *  set debounce time to 2s ([0b8a4672](0b8a4672))
+
+
 ##  (2020-01-30)
 
 
