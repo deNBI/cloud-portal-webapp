@@ -305,6 +305,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
             this.selectedVm = updated_vm;
           }
           updated_vm.cardState = 0;
+
           if (final_state && updated_vm.status === final_state) {
             this.setForcUrl(updated_vm);
 
@@ -312,6 +313,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
             this.check_status_loop(updated_vm, final_state, is_selected_vm)
           } else if (VirtualMachineStates.NOT_IN_PROCESS_STATES.indexOf(updated_vm.status) !== -1) {
             this.setForcUrl(updated_vm);
+            this.setVmActions();
 
             if (final_state && updated_vm.status !== final_state) {
               this.check_status_loop(updated_vm, final_state, is_selected_vm)
@@ -434,27 +436,15 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
       );
   }
 
-  prepareVMS(vms: VirtualMachine[]): void {
-
-    const vm_list: VirtualMachine[] = vms['vm_list'];
-
-    // tslint:disable-next-line:no-for-each-push
-    vm_list.forEach((new_vm: VirtualMachine) => {
-      this.vms_content.push(new VirtualMachine(new_vm))
-    });
-    this.total_items = vms['total_items'];
-    this.items_per_page = vms['items_per_page'];
-    this.total_pages = vms['num_pages'];
-    this.vmActions = [];
-
+  setVmActions(): void {
+    const actions: { id: VirtualMachine, name: string }[] = [];
     this.vms_content.forEach((vm: VirtualMachine, index: number) => {
-      vm.userlogin = vm['userlogin'];
       vm.cardState = 0;
-      this.setForcUrl(vm);
       if (vm.status === VirtualMachineStates.ACTIVE || vm.status === VirtualMachineStates.SHUTOFF) {
-        this.vmActions.push({id: vm, name: vm.name});
+        actions.push({id: vm, name: vm.name});
       }
     });
+    this.vmActions = actions;
 
     // Create a FormControl for each available music preference, initialize them as unchecked, and put them in an array
     const formControls: any = this.vmActions.map((control: any) => new FormControl(false));
@@ -467,6 +457,27 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
                                        vmActions: new FormArray(formControls),
                                        selectAll: selectAllControl
                                      });
+
+  }
+
+  prepareVMS(vms: VirtualMachine[]): void {
+
+    const vm_list: VirtualMachine[] = vms['vm_list'];
+
+    // tslint:disable-next-line:no-for-each-push
+    vm_list.forEach((new_vm: VirtualMachine) => {
+      const vm: VirtualMachine = new VirtualMachine(new_vm);
+      this.setForcUrl(vm);
+
+      this.vms_content.push(vm);
+
+    });
+    this.total_items = vms['total_items'];
+    this.items_per_page = vms['items_per_page'];
+    this.total_pages = vms['num_pages'];
+    this.vmActions = [];
+
+    this.setVmActions();
     this.onChanges();
     this.isSearching = false;
     this.checkVmTillActive()

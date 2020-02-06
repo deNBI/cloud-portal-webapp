@@ -44,7 +44,7 @@ export class VirtualMachine {
     this._created_at = vm.created_at;
     this._stopped_at = vm.stopped_at;
     this._elixir_id = vm.elixir_id;
-    this._userlogin = vm.userlogin;
+    this._userlogin = vm.userlogin
     this._floating_ip = vm.floating_ip;
     this._ssh_command = vm.ssh_command;
     this._udp_command = vm.udp_command;
