@@ -3,4 +3,15 @@ export const WIKI_GROUP_INVITATIONS: string = 'https://cloud.denbi.de/wiki/porta
 export const WIKI_SNAPSHOTS: string = 'https://cloud.denbi.de/wiki/portal/snapshots/';
 export const WIKI: string = 'https://cloud.denbi.de/wiki/';
 export const WIKI_GENERATE_KEYS: string = 'https://cloud.denbi.de/wiki/quickstart/#generate-ssh-keys';
-export const WIKI_LNKS: string[] = [WIKI_VOLUME, WIKI_GROUP_INVITATIONS, WIKI_SNAPSHOTS, WIKI, WIKI_GENERATE_KEYS];
+export const WIKI_NEWS_MANAGEMENT: string = 'https://cloud.denbi.de/wiki/cloud_admin/#news-management';
+export const WIKI_SIMPLEVM_CUSTOMISATION: string = 'https://cloud.denbi.de/portal/customisation';
+export const WIKI_LNKS: string[] =
+  [
+    WIKI_VOLUME,
+    WIKI_GROUP_INVITATIONS,
+    WIKI_SNAPSHOTS,
+    WIKI,
+    WIKI_GENERATE_KEYS,
+    WIKI_NEWS_MANAGEMENT,
+    WIKI_SIMPLEVM_CUSTOMISATION
+  ];

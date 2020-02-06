@@ -36,8 +36,7 @@
     <div class="col-md-12">
       <div class="card">
         <div class="card-header">
-          <strong>New Virtual Machine</strong>
-          – Form
+          <strong>New Virtual Machine</strong> <span *ngIf="singleProject" id="singleProjectNameSpan"> - <strong>{{this.selectedProject[0]}}</strong></span>
         </div>
 
         <div class="card-body">
@@ -45,13 +44,13 @@
 
           <form id="application_form" #f="ngForm"
                 class="form-horizontal">
-            <div class="form-group row">
+            <div class="form-group row" *ngIf="!singleProject">
               <label class="col-md-2 form-control-label"><strong>Project*</strong></label>
               <span *ngIf="client_avaiable && !projectDataLoaded" class="spinner-border text-info"></span>
 
 
               <div class="col-md-8">
-                <select required class="form-control" name="projectSelect"
+                <select required class="form-control" name="projectSelect" *ngIf="!singleProject"
                         [(ngModel)]="selectedProject" id="projectSelect"
                         (ngModelChange)="getSelectedProjectClient(); resetChecks();"
                 >
@@ -64,6 +63,7 @@
                   </option>
 
                 </select>
+                <label *ngIf="singleProject"><strong>{{selectedProject[0]}}</strong></label>
 
 
               </div>
@@ -82,21 +82,19 @@
                                      [selectedProjectVmsUsed]="selectedProjectVmsUsed"
                                      [selectedProjectVolumesMax]="selectedProjectVolumesMax"
                                      [selectedProjectVolumesUsed]="selectedProjectVolumesUsed"
-                                     [newVms]="newVms"
-                                     [newCores]="newCores" [newDiskspace]="diskspace" [newGpus]="newGpus"
-                                     [newRam]="newRam" >
+                                    >
 
               </app-resource-overview>
 
               <div class="alert alert-primary" role="alert"
-                   *ngIf="selectedProject && selectedProjectVmsUsed >= selectedProjectVmsMax">
+                   *ngIf="selectedProject && selectedProjectVmsUsed >= selectedProjectVmsMax && client_avaiable && client_checked">
                 The limit for virtual machines has been reached for this project.
                 Your principal investigator can request more
                 resources if necessary.
 
               </div>
               <div class="alert alert-primary" role="alert"
-                   *ngIf="selectedProject && selectedProjectVmsUsed < selectedProjectVmsMax && flavors_loaded && flavors.length == 0 && !selectedFlavor">
+                   *ngIf="client_avaiable && client_checked && selectedProject && selectedProjectVmsUsed < selectedProjectVmsMax && flavors_loaded && flavors.length == 0 && !selectedFlavor">
                 There are too few cores and not enough ram available for this project to start a new machine.
                 Your principal investigator can request more
                 resources if necessary.
@@ -104,28 +102,7 @@
 
 
               <div *ngIf="selectedProjectVmsUsed < selectedProjectVmsMax && (flavors?.length > 0 || selectedFlavor)">
-                <div *ngIf="selectedProject" class="form-group row col-md-12">
-                  <label class="col-md-2 form-control-label"><strong>Name*</strong></label>
-                  <div class="col-md-10">
-                    <div class="input-group">
-                      <input required id="id_instance_name" name="instance_name"
-                             class="form-control"
-                             type="text" placeholder="Instance name" [(ngModel)]="vm_name"
-                             pattern="[a-zA-Z0-9]+"
-                             [ngClass]="{'is-invalid':f.controls.instance_name?.invalid && (f.controls.instance_name?.dirty || f.controls.instance_name?.touched),
-                             'is-valid':f.controls.instance_name?.valid && (f.controls.instance_name?.dirty || f.controls.instance_name?.touched)}">
-                    </div>
-                    <div class="alert alert-danger"
-                         style="margin-top: 5px; margin-bottom: 5px"
-                         *ngIf="f.controls.instance_name?.errors && (f.controls.instance_name?.dirty || f.controls.instance_name?.touched)">
-                      Allowed characters are upper and lower case letters (a-z A-Z) and arabic numbers (0-9).
-                    </div>
-                    <div class="alert alert-primary" role="alert" style="margin-top: 5px">Info: The instance name will
-                      also
-                      be the hostname of the vm.
-                    </div>
-                  </div>
-                </div>
+
 
                 <div *ngIf="selectedProject" class="form-group row col-md-12">
                   <label class="col-md-2 form-control-label"><strong>Flavor*</strong></label>
@@ -155,6 +132,35 @@
                   </div>
                 </div>
 
+                <div *ngIf="selectedProject" class="form-group row col-md-12">
+                  <label class="col-md-2 form-control-label"><strong>Name*</strong></label>
+                  <div class="col-md-10">
+                    <div class="input-group">
+                      <input required id="id_instance_name" name="instance_name"
+                             class="form-control"
+                             type="text" placeholder="Instance name" [(ngModel)]="vm_name"
+                             pattern="[a-zA-Z0-9]+"
+                             [ngClass]="{'is-invalid':f.controls.instance_name?.invalid && (f.controls.instance_name?.dirty || f.controls.instance_name?.touched),
+                             'is-valid':f.controls.instance_name?.valid && (f.controls.instance_name?.dirty || f.controls.instance_name?.touched)}">
+                            <div class="input-group-append">
+                              <button class="btn btn-outline-primary" (click)="generateRandomName();">Generate</button>
+                            </div>
+                    </div>
+                    <div class="alert alert-danger"
+                         style="margin-top: 5px; margin-bottom: 5px"
+                         *ngIf="f.controls.instance_name?.errors && (f.controls.instance_name?.dirty || f.controls.instance_name?.touched)">
+                      Allowed characters are upper and lower case letters (a-z A-Z) and arabic numbers (0-9).
+                    </div>
+                    <div class="alert alert-primary" role="alert" style="margin-top: 5px">
+                      <p>The instance name will also be the hostname of the VM.</p>
+                      <p>The name of the Virtual Machine is generated automatically. You can change it
+                        in case you want to use a different name.<br>
+                        Regardless of the choice of name, a unique ID is appended to it. </p>
+
+                    </div>
+                  </div>
+                </div>
+
 
               </div>
               <accordion class="col-md-12">
@@ -166,6 +172,8 @@
                     <i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
                             'icon-arrow-up': optionalGroup.isOpen, 'icon-arrow-down': !optionalGroup.isOpen}"></i>
                   </div>
+
+
                   <div
                     *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID  && selectedProjectVmsUsed < selectedProjectVmsMax"
                     class="form-group row">
@@ -198,6 +206,7 @@
                              'is-valid': diskspace == 0 || (diskspace > 0 && volumeName != '')}" style="width: 100%;">
                       </div>
                     </div>
+
                   </div>
 
                   <div
@@ -319,11 +328,11 @@
                     </div>
                   </div>
                 </accordion-group>
-                <accordion-group #resEnvGroup *ngIf="has_forc && is_vo &&( selectedProject && projectDataLoaded &&
+                <accordion-group #resEnvGroup *ngIf="has_forc &&( selectedProject && projectDataLoaded &&
                 selectedProjectVmsUsed < selectedProjectVmsMax && (flavors?.length > 0 || selectedFlavor))">
                   <div accordion-heading style="width: 100%; cursor: pointer">
                     <strong>Research Environment </strong><span
-                    class="badge badge-primary">EXPERIMENTAL</span>
+                    class="badge badge-primary">BETA</span>
                     <i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
                             'icon-arrow-up': resEnvGroup.isOpen, 'icon-arrow-down': !resEnvGroup.isOpen}"></i>
                   </div>
@@ -341,6 +350,7 @@
           *ngIf="
           ( !vm_name
             || (!gaveOkay && hasTools)
+            || (!resEnvValid && resEnvComponent)
             || !selectedImage
             || (!selectedFlavor && flavors.length != 0 )
             || (diskspace > 0 && !volumeName)

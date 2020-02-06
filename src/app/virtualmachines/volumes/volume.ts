@@ -13,4 +13,5 @@ export class Volume {
   volume_virtualmachine: VirtualMachine;
   volume_client: Client;
   volume_created_by_user: boolean;
+  volume_status: string;
 }
