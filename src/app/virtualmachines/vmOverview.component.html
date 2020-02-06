@@ -160,7 +160,7 @@
                   </ng-container>
                   <ng-container *ngSwitchCase="VirtualMachineStates.staticBUILD">
                     <div [id]="'build_badge_' + vm?.name"
-                         class="dot-colorless bg-dark">
+                         class="dot-colorless bg-info">
                     </div>
                     {{VirtualMachineStates.staticBUILD}}
                   </ng-container>
@@ -194,6 +194,12 @@
                     </div>
                     {{VirtualMachineStates.staticDELETING}}
                   </ng-container>
+                   <ng-container *ngSwitchCase="VirtualMachineStates.staticDELETING_FAILED">
+                    <div [id]="'deleting_badge_' + vm?.name"
+                         class="dot-colorless bg-warning">
+                    </div>
+                    {{VirtualMachineStates.staticDELETING}}
+                  </ng-container>
                   <ng-container *ngSwitchCase="VirtualMachineStates.staticRESTARTING">
                     <div [id]="'restarting_badge_' + vm?.name"
                          class="dot-colorless bg-dark">
@@ -206,9 +212,21 @@
                     </div>
                     {{VirtualMachineStates.staticPOWERING_OFF}}
                   </ng-container>
+                   <ng-container *ngSwitchCase="VirtualMachineStates.staticPORT_CLOSED">
+                    <div [id]="'powering_off_badge_' + vm?.name"
+                         class="dot-colorless bg-info">
+                    </div>
+                    {{VirtualMachineStates.staticCHECKING_CONNECTION}}
+                  </ng-container>
+                   <ng-container *ngSwitchCase="VirtualMachineStates.staticCLIENT_OFFLINE">
+                    <div [id]="'powering_off_badge_' + vm?.name"
+                         class="dot-colorless bg-danger">
+                    </div>
+                    {{VirtualMachineStates.staticCLIENT_OFFLINE}}
+                  </ng-container>
                   <ng-container *ngSwitchDefault>
                     <div [id]="'default_badge_' + vm?.name"
-                         class="dot-colorless bg-dark" style="width: 10px; height: 10px">
+                         class="dot-colorless bg-info" style="width: 10px; height: 10px">
                     </div>
                     {{VirtualMachineStates.staticGETTING_STATUS}}
                   </ng-container>

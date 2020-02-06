@@ -165,12 +165,20 @@ export class VirtualmachineService {
     })
   }
 
-  checkVmStatus(openstack_id: string): Observable<any> {
-    return this.http.post(`${this.baseVmUrl}${openstack_id}/status/`, null, {
-      withCredentials: true,
+  checkVmStatus(openstack_id: string, name?: string): Observable<any> {
+    if (openstack_id) {
+      return this.http.post(`${this.baseVmUrl}${openstack_id}/status/`, null, {
+        withCredentials: true,
 
-      headers: header
-    })
+        headers: header
+      })
+    } else if (name) {
+      return this.http.post(`${this.baseVmUrl}${name}/status/`, null, {
+        withCredentials: true,
+
+        headers: header
+      })
+    }
   }
 
   checkVmStatusWhenReboot(openstack_id: string): Observable<any> {

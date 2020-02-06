@@ -32,6 +32,38 @@ export class VirtualMachine {
   private _res_env_url: string;
   private _modes: ImageMode[];
 
+  constructor(vm: VirtualMachine) {
+    this._flavor = vm.flavor;
+    this._image = vm.image;
+    this._project = vm.project;
+    this._status = vm.status;
+    this._keyname = vm.keyname;
+    this._name = vm.name;
+    this._client = vm.client;
+    this._openstackid = vm.openstackid;
+    this._created_at = vm.created_at;
+    this._stopped_at = vm.stopped_at;
+    this._elixir_id = vm.elixir_id;
+    this._userlogin = vm.userlogin;
+    this._floating_ip = vm.floating_ip;
+    this._ssh_command = vm.ssh_command;
+    this._udp_command = vm.udp_command;
+    this._application_id = vm.application_id;
+    this._cardState = vm.cardState;
+    this._projectid = vm.projectid;
+    this._volume_id = vm.volume_id;
+    this._diskspace = vm.diskspace;
+    this._res_env_url = vm.res_env_url;
+    this._modes = vm.modes;
+    this.calculateCreatedAt()
+  }
+
+  public calculateCreatedAt(): void {
+    if (this.created_at !== '') {
+      this.created_at = new Date(parseInt(this.created_at, 10) * 1000).toLocaleDateString();
+    }
+  }
+
   get volume_id(): string {
     return this._volume_id;
   }
@@ -207,4 +239,5 @@ export class VirtualMachine {
   set ssh_command(value: string) {
     this._ssh_command = value;
   }
+
 }
