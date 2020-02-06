@@ -554,6 +554,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
   }
 
   hasImageResenv(): void {
+
     if (!this.resEnvComponent) {
       return;
     }
@@ -566,7 +567,10 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
       }
     }
     this.resenvSelected = false;
-    this.resEnvComponent.unsetOnlyNamespace();
+    if (this.resEnvComponent) {
+      this.resEnvComponent.unsetOnlyNamespace();
+    }
+  } 
   }
 
   setSelectedFlavor(flavor: Flavor): void {
@@ -584,6 +588,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 
   ngDoCheck(): void {
     if (this.resEnvComponent) {
+
       this.resEnvValid = this.resEnvComponent.isValid();
       this.resEnvNeedsName = this.resEnvComponent.needsName();
       this.resEnvNeedsTemplate = this.resEnvComponent.needsTemplate();

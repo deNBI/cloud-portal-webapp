@@ -341,6 +341,7 @@
           *ngIf="
           ( !vm_name
             || (!gaveOkay && hasTools)
+            || (!resEnvValid && resEnvComponent)
             || !selectedImage
             || (!selectedFlavor && flavors.length != 0 )
             || (diskspace > 0 && !volumeName)
