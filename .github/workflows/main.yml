@@ -15,7 +15,7 @@ jobs:
     - name: Publish to Registry
       uses: elgohr/Publish-Docker-Github-Action@master
       env:
-          ANGULAR_MODE: production  
+          ANGULAR_MODE: stage  
       with:
         name: denbicloud/cloud-api
         username: ${{ secrets.DOCKER_USERNAME }}
