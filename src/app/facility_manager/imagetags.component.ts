@@ -195,7 +195,7 @@ export class ImageTagComponent implements OnInit {
     this.biocondaService
       .getAllowedForcTemplates(this.selectedFacility['FacilityId'].toString())
       .subscribe((response: any[]) => {
-        this.suggestedModes = response.map((template: any) => template['name']);
+        this.suggestedModes = response.map((template: any) => template);
       });
   }
 

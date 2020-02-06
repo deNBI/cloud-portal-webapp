@@ -319,11 +319,11 @@
                     </div>
                   </div>
                 </accordion-group>
-                <accordion-group #resEnvGroup *ngIf="has_forc && is_vo &&( selectedProject && projectDataLoaded &&
+                <accordion-group #resEnvGroup *ngIf="has_forc &&( selectedProject && projectDataLoaded &&
                 selectedProjectVmsUsed < selectedProjectVmsMax && (flavors?.length > 0 || selectedFlavor))">
                   <div accordion-heading style="width: 100%; cursor: pointer">
                     <strong>Research Environment </strong><span
-                    class="badge badge-primary">EXPERIMENTAL</span>
+                    class="badge badge-primary">BETA</span>
                     <i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
                             'icon-arrow-up': resEnvGroup.isOpen, 'icon-arrow-down': !resEnvGroup.isOpen}"></i>
                   </div>

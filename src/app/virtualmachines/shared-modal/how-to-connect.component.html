@@ -11,11 +11,11 @@
     </ng-template>
   </ngb-tab>
   <ngb-tab *ngIf="playbook_run == 1">
-    <ng-template ngbTabTitle><b>CONDA</b></ng-template>
+    <ng-template ngbTabTitle><b>Ansible</b></ng-template>
     <ng-template ngbTabContent>
       <div class="row justify-content-center">
     <span *ngIf="logs && logs['status'] == 0">
-     The installation of the conda packages were successful! <br>
+     The installation of the packages were successful! <br>
       If you want, take a look at the ansible-playbook logs below. <br>
     </span>
         <span *ngIf="logs && logs['status'] != 0">
