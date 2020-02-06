@@ -8,12 +8,11 @@ import {IResponseTemplate} from '../api-connector/response-template';
 import {SnapshotModel} from './snapshots/snapshot.model';
 import {FacilityService} from '../api-connector/facility.service';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
-import {Subject, Subscription} from 'rxjs';
+import {forkJoin, Observable, Subject, Subscription} from 'rxjs';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {is_vo} from '../shared/globalvar';
 import {VirtualMachineStates} from './virtualmachinemodels/virtualmachinestates';
 import {GroupService} from '../api-connector/group.service';
-import {environment} from '../../environments/environment';
 import {ClientService} from '../api-connector/client.service';
 import {Client} from './clients/client.model';
 import {TemplateNames} from './conda/template-names';
@@ -48,7 +47,6 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
   isSearching: boolean = true;
 
   selectedVm: VirtualMachine = null;
-  vm_per_site: number = 7;
 
   /**
    * Facilitties where the user is manager ['name',id].
@@ -60,6 +58,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
   public selectedFacility: [string, number];
 
   filter: string;
+  vm_per_site: number = 7;
 
   total_pages: number;
   total_items: number;
@@ -223,10 +222,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
   checkStatus(vm: VirtualMachine): void {
     this.virtualmachineservice.checkVmStatus(vm.openstackid)
       .subscribe((updated_vm: VirtualMachine) => {
-
-                   if (updated_vm.created_at !== '') {
-                     updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
-                   }
+                   updated_vm = new VirtualMachine(updated_vm);
 
                    this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
                    this.applyFilter();
@@ -251,20 +247,23 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
    * @param vm which will be deleted
    */
   deleteVm(vm: VirtualMachine): void {
-    this.virtualmachineservice.deleteVM(vm.openstackid).subscribe((updated_vm: VirtualMachine) => {
+    vm.status = VirtualMachineStates.DELETING;
+    this.subscription.add(this.virtualmachineservice.deleteVM(vm.openstackid).subscribe((updated_vm: VirtualMachine) => {
+      updated_vm = new VirtualMachine(updated_vm);
 
-      if (updated_vm.created_at !== '') {
-        updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
-      }
       updated_vm.cardState = 0;
       this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
       this.applyFilterStatus();
-      if (updated_vm.status === VirtualMachineStates.DELETED) {
-        this.status_changed = 1;
-      } else {
-        this.status_changed = 2;
+      if (updated_vm.status !== VirtualMachineStates.DELETED) {
+        setTimeout(
+          () => {
+            this.deleteVm(updated_vm)
+
+          },
+          this.checkStatusTimeout
+        )
       }
-    })
+    }))
   }
 
   /**
@@ -297,88 +296,37 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 
     setTimeout(
       () => {
-        if (vm.openstackid) {
-          this.subscription.add(this.virtualmachineservice.checkVmStatus(vm.openstackid).subscribe((updated_vm: VirtualMachine) => {
-            if (!updated_vm['error']) {
-              this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
-              if (is_selected_vm) {
-                this.selectedVm = updated_vm;
-              }
-            } else {
-              updated_vm = vm
-            }
 
-            updated_vm.cardState = 0;
-            if ((final_state && updated_vm.status === final_state)) {
-              this.setForcUrl(updated_vm);
-              if (updated_vm.created_at !== '') {
-                updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
-              }
-              this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
+        // tslint:disable-next-line:max-line-length
+        this.subscription.add(this.virtualmachineservice.checkVmStatus(vm.openstackid, vm.name).subscribe((updated_vm: VirtualMachine) => {
+          updated_vm = new VirtualMachine(updated_vm);
+          this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
+          if (is_selected_vm) {
+            this.selectedVm = updated_vm;
+          }
+          updated_vm.cardState = 0;
 
-            } else if (VirtualMachineStates.IN_PROCESS_STATES.indexOf(updated_vm.status) !== -1) {
-              if (vm['error']) {
-                this.status_check_error = true
-              }
-              if (updated_vm.created_at !== '') {
-                updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
-              }
-              this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
+          if (final_state && updated_vm.status === final_state) {
+            this.setForcUrl(updated_vm);
+
+          } else if (VirtualMachineStates.IN_PROCESS_STATES.indexOf(updated_vm.status) !== -1) {
+            this.check_status_loop(updated_vm, final_state, is_selected_vm)
+          } else if (VirtualMachineStates.NOT_IN_PROCESS_STATES.indexOf(updated_vm.status) !== -1) {
+            this.setForcUrl(updated_vm);
+            this.setVmActions();
+
+            if (final_state && updated_vm.status !== final_state) {
               this.check_status_loop(updated_vm, final_state, is_selected_vm)
-            } else if (VirtualMachineStates.NOT_IN_PROCESS_STATES.indexOf(updated_vm.status) !== -1) {
-              this.setForcUrl(updated_vm);
-              if (updated_vm.created_at !== '') {
-                updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
-              }
-              this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
-            } else {
-              if (vm['error']) {
-                this.status_check_error = true
-              }
-              this.check_status_loop(updated_vm, final_state, is_selected_vm)
+
             }
+          } else {
+            this.check_status_loop(updated_vm, final_state, is_selected_vm)
+          }
 
-          }));
-        } else {
-          this.subscription.add(this.virtualmachineservice.checkVmStatus(vm.name).subscribe((updated_vm: VirtualMachine) => {
-            this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
-            if (is_selected_vm) {
-              this.selectedVm = updated_vm;
-            }
+        }));
 
-            updated_vm.cardState = 0;
-            if ((final_state && updated_vm.status === final_state)) {
-              this.setForcUrl(updated_vm);
-              if (updated_vm.created_at !== '') {
-                updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
-              }
-              this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
-
-            } else if (VirtualMachineStates.IN_PROCESS_STATES.indexOf(updated_vm.status) !== -1) {
-              if (vm['error']) {
-                this.status_check_error = true
-              }
-              if (updated_vm.created_at !== '') {
-                updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
-              }
-              this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
-              this.check_status_loop(updated_vm, final_state, is_selected_vm)
-            } else if (VirtualMachineStates.NOT_IN_PROCESS_STATES.indexOf(updated_vm.status) !== -1) {
-              this.setForcUrl(updated_vm);
-              if (updated_vm.created_at !== '') {
-                updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
-              }
-              this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
-            } else {
-              if (vm['error']) {
-                this.status_check_error = true
-              }
-              this.check_status_loop(updated_vm, final_state, is_selected_vm)
-            }
-
-          }));
-        }
       },
+
       this.checkStatusTimeout
     );
   }
@@ -392,14 +340,10 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
     setTimeout(
       () => {
         this.virtualmachineservice.checkVmStatusWhenReboot(vm.openstackid).subscribe((updated_vm: VirtualMachine) => {
+          updated_vm = new VirtualMachine(updated_vm);
 
           if (updated_vm.status === VirtualMachineStates.ACTIVE) {
             this.reboot_done = true;
-
-            if (updated_vm.created_at !== '') {
-              updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
-            }
-
             this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
             this.applyFilter();
 
@@ -426,13 +370,9 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
   stopVm(vm: VirtualMachine): void {
     this.virtualmachineservice.stopVM(vm.openstackid)
       .subscribe((updated_vm: VirtualMachine) => {
+        updated_vm = new VirtualMachine(updated_vm);
 
                    this.status_changed = 0;
-
-                   if (updated_vm.created_at !== '') {
-                     updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
-                   }
-                   updated_vm.cardState = 0;
                    this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
                    this.selectedVm = updated_vm;
 
@@ -496,25 +436,15 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
       );
   }
 
-  prepareVMS(vms: VirtualMachine[]): void {
-
-    this.vms_content = vms['vm_list'];
-    this.total_items = vms['total_items'];
-    this.items_per_page = vms['items_per_page'];
-    this.total_pages = vms['num_pages'];
-    this.vmActions = [];
-
+  setVmActions(): void {
+    const actions: { id: VirtualMachine, name: string }[] = [];
     this.vms_content.forEach((vm: VirtualMachine, index: number) => {
-      vm.userlogin = vm['userlogin'];
       vm.cardState = 0;
-      this.setForcUrl(vm);
       if (vm.status === VirtualMachineStates.ACTIVE || vm.status === VirtualMachineStates.SHUTOFF) {
-        this.vmActions.push({id: vm, name: vm.name});
-      }
-      if (vm.created_at !== '') {
-        vm.created_at = new Date(parseInt(vm.created_at, 10) * 1000).toLocaleDateString();
+        actions.push({id: vm, name: vm.name});
       }
     });
+    this.vmActions = actions;
 
     // Create a FormControl for each available music preference, initialize them as unchecked, and put them in an array
     const formControls: any = this.vmActions.map((control: any) => new FormControl(false));
@@ -527,6 +457,27 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
                                        vmActions: new FormArray(formControls),
                                        selectAll: selectAllControl
                                      });
+
+  }
+
+  prepareVMS(vms: VirtualMachine[]): void {
+
+    const vm_list: VirtualMachine[] = vms['vm_list'];
+
+    // tslint:disable-next-line:no-for-each-push
+    vm_list.forEach((new_vm: VirtualMachine) => {
+      const vm: VirtualMachine = new VirtualMachine(new_vm);
+      this.setForcUrl(vm);
+
+      this.vms_content.push(vm);
+
+    });
+    this.total_items = vms['total_items'];
+    this.items_per_page = vms['items_per_page'];
+    this.total_pages = vms['num_pages'];
+    this.vmActions = [];
+
+    this.setVmActions();
     this.onChanges();
     this.isSearching = false;
     this.checkVmTillActive()
@@ -534,7 +485,9 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 
   checkVmTillActive(): void {
     this.vms_content.forEach((vm: VirtualMachine) => {
-      if (vm.status !== VirtualMachineStates.ACTIVE && vm.status !== VirtualMachineStates.SHUTOFF
+      if (vm.status === VirtualMachineStates.DELETING_FAILED) {
+        this.deleteVm(vm)
+      } else if (vm.status !== VirtualMachineStates.ACTIVE && vm.status !== VirtualMachineStates.SHUTOFF
         && vm.status !== VirtualMachineStates.DELETED) {
         this.check_status_loop(vm);
       }
@@ -545,12 +498,9 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
     void {
 
     this.virtualmachineservice.resumeVM(vm.openstackid).subscribe((updated_vm: VirtualMachine) => {
+      updated_vm = new VirtualMachine(updated_vm);
 
       this.status_changed = 0;
-
-      if (updated_vm.created_at !== '') {
-        updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
-      }
       updated_vm.cardState = 0;
       this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
       switch (updated_vm.status) {
@@ -655,31 +605,43 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
     })
   }
 
-  getToBeDeleted(): any {
+  setToBeDeletedVms(): any {
     // Filter out the unselected ids
 
     const selectedMachines: VirtualMachine[] = this.actionsForm.value.vmActions
-      .map((checked: any, index: any) => checked ? this.vmActions[index].id : null)
+      .map((checked: any, index: any) => checked && (this.vmActions[index].id.status === VirtualMachineStates.ACTIVE
+        || this.vmActions[index].id.status === VirtualMachineStates.SHUTOFF)
+        ? this.vmActions[index].id : null)
       .filter((value: any) => value !== null);
 
     this.selectedMachines = selectedMachines;
 
-    return selectedMachines;
   }
 
   deleteAll(): void {
-    for (const vm of this.getToBeDeleted()) {
-      this.virtualmachineservice.deleteVM(vm.openstackid).subscribe((updated_vm: VirtualMachine) => {
+    const observableBatch: Observable<VirtualMachine>[] = [];
 
-        if (updated_vm.created_at !== '') {
-          updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
+    // tslint:disable-next-line:no-for-each-push
+    this.selectedMachines.forEach((vm: VirtualMachine) => {
+      vm.status = VirtualMachineStates.DELETING;
+      observableBatch.push(this.virtualmachineservice.deleteVM(vm.openstackid))
+    });
+    forkJoin(observableBatch).subscribe((vms: VirtualMachine[]) => {
+      for (let idx: number = 0; idx < vms.length; idx++) {
+        const updated_vm: VirtualMachine = new VirtualMachine(vms[idx]);
+        this.vms_content[this.vms_content.indexOf(this.selectedMachines[idx])] = updated_vm;
+        this.selectedMachines[idx] = updated_vm;
+        if (updated_vm.status !== VirtualMachineStates.DELETED) {
+          setTimeout(
+            () => {
+              this.deleteVm(updated_vm)
+
+            },
+            this.checkStatusTimeout
+          )
         }
-        updated_vm.cardState = 0;
-        this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
-        this.selectedMachines[this.selectedMachines.indexOf(vm)] = updated_vm;
-        this.applyFilterStatus();
-      })
-    }
+      }
+    })
   }
 
   setForcUrl(vm: VirtualMachine): void {

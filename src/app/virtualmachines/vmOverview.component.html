@@ -103,7 +103,7 @@
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenu" role="menu" *dropdownMenu>
               <button class="dropdown-item btn btn-secondary" id="deleteAllSelectedVMsButton"
-                      (click)="getToBeDeleted(); verifyAllModal.show()">Delete selected VMs</button>
+                      (click)="setToBeDeletedVms(); verifyAllModal.show()">Delete selected VMs</button>
             </div>
           </div>
 
@@ -161,7 +161,7 @@
                   </ng-container>
                   <ng-container *ngSwitchCase="VirtualMachineStates.staticBUILD">
                     <div [id]="'build_badge_' + vm?.name"
-                         class="dot-colorless bg-dark">
+                         class="dot-colorless bg-info">
                     </div>
                     {{VirtualMachineStates.staticBUILD}}
                   </ng-container>
@@ -192,6 +192,18 @@
                     </div>
                     {{VirtualMachineStates.staticBUILD_PLAYBOOK}}
                   </ng-container>
+                   <ng-container *ngSwitchCase="VirtualMachineStates.staticDELETING">
+                    <div [id]="'deleting_badge_' + vm?.name"
+                         class="dot-colorless bg-warning">
+                    </div>
+                    {{VirtualMachineStates.staticDELETING}}
+                  </ng-container>
+                   <ng-container *ngSwitchCase="VirtualMachineStates.staticDELETING_FAILED">
+                    <div [id]="'deleting_badge_' + vm?.name"
+                         class="dot-colorless bg-warning">
+                    </div>
+                    {{VirtualMachineStates.staticDELETING}}
+                  </ng-container>
                   <ng-container *ngSwitchCase="VirtualMachineStates.staticRESTARTING">
                     <div [id]="'restarting_badge_' + vm?.name"
                          class="dot-colorless bg-dark">
@@ -204,9 +216,21 @@
                     </div>
                     {{VirtualMachineStates.staticPOWERING_OFF}}
                   </ng-container>
+                   <ng-container *ngSwitchCase="VirtualMachineStates.staticPORT_CLOSED">
+                    <div [id]="'powering_off_badge_' + vm?.name"
+                         class="dot-colorless bg-info">
+                    </div>
+                    {{VirtualMachineStates.staticCHECKING_CONNECTION}}
+                  </ng-container>
+                   <ng-container *ngSwitchCase="VirtualMachineStates.staticCLIENT_OFFLINE">
+                    <div [id]="'powering_off_badge_' + vm?.name"
+                         class="dot-colorless bg-danger">
+                    </div>
+                    {{VirtualMachineStates.staticCLIENT_OFFLINE}}
+                  </ng-container>
                   <ng-container *ngSwitchDefault>
                     <div [id]="'default_badge_' + vm?.name"
-                         class="dot-colorless bg-dark" style="width: 10px; height: 10px">
+                         class="dot-colorless bg-info" style="width: 10px; height: 10px">
                     </div>
                     {{VirtualMachineStates.staticGETTING_STATUS}}
                   </ng-container>
@@ -223,7 +247,9 @@
                 </div>
                 <div class="col-1">
                   <div class="form-check">
+
                     <ng-container formArrayName="vmActions" *ngFor="let genre of actionsForm.controls['vmActions'].controls; let i = index">
+
                       <input type="checkbox" [formControlName]="i.toString()" *ngIf="vmActions[i].name == vm?.name
                       && (vm?.status == VirtualMachineStates.staticACTIVE || vm?.status == VirtualMachineStates.staticSHUTOFF)"
                              [id]="'selectCheckBox_'+ i">
@@ -599,7 +625,7 @@
       </div>
       <div class="modal-footer">
         <button class="btn  btn-success col-md-4"
-                (click)="deleteAll();verifyAllModal.hide();deleteAllModal.show()"
+                (click)="deleteAll();verifyAllModal.hide();"
                 id="confirm_delete_all_button">
           Yes
         </button>
@@ -673,7 +699,7 @@
       </div>
       <div class="modal-footer">
         <button class="btn  btn-success col-md-4"
-                (click)="deleteVm(selectedVm);verifyModal.hide();deleteModal.show()"
+                (click)="deleteVm(selectedVm);verifyModal.hide();"
                 id="confirm_delete_button">
           Yes
         </button>
@@ -878,7 +904,7 @@
       </div>
       <div class="modal-footer">
         <button class="btn  btn-success col-md-4"
-                (click)="stopVm(selectedVm);submitStopVmModal.hide();stopModal.show()"
+                (click)="stopVm(selectedVm);submitStopVmModal.hide();"
                 [id]="'verifyStopButton'">
           Yes
         </button>
@@ -910,7 +936,7 @@
       </div>
       <div class="modal-footer">
         <button class="btn  btn-success col-md-4"
-                (click)="resumeVM(selectedVm);submitRestartModal.hide();resumeModal.show()"
+                (click)="resumeVM(selectedVm);submitRestartModal.hide();"
                 [id]="'verifyRestartButton'">
           Yes
         </button>
