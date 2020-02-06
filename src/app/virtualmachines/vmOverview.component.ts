@@ -659,7 +659,9 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
     // Filter out the unselected ids
 
     const selectedMachines: VirtualMachine[] = this.actionsForm.value.vmActions
-      .map((checked: any, index: any) => checked ? this.vmActions[index].id : null)
+      .map((checked: any, index: any) => checked && (this.vmActions[index].id.status === VirtualMachineStates.ACTIVE
+        || this.vmActions[index].id.status === VirtualMachineStates.SHUTOFF)
+        ? this.vmActions[index].id : null)
       .filter((value: any) => value !== null);
 
     this.selectedMachines = selectedMachines;
