@@ -581,7 +581,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
     if (this.resEnvComponent) {
       this.resEnvComponent.unsetOnlyNamespace();
     }
-  } 
+
   }
 
   setSelectedFlavor(flavor: Flavor): void {
