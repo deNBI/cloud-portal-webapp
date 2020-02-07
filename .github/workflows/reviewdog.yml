@@ -5,6 +5,11 @@ jobs:
     name: runner / misspell
     runs-on: ubuntu-latest
     steps:
+      - name: own iml
+        run: |
+          curl -L -o ./install-misspell.sh https://git.io/misspell
+          sh ./install-misspell.sh
+          misspell -w all.html your.txt important.md files.go
       - name: Check out code.
         uses: actions/checkout@v1
       - name: misspell
