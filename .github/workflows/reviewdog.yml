@@ -1,4 +1,4 @@
-ame: reviewdog
+name: reviewdog
 on: push
 jobs:
   misspell:
