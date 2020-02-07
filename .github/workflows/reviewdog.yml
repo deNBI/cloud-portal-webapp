@@ -1,13 +1,13 @@
 name: reviewdog
-on: pull_request
+on: push
 jobs:
   misspell:
     name: runner / misspell
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-        with:
-          ref: ${{github.ref}}
+      - uses: actions/checkout@v1
+      - name: Checking out Branch
+        run: git checkout "${GITHUB_REF:11}"
       - name: own iml
         run: |
           curl -L -o ./install-misspell.sh https://git.io/misspell
