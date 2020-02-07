@@ -11,4 +11,5 @@ jobs:
           sh ./install-misspell.sh
           ./bin/misspell -w -q .
           find . -type f -name '*.ts'   | grep -v node_modules/ | xargs ./bin/misspell -error -w
+          git status
           echo 'done'
