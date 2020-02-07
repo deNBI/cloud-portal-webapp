@@ -5,8 +5,9 @@ jobs:
     name: runner / misspell
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@master
+      - uses: actions/checkout@v1
+      - name: Checking out Branch
+        run: git checkout "${GITHUB_REF:11}"
       - name: own iml
         run: |
           curl -L -o ./install-misspell.sh https://git.io/misspell
