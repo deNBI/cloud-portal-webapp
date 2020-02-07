@@ -9,6 +9,7 @@ jobs:
         run: |
           curl -L -o ./install-misspell.sh https://git.io/misspell
           sh ./install-misspell.sh
+          ./bin/misspell --help
           find . -type f -name '*.ts'   | grep -v node_modules/ | xargs ./bin/misspell -error -w
           echo 'done'
       - name: Check out code.
