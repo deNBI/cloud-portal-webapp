@@ -105,7 +105,7 @@ export class ApplicationsService {
   }
 
   /**
-   * Checks if some client has the ressource avaiable for an application.
+   * Checks if some client has the ressource available for an application.
    * @param {string} app_id
    * @returns {Observable<any>}
    */

@@ -8,7 +8,7 @@ export class ApplicationOverviewPage {
   private static OWN_APPLICATION_ID: string = 'own_applications';
   private static EXTENSION_RESULT: string = 'extension result';
   private static EXTENSION_SV_SUCCESSFULLY_APPROVED: string = 'Modify request successfully approved!';
-  private static EXTENSION_OP_SUCCESFULLY_APPROVED: string = 'Modify request successfully approved and forwarded to facility!';
+  private static EXTENSION_OP_SUCCESSFULLY_APPROVED: string = 'Modify request successfully approved and forwarded to facility!';
   private static EXTENSION_APPROVAL_BTN_PREFIX: string = 'extension_approval_';
   private static COMPUTE_CENTER_SELECTION_PREFIX: string = 'id_compute_center_option_';
   private static DEFAULT_DENBI_COMPUTE_CENTER: string = 'de.NBI Cloud Portal - Development';
@@ -25,7 +25,7 @@ export class ApplicationOverviewPage {
 
   static async approveOPModificationRequest(application_name: string): Promise<any> {
     await Util.clickElementById(this.EXTENSION_APPROVAL_BTN_PREFIX + application_name);
-    await Util.waitForTextPresenceInElementById(this.EXTENSION_RESULT, this.EXTENSION_OP_SUCCESFULLY_APPROVED);
+    await Util.waitForTextPresenceInElementById(this.EXTENSION_RESULT, this.EXTENSION_OP_SUCCESSFULLY_APPROVED);
 
   }
 

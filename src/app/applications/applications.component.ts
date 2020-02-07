@@ -113,11 +113,11 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
       this.groupservice.getFacilityByGroup(app.PerunId.toString()).subscribe((res: object) => {
 
         const login: string = res['Login'];
-        const suport: string = res['Support'];
+        const support: string = res['Support'];
         const facilityname: string = res['Facility'];
         const facilityId: number = res['FacilityId'];
         if (facilityId) {
-          app.ComputeCenter = new ComputecenterComponent(facilityId.toString(), facilityname, login, suport);
+          app.ComputeCenter = new ComputecenterComponent(facilityId.toString(), facilityname, login, support);
         }
 
       })

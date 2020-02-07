@@ -123,11 +123,11 @@
           class="fa fa-spinner fa-spin" style="font-size:24px"></i>
         </div>
         <div class="alert alert-success" role="alert" *ngIf="delete_status == 1" id="delete_success">
-          {{selected_snapshot?.snapshot_name}} was succesfully deleted.
+          {{selected_snapshot?.snapshot_name}} was successfully deleted.
         </div>
       </div>
       <div class="alert alert-warning" role="alert" *ngIf="delete_status == 2">
-        When deleting {{selected_snapshot?.snapshot_name}} an error occured.
+        When deleting {{selected_snapshot?.snapshot_name}} an error occurred.
       </div>
       <div class="alert alert-warning" role="alert" *ngIf="delete_status == 3">
         Could not delete <strong>{{selected_snapshot?.snapshot_name}} </strong> because the

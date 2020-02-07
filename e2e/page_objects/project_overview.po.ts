@@ -89,7 +89,7 @@ export class ProjectOverview {
 
   }
 
-  static async openModificationModal(appication_name: string): Promise<any> {
+  static async openModificationModal(application_name: string): Promise<any> {
     await Util.clickElementById(this.EXTENSION_REQUEST_BTN);
     await Util.waitForVisibilityOfElementById('id_project_application_renewal_lifetime');
   }
