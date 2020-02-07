@@ -452,7 +452,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
     // Create a FormControl for the select/unselect all checkbox
     const selectAllControl: any = new FormControl(false);
 
-    // Simply add the list of FormControls to the FormGroup as a FormArray, add the selectAllControl separetely
+    // Simply add the list of FormControls to the FormGroup as a FormArray, add the selectAllControl separately
     this.actionsForm = this.fb.group({
                                        vmActions: new FormArray(formControls),
                                        selectAll: selectAllControl

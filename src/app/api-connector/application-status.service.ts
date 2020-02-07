@@ -32,7 +32,7 @@ export class ApplicationStatusService {
      * Set status for an application.
      * @param {number} application_id id of the application
      * @param {number} status_id id of the status to set
-     * @returns {Observable<any>} 200 if successfull
+     * @returns {Observable<any>} 200 if successful
      */
     setApplicationStatus(application_id: number | string, status_id: number | string): Observable<any> {
 
