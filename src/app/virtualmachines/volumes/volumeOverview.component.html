@@ -204,7 +204,7 @@
             *ngIf="volume_action_status == volumeActionStates.WAITING || volume_action_status == volumeActionStates.DETACHING_VOLUME || volume_action_status == volumeActionStates.ATTACHING || volume_action_status == volumeActionStates.CHANGING_NAME">
           Waiting </h4>
         <h4 class="modal-title"
-            *ngIf="volume_action_status == volumeActionStates.SUCCESS || volume_action_status == volumeActionStates.SUCCESSFULLY_DETACHED_VOLUME || volume_action_status ==  volumeActionStates.CHANGING_NAME_SUCESSFULL || volume_action_status == volumeActionStates.ATTACHING_SUCCESSFULL || volume_action_status == volumeActionStates.SUCCESSFULLY_CREATED_ATTACHED">
+            *ngIf="volume_action_status == volumeActionStates.SUCCESS || volume_action_status == volumeActionStates.SUCCESSFULLY_DETACHED_VOLUME || volume_action_status ==  volumeActionStates.CHANGING_NAME_SUCCESSFUL || volume_action_status == volumeActionStates.ATTACHING_SUCCESSFUL || volume_action_status == volumeActionStates.SUCCESSFULLY_CREATED_ATTACHED">
           Success </h4>
         <h4 class="modal-title" *ngIf="volume_action_status == volumeActionStates.ERROR"> Error </h4>
 
@@ -248,7 +248,7 @@
 
         </div>
         <div class="alert alert-success" role="alert"
-             *ngIf="volume_action_status == volumeActionStates.CHANGING_NAME_SUCESSFULL">
+             *ngIf="volume_action_status == volumeActionStates.CHANGING_NAME_SUCCESSFUL">
           Successfully renamed Volume.
 
         </div>
@@ -261,12 +261,12 @@
           {{selected_volume?.volume_openstackid}} was successfully detached.
         </div>
         <div class="alert alert-success" role="alert"
-             *ngIf="volume_action_status == volumeActionStates.ATTACHING_SUCCESSFULL">
+             *ngIf="volume_action_status == volumeActionStates.ATTACHING_SUCCESSFUL">
           {{selected_volume?.volume_name}} was successfully attached.
         </div>
 
         <div
-          *ngIf="volume_action_status == volumeActionStates.ATTACHING_SUCCESSFULL || volume_action_status == volumeActionStates.SUCCESSFULLY_CREATED_ATTACHED"
+          *ngIf="volume_action_status == volumeActionStates.ATTACHING_SUCCESSFUL || volume_action_status == volumeActionStates.SUCCESSFULLY_CREATED_ATTACHED"
           class="alert alert-info" role="alert">
           In order to use the volume you have to <a
           href="{{VOLUME_WIKI}}"> mount </a> it.

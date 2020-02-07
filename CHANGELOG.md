@@ -118,7 +118,7 @@
 #### Bug Fixes
 
 * **VM:** removed additional ressource view ([ebbdbfe7](ebbdbfe7))
-* **Modes:** descirption mandatory ([83c1c7a2](83c1c7a2))
+* **Modes:** descriptions mandatory ([83c1c7a2](83c1c7a2))
 
 
 ##  (2020-01-15)
@@ -496,9 +496,9 @@
 * **Snapshot:** removed needless calls ([97d00d9c](97d00d9c))
 * **Table:** fixed an table ([33343445](33343445))
 * **TestButton:**
-  *  openstack  test applicaiton btn works again ([bd35ac09](bd35ac09))
-  *  openstack  test applicaiton btn works again ([af144f05](af144f05))
-  *  simple vm test applicaiton btn works again ([9bf983a7](9bf983a7))
+  *  openstack  test application btn works again ([bd35ac09](bd35ac09))
+  *  openstack  test application btn works again ([af144f05](af144f05))
+  *  simple vm test application btn works again ([9bf983a7](9bf983a7))
 * **Userinfo:**  changed buttons ([bb3d7615](bb3d7615))
 * **VM:** fixed diskspace bug ([a3cd6b1e](a3cd6b1e))
 * **VirtualMachine:**
@@ -524,7 +524,7 @@
   * deletet wrong params from key service ([17051193](17051193))
   *  fixed encoding '+' ([9c705939](9c705939))
   *  fixed urls for flav,img and vm service ([9e11c2ce](9e11c2ce))
-* **applcations:**  cant checkConnection to Client anymore with empty host and emtpy port ([3ad07fc2](3ad07fc2))
+* **applcations:**  cant checkConnection to Client anymore with empty host and empty port ([3ad07fc2](3ad07fc2))
 * **application:**
   *  enter does not submit form anymore ([398429d7](398429d7))
   *  Applications does not get submitted accidentally when pressing Enter ([bcb86bd5](bcb86bd5))
@@ -564,7 +564,7 @@
   * converted stopped at timestamp to date ([e5c7e1aa](e5c7e1aa))
   * commit befre ws wrong,fixed reload bug ngfor ([d91630c0](d91630c0))
   * fixed key bug stat_server ([db5a8fdc](db5a8fdc))
-  * just vo-manager can see the cleints now ([483be344](483be344))
+  * just vo-manager can see the clients now ([483be344](483be344))
   *  fixed responsive table ([5ad113de](5ad113de))
   *  fixed responsive table ([a853d456](a853d456))
 * **assignRessource:** fixed assignRessource error if no cc is set (#77) ([50eabfb3](50eabfb3))
@@ -670,9 +670,9 @@
 * **new-instance-alert:**  now correctly showing what is missing ([c8adbc19](c8adbc19))
 * **newInstance:** fixed typo ([2d28273b](2d28273b))
 * **newserver:**
-  * should be visible if client is avaiable and user is pa… (#76) ([246a073d](246a073d))
+  * should be visible if client is available and user is pa… (#76) ([246a073d](246a073d))
   *  now if no client is avaible you cant see the new server tab ([efa77ad5](efa77ad5))
-* **notificaton:** fixed typo ([347f63eb](347f63eb))
+* **notification:** fixed typo ([347f63eb](347f63eb))
 * **overview:**
   *  overview text now in plural ([a2e24098](a2e24098))
   *  show overview only when member of project ([ba6c8fe7](ba6c8fe7))
@@ -762,7 +762,7 @@
 
 #### Features
 
-* **Applicaitons:**
+* **Applications:**
   * added pi field ([f32e4a07](f32e4a07))
   * added pi field ([f405e2ab](f405e2ab))
 * **Application:**
@@ -780,7 +780,7 @@
   * now shows client limits when simple vm is created ([33ca34bd](33ca34bd))
   *  Further informations on extensions ([5a9681ca](5a9681ca))
   * added Additional Information header ([7ef62ec3](7ef62ec3))
-  * if without faciltiy approve ([32c47621](32c47621))
+  * if without facility approve ([32c47621](32c47621))
   * added report fields ([10fa74df](10fa74df))
   * vo can approve without facility ([2624391f](2624391f))
 * **Applications:**
@@ -858,7 +858,7 @@
   * added description ([2ddf8840](2ddf8840))
   *  if requirements changed check patch" (#250) ([26c6254b](26c6254b))
 * **Project:** now copy linkt to clipboard ([afc0b180](afc0b180))
-* **ProjectHash:** useing url params ([0cf59e48](0cf59e48))
+* **ProjectHash:** using url params ([0cf59e48](0cf59e48))
 * **Projects:**
   * added delete members method ([74052b1f](74052b1f))
   * added checkbox for all members ([8d19fc2e](8d19fc2e))
@@ -889,7 +889,7 @@
   * now at vo listet for all facilities ([089b70fb](089b70fb))
   * addet to vo ([01b391fb](01b391fb))
   * added resources overview method ([c939d0c6](c939d0c6))
-* **SecurityGroups:** added udp conneciton info ([66b3754f](66b3754f))
+* **SecurityGroups:** added udp connection info ([66b3754f](66b3754f))
 * **SecurtyGroup:** added checkbox for udp,http,https ([ae48d149](ae48d149))
 * **Service:** removed settings ([92829292](92829292))
 * **ServiceWorker:**
@@ -964,7 +964,7 @@
   * added max lifetime 12 ([aadc2d4f](aadc2d4f))
   * small logic change ([14ec3cfb](14ec3cfb))
   * added loadder ([a7dae458](a7dae458))
-  * now also a vo can delete applicaitons form history (#172) ([4a8b6ace](4a8b6ace))
+  * now also a vo can delete applications form history (#172) ([4a8b6ace](4a8b6ace))
   *  shorten notification message ([7f4ba9bc](7f4ba9bc))
   *  added info (#56) ([89ddffa3](89ddffa3))
   * added project to vm ([80ad6464](80ad6464))
@@ -1000,10 +1000,10 @@
   *  metadatatabel invis if no metadata ([a3ec2db3](a3ec2db3))
   *  fixed key bug and changed design ([93d231d5](93d231d5))
   *  added methods add and delete MetadataItem to addvm.component ,added html for representing the metadatalist) ([af2216cb](af2216cb))
-* **applicaton:**
+* **application:**
   * now it shows in the modal which inputs where wrong (#143) ([015d99ba](015d99ba))
   * now it shows in the modal which inputs where wrong ([3697c3fd](3697c3fd))
-* **applicatons:** added refresh button ([dd3015b3](dd3015b3))
+* **applications:** added refresh button ([dd3015b3](dd3015b3))
 * **applictation:**
   *  added ssd comment information (#709) ([a3404500](a3404500))
   *  added ssd comment information (#709) ([9a6d4eaf](9a6d4eaf))
@@ -1026,7 +1026,7 @@
   * description in modal ([f3a2588d](f3a2588d))
   * now the perun attribute will be set (#91) ([d71c2d44](d71c2d44))
 * **dev:**  set travis lint test ([0c20ec24](0c20ec24))
-* **developemnt:**  add nvm commands ([d314fda1](d314fda1))
+* **developments:**  add nvm commands ([d314fda1](d314fda1))
 * **development:**
   *  use nodeenv instead of nvm ([c779b872](c779b872))
   *  reduce needed command ([3932bee7](3932bee7))
@@ -1321,8 +1321,8 @@
 #### Bug Fixes
 
 * **TestButton:**
-  *  openstack  test applicaiton btn works again ([b0bb967c](b0bb967c))
-  *  simple vm test applicaiton btn works again ([d768120f](d768120f))
+  *  openstack  test application btn works again ([b0bb967c](b0bb967c))
+  *  simple vm test application btn works again ([d768120f](d768120f))
 
 * **Loop:**
   * fixed the loop
@@ -1385,7 +1385,7 @@
 * **Application:**
   * detailed desc text ([2b8c7de9](2b8c7de9))
   * detailed desc text ([f7caeaed](f7caeaed))
-* **SecurityGroups:** added udp conneciton info ([20b9d3d2](20b9d3d2))
+* **SecurityGroups:** added udp connection info ([20b9d3d2](20b9d3d2))
 * **SecurtyGroup:** added checkbox for udp,http,https ([8f06062b](8f06062b))
 
 #### Bug Fixes
@@ -1428,7 +1428,7 @@
 
 #### Features
 
-* **Applicaitons:**
+* **Applications:**
   * added pi field ([ebebef3f](ebebef3f))
   * added pi field ([5203dbc0](5203dbc0))
 * **Application:**
@@ -1437,7 +1437,7 @@
   * pi will also be added ([4d4b20af](4d4b20af))
 * **Applications:** approve & create reenabled ([8b562d08](8b562d08))
 * **Approval:** added pi approval endpoints ([626a57c4](626a57c4))
-* **ProjectHash:** useing url params ([889d3e9d](889d3e9d))
+* **ProjectHash:** using url params ([889d3e9d](889d3e9d))
 * **Validation:**
   *  flavor and total cores/ram shown ([fccf932d](fccf932d))
   *  closing validation modal redirects to /applications ([dfec7a02](dfec7a02))
@@ -1675,7 +1675,7 @@ host and port ([53a75d93](53a75d93))
 #### Features
 
 * **Application:**
-  * if without faciltiy approve 
+  * if without facility approve 
   * vo can approve without facility 
   * added Additional Information header 
   * added report fields 
@@ -1711,7 +1711,7 @@ host and port ([53a75d93](53a75d93))
 
 #### Features
 
-* **developemnt:**  add nodeenv commands 
+* **developments:**  add nodeenv commands 
 * **invitation_links:**  reference to invitation links wiki page added 
 * **member:** add and remove member without facility 
 
