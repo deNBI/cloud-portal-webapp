@@ -322,10 +322,15 @@
 
                 <div class="row" *ngIf="vm?.res_env_url != '' && vm?.res_env_url != null && vm?.res_env_url != undefined && resenv_by_play(vm)">
                   <div class="col-md-1">
-                    <span class="font-weight-bold font-xs btn-block text-muted">Res-Env:</span>
+                    <span class="font-weight-bold font-xs btn-block text-muted">Research Environment:</span>
                   </div>
-                  <div class="col-md-11">
-                    <a class="font-weight-bold font-xs btn-block text-muted" href="{{vm?.res_env_url}}" target="_blank">{{vm?.res_env_url}}</a></div>
+                  <div class="col-md-11 font-weight-bold font-xs btn-block text-muted">
+                    <a href="{{vm?.res_env_url}}" target="_blank">{{vm?.res_env_url}}</a>
+                    <br>
+                    For RStudio credentials please visit: <a href="{{WIKI_RSTUDIO_LINK}}" target="_blank">{{WIKI_RSTUDIO_LINK}}</a>
+                    <br>
+                    For Apache Guacamole credentials please visit: <a href="{{WIKI_GUACAMOLE_LINK}}" target="_blank">{{WIKI_GUACAMOLE_LINK}}</a>
+                  </div>
                 </div>
               </div>
 
