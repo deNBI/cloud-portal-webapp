@@ -56,7 +56,7 @@ export class UserInfoComponent implements OnInit {
 
   title: string = 'User Information';
   /**
-   * Text refering to newsletter registration
+   * Text referring to newsletter registration
    */
   dsgvo_text: string = 'By activating this option, you agree that your preferred e-mail address may be used for the newsletter. ' +
     'You will receive the newsletter until you deactivate the option in the settings again.';

@@ -177,7 +177,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
       (result: IResponseTemplate) => {
 
         if (result.value === 'attached') {
-          this.volume_action_status = this.volumeActionStates.ATTACHING_SUCCESSFULL;
+          this.volume_action_status = this.volumeActionStates.ATTACHING_SUCCESSFUL;
         } else {
           this.volume_action_status = this.volumeActionStates.ERROR;
         }
@@ -373,7 +373,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
     this.vmService.renameVolume(volume.volume_openstackid, new_volume_name)
       .subscribe((changed_volume: Volume) => {
                    if (changed_volume.volume_name === new_volume_name) {
-                     this.volume_action_status = this.volumeActionStates.CHANGING_NAME_SUCESSFULL;
+                     this.volume_action_status = this.volumeActionStates.CHANGING_NAME_SUCCESSFUL;
                    } else {
                      this.volume_action_status = this.volumeActionStates.ERROR;
                    }

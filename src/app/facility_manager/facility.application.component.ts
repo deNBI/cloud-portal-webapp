@@ -165,8 +165,8 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
    * @param {number} application_id
    */
   public declineExtension(app: Application): void {
-    const modificaton_requested: number = 4;
-    this.applicationstatusservice.setApplicationStatus(app.Id, modificaton_requested).subscribe(() => {
+    const modification_requested: number = 4;
+    this.applicationstatusservice.setApplicationStatus(app.Id, modification_requested).subscribe(() => {
       this.updateNotificationModal('Success', 'Successfully declined!', true, 'success');
       this.all_application_modifications.splice(this.all_application_modifications.indexOf(app), 1);
       this.getAllApplicationsHistory(this.selectedFacility ['FacilityId']);
@@ -195,7 +195,7 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
   }
 
   /**
-   * If the selected facility changes, reload the applicatins.
+   * If the selected facility changes, reload the applicants.
    * @param value
    */
   onChangeSelectedFacility(): void {

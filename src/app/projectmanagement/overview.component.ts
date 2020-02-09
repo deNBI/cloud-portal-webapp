@@ -428,11 +428,11 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
       this.groupService.getFacilityByGroup(this.project_application.PerunId.toString()).subscribe((res: object) => {
 
         const login: string = res['Login'];
-        const suport: string = res['Support'];
+        const support: string = res['Support'];
         const facilityname: string = res['Facility'];
         const facilityId: number = res['FacilityId'];
         if (facilityId) {
-          this.project_application.ComputeCenter = new ComputecenterComponent(facilityId.toString(), facilityname, login, suport);
+          this.project_application.ComputeCenter = new ComputecenterComponent(facilityId.toString(), facilityname, login, support);
         }
 
       })

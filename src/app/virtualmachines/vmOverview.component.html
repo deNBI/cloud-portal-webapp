@@ -581,11 +581,11 @@
         </div>
         <div class="alert alert-success" role="alert" *ngIf="status_changed == 1"
              id="delete_success_div">
-          {{selectedVm?.name}} was succesfully deleted.
+          {{selectedVm?.name}} was successfully deleted.
         </div>
       </div>
       <div class="alert alert-warning" role="alert" *ngIf="status_changed == 2">
-        When deleting {{selectedVm?.name}} an error occured.
+        When deleting {{selectedVm?.name}} an error occurred.
       </div>
 
 
@@ -796,7 +796,7 @@
         </div>
         <div class="alert alert-danger" role="alert"
              *ngIf="snapshotDone != 'true' && snapshotDone != 'Waiting'">
-          An error occured when creating the snapshot.
+          An error occurred when creating the snapshot.
 
           <pre>{{snapshotDone}}</pre>
         </div>

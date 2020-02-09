@@ -49,7 +49,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
   BUILD_STATUS: string = 'Building..';
   CHECKING_PORT_STATUS: string = 'Checking Connection..';
   PREPARE_PLAYBOOK_STATUS: string = 'Prepare Playbook Build...';
-  BUIDLING_PLAYBOOK_STATUS: string = 'Building Playbook...';
+  BUILDING_PLAYBOOK_STATUS: string = 'Building Playbook...';
   ANIMATED_PROGRESS_BAR: string = 'progress-bar-animated';
 
   newVm: VirtualMachine = null;
@@ -173,7 +173,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
   /**
    * If the client for a project is viable.
    */
-  client_avaiable: boolean = false;
+  client_available: boolean = false;
 
   /**
    * Default volume name.
@@ -439,13 +439,13 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 
     this.groupService.getClient(this.selectedProject[1].toString()).subscribe((client: Client) => {
       if (client.status && client.status === 'Connected') {
-        this.client_avaiable = true;
+        this.client_available = true;
 
         this.loadProjectData();
         this.client_checked = true;
         this.getHasForc(client.id);
       } else {
-        this.client_avaiable = false;
+        this.client_available = false;
         this.client_checked = true;
 
       }
