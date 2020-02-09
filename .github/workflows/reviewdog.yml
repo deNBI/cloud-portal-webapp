@@ -28,7 +28,7 @@ jobs:
         with:
          token: ${{ secrets.GITHUB_TOKEN }}
          commit-message: fix(Linting):blacked code
-         title: Automated Blacked Linting
+         title: Automated Spellchecking 
          body: |
                         New Spellchecking
                         - Fixed spelling errors
