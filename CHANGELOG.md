@@ -1,4 +1,10 @@
-<<<<<<< HEAD
+##  (2020-02-09)
+
+
+#### Bug Fixes
+
+* **Modification:** lifetimechooser fixed ([f638f37d](f638f37d))
+* **VM:** loader till data is loade ([feed5ce7](feed5ce7))
 ##  (2020-02-06)
 
 

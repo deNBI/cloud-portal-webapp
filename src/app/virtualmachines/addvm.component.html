@@ -24,19 +24,22 @@
   </div>
 </div>
 
-<div *ngIf=" isLoaded==false" class="loader"></div>
+<div *ngIf=" !isLoaded || (singleProject && !projectDataLoaded )" class="loader"></div>
 <div *ngIf=" isLoaded && userinfo?.PublicKey != 'None' && projects.length == 0">
   <div class="alert alert-warning" role="alert">
     You are not a member of any Simple VM project.
   </div>
 </div>
-<div *ngIf=" isLoaded && userinfo?.PublicKey != 'None' && projects.length > 0" class="animated fadeIn">
+<div
+  *ngIf=" isLoaded && userinfo?.PublicKey != 'None' && projects.length > 0 && (!singleProject || singleProject && projectDataLoaded )"
+  class="animated fadeIn">
 
   <div class="row">
     <div class="col-md-12">
       <div class="card">
         <div class="card-header">
-          <strong>New Virtual Machine</strong> <span *ngIf="singleProject" id="singleProjectNameSpan"> - <strong>{{this.selectedProject[0]}}</strong></span>
+          <strong>New Virtual Machine</strong> <span *ngIf="singleProject"
+                                                     id="singleProjectNameSpan"> - <strong>{{this.selectedProject[0]}}</strong></span>
         </div>
 
         <div class="card-body">
@@ -99,7 +102,28 @@
                 Your principal investigator can request more
                 resources if necessary.
               </div>
+              <div *ngIf="selectedProject" class="form-group row col-md-12">
+                <label class="col-md-2 form-control-label"><strong>Name*</strong></label>
+                <div class="col-md-10">
+                  <div class="input-group">
+                    <input required id="id_instance_name" name="instance_name"
+                           class="form-control"
+                           type="text" placeholder="Instance name" [(ngModel)]="vm_name"
+                           pattern="[a-zA-Z0-9]+"
+                           [ngClass]="{'is-invalid':f.controls.instance_name?.invalid && (f.controls.instance_name?.dirty || f.controls.instance_name?.touched),
+                             'is-valid':f.controls.instance_name?.valid && (f.controls.instance_name?.dirty || f.controls.instance_name?.touched)}">
+                    <div class="input-group-append">
+                      <button class="btn btn-outline-primary" (click)="generateRandomName();">Generate</button>
+                    </div>
+                  </div>
+                  <div class="alert alert-danger"
+                       style="margin-top: 5px; margin-bottom: 5px"
+                       *ngIf="f.controls.instance_name?.errors && (f.controls.instance_name?.dirty || f.controls.instance_name?.touched)">
+                    Allowed characters are upper and lower case letters (a-z A-Z) and arabic numbers (0-9).
+                  </div>
 
+                </div>
+              </div>
 
               <div *ngIf="selectedProjectVmsUsed < selectedProjectVmsMax && (flavors?.length > 0 || selectedFlavor)">
 
@@ -129,35 +153,6 @@
                                       [images]="images"
                                       (selectedImageChange)="setSelectedImage($event)"
                                       id="id_image_detail"></app-image-detail>
-                  </div>
-                </div>
-
-                <div *ngIf="selectedProject" class="form-group row col-md-12">
-                  <label class="col-md-2 form-control-label"><strong>Name*</strong></label>
-                  <div class="col-md-10">
-                    <div class="input-group">
-                      <input required id="id_instance_name" name="instance_name"
-                             class="form-control"
-                             type="text" placeholder="Instance name" [(ngModel)]="vm_name"
-                             pattern="[a-zA-Z0-9]+"
-                             [ngClass]="{'is-invalid':f.controls.instance_name?.invalid && (f.controls.instance_name?.dirty || f.controls.instance_name?.touched),
-                             'is-valid':f.controls.instance_name?.valid && (f.controls.instance_name?.dirty || f.controls.instance_name?.touched)}">
-                            <div class="input-group-append">
-                              <button class="btn btn-outline-primary" (click)="generateRandomName();">Generate</button>
-                            </div>
-                    </div>
-                    <div class="alert alert-danger"
-                         style="margin-top: 5px; margin-bottom: 5px"
-                         *ngIf="f.controls.instance_name?.errors && (f.controls.instance_name?.dirty || f.controls.instance_name?.touched)">
-                      Allowed characters are upper and lower case letters (a-z A-Z) and arabic numbers (0-9).
-                    </div>
-                    <div class="alert alert-primary" role="alert" style="margin-top: 5px">
-                      <p>The instance name will also be the hostname of the VM.</p>
-                      <p>The name of the Virtual Machine is generated automatically. You can change it
-                        in case you want to use a different name.<br>
-                        Regardless of the choice of name, a unique ID is appended to it. </p>
-
-                    </div>
                   </div>
                 </div>
 
