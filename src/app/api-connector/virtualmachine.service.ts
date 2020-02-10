@@ -246,9 +246,19 @@ export class VirtualmachineService {
 
   }
 
-  createVolume(volume_name: string, volume_diskspace: string, vm_openstackid: string): Observable<Volume> {
+  getVolumeByNameAndVmName(volume_name: string, virtualmachine_name: string): Observable<Volume> {
+    const params: HttpParams = new HttpParams().set('volume_name', volume_name);
+
+    return this.http.get<Volume>(`${ApiSettings.getApiBaseURL()}volumes/vms/${virtualmachine_name}/`, {
+      withCredentials: true,
+      params: params
+    })
+
+  }
+
+  createVolume(volume_name: string, volume_storage: string, vm_openstackid: string): Observable<Volume> {
     const params: HttpParams = new HttpParams().set('volume_name', volume_name)
-      .set('volume_diskspace', volume_diskspace)
+      .set('volume_storage', volume_storage)
       .set('vm_openstackid', vm_openstackid);
 
     return this.http.post<Volume>(`${ApiSettings.getApiBaseURL()}volumes/`, params, {

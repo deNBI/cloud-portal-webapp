@@ -61,7 +61,7 @@
           <thead>
           <tr>
             <th>Project</th>
-            <th>Virtual Machine</th>
+            <th>Attached To</th>
             <th>Name</th>
             <th>Status</th>
             <th>Size</th>
@@ -74,9 +74,10 @@
           <tbody id="volume_table_body">
           <tr *ngFor="let volume of volumes">
             <td>{{volume.volume_project}}</td>
-            <td *ngIf="volume.volume_virtualmachine"
+            <td *ngIf="volume.volume_virtualmachine && volume.volume_status == VolumeStates.staticIN_USE"
                 [id]="'cell_vm_id_' + volume.volume_virtualmachine.name">
-              {{volume.volume_virtualmachine.name}}
+              {{volume.volume_device }}  <br><a class="h5 text-primary"
+                 [routerLink]="['/virtualmachines/detail/' + volume.volume_virtualmachine?.openstackid]">{{ volume.volume_virtualmachine.name}}</a>
             </td>
             <td *ngIf="!volume.volume_virtualmachine"
                 id="cell_vm_free_id"></td>
@@ -107,13 +108,15 @@
                      class="dot-colorless bg-warning" style="width: 10px; height: 10px">
                 </div>
                 <strong> {{VolumeStates.staticDELETING}}</strong>
-                <ng-container *ngSwitchCase="VolumeStates.staticCREATING">
+              </ng-container>
+
+              <ng-container *ngSwitchCase="VolumeStates.staticCREATING">
                 <div [id]="'creating_' + volume?.volume_name"
                      class="dot-colorless bg-warning" style="width: 10px; height: 10px">
                 </div>
                 <strong> {{VolumeStates.staticCREATING}}</strong>
               </ng-container>
-                <ng-container *ngSwitchCase="VolumeStates.staticRESERVED_PLANNED">
+              <ng-container *ngSwitchCase="VolumeStates.staticRESERVED_PLANNED">
                 <div [id]="'creating_' + volume?.volume_name"
                      class="dot-colorless bg-warning" style="width: 10px; height: 10px">
                 </div>
@@ -151,7 +154,7 @@
                  class="fa fa-spinner fa-spin"></i></td>
 
 
-            <td>{{volume.volume_size }} GB</td>
+            <td>{{volume.volume_storage }} GB</td>
             <td>
               <div *ngIf="(volume.volume_created_by_user
                || showFacilities)

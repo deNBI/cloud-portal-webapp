@@ -72,11 +72,13 @@ export class VolumeStates {
     return VolumeStates.NOT_IN_PROCESS_STATES;
   }
 
-
-   public get staticCRE(): string {
-    return VolumeStates.DELETING;
+  public get staticCREATING(): string {
+    return VolumeStates.CREATING;
   }
 
+  public get staticRESERVED_PLANNED(): string {
+    return VolumeStates.RESERVED_PLANNED_STATUS;
+  }
 
   static get CREATING(): string {
     return this._CREATING;
