@@ -7,7 +7,8 @@ export class VolumeStates {
   private static readonly _RESERVED: string = 'reserved';
   private static readonly _AVAILABLE: string = 'available';
   private static readonly _DELETING: string = 'deleting';
-
+  private static readonly _CREATING: string = 'creating';
+  private static readonly _RESERVED_PLANNED_STATUS: string = 'reserved_planned';
   private static readonly _NOT_FOUND: string = 'NOT FOUND';
   private static readonly _DETACHING: string = 'detaching';
   private static readonly _ATTACHING: string = 'attaching';
@@ -22,7 +23,13 @@ export class VolumeStates {
   ];
 
   private static readonly _NO_ACTIONS: string[] = [
-    VolumeStates._DETACHING, VolumeStates._ATTACHING, VolumeStates._NOT_FOUND, VolumeStates._DELETING, VolumeStates._RESERVED
+    VolumeStates._DETACHING,
+    VolumeStates._ATTACHING,
+    VolumeStates._NOT_FOUND,
+    VolumeStates._DELETING,
+    VolumeStates._RESERVED,
+    VolumeStates._CREATING,
+    VolumeStates._RESERVED_PLANNED_STATUS
   ]
 
   public get staticNO_ACTIONS(): string[] {
@@ -63,6 +70,20 @@ export class VolumeStates {
 
   public get staticNOT_IN_PROCESS_STATE(): string[] {
     return VolumeStates.NOT_IN_PROCESS_STATES;
+  }
+
+
+   public get staticCRE(): string {
+    return VolumeStates.DELETING;
+  }
+
+
+  static get CREATING(): string {
+    return this._CREATING;
+  }
+
+  static get RESERVED_PLANNED_STATUS(): string {
+    return this._RESERVED_PLANNED_STATUS;
   }
 
   static get NOT_FOUND(): string {
