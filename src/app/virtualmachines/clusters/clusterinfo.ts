@@ -15,6 +15,15 @@ export class Clusterinfo {
   private _instances_count: number;
   private _launch_date: string;
   private _key_name: string
+  private _status: string;
+
+  get status(): string {
+    return this._status;
+  }
+
+  set status(value: string) {
+    this._status = value;
+  }
 
   get master_instance(): VirtualMachine {
     return this._master_instance;

@@ -1,6 +1,7 @@
 import {Flavor} from './flavor';
 import {Client} from '../clients/client.model';
 import {ImageMode} from '../../facility_manager/image-tag';
+import {Clusterinfo} from '../clusters/clusterinfo';
 
 /**
  * Virtualmachine class.
@@ -24,11 +25,10 @@ export class VirtualMachine {
   private _udp_command: string;
   private _application_id: string;
   private _cardState: number;
-
+  private _cluster: Clusterinfo;
   private _projectid: number;
   private _volume_id: string;
   private _diskspace: string;
-
   private _res_env_url: string;
   private _modes: ImageMode[];
 
@@ -55,6 +55,7 @@ export class VirtualMachine {
     this._diskspace = vm.diskspace;
     this._res_env_url = vm.res_env_url;
     this._modes = vm.modes;
+    this._cluster = vm.cluster;
     this.calculateCreatedAt()
   }
 
@@ -62,6 +63,14 @@ export class VirtualMachine {
     if (this.created_at !== '') {
       this.created_at = new Date(parseInt(this.created_at, 10) * 1000).toLocaleDateString();
     }
+  }
+
+  get cluster(): Clusterinfo {
+    return this._cluster;
+  }
+
+  set cluster(value: Clusterinfo) {
+    this._cluster = value;
   }
 
   get volume_id(): string {

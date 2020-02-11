@@ -269,6 +269,25 @@
                     <strong>Image</strong>: {{vm?.image}}
                   </div>
                 </div>
+                <div *ngIf="vm?.cluster?.cluster_id" class="col-12" style="margin-left: 10px" [ngSwitch]="vm?.cluster?.status">
+                  <div style="font-size: small">
+                    <strong>Cluster</strong>: {{vm?.cluster.cluster_id}}  <ng-container *ngSwitchCase="'Running'">
+                    <div [id]="'running_cluster_' + vm?.name"
+                         class="dot-colorless bg-success">
+                    </div>
+                  </ng-container>
+                     <ng-container *ngSwitchCase="'Creating'">
+                    <div [id]="'creating_cluster_' + vm?.name"
+                         class="dot-colorless bg-warning">
+                    </div>
+                  </ng-container>
+                    <ng-container *ngSwitchCase="'Configuring'">
+                    <div [id]="'configuring_cluster_' + vm?.name"
+                         class="dot-colorless bg-info">
+                    </div>
+                  </ng-container>
+                  </div>
+                </div>
               </div>
             </div>
             <div class="card-footer p-x-1 py-h"
