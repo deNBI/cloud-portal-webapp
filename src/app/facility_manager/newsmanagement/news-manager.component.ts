@@ -226,18 +226,4 @@ export class NewsManagerComponent implements OnInit {
 
     return editable;
   }
-
-  addTestNews(): void {
-    const news: DenbiNews = new DenbiNews();
-    news.title = 'Non editable news';
-    news.tag = 'testTag1, testTag2';
-    news.facility_id = [3385, 1234];
-    news.text = 'You will not be able to edit this news\nBecause it contains a fac_id you are no manager of';
-    news.motd = 'MOTD';
-    news.id = 123;
-    news.author = 'Jesus';
-    news.time = '01.01.0 00:00';
-    this.isEditable(news);
-    this.allNews.push(news);
-  }
 }
