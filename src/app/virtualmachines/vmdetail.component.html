@@ -107,10 +107,15 @@
             </div>
             <div class="row" *ngIf="virtualMachine?.res_env_url != '' && virtualMachine?.res_env_url != null && virtualMachine?.res_env_url != undefined">
               <div class="col-md-1">
-                <span class="font-weight-bold font-xs btn-block text-muted">Res-Env:</span>
+                <span class="font-weight-bold font-xs btn-block text-muted">Research Environment:</span>
               </div>
-              <div class="col-md-11">
-                <a class="font-weight-bold font-xs btn-block text-muted" href="{{virtualMachine?.res_env_url}}" target="_blank">{{virtualMachine?.res_env_url}}</a></div>
+              <div class="col-md-11 font-weight-bold font-xs btn-block text-muted">
+                <a href="{{virtualMachine?.res_env_url}}" target="_blank">{{virtualMachine?.res_env_url}}</a>
+                <br>
+                For RStudio credentials please visit: <a href="{{WIKI_RSTUDIO_LINK}}" target="_blank">{{WIKI_RSTUDIO_LINK}}</a>
+                <br>
+                For Apache Guacamole credentials please visit: <a href="{{WIKI_GUACAMOLE_LINK}}" target="_blank">{{WIKI_GUACAMOLE_LINK}}</a>
+              </div>
             </div>
           </div>
 
