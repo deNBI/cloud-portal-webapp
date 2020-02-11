@@ -1,4 +1,20 @@
-<<<<<<< HEAD
+##  (2020-02-11)
+
+
+#### Bug Fixes
+
+* **Filter:** fixed filter in vm overview ([2970f45d](2970f45d))
+
+
+##  (2020-02-09)
+
+
+#### Bug Fixes
+
+* **Modification:** lifetimechooser fixed ([f638f37d](f638f37d))
+* **VM:** loader till data is loade ([feed5ce7](feed5ce7))
+  * fixed lifetime chooser ([a9e639d8](a9e639d8))
+
 ##  (2020-02-06)
 
 

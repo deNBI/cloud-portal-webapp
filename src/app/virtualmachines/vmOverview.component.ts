@@ -466,15 +466,16 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
   prepareVMS(vms: VirtualMachine[]): void {
 
     const vm_list: VirtualMachine[] = vms['vm_list'];
+    const tmp_vms: VirtualMachine[] = [];
 
     // tslint:disable-next-line:no-for-each-push
     vm_list.forEach((new_vm: VirtualMachine) => {
       const vm: VirtualMachine = new VirtualMachine(new_vm);
       this.setForcUrl(vm);
-
-      this.vms_content.push(vm);
+      tmp_vms.push(vm);
 
     });
+    this.vms_content = tmp_vms;
     this.total_items = vms['total_items'];
     this.items_per_page = vms['items_per_page'];
     this.total_pages = vms['num_pages'];
