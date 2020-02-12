@@ -1,3 +1,66 @@
+##  (2020-02-11)
+
+
+#### Bug Fixes
+
+* **Filter:** fixed filter in vm overview ([2970f45d](2970f45d))
+
+
+##  (2020-02-09)
+
+
+#### Bug Fixes
+
+* **Modification:** lifetimechooser fixed ([f638f37d](f638f37d))
+* **VM:** loader till data is loade ([feed5ce7](feed5ce7))
+  * fixed lifetime chooser ([a9e639d8](a9e639d8))
+
+##  (2020-02-06)
+
+
+#### Features
+
+* **New Instance:** if only one simple vm project it will be preselected ([c612d51a](c612d51a))
+* **Snapshot:**
+  * added test ([da5fb0d9](da5fb0d9))
+  * added test ([c82acb5b](c82acb5b))
+  * added test ([d776e13f](d776e13f))
+* **VM:** added deleting status ([90eddfe7](90eddfe7))
+* **Volume:**
+  * added all states ([3fc2a831](3fc2a831))
+  * added status not found ([7d5b6817](7d5b6817))
+* **news:**
+  *  add character counter for motd ([9751261d](9751261d))
+  *  motd addable and patchable ([51ca5a99](51ca5a99))
+* **resenv:**  add rstudio support, fix mode suggestions, conda tab to ansible, add res-env link to detail page, adjust wiki link ([8a2e5f5f](8a2e5f5f))
+
+#### Bug Fixes
+
+* **Delete:** all selected ignores if status is not active or shutoff ([0049fef3](0049fef3))
+* **VM:**
+  * if not found please contact denbi.cloud info ([e51fbdf4](e51fbdf4))
+  * fixed wrong message when client is down ([b10e3f35](b10e3f35))
+  * ressource overview fixed ([58293739](58293739))
+* **error:**  remove not needed icons ([572b95e3](572b95e3))
+* **resenv:**
+  *  remove is_vo check ([1a8f1836](1a8f1836))
+  *  show template_name when title missing ([f9cd9d36](f9cd9d36))
+=======
+
+##  (2020-02-05)
+
+
+#### Bug Fixes
+
+* **Modification:**
+  * no double submit ([e8a3091a](e8a3091a))
+  * no double submit ([a90656a7](a90656a7))
+
+#### Features
+
+* **Actions:**  ([f63662d3](f63662d3))
+>>>>>>> ced08033998bc15d3ebc2b18ce5227a9405a227c
+
 ##  (2020-01-31)
 
 

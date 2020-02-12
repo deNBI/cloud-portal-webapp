@@ -14,6 +14,10 @@ export class VirtualMachineStates {
   private static readonly _RESTARTING: string = 'RESTARTING';
   private static readonly _PREPARE_PLAYBOOK_BUILD: string = 'PREPARE_PLAYBOOK_BUILD';
   private static readonly _BUILD_PLAYBOOK: string = 'BUILD_PLAYBOOK';
+  private static readonly _PORT_CLOSED: string = 'PORT_CLOSED';
+  private static readonly _DELETING: string = 'DELETING';
+  private static readonly _DELETING_FAILED: string = 'DELETING FAILED';
+  private static readonly _CHECKING_CONNECTION: string = 'CHECKING CONNECTION';
 
   private static readonly _GETTING_STATUS: string = 'CHECKING STATUS';
 
@@ -22,16 +26,30 @@ export class VirtualMachineStates {
     VirtualMachineStates._POWERING_OFF,
     VirtualMachineStates._RESTARTING,
     VirtualMachineStates._PREPARE_PLAYBOOK_BUILD,
-    VirtualMachineStates._BUILD_PLAYBOOK];
+    VirtualMachineStates._BUILD_PLAYBOOK,
+    VirtualMachineStates._DELETING,
+    VirtualMachineStates._DELETING_FAILED,
+    VirtualMachineStates._CLIENT_OFFLINE,
+    VirtualMachineStates._GETTING_STATUS,
+    VirtualMachineStates._PORT_CLOSED,
+    VirtualMachineStates._CHECKING_CONNECTION
+  ];
 
   private static readonly _NOT_IN_PROCESS_STATES: string[] = [
     VirtualMachineStates._ACTIVE,
     VirtualMachineStates._DELETED,
     VirtualMachineStates._SHUTOFF,
     VirtualMachineStates._NOT_FOUND,
-    VirtualMachineStates._CLIENT_OFFLINE,
     VirtualMachineStates._ERROR
   ];
+
+  public get staticDELETING(): string {
+    return VirtualMachineStates.DELETING;
+  }
+
+  public get staticDELETING_FAILED(): string {
+    return VirtualMachineStates.DELETING_FAILED;
+  }
 
   public get staticPREPARE_PLAYBOOK_BUILD(): string {
     return VirtualMachineStates.PREPARE_PLAYBOOK_BUILD;
@@ -43,6 +61,14 @@ export class VirtualMachineStates {
 
   public get staticBUILD(): string {
     return VirtualMachineStates.BUILD;
+  }
+
+   public get staticCHECKING_CONNECTION(): string {
+    return VirtualMachineStates.CHECKING_CONNECTION;
+  }
+
+    public get staticPORT_CLOSED(): string {
+    return VirtualMachineStates.PORT_CLOSED;
   }
 
   public get staticACTIVE(): string {
@@ -97,6 +123,10 @@ export class VirtualMachineStates {
     return this._BUILD_PLAYBOOK;
   }
 
+  static get DELETING(): string {
+    return this._DELETING;
+  }
+
   static get ACTIVE(): string {
     return this._ACTIVE;
   }
@@ -129,6 +159,14 @@ export class VirtualMachineStates {
     return this._RESTARTING;
   }
 
+  static get PORT_CLOSED(): string {
+    return this._PORT_CLOSED;
+  }
+
+  static get CHECKING_CONNECTION(): string {
+    return this._CHECKING_CONNECTION;
+  }
+
   static get GETTING_STATUS(): string {
     return this._GETTING_STATUS;
   }
@@ -141,4 +179,7 @@ export class VirtualMachineStates {
     return this._NOT_IN_PROCESS_STATES;
   }
 
+  static get DELETING_FAILED(): string {
+    return this._DELETING_FAILED;
+  }
 }

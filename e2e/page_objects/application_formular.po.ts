@@ -1,4 +1,4 @@
-import {browser, by, element, protractor, ProtractorExpectedConditions} from 'protractor';
+import {by, element} from 'protractor';
 import {Util} from '../util';
 
 /**
@@ -11,6 +11,7 @@ export class FormularPage {
   private static APPLICATION_SUBMITTED: string = 'The application was submitted';
   private static NOTIFICATION_MESSAGE: string = 'notification_message';
   public static NOTIFICATION_BTN_REDIRECT: string = 'notification_btn_redirect';
+  private static NUMBER_FLAVORS: string = '3';
 
   static async submitApplication(): Promise<any> {
     console.log('Submit Application');
@@ -49,7 +50,7 @@ export class FormularPage {
     await Util.sendTextToElementByName('project_application_workgroup', 'Proctractor Workgroup');
     await Util.sendTextToElementByName('project_application_bmbf_project', 'BMBF Project');
     await Util.sendTextToElementByName('project_application_elixir_project', 'Elixir Project');
-    await Util.sendTextToElementById('project_application_de.NBI default', '2');
+    await Util.sendTextToElementById('project_application_de.NBI default', this.NUMBER_FLAVORS);
     await Util.sendTextToElementByElement(element(by.className('input-container')).element(by.tagName('input')), 'Bioinformatics');
     await Util.clickElementById('<b>Bioinformatics</b>');
     await Util.sendTextToElementByName('project_application_horizon2020', 'Horizon2020Project');
@@ -84,7 +85,7 @@ export class FormularPage {
     await Util.sendTextToElementByName('project_application_workgroup', 'Proctractor Workgroup');
     await Util.sendTextToElementByName('project_application_bmbf_project', 'BMBF Project');
     await Util.sendTextToElementByName('project_application_elixir_project', 'Elixir Project');
-    await Util.sendTextToElementById('project_application_de.NBI default', '2');
+    await Util.sendTextToElementById('project_application_de.NBI default', this.NUMBER_FLAVORS);
     await Util.sendTextToElementByElement(element(by.className('input-container')).element(by.tagName('input')), 'Bioinformatics');
     await Util.clickElementById('<b>Bioinformatics</b>');
     await Util.sendTextToElementByName('project_application_horizon2020', 'Horizon2020Project');

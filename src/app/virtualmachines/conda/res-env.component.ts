@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {FormControl, Validators} from '@angular/forms';
 import {BiocondaService} from '../../api-connector/bioconda.service';
 import {ResearchEnvironment} from '../virtualmachinemodels/res-env';
+import {RandomNameGenerator} from '../../shared/randomNameGenerator';
 
 /**
  * ResEnv.
@@ -25,6 +26,10 @@ export class ResEnvComponent implements OnInit {
 
   undefinedTemplate: ResearchEnvironment = new ResearchEnvironment();
 
+  WIKI_RESENV_LINK: string = 'https://cloud.denbi.de/wiki/portal/customization/#research-environments';
+
+  rng: RandomNameGenerator;
+
   constructor(private condaService: BiocondaService) {
   }
 
@@ -47,6 +52,7 @@ export class ResEnvComponent implements OnInit {
     this.condaService.getForcTemplates(this.clientid).subscribe((templates: ResearchEnvironment[]) => {
       this.templates = templates;
     });
+    this.rng = new RandomNameGenerator();
   }
 
   isValid(): boolean {
@@ -83,5 +89,9 @@ export class ResEnvComponent implements OnInit {
 
   unsetOnlyNamespace(): void {
     this.onlyNamespace = false;
+  }
+
+  generateRandomName(): void {
+    this.user_key_url.setValue(this.rng.randomName())
   }
 }

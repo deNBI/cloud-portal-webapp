@@ -9,8 +9,10 @@ export class Volume {
   volume_project: string;
   volume_projectid: string;
   volume_openstackid: string;
-  volume_size: number;
+  volume_storage: number;
   volume_virtualmachine: VirtualMachine;
   volume_client: Client;
   volume_created_by_user: boolean;
+  volume_status: string;
+  volume_device: string;
 }

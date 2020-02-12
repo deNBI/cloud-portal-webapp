@@ -21,6 +21,7 @@ import {BiocondaComponent} from './conda/bioconda.component';
 import {ResEnvComponent} from './conda/res-env.component';
 import {is_vo} from '../shared/globalvar';
 import {TemplateNames} from './conda/template-names';
+import {RandomNameGenerator} from '../shared/randomNameGenerator';
 
 /**
  * Start virtualmachine component.
@@ -80,6 +81,8 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
   started_machine: boolean = false;
 
   conda_img_path: string = `static/webapp/assets/img/conda_logo.svg`;
+
+  singleProject: boolean = false;
 
   /**
    * All image of a project.
@@ -159,7 +162,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 
   newCores: number = 0;
   newRam: number = 0;
-  newVms: number = 1;
+  newVms: number = 0;
   newGpus: number = 0;
 
   /**
@@ -194,7 +197,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
    * All projects of the user.
    * @type {any[]}
    */
-  projects: string[] = [];
+  projects: [string, number][] = [];
 
   /**
    * If all project data is loaded.
@@ -330,7 +333,6 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
    */
   startVM(flavor: string, servername: string, project: string, projectid: string | number): void {
     this.create_error = null;
-    this.vm_name = null;
     // tslint:disable-next-line:no-complex-conditionals
     if (this.selectedImage && flavor && servername && project &&
       (this.diskspace <= 0 || this.diskspace > 0 && this.volumeName.length > 0)) {
@@ -431,7 +433,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
   getSelectedProjectClient(): void {
     this.newCores = 0;
     this.newGpus = 0;
-    this.newVms = 1;
+    this.newVms = 0;
     this.client_checked = false;
     this.projectDataLoaded = false;
 
@@ -484,13 +486,22 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
         this.projects.push(project);
 
       }
+
+      if (this.projects.length === 1) {
+        this.resetChecks();
+        this.selectedProject = this.projects[0];
+        this.getSelectedProjectClient();
+        this.singleProject = true;
+      }
       this.isLoaded = true;
     })
   }
 
   checkProjectDataLoaded(): void {
     if (this.image_loaded && this.flavors_loaded && this.data_loaded) {
+      this.generateRandomName();
       this.projectDataLoaded = true;
+      this.isLoaded = true;
     }
   }
 
@@ -517,12 +528,17 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
       this.selectedProjectGPUsMax = res['gpus_max'];
       this.selectedProjectGPUsUsed = res['gpus_used'];
       this.data_loaded = true;
-      this.checkProjectDataLoaded()
+      this.checkProjectDataLoaded();
     });
 
     this.getImages(this.selectedProject[1]);
     this.getFlavors(this.selectedProject[1]);
 
+  }
+
+  generateRandomName(): void {
+    const rng: RandomNameGenerator = new RandomNameGenerator();
+    this.vm_name = rng.randomName();
   }
 
   setSelectedImage(image: Image): void {
@@ -549,6 +565,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
   }
 
   hasImageResenv(): void {
+
     if (!this.resEnvComponent) {
       return;
     }
@@ -561,7 +578,10 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
       }
     }
     this.resenvSelected = false;
-    this.resEnvComponent.unsetOnlyNamespace();
+    if (this.resEnvComponent) {
+      this.resEnvComponent.unsetOnlyNamespace();
+    }
+
   }
 
   setSelectedFlavor(flavor: Flavor): void {
@@ -579,6 +599,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 
   ngDoCheck(): void {
     if (this.resEnvComponent) {
+
       this.resEnvValid = this.resEnvComponent.isValid();
       this.resEnvNeedsName = this.resEnvComponent.needsName();
       this.resEnvNeedsTemplate = this.resEnvComponent.needsTemplate();

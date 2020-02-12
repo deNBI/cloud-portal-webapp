@@ -33,24 +33,25 @@
       </div>
 
     </div>
-    <div class="row">
-      <div class="col-4 container-fluid" style="margin: 10px 0 0 0;">
+    <div class="row justify-content-end " style="margin-bottom: 5px !important;padding-right: 15px;padding-left: 15px;">
+      <div class="col container-fluid" style="margin: 10px 0 0 0;" *ngIf="total_pages > 1">
         <pagination
           [totalItems]="total_items" [itemsPerPage]="items_per_page"
           (pageChanged)="pageChanged($event)" [(ngModel)]="currentPage"
           [boundaryLinks]="true" [maxSize]="total_pages" [rotate]="false" #pagination>
         </pagination>
       </div>
-      <div class="input-group mb-3 col-2">
+      <div class="input-group  col-3">
         <input id="vm_per_site" class="form-control" style="margin: 10px 0 0 0;"
                name="vm_per_site" placeholder="e.g 3"
                type="number" min="1" max="25" step="1"
                appMinAmount="1" appMaxAmount="25" appInteger
                pattern="^([1-9]|1[012])$" [(ngModel)]="vm_per_site" (ngModelChange)="vmPerPageChange.next($event)">
-        <div class="input-group-append" style="margin: 10px 0 0 0;"><span class="input-group-text"> VMs per page
+        <div class="input-group-append mb-3" style="margin: 10px 0 0 0;"><span class="input-group-text"> VMs per page
                                     </span></div>
       </div>
     </div>
+
     <div class="container-fluid">
       <div class="row">
         <div class="col-4">
@@ -102,7 +103,7 @@
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenu" role="menu" *dropdownMenu>
               <button class="dropdown-item btn btn-secondary" id="deleteAllSelectedVMsButton"
-                      (click)="getToBeDeleted(); verifyAllModal.show()">Delete selected VMs</button>
+                      (click)="setToBeDeletedVms(); verifyAllModal.show()">Delete selected VMs</button>
             </div>
           </div>
 
@@ -160,7 +161,7 @@
                   </ng-container>
                   <ng-container *ngSwitchCase="VirtualMachineStates.staticBUILD">
                     <div [id]="'build_badge_' + vm?.name"
-                         class="dot-colorless bg-dark">
+                         class="dot-colorless bg-info">
                     </div>
                     {{VirtualMachineStates.staticBUILD}}
                   </ng-container>
@@ -175,6 +176,9 @@
                          class="dot-colorless bg-dark">
                     </div>
                     {{VirtualMachineStates.staticNOT_FOUND}}
+                      <div class="alert alert-warning" role="alert"> Please contact cloud@denbi.de.</div>
+
+
                   </ng-container>
                   <ng-container *ngSwitchCase="VirtualMachineStates.staticERROR">
                     <div [id]="'error_badge_' + vm?.name"
@@ -188,6 +192,18 @@
                     </div>
                     {{VirtualMachineStates.staticBUILD_PLAYBOOK}}
                   </ng-container>
+                   <ng-container *ngSwitchCase="VirtualMachineStates.staticDELETING">
+                    <div [id]="'deleting_badge_' + vm?.name"
+                         class="dot-colorless bg-warning">
+                    </div>
+                    {{VirtualMachineStates.staticDELETING}}
+                  </ng-container>
+                   <ng-container *ngSwitchCase="VirtualMachineStates.staticDELETING_FAILED">
+                    <div [id]="'deleting_badge_' + vm?.name"
+                         class="dot-colorless bg-warning">
+                    </div>
+                    {{VirtualMachineStates.staticDELETING}}
+                  </ng-container>
                   <ng-container *ngSwitchCase="VirtualMachineStates.staticRESTARTING">
                     <div [id]="'restarting_badge_' + vm?.name"
                          class="dot-colorless bg-dark">
@@ -200,9 +216,21 @@
                     </div>
                     {{VirtualMachineStates.staticPOWERING_OFF}}
                   </ng-container>
+                   <ng-container *ngSwitchCase="VirtualMachineStates.staticPORT_CLOSED">
+                    <div [id]="'powering_off_badge_' + vm?.name"
+                         class="dot-colorless bg-info">
+                    </div>
+                    {{VirtualMachineStates.staticCHECKING_CONNECTION}}
+                  </ng-container>
+                   <ng-container *ngSwitchCase="VirtualMachineStates.staticCLIENT_OFFLINE">
+                    <div [id]="'powering_off_badge_' + vm?.name"
+                         class="dot-colorless bg-danger">
+                    </div>
+                    {{VirtualMachineStates.staticCLIENT_OFFLINE}}
+                  </ng-container>
                   <ng-container *ngSwitchDefault>
                     <div [id]="'default_badge_' + vm?.name"
-                         class="dot-colorless bg-dark" style="width: 10px; height: 10px">
+                         class="dot-colorless bg-info" style="width: 10px; height: 10px">
                     </div>
                     {{VirtualMachineStates.staticGETTING_STATUS}}
                   </ng-container>
@@ -219,7 +247,9 @@
                 </div>
                 <div class="col-1">
                   <div class="form-check">
+
                     <ng-container formArrayName="vmActions" *ngFor="let genre of actionsForm.controls['vmActions'].controls; let i = index">
+
                       <input type="checkbox" [formControlName]="i.toString()" *ngIf="vmActions[i].name == vm?.name
                       && (vm?.status == VirtualMachineStates.staticACTIVE || vm?.status == VirtualMachineStates.staticSHUTOFF)"
                              [id]="'selectCheckBox_'+ i">
@@ -292,10 +322,15 @@
 
                 <div class="row" *ngIf="vm?.res_env_url != '' && vm?.res_env_url != null && vm?.res_env_url != undefined && resenv_by_play(vm)">
                   <div class="col-md-1">
-                    <span class="font-weight-bold font-xs btn-block text-muted">Res-Env:</span>
+                    <span class="font-weight-bold font-xs btn-block text-muted">Research Environment:</span>
                   </div>
-                  <div class="col-md-11">
-                    <a class="font-weight-bold font-xs btn-block text-muted" href="{{vm?.res_env_url}}" target="_blank">{{vm?.res_env_url}}</a></div>
+                  <div class="col-md-11 font-weight-bold font-xs btn-block text-muted">
+                    <a href="{{vm?.res_env_url}}" target="_blank">{{vm?.res_env_url}}</a>
+                    <br>
+                    For RStudio credentials please visit: <a href="{{WIKI_RSTUDIO_LINK}}" target="_blank">{{WIKI_RSTUDIO_LINK}}</a>
+                    <br>
+                    For Apache Guacamole credentials please visit: <a href="{{WIKI_GUACAMOLE_LINK}}" target="_blank">{{WIKI_GUACAMOLE_LINK}}</a>
+                  </div>
                 </div>
               </div>
 
@@ -595,7 +630,7 @@
       </div>
       <div class="modal-footer">
         <button class="btn  btn-success col-md-4"
-                (click)="deleteAll();verifyAllModal.hide();deleteAllModal.show()"
+                (click)="deleteAll();verifyAllModal.hide();"
                 id="confirm_delete_all_button">
           Yes
         </button>
@@ -669,7 +704,7 @@
       </div>
       <div class="modal-footer">
         <button class="btn  btn-success col-md-4"
-                (click)="deleteVm(selectedVm);verifyModal.hide();deleteModal.show()"
+                (click)="deleteVm(selectedVm);verifyModal.hide();"
                 id="confirm_delete_button">
           Yes
         </button>
@@ -874,7 +909,7 @@
       </div>
       <div class="modal-footer">
         <button class="btn  btn-success col-md-4"
-                (click)="stopVm(selectedVm);submitStopVmModal.hide();stopModal.show()"
+                (click)="stopVm(selectedVm);submitStopVmModal.hide();"
                 [id]="'verifyStopButton'">
           Yes
         </button>
@@ -906,7 +941,7 @@
       </div>
       <div class="modal-footer">
         <button class="btn  btn-success col-md-4"
-                (click)="resumeVM(selectedVm);submitRestartModal.hide();resumeModal.show()"
+                (click)="resumeVM(selectedVm);submitRestartModal.hide();"
                 [id]="'verifyRestartButton'">
           Yes
         </button>

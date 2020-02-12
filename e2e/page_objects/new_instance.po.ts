@@ -36,16 +36,21 @@ export class NewInstancePage {
 
   static async chooseProject(): Promise<any> {
     await Util.waitForPresenceOfElementById('application_form');
-    await Util.waitForPresenceOfElementById(this.PROJECT_SELECT_ID);
-    await Util.waitForElementToBeClickableById(this.PROJECT_SELECT_ID);
-    console.log('Getting option from select');
-    await Util.clickOptionOfSelect(this.PROJECT_NAME, this.PROJECT_SELECT_ID);
+    let waitElementawait = await Util.waitForPresenceOfElementById('singleProjectNameSpan', 15000);
+    if (!waitElementawait) {
+      await Util.waitForPresenceOfElementById(this.PROJECT_SELECT_ID);
+      await Util.waitForElementToBeClickableById(this.PROJECT_SELECT_ID);
+      console.log('Getting option from select');
+      await Util.clickOptionOfSelect(this.PROJECT_NAME, this.PROJECT_SELECT_ID);
+    } else {
+      console.log('Single Project automatically selected');
+    }
   }
 
-  static async fillBasicForm(): Promise<any> {
+  static async fillBasicForm(name:string=this.BASIC_VM_NAME): Promise<any> {
     Util.logMethodCall('Fill new instance basic form');
 
-    await this.fillMandatoryFormWith(this.BASIC_VM_NAME, this.DEFAULT_FLAVOR_TITLE, this.UBUNTU_18_TITLE);
+    await this.fillMandatoryFormWith(name, this.DEFAULT_FLAVOR_TITLE, this.UBUNTU_18_TITLE);
   }
 
   static async fillBasicVolumeForm(): Promise<any> {

@@ -7,6 +7,7 @@ export class DenbiNews {
   private _author: string;
   private _time: string;
   private _text: string;
+  private _motd: string;
   private _tag: string;
   private _facility_id: number[] = [];
   private _editable: boolean;
@@ -19,6 +20,7 @@ export class DenbiNews {
       this._author = news.author;
       this._time = news.time;
       this._text = news.text;
+      this._motd = news.motd;
       this._tag = news.tag;
       this._facility_id = news.facility_id.slice(0);
       if (news.editable !== undefined || news.editable !== null) {
@@ -65,6 +67,14 @@ export class DenbiNews {
 
   set text(value: string) {
     this._text = value;
+  }
+
+  get motd(): string {
+    return this._motd;
+  }
+
+  set motd(value: string) {
+    this._motd = value;
   }
 
   get tag(): string {

@@ -66,7 +66,6 @@ export class SnapshotOverviewComponent implements OnInit {
   private checkStatusTimeout: number = 5000;
 
   currentPage: number = 1;
-  snaps_per_site: number = 7;
   total_pages: number;
   total_items: number;
   items_per_page: number = 7;
@@ -91,7 +90,7 @@ export class SnapshotOverviewComponent implements OnInit {
    */
   getSnapshots(): void {
     this.snapshots = [];
-    this.imageService.getSnapshotsByUser(this.currentPage, this.snaps_per_site).subscribe((result: any) => {
+    this.imageService.getSnapshotsByUser(this.currentPage, this.items_per_page).subscribe((result: any) => {
       this.snapshots = result['snapshot_list'];
       this.total_items = result['total_items'];
       this.items_per_page = result['items_per_page'];
@@ -136,7 +135,7 @@ export class SnapshotOverviewComponent implements OnInit {
 
   getFacilitySnapshots(): void {
     this.snapshots = [];
-    this.facilityService.getFacilitySnapshots(this.selectedFacility['FacilityId'], this.currentPage, this.snaps_per_site)
+    this.facilityService.getFacilitySnapshots(this.selectedFacility['FacilityId'], this.currentPage, this.items_per_page)
       .subscribe((res: any) => {
         this.snapshots = res['snapshot_list'];
         this.total_items = res['total_items'];
