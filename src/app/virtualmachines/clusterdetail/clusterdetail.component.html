@@ -56,7 +56,6 @@
         </div>
       </div>
     </div>
-    <hr>
 
     <div class="card-body" *ngIf="cluster?.status != 'Deleted'">
       <div class="card-title"><strong>Actions</strong></div>
@@ -69,26 +68,34 @@
         </div>
       </div>
     </div>
-    <hr *ngIf="cluster?.status != 'Deleted'">
-    <div class="card-body" *ngIf="cluster?.master_instance">
-      <div class="card-title"><strong>Master Instance: {{cluster?.master_instance.name}}</strong></div>
-   <app-virtualmachineinfo [vm]="cluster?.master_instance"></app-virtualmachineinfo>
   </div>
-     <div class="card-body" *ngFor="let worker of cluster?.worker_instances">
-      <div class="card-title"><strong>Worker Instance: {{worker.name}}</strong></div>
-   <app-virtualmachineinfo [vm]="worker"></app-virtualmachineinfo>
+
+  <div class="card" *ngIf="cluster?.master_instance">
+    <div class="card-header"><span class="font-weight-bold text-muted">Master Instance</span></div>
+
+    <div class="card-body">
+      <div class="card-title"><strong>Instance: {{cluster?.master_instance.name}}</strong></div>
+      <app-virtualmachineinfo [vm]="cluster?.master_instance"></app-virtualmachineinfo>
+    </div>
   </div>
-</div>
+  <div class="card">
+    <div class="card-header"><span class="font-weight-bold text-muted">Worker Instances</span></div>
+
+    <div class="card-body" *ngFor="let worker of cluster?.worker_instances">
+      <div class="card-title"><strong>Instance: {{worker.name}}</strong></div>
+      <app-virtualmachineinfo [vm]="worker"></app-virtualmachineinfo>
+    </div>
+  </div>
 
 
-<div bsModal #deleteModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
-     aria-labelledby="Label"
-     aria-hidden="true"
-     id="delete_modal">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">Delete Cluster {{cluster_id}}
-        <button type="button" class="close" style="cursor:pointer"
+  <div bsModal #deleteModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+       aria-labelledby="Label"
+       aria-hidden="true"
+       id="delete_modal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">Delete Cluster {{cluster_id}}
+          <button type="button" class="close" style="cursor:pointer"
                 (click)="deleteModal.hide();;"
                 aria-label="Close">
           <span aria-hidden="true">&times;</span>
