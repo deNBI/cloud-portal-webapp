@@ -5,7 +5,7 @@ import {ClientOverviewComponent} from './clients/clientOverview.component';
 import {VmOverviewComponent} from '../virtualmachines/vmOverview.component';
 import {VolumeOverviewComponent} from './volumes/volumeOverview.component';
 import {SnapshotOverviewComponent} from './snapshots/snapshotOverview.component';
-import {VmDetailComponent} from './vmdetail.component';
+import {VmDetailComponent} from './vmdetail/vmdetail.component';
 import {AddClusterComponent} from './clusters/add-cluster/add-cluster.component';
 import {ClusterdetailComponent} from './clusterdetail/clusterdetail.component';
 

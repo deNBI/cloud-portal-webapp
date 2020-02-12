@@ -3,6 +3,7 @@ import {ActivatedRoute} from '@angular/router';
 import {Clusterinfo} from '../clusters/clusterinfo';
 import {VirtualmachineService} from '../../api-connector/virtualmachine.service';
 import {VirtualMachineStates} from '../virtualmachinemodels/virtualmachinestates';
+import {VirtualMachine} from '../virtualmachinemodels/virtualmachine';
 
 @Component({
              selector: 'app-clusterdetail',
@@ -28,8 +29,12 @@ export class ClusterdetailComponent implements OnInit {
   }
 
   deleteCluster(): void {
-    this.virtualmachineService.deleteCluster(this.cluster_id).subscribe(() =>{
-      this.cluster.status = 'Deleted'
+    this.virtualmachineService.deleteCluster(this.cluster_id).subscribe(() => {
+      this.cluster.status = 'Deleted';
+      this.cluster.master_instance.status = VirtualMachineStates.DELETED;
+      this.cluster.worker_instances.forEach((vm: VirtualMachine) => {
+        vm.status = VirtualMachineStates.DELETED;
+      })
     })
   }
 
