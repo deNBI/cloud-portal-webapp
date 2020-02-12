@@ -1,3 +1,11 @@
+##  (2020-02-11)
+
+
+#### Bug Fixes
+
+* **Filter:** fixed filter in vm overview ([2970f45d](2970f45d))
+
+
 ##  (2020-02-09)
 
 
