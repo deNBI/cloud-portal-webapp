@@ -282,20 +282,32 @@
         </div>
       </div>
 
-      <div class="card" *ngIf="virtualMachine.volume_id">
+      <div class="card" *ngIf="virtualMachine?.volumes.length > 0">
         <div class="card-header"><span class="font-weight-bold text-muted">Attached Volumes</span></div>
         <div class="card-body">
-          <div class="row">
-            <div class="col-6">
+          <div class="row" *ngFor="let vol of virtualMachine?.volumes">
+            <div class="col-2">
               <div class="callout">
-                <small class="text-muted">Volume ID</small><br>
-                <strong class="text-muted">{{virtualMachine?.volume_id}}</strong>
+                <small class="text-muted">Name</small><br>
+                <strong class="text-muted">{{vol?.volume_name}}</strong>
               </div>
             </div>
-            <div class="col-6">
+            <div class="col-5">
               <div class="callout">
-                <small class="text-muted">Diskspace</small><br>
-                <strong class="text-muted">{{virtualMachine?.diskspace}} GB</strong>
+                <small class="text-muted">Volume ID</small><br>
+                <strong class="text-muted">{{vol?.volume_openstackid}}</strong>
+              </div>
+            </div>
+            <div class="col-2">
+              <div class="callout">
+                <small class="text-muted">Device</small><br>
+                <strong class="text-muted">{{vol?.volume_device}}</strong>
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="callout">
+                <small class="text-muted">Storage</small><br>
+                <strong class="text-muted">{{vol?.volume_storage}} GB</strong>
               </div>
             </div>
           </div>

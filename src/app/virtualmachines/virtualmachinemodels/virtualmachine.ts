@@ -1,6 +1,7 @@
 import {Flavor} from './flavor';
 import {Client} from '../clients/client.model';
 import {ImageMode} from '../../facility_manager/image-tag';
+import {Volume} from '../volumes/volume';
 
 /**
  * Virtualmachine class.
@@ -24,13 +25,12 @@ export class VirtualMachine {
   private _udp_command: string;
   private _application_id: string;
   private _cardState: number;
-
   private _projectid: number;
   private _volume_id: string;
   private _diskspace: string;
-
   private _res_env_url: string;
   private _modes: ImageMode[];
+  private _volumes:Volume[];
 
   constructor(vm: VirtualMachine) {
     this._flavor = vm.flavor;
@@ -55,6 +55,7 @@ export class VirtualMachine {
     this._diskspace = vm.diskspace;
     this._res_env_url = vm.res_env_url;
     this._modes = vm.modes;
+    this._volumes=vm.volumes;
     this.calculateCreatedAt()
   }
 
@@ -62,6 +63,14 @@ export class VirtualMachine {
     if (this.created_at !== '') {
       this.created_at = new Date(parseInt(this.created_at, 10) * 1000).toLocaleDateString();
     }
+  }
+
+  get volumes(): Volume[] {
+    return this._volumes;
+  }
+
+  set volumes(value: Volume[]) {
+    this._volumes = value;
   }
 
   get volume_id(): string {
