@@ -457,6 +457,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
     }
     if (checkForForc) {
       this.groupService.getClientHasForc(vm.client.id, 'true').subscribe((hasForc: JSON) => {
+        console.log(hasForc);
         if (hasForc['hasForc'] === 'True') {
           this.groupService.getClientForcUrl(vm.client.id).subscribe((response: JSON) => {
             if (response['forc_url'] !== 'None') {

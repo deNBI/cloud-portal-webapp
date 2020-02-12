@@ -269,6 +269,11 @@
                     <strong>Image</strong>: {{vm?.image}}
                   </div>
                 </div>
+                <div class="col-12" style="margin-left: 10px" *ngIf="vm?.res_env_url">
+                <div style="font-size: small">
+                  <strong>URL</strong>: <a target="_blank" href="{{vm?.res_env_url}}">{{vm?.res_env_url}}</a>
+                </div>
+              </div>
               </div>
             </div>
             <div class="card-footer p-x-1 py-h"
