@@ -14,8 +14,35 @@ export class Clusterinfo {
   private _user: string;
   private _instances_count: number;
   private _launch_date: string;
-  private _key_name: string
+  private _key_name: string;
   private _status: string;
+  private _application_id: string;
+  private _project: string;
+  private _userlogin: string;
+
+  get userlogin(): string {
+    return this._userlogin;
+  }
+
+  set userlogin(value: string) {
+    this._userlogin = value;
+  }
+
+  get project(): string {
+    return this._project;
+  }
+
+  set project(value: string) {
+    this._project = value;
+  }
+
+  get application_id(): string {
+    return this._application_id;
+  }
+
+  set application_id(value: string) {
+    this._application_id = value;
+  }
 
   get status(): string {
     return this._status;

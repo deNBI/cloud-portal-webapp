@@ -271,7 +271,14 @@
                 </div>
                 <div *ngIf="vm?.cluster?.cluster_id" class="col-12" style="margin-left: 10px" [ngSwitch]="vm?.cluster?.status">
                   <div style="font-size: small">
-                    <strong>Cluster</strong>: {{vm?.cluster.cluster_id}}  <ng-container *ngSwitchCase="'Running'">
+                    <strong>Cluster</strong>:
+
+
+                      <a style="margin-left: 10px"
+
+                     [routerLink]="['/virtualmachines/cluster/' + vm?.cluster.cluster_id]">{{vm?.cluster.cluster_id}}}  </a>
+
+                    <ng-container *ngSwitchCase="'Running'">
                     <div [id]="'running_cluster_' + vm?.name"
                          class="dot-colorless bg-success">
                     </div>

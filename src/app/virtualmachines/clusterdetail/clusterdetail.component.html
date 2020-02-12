@@ -1,0 +1,125 @@
+<div *ngIf="notFoundCluster" class="alert alert-info">
+  <strong>The Cluster could not be found.</strong>
+</div>
+
+<div *ngIf="!isLoaded && !notFoundCluster" class="loader"></div>
+
+<div class="animated fadeIn" *ngIf="isLoaded">
+  <div class="card">
+    <div class="card-header"><span class="font-weight-bold text-muted">Cluster: {{cluster?.cluster_id}}</span></div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-3">
+          <div [ngSwitch]="cluster?.status">
+            <div *ngSwitchCase="'Running'" [id]="'running_badge_' + cluster?.cluster_id"
+                 class="dot-colorless bg-success pulseAnim" style="width: 15px; height: 15px;">
+            </div>
+            <div *ngSwitchCase="'Creating'" [id]="'creating_badge_' + cluster?.cluster_id"
+                 class="dot-colorless bg-warning" style="width: 15px; height: 15px">
+            </div>
+             <div *ngSwitchCase="'Delete'" [id]="'deleted_badge_' + cluster?.cluster_id"
+                 class="dot-colorless bg-danger" style="width: 15px; height: 15px">
+            </div>
+            <div *ngSwitchDefault
+                 [id]="'default_badge_' + cluster?.cluster_id"
+                 class="dot-colorless bg-info" style="width: 15px; height: 15px">
+            </div>
+            <span style="margin-left:15px;" class="text-muted font-weight-bold">Status: {{cluster?.status}}</span>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="callout callout-success">
+            <small class="text-muted">Created at (y-m-d)</small><br>
+            <strong class="text-muted">{{cluster?.launch_date | date: 'yyyy.MM.dd HH:mm'}}</strong>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="callout">
+            <small class="text-muted">Part of</small><br>
+            <a [routerLink]="['/project-management/' + cluster?.application_id]" target="_blank">
+              <strong class="text-muted">{{cluster?.project}}</strong></a>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="callout">
+            <small class="text-muted">Created by</small><br>
+            <strong class="text-muted">{{cluster?.userlogin}}</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body" *ngIf="cluster?.status != 'Deleted'">
+      <div class="card-title"><strong>Actions</strong></div>
+      <div class="row">
+        <div class="col-2">
+          <button type="button" class="btn btn-danger" style="width:100%;" id="deleteCluster"
+                  (click)="deleteModal.show();">
+            <strong>Delete Cluster</strong>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<div bsModal #deleteModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="Label"
+     aria-hidden="true"
+     id="delete_modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">Delete Cluster {{cluster_id}}
+        <button type="button" class="close" style="cursor:pointer"
+                (click)="deleteModal.hide();;"
+                aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <button type="button" class="close" style="cursor:pointer"
+                (click)="deleteModal.hide();deleteCluster();"
+                aria-label="Close">
+          <span aria-hidden="true">Approve</span>
+        </button>
+
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal --></div>
+
+<div bsModal #verifyModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="Label"
+     aria-hidden="true"
+     id="verify_modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Delete VM</h4>
+        <button type="button" class="close" style="cursor: pointer"
+                (click)="verifyModal.hide()"
+                aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-warning" role="alert">
+          Are you sure you want to delete {{this.cluster?.cluster_id}}?
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button class="btn  btn-success col-md-4"
+                (click)="verifyModal.hide();deleteModal.show()"
+                id="confirm_delete_button">
+          Yes
+        </button>
+        <button class="btn  btn-danger col-md-4" type="reset"
+                (click)="verifyModal.hide();">Cancel
+        </button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
