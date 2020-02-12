@@ -174,7 +174,11 @@ export class NewsManagerComponent implements OnInit {
           this.facilitiesToPost.push(facility_id);
         }
       }
-      this.motdLength.next(this.selectedNews.motd.length);
+      if (this.selectedNews.motd) {
+        this.motdLength.next(this.selectedNews.motd.length);
+      } else {
+        this.motdLength.next(0);
+      }
     } else {
       this.selectedNews = new DenbiNews();
       this.motdLength.next(0);
