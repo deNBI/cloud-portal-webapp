@@ -2,6 +2,7 @@ import {Flavor} from './flavor';
 import {Client} from '../clients/client.model';
 import {ImageMode} from '../../facility_manager/image-tag';
 import {Clusterinfo} from '../clusters/clusterinfo';
+import {Volume} from '../volumes/volume';
 
 /**
  * Virtualmachine class.
@@ -27,10 +28,9 @@ export class VirtualMachine {
   private _cardState: number;
   private _cluster: Clusterinfo;
   private _projectid: number;
-  private _volume_id: string;
-  private _diskspace: string;
   private _res_env_url: string;
   private _modes: ImageMode[];
+  private _volumes: Volume[];
 
   constructor(vm: VirtualMachine) {
     this._flavor = vm.flavor;
@@ -51,12 +51,11 @@ export class VirtualMachine {
     this._application_id = vm.application_id;
     this._cardState = vm.cardState;
     this._projectid = vm.projectid;
-    this._volume_id = vm.volume_id;
-    this._diskspace = vm.diskspace;
     this._res_env_url = vm.res_env_url;
     this._modes = vm.modes;
     this._cluster = vm.cluster;
-    this.calculateCreatedAt()
+    this._volumes = vm.volumes;
+    this.calculateCreatedAt();
   }
 
   public calculateCreatedAt(): void {
@@ -73,20 +72,12 @@ export class VirtualMachine {
     this._cluster = value;
   }
 
-  get volume_id(): string {
-    return this._volume_id;
+  get volumes(): Volume[] {
+    return this._volumes;
   }
 
-  set volume_id(value: string) {
-    this._volume_id = value;
-  }
-
-  get diskspace(): string {
-    return this._diskspace;
-  }
-
-  set diskspace(value: string) {
-    this._diskspace = value;
+  set volumes(value: Volume[]) {
+    this._volumes = value;
   }
 
   get projectid(): number {

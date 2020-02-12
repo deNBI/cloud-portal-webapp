@@ -35,6 +35,9 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 
   VirtualMachineStates: VirtualMachineStates = new VirtualMachineStates();
 
+  WIKI_RSTUDIO_LINK: string = 'https://cloud.denbi.de/wiki/portal/customization/#rstudio';
+  WIKI_GUACAMOLE_LINK: string = 'https://cloud.denbi.de/wiki/portal/customization/#apache-guacamole';
+
   /**
    * All  vms.
    */
