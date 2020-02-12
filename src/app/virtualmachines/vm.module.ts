@@ -27,6 +27,7 @@ import { AddClusterComponent } from './clusters/add-cluster/add-cluster.componen
 import { ResourceOverviewComponent } from './resource-overview/resource-overview.component';
 import {ResEnvComponent} from './conda/res-env.component';
 import { ClusterdetailComponent } from './clusterdetail/clusterdetail.component';
+import { VirtualmachineinfoComponent } from './virtualmachineinfo/virtualmachineinfo.component';
 
 /**
  * VM module.
@@ -62,7 +63,8 @@ import { ClusterdetailComponent } from './clusterdetail/clusterdetail.component'
               AddClusterComponent,
               ResourceOverviewComponent,
               ResEnvComponent,
-              ClusterdetailComponent
+              ClusterdetailComponent,
+              VirtualmachineinfoComponent
             ]
           })
 export class VmModule {

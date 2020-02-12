@@ -10,79 +10,9 @@
       <div class="card">
         <div class="card-header"><span class="font-weight-bold text-muted">{{virtualMachine?.name}}</span></div>
         <div class="card-body">
-          <div class="row">
-            <div class="col-4" style="margin:auto">
-            <div [ngSwitch]="virtualMachine?.status">
-              <div *ngSwitchCase="'ACTIVE'" [id]="'active_badge_' + virtualMachine?.name"
-                   class="dot-colorless bg-success pulseAnim" style="width: 15px; height: 15px;">
-              </div>
-              <div *ngSwitchCase="'SHUTOFF'" [id]="'shutoff_badge_' + virtualMachine?.name"
-                   class="dot-colorless bg-warning" style="width: 15px; height: 15px">
-              </div>
-              <div *ngSwitchCase="'DELETED'" [id]="'deleted_badge_' + virtualMachine?.name"
-                   class="dot-colorless bg-danger" style="width: 15px; height: 15px">
-              </div>
-              <div *ngSwitchCase="'BUILD'" [id]="'build_badge_' + virtualMachine.name"
-                   class="dot-colorless bg-dark" style="width: 15px; height: 15px">
-              </div>
-              <div *ngSwitchCase="'PREPARE_PLAYBOOK_BUILD'" [id]="'ppb_badge_' + virtualMachine?.name"
-                   class="dot-colorless bg-dark" style="width: 15px; height: 15px">
-              </div>
-              <div *ngSwitchCase="'BUILD_PLAYBOOK'" [id]="'build_playbook_badge_' + virtualMachine?.name"
-                   class="dot-colorless bg-dark" style="width: 15px; height: 15px" >
-              </div>
-              <div *ngSwitchCase="'RESTARTING'" [id]="'restarting_badge_' + virtualMachine.name"
-                   class="dot-colorless bg-dark" style="width: 15px; height: 15px">
-              </div>
-              <div *ngSwitchCase="'POWERING OFF'" [id]="'powering_off_badge_' + virtualMachine?.name"
-                   class="dot-colorless bg-dark" style="width: 15px; height: 15px">
-              </div>
-                <div *ngSwitchDefault
-                   [id]="'default_badge_' + virtualMachine?.name"
-                   class="dot-colorless bg-dark" style="width: 15px; height: 15px">
-                </div><span style="margin-left:15px;"class="text-muted font-weight-bold">Status: {{virtualMachine?.status}}</span>
-              </div>
-            </div>
-            <div class="col-2" *ngIf="virtualMachine.status === virtualMachineStates.staticACTIVE">
-              <div class="callout callout-success">
-                <small class="text-muted">Created at (y-m-d)</small><br>
-                <strong class="text-muted">{{startDate | date: 'yyyy.MM.dd HH:mm'}}</strong>
-              </div>
-            </div>
-            <div class="col-2" *ngIf="virtualMachine?.stopped_at && virtualMachine?.status === virtualMachineStates.staticSHUTOFF">
-              <div class="callout callout-warning">
-                <small class="text-muted">Stopped at (y-m-d)</small><br>
-                <strong class="text-muted">{{stopDate | date: 'yyyy.MM.dd HH:mm'}}</strong>
-              </div>
-            </div>
-            <div class="col-2">
-              <div class="callout">
-                <small class="text-muted">Part of</small><br>
-                <a [routerLink]="['/project-management/' + virtualMachine?.application_id]" target="_blank">
-                  <strong class="text-muted">{{virtualMachine?.project}}</strong></a>
-              </div>
-            </div>
-            <div class="col-4">
-              <div class="callout">
-                <small class="text-muted">Openstack-ID</small><br>
-                <strong class="text-muted">{{virtualMachine?.openstackid}}</strong>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-4">
-              <div class="callout">
-                <small class="text-muted">Created by</small><br>
-                <strong class="text-muted">{{virtualMachine?.userlogin}}</strong>
-              </div>
-            </div>
-            <div class="col-8">
-              <div class="callout">
-                <small class="text-muted">Elixir-ID of {{virtualMachine?.userlogin}}</small><br>
-                <strong class="text-muted">{{virtualMachine?.elixir_id}}</strong>
-              </div>
-            </div>
-          </div>
+
+           <app-virtualmachineinfo [vm]="virtualMachine"></app-virtualmachineinfo>
+
         </div>
         <hr *ngIf="virtualMachine?.status === virtualMachineStates.staticACTIVE">
         <div class="card-body" *ngIf="virtualMachine?.status === virtualMachineStates.staticACTIVE">

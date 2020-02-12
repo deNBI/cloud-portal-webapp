@@ -17,7 +17,7 @@
             <div *ngSwitchCase="'Creating'" [id]="'creating_badge_' + cluster?.cluster_id"
                  class="dot-colorless bg-warning" style="width: 15px; height: 15px">
             </div>
-             <div *ngSwitchCase="'Delete'" [id]="'deleted_badge_' + cluster?.cluster_id"
+            <div *ngSwitchCase="'Deleted'" [id]="'deleted_badge_' + cluster?.cluster_id"
                  class="dot-colorless bg-danger" style="width: 15px; height: 15px">
             </div>
             <div *ngSwitchDefault
@@ -48,6 +48,8 @@
         </div>
       </div>
     </div>
+    <hr>
+
     <div class="card-body" *ngIf="cluster?.status != 'Deleted'">
       <div class="card-title"><strong>Actions</strong></div>
       <div class="row">
@@ -59,8 +61,15 @@
         </div>
       </div>
     </div>
+    <hr *ngIf="cluster?.status != 'Deleted'">
+    <div class="card-body" *ngIf="cluster?.master_instance">
+      <div class="card-title"><strong>Master Instance: {{cluster?.master_instance.name}}</strong></div>
+   <app-virtualmachineinfo [vm]="cluster?.master_instance"></app-virtualmachineinfo>
   </div>
-
+     <div class="card-body" *ngFor="let worker of cluster?.worker_instances">
+      <div class="card-title"><strong>Worker Instance: {{worker.name}}</strong></div>
+   <app-virtualmachineinfo [vm]="worker"></app-virtualmachineinfo>
+  </div>
 </div>
 
 
