@@ -21,6 +21,7 @@ import {PlaybookService} from '../api-connector/playbook.service';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {CondaPackage} from './condaPackage.model';
 import {TemplateNames} from './conda/template-names';
+import {BiocondaService} from "../api-connector/bioconda.service";
 
 /**
  * VM Detail page component
@@ -30,7 +31,7 @@ import {TemplateNames} from './conda/template-names';
              templateUrl: 'vmdetail.component.html',
              styleUrls: ['./vmdetail.component.scss'],
              providers: [FlavorService, FacilityService, VoService, UserService, GroupService, ApiSettings,
-               VoService, CreditsService, VirtualmachineService, ImageService, PlaybookService]
+               VoService, CreditsService, VirtualmachineService, ImageService, PlaybookService, BiocondaService]
            })
 
 export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
@@ -96,7 +97,8 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
               private flavorService: FlavorService,
               private imageService: ImageService,
               private playbookService: PlaybookService,
-              private groupService: GroupService) {
+              private groupService: GroupService,
+              private biocondaService: BiocondaService) {
     super();
   }
 
@@ -382,6 +384,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
           this.errorMessage = true;
           // TODO: Redirect back to overview
         } else {
+
           this.playbookService.getPlaybookForVM(this.vm_id).subscribe((pb: Object) => {
             if (pb != null) {
               let pbs: string = pb['playbooks'].toString();
@@ -408,6 +411,11 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
           this.checkAndGetForcDetails(vm);
           this.title = vm['name'];
           this.virtualMachine = vm;
+          this.biocondaService.getTemplateNameByVmName(vm).subscribe((tname: Object) => {
+            if (tname != null) {
+              console.log(tname['template']);
+            }
+          })
           this.startDate = parseInt(this.virtualMachine.created_at, 10) * 1000;
           this.stopDate = parseInt(this.virtualMachine.stopped_at, 10) * 1000;
           this.stopDate = parseInt(this.virtualMachine.stopped_at, 10) * 1000;
