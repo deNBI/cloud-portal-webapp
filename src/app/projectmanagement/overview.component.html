@@ -123,7 +123,7 @@
             </button>
             <button id="show_extension_modal"
                     *ngIf="project_application?.Status == application_states.APPROVED || project_application?.Status == application_states.MODIFICATION_DECLINED"
-                    (click)="newFlavors= {};selected_ontology_terms=[];initRamCores();calculateCredits(f.controls.project_application_renewal_lifetime.value);extensionModal.show()"
+                    (click)="newFlavors= {};selected_ontology_terms=[];initRamCores();calculateCredits(f.controls.project_application_renewal_lifetime.value);doiQuestionModal.show()"
                     class="btn btn-warning"
                     type="button" style="margin-bottom:5px;">
               Request Extension/Modification
@@ -1026,7 +1026,7 @@
           </div>
           <button type="button" class="btn  btn-primary"
                   form="application_form" id="submit_renewal_btn"
-                  (click)="extension_request=true;filterEnteredData(f);calculateInitialCredits(f); doiModal.show();"
+                  (click)="extension_request=true;filterEnteredData(f);calculateInitialCredits(f); submitModal.show();"
                   [disabled]="f.invalid || (!project_application.EdamTopics && selected_ontology_terms.length < 1)"><i
             class="fa fa-dot-circle-o">
 
@@ -1121,10 +1121,11 @@
         </div>
         <div class="modal-body">
           <div class="alert alert-info">
-            <strong> If you have new publications associated with the de.NBI Cloud please add their DOIs here.
-            </strong><br> Look <a
+            <p>Please add the DOIs of new publications in this form. For more information on DOIs, please look <a
             href="https://cloud.denbi.de/wiki/portal/project_overview/#adding-a-doi-digital-object-identifier"
-            target="_blank">here</a> for more information about DOIs.
+            target="_blank">here</a>.
+              You can also add the publications at a later date on the project overview page.</p>
+            <p>The addition or non-addition of publications/DOIs <strong>does not affect the renewal request procedure!</strong></p>
           </div>
           <div class="table-responsive">
             <table class="table ">
@@ -1138,7 +1139,6 @@
                   <td>
                     <button
                       class="btn btn-danger" type="button" (click)="deleteDoi(doi);">
-
                       <i class="fa fa-trash"></i>&nbsp;
                     </button>
                   </td>
@@ -1164,18 +1164,10 @@
             </table>
 
           </div>
-
-          <div class="modal-footer">
-
-
-            <button id="doi_modal_btn" class="btn btn-success col-md4" type="button"
-                    (click)="extensionModal.hide();doiModal.hide(); submitModal.show();">Confirm
-
+          <div class="modal-footer" style="text-align:center;">
+            <button id="doi_continue_btn" class="btn btn-success col-md-6" type="button"
+                    style="margin:auto;" (click)="extensionModal.show();doiModal.hide();">Continue
             </button>
-            <button class="btn  btn-primary col-md-4" type="reset"
-                    (click)="doiModal.hide();">Cancel
-            </button>
-
           </div>
         </div><!-- /.modal-content -->L
       </div><!-- /.modal-dialog -->
@@ -1183,7 +1175,43 @@
   </div>
 
 
-    <div bsModal #resultModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+  <div bsModal #doiQuestionModal="bs-modal" class="modal fade" tabindex="-1"
+       role="dialog" aria-labelledby="Label"
+       aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Publications</h4>
+          <button type="button" class="close" style="cursor: pointer;"
+                  (click)="doiQuestionModal.hide()"
+                  data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+
+        </div>
+        <div class="modal-body">
+          <div>
+          <p><strong>Do you have any new publications that were made during your work with the de.NBI Cloud or
+            in which the de.NBI Cloud is mentioned?</strong></p>
+          </div>
+          <div class="modal-footer">
+
+
+            <button id="new_dois_btn" class="btn btn-success col-md-6" type="button"
+                    (click)="doiModal.show(); doiQuestionModal.hide();">Yes
+            </button>
+            <button id="no_new_dois_btn" class="btn btn-primary col-md-6" type="reset"
+                    (click)="extensionModal.show();doiQuestionModal.hide();">No
+            </button>
+
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+  </div>
+
+
+  <div bsModal #resultModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
          aria-labelledby="Label"
          aria-hidden="true">
       <div class="modal-dialog" role="document">
