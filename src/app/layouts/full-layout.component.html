@@ -11,25 +11,10 @@
 
   <ul class="nav navbar-nav ml-md-auto">
 
-    <!--<cui-breadcrumb>
-
-    </cui-breadcrumb> -->
-    <!--<li><strong class="text-muted" style="cursor: pointer;padding-right: 2pc" routerLinkActive="active"
-                  [routerLink]="['/userinfo']"
-      >{{login_name}}</strong>pa</li>-->
-
 
   </ul>
 
 </app-header>
-
-<!--
-
-<a *ngIf="navbar_minimized" class="nav-link" routerLinkActive="active" data-toggle="tooltip" data-placement="right" title="New Instance"
-             [routerLink]="['/virtualmachines/newVM']">
-            <i class="nav-icon icon-screen-desktop" ></i> New Instance</a>
-          <a *ngIf="!navbar_minimized" class="nav-link" routerLinkActive="active" [routerLink]="['/virtualmachines/newVM']">
-            <i class="nav-icon icon-screen-desktop" ></i> New Instance</a> -->
 
 <div class="app-body">
   <div class="sidebar">
@@ -42,19 +27,19 @@
           <a *ngIf="navbar_minimized" class="nav-link" data-toggle="tooltip" data-placement="right"
              title="User Information"
              routerLinkActive="active" [routerLink]="['/userinfo']"><i
-            class="nav-icon icon-user"></i>User Information</a>
+            class="nav-icon fas fa-user"></i>User Information</a>
           <a *ngIf="!navbar_minimized" class="nav-link"
              routerLinkActive="active" [routerLink]="['/userinfo']"><i
-            class="nav-icon icon-user"></i>
+            class="nav-icon fas fa-user"></i>
             User Information </a>
         </li>
         <li class="nav-item">
           <a *ngIf="navbar_minimized" data-toggle="tooltip" data-placement="right" title="Help"
              class="nav-link" routerLinkActive="active" [routerLink]="['/help']"><i
-            class="nav-icon icon-info"></i>
+            class="nav-icon fas fa-info-circle"></i>
             Help</a>
           <a *ngIf="!navbar_minimized" class="nav-link" routerLinkActive="active" [routerLink]="['/help']"><i
-            class="nav-icon icon-info"></i>
+            class="nav-icon fas fa-info-circle"></i>
             Help</a>
         </li>
         <li class="divider"></li>
@@ -65,23 +50,23 @@
 
           <a class="nav-link" *ngIf="is_vo_admin && !navbar_minimized" [routerLinkActiveOptions]="{exact:true}"
              routerLinkActive="active" [routerLink]="['/applications']"><i
-            class="nav-icon icon-drawer"></i> Applications</a>
+            class="nav-icon fas fa-archive"></i> Applications</a>
           <a class="nav-link" *ngIf="is_vo_admin && navbar_minimized" [routerLinkActiveOptions]="{exact:true}"
              routerLinkActive="active" [routerLink]="['/applications']" data-toggle="tooltip" data-placement="right"
              title="Applications"><i
-            class="nav-icon icon-drawer"></i> Applications</a>
+            class="nav-icon fas fa-archive"></i> Applications</a>
         </li>
         <li class="nav-item">
           <a *ngIf="!navbar_minimized" class="nav-link" routerLinkActive="active"
              [routerLink]="['/applications/type-overview']">
-            <i class="nav-icon icon-plus">
+            <i class="nav-icon fas fa-plus-circle">
             </i>
             New Project
           </a>
           <a *ngIf="navbar_minimized" class="nav-link" routerLinkActive="active"
              [routerLink]="['/applications/type-overview']"
              data-toggle="tooltip" data-placement="right" title="New Project">
-            <i class="nav-icon icon-plus">
+            <i class="nav-icon fas fa-plus-circle">
             </i>
             New Project
           </a>
@@ -149,17 +134,17 @@
           <a *ngIf="navbar_minimized" class="nav-link" routerLinkActive="active" data-toggle="tooltip"
              data-placement="right" title="New Instance"
              [routerLink]="['/virtualmachines/newVM']">
-            <i class="nav-icon icon-screen-desktop"></i> New Instance</a>
+            <i class="nav-icon fas fa-desktop"></i> New Instance</a>
           <a *ngIf="!navbar_minimized" class="nav-link" routerLinkActive="active"
              [routerLink]="['/virtualmachines/newVM']">
-            <i class="nav-icon icon-screen-desktop"></i> New Instance</a>
+            <i class="nav-icon fas fa-desktop"></i> New Instance</a>
         </li>
           <li class="nav-item" *ngIf="vm_project_member && !production ">
           <a *ngIf="navbar_minimized" class="nav-link" routerLinkActive="active" data-toggle="tooltip" data-placement="right" title="New Instance"
              [routerLink]="['/virtualmachines/newVM']">
-            <i class="nav-icon icon-screen-desktop" ></i> New Cluster</a>
+            <i class="nav-icon fas fa-network-wired" ></i> New Cluster</a>
           <a *ngIf="!navbar_minimized " class="nav-link" routerLinkActive="active" [routerLink]="['/virtualmachines/newCluster']">
-            <i class="nav-icon icon-screen-desktop" ></i> New Cluster</a>
+            <i class="nav-icon fas fa-network-wired" ></i> New Cluster</a>
         </li>
 
         <!-- for full sidebar VM Overviews-->
@@ -167,22 +152,22 @@
             class="nav-item nav-dropdown" appNavDropdown>
           <a class="nav-link nav-dropdown-toggle" onmouseover="" style="cursor: pointer;"
              appNavDropdownToggle><i
-            class="nav-icon icon-list" onmouseover="" style="cursor: pointer;"></i> Overviews</a>
+            class="nav-icon fas fa-ellipsis-h" onmouseover="" style="cursor: pointer;"></i> Overviews</a>
           <ul class="nav-dropdown-items" *ngIf="vm_project_member">
             <li class="nav-item">
               <a style="padding-left: 25px" class="nav-link" routerLinkActive="active"
                  [routerLink]="['/virtualmachines/vmOverview']"><i
-                class="nav-icon icon-list"></i> Instances</a>
+                class="nav-icon fas fa-list"></i> Instances</a>
             </li>
             <li class="nav-item" *ngIf="vm_project_member || is_vo_admin || is_facility_manager">
               <a style="padding-left: 25px" class="nav-link" routerLinkActive="active"
                  [routerLink]="['/virtualmachines/volumeOverview']"><i
-                class="nav-icon icon-list"></i> Volumes</a>
+                class="nav-icon fas fa-hdd"></i> Volumes</a>
             </li>
             <li class="nav-item" *ngIf="vm_project_member || is_vo_admin || is_facility_manager">
               <a style="padding-left: 25px" class="nav-link" routerLinkActive="active"
                  [routerLink]="['/virtualmachines/snapshotOverview']"><i
-                class="nav-icon icon-list"></i>Snapshots</a>
+                class="nav-icon fas fa-camera"></i>Snapshots</a>
             </li>
 
           </ul>
@@ -194,19 +179,19 @@
         <li class="nav-item" *ngIf="navbar_minimized && (vm_project_member || is_vo_admin)">
           <a class="nav-link" routerLinkActive="active" data-toggle="tooltip" data-placement="right" title="Instances"
              [routerLink]="['/virtualmachines/vmOverview']"><i
-            class="nav-icon icon-list"></i> Instances</a>
+            class="nav-icon fas fa-list"></i> Instances</a>
         </li>
         <li class="nav-item" *ngIf="navbar_minimized &&(vm_project_member || is_vo_admin || is_facility_manager)">
           <a class="nav-link" routerLinkActive="active"
              [routerLink]="['/virtualmachines/volumeOverview']" data-toggle="tooltip" data-placement="right"
              title="Volumes"><i
-            class="nav-icon icon-list"></i> Volumes</a>
+            class="nav-icon fas fa-hdd"></i> Volumes</a>
         </li>
         <li class="nav-item" *ngIf="navbar_minimized &&(vm_project_member || is_vo_admin || is_facility_manager)">
           <a class="nav-link" routerLinkActive="active"
              [routerLink]="['/virtualmachines/snapshotOverview']" data-toggle="tooltip" data-placement="right"
              title="Snapshots"><i
-            class="nav-icon icon-list"></i>Snapshots</a>
+            class="nav-icon fas fa-camera"></i>Snapshots</a>
         </li>
 
 
@@ -221,67 +206,67 @@
         <li *ngIf="(is_facility_manager || is_vo_admin) && !navbar_minimized" class="nav-item">
           <a class="nav-link" routerLinkActive="active"
              [routerLink]="['/facility-manager/facilityProjects']"><i
-            class="nav-icon icon-list"></i> Projects</a>
+            class="nav-icon fas fa-boxes"></i> Projects</a>
         </li>
 
         <li *ngIf="(is_facility_manager || is_vo_admin) && navbar_minimized" class="nav-item">
           <a class="nav-link" routerLinkActive="active" data-toggle="tooltip" data-placement="right"
              title="Facilities: Projects"
              [routerLink]="['/facility-manager/facilityProjects']"><i
-            class="nav-icon icon-list"></i> Projects</a>
+            class="nav-icon fas fa-boxes"></i> Projects</a>
         </li>
 
 
         <li *ngIf="!navbar_minimized && (is_facility_manager || is_vo_admin)" class="nav-item">
           <a class="nav-link" routerLinkActive="active"
              [routerLink]="['/facility-manager/facilityApplications']"><i
-            class="nav-icon icon-list"></i> Applications</a>
+            class="nav-icon fas fa-archive"></i> Applications</a>
         </li>
 
         <li *ngIf="navbar_minimized &&(is_facility_manager || is_vo_admin)" class="nav-item">
           <a class="nav-link" routerLinkActive="active" data-toggle="tooltip" data-placement="right"
              title="Facilities: Applications"
              [routerLink]="['/facility-manager/facilityApplications']"><i
-            class="nav-icon icon-list"></i> Applications</a>
+            class="nav-icon fas fa-archive"></i> Applications</a>
         </li>
 
 
         <li *ngIf="!navbar_minimized &&(is_facility_manager || is_vo_admin)" class="nav-item">
           <a class="nav-link" routerLinkActive="active"
              [routerLink]="['/facility-manager/facilityResources']"><i
-            class="nav-icon icon-list"></i> Resources</a>
+            class="nav-icon fas fa-server"></i> Resources</a>
         </li>
 
         <li *ngIf="navbar_minimized &&(is_facility_manager || is_vo_admin)" class="nav-item">
           <a class="nav-link" routerLinkActive="active" data-toggle="tooltip" data-placement="right"
              title="Facilites: Resources"
              [routerLink]="['/facility-manager/facilityResources']"><i
-            class="nav-icon icon-list"></i> Resources</a>
+            class="nav-icon fas fa-server"></i> Resources</a>
         </li>
 
 
         <li *ngIf="!navbar_minimized  && (is_facility_manager || is_vo_admin)" class="nav-item">
           <a class="nav-link" routerLinkActive="active"
              [routerLink]="['/facility-manager/imageTags']"><i
-            class="nav-icon icon-tag"></i> Image Tags</a>
+            class="nav-icon fas fa-tags"></i> Image Tags</a>
         </li>
 
         <li *ngIf="navbar_minimized  && (is_facility_manager || is_vo_admin)" class="nav-item">
           <a class="nav-link" routerLinkActive="active" data-toggle="tooltip" data-placement="right" title="Image Tags"
              [routerLink]="['/facility-manager/imageTags']"><i
-            class="nav-icon icon-tag"></i> Image Tags</a>
+            class="nav-icon fas fa-tags"></i> Image Tags</a>
         </li>
 
         <li *ngIf="!navbar_minimized  && (is_facility_manager || is_vo_admin)" class="nav-item">
           <a class="nav-link" routerLinkActive="active"
              [routerLink]="['/facility-manager/news-manager']"><i
-            class="nav-icon icon-event"></i> News Management</a>
+            class="nav-icon fas fa-newspaper"></i> News Management</a>
         </li>
 
         <li *ngIf="navbar_minimized  && (is_facility_manager || is_vo_admin)" class="nav-item">
           <a class="nav-link" routerLinkActive="active" data-toggle="tooltip" data-placement="right" title="News Management"
              [routerLink]="['/facility-manager/news-manager']"><i
-            class="nav-icon icon-event"></i> News Management</a>
+            class="nav-icon fas fa-newspaper"></i> News Management</a>
         </li>
 
 
@@ -293,39 +278,39 @@
           <a class="nav-link" routerLinkActive="active"
              [routerLink]="['/virtualmachines/clientOverview'] " data-toggle="tooltip" data-placement="right"
              title="Clients"><i
-            class="nav-icon icon-list"></i> Clients</a>
+            class="nav-icon fas fa-plug"></i> Clients</a>
         </li>
         <li class="nav-item" *ngIf="is_vo_admin && !navbar_minimized">
           <a class="nav-link" routerLinkActive="active"
              [routerLink]="['/virtualmachines/clientOverview']"><i
-            class="nav-icon icon-list"></i> Clients</a>
+            class="nav-icon fas fa-plug"></i> Clients</a>
         </li>
 
         <li class="nav-item" *ngIf="is_vo_admin && !navbar_minimized">
           <a class="nav-link" routerLinkActive="active"
              [routerLink]="['/vo-manager/overview']"><i
-            class="nav-icon icon-list"></i> Overview</a>
+            class="nav-icon fas fa-cloud"></i> Overview</a>
         </li>
 
         <li class="nav-item" *ngIf="is_vo_admin && navbar_minimized">
           <a class="nav-link" routerLinkActive="active" data-toggle="tooltip" data-placement="right"
              title="VO Manager: Overview"
              [routerLink]="['/vo-manager/overview']"><i
-            class="nav-icon icon-list"></i> Overview</a>
+            class="nav-icon fas fa-cloud"></i> Overview</a>
         </li>
 
 
         <li class="nav-item" *ngIf="is_vo_admin && !navbar_minimized">
           <a class="nav-link" routerLinkActive="active"
              [routerLink]="['/vo-manager/resources']"><i
-            class="nav-icon icon-list"></i> Resources</a>
+            class="nav-icon fas fa-server"></i> Resources</a>
         </li>
 
         <li class="nav-item" *ngIf="is_vo_admin && navbar_minimized">
           <a class="nav-link" routerLinkActive="active" data-toggle="tooltip" data-placement="right"
              title="VO Manager: Resources"
              [routerLink]="['/vo-manager/resources']"><i
-            class="nav-icon icon-list"></i> Resources</a>
+            class="nav-icon fas fa-server"></i> Resources</a>
         </li>
 
 
