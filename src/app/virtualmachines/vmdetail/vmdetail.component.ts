@@ -22,6 +22,8 @@ import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {CondaPackage} from '../condaPackage.model';
 import {TemplateNames} from '../conda/template-names';
 import {BiocondaService} from '../../api-connector/bioconda.service';
+import {forEach} from "@angular/router/src/utils/collection";
+import {ResenvTemplate} from "../conda/resenvTemplate.model";
 
 /**
  * VM Detail page component
@@ -44,6 +46,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
   stopDate: number;
   virtualMachineStates: VirtualMachineStates = new VirtualMachineStates();
   virtualMachine: VirtualMachine;
+  resenvTemplate: ResenvTemplate;
   snapshotSearchTerm: Subject<string> = new Subject<string>();
   errorMessage: boolean = false;
   private _condaPackages: CondaPackage[] = [];
@@ -414,7 +417,17 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
           this.virtualMachine = vm;
           this.biocondaService.getTemplateNameByVmName(vm).subscribe((tname: Object) => {
             if (tname != null) {
-              console.log(tname['template']);
+              const template_name = tname['template'];
+              this.biocondaService.getForcTemplates(vm.client.id).subscribe((templates: Object) => {
+                if (templates != null) {
+                  for (let i of templates) {
+                    if (i['template_name'] === template_name) {
+                      this.resenvTemplate = i;
+                      break;
+                    }
+                  }
+                }
+              });
             }
           })
           this.startDate = parseInt(this.virtualMachine.created_at, 10) * 1000;
@@ -466,7 +479,6 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
     }
     if (checkForForc) {
       this.groupService.getClientHasForc(vm.client.id, 'true').subscribe((hasForc: JSON) => {
-        console.log(hasForc);
         if (hasForc['hasForc'] === 'True') {
           this.groupService.getClientForcUrl(vm.client.id).subscribe((response: JSON) => {
             if (response['forc_url'] !== 'None') {
