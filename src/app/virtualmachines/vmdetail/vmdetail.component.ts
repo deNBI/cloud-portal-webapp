@@ -1,26 +1,25 @@
 import {Component, OnInit} from '@angular/core';
-import {FlavorService} from '../api-connector/flavor.service';
-import {ApplicationsService} from '../api-connector/applications.service';
-import {FacilityService} from '../api-connector/facility.service';
-import {VoService} from '../api-connector/vo.service';
-import {UserService} from '../api-connector/user.service';
-import {GroupService} from '../api-connector/group.service';
-import {ApiSettings} from '../api-connector/api-settings.service';
-import {CreditsService} from '../api-connector/credits.service';
-import {AbstractBaseClasse} from '../shared/shared_modules/baseClass/abstract-base-class';
+import {FlavorService} from '../../api-connector/flavor.service';
+import {ApplicationsService} from '../../api-connector/applications.service';
+import {FacilityService} from '../../api-connector/facility.service';
+import {VoService} from '../../api-connector/vo.service';
+import {UserService} from '../../api-connector/user.service';
+import {GroupService} from '../../api-connector/group.service';
+import {CreditsService} from '../../api-connector/credits.service';
+import {AbstractBaseClasse} from '../../shared/shared_modules/baseClass/abstract-base-class';
 import {ActivatedRoute} from '@angular/router';
-import {VirtualMachine} from './virtualmachinemodels/virtualmachine';
-import {VirtualmachineService} from '../api-connector/virtualmachine.service';
-import {ImageService} from '../api-connector/image.service';
-import {Image} from './virtualmachinemodels/image';
-import {VirtualMachineStates} from './virtualmachinemodels/virtualmachinestates';
-import {IResponseTemplate} from '../api-connector/response-template';
-import {SnapshotModel} from './snapshots/snapshot.model';
+import {VirtualMachine} from '../virtualmachinemodels/virtualmachine';
+import {VirtualmachineService} from '../../api-connector/virtualmachine.service';
+import {ImageService} from '../../api-connector/image.service';
+import {Image} from '../virtualmachinemodels/image';
+import {VirtualMachineStates} from '../virtualmachinemodels/virtualmachinestates';
+import {IResponseTemplate} from '../../api-connector/response-template';
+import {SnapshotModel} from '../snapshots/snapshot.model';
 import {Subject} from 'rxjs';
-import {PlaybookService} from '../api-connector/playbook.service';
+import {PlaybookService} from '../../api-connector/playbook.service';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
-import {CondaPackage} from './condaPackage.model';
-import {TemplateNames} from './conda/template-names';
+import {CondaPackage} from '../condaPackage.model';
+import {TemplateNames} from '../conda/template-names';
 
 /**
  * VM Detail page component
@@ -29,7 +28,7 @@ import {TemplateNames} from './conda/template-names';
              selector: 'app-virtual-machine-detail',
              templateUrl: 'vmdetail.component.html',
              styleUrls: ['./vmdetail.component.scss'],
-             providers: [FlavorService, FacilityService, VoService, UserService, GroupService, ApiSettings,
+             providers: [FlavorService, FacilityService, VoService, UserService, GroupService,
                VoService, CreditsService, VirtualmachineService, ImageService, PlaybookService]
            })
 

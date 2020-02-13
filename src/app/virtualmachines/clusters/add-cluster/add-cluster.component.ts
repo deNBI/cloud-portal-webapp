@@ -316,8 +316,7 @@ export class AddClusterComponent implements OnInit {
       () => {
         this.virtualmachineservice.getClusterInfo(this.cluster_id).subscribe((cluster_info: Clusterinfo) => {
           this.cluster_info = cluster_info;
-          console.log(this.cluster_info)
-          if (!this.cluster_info['public_ip']) {
+          if (this.cluster_info.status !== 'Running' && this.cluster_info.status !== 'Deleted') {
             this.checkClusterStatusLoop()
           } else {
             this.cluster_started = true;

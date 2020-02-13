@@ -1,0 +1,46 @@
+<div class="row">
+  <div class="col-4" style="margin:auto">
+    <app-vmstatus [with_text]="true" [vm]="vm"></app-vmstatus>
+
+  </div>
+  <div class="col-2">
+    <div class="callout callout-success">
+      <small class="text-muted">Created at (y-m-d)</small><br>
+      <strong class="text-muted">{{vm.created_at | date: 'yyyy.MM.dd HH:mm'}}</strong>
+    </div>
+  </div>
+  <div class="col-2"
+       *ngIf="vm.stopped_at && vm.status === VirtualMachineStates.staticSHUTOFF">
+    <div class="callout callout-warning">
+      <small class="text-muted">Stopped at (y-m-d)</small><br>
+      <strong class="text-muted">{{vm.stopped_at | date: 'yyyy.MM.dd HH:mm'}}</strong>
+    </div>
+  </div>
+  <div class="col-2">
+    <div class="callout">
+      <small class="text-muted">Part of</small><br>
+      <a [routerLink]="['/project-management/' + vm.application_id]" target="_blank">
+        <strong class="text-muted">{{vm.project}}</strong></a>
+    </div>
+  </div>
+  <div class="col-4">
+    <div class="callout">
+      <small class="text-muted">Openstack-ID</small><br>
+      <strong class="text-muted">{{vm.openstackid}}</strong>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-4">
+    <div class="callout">
+      <small class="text-muted">Created by</small><br>
+      <strong class="text-muted">{{vm.userlogin}}</strong>
+    </div>
+  </div>
+  <div class="col-8">
+    <div class="callout">
+      <small class="text-muted">Elixir-ID of {{vm.userlogin}}</small><br>
+      <strong class="text-muted">{{vm.elixir_id}}</strong>
+    </div>
+  </div>
+</div>
