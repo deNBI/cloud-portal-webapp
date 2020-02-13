@@ -26,7 +26,7 @@ export class ResEnvComponent implements OnInit {
 
   undefinedTemplate: ResearchEnvironment = new ResearchEnvironment();
 
-  WIKI_RESENV_LINK: string = 'https://cloud.denbi.de/wiki/portal/customisation/#research-environments';
+  WIKI_RESENV_LINK: string = 'https://cloud.denbi.de/wiki/portal/customization/#research-environments';
 
   rng: RandomNameGenerator;
 
