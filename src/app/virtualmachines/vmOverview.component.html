@@ -132,7 +132,7 @@
             </div>
             <div class="card-block" *ngIf="vm">
               <div class="row" style="margin-top: 5px">
-                <div class="col-5" style="margin: auto;" [ngSwitch]="vm?.status">
+                <div class="col-5" style="margin: auto;">
 
 
                   <a class="h5 text-primary" style="margin-left: 10px"
@@ -141,101 +141,9 @@
                       else statusElseBlock"
                      [routerLink]="['/virtualmachines/detail/' + vm?.openstackid]">{{vm?.name}}  </a>
                   <ng-template #statusElseBlock><span class="h5 text-primary"
-                                      style="margin-left: 10px">{{vm?.name}}  </span></ng-template>
-                  <ng-container *ngSwitchCase="VirtualMachineStates.staticACTIVE">
-                    <div [id]="'active_badge_' + vm?.name"
-                         class="dot-colorless bg-success pulseAnim" style="width: 10px; height: 10px">
-                    </div>
-                    {{VirtualMachineStates.staticACTIVE}}
-                  </ng-container>
-                  <ng-container *ngSwitchCase="VirtualMachineStates.staticSHUTOFF" >
-                    <div [id]="'shutoff_badge_' + vm?.name" class="dot-colorless bg-warning" style="width: 10px; height: 10px">
-                    </div>
-                    {{VirtualMachineStates.staticSHUTOFF}}
-                  </ng-container>
-                  <ng-container *ngSwitchCase="VirtualMachineStates.staticDELETED">
-                    <div [id]="'deleted_badge_' + vm?.name"
-                         class="dot-colorless bg-danger" style="width: 10px; height: 10px">
-                    </div>
-                    {{VirtualMachineStates.staticDELETED}}
-                  </ng-container>
-                  <ng-container *ngSwitchCase="VirtualMachineStates.staticBUILD">
-                    <div [id]="'build_badge_' + vm?.name"
-                         class="dot-colorless bg-info">
-                    </div>
-                    {{VirtualMachineStates.staticBUILD}}
-                  </ng-container>
-                  <ng-container *ngSwitchCase="VirtualMachineStates.staticPREPARE_PLAYBOOK_BUILD">
-                    <div [id]="'ppb_badge_' + vm?.name"
-                         class="dot-colorless bg-dark">
-                    </div>
-                    {{VirtualMachineStates.staticBUILD}}
-                  </ng-container>
-                  <ng-container *ngSwitchCase="VirtualMachineStates.staticNOT_FOUND">
-                    <div [id]="'not_found_badge_' + vm?.name"
-                         class="dot-colorless bg-dark">
-                    </div>
-                    {{VirtualMachineStates.staticNOT_FOUND}}
-                      <div class="alert alert-warning" role="alert"> Please contact cloud@denbi.de.</div>
+                                                      style="margin-left: 10px">{{vm?.name}}  </span></ng-template>
+                  <app-vmstatus [vm]="vm"></app-vmstatus>
 
-
-                  </ng-container>
-                  <ng-container *ngSwitchCase="VirtualMachineStates.staticERROR">
-                    <div [id]="'error_badge_' + vm?.name"
-                         class="dot-colorless bg-danger">
-                    </div>
-                    {{VirtualMachineStates.staticERROR}}
-                  </ng-container>
-                  <ng-container *ngSwitchCase="VirtualMachineStates.staticBUILD_PLAYBOOK">
-                    <div [id]="'build_playbook_badge_' + vm?.name"
-                         class="dot-colorless bg-dark">
-                    </div>
-                    {{VirtualMachineStates.staticBUILD_PLAYBOOK}}
-                  </ng-container>
-                   <ng-container *ngSwitchCase="VirtualMachineStates.staticDELETING">
-                    <div [id]="'deleting_badge_' + vm?.name"
-                         class="dot-colorless bg-warning">
-                    </div>
-                    {{VirtualMachineStates.staticDELETING}}
-                  </ng-container>
-                   <ng-container *ngSwitchCase="VirtualMachineStates.staticDELETING_FAILED">
-                    <div [id]="'deleting_badge_' + vm?.name"
-                         class="dot-colorless bg-warning">
-                    </div>
-                    {{VirtualMachineStates.staticDELETING}}
-                  </ng-container>
-                  <ng-container *ngSwitchCase="VirtualMachineStates.staticRESTARTING">
-                    <div [id]="'restarting_badge_' + vm?.name"
-                         class="dot-colorless bg-dark">
-                    </div>
-                    {{VirtualMachineStates.staticRESTARTING}}
-                  </ng-container>
-                  <ng-container *ngSwitchCase="VirtualMachineStates.staticPOWERING_OFF">
-                    <div [id]="'powering_off_badge_' + vm?.name"
-                         class="dot-colorless bg-dark">
-                    </div>
-                    {{VirtualMachineStates.staticPOWERING_OFF}}
-                  </ng-container>
-                   <ng-container *ngSwitchCase="VirtualMachineStates.staticPORT_CLOSED">
-                    <div [id]="'powering_off_badge_' + vm?.name"
-                         class="dot-colorless bg-info">
-                    </div>
-                    {{VirtualMachineStates.staticCHECKING_CONNECTION}}
-                  </ng-container>
-                   <ng-container *ngSwitchCase="VirtualMachineStates.staticCLIENT_OFFLINE">
-                    <div [id]="'powering_off_badge_' + vm?.name"
-                         class="dot-colorless bg-danger">
-                    </div>
-                    {{VirtualMachineStates.staticCLIENT_OFFLINE}}
-                  </ng-container>
-                  <ng-container *ngSwitchDefault>
-                    <div [id]="'default_badge_' + vm?.name"
-                         class="dot-colorless bg-info" style="width: 10px; height: 10px">
-                    </div>
-                    {{VirtualMachineStates.staticGETTING_STATUS}}
-                  </ng-container>
-                  <i *ngIf="VirtualMachineStates.staticNOT_IN_PROCESS_STATE.indexOf(vm?.status) === -1"
-                     class="fa fa-spinner fa-spin"></i>
                 </div>
                 <div class="col-3" style="margin: auto; text-align: center">
                   <a [routerLink]="['/project-management/' + vm?.application_id]" target="_blank"><strong>{{vm?.project}}</strong></a>
@@ -267,6 +175,37 @@
                 <div class="col-12" style="margin-left: 10px">
                   <div style="font-size: small">
                     <strong>Image</strong>: {{vm?.image}}
+                  </div>
+                </div>
+                <div class="col-12" style="margin-left: 10px" *ngIf="vm?.res_env_url">
+                <div style="font-size: small">
+                  <strong>URL</strong>: <a target="_blank" href="{{vm?.res_env_url}}">{{vm?.res_env_url}}</a>
+                </div>
+              </div>
+                <div *ngIf="vm?.cluster?.cluster_id" class="col-12" style="margin-left: 10px" [ngSwitch]="vm?.cluster?.status">
+                  <div style="font-size: small">
+                    <strong>Cluster</strong>:
+
+
+                      <a style="margin-left: 10px"
+
+                     [routerLink]="['/virtualmachines/cluster/' + vm?.cluster.cluster_id]">{{vm?.cluster.cluster_id}}}  </a>
+
+                    <ng-container *ngSwitchCase="'Running'">
+                    <div [id]="'running_cluster_' + vm?.name"
+                         class="dot-colorless bg-success">
+                    </div>
+                  </ng-container>
+                     <ng-container *ngSwitchCase="'Creating'">
+                    <div [id]="'creating_cluster_' + vm?.name"
+                         class="dot-colorless bg-warning">
+                    </div>
+                  </ng-container>
+                    <ng-container *ngSwitchCase="'Configuring'">
+                    <div [id]="'configuring_cluster_' + vm?.name"
+                         class="dot-colorless bg-info">
+                    </div>
+                  </ng-container>
                   </div>
                 </div>
               </div>
@@ -322,10 +261,15 @@
 
                 <div class="row" *ngIf="vm?.res_env_url != '' && vm?.res_env_url != null && vm?.res_env_url != undefined && resenv_by_play(vm)">
                   <div class="col-md-1">
-                    <span class="font-weight-bold font-xs btn-block text-muted">Res-Env:</span>
+                    <span class="font-weight-bold font-xs btn-block text-muted">Research Environment:</span>
                   </div>
-                  <div class="col-md-11">
-                    <a class="font-weight-bold font-xs btn-block text-muted" href="{{vm?.res_env_url}}" target="_blank">{{vm?.res_env_url}}</a></div>
+                  <div class="col-md-11 font-weight-bold font-xs btn-block text-muted">
+                    <a href="{{vm?.res_env_url}}" target="_blank">{{vm?.res_env_url}}</a>
+                    <br>
+                    For RStudio credentials please visit: <a href="{{WIKI_RSTUDIO_LINK}}" target="_blank">{{WIKI_RSTUDIO_LINK}}</a>
+                    <br>
+                    For Apache Guacamole credentials please visit: <a href="{{WIKI_GUACAMOLE_LINK}}" target="_blank">{{WIKI_GUACAMOLE_LINK}}</a>
+                  </div>
                 </div>
               </div>
 

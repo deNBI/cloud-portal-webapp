@@ -47,8 +47,15 @@ export class VirtualmachineService {
     })
   }
 
+  deleteCluster(cluster_id: string): Observable<void> {
+    return this.http.delete<void>(`${ApiSettings.getApiBaseURL()}clusters/${cluster_id}/`, {
+      withCredentials: true,
+      headers: header
+    })
+  }
+
   startVM(flavor: string, image: Image, servername: string, project: string, projectid: string, http: boolean, https: boolean,
-          udp: boolean, volumename?: string, diskspace?: string, playbook_information?: string, user_key_url?: string): Observable<any> {
+          udp: boolean, volume_name?: string, volume_storage?: string, playbook_information?: string, user_key_url?: string): Observable<any> {
 
     const params: HttpParams = new HttpParams()
       .set('flavor', flavor)
@@ -56,8 +63,8 @@ export class VirtualmachineService {
       .set('servername', servername)
       .set('project', project)
       .set('projectid', projectid)
-      .set('diskspace', diskspace)
-      .set('volumename', volumename)
+      .set('volume_storage', volume_storage)
+      .set('volume_name', volume_name)
       .set('http_allowed', http.toString())
       .set('https_allowed', https.toString())
       .set('udp_allowed', udp.toString())
@@ -246,9 +253,19 @@ export class VirtualmachineService {
 
   }
 
-  createVolume(volume_name: string, volume_diskspace: string, vm_openstackid: string): Observable<Volume> {
+  getVolumeByNameAndVmName(volume_name: string, virtualmachine_name: string): Observable<Volume> {
+    const params: HttpParams = new HttpParams().set('volume_name', volume_name);
+
+    return this.http.get<Volume>(`${ApiSettings.getApiBaseURL()}volumes/vms/${virtualmachine_name}/`, {
+      withCredentials: true,
+      params: params
+    })
+
+  }
+
+  createVolume(volume_name: string, volume_storage: string, vm_openstackid: string): Observable<Volume> {
     const params: HttpParams = new HttpParams().set('volume_name', volume_name)
-      .set('volume_diskspace', volume_diskspace)
+      .set('volume_storage', volume_storage)
       .set('vm_openstackid', vm_openstackid);
 
     return this.http.post<Volume>(`${ApiSettings.getApiBaseURL()}volumes/`, params, {

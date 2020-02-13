@@ -35,6 +35,9 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 
   VirtualMachineStates: VirtualMachineStates = new VirtualMachineStates();
 
+  WIKI_RSTUDIO_LINK: string = 'https://cloud.denbi.de/wiki/portal/customization/#rstudio';
+  WIKI_GUACAMOLE_LINK: string = 'https://cloud.denbi.de/wiki/portal/customization/#apache-guacamole';
+
   /**
    * All  vms.
    */
@@ -460,7 +463,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 
   }
 
-  prepareVMS(vms: VirtualMachine[]): void {
+  prepareVMS(vms: any): void {
 
     const vm_list: VirtualMachine[] = vms['vm_list'];
     const tmp_vms: VirtualMachine[] = [];
@@ -472,6 +475,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
       tmp_vms.push(vm);
 
     });
+    this.vms_content = [];
     this.vms_content = tmp_vms;
     this.total_items = vms['total_items'];
     this.items_per_page = vms['items_per_page'];

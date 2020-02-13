@@ -102,7 +102,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
    */
   projects: string[] = [];
   /**
-   * Default diskspace.
+   * Default volumeStorage.
    * @type {number}
    */
   diskspace: number = 1;
@@ -235,7 +235,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
   /**
    * Create an volume and attach to an instance.
    * @param {string} volume_name name of the volume
-   * @param {number} diskspace diskspace of the volume
+   * @param {number} diskspace volumeStorage of the volume
    * @param {string} instance_id opentack_id of the instance
    * @returns {void}
    */
@@ -269,7 +269,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
   /**
    * Create an volume.
    * @param {string} volume_name name of the volume.
-   * @param {number} diskspace diskspace of the new volume
+   * @param {number} diskspace volumeStorage of the new volume
    * @param {string} instance_id openstack_id of instance.
    * @returns {void}
    */
@@ -319,9 +319,6 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
 
     } else {
       volume.volume_status = VolumeStates.DELETING;
-      console.log(volume.volume_status);
-      console.log(VolumeStates.DELETING)
-
       this.vmService.deleteVolume(volume.volume_openstackid).subscribe(
         (result: IResponseTemplate) => {
           if (result.value === 'deleted') {
@@ -429,17 +426,32 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
     setTimeout(
       () => {
         const idx: number = this.volumes.indexOf(volume);
+        if (volume.volume_openstackid) {
 
-        this.checkStatusSubscription.add(this.vmService.getVolumeById(volume.volume_openstackid).subscribe((vol: Volume) => {
-          if (idx > -1) {
-            vol.volume_created_by_user = created;
-            this.volumes[idx] = vol;
-          }
+          this.checkStatusSubscription.add(this.vmService.getVolumeById(volume.volume_openstackid).subscribe((vol: Volume) => {
+            if (idx > -1) {
+              vol.volume_created_by_user = created;
+              this.volumes[idx] = vol;
+            }
+            // tslint:disable-next-line:max-line-length
+            if (vol.volume_status !== VolumeStates.AVAILABLE && vol.volume_status !== VolumeStates.NOT_FOUND && vol.volume_status !== VolumeStates.IN_USE && vol.volume_status !== final_state) {
+              this.check_status_loop(this.volumes[idx], this.checkStatusTimeout, final_state)
+            }
+          }))
+        } else {
           // tslint:disable-next-line:max-line-length
-          if (vol.volume_status !== 'available' && vol.volume_status !== 'NOT FOUND' && vol.volume_status !== 'in-use' && vol.volume_status !== final_state) {
-            this.check_status_loop(this.volumes[idx], this.checkStatusTimeout, final_state)
-          }
-        }))
+          this.checkStatusSubscription.add(this.vmService.getVolumeByNameAndVmName(volume.volume_name, volume.volume_virtualmachine.name).subscribe((vol: Volume) => {
+            if (idx > -1) {
+              vol.volume_created_by_user = created;
+              this.volumes[idx] = vol;
+            }
+            // tslint:disable-next-line:max-line-length
+            if (vol.volume_status !== VolumeStates.AVAILABLE && vol.volume_status !== VolumeStates.NOT_FOUND && vol.volume_status !== VolumeStates.IN_USE && vol.volume_status !== final_state) {
+              this.check_status_loop(this.volumes[idx], this.checkStatusTimeout, final_state)
+            }
+          }))
+
+        }
       },
       initial_timeout
     )
@@ -477,7 +489,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
   }
 
   /**
-   * Calc diskspace sum of selected project diskspace and additional diskspace of new volume.
+   * Calc volumeStorage sum of selected project volumeStorage and additional volumeStorage of new volume.
    */
   calcDiskSpaceSum(): void {
     this.selectedProjectDiskSpaceSum = parseInt(this.diskspace.toString(), 10)
@@ -485,7 +497,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
   }
 
   /**
-   * Get diskspace of selected project.
+   * Get volumeStorage of selected project.
    * @returns {void}
    */
   getSelectedProjectDiskspace(): void {

@@ -174,7 +174,11 @@ export class NewsManagerComponent implements OnInit {
           this.facilitiesToPost.push(facility_id);
         }
       }
-      this.motdLength.next(this.selectedNews.motd.length);
+      if (this.selectedNews.motd) {
+        this.motdLength.next(this.selectedNews.motd.length);
+      } else {
+        this.motdLength.next(0);
+      }
     } else {
       this.selectedNews = new DenbiNews();
       this.motdLength.next(0);
@@ -225,19 +229,5 @@ export class NewsManagerComponent implements OnInit {
     news.editable = editable;
 
     return editable;
-  }
-
-  addTestNews(): void {
-    const news: DenbiNews = new DenbiNews();
-    news.title = 'Non editable news';
-    news.tag = 'testTag1, testTag2';
-    news.facility_id = [3385, 1234];
-    news.text = 'You will not be able to edit this news\nBecause it contains a fac_id you are no manager of';
-    news.motd = 'MOTD';
-    news.id = 123;
-    news.author = 'Jesus';
-    news.time = '01.01.0 00:00';
-    this.isEditable(news);
-    this.allNews.push(news);
   }
 }
