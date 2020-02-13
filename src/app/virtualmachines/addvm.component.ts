@@ -22,6 +22,7 @@ import {ResEnvComponent} from './conda/res-env.component';
 import {is_vo} from '../shared/globalvar';
 import {TemplateNames} from './conda/template-names';
 import {RandomNameGenerator} from '../shared/randomNameGenerator';
+import {Router} from '@angular/router';
 
 /**
  * Start virtualmachine component.
@@ -224,7 +225,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 
   constructor(private groupService: GroupService, private imageService: ImageService,
               private flavorService: FlavorService, private virtualmachineservice: VirtualmachineService,
-              private keyservice: KeyService, private userservice: UserService) {
+              private keyservice: KeyService, private userservice: UserService, private router: Router) {
   }
 
   /**
@@ -401,6 +402,11 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
       this.newVm = null;
 
     }
+    setTimeout(() => {
+                 this.router.navigate(['/virtualmachines/vmOverview'])
+               }
+      ,
+               2000);
   }
 
   getPlaybookInformation(): string {

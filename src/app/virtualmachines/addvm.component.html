@@ -221,7 +221,6 @@
                                  class="form-control"
                                  (input)="diskspace = $event.target.value"
                                  type="number" [max]="selectedProjectDiskspaceMax - selectedProjectDiskspaceUsed"
-
                                  placeholder="e.g 8"
                                  [ngModel]="0"
                                  appMinAmount="0"
@@ -390,7 +389,7 @@
                   (!resEnvValid && resEnvComponent)"
                   class="btn btn-primary  .btn-lg offset-md-8"
                   data-toggle="modal"
-                  (click)="startVM(selectedFlavor.name,f.controls.instance_name.value,selectedProject[0],selectedProject[1]);resetData();resetProgressBar;infoModal.show();">
+                  (click)="startVM(selectedFlavor.name,f.controls.instance_name.value,selectedProject[0],selectedProject[1]);resetData();redirectModal.show()">
             Start VM
           </button>
         </div>
@@ -472,6 +471,21 @@
                 (click)="infoModal.hide();resetData()"
                 id="close_info_modal">Close
         </button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div bsModal #redirectModal="bs-modal" class="modal fade " tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true"
+     id="redirect_modal">
+  <div class="modal-dialog modal-info" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Redirecting</h4>
+      </div>
+      <div class="modal-body">
+        <p>Redirecting to Instance Overview...</p>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
