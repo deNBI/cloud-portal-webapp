@@ -244,6 +244,40 @@
         </div>
       </div>
 
+      <div class="card" *ngIf="resenvTemplate">
+        <div class="card-header"><span class="font-weight-bold text-muted">Research Environment</span></div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-4" *ngIf="resenvTemplate?.logo_url">
+              <div class="callout">
+                <img src="{{resenvTemplate?.logo_url}}" style="height: 42px;">
+              </div>
+            </div>
+            <div class="col-2"*ngIf="resenvTemplate?.title">
+              <div class="callout">
+                <small class="text-muted">Name</small><br>
+                <strong class="text-muted" *ngIf="!resenvTemplate?.info_url">{{resenvTemplate.title}}</strong>
+                <strong class="text-muted" *ngIf="resenvTemplate?.info_url">
+                  <a href="{{resenvTemplate.info_url}}" target="_blank">{{resenvTemplate.title}}</a></strong>
+              </div>
+            </div>
+            <div class="col-6" *ngIf="resenvTemplate?.description">
+              <div class="callout">
+                <small class="text-muted">Description</small><br>
+                <strong class="text-muted" >{{resenvTemplate.description}}</strong>
+              </div>
+            </div>
+            <div class="col-8">
+              <div class="callout">
+                <small class="text-muted">URL</small><br>
+                <strong class="text-muted"><a target="_blank" href="{{virtualMachine?.res_env_url}}">{{virtualMachine.res_env_url}}</a></strong>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
 
     </div>
   </div>

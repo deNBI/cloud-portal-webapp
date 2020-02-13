@@ -177,6 +177,11 @@
                     <strong>Image</strong>: {{vm?.image}}
                   </div>
                 </div>
+                <div class="col-12" style="margin-left: 10px" *ngIf="vm?.res_env_url">
+                <div style="font-size: small">
+                  <strong>URL</strong>: <a target="_blank" href="{{vm?.res_env_url}}">{{vm?.res_env_url}}</a>
+                </div>
+              </div>
                 <div *ngIf="vm?.cluster?.cluster_id" class="col-12" style="margin-left: 10px" [ngSwitch]="vm?.cluster?.status">
                   <div style="font-size: small">
                     <strong>Cluster</strong>:
