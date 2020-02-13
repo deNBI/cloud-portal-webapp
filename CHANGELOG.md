@@ -516,7 +516,7 @@
   *  openstack  test applicaiton btn works again ([af144f05](af144f05))
   *  simple vm test applicaiton btn works again ([9bf983a7](9bf983a7))
 * **Userinfo:**  changed buttons ([bb3d7615](bb3d7615))
-* **VM:** fixed diskspace bug ([a3cd6b1e](a3cd6b1e))
+* **VM:** fixed volumeStorage bug ([a3cd6b1e](a3cd6b1e))
 * **VirtualMachine:**
   * start btn disabled if no image or flavor is selected, also do not show  please choose info if starting a vm isnt possible ([034a3130](034a3130))
   * choose not visisbile anymoore when bioconda is selected ([80d8aa2f](80d8aa2f))
@@ -1600,7 +1600,7 @@ host and port ([53a75d93](53a75d93))
 #### Bug Fixes
 
 * **Resources:** fixed small bug 
-* **VM:** fixed diskspace bug 
+* **VM:** fixed volumeStorage bug 
 * **Vm:** fixed button bug
 
 #### Features

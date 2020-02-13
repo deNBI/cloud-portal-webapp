@@ -120,12 +120,12 @@ export class AddClusterComponent implements OnInit {
   selectedProjectClient: Client;
 
   /**
-   * Selected Project diskspace max.
+   * Selected Project volumeStorage max.
    */
   selectedProjectDiskspaceMax: number;
 
   /**
-   * Selected Project diskspace used.
+   * Selected Project volumeStorage used.
    */
   selectedProjectDiskspaceUsed: number;
 
@@ -177,7 +177,7 @@ export class AddClusterComponent implements OnInit {
   volumeName: string = '';
 
   /**
-   * Default diskspace.
+   * Default volumeStorage.
    * @type {number}
    */
   diskspace: number = 0;
