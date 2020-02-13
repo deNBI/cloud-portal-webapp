@@ -1,3 +1,18 @@
+
+##  (2020-02-13)
+
+#### Bug Fixes
+
+* **Namespace:** will be red if template or onlynamespace is choosen but not namespace ([7d6c9ef9](7d6c9ef9))
+* **Volume:** cannot fil non number to volume storage ([7e27b27b](7e27b27b))
+* **typos:**  some word in news-management, link to wiki in resen… (#1075) ([970a512c](970a512c))
+
+#### Features
+
+* **Volumes:** added to detial page ([1f5ffa5b](1f5ffa5b))
+* **application-formular:**  add toggle and validity check if part of project ([66b02232](66b02232))
+* **help:**  all help-emails can now be clicked to send a mail ([734b2be1](734b2be1))
+
 ##  (2020-02-11)
 
 
