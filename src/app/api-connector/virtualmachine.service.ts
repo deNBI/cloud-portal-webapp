@@ -47,6 +47,13 @@ export class VirtualmachineService {
     })
   }
 
+  deleteCluster(cluster_id: string): Observable<void> {
+    return this.http.delete<void>(`${ApiSettings.getApiBaseURL()}clusters/${cluster_id}/`, {
+      withCredentials: true,
+      headers: header
+    })
+  }
+
   startVM(flavor: string, image: Image, servername: string, project: string, projectid: string, http: boolean, https: boolean,
           udp: boolean, volume_name?: string, volume_storage?: string, playbook_information?: string, user_key_url?: string): Observable<any> {
 
