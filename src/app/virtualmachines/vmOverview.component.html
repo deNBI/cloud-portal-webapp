@@ -143,6 +143,7 @@
                   <ng-template #statusElseBlock><span class="h5 text-primary"
                                                       style="margin-left: 10px">{{vm?.name}}  </span></ng-template>
                   <app-vmstatus [vm]="vm"></app-vmstatus>
+
                 </div>
                 <div class="col-3" style="margin: auto; text-align: center">
                   <a [routerLink]="['/project-management/' + vm?.application_id]" target="_blank"><strong>{{vm?.project}}</strong></a>
