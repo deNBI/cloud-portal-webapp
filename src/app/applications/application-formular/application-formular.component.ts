@@ -472,4 +472,22 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 
   }
 
+  toggleProjectPart(checked: boolean, project_part: string): void {
+    if (project_part === 'horizon') {
+      if (!checked) {
+        this.project_application_horizon2020 = '';
+      }
+    }
+    if (project_part === 'elixir') {
+      if (!checked) {
+        this.project_application_elixir_project = '';
+      }
+    }
+    if (project_part === 'bmbf') {
+      if (!checked) {
+        this.project_application_bmbf_project = '';
+      }
+    }
+  }
+
 }
