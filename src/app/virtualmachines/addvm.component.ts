@@ -121,12 +121,12 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
   selectedProjectClient: Client;
 
   /**
-   * Selected Project diskspace max.
+   * Selected Project volumeStorage max.
    */
   selectedProjectDiskspaceMax: number;
 
   /**
-   * Selected Project diskspace used.
+   * Selected Project volumeStorage used.
    */
   selectedProjectDiskspaceUsed: number;
 
@@ -183,10 +183,10 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
   volumeName: string = '';
 
   /**
-   * Default diskspace.
+   * Default volumeStorage.
    * @type {number}
    */
-  diskspace: number = 0;
+  volumeStorage: number = 0;
 
   /**
    * If the data for the site is initialized.
@@ -275,6 +275,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
     this.progress_bar_width = 0;
   }
 
+
   /**
    * Check the status of the started vm in a loop.
    * @param {string} id
@@ -336,7 +337,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
     this.create_error = null;
     // tslint:disable-next-line:no-complex-conditionals
     if (this.selectedImage && flavor && servername && project &&
-      (this.diskspace <= 0 || this.diskspace > 0 && this.volumeName.length > 0)) {
+      (this.volumeStorage <= 0 || this.volumeStorage > 0 && this.volumeName.length > 0)) {
       this.create_error = null;
       this.started_machine = true;
 
@@ -364,7 +365,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
         flavor_fixed, this.selectedImage, servername,
         project, projectid.toString(), this.http_allowed,
         this.https_allowed, this.udp_allowed, this.volumeName,
-        this.diskspace.toString(), play_information, user_key_url)
+        this.volumeStorage.toString(), play_information, user_key_url)
         .subscribe((newVm: VirtualMachine) => {
           this.started_machine = false;
 
