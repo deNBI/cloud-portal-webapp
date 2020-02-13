@@ -22,8 +22,7 @@ import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {CondaPackage} from '../condaPackage.model';
 import {TemplateNames} from '../conda/template-names';
 import {BiocondaService} from '../../api-connector/bioconda.service';
-import {forEach} from "@angular/router/src/utils/collection";
-import {ResenvTemplate} from "../conda/resenvTemplate.model";
+import {ResenvTemplate} from '../conda/resenvTemplate.model';
 
 /**
  * VM Detail page component
@@ -415,14 +414,14 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
           this.checkAndGetForcDetails(vm);
           this.title = vm['name'];
           this.virtualMachine = vm;
-          this.biocondaService.getTemplateNameByVmName(vm).subscribe((tname: Object) => {
+          this.biocondaService.getTemplateNameByVmName(vm).subscribe((tname: any) => {
             if (tname != null) {
-              const template_name = tname['template'];
-              this.biocondaService.getForcTemplates(vm.client.id).subscribe((templates: Object) => {
+              const template_name: string = tname['template'];
+              this.biocondaService.getForcTemplates(vm.client.id).subscribe((templates: any) => {
                 if (templates != null) {
-                  for (let i of templates) {
-                    if (i['template_name'] === template_name) {
-                      this.resenvTemplate = i;
+                  for (const temp of templates) {
+                    if (temp['template_name'] === template_name) {
+                      this.resenvTemplate = temp;
                       break;
                     }
                   }
