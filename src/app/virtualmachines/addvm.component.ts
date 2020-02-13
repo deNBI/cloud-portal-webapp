@@ -274,6 +274,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
     this.progress_bar_width = 0;
   }
 
+
   /**
    * Check the status of the started vm in a loop.
    * @param {string} id

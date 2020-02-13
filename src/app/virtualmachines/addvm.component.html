@@ -345,7 +345,7 @@
             || (!resEnvValid && resEnvComponent)
             || !selectedImage
             || (!selectedFlavor && flavors.length != 0 )
-            || (volumeStorage > 0 && !volumeName)
+            || (volumeStorage != 0 && !volumeName)
             || (!resEnvValid && resEnvComponent))
           && flavors.length > 0
           && projectDataLoaded
@@ -359,7 +359,9 @@
           </p>
           <p *ngIf="!selectedImage">- The image you want to run on your VM
           </p>
-          <p *ngIf="volumeStorage > 0 && !volumeName">- A name for your storage volume
+          <p *ngIf="volumeStorage != 0 && !volumeName">- A name for your storage volume
+          </p>
+            <p *ngIf="f.controls.vm_volume_storage?.invalid">- A valid volume storage
           </p>
           <p *ngIf="!gaveOkay && hasTools">- Give your okay to the Bioconda install process
           </p>
@@ -379,6 +381,7 @@
                   type="button"
 
                   [disabled]="!vm_name ||
+                   f.controls.vm_volume_storage?.invalid ||
                   started_machine ||
                   !selectedFlavor ||
                   !selectedImage||
