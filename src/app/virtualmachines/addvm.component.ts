@@ -67,6 +67,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
   playbook_run: number = 0;
   timeout: number = 0;
   has_forc: boolean = false;
+  forc_url: string = '';
   client_id: string;
   mosh_mode_available: boolean = false;
   resenvSelected: boolean = false;
@@ -450,7 +451,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 
         this.loadProjectData();
         this.client_checked = true;
-        this.getHasForc(client.id);
+        this.getForc(client.id);
       } else {
         this.client_avaiable = false;
         this.client_checked = true;
@@ -461,10 +462,11 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
     })
   }
 
-  getHasForc(id: string): void {
-    this.groupService.getClientHasForc(this.selectedProject[1].toString()).subscribe((response: JSON) => {
-      if (response['hasForc'] === 'True') {
+  getForc(id: string): void {
+    this.groupService.getClientForcUrl(this.selectedProject[1].toString()).subscribe((response: JSON) => {
+      if (response['forc_url'] !== null) {
         this.has_forc = true;
+        this.forc_url = response['forc_url']
       }
     });
     this.client_id = id;
