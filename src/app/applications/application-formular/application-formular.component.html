@@ -180,6 +180,28 @@
               </div>
             </div>
 
+            <div class="form-group row">
+              <label class="col-md-4 form-control-label" for="textarea-input"><strong>Workshop* <i
+                data-balloon="Please indicate whether a workshop is to be held as part of this project."
+                data-balloon-pos="down">
+                  <i class="icon-question"
+                     style="cursor: pointer;"></i></i></strong></label>
+              <div class="col-md-8">
+                <div class="input-group">
+                  <label id="id_project_application_workshop"
+                         class="switch switch-label switch-outline-primary-alt">
+                    <input type="checkbox" class="switch-input"
+                           name="project_application_workshop"
+                           [(ngModel)]="project_application_workshop"
+                    >
+                    <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                    <span class="switch-handle"></span></label>
+                </div>
+                <span class="help-block">
+                  Would you like to conduct a workshop with the requested resources in the context of this project?
+                </span>
+              </div>
+            </div>
 
             <div class="form-group row">
               <h5 class="col-md-12 form-control-label">Resources</h5>
