@@ -1178,7 +1178,7 @@
   <div bsModal #doiQuestionModal="bs-modal" class="modal fade" tabindex="-1"
        role="dialog" aria-labelledby="Label"
        aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-md" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h4 class="modal-title">Publications</h4>
@@ -1195,15 +1195,19 @@
             in which the de.NBI Cloud is mentioned?</strong></p>
           </div>
           <div class="modal-footer">
+            <div class="row" style="margin:auto">
+              <div class="col-6">
+                <button id="new_dois_btn" class="btn btn-success" type="button"
+                        (click)="doiQuestionModal.hide(); doiModal.show(); setModalOpen(true)">Yes
+                </button>
+              </div>
 
-
-            <button id="new_dois_btn" class="btn btn-success col-md-6" type="button"
-                    (click)="doiQuestionModal.hide(); doiModal.show(); setModalOpen(true)">Yes
-            </button>
-            <button id="no_new_dois_btn" class="btn btn-primary col-md-6" type="reset"
-                    (click)="doiQuestionModal.hide(); extensionModal.show(); setModalOpen(true);">No
-            </button>
-
+              <div class="col-6">
+                <button id="no_new_dois_btn" class="btn btn-primary" type="reset"
+                        (click)="doiQuestionModal.hide(); extensionModal.show(); setModalOpen(true);">No
+                </button>
+              </div>
+            </div>
           </div>
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
@@ -1266,4 +1270,4 @@
         </div><!-- /.modal-dialog -->
       </div><!-- /.modal -->
     </div>
-  
+
