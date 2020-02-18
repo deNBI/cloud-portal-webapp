@@ -47,7 +47,7 @@
 
           <form id="application_form" #f="ngForm"
                 class="form-horizontal">
-            <div class="form-group row" *ngIf="!singleProject">
+            <div class="form-group row col-md-12" *ngIf="!singleProject">
               <label class="col-md-2 form-control-label"><strong>Project*</strong></label>
               <span *ngIf="client_avaiable && !projectDataLoaded" class="spinner-border text-info"></span>
 
