@@ -4,6 +4,7 @@
 * **application:**  default checked project part toggle at pi validation ([ccc0bd81](ccc0bd81))
 * **layout:**  new instance project selection aligned with form (#1112) ([fa874d9c](fa874d9c))
 * **project_overview:**  removed scroll problems with extension modals (#1107) ([22497114](22497114))
+* **application:** default checked project part toggle at pi validation ([ccc0bd81](ccc0bd81))
 
 #### Features
 * **application:**  added workshop option (#1109) ([ca9c5798](ca9c5798))
