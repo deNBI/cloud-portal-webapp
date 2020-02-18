@@ -488,6 +488,7 @@
                 <label id="id_project_application_horizon_switch"
                        class="switch switch-label switch-outline-primary-alt">
                   <input type="checkbox" class="switch-input" #part_horizon
+                         [defaultChecked]="project_application_horizon2020.length > 1"
                          (click)="toggleProjectPart(part_horizon.checked, 'horizon')">
                   <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
                   <span class="switch-handle"></span></label>
@@ -508,6 +509,7 @@
                 <label id="id_project_application_elixir_switch"
                        class="switch switch-label switch-outline-primary-alt">
                   <input type="checkbox" class="switch-input" #part_elixir
+                         [defaultChecked]="project_application_elixir_project.length > 1"
                          (click)="toggleProjectPart(part_elixir.checked, 'elixir')">
                   <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
                   <span class="switch-handle"></span></label>
@@ -528,6 +530,7 @@
                 <label id="id_project_application_bmbf_switch"
                        class="switch switch-label switch-outline-primary-alt">
                   <input type="checkbox" class="switch-input" #part_bmbf
+                         [defaultChecked]="project_application_bmbf_project.length > 1"
                          (click)="toggleProjectPart(part_bmbf.checked, 'bmbf')">
                   <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
                   <span class="switch-handle"></span></label>
