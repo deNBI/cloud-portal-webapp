@@ -43,6 +43,7 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
    * @type {Array}
    */
   all_application_modifications: Application [] = [];
+  isHistoryLoaded:boolean=false;
 
   applications_history: Application [] = [];
 
@@ -100,25 +101,22 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
     // todo check if user is VO Admin
     this.facilityService.getFacilityApplicationsHistory(facility).subscribe((res: any) => {
       if (Object.keys(res).length === 0) {
-        this.isLoaded = true;
+        this.isHistoryLoaded = true;
       }
       const newApps: Application [] = this.setNewApplications(res);
-      this.applications_history.push.apply(this.applications_history, newApps);
-      this.isLoaded = true;
+      this.applications_history=newApps;
+      this.isHistoryLoaded = true;
     });
   }
 
   getFullApplications(facility: number): void {
     forkJoin(this.facilityService.getFacilityApplicationsWaitingForConfirmation(facility),
-             this.facilityService.getFacilityApplicationsHistory(facility),
              this.facilityService.getFacilityModificationApplicationsWaitingForConfirmation(facility)).subscribe((res: any) => {
       const newAppsWFC: Application [] = this.setNewApplications(res[0]);
       this.all_applications_wfc.push.apply(this.all_applications_wfc, newAppsWFC);
-      const newAppsMod: Application [] = this.setNewApplications(res[2]);
+      const newAppsMod: Application [] = this.setNewApplications(res[1]);
       this.all_application_modifications.push.apply(this.all_application_modifications, newAppsMod);
       this.isLoaded = true;
-      const newAppsHistory: Application [] = this.setNewApplications(res[1]);
-      this.applications_history.push.apply(this.applications_history, newAppsHistory);
     })
   }
 
@@ -213,6 +211,8 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
       this.facilityService.getFacilityResources(this.selectedFacility['FacilityId']).subscribe();
       this.getApplicationStatus();
       this.getFullApplications(this.selectedFacility ['FacilityId']);
+      this.getAllApplicationsHistory(this.selectedFacility ['FacilityId']);
+
     })
   }
 
