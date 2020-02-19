@@ -128,7 +128,7 @@ export class HowToConnectComponent implements OnChanges, OnInit {
 
   getForcUrl(): void {
     this.groupService.getClientForcUrl(this.selectedVirtualMachine.client.id).subscribe((response: JSON) => {
-      if (response['forc_url'] !== 'None') {
+      if (response['forc_url'] !== null) {
         this.forc_url = response['forc_url'];
       }
     });
