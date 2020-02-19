@@ -26,7 +26,7 @@
                   </ng-container>
                   <ng-container *ngSwitchCase="VirtualMachineStates.staticPREPARE_PLAYBOOK_BUILD">
                     <div [id]="'ppb_badge_' + vm?.name"
-                         class="dot-colorless bg-dark">
+                         class="dot-colorless bg-info">
                     </div>
                     {{VirtualMachineStates.staticBUILD}}
                   </ng-container>
@@ -47,7 +47,7 @@
                   </ng-container>
                   <ng-container *ngSwitchCase="VirtualMachineStates.staticBUILD_PLAYBOOK">
                     <div [id]="'build_playbook_badge_' + vm?.name"
-                         class="dot-colorless bg-dark">
+                         class="dot-colorless bg-info">
                     </div>
                     {{VirtualMachineStates.staticBUILD_PLAYBOOK}}
                   </ng-container>
@@ -65,13 +65,13 @@
                   </ng-container>
                   <ng-container *ngSwitchCase="VirtualMachineStates.staticRESTARTING">
                     <div [id]="'restarting_badge_' + vm?.name"
-                         class="dot-colorless bg-dark">
+                         class="dot-colorless bg-info">
                     </div>
                     {{VirtualMachineStates.staticRESTARTING}}
                   </ng-container>
                   <ng-container *ngSwitchCase="VirtualMachineStates.staticPOWERING_OFF">
                     <div [id]="'powering_off_badge_' + vm?.name"
-                         class="dot-colorless bg-dark">
+                         class="dot-colorless bg-info">
                     </div>
                     {{VirtualMachineStates.staticPOWERING_OFF}}
                   </ng-container>
