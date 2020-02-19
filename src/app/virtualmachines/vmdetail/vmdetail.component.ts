@@ -478,20 +478,16 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
       }
     }
     if (checkForForc) {
-      this.groupService.getClientHasForc(vm.client.id, 'true').subscribe((hasForc: JSON) => {
-        if (hasForc['hasForc'] === 'True') {
-          this.groupService.getClientForcUrl(vm.client.id).subscribe((response: JSON) => {
-            if (response['forc_url'] !== 'None') {
-              this.virtualmachineService.getLocationUrl(vm.openstackid)
-                .subscribe((url: any) => {
-                  if (url !== '') {
-                    vm.res_env_url = `${response['forc_url']}${url}/`;
-                  } else {
-                    vm.res_env_url = '';
-                  }
-                });
-            }
-          });
+      this.groupService.getClientForcUrl(vm.client.id, 'true').subscribe((response: JSON) => {
+        if (response['forc_url'] !== null) {
+          this.virtualmachineService.getLocationUrl(vm.openstackid)
+            .subscribe((url: any) => {
+              if (url !== '') {
+                vm.res_env_url = `${response['forc_url']}${url}/`;
+              } else {
+                vm.res_env_url = '';
+              }
+            });
         }
       });
     }
