@@ -148,6 +148,7 @@ export class ResourcesComponent implements OnInit {
 
     this.facilityService.updateRamFactor(this.selectedFacility['FacilityId'], rf).subscribe((ramFactor: RamFactor) => {
       this.ramFactors[this.ramFactors.indexOf(rf)] = ramFactor;
+      this.getSelectedFacilityResources()
 
     })
 
@@ -157,6 +158,7 @@ export class ResourcesComponent implements OnInit {
 
     this.facilityService.updateCoreFactor(this.selectedFacility['FacilityId'], cf).subscribe((coreFactor: CoreFactor) => {
       this.coreFactors[this.coreFactors.indexOf(cf)] = coreFactor;
+      this.getSelectedFacilityResources()
 
     })
 
