@@ -382,6 +382,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
   getVmById(): void {
     this.virtualmachineService.getVmById(this.vm_id).subscribe(
       (vm: VirtualMachine) => {
+        vm = new VirtualMachine(vm);
         if (vm == null) {
           this.isLoaded = false
           this.errorMessage = true;
