@@ -8,7 +8,7 @@
         </div>
         <input type="text" class="form-control col" [formControl]="user_key_url" id="resenv_name"
                [ngClass]="{
-           'is-invalid':user_key_url?.invalid && (user_key_url?.dirty || user_key_url?.touched),
+           'is-invalid':user_key_url?.invalid && (user_key_url?.dirty || user_key_url?.touched) || (selectedTemplate.template_name !== 'undefined' && !user_key_url.value) ||(onlyNamespace && !user_key_url.value),
            'is-valid':user_key_url?.valid && (user_key_url?.dirty || user_key_url?.touched)}">
         <div class="input-group-append">
           <span class="input-group-text">_100/</span>

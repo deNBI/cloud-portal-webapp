@@ -222,6 +222,7 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
     newApp.Comment = aj['project_application_comment'];
     newApp.PerunId = aj['project_application_perun_id'];
     newApp.PIApproved = aj['project_application_pi_approved'];
+    newApp.Workshop = aj['project_application_workshop'];
 
     if (aj['project_application_pi']) {
       const firstName: string = (aj['project_application_pi'])['firstName'];

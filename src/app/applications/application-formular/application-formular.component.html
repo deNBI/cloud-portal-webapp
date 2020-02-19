@@ -180,6 +180,28 @@
               </div>
             </div>
 
+            <div class="form-group row">
+              <label class="col-md-4 form-control-label" for="textarea-input"><strong>Workshop* <i
+                data-balloon="Please indicate whether a workshop is to be held as part of this project."
+                data-balloon-pos="down">
+                  <i class="icon-question"
+                     style="cursor: pointer;"></i></i></strong></label>
+              <div class="col-md-8">
+                <div class="input-group">
+                  <label id="id_project_application_workshop"
+                         class="switch switch-label switch-outline-primary-alt">
+                    <input type="checkbox" class="switch-input"
+                           name="project_application_workshop"
+                           [(ngModel)]="project_application_workshop"
+                    >
+                    <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                    <span class="switch-handle"></span></label>
+                </div>
+                <span class="help-block">
+                  Would you like to conduct a workshop with the requested resources in the context of this project?
+                </span>
+              </div>
+            </div>
 
             <div class="form-group row">
               <h5 class="col-md-12 form-control-label">Resources</h5>
@@ -463,32 +485,64 @@
               <label class="col-md-4 form-control-label" for="text-input"><strong>Horizon
                 2020</strong></label>
               <div class="col-md-8">
-                <input type="text" id="id_project_application_horizon2020"
+                <label id="id_project_application_horizon_switch"
+                       class="switch switch-label switch-outline-primary-alt">
+                  <input type="checkbox" class="switch-input" #part_horizon
+                         [defaultChecked]="project_application_horizon2020.length > 1"
+                         (click)="toggleProjectPart(part_horizon.checked, 'horizon')">
+                  <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                  <span class="switch-handle"></span></label>
+                <input type="text" id="id_project_application_horizon2020" *ngIf="part_horizon.checked"
                        name="project_application_horizon2020" class="form-control"
-                       maxlength="2048"
-                       [(ngModel)]="project_application_horizon2020" placeholder='Name of the project'
-                >
-                <span class="help-block">Is your project part of a Horizon 2020 project?</span>
+                       maxlength="2048" required minlength="2"
+                       [ngClass]="{
+                                'is-invalid': f.controls.project_application_horizon2020?.invalid,
+                                'is-valid': f.controls.project_application_horizon2020?.valid
+                                }"
+                       [(ngModel)]="project_application_horizon2020" placeholder='Name of the project'>
+                <p>Is your project part of a Horizon 2020 project?</p>
               </div>
             </div>
             <div class="form-group row">
               <label class="col-md-4 form-control-label" for="text-input"><strong>Elixir Project</strong></label>
               <div class="col-md-8">
-                <input type="text" id="id_project_application_elixir_project"
+                <label id="id_project_application_elixir_switch"
+                       class="switch switch-label switch-outline-primary-alt">
+                  <input type="checkbox" class="switch-input" #part_elixir
+                         [defaultChecked]="project_application_elixir_project.length > 1"
+                         (click)="toggleProjectPart(part_elixir.checked, 'elixir')">
+                  <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                  <span class="switch-handle"></span></label>
+                <input type="text" id="id_project_application_elixir_project" *ngIf="part_elixir.checked"
                        name="project_application_elixir_project" class="form-control"
-                       maxlength="2048"
+                       maxlength="2048" required minlength="2"
+                       [ngClass]="{
+                                'is-invalid': f.controls.project_application_elixir_project?.invalid,
+                                'is-valid': f.controls.project_application_elixir_project?.valid
+                                }"
                        [(ngModel)]="project_application_elixir_project" placeholder='Name of the project'>
-                <span class="help-block">Is your project part of an Elixir project?</span>
+                <p>Is your project part of an Elixir project?</p>
               </div>
             </div>
             <div class="form-group row">
               <label class="col-md-4 form-control-label" for="text-input"><strong>BMBF</strong></label>
               <div class="col-md-8">
-                <input type="text" id="id_project_application_bmbf_project"
+                <label id="id_project_application_bmbf_switch"
+                       class="switch switch-label switch-outline-primary-alt">
+                  <input type="checkbox" class="switch-input" #part_bmbf
+                         [defaultChecked]="project_application_bmbf_project.length > 1"
+                         (click)="toggleProjectPart(part_bmbf.checked, 'bmbf')">
+                  <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                  <span class="switch-handle"></span></label>
+                <input type="text" id="id_project_application_bmbf_project" *ngIf="part_bmbf.checked"
                        name="project_application_bmbf_project" class="form-control"
-                       maxlength="2048"
+                       maxlength="2048" required minlength="2"
+                       [ngClass]="{
+                                'is-invalid': f.controls.project_application_bmbf_project?.invalid,
+                                'is-valid': f.controls.project_application_bmbf_project?.valid
+                                }"
                        [(ngModel)]="project_application_bmbf_project" placeholder='Name of the project'>
-                <span class="help-block">Is your project part of a BMBF project?</span>
+                <p>Is your project part of a BMBF project?</p>
               </div>
             </div>
 
@@ -828,7 +882,7 @@
           <div *ngIf="is_validation" class="row">
             <div class="col-4"></div>
             <div class="col-8 alert-warning">
-              If you do not approve of this application, please contact cloud@denbi.de
+              If you do not approve of this application, please contact <a href="mailto:cloud@denbi.de">cloud@denbi.de</a>
             </div>
           </div>
         </div>
@@ -885,10 +939,10 @@
                     (click)="filterEnteredData(f);calculateInitialCredits(f); submitModal.show();"
                     id="submit_btn"
                     [disabled]="f.invalid  ||selected_ontology_terms.length == 0  || !simple_vm_min_vm || (!application_dissemination.isPlatformSelected()  && project_application_report_allowed)"
-                  class="btn btn-sm btn-success"
-                  type="button"><i
-            class="fa fa-dot-circle-o"></i> Submit
-            Application
+                    class="btn btn-sm btn-success"
+                    type="button"><i
+              class="fa fa-dot-circle-o"></i> Submit
+              Application
             </button>
           </div>
         </div>

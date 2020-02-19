@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, OnDestroy, ViewChild} from '@angular/core';
+import {Component, Input, OnInit, OnDestroy, ViewChild, Renderer2, Inject} from '@angular/core';
 import {Project} from './project.model';
 import {ProjectMember} from './project_member.model'
 import {environment} from '../../environments/environment'
@@ -27,6 +27,7 @@ import {WIKI_GROUP_INVITATIONS} from '../../links/links';
 import {Doi} from '../applications/doi/doi';
 import {EdamOntologyTerm} from '../applications/edam-ontology-term';
 import {AutocompleteComponent} from 'angular-ng-autocomplete';
+import {DOCUMENT} from "@angular/common";
 
 /**
  * Projectoverview component.
@@ -91,6 +92,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   details_loaded: boolean = false;
   userinfo: Userinfo;
   allSet: boolean = false;
+  renderer: Renderer2;
   smallExampleFlavor: Flavor;
   largeExampleFlavor: Flavor;
   smallExamplePossibleHours: number = 0;
@@ -124,8 +126,25 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
               private activatedRoute: ActivatedRoute,
               private fullLayout: FullLayoutComponent,
               private router: Router,
-              private creditsService: CreditsService) {
+              private creditsService: CreditsService,
+              @Inject(DOCUMENT) private document: Document) {
     super(userservice, applicationstatusservice, applicationsservice, facilityService);
+  }
+
+  delay(ms: number): Promise<any> {
+    return new Promise( resolve => setTimeout(resolve, ms) );
+  }
+
+  setModalOpen(bool: boolean): void {
+    (async () => {
+        await this.delay(750); //needed, because bootstraps class-toggle-function seems to be too slow
+        if (bool) {
+          this.document.body.classList.add('modal-open');
+        } else {
+          this.document.body.classList.remove('modal-open');
+        }
+      }
+    )();
   }
 
   removeEDAMterm(term: EdamOntologyTerm): void {
@@ -398,12 +417,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
   }
 
-  /**
-   * Bugfix not scrollable site after closing modal
-   */
-  removeModalOpen(): void {
-    document.body.classList.remove('modal-open');
-  }
 
   ngOnInit(): void {
     this.applicationsservice.getEdamOntologyTerms().subscribe((terms: EdamOntologyTerm[]) => {

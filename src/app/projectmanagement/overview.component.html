@@ -130,7 +130,7 @@
             </button>
             <button id="show_extension_modal"
                     *ngIf="project_application?.Status == application_states.APPROVED || project_application?.Status == application_states.MODIFICATION_DECLINED"
-                    (click)="newFlavors= {};initRamCores();calculateCredits(f.controls.project_application_renewal_lifetime?.value);extensionModal.show()"
+                    (click)="newFlavors= {};selected_ontology_terms=[];initRamCores();calculateCredits(f.controls.project_application_renewal_lifetime?.value);doiQuestionModal.show()"
                     class="btn btn-warning"
                     type="button" style="margin-bottom:5px;">
               Request Extension/Modification
@@ -662,7 +662,7 @@
       <div class="modal-header">
         <h4>Modification/Extension request for {{project_application?.Shortname}}</h4>
         <button type="button" class="close" style="cursor: pointer"
-                (click)="extensionModal.hide()" aria-label="Close">
+                (click)="extensionModal.hide(); setModalOpen(false);" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -1037,16 +1037,16 @@
           </div>
           <button type="button" class="btn  btn-primary"
                   form="application_form" id="submit_renewal_btn"
-                  (click)="extension_request=true;filterEnteredData(f); submitModal.show();"
-                  [disabled]="f.invalid"><i
+                  (click)="extension_request=true;filterEnteredData(f);calculateInitialCredits(f);
+                  submitModal.show(); setModalOpen(true);"
+                  [disabled]="f.invalid || (!project_application.EdamTopics && selected_ontology_terms.length < 1)"><i
             class="fa fa-dot-circle-o">
 
           </i>
             Submit
           </button>
           <button type="button" class="btn btn-danger"
-                  (click)="extensionModal.hide();    totalRAM = 0;
-    totalNumberOfCores = 0;">
+                  (click)="extensionModal.hide(); setModalOpen(false); totalRAM = 0; totalNumberOfCores = 0;">
             Close
           </button>
 
@@ -1177,7 +1177,7 @@
       <div class="modal-header">
         <h4 class="modal-title">{{projectName}}</h4>
         <button type="button" class="close" style="cursor: pointer;"
-                (click)="submitModal.hide()"
+                (click)="submitModal.hide(); setModalOpen(false);"
                 data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -1217,7 +1217,7 @@
 
 
         <button id="submit_modal_btn" class="btn btn-success col-md4" type="button"
-                (click)="resultModal.show(); extensionModal.hide(); submitModal.hide();onSubmit(f, false);">Confirm Application
+                (click)="extensionModal.hide(); submitModal.hide(); resultModal.show(); onSubmit(f);">Confirm Application
         </button>
         <button class="btn  btn-primary col-md-4" type="reset"
                 (click)="submitModal.hide();">Cancel
@@ -1235,7 +1235,7 @@
         <div class="modal-header">
           <h4 class="modal-title">Digital object identifier (DOI)</h4>
           <button type="button" class="close" style="cursor: pointer;"
-                  (click)="doiModal.hide()"
+                  (click)="doiModal.hide(); setModalOpen(false);"
                   data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -1243,10 +1243,11 @@
         </div>
         <div class="modal-body">
           <div class="alert alert-info">
-            <strong> If you have new publications associated with the de.NBI Cloud please add their DOIs here.
-            </strong><br> Look <a
+            <p>Please add the DOIs of new publications in this form. For more information on DOIs, please look <a
             href="https://cloud.denbi.de/wiki/portal/project_overview/#adding-a-doi-digital-object-identifier"
-            target="_blank">here</a> for more information about DOIs.
+            target="_blank">here</a>.
+              You can also add the publications at a later date on the project overview page.</p>
+            <p>The addition or non-addition of publications/DOIs <strong>does not affect the renewal request procedure!</strong></p>
           </div>
           <div class="table-responsive">
             <table class="table ">
@@ -1260,7 +1261,6 @@
                   <td>
                     <button
                       class="btn btn-danger" type="button" (click)="deleteDoi(doi);">
-
                       <i class="fa fa-trash"></i>&nbsp;
                     </button>
                   </td>
@@ -1286,18 +1286,10 @@
             </table>
 
           </div>
-
-          <div class="modal-footer">
-
-
-            <button id="doi_modal_btn" class="btn btn-success col-md4" type="button"
-                    (click)="extensionModal.hide();doiModal.hide(); submitModal.show();">Confirm
-
+          <div class="modal-footer" style="text-align:center;">
+            <button id="doi_continue_btn" class="btn btn-success col-md-6" type="button"
+                    style="margin:auto;" (click)="doiModal.hide(); extensionModal.show(); setModalOpen(true);">Continue
             </button>
-            <button class="btn  btn-primary col-md-4" type="reset"
-                    (click)="doiModal.hide();">Cancel
-            </button>
-
           </div>
         </div><!-- /.modal-content -->L
       </div><!-- /.modal-dialog -->
@@ -1305,7 +1297,47 @@
   </div>
 
 
-    <div bsModal #resultModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+  <div bsModal #doiQuestionModal="bs-modal" class="modal fade" tabindex="-1"
+       role="dialog" aria-labelledby="Label"
+       aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Publications</h4>
+          <button type="button" class="close" style="cursor: pointer;"
+                  (click)="doiQuestionModal.hide(); setModalOpen(false);"
+                  data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+
+        </div>
+        <div class="modal-body">
+          <div>
+          <p><strong>Do you have any new publications that were made during your work with the de.NBI Cloud or
+            in which the de.NBI Cloud is mentioned?</strong></p>
+          </div>
+          <div class="modal-footer">
+            <div class="row" style="margin:auto">
+              <div class="col-6">
+                <button id="new_dois_btn" class="btn btn-success" type="button"
+                        (click)="doiQuestionModal.hide(); doiModal.show(); setModalOpen(true)">Yes
+                </button>
+              </div>
+
+              <div class="col-6">
+                <button id="no_new_dois_btn" class="btn btn-primary" type="reset"
+                        (click)="doiQuestionModal.hide(); extensionModal.show(); setModalOpen(true);">No
+                </button>
+              </div>
+            </div>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+  </div>
+
+
+  <div bsModal #resultModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
          aria-labelledby="Label"
          aria-hidden="true">
       <div class="modal-dialog" role="document">
@@ -1316,7 +1348,7 @@
             <h4 class="modal-title" *ngIf="extension_status == 1"> Success </h4>
             <h4 class="modal-title" *ngIf="extension_status == 2"> Error </h4>
             <button type="button" class="close" style="cursor: pointer"
-                    (click)="resultModal.hide();extension_status= 0;removeModalOpen();"
+                    (click)="resultModal.hide();extension_status= 0; setModalOpen(false);"
                     aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -1351,7 +1383,7 @@
 
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary"
-                      (click)="resultModal.hide();extension_status= 0;removeModalOpen();">
+                      (click)="resultModal.hide();extension_status= 0; setModalOpen(false);">
                 Close
               </button>
             </div>

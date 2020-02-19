@@ -22,6 +22,7 @@ import {ResEnvComponent} from './conda/res-env.component';
 import {is_vo} from '../shared/globalvar';
 import {TemplateNames} from './conda/template-names';
 import {RandomNameGenerator} from '../shared/randomNameGenerator';
+import {Router} from '@angular/router';
 
 /**
  * Start virtualmachine component.
@@ -120,12 +121,12 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
   selectedProjectClient: Client;
 
   /**
-   * Selected Project diskspace max.
+   * Selected Project volumeStorage max.
    */
   selectedProjectDiskspaceMax: number;
 
   /**
-   * Selected Project diskspace used.
+   * Selected Project volumeStorage used.
    */
   selectedProjectDiskspaceUsed: number;
 
@@ -182,10 +183,10 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
   volumeName: string = '';
 
   /**
-   * Default diskspace.
+   * Default volumeStorage.
    * @type {number}
    */
-  diskspace: number = 0;
+  volumeStorage: number = 0;
 
   /**
    * If the data for the site is initialized.
@@ -224,7 +225,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 
   constructor(private groupService: GroupService, private imageService: ImageService,
               private flavorService: FlavorService, private virtualmachineservice: VirtualmachineService,
-              private keyservice: KeyService, private userservice: UserService) {
+              private keyservice: KeyService, private userservice: UserService, private router: Router) {
   }
 
   /**
@@ -273,6 +274,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
     this.progress_bar_animated = this.ANIMATED_PROGRESS_BAR;
     this.progress_bar_width = 0;
   }
+
 
   /**
    * Check the status of the started vm in a loop.
@@ -335,7 +337,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
     this.create_error = null;
     // tslint:disable-next-line:no-complex-conditionals
     if (this.selectedImage && flavor && servername && project &&
-      (this.diskspace <= 0 || this.diskspace > 0 && this.volumeName.length > 0)) {
+      (this.volumeStorage <= 0 || this.volumeStorage > 0 && this.volumeName.length > 0)) {
       this.create_error = null;
       this.started_machine = true;
 
@@ -363,7 +365,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
         flavor_fixed, this.selectedImage, servername,
         project, projectid.toString(), this.http_allowed,
         this.https_allowed, this.udp_allowed, this.volumeName,
-        this.diskspace.toString(), play_information, user_key_url)
+        this.volumeStorage.toString(), play_information, user_key_url)
         .subscribe((newVm: VirtualMachine) => {
           this.started_machine = false;
 
@@ -401,6 +403,11 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
       this.newVm = null;
 
     }
+    setTimeout(() => {
+                 this.router.navigate(['/virtualmachines/vmOverview'])
+               }
+      ,
+               2000);
   }
 
   getPlaybookInformation(): string {

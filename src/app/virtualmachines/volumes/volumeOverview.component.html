@@ -139,7 +139,7 @@
                       class="dot-colorless bg-danger" style="width: 10px; height: 10px">
                 </span>
                 <strong> {{VolumeStates.staticNOT_FOUND}}</strong><br>
-                <p class="alert alert-danger" role="alert"> Please contact cloud@denbi.de.</p>
+                <p class="alert alert-danger" role="alert"> Please contact <a href="mailto:cloud@denbi.de">cloud@denbi.de</a>.</p>
 
               </ng-container>
               <ng-container *ngSwitchCase="VolumeStates.staticERROR">
@@ -147,7 +147,7 @@
                       class="dot-colorless bg-danger" style="width: 10px; height: 10px">
                 </span>
                 <strong> {{VolumeStates.staticERROR}}</strong><br>
-                <p class="alert alert-danger" role="alert"> Please contact cloud@denbi.de.</p>
+                <p class="alert alert-danger" role="alert"> Please contact <a href="mailto:cloud@denbi.de">cloud@denbi.de</a>.</p>
 
               </ng-container>
               <i *ngIf="VolumeStates.staticNOT_IN_PROCESS_STATE.indexOf(volume?.volume_status) === -1"

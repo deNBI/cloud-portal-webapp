@@ -93,6 +93,13 @@
 
     </tr>
     <tr>
+      <td>Workshop</td>
+      <td>
+        <span *ngIf="application?.Workshop" class="badge badge-success">Yes</span>
+        <span *ngIf="!application?.Workshop" class="badge badge-danger">No</span>
+      </td>
+    </tr>
+    <tr>
       <td>Description
       </td>
       <td>{{

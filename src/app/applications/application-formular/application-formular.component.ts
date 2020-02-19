@@ -52,6 +52,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
   project_application_elixir_project: string = '';
   project_application_bmbf_project: string = '';
   project_application_comment: string = '';
+  project_application_workshop: boolean = false;
   all_dissemination_checked: boolean = false;
 
   application_dissemination: ApplicationDissemination = new ApplicationDissemination();
@@ -161,6 +162,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
       this.project_application_elixir_project = this.application.ElixirProject;
       this.project_application_bmbf_project = this.application.BMBFProject;
       this.project_application_volume_counter = this.application.VolumeCounter;
+      this.project_application_workshop = this.application.Workshop;
       this.initiated_validation = true
 
     }
@@ -231,6 +233,13 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
     } else {
       this.valuesToConfirm.push('Sensitive Data: Yes');
     }
+
+    if(!this.project_application_workshop) {
+      this.valuesToConfirm.push('Workshops: No');
+    } else {
+      this.valuesToConfirm.push('Workshops: Yes');
+    }
+
     if (this.openstack_project) {
       if (!this.project_application_openstack_basic_introduction) {
         this.valuesToConfirm.push('Training: No');
@@ -470,6 +479,24 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
       this.notificationModalStay = true;
     })
 
+  }
+
+  toggleProjectPart(checked: boolean, project_part: string): void {
+    if (project_part === 'horizon') {
+      if (!checked) {
+        this.project_application_horizon2020 = '';
+      }
+    }
+    if (project_part === 'elixir') {
+      if (!checked) {
+        this.project_application_elixir_project = '';
+      }
+    }
+    if (project_part === 'bmbf') {
+      if (!checked) {
+        this.project_application_bmbf_project = '';
+      }
+    }
   }
 
 }

@@ -1,3 +1,29 @@
+##  (2020-02-18)
+
+#### Bug Fixes
+* **application:**  default checked project part toggle at pi validation ([ccc0bd81](ccc0bd81))
+* **layout:**  new instance project selection aligned with form (#1112) ([fa874d9c](fa874d9c))
+* **project_overview:**  removed scroll problems with extension modals (#1107) ([22497114](22497114))
+* **application:** default checked project part toggle at pi validation ([ccc0bd81](ccc0bd81))
+
+#### Features
+* **application:**  added workshop option (#1109) ([ca9c5798](ca9c5798))
+* **troubleshooting:**  troubleshooting page added ([a8116e16](a8116e16))
+
+##  (2020-02-13)
+
+#### Bug Fixes
+
+* **Namespace:** will be red if template or onlynamespace is choosen but not namespace ([7d6c9ef9](7d6c9ef9))
+* **Volume:** cannot fil non number to volume storage ([7e27b27b](7e27b27b))
+* **typos:**  some word in news-management, link to wiki in resen… (#1075) ([970a512c](970a512c))
+
+#### Features
+
+* **Volumes:** added to detial page ([1f5ffa5b](1f5ffa5b))
+* **application-formular:**  add toggle and validity check if part of project ([66b02232](66b02232))
+* **help:**  all help-emails can now be clicked to send a mail ([734b2be1](734b2be1))
+
 ##  (2020-02-11)
 
 
@@ -516,7 +542,7 @@
   *  openstack  test applicaiton btn works again ([af144f05](af144f05))
   *  simple vm test applicaiton btn works again ([9bf983a7](9bf983a7))
 * **Userinfo:**  changed buttons ([bb3d7615](bb3d7615))
-* **VM:** fixed diskspace bug ([a3cd6b1e](a3cd6b1e))
+* **VM:** fixed volumeStorage bug ([a3cd6b1e](a3cd6b1e))
 * **VirtualMachine:**
   * start btn disabled if no image or flavor is selected, also do not show  please choose info if starting a vm isnt possible ([034a3130](034a3130))
   * choose not visisbile anymoore when bioconda is selected ([80d8aa2f](80d8aa2f))
@@ -1600,7 +1626,7 @@ host and port ([53a75d93](53a75d93))
 #### Bug Fixes
 
 * **Resources:** fixed small bug 
-* **VM:** fixed diskspace bug 
+* **VM:** fixed volumeStorage bug 
 * **Vm:** fixed button bug
 
 #### Features

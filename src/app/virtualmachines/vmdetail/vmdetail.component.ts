@@ -1,26 +1,28 @@
 import {Component, OnInit} from '@angular/core';
-import {FlavorService} from '../api-connector/flavor.service';
-import {ApplicationsService} from '../api-connector/applications.service';
-import {FacilityService} from '../api-connector/facility.service';
-import {VoService} from '../api-connector/vo.service';
-import {UserService} from '../api-connector/user.service';
-import {GroupService} from '../api-connector/group.service';
-import {ApiSettings} from '../api-connector/api-settings.service';
-import {CreditsService} from '../api-connector/credits.service';
-import {AbstractBaseClasse} from '../shared/shared_modules/baseClass/abstract-base-class';
+import {FlavorService} from '../../api-connector/flavor.service';
+import {ApplicationsService} from '../../api-connector/applications.service';
+import {FacilityService} from '../../api-connector/facility.service';
+import {VoService} from '../../api-connector/vo.service';
+import {UserService} from '../../api-connector/user.service';
+import {GroupService} from '../../api-connector/group.service';
+import {CreditsService} from '../../api-connector/credits.service';
+import {AbstractBaseClasse} from '../../shared/shared_modules/baseClass/abstract-base-class';
 import {ActivatedRoute} from '@angular/router';
-import {VirtualMachine} from './virtualmachinemodels/virtualmachine';
-import {VirtualmachineService} from '../api-connector/virtualmachine.service';
-import {ImageService} from '../api-connector/image.service';
-import {Image} from './virtualmachinemodels/image';
-import {VirtualMachineStates} from './virtualmachinemodels/virtualmachinestates';
-import {IResponseTemplate} from '../api-connector/response-template';
-import {SnapshotModel} from './snapshots/snapshot.model';
+import {VirtualMachine} from '../virtualmachinemodels/virtualmachine';
+import {VirtualmachineService} from '../../api-connector/virtualmachine.service';
+import {ImageService} from '../../api-connector/image.service';
+import {Image} from '../virtualmachinemodels/image';
+import {VirtualMachineStates} from '../virtualmachinemodels/virtualmachinestates';
+import {IResponseTemplate} from '../../api-connector/response-template';
+import {SnapshotModel} from '../snapshots/snapshot.model';
 import {Subject} from 'rxjs';
-import {PlaybookService} from '../api-connector/playbook.service';
+import {PlaybookService} from '../../api-connector/playbook.service';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
-import {CondaPackage} from './condaPackage.model';
-import {TemplateNames} from './conda/template-names';
+
+import {CondaPackage} from '../condaPackage.model';
+import {TemplateNames} from '../conda/template-names';
+import {BiocondaService} from '../../api-connector/bioconda.service';
+import {ResenvTemplate} from '../conda/resenvTemplate.model';
 
 /**
  * VM Detail page component
@@ -29,8 +31,9 @@ import {TemplateNames} from './conda/template-names';
              selector: 'app-virtual-machine-detail',
              templateUrl: 'vmdetail.component.html',
              styleUrls: ['./vmdetail.component.scss'],
-             providers: [FlavorService, FacilityService, VoService, UserService, GroupService, ApiSettings,
-               VoService, CreditsService, VirtualmachineService, ImageService, PlaybookService]
+
+             providers: [FlavorService, FacilityService, VoService, UserService, GroupService,
+               VoService, CreditsService, VirtualmachineService, ImageService, PlaybookService,BiocondaService]
            })
 
 export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
@@ -42,6 +45,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
   stopDate: number;
   virtualMachineStates: VirtualMachineStates = new VirtualMachineStates();
   virtualMachine: VirtualMachine;
+  resenvTemplate: ResenvTemplate;
   snapshotSearchTerm: Subject<string> = new Subject<string>();
   errorMessage: boolean = false;
   private _condaPackages: CondaPackage[] = [];
@@ -96,7 +100,8 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
               private flavorService: FlavorService,
               private imageService: ImageService,
               private playbookService: PlaybookService,
-              private groupService: GroupService) {
+              private groupService: GroupService,
+              private biocondaService: BiocondaService) {
     super();
   }
 
@@ -382,6 +387,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
           this.errorMessage = true;
           // TODO: Redirect back to overview
         } else {
+
           this.playbookService.getPlaybookForVM(this.vm_id).subscribe((pb: Object) => {
             if (pb != null) {
               let pbs: string = pb['playbooks'].toString();
@@ -408,6 +414,21 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
           this.checkAndGetForcDetails(vm);
           this.title = vm['name'];
           this.virtualMachine = vm;
+          this.biocondaService.getTemplateNameByVmName(vm).subscribe((tname: any) => {
+            if (tname != null) {
+              const template_name: string = tname['template'];
+              this.biocondaService.getForcTemplates(vm.client.id).subscribe((templates: any) => {
+                if (templates != null) {
+                  for (const temp of templates) {
+                    if (temp['template_name'] === template_name) {
+                      this.resenvTemplate = temp;
+                      break;
+                    }
+                  }
+                }
+              });
+            }
+          })
           this.startDate = parseInt(this.virtualMachine.created_at, 10) * 1000;
           this.stopDate = parseInt(this.virtualMachine.stopped_at, 10) * 1000;
           this.stopDate = parseInt(this.virtualMachine.stopped_at, 10) * 1000;
