@@ -22,6 +22,7 @@ export class ResourcesComponent implements OnInit {
 
   title: string = 'Resource Overview';
   public managerFacilities: [string, number][];
+  ramUpdateList: { [id: string]: boolean } = {};
   /**
    * Chosen facility.
    */
@@ -63,6 +64,10 @@ export class ResourcesComponent implements OnInit {
       factor = factor.toString().replace(re, '.');
       this.facilityService.addRamFactor(this.selectedFacility['FacilityId'], ram, factor, description).subscribe((res: RamFactor[]) => {
         this.ramFactors = res;
+        this.ramFactors.forEach((ramFactor: RamFactor) => {
+          this.ramUpdateList[ramFactor.id] = false;
+          console.log(this.ramUpdateList)
+        })
         this.getSelectedFacilityResources()
       })
     }
@@ -106,14 +111,38 @@ export class ResourcesComponent implements OnInit {
 
   }
 
+  public reloadRamFactor(rf: RamFactor): void {
+    this.facilityService.getRamFactor(this.selectedFacility['FacilityId'], rf.id).subscribe((ramFactor: RamFactor) => {
+      this.ramFactors[this.ramFactors.indexOf(rf)] = ramFactor;
+    })
+  }
+
   public getRamCoreFactors(): void {
     forkJoin(
       this.facilityService.getCoreFactor(this.selectedFacility['FacilityId']),
-      this.facilityService.getRamFactor(this.selectedFacility['FacilityId'])).subscribe((res: any) => {
+      this.facilityService.getRamFactors(this.selectedFacility['FacilityId'])).subscribe((res: any) => {
       this.coreFactors = res[0];
+
       this.ramFactors = res[1];
+      this.ramFactors.forEach((ramFactor: RamFactor) => {
+        this.ramUpdateList[ramFactor.id] = false;
+        console.log(this.ramUpdateList)
+      })
     })
 
+  }
+
+  public updateRamFactor(rf: RamFactor): void {
+
+    this.facilityService.updateRamFactor(this.selectedFacility['FacilityId'], rf).subscribe((ramFactor: RamFactor) => {
+      this.ramFactors[this.ramFactors.indexOf(rf)] = ramFactor;
+
+    })
+
+  }
+
+  public changeRamToUpdate(ramFactor: RamFactor): void {
+    this.ramUpdateList[ramFactor.id] = !this.ramUpdateList[ramFactor.id]
   }
 
   public tableToCSV(): void {

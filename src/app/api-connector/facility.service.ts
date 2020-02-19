@@ -214,6 +214,31 @@ export class FacilityService {
     })
   }
 
+  getRamFactor(facility: number | string, factor_id: number | string): Observable<RamFactor> {
+
+    return this.http.get<RamFactor>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/ramFactors/${factor_id}/`, {
+      withCredentials: true,
+      headers: header
+    })
+  }
+
+  /**
+   * Updates an RamFactor.
+   * @param {number | string} facility
+   * @param {number | string} factor_id
+   * @param factor
+   * @returns {Observable<RamFactor[]>}
+   */
+  updateRamFactor(facility: number | string, factor: RamFactor): Observable<RamFactor> {
+    const params: HttpParams = new HttpParams().set('factor', JSON.stringify(factor));
+
+    // tslint:disable-next-line:max-line-length
+    return this.http.post<RamFactor>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/ramFactors/${factor.id}/`, params, {
+      withCredentials: true,
+      headers: header
+    })
+  }
+
   /**
    * Deletes an CoreFactor.
    * @param {number | string} facility
@@ -248,7 +273,7 @@ export class FacilityService {
    * @param {number | string} facility
    * @returns {Observable<any>}
    */
-  getRamFactor(facility: number | string): Observable<RamFactor[]> {
+  getRamFactors(facility: number | string): Observable<RamFactor[]> {
     const params: HttpParams = new HttpParams().set('type', 'ram');
 
     return this.http.get<RamFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/ramFactors/`, {
