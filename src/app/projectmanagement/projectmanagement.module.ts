@@ -24,8 +24,8 @@ import {ChartsModule} from 'ng2-charts';
               ModalModule.forRoot(),
               ApplicationsModule,
               SharedDirectivesModule,
-              ChartsModule
-              AutocompleteLibModule,
+              ChartsModule,
+              AutocompleteLibModule
             ],
             declarations: [
               OverviewComponent
