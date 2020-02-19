@@ -23,6 +23,8 @@ export class ResourcesComponent implements OnInit {
   title: string = 'Resource Overview';
   public managerFacilities: [string, number][];
   ramUpdateList: { [id: string]: boolean } = {};
+  coresUpdateList: { [id: string]: boolean } = {};
+
   /**
    * Chosen facility.
    */
@@ -44,7 +46,7 @@ export class ResourcesComponent implements OnInit {
   };
 
   constructor(private facilityService: FacilityService, private exportAsService: ExportAsService) {
-  }
+  }x
 
   addCoreFactor(cores: string | number, factor: string | number, description: string): void {
     if (cores && factor) {
@@ -53,6 +55,9 @@ export class ResourcesComponent implements OnInit {
       this.facilityService.addCoresFactor(this.selectedFacility['FacilityId'], cores, factor, description)
         .subscribe((res: CoreFactor[]) => {
           this.coreFactors = res;
+          this.coreFactors.forEach((coreFactor: CoreFactor) => {
+            this.coresUpdateList[coreFactor.id] = false;
+          });
           this.getSelectedFacilityResources()
         })
     }
@@ -66,7 +71,6 @@ export class ResourcesComponent implements OnInit {
         this.ramFactors = res;
         this.ramFactors.forEach((ramFactor: RamFactor) => {
           this.ramUpdateList[ramFactor.id] = false;
-          console.log(this.ramUpdateList)
         })
         this.getSelectedFacilityResources()
       })
@@ -117,16 +121,24 @@ export class ResourcesComponent implements OnInit {
     })
   }
 
+  public reloadCoreFactor(cf: CoreFactor): void {
+    this.facilityService.getCoreFactor(this.selectedFacility['FacilityId'], cf.id).subscribe((coreFactor: CoreFactor) => {
+      this.coreFactors[this.coreFactors.indexOf(cf)] = coreFactor;
+    })
+  }
+
   public getRamCoreFactors(): void {
     forkJoin(
-      this.facilityService.getCoreFactor(this.selectedFacility['FacilityId']),
+      this.facilityService.getCoreFactors(this.selectedFacility['FacilityId']),
       this.facilityService.getRamFactors(this.selectedFacility['FacilityId'])).subscribe((res: any) => {
       this.coreFactors = res[0];
+      this.coreFactors.forEach((coreFactor: CoreFactor) => {
+        this.coresUpdateList[coreFactor.id] = false;
+      });
 
       this.ramFactors = res[1];
       this.ramFactors.forEach((ramFactor: RamFactor) => {
         this.ramUpdateList[ramFactor.id] = false;
-        console.log(this.ramUpdateList)
       })
     })
 
@@ -141,8 +153,22 @@ export class ResourcesComponent implements OnInit {
 
   }
 
+  public updateCoreFactor(cf: CoreFactor): void {
+
+    this.facilityService.updateCoreFactor(this.selectedFacility['FacilityId'], cf).subscribe((coreFactor: CoreFactor) => {
+      this.coreFactors[this.coreFactors.indexOf(cf)] = coreFactor;
+
+    })
+
+  }
+
   public changeRamToUpdate(ramFactor: RamFactor): void {
     this.ramUpdateList[ramFactor.id] = !this.ramUpdateList[ramFactor.id]
+  }
+
+  public changeCoreToUpdate(coreFactor: CoreFactor): void {
+    this.coresUpdateList[coreFactor.id] = !this.coresUpdateList[coreFactor.id]
+
   }
 
   public tableToCSV(): void {

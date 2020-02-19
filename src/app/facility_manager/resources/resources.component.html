@@ -132,10 +132,14 @@
             <tbody>
             <ng-container
               *ngFor="let cF of coreFactors">
-              <tr>
+
+              <tr *ngIf="!this.coresUpdateList[cF.id]">
                 <td>
-                  <button (click)="deleteCoreFactor(cF.id)" class="btn btn-danger"></button>
-                  Remove
+                  <div class="btn-group-vertical" role="group">
+                    <button (click)="deleteCoreFactor(cF.id)" class="btn btn-danger" style="margin-bottom: 5px">Remove
+                    </button>
+                    <button class="btn btn-warning" (click)="changeCoreToUpdate(cF)">Update</button>
+                  </div>
                 </td>
                 <td>{{cF.cores}}</td>
                 <td>{{cF.factor}}</td>
@@ -143,6 +147,20 @@
 
 
               </tr>
+                <tr *ngIf="this.coresUpdateList[cF.id]">
+                <td>
+                  <div class="btn-group-vertical" role="group">
+                    <button (click)="updateCoreFactor(cF);changeCoreToUpdate(cF);" class="btn btn-success"
+                            style="margin-bottom: 5px">Save
+                    </button>
+                    <button class="btn btn-info" (click)="reloadCoreFactor(cF);changeCoreToUpdate(cF);">Cancel</button>
+                  </div>
+                </td>
+                <td><input type="text" [(ngModel)]="cF.cores" placeholder="Ram" pattern="[0-9]+"></td>
+                <td><input type="text" [(ngModel)]="cF.factor" placeholder="Factor" pattern="[0-9]+(\.[0-9]+)?"></td>
+                <td><textarea type="textfield" [(ngModel)]="cF.description" placeholder="Description"></textarea></td>
+
+
             </ng-container>
 
             <tr>
