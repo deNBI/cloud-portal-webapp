@@ -85,6 +85,8 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 
   singleProject: boolean = false;
 
+  showAddVol: boolean = true;
+
   /**
    * All image of a project.
    */
@@ -264,6 +266,13 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 
     return /ssh-rsa AAAA[0-9A-Za-z+/]+[=]{0,3}( [^@]+@[^@]+)?/.test(this.userinfo.PublicKey)
 
+  }
+
+  /**
+   * Toggles the state of the showAddVol Boolean
+   */
+  toggleShowAddVol(): void {
+    this.showAddVol = !this.showAddVol;
   }
 
   /**
