@@ -19,7 +19,7 @@ export class CreditsService {
 
   /**
    * Get credits for project application.
-   * @returns {int} The expected credits for the credits.
+   * @returns {int} The expected credits for the resources.
    */
   public getCreditsForApplication(cpus: number, ram: number, months: number): Observable<number> {
     const params: HttpParams = new HttpParams().set('cpu', cpus.toString()).set('ram', ram.toString()).set('months', months.toString());
@@ -30,4 +30,41 @@ export class CreditsService {
     });
   }
 
+  /**
+   * Get credits for project application.
+   * @returns {int} The expected credits for the resources.
+   */
+  public getExtraCreditsForExtension(cpus: number, ram: number, months: number, projectApplicationId: string): Observable<number> {
+    const params: HttpParams = new HttpParams().set('new_cpu', cpus.toString()).set('new_ram', ram.toString())
+      .set('new_lifetime', months.toString()).set('project_application_id', projectApplicationId);
+
+    return this.http.get<number>(`${ApiSettings.getApiBaseURL()}creditManager/getExtraCreditsNumber/`, {
+      withCredentials: true,
+      params: params
+    });
+  }
+
+  /**
+   * Get credits value per hour for specified resources.
+   * @param cpus Number of cpus
+   * @param ram Amount of ram
+   */
+  public getCreditsPerHour(cpus: number, ram: number): Observable<number> {
+    const params: HttpParams = new HttpParams().set('cpu', cpus.toString()).set('ram', ram.toString());
+
+    return this.http.get<number>(`${ApiSettings.getApiBaseURL()}creditManager/getCreditsPerHour/`, {
+      withCredentials: true,
+      params: params
+    });
+  }
+
+  /**
+   * Get current credits of project.
+   * @param group_id
+   */
+  public getCurrentCreditsOfProject(group_id: number): Observable<number> {
+    return this.http.get<number>(`${ApiSettings.getApiBaseURL()}creditManager/${group_id}/getUsedCredits/`, {
+      withCredentials: true
+    });
+  }
 }

@@ -18,6 +18,7 @@ export class ApplicationExtension {
     private _TotalCores: number;
     private _TotalRAM: number;
     private _ExtendedCredits: number;
+    private _IsOnlyExtraCreditsApplication: boolean;
     private _RequestedFlavors: {
         [id: string]: {
             counter: number, tag: string, ram: number, rootdisk: number,
@@ -185,10 +186,18 @@ export class ApplicationExtension {
     }
 
     get ExtendedCredits(): number {
-      return this._ExtendedCredits;
+      return Number(this._ExtendedCredits);
     }
 
     set ExtendedCredits(value: number) {
       this._ExtendedCredits = value;
     }
+
+  get IsOnlyExtraCreditsApplication(): boolean {
+    return this._IsOnlyExtraCreditsApplication;
+  }
+
+  set IsOnlyExtraCreditsApplication(value: boolean) {
+    this._IsOnlyExtraCreditsApplication = value;
+  }
 }

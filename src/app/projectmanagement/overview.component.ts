@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewChild, Renderer2, Inject} from '@angular/core';
+import {Component, Input, OnInit, OnDestroy, ViewChild, Renderer2, Inject} from '@angular/core';
 import {Project} from './project.model';
 import {ProjectMember} from './project_member.model'
 import {environment} from '../../environments/environment'
@@ -9,7 +9,7 @@ import * as moment from 'moment';
 import {ProjectMemberApplication} from './project_member_application';
 import {ComputecenterComponent} from './computecenter.component';
 import {Userinfo} from '../userinfo/userinfo.model';
-import {forkJoin, Observable} from 'rxjs';
+import {forkJoin, Observable, TimeInterval} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Application} from '../applications/application.model/application.model';
 import {ApplicationBaseClassComponent} from '../shared/shared_modules/baseClass/application-base-class.component';
@@ -38,7 +38,7 @@ import {DOCUMENT} from "@angular/common";
              providers: [FlavorService, ApplicationStatusService, ApplicationsService,
                FacilityService, UserService, GroupService, ApiSettings, CreditsService]
            })
-export class OverviewComponent extends ApplicationBaseClassComponent implements OnInit {
+export class OverviewComponent extends ApplicationBaseClassComponent implements OnInit, OnDestroy {
 
   @Input() invitation_group_post: string = environment.invitation_group_post;
   @Input() voRegistrationLink: string = environment.voRegistrationLink;
@@ -93,6 +93,14 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   userinfo: Userinfo;
   allSet: boolean = false;
   renderer: Renderer2;
+  smallExampleFlavor: Flavor;
+  largeExampleFlavor: Flavor;
+  smallExamplePossibleHours: number = 0;
+  largeExamplePossibleHours: number = 0;
+  creditsPerHourSmallExample: number;
+  creditsPerHourLargeExample: number;
+  smallExamplePossibleDays: string = "";
+  largeExamplePossibleDays: string = "";
 
   title: string = 'Project Overview';
   @ViewChild('edam_ontology') edam_ontology: AutocompleteComponent;
@@ -103,6 +111,11 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   public project_members: ProjectMember[] = [];
   public isLoaded: boolean = false;
   public showLink: boolean = true;
+  private project_application_extra_credits: number;
+  public project_application_extra_credits_comment: string;
+  private current_credits: number = 0;
+  project_application_renewal_lifetime: number;
+  private updateCreditsUsedIntervals: number;
 
   constructor(private flavorService: FlavorService,
               private groupService: GroupService,
@@ -147,23 +160,71 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
     this.edam_ontology.clear();
   }
 
-  calculateCredits(lifetimeString?: string): void {
-    let lifetime: number;
-    if (Number(lifetimeString) === undefined) {
-      lifetime = 0
-    } else {
-      lifetime = Number(lifetimeString)
+  calculateCredits(lifetime: number): void {
+    // tslint:disable-next-line:triple-equals
+    if (lifetime == null || isNaN(lifetime)) {
+      lifetime = 0;
     }
-    const total_lifetime: number = (Math.round(((this.project.LifetimeDays - this.project.DaysRunning) / 31) * 100) / 100) + lifetime;
-    this.creditsService.getCreditsForApplication(this.totalNumberOfCores, this.totalRAM, total_lifetime).toPromise()
+    // tslint:disable-next-line:max-line-length
+    this.creditsService.getExtraCreditsForExtension(this.totalNumberOfCores, this.totalRAM, lifetime, this.project_application.Id.toString()).toPromise()
       .then((credits: number) => {
-        // tslint:disable-next-line:max-line-length
-        let extraCredits: number = credits - Math.round(this.project.ApprovedCredits * ((this.project.LifetimeDays - this.project.DaysRunning) / this.project.LifetimeDays))
-        if (extraCredits < 0) {
-          extraCredits = 0
-        }
-        this.extensionCredits = extraCredits;
+        this.extensionCredits = credits;
       }).catch((err: Error) => console.log(err.message));
+  }
+
+  updateExampleCredits(numberOfCredits: number): void {
+    const totalHoursSmall: number = Math.round((numberOfCredits / this.creditsPerHourSmallExample));
+    const totalHoursLarge: number = Math.round((numberOfCredits / this.creditsPerHourLargeExample)) ;
+    this.smallExamplePossibleHours = totalHoursSmall % 24;
+    this.largeExamplePossibleHours = totalHoursLarge % 24;
+    this.smallExamplePossibleDays = this.updateCreditsDaysString(totalHoursSmall);
+    this.largeExamplePossibleDays = this.updateCreditsDaysString(totalHoursLarge);
+  }
+
+  updateCreditsDaysString(hours: number): string {
+    let daysString: string = '';
+    if (Math.floor(hours / 24) === 1) {
+      daysString = ' day';
+    } else if (Math.floor(hours / 24) > 1) {
+      daysString = ' days';
+    }
+    if (daysString !== '') {
+      return Math.floor(hours / 24) + daysString;
+    }
+
+    return ''
+}
+
+  startUpdateCreditUsageLoop(): void {
+    this.updateCreditsUsedIntervals = setInterval(() =>
+        this.creditsService.getCurrentCreditsOfProject(Number(this.project_application.PerunId.toString())).toPromise().then(
+          (credits: number) => {
+            this.current_credits = credits;
+          }
+        ).catch((err: Error) => console.log(err.message)),5000);
+  }
+
+  initExampleFlavors(): void {
+    const standardFlavors: Flavor[] = this.flavorList.
+    filter((fl: Flavor, nu: number, arr: Flavor[]) => fl.type.long_name === 'Standard Flavours');
+    const highMemFlavors: Flavor[] = this.flavorList.
+    filter((fl: Flavor, nu: number, arr: Flavor[]) => fl.type.long_name === 'High Memory Flavours');
+    standardFlavors.sort((fl1: Flavor, fl2: Flavor) => fl1.vcpus - fl2.vcpus);
+    highMemFlavors.sort((fl1: Flavor, fl2: Flavor) => fl1.vcpus - fl2.vcpus);
+    if (standardFlavors.length !== 0) {
+      this.smallExampleFlavor = standardFlavors[0];
+      this.creditsService.getCreditsPerHour(this.smallExampleFlavor.vcpus, this.smallExampleFlavor.ram).toPromise()
+        .then((credits: number) => {
+          this.creditsPerHourSmallExample = credits * 4;
+        }).catch((err: Error) => console.log(err.message));
+    }
+    if (highMemFlavors.length !== 0) {
+      this.largeExampleFlavor = highMemFlavors[0];
+      this.creditsService.getCreditsPerHour(this.largeExampleFlavor.vcpus, this.largeExampleFlavor.ram).toPromise()
+        .then((credits: number) => {
+          this.creditsPerHourLargeExample = credits;
+        }).catch((err: Error) => console.log(err.message));
+    }
   }
 
   approveMemberApplication(project: number, application: number, membername: string): void {
@@ -254,32 +315,30 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   /**
    * Submits an renewal request for an application.
    * @param {NgForm} form
+   * @param {boolean} isExtraCreditsApplication: whether or not only extra credits are applied for
    */
-  onSubmit(form: NgForm): void {
+  onSubmit(form: NgForm, isExtraCreditsApplication: boolean): void {
     const values: { [key: string]: string | number | boolean } = {};
-    for (const value in form.controls) {
-      if (form.controls[value].disabled) {
-        continue;
-      }
-      if (form.controls[value].value) {
-        values[value] = form.controls[value].value;
-      }
-    }
     values['project_application_id'] = this.project_application.Id;
-    values['total_cores_new'] = this.totalNumberOfCores;
-    values['total_ram_new'] = this.totalRAM;
-    values['project_application_renewal_credits'] = this.extensionCredits;
+    if (isExtraCreditsApplication) {
+      values['is_only_extra_credits_application'] = isExtraCreditsApplication;
+      values['project_application_renewal_comment'] = form.controls['project_application_extra_credits_comment'].value;
+      values['project_application_renewal_credits'] = form.controls['project_application_extra_credits'].value;
+    } else {
+      for (const value in form.controls) {
+        if (form.controls[value].disabled) {
+          continue;
+        }
+        if (form.controls[value].value) {
+          values[value] = form.controls[value].value;
+        }
+      }
+      values['total_cores_new'] = this.totalNumberOfCores;
+      values['total_ram_new'] = this.totalRAM;
+      values['project_application_renewal_credits'] = this.extensionCredits;
+      values['is_only_extra_credits_application'] = isExtraCreditsApplication;
+    }
     this.requestExtension(values);
-
-  }
-
-  /**
-   * Sends a request to the BE to get the initital credits for a new application.
-   */
-  calculateInitialCredits(form: NgForm): void {
-
-    /*todo calculate */
-    this.credits = 0;
 
   }
 
@@ -379,9 +438,13 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
       this.getListOfTypes();
       this.getDois();
       this.is_vo_admin = is_vo;
-
+      this.startUpdateCreditUsageLoop();
     });
 
+  }
+
+  ngOnDestroy(): void {
+    clearInterval(this.updateCreditsUsedIntervals);
   }
 
   getDois(): void {
