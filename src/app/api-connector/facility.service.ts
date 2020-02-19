@@ -104,23 +104,29 @@ export class FacilityService {
    * @param {number} facility
    * @returns {Observable<any>}
    */
-  getFacilityVolumes(facility: number | string): Observable<any> {
+  getFacilityVolumes(facility: number | string, items_per_page: number, current_page: number): Observable<any> {
+    const params: HttpParams = new HttpParams().set('items_per_page', items_per_page.toString()).set('page', current_page.toString());
 
     return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/volumes/`, {
-      withCredentials: true
+      withCredentials: true,
+      params: params
     })
 
   }
 
   /**
    * Gets all volumes from a specific facility.
-   * @param {number} facility
+   * @param {number | string} facility
+   * @param {number} currentPage
+   * @param {number} snapsPerSite
    * @returns {Observable<any>}
    */
-  getFacilitySnapshots(facility: number | string): Observable<any> {
+  getFacilitySnapshots(facility: number | string, currentPage: number, snapsPerSite: number): Observable<any> {
+    const params: HttpParams = new HttpParams().set('page', currentPage.toString()).set('snaps_per_site', snapsPerSite.toString());
 
     return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/snapshots/`, {
-      withCredentials: true
+      withCredentials: true,
+      params: params
     })
 
   }

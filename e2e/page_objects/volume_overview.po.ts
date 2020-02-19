@@ -45,9 +45,6 @@ export class VolumeOverviewPage {
     await Util.clickElementByElement(element(by.id(this.TABLE_ID)).element(by.id(this.DELETE_BUTTON)));
     await Util.waitForVisibilityOfElementById(this.VERIFY_MODAL);
     await Util.clickElementById(this.VERIFY_DELETION_BUTTON);
-    await Util.waitForPresenceOfElementById(this.SUCCESS_DELETED_DIV, Util.LONG_TIMEOUT);
-    await Util.clickElementById(this.CLOSE_RESULT_MODAL);
-    await Util.waitForInvisibilityOfElementById(this.RESULT_MODAL);
   }
 
   static async createAndAttachVolumeToProjectVm(vm: string): Promise<any> {

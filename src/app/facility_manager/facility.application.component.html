@@ -92,7 +92,7 @@
                       type="button"
                       class="btn btn-danger"
                       style="margin: auto 2.5px"><i
-                      class="fa fa-close"></i>&nbsp;
+                      class="fa fa-times"></i>&nbsp;
                       Decline
                     </button>
                     <button
@@ -207,7 +207,7 @@
                       type="button"
                       class="btn btn-danger"
                       style="margin: auto 2.5px"><i
-                      class="fa fa-close"></i>&nbsp;
+                      class="fa fa-times"></i>&nbsp;
                       Decline
                     </button>
                     <button
@@ -245,7 +245,10 @@
     <div class="card-header">
       <i class="fa fa-align-justify"></i> Application history
     </div>
-    <div class="card-body" *ngIf="applications_history.length == 0">
+      <div *ngIf="!isHistoryLoaded" id="search_spinner" style="margin:10px; padding:10px;">
+        <div class="spinner-border text-primary" style="display:block; margin:auto;"></div>
+      </div>
+    <div class="card-body" *ngIf="applications_history.length == 0 && isHistoryLoaded">
       <div class="alert alert-warning" role="alert">
         <strong>No Applications!</strong> There are no
         applications at all!

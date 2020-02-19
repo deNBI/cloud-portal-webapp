@@ -8,6 +8,7 @@ import {FormsModule} from '@angular/forms';
 import {AccordionModule} from 'ngx-bootstrap';
 import {ApplicationsModule} from '../applications/applications.module';
 import {SharedDirectivesModule} from '../shared/shared_modules/shared_directives.module';
+import {AutocompleteLibModule} from 'angular-ng-autocomplete';
 import {ChartsModule} from 'ng2-charts';
 
 /**
@@ -24,6 +25,7 @@ import {ChartsModule} from 'ng2-charts';
               ApplicationsModule,
               SharedDirectivesModule,
               ChartsModule
+              AutocompleteLibModule,
             ],
             declarations: [
               OverviewComponent

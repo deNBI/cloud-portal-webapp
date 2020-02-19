@@ -3,6 +3,7 @@ import {VirtualMachine} from '../virtualmachinemodels/virtualmachine';
 import * as JSPDF from 'jspdf';
 import {VirtualmachineService} from '../../api-connector/virtualmachine.service';
 import {GroupService} from '../../api-connector/group.service';
+import {TemplateNames} from '../conda/template-names';
 
 /**
  * How to Connect moda body.
@@ -24,6 +25,8 @@ export class HowToConnectComponent implements OnChanges, OnInit {
   doc: JSPDF;
 
   forc_url: string = '';
+
+  resenv_by_play: boolean = true;
 
   constructor(private virtualMachineService: VirtualmachineService, private groupService: GroupService) {
   }
@@ -113,14 +116,19 @@ export class HowToConnectComponent implements OnChanges, OnInit {
         });
       this.virtualMachineService.getLocationUrl(current.openstackid)
         .subscribe((url: any) => {
-          this.location_url = `${this.forc_url}${url}/`;
+          this.location_url = url;
         });
+    }
+    for (const mode of current.modes) {
+      if (TemplateNames.ALL_TEMPLATE_NAMES.indexOf(mode.name) !== -1) {
+        this.resenv_by_play = false;
+      }
     }
   }
 
   getForcUrl(): void {
     this.groupService.getClientForcUrl(this.selectedVirtualMachine.client.id).subscribe((response: JSON) => {
-      if (response['forc_url'] !== 'None') {
+      if (response['forc_url'] !== null) {
         this.forc_url = response['forc_url'];
       }
     });

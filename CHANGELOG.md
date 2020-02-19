@@ -1,3 +1,150 @@
+##  (2020-02-18)
+
+#### Bug Fixes
+* **application:**  default checked project part toggle at pi validation ([ccc0bd81](ccc0bd81))
+* **layout:**  new instance project selection aligned with form (#1112) ([fa874d9c](fa874d9c))
+* **project_overview:**  removed scroll problems with extension modals (#1107) ([22497114](22497114))
+* **application:** default checked project part toggle at pi validation ([ccc0bd81](ccc0bd81))
+
+#### Features
+* **application:**  added workshop option (#1109) ([ca9c5798](ca9c5798))
+* **troubleshooting:**  troubleshooting page added ([a8116e16](a8116e16))
+
+##  (2020-02-13)
+
+#### Bug Fixes
+
+* **Namespace:** will be red if template or onlynamespace is choosen but not namespace ([7d6c9ef9](7d6c9ef9))
+* **Volume:** cannot fil non number to volume storage ([7e27b27b](7e27b27b))
+* **typos:**  some word in news-management, link to wiki in resen… (#1075) ([970a512c](970a512c))
+
+#### Features
+
+* **Volumes:** added to detial page ([1f5ffa5b](1f5ffa5b))
+* **application-formular:**  add toggle and validity check if part of project ([66b02232](66b02232))
+* **help:**  all help-emails can now be clicked to send a mail ([734b2be1](734b2be1))
+
+##  (2020-02-11)
+
+
+#### Bug Fixes
+
+* **Filter:** fixed filter in vm overview ([2970f45d](2970f45d))
+
+
+##  (2020-02-09)
+
+
+#### Bug Fixes
+
+* **Modification:** lifetimechooser fixed ([f638f37d](f638f37d))
+* **VM:** loader till data is loade ([feed5ce7](feed5ce7))
+  * fixed lifetime chooser ([a9e639d8](a9e639d8))
+
+##  (2020-02-06)
+
+
+#### Features
+
+* **New Instance:** if only one simple vm project it will be preselected ([c612d51a](c612d51a))
+* **Snapshot:**
+  * added test ([da5fb0d9](da5fb0d9))
+  * added test ([c82acb5b](c82acb5b))
+  * added test ([d776e13f](d776e13f))
+* **VM:** added deleting status ([90eddfe7](90eddfe7))
+* **Volume:**
+  * added all states ([3fc2a831](3fc2a831))
+  * added status not found ([7d5b6817](7d5b6817))
+* **news:**
+  *  add character counter for motd ([9751261d](9751261d))
+  *  motd addable and patchable ([51ca5a99](51ca5a99))
+* **resenv:**  add rstudio support, fix mode suggestions, conda tab to ansible, add res-env link to detail page, adjust wiki link ([8a2e5f5f](8a2e5f5f))
+
+#### Bug Fixes
+
+* **Delete:** all selected ignores if status is not active or shutoff ([0049fef3](0049fef3))
+* **VM:**
+  * if not found please contact denbi.cloud info ([e51fbdf4](e51fbdf4))
+  * fixed wrong message when client is down ([b10e3f35](b10e3f35))
+  * ressource overview fixed ([58293739](58293739))
+* **error:**  remove not needed icons ([572b95e3](572b95e3))
+* **resenv:**
+  *  remove is_vo check ([1a8f1836](1a8f1836))
+  *  show template_name when title missing ([f9cd9d36](f9cd9d36))
+=======
+
+##  (2020-02-05)
+
+
+#### Bug Fixes
+
+* **Modification:**
+  * no double submit ([e8a3091a](e8a3091a))
+  * no double submit ([a90656a7](a90656a7))
+
+#### Features
+
+* **Actions:**  ([f63662d3](f63662d3))
+>>>>>>> ced08033998bc15d3ebc2b18ce5227a9405a227c
+
+##  (2020-01-31)
+
+
+#### Bug Fixes
+
+* **forc:**
+  *  enable again and fix ([c214a319](c214a319))
+
+
+##  (2020-01-31)
+
+
+#### Features
+
+* **snapshot:**  add pagination ([fa2d00e3](fa2d00e3))
+
+#### Bug Fixes
+
+* **vm-overview:**
+  *  show error state ([133587ee](133587ee))
+  *  set debounce time to 2s ([0b8a4672](0b8a4672))
+
+
+##  (2020-01-30)
+
+
+#### Bug Fixes
+
+* **vm:**  deactivate forc in new instance ([8a4e978b](8a4e978b))
+
+
+##  (2020-01-29)
+
+
+#### Features
+
+* **VM:** Checking Port changed to Checking Connection ([79521ad3](79521ad3))
+
+#### Bug Fixes
+
+* **vm:**  remove detail in new tab for e2e tests ([be78b446](be78b446))
+* **vm:**  overview/detail: routerLink instead href, volume buttons to pointer, reverse merge errors
+* **linting:**  some linting done
+
+
+##  (2020-01-24)
+
+
+#### Bug Fixes
+
+* **layout:**  sidebar bottom end aligned for smaller screens ([fd023926](fd023926))
+* **type-overview:**  changed information ([eb61796e](eb61796e))
+
+#### Features
+
+* **vm:**  added instance detail view ([8815fc2a](8815fc2a))
+
+
 ##  (2020-01-20)
 
 
@@ -395,7 +542,7 @@
   *  openstack  test applicaiton btn works again ([af144f05](af144f05))
   *  simple vm test applicaiton btn works again ([9bf983a7](9bf983a7))
 * **Userinfo:**  changed buttons ([bb3d7615](bb3d7615))
-* **VM:** fixed diskspace bug ([a3cd6b1e](a3cd6b1e))
+* **VM:** fixed volumeStorage bug ([a3cd6b1e](a3cd6b1e))
 * **VirtualMachine:**
   * start btn disabled if no image or flavor is selected, also do not show  please choose info if starting a vm isnt possible ([034a3130](034a3130))
   * choose not visisbile anymoore when bioconda is selected ([80d8aa2f](80d8aa2f))
@@ -1479,7 +1626,7 @@ host and port ([53a75d93](53a75d93))
 #### Bug Fixes
 
 * **Resources:** fixed small bug 
-* **VM:** fixed diskspace bug 
+* **VM:** fixed volumeStorage bug 
 * **Vm:** fixed button bug
 
 #### Features

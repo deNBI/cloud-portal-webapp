@@ -22,9 +22,13 @@ import {SharedDirectivesModule} from '../shared/shared_modules/shared_directives
 import {ImageCarouselSlideComponent} from './imageCarouselSlide.component';
 import {PopoverModule} from 'ngx-bootstrap/popover';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {VmDetailComponent} from './vmdetail/vmdetail.component';
 import { AddClusterComponent } from './clusters/add-cluster/add-cluster.component';
 import { ResourceOverviewComponent } from './resource-overview/resource-overview.component';
 import {ResEnvComponent} from './conda/res-env.component';
+import { ClusterdetailComponent } from './clusterdetail/clusterdetail.component';
+import { VirtualmachineinfoComponent } from './vmdetail/virtualmachineinfo/virtualmachineinfo.component';
+import {VmstatusComponent} from './vmdetail/vmstatus/vmstatus.component';
 
 /**
  * VM module.
@@ -56,9 +60,13 @@ import {ResEnvComponent} from './conda/res-env.component';
               SnapshotOverviewComponent,
               HowToConnectComponent,
               BiocondaComponent,
+              VmDetailComponent,
               AddClusterComponent,
               ResourceOverviewComponent,
-              ResEnvComponent
+              ResEnvComponent,
+              ClusterdetailComponent,
+              VirtualmachineinfoComponent,
+              VmstatusComponent
             ]
           })
 export class VmModule {

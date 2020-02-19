@@ -1,5 +1,5 @@
 import {Util} from '../util';
-import {browser, by, element, protractor} from 'protractor';
+import {browser} from 'protractor';
 
 /**
  * Project Overview page.
@@ -15,7 +15,10 @@ export class ProjectOverview {
   private static REMOVE_MEMBER_PREFIX: string = 'remove_member_';
   private static NOTIFICATION_TITLE: string = 'notification_title';
   private static NOTIFICATION_CLOSE: string = 'close_notification';
-  private static SUBMIT_MODEL_BTN: string = 'submit_modal_btn';
+  private static SUBMIT_MODAL_BTN: string = 'submit_modal_btn';
+  private static DOI_CONTINUE_BTN: string = 'doi_continue_btn';
+  private static RENEWAL_LIFETIME: string = 'id_project_application_renewal_lifetime';
+  private static HAS_DOI_BTN: string = 'new_dois_btn';
   private static SUBMIT_RENEWAL_BTN: string = 'submit_renewal_btn';
   private static EXTENSION_RESULT: string = 'extension result';
   private static EXTENSION_SUCCESSFULLY_SUBMITTED: string = 'Modify request successfully submitted!';
@@ -90,12 +93,16 @@ export class ProjectOverview {
 
   static async openModificationModal(appication_name: string): Promise<any> {
     await Util.clickElementById(this.EXTENSION_REQUEST_BTN);
-    await Util.waitForVisibilityOfElementById('id_project_application_renewal_lifetime');
+    await Util.waitForPresenceOfElementById(this.HAS_DOI_BTN);
+    await Util.clickElementById(this.HAS_DOI_BTN);
+    await Util.waitForPresenceOfElementById(this.DOI_CONTINUE_BTN);
+    await Util.clickElementById(this.DOI_CONTINUE_BTN);
+    await Util.waitForPresenceOfElementById(this.RENEWAL_LIFETIME);
   }
 
   static async sendModificationRequest(application_name: string): Promise<any> {
     await Util.clickElementById(this.SUBMIT_RENEWAL_BTN);
-    await Util.clickElementById(this.SUBMIT_MODEL_BTN);
+    await Util.clickElementById(this.SUBMIT_MODAL_BTN);
     await Util.waitForTextPresenceInElementById(this.EXTENSION_RESULT, this.EXTENSION_SUCCESSFULLY_SUBMITTED);
   }
 

@@ -1,6 +1,8 @@
 import {Flavor} from './flavor';
 import {Client} from '../clients/client.model';
 import {ImageMode} from '../../facility_manager/image-tag';
+import {Clusterinfo} from '../clusters/clusterinfo';
+import {Volume} from '../volumes/volume';
 
 /**
  * Virtualmachine class.
@@ -24,8 +26,67 @@ export class VirtualMachine {
   private _udp_command: string;
   private _application_id: string;
   private _cardState: number;
+  private _cluster: Clusterinfo;
+  private _projectid: number;
   private _res_env_url: string;
   private _modes: ImageMode[];
+  private _volumes: Volume[];
+
+  constructor(vm: VirtualMachine) {
+    this._flavor = vm.flavor;
+    this._image = vm.image;
+    this._project = vm.project;
+    this._status = vm.status;
+    this._keyname = vm.keyname;
+    this._name = vm.name;
+    this._client = vm.client;
+    this._openstackid = vm.openstackid;
+    this._created_at = vm.created_at;
+    this._stopped_at = vm.stopped_at;
+    this._elixir_id = vm.elixir_id;
+    this._userlogin = vm.userlogin
+    this._floating_ip = vm.floating_ip;
+    this._ssh_command = vm.ssh_command;
+    this._udp_command = vm.udp_command;
+    this._application_id = vm.application_id;
+    this._cardState = vm.cardState;
+    this._projectid = vm.projectid;
+    this._res_env_url = vm.res_env_url;
+    this._modes = vm.modes;
+    this._cluster = vm.cluster;
+    this._volumes = vm.volumes;
+    this.calculateCreatedAt();
+  }
+
+  public calculateCreatedAt(): void {
+    if (this.created_at !== '') {
+      this.created_at = new Date(parseInt(this.created_at, 10) * 1000).toLocaleDateString();
+    }
+  }
+
+  get cluster(): Clusterinfo {
+    return this._cluster;
+  }
+
+  set cluster(value: Clusterinfo) {
+    this._cluster = value;
+  }
+
+  get volumes(): Volume[] {
+    return this._volumes;
+  }
+
+  set volumes(value: Volume[]) {
+    this._volumes = value;
+  }
+
+  get projectid(): number {
+    return this._projectid;
+  }
+
+  set projectid(value: number) {
+    this._projectid = value;
+  }
 
   get modes(): ImageMode[] {
     return this._modes;
@@ -178,4 +239,5 @@ export class VirtualMachine {
   set ssh_command(value: string) {
     this._ssh_command = value;
   }
+
 }

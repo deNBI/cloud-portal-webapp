@@ -58,6 +58,8 @@ export class Application {
     }
   };
 
+  private _Workshop: boolean;
+
   constructor() {
     this._CurrentFlavors = {};
   }
@@ -73,6 +75,15 @@ export class Application {
       gpu: gpu,
       epheremal_disk: epheremal_disk
     };
+  }
+
+
+  get Workshop(): boolean {
+    return this._Workshop;
+  }
+
+  set Workshop(value: boolean) {
+    this._Workshop = value;
   }
 
   get OpenstackBasicIntroduction(): boolean {

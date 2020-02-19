@@ -1,0 +1,25 @@
+.dot {
+  height: 25px;
+  width: 25px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+
+}
+
+.dot-colorless {
+  height: 10px;
+  width: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.pulseAnim {
+  border-radius: 50%;
+  cursor: pointer;
+  background: rgb(77, 189, 116);
+  box-shadow: 0 0 0 rgba(77, 189, 116, 0.4);
+  -moz-animation: pulse 2s infinite;
+  -webkit-animation: pulse 2s infinite;
+  animation: pulse 2s infinite;
+}

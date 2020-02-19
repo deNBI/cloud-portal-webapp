@@ -5,7 +5,9 @@ import {ClientOverviewComponent} from './clients/clientOverview.component';
 import {VmOverviewComponent} from '../virtualmachines/vmOverview.component';
 import {VolumeOverviewComponent} from './volumes/volumeOverview.component';
 import {SnapshotOverviewComponent} from './snapshots/snapshotOverview.component';
+import {VmDetailComponent} from './vmdetail/vmdetail.component';
 import {AddClusterComponent} from './clusters/add-cluster/add-cluster.component';
+import {ClusterdetailComponent} from './clusterdetail/clusterdetail.component';
 
 const routes: Routes = [
     {
@@ -23,36 +25,51 @@ const routes: Routes = [
             title: 'New Cluster'
         }
 
-    },
-    {
-        path: 'clientOverview',
-        component: ClientOverviewComponent,
-        data: {
-            title: 'Client Overview'
-        }
+  },
+  {
+    path: 'clientOverview',
+    component: ClientOverviewComponent,
+    data: {
+      title: 'Client Overview'
+    }
 
-    },
-    {
-        path: 'vmOverview',
-        component: VmOverviewComponent,
-        data: {
-            title: 'VM Overview'
-        }
+  },
+  {
+    path: 'vmOverview',
+    component: VmOverviewComponent,
+    data: {
+      title: 'VM Overview'
+    }
 
-    },
-    {
-        path: 'volumeOverview',
-        component: VolumeOverviewComponent,
-        data: {
-            title: 'Volumes Overview'
-        }
+  },
+  {
+    path: 'cluster/:id',
+    component: ClusterdetailComponent,
+    data: {
+      title: 'Cluster Detail'
+    }
+  },
+  {
+    path: 'detail/:id',
+    component: VmDetailComponent,
+    data: {
+      title: 'VM Detail'
+    }
 
-    },
-    {
-        path: 'snapshotOverview',
-        component: SnapshotOverviewComponent,
-        data: {
-            title: 'Snapshots Overview'
+  },
+  {
+    path: 'volumeOverview',
+    component: VolumeOverviewComponent,
+    data: {
+      title: 'Volumes Overview'
+    }
+
+  },
+  {
+    path: 'snapshotOverview',
+    component: SnapshotOverviewComponent,
+    data: {
+      title: 'Snapshots Overview'
         }
 
     }

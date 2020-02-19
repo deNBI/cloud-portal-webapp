@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, DoCheck, OnInit, ViewChild} from '@angular/core';
 import {Image} from './virtualmachinemodels/image';
 import {Flavor} from './virtualmachinemodels/flavor';
 import {ImageService} from '../api-connector/image.service';
@@ -20,6 +20,9 @@ import {UserService} from '../api-connector/user.service';
 import {BiocondaComponent} from './conda/bioconda.component';
 import {ResEnvComponent} from './conda/res-env.component';
 import {is_vo} from '../shared/globalvar';
+import {TemplateNames} from './conda/template-names';
+import {RandomNameGenerator} from '../shared/randomNameGenerator';
+import {Router} from '@angular/router';
 
 /**
  * Start virtualmachine component.
@@ -30,7 +33,7 @@ import {is_vo} from '../shared/globalvar';
              providers: [GroupService, ImageService, KeyService, FlavorService, VirtualmachineService, ApplicationsService,
                Application, ApiSettings, KeyService, ClientService, UserService]
            })
-export class VirtualMachineComponent implements OnInit {
+export class VirtualMachineComponent implements OnInit, DoCheck {
 
   TWENTY_FIVE_PERCENT: number = 25;
   FIFTY_PERCENT: number = 50;
@@ -45,7 +48,7 @@ export class VirtualMachineComponent implements OnInit {
   BUILD_PLAYBOOK: string = 'BUILD_PLAYBOOK';
   CREATING_STATUS: string = 'Creating...';
   BUILD_STATUS: string = 'Building..';
-  CHECKING_PORT_STATUS: string = 'Checking port..';
+  CHECKING_PORT_STATUS: string = 'Checking Connection..';
   PREPARE_PLAYBOOK_STATUS: string = 'Prepare Playbook Build...';
   BUIDLING_PLAYBOOK_STATUS: string = 'Building Playbook...';
   ANIMATED_PROGRESS_BAR: string = 'progress-bar-animated';
@@ -64,8 +67,13 @@ export class VirtualMachineComponent implements OnInit {
   playbook_run: number = 0;
   timeout: number = 0;
   has_forc: boolean = false;
+  forc_url: string = '';
   client_id: string;
   mosh_mode_available: boolean = false;
+  resenvSelected: boolean = false;
+  resEnvValid: boolean = true;
+  resEnvNeedsName: boolean = false;
+  resEnvNeedsTemplate: boolean = false;
   data_loaded: boolean = false;
 
   title: string = 'New Instance';
@@ -75,6 +83,8 @@ export class VirtualMachineComponent implements OnInit {
   started_machine: boolean = false;
 
   conda_img_path: string = `static/webapp/assets/img/conda_logo.svg`;
+
+  singleProject: boolean = false;
 
   /**
    * All image of a project.
@@ -112,12 +122,12 @@ export class VirtualMachineComponent implements OnInit {
   selectedProjectClient: Client;
 
   /**
-   * Selected Project diskspace max.
+   * Selected Project volumeStorage max.
    */
   selectedProjectDiskspaceMax: number;
 
   /**
-   * Selected Project diskspace used.
+   * Selected Project volumeStorage used.
    */
   selectedProjectDiskspaceUsed: number;
 
@@ -154,7 +164,7 @@ export class VirtualMachineComponent implements OnInit {
 
   newCores: number = 0;
   newRam: number = 0;
-  newVms: number = 1;
+  newVms: number = 0;
   newGpus: number = 0;
 
   /**
@@ -174,10 +184,10 @@ export class VirtualMachineComponent implements OnInit {
   volumeName: string = '';
 
   /**
-   * Default diskspace.
+   * Default volumeStorage.
    * @type {number}
    */
-  diskspace: number = 0;
+  volumeStorage: number = 0;
 
   /**
    * If the data for the site is initialized.
@@ -189,7 +199,7 @@ export class VirtualMachineComponent implements OnInit {
    * All projects of the user.
    * @type {any[]}
    */
-  projects: string[] = [];
+  projects: [string, number][] = [];
 
   /**
    * If all project data is loaded.
@@ -203,6 +213,8 @@ export class VirtualMachineComponent implements OnInit {
    */
   FREEMIUM_ID: number = environment.freemium_project_id;
 
+  prod: boolean = environment.production;
+
   /**
    * Time for the check status loop.
    * @type {number}
@@ -214,7 +226,7 @@ export class VirtualMachineComponent implements OnInit {
 
   constructor(private groupService: GroupService, private imageService: ImageService,
               private flavorService: FlavorService, private virtualmachineservice: VirtualmachineService,
-              private keyservice: KeyService, private userservice: UserService) {
+              private keyservice: KeyService, private userservice: UserService, private router: Router) {
   }
 
   /**
@@ -263,6 +275,7 @@ export class VirtualMachineComponent implements OnInit {
     this.progress_bar_animated = this.ANIMATED_PROGRESS_BAR;
     this.progress_bar_width = 0;
   }
+
 
   /**
    * Check the status of the started vm in a loop.
@@ -323,9 +336,9 @@ export class VirtualMachineComponent implements OnInit {
    */
   startVM(flavor: string, servername: string, project: string, projectid: string | number): void {
     this.create_error = null;
-    this.vm_name = null;
     // tslint:disable-next-line:no-complex-conditionals
-    if (this.selectedImage && flavor && servername && project && (this.diskspace <= 0 || this.diskspace > 0 && this.volumeName.length > 0)) {
+    if (this.selectedImage && flavor && servername && project &&
+      (this.volumeStorage <= 0 || this.volumeStorage > 0 && this.volumeName.length > 0)) {
       this.create_error = null;
       this.started_machine = true;
 
@@ -337,21 +350,23 @@ export class VirtualMachineComponent implements OnInit {
       } else {
         this.progress_bar_width = this.THIRTY_THIRD_PERCENT;
       }
-      const play_information: string = this.getPlaybookInformation();
+      // Playbook and Research-Environment stuff
+      let play_information: string = this.getPlaybookInformation();
       if (play_information !== '{}') {
         this.playbook_run = 1;
+      } else {
+        play_information = null;
       }
-      let tags: string = null;
       let user_key_url: string = null;
-      if (this.selectedImage.tags.indexOf('resenv') !== -1) {
-        tags = this.selectedImage.tags.toString();
+      if (this.resenvSelected) {
         user_key_url = this.resEnvComponent.getUserKeyUrl();
       }
+
       this.virtualmachineservice.startVM(
         flavor_fixed, this.selectedImage, servername,
         project, projectid.toString(), this.http_allowed,
         this.https_allowed, this.udp_allowed, this.volumeName,
-        this.diskspace.toString(), play_information, tags, user_key_url)
+        this.volumeStorage.toString(), play_information, user_key_url)
         .subscribe((newVm: VirtualMachine) => {
           this.started_machine = false;
 
@@ -389,6 +404,11 @@ export class VirtualMachineComponent implements OnInit {
       this.newVm = null;
 
     }
+    setTimeout(() => {
+                 this.router.navigate(['/virtualmachines/vmOverview'])
+               }
+      ,
+               2000);
   }
 
   getPlaybookInformation(): string {
@@ -405,10 +425,9 @@ export class VirtualMachineComponent implements OnInit {
       this.timeout += this.biocondaComponent.getTimeout();
     }
 
-    if (this.resEnvComponent && this.resEnvComponent.selectedTemplate !== null
+    if (this.resEnvComponent && this.resEnvComponent.selectedTemplate.template_name !== 'undefined'
       && this.resEnvComponent.user_key_url.errors === null) {
-      playbook_info[this.resEnvComponent.selectedTemplate.template_name] = {template_version:
-        this.resEnvComponent.selectedTemplate.template_version};
+      playbook_info[this.resEnvComponent.selectedTemplate.template_name] = {};
       playbook_info['user_key_url'] = {user_key_url: this.resEnvComponent.getUserKeyUrl()};
     }
 
@@ -422,7 +441,7 @@ export class VirtualMachineComponent implements OnInit {
   getSelectedProjectClient(): void {
     this.newCores = 0;
     this.newGpus = 0;
-    this.newVms = 1;
+    this.newVms = 0;
     this.client_checked = false;
     this.projectDataLoaded = false;
 
@@ -432,7 +451,7 @@ export class VirtualMachineComponent implements OnInit {
 
         this.loadProjectData();
         this.client_checked = true;
-        this.getHasForc(client.id);
+        this.getForc(client.id);
       } else {
         this.client_avaiable = false;
         this.client_checked = true;
@@ -443,10 +462,11 @@ export class VirtualMachineComponent implements OnInit {
     })
   }
 
-  getHasForc(id: string): void {
-    this.groupService.getClientHasForc(this.selectedProject[1].toString()).subscribe((response: JSON) => {
-      if (response['hasForc'] === 'True') {
+  getForc(id: string): void {
+    this.groupService.getClientForcUrl(this.selectedProject[1].toString()).subscribe((response: JSON) => {
+      if (response['forc_url'] !== null) {
         this.has_forc = true;
+        this.forc_url = response['forc_url']
       }
     });
     this.client_id = id;
@@ -475,13 +495,22 @@ export class VirtualMachineComponent implements OnInit {
         this.projects.push(project);
 
       }
+
+      if (this.projects.length === 1) {
+        this.resetChecks();
+        this.selectedProject = this.projects[0];
+        this.getSelectedProjectClient();
+        this.singleProject = true;
+      }
       this.isLoaded = true;
     })
   }
 
   checkProjectDataLoaded(): void {
     if (this.image_loaded && this.flavors_loaded && this.data_loaded) {
+      this.generateRandomName();
       this.projectDataLoaded = true;
+      this.isLoaded = true;
     }
   }
 
@@ -508,7 +537,7 @@ export class VirtualMachineComponent implements OnInit {
       this.selectedProjectGPUsMax = res['gpus_max'];
       this.selectedProjectGPUsUsed = res['gpus_used'];
       this.data_loaded = true;
-      this.checkProjectDataLoaded()
+      this.checkProjectDataLoaded();
     });
 
     this.getImages(this.selectedProject[1]);
@@ -516,10 +545,16 @@ export class VirtualMachineComponent implements OnInit {
 
   }
 
+  generateRandomName(): void {
+    const rng: RandomNameGenerator = new RandomNameGenerator();
+    this.vm_name = rng.randomName();
+  }
+
   setSelectedImage(image: Image): void {
 
     this.selectedImage = image;
-    this.isMoshModeAvailable()
+    this.isMoshModeAvailable();
+    this.hasImageResenv();
 
   }
 
@@ -538,6 +573,26 @@ export class VirtualMachineComponent implements OnInit {
 
   }
 
+  hasImageResenv(): void {
+
+    if (!this.resEnvComponent) {
+      return;
+    }
+    for (const mode of this.selectedImage.modes) {
+      if (TemplateNames.ALL_TEMPLATE_NAMES.indexOf(mode.name) !== -1) {
+        this.resenvSelected = true;
+        this.resEnvComponent.setOnlyNamespace();
+
+        return;
+      }
+    }
+    this.resenvSelected = false;
+    if (this.resEnvComponent) {
+      this.resEnvComponent.unsetOnlyNamespace();
+    }
+
+  }
+
   setSelectedFlavor(flavor: Flavor): void {
     this.selectedFlavor = flavor;
     this.newCores = this.selectedFlavor.vcpus;
@@ -549,6 +604,15 @@ export class VirtualMachineComponent implements OnInit {
     this.initializeData();
     this.is_vo = is_vo;
 
+  }
+
+  ngDoCheck(): void {
+    if (this.resEnvComponent) {
+
+      this.resEnvValid = this.resEnvComponent.isValid();
+      this.resEnvNeedsName = this.resEnvComponent.needsName();
+      this.resEnvNeedsTemplate = this.resEnvComponent.needsTemplate();
+    }
   }
 
   hasChosenTools(hasSomeTools: boolean): void {

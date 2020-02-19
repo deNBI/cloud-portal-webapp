@@ -24,7 +24,8 @@ export class VirtualmachineService {
   constructor(private http: HttpClient) {
   }
 
-  startCluster(masterFlavor: string, masterImage: string, workerFlavor: string, workerImage: string, workerCount: string | number, project_id: string | number): Observable<any> {
+  startCluster(masterFlavor: string, masterImage: string, workerFlavor: string, workerImage: string, workerCount: string | number,
+               project_id: string | number): Observable<any> {
     const params: HttpParams = new HttpParams()
       .set('master_flavor', masterFlavor)
       .set('master_image', masterImage)
@@ -46,9 +47,15 @@ export class VirtualmachineService {
     })
   }
 
+  deleteCluster(cluster_id: string): Observable<void> {
+    return this.http.delete<void>(`${ApiSettings.getApiBaseURL()}clusters/${cluster_id}/`, {
+      withCredentials: true,
+      headers: header
+    })
+  }
+
   startVM(flavor: string, image: Image, servername: string, project: string, projectid: string, http: boolean, https: boolean,
-          udp: boolean, volumename?: string, diskspace?: string, playbook_information?: string, resenvTags?: string,
-          user_key_url?: string): Observable<any> {
+          udp: boolean, volume_name?: string, volume_storage?: string, playbook_information?: string, user_key_url?: string): Observable<any> {
 
     const params: HttpParams = new HttpParams()
       .set('flavor', flavor)
@@ -56,13 +63,12 @@ export class VirtualmachineService {
       .set('servername', servername)
       .set('project', project)
       .set('projectid', projectid)
-      .set('diskspace', diskspace)
-      .set('volumename', volumename)
+      .set('volume_storage', volume_storage)
+      .set('volume_name', volume_name)
       .set('http_allowed', http.toString())
       .set('https_allowed', https.toString())
       .set('udp_allowed', udp.toString())
       .set('playbook_information', playbook_information)
-      .set('resenvTags', resenvTags)
       .set('user_key_url', user_key_url);
 
     return this.http.post(this.baseVmUrl, params, {
@@ -89,8 +95,16 @@ export class VirtualmachineService {
     })
   }
 
+  getVmById(openstackId: string): Observable<VirtualMachine> {
+
+    return this.http.get<VirtualMachine>(`${this.baseVmUrl}${openstackId}/details/`, {
+      withCredentials: true
+    })
+  }
+
   getVmsFromLoggedInUser(page: number, vm_per_site: number, filter?: string, filter_status?: string[]): Observable<VirtualMachine[]> {
     let params: HttpParams = new HttpParams().set('page', page.toString()).set('vm_per_site', vm_per_site.toString());
+
     if (filter) {
       params = params.set('filter', filter);
 
@@ -158,12 +172,20 @@ export class VirtualmachineService {
     })
   }
 
-  checkVmStatus(openstack_id: string): Observable<any> {
-    return this.http.post(`${this.baseVmUrl}${openstack_id}/status/`, null, {
-      withCredentials: true,
+  checkVmStatus(openstack_id: string, name?: string): Observable<any> {
+    if (openstack_id) {
+      return this.http.post(`${this.baseVmUrl}${openstack_id}/status/`, null, {
+        withCredentials: true,
 
-      headers: header
-    })
+        headers: header
+      })
+    } else if (name) {
+      return this.http.post(`${this.baseVmUrl}${name}/status/`, null, {
+        withCredentials: true,
+
+        headers: header
+      })
+    }
   }
 
   checkVmStatusWhenReboot(openstack_id: string): Observable<any> {
@@ -214,16 +236,36 @@ export class VirtualmachineService {
 
   }
 
-  getVolumesByUser(): Observable<Volume[]> {
+  getVolumesByUser(items_per_page: number, current_page: number): Observable<Volume[]> {
+    const params: HttpParams = new HttpParams().set('items_per_page', items_per_page.toString()).set('page', current_page.toString());
+
     return this.http.get<Volume[]>(`${ApiSettings.getApiBaseURL()}volumes/`, {
+      withCredentials: true,
+      params: params
+    })
+
+  }
+
+  getVolumeById(id: string): Observable<Volume> {
+    return this.http.get<Volume>(`${ApiSettings.getApiBaseURL()}volumes/${id}/`, {
       withCredentials: true
     })
 
   }
 
-  createVolume(volume_name: string, volume_diskspace: string, vm_openstackid: string): Observable<Volume> {
+  getVolumeByNameAndVmName(volume_name: string, virtualmachine_name: string): Observable<Volume> {
+    const params: HttpParams = new HttpParams().set('volume_name', volume_name);
+
+    return this.http.get<Volume>(`${ApiSettings.getApiBaseURL()}volumes/vms/${virtualmachine_name}/`, {
+      withCredentials: true,
+      params: params
+    })
+
+  }
+
+  createVolume(volume_name: string, volume_storage: string, vm_openstackid: string): Observable<Volume> {
     const params: HttpParams = new HttpParams().set('volume_name', volume_name)
-      .set('volume_diskspace', volume_diskspace)
+      .set('volume_storage', volume_storage)
       .set('vm_openstackid', vm_openstackid);
 
     return this.http.post<Volume>(`${ApiSettings.getApiBaseURL()}volumes/`, params, {

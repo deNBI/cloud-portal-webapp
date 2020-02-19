@@ -30,6 +30,16 @@ export class ImageService {
 
   }
 
+  getImageByProjectAndName(project_id: number, name: string): Observable<Image> {
+    const params: HttpParams = new HttpParams().set('name', name);
+
+    return this.http.get<Image>(`${ApiSettings.getApiBaseURL()}images/project/${project_id}/`, {
+      withCredentials: true,
+      params: params
+    })
+
+  }
+
   checkSnapshotNameAvailable(snapshot_name: string): Observable<IResponseTemplate> {
 
     return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}snapshots/names/`, {
@@ -196,10 +206,12 @@ export class ImageService {
 
   }
 
-  getSnapshotsByUser(): Observable<SnapshotModel[]> {
+  getSnapshotsByUser(currentPage: number, snapsPerSite: number): Observable<SnapshotModel[]> {
+    const params: HttpParams = new HttpParams().set('page', currentPage.toString()).set('snaps_per_site', snapsPerSite.toString());
 
     return this.http.get<SnapshotModel[]>(`${ApiSettings.getApiBaseURL()}snapshots/`, {
-      withCredentials: true
+      withCredentials: true,
+      params: params
     })
 
   }

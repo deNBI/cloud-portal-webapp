@@ -20,6 +20,9 @@ import {BiocondaComponent} from '../../conda/bioconda.component';
 import {forkJoin} from 'rxjs';
 import {Clusterinfo} from '../clusterinfo';
 
+/**
+ * Cluster Component
+ */
 @Component({
              selector: 'app-add-cluster',
              templateUrl: './add-cluster.component.html',
@@ -117,12 +120,12 @@ export class AddClusterComponent implements OnInit {
   selectedProjectClient: Client;
 
   /**
-   * Selected Project diskspace max.
+   * Selected Project volumeStorage max.
    */
   selectedProjectDiskspaceMax: number;
 
   /**
-   * Selected Project diskspace used.
+   * Selected Project volumeStorage used.
    */
   selectedProjectDiskspaceUsed: number;
 
@@ -174,7 +177,7 @@ export class AddClusterComponent implements OnInit {
   volumeName: string = '';
 
   /**
-   * Default diskspace.
+   * Default volumeStorage.
    * @type {number}
    */
   diskspace: number = 0;
@@ -235,8 +238,10 @@ export class AddClusterComponent implements OnInit {
   }
 
   calcMaxWorkerInstancesByFlavor(): void {
-    const ram_max_vms: number = (this.selectedProjectRamMax - this.selectedProjectRamUsed - (this.selectedMasterFlavor.ram / 1024)) / (this.selectedWorkerFlavor.ram / 1024);
-    const cpu_max_vms: number = (this.selectedProjectCoresMax - this.selectedProjectCoresUsed - this.selectedMasterFlavor.vcpus) / this.selectedWorkerFlavor.vcpus;
+    const ram_max_vms: number = (this.selectedProjectRamMax - this.selectedProjectRamUsed - (this.selectedMasterFlavor.ram / 1024))
+      / (this.selectedWorkerFlavor.ram / 1024);
+    const cpu_max_vms: number = (this.selectedProjectCoresMax - this.selectedProjectCoresUsed - this.selectedMasterFlavor.vcpus)
+      / this.selectedWorkerFlavor.vcpus;
 
     this.maxWorkerInstances = Math.min(ram_max_vms, cpu_max_vms)
   }
@@ -311,8 +316,7 @@ export class AddClusterComponent implements OnInit {
       () => {
         this.virtualmachineservice.getClusterInfo(this.cluster_id).subscribe((cluster_info: Clusterinfo) => {
           this.cluster_info = cluster_info;
-          console.log(this.cluster_info)
-          if (!this.cluster_info['public_ip']) {
+          if (this.cluster_info.status !== 'Running' && this.cluster_info.status !== 'Deleted') {
             this.checkClusterStatusLoop()
           } else {
             this.cluster_started = true;

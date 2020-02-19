@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, OnDestroy, ViewChild, ViewChildren, ElementRef} from '@angular/core';
+import {Component, Input, OnInit, OnDestroy, ViewChild, Renderer2, Inject, ViewChildren, ElementRef} from '@angular/core';
 import {Project} from './project.model';
 import {ProjectMember} from './project_member.model'
 import {environment} from '../../environments/environment'
@@ -25,6 +25,9 @@ import {CreditsService} from '../api-connector/credits.service';
 import {is_vo} from '../shared/globalvar';
 import {WIKI_GROUP_INVITATIONS} from '../../links/links';
 import {Doi} from '../applications/doi/doi';
+import {EdamOntologyTerm} from '../applications/edam-ontology-term';
+import {AutocompleteComponent} from 'angular-ng-autocomplete';
+import {DOCUMENT} from "@angular/common";
 import {Chart} from 'chart.js';
 
 /**
@@ -42,6 +45,9 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   @Input() voRegistrationLink: string = environment.voRegistrationLink;
   @Input() invitation_group_pre: string = environment.invitation_group_pre;
   WIKI_GROUP_INVITATIONS: string = WIKI_GROUP_INVITATIONS;
+  selected_ontology_terms: EdamOntologyTerm[] = [];
+  edam_ontology_terms: EdamOntologyTerm[];
+  ontology_search_keyword: string = 'term';
 
   @ViewChild(NgForm) simpleVmForm: NgForm;
   @ViewChild('creditsChart')
@@ -89,6 +95,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   details_loaded: boolean = false;
   userinfo: Userinfo;
   allSet: boolean = false;
+  renderer: Renderer2;
   smallExampleFlavor: Flavor;
   largeExampleFlavor: Flavor;
   smallExamplePossibleHours: number = 0;
@@ -99,6 +106,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   largeExamplePossibleDays: string = '';
 
   title: string = 'Project Overview';
+  @ViewChild('edam_ontology') edam_ontology: AutocompleteComponent;
 
   checked_member_list: number[] = [];
 
@@ -124,8 +132,38 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
               private activatedRoute: ActivatedRoute,
               private fullLayout: FullLayoutComponent,
               private router: Router,
-              private creditsService: CreditsService) {
+              private creditsService: CreditsService,
+              @Inject(DOCUMENT) private document: Document) {
     super(userservice, applicationstatusservice, applicationsservice, facilityService);
+  }
+
+  delay(ms: number): Promise<any> {
+    return new Promise( resolve => setTimeout(resolve, ms) );
+  }
+
+  setModalOpen(bool: boolean): void {
+    (async () => {
+        await this.delay(750); //needed, because bootstraps class-toggle-function seems to be too slow
+        if (bool) {
+          this.document.body.classList.add('modal-open');
+        } else {
+          this.document.body.classList.remove('modal-open');
+        }
+      }
+    )();
+  }
+
+  removeEDAMterm(term: EdamOntologyTerm): void {
+    const indexOf: number = this.selected_ontology_terms.indexOf(term);
+    this.selected_ontology_terms.splice(indexOf, 1);
+
+  }
+
+  selectEvent(item: any): void {
+    if (this.selected_ontology_terms.indexOf(item) === -1) {
+      this.selected_ontology_terms.push(item);
+    }
+    this.edam_ontology.clear();
   }
 
   calculateCredits(lifetime: number): void {
@@ -313,7 +351,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   }
 
   initRamCores(): void {
-    console.log('init');
     this.totalNumberOfCores = 0;
     this.totalRAM = 0;
     // tslint:disable-next-line:forin
@@ -374,7 +411,16 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
       } else {
         this.extension_status = 1;
       }
-      this.getApplication()
+      if (this.selected_ontology_terms.length > 0) {
+        this.applicationsservice.addEdamOntologyTerms(this.application_id,
+                                                      this.selected_ontology_terms
+        ).subscribe(() => {
+          this.getApplication()
+
+        });
+      } else {
+        this.getApplication()
+      }
 
     })
 
@@ -429,14 +475,12 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
   }
 
-  /**
-   * Bugfix not scrollable site after closing modal
-   */
-  removeModalOpen(): void {
-    document.body.classList.remove('modal-open');
-  }
 
   ngOnInit(): void {
+    this.applicationsservice.getEdamOntologyTerms().subscribe((terms: EdamOntologyTerm[]) => {
+      this.edam_ontology_terms = terms;
+      this.searchTermsInEdamTerms()
+    })
 
     this.activatedRoute.params.subscribe((paramsId: any) => {
       this.errorMessage = null;
@@ -475,6 +519,20 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
     }
 
     return true;
+  }
+
+  searchTermsInEdamTerms(): void {
+    const tmp: EdamOntologyTerm[] = [];
+    // tslint:disable-next-line:no-for-each-push typedef
+    this.selected_ontology_terms.forEach(ele => {
+      // tslint:disable-next-line:typedef
+      // @ts-ignore
+      // tslint:disable-next-line:typedef
+      const td = this.edam_ontology_terms.find(term => term.term === ele);
+      tmp.push(td)
+
+    })
+    this.selected_ontology_terms = tmp;
   }
 
   deleteDoi(doi: Doi): void {

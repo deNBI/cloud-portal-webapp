@@ -33,19 +33,25 @@
       </div>
 
     </div>
-
-    <div class="col-8 row container-fluid" style="margin: 10px 0 0 0;">
-      <pagination
-        [totalItems]="total_items" [itemsPerPage]="items_per_page"
-        (pageChanged)="pageChanged($event)" [(ngModel)]="currentPage"
-        [boundaryLinks]="true" [maxSize]="total_pages" [rotate]="false" #pagination>
-      </pagination>
-      <input id="vm_per_site" class="form-control" style="width: 80px; margin-left: 10px"
-             name="vm_per_site" placeholder="e.g 3"
-             type="number" min="1" max="25" step="1"
-             appMinAmount="1" appMaxAmount="25" appInteger
-             pattern="^([1-9]|1[012])$" [(ngModel)]="vm_per_site" (ngModelChange)="vmPerPageChange.next($event)">
+    <div class="row justify-content-end " style="margin-bottom: 5px !important;padding-right: 15px;padding-left: 15px;">
+      <div class="col container-fluid" style="margin: 10px 0 0 0;" *ngIf="total_pages > 1">
+        <pagination
+          [totalItems]="total_items" [itemsPerPage]="items_per_page"
+          (pageChanged)="pageChanged($event)" [(ngModel)]="currentPage"
+          [boundaryLinks]="true" [maxSize]="total_pages" [rotate]="false" #pagination>
+        </pagination>
+      </div>
+      <div class="input-group  col-3">
+        <input id="vm_per_site" class="form-control" style="margin: 10px 0 0 0;"
+               name="vm_per_site" placeholder="e.g 3"
+               type="number" min="1" max="25" step="1"
+               appMinAmount="1" appMaxAmount="25" appInteger
+               pattern="^([1-9]|1[012])$" [(ngModel)]="vm_per_site" (ngModelChange)="vmPerPageChange.next($event)">
+        <div class="input-group-append mb-3" style="margin: 10px 0 0 0;"><span class="input-group-text"> VMs per page
+                                    </span></div>
+      </div>
     </div>
+
     <div class="container-fluid">
       <div class="row">
         <div class="col-4">
@@ -97,7 +103,7 @@
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenu" role="menu" *dropdownMenu>
               <button class="dropdown-item btn btn-secondary" id="deleteAllSelectedVMsButton"
-                      (click)="getToBeDeleted(); verifyAllModal.show()">Delete selected VMs</button>
+                      (click)="setToBeDeletedVms(); verifyAllModal.show()">Delete selected VMs</button>
             </div>
           </div>
 
@@ -124,74 +130,23 @@
 
               </div>
             </div>
-            <div class="card-block">
+            <div class="card-block" *ngIf="vm">
               <div class="row" style="margin-top: 5px">
-                <div class="col-5" style="margin: auto;" [ngSwitch]="vm?.status">
-                  <a class="h5 text-primary" style="margin-left: 10px">{{vm?.name}}  </a>
-                  <ng-container *ngSwitchCase="this.VirtualMachineStates.staticACTIVE">
-                    <div [id]="'active_badge_' + vm?.name"
-                         class="dot-colorless bg-success pulseAnim" style="width: 10px; height: 10px">
-                    </div>
-                    {{this.VirtualMachineStates.staticACTIVE}}
-                  </ng-container>
-                  <ng-container *ngSwitchCase="this.VirtualMachineStates.staticSHUTOFF" >
-                    <div [id]="'shutoff_badge_' + vm?.name" class="dot-colorless bg-warning" style="width: 10px; height: 10px">
-                    </div>
-                    {{this.VirtualMachineStates.staticSHUTOFF}}
-                  </ng-container>
-                  <ng-container *ngSwitchCase="this.VirtualMachineStates.staticDELETED">
-                    <div [id]="'deleted_badge_' + vm?.name"
-                         class="dot-colorless bg-danger" style="width: 10px; height: 10px">
-                    </div>
-                    {{this.VirtualMachineStates.staticDELETED}}
-                  </ng-container>
-                  <ng-container *ngSwitchCase="this.VirtualMachineStates.staticBUILD">
-                    <div [id]="'build_badge_' + vm?.name"
-                         class="dot-colorless bg-dark">
-                    </div>
-                    {{this.VirtualMachineStates.staticBUILD}}
-                  </ng-container>
-                  <ng-container *ngSwitchCase="this.VirtualMachineStates.staticPREPARE_PLAYBOOK_BUILD">
-                    <div [id]="'ppb_badge_' + vm?.name"
-                         class="dot-colorless bg-dark">
-                    </div>
-                    {{this.VirtualMachineStates.staticBUILD}}
-                  </ng-container>
-                  <ng-container *ngSwitchCase="this.VirtualMachineStates.staticNOT_FOUND">
-                    <div [id]="'not_found_badge_' + vm?.name"
-                         class="dot-colorless bg-dark">
-                    </div>
-                    {{this.VirtualMachineStates.staticNOT_FOUND}}
-                  </ng-container>
-                  <ng-container *ngSwitchCase="this.VirtualMachineStates.staticBUILD_PLAYBOOK">
-                    <div [id]="'build_playbook_badge_' + vm?.name"
-                         class="dot-colorless bg-dark">
-                    </div>
-                    {{this.VirtualMachineStates.staticBUILD_PLAYBOOK}}
-                  </ng-container>
-                  <ng-container *ngSwitchCase="this.VirtualMachineStates.staticRESTARTING">
-                    <div [id]="'restarting_badge_' + vm?.name"
-                         class="dot-colorless bg-dark">
-                    </div>
-                    {{this.VirtualMachineStates.staticRESTARTING}}
-                  </ng-container>
-                  <ng-container *ngSwitchCase="this.VirtualMachineStates.staticPOWERING_OFF">
-                    <div [id]="'powering_off_badge_' + vm?.name"
-                         class="dot-colorless bg-dark">
-                    </div>
-                    {{this.VirtualMachineStates.staticPOWERING_OFF}}
-                  </ng-container>
-                  <ng-container *ngSwitchDefault>
-                    <div [id]="'default_badge_' + vm?.name"
-                         class="dot-colorless bg-dark" style="width: 10px; height: 10px">
-                    </div>
-                    {{this.VirtualMachineStates.staticGETTING_STATUS}}
-                  </ng-container>
-                  <i *ngIf="this.VirtualMachineStates.staticNOT_IN_PROCESS_STATE.indexOf(vm?.status) === -1"
-                  class="fa fa-spinner fa-spin"></i>
+                <div class="col-5" style="margin: auto;">
+
+
+                  <a class="h5 text-primary" style="margin-left: 10px"
+                     *ngIf="vm?.status == VirtualMachineStates.staticACTIVE
+                     || vm?.status == VirtualMachineStates.staticSHUTOFF;
+                      else statusElseBlock"
+                     [routerLink]="['/virtualmachines/detail/' + vm?.openstackid]">{{vm?.name}}  </a>
+                  <ng-template #statusElseBlock><span class="h5 text-primary"
+                                                      style="margin-left: 10px">{{vm?.name}}  </span></ng-template>
+                  <app-vmstatus [vm]="vm"></app-vmstatus>
+
                 </div>
                 <div class="col-3" style="margin: auto; text-align: center">
-                  <a href="{{site_path}}#/project-management/{{vm?.application_id}}"><strong>{{vm?.project}}</strong></a>
+                  <a [routerLink]="['/project-management/' + vm?.application_id]" target="_blank"><strong>{{vm?.project}}</strong></a>
                 </div>
                 <div class="col-2" style="margin: auto; text-align: center">
                   {{vm?.userlogin}}
@@ -200,8 +155,11 @@
                 </div>
                 <div class="col-1">
                   <div class="form-check">
+
                     <ng-container formArrayName="vmActions" *ngFor="let genre of actionsForm.controls['vmActions'].controls; let i = index">
-                      <input type="checkbox" [formControlName]="i" *ngIf="vmActions[i].name == vm?.name"
+
+                      <input type="checkbox" [formControlName]="i.toString()" *ngIf="vmActions[i].name == vm?.name
+                      && (vm?.status == VirtualMachineStates.staticACTIVE || vm?.status == VirtualMachineStates.staticSHUTOFF)"
                              [id]="'selectCheckBox_'+ i">
                     </ng-container>
                   </div>
@@ -219,33 +177,59 @@
                     <strong>Image</strong>: {{vm?.image}}
                   </div>
                 </div>
+                <div *ngIf="vm?.cluster?.cluster_id" class="col-12" style="margin-left: 10px" [ngSwitch]="vm?.cluster?.status">
+                  <div style="font-size: small">
+                    <strong>Cluster</strong>:
+
+
+                    <a style="margin-left: 10px"
+
+                       [routerLink]="['/virtualmachines/cluster/' + vm?.cluster.cluster_id]">{{vm?.cluster.cluster_id}}}  </a>
+
+                    <ng-container *ngSwitchCase="'Running'">
+                      <div [id]="'running_cluster_' + vm?.name"
+                           class="dot-colorless bg-success">
+                      </div>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="'Creating'">
+                      <div [id]="'creating_cluster_' + vm?.name"
+                           class="dot-colorless bg-warning">
+                      </div>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="'Configuring'">
+                      <div [id]="'configuring_cluster_' + vm?.name"
+                           class="dot-colorless bg-info">
+                      </div>
+                    </ng-container>
+                  </div>
+                </div>
               </div>
             </div>
-            <div class="card-footer p-x-1 py-h"
+            <div class="card-body p-x-1 py-h"
                  *ngIf="vm?.status == this.VirtualMachineStates.staticACTIVE || vm?.status == this.VirtualMachineStates.staticSHUTOFF">
               <div class="row">
                 <div class="col-6"
                      *ngIf="vm.status != this.VirtualMachineStates.staticDELETED && vm.status != this.VirtualMachineStates.staticSHUTOFF">
-                  <a class="font-weight-bold font-xs btn-block text-muted" *ngIf="vm.cardState!= 1"
+                  <a class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary" *ngIf="vm.cardState!= 1"
                      [id]="'showHowToConnectButton_'+vm?.name"
                      (click)="selectedVm=vm; vm.cardState=1" href="#" onClick="return false;">
-                    How to connect ></a>
+                    How to connect ...</a>
 
-                  <a class="font-weight-bold font-xs btn-block text-muted" *ngIf="vm.cardState==1"
+                  <a class="font-weight-bold font-xs btn-block btn btn-secondary" *ngIf="vm.cardState==1"
                      [id]="'hideHowToConnectButton_'+vm?.name"
                      (click)="selectedVm=vm; vm.cardState=0;" href="#" onClick="return false;">
-                    Hide information <</a>
+                    ... Hide information</a>
                 </div>
                 <div class="col-6" *ngIf="vm.status != this.VirtualMachineStates.staticDELETED">
-                  <a class="font-weight-bold font-xs btn-block text-muted" *ngIf="vm.cardState!=2"
+                  <a class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary" *ngIf="vm.cardState!=2"
                      [id]="'showActionsButton_'+vm?.name"
                      (click)="selectedVm=vm; vm.cardState=2;" href="#" onClick="return false;">
-                    Show actions ></a>
+                    Show actions ...</a>
 
-                  <a class="font-weight-bold font-xs btn-block text-muted" *ngIf="vm.cardState==2"
+                  <a class="font-weight-bold font-xs btn-block btn btn-secondary" *ngIf="vm.cardState==2"
                      [id]="'hideActionsButton_'+vm?.name"
                      (click)="selectedVm=vm; vm.cardState=0;" href="#" onClick="return false;">
-                    Hide actions <</a>
+                    ... Hide actions</a>
                 </div>
 
 
@@ -254,7 +238,7 @@
             <div class="card-footer p-x-1 py-h"
                  *ngIf="(vm?.status ==  this.VirtualMachineStates.staticACTIVE|| vm?.status == this.VirtualMachineStates.staticSHUTOFF) && vm?.cardState != 0">
               <div *ngIf="vm?.cardState == 1">
-                 <div class="row" *ngFor="let mode of vm?.modes">
+                <div class="row" *ngFor="let mode of vm?.modes">
                   <div class="col-md-1">
                     <span class="font-weight-bold font-xs btn-block text-muted">{{mode.name}}:</span>
                   </div>
@@ -270,12 +254,17 @@
                 </div>
 
 
-                <div class="row" *ngIf="vm?.res_env_url != '' && vm?.res_env_url != null && vm?.res_env_url != undefined">
+                <div class="row" *ngIf="vm?.res_env_url != '' && vm?.res_env_url != null && vm?.res_env_url != undefined && resenv_by_play(vm)">
                   <div class="col-md-1">
-                    <span class="font-weight-bold font-xs btn-block text-muted">Res-Env:</span>
+                    <span class="font-weight-bold font-xs btn-block text-muted">Research Environment:</span>
                   </div>
-                  <div class="col-md-11">
-                    <a class="font-weight-bold font-xs btn-block text-muted" href="{{vm?.res_env_url}} | async" target="_blank">{{vm?.res_env_url}}</a></div>
+                  <div class="col-md-11 font-weight-bold font-xs btn-block text-muted">
+                    <a href="{{vm?.res_env_url}}" target="_blank">{{vm?.res_env_url}}</a>
+                    <br>
+                    For RStudio credentials please visit: <a href="{{WIKI_RSTUDIO_LINK}}" target="_blank">{{WIKI_RSTUDIO_LINK}}</a>
+                    <br>
+                    For Apache Guacamole credentials please visit: <a href="{{WIKI_GUACAMOLE_LINK}}" target="_blank">{{WIKI_GUACAMOLE_LINK}}</a>
+                  </div>
                 </div>
               </div>
 
@@ -328,6 +317,16 @@
                   </div>
 
 
+                </div>
+              </div>
+            </div>
+            <div class="card-footer p-x-1 py-h"
+                 *ngIf="(vm?.status ==  this.VirtualMachineStates.staticACTIVE|| vm?.status == this.VirtualMachineStates.staticSHUTOFF) && vm?.cardState == 0">
+              <div class="row">
+                <div class="col">
+                  <a class="font-weight-bold font-xs btn-block text-muted">Please select
+                an option above.
+                  </a>
                 </div>
               </div>
             </div>
@@ -575,7 +574,7 @@
       </div>
       <div class="modal-footer">
         <button class="btn  btn-success col-md-4"
-                (click)="deleteAll();verifyAllModal.hide();deleteAllModal.show()"
+                (click)="deleteAll();verifyAllModal.hide();"
                 id="confirm_delete_all_button">
           Yes
         </button>
@@ -649,7 +648,7 @@
       </div>
       <div class="modal-footer">
         <button class="btn  btn-success col-md-4"
-                (click)="deleteVm(selectedVm);verifyModal.hide();deleteModal.show()"
+                (click)="deleteVm(selectedVm);verifyModal.hide();"
                 id="confirm_delete_button">
           Yes
         </button>
@@ -854,7 +853,7 @@
       </div>
       <div class="modal-footer">
         <button class="btn  btn-success col-md-4"
-                (click)="stopVm(selectedVm);submitStopVmModal.hide();stopModal.show()"
+                (click)="stopVm(selectedVm);submitStopVmModal.hide();"
                 [id]="'verifyStopButton'">
           Yes
         </button>
@@ -886,7 +885,7 @@
       </div>
       <div class="modal-footer">
         <button class="btn  btn-success col-md-4"
-                (click)="resumeVM(selectedVm);submitRestartModal.hide();resumeModal.show()"
+                (click)="resumeVM(selectedVm);submitRestartModal.hide();"
                 [id]="'verifyRestartButton'">
           Yes
         </button>

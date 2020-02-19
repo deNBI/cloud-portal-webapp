@@ -8,14 +8,14 @@ import {IResponseTemplate} from '../api-connector/response-template';
 import {SnapshotModel} from './snapshots/snapshot.model';
 import {FacilityService} from '../api-connector/facility.service';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
-import {Subject, Subscription} from 'rxjs';
+import {forkJoin, Observable, Subject, Subscription} from 'rxjs';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {is_vo} from '../shared/globalvar';
 import {VirtualMachineStates} from './virtualmachinemodels/virtualmachinestates';
 import {GroupService} from '../api-connector/group.service';
-import {environment} from '../../environments/environment';
 import {ClientService} from '../api-connector/client.service';
 import {Client} from './clients/client.model';
+import {TemplateNames} from './conda/template-names';
 
 /**
  * Vm overview componentn.
@@ -33,8 +33,10 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 
   private subscription: Subscription = new Subscription();
 
-  actionPopupOpen: boolean = false;
   VirtualMachineStates: VirtualMachineStates = new VirtualMachineStates();
+
+  WIKI_RSTUDIO_LINK: string = 'https://cloud.denbi.de/wiki/portal/customization/#rstudio';
+  WIKI_GUACAMOLE_LINK: string = 'https://cloud.denbi.de/wiki/portal/customization/#apache-guacamole';
 
   /**
    * All  vms.
@@ -42,20 +44,12 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
   vms_content: VirtualMachine[] = [];
   currentPage: number = 1;
   DEBOUNCE_TIME: number = 300;
+  FILTER_DEBOUNCE_TIME: number = 2000;
 
   filter_status_list: string[] = [VirtualMachineStates.ACTIVE, VirtualMachineStates.SHUTOFF];
   isSearching: boolean = true;
 
   selectedVm: VirtualMachine = null;
-  vm_per_site: number = 7;
-
-  STATIC_IMG_FOLDER: String = 'static/webapp/assets/img';
-  site_path: string = environment.webapp;
-
-  CPU_ICON_PATH: string = `${this.STATIC_IMG_FOLDER}/new_instance/cpu_icon.svg`;
-  RAM_ICON_PATH: string = `${this.STATIC_IMG_FOLDER}/new_instance/ram_icon.svg`;
-  STORAGE_ICON_PATH: string = `${this.STATIC_IMG_FOLDER}/new_instance/storage_icon.svg`;
-  GPU_ICON_PATH: string = `${this.STATIC_IMG_FOLDER}/new_instance/gpu_icon.svg`;
 
   /**
    * Facilitties where the user is manager ['name',id].
@@ -67,6 +61,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
   public selectedFacility: [string, number];
 
   filter: string;
+  vm_per_site: number = 7;
 
   total_pages: number;
   total_items: number;
@@ -132,7 +127,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
   snapshotSearchTerm: Subject<string> = new Subject<string>();
 
   actionsForm: FormGroup;
-  vmActions: any[] = [];
+  vmActions: {id: VirtualMachine, name: string}[] = [];
   selectedMachines: VirtualMachine[] = [];
 
   clientsForcUrls: {[client_id: string]: [string]} = {};
@@ -164,20 +159,6 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
       this.getAllVmsFacilities()
     }
 
-  }
-
-  /**
-   * Copies the ssh-command needed to connect to the virtual machine (vmachine) to the clipboard.
-   * @param vmachine
-   */
-
-
-
-  copySSHCommand(vmachine: VirtualMachine): void {
-    this.copyToClipboard((vmachine.ssh_command.substring(65, vmachine.ssh_command.length)));
-  }
-  copyUDPCommand(vmachine: VirtualMachine): void {
-    this.copyToClipboard(vmachine.udp_command);
   }
 
   copyToClipboard(text: string): void {
@@ -218,7 +199,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 
   /**
    * Check if the snapshot name is valid.
-   * @param e
+   * @param event: name of snapshot
    */
   validSnapshotName(event: any): any {
     this.snapshotNameCheckDone = false;
@@ -244,10 +225,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
   checkStatus(vm: VirtualMachine): void {
     this.virtualmachineservice.checkVmStatus(vm.openstackid)
       .subscribe((updated_vm: VirtualMachine) => {
-
-                   if (updated_vm.created_at !== '') {
-                     updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
-                   }
+                   updated_vm = new VirtualMachine(updated_vm);
 
                    this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
                    this.applyFilter();
@@ -272,20 +250,23 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
    * @param vm which will be deleted
    */
   deleteVm(vm: VirtualMachine): void {
-    this.virtualmachineservice.deleteVM(vm.openstackid).subscribe((updated_vm: VirtualMachine) => {
+    vm.status = VirtualMachineStates.DELETING;
+    this.subscription.add(this.virtualmachineservice.deleteVM(vm.openstackid).subscribe((updated_vm: VirtualMachine) => {
+      updated_vm = new VirtualMachine(updated_vm);
 
-      if (updated_vm.created_at !== '') {
-        updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
-      }
       updated_vm.cardState = 0;
       this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
       this.applyFilterStatus();
-      if (updated_vm.status === VirtualMachineStates.DELETED) {
-        this.status_changed = 1;
-      } else {
-        this.status_changed = 2;
+      if (updated_vm.status !== VirtualMachineStates.DELETED) {
+        setTimeout(
+          () => {
+            this.deleteVm(updated_vm)
+
+          },
+          this.checkStatusTimeout
+        )
       }
-    })
+    }))
   }
 
   /**
@@ -318,88 +299,37 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 
     setTimeout(
       () => {
-        if (vm.openstackid) {
-          this.subscription.add(this.virtualmachineservice.checkVmStatus(vm.openstackid).subscribe((updated_vm: VirtualMachine) => {
-            if (!updated_vm['error']) {
-              this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
-              if (is_selected_vm) {
-                this.selectedVm = updated_vm;
-              }
-            } else {
-              updated_vm = vm
-            }
 
-            updated_vm.cardState = 0;
-            if ((final_state && updated_vm.status === final_state)) {
-              this.setForcUrl(updated_vm);
-              if (updated_vm.created_at !== '') {
-                updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
-              }
-              this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
+        // tslint:disable-next-line:max-line-length
+        this.subscription.add(this.virtualmachineservice.checkVmStatus(vm.openstackid, vm.name).subscribe((updated_vm: VirtualMachine) => {
+          updated_vm = new VirtualMachine(updated_vm);
+          this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
+          if (is_selected_vm) {
+            this.selectedVm = updated_vm;
+          }
+          updated_vm.cardState = 0;
 
-            } else if (VirtualMachineStates.IN_PROCESS_STATES.indexOf(updated_vm.status) !== -1) {
-              if (vm['error']) {
-                this.status_check_error = true
-              }
-              if (updated_vm.created_at !== '') {
-                updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
-              }
-              this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
+          if (final_state && updated_vm.status === final_state) {
+            this.setForcUrl(updated_vm);
+
+          } else if (VirtualMachineStates.IN_PROCESS_STATES.indexOf(updated_vm.status) !== -1) {
+            this.check_status_loop(updated_vm, final_state, is_selected_vm)
+          } else if (VirtualMachineStates.NOT_IN_PROCESS_STATES.indexOf(updated_vm.status) !== -1) {
+            this.setForcUrl(updated_vm);
+            this.setVmActions();
+
+            if (final_state && updated_vm.status !== final_state) {
               this.check_status_loop(updated_vm, final_state, is_selected_vm)
-            } else if (VirtualMachineStates.NOT_IN_PROCESS_STATES.indexOf(updated_vm.status) !== -1) {
-              this.setForcUrl(updated_vm);
-              if (updated_vm.created_at !== '') {
-                updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
-              }
-              this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
-            } else {
-              if (vm['error']) {
-                this.status_check_error = true
-              }
-              this.check_status_loop(updated_vm, final_state, is_selected_vm)
+
             }
+          } else {
+            this.check_status_loop(updated_vm, final_state, is_selected_vm)
+          }
 
-          }));
-        } else {
-          this.subscription.add(this.virtualmachineservice.checkVmStatus(vm.name).subscribe((updated_vm: VirtualMachine) => {
-            this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
-            if (is_selected_vm) {
-              this.selectedVm = updated_vm;
-            }
+        }));
 
-            updated_vm.cardState = 0;
-            if ((final_state && updated_vm.status === final_state)) {
-              this.setForcUrl(updated_vm);
-              if (updated_vm.created_at !== '') {
-                updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
-              }
-              this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
-
-            } else if (VirtualMachineStates.IN_PROCESS_STATES.indexOf(updated_vm.status) !== -1) {
-              if (vm['error']) {
-                this.status_check_error = true
-              }
-              if (updated_vm.created_at !== '') {
-                updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
-              }
-              this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
-              this.check_status_loop(updated_vm, final_state, is_selected_vm)
-            } else if (VirtualMachineStates.NOT_IN_PROCESS_STATES.indexOf(updated_vm.status) !== -1) {
-              this.setForcUrl(updated_vm);
-              if (updated_vm.created_at !== '') {
-                updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
-              }
-              this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
-            } else {
-              if (vm['error']) {
-                this.status_check_error = true
-              }
-              this.check_status_loop(updated_vm, final_state, is_selected_vm)
-            }
-
-          }));
-        }
       },
+
       this.checkStatusTimeout
     );
   }
@@ -413,14 +343,10 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
     setTimeout(
       () => {
         this.virtualmachineservice.checkVmStatusWhenReboot(vm.openstackid).subscribe((updated_vm: VirtualMachine) => {
+          updated_vm = new VirtualMachine(updated_vm);
 
           if (updated_vm.status === VirtualMachineStates.ACTIVE) {
             this.reboot_done = true;
-
-            if (updated_vm.created_at !== '') {
-              updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
-            }
-
             this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
             this.applyFilter();
 
@@ -442,18 +368,14 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 
   /**
    * Stop a vm.
-   * @param {string} openstack_id of instance.
+   * @param {VirtualMachine} vm: virtual machine to stop.
    */
   stopVm(vm: VirtualMachine): void {
     this.virtualmachineservice.stopVM(vm.openstackid)
       .subscribe((updated_vm: VirtualMachine) => {
+        updated_vm = new VirtualMachine(updated_vm);
 
                    this.status_changed = 0;
-
-                   if (updated_vm.created_at !== '') {
-                     updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
-                   }
-                   updated_vm.cardState = 0;
                    this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
                    this.selectedVm = updated_vm;
 
@@ -493,7 +415,6 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 
   /**
    * Get all vms of user.
-   * @param {string} elixir_id of user
    */
   getVms(): void {
 
@@ -518,37 +439,15 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
       );
   }
 
-  /**
-   * Get all vms.
-   */
-  getAllVms(): void {
-    this.virtualmachineservice.getAllVM(this.currentPage, this.vm_per_site,
-                                        this.filter, this.filter_status_list)
-      .subscribe((vms: VirtualMachine[]) => {
-                   this.prepareVMS(vms);
-                 }
-      );
-  }
-
-  prepareVMS(vms: VirtualMachine[]): void {
-
-    this.vms_content = vms['vm_list'];
-    this.total_items = vms['total_items'];
-    this.items_per_page = vms['items_per_page'];
-    this.total_pages = vms['num_pages'];
-    this.vmActions = [];
-
+  setVmActions(): void {
+    const actions: { id: VirtualMachine, name: string }[] = [];
     this.vms_content.forEach((vm: VirtualMachine, index: number) => {
-      vm.userlogin = vm['userlogin'];
       vm.cardState = 0;
-      this.setForcUrl(vm);
-      if (vm.status !== VirtualMachineStates.DELETED) {
-        this.vmActions.push({id: vm, name: vm.name});
-      }
-      if (vm.created_at !== '') {
-        vm.created_at = new Date(parseInt(vm.created_at, 10) * 1000).toLocaleDateString();
+      if (vm.status === VirtualMachineStates.ACTIVE || vm.status === VirtualMachineStates.SHUTOFF) {
+        actions.push({id: vm, name: vm.name});
       }
     });
+    this.vmActions = actions;
 
     // Create a FormControl for each available music preference, initialize them as unchecked, and put them in an array
     const formControls: any = this.vmActions.map((control: any) => new FormControl(false));
@@ -561,6 +460,29 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
                                        vmActions: new FormArray(formControls),
                                        selectAll: selectAllControl
                                      });
+
+  }
+
+  prepareVMS(vms: any): void {
+
+    const vm_list: VirtualMachine[] = vms['vm_list'];
+    const tmp_vms: VirtualMachine[] = [];
+
+    // tslint:disable-next-line:no-for-each-push
+    vm_list.forEach((new_vm: VirtualMachine) => {
+      const vm: VirtualMachine = new VirtualMachine(new_vm);
+      this.setForcUrl(vm);
+      tmp_vms.push(vm);
+
+    });
+    this.vms_content = [];
+    this.vms_content = tmp_vms;
+    this.total_items = vms['total_items'];
+    this.items_per_page = vms['items_per_page'];
+    this.total_pages = vms['num_pages'];
+    this.vmActions = [];
+
+    this.setVmActions();
     this.onChanges();
     this.isSearching = false;
     this.checkVmTillActive()
@@ -568,7 +490,9 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 
   checkVmTillActive(): void {
     this.vms_content.forEach((vm: VirtualMachine) => {
-      if (vm.status !== VirtualMachineStates.ACTIVE && vm.status !== VirtualMachineStates.SHUTOFF
+      if (vm.status === VirtualMachineStates.DELETING_FAILED) {
+        this.deleteVm(vm)
+      } else if (vm.status !== VirtualMachineStates.ACTIVE && vm.status !== VirtualMachineStates.SHUTOFF
         && vm.status !== VirtualMachineStates.DELETED) {
         this.check_status_loop(vm);
       }
@@ -579,12 +503,9 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
     void {
 
     this.virtualmachineservice.resumeVM(vm.openstackid).subscribe((updated_vm: VirtualMachine) => {
+      updated_vm = new VirtualMachine(updated_vm);
 
       this.status_changed = 0;
-
-      if (updated_vm.created_at !== '') {
-        updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
-      }
       updated_vm.cardState = 0;
       this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
       switch (updated_vm.status) {
@@ -602,6 +523,18 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
     })
   }
 
+  /**
+   * Get all vms.
+   */
+  getAllVms(): void {
+    this.virtualmachineservice.getAllVM(this.currentPage, this.vm_per_site,
+                                        this.filter, this.filter_status_list)
+      .subscribe((vms: VirtualMachine[]) => {
+                   this.prepareVMS(vms);
+                 }
+      );
+  }
+
   ngOnInit(): void {
     this.getClientForcUrls();
     this.getVms();
@@ -614,7 +547,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 
     this.filterChanged
       .pipe(
-        debounceTime(this.DEBOUNCE_TIME),
+        debounceTime(this.FILTER_DEBOUNCE_TIME),
         distinctUntilChanged())
       .subscribe(() => {
         this.applyFilter();
@@ -677,31 +610,43 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
     })
   }
 
-  getToBeDeleted(): any {
+  setToBeDeletedVms(): any {
     // Filter out the unselected ids
 
     const selectedMachines: VirtualMachine[] = this.actionsForm.value.vmActions
-      .map((checked: any, index: any) => checked ? this.vmActions[index].id : null)
+      .map((checked: any, index: any) => checked && (this.vmActions[index].id.status === VirtualMachineStates.ACTIVE
+        || this.vmActions[index].id.status === VirtualMachineStates.SHUTOFF)
+        ? this.vmActions[index].id : null)
       .filter((value: any) => value !== null);
 
     this.selectedMachines = selectedMachines;
 
-    return selectedMachines;
   }
 
   deleteAll(): void {
-    for (const vm of this.getToBeDeleted()) {
-      this.virtualmachineservice.deleteVM(vm.openstackid).subscribe((updated_vm: VirtualMachine) => {
+    const observableBatch: Observable<VirtualMachine>[] = [];
 
-        if (updated_vm.created_at !== '') {
-          updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
+    // tslint:disable-next-line:no-for-each-push
+    this.selectedMachines.forEach((vm: VirtualMachine) => {
+      vm.status = VirtualMachineStates.DELETING;
+      observableBatch.push(this.virtualmachineservice.deleteVM(vm.openstackid))
+    });
+    forkJoin(observableBatch).subscribe((vms: VirtualMachine[]) => {
+      for (let idx: number = 0; idx < vms.length; idx++) {
+        const updated_vm: VirtualMachine = new VirtualMachine(vms[idx]);
+        this.vms_content[this.vms_content.indexOf(this.selectedMachines[idx])] = updated_vm;
+        this.selectedMachines[idx] = updated_vm;
+        if (updated_vm.status !== VirtualMachineStates.DELETED) {
+          setTimeout(
+            () => {
+              this.deleteVm(updated_vm)
+
+            },
+            this.checkStatusTimeout
+          )
         }
-        updated_vm.cardState = 0;
-        this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
-        this.selectedMachines[this.selectedMachines.indexOf(vm)] = updated_vm;
-        this.applyFilterStatus();
-      })
-    }
+      }
+    })
   }
 
   setForcUrl(vm: VirtualMachine): void {
@@ -722,16 +667,22 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
   getClientForcUrls(): void {
     this.clientService.getClientsChecked().subscribe((clients: Client[]) => {
       clients.forEach((client: Client) => {
-        this.groupService.getClientHasForc(client.id, 'true').subscribe((hasForc: JSON) => {
-          if (hasForc['hasForc'] === 'True') {
-            this.groupService.getClientForcUrl(client.id).subscribe((response: JSON) => {
-              if (response['forc_url'] !== 'None') {
-                this.clientsForcUrls[client.id] = response['forc_url'];
-              }
-            });
+        this.groupService.getClientForcUrl(client.id, 'true').subscribe((response: JSON) => {
+          if (response['forc_url'] !== null) {
+            this.clientsForcUrls[client.id] = response['forc_url'];
           }
         });
       });
     });
+  }
+
+  resenv_by_play(vm: VirtualMachine): boolean {
+    for (const mode of vm.modes) {
+      if (TemplateNames.ALL_TEMPLATE_NAMES.indexOf(mode.name) !== -1) {
+        return false;
+      }
+    }
+
+    return true;
   }
 }

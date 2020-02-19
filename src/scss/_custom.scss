@@ -1,5 +1,5 @@
 // Here you can add other styles
-@import "node_modules/bootstrap/scss/bootstrap";
+@import "../node_modules/bootstrap/scss/bootstrap";
 @import url('https://fonts.googleapis.com/css?family=Raleway'); //Raleway-Font as used on landing-page
 
 //de.NBI-Colors:
@@ -17,6 +17,14 @@ $deNBI_black: #000000;
 $openstackcolour: #ED1944;
 $simplevmcolour: #00ADEF;
 
+
+@media (max-width: 992px) {
+  .app-header .navbar-brand {
+    position: unset !important;
+    left: 0% !important;
+    margin-left: 0px !important;
+  }
+}
 //media-query for applications-overview buttons
 
 @media (max-width: 1350px)
@@ -24,6 +32,7 @@ $simplevmcolour: #00ADEF;
   .applicationActionsButton
   {
     display: none;
+
   }
 }
 
@@ -40,9 +49,74 @@ $simplevmcolour: #00ADEF;
 }
 
 
+
+.navbar-brand-minimized
+{
+  left:5px;
+  position: relative;
+}
+
+.brand-minimized .app-header .navbar-brand
+{
+  margin-left: 0px !important;
+}
+
+.dot {
+  height: 25px;
+  width: 25px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+
+}
+
+.dot-colorless {
+  height: 10px;
+  width: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.pulseAnim {
+  border-radius: 50%;
+  cursor: pointer;
+  background: rgb(77, 189, 116);
+  box-shadow: 0 0 0 rgba(77, 189, 116, 0.4);
+  -moz-animation: pulse 2s infinite;
+  -webkit-animation: pulse 2s infinite;
+  animation: pulse 2s infinite;
+}
+
+
+.sidebar-fixed .app-header + .app-body .sidebar{
+  height: calc(100vh - 175px);
+  border: 20px;
+  border-radius: 10px;
+  top: 75px;
+  margin: 15px;
+}
+
+.sidebar .nav .nav-item .nav-link {
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.sidebar .nav .nav-item {
+  width:100%;
+}
+
+
+.app-header .navbar-brand
+{
+  width: 100%;
+  margin-right: 10px;
+}
+
 //modals
 
-  .modal-header {
+.modal-header {
   color:#000 !important;
   background-color:#fff !important;
 }
@@ -448,6 +522,14 @@ $simplevmcolour: #00ADEF;
   {
     margin-right: 0px;
     padding: 1px;
+  }
+
+  @media(max-width: 575px) {
+    .app-footer
+    {
+      left: 15px !important;
+    }
+
   }
 
   .app-footer

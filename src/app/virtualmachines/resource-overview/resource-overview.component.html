@@ -1,4 +1,5 @@
-<div class="form-group row">
+<div class="form-group row col-md-12">
+
   <label class="col-md-2 form-control-label"><strong>Overview</strong></label>
 
 
@@ -13,7 +14,7 @@
 
       >
         <div class="progress-bar " role="progressbar"
-             [ngStyle]="{'width.%': selectedProjectVmsUsed/(selectedProjectVmsMax-newVms) *100}"
+             [ngStyle]="{'width.%': (selectedProjectVmsUsed/(selectedProjectVmsMax-newVms) *100).toString()}"
              [ngClass]=" {'bg-success':(selectedProjectVmsUsed / selectedProjectVmsMax) < 0.4 ,
                          'bg-warning':(selectedProjectVmsUsed / selectedProjectVmsMax) > 0.4 &&   selectedProjectVmsUsed < selectedProjectVmsMax,
                          'bg-danger': selectedProjectVmsUsed >= selectedProjectVmsMax}"
@@ -21,7 +22,7 @@
              aria-valuemin="0" aria-valuemax="100"></div>
 
         <div *ngIf="newVms >0 && showAdditionalRes" class="progress-bar bg-info" role="progressbar"
-             [ngStyle]="{'width.%': newVms/(selectedProjectVmsMax-selectedProjectVmsUsed) *100}"
+             [ngStyle]="{'width.%': (newVms/(selectedProjectVmsMax-selectedProjectVmsUsed) *100).toString()}"
              aria-valuemin="0"
              aria-valuemax="100"></div>
       </div>
@@ -35,14 +36,14 @@
         | {{selectedProjectRamMax}}</strong>
       <div style="background-color: darkgray;" class="progress progress-xs mt-2">
         <div class="progress-bar " role="progressbar"
-             [ngStyle]="{'width.%': selectedProjectRamUsed/(selectedProjectRamMax-newRam) *100 }" aria-valuenow="0"
+             [ngStyle]="{'width.%': (selectedProjectRamUsed/(selectedProjectRamMax-newRam) *100).toString()}" aria-valuenow="0"
              [ngClass]=" {'bg-success':(selectedProjectRamUsed / selectedProjectRamMax) < 0.5 ,
                          'bg-warning':(selectedProjectRamUsed / selectedProjectRamMax) > 0.5 &&   selectedProjectRamUsed < selectedProjectRamMax,
                          'bg-danger': selectedProjectRamUsed >= selectedProjectRamMax}"
              aria-valuemin="0" aria-valuemax="100"></div>
 
         <div *ngIf="newRam >0 && showAdditionalRes" class="progress-bar bg-info" role="progressbar"
-             [ngStyle]="{'width.%': newRam/(selectedProjectRamMax-selectedProjectRamUsed) *100}"
+             [ngStyle]="{'width.%': (newRam/(selectedProjectRamMax-selectedProjectRamUsed) *100).toString()}"
              aria-valuemin="0"
              aria-valuemax="100"></div>
       </div>
@@ -55,13 +56,13 @@
         | {{selectedProjectCoresMax}}</strong>
       <div style="background-color: darkgray;" class="progress progress-xs mt-2">
         <div class="progress-bar " role="progressbar"
-             [ngStyle]="{'width.%': selectedProjectCoresUsed/(selectedProjectCoresMax-newCores) *100 }"
+             [ngStyle]="{'width.%': (selectedProjectCoresUsed/(selectedProjectCoresMax-newCores) *100).toString()}"
              [ngClass]=" {'bg-success':(selectedProjectCoresUsed / selectedProjectCoresMax) < 0.5 ,
                          'bg-warning':(selectedProjectCoresUsed / selectedProjectCoresMax) > 0.5 &&   selectedProjectCoresUsed < selectedProjectCoresMax,
                          'bg-danger': selectedProjectCoresUsed >= selectedProjectCoresMax}"
              aria-valuemin="0" aria-valuemax="100"></div>
         <div *ngIf="newCores >0 && showAdditionalRes" class="progress-bar bg-info" role="progressbar"
-             [ngStyle]="{'width.%': newCores/(selectedProjectCoresMax-selectedProjectCoresUsed) *100}"
+             [ngStyle]="{'width.%': (newCores/(selectedProjectCoresMax-selectedProjectCoresUsed) *100).toString()}"
              aria-valuemin="0"
              aria-valuemax="100"></div>
       </div>
@@ -74,14 +75,14 @@
         | {{selectedProjectVolumesMax}}</strong>
       <div style="background-color: darkgray;" class="progress progress-xs mt-2">
         <div class="progress-bar" role="progressbar"
-             [ngStyle]="{'width.%': selectedProjectVolumesUsed/(selectedProjectVolumesMax-newVolumes) *100 }"
+             [ngStyle]="{'width.%': (selectedProjectVolumesUsed/(selectedProjectVolumesMax-newVolumes) *100).toString()}"
              [ngClass]=" {'bg-success':(selectedProjectVolumesUsed / selectedProjectVolumesMax) < 0.5 ,
                          'bg-warning':(selectedProjectVolumesUsed / selectedProjectVolumesMax) > 0.5 &&   selectedProjectVolumesUsed < selectedProjectVolumesMax,
                          'bg-danger': selectedProjectVolumesUsed >= selectedProjectVolumesMax}"
              aria-valuenow="0"
              aria-valuemin="0" aria-valuemax="100"></div>
         <div *ngIf="newVolumes >0 && showAdditionalRes" class="progress-bar bg-info" role="progressbar"
-             [ngStyle]="{'width.%': newVolumes/(selectedProjectVolumesMax-selectedProjectVolumesUsed) *100}"
+             [ngStyle]="{'width.%': (newVolumes/(selectedProjectVolumesMax-selectedProjectVolumesUsed) *100).toString()}"
              aria-valuemin="0"
              aria-valuemax="100"></div>
       </div>
@@ -95,7 +96,7 @@
       </strong>
       <div style="background-color: darkgray;" class="progress progress-xs mt-2">
         <div class="progress-bar" role="progressbar"
-             [ngStyle]="{'width.%': selectedProjectDiskspaceUsed/(selectedProjectDiskspaceMax-newDiskspace) *100 }"
+             [ngStyle]="{'width.%': (selectedProjectDiskspaceUsed/(selectedProjectDiskspaceMax-newDiskspace) *100).toString()}"
              [ngClass]=" {'bg-success':(selectedProjectDiskspaceUsed / selectedProjectDiskspaceMax) < 0.5 ,
                          'bg-warning':(selectedProjectDiskspaceUsed / selectedProjectDiskspaceMax) > 0.5 &&   selectedProjectDiskspaceUsed < selectedProjectDiskspaceMax,
                          'bg-danger': selectedProjectDiskspaceUsed >= selectedProjectDiskspaceMax}"
@@ -103,7 +104,7 @@
              aria-valuemin="0" aria-valuemax="[selectedProjectDiskspaceMax]"></div>
 
         <div *ngIf="newDiskspace >0 && showAdditionalRes" class="progress-bar bg-info" role="progressbar"
-             [ngStyle]="{'width.%': newDiskspace/(selectedProjectDiskspaceMax-selectedProjectDiskspaceUsed) *100}"
+             [ngStyle]="{'width.%': (newDiskspace/(selectedProjectDiskspaceMax-selectedProjectDiskspaceUsed) *100).toString()}"
              aria-valuemin="0"
              aria-valuemax="100"></div>
       </div>
@@ -116,7 +117,7 @@
       </strong>
       <div style="background-color: darkgray;" class="progress progress-xs mt-2">
         <div class="progress-bar" role="progressbar"
-             [ngStyle]="{'width.%': selectedProjectGPUsUsed/selectedProjectGPUsMax *100 }"
+             [ngStyle]="{'width.%': (selectedProjectGPUsUsed/selectedProjectGPUsMax *100).toString()}"
              [ngClass]=" {'bg-success':(selectedProjectGPUsUsed / selectedProjectGPUsMax) < 0.5 ,
                          'bg-warning':(selectedProjectGPUsUsed / selectedProjectGPUsMax) > 0.5 &&   selectedProjectGPUsUsed < selectedProjectGPUsMax,
                          'bg-danger': selectedProjectGPUsUsed >= selectedProjectGPUsMax}"
@@ -124,7 +125,7 @@
              aria-valuemin="0" aria-valuemax="[selectedProjectGPUsMax]"></div>
       </div>
       <div *ngIf="newGpus >0 && showAdditionalRes" class="progress-bar bg-info" role="progressbar"
-           [ngStyle]="{'width.%': newGpus/(selectedProjectGPUsMax-selectedProjectGPUsUsed) *100}"
+           [ngStyle]="{'width.%': (newGpus/(selectedProjectGPUsMax-selectedProjectGPUsUsed) *100).toString()}"
            aria-valuemin="0"
            aria-valuemax="100"></div>
     </div>
