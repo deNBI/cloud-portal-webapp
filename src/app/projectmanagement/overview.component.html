@@ -48,7 +48,7 @@
                 <th>Date created (d/m/y)</th>
                 <th>Expiration Date (d/m/y)</th>
                 <th>Days running</th>
-                <th *ngIf="is_vo_admin">Current Credits</th>
+                <th *ngIf="is_vo_admin">Credits Used</th>
                 <th>Lifetime in Days</th>
                 <th>Facility</th>
 
@@ -71,7 +71,7 @@
                 <td>{{ project?.DateCreated }}</td>
                 <td>{{project?.DateEnd}}</td>
                 <td>{{ project?.DaysRunning }}</td>
-                <th *ngIf="is_vo_admin">{{project?.CurrentCredits}}/{{project?.ApprovedCredits}}</th>
+                <th *ngIf="is_vo_admin">{{current_credits}}/{{project?.ApprovedCredits}}</th>
                 <td>{{project?.LifetimeDays}}</td>
 
                 <td>
@@ -121,9 +121,16 @@
               class="btn btn-danger">
               Remove Application
             </button>
+            <button id="show_credits_extension_modal"
+                    *ngIf="(project_application?.Status == application_states.APPROVED || project_application?.Status == application_states.MODIFICATION_DECLINED) && is_vo_admin"
+                    (click)="newFlavors= {};initExampleFlavors();creditsExtensionModal.show()"
+                    class="btn btn-success"
+                    type="button" style="margin-bottom:5px;margin-right:5px">
+              Request More Credits
+            </button>
             <button id="show_extension_modal"
                     *ngIf="project_application?.Status == application_states.APPROVED || project_application?.Status == application_states.MODIFICATION_DECLINED"
-                    (click)="newFlavors= {};selected_ontology_terms=[];initRamCores();calculateCredits(f.controls.project_application_renewal_lifetime.value);doiQuestionModal.show()"
+                    (click)="newFlavors= {};selected_ontology_terms=[];initRamCores();calculateCredits(f.controls.project_application_renewal_lifetime?.value);doiQuestionModal.show()"
                     class="btn btn-warning"
                     type="button" style="margin-bottom:5px;">
               Request Extension/Modification
@@ -678,7 +685,7 @@
           <strong>Choosing 0 additional months will only change the requested resources and will not prolong your
             project lifetime.</strong>
         </div>
-        <form id="application_form" #f="ngForm" (ngSubmit)="onSubmit(f)"
+        <form id="application_form" #f="ngForm" (ngSubmit)="onSubmit(f, false)"
               class="form-horizontal">
 
 
@@ -716,8 +723,8 @@
             <div class="col">
               <div class="input-group">
                 <input class="form-control"
-                       (change)="calculateCredits(f.controls.project_application_renewal_lifetime.value);"
-                       id="id_project_application_renewal_lifetime"
+                       (change)="calculateCredits(f.controls.project_application_renewal_lifetime?.value);"
+                       id="project_application_renewal_lifetime"
                        name="project_application_renewal_lifetime"
                        placeholder="e.g. 3"
                        type="number" min="0" max="12" step="1" ngModel required
@@ -814,7 +821,7 @@
                       <div class="input-group">
                         <input class="form-control"
                                (change)="valuesChanged(fl,name?.value);
-                               calculateCredits(f.controls.project_application_renewal_lifetime.value);"
+                               calculateCredits(f.controls.project_application_renewal_lifetime?.value);"
                                id="id_project_application_renewal_{{fl.name}}"
                                name="project_application_renewal_{{fl.name}}"
                                type="number" min="0" step="1"
@@ -984,6 +991,10 @@
             <div *ngIf="is_vo_admin" class="form-group row">
               <label #corenumbers id="creditnumber" class="col">Expected number of extra credits: <span id="extension_credits">{{extensionCredits}}</span></label>
             </div>
+            <div class="alert alert-primary" role="alert">
+              This is the expected number of extra credits that you get for your project. It accounts for an extended lifetime for a project
+              and for an increase in requested resources.
+            </div>
             <div class="form-group row">
               <label #corenumbers id="corenumbers" class="col">Number of total
                 cores: <span id="total_cores">{{totalNumberOfCores}}</span></label>
@@ -1026,7 +1037,7 @@
           </div>
           <button type="button" class="btn  btn-primary"
                   form="application_form" id="submit_renewal_btn"
-                  (click)="extension_request=true;filterEnteredData(f);calculateInitialCredits(f);
+                  (click)="extension_request=true;filterEnteredData(f);calculateCredits(f.controls.project_application_renewal_lifetime?.value);
                   submitModal.show(); setModalOpen(true);"
                   [disabled]="f.invalid || (!project_application.EdamTopics && selected_ontology_terms.length < 1)"><i
             class="fa fa-dot-circle-o">
@@ -1046,6 +1057,117 @@
   </div><!-- /.modal -->
 </div>
 
+<div bsModal #creditsExtensionModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="Label"
+     aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4>Extra credits request for {{project_application?.Shortname}}</h4>
+        <button type="button" class="close" style="cursor: pointer"
+                (click)="creditsExtensionModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="credits_application_form" #f2="ngForm" (ngSubmit)="onSubmit(f2, true)"
+              class="form-horizontal">
+
+          <div class="form-group row">
+            <label class="col-md-4 form-control-label"
+                   for="text-input"><strong>Reasons for Extension</strong></label>
+            <div class="col-md-8">
+                <textarea required type="text" id="project_application_extra_credits_comment"
+                          name="project_application_extra_credits_comment" class="form-control"
+                          maxlength="8192"
+                          placeholder=''
+                          [(ngModel)]="project_application_extra_credits_comment" minlength="10"
+                          [ngClass]="{
+                                'is-invalid': f2.controls.project_application_extra_credits_comment?.invalid && (f2.controls.project_application_extra_credits_comment?.dirty || f.controls.project_application_extra_credits_comment?.touched),
+                                'is-valid': f2.controls.project_application_extra_credits_comment?.valid && (f2.controls.project_application_extra_credits_comment?.dirty || f.controls.project_application_extra_credits_comment?.touched)
+                                }"
+                          ></textarea>
+              <span class="help-block">Please state why you need extra credits.</span>
+              <div class="alert alert-info">
+                As more credits are requested we require a more detailed description of the reasons!
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-4 form-control-label" for="textarea-input"><strong>Amount of extra credits needed</strong></label>
+            <div class="col-md-8">
+
+            <div class="input-group">
+              <input required class="form-control"
+                     id="project_application_extra_credits"
+                     name="project_application_extra_credits"
+                     placeholder="e.g. 5000"
+                     (change)="updateExampleCredits(f2.controls.project_application_extra_credits?.value);"
+                     [(ngModel)]="project_application_extra_credits" min="100" step="100" type="number"
+                     appInteger appMinAmount="100"
+                     [ngClass]="{
+                                'is-invalid': f2.controls.project_application_extra_credits?.invalid && (f2.controls.project_application_extra_credits?.dirty || f2.controls.project_application_extra_credits?.touched),
+                                'is-valid': f2.controls.project_application_extra_credits?.valid && (f2.controls.project_application_extra_credits?.dirty || f2.controls.project_application_extra_credits?.touched)
+                                }">
+              <div class="input-group-append"><span class="input-group-text"> Credits
+                                    </span></div>
+            </div>
+            <span class="help-block">How many credits do you need for your project? You need 1 credit for 1 cpu core per hour and 0.28 credits for 1 GB of ram per hour.</span>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-4 form-control-label"><strong>Example</strong></label>
+            <div class="col-md-8">
+              <tr>
+                <strong>
+                  Runtime of exemplary VMs with the entered credits.
+                  </strong>
+              </tr>
+              <tr>
+                <td>Enough Credits to run 4 {{smallExampleFlavor?.name}} for {{smallExamplePossibleDays}} {{smallExamplePossibleHours}} hours <strong>non-stop</strong></td>
+              </tr>
+              <tr>
+                <td>Enough Credits to run 1 {{largeExampleFlavor?.name}} for {{largeExamplePossibleDays}} {{largeExamplePossibleHours}} hours <strong>non-stop</strong></td>
+              </tr>
+            </div>
+          </div>
+        </form>
+        <div *ngIf="f2.invalid" class="alert alert-warning" role="alert">
+          <p>Some required fields are incorrect or not filled in yet.
+            Please check if all required (*) fields are filled in correctly.</p>
+          <p *ngIf="f2.controls.project_application_extra_credits_comment?.invalid">
+            - No reason specified (at least 10 characters)
+          </p>
+          <p *ngIf="f2.controls.project_application_extra_credits?.invalid">
+            - Number of extra credits not specified
+          </p>
+        </div>
+
+
+        <div class="modal-footer">
+          <div class="label">
+            By submitting this application you agree to the cloud usage policy.
+          </div>
+          <button type="button" class="btn  btn-primary"adm
+                  form="credits_application_form" id="submit_extra_credits_btn"
+                  (click)="filterEnteredData(f2);onSubmit(f2, true);extension_request=true;creditsExtensionModal.hide()"
+                  [disabled]="f2.invalid"><i
+            class="fa fa-dot-circle-o">
+
+          </i>
+            Submit
+          </button>
+          <button type="button" class="btn btn-danger"
+                  (click)="creditsExtensionModal.hide();">
+            Close
+          </button>
+
+        </div>
+
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+</div>
 
 <div bsModal #submitModal="bs-modal" class="modal fade" tabindex="-1"
      role="dialog" aria-labelledby="Label"

@@ -350,15 +350,17 @@
                   </div>
                 </accordion-group>
                 <accordion-group #resEnvGroup *ngIf="has_forc &&( selectedProject && projectDataLoaded &&
-                selectedProjectVmsUsed < selectedProjectVmsMax && (flavors?.length > 0 || selectedFlavor))">
+                selectedProjectVmsUsed < selectedProjectVmsMax && (flavors?.length > 0 || selectedFlavor))"
+                [isOpen]="resenvSelected">
                   <div accordion-heading style="width: 100%; cursor: pointer">
-                    <strong>Research Environment </strong><span
-                    class="badge badge-primary">BETA</span>
+                    <strong>Research Environment </strong>
+                    (e.g. RStudio, Apache Guacamole, Theia IDE)
+                    <span class="badge badge-primary">BETA</span>
                     <i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
                             'icon-arrow-up': resEnvGroup.isOpen, 'icon-arrow-down': !resEnvGroup.isOpen}"></i>
                   </div>
                   <app-res-env #resEnv
-                               [clientid]="client_id"
+                               [clientid]="client_id" [forc_url]="forc_url"
                                [onlyNamespace]="resenvSelected"></app-res-env>
                 </accordion-group>
               </accordion>

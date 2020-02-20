@@ -15,6 +15,7 @@ import {RandomNameGenerator} from '../../shared/randomNameGenerator';
 export class ResEnvComponent implements OnInit {
 
   @Input() clientid: string;
+  @Input() forc_url: string;
   @Input() onlyNamespace: boolean = false;
 
   user_key_url: FormControl = new FormControl('',
@@ -40,6 +41,7 @@ export class ResEnvComponent implements OnInit {
   setSelectedTemplate(template: ResearchEnvironment): void {
     if (template === null) {
       this.selectedTemplate = this.undefinedTemplate;
+      this.user_key_url.setValue('');
 
       return;
     }
@@ -89,6 +91,7 @@ export class ResEnvComponent implements OnInit {
 
   unsetOnlyNamespace(): void {
     this.onlyNamespace = false;
+    this.user_key_url.setValue('');
   }
 
   generateRandomName(): void {
