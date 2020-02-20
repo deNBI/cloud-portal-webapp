@@ -10,11 +10,12 @@ export abstract class FilterBaseClass extends AbstractBaseClasse {
     SUSPENDED: true,
     DELETED: false,
     EXPIRED: false,
-    'EXPIRES SOON': false,
-    WAIT_FOR_CONFIRMATION: false
+    'EXPIRES SOON': true,
+    WAIT_FOR_CONFIRMATION: false,
+    EXPIRES_SOON: true
   };
   filterProjectName: string;
-  filterProjectId: number;
+  filterProjectId: string;
   filterProjectLongName: string;
   filterVmUsername: string;
   filterVmIp: string;
@@ -28,14 +29,16 @@ export abstract class FilterBaseClass extends AbstractBaseClasse {
 
   abstract checkFilter(obj: any): void
 
-  isFilterProjectId(id: number | string): boolean {
+  isFilterProjectId(id: string, filter?: string): boolean {
+
+    if (filter) {
+      this.filterProjectId = filter;
+    }
     if (!this.filterProjectId) {
       return true;
-    } else if (id.toString().indexOf(this.filterProjectId.toString()) === 0) {
-      return true
-    } else {
-      return false
     }
+
+    return id.includes(this.filterProjectId);
   }
 
   isFilterFacilityName(name: string): boolean {
@@ -48,28 +51,28 @@ export abstract class FilterBaseClass extends AbstractBaseClasse {
     }
   }
 
-  isFilterLongProjectName(name: string): boolean {
+  isFilterLongProjectName(name: string, filter?: string): boolean {
+
+    if (filter) {
+      this.filterProjectLongName = filter;
+    }
     if (!this.filterProjectLongName) {
       return true;
-    } else if (name != null && name.indexOf(this.filterProjectLongName) === 0) {
-      return true;
-    } else {
-      return false;
     }
+
+    return name != null && name.includes(this.filterProjectLongName);
   }
 
-  isFilterProjectName(projectName: string): boolean {
+  isFilterProjectName(projectName: string, filter?: string): boolean {
+    if (filter) {
+      this.filterProjectName = filter;
+    }
 
     if (!this.filterProjectName) {
       return true;
-    } else if (projectName != null && projectName.indexOf(this.filterProjectName) === 0) {
-
-      return true;
-
-    } else {
-
-      return false;
     }
+
+    return projectName != null && projectName.includes(this.filterProjectName);
   }
 
   isFilterProjectStatus(status_number: number, lifetime_reached: number): boolean {
@@ -99,13 +102,7 @@ export abstract class FilterBaseClass extends AbstractBaseClasse {
         break;
     }
 
-    if (this.filterstatus_list[status] || this.filterstatus_list[lifetime_status]
-    ) {
-
-      return true
-    } else {
-      return false
-    }
+    return this.filterstatus_list[status] || this.filterstatus_list[lifetime_status];
   }
 
   isFilterStopped_at(vmstopped_at: string): boolean {
@@ -165,13 +162,7 @@ export abstract class FilterBaseClass extends AbstractBaseClasse {
     if (vmstatus !== 'ACTIVE' && vmstatus !== 'DELETED' && vmstatus !== 'SHUTOFF') {
       return true
     }
-    if (this.filterstatus_list[vmstatus]
-    ) {
-
-      return true
-    } else {
-      return false
-    }
+    return this.filterstatus_list[vmstatus];
   }
 
   isFilterUsername(vmusername: string): boolean {
@@ -187,6 +178,7 @@ export abstract class FilterBaseClass extends AbstractBaseClasse {
 
   changeFilterStatus(status: string): void {
     this.filterstatus_list[status] = !this.filterstatus_list[status];
+    console.log(this.filterstatus_list)
 
   }
 

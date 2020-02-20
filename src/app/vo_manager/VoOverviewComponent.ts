@@ -118,7 +118,7 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
     return facNameFilter
       && this.isFilterProjectStatus(project.Status, project.LifetimeReached)
       && this.isFilterProjectName(project.Name)
-      && this.isFilterProjectId(project.Id)
+      && this.isFilterProjectId(project.Id.toString())
 
   }
 
