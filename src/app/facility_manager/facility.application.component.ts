@@ -96,6 +96,8 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
    * @param {number} facility id of the facility
    */
   getAllApplicationsHistory(facility: number): void {
+          this.isHistoryLoaded = false;
+
     this.applications_history = [];
 
     // todo check if user is VO Admin
