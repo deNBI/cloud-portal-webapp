@@ -1,3 +1,18 @@
+##  (2020-02-21)
+
+#### Features
+
+* **Resource:** factors now editable
+
+#### Bug Fixes
+
+* **Virtual Machiens:** creation in detail
+
+#### Refactor
+
+* **VM-Overview:** different footer buttons, remove forc-url on front, cyan circles
+* **Research Environments:** refactor UI and forc getURL Method
+
 ##  (2020-02-18)
 
 #### Bug Fixes
@@ -7,6 +22,7 @@
 * **application:** default checked project part toggle at pi validation ([ccc0bd81](ccc0bd81))
 
 #### Features
+
 * **application:**  added workshop option (#1109) ([ca9c5798](ca9c5798))
 * **troubleshooting:**  troubleshooting page added ([a8116e16](a8116e16))
 
