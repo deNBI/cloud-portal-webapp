@@ -1,3 +1,12 @@
+##  (2020-02-23)
+
+
+#### Bug Fixes
+
+* **Facility:**
+  * load history applications when chaning fac ([8ff90492](8ff90492))
+  * load history applications when chaning fac ([3e83a063](3e83a063))
+
 ##  (2020-02-18)
 
 #### Bug Fixes
