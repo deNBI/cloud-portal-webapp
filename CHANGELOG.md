@@ -1,11 +1,25 @@
 ##  (2020-02-23)
 
-
 #### Bug Fixes
 
 * **Facility:**
   * load history applications when chaning fac ([8ff90492](8ff90492))
   * load history applications when chaning fac ([3e83a063](3e83a063))
+
+##  (2020-02-21)
+
+#### Features
+
+* **Resource:** factors now editable
+
+#### Bug Fixes
+
+* **Virtual Machiens:** creation in detail
+
+#### Refactor
+
+* **VM-Overview:** different footer buttons, remove forc-url on front, cyan circles
+* **Research Environments:** refactor UI and forc getURL Method
 
 ##  (2020-02-18)
 
@@ -16,6 +30,7 @@
 * **application:** default checked project part toggle at pi validation ([ccc0bd81](ccc0bd81))
 
 #### Features
+
 * **application:**  added workshop option (#1109) ([ca9c5798](ca9c5798))
 * **troubleshooting:**  troubleshooting page added ([a8116e16](a8116e16))
 
@@ -80,7 +95,6 @@
 * **resenv:**
   *  remove is_vo check ([1a8f1836](1a8f1836))
   *  show template_name when title missing ([f9cd9d36](f9cd9d36))
-=======
 
 ##  (2020-02-05)
 
@@ -94,7 +108,6 @@
 #### Features
 
 * **Actions:**  ([f63662d3](f63662d3))
->>>>>>> ced08033998bc15d3ebc2b18ce5227a9405a227c
 
 ##  (2020-01-31)
 
