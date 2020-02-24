@@ -5,9 +5,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
       - name: Checking out Branch
-        run: git checkout "${GITHUB_REF:11}"
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
       - name: Lint
         run: |
           sudo npm install -g @angular/cli
