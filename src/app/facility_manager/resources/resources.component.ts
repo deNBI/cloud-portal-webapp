@@ -45,9 +45,9 @@ export class ResourcesComponent implements OnInit {
     elementId: this.tableId
   };
 
-  constructor(private facilityService: FacilityService, private exportAsService: ExportAsService) {
-  }x
 
+  constructor(private facilityService: FacilityService, private exportAsService: ExportAsService) {
+  }
   addCoreFactor(cores: string | number, factor: string | number, description: string): void {
     if (cores && factor) {
       const re: any = /\,/gi;
