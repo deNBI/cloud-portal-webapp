@@ -77,7 +77,6 @@ export class Application {
     };
   }
 
-
   get Workshop(): boolean {
     return this._Workshop;
   }

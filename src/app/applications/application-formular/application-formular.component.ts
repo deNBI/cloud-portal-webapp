@@ -234,7 +234,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
       this.valuesToConfirm.push('Sensitive Data: Yes');
     }
 
-    if(!this.project_application_workshop) {
+    if (!this.project_application_workshop) {
       this.valuesToConfirm.push('Workshops: No');
     } else {
       this.valuesToConfirm.push('Workshops: Yes');

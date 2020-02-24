@@ -30,7 +30,7 @@
     "arrow-parens":true,
 
     //"template-cyclomatic-complexity": [true, 10],
-    "template-conditional-complexity": [true, 10],
+    "template-conditional-complexity": [true, 15],
      "banana-in-box": true,
     "templates-no-negated-async": true,
     "directive-selector": [true, "attribute", "sg", "camelCase"],

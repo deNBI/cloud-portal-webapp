@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, OnDestroy, ViewChild, Renderer2, Inject, ViewChildren, ElementRef} from '@angular/core';
+import {Component, ElementRef, Inject, Input, OnDestroy, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {Project} from './project.model';
 import {ProjectMember} from './project_member.model'
 import {environment} from '../../environments/environment'
@@ -9,7 +9,7 @@ import * as moment from 'moment';
 import {ProjectMemberApplication} from './project_member_application';
 import {ComputecenterComponent} from './computecenter.component';
 import {Userinfo} from '../userinfo/userinfo.model';
-import {forkJoin, Observable, TimeInterval} from 'rxjs';
+import {forkJoin, Observable} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Application} from '../applications/application.model/application.model';
 import {ApplicationBaseClassComponent} from '../shared/shared_modules/baseClass/application-base-class.component';
@@ -27,7 +27,7 @@ import {WIKI_GROUP_INVITATIONS} from '../../links/links';
 import {Doi} from '../applications/doi/doi';
 import {EdamOntologyTerm} from '../applications/edam-ontology-term';
 import {AutocompleteComponent} from 'angular-ng-autocomplete';
-import {DOCUMENT} from "@angular/common";
+import {DOCUMENT} from '@angular/common';
 import {Chart} from 'chart.js';
 
 /**
@@ -50,8 +50,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   ontology_search_keyword: string = 'term';
 
   @ViewChild(NgForm) simpleVmForm: NgForm;
-  @ViewChild('creditsChart')
-  creditsCanvas: ElementRef;
+  @ViewChild('creditsChart') creditsCanvas: ElementRef;
 
   /**
    * If at least 1 flavor is selected.
@@ -137,20 +136,24 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
     super(userservice, applicationstatusservice, applicationsservice, facilityService);
   }
 
-  delay(ms: number): Promise<any> {
-    return new Promise( resolve => setTimeout(resolve, ms) );
+  async delay(ms: number): Promise<any> {
+    // tslint:disable-next-line:typedef
+    return new Promise((resolve: any) => {
+      setTimeout(resolve, ms)
+    });
   }
 
   setModalOpen(bool: boolean): void {
+    // tslint:disable-next-line:typedef
     (async () => {
-        await this.delay(750); //needed, because bootstraps class-toggle-function seems to be too slow
+        await this.delay(750).then().catch(); // needed, because bootstraps class-toggle-function seems to be too slow
         if (bool) {
           this.document.body.classList.add('modal-open');
         } else {
           this.document.body.classList.remove('modal-open');
         }
       }
-    )();
+    )().then().catch();
   }
 
   removeEDAMterm(term: EdamOntologyTerm): void {
@@ -252,14 +255,21 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
       daysString = ' days';
     }
     if (daysString !== '') {
-      return Math.floor(hours / 24) + daysString;
+      return Math.floor(hours / 24).toString();
     }
 
     return ''
 }
 
   startUpdateCreditUsageLoop(): void {
-    this.updateCreditsUsedIntervals = setInterval(() => this.fetchCurrentCreditsOfProject(), 5000);
+    this.updateCreditsUsedIntervals = setInterval(
+      () =>
+        this.creditsService.getCurrentCreditsOfProject(Number(this.project_application.PerunId.toString())).toPromise().then(
+          (credits: number) => {
+            this.current_credits = credits;
+          }
+          // tslint:disable-next-line:align
+        ).catch((err: Error) => console.log(err.message)), 5000);
   }
 
   initExampleFlavors(): void {
@@ -474,7 +484,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
     this.life_time_string = `${this.project_application.DateApproved} -  ${this.getEndDate(this.project_application.Lifetime, this.project_application.DateApproved)}`;
 
   }
-
 
   ngOnInit(): void {
     this.applicationsservice.getEdamOntologyTerms().subscribe((terms: EdamOntologyTerm[]) => {
