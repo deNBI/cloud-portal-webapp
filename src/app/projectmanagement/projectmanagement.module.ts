@@ -23,7 +23,7 @@ import {AutocompleteLibModule} from 'angular-ng-autocomplete';
               ModalModule.forRoot(),
               ApplicationsModule,
               SharedDirectivesModule,
-              AutocompleteLibModule,
+              AutocompleteLibModule
 
             ],
             declarations: [
