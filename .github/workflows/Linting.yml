@@ -33,7 +33,7 @@ jobs:
                         [1]: https://github.com/peter-evans/create-pull-request
            labels: automated,linting
            reviewers: ${{github.actor}}
-           branch: fix(linting)_${{GITHUB_WORKSPACE}}
+           branch: fix(linting)_${{github.ref}}
       - name: Check outputs
         run: |
                       echo "Pull Request Number - ${{ env.PULL_REQUEST_NUMBER }}"
