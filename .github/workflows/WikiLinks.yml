@@ -3,7 +3,7 @@ name: WikiLinks Online
 on: [pull_request]
 
 jobs:
-  build:
+  wikilinks-check:
 
     runs-on: ubuntu-latest
 
