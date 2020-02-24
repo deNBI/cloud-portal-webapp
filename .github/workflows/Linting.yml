@@ -6,8 +6,8 @@ jobs:
     timeout-minutes: 3
     steps:
       - uses: actions/checkout@v1
-      - name: Prepare
-        run: npm ci
+      - name: Checking out Branch
+        run: git checkout "${GITHUB_REF:11}"
       - name: Lint
         run: |
           sudo npm install -g @angular/cli
