@@ -98,10 +98,10 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
   getAllApplicationsHistory(facility: number): void {
           this.isHistoryLoaded = false;
 
-    this.applications_history = [];
+          this.applications_history = [];
 
     // todo check if user is VO Admin
-    this.facilityService.getFacilityApplicationsHistory(facility).subscribe((res: any) => {
+          this.facilityService.getFacilityApplicationsHistory(facility).subscribe((res: any) => {
       if (Object.keys(res).length === 0) {
         this.isHistoryLoaded = true;
       }
