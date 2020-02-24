@@ -5,8 +5,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 6
     steps:
-      - name: Checking out Branch
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v1
+      - run: |
+          git checkout "${GITHUB_REF:11}"
+          git status
       - name: Prepare
         run: npm ci
       - name: Lint
@@ -31,7 +33,7 @@ jobs:
                         [1]: https://github.com/peter-evans/create-pull-request
            labels: automated,linting
            reviewers: ${{github.actor}}
-           branch: fix(linting)_${$GITHUB_WORKSPACE}}
+           branch: fix(linting)_${{GITHUB_WORKSPACE}}
       - name: Check outputs
         run: |
                       echo "Pull Request Number - ${{ env.PULL_REQUEST_NUMBER }}"
