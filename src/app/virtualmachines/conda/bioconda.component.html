@@ -32,7 +32,7 @@
       </div>
 
       <ng-container *ngFor="let tool of all_tools" >
-        <div class="rTableRow" [hidden]="toolBuild.options.length == 1 && !is_tool_name_added(tool.name) ">
+        <div class="rTableRow">
           <div class="rTableCell">
 
             <button (keydown.enter)="$event.preventDefault();" class="btn btn-lg"
@@ -58,7 +58,7 @@
           </div>
           <div class="rTableCell"><select #toolBuild class="form-control">
             <ng-container *ngFor=" let build of getBuildsByVersion(tool,toolVersion.value)">
-              <option *ngIf="!is_added_values(tool.name,toolVersion.value,build)">
+              <option >
                 {{build}}
               </option>
             </ng-container>
