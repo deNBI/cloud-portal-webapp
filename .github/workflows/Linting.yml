@@ -6,8 +6,10 @@ jobs:
     timeout-minutes: 6
     steps:
       - uses: actions/checkout@v2
-      - run: |
-          echo ${{github.ref}}
+        with:
+          fetch-depth: 2
+      - run: git checkout HEAD^
+      - run: git status
       - name: Prepare
         run: npm ci
       - name: Lint
