@@ -262,7 +262,14 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 }
 
   startUpdateCreditUsageLoop(): void {
-    this.updateCreditsUsedIntervals = setInterval(() => this.fetchCurrentCreditsOfProject(), 5000);
+    this.updateCreditsUsedIntervals = setInterval(
+      () =>
+        this.creditsService.getCurrentCreditsOfProject(Number(this.project_application.PerunId.toString())).toPromise().then(
+          (credits: number) => {
+            this.current_credits = credits;
+          }
+          // tslint:disable-next-line:align
+        ).catch((err: Error) => console.log(err.message)), 5000);
   }
 
   initExampleFlavors(): void {
