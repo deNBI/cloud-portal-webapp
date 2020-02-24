@@ -276,7 +276,6 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
     this.progress_bar_width = 0;
   }
 
-
   /**
    * Check the status of the started vm in a loop.
    * @param {string} id
@@ -405,7 +404,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 
     }
     setTimeout(() => {
-                 this.router.navigate(['/virtualmachines/vmOverview'])
+                 this.router.navigate(['/virtualmachines/vmOverview']).then()
                }
       ,
                2000);

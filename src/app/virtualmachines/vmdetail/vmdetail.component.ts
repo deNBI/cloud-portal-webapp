@@ -33,7 +33,7 @@ import {ResenvTemplate} from '../conda/resenvTemplate.model';
              styleUrls: ['./vmdetail.component.scss'],
 
              providers: [FlavorService, FacilityService, VoService, UserService, GroupService,
-               VoService, CreditsService, VirtualmachineService, ImageService, PlaybookService,BiocondaService]
+               VoService, CreditsService, VirtualmachineService, ImageService, PlaybookService, BiocondaService]
            })
 
 export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
