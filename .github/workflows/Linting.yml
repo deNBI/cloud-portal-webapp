@@ -9,6 +9,8 @@ jobs:
         uses: actions/checkout@v2
         with:
           ref: ${{ github.event.pull_request.head.sha }}
+      - name: Prepare
+        run: npm ci
       - name: Lint
         run: |
           sudo npm install -g @angular/cli
