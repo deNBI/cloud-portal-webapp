@@ -3,7 +3,7 @@ on: [pull_request]
 jobs:
   job:
     runs-on: ubuntu-latest
-    timeout-minutes: 3
+    timeout-minutes: 6
     steps:
       - name: Checking out Branch
         uses: actions/checkout@v2
@@ -33,7 +33,7 @@ jobs:
                         [1]: https://github.com/peter-evans/create-pull-request
            labels: automated,linting
            reviewers: ${{github.actor}}
-           branch: fix(linting)_${{github.ref}}
+           branch: fix(linting)_${$GITHUB_WORKSPACE}}
       - name: Check outputs
         run: |
                       echo "Pull Request Number - ${{ env.PULL_REQUEST_NUMBER }}"
