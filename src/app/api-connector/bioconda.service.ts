@@ -20,11 +20,9 @@ export class BiocondaService {
   constructor(private http: HttpClient) {
   }
 
-  getAllTools(page: number, name?: string, version?: string, build?: string): Observable<any> {
+  getAllTools(page: number, name?: string): Observable<any> {
     const params: HttpParams = new HttpParams()
       .set('page', page.toString())
-      .set('build', build)
-      .set('version', version)
       .set('name', name);
 
     return this.http.get(`${ApiSettings.getApiBaseURL()}conda/all/`, {

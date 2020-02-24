@@ -9,6 +9,7 @@ import {AccordionModule} from 'ngx-bootstrap';
 import {ApplicationsModule} from '../applications/applications.module';
 import {SharedDirectivesModule} from '../shared/shared_modules/shared_directives.module';
 import {AutocompleteLibModule} from 'angular-ng-autocomplete';
+import {ChartsModule} from 'ng2-charts';
 
 /**
  * Projectmanagment module.
@@ -23,8 +24,8 @@ import {AutocompleteLibModule} from 'angular-ng-autocomplete';
               ModalModule.forRoot(),
               ApplicationsModule,
               SharedDirectivesModule,
+              ChartsModule,
               AutocompleteLibModule
-
             ],
             declarations: [
               OverviewComponent

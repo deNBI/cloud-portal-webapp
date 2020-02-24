@@ -36,7 +36,8 @@ export class NewInstancePage {
 
   static async chooseProject(): Promise<any> {
     await Util.waitForPresenceOfElementById('application_form');
-    const waitElementawait = await Util.waitForPresenceOfElementById('singleProjectNameSpan', 15000);
+
+    const waitElementawait: any = await Util.waitForPresenceOfElementById('singleProjectNameSpan', 15000);
     if (!waitElementawait) {
       await Util.waitForPresenceOfElementById(this.PROJECT_SELECT_ID);
       await Util.waitForElementToBeClickableById(this.PROJECT_SELECT_ID);

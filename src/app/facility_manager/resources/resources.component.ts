@@ -44,7 +44,6 @@ export class ResourcesComponent implements OnInit {
     type: 'csv',
     elementId: this.tableId
   };
-x
 
   constructor(private facilityService: FacilityService, private exportAsService: ExportAsService) {
   }

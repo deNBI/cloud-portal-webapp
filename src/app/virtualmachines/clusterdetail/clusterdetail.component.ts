@@ -5,6 +5,9 @@ import {VirtualmachineService} from '../../api-connector/virtualmachine.service'
 import {VirtualMachineStates} from '../virtualmachinemodels/virtualmachinestates';
 import {VirtualMachine} from '../virtualmachinemodels/virtualmachine';
 
+/**
+ * Clusterdetail component.
+ */
 @Component({
              selector: 'app-clusterdetail',
              templateUrl: './clusterdetail.component.html',
