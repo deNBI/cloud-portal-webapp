@@ -1,6 +1,6 @@
 name: WikiLinks Online
 
-on: [pr]
+on: [pull_request]
 
 jobs:
   build:
