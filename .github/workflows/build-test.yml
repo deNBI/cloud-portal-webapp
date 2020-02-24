@@ -1,0 +1,9 @@
+name: build-image
+on: pull_request
+jobs:
+    format:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - name: Checking out Branch
+            - run: docker build -t webapp  
