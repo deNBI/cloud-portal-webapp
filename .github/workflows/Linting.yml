@@ -7,8 +7,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          fetch-depth: 2
-      - run: git checkout HEAD^
+          ref: ${{ github.event.pull_request.head.sha }}
       - run: git status
       - name: Prepare
         run: npm ci
