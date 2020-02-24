@@ -404,7 +404,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 
     }
     setTimeout(() => {
-                 this.router.navigate(['/virtualmachines/vmOverview']).then()
+                 this.router.navigate(['/virtualmachines/vmOverview']).then().catch()
                }
       ,
                2000);
