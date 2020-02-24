@@ -10,7 +10,7 @@ jobs:
         run: npm ci
       - name: Lint
         run: |
-          npm install -g @angular/cli
+          npm install @angular/cli
           ng lint --fix
       - name: Check for modified files
         id: git-check
