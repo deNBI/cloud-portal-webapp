@@ -146,14 +146,14 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   setModalOpen(bool: boolean): void {
     // tslint:disable-next-line:typedef
     (async () => {
-        await this.delay(750); // needed, because bootstraps class-toggle-function seems to be too slow
+        await this.delay(750).then().catch(); // needed, because bootstraps class-toggle-function seems to be too slow
         if (bool) {
           this.document.body.classList.add('modal-open');
         } else {
           this.document.body.classList.remove('modal-open');
         }
       }
-    )();
+    )().then().catch();
   }
 
   removeEDAMterm(term: EdamOntologyTerm): void {
@@ -262,11 +262,13 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 }
 
   startUpdateCreditUsageLoop(): void {
-    this.updateCreditsUsedIntervals = setInterval(() =>
+    this.updateCreditsUsedIntervals = setInterval(
+      () =>
         this.creditsService.getCurrentCreditsOfProject(Number(this.project_application.PerunId.toString())).toPromise().then(
           (credits: number) => {
             this.current_credits = credits;
           }
+          // tslint:disable-next-line:align
         ).catch((err: Error) => console.log(err.message)), 5000);
   }
 
