@@ -153,7 +153,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
           this.document.body.classList.remove('modal-open');
         }
       }
-    )().then();
+    )().then().catch();
   }
 
   removeEDAMterm(term: EdamOntologyTerm): void {
