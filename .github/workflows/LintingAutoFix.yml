@@ -1,7 +1,7 @@
 name: Linting
 on: push
 jobs:
-  job:
+  tslinting-check:
     runs-on: ubuntu-latest
     timeout-minutes: 6
     steps:
