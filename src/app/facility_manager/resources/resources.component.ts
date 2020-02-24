@@ -44,10 +44,10 @@ export class ResourcesComponent implements OnInit {
     type: 'csv',
     elementId: this.tableId
   };
+x
 
   constructor(private facilityService: FacilityService, private exportAsService: ExportAsService) {
-  }x
-
+  }
   addCoreFactor(cores: string | number, factor: string | number, description: string): void {
     if (cores && factor) {
       const re: any = /\,/gi;

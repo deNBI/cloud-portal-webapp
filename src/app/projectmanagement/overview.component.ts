@@ -27,7 +27,7 @@ import {WIKI_GROUP_INVITATIONS} from '../../links/links';
 import {Doi} from '../applications/doi/doi';
 import {EdamOntologyTerm} from '../applications/edam-ontology-term';
 import {AutocompleteComponent} from 'angular-ng-autocomplete';
-import {DOCUMENT} from "@angular/common";
+import {DOCUMENT} from '@angular/common';
 import {Chart} from 'chart.js';
 
 /**
@@ -50,8 +50,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   ontology_search_keyword: string = 'term';
 
   @ViewChild(NgForm) simpleVmForm: NgForm;
-  @ViewChild('creditsChart')
-  creditsCanvas: ElementRef;
+  @ViewChild('creditsChart') creditsCanvas: ElementRef;
 
   /**
    * If at least 1 flavor is selected.
@@ -143,7 +142,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
   setModalOpen(bool: boolean): void {
     (async () => {
-        await this.delay(750); //needed, because bootstraps class-toggle-function seems to be too slow
+        await this.delay(750); // needed, because bootstraps class-toggle-function seems to be too slow
         if (bool) {
           this.document.body.classList.add('modal-open');
         } else {
@@ -474,7 +473,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
     this.life_time_string = `${this.project_application.DateApproved} -  ${this.getEndDate(this.project_application.Lifetime, this.project_application.DateApproved)}`;
 
   }
-
 
   ngOnInit(): void {
     this.applicationsservice.getEdamOntologyTerms().subscribe((terms: EdamOntologyTerm[]) => {

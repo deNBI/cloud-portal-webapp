@@ -7,12 +7,11 @@ import {VirtualMachine} from '../../virtualmachinemodels/virtualmachine';
              templateUrl: './virtualmachineinfo.component.html',
              styleUrls: ['./virtualmachineinfo.component.scss']
            })
-export class VirtualmachineinfoComponent{
+export class VirtualmachineinfoComponent {
   VirtualMachineStates: VirtualMachineStates = new VirtualMachineStates();
   @Input() vm: VirtualMachine;
 
   constructor() {
   }
-
 
 }

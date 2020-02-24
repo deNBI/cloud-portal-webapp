@@ -230,7 +230,6 @@ export class FacilityService {
     })
   }
 
-
   /**
    * Updates an RamFactor.
    * @param {number | string} facility
