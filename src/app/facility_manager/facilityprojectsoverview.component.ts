@@ -102,6 +102,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
       return this.isFilterProjectStatus(project.Status, project.LifetimeReached)
     } else {
 
+      // tslint:disable-next-line:max-line-length
       return (this.isFilterLongProjectName(project.RealName, this.filter) || this.isFilterProjectId(project.Id.toString(), this.filter)) || this.isFilterProjectName(project.Name, this.filter) && this.isFilterProjectStatus(project.Status, project.LifetimeReached)
     }
 

@@ -146,14 +146,14 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   setModalOpen(bool: boolean): void {
     // tslint:disable-next-line:typedef
     (async () => {
-        await this.delay(750); // needed, because bootstraps class-toggle-function seems to be too slow
+        await this.delay(750).then(); // needed, because bootstraps class-toggle-function seems to be too slow
         if (bool) {
           this.document.body.classList.add('modal-open');
         } else {
           this.document.body.classList.remove('modal-open');
         }
       }
-    )();
+    )().then();
   }
 
   removeEDAMterm(term: EdamOntologyTerm): void {

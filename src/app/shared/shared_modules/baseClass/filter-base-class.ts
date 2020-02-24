@@ -162,6 +162,7 @@ export abstract class FilterBaseClass extends AbstractBaseClasse {
     if (vmstatus !== 'ACTIVE' && vmstatus !== 'DELETED' && vmstatus !== 'SHUTOFF') {
       return true
     }
+
     return this.filterstatus_list[vmstatus];
   }
 
