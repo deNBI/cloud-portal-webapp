@@ -335,7 +335,7 @@
   </div>
   <!-- Main content -->
 
-  <main class="main" style="overflow-y: auto; height: calc(100vh - 100px);">
+  <main class="main" style="overflow-y: visible; height: calc(100vh - 100px);">
 
     <!-- Breadcrumb-->
 
@@ -343,7 +343,7 @@
 
      </cui-breadcrumb> -->
 
-    <div class="container-fluid" style="overflow-y: auto; height: 100%;">
+    <div class="container-fluid" style="overflow-y: visible; height: 100%;">
       <router-outlet (activate)="componentAdded($event)"></router-outlet>
     </div><!-- /.conainer-fluid -->
   </main>
