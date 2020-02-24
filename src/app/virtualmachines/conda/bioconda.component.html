@@ -1,84 +1,108 @@
+
 <div class="row">
-  <div class="col-8">
-    <div class="table-responsive">
-      <table class="table table-striped">
-        <thead>
-        <tr>
-          <th style="width: 10%">Add/Remove</th>
-          <th>Name</th>
-          <th>Version</th>
-          <th>Build</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-          <td align="center">
-            <div *ngIf="isSearching" class="spinner-border" role="status">
-              <span class="sr-only">Loading...</span>
-            </div>
-          </td>
-          <td>
-            <input type="text" placeholder="Filter"
-                   name="filterToolNameRef" (ngModelChange)='changedNameFilter($event)'
-                   [ngModel]="filterToolName" (keydown.enter)="$event.preventDefault();">
-          </td>
-          <td>
-            <input type="text" placeholder="Filter"
-                   name="filterVersionName"
-                   [ngModel]="filterToolVersion"
-                   (ngModelChange)="changedVersionFilter($event)" (keydown.enter)="$event.preventDefault();">
-          </td>
-          <td>
-            <input type="text" placeholder="Filter"
-                   name="filterToolBuild"
-                   [ngModel]="filterToolBuild"
-                   (ngModelChange)="changedBuildFilter($event)" (keydown.enter)="$event.preventDefault();">
-          </td>
-        </tr>
-        <tr *ngFor="let tool of all_tools">
-          <td class="text-center" style="width: 10%">
-            <button (keydown.enter)="$event.preventDefault();" class="btn btn-lg" (click)="add_or_remove(tool)">
+
+  <div [ngClass]="{'col':window_size < MAX_WINDOW_SIZE,
+       'col-8':window_size >= MAX_WINDOW_SIZE}
+      ">
+    <div class="rTable">
+      <div class="rTableRow">
+        <div class="rTableHead"><strong>Add/Remove</strong></div>
+        <div class="rTableHead"><strong>Name</strong></div>
+        <div class="rTableHead"><strong>Version</strong></div>
+        <div class="rTableHead"><strong>Build</strong></div>
+      </div>
+
+      <div class="rTableRow">
+        <div class="rTableCell ">
+          <span *ngIf="isSearching" class="spinner-border" role="status">
+            </span>
+
+        </div>
+        <div class="rTableCell">
+          <input type="text" placeholder="Filter" [disabled]="isSearching"
+                 name="filterToolNameRef" (ngModelChange)='changedNameFilter($event)'
+                 [ngModel]="filterToolName" (keydown.enter)="$event.preventDefault();">
+        </div>
+        <div class="rTableCell">&nbsp;
+
+        </div>
+        <div class="rTableCell">&nbsp;
+
+        </div>
+      </div>
+
+      <ng-container *ngFor="let tool of all_tools" >
+        <div class="rTableRow" [hidden]="toolBuild.options.length == 1 && !is_tool_name_added(tool.name) ">
+          <div class="rTableCell">
+
+            <button (keydown.enter)="$event.preventDefault();" class="btn btn-lg"
+                    (click)="addTool(tool.name,toolVersion.value,toolBuild.value)">
               <i *ngIf="!is_added(tool)" class="icon-plus" style="color: green"></i>
               <i *ngIf="is_added(tool)" class="icon-minus" style="color: red"></i>
             </button>
-          </td>
-          <td>{{tool.name}}</td>
-          <td>{{tool.version}}</td>
-          <td>{{tool.build}}</td>
-        </tr>
-        </tbody>
-      </table>
-      <div class="d-flex justify-content-center">
-        <pagination [totalItems]="total_pages" [itemsPerPage]="toolsPerPage"
+          </div>
+          <div class="rTableCell"
+               style="width: auto">{{tool.name}}
+          </div>
+          <div class="rTableCell"><select #toolVersion (change)="onChange($event.target.value)"
 
-                    (pageChanged)="pageChanged($event)" [(ngModel)]="currentPage"
-                    [boundaryLinks]="true" [maxSize]="max_pages" [rotate]="false" #pagination>
-        </pagination>
+                                          class="form-control">
+
+            <option *ngFor=" let item of tool.versions|keyvalue">
+              {{item.key}}
+            </option>
+
+          </select>
+
+
+          </div>
+          <div class="rTableCell"><select #toolBuild class="form-control">
+            <ng-container *ngFor=" let build of getBuildsByVersion(tool,toolVersion.value)">
+              <option *ngIf="!is_added_values(tool.name,toolVersion.value,build)">
+                {{build}}
+              </option>
+            </ng-container>
+
+          </select>
+
+
+          </div>
+        </div>
+      </ng-container>
+
+
+    </div>
+  </div>
+
+  <div [ngClass]="{'col':window_size < MAX_WINDOW_SIZE,
+       'col-4':window_size >= MAX_WINDOW_SIZE}
+      ">
+
+    <div class="rTable" #chosenTable>
+      <div class="rTableRow">
+        <div class="rTableHead"><strong> Remove </strong></div>
+        <div class="rTableHead"><strong>Chosen Package</strong></div>
+      </div>
+
+      <div class="rTableRow" *ngFor="let tool of chosen_tools">
+        <div class="rTableCell">
+          <button class="btn btn-lg" (click)="removeTool(tool)">
+            <i class="icon-minus" style="color: red"></i>
+          </button>
+        </div>
+        <div class="rTableHead"><strong>Name:</strong> {{tool.name}}<br>
+          <strong>Version:</strong> {{tool.version}}<br>
+          <strong> Build:</strong> {{tool.build}}</div>
       </div>
     </div>
   </div>
-  <div class="col-4">
-    <div class="table-responsive">
-      <table class="table table-striped" #chosenTable>
-        <thead>
-        <tr>
-          <th style="width: 25%">Remove</th>
-          <th>Chosen Package</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let tool of chosen_tools">
-          <td class="text-center" style="width: 25%">
-            <button class="btn btn-lg" (click)="add_or_remove(tool)">
-              <i class="icon-minus" style="color: red"></i>
-            </button>
-          </td>
-          <td>Name: {{tool.name}}<br>
-            Version: {{tool.version}}<br>
-            Build: {{tool.build}}</td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
 </div>
+<div class="d-flex flex-wrap row" style="margin-top: 5px">
+  <pagination [totalItems]="total_pages" [itemsPerPage]="toolsPerPage"
+
+              (pageChanged)="pageChanged($event)" [(ngModel)]="currentPage"
+              [boundaryLinks]="true" [maxSize]="max_pages" [rotate]="false" #pagination>
+  </pagination>
+</div>
+
+

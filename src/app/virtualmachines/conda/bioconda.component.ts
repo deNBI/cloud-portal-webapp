@@ -1,4 +1,4 @@
-import {Component, ElementRef, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, ElementRef, EventEmitter, HostListener, OnInit, Output, ViewChild} from '@angular/core';
 import {BiocondaService} from '../../api-connector/bioconda.service';
 import {Subject} from 'rxjs';
 import {debounceTime, distinctUntilChanged, switchMap} from 'rxjs/operators';
@@ -25,7 +25,7 @@ export interface IBiocondaTool {
            })
 export class BiocondaComponent implements OnInit {
   FIRST_PAGE: number = 1;
-  DEBOUNCE_TIME: number = 300;
+  DEBOUNCE_TIME: number = 700;
 
   all_tools: any[] = [];
 
@@ -45,6 +45,8 @@ export class BiocondaComponent implements OnInit {
 
   max_pages: number = 15;
   total_pages: number;
+  window_size: number;
+  MAX_WINDOW_SIZE: number = 1200;
 
   filternameChanged: Subject<string> = new Subject<string>();
 
@@ -52,7 +54,11 @@ export class BiocondaComponent implements OnInit {
   @ViewChild('pagination') pagination: PaginationComponent;
   @ViewChild('chosenTable') chosenTable: ElementRef;
 
-  constructor(private condaService: BiocondaService) {
+  @HostListener('window:resize', ['$event']) onResize(event: any): void {
+    this.window_size = window.innerWidth;
+  }
+
+  constructor(private condaService: BiocondaService, private cdr: ChangeDetectorRef) {
   }
 
   pageChanged(event: any): void {
@@ -60,6 +66,8 @@ export class BiocondaComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.window_size = window.innerWidth;
+
     this.getAllTools(this.FIRST_PAGE);
 
     this.filternameChanged
@@ -78,6 +86,15 @@ export class BiocondaComponent implements OnInit {
 
       });
 
+  }
+
+  onChange(event: any): void {
+    this.cdr.detectChanges();
+
+  }
+
+  getBuildsByVersion(tool: CondaVersionBuilds, version: string): string[] {
+    return tool.versions[version]
   }
 
   getAllTools(page: number): void {
@@ -100,6 +117,8 @@ export class BiocondaComponent implements OnInit {
 
         this.currentPage = page;
         this.pagination.selectPage(this.currentPage);
+        this.cdr.detectChanges();
+
         this.isSearching = false;
       });
   }
@@ -125,6 +144,8 @@ export class BiocondaComponent implements OnInit {
 
     this.currentPage = 1;
     this.pagination.selectPage(this.currentPage);
+    this.cdr.detectChanges();
+
     this.isSearching = false;
 
   }
@@ -205,4 +226,5 @@ export class BiocondaComponent implements OnInit {
   hasChosenTools(): boolean {
     return this.chosen_tools.length > 0;
   }
+
 }
