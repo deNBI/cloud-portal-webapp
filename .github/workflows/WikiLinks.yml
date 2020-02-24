@@ -9,6 +9,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Run a one-line script
-      run: bash src/links/check_links.sh
+    - name: Checking if Wiki Links return Code 200
+      run: |
+        bash src/links/check_links.sh
+        echo $?
+      
    
