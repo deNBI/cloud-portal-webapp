@@ -7,8 +7,6 @@ jobs:
     steps:
       - name: Checking out Branch
         uses: actions/checkout@v2
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
       - name: Prepare
         run: npm ci
       - name: Lint
