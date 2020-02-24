@@ -5,6 +5,9 @@ import {VirtualmachineService} from '../../api-connector/virtualmachine.service'
 import {VirtualMachineStates} from '../virtualmachinemodels/virtualmachinestates';
 import {VirtualMachine} from '../virtualmachinemodels/virtualmachine';
 
+/**
+ * Clusterdetail component.
+ */
 @Component({
              selector: 'app-clusterdetail',
              templateUrl: './clusterdetail.component.html',
@@ -16,7 +19,6 @@ export class ClusterdetailComponent implements OnInit {
   cluster: Clusterinfo;
   isLoaded: boolean = false;
   notFoundCluster: boolean = false;
-
 
   constructor(private activatedRoute: ActivatedRoute, private virtualmachineService: VirtualmachineService) {
   }

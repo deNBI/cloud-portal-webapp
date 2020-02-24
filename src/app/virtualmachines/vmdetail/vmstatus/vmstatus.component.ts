@@ -2,6 +2,9 @@ import {Component, Input} from '@angular/core';
 import {VirtualMachineStates} from '../../virtualmachinemodels/virtualmachinestates';
 import {VirtualMachine} from '../../virtualmachinemodels/virtualmachine';
 
+/**
+ * Vmstatus component.
+ */
 @Component({
              selector: 'app-vmstatus',
              templateUrl: './vmstatus.component.html',
