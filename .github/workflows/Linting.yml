@@ -7,7 +7,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: |
-          git status
+          echo ${{github.ref}}
       - name: Prepare
         run: npm ci
       - name: Lint
