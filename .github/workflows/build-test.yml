@@ -1,8 +1,8 @@
 name: build-image
 on: pull_request
 jobs:
-    format:
+    build-test:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2
-            - run: docker build -t webapp  
+            - run: docker build --no-cache --build-arg "ANGULAR_MODE=production" -t webapp .  
