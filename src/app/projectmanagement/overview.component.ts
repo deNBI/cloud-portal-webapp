@@ -27,7 +27,7 @@ import {WIKI_GROUP_INVITATIONS} from '../../links/links';
 import {Doi} from '../applications/doi/doi';
 import {EdamOntologyTerm} from '../applications/edam-ontology-term';
 import {AutocompleteComponent} from 'angular-ng-autocomplete';
-import {DOCUMENT} from "@angular/common";
+import {DOCUMENT} from '@angular/common';
 
 /**
  * Projectoverview component.
@@ -99,8 +99,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   largeExamplePossibleHours: number = 0;
   creditsPerHourSmallExample: number;
   creditsPerHourLargeExample: number;
-  smallExamplePossibleDays: string = "";
-  largeExamplePossibleDays: string = "";
+  smallExamplePossibleDays: string = '';
+  largeExamplePossibleDays: string = '';
 
   title: string = 'Project Overview';
   @ViewChild('edam_ontology') edam_ontology: AutocompleteComponent;
@@ -137,7 +137,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
   setModalOpen(bool: boolean): void {
     (async () => {
-        await this.delay(750); //needed, because bootstraps class-toggle-function seems to be too slow
+        await this.delay(750); // needed, because bootstraps class-toggle-function seems to be too slow
         if (bool) {
           this.document.body.classList.add('modal-open');
         } else {
@@ -201,7 +201,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
           (credits: number) => {
             this.current_credits = credits;
           }
-        ).catch((err: Error) => console.log(err.message)),5000);
+        ).catch((err: Error) => console.log(err.message)), 5000);
   }
 
   initExampleFlavors(): void {
@@ -416,7 +416,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
     this.life_time_string = `${this.project_application.DateApproved} -  ${this.getEndDate(this.project_application.Lifetime, this.project_application.DateApproved)}`;
 
   }
-
 
   ngOnInit(): void {
     this.applicationsservice.getEdamOntologyTerms().subscribe((terms: EdamOntologyTerm[]) => {

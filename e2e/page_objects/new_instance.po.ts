@@ -36,7 +36,7 @@ export class NewInstancePage {
 
   static async chooseProject(): Promise<any> {
     await Util.waitForPresenceOfElementById('application_form');
-    let waitElementawait = await Util.waitForPresenceOfElementById('singleProjectNameSpan', 15000);
+    const waitElementawait = await Util.waitForPresenceOfElementById('singleProjectNameSpan', 15000);
     if (!waitElementawait) {
       await Util.waitForPresenceOfElementById(this.PROJECT_SELECT_ID);
       await Util.waitForElementToBeClickableById(this.PROJECT_SELECT_ID);
@@ -47,7 +47,7 @@ export class NewInstancePage {
     }
   }
 
-  static async fillBasicForm(name:string=this.BASIC_VM_NAME): Promise<any> {
+  static async fillBasicForm(name: string= this.BASIC_VM_NAME): Promise<any> {
     Util.logMethodCall('Fill new instance basic form');
 
     await this.fillMandatoryFormWith(name, this.DEFAULT_FLAVOR_TITLE, this.UBUNTU_18_TITLE);

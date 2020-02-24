@@ -17,7 +17,6 @@ export class ClusterdetailComponent implements OnInit {
   isLoaded: boolean = false;
   notFoundCluster: boolean = false;
 
-
   constructor(private activatedRoute: ActivatedRoute, private virtualmachineService: VirtualmachineService) {
   }
 
