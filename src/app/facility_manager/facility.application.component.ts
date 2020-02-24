@@ -43,7 +43,7 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
    * @type {Array}
    */
   all_application_modifications: Application [] = [];
-  isHistoryLoaded:boolean=false;
+  isHistoryLoaded: boolean = false;
 
   applications_history: Application [] = [];
 
@@ -96,6 +96,8 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
    * @param {number} facility id of the facility
    */
   getAllApplicationsHistory(facility: number): void {
+          this.isHistoryLoaded = false;
+
     this.applications_history = [];
 
     // todo check if user is VO Admin
@@ -104,7 +106,7 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
         this.isHistoryLoaded = true;
       }
       const newApps: Application [] = this.setNewApplications(res);
-      this.applications_history=newApps;
+      this.applications_history = newApps;
       this.isHistoryLoaded = true;
     });
   }
@@ -201,6 +203,7 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
     this.all_application_modifications = [];
     this.applications_history = [];
     this.getFullApplications(this.selectedFacility ['FacilityId']);
+    this.getAllApplicationsHistory(this.selectedFacility ['FacilityId']);
 
   }
 
