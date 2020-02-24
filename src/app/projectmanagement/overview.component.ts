@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, OnDestroy, ViewChild, Renderer2, Inject, ViewChildren, ElementRef} from '@angular/core';
+import {Component, ElementRef, Inject, Input, OnDestroy, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {Project} from './project.model';
 import {ProjectMember} from './project_member.model'
 import {environment} from '../../environments/environment'
@@ -9,7 +9,7 @@ import * as moment from 'moment';
 import {ProjectMemberApplication} from './project_member_application';
 import {ComputecenterComponent} from './computecenter.component';
 import {Userinfo} from '../userinfo/userinfo.model';
-import {forkJoin, Observable, TimeInterval} from 'rxjs';
+import {forkJoin, Observable} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Application} from '../applications/application.model/application.model';
 import {ApplicationBaseClassComponent} from '../shared/shared_modules/baseClass/application-base-class.component';
@@ -136,11 +136,15 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
     super(userservice, applicationstatusservice, applicationsservice, facilityService);
   }
 
-  delay(ms: number): Promise<any> {
-    return new Promise( resolve => setTimeout(resolve, ms) );
+  async delay(ms: number): Promise<any> {
+    // tslint:disable-next-line:typedef
+    return new Promise((resolve: any) => {
+      setTimeout(resolve, ms)
+    });
   }
 
   setModalOpen(bool: boolean): void {
+    // tslint:disable-next-line:typedef
     (async () => {
         await this.delay(750); // needed, because bootstraps class-toggle-function seems to be too slow
         if (bool) {
@@ -251,7 +255,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
       daysString = ' days';
     }
     if (daysString !== '') {
-      return Math.floor(hours / 24) + daysString;
+      return Math.floor(hours / 24).toString();
     }
 
     return ''

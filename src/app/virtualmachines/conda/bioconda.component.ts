@@ -105,10 +105,12 @@ export class BiocondaComponent implements OnInit {
         const packages_dic: any = res['packages'];
 
         for (const line in packages_dic) {
-          this.all_tools.push({
-                                name: line,
-                                versions: packages_dic[line]
-                              })
+          if (line in packages_dic) {
+            this.all_tools.push({
+                                  name: line,
+                                  versions: packages_dic[line]
+                                })
+          }
         }
         this.toolsPerPage = res['items_per_page'];
         this.total_pages = res['total_items'];
