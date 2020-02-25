@@ -58,6 +58,16 @@ export class FacilityService {
 
   }
 
+  getFacilityGroupsByMemberElixirId(facility: number | string, elixir_id: string): Observable<any> {
+
+    return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/projects/filter/`, {
+      withCredentials: true,
+      params: {elixir_id: elixir_id.toString()}
+
+    })
+
+  }
+
   /**
    * Get all resources assigned to a facility.
    * @param {number} facility id of the facility

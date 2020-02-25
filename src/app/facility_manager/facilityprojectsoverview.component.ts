@@ -90,7 +90,73 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
       });
   }
 
+  getProjectsByMemberElixirId(): void {
+    // tslint:disable-next-line:max-line-length
+    this.facilityservice.getFacilityGroupsByMemberElixirId(this.managerFacilities[0]['FacilityId'], this.filter).subscribe((result: any) => {
+      this.projects_filtered = [];
+      const facility_projects: any = result;
+      const is_pi: boolean = false;
+      const is_admin: boolean = false;
+      for (const group of facility_projects) {
+        const dateCreated: moment.Moment = moment.unix(group['createdAt']);
+        const dateDayDifference: number = Math.ceil(moment().diff(dateCreated, 'days', true));
+        const groupid: string = group['id'];
+
+        const currentCredits: number = Number(group['current_credits']);
+        const approvedCredits: number = Number(group['approved_credits']);
+        const tmp_facility: any = group['compute_center'];
+        let shortname: string = group['shortname'];
+        let compute_center: ComputecenterComponent = null;
+        const lifetime: number = group['lifetime'];
+
+        if (!shortname) {
+          shortname = group['name']
+        }
+        if (tmp_facility) {
+          compute_center = new ComputecenterComponent(
+            tmp_facility['compute_center_facility_id'],
+            tmp_facility['compute_center_name'],
+            tmp_facility['compute_center_login'],
+            tmp_facility['compute_center_support_mail']);
+        }
+
+        const newProject: Project = new Project(
+          Number(groupid),
+          shortname,
+          group['description'],
+          `${dateCreated.date()}.${(dateCreated.month() + 1)}.${dateCreated.year()}`,
+          dateDayDifference,
+          is_pi,
+          is_admin,
+          compute_center,
+          currentCredits,
+          approvedCredits);
+        newProject.Status = group['status'];
+
+        if (lifetime !== -1) {
+          const expirationDate: string = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format('DD.MM.YYYY');
+          const lifetimeDays: number = Math.abs(moment(moment(expirationDate, 'DD.MM.YYYY')
+                                                         .toDate()).diff(moment(dateCreated), 'days'));
+
+          newProject.LifetimeDays = lifetimeDays;
+          newProject.DateEnd = expirationDate;
+          newProject.LifetimeReached = this.lifeTimeReached(lifetimeDays, dateDayDifference)
+
+        }
+        newProject.RealName = group['name'];
+        newProject.Lifetime = lifetime;
+        newProject.OpenStackProject = group['openstack_project'];
+
+        this.projects_filtered.push(newProject);
+      }
+    })
+  }
+
   applyFilter(): void {
+    if (this.filter && this.filter.includes('@elixir-europe.org')) {
+      this.getProjectsByMemberElixirId();
+
+    }
 
     this.projects_filtered = this.projects.filter((project: Project) => this.checkFilter(project));
 
