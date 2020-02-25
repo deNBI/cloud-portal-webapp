@@ -38,8 +38,52 @@
         </div>
 
         <div class="card-body" style="overflow-x: visible; overflow-y: visible">
-          <div class="table-responsive" >
-            <table class="table table-hover table-responsive" >
+          <div class="row">
+            <div class="col-3">
+              <input type="text" placeholder="Filter" name="filter"
+                     [(ngModel)]="filter" (ngModelChange)="filterChanged.next($event)" style="width:100%;">
+            </div>
+            <div class="col-3">
+              <div class="checkbox">
+                <label style="margin-top: 7px;margin-bottom: 0px !important;">
+                  <input type="checkbox"
+                         (change)="changeFilterStatus(project_states[project_states.ACTIVE]);applyFilter();"
+                         checked/>
+                  <span style="margin-left: 5px; bottom: 5px; position: relative;"
+                        class="badge badge-success">{{project_states[project_states.ACTIVE]}}  </span>
+
+                </label>
+              </div>
+
+            </div>
+
+            <div class="col-3">
+              <div class="checkbox">
+                <label style="margin-top: 7px;margin-bottom: 0px !important;">
+                  <input type="checkbox"
+                         (change)="changeFilterStatus(lifetime_states[lifetime_states.EXPIRES_SOON]);applyFilter();"
+                         checked/>
+                  <span style="margin-left: 5px; bottom: 5px; position: relative;"
+                        class="badge badge-warning">{{lifetime_states[lifetime_states.EXPIRES_SOON]}}</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="col-3">
+              <div class="checkbox">
+                <label style="margin-top: 7px;margin-bottom: 0px !important;">
+                  <input type="checkbox"
+                         (change)="changeFilterStatus(lifetime_states[lifetime_states.EXPIRED]);applyFilter();"
+                  />
+                  <span style="margin-left: 5px; bottom: 5px; position: relative;"
+                        class="badge badge-danger">{{lifetime_states[lifetime_states.EXPIRED]}}</span>
+                </label>
+              </div>
+            </div>
+
+          </div>
+          <div class="table-responsive">
+            <table class="table table-hover table-responsive">
               <thead>
               <tr>
                 <th></th>
@@ -52,57 +96,7 @@
               </tr>
               </thead>
               <tbody>
-              <td></td>
-              <td><input  type="text" placeholder="Filter"
-                          name="filterProjectId"
-                          [(ngModel)]="filterProjectId"
-                          (ngModelChange)="applyFilter();">
-              </td>
-              <td><input  type="text" placeholder="Filter"
-                          name="filterProjectName"
-                          [(ngModel)]="filterProjectName"
-                          (ngModelChange)="applyFilter();">
-              </td>
-              <td><input type="text" placeholder="Filter"
-                         name="filterProjectLongName"
-                         [(ngModel)]="filterProjectLongName"
-                         (ngModelChange)="applyFilter();">
-              </td>
-              <td>
-                <div class="col">
-                  <div class="checkbox">
-                    <label>
-                      <input type="checkbox"
-                             (change)="changeFilterStatus(project_states[project_states.ACTIVE]);applyFilter();"
-                             checked/>
-                      <span style="margin-left: 5px"
-                            class="badge badge-success">{{project_states[project_states.ACTIVE]}} </span>
 
-                    </label>
-                  </div>
-                  <div class="checkbox">
-                    <label>
-                      <input type="checkbox"
-                             (change)="changeFilterStatus(lifetime_states[lifetime_states.EXPIRED]);applyFilter();"
-                      />
-                      <span style="margin-left: 5px"
-                            class="badge badge-danger">{{lifetime_states[lifetime_states.EXPIRED]}}</span>
-
-                    </label>
-                  </div>
-                  <div class="checkbox">
-                    <label>
-                      <input type="checkbox"
-                             (change)="changeFilterStatus(lifetime_states[lifetime_states.EXPIRES_SOON]);applyFilter();"
-                      />
-                      <span style="margin-left: 5px"
-                            class="badge badge-warning">{{lifetime_states[lifetime_states.EXPIRES_SOON]}}</span>
-                    </label>
-                  </div>
-                </div>
-
-
-              </td>
               <tr *ngFor="let project of projects_filtered">
 
                 <td>
