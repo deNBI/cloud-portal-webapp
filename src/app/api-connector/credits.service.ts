@@ -67,4 +67,14 @@ export class CreditsService {
       withCredentials: true
     });
   }
+
+  /**
+   * Gets credits history of project.
+   * @param group_id
+   */
+  public getCreditsUsageHistoryOfProject(group_id: number): Observable<{}> {
+    return this.http.get(`${ApiSettings.getApiBaseURL()}creditManager/${group_id}/getCreditsHistory/`, {
+      withCredentials: true
+    });
+  }
 }

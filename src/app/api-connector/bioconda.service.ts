@@ -4,8 +4,8 @@ import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Cookie} from 'ng2-cookies/ng2-cookies';
 import {ResearchEnvironment} from '../virtualmachines/virtualmachinemodels/res-env';
-import {VirtualMachine} from "../virtualmachines/virtualmachinemodels/virtualmachine";
-import {Http} from "@angular/http";
+import {VirtualMachine} from '../virtualmachines/virtualmachinemodels/virtualmachine';
+import {Http} from '@angular/http';
 
 const header: HttpHeaders = new HttpHeaders({
                                               'X-CSRFToken': Cookie.get('csrftoken')
@@ -20,11 +20,9 @@ export class BiocondaService {
   constructor(private http: HttpClient) {
   }
 
-  getAllTools(page: number, name?: string, version?: string, build?: string): Observable<any> {
+  getAllTools(page: number, name?: string): Observable<any> {
     const params: HttpParams = new HttpParams()
       .set('page', page.toString())
-      .set('build', build)
-      .set('version', version)
       .set('name', name);
 
     return this.http.get(`${ApiSettings.getApiBaseURL()}conda/all/`, {
