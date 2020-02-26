@@ -100,7 +100,7 @@
 
   <div class="row" *ngIf="project_application && (project?.UserIsPi ||project?.UserIsAdmin  || !project)">
     <div class="col">
-      <div class="card">
+      <div class="card" style="height: calc(100% - 1.5rem);">
         <div class="card-header">
           <i class="fa fa-align-justify"></i> Actions
         </div>
@@ -191,6 +191,12 @@
               </tbody>
             </table>
 
+          </div>
+          <div class="alert alert-info">
+            <p>Please note that the publications entered on this page are listed publicly on
+              <a href="https://cloud.denbi.de/publications" target="_blank">this page on our website</a>.
+              We kindly ask you to list your publications which have been created
+              during your work in the de.NBI Cloud and/or this project. </p>
           </div>
         </div>
       </div>
