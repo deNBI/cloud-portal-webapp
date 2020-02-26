@@ -47,6 +47,21 @@ export class VirtualmachineService {
     })
   }
 
+  getClusters(page: number, vm_per_site: number, filter?: string): Observable<Clusterinfo[]> {
+    let params: HttpParams = new HttpParams().set('page', page.toString()).set('vm_per_site', vm_per_site.toString());
+
+    if (filter) {
+      params = params.set('filter', filter);
+
+    }
+
+    return this.http.get<Clusterinfo[]>(`${ApiSettings.getApiBaseURL()}clusters/`, {
+      withCredentials: true,
+      headers: header,
+      params: params
+    })
+  }
+
   deleteCluster(cluster_id: string): Observable<void> {
     return this.http.delete<void>(`${ApiSettings.getApiBaseURL()}clusters/${cluster_id}/`, {
       withCredentials: true,

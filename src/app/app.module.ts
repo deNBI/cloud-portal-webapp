@@ -39,6 +39,7 @@ import {UncaughtExceptionHandler} from './error-handler/UncaughtExceptionHandler
 import {CookieService} from 'ngx-cookie-service';
 
 import {TitleHeadbarComponent} from './shared/title-headbar.component';
+import { ClusterinfoComponent } from './virtualmachines/clusters/clusterinfo/clusterinfo.component';
 
 /**
  * App module.
@@ -77,7 +78,7 @@ import {TitleHeadbarComponent} from './shared/title-headbar.component';
               SidebarMinimizeDirective,
               MobileSidebarToggleDirective,
               SidebarOffCanvasCloseDirective,
-              TitleHeadbarComponent
+              TitleHeadbarComponent,
             ],
             providers: [
               {

@@ -26,9 +26,11 @@ import {VmDetailComponent} from './vmdetail/vmdetail.component';
 import { AddClusterComponent } from './clusters/add-cluster/add-cluster.component';
 import { ResourceOverviewComponent } from './resource-overview/resource-overview.component';
 import {ResEnvComponent} from './conda/res-env.component';
-import { ClusterdetailComponent } from './clusterdetail/clusterdetail.component';
+import { ClusterdetailComponent } from './clusters/clusterdetail/clusterdetail.component';
 import { VirtualmachineinfoComponent } from './vmdetail/virtualmachineinfo/virtualmachineinfo.component';
 import {VmstatusComponent} from './vmdetail/vmstatus/vmstatus.component';
+import {ClusterOverviewComponent} from './clusters/clusteroverview/clusterOverview.component';
+import {ClusterinfoComponent} from './clusters/clusterinfo/clusterinfo.component';
 
 /**
  * VM module.
@@ -64,7 +66,9 @@ import {VmstatusComponent} from './vmdetail/vmstatus/vmstatus.component';
               AddClusterComponent,
               ResourceOverviewComponent,
               ResEnvComponent,
+              ClusterinfoComponent,
               ClusterdetailComponent,
+              ClusterOverviewComponent,
               VirtualmachineinfoComponent,
               VmstatusComponent
             ]

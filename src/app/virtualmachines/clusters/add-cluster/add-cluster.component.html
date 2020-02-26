@@ -247,7 +247,7 @@
         </div>
 
         <div class="form-group row"
-             *ngIf="projectDataLoaded && (selectedProjectVmsUsed +2) < selectedProjectVmsMax && (flavors?.length > 0  || selectedFlavor)">
+             *ngIf="projectDataLoaded && (selectedProjectVmsUsed +2) <= selectedProjectVmsMax && (flavors?.length > 0  || selectedFlavor)">
 
           <button style=" margin-left: auto;margin-top: 25px;
     margin-right: auto;
