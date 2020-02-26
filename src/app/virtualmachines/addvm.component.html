@@ -158,8 +158,25 @@
               </div>
 
               <div id="volumeDiv" style="margin-bottom: 15px;">
+                <div class="row">
+                  <label class="col-2"><strong>Volumes</strong></label>
+                  <div class="col-10"></div>
+                </div>
+
+                <div class="row" *ngIf="volumesToMount?.length > 0">
+                  <div class="col-2">Volumes to mount</div>
+                  <div class="col-10">
+                    <div *ngFor="let vol of volumesToMount" class="row">
+                      <div class="col-3">{{vol.volume_name}}</div>
+                      <div class="col-3">{{vol.volume_device}}</div>
+                      <div class="col-2">{{vol.volume_storage}} GB</div>
+                      <div class="col-2"><button></button></div>
+                    </div>
+                  </div>
+                </div>
+
                 <div class="row col-md-12">
-                  <label class="col-md-2"><strong>Volumes</strong></label>
+                  <div class="col-md-2"></div>
                   <div class="col-md-10">
                     <button class="btn btn-light" (click)="toggleShowAddVol();" *ngIf="showAddVol" >
                       Add volume <span class="fa fa-plus-circle"></span>
@@ -202,9 +219,13 @@
                   </div>
                   <div class="col-md-12 row">
                     <div class="col-md-2"></div>
-                    <div class="col-md-10">
+                    <div class="col-md-4">
                       <button class="btn btn-danger" (click)="toggleShowAddVol(); volumeName=''; volumeStorage=0;"
                               *ngIf="!showAddVol">Discard</button>
+                    </div>
+                    <div class="col-4">
+                      <button class="btn btn-danger" (click)="toggleShowAddVol(); this.addVolumeToList();"
+                              *ngIf="!showAddVol">Add</button>
                     </div>
 
                   </div>

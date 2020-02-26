@@ -23,6 +23,7 @@ import {is_vo} from '../shared/globalvar';
 import {TemplateNames} from './conda/template-names';
 import {RandomNameGenerator} from '../shared/randomNameGenerator';
 import {Router} from '@angular/router';
+import {Volume} from "./volumes/volume";
 
 /**
  * Start virtualmachine component.
@@ -75,6 +76,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
   resEnvNeedsName: boolean = false;
   resEnvNeedsTemplate: boolean = false;
   data_loaded: boolean = false;
+  volumesToMount: Volume[];
 
   title: string = 'New Instance';
 
@@ -258,6 +260,15 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 
     });
 
+  }
+
+  addVolumeToList(): void {
+    let newVol: Volume = new Volume();
+    newVol.volume_storage = this.volumeStorage;
+    newVol.volume_name = this.volumeName;
+    newVol.volume_device = "test";
+    this.volumesToMount.push(newVol);
+    console.log('done');
   }
 
   /**
