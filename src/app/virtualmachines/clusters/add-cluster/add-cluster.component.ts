@@ -382,8 +382,8 @@ export class AddClusterComponent implements OnInit {
     const workerFlavor: string = this.selectedWorkerFlavor.name.replace(re, '%2B');
 
     this.virtualmachineservice.startCluster(
-      masterFlavor, this.selectedMasterImage.name,
-      workerFlavor, this.selectedWorkerImage.name,
+      masterFlavor, this.selectedMasterImage,
+      workerFlavor, this.selectedWorkerImage,
       this.workerInstancesCount, this.selectedProject[1]).subscribe(
       (res: any) => {
         if (res['status'] && res['status'] === 'mutex_locked') {

@@ -1,24 +1,8 @@
-<div class="card">
-    <div class="card-header"><span class="font-weight-bold text-muted">Cluster: {{cluster?.cluster_id}}</span></div>
-    <div class="card-body">
+
       <div class="row">
         <div class="col-3">
-          <div [ngSwitch]="cluster?.status">
-            <div *ngSwitchCase="'Running'" [id]="'running_badge_' + cluster?.cluster_id"
-                 class="dot-colorless bg-success pulseAnim" style="width: 15px; height: 15px;">
-            </div>
-            <div *ngSwitchCase="'Creating'" [id]="'creating_badge_' + cluster?.cluster_id"
-                 class="dot-colorless bg-warning" style="width: 15px; height: 15px">
-            </div>
-            <div *ngSwitchCase="'Deleted'" [id]="'deleted_badge_' + cluster?.cluster_id"
-                 class="dot-colorless bg-danger" style="width: 15px; height: 15px">
-            </div>
-            <div *ngSwitchDefault
-                 [id]="'default_badge_' + cluster?.cluster_id"
-                 class="dot-colorless bg-info" style="width: 15px; height: 15px">
-            </div>
-            <span style="margin-left:15px;" class="text-muted font-weight-bold">Status: {{cluster?.status}}</span>
-          </div>
+
+          <app-clusterstatus [cluster]="cluster"></app-clusterstatus>
         </div>
         <div class="col-3">
           <div class="callout callout-success">
@@ -48,4 +32,3 @@
           </div>
         </div>
       </div>
-    </div>
