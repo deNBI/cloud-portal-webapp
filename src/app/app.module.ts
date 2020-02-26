@@ -79,7 +79,7 @@ import { ClusterstatusComponent } from './virtualmachines/clusters/clusterstatus
               SidebarMinimizeDirective,
               MobileSidebarToggleDirective,
               SidebarOffCanvasCloseDirective,
-              TitleHeadbarComponent,
+              TitleHeadbarComponent
             ],
             providers: [
               {

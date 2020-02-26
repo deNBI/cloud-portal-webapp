@@ -67,7 +67,6 @@ export class AddClusterComponent implements OnInit {
 
   cluster_info: Clusterinfo;
 
-
   /**
    * All image of a project.
    */
