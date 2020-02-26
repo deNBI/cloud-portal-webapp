@@ -279,7 +279,7 @@
       </div>
     </div>
 
-  </div>
+</div>
   <div class="row">
     <div class="col-6"
          *ngIf="project && (project_application?.Status ==  application_states.APPROVED || project_application?.Status ==  application_states.MODIFICATION_REQUESTED  || project_application?.Status ==  application_states.MODIFICATION_DECLINED || project_application?.Status ==  application_states.MODIFICATION_DECLINED)">
@@ -333,9 +333,21 @@
         </div>
       </div>
     </div>
-    <div class="col"></div>
-</div>
 
+      <div class="col"
+           *ngIf="is_vo_admin && (project_application?.Status ==  application_states.APPROVED || project_application?.Status ==  application_states.MODIFICATION_REQUESTED  || project_application?.Status ==  application_states.MODIFICATION_DECLINED || project_application?.Status ==  application_states.MODIFICATION_DECLINED)">
+        <div class="card">
+          <div class="card-header">
+            <i class="fa fa-align-justify"></i> Credit Usage history of {{project?.Name }}
+          </div>
+          <div class="card-body">
+            <canvas #creditsChart
+              id="creditsChart" width="400" height="400"
+            >
+            </canvas>
+          </div>
+      </div>
+    </div>
 
 <div bsModal #addUserModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
      aria-hidden="true">
