@@ -18,12 +18,12 @@
       <div class="card border-success flavor-image-card" style="cursor: default;">
         <div class="card-header bg-success text-truncate" data-toggle="tooltip" data-placement="top"
              title="{{selectedTemplate.title}}" (click)="setSelectedTemplate(null)" style="cursor: pointer;">
-          <strong *ngIf="selectedTemplate.title != null">{{selectedTemplate.title}}</strong>
-          <strong *ngIf="selectedTemplate.title == null">{{selectedTemplate.template_name}}</strong>
           <button type="button" class="close"
-                  aria-label="Close">
+          aria-label="Close">
             <i class="fas fa-minus-circle"></i>
           </button>
+          <strong *ngIf="selectedTemplate.title != null">{{selectedTemplate.title}}</strong>
+          <strong *ngIf="selectedTemplate.title == null">{{selectedTemplate.template_name}}</strong>
         </div>
         <div class="card-body">
           <div class="scroll-image">
@@ -71,11 +71,11 @@
                  title="{{template.title}}"
                  style="background-color: #005AA9 !important; color: white !important; cursor: pointer">
               <!-- quickfix -->
-              <strong *ngIf="template.title != null">{{template.title}}</strong>
-              <strong *ngIf="template.title == null">{{template.template_name}}</strong>
               <button type="button" class="close">
                 <i class="fas fa-plus-circle"></i>
               </button>
+              <strong *ngIf="template.title != null">{{template.title}}</strong>
+              <strong *ngIf="template.title == null">{{template.template_name}}</strong>
             </div>
             <div class="card-body">
               <div class="scroll-image">
