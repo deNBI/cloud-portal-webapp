@@ -84,7 +84,7 @@ export class ClusterOverviewComponent implements OnInit, OnDestroy {
 
   constructor(private facilityService: FacilityService,
               private imageService: ImageService, private userservice: UserService,
-              private virtualmachineservice: VirtualmachineService, private fb: FormBuilder,
+              private virtualmachineservice: VirtualmachineService, private fb: FormBuilder
   ) {
 
   }

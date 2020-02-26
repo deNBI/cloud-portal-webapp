@@ -78,7 +78,7 @@ import { ClusterinfoComponent } from './virtualmachines/clusters/clusterinfo/clu
               SidebarMinimizeDirective,
               MobileSidebarToggleDirective,
               SidebarOffCanvasCloseDirective,
-              TitleHeadbarComponent,
+              TitleHeadbarComponent
             ],
             providers: [
               {
