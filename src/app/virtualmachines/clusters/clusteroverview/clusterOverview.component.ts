@@ -33,7 +33,7 @@ export class ClusterOverviewComponent implements OnInit, OnDestroy {
   VirtualMachineStates: VirtualMachineStates = new VirtualMachineStates();
 
   cluster_content: Clusterinfo[] = [];
-  show_connection_infO:boolean=false;
+  show_connection_infO: boolean = false;
   currentPage: number = 1;
   DEBOUNCE_TIME: number = 300;
   FILTER_DEBOUNCE_TIME: number = 2000;

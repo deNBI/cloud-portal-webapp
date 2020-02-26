@@ -6,7 +6,7 @@ import {Clusterinfo} from '../clusterinfo';
  */
 @Component({
              selector: 'app-clusterstatus',
-             templateUrl: './clusterstatus.component.html',
+             templateUrl: './clusterstatus.component.html'
            })
 export class ClusterstatusComponent {
   @Input() cluster: Clusterinfo;
