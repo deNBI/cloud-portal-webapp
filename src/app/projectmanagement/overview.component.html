@@ -1366,7 +1366,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h4 class="modal-title" id="information_modal_title">Information for {{project.Name}}</h4>
-            <button type="button" class="close" style="cursor:pointer" (click)="informationModal.hide()"
+            <button type="button" class="close" style="cursor:pointer" (click)="informationModal.hide(); setModalOpen(false);"
                     aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -1420,6 +1420,12 @@
               </table>
               <app-application-detail [application]="project_application"></app-application-detail>
 
+            </div>
+          </div>
+          <div class="modal-footer">
+            <div class="row" style="margin:auto;">
+              <button type="button" class="btn btn-secondary"
+                      (click)="informationModal.hide(); setModalOpen(false);">Close</button>
             </div>
           </div>
       </div>
