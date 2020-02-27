@@ -55,7 +55,7 @@ export class VirtualmachineService {
   }
 
   startVM(flavor: string, image: Image, servername: string, project: string, projectid: string,
-          http: boolean, https: boolean, udp: boolean, volume_name?: string, volume_storage?: string,
+          http: boolean, https: boolean, udp: boolean, volume_list: Volume[],
           playbook_information?: string, user_key_url?: string): Observable<any> {
 
     const params: HttpParams = new HttpParams()
@@ -64,8 +64,7 @@ export class VirtualmachineService {
       .set('servername', servername)
       .set('project', project)
       .set('projectid', projectid)
-      .set('volume_storage', volume_storage)
-      .set('volume_name', volume_name)
+      .set('volumes', JSON.stringify(volume_list))
       .set('http_allowed', http.toString())
       .set('https_allowed', https.toString())
       .set('udp_allowed', udp.toString())

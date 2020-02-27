@@ -202,11 +202,11 @@
                         <div class="col-md-2"><strong>Name</strong></div>
                         <div class="col-xl-6 col-sm-12 col-md-8">
                           <input type="text" placeholder="Enter a name here..."
-                                 id="volume_name"
+                                 id="volume_name" class="form-control"
                                  [value]="volumeName"
                                  (input)="volumeName = $event.target.value"
-                                 [ngClass]="{'is-invalid':volumeStorage > 0 && volumeName == '',
-                             'is-valid': volumeStorage == 0 || (volumeStorage > 0 && volumeName != '')}" style="width: 100%;">
+                                 [ngClass]="{'is-invalid':!this.checkVolumeName(),
+                             'is-valid':this.checkVolumeName()}" style="width: 100%;">
                         </div>
                       </div>
                       <div class="form-group row">
@@ -222,8 +222,8 @@
                                  appMaxAmount="{{selectedProjectDiskspaceMax - selectedProjectDiskspaceUsed}}"
                                  appInteger
                                  [ngClass]="{
-                                'is-invalid': f.controls.vm_volume_storage?.invalid && (f.controls.vm_volume_storage?.dirty || f.controls.vm_volume_storage?.touched),
-                                'is-valid': f.controls.vm_volume_storage?.valid && (f.controls.vm_volume_storage?.dirty || f.controls.vm_volume_storage?.touched)
+                                'is-invalid': !this.checkStorageNumber() && (f.controls.vm_volume_storage?.dirty || f.controls.vm_volume_storage?.touched),
+                                'is-valid': this.checkStorageNumber() && (f.controls.vm_volume_storage?.dirty || f.controls.vm_volume_storage?.touched)
                                 }">
                           <div class="input-group-append" style="height: auto"><span
                             class="input-group-text"> GB
@@ -393,10 +393,6 @@
           </p>
           <p *ngIf="!selectedImage">- The image you want to run on your VM
           </p>
-          <p *ngIf="volumeStorage != 0 && !volumeName">- A name for your storage volume
-          </p>
-            <p *ngIf="f.controls.vm_volume_storage?.invalid">- A valid volume storage
-          </p>
           <p *ngIf="!gaveOkay && hasTools">- Give your okay to the Bioconda install process
           </p>
           <p *ngIf="resEnvNeedsName">- An url name for your Research-Environment
@@ -415,11 +411,9 @@
                   type="button"
 
                   [disabled]="!vm_name ||
-                   f.controls.vm_volume_storage?.invalid ||
                   started_machine ||
                   !selectedFlavor ||
                   !selectedImage||
-                  (volumeStorage > 0 && volumeName == '') ||
                   (!gaveOkay && hasTools) ||
                   (!resEnvValid && resEnvComponent)"
                   class="btn btn-primary  .btn-lg offset-md-8"

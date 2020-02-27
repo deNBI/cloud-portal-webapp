@@ -263,21 +263,29 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 
   }
 
-  checkVolumeValidity(): boolean {
+  checkVolumeName(): boolean {
     if (!(this.volumeName.length > 0)) {
       return false;
+    } else if (!this.volumeName.match(new RegExp("^[\\w]+$", "i"))) {
+      return false;
     } else {
-      if (!this.volumeName.match(new RegExp("^[\\w]+$", "i"))) {
-        return false;
-        } else if (!(this.volumeStorage > 0)) {
-          return false;
-        }  else if ((this.selectedProjectDiskspaceUsed + this.getStorageInList() + this.volumeStorage)
-          > this.selectedProjectDiskspaceMax) {
-          return false;
-          } else {
-            return true;
-          }
-      }
+      return true;
+    }
+  }
+
+  checkStorageNumber(): boolean {
+    if (!(this.volumeStorage > 0)) {
+      return false;
+    } else if  ((this.selectedProjectDiskspaceUsed + this.getStorageInList() + this.volumeStorage)
+      > this.selectedProjectDiskspaceMax) {
+      return false
+    } else {
+      return true;
+    }
+  }
+
+  checkVolumeValidity(): boolean {
+    return (this.checkStorageNumber() && this.checkVolumeName());
   }
 
 
@@ -288,6 +296,8 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
     newVol.volume_name = this.volumeName;
     newVol.volume_device = 'test';
     this.volumesToMount.push(newVol);
+    this.volumeStorage = 0;
+    this.volumeName = '';
   }
 
   removeVolFromList(idx: number): void {
@@ -407,8 +417,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
       this.virtualmachineservice.startVM(
         flavor_fixed, this.selectedImage, servername,
         project, projectid.toString(), this.http_allowed,
-        this.https_allowed, this.udp_allowed, this.volumeName,
-        this.volumeStorage.toString(), play_information, user_key_url)
+        this.https_allowed, this.udp_allowed, this.volumesToMount, play_information, user_key_url)
         .subscribe((newVm: VirtualMachine) => {
           this.started_machine = false;
 
