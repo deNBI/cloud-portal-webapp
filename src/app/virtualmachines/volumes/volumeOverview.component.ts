@@ -153,7 +153,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
       debounceTime(this.DEBOUNCE_TIME),
       distinctUntilChanged())
       .subscribe(() => {
-        if (this.items_per_page && this.items_per_page >0){
+        if (this.items_per_page && this.items_per_page > 0) {
         if (this.showFacilities) {
           this.getFacilityVolumes()
         } else {

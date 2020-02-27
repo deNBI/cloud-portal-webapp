@@ -1,8 +1,13 @@
-import {Component, ElementRef, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, ElementRef, EventEmitter, HostListener, OnInit, Output, ViewChild} from '@angular/core';
 import {BiocondaService} from '../../api-connector/bioconda.service';
 import {Subject} from 'rxjs';
 import {debounceTime, distinctUntilChanged, switchMap} from 'rxjs/operators';
 import {PaginationComponent} from 'ngx-bootstrap';
+
+export interface CondaVersionBuilds {
+  name: string;
+  versions: string[][];
+}
 
 export interface IBiocondaTool {
   name: string,
@@ -20,9 +25,9 @@ export interface IBiocondaTool {
            })
 export class BiocondaComponent implements OnInit {
   FIRST_PAGE: number = 1;
-  DEBOUNCE_TIME: number = 300;
+  DEBOUNCE_TIME: number = 700;
 
-  all_tools: IBiocondaTool[] = [];
+  all_tools: any[] = [];
 
   chosen_tools: IBiocondaTool[] = [];
 
@@ -36,23 +41,24 @@ export class BiocondaComponent implements OnInit {
 
   filterToolName: string = '';
 
-  filterToolVersion: string = '';
-
-  filterToolBuild: string = '';
   isSearching: boolean;
 
   max_pages: number = 15;
   total_pages: number;
+  window_size: number;
+  MAX_WINDOW_SIZE: number = 1200;
 
   filternameChanged: Subject<string> = new Subject<string>();
-  filterVersionChanged: Subject<string> = new Subject<string>();
-  filterBuildChanged: Subject<string> = new Subject<string>();
 
   @Output() readonly hasTools: EventEmitter<boolean> = new EventEmitter<boolean>();
   @ViewChild('pagination') pagination: PaginationComponent;
   @ViewChild('chosenTable') chosenTable: ElementRef;
 
-  constructor(private condaService: BiocondaService) {
+  @HostListener('window:resize', ['$event']) onResize(event: any): void {
+    this.window_size = window.innerWidth;
+  }
+
+  constructor(private condaService: BiocondaService, private cdr: ChangeDetectorRef) {
   }
 
   pageChanged(event: any): void {
@@ -60,6 +66,8 @@ export class BiocondaComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.window_size = window.innerWidth;
+
     this.getAllTools(this.FIRST_PAGE);
 
     this.filternameChanged
@@ -70,7 +78,7 @@ export class BiocondaComponent implements OnInit {
 
           this.filterToolName = filterName;
 
-          return this.condaService.getAllTools(1, this.filterToolName, this.filterToolVersion, this.filterToolBuild)
+          return this.condaService.getAllTools(1, this.filterToolName)
 
         }))
       .subscribe((res: any) => {
@@ -78,50 +86,31 @@ export class BiocondaComponent implements OnInit {
 
       });
 
-    this.filterVersionChanged
-      .pipe(
-        debounceTime(this.DEBOUNCE_TIME),
-        distinctUntilChanged(), switchMap((filterVersion: string) => {
-          this.isSearching = true;
+  }
 
-          this.filterToolVersion = filterVersion;
+  onChange(event: any): void {
+    this.cdr.detectChanges();
 
-          return this.condaService.getAllTools(1, this.filterToolName, this.filterToolVersion, this.filterToolBuild)
+  }
 
-        }))
-      .subscribe((res: any) => {
-        this.setAllTools(res);
-
-      });
-
-    this.filterBuildChanged
-      .pipe(
-        debounceTime(this.DEBOUNCE_TIME),
-        distinctUntilChanged(), switchMap((filterToolBuild: string) => {
-          this.isSearching = true;
-
-          this.filterToolBuild = filterToolBuild;
-
-          return this.condaService.getAllTools(1, this.filterToolName, this.filterToolVersion, this.filterToolBuild)
-        })).subscribe((res: any) => {
-      this.setAllTools(res);
-
-    });
-
+  getBuildsByVersion(tool: CondaVersionBuilds, version: string): string[] {
+    return tool.versions[version]
   }
 
   getAllTools(page: number): void {
     this.isSearching = true;
-    this.condaService.getAllTools(page, this.filterToolName, this.filterToolVersion, this.filterToolBuild).subscribe(
+    this.condaService.getAllTools(page, this.filterToolName).subscribe(
       (res: any) => {
         this.all_tools = [];
+        const packages_dic: any = res['packages'];
 
-        for (const line of res['packages']) {
-          this.all_tools.push({
-                                name: line['name'],
-                                version: line['version'],
-                                build: line['build']
-                              })
+        for (const line in packages_dic) {
+          if (line in packages_dic) {
+            this.all_tools.push({
+                                  name: line,
+                                  versions: packages_dic[line]
+                                })
+          }
         }
         this.toolsPerPage = res['items_per_page'];
         this.total_pages = res['total_items'];
@@ -130,6 +119,8 @@ export class BiocondaComponent implements OnInit {
 
         this.currentPage = page;
         this.pagination.selectPage(this.currentPage);
+        this.cdr.detectChanges();
+
         this.isSearching = false;
       });
   }
@@ -139,11 +130,13 @@ export class BiocondaComponent implements OnInit {
 
     this.all_tools = [];
 
-    for (const line of res['packages']) {
+    const packages_dic: any = res['packages'];
+
+    // tslint:disable-next-line:forin
+    for (const line in packages_dic) {
       this.all_tools.push({
-                            name: line['name'],
-                            version: line['version'],
-                            build: line['build']
+                            name: line,
+                            versions: packages_dic[line]
                           })
     }
     this.toolsPerPage = res['items_per_page'];
@@ -153,6 +146,8 @@ export class BiocondaComponent implements OnInit {
 
     this.currentPage = 1;
     this.pagination.selectPage(this.currentPage);
+    this.cdr.detectChanges();
+
     this.isSearching = false;
 
   }
@@ -162,32 +157,53 @@ export class BiocondaComponent implements OnInit {
 
   }
 
-  changedVersionFilter(text: string): void {
-    this.filterVersionChanged.next(text);
+  addTool(name: string, version: string, build: string): void {
+    const tool: IBiocondaTool = {name: name, version: version, build: build};
 
+    if (!this.is_tool_name_added(tool.name)) {
+      this.chosen_tools.push(tool);
+    } else {
+      this.chosen_tools.forEach((item: IBiocondaTool, index: number) => {
+        if (tool.name === item.name) {
+          this.chosen_tools.splice(index, 1);
+        }
+
+      });
+      this.chosen_tools.push(tool);
+
+    }
+    this.hasTools.emit(this.hasChosenTools());
   }
 
-  changedBuildFilter(text: string): void {
-    this.filterBuildChanged.next(text);
-
-  }
-
-  add_or_remove(tool: IBiocondaTool): void {
+  removeTool(tool: IBiocondaTool): void {
     let deleted: boolean = false;
+
     this.chosen_tools.forEach((item: IBiocondaTool, index: number) => {
       if (tool.name === item.name && tool.version === item.version && tool.build === item.build) {
         this.chosen_tools.splice(index, 1);
         deleted = true;
-      } else if (tool.name === item.name && (tool.version !== item.version || tool.build !== item.build)) {
-        this.chosen_tools.splice(index, 1);
-        deleted = true;
-        this.chosen_tools.push(tool);
       }
     });
-    if (!deleted) {
-      this.chosen_tools.push(tool);
-    }
+
     this.hasTools.emit(this.hasChosenTools());
+
+  }
+
+  is_tool_name_added(name: string): boolean {
+    let found: boolean = false;
+    this.chosen_tools.forEach((item: IBiocondaTool) => {
+      if (name === item.name) {
+        found = true;
+      }
+    });
+
+    return found;
+  }
+
+  is_added_values(name: string, version: string, build: string): boolean {
+    const tool: IBiocondaTool = {name: name, version: version, build: build};
+
+    return this.is_added(tool);
   }
 
   is_added(tool: IBiocondaTool): boolean {
@@ -212,4 +228,5 @@ export class BiocondaComponent implements OnInit {
   hasChosenTools(): boolean {
     return this.chosen_tools.length > 0;
   }
+
 }

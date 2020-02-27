@@ -1,0 +1,17 @@
+name: WikiLinks Online
+
+on: [pull_request]
+
+jobs:
+  wikilinks-check:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Checking if Wiki Links return Code 200
+      run: |
+        bash src/links/check_links.sh
+        echo $?
+      
+   

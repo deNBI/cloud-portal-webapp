@@ -375,11 +375,11 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
       .subscribe((updated_vm: VirtualMachine) => {
         updated_vm = new VirtualMachine(updated_vm);
 
-                   this.status_changed = 0;
-                   this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
-                   this.selectedVm = updated_vm;
+        this.status_changed = 0;
+        this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
+        this.selectedVm = updated_vm;
 
-                   switch (updated_vm.status) {
+        switch (updated_vm.status) {
                      case VirtualMachineStates.SHUTOFF:
                        this.status_changed = 1;
                        break;

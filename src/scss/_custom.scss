@@ -1,6 +1,5 @@
 // Here you can add other styles
 @import "../node_modules/bootstrap/scss/bootstrap";
-@import url('https://fonts.googleapis.com/css?family=Raleway'); //Raleway-Font as used on landing-page
 
 //de.NBI-Colors:
 
@@ -103,13 +102,48 @@ $simplevmcolour: #00ADEF;
   overflow: hidden;
 }
 
+.rTable {
+  display: table;
+  width: 100%;
+}
+
+.rTableRow {
+  display: table-row;
+}
+
+.rTableHeading {
+  display: table-header-group;
+  background-color: #666666;
+}
+
+.rTableCell, .rTableHead {
+  display: table-cell;
+  padding: 3px 10px;
+  border: 1px solid #999999;
+}
+
+.rTableHeading {
+  display: table-header-group;
+  background-color: #DDD;
+  font-weight: bold;
+}
+
+.rTableFoot {
+  display: table-footer-group;
+  font-weight: bold;
+  background-color: #ddd;
+}
+
+.rTableBody {
+  display: table-row-group;
+}
+
 .sidebar .nav .nav-item {
-  width:100%;
+  width: 100%;
 }
 
 
-.app-header .navbar-brand
-{
+.app-header .navbar-brand {
   width: 100%;
   margin-right: 10px;
 }
@@ -321,8 +355,6 @@ $simplevmcolour: #00ADEF;
     @include button-outline-variant($simplevmcolour, #222222, lighten($simplevmcolour,5%), $simplevmcolour);
   }
   // Google Font as on landing page.
-  @import url('https://fonts.googleapis.com/css?family=Raleway');
-
   .app-body {
     color: $deNBI_darkgrey;
     font-family: 'Raleway', sans-serif;

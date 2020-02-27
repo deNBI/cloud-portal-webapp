@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, OnDestroy, ViewChild, Renderer2, Inject} from '@angular/core';
+import {Component, ElementRef, Inject, Input, OnDestroy, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {Project} from './project.model';
 import {ProjectMember} from './project_member.model'
 import {environment} from '../../environments/environment'
@@ -9,7 +9,7 @@ import * as moment from 'moment';
 import {ProjectMemberApplication} from './project_member_application';
 import {ComputecenterComponent} from './computecenter.component';
 import {Userinfo} from '../userinfo/userinfo.model';
-import {forkJoin, Observable, TimeInterval} from 'rxjs';
+import {forkJoin, Observable} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Application} from '../applications/application.model/application.model';
 import {ApplicationBaseClassComponent} from '../shared/shared_modules/baseClass/application-base-class.component';
@@ -27,7 +27,8 @@ import {WIKI_GROUP_INVITATIONS} from '../../links/links';
 import {Doi} from '../applications/doi/doi';
 import {EdamOntologyTerm} from '../applications/edam-ontology-term';
 import {AutocompleteComponent} from 'angular-ng-autocomplete';
-import {DOCUMENT} from "@angular/common";
+import {DOCUMENT} from '@angular/common';
+import {Chart} from 'chart.js';
 
 /**
  * Projectoverview component.
@@ -49,6 +50,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   ontology_search_keyword: string = 'term';
 
   @ViewChild(NgForm) simpleVmForm: NgForm;
+  @ViewChild('creditsChart') creditsCanvas: ElementRef;
 
   /**
    * If at least 1 flavor is selected.
@@ -99,8 +101,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   largeExamplePossibleHours: number = 0;
   creditsPerHourSmallExample: number;
   creditsPerHourLargeExample: number;
-  smallExamplePossibleDays: string = "";
-  largeExamplePossibleDays: string = "";
+  smallExamplePossibleDays: string = '';
+  largeExamplePossibleDays: string = '';
 
   title: string = 'Project Overview';
   @ViewChild('edam_ontology') edam_ontology: AutocompleteComponent;
@@ -116,6 +118,9 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   private current_credits: number = 0;
   project_application_renewal_lifetime: number;
   private updateCreditsUsedIntervals: number;
+  private updateCreditHistoryIntervals: number;
+
+  creditsChart: any;
 
   constructor(private flavorService: FlavorService,
               private groupService: GroupService,
@@ -131,20 +136,28 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
     super(userservice, applicationstatusservice, applicationsservice, facilityService);
   }
 
-  delay(ms: number): Promise<any> {
-    return new Promise( resolve => setTimeout(resolve, ms) );
+  async delay(ms: number): Promise<any> {
+    // tslint:disable-next-line:typedef
+    return new Promise((resolve: any) => {
+      setTimeout(resolve, ms)
+    });
   }
 
   setModalOpen(bool: boolean): void {
+    // tslint:disable-next-line:typedef
     (async () => {
-        await this.delay(750); //needed, because bootstraps class-toggle-function seems to be too slow
+        await this.delay(750).then().catch(); // needed, because bootstraps class-toggle-function seems to be too slow
         if (bool) {
           this.document.body.classList.add('modal-open');
         } else {
           this.document.body.classList.remove('modal-open');
         }
       }
-    )();
+    )().then().catch();
+  }
+
+  printSometing(text: any): void {
+    console.log(text);
   }
 
   removeEDAMterm(term: EdamOntologyTerm): void {
@@ -172,6 +185,63 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
       }).catch((err: Error) => console.log(err.message));
   }
 
+  fetchCurrentCreditsOfProject(): void {
+    if (this.project_application != null) {
+      this.creditsService.getCurrentCreditsOfProject(Number(this.project_application.PerunId.toString())).toPromise().then(
+        (credits: number) => {
+          this.current_credits = credits;
+        }
+      ).catch((err: Error) => console.log(err.message))
+    } else {
+      console.log(this.project_application)
+    }
+    this.fetchCreditHistoryOfProject();
+  }
+
+  fetchCreditHistoryOfProject(): void {
+    if (this.project != null) {
+      this.creditsService.getCreditsUsageHistoryOfProject(Number(this.project.Id.toString())).toPromise()
+        .then((response: {}) => {
+          // tslint:disable-next-line:triple-equals
+                if (response['data_points'] != undefined) {
+                  const data_points: number[] = response['data_points'];
+                  const ceiling_line: number[] = [];
+                  const ceiling_value: number = Math.max.apply(null, data_points);
+                  // tslint:disable-next-line:id-length prefer-for-of
+                  for (let i: number = 0; i < data_points.length; i++) {
+                    ceiling_line.push(ceiling_value);
+                  }
+                  this.creditsChart = new Chart(this.creditsCanvas.nativeElement, {
+                    type: 'line',
+                    data: {
+                      labels: response['time_points'],
+                      datasets: [{
+                        label: 'Credit Usage',
+                        data: data_points,
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)'
+                      }, {
+                        label: 'Current Credits Used',
+                        data: ceiling_line,
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        fill: false,
+                        bezierCurve: false,
+                        pointRadius: 0,
+                        tooltip: false
+                      }]
+                    },
+                    options: {
+                      animation: {
+                        duration: 0
+                      }
+                    }
+                  })
+                }
+              }
+        ).catch((err: Error) => console.log(err.message));
+    }
+  }
+
   updateExampleCredits(numberOfCredits: number): void {
     const totalHoursSmall: number = Math.round((numberOfCredits / this.creditsPerHourSmallExample));
     const totalHoursLarge: number = Math.round((numberOfCredits / this.creditsPerHourLargeExample)) ;
@@ -189,19 +259,21 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
       daysString = ' days';
     }
     if (daysString !== '') {
-      return Math.floor(hours / 24) + daysString;
+      return Math.floor(hours / 24).toString();
     }
 
     return ''
 }
 
   startUpdateCreditUsageLoop(): void {
-    this.updateCreditsUsedIntervals = setInterval(() =>
+    this.updateCreditsUsedIntervals = setInterval(
+      () =>
         this.creditsService.getCurrentCreditsOfProject(Number(this.project_application.PerunId.toString())).toPromise().then(
           (credits: number) => {
             this.current_credits = credits;
           }
-        ).catch((err: Error) => console.log(err.message)),5000);
+          // tslint:disable-next-line:align
+        ).catch((err: Error) => console.log(err.message)), 5000);
   }
 
   initExampleFlavors(): void {
@@ -414,9 +486,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
     // tslint:disable-next-line:max-line-length
     this.life_time_string = `${this.project_application.DateApproved} -  ${this.getEndDate(this.project_application.Lifetime, this.project_application.DateApproved)}`;
-
   }
-
 
   ngOnInit(): void {
     this.applicationsservice.getEdamOntologyTerms().subscribe((terms: EdamOntologyTerm[]) => {
