@@ -190,8 +190,11 @@
 
                 <div class="row col-md-12">
                   <div class="col-md-2"></div>
-                  <div class="col-md-10">
-                    <button class="btn btn-light" (click)="toggleShowAddVol();" *ngIf="showAddVol" >
+                  <div class="col-md-10"
+                       *ngIf="!(((this.selectedProjectVolumesUsed + this.volumesToMount?.length)
+                    >= this.selectedProjectVolumesMax)
+                    || ((this.selectedProjectDiskspaceUsed + this.getStorageInList()) >= this.selectedProjectDiskspaceMax))">
+                    <button class="btn btn-light" (click)="toggleShowAddVol();" *ngIf="showAddVol">
                       Add volume <span class="fa fa-plus-circle"></span>
                     </button>
                     <div id="addVolumeDiv"  *ngIf="!showAddVol">
@@ -229,6 +232,16 @@
                       </div>
                     </div>
 
+                  </div>
+
+                  <div class="col-10 alert alert-info"
+                  *ngIf="(((this.selectedProjectVolumesUsed + this.volumesToMount?.length)
+                    >= this.selectedProjectVolumesMax) || ((this.selectedProjectDiskspaceUsed + getStorageInList()) >= this.selectedProjectDiskspaceMax))">
+                    <span *ngIf="(this.selectedProjectVolumesUsed + this.volumesToMount?.length)
+                    >= this.selectedProjectVolumesMax">You have reached the maximum number of volumes available
+                    for this project. </span>
+                    <span *ngIf="(this.selectedProjectDiskspaceUsed + getStorageInList() >= this.selectedProjectDiskspaceMax)">
+                      You have reached the maximum amount of storage (in GB) available for this project. </span>
                   </div>
                   <div class="col-md-12 row" *ngIf="!showAddVol">
                     <div class="col-md-2"></div>

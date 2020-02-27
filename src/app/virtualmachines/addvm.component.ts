@@ -268,24 +268,18 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
       return false;
     } else {
       if (!this.volumeName.match(new RegExp("^[\\w]+$", "i"))) {
-        console.log('nope! wrong pattern');
         return false;
-      } else if (!(this.volumeStorage > 0)) {
-        console.log('nope! number too small');
-        return false;
-      } else if ((this.selectedProjectVolumesUsed + this.volumesToMount.length)
-        >= this.selectedProjectVolumesMax) {
-        console.log('nope! to many volumes');
-        return false;
-      } else if ((this.selectedProjectDiskspaceUsed + this.getStorageInList() + this.volumeStorage)
-        > this.selectedProjectDiskspaceMax) {
-        console.log('nope! number too much space used');
-        return false;
-      } else {
-        return true;
+        } else if (!(this.volumeStorage > 0)) {
+          return false;
+        }  else if ((this.selectedProjectDiskspaceUsed + this.getStorageInList() + this.volumeStorage)
+          > this.selectedProjectDiskspaceMax) {
+          return false;
+          } else {
+            return true;
+          }
       }
-    }
   }
+
 
 
   addVolumeToList(): void {
@@ -293,7 +287,6 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
     newVol.volume_storage = this.volumeStorage;
     newVol.volume_name = this.volumeName;
     newVol.volume_device = 'test';
-    console.log(this.volumesToMount);
     this.volumesToMount.push(newVol);
   }
 
