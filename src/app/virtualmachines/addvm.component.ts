@@ -24,7 +24,6 @@ import {TemplateNames} from './conda/template-names';
 import {RandomNameGenerator} from '../shared/randomNameGenerator';
 import {Router} from '@angular/router';
 import {Volume} from './volumes/volume';
-import {forEach} from "@angular/router/src/utils/collection";
 
 /**
  * Start virtualmachine component.
@@ -77,7 +76,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
   resEnvNeedsName: boolean = false;
   resEnvNeedsTemplate: boolean = false;
   data_loaded: boolean = false;
-  volumesToMount: Volume[]= new Array();
+  volumesToMount: Volume[] = [];
 
   title: string = 'New Instance';
 
@@ -285,7 +284,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
   checkStorageNumber(): boolean {
     if (!(this.volumeStorage > 0)) {
       return false;
-    } else if  ((this.selectedProjectDiskspaceUsed + this.getStorageInList() + this.volumeStorage)
+    } else if ((this.selectedProjectDiskspaceUsed + this.getStorageInList() + this.volumeStorage)
       > this.selectedProjectDiskspaceMax) {
       return false
     } else {
