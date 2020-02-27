@@ -154,7 +154,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 
   applyFilter(): void {
     if (this.filter) {
-      this.filter=this.filter.trim()
+      this.filter = this.filter.trim()
     }
     if (this.filter && this.filter.includes('@elixir-europe')) {
       this.getProjectsByMemberElixirId();
