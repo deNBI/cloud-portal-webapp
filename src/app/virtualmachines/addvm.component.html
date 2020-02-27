@@ -162,17 +162,30 @@
                   <label class="col-2"><strong>Volumes</strong></label>
                   <div class="col-10"></div>
                 </div>
-
-                <div class="row" *ngIf="volumesToMount?.length > 0">
+                <div *ngIf="volumesToMount?.length > 0" style="margin-bottom: 5px;" id="volumesToMountTable">
+                <div class="row">
                   <div class="col-2">Volumes to mount</div>
                   <div class="col-10">
-                    <div *ngFor="let vol of volumesToMount" class="row">
-                      <div class="col-3">{{vol.volume_name}}</div>
-                      <div class="col-3">{{vol.volume_device}}</div>
+                    <div *ngFor="let vol of volumesToMount" class="row" id="volumeRow_{{vol.volume_name}}"
+                      style="margin-bottom:5px;">
+                      <div class="col-6">{{vol.volume_name}}</div>
                       <div class="col-2">{{vol.volume_storage}} GB</div>
-                      <div class="col-2"><button></button></div>
+                      <div class="col-2">
+                        <button class="btn btn-danger"
+                                (click)="removeVolFromList(volumesToMount.indexOf(vol));">Remove
+                          <span class="fa fa-trash"></span>
+                        </button>
+                      </div>
                     </div>
                   </div>
+                </div>
+                  <div class="row">
+                    <div class="col-2"></div>
+                    <div class="col-10">
+                      <hr style="color:lightgray;">
+                    </div>
+                  </div>
+
                 </div>
 
                 <div class="row col-md-12">
@@ -217,15 +230,16 @@
                     </div>
 
                   </div>
-                  <div class="col-md-12 row">
+                  <div class="col-md-12 row" *ngIf="!showAddVol">
                     <div class="col-md-2"></div>
                     <div class="col-md-4">
                       <button class="btn btn-danger" (click)="toggleShowAddVol(); volumeName=''; volumeStorage=0;"
-                              *ngIf="!showAddVol">Discard</button>
+                        >Discard</button>
                     </div>
                     <div class="col-4">
-                      <button class="btn btn-danger" (click)="toggleShowAddVol(); this.addVolumeToList();"
-                              *ngIf="!showAddVol">Add</button>
+                      <button class="btn btn-success" (click)="toggleShowAddVol(); this.addVolumeToList();"
+                        [disabled]="!checkVolumeValidity()"
+                      >Add Volume</button>
                     </div>
 
                   </div>

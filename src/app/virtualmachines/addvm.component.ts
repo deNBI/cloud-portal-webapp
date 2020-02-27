@@ -24,6 +24,7 @@ import {TemplateNames} from './conda/template-names';
 import {RandomNameGenerator} from '../shared/randomNameGenerator';
 import {Router} from '@angular/router';
 import {Volume} from './volumes/volume';
+import {forEach} from "@angular/router/src/utils/collection";
 
 /**
  * Start virtualmachine component.
@@ -76,7 +77,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
   resEnvNeedsName: boolean = false;
   resEnvNeedsTemplate: boolean = false;
   data_loaded: boolean = false;
-  volumesToMount: Volume[];
+  volumesToMount: Volume[]= new Array();
 
   title: string = 'New Instance';
 
@@ -262,13 +263,42 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 
   }
 
+  checkVolumeValidity(): boolean {
+    if (!(this.volumeName.length > 0)) {
+      return false;
+    } else {
+      if (!this.volumeName.match(new RegExp("^[\\w]+$", "i"))) {
+        console.log('nope! wrong pattern');
+        return false;
+      } else if (!(this.volumeStorage > 0)) {
+        console.log('nope! number too small');
+        return false;
+      } else if ((this.selectedProjectVolumesUsed + this.volumesToMount.length)
+        >= this.selectedProjectVolumesMax) {
+        console.log('nope! to many volumes');
+        return false;
+      } else if ((this.selectedProjectDiskspaceUsed + this.getStorageInList() + this.volumeStorage)
+        > this.selectedProjectDiskspaceMax) {
+        console.log('nope! number too much space used');
+        return false;
+      } else {
+        return true;
+      }
+    }
+  }
+
+
   addVolumeToList(): void {
     const newVol: Volume = new Volume();
     newVol.volume_storage = this.volumeStorage;
     newVol.volume_name = this.volumeName;
     newVol.volume_device = 'test';
+    console.log(this.volumesToMount);
     this.volumesToMount.push(newVol);
-    console.log('done');
+  }
+
+  removeVolFromList(idx: number): void {
+    this.volumesToMount.splice(idx,1);
   }
 
   /**
@@ -645,5 +675,17 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
   resetChecks(): void {
     this.gaveOkay = false;
     this.hasTools = false;
+  }
+
+  getStorageInList() : number{
+   if (this.volumesToMount.length === 0) {
+     return 0;
+   } else {
+     let storageInList: number = 0;
+     this.volumesToMount.forEach(function(volume) {
+       storageInList = storageInList + volume.volume_storage;
+     });
+     return storageInList;
+   }
   }
 }
