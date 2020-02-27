@@ -23,7 +23,7 @@ import {is_vo} from '../shared/globalvar';
 import {TemplateNames} from './conda/template-names';
 import {RandomNameGenerator} from '../shared/randomNameGenerator';
 import {Router} from '@angular/router';
-import {Volume} from "./volumes/volume";
+import {Volume} from './volumes/volume';
 
 /**
  * Start virtualmachine component.
@@ -263,10 +263,10 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
   }
 
   addVolumeToList(): void {
-    let newVol: Volume = new Volume();
+    const newVol: Volume = new Volume();
     newVol.volume_storage = this.volumeStorage;
     newVol.volume_name = this.volumeName;
-    newVol.volume_device = "test";
+    newVol.volume_device = 'test';
     this.volumesToMount.push(newVol);
     console.log('done');
   }
