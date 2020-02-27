@@ -53,49 +53,27 @@
     </div>
 
     <div class="container-fluid">
-      <div class="row">
-        <div class="col-4">
-          <input type="text" placeholder="Filter" name="filter"
-                 [(ngModel)]="filter" (ngModelChange)="filterChanged.next($event)" style="width:100%;">
-        </div>
-        <div class="col-2">
-          <div class="checkbox">
-            <label style="margin-top: 7px;margin-bottom: 0px !important;">
-              <input type="checkbox"
-                     (change)="changeFilterStatus(VirtualMachineStates.staticACTIVE);applyFilter();"
-                     checked/>
-              <span style="margin-left: 5px; bottom: 5px; position: relative;"
-                    class="badge badge-success">{{VirtualMachineStates.staticACTIVE}}  </span>
-
-            </label>
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <div class="input-group-text">
+            <input type="checkbox" checked (change)="changeFilterStatus(VirtualMachineStates.staticACTIVE)">
+            <span class="badge badge-success">{{VirtualMachineStates.staticACTIVE}}</span>
           </div>
-
-        </div>
-
-        <div class="col-2">
-          <div class="checkbox">
-            <label style="margin-top: 7px;margin-bottom: 0px !important;">
-              <input type="checkbox"
-                     (change)="changeFilterStatus(VirtualMachineStates.staticSHUTOFF);applyFilter();"
-                     checked/>
-              <span style="margin-left: 5px; bottom: 5px; position: relative;"
-                    class="badge badge-warning">{{VirtualMachineStates.staticSHUTOFF}}</span>
-            </label>
+          <div class="input-group-text">
+            <input type="checkbox" checked (change)="changeFilterStatus(VirtualMachineStates.staticSHUTOFF)">
+            <span class="badge badge-warning">{{VirtualMachineStates.staticSHUTOFF}}</span>
+          </div>
+          <div class="input-group-text">
+            <input type="checkbox" (change)="changeFilterStatus(VirtualMachineStates.staticDELETED)">
+            <span class="badge badge-danger">{{VirtualMachineStates.staticDELETED}}</span>
           </div>
         </div>
-
-        <div class="col-2">
-          <div class="checkbox">
-            <label style="margin-top: 7px;margin-bottom: 0px !important;">
-              <input type="checkbox"
-                     (change)="changeFilterStatus(VirtualMachineStates.staticDELETED);applyFilter();"
-                     id="checkbox_deleted"/>
-              <span style="margin-left: 5px; bottom: 5px; position: relative;"
-                    class="badge badge-danger">{{VirtualMachineStates.staticDELETED}}</span>
-            </label>
-          </div>
-        </div>
-        <div class="col-2" *ngIf="vms_content.length > 0">
+        <input type="text" class="form-control" id="all_filter" placeholder="Filter" [(ngModel)]="filter">
+      </div>
+      <div class="input-group">
+        <button class="btn btn-outline-primary" style="width: 100%" (click)="applyFilter()">Click here to set filter!</button>
+      </div>
+      <div class="row justify-content-end col" *ngIf="vms_content.length > 0" style="margin-top: 10px">
           <div class="dropdown" dropdown>
             <button class="btn btn-secondary dropdown-toggle" type="button" id="actionDropdownMenu" data-toggle="dropdown"
                     type="button" aria-haspopup="true" aria-expanded="false" aria-controls="dropdown-split" dropdownToggle id="vmActionsDropdown">
@@ -106,8 +84,6 @@
                       (click)="setToBeDeletedVms(); verifyAllModal.show()">Delete selected VMs</button>
             </div>
           </div>
-
-        </div>
       </div>
 
       <div *ngIf="isSearching" id="search_spinner" style="margin:10px; padding:10px;">
@@ -317,16 +293,6 @@
                   </div>
 
 
-                </div>
-              </div>
-            </div>
-            <div class="card-footer p-x-1 py-h"
-                 *ngIf="(vm?.status ==  this.VirtualMachineStates.staticACTIVE|| vm?.status == this.VirtualMachineStates.staticSHUTOFF) && vm?.cardState == 0">
-              <div class="row">
-                <div class="col">
-                  <a class="font-weight-bold font-xs btn-block text-muted">Please select
-                an option above.
-                  </a>
                 </div>
               </div>
             </div>
