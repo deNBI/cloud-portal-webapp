@@ -57,7 +57,7 @@ export class FormularPage {
     await Util.sendTextToElementById('id_project_application_volume_limit', '2');
     await Util.clickElementById('id_project_application_report_allowed');
     await Util.clickElementById('id_project_application_sensitive_data');
-    await Util.sendTextToElementByName('information_public_title_input', 'A Public Title');
+    // await Util.sendTextToElementByName('information_public_title_input', 'A Public Title');
     await Util.clickElementById('public_description_enabled');
     await Util.sendTextToElementByName('information_description', 'A Public Description');
     await Util.clickElementById('information_resources_checkbox');
