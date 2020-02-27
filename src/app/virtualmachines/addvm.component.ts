@@ -263,6 +263,9 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 
   }
 
+  /**
+   * Checks if the name which is entered for a new volume is valid.
+   */
   checkVolumeName(): boolean {
     if (!(this.volumeName.length > 0)) {
       return false;
@@ -273,6 +276,12 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
     }
   }
 
+
+  /**
+   * Checks if the amount of storage that is entered for a new volume is valid.
+   * Depends on free storage-space in the project and the amount of storage already 'reserved' by the volumes
+   * in the 'volumesToMount'-list.
+   */
   checkStorageNumber(): boolean {
     if (!(this.volumeStorage > 0)) {
       return false;
@@ -284,12 +293,18 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
     }
   }
 
+  /**
+   * Checks if the entered amount of storage and the entered name for a new volume are both okay.
+   * A new volume can only be added to the list, if this function returns true.
+   */
   checkVolumeValidity(): boolean {
     return (this.checkStorageNumber() && this.checkVolumeName());
   }
 
 
-
+  /**
+   *  Adds a new volume to the list of volumes which will be mounted to the machine when it gets started.
+   */
   addVolumeToList(): void {
     const newVol: Volume = new Volume();
     newVol.volume_storage = this.volumeStorage;
@@ -300,6 +315,10 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
     this.volumeName = '';
   }
 
+  /**
+   * Removes the volume at the position idx from the list of volumes, which will be mounted.
+   * @param idx the index of the volume within the list 'volumesToMount'
+   */
   removeVolFromList(idx: number): void {
     this.volumesToMount.splice(idx,1);
   }
@@ -679,6 +698,10 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
     this.hasTools = false;
   }
 
+  /**
+   * Calculates the amount of storage that is used when all volumes which are currently listed will be mounted
+   * to the machine.
+   */
   getStorageInList() : number{
    if (this.volumesToMount.length === 0) {
      return 0;
