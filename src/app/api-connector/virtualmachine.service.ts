@@ -58,7 +58,6 @@ export class VirtualmachineService {
           http: boolean, https: boolean, udp: boolean, volumes: Volume[],
           playbook_information?: string, user_key_url?: string): Observable<any> {
 
-
     const params: HttpParams = new HttpParams()
       .set('flavor', flavor)
       .set('image', JSON.stringify(image))

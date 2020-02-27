@@ -268,13 +268,12 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
   checkVolumeName(): boolean {
     if (!(this.volumeName.length > 0)) {
       return false;
-    } else if (!this.volumeName.match(new RegExp("^[\\w]+$", "i"))) {
+    } else if (!this.volumeName.match(new RegExp('^[\\w]+$', 'i'))) {
       return false;
     } else {
       return true;
     }
   }
-
 
   /**
    * Checks if the amount of storage that is entered for a new volume is valid.
@@ -300,7 +299,6 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
     return (this.checkStorageNumber() && this.checkVolumeName());
   }
 
-
   /**
    *  Adds a new volume to the list of volumes which will be mounted to the machine when it gets started.
    */
@@ -319,7 +317,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
    * @param idx the index of the volume within the list 'volumesToMount'
    */
   removeVolFromList(idx: number): void {
-    this.volumesToMount.splice(idx,1);
+    this.volumesToMount.splice(idx, 1);
   }
 
   /**
@@ -700,7 +698,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
    * Calculates the amount of storage that is used when all volumes which are currently listed will be mounted
    * to the machine.
    */
-  getStorageInList() : number{
+  getStorageInList(): number {
    if (this.volumesToMount.length === 0) {
      return 0;
    } else {
@@ -708,6 +706,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
      this.volumesToMount.forEach(function(volume) {
        storageInList = storageInList + volume.volume_storage;
      });
+
      return storageInList;
    }
   }
