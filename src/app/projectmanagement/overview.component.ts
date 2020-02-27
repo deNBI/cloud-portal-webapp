@@ -156,6 +156,10 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
     )().then().catch();
   }
 
+  printSometing(text: any): void {
+    console.log(text);
+  }
+
   removeEDAMterm(term: EdamOntologyTerm): void {
     const indexOf: number = this.selected_ontology_terms.indexOf(term);
     this.selected_ontology_terms.splice(indexOf, 1);
@@ -482,7 +486,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
     // tslint:disable-next-line:max-line-length
     this.life_time_string = `${this.project_application.DateApproved} -  ${this.getEndDate(this.project_application.Lifetime, this.project_application.DateApproved)}`;
-
   }
 
   ngOnInit(): void {
