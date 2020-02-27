@@ -486,7 +486,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
     // tslint:disable-next-line:max-line-length
     this.life_time_string = `${this.project_application.DateApproved} -  ${this.getEndDate(this.project_application.Lifetime, this.project_application.DateApproved)}`;
-
   }
 
   ngOnInit(): void {
