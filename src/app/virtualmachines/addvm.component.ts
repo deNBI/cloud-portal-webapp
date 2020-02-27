@@ -408,8 +408,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
   startVM(flavor: string, servername: string, project: string, projectid: string | number): void {
     this.create_error = null;
     // tslint:disable-next-line:no-complex-conditionals
-    if (this.selectedImage && flavor && servername && project &&
-      (this.volumeStorage <= 0 || this.volumeStorage > 0 && this.volumeName.length > 0)) {
+    if (this.selectedImage && flavor && servername && project) {
       this.create_error = null;
       this.started_machine = true;
 
