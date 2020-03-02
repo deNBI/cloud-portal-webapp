@@ -28,13 +28,14 @@ describe('Virtual Machine Tests', async function (): Promise<any> {
     await NewInstancePage.fillBasicForm();
     Util.logInfo('Starting');
     await NewInstancePage.submitAndStartVM();
-    Util.logInfo('Waiting for confirmation');
-    const isPresent: boolean = await NewInstancePage.waitForConfirmation();
-    expect(isPresent).toBeTruthy();
+    Util.logInfo('Redirect Modal should be present');
+    await NewInstancePage.isRedirectModalPresent();
+
     Util.logInfo('Saving basic vm name');
     const vm_name: string = await NewInstancePage.getVMName();
+    Util.logInfo(vm_name);
     await vmOverviewPage.setBasicVMName(vm_name);
-    await NewInstancePage.closeInfoModal();
+    await Util.waitForPage('/virtualmachines/vmOverview')
   });
 
   it('should start a basic vm with a volume', async function (): Promise<any> {
@@ -48,14 +49,15 @@ describe('Virtual Machine Tests', async function (): Promise<any> {
     await NewInstancePage.setVolume();
     Util.logInfo('Starting');
     await NewInstancePage.submitAndStartVM();
-    Util.logInfo('Waiting for confirmation');
-    const isVMPresent: boolean = await NewInstancePage.waitForConfirmation();
-    expect(isVMPresent).toBeTruthy();
     const vm_name: string = await NewInstancePage.getVMName();
+    Util.logInfo(vm_name)
+
     await vmOverviewPage.setVolumeVMName(vm_name);
-    await NewInstancePage.closeInfoModal();
+    browser.sleep(8000)
+
     Util.logInfo('Checking volume overview if volume present');
     await VolumeOverviewPage.navigateToVolumeOverview();
+    browser.sleep(8000)
     const isVolumePresent: boolean = await VolumeOverviewPage.isVolumePresent();
     expect(isVolumePresent).toBeTruthy();
     Util.logInfo('------------------------------Start virtual machine tests: ended');
@@ -117,10 +119,8 @@ describe('Virtual Machine Tests', async function (): Promise<any> {
 
     Util.logInfo('Starting');
     await NewInstancePage.submitAndStartVM();
-    Util.logInfo('Waiting for confirmation');
-    const isVMPresent: boolean = await NewInstancePage.waitForConfirmation();
-    expect(isVMPresent).toBeTruthy();
-    await NewInstancePage.closeInfoModal();
+    await Util.waitForPage('/virtualmachines/vmOverview');
+
     Util.logInfo('------------------------------Start virtual machine with snapshot ended');
   });
 
@@ -135,6 +135,7 @@ describe('Virtual Machine Tests', async function (): Promise<any> {
 
   it('should delete the snapshot of the basic vm', async function (): Promise<any> {
     Util.logHeader('Deleting the snapshot of the basic vm');
+    await SnapshotOverviewPage.navigateToSnapshotOverview();
     await SnapshotOverviewPage.deleteBasicSnapshot();
     const isDeleted: boolean = await SnapshotOverviewPage.isBasicSnapshotDeleted();
     expect(isDeleted).toBeTruthy();
@@ -168,14 +169,11 @@ describe('Virtual Machine Tests', async function (): Promise<any> {
     await NewInstancePage.fillBasicForm();
     Util.logInfo('Starting');
     await NewInstancePage.submitAndStartVM();
-    Util.logInfo('Waiting for confirmation');
-    const isPresent: boolean = await NewInstancePage.waitForConfirmation();
-    expect(isPresent).toBeTruthy();
     Util.logInfo('Saving basic vm name');
     const vm_name: string = await NewInstancePage.getVMName();
+    Util.logInfo(vm_name);
     await vmOverviewPage.setBasicVMName(vm_name);
-    await vmDetailPage.setBasicVMName(vm_name);
-    await NewInstancePage.closeInfoModal();
+    await Util.waitForPage('/virtualmachines/vmOverview')
   });
 
   it('should show vm detail page with base functions for virtual machines working',

@@ -344,11 +344,6 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
       const re: RegExp = /\+/gi;
 
       const flavor_fixed: string = flavor.replace(re, '%2B');
-      if (this.hasTools) {
-        this.progress_bar_width = this.TWENTY_FIVE_PERCENT;
-      } else {
-        this.progress_bar_width = this.THIRTY_THIRD_PERCENT;
-      }
       // Playbook and Research-Environment stuff
       let play_information: string = this.getPlaybookInformation();
       if (play_information !== '{}') {
@@ -367,18 +362,15 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
         this.https_allowed, this.udp_allowed, this.volumeName,
         this.volumeStorage.toString(), play_information, user_key_url)
         .subscribe((newVm: VirtualMachine) => {
+          this.newVm = newVm;
           this.started_machine = false;
 
           if (newVm.status === 'Build') {
-            this.progress_bar_status = this.BUILD_STATUS;
-            this.progress_bar_animated = '';
-            this.progress_bar_animated = this.ANIMATED_PROGRESS_BAR;
-            if (this.hasTools) {
-              this.progress_bar_width = this.TWENTY_FIVE_PERCENT;
-            } else {
-              this.progress_bar_width = this.THIRTY_THIRD_PERCENT;
-            }
-            this.check_status_loop(newVm.openstackid);
+            setTimeout(
+              () => {
+            this.router.navigate(['/virtualmachines/vmOverview']).then().catch()
+              },2000)
+
 
           } else if (newVm.status === 'mutex_locked') {
             setTimeout(
@@ -387,11 +379,12 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
               },
               1000)
           } else if (newVm.status) {
-            this.progress_bar_status = this.CREATING_STATUS;
             this.newVm = newVm;
-            this.check_status_loop(newVm.openstackid);
+           setTimeout(
+              () => {
+            this.router.navigate(['/virtualmachines/vmOverview']).then().catch()
+              },2000)
           } else {
-            this.progress_bar_status = this.CREATING_STATUS;
             this.loadProjectData();
             this.create_error = <IResponseTemplate><any>newVm;
           }
@@ -403,11 +396,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
       this.newVm = null;
 
     }
-    setTimeout(() => {
-                 this.router.navigate(['/virtualmachines/vmOverview']).then().catch()
-               }
-      ,
-               2000);
+
   }
 
   getPlaybookInformation(): string {
