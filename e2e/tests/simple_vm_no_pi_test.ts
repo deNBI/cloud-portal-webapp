@@ -19,7 +19,7 @@ describe('Simple Application Test', function (): void {
   });
 
   it('should fill the simple vm form', async function (): Promise<any> {
-    await FormularPage.fillApplicationFormularNoPi(Util.SIMPLE_VM_APPLICATION_NAME_NO_PI);
+    await FormularPage.fillApplicationFormular(Util.SIMPLE_VM_APPLICATION_NAME_NO_PI);
 
   });
 

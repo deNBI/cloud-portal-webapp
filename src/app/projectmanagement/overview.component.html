@@ -107,7 +107,7 @@
         <div class="card-body">
           <div class="btn-group col-12">
             <button id="show_information_btn"
-                    (click)="informationModal.show();getFacilityProject(); printSometing('test');"
+                    (click)="informationModal.show();getFacilityProject();"
                     type="button"
                     class="btn btn-info" style="margin-bottom:5px;margin-right:5px">
               <i class="fa fa-info-circle"></i>&nbsp;
@@ -1361,8 +1361,8 @@
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h4 class="modal-title" id="information_modal_title">Information for {{project.Name}}</h4>
-            <button type="button" class="close" style="cursor:pointer" (click)="informationModal.hide(); setModalOpen(false);"
+            <h4 class="modal-title" id="information_modal_title">Information for {{project?.Name}}</h4>
+            <button type="button" class="close" id="close_info_modal" style="cursor:pointer" (click)="informationModal.hide(); setModalOpen(false);"
                     aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
