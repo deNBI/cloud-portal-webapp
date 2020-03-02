@@ -1,6 +1,5 @@
 // Here you can add other styles
 @import "../node_modules/bootstrap/scss/bootstrap";
-@import url('https://fonts.googleapis.com/css?family=Raleway'); //Raleway-Font as used on landing-page
 
 //de.NBI-Colors:
 
@@ -356,8 +355,6 @@ $simplevmcolour: #00ADEF;
     @include button-outline-variant($simplevmcolour, #222222, lighten($simplevmcolour,5%), $simplevmcolour);
   }
   // Google Font as on landing page.
-  @import url('https://fonts.googleapis.com/css?family=Raleway');
-
   .app-body {
     color: $deNBI_darkgrey;
     font-family: 'Raleway', sans-serif;
