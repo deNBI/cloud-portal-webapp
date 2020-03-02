@@ -181,6 +181,11 @@
                        (click)="getActiveVmsByProject(volume.volume_projectid);setSelectedVolume(volume);attachModal.show();">Attach
                       Volume</a>
                   </li>
+                  <li *ngIf="!volume.volume_virtualmachine && volume.volume_status != VolumeStates.staticERROR"
+                      role="menuitem">
+                    <a class="dropdown-item"
+                       (click)="extendVolume(volume);">Extend Volume</a>
+                  </li>
                   <li role="menuitem">
                     <a class="dropdown-item"
                        (click)="setSelectedVolume(volume);renameModal.show();">Rename

@@ -189,6 +189,10 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
     )
   }
 
+  extendVolume(volume: Volume): void {
+    this.vmService.extendVolume(volume.volume_openstackid, '5').subscribe()
+  }
+
   /**
    * Load volumes depending on page.
    * @param event
