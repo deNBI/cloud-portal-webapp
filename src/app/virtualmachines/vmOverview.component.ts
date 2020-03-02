@@ -44,7 +44,6 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
   vms_content: VirtualMachine[] = [];
   currentPage: number = 1;
   DEBOUNCE_TIME: number = 300;
-  FILTER_DEBOUNCE_TIME: number = 2000;
 
   filter_status_list: string[] = [VirtualMachineStates.ACTIVE, VirtualMachineStates.SHUTOFF];
   isSearching: boolean = true;
@@ -123,7 +122,6 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 
   vmPerPageChange: Subject<number> = new Subject<number>();
 
-  filterChanged: Subject<string> = new Subject<string>();
   snapshotSearchTerm: Subject<string> = new Subject<string>();
 
   actionsForm: FormGroup;
@@ -151,6 +149,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
     if (typeof(this.vm_per_site) !== 'number' || this.vm_per_site <= 0) {
       this.vm_per_site = 7;
     }
+
     if (this.tab === 'own') {
       this.getVms()
     } else if (this.tab === 'all') {
@@ -544,14 +543,6 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
       this.managerFacilities = result;
       this.selectedFacility = this.managerFacilities[0];
     });
-
-    this.filterChanged
-      .pipe(
-        debounceTime(this.FILTER_DEBOUNCE_TIME),
-        distinctUntilChanged())
-      .subscribe(() => {
-        this.applyFilter();
-      });
 
     this.vmPerPageChange.pipe(
       debounceTime(this.DEBOUNCE_TIME),
