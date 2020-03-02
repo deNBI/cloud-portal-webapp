@@ -50,14 +50,14 @@ describe('Virtual Machine Tests', async function (): Promise<any> {
     Util.logInfo('Starting');
     await NewInstancePage.submitAndStartVM();
     const vm_name: string = await NewInstancePage.getVMName();
-    Util.logInfo(vm_name)
+    Util.logInfo(vm_name);
 
     await vmOverviewPage.setVolumeVMName(vm_name);
-    browser.sleep(8000)
+    browser.sleep(8000).then().catch();
 
     Util.logInfo('Checking volume overview if volume present');
     await VolumeOverviewPage.navigateToVolumeOverview();
-    browser.sleep(8000)
+    browser.sleep(8000).then().catch();
     const isVolumePresent: boolean = await VolumeOverviewPage.isVolumePresent();
     expect(isVolumePresent).toBeTruthy();
     Util.logInfo('------------------------------Start virtual machine tests: ended');
