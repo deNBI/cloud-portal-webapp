@@ -1,3 +1,11 @@
+##  (2020-03-02)
+
+
+#### Features
+
+* **vm overview:**  add set filter button, remove pipes ([cd35c0b6](cd35c0b6))
+
+
 ##  (2020-02-27)
 
 
