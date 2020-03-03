@@ -9,6 +9,8 @@ export class NewInstancePage {
   private static PROJECT_SELECT_ID: string = 'projectSelect';
   private static PROJECT_NAME: string = `id_option_${Util.SIMPLE_VM_APPLICATION_NAME}`;
   private static BASIC_VM_NAME: string = Util.BASIC_VM_NAME;
+  private static REDIRECT_MODAL: string = 'redirect_modal';
+  private static NEW_INSTANCE_NAME_SPAN: string = 'new_vm_name';
   private static VOLUME_VM_NAME: string = Util.VOLUME_VM_NAME;
   private static ID_INSTANCE_NAME: string = 'id_instance_name';
   private static DEFAULT_FLAVOR_TITLE: string = 'de.NBI default';
@@ -76,10 +78,16 @@ export class NewInstancePage {
 
     await Util.waitForElementToBeClickableById(this.START_BUTTON);
     await Util.clickElementById(this.START_BUTTON);
+    // await Util.waitForPage('/virtualmachines/vmOverview')
   }
 
   static async waitForConfirmation(): Promise<boolean> {
     return await Util.waitForPresenceOfElementById(this.OVERVIEW_BUTTON, Util.LONG_TIMEOUT);
+  }
+
+  static async isRedirectModalPresent(): Promise<boolean> {
+    return await Util.waitForPresenceOfElementById(this.REDIRECT_MODAL);
+
   }
 
   static async setVolume(): Promise<any> {
@@ -97,9 +105,10 @@ export class NewInstancePage {
   }
 
   static async getVMName(): Promise<string> {
-    await Util.waitForPresenceByElement(element(by.id(this.HOW_TO_CONNECT)));
+    await Util.waitForPresenceOfElementById(this.REDIRECT_MODAL);
+    await Util.waitForPresenceOfElementById(this.NEW_INSTANCE_NAME_SPAN);
 
-    return await element(by.id(this.HOW_TO_CONNECT)).element(by.id(this.HTC_VM_NAME)).getText();
+    return await element(by.id(this.NEW_INSTANCE_NAME_SPAN)).getAttribute('textContent');
   }
 
 }
