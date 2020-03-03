@@ -164,7 +164,6 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
                                             this.isSearching = true;
 
                                             this.filter = filter.trim();
-                                            console.log(this.filter)
 
                                             return this.vmService.getVolumesByUser(this.items_per_page, this.currentPage, this.filter)
                                           }
