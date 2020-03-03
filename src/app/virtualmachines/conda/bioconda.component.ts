@@ -76,7 +76,7 @@ export class BiocondaComponent implements OnInit {
         distinctUntilChanged(), switchMap((filterName: string) => {
           this.isSearching = true;
 
-          this.filterToolName = filterName;
+          this.filterToolName = filterName.trim();
 
           return this.condaService.getAllTools(1, this.filterToolName)
 
