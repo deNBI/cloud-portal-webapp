@@ -38,7 +38,7 @@
         <pagination
           [totalItems]="total_items" [itemsPerPage]="items_per_page"
           (pageChanged)="pageChanged($event)" [(ngModel)]="currentPage"
-          [boundaryLinks]="true" [maxSize]="total_pages" [rotate]="false" #pagination>
+          [boundaryLinks]="true" [maxSize]="5" [rotate]="false" #pagination>
         </pagination>
       </div>
       <div class="input-group  col-3">
@@ -283,7 +283,7 @@
                     <a class="font-weight-bold font-xs btn-block text-muted"
                        [id]="'restartVMButton_' + vm?.name"
                        (click)="selectedVm=vm;submitRestartModal.show();" href="#" onClick="return false;">
-                      &lt;restart vm&gt;
+                      &lt;resume vm&gt;
                     </a>
                   </div>
                   <div class="col-md-2"
