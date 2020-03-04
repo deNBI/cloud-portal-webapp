@@ -186,6 +186,7 @@ export class SnapshotOverviewComponent implements OnInit {
 
           this.filter = filterName.trim();
           if (this.showFacilities) {
+            // tslint:disable-next-line:max-line-length
             return this.facilityService.getFacilitySnapshots(this.selectedFacility['FacilityId'], this.currentPage, this.items_per_page, this.filter)
           } else {
             return this.imageService.getSnapshotsByUser(this.currentPage, this.items_per_page, this.filter)
