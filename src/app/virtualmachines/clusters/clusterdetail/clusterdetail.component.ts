@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {Clusterinfo} from '../clusters/clusterinfo';
-import {VirtualmachineService} from '../../api-connector/virtualmachine.service';
-import {VirtualMachineStates} from '../virtualmachinemodels/virtualmachinestates';
-import {VirtualMachine} from '../virtualmachinemodels/virtualmachine';
+import {Clusterinfo} from '../clusterinfo';
+import {VirtualmachineService} from '../../../api-connector/virtualmachine.service';
+import {VirtualMachineStates} from '../../virtualmachinemodels/virtualmachinestates';
+import {VirtualMachine} from '../../virtualmachinemodels/virtualmachine';
 
 /**
  * Clusterdetail component.
