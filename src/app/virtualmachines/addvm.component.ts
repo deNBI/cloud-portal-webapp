@@ -23,6 +23,7 @@ import {is_vo} from '../shared/globalvar';
 import {TemplateNames} from './conda/template-names';
 import {RandomNameGenerator} from '../shared/randomNameGenerator';
 import {Router} from '@angular/router';
+import {Volume} from './volumes/volume';
 
 /**
  * Start virtualmachine component.
@@ -75,6 +76,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
   resEnvNeedsName: boolean = false;
   resEnvNeedsTemplate: boolean = false;
   data_loaded: boolean = false;
+  volumesToMount: Volume[] = [];
 
   title: string = 'New Instance';
 
@@ -85,6 +87,8 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
   conda_img_path: string = `static/webapp/assets/img/conda_logo.svg`;
 
   singleProject: boolean = false;
+
+  showAddVol: boolean = true;
 
   /**
    * All image of a project.
@@ -259,12 +263,77 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
   }
 
   /**
+   * Checks if the name which is entered for a new volume is valid.
+   */
+  checkVolumeName(): boolean {
+    if (!(this.volumeName.length > 0)) {
+      return false;
+    } else if (!this.volumeName.match(new RegExp('^[\\w]+$', 'i'))) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  /**
+   * Checks if the amount of storage that is entered for a new volume is valid.
+   * Depends on free storage-space in the project and the amount of storage already 'reserved' by the volumes
+   * in the 'volumesToMount'-list.
+   */
+  checkStorageNumber(): boolean {
+    if (!(this.volumeStorage > 0)) {
+      return false;
+    } else if ((this.selectedProjectDiskspaceUsed + this.getStorageInList() + this.volumeStorage)
+      > this.selectedProjectDiskspaceMax) {
+      return false
+    } else {
+      return true;
+    }
+  }
+
+  /**
+   * Checks if the entered amount of storage and the entered name for a new volume are both okay.
+   * A new volume can only be added to the list, if this function returns true.
+   */
+  checkVolumeValidity(): boolean {
+    return (this.checkStorageNumber() && this.checkVolumeName());
+  }
+
+  /**
+   *  Adds a new volume to the list of volumes which will be mounted to the machine when it gets started.
+   */
+  addVolumeToList(): void {
+    const newVol: Volume = new Volume();
+    newVol.volume_storage = this.volumeStorage;
+    newVol.volume_name = this.volumeName;
+    newVol.volume_device = 'test';
+    this.volumesToMount.push(newVol);
+    this.volumeStorage = 0;
+    this.volumeName = '';
+  }
+
+  /**
+   * Removes the volume at the position idx from the list of volumes, which will be mounted.
+   * @param idx the index of the volume within the list 'volumesToMount'
+   */
+  removeVolFromList(idx: number): void {
+    this.volumesToMount.splice(idx, 1);
+  }
+
+  /**
    * Validate the public key of the user.
    */
   validatePublicKey(): boolean {
 
     return /ssh-rsa AAAA[0-9A-Za-z+/]+[=]{0,3}( [^@]+@[^@]+)?/.test(this.userinfo.PublicKey)
 
+  }
+
+  /**
+   * Toggles the state of the showAddVol Boolean
+   */
+  toggleShowAddVol(): void {
+    this.showAddVol = !this.showAddVol;
   }
 
   /**
@@ -336,8 +405,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
   startVM(flavor: string, servername: string, project: string, projectid: string | number): void {
     this.create_error = null;
     // tslint:disable-next-line:no-complex-conditionals
-    if (this.selectedImage && flavor && servername && project &&
-      (this.volumeStorage <= 0 || this.volumeStorage > 0 && this.volumeName.length > 0)) {
+    if (this.selectedImage && flavor && servername && project) {
       this.create_error = null;
       this.started_machine = true;
 
@@ -359,8 +427,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
       this.virtualmachineservice.startVM(
         flavor_fixed, this.selectedImage, servername,
         project, projectid.toString(), this.http_allowed,
-        this.https_allowed, this.udp_allowed, this.volumeName,
-        this.volumeStorage.toString(), play_information, user_key_url)
+        this.https_allowed, this.udp_allowed, this.volumesToMount, play_information, user_key_url)
         .subscribe((newVm: VirtualMachine) => {
           this.newVm = newVm;
           this.started_machine = false;
@@ -615,5 +682,22 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
   resetChecks(): void {
     this.gaveOkay = false;
     this.hasTools = false;
+  }
+
+  /**
+   * Calculates the amount of storage that is used when all volumes which are currently listed will be mounted
+   * to the machine.
+   */
+  getStorageInList(): number {
+   if (this.volumesToMount.length === 0) {
+     return 0;
+   } else {
+     let storageInList: number = 0;
+     this.volumesToMount.forEach((volume: Volume) => {
+       storageInList = storageInList + volume.volume_storage;
+     });
+
+     return storageInList;
+   }
   }
 }

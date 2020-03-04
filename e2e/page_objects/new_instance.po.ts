@@ -28,6 +28,8 @@ export class NewInstancePage {
   private static OPTIONAL_ACCORDION: string = 'optional_accordion';
   private static HOW_TO_CONNECT: string = 'how_to_connect_id';
   private static HTC_VM_NAME: string = 'instance_name';
+  private static ADD_VOLUME_FORM_BUTTON: string = 'openAddVolumeFormButton';
+  private static ADD_VOLUME_CONFIRMATION_BUTTON: string = 'addVolumeConfirmationButton';
 
   static async getNewInstanceTab(): Promise<any> {
     Util.logMethodCall('Navigating to New Instance Tab');
@@ -93,11 +95,12 @@ export class NewInstancePage {
   static async setVolume(): Promise<any> {
     Util.logMethodCall('Set Volume');
 
-    await Util.clickElementById(this.OPTIONAL_ACCORDION);
+    await Util.clickElementById(this.ADD_VOLUME_FORM_BUTTON);
     console.log('Setting Volume name');
     await Util.sendTextToElementById(this.VOLUME_NAME_ID, Util.VOLUME_NAME);
     console.log('Setting Volume space');
     await Util.sendTextToElementById(this.VOLUME_SPACE_ID, this.VOLUME_SPACE);
+    await Util.clickElementById(this.ADD_VOLUME_CONFIRMATION_BUTTON);
   }
 
   static async closeInfoModal(): Promise<any> {
