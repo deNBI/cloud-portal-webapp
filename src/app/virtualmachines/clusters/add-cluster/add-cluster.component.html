@@ -45,9 +45,10 @@
 
           <form id="application_form" #f="ngForm"
                 class="form-horizontal">
-            <div class="form-group row">
+            <div class="form-group row col-md-12">
               <label class="col-md-2 form-control-label"><strong>Project*</strong></label>
-              <span *ngIf="client_avaiable && !projectDataLoaded" class="spinner-border text-info"></span>
+              <span *ngIf="client_avaiable && (!projectDataLoaded || !flavors_loaded)"
+                    class="spinner-border text-info"></span>
 
 
               <div class="col-md-8">
@@ -69,7 +70,7 @@
               </div>
 
             </div>
-            <div *ngIf="client_avaiable && projectDataLoaded">
+            <div *ngIf="client_avaiable && projectDataLoaded && flavors_loaded">
               <app-resource-overview [selectedProjectCoresMax]="selectedProjectCoresMax"
                                      [selectedProjectCoresUsed]="selectedProjectCoresUsed"
                                      [selectedProjectDiskspaceMax]="selectedProjectDiskspaceMax"
@@ -85,29 +86,34 @@
                                      [newCores]="newCores" [newRam]="newRam" [newGpus]="newGpus"
                                      [newVms]="newVms"
                                      [showAdditionalRes]="true"></app-resource-overview>
-              <div class="alert alert-primary" role="alert"
-                   *ngIf="selectedProject && (selectedProjectVmsUsed + 2 ) >= selectedProjectVmsMax">
-                The limit for virtualmachines is too low for your project to start a new cluster.
-                Your principal
-                investigator can request more
-                resources if necessary.
+              <accordion class="col">
 
-              </div>
-              <div class="alert alert-primary" role="alert"
-                   *ngIf="selectedProject && selectedProjectVmsUsed < selectedProjectVmsMax && flavors_loaded && flavors.length == 0 && !selectedFlavor">
-                There are too few cores and not enough ram available for this project to start a new machine.
-                Your principal investigator can request more
-                resources if necessary.
-              </div>
+                <div>
+                  <div class="alert alert-primary" role="alert"
+                       *ngIf="selectedProject && (selectedProjectVmsUsed + 2 ) > selectedProjectVmsMax">
+                    The limit for virtualmachines is too low for your project to start a new cluster.
+                    Your principal
+                    investigator can request more
+                    resources if necessary.
+
+                  </div>
+                  <div class="alert alert-primary " role="alert"
+                       *ngIf="selectedProject && selectedProjectVmsUsed < selectedProjectVmsMax && flavors_loaded && flavors.length == 0 && !selectedFlavor">
+                    There are too few cores and not enough ram available for this project to start a new machine.
+                    Your principal investigator can request more
+                    resources if necessary.
+                  </div>
+                </div>
+              </accordion>
 
 
-              <div
-                *ngIf="(selectedProjectVmsUsed +2) <= selectedProjectVmsMax && (flavors?.length > 0 || selectedFlavor)">
+              <div>
 
-                <accordion class="col-md-12">
+                <accordion class="col"
+                           *ngIf="selectedProject && projectDataLoaded && (selectedProjectVmsUsed +2) <= selectedProjectVmsMax && (flavors.length != 0 || selectedFlavor) && images?.length> 0">
 
-                  <accordion-group #masterInstanceGroup
-                                   *ngIf="selectedProject && projectDataLoaded && selectedProjectVmsUsed < selectedProjectVmsMax && (flavors.length != 0 || selectedFlavor)">
+                  <accordion-group #masterInstanceGroup [isOpen]="true"
+                  >
                     <div accordion-heading style="width: 100%; cursor: pointer"><strong>Master Instance</strong>
                       <i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
                             'icon-arrow-up': masterInstanceGroup.isOpen, 'icon-arrow-down': !masterInstanceGroup.isOpen}"></i>
@@ -142,15 +148,19 @@
 
 
                   </accordion-group>
+
+                  <div class="alert alert-info " role="alert"
+                       *ngIf="(!selectedMasterFlavor || !selectedMasterImage) &&  (selectedProjectVmsUsed + 2 ) <= selectedProjectVmsMax">
+                    Please select a master instance configuration before selecting the worker instances!
+                  </div>
                 </accordion>
-                <div class="alert alert-info " role="alert" *ngIf="!selectedMasterFlavor || !selectedMasterImage">
-                  Please select a master instance configuration before selecting the worker instances!
-                </div>
-                <accordion class="col-md-12 ">
+
+                <accordion class="col">
 
                   <accordion-group #workerInstancesGroup [isDisabled]="!selectedMasterFlavor || !selectedMasterImage"
+                                   (click)="resizeFix()"
 
-                                   *ngIf="selectedProject && projectDataLoaded && selectedProjectVmsUsed < selectedProjectVmsMax &&
+                                   *ngIf="selectedProject && projectDataLoaded &&  (selectedProjectVmsUsed + 2 ) <= selectedProjectVmsMax &&
                   (flavors.length != 0 || selectedFlavor)">
                     <div accordion-heading style="width: 100%; cursor: pointer"><strong
                       *ngIf="!selectedMasterFlavor || !selectedMasterImage">Worker Instances [disabled] </strong>
@@ -218,7 +228,7 @@
           </form>
 
           <div
-            *ngIf="(selectedProjectVmsUsed +2) <= selectedProjectVmsMax && (!selectedMasterFlavor || !selectedMasterImage || !selectedWorkerFlavor || !selectedWorkerImage ||!workerInstancesCount) && selectedProject && projectDataLoaded"
+            *ngIf="(selectedProjectVmsUsed +2) <= selectedProjectVmsMax && (!selectedMasterFlavor || !selectedMasterImage || !selectedWorkerFlavor || !selectedWorkerImage ||!workerInstancesCount) && selectedProject && projectDataLoaded && flavors_loaded"
             class="alert alert-danger" role="alert" style="max-width: 600px;margin: 0 auto;">
             <p>Please choose the following before starting a Cluster:</p>
             <p *ngIf="!selectedMasterFlavor">- The flavor type of your Master VM
