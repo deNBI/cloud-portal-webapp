@@ -136,6 +136,7 @@ export class FacilityService {
     if (filter) {
       params = params.set('filter', filter);
     }
+
     return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/snapshots/`, {
       withCredentials: true,
       params: params
