@@ -75,6 +75,10 @@
             <div class="input-group justify-content-end">
             <div class="input-group-prepend">
               <div class="input-group-text">
+                <input type="text" checked style="margin:2px;" [(ngModel)]="filter">
+
+              </div>
+              <div class="input-group-text">
                 <input type="checkbox" checked style="margin:2px;"
                        (change)="changeFilterStatus(VirtualMachineStates.staticACTIVE)">
                 <span class="badge badge-success">{{VirtualMachineStates.staticACTIVE}}</span>
