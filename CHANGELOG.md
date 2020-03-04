@@ -1,3 +1,23 @@
+
+##  (2020-03-04)
+
+
+#### Bug Fixes
+
+* **Conda:** fixed conda bugs (#1172) ([864f537f](864f537f))
+* **Filter:** readded (#1173) ([0542d1e0](0542d1e0))
+* **Linting:**
+  * blacked code ([e2d380e1](e2d380e1))
+  * blacked code ([0db2fc73](0db2fc73))
+
+#### Features
+
+* **Cluster:** added for VO ([50b6901c](50b6901c))
+* **Volume:**
+  * multiple volumes possible ([bdb406a2](bdb406a2))
+  * added filter ([b7d7ee2e](b7d7ee2e))
+* **vm overview:**  add set filter button, remove pipes ([cd35c0b6](cd35c0b6))
+
 ##  (2020-03-02)
 
 
