@@ -194,7 +194,7 @@
                        *ngIf="!(((this.selectedProjectVolumesUsed + this.volumesToMount?.length)
                     >= this.selectedProjectVolumesMax)
                     || ((this.selectedProjectDiskspaceUsed + this.getStorageInList()) >= this.selectedProjectDiskspaceMax))">
-                    <button class="btn btn-light" (click)="toggleShowAddVol();" *ngIf="showAddVol">
+                    <button class="btn btn-light" (click)="toggleShowAddVol();" *ngIf="showAddVol" id="openAddVolumeFormButton">
                       Add volume <span class="fa fa-plus-circle"></span>
                     </button>
                     <div id="addVolumeDiv"  *ngIf="!showAddVol">
@@ -251,7 +251,7 @@
                     </div>
                     <div class="col-4">
                       <button class="btn btn-success" (click)="toggleShowAddVol(); this.addVolumeToList();"
-                        [disabled]="!checkVolumeValidity()"
+                        [disabled]="!checkVolumeValidity()" id="addVolumeConfirmationButton"
                       >Add Volume</button>
                     </div>
 
