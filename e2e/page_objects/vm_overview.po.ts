@@ -56,7 +56,7 @@ export class VMOverviewPage {
   async navigateToOverview(): Promise<any> {
     Util.logMethodCall('Navigating to VM Overview Page');
     await Util.navigateToAngularPage(this.VM_OVERVIEW_URL);
-    await Util.waitForPage(this.VM_OVERVIEW_URL);
+    await Util.waitForPage(this.VM_OVERVIEW_URL, this.LONG_TIMEOUT);
 
     return await browser.driver.sleep(10000);
   }
@@ -75,7 +75,6 @@ export class VMOverviewPage {
 
   async isVmActive(name: string): Promise<boolean> {
     Util.logMethodCall(`Checking if ${name} is active`);
-
     await Util.waitForPresenceOfElementById(this.TABLE_ID);
 
     return await Util.waitForPresenceOfElementById(`${this.ACTIVE_BADGE_PREFIX}${name}`, this.LONG_TIMEOUT);

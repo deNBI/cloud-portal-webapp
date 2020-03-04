@@ -1,4 +1,4 @@
-import {Component, EventEmitter, HostListener, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, HostListener, Input, OnInit, Output} from '@angular/core';
 import {Image} from './virtualmachinemodels/image'
 import {OwlOptions} from 'ngx-owl-carousel-o';
 
@@ -32,7 +32,7 @@ export class ImageDetailComponent implements OnInit {
     touchDrag: false,
     pullDrag: false,
     dots: true,
-    navSpeed: 700,
+  navSpeed: 700,
     navText: ['<i class=\'fa fa-chevron-left\'></i>',
       '<i class=\'fa fa-chevron-right\'></i>'],
     responsive: {
@@ -55,7 +55,8 @@ export class ImageDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.window_size = window.innerWidth;
-  }
+
+}
 
   public setImageVisible(): void {
     this.image_visible = !this.image_visible;

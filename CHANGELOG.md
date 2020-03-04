@@ -1,3 +1,30 @@
+##  (2020-03-02)
+
+
+#### Features
+
+* **vm overview:**  add set filter button, remove pipes ([cd35c0b6](cd35c0b6))
+
+
+##  (2020-02-27)
+
+
+#### Bug Fixes
+
+* **Dissemination:** let information desc empty ([d16510e1](d16510e1))
+* **Linting:**
+  * blacked code ([9060dcbe](9060dcbe))
+  * blacked code ([863e3480](863e3480))
+* **diverse:**  new app tooltip visible, vm resource indicators t… (#1133) ([e43251fa](e43251fa))
+* **mod. req.:**  remove uneccessary column ([3adfccc5](3adfccc5))
+* **style:**  prod same style as dev (#1153) ([6c5dc162](6c5dc162))
+* **userinfo:**  public key has to start with ssh-rsa (#1155) ([5f5037d4](5f5037d4))
+
+#### Features
+
+* **Conda:** reworked filtering ([439ca4ef](439ca4ef))
+* **FM:** changed to one filter ([cdc187ea](cdc187ea))
+
 ##  (2020-02-23)
 
 #### Bug Fixes

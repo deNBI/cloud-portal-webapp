@@ -515,6 +515,7 @@
       </div>
       <div class="modal-body">
         <p>Redirecting to Instance Overview...</p>
+        <span [hidden]="true" *ngIf="newVm?.name" id="new_vm_name">{{newVm?.name}}</span>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->

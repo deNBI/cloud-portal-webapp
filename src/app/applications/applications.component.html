@@ -5,8 +5,7 @@
 <div *ngIf="isLoaded_AllApplication"
      class="animated fadeIn">
 
-  <div *ngIf="is_vo_admin == true" class="col-lg-12">
-    <div class="card">
+    <div class="card" *ngIf="is_vo_admin == true">
       <div class="card-header">
         <i class="fa fa-align-justify"></i> Applications for review
       </div>
@@ -224,7 +223,6 @@
       </div>
 
     </div>
-  </div>
 
 
 </div>

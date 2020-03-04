@@ -24,7 +24,7 @@
           <pagination
             [totalItems]="total_items" [itemsPerPage]="items_per_page"
             (pageChanged)="pageChanged($event)" [(ngModel)]="currentPage"
-            [boundaryLinks]="true" [maxSize]="total_pages" [rotate]="false" #pagination>
+            [boundaryLinks]="true" [maxSize]="5" [rotate]="false" #pagination>
           </pagination>
         </div>
       <div class="input-group col-3">

@@ -7,7 +7,8 @@ import {VolumeOverviewComponent} from './volumes/volumeOverview.component';
 import {SnapshotOverviewComponent} from './snapshots/snapshotOverview.component';
 import {VmDetailComponent} from './vmdetail/vmdetail.component';
 import {AddClusterComponent} from './clusters/add-cluster/add-cluster.component';
-import {ClusterdetailComponent} from './clusterdetail/clusterdetail.component';
+import {ClusterdetailComponent} from './clusters/clusterdetail/clusterdetail.component';
+import {ClusterOverviewComponent} from './clusters/clusteroverview/clusterOverview.component';
 
 const routes: Routes = [
     {
@@ -39,6 +40,14 @@ const routes: Routes = [
     component: VmOverviewComponent,
     data: {
       title: 'VM Overview'
+    }
+
+  },
+  {
+    path: 'clusterOverview',
+    component: ClusterOverviewComponent,
+    data: {
+      title: 'Cluster Overview'
     }
 
   },
