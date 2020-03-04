@@ -27,6 +27,11 @@
             [boundaryLinks]="true" [maxSize]="5" [rotate]="false" #pagination>
           </pagination>
         </div>
+        <div class="col">
+          <input type="text" placeholder="Filter"
+                 name="filter" (ngModelChange)='changedFilter($event)'
+                 [ngModel]="filter" (keydown.enter)="$event.preventDefault();">
+        </div>
       <div class="input-group col-3">
         <input id="vm_per_site" class="form-control"
                name="vm_per_site" placeholder="e.g 3"
