@@ -55,7 +55,7 @@
     <div class="container-fluid">
 
         <div class="row">
-          <div class="col-6">
+          <div class="col-4">
             <div *ngIf="vms_content.length > 0">
               <div class="dropdown" dropdown>
                 <button class="btn btn-secondary dropdown-toggle" type="button" id="actionDropdownMenu" data-toggle="dropdown"
@@ -71,11 +71,11 @@
           </div>
 
 
-          <div class="col-6">
+          <div class="col-8">
             <div class="input-group justify-content-end">
             <div class="input-group-prepend">
               <div class="input-group-text">
-                <input type="text" checked style="margin:2px;" [(ngModel)]="filter">
+                <input type="text" checked style="margin:2px;" placeholder="Filter" [(ngModel)]="filter">
 
               </div>
               <div class="input-group-text">
@@ -115,7 +115,8 @@
           <div class="card instance-card" style="margin-bottom:15px;" [id]="'instanceCard_' + vm?.name">
             <div class="card-header" *ngIf="isFirst">
               <div class="row">
-                <div class="col-5"><strong>Instance Name</strong></div>
+                <div class="col-2"></div>
+                <div class="col-3"><strong>Instance Name</strong></div>
                 <div class="col-3" style="text-align: center"><strong>Project</strong></div>
                 <div class="col-2" style="text-align: center"><strong>Created (by/at)</strong></div>
                 <div class="col-1" style="left:50px;">
@@ -124,10 +125,21 @@
 
               </div>
             </div>
-            <div class="card-block" *ngIf="vm">
+            <div class="card-block">
               <div class="row" style="margin-top: 5px">
-                <div class="col-5" style="margin: auto;">
-
+                <div class="col-2">
+                  <div *ngIf="vm.volumes.length > 0" class="row">
+                    <div class="col-2" style="margin: 10px;">
+                      <span class="fas fa-hdd" style="font-size: 18px;"
+                            data-toggle="tooltip" data-placement="right" title="{{'Volumes mounted: ' + vm?.volumes.length}}">
+                        <span class="badge badge-pill badge-secondary"
+                        style="font-size: 10px; position: relative; top: -12px; left: -10px;">
+                          {{vm?.volumes.length}}</span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-3" style="margin: auto;">
 
                   <a class="h5 text-primary" style="margin-left: 10px"
                      *ngIf="vm?.status == VirtualMachineStates.staticACTIVE
@@ -161,7 +173,8 @@
                 <div class="col-1" style="text-align: center"></div>
               </div>
               <div class="row" style="margin-top: 10px; margin-bottom:5px;">
-                <div class="col-12" style="margin-left: 10px">
+                <div class="col-1"></div>
+                <div class="col-11" style="margin-left: 10px">
                   <div style="font-size: small">
                     <strong>{{vm?.flavor?.name}}</strong>: {{vm?.flavor?.vcpus + ' VCPUs - ' }}{{vm?.flavor?.ram + ' GB RAM - '}}{{vm?.flavor?.rootdisk + ' GB root disk'}}
                   </div>
