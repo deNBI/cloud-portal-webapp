@@ -1,6 +1,6 @@
 import {Component, EventEmitter, HostListener, Input, OnInit, Output} from '@angular/core';
 import {Flavor} from './virtualmachinemodels/flavor'
-import {OwlOptions, ResponsiveSettings} from 'ngx-owl-carousel-o';
+import {OwlOptions} from 'ngx-owl-carousel-o';
 
 /**
  * Flavor detail component.

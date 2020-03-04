@@ -1,0 +1,202 @@
+<div class="animated fadeIn">
+  <div class="card">
+
+    <div class="card-header">
+      <div class="row">
+        <div *ngIf="is_vo_admin || is_facility_manager" class="col-6">
+
+
+          <button style="margin-right: 5px;margin-left: 5px;margin-top:5px;margin-bottom: 5px"
+                  class="btn btn-primary"
+                  (click)="toggleTab('own');applyFilter();">Own Clusters
+          </button>
+
+          <button *ngIf="is_vo_admin" style="margin-right: 5px;margin-left: 5px;margin-top: 5px;margin-bottom: 5px"
+                  class="btn btn-primary"
+                  (click)="toggleTab('all');applyFilter();">All Clusters
+          </button>
+          <button style="margin-right: 5px;margin-left: 5px;margin-top: 5px;margin-bottom: 5px"
+                  class="btn btn-primary"
+                  (click)="toggleTab('facility');applyFilter();">Clusters of your facilities
+          </button>
+
+
+        </div>
+        <div *ngIf="tab=='facility'" class="col-4"><select [(ngModel)]="selectedFacility"
+                                                           class="form-control " name="selectedFacility">
+          <option *ngFor="  let facility of managerFacilities"
+                  [ngValue]="facility">
+            {{facility['Facility']}}
+          </option>
+
+        </select></div>
+      </div>
+
+    </div>
+    <div class="row justify-content-end " style="margin-bottom: 5px !important;padding-right: 15px;padding-left: 15px;">
+      <div class="col container-fluid" style="margin: 10px 0 0 0;" *ngIf="total_pages > 1">
+        <pagination
+          [totalItems]="total_items" [itemsPerPage]="items_per_page"
+          (pageChanged)="pageChanged($event)" [(ngModel)]="currentPage"
+          [boundaryLinks]="true" [maxSize]="total_pages" [rotate]="false" #pagination>
+        </pagination>
+      </div>
+      <div class="input-group  col-3">
+        <input id="vm_per_site" class="form-control" style="margin: 10px 0 0 0;"
+               name="vm_per_site" placeholder="e.g 3"
+               type="number" min="1" max="25" step="1"
+               appMinAmount="1" appMaxAmount="25" appInteger
+               pattern="^([1-9]|1[012])$" [(ngModel)]="cluster_per_site"
+               (ngModelChange)="clusterPerPageChange.next($event)">
+        <div class="input-group-append mb-3" style="margin: 10px 0 0 0;"><span class="input-group-text"> VMs per page
+                                    </span></div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <div *ngIf="isSearching" id="search_spinner" style="margin:10px; padding:10px;">
+        <div class="spinner-border text-primary" style="display:block; margin:auto;"></div>
+      </div>
+
+      <div class="row" *ngFor="let cluster of clusters; first as isFirst;"
+           id="vm_overview_table">
+        <div class="col-md-12">
+          <div class="card instance-card" style="margin-bottom:15px;" [id]="'instanceCard_' + cluster?.cluster_id">
+            <div class="card-header" *ngIf="isFirst">
+              <div class="row">
+                <div class="col-6"><strong>Cluster ID</strong></div>
+                <div class="col-3" style="text-align: center"><strong>Project</strong></div>
+                <div class="col-3" style="text-align: center"><strong>Created (by/at)</strong></div>
+
+              </div>
+            </div>
+            <div class="card-block" *ngIf="cluster">
+              <div class="row" style="margin-top: 5px">
+                <div class="col-6" style="margin: auto;">
+
+
+                  <a class="h5 text-primary" style="margin-left: 10px"
+
+                     [routerLink]="['/virtualmachines/cluster/' + cluster?.cluster_id]">{{cluster?.cluster_id}}  </a>
+
+                  <app-clusterstatus [cluster]="cluster"></app-clusterstatus>
+
+                </div>
+                <div class="col-3" style="margin: auto; text-align: center">
+                  <a [routerLink]="['/project-management/' + cluster?.application_id]"
+                     target="_blank"><strong>{{cluster?.project}}</strong></a>
+                </div>
+                <div class="col-3" style="margin: auto; text-align: center">
+                  {{cluster?.userlogin}}
+                  <br>
+                  {{cluster?.launch_date}}
+                </div>
+              </div>
+              <div class="row" style="margin-top: 10px; margin-bottom:5px;">
+                <div class="col-12" style="margin-left: 10px">
+                  <div style="font-size: small">
+                    <strong *ngIf="cluster.instances_count > 0">Inst:</strong>: {{cluster.instances_count}}
+                  </div>
+                </div>
+                <div class="col-12" style="margin-left: 10px">
+                  <div style="font-size: small">
+                    <strong *ngIf="cluster?.public_ip">Public IP</strong>: {{cluster?.public_ip}}
+                  </div>
+                </div>
+              </div>
+              <div class="card-body p-x-1 py-h">
+                <div class="row">
+                  <div class="col-6"
+                       *ngIf="cluster?.status == 'Running' && cluster?.public_ip ">
+                    <a *ngIf="!show_connection_infO"
+                       class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+                       [id]="'showHowToConnectButton_'+cluster?.cluster_id"
+                       (click)="show_connection_infO=true; " href="#" onClick="return false;">
+                      How to connect ...</a>
+
+                    <a *ngIf="show_connection_infO" class="font-weight-bold font-xs btn-block btn btn-secondary"
+                       [id]="'hideHowToConnectButton_'+cluster?.cluster_id"
+                       (click)="show_connection_infO=false; " href="#" onClick="return false;">
+                      ... Hide information</a>
+                  </div>
+                  <div class="col-6"
+                       *ngIf="cluster?.status != VirtualMachineStates.staticDELETED && cluster?.status != VirtualMachineStates.staticDELETING">
+                    <a class="font-weight-bold font-xs btn-block text-muted btn btn-outline-danger"
+                       [id]="'delete_'+cluster?.cluster_id"
+                       (click)="selectedCluster=cluster; verifyModal.show()" href="#" onClick="return false;">
+                      Delete</a>
+
+
+                  </div>
+
+
+                </div>
+              </div>
+              <div class="card-footer p-x-1 py-h" *ngIf="show_connection_infO"
+              >
+                <div>
+                  <div class="row" *ngFor="let mode of cluster?.master_instance?.modes">
+                    <div class="col-md-1">
+                      <span class="font-weight-bold font-xs btn-block text-muted">{{mode.name}}:</span>
+                    </div>
+                    <div class="col-md-9">
+                      <span class="font-weight-bold font-xs btn-block text-muted" [innerHTML]="mode.description"></span>
+                    </div>
+
+                    <div class="col-md-2" style="margin: auto" *ngIf="mode.copy_field && mode.copy_field!=''"><a
+                      (click)="copyToClipboard(mode.copy_field);" href="#"
+                      onClick="return false;"
+                      class="font-weight-bold font-xs btn-block text-muted">&lt;copy
+                      command&gt;</a>
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+    </div>
+  </div>
+</div>
+
+
+<div bsModal #verifyModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="Label"
+     aria-hidden="true"
+     id="verify_modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Delete VM</h4>
+        <button type="button" class="close" style="cursor: pointer"
+                (click)="verifyModal.hide()"
+                aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-warning" role="alert">
+          <p> Are you sure you want to delete {{selectedCluster?.cluster_id}}?</p>
+          This will also delete the virtual machines:
+          <p>{{selectedCluster?.master_instance.name}}</p>
+          <p *ngFor="let vm of selectedCluster?.worker_instances">{{vm.name}}</p>
+
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button class="btn  btn-success col-md-4"
+                (click)="deleteCluster(selectedCluster);verifyModal.hide();"
+                id="confirm_delete_button">
+          Yes
+        </button>
+        <button class="btn  btn-danger col-md-4" type="reset"
+                (click)="selectedCluster=null;verifyModal.hide();">Cancel
+        </button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
