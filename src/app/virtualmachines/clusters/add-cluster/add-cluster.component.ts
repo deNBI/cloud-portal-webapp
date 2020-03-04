@@ -61,16 +61,11 @@ export class AddClusterComponent implements OnInit {
   hasTools: boolean = false;
   gaveOkay: boolean = false;
   client_checked: boolean = false;
-  playbook_run: number = 0;
   timeout: number = 0;
 
   title: string = 'New Cluster';
 
-  vm_name: string;
   cluster_info: Clusterinfo;
-  started_machine: boolean = false;
-
-  conda_img_path: string = `static/webapp/assets/img/conda_logo.svg`;
 
   /**
    * All image of a project.
@@ -386,8 +381,8 @@ export class AddClusterComponent implements OnInit {
     const workerFlavor: string = this.selectedWorkerFlavor.name.replace(re, '%2B');
 
     this.virtualmachineservice.startCluster(
-      masterFlavor, this.selectedMasterImage.name,
-      workerFlavor, this.selectedWorkerImage.name,
+      masterFlavor, this.selectedMasterImage,
+      workerFlavor, this.selectedWorkerImage,
       this.workerInstancesCount, this.selectedProject[1]).subscribe(
       (res: any) => {
         if (res['status'] && res['status'] === 'mutex_locked') {
@@ -513,7 +508,12 @@ export class AddClusterComponent implements OnInit {
 
   }
 
+  resizeFix(): void {
+    window.dispatchEvent(new Event('resize'));
+  }
+
   ngOnInit(): void {
+
     this.initializeData();
     this.voService.isVo().subscribe((result: IResponseTemplate) => {
       this.is_vo = <boolean><Boolean>result.value;
