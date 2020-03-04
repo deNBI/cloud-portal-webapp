@@ -206,8 +206,12 @@ export class ImageService {
 
   }
 
-  getSnapshotsByUser(currentPage: number, snapsPerSite: number): Observable<SnapshotModel[]> {
-    const params: HttpParams = new HttpParams().set('page', currentPage.toString()).set('snaps_per_site', snapsPerSite.toString());
+  getSnapshotsByUser(currentPage: number, snapsPerSite: number, filter?: string): Observable<SnapshotModel[]> {
+    let params: HttpParams = new HttpParams().set('page', currentPage.toString()).set('snaps_per_site', snapsPerSite.toString());
+
+    if (filter) {
+      params = params.set('filter', filter);
+    }
 
     return this.http.get<SnapshotModel[]>(`${ApiSettings.getApiBaseURL()}snapshots/`, {
       withCredentials: true,
