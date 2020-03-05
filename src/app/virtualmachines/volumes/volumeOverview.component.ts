@@ -35,6 +35,8 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
    * Enum of all volume action states.
    */
   volumeActionStates: typeof VolumeActionStates = VolumeActionStates;
+  extendError = false;
+  extendDone = false;
 
   showFacilities: boolean = false;
 
@@ -118,6 +120,8 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
    */
   volume_action_status: number;
 
+  extendVolumeStorage: number;
+
   /**
    * Type of request.
    */
@@ -148,6 +152,10 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
   changedFilter(text: string): void {
     this.filterChanged.next(text);
 
+  }
+
+  setSelectedProjectByVolume(volume: Volume): void {
+    this.selectedProject = [volume.volume_project, parseInt(volume.volume_projectid, 10)];
   }
 
   ngOnInit(): void {
@@ -227,8 +235,21 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
     )
   }
 
-  extendVolume(volume: Volume): void {
-    this.vmService.extendVolume(volume.volume_openstackid, '5').subscribe()
+  extendVolume(volume: Volume, new_storage: number): void {
+    this.vmService.extendVolume(volume.volume_openstackid, new_storage.toString()).subscribe(
+      (res: any) => {
+        this.extendDone = true;
+        if (res['status_code'] === 202) {
+          this.vmService.getVolumeById(volume.volume_openstackid).subscribe(
+            (upd_vol: Volume) => {
+              volume.volume_storage = new_storage;
+              this.volumes[this.volumes.indexOf(volume)] = volume;
+            });
+        } else {
+          this.extendError = true;
+        }
+      }
+    )
   }
 
   /**
