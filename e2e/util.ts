@@ -84,12 +84,12 @@ export class Util {
     console.log(text.cyan)
   }
 
-  static async waitForPage(url: string): Promise<boolean> {
+  static async waitForPage(url: string, timeout: number = this.timeout): Promise<boolean> {
     const until_: ProtractorExpectedConditions = protractor.ExpectedConditions;
     console.log(`Waiting until page contains ${url}`);
     await browser.sleep(2000);
 
-    return await browser.driver.wait(until_.urlContains(url), this._timeout);
+    return await browser.driver.wait(until_.urlContains(url), timeout);
   }
 
   static async sendTextToElementByName(name: string, text: string, show_output: boolean = true): Promise<void> {

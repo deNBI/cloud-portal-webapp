@@ -17,7 +17,7 @@ export class ProjectOverview {
   private static NOTIFICATION_CLOSE: string = 'close_notification';
   private static SUBMIT_MODAL_BTN: string = 'submit_modal_btn';
   private static DOI_CONTINUE_BTN: string = 'doi_continue_btn';
-  private static RENEWAL_LIFETIME: string = 'id_project_application_renewal_lifetime';
+  private static RENEWAL_LIFETIME: string = 'project_application_renewal_lifetime';
   private static HAS_DOI_BTN: string = 'new_dois_btn';
   private static SUBMIT_RENEWAL_BTN: string = 'submit_renewal_btn';
   private static EXTENSION_RESULT: string = 'extension result';
@@ -65,7 +65,11 @@ export class ProjectOverview {
     Util.logMethodCall('Check if pi is set');
     await Util.clickElementById(this.SHOW_INFORMATION_BTN);
 
-    return await Util.waitForAbsenceOfElementById(this.PI_ROW);
+    const isPiAbsence: boolean = await Util.waitForAbsenceOfElementById(this.PI_ROW);
+    await Util.clickElementById('close_info_modal');
+
+    return isPiAbsence
+
   }
 
   static async addMemberToProject(application_name: string, member: string = this.DEFAULT_MEMBER): Promise<any> {
@@ -141,7 +145,7 @@ export class ProjectOverview {
   }
 
   static async fillModificationRequest(): Promise<any> {
-    await Util.sendTextToElementById('id_project_application_renewal_lifetime', '1');
+    await Util.sendTextToElementById(this.RENEWAL_LIFETIME, '1');
     await Util.sendTextToElementById(this.DENBI_DEFAULT_NEW_INPUT, '2');
     await Util.sendTextToElementById(this.NEW_VOLUME_COUNTER_ID, '1');
     await Util.sendTextToElementById(this.NEW_VOLUME_LIMIT_ID, '1');

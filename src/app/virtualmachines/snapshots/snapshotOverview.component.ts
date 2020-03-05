@@ -5,7 +5,7 @@ import {forkJoin, Subject} from 'rxjs';
 import {IResponseTemplate} from '../../api-connector/response-template';
 import {FacilityService} from '../../api-connector/facility.service';
 import {WIKI_SNAPSHOTS} from '../../../links/links';
-import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
+import {debounceTime, distinctUntilChanged, switchMap} from 'rxjs/operators';
 
 enum Snapshot_Delete_Statuses {
   WAITING = 0,
@@ -62,6 +62,8 @@ export class SnapshotOverviewComponent implements OnInit {
    * @type {boolean}
    */
   isLoaded: boolean = false;
+  filterChanged: Subject<string> = new Subject<string>();
+  filter: string;
 
   private checkStatusTimeout: number = 5000;
 
@@ -74,6 +76,11 @@ export class SnapshotOverviewComponent implements OnInit {
   DEBOUNCE_TIME: number = 300;
 
   constructor(private facilityService: FacilityService, private imageService: ImageService) {
+
+  }
+
+  changedFilter(text: string): void {
+    this.filterChanged.next(text);
 
   }
 
@@ -170,6 +177,33 @@ export class SnapshotOverviewComponent implements OnInit {
 
   ngOnInit(): void {
     this.getSnapshots();
+
+    this.filterChanged
+      .pipe(
+        debounceTime(this.DEBOUNCE_TIME),
+        distinctUntilChanged(), switchMap((filterName: string) => {
+          this.isSearching = true;
+
+          this.filter = filterName.trim();
+          if (this.showFacilities) {
+            // tslint:disable-next-line:max-line-length
+            return this.facilityService.getFacilitySnapshots(this.selectedFacility['FacilityId'], this.currentPage, this.items_per_page, this.filter)
+          } else {
+            return this.imageService.getSnapshotsByUser(this.currentPage, this.items_per_page, this.filter)
+          }
+
+        }))
+      .subscribe((result: any) => {
+
+        this.snapshots = result['snapshot_list'];
+        this.total_items = result['total_items'];
+        this.items_per_page = result['items_per_page'];
+        this.total_pages = result['num_pages'];
+        this.isLoaded = true;
+        this.checkSnapShotsStatus();
+        this.isSearching = false;
+
+      });
 
     this.snapshotsPerPageChange.pipe(
       debounceTime(this.DEBOUNCE_TIME),

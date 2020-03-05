@@ -11,7 +11,7 @@ import {FacilityService} from '../../api-connector/facility.service';
 import {WIKI_VOLUME} from '../../../links/links';
 import {Subject, Subscription} from 'rxjs';
 import {VolumeStates} from './volume_states';
-import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
+import {debounceTime, distinctUntilChanged, switchMap} from 'rxjs/operators';
 
 /**
  * Volume overview component.
@@ -28,6 +28,8 @@ import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 export class VolumeOverviewComponent extends AbstractBaseClasse implements OnInit, OnDestroy {
   VOLUME_WIKI: string = WIKI_VOLUME;
   title: string = 'Volume Overview';
+
+  filter: string;
 
   /**
    * Enum of all volume action states.
@@ -128,6 +130,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
   total_pages: number;
   total_items: number;
   volumePerPageChange: Subject<number> = new Subject<number>();
+  filterChanged: Subject<string> = new Subject<string>();
   DEBOUNCE_TIME: number = 1000;
   currentPage: number = 1;
   isSearching: boolean = true;
@@ -142,6 +145,11 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
     this.getVolumesSubscription.unsubscribe();
   }
 
+  changedFilter(text: string): void {
+    this.filterChanged.next(text);
+
+  }
+
   ngOnInit(): void {
     this.getVolumes();
     this.getUserApprovedProjects();
@@ -149,16 +157,46 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
       this.managerFacilities = result;
       this.selectedFacility = this.managerFacilities[0];
     });
+    this.filterChanged
+      .pipe(
+        debounceTime(this.DEBOUNCE_TIME),
+        distinctUntilChanged(), switchMap((filter: string) => {
+                                            this.isSearching = true;
+
+                                            this.filter = filter.trim();
+
+                                            return this.vmService.getVolumesByUser(this.items_per_page, this.currentPage, this.filter)
+                                          }
+        )).subscribe((result: any) => {
+      this.volumes = result['volume_list'];
+      this.total_pages = result['num_pages'];
+      this.total_items = result['total_items'];
+      this.items_per_page = result['items_per_page'];
+      for (const volume of this.volumes) {
+        this.setCollapseStatus(volume.volume_openstackid, false);
+      }
+
+      this.isSearching = false;
+      this.volumes.forEach((vol: Volume) => {
+        // tslint:disable-next-line:max-line-length
+        if (vol.volume_status !== VolumeStates.AVAILABLE && vol.volume_status !== VolumeStates.NOT_FOUND && vol.volume_status !== VolumeStates.IN_USE) {
+
+          this.check_status_loop(vol)
+        }
+      })
+
+    });
     this.volumePerPageChange.pipe(
       debounceTime(this.DEBOUNCE_TIME),
       distinctUntilChanged())
       .subscribe(() => {
         if (this.items_per_page && this.items_per_page > 0) {
-        if (this.showFacilities) {
-          this.getFacilityVolumes()
-        } else {
-          this.getVolumes()
-        }}
+          if (this.showFacilities) {
+            this.getFacilityVolumes()
+          } else {
+            this.getVolumes()
+          }
+        }
 
       });
 

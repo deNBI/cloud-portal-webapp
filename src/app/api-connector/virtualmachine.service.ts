@@ -24,12 +24,12 @@ export class VirtualmachineService {
   constructor(private http: HttpClient) {
   }
 
-  startCluster(masterFlavor: string, masterImage: string, workerFlavor: string, workerImage: string, workerCount: string | number,
+  startCluster(masterFlavor: string, masterImage: Image, workerFlavor: string, workerImage: Image, workerCount: string | number,
                project_id: string | number): Observable<any> {
     const params: HttpParams = new HttpParams()
       .set('master_flavor', masterFlavor)
-      .set('master_image', masterImage)
-      .set('worker_image', workerImage)
+      .set('master_image', JSON.stringify(masterImage))
+      .set('worker_image', JSON.stringify(workerImage))
       .set('worker_flavor', workerFlavor)
       .set('worker_count', workerCount.toString())
       .set('project_id', project_id.toString());
@@ -47,6 +47,21 @@ export class VirtualmachineService {
     })
   }
 
+  getClusters(page: number, vm_per_site: number, filter?: string): Observable<Clusterinfo[]> {
+    let params: HttpParams = new HttpParams().set('page', page.toString()).set('vm_per_site', vm_per_site.toString());
+
+    if (filter) {
+      params = params.set('filter', filter);
+
+    }
+
+    return this.http.get<Clusterinfo[]>(`${ApiSettings.getApiBaseURL()}clusters/`, {
+      withCredentials: true,
+      headers: header,
+      params: params
+    })
+  }
+
   deleteCluster(cluster_id: string): Observable<void> {
     return this.http.delete<void>(`${ApiSettings.getApiBaseURL()}clusters/${cluster_id}/`, {
       withCredentials: true,
@@ -55,7 +70,7 @@ export class VirtualmachineService {
   }
 
   startVM(flavor: string, image: Image, servername: string, project: string, projectid: string,
-          http: boolean, https: boolean, udp: boolean, volume_name?: string, volume_storage?: string,
+          http: boolean, https: boolean, udp: boolean, volumes: Volume[],
           playbook_information?: string, user_key_url?: string): Observable<any> {
 
     const params: HttpParams = new HttpParams()
@@ -64,8 +79,7 @@ export class VirtualmachineService {
       .set('servername', servername)
       .set('project', project)
       .set('projectid', projectid)
-      .set('volume_storage', volume_storage)
-      .set('volume_name', volume_name)
+      .set('volumes', JSON.stringify(volumes))
       .set('http_allowed', http.toString())
       .set('https_allowed', https.toString())
       .set('udp_allowed', udp.toString())
@@ -237,8 +251,12 @@ export class VirtualmachineService {
 
   }
 
-  getVolumesByUser(items_per_page: number, current_page: number): Observable<Volume[]> {
-    const params: HttpParams = new HttpParams().set('items_per_page', items_per_page.toString()).set('page', current_page.toString());
+  getVolumesByUser(items_per_page: number, current_page: number, filter?: string): Observable<Volume[]> {
+    let params: HttpParams = new HttpParams().set('items_per_page', items_per_page.toString()).set('page', current_page.toString());
+    if (filter) {
+      params = params.set('filter', filter);
+
+    }
 
     return this.http.get<Volume[]>(`${ApiSettings.getApiBaseURL()}volumes/`, {
       withCredentials: true,
