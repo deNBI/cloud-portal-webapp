@@ -105,38 +105,49 @@
           <i class="fa fa-align-justify"></i> Actions
         </div>
         <div class="card-body">
-          <div class="btn-group col-12">
-            <button id="show_information_btn"
-                    (click)="informationModal.show();getFacilityProject();"
-                    type="button"
-                    class="btn btn-info" style="margin-bottom:5px;margin-right:5px">
-              <i class="fa fa-info-circle"></i>&nbsp;
-              <span>Show Information</span>
-            </button>
-            <button
-              id="remove_application_button"
-              *ngIf="project_application?.Status == application_states.SUBMITTED || project_application?.Status == application_states.DECLINED"
-              (click)="deleteModal.show();"
-              type="button" style="margin-bottom:5px;"
-              class="btn btn-danger">
-              Remove Application
-            </button>
-            <button id="show_credits_extension_modal"
-                    *ngIf="(project_application?.Status == application_states.APPROVED || project_application?.Status == application_states.MODIFICATION_DECLINED) && is_vo_admin"
-                    (click)="newFlavors= {};initExampleFlavors();creditsExtensionModal.show()"
-                    class="btn btn-success"
-                    type="button" style="margin-bottom:5px;margin-right:5px">
-              Request More Credits
-            </button>
-            <button id="show_extension_modal"
-                    *ngIf="project_application?.Status == application_states.APPROVED || project_application?.Status == application_states.MODIFICATION_DECLINED"
-                    (click)="newFlavors= {};selected_ontology_terms=[];initRamCores();calculateCredits(f.controls.project_application_renewal_lifetime?.value);doiQuestionModal.show()"
-                    class="btn btn-warning"
-                    type="button" style="margin-bottom:5px;">
-              Request Extension/Modification
-            </button>
+          <div class="row">
+            <div class="btn-group col-12">
+              <button
+                id="remove_application_button"
+                *ngIf="project_application?.Status == application_states.SUBMITTED || project_application?.Status == application_states.DECLINED"
+                (click)="deleteModal.show();"
+                type="button" style="margin-bottom:5px;"
+                class="btn btn-danger">
+                Remove Application
+              </button>
+              <button id="show_credits_extension_modal"
+                      *ngIf="(project_application?.Status == application_states.APPROVED || project_application?.Status == application_states.MODIFICATION_DECLINED) && is_vo_admin"
+                      (click)="newFlavors= {};initExampleFlavors();creditsExtensionModal.show()"
+                      class="btn btn-success"
+                      type="button" style="margin-bottom:5px;margin-right:5px">
+                Request More Credits
+              </button>
+              <button id="show_extension_modal"
+                      *ngIf="project_application?.Status == application_states.APPROVED || project_application?.Status == application_states.MODIFICATION_DECLINED"
+                      (click)="newFlavors= {};selected_ontology_terms=[];initRamCores();calculateCredits(f.controls.project_application_renewal_lifetime?.value);doiQuestionModal.show()"
+                      class="btn btn-warning"
+                      type="button" style="margin-bottom:5px;">
+                Request Extension/Modification
+              </button>
 
+            </div>
           </div>
+          <div class="row">
+            <div class="btn-group col-12">
+              <button id="show_information_btn" (click)="informationModal.show();getFacilityProject();"
+                    type="button" class="btn btn-info"  style="margin-top:5px;">
+                <i class="fa fa-info-circle"></i>&nbsp;
+                <span>Show Information</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="alert alert-info" style="margin-top:15px;">
+            <p>You can find more information about modification requestes
+              <a href="https://cloud.denbi.de/wiki/portal/modification/" target="_blank">here</a>.</p>
+            <p *ngIf="is_vo_admin">Information about credits are coming soon.</p>
+          </div>
+
         </div>
 
       </div>
