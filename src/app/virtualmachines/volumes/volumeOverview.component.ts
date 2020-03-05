@@ -35,8 +35,8 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
    * Enum of all volume action states.
    */
   volumeActionStates: typeof VolumeActionStates = VolumeActionStates;
-  extendError = false;
-  extendDone = false;
+  extendError: boolean = false;
+  extendDone: boolean = false;
 
   showFacilities: boolean = false;
 
