@@ -13,13 +13,12 @@
       <strong>Please select a research environment template you would like to have installed:</strong>
     </div>
     <div class="row col">
-
       <!--template--><div *ngIf="selectedTemplate.template_name !== 'undefined'">
       <div class="card border-success flavor-image-card" style="cursor: default;">
         <div class="card-header bg-success text-truncate" data-toggle="tooltip" data-placement="top"
              title="{{selectedTemplate.title}}" (click)="setSelectedTemplate(null)" style="cursor: pointer;">
           <button type="button" class="close"
-          aria-label="Close">
+                  aria-label="Close">
             <i class="fas fa-minus-circle"></i>
           </button>
           <strong *ngIf="selectedTemplate.title != null">{{selectedTemplate.title}}</strong>
@@ -46,21 +45,6 @@
       </div>
     </div><!-- end template-->
 
-      <!--no template--><div *ngIf="selectedTemplate.template_name === 'undefined'">
-      <div class="card border-info flavor-image-card" style="cursor: default;">
-        <div class="card-header bg-info text-truncate" data-toggle="tooltip" data-placement="top"
-             title="Please choose a research environment">
-          <strong>Choose a research environment</strong></div>
-        <div class="card-body">
-          <div class="scroll-image">For more information, please visit <a href="{{WIKI_RESENV_LINK}}"
-                                                                          target="_blank">the Wiki</a>.
-            <p>You can choose from the research environments below <i class="fa fa-arrow-down"></i></p>
-          </div>
-        </div>
-      </div>
-    </div><!-- end no template-->
-    </div>
-    <div class="row col">
       <ng-container *ngFor="let template of templates">
 
         <div *ngIf="template.template_name !== selectedTemplate.template_name">
