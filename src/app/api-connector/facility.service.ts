@@ -131,8 +131,11 @@ export class FacilityService {
    * @param {number} snapsPerSite
    * @returns {Observable<any>}
    */
-  getFacilitySnapshots(facility: number | string, currentPage: number, snapsPerSite: number): Observable<any> {
-    const params: HttpParams = new HttpParams().set('page', currentPage.toString()).set('snaps_per_site', snapsPerSite.toString());
+  getFacilitySnapshots(facility: number | string, currentPage: number, snapsPerSite: number, filter?: string): Observable<any> {
+    let params: HttpParams = new HttpParams().set('page', currentPage.toString()).set('snaps_per_site', snapsPerSite.toString());
+    if (filter) {
+      params = params.set('filter', filter);
+    }
 
     return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/snapshots/`, {
       withCredentials: true,
