@@ -36,11 +36,29 @@
         <li class="nav-item">
           <a *ngIf="navbar_minimized" data-toggle="tooltip" data-placement="right" title="Help"
              class="nav-link" routerLinkActive="active" [routerLink]="['/help']"><i
-            class="nav-icon fas fa-info-circle"></i>
+            class="nav-icon fas fa-comments"></i>
             Help</a>
           <a *ngIf="!navbar_minimized" class="nav-link" routerLinkActive="active" [routerLink]="['/help']"><i
-            class="nav-icon fas fa-info-circle"></i>
+            class="nav-icon fas fa-comments"></i>
             Help</a>
+        </li>
+        <li class="nav-item">
+          <a *ngIf="navbar_minimized" data-toggle="tooltip" data-placement="right" title="Wiki"
+             class="nav-link" href="https://cloud.denbi.de/wiki/" target="_blank"><i
+            class="nav-icon fas fa-info-circle"></i>
+            Wiki</a>
+          <a *ngIf="!navbar_minimized" class="nav-link" href="https://cloud.denbi.de/wiki/" target="_blank"><i
+            class="nav-icon fas fa-info-circle"></i>
+            Wiki</a>
+        </li>
+        <li class="nav-item">
+          <a *ngIf="navbar_minimized" data-toggle="tooltip" data-placement="right" title="FAQ"
+             class="nav-link" href="https://cloud.denbi.de/wiki/FAQ/" target="_blank"><i
+            class="nav-icon fas fa-question-circle"></i>
+            FAQ</a>
+          <a *ngIf="!navbar_minimized" class="nav-link" href="https://cloud.denbi.de/wiki/FAQ/" target="_blank"><i
+            class="nav-icon fas fa-question-circle"></i>
+            FAQ</a>
         </li>
         <li class="divider"></li>
         <li class="nav-title">
@@ -345,7 +363,7 @@
   </div>
   <!-- Main content -->
 
-  <main class="main" style="overflow-y: visible; height: calc(100vh - 100px);">
+  <main class="main" style="overflow-y: auto; height: calc(100vh - 100px);">
 
     <!-- Breadcrumb-->
 
@@ -353,7 +371,7 @@
 
      </cui-breadcrumb> -->
 
-    <div class="container-fluid" style="overflow-y: visible; height: 100%;">
+    <div class="container-fluid" style="overflow-y: auto; height: 100%;">
       <router-outlet (activate)="componentAdded($event)"></router-outlet>
     </div><!-- /.conainer-fluid -->
   </main>
