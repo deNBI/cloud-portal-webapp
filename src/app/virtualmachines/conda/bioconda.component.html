@@ -42,7 +42,9 @@
             </button>
           </div>
           <div class="rTableCell"
-               style="width: auto">{{tool.name}}
+               style="width: auto">
+            <a *ngIf="tool.home != 'NA'; else noHomeBlock" href="{{tool.home}}" target="_blank">{{tool.name}}</a>
+            <ng-template #noHomeBlock >{{tool.name}}</ng-template>
           </div>
           <div class="rTableCell"><select #toolVersion (change)="onChange($event.target.value)"
 

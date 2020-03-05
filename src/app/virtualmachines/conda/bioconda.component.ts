@@ -82,6 +82,7 @@ export class BiocondaComponent implements OnInit {
 
         }))
       .subscribe((res: any) => {
+        console.log(res);
         this.setAllTools(res);
 
       });
@@ -101,6 +102,7 @@ export class BiocondaComponent implements OnInit {
     this.isSearching = true;
     this.condaService.getAllTools(page, this.filterToolName).subscribe(
       (res: any) => {
+        console.log(res);
         this.all_tools = [];
         const packages_dic: any = res['packages'];
 
@@ -108,7 +110,8 @@ export class BiocondaComponent implements OnInit {
           if (line in packages_dic) {
             this.all_tools.push({
                                   name: line,
-                                  versions: packages_dic[line]
+                                  versions: packages_dic[line]['versions'],
+                                  home: packages_dic[line]['home']
                                 })
           }
         }
@@ -136,7 +139,8 @@ export class BiocondaComponent implements OnInit {
     for (const line in packages_dic) {
       this.all_tools.push({
                             name: line,
-                            versions: packages_dic[line]
+                            versions: packages_dic[line]['versions'],
+                            home: packages_dic[line]['home']
                           })
     }
     this.toolsPerPage = res['items_per_page'];
