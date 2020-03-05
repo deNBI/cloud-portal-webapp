@@ -115,8 +115,7 @@
           <div class="card instance-card" style="margin-bottom:15px;" [id]="'instanceCard_' + vm?.name">
             <div class="card-header" *ngIf="isFirst">
               <div class="row">
-                <div class="col-2"></div>
-                <div class="col-3"><strong>Instance Name</strong></div>
+                <div class="col-5"><strong>Instance Name</strong></div>
                 <div class="col-3" style="text-align: center"><strong>Project</strong></div>
                 <div class="col-2" style="text-align: center"><strong>Created (by/at)</strong></div>
                 <div class="col-1" style="left:50px;">
@@ -127,19 +126,7 @@
             </div>
             <div class="card-block">
               <div class="row" style="margin-top: 5px">
-                <div class="col-2">
-                  <div *ngIf="vm.volumes.length > 0" class="row">
-                    <div class="col-2" style="margin: 10px;">
-                      <span class="fas fa-hdd" style="font-size: 18px;"
-                            data-toggle="tooltip" data-placement="right" title="{{'Volumes mounted: ' + vm?.volumes.length}}">
-                        <span class="badge badge-pill badge-secondary"
-                        style="font-size: 10px; position: relative; top: -12px; left: -10px;">
-                          {{vm?.volumes.length}}</span>
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-3" style="margin: auto;">
+                <div class="col-5" style="margin: auto;">
 
                   <a class="h5 text-primary" style="margin-left: 10px"
                      *ngIf="vm?.status == VirtualMachineStates.staticACTIVE
@@ -151,6 +138,7 @@
                   <app-vmstatus [vm]="vm"></app-vmstatus>
 
                 </div>
+
                 <div class="col-3" style="margin: auto; text-align: center">
                   <a [routerLink]="['/project-management/' + vm?.application_id]" target="_blank"><strong>{{vm?.project}}</strong></a>
                 </div>
@@ -173,6 +161,17 @@
                 <div class="col-1" style="text-align: center"></div>
               </div>
               <div class="row" style="margin-top: 10px; margin-bottom:5px;">
+                <div class="col-12" style="margin-left: 10px; font-size: 18px; line-height: 27px; height: 27px">
+                  <div *ngIf="vm.volumes.length > 0">
+                      <span class="fas fa-hdd" style="font-size: 18px;"
+                            data-toggle="tooltip" data-placement="right" title="{{'Volumes mounted: ' + vm?.volumes.length}}">
+                        <span class="badge badge-pill badge-secondary"
+                              style="font-size: 10px; position: relative; top: -12px; left: -10px;">
+                          {{vm?.volumes.length}}</span>
+                      </span>
+                  </div>
+
+                </div>
                 <div class="col-1"></div>
                 <div class="col-11" style="margin-left: 10px">
                   <div style="font-size: small">
