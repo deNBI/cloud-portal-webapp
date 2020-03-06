@@ -693,6 +693,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
      return 0;
    } else {
      let storageInList: number = 0;
+
      this.volumesToMount.forEach((volume: Volume) => {
        storageInList = storageInList + volume.volume_storage;
      });
