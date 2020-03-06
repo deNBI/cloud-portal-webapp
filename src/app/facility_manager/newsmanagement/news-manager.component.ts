@@ -58,6 +58,10 @@ export class NewsManagerComponent implements OnInit {
       this.setFormGroup();
     });
     this.selectedNews = new DenbiNews();
+    const facility_ids: string[] = this.selectedFacilities.map((facility: [string, number]) => facility['FacilityId'].toString());
+    this.newsService.getNewsFromWordpress(facility_ids.toString()).subscribe((result: any) => {
+      console.log(result);
+    })
   }
 
   controlToNews(): void {
