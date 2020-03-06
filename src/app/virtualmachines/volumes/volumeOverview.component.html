@@ -189,7 +189,7 @@
                   <li *ngIf="!volume.volume_virtualmachine && volume.volume_status != VolumeStates.staticERROR"
                       role="menuitem">
                     <a class="dropdown-item"
-                       (click)="extendVolumeStorage=volume.volume_storage+1;selected_volume=volume;setSelectedProjectByVolume(volume);getSelectedProjectDiskspace();getSelectedProjectVolumes();extendModal.show();">Extend
+                       (click)="extendVolumeStorage=volume.volume_storage+1;selected_volume=volume;getSelectedVolumeStorage();extendModal.show();">Extend
                       Volume</a>
                   </li>
                   <li role="menuitem">
@@ -340,11 +340,11 @@
       <div class="modal-footer">
         <button id="verify_deletion_button"
                 *ngIf="request_status==volumeRequestStates.DELETE;" class="btn  btn-success col-md-4"
-                (click)="deleteVolume(selected_volume,selected_volume.volume_virtualmachine?.openstackid);verifyModal.hide();">
+                (click)="deleteVolume(selected_volume,selected_volume?.volume_virtualmachine?.openstackid);verifyModal.hide();">
           Yes
         </button>
         <button *ngIf="request_status==volumeRequestStates.DETACH;" class="btn  btn-success col-md-4"
-                (click)="detachVolume(selected_volume,selected_volume.volume_virtualmachine.openstackid);verifyModal.hide();">
+                (click)="detachVolume(selected_volume,selected_volume?.volume_virtualmachine.openstackid);verifyModal.hide();">
           Yes
         </button>
 
@@ -497,29 +497,32 @@
         </button>
       </div>
       <div class="modal-body">
+        <div *ngIf="!selected_volume_data_loaded" id="serach_vol_spinner" style="margin:10px; padding:10px;">
+          <div class="spinner-border text-primary" style="display:block; margin:auto;"></div>
+        </div>
+        <ng-container *ngIf="selected_volume_data_loaded">
+          <div class="form-group row">
+            <label class="col-md-3 form-control-label">Storage Project </label>
 
-        <div class="form-group row">
-          <label class="col-md-3 form-control-label">Storage Project </label>
-
-          <div class="col-md-6">
             <div class="col-md-6">
+              <div class="col-md-6">
 
-              {{selectedProjectDiskspaceUsed}} / {{selectedProjectDiskspaceMax}}
-              GB
+                {{selectedProjectDiskspaceUsed}} / {{selectedProjectDiskspaceMax}}
+                GB
+              </div>
             </div>
           </div>
-        </div>
-        <div *ngIf="
+          <div *ngIf="
                     selectedProjectDiskspaceUsed <= selectedProjectDiskspaceMax "
-             class="form-group row">
+               class="form-group row">
 
-          <label class="col-md-3 form-control-label">Current Size</label>
-          <div class="col-md-9">
-            <div class="input-group">
-              <input min="0" step="1" [value]="selected_volume?.volume_storage"
-                     disabled
-                     type="number" placeholder="e.g 8 "
-                     id="old_volume_storage">
+            <label class="col-md-3 form-control-label">Current Size</label>
+            <div class="col-md-9">
+              <div class="input-group">
+                <input min="0" step="1" [value]="selected_volume?.volume_storage"
+                       disabled
+                       type="number" placeholder="e.g 8 "
+                       id="old_volume_storage">
               <div class="input-group-append"><span
                 class="input-group-text"> GB
                                     </span></div>
@@ -561,14 +564,20 @@
 
 
             </div>
+            <div class="input-group-append"><span
+              class="input-group-text"> min: {{selected_volume?.volume_storage + 1}}
+                                    </span><span
+              class="input-group-text"> max:  {{selectedProjectDiskspaceMax - selectedProjectDiskspaceUsed + selected_volume?.volume_storage}}
+                                    </span></div>
           </div>
         </div>
+        </ng-container>
 
       </div>
       <div class="modal-footer"
            *ngIf="selectedProjectDiskspaceUsed <= selectedProjectDiskspaceMax &&   !(selectedProjectDiskspaceUsed + 1 >= selectedProjectDiskspaceMax)">
         <button id="verify_extend_btn"
-                [disabled]="extendVolumeStorage <= selected_volume.volume_storage || (selectedProjectDiskspaceUsed - selected_volume.volume_storage +extendVolumeStorage) > selectedProjectDiskspaceMax"
+                [disabled]="extendVolumeStorage <= selected_volume?.volume_storage || (selectedProjectDiskspaceUsed - selected_volume?.volume_storage +extendVolumeStorage) > selectedProjectDiskspaceMax"
                 class="btn  btn-success col-md-4"
                 (click)="extendError=false;extendDone=false;extendVolume(selected_volume,extendVolumeStorage);extendModal.hide();extendResultModal.show()">
           Yes

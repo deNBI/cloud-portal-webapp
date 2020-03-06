@@ -9,7 +9,7 @@ import {VolumeRequestStates} from './volume-request-states.enum';
 import {IResponseTemplate} from '../../api-connector/response-template';
 import {FacilityService} from '../../api-connector/facility.service';
 import {WIKI_VOLUME} from '../../../links/links';
-import {Subject, Subscription} from 'rxjs';
+import {forkJoin, Subject, Subscription} from 'rxjs';
 import {VolumeStates} from './volume_states';
 import {debounceTime, distinctUntilChanged, switchMap} from 'rxjs/operators';
 
@@ -28,7 +28,7 @@ import {debounceTime, distinctUntilChanged, switchMap} from 'rxjs/operators';
 export class VolumeOverviewComponent extends AbstractBaseClasse implements OnInit, OnDestroy {
   VOLUME_WIKI: string = WIKI_VOLUME;
   title: string = 'Volume Overview';
-
+  selected_volume_data_loaded: boolean = false;
   filter: string;
 
   /**
@@ -557,6 +557,30 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
   calcDiskSpaceSum(): void {
     this.selectedProjectDiskSpaceSum = parseInt(this.diskspace.toString(), 10)
       + parseInt(this.selectedProjectDiskspaceUsed.toString(), 10);
+  }
+
+  getSelectedVolumeStorage(): void {
+    this.setSelectedProjectByVolume(this.selected_volume);
+    this.selected_volume_data_loaded = false;
+    forkJoin(this.groupService.getGroupMaxDiskspace(this.selectedProject[1].toString()),
+             this.groupService.getGroupUsedDiskspace(this.selectedProject[1].toString()))
+      .subscribe((result: any) => {
+                   if (result[0]['value']) {
+                     this.selectedProjectDiskspaceMax = result[0]['value'];
+
+                   } else {
+                     this.selectedProjectDiskspaceMax = 0;
+                   }
+                   if (result[1]['value']) {
+
+                     this.selectedProjectDiskspaceUsed = result[1]['value'];
+                   } else {
+                     this.selectedProjectDiskspaceUsed = 0;
+                   }
+                   this.selected_volume_data_loaded = true;
+
+                 }
+      )
   }
 
   /**
