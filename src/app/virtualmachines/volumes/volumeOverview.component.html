@@ -552,7 +552,7 @@
             <div class="input-group">
               <input min="0" step="1" [(ngModel)]="extendVolumeStorage" required
                      [min]="selected_volume?.volume_storage +1"
-                     [max]="selectedProjectDiskspaceMax-selectedProjectDiskspaceUsed"
+                     [max]="selectedProjectDiskspaceMax-selectedProjectDiskspaceUsed + selected_volume?.volume_storage"
                      type="number" placeholder="e.g 8 "
                      id="new_volume_storage">
               <div class="input-group-append"><span
