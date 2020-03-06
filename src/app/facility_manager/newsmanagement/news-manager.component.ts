@@ -86,6 +86,11 @@ export class NewsManagerComponent implements OnInit {
     );
   }
 
+  returnPlainText(htmlAsString: string): string
+  {
+    return htmlAsString ? String(htmlAsString).replace(/<[^>]+>/gm, '') : '';
+  }
+
   patch(news: DenbiNews): void {
     this.controlToNews();
     this.newsService.updateNews(news).subscribe(
