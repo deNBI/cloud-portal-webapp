@@ -49,8 +49,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   edam_ontology_terms: EdamOntologyTerm[];
   ontology_search_keyword: string = 'term';
 
-  @ViewChild(NgForm) simpleVmForm: NgForm;
-  @ViewChild('creditsChart') creditsCanvas: ElementRef;
+  @ViewChild(NgForm, { static: false }) simpleVmForm: NgForm;
+  @ViewChild('creditsChart', { static: false }) creditsCanvas: ElementRef;
 
   /**
    * If at least 1 flavor is selected.
@@ -105,7 +105,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   largeExamplePossibleDays: string = '';
 
   title: string = 'Project Overview';
-  @ViewChild('edam_ontology') edam_ontology: AutocompleteComponent;
+  @ViewChild('edam_ontology', { static: false }) edam_ontology: AutocompleteComponent;
 
   checked_member_list: number[] = [];
 

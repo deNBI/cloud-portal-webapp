@@ -74,8 +74,8 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 
   application_id: string | number;
   ontology_search_keyword: string = 'term';
-  @ViewChild('edam_ontology') edam_ontology: AutocompleteComponent;
-  @ViewChild(NgForm) application_form: NgForm;
+  @ViewChild('edam_ontology', { static: true }) edam_ontology: AutocompleteComponent;
+  @ViewChild(NgForm, { static: true }) application_form: NgForm;
 
   /**
    * List of flavor types.
