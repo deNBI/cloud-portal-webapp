@@ -1,6 +1,10 @@
 <div *ngIf="isLoaded==false" class="loader"></div>
 <div *ngIf="isLoaded">
-  <button type="button" style="margin-bottom: 5px" class="btn btn-secondary"
+  <a type="button" style="margin-bottom: 5px"  target="_blank" class="btn btn-secondary" href="{{WIKI_VOLUME_OVERVIEW}}"
+
+          id="volume_ov">Wiki
+  </a>
+  <button type="button" style="margin-bottom: 5px;margin-left: 5px;" class="btn btn-secondary"
           (click)="selectedProject = undefined;selected_vm=undefined; createModal.show();"
           id="create_attach_button">Create
     & Attach Volume
@@ -294,7 +298,7 @@
           *ngIf="volume_action_status == volumeActionStates.ATTACHING_SUCCESSFULL || volume_action_status == volumeActionStates.SUCCESSFULLY_CREATED_ATTACHED"
           class="alert alert-info" role="alert">
           In order to use the volume you have to <a
-          href="{{VOLUME_WIKI}}"> mount </a> it.
+          href="{{WIKI_MOUNT_VOLUME}}"> mount </a> it.
         </div>
       </div>
       <div class="alert alert-warning" role="alert" *ngIf="volume_action_status == volumeActionStates.ERROR">
@@ -458,7 +462,7 @@
           successfully submitted. However, it may take a few minutes until the volume is actually extended.
 
           Please visit the <a href="{{WIKI_EXTEND_VOLUME}}"> wiki </a> for the further steps you need to take before you
-          can use the extended volume.</a>
+          can use the extended volume.
         </strong>
         </div>
 
