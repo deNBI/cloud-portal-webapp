@@ -455,7 +455,11 @@
       <div class="modal-body">
 
         <div *ngIf="extendDone && !extendError" class="alert alert-info" role="alert"><strong>Your extend command was
-          successfully submitted. However, it may take a few minutes until the volume is actually extended.</strong>
+          successfully submitted. However, it may take a few minutes until the volume is actually extended.
+
+          Please visit the <a href="{{WIKI_EXTEND_VOLUME}}"> wiki </a> for the further steps you need to take before you
+          can use the extended volume.</a>
+        </strong>
         </div>
 
         <div *ngIf="extendDone && extendError" class="alert alert-danger" role="alert">
@@ -531,12 +535,12 @@
             </div>
           </div>
         </div>
-        <div class="form-group row alert alert-danger"
+          <div class="form-group row alert alert-danger"
 
-             *ngIf="
-                    selectedProjectDiskspaceUsed + 1 >= selectedProjectDiskspaceMax">
-          This project has not enough storage to extend this volume.
-        </div>
+               *ngIf="
+                    selectedProjectDiskspaceUsed + 1 > selectedProjectDiskspaceMax">
+            This project has not enough storage to extend this volume.
+          </div>
 
         <div class="form-group row alert alert-danger"
 
@@ -547,7 +551,7 @@
 
 
         <div
-          *ngIf="selectedProjectDiskspaceUsed <= selectedProjectDiskspaceMax &&   !(selectedProjectDiskspaceUsed + 1 >= selectedProjectDiskspaceMax)"
+          *ngIf="selectedProjectDiskspaceUsed <= selectedProjectDiskspaceMax &&   !(selectedProjectDiskspaceUsed + 1 > selectedProjectDiskspaceMax)"
           class="form-group row">
 
           <label class="col-md-3 form-control-label">New Size</label>
@@ -575,12 +579,13 @@
 
       </div>
       <div class="modal-footer"
-           *ngIf="selectedProjectDiskspaceUsed <= selectedProjectDiskspaceMax &&   !(selectedProjectDiskspaceUsed + 1 >= selectedProjectDiskspaceMax)">
+      >
         <button id="verify_extend_btn"
+                *ngIf="selectedProjectDiskspaceUsed <= selectedProjectDiskspaceMax &&   !(selectedProjectDiskspaceUsed + 1 > selectedProjectDiskspaceMax)"
                 [disabled]="extendVolumeStorage <= selected_volume?.volume_storage || (selectedProjectDiskspaceUsed - selected_volume?.volume_storage +extendVolumeStorage) > selectedProjectDiskspaceMax"
                 class="btn  btn-success col-md-4"
                 (click)="extendError=false;extendDone=false;extendVolume(selected_volume,extendVolumeStorage);extendModal.hide();extendResultModal.show()">
-          Yes
+          Extend
         </button>
 
         <button class="btn  btn-danger col-md-4" type="reset"

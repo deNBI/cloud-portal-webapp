@@ -5,6 +5,7 @@ export const WIKI: string = 'https://cloud.denbi.de/wiki/';
 export const WIKI_GENERATE_KEYS: string = 'https://cloud.denbi.de/wiki/quickstart/#generate-ssh-keys';
 export const WIKI_NEWS_MANAGEMENT: string = 'https://cloud.denbi.de/wiki/cloud_admin/#news-management';
 export const WIKI_SIMPLEVM_CUSTOMISATION: string = 'https://cloud.denbi.de/portal/customisation';
+export const WIKI_EXTEND_VOLUME: string = 'https://cloud.denbi.de/portal/volumes/#extend-a-volume';
 export const WIKI_LNKS: string[] =
   [
     WIKI_VOLUME,
@@ -13,5 +14,6 @@ export const WIKI_LNKS: string[] =
     WIKI,
     WIKI_GENERATE_KEYS,
     WIKI_NEWS_MANAGEMENT,
-    WIKI_SIMPLEVM_CUSTOMISATION
+    WIKI_SIMPLEVM_CUSTOMISATION,
+    WIKI_EXTEND_VOLUME
   ];
