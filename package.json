@@ -120,7 +120,7 @@
     "tslint": "^5.11.0",
     "tslint-consistent-codestyle": "^1.15.1",
     "tslint-eslint-rules": "^5.4.0",
-    "typescript": "~3.5.3",
+    "typescript": "~3.7.0",
     "url-loader": "^1.0.1",
     "webpack-cli": "^3.2.1"
   }
