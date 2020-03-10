@@ -214,10 +214,12 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
                   this.creditsChart = new Chart(this.creditsCanvas.nativeElement, {
                     type: 'line',
                     data: {
+
                       labels: response['time_points'],
                       datasets: [{
                         label: 'Credit Usage',
                         data: data_points,
+                        lineTension: 0,
                         borderColor: 'rgba(54, 162, 235, 1)',
                         backgroundColor: 'rgba(54, 162, 235, 0.2)'
                       }, {
@@ -225,9 +227,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
                         data: ceiling_line,
                         borderColor: 'rgba(255, 99, 132, 1)',
                         fill: false,
-                        bezierCurve: false,
-                        pointRadius: 0,
-                        tooltip: false
+                        pointRadius: 0
                       }]
                     },
                     options: {
