@@ -14,7 +14,7 @@ for i in "${WIKI_LNKS[@]}"; do
   status_code=$(curl -o /dev/null -Isw '%{http_code}\n' "$i")
   if [[ "$status_code" -ne 200 ]]; then
     echo "Site status changed to $status_code"
-    (exit 1)
+    exit 1
   else
     echo Status: "$status_code"
 
