@@ -8,14 +8,11 @@ import {ComputecenterComponent} from '../projectmanagement/computecenter.compone
 import {FilterBaseClass} from '../shared/shared_modules/baseClass/filter-base-class';
 import {IResponseTemplate} from '../api-connector/response-template';
 import {FacilityService} from '../api-connector/facility.service';
-import {forkJoin} from 'rxjs/index';
-import {Application} from '../applications/application.model/application.model';
 import {DomSanitizer, SafeResourceUrl, SafeUrl} from '@angular/platform-browser';
 import {VirtualMachine} from '../virtualmachines/virtualmachinemodels/virtualmachine';
 import {Volume} from '../virtualmachines/volumes/volume';
 import {FullLayoutComponent} from '../layouts/full-layout.component';
 import {SnapshotModel} from '../virtualmachines/snapshots/snapshot.model';
-import {createUTCDate} from 'ngx-bootstrap/chronos/create/date-from-array';
 
 /**
  * Vo Overview component.

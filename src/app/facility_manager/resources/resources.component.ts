@@ -177,21 +177,5 @@ export class ResourcesComponent implements OnInit {
 
   }
 
-  public tableToPDF(): void {
-    const data: object = document.getElementById(this.tableId);
-    html2canvas(data).then((canvas: any) => {
-      // Few necessary setting options
-      const imgWidth: number = 208;
-      const pageHeight: number = 295;
-      const imgHeight: number = canvas.height * imgWidth / canvas.width;
-      const heightLeft: number = imgHeight;
-
-      const contentDataURL: string = canvas.toDataURL('image/png');
-      const pdf: jspdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF
-      const position: number = 0;
-      pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
-      pdf.save(`${this.selectedFacility['Facility']}.pdf`); // Generated PDF
-    });
-  }
 
 }

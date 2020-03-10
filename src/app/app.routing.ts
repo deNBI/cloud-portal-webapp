@@ -33,31 +33,31 @@ export const routes: Routes = [
     children: [
       {
         path: 'userinfo',
-        loadChildren: './userinfo/userinfo.module#UserinfoModule'
+        loadChildren: () => import('./userinfo/userinfo.module').then(m => m.UserinfoModule)
       },
       {
         path: 'help',
-        loadChildren: './help/help.module#HelpModule'
+        loadChildren: () => import('./help/help.module').then(m => m.HelpModule)
       },
       {
         path: 'project-management',
-        loadChildren: './projectmanagement/projectmanagement.module#ProjectManagementModule'
+        loadChildren: () => import('./projectmanagement/projectmanagement.module').then(m => m.ProjectManagementModule)
       },
       {
         path: 'applications',
-        loadChildren: './applications/applications.module#ApplicationsModule'
+        loadChildren: () => import('./applications/applications.module').then(m => m.ApplicationsModule)
       },
       {
         path: 'virtualmachines',
-        loadChildren: './virtualmachines/vm.module#VmModule'
+        loadChildren: () => import('./virtualmachines/vm.module').then(m => m.VmModule)
       },
       {
         path: 'vo-manager',
-        loadChildren: './vo_manager/VoManager.module#VoManagerModule'
+        loadChildren: () => import('./vo_manager/VoManager.module').then(m => m.VoManagerModule)
       },
       {
         path: 'facility-manager',
-        loadChildren: './facility_manager/facilitymanager.module#FacilitymanagerModule'
+        loadChildren: () => import('./facility_manager/facilitymanager.module').then(m => m.FacilitymanagerModule)
       }
 
     ]

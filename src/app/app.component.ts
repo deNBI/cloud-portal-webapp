@@ -1,5 +1,4 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
-import {Http, RequestOptions, XHRBackend} from '@angular/http';
 import {ModalDirective} from 'ngx-bootstrap';
 import {Angulartics2Piwik} from 'angulartics2/piwik';
 import {ApplicationRef} from '@angular/core';
@@ -14,10 +13,7 @@ import {VoService} from './api-connector/vo.service';
              // tslint:disable-next-line:component-selector
              selector: 'body',
              templateUrl: 'app.component.html',
-             providers: [{
-               provide: Http,
-               deps: [XHRBackend, RequestOptions, AppComponent]
-             }, VoService]
+             providers: [VoService]
            })
 export class AppComponent implements AfterViewInit, OnInit {
 
