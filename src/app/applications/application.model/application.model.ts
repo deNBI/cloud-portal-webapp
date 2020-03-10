@@ -2,7 +2,7 @@ import {ApplicationExtension} from '../application_extension.model';
 import {ComputecenterComponent} from '../../projectmanagement/computecenter.component';
 import {ApplicationDissemination} from '../application-dissemination';
 import {EdamOntologyTerm} from '../edam-ontology-term';
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 
 /**
  * Application class.
