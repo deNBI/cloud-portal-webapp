@@ -32,11 +32,6 @@ import {Clusterinfo} from '../clusterinfo';
            })
 export class AddClusterComponent implements OnInit {
 
-  TWENTY_FIVE_PERCENT: number = 25;
-  FIFTY_PERCENT: number = 50;
-  THIRTY_THIRD_PERCENT: number = 33;
-  SIXTY_SIX_PERCENT: number = 66;
-  SEVENTY_FIVE: number = 75;
   ACTIVE: string = 'ACTIVE';
   PLAYBOOK_FAILED: string = 'PLAYBOOK_FAILED';
   DELETED: string = 'DELETED';
@@ -219,6 +214,30 @@ export class AddClusterComponent implements OnInit {
     this.calculateNewValues()
   }
 
+  checkFlavorsUsableForCluster(): void {
+    this.flavors_usable = this.flavors.filter((flav: Flavor) => {
+      return this.filterFlavorsTest(flav)
+    });
+
+    this.flavors_loaded = true;
+
+  }
+
+  filterFlavorsTest(flavor: Flavor): boolean {
+    const tmp_flavors: Flavor[] = [];
+    const available_cores: number = this.selectedProjectCoresMax - (flavor.vcpus + this.selectedProjectCoresUsed);
+    const available_ram: number = this.selectedProjectRamMax - (flavor.ram / 1024 + this.selectedProjectRamUsed);
+    const available_gpu: number = this.selectedProjectGPUsMax - (flavor.gpu + this.selectedProjectGPUsUsed);
+    console.log(flavor.name, available_cores, available_ram, available_gpu)
+    for (const fl of this.flavors) {
+      if (fl.vcpus <= available_cores && (fl.ram / 1024) <= available_ram && fl.gpu <= available_gpu) {
+        tmp_flavors.push(fl)
+      }
+    }
+
+    return tmp_flavors.length > 0;
+  }
+
   filterFlavors(): void {
     const tmp_flavors: Flavor[] = [];
     const available_cores: number = this.selectedProjectCoresMax - (this.newCores + this.selectedProjectCoresUsed);
@@ -282,8 +301,7 @@ export class AddClusterComponent implements OnInit {
   getFlavors(project_id: number): void {
     this.flavorService.getFlavors(project_id).subscribe((flavors: Flavor[]) => {
       this.flavors = flavors;
-      this.flavors_usable = this.flavors;
-      this.flavors_loaded = true;
+      this.checkFlavorsUsableForCluster();
     });
 
   }
@@ -323,55 +341,6 @@ export class AddClusterComponent implements OnInit {
       this.checkStatusTimeout);
   }
 
-  /**
-   * Check the status of the started vm in a loop.
-   * @param {string} id
-   */
-  check_status_loop(id: string): void {
-
-    setTimeout(
-      () => {
-        this.virtualmachineservice.checkVmStatus(id).subscribe((newVm: VirtualMachine) => {
-          if (newVm.status === this.ACTIVE) {
-            this.resetProgressBar();
-            this.newVm = newVm;
-            this.loadProjectData();
-
-          } else if (newVm.status === this.PLAYBOOK_FAILED || newVm.status === this.DELETED) {
-            this.newVm.status = this.DELETED;
-            this.resetProgressBar();
-            this.create_error = <IResponseTemplate><any>newVm;
-            this.loadProjectData();
-          } else if (newVm.status) {
-            if (newVm.status === this.PORT_CLOSED) {
-              this.progress_bar_status = this.CHECKING_PORT_STATUS;
-              if (this.hasTools) {
-                this.progress_bar_width = this.FIFTY_PERCENT;
-              } else {
-                this.progress_bar_width = this.SIXTY_SIX_PERCENT;
-              }
-
-            } else if (newVm.status === this.PREPARE_PLAYBOOK_BUILD) {
-              this.progress_bar_status = this.PREPARE_PLAYBOOK_STATUS;
-              this.progress_bar_width = this.SIXTY_SIX_PERCENT;
-
-            } else if (newVm.status === this.BUILD_PLAYBOOK) {
-              this.progress_bar_status = this.BUIDLING_PLAYBOOK_STATUS;
-              this.progress_bar_width = this.SEVENTY_FIVE;
-            }
-
-            this.check_status_loop(id)
-          } else {
-            this.resetProgressBar();
-            this.loadProjectData();
-            this.create_error = <IResponseTemplate><any>newVm;
-          }
-
-        })
-      },
-      this.checkStatusTimeout);
-  }
-
   startCluster(): void {
     const re: RegExp = /\+/gi;
     this.cluster_error = null;
@@ -382,7 +351,7 @@ export class AddClusterComponent implements OnInit {
 
     this.virtualmachineservice.startCluster(
       masterFlavor, this.selectedMasterImage,
-      workerFlavor, this.selectedWorkerImage,
+      workerFlavor, this.selectedMasterImage,
       this.workerInstancesCount, this.selectedProject[1]).subscribe(
       (res: any) => {
         if (res['status'] && res['status'] === 'mutex_locked') {
@@ -405,22 +374,6 @@ export class AddClusterComponent implements OnInit {
 
   }
 
-  getPlaybookInformation(): string {
-    const playbook_info: {
-      [name: string]: {
-        [variable: string]: string
-      }
-    } = {};
-    this.timeout = 300;
-    if (this.biocondaComponent.hasChosenTools()) {
-      playbook_info['bioconda'] = {
-        packages: this.biocondaComponent.getChosenTools()
-      };
-      this.timeout += this.biocondaComponent.getTimeout();
-    }
-
-    return JSON.stringify(playbook_info);
-  }
 
   /**
    * Get the client from the selected project.

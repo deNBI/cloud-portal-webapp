@@ -124,7 +124,7 @@
 
 
                         <app-flavor-detail [selectedFlavor]="selectedMasterFlavor"
-                                           [flavors]="flavors"
+                                           [flavors]="flavors_usable"
                                            (selectedFlavorChange)="selectedMasterFlavor=$event;calculateNewValues();"
                                            id="id_flavor_detail"></app-flavor-detail>
 
@@ -157,7 +157,7 @@
 
                 <accordion class="col">
 
-                  <accordion-group #workerInstancesGroup [isDisabled]="!selectedMasterFlavor || !selectedMasterImage"
+                  <accordion-group #workerInstancesGroup  [isDisabled]="!selectedMasterFlavor || !selectedMasterImage"
                                    (click)="resizeFix()"
 
                                    *ngIf="selectedProject && projectDataLoaded &&  (selectedProjectVmsUsed + 2 ) <= selectedProjectVmsMax &&
@@ -189,10 +189,8 @@
                       <div class="col-md-10">
 
 
-                        <app-image-detail [selectedImage]="selectedWorkerImage"
-                                          [images]="images"
-                                          (selectedImageChange)="selectedWorkerImage=$event;"
-                                          id="id_image_detail"></app-image-detail>
+                      <app-image-slide [image]="selectedMasterImage"
+                                       [selectedImage]="selectedMasterImage"></app-image-slide>
                       </div>
                     </div>
                     <div class="form-group row col-md-12">
