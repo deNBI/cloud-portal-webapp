@@ -1,7 +1,7 @@
 ### STAGE 1: Build ###
 
 # We label our stage as 'builder'
-FROM node:8.11-alpine as builder
+FROM node:10.19.0-buster-slim as builder
 
 ARG ANGULAR_MODE
 ENV ANGULAR_MODE=${ANGULAR_MODE}
@@ -19,7 +19,7 @@ WORKDIR /ng-app
 COPY . .
 
 ## Build the angular app in production mode and store the artifacts in dist folder
-RUN $(npm bin)/ng build --configuration=${ANGULAR_MODE}   --prod --build-optimizer  
+RUN $(npm bin)/ng build --configuration=${ANGULAR_MODE}   --prod --build-optimizer
 
 ### STAGE 2: Setup ###
 FROM nginx:1.13.3-alpine
