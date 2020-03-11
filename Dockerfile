@@ -1,7 +1,7 @@
 ### STAGE 1: Build ###
 
 # We label our stage as 'builder'
-FROM node:10.19.0-buster-slim as builder
+FROM node:10.19.0-alpine3.9 as builder
 
 ARG ANGULAR_MODE
 ENV ANGULAR_MODE=${ANGULAR_MODE}
