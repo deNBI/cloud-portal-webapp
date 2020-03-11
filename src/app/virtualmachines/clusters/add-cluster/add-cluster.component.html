@@ -98,7 +98,7 @@
 
                   </div>
                   <div class="alert alert-primary " role="alert"
-                       *ngIf="selectedProject && selectedProjectVmsUsed < selectedProjectVmsMax && flavors_loaded && flavors.length == 0 && !selectedFlavor">
+                       *ngIf="selectedProject && selectedProjectVmsUsed < selectedProjectVmsMax && flavors_loaded && flavors_usable.length == 0 && !selectedFlavor">
                     There are too few cores and not enough ram available for this project to start a new machine.
                     Your principal investigator can request more
                     resources if necessary.
