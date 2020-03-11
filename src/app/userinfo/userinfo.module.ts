@@ -1,20 +1,31 @@
-import ***REMOVED*** NgModule ***REMOVED*** from '@angular/core';
+import {NgModule} from '@angular/core';
 
-import ***REMOVED*** TabsModule ***REMOVED*** from 'ngx-bootstrap/tabs';
-import ***REMOVED*** UserinfoComponent ***REMOVED*** from './userinfo.component';
-import ***REMOVED*** UserinfoRoutingModule ***REMOVED*** from './userinfo-routing.module';
-import ***REMOVED***CommonModule***REMOVED*** from "@angular/common";
-import ***REMOVED***FormsModule***REMOVED*** from "@angular/forms";
+import {TabsModule} from 'ngx-bootstrap/tabs';
+import {UserInfoComponent} from './userinfo.component';
+import {UserInfoRoutingModule} from './userinfo-routing.module';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {ModalModule} from 'ngx-bootstrap/modal';
+import {AlertModule} from 'ngx-bootstrap';
+import {PublicKeyModule} from '../shared/shared_modules/public-key/public-key.module';
 
-@NgModule(***REMOVED***
-  imports: [
-    UserinfoRoutingModule,
-    TabsModule,
-    CommonModule,
-    FormsModule
-  ],
-  declarations: [
-    UserinfoComponent
-  ]
-***REMOVED***)
-export class UserinfoModule ***REMOVED*** ***REMOVED***
+/**
+ * Userinfo module.
+ */
+@NgModule({
+            imports: [
+              PublicKeyModule,
+              UserInfoRoutingModule,
+              TabsModule,
+              CommonModule,
+              FormsModule, ModalModule.forRoot(),
+              AlertModule.forRoot()
+            ],
+
+            declarations: [
+              UserInfoComponent
+            ],
+            exports: [UserInfoComponent, UserInfoRoutingModule, TabsModule, CommonModule, FormsModule, ModalModule, AlertModule]
+          })
+export class UserinfoModule {
+}

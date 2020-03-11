@@ -1,4 +1,7 @@
-export class Userinfo ***REMOVED***
+/**
+ * Userinfo class.
+ */
+export class Userinfo {
 
   private _Id: number;
   private _FirstName: string;
@@ -7,68 +10,92 @@ export class Userinfo ***REMOVED***
   private _ElixirId: string;
   private _PublicKey: string;
   private _UserLogin: string;
+  private _Email: string;
+  private _PendingEmails: string[];
 
-  constructor() ***REMOVED***
-    this.LastName = " ";
-    this.FirstName = " ";
-    this.Id = -1;
-  ***REMOVED***
+  constructor(userInfo: any) {
+    this._Id = userInfo.Id;
+    this._FirstName = userInfo.FirstName;
+    this._LastName = userInfo.LastName;
+    this._MemberId = userInfo.MemberId;
+    this._ElixirId = userInfo.ElixirId;
+    this._PublicKey = userInfo.PublicKey;
+    this._UserLogin = userInfo.UserLogin;
+    this._Email = userInfo.Email;
+    this._PendingEmails = userInfo.PendingEmails;
+  }
 
-  get Id(): number ***REMOVED***
+  get PendingEmails(): string[] {
+    return this._PendingEmails;
+  }
+
+  set PendingEmails(value: string[]) {
+    this._PendingEmails = value;
+  }
+
+  get Email(): string {
+    return this._Email;
+  }
+
+  set Email(value: string) {
+    this._Email = value;
+  }
+
+  get Id(): number {
     return this._Id;
-  ***REMOVED***
+  }
 
-  set Id(value: number) ***REMOVED***
+  set Id(value: number) {
     this._Id = value;
-  ***REMOVED***
+  }
 
-  get FirstName(): string ***REMOVED***
+  get FirstName(): string {
     return this._FirstName;
-  ***REMOVED***
+  }
 
-  set FirstName(value: string) ***REMOVED***
+  set FirstName(value: string) {
     this._FirstName = value;
-  ***REMOVED***
+  }
 
-  get LastName(): string ***REMOVED***
+  get LastName(): string {
     return this._LastName;
-  ***REMOVED***
+  }
 
-  set LastName(value: string) ***REMOVED***
+  set LastName(value: string) {
     this._LastName = value;
-  ***REMOVED***
+  }
 
-  get MemberId(): number ***REMOVED***
+  get MemberId(): number {
     return this._MemberId;
-  ***REMOVED***
+  }
 
-  set MemberId(value: number) ***REMOVED***
+  set MemberId(value: number) {
     this._MemberId = value;
-  ***REMOVED***
+  }
 
-  set ElxirId(value: string) ***REMOVED***
+  set ElxirId(value: string) {
     this._ElixirId = value;
-  ***REMOVED***
+  }
 
-  get ElxirId() ***REMOVED***
+  get ElxirId(): string {
     return this._ElixirId
-  ***REMOVED***
+  }
 
-  set PublicKey(value: string) ***REMOVED***
+  set PublicKey(value: string) {
     this._PublicKey = value;
-  ***REMOVED***
+  }
 
-  get PublicKey() ***REMOVED***
+  get PublicKey(): string {
     return this._PublicKey
-  ***REMOVED***
+  }
 
-  set UserLogin(value: string) ***REMOVED***
+  set UserLogin(value: string) {
 
     this._UserLogin = value;
-  ***REMOVED***
+  }
 
-  get UserLogin() ***REMOVED***
+  get UserLogin(): string {
     return this._UserLogin
-  ***REMOVED***
+  }
 
-***REMOVED***
+}

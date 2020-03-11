@@ -1,104 +1,161 @@
-import ***REMOVED***Component***REMOVED*** from '@angular/core';
-import 'rxjs/add/operator/toPromise';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Userinfo} from './userinfo.model'
+import {ApiSettings} from '../api-connector/api-settings.service'
+import {KeyService} from '../api-connector/key.service';
+import {UserService} from '../api-connector/user.service';
+import {GroupService} from '../api-connector/group.service';
+import {IResponseTemplate} from '../api-connector/response-template';
+import {forkJoin} from 'rxjs/index';
 
-import ***REMOVED***Userinfo***REMOVED*** from './userinfo.model'
-import ***REMOVED***AuthzResolver***REMOVED*** from '../perun-connector/authz-resolver.service'
-import ***REMOVED***PerunSettings***REMOVED*** from "../perun-connector/connector-settings.service";
-import ***REMOVED***MembersManager***REMOVED*** from '../perun-connector/members-manager.service'
-import ***REMOVED***ApiSettings***REMOVED*** from '../api-connector/api-settings.service'
-import ***REMOVED***keyService***REMOVED*** from "../api-connector/key.service";
-import ***REMOVED***UsersManager***REMOVED*** from "../perun-connector/users-manager.service";
-import ***REMOVED***AttributesManager***REMOVED*** from "../perun-connector/attributes-manager";
+/**
+ * UserInformation component.
+ */
+@Component({
+             selector: 'app-userinfo',
+             templateUrl: 'userinfo.component.html',
+             providers: [GroupService, UserService, ApiSettings, KeyService]
+           })
+export class UserInfoComponent implements OnInit {
+  /**
+   * Information of the logged in User
+   */
+  userInfo: Userinfo;
 
+  /**
+   * If the user has subscribed to the newsletter.
+   */
+  newsletterSubscribed: boolean;
 
-@Component(***REMOVED***
-  templateUrl: 'userinfo.component.html',
-  providers: [AuthzResolver, PerunSettings, MembersManager, ApiSettings, keyService, UsersManager, AttributesManager]
-***REMOVED***)
-export class UserinfoComponent ***REMOVED***
-  userinfo: Userinfo;
-  key: string = 'Show Public Key';
-  key_visible = false;
-  public_key: string;
+  /**
+   * New requested public key.
+   */
+  newPublicKey: string;
 
-  constructor(private authzresolver: AuthzResolver, private memberssmanager: MembersManager, private keyService: keyService, private usersmanager: UsersManager, private attributemanager: AttributesManager) ***REMOVED***
-    this.userinfo = new Userinfo();
+  /**
+   * If every data is loaded.
+   * @type {boolean}
+   */
+  isLoaded: boolean = false;
+
+  /**
+   * If the user is part of a project.
+   * @type {boolean}
+   */
+  isProjectMember: boolean = true;
+
+  /**
+   * If freemium is active.
+   * @type {boolean}
+   */
+  freemiumActive: boolean = false;
+
+  /**
+   * Email requested to change.
+   */
+  emailChange: string;
+
+  title: string = 'User Information';
+  /**
+   * Text refering to newsletter registration
+   */
+  dsgvo_text: string = 'By activating this option, you agree that your preferred e-mail address may be used for the newsletter. ' +
+    'You will receive the newsletter until you deactivate the option in the settings again.';
+
+  constructor(private groupService: GroupService, private userService: UserService, private keyService: KeyService) {
+  }
+
+  requestChangePreferredMailUser(email: string): void {
+    this.userService.requestChangePreferredMailUser(email).subscribe(() => {
+      this.getPendingPreferredMailUser();
+    })
+  }
+
+  getPendingPreferredMailUser(): void {
+    this.userService.getPendingPreferredMailUser().subscribe((res: IResponseTemplate) => {
+      this.userInfo.PendingEmails = <string[]>res.value;
+
+    })
+  }
+
+  ngOnInit(): void {
     this.getUserinfo();
+    this.isFreemiumActive();
+    this.isUserSimpleVmMember();
+  }
 
+  isFreemiumActive(): void {
+    this.groupService.isFreemiumActive().subscribe((result: IResponseTemplate) => {
+      this.freemiumActive = <boolean><Boolean>result.value;
 
-  ***REMOVED***
+    });
+  }
 
-  importKey(publicKey: string, keyname: string) ***REMOVED***
+  importKey(publicKey: string): void {
 
-    let re = /\+/gi;
+    const re: RegExp = /\+/gi;
 
-    let newstr = publicKey.replace(re, "%2B");
-
-    this.keyService.postKey(this.userinfo.ElxirId, publicKey.replace(re, '%2B'), keyname).subscribe(result => ***REMOVED***
+    this.keyService.postKey(publicKey.replace(re, '%2B')).subscribe(() => {
       this.getUserPublicKey();
-    ***REMOVED***);
-  ***REMOVED***
+    });
+  }
 
-  validatePublicKey() ***REMOVED***
+  getUserPublicKey(): void {
+    this.keyService.getKey().subscribe((key: IResponseTemplate) => {
+      this.userInfo.PublicKey = <string>key.value;
+      this.isLoaded = true;
+    })
+  }
 
-    if (/ssh-rsa AAAA[0-9A-Za-z+/]+[=]***REMOVED***0,3***REMOVED***( [^@]+@[^@]+)?/.test(this.public_key)) ***REMOVED***
+  getUserinfo(): void {
+    this.userService.getUserInfo().subscribe((userinfo: any) => {
+      this.userInfo = new Userinfo(userinfo);
+      this.title = this.title.concat(': ', this.userInfo.FirstName, ' ', this.userInfo.LastName);
+
+      forkJoin(
+        this.userService.getNewsletterSubscription(),
+        this.userService.getPendingPreferredMailUser()).subscribe((res: IResponseTemplate[]) => {
+
+        this.newsletterSubscribed = <boolean>res[0].value;
+        this.userInfo.PendingEmails = <string[]>res[1].value;
+
+        this.isLoaded = true;
+
+      })
+    })
+
+  }
+
+  isUserSimpleVmMember(): void {
+    this.groupService.getSimpleVmByUser().subscribe((result: any) => {
+      if (result.length > 0) {
+        this.isProjectMember = true
+      } else {
+        this.isProjectMember = false
+      }
+    })
+  }
+
+  setNewsletterSubscription(): void {
+    if (this.newsletterSubscribed) {
+      this.userService.setNewsletterSubscriptionWhenSubscribed().subscribe();
+    } else {
+      this.userService.setNewsletterSubscriptionWhenNotSubscribed().subscribe();
+    }
+
+  }
+
+  validatePublicKey(): boolean {
+
+    if (/ssh-rsa AAAA[0-9A-Za-z+/]+[=]{0,3}( [^@]+@[^@]+)?/.test(this.newPublicKey)) {
       return true;
-    ***REMOVED***
-    else ***REMOVED***
+    } else {
 
       return false;
-    ***REMOVED***
+    }
 
-  ***REMOVED***
+  }
 
-  getUserPublicKey() ***REMOVED***
-    this.keyService.getKey(this.userinfo.ElxirId).subscribe(result => ***REMOVED***
-      this.userinfo.PublicKey = result.toString();
-    ***REMOVED***)
-  ***REMOVED***
-
-  getUserinfo() ***REMOVED***
-    this.authzresolver.getLoggedUser().toPromise()
-      .then(result => ***REMOVED***
-        let res = result.json();
-
-        this.userinfo.FirstName = res["firstName"];
-        this.userinfo.LastName = res["lastName"];
-        this.userinfo.Id = res["id"];
-
-        return this.memberssmanager.getMemberByUser(res["id"]).toPromise();
-
-      ***REMOVED***).then(memberinfo => ***REMOVED***
-      this.userinfo.MemberId = memberinfo.json()["id"];
-      this.attributemanager.getLogins(this.userinfo.Id).toPromise().then(result => ***REMOVED***
-        let logins = result.json()
-        for (let login of logins) ***REMOVED***
-          if (login['friendlyName'] === 'login-namespace:elixir-persistent') ***REMOVED***
-            this.userinfo.ElxirId = login['value']
-          ***REMOVED***
-          else if (login['friendlyName'] === 'login-namespace:elixir') ***REMOVED***
-            this.userinfo.UserLogin = login['value'];
-
-          ***REMOVED***
-
-        ***REMOVED***
-
-      ***REMOVED***).then(result => ***REMOVED***
-        this.getUserPublicKey()
-
-      ***REMOVED***);
-
-    ***REMOVED***)
-  ***REMOVED***
-
-  toggleKey() ***REMOVED***
-    if (this.key == 'Show Public Key') ***REMOVED***
-      this.key = 'Hide Public Key';
-      this.key_visible = true;
-    ***REMOVED*** else ***REMOVED***
-      this.key = 'Show Public Key';
-      this.key_visible = false;
-    ***REMOVED***
-  ***REMOVED***
-***REMOVED***
-
+  joinFreemium(): void {
+    this.groupService.addMemberToFreemium().subscribe();
+  }
+}

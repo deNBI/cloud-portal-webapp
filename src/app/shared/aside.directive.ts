@@ -1,17 +1,19 @@
-import ***REMOVED*** Directive, HostListener ***REMOVED*** from '@angular/core';
+import {Directive, HostListener} from '@angular/core';
+
+// tslint:disable
 
 /**
-* Allows the aside to be toggled via click.
-*/
-@Directive(***REMOVED***
-  selector: '[appAsideMenuToggler]',
-***REMOVED***)
-export class AsideToggleDirective ***REMOVED***
-  constructor() ***REMOVED*** ***REMOVED***
+ * Allows the aside to be toggled via click.
+ */
+@Directive({
+             selector: '[appAsideMenuToggler]'
+           })
+export class AsideToggleDirective {
+  constructor() {
+  }
 
-  @HostListener('click', ['$event'])
-  toggleOpen($event: any) ***REMOVED***
+  @HostListener('click', ['$event']) toggleOpen($event: any) {
     $event.preventDefault();
     document.querySelector('body').classList.toggle('aside-menu-hidden');
-  ***REMOVED***
-***REMOVED***
+  }
+}

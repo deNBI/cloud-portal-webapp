@@ -3,11 +3,19 @@
 // `ng build --env=prod` then `environment.prod.ts` will be used instead.
 // The list of which env maps to which file can be found in `angular-cli.json`.
 
-export const environment = ***REMOVED***
+export const environment: any = {
   production: false,
   vo: 3334,
+  freemium_project_id: 10392,
+  domain: 'localhost',
 
-  apiBaseUrl: 'https://portal-dev.denbi.de/api/v0/',
+  invitation_group_pre: 'https://perun.elixir-czech.cz/fed/registrar/?vo=elixir&targetnew=https%3A%2F%2Fperun.elixir-czech.cz' +
+    '%2Ffed%2Fregistrar%2F%3Fvo%3Ddenbi-dev%26group%3D',
+  invitation_group_post: '&targetexisting=https%3A%2F%2Fperun.elixir-czech.cz%2Ffed%2Fregistrar%2F%3Fvo%3Ddenbi-dev%26group%3D',
+  apiBaseUrl: 'http://localhost:8000/api/v0/',
   voRegistrationLink: 'https://perun.elixir-czech.cz/registrar/?vo=denbi-dev',
-  connectorBaseUrl : 'https://portal-dev.denbi.de/connector/'
-***REMOVED***;
+  login: 'http://localhost:8000',
+  webapp: 'http://localhost:8001/',
+  matomoServer: ''
+
+};

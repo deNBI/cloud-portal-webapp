@@ -1,53 +1,76 @@
-import ***REMOVED*** NgModule ***REMOVED*** from '@angular/core';
-import ***REMOVED*** Routes, RouterModule ***REMOVED*** from '@angular/router';
-
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
 // Layouts
-import ***REMOVED*** FullLayoutComponent ***REMOVED*** from './layouts/full-layout.component';
-import ***REMOVED*** SimpleLayoutComponent ***REMOVED*** from './layouts/simple-layout.component';
-import ***REMOVED***MemberGuardService***REMOVED*** from './member-guard.service';
-import ***REMOVED***RegistrationInfoComponent***REMOVED*** from "./registration-info.component";
+import {ConsentInfoComponent} from './consent-info.component';
+import {FullLayoutComponent} from './layouts/full-layout.component';
+import {MemberGuardService} from './member-guard.service';
+import {RegistrationInfoComponent} from './registration-info.component';
+import {ValidationApplicationComponent} from './validation-application/validation-application.component';
 
 export const routes: Routes = [
-  ***REMOVED***
+  {
     path: '',
     redirectTo: 'userinfo',
-    pathMatch: 'full',
-  ***REMOVED***,
-    ***REMOVED***
+    pathMatch: 'full'
+  },
+  {
     path: 'registration-info',
     component: RegistrationInfoComponent,
-    pathMatch:'full'
-  ***REMOVED***,
-  ***REMOVED***
+    pathMatch: 'full'
+  },
+  {
+    path: 'consent-info',
+    component: ConsentInfoComponent,
+    pathMatch: 'full'
+  },
+  {
     path: '',
     component: FullLayoutComponent,
-     canActivate: [MemberGuardService],
-    data: ***REMOVED***
-      title: 'de.NBI Portal'
-    ***REMOVED***,
+    canActivate: [MemberGuardService],
+    data: {
+      title: 'de.NBI Cloud Portal'
+    },
     children: [
-      ***REMOVED***
+      {
         path: 'userinfo',
         loadChildren: './userinfo/userinfo.module#UserinfoModule'
-      ***REMOVED***,
-      ***REMOVED***
+      },
+      {
+        path: 'help',
+        loadChildren: './help/help.module#HelpModule'
+      },
+      {
         path: 'project-management',
         loadChildren: './projectmanagement/projectmanagement.module#ProjectManagementModule'
-      ***REMOVED***,
-      ***REMOVED***
+      },
+      {
         path: 'applications',
         loadChildren: './applications/applications.module#ApplicationsModule'
-      ***REMOVED***
+      },
+      {
+        path: 'virtualmachines',
+        loadChildren: './virtualmachines/vm.module#VmModule'
+      },
+      {
+        path: 'vo-manager',
+        loadChildren: './vo_manager/VoManager.module#VoManagerModule'
+      },
+      {
+        path: 'facility-manager',
+        loadChildren: './facility_manager/facilitymanager.module#FacilitymanagerModule'
+      }
 
     ]
-  ***REMOVED***
+  }
 ];
 
-
-
-@NgModule(***REMOVED***
-  imports: [ RouterModule.forRoot(routes) ],
-  exports: [ RouterModule ],
+/**
+ * App routing module.
+ */
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule],
   providers: [MemberGuardService]
-***REMOVED***)
-export class AppRoutingModule ***REMOVED******REMOVED***
+})
+export class AppRoutingModule {
+}

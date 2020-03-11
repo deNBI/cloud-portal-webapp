@@ -1,6 +1,6 @@
-***REMOVED***
+{
   "compileOnSave": false,
-  "compilerOptions": ***REMOVED***
+  "compilerOptions": {
     "outDir": "./dist/out-tsc",
     "baseUrl": "src",
     "sourceMap": true,
@@ -15,6 +15,7 @@
     "lib": [
       "es2016",
       "dom"
-    ]
-  ***REMOVED***
-***REMOVED***
+    ],
+    "module": "es2015"
+  }
+}

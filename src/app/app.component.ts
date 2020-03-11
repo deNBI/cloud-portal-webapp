@@ -1,35 +1,58 @@
-import ***REMOVED***AfterViewInit, Component, ViewChild***REMOVED*** from '@angular/core';
-import ***REMOVED***RequestOptions, XHRBackend, Http***REMOVED*** from '@angular/http';
-import ***REMOVED***HttpInterceptor***REMOVED*** from "app/interceptor";
-import ***REMOVED***ModalDirective***REMOVED*** from "ngx-bootstrap";
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {Http, RequestOptions, XHRBackend} from '@angular/http';
+import {ModalDirective} from 'ngx-bootstrap';
+import {Angulartics2Piwik} from 'angulartics2/piwik';
+import {ApplicationRef} from '@angular/core';
+import {IResponseTemplate} from './api-connector/response-template';
+import {setVO} from './shared/globalvar';
+import {VoService} from './api-connector/vo.service';
 
+/**
+ * App component.
+ */
+@Component({
+             // tslint:disable-next-line:component-selector
+             selector: 'body',
+             templateUrl: 'app.component.html',
+             providers: [{
+               provide: Http,
+               deps: [XHRBackend, RequestOptions, AppComponent]
+             }, VoService]
+           })
+export class AppComponent implements AfterViewInit, OnInit {
 
-export function httpInterceptor(backend: XHRBackend, options: RequestOptions, modal: AppComponent) ***REMOVED***
-  return new HttpInterceptor(backend, options, modal.getModal());
-***REMOVED***
+  notificationModalTitle: string = 'Update available';
+  notificationModalMessage: string = 'A new update is available. Please reload the site to use the new version of the portal.';
+  notificationModalType: string = 'info';
 
-@Component(***REMOVED***
-  selector: 'body',
-  templateUrl: 'app.component.html',
-  providers: [ ***REMOVED***
-    provide: Http,
-    useFactory: httpInterceptor,
-    deps: [XHRBackend, RequestOptions, AppComponent]
-  ***REMOVED***]
-***REMOVED***)
-export class AppComponent implements AfterViewInit ***REMOVED***
+  @ViewChild('notificationModal', { static: true }) modal: ModalDirective;
 
-  ngAfterViewInit(): void ***REMOVED***
-  ***REMOVED***
+  constructor(private appRef: ApplicationRef, private angulartics2Piwik: Angulartics2Piwik, private voService: VoService) {
+    /*   if (environment.production) {
+           const isStable = appRef.isStable.pipe(first(isStable => isStable === true));
+           const intervalTime = interval(60 * 1000);
+           const checkUpdatesInIntervall = concat(isStable, intervalTime);
+           checkUpdatesInIntervall.subscribe(() => this.swUpdate.checkForUpdate().then(() => {
+               this.swUpdate.available.subscribe(evt => {
+                   this.openNotificationModal()
 
-  @ViewChild('timeoutModal') modal: ModalDirective;
+               })
+           }))
+       }*/
 
-  refresh() ***REMOVED***
-    window.sessionStorage.clear();
-    window.location.reload(true);
-  ***REMOVED***
+  }
 
-  getModal() ***REMOVED***
-    return this.modal;
-  ***REMOVED***
-***REMOVED***
+  reloadSite(): void {
+    window.location.reload()
+  }
+
+  ngOnInit(): void {
+    this.angulartics2Piwik.startTracking();
+    this.voService.isVo().subscribe((result: IResponseTemplate) => {
+      setVO(<boolean><Boolean>result.value);
+    })
+  }
+
+  ngAfterViewInit(): void {
+  }
+}

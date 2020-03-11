@@ -1,38 +1,49 @@
-import ***REMOVED*** NgModule ***REMOVED*** from '@angular/core';
+import {NgModule} from '@angular/core';
 
-import ***REMOVED*** TabsModule ***REMOVED*** from 'ngx-bootstrap/tabs';
-import ***REMOVED*** ApplicationsComponent ***REMOVED*** from './applications.component';
-import ***REMOVED*** AddApplicationComponent ***REMOVED*** from './addapplication.component';
-import ***REMOVED*** ApplicationsRoutingModule ***REMOVED*** from './applications-routing.module';
-import ***REMOVED***CommonModule***REMOVED*** from "@angular/common";
-import ***REMOVED***FormsModule***REMOVED*** from '@angular/forms';
-import ***REMOVED*** ModalModule ***REMOVED*** from 'ngx-bootstrap/modal';
-import ***REMOVED***ImageDetailComponent***REMOVED*** from "./imagedetail.component";
-import ***REMOVED***VirtualMachineComponent***REMOVED*** from "./addvm.component";
-import ***REMOVED***FlavorDetailComponent***REMOVED*** from './flavordetail.component';
-import ***REMOVED***ClientOverviewComponent***REMOVED*** from "./vmClients.component";
-import ***REMOVED***UserinfoComponent***REMOVED*** from "../userinfo/userinfo.component";
-import ***REMOVED***VmOverviewComponent***REMOVED*** from "./vmOverview.component";
+import {TabsModule} from 'ngx-bootstrap/tabs';
+import {AccordionModule} from 'ngx-bootstrap';
+import {ApplicationsComponent} from './applications.component';
+import {ApplicationsRoutingModule} from './applications-routing.module';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {ModalModule} from 'ngx-bootstrap/modal';
+import {AddsimplevmComponent} from './addsimplevm.component';
+import {AddcloudapplicationComponent} from './addcloudapplication.component';
+import {ClickOutsideModule} from 'ng4-click-outside';
+import {TypeOverviewComponent} from './type-overview.component';
+import {AppSidebarModule} from '@coreui/angular';
+import {ValidationApplicationComponent} from '../validation-application/validation-application.component';
+import {AutocompleteLibModule} from 'angular-ng-autocomplete';
+import {ApplicationDetailComponent} from './application-detail/application-detail.component';
+import {SharedDirectivesModule} from '../shared/shared_modules/shared_directives.module';
+import { ApplicationFormularComponent } from './application-formular/application-formular.component';
 
-
-@NgModule(***REMOVED***
-  imports: [
-    ApplicationsRoutingModule,
-    TabsModule,
-    CommonModule,
-    FormsModule,
-    ModalModule.forRoot(),
-
-
-  ],
-  declarations: [
-    ApplicationsComponent,
-    AddApplicationComponent,
-    ImageDetailComponent,
-    VirtualMachineComponent,
-    FlavorDetailComponent,
-    ClientOverviewComponent,
-    VmOverviewComponent,
-  ]
-***REMOVED***)
-export class ApplicationsModule ***REMOVED*** ***REMOVED***
+/**
+ * Applications Module.
+ */
+@NgModule({
+            imports: [
+              AccordionModule.forRoot(),
+              ApplicationsRoutingModule,
+              ClickOutsideModule,
+              TabsModule,
+              CommonModule,
+              FormsModule,
+              ModalModule.forRoot(),
+              AppSidebarModule,
+              AutocompleteLibModule,
+              SharedDirectivesModule
+            ],
+            declarations: [
+              ApplicationsComponent,
+              AddsimplevmComponent,
+              AddcloudapplicationComponent,
+              TypeOverviewComponent,
+              ValidationApplicationComponent,
+              ApplicationDetailComponent,
+              ApplicationFormularComponent
+            ],
+            exports: [ApplicationDetailComponent]
+          })
+export class ApplicationsModule {
+}

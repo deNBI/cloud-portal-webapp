@@ -1,0 +1,6 @@
+{
+  "moderate": true,
+  "package-manager": "auto",
+  "whitelist": [],
+  "registry": "https://registry.npmjs.org"
+}

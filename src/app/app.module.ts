@@ -1,59 +1,98 @@
-import ***REMOVED***BrowserModule***REMOVED*** from '@angular/platform-browser';
-import ***REMOVED***NgModule***REMOVED*** from '@angular/core';
-import ***REMOVED***LocationStrategy, HashLocationStrategy***REMOVED*** from '@angular/common';
+import {HashLocationStrategy, LocationStrategy} from '@angular/common';
+import {NgModule} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
 
-import ***REMOVED***AppComponent***REMOVED*** from './app.component';
-import ***REMOVED***BsDropdownModule***REMOVED*** from 'ngx-bootstrap/dropdown';
-import ***REMOVED***TabsModule***REMOVED*** from 'ngx-bootstrap/tabs';
-import ***REMOVED***NAV_DROPDOWN_DIRECTIVES***REMOVED*** from './shared/nav-dropdown.directive';
+import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
+import {TabsModule} from 'ngx-bootstrap/tabs';
+import {AppComponent} from './app.component';
 
-import ***REMOVED***ChartsModule***REMOVED*** from 'ng2-charts/ng2-charts';
-import ***REMOVED***SIDEBAR_TOGGLE_DIRECTIVES***REMOVED*** from './shared/sidebar.directive';
-import ***REMOVED***AsideToggleDirective***REMOVED*** from './shared/aside.directive';
-import ***REMOVED***BreadcrumbsComponent***REMOVED*** from './shared/breadcrumb.component';
-import ***REMOVED***HttpModule***REMOVED*** from '@angular/http';
-import ***REMOVED***AuthzResolver***REMOVED*** from "./perun-connector/authz-resolver.service";
-import ***REMOVED***MembersManager***REMOVED*** from "./perun-connector/members-manager.service";
-import ***REMOVED***PerunSettings***REMOVED*** from "./perun-connector/connector-settings.service";
-import ***REMOVED***ApiSettings***REMOVED*** from "./api-connector/api-settings.service";
+import {HttpClientModule} from '@angular/common/http';
+import {ChartsModule} from 'ng2-charts/ng2-charts';
+import {ModalModule} from 'ngx-bootstrap';
+import {PaginationModule} from 'ngx-bootstrap/pagination';
+import {ExportAsModule} from 'ngx-export-as';
+import {ApiSettings} from './api-connector/api-settings.service';
+import {UserService} from './api-connector/user.service';
+
 // Routing Module
-import ***REMOVED***AppRoutingModule***REMOVED*** from './app.routing';
-
+import {AppRoutingModule} from './app.routing';
+import {ConsentInfoComponent} from './consent-info.component';
 // Layouts
-import ***REMOVED***FullLayoutComponent***REMOVED*** from './layouts/full-layout.component';
-import ***REMOVED***SimpleLayoutComponent***REMOVED*** from './layouts/simple-layout.component';
-import ***REMOVED***ModalModule***REMOVED*** from "ngx-bootstrap";
-import ***REMOVED***RegistrationInfoComponent***REMOVED*** from "./registration-info.component";
+import {AppAsideModule, AppBreadcrumbModule, AppFooterModule, AppHeaderModule, AppSidebarModule} from '@coreui/angular';
+import {FullLayoutComponent} from './layouts/full-layout.component';
+import {RegistrationInfoComponent} from './registration-info.component';
+import {AsideToggleDirective} from './shared/aside.directive';
+import {SharedModuleModule} from './shared/shared_modules/shared-module.module';
+import {PerfectScrollbarModule} from 'ngx-perfect-scrollbar';
+import {BreadcrumbsComponent} from './shared/breadcrumb.component';
+import {
+  MobileSidebarToggleDirective,
+  SidebarMinimizeDirective,
+  SidebarOffCanvasCloseDirective,
+  SidebarToggleDirective
+} from './shared/sidebar.directive';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {Angulartics2Module} from 'angulartics2';
+import { ErrorHandler } from '@angular/core';
+import {UncaughtExceptionHandler} from './error-handler/UncaughtExceptionHandler.service';
+import {CookieService} from 'ngx-cookie-service';
 
-@NgModule(***REMOVED***
-  imports: [
-    BrowserModule,
-    HttpModule,
-    AppRoutingModule,
-    BsDropdownModule.forRoot(),
-    TabsModule.forRoot(),
-    ChartsModule,
-    ModalModule.forRoot(),
-  ],
-  declarations: [
-    AppComponent,
-    FullLayoutComponent,
-    SimpleLayoutComponent,
-    NAV_DROPDOWN_DIRECTIVES,
-    BreadcrumbsComponent,
-    SIDEBAR_TOGGLE_DIRECTIVES,
-    AsideToggleDirective,
-    RegistrationInfoComponent
-  ],
-  providers: [***REMOVED***
-    provide: LocationStrategy,
-    useClass: HashLocationStrategy
-  ***REMOVED***, MembersManager,
-     AuthzResolver,
-    PerunSettings,
-    ApiSettings
-  ],
-  bootstrap: [AppComponent]
-***REMOVED***)
-export class AppModule ***REMOVED***
-***REMOVED***
+import {TitleHeadbarComponent} from './shared/title-headbar.component';
+import { ClusterinfoComponent } from './virtualmachines/clusters/clusterinfo/clusterinfo.component';
+import { ClusterstatusComponent } from './virtualmachines/clusters/clusterstatus/clusterstatus.component';
+
+/**
+ * App module.
+ */
+@NgModule({
+
+            imports: [
+              AppAsideModule,
+              AppBreadcrumbModule.forRoot(),
+              AppHeaderModule,
+              AppFooterModule,
+              AppSidebarModule,
+              PerfectScrollbarModule,
+              BrowserModule,
+              HttpClientModule,
+              AppRoutingModule,
+              BsDropdownModule.forRoot(),
+              TabsModule.forRoot(),
+              ChartsModule,
+              ModalModule.forRoot(),
+              PaginationModule.forRoot(),
+              ExportAsModule,
+              SharedModuleModule,
+              Angulartics2Module.forRoot(),
+              BrowserAnimationsModule
+            ],
+            declarations: [
+              AppComponent,
+              FullLayoutComponent,
+              AsideToggleDirective,
+              RegistrationInfoComponent,
+              ConsentInfoComponent,
+              BreadcrumbsComponent,
+              SidebarToggleDirective,
+              SidebarMinimizeDirective,
+              MobileSidebarToggleDirective,
+              SidebarOffCanvasCloseDirective,
+              TitleHeadbarComponent
+            ],
+            providers: [
+              {
+                provide: LocationStrategy,
+                useClass: HashLocationStrategy
+              },
+              {
+                provide: ErrorHandler,
+                useClass: UncaughtExceptionHandler
+              },
+              ApiSettings,
+              UserService,
+              CookieService
+            ],
+            bootstrap: [AppComponent]
+          })
+export class AppModule {
+}

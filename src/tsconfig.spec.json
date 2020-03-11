@@ -1,6 +1,6 @@
-***REMOVED***
+{
   "extends": "../tsconfig.json",
-  "compilerOptions": ***REMOVED***
+  "compilerOptions": {
     "outDir": "../out-tsc/spec",
     "module": "commonjs",
     "target": "es5",
@@ -9,12 +9,13 @@
       "jasmine",
       "node"
     ]
-  ***REMOVED***,
+  },
   "files": [
-    "test.ts"
+    "test.ts",
+    "polyfills.ts"
   ],
   "include": [
     "**/*.spec.ts",
     "**/*.d.ts"
   ]
-***REMOVED***
+}

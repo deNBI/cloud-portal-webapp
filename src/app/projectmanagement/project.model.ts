@@ -1,24 +1,43 @@
-export class Project ***REMOVED***
-  get UserIsAdmin(): boolean ***REMOVED***
+import {ProjectMemberApplication} from './project_member_application';
+import {ComputecenterComponent} from './computecenter.component';
+
+/**
+ * Project class.
+ */
+export class Project {
+
+  get UserIsAdmin(): boolean {
     return this._UserIsAdmin;
-  ***REMOVED***
+  }
 
-  set UserIsAdmin(value: boolean) ***REMOVED***
+  set UserIsAdmin(value: boolean) {
     this._UserIsAdmin = value;
-  ***REMOVED***
+  }
 
-  private _Id: number;
+  private _Id: number | string;
   private _Name: string;
   private _Description: string;
   private _DateCreated: string;
+  private _DateEnd: string;
   private _DaysRunning: number;
+  private _LifetimeDays: number;
+  private _Lifetime: number | string;
   private _UserIsAdmin: boolean;
   private _UserIsPi: boolean;
-  private _ComputeCenter:string;
-  private _ComputeCenterDetails:***REMOVED******REMOVED***;
+  private _Status: number;
+  private _ComputeCenter: ComputecenterComponent;
+  private _PerunId: number;
+  private _ProjectMemberApplications: ProjectMemberApplication[];
+  private _RealName: string;
+  private _OpenStackProject: boolean;
+  private _LifetimeReached: number;
 
+  private _CurrentCredits: number;
+  private _ApprovedCredits: number;
 
-  constructor(Id: number, Name: string, Description: string, DateCreated: string, DaysRunning: number, UserIsAdmin: boolean, UserIsPi: boolean,ComputeCenter: string) ***REMOVED***
+  constructor(Id: number | string, Name: string, Description: string, DateCreated: string, DaysRunning: number,
+              UserIsAdmin: boolean, UserIsPi: boolean, ComputeCenter: ComputecenterComponent,
+              CurrentCredits: number, ApprovedCredits: number) {
     this._Id = Id;
     this._Name = Name;
     this._Description = Description;
@@ -26,74 +45,156 @@ export class Project ***REMOVED***
     this._DaysRunning = DaysRunning;
     this._UserIsAdmin = UserIsAdmin;
     this._UserIsPi = UserIsPi;
-    this._ComputeCenter= ComputeCenter;
-  ***REMOVED***
+    this._ComputeCenter = ComputeCenter;
+    this._ApprovedCredits = ApprovedCredits;
+    this._CurrentCredits = CurrentCredits;
+  }
 
-//todo exdend with additional information
+// todo exdend with additional information
 
+  get LifetimeReached(): number {
+    return this._LifetimeReached
+  }
 
-  get ComputeCenterDetails()***REMOVED***
-    return this._ComputeCenterDetails;
-  ***REMOVED***
-  set ComputecenterDetails(value:***REMOVED******REMOVED***)***REMOVED***
-    this._ComputeCenterDetails=value;
-  ***REMOVED***
-  get ComputeCenter(): string ***REMOVED***
+  set LifetimeReached(value: number) {
+    this._LifetimeReached = value;
+  }
+
+  get RealName(): string {
+
+    return this._RealName
+  }
+
+  set RealName(value: string) {
+    this._RealName = value;
+  }
+
+  get Status(): number {
+    return this._Status;
+  }
+
+  set Status(value: number) {
+    this._Status = value;
+
+  }
+
+  get ProjectMemberApplications(): ProjectMemberApplication[] {
+    return this._ProjectMemberApplications;
+  }
+
+  set ProjectMemberApplications(value: ProjectMemberApplication[]) {
+    this._ProjectMemberApplications = value;
+  }
+
+  get LifetimeDays(): number {
+    return this._LifetimeDays
+  }
+
+  set LifetimeDays(value: number) {
+    this._LifetimeDays = value;
+  }
+
+  get OpenStackProject(): boolean {
+    return this._OpenStackProject
+  }
+
+  set OpenStackProject(value: boolean) {
+    this._OpenStackProject = value;
+  }
+
+  set Lifetime(value: number | string) {
+    this._Lifetime = value;
+  }
+
+  get Lifetime(): number | string {
+    return this._Lifetime;
+  }
+
+  get ComputeCenter(): ComputecenterComponent {
     return this._ComputeCenter
-  ***REMOVED***
+  }
 
-  set ComputeCenter(value: string) ***REMOVED***
+  set ComputeCenter(value: ComputecenterComponent) {
     this._ComputeCenter = value;
-  ***REMOVED***
+  }
 
-  get Id(): number ***REMOVED***
-    return this._Id;
-  ***REMOVED***
+  get PerunId(): number {
+    return this._PerunId;
+  }
 
-  set Id(value: number) ***REMOVED***
+  set PerunId(value: number) {
+    this._PerunId = value;
+  }
+
+  set Id(value: number | string) {
     this._Id = value;
-  ***REMOVED***
+  }
 
-  get Name(): string ***REMOVED***
+  get Id(): number | string {
+    return this._Id;
+  }
+
+  get Name(): string {
     return this._Name;
-  ***REMOVED***
+  }
 
-  set Name(value: string) ***REMOVED***
+  set Name(value: string) {
     this._Name = value;
-  ***REMOVED***
+  }
 
-  get Description(): string ***REMOVED***
+  get Description(): string {
     return this._Description;
-  ***REMOVED***
+  }
 
-  set Description(value: string) ***REMOVED***
+  set Description(value: string) {
     this._Description = value;
-  ***REMOVED***
+  }
 
-  get DateCreated(): string ***REMOVED***
+  get DateCreated(): string {
     return this._DateCreated;
-  ***REMOVED***
+  }
 
-  set DateCreated(value: string) ***REMOVED***
+  set DateCreated(value: string) {
     this._DateCreated = value;
-  ***REMOVED***
+  }
 
-  get DaysRunning(): number ***REMOVED***
+  get DateEnd(): string {
+    return this._DateEnd;
+  }
+
+  set DateEnd(value: string) {
+    this._DateEnd = value;
+  }
+
+  get DaysRunning(): number {
     return this._DaysRunning;
-  ***REMOVED***
+  }
 
-  set DaysRunning(value: number) ***REMOVED***
+  set DaysRunning(value: number) {
     this._DaysRunning = value;
-  ***REMOVED***
+  }
 
-
-  get UserIsPi(): boolean ***REMOVED***
+  get UserIsPi(): boolean {
     return this._UserIsPi;
-  ***REMOVED***
+  }
 
-  set UserIsPi(value: boolean) ***REMOVED***
+  set UserIsPi(value: boolean) {
     this._UserIsPi = value;
-  ***REMOVED***
+  }
 
+  get CurrentCredits(): number {
+    return this._CurrentCredits;
+  }
 
-***REMOVED***
+  set CurrentCredits(value: number) {
+    this._CurrentCredits = value;
+  }
+
+  get ApprovedCredits(): number {
+    return this._ApprovedCredits;
+  }
+
+  set ApprovedCredits(value: number) {
+    this._ApprovedCredits = value;
+  }
+}

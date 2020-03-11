@@ -1,19 +1,36 @@
-import ***REMOVED*** NgModule ***REMOVED*** from '@angular/core';
+import {NgModule} from '@angular/core';
+import {TabsModule} from 'ngx-bootstrap/tabs';
+import {OverviewComponent} from './overview.component';
+import {ProjectManagementRoutingModule} from './projectmanagement-routing.module';
+import {CommonModule} from '@angular/common';
+import {ModalModule} from 'ngx-bootstrap/modal';
+import {FormsModule} from '@angular/forms';
+import {AccordionModule} from 'ngx-bootstrap';
+import {ApplicationsModule} from '../applications/applications.module';
+import {SharedDirectivesModule} from '../shared/shared_modules/shared_directives.module';
+import {AutocompleteLibModule} from 'angular-ng-autocomplete';
+import {ChartsModule} from 'ng2-charts';
 
-import ***REMOVED*** TabsModule ***REMOVED*** from 'ngx-bootstrap/tabs';
-import ***REMOVED*** OverviewComponent ***REMOVED*** from './overview.component';
-import ***REMOVED*** ProjectManagementRoutingModule ***REMOVED*** from './projectmanagement-routing.module';
-import ***REMOVED***CommonModule***REMOVED*** from "@angular/common";
-import ***REMOVED*** ModalModule ***REMOVED*** from 'ngx-bootstrap/modal';
-@NgModule(***REMOVED***
-  imports: [
-    ProjectManagementRoutingModule,
-    TabsModule,
-    CommonModule,
-    ModalModule.forRoot(),
-  ],
-  declarations: [
-    OverviewComponent
-  ]
-***REMOVED***)
-export class ProjectManagementModule ***REMOVED*** ***REMOVED***
+/**
+ * Projectmanagment module.
+ */
+@NgModule({
+            imports: [
+              AccordionModule.forRoot(),
+              ProjectManagementRoutingModule,
+              TabsModule,
+              FormsModule,
+              CommonModule,
+              ModalModule.forRoot(),
+              ApplicationsModule,
+              SharedDirectivesModule,
+              ChartsModule,
+              AutocompleteLibModule
+            ],
+            declarations: [
+              OverviewComponent
+
+            ]
+          })
+export class ProjectManagementModule {
+}

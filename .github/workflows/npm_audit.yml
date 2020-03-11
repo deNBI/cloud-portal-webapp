@@ -1,0 +1,21 @@
+name: NPM AUDIT
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Workflow run cleanup action
+      uses: rokroskar/workflow-run-cleanup-action@v0.2.2
+      env:
+                GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+    - uses: actions/checkout@v2
+    - name: Run a one-line script
+      run: |
+        sudo npm install -g audit-ci
+        audit-ci --config audit/audit-ci.json
+
+

@@ -1,22 +1,59 @@
-import ***REMOVED***Injectable***REMOVED*** from '@angular/core';
-import ***REMOVED***URLSearchParams***REMOVED*** from '@angular/http';
-import ***REMOVED***VirtualMachineComponent***REMOVED*** from '../applications/addvm.component'
-import ***REMOVED***Http, Response, Headers, RequestOptions***REMOVED*** from '@angular/http';
-import ***REMOVED***Observable***REMOVED*** from 'rxjs/Rx';
-import ***REMOVED***ApiSettings***REMOVED*** from './api-settings.service'
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
-import ***REMOVED***VirtualMachine***REMOVED*** from '../virtualmachinemodels/virtualmachine';
+import {Injectable} from '@angular/core';
+import {ApiSettings} from './api-settings.service'
+import {Observable} from 'rxjs';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {Cookie} from 'ng2-cookies/ng2-cookies';
+import {VirtualMachine} from '../virtualmachines/virtualmachinemodels/virtualmachine';
+import {Volume} from '../virtualmachines/volumes/volume';
+import {IResponseTemplate} from './response-template';
+import {Clusterinfo} from '../virtualmachines/clusters/clusterinfo';
+import {Image} from '../virtualmachines/virtualmachinemodels/image';
 
+const header: HttpHeaders = new HttpHeaders({
+                                              'X-CSRFToken': Cookie.get('csrftoken')
+                                            });
+
+/**
+ * Service which provides vm methods.
+ */
 @Injectable()
-export class VirtualmachineService ***REMOVED***
+export class VirtualmachineService {
   data: string;
-  baseVmUrl = this.settings.getConnectorBaseUrl() + 'vms/'
+  baseVmUrl: string = `${ApiSettings.getApiBaseURL()}vms/`;
 
-  constructor(private http: Http, private settings: ApiSettings) ***REMOVED***
-  ***REMOVED***
+  constructor(private http: HttpClient) {
+  }
 
+  startCluster(masterFlavor: string, masterImage: Image, workerFlavor: string, workerImage: Image, workerCount: string | number,
+               project_id: string | number): Observable<any> {
+    const params: HttpParams = new HttpParams()
+      .set('master_flavor', masterFlavor)
+      .set('master_image', JSON.stringify(masterImage))
+      .set('worker_image', JSON.stringify(workerImage))
+      .set('worker_flavor', workerFlavor)
+      .set('worker_count', workerCount.toString())
+      .set('project_id', project_id.toString());
 
+    return this.http.post(`${ApiSettings.getApiBaseURL()}clusters/`, params, {
+      withCredentials: true,
+      headers: header
+    })
+  }
+
+  getClusterInfo(cluster_id: string): Observable<Clusterinfo> {
+    return this.http.get<Clusterinfo>(`${ApiSettings.getApiBaseURL()}clusters/${cluster_id}/`, {
+      withCredentials: true,
+      headers: header
+    })
+  }
+
+  getClusters(page: number, vm_per_site: number, filter?: string): Observable<Clusterinfo[]> {
+    let params: HttpParams = new HttpParams().set('page', page.toString()).set('vm_per_site', vm_per_site.toString());
+
+    if (filter) {
+      params = params.set('filter', filter);
+
+<<<<<<< HEAD
   startVM(flavor: string, image: string, servername: string, host: string, port: string, project: string,projectid:string): Observable<Response> ***REMOVED***
     let header = new Headers(***REMOVED***
       'X-CSRFToken': this.settings.getCSRFToken(),
@@ -29,75 +66,285 @@ export class VirtualmachineService ***REMOVED***
     urlSearchParams.append('port', port);
     urlSearchParams.append('project', project);
     urlSearchParams.append('projectid', projectid);
+=======
+    }
+>>>>>>> dev
 
-    return this.http.post(this.baseVmUrl + 'addVm/', urlSearchParams, ***REMOVED***
+    return this.http.get<Clusterinfo[]>(`${ApiSettings.getApiBaseURL()}clusters/`, {
       withCredentials: true,
       headers: header,
-    ***REMOVED***);
-  ***REMOVED***
+      params: params
+    })
+  }
 
-  getAllVM(): Observable<VirtualMachine[]> ***REMOVED***
-
-
-    let urlSearchParams = new URLSearchParams();
-
-    return this.http.get(this.baseVmUrl + 'getallVms/', ***REMOVED***
+  deleteCluster(cluster_id: string): Observable<void> {
+    return this.http.delete<void>(`${ApiSettings.getApiBaseURL()}clusters/${cluster_id}/`, {
       withCredentials: true,
-      search: urlSearchParams
-    ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
-  ***REMOVED***
+      headers: header
+    })
+  }
 
+  startVM(flavor: string, image: Image, servername: string, project: string, projectid: string,
+          http: boolean, https: boolean, udp: boolean, volumes: Volume[],
+          playbook_information?: string, user_key_url?: string): Observable<any> {
 
-  getVm(elixir_id: string): Observable<VirtualMachine[]> ***REMOVED***
-    let urlSearchParams = new URLSearchParams();
-    urlSearchParams.append('elixir_id', elixir_id)
+    const params: HttpParams = new HttpParams()
+      .set('flavor', flavor)
+      .set('image', JSON.stringify(image))
+      .set('servername', servername)
+      .set('project', project)
+      .set('projectid', projectid)
+      .set('volumes', JSON.stringify(volumes))
+      .set('http_allowed', http.toString())
+      .set('https_allowed', https.toString())
+      .set('udp_allowed', udp.toString())
+      .set('playbook_information', playbook_information)
+      .set('user_key_url', user_key_url);
 
-    return this.http.get(this.baseVmUrl + 'getVmByUser/', ***REMOVED***
+    return this.http.post(this.baseVmUrl, params, {
       withCredentials: true,
-      search: urlSearchParams
-    ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
-  ***REMOVED***
+      headers: header
+    })
+  }
 
-  deleteVM(openstack_id: string): Observable<Response> ***REMOVED***
-    let header = new Headers(***REMOVED***
-      'X-CSRFToken': this.settings.getCSRFToken(),
-    ***REMOVED***);
-    let urlSearchParams = new URLSearchParams();
+  getAllVM(page: number, vm_per_site: number, filter?: string, filter_status?: string[]): Observable<VirtualMachine[]> {
+    let params: HttpParams = new HttpParams().set('page', page.toString()).set('vm_per_site', vm_per_site.toString());
+    if (filter) {
+      params = params.set('filter', filter);
 
-    urlSearchParams.append('openstack_id', openstack_id)
+    }
+    if (filter_status) {
+      params = params.append('filter_status', JSON.stringify(filter_status));
 
-    return this.http.post(this.baseVmUrl + 'deleteVm/', urlSearchParams, ***REMOVED***
+    }
+
+    return this.http.get<VirtualMachine[]>(`${ApiSettings.getApiBaseURL()}voManager/vms/`, {
       withCredentials: true,
-      headers: header,
-    ***REMOVED***);
-  ***REMOVED***
+      params: params
 
-  stopVM(openstack_id: string): Observable<Response> ***REMOVED***
-    let header = new Headers(***REMOVED***
-      'X-CSRFToken': this.settings.getCSRFToken(),
-    ***REMOVED***);
-    let urlSearchParams = new URLSearchParams();
+    })
+  }
 
-    urlSearchParams.append('openstack_id', openstack_id)
+  getVmById(openstackId: string): Observable<VirtualMachine> {
 
-    return this.http.post(this.baseVmUrl + 'stopVm/', urlSearchParams, ***REMOVED***
+    return this.http.get<VirtualMachine>(`${this.baseVmUrl}${openstackId}/details/`, {
+      withCredentials: true
+    })
+  }
+
+  getVmsFromLoggedInUser(page: number, vm_per_site: number, filter?: string, filter_status?: string[]): Observable<VirtualMachine[]> {
+    let params: HttpParams = new HttpParams().set('page', page.toString()).set('vm_per_site', vm_per_site.toString());
+
+    if (filter) {
+      params = params.set('filter', filter);
+
+    }
+    if (filter_status) {
+      params = params.append('filter_status', JSON.stringify(filter_status));
+
+    }
+
+    return this.http.get<VirtualMachine[]>(this.baseVmUrl, {
       withCredentials: true,
-      headers: header,
-    ***REMOVED***);
-  ***REMOVED***
+      params: params
 
-  resumeVM(openstack_id: string): Observable<Response> ***REMOVED***
-    let header = new Headers(***REMOVED***
-      'X-CSRFToken': this.settings.getCSRFToken(),
-    ***REMOVED***);
-    let urlSearchParams = new URLSearchParams();
+    })
+  }
 
-    urlSearchParams.append('openstack_id', openstack_id)
-
-    return this.http.post(this.baseVmUrl + 'resumeVm/', urlSearchParams, ***REMOVED***
+  getLogs(openstack_id: string): Observable<any> {
+    return this.http.post(`${this.baseVmUrl}${openstack_id}/logs/`, null, {
       withCredentials: true,
-      headers: header,
-    ***REMOVED***);
-  ***REMOVED***
+      headers: header
+    })
+  }
 
-***REMOVED***
+  getLocationUrl(openstack_id: string): Observable<any> {
+    return this.http.post(`${this.baseVmUrl}${openstack_id}/location_url/`, null, {
+      withCredentials: true,
+      headers: header
+    })
+  }
+
+  getVmsFromFacilitiesOfLoggedUser(facility_id: string | number,
+                                   page: number, vm_per_site: number,
+                                   filter?: string, filter_status?: string[]): Observable<VirtualMachine[]> {
+    let params: HttpParams = new HttpParams().set('page', page.toString()).set('vm_per_site', vm_per_site.toString());
+    if (filter) {
+      params = params.set('filter', filter);
+
+    }
+    if (filter_status) {
+      params = params.append('filter_status', JSON.stringify(filter_status));
+
+    }
+
+    return this.http.get<VirtualMachine[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility_id}/vms/`,
+                                           {
+                                             withCredentials: true,
+                                             params:
+                                             params
+
+                                           }
+    )
+  }
+
+  getActiveVmsByProject(groupid: string): Observable<VirtualMachine[]> {
+
+    return this.http.get<VirtualMachine[]>(`${ApiSettings.getApiBaseURL()}projects/${groupid}/vms/`, {
+      withCredentials: true
+    })
+  }
+
+  checkStatusInactiveVms(): Observable<VirtualMachine[]> {
+
+    return this.http.get<VirtualMachine[]>(`${this.baseVmUrl}status/`, {
+      withCredentials: true
+    })
+  }
+
+  checkVmStatus(openstack_id: string, name?: string): Observable<any> {
+    if (openstack_id) {
+      return this.http.post(`${this.baseVmUrl}${openstack_id}/status/`, null, {
+        withCredentials: true,
+
+        headers: header
+      })
+    } else if (name) {
+      return this.http.post(`${this.baseVmUrl}${name}/status/`, null, {
+        withCredentials: true,
+
+        headers: header
+      })
+    }
+  }
+
+  checkVmStatusWhenReboot(openstack_id: string): Observable<any> {
+    const params: HttpParams = new HttpParams().set('reboot', 'true');
+
+    return this.http.post(`${this.baseVmUrl}${openstack_id}/status/`, params, {
+      withCredentials: true,
+
+      headers: header
+    })
+  }
+
+  deleteVM(openstack_id: string): Observable<VirtualMachine> {
+
+    return this.http.delete<VirtualMachine>(`${this.baseVmUrl}${openstack_id}/`, {
+      withCredentials: true,
+      headers: header
+    })
+
+  }
+
+  stopVM(openstack_id: string): Observable<VirtualMachine> {
+    const params: HttpParams = new HttpParams().set('os_action', 'stop');
+
+    return this.http.post<VirtualMachine>(`${this.baseVmUrl}${openstack_id}/action/`, params, {
+      withCredentials: true,
+      headers: header
+    })
+  }
+
+  rebootVM(openstack_id: string, reboot_type: string): Observable<IResponseTemplate> {
+    const params: HttpParams = new HttpParams().set('os_action', 'reboot').set('reboot_type', reboot_type);
+
+    return this.http.post<IResponseTemplate>(`${this.baseVmUrl}${openstack_id}/action/`, params, {
+      withCredentials: true,
+      headers: header
+    })
+  }
+
+  resumeVM(openstack_id: string): Observable<VirtualMachine> {
+
+    const params: HttpParams = new HttpParams().set('os_action', 'resume');
+
+    return this.http.post<VirtualMachine>(`${this.baseVmUrl}${openstack_id}/action/`, params, {
+      withCredentials: true,
+      headers: header
+    })
+
+  }
+
+  getVolumesByUser(items_per_page: number, current_page: number, filter?: string): Observable<Volume[]> {
+    let params: HttpParams = new HttpParams().set('items_per_page', items_per_page.toString()).set('page', current_page.toString());
+    if (filter) {
+      params = params.set('filter', filter);
+
+    }
+
+    return this.http.get<Volume[]>(`${ApiSettings.getApiBaseURL()}volumes/`, {
+      withCredentials: true,
+      params: params
+    })
+
+  }
+
+  getVolumeById(id: string): Observable<Volume> {
+    return this.http.get<Volume>(`${ApiSettings.getApiBaseURL()}volumes/${id}/`, {
+      withCredentials: true
+    })
+
+  }
+
+  getVolumeByNameAndVmName(volume_name: string, virtualmachine_name: string): Observable<Volume> {
+    const params: HttpParams = new HttpParams().set('volume_name', volume_name);
+
+    return this.http.get<Volume>(`${ApiSettings.getApiBaseURL()}volumes/vms/${virtualmachine_name}/`, {
+      withCredentials: true,
+      params: params
+    })
+
+  }
+
+  createVolume(volume_name: string, volume_storage: string, vm_openstackid: string): Observable<Volume> {
+    const params: HttpParams = new HttpParams().set('volume_name', volume_name)
+      .set('volume_storage', volume_storage)
+      .set('vm_openstackid', vm_openstackid);
+
+    return this.http.post<Volume>(`${ApiSettings.getApiBaseURL()}volumes/`, params, {
+      withCredentials: true,
+      headers: header
+    })
+  }
+
+  attachVolumetoServer(volume_id: string, instance_id: string): Observable<IResponseTemplate> {
+
+    const params: HttpParams = new HttpParams().set('instance_id', instance_id).set('os_action', 'attach');
+
+    return this.http.post<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}volumes/${volume_id}/action/`, params, {
+                                               withCredentials: true,
+                                               headers: header
+                                             }
+    )
+
+  }
+
+  renameVolume(volume_id: string, new_volume_name: string): Observable<Volume> {
+    const params: HttpParams = new HttpParams().set('new_volume_name', new_volume_name);
+
+    return this.http.patch<Volume>(`${ApiSettings.getApiBaseURL()}volumes/${volume_id}/`, params, {
+      withCredentials: true,
+      headers: header
+    })
+
+  }
+
+  deleteVolume(volume_id: string): Observable<IResponseTemplate> {
+
+    return this.http.delete<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}volumes/${volume_id}/`, {
+      withCredentials: true,
+      headers: header
+    })
+  }
+
+  deleteVolumeAttachment(volume_id: string, instance_id: string): Observable<IResponseTemplate> {
+
+    const params: HttpParams = new HttpParams().set('instance_id', instance_id).set('os_action', 'detach');
+
+    return this.http.post<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}volumes/${volume_id}/action/`, params, {
+      withCredentials: true,
+      headers: header
+    })
+  }
+}

@@ -1,36 +1,34 @@
 // Karma configuration file, see link for more information
 // https://karma-runner.github.io/0.13/config/configuration-file.html
 
-module.exports = function (config) ***REMOVED***
-  config.set(***REMOVED***
+module.exports = function (config) {
+  config.set({
     basePath: '',
-    frameworks: ['jasmine', '@angular/cli'],
+    frameworks: ['jasmine', '@angular-devkit/build-angular'],
     plugins: [
       require('karma-jasmine'),
       require('karma-chrome-launcher'),
       require('karma-jasmine-html-reporter'),
       require('karma-coverage-istanbul-reporter'),
-      require('@angular/cli/plugins/karma')
+      require('@angular-devkit/build-angular/plugins/karma')
     ],
-    client:***REMOVED***
+    client:{
       clearContext: false // leave Jasmine Spec Runner output visible in browser
-    ***REMOVED***,
+    },
     files: [
-      ***REMOVED*** pattern: './src/test.ts', watched: false ***REMOVED***
+      
     ],
-    preprocessors: ***REMOVED***
-      './src/test.ts': ['@angular/cli']
-    ***REMOVED***,
-    mime: ***REMOVED***
+    preprocessors: {
+      
+    },
+    mime: {
       'text/x-typescript': ['ts','tsx']
-    ***REMOVED***,
-    coverageIstanbulReporter: ***REMOVED***
-      reports: [ 'html', 'lcovonly' ],
+    },
+    coverageIstanbulReporter: {
+      dir: require('path').join(__dirname, 'coverage'), reports: [ 'html', 'lcovonly' ],
       fixWebpackSourcePaths: true
-    ***REMOVED***,
-    angularCli: ***REMOVED***
-      environment: 'dev'
-    ***REMOVED***,
+    },
+    
     reporters: config.angularCli && config.angularCli.codeCoverage
               ? ['progress', 'coverage-istanbul']
               : ['progress', 'kjhtml'],
@@ -40,5 +38,5 @@ module.exports = function (config) ***REMOVED***
     autoWatch: true,
     browsers: ['Chrome'],
     singleRun: false
-  ***REMOVED***);
-***REMOVED***;
+  });
+};

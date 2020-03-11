@@ -1,84 +1,111 @@
-import ***REMOVED***Component, OnInit***REMOVED*** from '@angular/core';
-import ***REMOVED***UsersManager***REMOVED*** from "../perun-connector/users-manager.service";
-import ***REMOVED***AuthzResolver***REMOVED*** from "../perun-connector/authz-resolver.service";
-import ***REMOVED***PerunSettings***REMOVED*** from "../perun-connector/connector-settings.service";
-import ***REMOVED***ApiSettings***REMOVED*** from "../api-connector/api-settings.service";
-import ***REMOVED***ClientService***REMOVED*** from "../api-connector/vmClients.service";
+import {Component, OnInit} from '@angular/core';
+import {ApiSettings} from '../api-connector/api-settings.service';
+import {ClientService} from '../api-connector/client.service';
+import {FacilityService} from '../api-connector/facility.service';
+import {UserService} from '../api-connector/user.service';
+import {GroupService} from '../api-connector/group.service';
+import {VoService} from '../api-connector/vo.service';
+import {IResponseTemplate} from '../api-connector/response-template';
+import {ApplicationBaseClassComponent} from '../shared/shared_modules/baseClass/application-base-class.component';
+import {ApplicationsService} from '../api-connector/applications.service';
+import {ApplicationStatusService} from '../api-connector/application-status.service';
+import {ProjectEnumeration} from '../projectmanagement/project-enumeration';
+import {environment} from '../../environments/environment';
+import {is_vo} from '../shared/globalvar';
 
+/**
+ * FullLayout component.
+ */
+@Component({
+             selector: 'app-dashboard',
+             templateUrl: './full-layout.component.html',
+             providers: [ApplicationsService,
+               ApplicationStatusService,
+               VoService,
+               GroupService,
+               UserService,
+               FacilityService,
+               ClientService,
+               ApiSettings]
+           })
+export class FullLayoutComponent extends ApplicationBaseClassComponent implements OnInit {
 
-@Component(***REMOVED***
-  selector: 'app-dashboard',
-  templateUrl: './full-layout.component.html',
-  providers: [ClientService, AuthzResolver, UsersManager, PerunSettings, ApiSettings]
-***REMOVED***)
-export class FullLayoutComponent implements OnInit ***REMOVED***
+  public year: number = new Date().getFullYear();
+  public disabled: boolean = false;
+  public status: { isopen: boolean } = {isopen: false};
+  is_vo_admin: boolean = false;
+  public is_facility_manager: boolean = false;
+  public vm_project_member: boolean = false;
+  public login_name: string = '';
+  public production: boolean = environment.production;
+  navbar_state: string = 'closed';
+  overview_state: string = 'closed';
+  navbar_minimized: boolean = false;
+  brand_logo: string = 'static/webapp/assets/img/denbi-logo-color.svg';
+  brand_logo_minimized: string = 'static/webapp/assets/img/denbi-logo-minimized.svg';
 
-  public year = new Date().getFullYear();
-  public disabled = false;
-  public status: ***REMOVED*** isopen: boolean ***REMOVED*** = ***REMOVED***isopen: false***REMOVED***;
-  private is_vo_admin = false;
-  client_avaiable;
+  TITLE: string = '';
 
-  constructor(private clientservice: ClientService, private perunsettings: PerunSettings, private usersmanager: UsersManager, private authzresolver: AuthzResolver) ***REMOVED***
-    this.is_client_avaiable();
-  ***REMOVED***
+  project_enumeration: ProjectEnumeration[] = [];
 
-  public get_is_vo_admin(): boolean ***REMOVED***
+  constructor(private voService: VoService, private groupService: GroupService, userservice: UserService,
+              facilityService: FacilityService, applicationsservice: ApplicationsService,
+              applicationstatusservice: ApplicationStatusService
+  ) {
+    super(userservice, applicationstatusservice, applicationsservice, facilityService);
+
+  }
+
+  componentAdded(event: any): void {
+
+    this.TITLE = event.title;
+
+  }
+
+  public get_is_vo_admin(): boolean {
     return this.is_vo_admin;
-  ***REMOVED***
+  }
 
-  public toggled(open: boolean): void ***REMOVED***
-    console.log('Dropdown is now: ', open);
-  ***REMOVED***
+  public get_is_facility_manager(): void {
+    this.facilityService.getManagerFacilities().subscribe((result: any) => {
+      if (result.length > 0) {
+        this.is_facility_manager = true
+      }
+    })
+  }
 
-  public toggleDropdown($event: MouseEvent): void ***REMOVED***
-    $event.preventDefault();
-    $event.stopPropagation();
-    this.status.isopen = !this.status.isopen;
-  ***REMOVED***
+  is_vm_project_member(): void {
+    this.groupService.getSimpleVmByUser().subscribe((result: any) => {
+      if (result.length > 0) {
+        this.vm_project_member = true
+      }
+    })
+  }
 
-  is_client_avaiable() ***REMOVED***
-    this.clientservice.getRRFirstClient().subscribe(result => ***REMOVED***
-      try ***REMOVED***
-        if (result['status'] === 'Connected') ***REMOVED***
-          this.client_avaiable = true;
-          return
-        ***REMOVED***
-        this.client_avaiable = false;
-        return;
-      ***REMOVED***
-      catch (e) ***REMOVED***
-        this.client_avaiable = false;
-        return;
-      ***REMOVED***
+  getGroupsEnumeration(): void {
+    this.groupService.getGroupsEnumeration().subscribe((res: ProjectEnumeration[]) => {
+      this.project_enumeration = res;
+    })
+  }
 
-    ***REMOVED***)
+  ngOnInit(): void {
+    this.getGroupsEnumeration();
+    this.is_vm_project_member();
+    this.get_is_facility_manager();
+    this.getLoginName();
 
-  ***REMOVED***
+    this.is_vo_admin = is_vo;
+  }
 
-  checkVOstatus(usersmanager: UsersManager) ***REMOVED***
-    let user_id: number;
-    let admin_vos: ***REMOVED******REMOVED***;
-    this.authzresolver
-      .getLoggedUser().toPromise()
-      .then(function (userdata) ***REMOVED***
-        //TODO catch errors
-        user_id = userdata.json()["id"];
-        return usersmanager.getVosWhereUserIsAdmin(user_id).toPromise();
-      ***REMOVED***).then(function (adminvos) ***REMOVED***
-      admin_vos = adminvos.json();
-    ***REMOVED***).then(result => ***REMOVED***
-      //check if user is a Vo admin so we can serv according buttons
-      for (let vkey in admin_vos) ***REMOVED***
-        if (admin_vos[vkey]["id"] == this.perunsettings.getPerunVO().toString()) ***REMOVED***
-          this.is_vo_admin = true;
-        ***REMOVED***
+  getLoginName(): void {
+    this.userservice.getLoginElixirName().subscribe((login: IResponseTemplate) => {
+      this.login_name = <string>login.value
+    });
 
-      ***REMOVED***
-    ***REMOVED***);
-  ***REMOVED***
+  }
 
-  ngOnInit(): void ***REMOVED***
-    this.checkVOstatus(this.usersmanager);
-  ***REMOVED***
-***REMOVED***
+  setSidebarStatus(): void {
+    this.navbar_minimized = !this.navbar_minimized;
+  }
+
+}
