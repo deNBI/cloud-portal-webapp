@@ -20,7 +20,6 @@ import {BiocondaComponent} from './conda/bioconda.component';
 import {HowToConnectComponent} from './shared-modal/how-to-connect.component';
 import {SharedDirectivesModule} from '../shared/shared_modules/shared_directives.module';
 import {ImageCarouselSlideComponent} from './imageCarouselSlide.component';
-import {PopoverModule} from 'ngx-bootstrap/popover';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {VmDetailComponent} from './vmdetail/vmdetail.component';
 import {AddClusterComponent} from './clusters/add-cluster/add-cluster.component';
@@ -50,7 +49,7 @@ import {ClusterstatusComponent} from './clusters/clusterstatus/clusterstatus.com
               CarouselModule,
               AccordionModule.forRoot(),
               SharedDirectivesModule,
-              PopoverModule.forRoot(), NgbModule,
+              NgbModule,
               ReactiveFormsModule],
             declarations: [
               ImageCarouselSlideComponent,

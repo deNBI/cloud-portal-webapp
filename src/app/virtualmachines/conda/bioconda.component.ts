@@ -51,8 +51,8 @@ export class BiocondaComponent implements OnInit {
   filternameChanged: Subject<string> = new Subject<string>();
 
   @Output() readonly hasTools: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @ViewChild('pagination') pagination: PaginationComponent;
-  @ViewChild('chosenTable') chosenTable: ElementRef;
+  @ViewChild('pagination', { static: true }) pagination: PaginationComponent;
+  @ViewChild('chosenTable', { static: true }) chosenTable: ElementRef;
 
   @HostListener('window:resize', ['$event']) onResize(event: any): void {
     this.window_size = window.innerWidth;
