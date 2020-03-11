@@ -90,8 +90,7 @@ export class NewsManagerComponent implements OnInit {
     );
   }
 
-  returnPlainText(htmlAsString: string): string
-  {
+  returnPlainText(htmlAsString: string): string {
     return htmlAsString ? String(htmlAsString).replace(/<[^>]+>/gm, '') : '';
   }
 
