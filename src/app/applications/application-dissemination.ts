@@ -20,8 +20,6 @@ export class ApplicationDissemination {
   private _allowed_platforms: string[] = [];
   private _allowed_informations: string[] = [];
 
-  // @ts-ignore
-  constructor()
   constructor(
     platform_denbi: boolean, platform_twitter: boolean,
     information_title: string, information_resources: boolean,

@@ -11,7 +11,6 @@ import {ChartsModule} from 'ng2-charts/ng2-charts';
 import {ModalModule} from 'ngx-bootstrap';
 import {PaginationModule} from 'ngx-bootstrap/pagination';
 import {ExportAsModule} from 'ngx-export-as';
-import {PopoverModule} from 'ngx-popover';
 import {ApiSettings} from './api-connector/api-settings.service';
 import {UserService} from './api-connector/user.service';
 
@@ -61,7 +60,6 @@ import { ClusterstatusComponent } from './virtualmachines/clusters/clusterstatus
               TabsModule.forRoot(),
               ChartsModule,
               ModalModule.forRoot(),
-              PopoverModule,
               PaginationModule.forRoot(),
               ExportAsModule,
               SharedModuleModule,
