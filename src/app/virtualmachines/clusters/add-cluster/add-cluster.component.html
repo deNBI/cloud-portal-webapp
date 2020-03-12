@@ -226,7 +226,7 @@
           </form>
 
           <div
-            *ngIf="(selectedProjectVmsUsed +2) <= selectedProjectVmsMax && (!selectedMasterFlavor || !selectedMasterImage || !selectedWorkerFlavor || !selectedWorkerImage ||!workerInstancesCount) && selectedProject && projectDataLoaded && flavors_loaded"
+            *ngIf="(selectedProjectVmsUsed +2) <= selectedProjectVmsMax && (!selectedMasterFlavor || !selectedMasterImage || !selectedWorkerFlavor  ||!workerInstancesCount) && selectedProject && projectDataLoaded && flavors_loaded"
             class="alert alert-danger" role="alert" style="max-width: 600px;margin: 0 auto;">
             <p>Please choose the following before starting a Cluster:</p>
             <p *ngIf="!selectedMasterFlavor">- The flavor type of your Master VM
@@ -234,8 +234,6 @@
             <p *ngIf="!selectedMasterImage">- The image you want to run on your Master VM
             </p>
             <p *ngIf="!selectedWorkerFlavor">- The flavor type of your Worker VMs
-            </p>
-            <p *ngIf="!selectedWorkerImage">- The image you want to run on your Worker VMs
             </p>
             <p *ngIf="!workerInstancesCount">- The count of Worker Vms
             </p>
