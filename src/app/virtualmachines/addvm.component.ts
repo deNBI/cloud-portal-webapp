@@ -186,6 +186,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
    * @type {string}
    */
   volumeName: string = '';
+  volumeMountPath: string;
 
   /**
    * Default volumeStorage.
@@ -262,17 +263,34 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 
   }
 
+  checkIfMountPathIsUsable(path?: string): boolean {
+    if (path) {
+      for (const vol of this.volumesToMount) {
+        if (vol.volume_path === path) {
+          return false;
+        }
+
+      }
+
+      return true;
+    }
+
+    return false;
+  }
+
   /**
    * Checks if the name which is entered for a new volume is valid.
    */
-  checkVolumeName(): boolean {
-    if (!(this.volumeName.length > 0)) {
-      return false;
-    } else if (!this.volumeName.match(new RegExp('^[\\w]+$', 'i'))) {
-      return false;
-    } else {
-      return true;
+  checkInputVolumeString(text?: string): boolean {
+    if (text) {
+      if (!(text.length > 0)) {
+        return false;
+      }
+
+      return new RegExp('^[\\w]+$', 'i').test(text)
     }
+
+    return false;
   }
 
   /**
@@ -296,7 +314,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
    * A new volume can only be added to the list, if this function returns true.
    */
   checkVolumeValidity(): boolean {
-    return (this.checkStorageNumber() && this.checkVolumeName());
+    return (this.checkStorageNumber() && this.checkIfMountPathIsUsable(this.volumeMountPath) && this.checkInputVolumeString(this.volumeMountPath) && this.checkInputVolumeString(this.volumeName));
   }
 
   /**
@@ -306,10 +324,12 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
     const newVol: Volume = new Volume();
     newVol.volume_storage = this.volumeStorage;
     newVol.volume_name = this.volumeName;
+    newVol.volume_path = this.volumeMountPath;
     newVol.volume_device = 'test';
     this.volumesToMount.push(newVol);
     this.volumeStorage = 0;
     this.volumeName = '';
+    this.volumeMountPath = '';
   }
 
   /**

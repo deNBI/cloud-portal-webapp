@@ -168,7 +168,9 @@
                   <div class="col-10">
                     <div *ngFor="let vol of volumesToMount" class="row" id="volumeRow_{{vol.volume_name}}"
                       style="margin-bottom:5px;">
-                      <div class="col-6">{{vol.volume_name}}</div>
+                      <div class="col-4">{{vol.volume_name}}</div>
+                                            <div class="col-4">/mnt/{{vol.volume_path}}</div>
+
                       <div class="col-2">{{vol.volume_storage}} GB</div>
                       <div class="col-2">
                         <button class="btn btn-danger"
@@ -202,17 +204,33 @@
                         <div class="col-md-2"><strong>Name</strong></div>
                         <div class="col-xl-6 col-sm-12 col-md-8">
                           <input type="text" placeholder="Enter a name here..."
-                                 id="volume_name" class="form-control"
-                                 [value]="volumeName"
-                                 (input)="volumeName = $event.target.value"
-                                 [ngClass]="{'is-invalid':!this.checkVolumeName(),
-                             'is-valid':this.checkVolumeName()}" style="width: 100%;">
+                                 id="volume_name" class="form-control" name="volume_name"
+                                 [(ngModel)]="volumeName"
+
+                                 [ngClass]="{'is-invalid':!this.checkInputVolumeString(volumeName),
+                             'is-valid':this.checkInputVolumeString(volumeName)}" style="width: 100%;">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <div class="col-md-2"><strong>Mountpath</strong></div>
+                        <div class=" input-group col-xl-6 col-sm-12 col-md-8">
+
+                          <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon3">/mnt/</span>
+                          </div>
+                          <input type="text" placeholder="volume."
+                                 id="volume_mount_path" class="form-control" name="volume_mount_path"
+                                 [(ngModel)]="volumeMountPath"
+                                 [ngClass]="{'is-invalid':!this.checkInputVolumeString(volumeMountPath)  ||  !this.checkIfMountPathIsUsable(volumeMountPath),
+                             'is-valid':this.checkInputVolumeString(volumeMountPath) && this.checkIfMountPathIsUsable(volumeMountPath)}" >
+
+
                         </div>
                       </div>
                       <div class="form-group row">
                         <div class="col-md-2"><strong>Storage</strong></div>
                         <div class="input-group col-xl-6 col-sm-12 col-md-8" style="width:100%">
-                          <input min="0" step="1"   [(ngModel)]="volumeStorage"
+                          <input min="0" step="1" [(ngModel)]="volumeStorage"
                                  style="height: auto"
                                  id="volume_space" name="vm_volume_storage"
                                  class="form-control"
@@ -226,7 +244,8 @@
                                 'is-valid': this.checkStorageNumber() && (f.controls.vm_volume_storage?.dirty || f.controls.vm_volume_storage?.touched)
                                 }">
                           <div class="input-group-append" style="height: auto"><span
-                            class="input-group-text"> GB
+                            class="input-group-text"> GB (max {{selectedProjectDiskspaceMax - selectedProjectDiskspaceUsed}}
+                            )
                                     </span></div>
                         </div>
                       </div>
