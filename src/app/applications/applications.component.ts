@@ -144,7 +144,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
   getAllApplications(usersmanager: UsersManager) ** * REMOVED ** *
     // todo check if user is VO Admin
     let user_id: number;
-    let admin_vos:      ** * REMOVED ** ** ** REMOVED ** * ;
+    let admin_vos:       ** * REMOVED ** ** ** REMOVED ** * ;
 
     this.authzresolver
       .getLoggedUser().toPromise()
@@ -227,7 +227,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
                     ** * REMOVED ** *
                   ** * REMOVED ** * )
-    ** * REMOVED ** * );     ** * REMOVED ** *
+    ** * REMOVED ** * );      ** * REMOVED ** *
                 else ** * REMOVED ** *
                    a.ComputeCenter = 'None'
 
