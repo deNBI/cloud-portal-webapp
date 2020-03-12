@@ -56,7 +56,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
   all_dissemination_checked: boolean = false;
 
   // tslint:disable-next-line:max-line-length
-  application_dissemination: ApplicationDissemination = new ApplicationDissemination(null, null, null, null, null, null, null, null, null, null, null, null);
+  application_dissemination: ApplicationDissemination = new ApplicationDissemination(null, null, null, null, null, null, null, null, null, null, null);
 
   initiated_validation: boolean = false;
 
@@ -145,7 +145,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 
       } else {
         // tslint:disable-next-line:max-line-length
-        this.application.Dissemination = new ApplicationDissemination(null, null, null, null, null, null, null, null, null, null, null, null);
+        this.application.Dissemination = new ApplicationDissemination(null, null, null, null, null, null, null, null, null, null, null);
       }
       this.application_dissemination = this.application.Dissemination;
       this.project_application_sensitive_data = this.application.SensitiveData;
