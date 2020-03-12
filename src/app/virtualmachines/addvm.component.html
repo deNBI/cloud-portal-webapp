@@ -85,7 +85,7 @@
                                      [selectedProjectVmsUsed]="selectedProjectVmsUsed"
                                      [selectedProjectVolumesMax]="selectedProjectVolumesMax"
                                      [selectedProjectVolumesUsed]="selectedProjectVolumesUsed"
-                                    >
+              >
 
               </app-resource-overview>
 
@@ -163,22 +163,22 @@
                   <div class="col-10"></div>
                 </div>
                 <div *ngIf="volumesToMount?.length > 0" style="margin-bottom: 5px;" id="volumesToMountTable">
-                <div class="row">
-                  <div class="col-2">Volumes to mount</div>
-                  <div class="col-10">
-                    <div *ngFor="let vol of volumesToMount" class="row" id="volumeRow_{{vol.volume_name}}"
-                      style="margin-bottom:5px;">
-                      <div class="col-6">{{vol.volume_name}}</div>
-                      <div class="col-2">{{vol.volume_storage}} GB</div>
-                      <div class="col-2">
-                        <button class="btn btn-danger"
-                                (click)="removeVolFromList(volumesToMount.indexOf(vol));">Remove
-                          <span class="fa fa-trash"></span>
-                        </button>
+                  <div class="row">
+                    <div class="col-2">Volumes to mount</div>
+                    <div class="col-10">
+                      <div *ngFor="let vol of volumesToMount" class="row" id="volumeRow_{{vol.volume_name}}"
+                           style="margin-bottom:5px;">
+                        <div class="col-6">{{vol.volume_name}}</div>
+                        <div class="col-2">{{vol.volume_storage}} GB</div>
+                        <div class="col-2">
+                          <button class="btn btn-danger"
+                                  (click)="removeVolFromList(volumesToMount.indexOf(vol));">Remove
+                            <span class="fa fa-trash"></span>
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
                   <div class="row">
                     <div class="col-2"></div>
                     <div class="col-10">
@@ -235,7 +235,7 @@
                   </div>
 
                   <div class="col-10 alert alert-info"
-                  *ngIf="(((this.selectedProjectVolumesUsed + this.volumesToMount?.length)
+                       *ngIf="(((this.selectedProjectVolumesUsed + this.volumesToMount?.length)
                     >= this.selectedProjectVolumesMax) || ((this.selectedProjectDiskspaceUsed + getStorageInList()) >= this.selectedProjectDiskspaceMax))">
                     <span *ngIf="(this.selectedProjectVolumesUsed + this.volumesToMount?.length)
                     >= this.selectedProjectVolumesMax">You have reached the maximum number of volumes available
@@ -247,11 +247,11 @@
                     <div class="col-md-2"></div>
                     <div class="col-md-4">
                       <button class="btn btn-danger" (click)="toggleShowAddVol(); volumeName=''; volumeStorage=0;"
-                        >Discard</button>
+                      >Discard</button>
                     </div>
                     <div class="col-4">
                       <button class="btn btn-success" (click)="toggleShowAddVol(); this.addVolumeToList();"
-                        [disabled]="!checkVolumeValidity()" id="addVolumeConfirmationButton"
+                              [disabled]="!checkVolumeValidity()" id="addVolumeConfirmationButton"
                       >Add Volume</button>
                     </div>
 
@@ -266,7 +266,7 @@
 
                 <accordion-group #optionalGroup id="optional_accordion"
                                  *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && selectedProjectVmsUsed < selectedProjectVmsMax
-                                  && (flavors.length != 0 || selectedFlavor) && mosh_mode_available">
+                                  && (flavors.length != 0 || selectedFlavor)">
 
                   <div accordion-heading style="width: 100%; cursor: pointer">
                     <strong>Optional parameters</strong>
@@ -280,8 +280,8 @@
                     *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && selectedProjectVmsUsed < selectedProjectVmsMax"
                     class="form-group row">
 
-                    <label class="col-md-2 form-control-label" *ngIf="mosh_mode_available">Open Ports</label>
-                    <div class="col-6" *ngIf="mosh_mode_available" ><label><strong style="padding-right: 10px; bottom: 15px;position: relative;">UDP
+                    <label class="col-md-2 form-control-label">Open Ports</label>
+                    <div class="col-6"><label><strong style="padding-right: 10px; bottom: 15px;position: relative;">UDP
                       <i
                         data-balloon="This selection is necessary for using mosh"
                         data-balloon-pos="down" data-balloon-length="large"><i
@@ -291,13 +291,39 @@
                       <label
                         class="switch switch-label switch-pill switch-success">
                         <input type="checkbox" class="switch-input"
-                               name="udp_allowed"
+                               name="udp_allowed" [disabled]="!mosh_mode_available"
                                [(ngModel)]="udp_allowed">
                         <div class="switch-slider" data-checked="✓" data-unchecked="✕"></div>
                         <!--<span class="switch-handle"></span>-->
-                      </label></div>
+                      </label>
+                    </div>
+                    <div class="alert alert-info" *ngIf="!mosh_mode_available">To use MOSH with UDP ports, please select an Image which supports MOSH.</div>
+                  </div>
+                  <div
+                    *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && selectedProjectVmsUsed < selectedProjectVmsMax && udp_allowed && mosh_mode_available"
+                    class="form-group row">
 
+                    <label class="col-md-2 form-control-label">Install MOSH</label>
+                    <div class="col-6"><label><strong style="padding-right: 10px; bottom: 15px;position: relative;">
+                      <i
+                        data-balloon="This selection will install MOSH on your virtual machine."
+                        data-balloon-pos="down" data-balloon-length="large"><i
+                        class="icon-question menu_links"
+                        style="cursor: pointer;"></i></i></strong></label>
 
+                      <label
+                        class="switch switch-label switch-pill switch-success">
+                        <input type="checkbox" class="switch-input"
+                               name="install_mosh"
+                               [(ngModel)]="install_mosh">
+                        <div class="switch-slider" data-checked="✓" data-unchecked="✕"></div>
+                        <!--<span class="switch-handle"></span>-->
+                      </label>
+                    </div>
+                    <div class="alert alert-info" *ngIf="install_mosh">
+                      Please note, that to install MOSH, we have to place a temporarily created public key onto your machine.
+                      At the end of the installation process, we remove the temporary key and put your public key as the only key onto your machine, regardless of a successful or failing installation process.
+                    </div>
                   </div>
                 </accordion-group>
 
@@ -354,7 +380,7 @@
                 </accordion-group>
                 <accordion-group #resEnvGroup *ngIf="has_forc &&( selectedProject && projectDataLoaded &&
                 selectedProjectVmsUsed < selectedProjectVmsMax && (flavors?.length > 0 || selectedFlavor))"
-                [isOpen]="resenvSelected">
+                                 [isOpen]="resenvSelected">
                   <div accordion-heading style="width: 100%; cursor: pointer">
                     <strong>Research Environment </strong>
                     (e.g. RStudio, Apache Guacamole, Theia IDE)
