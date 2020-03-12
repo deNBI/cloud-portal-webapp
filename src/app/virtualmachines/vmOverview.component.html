@@ -161,16 +161,27 @@
                 </div>
                 <div class="col-1" style="text-align: center"></div>
               </div>
-              <div class="row" style="margin-top: 10px; margin-bottom:5px;">
-                <div class="col-12" style="margin-left: 10px; font-size: 18px; line-height: 27px; height: 27px">
-                  <div *ngIf="vm.volumes.length > 0">
+              <div style="margin-top: 10px; margin-bottom:5px;">
+                <div class="row" style="margin-left: 10px; font-size: 18px; line-height: 27px; height: 27px">
+                  <div *ngIf="vm.volumes.length > 0" class="col-md-1">
                       <span class="fas fa-hdd" style="font-size: 18px;"
-                            data-toggle="tooltip" data-placement="right" title="{{'Volumes mounted: ' + vm?.volumes.length}}">
+                            data-toggle="tooltip" data-placement="right"
+                            title="{{'Volumes mounted: ' + vm?.volumes.length}}">
                         <span class="badge badge-pill badge-secondary"
                               style="font-size: 10px; position: relative; top: -12px; left: -10px;">
                           {{vm?.volumes.length}}</span>
                       </span>
                   </div>
+                  <div *ngIf="vm.res_env_url.length > 0" class="col-md-1">
+                      <span class="fas fa-globe" style="font-size: 18px;" data-toggle="tooltip" data-placement="right"
+                         title="{{'Access via: ' + vm?.res_env_url}}" (click)="this.copyToClipboard(vm?.res_env_url)">
+                          <span class="badge badge-pill badge-secondary"
+                              style="font-size: 10px; position: relative; top: -12px; left: -10px;">
+                            <i class="fas fa-check"></i>
+                          </span>
+                      </span>
+                  </div>
+
 
                 </div>
                 <div class="col-1"></div>
