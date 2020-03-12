@@ -180,6 +180,23 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
     }
   }
 
+  setShortNewApplication(aj: any): Application {
+    const newApp: Application = new Application();
+    newApp.Id = aj['project_application_id'];
+
+    newApp.Name = aj['project_application_name'];
+    newApp.Shortname = aj['project_application_shortname'];
+    newApp.Institute = aj['project_application_institute'];
+    newApp.User = aj['project_application_user']['username'];
+    newApp.DateSubmitted = aj['project_application_date_submitted'];
+    newApp.Status = aj['project_application_status'];
+        newApp.PerunId = aj['project_application_perun_id'];
+
+    newApp.DateApproved = aj['project_application_date_approved'];
+
+    return newApp
+  }
+
   setNewApplication(aj: any): Application {
 
     const newApp: Application = new Application();
@@ -293,6 +310,21 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
     }
   }
 
+  setShortDetailNewApplications(res: any): Application[] {
+    const newApplications: Application[] = [];
+
+    for (const key in res) {
+      if (res.hasOwnProperty(key)) {
+
+        const aj: object = res[key];
+
+        newApplications.push(this.setShortNewApplication(aj))
+      }
+    }
+
+    return newApplications
+  }
+
   setNewApplications(res: any): Application[] {
     const newApplications: Application[] = [];
 
@@ -357,6 +389,7 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
   public getStatusById(id: number): string {
     const dummy: string = 'Unknown';
     for (const status of this.application_status) {
+
       if (status.application_status_id === id) {
         return status.application_status_name;
       }
