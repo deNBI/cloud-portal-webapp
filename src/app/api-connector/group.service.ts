@@ -24,10 +24,10 @@ export class GroupService {
   getFacilityByGroup(groupid: string): Observable<any> {
 
 <<<<<<< HEAD
-    constructor(private http: Http, private settings: ApiSettings) ***REMOVED***
-    ***REMOVED***
+    constructor(private http: Http, private settings: ApiSettings) ** * REMOVED ** *
+    ** * REMOVED ** *
 
-    getComputeCenters(): Observable<any> ***REMOVED***
+    getComputeCenters(): Observable < any > ** * REMOVED ** *
 =======
     return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/computecenter/`, {
       withCredentials: true
@@ -36,36 +36,37 @@ export class GroupService {
   }
 >>>>>>> dev
 
-  getClient(groupid: string): Observable<Client> {
+  getClient(groupid: string): Observable < Client > {
 
 <<<<<<< HEAD
-        return this.http.get(this.settings.getApiBaseURL() + 'computecenters/', ***REMOVED***
+        return this.http.get(this.settings.getApiBaseURL() + 'computecenters/',  ** * REMOVED ** *
+            withCredentials: true, 
+
+                             ** * REMOVED ** * ).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+
+    ** * REMOVED ** *
+
+    getComputeCentersDetails(resource_id: number): Observable<any> ** * REMOVED ** *
+
+    return this.http.get(this.settings.getApiBaseURL() + 'facility_details/',  ** * REMOVED ** *
             withCredentials: true,
+                             params:  ** * REMOVED ** * resource_id: resource_id ** * REMOVED ** *
+        ** * REMOVED ** * ).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
 
-        ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+    ** * REMOVED ** *
 
-    ***REMOVED***
-
-    getComputeCentersDetails(resource_id: number): Observable<any> ***REMOVED***
-
-        return this.http.get(this.settings.getApiBaseURL() + 'facility_details/', ***REMOVED***
-            withCredentials: true,
-            params: ***REMOVED***resource_id: resource_id***REMOVED***
-        ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
-
-    ***REMOVED***
-
-    assignGroupToResource(groupid: string, computecenter: string): Observable<any> ***REMOVED***
+    assignGroupToResource(groupid: string, computecenter: string): Observable < any > ** * REMOVED ** *
         let urlSearchParams = new URLSearchParams();
-        let header = new Headers(***REMOVED***
-            'X-CSRFToken': this.settings.getCSRFToken(),
-        ***REMOVED***);
-        urlSearchParams.append('compute_center', computecenter);
-        urlSearchParams.append('groupid', groupid);
-        return this.http.post(this.settings.getApiBaseURL() + 'assignGroupToResource/', urlSearchParams, ***REMOVED***
-            withCredentials: true,
-            headers: header
-        ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+    let header = new Headers( ** * REMOVED ** *
+            'X-CSRFToken':       this.settings.getCSRFToken(), 
+                                 ** * REMOVED ** * );
+    urlSearchParams.append('compute_center', computecenter);
+    urlSearchParams.append('groupid', groupid);
+
+    return this.http.post(this.settings.getApiBaseURL() + 'assignGroupToResource/', urlSearchParams,  ** * REMOVED ** *
+            withCredentials:  true,
+                              headers: header
+        ** * REMOVED ** * ).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
 =======
     return this.http.get<Client>(`${ApiSettings.getApiBaseURL()}projects/${groupid}/client/`, {
       withCredentials: true,
@@ -200,7 +201,7 @@ export class GroupService {
   }
 >>>>>>> dev
 
-  setDescription(groupid: string, description: string): Observable<any> {
+    setDescription(groupid: string, description: string): Observable < any > {
 
     const params: HttpParams = new HttpParams().set('description', description).set('groupid', groupid);
 
@@ -211,7 +212,7 @@ export class GroupService {
 
   }
 
-  setPerunGroupStatus(group_id: string, status: string): Observable<any> {
+    setPerunGroupStatus(group_id: string, status: string): Observable < any > {
 
     const params: HttpParams = new HttpParams().set('status', status);
 
@@ -221,7 +222,7 @@ export class GroupService {
     })
   }
 
-  setGroupVolumeLimit(group_id: number, value: number): Observable<any> {
+    setGroupVolumeLimit(group_id: number, value: number): Observable < any > {
 
     const params: HttpParams = new HttpParams().set('value', value.toString());
 
@@ -231,7 +232,7 @@ export class GroupService {
     })
   }
 
-  setGroupVolumeCounter(group_id: number, value: number): Observable<any> {
+    setGroupVolumeCounter(group_id: number, value: number): Observable < any > {
 
     const params: HttpParams = new HttpParams().set('value', value.toString());
 
@@ -241,7 +242,7 @@ export class GroupService {
     })
   }
 
-  setName(groupid: string, name: string): Observable<any> {
+    setName(groupid: string, name: string): Observable < any > {
     const params: HttpParams = new HttpParams().set('name', name);
 
     return this.http.post(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/name/`, params, {
@@ -250,14 +251,14 @@ export class GroupService {
     })
   }
 
-  getName(groupid: string): Observable<any> {
+    getName(groupid: string): Observable < any > {
     return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/name/`, {
       withCredentials: true
     })
 
   }
 
-  setShortname(groupid: string, shortname: string): Observable<any> {
+    setShortname(groupid: string, shortname: string): Observable < any > {
     const params: HttpParams = new HttpParams().set('shortname', shortname)
 
     return this.http.post(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/shortname/`, params, {
@@ -267,7 +268,7 @@ export class GroupService {
 
   }
 
-  getShortame(groupid: string): Observable<any> {
+    getShortame(groupid: string): Observable < any > {
 
     return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/shortname/`, {
       withCredentials: true,
@@ -275,23 +276,23 @@ export class GroupService {
     })
 
 <<<<<<< HEAD
-    ***REMOVED***
+    ** * REMOVED ** *
 
-    setNumberOfVms(groupid: string, numberofVms: string): Observable<any> ***REMOVED***
+    setNumberOfVms(groupid: string, numberofVms: string): Observable<any> ** * REMOVED ** *
         let urlSearchParams = new URLSearchParams();
-        let header = new Headers(***REMOVED***
-            'X-CSRFToken': this.settings.getCSRFToken(),
-        ***REMOVED***);
-        urlSearchParams.append('numberOfVms', numberofVms);
-        urlSearchParams.append('groupid', groupid);
-        return this.http.post(this.settings.getApiBaseURL() + 'setGroupNumberOfVms/', urlSearchParams, ***REMOVED***
-            withCredentials: true,
-            headers: header
-        ***REMOVED***).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+    const header = new Headers( ** * REMOVED ** *
+            'X-CSRFToken':         this.settings.getCSRFToken(), 
+                                   ** * REMOVED ** * );
+    urlSearchParams.append('numberOfVms', numberofVms);
+    urlSearchParams.append('groupid', groupid);
 
+    return this.http.post(this.settings.getApiBaseURL() + 'setGroupNumberOfVms/', urlSearchParams,  ** * REMOVED ** *
+            withCredentials:  true,
+                              headers: header
+        ** * REMOVED ** * ).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
 
-    ***REMOVED***
-***REMOVED***
+    ** * REMOVED ** *
+** * REMOVED ** *
 =======
   }
 
