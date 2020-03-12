@@ -16,7 +16,6 @@ export class ApplicationDissemination {
   private _information_workgroup: boolean = false;
   private _information_project_type: boolean = false;
 
-
   private _allowed_platforms: string[] = [];
   private _allowed_informations: string[] = [];
 
