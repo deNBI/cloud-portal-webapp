@@ -118,6 +118,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   private current_credits: number = 0;
   project_application_renewal_lifetime: number;
   private updateCreditsUsedIntervals: number;
+
   private updateCreditHistoryIntervals: number;
 
   creditsChart: any;

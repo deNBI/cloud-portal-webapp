@@ -293,6 +293,18 @@ export class VirtualmachineService {
     })
   }
 
+  extendVolume(volume_id: string, new_size: string): Observable<IResponseTemplate> {
+
+    const params: HttpParams = new HttpParams().set('os_action', 'extend').set('new_size', new_size);
+
+    return this.http.post<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}volumes/${volume_id}/action/`, params, {
+                                               withCredentials: true,
+                                               headers: header
+                                             }
+    )
+
+  }
+
   attachVolumetoServer(volume_id: string, instance_id: string): Observable<IResponseTemplate> {
 
     const params: HttpParams = new HttpParams().set('instance_id', instance_id).set('os_action', 'attach');
