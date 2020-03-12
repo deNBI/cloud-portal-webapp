@@ -211,7 +211,6 @@ export class AddClusterComponent implements OnInit {
 
   changeCount(): void {
     this.newVms = Number(this.workerInstancesCount) + Number(1);
-    this.calculateNewValues()
   }
 
   checkFlavorsUsableForCluster(): void {
@@ -257,10 +256,11 @@ export class AddClusterComponent implements OnInit {
     const cpu_max_vms: number = (this.selectedProjectCoresMax - this.selectedProjectCoresUsed - this.selectedMasterFlavor.vcpus)
       / this.selectedWorkerFlavor.vcpus;
 
-    this.maxWorkerInstances = Math.min(ram_max_vms, cpu_max_vms)
+    this.maxWorkerInstances = Math.min(ram_max_vms, cpu_max_vms, this.selectedProjectVmsMax - this.selectedProjectVmsUsed - 1)
   }
 
   calculateNewValues(): void {
+    console.log("test")
     let tmp_ram: number = 0;
     let tmp_cores: number = 0;
     let tmp_gpus: number = 0;

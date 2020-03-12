@@ -125,7 +125,7 @@
 
                         <app-flavor-detail [selectedFlavor]="selectedMasterFlavor"
                                            [flavors]="flavors_usable"
-                                           (selectedFlavorChange)="selectedMasterFlavor=$event;calculateNewValues();"
+                                           (selectedFlavorChange)="selectedMasterFlavor=$event;selectedWorkerFlavor=null;calculateNewValues();"
                                            id="id_flavor_detail"></app-flavor-detail>
 
                       </div>
@@ -157,8 +157,8 @@
 
                 <accordion class="col">
 
-                  <accordion-group #workerInstancesGroup  [isDisabled]="!selectedMasterFlavor || !selectedMasterImage"
-                                   (click)="resizeFix()"
+                  <accordion-group #workerInstancesGroup [isOpen]="!(!selectedMasterFlavor || !selectedMasterImage)" (isOpenChange)="resizeFix();"
+                                   [isDisabled]="!selectedMasterFlavor || !selectedMasterImage"
 
                                    *ngIf="selectedProject && projectDataLoaded &&  (selectedProjectVmsUsed + 2 ) <= selectedProjectVmsMax &&
                   (flavors.length != 0 || selectedFlavor)">
@@ -175,7 +175,7 @@
 
                         <app-flavor-detail [selectedFlavor]="selectedWorkerFlavor"
                                            [flavors]="flavors_usable"
-                                           (selectedFlavorChange)="selectedWorkerFlavor=$event;calculateNewValues();calcMaxWorkerInstancesByFlavor();"
+                                           (selectedFlavorChange)="selectedWorkerFlavor=$event;calcMaxWorkerInstancesByFlavor();"
                                            id="id_flavor_detail"></app-flavor-detail>
 
                       </div>
@@ -251,7 +251,7 @@
 
                   type="button"
 
-                  [disabled]="(workerInstancesCount > maxWorkerInstances) || !selectedMasterFlavor || !selectedMasterImage || !selectedWorkerFlavor || !selectedWorkerImage || !workerInstancesCount "
+                  [disabled]="(workerInstancesCount > maxWorkerInstances) || !selectedMasterFlavor || !selectedMasterImage || !selectedWorkerFlavor  || !workerInstancesCount "
                   class="btn btn-primary  .btn-lg offset-md-8"
                   data-toggle="modal"
                   (click)="startCluster();infoModal.show()">
