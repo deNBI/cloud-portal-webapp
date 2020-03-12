@@ -39,7 +39,7 @@ export class GroupService {
   getClient(groupid: string): Observable < Client > {
 
 <<<<<<< HEAD
-        return this.http.get(this.settings.getApiBaseURL() + 'computecenters/',  ** * REMOVED ** *
+        return this.http.get(this.settings.getApiBaseURL() + 'computecenters/',   ** * REMOVED ** *
             withCredentials: true, 
 
                              ** * REMOVED ** * ).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
@@ -48,9 +48,9 @@ export class GroupService {
 
     getComputeCentersDetails(resource_id: number): Observable<any> ** * REMOVED ** *
 
-    return this.http.get(this.settings.getApiBaseURL() + 'facility_details/',  ** * REMOVED ** *
+    return this.http.get(this.settings.getApiBaseURL() + 'facility_details/',   ** * REMOVED ** *
             withCredentials: true,
-                             params:  ** * REMOVED ** * resource_id: resource_id ** * REMOVED ** *
+                         params:   ** * REMOVED ** * resource_id: resource_id ** * REMOVED ** *
         ** * REMOVED ** * ).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
 
     ** * REMOVED ** *
@@ -58,14 +58,14 @@ export class GroupService {
     assignGroupToResource(groupid: string, computecenter: string): Observable < any > ** * REMOVED ** *
         let urlSearchParams = new URLSearchParams();
     let header = new Headers( ** * REMOVED ** *
-            'X-CSRFToken':       this.settings.getCSRFToken(), 
-                                 ** * REMOVED ** * );
+            'X-CSRFToken':    this.settings.getCSRFToken(), 
+                              ** * REMOVED ** * );
     urlSearchParams.append('compute_center', computecenter);
     urlSearchParams.append('groupid', groupid);
 
-    return this.http.post(this.settings.getApiBaseURL() + 'assignGroupToResource/', urlSearchParams,  ** * REMOVED ** *
+    return this.http.post(this.settings.getApiBaseURL() + 'assignGroupToResource/', urlSearchParams,   ** * REMOVED ** *
             withCredentials:  true,
-                              headers: header
+                          headers: header
         ** * REMOVED ** * ).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
 =======
     return this.http.get<Client>(`${ApiSettings.getApiBaseURL()}projects/${groupid}/client/`, {
@@ -281,14 +281,14 @@ export class GroupService {
     setNumberOfVms(groupid: string, numberofVms: string): Observable<any> ** * REMOVED ** *
         let urlSearchParams = new URLSearchParams();
     const header = new Headers( ** * REMOVED ** *
-            'X-CSRFToken':         this.settings.getCSRFToken(), 
-                                   ** * REMOVED ** * );
+            'X-CSRFToken':      this.settings.getCSRFToken(), 
+                                ** * REMOVED ** * );
     urlSearchParams.append('numberOfVms', numberofVms);
     urlSearchParams.append('groupid', groupid);
 
-    return this.http.post(this.settings.getApiBaseURL() + 'setGroupNumberOfVms/', urlSearchParams,  ** * REMOVED ** *
+    return this.http.post(this.settings.getApiBaseURL() + 'setGroupNumberOfVms/', urlSearchParams,   ** * REMOVED ** *
             withCredentials:  true,
-                              headers: header
+                          headers: header
         ** * REMOVED ** * ).map((res: Response) => res.json()).catch((error: any) => Observable.throw(error.json().error || 'Server error'))
 
     ** * REMOVED ** *

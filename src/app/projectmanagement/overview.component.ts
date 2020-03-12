@@ -17,8 +17,8 @@ import ** * REMOVED ** * ApiSettings ** * REMOVED ** * from '../api-connector/ap
 import ** * REMOVED ** * GroupService ** * REMOVED ** * from '../api-connector/group.service';
 
        @Component( ** * REMOVED ** *
-    templateUrl: 'overview.component.html',
-           providers: [GroupService, ResourcesManager, AuthzResolver, GroupsManager, MembersManager, UsersManager, PerunSettings, ApiSettings]
+    templateUrl:   'overview.component.html',
+                   providers: [GroupService, ResourcesManager, AuthzResolver, GroupsManager, MembersManager, UsersManager, PerunSettings, ApiSettings]
 ** * REMOVED ** * )
 export class OverviewComponent ** * REMOVED ** *
 
@@ -26,12 +26,12 @@ export class OverviewComponent ** * REMOVED ** *
 
        @Input() voRegistrationLink: string = environment.voRegistrationLink;
 
-       userprojects:  ** * REMOVED ** ** ** REMOVED ** * ;
+       userprojects:   ** * REMOVED ** ** ** REMOVED ** * ;
        userid: number;
        member_id: number;
-       user_data:  ** * REMOVED ** ** ** REMOVED ** * ;
-       admingroups:  ** * REMOVED ** ** ** REMOVED ** * ;
-       adminvos:  ** * REMOVED ** ** ** REMOVED ** * ;
+       user_data:   ** * REMOVED ** ** ** REMOVED ** * ;
+       admingroups:   ** * REMOVED ** ** ** REMOVED ** * ;
+       adminvos:   ** * REMOVED ** ** ** REMOVED ** * ;
        filteredMembers = null;
        projects: Project[] = new Array();
 
@@ -55,12 +55,12 @@ export class OverviewComponent ** * REMOVED ** *
   public notificationModalIsClosable: boolean = false;
 
        constructor(private authzresolver: AuthzResolver,
-              private perunsettings: PerunSettings,
-              private useresmanager: UsersManager,
-              private groupsmanager: GroupsManager,
-              private membersmanager: MembersManager,
-              private  resourceManager: ResourcesManager,
-              private groupservice: GroupService) ** * REMOVED ** *
+                   private perunsettings: PerunSettings,
+                   private useresmanager: UsersManager,
+                   private groupsmanager: GroupsManager,
+                   private membersmanager: MembersManager,
+                   private  resourceManager: ResourcesManager,
+                   private groupservice: GroupService) ** * REMOVED ** *
     this.getUserProjects(groupsmanager, membersmanager, useresmanager); 
        ** * REMOVED ** *
 
@@ -74,10 +74,10 @@ export class OverviewComponent ** * REMOVED ** *
                     usersmanager: UsersManager) ** * REMOVED ** *
         let user_id: number;
        let member_id: number;
-       let user_projects:  ** * REMOVED ** ** ** REMOVED ** * ;
-       let user_data:  ** * REMOVED ** ** ** REMOVED ** * ;
-       let admin_groups:  ** * REMOVED ** ** ** REMOVED ** * ;
-       let admin_vos:  ** * REMOVED ** ** ** REMOVED ** * ;
+       let user_projects:   ** * REMOVED ** ** ** REMOVED ** * ;
+       let user_data:   ** * REMOVED ** ** ** REMOVED ** * ;
+       let admin_groups:   ** * REMOVED ** ** ** REMOVED ** * ;
+       let admin_vos:   ** * REMOVED ** ** ** REMOVED ** * ;
 
        this.authzresolver
             .getLoggedUser().toPromise()
@@ -98,14 +98,14 @@ export class OverviewComponent ** * REMOVED ** *
             user_projects =     groupsdata.json(); 
        ** * REMOVED ** * ).then(function () ** * REMOVED ** *
 
-return usersmanager.getGroupsWhereUserIsAdmin(user_id).toPromise(); 
+       return usersmanager.getGroupsWhereUserIsAdmin(user_id).toPromise(); 
        ** * REMOVED ** * ).then(function (admingroups) ** * REMOVED ** *
-            admin_groups =  admingroups.json(); 
+            admin_groups =      admingroups.json(); 
        ** * REMOVED ** * ).then(function () ** * REMOVED ** *
 
-return usersmanager.getVosWhereUserIsAdmin(user_id).toPromise(); 
+       return usersmanager.getVosWhereUserIsAdmin(user_id).toPromise(); 
        ** * REMOVED ** * ).then(function (adminvos) ** * REMOVED ** *
-            admin_vos =     adminvos.json(); 
+            admin_vos =         adminvos.json(); 
        ** * REMOVED ** * ).then(result => ** * REMOVED ** *
 
             // hold data in the class just in case
@@ -149,7 +149,7 @@ return usersmanager.getVosWhereUserIsAdmin(user_id).toPromise();
        try ** * REMOVED ** *
                         let resource_id = resource.json()[0]['id'];
        this.resourceManager.getFacilityByResource(resource_id).subscribe(facility => ** * REMOVED ** *
-                            let                                                           newProject = new Project(
+                            let                                          newProject = new Project(
                                 group['id'],
                                 group['name'],
                                 group['description'],
