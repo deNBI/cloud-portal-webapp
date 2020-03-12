@@ -163,31 +163,33 @@
                   <div class="col-md-10"></div>
                 </div>
                 <div *ngIf="volumesToMount?.length > 0" style="margin-bottom: 5px;" id="volumesToMountTable">
-                <div class="row col-md-12">
-                  <div class="col-md-2"></div>
-                  <div class="col-md-2">Volumes to mount</div>
-                  <div class="col-md-8">
-                    <div *ngFor="let vol of volumesToMount" class="row" id="volumeRow_{{vol.volume_name}}"
-                      style="margin-bottom:5px;">
-                      <div class="col-md-6">{{vol.volume_name}}</div>
-                      <div class="col-md-3">{{vol.volume_storage}} GB</div>
-                      <div class="col-md-3">
-                        <button class="btn btn-danger"
-                                (click)="removeVolFromList(volumesToMount.indexOf(vol));">Remove
-                          <span class="fa fa-trash"></span>
-                        </button>
+                  <div class="row col-md-12">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-2">Volumes to mount</div>
+                    <div class="col-md-8">
+                      <div *ngFor="let vol of volumesToMount" class="row" id="volumeRow_{{vol.volume_name}}"
+                           style="margin-bottom:5px;">
+                        <div class="col-md-6">{{vol.volume_name}}</div>
+                        <div class="col-md-3">{{vol.volume_storage}} GB</div>
+                        <div class="col-md-3">
+                          <button class="btn btn-danger"
+                                  (click)="removeVolFromList(volumesToMount.indexOf(vol));">Remove
+                            <span class="fa fa-trash"></span>
+                          </button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-2"></div>
-                    <div class="col-10">
-                      <hr style="color:lightgray;">
+                    <div class="row">
+                      <div class="col-2"></div>
+                      <div class="col-10">
+                        <hr style="color:lightgray;">
+                      </div>
                     </div>
+
                   </div>
+
 
                 </div>
-
                 <div class="row col-md-12">
                   <div class="col-md-2"></div>
                   <div class="col-md-10"
@@ -245,17 +247,16 @@
                   </div>
                   <div class="col-md-12 row" *ngIf="!showAddVol">
                     <div class="col-md-4"></div>
-                      <div class="btn-group col-md-8" role="group">
-                        <button class="btn btn-danger" (click)="toggleShowAddVol(); volumeName=''; volumeStorage=0;"
-                        type="button">Discard <span class="fa fa-times"></span></button>
-                        <button class="btn btn-success" (click)="toggleShowAddVol(); this.addVolumeToList();"
-                                [disabled]="!checkVolumeValidity()" id="addVolumeConfirmationButton"
-                        type="button">Add Volume <span class="fa fa-check"></span></button>
-                      </div>
+                    <div class="btn-group col-md-8" role="group">
+                      <button class="btn btn-danger" (click)="toggleShowAddVol(); volumeName=''; volumeStorage=0;"
+                              type="button">Discard <span class="fa fa-times"></span></button>
+                      <button class="btn btn-success" (click)="toggleShowAddVol(); this.addVolumeToList();"
+                              [disabled]="!checkVolumeValidity()" id="addVolumeConfirmationButton"
+                              type="button">Add Volume <span class="fa fa-check"></span></button>
+                    </div>
 
                   </div>
                 </div>
-
               </div>
 
 
