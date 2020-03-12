@@ -7,7 +7,6 @@ export class Dissemination {
   private _platform_twitter: boolean;
   private _information_title: string;
   private _information_resources: boolean;
-  private _information_runtime: boolean;
   private _information_pi_name: boolean;
   private _information_institution: boolean;
   private _information_workgroup: boolean;
@@ -21,16 +20,15 @@ export class Dissemination {
   constructor(
     platform_denbi: boolean, platform_twitter: boolean,
     information_title: string, information_resources: boolean,
-    information_runtime: boolean, information_pi_name: boolean,
-    information_institution: boolean, information_workgroup: boolean,
-    information_project_type: boolean, information_lifetime: boolean,
-    information_project_affiliation: boolean, information_description: string) {
+    information_pi_name: boolean, information_institution: boolean,
+    information_workgroup: boolean, information_project_type: boolean,
+    information_lifetime: boolean, information_project_affiliation: boolean,
+    information_description: string) {
 
     this._platform_denbi = platform_denbi;
     this._platform_twitter = platform_twitter;
     this._information_title = information_title;
     this._information_resources = information_resources;
-    this._information_runtime = information_runtime;
     this._information_pi_name = information_pi_name;
     this._information_institution = information_institution;
     this._information_description = information_description;
@@ -100,14 +98,6 @@ export class Dissemination {
     }
   }
 
-  get allowed_platforms(): string[] {
-    return this._allowed_platforms;
-  }
-
-  get allowed_informations(): string[] {
-    return this._allowed_informations;
-  }
-
   get platform_twitter(): boolean {
     return this._platform_twitter;
   }
@@ -130,14 +120,6 @@ export class Dissemination {
 
   set information_resources(value: boolean) {
     this._information_resources = value;
-  }
-
-  get information_runtime(): boolean {
-    return this._information_runtime;
-  }
-
-  set information_runtime(value: boolean) {
-    this._information_runtime = value;
   }
 
   get information_pi_name(): boolean {
