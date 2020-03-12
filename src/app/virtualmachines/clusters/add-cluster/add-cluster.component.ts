@@ -260,7 +260,7 @@ export class AddClusterComponent implements OnInit {
   }
 
   calculateNewValues(): void {
-    console.log("test")
+    console.log('test')
     let tmp_ram: number = 0;
     let tmp_cores: number = 0;
     let tmp_gpus: number = 0;
