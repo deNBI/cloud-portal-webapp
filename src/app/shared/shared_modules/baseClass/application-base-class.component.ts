@@ -190,7 +190,7 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
     newApp.User = aj['project_application_user']['username'];
     newApp.DateSubmitted = aj['project_application_date_submitted'];
     newApp.Status = aj['project_application_status'];
-        newApp.PerunId = aj['project_application_perun_id'];
+    newApp.PerunId = aj['project_application_perun_id'];
 
     newApp.DateApproved = aj['project_application_date_approved'];
 
