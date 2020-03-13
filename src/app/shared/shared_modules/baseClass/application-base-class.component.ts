@@ -299,8 +299,7 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
       // @ts-ignore
       return new ApplicationDissemination(
         obj['platform_denbi'], obj['platform_twitter'],
-        obj['information_title'], obj['information_resources'],
-        obj['information_runtime'], obj['information_pi_name'],
+        obj['information_title'], obj['information_resources'], obj['information_pi_name'],
         obj['information_institution'], obj['information_workgroup'],
         obj['information_project_type'],
         obj['information_lifetime'], obj['information_project_affiliation'],
