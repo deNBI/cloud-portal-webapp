@@ -6,16 +6,16 @@
         <div *ngIf="is_vo_admin || is_facility_manager" class="col-6">
 
 
-          <button style="margin-right: 5px;margin-left: 5px;margin-top:5px;margin-bottom: 5px"
+          <button style="margin: 5px"
                   class="btn btn-primary"
                   (click)="toggleTab('own');applyFilter();">Own Machines
           </button>
 
-          <button *ngIf="is_vo_admin" style="margin-right: 5px;margin-left: 5px;margin-top: 5px;margin-bottom: 5px"
+          <button *ngIf="is_vo_admin" style="margin: 5px"
                   class="btn btn-primary"
                   (click)="toggleTab('all');applyFilter();">All Machines
           </button>
-          <button style="margin-right: 5px;margin-left: 5px;margin-top: 5px;margin-bottom: 5px"
+          <button style="margin: 5px"
                   class="btn btn-primary"
                   (click)="toggleTab('facility');applyFilter();">Machines of your facilities
           </button>
@@ -41,7 +41,7 @@
           [boundaryLinks]="true" [maxSize]="5" [rotate]="false" #pagination>
         </pagination>
       </div>
-      <div class="input-group  col-3">
+      <div class="input-group col-3">
         <input id="vm_per_site" class="form-control" style="margin: 10px 0 0 0;"
                name="vm_per_site" placeholder="e.g 3"
                type="number" min="1" max="25" step="1"
@@ -55,29 +55,9 @@
     <div class="container-fluid">
 
         <div class="row">
-          <div class="col-6">
-            <div *ngIf="vms_content.length > 0">
-              <div class="dropdown" dropdown>
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="actionDropdownMenu" data-toggle="dropdown"
-                        type="button" aria-haspopup="true" aria-expanded="false" aria-controls="dropdown-split" dropdownToggle id="vmActionsDropdown">
-                  Actions
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenu" role="menu" *dropdownMenu>
-                  <button class="dropdown-item btn btn-secondary" id="deleteAllSelectedVMsButton"
-                          (click)="setToBeDeletedVms(); verifyAllModal.show()">Delete selected VMs</button>
-                </div>
-              </div>
-            </div>
-          </div>
 
-
-          <div class="col-6">
-            <div class="input-group justify-content-end">
+          <div class="col-10 input-group">
             <div class="input-group-prepend">
-              <div class="input-group-text">
-                <input type="text" checked style="margin:2px;" [(ngModel)]="filter">
-
-              </div>
               <div class="input-group-text">
                 <input type="checkbox" checked style="margin:2px;"
                        (change)="changeFilterStatus(VirtualMachineStates.staticACTIVE)">
@@ -94,14 +74,35 @@
                 <span class="badge badge-danger">{{VirtualMachineStates.staticDELETED}}</span>
               </div>
             </div>
+              <div class="input-group-text col-5">
+                <input type="text" checked style="margin:2px;" placeholder="user,project,elixir_id,openstackid,name,flavor"
+                       [(ngModel)]="filter" style="width:100%">
+              </div>
             <div class="input-group-append">
               <button class="btn btn-outline-primary"(click)="applyFilter()">Filter</button>
             </div>
+
           </div>
-        </div>
+
+          <div class="col-2">
+            <div *ngIf="vms_content.length > 0">
+              <div class="dropdown" dropdown>
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="actionDropdownMenu" data-toggle="dropdown"
+                        type="button" aria-haspopup="true" aria-expanded="false" aria-controls="dropdown-split"
+                        dropdownToggle id="vmActionsDropdown" style="width:100%">
+                  Actions
+                </button>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu" role="menu"
+                     *dropdownMenu id="dropdownMenu">
+                  <button class="dropdown-item btn btn-secondary" id="deleteAllSelectedVMsButton"
+                          (click)="setToBeDeletedVms(); verifyAllModal.show()" *ngIf="selectedMachines.length > 0"
+                  >Delete selected VMs</button>
+                </div>
+              </div>
+            </div>
+          </div>
 
         </div>
-
 
       <div *ngIf="isSearching" id="search_spinner" style="margin:10px; padding:10px;">
         <div class="spinner-border text-primary" style="display:block; margin:auto;"></div>
@@ -123,10 +124,9 @@
 
               </div>
             </div>
-            <div class="card-block" *ngIf="vm">
+            <div class="card-block">
               <div class="row" style="margin-top: 5px">
                 <div class="col-5" style="margin: auto;">
-
 
                   <a class="h5 text-primary" style="margin-left: 10px"
                      *ngIf="vm?.status == VirtualMachineStates.staticACTIVE
@@ -138,6 +138,7 @@
                   <app-vmstatus [vm]="vm"></app-vmstatus>
 
                 </div>
+
                 <div class="col-3" style="margin: auto; text-align: center">
                   <a [routerLink]="['/project-management/' + vm?.application_id]" target="_blank"><strong>{{vm?.project}}</strong></a>
                 </div>
@@ -160,7 +161,19 @@
                 <div class="col-1" style="text-align: center"></div>
               </div>
               <div class="row" style="margin-top: 10px; margin-bottom:5px;">
-                <div class="col-12" style="margin-left: 10px">
+                <div class="col-12" style="margin-left: 10px; font-size: 18px; line-height: 27px; height: 27px">
+                  <div *ngIf="vm.volumes.length > 0">
+                      <span class="fas fa-hdd" style="font-size: 18px;"
+                            data-toggle="tooltip" data-placement="right" title="{{'Volumes mounted: ' + vm?.volumes.length}}">
+                        <span class="badge badge-pill badge-secondary"
+                              style="font-size: 10px; position: relative; top: -12px; left: -10px;">
+                          {{vm?.volumes.length}}</span>
+                      </span>
+                  </div>
+
+                </div>
+                <div class="col-1"></div>
+                <div class="col-11" style="margin-left: 10px">
                   <div style="font-size: small">
                     <strong>{{vm?.flavor?.name}}</strong>: {{vm?.flavor?.vcpus + ' VCPUs - ' }}{{vm?.flavor?.ram + ' GB RAM - '}}{{vm?.flavor?.rootdisk + ' GB root disk'}}
                   </div>

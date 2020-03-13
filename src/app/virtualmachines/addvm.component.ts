@@ -61,6 +61,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
   http_allowed: boolean = false;
   https_allowed: boolean = false;
   udp_allowed: boolean = false;
+  install_mosh: boolean = false;
   is_vo: boolean = false;
   hasTools: boolean = false;
   gaveOkay: boolean = false;
@@ -225,8 +226,8 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
    */
   private checkStatusTimeout: number = 5000;
 
-  @ViewChild('bioconda') biocondaComponent: BiocondaComponent;
-  @ViewChild('resEnv') resEnvComponent: ResEnvComponent;
+  @ViewChild('bioconda', { static: false }) biocondaComponent: BiocondaComponent;
+  @ViewChild('resEnv', { static: false }) resEnvComponent: ResEnvComponent;
 
   constructor(private groupService: GroupService, private imageService: ImageService,
               private flavorService: FlavorService, private virtualmachineservice: VirtualmachineService,
@@ -423,6 +424,9 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
       if (this.resenvSelected) {
         user_key_url = this.resEnvComponent.getUserKeyUrl();
       }
+      if (!this.mosh_mode_available) {
+        this.udp_allowed = false;
+      }
 
       this.virtualmachineservice.startVM(
         flavor_fixed, this.selectedImage, servername,
@@ -485,6 +489,10 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
       && this.resEnvComponent.user_key_url.errors === null) {
       playbook_info[this.resEnvComponent.selectedTemplate.template_name] = {};
       playbook_info['user_key_url'] = {user_key_url: this.resEnvComponent.getUserKeyUrl()};
+    }
+
+    if (this.udp_allowed && this.install_mosh) {
+      playbook_info['optional'] = {mosh : 'install'};
     }
 
     return JSON.stringify(playbook_info);
@@ -693,6 +701,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
      return 0;
    } else {
      let storageInList: number = 0;
+
      this.volumesToMount.forEach((volume: Volume) => {
        storageInList = storageInList + volume.volume_storage;
      });

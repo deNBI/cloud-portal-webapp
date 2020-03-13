@@ -311,7 +311,7 @@
                   }}
                 </td>
                 <td>
-                  <button (click)="switchCollapseStatus('application_history-' + application?.Id);"
+                  <button (click)="getFacilityApplicationById(application);switchCollapseStatus('application_history-' + application?.Id);"
                           type="button"
                           class="btn btn-secondary">
                     <i class="fa fa-info-circle"></i>&nbsp;
@@ -329,7 +329,7 @@
                 </td>
               </tr>
               <td colspan="12">
-                <app-application-detail
+                <app-application-detail *ngIf="!getCollapseStatus('application_history-' + application?.Id)"
                   [class.collapse_no_margin]="getCollapseStatus('application_history-' + application?.Id)"
                   [class.collapse]="getCollapseStatus('application_history-' + application?.Id)"
                   [application]="application"></app-application-detail>

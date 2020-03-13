@@ -55,7 +55,8 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
   project_application_workshop: boolean = false;
   all_dissemination_checked: boolean = false;
 
-  application_dissemination: ApplicationDissemination = new ApplicationDissemination();
+  // tslint:disable-next-line:max-line-length
+  application_dissemination: ApplicationDissemination = new ApplicationDissemination(null, null, null, null, null, null, null, null, null, null, null);
 
   initiated_validation: boolean = false;
 
@@ -74,8 +75,8 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 
   application_id: string | number;
   ontology_search_keyword: string = 'term';
-  @ViewChild('edam_ontology') edam_ontology: AutocompleteComponent;
-  @ViewChild(NgForm) application_form: NgForm;
+  @ViewChild('edam_ontology', { static: true }) edam_ontology: AutocompleteComponent;
+  @ViewChild(NgForm, { static: true }) application_form: NgForm;
 
   /**
    * List of flavor types.
@@ -143,7 +144,8 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
         this.project_application_report_allowed = true;
 
       } else {
-        this.application.Dissemination = new ApplicationDissemination();
+        // tslint:disable-next-line:max-line-length
+        this.application.Dissemination = new ApplicationDissemination(null, null, null, null, null, null, null, null, null, null, null);
       }
       this.application_dissemination = this.application.Dissemination;
       this.project_application_sensitive_data = this.application.SensitiveData;
