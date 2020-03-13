@@ -109,6 +109,14 @@ export class FacilityService {
 
   }
 
+  getFacilityApplicationById(facility: number | string, id: string): Observable<any> {
+
+    return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/applications/${id}/detail/`, {
+      withCredentials: true
+    })
+
+  }
+
   /**
    * Gets all volumes from a specific facility.
    * @param {number} facility
