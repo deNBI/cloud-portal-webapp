@@ -98,7 +98,7 @@
 
                   </div>
                   <div class="alert alert-primary " role="alert"
-                       *ngIf="selectedProject && selectedProjectVmsUsed < selectedProjectVmsMax && flavors_loaded && flavors.length == 0 && !selectedFlavor">
+                       *ngIf="selectedProject && selectedProjectVmsUsed < selectedProjectVmsMax && flavors_loaded && flavors_usable.length == 0 && !selectedFlavor">
                     There are too few cores and not enough ram available for this project to start a new machine.
                     Your principal investigator can request more
                     resources if necessary.
@@ -124,8 +124,8 @@
 
 
                         <app-flavor-detail [selectedFlavor]="selectedMasterFlavor"
-                                           [flavors]="flavors"
-                                           (selectedFlavorChange)="selectedMasterFlavor=$event;calculateNewValues();"
+                                           [flavors]="flavors_usable"
+                                           (selectedFlavorChange)="selectedMasterFlavor=$event;selectedWorkerFlavor=null;calculateNewValues();"
                                            id="id_flavor_detail"></app-flavor-detail>
 
                       </div>
@@ -157,8 +157,8 @@
 
                 <accordion class="col">
 
-                  <accordion-group #workerInstancesGroup [isDisabled]="!selectedMasterFlavor || !selectedMasterImage"
-                                   (click)="resizeFix()"
+                  <accordion-group #workerInstancesGroup [isOpen]="!(!selectedMasterFlavor || !selectedMasterImage)" (isOpenChange)="resizeFix();"
+                                   [isDisabled]="!selectedMasterFlavor || !selectedMasterImage"
 
                                    *ngIf="selectedProject && projectDataLoaded &&  (selectedProjectVmsUsed + 2 ) <= selectedProjectVmsMax &&
                   (flavors.length != 0 || selectedFlavor)">
@@ -175,7 +175,7 @@
 
                         <app-flavor-detail [selectedFlavor]="selectedWorkerFlavor"
                                            [flavors]="flavors_usable"
-                                           (selectedFlavorChange)="selectedWorkerFlavor=$event;calculateNewValues();calcMaxWorkerInstancesByFlavor();"
+                                           (selectedFlavorChange)="selectedWorkerFlavor=$event;calcMaxWorkerInstancesByFlavor();"
                                            id="id_flavor_detail"></app-flavor-detail>
 
                       </div>
@@ -189,10 +189,8 @@
                       <div class="col-md-10">
 
 
-                        <app-image-detail [selectedImage]="selectedWorkerImage"
-                                          [images]="images"
-                                          (selectedImageChange)="selectedWorkerImage=$event;"
-                                          id="id_image_detail"></app-image-detail>
+                      <app-image-slide [image]="selectedMasterImage"
+                                       [selectedImage]="selectedMasterImage"></app-image-slide>
                       </div>
                     </div>
                     <div class="form-group row col-md-12">
@@ -228,7 +226,7 @@
           </form>
 
           <div
-            *ngIf="(selectedProjectVmsUsed +2) <= selectedProjectVmsMax && (!selectedMasterFlavor || !selectedMasterImage || !selectedWorkerFlavor || !selectedWorkerImage ||!workerInstancesCount) && selectedProject && projectDataLoaded && flavors_loaded"
+            *ngIf="(selectedProjectVmsUsed +2) <= selectedProjectVmsMax && (!selectedMasterFlavor || !selectedMasterImage || !selectedWorkerFlavor  ||!workerInstancesCount) && selectedProject && projectDataLoaded && flavors_loaded"
             class="alert alert-danger" role="alert" style="max-width: 600px;margin: 0 auto;">
             <p>Please choose the following before starting a Cluster:</p>
             <p *ngIf="!selectedMasterFlavor">- The flavor type of your Master VM
@@ -236,8 +234,6 @@
             <p *ngIf="!selectedMasterImage">- The image you want to run on your Master VM
             </p>
             <p *ngIf="!selectedWorkerFlavor">- The flavor type of your Worker VMs
-            </p>
-            <p *ngIf="!selectedWorkerImage">- The image you want to run on your Worker VMs
             </p>
             <p *ngIf="!workerInstancesCount">- The count of Worker Vms
             </p>
@@ -255,7 +251,7 @@
 
                   type="button"
 
-                  [disabled]="(workerInstancesCount > maxWorkerInstances) || !selectedMasterFlavor || !selectedMasterImage || !selectedWorkerFlavor || !selectedWorkerImage || !workerInstancesCount "
+                  [disabled]="(workerInstancesCount > maxWorkerInstances) || !selectedMasterFlavor || !selectedMasterImage || !selectedWorkerFlavor  || !workerInstancesCount "
                   class="btn btn-primary  .btn-lg offset-md-8"
                   data-toggle="modal"
                   (click)="startCluster();infoModal.show()">
