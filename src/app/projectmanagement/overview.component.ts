@@ -444,6 +444,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   private current_credits: number = 0;
   project_application_renewal_lifetime: number;
   private updateCreditsUsedIntervals: number;
+
   private updateCreditHistoryIntervals: number;
 
   creditsChart: any;
@@ -666,7 +667,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
           this.project_application = newApp;
           if (this.project_application) {
             this.setLifetime();
-
             this.applicationsservice.getApplicationPerunId(this.application_id).subscribe((id: any) => {
               if (id['perun_id']) {
                 this.project_id = id['perun_id'];

@@ -1,6 +1,10 @@
 <div *ngIf="isLoaded==false" class="loader"></div>
 <div *ngIf="isLoaded">
-  <button type="button" style="margin-bottom: 5px" class="btn btn-secondary"
+  <a type="button" style="margin-bottom: 5px"  target="_blank" class="btn btn-secondary" href="{{WIKI_VOLUME_OVERVIEW}}"
+
+          id="volume_ov">Wiki
+  </a>
+  <button type="button" style="margin-bottom: 5px;margin-left: 5px;" class="btn btn-secondary"
           (click)="selectedProject = undefined;selected_vm=undefined; createModal.show();"
           id="create_attach_button">Create
     & Attach Volume
@@ -186,6 +190,12 @@
                        (click)="getActiveVmsByProject(volume.volume_projectid);setSelectedVolume(volume);attachModal.show();">Attach
                       Volume</a>
                   </li>
+                  <li *ngIf="!volume.volume_virtualmachine && volume.volume_status != VolumeStates.staticERROR"
+                      role="menuitem">
+                    <a class="dropdown-item"
+                       (click)="extendVolumeStorage=volume.volume_storage+1;selected_volume=volume;getSelectedVolumeStorage();extendModal.show();">Extend
+                      Volume</a>
+                  </li>
                   <li role="menuitem">
                     <a class="dropdown-item"
                        (click)="setSelectedVolume(volume);renameModal.show();">Rename
@@ -288,7 +298,7 @@
           *ngIf="volume_action_status == volumeActionStates.ATTACHING_SUCCESSFULL || volume_action_status == volumeActionStates.SUCCESSFULLY_CREATED_ATTACHED"
           class="alert alert-info" role="alert">
           In order to use the volume you have to <a
-          href="{{VOLUME_WIKI}}"> mount </a> it.
+          href="{{VOLUME_WIKI}}" target="_blank"> mount </a> it.
         </div>
       </div>
       <div class="alert alert-warning" role="alert" *ngIf="volume_action_status == volumeActionStates.ERROR">
@@ -334,11 +344,11 @@
       <div class="modal-footer">
         <button id="verify_deletion_button"
                 *ngIf="request_status==volumeRequestStates.DELETE;" class="btn  btn-success col-md-4"
-                (click)="deleteVolume(selected_volume,selected_volume.volume_virtualmachine?.openstackid);verifyModal.hide();">
+                (click)="deleteVolume(selected_volume,selected_volume?.volume_virtualmachine?.openstackid);verifyModal.hide();">
           Yes
         </button>
         <button *ngIf="request_status==volumeRequestStates.DETACH;" class="btn  btn-success col-md-4"
-                (click)="detachVolume(selected_volume,selected_volume.volume_virtualmachine.openstackid);verifyModal.hide();">
+                (click)="detachVolume(selected_volume,selected_volume?.volume_virtualmachine.openstackid);verifyModal.hide();">
           Yes
         </button>
 
@@ -431,6 +441,165 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+
+<div bsModal #extendResultModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="Label"
+     aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Extension result</h4>
+        <button type="button" class="close" style="cursor:pointer"
+                (click)="extendResultModal.hide()"
+                aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <div *ngIf="extendDone && !extendError" class="alert alert-info" role="alert"><strong>Your extend command was
+          successfully submitted. However, it may take a few minutes until the volume is actually extended.
+
+          Please visit the <a href="{{WIKI_EXTEND_VOLUME}}"> wiki </a> for the further steps you need to take before you
+          can use the extended volume.
+        </strong>
+        </div>
+
+        <div *ngIf="extendDone && extendError" class="alert alert-danger" role="alert">
+          The volume could not be extended. Try again later. If the problem persists please contact <a
+          class="alert-link" href="mailto: cloud@denbi.de">cloud@denbi.de</a>
+
+        </div>
+        <div class="alert alert-info" role="alert"
+             *ngIf="!extendDone">
+          Extending {{selected_volume?.volume_name}}... <i class="fa fa-spinner fa-spin"
+                                                           style="font-size:24px"></i>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+
+        <button class="btn  btn-danger col-md-4" type="reset"
+                (click)="extendResultModal.hide();">
+          Close
+        </button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div bsModal #extendModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="Label"
+     aria-hidden="true"
+     id="extend_modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Extend Volume {{selected_volume?.volume_name}}</h4>
+        <button type="button" class="close" style="cursor: pointer"
+                (click)="extendModal.hide()"
+                aria-label="Close"
+                id="close_extend_modal_button">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div *ngIf="!selected_volume_data_loaded" id="serach_vol_spinner" style="margin:10px; padding:10px;">
+          <div class="spinner-border text-primary" style="display:block; margin:auto;"></div>
+        </div>
+        <ng-container *ngIf="selected_volume_data_loaded">
+          <div class="form-group row">
+            <label class="col-md-3 form-control-label">Storage Project </label>
+
+            <div class="col-md-6">
+              <div class="col-md-6">
+
+                {{selectedProjectDiskspaceUsed}} / {{selectedProjectDiskspaceMax}}
+                GB
+              </div>
+            </div>
+          </div>
+          <div *ngIf="
+                    selectedProjectDiskspaceUsed <= selectedProjectDiskspaceMax "
+               class="form-group row">
+
+            <label class="col-md-3 form-control-label">Current Size</label>
+            <div class="col-md-9">
+              <div class="input-group">
+                <input min="0" step="1" [value]="selected_volume?.volume_storage"
+                       disabled
+                       type="number" placeholder="e.g 8 "
+                       id="old_volume_storage">
+              <div class="input-group-append"><span
+                class="input-group-text"> GB
+                                    </span></div>
+
+
+            </div>
+          </div>
+        </div>
+          <div class="form-group row alert alert-danger"
+
+               *ngIf="
+                    selectedProjectDiskspaceUsed + 1 > selectedProjectDiskspaceMax">
+            This project has not enough storage to extend this volume.
+          </div>
+
+        <div class="form-group row alert alert-danger"
+
+             *ngIf="
+                    selectedProjectDiskspaceUsed == selectedProjectDiskspaceMax">
+          This project has already reached its storage limit.
+        </div>
+
+
+        <div
+          *ngIf="selectedProjectDiskspaceUsed <= selectedProjectDiskspaceMax &&   !(selectedProjectDiskspaceUsed + 1 > selectedProjectDiskspaceMax)"
+          class="form-group row">
+
+          <label class="col-md-3 form-control-label">New Size</label>
+          <div class="col-md-9">
+            <div class="input-group">
+              <input min="0" step="1" [(ngModel)]="extendVolumeStorage" required
+                     [min]="selected_volume?.volume_storage +1"
+                     [max]="selectedProjectDiskspaceMax-selectedProjectDiskspaceUsed + selected_volume?.volume_storage"
+                     type="number" placeholder="e.g 8 "
+                     id="new_volume_storage">
+              <div class="input-group-append"><span
+                class="input-group-text"> GB
+                                    </span></div>
+
+
+            </div>
+            <div class="input-group-append"><span
+              class="input-group-text"> min: {{selected_volume?.volume_storage + 1}}
+                                    </span><span
+              class="input-group-text"> max:  {{selectedProjectDiskspaceMax - selectedProjectDiskspaceUsed + selected_volume?.volume_storage}}
+                                    </span></div>
+          </div>
+        </div>
+        </ng-container>
+
+      </div>
+      <div class="modal-footer"
+      >
+        <button id="verify_extend_btn"
+                *ngIf="selectedProjectDiskspaceUsed <= selectedProjectDiskspaceMax &&   !(selectedProjectDiskspaceUsed + 1 > selectedProjectDiskspaceMax)"
+                [disabled]="extendVolumeStorage <= selected_volume?.volume_storage || (selectedProjectDiskspaceUsed - selected_volume?.volume_storage +extendVolumeStorage) > selectedProjectDiskspaceMax"
+                class="btn  btn-success col-md-4"
+                (click)="extendError=false;extendDone=false;extendVolume(selected_volume,extendVolumeStorage);extendModal.hide();extendResultModal.show()">
+          Extend
+        </button>
+
+        <button class="btn  btn-danger col-md-4" type="reset"
+                (click)="extendModal.hide();">Cancel
+        </button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 
 <div bsModal #createModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
      aria-labelledby="Label"

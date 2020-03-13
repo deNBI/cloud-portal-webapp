@@ -201,7 +201,8 @@
             </div>
           </div>
 
-          <div class="alert alert-info" style="margin-top:15px;">
+          <div class="alert alert-info" style="margin-top:15px;"
+               *ngIf="project_application.Status == application_states.APPROVED">
             <p>You can find more information about modification requestes
               <a href="https://cloud.denbi.de/wiki/portal/modification/" target="_blank">here</a>.</p>
             <p *ngIf="is_vo_admin">Information about credits are coming soon.</p>
