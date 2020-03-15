@@ -78,251 +78,265 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
     this.getApplicationStatus();
 <<<<<<< HEAD
     this.getSpecialHardware();
-    this.getComputeCenters();
+    this.getComputeCenters(); 
 
-  ***REMOVED***
+    ** * REMOVED ** *
 
-  getComputeCenters() ***REMOVED***
-    this.groupservice.getComputeCenters().subscribe(result => ***REMOVED***
-      this.computeCenters = result;
-    ***REMOVED***)
-  ***REMOVED***
+  getComputeCenters() ** * REMOVED ** *
+    this.groupservice.getComputeCenters().subscribe(result => ** * REMOVED ** *
+      this.computeCenters =                         result; 
+    ** * REMOVED ** * )
+    ** * REMOVED ** *
 
-  getUserApplications() ***REMOVED***
+  getUserApplications() ** * REMOVED ** *
     this.applicataionsservice
       .getUserApplications().toPromise()
-      .then(result => ***REMOVED***
+      .then(result => ** * REMOVED ** *
         let res = result.json();
-        for (let key in res) ***REMOVED***
-          let aj = res[key];
-          let a = new Application();
-          a.Id = aj["project_application_id"];
-          a.Name = aj["project_application_name"];
-          a.Lifetime = aj["project_application_lifetime"];
-          a.DateSubmitted = aj["project_application_date_submitted"];
-          a.Status = aj["project_application_status"]["application_status_name"];
-          a.Description = aj["project_application_description"];
-          a.VMsRequested = aj["project_application_vms_requested"];
-          a.RamPerVM = aj["project_application_ram_per_vm"];
-          a.CoresPerVM = aj["project_application_cores_per_vm"];
-          a.DiskSpace = aj["project_application_disk_space"];
-          a.ObjectStorage = aj["project_application_object_storage"];
-          a.SpecialHardware = aj["project_application_special_hardware"];
+    for (const key in res) { ** * REMOVED ** *
+          let
+    } aj = res[key];
+    let a = new Application();
+    a.Id = aj['project_application_id'];
+    a.Name = aj['project_application_name'];
+    a.Lifetime = aj['project_application_lifetime'];
+    a.DateSubmitted = aj['project_application_date_submitted'];
+    a.Status = aj['project_application_status']['application_status_name'];
+    a.Description = aj['project_application_description'];
+    a.VMsRequested = aj['project_application_vms_requested'];
+    a.RamPerVM = aj['project_application_ram_per_vm'];
+    a.CoresPerVM = aj['project_application_cores_per_vm'];
+    a.DiskSpace = aj['project_application_disk_space'];
+    a.ObjectStorage = aj['project_application_object_storage'];
+    a.SpecialHardware = aj['project_application_special_hardware'];
 
-          this.user_applications.push(a)
-        ***REMOVED***
-      ***REMOVED***);
-  ***REMOVED***
+    this.user_applications.push(a)
+        ** * REMOVED ** *
+      ** * REMOVED ** * ); 
+    ** * REMOVED ** *
 
-  getApplicationStatus() ***REMOVED***
+  getApplicationStatus() ** * REMOVED ** *
     this.applicationstatusservice.getAllApplicationStatus().toPromise()
-      .then(result => ***REMOVED***
+      .then(result => ** * REMOVED ** *
         let res = result.json();
-        for (let key in res) ***REMOVED***
-          let asj = res[key];
-          let aj = new ApplicationStatus(asj["application_status_id"], asj["application_status_name"]);
-          this.application_status.push(aj)
-        ***REMOVED***
-      ***REMOVED***);
-  ***REMOVED***
+    for (const key in res) { ** * REMOVED ** *
+          let
+    } asj = res[key];
+    let aj = new ApplicationStatus(asj['application_status_id'], asj['application_status_name']);
+    this.application_status.push(aj)
+        ** * REMOVED ** *
+      ** * REMOVED ** * ); 
+    ** * REMOVED ** *
 
-  getSpecialHardware() ***REMOVED***
+  getSpecialHardware() ** * REMOVED ** *
     this.specialhardwareservice.getAllSpecialHardware().toPromise()
-      .then(result => ***REMOVED***
+      .then(result => ** * REMOVED ** *
         let res = result.json();
-        for (let key in res) ***REMOVED***
-          let shj = res[key];
-          let sh = new SpecialHardware(shj["special_hardware_id"], shj["special_hardware_key"], shj["special_hardware_name"]);
-          this.special_hardware.push(sh)
-        ***REMOVED***
-      ***REMOVED***);
-  ***REMOVED***
+    for (const key in res) { ** * REMOVED ** *
+          let
+    } shj = res[key];
+    const sh = new SpecialHardware(shj['special_hardware_id'], shj['special_hardware_key'], shj['special_hardware_name']);
+    this.special_hardware.push(sh)
+        ** * REMOVED ** *
+      ** * REMOVED ** * ); 
+    ** * REMOVED ** *
 
-  getAllApplications(usersmanager: UsersManager) ***REMOVED***
-    //todo check if user is VO Admin
+  getAllApplications(usersmanager: UsersManager) ** * REMOVED ** *
+    // todo check if user is VO Admin
     let user_id: number;
-    let admin_vos: ***REMOVED******REMOVED***;
+    let admin_vos:  ** * REMOVED ** ** ** REMOVED ** * ;
 
     this.authzresolver
       .getLoggedUser().toPromise()
-      .then(function (userdata) ***REMOVED***
-        //TODO catch errors
-        user_id = userdata.json()["id"];
-        return usersmanager.getVosWhereUserIsAdmin(user_id).toPromise();
-      ***REMOVED***).then(function (adminvos) ***REMOVED***
-      admin_vos = adminvos.json();
-    ***REMOVED***).then(result => ***REMOVED***
-      //check if user is a Vo admin so we can serv according buttons
-      for (let vkey in admin_vos) ***REMOVED***
-        if (admin_vos[vkey]["id"] == this.perunsettings.getPerunVO().toString()) ***REMOVED***
-          this.is_vo_admin = true;
-          this.applicataionsservice
+      .then(function (userdata) ** * REMOVED ** *
+        // TODO catch errors
+        user_id = userdata.json()['id'];
+
+    return usersmanager.getVosWhereUserIsAdmin(user_id).toPromise(); 
+    ** * REMOVED ** * ).then(function (adminvos) ** * REMOVED ** *
+      admin_vos =         adminvos.json(); 
+    ** * REMOVED ** * ).then(result => ** * REMOVED ** *
+      // check if user is a Vo admin so we can serv according buttons
+    for (const vkey in admin_vos) { ** * REMOVED ** * }
+    if (admin_vos[vkey]['id'] == this.perunsettings.getPerunVO().toString()) { ** * REMOVED ** *
+          this.is_vo_admin
+    } = true;
+    this.applicataionsservice
             .getAllApplications().toPromise()
-            .then(result => ***REMOVED***
+            .then(result => ** * REMOVED ** *
               let res = result.json();
-              for (let key in res) ***REMOVED***
-                let aj = res[key];
-                let a = new Application();
-                a.Id = aj["project_application_id"];
+    for (const key in res) { ** * REMOVED ** *
+                let
+    } aj = res[key];
+    const a = new Application();
+    a.Id = aj['project_application_id'];
 
-                a.Name = aj["project_application_name"];
-                a.Description = aj["project_application_description"];
-                a.Lifetime = aj["project_application_lifetime"];
+    a.Name = aj['project_application_name'];
+    a.Description = aj['project_application_description'];
+    a.Lifetime = aj['project_application_lifetime'];
 
-                a.VMsRequested = aj["project_application_vms_requested"];
-                a.RamPerVM = aj["project_application_ram_per_vm"];
-                a.CoresPerVM = aj["project_application_cores_per_vm"];
-                a.DiskSpace = aj["project_application_disk_space"];
-                a.ObjectStorage = aj["project_application_object_storage"];
-                a.SpecialHardware = aj["project_application_special_hardware"];
+    a.VMsRequested = aj['project_application_vms_requested'];
+    a.RamPerVM = aj['project_application_ram_per_vm'];
+    a.CoresPerVM = aj['project_application_cores_per_vm'];
+    a.DiskSpace = aj['project_application_disk_space'];
+    a.ObjectStorage = aj['project_application_object_storage'];
+    a.SpecialHardware = aj['project_application_special_hardware'];
 
-                a.Institute = aj["project_application_institute"];
-                a.Workgroup = aj["project_application_workgroup"];
+    a.Institute = aj['project_application_institute'];
+    a.Workgroup = aj['project_application_workgroup'];
 
-                a.DateSubmitted = aj["project_application_date_submitted"];
-                a.DateStatusChanged = aj["project_application_date_status_changed"];
-                a.User = aj["project_application_user"]["username"];
-                a.UserEmail = aj["project_application_user"]["email"];
-                a.Status = aj["project_application_status"];
-                if (a.Status !==1) ***REMOVED***
-                this.groupsmanager.getGroupByVoandName(a.Name).subscribe(group => ***REMOVED***
-                  if (group.status !== 200)***REMOVED***
-                      a.ComputeCenter = 'None'
-                      this.all_applications.push(a)
-                  ***REMOVED***
-                  this.resourceManager.getGroupAssignedResources(group.json()['id']).subscribe(resource => ***REMOVED***
-                    try ***REMOVED***
-                       let resource_id=resource.json()[0]['id'];
-                      this.resourceManager.getFacilityByResource(resource_id).subscribe(facility => ***REMOVED***
-                        a.ComputeCenter = facility.json()['name'];
-                        this.groupservice.getComputeCentersDetails(resource_id).subscribe(details =>***REMOVED***
-                          if(details)***REMOVED***
-                            let details_array=[];
-                            for(let detail in details)***REMOVED***
-                              let detail_as_string=detail + ': ' + details[detail];
-                              details_array.push(detail_as_string);
-                            ***REMOVED***
+    a.DateSubmitted = aj['project_application_date_submitted'];
+    a.DateStatusChanged = aj['project_application_date_status_changed'];
+    a.User = aj['project_application_user']['username'];
+    a.UserEmail = aj['project_application_user']['email'];
+    a.Status = aj['project_application_status'];
+    if (a.Status !== 1) { ** * REMOVED ** *
+                this.groupsmanager.getGroupByVoandName(a.Name).subscribe(group => ** * REMOVED ** *
+    }
+    if (group.status !== 200) { ** * REMOVED ** *
+                      a.ComputeCenter
+    } = 'None'
+    this.all_applications.push(a)
+                  ** * REMOVED ** *
+                  this.resourceManager.getGroupAssignedResources(group.json()['id']).subscribe(resource => ** * REMOVED ** *
+    try ** * REMOVED ** *
+                       let resource_id = resource.json()[0]['id'];
+    this.resourceManager.getFacilityByResource(resource_id).subscribe(facility => ** * REMOVED ** *
+                        a.ComputeCenter =                                               facility.json()['name'];
+    this.groupservice.getComputeCentersDetails(resource_id).subscribe(details => ** * REMOVED ** *
+    if (details) { ** * REMOVED ** *
+                            let
+    } details_array = [];
+    for (const detail in details) { ** * REMOVED ** *
+                              let
+    } detail_as_string = detail + ': ' + details[detail];
+    details_array.push(detail_as_string); 
+    ** * REMOVED ** *
 
-                          a.ComputecenterDetails=details_array;
-                         ***REMOVED***
+                          a.ComputecenterDetails= details_array; 
+    ** * REMOVED ** *
                            this.all_applications.push(a)
-                        ***REMOVED***)
+                        ** * REMOVED ** * )
 
-
-
-                      ***REMOVED***)
-                    ***REMOVED***
-                    catch (e) ***REMOVED***
+    ** * REMOVED ** * )
+    ** * REMOVED ** * catch (e) ** * REMOVED ** *
 
                       a.ComputeCenter = 'None'
 
-                      this.all_applications.push(a)
+    this.all_applications.push(a)
 
-
-                    ***REMOVED***
-                  ***REMOVED***)
-                ***REMOVED***);***REMOVED***
-                else ***REMOVED***
+                    ** * REMOVED ** *
+                  ** * REMOVED ** * )
+    ** * REMOVED ** * ); ** * REMOVED ** *
+                else ** * REMOVED ** *
                    a.ComputeCenter = 'None'
 
-                      this.all_applications.push(a)
+    this.all_applications.push(a)
 
-                ***REMOVED***
-              ***REMOVED***
-            ***REMOVED***);
-          break;
-        ***REMOVED***
-      ***REMOVED***
-    ***REMOVED***);
-  ***REMOVED***
+                ** * REMOVED ** *
+              ** * REMOVED ** *
+            ** * REMOVED ** * );
+    break; 
+    ** * REMOVED ** *
+      ** * REMOVED ** *
+    ** * REMOVED ** * ); 
+    ** * REMOVED ** *
 
-  public getCollapseStatus(id: string) ***REMOVED***
-    if (id in this.collapse_status) ***REMOVED***
-      return this.collapse_status[id];
-    ***REMOVED*** else ***REMOVED***
+  public getCollapseStatus(id: string) ** * REMOVED ** *
+    if (id in this.collapse_status) { ** * REMOVED ** * }
+
+    return this.collapse_status[id]; 
+    ** * REMOVED ** * else ** * REMOVED ** *
       this.collapse_status[id] = true;
-      return true;
-    ***REMOVED***
-  ***REMOVED***
 
-  public switchCollapseStatus(id: string) ***REMOVED***
-    this.collapse_status[id] = !this.getCollapseStatus(id);
-  ***REMOVED***
+ return true; 
+    ** * REMOVED ** *
+  ** * REMOVED ** *
 
+  public switchCollapseStatus(id: string) ** * REMOVED ** *
+    this.collapse_status[id] = !this.getCollapseStatus(id); 
+    ** * REMOVED ** *
 
-  public getStatusById(id: number): string ***REMOVED***
-    let s = "Unknown";
-    for (let status of this.application_status) ***REMOVED***
-      if (status.Id == id) ***REMOVED***
-        return status.Name;
-      ***REMOVED***
-    ***REMOVED***
-    return s;
-  ***REMOVED***
+  public getStatusById(id: number): string ** * REMOVED ** *
+    let s = 'Unknown';
+    for (const status of this.application_status) { ** * REMOVED ** * }
+    if (status.Id == id) { ** * REMOVED ** * }
 
-  public getIdByStatus(name: string): number ***REMOVED***
+    return status.Name; 
+    ** * REMOVED ** *
+    ** * REMOVED ** *
+
+    return s; 
+    ** * REMOVED ** *
+
+  public getIdByStatus(name: string): number ** * REMOVED ** *
     let s = -1;
-    for (let status of this.application_status) ***REMOVED***
-      if (status.Name == name) ***REMOVED***
-        return status.Id;
-      ***REMOVED***
-    ***REMOVED***
-    return s;
-  ***REMOVED***
+    for (const status of this.application_status) { ** * REMOVED ** * }
+    if (status.Name == name) { ** * REMOVED ** * }
 
-  public updateNotificaitonModal(title: string, message: string, closable: true, type: string) ***REMOVED***
+    return status.Id; 
+    ** * REMOVED ** *
+    ** * REMOVED ** *
+
+    return s; 
+    ** * REMOVED ** *
+
+  public updateNotificaitonModal(title: string, message: string, closable: true, type: string) ** * REMOVED ** *
     this.notificationModalTitle = title;
     this.notificationModalMessage = message;
     this.notificationModalIsClosable = closable;
-    this.notificationModalType = type;
-  ***REMOVED***
+    this.notificationModalType = type; 
+    ** * REMOVED ** *
 
-  public createGroup(name, description, manager_elixir_id, application_id, compute_center,numberOfVms) ***REMOVED***
-    //get memeber id in order to add the user later as the new member and manager of the group
+  public createGroup(name, description, manager_elixir_id, application_id, compute_center, numberOfVms) ** * REMOVED ** *
+    // get memeber id in order to add the user later as the new member and manager of the group
     let manager_member_id: number;
     let manager_member_user_id: number;
     let new_group_id: number;
 
     this.membersmanager.getMemberByExtSourceNameAndExtLogin(manager_elixir_id).toPromise()
-      .then(member_raw => ***REMOVED***
+      .then(member_raw => ** * REMOVED ** *
           let member = member_raw.json();
-          manager_member_id = member["id"];
-          manager_member_user_id = member["userId"];
-          // create new group
-          return this.groupsmanager.createGroup(name, description).toPromise();
-        ***REMOVED***
-      ).then(group_raw => ***REMOVED***
-      let group = group_raw.json();
-      new_group_id = group["id"];
+    manager_member_id = member['id'];
+    manager_member_user_id = member['userId'];
 
-      //add the application user to the group
-      return this.groupsmanager.addMember(new_group_id, manager_member_id).toPromise();
+    // create new group
+    return this.groupsmanager.createGroup(name, description).toPromise(); 
+    ** * REMOVED ** *
+      ).then(group_raw => ** * REMOVED ** *
+      let    group = group_raw.json();
+    new_group_id = group['id'];
 
-    ***REMOVED***).then(null_result => ***REMOVED***
-      return this.groupsmanager.addAdmin(new_group_id, manager_member_user_id).toPromise();
-    ***REMOVED***).then(null_result => ***REMOVED***
-      return this.applicationstatusservice.setApplicationStatus(application_id, this.getIdByStatus("approved")).toPromise();
-    ***REMOVED***).then(null_result => ***REMOVED***
-      //setting approved status for Perun Group
+      // add the application user to the group
+    return this.groupsmanager.addMember(new_group_id, manager_member_id).toPromise(); 
+
+    ** * REMOVED ** * ).then(null_result => ** * REMOVED ** *
+
+return this.groupsmanager.addAdmin(new_group_id, manager_member_user_id).toPromise(); 
+    ** * REMOVED ** * ).then(null_result => ** * REMOVED ** *
+
+return this.applicationstatusservice.setApplicationStatus(application_id, this.getIdByStatus('approved')).toPromise(); 
+    ** * REMOVED ** * ).then(null_result => ** * REMOVED ** *
+      // setting approved status for Perun Group
       this.groupsmanager.setPerunGroupStatus(new_group_id, 2).toPromise();
-      this.groupservice.assignGroupToResource(new_group_id.toString(), compute_center).subscribe();
-      this.groupservice.setNumberOfVms(new_group_id.toString(),numberOfVms.toString()).subscribe();
-      //update modal
-      this.updateNotificaitonModal("Success", "The new project was created", true, "success");
-      //update applications
-      this.all_applications = [];
-      this.user_applications = [];
-      this.getUserApplications();
-      this.getAllApplications(this.usersmanager);
-    ***REMOVED***).catch(error => ***REMOVED***
-      this.updateNotificaitonModal("Failed", "Project could not be created!", true, "danger");
-    ***REMOVED***);
+    this.groupservice.assignGroupToResource(new_group_id.toString(), compute_center).subscribe();
+    this.groupservice.setNumberOfVms(new_group_id.toString(), numberOfVms.toString()).subscribe();
+      // update modal
+    this.updateNotificaitonModal('Success', 'The new project was created', true, 'success');
+      // update applications
+    this.all_applications = [];
+    this.user_applications = [];
+    this.getUserApplications();
+    this.getAllApplications(this.usersmanager); 
+    ** * REMOVED ** * ). catch (error => ** * REMOVED ** *
+      this.updateNotificaitonModal('Failed', 'Project could not be created!', true, 'danger'); 
+    ** * REMOVED ** * ); 
 
-  ***REMOVED***
+    ** * REMOVED ** *
 
-  public declineApplication(application_id) ***REMOVED***
-    this.applicationstatusservice.setApplicationStatus(application_id, this.getIdByStatus("declined")).toPromise()
-      .then(result => ***REMOVED***
+  public declineApplication(application_id) ** * REMOVED ** *
+    this.applicationstatusservice.setApplicationStatus(application_id, this.getIdByStatus('declined')).toPromise()
+      .then(result => ** * REMOVED ** *
 =======
     if (this.is_vo_admin) {
       this.getAllApplications();
@@ -677,9 +691,9 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
       .then(() => {
 >>>>>>> dev
         this.all_applications = [];
-        this.user_applications = [];
-        this.getAllApplications();
-        this.updateNotificationModal('Success', 'The Application was declined', true, 'success');
+    this.user_applications = [];
+    this.getAllApplications();
+    this.updateNotificationModal('Success', 'The Application was declined', true, 'success');
       })
       .catch(() => {
         this.updateNotificationModal('Failed', 'Application could be declined!', true, 'danger');
