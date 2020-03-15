@@ -26,9 +26,9 @@ import ** * REMOVED ** * keyService ** * REMOVED ** * from '../api-connector/key
 import ** * REMOVED ** * Project ** * REMOVED ** * from '../projectmanagement/project.model';
 
        @Component( ** * REMOVED ** *
-  selector: 'new-vm',
-           templateUrl: 'addvm.component.html',
-           providers: [ImageService, keyService, FlavorService, VirtualmachineService, ApplicationsService, AttributesManager, Application, AuthzResolver, PerunSettings, MembersManager, ApiSettings, keyService, ClientService, GroupsManager]
+  selector:        'new-vm',
+                   templateUrl: 'addvm.component.html',
+                   providers: [ImageService, keyService, FlavorService, VirtualmachineService, ApplicationsService, AttributesManager, Application, AuthzResolver, PerunSettings, MembersManager, ApiSettings, keyService, ClientService, GroupsManager]
 ** * REMOVED ** * )
 export class VirtualMachineComponent implements OnInit ** * REMOVED ** *
   data: string = '';
@@ -124,7 +124,7 @@ export class VirtualMachineComponent implements OnInit ** * REMOVED ** *
 
       this.virtualmachineservice.startVM(flavor, image, servername, this.vmclient.host, this.vmclient.port, project, projectid).subscribe(data => ** * REMOVED ** *
 
-        this.data =                                                                                                                      data.json();
+        this.data =                                                                                                                       data.json();
        }
        ** * REMOVED ** * ); 
 
