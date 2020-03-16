@@ -91,22 +91,30 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
     })
   }
 
+  getFacilityApplicationById(application: Application): void {
+    const idx: number = this.applications_history.indexOf(application);
+    this.facilityService.getFacilityApplicationById(this.selectedFacility ['FacilityId'], application.Id.toString())
+      .subscribe((res: any) => {
+        console.log(res)
+        this.applications_history[idx] = this.setNewApplication(res)
+      })
+  }
+
   /**
    * Get all application ( with all stati) for a facility.
    * @param {number} facility id of the facility
    */
   getAllApplicationsHistory(facility: number): void {
-          this.isHistoryLoaded = false;
+    this.isHistoryLoaded = false;
 
-          this.applications_history = [];
+    this.applications_history = [];
 
     // todo check if user is VO Admin
-          this.facilityService.getFacilityApplicationsHistory(facility).subscribe((res: any) => {
+    this.facilityService.getFacilityApplicationsHistory(facility).subscribe((res: any) => {
       if (Object.keys(res).length === 0) {
         this.isHistoryLoaded = true;
       }
-      const newApps: Application [] = this.setNewApplications(res);
-      this.applications_history = newApps;
+      this.applications_history = this.setShortDetailNewApplications(res);
       this.isHistoryLoaded = true;
     });
   }

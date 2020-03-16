@@ -75,7 +75,7 @@
               </div>
             </div>
               <div class="input-group-text col-5">
-                <input type="text" checked style="margin:2px;" placeholder="Filter"
+                <input type="text" checked style="margin:2px;" placeholder="user,project,elixir_id,openstackid,name,flavor"
                        [(ngModel)]="filter" style="width:100%">
               </div>
             <div class="input-group-append">
@@ -95,8 +95,8 @@
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu" role="menu"
                      *dropdownMenu id="dropdownMenu">
                   <button class="dropdown-item btn btn-secondary" id="deleteAllSelectedVMsButton"
-                          (click)="setToBeDeletedVms(); verifyAllModal.show()" *ngIf="selectedMachines.length > 0"
-                  >Delete selected VMs</button>
+                          (click)="setToBeDeletedVms(); verifyAllModal.show()">
+                    Delete selected VMs</button>
                 </div>
               </div>
             </div>
