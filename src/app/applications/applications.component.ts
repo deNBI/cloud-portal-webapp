@@ -144,7 +144,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
   getAllApplications(usersmanager: UsersManager) ** * REMOVED ** *
     // todo check if user is VO Admin
     let user_id: number;
-    let admin_vos:  ** * REMOVED ** ** ** REMOVED ** * ;
+    let admin_vos:   ** * REMOVED ** ** ** REMOVED ** * ;
 
     this.authzresolver
       .getLoggedUser().toPromise()
@@ -154,7 +154,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
     return usersmanager.getVosWhereUserIsAdmin(user_id).toPromise(); 
     ** * REMOVED ** * ).then(function (adminvos) ** * REMOVED ** *
-      admin_vos =         adminvos.json(); 
+      admin_vos =            adminvos.json(); 
     ** * REMOVED ** * ).then(result => ** * REMOVED ** *
       // check if user is a Vo admin so we can serv according buttons
     for (const vkey in admin_vos) { ** * REMOVED ** * }
@@ -202,7 +202,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
     try ** * REMOVED ** *
                        let resource_id = resource.json()[0]['id'];
     this.resourceManager.getFacilityByResource(resource_id).subscribe(facility => ** * REMOVED ** *
-                        a.ComputeCenter =                                               facility.json()['name'];
+                        a.ComputeCenter =                             facility.json()['name'];
     this.groupservice.getComputeCentersDetails(resource_id).subscribe(details => ** * REMOVED ** *
     if (details) { ** * REMOVED ** *
                             let
@@ -227,7 +227,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
                     ** * REMOVED ** *
                   ** * REMOVED ** * )
-    ** * REMOVED ** * ); ** * REMOVED ** *
+    ** * REMOVED ** * );  ** * REMOVED ** *
                 else ** * REMOVED ** *
                    a.ComputeCenter = 'None'
 
@@ -249,7 +249,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
     ** * REMOVED ** * else ** * REMOVED ** *
       this.collapse_status[id] = true;
 
- return true; 
+    return true; 
     ** * REMOVED ** *
   ** * REMOVED ** *
 
@@ -312,10 +312,10 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
     ** * REMOVED ** * ).then(null_result => ** * REMOVED ** *
 
-return this.groupsmanager.addAdmin(new_group_id, manager_member_user_id).toPromise(); 
+    return this.groupsmanager.addAdmin(new_group_id, manager_member_user_id).toPromise(); 
     ** * REMOVED ** * ).then(null_result => ** * REMOVED ** *
 
-return this.applicationstatusservice.setApplicationStatus(application_id, this.getIdByStatus('approved')).toPromise(); 
+    return this.applicationstatusservice.setApplicationStatus(application_id, this.getIdByStatus('approved')).toPromise(); 
     ** * REMOVED ** * ).then(null_result => ** * REMOVED ** *
       // setting approved status for Perun Group
       this.groupsmanager.setPerunGroupStatus(new_group_id, 2).toPromise();

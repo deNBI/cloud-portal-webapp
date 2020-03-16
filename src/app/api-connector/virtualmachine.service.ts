@@ -56,8 +56,8 @@ export class VirtualmachineService {
 <<<<<<< HEAD
       startVM(flavor: string, image: string, servername: string, host: string, port: string, project: string, projectid: string): Observable < Response > ** * REMOVED ** *
     let header = new Headers( ** * REMOVED ** *
-      'X-CSRFToken':         this.settings.getCSRFToken(), 
-                             ** * REMOVED ** * );
+      'X-CSRFToken':          this.settings.getCSRFToken(), 
+                              ** * REMOVED ** * );
       const urlSearchParams = new URLSearchParams();
       urlSearchParams.append('flavor', flavor);
       urlSearchParams.append('image', image);
@@ -85,8 +85,8 @@ export class VirtualmachineService {
   }
 
     startVM(flavor: string, image: Image, servername: string, project: string, projectid: string,
-          http: boolean, https: boolean, udp: boolean, volumes: Volume[],
-          playbook_information ? : string, user_key_url ? : string): Observable < any > {
+            http: boolean, https: boolean, udp: boolean, volumes: Volume[],
+            playbook_information ? : string, user_key_url ? : string): Observable < any > {
 
     const params: HttpParams = new HttpParams()
       .set('flavor', flavor)
@@ -166,8 +166,8 @@ export class VirtualmachineService {
   }
 
     getVmsFromFacilitiesOfLoggedUser(facility_id: string | number,
-                                   page: number, vm_per_site: number,
-                                   filter ? : string, filter_status ? : string[]): Observable < VirtualMachine[] > {
+                                     page: number, vm_per_site: number,
+                                     filter ? : string, filter_status ? : string[]): Observable < VirtualMachine[] > {
     let params: HttpParams = new HttpParams().set('page', page.toString()).set('vm_per_site', vm_per_site.toString());
     if (filter) {
       params = params.set('filter', filter);
