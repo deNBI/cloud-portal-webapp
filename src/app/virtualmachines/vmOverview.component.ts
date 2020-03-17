@@ -16,8 +16,8 @@ import {GroupService} from '../api-connector/group.service';
 import {ClientService} from '../api-connector/client.service';
 import {Client} from './clients/client.model';
 import {TemplateNames} from './conda/template-names';
-import {CondaPackage} from "./condaPackage.model";
-import {PlaybookService} from "../api-connector/playbook.service";
+import {CondaPackage} from './condaPackage.model';
+import {PlaybookService} from '../api-connector/playbook.service';
 
 /**
  * Vm overview componentn.
@@ -136,7 +136,6 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
     Key-Value-Map for Conda Packages installed on machine.
    */
   condaPackagesByVM: {[vm_id: string]: number} = {};
-
 
   constructor(private facilityService: FacilityService,
 
