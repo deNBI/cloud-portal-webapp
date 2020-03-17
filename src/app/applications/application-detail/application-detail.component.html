@@ -98,6 +98,25 @@
         <span *ngIf="application?.Workshop" class="badge badge-success">Yes</span>
         <span *ngIf="!application?.Workshop" class="badge badge-danger">No</span>
       </td>
+      <td *ngIf="(application?.Status == application_states.MODIFICATION_REQUESTED || isModification) && !application?.ApplicationExtension?.IsOnlyExtraCreditsApplication">
+      </td>
+    </tr>
+    <tr *ngIf="application?.OpenStackProject">
+      <td>Cloud Service</td>
+      <td>
+        <span *ngIf="application?.CloudService" class="badge badge-success">Yes</span>
+        <span *ngIf="!application?.CloudService" class="badge badge-danger">No</span>
+      </td>
+      <td *ngIf="(application?.Status == application_states.MODIFICATION_REQUESTED || isModification) && !application?.ApplicationExtension?.IsOnlyExtraCreditsApplication">
+      </td>
+    </tr>
+    <tr *ngIf="application?.OpenStackProject && application?.CloudService">
+      <td>Cloud Service user number</td>
+      <td>
+        <span>{{application?.CloudServiceUserNumber}}</span>
+      </td>
+      <td *ngIf="(application?.Status == application_states.MODIFICATION_REQUESTED || isModification) && !application?.ApplicationExtension?.IsOnlyExtraCreditsApplication">
+      {{application?.ApplicationExtension?.CloudServiceUserNumber}}</td>
     </tr>
     <tr>
       <td>Description
