@@ -44,7 +44,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
   vms_content: VirtualMachine[] = [];
   currentPage: number = 1;
   DEBOUNCE_TIME: number = 300;
-
+  filter_cluster: boolean = false;
   filter_status_list: string[] = [VirtualMachineStates.ACTIVE, VirtualMachineStates.SHUTOFF];
   isSearching: boolean = true;
 
@@ -419,7 +419,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 
     this.virtualmachineservice.getVmsFromLoggedInUser(
       this.currentPage, this.vm_per_site,
-      this.filter, this.filter_status_list)
+      this.filter, this.filter_status_list, this.filter_cluster)
       .subscribe((vms: any) => {
                    this.prepareVMS(vms);
                  }
@@ -431,7 +431,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
     this.virtualmachineservice.getVmsFromFacilitiesOfLoggedUser(
       this.selectedFacility['FacilityId'],
       this.currentPage, this.vm_per_site,
-      this.filter, this.filter_status_list)
+      this.filter, this.filter_status_list, this.filter_cluster)
       .subscribe((vms: VirtualMachine[]) => {
                    this.prepareVMS(vms);
                  }
@@ -527,7 +527,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
    */
   getAllVms(): void {
     this.virtualmachineservice.getAllVM(this.currentPage, this.vm_per_site,
-                                        this.filter, this.filter_status_list)
+                                        this.filter, this.filter_status_list, this.filter_cluster)
       .subscribe((vms: VirtualMachine[]) => {
                    this.prepareVMS(vms);
                  }
