@@ -12,6 +12,8 @@ import {ApplicationStatusService} from '../api-connector/application-status.serv
 import {ProjectEnumeration} from '../projectmanagement/project-enumeration';
 import {environment} from '../../environments/environment';
 import {is_vo} from '../shared/globalvar';
+import {Application} from "../applications/application.model/application.model";
+import {Project} from "../projectmanagement/project.model";
 
 /**
  * FullLayout component.
@@ -47,6 +49,7 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
   TITLE: string = '';
 
   project_enumeration: ProjectEnumeration[] = [];
+  project_badges_states : {[id: string]: number} = {};
 
   constructor(private voService: VoService, private groupService: GroupService, userservice: UserService,
               facilityService: FacilityService, applicationsservice: ApplicationsService,
@@ -85,6 +88,13 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
   getGroupsEnumeration(): void {
     this.groupService.getGroupsEnumeration().subscribe((res: ProjectEnumeration[]) => {
       this.project_enumeration = res;
+      this.project_enumeration.forEach((enumeration: ProjectEnumeration) => {
+         this.badgeState(enumeration).then( value => {
+            this.project_badges_states[enumeration.application_id] = value;
+            console.log(enumeration.application_id + ': ' + this.project_badges_states[enumeration.application_id]);
+         });
+
+      })
     })
   }
 
@@ -106,6 +116,35 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
 
   setSidebarStatus(): void {
     this.navbar_minimized = !this.navbar_minimized;
+  }
+
+  async badgeState(projEnum: ProjectEnumeration): Promise<number>{
+    let checkApp: Application;
+    await this.applicationsservice.getApplication(projEnum.application_id).subscribe( (application: Application) => {
+     if (application) {
+       checkApp = application;
+     }
+     else return -1;
+    });
+    if (checkApp) {
+      if (checkApp.ApplicationExtension) return 3;
+
+      if (checkApp.Status === this.application_states.TERMINATED) return 2;
+
+      if (checkApp.DaysRunning < 8) return 0;
+
+      if (this.daysLeft(checkApp.DaysRunning, checkApp.Lifetime) < 30 ) return 0;
+
+      return -1;
+    } else return -1;
+
+  }
+
+  daysLeft(daysRunning: number, lifetimeMonths) : number
+  {
+    let max_days = 30* lifetimeMonths;
+    max_days = max_days - daysRunning;
+    return max_days;
   }
 
 }
