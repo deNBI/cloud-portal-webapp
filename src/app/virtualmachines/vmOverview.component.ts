@@ -16,6 +16,8 @@ import {GroupService} from '../api-connector/group.service';
 import {ClientService} from '../api-connector/client.service';
 import {Client} from './clients/client.model';
 import {TemplateNames} from './conda/template-names';
+import {CondaPackage} from "./condaPackage.model";
+import {PlaybookService} from "../api-connector/playbook.service";
 
 /**
  * Vm overview componentn.
@@ -25,7 +27,7 @@ import {TemplateNames} from './conda/template-names';
              templateUrl: 'vmOverview.component.html',
              styleUrls: ['./vmOverview.component.scss'],
              providers: [FacilityService, ImageService, UserService,
-               VirtualmachineService, FullLayoutComponent, GroupService, ClientService]
+               VirtualmachineService, FullLayoutComponent, GroupService, ClientService, PlaybookService]
            })
 
 export class VmOverviewComponent implements OnInit, OnDestroy {
@@ -130,12 +132,19 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 
   clientsForcUrls: {[client_id: string]: [string]} = {};
 
+  /*
+    Key-Value-Map for Conda Packages installed on machine.
+   */
+  condaPackagesByVM: {[vm_id: string]: number} = {};
+
+
   constructor(private facilityService: FacilityService,
 
               private imageService: ImageService, private userservice: UserService,
               private virtualmachineservice: VirtualmachineService, private fb: FormBuilder,
               private groupService: GroupService,
-              private clientService: ClientService) {
+              private clientService: ClientService,
+              private playbookService: PlaybookService) {
     this.actionsForm = fb.group({
                                   title: fb.control('initial value', Validators.required)
                                 });
@@ -462,6 +471,32 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 
   }
 
+  checkCondaPackages(vm: VirtualMachine): void {
+    this.playbookService.getPlaybookForVM(vm.openstackid).subscribe((pb: Object) => {
+      if (pb != null) {
+        let pbs: string = pb['playbooks'].toString();
+        if (pbs != null) {
+          pbs = pbs.replace(/\\/g, '');
+          pbs = pbs.replace('"[', '[');
+          pbs = pbs.replace(']"', ']');
+          const pkgs: Object = JSON.parse(pbs);
+          if (pkgs != null) {
+            const package_list: Object = pkgs['bioconda'];
+            if (package_list != null) {
+              let numberOfPackages: number = 0;
+              for (const packageObject in package_list['packages']) {
+                if (package_list['packages'].hasOwnProperty(packageObject)) {
+                  numberOfPackages++;
+                }
+              }
+              this.condaPackagesByVM[vm.openstackid] = numberOfPackages;
+            }
+          }
+        }
+      }
+    });
+  }
+
   prepareVMS(vms: any): void {
 
     const vm_list: VirtualMachine[] = vms['vm_list'];
@@ -471,6 +506,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
     vm_list.forEach((new_vm: VirtualMachine) => {
       const vm: VirtualMachine = new VirtualMachine(new_vm);
       this.setForcUrl(vm);
+      this.checkCondaPackages(vm);
       tmp_vms.push(vm);
 
     });
