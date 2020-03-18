@@ -95,7 +95,7 @@ export class VirtualmachineService {
   getAllVM(page: number, vm_per_site: number, filter?: string, filter_status?: string[]): Observable<VirtualMachine[]> {
     let params: HttpParams = new HttpParams().set('page', page.toString()).set('vm_per_site', vm_per_site.toString());
     if (filter) {
-      params = params.set('filter', filter);
+      params = params.append('filter', filter);
 
     }
     if (filter_status) {
