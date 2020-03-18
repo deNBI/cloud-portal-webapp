@@ -191,6 +191,7 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
     newApp.DateSubmitted = aj['project_application_date_submitted'];
     newApp.Status = aj['project_application_status'];
     newApp.PerunId = aj['project_application_perun_id'];
+    newApp.OpenStackProject = aj['project_application_openstack_project'];
 
     newApp.DateApproved = aj['project_application_date_approved'];
 
