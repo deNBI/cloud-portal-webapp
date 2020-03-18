@@ -92,6 +92,9 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
   }
 
   getFacilityApplicationById(application: Application): void {
+    if (application.Description !== undefined) {
+      return;
+    }
     const idx: number = this.applications_history.indexOf(application);
     this.facilityService.getFacilityApplicationById(this.selectedFacility ['FacilityId'], application.Id.toString())
       .subscribe((res: any) => {
