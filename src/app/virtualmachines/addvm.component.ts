@@ -290,6 +290,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
         }
 
       }
+
       return true;
     }
 
@@ -491,7 +492,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
       this.virtualmachineservice.startVM(
         flavor_fixed, this.selectedImage, servername,
         project, projectid.toString(), this.http_allowed,
-        this.https_allowed, this.udp_allowed, this.volumesToMount, play_information, user_key_url)
+        this.https_allowed, this.udp_allowed, this.volumesToMount, this.volumesToAttach, play_information, user_key_url)
         .subscribe((newVm: VirtualMachine) => {
           this.newVm = newVm;
           this.started_machine = false;
@@ -566,6 +567,8 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
     this.newCores = 0;
     this.newGpus = 0;
     this.newVms = 0;
+    this.volumesToAttach = [];
+    this.volumesToMount = [];
     this.client_checked = false;
     this.projectDataLoaded = false;
 
