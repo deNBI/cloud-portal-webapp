@@ -1,3 +1,22 @@
+##  (2020-03-13)
+
+
+#### Features
+
+* **Angular:** updated to 8 
+* **Application:** history detail on demand 
+* **Cluster:** now worker same image as master )
+* **Filter:** updated placeholder 
+* **Volume:**
+  * added resizing 
+  * resize ui 
+* **bioconda:**  links to homepage 
+* **mosh:**  switch always visible, disabled when no mosh, switch for installing mosh 
+
+#### Bug Fixes
+
+* **Audit:** fixed all vulnerabilities 
+* **layout:**  adjusted view-pane for components + fix(project-overview): added missing wiki link to action-area
 
 ##  (2020-03-04)
 

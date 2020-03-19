@@ -61,6 +61,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
   http_allowed: boolean = false;
   https_allowed: boolean = false;
   udp_allowed: boolean = false;
+  install_mosh: boolean = false;
   is_vo: boolean = false;
   hasTools: boolean = false;
   gaveOkay: boolean = false;
@@ -443,6 +444,9 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
       if (this.resenvSelected) {
         user_key_url = this.resEnvComponent.getUserKeyUrl();
       }
+      if (!this.mosh_mode_available) {
+        this.udp_allowed = false;
+      }
 
       this.virtualmachineservice.startVM(
         flavor_fixed, this.selectedImage, servername,
@@ -505,6 +509,10 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
       && this.resEnvComponent.user_key_url.errors === null) {
       playbook_info[this.resEnvComponent.selectedTemplate.template_name] = {};
       playbook_info['user_key_url'] = {user_key_url: this.resEnvComponent.getUserKeyUrl()};
+    }
+
+    if (this.udp_allowed && this.install_mosh) {
+      playbook_info['optional'] = {mosh : 'install'};
     }
 
     return JSON.stringify(playbook_info);
