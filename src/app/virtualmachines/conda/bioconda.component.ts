@@ -82,9 +82,7 @@ export class BiocondaComponent implements OnInit {
 
         }))
       .subscribe((res: any) => {
-        console.log(res);
         this.setAllTools(res);
-
       });
 
   }
@@ -102,7 +100,6 @@ export class BiocondaComponent implements OnInit {
     this.isSearching = true;
     this.condaService.getAllTools(page, this.filterToolName).subscribe(
       (res: any) => {
-        console.log(res);
         this.all_tools = [];
         const packages_dic: any = res['packages'];
 

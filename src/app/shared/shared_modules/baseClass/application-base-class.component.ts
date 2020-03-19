@@ -191,6 +191,7 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
     newApp.DateSubmitted = aj['project_application_date_submitted'];
     newApp.Status = aj['project_application_status'];
     newApp.PerunId = aj['project_application_perun_id'];
+    newApp.OpenStackProject = aj['project_application_openstack_project'];
 
     newApp.DateApproved = aj['project_application_date_approved'];
 
@@ -240,6 +241,8 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
     newApp.PerunId = aj['project_application_perun_id'];
     newApp.PIApproved = aj['project_application_pi_approved'];
     newApp.Workshop = aj['project_application_workshop'];
+    newApp.CloudService = aj['project_application_cloud_service'];
+    newApp.CloudServiceUserNumber = aj['project_application_cloud_service_user_number'];
 
     if (aj['project_application_pi']) {
       const firstName: string = (aj['project_application_pi'])['firstName'];
@@ -288,6 +291,7 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
       extension.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
       extension.ExtendedCredits = aj['projectapplicationrenewal']['project_application_renewal_credits'];
       extension.IsOnlyExtraCreditsApplication = aj['projectapplicationrenewal']['is_only_extra_credits_application'];
+      extension.CloudServiceUserNumber = aj['projectapplicationrenewal']['project_application_renewal_cloud_service_user_number'];
       newApp.ApplicationExtension = extension;
     }
 
