@@ -343,7 +343,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
   }
 
   /**
-   * Submit simple vm application.
+   * Submit application.
    * @param {NgForm} form
    */
   onSubmit(form: NgForm): void {

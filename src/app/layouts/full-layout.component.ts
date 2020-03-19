@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {assertPlatform, Component, OnInit} from '@angular/core';
 import {ApiSettings} from '../api-connector/api-settings.service';
 import {ClientService} from '../api-connector/client.service';
 import {FacilityService} from '../api-connector/facility.service';
@@ -12,6 +12,8 @@ import {ApplicationStatusService} from '../api-connector/application-status.serv
 import {ProjectEnumeration} from '../projectmanagement/project-enumeration';
 import {environment} from '../../environments/environment';
 import {is_vo} from '../shared/globalvar';
+import {Application} from '../applications/application.model/application.model';
+import {Project} from '../projectmanagement/project.model';
 
 /**
  * FullLayout component.
@@ -47,6 +49,7 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
   TITLE: string = '';
 
   project_enumeration: ProjectEnumeration[] = [];
+  project_badges_states: {[id: string]: number} = {};
 
   constructor(private voService: VoService, private groupService: GroupService, userservice: UserService,
               facilityService: FacilityService, applicationsservice: ApplicationsService,
@@ -85,7 +88,12 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
   getGroupsEnumeration(): void {
     this.groupService.getGroupsEnumeration().subscribe((res: ProjectEnumeration[]) => {
       this.project_enumeration = res;
-    })
+      this.project_enumeration.forEach((enumeration: ProjectEnumeration) => {
+         this.badgeState(enumeration).then((value: number) => {
+            this.project_badges_states[enumeration.application_id] = value;
+         }).catch((reason: any) => {console.log(reason)});
+      })
+    });
   }
 
   ngOnInit(): void {
@@ -106,6 +114,32 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
 
   setSidebarStatus(): void {
     this.navbar_minimized = !this.navbar_minimized;
+  }
+
+  async badgeState(projEnum: ProjectEnumeration): Promise<number> {
+
+      if (projEnum.project_status === 'wait for confirmation') { return 4; }
+
+      if (projEnum.project_status === 'modification requested') { return 3; }
+
+      if (projEnum.project_status === 'suspended') { return 2; }
+
+      if ((this.getDaysRunning(projEnum.project_start_date) < 8) && projEnum.project_status === 'approved') { return 0; }
+
+      if (this.getDaysLeft(projEnum) < 21 ) { return 1; }
+
+      return -1;
+  }
+
+  getDaysLeft(projEnum: ProjectEnumeration): number {
+    const max_days: number = 31 * projEnum.project_lifetime;
+    const daysRunning: number = this.getDaysRunning(projEnum.project_start_date);
+
+    return max_days - daysRunning;
+  }
+
+  getDaysRunning(datestring: string): number {
+    return Math.ceil((Math.abs(Date.now() - new Date(datestring).getTime())) / (1000 * 3600 * 24));
   }
 
 }
