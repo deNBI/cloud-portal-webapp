@@ -26,12 +26,12 @@ export class OverviewComponent ** * REMOVED ** *
 
        @Input() voRegistrationLink: string = environment.voRegistrationLink;
 
-       userprojects:     ** * REMOVED ** ** ** REMOVED ** * ;
+       userprojects:      ** * REMOVED ** ** ** REMOVED ** * ;
        userid: number;
        member_id: number;
-       user_data:     ** * REMOVED ** ** ** REMOVED ** * ;
-       admingroups:     ** * REMOVED ** ** ** REMOVED ** * ;
-       adminvos:     ** * REMOVED ** ** ** REMOVED ** * ;
+       user_data:      ** * REMOVED ** ** ** REMOVED ** * ;
+       admingroups:      ** * REMOVED ** ** ** REMOVED ** * ;
+       adminvos:      ** * REMOVED ** ** ** REMOVED ** * ;
        filteredMembers = null;
        projects: Project[] = new Array();
 
@@ -74,10 +74,10 @@ export class OverviewComponent ** * REMOVED ** *
                     usersmanager: UsersManager) ** * REMOVED ** *
         let user_id: number;
        let member_id: number;
-       let user_projects:     ** * REMOVED ** ** ** REMOVED ** * ;
-       let user_data:     ** * REMOVED ** ** ** REMOVED ** * ;
-       let admin_groups:     ** * REMOVED ** ** ** REMOVED ** * ;
-       let admin_vos:     ** * REMOVED ** ** ** REMOVED ** * ;
+       let user_projects:      ** * REMOVED ** ** ** REMOVED ** * ;
+       let user_data:      ** * REMOVED ** ** ** REMOVED ** * ;
+       let admin_groups:      ** * REMOVED ** ** ** REMOVED ** * ;
+       let admin_vos:      ** * REMOVED ** ** ** REMOVED ** * ;
 
        this.authzresolver
             .getLoggedUser().toPromise()
