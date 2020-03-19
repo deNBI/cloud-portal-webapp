@@ -157,18 +157,17 @@
                 </div>
               </div>
 
-              <div id="volumeDiv" style="margin-bottom: 25px;"
-                   *ngIf="selectedProject
+                <div id="volumeDiv" style="margin-bottom: 25px;"
+                     *ngIf="selectedProject
                    && selectedProject[1] != FREEMIUM_ID
                    && selectedProjectVmsUsed < selectedProjectVmsMax
                    && (flavors.length != 0 || selectedFlavor)">
-                <div class="from-group row col-md-12">
-                  <label class="col-md-2"><strong>Volumes</strong></label>
-                  <div class="col-md-10"></div>
-                </div>
-                <div *ngIf="volumesToMount?.length > 0" style="margin-bottom: 5px;" id="volumesToMountTable">
-<<<<<<< HEAD
-                <div class="row">
+                  <div class="from-group row col-md-12">
+                    <label class="col-md-2"><strong>Volumes</strong></label>
+                    <div class="col-md-10"></div>
+                  </div>
+                  <div *ngIf="volumesToMount?.length > 0" style="margin-bottom: 5px;" id="volumesToMountTable">
+                    <div class="row">
                   <div class="col-2">Volumes to mount</div>
                   <div class="col-10">
                     <div *ngFor="let vol of volumesToMount" class="row" id="volumeRow_{{vol.volume_name}}"
@@ -182,22 +181,7 @@
                                 (click)="removeVolFromList(volumesToMount.indexOf(vol));">Remove
                           <span class="fa fa-trash"></span>
                         </button>
-=======
-                  <div class="row col-md-12">
-                    <div class="col-md-2"></div>
-                    <div class="col-md-2">Volumes to mount</div>
-                    <div class="col-md-8">
-                      <div *ngFor="let vol of volumesToMount" class="row" id="volumeRow_{{vol.volume_name}}"
-                           style="margin-bottom:5px;">
-                        <div class="col-md-6">{{vol.volume_name}}</div>
-                        <div class="col-md-3">{{vol.volume_storage}} GB</div>
-                        <div class="col-md-3">
-                          <button class="btn btn-danger"
-                                  (click)="removeVolFromList(volumesToMount.indexOf(vol));">Remove
-                            <span class="fa fa-trash"></span>
-                          </button>
-                        </div>
->>>>>>> dev
+
                       </div>
                     </div>
                     <div class="row">
@@ -210,7 +194,8 @@
                   </div>
 
 
-                </div>
+                    </div>
+                  </div>
                 <div class="row col-md-12">
                   <div class="col-md-2"></div>
                   <div class="col-md-10"
@@ -295,8 +280,7 @@
 
                   </div>
                 </div>
-              </div>
-
+                </div>
 
 
               <accordion class="col-md-12">
