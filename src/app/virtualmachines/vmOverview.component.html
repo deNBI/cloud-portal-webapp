@@ -58,6 +58,11 @@
 
           <div class="col-10 input-group">
             <div class="input-group-prepend">
+              <div class="input-group-text" *ngIf="is_vo_admin">
+                <input type="checkbox" [checked]="filter_cluster" style="margin:2px;"
+                       (change)="filter_cluster=!filter_cluster">
+                <span class="badge badge-info">Cluster</span>
+              </div>
               <div class="input-group-text">
                 <input type="checkbox" checked style="margin:2px;"
                        (change)="changeFilterStatus(VirtualMachineStates.staticACTIVE)">
@@ -160,16 +165,44 @@
                 </div>
                 <div class="col-1" style="text-align: center"></div>
               </div>
-              <div class="row" style="margin-top: 10px; margin-bottom:5px;">
-                <div class="col-12" style="margin-left: 10px; font-size: 18px; line-height: 27px; height: 27px">
-                  <div *ngIf="vm.volumes.length > 0">
+              <div style="margin-top: 10px; margin-bottom:5px;">
+                <div class="row" style="margin-left: 10px; font-size: 18px; line-height: 27px; height: 27px">
+                  <div *ngIf="vm.volumes.length > 0" class="col-md-1">
                       <span class="fas fa-hdd" style="font-size: 18px;"
-                            data-toggle="tooltip" data-placement="right" title="{{'Volumes mounted: ' + vm?.volumes.length}}">
+                            data-toggle="tooltip" data-placement="right"
+                            title="{{'Volumes mounted: ' + vm?.volumes.length}}">
                         <span class="badge badge-pill badge-secondary"
                               style="font-size: 10px; position: relative; top: -12px; left: -10px;">
                           {{vm?.volumes.length}}</span>
                       </span>
                   </div>
+                  <div *ngIf="vm.res_env_url" class="col-md-1">
+                      <span class="fas fa-globe" style="font-size: 18px;" data-toggle="tooltip" data-placement="right"
+                         title="{{'Access via: ' + vm?.res_env_url}}" (click)="this.copyToClipboard(vm?.res_env_url)">
+                          <span class="badge badge-pill badge-secondary"
+                              style="font-size: 10px; position: relative; top: -12px; left: -10px;">
+                            <i class="fas fa-check"></i>
+                          </span>
+                      </span>
+                  </div>
+                  <div *ngIf="condaPackagesByVM[vm?.openstackid]" class="col-md-1">
+                      <span class="fas fa-box" style="font-size: 18px;" data-toggle="tooltip" data-placement="right"
+                            title="One installed Conda-Package" *ngIf="condaPackagesByVM[vm?.openstackid] === 1">
+                          <span class="badge badge-pill badge-secondary"
+                                style="font-size: 10px; position: relative; top: -12px; left: -10px;">
+                          {{this.condaPackagesByVM[vm.openstackid].toString()}}
+                          </span>
+                      </span>
+                      <span class="fas fa-boxes" style="font-size: 18px;" data-toggle="tooltip" data-placement="right"
+                          title="{{'Number of Conda Packages installed: ' + this.condaPackagesByVM[vm.openstackid].toString()}}"
+                          *ngIf="condaPackagesByVM[vm?.openstackid] > 1">
+                          <span class="badge badge-pill badge-secondary"
+                                style="font-size: 10px; position: relative; top: -12px; left: -10px;">
+                          {{this.condaPackagesByVM[vm.openstackid].toString()}}
+                          </span>
+                      </span>
+                  </div>
+
 
                 </div>
                 <div class="col-1"></div>

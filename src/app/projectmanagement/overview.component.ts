@@ -176,7 +176,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
   calculateCredits(lifetime: number): void {
     // tslint:disable-next-line:triple-equals
-    if (lifetime == null || isNaN(lifetime)) {
+    if (lifetime === null || lifetime === undefined || lifetime.toString() === '') {
       lifetime = 0;
     }
     // tslint:disable-next-line:max-line-length

@@ -446,7 +446,7 @@
 
             <th>Name</th>
             <th>Date Submitted</th>
-            <th>Actions {{project?.ProjectMemberApplications}}</th>
+            <th>Actions </th>
             </thead>
             <tbody *ngFor="  let application of project?.ProjectMemberApplications">
 
@@ -939,6 +939,43 @@
               <span class="help-block">How much Object Storage do you need in the future?</span>
             </div>
           </div>
+          <div *ngIf="project_application?.OpenStackProject && project_application?.CloudService" class="form-group row">
+            <label class="col-md-4 form-control-label" for="textarea-input"><strong>Cloud Service user number </strong><i
+              data-balloon="Number of user using your service."
+              data-balloon-pos="down" data-balloon-length="large"><i
+              class="icon-question"
+              style="cursor: pointer;"></i></i></label>
+
+            <div class="col">
+              <div class="input-group">
+                <input class="form-control"
+                       name="project_application_cloud_service_user_number"
+                       id="project_application_cloud_service_user_number"
+                       placeholder="NA"
+                       value="{{project_application?.CloudServiceUserNumber}}"
+                       type="text" disabled>
+              </div>
+              <span class="help-block">Current number of users</span>
+            </div>
+
+            <div *ngIf="project_application?.OpenStackProject && project_application?.CloudService" class="col">
+              <div class="input-group">
+                <input class="form-control"
+                       id="id_project_application_renewal_cloud_service_user_number"
+                       name="project_application_renewal_cloud_service_user_number"
+                       placeholder="e.g. 200"
+                       [ngModel]="project_application?.CloudServiceUserNumber"
+                       type="number" min="0" step="1" [ngModel]="0"
+                       appInteger appMinAmount="0" required
+                       [ngClass]="{
+                                'is-invalid': f.controls.project_application_renewal_cloud_service_user_number?.invalid ,
+                                'is-valid': f.controls.project_application_renewal_cloud_service_user_number?.valid
+                                }">
+              </div>
+              <span class="help-block">How many users are using your service?</span>
+            </div>
+          </div>
+
           <div class="form-group row">
             <label class="col-md-4 form-control-label"
                    for="text-input"><strong>Comment</strong></label>

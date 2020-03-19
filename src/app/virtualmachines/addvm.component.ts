@@ -78,6 +78,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
   resEnvNeedsTemplate: boolean = false;
   data_loaded: boolean = false;
   volumesToMount: Volume[] = [];
+  volumesToAttach: Volume[] = [];
 
   title: string = 'New Instance';
 
@@ -153,6 +154,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
   selectedProjectRamMax: number;
 
   selectedProjectRamUsed: number;
+  detached_project_volumes: Volume[] = [];
 
   /**
    * Selected Project vms max.
@@ -181,12 +183,14 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
    * If the client for a project is viable.
    */
   client_avaiable: boolean = false;
+  showAttachVol: boolean = true;
 
   /**
    * Default volume name.
    * @type {string}
    */
   volumeName: string = '';
+  volumeMountPath: string;
 
   /**
    * Default volumeStorage.
@@ -263,17 +267,49 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 
   }
 
+  getDetachedVolumesByProject(): void {
+    this.virtualmachineservice.getDetachedVolumesByProject(this.selectedProject[1]).subscribe(
+      (detached_volumes: Volume[]) => {
+        this.detached_project_volumes = detached_volumes;
+      }
+    )
+  }
+
+  checkIfMountPathIsUsable(path?: string): boolean {
+    if (path) {
+      for (const vol of this.volumesToMount) {
+        if (vol.volume_path === path) {
+          return false;
+        }
+
+      }
+
+      for (const vol of this.volumesToAttach) {
+        if (vol.volume_path === path) {
+          return false;
+        }
+
+      }
+
+      return true;
+    }
+
+    return false;
+  }
+
   /**
    * Checks if the name which is entered for a new volume is valid.
    */
-  checkVolumeName(): boolean {
-    if (!(this.volumeName.length > 0)) {
-      return false;
-    } else if (!this.volumeName.match(new RegExp('^[\\w]+$', 'i'))) {
-      return false;
-    } else {
-      return true;
+  checkInputVolumeString(text?: string): boolean {
+    if (text) {
+      if (!(text.length > 0)) {
+        return false;
+      }
+
+      return new RegExp('^[\\w]+$', 'i').test(text)
     }
+
+    return false;
   }
 
   /**
@@ -297,7 +333,9 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
    * A new volume can only be added to the list, if this function returns true.
    */
   checkVolumeValidity(): boolean {
-    return (this.checkStorageNumber() && this.checkVolumeName());
+    return (this.checkStorageNumber() &&
+      this.checkIfMountPathIsUsable(this.volumeMountPath) &&
+      this.checkInputVolumeString(this.volumeMountPath) && this.checkInputVolumeString(this.volumeName));
   }
 
   /**
@@ -307,10 +345,29 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
     const newVol: Volume = new Volume();
     newVol.volume_storage = this.volumeStorage;
     newVol.volume_name = this.volumeName;
+    newVol.volume_path = this.volumeMountPath;
     newVol.volume_device = 'test';
     this.volumesToMount.push(newVol);
     this.volumeStorage = 0;
     this.volumeName = '';
+    this.volumeMountPath = '';
+  }
+
+  addAttachVolume(vol: Volume): void {
+    this.volumesToAttach.push(vol);
+    this.detached_project_volumes.splice(this.detached_project_volumes.indexOf(vol), 1)
+    if (this.detached_project_volumes.length === 0) {
+      this.toggleShowAttachVol()
+    }
+  }
+
+  removeAttachVolume(vol: Volume): void {
+    const idx: number = this.volumesToAttach.indexOf(vol);
+    if (idx !== -1) {
+      this.volumesToAttach.splice(idx, 1);
+      this.detached_project_volumes.push(vol)
+
+    }
   }
 
   /**
@@ -335,6 +392,10 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
    */
   toggleShowAddVol(): void {
     this.showAddVol = !this.showAddVol;
+  }
+
+  toggleShowAttachVol(): void {
+    this.showAttachVol = !this.showAttachVol;
   }
 
   /**
@@ -431,7 +492,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
       this.virtualmachineservice.startVM(
         flavor_fixed, this.selectedImage, servername,
         project, projectid.toString(), this.http_allowed,
-        this.https_allowed, this.udp_allowed, this.volumesToMount, play_information, user_key_url)
+        this.https_allowed, this.udp_allowed, this.volumesToMount, this.volumesToAttach, play_information, user_key_url)
         .subscribe((newVm: VirtualMachine) => {
           this.newVm = newVm;
           this.started_machine = false;
@@ -506,6 +567,8 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
     this.newCores = 0;
     this.newGpus = 0;
     this.newVms = 0;
+    this.volumesToAttach = [];
+    this.volumesToMount = [];
     this.client_checked = false;
     this.projectDataLoaded = false;
 
@@ -587,6 +650,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
     this.images = [];
     this.selectedImage = undefined;
     this.selectedFlavor = undefined;
+    this.getDetachedVolumesByProject();
     this.groupService.getGroupResources(this.selectedProject[1].toString()).subscribe((res: any) => {
       this.selectedProjectVmsMax = res['number_vms'];
       this.selectedProjectVmsUsed = res['used_vms'];

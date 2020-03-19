@@ -1,6 +1,6 @@
 <div *ngIf="isLoaded==false" class="loader"></div>
 <div *ngIf="isLoaded">
-  <a type="button" style="margin-bottom: 5px"  target="_blank" class="btn btn-secondary" href="{{WIKI_VOLUME_OVERVIEW}}"
+  <a style="margin-bottom: 5px"  target="_blank" class="btn btn-secondary" href="{{WIKI_VOLUME_OVERVIEW}}"
 
           id="volume_ov">Wiki
   </a>
@@ -84,9 +84,11 @@
           <tr *ngFor="let volume of volumes">
             <td>{{volume.volume_project}}</td>
             <td *ngIf="volume.volume_virtualmachine && volume.volume_status == VolumeStates.staticIN_USE"
-                [id]="'cell_vm_id_' + volume.volume_virtualmachine.name">
-              {{volume.volume_device }}  <br><a class="h5 text-primary"
-                 [routerLink]="['/virtualmachines/detail/' + volume.volume_virtualmachine?.openstackid]">{{ volume.volume_virtualmachine.name}}</a>
+                [id]="'cell_vm_id_' + volume.volume_virtualmachine.name"><span *ngIf="volume.volume_path">
+                <strong>Initial mounted to: </strong>/mnt/{{volume.volume_path }} <br></span>
+              <strong>Device: </strong>{{volume.volume_device }}  <br><strong>VM:</strong><a class="h5 text-primary"
+                                                                        [routerLink]="['/virtualmachines/detail/' + volume.volume_virtualmachine?.openstackid]">
+                {{ volume.volume_virtualmachine.name}}</a>
             </td>
             <td *ngIf="!volume.volume_virtualmachine || volume.volume_status != VolumeStates.staticIN_USE "
                 id="cell_vm_free_id"></td>
@@ -190,9 +192,9 @@
                        (click)="getActiveVmsByProject(volume.volume_projectid);setSelectedVolume(volume);attachModal.show();">Attach
                       Volume</a>
                   </li>
-                  <li *ngIf="!volume.volume_virtualmachine && volume.volume_status != VolumeStates.staticERROR"
+                  <li *ngIf=" volume.volume_status != VolumeStates.staticERROR"
                       role="menuitem">
-                    <a class="dropdown-item"
+                    <a class="dropdown-item "
                        (click)="extendVolumeStorage=volume.volume_storage+1;selected_volume=volume;getSelectedVolumeStorage();extendModal.show();">Extend
                       Volume</a>
                   </li>
@@ -298,7 +300,7 @@
           *ngIf="volume_action_status == volumeActionStates.ATTACHING_SUCCESSFULL || volume_action_status == volumeActionStates.SUCCESSFULLY_CREATED_ATTACHED"
           class="alert alert-info" role="alert">
           In order to use the volume you have to <a
-          href="{{VOLUME_WIKI}}" target="_blank"> mount </a> it.
+          href="{{WIKI_MOUNT_VOLUME}}" target="_blank"> mount </a> it.
         </div>
       </div>
       <div class="alert alert-warning" role="alert" *ngIf="volume_action_status == volumeActionStates.ERROR">
@@ -375,6 +377,13 @@
         </button>
       </div>
       <div class="modal-body">
+        <div
+
+          class="alert alert-warning" role="alert">
+
+          The volume must still be <a
+          href="{{WIKI_MOUNT_VOLUME}}" target="_blank"> mounted </a> after the attaching to use it.
+        </div>
         <strong>To which vm should the volume be attached?</strong>
 
         <select class="form-control col-md-6" name="selected_vm"
@@ -458,12 +467,16 @@
       </div>
       <div class="modal-body">
 
-        <div *ngIf="extendDone && !extendError" class="alert alert-info" role="alert"><strong>Your extend command was
+        <div *ngIf="extendDone && !extendError" class="alert alert-info" role="alert">Your extend command was
           successfully submitted. However, it may take a few minutes until the volume is actually extended.
 
-          Please visit the <a href="{{WIKI_EXTEND_VOLUME}}"> wiki </a> for the further steps you need to take before you
-          can use the extended volume.
-        </strong>
+
+        </div>
+        <div *ngIf="extendDone && !extendError" class="alert alert-warning" role="alert">
+          <strong>Please visit the <a href="{{WIKI_EXTEND_VOLUME}}"> wiki </a> for the further steps you need to take
+            before you
+            can use the extended volume.
+          </strong>
         </div>
 
         <div *ngIf="extendDone && extendError" class="alert alert-danger" role="alert">
@@ -509,6 +522,11 @@
           <div class="spinner-border text-primary" style="display:block; margin:auto;"></div>
         </div>
         <ng-container *ngIf="selected_volume_data_loaded">
+          <div *ngIf="selected_volume?.volume_virtualmachine"
+               class="alert alert-danger" role="alert">
+            To extend the volume it must not be attached to any vm!
+          </div>
+
           <div class="form-group row">
             <label class="col-md-3 form-control-label">Storage Project </label>
 
@@ -562,6 +580,7 @@
           <div class="col-md-9">
             <div class="input-group">
               <input min="0" step="1" [(ngModel)]="extendVolumeStorage" required
+                     [disabled]="selected_volume?.volume_virtualmachine"
                      [min]="selected_volume?.volume_storage +1"
                      [max]="selectedProjectDiskspaceMax-selectedProjectDiskspaceUsed + selected_volume?.volume_storage"
                      type="number" placeholder="e.g 8 "
@@ -586,7 +605,7 @@
       >
         <button id="verify_extend_btn"
                 *ngIf="selectedProjectDiskspaceUsed <= selectedProjectDiskspaceMax &&   !(selectedProjectDiskspaceUsed + 1 > selectedProjectDiskspaceMax)"
-                [disabled]="extendVolumeStorage <= selected_volume?.volume_storage || (selectedProjectDiskspaceUsed - selected_volume?.volume_storage +extendVolumeStorage) > selectedProjectDiskspaceMax"
+                [disabled]="selected_volume?.volume_virtualmachine || extendVolumeStorage <= selected_volume?.volume_storage || (selectedProjectDiskspaceUsed - selected_volume?.volume_storage +extendVolumeStorage) > selectedProjectDiskspaceMax"
                 class="btn  btn-success col-md-4"
                 (click)="extendError=false;extendDone=false;extendVolume(selected_volume,extendVolumeStorage);extendModal.hide();extendResultModal.show()">
           Extend
@@ -737,13 +756,19 @@
           The storage limit is exceeded
 
         </div>
+        <div
+
+          class="alert alert-warning" role="alert">
+          In order to use the volume you have to <a
+          href="{{WIKI_MOUNT_VOLUME}}" target="_blank"> mount </a> it.
+        </div>
 
       </div>
       <div class="modal-footer">
         <button id="verify_create_attach_button"
                 class="btn  btn-success col-md-6"
                 [disabled]="selected_vm == undefined || diskspace <= 0 || volumeName.length == 0 || (selectedProjectDiskSpaceSum > selectedProjectDiskspaceMax)"
-                (click)="createAndAttachvolume(volumeName,diskspace,selected_vm.openstackid);createModal.hide();resultModal.show()">
+                (click)="createAndAttachvolume(volumeName,diskspace,selected_vm.openstackid);createModal.hide();">
           Create & Attach Volume
         </button>
 

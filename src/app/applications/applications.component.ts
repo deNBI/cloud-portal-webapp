@@ -134,7 +134,6 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
     if (this.is_vo_admin) {
 
       this.applicationsservice.getAllApplications().subscribe((res: any) => {
-        console.log(res);
         if (Object.keys(res).length === 0) {
           this.isLoaded_userApplication = true;
         }
