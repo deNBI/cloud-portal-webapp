@@ -266,6 +266,14 @@ export class VirtualmachineService {
 
   }
 
+  getDetachedVolumesByProject(project_id: string | number): Observable<Volume[]> {
+
+    return this.http.get<Volume[]>(`${ApiSettings.getApiBaseURL()}volumes/project/${project_id}/`, {
+      withCredentials: true
+    })
+
+  }
+
   getVolumesByUser(items_per_page: number, current_page: number, filter?: string): Observable<Volume[]> {
     let params: HttpParams = new HttpParams().set('items_per_page', items_per_page.toString()).set('page', current_page.toString());
     if (filter) {
