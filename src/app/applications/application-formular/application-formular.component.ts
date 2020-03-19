@@ -53,6 +53,8 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
   project_application_bmbf_project: string = '';
   project_application_comment: string = '';
   project_application_workshop: boolean = false;
+  project_application_cloud_service: boolean = false;
+  project_application_cloud_service_user_number: number = 0;
   all_dissemination_checked: boolean = false;
 
   // tslint:disable-next-line:max-line-length
@@ -175,6 +177,8 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
       this.project_application_bmbf_project = this.application.BMBFProject;
       this.project_application_volume_counter = this.application.VolumeCounter;
       this.project_application_workshop = this.application.Workshop;
+      this.project_application_cloud_service = this.application.CloudService;
+      this.project_application_cloud_service_user_number = this.application.CloudServiceUserNumber;
       this.initiated_validation = true
 
     }
@@ -257,6 +261,11 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
         this.valuesToConfirm.push('Training: No');
     } else {
         this.valuesToConfirm.push('Training: Yes');
+      }
+      if (!this.project_application_cloud_service) {
+        this.valuesToConfirm.push('CloudService: No');
+      } else {
+        this.valuesToConfirm.push('CloudService: Yes');
       }
     }
     let research: string = 'Research Topics: ';
@@ -414,6 +423,8 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
     values['project_application_initial_credits'] = this.credits;
     values['project_application_openstack_basic_introduction'] = this.project_application_openstack_basic_introduction;
     values['project_application_sensitive_data'] = this.project_application_openstack_basic_introduction;
+    values['project_application_cloud_service'] = this.project_application_cloud_service;
+    values['project_application_cloud_service_user_number'] = this.project_application_cloud_service_user_number;
 
     for (const value in form.controls) {
       if (form.controls[value].disabled) {
