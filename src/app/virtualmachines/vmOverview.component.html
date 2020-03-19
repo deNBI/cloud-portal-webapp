@@ -58,6 +58,11 @@
 
           <div class="col-10 input-group">
             <div class="input-group-prepend">
+              <div class="input-group-text" *ngIf="is_vo_admin">
+                <input type="checkbox" [checked]="filter_cluster" style="margin:2px;"
+                       (change)="filter_cluster=!filter_cluster">
+                <span class="badge badge-info">Cluster</span>
+              </div>
               <div class="input-group-text">
                 <input type="checkbox" checked style="margin:2px;"
                        (change)="changeFilterStatus(VirtualMachineStates.staticACTIVE)">
