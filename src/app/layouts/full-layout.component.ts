@@ -91,7 +91,7 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
       this.project_enumeration.forEach((enumeration: ProjectEnumeration) => {
          this.badgeState(enumeration).then(value => {
             this.project_badges_states[enumeration.application_id] = value;
-         });
+         }).catch((reason => {console.log(reason)}));
       })
     });
   }
@@ -132,8 +132,8 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
   }
 
   getDaysLeft(projEnum: ProjectEnumeration): number {
-    const max_days = 31 * projEnum.project_lifetime;
-    const daysRunning = this.getDaysRunning(projEnum.project_start_date);
+    const max_days: number = 31 * projEnum.project_lifetime;
+    const daysRunning: number = this.getDaysRunning(projEnum.project_start_date);
 
     return max_days - daysRunning;
   }
