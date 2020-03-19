@@ -128,6 +128,10 @@
                   data-toggle="tooltip" data-placement="right"
                   title="An extension/modification request was submitted for this project."
                   *ngIf="this.project_badges_states[application.application_id] === 3">MER</span>
+            <span class="badge badge-secondary"  style="font-size: 6px; position: relative; top: 3px;"
+                  data-toggle="tooltip" data-placement="right"
+                  title="The review for this application is pending."
+                  *ngIf="this.project_badges_states[application.application_id] === 4">PND</span>
           </a>
 
           <a *ngIf="navbar_minimized && !application.is_open_stack" class="nav-link" routerLinkActive="active"

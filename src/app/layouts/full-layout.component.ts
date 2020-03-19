@@ -117,13 +117,16 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
   }
 
   async badgeState(projEnum: ProjectEnumeration): Promise<number> {
-       if (projEnum.project_status === 'modification requested') { return 3; }
 
-       if (projEnum.project_status === 'suspended') { return 2; }
+      if (projEnum.project_status === "wait for confirmation") { return 4; }
 
-       if (this.getDaysRunning(projEnum.project_start_date) < 8) { return 0; }
+      if (projEnum.project_status === "modification requested") { return 3; }
 
-       if (this.getDaysLeft(projEnum) < 21 ) { return 1; }
+      if (projEnum.project_status === 'suspended') { return 2; }
+
+      if ((this.getDaysRunning(projEnum.project_start_date) < 8) && projEnum.project_status === 'approved') { return 0; }
+
+      if (this.getDaysLeft(projEnum) < 21 ) { return 1; }
 
        return -1;
   }
