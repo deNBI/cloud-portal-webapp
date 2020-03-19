@@ -290,6 +290,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
         }
 
       }
+
       return true;
     }
 
