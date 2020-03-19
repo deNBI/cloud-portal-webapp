@@ -96,7 +96,7 @@ export class VirtualmachineService {
            filter_status?: string[], filter_cluster: boolean = false): Observable<VirtualMachine[]> {
     let params: HttpParams = new HttpParams().set('page', page.toString()).set('vm_per_site', vm_per_site.toString());
     if (filter) {
-      params = params.set('filter', filter);
+      params = params.append('filter', filter);
 
     }
     if (filter_status) {

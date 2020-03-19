@@ -50,6 +50,8 @@ export class Application {
   private _PI: string;
   private _PIElixir: string;
   private _PIEmail: string;
+  private _CloudService: boolean;
+  private _CloudServiceUserNumber: number;
   // todo own type!!!!!!!!!!!!
   private _CurrentFlavors: {
     [id: string]: {
@@ -83,6 +85,22 @@ export class Application {
 
   set Workshop(value: boolean) {
     this._Workshop = value;
+  }
+
+  get CloudService(): boolean {
+    return this._CloudService;
+  }
+
+  set CloudService(value: boolean) {
+    this._CloudService = value;
+  }
+
+  get CloudServiceUserNumber(): number {
+    return this._CloudServiceUserNumber;
+  }
+
+  set CloudServiceUserNumber(value: number) {
+    this._CloudServiceUserNumber = value;
   }
 
   get OpenstackBasicIntroduction(): boolean {
