@@ -16,6 +16,8 @@ import {GroupService} from '../api-connector/group.service';
 import {ClientService} from '../api-connector/client.service';
 import {Client} from './clients/client.model';
 import {TemplateNames} from './conda/template-names';
+import {CondaPackage} from './condaPackage.model';
+import {PlaybookService} from '../api-connector/playbook.service';
 
 /**
  * Vm overview componentn.
@@ -25,7 +27,7 @@ import {TemplateNames} from './conda/template-names';
              templateUrl: 'vmOverview.component.html',
              styleUrls: ['./vmOverview.component.scss'],
              providers: [FacilityService, ImageService, UserService,
-               VirtualmachineService, FullLayoutComponent, GroupService, ClientService]
+               VirtualmachineService, FullLayoutComponent, GroupService, ClientService, PlaybookService]
            })
 
 export class VmOverviewComponent implements OnInit, OnDestroy {
@@ -44,7 +46,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
   vms_content: VirtualMachine[] = [];
   currentPage: number = 1;
   DEBOUNCE_TIME: number = 300;
-
+  filter_cluster: boolean = false;
   filter_status_list: string[] = [VirtualMachineStates.ACTIVE, VirtualMachineStates.SHUTOFF];
   isSearching: boolean = true;
 
@@ -130,12 +132,18 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 
   clientsForcUrls: {[client_id: string]: [string]} = {};
 
+  /*
+    Key-Value-Map for Conda Packages installed on machine.
+   */
+  condaPackagesByVM: {[vm_id: string]: number} = {};
+
   constructor(private facilityService: FacilityService,
 
               private imageService: ImageService, private userservice: UserService,
               private virtualmachineservice: VirtualmachineService, private fb: FormBuilder,
               private groupService: GroupService,
-              private clientService: ClientService) {
+              private clientService: ClientService,
+              private playbookService: PlaybookService) {
     this.actionsForm = fb.group({
                                   title: fb.control('initial value', Validators.required)
                                 });
@@ -419,7 +427,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 
     this.virtualmachineservice.getVmsFromLoggedInUser(
       this.currentPage, this.vm_per_site,
-      this.filter, this.filter_status_list)
+      this.filter, this.filter_status_list, this.filter_cluster)
       .subscribe((vms: any) => {
                    this.prepareVMS(vms);
                  }
@@ -431,7 +439,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
     this.virtualmachineservice.getVmsFromFacilitiesOfLoggedUser(
       this.selectedFacility['FacilityId'],
       this.currentPage, this.vm_per_site,
-      this.filter, this.filter_status_list)
+      this.filter, this.filter_status_list, this.filter_cluster)
       .subscribe((vms: VirtualMachine[]) => {
                    this.prepareVMS(vms);
                  }
@@ -462,6 +470,32 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 
   }
 
+  checkCondaPackages(vm: VirtualMachine): void {
+    this.playbookService.getPlaybookForVM(vm.openstackid).subscribe((pb: Object) => {
+      if (pb != null) {
+        let pbs: string = pb['playbooks'].toString();
+        if (pbs != null) {
+          pbs = pbs.replace(/\\/g, '');
+          pbs = pbs.replace('"[', '[');
+          pbs = pbs.replace(']"', ']');
+          const pkgs: Object = JSON.parse(pbs);
+          if (pkgs != null) {
+            const package_list: Object = pkgs['bioconda'];
+            if (package_list != null) {
+              let numberOfPackages: number = 0;
+              for (const packageObject in package_list['packages']) {
+                if (package_list['packages'].hasOwnProperty(packageObject)) {
+                  numberOfPackages++;
+                }
+              }
+              this.condaPackagesByVM[vm.openstackid] = numberOfPackages;
+            }
+          }
+        }
+      }
+    });
+  }
+
   prepareVMS(vms: any): void {
 
     const vm_list: VirtualMachine[] = vms['vm_list'];
@@ -471,6 +505,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
     vm_list.forEach((new_vm: VirtualMachine) => {
       const vm: VirtualMachine = new VirtualMachine(new_vm);
       this.setForcUrl(vm);
+      this.checkCondaPackages(vm);
       tmp_vms.push(vm);
 
     });
@@ -527,7 +562,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
    */
   getAllVms(): void {
     this.virtualmachineservice.getAllVM(this.currentPage, this.vm_per_site,
-                                        this.filter, this.filter_status_list)
+                                        this.filter, this.filter_status_list, this.filter_cluster)
       .subscribe((vms: VirtualMachine[]) => {
                    this.prepareVMS(vms);
                  }

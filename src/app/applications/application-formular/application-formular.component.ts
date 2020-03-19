@@ -58,7 +58,17 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
   all_dissemination_checked: boolean = false;
 
   // tslint:disable-next-line:max-line-length
-  application_dissemination: ApplicationDissemination = new ApplicationDissemination(null, null, null, null, null, null, null, null, null, null, null);
+  application_dissemination: ApplicationDissemination = new ApplicationDissemination(false,
+                                                                                     false,
+                                                                                     '',
+                                                                                     false,
+                                                                                     false,
+                                                                                     false,
+                                                                                     false,
+                                                                                     false,
+                                                                                     false,
+                                                                                     false,
+                                                                                     '');
 
   initiated_validation: boolean = false;
 
