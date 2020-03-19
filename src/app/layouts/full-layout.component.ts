@@ -119,24 +119,24 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
   async badgeState(projEnum: ProjectEnumeration): Promise<number> {
        if (projEnum.project_status === 'modification requested') { return 3; }
 
-       if (projEnum.project_status ==='suspended') { return 2; }
+       if (projEnum.project_status === 'suspended') { return 2; }
 
        if (this.getDaysRunning(projEnum.project_start_date) < 8) { return 0; }
 
        if (this.getDaysLeft(projEnum) < 21 ) { return 1; }
+
        return -1;
   }
 
   getDaysLeft(projEnum: ProjectEnumeration): number {
-    let max_days = 31 * projEnum.project_lifetime;
-    let daysRunning = this.getDaysRunning(projEnum.project_start_date);
+    const max_days = 31 * projEnum.project_lifetime;
+    const daysRunning = this.getDaysRunning(projEnum.project_start_date);
+
     return max_days - daysRunning;
   }
 
   getDaysRunning(datestring: string): number {
-    return Math.ceil((Math.abs(Date.now() - new Date(datestring).getTime())) / (1000*3600*24));
+    return Math.ceil((Math.abs(Date.now() - new Date(datestring).getTime())) / (1000 * 3600 * 24));
   }
-
-
 
 }
