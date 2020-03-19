@@ -11,7 +11,6 @@ export class ProjectEnumeration {
   private _project_start_date: string;
   private _project_status: string;
 
-
   get project_status(): string {
     return this._project_status;
   }
