@@ -102,7 +102,7 @@
                 Your principal investigator can request more
                 resources if necessary.
               </div>
-              <div *ngIf="selectedProject" class="form-group row col-md-12">
+              <div *ngIf="selectedProject && selectedProjectVmsUsed < selectedProjectVmsMax" class="form-group row col-md-12">
                 <label class="col-md-2 form-control-label"><strong>Name*</strong></label>
                 <div class="col-md-10">
                   <div class="input-group">
@@ -157,7 +157,11 @@
                 </div>
               </div>
 
-              <div id="volumeDiv" style="margin-bottom: 25px;">
+              <div id="volumeDiv" style="margin-bottom: 25px;"
+                   *ngIf="selectedProject
+                   && selectedProject[1] != FREEMIUM_ID
+                   && selectedProjectVmsUsed < selectedProjectVmsMax
+                   && (flavors.length != 0 || selectedFlavor)">
                 <div class="from-group row col-md-12">
                   <label class="col-md-2"><strong>Volumes</strong></label>
                   <div class="col-md-10"></div>
@@ -193,9 +197,9 @@
                 <div class="row col-md-12">
                   <div class="col-md-2"></div>
                   <div class="col-md-10"
-                       *ngIf="!(((this.selectedProjectVolumesUsed + this.volumesToMount?.length)
-                    >= this.selectedProjectVolumesMax)
-                    || ((this.selectedProjectDiskspaceUsed + this.getStorageInList()) >= this.selectedProjectDiskspaceMax))">
+                       *ngIf="!(((selectedProjectVolumesUsed + volumesToMount?.length)
+                    >= selectedProjectVolumesMax)
+                    || ((selectedProjectDiskspaceUsed + getStorageInList()) >= selectedProjectDiskspaceMax))">
                     <button class="btn btn-light" (click)="toggleShowAddVol();" *ngIf="showAddVol" id="openAddVolumeFormButton">
                       Add Volume <span class="fa fa-plus-circle"></span>
                     </button>
