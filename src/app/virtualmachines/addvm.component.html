@@ -111,7 +111,7 @@
                            type="text" placeholder="Instance name" [(ngModel)]="vm_name"
                            pattern="[a-zA-Z0-9]+"
                            [ngClass]="{'is-invalid':f.controls.instance_name?.invalid && (f.controls.instance_name?.dirty || f.controls.instance_name?.touched),
-                             'is-valid':f.controls.instance_name?.valid && (f.controls.instance_name?.dirty || f.controls.instance_name?.touched)}">
+                             'is-valid':f.controls.instance_name?.valid}">
                     <div class="input-group-append">
                       <button class="btn btn-outline-primary" (click)="generateRandomName();">Generate</button>
                     </div>
