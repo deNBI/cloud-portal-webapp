@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {assertPlatform, Component, OnInit} from '@angular/core';
 import {ApiSettings} from '../api-connector/api-settings.service';
 import {ClientService} from '../api-connector/client.service';
 import {FacilityService} from '../api-connector/facility.service';
@@ -89,13 +89,11 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
     this.groupService.getGroupsEnumeration().subscribe((res: ProjectEnumeration[]) => {
       this.project_enumeration = res;
       this.project_enumeration.forEach((enumeration: ProjectEnumeration) => {
-         this.badgeState(enumeration).then( value => {
+         this.badgeState(enumeration).then(value => {
             this.project_badges_states[enumeration.application_id] = value;
-            console.log(enumeration.application_id + ': ' + this.project_badges_states[enumeration.application_id]);
          });
-
       })
-    })
+    });
   }
 
   ngOnInit(): void {
@@ -119,31 +117,26 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
   }
 
   async badgeState(projEnum: ProjectEnumeration): Promise<number> {
-    let checkApp: Application;
-    await this.applicationsservice.getApplication(projEnum.application_id).subscribe( (application: Application) => {
-     if (application) {
-       checkApp = application;
-     } else { return -1; }
-    });
-    if (checkApp) {
-      if (checkApp.ApplicationExtension) { return 3; }
+       if (projEnum.project_status === 'modification requested') { return 3; }
 
-      if (checkApp.Status === this.application_states.TERMINATED) { return 2; }
+       if (projEnum.project_status ==='suspended') { return 2; }
 
-      if (checkApp.DaysRunning < 8) { return 0; }
+       if (this.getDaysRunning(projEnum.project_start_date) < 8) { return 0; }
 
-      if (this.daysLeft(checkApp.DaysRunning, checkApp.Lifetime) < 30 ) { return 0; }
-
-      return -1;
-    } else { return -1; }
-
+       if (this.getDaysLeft(projEnum) < 21 ) { return 1; }
+       return -1;
   }
 
-  daysLeft(daysRunning: number, lifetimeMonths): number {
-    let max_days = 30 * lifetimeMonths;
-    max_days = max_days - daysRunning;
-
-    return max_days;
+  getDaysLeft(projEnum: ProjectEnumeration): number {
+    let max_days = 31 * projEnum.project_lifetime;
+    let daysRunning = this.getDaysRunning(projEnum.project_start_date);
+    return max_days - daysRunning;
   }
+
+  getDaysRunning(datestring: string): number {
+    return Math.ceil((Math.abs(Date.now() - new Date(datestring).getTime())) / (1000*3600*24));
+  }
+
+
 
 }

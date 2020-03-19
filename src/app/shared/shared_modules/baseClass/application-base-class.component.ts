@@ -250,7 +250,7 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
     }
 
     if (newApp.Status === this.application_states.APPROVED) {
-      newApp.DaysRunning = Math.ceil((Math.abs(Date.now() - new Date(newApp.DateStatusChanged).getTime())) / (1000 * 3600 * 24));
+      newApp.DaysRunning = Math.ceil((Math.abs(Date.now() - new Date(newApp.DateApproved).getTime())) / (1000 * 3600 * 24));
 
     }
     for (const flavor of aj['flavors']) {

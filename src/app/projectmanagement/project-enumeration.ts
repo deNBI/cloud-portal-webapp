@@ -7,6 +7,34 @@ export class ProjectEnumeration {
   private _application_id: string;
   private _has_perun_group: boolean;
   private _is_open_stack: boolean;
+  private _project_lifetime: number;
+  private _project_start_date: string;
+  private _project_status: string;
+
+
+  get project_status(): string {
+    return this._project_status;
+  }
+
+  set project_status(value: string) {
+    this._project_status = value;
+  }
+
+  get project_lifetime(): number {
+    return this._project_lifetime;
+  }
+
+  set project_lifetime(value: number) {
+    this._project_lifetime = value;
+  }
+
+  get project_start_date(): string {
+    return this._project_start_date;
+  }
+
+  set project_start_date(value: string) {
+    this._project_start_date = value;
+  }
 
   get project_name(): string {
     return this._project_name;
