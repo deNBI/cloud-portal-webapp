@@ -118,9 +118,9 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
 
   async badgeState(projEnum: ProjectEnumeration): Promise<number> {
 
-      if (projEnum.project_status === "wait for confirmation") { return 4; }
+      if (projEnum.project_status === 'wait for confirmation') { return 4; }
 
-      if (projEnum.project_status === "modification requested") { return 3; }
+      if (projEnum.project_status === 'modification requested') { return 3; }
 
       if (projEnum.project_status === 'suspended') { return 2; }
 
@@ -128,7 +128,7 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
 
       if (this.getDaysLeft(projEnum) < 21 ) { return 1; }
 
-       return -1;
+      return -1;
   }
 
   getDaysLeft(projEnum: ProjectEnumeration): number {
