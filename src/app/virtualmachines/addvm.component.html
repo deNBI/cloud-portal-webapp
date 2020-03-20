@@ -261,13 +261,12 @@
                   </div>
 
 
-                  <div class="row col-md-12">
+                  <div class=" form-group row col-md-12">
                     <div class="col-md-2"></div>
-                    <div class="col-md-10"
-                         *ngIf="!(((selectedProjectVolumesUsed + volumesToMount?.length)
-                    >= selectedProjectVolumesMax)
-                    || ((selectedProjectDiskspaceUsed + getStorageInList()) >= selectedProjectDiskspaceMax))">
-                      <button class="btn btn-light" (click)="toggleShowAddVol();" *ngIf="showAddVol && showAttachVol"
+                    <div class="col-md-10">
+                      <button class="btn btn-light" (click)="toggleShowAddVol();"
+                              *ngIf=" !((selectedProjectVolumesUsed + volumesToMount?.length)
+                    >= selectedProjectVolumesMax) &&showAddVol && showAttachVol && (selectedProjectDiskspaceUsed + getStorageInList() < selectedProjectDiskspaceMax)"
                               id="openAddVolumeFormButton">
                         New Volume <span class="fa fa-plus-circle"></span>
                       </button>
@@ -331,17 +330,8 @@
 
                     </div>
 
-                    <div class="col-10 alert alert-info"
-                         *ngIf="(((this.selectedProjectVolumesUsed + this.volumesToMount?.length)
-                    >= this.selectedProjectVolumesMax) || ((this.selectedProjectDiskspaceUsed + getStorageInList()) >= this.selectedProjectDiskspaceMax))">
-                    <span *ngIf="(this.selectedProjectVolumesUsed + this.volumesToMount?.length)
-                    >= this.selectedProjectVolumesMax">You have reached the maximum number of volumes available
-                    for this project. </span>
-                      <span
-                        *ngIf="(this.selectedProjectDiskspaceUsed + getStorageInList() >= this.selectedProjectDiskspaceMax)">
-                      You have reached the maximum amount of storage (in GB) available for this project. </span>
-                    </div>
-                    <div class="col-md-12 row" *ngIf="!showAddVol || !showAttachVol">
+
+                    <div class=" form-group col-md-12 row" *ngIf="!showAddVol || !showAttachVol">
                       <div class="col-md-2"></div>
                       <div class="btn-toolbar col-md-10" role="group">
                         <button class="btn btn-danger col-md-4"
@@ -355,7 +345,27 @@
                       </div>
 
                     </div>
+
+
                   </div>
+                  <div class=" form-group col-md-12 row"
+                       *ngIf="(((this.selectedProjectVolumesUsed + this.volumesToMount?.length)
+                    >= this.selectedProjectVolumesMax) || ((this.selectedProjectDiskspaceUsed + getStorageInList()) >= this.selectedProjectDiskspaceMax))">
+                    <div class="col-md-2"></div>
+                    <div class="form-group col-md-10 row">
+                      <div class="alert alert-info " *ngIf="(this.selectedProjectVolumesUsed + this.volumesToMount?.length)
+                    >= this.selectedProjectVolumesMax"> You can't create a new volume, because you have you have reached
+                        the maximum number of volumes available
+                        for this project.
+                      </div>
+                      <div class="alert alert-info "
+                           *ngIf="(this.selectedProjectDiskspaceUsed + getStorageInList() >= this.selectedProjectDiskspaceMax)">
+                        You can't create a new volume, because you have reached the maximum amount of storage (in GB)
+                        available for this project.
+                      </div>
+                    </div>
+                  </div>
+
                 </div>
 
 
