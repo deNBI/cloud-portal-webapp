@@ -8,8 +8,8 @@ import {VolumeActionStates} from './volume-action-states.enum';
 import {VolumeRequestStates} from './volume-request-states.enum';
 import {IResponseTemplate} from '../../api-connector/response-template';
 import {FacilityService} from '../../api-connector/facility.service';
-import {WIKI_VOLUME} from '../../../links/links';
-import {Subject, Subscription} from 'rxjs';
+import {WIKI_EXTEND_VOLUME, WIKI_MOUNT_VOLUME, WIKI_VOLUME_OVERVIEW} from '../../../links/links';
+import {forkJoin, Subject, Subscription} from 'rxjs';
 import {VolumeStates} from './volume_states';
 import {debounceTime, distinctUntilChanged, switchMap} from 'rxjs/operators';
 
@@ -26,15 +26,19 @@ import {debounceTime, distinctUntilChanged, switchMap} from 'rxjs/operators';
            })
 
 export class VolumeOverviewComponent extends AbstractBaseClasse implements OnInit, OnDestroy {
-  VOLUME_WIKI: string = WIKI_VOLUME;
+  WIKI_MOUNT_VOLUME: string = WIKI_MOUNT_VOLUME;
+  WIKI_EXTEND_VOLUME: string = WIKI_EXTEND_VOLUME;
+  WIKI_VOLUME_OVERVIEW: string = WIKI_VOLUME_OVERVIEW;
   title: string = 'Volume Overview';
-
+  selected_volume_data_loaded: boolean = false;
   filter: string;
 
   /**
    * Enum of all volume action states.
    */
   volumeActionStates: typeof VolumeActionStates = VolumeActionStates;
+  extendError: boolean = false;
+  extendDone: boolean = false;
 
   showFacilities: boolean = false;
 
@@ -118,6 +122,8 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
    */
   volume_action_status: number;
 
+  extendVolumeStorage: number;
+
   /**
    * Type of request.
    */
@@ -148,6 +154,10 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
   changedFilter(text: string): void {
     this.filterChanged.next(text);
 
+  }
+
+  setSelectedProjectByVolume(volume: Volume): void {
+    this.selectedProject = [volume.volume_project, parseInt(volume.volume_projectid, 10)];
   }
 
   ngOnInit(): void {
@@ -223,6 +233,23 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
       },
       () => {
         this.check_status_loop(volume, 0)
+      }
+    )
+  }
+
+  extendVolume(volume: Volume, new_storage: number): void {
+    this.vmService.extendVolume(volume.volume_openstackid, new_storage.toString()).subscribe(
+      (res: any) => {
+        this.extendDone = true;
+        if (res['status_code'] === 202) {
+          this.vmService.getVolumeById(volume.volume_openstackid).subscribe(
+            (upd_vol: Volume) => {
+              volume.volume_storage = new_storage;
+              this.volumes[this.volumes.indexOf(volume)] = volume;
+            });
+        } else {
+          this.extendError = true;
+        }
       }
     )
   }
@@ -532,6 +559,30 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
   calcDiskSpaceSum(): void {
     this.selectedProjectDiskSpaceSum = parseInt(this.diskspace.toString(), 10)
       + parseInt(this.selectedProjectDiskspaceUsed.toString(), 10);
+  }
+
+  getSelectedVolumeStorage(): void {
+    this.setSelectedProjectByVolume(this.selected_volume);
+    this.selected_volume_data_loaded = false;
+    forkJoin(this.groupService.getGroupMaxDiskspace(this.selectedProject[1].toString()),
+             this.groupService.getGroupUsedDiskspace(this.selectedProject[1].toString()))
+      .subscribe((result: any) => {
+                   if (result[0]['value']) {
+                     this.selectedProjectDiskspaceMax = result[0]['value'];
+
+                   } else {
+                     this.selectedProjectDiskspaceMax = 0;
+                   }
+                   if (result[1]['value']) {
+
+                     this.selectedProjectDiskspaceUsed = result[1]['value'];
+                   } else {
+                     this.selectedProjectDiskspaceUsed = 0;
+                   }
+                   this.selected_volume_data_loaded = true;
+
+                 }
+      )
   }
 
   /**

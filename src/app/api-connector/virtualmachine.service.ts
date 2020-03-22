@@ -70,7 +70,7 @@ export class VirtualmachineService {
   }
 
   startVM(flavor: string, image: Image, servername: string, project: string, projectid: string,
-          http: boolean, https: boolean, udp: boolean, volumes: Volume[],
+          http: boolean, https: boolean, udp: boolean, new_volumes: Volume[], attach_volumes: Volume[],
           playbook_information?: string, user_key_url?: string): Observable<any> {
 
     const params: HttpParams = new HttpParams()
@@ -79,7 +79,8 @@ export class VirtualmachineService {
       .set('servername', servername)
       .set('project', project)
       .set('projectid', projectid)
-      .set('volumes', JSON.stringify(volumes))
+      .set('new_volumes', JSON.stringify(new_volumes))
+      .set('attach_volumes', JSON.stringify(attach_volumes))
       .set('http_allowed', http.toString())
       .set('https_allowed', https.toString())
       .set('udp_allowed', udp.toString())
@@ -92,14 +93,19 @@ export class VirtualmachineService {
     })
   }
 
-  getAllVM(page: number, vm_per_site: number, filter?: string, filter_status?: string[]): Observable<VirtualMachine[]> {
+  getAllVM(page: number, vm_per_site: number, filter?: string,
+           filter_status?: string[], filter_cluster: boolean = false): Observable<VirtualMachine[]> {
     let params: HttpParams = new HttpParams().set('page', page.toString()).set('vm_per_site', vm_per_site.toString());
     if (filter) {
-      params = params.set('filter', filter);
+      params = params.append('filter', filter);
 
     }
     if (filter_status) {
       params = params.append('filter_status', JSON.stringify(filter_status));
+
+    }
+    if (filter_cluster) {
+      params = params.append('filter_cluster', 'true');
 
     }
 
@@ -117,7 +123,8 @@ export class VirtualmachineService {
     })
   }
 
-  getVmsFromLoggedInUser(page: number, vm_per_site: number, filter?: string, filter_status?: string[]): Observable<VirtualMachine[]> {
+  getVmsFromLoggedInUser(page: number, vm_per_site: number, filter?: string,
+                         filter_status?: string[], filter_cluster: boolean = false): Observable<VirtualMachine[]> {
     let params: HttpParams = new HttpParams().set('page', page.toString()).set('vm_per_site', vm_per_site.toString());
 
     if (filter) {
@@ -126,6 +133,10 @@ export class VirtualmachineService {
     }
     if (filter_status) {
       params = params.append('filter_status', JSON.stringify(filter_status));
+
+    }
+    if (filter_cluster) {
+      params = params.append('filter_cluster', 'true');
 
     }
 
@@ -152,7 +163,8 @@ export class VirtualmachineService {
 
   getVmsFromFacilitiesOfLoggedUser(facility_id: string | number,
                                    page: number, vm_per_site: number,
-                                   filter?: string, filter_status?: string[]): Observable<VirtualMachine[]> {
+                                   filter?: string, filter_status?: string[],
+                                   filter_cluster: boolean = false): Observable<VirtualMachine[]> {
     let params: HttpParams = new HttpParams().set('page', page.toString()).set('vm_per_site', vm_per_site.toString());
     if (filter) {
       params = params.set('filter', filter);
@@ -160,6 +172,10 @@ export class VirtualmachineService {
     }
     if (filter_status) {
       params = params.append('filter_status', JSON.stringify(filter_status));
+
+    }
+    if (filter_cluster) {
+      params = params.append('filter_cluster', 'true');
 
     }
 
@@ -251,6 +267,14 @@ export class VirtualmachineService {
 
   }
 
+  getDetachedVolumesByProject(project_id: string | number): Observable<Volume[]> {
+
+    return this.http.get<Volume[]>(`${ApiSettings.getApiBaseURL()}volumes/project/${project_id}/`, {
+      withCredentials: true
+    })
+
+  }
+
   getVolumesByUser(items_per_page: number, current_page: number, filter?: string): Observable<Volume[]> {
     let params: HttpParams = new HttpParams().set('items_per_page', items_per_page.toString()).set('page', current_page.toString());
     if (filter) {
@@ -291,6 +315,18 @@ export class VirtualmachineService {
       withCredentials: true,
       headers: header
     })
+  }
+
+  extendVolume(volume_id: string, new_size: string): Observable<IResponseTemplate> {
+
+    const params: HttpParams = new HttpParams().set('os_action', 'extend').set('new_size', new_size);
+
+    return this.http.post<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}volumes/${volume_id}/action/`, params, {
+                                               withCredentials: true,
+                                               headers: header
+                                             }
+    )
+
   }
 
   attachVolumetoServer(volume_id: string, instance_id: string): Observable<IResponseTemplate> {

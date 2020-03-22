@@ -179,8 +179,6 @@ export abstract class FilterBaseClass extends AbstractBaseClasse {
 
   changeFilterStatus(status: string): void {
     this.filterstatus_list[status] = !this.filterstatus_list[status];
-    console.log(this.filterstatus_list)
-
   }
 
   changeFilterProjectStatusAndLifetimeStatus(project_status?: number, lifetime_reached?: number): void {

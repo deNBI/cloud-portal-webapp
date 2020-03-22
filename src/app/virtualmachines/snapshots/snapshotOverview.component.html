@@ -1,6 +1,10 @@
 <div *ngIf="isLoaded==false" class="loader"></div>
-<div class="container-fluid">
+<div class="">
   <div *ngIf="isLoaded">
+    <a style="margin-bottom: 5px"  target="_blank" class="btn btn-secondary" href="{{WIKI_SNAPSHOTS}}"
+
+          id="volume_ov">Wiki
+  </a>
 
     <button type="button" style="margin-bottom: 5px;margin-left: 5px;" class="btn btn-secondary"
             (click)="showFacilities =!showFacilities; reset(); getFacilitySnapshots();"
@@ -28,7 +32,7 @@
           </pagination>
         </div>
         <div class="col">
-          <input type="text" placeholder="Filter"
+          <input type="text" placeholder="name,project,openstackid"
                  name="filter" (ngModelChange)='changedFilter($event)'
                  [ngModel]="filter" (keydown.enter)="$event.preventDefault();">
         </div>

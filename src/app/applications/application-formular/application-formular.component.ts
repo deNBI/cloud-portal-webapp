@@ -53,9 +53,22 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
   project_application_bmbf_project: string = '';
   project_application_comment: string = '';
   project_application_workshop: boolean = false;
+  project_application_cloud_service: boolean = false;
+  project_application_cloud_service_user_number: number = 0;
   all_dissemination_checked: boolean = false;
 
-  application_dissemination: ApplicationDissemination = new ApplicationDissemination();
+  // tslint:disable-next-line:max-line-length
+  application_dissemination: ApplicationDissemination = new ApplicationDissemination(false,
+                                                                                     false,
+                                                                                     '',
+                                                                                     false,
+                                                                                     false,
+                                                                                     false,
+                                                                                     false,
+                                                                                     false,
+                                                                                     false,
+                                                                                     false,
+                                                                                     '');
 
   initiated_validation: boolean = false;
 
@@ -74,8 +87,8 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 
   application_id: string | number;
   ontology_search_keyword: string = 'term';
-  @ViewChild('edam_ontology') edam_ontology: AutocompleteComponent;
-  @ViewChild(NgForm) application_form: NgForm;
+  @ViewChild('edam_ontology', { static: true }) edam_ontology: AutocompleteComponent;
+  @ViewChild(NgForm, { static: true }) application_form: NgForm;
 
   /**
    * List of flavor types.
@@ -143,7 +156,8 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
         this.project_application_report_allowed = true;
 
       } else {
-        this.application.Dissemination = new ApplicationDissemination();
+        // tslint:disable-next-line:max-line-length
+        this.application.Dissemination = new ApplicationDissemination(null, null, null, null, null, null, null, null, null, null, null);
       }
       this.application_dissemination = this.application.Dissemination;
       this.project_application_sensitive_data = this.application.SensitiveData;
@@ -163,6 +177,8 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
       this.project_application_bmbf_project = this.application.BMBFProject;
       this.project_application_volume_counter = this.application.VolumeCounter;
       this.project_application_workshop = this.application.Workshop;
+      this.project_application_cloud_service = this.application.CloudService;
+      this.project_application_cloud_service_user_number = this.application.CloudServiceUserNumber;
       this.initiated_validation = true
 
     }
@@ -246,6 +262,11 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
     } else {
         this.valuesToConfirm.push('Training: Yes');
       }
+      if (!this.project_application_cloud_service) {
+        this.valuesToConfirm.push('CloudService: No');
+      } else {
+        this.valuesToConfirm.push('CloudService: Yes');
+      }
     }
     let research: string = 'Research Topics: ';
     for (const term of this.selected_ontology_terms) {
@@ -322,7 +343,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
   }
 
   /**
-   * Submit simple vm application.
+   * Submit application.
    * @param {NgForm} form
    */
   onSubmit(form: NgForm): void {
@@ -402,6 +423,8 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
     values['project_application_initial_credits'] = this.credits;
     values['project_application_openstack_basic_introduction'] = this.project_application_openstack_basic_introduction;
     values['project_application_sensitive_data'] = this.project_application_openstack_basic_introduction;
+    values['project_application_cloud_service'] = this.project_application_cloud_service;
+    values['project_application_cloud_service_user_number'] = this.project_application_cloud_service_user_number;
 
     for (const value in form.controls) {
       if (form.controls[value].disabled) {

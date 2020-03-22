@@ -180,6 +180,24 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
     }
   }
 
+  setShortNewApplication(aj: any): Application {
+    const newApp: Application = new Application();
+    newApp.Id = aj['project_application_id'];
+
+    newApp.Name = aj['project_application_name'];
+    newApp.Shortname = aj['project_application_shortname'];
+    newApp.Institute = aj['project_application_institute'];
+    newApp.User = aj['project_application_user']['username'];
+    newApp.DateSubmitted = aj['project_application_date_submitted'];
+    newApp.Status = aj['project_application_status'];
+    newApp.PerunId = aj['project_application_perun_id'];
+    newApp.OpenStackProject = aj['project_application_openstack_project'];
+
+    newApp.DateApproved = aj['project_application_date_approved'];
+
+    return newApp
+  }
+
   setNewApplication(aj: any): Application {
 
     const newApp: Application = new Application();
@@ -223,6 +241,8 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
     newApp.PerunId = aj['project_application_perun_id'];
     newApp.PIApproved = aj['project_application_pi_approved'];
     newApp.Workshop = aj['project_application_workshop'];
+    newApp.CloudService = aj['project_application_cloud_service'];
+    newApp.CloudServiceUserNumber = aj['project_application_cloud_service_user_number'];
 
     if (aj['project_application_pi']) {
       const firstName: string = (aj['project_application_pi'])['firstName'];
@@ -233,7 +253,7 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
     }
 
     if (newApp.Status === this.application_states.APPROVED) {
-      newApp.DaysRunning = Math.ceil((Math.abs(Date.now() - new Date(newApp.DateStatusChanged).getTime())) / (1000 * 3600 * 24));
+      newApp.DaysRunning = Math.ceil((Math.abs(Date.now() - new Date(newApp.DateApproved).getTime())) / (1000 * 3600 * 24));
 
     }
     for (const flavor of aj['flavors']) {
@@ -271,6 +291,7 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
       extension.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
       extension.ExtendedCredits = aj['projectapplicationrenewal']['project_application_renewal_credits'];
       extension.IsOnlyExtraCreditsApplication = aj['projectapplicationrenewal']['is_only_extra_credits_application'];
+      extension.CloudServiceUserNumber = aj['projectapplicationrenewal']['project_application_renewal_cloud_service_user_number'];
       newApp.ApplicationExtension = extension;
     }
 
@@ -282,8 +303,7 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
       // @ts-ignore
       return new ApplicationDissemination(
         obj['platform_denbi'], obj['platform_twitter'],
-        obj['information_title'], obj['information_resources'],
-        obj['information_runtime'], obj['information_pi_name'],
+        obj['information_title'], obj['information_resources'], obj['information_pi_name'],
         obj['information_institution'], obj['information_workgroup'],
         obj['information_project_type'],
         obj['information_lifetime'], obj['information_project_affiliation'],
@@ -291,6 +311,21 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
     } else {
       return null
     }
+  }
+
+  setShortDetailNewApplications(res: any): Application[] {
+    const newApplications: Application[] = [];
+
+    for (const key in res) {
+      if (res.hasOwnProperty(key)) {
+
+        const aj: object = res[key];
+
+        newApplications.push(this.setShortNewApplication(aj))
+      }
+    }
+
+    return newApplications
   }
 
   setNewApplications(res: any): Application[] {
@@ -357,6 +392,7 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
   public getStatusById(id: number): string {
     const dummy: string = 'Unknown';
     for (const status of this.application_status) {
+
       if (status.application_status_id === id) {
         return status.application_status_name;
       }

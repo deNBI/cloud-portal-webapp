@@ -51,8 +51,8 @@ export class BiocondaComponent implements OnInit {
   filternameChanged: Subject<string> = new Subject<string>();
 
   @Output() readonly hasTools: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @ViewChild('pagination') pagination: PaginationComponent;
-  @ViewChild('chosenTable') chosenTable: ElementRef;
+  @ViewChild('pagination', { static: true }) pagination: PaginationComponent;
+  @ViewChild('chosenTable', { static: true }) chosenTable: ElementRef;
 
   @HostListener('window:resize', ['$event']) onResize(event: any): void {
     this.window_size = window.innerWidth;
@@ -82,9 +82,7 @@ export class BiocondaComponent implements OnInit {
 
         }))
       .subscribe((res: any) => {
-        console.log(res);
         this.setAllTools(res);
-
       });
 
   }
@@ -102,7 +100,6 @@ export class BiocondaComponent implements OnInit {
     this.isSearching = true;
     this.condaService.getAllTools(page, this.filterToolName).subscribe(
       (res: any) => {
-        console.log(res);
         this.all_tools = [];
         const packages_dic: any = res['packages'];
 
