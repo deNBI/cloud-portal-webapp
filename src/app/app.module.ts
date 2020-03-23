@@ -13,6 +13,7 @@ import {PaginationModule} from 'ngx-bootstrap/pagination';
 import {ExportAsModule} from 'ngx-export-as';
 import {ApiSettings} from './api-connector/api-settings.service';
 import {UserService} from './api-connector/user.service';
+import {ClipboardModule} from "ngx-clipboard";
 
 // Routing Module
 import {AppRoutingModule} from './app.routing';
@@ -64,7 +65,8 @@ import { ClusterstatusComponent } from './virtualmachines/clusters/clusterstatus
               ExportAsModule,
               SharedModuleModule,
               Angulartics2Module.forRoot(),
-              BrowserAnimationsModule
+              BrowserAnimationsModule,
+              ClipboardModule
             ],
             declarations: [
               AppComponent,

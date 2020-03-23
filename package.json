@@ -54,7 +54,7 @@
     "bootstrap": "^4.3.1",
     "chart.js": "^2.8.0",
     "chromedriver": "^76.0.0",
-    "clipboard": "latest",
+    "ngx-clipboard": "^13.0.0",
     "colors": "^1.4.0",
     "core-js": "2.6.5",
     "css-loader": "3.4.2",
