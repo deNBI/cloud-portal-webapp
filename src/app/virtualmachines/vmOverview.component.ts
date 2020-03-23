@@ -170,12 +170,14 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 
   copyToClipboard(text: string): void {
     document.addEventListener('copy', (clipEvent: ClipboardEvent) => {
-      clipEvent.clipboardData.setData('text/plain', (text));
       clipEvent.preventDefault();
+      clipEvent.clipboardData.setData('text/plain', (text));
       document.removeEventListener('copy', null);
     });
     document.execCommand('copy');
   }
+
+
 
   changeFilterStatus(status: string): void {
     this.currentPage = 1;

@@ -284,11 +284,9 @@
                   <div class="col-md-9">
                     <span class="font-weight-bold font-xs btn-block text-muted"  [innerHTML]="mode.description"></span></div>
 
-                  <div class="col-md-2" style="margin: auto" *ngIf="mode.copy_field && mode.copy_field!=''"><a
-                    (click)="copyToClipboard(mode.copy_field);" href="#"
-                    onClick="return false;"
-                    class="font-weight-bold font-xs btn-block text-muted">&lt;copy
-                    command&gt;</a>
+                  <div class="col-md-2" style="margin: auto" *ngIf="mode.copy_field && mode.copy_field!=''">
+                    <div (click)="copyToClipboard(mode.copy_field);"
+                    class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary">Copy command</div>
                   </div>
                 </div>
 
@@ -311,48 +309,42 @@
                 <div class="row">
                   <div class="col-md-2"
                        *ngIf="vm.status != this.VirtualMachineStates.staticSHUTOFF && vm.status != this.VirtualMachineStates.staticDELETED">
-                    <a class="font-weight-bold font-xs btn-block text-muted"
-                       [id]="'checkStatusVMButton_' + vm?.name"
-                       (click)="checkStatus(vm);" href="#" onClick="return false;">
-                      &lt;check status&gt;
-                    </a>
+                    <div class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+                       [id]="'checkStatusVMButton_' + vm?.name" (click)="checkStatus(vm);">
+                      Check status
+                    </div>
                   </div>
                   <div class="col-md-2" *ngIf="vm.status ==this.VirtualMachineStates.staticACTIVE">
-                    <a class="font-weight-bold font-xs btn-block text-muted"
-                       [id]="'stopVMButton_' + vm?.name"
-                       (click)="selectedVm=vm;submitStopVmModal.show();" href="#" onClick="return false;">
-                      &lt;stop vm&gt;
-                    </a>
+                    <div class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+                       [id]="'stopVMButton_' + vm?.name" (click)="selectedVm=vm;submitStopVmModal.show();">
+                      Stop VM
+                    </div>
                   </div>
                   <div class="col-md-2" *ngIf="vm.status ==this.VirtualMachineStates.staticSHUTOFF">
-                    <a class="font-weight-bold font-xs btn-block text-muted"
-                       [id]="'restartVMButton_' + vm?.name"
-                       (click)="selectedVm=vm;submitRestartModal.show();" href="#" onClick="return false;">
-                      &lt;resume vm&gt;
-                    </a>
+                    <div class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+                       [id]="'restartVMButton_' + vm?.name" (click)="selectedVm=vm;submitRestartModal.show();">
+                      Resume VM
+                    </div>
                   </div>
                   <div class="col-md-2"
                        *ngIf="vm.client.features['VM_REBOOT'] && vm.status != this.VirtualMachineStates.staticDELETED">
-                    <a class="font-weight-bold font-xs btn-block text-muted"
-                       [id]="'chooseRebootVMButton_' + vm?.name"
-                       href="#" onClick="return false;" (click)="selectedVm=vm; chooseRebootOptionModal.show();">
-                      &lt;reboot vm&gt;
-                    </a>
+                    <div class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+                       [id]="'chooseRebootVMButton_' + vm?.name" (click)="selectedVm=vm; chooseRebootOptionModal.show();">
+                      Reboot VM
+                    </div>
                   </div>
                   <div class="col-md-2" *ngIf="vm.status != this.VirtualMachineStates.staticDELETED">
-                    <a class="font-weight-bold font-xs btn-block text-muted"
+                    <div class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
                        [id]="'createSnapshotVMButton_' + vm?.name"
-                       (click)="snapshot_vm=vm;resetSnapshotResult();snapshotModal.show(); " href="#"
-                       onClick="return false;">
-                      &lt;create snapshot&gt;
-                    </a>
+                       (click)="snapshot_vm=vm;resetSnapshotResult();snapshotModal.show();">
+                      Create Snapshot
+                    </div>
                   </div>
                   <div class="col-md-2" *ngIf="vm.status != this.VirtualMachineStates.staticDELETED">
-                    <a class="font-weight-bold font-xs btn-block text-muted"
-                       [id]="'deleteVMButton_' + vm?.name"
-                       (click)="selectedVm=vm;verifyModal.show();" href="#" onClick="return false;">
-                      &lt;delete vm&gt;
-                    </a>
+                    <div class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+                       [id]="'deleteVMButton_' + vm?.name" (click)="selectedVm=vm;verifyModal.show();">
+                      Delete VM
+                    </div>
                   </div>
 
 
