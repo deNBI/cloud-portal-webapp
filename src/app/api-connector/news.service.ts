@@ -67,6 +67,7 @@ export class NewsService {
 
   getNewsFromWP(): Observable<any> {
     const params: HttpParams = new HttpParams()
+
     return this.http.get(`${ApiSettings.getApiBaseURL()}wp-news-management/`, {
       withCredentials: true,
       headers: header,
