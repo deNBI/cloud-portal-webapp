@@ -65,46 +65,46 @@
       <div *ngIf="isSearching" id="search_spinner" style="margin:10px; padding:10px;">
         <div class="spinner-border text-primary" style="display:block; margin:auto;"></div>
       </div>
-      <div class="table-responsive" style="overflow-x: visible; overflow-y: visible">
-        <table class="table table-hover">
-          <thead>
-          <tr>
-            <th>Project</th>
-            <th>Attached To</th>
-            <th>Name</th>
-            <th>Status</th>
-            <th>Size</th>
-            <th>Actions</th>
-            <!-- th>Client</th-->
+      <div class="rTable" style="overflow-x: visible; overflow-y: visible">
+        <div class="rTableHeading">
+          <div class="rTableHead col-2">Project</div>
+          <div class="rTableHead col-2">Attached To</div>
+          <div class="rTableHead col-2">Name</div>
+          <div class="rTableHead col-2">Status</div>
+          <div class="rTableHead col-1">Size</div>
+          <div class="rTableHead col-2">Actions</div>
+          <div class="rTableHead col-1">
+            <input type="checkbox" [checked]="all_volumes_checked" (change)="changeCheckAllVolumes()"><strong style="margin-left: 2px;">Select all</strong>
+          </div>
 
-          </tr>
+        </div>
 
-          </thead>
-          <tbody id="volume_table_body">
-          <tr *ngFor="let volume of volumes">
-            <td>{{volume.volume_project}}</td>
-            <td *ngIf="volume.volume_virtualmachine && volume.volume_status == VolumeStates.staticIN_USE"
-                [id]="'cell_vm_id_' + volume.volume_virtualmachine.name"><span *ngIf="volume.volume_path">
+        <div class="rTableRow" *ngFor="let volume of volumes">
+          <div class="rTableCell ">{{volume.volume_project}}</div>
+          <div class="rTableCell "
+               *ngIf="volume.volume_virtualmachine && volume.volume_status == VolumeStates.staticIN_USE"
+               [id]="'cell_vm_id_' + volume.volume_virtualmachine.name"><span *ngIf="volume.volume_path">
                 <strong>Initial mounted to: </strong>/mnt/{{volume.volume_path }} <br></span>
-              <strong>Device: </strong>{{volume.volume_device }}  <br><strong>VM:</strong><a class="h5 text-primary"
-                                                                        [routerLink]="['/virtualmachines/detail/' + volume.volume_virtualmachine?.openstackid]">
-                {{ volume.volume_virtualmachine.name}}</a>
-            </td>
-            <td *ngIf="!volume.volume_virtualmachine || volume.volume_status != VolumeStates.staticIN_USE "
-                id="cell_vm_free_id"></td>
-            <td id="cell_name_id_{{volume.volume_name}}">{{volume.volume_name}}</td>
+            <strong>Device: </strong>{{volume.volume_device }}  <br><strong>VM:</strong><a class="h5 text-primary"
+                                                                                           [routerLink]="['/virtualmachines/detail/' + volume.volume_virtualmachine?.openstackid]">
+              {{ volume.volume_virtualmachine.name}}</a>
+          </div>
+          <div class="rTableCell "
+               *ngIf="!volume.volume_virtualmachine || volume.volume_status != VolumeStates.staticIN_USE "
+               id="cell_vm_free_id"></div>
+          <div class="rTableCell " id="cell_name_id_{{volume.volume_name}}">{{volume.volume_name}}</div>
 
-            <td style="margin: auto;" [ngSwitch]="volume?.volume_status">
+          <div class="rTableCell " style="margin: auto;" [ngSwitch]="volume?.volume_status">
 
-              <ng-container *ngSwitchCase="VolumeStates.staticAVAILABLE">
-                <div [id]="'available_' + volume?.volume_name"
-                     class="dot-colorless bg-success pulseAnim" style="width: 10px; height: 10px">
-                </div>
-                <strong> {{VolumeStates.staticAVAILABLE}}</strong>
-              </ng-container>
-              <ng-container *ngSwitchCase="VolumeStates.staticDETACHING">
-                <div [id]="'detaching_' + volume?.volume_name"
-                     class="dot-colorless bg-warning" style="width: 10px; height: 10px">
+            <ng-container *ngSwitchCase="VolumeStates.staticAVAILABLE">
+              <div [id]="'available_' + volume?.volume_name"
+                   class="dot-colorless bg-success pulseAnim" style="width: 10px; height: 10px">
+              </div>
+              <strong> {{VolumeStates.staticAVAILABLE}}</strong>
+            </ng-container>
+            <ng-container *ngSwitchCase="VolumeStates.staticDETACHING">
+              <div [id]="'detaching_' + volume?.volume_name"
+                   class="dot-colorless bg-warning" style="width: 10px; height: 10px">
                 </div>
                 <strong> {{VolumeStates.staticDETACHING}}</strong>
               </ng-container>
@@ -153,30 +153,31 @@
                 <p class="alert alert-danger" role="alert"> Please contact <a href="mailto:cloud@denbi.de">cloud@denbi.de</a>.</p>
 
               </ng-container>
-              <ng-container *ngSwitchCase="VolumeStates.staticERROR">
+            <ng-container *ngSwitchCase="VolumeStates.staticERROR">
                 <span [id]="'not_found_badge_' + volume?.volume_name"
                       class="dot-colorless bg-danger" style="width: 10px; height: 10px">
                 </span>
-                <strong> {{VolumeStates.staticERROR}}</strong><br>
-                <p class="alert alert-danger" role="alert"> Please contact <a href="mailto:cloud@denbi.de">cloud@denbi.de</a>.</p>
+              <strong> {{VolumeStates.staticERROR}}</strong><br>
+              <p class="alert alert-danger" role="alert"> Please contact <a
+                href="mailto:cloud@denbi.de">cloud@denbi.de</a>.</p>
 
-              </ng-container>
-              <i *ngIf="VolumeStates.staticNOT_IN_PROCESS_STATE.indexOf(volume?.volume_status) === -1"
-                 class="fa fa-spinner fa-spin"></i></td>
+            </ng-container>
+            <i *ngIf="VolumeStates.staticNOT_IN_PROCESS_STATE.indexOf(volume?.volume_status) === -1"
+               class="fa fa-spinner fa-spin"></i></div>
 
 
-            <td>{{volume.volume_storage }} GB</td>
-            <td>
-              <div *ngIf="(volume.volume_created_by_user
+          <div class="rTableCell ">{{volume.volume_storage }} GB</div>
+          <div class="rTableCell ">
+            <div *ngIf="(volume.volume_created_by_user
                || showFacilities)
                && VolumeStates.staticNO_ACTIONS.indexOf(volume?.volume_status) === -1"
-                   class="btn-group" dropdown>
-                <button class="btn btn-secondary"
-                        (click)="setRequestStatus(0);setSelectedVolume(volume);verifyModal.show();"
-                        type="button" id="delete_button">Delete Volume
-                </button>
-                <button class="btn btn-secondary dropdown-toggle dropdown-toggle-split"
-                        type="button" aria-haspopup="true" aria-expanded="false"
+                 class="btn-group" dropdown>
+              <button class="btn btn-secondary"
+                      (click)="setRequestStatus(0);setSelectedVolume(volume);verifyModal.show();"
+                      type="button" id="delete_button">Delete Volume
+              </button>
+              <button class="btn btn-secondary dropdown-toggle dropdown-toggle-split"
+                      type="button" aria-haspopup="true" aria-expanded="false"
                         dropdownToggle aria-controls="dropdown-split"></button>
                 <ul class="dropdown-menu" style="cursor: pointer" role="menu" *dropdownMenu>
                   <li *ngIf="volume.volume_virtualmachine && volume.volume_status != VolumeStates.staticERROR"
@@ -204,18 +205,20 @@
                       Volume</a>
                   </li>
                 </ul>
-              </div>
+            </div>
 
 
-            </td>
+          </div>
+          <div class="rTableCell ">  <input type="checkbox" [checked]="isVolChecked(volume)" (change)="changeCheckedVolume(volume)"  *ngIf="(volume.volume_created_by_user
+               || showFacilities)
+               && VolumeStates.staticNO_ACTIONS.indexOf(volume?.volume_status) === -1"></div>
 
-            <!-- td>{{volume.volume_client.host}} : {{volume.volume_client.port}}</td-->
 
-          </tr>
+          <!-- td>{{volume.volume_client.host}} : {{volume.volume_client.port}}</td-->
 
-          </tbody>
+        </div>
 
-        </table>
+
       </div>
 
 
