@@ -13,6 +13,7 @@ import {GroupService} from '../../../api-connector/group.service';
 import {ClientService} from '../../../api-connector/client.service';
 import {Clusterinfo} from '../clusterinfo';
 import {ClusterinfoComponent} from '../clusterinfo/clusterinfo.component';
+import {ClipboardService} from "ngx-clipboard";
 
 /**
  * Cluster overview componentn.
@@ -85,7 +86,8 @@ export class ClusterOverviewComponent implements OnInit, OnDestroy {
 
   constructor(private facilityService: FacilityService,
               private imageService: ImageService, private userservice: UserService,
-              private virtualmachineservice: VirtualmachineService, private fb: FormBuilder
+              private virtualmachineservice: VirtualmachineService, private fb: FormBuilder,
+              private clipboardService: ClipboardService
   ) {
 
   }
@@ -109,12 +111,9 @@ export class ClusterOverviewComponent implements OnInit, OnDestroy {
   }
 
   copyToClipboard(text: string): void {
-    document.addEventListener('copy', (clipEvent: ClipboardEvent) => {
-      clipEvent.clipboardData.setData('text/plain', (text));
-      clipEvent.preventDefault();
-      document.removeEventListener('copy', null);
-    });
-    document.execCommand('copy');
+    if (this.clipboardService.isSupported) {
+      this.clipboardService.copy(text);
+    }
   }
 
   get_is_facility_manager(): void {

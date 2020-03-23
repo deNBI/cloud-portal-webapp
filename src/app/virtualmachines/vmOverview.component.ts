@@ -174,7 +174,6 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
     if (this.clipboardService.isSupported) {
       this.clipboardService.copy(text);
     }
-
   }
 
 
