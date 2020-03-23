@@ -24,6 +24,7 @@ enum Snapshot_Delete_Statuses {
 
 export class SnapshotOverviewComponent implements OnInit {
   WIKI_SNAPSHOTS: string = WIKI_SNAPSHOTS;
+  checked_snapshots: SnapshotModel [] = [];
 
   title: string = 'Snapshot Overview';
 
@@ -64,6 +65,7 @@ export class SnapshotOverviewComponent implements OnInit {
   isLoaded: boolean = false;
   filterChanged: Subject<string> = new Subject<string>();
   filter: string;
+  all_snapshots_checked: boolean = false;
 
   private checkStatusTimeout: number = 5000;
 
@@ -106,6 +108,24 @@ export class SnapshotOverviewComponent implements OnInit {
       this.checkSnapShotsStatus();
       this.isSearching = false;
     })
+  }
+
+  changeCheckAllSnapshots(): void {
+    if (this.all_snapshots_checked) {
+      this.checked_snapshots = [];
+      this.all_snapshots_checked = false;
+
+      return;
+
+    }
+
+    this.snapshots.forEach((snap: SnapshotModel) => {
+      if (!this.isSnapChecked(snap)) {
+        this.checked_snapshots.push(snap);
+      }
+    });
+    this.all_snapshots_checked = true;
+
   }
 
   checkSnapShotsStatus(): void {
@@ -221,6 +241,47 @@ export class SnapshotOverviewComponent implements OnInit {
       this.selectedFacility = this.managerFacilities[0];
     });
 
+  }
+
+  areAllSnapshotsChecked(): void {
+    let all_checked: boolean = true;
+    this.snapshots.forEach((snap: SnapshotModel) => {
+      if (!this.isSnapChecked(snap)) {
+        all_checked = false;
+
+      }
+    });
+
+    this.all_snapshots_checked = all_checked;
+
+  }
+
+  changeCheckedSnapshot(snap: SnapshotModel): void {
+    if (!this.isSnapChecked(snap)) {
+      this.checked_snapshots.push(snap);
+
+    } else {
+      this.checked_snapshots.splice(this.checked_snapshots.indexOf(snap), 1)
+    }
+    this.areAllSnapshotsChecked();
+
+  }
+
+  isSnapChecked(snap: SnapshotModel): boolean {
+    return this.checked_snapshots.indexOf(snap) !== -1
+  }
+
+  deleteSelectedSnapshots(): void {
+    this.checked_snapshots.forEach((snap: SnapshotModel) => {
+      this.deleteSnapshot(snap.snapshot_openstackid)
+
+    });
+    this.uncheckAll()
+  }
+
+  uncheckAll(): void {
+    this.checked_snapshots = [];
+    this.all_snapshots_checked = false;
   }
 
   /**
