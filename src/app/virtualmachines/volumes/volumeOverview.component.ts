@@ -142,6 +142,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
   currentPage: number = 1;
   isSearching: boolean = true;
   all_volumes_checked: boolean = false;
+  selected_volumes_to_detach: boolean = false;
 
   constructor(private facilityService: FacilityService, private groupService: GroupService, private vmService: VirtualmachineService) {
     super();
@@ -170,11 +171,48 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
       this.checked_volumes.splice(this.checked_volumes.indexOf(vol), 1)
     }
     this.areAllVolumesChecked();
+    this.areSelectedVolumesDetachable()
 
   }
 
+  areSelectedVolumesDetachable(): void {
+    this.selected_volumes_to_detach = false;
+    this.checked_volumes.forEach((vol: Volume) => {
+      if (vol.volume_virtualmachine) {
+        this.selected_volumes_to_detach = true;
+      }
+    })
+  }
+
+  uncheckAll(): void {
+    this.checked_volumes = [];
+    this.all_volumes_checked = false;
+    this.selected_volumes_to_detach = false;
+  }
+
+  deleteSelectedVolumes(): void {
+    this.checked_volumes.forEach((vol: Volume) => {
+      if (vol.volume_virtualmachine) {
+        this.deleteVolume(vol, vol.volume_virtualmachine.openstackid)
+      } else {
+        this.deleteVolume(vol)
+      }
+    });
+    this.uncheckAll()
+  }
+
+  detachSelectedVolumes(): void {
+    this.checked_volumes.forEach((vol: Volume) => {
+
+      if (vol.volume_virtualmachine) {
+        this.detachVolume(vol, vol.volume_virtualmachine.openstackid)
+      }
+    });
+    this.uncheckAll()
+  }
+
   areAllVolumesChecked(): void {
-    const all_checked: boolean = true;
+    let all_checked: boolean = true;
     this.volumes.forEach((vol: Volume) => {
       if (!this.isVolChecked(vol)) {
         all_checked = false;
@@ -201,6 +239,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
       }
     });
     this.all_volumes_checked = true;
+    this.areSelectedVolumesDetachable()
 
   }
 
