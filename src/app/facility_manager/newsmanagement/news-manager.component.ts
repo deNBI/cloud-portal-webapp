@@ -61,7 +61,7 @@ export class NewsManagerComponent implements OnInit {
     const facility_ids: string[] = this.selectedFacilities.map((facility: [string, number]) => facility['FacilityId'].toString());
     this.newsService.getNewsFromWordpress(facility_ids.toString()).subscribe((result: any) => {
       console.log(result);
-    })
+    });
   }
 
   controlToNews(): void {
@@ -88,6 +88,12 @@ export class NewsManagerComponent implements OnInit {
         this.error_string = error[0];
       }
     );
+  }
+
+  getWordPressNews(): void {
+    this.newsService.getNewsFromWP().subscribe((result: any) => {
+      console.log(result);
+    })
   }
 
   returnPlainText(htmlAsString: string): string {
