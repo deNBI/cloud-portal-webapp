@@ -53,6 +53,9 @@ export class VMOverviewPage {
   private vm_names: { [key: string]: string } = {};
   private name_counter: number = 0;
 
+  /**
+   * Navigates to the VM Overview page.
+   */
   async navigateToOverview(): Promise<any> {
     Util.logMethodCall('Navigating to VM Overview Page');
     await Util.navigateToAngularPage(this.VM_OVERVIEW_URL);
@@ -61,18 +64,30 @@ export class VMOverviewPage {
     return await browser.driver.sleep(10000);
   }
 
+  /**
+   * Sets the basic vm name for the component.
+   * @param name
+   */
   async setBasicVMName(name: string): Promise<any> {
     Util.logMethodCall(`Setting basic vm name as ${name}`);
     this.vm_names[this.BASIC_VM_NAME_KEY] = name;
     this.name_counter += 1;
   }
 
+  /**
+   * Sets the volume name for the component.
+   * @param name
+   */
   async setVolumeVMName(name: string): Promise<any> {
     Util.logMethodCall(`Setting volume vm name as ${name}`);
     this.vm_names[this.VOLUME_VM_NAME_KEY] = name;
     this.name_counter += 1;
   }
 
+  /**
+   * Checks if vm is active.
+   * @param name Name of the vm
+   */
   async isVmActive(name: string): Promise<boolean> {
     Util.logMethodCall(`Checking if ${name} is active`);
     await Util.waitForPresenceOfElementById(this.TABLE_ID);
@@ -80,10 +95,16 @@ export class VMOverviewPage {
     return await Util.waitForPresenceOfElementById(`${this.ACTIVE_BADGE_PREFIX}${name}`, this.LONG_TIMEOUT);
   }
 
+  /**
+   * Checks if the vm with the basis name is active.
+   */
   async isBasicVMActive(): Promise<boolean> {
     return await this.isVmActive(this.vm_names[this.BASIC_VM_NAME_KEY]);
   }
 
+  /**
+   * Checks if all vms are active.
+   */
   async areAllVMActive(): Promise<boolean> {
     Util.logMethodCall(`Checking active for ${this.name_counter} active vm`);
 
@@ -101,6 +122,10 @@ export class VMOverviewPage {
     return true;
   }
 
+  /**
+   * Checks if vm is shutoff.
+   * @param name Name of the vm
+   */
   async isVMShutoff(name: string): Promise<boolean> {
     Util.logMethodCall(`Checking if ${name} is shutoff`);
     await Util.waitForPresenceOfElementById(this.TABLE_ID);
@@ -108,15 +133,17 @@ export class VMOverviewPage {
     return await Util.waitForPresenceOfElementById(`${this.SHUTOFF_BADGE_PREFIX}${name}`, this.LONG_TIMEOUT);
   }
 
+  /**
+   * Checks if  vm with basic name is shutoff.
+   */
   async isBasicVMShutoff(): Promise<boolean> {
     return await this.isVMShutoff(this.vm_names[this.BASIC_VM_NAME_KEY]);
   }
 
-  async showDeleted(): Promise<any> {
-    console.log('Showing all deleted VM');
-    await Util.clickElementById(this.CHECKBOX_DELETED);
-  }
-
+  /**
+   * Checks if vm is deleted.
+   * @param name Name of the vm
+   */
   async isVMDeleted(name: string): Promise<boolean> {
     Util.logMethodCall(`Checking if ${name} is deleted`);
 
@@ -125,14 +152,10 @@ export class VMOverviewPage {
     return await Util.waitForPresenceOfElementById(`${this.DELETED_BADGE_PREFIX}${name}`);
   }
 
-  async isBasicVMDeleted(): Promise<boolean> {
-    return await this.isVMDeleted(this.vm_names[this.BASIC_VM_NAME_KEY]);
-  }
-
-  async isVolumeVMDeleted(): Promise<boolean> {
-    return await this.isVMDeleted(this.vm_names[this.VOLUME_VM_NAME_KEY]);
-  }
-
+  /**
+   * Shutoff a vm.
+   * @param name name of the vm
+   */
   async shutoffVM(name: string): Promise<any> {
     Util.logMethodCall(`Shutting off ${name}`);
     await Util.waitForPresenceOfElementById(`${this.ACTIVE_BADGE_PREFIX}${name}`);
@@ -145,10 +168,17 @@ export class VMOverviewPage {
     Util.logMethodCall(`Shutoff method for ${name} completed`)
   }
 
+  /**
+   * Shutoff the vm with the basic name.
+   */
   async shutOffBasicVM(): Promise<any> {
     return await this.shutoffVM(this.vm_names[this.BASIC_VM_NAME_KEY]);
   }
 
+  /**
+   * Resume a vm.
+   * @param name Name of the vm.
+   */
   async resumeVM(name: string): Promise<any> {
     Util.logMethodCall(`Resume vm ${name}`);
     await Util.waitForPresenceOfElementById(`${this.SHUTOFF_BADGE_PREFIX}${name}`);
@@ -160,10 +190,16 @@ export class VMOverviewPage {
     Util.logMethodCall(`Resuming method for ${name} completed`)
   }
 
+  /**
+   * Resume the basic vm.
+   */
   async resumeBasicVM(): Promise<any> {
     return await this.resumeVM(this.vm_names[this.BASIC_VM_NAME_KEY]);
   }
 
+  /**
+   * Gets the name of the basic vm.
+   */
   async getBasicVMName(): Promise<string> {
     if (this.vm_names[this.BASIC_VM_NAME_KEY]) {
       return this.vm_names[this.BASIC_VM_NAME_KEY];
@@ -172,14 +208,10 @@ export class VMOverviewPage {
     }
   }
 
-  async getVolumeVMName(): Promise<string> {
-    if (this.vm_names[this.VOLUME_VM_NAME_KEY]) {
-      return this.vm_names[this.VOLUME_VM_NAME_KEY];
-    } else {
-      return '';
-    }
-  }
-
+  /**
+   * Delete a vm.
+   * @param name Name of the vm.
+   */
   async deleteVM(name: string): Promise<any> {
     Util.logMethodCall(`Deleting ${name}`);
     if (element(by.id(`${this.SHOW_ACTIONS_PREFIX}${name}`)).isPresent()) {
@@ -194,14 +226,24 @@ export class VMOverviewPage {
     Util.logMethodCall(`Deletion method for ${name} completed`)
   }
 
+  /**
+   * Deletes the basic vm.
+   */
   async deleteBasicVM(): Promise<any> {
     return await this.deleteVM(this.vm_names[this.BASIC_VM_NAME_KEY]);
   }
 
+  /**
+   * Delete the volume vm.
+   */
   async deleteVolumeVM(): Promise<any> {
     return await this.deleteVM(this.vm_names[this.VOLUME_VM_NAME_KEY]);
   }
 
+  /**
+   * Creates a snapshot from a vm.
+   * @param name Name of the vm.
+   */
   async createSnapshotOfVM(name: string): Promise<any> {
     Util.logMethodCall(`Creating snapshot of ${name}`);
 
@@ -218,11 +260,17 @@ export class VMOverviewPage {
     Util.logMethodCall(`Creating snapshot method for ${name} completed`);
   }
 
+  /**
+   * Creats a snapshot from the basic vm.
+   */
   async createSnapshotOfBasicVM(): Promise<any> {
     return await this.createSnapshotOfVM(this.vm_names[this.BASIC_VM_NAME_KEY]);
 
   }
 
+  /**
+   * Navigate to the vm detail page of the basic vm.
+   */
   async goToVmDetail(): Promise<any> {
     Util.logMethodCall(`Going to VM Detail page for ${this.vm_names[this.BASIC_VM_NAME_KEY]}`);
     const vm_name: string = await this.getBasicVMName();

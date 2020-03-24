@@ -13,7 +13,14 @@ const header: HttpHeaders = new HttpHeaders({
  */
 @Injectable()
 export class PlaybookService {
+  /**
+   * Date for playbook.
+   */
   data: string;
+
+  /**
+   * API playbook endpoint.
+   */
   baseUrl: string = `${ApiSettings.getApiBaseURL()}playbooks/`;
 
   constructor(private http: HttpClient) {

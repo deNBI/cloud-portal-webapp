@@ -45,22 +45,34 @@ export class ProjectOverview {
   private static REMOVE_APPLICATION_MODAL: string = 'remove_application_modal';
   private static CONFIRM_REMOVE_APPLICATION_BUTTON: string = 'confirm_remove_application_button';
 
+  /**
+   * Navigates to the simple project overview.
+   */
   static async navigateToSimpleProjectverview(): Promise<any> {
     console.log('Navigating to simple project overview');
     await Util.clickElementById(Util.SIMPLE_VM_APPLICATION_NAME)
   }
 
+  /**
+   * Navigates to the openstack project overview.
+   */
   static async navigateToOpenStackeProjectverview(): Promise<any> {
     console.log('Navigating to openstack project overview');
     await Util.clickElementById(Util.OPENSTACK_APPLICATION_NAME)
   }
 
+  /**
+   * Checks if the dissemination is set.
+   */
   static async isDisseminationSet(): Promise<any> {
     Util.logMethodCall('Check if dissemination is set');
     await Util.waitForTextPresenceInElementById(this.DISSEMINATION_INFORMATION_LIST, this.DEFAULT_INFORMATION_DISSEMINATION_STRING);
     await Util.waitForTextPresenceInElementById(this.DISSEMINATION_PLATFORM_LIST, this.DEFAULT_PLATFORM_DISSEMINATION_STRING);
   }
 
+  /**
+   * Checks if the application is pi approved.
+   */
   static async hasPi(): Promise<boolean> {
     Util.logMethodCall('Check if pi is set');
     await Util.clickElementById(this.SHOW_INFORMATION_BTN);
@@ -72,6 +84,11 @@ export class ProjectOverview {
 
   }
 
+  /**
+   * Adds a member to a project
+   * @param application_name Name of the project
+   * @param member Name of the member
+   */
   static async addMemberToProject(application_name: string, member: string = this.DEFAULT_MEMBER): Promise<any> {
     console.log('Open add member modal');
     await Util.clickElementById(this.ADD_MEMBER_BTN_MODAL);
@@ -85,6 +102,11 @@ export class ProjectOverview {
 
   }
 
+  /**
+   * Removes  a member from a project
+   * @param application_name Name of the project
+   * @param member name of the member
+   */
   static async removeMemberFromProject(application_name: string, member: string = this.DEFAULT_MEMBER): Promise<any> {
     await Util.clickElementById(this.REMOVE_MEMBER_PREFIX + member);
     await Util.waitForTextPresenceInElementById(this.NOTIFICATION_TITLE, this.SUCCESS);
@@ -95,6 +117,10 @@ export class ProjectOverview {
 
   }
 
+  /**
+   * Opens a modificaiton modal.
+   * @param appication_name Name of the application
+   */
   static async openModificationModal(appication_name: string): Promise<any> {
     await Util.clickElementById(this.EXTENSION_REQUEST_BTN);
     await Util.waitForPresenceOfElementById(this.HAS_DOI_BTN);
@@ -104,17 +130,27 @@ export class ProjectOverview {
     await Util.waitForPresenceOfElementById(this.RENEWAL_LIFETIME);
   }
 
+  /**
+   * Sends a modificaiton request
+   * @param application_name Name of the application
+   */
   static async sendModificationRequest(application_name: string): Promise<any> {
     await Util.clickElementById(this.SUBMIT_RENEWAL_BTN);
     await Util.clickElementById(this.SUBMIT_MODAL_BTN);
     await Util.waitForTextPresenceInElementById(this.EXTENSION_RESULT, this.EXTENSION_SUCCESSFULLY_SUBMITTED);
   }
 
+  /**
+   * Checks if edam tag" Bioinformatics" is set
+   */
   static async isBioinformaticsSet(): Promise<any> {
     await Util.clickElementById(this.SHOW_INFORMATION_BTN);
     await Util.waitForPresenceOfElementById(this.BIOINFORMATICS_TOPIC);
   }
 
+  /**
+   * Checks if the default simple vm values are set in the modificaiton modal.
+   */
   static async areDefaultValuesSetSimpleVM(): Promise<any> {
     await Util.checkInputsByIdsGotSameValue(this.DENBI_DEFAULT_OLD_ID, this.DENBI_DEFAULT_NEW_INPUT);
     await Util.checkInputsByIdsGotSameValue(this.OLD_VOLUME_COUNTER_ID, this.NEW_VOLUME_COUNTER_ID);
@@ -122,6 +158,9 @@ export class ProjectOverview {
 
   }
 
+  /**
+   * Checks if the default openstack values are set in the modificaiton modal.
+   */
   static async areDefaultValuesSetOpenstack(): Promise<any> {
     await Util.checkInputsByIdsGotSameValue(this.DENBI_DEFAULT_OLD_ID, this.DENBI_DEFAULT_NEW_INPUT);
     await Util.checkInputsByIdsGotSameValue(this.OLD_VOLUME_COUNTER_ID, this.NEW_VOLUME_COUNTER_ID);
@@ -130,6 +169,9 @@ export class ProjectOverview {
 
   }
 
+  /**
+   * Checks if the total cores and ram got the right values.
+   */
   static async checkTotalCoresRam(): Promise<any> {
     Util.logMethodCall('Check cores and ram');
     const counter: string = await Util.getInputValueById(this.DENBI_DEFAULT_NEW_INPUT);
@@ -144,6 +186,9 @@ export class ProjectOverview {
 
   }
 
+  /**
+   * Fills the modification request with the default values.
+   */
   static async fillModificationRequest(): Promise<any> {
     await Util.sendTextToElementById(this.RENEWAL_LIFETIME, '1');
     await Util.sendTextToElementById(this.DENBI_DEFAULT_NEW_INPUT, '2');
@@ -152,6 +197,9 @@ export class ProjectOverview {
     await Util.sendTextToElementById('id_project_application_renewal_comment', 'This is a Protrector test modificatioN!');
   }
 
+  /**
+   * Removes an applicaiton.
+   */
   static async removeApplication(): Promise<any> {
     await Util.clickElementById(this.REMOVE_APPLICATION_BUTTON);
     await Util.waitForPresenceOfElementById(this.REMOVE_APPLICATION_MODAL);

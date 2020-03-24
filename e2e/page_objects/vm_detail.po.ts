@@ -42,15 +42,18 @@ export class VMDetailPage {
   private VERIFY_RESTART_MODAL: string = 'submitRestartModal';
   private SUBMIT_STOP_MODAL: string = 'submitStopVmModal';
 
+  /**
+   * Set the  basic vm name
+   * @param name
+   */
   async setBasicVMName(name: string): Promise<any> {
     Util.logMethodCall(`Setting basic vm name as ${name}`);
     this.VM_NAME = name;
   }
 
-  getVmName(): string {
-    return this.VM_NAME;
-  }
-
+  /**
+   * Stops the basic vm.
+   */
   async stopBasicVM(): Promise<any> {
     Util.logMethodCall(`Stopping Basic vm ${this.VM_NAME}`);
     await Util.waitForElementToBeClickableById(this.SHUTOFF_BUTTON, Util.LONG_TIMEOUT);
@@ -62,6 +65,9 @@ export class VMDetailPage {
     Util.logMethodCall('Stopping of Basic VM completed');
   }
 
+  /**
+   * Restarts the basic vm.
+   */
   async restartBasicVM(): Promise<any> {
     Util.logMethodCall('Restarting basic VM');
     await Util.waitForElementToBeClickableById(this.RESUME_BUTTON, Util.LONG_TIMEOUT);
@@ -74,6 +80,9 @@ export class VMDetailPage {
 
   }
 
+  /**
+   * Creats a snapshot from the basic vm.
+   */
   async createSnapshotBasicVM(): Promise<any> {
     Util.logMethodCall('Creating Snapshot of basic VM');
     await Util.waitForElementToBeClickableById(this.SNAPSHOT_BUTTON, Util.LONG_TIMEOUT);
@@ -87,6 +96,9 @@ export class VMDetailPage {
 
   }
 
+  /**
+   * Deletes the basic vm.
+   */
   async deleteBasicVM(): Promise<any> {
     Util.logMethodCall('Deleting Basic VM');
     await Util.waitForElementToBeClickableById(this.DELETE_BUTTON, Util.LONG_TIMEOUT);

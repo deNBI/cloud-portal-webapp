@@ -31,15 +31,24 @@ export class VolumeOverviewPage {
   private static SPACE_INPUT_ID: string = 'space_input_id';
   private static VERIFY_CA_BUTTON: string = 'verify_create_attach_button';
 
+  /**
+   * Navigate to the volume overview.
+   */
   static async navigateToVolumeOverview(): Promise<any> {
     Util.logMethodCall('Navigating to volume overview');
     await Util.navigateToAngularPage(this.VOLUME_OVERVIEW_URL);
   }
 
+  /**
+   * Checks if volume is present.
+   */
   static async isVolumePresent(): Promise<boolean> {
     return await Util.waitForPresenceOfElementById(`${this.VOLUME_NAME_CELL_ID_PREFIX}${Util.VOLUME_NAME}`);
   }
 
+  /**
+   * Delete volume.
+   */
   static async deleteVolume(): Promise<any> {
     Util.logMethodCall('Deleting Volume');
     await Util.clickElementByElement(element(by.id(this.TABLE_ID)).element(by.id(this.DELETE_BUTTON)));
@@ -47,6 +56,10 @@ export class VolumeOverviewPage {
     await Util.clickElementById(this.VERIFY_DELETION_BUTTON);
   }
 
+  /**
+   * Create volume and attach to vm.
+   * @param vm Name of the vm.
+   */
   static async createAndAttachVolumeToProjectVm(vm: string): Promise<any> {
     Util.logMethodCall(` creating and attach volume to project: ${Util.SIMPLE_VM_APPLICATION_NAME} vm: ${vm}`);
 
@@ -67,18 +80,28 @@ export class VolumeOverviewPage {
     await Util.waitForInvisibilityOfElementById(this.RESULT_MODAL);
   }
 
+  /**
+   * Checks if Volume is Deleted.
+   */
   static async isVolumeDeleted(): Promise<boolean> {
     await Util.waitForPresenceOfElementById(this.TABLE_ID);
 
     return await Util.waitForAbsenceOfElementById(`${this.VOLUME_NAME_CELL_ID_PREFIX}${Util.VOLUME_NAME}`);
   }
 
+  /**
+   * Checks if volume is attached to vm
+   * @param name Name of the vm.
+   */
   static async isVolumeAttachedToVM(name: string): Promise<boolean> {
     Util.logMethodCall(` checking if volume attached to ${name}`);
 
     return await Util.waitForPresenceOfElementById(`${this.VM_NAME_CELL_ID_PREFIX}${name}`);
   }
 
+  /**
+   * Checks if volume is available.
+   */
   static async isVolumeFree(): Promise<boolean> {
     Util.logMethodCall(` checking if volume is free`);
 

@@ -18,7 +18,14 @@ const header: HttpHeaders = new HttpHeaders({
  */
 @Injectable()
 export class VirtualmachineService {
+  /**
+   * Data for service.
+   */
   data: string;
+
+  /**
+   * Base API-Endpoint for the vms.
+   */
   baseVmUrl: string = `${ApiSettings.getApiBaseURL()}vms/`;
 
   constructor(private http: HttpClient) {

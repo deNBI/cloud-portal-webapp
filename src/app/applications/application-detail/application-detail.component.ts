@@ -27,9 +27,12 @@ export class ApplicationDetailComponent extends ApplicationBaseClassComponent im
    * @type {boolean}
    */
   creditsService: CreditsService;
-  is_vo_admin: boolean = false;
-  current_credits: number = 0;
-  credits_left_with_extra: number = 0;
+  /**
+   * If the user is vo admin.
+   */
+  public is_vo_admin: boolean = false;
+  private current_credits: number = 0;
+  private credits_left_with_extra: number = 0;
 
   constructor(applicationsservice: ApplicationsService,
               applicationstatusservice: ApplicationStatusService,

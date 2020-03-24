@@ -5,7 +5,6 @@ import {Observable} from 'rxjs';
 import {Cookie} from 'ng2-cookies/ng2-cookies';
 import {ResearchEnvironment} from '../virtualmachines/virtualmachinemodels/res-env';
 import {VirtualMachine} from '../virtualmachines/virtualmachinemodels/virtualmachine';
-import {Http} from '@angular/http';
 
 const header: HttpHeaders = new HttpHeaders({
                                               'X-CSRFToken': Cookie.get('csrftoken')

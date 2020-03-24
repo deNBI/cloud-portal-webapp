@@ -1,4 +1,4 @@
-import {by, element, browser} from 'protractor';
+import {by, element} from 'protractor';
 import {Util} from '../util';
 
 /**
@@ -17,32 +17,39 @@ export class ApplicationOverviewPage {
   private static NOTIFICATION_MESSAGE: string = 'notification_message';
   private static APPROVAL_PREFIX: string = 'approve_';
 
+  /**
+   * Navigates to the application overview site.
+   */
   static async navigateToApplicationOverview(): Promise<any> {
     console.log('Navigate to Application Overview form');
     await Util.navigateToAngularPage('applications');
     await Util.waitForPage('applications');
   }
 
+  /**
+   * Approves the openstack modification request.
+   * @param application_name
+   */
   static async approveOPModificationRequest(application_name: string): Promise<any> {
     await Util.clickElementById(this.EXTENSION_APPROVAL_BTN_PREFIX + application_name);
     await Util.waitForTextPresenceInElementById(this.EXTENSION_RESULT, this.EXTENSION_OP_SUCCESFULLY_APPROVED);
 
   }
 
+  /**
+   * Approves the simple vm modification request.
+   * @param application_name
+   */
   static async approveSVModificationRequest(application_name: string): Promise<any> {
     await Util.clickElementById(this.EXTENSION_APPROVAL_BTN_PREFIX + application_name);
     await Util.waitForTextPresenceInElementById(this.EXTENSION_RESULT, this.EXTENSION_SV_SUCCESSFULLY_APPROVED);
 
   }
 
-  static async isApplicationRequestPresent(application_name: string): Promise<boolean> {
-    await Util.waitForPage('applications');
-    await Util.waitForPresenceOfElementById(this.OWN_APPLICATION_ID);
-    const elm: any = element(by.id(application_name));
-
-    return await elm.isPresent()
-  }
-
+  /**
+   * Approves the simple vm application.
+   * @param application_name
+   */
   static async approveSimpleVm(application_name: string): Promise<any> {
     await Util.waitForPage('applications');
     await Util.clickElementById(this.APPROVAL_PREFIX + application_name);
@@ -51,6 +58,10 @@ export class ApplicationOverviewPage {
 
   }
 
+  /**
+   * Approves the openstack application.
+   * @param application_name
+   */
   static async approveCloudApplication(application_name: string): Promise<any> {
     await Util.waitForPage('applications');
     await Util.waitForPresenceOfElementById(this.COMPUTE_CENTER_SELECTION_PREFIX + application_name);

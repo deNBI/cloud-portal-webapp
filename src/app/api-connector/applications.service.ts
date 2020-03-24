@@ -20,13 +20,10 @@ export class ApplicationsService {
   constructor(private http: HttpClient) {
   }
 
-  getUserApplications(): Observable<any> {
-    return this.http.get(`${ApiSettings.getApiBaseURL()}users/current/project_applications/`, {
-      headers: header,
-      withCredentials: true
-    })
-  }
-
+  /**
+   * Get an applicaiton by hash
+   * @param hash hash to search for
+   */
   getApplicationValidationByHash(hash: string): Observable<any> {
 
     return this.http.get(`${ApiSettings.getApiBaseURL()}project_applications/validation/${hash}/`, {
@@ -35,6 +32,11 @@ export class ApplicationsService {
     })
   }
 
+  /**
+   * Validates an application by hash
+   * @param hash hash of the applicaiton
+   * @param data modified application data.
+   */
   validateApplicationAsPIByHash(hash: string, data: { [key: string]: string | number | boolean }): Observable<any> {
 
     return this.http.post(`${ApiSettings.getApiBaseURL()}project_applications/validation/${hash}/`, data, {
@@ -43,6 +45,11 @@ export class ApplicationsService {
     })
   }
 
+  /**
+   * Sets the dissemination of a applicaiton
+   * @param project_application_id id of the application
+   * @param dissemination Disseminationobject
+   */
   setApplicationDissemination(project_application_id: string | number, dissemination: ApplicationDissemination): Observable<any> {
     return this.http.post(`${ApiSettings.getApiBaseURL()}project_applications/${project_application_id}/dissemination/`,
                           dissemination, {
@@ -51,6 +58,10 @@ export class ApplicationsService {
                           })
   }
 
+  /**
+   * Deletes a dissemination form an application
+   * @param project_application_id Id of the application
+   */
   deleteApplicationDissemination(project_application_id: string | number): Observable<any> {
     return this.http.delete(`${ApiSettings.getApiBaseURL()}project_applications/${project_application_id}/dissemination/`,
                             {
@@ -59,13 +70,10 @@ export class ApplicationsService {
                             })
   }
 
-  getUserApplication(project_id: string | number): Observable<any> {
-    return this.http.get(`${ApiSettings.getApiBaseURL()}users/current/project_applications/${project_id}/`, {
-      headers: header,
-      withCredentials: true
-    })
-  }
-
+  /**
+   * Gets an application.
+   * @param app_id Id of the application.
+   */
   getApplication(app_id: string): Observable<any> {
     return this.http.get(`${ApiSettings.getApiBaseURL()}project_applications/${app_id}/`, {
       headers: header,
@@ -73,6 +81,10 @@ export class ApplicationsService {
     })
   }
 
+  /**
+   * Gets the perun id of an application.
+   * @param app_id Id of the application.
+   */
   getApplicationPerunId(app_id: string): Observable<any> {
     return this.http.get(`${ApiSettings.getApiBaseURL()}project_applications/${app_id}/perun/`, {
       headers: header,
@@ -80,6 +92,10 @@ export class ApplicationsService {
     })
   }
 
+  /**
+   * Gets a client from an applicaiton.
+   * @param app_id Id of the application
+   */
   getApplicationClient(app_id: string): Observable<any> {
     return this.http.get(`${ApiSettings.getApiBaseURL()}project_applications/${app_id}/client/`, {
       headers: header,
@@ -87,6 +103,9 @@ export class ApplicationsService {
     })
   }
 
+  /**
+   * Gets all edam terms.
+   */
   getEdamOntologyTerms(): Observable<EdamOntologyTerm[]> {
     return this.http.get<EdamOntologyTerm[]>(`${ApiSettings.getApiBaseURL()}edam_ontology/`, {
       headers: header,
@@ -94,6 +113,11 @@ export class ApplicationsService {
     })
   }
 
+  /**
+   * Add edam ontology term to an application.
+   * @param application_id id of the Applicaiton
+   * @param data EdamOntologyTerm array.
+   */
   addEdamOntologyTerms(application_id: number | string, data: EdamOntologyTerm[]): Observable<any> {
     const params: any = {edam_ontology_terms: data};
 
@@ -116,6 +140,9 @@ export class ApplicationsService {
     })
   }
 
+  /**
+   * Get all applications.
+   */
   getAllApplications(): Observable<any> {
     return this.http.get(`${ApiSettings.getApiBaseURL()}project_applications/`, {
       withCredentials: true,
@@ -125,6 +152,10 @@ export class ApplicationsService {
 
   }
 
+  /**
+   * Creates a new application.
+   * @param data Application data.
+   */
   addNewApplication(data: { [key: string]: string | number | boolean }): Observable<any> {
 
     return this.http.post(`${ApiSettings.getApiBaseURL()}project_applications/`, data, {
@@ -134,6 +165,10 @@ export class ApplicationsService {
 
   }
 
+  /**
+   * Requests a renewal.
+   * @param data renewaldata.
+   */
   requestRenewal(data: { [key: string]: string | number | boolean }): Observable<any> {
 
     return this.http.post(`${ApiSettings.getApiBaseURL()}applicationRenewals/`, data, {
@@ -143,6 +178,10 @@ export class ApplicationsService {
 
   }
 
+  /**
+   * Approves an application renewal.
+   * @param application_id Id of the applicaiton
+   */
   approveRenewal(application_id: number | string): Observable<any> {
 
     return this.http.post(`${ApiSettings.getApiBaseURL()}applicationRenewals/${application_id}/status/`, null, {
@@ -152,6 +191,10 @@ export class ApplicationsService {
 
   }
 
+  /**
+   * Declines an application renewal.
+   * @param application_id Id of the applicaiton
+   */
   declineRenewal(application_id: number | string): Observable<any> {
 
     return this.http.delete(`${ApiSettings.getApiBaseURL()}applicationRenewals/${application_id}/status/`, {
@@ -161,23 +204,10 @@ export class ApplicationsService {
 
   }
 
-  getAllApplicationsRenewalRequests(): Observable<any> {
-    return this.http.get(`${ApiSettings.getApiBaseURL()}applicationsRenewals/`, {
-      withCredentials: true,
-      headers: header
-
-    })
-
-  }
-
-  getApplicationsRenewalRequest(application_id: number): Observable<any> {
-    return this.http.get(`${ApiSettings.getApiBaseURL()}applicationsRenewals/${application_id}/`, {
-      withCredentials: true,
-      headers: header
-    })
-
-  }
-
+  /**
+   * Deletes an applicaiton.
+   * @param application_id Id of the application.
+   */
   deleteApplication(application_id: string | number): Observable<any> {
 
     return this.http.delete(`${ApiSettings.getApiBaseURL()}project_applications/${application_id}/`, {

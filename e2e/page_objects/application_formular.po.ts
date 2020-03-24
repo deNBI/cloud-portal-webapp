@@ -10,9 +10,16 @@ export class FormularPage {
   private static ACKNOWLEDGE_BTN: string = 'acknowledge_approve_btn';
   private static APPLICATION_SUBMITTED: string = 'The application was submitted';
   private static NOTIFICATION_MESSAGE: string = 'notification_message';
-  public static NOTIFICATION_BTN_REDIRECT: string = 'notification_btn_redirect';
   private static NUMBER_FLAVORS: string = '3';
 
+  /**
+   * Notification btn redirect id.
+   */
+  public static NOTIFICATION_BTN_REDIRECT: string = 'notification_btn_redirect';
+
+  /**
+   * Clicks the submit btn and submits an application.
+   */
   static async submitApplication(): Promise<any> {
     console.log('Submit Application');
 
@@ -22,22 +29,36 @@ export class FormularPage {
     console.log('Submitted Application');
   }
 
+  /**
+   *  Navigates to the new cloud application site.
+   */
   static async navigateToCloudApplication(): Promise<any> {
     await Util.navigateToAngularPage('applications/newCloudApplication');
 
     return await Util.waitForPage('applications/newCloudApplication');
   }
 
+  /**
+   *  Navigates to the new simple vm application site.
+   */
   static async navigateToSimpleVmApplication(): Promise<any> {
     await Util.navigateToAngularPage('applications/newSimpleVmApplication');
     await Util.waitForPage('applications/newSimpleVmApplication');
 
   }
 
+  /**
+   * Wait till application is submitted.
+   */
   static async isApplicationSubmitted(): Promise<any> {
     return await Util.waitForTextPresenceInElementById(this.NOTIFICATION_MESSAGE, this.APPLICATION_SUBMITTED);
   }
 
+  /**
+   * Fills the application formular with default values.
+   * @param name Name of the applicaiton.
+   * @param is_pi If sent with pi.
+   */
   static async fillApplicationFormular(name: string, is_pi?: boolean): Promise<any> {
 
     // fill  Formular

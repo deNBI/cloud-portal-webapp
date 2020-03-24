@@ -1,4 +1,10 @@
 export interface IResponseTemplate {
+  /**
+   * Value of the response.
+   */
     value: string | number | boolean | string [];
-    error: string;
+  /**
+   * Error message of the response.
+   */
+  error: string;
 }

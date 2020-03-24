@@ -31,6 +31,9 @@ export class NewInstancePage {
   private static ADD_VOLUME_FORM_BUTTON: string = 'openAddVolumeFormButton';
   private static ADD_VOLUME_CONFIRMATION_BUTTON: string = 'addVolumeConfirmationButton';
 
+  /**
+   * Navigates to the new instance site.
+   */
   static async getNewInstanceTab(): Promise<any> {
     Util.logMethodCall('Navigating to New Instance Tab');
     await Util.navigateToAngularPage(this.NEW_INSTANCE_URL);
@@ -38,6 +41,9 @@ export class NewInstancePage {
     return await Util.waitForPage(this.NEW_INSTANCE_URL);
   }
 
+  /**
+   * Chooses the default project.
+   */
   static async chooseProject(): Promise<any> {
     await Util.waitForPresenceOfElementById('application_form');
 
@@ -52,18 +58,31 @@ export class NewInstancePage {
     }
   }
 
-  static async fillBasicForm(name: string= this.BASIC_VM_NAME): Promise<any> {
+  /**
+   * Fills the form with default values.
+   * @param name Name of the new vm.
+   */
+  static async fillBasicForm(name: string = this.BASIC_VM_NAME): Promise<any> {
     Util.logMethodCall('Fill new instance basic form');
 
     await this.fillMandatoryFormWith(name, this.DEFAULT_FLAVOR_TITLE, this.UBUNTU_18_TITLE);
   }
 
+  /**
+   * Fills the form with the default values, also for volume.
+   */
   static async fillBasicVolumeForm(): Promise<any> {
     Util.logMethodCall('Fill new instance basic volume form');
 
     await this.fillMandatoryFormWith(this.VOLUME_VM_NAME, this.DEFAULT_FLAVOR_TITLE, this.UBUNTU_18_TITLE);
   }
 
+  /**
+   * Fills the new vm form.
+   * @param instance_name Name of the new instance
+   * @param flavor flavor name to use
+   * @param image image name to use
+   */
   static async fillMandatoryFormWith(instance_name: string, flavor: string, image: string): Promise<any> {
     Util.logMethodCall('Fill new instance mandatory form');
 
@@ -75,6 +94,9 @@ export class NewInstancePage {
     await element(by.id(this.IMAGE_ID)).element(by.id(`${this.IMAGE_PREFIX}${image}`)).click();
   }
 
+  /**
+   * Press the submit btn and starts a new vm.
+   */
   static async submitAndStartVM(): Promise<any> {
     Util.logMethodCall('Submit and start VM');
 
@@ -83,15 +105,17 @@ export class NewInstancePage {
     // await Util.waitForPage('/virtualmachines/vmOverview')
   }
 
-  static async waitForConfirmation(): Promise<boolean> {
-    return await Util.waitForPresenceOfElementById(this.OVERVIEW_BUTTON, Util.LONG_TIMEOUT);
-  }
-
+  /**
+   * Waits till redirect modal is present.
+   */
   static async isRedirectModalPresent(): Promise<boolean> {
     return await Util.waitForPresenceOfElementById(this.REDIRECT_MODAL);
 
   }
 
+  /**
+   * Sets the volume default values.
+   */
   static async setVolume(): Promise<any> {
     Util.logMethodCall('Set Volume');
 
@@ -103,10 +127,9 @@ export class NewInstancePage {
     await Util.clickElementById(this.ADD_VOLUME_CONFIRMATION_BUTTON);
   }
 
-  static async closeInfoModal(): Promise<any> {
-    await Util.clickElementById(this.CLOSE_INFO_MODAL)
-  }
-
+  /**
+   * Get the name of the new started vm.
+   */
   static async getVMName(): Promise<string> {
     await Util.waitForPresenceOfElementById(this.REDIRECT_MODAL);
     await Util.waitForPresenceOfElementById(this.NEW_INSTANCE_NAME_SPAN);

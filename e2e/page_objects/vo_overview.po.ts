@@ -1,4 +1,4 @@
-import {browser, by, element, ElementFinder} from 'protractor';
+import {browser, by, element} from 'protractor';
 import {Util} from '../util';
 
 /**
@@ -15,17 +15,26 @@ export class VoOverviewPage {
   private static PROJECT_TERMINATED_MESSAGE: string = 'The project was terminated.';
   private static TERMINATE_BUTTON_TEXT: string = 'Terminate Project';
 
+  /**
+   * Navigates to the volume overview page.
+   */
   static async navigateToVolumeOverview(): Promise<any> {
     Util.logMethodCall('Navigating to vo overview');
     await Util.navigateToAngularPage(this.VO_OVERVIEW_URL);
   }
 
+  /**
+   * Filters for all PT projects.
+   */
   static async filterForPTProjets(): Promise<any> {
     Util.logMethodCall('Filter for PT Projects');
     await Util.sendTextToElementById(this.FILTER_PROJECT_NAME_INPUT, 'PT');
     await browser.sleep(2000)
   }
 
+  /**
+   * Gets all pt projects.
+   */
   static async getAllPTProjects(): Promise<any> {
     Util.logMethodCall('Get all PT projects');
     const ele: any = element(by.buttonText(this.TERMINATE_BUTTON_TEXT));
@@ -38,6 +47,10 @@ export class VoOverviewPage {
 
   }
 
+  /**
+   * Terminate project.
+   * @param terminateBtnId Id of the terminate btn.
+   */
   static async terminateProject(terminateBtnId: Element): Promise<any> {
     Util.logMethodCall(`Terminate Project ${terminateBtnId}`);
 

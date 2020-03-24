@@ -7,6 +7,13 @@ import {Util} from '../util';
 export class LoginPage {
   private static timeout: number = browser.params.timeout;
 
+  /**
+   * Logs into the portal.
+   * @param email email to use for login
+   * @param psw  password to use
+   * @param auth e.g google or uni
+   * @param relog if it should relog when a new test starts
+   */
   static async login(email: string, psw: string, auth: string, relog: boolean = false): Promise<any> {
 
     await browser.driver.get(browser.params.portal);
@@ -31,6 +38,11 @@ export class LoginPage {
     await Util.waitForPage('userinfo');
   }
 
+  /**
+   * Auth via google.
+   * @param email email to use
+   * @param psw password to use
+   */
   static async useGoogle(email: string, psw: string): Promise<any> {
     await element(by.className('metalist list-group')).click();
     // Input Email
@@ -47,6 +59,11 @@ export class LoginPage {
 
   }
 
+  /**
+   * Auth via uni bielefeld.
+   * @param email email to use
+   * @param psw password to use
+   */
   static async useUni(email: string, psw: string): Promise<any> {
     await Util.waitForPresenceOfElementById('query');
     await Util.sendTextToElementById('query', 'Bielefeld');
@@ -60,6 +77,9 @@ export class LoginPage {
     await Util.waitForPage('userinfo');
   }
 
+  /**
+   * Logs the user out.
+   */
   static async logOut(): Promise<any> {
     console.log('Restarting browser');
     await browser.restart();

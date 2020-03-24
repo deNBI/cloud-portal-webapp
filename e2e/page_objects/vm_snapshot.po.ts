@@ -16,6 +16,9 @@ export class SnapshotOverviewPage {
   private static VERIFY_MODAL: string = 'verify_modal';
   private static CONFIRM_DELETE: string = 'confirm_delete_button';
 
+  /**
+   * Navigate to the snapshot overview.
+   */
   static async navigateToSnapshotOverview(): Promise<any> {
     Util.logMethodCall('Navigating to Snapshot Overview Page');
     await Util.navigateToAngularPage(this.SNAPSHOT_OVERVIEW_URL);
@@ -24,6 +27,10 @@ export class SnapshotOverviewPage {
     return await browser.driver.sleep(10000);
   }
 
+  /**
+   * Checks if a snapshot is deleted.
+   * @param name Name of the snapshot
+   */
   static async isSnapshotDeleted(name: string): Promise<boolean> {
     Util.logMethodCall(`Checking if snapshot ${name} is absent`);
     await Util.waitForPresenceOfElementById(this.TABLE_ID, 10000);
@@ -31,10 +38,17 @@ export class SnapshotOverviewPage {
     return await Util.waitForAbsenceOfElementById(name);
   }
 
+  /**
+   * Checks if the basic snapshot is deleted.
+   */
   static async isBasicSnapshotDeleted(): Promise<boolean> {
     return await this.isSnapshotDeleted(Util.BASIC_SNAPSHOT_NAME);
   }
 
+  /**
+   * Checks if snapshot is present.
+   * @param name Name of the snapshot
+   */
   static async isSnapshotPresent(name: string): Promise<boolean> {
     Util.logMethodCall(`Checking if snapshot ${name} is present`);
     await Util.waitForPresenceOfElementById(this.TABLE_ID, 10000);
@@ -42,10 +56,17 @@ export class SnapshotOverviewPage {
     return await Util.waitForPresenceOfElementById(name);
   }
 
+  /**
+   * Checks if the basic snapshot is present.
+   */
   static async isBasicSnapshotPresent(): Promise<boolean> {
     return await this.isSnapshotPresent(Util.BASIC_SNAPSHOT_NAME);
   }
 
+  /**
+   * Checks if snapshot is active.
+   * @param name Name of the snapshot
+   */
   static async isSnapshotActive(name: string): Promise<boolean> {
     Util.logMethodCall(`Checking if snapshot ${name} is active`);
     await Util.waitForPresenceOfElementById(this.TABLE_ID, 1000000);
@@ -53,10 +74,17 @@ export class SnapshotOverviewPage {
     return await Util.waitForPresenceOfElementById(`${this.SNAPSHOT_ACTIVE_PREFIX}${name}`, Util.LONG_TIMEOUT);
   }
 
+  /**
+   * Checks if the basic snapshot is active.
+   */
   static async isBasicSnapshotActive(): Promise<boolean> {
     return await this.isSnapshotActive(Util.BASIC_SNAPSHOT_NAME);
   }
 
+  /**
+   * Delete a snapshot.
+   * @param name Name of the snapshot.
+   */
   static async deleteSnapshot(name: string): Promise<any> {
     Util.logMethodCall(`Deleting snapshot ${name}`);
     await Util.waitForPresenceOfElementById(this.TABLE_ID);
@@ -70,6 +98,9 @@ export class SnapshotOverviewPage {
     return await Util.waitForInvisibilityOfElementById(this.DELETE_MODAL);
   }
 
+  /**
+   * Delete the basic snapshots.
+   */
   static async deleteBasicSnapshot(): Promise<any> {
     await this.deleteSnapshot(Util.BASIC_SNAPSHOT_NAME);
   }
