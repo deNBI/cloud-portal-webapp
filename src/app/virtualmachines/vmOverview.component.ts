@@ -18,7 +18,7 @@ import {Client} from './clients/client.model';
 import {TemplateNames} from './conda/template-names';
 import {CondaPackage} from './condaPackage.model';
 import {PlaybookService} from '../api-connector/playbook.service';
-import {BiocondaService} from "../api-connector/bioconda.service";
+import {BiocondaService} from '../api-connector/bioconda.service';
 
 /**
  * Vm overview componentn.
@@ -504,8 +504,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
     this.biocondaService.getTemplateNameByVmName(vm).subscribe((result: any ) => {
       if (result) {
         this.resenvInformationByVM[vm.name] = result['template'];
-      }
-      else {
+      } else {
         this.resenvInformationByVM[vm.name] = '';
       }
       console.log(result);
@@ -515,10 +514,10 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
   showCopiedMessage(name: string): void {
     const span_id: string = name + 'resenvSpan';
     const innerHTML: string = document.getElementById(span_id).innerHTML;
-    document.getElementById(span_id).innerHTML = "Copied URL!";
+    document.getElementById(span_id).innerHTML = 'Copied URL!';
     setTimeout(function () {
       document.getElementById(span_id).innerHTML = innerHTML;
-    }, 1000);
+    },         1000);
   }
 
   prepareVMS(vms: any): void {
