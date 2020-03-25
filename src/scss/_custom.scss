@@ -122,6 +122,11 @@ $simplevmcolour: #00ADEF;
   border: 1px solid #999999;
 }
 
+.rTableCellNoBorder, .rTableHeadNoBorder {
+  display: table-cell;
+  padding: 3px 10px;
+}
+
 .rTableHeading {
   display: table-header-group;
   background-color: #DDD;

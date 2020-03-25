@@ -1,3 +1,23 @@
+##  (2020-03-19)
+
+
+#### Bug Fixes
+
+* **app:**  volume and name not shown when max vm, fm app history loads once ([836ec6d6](836ec6d6))
+* **dissemination:**  init with false instead null ([1bd72601](1bd72601))
+* **fm:**  os short apps, column width fixed ([b072fa77](b072fa77))
+* **instance overview:**  all machine func appends params ([a7a09a48](a7a09a48))
+* **mod-req:**  catch lifetime empty string ([ad1b8b08](ad1b8b08))
+
+#### Features
+
+* **InstanceOverview:** added clsuter filter for vo ([af624d8c](af624d8c))
+* **Volume:**
+  * mounted path and attach volumes by start ([d0a36646](d0a36646))
+  * added more infos ([f8d93651](f8d93651))
+* **WIKI:** added at snapshot overview ([f2f6e558](f2f6e558))
+* **application:**  openstack apps specify if service, mod req adjust user number if service ([8865e10e](8865e10e))
+
 ##  (2020-03-13)
 
 

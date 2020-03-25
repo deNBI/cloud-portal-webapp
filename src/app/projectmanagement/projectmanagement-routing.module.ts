@@ -5,11 +5,8 @@ import {OverviewComponent} from './overview.component';
 const routes: Routes = [
   {
     path: '',
-    component: OverviewComponent,
-    data: {
-      title: 'Project overview'
-    }
-
+    redirectTo: '/userinfo',
+    pathMatch: 'full'
   }
   , {
     path: ':id',
