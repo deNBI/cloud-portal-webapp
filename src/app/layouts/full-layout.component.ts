@@ -116,19 +116,16 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
     this.navbar_minimized = !this.navbar_minimized;
   }
 
-
   /**
    * Preferences: Suspended > Expires soon > modification requested > new
    * @param projEnum ProjectEnumeration which includes information about project in sidebar.
    */
   async badgeState(projEnum: ProjectEnumeration): Promise<number> {
 
-      if (projEnum.project_status === 'suspended') { return 2; }
-      else if (projEnum.project_status === 'approved') {
+      if (projEnum.project_status === 'suspended') { return 2; } else if (projEnum.project_status === 'approved') {
         if (this.getDaysLeft(projEnum) < 21) { return 1; }
         if (this.getDaysRunning(projEnum.project_start_date) < 8) { return 0; }
-      }
-      else if (projEnum.project_status === 'modification requested') { return 3; }
+      } else if (projEnum.project_status === 'modification requested') { return 3; }
 
       return -1;
   }
