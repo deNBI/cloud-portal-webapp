@@ -51,6 +51,7 @@ export class Application {
   private _PIElixir: string;
   private _PIEmail: string;
   private _CloudService: boolean;
+  private _CloudServiceDevelop: boolean;
   private _CloudServiceUserNumber: number;
   // todo own type!!!!!!!!!!!!
   private _CurrentFlavors: {
@@ -463,5 +464,13 @@ export class Application {
     } else {
       return this.InitialCredits
     }
+  }
+
+  get CloudServiceDevelop(): boolean {
+    return this._CloudServiceDevelop;
+  }
+
+  set CloudServiceDevelop(value: boolean) {
+    this._CloudServiceDevelop = value;
   }
 }
