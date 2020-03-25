@@ -482,31 +482,46 @@
               </div>
             </div>
             <div class="form-group row" *ngIf="openstack_project">
-              <label class="col-md-4 form-control-label" for="text-input"><strong>Cloud Service</strong></label>
+              <label class="col-md-4 form-control-label" for="text-input"><strong>Service</strong></label>
               <div class="col-md-8">
 
                 <label id="id_project_application_cloud_service"
                        class="switch switch-label switch-outline-primary-alt">
                   <input type="checkbox" class="switch-input"
                          name="project_application_cloud_service"
-                         [defaultChecked]="project_application_cloud_service_user_number > 0"
+                         [defaultChecked]="project_application_cloud_service_user_number > 0 || project_application_cloud_service_develop"
                          [(ngModel)]="project_application_cloud_service"
                   >
                   <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
                   <span class="switch-handle"></span></label>
                 <div class="alert alert-info" role="alert">
-                  Do you plan on offering a service?
+                  Do you plan to offer a service?
                 </div>
               </div>
             </div>
             <div class="form-group row" *ngIf="project_application_cloud_service">
+              <label class="col-md-4 form-control-label" for="text-input"><strong>New service*</strong></label>
+              <div class="col-md-8">
+
+                <label id="id_project_application_cloud_service_develop"
+                       class="switch switch-label switch-outline-primary-alt">
+                  <input type="checkbox" class="switch-input"
+                         name="project_application_cloud_service_develop"
+                         [defaultChecked]="project_application_cloud_service_user_number > 0 || project_application_cloud_service"
+                         [(ngModel)]="project_application_cloud_service_develop"
+                  >
+                  <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                  <span class="switch-handle"></span></label>
+                <div class="alert alert-info" role="alert">
+                  Are you developing a new service?
+                  <br>
+                  <strong>Note:</strong> if you plan to offer an existing service, please set this switch to No.
+                </div>
+              </div>
+            </div>
+            <div class="form-group row" *ngIf="!project_application_cloud_service_develop && project_application_cloud_service">
               <label class="col-md-4 form-control-label" for="textarea-input"><strong>Number
-                of service users*
-                <i
-                  data-balloon="The number of users you think will use your service."
-                  data-balloon-pos="right" data-balloon-length="large" style="z-index: 2000"><i
-                  class="icon-question"
-                  style="cursor: pointer;"></i></i></strong></label>
+                of service users*</strong></label>
               <div class="col-md-8">
                 <div class="input-group">
                   <input required class="form-control"
@@ -521,7 +536,9 @@
                                 'is-valid': f.controls.project_application_cloud_service_user_number?.valid
                                 }">
                 </div>
-                <span class="help-block">How many service users will probably use your service?</span>
+                <span class="help-block">How many service users will probably use your service?
+                  <br>
+                  <strong>Note:</strong> we define service users as <strong>unique useres per month.</strong></span>
               </div>
             </div>
 
