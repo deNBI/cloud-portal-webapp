@@ -13,7 +13,7 @@ import {GroupService} from '../../../api-connector/group.service';
 import {ClientService} from '../../../api-connector/client.service';
 import {Clusterinfo} from '../clusterinfo';
 import {ClusterinfoComponent} from '../clusterinfo/clusterinfo.component';
-import {ClipboardService} from "ngx-clipboard";
+import {ClipboardService} from 'ngx-clipboard';
 
 /**
  * Cluster overview componentn.
