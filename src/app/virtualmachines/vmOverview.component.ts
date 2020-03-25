@@ -18,7 +18,7 @@ import {Client} from './clients/client.model';
 import {TemplateNames} from './conda/template-names';
 import {CondaPackage} from './condaPackage.model';
 import {PlaybookService} from '../api-connector/playbook.service';
-import {ClipboardService} from "ngx-clipboard";
+import {ClipboardService} from 'ngx-clipboard';
 
 /**
  * Vm overview componentn.
@@ -169,13 +169,11 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 
   }
 
-
   copyToClipboard(text: string): void {
     if (this.clipboardService.isSupported) {
       this.clipboardService.copy(text);
     }
   }
-
 
   changeFilterStatus(status: string): void {
     this.currentPage = 1;
