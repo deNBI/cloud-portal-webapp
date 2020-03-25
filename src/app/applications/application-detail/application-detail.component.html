@@ -111,10 +111,10 @@
       </td>
     </tr>
     <tr *ngIf="application?.OpenStackProject && application?.CloudService">
-      <td>Service development status</td>
+      <td>Service status</td>
       <td>
-        <span *ngIf="application?.CloudServiceDevelop" class="badge badge-success">Yes</span>
-        <span *ngIf="!application?.CloudServiceDevelop" class="badge badge-danger">No</span>
+        <span *ngIf="application?.CloudServiceDevelop" class="badge badge-success">In development</span>
+        <span *ngIf="!application?.CloudServiceDevelop" class="badge badge-danger">Existing</span>
       </td>
       <td *ngIf="(application?.Status == application_states.MODIFICATION_REQUESTED || isModification) && !application?.ApplicationExtension?.IsOnlyExtraCreditsApplication">
       </td>
