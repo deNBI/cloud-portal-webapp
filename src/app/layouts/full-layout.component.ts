@@ -97,7 +97,7 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
   }
 
   ngOnInit(): void {
-    //this.getGroupsEnumeration();
+    this.getGroupsEnumeration();
     this.is_vm_project_member();
     this.get_is_facility_manager();
     this.getLoginName();
