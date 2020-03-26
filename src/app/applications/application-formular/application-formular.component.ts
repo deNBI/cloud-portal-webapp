@@ -54,6 +54,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
   project_application_comment: string = '';
   project_application_workshop: boolean = false;
   project_application_cloud_service: boolean = false;
+  project_application_cloud_service_develop: boolean = false;
   project_application_cloud_service_user_number: number = 0;
   all_dissemination_checked: boolean = false;
 
@@ -179,6 +180,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
       this.project_application_workshop = this.application.Workshop;
       this.project_application_cloud_service = this.application.CloudService;
       this.project_application_cloud_service_user_number = this.application.CloudServiceUserNumber;
+      this.project_application_cloud_service_develop = this.application.CloudServiceDevelop;
       this.initiated_validation = true
 
     }
@@ -425,6 +427,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
     values['project_application_sensitive_data'] = this.project_application_openstack_basic_introduction;
     values['project_application_cloud_service'] = this.project_application_cloud_service;
     values['project_application_cloud_service_user_number'] = this.project_application_cloud_service_user_number;
+    values['project_application_cloud_service_develop'] = this.project_application_cloud_service_develop;
 
     for (const value in form.controls) {
       if (form.controls[value].disabled) {

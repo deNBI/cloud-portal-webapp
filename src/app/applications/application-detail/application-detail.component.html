@@ -102,7 +102,7 @@
       </td>
     </tr>
     <tr *ngIf="application?.OpenStackProject">
-      <td>Cloud Service</td>
+      <td>Service</td>
       <td>
         <span *ngIf="application?.CloudService" class="badge badge-success">Yes</span>
         <span *ngIf="!application?.CloudService" class="badge badge-danger">No</span>
@@ -111,6 +111,15 @@
       </td>
     </tr>
     <tr *ngIf="application?.OpenStackProject && application?.CloudService">
+      <td>Service status</td>
+      <td>
+        <span *ngIf="application?.CloudServiceDevelop" class="badge badge-success">In development</span>
+        <span *ngIf="!application?.CloudServiceDevelop" class="badge badge-danger">Existing</span>
+      </td>
+      <td *ngIf="(application?.Status == application_states.MODIFICATION_REQUESTED || isModification) && !application?.ApplicationExtension?.IsOnlyExtraCreditsApplication">
+      </td>
+    </tr>
+    <tr *ngIf="application?.OpenStackProject && !application?.CloudServiceDevelop && application?.CloudService">
       <td> - approximate number of users</td>
       <td>
         <span>{{application?.CloudServiceUserNumber}}</span>
