@@ -382,34 +382,6 @@
                   <div class="col">
                     <app-bioconda #bioconda (hasTools)="hasChosenTools($event)"></app-bioconda>
                   </div>
-                  <div *ngIf="hasTools" class="col"
-                       [ngClass]="{
-                                'alert-danger': !gaveOkay,
-                                'alert-success': gaveOkay
-                                }">
-                    <div class="form-check">
-                      <input class="form-check-input"
-                             name="bioconda_need_okay"
-                             type="checkbox"
-                             id="bioconda_need_okay"
-                             [(ngModel)]="gaveOkay"
-                             #respCheck
-                             required
-                      >
-                      <label class="form-check-label" for="bioconda_need_okay">
-                        I hereby confirm that I read and acknowledge the following:<br>
-                        To set up your virtual machine with the chosen tools, we generate a new rsa-keypair which we use
-                        to
-                        log into your virtual machine.<br>
-                        We install Miniconda3, create a conda environment called 'denbi' and install your chosen
-                        tools.<br>
-                        For you convenience we initialize the .bashrc and set an alias, so that you are able to load the
-                        environment simply by typing 'denbi'.<br>
-                        When the installation is successful we delete our key and put your public key onto your virtual
-                        machine.
-                      </label>
-                    </div>
-                  </div>
                 </accordion-group>
 
                 <accordion-group #resEnvGroup *ngIf="has_forc &&( selectedProject && projectDataLoaded &&
@@ -485,10 +457,6 @@
                         <!--<span class="switch-handle"></span>-->
                       </label>
                     </div>
-                    <div class="alert alert-info" *ngIf="install_mosh">
-                      Please note, that to install MOSH, we have to place a temporarily created public key onto your machine.
-                      At the end of the installation process, we remove the temporary key and put your public key as the only key onto your machine, regardless of a successful or failing installation process.
-                    </div>
                   </div>
                 </accordion-group>
               </accordion>
@@ -497,10 +465,41 @@
 
         </div>
 
+        <div *ngIf="hasTools || install_mosh || resEnvOkayNeeded" class="row alert" style="margin: 15px"
+             [ngClass]="{
+                                'alert-danger': !gaveOkay,
+                                'alert-success': gaveOkay
+                                }">
+          <div class="form-check col">
+            <input class="form-check-input"
+                   name="ansible_need_okay"
+                   type="checkbox"
+                   id="ansible_need_okay"
+                   [(ngModel)]="gaveOkay"
+                   #respCheck
+                   required
+            >
+            <label class="form-check-label" for="ansible_need_okay">
+              I hereby confirm that I read and acknowledge the following:<br>
+              To set up your virtual machine with your chosen options, we generate a new rsa-keypair which we use
+              to log into your virtual machine.<br>
+              <strong>At the end of the installation process we will remove the temporary key from your machine and
+                copy your public key onto it, regardless of whether the installation of your selections will succeed
+                or fail.</strong><br><br>
+              <div *ngIf="hasTools"><strong>Conda specifics:</strong><br>
+                We install Miniconda3, create a conda environment called 'denbi' and install your chosen
+                tools.<br>
+                For you convenience we initialize the .bashrc and set an alias, so that you are able to load the
+                environment simply by typing 'denbi'.<br></div>
+            </label>
+          </div>
+        </div>
+
+
         <div
           *ngIf="
           ( !vm_name
-            || (!gaveOkay && hasTools)
+            || (!gaveOkay && (hasTools || install_mosh || resEnvOkayNeeded))
             || (!resEnvValid && resEnvComponent)
             || !selectedImage
             || (!selectedFlavor && flavors.length != 0 )
@@ -510,7 +509,7 @@
           && projectDataLoaded
           && flavors_loaded
           && (selectedProjectVmsUsed < selectedProjectVmsMax)"
-          class="alert alert-danger" role="alert" style="max-width: 600px;margin: 0 auto;">
+          class="alert alert-danger" role="alert" style="; margin: 15px;">
           <p>The following is missing before starting a VM:</p>
           <p *ngIf="!vm_name">- A name for your instance
           </p>
@@ -518,7 +517,7 @@
           </p>
           <p *ngIf="!selectedImage">- The image you want to run on your VM
           </p>
-          <p *ngIf="!gaveOkay && hasTools">- Give your okay to the Bioconda install process
+          <p *ngIf="!gaveOkay && (hasTools || install_mosh || resEnvOkayNeeded)">- Give your okay to the automated install process
           </p>
           <p *ngIf="resEnvNeedsName">- An url name for your Research-Environment
           </p>
@@ -539,7 +538,7 @@
                   started_machine ||
                   !selectedFlavor ||
                   !selectedImage||
-                  (!gaveOkay && hasTools) ||
+                  (!gaveOkay && (hasTools || install_mosh || resEnvOkayNeeded)) ||
                   (!resEnvValid && resEnvComponent)"
                   class="btn btn-primary  .btn-lg offset-md-8"
                   data-toggle="modal"

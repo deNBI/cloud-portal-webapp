@@ -55,9 +55,6 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
   public sendNews: boolean;
   public alternative_emailText: string = '';
   public news_tags: string = '';
-  public news_id: number = 0;
-  public newsStatus: number = 0;
-  public news_error_string: string = ';';
   FILTER_DEBOUNCE_TIME: number = 500;
 
   public managerFacilities: [string, number][];
@@ -352,24 +349,5 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 
   public comingSoon(): void {
     alert('This function will be implemented soon.')
-  }
-
-  public delete_news(news_id: number): void {
-    this.newsStatus = 0;
-    this.news_error_string = ''
-    this.facilityservice.deleteNews(news_id.toString())
-      .subscribe(
-        (result: any) => {
-          if (result[0] === 'True') {
-            this.newsStatus = 1;
-          } else {
-            this.newsStatus = 2;
-            this.news_error_string = result;
-          }
-        },
-        (error: any) => {
-          this.newsStatus = 2;
-          this.news_error_string = error;
-        })
   }
 }
