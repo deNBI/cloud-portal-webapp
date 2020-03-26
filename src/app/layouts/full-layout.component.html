@@ -25,13 +25,13 @@
         </li>
         <li class="nav-item">
           <a *ngIf="navbar_minimized" class="nav-link" data-toggle="tooltip" data-placement="right"
-             title="User Information"
+             title="Profile"
              routerLinkActive="active" [routerLink]="['/userinfo']"><i
-            class="nav-icon fas fa-user"></i>User Information</a>
+            class="nav-icon fas fa-user"></i>Profile</a>
           <a *ngIf="!navbar_minimized" class="nav-link"
              routerLinkActive="active" [routerLink]="['/userinfo']"><i
             class="nav-icon fas fa-user"></i>
-            User Information </a>
+            Profile </a>
         </li>
         <li class="nav-item">
           <a *ngIf="navbar_minimized" data-toggle="tooltip" data-placement="right" title="Help"
