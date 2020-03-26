@@ -5,6 +5,7 @@ import {DenbiNews} from './news';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {environment} from '../../../environments/environment';
 import {BehaviorSubject} from 'rxjs';
+import {WordPressNews} from "./wp-news";
 
 /**
  * News-Manager Class.
@@ -25,6 +26,7 @@ export class NewsManagerComponent implements OnInit {
   public selectedFacilities: [string, number][] = [];
   public facilitiesToPost: number[] = [];
   allNews: DenbiNews[];
+  wordPressNews: WordPressNews[];
   selectedNews: DenbiNews = new DenbiNews();
   selectedNewsForm: FormGroup = new FormGroup({
                                                 title: new FormControl({value: this.selectedNews.title, disabled: false},
@@ -59,8 +61,11 @@ export class NewsManagerComponent implements OnInit {
     });
     this.selectedNews = new DenbiNews();
     const facility_ids: string[] = this.selectedFacilities.map((facility: [string, number]) => facility['FacilityId'].toString());
-    this.newsService.getNewsFromWordpress(facility_ids.toString()).subscribe((result: any) => {
-      console.log(result);
+    this.newsService.getNewsFromWP(facility_ids.toString()).subscribe((result: any) => {
+      if (result) {
+        console.log(result);
+        //Save news here next step!
+      }
     });
   }
 
@@ -130,13 +135,13 @@ export class NewsManagerComponent implements OnInit {
       return;
     }
     const facility_ids: string[] = this.selectedFacilities.map((facility: [string, number]) => facility['FacilityId'].toString());
-    this.newsService.getNews(facility_ids.toString()).subscribe((result: any) => {
+    /*this.newsService.getNews(facility_ids.toString()).subscribe((result: any) => {
       this.allNews = result;
       this.allNews.forEach((news: DenbiNews) => {
         news.tag = news.tag.replace(this.reg1, '').replace(this.reg2, '').replace(this.reg3, '');
         this.isEditable(news);
       });
-    });
+    });*/
   }
 
   delete(news: DenbiNews): void {
