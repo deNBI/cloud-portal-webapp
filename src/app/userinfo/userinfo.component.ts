@@ -54,7 +54,7 @@ export class UserInfoComponent implements OnInit {
    */
   emailChange: string;
 
-  title: string = 'User Information';
+  title: string = 'Profile';
   /**
    * Text refering to newsletter registration
    */
