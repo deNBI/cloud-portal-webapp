@@ -103,7 +103,7 @@
     "karma": "^4.4.1",
     "karma-chrome-launcher": "^2.2.0",
     "karma-coverage-istanbul-reporter": "^2.0.5",
-    "karma-jasmine": "^2.0.1",
+    "karma-jasmine": "^3.1.1",
     "karma-jasmine-html-reporter": "^1.4.0",
     "less-loader": "^4.0.2",
     "ngx-spec": "^2.1.4",
