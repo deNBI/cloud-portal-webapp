@@ -52,6 +52,11 @@ JL().setOptions({
 export class UncaughtExceptionHandler implements ErrorHandler {
 
   handleError(error: any): any {
+    console.log('Start ------------------------------------');
+    console.log(`Logging error name: ${error.name}`);
+    console.log(`Logging error message: ${error.message}`);
+    console.log(`Logging error stack: ${error.stack}`);
     JL().fatalException('Uncaught Exception', error);
+    console.log('End ------------------------------------');
   }
 }
