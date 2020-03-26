@@ -242,6 +242,7 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
     newApp.PIApproved = aj['project_application_pi_approved'];
     newApp.Workshop = aj['project_application_workshop'];
     newApp.CloudService = aj['project_application_cloud_service'];
+    newApp.CloudServiceDevelop = aj['project_application_cloud_service_develop'];
     newApp.CloudServiceUserNumber = aj['project_application_cloud_service_user_number'];
 
     if (aj['project_application_pi']) {
