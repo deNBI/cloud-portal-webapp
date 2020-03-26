@@ -912,9 +912,9 @@
               <div class="col-md-8 alert alert-info">Only applications approved by a principal investigator
                 of a german university or research facility will be accepted.
                 You are able to enter an email address of your principal investigator whom
-                we will send an email, containing your name and email address and a link informing him about the
+                we will send an email, containing your name and email address and a link informing her/him about the
                 requested resources,
-                where he will be able to approve this application.
+                where she/he will be able to approve this application.
               </div>
             </div>
             <div *ngIf="!project_application_pi_approved && !is_validation" class="form-group row">
@@ -934,9 +934,9 @@
                                 'is-invalid': f.controls.project_application_pi_email?.invalid && (f.controls.project_application_pi_email?.dirty || f.controls.project_application_pi_email?.touched),
                                 'is-valid': f.controls.project_application_pi_email?.valid && (f.controls.project_application_pi_email?.dirty || f.controls.project_application_pi_email?.touched)
                                 }">
-                <p *ngIf="!project_application_pi_approved  && !is_validation"> Please insert the email of your
-                  principal investigator.
-                  He will get an email with further information how to verify the application.</p>
+                <p *ngIf="!project_application_pi_approved  && !is_validation"> Please enter the e-mail address of your
+                  principal investigator. An email with further information on how to verify the application will be
+                  sent to this email.</p>
               </div>
             </div>
           </form>
