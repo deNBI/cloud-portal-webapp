@@ -65,8 +65,11 @@ export class NewsService {
     })
   }
 
-  getNewsFromWP(): Observable<any> {
-    const params: HttpParams = new HttpParams()
+  /** new Method!
+   * @param facility_ids string of all facility ids for which we want the news in wp
+   */
+  getNewsFromWP(facility_ids: string): Observable<any> {
+    const params: HttpParams = new HttpParams().set('facility_ids', facility_ids);
     return this.http.get(`${ApiSettings.getApiBaseURL()}wp-news-management/`, {
       withCredentials: true,
       headers: header,

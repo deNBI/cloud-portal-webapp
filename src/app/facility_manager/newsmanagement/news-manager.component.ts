@@ -90,8 +90,13 @@ export class NewsManagerComponent implements OnInit {
     );
   }
 
+
+  /**
+   * Building the posibility to manage facility news in wordpress
+   */
   getWordPressNews(): void {
-    this.newsService.getNewsFromWP().subscribe((result: any) => {
+    const facility_ids: string[] = this.selectedFacilities.map((facility: [string, number]) => facility['FacilityId'].toString());
+    this.newsService.getNewsFromWP(facility_ids.toString()).subscribe((result: any) => {
       console.log(result);
     })
   }
