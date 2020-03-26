@@ -84,6 +84,10 @@ export class ResEnvComponent implements OnInit {
     }
   }
 
+  okayNeeded(): boolean {
+    return (!this.onlyNamespace && this.selectedTemplate.template_name !== 'undefined');
+  }
+
   setOnlyNamespace(): void {
     this.onlyNamespace = true;
     this.setSelectedTemplate(null);

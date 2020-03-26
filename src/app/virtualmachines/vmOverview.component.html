@@ -178,7 +178,7 @@
                   </div>
                   <div *ngIf="vm.res_env_url" class="col-md-1">
                       <span class="fas fa-globe" style="font-size: 18px;" data-toggle="tooltip" data-placement="right"
-                         title="{{'Access via: ' + vm?.res_env_url}}" (click)="this.copyToClipboard(vm?.res_env_url)">
+                         title="{{'Access via: ' + vm?.res_env_url}}" (click)="copyToClipboard(vm?.res_env_url)">
                           <span class="badge badge-pill badge-secondary"
                               style="font-size: 10px; position: relative; top: -12px; left: -10px;">
                             <i class="fas fa-check"></i>
