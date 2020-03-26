@@ -76,6 +76,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
   resEnvValid: boolean = true;
   resEnvNeedsName: boolean = false;
   resEnvNeedsTemplate: boolean = false;
+  resEnvOkayNeeded: boolean = false;
   data_loaded: boolean = false;
   volumesToMount: Volume[] = [];
   volumesToAttach: Volume[] = [];
@@ -740,6 +741,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
       this.resEnvValid = this.resEnvComponent.isValid();
       this.resEnvNeedsName = this.resEnvComponent.needsName();
       this.resEnvNeedsTemplate = this.resEnvComponent.needsTemplate();
+      this.resEnvOkayNeeded = this.resEnvComponent.okayNeeded();
     }
   }
 
