@@ -18,6 +18,7 @@ import {Client} from './clients/client.model';
 import {TemplateNames} from './conda/template-names';
 import {CondaPackage} from './condaPackage.model';
 import {PlaybookService} from '../api-connector/playbook.service';
+import {ClipboardService} from 'ngx-clipboard';
 
 /**
  * Vm overview componentn.
@@ -138,7 +139,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
   condaPackagesByVM: {[vm_id: string]: number} = {};
 
   constructor(private facilityService: FacilityService,
-
+              private clipboardService: ClipboardService,
               private imageService: ImageService, private userservice: UserService,
               private virtualmachineservice: VirtualmachineService, private fb: FormBuilder,
               private groupService: GroupService,
@@ -169,12 +170,9 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
   }
 
   copyToClipboard(text: string): void {
-    document.addEventListener('copy', (clipEvent: ClipboardEvent) => {
-      clipEvent.clipboardData.setData('text/plain', (text));
-      clipEvent.preventDefault();
-      document.removeEventListener('copy', null);
-    });
-    document.execCommand('copy');
+    if (this.clipboardService.isSupported) {
+      this.clipboardService.copy(text);
+    }
   }
 
   changeFilterStatus(status: string): void {
