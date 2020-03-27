@@ -4,6 +4,7 @@ import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {ApiSettings} from './api-settings.service';
 import {DenbiNews} from '../facility_manager/newsmanagement/news';
+import {WordPressNews} from "../facility_manager/newsmanagement/wp-news";
 
 const header: HttpHeaders = new HttpHeaders({
                                               'X-CSRFToken': Cookie.get('csrftoken')
@@ -34,6 +35,16 @@ export class NewsService {
       withCredentials: true,
       headers: header
     })
+  }
+
+  addNewsToWordpress(news: WordPressNews): Observable<any> {
+    let httpParams: HttpParams = new HttpParams().set('title', news.title).set('text', news.text)
+      .set('excerpt', news.excerpt).set('facility', news.facility.toString());
+    return this.http.post(`${ApiSettings.getApiBaseURL()}wp-news-management/`, news, {
+      withCredentials: true,
+      headers: header,
+      params: httpParams
+    });
   }
 
   updateNews(news: DenbiNews): Observable<any> {

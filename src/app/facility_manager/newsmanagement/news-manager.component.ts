@@ -28,13 +28,14 @@ export class NewsManagerComponent implements OnInit {
   allNews: DenbiNews[];
   wordPressNews: WordPressNews[];
   selectedNews: DenbiNews = new DenbiNews();
+  newWordpressNews: WordPressNews = new WordPressNews();
   selectedNewsForm: FormGroup = new FormGroup({
-                                                title: new FormControl({value: this.selectedNews.title, disabled: false},
+                                                title: new FormControl({value: this.newWordpressNews.title, disabled: false},
                                                                        Validators.required),
-                                                text: new FormControl({value: this.selectedNews.text, disabled: false},
+                                                text: new FormControl({value: this.newWordpressNews.text, disabled: false},
                                                                       Validators.required),
-                                                motd: new FormControl({value: this.selectedNews.motd, disabled: false}),
-                                                tag: new FormControl({value: this.selectedNews.tag, disabled: false})
+                                                motd: new FormControl({value: this.newWordpressNews.excerpt, disabled: false}),
+                                                tag: new FormControl({value: this.newWordpressNews.tags, disabled: false})
                                               });
   allChecked: boolean = true;
   deletionStatus: number = 0;
@@ -95,17 +96,41 @@ export class NewsManagerComponent implements OnInit {
     );
   }
 
+  addNewsToWordpress(news: WordPressNews): void {
+    news.status = "publish";
+    //news.date = Date.now.toString();
+    news.facility = [];
+    console.log(this.selectedFacilities);
+    this.facilityService.getComputeCenters().subscribe((computeCenters: any) => {
+      this.selectedFacilities.forEach((facility: any) => {
+        let computeCenter = computeCenters.find(i => i.compute_center_facility_id === facility["FacilityId"]);
+        if (computeCenter) {
+          let wp_id = computeCenter["compute_center_news_id"];
+          //maybe change this and get the wp_id directly in api
+          if (wp_id) {
+            news.facility.push(wp_id);
+          }
+        }
+    })
+
+    this.newsService.addNewsToWordpress(news).subscribe((result: any )=> {
+      console.log(result);
+      })
+    });
+  }
+
 
   /**
    * Building the posibility to manage facility news in wordpress
    */
   getWordPressNews(): void {
+    this.wordPressNews = [];
     const facility_ids: string[] = this.selectedFacilities.map((facility: [string, number]) => facility['FacilityId'].toString());
     this.newsService.getNewsFromWP(facility_ids.toString()).subscribe((result: Object[]) => {
       result.forEach((wp_news: Object) =>  {
         let wp_temp: WordPressNews = new WordPressNews();
           wp_temp.id = wp_news["id"];
-          wp_temp.title = wp_news["title"];
+          wp_temp.title = wp_news["title"]["rendered"];
           wp_temp.date = wp_news["date"];
           wp_temp.modification_date = wp_news["modified"];
           wp_temp.text = wp_news["content"]["rendered"];
@@ -113,11 +138,12 @@ export class NewsManagerComponent implements OnInit {
           wp_temp.tags = wp_news["tags"];
           wp_temp.facility = wp_news["categories"];
           wp_temp.status = wp_news["status"];
-        this.wordPressNews.push(new WordPressNews(wp_temp))
+          this.wordPressNews.push(wp_temp);
       });
       console.log(this.wordPressNews);
     })
   }
+
 
   returnPlainText(htmlAsString: string): string {
     return htmlAsString ? String(htmlAsString).replace(/<[^>]+>/gm, '') : '';

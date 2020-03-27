@@ -160,6 +160,13 @@ we are happy to inform..."
                       [disabled]="selectedNewsForm.invalid || facilitiesToPost.length == 0"
                       *ngIf="selectedNews.id == null && selectedNews.editable">Add news
               </button>
+              <!-- wordpress button -->
+              <button class="btn btn-success"
+                      style="margin: 5px"
+                      (click)="addNewsToWordpress(newWordpressNews);"
+                      [disabled]="selectedNewsForm.invalid || facilitiesToPost.length == 0"
+                      *ngIf="selectedNews.id == null && selectedNews.editable">Add news to WP
+              </button> <!-- end of wordpress button -->
               <button class="btn btn-success"
                       style="margin: 5px"
                       (click)="verifyPatchModal.show()"
