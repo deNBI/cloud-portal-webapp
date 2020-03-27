@@ -166,22 +166,25 @@
                 <div class="col-1" style="text-align: center"></div>
               </div>
               <div style="margin-top: 10px; margin-bottom:5px;">
-                <div class="row" style="margin-left: 10px; font-size: 18px; line-height: 27px; height: 27px">
-                  <div *ngIf="vm.volumes.length > 0" class="col-md-1">
+                <div class="row" style="margin-left: 10px; font-size: 18px; line-height: 27px; height: 27px"
+                  *ngIf="vm.status === VirtualMachineStates.staticACTIVE || vm.status === VirtualMachineStates.staticSHUTOFF">
+                  <div *ngIf="vm.volumes?.length > 0" class="col-md-1">
                       <span class="fas fa-hdd" style="font-size: 18px;"
                             data-toggle="tooltip" data-placement="right"
-                            title="{{'Volumes mounted: ' + vm?.volumes.length}}">
+                            title="{{'Volumes mounted: ' + vm?.volumes?.length}}">
                         <span class="badge badge-pill badge-secondary"
                               style="font-size: 10px; position: relative; top: -12px; left: -10px;">
                           {{vm?.volumes.length}}</span>
                       </span>
                   </div>
-                  <div *ngIf="vm.res_env_url" class="col-md-1">
-                      <span class="fas fa-globe" style="font-size: 18px;" data-toggle="tooltip" data-placement="right"
-                         title="{{'Access via: ' + vm?.res_env_url}}" (click)="copyToClipboard(vm?.res_env_url)">
-                          <span class="badge badge-pill badge-secondary"
+                  <div *ngIf="vm?.res_env_url" class="col-md-1">
+                      <span class="fas fa-globe" style="font-size: 18px; cursor: pointer;" data-toggle="tooltip" data-placement="right"
+                         title="{{'Research Environment installed: ' + resenvInformationByVM[vm.name]}}"
+                            (click)="this.copyToClipboard(vm?.res_env_url); this.showCopiedMessage(vm.name);">
+                          <span class="badge badge-pill badge-secondary" id="{{vm.name + 'resenvSpan'}}"
                               style="font-size: 10px; position: relative; top: -12px; left: -10px;">
-                            <i class="fas fa-check"></i>
+                            <i class="fas fa-check" *ngIf="vm.status === VirtualMachineStates.staticACTIVE"></i>
+                            <i class="fas fa-times" *ngIf="vm.status === VirtualMachineStates.staticSHUTOFF"></i>
                           </span>
                       </span>
                   </div>
@@ -199,6 +202,15 @@
                           <span class="badge badge-pill badge-secondary"
                                 style="font-size: 10px; position: relative; top: -12px; left: -10px;">
                           {{this.condaPackagesByVM[vm.openstackid].toString()}}
+                          </span>
+                      </span>
+                  </div>
+                  <div *ngIf="vm?.cluster.cluster_id" class="col-md-1">
+                      <span class="fas fa-network-wired" style="font-size: 18px;" data-toggle="tooltip" data-placement="right"
+                            title="{{'Master node of cluster with ' + vm?.cluster.worker_instances?.length.toString() + ' slaves'}}" (click)="this.copyToClipboard(vm?.res_env_url)">
+                          <span class="badge badge-pill badge-secondary"
+                                style="font-size: 10px; position: relative; top: -12px; left: -10px;">
+                            {{vm?.cluster.worker_instances?.length.toString()}}
                           </span>
                       </span>
                   </div>
@@ -355,6 +367,7 @@
 
         </div>
       </div>
+      <div *ngIf="vms_content?.length === 0" class="row col-md-10 alert alert-info" style="margin:10px;">There are no machines to show.</div>
     </div>
   </div>
 

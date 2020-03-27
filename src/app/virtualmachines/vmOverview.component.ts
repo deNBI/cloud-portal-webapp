@@ -16,8 +16,8 @@ import {GroupService} from '../api-connector/group.service';
 import {ClientService} from '../api-connector/client.service';
 import {Client} from './clients/client.model';
 import {TemplateNames} from './conda/template-names';
-import {CondaPackage} from './condaPackage.model';
 import {PlaybookService} from '../api-connector/playbook.service';
+import {BiocondaService} from '../api-connector/bioconda.service';
 import {ClipboardService} from 'ngx-clipboard';
 
 /**
@@ -28,7 +28,7 @@ import {ClipboardService} from 'ngx-clipboard';
              templateUrl: 'vmOverview.component.html',
              styleUrls: ['./vmOverview.component.scss'],
              providers: [FacilityService, ImageService, UserService,
-               VirtualmachineService, FullLayoutComponent, GroupService, ClientService, PlaybookService]
+               VirtualmachineService, FullLayoutComponent, GroupService, ClientService, PlaybookService, BiocondaService]
            })
 
 export class VmOverviewComponent implements OnInit, OnDestroy {
@@ -131,6 +131,8 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
   vmActions: {id: VirtualMachine, name: string}[] = [];
   selectedMachines: VirtualMachine[] = [];
 
+  resenvInformationByVM: {[name: string]: string} = {};
+
   clientsForcUrls: {[client_id: string]: [string]} = {};
 
   /*
@@ -144,7 +146,8 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
               private virtualmachineservice: VirtualmachineService, private fb: FormBuilder,
               private groupService: GroupService,
               private clientService: ClientService,
-              private playbookService: PlaybookService) {
+              private playbookService: PlaybookService,
+              private biocondaService: BiocondaService) {
     this.actionsForm = fb.group({
                                   title: fb.control('initial value', Validators.required)
                                 });
@@ -494,6 +497,27 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
     });
   }
 
+  checkResenvByVM (vm: VirtualMachine): void {
+    this.biocondaService.getTemplateNameByVmName(vm).subscribe((result: any ) => {
+      if (result) {
+        this.resenvInformationByVM[vm.name] = result['template'];
+      } else {
+        this.resenvInformationByVM[vm.name] = '';
+      }
+      console.log(result);
+    });
+  }
+
+  showCopiedMessage(name: string): void {
+    const span_id: string = `${name}resenvSpan`;
+    const innerHTML: string = document.getElementById(span_id).innerHTML;
+    document.getElementById(span_id).innerHTML = 'Copied URL!';
+    setTimeout(() => {
+                 document.getElementById(span_id).innerHTML = innerHTML;
+               },
+               1000);
+  }
+
   prepareVMS(vms: any): void {
 
     const vm_list: VirtualMachine[] = vms['vm_list'];
@@ -504,6 +528,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
       const vm: VirtualMachine = new VirtualMachine(new_vm);
       this.setForcUrl(vm);
       this.checkCondaPackages(vm);
+      this.checkResenvByVM(vm);
       tmp_vms.push(vm);
 
     });
