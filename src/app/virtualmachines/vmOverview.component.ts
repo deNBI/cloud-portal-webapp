@@ -515,7 +515,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
     document.getElementById(span_id).innerHTML = 'Copied URL!';
     setTimeout(function (): void {
       document.getElementById(span_id).innerHTML = innerHTML;
-    },         1000);
+    },1000);
   }
 
   prepareVMS(vms: any): void {
