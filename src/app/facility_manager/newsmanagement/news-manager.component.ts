@@ -101,8 +101,21 @@ export class NewsManagerComponent implements OnInit {
    */
   getWordPressNews(): void {
     const facility_ids: string[] = this.selectedFacilities.map((facility: [string, number]) => facility['FacilityId'].toString());
-    this.newsService.getNewsFromWP(facility_ids.toString()).subscribe((result: any) => {
-      console.log(result);
+    this.newsService.getNewsFromWP(facility_ids.toString()).subscribe((result: Object[]) => {
+      result.forEach((wp_news: Object) =>  {
+        let wp_temp: WordPressNews = new WordPressNews();
+          wp_temp.id = wp_news["id"];
+          wp_temp.title = wp_news["title"];
+          wp_temp.date = wp_news["date"];
+          wp_temp.modification_date = wp_news["modified"];
+          wp_temp.text = wp_news["content"]["rendered"];
+          wp_temp.excerpt = wp_news["excerpt"]["rendered"];
+          wp_temp.tags = wp_news["tags"];
+          wp_temp.facility = wp_news["categories"];
+          wp_temp.status = wp_news["status"];
+        this.wordPressNews.push(new WordPressNews(wp_temp))
+      });
+      console.log(this.wordPressNews);
     })
   }
 

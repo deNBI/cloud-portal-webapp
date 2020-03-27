@@ -4,7 +4,8 @@
 export class WordPressNews {
   private _id: string;
   private _title: string;
-  private _time: string;
+  private _date: string;
+  private _modification_date: string;
   private _text: string;
   private _excerpt: string;
   private _tags: string [] = [];
@@ -15,15 +16,24 @@ export class WordPressNews {
     if (news) {
       this._id = news.id;
       this._title = news.title;
-      this._time = news.time;
+      this._date = news.date;
       this._text = news.text;
       this._excerpt = news.excerpt;
       this._tags = news.tags;
       this._facility = news.facility;
       this._status = news.status;
+      this._modification_date = news.modification_date;
     }
   }
 
+
+  get modification_date(): string {
+    return this._modification_date;
+  }
+
+  set modification_date(value: string) {
+    this._modification_date = value;
+  }
 
   get status(): string {
     return this._status;
@@ -49,12 +59,12 @@ export class WordPressNews {
     this._title = value;
   }
 
-  get time(): string {
-    return this._time;
+  get date(): string {
+    return this._date;
   }
 
-  set time(value: string) {
-    this._time = value;
+  set date(value: string) {
+    this._date = value;
   }
 
   get text(): string {
