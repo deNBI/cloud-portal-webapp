@@ -510,12 +510,12 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
   }
 
   showCopiedMessage(name: string): void {
-    const span_id: string = name + 'resenvSpan';
+    const span_id: string = `${name}resenvSpan`;
     const innerHTML: string = document.getElementById(span_id).innerHTML;
     document.getElementById(span_id).innerHTML = 'Copied URL!';
-    setTimeout(function () {
+    setTimeout(function (): void {
       document.getElementById(span_id).innerHTML = innerHTML;
-    },         1000);
+    }, 1000);
   }
 
   prepareVMS(vms: any): void {
