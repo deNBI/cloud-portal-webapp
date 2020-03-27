@@ -16,7 +16,6 @@ import {GroupService} from '../api-connector/group.service';
 import {ClientService} from '../api-connector/client.service';
 import {Client} from './clients/client.model';
 import {TemplateNames} from './conda/template-names';
-import {CondaPackage} from './condaPackage.model';
 import {PlaybookService} from '../api-connector/playbook.service';
 import {BiocondaService} from '../api-connector/bioconda.service';
 import {ClipboardService} from 'ngx-clipboard';
@@ -513,9 +512,10 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
     const span_id: string = `${name}resenvSpan`;
     const innerHTML: string = document.getElementById(span_id).innerHTML;
     document.getElementById(span_id).innerHTML = 'Copied URL!';
-    setTimeout(function (): void {
-      document.getElementById(span_id).innerHTML = innerHTML;
-    },1000);
+    setTimeout(() => {
+                 document.getElementById(span_id).innerHTML = innerHTML;
+               },
+               1000);
   }
 
   prepareVMS(vms: any): void {
