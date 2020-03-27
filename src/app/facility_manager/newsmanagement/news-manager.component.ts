@@ -5,7 +5,7 @@ import {DenbiNews} from './news';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {environment} from '../../../environments/environment';
 import {BehaviorSubject} from 'rxjs';
-import {WordPressNews} from "./wp-news";
+import {WordPressNews} from './wp-news';
 
 /**
  * News-Manager Class.
@@ -64,7 +64,7 @@ export class NewsManagerComponent implements OnInit {
     this.newsService.getNewsFromWP(facility_ids.toString()).subscribe((result: any) => {
       if (result) {
         console.log(result);
-        //Save news here next step!
+        // Save news here next step!
       }
     });
   }
@@ -94,7 +94,6 @@ export class NewsManagerComponent implements OnInit {
       }
     );
   }
-
 
   /**
    * Building the posibility to manage facility news in wordpress

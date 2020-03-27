@@ -24,7 +24,6 @@ export class WordPressNews {
     }
   }
 
-
   get status(): string {
     return this._status;
   }
