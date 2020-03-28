@@ -99,7 +99,7 @@ export class NewsManagerComponent implements OnInit {
   addNewsToWordpress(news: WordPressNews): void {
     news.status = "publish";
     //news.date = Date.now.toString();
-    news.facility = [];
+    let tempArr: string[] = [];
     console.log(this.selectedFacilities);
     this.facilityService.getComputeCenters().subscribe((computeCenters: any) => {
       this.selectedFacilities.forEach((facility: any) => {
@@ -108,10 +108,11 @@ export class NewsManagerComponent implements OnInit {
           let wp_id = computeCenter["compute_center_news_id"];
           //maybe change this and get the wp_id directly in api
           if (wp_id) {
-            news.facility.push(wp_id);
+            tempArr.push(wp_id);
           }
         }
-    })
+    });
+      news.facility = tempArr.toString();
 
     this.newsService.addNewsToWordpress(news).subscribe((result: any )=> {
       console.log(result);

@@ -38,12 +38,9 @@ export class NewsService {
   }
 
   addNewsToWordpress(news: WordPressNews): Observable<any> {
-    let httpParams: HttpParams = new HttpParams().set('title', news.title).set('text', news.text)
-      .set('excerpt', news.excerpt).set('facility', news.facility.toString());
     return this.http.post(`${ApiSettings.getApiBaseURL()}wp-news-management/`, news, {
       withCredentials: true,
-      headers: header,
-      params: httpParams
+      headers: header
     });
   }
 

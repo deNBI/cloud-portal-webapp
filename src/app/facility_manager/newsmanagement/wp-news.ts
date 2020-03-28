@@ -9,7 +9,7 @@ export class WordPressNews {
   private _text: string;
   private _excerpt: string;
   private _tags: string [] = [];
-  private _facility: number[] = [];
+  private _facility: string;
   private _status: string;
 
   constructor(news?: WordPressNews) {
@@ -91,11 +91,11 @@ export class WordPressNews {
     this._tags = value;
   }
 
-  get facility(): number[] {
+  get facility(): string {
     return this._facility;
   }
 
-  set facility(value: number[]) {
+  set facility(value: string) {
     this._facility = value;
   }
 }
