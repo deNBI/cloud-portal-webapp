@@ -59,14 +59,8 @@ export class NewsManagerComponent implements OnInit {
       this.managerFacilitiesIdOnly = this.managerFacilities.map((facility: [string, number]) => facility['FacilityId']);
       this.list();
       this.setFormGroup();
-    });
-    this.selectedNews = new DenbiNews();
-    const facility_ids: string[] = this.selectedFacilities.map((facility: [string, number]) => facility['FacilityId'].toString());
-    this.newsService.getNewsFromWP(facility_ids.toString()).subscribe((result: any) => {
-      if (result) {
-        console.log(result);
-        //Save news here next step!
-      }
+      const facility_ids: string[] = this.selectedFacilities.map((facility: [string, number]) => facility['FacilityId'].toString());
+      this.getWordPressNews();
     });
   }
 
@@ -131,11 +125,14 @@ export class NewsManagerComponent implements OnInit {
       result.forEach((wp_news: Object) =>  {
         let wp_temp: WordPressNews = new WordPressNews();
           wp_temp.id = wp_news["id"];
-          wp_temp.title = wp_news["title"]["rendered"];
+          const rendered_title: string = wp_news["title"]["rendered"];
+          wp_temp.title = rendered_title.replace(/(<([^>]+)>)/ig,"");
           wp_temp.date = wp_news["date"];
           wp_temp.modification_date = wp_news["modified"];
-          wp_temp.text = wp_news["content"]["rendered"];
-          wp_temp.excerpt = wp_news["excerpt"]["rendered"];
+          const rendered_text: string = wp_news["content"]["rendered"];
+          wp_temp.text = rendered_text.replace(/(<([^>]+)>)/ig,"");
+          const rendered_excerpt: string = wp_news["excerpt"]["rendered"];
+          wp_temp.excerpt = rendered_excerpt.replace(/(<([^>]+)>)/ig,"");
           wp_temp.tags = wp_news["tags"];
           wp_temp.facility = wp_news["categories"];
           wp_temp.status = wp_news["status"];

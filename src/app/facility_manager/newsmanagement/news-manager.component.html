@@ -25,21 +25,19 @@
             </div>
             <div class="card-body">
               <form>
-                <div *ngFor="let news of allNews">
-                  <div class="card" style="cursor: pointer;" (click)="setNews(news)"
-                       [ngStyle]="{
+                <div *ngFor="let news of wordPressNews">
+                  <div class="card" style="cursor: pointer;"> <!--(click)="setNews(news)">-->
+                       <!-- [ngStyle]="{
           'border-right-color': news.id == selectedNews.id ? '#3ea662' : '#c8ced3',
           'border-right-style': 'solid',
           'border-right-width': news.id == selectedNews.id ? '3px' : '1px'
-          }">
+          }" -->
                     <div class="card-header text-truncate"
                          data-toggle="tooltip"
                          data-placement="auto"
                          style="background-color: #00ADEF !important; color: white !important;"
                          title="{{news.title}}">
                       <strong>{{news.title}}</strong>
-                      <i *ngIf="!news.editable" class="float-right fa fa-warning"
-                         style="font-size: 20px; color: yellow"></i>
                     </div>
                     <div class="card-body"
                          style="color:#58595B;">
@@ -48,15 +46,6 @@
                              data-placement="auto">{{news.text}}</div>
                       </div>
                       <br>
-                      <div class="row">
-                        <div class="col">by: {{news.author}}</div>
-                      </div>
-                      <div class="row">
-                        <div class="col">on: {{news.time}}</div>
-                      </div>
-                      <div class="row">
-                        <div class="col">id: {{news.id}}</div>
-                      </div>
                     </div>
                   </div>
                 </div>
