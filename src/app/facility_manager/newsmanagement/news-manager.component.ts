@@ -27,7 +27,7 @@ export class NewsManagerComponent implements OnInit {
   public facilitiesToPost: number[] = [];
   allNews: DenbiNews[];
   wordPressNews: WordPressNews[];
-  selectedNews: DenbiNews = new DenbiNews();
+  selectedNews: WordPressNews = new WordPressNews();
   newWordpressNews: WordPressNews = new WordPressNews();
   selectedNewsForm: FormGroup = new FormGroup({
                                                 title: new FormControl({value: this.newWordpressNews.title, disabled: false},
@@ -67,8 +67,8 @@ export class NewsManagerComponent implements OnInit {
   controlToNews(): void {
     this.selectedNews.title = this.selectedNewsForm.controls['title'].value;
     this.selectedNews.text = this.selectedNewsForm.controls['text'].value;
-    this.selectedNews.motd = this.selectedNewsForm.controls['motd'].value;
-    this.selectedNews.tag = this.selectedNewsForm.controls['tag'].value;
+    this.selectedNews.excerpt = this.selectedNewsForm.controls['motd'].value;
+    this.selectedNews.tags = this.selectedNewsForm.controls['tag'].value;
   }
 
   add(news: DenbiNews): void {
@@ -140,11 +140,6 @@ export class NewsManagerComponent implements OnInit {
       });
       console.log(this.wordPressNews);
     })
-  }
-
-
-  returnPlainText(htmlAsString: string): string {
-    return htmlAsString ? String(htmlAsString).replace(/<[^>]+>/gm, '') : '';
   }
 
   patch(news: DenbiNews): void {
@@ -226,22 +221,21 @@ export class NewsManagerComponent implements OnInit {
     this.list();
   }
 
-  setNews(news?: DenbiNews): void {
+  setNews(news?: WordPressNews): void {
     this.facilitiesToPost = [];
     if (news) {
-      this.selectedNews = new DenbiNews(news);
+      this.selectedNews = news;
+      console.log("set it");
       for (const facility_id of this.managerFacilitiesIdOnly) {
-        if (this.selectedNews.facility_id.indexOf(facility_id) !== -1) {
-          this.facilitiesToPost.push(facility_id);
-        }
+        //need to check how to get facility numbers from database by wordpress facility
       }
-      if (this.selectedNews.motd) {
-        this.motdLength.next(this.selectedNews.motd.length);
+      if (this.selectedNews.excerpt) {
+        this.motdLength.next(this.selectedNews.excerpt.length);
       } else {
         this.motdLength.next(0);
       }
     } else {
-      this.selectedNews = new DenbiNews();
+      this.selectedNews = new WordPressNews();
       this.motdLength.next(0);
     }
     this.deletionStatus = 0;
@@ -258,9 +252,9 @@ export class NewsManagerComponent implements OnInit {
                                             text: new FormControl(
                                               {value: this.selectedNews.text, disabled: false}, Validators.required),
                                             motd: new FormControl(
-                                              {value: this.selectedNews.motd, disabled: false}),
+                                              {value: this.selectedNews.excerpt, disabled: false}),
                                             tag: new FormControl(
-                                              {value: this.selectedNews.tag, disabled: false})
+                                              {value: this.selectedNews.tags, disabled: false})
                                           });
     this.selectedNewsForm.controls['motd'].valueChanges.subscribe((value: any) => {
       this.motdLength.next(value.length);
@@ -271,10 +265,10 @@ export class NewsManagerComponent implements OnInit {
     const index: number = this.facilitiesToPost.indexOf(facility['FacilityId']);
     if (index === -1) {
       this.facilitiesToPost.push(facility['FacilityId']);
-      this.selectedNews.facility_id.push(facility['FacilityId'])
+      //this.selectedNews.facility.push(facility['FacilityId'])
     } else {
       this.facilitiesToPost.splice(index, 1);
-      this.selectedNews.facility_id.splice(this.selectedNews.facility_id.indexOf(facility['FacilityId']), 1);
+      //this.selectedNews.facility_id.splice(this.selectedNews.facility_id.indexOf(facility['FacilityId']), 1);
     }
   }
 
@@ -290,5 +284,12 @@ export class NewsManagerComponent implements OnInit {
     news.editable = editable;
 
     return editable;
+  }
+
+  deleteNewsFromWordpress(): void {
+    this.newsService.deleteNewsFromWordpress(this.selectedNews.id).subscribe((result: any) => {
+      console.log(result);
+      this.getWordPressNews();
+    })
   }
 }

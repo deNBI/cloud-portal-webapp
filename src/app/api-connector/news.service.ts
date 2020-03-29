@@ -62,17 +62,6 @@ export class NewsService {
     })
   }
 
-  getNewsFromWordpress(facility_ids: string): Observable<any> {
-    const params: HttpParams = new HttpParams()
-      .set('facility_ids', facility_ids);
-
-    return this.http.get(`${ApiSettings.getApiBaseURL()}wp-news-management/`, {
-      withCredentials: true,
-      headers: header,
-      params: params
-    })
-  }
-
   /** new Method!
    * @param facility_ids string of all facility ids for which we want the news in wp
    */
@@ -82,5 +71,17 @@ export class NewsService {
       withCredentials: true,
       headers: header,
       params: params});
+  }
+
+  deleteNewsFromWordpress(news_id: string): Observable<any> {
+    const params: HttpParams = new HttpParams()
+      .set('news_id', news_id);
+
+    return this.http.delete(`${ApiSettings.getApiBaseURL()}wp-news-management/`, {
+        withCredentials: true,
+        headers: header,
+        params: params
+      }
+    )
   }
 }
