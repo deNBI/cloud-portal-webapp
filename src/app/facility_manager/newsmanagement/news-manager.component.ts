@@ -98,9 +98,10 @@ export class NewsManagerComponent implements OnInit {
 
   addNewsToWordpress(news: WordPressNews): void {
     news.status = "publish";
-    //news.date = Date.now.toString();
+    news.title = this.selectedNewsForm.controls["title"].value;
+    news.text = this.selectedNewsForm.controls["text"].value;
+    news.excerpt = this.selectedNewsForm.controls["motd"].value;
     let tempArr: string[] = [];
-    console.log(this.selectedFacilities);
     this.facilityService.getComputeCenters().subscribe((computeCenters: any) => {
       this.selectedFacilities.forEach((facility: any) => {
         let computeCenter = computeCenters.find(i => i.compute_center_facility_id === facility["FacilityId"]);
@@ -113,8 +114,7 @@ export class NewsManagerComponent implements OnInit {
         }
     });
       news.facility = tempArr.toString();
-
-    this.newsService.addNewsToWordpress(news).subscribe((result: any )=> {
+      this.newsService.addNewsToWordpress(news).subscribe((result: any )=> {
       console.log(result);
       })
     });
