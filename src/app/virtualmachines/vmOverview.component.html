@@ -367,7 +367,7 @@
 
         </div>
       </div>
-      <div *ngIf="vms_content?.length === 0" class="row col-md-10 alert alert-info" style="margin:10px;">There are no machines to show.</div>
+      <div *ngIf="vms_content?.length === 0 && !isSearching" class="row col-md-10 alert alert-info" style="margin:10px;">There are no machines to show.</div>
     </div>
   </div>
 

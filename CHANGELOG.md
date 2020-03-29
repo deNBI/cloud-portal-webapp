@@ -1,3 +1,29 @@
+
+##  (2020-03-29)
+
+
+#### Bug Fixes
+
+* **Volume:** if volume storage is full, not attached volumes can still be attached (#1290) ([dc76397a](dc76397a))
+* **app:**  volume and name not shown when max vm, fm app history loads once ([836ec6d6](836ec6d6))
+* **dissemination:**  init with false instead null ([1bd72601](1bd72601))
+* **fm:**  os short apps, column width fixed ([b072fa77](b072fa77))
+* **instance overview:**  all machine func appends params ([a7a09a48](a7a09a48))
+* **mod-req:**  catch lifetime empty string ([ad1b8b08](ad1b8b08))
+
+#### Features
+
+* **FacilityManager:** reverse app history (#1291) ([a54a1375](a54a1375))
+* **InstanceOverview:** added clsuter filter for vo ([af624d8c](af624d8c))
+* **Snapshots:** added delete selected ([f09bfd34](f09bfd34))
+* **Vol:** added select ([2d91fbe8](2d91fbe8))
+* **Volume:**
+  * added deleteselected and detach selected method ([491bcab9](491bcab9))
+  * mounted path and attach volumes by start ([d0a36646](d0a36646))
+  * added more infos ([f8d93651](f8d93651))
+* **WIKI:** added at snapshot overview ([f2f6e558](f2f6e558))
+* **application:**  openstack apps specify if service, mod req adjust user number if service ([8865e10e](8865e10e))
+
 ##  (2020-03-19)
 
 

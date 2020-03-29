@@ -22,6 +22,7 @@ export class NewInstancePage {
   private static FLAVOR_PREFIX: string = 'id_flavor_owl_';
   private static IMAGE_PREFIX: string = 'id_image_owl_';
   private static VOLUME_NAME_ID: string = 'volume_name';
+  private static VOLUME_MOUNT_PATH_ID: string = 'volume_mount_path';
   private static VOLUME_SPACE_ID: string = 'volume_space';
   private static VOLUME_SPACE: string = '1';
   private static CLOSE_INFO_MODAL: string = 'close_info_modal';
@@ -98,6 +99,9 @@ export class NewInstancePage {
     await Util.clickElementById(this.ADD_VOLUME_FORM_BUTTON);
     console.log('Setting Volume name');
     await Util.sendTextToElementById(this.VOLUME_NAME_ID, Util.VOLUME_NAME);
+    console.log('Setting Volume mount path');
+    await Util.sendTextToElementById(this.VOLUME_MOUNT_PATH_ID, Util.VOLUME_MOUNT_PATH_STRING);
+
     console.log('Setting Volume space');
     await Util.sendTextToElementById(this.VOLUME_SPACE_ID, this.VOLUME_SPACE);
     await Util.clickElementById(this.ADD_VOLUME_CONFIRMATION_BUTTON);
