@@ -8,7 +8,7 @@ export class WordPressNews {
   private _modification_date: string;
   private _text: string;
   private _excerpt: string;
-  private _tags: string [] = [];
+  private _tags: string;
   private _facility: string;
   private _status: string;
 
@@ -83,11 +83,11 @@ export class WordPressNews {
     this._excerpt = value;
   }
 
-  get tags(): string[] {
+  get tags(): string {
     return this._tags;
   }
 
-  set tags(value: string[]) {
+  set tags(value: string) {
     this._tags = value;
   }
 

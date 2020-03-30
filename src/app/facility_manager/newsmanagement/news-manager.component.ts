@@ -25,6 +25,7 @@ export class NewsManagerComponent implements OnInit {
   public managerFacilitiesIdOnly: number[];
   public selectedFacilities: [string, number][] = [];
   public facilitiesToPost: number[] = [];
+  computeCenters : any[] = [];
   allNews: DenbiNews[];
   wordPressNews: WordPressNews[];
   selectedNews: WordPressNews = new WordPressNews();
@@ -53,17 +54,18 @@ export class NewsManagerComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.facilityService.getManagerFacilities().subscribe((result: any) => {
-      this.managerFacilities = result;
-      this.selectedFacilities = this.managerFacilities.map((facility: [string, number]) => facility);
-      this.managerFacilitiesIdOnly = this.managerFacilities.map((facility: [string, number]) => facility['FacilityId']);
-      this.list();
-      this.setFormGroup();
-      const facility_ids: string[] = this.selectedFacilities.map((facility: [string, number]) => facility['FacilityId'].toString());
-      this.getWordPressNews();
+    this.facilityService.getComputeCenters().subscribe((computeCenters: any[]) => {
+      this.computeCenters = computeCenters;
+      this.facilityService.getManagerFacilities().subscribe((result: any) => {
+        this.managerFacilities = result;
+        this.selectedFacilities = this.managerFacilities.map((facility: [string, number]) => facility);
+        this.managerFacilitiesIdOnly = this.managerFacilities.map((facility: [string, number]) => facility['FacilityId']);
+        this.list();
+        this.setFormGroup();
+        this.getWordPressNews();
+      });
     });
   }
-
   controlToNews(): void {
     this.selectedNews.title = this.selectedNewsForm.controls['title'].value;
     this.selectedNews.text = this.selectedNewsForm.controls['text'].value;
@@ -95,13 +97,15 @@ export class NewsManagerComponent implements OnInit {
     news.title = this.selectedNewsForm.controls["title"].value;
     news.text = this.selectedNewsForm.controls["text"].value;
     news.excerpt = this.selectedNewsForm.controls["motd"].value;
+    news.tags = this.selectedNewsForm.controls["tag"].value;
+    if (news.tags) {
+      news.tags = news.tags.replace(/\s/g, "");
+    }
     let tempArr: string[] = [];
-    this.facilityService.getComputeCenters().subscribe((computeCenters: any) => {
-      this.selectedFacilities.forEach((facility: any) => {
-        let computeCenter = computeCenters.find(i => i.compute_center_facility_id === facility["FacilityId"]);
+      this.facilitiesToPost.forEach((facility: any) => {
+        let computeCenter = this.computeCenters.find(i => i.compute_center_facility_id === facility);
         if (computeCenter) {
           let wp_id = computeCenter["compute_center_news_id"];
-          //maybe change this and get the wp_id directly in api
           if (wp_id) {
             tempArr.push(wp_id);
           }
@@ -110,8 +114,8 @@ export class NewsManagerComponent implements OnInit {
       news.facility = tempArr.toString();
       this.newsService.addNewsToWordpress(news).subscribe((result: any )=> {
       console.log(result);
-      })
-    });
+      this.getWordPressNews();
+      });
   }
 
 
@@ -121,6 +125,7 @@ export class NewsManagerComponent implements OnInit {
   getWordPressNews(): void {
     this.wordPressNews = [];
     const facility_ids: string[] = this.selectedFacilities.map((facility: [string, number]) => facility['FacilityId'].toString());
+    console.log(facility_ids.toString());
     this.newsService.getNewsFromWP(facility_ids.toString()).subscribe((result: Object[]) => {
       result.forEach((wp_news: Object) =>  {
         let wp_temp: WordPressNews = new WordPressNews();
@@ -140,6 +145,10 @@ export class NewsManagerComponent implements OnInit {
       });
       console.log(this.wordPressNews);
     })
+  }
+
+  updateNewsInWordpress(): void {
+    //update wordpress post by id
   }
 
   patch(news: DenbiNews): void {
@@ -167,13 +176,6 @@ export class NewsManagerComponent implements OnInit {
       return;
     }
     const facility_ids: string[] = this.selectedFacilities.map((facility: [string, number]) => facility['FacilityId'].toString());
-    /*this.newsService.getNews(facility_ids.toString()).subscribe((result: any) => {
-      this.allNews = result;
-      this.allNews.forEach((news: DenbiNews) => {
-        news.tag = news.tag.replace(this.reg1, '').replace(this.reg2, '').replace(this.reg3, '');
-        this.isEditable(news);
-      });
-    });*/
   }
 
   delete(news: DenbiNews): void {
@@ -205,6 +207,7 @@ export class NewsManagerComponent implements OnInit {
       this.allChecked = true;
       this.list();
     }
+    this.getWordPressNews();
   }
 
   selectFacility(facility: [string, number]): void {
@@ -219,13 +222,13 @@ export class NewsManagerComponent implements OnInit {
     }
     this.selectedFacilities.length === this.managerFacilities.length ? this.allChecked = true : this.allChecked = false;
     this.list();
+    this.getWordPressNews();
   }
 
   setNews(news?: WordPressNews): void {
     this.facilitiesToPost = [];
     if (news) {
       this.selectedNews = news;
-      console.log("set it");
       for (const facility_id of this.managerFacilitiesIdOnly) {
         //need to check how to get facility numbers from database by wordpress facility
       }
@@ -234,6 +237,14 @@ export class NewsManagerComponent implements OnInit {
       } else {
         this.motdLength.next(0);
       }
+
+      const fac_ids: string[] = news.facility.toString().split(',');
+      fac_ids.forEach((center: string) => {
+        let centerToPost = this.computeCenters
+          .find(i => i["compute_center_news_id"] === center);
+        this.facilitiesToPost.push(centerToPost["compute_center_facility_id"]);
+      });
+      console.log(this.facilitiesToPost);
     } else {
       this.selectedNews = new WordPressNews();
       this.motdLength.next(0);

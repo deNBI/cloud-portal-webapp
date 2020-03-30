@@ -25,6 +25,9 @@
             </div>
             <div class="card-body">
               <form>
+                <div *ngIf="wordPressNews?.length === 0" class="alert alert-info">
+                  <span>No news available for the facilities selected.</span>
+                </div>
                 <div *ngFor="let news of wordPressNews">
                   <div class="card" style="cursor: pointer;" (click)="setNews(news)"> <!--(click)="setNews(news)">-->
                        <!-- [ngStyle]="{
@@ -33,9 +36,9 @@
           'border-right-width': news.id == selectedNews.id ? '3px' : '1px'
           }" -->
                     <div class="card-header text-truncate"
-                         data-toggle="tooltip"
+                         data-toggle="tooltip" id="{{news.id}}_header"
                          data-placement="auto"
-                         style="background-color: #00ADEF !important; color: white !important;"
+                         style="background-color: #00ADEF; color: white !important;"
                          title="{{news.title}}">
                       <strong>{{news.title}}</strong>
                     </div>
@@ -167,6 +170,10 @@ we are happy to inform..."
               <button class="btn btn-danger"
                       style="margin: 5px"
                       (click)="deleteNewsFromWordpress();" *ngIf="selectedNews">Delete News
+              </button>
+              <button class="btn btn-secondary"
+                      style="margin: 5px"
+                      (click)="updateNewsInWordpress();" *ngIf="selectedNews">Update News
               </button><!-- end of wordpress button -->
               <!--<button class="btn btn-success"
                       style="margin: 5px"
