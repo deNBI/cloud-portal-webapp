@@ -15,12 +15,6 @@
             Send email
           </button>
         </div>
-        <div class="col-md-2">
-          <button (click)="newsModal.show()" type="button " class="btn btn-outline-primary"><i
-            class="icon-envelope-letter"></i>
-            Manage News
-          </button>
-        </div>
         <div class="col-md-8" style="margin-bottom: 10px;"><select [(ngModel)]="selectedFacility"
                                                                    (ngModelChange)="onChangeSelectedFacility($event)"
                                                                    class="form-control" name="selectedFacility">
@@ -514,83 +508,3 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div>
-
-<div bsModal #newsModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
-     aria-labelledby="Label"
-     aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title" *ngIf="selectedFacility"> Manage News of
-          {{selectedFacility['Facility']}}</h4>
-        <button type="button" class="close" style="cursor: pointer"
-                (click)="newsModal.hide()"
-                aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="modal-body">
-          <form class="form-horizontal" id="news_form" #f="ngForm">
-            <label> Please input id of the news you want to delete:
-              <input class="form-control" id="news_id"
-                     name="news_id_name"
-                     type="number" min="0" [(ngModel)]="news_id" required>
-            </label>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" [disabled]="f.invalid" class="btn btn-primary"
-                  (click)="newsModal.hide(); delete_news(news_id); newsSuccessModal.show()">Delete News
-          </button>
-          <button type="button" class="btn btn-secondary"
-                  (click)="newsModal.hide()">Close
-          </button>
-        </div>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-
-<div bsModal #newsSuccessModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
-     aria-labelledby="Label"
-     aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title" *ngIf="newsStatus == 0"> Waiting </h4>
-        <h4 class="modal-title" *ngIf="newsStatus == 1"> Success </h4>
-        <h4 class="modal-title" *ngIf="emailStatus == 2"> Error </h4>
-        <button type="button" class="close" style="cursor:pointer"
-                (click)="newsSuccessModal.hide()"
-                aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="alert alert-info" role="alert" *ngIf="newsStatus == 0">
-          Deleting the news. <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
-        </div>
-        <div class="alert alert-success" role="alert" *ngIf="newsStatus == 1">
-          The news has been deleted successfully.
-        </div>
-        <div class="alert alert-success" role="alert" *ngIf="newsStatus == 2">
-          The news has not been deleted.
-          Reason: {{news_error_string}}
-        </div>
-      </div>
-
-
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="newsSuccessModal.hide()">
-          Close
-        </button>
-      </div>
-
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-
-
-
-

@@ -939,7 +939,7 @@
               <span class="help-block">How much Object Storage do you need in the future?</span>
             </div>
           </div>
-          <div *ngIf="project_application?.OpenStackProject && project_application?.CloudService" class="form-group row">
+          <div *ngIf="project_application?.OpenStackProject && project_application?.CloudService && !project_application?.CloudServiceDevelop" class="form-group row">
             <label class="col-md-4 form-control-label" for="textarea-input"><strong>Cloud Service user number </strong><i
               data-balloon="Number of user using your service."
               data-balloon-pos="down" data-balloon-length="large"><i
@@ -958,7 +958,7 @@
               <span class="help-block">Current number of users</span>
             </div>
 
-            <div *ngIf="project_application?.OpenStackProject && project_application?.CloudService" class="col">
+            <div *ngIf="project_application?.OpenStackProject && project_application?.CloudService && !project_application?.CloudServiceDevelop" class="col">
               <div class="input-group">
                 <input class="form-control"
                        id="id_project_application_renewal_cloud_service_user_number"
