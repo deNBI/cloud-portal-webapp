@@ -23,3 +23,15 @@ jobs:
         dockerfile: Dockerfile
         buildargs: ANGULAR_MODE  
         tags: ${{ steps.get_version.outputs.VERSION }}
+     - name: Publish Staging to Registry
+       uses: elgohr/Publish-Docker-Github-Action@master
+       env:
+          ANGULAR_MODE: stage  
+       with:
+        name: denbicloud/cloud-portal-webapp
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+        dockerfile: Dockerfile
+        buildargs: ANGULAR_MODE  
+        tags: ${{ steps.get_version.outputs.VERSION }}-staging
+

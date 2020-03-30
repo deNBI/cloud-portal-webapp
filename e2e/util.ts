@@ -1,7 +1,4 @@
 import {browser, by, element, ElementFinder, protractor, ProtractorExpectedConditions, until} from 'protractor';
-// tslint:disable-next-line:no-require-imports id-length
-import _ = require('colors');
-import {By} from '@angular/platform-browser';
 
 /**
  * Util test class.
@@ -20,12 +17,18 @@ export class Util {
   private static _VOLUME_NAME: string = 'ProtractorVolume';
   private static _VOLUME_SPACE: string = '1';
   private static _LONG_TIMEOUT: number = 420000;
+  private static _VOLUME_MOUNT_PATH_STRING: string = 'path';
+
   private static _BASIC_SNAPSHOT_NAME: string = 'PTSnap';
   private static _ALTERNATIVE_SNAPSHOT_NAME: string = 'PTSnapTwo';
 
   // tslint:disable-next-line:no-require-imports
   static get PI_EMAIL(): string {
     return this._PI_EMAIL;
+  }
+
+  static get VOLUME_MOUNT_PATH_STRING(): string {
+    return this._VOLUME_MOUNT_PATH_STRING;
   }
 
   static get ALTERNATIVE_SNAPSHOT_NAME(): string {
