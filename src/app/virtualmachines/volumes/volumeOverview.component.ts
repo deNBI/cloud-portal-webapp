@@ -32,6 +32,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
   title: string = 'Volume Overview';
   selected_volume_data_loaded: boolean = false;
   filter: string;
+  checked_volumes: Volume [] = [];
 
   /**
    * Enum of all volume action states.
@@ -140,6 +141,8 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
   DEBOUNCE_TIME: number = 1000;
   currentPage: number = 1;
   isSearching: boolean = true;
+  all_volumes_checked: boolean = false;
+  selected_volumes_to_detach: boolean = false;
 
   constructor(private facilityService: FacilityService, private groupService: GroupService, private vmService: VirtualmachineService) {
     super();
@@ -153,6 +156,90 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
 
   changedFilter(text: string): void {
     this.filterChanged.next(text);
+
+  }
+
+  isVolChecked(vol: Volume): boolean {
+    return this.checked_volumes.indexOf(vol) !== -1
+  }
+
+  changeCheckedVolume(vol: Volume): void {
+    if (!this.isVolChecked(vol)) {
+      this.checked_volumes.push(vol);
+
+    } else {
+      this.checked_volumes.splice(this.checked_volumes.indexOf(vol), 1)
+    }
+    this.areAllVolumesChecked();
+    this.areSelectedVolumesDetachable()
+
+  }
+
+  areSelectedVolumesDetachable(): void {
+    this.selected_volumes_to_detach = false;
+    this.checked_volumes.forEach((vol: Volume) => {
+      if (vol.volume_virtualmachine) {
+        this.selected_volumes_to_detach = true;
+      }
+    })
+  }
+
+  uncheckAll(): void {
+    this.checked_volumes = [];
+    this.all_volumes_checked = false;
+    this.selected_volumes_to_detach = false;
+  }
+
+  deleteSelectedVolumes(): void {
+    this.checked_volumes.forEach((vol: Volume) => {
+      if (vol.volume_virtualmachine) {
+        this.deleteVolume(vol, vol.volume_virtualmachine.openstackid)
+      } else {
+        this.deleteVolume(vol)
+      }
+    });
+    this.uncheckAll()
+  }
+
+  detachSelectedVolumes(): void {
+    this.checked_volumes.forEach((vol: Volume) => {
+
+      if (vol.volume_virtualmachine) {
+        this.detachVolume(vol, vol.volume_virtualmachine.openstackid)
+      }
+    });
+    this.uncheckAll()
+  }
+
+  areAllVolumesChecked(): void {
+    let all_checked: boolean = true;
+    this.volumes.forEach((vol: Volume) => {
+      if (!this.isVolChecked(vol)) {
+        all_checked = false;
+
+      }
+    });
+
+    this.all_volumes_checked = all_checked;
+
+  }
+
+  changeCheckAllVolumes(): void {
+    if (this.all_volumes_checked) {
+      this.checked_volumes = [];
+      this.all_volumes_checked = false;
+
+      return;
+
+    }
+
+    this.volumes.forEach((vol: Volume) => {
+      if (!this.isVolChecked(vol)) {
+        this.checked_volumes.push(vol);
+      }
+    });
+    this.all_volumes_checked = true;
+    this.areSelectedVolumesDetachable()
 
   }
 
