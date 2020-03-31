@@ -25,8 +25,10 @@ export class NewsManagerComponent implements OnInit {
   public managerFacilitiesIdOnly: number[];
   public selectedFacilities: [string, number][] = [];
   public facilitiesToPost: number[] = [];
+  selectedTags: number[] = [];
   computeCenters : any[] = [];
   allNews: DenbiNews[];
+  availableTags: [string, number][] = [];
   wordPressNews: WordPressNews[];
   selectedNews: WordPressNews = new WordPressNews();
   newWordpressNews: WordPressNews = new WordPressNews();
@@ -63,33 +65,27 @@ export class NewsManagerComponent implements OnInit {
         this.list();
         this.setFormGroup();
         this.getWordPressNews();
+        this.getTagsAvailable();
       });
     });
   }
+
+  getTagsAvailable(): void {
+    this.newsService.getAvailableTagsFromWordPress().subscribe((result: any[]) => {
+      if (result) {
+        result.forEach((tag: any) => {
+          this.availableTags.push([tag["name"], tag["id"]]);
+        });
+        console.log(this.availableTags);
+      }
+    })
+  }
+
   controlToNews(): void {
     this.selectedNews.title = this.selectedNewsForm.controls['title'].value;
     this.selectedNews.text = this.selectedNewsForm.controls['text'].value;
     this.selectedNews.excerpt = this.selectedNewsForm.controls['motd'].value;
     this.selectedNews.tags = this.selectedNewsForm.controls['tag'].value;
-  }
-
-  add(news: DenbiNews): void {
-    this.controlToNews();
-    this.newsService.addNews(news).subscribe(
-      (result: any) => {
-        if (result[0] === `The article: '${this.selectedNews.title}' was added.`) {
-          this.addingStatus = 1;
-        } else {
-          this.addingStatus = 2;
-          this.error_string = result[0];
-        }
-        this.list();
-      },
-      (error: any) => {
-        this.addingStatus = 2;
-        this.error_string = error[0];
-      }
-    );
   }
 
   addNewsToWordpress(news: WordPressNews): void {
@@ -126,7 +122,7 @@ export class NewsManagerComponent implements OnInit {
     this.wordPressNews = [];
     const facility_ids: string[] = this.selectedFacilities.map((facility: [string, number]) => facility['FacilityId'].toString());
     console.log(facility_ids.toString());
-    this.newsService.getNewsFromWP(facility_ids.toString()).subscribe((result: Object[]) => {
+    this.newsService.getNewsFromWordPress(facility_ids.toString()).subscribe((result: Object[]) => {
       result.forEach((wp_news: Object) =>  {
         let wp_temp: WordPressNews = new WordPressNews();
           wp_temp.id = wp_news["id"];
@@ -281,6 +277,10 @@ export class NewsManagerComponent implements OnInit {
       this.facilitiesToPost.splice(index, 1);
       //this.selectedNews.facility_id.splice(this.selectedNews.facility_id.indexOf(facility['FacilityId']), 1);
     }
+  }
+
+  manageTags(tag: [string, number]): void {
+      console.log(tag.keys().next());
   }
 
   isEditable(news: DenbiNews): boolean {
