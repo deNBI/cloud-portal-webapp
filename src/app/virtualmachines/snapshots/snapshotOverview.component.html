@@ -46,54 +46,74 @@
         <div class="input-group-append mb-3 "><span class="input-group-text"> Snapshots per page
                                     </span></div>
       </div>
+
+      <div class="col-2">
+        <div class="dropdown" dropdown>
+          <button class="btn btn-secondary dropdown-toggle" id="actionDropdownMenu" data-toggle="dropdown"
+                  type="button" aria-haspopup="true" aria-expanded="false" aria-controls="dropdown-split"
+                  dropdownToggle style="width:100%">
+            Actions
+          </button>
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu" role="menu"
+               *dropdownMenu id="dropdownMenu">
+            <button [disabled]="checked_snapshots?.length == 0" class="dropdown-item btn btn-secondary"
+                    id="deleteAllSelectedVolumesButton" (click)="deleteSelectedModal.show()"
+            >
+              Delete selected Snapshots
+            </button>
+
+          </div>
+        </div>
       </div>
+    </div>
 
       <div>
         <div *ngIf="isSearching; else searchDoneBlock" id="search_spinner" style="margin:10px; padding:10px;">
           <div class="spinner-border text-primary" style="display:block; margin:auto;"></div>
         </div>
         <ng-template #searchDoneBlock>
-          <div class="table-responsive">
-            <table class="table table-striped " id="snapshot_table">
-              <thead>
-              <tr>
-                <th>Name</th>
-                <th>Project</th>
-                <th>Actions</th>
-                <th>Status</th>
+          <div class="rTable">
+            <div class="rTableHeading">
+              <div class="rTableHead col-3 ">Name</div>
+              <div class="rTableHead col-3 ">Project</div>
+              <div class="rTableHead col-2 ">Actions</div>
+              <div class="rTableHead col-2">Status</div>
+              <div class="rTableHead col-2">
+                <input type="checkbox" [checked]="all_snapshots_checked" (change)="changeCheckAllSnapshots()"><strong
+                style="margin-left: 2px;">Select all</strong>
+              </div>
 
-                <!-- th>Client</th-->
+              <!-- th>Client</th-->
 
-              </tr>
+            </div>
 
-              </thead>
-              <tbody>
-              <tr *ngFor="let snapshot of snapshots">
-                <td id="{{snapshot?.snapshot_name}}">{{snapshot?.snapshot_name}}</td>
-                <td>{{snapshot?.snapshot_project}}</td>
-                <td>
-                  <button *ngIf="snapshot.snapshot_created  || showFacilities"
-                          (click)="setSelectedSnapshot(snapshot);verifyModal.show();"
-                          id="delete_button_{{snapshot?.snapshot_name}}"
-                          class="btn btn-primary">
-                    Delete Snapshot
-                  </button>
-                </td>
-                <td> <span *ngIf="snapshot?.snapshot_status == 'active'"
-                           style="margin-left: 5px" id="snapshot_active_{{snapshot?.snapshot_name}}"
-                           class="badge badge-success"> {{snapshot?.snapshot_status | uppercase}} </span>
-                  <span *ngIf="snapshot?.snapshot_status != 'active'"
-                        style="margin-left: 5px"
-                        class="badge badge-info"> {{snapshot?.snapshot_status | uppercase}} </span>
-                </td>
+            <div class="rTableRow" *ngFor="let snapshot of snapshots">
+              <div class="rTableCell " id="{{snapshot?.snapshot_name}}">{{snapshot?.snapshot_name}}</div>
+              <div class="rTableCell ">{{snapshot?.snapshot_project}}</div>
+              <div class="rTableCell ">
+                <button *ngIf="snapshot.snapshot_created  || showFacilities"
+                        (click)="setSelectedSnapshot(snapshot);verifyModal.show();"
+                        id="delete_button_{{snapshot?.snapshot_name}}"
+                        class="btn btn-primary">
+                  Delete Snapshot
+                </button>
+              </div>
+              <div class="rTableCell "> <span *ngIf="snapshot?.snapshot_status == 'active'"
+                                              style="margin-left: 5px" id="snapshot_active_{{snapshot?.snapshot_name}}"
+                                              class="badge badge-success"> {{snapshot?.snapshot_status | uppercase}} </span>
+                <span *ngIf="snapshot?.snapshot_status != 'active'"
+                      style="margin-left: 5px"
+                      class="badge badge-info"> {{snapshot?.snapshot_status | uppercase}} </span>
+              </div>
 
-                <!-- td>{{volume.volume_client.host}} : {{volume.volume_client.port}}</td-->
+              <!-- td>{{volume.volume_client.host}} : {{volume.volume_client.port}}</td-->
+              <div class="rTableCell "><input type="checkbox" [checked]="isSnapChecked(snapshot)"
+                                              (change)="changeCheckedSnapshot(snapshot)"
+                                              *ngIf="snapshot.snapshot_created  || showFacilities"></div>
 
-              </tr>
+            </div>
 
-              </tbody>
 
-            </table>
           </div>
         </ng-template>
 
@@ -191,6 +211,43 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+<div bsModal #deleteSelectedModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="Label"
+     aria-hidden="true"
+     id="delete_all_modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Delete the following Snapshots</h4>
+        <button type="button" class="close" style="cursor: pointer"
+                (click)="deleteSelectedModal.hide()"
+                aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-warning" role="alert">
+          Are you sure you want to delete:
+          <div *ngFor="let snap of checked_snapshots">
+            <strong>{{snap?.snapshot_name}}</strong>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button class="btn  btn-success col-md-4"
+                (click)="deleteSelectedSnapshots();deleteSelectedModal.hide();"
+                id="confirm_delete_all_button">
+          Yes
+        </button>
+        <button class="btn  btn-danger col-md-4" type="reset"
+                (click)="deleteSelectedModal.hide();">Cancel
+        </button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div>
+</div>
 
 
 

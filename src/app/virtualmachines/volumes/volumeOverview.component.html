@@ -59,52 +59,76 @@
         <div class="input-group-append mb-3 "><span class="input-group-text"> Volumes per page
                                     </span></div>
       </div>
+
+      <div class="col-2">
+        <div class="dropdown" dropdown>
+          <button class="btn btn-secondary dropdown-toggle" id="actionDropdownMenu" data-toggle="dropdown"
+                  type="button" aria-haspopup="true" aria-expanded="false" aria-controls="dropdown-split"
+                  dropdownToggle style="width:100%">
+            Actions
+          </button>
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu" role="menu"
+               *dropdownMenu id="dropdownMenu">
+            <button [disabled]="checked_volumes?.length == 0" class="dropdown-item btn btn-secondary"
+                    id="deleteAllSelectedVolumesButton" (click)="deleteSelectedModal.show()"
+            >
+              Delete selected Volumes
+            </button>
+            <button [disabled]="!selected_volumes_to_detach" class="dropdown-item btn btn-secondary"
+                    id="detachAllSelectedVolumesButton" (click)="detachSelectedModal.show()"
+            >
+              Detach selected Volumes
+            </button>
+          </div>
+        </div>
+      </div>
+
     </div>
     <div>
 
       <div *ngIf="isSearching" id="search_spinner" style="margin:10px; padding:10px;">
         <div class="spinner-border text-primary" style="display:block; margin:auto;"></div>
       </div>
-      <div class="table-responsive" style="overflow-x: visible; overflow-y: visible">
-        <table class="table table-hover">
-          <thead>
-          <tr>
-            <th>Project</th>
-            <th>Attached To</th>
-            <th>Name</th>
-            <th>Status</th>
-            <th>Size</th>
-            <th>Actions</th>
-            <!-- th>Client</th-->
+      <div class="rTable" style="overflow-x: visible; overflow-y: visible">
+        <div class="rTableHeading">
+          <div class="rTableHead col-2">Project</div>
+          <div class="rTableHead col-2">Attached To</div>
+          <div class="rTableHead col-2">Name</div>
+          <div class="rTableHead col-2">Status</div>
+          <div class="rTableHead col-1">Size</div>
+          <div class="rTableHead col-2">Actions</div>
+          <div class="rTableHead col-1">
+            <input type="checkbox" [checked]="all_volumes_checked" (change)="changeCheckAllVolumes()"><strong style="margin-left: 2px;">Select all</strong>
+          </div>
 
-          </tr>
+        </div>
 
-          </thead>
-          <tbody id="volume_table_body">
-          <tr *ngFor="let volume of volumes">
-            <td>{{volume.volume_project}}</td>
-            <td *ngIf="volume.volume_virtualmachine && volume.volume_status == VolumeStates.staticIN_USE"
-                [id]="'cell_vm_id_' + volume.volume_virtualmachine.name"><span *ngIf="volume.volume_path">
-                <strong>Initial mounted to: </strong>/mnt/{{volume.volume_path }} <br></span>
-              <strong>Device: </strong>{{volume.volume_device }}  <br><strong>VM:</strong><a class="h5 text-primary"
-                                                                        [routerLink]="['/virtualmachines/detail/' + volume.volume_virtualmachine?.openstackid]">
-                {{ volume.volume_virtualmachine.name}}</a>
-            </td>
-            <td *ngIf="!volume.volume_virtualmachine || volume.volume_status != VolumeStates.staticIN_USE "
-                id="cell_vm_free_id"></td>
-            <td id="cell_name_id_{{volume.volume_name}}">{{volume.volume_name}}</td>
+        <div class="rTableRow" *ngFor="let volume of volumes">
+          <div class="rTableCell ">{{volume?.volume_project}}</div>
+          <div class="rTableCell "
+               *ngIf="volume?.volume_virtualmachine && volume?.volume_status == VolumeStates.staticIN_USE"
+               [id]="'cell_vm_id_' + volume?.volume_virtualmachine.name"><span *ngIf="volume?.volume_path">
+                <strong>Initial mounted to: </strong>/mnt/{{volume?.volume_path }} <br></span>
+            <strong>Device: </strong>{{volume?.volume_device }}  <br><strong>VM:</strong><a class="h5 text-primary"
+                                                                                           [routerLink]="['/virtualmachines/detail/' + volume?.volume_virtualmachine?.openstackid]">
+              {{ volume?.volume_virtualmachine.name}}</a>
+          </div>
+          <div class="rTableCell "
+               *ngIf="!volume?.volume_virtualmachine || volume?.volume_status != VolumeStates.staticIN_USE "
+               id="cell_vm_free_id"></div>
+          <div class="rTableCell " id="cell_name_id_{{volume?.volume_name}}">{{volume?.volume_name}}</div>
 
-            <td style="margin: auto;" [ngSwitch]="volume?.volume_status">
+          <div class="rTableCell " style="margin: auto;" [ngSwitch]="volume?.volume_status">
 
-              <ng-container *ngSwitchCase="VolumeStates.staticAVAILABLE">
-                <div [id]="'available_' + volume?.volume_name"
-                     class="dot-colorless bg-success pulseAnim" style="width: 10px; height: 10px">
-                </div>
-                <strong> {{VolumeStates.staticAVAILABLE}}</strong>
-              </ng-container>
-              <ng-container *ngSwitchCase="VolumeStates.staticDETACHING">
-                <div [id]="'detaching_' + volume?.volume_name"
-                     class="dot-colorless bg-warning" style="width: 10px; height: 10px">
+            <ng-container *ngSwitchCase="VolumeStates.staticAVAILABLE">
+              <div [id]="'available_' + volume?.volume_name"
+                   class="dot-colorless bg-success pulseAnim" style="width: 10px; height: 10px">
+              </div>
+              <strong> {{VolumeStates.staticAVAILABLE}}</strong>
+            </ng-container>
+            <ng-container *ngSwitchCase="VolumeStates.staticDETACHING">
+              <div [id]="'detaching_' + volume?.volume_name"
+                   class="dot-colorless bg-warning" style="width: 10px; height: 10px">
                 </div>
                 <strong> {{VolumeStates.staticDETACHING}}</strong>
               </ng-container>
@@ -153,49 +177,50 @@
                 <p class="alert alert-danger" role="alert"> Please contact <a href="mailto:cloud@denbi.de">cloud@denbi.de</a>.</p>
 
               </ng-container>
-              <ng-container *ngSwitchCase="VolumeStates.staticERROR">
+            <ng-container *ngSwitchCase="VolumeStates.staticERROR">
                 <span [id]="'not_found_badge_' + volume?.volume_name"
                       class="dot-colorless bg-danger" style="width: 10px; height: 10px">
                 </span>
-                <strong> {{VolumeStates.staticERROR}}</strong><br>
-                <p class="alert alert-danger" role="alert"> Please contact <a href="mailto:cloud@denbi.de">cloud@denbi.de</a>.</p>
+              <strong> {{VolumeStates.staticERROR}}</strong><br>
+              <p class="alert alert-danger" role="alert"> Please contact <a
+                href="mailto:cloud@denbi.de">cloud@denbi.de</a>.</p>
 
-              </ng-container>
-              <i *ngIf="VolumeStates.staticNOT_IN_PROCESS_STATE.indexOf(volume?.volume_status) === -1"
-                 class="fa fa-spinner fa-spin"></i></td>
+            </ng-container>
+            <i *ngIf="VolumeStates.staticNOT_IN_PROCESS_STATE.indexOf(volume?.volume_status) === -1"
+               class="fa fa-spinner fa-spin"></i></div>
 
 
-            <td>{{volume.volume_storage }} GB</td>
-            <td>
-              <div *ngIf="(volume.volume_created_by_user
+          <div class="rTableCell ">{{volume?.volume_storage }} GB</div>
+          <div class="rTableCell ">
+            <div *ngIf="(volume?.volume_created_by_user
                || showFacilities)
                && VolumeStates.staticNO_ACTIONS.indexOf(volume?.volume_status) === -1"
-                   class="btn-group" dropdown>
-                <button class="btn btn-secondary"
-                        (click)="setRequestStatus(0);setSelectedVolume(volume);verifyModal.show();"
-                        type="button" id="delete_button">Delete Volume
-                </button>
-                <button class="btn btn-secondary dropdown-toggle dropdown-toggle-split"
-                        type="button" aria-haspopup="true" aria-expanded="false"
+                 class="btn-group" dropdown>
+              <button class="btn btn-secondary"
+                      (click)="setRequestStatus(0);setSelectedVolume(volume);verifyModal.show();"
+                      type="button" id="delete_button">Delete Volume
+              </button>
+              <button class="btn btn-secondary dropdown-toggle dropdown-toggle-split"
+                      type="button" aria-haspopup="true" aria-expanded="false"
                         dropdownToggle aria-controls="dropdown-split"></button>
                 <ul class="dropdown-menu" style="cursor: pointer" role="menu" *dropdownMenu>
-                  <li *ngIf="volume.volume_virtualmachine && volume.volume_status != VolumeStates.staticERROR"
+                  <li *ngIf="volume?.volume_virtualmachine && volume?.volume_status != VolumeStates.staticERROR"
                       role="menuitem">
                     <a class="dropdown-item"
                        (click)="setRequestStatus(1);setSelectedVolume(volume);verifyModal.show();">Detach
                       Volume</a>
                   </li>
 
-                  <li *ngIf="!volume.volume_virtualmachine  && volume.volume_status != VolumeStates.staticERROR"
+                  <li *ngIf="!volume?.volume_virtualmachine  && volume?.volume_status != VolumeStates.staticERROR"
                       role="menuitem">
                     <a class="dropdown-item"
-                       (click)="getActiveVmsByProject(volume.volume_projectid);setSelectedVolume(volume);attachModal.show();">Attach
+                       (click)="getActiveVmsByProject(volume?.volume_projectid);setSelectedVolume(volume);attachModal.show();">Attach
                       Volume</a>
                   </li>
-                  <li *ngIf=" volume.volume_status != VolumeStates.staticERROR"
+                  <li *ngIf=" volume?.volume_status != VolumeStates.staticERROR"
                       role="menuitem">
                     <a class="dropdown-item "
-                       (click)="extendVolumeStorage=volume.volume_storage+1;selected_volume=volume;getSelectedVolumeStorage();extendModal.show();">Extend
+                       (click)="extendVolumeStorage=volume?.volume_storage+1;selected_volume=volume;getSelectedVolumeStorage();extendModal.show();">Extend
                       Volume</a>
                   </li>
                   <li role="menuitem">
@@ -204,18 +229,20 @@
                       Volume</a>
                   </li>
                 </ul>
-              </div>
+            </div>
 
 
-            </td>
+          </div>
+          <div class="rTableCell ">  <input type="checkbox" [checked]="isVolChecked(volume)" (change)="changeCheckedVolume(volume)"  *ngIf="(volume?.volume_created_by_user
+               || showFacilities)
+               && VolumeStates.staticNO_ACTIONS.indexOf(volume?.volume_status) === -1"></div>
 
-            <!-- td>{{volume.volume_client.host}} : {{volume.volume_client.port}}</td-->
 
-          </tr>
+          <!-- td>{{volume?.volume_client.host}} : {{volume?.volume_client.port}}</td-->
 
-          </tbody>
+        </div>
 
-        </table>
+
       </div>
 
 
@@ -250,11 +277,11 @@
       <div class="modal-body">
 
         <div class="alert alert-info" role="alert" *ngIf="volume_action_status == volumeActionStates.CHANGING_NAME">
-          Renaming Volume... <i class="fa fa-spinner fa-spin"
+          Renaming volume?... <i class="fa fa-spinner fa-spin"
                                 style="font-size:24px"></i>
         </div>
         <div class="alert alert-info" role="alert" *ngIf="volume_action_status == volumeActionStates.WAIT_CREATION">
-          Creating Volume... <i class="fa fa-spinner fa-spin"
+          Creating volume?... <i class="fa fa-spinner fa-spin"
                                 style="font-size:24px"></i>
         </div>
         <div class="alert alert-info" role="alert" *ngIf="volume_action_status == volumeActionStates.DETACHING_VOLUME">
@@ -275,12 +302,12 @@
         <div id="successfully_created_attached_div"
              class="alert alert-success" role="alert"
              *ngIf="volume_action_status == volumeActionStates.SUCCESSFULLY_CREATED_ATTACHED">
-          Successfully created and attached Volume.
+          Successfully created and attached volume?.
 
         </div>
         <div class="alert alert-success" role="alert"
              *ngIf="volume_action_status == volumeActionStates.CHANGING_NAME_SUCESSFULL">
-          Successfully renamed Volume.
+          Successfully renamed volume?.
 
         </div>
         <div class="alert alert-success" role="alert" *ngIf="volume_action_status == volumeActionStates.SUCCESS"
@@ -314,6 +341,82 @@
         </button>
       </div>
 
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div bsModal #deleteSelectedModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="Label"
+     aria-hidden="true"
+     id="delete_all_modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Delete the following Volumes</h4>
+        <button type="button" class="close" style="cursor: pointer"
+                (click)="deleteSelectedModal.hide()"
+                aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-warning" role="alert">
+          Are you sure you want to delete:
+          <div *ngFor="let volume of checked_volumes">
+            <strong>{{volume?.volume_name}}</strong>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button class="btn  btn-success col-md-4"
+                (click)="deleteSelectedVolumes();deleteSelectedModal.hide();"
+                id="confirm_delete_all_button">
+          Yes
+        </button>
+        <button class="btn  btn-danger col-md-4" type="reset"
+                (click)="deleteSelectedModal.hide();">Cancel
+        </button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div bsModal #detachSelectedModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="Label"
+     aria-hidden="true"
+     id="detach_all_modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Detach the following Volumes</h4>
+        <button type="button" class="close" style="cursor: pointer"
+                (click)="detachSelectedModal.hide()"
+                aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-warning" role="alert">
+          Are you sure you want to detach:
+          <div *ngFor="let volume of checked_volumes">
+            <ng-container *ngIf="volume?.volume_virtualmachine?.openstackid">
+              <strong>{{volume?.volume_name}}</strong> from <strong>{{volume?.volume_virtualmachine?.name}}</strong>
+            </ng-container>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button class="btn  btn-success col-md-4"
+                (click)="detachSelectedVolumes();detachSelectedModal.hide();"
+                id="confirm_detach_all_button">
+          Yes
+        </button>
+        <button class="btn  btn-danger col-md-4" type="reset"
+                (click)="detachSelectedModal.hide();">Cancel
+        </button>
+      </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
@@ -475,7 +578,7 @@
         <div *ngIf="extendDone && !extendError" class="alert alert-warning" role="alert">
           <strong>Please visit the <a href="{{WIKI_EXTEND_VOLUME}}"> wiki </a> for the further steps you need to take
             before you
-            can use the extended volume.
+            can use the extended volume?.
           </strong>
         </div>
 
@@ -561,7 +664,7 @@
 
                *ngIf="
                     selectedProjectDiskspaceUsed + 1 > selectedProjectDiskspaceMax">
-            This project has not enough storage to extend this volume.
+            This project has not enough storage to extend this volume?.
           </div>
 
         <div class="form-group row alert alert-danger"

@@ -105,21 +105,38 @@ $simplevmcolour: #00ADEF;
 .rTable {
   display: table;
   width: 100%;
+
 }
 
 .rTableRow {
   display: table-row;
+  vertical-align: inherit;
+  border-color: inherit;
 }
 
 .rTableHeading {
   display: table-header-group;
-  background-color: #666666;
+  background-color: #f0f3f5;
 }
 
-.rTableCell, .rTableHead {
+.rTableCell {
   display: table-cell;
   padding: 3px 10px;
-  border: 1px solid #999999;
+  vertical-align: inherit;
+
+
+  border-bottom: 1px solid #999999;
+}
+
+.rTableHead {
+  display: table-cell;
+  vertical-align: inherit;
+  font-weight: bold;
+  padding: 3px 10px;
+
+  border-bottom: 2px solid #999999;
+  border-top: 2px solid #999999;
+
 }
 
 .rTableCellNoBorder, .rTableHeadNoBorder {
@@ -127,11 +144,6 @@ $simplevmcolour: #00ADEF;
   padding: 3px 10px;
 }
 
-.rTableHeading {
-  display: table-header-group;
-  background-color: #DDD;
-  font-weight: bold;
-}
 
 .rTableFoot {
   display: table-footer-group;
