@@ -504,7 +504,6 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
       } else {
         this.resenvInformationByVM[vm.name] = '';
       }
-      console.log(result);
     });
   }
 
