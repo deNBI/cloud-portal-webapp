@@ -101,7 +101,8 @@
                   </div>
                    <div class="rTableCellNoBorder">
                    <ul>
-                    <li *ngFor="let sup of project?.ComputeCenter?.Support ">{{sup}}</li>
+                    <li *ngFor="let sup of project?.ComputeCenter?.Support ">
+                      <a href="mailto:{{sup}}">{{sup}}</a></li>
                   </ul>
                   </div>
                 </div>
