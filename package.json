@@ -122,6 +122,6 @@
     "tslint-eslint-rules": "^5.4.0",
     "typescript": "~3.5.3",
     "url-loader": "^1.0.1",
-    "webpack-cli": "^3.2.1"
+    "webpack-cli": "^3.3.11"
   }
 }
