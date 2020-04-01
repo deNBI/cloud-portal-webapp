@@ -26,7 +26,7 @@
             <div class="card-body">
               <form>
                 <div *ngFor="let news of allNews">
-                  <div class="card" style="cursor: pointer;" (click)="setNews(news)"
+                  <div class="card" style="cursor: pointer;overflow: scroll" (click)="setNews(news)"
                        [ngStyle]="{
           'border-right-color': news.id == selectedNews.id ? '#3ea662' : '#c8ced3',
           'border-right-style': 'solid',
@@ -65,7 +65,7 @@
           </div>
         </div>
         <form class="col-8" [formGroup]="selectedNewsForm">
-          <div class="card">
+          <div class="card" style=" overflow: scroll">
             <div class="card-header">
               <strong>Edit news</strong>
             </div>

@@ -114,6 +114,11 @@ $simplevmcolour: #00ADEF;
   border-color: inherit;
 }
 
+.rTableRowNoBorder {
+  display: table-row;
+  vertical-align: inherit;
+}
+
 .rTableHeading {
   display: table-header-group;
   background-color: #f0f3f5;
@@ -136,6 +141,16 @@ $simplevmcolour: #00ADEF;
 
   border-bottom: 2px solid #999999;
   border-top: 2px solid #999999;
+
+}
+
+.rTableHeadNoBorder {
+  display: table-cell;
+  vertical-align: inherit;
+  font-weight: bold;
+  padding: 3px 10px;
+
+
 
 }
 
