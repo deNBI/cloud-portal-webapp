@@ -20,7 +20,7 @@
 
 </div>
 
-<div *ngIf="isLoaded" class="card">
+<div *ngIf="isLoaded" class="card" style=" overflow: scroll">
 
   <div class="card-header">
     <strong>Volumes</strong>
@@ -89,8 +89,8 @@
       <div *ngIf="isSearching" id="search_spinner" style="margin:10px; padding:10px;">
         <div class="spinner-border text-primary" style="display:block; margin:auto;"></div>
       </div>
-      <div class="rTable" style="overflow-x: visible; overflow-y: visible">
-        <div class="rTableHeading">
+      <div class="rTable"  style="overflow-x: visible; overflow-y: visible">
+        <div class="rTableHeading" id="volume_table_body">
           <div class="rTableHead col-2">Project</div>
           <div class="rTableHead col-2">Attached To</div>
           <div class="rTableHead col-2">Name</div>
@@ -121,7 +121,7 @@
           <div class="rTableCell " style="margin: auto;" [ngSwitch]="volume?.volume_status">
 
             <ng-container *ngSwitchCase="VolumeStates.staticAVAILABLE">
-              <div [id]="'available_' + volume?.volume_name"
+              <div id="available_{{volume?.volume_name}}"
                    class="dot-colorless bg-success pulseAnim" style="width: 10px; height: 10px">
               </div>
               <strong> {{VolumeStates.staticAVAILABLE}}</strong>
@@ -198,7 +198,7 @@
                  class="btn-group" dropdown>
               <button class="btn btn-secondary"
                       (click)="setRequestStatus(0);setSelectedVolume(volume);verifyModal.show();"
-                      type="button" id="delete_button">Delete Volume
+                      type="button" id="delete_button_{{volume.volume_name}}">Delete Volume
               </button>
               <button class="btn btn-secondary dropdown-toggle dropdown-toggle-split"
                       type="button" aria-haspopup="true" aria-expanded="false"

@@ -1,4 +1,6 @@
 import {browser, by, element, ElementFinder, protractor, ProtractorExpectedConditions, until} from 'protractor';
+// tslint:disable-next-line:no-require-imports no-var-requires typedef
+let clc = require('cli-color');
 
 /**
  * Util test class.
@@ -76,15 +78,15 @@ export class Util {
   }
 
   static logInfo(text: string): void {
-    console.log(text.blue);
+    console.log(clc.blue(text));
   }
 
   static logHeader(text: string): void {
-    console.log(text.magenta)
+    console.log(clc.magenta(text))
   }
 
   static logMethodCall(text: string): void {
-    console.log(text.cyan)
+    console.log(clc.cyan(text))
   }
 
   static async waitForPage(url: string, timeout: number = this.timeout): Promise<boolean> {
