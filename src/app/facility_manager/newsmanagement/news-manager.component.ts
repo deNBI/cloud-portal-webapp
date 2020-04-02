@@ -25,6 +25,7 @@ export class NewsManagerComponent implements OnInit {
   public managerFacilitiesIdOnly: number[];
   public selectedFacilities: [string, number][] = [];
   public facilitiesToPost: number[] = [];
+  facilitiesToSetMOTD: [string, number][] = [];
   selectedTags: string[] = [];
   computeCenters : any[] = [];
   availableTags: WordPressTag[] = [];
@@ -65,6 +66,16 @@ export class NewsManagerComponent implements OnInit {
         this.getTagsAvailable();
       });
     });
+  }
+
+  manageMOTD(facility: [string, number]): void {
+    let index: number = this.facilitiesToSetMOTD.indexOf(facility);
+    if (index > -1) {
+      this.facilitiesToSetMOTD.splice(index, 1);
+    } else {
+      this.facilitiesToSetMOTD.push(facility);
+    }
+    console.log(this.facilitiesToSetMOTD);
   }
 
   getTagsAvailable(): void {
