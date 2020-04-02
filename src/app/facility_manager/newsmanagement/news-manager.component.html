@@ -30,13 +30,12 @@
                 </div>
                 <div *ngFor="let news of wordPressNews">
                   <div class="card" style="cursor: pointer;" (click)="setNews(news)" [ngStyle]="{
-          'border-right-color': news.id == selectedNews.id ? '#3ea662' : '#c8ced3',
-          'border-right-style': 'solid',
-          'border-right-width': news.id == selectedNews.id ? '3px' : '1px'}">
+                    'border-color': news.id == selectedNews.id ? '#005aa9' : '#c8ced3'}">
                     <div class="card-header text-truncate"
                          data-toggle="tooltip" id="{{news.id}}_header"
                          data-placement="auto"
-                         style="background-color: #00ADEF; color: white !important;"
+                         style="color: white !important;"
+                         [ngStyle]="{'background-color': news.id == selectedNews.id ? '#005aa9' : '#00adef'}"
                          title="{{news.title}}">
                       <strong>{{news.title}}</strong>
                     </div>
@@ -113,8 +112,8 @@ we are happy to inform..."
                     <div class="form-row">
                       <input class="form-check-input" type="checkbox"
                              (click)="manageTags(tag)"
-                             [checked]="false">
-                      <label class="form-check-label">{{"Test"}}</label>
+                             [checked]="selectedTags?.indexOf(tag.id.toString()) > -1">
+                      <label class="form-check-label">{{tag.name}}</label>
                     </div>
                   </ng-container>
                 </div>
