@@ -227,6 +227,7 @@ export class VMOverviewPage {
   async goToVmDetail(): Promise<any> {
     Util.logMethodCall(`Going to VM Detail page for ${this.vm_names[this.BASIC_VM_NAME_KEY]}`);
     const vm_name: string = await this.getBasicVMName();
+
     return await Util.clickElementById(`${this.DETAIL_PRE}PTSIMPLEVM-8ce32`)
   }
 
