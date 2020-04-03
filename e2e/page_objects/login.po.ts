@@ -22,7 +22,7 @@ export class LoginPage {
 
     const current_url: any = await browser.driver.getCurrentUrl();
     console.log(current_url);
-    if (relog && current_url.includes('userinfo')) {
+    if (relog) {
       console.log('Need to relog');
       await this.logOut();
       await browser.waitForAngularEnabled(false);
