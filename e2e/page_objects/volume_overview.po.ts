@@ -13,7 +13,7 @@ export class VolumeOverviewPage {
   private static VOLUME_NAME_CELL_ID_PREFIX: string = 'cell_name_id_';
   private static VM_NAME_CELL_ID_PREFIX: string = 'cell_vm_id_';
   private static VM_CELL_FREE_ID: string = 'cell_vm_free_id';
-  private static DELETE_BUTTON: string = 'delete_button';
+  private static DELETE_BUTTON_PREFIX: string = 'delete_button_';
   private static VERIFY_MODAL: string = 'verify_modal';
   private static VERIFY_DELETION_BUTTON: string = 'verify_deletion_button';
 
@@ -42,7 +42,7 @@ export class VolumeOverviewPage {
 
   static async deleteVolume(): Promise<any> {
     Util.logMethodCall('Deleting Volume');
-    await Util.clickElementByElement(element(by.id(this.TABLE_ID)).element(by.id(this.DELETE_BUTTON)));
+    await Util.clickElementById(this.DELETE_BUTTON_PREFIX + Util.VOLUME_NAME);
     await Util.waitForVisibilityOfElementById(this.VERIFY_MODAL);
     await Util.clickElementById(this.VERIFY_DELETION_BUTTON);
   }
@@ -60,11 +60,7 @@ export class VolumeOverviewPage {
     await Util.sendTextToElementById(this.SPACE_INPUT_ID, Util.VOLUME_SPACE);
     await Util.clickElementById(this.VERIFY_CA_BUTTON);
 
-    await Util.waitForVisibilityOfElementById(this.RESULT_MODAL);
-    await Util.waitForPresenceOfElementById(this.SUCCESS_CA_DIV, Util.LONG_TIMEOUT);
     Util.logInfo(' creating and attaching probably successful');
-    await Util.clickElementById(this.CLOSE_RESULT_MODAL);
-    await Util.waitForInvisibilityOfElementById(this.RESULT_MODAL);
   }
 
   static async isVolumeDeleted(): Promise<boolean> {
@@ -82,11 +78,7 @@ export class VolumeOverviewPage {
   static async isVolumeFree(): Promise<boolean> {
     Util.logMethodCall(` checking if volume is free`);
 
-    await Util.waitForPresenceByElement(element(by.id(this.TABLE_ID))
-                                          .element(by.id(this.VM_CELL_FREE_ID)),
-                                        Util.timeout,
-                                        this.VM_CELL_FREE_ID);
+    return await Util.waitForPresenceOfElementById(`available_${Util.VOLUME_NAME}`);
 
-    return await element(by.id(this.TABLE_ID)).element(by.id(this.VM_CELL_FREE_ID)).isPresent();
   }
 }
