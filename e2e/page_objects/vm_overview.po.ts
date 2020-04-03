@@ -17,6 +17,7 @@ export class VMOverviewPage {
   private CHECKBOX_DELETED: string = 'checkbox_deleted';
   private VERIFY_STOP_BTN: string = 'verifyStopButton';
   private VERIFY_RESTART_BTN: string = 'verifyRestartButton';
+  private DETAIL_PRE: string = 'detail_';
 
   private SHUTOFF_BUTTON_PREFIX: string = 'stopVMButton_';
   private RESUME_BUTTON_PREFIX: string = 'restartVMButton_';
@@ -227,7 +228,7 @@ export class VMOverviewPage {
     Util.logMethodCall(`Going to VM Detail page for ${this.vm_names[this.BASIC_VM_NAME_KEY]}`);
     const vm_name: string = await this.getBasicVMName();
 
-    return await Util.clickElementByElement(element(by.cssContainingText('.h5', vm_name)));
+    return await Util.clickElementById(`${this.DETAIL_PRE}PTSIMPLEVM-8ce32`)
   }
 
 }

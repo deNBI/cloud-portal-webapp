@@ -133,7 +133,7 @@
               <div class="row" style="margin-top: 5px">
                 <div class="col-5" style="margin: auto;">
 
-                  <a class="h5 text-primary" style="margin-left: 10px"
+                  <a class="h5 text-primary"  style="margin-left: 10px" id="detail_{{vm.name}}"
                      *ngIf="vm?.status == VirtualMachineStates.staticACTIVE
                      || vm?.status == VirtualMachineStates.staticSHUTOFF;
                       else statusElseBlock"
