@@ -178,8 +178,7 @@ export class ResourcesComponent implements OnInit {
   }
 
   public tableToPDF(): void {
-    const data: object = document.getElementById(this.tableId);
-    html2canvas(data).then((canvas: any) => {
+    html2canvas(document.getElementById(this.tableId)).then((canvas: any) => {
       // Few necessary setting options
       const imgWidth: number = 208;
       const pageHeight: number = 295;
