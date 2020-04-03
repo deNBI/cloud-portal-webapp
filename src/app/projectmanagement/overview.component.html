@@ -1,3 +1,4 @@
+<script src="../../../e2e/tests/cloud_application_test.ts"></script>
 <div *ngIf="errorMessage != null">
   An Error has occurred. {{errorMessage}}
 </div>
@@ -8,14 +9,14 @@
 <div class="animated fadeIn" *ngIf="isLoaded">
   <div class="row">
 
-    <div class="col-lg-12"
+    <div class="col-12"
          *ngIf="project && (project_application?.Status == application_states.APPROVED
          || project_application?.Status == application_states.MODIFICATION_REQUESTED
          || project_application?.Status == application_states.MODIFICATION_DECLINED
          || project_application?.Status == application_states.MODIFICATION_DECLINED)">
 
 
-      <div class="card">
+      <div class="card" style=" overflow: scroll">
         <div class="card-header">
           <h3>
             <a *ngIf="project?.OpenStackProject" href="https://cloud.denbi.de/openstack/" target="_blank"
@@ -41,56 +42,73 @@
             {{project?.Name}}
           </h3>
         </div>
-        <div class="card-body">
-          <div class="table-responsive">
-            <table class="table table-hover">
-              <thead>
-              <tr>
-                <th>Project Name</th>
-                <th>Description</th>
-                <th>Date created (d/m/y)</th>
-                <th>Expiration Date (d/m/y)</th>
-                <th>Days running</th>
-                <th *ngIf="is_vo_admin">Credits Used</th>
-                <th>Lifetime in Days</th>
-                <th>Facility</th>
+        <div class="card-body " >
+          <div class="rTable" >
+            <div class="rTableRow">
+              <div class="rTableHead col-2">Project Name</div>
+              <div class="rTableHead col-1">Description</div>
+              <div class="rTableHead col-1">Date created (d/m/y)</div>
+              <div class="rTableHead col-1">Expiration Date (d/m/y)</div>
+              <div class="rTableHead col-1">Days running</div>
+              <div class="rTableHead col-2" *ngIf="is_vo_admin">Credits Used</div>
+              <div class="rTableHead col-1">Lifetime in Days</div>
+              <div class="rTableHead col-3">Facility</div>
+            </div>
 
-              </tr>
-              </thead>
-              <tbody>
 
-              <tr>
-                <!--[ngStyle]="{'color':lifeTimeReached(project?.LifetimeDays,project?.DaysRunning)}"-->
-                <td>{{ project?.Name }}
-                </td>
+            <div class="rTableRow">
+              <!--[ngStyle]="{'color':lifeTimeReached(project?.LifetimeDays,project?.DaysRunning)}"-->
+              <div class="rTableCell col-2">{{ project?.Name }}
+              </div>
 
-                <td>
-                  <button class="btn btn-info"
-                          (click)="infoModal.hide();descriptionModal.show();">Show
-                    Description
-                  </button>
-                </td>
+              <div class="rTableCell col-1">
+                <button class="btn btn-info"
+                        (click)="infoModal.hide();descriptionModal.show();">Show
+                  Description
+                </button>
+              </div>
 
-                <td>{{ project?.DateCreated }}</td>
-                <td>{{project?.DateEnd}}</td>
-                <td>{{ project?.DaysRunning }}</td>
-                <th *ngIf="is_vo_admin">{{current_credits}}/{{project?.ApprovedCredits}}</th>
-                <td>{{project?.LifetimeDays}}</td>
+              <div class="rTableCell col-1">{{ project?.DateCreated }}</div>
+              <div class="rTableCell col-1">{{project?.DateEnd}}</div>
+              <div class="rTableCell col-1">{{ project?.DaysRunning }}</div>
+              <div class="rTableCell col-2" *ngIf="is_vo_admin">{{current_credits}}/{{project?.ApprovedCredits}}</div>
+              <div class="rTableCell col-1">{{project?.LifetimeDays}}</div>
 
-                <td>
-                  <p *ngIf="project?.ComputeCenter?.Name">{{project?.ComputeCenter.Name}}</p>
-                  <ul *ngIf="project?.ComputeCenter?.Name">
-                    <li *ngIf="project?.OpenStackProject"> Login: <a target="_blank"
-                                                                     href="{{project?.ComputeCenter.Login}}">
-                      {{project?.ComputeCenter.Login}}</a></li>
-                    <li>Support: {{project?.ComputeCenter.Support}}</li>
+              <div class="rTableCell col-3">
+                <div class="rTableRowNoBorder">
+                  <div class="rTableHeadNoBorder">
+                    Name:
+                  </div>
+                   <div class="rTableCellNoBorder">
+                   {{project?.ComputeCenter?.Name}}
+                  </div>
+                </div>
 
+                <div class="rTableRowNoBorder" *ngIf="project?.OpenStackProject">
+                  <div class="rTableHeadNoBorder">
+                    Login:
+                  </div>
+                   <div class="rTableCellNoBorder">
+                   <a
+                  target="_blank"
+                  href="{{project?.ComputeCenter?.Login}}">
+                    {{project?.ComputeCenter?.Login}}</a>
+                  </div>
+                </div>
+                <div class="rTableRowNoBorder">
+                  <div class="rTableHeadNoBorder">
+                    Support:
+                  </div>
+                   <div class="rTableCellNoBorder">
+                   <ul>
+                    <li *ngFor="let sup of project?.ComputeCenter?.Support ">
+                      <a href="mailto:{{sup}}">{{sup}}</a></li>
                   </ul>
+                  </div>
+                </div>
 
-                </td>
-              </tr>
-              </tbody>
-            </table>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -100,7 +118,7 @@
 
   <div class="row" *ngIf="project_application && (project?.UserIsPi ||project?.UserIsAdmin  || !project)">
     <div class="col">
-      <div class="card" style="height: calc(100% - 1.5rem);">
+      <div class="card" style="height: calc(100% - 1.5rem);overflow: scroll;">
         <div class="card-header">
           <i class="fa fa-align-justify"></i> Actions
         </div>
@@ -157,7 +175,7 @@
     <div class="col"
          *ngIf="project && (project?.UserIsPi ||project?.UserIsAdmin)  && (project_application?.Status ==  application_states.APPROVED || project_application?.Status ==  application_states.MODIFICATION_REQUESTED  || project_application?.Status ==  application_states.MODIFICATION_DECLINED || project_application?.Status ==  application_states.MODIFICATION_DECLINED)">
 
-      <div class="card">
+      <div class="card" style=" overflow: scroll">
         <div class="card-header">
           <i class="fa fa-align-justify"></i>
           <a href="https://cloud.denbi.de/wiki/citation_and_publication/#publications"
@@ -220,7 +238,7 @@
     <div class="col"
          *ngIf="project && (project_application?.Status ==  application_states.APPROVED || project_application?.Status ==  application_states.MODIFICATION_REQUESTED  || project_application?.Status ==  application_states.MODIFICATION_DECLINED || project_application?.Status ==  application_states.MODIFICATION_DECLINED)">
 
-      <div class="card">
+      <div class="card" style=" overflow: scroll">
         <div class="card-header">
           <i class="fa fa-align-justify"></i>Members of the Project {{ project?.Name }}
         </div>
@@ -308,7 +326,7 @@
 </div>
    <div class="col"
            *ngIf="is_vo_admin && (project_application?.Status ==  application_states.APPROVED || project_application?.Status ==  application_states.MODIFICATION_REQUESTED  || project_application?.Status ==  application_states.MODIFICATION_DECLINED || project_application?.Status ==  application_states.MODIFICATION_DECLINED)">
-        <div class="card">
+        <div class="card" style=" overflow: scroll">
           <div class="card-header">
             <i class="fa fa-align-justify"></i> Credit Usage history of {{project?.Name }}
           </div>
