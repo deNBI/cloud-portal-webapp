@@ -116,8 +116,11 @@ export class NewsManagerComponent implements OnInit {
         }
     });
       news.facility = tempArr.toString();
-      this.newsService.addNewsToWordpress(news).subscribe((result: Object )=> {
-      console.log(result);
+      this.newsService.addNewsToWordpress(news).subscribe((result: any)=> {
+        /*result = result.replace(/\\/g, '');
+        result = result.replace('"[', '[');
+        result = result.replace(']"', ']');*/
+        console.log(result);
         //this.facilityService.setMOTDForFacility()
       this.getWordPressNews();
       });
