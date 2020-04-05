@@ -31,6 +31,20 @@ export class FacilityService {
   }
 
   /**
+   * Sets the newsID of the facility news which contains the motd for facility with the corresponding facility ID.
+   * @param facilityID facility id of the facility to set the id
+   * @param newsId the id of the news containing the motd
+   */
+  setMOTDForFacility(facilityID: string, newsId: string): Observable<any> {
+    let httpParams: HttpParams = new HttpParams().set('facilityID', facilityID).set('newsID', newsId);
+    return this.http.post(`${ApiSettings.getApiBaseURL()}wp-motd-management/`, {
+      headers: header,
+      withCredentials: true,
+      params: httpParams
+    });
+  }
+
+  /**
    * Get all facility, where the current user is manager.
    * @returns {Observable<any>}
    */

@@ -91,11 +91,11 @@ export class NewsManagerComponent implements OnInit {
     })
   }
 
-  controlToNews(): void {
+  /*controlToNews(): void {
     this.selectedNews.title = this.selectedNewsForm.controls['title'].value;
     this.selectedNews.text = this.selectedNewsForm.controls['text'].value;
     this.selectedNews.excerpt = this.selectedNewsForm.controls['motd'].value;
-  }
+  }*/
 
   addNewsToWordpress(news: WordPressNews): void {
     news.status = "publish";
@@ -117,13 +117,25 @@ export class NewsManagerComponent implements OnInit {
     });
       news.facility = tempArr.toString();
       this.newsService.addNewsToWordpress(news).subscribe((result: any)=> {
-        /*result = result.replace(/\\/g, '');
-        result = result.replace('"[', '[');
-        result = result.replace(']"', ']');*/
-        console.log(result);
-        //this.facilityService.setMOTDForFacility()
+        if (result) {
+          if (result["id"]){
+            this.setMOTDForFacility(result["id"].toString());
+          }
+        }
       this.getWordPressNews();
       });
+  }
+
+  setMOTDForFacility(id: string): void {
+    this.facilitiesToSetMOTD.forEach((element: [string, number]) => {
+      this.facilityService.setMOTDForFacility(element["FacilityId"], id).subscribe((result: boolean) => {
+        if (result) {
+          console.log("MOTD set!");
+        } else {
+          console.log("something went wrong");
+        }
+      })
+    })
   }
 
 
