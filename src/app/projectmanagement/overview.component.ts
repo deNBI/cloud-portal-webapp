@@ -84,6 +84,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   invitation_link: string;
   filteredMembers: any = null;
   project_application: Application;
+  project_service_in_development: boolean = true;
   application_action: string = '';
   application_member_name: string = '';
   application_action_done: boolean = false;
@@ -339,6 +340,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
           const newApp: Application = this.setNewApplication(aj);
 
           this.project_application = newApp;
+          this.project_service_in_development = this.project_application.CloudServiceDevelop;
           if (this.project_application) {
             this.setLifetime();
             this.applicationsservice.getApplicationPerunId(this.application_id).subscribe((id: any) => {

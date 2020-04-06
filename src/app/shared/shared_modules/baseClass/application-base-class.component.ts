@@ -293,6 +293,7 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
       extension.ExtendedCredits = aj['projectapplicationrenewal']['project_application_renewal_credits'];
       extension.IsOnlyExtraCreditsApplication = aj['projectapplicationrenewal']['is_only_extra_credits_application'];
       extension.CloudServiceUserNumber = aj['projectapplicationrenewal']['project_application_renewal_cloud_service_user_number'];
+      extension.CloudServiceDevelop = aj['projectapplicationrenewal']['project_application_renewal_cloud_service_develop'];
       newApp.ApplicationExtension = extension;
     }
 

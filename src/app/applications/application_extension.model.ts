@@ -19,6 +19,7 @@ export class ApplicationExtension {
   private _TotalRAM: number;
   private _ExtendedCredits: number;
   private _IsOnlyExtraCreditsApplication: boolean;
+  private _CloudServiceDevelop: boolean;
   private _CloudServiceUserNumber: number;
   private _RequestedFlavors: {
     [id: string]: {
@@ -208,5 +209,13 @@ export class ApplicationExtension {
 
   set CloudServiceUserNumber(value: number) {
     this._CloudServiceUserNumber = value;
+  }
+
+  get CloudServiceDevelop(): boolean {
+    return this._CloudServiceDevelop;
+  }
+
+  set CloudServiceDevelop(value: boolean) {
+    this._CloudServiceDevelop = value;
   }
 }
