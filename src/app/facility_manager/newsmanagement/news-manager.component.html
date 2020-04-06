@@ -110,10 +110,10 @@ we are happy to inform..."
                 <div class="form-check" id="tags_check">
                   <ng-container *ngFor="let tag of availableTags">
                     <div class="form-row">
-                      <input class="form-check-input" type="checkbox"
+                      <input class="form-check-input" type="checkbox" id="checkbox_{{tag.id.toString()}}"
                              (click)="manageTags(tag)"
                              [checked]="selectedTags?.indexOf(tag.id.toString()) > -1">
-                      <label class="form-check-label">{{tag.name}}</label>
+                      <label class="form-check-label" for="checkbox_{{tag.id.toString()}}">{{tag.name}}</label>
                     </div>
                   </ng-container>
                 </div>

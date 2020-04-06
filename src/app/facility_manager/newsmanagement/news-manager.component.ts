@@ -220,10 +220,15 @@ export class NewsManagerComponent implements OnInit {
       tag_ids.forEach((tag: string) => {
         this.selectedTags.push(tag);
       });
-      console.log(this.selectedTags);
     } else {
       this.selectedNews = new WordPressNews();
       this.motdLength.next(0);
+      this.facilitiesToSetMOTD = [];
+      this.selectedTags.forEach((tag: string) => {
+        document.getElementById("checkbox_" + tag)["checked"] = false;
+      })
+      this.selectedTags = [];
+      this.facilitiesToPost = [];
     }
     this.deletionStatus = 0;
     this.patchingStatus = 0;
