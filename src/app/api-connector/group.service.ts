@@ -21,6 +21,22 @@ export class GroupService {
   constructor(private http: HttpClient) {
   }
 
+  getProjectOSDetails(groupId: number | string): Observable<object> {
+    return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupId}/os_details/`, {
+      withCredentials: true,
+      headers: header
+    })
+
+  }
+
+  requestProjectTermination(appId: number | string): Observable<any> {
+    return this.http.delete(`${ApiSettings.getApiBaseURL()}projects/${appId}/`, {
+      withCredentials: true,
+      headers: header
+    })
+
+  }
+
   getFacilityByGroup(groupid: string): Observable<any> {
 
     return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/computecenter/`, {
