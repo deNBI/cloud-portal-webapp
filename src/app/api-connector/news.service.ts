@@ -18,6 +18,13 @@ export class NewsService {
   }
 
 
+  updateNewsInWordpress(news: WordPressNews): Observable<any> {
+    return this.http.patch(`${ApiSettings.getApiBaseURL()}wp-news-management/`, news, {
+      withCredentials: true,
+      headers: header
+    });
+  }
+
   addNewsToWordpress(news: WordPressNews): Observable<any> {
     return this.http.post(`${ApiSettings.getApiBaseURL()}wp-news-management/`, news, {
       withCredentials: true,

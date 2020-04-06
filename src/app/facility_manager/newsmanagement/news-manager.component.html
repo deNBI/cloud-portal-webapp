@@ -51,7 +51,7 @@
                       </div>
                       <div class="row">
                         <div class="text-truncate col" data-toggle="tooltip"
-                             data-placement="auto">Last changed: {{news.modification_date}}</div>
+                             data-placement="auto">Uploaded: {{news.modification_date}}</div>
                       </div>
                       <br>
                     </div>
@@ -155,42 +155,22 @@ we are happy to inform..."
               </div>
             </div>
             <div class="card-footer">
-              <button class="btn btn-primary"
-                      style="margin: 5px"
-                      (click)="setNews()">New news
+              <button class="btn btn-primary" style="margin: 5px"
+                      *ngIf="selectedNews" (click)="setNews()">New News
               </button>
-              <!--<button class="btn btn-success"
-                      style="margin: 5px"
-                      (click)="add(selectedNews); addModal.show();"
-                      [disabled]="selectedNewsForm.invalid || facilitiesToPost.length == 0"
-                      *ngIf="selectedNews.id == null && selectedNews.editable">Add news
-              </button> -->
-              <!-- wordpress button -->
               <button class="btn btn-success"
                       style="margin: 5px"
-                      (click)="addNewsToWordpress(newWordpressNews);"
+                      (click)="addModal.show();"
                       [disabled]="selectedNewsForm.invalid || facilitiesToPost.length == 0"
-                      *ngIf="selectedNews.id == null">Add news to WP
+                      *ngIf="selectedNews.id == null">Upload News
               </button>
-              <button class="btn btn-danger"
-                      style="margin: 5px"
-                      (click)="deleteNewsFromWordpress();" *ngIf="selectedNews">Delete News
-              </button>
-              <button class="btn btn-secondary"
-                      style="margin: 5px"
-                      (click)="updateNewsInWordpress();" *ngIf="selectedNews">Update News
-              </button><!-- end of wordpress button -->
-              <!--<button class="btn btn-success"
-                      style="margin: 5px"
-                      (click)="verifyPatchModal.show()"
+              <button class="btn btn-secondary" style="margin: 5px"
                       [disabled]="selectedNewsForm.invalid || facilitiesToPost.length == 0"
-                      *ngIf="selectedNews.id != null">Update news
+                      (click)="updateModal.show();" *ngIf="selectedNews">Update News
               </button>
-              <button class="btn btn-danger"
-                      style="margin: 5px"
-                      (click)="verifyDeleteModal.show()"
-                      *ngIf="selectedNews.id != null">Delete news
-              </button> -->
+              <button class="btn btn-danger" style="margin: 5px"
+                      (click)="deleteModal.show();" *ngIf="selectedNews?.id">Delete News
+              </button>
             </div>
           </div>
         </form>
@@ -198,37 +178,6 @@ we are happy to inform..."
     </div>
   </div>
 
-  <div bsModal #verifyDeleteModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
-       aria-labelledby="Label"
-       aria-hidden="true"
-       id="verify_modal">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Delete News</h4>
-          <button type="button" class="close" style="cursor: pointer"
-                  (click)="verifyDeleteModal.hide()"
-                  aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="alert alert-warning" role="alert">
-            Are you sure you want to delete this news: {{selectedNews.title}}?
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button class="btn  btn-success col-md-4"id="confirm_delete_button">
-                  <!--(click)="delete(selectedNews);verifyDeleteModal.hide();deleteModal.show()" -->
-            Yes
-          </button>
-          <button class="btn  btn-danger col-md-4" type="reset"
-                  (click)="verifyDeleteModal.hide();">Cancel
-          </button>
-        </div>
-      </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-  </div>
   <div bsModal #deleteModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
        aria-labelledby="Label"
        aria-hidden="true"
@@ -236,9 +185,7 @@ we are happy to inform..."
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title" *ngIf="deletionStatus == 0"> Waiting </h4>
-          <h4 class="modal-title" *ngIf="deletionStatus == 1"> Success </h4>
-          <h4 class="modal-title" *ngIf="deletionStatus == 2"> Error </h4>
+          <h4 class="modal-title"> Delete News: {{this.selectedNews.title}} ?</h4>
           <button type="button" class="close" style="cursor:pointer"
                   (click)="deleteModal.hide()"
                   aria-label="Close">
@@ -246,22 +193,18 @@ we are happy to inform..."
           </button>
         </div>
         <div class="modal-body">
-          <div class="alert alert-info" role="alert" *ngIf="deletionStatus == 0">
-            Deleting '{{selectedNews.title}}'... <i class="fa fa-spinner fa-spin"
-                                                    style="font-size:24px"></i>
+          <div class="alert alert-info" role="alert">
+            <p>Are you sure, that you want to delete <strong>{{this.selectedNews.title}}</strong> ?</p>
+            <p><strong>Please note: this may remove the current Message of the day for multiple facilities!</strong></p>
           </div>
-          <div class="alert alert-success" role="alert" *ngIf="deletionStatus == 1"
-               id="delete_success_div">
-            '{{selectedNews.title}}' was successfully deleted.
-          </div>
-        </div>
-        <div class="alert alert-warning" role="alert" *ngIf="deletionStatus == 2">
-          When deleting '{{selectedNews.title}}' an error occured.<br>
-          Error message: {{error_string}}.
         </div>
         <div class="modal-footer">
+          <button type="button" class="btn btn-danger"
+                  (click)="this.deleteNewsFromWordpress(); deleteModal.hide()"
+                  id="approve_delete_modal"><i class="fas fa-trash"></i> Delete
+          </button>
           <button type="button" class="btn btn-secondary"
-                  (click)="setNews();deleteModal.hide()"
+                  (click)="deleteModal.hide()"
                   id="close_delete_modal">Close
           </button>
         </div>
@@ -270,78 +213,41 @@ we are happy to inform..."
     </div><!-- /.modal-dialog -->
   </div>
 
-  <div bsModal #verifyPatchModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+  <div bsModal #updateModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
        aria-labelledby="Label"
        aria-hidden="true"
        id="verify_patch_modal">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Delete News</h4>
-          <button type="button" class="close" style="cursor: pointer"
-                  (click)="verifyPatchModal.hide()"
-                  aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="alert alert-warning" role="alert">
-            Are you sure you want to update this news: {{selectedNews.title}}?
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button class="btn  btn-success col-md-4"
-                  id="confirm_patch_button">
-            <!-- (click)="patch(selectedNews);verifyPatchModal.hide();patchModal.show()" -->
-            Yes
-          </button>
-          <button class="btn  btn-danger col-md-4" type="reset"
-                  (click)="verifyPatchModal.hide();">Cancel
-          </button>
-        </div>
-      </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-  </div>
-  <div bsModal #patchModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
-       aria-labelledby="Label"
-       aria-hidden="true"
-       id="patch_modal">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title" *ngIf="patchingStatus == 0"> Waiting </h4>
-          <h4 class="modal-title" *ngIf="patchingStatus == 1"> Success </h4>
-          <h4 class="modal-title" *ngIf="patchingStatus == 2"> Error </h4>
+          <h4 class="modal-title"> Update News: {{this.selectedNews.title}} ?</h4>
           <button type="button" class="close" style="cursor:pointer"
-                  (click)="patchModal.hide()"
+                  (click)="updateModal.hide()"
                   aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          <div class="alert alert-info" role="alert" *ngIf="patchingStatus == 0">
-            Patching '{{selectedNews.title}}'... <i class="fa fa-spinner fa-spin"
-                                                    style="font-size:24px"></i>
+          <div class="alert alert-info" role="alert">
+            <p>Are you sure, that you want to update <strong>{{this.selectedNews.title}}</strong> ?</p>
+            <p><strong>Please note: this may change the current Message of the day for multiple facilities!</strong></p>
           </div>
-          <div class="alert alert-success" role="alert" *ngIf="patchingStatus == 1"
-               id="patching_success_div">
-            '{{selectedNews.title}}' was successfully patched.
-          </div>
-        </div>
-        <div class="alert alert-warning" role="alert" *ngIf="patchingStatus == 2">
-          When patching '{{selectedNews.title}}' an error occured.<br>
-          Error message: {{error_string}}.
         </div>
         <div class="modal-footer">
+          <button type="button" class="btn btn-primary"
+                  (click)="addNewsToWordpress(newWordpressNews, true); updateModal.hide()"
+                  id="approve_update_modal"><i class="fas fa-edit"></i> Update
+          </button>
           <button type="button" class="btn btn-secondary"
-                  (click)="setNews();patchModal.hide()"
-                  id="close_patch_modal">Close
+                  (click)="updateModal.hide()"
+                  id="close_update_modal">Close
           </button>
         </div>
 
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
   </div>
+
   <div bsModal #addModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
        aria-labelledby="Label"
        aria-hidden="true"
@@ -349,33 +255,27 @@ we are happy to inform..."
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title" *ngIf="addingStatus == 0"> Waiting </h4>
-          <h4 class="modal-title" *ngIf="addingStatus == 1"> Success </h4>
-          <h4 class="modal-title" *ngIf="addingStatus == 2"> Error </h4>
+          <h4 class="modal-title"> Update News: {{this.selectedNews.title}} ?</h4>
           <button type="button" class="close" style="cursor:pointer"
-                  (click)="setNews(); addModal.hide()"
+                  (click)="addModal.hide()"
                   aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          <div class="alert alert-info" role="alert" *ngIf="addingStatus == 0">
-            Posting '{{selectedNews.title}}'... <i class="fa fa-spinner fa-spin"
-                                                   style="font-size:24px"></i>
+          <div class="alert alert-info" role="alert">
+            <p>Are you sure, that you want to upload <strong>{{this.selectedNews.title}}</strong> ?</p>
+            <p><strong>Please note: this may change the current Message of the day for multiple facilities!</strong></p>
           </div>
-          <div class="alert alert-success" role="alert" *ngIf="addingStatus == 1"
-               id="adding_success_div">
-            '{{selectedNews.title}}' was successfully posted.
-          </div>
-        </div>
-        <div class="alert alert-warning" role="alert" *ngIf="addingStatus == 2">
-          When adding '{{selectedNews.title}}' an error occured.<br>
-          Error message: {{error_string}}.
         </div>
         <div class="modal-footer">
+          <button type="button" class="btn btn-success"
+                  (click)="addNewsToWordpress(newWordpressNews, false); addModal.hide()"
+                  id="approve_add_modal"><i class="fas fa-plus"></i> Add News
+          </button>
           <button type="button" class="btn btn-secondary"
-                  (click)="setNews();addModal.hide()"
-                  id="close_adding_modal">Close
+                  (click)="addModal.hide()"
+                  id="close_add_modal">Close
           </button>
         </div>
 
