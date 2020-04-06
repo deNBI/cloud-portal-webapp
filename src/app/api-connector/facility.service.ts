@@ -36,11 +36,11 @@ export class FacilityService {
    * @param newsId the id of the news containing the motd
    */
   setMOTDForFacility(facilityID: string, newsId: string): Observable<any> {
-    let httpParams: HttpParams = new HttpParams().set('facilityID', facilityID).set('newsID', newsId);
-    return this.http.post(`${ApiSettings.getApiBaseURL()}wp-motd-management/`, {
+    const httpParams: HttpParams = new HttpParams().set('facilityID', facilityID).set('newsID', newsId);
+
+    return this.http.post(`${ApiSettings.getApiBaseURL()}wp-motd-management/`, httpParams, {
       headers: header,
-      withCredentials: true,
-      params: httpParams
+      withCredentials: true
     });
   }
 
