@@ -3,7 +3,7 @@ import {Cookie} from 'ng2-cookies/ng2-cookies';
 import {Injectable} from '@angular/core';
 import {ObjectUnsubscribedError, Observable} from 'rxjs';
 import {ApiSettings} from './api-settings.service';
-import {WordPressNews} from "../facility_manager/newsmanagement/wp-news";
+import {WordPressNews} from '../facility_manager/newsmanagement/wp-news';
 
 const header: HttpHeaders = new HttpHeaders({
                                               'X-CSRFToken': Cookie.get('csrftoken')
@@ -16,7 +16,6 @@ const header: HttpHeaders = new HttpHeaders({
 export class NewsService {
   constructor(private http: HttpClient) {
   }
-
 
   updateNewsInWordpress(news: WordPressNews): Observable<any> {
     return this.http.patch(`${ApiSettings.getApiBaseURL()}wp-news-management/`, news, {
@@ -32,12 +31,12 @@ export class NewsService {
     });
   }
 
-
   /** Get existing News from Wordpress from facilites listed in facility_ids
    * @param facility_ids string of all facility ids for which we want the news in wp
    */
   getNewsFromWordPress(facility_ids: string): Observable<any> {
     const params: HttpParams = new HttpParams().set('facility_ids', facility_ids);
+
     return this.http.get(`${ApiSettings.getApiBaseURL()}wp-news-management/`, {
       withCredentials: true,
       headers: header,
