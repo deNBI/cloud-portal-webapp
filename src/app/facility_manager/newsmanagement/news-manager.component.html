@@ -32,15 +32,17 @@
                   <div class="card" style="cursor: pointer;" (click)="setNews(news)" [ngStyle]="{
                     'border-color': news.id == selectedNews.id ? '#005aa9' : '#c8ced3'}">
                     <div class="card-header text-truncate"
-                         data-toggle="tooltip" id="{{news.id}}_header"
-                         data-placement="auto"
-                         style="color: white !important;"
-                         [ngStyle]="{'background-color': news.id == selectedNews.id ? '#005aa9' : '#00adef'}"
-                         title="{{news.title}}">
+                         data-toggle="tooltip" id="{{news.id}}_header" data-placement="auto"
+                         style="color: white !important;" title="{{news.title}}"
+                         [ngStyle]="{'background-color': news.id == selectedNews.id ? '#005aa9' : '#00adef'}">
                       <strong>{{news.title}}</strong>
                     </div>
                     <div class="card-body"
                          style="color:#58595B;">
+                      <div class="row">
+                        <div class="text-truncate col" data-toggle="tooltip"
+                             data-placement="auto"><strong>ID: </strong>{{news.id}}</div>
+                      </div>
                       <div class="row">
                         <div class="text-truncate col" data-toggle="tooltip"
                              data-placement="auto"><strong>Text: </strong>{{news.text}}</div>
@@ -166,7 +168,7 @@ we are happy to inform..."
               </button>
               <button class="btn btn-secondary" style="margin: 5px"
                       [disabled]="selectedNewsForm.invalid || facilitiesToPost.length == 0"
-                      (click)="updateModal.show();" *ngIf="selectedNews">Update News
+                      (click)="updateModal.show();" *ngIf="selectedNews?.id">Update News
               </button>
               <button class="btn btn-danger" style="margin: 5px"
                       (click)="deleteModal.show();" *ngIf="selectedNews?.id">Delete News
@@ -276,6 +278,38 @@ we are happy to inform..."
           <button type="button" class="btn btn-secondary"
                   (click)="addModal.hide()"
                   id="close_add_modal">Close
+          </button>
+        </div>
+
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div>
+
+  <div bsModal #infoModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+       aria-labelledby="Label"
+       aria-hidden="true"
+       id="info_modal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title"> Information</h4>
+          <button type="button" class="close" style="cursor:pointer"
+                  (click)="infoModal.hide()"
+                  aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="alert alert-info" role="alert">
+            <p *ngIf="returnState === 0">The selected news got deleted!</p>
+            <p *ngIf="returnState === 1">The selected news got updated!</p>
+            <p *ngIf="returnState === 2">The news got uploaded!</p>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary"
+                  (click)="infoModal.hide()"
+                  id="close_info_modal">OK
           </button>
         </div>
 
