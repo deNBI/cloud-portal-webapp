@@ -155,7 +155,7 @@ export class ClusterOverviewComponent implements OnInit, OnDestroy {
             this.selectedCluster = updated_cluster;
           }
 
-          if (updated_cluster.status !== 'Running' || updated_cluster.status !== 'Deleting') {
+          if (updated_cluster.status !== 'Running' && updated_cluster.status !== 'Deleting') {
             this.check_status_loop(updated_cluster, final_state, is_selected_cluster)
 
           }
