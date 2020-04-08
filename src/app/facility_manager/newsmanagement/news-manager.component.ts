@@ -272,31 +272,25 @@ export class NewsManagerComponent implements OnInit {
         if (tempFacility) {
           if (tempFacility['compute_center_motd_id'] === news.id) {
             this.facilitiesToSetMOTD.push(facility);
-            document.getElementById('news_select_' + facility['FacilityId'] + '_motd')['checked'] = true;
+            document.getElementById(`news_select_${facility['FacilityId']}_motd`)['checked'] = true;
           }
         }
       });
 
-      const fac_ids: string[] = news.facility.toString().split(',');
-      fac_ids.forEach((center: string) => {
-        const centerToPost = this.computeCenters
-          .find(i => i['compute_center_news_id'] === center);
-        this.facilitiesToPost.push(centerToPost['compute_center_facility_id']);
-      });
-      this.selectedTags = [];
-      const tag_ids: string[] = news.tags.toString().split(',');
-      tag_ids.forEach((tag: string) => {
-        this.selectedTags.push(tag);
-      });
+      const facilityIds: string[] = news.facility.toString().split(',');
+      this.facilitiesToPost = facilityIds.map((id: string) => this.computeCenters
+        .find((facility: any) => facility['compute_center_news_id'] === id)['compute_center_facility_id']);
+      const tagIds: string[] = news.tags.toString().split(',');
+      this.selectedTags = tagIds.map((tag: string) => tag);
     } else {
       this.selectedNews = new WordPressNews();
       this.motdLength.next(0);
       this.selectedTags.forEach((tag: string) => {
-        document.getElementById('checkbox_' + tag)['checked'] = false;
+        document.getElementById(`checkbox_${tag}`)['checked'] = false;
       });
       this.managerFacilities.forEach((facility: [string, number]) => {
-        document.getElementById('news_select_' + facility['FacilityId'] + '_motd')['checked'] = false;
-      })
+        document.getElementById(`news_select_${facility['FacilityId']}_motd`)['checked'] = false;
+      });
       this.selectedTags = [];
       this.facilitiesToPost = [];
     }
@@ -336,9 +330,9 @@ export class NewsManagerComponent implements OnInit {
       this.facilitiesToPost.push(facility['FacilityId']);
     } else {
       this.facilitiesToPost.splice(index, 1);
-      if (this.facilitiesToSetMOTD.find(element => element === facility)) {
+      if (this.facilitiesToSetMOTD.find((element: [string, number]) => element === facility)) {
         this.manageMOTD(facility);
-        document.getElementById('news_select_' + facility['FacilityId'] + '_motd')['checked'] = false;
+        document.getElementById(`news_select_${facility['FacilityId']}_motd`)['checked'] = false;
       }
     }
   }
