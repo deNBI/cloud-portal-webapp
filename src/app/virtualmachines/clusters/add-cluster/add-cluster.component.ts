@@ -207,7 +207,7 @@ export class AddClusterComponent implements OnInit {
   constructor(private groupService: GroupService, private imageService: ImageService,
               private flavorService: FlavorService, private virtualmachineservice: VirtualmachineService,
               private keyservice: KeyService, private userservice: UserService,
-              private voService: VoService,private router: Router) {
+              private voService: VoService, private router: Router) {
   }
 
   changeCount(): void {
