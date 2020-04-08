@@ -26,7 +26,6 @@ export class WordPressNews {
     }
   }
 
-
   get modification_date(): string {
     return this._modification_date;
   }
