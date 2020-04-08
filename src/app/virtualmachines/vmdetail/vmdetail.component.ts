@@ -164,6 +164,15 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
       )
   }
 
+  setVmNeeded(): void {
+    this.virtualmachineService.setVmNeeded(this.virtualMachine.openstackid).subscribe((res: any) => {
+      if (res['still_needed']) {
+        this.virtualMachine.still_used_confirmation_requested = false;
+
+      }
+    })
+  }
+
   /**
    * Delete VM.
    * @param vm which will be deleted

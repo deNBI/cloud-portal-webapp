@@ -238,6 +238,13 @@ export class VirtualmachineService {
 
   }
 
+  setVmNeeded(openstack_id: string): Observable<any> {
+    return this.http.post<any>(`${this.baseVmUrl}${openstack_id}/need/`, null, {
+      withCredentials: true,
+      headers: header
+    })
+  }
+
   stopVM(openstack_id: string): Observable<VirtualMachine> {
     const params: HttpParams = new HttpParams().set('os_action', 'stop');
 
