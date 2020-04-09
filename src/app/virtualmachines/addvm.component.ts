@@ -24,6 +24,7 @@ import {TemplateNames} from './conda/template-names';
 import {RandomNameGenerator} from '../shared/randomNameGenerator';
 import {Router} from '@angular/router';
 import {Volume} from './volumes/volume';
+import { WIKI_MOUNT_VOLUME } from 'links/links';
 
 /**
  * Start virtualmachine component.
@@ -69,6 +70,8 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
   playbook_run: number = 0;
   timeout: number = 0;
   has_forc: boolean = false;
+    WIKI_MOUNT_VOLUME: string = WIKI_MOUNT_VOLUME;
+
   forc_url: string = '';
   client_id: string;
   mosh_mode_available: boolean = false;

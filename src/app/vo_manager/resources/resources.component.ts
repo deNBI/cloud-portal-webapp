@@ -48,8 +48,7 @@ export class ResourcesComponent implements OnInit {
   }
 
   public tableToPDF(): void {
-    const data: any = document.getElementById(this.tableId);
-    html2canvas(data).then((canvas: any) => {
+    html2canvas(document.getElementById(this.tableId)).then((canvas: any) => {
       // Few necessary setting options
       const imgWidth: number = 208;
       const pageHeight: number = 295;
@@ -61,6 +60,8 @@ export class ResourcesComponent implements OnInit {
       const position: number = 0;
       pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
       pdf.save('VoResources.pdf'); // Generated PDF
+    }).catch(() => {
+      console.log('failed to convert to pdf')
     });
   }
 

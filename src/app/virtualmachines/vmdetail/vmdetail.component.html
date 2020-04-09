@@ -222,10 +222,16 @@
                 <strong class="text-muted">{{vol?.volume_name}}</strong>
               </div>
             </div>
-            <div class="col-5">
+            <div class="col-3">
               <div class="callout">
                 <small class="text-muted">Volume ID</small><br>
                 <strong class="text-muted">{{vol?.volume_openstackid}}</strong>
+              </div>
+            </div>
+             <div class="col-3">
+              <div class="callout">
+                <small class="text-muted">Initially mounted to</small><br>
+                <strong class="text-muted">/mnt/{{vol?.volume_path}}</strong>
               </div>
             </div>
             <div class="col-2">
@@ -234,7 +240,7 @@
                 <strong class="text-muted">{{vol?.volume_device}}</strong>
               </div>
             </div>
-            <div class="col-3">
+            <div class="col-2">
               <div class="callout">
                 <small class="text-muted">Storage</small><br>
                 <strong class="text-muted">{{vol?.volume_storage}} GB</strong>
