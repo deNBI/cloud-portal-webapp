@@ -107,7 +107,7 @@
               <div class="card-body p-x-1 py-h">
                 <div class="row">
                   <div class="col-6"
-                       *ngIf="cluster?.status == 'Running' && cluster?.public_ip ">
+                       *ngIf="cluster?.status == 'Running' ">
                     <a *ngIf="!show_connection_infO"
                        class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
                        [id]="'showHowToConnectButton_'+cluster?.cluster_id"
