@@ -5,6 +5,9 @@ import {Volume} from '../../virtualmachines/volumes/volume';
 import {SnapshotModel} from '../../virtualmachines/snapshots/snapshot.model';
 import {GroupService} from '../../api-connector/group.service';
 
+/**
+ * Project OpenStack Details Component.
+ */
 @Component({
              selector: 'app-project-os-details',
              templateUrl: './project-os-details.component.html',
