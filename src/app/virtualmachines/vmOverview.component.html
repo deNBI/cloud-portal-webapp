@@ -677,6 +677,10 @@
       <div class="modal-body">
         <div class="alert alert-warning" role="alert">
           Are you sure you want to delete {{selectedVm?.name}}?
+          </div>
+
+         <div class="alert alert-danger" *ngIf="selectedVm?.openstackid == selectedVm?.cluster?.master_instance_openstack_id" role="alert">
+          If you delete the master of a cluster, your worker machines become useless!
         </div>
 
       </div>

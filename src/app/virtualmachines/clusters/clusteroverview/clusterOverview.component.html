@@ -95,19 +95,19 @@
               <div class="row" style="margin-top: 10px; margin-bottom:5px;">
                 <div class="col-12" style="margin-left: 10px">
                   <div style="font-size: small">
-                    <strong *ngIf="cluster.instances_count > 0">Inst:</strong>: {{cluster.instances_count}}
+                    <strong *ngIf="cluster.instances_count > 0">Inst:</strong> {{cluster.instances_count}}
                   </div>
                 </div>
                 <div class="col-12" style="margin-left: 10px">
                   <div style="font-size: small">
-                    <strong *ngIf="cluster?.public_ip">Public IP</strong>: {{cluster?.public_ip}}
+                    <strong *ngIf="cluster?.public_ip">Public IP:</strong> {{cluster?.public_ip}}
                   </div>
                 </div>
               </div>
               <div class="card-body p-x-1 py-h">
                 <div class="row">
                   <div class="col-6"
-                       *ngIf="cluster?.status == 'Running' && cluster?.public_ip ">
+                       *ngIf="cluster?.status == 'Running' ">
                     <a *ngIf="!show_connection_infO"
                        class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
                        [id]="'showHowToConnectButton_'+cluster?.cluster_id"
