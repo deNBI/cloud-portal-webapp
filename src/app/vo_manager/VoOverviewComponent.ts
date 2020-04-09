@@ -273,14 +273,6 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
     document.body.classList.remove('modal-open');
   }
 
-  public getProjectDetails(): void {
-    this.voserice.getProjectDetails(this.selectedProject.Id).subscribe((res: any) => {
-      this.selectedProjectVms = res['vms'];
-      this.selectedProjectVolumes = res['volumes'];
-      this.selectedProjectSnapshots = res['snapshots'];
-    })
-  }
-
   public terminateProject(): void {
     this.voserice.terminateProject(this.selectedProject.Id)
       .subscribe(() => {

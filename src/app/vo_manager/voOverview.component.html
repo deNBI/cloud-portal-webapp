@@ -211,7 +211,7 @@
                     style="margin-left: 5px"
                     type="button"
                     class="btn btn-danger" [id]="'show_terminate_' + project?.Id"
-                    (click)="selectedProject = project;getProjectDetails();terminateModal.show();"
+                    (click)="selectedProject = project;terminateModal.show();"
 
                   >
                     <i class="fa fa-trash"></i>&nbsp;Terminate Project
@@ -618,71 +618,11 @@
         <div class="alert alert-warning" role="alert">
           Are you sure you want to terminate this project?
         </div>
-        <div *ngIf="!selectedProject?.OpenStackProject" role="alert">
-          <table class="table table-striped table-bordered">
-
-            <tbody>
-            <tr>
-              <th colspan="3">Virtual Machines</th>
-
-            </tr>
-            <tr>
-              <th>Id</th>
-              <th>Name</th>
-            </tr>
-            <tr *ngFor="let vm of selectedProjectVms">
-              <td>{{vm?.openstackid}}</td>
-              <td>{{vm?.name}}</td>
-
-            </tr>
-            </tbody>
-          </table>
-          <table class="table table-striped table-bordered">
-            <tbody>
-
-
-            <tr>
-              <th colspan="3">Volumes</th>
-
-            </tr>
-            <tr>
-              <th>Id</th>
-              <th>Name</th>
-            </tr>
-            <tr *ngFor="let volume of selectedProjectVolumes">
-              <td>{{volume?.volume_openstackid}}</td>
-              <td>{{volume?.volume_name}}</td>
-
-            </tr>
-
-            </tbody>
-          </table>
-          <table class="table table-striped table-bordered">
-            <tbody>
-
-
-            <tr>
-              <th colspan="3">Snapshots</th>
-
-            </tr>
-            <tr>
-              <th>Id</th>
-              <th>Name</th>
-            </tr>
-            <tr *ngFor="let snapshot of selectedProjectSnapshots">
-              <td>{{snapshot?.snapshot_openstackid}}</td>
-              <td>{{snapshot?.snapshot_name}}</td>
-
-            </tr>
-
-            </tbody>
-          </table>
-        </div>
-
+        <app-project-os-details *ngIf="selectedProject" [project]="selectedProject"></app-project-os-details>
       </div>
       <div class="modal-footer">
         <button class="btn  btn-success col-md-4" id="terminate_project_btn"
-                (click)="terminateProject();terminateModal.hide();notificationModal.show()">
+                (click)="terminateProject();terminateModal.hide();notificationModal.show();;">
           Yes
         </button>
         <button class="btn  btn-danger col-md-4" type="reset"

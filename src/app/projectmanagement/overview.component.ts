@@ -49,8 +49,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   edam_ontology_terms: EdamOntologyTerm[];
   ontology_search_keyword: string = 'term';
 
-  @ViewChild(NgForm, { static: false }) simpleVmForm: NgForm;
-  @ViewChild('creditsChart', { static: false }) creditsCanvas: ElementRef;
+  @ViewChild(NgForm, {static: false}) simpleVmForm: NgForm;
+  @ViewChild('creditsChart', {static: false}) creditsCanvas: ElementRef;
 
   /**
    * If at least 1 flavor is selected.
@@ -70,6 +70,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   credits: number = 0;
 
   errorMessage: string;
+  terminate_confirmation_given: boolean = false;
 
   /**
    * id of the extension status.
@@ -274,8 +275,10 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
           (credits: number) => {
             this.current_credits = credits;
           }
-          // tslint:disable-next-line:align
-        ).catch((err: Error) => console.log(err.message)), 5000);
+        ).catch((err: Error) => {
+          console.log(err.message)
+        }),
+      5000);
   }
 
   initExampleFlavors(): void {
@@ -341,6 +344,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
           this.project_application = newApp;
           this.project_service_in_development = this.project_application.CloudServiceDevelop;
+          this.startUpdateCreditUsageLoop();
+
           if (this.project_application) {
             this.setLifetime();
             this.applicationsservice.getApplicationPerunId(this.application_id).subscribe((id: any) => {
@@ -494,7 +499,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
     this.applicationsservice.getEdamOntologyTerms().subscribe((terms: EdamOntologyTerm[]) => {
       this.edam_ontology_terms = terms;
       this.searchTermsInEdamTerms()
-    })
+    });
 
     this.activatedRoute.params.subscribe((paramsId: any) => {
       this.errorMessage = null;
@@ -510,7 +515,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
       this.getListOfTypes();
       this.getDois();
       this.is_vo_admin = is_vo;
-      this.startUpdateCreditUsageLoop();
     });
 
   }
@@ -563,6 +567,18 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
       })
     }
 
+  }
+
+  requestProjectTermination(): void {
+    this.updateNotificationModal('Waiting', 'Termination request will be submitted...', true, 'info');
+
+    this.groupService.requestProjectTermination(this.project.Id).subscribe(() => {
+      this.fullLayout.getGroupsEnumeration();
+      this.getApplicationStatus();
+      this.getApplication();
+      this.updateNotificationModal('Success', 'Termination was requested!', true, 'success');
+
+    })
   }
 
   /**
