@@ -52,7 +52,7 @@
     "angular-ng-autocomplete": "^2.0.1",
     "angulartics2": "^8.3.0",
     "bootstrap": "^4.4.1",
-    "chart.js": "^2.8.0",
+    "chart.js": "^2.9.3",
     "chromedriver": "^80.0.1",
     "cli-color": "^2.0.0",
     "colors": "^1.4.0",
@@ -122,7 +122,7 @@
     "tslint-consistent-codestyle": "^1.15.1",
     "tslint-eslint-rules": "^5.4.0",
     "typescript": "~3.5.3",
-    "url-loader": "^1.0.1",
+    "url-loader": "^4.1.0",
     "webpack-cli": "^3.3.11"
   }
 }
