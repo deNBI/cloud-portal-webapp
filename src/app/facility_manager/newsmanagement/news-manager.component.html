@@ -25,38 +25,37 @@
             </div>
             <div class="card-body">
               <form>
-                <div *ngFor="let news of allNews">
-                  <div class="card" style="cursor: pointer;overflow: scroll" (click)="setNews(news)"
-                       [ngStyle]="{
-          'border-right-color': news.id == selectedNews.id ? '#3ea662' : '#c8ced3',
-          'border-right-style': 'solid',
-          'border-right-width': news.id == selectedNews.id ? '3px' : '1px'
-          }">
+                <div *ngIf="wordPressNews?.length === 0" class="alert alert-info">
+                  <span>No news available for the facilities selected.</span>
+                </div>
+                <div *ngFor="let news of wordPressNews">
+                  <div class="card" style="cursor: pointer;" (click)="setNews(news)" [ngStyle]="{
+                    'border-color': news.id == selectedNews.id ? '#005aa9' : '#c8ced3'}">
                     <div class="card-header text-truncate"
-                         data-toggle="tooltip"
-                         data-placement="auto"
-                         style="background-color: #00ADEF !important; color: white !important;"
-                         title="{{news.title}}">
+                         data-toggle="tooltip" id="{{news.id}}_header" data-placement="auto"
+                         style="color: white !important;" title="{{news.title}}"
+                         [ngStyle]="{'background-color': news.id == selectedNews.id ? '#005aa9' : '#00adef'}">
                       <strong>{{news.title}}</strong>
-                      <i *ngIf="!news.editable" class="float-right fa fa-warning"
-                         style="font-size: 20px; color: yellow"></i>
                     </div>
                     <div class="card-body"
                          style="color:#58595B;">
                       <div class="row">
                         <div class="text-truncate col" data-toggle="tooltip"
-                             data-placement="auto">{{news.text}}</div>
+                             data-placement="auto"><strong>ID: </strong>{{news.id}}</div>
+                      </div>
+                      <div class="row">
+                        <div class="text-truncate col" data-toggle="tooltip"
+                             data-placement="auto"><strong>Text: </strong>{{news.text}}</div>
+                      </div>
+                      <div class="row">
+                        <div class="text-truncate col" data-toggle="tooltip"
+                             data-placement="auto"><strong>Message of the Day: </strong>{{news.excerpt}}</div>
+                      </div>
+                      <div class="row">
+                        <div class="text-truncate col" data-toggle="tooltip"
+                             data-placement="auto">Uploaded: {{news.modification_date}}</div>
                       </div>
                       <br>
-                      <div class="row">
-                        <div class="col">by: {{news.author}}</div>
-                      </div>
-                      <div class="row">
-                        <div class="col">on: {{news.time}}</div>
-                      </div>
-                      <div class="row">
-                        <div class="col">id: {{news.id}}</div>
-                      </div>
                     </div>
                   </div>
                 </div>
@@ -69,7 +68,7 @@
             <div class="card-header">
               <strong>Edit news</strong>
             </div>
-            <div class="card-body" *ngIf="selectedNews.editable">
+            <div class="card-body"> <!-- check: *ngIf="selectedNews.editable -->
               <div class="form-group">
                 <label class="col-form-label" for="news_title">Title:</label>
                 <input type="text" class="form-control" formControlName="title"
@@ -102,32 +101,45 @@ we are happy to inform..."
                   You have written {{ motdLength | async}} characters.
                   <br>Total characters: {{ motdLength.getValue() + 76}}. (Due to appendage of newslink and timestamp).
                 </div>
+                <div class="form-group">
+                  <a href="https://cloud.denbi.de/wiki/cloud_admin/news_management/#message-of-the-day" target="_blank">
+                    How does message of the day work? (Opens in new tab)
+                  </a>
+                </div>
               </div>
               <div class="form-group">
-                <a href="https://cloud.denbi.de/wiki/cloud_admin/news_management/#message-of-the-day" target="_blank">
-                  How does message of the day work? (Opens in new tab)
-                </a>
-              </div>
-              <div class="form-group">
-                <label class="col-form-label" for="news_tags">Tags:</label>
-                <input type="text" class="form-control" id="news_tags" formControlName="tag" name="news_tags"
-                       placeholder="e.g. projecttypes, openstack, simplevm, newtype, update">
-                <small id="tagsHelp" class="form-text text-muted">Input tags as comma separated list, leading and
-                  trailing spaces will be trimmed out automatically.
-                  <br><strong>Note: </strong>The facility id and its public name set in the database will be appended
-                  automatically!
-                </small>
+                <label class="col-form-label">Tags:</label>
+                <div class="form-check" id="tags_check">
+                  <ng-container *ngFor="let tag of availableTags">
+                    <div class="form-row">
+                      <input class="form-check-input" type="checkbox" id="checkbox_{{tag.id.toString()}}"
+                             (click)="manageTags(tag)"
+                             [checked]="selectedTags?.indexOf(tag.id.toString()) > -1">
+                      <label class="form-check-label" for="checkbox_{{tag.id.toString()}}">{{tag.name}}</label>
+                    </div>
+                  </ng-container>
+                </div>
               </div>
               <label for="facility_check">Facilities:</label>
               <div class="form-check" id="facility_check">
                 <ng-container *ngFor="let facility of managerFacilities">
                   <div class="form-row">
+                    <div class="col-6">
                     <input class="form-check-input" type="checkbox"
                            id="news_select_{{facility['FacilityId']}}"
                            (click)="setFacility(facility)"
                            [checked]="facilitiesToPost?.indexOf(facility['FacilityId']) != -1">
                     <label class="form-check-label"
                            for="news_select_{{facility['FacilityId']}}">{{facility['Facility']}}</label>
+                    </div>
+                    <div class="col-6">
+                      <input class="form-check-input" type="checkbox" id="news_select_{{facility['FacilityId']}}_motd"
+                             (click)="manageMOTD(facility);"
+                             [disabled]="facilitiesToPost?.indexOf(facility['FacilityId']) == -1"
+                             [checked]="facilitiesToSetMOTD?.indexOf(facility['FacilityId']) > 1">
+                      <label class="form-check-label" for="news_select_{{facility['FacilityId']}}_motd">
+                        Set as MOTD for facility</label>
+                    </div>
                   </div>
                 </ng-container>
               </div>
@@ -135,13 +147,8 @@ we are happy to inform..."
               <div *ngIf="facilitiesToPost.length == 0" class="alert alert-warning">At least one facility needs to be
                 selected.
               </div>
-              <div class="form-group">
-                <label class="col-form-label" for="news_id">Id:</label>
-                <input type="text" class="form-control" id="news_id"
-                       [value]="selectedNews.id == null ? -1 : selectedNews.id" name="news_id" [disabled]="true">
-              </div>
             </div>
-            <div class="card-body" *ngIf="!selectedNews.editable">
+            <div class="card-body" *ngIf="!selectedNews"> <!-- check case here -->
               <div class="alert alert-info">
                 This news is also published for a facility you are not the manager of, which means you are not allowed
                 to edit or delete this news.
@@ -150,26 +157,21 @@ we are happy to inform..."
               </div>
             </div>
             <div class="card-footer">
-              <button class="btn btn-primary"
-                      style="margin: 5px"
-                      (click)="setNews()">New news
+              <button class="btn btn-primary" style="margin: 5px"
+                      *ngIf="selectedNews" (click)="setNews()">New News
               </button>
               <button class="btn btn-success"
                       style="margin: 5px"
-                      (click)="add(selectedNews); addModal.show();"
+                      (click)="addModal.show();"
                       [disabled]="selectedNewsForm.invalid || facilitiesToPost.length == 0"
-                      *ngIf="selectedNews.id == null && selectedNews.editable">Add news
+                      *ngIf="selectedNews.id == null">Upload News
               </button>
-              <button class="btn btn-success"
-                      style="margin: 5px"
-                      (click)="verifyPatchModal.show()"
+              <button class="btn btn-secondary" style="margin: 5px"
                       [disabled]="selectedNewsForm.invalid || facilitiesToPost.length == 0"
-                      *ngIf="selectedNews.id != null && selectedNews.editable">Update news
+                      (click)="updateModal.show();" *ngIf="selectedNews?.id">Update News
               </button>
-              <button class="btn btn-danger"
-                      style="margin: 5px"
-                      (click)="verifyDeleteModal.show()"
-                      *ngIf="selectedNews.id != null && selectedNews.editable">Delete news
+              <button class="btn btn-danger" style="margin: 5px"
+                      (click)="deleteModal.show();" *ngIf="selectedNews?.id">Delete News
               </button>
             </div>
           </div>
@@ -178,38 +180,6 @@ we are happy to inform..."
     </div>
   </div>
 
-  <div bsModal #verifyDeleteModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
-       aria-labelledby="Label"
-       aria-hidden="true"
-       id="verify_modal">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Delete News</h4>
-          <button type="button" class="close" style="cursor: pointer"
-                  (click)="verifyDeleteModal.hide()"
-                  aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="alert alert-warning" role="alert">
-            Are you sure you want to delete this news: {{selectedNews.title}}?
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button class="btn  btn-success col-md-4"
-                  (click)="delete(selectedNews);verifyDeleteModal.hide();deleteModal.show()"
-                  id="confirm_delete_button">
-            Yes
-          </button>
-          <button class="btn  btn-danger col-md-4" type="reset"
-                  (click)="verifyDeleteModal.hide();">Cancel
-          </button>
-        </div>
-      </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-  </div>
   <div bsModal #deleteModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
        aria-labelledby="Label"
        aria-hidden="true"
@@ -217,9 +187,7 @@ we are happy to inform..."
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title" *ngIf="deletionStatus == 0"> Waiting </h4>
-          <h4 class="modal-title" *ngIf="deletionStatus == 1"> Success </h4>
-          <h4 class="modal-title" *ngIf="deletionStatus == 2"> Error </h4>
+          <h4 class="modal-title"> Delete News: {{this.selectedNews.title}} ?</h4>
           <button type="button" class="close" style="cursor:pointer"
                   (click)="deleteModal.hide()"
                   aria-label="Close">
@@ -227,22 +195,18 @@ we are happy to inform..."
           </button>
         </div>
         <div class="modal-body">
-          <div class="alert alert-info" role="alert" *ngIf="deletionStatus == 0">
-            Deleting '{{selectedNews.title}}'... <i class="fa fa-spinner fa-spin"
-                                                    style="font-size:24px"></i>
+          <div class="alert alert-info" role="alert">
+            <p>Are you sure, that you want to delete <strong>{{this.selectedNews.title}}</strong> ?</p>
+            <p><strong>Please note: this may remove the current Message of the day for multiple facilities!</strong></p>
           </div>
-          <div class="alert alert-success" role="alert" *ngIf="deletionStatus == 1"
-               id="delete_success_div">
-            '{{selectedNews.title}}' was successfully deleted.
-          </div>
-        </div>
-        <div class="alert alert-warning" role="alert" *ngIf="deletionStatus == 2">
-          When deleting '{{selectedNews.title}}' an error occured.<br>
-          Error message: {{error_string}}.
         </div>
         <div class="modal-footer">
+          <button type="button" class="btn btn-danger"
+                  (click)="this.deleteNewsFromWordpress(); deleteModal.hide()"
+                  id="approve_delete_modal"><i class="fas fa-trash"></i> Delete
+          </button>
           <button type="button" class="btn btn-secondary"
-                  (click)="setNews();deleteModal.hide()"
+                  (click)="deleteModal.hide()"
                   id="close_delete_modal">Close
           </button>
         </div>
@@ -251,78 +215,41 @@ we are happy to inform..."
     </div><!-- /.modal-dialog -->
   </div>
 
-  <div bsModal #verifyPatchModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+  <div bsModal #updateModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
        aria-labelledby="Label"
        aria-hidden="true"
        id="verify_patch_modal">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Delete News</h4>
-          <button type="button" class="close" style="cursor: pointer"
-                  (click)="verifyPatchModal.hide()"
-                  aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="alert alert-warning" role="alert">
-            Are you sure you want to update this news: {{selectedNews.title}}?
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button class="btn  btn-success col-md-4"
-                  (click)="patch(selectedNews);verifyPatchModal.hide();patchModal.show()"
-                  id="confirm_patch_button">
-            Yes
-          </button>
-          <button class="btn  btn-danger col-md-4" type="reset"
-                  (click)="verifyPatchModal.hide();">Cancel
-          </button>
-        </div>
-      </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-  </div>
-  <div bsModal #patchModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
-       aria-labelledby="Label"
-       aria-hidden="true"
-       id="patch_modal">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title" *ngIf="patchingStatus == 0"> Waiting </h4>
-          <h4 class="modal-title" *ngIf="patchingStatus == 1"> Success </h4>
-          <h4 class="modal-title" *ngIf="patchingStatus == 2"> Error </h4>
+          <h4 class="modal-title"> Update News: {{this.selectedNews.title}} ?</h4>
           <button type="button" class="close" style="cursor:pointer"
-                  (click)="patchModal.hide()"
+                  (click)="updateModal.hide()"
                   aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          <div class="alert alert-info" role="alert" *ngIf="patchingStatus == 0">
-            Patching '{{selectedNews.title}}'... <i class="fa fa-spinner fa-spin"
-                                                    style="font-size:24px"></i>
+          <div class="alert alert-info" role="alert">
+            <p>Are you sure, that you want to update <strong>{{this.selectedNews.title}}</strong> ?</p>
+            <p><strong>Please note: this may change the current Message of the day for multiple facilities!</strong></p>
           </div>
-          <div class="alert alert-success" role="alert" *ngIf="patchingStatus == 1"
-               id="patching_success_div">
-            '{{selectedNews.title}}' was successfully patched.
-          </div>
-        </div>
-        <div class="alert alert-warning" role="alert" *ngIf="patchingStatus == 2">
-          When patching '{{selectedNews.title}}' an error occured.<br>
-          Error message: {{error_string}}.
         </div>
         <div class="modal-footer">
+          <button type="button" class="btn btn-primary"
+                  (click)="addNewsToWordpress(newWordpressNews, true); updateModal.hide()"
+                  id="approve_update_modal"><i class="fas fa-edit"></i> Update
+          </button>
           <button type="button" class="btn btn-secondary"
-                  (click)="setNews();patchModal.hide()"
-                  id="close_patch_modal">Close
+                  (click)="updateModal.hide()"
+                  id="close_update_modal">Close
           </button>
         </div>
 
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
   </div>
+
   <div bsModal #addModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
        aria-labelledby="Label"
        aria-hidden="true"
@@ -330,33 +257,59 @@ we are happy to inform..."
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title" *ngIf="addingStatus == 0"> Waiting </h4>
-          <h4 class="modal-title" *ngIf="addingStatus == 1"> Success </h4>
-          <h4 class="modal-title" *ngIf="addingStatus == 2"> Error </h4>
+          <h4 class="modal-title"> Update News: {{this.selectedNews.title}} ?</h4>
           <button type="button" class="close" style="cursor:pointer"
-                  (click)="setNews(); addModal.hide()"
+                  (click)="addModal.hide()"
                   aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          <div class="alert alert-info" role="alert" *ngIf="addingStatus == 0">
-            Posting '{{selectedNews.title}}'... <i class="fa fa-spinner fa-spin"
-                                                   style="font-size:24px"></i>
-          </div>
-          <div class="alert alert-success" role="alert" *ngIf="addingStatus == 1"
-               id="adding_success_div">
-            '{{selectedNews.title}}' was successfully posted.
+          <div class="alert alert-info" role="alert">
+            <p>Are you sure, that you want to upload <strong>{{this.selectedNews.title}}</strong> ?</p>
+            <p><strong>Please note: this may change the current Message of the day for multiple facilities!</strong></p>
           </div>
         </div>
-        <div class="alert alert-warning" role="alert" *ngIf="addingStatus == 2">
-          When adding '{{selectedNews.title}}' an error occured.<br>
-          Error message: {{error_string}}.
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success"
+                  (click)="addNewsToWordpress(newWordpressNews, false); addModal.hide()"
+                  id="approve_add_modal"><i class="fas fa-plus"></i> Add News
+          </button>
+          <button type="button" class="btn btn-secondary"
+                  (click)="addModal.hide()"
+                  id="close_add_modal">Close
+          </button>
+        </div>
+
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div>
+
+  <div bsModal #infoModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+       aria-labelledby="Label"
+       aria-hidden="true"
+       id="info_modal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title"> Information</h4>
+          <button type="button" class="close" style="cursor:pointer"
+                  (click)="infoModal.hide()"
+                  aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="alert alert-info" role="alert">
+            <p *ngIf="returnState === 0">The selected news got deleted!</p>
+            <p *ngIf="returnState === 1">The selected news got updated!</p>
+            <p *ngIf="returnState === 2">The news got uploaded!</p>
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary"
-                  (click)="setNews();addModal.hide()"
-                  id="close_adding_modal">Close
+                  (click)="infoModal.hide()"
+                  id="close_info_modal">OK
           </button>
         </div>
 
