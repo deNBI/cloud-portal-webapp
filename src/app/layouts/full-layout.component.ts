@@ -1,4 +1,4 @@
-import {assertPlatform, Component, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ApiSettings} from '../api-connector/api-settings.service';
 import {ClientService} from '../api-connector/client.service';
 import {FacilityService} from '../api-connector/facility.service';
@@ -12,8 +12,6 @@ import {ApplicationStatusService} from '../api-connector/application-status.serv
 import {ProjectEnumeration} from '../projectmanagement/project-enumeration';
 import {environment} from '../../environments/environment';
 import {is_vo} from '../shared/globalvar';
-import {Application} from '../applications/application.model/application.model';
-import {Project} from '../projectmanagement/project.model';
 
 /**
  * FullLayout component.
@@ -121,13 +119,33 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
    * @param projEnum ProjectEnumeration which includes information about project in sidebar.
    */
   async badgeState(projEnum: ProjectEnumeration): Promise<number> {
+    switch (projEnum.project_status) {
+      case 'termination requested': {
+        return 4;
+      }
+      case 'suspended': {
+        return 2;
 
-      if (projEnum.project_status === 'suspended') { return 2; } else if (projEnum.project_status === 'approved') {
-        if (this.getDaysLeft(projEnum) < 21) { return 1; }
-        if (this.getDaysRunning(projEnum.project_start_date) < 8) { return 0; }
-      } else if (projEnum.project_status === 'modification requested') { return 3; }
+      }
+      case 'approved': {
+        if (this.getDaysLeft(projEnum) < 21) {
+          return 1;
+        }
+        if (this.getDaysRunning(projEnum.project_start_date) < 8) {
+          return 0;
+        }
 
-      return -1;
+        return -1
+
+      }
+      case 'modification requested': {
+        return 3
+      }
+      default: {
+        return -1
+      }
+
+    }
   }
 
   getDaysLeft(projEnum: ProjectEnumeration): number {
