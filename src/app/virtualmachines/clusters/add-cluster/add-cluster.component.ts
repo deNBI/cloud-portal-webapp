@@ -19,6 +19,7 @@ import {Client} from '../../clients/client.model';
 import {BiocondaComponent} from '../../conda/bioconda.component';
 import {forkJoin} from 'rxjs';
 import {Clusterinfo} from '../clusterinfo';
+import {Router} from '@angular/router';
 
 /**
  * Cluster Component
@@ -206,7 +207,7 @@ export class AddClusterComponent implements OnInit {
   constructor(private groupService: GroupService, private imageService: ImageService,
               private flavorService: FlavorService, private virtualmachineservice: VirtualmachineService,
               private keyservice: KeyService, private userservice: UserService,
-              private voService: VoService) {
+              private voService: VoService, private router: Router) {
   }
 
   changeCount(): void {
@@ -361,8 +362,9 @@ export class AddClusterComponent implements OnInit {
             },
             1000)
         } else {
+          this.router.navigate(['/virtualmachines/clusterOverview']).then().catch()
+
           this.cluster_id = res['id'];
-          this.checkClusterStatusLoop();
         }
 
       }
