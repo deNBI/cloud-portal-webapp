@@ -10,6 +10,7 @@ import {ApplicationsModule} from '../applications/applications.module';
 import {SharedDirectivesModule} from '../shared/shared_modules/shared_directives.module';
 import {AutocompleteLibModule} from 'angular-ng-autocomplete';
 import {ChartsModule} from 'ng2-charts';
+import {ProjectOsDetailsComponent} from './project-os-details/project-os-details.component';
 
 /**
  * Projectmanagment module.
@@ -28,8 +29,12 @@ import {ChartsModule} from 'ng2-charts';
               AutocompleteLibModule
             ],
             declarations: [
-              OverviewComponent
+              OverviewComponent,
+              ProjectOsDetailsComponent
 
+            ],
+            exports: [
+              ProjectOsDetailsComponent
             ]
           })
 export class ProjectManagementModule {
