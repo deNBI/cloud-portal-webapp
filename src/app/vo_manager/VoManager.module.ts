@@ -10,6 +10,7 @@ import {VoOverviewComponent} from './VoOverviewComponent';
 import {VoGuardService} from './vo-guard.service';
 import {VoService} from '../api-connector/vo.service';
 import {ResourcesComponent} from './resources/resources.component';
+import {ProjectManagementModule} from '../projectmanagement/projectmanagement.module';
 
 /**
  * VO Manager module.
@@ -20,7 +21,8 @@ import {ResourcesComponent} from './resources/resources.component';
               TabsModule,
               FormsModule,
               CommonModule,
-              ModalModule.forRoot()
+              ModalModule.forRoot(),
+              ProjectManagementModule
             ],
             declarations: [
               VoOverviewComponent,
