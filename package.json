@@ -41,7 +41,7 @@
     "@angular/material": "^7.3.7",
     "@angular/platform-browser": "^8.2.14",
     "@angular/platform-browser-dynamic": "^8.2.14",
-    "@angular/pwa": "^0.900.7",
+    "@angular/pwa": "^0.901.1",
     "@angular/router": "^8.2.14",
     "@angular/service-worker": "^8.2.14",
     "@angular/upgrade": "^8.2.14",
