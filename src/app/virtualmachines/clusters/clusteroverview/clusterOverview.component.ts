@@ -12,7 +12,6 @@ import {VirtualMachineStates} from '../../virtualmachinemodels/virtualmachinesta
 import {GroupService} from '../../../api-connector/group.service';
 import {ClientService} from '../../../api-connector/client.service';
 import {Clusterinfo} from '../clusterinfo';
-import {ClusterinfoComponent} from '../clusterinfo/clusterinfo.component';
 import {ClipboardService} from 'ngx-clipboard';
 
 /**
@@ -156,7 +155,7 @@ export class ClusterOverviewComponent implements OnInit, OnDestroy {
             this.selectedCluster = updated_cluster;
           }
 
-          if (updated_cluster.status !== 'Running') {
+          if (updated_cluster.status !== 'Running' && updated_cluster.status !== 'DELETING') {
             this.check_status_loop(updated_cluster, final_state, is_selected_cluster)
 
           }
