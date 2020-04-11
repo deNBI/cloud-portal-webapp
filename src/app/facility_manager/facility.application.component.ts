@@ -61,7 +61,7 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
    */
   public approveExtension(app: Application): void {
 
-    this.applicationsservice.approveRenewal(app.Id).subscribe((result: any) => {
+    this.applicationsservice.approveRenewal(app.project_application_id).subscribe((result: any) => {
       if (result['Error']) {
         this.updateNotificationModal('Failed', 'Failed to approve the application modification.', true, 'danger');
       } else {
@@ -92,11 +92,11 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
   }
 
   getFacilityApplicationById(application: Application): void {
-    if (application.Description !== undefined) {
+    if (application.project_application_description !== undefined) {
       return;
     }
     const idx: number = this.applications_history.indexOf(application);
-    this.facilityService.getFacilityApplicationById(this.selectedFacility ['FacilityId'], application.Id.toString())
+    this.facilityService.getFacilityApplicationById(this.selectedFacility ['FacilityId'], application.project_application_id.toString())
       .subscribe((res: any) => {
         this.applications_history[idx] = this.setNewApplication(res);
       })
@@ -157,7 +157,7 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
   approveApplication(app: Application): void {
 
     this.updateNotificationModal('Approving Application', 'Waiting..', true, 'info');
-    this.facilityService.approveFacilityApplication(this.selectedFacility['FacilityId'], app.Id).subscribe(
+    this.facilityService.approveFacilityApplication(this.selectedFacility['FacilityId'], app.project_application_id).subscribe(
       () => {
         this.updateNotificationModal('Success', 'Successfully approved the application.', true, 'success');
         this.all_applications_wfc.splice(this.all_applications_wfc.indexOf(app), 1);
@@ -176,7 +176,7 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
    */
   public declineExtension(app: Application): void {
     const modificaton_requested: number = 4;
-    this.applicationstatusservice.setApplicationStatus(app.Id, modificaton_requested).subscribe(() => {
+    this.applicationstatusservice.setApplicationStatus(app.project_application_id, modificaton_requested).subscribe(() => {
       this.updateNotificationModal('Success', 'Successfully declined!', true, 'success');
       this.all_application_modifications.splice(this.all_application_modifications.indexOf(app), 1);
       this.getAllApplicationsHistory(this.selectedFacility ['FacilityId']);

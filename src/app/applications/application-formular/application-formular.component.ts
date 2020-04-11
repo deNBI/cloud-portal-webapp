@@ -146,11 +146,11 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 
   initiateFormWithApplication(): void {
     if (this.application && !this.initiated_validation) {
-      this.application_id = this.application.Id;
+      this.application_id = this.application.project_application_id;
       if (this.application.CurrentFlavors) {
         this.simple_vm_min_vm = true;
       }
-      this.openstack_project = this.application.OpenStackProject;
+      this.openstack_project = this.application.project_application_openstack_project;
       this.simple_vm_project = !this.openstack_project;
       if (this.application.Dissemination) {
         this.application_dissemination = this.application.Dissemination;
@@ -161,26 +161,26 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
         this.application.Dissemination = new ApplicationDissemination(null, null, null, null, null, null, null, null, null, null, null);
       }
       this.application_dissemination = this.application.Dissemination;
-      this.project_application_sensitive_data = this.application.SensitiveData;
-      this.project_application_vms_requested = this.application.VMsRequested;
+      this.project_application_sensitive_data = this.application.project_application_sensitive_data;
+      this.project_application_vms_requested = this.application.project_application_vms_requested;
       this.selected_ontology_terms = this.application.EdamTopics;
-      this.project_application_name = this.application.Name;
-      this.project_application_shortname = this.application.Shortname;
-      this.project_application_description = this.application.Description;
-      this.project_application_lifetime = this.application.Lifetime;
-      this.project_application_volume_limit = this.application.VolumeLimit;
-      this.project_application_object_storage = this.application.ObjectStorage;
-      this.project_application_institute = this.application.Institute;
-      this.project_application_workgroup = this.application.Workgroup;
-      this.project_application_horizon2020 = this.application.Horizon2020;
-      this.project_application_openstack_basic_introduction = this.application.OpenstackBasicIntroduction;
-      this.project_application_elixir_project = this.application.ElixirProject;
-      this.project_application_bmbf_project = this.application.BMBFProject;
-      this.project_application_volume_counter = this.application.VolumeCounter;
-      this.project_application_workshop = this.application.Workshop;
-      this.project_application_cloud_service = this.application.CloudService;
-      this.project_application_cloud_service_user_number = this.application.CloudServiceUserNumber;
-      this.project_application_cloud_service_develop = this.application.CloudServiceDevelop;
+      this.project_application_name = this.application.project_application_name;
+      this.project_application_shortname = this.application.project_application_shortname;
+      this.project_application_description = this.application.project_application_description;
+      this.project_application_lifetime = this.application.project_application_lifetime;
+      this.project_application_volume_limit = this.application.project_application_volume_limit;
+      this.project_application_object_storage = this.application.project_application_object_storage;
+      this.project_application_institute = this.application.project_application_institute;
+      this.project_application_workgroup = this.application.project_application_workgroup;
+      this.project_application_horizon2020 = this.application.project_application_horizon2020;
+      this.project_application_openstack_basic_introduction = this.application.project_application_openstack_basic_introduction;
+      this.project_application_elixir_project = this.application.project_application_elixir_project;
+      this.project_application_bmbf_project = this.application.project_application_bmbf_project;
+      this.project_application_volume_counter = this.application.project_application_volume_counter;
+      this.project_application_workshop = this.application.project_application_workshop;
+      this.project_application_cloud_service = this.application.project_application_cloud_service;
+      this.project_application_cloud_service_user_number = this.application.project_application_cloud_service_user_number;
+      this.project_application_cloud_service_develop = this.application.project_application_cloud_service_develop;
       this.initiated_validation = true
 
     }
@@ -412,12 +412,12 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 
   approveApplication(form: NgForm): any {
     this.calculateInitialCredits(form);
-    this.application_id = this.application.Id;
+    this.application_id = this.application.project_application_id;
     if (this.project_application_report_allowed) {
-      this.applicationsservice.setApplicationDissemination(this.application.Id, this.application_dissemination).subscribe()
+      this.applicationsservice.setApplicationDissemination(this.application.project_application_id, this.application_dissemination).subscribe()
 
     } else {
-      this.applicationsservice.deleteApplicationDissemination(this.application.Id).subscribe()
+      this.applicationsservice.deleteApplicationDissemination(this.application.project_application_id).subscribe()
     }
 
     const values: { [key: string]: string | number | boolean } = {};
@@ -440,7 +440,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
     this.applicationsservice.validateApplicationAsPIByHash(this.hash, values).subscribe((res: any) => {
       if (res['project_application_pi_approved']) {
         this.fullLayout.getGroupsEnumeration();
-        this.applicationsservice.addEdamOntologyTerms(this.application.Id,
+        this.applicationsservice.addEdamOntologyTerms(this.application.project_application_id,
                                                       this.selected_ontology_terms
         ).subscribe();
         this.updateNotificationModal(

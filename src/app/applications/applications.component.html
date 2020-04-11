@@ -40,10 +40,10 @@
               *ngFor="let application of all_applications">
 
               <ng-container
-                *ngIf="application?.Status == application_states.SUBMITTED || application?.Status == application_states.MODIFICATION_REQUESTED || application?.Status == application_states.WAIT_FOR_CONFIRMATION || application?.Status == application_states.CONFIRMATION_DENIED">
+                *ngIf="application?.project_application_status == application_states.SUBMITTED || application?.project_application_status == application_states.MODIFICATION_REQUESTED || application?.project_application_status == application_states.WAIT_FOR_CONFIRMATION || application?.project_application_status == application_states.CONFIRMATION_DENIED">
                 <tr>
                   <td>
-                                              <span *ngIf="application?.OpenStackProject"
+                                              <span *ngIf="application?.project_application_openstack_project"
                                                     style="font-size: 20px"
                                                     class="project-openstack_plain_white_redbg"
                                                     data-toggle="tooltip"
@@ -51,7 +51,7 @@
                                                 <span class="path1"></span>
                                                 <span class="path2"></span>
                                   </span>
-                    <span *ngIf="!application?.OpenStackProject"
+                    <span *ngIf="!application?.project_application_openstack_project"
                           style="font-size: 20px"
                           class="project-simpleVM_Logo_bluebg"
                           data-toggle="tooltip"
@@ -62,7 +62,7 @@
                       <span class="path4"></span>
                       <span class="path5"></span>
                     </span>
-                    <span *ngIf="application?.PIApproved"
+                    <span *ngIf="application?.project_application_pi_approved"
                           style="margin: 2px"
                           class="badge"
                           data-toggle="tooltip" data-placement="auto"
@@ -72,7 +72,7 @@
                                       class="path3"></span><span class="path4"></span>
                                     </span>
                                   </span>
-                    <span *ngIf="!application?.PIApproved"
+                    <span *ngIf="!application?.project_application_pi_approved"
                           style="margin: 2px" class="badge"
                           data-toggle="tooltip" data-placement="auto"
                           title="This application is yet not approved by a PI">
@@ -83,20 +83,20 @@
                                   </span>
 
                   </td>
-                  <td>{{ application?.Name }}
+                  <td>{{ application?.project_application_name }}
                   </td>
-                  <td>{{application?.Shortname}}</td>
-                  <td>{{ application?.DateSubmitted }}
+                  <td>{{application?.project_application_shortname}}</td>
+                  <td>{{ application?.project_application_date_submitted }}
                   </td>
                   <td style="word-wrap: break-word;min-width: 110px; max-width: 130px; white-space: normal">
                     {{ application?.User }}
                   </td>
-                  <td>{{application?.Institute}}</td>
+                  <td>{{application?.project_application_institute}}</td>
 
                   <td>
                     <select
-                      [style.display]=" (application?.Status == application_states.SUBMITTED || application?.Status == application_states.CONFIRMATION_DENIED || (!application?.ComputeCenter?.FacilityId ))? 'inherit' :'none'"
-                      class="form-control" [id]="'id_compute_center_option_' + application?.Name"
+                      [style.display]=" (application?.project_application_status == application_states.SUBMITTED || application?.project_application_status == application_states.CONFIRMATION_DENIED || (!application?.ComputeCenter?.FacilityId ))? 'inherit' :'none'"
+                      class="form-control" [id]="'id_compute_center_option_' + application?.project_application_name"
                       #selectedComputeCenter>
 
                       <option value="undefined" selected> no center selected
@@ -107,16 +107,16 @@
                       </option>
                     </select>
                     <span
-                      *ngIf="application?.Status != application_states.SUBMITTED">{{application?.ComputeCenter?.Name}}</span>
+                      *ngIf="application?.project_application_status != application_states.SUBMITTED">{{application?.ComputeCenter?.Name}}</span>
                   </td>
 
 
                   <td>
                     <div class="btn-group">
                       <button
-                        *ngIf="application?.Status == application_states.CONFIRMATION_DENIED || (application?.Status == application_states.WAIT_FOR_CONFIRMATION && !application?.ComputeCenter?.FacilityId )"
+                        *ngIf="application?.project_application_status == application_states.CONFIRMATION_DENIED || (application?.project_application_status == application_states.WAIT_FOR_CONFIRMATION && !application?.ComputeCenter?.FacilityId )"
                         style="margin: auto 2.5px"
-                        (click)="resetNotificationModal();assignGroupToFacility(application?.PerunId,application?.Id,selectedComputeCenter.value); notificationModal.show();"
+                        (click)="resetNotificationModal();assignGroupToFacility(application?.project_application_perun_id,application?.project_application_id,selectedComputeCenter.value); notificationModal.show();"
 
 
                         type="button"
@@ -125,7 +125,7 @@
                         <span class="applicationActionsButton">Assign</span>
                       </button>
                       <button
-                        *ngIf="application?.Status == application_states.WAIT_FOR_CONFIRMATION && application?.ComputeCenter?.FacilityId"
+                        *ngIf="application?.project_application_status == application_states.WAIT_FOR_CONFIRMATION && application?.ComputeCenter?.FacilityId"
                         style="margin: auto 2.5px"
                         (click)="resetNotificationModal();removeApplicationFromFacilityConfirmation(application);"
 
@@ -136,8 +136,8 @@
                         <span class="applicationActionsButton">Reassign</span>
                       </button>
                       <button
-                        *ngIf="application?.Status == application_states.SUBMITTED && application?.OpenStackProject"
-                        style="margin: auto 2.5px" [id]="'approve_'+ application?.Shortname"
+                        *ngIf="application?.project_application_status == application_states.SUBMITTED && application?.project_application_openstack_project"
+                        style="margin: auto 2.5px" [id]="'approve_'+ application?.project_application_shortname"
                         (click)="resetNotificationModal();createOpenStackProjectGroup(application,selectedComputeCenter.value); notificationModal.show();"
 
                         type="button"
@@ -148,8 +148,8 @@
                       </button>
 
                       <button
-                        *ngIf="application?.Status == application_states.SUBMITTED && !application?.OpenStackProject"
-                        style="margin: auto 2.5px" [id]="'approve_' + application?.Shortname"
+                        *ngIf="application?.project_application_status == application_states.SUBMITTED && !application?.project_application_openstack_project"
+                        style="margin: auto 2.5px" [id]="'approve_' + application?.project_application_shortname"
                         (click)="resetNotificationModal();createSimpleVmProjectGroup(application,selectedComputeCenter.value); notificationModal.show();"
 
                         type="button"
@@ -158,8 +158,8 @@
                         <span class="applicationActionsButton">Approve
                           & Create </span>
                       </button>
-                      <button [id]="'extension_approval_' + application.Shortname"
-                              *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED"
+                      <button [id]="'extension_approval_' + application.project_application_shortname"
+                              *ngIf="application?.project_application_status == application_states.MODIFICATION_REQUESTED"
                               style="margin: auto 2.5px"
                               (click)="setSelectedApplication(application);approveExtension(application);resultModal.show();"
                               type="button"
@@ -169,8 +169,8 @@
                           Modification </span>
                       </button>
 
-                      <button *ngIf="application?.Status == application_states.SUBMITTED"
-                              (click)='declineApplication(application?.Id)'
+                      <button *ngIf="application?.project_application_status == application_states.SUBMITTED"
+                              (click)='declineApplication(application?.project_application_id)'
                               type="button"
                               class="btn btn-danger"
                               style="margin: auto 2.5px">
@@ -178,11 +178,11 @@
                         <span class="applicationActionsButton">Decline</span>
                       </button>
                       <button
-                        *ngIf="application?.Status == application_states.MODIFICATION_REQUESTED"
+                        *ngIf="application?.project_application_status == application_states.MODIFICATION_REQUESTED"
                         type="button"
                         class="btn btn-danger"
                         style="margin: auto 2.5px"
-                        (click)="setSelectedApplication(application);declineExtension(application?.Id);resultModal.show();">
+                        (click)="setSelectedApplication(application);declineExtension(application?.project_application_id);resultModal.show();">
                         <i
                           class="fa fa-close"></i>&nbsp;
                         <span class="applicationActionsButton">Decline Modification</span>
@@ -190,15 +190,15 @@
 
 
                       <button
-                        (click)="switchCollapseStatus('application_review-' + application?.Id);  getMemberDetailsByElixirIdIfCollapsed(application?.User,'application_review-' + application?.Id);"
+                        (click)="switchCollapseStatus('application_review-' + application?.project_application_id);  getMemberDetailsByElixirIdIfCollapsed(application?.User,'application_review-' + application?.project_application_id);"
                         type="button"
                         class="btn btn-secondary"
                         style="margin: auto 2.5px">
                         <i class="fa fa-info-circle"></i>&nbsp;
                         <span class="applicationActionsButton"
-                          [hidden]="!getCollapseStatus('application_review-' + application?.Id)">Show</span>
+                          [hidden]="!getCollapseStatus('application_review-' + application?.project_application_id)">Show</span>
                         <span class="applicationActionsButton"
-                        [hidden]="getCollapseStatus('application_review-' + application?.Id)">Hide</span>
+                        [hidden]="getCollapseStatus('application_review-' + application?.project_application_id)">Hide</span>
                         <span class="applicationActionsButton"> Information</span>
                       </button>
                     </div>
@@ -207,8 +207,8 @@
 
                 <td colspan="12">
                   <app-application-detail
-                    [class.collapse_no_margin]="getCollapseStatus('application_review-' + application?.Id)"
-                    [class.collapse]="getCollapseStatus('application_review-' + application?.Id)"
+                    [class.collapse_no_margin]="getCollapseStatus('application_review-' + application?.project_application_id)"
+                    [class.collapse]="getCollapseStatus('application_review-' + application?.project_application_id)"
                     [application]="application"
                   [isModification]="application.ApplicationExtension != null && application.ApplicationExtension != undefined"></app-application-detail>
                 </td>

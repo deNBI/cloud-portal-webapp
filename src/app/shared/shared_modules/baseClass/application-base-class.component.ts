@@ -182,18 +182,18 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
 
   setShortNewApplication(aj: any): Application {
     const newApp: Application = new Application();
-    newApp.Id = aj['project_application_id'];
+    newApp.project_application_id = aj['project_application_id'];
 
-    newApp.Name = aj['project_application_name'];
-    newApp.Shortname = aj['project_application_shortname'];
-    newApp.Institute = aj['project_application_institute'];
+    newApp.project_application_name = aj['project_application_name'];
+    newApp.project_application_shortname = aj['project_application_shortname'];
+    newApp.project_application_institute = aj['project_application_institute'];
     newApp.User = aj['project_application_user']['username'];
-    newApp.DateSubmitted = aj['project_application_date_submitted'];
-    newApp.Status = aj['project_application_status'];
-    newApp.PerunId = aj['project_application_perun_id'];
-    newApp.OpenStackProject = aj['project_application_openstack_project'];
+    newApp.project_application_date_submitted = aj['project_application_date_submitted'];
+    newApp.project_application_status = aj['project_application_status'];
+    newApp.project_application_perun_id = aj['project_application_perun_id'];
+    newApp.project_application_openstack_project = aj['project_application_openstack_project'];
 
-    newApp.DateApproved = aj['project_application_date_approved'];
+    newApp.project_application_date_approved = aj['project_application_date_approved'];
 
     return newApp
   }
@@ -201,60 +201,58 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
   setNewApplication(aj: any): Application {
 
     const newApp: Application = new Application();
-    newApp.Id = aj['project_application_id'];
+    newApp.project_application_id = aj['project_application_id'];
 
-    newApp.Name = aj['project_application_name'];
-    newApp.Shortname = aj['project_application_shortname'];
-    newApp.Description = aj['project_application_description'];
-    newApp.Lifetime = aj['project_application_lifetime'];
+    newApp.project_application_name = aj['project_application_name'];
+    newApp.project_application_shortname = aj['project_application_shortname'];
+    newApp.project_application_description = aj['project_application_description'];
+    newApp.project_application_lifetime = aj['project_application_lifetime'];
     newApp.EdamTopics = aj['project_application_edam_terms'];
     newApp.PiAffiliations = aj['pi_affiliations'];
-    newApp.SensitiveData = aj['project_application_sensitive_data'];
-    newApp.VMsRequested = aj['project_application_vms_requested'];
-    newApp.RamPerVM = aj['project_application_ram_per_vm'];
-    newApp.TotalRam = aj['project_application_total_ram'];
-    newApp.TotalCores = aj['project_application_total_cores'];
-    newApp.InitialCredits = aj['project_application_initial_credits'];
-    newApp.CoresPerVM = aj['project_application_cores_per_vm'];
-    newApp.VolumeLimit = aj['project_application_volume_limit'];
-    newApp.VolumeCounter = aj['project_application_volume_counter'];
-    newApp.OpenstackBasicIntroduction = aj['project_application_openstack_basic_introduction'];
+    newApp.project_application_sensitive_data = aj['project_application_sensitive_data'];
+    newApp.project_application_vms_requested = aj['project_application_vms_requested'];
+    newApp.project_application_total_ram = aj['project_application_total_ram'];
+    newApp.project_application_total_cores = aj['project_application_total_cores'];
+    newApp.project_application_initial_credits = aj['project_application_initial_credits'];
+    newApp.project_application_volume_limit = aj['project_application_volume_limit'];
+    newApp.project_application_volume_counter = aj['project_application_volume_counter'];
+    newApp.project_application_openstack_basic_introduction = aj['project_application_openstack_basic_introduction'];
 
-    newApp.ObjectStorage = aj['project_application_object_storage'];
-    newApp.OpenStackProject = aj['project_application_openstack_project'];
+    newApp.project_application_object_storage = aj['project_application_object_storage'];
+    newApp.project_application_openstack_project = aj['project_application_openstack_project'];
 
-    newApp.Institute = aj['project_application_institute'];
-    newApp.Workgroup = aj['project_application_workgroup'];
-    newApp.DateApproved = aj['project_application_date_approved'];
+    newApp.project_application_institute = aj['project_application_institute'];
+    newApp.project_application_workgroup = aj['project_application_workgroup'];
+    newApp.project_application_date_approved = aj['project_application_date_approved'];
 
-    newApp.DateSubmitted = aj['project_application_date_submitted'];
-    newApp.DateStatusChanged = aj['project_application_date_status_changed'];
+    newApp.project_application_date_submitted = aj['project_application_date_submitted'];
+    newApp.project_application_date_status_changed = aj['project_application_date_status_changed'];
     newApp.User = aj['project_application_user']['username'];
     newApp.UserAffiliations = aj['project_application_user']['profile']['affiliations'];
     newApp.UserEmail = aj['project_application_user']['email'];
-    newApp.Status = aj['project_application_status'];
+    newApp.project_application_status = aj['project_application_status'];
     newApp.Dissemination = this.createDisseminatenObject(aj['dissemination']);
-    newApp.Horizon2020 = aj['project_application_horizon2020'];
-    newApp.BMBFProject = aj['project_application_bmbf_project'];
-    newApp.ElixirProject = aj['project_application_elixir_project'];
-    newApp.Comment = aj['project_application_comment'];
-    newApp.PerunId = aj['project_application_perun_id'];
-    newApp.PIApproved = aj['project_application_pi_approved'];
-    newApp.Workshop = aj['project_application_workshop'];
-    newApp.CloudService = aj['project_application_cloud_service'];
-    newApp.CloudServiceDevelop = aj['project_application_cloud_service_develop'];
-    newApp.CloudServiceUserNumber = aj['project_application_cloud_service_user_number'];
+    newApp.project_application_horizon2020 = aj['project_application_horizon2020'];
+    newApp.project_application_bmbf_project = aj['project_application_bmbf_project'];
+    newApp.project_application_elixir_project = aj['project_application_elixir_project'];
+    newApp.project_application_comment = aj['project_application_comment'];
+    newApp.project_application_perun_id = aj['project_application_perun_id'];
+    newApp.project_application_pi_approved = aj['project_application_pi_approved'];
+    newApp.project_application_workshop = aj['project_application_workshop'];
+    newApp.project_application_cloud_service = aj['project_application_cloud_service'];
+    newApp.project_application_cloud_service_develop = aj['project_application_cloud_service_develop'];
+    newApp.project_application_cloud_service_user_number = aj['project_application_cloud_service_user_number'];
 
     if (aj['project_application_pi']) {
       const firstName: string = (aj['project_application_pi'])['firstName'];
       const lastName: string = (aj['project_application_pi'])['lastName'];
       newApp.PI = `${firstName} ${lastName}`;
       newApp.PIEmail = (aj['project_application_pi'])['email'];
-      newApp.PIElixir = aj['project_application_pi']['elixirId']
+      newApp.project_application_pi_elixir = aj['project_application_pi']['elixirId']
     }
 
-    if (newApp.Status === this.application_states.APPROVED) {
-      newApp.DaysRunning = Math.ceil((Math.abs(Date.now() - new Date(newApp.DateApproved).getTime())) / (1000 * 3600 * 24));
+    if (newApp.project_application_status === this.application_states.APPROVED) {
+      newApp.DaysRunning = Math.ceil((Math.abs(Date.now() - new Date(newApp.project_application_date_approved).getTime())) / (1000 * 3600 * 24));
 
     }
     for (const flavor of aj['flavors']) {
@@ -277,22 +275,20 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
 
       }
 
-      extension.TotalRAM = requestExtensionTotalRam;
-      extension.TotalCores = requestExtensionTotalCores;
+      extension.project_application_renewal_total_ram = requestExtensionTotalRam;
+      extension.project_application_renewal_total_cores = requestExtensionTotalCores;
 
       extension.Id = aj['projectapplicationrenewal']['project_application'];
-      extension.Lifetime = aj['projectapplicationrenewal']['project_application_renewal_lifetime'];
-      extension.VolumeLimit = aj['projectapplicationrenewal']['project_application_renewal_volume_limit'];
-      extension.VolumeCounter = aj['projectapplicationrenewal']['project_application_renewal_volume_counter'];
-      extension.VMsRequested = aj['projectapplicationrenewal']['project_application_renewal_vms_requested'];
-      extension.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
-      extension.CoresPerVM = aj['projectapplicationrenewal']['project_application_renewal_cores_per_vm'];
-      extension.ObjectStorage = aj['projectapplicationrenewal']['project_application_renewal_object_storage'];
-      extension.RamPerVM = aj['projectapplicationrenewal']['project_application_renewal_ram_per_vm'];
-      extension.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
-      extension.ExtendedCredits = aj['projectapplicationrenewal']['project_application_renewal_credits'];
-      extension.IsOnlyExtraCreditsApplication = aj['projectapplicationrenewal']['is_only_extra_credits_application'];
-      extension.CloudServiceUserNumber = aj['projectapplicationrenewal']['project_application_renewal_cloud_service_user_number'];
+      extension.project_application_renewal_lifetime = aj['projectapplicationrenewal']['project_application_renewal_lifetime'];
+      extension.project_application_renewal_volume_limit = aj['projectapplicationrenewal']['project_application_renewal_volume_limit'];
+      extension.project_application_renewal_volume_counter = aj['projectapplicationrenewal']['project_application_renewal_volume_counter'];
+      extension.project_application_renewal_vms_requested = aj['projectapplicationrenewal']['project_application_renewal_vms_requested'];
+      extension.project_application_renewal_comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
+      extension.project_application_renewal_object_storage = aj['projectapplicationrenewal']['project_application_renewal_object_storage'];
+      extension.project_application_renewal_comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
+      extension.project_application_renewal_credits = aj['projectapplicationrenewal']['project_application_renewal_credits'];
+      extension.is_only_extra_credits_application = aj['projectapplicationrenewal']['is_only_extra_credits_application'];
+      extension.project_application_cloud_service_user_number = aj['projectapplicationrenewal']['project_application_renewal_cloud_service_user_number'];
       newApp.ApplicationExtension = extension;
     }
 

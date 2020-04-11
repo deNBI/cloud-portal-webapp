@@ -181,7 +181,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
       lifetime = 0;
     }
     // tslint:disable-next-line:max-line-length
-    this.creditsService.getExtraCreditsForExtension(this.totalNumberOfCores, this.totalRAM, lifetime, this.project_application.Id.toString()).toPromise()
+    this.creditsService.getExtraCreditsForExtension(this.totalNumberOfCores, this.totalRAM, lifetime, this.project_application.project_application_id.toString()).toPromise()
       .then((credits: number) => {
         this.extensionCredits = credits;
       }).catch((err: Error) => console.log(err.message));
@@ -189,7 +189,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
   fetchCurrentCreditsOfProject(): void {
     if (this.project_application != null) {
-      this.creditsService.getCurrentCreditsOfProject(Number(this.project_application.PerunId.toString())).toPromise().then(
+      this.creditsService.getCurrentCreditsOfProject(Number(this.project_application.project_application_perun_id.toString())).toPromise().then(
         (credits: number) => {
           this.current_credits = credits;
         }
@@ -270,7 +270,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   startUpdateCreditUsageLoop(): void {
     this.updateCreditsUsedIntervals = setInterval(
       () =>
-        this.creditsService.getCurrentCreditsOfProject(Number(this.project_application.PerunId.toString())).toPromise().then(
+        this.creditsService.getCurrentCreditsOfProject(Number(this.project_application.project_application_perun_id.toString())).toPromise().then(
           (credits: number) => {
             this.current_credits = credits;
           }
@@ -396,7 +396,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
    */
   onSubmit(form: NgForm, isExtraCreditsApplication: boolean): void {
     const values: { [key: string]: string | number | boolean } = {};
-    values['project_application_id'] = this.project_application.Id;
+    values['project_application_id'] = this.project_application.project_application_id;
     if (isExtraCreditsApplication) {
       values['is_only_extra_credits_application'] = isExtraCreditsApplication;
       values['project_application_renewal_comment'] = form.controls['project_application_extra_credits_comment'].value;
@@ -490,7 +490,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   setLifetime(): void {
 
     // tslint:disable-next-line:max-line-length
-    this.life_time_string = `${this.project_application.DateApproved} -  ${this.getEndDate(this.project_application.Lifetime, this.project_application.DateApproved)}`;
+    this.life_time_string = `${this.project_application.project_application_date_approved} -  ${this.getEndDate(this.project_application.project_application_lifetime, this.project_application.project_application_date_approved)}`;
   }
 
   ngOnInit(): void {
@@ -585,9 +585,9 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
    */
   getFacilityProject(): void {
 
-    if (!this.project_application.ComputeCenter && this.project_application.Status !== this.application_states.SUBMITTED
-      && this.project_application.Status !== this.application_states.TERMINATED) {
-      this.groupService.getFacilityByGroup(this.project_application.PerunId.toString()).subscribe((res: object) => {
+    if (!this.project_application.ComputeCenter && this.project_application.project_application_status !== this.application_states.SUBMITTED
+      && this.project_application.project_application_status !== this.application_states.TERMINATED) {
+      this.groupService.getFacilityByGroup(this.project_application.project_application_perun_id.toString()).subscribe((res: object) => {
 
         const login: string = res['Login'];
         const suport: string = res['Support'];
@@ -1042,7 +1042,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
    * @param application_id
    */
   public deleteApplication(): void {
-    this.applicationsservice.deleteApplication(this.project_application.Id).subscribe(
+    this.applicationsservice.deleteApplication(this.project_application.project_application_id).subscribe(
       () => {
         this.updateNotificationModal('Success', 'The application has been successfully removed', true, 'success');
         this.fullLayout.getGroupsEnumeration();
@@ -1074,7 +1074,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
         }
       }
     }
-    if (nr_vm > 0 || this.project_application.OpenStackProject) {
+    if (nr_vm > 0 || this.project_application.project_application_openstack_project) {
       this.min_vm = true;
     } else if (nr_vm === 0) {
       this.min_vm = false;

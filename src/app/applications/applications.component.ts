@@ -109,8 +109,8 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
    */
   getFacilityProject(app: Application): void {
 
-    if (!app.ComputeCenter && app.Status !== this.application_states.SUBMITTED && app.Status !== this.application_states.TERMINATED) {
-      this.groupservice.getFacilityByGroup(app.PerunId.toString()).subscribe((res: object) => {
+    if (!app.ComputeCenter && app.project_application_status !== this.application_states.SUBMITTED && app.project_application_status !== this.application_states.TERMINATED) {
+      this.groupservice.getFacilityByGroup(app.project_application_perun_id.toString()).subscribe((res: object) => {
 
         const login: string = res['Login'];
         const suport: string = res['Support'];
@@ -142,8 +142,8 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
         this.isLoaded_AllApplication = true;
         for (const app of this.all_applications) {
-          if (app.Status === this.application_states.WAIT_FOR_CONFIRMATION ||
-            app.Status === this.application_states.MODIFICATION_REQUESTED) {
+          if (app.project_application_status === this.application_states.WAIT_FOR_CONFIRMATION ||
+            app.project_application_status === this.application_states.MODIFICATION_REQUESTED) {
             this.getFacilityProject(app);
           }
         }
@@ -160,7 +160,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
     const index: number = this.all_applications.indexOf(application);
 
     this.applicationsservice
-      .getApplication(application.Id.toString())
+      .getApplication(application.project_application_id.toString())
       .subscribe((aj: object) => {
                    const newApp: Application = this.setNewApplication(aj);
                    this.all_applications[index] = newApp;
@@ -174,9 +174,9 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
   public approveExtension(app: Application): void {
 
-    if (app.OpenStackProject) {
+    if (app.project_application_openstack_project) {
       if (!app.ComputeCenter) {
-        this.applicationsservice.approveRenewal(app.Id.toString()).subscribe((result: any) => {
+        this.applicationsservice.approveRenewal(app.project_application_id.toString()).subscribe((result: any) => {
           if (result['Error']) {
             this.extension_status = 2;
             this.updateNotificationModal('Failed', 'Failed to approve the application modification.', true, 'danger');
@@ -192,13 +192,13 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
         });
       } else {
         this.applicationstatusservice.setApplicationStatus(
-          app.Id.toString(),
+          app.project_application_id.toString(),
           this.WAIT_FOR_EXTENSION_STATUS.toString()).subscribe(() => {
           this.extension_status = 5;
           this.getApplication(app);
 
           for (const appl of this.user_applications) {
-            if (this.selectedApplication.Id.toString() === appl.Id.toString()) {
+            if (this.selectedApplication.project_application_id.toString() === appl.project_application_id.toString()) {
               break;
             }
 
@@ -206,7 +206,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
         })
       }
     } else {
-      this.applicationsservice.approveRenewal(app.Id).subscribe((result: { [key: string]: string }) => {
+      this.applicationsservice.approveRenewal(app.project_application_id).subscribe((result: { [key: string]: string }) => {
         if (result['Error']) {
           this.extension_status = 2
         } else {
@@ -239,7 +239,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
    * @param {Application} application the application
    */
   removeApplicationFromFacilityConfirmation(application: Application): void {
-    this.groupservice.removeGroupFromResource(application.PerunId.toString()).subscribe(() => {
+    this.groupservice.removeGroupFromResource(application.project_application_perun_id.toString()).subscribe(() => {
       this.getApplication(application)
     })
 
@@ -256,7 +256,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
   public createOpenStackProjectGroup(application: Application,
                                      compute_center: string): void {
     this.groupservice.createGroupOpenStack(
-      application.Id, compute_center)
+      application.project_application_id, compute_center)
       .subscribe((result: { [key: string]: string }) => {
                    if (result['Error']) {
                      this.updateNotificationModal('Failed', result['Error'], true, 'danger');
@@ -323,7 +323,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
   private reloadApplicationList(application_id: string): void {
     for (const app of this.all_applications) {
-      if (app.Id.toString() === application_id.toString()) {
+      if (app.project_application_id.toString() === application_id.toString()) {
         this.getApplication(app);
         break;
 
@@ -337,7 +337,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
    */
   public createSimpleVmProjectGroup(app: Application, compute_center_id?: string): void {
 
-    const application_id: string = <string>app.Id;
+    const application_id: string = <string>app.project_application_id;
     if (compute_center_id && compute_center_id !== 'undefined') {
       this.groupservice.createGroupByApplication(application_id, compute_center_id).subscribe(
         (res: any) => {
@@ -397,7 +397,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
             this.application_states.WAIT_FOR_CONFIRMATION.toString())
             .subscribe(() => {
               for (const app of this.all_applications) {
-                if (app.Id.toString() === application_id) {
+                if (app.project_application_id.toString() === application_id) {
                   this.getApplication(app);
 
                   break;
