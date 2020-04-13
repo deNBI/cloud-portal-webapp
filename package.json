@@ -119,7 +119,7 @@
     "stylus-loader": "^3.0.1",
     "ts-node": "8.0.3",
     "tslint": "^5.20.1",
-    "tslint-consistent-codestyle": "^1.15.1",
+    "tslint-consistent-codestyle": "^1.16.0",
     "tslint-eslint-rules": "^5.4.0",
     "typescript": "~3.5.3",
     "url-loader": "^4.1.0",
