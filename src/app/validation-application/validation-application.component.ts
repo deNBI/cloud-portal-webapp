@@ -45,8 +45,8 @@ export class ValidationApplicationComponent extends ApplicationBaseClassComponen
       this.hash = paramsId.hash;
 
       this.applicationsService.getApplicationValidationByHash(this.hash).subscribe(
-        (app: any) => {
-          this.application = this.setNewApplication(app);
+        (app: Application) => {
+          this.application = app;
           if (this.application.project_application_openstack_project) {
             this.title = 'Cloud Project Application Validation';
           } else {

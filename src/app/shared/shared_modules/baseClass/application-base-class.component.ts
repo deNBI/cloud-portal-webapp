@@ -2,7 +2,6 @@ import {AbstractBaseClasse} from './abstract-base-class';
 import {ApplicationStatus} from '../../../applications/application_status.model';
 import {Application} from '../../../applications/application.model/application.model';
 import {Flavor} from '../../../virtualmachines/virtualmachinemodels/flavor';
-import {ApplicationExtension} from '../../../applications/application_extension.model';
 import {ApplicationsService} from '../../../api-connector/applications.service';
 import {ComputecenterComponent} from '../../../projectmanagement/computecenter.component';
 import {FlavorType} from '../../../virtualmachines/virtualmachinemodels/flavorType';
@@ -11,7 +10,6 @@ import {FacilityService} from '../../../api-connector/facility.service';
 import {Component} from '@angular/core';
 import {ApplicationStatusService} from '../../../api-connector/application-status.service';
 import {UserService} from '../../../api-connector/user.service';
-import {ApplicationDissemination} from '../../../applications/application-dissemination';
 
 /**
  * Application base component..
@@ -178,111 +176,6 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
       this.totalRAM = this.totalRAM + fl.flavor.ram * fl.counter;
       this.totalNumberOfCores = this.totalNumberOfCores + fl.flavor.vcpus * fl.counter;
     }
-  }
-
-  setShortNewApplication(aj: any): Application {
-    const newApp: Application = new Application();
-    newApp.project_application_id = aj['project_application_id'];
-
-    newApp.project_application_name = aj['project_application_name'];
-    newApp.project_application_shortname = aj['project_application_shortname'];
-    newApp.project_application_institute = aj['project_application_institute'];
-    newApp.project_application_username = aj['project_application_user']['username'];
-    newApp.project_application_date_submitted = aj['project_application_date_submitted'];
-    newApp.project_application_status = aj['project_application_status'];
-    newApp.project_application_perun_id = aj['project_application_perun_id'];
-    newApp.project_application_openstack_project = aj['project_application_openstack_project'];
-
-    newApp.project_application_date_approved = aj['project_application_date_approved'];
-
-    return newApp
-  }
-
-  setNewApplication(aj: Application): Application {
-
-    aj.dissemination = this.createDisseminatenObject(aj['dissemination']);
-
-    if (aj.project_application_status === this.application_states.APPROVED) {
-      aj.DaysRunning = Math.ceil((Math.abs(Date.now() - new Date(aj.project_application_date_approved).getTime())) / (1000 * 3600 * 24));
-
-    }
-    if (aj['projectapplicationrenewal']) {
-      const extension: ApplicationExtension = new ApplicationExtension();
-      let requestExtensionTotalCores: number = 0;
-      let requestExtensionTotalRam: number = 0;
-
-      for (const flavor of aj['projectapplicationrenewal']['flavors']) {
-        extension.addFlavorToRequested(
-          flavor.flavor_name, flavor.counter, flavor.tag, flavor.ram,
-          flavor.rootdisk, flavor.vcpus, flavor.gpu, flavor.epheremal_disk);
-        requestExtensionTotalCores += flavor.vcpus * flavor.counter;
-        requestExtensionTotalRam += flavor.ram * flavor.counter
-
-      }
-
-      extension.project_application_renewal_total_ram = requestExtensionTotalRam;
-      extension.project_application_renewal_total_cores = requestExtensionTotalCores;
-
-      extension.Id = aj['projectapplicationrenewal']['project_application'];
-      extension.project_application_renewal_lifetime = aj['projectapplicationrenewal']['project_application_renewal_lifetime'];
-      extension.project_application_renewal_volume_limit = aj['projectapplicationrenewal']['project_application_renewal_volume_limit'];
-      extension.project_application_renewal_volume_counter = aj['projectapplicationrenewal']['project_application_renewal_volume_counter'];
-      extension.project_application_renewal_vms_requested = aj['projectapplicationrenewal']['project_application_renewal_vms_requested'];
-      extension.project_application_renewal_comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
-      extension.project_application_renewal_object_storage = aj['projectapplicationrenewal']['project_application_renewal_object_storage'];
-      extension.project_application_renewal_comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
-      extension.project_application_renewal_credits = aj['projectapplicationrenewal']['project_application_renewal_credits'];
-      extension.is_only_extra_credits_application = aj['projectapplicationrenewal']['is_only_extra_credits_application'];
-      extension.project_application_cloud_service_user_number = aj['projectapplicationrenewal']['project_application_renewal_cloud_service_user_number'];
-      aj.projectapplicationrenewal = extension;
-    }
-
-    return aj
-  }
-
-  createDisseminatenObject(obj: any): ApplicationDissemination {
-    if (obj) {
-      // @ts-ignore
-      return new ApplicationDissemination(
-        obj['platform_denbi'], obj['platform_twitter'],
-        obj['information_title'], obj['information_resources'], obj['information_pi_name'],
-        obj['information_institution'], obj['information_workgroup'],
-        obj['information_project_type'],
-        obj['information_lifetime'], obj['information_project_affiliation'],
-        obj['information_description'])
-    } else {
-      return null
-    }
-  }
-
-  setShortDetailNewApplications(res: any): Application[] {
-    const newApplications: Application[] = [];
-
-    for (const key in res) {
-      if (res.hasOwnProperty(key)) {
-
-        const aj: object = res[key];
-
-        newApplications.push(this.setShortNewApplication(aj))
-      }
-    }
-
-    return newApplications
-  }
-
-  setNewApplications(res: any): Application[] {
-    const newApplications: Application[] = [];
-
-    for (const key in res) {
-      if (res.hasOwnProperty(key)) {
-
-        const aj: object = res[key];
-
-        newApplications.push(this.setNewApplication(aj))
-      }
-    }
-
-    return newApplications
   }
 
   setApplicationUser(elixir_id: string): void {

@@ -3,6 +3,7 @@ import {ComputecenterComponent} from '../../projectmanagement/computecenter.comp
 import {ApplicationDissemination} from '../application-dissemination';
 import {EdamOntologyTerm} from '../edam-ontology-term';
 import {Flavor} from '../../virtualmachines/virtualmachinemodels/flavor';
+import {Application_States} from '../../shared/shared_modules/baseClass/abstract-base-class';
 
 /**
  * User Class.
@@ -91,48 +92,59 @@ export class Application {
   private _flavors: Flavor[] = [];
   private _project_application_workshop: boolean;
 
-  constructor(aj: Application) {
-    this._project_application_id = aj.project_application_id;
-    this._project_application_name = aj.project_application_name;
-    this._project_application_shortname = aj.project_application_shortname;
-    this._project_application_institute = aj.project_application_institute;
-    this._project_application_workgroup = aj.project_application_workgroup;
-    this._project_application_lifetime = aj.project_application_lifetime;
-    this._project_application_vms_requested = aj.project_application_vms_requested;
-    this._project_application_volume_limit = aj.project_application_volume_limit;
-    this._project_application_volume_counter = aj.project_application_volume_counter;
-    this._project_application_object_storage = aj.project_application_object_storage;
-    this._project_application_description = aj.project_application_description;
-    this._project_application_comment = aj.project_application_comment;
-    this._project_application_date_submitted = aj.project_application_date_submitted;
-    this._project_application_date_status_changed = aj.project_application_date_status_changed;
-    this._project_application_user = aj.project_application_user;
-    this._project_application_pi = aj.project_application_pi;
-    this._project_application_status = aj.project_application_status;
-    this._ComputeCenter = aj.ComputeCenter;
-    this._project_application_openstack_project = aj.project_application_openstack_project;
-    this._DaysRunning = aj.DaysRunning;
-    this._projectapplicationrenewal = aj.projectapplicationrenewal;
-    this._project_application_perun_id = aj.project_application_perun_id;
-    this._project_application_total_cores = aj.project_application_total_cores;
-    this._project_application_total_ram = aj.project_application_total_ram;
-    this._project_application_initial_credits = aj.project_application_initial_credits;
-    this._project_application_date_approved = aj.project_application_date_approved;
-    this._project_application_openstack_basic_introduction = aj.project_application_openstack_basic_introduction;
-    this._project_application_horizon2020 = aj.project_application_horizon2020;
-    this._project_application_bmbf_project = aj.project_application_bmbf_project;
-    this._project_application_edam_terms = aj.project_application_edam_terms;
-    this._project_application_sensitive_data = aj.project_application_sensitive_data;
-    this._project_application_elixir_project = aj.project_application_elixir_project;
-    this._dissemination = aj.dissemination;
-    this._project_application_pi_approved = aj.project_application_pi_approved;
-    this._project_application_cloud_service = aj.project_application_cloud_service;
-    this._project_application_cloud_service_develop = aj.project_application_cloud_service_develop;
-    this._project_application_cloud_service_user_number = aj.project_application_cloud_service_user_number;
-    this._flavors = aj.flavors;
-    this._project_application_workshop = aj.project_application_workshop;
-        console.log(this._flavors)
+  constructor(aj: Application | null) {
+    if (aj) {
+      this._project_application_id = aj.project_application_id;
+      this._project_application_name = aj.project_application_name;
+      this._project_application_shortname = aj.project_application_shortname;
+      this._project_application_institute = aj.project_application_institute;
+      this._project_application_workgroup = aj.project_application_workgroup;
+      this._project_application_lifetime = aj.project_application_lifetime;
+      this._project_application_vms_requested = aj.project_application_vms_requested;
+      this._project_application_volume_limit = aj.project_application_volume_limit;
+      this._project_application_volume_counter = aj.project_application_volume_counter;
+      this._project_application_object_storage = aj.project_application_object_storage;
+      this._project_application_description = aj.project_application_description;
+      this._project_application_comment = aj.project_application_comment;
+      this._project_application_date_submitted = aj.project_application_date_submitted;
+      this._project_application_date_status_changed = aj.project_application_date_status_changed;
+      this._project_application_user = aj.project_application_user;
+      this._project_application_pi = aj.project_application_pi;
+      this._project_application_status = aj.project_application_status;
+      this._ComputeCenter = aj.ComputeCenter;
+      this._project_application_openstack_project = aj.project_application_openstack_project;
+      this._DaysRunning = aj.DaysRunning;
+      this._projectapplicationrenewal = aj.projectapplicationrenewal;
+      this._project_application_perun_id = aj.project_application_perun_id;
+      this._project_application_total_cores = aj.project_application_total_cores;
+      this._project_application_total_ram = aj.project_application_total_ram;
+      this._project_application_initial_credits = aj.project_application_initial_credits;
+      this._project_application_date_approved = aj.project_application_date_approved;
+      this._project_application_openstack_basic_introduction = aj.project_application_openstack_basic_introduction;
+      this._project_application_horizon2020 = aj.project_application_horizon2020;
+      this._project_application_bmbf_project = aj.project_application_bmbf_project;
+      this._project_application_edam_terms = aj.project_application_edam_terms;
+      this._project_application_sensitive_data = aj.project_application_sensitive_data;
+      this._project_application_elixir_project = aj.project_application_elixir_project;
+      this._project_application_pi_approved = aj.project_application_pi_approved;
+      this._project_application_cloud_service = aj.project_application_cloud_service;
+      this._project_application_cloud_service_develop = aj.project_application_cloud_service_develop;
+      this._project_application_cloud_service_user_number = aj.project_application_cloud_service_user_number;
+      this._flavors = aj.flavors;
+      this._project_application_workshop = aj.project_application_workshop;
+      if (aj.dissemination) {
+        this._dissemination = new ApplicationDissemination(aj.dissemination);
+      }
+      this.setDaysRunning()
+    }
+  }
 
+  private setDaysRunning(): void {
+    if (this._project_application_status === Application_States.APPROVED
+    ) {
+      // tslint:disable-next-line:max-line-length
+      this._DaysRunning = Math.ceil((Math.abs(Date.now() - new Date(this.project_application_date_approved).getTime())) / (1000 * 3600 * 24));
+    }
   }
 
   public getFlavorCounter(flavor: Flavor): number {

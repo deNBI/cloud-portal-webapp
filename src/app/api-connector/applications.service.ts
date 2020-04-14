@@ -28,9 +28,9 @@ export class ApplicationsService {
     })
   }
 
-  getApplicationValidationByHash(hash: string): Observable<any> {
+  getApplicationValidationByHash(hash: string): Observable<Application> {
 
-    return this.http.get(`${ApiSettings.getApiBaseURL()}project_applications/validation/${hash}/`, {
+    return this.http.get<Application>(`${ApiSettings.getApiBaseURL()}project_applications/validation/${hash}/`, {
       headers: header,
       withCredentials: true
     })
@@ -117,8 +117,8 @@ export class ApplicationsService {
     })
   }
 
-  getAllApplications(): Observable<any> {
-    return this.http.get(`${ApiSettings.getApiBaseURL()}project_applications/`, {
+  getAllApplications(): Observable<Application[]> {
+    return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}project_applications/`, {
       withCredentials: true,
       headers: header
 

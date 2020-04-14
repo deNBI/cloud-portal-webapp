@@ -57,22 +57,8 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
   project_application_cloud_service_develop: boolean = false;
   project_application_cloud_service_user_number: number = 0;
   all_dissemination_checked: boolean = false;
-
-  // tslint:disable-next-line:max-line-length
-  application_dissemination: ApplicationDissemination = new ApplicationDissemination(false,
-                                                                                     false,
-                                                                                     '',
-                                                                                     false,
-                                                                                     false,
-                                                                                     false,
-                                                                                     false,
-                                                                                     false,
-                                                                                     false,
-                                                                                     false,
-                                                                                     '');
-
+  application_dissemination: ApplicationDissemination = new ApplicationDissemination(null);
   initiated_validation: boolean = false;
-
   credits: number = 0;
   dissemination_platform_count: number = 0;
   flavorList: Flavor[] = [];
@@ -145,7 +131,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
   }
 
   initiateFormWithApplication(): void {
-    if (this.application && !this.initiated_validation) {
+    if (this.application && !this.initiated_validation && this.is_validation) {
       this.application_id = this.application.project_application_id;
       if (this.application.flavors) {
         this.simple_vm_min_vm = true;
@@ -157,8 +143,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
         this.project_application_report_allowed = true;
 
       } else {
-        // tslint:disable-next-line:max-line-length
-        this.application.dissemination = new ApplicationDissemination(null, null, null, null, null, null, null, null, null, null, null);
+        this.application.dissemination = new ApplicationDissemination(null);
       }
       this.application_dissemination = this.application.dissemination;
       this.project_application_sensitive_data = this.application.project_application_sensitive_data;
@@ -182,7 +167,9 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
       this.project_application_cloud_service_user_number = this.application.project_application_cloud_service_user_number;
       this.project_application_cloud_service_develop = this.application.project_application_cloud_service_develop;
       this.initiated_validation = true
-
+    } else {
+      this.application = new Application(null);
+      this.application.project_application_openstack_project = this.openstack_project;
     }
   }
 

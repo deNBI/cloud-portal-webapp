@@ -12,7 +12,6 @@ import {FlavorService} from '../api-connector/flavor.service';
 import {Client} from '../virtualmachines/clients/client.model';
 import {ApplicationBaseClassComponent} from '../shared/shared_modules/baseClass/application-base-class.component';
 import {ComputecenterComponent} from '../projectmanagement/computecenter.component';
-import {IResponseTemplate} from '../api-connector/response-template';
 import {is_vo} from '../shared/globalvar';
 
 /**
@@ -133,12 +132,11 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
     if (this.is_vo_admin) {
 
-      this.applicationsservice.getAllApplications().subscribe((res: any) => {
-        if (Object.keys(res).length === 0) {
+      this.applicationsservice.getAllApplications().subscribe((applications: Application[]) => {
+        if (applications.length === 0) {
           this.isLoaded_userApplication = true;
         }
-        const newApps: Application [] = this.setNewApplications(res);
-        this.all_applications.push.apply(this.all_applications, newApps);
+        this.all_applications.push.apply(this.all_applications, applications);
 
         this.isLoaded_AllApplication = true;
         for (const app of this.all_applications) {

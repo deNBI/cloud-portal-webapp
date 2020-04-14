@@ -79,13 +79,11 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
    */
   getAllApplicationsModifications(facility: number): void {
     this.isLoaded = false;
-    this.facilityService.getFacilityModificationApplicationsWaitingForConfirmation(facility).subscribe((res: any) => {
-      if (Object.keys(res).length === 0) {
+    this.facilityService.getFacilityModificationApplicationsWaitingForConfirmation(facility).subscribe((applications: Application[]) => {
+      if (applications.length === 0) {
         this.isLoaded = true;
       }
-
-      const newApps: Application [] = this.setNewApplications(res);
-      this.all_application_modifications.push.apply(this.all_application_modifications, newApps);
+      this.all_application_modifications.push.apply(this.all_application_modifications, applications);
       this.isLoaded = true;
 
     })
@@ -97,8 +95,8 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
     }
     const idx: number = this.applications_history.indexOf(application);
     this.facilityService.getFacilityApplicationById(this.selectedFacility ['FacilityId'], application.project_application_id.toString())
-      .subscribe((res: any) => {
-        this.applications_history[idx] = this.setNewApplication(res);
+      .subscribe((application: Application) => {
+        this.applications_history[idx] = application;
       })
   }
 
@@ -112,11 +110,11 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
     this.applications_history = [];
 
     // todo check if user is VO Admin
-    this.facilityService.getFacilityApplicationsHistory(facility).subscribe((res: any) => {
-      if (Object.keys(res).length === 0) {
+    this.facilityService.getFacilityApplicationsHistory(facility).subscribe((applications: Application[]) => {
+      if (applications.length === 0) {
         this.isHistoryLoaded = true;
       }
-      this.applications_history = this.setShortDetailNewApplications(res);
+      this.applications_history = applications;
       this.isHistoryLoaded = true;
     });
   }
@@ -124,10 +122,8 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
   getFullApplications(facility: number): void {
     forkJoin(this.facilityService.getFacilityApplicationsWaitingForConfirmation(facility),
              this.facilityService.getFacilityModificationApplicationsWaitingForConfirmation(facility)).subscribe((res: any) => {
-      const newAppsWFC: Application [] = this.setNewApplications(res[0]);
-      this.all_applications_wfc.push.apply(this.all_applications_wfc, newAppsWFC);
-      const newAppsMod: Application [] = this.setNewApplications(res[1]);
-      this.all_application_modifications.push.apply(this.all_application_modifications, newAppsMod);
+      this.all_applications_wfc.push.apply(this.all_applications_wfc, res[0]);
+      this.all_application_modifications.push.apply(this.all_application_modifications, res[1]);
       this.isLoaded = true;
     })
   }
@@ -139,12 +135,11 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
   getAllApplicationsWFC(facility: number): void {
 
     // todo check if user is VO Admin
-    this.facilityService.getFacilityApplicationsWaitingForConfirmation(facility).subscribe((res: any) => {
-      if (Object.keys(res).length === 0) {
+    this.facilityService.getFacilityApplicationsWaitingForConfirmation(facility).subscribe((applications: Application[]) => {
+      if (applications.length === 0) {
         this.isLoaded = true;
       }
-      const newApps: Application [] = this.setNewApplications(res);
-      this.all_applications_wfc.push.apply(this.all_applications_wfc, newApps);
+      this.all_applications_wfc.push.apply(this.all_applications_wfc, applications);
 
     });
     this.isLoaded = true;
