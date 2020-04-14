@@ -165,7 +165,7 @@
           </div>
 
           <div class="alert alert-info" style="margin-top:15px;"
-               *ngIf="project_application.project_application_status == application_states.APPROVED">
+               *ngIf="project_application?.project_application_status == application_states.APPROVED">
             <p>You can find more information about modification requestes
               <a href="https://cloud.denbi.de/wiki/portal/modification/" target="_blank">here</a>.</p>
             <p *ngIf="is_vo_admin">Information about credits are coming soon.</p>
@@ -263,7 +263,7 @@
               Member Applications
             </button>
 
-            <button (click)="removeCheckedMembers(project_id)" type="button" style="margin-bottom:5px;"
+            <button (click)="removeCheckedMembers(project_application?.project_application_perun_id)" type="button" style="margin-bottom:5px;"
                     [disabled]="checked_member_list.length <= 0 || remove_members_clicked" class="btn btn-danger"><i
               class="fa fa-trash"></i>&nbsp;Remove
               Members
@@ -788,7 +788,7 @@
               <span class="help-block">Number of months you want to extend the project </span>
             </div>
           </div>
-          <div class="form-group row" *ngIf="project_application?.EdamTopics.length == 0 ">
+          <div class="form-group row" *ngIf="project_application?.project_application_edam_terms.length == 0 ">
             <label class="col-md-4 form-control-label" for="text-input"><strong>Research Topics* </strong></label>
             <div class="col-md-8">
               <div [ngClass]="{
@@ -859,7 +859,7 @@
                                name="project_application_{{fl.name}}_old"
                                id="project_application_{{fl.name}}_old"
                                type="text"
-                               value="{{project_application?.CurrentFlavors[fl.name]?.counter}}"
+                               value="{{project_application?.getFlavorCounter(fl)}}"
                                placeholder="0" disabled>
                         <div class="input-group-append"><span class="input-group-text"> VMs</span></div>
                       </div>
@@ -875,7 +875,7 @@
                                type="number" min="0" step="1"
                                placeholder="e.g 1"
                                (ngModelChange)="onChangeFlavor($event)"
-                               [ngModel]="project_application?.CurrentFlavors[fl.name]?.counter"
+                               [ngModel]="project_application?.getFlavorCounter(fl)"
                                #name="ngModel"
                                appMinAmount="0" appIntegerOrNull
                                [ngClass]="{
@@ -1110,7 +1110,7 @@
           <p *ngIf="!min_vm">
             - Select at least one Flavor
           </p>
-          <p  *ngIf="project_application.EdamTopics.length == 0 && selected_ontology_terms.length < 1">
+          <p  *ngIf="project_application?.project_application_edam_terms.length == 0 && selected_ontology_terms.length < 1">
             - Select at least one Research Topic
           </p>
         </div>
@@ -1124,7 +1124,7 @@
                   form="application_form" id="submit_renewal_btn"
                   (click)="extension_request=true;filterEnteredData(f);calculateCredits(f.controls.project_application_renewal_lifetime?.value);
                   submitModal.show(); setModalOpen(true);"
-                  [disabled]="f.invalid || (!project_application.EdamTopics && selected_ontology_terms.length < 1)"><i
+                  [disabled]="f.invalid || (!project_application?.project_application_edam_terms && selected_ontology_terms.length < 1)"><i
             class="fa fa-dot-circle-o">
 
           </i>

@@ -332,14 +332,14 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
     this.applicationsservice
       .getApplication(this.application_id)
       .subscribe(
-        (aj: object) => {
-          if (aj['project_application_name'] === '') {
+        (aj: Application) => {
+          if (aj.project_application_name === '') {
             this.isLoaded = false;
             this.errorMessage = 'Not found';
 
             return;
           }
-          const newApp: Application = this.setNewApplication(aj);
+          const newApp: Application = new Application(aj);
 
           this.project_application = newApp;
           this.startUpdateCreditUsageLoop();
@@ -372,20 +372,11 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   initRamCores(): void {
     this.totalNumberOfCores = 0;
     this.totalRAM = 0;
-    // tslint:disable-next-line:forin
-    for (const key in this.project_application.CurrentFlavors) {
-      const flavor: any = this.project_application.CurrentFlavors[key];
-      if (flavor != null) {
-        const flav: Flavor = this.flavorList.find(function (fl: Flavor): boolean {
-          return fl.name === key;
-
-        });
-        this.newFlavors[key] = {counter: flavor.counter, flavor: flav};
-        this.calculateRamCores()
-
-      }
+    for (const flavor of this.project_application.flavors) {
+      this.newFlavors[flavor.name] = {counter: flavor.counter, flavor: flavor};
 
     }
+    this.calculateRamCores()
 
   }
 

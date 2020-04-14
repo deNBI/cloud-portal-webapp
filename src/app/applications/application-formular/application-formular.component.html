@@ -238,7 +238,7 @@
                                  name="project_application_{{f.name}}"
                                  type="number" min="0" step="1"
                                  placeholder="0"
-                                 [ngModel]="application?.CurrentFlavors[f.name]?.counter || 0"
+                                 [ngModel]="application?.flavors[f.name]?.counter || 0"
                                  (change)="valuesChanged(f,name?.value)"
 
                                  #name="ngModel"

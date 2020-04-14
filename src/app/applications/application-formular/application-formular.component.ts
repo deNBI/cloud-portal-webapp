@@ -147,23 +147,23 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
   initiateFormWithApplication(): void {
     if (this.application && !this.initiated_validation) {
       this.application_id = this.application.project_application_id;
-      if (this.application.CurrentFlavors) {
+      if (this.application.flavors) {
         this.simple_vm_min_vm = true;
       }
       this.openstack_project = this.application.project_application_openstack_project;
       this.simple_vm_project = !this.openstack_project;
-      if (this.application.Dissemination) {
-        this.application_dissemination = this.application.Dissemination;
+      if (this.application.dissemination) {
+        this.application_dissemination = this.application.dissemination;
         this.project_application_report_allowed = true;
 
       } else {
         // tslint:disable-next-line:max-line-length
-        this.application.Dissemination = new ApplicationDissemination(null, null, null, null, null, null, null, null, null, null, null);
+        this.application.dissemination = new ApplicationDissemination(null, null, null, null, null, null, null, null, null, null, null);
       }
-      this.application_dissemination = this.application.Dissemination;
+      this.application_dissemination = this.application.dissemination;
       this.project_application_sensitive_data = this.application.project_application_sensitive_data;
       this.project_application_vms_requested = this.application.project_application_vms_requested;
-      this.selected_ontology_terms = this.application.EdamTopics;
+      this.selected_ontology_terms = this.application.project_application_edam_terms;
       this.project_application_name = this.application.project_application_name;
       this.project_application_shortname = this.application.project_application_shortname;
       this.project_application_description = this.application.project_application_description;

@@ -5,6 +5,48 @@ import {EdamOntologyTerm} from '../edam-ontology-term';
 import {Flavor} from '../../virtualmachines/virtualmachinemodels/flavor';
 
 /**
+ * User Class.
+ */
+export class User {
+  private _username: string;
+  private _user_affiliations: string [];
+  private _elixir_id: string;
+  private _email: string;
+
+  get username(): string {
+    return this._username;
+  }
+
+  set username(value: string) {
+    this._username = value;
+  }
+
+  get user_affiliations(): string[] {
+    return this._user_affiliations;
+  }
+
+  set user_affiliations(value: string[]) {
+    this._user_affiliations = value;
+  }
+
+  get elixir_id(): string {
+    return this._elixir_id;
+  }
+
+  set elixir_id(value: string) {
+    this._elixir_id = value;
+  }
+
+  get email(): string {
+    return this._email;
+  }
+
+  set email(value: string) {
+    this._email = value;
+  }
+}
+
+/**
  * Application class.
  */
 export class Application {
@@ -23,15 +65,13 @@ export class Application {
   private _project_application_comment: string;
   private _project_application_date_submitted: string;
   private _project_application_date_status_changed: string;
-  private _User: string;
-  private _UserEmail: string;
-  private _UserAffiliations: string[];
-  private _PiAffiliations: string[];
+  private _project_application_user: User;
+  private _project_application_pi: User;
   private _project_application_status: number;
   private _ComputeCenter: ComputecenterComponent;
   private _project_application_openstack_project: boolean;
   private _DaysRunning: number;
-  private _ApplicationExtension: ApplicationExtension = null;
+  private _projectapplicationrenewal: ApplicationExtension = null;
   private _project_application_perun_id: number | string;
   private _project_application_total_cores: number;
   private _project_application_total_ram: number;
@@ -40,34 +80,90 @@ export class Application {
   private _project_application_openstack_basic_introduction: boolean;
   private _project_application_horizon2020: string;
   private _project_application_bmbf_project: string;
-  private _EdamTopics: EdamOntologyTerm[];
+  private _project_application_edam_terms: EdamOntologyTerm[];
   private _project_application_sensitive_data: boolean;
   private _project_application_elixir_project: string;
-  private _Dissemination: ApplicationDissemination;
+  private _dissemination: ApplicationDissemination;
   private _project_application_pi_approved: boolean;
-  private _PI: string;
-  private _project_application_pi_elixir: string;
-  private _PIEmail: string;
   private _project_application_cloud_service: boolean;
   private _project_application_cloud_service_develop: boolean;
   private _project_application_cloud_service_user_number: number;
-  private _CurrentFlavors: Flavor[] = [];
+  private _flavors: Flavor[] = [];
   private _project_application_workshop: boolean;
 
-  constructor() {
+  constructor(aj: Application) {
+    this._project_application_id = aj.project_application_id;
+    this._project_application_name = aj.project_application_name;
+    this._project_application_shortname = aj.project_application_shortname;
+    this._project_application_institute = aj.project_application_institute;
+    this._project_application_workgroup = aj.project_application_workgroup;
+    this._project_application_lifetime = aj.project_application_lifetime;
+    this._project_application_vms_requested = aj.project_application_vms_requested;
+    this._project_application_volume_limit = aj.project_application_volume_limit;
+    this._project_application_volume_counter = aj.project_application_volume_counter;
+    this._project_application_object_storage = aj.project_application_object_storage;
+    this._project_application_description = aj.project_application_description;
+    this._project_application_comment = aj.project_application_comment;
+    this._project_application_date_submitted = aj.project_application_date_submitted;
+    this._project_application_date_status_changed = aj.project_application_date_status_changed;
+    this._project_application_user = aj.project_application_user;
+    this._project_application_pi = aj.project_application_pi;
+    this._project_application_status = aj.project_application_status;
+    this._ComputeCenter = aj.ComputeCenter;
+    this._project_application_openstack_project = aj.project_application_openstack_project;
+    this._DaysRunning = aj.DaysRunning;
+    this._projectapplicationrenewal = aj.projectapplicationrenewal;
+    this._project_application_perun_id = aj.project_application_perun_id;
+    this._project_application_total_cores = aj.project_application_total_cores;
+    this._project_application_total_ram = aj.project_application_total_ram;
+    this._project_application_initial_credits = aj.project_application_initial_credits;
+    this._project_application_date_approved = aj.project_application_date_approved;
+    this._project_application_openstack_basic_introduction = aj.project_application_openstack_basic_introduction;
+    this._project_application_horizon2020 = aj.project_application_horizon2020;
+    this._project_application_bmbf_project = aj.project_application_bmbf_project;
+    this._project_application_edam_terms = aj.project_application_edam_terms;
+    this._project_application_sensitive_data = aj.project_application_sensitive_data;
+    this._project_application_elixir_project = aj.project_application_elixir_project;
+    this._dissemination = aj.dissemination;
+    this._project_application_pi_approved = aj.project_application_pi_approved;
+    this._project_application_cloud_service = aj.project_application_cloud_service;
+    this._project_application_cloud_service_develop = aj.project_application_cloud_service_develop;
+    this._project_application_cloud_service_user_number = aj.project_application_cloud_service_user_number;
+    this._flavors = aj.flavors;
+    this._project_application_workshop = aj.project_application_workshop;
+        console.log(this._flavors)
+
   }
 
-  public addFlavorToCurrent(name: string, counter: number, tag: string, ram: number, rootdisk: number,
-                            vcpus: number, gpu: number, epheremal_disk: number): void {
-    this._CurrentFlavors[name] = {
-      counter: counter,
-      tag: tag,
-      ram: ram,
-      rootdisk: rootdisk,
-      vcpus: vcpus,
-      gpu: gpu,
-      epheremal_disk: epheremal_disk
-    };
+  public getFlavorCounter(flavor: Flavor): number {
+    const flavs: Flavor[] = this._flavors.filter((fl: Flavor) => {
+      return fl.name === flavor.name
+    });
+    if (flavs.length > 0) {
+      return flavs[0].counter
+    }
+
+    return 0
+  }
+
+  public addFlavorToCurrent(flavor: Flavor): void {
+    this._flavors.push(flavor)
+  }
+
+  get project_application_user(): User {
+    return this._project_application_user;
+  }
+
+  set project_application_user(value: User) {
+    this._project_application_user = value;
+  }
+
+  get project_application_pi(): User {
+    return this._project_application_pi;
+  }
+
+  set project_application_pi(value: User) {
+    this._project_application_pi = value;
   }
 
   get project_application_workshop(): boolean {
@@ -110,36 +206,20 @@ export class Application {
     this._project_application_sensitive_data = value;
   }
 
-  get PiAffiliations(): string[] {
-    return this._PiAffiliations;
+  get project_application_edam_terms(): EdamOntologyTerm[] {
+    return this._project_application_edam_terms;
   }
 
-  set PiAffiliations(value: string[]) {
-    this._PiAffiliations = value;
+  set project_application_edam_terms(value: EdamOntologyTerm[]) {
+    this._project_application_edam_terms = value;
   }
 
-  get EdamTopics(): EdamOntologyTerm[] {
-    return this._EdamTopics;
+  get dissemination(): ApplicationDissemination {
+    return this._dissemination;
   }
 
-  set EdamTopics(value: EdamOntologyTerm[]) {
-    this._EdamTopics = value;
-  }
-
-  get project_application_pi_elixir(): string {
-    return this._project_application_pi_elixir;
-  }
-
-  set project_application_pi_elixir(value: string) {
-    this._project_application_pi_elixir = value;
-  }
-
-  get Dissemination(): ApplicationDissemination {
-    return this._Dissemination;
-  }
-
-  set Dissemination(value: ApplicationDissemination) {
-    this._Dissemination = value;
+  set dissemination(value: ApplicationDissemination) {
+    this._dissemination = value;
   }
 
   get project_application_pi_approved(): boolean {
@@ -150,12 +230,12 @@ export class Application {
     this._project_application_pi_approved = value;
   }
 
-  get CurrentFlavors(): Flavor[] {
-    return this._CurrentFlavors;
+  get flavors(): Flavor[] {
+    return this._flavors;
   }
 
-  set CurrentFlavors(value: Flavor[]) {
-    this._CurrentFlavors = value;
+  set flavors(value: Flavor[]) {
+    this._flavors = value;
   }
 
   get project_application_date_approved(): string {
@@ -182,20 +262,12 @@ export class Application {
     this._project_application_total_ram = value;
   }
 
-  get UserAffiliations(): string[] {
-    return this._UserAffiliations
+  get projectapplicationrenewal(): ApplicationExtension {
+    return this._projectapplicationrenewal;
   }
 
-  set UserAffiliations(value: string[]) {
-    this._UserAffiliations = value;
-  }
-
-  get ApplicationExtension(): ApplicationExtension {
-    return this._ApplicationExtension;
-  }
-
-  set ApplicationExtension(value: ApplicationExtension) {
-    this._ApplicationExtension = value;
+  set projectapplicationrenewal(value: ApplicationExtension) {
+    this._projectapplicationrenewal = value;
   }
 
   get DaysRunning(): number {
@@ -334,28 +406,12 @@ export class Application {
     this._project_application_date_status_changed = value;
   }
 
-  get User(): string {
-    return this._User;
-  }
-
-  set User(value: string) {
-    this._User = value;
-  }
-
   get project_application_status(): number {
     return this._project_application_status;
   }
 
   set project_application_status(value: number) {
     this._project_application_status = value;
-  }
-
-  get UserEmail(): string {
-    return this._UserEmail;
-  }
-
-  set UserEmail(value: string) {
-    this._UserEmail = value;
   }
 
   get project_application_perun_id(): number | string {
@@ -390,22 +446,6 @@ export class Application {
     this._project_application_elixir_project = value;
   }
 
-  get PI(): string {
-    return this._PI;
-  }
-
-  set PI(value: string) {
-    this._PI = value;
-  }
-
-  get PIEmail(): string {
-    return this._PIEmail;
-  }
-
-  set PIEmail(value: string) {
-    this._PIEmail = value;
-  }
-
   get project_application_initial_credits(): number {
     return Number(this._project_application_initial_credits);
   }
@@ -415,8 +455,8 @@ export class Application {
   }
 
   get TotalExtensionCredits(): number {
-    if (this.ApplicationExtension != null) {
-      return Number(this.project_application_initial_credits) + Number(this.ApplicationExtension.project_application_renewal_credits)
+    if (this.projectapplicationrenewal != null) {
+      return Number(this.project_application_initial_credits) + Number(this.projectapplicationrenewal.project_application_renewal_credits)
     } else {
       return this.project_application_initial_credits
     }

@@ -5,6 +5,7 @@ import {Observable} from 'rxjs';
 import {Cookie} from 'ng2-cookies/ng2-cookies';
 import {EdamOntologyTerm} from '../applications/edam-ontology-term';
 import {ApplicationDissemination} from '../applications/application-dissemination';
+import {Application} from '../applications/application.model/application.model';
 
 const header: HttpHeaders = new HttpHeaders({
                                               'X-CSRFToken': Cookie.get('csrftoken'),
@@ -66,8 +67,8 @@ export class ApplicationsService {
     })
   }
 
-  getApplication(app_id: string): Observable<any> {
-    return this.http.get(`${ApiSettings.getApiBaseURL()}project_applications/${app_id}/`, {
+  getApplication(app_id: string): Observable<Application> {
+    return this.http.get<Application>(`${ApiSettings.getApiBaseURL()}project_applications/${app_id}/`, {
       headers: header,
       withCredentials: true
     })

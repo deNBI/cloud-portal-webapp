@@ -74,7 +74,7 @@
                 <td>{{application?.project_application_shortname}}</td>
                 <td>{{ application?.project_application_date_submitted }}</td>
                 <td style="word-wrap: break-word;min-width: 110px; max-width: 130px; white-space: normal">
-                  {{ application?.User }}
+                  {{ application?.project_application_username }}
                 </td>
                 <td>{{application?.project_application_institute}}</td>
 
@@ -96,7 +96,7 @@
                       Decline
                     </button>
                     <button
-                      (click)="switchCollapseStatus('application_review-' + application?.project_application_id);  getMemberDetailsByElixirIdIfCollapsed(application?.User,'application_review-' + application?.project_application_id);"
+                      (click)="switchCollapseStatus('application_review-' + application?.project_application_id);  getMemberDetailsByElixirIdIfCollapsed(application?.project_application_username,'application_review-' + application?.project_application_id);"
                       type="button"
                       class="btn btn-secondary"
                       style="margin: auto 2.5px">
@@ -189,7 +189,7 @@
                 <td>{{app.project_application_shortname}}</td>
                 <td>{{ app.project_application_date_submitted }}</td>
                 <td style="word-wrap: break-word;min-width: 110px; max-width: 130px; white-space: normal">
-                  {{ app.User }}
+                  {{ app.project_application_username }}
                 </td>
                 <td>{{app.project_application_institute}}</td>
 
@@ -211,7 +211,7 @@
                       Decline
                     </button>
                     <button
-                      (click)="switchCollapseStatus('application_review-' + app.project_application_id);  getMemberDetailsByElixirIdIfCollapsed(app.User,'application_review-' + app.project_application_id);"
+                      (click)="switchCollapseStatus('application_review-' + app.project_application_id);  getMemberDetailsByElixirIdIfCollapsed(app.project_application_username,'application_review-' + app.project_application_id);"
                       type="button"
                       class="btn btn-secondary"
                       style="margin: auto 2.5px">
