@@ -197,7 +197,6 @@ export class Application {
         this._flavors.push(flavor)
       }
     }
-    console.log(this._flavors)
   }
 
   get project_application_report_allowed(): boolean {

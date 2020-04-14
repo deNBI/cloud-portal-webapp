@@ -18,7 +18,7 @@ import {FullLayoutComponent} from '../layouts/full-layout.component';
 export class ValidationApplicationComponent extends ApplicationBaseClassComponent implements OnInit {
 
   application: Application;
-  isLoaded: boolean = false;
+  isLoadedApplication: boolean = false;
   hash: string;
   validated: boolean = false;
   title: string;
@@ -34,8 +34,7 @@ export class ValidationApplicationComponent extends ApplicationBaseClassComponen
   public totalRAM: number = 0;
 
   constructor(private applicationsService: ApplicationsService,
-              private activatedRoute: ActivatedRoute,
-              private flavorService: FlavorService, private fullLayout: FullLayoutComponent) {
+              private activatedRoute: ActivatedRoute) {
     super(null, null, applicationsService, null);
 
   }
@@ -52,11 +51,11 @@ export class ValidationApplicationComponent extends ApplicationBaseClassComponen
           } else {
             this.title = 'Simple VM Project Application Validation';
           }
-          this.isLoaded = true;
+          this.isLoadedApplication = true;
 
         },
         () => {
-          this.isLoaded = true;
+          this.isLoadedApplication = true;
 
         })
     })
