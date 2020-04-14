@@ -31,6 +31,20 @@ export class FacilityService {
   }
 
   /**
+   * Sets the newsID of the facility news which contains the motd for facility with the corresponding facility ID.
+   * @param facilityID facility id of the facility to set the id
+   * @param newsId the id of the news containing the motd
+   */
+  setMOTDForFacility(facilityID: string, newsId: string): Observable<any> {
+    const httpParams: HttpParams = new HttpParams().set('facilityID', facilityID).set('newsID', newsId);
+
+    return this.http.post(`${ApiSettings.getApiBaseURL()}wp-motd-management/`, httpParams, {
+      headers: header,
+      withCredentials: true
+    });
+  }
+
+  /**
    * Get all facility, where the current user is manager.
    * @returns {Observable<any>}
    */
@@ -58,14 +72,17 @@ export class FacilityService {
 
   }
 
+  /**
+   * Gets FacilityGroups by the elixirId of the member.
+   * @param facility the facility
+   * @param elixir_id the id of the member
+   */
   getFacilityGroupsByMemberElixirId(facility: number | string, elixir_id: string): Observable<any> {
 
     return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/projects/filter/`, {
       withCredentials: true,
       params: {elixir_id: elixir_id.toString()}
-
-    })
-
+    });
   }
 
   /**
@@ -77,9 +94,7 @@ export class FacilityService {
 
     return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/projects/resources/`, {
       withCredentials: true
-
-    })
-
+    });
   }
 
   /**
@@ -91,9 +106,7 @@ export class FacilityService {
 
     return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/applications/`, {
       withCredentials: true
-
-    })
-
+    });
   }
 
   /**
@@ -105,16 +118,19 @@ export class FacilityService {
 
     return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/applications_history/`, {
       withCredentials: true
-    })
-
+    });
   }
 
+  /**
+   * Get application for facility by id.
+   * @param facility self-speaking
+   * @param id self-speaking
+   */
   getFacilityApplicationById(facility: number | string, id: string): Observable<any> {
 
     return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/applications/${id}/detail/`, {
       withCredentials: true
-    })
-
+    });
   }
 
   /**
@@ -128,8 +144,7 @@ export class FacilityService {
     return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/volumes/`, {
       withCredentials: true,
       params: params
-    })
-
+    });
   }
 
   /**
@@ -148,8 +163,7 @@ export class FacilityService {
     return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/snapshots/`, {
       withCredentials: true,
       params: params
-    })
-
+    });
   }
 
   /**
@@ -160,8 +174,7 @@ export class FacilityService {
   getFacilityModificationApplicationsWaitingForConfirmation(facility: number | string): Observable<any> {
     return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/modification_applications/`, {
       withCredentials: true
-
-    })
+    });
   }
 
   /**
@@ -178,7 +191,7 @@ export class FacilityService {
                             withCredentials: true,
                             headers: header,
                             observe: 'response'
-                          })
+                          });
   }
 
   /**
@@ -200,7 +213,7 @@ export class FacilityService {
     return this.http.post<CoreFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/coreFactors/`, params, {
       withCredentials: true,
       headers: header
-    })
+    });
   }
 
   /**
@@ -218,7 +231,7 @@ export class FacilityService {
     return this.http.post<RamFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/ramFactors/`, params, {
       withCredentials: true,
       headers: header
-    })
+    });
   }
 
   /**
@@ -232,23 +245,33 @@ export class FacilityService {
     return this.http.delete<RamFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/ramFactors/${factor_id}/`, {
       withCredentials: true,
       headers: header
-    })
+    });
   }
 
+  /**
+   * Gets the RamFactor for facility with factor_id.
+   * @param facility self-speaking
+   * @param factor_id self-speaking
+   */
   getRamFactor(facility: number | string, factor_id: number | string): Observable<RamFactor> {
 
     return this.http.get<RamFactor>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/ramFactors/${factor_id}/`, {
       withCredentials: true,
       headers: header
-    })
+    });
   }
 
-    getCoreFactor(facility: number | string, factor_id: number | string): Observable<CoreFactor> {
+  /**
+   * Gets the CoreFactor for facility with factor_id.
+   * @param facility self-speaking
+   * @param factor_id self-speaking
+   */
+  getCoreFactor(facility: number | string, factor_id: number | string): Observable<CoreFactor> {
 
     return this.http.get<CoreFactor>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/coreFactors/${factor_id}/`, {
       withCredentials: true,
       headers: header
-    })
+    });
   }
 
   /**
@@ -265,17 +288,22 @@ export class FacilityService {
     return this.http.post<RamFactor>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/ramFactors/${factor.id}/`, params, {
       withCredentials: true,
       headers: header
-    })
+    });
   }
 
-    updateCoreFactor(facility: number | string, factor: CoreFactor): Observable<CoreFactor> {
+  /**
+   * Updates the CoreFactor.
+   * @param facility
+   * @param factor
+   */
+  updateCoreFactor(facility: number | string, factor: CoreFactor): Observable<CoreFactor> {
     const params: HttpParams = new HttpParams().set('factor', JSON.stringify(factor));
 
     // tslint:disable-next-line:max-line-length
     return this.http.post<CoreFactor>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/coreFactors/${factor.id}/`, params, {
       withCredentials: true,
       headers: header
-    })
+    });
   }
 
   /**
@@ -380,18 +408,6 @@ export class FacilityService {
     return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/projects/${groupid}/members/`, {
                            withCredentials: true
                          }
-    )
-  }
-
-  deleteNews(news_id: string): Observable<any> {
-    const params: HttpParams = new HttpParams()
-      .set('news_id', news_id);
-
-    return this.http.delete(`${ApiSettings.getApiBaseURL()}facilityManagers/current/facilityNews/`, {
-                              withCredentials: true,
-                              headers: header,
-                              params: params
-                            }
     )
   }
 
