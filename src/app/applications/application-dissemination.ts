@@ -36,12 +36,17 @@ export class ApplicationDissemination {
       this._information_project_type = diss.information_project_type;
       this._information_lifetime = diss.information_lifetime;
       this._information_project_affiliation = diss.information_project_affiliation;
-      this.setAllowedPlatforms();
-      this.setAllowedInformations();
+
     }
+    this.setAllowedPlatforms();
+    this.setAllowedInformations();
   }
 
-  setAllFalse(): void {
+  someAllowed(): boolean {
+    return this._allowed_informations.length > 0 && this._allowed_platforms.length > 0
+  }
+
+  setAllInformationFalse(): void {
     this._information_description = '';
     this._information_description_allowed = false;
     this._information_resources = false;
@@ -51,9 +56,10 @@ export class ApplicationDissemination {
     this._information_institution = false;
     this._information_workgroup = false;
     this._information_project_type = false;
+    this.setAllowedInformations();
   }
 
-  setAllTrue(): void {
+  setAllInformationTrue(): void {
     this._information_description_allowed = true;
     this._information_resources = true;
     this._information_project_affiliation = true;
@@ -62,6 +68,7 @@ export class ApplicationDissemination {
     this._information_institution = true;
     this._information_workgroup = true;
     this._information_project_type = true;
+    this.setAllowedInformations();
 
   }
 
@@ -74,6 +81,7 @@ export class ApplicationDissemination {
     this._information_institution = !this._information_institution;
     this._information_workgroup = !this._information_workgroup;
     this._information_project_type = !this._information_project_type;
+    this.setAllowedInformations();
 
   }
 

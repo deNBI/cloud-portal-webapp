@@ -10,7 +10,7 @@ import {Application_States} from '../../shared/shared_modules/baseClass/abstract
  */
 export class User {
   private _username: string;
-  private _user_affiliations: string [];
+  private _user_affiliations: string [] = [];
   private _elixir_id: string;
   private _email: string;
 
@@ -53,6 +53,7 @@ export class User {
 export class Application {
 
   private _project_application_id: number | string;
+  private _project_application_report_allowed: boolean = false;
   private _project_application_name: string;
   private _project_application_shortname: string;
   private _project_application_institute: string;
@@ -81,7 +82,7 @@ export class Application {
   private _project_application_openstack_basic_introduction: boolean;
   private _project_application_horizon2020: string;
   private _project_application_bmbf_project: string;
-  private _project_application_edam_terms: EdamOntologyTerm[];
+  private _project_application_edam_terms: EdamOntologyTerm[] = [];
   private _project_application_sensitive_data: boolean;
   private _project_application_elixir_project: string;
   private _dissemination: ApplicationDissemination;
@@ -93,6 +94,8 @@ export class Application {
   private _project_application_workshop: boolean;
 
   constructor(aj: Application | null) {
+    this._dissemination = new ApplicationDissemination(null);
+
     if (aj) {
       this._project_application_id = aj.project_application_id;
       this._project_application_name = aj.project_application_name;
@@ -134,9 +137,14 @@ export class Application {
       this._project_application_workshop = aj.project_application_workshop;
       if (aj.dissemination) {
         this._dissemination = new ApplicationDissemination(aj.dissemination);
+        this._project_application_report_allowed = this._dissemination.someAllowed();
       }
       this.setDaysRunning()
     }
+  }
+
+  public appl(): Application {
+    return this
   }
 
   private setDaysRunning(): void {
@@ -144,6 +152,19 @@ export class Application {
     ) {
       // tslint:disable-next-line:max-line-length
       this._DaysRunning = Math.ceil((Math.abs(Date.now() - new Date(this.project_application_date_approved).getTime())) / (1000 * 3600 * 24));
+    }
+  }
+
+  public addEdamTerm(term: EdamOntologyTerm): void {
+    if (this.project_application_edam_terms.indexOf(term) === -1) {
+      this.project_application_edam_terms.push(term);
+    }
+  }
+
+  public removeEdamTerm(term: EdamOntologyTerm): void {
+    const idx: number = this.project_application_edam_terms.indexOf(term)
+    if (idx !== -1) {
+      this.project_application_edam_terms.splice(idx, 1);
     }
   }
 
@@ -158,8 +179,33 @@ export class Application {
     return 0
   }
 
-  public addFlavorToCurrent(flavor: Flavor): void {
-    this._flavors.push(flavor)
+  public setFlavorInFlavors(flavor: Flavor, counter: number): void {
+    const idx: number = this._flavors.findIndex((fl: Flavor) => {
+      return fl.name === flavor.name
+    });
+    if (idx !== -1) {
+      if (counter > 0) {
+        this._flavors[idx].counter = counter;
+      } else {
+        this._flavors.splice(idx, 1)
+      }
+    } else {
+      if (counter > 0) {
+
+        flavor.counter = counter;
+
+        this._flavors.push(flavor)
+      }
+    }
+    console.log(this._flavors)
+  }
+
+  get project_application_report_allowed(): boolean {
+    return this._project_application_report_allowed;
+  }
+
+  set project_application_report_allowed(value: boolean) {
+    this._project_application_report_allowed = value;
   }
 
   get project_application_user(): User {

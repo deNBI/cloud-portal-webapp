@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {ApiSettings} from './api-settings.service'
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Cookie} from 'ng2-cookies/ng2-cookies';
 import {EdamOntologyTerm} from '../applications/edam-ontology-term';
@@ -126,9 +126,9 @@ export class ApplicationsService {
 
   }
 
-  addNewApplication(data: { [key: string]: string | number | boolean }): Observable<any> {
+  addNewApplication(application: Application): Observable<Application> {
 
-    return this.http.post(`${ApiSettings.getApiBaseURL()}project_applications/`, data, {
+    return this.http.post<Application>(`${ApiSettings.getApiBaseURL()}project_applications/`, application.appl(), {
       headers: header,
       withCredentials: true
     })
