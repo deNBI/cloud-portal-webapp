@@ -9,7 +9,7 @@ import {VoService} from '../api-connector/vo.service';
 import {FacilityService} from '../api-connector/facility.service';
 import {Flavor} from '../virtualmachines/virtualmachinemodels/flavor';
 import {FlavorService} from '../api-connector/flavor.service';
-import {Client} from '../virtualmachines/clients/client.model';
+import {Client} from '../vo_manager/clients/client.model';
 import {ApplicationBaseClassComponent} from '../shared/shared_modules/baseClass/application-base-class.component';
 import {ComputecenterComponent} from '../projectmanagement/computecenter.component';
 import {is_vo} from '../shared/globalvar';

@@ -3,7 +3,7 @@ import {RouterModule, Routes} from '@angular/router';
 import {VoOverviewComponent} from './VoOverviewComponent';
 import {VoGuardService} from './vo-guard.service';
 import {ResourcesComponent} from './resources/resources.component';
-import {ClientOverviewComponent} from '../virtualmachines/clients/clientOverview.component';
+import {ClientOverviewComponent} from './clients/clientOverview.component';
 
 const routes: Routes = [
     {
@@ -24,11 +24,11 @@ const routes: Routes = [
 
     },
   {
-        path: 'clients',
+        path: 'clientsOverview',
         component: ClientOverviewComponent,
         canActivate: [VoGuardService],
         data: {
-            title: 'Vo Resources'
+            title: 'Clients'
         }
 
     }

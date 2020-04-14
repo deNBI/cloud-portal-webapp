@@ -8,7 +8,6 @@ import {ModalModule} from 'ngx-bootstrap/modal';
 import {ImageDetailComponent} from '../virtualmachines/imagedetail.component';
 import {VirtualMachineComponent} from '../virtualmachines/addvm.component';
 import {FlavorDetailComponent} from '../virtualmachines/flavordetail.component';
-import {ClientOverviewComponent} from './clients/clientOverview.component';
 import {VmOverviewComponent} from '../virtualmachines/vmOverview.component';
 import {VolumeOverviewComponent} from './volumes/volumeOverview.component';
 import {SnapshotOverviewComponent} from './snapshots/snapshotOverview.component';
@@ -56,7 +55,6 @@ import {ClusterstatusComponent} from './clusters/clusterstatus/clusterstatus.com
               ImageDetailComponent,
               VirtualMachineComponent,
               FlavorDetailComponent,
-              ClientOverviewComponent,
               VmOverviewComponent,
               VolumeOverviewComponent,
               SnapshotOverviewComponent,

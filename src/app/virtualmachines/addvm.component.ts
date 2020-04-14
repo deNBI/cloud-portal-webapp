@@ -14,7 +14,7 @@ import {KeyService} from '../api-connector/key.service';
 import {GroupService} from '../api-connector/group.service';
 import {environment} from '../../environments/environment';
 import {IResponseTemplate} from '../api-connector/response-template';
-import {Client} from './clients/client.model';
+import {Client} from '../vo_manager/clients/client.model';
 import {VirtualMachine} from './virtualmachinemodels/virtualmachine';
 import {UserService} from '../api-connector/user.service';
 import {BiocondaComponent} from './conda/bioconda.component';

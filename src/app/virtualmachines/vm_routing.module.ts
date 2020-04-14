@@ -1,7 +1,6 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {VirtualMachineComponent} from '../virtualmachines/addvm.component';
-import {ClientOverviewComponent} from './clients/clientOverview.component';
 import {VmOverviewComponent} from '../virtualmachines/vmOverview.component';
 import {VolumeOverviewComponent} from './volumes/volumeOverview.component';
 import {SnapshotOverviewComponent} from './snapshots/snapshotOverview.component';
@@ -25,14 +24,6 @@ const routes: Routes = [
         data: {
             title: 'New Cluster'
         }
-
-  },
-  {
-    path: 'clientOverview',
-    component: ClientOverviewComponent,
-    data: {
-      title: 'Client Overview'
-    }
 
   },
   {

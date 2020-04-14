@@ -15,7 +15,7 @@ import {Image} from '../../virtualmachinemodels/image';
 import {IResponseTemplate} from '../../../api-connector/response-template';
 import {Flavor} from '../../virtualmachinemodels/flavor';
 import {Userinfo} from '../../../userinfo/userinfo.model';
-import {Client} from '../../clients/client.model';
+import {Client} from '../../../vo_manager/clients/client.model';
 import {BiocondaComponent} from '../../conda/bioconda.component';
 import {forkJoin} from 'rxjs';
 import {Clusterinfo} from '../clusterinfo';
