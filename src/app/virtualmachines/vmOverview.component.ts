@@ -19,6 +19,7 @@ import {TemplateNames} from './conda/template-names';
 import {PlaybookService} from '../api-connector/playbook.service';
 import {BiocondaService} from '../api-connector/bioconda.service';
 import {ClipboardService} from 'ngx-clipboard';
+import {WIKI_GUACAMOLE_LINK, WIKI_RSTUDIO_LINK} from '../../links/links';
 
 /**
  * Vm overview componentn.
@@ -38,8 +39,8 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 
   VirtualMachineStates: VirtualMachineStates = new VirtualMachineStates();
 
-  WIKI_RSTUDIO_LINK: string = 'https://cloud.denbi.de/wiki/portal/customization/#rstudio';
-  WIKI_GUACAMOLE_LINK: string = 'https://cloud.denbi.de/wiki/portal/customization/#apache-guacamole';
+  WIKI_RSTUDIO_LINK: string = WIKI_RSTUDIO_LINK;
+  WIKI_GUACAMOLE_LINK: string = WIKI_GUACAMOLE_LINK;
 
   /**
    * All  vms.
