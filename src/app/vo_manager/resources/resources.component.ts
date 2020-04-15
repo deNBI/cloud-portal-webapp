@@ -25,7 +25,7 @@ export class ResourcesComponent implements OnInit {
   today: number = Date.now();
 
   exportAsConfigCSV: ExportAsConfig = {
-    type: 'csv',
+    type: 'csv'
   };
 
   constructor(private voservice: VoService, private exportAsService: ExportAsService) {

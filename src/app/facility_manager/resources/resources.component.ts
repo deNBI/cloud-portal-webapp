@@ -41,7 +41,7 @@ export class ResourcesComponent implements OnInit {
   coreFactors: CoreFactor[] = [];
   ramFactors: RamFactor[] = [];
   exportAsConfigCSV: ExportAsConfig = {
-    type: 'csv',
+    type: 'csv'
   };
 
   constructor(private facilityService: FacilityService, private exportAsService: ExportAsService) {
