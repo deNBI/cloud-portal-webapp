@@ -42,7 +42,7 @@ export class ResourcesComponent implements OnInit {
   ramFactors: RamFactor[] = [];
   exportAsConfigCSV: ExportAsConfig = {
     type: 'csv',
-    elementId: this.tableId
+    elementIdOrContent: this.tableId
   };
 
   constructor(private facilityService: FacilityService, private exportAsService: ExportAsService) {
