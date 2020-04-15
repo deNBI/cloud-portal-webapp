@@ -108,6 +108,9 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
     } else {
       this.application = new Application(null);
       this.application.project_application_openstack_project = this.openstack_project;
+      if (this.openstack_project) {
+        this.application.project_application_object_storage = 0;
+      }
       this.application.project_application_volume_counter = 3;
       this.application.project_application_volume_limit = 20;
     }

@@ -184,7 +184,7 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
   }
 
   public getMemberDetailsByElixirId(application: Application): void {
-    this.userservice.getMemberDetailsByElixirId(application.project_application_user.username).subscribe(
+    this.userservice.getMemberDetailsByElixirId(application.project_application_user.elixir_id).subscribe(
       (result: { [key: string]: string }) => {
 
         application.project_application_user.username = `${result['firstName']} ${result['lastName']}`;

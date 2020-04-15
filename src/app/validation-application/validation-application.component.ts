@@ -1,10 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewChecked, ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {ApplicationsService} from '../api-connector/applications.service';
 import {Application} from '../applications/application.model/application.model';
 import {ActivatedRoute} from '@angular/router';
 import {ApplicationBaseClassComponent} from '../shared/shared_modules/baseClass/application-base-class.component';
 import {FlavorService} from '../api-connector/flavor.service';
-import {FullLayoutComponent} from '../layouts/full-layout.component';
 
 /**
  * Application validation modal.
@@ -15,7 +14,7 @@ import {FullLayoutComponent} from '../layouts/full-layout.component';
              styleUrls: ['./validation-application.component.scss'],
              providers: [ApplicationsService, FlavorService]
            })
-export class ValidationApplicationComponent extends ApplicationBaseClassComponent implements OnInit {
+export class ValidationApplicationComponent extends ApplicationBaseClassComponent implements OnInit, AfterViewChecked {
 
   application: Application;
   isLoadedApplication: boolean = false;
@@ -34,9 +33,13 @@ export class ValidationApplicationComponent extends ApplicationBaseClassComponen
   public totalRAM: number = 0;
 
   constructor(private applicationsService: ApplicationsService,
-              private activatedRoute: ActivatedRoute) {
+              private activatedRoute: ActivatedRoute, private changeDetector: ChangeDetectorRef) {
     super(null, null, applicationsService, null);
 
+  }
+
+  ngAfterViewChecked():void {
+    this.changeDetector.detectChanges();
   }
 
   ngOnInit(): void {

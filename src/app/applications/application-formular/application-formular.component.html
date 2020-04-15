@@ -961,11 +961,11 @@
         </div>
         <div class="card-footer">
 
-          <div *ngIf="!simple_vm_min_vm" class="form-group row alert alert-danger">
+          <div *ngIf="application?.flavors.length == 0 && !application?.project_application_openstack_project" class="form-group row alert alert-danger">
             Please select at least one flavor.
           </div>
           <div
-            *ngIf="f.invalid ||application.project_application_edam_terms.length == 0 || !simple_vm_min_vm || (!application?.dissemination.isPlatformSelected() && application.project_application_report_allowed)"
+            *ngIf="f.invalid ||application.project_application_edam_terms.length == 0 || (application?.flavors.length == 0  && !application?.project_application_openstack_project) || (!application?.dissemination.isPlatformSelected() && application.project_application_report_allowed)"
             class="form-group row alert alert-warning">
             Some required fields are incorrect or not filled in yet.
             Please check if all required (*) fields are filled in correctly.
@@ -998,7 +998,7 @@
             </div>
             <label class="col-md-4 form-control-label">
               <button (click)="notificationModal.show();approveApplication(f);"
-                      [disabled]="!respCheck.checked || f.invalid  ||application.project_application_edam_terms.length == 0  || !simple_vm_min_vm || (!application?.dissemination?.isPlatformSelected()  && application.project_application_report_allowed)"
+                      [disabled]="!respCheck.checked || f.invalid  ||application.project_application_edam_terms.length == 0  || (application?.flavors.length == 0  && !application?.project_application_openstack_project)|| (!application?.dissemination?.isPlatformSelected()  && application.project_application_report_allowed)"
 
                       class="btn btn-sm btn-success">
                 <i class="fa fa-dot-circle-o"></i>
@@ -1011,7 +1011,7 @@
             <button *ngIf="!is_validation"
                     (click)="filterEnteredData(f);calculateInitialCredits(f); submitModal.show();"
                     id="submit_btn"
-                    [disabled]="f.invalid  ||application.project_application_edam_terms.length == 0  || !simple_vm_min_vm || (!application?.dissemination?.isPlatformSelected()  && application.project_application_report_allowed)"
+                    [disabled]="f.invalid  ||application.project_application_edam_terms.length == 0  || (application?.flavors.length == 0  && !application?.project_application_openstack_project) || (!application?.dissemination?.isPlatformSelected()  && application.project_application_report_allowed)"
                     class="btn btn-sm btn-success"
                     type="button"><i
               class="fa fa-dot-circle-o"></i> Submit
