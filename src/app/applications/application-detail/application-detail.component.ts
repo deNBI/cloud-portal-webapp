@@ -42,7 +42,7 @@ export class ApplicationDetailComponent extends ApplicationBaseClassComponent im
   }
 
   ngOnInit(): void {
-    this.getMemberDetailsByElixirId(this.application.project_application_user.username);
+    this.getMemberDetailsByElixirId(this.application);
     this.getCurrentCredits();
     this.is_vo_admin = is_vo;
   }

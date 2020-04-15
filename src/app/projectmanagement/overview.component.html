@@ -139,7 +139,7 @@
               </button>
               <button id="show_extension_modal"
                       *ngIf="project_application?.project_application_status == application_states.APPROVED || project_application?.project_application_status == application_states.MODIFICATION_DECLINED"
-                      (click)="newFlavors= {};selected_ontology_terms=[];initRamCores();calculateCredits(f.controls.project_application_renewal_lifetime?.value);doiQuestionModal.show()"
+                      (click)="newFlavors= {};selected_ontology_terms=[];calculateCredits(f.controls.project_application_renewal_lifetime?.value);doiQuestionModal.show()"
                       class="btn btn-warning"
                       type="button" style="margin-bottom:5px;margin-right:5px;">
                 Request Extension/Modification
@@ -1043,7 +1043,7 @@
                        id="id_project_application_renewal_cloud_service_user_number"
                        name="project_application_renewal_cloud_service_user_number"
                        placeholder="e.g. 200"
-                       [(ngModel)]="project_application?.projectapplicationrenewal.project_application_cloud_service_user_number"
+                       [(ngModel)]="project_application?.projectapplicationrenewal.project_application_renewal_cloud_service_user_number"
                        type="number" min="0" step="1"
                        appInteger appMinAmount="0" required
                        [ngClass]="{
@@ -1080,7 +1080,8 @@
 
           <strong>
             <div *ngIf="is_vo_admin" class="form-group row">
-              <label #corenumbers id="creditnumber" class="col">Expected number of extra credits: <span id="extension_credits">{{extensionCredits}}</span></label>
+              <label #corenumbers id="creditnumber" class="col">Expected number of extra credits: <span
+                id="extension_credits">{{project_application?.projectapplicationrenewal.project_application_renewal_credits}}</span></label>
             </div>
             <div class="alert alert-primary" role="alert">
               This is the expected number of extra credits that you get for your project. It accounts for an extended lifetime for a project
@@ -1292,14 +1293,14 @@
 
             <tr *ngIf="is_vo_admin" >
               <td><strong>Approximate number of extra credits:
-                {{extensionCredits.toString()}}</strong></td>
+                {{project_application?.projectapplicationrenewal.project_application_renewal_credits}}</strong></td>
             </tr>
             <tr>
               <td><strong>Number of cores in total:
-                {{totalNumberOfCores.toString()}}</strong></td>
+                {{project_application?.projectapplicationrenewal.project_application_renewal_total_cores}}</strong></td>
             </tr>
             <tr>
-              <td><strong>Value of RAM in total: {{totalRAM.toString()}} GBs</strong>
+              <td><strong>Value of RAM in total: {{project_application?.projectapplicationrenewal.project_application_renewal_total_ram}} GBs</strong>
               </td>
             </tr>
           </table>
@@ -1382,9 +1383,7 @@
           </div>
           <div class="modal-footer" style="text-align:center;">
             <button id="doi_continue_btn" class="btn btn-success col-md-6" type="button"
-                    style="margin:auto;"
-                    (click)="doiModal.hide();project_application.inititatenExtension(); extensionModal.show(); setModalOpen(true);">
-              Continue
+                    style="margin:auto;" (click)="doiModal.hide(); extensionModal.show(); setModalOpen(true);">Continue
             </button>
           </div>
         </div><!-- /.modal-content -->L

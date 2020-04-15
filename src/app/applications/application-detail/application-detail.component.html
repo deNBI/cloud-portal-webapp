@@ -45,7 +45,7 @@
     <tr>
       <td>User Name</td>
       <td>
-        {{  application?.project_application_user?.username}}}
+        {{  application?.project_application_user?.username}}
       </td>
       <td *ngIf="(application?.project_application_status == application_states.MODIFICATION_REQUESTED || isModification) && !application?.projectapplicationrenewal?.is_only_extra_credits_application">
       </td>
@@ -53,7 +53,7 @@
     <tr>
       <td>User Email</td>
       <td>
-        {{  application?.project_application_user?.email}}}
+        {{  application?.project_application_user?.email}}
       </td>
       <td *ngIf="(application?.project_application_status == application_states.MODIFICATION_REQUESTED || isModification) && !application?.projectapplicationrenewal?.is_only_extra_credits_application">
       </td>
@@ -119,13 +119,15 @@
       <td *ngIf="(application?.project_application_status == application_states.MODIFICATION_REQUESTED || isModification) && !application?.projectapplicationrenewal?.is_only_extra_credits_application">
       </td>
     </tr>
-    <tr *ngIf="application?.project_application_openstack_project && !application?.project_application_cloud_service_develop && application?.project_application_cloud_service">
+    <tr
+      *ngIf="application?.project_application_openstack_project && !application?.project_application_cloud_service_develop && application?.project_application_cloud_service">
       <td> - approximate number of users</td>
       <td>
         <span>{{application?.project_application_cloud_service_user_number}}</span>
       </td>
-      <td *ngIf="(application?.project_application_status == application_states.MODIFICATION_REQUESTED || isModification) && !application?.projectapplicationrenewal?.is_only_extra_credits_application">
-      {{application?.projectapplicationrenewal?.project_application_cloud_service_user_number}}</td>
+      <td
+        *ngIf="(application?.project_application_status == application_states.MODIFICATION_REQUESTED || isModification) && !application?.projectapplicationrenewal?.is_only_extra_credits_application">
+        {{application?.projectapplicationrenewal?.project_application_renewal_cloud_service_user_number}}</td>
     </tr>
     <tr>
       <td>Description
@@ -269,24 +271,16 @@
       <td>{{flavor.counter}}</td>
       <td
         *ngIf="(application?.project_application_status == application_states.MODIFICATION_REQUESTED  || isModification)  && !application?.projectapplicationrenewal?.is_only_extra_credits_application">
-                                                            <span
-                                                              *ngIf="application?.projectapplicationrenewal?.flavors[item.key]">
-                                                                {{application?.projectapplicationrenewal?.flavors[item.key]?.counter}}</span>
-        <span
-          *ngIf="!application?.projectapplicationrenewal?.flavors[item.key] && !application?.projectapplicationrenewal?.is_only_extra_credits_application">
-                                                               0</span></td>
+                                                            <span>
+                                                                {{application?.projectapplicationrenewal?.getFlavorCounter(flavor)}}</span>
+      </td>
     </tr>
     <ng-container
-      *ngFor="let item of application?.projectapplicationrenewal?.flavors| keyvalue ">
-      <tr *ngIf="!application?.flavors[item.key]">
-        <td>Flavor: {{item.key}}</td>
+      *ngFor="let flavor of application?.projectapplicationrenewal?.flavors  ">
+      <tr *ngIf="application?.getFlavorCounter(flavor)== 0">
+        <td>Flavor: {{flavor.name}}</td>
         <td>0</td>
-        <td>
-          {{application?.projectapplicationrenewal?.flavors[item.key]?.counter}}
-
-
-        </td>
-
+        <td>{{application?.projectapplicationrenewal.getFlavorCounter(flavor)}}</td>
 
       </tr>
     </ng-container>

@@ -128,16 +128,16 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
    * Get all Applications if user is admin.
    */
   getAllApplications(): void {
-    // todo check if user is VO Admin
-
     if (this.is_vo_admin) {
 
       this.applicationsservice.getAllApplications().subscribe((applications: Application[]) => {
         if (applications.length === 0) {
           this.isLoaded_userApplication = true;
         }
-        this.all_applications.push.apply(this.all_applications, applications);
+        for (const application of applications) {
+          this.all_applications.push(new Application(application));
 
+        }
         this.isLoaded_AllApplication = true;
         for (const app of this.all_applications) {
           if (app.project_application_status === this.application_states.WAIT_FOR_CONFIRMATION ||

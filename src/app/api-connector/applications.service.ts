@@ -4,8 +4,8 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Cookie} from 'ng2-cookies/ng2-cookies';
 import {EdamOntologyTerm} from '../applications/edam-ontology-term';
-import {ApplicationDissemination} from '../applications/application-dissemination';
 import {Application} from '../applications/application.model/application.model';
+import {ApplicationExtension} from '../applications/application_extension.model';
 
 const header: HttpHeaders = new HttpHeaders({
                                               'X-CSRFToken': Cookie.get('csrftoken'),
@@ -112,16 +112,16 @@ export class ApplicationsService {
 
   addNewApplication(application: Application): Observable<Application> {
 
-    return this.http.post<Application>(`${ApiSettings.getApiBaseURL()}project_applications/`, application.appl(), {
+    return this.http.post<Application>(`${ApiSettings.getApiBaseURL()}project_applications/`, application, {
       headers: header,
       withCredentials: true
     })
 
   }
 
-  requestRenewal(data: { [key: string]: string | number | boolean }): Observable<any> {
+  requestRenewal(extension: ApplicationExtension): Observable<any> {
 
-    return this.http.post(`${ApiSettings.getApiBaseURL()}applicationRenewals/`, data, {
+    return this.http.post(`${ApiSettings.getApiBaseURL()}applicationRenewals/`, extension, {
       headers: header,
       withCredentials: true
     })

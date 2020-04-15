@@ -44,12 +44,6 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
    */
   application_status: ApplicationStatus[] = [];
 
-  /**application_user
-   * User which requested the Application {id: Elixir id of user : {name and email}}.
-   * @type {{}}
-   */
-  application_user: { [id: string]: { [id: string]: string } } = {};
-
   /**
    * List of flavor types.
    */
@@ -178,36 +172,25 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
     }
   }
 
-  setApplicationUser(elixir_id: string): void {
-    if (!(elixir_id in this.application_user)) {
-      this.userservice.getMemberDetailsByElixirId(elixir_id).subscribe((result: { [key: string]: string }) => {
-
-        const name: string = `${result['firstName']} ${result['lastName']}`;
-        const appuser: { [id: string]: string } = {};
-        appuser['name'] = name;
-        appuser['email'] = result['email'];
-        this.application_user[elixir_id] = appuser;
-      })
-    }
-  }
-
   /**
    * Get details of member like name and email by elixir.
    * @param {string} elixir_id
    * @param {string} collapse_id
    */
-  public getMemberDetailsByElixirIdIfCollapsed(elixir_id: string, collapse_id: string): void {
+  public getMemberDetailsByElixirIdIfCollapsed(application: Application, collapse_id: string): void {
     if (!this.getCollapseStatus(collapse_id)) {
-      this.setApplicationUser(elixir_id);
+      this.getMemberDetailsByElixirId(application);
     }
   }
 
-  /**
-   * Get details of member like name and email by elixir.
-   * @param {string} elixir_id
-   */
-  public getMemberDetailsByElixirId(elixir_id: string): void {
-    this.setApplicationUser(elixir_id);
+  public getMemberDetailsByElixirId(application: Application): void {
+    this.userservice.getMemberDetailsByElixirId(application.project_application_user.username).subscribe(
+      (result: { [key: string]: string }) => {
+
+        application.project_application_user.username = `${result['firstName']} ${result['lastName']}`;
+
+        application.project_application_user.email = result['email'];
+      });
   }
 
   /**

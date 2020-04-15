@@ -73,30 +73,15 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
     })
   }
 
-  /**
-   * Get all application modification requests.
-   * @param {number} facility id of the facility
-   */
-  getAllApplicationsModifications(facility: number): void {
-    this.isLoaded = false;
-    this.facilityService.getFacilityModificationApplicationsWaitingForConfirmation(facility).subscribe((applications: Application[]) => {
-      if (applications.length === 0) {
-        this.isLoaded = true;
-      }
-      this.all_application_modifications.push.apply(this.all_application_modifications, applications);
-      this.isLoaded = true;
-
-    })
-  }
 
   getFacilityApplicationById(application: Application): void {
     if (application.project_application_description !== undefined) {
       return;
     }
     const idx: number = this.applications_history.indexOf(application);
-    this.facilityService.getFacilityApplicationById(this.selectedFacility ['FacilityId'], application.project_application_id.toString())
-      .subscribe((application: Application) => {
-        this.applications_history[idx] = application;
+    this.facilityService.getFacilityApplicationById(this.selectedFacility['FacilityId'], application.project_application_id.toString())
+      .subscribe((app: Application) => {
+        this.applications_history[idx] = new Application(app);
       })
   }
 
@@ -114,7 +99,9 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
       if (applications.length === 0) {
         this.isHistoryLoaded = true;
       }
-      this.applications_history = applications;
+      for (const application of applications) {
+        this.applications_history.push(new Application(application))
+      }
       this.isHistoryLoaded = true;
     });
   }
@@ -122,8 +109,15 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
   getFullApplications(facility: number): void {
     forkJoin(this.facilityService.getFacilityApplicationsWaitingForConfirmation(facility),
              this.facilityService.getFacilityModificationApplicationsWaitingForConfirmation(facility)).subscribe((res: any) => {
-      this.all_applications_wfc.push.apply(this.all_applications_wfc, res[0]);
-      this.all_application_modifications.push.apply(this.all_application_modifications, res[1]);
+      const wfc_apps: Application[] = res[0];
+      const modification_apps: Application[] = res[1];
+
+      for (const wfcApp of wfc_apps) {
+        this.all_applications_wfc.push(new Application(wfcApp))
+      }
+      for (const modificationApp of modification_apps) {
+        this.all_application_modifications.push(new Application(modificationApp))
+      }
       this.isLoaded = true;
     })
   }
