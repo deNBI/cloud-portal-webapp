@@ -749,7 +749,7 @@
 
           <div class="form-group row">
 
-            <label class="col-md-4 form-control-label" for="textarea-input">
+            <label class="col-md-4 form-control-label">
               <strong>Lifetime* <i class="icon-question" data-toggle="tooltip"
                                    title="Current timespan of your project. You can extend your project by a maximum of 12 months">
               </i>
@@ -775,7 +775,8 @@
                        id="project_application_renewal_lifetime"
                        name="project_application_renewal_lifetime"
                        placeholder="e.g. 3"
-                       type="number" min="0" max="12" step="1" ngModel required
+                       [(ngModel)]="project_application?.projectapplicationrenewal.project_application_renewal_lifetime"
+                       type="number" min="0" max="12" step="1" required
                        appInteger appMinAmount="0" appMaxAmount="12"
                        [ngClass]="{
                                 'is-invalid': f.controls.project_application_renewal_lifetime?.invalid && (f.controls.project_application_renewal_lifetime?.dirty || f.controls.project_application_renewal_lifetime?.touched),
@@ -789,7 +790,7 @@
             </div>
           </div>
           <div class="form-group row" *ngIf="project_application?.project_application_edam_terms.length == 0 ">
-            <label class="col-md-4 form-control-label" for="text-input"><strong>Research Topics* </strong></label>
+            <label class="col-md-4 form-control-label"><strong>Research Topics* </strong></label>
             <div class="col-md-8">
               <div [ngClass]="{
                                 'danger-border': selected_ontology_terms?.length <=0,
@@ -851,13 +852,13 @@
                     class="form-group row">
                     <label class="col-md-4 form-control-label"><strong>{{fl.name}}</strong><br>
                       Number of cores: <span
-                        id="id_project_application_renewal_{{fl.name}}_cores">{{fl.vcpus}}</span><br>
-                      RAM: <span id="id_project_application_renewal_{{fl.name}}_ram">{{fl.ram}}</span> GB</label>
+                        id="{{fl.name}}_cores">{{fl.vcpus}}</span><br>
+                      RAM: <span id="{{fl.name}}_ram">{{fl.ram}}</span> GB</label>
                     <div class="col">
                       <div class="input-group">
                         <input class="form-control"
-                               name="project_application_{{fl.name}}_old"
-                               id="project_application_{{fl.name}}_old"
+                               name="{{fl.name}}_old"
+                               id="{{fl.name}}_old"
                                type="text"
                                value="{{project_application?.getFlavorCounter(fl)}}"
                                placeholder="0" disabled>
@@ -870,12 +871,12 @@
                         <input class="form-control"
                                (change)="valuesChanged(fl,name?.value);
                                calculateCredits(f.controls.project_application_renewal_lifetime?.value);"
-                               id="id_project_application_renewal_{{fl.name}}"
-                               name="project_application_renewal_{{fl.name}}"
+                               id="{{fl.name}}"
+                               name="{{fl.name}}"
                                type="number" min="0" step="1"
                                placeholder="e.g 1"
-                               (ngModelChange)="onChangeFlavor($event)"
-                               [ngModel]="project_application?.getFlavorCounter(fl)"
+                               (ngModelChange)="onChangeFlavor(fl,$event)"
+                               [ngModel]="project_application?.projectapplicationrenewal.getFlavorCounter(fl)"
                                #name="ngModel"
                                appMinAmount="0" appIntegerOrNull
                                [ngClass]="{
@@ -893,7 +894,7 @@
             </ng-container>
           </accordion>
           <div class="form-group row">
-            <label class="col-md-4 form-control-label" for="textarea-input"><strong>Number
+            <label class="col-md-4 form-control-label" for="project_application_volume_counter"><strong>Number
               of storage
               volumes*
               <i
@@ -920,7 +921,7 @@
                        name="project_application_renewal_volume_counter"
                        placeholder="e.g. 20"
                        type="number" min="0" step="1"
-                       [ngModel]="project_application?.project_application_volume_counter"
+                       [(ngModel)]="project_application?.projectapplicationrenewal.project_application_renewal_volume_counter"
                        appMinAmount="0" appInteger
                        [ngClass]="{
                                 'is-invalid': f.controls.project_application_renewal_volume_counter?.invalid,
@@ -931,7 +932,7 @@
             </div>
           </div>
           <div class="form-group row">
-            <label class="col-md-4 form-control-label" for="textarea-input"><strong>Storage
+            <label class="col-md-4 form-control-label" for="project_application_volume_limit"><strong>Storage
               Limit*
               <i
                 data-balloon="Storage limit is the sum of extra storage provided by volumes."
@@ -957,7 +958,8 @@
                        id="id_project_application_renewal_volume_limit"
                        name="project_application_renewal_volume_limit"
                        placeholder="e.g. 20"
-                       type="number" min="1" step="1" [ngModel]="project_application?.project_application_volume_limit"
+                       type="number" min="1" step="1"
+                       [(ngModel)]="project_application?.projectapplicationrenewal.project_application_renewal_volume_limit"
                        appMinAmount="1" appInteger
                        [ngClass]="{
                                 'is-invalid': f.controls.project_application_renewal_volume_limit?.invalid,
@@ -1000,8 +1002,8 @@
                        id="id_project_application_renewal_object_storage"
                        name="project_application_renewal_object_storage"
                        placeholder="e.g. 8"
-                       [ngModel]="project_application?.project_application_object_storage"
-                       type="number" min="0" step="1" [ngModel]="0"
+                       [(ngModel)]="project_application?.projectapplicationrenewal.project_application_renewal_object_storage"
+                       type="number" min="0" step="1"
                        appInteger appMinAmount="0" required
                        [ngClass]="{
                                 'is-invalid': f.controls.project_application_renewal_object_storage?.invalid ,
@@ -1013,8 +1015,11 @@
               <span class="help-block">How much Object Storage do you need in the future?</span>
             </div>
           </div>
-          <div *ngIf="project_application?.project_application_openstack_project && project_application?.project_application_cloud_service && !project_application?.project_application_cloud_service_develop" class="form-group row">
-            <label class="col-md-4 form-control-label" for="textarea-input"><strong>Cloud Service user number </strong><i
+          <div
+            *ngIf="project_application?.project_application_openstack_project && project_application?.project_application_cloud_service && !project_application?.project_application_cloud_service_develop"
+            class="form-group row">
+            <label class="col-md-4 form-control-label" for="project_application_cloud_service_user_number"><strong>Cloud
+              Service user number </strong><i
               data-balloon="Number of user using your service."
               data-balloon-pos="down" data-balloon-length="large"><i
               class="icon-question"
@@ -1038,8 +1043,8 @@
                        id="id_project_application_renewal_cloud_service_user_number"
                        name="project_application_renewal_cloud_service_user_number"
                        placeholder="e.g. 200"
-                       [ngModel]="project_application?.project_application_cloud_service_user_number"
-                       type="number" min="0" step="1" [ngModel]="0"
+                       [(ngModel)]="project_application?.projectapplicationrenewal.project_application_cloud_service_user_number"
+                       type="number" min="0" step="1"
                        appInteger appMinAmount="0" required
                        [ngClass]="{
                                 'is-invalid': f.controls.project_application_renewal_cloud_service_user_number?.invalid ,
@@ -1052,12 +1057,13 @@
 
           <div class="form-group row">
             <label class="col-md-4 form-control-label"
-                   for="text-input"><strong>Comment</strong></label>
+                   for="id_project_application_renewal_comment"><strong>Comment</strong></label>
             <div class="col-md-8">
                 <textarea type="text" id="id_project_application_renewal_comment"
                           name="project_application_renewal_comment" class="form-control"
                           maxlength="8192"
-                          placeholder='' ngModel></textarea>
+                          placeholder=''
+                          [(ngModel)]="project_application?.projectapplicationrenewal.project_application_renewal_comment"></textarea>
               <span class="help-block">Additional information you want to share?</span>
             </div>
           </div>
@@ -1082,11 +1088,14 @@
             </div>
             <div class="form-group row">
               <label #corenumbers id="corenumbers" class="col">Number of total
-                cores: <span id="total_cores">{{totalNumberOfCores}}</span></label>
+                cores: <span
+                  id="total_cores">{{project_application?.projectapplicationrenewal.project_application_renewal_total_cores}}</span></label>
             </div>
             <div class="form-group row">
               <label #ramnumbers id="ramnumbers" class="col">Amount of total
-                RAM: <span id="total_ram">{{totalRAM}}</span> </label>
+                RAM: <span
+                  id="total_ram">{{project_application?.projectapplicationrenewal.project_application_renewal_total_ram}}</span>
+              </label>
             </div>
           </strong>
 
@@ -1131,7 +1140,7 @@
             Submit
           </button>
           <button type="button" class="btn btn-danger"
-                  (click)="extensionModal.hide(); setModalOpen(false); totalRAM = 0; totalNumberOfCores = 0;">
+                  (click)="extensionModal.hide(); setModalOpen(false);">
             Close
           </button>
 
@@ -1373,7 +1382,9 @@
           </div>
           <div class="modal-footer" style="text-align:center;">
             <button id="doi_continue_btn" class="btn btn-success col-md-6" type="button"
-                    style="margin:auto;" (click)="doiModal.hide(); extensionModal.show(); setModalOpen(true);">Continue
+                    style="margin:auto;"
+                    (click)="doiModal.hide();project_application.inititatenExtension(); extensionModal.show(); setModalOpen(true);">
+              Continue
             </button>
           </div>
         </div><!-- /.modal-content -->L

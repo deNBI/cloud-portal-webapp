@@ -25,6 +25,37 @@ export class ApplicationExtension {
 
   }
 
+  public getFlavorCounter(flavor: Flavor): number {
+    const flavs: Flavor[] = this._flavors.filter((fl: Flavor) => {
+      return fl.name === flavor.name
+    });
+    if (flavs.length > 0) {
+      return flavs[0].counter
+    }
+
+    return 0
+  }
+
+  public setFlavorInFlavors(flavor: Flavor, counter: number): void {
+    const idx: number = this._flavors.findIndex((fl: Flavor) => {
+      return fl.name === flavor.name
+    });
+    if (idx !== -1) {
+      if (counter > 0) {
+        this._flavors[idx].counter = counter;
+      } else {
+        this._flavors.splice(idx, 1)
+      }
+    } else {
+      if (counter > 0) {
+
+        flavor.counter = counter;
+
+        this._flavors.push(flavor)
+      }
+    }
+  }
+
   public addFlavorToRequested(flavor: Flavor): void {
     this._flavors.push(flavor)
   }

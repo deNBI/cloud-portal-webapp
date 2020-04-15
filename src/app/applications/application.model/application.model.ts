@@ -143,8 +143,21 @@ export class Application {
     }
   }
 
-  public appl(): Application {
-    return this
+  public inititatenExtension(): void {
+    this._projectapplicationrenewal = new ApplicationExtension();
+    this._projectapplicationrenewal.project_application_renewal_lifetime = 0;
+    this._projectapplicationrenewal.project_application_renewal_vms_requested = this._project_application_vms_requested;
+    this._projectapplicationrenewal.project_application_renewal_volume_limit = this._project_application_volume_limit;
+    this._projectapplicationrenewal.project_application_renewal_volume_counter = this._project_application_volume_counter;
+    this._projectapplicationrenewal.project_application_renewal_object_storage = this._project_application_object_storage;
+    this._projectapplicationrenewal.project_application_renewal_comment = '';
+    this._projectapplicationrenewal.project_application_renewal_openstack_project = this._project_application_openstack_project;
+    this._projectapplicationrenewal.project_application_renewal_total_cores = this._project_application_total_cores;
+    this._projectapplicationrenewal.project_application_renewal_total_ram = this._project_application_total_ram;
+    this._projectapplicationrenewal.project_application_renewal_credits = 0;
+    this._projectapplicationrenewal.is_only_extra_credits_application = false;
+    this._projectapplicationrenewal.project_application_cloud_service_user_number = this._project_application_cloud_service_user_number;
+    this._projectapplicationrenewal.flavors = this.flavors;
   }
 
   private setDaysRunning(): void {

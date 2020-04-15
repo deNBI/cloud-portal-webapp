@@ -1050,7 +1050,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
     alert('This function will be implemented soon.')
   }
 
-  onChangeFlavor(value: number): void {
+  onChangeFlavor(flavor: Flavor, value: number): void {
+    this.project_application.projectapplicationrenewal.setFlavorInFlavors(flavor, value)
 
     this.checkIfMinVmIsSelected();
   }
