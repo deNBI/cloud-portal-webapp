@@ -273,12 +273,10 @@ export class NewsManagerComponent implements OnInit {
           if (tempFacility['compute_center_motd_id'] === news.id.toString()) {
             this.facilitiesToSetMOTD.push(facility);
             document.getElementById(`news_select_${facility['FacilityId']}_motd`)['checked'] = true;
-          }
-          else {
+          } else {
             document.getElementById(`news_select_${facility['FacilityId']}_motd`)['checked'] = false;
           }
-        }
-        else {
+        } else {
         }
       });
 
@@ -292,7 +290,7 @@ export class NewsManagerComponent implements OnInit {
       this.motdLength.next(0);
 
       this.managerFacilities.forEach((facility: [string, number]) => {
-        if (document.getElementById(`news_select_${facility['FacilityId']}_motd`)){
+        if (document.getElementById(`news_select_${facility['FacilityId']}_motd`)) {
           document.getElementById(`news_select_${facility['FacilityId']}_motd`)['checked'] = false;
         }
       });
