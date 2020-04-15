@@ -117,7 +117,9 @@
             {{application.project_name}}
             <span class="badge badge-success" style="font-size: 8px; position: relative; top: 3px;" data-toggle="tooltip"
                   data-placement="right" title="This project was approved within the last week."
-                  *ngIf="this.project_badges_states[application.application_id] === 0">NEW</span>
+                  *ngIf="this.project_badges_states[application.application_id] === 0">
+              <i class="fas fa-plus-circle"></i>
+            </span>
             <span class="badge badge-warning" style="font-size: 8px; position: relative; top: 3px;" data-toggle="tooltip"
                   data-placement="right" title="The project lifetime expires soon."
                   *ngIf="this.project_badges_states[application.application_id] === 1">
