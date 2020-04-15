@@ -10,10 +10,7 @@
   <div class="row">
 
     <div class="col-12"
-         *ngIf="project && (project_application?.Status == application_states.APPROVED
-         || project_application?.Status == application_states.MODIFICATION_REQUESTED
-         || project_application?.Status == application_states.MODIFICATION_DECLINED
-         || project_application?.Status == application_states.MODIFICATION_DECLINED)">
+         *ngIf="project && project_application?.Status != application_states.TERMINATED  && project_application?.Status != application_states.DECLINED ">
 
 
       <div class="card" style=" overflow: scroll">
@@ -144,8 +141,15 @@
                       *ngIf="project_application?.Status == application_states.APPROVED || project_application?.Status == application_states.MODIFICATION_DECLINED"
                       (click)="newFlavors= {};selected_ontology_terms=[];initRamCores();calculateCredits(f.controls.project_application_renewal_lifetime?.value);doiQuestionModal.show()"
                       class="btn btn-warning"
-                      type="button" style="margin-bottom:5px;">
+                      type="button" style="margin-bottom:5px;margin-right:5px;">
                 Request Extension/Modification
+              </button>
+              <button id="show_termination_modal"
+                      *ngIf="project_application?.Status == application_states.APPROVED "
+                      (click)="terminateModal.show()"
+                      class="btn btn-danger"
+                      type="button" style="margin-bottom:5px;">
+                Request Termination
               </button>
 
             </div>
@@ -173,7 +177,7 @@
     </div>
 
     <div class="col"
-         *ngIf="project && (project?.UserIsPi ||project?.UserIsAdmin)  && (project_application?.Status ==  application_states.APPROVED || project_application?.Status ==  application_states.MODIFICATION_REQUESTED  || project_application?.Status ==  application_states.MODIFICATION_DECLINED || project_application?.Status ==  application_states.MODIFICATION_DECLINED)">
+         *ngIf="project && (project?.UserIsPi ||project?.UserIsAdmin)  && project_application?.Status != application_states.TERMINATED  && project_application?.Status != application_states.DECLINED ">
 
       <div class="card" style=" overflow: scroll">
         <div class="card-header">
@@ -439,15 +443,67 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+  <div bsModal #terminateModal="bs-modal" class="modal fade" tabindex="-1"
+       role="dialog" aria-labelledby="Label"
+       aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Terminate Project</h4>
+          <button type="button" class="close" style="cursor:pointer"
+                  (click)="terminateModal.hide()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+          <div class="alert alert-warning" role="alert">
+            Are you sure you want to terminate this project?
+          </div>
+          <app-project-os-details *ngIf="project" [project]="project"></app-project-os-details>
+          <div class="alert alert-danger" role="alert">
+            All used resources will be scheduled for deletion and then irreversibly terminated!
+
+          </div>
+          <div class="alert alert-danger form-check">
+
+            <label class="form-check-label">
+              <input class="form-check-input"
+                     name="terminate_confirmation_given"
+                     type="checkbox"
+                     id="terminate_confirmation_given"
+                     [checked]="terminate_confirmation_given"
+                     [(ngModel)]="terminate_confirmation_given"
+
+              >
+              I hereby confirm that the project shall be terminated.
+            </label>
+          </div>
 
 
-<div bsModal #applicationModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
-     aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Applications for {{project?.Name}}</h4>
-        <button type="button" class="close" style="cursor: pointer;" (click)="applicationModal.hide()"
+        </div>
+        <div class="modal-footer">
+          <button class="btn  btn-success col-md-4" id="terminate_project_btn"
+                  [disabled]="!terminate_confirmation_given"
+                  (click)="terminateModal.hide();notificationModal.show();requestProjectTermination();">
+            Yes
+          </button>
+          <button class="btn  btn-danger col-md-4" type="reset"
+                  (click)="terminateModal.hide()">Cancel
+          </button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
+
+  <div bsModal #applicationModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+       aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Applications for {{project?.Name}}</h4>
+          <button type="button" class="close" style="cursor: pointer;" (click)="applicationModal.hide()"
                 aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -1488,10 +1544,12 @@
           <div class="modal-footer">
             <div class="row" style="margin:auto;">
               <button type="button" class="btn btn-secondary"
-                      (click)="informationModal.hide(); setModalOpen(false);">Close</button>
+                      (click)="informationModal.hide(); setModalOpen(false);">Close
+              </button>
             </div>
           </div>
-      </div>
+        </div>
       </div>
     </div>
-  </div>
+</div>
+

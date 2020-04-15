@@ -42,7 +42,7 @@ export class ResourcesComponent implements OnInit {
   ramFactors: RamFactor[] = [];
   exportAsConfigCSV: ExportAsConfig = {
     type: 'csv',
-    elementId: this.tableId
+    elementIdOrContent: this.tableId
   };
 
   constructor(private facilityService: FacilityService, private exportAsService: ExportAsService) {
@@ -190,6 +190,8 @@ export class ResourcesComponent implements OnInit {
       const position: number = 0;
       pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
       pdf.save(`${this.selectedFacility['Facility']}.pdf`); // Generated PDF
+    }).catch(() => {
+      console.log('failed to convert to pdf')
     });
   }
 
