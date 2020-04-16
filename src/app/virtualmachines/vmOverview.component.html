@@ -259,7 +259,12 @@
             <div class="card-body p-x-1 py-h"
                  *ngIf="vm?.status == this.VirtualMachineStates.staticACTIVE || vm?.status == this.VirtualMachineStates.staticSHUTOFF">
               <div class="row">
-                <div class="col-6"
+                <div class="col-4">
+                  <a class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+                     [id]="'showDetailsButton_'+vm?.name"
+                     [routerLink]="['/virtualmachines/detail/' + vm?.openstackid]">Show VM details</a>
+                </div>
+                <div class="col-4"
                      *ngIf="vm.status != this.VirtualMachineStates.staticDELETED && vm.status != this.VirtualMachineStates.staticSHUTOFF">
                   <a class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary" *ngIf="vm.cardState!= 1"
                      [id]="'showHowToConnectButton_'+vm?.name"
@@ -271,7 +276,7 @@
                      (click)="selectedVm=vm; vm.cardState=0;" href="#" onClick="return false;">
                     ... Hide information</a>
                 </div>
-                <div class="col-6" *ngIf="vm.status != this.VirtualMachineStates.staticDELETED">
+                <div class="col-4" *ngIf="vm.status != this.VirtualMachineStates.staticDELETED">
                   <a class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary" *ngIf="vm.cardState!=2"
                      [id]="'showActionsButton_'+vm?.name"
                      (click)="selectedVm=vm; vm.cardState=2;" href="#" onClick="return false;">
