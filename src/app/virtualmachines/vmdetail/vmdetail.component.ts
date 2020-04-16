@@ -24,7 +24,7 @@ import {TemplateNames} from '../conda/template-names';
 import {BiocondaService} from '../../api-connector/bioconda.service';
 import {ResenvTemplate} from '../conda/resenvTemplate.model';
 import {WIKI_GUACAMOLE_LINK, WIKI_RSTUDIO_LINK} from '../../../links/links';
-import {ClipboardService} from "ngx-clipboard";
+import {ClipboardService} from 'ngx-clipboard';
 
 /**
  * VM Detail page component
