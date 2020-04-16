@@ -252,7 +252,7 @@
         </div>
 
         <div class="form-group row"
-             *ngIf="projectDataLoaded && (selectedProjectVmsUsed +2) <= selectedProjectVmsMax && (flavors?.length > 0  || selectedFlavor)">
+             *ngIf="projectDataLoaded && (selectedProjectVmsUsed +2) <= selectedProjectVmsMax && (flavors?.length > 0  || selectedFlavor) && selectedProjectClient?.bibigrid_available">
 
           <button style=" margin-left: auto;margin-top: 25px;
     margin-right: auto;
@@ -264,7 +264,7 @@
                   class="btn btn-primary  .btn-lg offset-md-8"
                   data-toggle="modal"
                   (click)="startCluster();infoModal.show()">
-            Start VM
+            Start Cluster
           </button>
         </div>
 
