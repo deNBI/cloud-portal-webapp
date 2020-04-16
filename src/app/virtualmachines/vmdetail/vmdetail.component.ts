@@ -23,6 +23,8 @@ import {CondaPackage} from '../condaPackage.model';
 import {TemplateNames} from '../conda/template-names';
 import {BiocondaService} from '../../api-connector/bioconda.service';
 import {ResenvTemplate} from '../conda/resenvTemplate.model';
+import {is_vo} from '../../shared/globalvar';
+import {WIKI_GUACAMOLE_LINK, WIKI_RSTUDIO_LINK} from '../../../links/links';
 
 /**
  * VM Detail page component
@@ -50,8 +52,10 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
   errorMessage: boolean = false;
   private _condaPackages: CondaPackage[] = [];
   res_env_url: string = '';
-  WIKI_RSTUDIO_LINK: string = 'https://cloud.denbi.de/wiki/portal/customization/#rstudio';
-  WIKI_GUACAMOLE_LINK: string = 'https://cloud.denbi.de/wiki/portal/customization/#apache-guacamole';
+
+  is_vo_admin: boolean = is_vo;
+  WIKI_RSTUDIO_LINK: string = WIKI_RSTUDIO_LINK;
+  WIKI_GUACAMOLE_LINK: string = WIKI_GUACAMOLE_LINK;
 
   DEBOUNCE_TIME: number = 300;
 
@@ -162,6 +166,15 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
                    this.virtualMachine = updated_vm;
                  }
       )
+  }
+
+  setVmNeeded(): void {
+    this.virtualmachineService.setVmNeeded(this.virtualMachine.openstackid).subscribe((res: any) => {
+      if (res['still_needed']) {
+        this.virtualMachine.still_used_confirmation_requested = false;
+
+      }
+    })
   }
 
   /**
