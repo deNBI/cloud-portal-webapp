@@ -24,6 +24,7 @@ import {TemplateNames} from '../conda/template-names';
 import {BiocondaService} from '../../api-connector/bioconda.service';
 import {ResenvTemplate} from '../conda/resenvTemplate.model';
 import {WIKI_GUACAMOLE_LINK, WIKI_RSTUDIO_LINK} from '../../../links/links';
+import {ClipboardService} from "ngx-clipboard";
 
 /**
  * VM Detail page component
@@ -102,7 +103,8 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
               private imageService: ImageService,
               private playbookService: PlaybookService,
               private groupService: GroupService,
-              private biocondaService: BiocondaService) {
+              private biocondaService: BiocondaService,
+              private clipboardService: ClipboardService) {
     super();
   }
 
@@ -380,6 +382,12 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
     })
   }
 
+  copyToClipboard(text: string): void {
+    if (this.clipboardService.isSupported) {
+      this.clipboardService.copy(text);
+    }
+  }
+
   getVmById(): void {
     this.virtualmachineService.getVmById(this.vm_id).subscribe(
       (vm: VirtualMachine) => {
@@ -453,22 +461,6 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
     );
 
     return newImage;
-  }
-
-  copySSHCommand(): void {
-    this.copyToClipboard(this.virtualMachine.ssh_command.substring(65, this.virtualMachine.ssh_command.length));
-  }
-  copyUDPCommand(): void {
-    this.copyToClipboard(this.virtualMachine.udp_command);
-  }
-
-  copyToClipboard(text: string): void {
-    document.addEventListener('copy', (clipEvent: ClipboardEvent) => {
-      clipEvent.clipboardData.setData('text/plain', (text));
-      clipEvent.preventDefault();
-      document.removeEventListener('copy', null);
-    });
-    document.execCommand('copy');
   }
 
   checkAndGetForcDetails(vm: VirtualMachine): void {
