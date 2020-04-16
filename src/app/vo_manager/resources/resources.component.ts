@@ -26,7 +26,7 @@ export class ResourcesComponent implements OnInit {
 
   exportAsConfigCSV: ExportAsConfig = {
     type: 'csv',
-    elementIdOrContent: this.tableId
+    elementId: this.tableId
   };
 
   constructor(private voservice: VoService, private exportAsService: ExportAsService) {
