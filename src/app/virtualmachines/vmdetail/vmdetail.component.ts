@@ -23,6 +23,7 @@ import {CondaPackage} from '../condaPackage.model';
 import {TemplateNames} from '../conda/template-names';
 import {BiocondaService} from '../../api-connector/bioconda.service';
 import {ResenvTemplate} from '../conda/resenvTemplate.model';
+import {is_vo} from '../../shared/globalvar';
 
 /**
  * VM Detail page component
@@ -52,6 +53,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
   res_env_url: string = '';
   WIKI_RSTUDIO_LINK: string = 'https://cloud.denbi.de/wiki/portal/customization/#rstudio';
   WIKI_GUACAMOLE_LINK: string = 'https://cloud.denbi.de/wiki/portal/customization/#apache-guacamole';
+  is_vo_admin: boolean = is_vo;
 
   DEBOUNCE_TIME: number = 300;
 
