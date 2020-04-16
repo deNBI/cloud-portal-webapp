@@ -19,24 +19,27 @@ export class ApplicationExtension {
   private _project_application_renewal_credits: number;
   private _is_only_extra_credits_application: boolean;
   private _project_application_renewal_cloud_service_user_number: number;
+  private _project_application_renewal_cloud_service_develop: boolean;
   private _flavors: Flavor[] = [];
 
   constructor(extension: ApplicationExtension|null) {
-    if(extension){
-    this._project_application_id = extension.project_application_id;
-    this._project_application_renewal_lifetime = extension.project_application_renewal_lifetime;
-    this._project_application_renewal_vms_requested = extension.project_application_renewal_vms_requested;
-    this._project_application_renewal_volume_limit = extension.project_application_renewal_volume_limit;
-    this._project_application_renewal_volume_counter = extension.project_application_renewal_volume_counter;
-    this._project_application_renewal_object_storage = extension.project_application_renewal_object_storage;
-    this._project_application_renewal_comment = extension.project_application_renewal_comment;
-    this._project_application_renewal_date_submitted = extension.project_application_renewal_date_submitted;
-    this._project_application_renewal_total_cores = extension.project_application_renewal_total_cores;
-    this._project_application_renewal_total_ram = extension.project_application_renewal_total_ram;
-    this._project_application_renewal_credits = extension.project_application_renewal_credits;
-    this._is_only_extra_credits_application = extension.is_only_extra_credits_application;
-    this._project_application_renewal_cloud_service_user_number = extension.project_application_renewal_cloud_service_user_number;
-    this._flavors = extension.flavors;}
+    if (extension) {
+      this._project_application_id = extension.project_application_id;
+      this._project_application_renewal_lifetime = extension.project_application_renewal_lifetime;
+      this._project_application_renewal_vms_requested = extension.project_application_renewal_vms_requested;
+      this._project_application_renewal_volume_limit = extension.project_application_renewal_volume_limit;
+      this._project_application_renewal_volume_counter = extension.project_application_renewal_volume_counter;
+      this._project_application_renewal_object_storage = extension.project_application_renewal_object_storage;
+      this._project_application_renewal_comment = extension.project_application_renewal_comment;
+      this._project_application_renewal_date_submitted = extension.project_application_renewal_date_submitted;
+      this._project_application_renewal_total_cores = extension.project_application_renewal_total_cores;
+      this._project_application_renewal_total_ram = extension.project_application_renewal_total_ram;
+      this._project_application_renewal_credits = extension.project_application_renewal_credits;
+      this._is_only_extra_credits_application = extension.is_only_extra_credits_application;
+      this._project_application_renewal_cloud_service_user_number = extension.project_application_renewal_cloud_service_user_number;
+      this._project_application_renewal_cloud_service_develop = extension.project_application_renewal_cloud_service_develop;
+      this._flavors = extension.flavors;
+    }
   }
 
   public calculateRamCores(): void {
@@ -127,7 +130,6 @@ export class ApplicationExtension {
     this._project_application_renewal_lifetime = value;
   }
 
-
   get Id(): number {
     return this._Id;
   }
@@ -176,7 +178,6 @@ export class ApplicationExtension {
     this._project_application_renewal_object_storage = value;
   }
 
-
   get project_application_renewal_date_submitted(): string {
     return this._project_application_renewal_date_submitted;
   }
@@ -207,5 +208,13 @@ export class ApplicationExtension {
 
   set project_application_renewal_cloud_service_user_number(value: number) {
     this._project_application_renewal_cloud_service_user_number = value;
+  }
+
+  get project_application_renewal_cloud_service_develop(): boolean {
+    return this._project_application_renewal_cloud_service_develop;
+  }
+
+  set project_application_renewal_cloud_service_develop(value: boolean) {
+    this._project_application_renewal_cloud_service_develop = value;
   }
 }

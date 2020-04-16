@@ -85,6 +85,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   invitation_link: string;
   filteredMembers: any = null;
   project_application: Application;
+  project_service_in_development: boolean = true;
   application_action: string = '';
   application_member_name: string = '';
   application_action_done: boolean = false;
@@ -346,6 +347,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
           if (!this.project_application.projectapplicationrenewal) {
             this.project_application.inititatenExtension();
           }
+
           this.startUpdateCreditUsageLoop();
 
           if (this.project_application) {

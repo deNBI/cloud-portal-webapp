@@ -1015,11 +1015,35 @@
               <span class="help-block">How much Object Storage do you need in the future?</span>
             </div>
           </div>
-          <div
-            *ngIf="project_application?.project_application_openstack_project && project_application?.project_application_cloud_service && !project_application?.project_application_cloud_service_develop"
-            class="form-group row">
-            <label class="col-md-4 form-control-label" for="project_application_cloud_service_user_number"><strong>Cloud
-              Service user number </strong><i
+
+          <div *ngIf="project_application?.project_application_openstack_project && project_application?.project_application_cloud_service && project_application?.project_application_cloud_service_develop" class="form-group row">
+            <label class="col-md-4 form-control-label" for="textarea-input"><strong>Service status </strong><i
+              data-balloon="Status of your service."
+              data-balloon-pos="down" data-balloon-length="large"><i
+              class="icon-question"
+              style="cursor: pointer;"></i></i></label>
+
+            <div class="col">
+            </div>
+
+            <div *ngIf="project_application?.project_application_openstack_project && project_application?.project_application_cloud_service && project_application?.project_application_cloud_service_develop" class="col">
+              <div class="input-group">
+                <label id="id_project_application_renewal_cloud_service_develop"
+                       class="switch switch-label switch-outline-primary-alt">
+                  <input type="checkbox" class="switch-input"
+                         name="project_application_renewal_cloud_service_develop"
+                         [defaultChecked]="project_application?.project_application_cloud_service_develop"
+                         [(ngModel)]="project_application.project_application_cloud_service_develop"
+                  >
+                  <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                  <span class="switch-handle"></span></label>
+              </div>
+              <span class="help-block">Is your service still in development?</span>
+            </div>
+          </div>
+
+          <div *ngIf="project_application?.project_application_openstack_project && project_application?.project_application_cloud_service && (!project_application?.project_application_cloud_service_develop)" class="form-group row">
+            <label class="col-md-4 form-control-label" for="textarea-input"><strong>Cloud Service user number </strong><i
               data-balloon="Number of user using your service."
               data-balloon-pos="down" data-balloon-length="large"><i
               class="icon-question"
