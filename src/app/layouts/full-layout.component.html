@@ -114,7 +114,9 @@
                       <span class="path4"></span>
                       <span class="path5"></span>
                     </span>
-            {{application.project_name}}
+            <span style="display: inline-block;width: 65%;overflow: hidden;text-overflow: ellipsis;">
+              {{application.project_name}}
+            </span>
             <span class="badge badge-success" style="font-size: 8px; position: relative; top: 3px;" data-toggle="tooltip"
                   data-placement="right" title="This project was approved within the last week."
                   *ngIf="this.project_badges_states[application.application_id] === 0">
