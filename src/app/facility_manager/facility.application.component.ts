@@ -197,6 +197,7 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
    * @param value
    */
   onChangeSelectedFacility(): void {
+    this.isLoaded = false;
     this.all_applications_wfc = [];
     this.all_application_modifications = [];
     this.applications_history = [];

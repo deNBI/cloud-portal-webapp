@@ -384,7 +384,7 @@ export class AddClusterComponent implements OnInit {
     this.client_checked = false;
     this.projectDataLoaded = false;
 
-    this.groupService.getClient(this.selectedProject[1].toString()).subscribe((client: Client) => {
+    this.groupService.getClientBibigrid(this.selectedProject[1].toString()).subscribe((client: Client) => {
       if (client.status && client.status === 'Connected') {
         this.client_avaiable = true;
 
