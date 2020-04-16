@@ -19,7 +19,6 @@ import {ModalDirective} from 'ngx-bootstrap';
 export class NewsManagerComponent implements OnInit {
 
   title: string = 'News Management';
-
   public production: boolean = environment.production;
 
   public managerFacilities: [string, number][];
@@ -259,6 +258,7 @@ export class NewsManagerComponent implements OnInit {
   setNews(news?: WordPressNews): void {
     this.facilitiesToPost = [];
     this.facilitiesToSetMOTD = [];
+    this.selectedTags = [];
     if (news) {
       this.selectedNews = news;
       if (this.selectedNews.excerpt) {
@@ -270,10 +270,13 @@ export class NewsManagerComponent implements OnInit {
         const tempFacility: any = this.computeCenters.find(
           (element: any) => element['compute_center_facility_id'] === facility['FacilityId']);
         if (tempFacility) {
-          if (tempFacility['compute_center_motd_id'] === news.id) {
+          if (tempFacility['compute_center_motd_id'] === news.id.toString()) {
             this.facilitiesToSetMOTD.push(facility);
             document.getElementById(`news_select_${facility['FacilityId']}_motd`)['checked'] = true;
+          } else {
+            document.getElementById(`news_select_${facility['FacilityId']}_motd`)['checked'] = false;
           }
+        } else {
         }
       });
 
@@ -285,11 +288,11 @@ export class NewsManagerComponent implements OnInit {
     } else {
       this.selectedNews = new WordPressNews();
       this.motdLength.next(0);
-      this.selectedTags.forEach((tag: string) => {
-        document.getElementById(`checkbox_${tag}`)['checked'] = false;
-      });
+
       this.managerFacilities.forEach((facility: [string, number]) => {
-        document.getElementById(`news_select_${facility['FacilityId']}_motd`)['checked'] = false;
+        if (document.getElementById(`news_select_${facility['FacilityId']}_motd`)) {
+          document.getElementById(`news_select_${facility['FacilityId']}_motd`)['checked'] = false;
+        }
       });
       this.selectedTags = [];
       this.facilitiesToPost = [];
