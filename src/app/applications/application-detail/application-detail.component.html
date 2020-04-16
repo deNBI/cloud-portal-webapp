@@ -126,7 +126,10 @@
       </td>
     </tr>
     <tr
-      *ngIf="application?.project_application_openstack_project && (!application?.project_application_cloud_service_develop || !application?.projectapplicationrenewal?.project_application_renewal_cloud_service_develop) && application?.project_application_cloud_service">
+      *ngIf="application?.project_application_openstack_project
+      && (!application?.project_application_cloud_service_develop
+        || (!application?.projectapplicationrenewal?.project_application_renewal_cloud_service_develop) && (application?.project_application_status == application_states.MODIFICATION_REQUESTED || isModification) )
+      && application?.project_application_cloud_service">
       <td> - approximate number of users</td>
       <td>
         <span>{{application?.project_application_cloud_service_user_number}}</span>
