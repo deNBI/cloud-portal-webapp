@@ -278,6 +278,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 
     this.applicationsservice.addNewApplication(this.application).subscribe(
       (application: Application) => {
+        this.application_id = application.project_application_id
 
         this.updateNotificationModal('Success', 'The application was submitted', true, 'success');
         this.fullLayout.getGroupsEnumeration();
