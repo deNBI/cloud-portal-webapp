@@ -5,13 +5,21 @@
 <div *ngIf="!isLoaded && !errorMessage" class="loader"></div>
 
 <div class="animated fadeIn" *ngIf="isLoaded">
+  <div class="alert alert-danger" role="alert" *ngIf="is_vo_admin && virtualMachine?.still_used_confirmation_requested">
+    <strong>This machine has been running for a long time, please confirm that you still need this machine.<br>
+      Otherwise, the machine is scheduled for deletion.</strong>
+    <br>
+    <button (click)="setVmNeeded()" type="button" class="btn btn-success" style="width:100%;" id="still_need_btn">
+      <strong>Still needed!</strong>
+    </button>
+  </div>
   <div class="row">
     <div class="col-12">
       <div class="card" style=" overflow: scroll">
         <div class="card-header"><span class="font-weight-bold text-muted">{{virtualMachine?.name}}</span></div>
         <div class="card-body">
 
-           <app-virtualmachineinfo [vm]="virtualMachine"></app-virtualmachineinfo>
+          <app-virtualmachineinfo [vm]="virtualMachine"></app-virtualmachineinfo>
 
         </div>
         <hr *ngIf="virtualMachine?.status === virtualMachineStates.staticACTIVE">
