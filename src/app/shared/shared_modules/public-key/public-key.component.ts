@@ -5,7 +5,7 @@ import {Userinfo} from '../../../userinfo/userinfo.model';
 import {IResponseTemplate} from '../../../api-connector/response-template';
 import {AbstractBaseClasse} from '../baseClass/abstract-base-class';
 import {WIKI_GENERATE_KEYS} from '../../../../links/links';
-import {ClipboardService} from "ngx-clipboard";
+import {ClipboardService} from 'ngx-clipboard';
 
 /**
  * Public Key component.
