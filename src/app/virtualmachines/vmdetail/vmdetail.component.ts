@@ -382,6 +382,10 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
     })
   }
 
+  /**
+   * Copies the content of the field it get's clicked on (e.g. ssh connection information).
+   * @param text the content of the field
+   */
   copyToClipboard(text: string): void {
     if (this.clipboardService.isSupported) {
       this.clipboardService.copy(text);
