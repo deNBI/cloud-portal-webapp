@@ -73,7 +73,6 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
     })
   }
 
-
   getFacilityApplicationById(application: Application): void {
     if (application.project_application_description !== undefined) {
       return;

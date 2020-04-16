@@ -38,7 +38,7 @@ export class ValidationApplicationComponent extends ApplicationBaseClassComponen
 
   }
 
-  ngAfterViewChecked():void {
+  ngAfterViewChecked(): void {
     this.changeDetector.detectChanges();
   }
 
