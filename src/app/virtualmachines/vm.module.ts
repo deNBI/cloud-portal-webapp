@@ -5,10 +5,10 @@ import {VmRoutingModule} from './vm_routing.module';
 import {CommonModule} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ModalModule} from 'ngx-bootstrap/modal';
-import {ImageDetailComponent} from '../virtualmachines/imagedetail.component';
-import {VirtualMachineComponent} from '../virtualmachines/addvm.component';
-import {FlavorDetailComponent} from '../virtualmachines/flavordetail.component';
-import {VmOverviewComponent} from '../virtualmachines/vmOverview.component';
+import {ImageDetailComponent} from './imagedetail.component';
+import {VirtualMachineComponent} from './addvm.component';
+import {FlavorDetailComponent} from './flavordetail.component';
+import {VmOverviewComponent} from './vmOverview.component';
 import {VolumeOverviewComponent} from './volumes/volumeOverview.component';
 import {SnapshotOverviewComponent} from './snapshots/snapshotOverview.component';
 import {PaginationModule} from 'ngx-bootstrap/pagination'

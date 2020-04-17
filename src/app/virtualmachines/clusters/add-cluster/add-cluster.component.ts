@@ -28,8 +28,8 @@ import {Router} from '@angular/router';
              selector: 'app-add-cluster',
              templateUrl: './add-cluster.component.html',
              styleUrls: ['./add-cluster.component.scss'],
-             providers: [GroupService, ImageService, KeyService, FlavorService, VirtualmachineService, ApplicationsService,
-               Application, ApiSettings, KeyService, ClientService, UserService, VoService]
+             providers: [GroupService, ImageService, KeyService, FlavorService, VirtualmachineService
+               , ApiSettings, KeyService, ClientService, UserService, VoService]
            })
 export class AddClusterComponent implements OnInit {
 

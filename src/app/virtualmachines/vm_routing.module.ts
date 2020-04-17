@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {VirtualMachineComponent} from '../virtualmachines/addvm.component';
-import {VmOverviewComponent} from '../virtualmachines/vmOverview.component';
+import {VirtualMachineComponent} from './addvm.component';
+import {VmOverviewComponent} from './vmOverview.component';
 import {VolumeOverviewComponent} from './volumes/volumeOverview.component';
 import {SnapshotOverviewComponent} from './snapshots/snapshotOverview.component';
 import {VmDetailComponent} from './vmdetail/vmdetail.component';
@@ -10,8 +10,8 @@ import {ClusterdetailComponent} from './clusters/clusterdetail/clusterdetail.com
 import {ClusterOverviewComponent} from './clusters/clusteroverview/clusterOverview.component';
 
 const routes: Routes = [
-    {
-        path: 'newVM',
+  {
+    path: 'newVM',
         component: VirtualMachineComponent,
         data: {
             title: 'New Instance'
