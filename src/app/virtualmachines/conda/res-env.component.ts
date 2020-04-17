@@ -29,6 +29,7 @@ export class ResEnvComponent implements OnInit {
 
   undefinedTemplate: ResearchEnvironment = new ResearchEnvironment();
 
+
   rng: RandomNameGenerator;
 
   WIKI_RESENV_LINK: string = WIKI_RESENV_LINK;
