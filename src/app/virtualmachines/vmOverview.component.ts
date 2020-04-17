@@ -45,7 +45,6 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
   volume_to_detach: Volume;
   detached_project_volumes: Volume[] = [];
 
-
   WIKI_RSTUDIO_LINK: string = WIKI_RSTUDIO_LINK;
   WIKI_GUACAMOLE_LINK: string = WIKI_GUACAMOLE_LINK;
 
