@@ -54,6 +54,15 @@ export class GroupService {
 
   }
 
+  getClientBibigrid(groupid: string): Observable<Client> {
+
+    return this.http.get<Client>(`${ApiSettings.getApiBaseURL()}projects/${groupid}/cluster/client/`, {
+      withCredentials: true,
+      headers: header
+    })
+
+  }
+
   getClientForcUrl(groupid: string, isClient?: string): Observable<any> {
     if (isClient) {
       const params: HttpParams = new HttpParams().set('client', isClient);
