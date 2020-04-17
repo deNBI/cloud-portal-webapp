@@ -347,8 +347,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
           if (!this.project_application.projectapplicationrenewal) {
             this.project_application.inititatenExtension();
           }
-          if (this.project_application.project_application_perun_id){
-          this.startUpdateCreditUsageLoop();}
+          if (this.project_application.project_application_perun_id) {
+          this.startUpdateCreditUsageLoop(); }
 
           if (this.project_application) {
             this.setLifetime();
