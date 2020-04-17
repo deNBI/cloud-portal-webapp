@@ -269,11 +269,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
     this.application.project_application_edam_terms = tmp;
   }
 
-  /**
-   * Submit application.
-   * @param {NgForm} form
-   */
-  onSubmit(form: NgForm): void {
+  onSubmit(): void {
     this.error = null;
 
     this.applicationsservice.addNewApplication(this.application).subscribe(

@@ -43,7 +43,7 @@
             <input name="test_name" placeholder="TestAppName" #test_name>
           </div>
 
-          <form id="application_form" #f="ngForm"
+          <form id="application_form" #form="ngForm"
                 class="form-horizontal">
             <div class="form-group row">
               <h5 class="col-md-6 form-control-label">General Information</h5>
@@ -94,8 +94,8 @@
                        placeholder="e.g. Assembler benchmarking based on A. thaliana genome"
                        [(ngModel)]="application.project_application_name"
                        [ngClass]="{
-                                'is-invalid': f.controls.project_application_name?.invalid && (f.controls.project_application_name?.dirty || f.controls.project_application_name?.touched),
-                                'is-valid': f.controls.project_application_name?.valid && (f.controls.project_application_name?.dirty || f.controls.project_application_name?.touched)
+                                'is-invalid': form.controls.project_application_name?.invalid && (form.controls.project_application_name?.dirty || form.controls.project_application_name?.touched),
+                                'is-valid': form.controls.project_application_name?.valid && (form.controls.project_application_name?.dirty || form.controls.project_application_name?.touched)
                                 }">
                 <span class="help-block">Name your project.</span>
               </div>
@@ -122,8 +122,8 @@
                        placeholder="e.g. ThalianaBench"
                        pattern="[a-zA-Z0-9]+"
                        [ngClass]="{
-                                'is-invalid': f.controls.project_application_shortname?.invalid && (f.controls.project_application_shortname?.dirty || f.controls.project_application_shortname?.touched),
-                                'is-valid': f.controls.project_application_shortname?.valid && (f.controls.project_application_shortname?.dirty || f.controls.project_application_shortname?.touched)
+                                'is-invalid': form.controls.project_application_shortname?.invalid && (form.controls.project_application_shortname?.dirty || form.controls.project_application_shortname?.touched),
+                                'is-valid': form.controls.project_application_shortname?.valid && (form.controls.project_application_shortname?.dirty || form.controls.project_application_shortname?.touched)
                                 }">
 
 
@@ -145,8 +145,8 @@
                                           placeholder="Full description. Consider to name tools you want to use."
                                           [(ngModel)]="application.project_application_description"
                                           [ngClass]="{
-                                'is-invalid': f.controls.project_application_description?.invalid && (f.controls.project_application_description?.dirty || f.controls.project_application_description?.touched),
-                                'is-valid': f.controls.project_application_description?.valid && (f.controls.project_application_description?.dirty || f.controls.project_application_description?.touched)
+                                'is-invalid': form.controls.project_application_description?.invalid && (form.controls.project_application_description?.dirty || form.controls.project_application_description?.touched),
+                                'is-valid': form.controls.project_application_description?.valid && (form.controls.project_application_description?.dirty || form.controls.project_application_description?.touched)
                                 }"></textarea>
                 <span class="help-block">Describe what would you want to do in your project.</span>
                 <div class="alert alert-info">
@@ -172,8 +172,8 @@
                          appMinAmount="1" appMaxAmount="12" appInteger
                          pattern="^([1-9]|1[012])$"
                          [ngClass]="{
-                                'is-invalid': f.controls.project_application_lifetime?.invalid && (f.controls.project_application_lifetime?.dirty || f.controls.project_application_lifetime?.touched),
-                                'is-valid': f.controls.project_application_lifetime?.valid && (f.controls.project_application_lifetime?.dirty || f.controls.project_application_lifetime?.touched)
+                                'is-invalid': form.controls.project_application_lifetime?.invalid && (form.controls.project_application_lifetime?.dirty || form.controls.project_application_lifetime?.touched),
+                                'is-valid': form.controls.project_application_lifetime?.valid && (form.controls.project_application_lifetime?.dirty || form.controls.project_application_lifetime?.touched)
                                 }">
                   <div class="input-group-append"><span class="input-group-text"> months
                                     </span></div>
@@ -281,14 +281,14 @@
                          appMinAmount="0" appInteger
                          [(ngModel)]="application.project_application_volume_counter"
                          [ngClass]="{
-                                'is-invalid': f.controls.project_application_volume_counter?.invalid,
-                                'is-valid': f.controls.project_application_volume_counter?.valid
+                                'is-invalid': form.controls.project_application_volume_counter?.invalid,
+                                'is-valid': form.controls.project_application_volume_counter?.valid
                                 }">
                 </div>
                 <span class="help-block">How many storage volumes do you want to use?</span>
               </div>
             </div>
-            <div class="form-group row" [hidden]="f.controls.project_application_volume_counter?.value == 0">
+            <div class="form-group row" [hidden]="form.controls.project_application_volume_counter?.value == 0">
               <label class="col-md-4 form-control-label" for="id_project_application_volume_limit"><strong> Volume
                 Storage
                 Limit*
@@ -307,10 +307,10 @@
 
                          appInteger appMinAmount="1"
                          [ngClass]="{
-                                'is-invalid': f.controls.project_application_volume_limit?.invalid,
-                                'is-valid': f.controls.project_application_volume_limit?.valid
+                                'is-invalid': form.controls.project_application_volume_limit?.invalid,
+                                'is-valid': form.controls.project_application_volume_limit?.valid
                                 }"
-                         [disabled]="f.controls.project_application_volume_counter?.value == 0">
+                         [disabled]="form.controls.project_application_volume_counter?.value == 0">
                   <div class="input-group-append"><span class="input-group-text"> GB
                                     </span></div>
                 </div>
@@ -333,8 +333,8 @@
                          [(ngModel)]="application.project_application_object_storage" min="0" step="1" type="number"
                          appInteger appMinAmount="0"
                          [ngClass]="{
-                                'is-invalid': f.controls.project_application_object_storage?.invalid ,
-                                'is-valid': f.controls.project_application_object_storage?.valid
+                                'is-invalid': form.controls.project_application_object_storage?.invalid ,
+                                'is-valid': form.controls.project_application_object_storage?.valid
                                 }">
                   <div class="input-group-append"><span class="input-group-text"> GB </span></div>
                 </div>
@@ -379,8 +379,8 @@
                        placeholder="e.g. Center for Biotechnology, Bielefeld"
                        [(ngModel)]="application.project_application_institute"
                        [ngClass]="{
-                                'is-invalid': f.controls.project_application_institute?.invalid && (f.controls.project_application_institute?.dirty || f.controls.project_application_institute?.touched),
-                                'is-valid': f.controls.project_application_institute?.valid && (f.controls.project_application_institute?.dirty || f.controls.project_application_institute?.touched)
+                                'is-invalid': form.controls.project_application_institute?.invalid && (form.controls.project_application_institute?.dirty || form.controls.project_application_institute?.touched),
+                                'is-valid': form.controls.project_application_institute?.valid && (form.controls.project_application_institute?.dirty || form.controls.project_application_institute?.touched)
                                 }">
                 <span class="help-block">To which institute do you belong?</span>
               </div>
@@ -399,8 +399,8 @@
                        placeholder="e.g. Computational Metagenomics"
 
                        [ngClass]="{
-                                'is-invalid': f.controls.project_application_workgroup?.invalid && (f.controls.project_application_workgroup?.dirty || f.controls.project_application_workgroup?.touched),
-                                'is-valid': f.controls.project_application_workgroup?.valid && (f.controls.project_application_workgroup?.dirty || f.controls.project_application_workgroup?.touched)
+                                'is-invalid': form.controls.project_application_workgroup?.invalid && (form.controls.project_application_workgroup?.dirty || form.controls.project_application_workgroup?.touched),
+                                'is-valid': form.controls.project_application_workgroup?.valid && (form.controls.project_application_workgroup?.dirty || form.controls.project_application_workgroup?.touched)
                                 }">
                 <span class="help-block">To which workgroup do you belong?</span>
               </div>
@@ -543,8 +543,8 @@
                          appMinAmount="1" appInteger
                          [(ngModel)]="application.project_application_cloud_service_user_number"
                          [ngClass]="{
-                                'is-invalid': f.controls.project_application_cloud_service_user_number?.invalid,
-                                'is-valid': f.controls.project_application_cloud_service_user_number?.valid
+                                'is-invalid': form.controls.project_application_cloud_service_user_number?.invalid,
+                                'is-valid': form.controls.project_application_cloud_service_user_number?.valid
                                 }">
                 </div>
                 <span class="help-block">How many service users will probably use your service?
@@ -568,8 +568,8 @@
                        name="project_application_horizon2020" class="form-control"
                        maxlength="2048" required minlength="2"
                        [ngClass]="{
-                                'is-invalid': f.controls.project_application_horizon2020?.invalid,
-                                'is-valid': f.controls.project_application_horizon2020?.valid
+                                'is-invalid': form.controls.project_application_horizon2020?.invalid,
+                                'is-valid': form.controls.project_application_horizon2020?.valid
                                 }"
                        [(ngModel)]="application.project_application_horizon2020" placeholder='Name of the project'>
                 <p>Is your project part of a Horizon 2020 project?</p>
@@ -590,8 +590,8 @@
                        name="project_application_elixir_project" class="form-control"
                        maxlength="2048" required minlength="2"
                        [ngClass]="{
-                                'is-invalid': f.controls.project_application_elixir_project?.invalid,
-                                'is-valid': f.controls.project_application_elixir_project?.valid
+                                'is-invalid': form.controls.project_application_elixir_project?.invalid,
+                                'is-valid': form.controls.project_application_elixir_project?.valid
                                 }"
                        [(ngModel)]="application.project_application_elixir_project" placeholder='Name of the project'>
                 <p>Is your project part of an Elixir project?</p>
@@ -611,8 +611,8 @@
                        name="project_application_bmbf_project" class="form-control"
                        maxlength="2048" required minlength="2"
                        [ngClass]="{
-                                'is-invalid': f.controls.project_application_bmbf_project?.invalid,
-                                'is-valid': f.controls.project_application_bmbf_project?.valid
+                                'is-invalid': form.controls.project_application_bmbf_project?.invalid,
+                                'is-valid': form.controls.project_application_bmbf_project?.valid
                                 }"
                        [(ngModel)]="application.project_application_bmbf_project" placeholder='Name of the project'>
                 <p>Is your project part of a BMBF project?</p>
@@ -942,8 +942,8 @@
                        ngModel
                        pattern="(?!(^[.-].*|[^@]*[.-]@|.*\.{2,}.*)|^.{254}.)([a-zA-Z0-9!#$%&'*+\/=?^_`{|}~.-]+@)(?!-.*|.*-\.)([a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,15}"
                        [ngClass]="{
-                                'is-invalid': f.controls.project_application_pi_email?.invalid && (f.controls.project_application_pi_email?.dirty || f.controls.project_application_pi_email?.touched),
-                                'is-valid': f.controls.project_application_pi_email?.valid && (f.controls.project_application_pi_email?.dirty || f.controls.project_application_pi_email?.touched)
+                                'is-invalid': form.controls.project_application_pi_email?.invalid && (form.controls.project_application_pi_email?.dirty || form.controls.project_application_pi_email?.touched),
+                                'is-valid': form.controls.project_application_pi_email?.valid && (form.controls.project_application_pi_email?.dirty || form.controls.project_application_pi_email?.touched)
                                 }">
                 <p *ngIf="!application.project_application_pi_approved  && !is_validation"> Please enter the e-mail
                   address of your
@@ -965,7 +965,7 @@
             Please select at least one flavor.
           </div>
           <div
-            *ngIf="f.invalid ||application.project_application_edam_terms.length == 0 || (application?.flavors.length == 0  && !application?.project_application_openstack_project) || (!application?.dissemination.isPlatformSelected() && application.project_application_report_allowed)"
+            *ngIf="form.invalid ||application.project_application_edam_terms.length == 0 || (application?.flavors.length == 0  && !application?.project_application_openstack_project) || (!application?.dissemination.isPlatformSelected() && application.project_application_report_allowed)"
             class="form-group row alert alert-warning">
             Some required fields are incorrect or not filled in yet.
             Please check if all required (*) fields are filled in correctly.
@@ -997,8 +997,8 @@
               </div>
             </div>
             <label class="col-md-4 form-control-label">
-              <button (click)="notificationModal.show();approveApplication(f);"
-                      [disabled]="!respCheck.checked || f.invalid  ||application.project_application_edam_terms.length == 0  || (application?.flavors.length == 0  && !application?.project_application_openstack_project)|| (!application?.dissemination?.isPlatformSelected()  && application.project_application_report_allowed)"
+              <button (click)="notificationModal.show();approveApplication(form);"
+                      [disabled]="!respCheck.checked || form.invalid  ||application.project_application_edam_terms.length == 0  || (application?.flavors.length == 0  && !application?.project_application_openstack_project)|| (!application?.dissemination?.isPlatformSelected()  && application.project_application_report_allowed)"
 
                       class="btn btn-sm btn-success">
                 <i class="fa fa-dot-circle-o"></i>
@@ -1009,9 +1009,9 @@
           </div>
           <div>
             <button *ngIf="!is_validation"
-                    (click)="filterEnteredData(f);calculateInitialCredits(f); submitModal.show();"
+                    (click)="filterEnteredData(form);calculateInitialCredits(form); submitModal.show();"
                     id="submit_btn"
-                    [disabled]="f.invalid  ||application.project_application_edam_terms.length == 0  || (application?.flavors.length == 0  && !application?.project_application_openstack_project) || (!application?.dissemination?.isPlatformSelected()  && application.project_application_report_allowed)"
+                    [disabled]="form.invalid  ||application.project_application_edam_terms.length == 0  || (application?.flavors.length == 0  && !application?.project_application_openstack_project) || (!application?.dissemination?.isPlatformSelected()  && application.project_application_report_allowed)"
                     class="btn btn-sm btn-success"
                     type="button"><i
               class="fa fa-dot-circle-o"></i> Submit
@@ -1091,7 +1091,7 @@
       </div>
       <div class="modal-footer">
         <button id="acknowledge_approve_btn" type="button"
-                (click)="acknowledgemodal.hide(); onSubmit(f); notificationModal.show();"
+                (click)="acknowledgemodal.hide(); onSubmit(); notificationModal.show();"
                 class="btn  btn-success" name="_save" form="application_form">
           Accept
         </button>
