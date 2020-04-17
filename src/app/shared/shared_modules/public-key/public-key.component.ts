@@ -5,6 +5,7 @@ import {Userinfo} from '../../../userinfo/userinfo.model';
 import {IResponseTemplate} from '../../../api-connector/response-template';
 import {AbstractBaseClasse} from '../baseClass/abstract-base-class';
 import {WIKI_GENERATE_KEYS} from '../../../../links/links';
+import {ClipboardService} from 'ngx-clipboard';
 
 /**
  * Public Key component.
@@ -21,9 +22,11 @@ export class PublicKeyComponent extends AbstractBaseClasse {
   WIKI_GENERATE_KEYS: string = WIKI_GENERATE_KEYS;
 
   public_key: string;
+  acknowledgement_given: boolean = false;
   @Input() userinfo: Userinfo;
 
-  constructor(private keyservice: KeyService) {
+  constructor(private keyservice: KeyService,
+              private clipboardService: ClipboardService) {
     super()
   }
 
@@ -34,6 +37,14 @@ export class PublicKeyComponent extends AbstractBaseClasse {
     this.keyservice.postKey(publicKey.replace(re, '%2B')).subscribe(() => {
       this.getUserPublicKey();
     });
+  }
+
+  copyToClipboard(text: string): void {
+    if (this.clipboardService.isSupported) {
+      this.clipboardService.copy(text);
+    } else {
+      super.copyToClipboard(text);
+    }
   }
 
   validatePublicKey(): boolean {
