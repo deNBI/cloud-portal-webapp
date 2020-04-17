@@ -3,6 +3,7 @@ import {FormControl, Validators} from '@angular/forms';
 import {BiocondaService} from '../../api-connector/bioconda.service';
 import {ResearchEnvironment} from '../virtualmachinemodels/res-env';
 import {RandomNameGenerator} from '../../shared/randomNameGenerator';
+import {WIKI_RESENV_LINK} from '../../../links/links';
 
 /**
  * ResEnv.
@@ -17,6 +18,7 @@ export class ResEnvComponent implements OnInit {
   @Input() clientid: string;
   @Input() forc_url: string;
   @Input() onlyNamespace: boolean = false;
+  @Input() imageName: string = '';
 
   user_key_url: FormControl = new FormControl('',
                                               [Validators.required, Validators.pattern('[a-zA-Z]*')]);
@@ -27,9 +29,10 @@ export class ResEnvComponent implements OnInit {
 
   undefinedTemplate: ResearchEnvironment = new ResearchEnvironment();
 
-  WIKI_RESENV_LINK: string = 'https://cloud.denbi.de/wiki/portal/customization/#research-environments';
 
   rng: RandomNameGenerator;
+
+  WIKI_RESENV_LINK: string = WIKI_RESENV_LINK;
 
   constructor(private condaService: BiocondaService) {
   }

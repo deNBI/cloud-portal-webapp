@@ -7,6 +7,10 @@ export const WIKI_NEWS_MANAGEMENT: string = 'https://cloud.denbi.de/wiki/cloud_a
 export const WIKI_SIMPLEVM_CUSTOMISATION: string = 'https://cloud.denbi.de/wiki/simple_vm/customisation';
 export const WIKI_EXTEND_VOLUME: string = 'https://cloud.denbi.de/wiki/simple_vm/volumes/#extend-a-volume';
 export const WIKI_VOLUME_OVERVIEW: string = 'https://cloud.denbi.de/wiki/simple_vm/volumes/';
+export const WIKI_RESENV_LINK: string = 'https://cloud.denbi.de/wiki/simple_vm/customization/#research-environments';
+
+export const WIKI_RSTUDIO_LINK: string = 'https://cloud.denbi.de/wiki/simple_vm/customization/#rstudio';
+export const WIKI_GUACAMOLE_LINK: string = 'https://cloud.denbi.de/wiki/simple_vm/customization/#apache-guacamole';
 export const WIKI_LNKS: string[] =
   [
     WIKI_MOUNT_VOLUME,
@@ -17,5 +21,8 @@ export const WIKI_LNKS: string[] =
     WIKI_NEWS_MANAGEMENT,
     WIKI_SIMPLEVM_CUSTOMISATION,
     WIKI_EXTEND_VOLUME,
-    WIKI_VOLUME_OVERVIEW
+    WIKI_VOLUME_OVERVIEW,
+    WIKI_RESENV_LINK,
+    WIKI_RSTUDIO_LINK,
+    WIKI_GUACAMOLE_LINK
   ];
