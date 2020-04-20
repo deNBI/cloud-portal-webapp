@@ -413,7 +413,7 @@
             </div>
             <div class="form-group row">
               <label class="col-md-4 form-control-label"><strong>Research Topics* </strong></label>
-              <div class="col-md-8">
+              <div class="col-md-8" style="  z-index: 999;" >
                 <div [ngClass]="{
                                 'danger-border': application.project_application_edam_terms?.length <=0,
                                 'success-border':application.project_application_edam_terms?.length >0
@@ -677,7 +677,7 @@
                   </div>
 
                   <div class="form-group row">
-                    <label class="col-md-4 form-control-label">Project Title + Research Topics</label>
+                    <label class="col-md-4 form-control-label">Project Title</label>
                     <div class="col-md-2">
                       <label class="switch switch-label switch-outline-primary-alt">
                         <input type="checkbox" class="switch-input" name="information_title" checked
@@ -690,6 +690,19 @@
                                                  placeholder="Choose a public title - Leave blank for existing title."
 
                                                  [(ngModel)]="application.dissemination.information_title">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-md-4 form-control-label">Research Topics</label>
+                    <div class="col-md-2">
+                      <label class="switch switch-label switch-outline-primary-alt">
+                        <input type="checkbox" class="switch-input" name="information_edam_terms" checked
+                               disabled>
+                        <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                        <span class="switch-handle"></span>
+                      </label>
+                    </div>
+                    <div class="col-md-6">
                       <h5><span
 
                         *ngFor="let term of application.project_application_edam_terms"
@@ -701,6 +714,7 @@
                       </h5>
                     </div>
                   </div>
+
 
                   <div class="form-group row">
                     <label class="col-md-4 form-control-label">Description</label>
