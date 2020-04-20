@@ -26,7 +26,7 @@ export class ResourcesComponent implements OnInit {
 
   exportAsConfigCSV: ExportAsConfig = {
     type: 'csv',
-    //elementId: this.tableId
+    // elementId: this.tableId
     elementIdOrContent: this.tableId
   };
 
