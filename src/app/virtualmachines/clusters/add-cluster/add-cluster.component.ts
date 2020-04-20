@@ -202,7 +202,7 @@ export class AddClusterComponent implements OnInit {
    */
   private checkStatusTimeout: number = 5000;
 
-  @ViewChild('bioconda', { static: false }) biocondaComponent: BiocondaComponent;
+  @ViewChild('bioconda', { static: true }) biocondaComponent: BiocondaComponent;
 
   constructor(private groupService: GroupService, private imageService: ImageService,
               private flavorService: FlavorService, private virtualmachineservice: VirtualmachineService,
