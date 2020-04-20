@@ -94,7 +94,7 @@
     "@types/node": "13.13.0",
     "audit-ci": "^2.4.2",
     "autoprefixer": "^9.7.5",
-    "codelyzer": "^4.5.0",
+    "codelyzer": "^5.2.2",
     "exports-loader": "^0.7.0",
     "file-loader": "^6.0.0",
     "html-webpack-plugin": "^4.0.1",
