@@ -2,7 +2,6 @@ import {AbstractBaseClasse} from './abstract-base-class';
 import {ApplicationStatus} from '../../../applications/application_status.model';
 import {Application} from '../../../applications/application.model/application.model';
 import {Flavor} from '../../../virtualmachines/virtualmachinemodels/flavor';
-import {ApplicationExtension} from '../../../applications/application_extension.model';
 import {ApplicationsService} from '../../../api-connector/applications.service';
 import {ComputecenterComponent} from '../../../projectmanagement/computecenter.component';
 import {FlavorType} from '../../../virtualmachines/virtualmachinemodels/flavorType';
@@ -11,7 +10,6 @@ import {FacilityService} from '../../../api-connector/facility.service';
 import {Component} from '@angular/core';
 import {ApplicationStatusService} from '../../../api-connector/application-status.service';
 import {UserService} from '../../../api-connector/user.service';
-import {ApplicationDissemination} from '../../../applications/application-dissemination';
 
 /**
  * Application base component..
@@ -45,12 +43,6 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
    * @type {Array}
    */
   application_status: ApplicationStatus[] = [];
-
-  /**application_user
-   * User which requested the Application {id: Elixir id of user : {name and email}}.
-   * @type {{}}
-   */
-  application_user: { [id: string]: { [id: string]: string } } = {};
 
   /**
    * List of flavor types.
@@ -180,200 +172,25 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
     }
   }
 
-  setShortNewApplication(aj: any): Application {
-    const newApp: Application = new Application();
-    newApp.Id = aj['project_application_id'];
-
-    newApp.Name = aj['project_application_name'];
-    newApp.Shortname = aj['project_application_shortname'];
-    newApp.Institute = aj['project_application_institute'];
-    newApp.User = aj['project_application_user']['username'];
-    newApp.DateSubmitted = aj['project_application_date_submitted'];
-    newApp.Status = aj['project_application_status'];
-    newApp.PerunId = aj['project_application_perun_id'];
-    newApp.OpenStackProject = aj['project_application_openstack_project'];
-
-    newApp.DateApproved = aj['project_application_date_approved'];
-
-    return newApp
-  }
-
-  setNewApplication(aj: any): Application {
-
-    const newApp: Application = new Application();
-    newApp.Id = aj['project_application_id'];
-
-    newApp.Name = aj['project_application_name'];
-    newApp.Shortname = aj['project_application_shortname'];
-    newApp.Description = aj['project_application_description'];
-    newApp.Lifetime = aj['project_application_lifetime'];
-    newApp.EdamTopics = aj['project_application_edam_terms'];
-    newApp.PiAffiliations = aj['pi_affiliations'];
-    newApp.SensitiveData = aj['project_application_sensitive_data'];
-    newApp.VMsRequested = aj['project_application_vms_requested'];
-    newApp.RamPerVM = aj['project_application_ram_per_vm'];
-    newApp.TotalRam = aj['project_application_total_ram'];
-    newApp.TotalCores = aj['project_application_total_cores'];
-    newApp.InitialCredits = aj['project_application_initial_credits'];
-    newApp.CoresPerVM = aj['project_application_cores_per_vm'];
-    newApp.VolumeLimit = aj['project_application_volume_limit'];
-    newApp.VolumeCounter = aj['project_application_volume_counter'];
-    newApp.OpenstackBasicIntroduction = aj['project_application_openstack_basic_introduction'];
-
-    newApp.ObjectStorage = aj['project_application_object_storage'];
-    newApp.OpenStackProject = aj['project_application_openstack_project'];
-
-    newApp.Institute = aj['project_application_institute'];
-    newApp.Workgroup = aj['project_application_workgroup'];
-    newApp.DateApproved = aj['project_application_date_approved'];
-
-    newApp.DateSubmitted = aj['project_application_date_submitted'];
-    newApp.DateStatusChanged = aj['project_application_date_status_changed'];
-    newApp.User = aj['project_application_user']['username'];
-    newApp.UserAffiliations = aj['project_application_user']['profile']['affiliations'];
-    newApp.UserEmail = aj['project_application_user']['email'];
-    newApp.Status = aj['project_application_status'];
-    newApp.Dissemination = this.createDisseminatenObject(aj['dissemination']);
-    newApp.Horizon2020 = aj['project_application_horizon2020'];
-    newApp.BMBFProject = aj['project_application_bmbf_project'];
-    newApp.ElixirProject = aj['project_application_elixir_project'];
-    newApp.Comment = aj['project_application_comment'];
-    newApp.PerunId = aj['project_application_perun_id'];
-    newApp.PIApproved = aj['project_application_pi_approved'];
-    newApp.Workshop = aj['project_application_workshop'];
-    newApp.CloudService = aj['project_application_cloud_service'];
-    newApp.CloudServiceDevelop = aj['project_application_cloud_service_develop'];
-    newApp.CloudServiceUserNumber = aj['project_application_cloud_service_user_number'];
-
-    if (aj['project_application_pi']) {
-      const firstName: string = (aj['project_application_pi'])['firstName'];
-      const lastName: string = (aj['project_application_pi'])['lastName'];
-      newApp.PI = `${firstName} ${lastName}`;
-      newApp.PIEmail = (aj['project_application_pi'])['email'];
-      newApp.PIElixir = aj['project_application_pi']['elixirId']
-    }
-
-    if (newApp.Status === this.application_states.APPROVED) {
-      newApp.DaysRunning = Math.ceil((Math.abs(Date.now() - new Date(newApp.DateApproved).getTime())) / (1000 * 3600 * 24));
-
-    }
-    for (const flavor of aj['flavors']) {
-      newApp.addFlavorToCurrent(
-        flavor.flavor_name, flavor.counter, flavor.tag, flavor.ram,
-        flavor.rootdisk, flavor.vcpus, flavor.gpu, flavor.epheremal_disk)
-
-    }
-    if (aj['projectapplicationrenewal']) {
-      const extension: ApplicationExtension = new ApplicationExtension();
-      let requestExtensionTotalCores: number = 0;
-      let requestExtensionTotalRam: number = 0;
-
-      for (const flavor of aj['projectapplicationrenewal']['flavors']) {
-        extension.addFlavorToRequested(
-          flavor.flavor_name, flavor.counter, flavor.tag, flavor.ram,
-          flavor.rootdisk, flavor.vcpus, flavor.gpu, flavor.epheremal_disk);
-        requestExtensionTotalCores += flavor.vcpus * flavor.counter;
-        requestExtensionTotalRam += flavor.ram * flavor.counter
-
-      }
-
-      extension.TotalRAM = requestExtensionTotalRam;
-      extension.TotalCores = requestExtensionTotalCores;
-
-      extension.Id = aj['projectapplicationrenewal']['project_application'];
-      extension.Lifetime = aj['projectapplicationrenewal']['project_application_renewal_lifetime'];
-      extension.VolumeLimit = aj['projectapplicationrenewal']['project_application_renewal_volume_limit'];
-      extension.VolumeCounter = aj['projectapplicationrenewal']['project_application_renewal_volume_counter'];
-      extension.VMsRequested = aj['projectapplicationrenewal']['project_application_renewal_vms_requested'];
-      extension.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
-      extension.CoresPerVM = aj['projectapplicationrenewal']['project_application_renewal_cores_per_vm'];
-      extension.ObjectStorage = aj['projectapplicationrenewal']['project_application_renewal_object_storage'];
-      extension.RamPerVM = aj['projectapplicationrenewal']['project_application_renewal_ram_per_vm'];
-      extension.Comment = aj['projectapplicationrenewal']['project_application_renewal_comment'];
-      extension.ExtendedCredits = aj['projectapplicationrenewal']['project_application_renewal_credits'];
-      extension.IsOnlyExtraCreditsApplication = aj['projectapplicationrenewal']['is_only_extra_credits_application'];
-      extension.CloudServiceUserNumber = aj['projectapplicationrenewal']['project_application_renewal_cloud_service_user_number'];
-      newApp.ApplicationExtension = extension;
-    }
-
-    return newApp
-  }
-
-  createDisseminatenObject(obj: any): ApplicationDissemination {
-    if (obj) {
-      // @ts-ignore
-      return new ApplicationDissemination(
-        obj['platform_denbi'], obj['platform_twitter'],
-        obj['information_title'], obj['information_resources'], obj['information_pi_name'],
-        obj['information_institution'], obj['information_workgroup'],
-        obj['information_project_type'],
-        obj['information_lifetime'], obj['information_project_affiliation'],
-        obj['information_description'])
-    } else {
-      return null
-    }
-  }
-
-  setShortDetailNewApplications(res: any): Application[] {
-    const newApplications: Application[] = [];
-
-    for (const key in res) {
-      if (res.hasOwnProperty(key)) {
-
-        const aj: object = res[key];
-
-        newApplications.push(this.setShortNewApplication(aj))
-      }
-    }
-
-    return newApplications
-  }
-
-  setNewApplications(res: any): Application[] {
-    const newApplications: Application[] = [];
-
-    for (const key in res) {
-      if (res.hasOwnProperty(key)) {
-
-        const aj: object = res[key];
-
-        newApplications.push(this.setNewApplication(aj))
-      }
-    }
-
-    return newApplications
-  }
-
-  setApplicationUser(elixir_id: string): void {
-    if (!(elixir_id in this.application_user)) {
-      this.userservice.getMemberDetailsByElixirId(elixir_id).subscribe((result: { [key: string]: string }) => {
-
-        const name: string = `${result['firstName']} ${result['lastName']}`;
-        const appuser: { [id: string]: string } = {};
-        appuser['name'] = name;
-        appuser['email'] = result['email'];
-        this.application_user[elixir_id] = appuser;
-      })
-    }
-  }
-
   /**
    * Get details of member like name and email by elixir.
    * @param {string} elixir_id
    * @param {string} collapse_id
    */
-  public getMemberDetailsByElixirIdIfCollapsed(elixir_id: string, collapse_id: string): void {
+  public getMemberDetailsByElixirIdIfCollapsed(application: Application, collapse_id: string): void {
     if (!this.getCollapseStatus(collapse_id)) {
-      this.setApplicationUser(elixir_id);
+      this.getMemberDetailsByElixirId(application);
     }
   }
 
-  /**
-   * Get details of member like name and email by elixir.
-   * @param {string} elixir_id
-   */
-  public getMemberDetailsByElixirId(elixir_id: string): void {
-    this.setApplicationUser(elixir_id);
+  public getMemberDetailsByElixirId(application: Application): void {
+    this.userservice.getMemberDetailsByElixirId(application.project_application_user.elixir_id).subscribe(
+      (result: { [key: string]: string }) => {
+
+        application.project_application_user.username = `${result['firstName']} ${result['lastName']}`;
+
+        application.project_application_user.email = result['email'];
+      });
   }
 
   /**

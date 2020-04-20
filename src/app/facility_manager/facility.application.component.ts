@@ -61,7 +61,7 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
    */
   public approveExtension(app: Application): void {
 
-    this.applicationsservice.approveRenewal(app.Id).subscribe((result: any) => {
+    this.applicationsservice.approveRenewal(app.project_application_id).subscribe((result: any) => {
       if (result['Error']) {
         this.updateNotificationModal('Failed', 'Failed to approve the application modification.', true, 'danger');
       } else {
@@ -73,32 +73,14 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
     })
   }
 
-  /**
-   * Get all application modification requests.
-   * @param {number} facility id of the facility
-   */
-  getAllApplicationsModifications(facility: number): void {
-    this.isLoaded = false;
-    this.facilityService.getFacilityModificationApplicationsWaitingForConfirmation(facility).subscribe((res: any) => {
-      if (Object.keys(res).length === 0) {
-        this.isLoaded = true;
-      }
-
-      const newApps: Application [] = this.setNewApplications(res);
-      this.all_application_modifications.push.apply(this.all_application_modifications, newApps);
-      this.isLoaded = true;
-
-    })
-  }
-
   getFacilityApplicationById(application: Application): void {
-    if (application.Description !== undefined) {
+    if (application.project_application_description !== undefined) {
       return;
     }
     const idx: number = this.applications_history.indexOf(application);
-    this.facilityService.getFacilityApplicationById(this.selectedFacility ['FacilityId'], application.Id.toString())
-      .subscribe((res: any) => {
-        this.applications_history[idx] = this.setNewApplication(res);
+    this.facilityService.getFacilityApplicationById(this.selectedFacility['FacilityId'], application.project_application_id.toString())
+      .subscribe((app: Application) => {
+        this.applications_history[idx] = new Application(app);
       })
   }
 
@@ -112,11 +94,13 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
     this.applications_history = [];
 
     // todo check if user is VO Admin
-    this.facilityService.getFacilityApplicationsHistory(facility).subscribe((res: any) => {
-      if (Object.keys(res).length === 0) {
+    this.facilityService.getFacilityApplicationsHistory(facility).subscribe((applications: Application[]) => {
+      if (applications.length === 0) {
         this.isHistoryLoaded = true;
       }
-      this.applications_history = this.setShortDetailNewApplications(res);
+      for (const application of applications) {
+        this.applications_history.push(new Application(application))
+      }
       this.isHistoryLoaded = true;
     });
   }
@@ -124,10 +108,15 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
   getFullApplications(facility: number): void {
     forkJoin(this.facilityService.getFacilityApplicationsWaitingForConfirmation(facility),
              this.facilityService.getFacilityModificationApplicationsWaitingForConfirmation(facility)).subscribe((res: any) => {
-      const newAppsWFC: Application [] = this.setNewApplications(res[0]);
-      this.all_applications_wfc.push.apply(this.all_applications_wfc, newAppsWFC);
-      const newAppsMod: Application [] = this.setNewApplications(res[1]);
-      this.all_application_modifications.push.apply(this.all_application_modifications, newAppsMod);
+      const wfc_apps: Application[] = res[0];
+      const modification_apps: Application[] = res[1];
+
+      for (const wfcApp of wfc_apps) {
+        this.all_applications_wfc.push(new Application(wfcApp))
+      }
+      for (const modificationApp of modification_apps) {
+        this.all_application_modifications.push(new Application(modificationApp))
+      }
       this.isLoaded = true;
     })
   }
@@ -139,12 +128,11 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
   getAllApplicationsWFC(facility: number): void {
 
     // todo check if user is VO Admin
-    this.facilityService.getFacilityApplicationsWaitingForConfirmation(facility).subscribe((res: any) => {
-      if (Object.keys(res).length === 0) {
+    this.facilityService.getFacilityApplicationsWaitingForConfirmation(facility).subscribe((applications: Application[]) => {
+      if (applications.length === 0) {
         this.isLoaded = true;
       }
-      const newApps: Application [] = this.setNewApplications(res);
-      this.all_applications_wfc.push.apply(this.all_applications_wfc, newApps);
+      this.all_applications_wfc.push.apply(this.all_applications_wfc, applications);
 
     });
     this.isLoaded = true;
@@ -157,7 +145,7 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
   approveApplication(app: Application): void {
 
     this.updateNotificationModal('Approving Application', 'Waiting..', true, 'info');
-    this.facilityService.approveFacilityApplication(this.selectedFacility['FacilityId'], app.Id).subscribe(
+    this.facilityService.approveFacilityApplication(this.selectedFacility['FacilityId'], app.project_application_id).subscribe(
       () => {
         this.updateNotificationModal('Success', 'Successfully approved the application.', true, 'success');
         this.all_applications_wfc.splice(this.all_applications_wfc.indexOf(app), 1);
@@ -176,7 +164,7 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
    */
   public declineExtension(app: Application): void {
     const modificaton_requested: number = 4;
-    this.applicationstatusservice.setApplicationStatus(app.Id, modificaton_requested).subscribe(() => {
+    this.applicationstatusservice.setApplicationStatus(app.project_application_id, modificaton_requested).subscribe(() => {
       this.updateNotificationModal('Success', 'Successfully declined!', true, 'success');
       this.all_application_modifications.splice(this.all_application_modifications.indexOf(app), 1);
       this.getAllApplicationsHistory(this.selectedFacility ['FacilityId']);

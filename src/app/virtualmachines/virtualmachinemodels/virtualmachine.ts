@@ -1,5 +1,5 @@
 import {Flavor} from './flavor';
-import {Client} from '../clients/client.model';
+import {Client} from '../../vo_manager/clients/client.model';
 import {ImageMode} from '../../facility_manager/image-tag';
 import {Clusterinfo} from '../clusters/clusterinfo';
 import {Volume} from '../volumes/volume';

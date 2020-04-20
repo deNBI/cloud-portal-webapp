@@ -14,7 +14,7 @@ import {is_vo} from '../shared/globalvar';
 import {VirtualMachineStates} from './virtualmachinemodels/virtualmachinestates';
 import {GroupService} from '../api-connector/group.service';
 import {ClientService} from '../api-connector/client.service';
-import {Client} from './clients/client.model';
+import {Client} from '../vo_manager/clients/client.model';
 import {TemplateNames} from './conda/template-names';
 import {PlaybookService} from '../api-connector/playbook.service';
 import {BiocondaService} from '../api-connector/bioconda.service';
@@ -44,7 +44,6 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
   volume_to_attach: Volume;
   volume_to_detach: Volume;
   detached_project_volumes: Volume[] = [];
-
 
   WIKI_RSTUDIO_LINK: string = WIKI_RSTUDIO_LINK;
   WIKI_GUACAMOLE_LINK: string = WIKI_GUACAMOLE_LINK;
