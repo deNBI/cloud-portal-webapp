@@ -107,5 +107,4 @@ export abstract class FilterBaseClass extends AbstractBaseClasse {
     this.filterstatus_list[status] = !this.filterstatus_list[status];
   }
 
-
 }
