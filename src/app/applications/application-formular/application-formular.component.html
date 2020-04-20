@@ -421,7 +421,7 @@
                   <ng-autocomplete #edam_ontology id="edam_input"
                                    [data]="edam_ontology_terms"
                                    [searchKeyword]="ontology_search_keyword"
-                                   (selected)='selectEvent($event);edam_ontology.clear()'
+                                   (selected)='selectEvent($event);edam_ontology.clear();edam_ontology.focus();'
                                    placeHolder="Please add your research topics"
 
                                    [itemTemplate]="itemTemplate"
@@ -677,7 +677,7 @@
                   </div>
 
                   <div class="form-group row">
-                    <label class="col-md-4 form-control-label">Project Title</label>
+                    <label class="col-md-4 form-control-label">Project Title + Research Topics</label>
                     <div class="col-md-2">
                       <label class="switch switch-label switch-outline-primary-alt">
                         <input type="checkbox" class="switch-input" name="information_title" checked
@@ -690,6 +690,15 @@
                                                  placeholder="Choose a public title - Leave blank for existing title."
 
                                                  [(ngModel)]="application.dissemination.information_title">
+                      <h5><span
+
+                        *ngFor="let term of application.project_application_edam_terms"
+                        style="margin-right: 5px; "
+                        class="badge badge-info"> {{term.term}}
+
+ </span>
+
+                      </h5>
                     </div>
                   </div>
 
