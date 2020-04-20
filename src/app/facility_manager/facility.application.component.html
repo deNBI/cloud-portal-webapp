@@ -49,7 +49,7 @@
               <tr>
                 <td>
 
-                                     <span *ngIf="application?.OpenStackProject"
+                                     <span *ngIf="application?.project_application_openstack_project"
                                            style="font-size: 20px"
                                            class="project-openstack_plain_white_redbg"
                                            data-toggle="tooltip"
@@ -57,7 +57,7 @@
                                                 <span class="path1"></span>
                                                 <span class="path2"></span>
                                   </span>
-                  <span *ngIf="!application?.OpenStackProject"
+                  <span *ngIf="!application?.project_application_openstack_project"
                         style="font-size: 20px"
                         class="project-simpleVM_Logo_bluebg"
                         data-toggle="tooltip"
@@ -70,17 +70,17 @@
                                   </span>
 
                 </td>
-                <td>{{ application?.Name }}</td>
-                <td>{{application?.Shortname}}</td>
-                <td>{{ application?.DateSubmitted }}</td>
+                <td>{{ application?.project_application_name }}</td>
+                <td>{{application?.project_application_shortname}}</td>
+                <td>{{ application?.project_application_date_submitted }}</td>
                 <td style="word-wrap: break-word;min-width: 110px; max-width: 130px; white-space: normal">
-                  {{ application?.User }}
+                  {{ application?.project_application_username }}
                 </td>
-                <td>{{application?.Institute}}</td>
+                <td>{{application?.project_application_institute}}</td>
 
                 <td>
                   <div class="btn-group">
-                    <button type="button" [id]="'approval_' + application?.Shortname"
+                    <button type="button" [id]="'approval_' + application?.project_application_shortname"
                             (click)="resetNotificationModal();notificationModal.show();approveApplication(application)"
                             class="btn btn-success"
                             style="margin: auto 2.5px"><i
@@ -88,7 +88,7 @@
                       Approve
                     </button>
                     <button
-                      (click)='resetNotificationModal();notificationModal.show();declineApplication(application?.Id)'
+                      (click)='resetNotificationModal();notificationModal.show();declineApplication(application?.project_application_id)'
                       type="button"
                       class="btn btn-danger"
                       style="margin: auto 2.5px"><i
@@ -96,14 +96,14 @@
                       Decline
                     </button>
                     <button
-                      (click)="switchCollapseStatus('application_review-' + application?.Id);  getMemberDetailsByElixirIdIfCollapsed(application?.User,'application_review-' + application?.Id);"
+                      (click)="switchCollapseStatus('application_review-' + application?.project_application_id);  getMemberDetailsByElixirIdIfCollapsed(application,'application_review-' + application?.project_application_id);"
                       type="button"
                       class="btn btn-secondary"
                       style="margin: auto 2.5px">
                       <i class="fa fa-info-circle"></i>&nbsp;
                       <span
-                        [hidden]="!getCollapseStatus('application_review-' + application?.Id)">Show</span><span
-                      [hidden]="getCollapseStatus('application_review-' + application?.Id)">Hide</span>
+                        [hidden]="!getCollapseStatus('application_review-' + application?.project_application_id)">Show</span><span
+                      [hidden]="getCollapseStatus('application_review-' + application?.project_application_id)">Hide</span>
                       Information
                     </button>
                   </div>
@@ -112,8 +112,8 @@
 
               <td colspan="12">
                 <app-application-detail
-                  [class.collapse_no_margin]="getCollapseStatus('application_review-' + application?.Id)"
-                  [class.collapse]="getCollapseStatus('application_review-' + application?.Id)"
+                  [class.collapse_no_margin]="getCollapseStatus('application_review-' + application?.project_application_id)"
+                  [class.collapse]="getCollapseStatus('application_review-' + application?.project_application_id)"
                   [application]="application"></app-application-detail>
               </td>
             </ng-container>
@@ -163,7 +163,7 @@
               <tr>
                 <td>
 
-                                     <span *ngIf="app?.OpenStackProject"
+                                     <span *ngIf="app?.project_application_openstack_project"
                                            style="font-size: 20px"
                                            class="project-openstack_plain_white_redbg"
                                            data-toggle="tooltip"
@@ -171,7 +171,7 @@
                                                 <span class="path1"></span>
                                                 <span class="path2"></span>
                                   </span>
-                  <span *ngIf="!app?.OpenStackProject"
+                  <span *ngIf="!app?.project_application_openstack_project"
                         style="font-size: 20px"
                         class="project-simpleVM_Logo_bluebg"
                         data-toggle="tooltip"
@@ -185,17 +185,17 @@
 
 
                 </td>
-                <td>{{ app.Name }}</td>
-                <td>{{app.Shortname}}</td>
-                <td>{{ app.DateSubmitted }}</td>
+                <td>{{ app.project_application_name }}</td>
+                <td>{{app.project_application_shortname}}</td>
+                <td>{{ app.project_application_date_submitted }}</td>
                 <td style="word-wrap: break-word;min-width: 110px; max-width: 130px; white-space: normal">
-                  {{ app.User }}
+                  {{ app.project_application_username }}
                 </td>
-                <td>{{app.Institute}}</td>
+                <td>{{app.project_application_institute}}</td>
 
                 <td>
                   <div class="btn-group">
-                    <button type="button" [id]="'extension_approval_' + app?.Shortname"
+                    <button type="button" [id]="'extension_approval_' + app?.project_application_shortname"
                             (click)="resetNotificationModal();notificationModal.show();approveExtension(app)"
                             class="btn btn-success"
                             style="margin: auto 2.5px"><i
@@ -211,14 +211,14 @@
                       Decline
                     </button>
                     <button
-                      (click)="switchCollapseStatus('application_review-' + app.Id);  getMemberDetailsByElixirIdIfCollapsed(app.User,'application_review-' + app.Id);"
+                      (click)="switchCollapseStatus('application_review-' + app.project_application_id);  getMemberDetailsByElixirIdIfCollapsed(app,'application_review-' + app.project_application_id);"
                       type="button"
                       class="btn btn-secondary"
                       style="margin: auto 2.5px">
                       <i class="fa fa-info-circle"></i>&nbsp;
                       <span
-                        [hidden]="!getCollapseStatus('application_review-' + app.Id)">Show</span><span
-                      [hidden]="getCollapseStatus('application_review-' + app.Id)">Hide</span>
+                        [hidden]="!getCollapseStatus('application_review-' + app.project_application_id)">Show</span><span
+                      [hidden]="getCollapseStatus('application_review-' + app.project_application_id)">Hide</span>
                       Information
                     </button>
                   </div>
@@ -227,8 +227,8 @@
 
               <td colspan="12">
                 <app-application-detail [isModification]="true"
-                                        [class.collapse_no_margin]="getCollapseStatus('application_review-' + app?.Id)"
-                                        [class.collapse]="getCollapseStatus('application_review-' + app?.Id)"
+                                        [class.collapse_no_margin]="getCollapseStatus('application_review-' + app?.project_application_id)"
+                                        [class.collapse]="getCollapseStatus('application_review-' + app?.project_application_id)"
                                         [application]="app"></app-application-detail>
               </td>
             </ng-container>
@@ -273,11 +273,11 @@
           <tbody>
           <ng-container
             *ngFor="let application of applications_history">
-            <ng-container *ngIf="application?.Status != application_states.SUBMITTED">
+            <ng-container *ngIf="application?.project_application_status != application_states.SUBMITTED">
               <tr>
                 <td>
 
-                                     <span *ngIf="application?.OpenStackProject"
+                                     <span *ngIf="application?.project_application_openstack_project"
                                            style="font-size: 20px"
                                            class="project-openstack_plain_white_redbg"
                                            data-toggle="tooltip"
@@ -285,7 +285,7 @@
                                                 <span class="path1"></span>
                                                 <span class="path2"></span>
                                   </span>
-                  <span *ngIf="!application?.OpenStackProject"
+                  <span *ngIf="!application?.project_application_openstack_project"
                         style="font-size: 20px"
                         class="project-simpleVM_Logo_bluebg"
                         data-toggle="tooltip"
@@ -299,23 +299,23 @@
 
 
                 </td>
-                <td>{{ application?.Name }}</td>
-                <td>{{application?.Shortname}}</td>
-                <td>{{ application?.DateSubmitted }}
+                <td>{{ application?.project_application_name }}</td>
+                <td>{{application?.project_application_shortname}}</td>
+                <td>{{ application?.project_application_date_submitted }}
                 </td>
-                <td>{{ application?.Institute }}</td>
+                <td>{{ application?.project_application_institute }}</td>
                 <td>{{
-                    getStatusById(application?.Status)
+                    getStatusById(application?.project_application_status)
                   }}
                 </td>
                 <td>
-                  <button (click)="getFacilityApplicationById(application);switchCollapseStatus('application_history-' + application?.Id);"
+                  <button (click)="getFacilityApplicationById(application);switchCollapseStatus('application_history-' + application?.project_application_id);"
                           type="button"
                           class="btn btn-secondary">
                     <i class="fa fa-info-circle"></i>&nbsp;
-                    <span [hidden]="!getCollapseStatus('application_history-' + application?.Id)"
+                    <span [hidden]="!getCollapseStatus('application_history-' + application?.project_application_id)"
                     >Show</span><span
-                    [hidden]="getCollapseStatus('application_history-' + application?.Id)"
+                    [hidden]="getCollapseStatus('application_history-' + application?.project_application_id)"
                     style="margin-left: 5px">Hide</span>
                     Information
                   </button>
@@ -327,9 +327,9 @@
                 </td>
               </tr>
               <td colspan="12">
-                <app-application-detail *ngIf="!getCollapseStatus('application_history-' + application?.Id)"
-                  [class.collapse_no_margin]="getCollapseStatus('application_history-' + application?.Id)"
-                  [class.collapse]="getCollapseStatus('application_history-' + application?.Id)"
+                <app-application-detail *ngIf="!getCollapseStatus('application_history-' + application?.project_application_id)"
+                  [class.collapse_no_margin]="getCollapseStatus('application_history-' + application?.project_application_id)"
+                  [class.collapse]="getCollapseStatus('application_history-' + application?.project_application_id)"
                   [application]="application"></app-application-detail>
               </td>
 

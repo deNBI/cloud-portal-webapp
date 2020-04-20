@@ -85,6 +85,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   invitation_link: string;
   filteredMembers: any = null;
   project_application: Application;
+  project_service_in_development: boolean = true;
   application_action: string = '';
   application_member_name: string = '';
   application_action_done: boolean = false;
@@ -117,7 +118,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   private project_application_extra_credits: number;
   public project_application_extra_credits_comment: string;
   private current_credits: number = 0;
-  project_application_renewal_lifetime: number;
   private updateCreditsUsedIntervals: number;
 
   private updateCreditHistoryIntervals: number;
@@ -176,20 +176,22 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   }
 
   calculateCredits(lifetime: number): void {
-    // tslint:disable-next-line:triple-equals
     if (lifetime === null || lifetime === undefined || lifetime.toString() === '') {
       lifetime = 0;
     }
-    // tslint:disable-next-line:max-line-length
-    this.creditsService.getExtraCreditsForExtension(this.totalNumberOfCores, this.totalRAM, lifetime, this.project_application.Id.toString()).toPromise()
-      .then((credits: number) => {
-        this.extensionCredits = credits;
-      }).catch((err: Error) => console.log(err.message));
+    this.creditsService.getExtraCreditsForExtension(this.totalNumberOfCores,
+                                                    this.totalRAM, lifetime,
+                                                    this.project_application.project_application_id.toString()).subscribe(
+      (credits: number) => {
+        this.project_application.projectapplicationrenewal.project_application_renewal_credits = credits;
+      })
+
   }
 
   fetchCurrentCreditsOfProject(): void {
     if (this.project_application != null) {
-      this.creditsService.getCurrentCreditsOfProject(Number(this.project_application.PerunId.toString())).toPromise().then(
+      // tslint:disable-next-line:max-line-length
+      this.creditsService.getCurrentCreditsOfProject(Number(this.project_application.project_application_perun_id.toString())).toPromise().then(
         (credits: number) => {
           this.current_credits = credits;
         }
@@ -270,7 +272,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   startUpdateCreditUsageLoop(): void {
     this.updateCreditsUsedIntervals = setInterval(
       () =>
-        this.creditsService.getCurrentCreditsOfProject(Number(this.project_application.PerunId.toString())).toPromise().then(
+        // tslint:disable-next-line:max-line-length
+        this.creditsService.getCurrentCreditsOfProject(Number(this.project_application.project_application_perun_id.toString())).toPromise().then(
           (credits: number) => {
             this.current_credits = credits;
           }
@@ -332,17 +335,20 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
     this.applicationsservice
       .getApplication(this.application_id)
       .subscribe(
-        (aj: object) => {
-          if (aj['project_application_name'] === '') {
+        (aj: Application) => {
+          if (aj.project_application_name === '') {
             this.isLoaded = false;
             this.errorMessage = 'Not found';
 
             return;
           }
-          const newApp: Application = this.setNewApplication(aj);
 
-          this.project_application = newApp;
-          this.startUpdateCreditUsageLoop();
+          this.project_application = new Application(aj);
+          if (!this.project_application.projectapplicationrenewal) {
+            this.project_application.inititatenExtension();
+          }
+          if (this.project_application.project_application_perun_id){
+          this.startUpdateCreditUsageLoop();}
 
           if (this.project_application) {
             this.setLifetime();
@@ -369,79 +375,42 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
         })
   }
 
-  initRamCores(): void {
-    this.totalNumberOfCores = 0;
-    this.totalRAM = 0;
-    // tslint:disable-next-line:forin
-    for (const key in this.project_application.CurrentFlavors) {
-      const flavor: any = this.project_application.CurrentFlavors[key];
-      if (flavor != null) {
-        const flav: Flavor = this.flavorList.find(function (fl: Flavor): boolean {
-          return fl.name === key;
-
-        });
-        this.newFlavors[key] = {counter: flavor.counter, flavor: flav};
-        this.calculateRamCores()
-
-      }
-
-    }
-
-  }
-
   /**
    * Submits an renewal request for an application.
    * @param {NgForm} form
    * @param {boolean} isExtraCreditsApplication: whether or not only extra credits are applied for
    */
   onSubmit(form: NgForm, isExtraCreditsApplication: boolean): void {
-    const values: { [key: string]: string | number | boolean } = {};
-    values['project_application_id'] = this.project_application.Id;
     if (isExtraCreditsApplication) {
-      values['is_only_extra_credits_application'] = isExtraCreditsApplication;
-      values['project_application_renewal_comment'] = form.controls['project_application_extra_credits_comment'].value;
-      values['project_application_renewal_credits'] = form.controls['project_application_extra_credits'].value;
-    } else {
-      for (const value in form.controls) {
-        if (form.controls[value].disabled) {
-          continue;
-        }
-        if (form.controls[value].value) {
-          values[value] = form.controls[value].value;
-        }
-      }
-      values['total_cores_new'] = this.totalNumberOfCores;
-      values['total_ram_new'] = this.totalRAM;
-      values['project_application_renewal_credits'] = this.extensionCredits;
-      values['is_only_extra_credits_application'] = isExtraCreditsApplication;
+      this.project_application.projectapplicationrenewal.is_only_extra_credits_application = isExtraCreditsApplication;
+      this.project_application.projectapplicationrenewal.project_application_renewal_comment = form.controls['project_application_extra_credits_comment'].value;
+      this.project_application.projectapplicationrenewal.project_application_renewal_credits = form.controls['project_application_extra_credits'].value;
     }
-    this.requestExtension(values);
+
+    this.requestExtension();
 
   }
 
-  /**
-   * Request an extension from an application.
-   * @param data
-   */
-  public requestExtension(data: { [key: string]: string | number | boolean }): void {
-    this.applicationsservice.requestRenewal(data).subscribe((result: { [key: string]: string }) => {
-      if (result['Error']) {
-        this.extension_status = 2
-      } else {
-        this.extension_status = 1;
-      }
-      if (this.selected_ontology_terms.length > 0) {
-        this.applicationsservice.addEdamOntologyTerms(this.application_id,
-                                                      this.selected_ontology_terms
-        ).subscribe(() => {
+  public requestExtension(): void {
+    this.applicationsservice.requestRenewal(this.project_application.projectapplicationrenewal)
+      .subscribe((result: { [key: string]: string }) => {
+        if (result['Error']) {
+          this.extension_status = 2
+        } else {
+          this.extension_status = 1;
+        }
+        if (this.selected_ontology_terms.length > 0) {
+          this.applicationsservice.addEdamOntologyTerms(this.application_id,
+                                                        this.selected_ontology_terms
+          ).subscribe(() => {
+            this.getApplication()
+
+          });
+        } else {
           this.getApplication()
+        }
 
-        });
-      } else {
-        this.getApplication()
-      }
-
-    })
+      })
 
   }
 
@@ -490,7 +459,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   setLifetime(): void {
 
     // tslint:disable-next-line:max-line-length
-    this.life_time_string = `${this.project_application.DateApproved} -  ${this.getEndDate(this.project_application.Lifetime, this.project_application.DateApproved)}`;
+    this.life_time_string = `${this.project_application.project_application_date_approved} -  ${this.getEndDate(this.project_application.project_application_lifetime, this.project_application.project_application_date_approved)}`;
   }
 
   ngOnInit(): void {
@@ -585,9 +554,9 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
    */
   getFacilityProject(): void {
 
-    if (!this.project_application.ComputeCenter && this.project_application.Status !== this.application_states.SUBMITTED
-      && this.project_application.Status !== this.application_states.TERMINATED) {
-      this.groupService.getFacilityByGroup(this.project_application.PerunId.toString()).subscribe((res: object) => {
+    if (!this.project_application.ComputeCenter && this.project_application.project_application_status !== this.application_states.SUBMITTED
+      && this.project_application.project_application_status !== this.application_states.TERMINATED) {
+      this.groupService.getFacilityByGroup(this.project_application.project_application_perun_id.toString()).subscribe((res: object) => {
 
         const login: string = res['Login'];
         const suport: string = res['Support'];
@@ -1042,7 +1011,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
    * @param application_id
    */
   public deleteApplication(): void {
-    this.applicationsservice.deleteApplication(this.project_application.Id).subscribe(
+    this.applicationsservice.deleteApplication(this.project_application.project_application_id).subscribe(
       () => {
         this.updateNotificationModal('Success', 'The application has been successfully removed', true, 'success');
         this.fullLayout.getGroupsEnumeration();
@@ -1059,7 +1028,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
     alert('This function will be implemented soon.')
   }
 
-  onChangeFlavor(value: number): void {
+  onChangeFlavor(flavor: Flavor, value: number): void {
+    this.project_application.projectapplicationrenewal.setFlavorInFlavors(flavor, value)
 
     this.checkIfMinVmIsSelected();
   }
@@ -1074,7 +1044,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
         }
       }
     }
-    if (nr_vm > 0 || this.project_application.OpenStackProject) {
+    if (nr_vm > 0 || this.project_application.project_application_openstack_project) {
       this.min_vm = true;
     } else if (nr_vm === 0) {
       this.min_vm = false;
