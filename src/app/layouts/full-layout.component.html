@@ -328,13 +328,13 @@
 
         <li class="nav-item" *ngIf="navbar_minimized && is_vo_admin">
           <a class="nav-link" routerLinkActive="active"
-             [routerLink]="['/virtualmachines/clientOverview'] " data-toggle="tooltip" data-placement="right"
+             [routerLink]="['/vo-manager/clientsOverview'] " data-toggle="tooltip" data-placement="right"
              title="Clients"><i
             class="nav-icon fas fa-plug"></i> Clients</a>
         </li>
         <li class="nav-item" *ngIf="is_vo_admin && !navbar_minimized">
           <a class="nav-link" routerLinkActive="active"
-             [routerLink]="['/virtualmachines/clientOverview']"><i
+             [routerLink]="['/vo-manager/clientsOverview']"><i
             class="nav-icon fas fa-plug"></i> Clients</a>
         </li>
 

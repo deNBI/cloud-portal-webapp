@@ -1,7 +1,7 @@
-<div *ngIf=" !isLoaded" class="loader"></div>
-<div *ngIf="isLoaded && !application"> No application found.</div>
+<div *ngIf=" !isLoadedApplication" class="loader"></div>
+<div *ngIf="isLoadedApplication && !application"> No application found.</div>
 
-<div *ngIf="isLoaded && application && !validated" class="animated fadeIn">
+<div *ngIf="isLoadedApplication && application && !validated" class="animated fadeIn">
 
   <div class="container-fluid">
     <app-application-formular [hash]="hash" [title]="title" [is_validation]="true"

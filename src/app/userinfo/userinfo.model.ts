@@ -14,7 +14,7 @@ export class Userinfo {
   private _PendingEmails: string[];
 
   constructor(userInfo: any) {
-    this._Id = userInfo.Id;
+    this._Id = userInfo.project_application_id;
     this._FirstName = userInfo.FirstName;
     this._LastName = userInfo.LastName;
     this._MemberId = userInfo.MemberId;

@@ -1,10 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewChecked, ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {ApplicationsService} from '../api-connector/applications.service';
 import {Application} from '../applications/application.model/application.model';
 import {ActivatedRoute} from '@angular/router';
 import {ApplicationBaseClassComponent} from '../shared/shared_modules/baseClass/application-base-class.component';
 import {FlavorService} from '../api-connector/flavor.service';
-import {FullLayoutComponent} from '../layouts/full-layout.component';
 
 /**
  * Application validation modal.
@@ -15,10 +14,10 @@ import {FullLayoutComponent} from '../layouts/full-layout.component';
              styleUrls: ['./validation-application.component.scss'],
              providers: [ApplicationsService, FlavorService]
            })
-export class ValidationApplicationComponent extends ApplicationBaseClassComponent implements OnInit {
+export class ValidationApplicationComponent extends ApplicationBaseClassComponent implements OnInit, AfterViewChecked {
 
   application: Application;
-  isLoaded: boolean = false;
+  isLoadedApplication: boolean = false;
   hash: string;
   validated: boolean = false;
   title: string;
@@ -34,10 +33,13 @@ export class ValidationApplicationComponent extends ApplicationBaseClassComponen
   public totalRAM: number = 0;
 
   constructor(private applicationsService: ApplicationsService,
-              private activatedRoute: ActivatedRoute,
-              private flavorService: FlavorService, private fullLayout: FullLayoutComponent) {
+              private activatedRoute: ActivatedRoute, private changeDetector: ChangeDetectorRef) {
     super(null, null, applicationsService, null);
 
+  }
+
+  ngAfterViewChecked(): void {
+    this.changeDetector.detectChanges();
   }
 
   ngOnInit(): void {
@@ -45,18 +47,18 @@ export class ValidationApplicationComponent extends ApplicationBaseClassComponen
       this.hash = paramsId.hash;
 
       this.applicationsService.getApplicationValidationByHash(this.hash).subscribe(
-        (app: any) => {
-          this.application = this.setNewApplication(app);
-          if (this.application.OpenStackProject) {
+        (app: Application) => {
+          this.application = new Application(app);
+          if (this.application.project_application_openstack_project) {
             this.title = 'Cloud Project Application Validation';
           } else {
             this.title = 'Simple VM Project Application Validation';
           }
-          this.isLoaded = true;
+          this.isLoadedApplication = true;
 
         },
         () => {
-          this.isLoaded = true;
+          this.isLoadedApplication = true;
 
         })
     })

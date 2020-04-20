@@ -4,7 +4,8 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Cookie} from 'ng2-cookies/ng2-cookies';
 import {EdamOntologyTerm} from '../applications/edam-ontology-term';
-import {ApplicationDissemination} from '../applications/application-dissemination';
+import {Application} from '../applications/application.model/application.model';
+import {ApplicationExtension} from '../applications/application_extension.model';
 
 const header: HttpHeaders = new HttpHeaders({
                                               'X-CSRFToken': Cookie.get('csrftoken'),
@@ -27,36 +28,20 @@ export class ApplicationsService {
     })
   }
 
-  getApplicationValidationByHash(hash: string): Observable<any> {
+  getApplicationValidationByHash(hash: string): Observable<Application> {
 
-    return this.http.get(`${ApiSettings.getApiBaseURL()}project_applications/validation/${hash}/`, {
+    return this.http.get<Application>(`${ApiSettings.getApiBaseURL()}project_applications/validation/${hash}/`, {
       headers: header,
       withCredentials: true
     })
   }
 
-  validateApplicationAsPIByHash(hash: string, data: { [key: string]: string | number | boolean }): Observable<any> {
+  validateApplicationAsPIByHash(hash: string, application: Application): Observable<any> {
 
-    return this.http.post(`${ApiSettings.getApiBaseURL()}project_applications/validation/${hash}/`, data, {
+    return this.http.post(`${ApiSettings.getApiBaseURL()}project_applications/validation/${hash}/`, application, {
       headers: header,
       withCredentials: true
     })
-  }
-
-  setApplicationDissemination(project_application_id: string | number, dissemination: ApplicationDissemination): Observable<any> {
-    return this.http.post(`${ApiSettings.getApiBaseURL()}project_applications/${project_application_id}/dissemination/`,
-                          dissemination, {
-                            headers: header,
-                            withCredentials: true
-                          })
-  }
-
-  deleteApplicationDissemination(project_application_id: string | number): Observable<any> {
-    return this.http.delete(`${ApiSettings.getApiBaseURL()}project_applications/${project_application_id}/dissemination/`,
-                            {
-                              headers: header,
-                              withCredentials: true
-                            })
   }
 
   getUserApplication(project_id: string | number): Observable<any> {
@@ -66,8 +51,8 @@ export class ApplicationsService {
     })
   }
 
-  getApplication(app_id: string): Observable<any> {
-    return this.http.get(`${ApiSettings.getApiBaseURL()}project_applications/${app_id}/`, {
+  getApplication(app_id: string): Observable<Application> {
+    return this.http.get<Application>(`${ApiSettings.getApiBaseURL()}project_applications/${app_id}/`, {
       headers: header,
       withCredentials: true
     })
@@ -116,8 +101,8 @@ export class ApplicationsService {
     })
   }
 
-  getAllApplications(): Observable<any> {
-    return this.http.get(`${ApiSettings.getApiBaseURL()}project_applications/`, {
+  getAllApplications(): Observable<Application[]> {
+    return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}project_applications/`, {
       withCredentials: true,
       headers: header
 
@@ -125,18 +110,18 @@ export class ApplicationsService {
 
   }
 
-  addNewApplication(data: { [key: string]: string | number | boolean }): Observable<any> {
+  addNewApplication(application: Application): Observable<Application> {
 
-    return this.http.post(`${ApiSettings.getApiBaseURL()}project_applications/`, data, {
+    return this.http.post<Application>(`${ApiSettings.getApiBaseURL()}project_applications/`, application, {
       headers: header,
       withCredentials: true
     })
 
   }
 
-  requestRenewal(data: { [key: string]: string | number | boolean }): Observable<any> {
+  requestRenewal(extension: ApplicationExtension): Observable<any> {
 
-    return this.http.post(`${ApiSettings.getApiBaseURL()}applicationRenewals/`, data, {
+    return this.http.post(`${ApiSettings.getApiBaseURL()}applicationRenewals/`, extension, {
       headers: header,
       withCredentials: true
     })

@@ -14,6 +14,15 @@ export class Flavor {
   private _type: FlavorType;
   private _simple_vm: boolean;
   private _comment: string;
+  private _counter: number;
+
+  get counter(): number {
+    return this._counter;
+  }
+
+  set counter(value: number) {
+    this._counter = value;
+  }
 
   get id(): string {
     return this._id;
