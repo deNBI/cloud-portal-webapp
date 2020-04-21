@@ -26,7 +26,7 @@ export class NewsManagerComponent implements OnInit {
   public selectedFacilities: [string, number][] = [];
   public facilitiesToPost: number[] = [];
   returnState: number = -1;
-  @ViewChild('infoModal', null) infoModal: ModalDirective;
+  @ViewChild('infoModal', { static: true }) infoModal: ModalDirective;
   facilitiesToSetMOTD: [string, number][] = [];
   selectedTags: string[] = [];
   computeCenters: any[] = [];

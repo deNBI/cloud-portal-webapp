@@ -228,8 +228,8 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
    */
   private checkStatusTimeout: number = 5000;
 
-  @ViewChild('bioconda', { static: false }) biocondaComponent: BiocondaComponent;
-  @ViewChild('resEnv', { static: false }) resEnvComponent: ResEnvComponent;
+  @ViewChild('bioconda') biocondaComponent: BiocondaComponent;
+  @ViewChild('resEnv') resEnvComponent: ResEnvComponent;
 
   constructor(private groupService: GroupService, private imageService: ImageService,
               private flavorService: FlavorService, private virtualmachineservice: VirtualmachineService,
