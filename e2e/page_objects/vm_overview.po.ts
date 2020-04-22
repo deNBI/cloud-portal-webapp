@@ -24,7 +24,6 @@ export class VMOverviewPage {
   private DELETE_BUTTON_PREFIX: string = 'deleteVMButton_';
   private SNAPSHOT_BUTTON_PREFIX: string = 'createSnapshotVMButton_';
 
-
   private SNAPSHOT_NAME_MODAL: string = 'snapshot_name_modal';
   private SNAPSHOT_NAME_INPUT: string = 'snapshot_name_input';
   private SNAPSHOT_CREATE_BUTTON: string = 'snapshot_create_modal_button';
@@ -37,7 +36,6 @@ export class VMOverviewPage {
 
   private VERIFY_RESTART_MODAL: string = 'submitRestartModal';
   private SUBMIT_STOP_MODAL: string = 'submitStopVmModal';
-
 
   private BASIC_VM_NAME_KEY: string = 'basic_vm_name';
   private VOLUME_VM_NAME_KEY: string = 'volume_vm_name';
