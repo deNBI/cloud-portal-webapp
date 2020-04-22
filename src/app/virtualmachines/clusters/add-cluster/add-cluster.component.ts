@@ -15,10 +15,11 @@ import {Image} from '../../virtualmachinemodels/image';
 import {IResponseTemplate} from '../../../api-connector/response-template';
 import {Flavor} from '../../virtualmachinemodels/flavor';
 import {Userinfo} from '../../../userinfo/userinfo.model';
-import {Client} from '../../clients/client.model';
+import {Client} from '../../../vo_manager/clients/client.model';
 import {BiocondaComponent} from '../../conda/bioconda.component';
 import {forkJoin} from 'rxjs';
 import {Clusterinfo} from '../clusterinfo';
+import {Router} from '@angular/router';
 
 /**
  * Cluster Component
@@ -27,8 +28,8 @@ import {Clusterinfo} from '../clusterinfo';
              selector: 'app-add-cluster',
              templateUrl: './add-cluster.component.html',
              styleUrls: ['./add-cluster.component.scss'],
-             providers: [GroupService, ImageService, KeyService, FlavorService, VirtualmachineService, ApplicationsService,
-               Application, ApiSettings, KeyService, ClientService, UserService, VoService]
+             providers: [GroupService, ImageService, KeyService, FlavorService, VirtualmachineService
+               , ApiSettings, KeyService, ClientService, UserService, VoService]
            })
 export class AddClusterComponent implements OnInit {
 
@@ -201,12 +202,12 @@ export class AddClusterComponent implements OnInit {
    */
   private checkStatusTimeout: number = 5000;
 
-  @ViewChild('bioconda', { static: false }) biocondaComponent: BiocondaComponent;
+  @ViewChild('bioconda', { static: true }) biocondaComponent: BiocondaComponent;
 
   constructor(private groupService: GroupService, private imageService: ImageService,
               private flavorService: FlavorService, private virtualmachineservice: VirtualmachineService,
               private keyservice: KeyService, private userservice: UserService,
-              private voService: VoService) {
+              private voService: VoService, private router: Router) {
   }
 
   changeCount(): void {
@@ -361,8 +362,9 @@ export class AddClusterComponent implements OnInit {
             },
             1000)
         } else {
+          this.router.navigate(['/virtualmachines/clusterOverview']).then().catch()
+
           this.cluster_id = res['id'];
-          this.checkClusterStatusLoop();
         }
 
       }
@@ -382,7 +384,7 @@ export class AddClusterComponent implements OnInit {
     this.client_checked = false;
     this.projectDataLoaded = false;
 
-    this.groupService.getClient(this.selectedProject[1].toString()).subscribe((client: Client) => {
+    this.groupService.getClientBibigrid(this.selectedProject[1].toString()).subscribe((client: Client) => {
       if (client.status && client.status === 'Connected') {
         this.client_avaiable = true;
 

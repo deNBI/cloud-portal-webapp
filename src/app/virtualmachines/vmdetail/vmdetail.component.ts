@@ -23,6 +23,9 @@ import {CondaPackage} from '../condaPackage.model';
 import {TemplateNames} from '../conda/template-names';
 import {BiocondaService} from '../../api-connector/bioconda.service';
 import {ResenvTemplate} from '../conda/resenvTemplate.model';
+import {is_vo} from '../../shared/globalvar';
+import {WIKI_GUACAMOLE_LINK, WIKI_RSTUDIO_LINK} from '../../../links/links';
+import {ClipboardService} from 'ngx-clipboard';
 
 /**
  * VM Detail page component
@@ -50,8 +53,10 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
   errorMessage: boolean = false;
   private _condaPackages: CondaPackage[] = [];
   res_env_url: string = '';
-  WIKI_RSTUDIO_LINK: string = 'https://cloud.denbi.de/wiki/portal/customization/#rstudio';
-  WIKI_GUACAMOLE_LINK: string = 'https://cloud.denbi.de/wiki/portal/customization/#apache-guacamole';
+
+  is_vo_admin: boolean = is_vo;
+  WIKI_RSTUDIO_LINK: string = WIKI_RSTUDIO_LINK;
+  WIKI_GUACAMOLE_LINK: string = WIKI_GUACAMOLE_LINK;
 
   DEBOUNCE_TIME: number = 300;
 
@@ -101,7 +106,8 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
               private imageService: ImageService,
               private playbookService: PlaybookService,
               private groupService: GroupService,
-              private biocondaService: BiocondaService) {
+              private biocondaService: BiocondaService,
+              private clipboardService: ClipboardService) {
     super();
   }
 
@@ -162,6 +168,15 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
                    this.virtualMachine = updated_vm;
                  }
       )
+  }
+
+  setVmNeeded(): void {
+    this.virtualmachineService.setVmNeeded(this.virtualMachine.openstackid).subscribe((res: any) => {
+      if (res['still_needed']) {
+        this.virtualMachine.still_used_confirmation_requested = false;
+
+      }
+    })
   }
 
   /**
@@ -379,6 +394,16 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
     })
   }
 
+  /**
+   * Copies the content of the field it get's clicked on (e.g. ssh connection information).
+   * @param text the content of the field
+   */
+  copyToClipboard(text: string): void {
+    if (this.clipboardService.isSupported) {
+      this.clipboardService.copy(text);
+    }
+  }
+
   getVmById(): void {
     this.virtualmachineService.getVmById(this.vm_id).subscribe(
       (vm: VirtualMachine) => {
@@ -452,22 +477,6 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
     );
 
     return newImage;
-  }
-
-  copySSHCommand(): void {
-    this.copyToClipboard(this.virtualMachine.ssh_command.substring(65, this.virtualMachine.ssh_command.length));
-  }
-  copyUDPCommand(): void {
-    this.copyToClipboard(this.virtualMachine.udp_command);
-  }
-
-  copyToClipboard(text: string): void {
-    document.addEventListener('copy', (clipEvent: ClipboardEvent) => {
-      clipEvent.clipboardData.setData('text/plain', (text));
-      clipEvent.preventDefault();
-      document.removeEventListener('copy', null);
-    });
-    document.execCommand('copy');
   }
 
   checkAndGetForcDetails(vm: VirtualMachine): void {

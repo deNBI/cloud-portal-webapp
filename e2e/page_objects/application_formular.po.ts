@@ -52,7 +52,7 @@ export class FormularPage {
     await Util.sendTextToElementByName('project_application_bmbf_project', 'BMBF Project');
     await Util.clickElementById('id_project_application_elixir_switch');
     await Util.sendTextToElementByName('project_application_elixir_project', 'Elixir Project');
-    await Util.sendTextToElementById('project_application_de.NBI default', this.NUMBER_FLAVORS);
+    await Util.sendTextToElementById('de.NBI default', this.NUMBER_FLAVORS);
     await Util.sendTextToElementByElement(element(by.className('input-container')).element(by.tagName('input')), 'Bioinformatics');
     await Util.clickElementById('<b>Bioinformatics</b>');
     await Util.clickElementById('id_project_application_horizon_switch');

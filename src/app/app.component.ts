@@ -15,9 +15,10 @@ import {VoService} from './api-connector/vo.service';
              selector: 'body',
              templateUrl: 'app.component.html',
              providers: [{
-               provide: Http,
-               deps: [XHRBackend, RequestOptions, AppComponent]
-             }, VoService]
+    provide: Http,
+    deps: [XHRBackend, RequestOptions, AppComponent],
+    useValue: undefined
+}, VoService]
            })
 export class AppComponent implements AfterViewInit, OnInit {
 

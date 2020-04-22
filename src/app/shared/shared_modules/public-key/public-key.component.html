@@ -14,13 +14,11 @@
     <div class="col-12">
       <div class="btn-group" role="group" aria-label="publicKeyButtonGroup">
       <button class="btn btn-primary" style="float: left; margin: 2px" type="button" (click)="public_key='';pubKeyModal.show()"
-      id="setPublicKeyButton">Set
-        Key
+      id="setPublicKeyButton">Set Key
       </button>
       <button class="btn btn-primary" style="float: right; margin: 2px" type="button" (click)="copyToClipboard(userinfo?.PublicKey)"
-              *ngIf="public_key != ''" id="copyPublicKeyButton">
-        Copy
-        Key
+              *ngIf="public_key != '' || (pubKeyModal.isShown && userinfo?.PublicKey != 'None')"
+              id="copyPublicKeyButton">Copy Key
       </button>
       </div>
     </div>
@@ -74,8 +72,15 @@
 
 
         <alert *ngIf="validatePublicKey()" type="danger">
-          <strong>Warning!</strong> Replacing your current public key with a different one will probably
+          <strong>Warning!</strong> Replacing your current public key with a different one will
           render all your currently running machines inaccessible.
+          <div class="form-check">
+            <input class="form-check-input" name="public_key_acknowledgement_checkbox" type="checkbox"
+                   id="public_key_acknowledgement_checkbox" [(ngModel)]="acknowledgement_given">
+            <label class="form-check-label" for="public_key_acknowledgement_checkbox">
+              I hereby confirm that I am aware of the effects of entering a new SSH-key.
+            </label>
+          </div>
         </alert>
       </div>
 
@@ -83,11 +88,11 @@
       <div class="modal-footer">
 
 
-        <button [disabled]="!validatePublicKey()"
+        <button [disabled]="!validatePublicKey() || !acknowledgement_given"
                 class="btn btn-success col-md4" type="button"
                 (click)="importKey(publickey.value);pubKeyModal.hide();">Set
         </button>
-        <button class="btn  btn-primary col-md-4" type="reset" (click)="pubKeyModal.hide();">Cancel
+        <button class="btn  btn-primary col-md-4" type="reset" (click)="public_key = userinfo.PublicKey ;pubKeyModal.hide();">Cancel
         </button>
 
       </div>

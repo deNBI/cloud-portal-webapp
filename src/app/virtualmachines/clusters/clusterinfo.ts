@@ -1,5 +1,5 @@
 import {VirtualMachine} from '../virtualmachinemodels/virtualmachine';
-import {Client} from '../clients/client.model';
+import {Client} from '../../vo_manager/clients/client.model';
 
 /**
  * Clusterinfo
@@ -19,6 +19,15 @@ export class Clusterinfo {
   private _application_id: string;
   private _project: string;
   private _userlogin: string;
+  private _master_instance_openstack_id: string;
+
+  get master_instance_openstack_id(): string {
+    return this._master_instance_openstack_id;
+  }
+
+  set master_instance_openstack_id(value: string) {
+    this._master_instance_openstack_id = value;
+  }
 
   get userlogin(): string {
     return this._userlogin;
@@ -58,6 +67,7 @@ export class Clusterinfo {
 
   set master_instance(value: VirtualMachine) {
     this._master_instance = value;
+    this._master_instance_openstack_id = this._master_instance.openstackid
   }
 
   get worker_instances(): VirtualMachine[] {
