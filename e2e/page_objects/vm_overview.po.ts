@@ -17,20 +17,13 @@ export class VMOverviewPage {
   private CHECKBOX_DELETED: string = 'checkbox_deleted';
   private VERIFY_STOP_BTN: string = 'verifyStopButton';
   private VERIFY_RESTART_BTN: string = 'verifyRestartButton';
-  private DETAIL_PRE: string = 'detail_';
+  private DETAIL_PRE: string = 'showDetailsButton_';
 
   private SHUTOFF_BUTTON_PREFIX: string = 'stopVMButton_';
   private RESUME_BUTTON_PREFIX: string = 'restartVMButton_';
   private DELETE_BUTTON_PREFIX: string = 'deleteVMButton_';
   private SNAPSHOT_BUTTON_PREFIX: string = 'createSnapshotVMButton_';
 
-  private STOP_MODAL: string = 'stop_modal';
-  private SHUTOFF_SUCCESS: string = 'stop_success_div';
-  private CLOSE_STOP_MODAL: string = 'close_stop_modal';
-
-  private RESUME_MODAL: string = 'resume_modal';
-  private RESUME_SUCCESS: string = 'resume_success_div';
-  private CLOSE_RESUME_MODAL: string = 'close_resume_modal';
 
   private SNAPSHOT_NAME_MODAL: string = 'snapshot_name_modal';
   private SNAPSHOT_NAME_INPUT: string = 'snapshot_name_input';
@@ -40,14 +33,11 @@ export class VMOverviewPage {
   private CLOSE_SNAPSHOT_RESULT_BUTTON: string = 'snapshot_result_modal_close';
 
   private VERIFY_MODAL: string = 'verify_modal';
-  private DELETE_MODAL: string = 'delete_modal';
   private CONFIRM_DELETE_BUTTON: string = 'confirm_delete_button';
-  private DELETE_SUCCESS: string = 'delete_success_div';
-  private CLOSE_DELETE_MODAL: string = 'close_delete_modal';
+
   private VERIFY_RESTART_MODAL: string = 'submitRestartModal';
   private SUBMIT_STOP_MODAL: string = 'submitStopVmModal';
 
-  private SEARCH_SPINNER: string = 'search_spinner';
 
   private BASIC_VM_NAME_KEY: string = 'basic_vm_name';
   private VOLUME_VM_NAME_KEY: string = 'volume_vm_name';
@@ -225,10 +215,12 @@ export class VMOverviewPage {
   }
 
   async goToVmDetail(): Promise<any> {
-    Util.logMethodCall(`Going to VM Detail page for ${this.vm_names[this.BASIC_VM_NAME_KEY]}`);
     const vm_name: string = await this.getBasicVMName();
 
-    return await Util.clickElementById(`${this.DETAIL_PRE}PTSIMPLEVM-8ce32`)
+    await this.isVmActive(vm_name);
+    Util.logMethodCall(`Going to VM Detail page for ${this.vm_names[this.BASIC_VM_NAME_KEY]}`);
+
+    return await Util.clickElementById(`${this.DETAIL_PRE}${vm_name}`)
   }
 
 }
