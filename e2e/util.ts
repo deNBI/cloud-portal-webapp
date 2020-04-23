@@ -202,6 +202,14 @@ export class Util {
     return await browser.driver.wait(until_.presenceOf(elem), timeout, 'Element taking too long to appear in the DOM');
   }
 
+  static async waitForPresenceOfLinkByPartialId(prefix: string, id: string, timeout: number = this.timeout): Promise<boolean> {
+    const until_: ProtractorExpectedConditions = protractor.ExpectedConditions;
+    console.log(`Waiting until page contains element ${id}`);
+    const elem: ElementFinder = element(by.css(`a[id^=${prefix}${id}]`));
+
+    return await browser.driver.wait(until_.presenceOf(elem), timeout, 'Element taking too long to appear in the DOM');
+  }
+
   static async waitForPresenceByElement(elem: any, timeout: number = this.timeout, id: string = 'Elementfinder'): Promise<boolean> {
     const until_: ProtractorExpectedConditions = protractor.ExpectedConditions;
     console.log(`Waiting until page contains element ${id}`);
@@ -285,5 +293,12 @@ export class Util {
     const elem: ElementFinder = element(by.name(name));
 
     return await browser.driver.wait(until_.elementToBeClickable(elem), timeout, 'Element taking too long to be clickable');
+  }
+
+  static async getTextFromLinkElement(prefix: string, name: string): Promise<string> {
+    await this.waitForPresenceOfLinkByPartialId(prefix, name);
+    const elem: ElementFinder = element(by.css(`a[id^=${prefix}${name}]`));
+
+    return elem.getText();
   }
 }

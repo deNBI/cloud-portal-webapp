@@ -527,6 +527,11 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
       this.newVm = null;
 
     }
+    setTimeout(
+      () => {
+        this.router.navigate(['/virtualmachines/vmOverview']).then().catch()
+      },
+      2000)
 
   }
 
