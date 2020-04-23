@@ -962,7 +962,7 @@
                        name="project_application_pi_email"
                        class="form-control" maxlength="256"
                        placeholder="example@domain.com"
-                       ngModel
+                       [(ngModel)]="application.project_application_pi.email"
                        pattern="(?!(^[.-].*|[^@]*[.-]@|.*\.{2,}.*)|^.{254}.)([a-zA-Z0-9!#$%&'*+\/=?^_`{|}~.-]+@)(?!-.*|.*-\.)([a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,15}"
                        [ngClass]="{
                                 'is-invalid': form.controls.project_application_pi_email?.invalid && (form.controls.project_application_pi_email?.dirty || form.controls.project_application_pi_email?.touched),
