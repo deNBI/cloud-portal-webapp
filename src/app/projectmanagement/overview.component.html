@@ -465,7 +465,9 @@
             All used resources will be scheduled for deletion and then irreversibly terminated!
 
           </div>
-          <div class="alert alert-danger form-check">
+          <div class="alert  form-check"
+               [ngClass]="{'alert-danger':!terminate_confirmation_given,'alert-success':terminate_confirmation_given}"
+          >
 
             <label class="form-check-label">
               <input class="form-check-input"
