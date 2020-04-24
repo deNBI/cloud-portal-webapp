@@ -94,12 +94,12 @@
                           (click)="selectedMode=mode;updateModeDescription=selectedMode.description;
                           updateModeCopy=selectedMode.copy_field;
                           updateModeName=selectedMode.name;updateModal.show();">
-                    Update Tag
+                    Update Mode
                   </button>
                 </td>
               </tr>
               <tr>
-                <td><input type="text" placeholder="Tag" #name [(ngModel)]="newModeName" pattern="[0-9a-zA-Z-_]*"
+                <td><input type="text" placeholder="Mode" #name [(ngModel)]="newModeName" pattern="[0-9a-zA-Z-_]*"
                            required></td>
                 <td>
                <textarea [hidden]="show_html" class="form-control input-lg"
@@ -117,7 +117,7 @@
                 </td>
                 <td>
                   <button type="button" [disabled]="!newModeName || !newModeDescription" (click)="addImageMode()"
-                          class="btn btn-primary">Add Tag
+                          class="btn btn-primary">Add Mode
                   </button>
                 </td>
 
@@ -227,7 +227,7 @@
                 <td><input type="text" placeholder="Tag" #blockedTag pattern="[0-9a-zA-Z-_]*" required></td>
                 <td>
                   <button type="button" class="btn btn-primary"
-                          (click)="addBlockedTag(blockedTag.value, blockedTag);">Add Tag
+                          (click)="addBlockedTag(blockedTag.value, blockedTag);">Add Mode
                   </button>
                 </td>
 

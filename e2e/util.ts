@@ -121,8 +121,20 @@ export class Util {
     }
     const elem: ElementFinder = element(by.id(id));
     await elem.clear();
+    await elem.sendKeys(text);
+    const str: string = await elem.getAttribute('value');
 
-    return await elem.sendKeys(text);
+    if (str !== text) {
+      console.warn('Text is not send by xpath in field so i will try to send string char by char!');
+      await elem.clear();
+      for (let idx: number = 0; idx < text.length; idx++) {
+        // tslint:disable-next-line:prefer-template
+       await elem.sendKeys(text.charAt(idx) + '');
+      }
+    }
+
+    return
+
   }
 
   static async clickElementByName(name: string): Promise<void> {

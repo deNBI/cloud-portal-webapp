@@ -49,8 +49,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   edam_ontology_terms: EdamOntologyTerm[];
   ontology_search_keyword: string = 'term';
 
-  @ViewChild(NgForm, {static: false}) simpleVmForm: NgForm;
-  @ViewChild('creditsChart', {static: false}) creditsCanvas: ElementRef;
+  @ViewChild(NgForm) simpleVmForm: NgForm;
+  @ViewChild('creditsChart') creditsCanvas: ElementRef;
 
   /**
    * If at least 1 flavor is selected.
@@ -107,7 +107,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   largeExamplePossibleDays: string = '';
 
   title: string = 'Project Overview';
-  @ViewChild('edam_ontology', { static: false }) edam_ontology: AutocompleteComponent;
+  @ViewChild('edam_ontology') edam_ontology: AutocompleteComponent;
 
   checked_member_list: number[] = [];
 
@@ -229,9 +229,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
                         data: ceiling_line,
                         borderColor: 'rgba(255, 99, 132, 1)',
                         fill: false,
-                        bezierCurve: false,
-                        pointRadius: 0,
-                        tooltip: false
+                        pointRadius: 0
                       }]
                     },
                     options: {
@@ -347,8 +345,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
           if (!this.project_application.projectapplicationrenewal) {
             this.project_application.inititatenExtension();
           }
-          if (this.project_application.project_application_perun_id){
-          this.startUpdateCreditUsageLoop();}
+          if (this.project_application.project_application_perun_id) {
+          this.startUpdateCreditUsageLoop(); }
 
           if (this.project_application) {
             this.setLifetime();
