@@ -68,7 +68,7 @@ export class Application {
   private _project_application_date_submitted: string;
   private _project_application_date_status_changed: string;
   private _project_application_user: User;
-  private _project_application_pi: User;
+  private _project_application_pi: User = new User();
   private _project_application_status: number;
   private _ComputeCenter: ComputecenterComponent;
   private _project_application_openstack_project: boolean;
