@@ -5,7 +5,7 @@ import {ProjectManagementRoutingModule} from './projectmanagement-routing.module
 import {CommonModule} from '@angular/common';
 import {ModalModule} from 'ngx-bootstrap/modal';
 import {FormsModule} from '@angular/forms';
-import {AccordionModule} from 'ngx-bootstrap';
+import {AccordionModule} from 'ngx-bootstrap/accordion';
 import {ApplicationsModule} from '../applications/applications.module';
 import {SharedDirectivesModule} from '../shared/shared_modules/shared_directives.module';
 import {AutocompleteLibModule} from 'angular-ng-autocomplete';
