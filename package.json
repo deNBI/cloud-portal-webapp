@@ -72,7 +72,7 @@
     "ngx-cookie-service": "^3.0.4",
     "ngx-export-as": "^1.4.2",
     "ngx-owl-carousel-o": "^1.2.0",
-    "ngx-perfect-scrollbar": "^8.0.0",
+    "ngx-perfect-scrollbar": "^9.0.0",
     "ngx-smart-popover": "^1.4.0",
     "node-sass": "^4.13.1",
     "postcss-loader": "^2.1.5",
