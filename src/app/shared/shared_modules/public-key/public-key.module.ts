@@ -4,7 +4,7 @@ import {TabsModule} from 'ngx-bootstrap/tabs';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {ModalModule} from 'ngx-bootstrap/modal';
-import {AlertModule} from 'ngx-bootstrap';
+import {AlertModule} from 'ngx-bootstrap/alert';
 import {PublicKeyComponent} from './public-key.component';
 
 /**

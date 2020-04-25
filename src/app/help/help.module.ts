@@ -5,7 +5,7 @@ import {HelpRoutingModule} from './help-routing.module';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {ModalModule} from 'ngx-bootstrap/modal';
-import {AlertModule} from 'ngx-bootstrap';
+import {AlertModule} from 'ngx-bootstrap/alert';
 
 /**
  * Help module.

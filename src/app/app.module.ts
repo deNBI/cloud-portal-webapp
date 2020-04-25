@@ -8,7 +8,7 @@ import {AppComponent} from './app.component';
 
 import {HttpClientModule} from '@angular/common/http';
 import { ChartsModule } from 'ng2-charts';
-import {ModalModule} from 'ngx-bootstrap';
+import {ModalModule} from 'ngx-bootstrap/modal';
 import {PaginationModule} from 'ngx-bootstrap/pagination';
 import {ExportAsModule} from 'ngx-export-as';
 import {ApiSettings} from './api-connector/api-settings.service';

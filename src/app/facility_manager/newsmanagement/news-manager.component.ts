@@ -6,7 +6,7 @@ import {environment} from '../../../environments/environment';
 import {BehaviorSubject} from 'rxjs';
 import {WordPressNews} from './wp-news';
 import {WordPressTag} from './wp-tags';
-import {ModalDirective} from 'ngx-bootstrap';
+import {ModalDirective} from 'ngx-bootstrap/modal';
 
 /**
  * News-Manager Class to manage news in wordPress.
