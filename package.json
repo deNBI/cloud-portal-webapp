@@ -61,6 +61,7 @@
     "cssnano": "^4.0.5",
     "html2canvas": "1.0.0-rc.5",
     "http-server": "^0.12.1",
+    "is-promise": "^2.2.0",
     "jsnlog": "^2.29.0",
     "jspdf": "^1.5.3",
     "moment": "^2.24.0",
