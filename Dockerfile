@@ -22,7 +22,7 @@ COPY . .
 RUN $(npm bin)/ng build --configuration=${ANGULAR_MODE}   --prod --build-optimizer
 
 ### STAGE 2: Setup ###
-FROM nginx:1.17.9-alpine
+FROM nginx:1.17.10-alpine
 
 ## Copy our default nginx config
 COPY nginx/default.conf /etc/nginx/conf.d/
