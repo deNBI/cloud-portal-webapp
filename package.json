@@ -75,7 +75,7 @@
     "ngx-perfect-scrollbar": "^9.0.0",
     "ngx-smart-popover": "^1.4.0",
     "node-sass": "^4.13.1",
-    "postcss-loader": "^2.1.5",
+    "postcss-loader": "^3.0.0",
     "postcss-url": "^8.0.0",
     "protractor-stop-describe-on-failure": "^1.0.4",
     "rxjs": "6.5.5",
