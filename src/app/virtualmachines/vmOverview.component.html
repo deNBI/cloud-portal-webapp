@@ -138,7 +138,7 @@
                      || vm?.status == VirtualMachineStates.staticSHUTOFF;
                       else statusElseBlock"
                      [routerLink]="['/virtualmachines/detail/' + vm?.openstackid]">{{vm?.name}}  </a>
-                  <ng-template #statusElseBlock><span class="h5 text-primary"
+                  <ng-template #statusElseBlock><span class="h5 text-primary" id="detail_{{vm.name}}"
                                                       style="margin-left: 10px">{{vm?.name}}  </span></ng-template>
                   <app-vmstatus [vm]="vm"></app-vmstatus>
 
