@@ -87,12 +87,14 @@ export class ImageTagComponent implements OnInit {
       this.imageService.getImageTags(this.selectedFacility['FacilityId']),
       this.imageService.getImageLogos(),
       this.imageService.getBlockedImageTags(this.selectedFacility['FacilityId']),
-      this.imageService.getImageModes(this.selectedFacility['FacilityId']))
+      this.imageService.getImageModes(this.selectedFacility['FacilityId']),
+      this.imageService.getBlockedImageTagsResenv(this.selectedFacility['FacilityId']))
       .subscribe((res: any) => {
         this.imageTags = res[0];
         this.imageLogos = res[1];
         this.blockedImageTags = res[2];
         this.imageModes = res[3];
+        this.blockedImageTagsResenv = res[4];
         this.isLoaded = true;
       })
   }
@@ -106,12 +108,14 @@ export class ImageTagComponent implements OnInit {
         this.imageService.getImageTags(this.selectedFacility['FacilityId']),
         this.imageService.getImageLogos(),
         this.imageService.getBlockedImageTags(this.selectedFacility['FacilityId']),
-        this.imageService.getImageModes(this.selectedFacility['FacilityId']))
+        this.imageService.getImageModes(this.selectedFacility['FacilityId']),
+        this.imageService.getBlockedImageTagsResenv(this.selectedFacility['FacilityId']))
         .subscribe((res: any) => {
           this.imageTags = res[0];
           this.imageLogos = res[1];
           this.blockedImageTags = res[2];
           this.imageModes = res[3];
+          this.blockedImageTagsResenv = res[4];
           this.isLoaded = true;
         })
     });
@@ -223,21 +227,18 @@ export class ImageTagComponent implements OnInit {
 
   addBlockedTagResenv(tag: string, input: HTMLInputElement): void {
     if (input.validity.valid) {
-      console.log(tag, input, this.checkedBlockedImageTagResenv);
+      this.imageService
+        .addBlockedImageTagResenv(tag.trim(), this.checkedBlockedImageTagResenv, this.selectedFacility['FacilityId'])
+        .subscribe((newTag: BlockedImageTagResenv) => {
+          this.blockedImageTagsResenv.push(newTag)
+        });
     }
-    //   this.imageService.addBlockedImageTag(tag.trim(), this.selectedFacility['FacilityId']).subscribe((newTag: BlockedImageTag) => {
-    //     this.blockedImageTags.push(newTag)
-    //   });
-    //   this.alertRed_blocked = false;
-    // } else {
-    //   this.alertRed_blocked = true;
-    // }
   }
 
   deleteBlockedTagResenv(tag: string, facility_id: number): void {
-    this.imageService.deleteBlockedImageTag(tag, facility_id).subscribe(() => {
-      this.imageService.getBlockedImageTags(facility_id).subscribe((tags: BlockedImageTag[]) => {
-        this.blockedImageTags = tags;
+    this.imageService.deleteBlockedImageTagResenv(tag, facility_id).subscribe(() => {
+      this.imageService.getBlockedImageTagsResenv(facility_id).subscribe((tags: BlockedImageTagResenv[]) => {
+        this.blockedImageTagsResenv = tags;
       })
     })
   }
