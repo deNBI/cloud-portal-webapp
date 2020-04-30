@@ -24,24 +24,30 @@
         </div>
         <hr *ngIf="virtualMachine?.status === virtualMachineStates.staticACTIVE">
         <div class="card-body" *ngIf="virtualMachine?.status === virtualMachineStates.staticACTIVE">
-          <div class="card-title">
-            <strong>Connect Information</strong>
-          </div>
-          <div class="card-footer p-x-1 py-h">
-
+            <span class="text-muted font-weight-bold card-title" style="margin-left: 15px">
+              Connect Information</span>
+          <div class="p-x-1 py-h">
             <div class="row" *ngFor="let mode of virtualMachine?.modes">
-              <div class="col-md-1">
-                <span class="font-weight-bold font-xs btn-block text-muted">{{mode.name}}:</span>
+              <div class="col-4">
+                <div class="callout">
+                  <small class="text-muted">via</small><br>
+                  <strong class="text-muted">{{mode.name}}</strong>
+                </div>
               </div>
-              <div class="col-md-9">
-                <span class="font-weight-bold font-xs btn-block text-muted" [innerHTML]="mode.description"></span></div>
+              <div class="col-4">
+                <div class="callout">
+                  <small class="text-muted">with</small><br>
+                  <strong class="text-muted">{{mode.description}}</strong>
+                </div>
+              </div>
 
-              <div class="col-md-2" style="margin: auto" *ngIf="mode.copy_field && mode.copy_field != ''"><a
-                (click)="copyToClipboard(mode.copy_field);" href="#"
-                onClick="return false;"
-                class="font-weight-bold font-xs btn-block text-muted">&lt;copy
-                command&gt;</a>
+              <div class="col-2">
+                <div class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+                     id="copyCommandButton" style="margin-top:20px;" (click)="copyToClipboard(mode.copy_field);">
+                  Copy Command
+                </div>
               </div>
+
             </div>
             <div class="row" *ngIf="virtualMachine?.res_env_url != '' && virtualMachine?.res_env_url != null && virtualMachine?.res_env_url != undefined">
               <div class="col-md-1">
