@@ -40,7 +40,6 @@ export class ClientService {
 
         return this.http.post<IResponseTemplate>(`${this.clientURL}checkClient/`, params, {
             withCredentials: true,
-            headers: header
         })
 
     }
@@ -51,14 +50,14 @@ export class ClientService {
 
         return this.http.post<Client>(this.clientURL, params, {
             withCredentials: true,
-            headers: header
+//headers:header
         })
     }
 
     deleteClient(client_id: number): Observable<any> {
         return this.http.delete(`${this.clientURL}${client_id }/`, {
             withCredentials: true,
-            headers: header
+//headers:header
         })
 
     }
@@ -68,7 +67,7 @@ export class ClientService {
 
         return this.http.patch<Client>(`${this.clientURL}${client.id }/`, params, {
             withCredentials: true,
-            headers: header
+//headers:header
         })
 
     }

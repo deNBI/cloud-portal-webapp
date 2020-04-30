@@ -26,7 +26,7 @@ export class BiocondaService {
       .set('name', name);
 
     return this.http.get(`${ApiSettings.getApiBaseURL()}conda/all/`, {
-      headers: header,
+      ////headers: header,
       withCredentials: true,
       params: params
     })
@@ -37,7 +37,7 @@ export class BiocondaService {
       .set('clientid', clientid);
 
     return this.http.get<ResearchEnvironment[]>(`${ApiSettings.getApiBaseURL()}forc/templates/`, {
-      headers: header,
+      ////headers: header,
       withCredentials: true,
       params: params
     })
@@ -48,7 +48,7 @@ export class BiocondaService {
       .set('facility_id', facility_id);
 
     return this.http.get(`${ApiSettings.getApiBaseURL()}forc/templates/allowed/`, {
-      headers: header,
+      ////headers: header,
       withCredentials: true,
       params: params
     })
@@ -58,7 +58,7 @@ export class BiocondaService {
     const params: HttpParams = new HttpParams().set('vm', vm.name);
 
     return this.http.get(`${ApiSettings.getApiBaseURL()}forc/backends/vm_name/`, {
-      headers: header,
+      ////headers: header,
       withCredentials: true,
       params: params
     })

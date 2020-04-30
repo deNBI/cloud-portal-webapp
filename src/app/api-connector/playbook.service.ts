@@ -23,7 +23,7 @@ export class PlaybookService {
 
     return this.http.get<Object>(`${this.baseUrl}${vm_id}/`, {
       withCredentials: true,
-      headers: header
+      //headers: header
     });
   }
 

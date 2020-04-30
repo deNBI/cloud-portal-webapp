@@ -4,7 +4,6 @@ import {Observable} from 'rxjs';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Cookie} from 'ng2-cookies/ng2-cookies';
 import {IResponseTemplate} from './response-template';
-import {Userinfo} from '../userinfo/userinfo.model';
 
 const header: HttpHeaders = new HttpHeaders({
                                               'X-CSRFToken': Cookie.get('csrftoken')
@@ -37,7 +36,7 @@ export class UserService {
 
     return this.http.post(`${ApiSettings.getApiBaseURL()}users/current/preferredEmail/`, params, {
       withCredentials: true,
-      headers: header
+      //headers: header
     })
   }
 
@@ -80,13 +79,13 @@ export class UserService {
     if (redirect && redirect !== '/userinfo' && redirect !== 'redirect') {
       const params: HttpParams = new HttpParams().set('redirect_after_login', redirect);
 
-      return this.http.get(`${ApiSettings.getApiBaseURL()}loggedUser/`, {
+      return this.http.get(`${ApiSettings.getApiBase()}loggedUser/`, {
         withCredentials: true,
         params: params
 
       })
     } else {
-      return this.http.get(`${ApiSettings.getApiBaseURL()}loggedUser/`, {
+      return this.http.get(`${ApiSettings.getApiBase()}loggedUser/`, {
         withCredentials: true
 
       })
@@ -116,7 +115,7 @@ export class UserService {
 
     return this.http.post<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}newsletter/subscription/`, params, {
       withCredentials: true,
-      headers: header
+      //headers: header
     })
 
   }
@@ -126,7 +125,7 @@ export class UserService {
 
     return this.http.post<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}newsletter/subscription/`, params, {
       withCredentials: true,
-      headers: header
+      //headers: header
     })
 
   }
@@ -145,7 +144,7 @@ export class UserService {
 
     return this.http.post<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}users/current/helpMail/`, params, {
       withCredentials: true,
-      headers: header
+      //headers: header
     })
   }
 

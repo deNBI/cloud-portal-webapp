@@ -24,7 +24,7 @@ export class GroupService {
   getProjectOSDetails(groupId: number | string): Observable<object> {
     return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupId}/os_details/`, {
       withCredentials: true,
-      headers: header
+      //headers: header
     })
 
   }
@@ -32,7 +32,7 @@ export class GroupService {
   requestProjectTermination(appId: number | string): Observable<any> {
     return this.http.delete(`${ApiSettings.getApiBaseURL()}projects/${appId}/`, {
       withCredentials: true,
-      headers: header
+      //headers: header
     })
 
   }
@@ -49,7 +49,7 @@ export class GroupService {
 
     return this.http.get<Client>(`${ApiSettings.getApiBaseURL()}projects/${groupid}/client/`, {
       withCredentials: true,
-      headers: header
+      //headers: header
     })
 
   }
@@ -58,7 +58,7 @@ export class GroupService {
 
     return this.http.get<Client>(`${ApiSettings.getApiBaseURL()}projects/${groupid}/cluster/client/`, {
       withCredentials: true,
-      headers: header
+      //headers: header
     })
 
   }
@@ -69,13 +69,13 @@ export class GroupService {
 
       return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/client/getForc/`, {
         withCredentials: true,
-        headers: header,
+        ////headers: header,
         params: params
       })
     } else {
       return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/client/getForc/`, {
         withCredentials: true,
-        headers: header
+        //headers: header
       })
     }
   }
@@ -85,7 +85,7 @@ export class GroupService {
 
     return this.http.post(`${ApiSettings.getApiBaseURL()}projects/${groupid}/resource/`, params, {
       withCredentials: true,
-      headers: header
+      //headers: header
     })
 
   }
@@ -94,7 +94,7 @@ export class GroupService {
 
     return this.http.delete(`${ApiSettings.getApiBaseURL()}projects/${groupid}/resource/`, {
       withCredentials: true,
-      headers: header
+      //headers: header
     })
 
   }
@@ -131,7 +131,7 @@ export class GroupService {
 
     return this.http.post(`${ApiSettings.getApiBaseURL()}projects/${group_id}/members/${member_id}/`, params, {
       withCredentials: true,
-      headers: header,
+      ////headers: header,
       // responseType: 'text',
       observe: 'response'
     })
@@ -147,7 +147,7 @@ export class GroupService {
 
     return this.http.post(`${ApiSettings.getApiBaseURL()}projects/${group_id}/admins/${user_id}/`, params, {
       withCredentials: true,
-      headers: header,
+      ////headers: header,
       // responseType: 'text',
       observe: 'response'
     })
@@ -163,7 +163,7 @@ export class GroupService {
 
     return this.http.request('delete', `${ApiSettings.getApiBaseURL()}projects/${group_id}/members/${member_id}/`, {
       withCredentials: true,
-      headers: header,
+      ////headers: header,
       body: params,
       responseType: 'text',
       observe: 'response'
@@ -181,7 +181,7 @@ export class GroupService {
 
     return this.http.request('delete', `${ApiSettings.getApiBaseURL()}projects/${group_id}/admins/${user_id}/`, {
       withCredentials: true,
-      headers: header,
+      ////headers: header,
       responseType: 'text',
       body: params,
       observe: 'response'
@@ -194,7 +194,7 @@ export class GroupService {
 
     return this.http.post(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/description/`, params, {
       withCredentials: true,
-      headers: header
+      //headers: header
     })
 
   }
@@ -205,7 +205,7 @@ export class GroupService {
 
     return this.http.post(`${ApiSettings.getApiBaseURL()}projects/${group_id}/attributes/status/`, params, {
       withCredentials: true,
-      headers: header
+      //headers: header
     })
   }
 
@@ -215,7 +215,7 @@ export class GroupService {
 
     return this.http.post(`${ApiSettings.getApiBaseURL()}projects/${group_id}attributes/volumeLimit/`, params, {
       withCredentials: true,
-      headers: header
+      //headers: header
     })
   }
 
@@ -225,7 +225,7 @@ export class GroupService {
 
     return this.http.post(`${ApiSettings.getApiBaseURL()}projects/${group_id}/attributes/volumesCounter/`, params, {
       withCredentials: true,
-      headers: header
+      //headers: header
     })
   }
 
@@ -234,7 +234,7 @@ export class GroupService {
 
     return this.http.post(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/name/`, params, {
       withCredentials: true,
-      headers: header
+      //headers: header
     })
   }
 
@@ -250,7 +250,7 @@ export class GroupService {
 
     return this.http.post(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/shortname/`, params, {
       withCredentials: true,
-      headers: header
+      //headers: header
     })
 
   }
@@ -293,7 +293,7 @@ export class GroupService {
 
     return this.http.post(`${ApiSettings.getApiBaseURL()}projects/${groupid}/applications/${application}/status/`, null, {
       withCredentials: true,
-      headers: header
+      //headers: header
     })
 
   }
@@ -302,7 +302,7 @@ export class GroupService {
 
     return this.http.delete(`${ApiSettings.getApiBaseURL()}projects/${groupid}/applications/${application}/status/`, {
       withCredentials: true,
-      headers: header
+      //headers: header
     })
 
   }
@@ -311,7 +311,7 @@ export class GroupService {
 
     return this.http.get(`${ApiSettings.getApiBaseURL()}projects/simpleVm/`, {
       withCredentials: true,
-      headers: header
+      //headers: header
 
     })
   }
@@ -332,7 +332,7 @@ export class GroupService {
 
     return this.http.post<Doi[]>(`${ApiSettings.getApiBaseURL()}doi/`, params, {
       withCredentials: true,
-      headers: header
+      //headers: header
 
     })
   }
@@ -340,7 +340,7 @@ export class GroupService {
   deleteGroupDoi(id: string | number): Observable<Doi[]> {
     return this.http.delete<Doi[]>(`${ApiSettings.getApiBaseURL()}doi/${id}/`, {
       withCredentials: true,
-      headers: header
+      //headers: header
 
     })
   }
@@ -353,7 +353,7 @@ export class GroupService {
     return this.http.post(`${ApiSettings.getApiBaseURL()}projects/openStack/`, params,
                           {
                             withCredentials: true,
-                            headers: header
+                //headers:header
                           })
   }
 
@@ -364,7 +364,7 @@ export class GroupService {
     return this.http.post(`${ApiSettings.getApiBaseURL()}projects/simple_vm/`, params,
                           {
                             withCredentials: true,
-                            headers: header
+                //headers:header
                           })
   }
 
@@ -380,7 +380,7 @@ export class GroupService {
 
     return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/members/`, {
       withCredentials: true,
-      headers: header
+      //headers: header
 
     })
 
@@ -441,7 +441,7 @@ export class GroupService {
 
     return this.http.post(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/`, params, {
       withCredentials: true,
-      headers: header
+      //headers: header
     })
   }
 
@@ -455,7 +455,7 @@ export class GroupService {
 
     return this.http.post(`${ApiSettings.getApiBaseURL()}freemium/`, {
       withCredentials: true,
-      headers: header
+      //headers: header
     })
   }
 

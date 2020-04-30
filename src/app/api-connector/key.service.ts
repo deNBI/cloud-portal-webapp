@@ -32,7 +32,7 @@ export class KeyService {
 
         return this.http.put<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}users/current/public_key/`, params, {
             withCredentials: true,
-            headers: header
+//headers:header
         })
     }
 
