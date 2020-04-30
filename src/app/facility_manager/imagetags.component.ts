@@ -1,6 +1,6 @@
 import {ImageService} from '../api-connector/image.service';
 import {Component, OnInit} from '@angular/core';
-import {BlockedImageTag, ImageLogo, ImageMode, ImageTag} from './image-tag';
+import {BlockedImageTag, ImageLogo, ImageMode, ImageTag, BlockedImageTagResenv} from './image-tag';
 import {forkJoin} from 'rxjs';
 import {FacilityService} from '../api-connector/facility.service';
 import {BiocondaService} from '../api-connector/bioconda.service';
@@ -25,6 +25,8 @@ export class ImageTagComponent implements OnInit {
   imageLogos: ImageLogo[];
   checkedModes: ImageMode[] = [];
   blockedImageTags: BlockedImageTag[];
+  blockedImageTagsResenv: BlockedImageTagResenv[];
+  checkedBlockedImageTagResenv: string[] = [];
   imageTag: string;
   imageUrl: string;
   show_html: boolean = false;
@@ -58,6 +60,26 @@ export class ImageTagComponent implements OnInit {
     } else {
       this.checkedModes.splice(idx, 1)
     }
+  }
+
+  checkBlockedTagResenv(mode: string): void {
+    const idx: number = this.checkedBlockedImageTagResenv.indexOf(mode);
+
+    if (idx === -1) {
+      this.checkedBlockedImageTagResenv.push(mode)
+    } else {
+      this.checkedBlockedImageTagResenv.splice(idx, 1)
+    }
+  }
+
+  resenvModeAdded(mode: string): boolean {
+    for (const imageMode of this.imageModes) {
+      if (imageMode.name === mode) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   reloadData(): void {
@@ -193,10 +215,31 @@ export class ImageTagComponent implements OnInit {
 
   getTagModeSuggestions(): void {
     this.biocondaService
-      .getAllowedForcTemplates(this.selectedFacility['FacilityId'].toString())
+      .getSuggestedForcTemplates(this.selectedFacility['FacilityId'].toString())
       .subscribe((response: any[]) => {
         this.suggestedModes = response.map((template: any) => template);
       });
+  }
+
+  addBlockedTagResenv(tag: string, input: HTMLInputElement): void {
+    if (input.validity.valid) {
+      console.log(tag, input, this.checkedBlockedImageTagResenv);
+    }
+    //   this.imageService.addBlockedImageTag(tag.trim(), this.selectedFacility['FacilityId']).subscribe((newTag: BlockedImageTag) => {
+    //     this.blockedImageTags.push(newTag)
+    //   });
+    //   this.alertRed_blocked = false;
+    // } else {
+    //   this.alertRed_blocked = true;
+    // }
+  }
+
+  deleteBlockedTagResenv(tag: string, facility_id: number): void {
+    this.imageService.deleteBlockedImageTag(tag, facility_id).subscribe(() => {
+      this.imageService.getBlockedImageTags(facility_id).subscribe((tags: BlockedImageTag[]) => {
+        this.blockedImageTags = tags;
+      })
+    })
   }
 
 }
