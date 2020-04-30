@@ -92,7 +92,7 @@
     "@angular/compiler-cli": "^9.1.2",
     "@compodoc/compodoc": "^1.1.11",
     "@types/jasmine": "^3.5.10",
-    "@types/node": "^13.13.2",
+    "@types/node": "^13.13.4",
     "audit-ci": "^2.5.1",
     "autoprefixer": "^9.7.6",
     "codelyzer": "^5.1.2",
