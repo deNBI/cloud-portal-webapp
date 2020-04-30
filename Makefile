@@ -69,6 +69,9 @@ ng_serve: # Activates the env environment and serves the angular webapp
 	. env/bin/activate && \
 	ng serve
 
+changelog: ## Generate Changelog
+	github_changelog_generator --token  $(t) --release-branch $(b)
+
 .PHONY: default new_environment new_node_modules new_env_and_node serve check_nodeenv clean_env clean_node_modules ng_serve
 
 help:
