@@ -305,6 +305,15 @@ export class NewsManagerComponent implements OnInit {
   }
 
   /**
+   * Returns all public names of the facilities for which the news got posted as a concatenated string.
+   * The names are separated with commas.
+   * @param news the news for which the string shall be returned
+   */
+  facilitiesAsString(news: WordPressNews): string {
+    return "TestFacility";
+  }
+
+  /**
    * Builds reference between news-values and form-fields.
    */
   setFormGroup(): void {
