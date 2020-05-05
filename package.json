@@ -63,7 +63,7 @@
     "is-promise": "^4.0.0",
     "jsnlog": "^2.29.0",
     "jspdf": "^1.5.3",
-    "moment": "^2.24.0",
+    "moment": "^2.25.2",
     "ng2-charts": "^2.3.0",
     "ng2-cookies": "^1.0.12",
     "ng4-click-outside": "^1.0.1",
