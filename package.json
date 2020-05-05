@@ -59,7 +59,7 @@
     "css-loader": "3.5.3",
     "cssnano": "^4.0.5",
     "html2canvas": "1.0.0-rc.5",
-    "http-server": "^0.12.1",
+    "http-server": "^0.12.3",
     "is-promise": "^4.0.0",
     "jsnlog": "^2.29.0",
     "jspdf": "^1.5.3",
