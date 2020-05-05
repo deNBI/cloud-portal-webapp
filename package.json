@@ -98,7 +98,7 @@
     "codelyzer": "^5.1.2",
     "exports-loader": "^0.7.0",
     "file-loader": "^6.0.0",
-    "html-webpack-plugin": "^4.2.0",
+    "html-webpack-plugin": "^4.3.0",
     "istanbul-instrumenter-loader": "^3.0.1",
     "jasmine-core": "^3.5.0",
     "jasmine-spec-reporter": "^5.0.2",
