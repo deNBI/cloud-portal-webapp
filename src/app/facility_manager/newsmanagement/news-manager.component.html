@@ -62,9 +62,12 @@
                       </div>
                       <br>
                       <div class="row">
-                        
+                        <a class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+                           [id]="'goToWordPressButton_' + news.id.toString()"
+                           href="https://cloud.denbi.de/?page_id={{news.id.toString()}}" target="_blank">
+                          Show in WordPress
+                        </a>
                       </div>
-                      <br>
                     </div>
                   </div>
                 </div>
