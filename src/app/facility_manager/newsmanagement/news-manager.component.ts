@@ -318,7 +318,7 @@ export class NewsManagerComponent implements OnInit {
       let facilitiesString: string = "";
       this.computeCenters.forEach((facility: any) => {
         if (newsId.localeCompare(facility['compute_center_motd_id']) === 0) {
-          let temp_string: string = facility['compute_center_name'] + ", ";
+          let temp_string: string = `${facility['compute_center_name']}, `;
           facilitiesString = facilitiesString + temp_string;
         }
       });
@@ -337,7 +337,7 @@ export class NewsManagerComponent implements OnInit {
     this.computeCenters.forEach((facility: any) => {
       const motd_string: string = facility['compute_center_motd_id'];
       if (!this.newsSetAsMOTD.includes(motd_string)){
-        if (motd_string != "-1") {
+        if (motd_string !== "-1") {
           this.newsSetAsMOTD.push(motd_string);
         }
       }
