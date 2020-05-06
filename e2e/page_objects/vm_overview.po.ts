@@ -18,6 +18,7 @@ export class VMOverviewPage {
   private VERIFY_STOP_BTN: string = 'verifyStopButton';
   private VERIFY_RESTART_BTN: string = 'verifyRestartButton';
   private DETAIL_PRE: string = 'showDetailsButton_';
+  private DETAIL_LINK: string = 'detail_';
 
   private SHUTOFF_BUTTON_PREFIX: string = 'stopVMButton_';
   private RESUME_BUTTON_PREFIX: string = 'restartVMButton_';
@@ -159,6 +160,18 @@ export class VMOverviewPage {
     } else {
       return '';
     }
+  }
+
+  async getNewBasicVMName(): Promise<string> {
+    const basicName: string = await Util.getTextFromLinkElement(this.DETAIL_LINK, Util.BASIC_VM_NAME);
+
+    return basicName;
+  }
+
+  async getNewVolumeVMName(): Promise<string> {
+    const volumeName: string = await Util.getTextFromLinkElement(this.DETAIL_LINK, Util.VOLUME_VM_NAME);
+
+    return volumeName;
   }
 
   async getVolumeVMName(): Promise<string> {
