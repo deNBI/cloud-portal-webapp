@@ -36,7 +36,9 @@
                          style="color: white !important;"
                          [ngStyle]="{'background-color': news.id == selectedNews.id ? '#005aa9' : '#00adef'}">
                       <strong>{{news.title}}</strong>
-                      <span class="badge badge-light" style="margin-left:5px;" *ngIf="true"
+                      <span class="badge badge-light" style="margin-left:5px;"
+                            [ngStyle]="{'color': news.id == selectedNews.id ? '#005aa9' : '#00adef'}"
+                            *ngIf="newsSetAsMOTD.includes(news.id.toString())"
                             title="{{'Set as MOTD in: ' + facilitiesAsString(news)}}">
                         <i style="margin-right: 2px;" class="fas fa-terminal">MOTD</i></span>
                     </div>
@@ -56,7 +58,11 @@
                       </div>
                       <div class="row">
                         <div class="text-truncate col" data-toggle="tooltip"
-                             data-placement="auto">Uploaded: {{news.modification_date}}</div>
+                             data-placement="auto"><strong>Uploaded: </strong>{{news.modification_date}}</div>
+                      </div>
+                      <br>
+                      <div class="row">
+                        
                       </div>
                       <br>
                     </div>
