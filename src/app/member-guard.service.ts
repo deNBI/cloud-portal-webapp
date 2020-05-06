@@ -1,19 +1,15 @@
 import {Injectable} from '@angular/core';
-import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router, UrlTree} from '@angular/router';
-import {Observable, Subscription, throwError} from 'rxjs';
+import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
+import {Observable} from 'rxjs';
 import {environment} from '../environments/environment';
 import {UserService} from './api-connector/user.service';
 import {CookieService} from 'ngx-cookie-service';
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {ApiSettings} from './api-connector/api-settings.service';
-import {catchError, map, switchMap} from 'rxjs/operators';
-import {Cookie} from 'ng2-cookies/ng2-cookies';
-import {error} from '@angular/compiler/src/util';
+import {HttpClient,} from '@angular/common/http';
+import {map, switchMap} from 'rxjs/operators';
 import {now} from 'moment';
-
-const header: HttpHeaders = new HttpHeaders({
-                                              'X-CSRFToken': Cookie.get('csrftoken')
-                                            });
+import {IResponseTemplate} from './api-connector/response-template';
+import {VoService} from './api-connector/vo.service';
+import {setVO} from './shared/globalvar';
 
 /**
  * Guard which checks if the user is member of the vo.
@@ -21,7 +17,8 @@ const header: HttpHeaders = new HttpHeaders({
 @Injectable()
 export class MemberGuardService implements CanActivate {
 
-  constructor(private http: HttpClient, private cookieService: CookieService, private router: Router, private userservice: UserService) {
+  constructor(private http: HttpClient, private cookieService: CookieService,
+              private router: Router, private userservice: UserService, private voService: VoService) {
 
   }
 
@@ -45,12 +42,14 @@ export class MemberGuardService implements CanActivate {
       redirect_url = null;
     }
 
-
-
     return this.userservice.getOnlyLoggedUserWithRedirect(redirect_url).pipe(switchMap((res: any) => {
       if (res['error']) {
         window.location.href = environment.login;
       }
+      this.voService.isVo().subscribe((result: IResponseTemplate) => {
+        setVO(<boolean><Boolean>result.value);
+
+      })
 
       return this.userservice.getMemberByUser().pipe(map((memberinfo: any) => {
         if (memberinfo['name'] === 'MemberNotExistsException') {
@@ -74,7 +73,8 @@ export class MemberGuardService implements CanActivate {
 
         }
 
-        return true;
+        return true
+
       }))
     }))
 

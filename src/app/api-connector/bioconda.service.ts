@@ -48,7 +48,6 @@ export class BiocondaService {
       .set('facility_id', facility_id);
 
     return this.http.get(`${ApiSettings.getApiBaseURL()}forc/templates/allowed/`, {
-      ////headers: header,
       withCredentials: true,
       params: params
     })

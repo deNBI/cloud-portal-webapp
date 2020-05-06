@@ -331,15 +331,14 @@ export class GroupService {
       .set('application', application_id.toString()).set('doi', doi);
 
     return this.http.post<Doi[]>(`${ApiSettings.getApiBaseURL()}doi/`, params, {
-      withCredentials: true,
-      //headers: header
+      withCredentials: true
 
     })
   }
 
   deleteGroupDoi(id: string | number): Observable<Doi[]> {
     return this.http.delete<Doi[]>(`${ApiSettings.getApiBaseURL()}doi/${id}/`, {
-      withCredentials: true,
+      withCredentials: true
       //headers: header
 
     })

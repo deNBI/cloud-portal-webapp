@@ -41,6 +41,7 @@ import {CookieService} from 'ngx-cookie-service';
 import {TitleHeadbarComponent} from './shared/title-headbar.component';
 import { ClusterinfoComponent } from './virtualmachines/clusters/clusterinfo/clusterinfo.component';
 import { ClusterstatusComponent } from './virtualmachines/clusters/clusterstatus/clusterstatus.component';
+import {VoService} from './api-connector/vo.service';
 
 /**
  * App module.
@@ -92,7 +93,8 @@ import { ClusterstatusComponent } from './virtualmachines/clusters/clusterstatus
               },
               ApiSettings,
               UserService,
-              CookieService
+              CookieService,
+              VoService
             ],
             bootstrap: [AppComponent]
           })
