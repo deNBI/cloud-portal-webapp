@@ -67,6 +67,9 @@ export class ResEnvComponent implements OnInit, OnChanges {
 
   ngOnChanges(): void {
     this.checkBlocked();
+    console.log(this.selectedImageTags);
+    console.log(this.blockedImageTagsResenv);
+    console.log(this.templates_to_block);
   }
 
   isValid(): boolean {
@@ -108,6 +111,7 @@ export class ResEnvComponent implements OnInit, OnChanges {
   unsetOnlyNamespace(): void {
     this.onlyNamespace = false;
     this.user_key_url.setValue('');
+    this.setSelectedTemplate(null);
   }
 
   generateRandomName(): void {
@@ -121,8 +125,11 @@ export class ResEnvComponent implements OnInit, OnChanges {
     for (const blockedTag of this.blockedImageTagsResenv) {
       if (this.selectedImageTags.indexOf(blockedTag.tag) !== -1) {
         this.templates_to_block = blockedTag.resenvs;
+
+        return;
       }
     }
+    this.templates_to_block = [];
   }
 
 }
