@@ -67,9 +67,6 @@ export class ResEnvComponent implements OnInit, OnChanges {
 
   ngOnChanges(): void {
     this.checkBlocked();
-    console.log(this.selectedImageTags);
-    console.log(this.blockedImageTagsResenv);
-    console.log(this.templates_to_block);
   }
 
   isValid(): boolean {
