@@ -481,7 +481,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
   }
 
   checkAndGetForcDetails(vm: VirtualMachine): void {
-    let checkForForc: boolean = true;
+    const checkForForc: boolean = true;
     // for (const mode of vm.modes) {
     //   if (TemplateNames.ALL_TEMPLATE_NAMES.indexOf(mode.name) !== -1) {
     //     checkForForc = false;
