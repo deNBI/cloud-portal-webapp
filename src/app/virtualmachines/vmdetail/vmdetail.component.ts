@@ -20,7 +20,6 @@ import {PlaybookService} from '../../api-connector/playbook.service';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 
 import {CondaPackage} from '../condaPackage.model';
-import {TemplateNames} from '../conda/template-names';
 import {BiocondaService} from '../../api-connector/bioconda.service';
 import {ResenvTemplate} from '../conda/resenvTemplate.model';
 import {is_vo} from '../../shared/globalvar';
@@ -53,6 +52,8 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
   errorMessage: boolean = false;
   private _condaPackages: CondaPackage[] = [];
   res_env_url: string = '';
+  filteredMembers: any = null;
+  backend_users: any = [];
 
   is_vo_admin: boolean = is_vo;
   WIKI_RSTUDIO_LINK: string = WIKI_RSTUDIO_LINK;
@@ -481,11 +482,11 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
 
   checkAndGetForcDetails(vm: VirtualMachine): void {
     let checkForForc: boolean = true;
-    for (const mode of vm.modes) {
-      if (TemplateNames.ALL_TEMPLATE_NAMES.indexOf(mode.name) !== -1) {
-        checkForForc = false;
-      }
-    }
+    // for (const mode of vm.modes) {
+    //   if (TemplateNames.ALL_TEMPLATE_NAMES.indexOf(mode.name) !== -1) {
+    //     checkForForc = false;
+    //   }
+    // }
     if (checkForForc) {
       this.groupService.getClientForcUrl(vm.client.id, 'true').subscribe((response: JSON) => {
         if (response['forc_url'] !== null) {
@@ -499,7 +500,32 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
             });
         }
       });
+      this.getUsersForBackend();
     }
 
+  }
+
+  filterMembers(searchString: string): void {
+    this.userService.getFilteredMembersOfdeNBIVo(searchString).subscribe((result: object) => {
+      this.filteredMembers = result;
+    })
+  }
+
+  addUserToBackend(userId: any): void {
+    this.biocondaService.addUserToBackend(this.vm_id, userId).subscribe((result: any) => {
+      this.getUsersForBackend();
+    });
+  }
+
+  getUsersForBackend(): void {
+    this.biocondaService.getUsersForBackend(this.vm_id).subscribe((result: any) => {
+      this.backend_users = result;
+    });
+  }
+
+  deleteUserFromBackend(userId: any): void {
+    this.biocondaService.deleteUserFromBackend(this.vm_id, userId.toString()).subscribe((result: any) => {
+      this.getUsersForBackend();
+    });
   }
 }
