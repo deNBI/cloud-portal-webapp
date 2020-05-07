@@ -585,7 +585,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 
       }
       this.selectedProjectClient = client;
-      this.imageService.getBlockedImageTagsResenv(Number(this.selectedProjectClient.id), "true")
+      this.imageService.getBlockedImageTagsResenv(Number(this.selectedProjectClient.id), 'true')
         .subscribe((tags: BlockedImageTagResenv[]) => {
         this.blockedImageTagsResenv = tags;
       });
