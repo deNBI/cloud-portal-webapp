@@ -15,7 +15,7 @@
   </div>
   <div class="row">
     <div class="col-12">
-      <div class="card" style=" overflow: scroll">
+      <div class="card" style=" ">
         <div class="card-header"><span class="font-weight-bold text-muted">{{virtualMachine?.name}}</span></div>
         <div class="card-body">
 
@@ -24,24 +24,30 @@
         </div>
         <hr *ngIf="virtualMachine?.status === virtualMachineStates.staticACTIVE">
         <div class="card-body" *ngIf="virtualMachine?.status === virtualMachineStates.staticACTIVE">
-          <div class="card-title">
-            <strong>Connect Information</strong>
-          </div>
-          <div class="card-footer p-x-1 py-h">
-
+            <span class="text-muted font-weight-bold card-title" style="margin-left: 15px">
+              Connect Information</span>
+          <div class="p-x-1 py-h">
             <div class="row" *ngFor="let mode of virtualMachine?.modes">
-              <div class="col-md-1">
-                <span class="font-weight-bold font-xs btn-block text-muted">{{mode.name}}:</span>
+              <div class="col-4">
+                <div class="callout">
+                  <small class="text-muted">via</small><br>
+                  <strong class="text-muted">{{mode.name}}</strong>
+                </div>
               </div>
-              <div class="col-md-9">
-                <span class="font-weight-bold font-xs btn-block text-muted" [innerHTML]="mode.description"></span></div>
+              <div class="col-4">
+                <div class="callout">
+                  <small class="text-muted">with</small><br>
+                  <strong class="text-muted">{{mode.description}}</strong>
+                </div>
+              </div>
 
-              <div class="col-md-2" style="margin: auto" *ngIf="mode.copy_field && mode.copy_field != ''"><a
-                (click)="copyToClipboard(mode.copy_field);" href="#"
-                onClick="return false;"
-                class="font-weight-bold font-xs btn-block text-muted">&lt;copy
-                command&gt;</a>
+              <div class="col-2">
+                <div class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+                     id="copyCommandButton" style="margin-top:20px;" (click)="copyToClipboard(mode.copy_field);">
+                  Copy Command
+                </div>
               </div>
+
             </div>
             <div class="row" *ngIf="virtualMachine?.res_env_url != '' && virtualMachine?.res_env_url != null && virtualMachine?.res_env_url != undefined">
               <div class="col-md-1">
@@ -99,7 +105,7 @@
 
       </div>
 
-      <div class="card" style=" overflow: scroll">
+      <div class="card" style=" ">
         <div class="card-header"><span class="font-weight-bold text-muted">Flavor Information</span></div>
         <div class="card-body">
           <div class="row">
@@ -161,7 +167,7 @@
         </div>
       </div>
 
-      <div class="card" style=" overflow: scroll">
+      <div class="card" style=" ">
         <div class="card-header"><span class="font-weight-bold text-muted">Image Information</span></div>
         <div class="card-body">
           <div class="row">
@@ -194,7 +200,7 @@
         </div>
       </div>
 
-      <div class="card"  style=" overflow: scroll"*ngIf="this.condaPackages?.length > 0"> <!-- remove "false" as soon as request ist working -->
+      <div class="card"  style=" "*ngIf="this.condaPackages?.length > 0"> <!-- remove "false" as soon as request ist working -->
         <div class="card-header"><span class="font-weight-bold text-muted">Installed Conda Packages</span></div>
         <div class="card-body">
           <div class="row" *ngFor="let pkg of this.condaPackages">
@@ -220,7 +226,7 @@
         </div>
       </div>
 
-      <div class="card" style=" overflow: scroll" *ngIf="virtualMachine?.volumes.length > 0">
+      <div class="card" style=" " *ngIf="virtualMachine?.volumes.length > 0">
         <div class="card-header"><span class="font-weight-bold text-muted">Attached Volumes</span></div>
         <div class="card-body">
           <div class="row" *ngFor="let vol of virtualMachine?.volumes">
@@ -258,7 +264,7 @@
         </div>
       </div>
 
-      <div class="card" style=" overflow: scroll" *ngIf="resenvTemplate">
+      <div class="card" style=" " *ngIf="resenvTemplate">
         <div class="card-header"><span class="font-weight-bold text-muted">Research Environment</span></div>
         <div class="card-body">
           <div class="row">
