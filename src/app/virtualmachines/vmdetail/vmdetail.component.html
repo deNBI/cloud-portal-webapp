@@ -15,7 +15,7 @@
   </div>
   <div class="row">
     <div class="col-12">
-      <div class="card" style=" overflow: scroll">
+      <div class="card" style=" ">
         <div class="card-header"><span class="font-weight-bold text-muted">{{virtualMachine?.name}}</span></div>
         <div class="card-body">
 
@@ -105,7 +105,7 @@
 
       </div>
 
-      <div class="card" style=" overflow: scroll">
+      <div class="card" style=" ">
         <div class="card-header"><span class="font-weight-bold text-muted">Flavor Information</span></div>
         <div class="card-body">
           <div class="row">
@@ -167,7 +167,7 @@
         </div>
       </div>
 
-      <div class="card" style=" overflow: scroll">
+      <div class="card" style=" ">
         <div class="card-header"><span class="font-weight-bold text-muted">Image Information</span></div>
         <div class="card-body">
           <div class="row">
@@ -200,7 +200,7 @@
         </div>
       </div>
 
-      <div class="card"  style=" overflow: scroll"*ngIf="this.condaPackages?.length > 0"> <!-- remove "false" as soon as request ist working -->
+      <div class="card"  style=" "*ngIf="this.condaPackages?.length > 0"> <!-- remove "false" as soon as request ist working -->
         <div class="card-header"><span class="font-weight-bold text-muted">Installed Conda Packages</span></div>
         <div class="card-body">
           <div class="row" *ngFor="let pkg of this.condaPackages">
@@ -226,7 +226,7 @@
         </div>
       </div>
 
-      <div class="card" style=" overflow: scroll" *ngIf="virtualMachine?.volumes.length > 0">
+      <div class="card" style=" " *ngIf="virtualMachine?.volumes.length > 0">
         <div class="card-header"><span class="font-weight-bold text-muted">Attached Volumes</span></div>
         <div class="card-body">
           <div class="row" *ngFor="let vol of virtualMachine?.volumes">
@@ -264,7 +264,7 @@
         </div>
       </div>
 
-      <div class="card" style=" overflow: scroll" *ngIf="resenvTemplate">
+      <div class="card" style=" " *ngIf="resenvTemplate">
         <div class="card-header"><span class="font-weight-bold text-muted">Research Environment</span></div>
         <div class="card-body">
           <div class="row">
