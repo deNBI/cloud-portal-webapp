@@ -7,7 +7,6 @@ import { ApiSettings } from '../api-connector/api-settings.service';
 // Runs before the Ajax Appender sends the logs to the server
 function beforeSendFunction(xhr: XMLHttpRequest, json: JSON): any {
   json = filter(json); // filter out duplicate error messages
-  xhr.setRequestHeader('X-CSRFToken', Cookie.get('csrftoken')); // add csrftoken to cookie
   xhr.withCredentials = true;
 }
 

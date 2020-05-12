@@ -235,7 +235,7 @@
 
                     <a style="margin-left: 10px"
 
-                       [routerLink]="['/virtualmachines/cluster/' + vm?.cluster.cluster_id]">{{vm?.cluster.cluster_id}}}  </a>
+                       [routerLink]="['/virtualmachines/cluster/' + vm?.cluster.cluster_id]">{{vm?.cluster.cluster_id}} </a>
 
                     <ng-container *ngSwitchCase="'Running'">
                       <div [id]="'running_cluster_' + vm?.name"

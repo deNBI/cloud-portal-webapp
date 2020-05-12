@@ -19,12 +19,16 @@ export class NewsService {
 
   updateNewsInWordpress(news: WordPressNews): Observable<any> {
     return this.http.patch(`${ApiSettings.getApiBaseURL()}wp-news-management/`, news, {
+            withCredentials: true,
+
       //headers: header
     });
   }
 
   addNewsToWordpress(news: WordPressNews): Observable<any> {
     return this.http.post(`${ApiSettings.getApiBaseURL()}wp-news-management/`, news, {
+            withCredentials: true,
+
       //headers: header
     });
   }
@@ -36,6 +40,8 @@ export class NewsService {
     const params: HttpParams = new HttpParams().set('facility_ids', facility_ids);
 
     return this.http.get(`${ApiSettings.getApiBaseURL()}wp-news-management/`, {
+            withCredentials: true,
+
       ////headers: header,
       params: params});
   }
@@ -49,6 +55,8 @@ export class NewsService {
       .set('news_id', news_id);
 
     return this.http.delete(`${ApiSettings.getApiBaseURL()}wp-news-management/`, {
+            withCredentials: true,
+
         ////headers: header,
         params: params
       }
@@ -57,6 +65,8 @@ export class NewsService {
 
   getAvailableTagsFromWordPress(): Observable<any> {
     return this.http.get(`${ApiSettings.getApiBaseURL()}wp-tags-management/`, {
+            withCredentials: true,
+
       //headers: header
     })
   }
