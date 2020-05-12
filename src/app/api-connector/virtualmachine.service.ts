@@ -35,15 +35,15 @@ export class VirtualmachineService {
       .set('project_id', project_id.toString());
 
     return this.http.post(`${ApiSettings.getApiBaseURL()}clusters/`, params, {
-      withCredentials: true,
-      //headers: header
+      withCredentials: true
+      // headers: header
     })
   }
 
   getClusterInfo(cluster_id: string): Observable<Clusterinfo> {
     return this.http.get<Clusterinfo>(`${ApiSettings.getApiBaseURL()}clusters/${cluster_id}/`, {
-      withCredentials: true,
-      //headers: header
+      withCredentials: true
+      // headers: header
     })
   }
 
@@ -57,15 +57,15 @@ export class VirtualmachineService {
 
     return this.http.get<Clusterinfo[]>(`${ApiSettings.getApiBaseURL()}clusters/`, {
       withCredentials: true,
-      ////headers: header,
+      //// headers: header,
       params: params
     })
   }
 
   deleteCluster(cluster_id: string): Observable<void> {
     return this.http.delete<void>(`${ApiSettings.getApiBaseURL()}clusters/${cluster_id}/`, {
-      withCredentials: true,
-      //headers: header
+      withCredentials: true
+      // headers: header
     })
   }
 
@@ -88,8 +88,8 @@ export class VirtualmachineService {
       .set('user_key_url', user_key_url);
 
     return this.http.post(this.baseVmUrl, params, {
-      withCredentials: true,
-      //headers: header
+      withCredentials: true
+      // headers: header
     })
   }
 
@@ -149,15 +149,15 @@ export class VirtualmachineService {
 
   getLogs(openstack_id: string): Observable<any> {
     return this.http.post(`${this.baseVmUrl}${openstack_id}/logs/`, null, {
-      withCredentials: true,
-      //headers: header
+      withCredentials: true
+      // headers: header
     })
   }
 
   getLocationUrl(openstack_id: string): Observable<any> {
     return this.http.post(`${this.baseVmUrl}${openstack_id}/location_url/`, null, {
-      withCredentials: true,
-      //headers: header
+      withCredentials: true
+      // headers: header
     })
   }
 
@@ -206,15 +206,15 @@ export class VirtualmachineService {
   checkVmStatus(openstack_id: string, name?: string): Observable<any> {
     if (openstack_id) {
       return this.http.post(`${this.baseVmUrl}${openstack_id}/status/`, null, {
-        withCredentials: true,
+        withCredentials: true
 
-        //headers: header
+        // headers: header
       })
     } else if (name) {
       return this.http.post(`${this.baseVmUrl}${name}/status/`, null, {
-        withCredentials: true,
+        withCredentials: true
 
-        //headers: header
+        // headers: header
       })
     }
   }
@@ -223,25 +223,25 @@ export class VirtualmachineService {
     const params: HttpParams = new HttpParams().set('reboot', 'true');
 
     return this.http.post(`${this.baseVmUrl}${openstack_id}/status/`, params, {
-      withCredentials: true,
+      withCredentials: true
 
-      //headers: header
+      // headers: header
     })
   }
 
   deleteVM(openstack_id: string): Observable<VirtualMachine> {
 
     return this.http.delete<VirtualMachine>(`${this.baseVmUrl}${openstack_id}/`, {
-      withCredentials: true,
-      //headers: header
+      withCredentials: true
+      // headers: header
     })
 
   }
 
   setVmNeeded(openstack_id: string): Observable<any> {
     return this.http.post<any>(`${this.baseVmUrl}${openstack_id}/need/`, null, {
-      withCredentials: true,
-      //headers: header
+      withCredentials: true
+      // headers: header
     })
   }
 
@@ -249,8 +249,8 @@ export class VirtualmachineService {
     const params: HttpParams = new HttpParams().set('os_action', 'stop');
 
     return this.http.post<VirtualMachine>(`${this.baseVmUrl}${openstack_id}/action/`, params, {
-      withCredentials: true,
-      //headers: header
+      withCredentials: true
+      // headers: header
     })
   }
 
@@ -258,8 +258,8 @@ export class VirtualmachineService {
     const params: HttpParams = new HttpParams().set('os_action', 'reboot').set('reboot_type', reboot_type);
 
     return this.http.post<IResponseTemplate>(`${this.baseVmUrl}${openstack_id}/action/`, params, {
-      withCredentials: true,
-      //headers: header
+      withCredentials: true
+      // headers: header
     })
   }
 
@@ -268,8 +268,8 @@ export class VirtualmachineService {
     const params: HttpParams = new HttpParams().set('os_action', 'resume');
 
     return this.http.post<VirtualMachine>(`${this.baseVmUrl}${openstack_id}/action/`, params, {
-      withCredentials: true,
-      //headers: header
+      withCredentials: true
+      // headers: header
     })
 
   }
@@ -319,8 +319,8 @@ export class VirtualmachineService {
       .set('vm_openstackid', vm_openstackid);
 
     return this.http.post<Volume>(`${ApiSettings.getApiBaseURL()}volumes/`, params, {
-      withCredentials: true,
-      //headers: header
+      withCredentials: true
+      // headers: header
     })
   }
 
@@ -329,8 +329,8 @@ export class VirtualmachineService {
     const params: HttpParams = new HttpParams().set('os_action', 'extend').set('new_size', new_size);
 
     return this.http.post<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}volumes/${volume_id}/action/`, params, {
-                                               withCredentials: true,
-                                   //headers:header
+                                               withCredentials: true
+                                   // headers:header
                                              }
     )
 
@@ -341,8 +341,8 @@ export class VirtualmachineService {
     const params: HttpParams = new HttpParams().set('instance_id', instance_id).set('os_action', 'attach');
 
     return this.http.post<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}volumes/${volume_id}/action/`, params, {
-                                               withCredentials: true,
-                                   //headers:header
+                                               withCredentials: true
+                                   // headers:header
                                              }
     )
 
@@ -352,8 +352,8 @@ export class VirtualmachineService {
     const params: HttpParams = new HttpParams().set('new_volume_name', new_volume_name);
 
     return this.http.patch<Volume>(`${ApiSettings.getApiBaseURL()}volumes/${volume_id}/`, params, {
-      withCredentials: true,
-      //headers: header
+      withCredentials: true
+      // headers: header
     })
 
   }
@@ -361,8 +361,8 @@ export class VirtualmachineService {
   deleteVolume(volume_id: string): Observable<IResponseTemplate> {
 
     return this.http.delete<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}volumes/${volume_id}/`, {
-      withCredentials: true,
-      //headers: header
+      withCredentials: true
+      // headers: header
     })
   }
 
@@ -371,8 +371,8 @@ export class VirtualmachineService {
     const params: HttpParams = new HttpParams().set('instance_id', instance_id).set('os_action', 'detach');
 
     return this.http.post<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}volumes/${volume_id}/action/`, params, {
-      withCredentials: true,
-      //headers: header
+      withCredentials: true
+      // headers: header
     })
   }
 }

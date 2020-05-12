@@ -4,7 +4,7 @@ import {Observable, Subject} from 'rxjs';
 import {environment} from '../environments/environment';
 import {UserService} from './api-connector/user.service';
 import {CookieService} from 'ngx-cookie-service';
-import {HttpClient,} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {map, switchMap} from 'rxjs/operators';
 import {now} from 'moment';
 import {IResponseTemplate} from './api-connector/response-template';
