@@ -12,7 +12,7 @@ import {now} from 'moment';
  * Guard which checks if the user is member of the vo.
  */
 @Injectable()
-export class LoggedIn_guard implements CanActivate {
+export class LoggedInGuard implements CanActivate {
 
   constructor(private http: HttpClient, private cookieService: CookieService,
               private router: Router, private userservice: UserService) {

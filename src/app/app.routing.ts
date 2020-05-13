@@ -6,7 +6,7 @@ import {ConsentInfoComponent} from './consent-info.component';
 import {FullLayoutComponent} from './layouts/full-layout.component';
 import {MemberGuardService} from './member-guard.service';
 import {RegistrationInfoComponent} from './registration-info.component';
-import {LoggedIn_guard} from './logged-in_guard.';
+import {LoggedInGuard} from './logged-in-guard.service';
 
 export const routes: Routes = [
   {
@@ -34,32 +34,32 @@ export const routes: Routes = [
     children: [
       {
         path: 'userinfo',
-        canActivate: [LoggedIn_guard],
+        canActivate: [LoggedInGuard],
 
         loadChildren: () => import('./userinfo/userinfo.module').then(m => m.UserinfoModule)
       },
       {
         path: 'help',
-        canActivate: [LoggedIn_guard],
+        canActivate: [LoggedInGuard],
 
         loadChildren: () => import('./help/help.module').then(m => m.HelpModule)
 
       },
       {
         path: 'project-management',
-        canActivate: [LoggedIn_guard],
+        canActivate: [LoggedInGuard],
 
         loadChildren: () => import('./projectmanagement/projectmanagement.module').then(m => m.ProjectManagementModule)
       },
       {
         path: 'applications',
-        canActivate: [LoggedIn_guard],
+        canActivate: [LoggedInGuard],
 
         loadChildren: () => import('./applications/applications.module').then(m => m.ApplicationsModule)
       },
       {
         path: 'virtualmachines',
-        canActivate: [LoggedIn_guard],
+        canActivate: [LoggedInGuard],
 
         loadChildren: () => import('./virtualmachines/vm.module').then(m => m.VmModule)
       },
@@ -69,7 +69,7 @@ export const routes: Routes = [
       },
       {
         path: 'facility-manager',
-        canActivate: [LoggedIn_guard],
+        canActivate: [LoggedInGuard],
 
         loadChildren: () => import('./facility_manager/facilitymanager.module').then(m => m.FacilitymanagerModule)
       }
@@ -84,7 +84,7 @@ export const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
-            providers: [MemberGuardService, LoggedIn_guard]
+            providers: [MemberGuardService, LoggedInGuard]
 })
 export class AppRoutingModule {
 }
