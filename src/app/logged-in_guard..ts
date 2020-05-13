@@ -7,7 +7,6 @@ import {CookieService} from 'ngx-cookie-service';
 import {HttpClient} from '@angular/common/http';
 import {map} from 'rxjs/operators';
 import {now} from 'moment';
-import {VoService} from './api-connector/vo.service';
 
 /**
  * Guard which checks if the user is member of the vo.
@@ -16,7 +15,7 @@ import {VoService} from './api-connector/vo.service';
 export class LoggedIn_guard implements CanActivate {
 
   constructor(private http: HttpClient, private cookieService: CookieService,
-              private router: Router, private userservice: UserService, private voService: VoService) {
+              private router: Router, private userservice: UserService) {
 
   }
 
