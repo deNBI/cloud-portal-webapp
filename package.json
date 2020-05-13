@@ -80,7 +80,7 @@
     "protractor-stop-describe-on-failure": "^1.0.4",
     "rxjs": "6.5.5",
     "ts-helpers": "1.1.2",
-    "tslib": "^1.10.0",
+    "tslib": "^1.12.0",
     "tslint-angular": "^3.0.2",
     "tslint-clean-code": "^0.2.9",
     "uglify-js": "3.9.2",
