@@ -90,8 +90,8 @@ export class ImageService {
     const params: HttpParams = new HttpParams().set('facility', facility.toString()).set('mode', JSON.stringify(mode));
 
     return this.http.post<ImageMode>(`${ApiSettings.getApiBaseURL()}imageModes/`, params, {
-      withCredentials: true,
-      //headers: header
+      withCredentials: true
+      // headers: header
     })
 
   }
@@ -101,8 +101,8 @@ export class ImageService {
     const params: HttpParams = new HttpParams().set('mode', JSON.stringify(mode));
 
     return this.http.patch<ImageMode>(`${ApiSettings.getApiBaseURL()}imageModes/${mode.id}/`, params, {
-      withCredentials: true,
-      //headers: header
+      withCredentials: true
+      // headers: header
     })
 
   }
@@ -113,8 +113,8 @@ export class ImageService {
       .set('imageTag', imageTag).set('facility', facility.toString()).set('imageModes', JSON.stringify(imageModes));
 
     return this.http.post<ImageTag>(`${ApiSettings.getApiBaseURL()}imageTags/`, params, {
-      withCredentials: true,
-      //headers: header
+      withCredentials: true
+      // headers: header
     })
 
   }
@@ -123,8 +123,8 @@ export class ImageService {
     const params: HttpParams = new HttpParams().set('imageTag', imageTag).set('facility_id', facility_id.toString());
 
     return this.http.post<BlockedImageTag>(`${ApiSettings.getApiBaseURL()}blockedImageTags/`, params, {
-      withCredentials: true,
-      //headers: header
+      withCredentials: true
+      // headers: header
     })
   }
 
@@ -140,8 +140,8 @@ export class ImageService {
     const params: HttpParams = new HttpParams().set('tag', imageTag).set('url', url);
 
     return this.http.post<ImageLogo>(`${ApiSettings.getApiBaseURL()}imageLogoTags/`, params, {
-      withCredentials: true,
-      //headers: header
+      withCredentials: true
+      // headers: header
     })
 
   }
@@ -149,8 +149,8 @@ export class ImageService {
   deleteImageLogoTag(imageTag: string | number): Observable<IResponseTemplate> {
 
     return this.http.delete<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}imageLogoTags/${imageTag}/`, {
-      withCredentials: true,
-      //headers: header
+      withCredentials: true
+      // headers: header
     })
 
   }
@@ -158,8 +158,8 @@ export class ImageService {
   deleteImageTag(id: string): Observable<IResponseTemplate> {
 
     return this.http.delete<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}imageTags/${id}/`, {
-      withCredentials: true,
-      //headers: header
+      withCredentials: true
+      // headers: header
     })
 
   }
@@ -167,8 +167,8 @@ export class ImageService {
   deleteImageMode(id: string): Observable<IResponseTemplate> {
 
     return this.http.delete<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}imageModes/${id}/`, {
-      withCredentials: true,
-      //headers: header
+      withCredentials: true
+      // headers: header
     })
 
   }
@@ -178,7 +178,7 @@ export class ImageService {
 
     return this.http.delete<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}blockedImageTags/${imageTag}/`, {
       withCredentials: true,
-      ////headers: header,
+      //// headers: header,
       params: params
     })
 
@@ -192,16 +192,16 @@ export class ImageService {
       .set('description', description);
 
     return this.http.post<SnapshotModel>(`${ApiSettings.getApiBaseURL()}snapshots/`, params, {
-      withCredentials: true,
-      //headers: header
+      withCredentials: true
+      // headers: header
     })
 
   }
 
   deleteSnapshot(snapshot_id: string): Observable<IResponseTemplate> {
     return this.http.delete<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}snapshots/${snapshot_id}/`, {
-      withCredentials: true,
-      //headers: header
+      withCredentials: true
+      // headers: header
     })
 
   }

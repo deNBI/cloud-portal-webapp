@@ -39,7 +39,7 @@ export class ClientService {
         const params: HttpParams = new HttpParams().set('host', host).set('port', port);
 
         return this.http.post<IResponseTemplate>(`${this.clientURL}checkClient/`, params, {
-            withCredentials: true,
+            withCredentials: true
         })
 
     }
@@ -49,15 +49,15 @@ export class ClientService {
         const params: HttpParams = new HttpParams().set('host', host).set('port', port).set('location', location);
 
         return this.http.post<Client>(this.clientURL, params, {
-            withCredentials: true,
-//headers:header
+            withCredentials: true
+// headers:header
         })
     }
 
     deleteClient(client_id: number): Observable<any> {
         return this.http.delete(`${this.clientURL}${client_id }/`, {
-            withCredentials: true,
-//headers:header
+            withCredentials: true
+// headers:header
         })
 
     }
@@ -66,8 +66,8 @@ export class ClientService {
         const params: HttpParams = new HttpParams().set('host', client.host).set('port', client.port).set('location', client.location);
 
         return this.http.patch<Client>(`${this.clientURL}${client.id }/`, params, {
-            withCredentials: true,
-//headers:header
+            withCredentials: true
+// headers:header
         })
 
     }

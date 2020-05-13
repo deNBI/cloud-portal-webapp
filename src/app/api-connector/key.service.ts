@@ -31,8 +31,8 @@ export class KeyService {
         const params: HttpParams = new HttpParams().set('public_key', public_key);
 
         return this.http.put<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}users/current/public_key/`, params, {
-            withCredentials: true,
-//headers:header
+            withCredentials: true
+// headers:header
         })
     }
 

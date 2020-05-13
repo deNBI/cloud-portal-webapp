@@ -40,7 +40,7 @@ export class FacilityService {
     const httpParams: HttpParams = new HttpParams().set('facilityID', facilityID).set('newsID', newsId);
 
     return this.http.post(`${ApiSettings.getApiBaseURL()}wp-motd-management/`, httpParams, {
-      ////headers: header,
+      //// headers: header,
       withCredentials: true
     });
   }
@@ -190,7 +190,7 @@ export class FacilityService {
     return this.http.post(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/applications/${application_id}/status/`,
                           params, {
                             withCredentials: true,
-                //headers:header,
+                // headers:header,
                             observe: 'response'
                           });
   }
@@ -212,8 +212,8 @@ export class FacilityService {
       .set('description', description);
 
     return this.http.post<CoreFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/coreFactors/`, params, {
-      withCredentials: true,
-      //headers: header
+      withCredentials: true
+      // headers: header
     });
   }
 
@@ -230,8 +230,8 @@ export class FacilityService {
       .set('ram', ram.toString()).set('factor', factor.toString()).set('description', description);
 
     return this.http.post<RamFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/ramFactors/`, params, {
-      withCredentials: true,
-      //headers: header
+      withCredentials: true
+      // headers: header
     });
   }
 
@@ -244,8 +244,8 @@ export class FacilityService {
   deleteRamFactor(facility: number | string, factor_id: number | string): Observable<RamFactor[]> {
 
     return this.http.delete<RamFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/ramFactors/${factor_id}/`, {
-      withCredentials: true,
-      //headers: header
+      withCredentials: true
+      // headers: header
     });
   }
 
@@ -257,8 +257,8 @@ export class FacilityService {
   getRamFactor(facility: number | string, factor_id: number | string): Observable<RamFactor> {
 
     return this.http.get<RamFactor>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/ramFactors/${factor_id}/`, {
-      withCredentials: true,
-      //headers: header
+      withCredentials: true
+      // headers: header
     });
   }
 
@@ -270,8 +270,8 @@ export class FacilityService {
   getCoreFactor(facility: number | string, factor_id: number | string): Observable<CoreFactor> {
 
     return this.http.get<CoreFactor>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/coreFactors/${factor_id}/`, {
-      withCredentials: true,
-      //headers: header
+      withCredentials: true
+      // headers: header
     });
   }
 
@@ -287,8 +287,8 @@ export class FacilityService {
 
     // tslint:disable-next-line:max-line-length
     return this.http.post<RamFactor>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/ramFactors/${factor.id}/`, params, {
-      withCredentials: true,
-      //headers: header
+      withCredentials: true
+      // headers: header
     });
   }
 
@@ -302,8 +302,8 @@ export class FacilityService {
 
     // tslint:disable-next-line:max-line-length
     return this.http.post<CoreFactor>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/coreFactors/${factor.id}/`, params, {
-      withCredentials: true,
-      //headers: header
+      withCredentials: true
+      // headers: header
     });
   }
 
@@ -316,8 +316,8 @@ export class FacilityService {
   deleteCoreFactor(facility: number | string, factor_id: number | string): Observable<CoreFactor[]> {
 
     return this.http.delete<CoreFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/coreFactors/${factor_id}/`, {
-      withCredentials: true,
-      //headers: header
+      withCredentials: true
+      // headers: header
     })
   }
 
@@ -362,7 +362,7 @@ export class FacilityService {
 
     return this.http.post(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/applications/${application_id}/status/`, params, {
       withCredentials: true,
-      ////headers: header,
+      //// headers: header,
       observe: 'response'
     })
   }
@@ -393,7 +393,7 @@ export class FacilityService {
 
     return this.http.post(`${ApiSettings.getApiBaseURL()}facilityManagers/current/facilityMail/`, params, {
                             withCredentials: true,
-                //headers:header,
+                // headers:header,
                             observe: 'response'
                           }
     )

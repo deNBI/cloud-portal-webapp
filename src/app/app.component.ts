@@ -49,9 +49,9 @@ export class AppComponent implements AfterViewInit, OnInit {
 
   ngOnInit(): void {
     this.angulartics2Piwik.startTracking();
-    //this.voService.isVo().subscribe((result: IResponseTemplate) => {
+    // this.voService.isVo().subscribe((result: IResponseTemplate) => {
      // setVO(<boolean><Boolean>result.value);
-    //})
+    // })
   }
 
   ngAfterViewInit(): void {
