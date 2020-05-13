@@ -35,8 +35,8 @@ export class UserService {
     const params: HttpParams = new HttpParams().set('newPreferredEmail', email);
 
     return this.http.post(`${ApiSettings.getApiBaseURL()}users/current/preferredEmail/`, params, {
-      withCredentials: true,
-      //headers: header
+      withCredentials: true
+      // headers: header
     })
   }
 
@@ -114,8 +114,8 @@ export class UserService {
     const params: HttpParams = new HttpParams().set('subscribed', true.toString());
 
     return this.http.post<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}newsletter/subscription/`, params, {
-      withCredentials: true,
-      //headers: header
+      withCredentials: true
+      // headers: header
     })
 
   }
@@ -124,8 +124,8 @@ export class UserService {
     const params: HttpParams = new HttpParams().set('subscribed', false.toString());
 
     return this.http.post<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}newsletter/subscription/`, params, {
-      withCredentials: true,
-      //headers: header
+      withCredentials: true
+      // headers: header
     })
 
   }
@@ -143,8 +143,8 @@ export class UserService {
     const params: HttpParams = new HttpParams().set('subject', subject).set('message', message).set('reply', reply);
 
     return this.http.post<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}users/current/helpMail/`, params, {
-      withCredentials: true,
-      //headers: header
+      withCredentials: true
+      // headers: header
     })
   }
 
