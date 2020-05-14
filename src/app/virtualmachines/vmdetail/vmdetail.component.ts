@@ -23,8 +23,9 @@ import {CondaPackage} from '../condaPackage.model';
 import {BiocondaService} from '../../api-connector/bioconda.service';
 import {ResenvTemplate} from '../conda/resenvTemplate.model';
 import {is_vo} from '../../shared/globalvar';
-import {WIKI_GUACAMOLE_LINK, WIKI_RSTUDIO_LINK} from '../../../links/links';
+import {WIKI_GUACAMOLE_LINK, WIKI_MOUNT_VOLUME, WIKI_RSTUDIO_LINK} from '../../../links/links';
 import {ClipboardService} from 'ngx-clipboard';
+import {Volume} from '../volumes/volume';
 
 /**
  * VM Detail page component
@@ -58,8 +59,13 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
   is_vo_admin: boolean = is_vo;
   WIKI_RSTUDIO_LINK: string = WIKI_RSTUDIO_LINK;
   WIKI_GUACAMOLE_LINK: string = WIKI_GUACAMOLE_LINK;
+  WIKI_MOUNT_VOLUME: string = WIKI_MOUNT_VOLUME;
 
   DEBOUNCE_TIME: number = 300;
+
+  volume_to_attach: Volume;
+  volume_to_detach: Volume;
+  detached_project_volumes: Volume[] = [];
 
   /**
    * The changed status.
@@ -198,6 +204,42 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
         this.status_changed = 2;
       }
     })
+  }
+
+  getDetachedVolumesByVSelectedMProject(): void {
+    this.virtualmachineService.getDetachedVolumesByProject(this.virtualMachine.projectid).subscribe(
+      (detached_volumes: Volume[]) => {
+        this.detached_project_volumes = detached_volumes;
+      }
+    )
+  }
+
+  attachVolume(volume: Volume): void {
+
+    this.virtualmachineService.attachVolumetoServer(volume.volume_openstackid, this.virtualMachine.openstackid).subscribe(
+      (result: IResponseTemplate) => {
+
+        if (result.value === 'attached') {
+          this.getVmById();
+
+        }
+      },
+      () => {
+      }
+    )
+  }
+
+  detachVolume(volume: Volume): void {
+
+    this.virtualmachineService.deleteVolumeAttachment(volume.volume_openstackid, this.virtualMachine.openstackid).subscribe(
+      (result: any) => {
+        if (result.value === 'deleted') {
+          this.getVmById();
+
+        }
+      },
+      () => {
+      })
   }
 
   /**

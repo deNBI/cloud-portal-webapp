@@ -87,10 +87,24 @@
                 <strong>Create Snapshot</strong>
               </button>
             </div>
+            <div class="col--2"
+                 *ngIf="virtualMachine.status ==virtualMachineStates.staticACTIVE && virtualMachine?.volumes.length > 0">
+              <button type="button" class="btn btn-secondary" style="width:100%;" id="detachVolume"
+                      (click)="volume_to_detach == undefined;detachModal.show();">
+                Detach Volume
+              </button>
+            </div>
+            <div class="col-md-2" *ngIf="virtualMachine.status ==virtualMachineStates.staticACTIVE">
+              <button type="button" class="btn btn-secondary" style="width:100%;" id="attachVolume"
+
+                      (click)="volume_to_attach == undefined;getDetachedVolumesByVSelectedMProject();attachModal.show();">
+                Attach Volume
+              </button>
+            </div>
             <div class="col-2" *ngIf="virtualMachine?.status === virtualMachineStates.staticACTIVE ||
             virtualMachine?.status === virtualMachineStates.staticSHUTOFF">
               <button type="button" class="btn btn-danger" style="width:100%;" id="deleteVMButton"
-              (click)="verifyModal.show();">
+                      (click)="verifyModal.show();">
                 <strong>Delete VM</strong>
               </button>
             </div>
@@ -889,3 +903,97 @@
   </div><!-- /.modal -->
 
 </div>
+
+<div bsModal #detachModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="Label"
+     aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Detach Volume</h4>
+        <button type="button" class="close" style="cursor: pointer"
+                (click)="detachModal.hide()"
+                aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <strong>Which volume should be detached from {{virtualMachine?.name}}?</strong>
+
+        <select class="form-control col-md-6" name="selected_vm"
+                [(ngModel)]="volume_to_detach">
+          <option value="undefined" disabled selected hidden> Please Select</option>
+          <option *ngFor="let vol of virtualMachine?.volumes" [ngValue]="vol"> {{vol.volume_name}}
+            ({{vol.volume_storage}}
+            GB)
+          </option>
+
+        </select>
+
+
+      </div>
+      <div class="modal-footer">
+        <button class="btn  btn-success col-md-4"
+                [disabled]="volume_to_detach == undefined"
+                (click)="detachVolume(volume_to_detach);detachModal.hide();">
+          Detach Volume
+        </button>
+
+        <button class="btn  btn-danger col-md-4" type="reset"
+                (click)="volume_to_detach=undefined;detachModal.hide();">Cancel
+        </button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<div bsModal #attachModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="Label"
+     aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Attach Volume</h4>
+        <button type="button" class="close" style="cursor: pointer"
+                (click)="attachModal.hide()"
+                aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div
+
+          class="alert alert-warning" role="alert">
+
+          The volume must still be <a
+          href="{{WIKI_MOUNT_VOLUME}}" target="_blank"> mounted </a> after the attaching to use it.
+        </div>
+        <strong>Which volume should be attached?</strong>
+
+        <select class="form-control col-md-6" name="selected_vm"
+                [(ngModel)]="volume_to_attach">
+          <option value="undefined" disabled selected hidden> Please Select</option>
+          <option *ngFor="let vol of detached_project_volumes" [ngValue]="vol"> {{vol.volume_name}}
+            ({{vol.volume_storage}} GB)
+          </option>
+
+        </select>
+
+
+      </div>
+      <div class="modal-footer">
+        <button class="btn  btn-success col-md-4"
+                [disabled]="volume_to_attach == undefined"
+                (click)="attachVolume(volume_to_attach);attachModal.hide();">
+          Attach Volume
+        </button>
+
+        <button class="btn  btn-danger col-md-4" type="reset"
+                (click)="volume_to_attach == undefined;attachModal.hide();">Cancel
+        </button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
