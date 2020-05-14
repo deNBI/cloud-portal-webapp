@@ -43,7 +43,7 @@ export class BiocondaService {
     })
   }
 
-  getAllowedForcTemplates(facility_id?: string): Observable<any> {
+  getSuggestedForcTemplates(facility_id?: string): Observable<any> {
     const params: HttpParams = new HttpParams()
       .set('facility_id', facility_id);
 

@@ -1,9 +1,10 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnInit} from '@angular/core';
 import {FormControl, Validators} from '@angular/forms';
 import {BiocondaService} from '../../api-connector/bioconda.service';
 import {ResearchEnvironment} from '../virtualmachinemodels/res-env';
 import {RandomNameGenerator} from '../../shared/randomNameGenerator';
 import {WIKI_RESENV_LINK} from '../../../links/links';
+import {BlockedImageTagResenv} from '../../facility_manager/image-tag';
 
 /**
  * ResEnv.
@@ -13,12 +14,16 @@ import {WIKI_RESENV_LINK} from '../../../links/links';
              templateUrl: 'res-env.component.html',
              providers: [BiocondaService]
            })
-export class ResEnvComponent implements OnInit {
+export class ResEnvComponent implements OnInit, OnChanges {
 
   @Input() clientid: string;
   @Input() forc_url: string;
   @Input() onlyNamespace: boolean = false;
   @Input() imageName: string = '';
+  @Input() selectedImageTags: string[] = [];
+  @Input() blockedImageTagsResenv: BlockedImageTagResenv[];
+
+  templates_to_block: string[] = [];
 
   user_key_url: FormControl = new FormControl('',
                                               [Validators.required, Validators.pattern('[a-zA-Z]*')]);
@@ -52,11 +57,16 @@ export class ResEnvComponent implements OnInit {
 
   ngOnInit(): void {
     this.undefinedTemplate.template_name = 'undefined';
+    this.templates_to_block = [];
     this.setSelectedTemplate(null);
     this.condaService.getForcTemplates(this.clientid).subscribe((templates: ResearchEnvironment[]) => {
       this.templates = templates;
     });
     this.rng = new RandomNameGenerator();
+  }
+
+  ngOnChanges(): void {
+    this.checkBlocked();
   }
 
   isValid(): boolean {
@@ -98,9 +108,25 @@ export class ResEnvComponent implements OnInit {
   unsetOnlyNamespace(): void {
     this.onlyNamespace = false;
     this.user_key_url.setValue('');
+    this.setSelectedTemplate(null);
   }
 
   generateRandomName(): void {
     this.user_key_url.setValue(this.rng.randomName())
   }
+
+  checkBlocked(): void {
+    if (this.selectedImageTags === null || this.selectedImageTags === undefined) {
+      return;
+    }
+    for (const blockedTag of this.blockedImageTagsResenv) {
+      if (this.selectedImageTags.indexOf(blockedTag.tag) !== -1) {
+        this.templates_to_block = blockedTag.resenvs;
+
+        return;
+      }
+    }
+    this.templates_to_block = [];
+  }
+
 }

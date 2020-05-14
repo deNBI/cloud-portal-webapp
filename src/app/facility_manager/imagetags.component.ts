@@ -1,6 +1,6 @@
 import {ImageService} from '../api-connector/image.service';
 import {Component, OnInit} from '@angular/core';
-import {BlockedImageTag, ImageLogo, ImageMode, ImageTag} from './image-tag';
+import {BlockedImageTag, ImageLogo, ImageMode, ImageTag, BlockedImageTagResenv} from './image-tag';
 import {forkJoin} from 'rxjs';
 import {FacilityService} from '../api-connector/facility.service';
 import {BiocondaService} from '../api-connector/bioconda.service';
@@ -25,6 +25,8 @@ export class ImageTagComponent implements OnInit {
   imageLogos: ImageLogo[];
   checkedModes: ImageMode[] = [];
   blockedImageTags: BlockedImageTag[];
+  blockedImageTagsResenv: BlockedImageTagResenv[];
+  checkedBlockedImageTagResenv: string[] = [];
   imageTag: string;
   imageUrl: string;
   show_html: boolean = false;
@@ -60,17 +62,39 @@ export class ImageTagComponent implements OnInit {
     }
   }
 
+  checkBlockedTagResenv(mode: string): void {
+    const idx: number = this.checkedBlockedImageTagResenv.indexOf(mode);
+
+    if (idx === -1) {
+      this.checkedBlockedImageTagResenv.push(mode)
+    } else {
+      this.checkedBlockedImageTagResenv.splice(idx, 1)
+    }
+  }
+
+  resenvModeAdded(mode: string): boolean {
+    for (const imageMode of this.imageModes) {
+      if (imageMode.name === mode) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   reloadData(): void {
     forkJoin(
       this.imageService.getImageTags(this.selectedFacility['FacilityId']),
       this.imageService.getImageLogos(),
       this.imageService.getBlockedImageTags(this.selectedFacility['FacilityId']),
-      this.imageService.getImageModes(this.selectedFacility['FacilityId']))
+      this.imageService.getImageModes(this.selectedFacility['FacilityId']),
+      this.imageService.getBlockedImageTagsResenv(this.selectedFacility['FacilityId']))
       .subscribe((res: any) => {
         this.imageTags = res[0];
         this.imageLogos = res[1];
         this.blockedImageTags = res[2];
         this.imageModes = res[3];
+        this.blockedImageTagsResenv = res[4];
         this.isLoaded = true;
       })
   }
@@ -84,12 +108,14 @@ export class ImageTagComponent implements OnInit {
         this.imageService.getImageTags(this.selectedFacility['FacilityId']),
         this.imageService.getImageLogos(),
         this.imageService.getBlockedImageTags(this.selectedFacility['FacilityId']),
-        this.imageService.getImageModes(this.selectedFacility['FacilityId']))
+        this.imageService.getImageModes(this.selectedFacility['FacilityId']),
+        this.imageService.getBlockedImageTagsResenv(this.selectedFacility['FacilityId']))
         .subscribe((res: any) => {
           this.imageTags = res[0];
           this.imageLogos = res[1];
           this.blockedImageTags = res[2];
           this.imageModes = res[3];
+          this.blockedImageTagsResenv = res[4];
           this.isLoaded = true;
         })
     });
@@ -193,10 +219,28 @@ export class ImageTagComponent implements OnInit {
 
   getTagModeSuggestions(): void {
     this.biocondaService
-      .getAllowedForcTemplates(this.selectedFacility['FacilityId'].toString())
+      .getSuggestedForcTemplates(this.selectedFacility['FacilityId'].toString())
       .subscribe((response: any[]) => {
         this.suggestedModes = response.map((template: any) => template);
       });
+  }
+
+  addBlockedTagResenv(tag: string, input: HTMLInputElement): void {
+    if (input.validity.valid) {
+      this.imageService
+        .addBlockedImageTagResenv(tag.trim(), this.checkedBlockedImageTagResenv, this.selectedFacility['FacilityId'])
+        .subscribe((newTag: BlockedImageTagResenv) => {
+          this.blockedImageTagsResenv.push(newTag)
+        });
+    }
+  }
+
+  deleteBlockedTagResenv(tag: string, facility_id: number): void {
+    this.imageService.deleteBlockedImageTagResenv(tag, facility_id).subscribe(() => {
+      this.imageService.getBlockedImageTagsResenv(facility_id).subscribe((tags: BlockedImageTagResenv[]) => {
+        this.blockedImageTagsResenv = tags;
+      })
+    })
   }
 
 }
