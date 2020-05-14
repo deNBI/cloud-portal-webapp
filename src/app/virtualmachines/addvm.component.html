@@ -416,7 +416,10 @@
                             'icon-arrow-up': resEnvGroup.isOpen, 'icon-arrow-down': !resEnvGroup.isOpen}"></i>
                   </div>
                   <app-res-env #resEnv
-                               [clientid]="client_id" [forc_url]="forc_url"
+                               [clientid]="client_id"
+                               [forc_url]="forc_url"
+                               [selectedImageTags]="selectedImage?.tags"
+                               [blockedImageTagsResenv]="blockedImageTagsResenv"
                                [onlyNamespace]="resenvSelected"></app-res-env>
                 </accordion-group>
 

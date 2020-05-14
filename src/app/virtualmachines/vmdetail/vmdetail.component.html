@@ -310,6 +310,56 @@
 
           </div>
         </div>
+        <div class="card-header"><span class="font-weight-bold text-muted">User management</span></div>
+        <div class="card-body">
+          <div class="row">
+            <button id="add_member_btn_modal"
+                    (click)="addUserModal.show();"
+
+                    type="button" style="margin-bottom:5px;margin-right:5px"
+                    class="btn btn-success"><i class="fa fa-plus"></i>&nbsp; Add User
+            </button>
+            <button id="reload_member_btn_modal"
+                    (click)="getUsersForBackend();"
+
+                    type="button" style="margin-bottom:5px;margin-right:5px"
+                    class="btn btn-success"><i class="fa fa-info"></i>&nbsp; Reload user list
+            </button>
+          </div>
+          <div class="row">
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                <tr>
+                  <th>User ID</th>
+                  <th>Member ID</th>
+                  <th>Full Name</th>
+                  <th>Actions</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let member of backend_users">
+                  <td>
+                    {{ member["user_id"] }}</td>
+                  <td>{{ member["member_id"] }}</td>
+                  <td>{{ member["firstName"] }} {{member["lastName"]}}</td>
+                  <td>
+                    <button id="delete_member_btn_modal"
+                            (click)="deleteUserFromBackend(member['member_id']);"
+
+                            type="button" style="margin-bottom:5px;margin-right:5px"
+                            class="btn btn-danger"><i class="fa fa-minus"></i>&nbsp; Remove User
+                    </button>
+                  </td>
+                </tr>
+
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+        </div>
       </div>
 
 
@@ -779,6 +829,78 @@
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
   </div>
+
+  <div bsModal #addUserModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
+       aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content ">
+        <div class="modal-header">
+          <h4 class="modal-title">Add a member to your research environment.
+          </h4>
+          <button type="button" class="close" style="cursor:pointer" (click)="addUserModal.hide()"
+                  aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+          <div class="container-fluid">
+            <div class="row">
+              <p style=" margin-bottom: 15px;">Search and add a user to your research environment by providing at least
+                four characters of his name:</p>
+            </div>
+            <div class="row">
+              <div class="col-md-8">
+                <input style="width: 100%" placeholder="" id="add_member_input" #searchString>
+              </div>
+              <div class="col-md-4">
+                <button type="button" class="btn btn-primary" id="search_member_btn"
+                        (click)="filterMembers(searchString.value)"><i
+                  class="fa fa-search"></i> Search Member
+                </button>
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-md-12">
+                <strong>Please note</strong> that if you can not find the user, he is not registered for a
+                a de.NBI Cloud account.
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table *ngIf="filteredMembers!==null" class="table table-bordered table-striped table-sm">
+                <thead>
+
+                <th></th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                </thead>
+                <tbody *ngFor="  let member of filteredMembers">
+                <td>
+                  <button style="padding: 5px; margin: 5px"
+                          (click)="addUserToBackend(member['member_id']);filteredMembers=null; addUserModal.hide();"
+                          class="btn btn-success" id="add_member_btn"><i class="fa fa-plus"></i> Add Member
+                  </button>
+                </td>
+                <td>{{member['firstName']}}</td>
+                <td>{{member['lastName']}}</td>
+                <td>{{member['mail']}}</td>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" (click)="filteredMembers=null; addUserModal.hide();"
+                  type="reset"
+                  class="btn  btn-danger"><i class="fa fa-ban"></i> Close
+          </button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
 
 </div>
 
