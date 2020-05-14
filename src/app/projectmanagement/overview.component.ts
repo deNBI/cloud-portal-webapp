@@ -158,10 +158,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
     )().then().catch();
   }
 
-  printSometing(text: any): void {
-    console.log(text);
-  }
-
   removeEDAMterm(term: EdamOntologyTerm): void {
     const indexOf: number = this.selected_ontology_terms.indexOf(term);
     this.selected_ontology_terms.splice(indexOf, 1);
