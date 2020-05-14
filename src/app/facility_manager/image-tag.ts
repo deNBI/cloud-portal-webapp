@@ -34,3 +34,12 @@ export interface BlockedImageTag {
   name: string;
   compute_center_facility_id: number;
 }
+
+/**
+ * Blocked Image tag interface.
+ */
+export interface BlockedImageTagResenv {
+  tag: string;
+  resenvs: string[];
+  compute_center_facility_id: number;
+}
