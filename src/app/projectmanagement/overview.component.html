@@ -13,7 +13,7 @@
          *ngIf="project && project_application?.project_application_status != application_states.TERMINATED  && project_application?.project_application_status != application_states.DECLINED ">
 
 
-      <div class="card" style=" overflow: scroll">
+      <div class="card" style=" ">
         <div class="card-header">
           <h3>
             <a *ngIf="project?.OpenStackProject" href="https://cloud.denbi.de/openstack/" target="_blank"
@@ -115,7 +115,7 @@
 
   <div class="row" *ngIf="project_application && (project?.UserIsPi ||project?.UserIsAdmin  || !project)">
     <div class="col">
-      <div class="card" style="height: calc(100% - 1.5rem);overflow: scroll;">
+      <div class="card" style="height: calc(100% - 1.5rem);;">
         <div class="card-header">
           <i class="fa fa-align-justify"></i> Actions
         </div>
@@ -179,7 +179,7 @@
     <div class="col"
          *ngIf="project && (project?.UserIsPi ||project?.UserIsAdmin)  && project_application?.project_application_status != application_states.TERMINATED  && project_application?.project_application_status != application_states.DECLINED ">
 
-      <div class="card" style=" overflow: scroll">
+      <div class="card" style=" ">
         <div class="card-header">
           <i class="fa fa-align-justify"></i>
           <a href="https://cloud.denbi.de/wiki/citation_and_publication/#publications"
@@ -242,7 +242,7 @@
     <div class="col"
          *ngIf="project && (project_application?.project_application_status ==  application_states.APPROVED || project_application?.project_application_status ==  application_states.MODIFICATION_REQUESTED  || project_application?.project_application_status ==  application_states.MODIFICATION_DECLINED || project_application?.project_application_status ==  application_states.MODIFICATION_DECLINED)">
 
-      <div class="card" style=" overflow: scroll">
+      <div class="card" style=" ">
         <div class="card-header">
           <i class="fa fa-align-justify"></i>Members of the Project {{ project?.Name }}
         </div>
@@ -330,7 +330,7 @@
 </div>
    <div class="col"
            *ngIf="is_vo_admin && (project_application?.project_application_status ==  application_states.APPROVED || project_application?.project_application_status ==  application_states.MODIFICATION_REQUESTED  || project_application?.project_application_status ==  application_states.MODIFICATION_DECLINED || project_application?.project_application_status ==  application_states.MODIFICATION_DECLINED)">
-        <div class="card" style=" overflow: scroll">
+        <div class="card" style=" ">
           <div class="card-header">
             <i class="fa fa-align-justify"></i> Credit Usage history of {{project?.Name }}
           </div>
@@ -465,7 +465,9 @@
             All used resources will be scheduled for deletion and then irreversibly terminated!
 
           </div>
-          <div class="alert alert-danger form-check">
+          <div class="alert  form-check"
+               [ngClass]="{'alert-danger':!terminate_confirmation_given,'alert-success':terminate_confirmation_given}"
+          >
 
             <label class="form-check-label">
               <input class="form-check-input"

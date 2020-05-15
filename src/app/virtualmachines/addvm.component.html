@@ -36,7 +36,7 @@
 
   <div class="row">
     <div class="col-md-12">
-      <div class="card" style=" overflow: scroll">
+      <div class="card" style=" ">
         <div class="card-header">
           <strong>New Virtual Machine</strong> <span *ngIf="singleProject"
                                                      id="singleProjectNameSpan"> - <strong>{{this.selectedProject[0]}}</strong></span>
@@ -416,7 +416,10 @@
                             'icon-arrow-up': resEnvGroup.isOpen, 'icon-arrow-down': !resEnvGroup.isOpen}"></i>
                   </div>
                   <app-res-env #resEnv
-                               [clientid]="client_id" [forc_url]="forc_url"
+                               [clientid]="client_id"
+                               [forc_url]="forc_url"
+                               [selectedImageTags]="selectedImage?.tags"
+                               [blockedImageTagsResenv]="blockedImageTagsResenv"
                                [onlyNamespace]="resenvSelected"></app-res-env>
                 </accordion-group>
 

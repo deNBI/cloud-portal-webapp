@@ -6,7 +6,7 @@ import {environment} from '../../../environments/environment';
 import {BehaviorSubject} from 'rxjs';
 import {WordPressNews} from './wp-news';
 import {WordPressTag} from './wp-tags';
-import {ModalDirective} from 'ngx-bootstrap';
+import {ModalDirective} from 'ngx-bootstrap/modal';
 
 /**
  * News-Manager Class to manage news in wordPress.
@@ -32,6 +32,7 @@ export class NewsManagerComponent implements OnInit {
   computeCenters: any[] = [];
   availableTags: WordPressTag[] = [];
   wordPressNews: WordPressNews[];
+  newsSetAsMOTD: string[] = [];
   selectedNews: WordPressNews = new WordPressNews();
   newWordpressNews: WordPressNews = new WordPressNews();
   selectedNewsForm: FormGroup = new FormGroup({
@@ -194,7 +195,8 @@ export class NewsManagerComponent implements OnInit {
     this.newsService.getNewsFromWordPress(facility_ids.toString()).subscribe((result: Object[]) => {
       this.wordPressNews = result.map((news: Object) => this.createWordPressNews(news));
       this.setNews();
-    })
+    });
+
   }
 
   /**
@@ -302,6 +304,44 @@ export class NewsManagerComponent implements OnInit {
     this.addingStatus = 0;
     this.error_string = '';
     this.setFormGroup();
+    this.listNewsSetAsMOTD();
+  }
+
+  /**
+   * Returns all public names of the facilities for which the news got posted as a concatenated string.
+   * The names are separated with commas.
+   * @param news the news for which the string shall be returned
+   */
+  facilitiesAsString(news: WordPressNews): string {
+    const newsId: string = news.id.toString();
+    if (this.newsSetAsMOTD.includes(newsId)){
+      let facilitiesString: string = "";
+      this.computeCenters.forEach((facility: any) => {
+        if (newsId.localeCompare(facility['compute_center_motd_id']) === 0) {
+          let temp_string: string = `${facility['compute_center_name']}, `;
+          facilitiesString = facilitiesString + temp_string;
+        }
+      });
+      return facilitiesString.substring(0, facilitiesString.length - 2);
+    } else {
+      return "";
+    }
+  }
+
+  /**
+   * Checks if a news-object is set as a Message Of The Day in any facility.
+   * @param news the news which get's checked
+   */
+  listNewsSetAsMOTD(): void {
+    this.newsSetAsMOTD = [];
+    this.computeCenters.forEach((facility: any) => {
+      const motd_string: string = facility['compute_center_motd_id'];
+      if (!this.newsSetAsMOTD.includes(motd_string)){
+        if (motd_string !== "-1") {
+          this.newsSetAsMOTD.push(motd_string);
+        }
+      }
+    });
   }
 
   /**

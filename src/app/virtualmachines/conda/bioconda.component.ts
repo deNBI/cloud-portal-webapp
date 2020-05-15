@@ -2,7 +2,7 @@ import {ChangeDetectorRef, Component, ElementRef, EventEmitter, HostListener, On
 import {BiocondaService} from '../../api-connector/bioconda.service';
 import {Subject} from 'rxjs';
 import {debounceTime, distinctUntilChanged, switchMap} from 'rxjs/operators';
-import {PaginationComponent} from 'ngx-bootstrap';
+import {PaginationComponent} from 'ngx-bootstrap/pagination';
 
 export interface CondaVersionBuilds {
   name: string;

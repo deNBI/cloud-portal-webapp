@@ -11,8 +11,11 @@ WIKI_EXTEND_VOLUME=https://cloud.denbi.de/wiki/simple_vm/volumes/#extend-a-volum
 WIKI_RESENV_LINK=https://cloud.denbi.de/wiki/simple_vm/customization/#research-environments;
 WIKI_RSTUDIO_LINK=https://cloud.denbi.de/wiki/simple_vm/customization/#rstudio;
 WIKI_GUACAMOLE_LINK=https://cloud.denbi.de/wiki/simple_vm/customization/#apache-guacamole;
+WIKI_NEW_INSTANCE_LINK=https://cloud.denbi.de/wiki/simple_vm/new_instance/;
+WIKI_INSTANCE_OVERVIEW_LINK=https://cloud.denbi.de/wiki/simple_vm/instance_overview/;
+WIKI_INSTANCE_DETAIL_LINK=https://cloud.denbi.de/wiki/simple_vm/instance_detail/;
 
-WIKI_LNKS=("$WIKI_GUACAMOLE_LINK" "$WIKI_RSTUDIO_LINK" "$WIKI_RESENV_LINK" "$WIKI_VOLUME_OVERVIEW" "$WIKI_EXTEND_VOLUME" "$WIKI_MOUNT_VOLUME" "$WIKI_GROUP_INVITATIONS" "$WIKI_SNAPSHOTS" "$WIKI" "$WIKI_GENERATE_KEYS" "$NEWS")
+WIKI_LNKS=("$WIKI_INSTANCE_DETAIL_LINK" "$WIKI_INSTANCE_OVERVIEW_LINK" "$WIKI_NEW_INSTANCE_LINK" "$WIKI_GUACAMOLE_LINK" "$WIKI_RSTUDIO_LINK" "$WIKI_RESENV_LINK" "$WIKI_VOLUME_OVERVIEW" "$WIKI_EXTEND_VOLUME" "$WIKI_MOUNT_VOLUME" "$WIKI_GROUP_INVITATIONS" "$WIKI_SNAPSHOTS" "$WIKI" "$WIKI_GENERATE_KEYS" "$NEWS")
 for i in "${WIKI_LNKS[@]}"; do
   echo "$i"
   status_code=$(curl -o /dev/null -Isw '%{http_code}\n' "$i")

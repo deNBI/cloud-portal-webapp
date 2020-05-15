@@ -20,7 +20,8 @@ export enum Application_States {
   WAIT_FOR_CONFIRMATION = 6,
   CONFIRMATION_DENIED = 7,
   TERMINATED = 8,
-  SUSPENDED = 9
+  SUSPENDED = 9,
+  TERMINATION_REQUESTED = 10
 
 }
 
