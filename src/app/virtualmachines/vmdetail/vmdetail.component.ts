@@ -20,12 +20,12 @@ import {PlaybookService} from '../../api-connector/playbook.service';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 
 import {CondaPackage} from '../condaPackage.model';
-import {TemplateNames} from '../conda/template-names';
 import {BiocondaService} from '../../api-connector/bioconda.service';
 import {ResenvTemplate} from '../conda/resenvTemplate.model';
 import {is_vo} from '../../shared/globalvar';
-import {WIKI_GUACAMOLE_LINK, WIKI_RSTUDIO_LINK} from '../../../links/links';
+import {WIKI_GUACAMOLE_LINK, WIKI_MOUNT_VOLUME, WIKI_RSTUDIO_LINK} from '../../../links/links';
 import {ClipboardService} from 'ngx-clipboard';
+import {Volume} from '../volumes/volume';
 
 /**
  * VM Detail page component
@@ -53,12 +53,19 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
   errorMessage: boolean = false;
   private _condaPackages: CondaPackage[] = [];
   res_env_url: string = '';
+  filteredMembers: any = null;
+  backend_users: any = [];
 
   is_vo_admin: boolean = is_vo;
   WIKI_RSTUDIO_LINK: string = WIKI_RSTUDIO_LINK;
   WIKI_GUACAMOLE_LINK: string = WIKI_GUACAMOLE_LINK;
+  WIKI_MOUNT_VOLUME: string = WIKI_MOUNT_VOLUME;
 
   DEBOUNCE_TIME: number = 300;
+
+  volume_to_attach: Volume;
+  volume_to_detach: Volume;
+  detached_project_volumes: Volume[] = [];
 
   /**
    * The changed status.
@@ -197,6 +204,42 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
         this.status_changed = 2;
       }
     })
+  }
+
+  getDetachedVolumesByVSelectedMProject(): void {
+    this.virtualmachineService.getDetachedVolumesByProject(this.virtualMachine.projectid).subscribe(
+      (detached_volumes: Volume[]) => {
+        this.detached_project_volumes = detached_volumes;
+      }
+    )
+  }
+
+  attachVolume(volume: Volume): void {
+
+    this.virtualmachineService.attachVolumetoServer(volume.volume_openstackid, this.virtualMachine.openstackid).subscribe(
+      (result: IResponseTemplate) => {
+
+        if (result.value === 'attached') {
+          this.getVmById();
+
+        }
+      },
+      () => {
+      }
+    )
+  }
+
+  detachVolume(volume: Volume): void {
+
+    this.virtualmachineService.deleteVolumeAttachment(volume.volume_openstackid, this.virtualMachine.openstackid).subscribe(
+      (result: any) => {
+        if (result.value === 'deleted') {
+          this.getVmById();
+
+        }
+      },
+      () => {
+      })
   }
 
   /**
@@ -480,12 +523,12 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
   }
 
   checkAndGetForcDetails(vm: VirtualMachine): void {
-    let checkForForc: boolean = true;
-    for (const mode of vm.modes) {
-      if (TemplateNames.ALL_TEMPLATE_NAMES.indexOf(mode.name) !== -1) {
-        checkForForc = false;
-      }
-    }
+    const checkForForc: boolean = true;
+    // for (const mode of vm.modes) {
+    //   if (TemplateNames.ALL_TEMPLATE_NAMES.indexOf(mode.name) !== -1) {
+    //     checkForForc = false;
+    //   }
+    // }
     if (checkForForc) {
       this.groupService.getClientForcUrl(vm.client.id, 'true').subscribe((response: JSON) => {
         if (response['forc_url'] !== null) {
@@ -499,7 +542,32 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
             });
         }
       });
+      this.getUsersForBackend();
     }
 
+  }
+
+  filterMembers(searchString: string): void {
+    this.userService.getFilteredMembersOfdeNBIVo(searchString).subscribe((result: object) => {
+      this.filteredMembers = result;
+    })
+  }
+
+  addUserToBackend(userId: any): void {
+    this.biocondaService.addUserToBackend(this.vm_id, userId).subscribe((result: any) => {
+      this.getUsersForBackend();
+    });
+  }
+
+  getUsersForBackend(): void {
+    this.biocondaService.getUsersForBackend(this.vm_id).subscribe((result: any) => {
+      this.backend_users = result;
+    });
+  }
+
+  deleteUserFromBackend(userId: any): void {
+    this.biocondaService.deleteUserFromBackend(this.vm_id, userId.toString()).subscribe((result: any) => {
+      this.getUsersForBackend();
+    });
   }
 }

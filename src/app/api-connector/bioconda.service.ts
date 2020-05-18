@@ -43,7 +43,7 @@ export class BiocondaService {
     })
   }
 
-  getAllowedForcTemplates(facility_id?: string): Observable<any> {
+  getSuggestedForcTemplates(facility_id?: string): Observable<any> {
     const params: HttpParams = new HttpParams()
       .set('facility_id', facility_id);
 
@@ -58,6 +58,35 @@ export class BiocondaService {
 
     return this.http.get(`${ApiSettings.getApiBaseURL()}forc/backends/vm_name/`, {
       //// headers: header,
+      withCredentials: true,
+      params: params
+    })
+  }
+
+  getUsersForBackend(vmId: string): Observable<any> {
+    const params: HttpParams = new HttpParams().set('vm_id', vmId);
+
+    return this.http.get(`${ApiSettings.getApiBaseURL()}forc/backs/users/`, {
+      headers: header,
+      withCredentials: true,
+      params: params
+    })
+  }
+
+  addUserToBackend(vmId: string, user_id: string): Observable<any> {
+    const params: HttpParams = new HttpParams().set('vm_id', vmId).set('user_id', user_id);
+
+    return this.http.post(`${ApiSettings.getApiBaseURL()}forc/backs/users/`, params, {
+      headers: header,
+      withCredentials: true
+    })
+  }
+
+  deleteUserFromBackend(vmId: string, user_id: string): Observable<any> {
+    const params: HttpParams = new HttpParams().set('vm_id', vmId).set('user_id', user_id);
+
+    return this.http.delete(`${ApiSettings.getApiBaseURL()}forc/backs/users/`, {
+      headers: header,
       withCredentials: true,
       params: params
     })

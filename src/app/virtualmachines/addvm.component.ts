@@ -22,6 +22,7 @@ import {KeyService} from '../api-connector/key.service';
 import {FlavorService} from '../api-connector/flavor.service';
 import {VirtualmachineService} from '../api-connector/virtualmachine.service';
 import {ApiSettings} from '../api-connector/api-settings.service';
+import {BlockedImageTagResenv} from '../facility_manager/image-tag';
 
 /**
  * Start virtualmachine component.
@@ -65,6 +66,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
   timeout: number = 0;
   has_forc: boolean = false;
   WIKI_MOUNT_VOLUME: string = WIKI_MOUNT_VOLUME;
+  blockedImageTagsResenv: BlockedImageTagResenv[];
 
   forc_url: string = '';
   client_id: string;
@@ -588,8 +590,11 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 
       }
       this.selectedProjectClient = client;
-
-    })
+      this.imageService.getBlockedImageTagsResenv(Number(this.selectedProjectClient.id), 'true')
+        .subscribe((tags: BlockedImageTagResenv[]) => {
+        this.blockedImageTagsResenv = tags;
+      });
+    });
   }
 
   getForc(id: string): void {
