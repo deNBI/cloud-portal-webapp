@@ -143,7 +143,6 @@ export class ImageService {
 
     return this.http.post<BlockedImageTagResenv>(`${ApiSettings.getApiBaseURL()}blockedImageTagsResenv/`, params, {
       withCredentials: true,
-      headers: header
     })
   }
 
@@ -208,7 +207,6 @@ export class ImageService {
 
     return this.http.delete<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}blockedImageTagsResenv/${imageTag}/`, {
       withCredentials: true,
-      headers: header,
       params: params
     })
 

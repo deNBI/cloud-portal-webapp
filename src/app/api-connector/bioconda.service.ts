@@ -67,7 +67,6 @@ export class BiocondaService {
     const params: HttpParams = new HttpParams().set('vm_id', vmId);
 
     return this.http.get(`${ApiSettings.getApiBaseURL()}forc/backs/users/`, {
-      headers: header,
       withCredentials: true,
       params: params
     })
@@ -77,7 +76,6 @@ export class BiocondaService {
     const params: HttpParams = new HttpParams().set('vm_id', vmId).set('user_id', user_id);
 
     return this.http.post(`${ApiSettings.getApiBaseURL()}forc/backs/users/`, params, {
-      headers: header,
       withCredentials: true
     })
   }
@@ -86,7 +84,6 @@ export class BiocondaService {
     const params: HttpParams = new HttpParams().set('vm_id', vmId).set('user_id', user_id);
 
     return this.http.delete(`${ApiSettings.getApiBaseURL()}forc/backs/users/`, {
-      headers: header,
       withCredentials: true,
       params: params
     })
