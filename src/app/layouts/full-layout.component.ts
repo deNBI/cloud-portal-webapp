@@ -12,6 +12,7 @@ import {ApplicationStatusService} from '../api-connector/application-status.serv
 import {ProjectEnumeration} from '../projectmanagement/project-enumeration';
 import {environment} from '../../environments/environment';
 import {is_vo} from '../shared/globalvar';
+import {VirtualmachineService} from '../api-connector/virtualmachine.service';
 
 /**
  * FullLayout component.
@@ -21,6 +22,7 @@ import {is_vo} from '../shared/globalvar';
              templateUrl: './full-layout.component.html',
              providers: [ApplicationsService,
                ApplicationStatusService,
+               VirtualmachineService,
                VoService,
                GroupService,
                UserService,
@@ -43,6 +45,7 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
   navbar_minimized: boolean = false;
   brand_logo: string = 'static/webapp/assets/img/denbi-logo-color.svg';
   brand_logo_minimized: string = 'static/webapp/assets/img/denbi-logo-minimized.svg';
+  cluster_allowed = false;
 
   TITLE: string = '';
 
@@ -51,7 +54,7 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
 
   constructor(private voService: VoService, private groupService: GroupService, userservice: UserService,
               facilityService: FacilityService, applicationsservice: ApplicationsService,
-              applicationstatusservice: ApplicationStatusService
+              applicationstatusservice: ApplicationStatusService, private virtualMachineService: VirtualmachineService
   ) {
     super(userservice, applicationstatusservice, applicationsservice, facilityService);
 
@@ -65,6 +68,12 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
 
   public get_is_vo_admin(): boolean {
     return this.is_vo_admin;
+  }
+
+  set_cluster_allowed(): void {
+    this.virtualMachineService.getClusterAllowed().subscribe((res: any) => {
+      this.cluster_allowed = res['allowed'];
+    })
   }
 
   public get_is_facility_manager(): void {
@@ -95,6 +104,7 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
   }
 
   ngOnInit(): void {
+    this.set_cluster_allowed();
     this.getGroupsEnumeration();
     this.is_vm_project_member();
     this.get_is_facility_manager();
