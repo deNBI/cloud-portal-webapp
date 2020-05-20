@@ -173,7 +173,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
   newRam: number = 0;
   newVms: number = 0;
   newGpus: number = 0;
-  cluster_allowed:boolean=false;
+  cluster_allowed: boolean = false;
 
   /**
    * The selected project ['name',id].
@@ -649,8 +649,6 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
       this.isLoaded = true;
     }
   }
-
-
 
   loadProjectData(): void {
     this.projectDataLoaded = false;

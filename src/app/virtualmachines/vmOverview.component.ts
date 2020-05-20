@@ -111,7 +111,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
   status_changed: number = 0;
 
   is_facility_manager: boolean = false;
-  cluster_allowed:boolean=false;
+  cluster_allowed: boolean = false;
 
   /**
    * Timeout for checking vm status.
