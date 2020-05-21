@@ -145,7 +145,7 @@
                 Request Extension/Modification
               </button>
               <button id="show_termination_modal"
-                      *ngIf="project_application?.project_application_status == application_states.APPROVED "
+                      *ngIf="project_application?.project_application_status == application_states.APPROVED || project_application?.project_application_status == application_states.MODIFICATION_DECLINED"
                       (click)="terminateModal.show()"
                       class="btn btn-danger"
                       type="button" style="margin-bottom:5px;">
