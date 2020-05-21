@@ -1,5 +1,5 @@
 import {HashLocationStrategy, LocationStrategy} from '@angular/common';
-import {NgModule} from '@angular/core';
+import {ErrorHandler, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
 import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
@@ -7,14 +7,13 @@ import {TabsModule} from 'ngx-bootstrap/tabs';
 import {AppComponent} from './app.component';
 
 import {HttpClientModule} from '@angular/common/http';
-import { ChartsModule } from 'ng2-charts';
+import {ChartsModule} from 'ng2-charts';
 import {ModalModule} from 'ngx-bootstrap/modal';
 import {PaginationModule} from 'ngx-bootstrap/pagination';
 import {ExportAsModule} from 'ngx-export-as';
 import {ApiSettings} from './api-connector/api-settings.service';
 import {UserService} from './api-connector/user.service';
 import {ClipboardModule} from 'ngx-clipboard';
-
 // Routing Module
 import {AppRoutingModule} from './app.routing';
 import {ConsentInfoComponent} from './consent-info.component';
@@ -34,13 +33,10 @@ import {
 } from './shared/sidebar.directive';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {Angulartics2Module} from 'angulartics2';
-import { ErrorHandler } from '@angular/core';
 import {UncaughtExceptionHandler} from './error-handler/UncaughtExceptionHandler.service';
 import {CookieService} from 'ngx-cookie-service';
 
 import {TitleHeadbarComponent} from './shared/title-headbar.component';
-import { ClusterinfoComponent } from './virtualmachines/clusters/clusterinfo/clusterinfo.component';
-import { ClusterstatusComponent } from './virtualmachines/clusters/clusterstatus/clusterstatus.component';
 
 /**
  * App module.
@@ -79,7 +75,7 @@ import { ClusterstatusComponent } from './virtualmachines/clusters/clusterstatus
               SidebarMinimizeDirective,
               MobileSidebarToggleDirective,
               SidebarOffCanvasCloseDirective,
-              TitleHeadbarComponent
+              TitleHeadbarComponent,
             ],
             providers: [
               {
