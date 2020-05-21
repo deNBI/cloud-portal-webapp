@@ -50,7 +50,7 @@
     "@types/jquery": "^3.3.38",
     "angular-ng-autocomplete": "^2.0.1",
     "angulartics2": "^9.0.0",
-    "bootstrap": "^4.4.1",
+    "bootstrap": "^4.5.0",
     "chart.js": "^2.9.3",
     "chromedriver": "^81.0.0",
     "cli-color": "^2.0.0",
