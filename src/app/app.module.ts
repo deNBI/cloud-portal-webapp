@@ -75,7 +75,7 @@ import {TitleHeadbarComponent} from './shared/title-headbar.component';
               SidebarMinimizeDirective,
               MobileSidebarToggleDirective,
               SidebarOffCanvasCloseDirective,
-              TitleHeadbarComponent,
+              TitleHeadbarComponent
             ],
             providers: [
               {
