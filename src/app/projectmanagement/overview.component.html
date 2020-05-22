@@ -145,7 +145,7 @@
                 Request Extension/Modification
               </button>
               <button id="show_termination_modal"
-                      *ngIf="project_application?.project_application_status == application_states.APPROVED "
+                      *ngIf="project_application?.project_application_status == application_states.APPROVED || project_application?.project_application_status == application_states.MODIFICATION_DECLINED"
                       (click)="terminateModal.show()"
                       class="btn btn-danger"
                       type="button" style="margin-bottom:5px;">
@@ -1566,7 +1566,7 @@
                     <td>{{ project_application?.project_application_name }}
                     </td>
                     <td>{{project_application?.project_application_shortname}}</td>
-                    <td>{{ project_application?.project_application_lifetime }}</td>
+                    <td>{{ project_application?.project_application_lifetime }} months</td>
                     <td>{{ project_application?.project_application_date_submitted }}</td>
                     <td>{{ getStatusById(project_application?.project_application_status) }}</td>
                   </tr>
