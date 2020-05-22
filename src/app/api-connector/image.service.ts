@@ -142,7 +142,7 @@ export class ImageService {
       .set('resenvs', resenvs.toString());
 
     return this.http.post<BlockedImageTagResenv>(`${ApiSettings.getApiBaseURL()}blockedImageTagsResenv/`, params, {
-      withCredentials: true,
+      withCredentials: true
     })
   }
 
