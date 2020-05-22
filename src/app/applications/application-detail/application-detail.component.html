@@ -257,10 +257,26 @@
     <thead>
     <tr>
       <th colspan="2" style="text-align:center"><strong>Resources</strong></th>
-      <th *ngIf="(application?.project_application_status == application_states.MODIFICATION_REQUESTED || isModification) && !application?.projectapplicationrenewal?.is_only_extra_credits_application"></th>
+      <th
+        *ngIf="(application?.project_application_status == application_states.MODIFICATION_REQUESTED || isModification) && !application?.projectapplicationrenewal?.is_only_extra_credits_application"></th>
 
     </tr>
     </thead>
+    <tr *ngIf="application?.project_application_status == application_states.MODIFICATION_REQUESTED || isModification">
+      <td>Modification Requested from:
+      </td>
+
+      <td>
+        {{application?.projectapplicationrenewal?.project_application_renewal_user.username}}
+        ( {{application?.projectapplicationrenewal?.project_application_renewal_user.email}})
+      </td>
+      <td>
+                {{application?.projectapplicationrenewal?.project_application_renewal_user.elixir_id}}
+
+
+      </td>
+
+    </tr>
     <tr>
       <td>VMs
       </td>
@@ -268,7 +284,8 @@
       <td>
         {{application?.project_application_vms_requested}}
       </td>
-      <td *ngIf="(application?.project_application_status == application_states.MODIFICATION_REQUESTED || isModification) && !application?.projectapplicationrenewal?.is_only_extra_credits_application">
+      <td
+        *ngIf="(application?.project_application_status == application_states.MODIFICATION_REQUESTED || isModification) && !application?.projectapplicationrenewal?.is_only_extra_credits_application">
         Requested:
         {{application?.projectapplicationrenewal?.project_application_renewal_vms_requested}}
       </td>
