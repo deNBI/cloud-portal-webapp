@@ -17,7 +17,7 @@
 </app-header>
 
 <div class="app-body">
-  <div class="sidebar">
+  <app-sidebar class="sidebar">
     <nav class="sidebar-nav" [perfectScrollbar]>
       <ul class="nav">
         <li class="nav-title">
@@ -185,7 +185,7 @@
              [routerLink]="['/virtualmachines/newVM']">
             <i class="nav-icon fas fa-desktop"></i> New Instance</a>
         </li>
-          <li class="nav-item" *ngIf="is_vo_admin && vm_project_member">
+          <li class="nav-item" *ngIf="is_vo_admin || ( vm_project_member && cluster_allowed)">
           <a *ngIf="navbar_minimized" class="nav-link" routerLinkActive="active" data-toggle="tooltip" data-placement="right" title="New Instance"
              [routerLink]="['/virtualmachines/newVM']">
             <i class="nav-icon fas fa-network-wired" ></i> New Cluster</a>
@@ -205,7 +205,7 @@
                  [routerLink]="['/virtualmachines/vmOverview']"><i
                 class="nav-icon fas fa-list"></i> Instances</a>
             </li>
-             <li class="nav-item" *ngIf="is_vo_admin">
+             <li class="nav-item" *ngIf="is_vo_admin || ( vm_project_member && cluster_allowed)">
               <a style="padding-left: 25px" class="nav-link" routerLinkActive="active"
                  [routerLink]="['/virtualmachines/clusterOverview']"><i
                 class="nav-icon fas fa-network-wired"></i> Clusters</a>
@@ -232,7 +232,7 @@
              [routerLink]="['/virtualmachines/vmOverview']"><i
             class="nav-icon fas fa-list"></i> Instances</a>
         </li>
-         <li class="nav-item" *ngIf="is_vo_admin && navbar_minimized ">
+         <li class="nav-item" *ngIf="cluster_allowed && navbar_minimized ">
           <a class="nav-link" routerLinkActive="active" data-toggle="tooltip" data-placement="right" title="Clusters"
              [routerLink]="['/virtualmachines/clusterOverview']"><i
             class="nav-icon fas fa-list"></i> Clusters</a>
@@ -388,7 +388,7 @@
     </app-footer>
 
 
-  </div>
+  </app-sidebar>
   <!-- Main content -->
 
   <main class="main" style="overflow-y: auto; height: calc(100vh - 100px);">
