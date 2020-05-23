@@ -41,7 +41,6 @@ import { ClusterinfoComponent } from './virtualmachines/clusters/clusterinfo/clu
 import { ClusterstatusComponent } from './virtualmachines/clusters/clusterstatus/clusterstatus.component';
 import {VoService} from './api-connector/vo.service';
 
-
 /**
  * App module.
  */
