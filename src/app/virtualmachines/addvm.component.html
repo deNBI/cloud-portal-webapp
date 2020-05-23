@@ -439,14 +439,15 @@
                     *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && selectedProjectVmsUsed < selectedProjectVmsMax"
                     class="form-group row">
 
-                    <label class="col-md-2 form-control-label">Mobile usage</label>
-                    <div class="col-6"><label><strong style="padding-right: 10px; bottom: 15px;position: relative;">
+                    <label class="col-md-2 form-control-label">Working on the road</label>
+                    <div class="col-md-4"><label><strong style="padding-right: 10px; bottom: 15px;position: relative;">
                       <a href="https://cloud.denbi.de/wiki/Tutorials/Mosh/" target="_blank">Open UDP ports</a>
                       <i
-                        data-balloon="This selection is necessary for using MOSH."
+                        data-balloon="This selection is necessary for using MOSH.
+                        UDP is better suited for unstable/switching connections, e.g. during train travel."
                         data-balloon-pos="down" data-balloon-length="large"><i
                         class="icon-question menu_links"
-                        style="cursor: pointer;"></i></i></strong></label>
+                        style="cursor: pointer; margin-left: 2px;"></i></i></strong></label>
 
                       <label
                         class="switch switch-label switch-pill switch-success">
@@ -457,7 +458,7 @@
                         <!--<span class="switch-handle"></span>-->
                       </label>
                     </div>
-                    <div class="alert alert-info" *ngIf="!mosh_mode_available">To use MOSH with UDP ports, please select an Image which supports MOSH.
+                    <div class="alert alert-info col-md-6" *ngIf="!mosh_mode_available">To use MOSH with UDP ports, please select an Image which supports MOSH.
                       Learn more about MOSH <a href="https://mosh.org" target="_blank">here</a>.</div>
                   </div>
                   <div

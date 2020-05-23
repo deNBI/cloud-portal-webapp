@@ -24,6 +24,13 @@ export class VirtualmachineService {
   constructor(private http: HttpClient) {
   }
 
+  getClusterAllowed(): Observable<any> {
+    return this.http.get(`${ApiSettings.getApiBaseURL()}clusters/allowed/`, {
+      withCredentials: true,
+      headers: header
+    })
+  }
+
   startCluster(masterFlavor: string, masterImage: Image, workerFlavor: string, workerImage: Image, workerCount: string | number,
                project_id: string | number): Observable<any> {
     const params: HttpParams = new HttpParams()

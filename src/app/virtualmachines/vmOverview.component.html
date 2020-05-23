@@ -58,7 +58,7 @@
 
           <div class="col-10 input-group">
             <div class="input-group-prepend">
-              <div class="input-group-text" *ngIf="is_vo_admin">
+              <div class="input-group-text" *ngIf="is_vo_admin || cluster_allowed">
                 <input type="checkbox" [checked]="filter_cluster" style="margin:2px;"
                        (change)="filter_cluster=!filter_cluster">
                 <span class="badge badge-info">Cluster</span>
@@ -234,8 +234,7 @@
 
 
                     <a style="margin-left: 10px"
-
-                       [routerLink]="['/virtualmachines/cluster/' + vm?.cluster.cluster_id]">{{vm?.cluster.cluster_id}} </a>
+                       [routerLink]="['/virtualmachines/cluster/' + vm?.cluster.cluster_id]">{{vm?.cluster.cluster_id}}  </a>
 
                     <ng-container *ngSwitchCase="'Running'">
                       <div [id]="'running_cluster_' + vm?.name"
