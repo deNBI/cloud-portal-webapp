@@ -5,12 +5,12 @@
 <div *ngIf="!isLoaded && !errorMessage" class="loader"></div>
 
 <div class="animated fadeIn" *ngIf="isLoaded">
-  <div class="alert alert-danger" role="alert" *ngIf="is_vo_admin && virtualMachine?.still_used_confirmation_requested">
-    <strong>This machine has been running for a long time, please confirm that you still need this machine.<br>
+  <div class="alert alert-danger" role="alert" >
+    <strong>This machine has been running for {{virtualMachine?.days_running}} days!<br> Please confirm that you still need this machine.<br>
       Otherwise, the machine is scheduled for deletion.</strong>
     <br>
     <button (click)="setVmNeeded()" type="button" class="btn btn-success" style="width:100%;" id="still_need_btn">
-      <strong>Still needed!</strong>
+      <strong>Yes</strong>
     </button>
   </div>
   <div class="row">
