@@ -45,13 +45,13 @@ export class ApplicationDetailComponent extends ApplicationBaseClassComponent im
   }
 
   ngOnInit(): void {
-    this.getMemberDetailsByElixirId(this.application.User);
+    this.getMemberDetailsByElixirId(this.application);
     this.getCurrentCredits();
     this.is_vo_admin = is_vo;
   }
 
   getCurrentCredits(): void {
-    this.creditsService.getCurrentCreditsOfProject(Number(this.application.PerunId.toString())).toPromise()
+    this.creditsService.getCurrentCreditsOfProject(Number(this.application.project_application_perun_id.toString())).toPromise()
       .then((credits: number) => {
         this.current_credits = credits;
         this.credits_left_with_extra = this.application.TotalExtensionCredits - credits;

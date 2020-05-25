@@ -1,6 +1,6 @@
 <div *ngIf="isLoaded && userinfo?.PublicKey == 'None'">
   <div>
-    <div class="card" style=" overflow: scroll">
+    <div class="card" style=" ">
       <div class="card-header">
         <i class="fa fa-align-justify"></i> Public Key
       </div>
@@ -34,7 +34,7 @@
 
   <div class="row">
     <div class="col-md-12">
-      <div class="card" style=" overflow: scroll">
+      <div class="card" style=" ">
         <div class="card-header">
           <strong>New Cluster</strong>
           – Form
@@ -47,7 +47,7 @@
                 class="form-horizontal">
             <div class="form-group row col-md-12">
               <label class="col-md-2 form-control-label"><strong>Project*</strong></label>
-              <span *ngIf="client_avaiable && (!projectDataLoaded || !flavors_loaded)"
+              <span *ngIf="(client_avaiable|| selectedProject) && (!projectDataLoaded || !flavors_loaded)"
                     class="spinner-border text-info"></span>
 
 
@@ -70,7 +70,16 @@
               </div>
 
             </div>
-            <div *ngIf="client_avaiable && projectDataLoaded && flavors_loaded">
+            <div class="alert alert-danger" role="alert"
+                 *ngIf="client_avaiable && !selectedProjectClient?.bibigrid_available && projectDataLoaded && flavors_loaded">
+              Starting a cluster is currently not possible!<br>
+              If you have any questions please contact <a href="mailto:cloud@denbi.de">cloud@denbi.de.</a>
+
+
+            </div>
+
+            <div
+              *ngIf="client_avaiable && selectedProjectClient?.bibigrid_available && projectDataLoaded && flavors_loaded">
               <app-resource-overview [selectedProjectCoresMax]="selectedProjectCoresMax"
                                      [selectedProjectCoresUsed]="selectedProjectCoresUsed"
                                      [selectedProjectDiskspaceMax]="selectedProjectDiskspaceMax"
@@ -226,7 +235,7 @@
           </form>
 
           <div
-            *ngIf="(selectedProjectVmsUsed +2) <= selectedProjectVmsMax && (!selectedMasterFlavor || !selectedMasterImage || !selectedWorkerFlavor  ||!workerInstancesCount) && selectedProject && projectDataLoaded && flavors_loaded"
+            *ngIf="selectedProjectClient?.bibigrid_available && (selectedProjectVmsUsed +2) <= selectedProjectVmsMax && (!selectedMasterFlavor || !selectedMasterImage || !selectedWorkerFlavor  ||!workerInstancesCount) && selectedProject && projectDataLoaded && flavors_loaded"
             class="alert alert-danger" role="alert" style="max-width: 600px;margin: 0 auto;">
             <p>Please choose the following before starting a Cluster:</p>
             <p *ngIf="!selectedMasterFlavor">- The flavor type of your Master VM
@@ -243,7 +252,7 @@
         </div>
 
         <div class="form-group row"
-             *ngIf="projectDataLoaded && (selectedProjectVmsUsed +2) <= selectedProjectVmsMax && (flavors?.length > 0  || selectedFlavor)">
+             *ngIf="projectDataLoaded && (selectedProjectVmsUsed +2) <= selectedProjectVmsMax && (flavors?.length > 0  || selectedFlavor) && selectedProjectClient?.bibigrid_available">
 
           <button style=" margin-left: auto;margin-top: 25px;
     margin-right: auto;
@@ -255,7 +264,7 @@
                   class="btn btn-primary  .btn-lg offset-md-8"
                   data-toggle="modal"
                   (click)="startCluster();infoModal.show()">
-            Start VM
+            Start Cluster
           </button>
         </div>
 

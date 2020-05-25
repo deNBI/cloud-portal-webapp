@@ -1,109 +1,144 @@
+import {Flavor} from '../virtualmachines/virtualmachinemodels/flavor';
+import {User} from './application.model/application.model';
+
 /**
  * Application Extension class.
  */
 export class ApplicationExtension {
 
   private _Id: number;
-  private _Lifetime: number;
-  private _VMsRequested: number;
-  private _CoresPerVM: number;
-  private _RamPerVM: number;
-  private _VolumeLimit: number;
-  private _VolumeCounter: number;
-  private _ObjectStorage: number;
-  private _SpecialHardware: string[];
-  private _Comment: string;
-  private _DateSubmitted: string;
-  private _OpenStackProject: boolean;
-  private _TotalCores: number;
-  private _TotalRAM: number;
-  private _ExtendedCredits: number;
-  private _IsOnlyExtraCreditsApplication: boolean;
-  private _CloudServiceUserNumber: number;
-  private _RequestedFlavors: {
-    [id: string]: {
-      counter: number, tag: string, ram: number, rootdisk: number,
-      vcpus: number, gpu: number, epheremal_disk: number
+  private _project_application_id: number | string;
+  private _project_application_renewal_lifetime: number;
+  private _project_application_renewal_vms_requested: number;
+  private _project_application_renewal_volume_limit: number;
+  private _project_application_renewal_volume_counter: number;
+  private _project_application_renewal_object_storage: number;
+  private _project_application_renewal_comment: string;
+  private _project_application_renewal_date_submitted: string;
+  private _project_application_renewal_total_cores: number;
+  private _project_application_renewal_total_ram: number;
+  private _project_application_renewal_credits: number;
+  private _project_application_renewal_user: User;
+  private _is_only_extra_credits_application: boolean;
+  private _project_application_renewal_cloud_service_user_number: number;
+  private _project_application_renewal_cloud_service_develop: boolean;
+  private _flavors: Flavor[] = [];
+
+  constructor(extension: ApplicationExtension|null) {
+    if (extension) {
+      this._project_application_id = extension.project_application_id;
+      this._project_application_renewal_lifetime = extension.project_application_renewal_lifetime;
+      this._project_application_renewal_vms_requested = extension.project_application_renewal_vms_requested;
+      this._project_application_renewal_volume_limit = extension.project_application_renewal_volume_limit;
+      this._project_application_renewal_volume_counter = extension.project_application_renewal_volume_counter;
+      this._project_application_renewal_object_storage = extension.project_application_renewal_object_storage;
+      this._project_application_renewal_comment = extension.project_application_renewal_comment;
+      this._project_application_renewal_date_submitted = extension.project_application_renewal_date_submitted;
+      this._project_application_renewal_total_cores = extension.project_application_renewal_total_cores;
+      this._project_application_renewal_total_ram = extension.project_application_renewal_total_ram;
+      this._project_application_renewal_credits = extension.project_application_renewal_credits;
+      this._is_only_extra_credits_application = extension.is_only_extra_credits_application;
+      this._project_application_renewal_cloud_service_user_number = extension.project_application_renewal_cloud_service_user_number;
+      this._project_application_renewal_cloud_service_develop = extension.project_application_renewal_cloud_service_develop;
+      this._project_application_renewal_user = extension.project_application_renewal_user;
+      this._flavors = extension.flavors;
     }
-  };
-
-  constructor() {
-    this._RequestedFlavors = {};
-
   }
 
-  /**
-   * Add Flavor to requested flavor list.
-   * @param {string} name name of the flavor
-   * @param {number} counter how many flavors
-   * @param {string} tag tag of the flavor
-   * @param {number} ram ram of the flavor
-   * @param {number} rootdisk rootdisk of the flavor
-   * @param {number} vcpus vcpus of the flavor
-   * @param {number} gpu gpu of the flavors
-   * @param {number} epheremal_disk epheremal_disk of the flavor
-   */
-  public addFlavorToRequested(name: string, counter: number, tag: string, ram: number, rootdisk: number,
-                              vcpus: number, gpu: number, epheremal_disk: number): void {
-    this._RequestedFlavors[name] = {
-      counter: counter,
-      tag: tag,
-      ram: ram,
-      rootdisk: rootdisk,
-      vcpus: vcpus,
-      gpu: gpu,
-      epheremal_disk: epheremal_disk
-    };
-  }
+  public calculateRamCores(): void {
+    let ram: number = 0;
+    let cores: number = 0;
+    for (const flavor of this._flavors) {
+      ram += flavor.ram * flavor.counter;
+      cores += flavor.vcpus * flavor.counter;
 
-  get RequestedFlavors(): {
-    [id: string]: {
-      counter: number, tag: string, ram: number, rootdisk: number,
-      vcpus: number, gpu: number, epheremal_disk: number
     }
-  } {
-    return this._RequestedFlavors
+    this._project_application_renewal_total_cores = cores;
+    this._project_application_renewal_total_ram = ram;
   }
 
-  set RequestedFlavors(value: {
-    [id: string]: {
-      counter: number, tag: string, ram: number, rootdisk: number,
-      vcpus: number, gpu: number, epheremal_disk: number
+  public getFlavorCounter(flavor: Flavor): number {
+    const flavs: Flavor[] = this._flavors.filter((fl: Flavor) => {
+      return fl.name === flavor.name
+    });
+    if (flavs.length > 0) {
+      return flavs[0].counter
     }
-  }) {
-    this._RequestedFlavors = value;
+
+    return 0
   }
 
-  get TotalCores(): number {
-    return this._TotalCores;
+  public setFlavorInFlavors(flavor: Flavor, counter: number): void {
+    const idx: number = this._flavors.findIndex((fl: Flavor) => {
+      return fl.name === flavor.name
+    });
+    if (idx !== -1) {
+      if (counter > 0) {
+        this._flavors[idx].counter = counter;
+      } else {
+        this._flavors.splice(idx, 1)
+      }
+    } else {
+      if (counter > 0) {
+
+        flavor.counter = counter;
+
+        this._flavors.push(flavor)
+      }
+    }
+    this.calculateRamCores()
   }
 
-  set TotalCores(value: number) {
-    this._TotalCores = value;
+  get project_application_renewal_user(): User {
+    return this._project_application_renewal_user;
   }
 
-  get TotalRAM(): number {
-    return this._TotalRAM;
+  set project_application_renewal_user(value: User) {
+    this._project_application_renewal_user = value;
   }
 
-  set TotalRAM(value: number) {
-    this._TotalRAM = value;
+  public addFlavorToRequested(flavor: Flavor): void {
+    this._flavors.push(flavor)
   }
 
-  get Lifetime(): number {
-    return this._Lifetime;
+  get project_application_id(): number | string {
+    return this._project_application_id;
   }
 
-  set Lifetime(value: number) {
-    this._Lifetime = value;
+  set project_application_id(value: number | string) {
+    this._project_application_id = value;
   }
 
-  get OpenStackProject(): boolean {
-    return this._OpenStackProject
+  get flavors(): Flavor[] {
+    return this._flavors;
   }
 
-  set OpenStackProject(value: boolean) {
-    this._OpenStackProject = value;
+  set flavors(value: Flavor[]) {
+    this._flavors = value;
+  }
+
+  get project_application_renewal_total_cores(): number {
+    return this._project_application_renewal_total_cores;
+  }
+
+  set project_application_renewal_total_cores(value: number) {
+    this._project_application_renewal_total_cores = value;
+  }
+
+  get project_application_renewal_total_ram(): number {
+    return this._project_application_renewal_total_ram;
+  }
+
+  set project_application_renewal_total_ram(value: number) {
+    this._project_application_renewal_total_ram = value;
+  }
+
+  get project_application_renewal_lifetime(): number {
+    return this._project_application_renewal_lifetime;
+  }
+
+  set project_application_renewal_lifetime(value: number) {
+    this._project_application_renewal_lifetime = value;
   }
 
   get Id(): number {
@@ -114,99 +149,83 @@ export class ApplicationExtension {
     this._Id = value;
   }
 
-  set Comment(value: string) {
-    this._Comment = value;
+  set project_application_renewal_comment(value: string) {
+    this._project_application_renewal_comment = value;
   }
 
-  get Comment(): string {
-    return this._Comment;
+  get project_application_renewal_comment(): string {
+    return this._project_application_renewal_comment;
   }
 
-  get VMsRequested(): number {
-    return this._VMsRequested;
+  get project_application_renewal_vms_requested(): number {
+    return this._project_application_renewal_vms_requested;
   }
 
-  set VMsRequested(value: number) {
-    this._VMsRequested = value;
+  set project_application_renewal_vms_requested(value: number) {
+    this._project_application_renewal_vms_requested = value;
   }
 
-  get CoresPerVM(): number {
-    return this._CoresPerVM;
+  get project_application_renewal_volume_limit(): number {
+    return this._project_application_renewal_volume_limit;
   }
 
-  set CoresPerVM(value: number) {
-    this._CoresPerVM = value;
+  set project_application_renewal_volume_limit(value: number) {
+    this._project_application_renewal_volume_limit = value;
   }
 
-  get RamPerVM(): number {
-    return this._RamPerVM;
+  get project_application_renewal_volume_counter(): number {
+    return this._project_application_renewal_volume_counter;
   }
 
-  set RamPerVM(value: number) {
-    this._RamPerVM = value;
+  set project_application_renewal_volume_counter(value: number) {
+    this._project_application_renewal_volume_counter = value;
   }
 
-  get VolumeLimit(): number {
-    return this._VolumeLimit;
+  get project_application_renewal_object_storage(): number {
+    return this._project_application_renewal_object_storage;
   }
 
-  set VolumeLimit(value: number) {
-    this._VolumeLimit = value;
+  set project_application_renewal_object_storage(value: number) {
+    this._project_application_renewal_object_storage = value;
   }
 
-  get VolumeCounter(): number {
-    return this._VolumeCounter;
+  get project_application_renewal_date_submitted(): string {
+    return this._project_application_renewal_date_submitted;
   }
 
-  set VolumeCounter(value: number) {
-    this._VolumeCounter = value;
+  set project_application_renewal_date_submitted(value: string) {
+    this._project_application_renewal_date_submitted = value;
   }
 
-  get ObjectStorage(): number {
-    return this._ObjectStorage;
+  get project_application_renewal_credits(): number {
+    return Number(this._project_application_renewal_credits);
   }
 
-  set ObjectStorage(value: number) {
-    this._ObjectStorage = value;
+  set project_application_renewal_credits(value: number) {
+    this._project_application_renewal_credits = value;
   }
 
-  get SpecialHardware(): string[] {
-    return this._SpecialHardware;
+  get is_only_extra_credits_application(): boolean {
+    return this._is_only_extra_credits_application;
   }
 
-  set SpecialHardware(value: string[]) {
-    this._SpecialHardware = value;
+  set is_only_extra_credits_application(value: boolean) {
+    this._is_only_extra_credits_application = value;
   }
 
-  get DateSubmitted(): string {
-    return this._DateSubmitted;
+  get project_application_renewal_cloud_service_user_number(): number {
+    return this._project_application_renewal_cloud_service_user_number;
   }
 
-  set DateSubmitted(value: string) {
-    this._DateSubmitted = value;
+  set project_application_renewal_cloud_service_user_number(value: number) {
+    this._project_application_renewal_cloud_service_user_number = value;
   }
 
-  get ExtendedCredits(): number {
-    return Number(this._ExtendedCredits);
+  get project_application_renewal_cloud_service_develop(): boolean {
+    return this._project_application_renewal_cloud_service_develop;
   }
 
-  set ExtendedCredits(value: number) {
-    this._ExtendedCredits = value;
-  }
-
-  get IsOnlyExtraCreditsApplication(): boolean {
-    return this._IsOnlyExtraCreditsApplication;
-  }
-
-  set IsOnlyExtraCreditsApplication(value: boolean) {
-    this._IsOnlyExtraCreditsApplication = value;
-  }
-
-  get CloudServiceUserNumber(): number {
-    return this._CloudServiceUserNumber;
-  }
-
-  set CloudServiceUserNumber(value: number) {
-    this._CloudServiceUserNumber = value;
+  set project_application_renewal_cloud_service_develop(value: boolean) {
+    this._project_application_renewal_cloud_service_develop = value;
   }
 }

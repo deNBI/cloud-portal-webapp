@@ -2,220 +2,345 @@ import {ApplicationExtension} from '../application_extension.model';
 import {ComputecenterComponent} from '../../projectmanagement/computecenter.component';
 import {ApplicationDissemination} from '../application-dissemination';
 import {EdamOntologyTerm} from '../edam-ontology-term';
+import {Flavor} from '../../virtualmachines/virtualmachinemodels/flavor';
+import {Application_States} from '../../shared/shared_modules/baseClass/abstract-base-class';
+
+/**
+ * User Class.
+ */
+export class User {
+  private _username: string;
+  private _user_affiliations: string [] = [];
+  private _elixir_id: string;
+  private _email: string;
+
+  get username(): string {
+    return this._username;
+  }
+
+  set username(value: string) {
+    this._username = value;
+  }
+
+  get user_affiliations(): string[] {
+    return this._user_affiliations;
+  }
+
+  set user_affiliations(value: string[]) {
+    this._user_affiliations = value;
+  }
+
+  get elixir_id(): string {
+    return this._elixir_id;
+  }
+
+  set elixir_id(value: string) {
+    this._elixir_id = value;
+  }
+
+  get email(): string {
+    return this._email;
+  }
+
+  set email(value: string) {
+    this._email = value;
+  }
+}
 
 /**
  * Application class.
  */
 export class Application {
 
-  private _Id: number | string;
-  private _Name: string;
-  private _Shortname: string;
-  private _Institute: string;
-  private _Workgroup: string;
-  private _Lifetime: number;
-  private _VMsRequested: number;
-  private _CoresPerVM: number;
-  private _RamPerVM: number;
-  private _VolumeLimit: number;
-  private _VolumeCounter: number;
-  private _ObjectStorage: number;
-  private _SpecialHardware: number;
-  private _Description: string;
-  private _Comment: string;
-  private _DateSubmitted: string;
-  private _DateStatusChanged: string;
-  private _User: string;
-  private _UserEmail: string;
-  private _UserAffiliations: string[];
-  private _PiAffiliations: string[];
-  private _Status: number;
+  private _project_application_id: number | string;
+  private _project_application_report_allowed: boolean = false;
+  private _project_application_name: string;
+  private _project_application_shortname: string;
+  private _project_application_institute: string;
+  private _project_application_workgroup: string;
+  private _project_application_lifetime: number;
+  private _project_application_vms_requested: number;
+  private _project_application_volume_limit: number;
+  private _project_application_volume_counter: number;
+  private _project_application_object_storage: number;
+  private _project_application_description: string;
+  private _project_application_comment: string;
+  private _project_application_date_submitted: string;
+  private _project_application_date_status_changed: string;
+  private _project_application_user: User;
+  private _project_application_pi: User = new User();
+  private _project_application_status: number;
   private _ComputeCenter: ComputecenterComponent;
-  private _OpenStackProject: boolean;
+  private _project_application_openstack_project: boolean;
   private _DaysRunning: number;
-  private _ApplicationExtension: ApplicationExtension = null;
-  private _PerunId: number | string;
-  private _TotalCores: number;
-  private _TotalRam: number;
-  private _InitialCredits: number;
-  private _DateApproved: string;
-  private _OpenstackBasicIntroduction: boolean;
-  private _Horizon2020: string;
-  private _BMBFProject: string;
-  private _EdamTopics: EdamOntologyTerm[];
-  private _SensitiveData: boolean;
-  private _ElixirProject: string;
-  private _Dissemination: ApplicationDissemination;
-  private _PIApproved: boolean;
-  private _PI: string;
-  private _PIElixir: string;
-  private _PIEmail: string;
-  private _CloudService: boolean;
-  private _CloudServiceDevelop: boolean;
-  private _CloudServiceUserNumber: number;
-  // todo own type!!!!!!!!!!!!
-  private _CurrentFlavors: {
-    [id: string]: {
-      counter: number, tag: string, ram: number, rootdisk: number,
-      vcpus: number, gpu: number, epheremal_disk: number
+  private _projectapplicationrenewal: ApplicationExtension = null;
+  private _project_application_perun_id: number | string;
+  private _project_application_total_cores: number;
+  private _project_application_total_ram: number;
+  private _project_application_initial_credits: number;
+  private _project_application_date_approved: string;
+  private _project_application_openstack_basic_introduction: boolean;
+  private _project_application_horizon2020: string;
+  private _project_application_bmbf_project: string;
+  private _project_application_edam_terms: EdamOntologyTerm[] = [];
+  private _project_application_sensitive_data: boolean;
+  private _project_application_elixir_project: string;
+  private _dissemination: ApplicationDissemination;
+  private _project_application_pi_approved: boolean;
+  private _project_application_cloud_service: boolean;
+  private _project_application_cloud_service_develop: boolean;
+  private _project_application_cloud_service_user_number: number;
+  private _flavors: Flavor[] = [];
+  private _project_application_workshop: boolean;
+
+  constructor(aj: Application | null) {
+    this._dissemination = new ApplicationDissemination(null);
+
+    if (aj) {
+      this._project_application_id = aj.project_application_id;
+      this._project_application_name = aj.project_application_name;
+      this._project_application_shortname = aj.project_application_shortname;
+      this._project_application_institute = aj.project_application_institute;
+      this._project_application_workgroup = aj.project_application_workgroup;
+      this._project_application_lifetime = aj.project_application_lifetime;
+      this._project_application_vms_requested = aj.project_application_vms_requested;
+      this._project_application_volume_limit = aj.project_application_volume_limit;
+      this._project_application_volume_counter = aj.project_application_volume_counter;
+      this._project_application_object_storage = aj.project_application_object_storage;
+      this._project_application_description = aj.project_application_description;
+      this._project_application_comment = aj.project_application_comment;
+      this._project_application_date_submitted = aj.project_application_date_submitted;
+      this._project_application_date_status_changed = aj.project_application_date_status_changed;
+      this._project_application_user = aj.project_application_user;
+      this._project_application_pi = aj.project_application_pi;
+      this._project_application_status = aj.project_application_status;
+      this._ComputeCenter = aj.ComputeCenter;
+      this._project_application_openstack_project = aj.project_application_openstack_project;
+      this._DaysRunning = aj.DaysRunning;
+      if (aj.projectapplicationrenewal) {
+        this._projectapplicationrenewal = new ApplicationExtension(aj.projectapplicationrenewal);
+      }
+      this._project_application_perun_id = aj.project_application_perun_id;
+      this._project_application_total_cores = aj.project_application_total_cores;
+      this._project_application_total_ram = aj.project_application_total_ram;
+      this._project_application_initial_credits = aj.project_application_initial_credits;
+      this._project_application_date_approved = aj.project_application_date_approved;
+      this._project_application_openstack_basic_introduction = aj.project_application_openstack_basic_introduction;
+      this._project_application_horizon2020 = aj.project_application_horizon2020;
+      this._project_application_bmbf_project = aj.project_application_bmbf_project;
+      this._project_application_edam_terms = aj.project_application_edam_terms;
+      this._project_application_sensitive_data = aj.project_application_sensitive_data;
+      this._project_application_elixir_project = aj.project_application_elixir_project;
+      this._project_application_pi_approved = aj.project_application_pi_approved;
+      this._project_application_cloud_service = aj.project_application_cloud_service;
+      this._project_application_cloud_service_develop = aj.project_application_cloud_service_develop;
+      this._project_application_cloud_service_user_number = aj.project_application_cloud_service_user_number;
+      this._flavors = aj.flavors;
+      this._project_application_workshop = aj.project_application_workshop;
+      if (aj.dissemination) {
+        this._dissemination = new ApplicationDissemination(aj.dissemination);
+        this._project_application_report_allowed = this._dissemination.someAllowed();
+      }
+      this.setDaysRunning()
     }
-  };
-
-  private _Workshop: boolean;
-
-  constructor() {
-    this._CurrentFlavors = {};
   }
 
-  public addFlavorToCurrent(name: string, counter: number, tag: string, ram: number, rootdisk: number,
-                            vcpus: number, gpu: number, epheremal_disk: number): void {
-    this._CurrentFlavors[name] = {
-      counter: counter,
-      tag: tag,
-      ram: ram,
-      rootdisk: rootdisk,
-      vcpus: vcpus,
-      gpu: gpu,
-      epheremal_disk: epheremal_disk
-    };
+  public inititatenExtension(): void {
+    this._projectapplicationrenewal = new ApplicationExtension(null);
+    this._projectapplicationrenewal.project_application_id = this._project_application_id;
+    this._projectapplicationrenewal.project_application_renewal_lifetime = 0;
+    this._projectapplicationrenewal.project_application_renewal_vms_requested = this._project_application_vms_requested;
+    this._projectapplicationrenewal.project_application_renewal_volume_limit = this._project_application_volume_limit;
+    this._projectapplicationrenewal.project_application_renewal_volume_counter = this._project_application_volume_counter;
+    this._projectapplicationrenewal.project_application_renewal_object_storage = this._project_application_object_storage;
+    this._projectapplicationrenewal.project_application_renewal_comment = '';
+    this._projectapplicationrenewal.project_application_renewal_total_cores = this._project_application_total_cores;
+    this._projectapplicationrenewal.project_application_renewal_total_ram = this._project_application_total_ram;
+    this._projectapplicationrenewal.project_application_renewal_credits = 0;
+    this._projectapplicationrenewal.is_only_extra_credits_application = false;
+    // tslint:disable-next-line:max-line-length
+    this._projectapplicationrenewal.project_application_renewal_cloud_service_user_number = this._project_application_cloud_service_user_number;
+    this._projectapplicationrenewal.flavors = this.flavors;
   }
 
-  get Workshop(): boolean {
-    return this._Workshop;
-  }
-
-  set Workshop(value: boolean) {
-    this._Workshop = value;
-  }
-
-  get CloudService(): boolean {
-    return this._CloudService;
-  }
-
-  set CloudService(value: boolean) {
-    this._CloudService = value;
-  }
-
-  get CloudServiceUserNumber(): number {
-    return this._CloudServiceUserNumber;
-  }
-
-  set CloudServiceUserNumber(value: number) {
-    this._CloudServiceUserNumber = value;
-  }
-
-  get OpenstackBasicIntroduction(): boolean {
-    return this._OpenstackBasicIntroduction;
-  }
-
-  set OpenstackBasicIntroduction(value: boolean) {
-    this._OpenstackBasicIntroduction = value;
-  }
-
-  get SensitiveData(): boolean {
-    return this._SensitiveData;
-  }
-
-  set SensitiveData(value: boolean) {
-    this._SensitiveData = value;
-  }
-
-  get PiAffiliations(): string[] {
-    return this._PiAffiliations;
-  }
-
-  set PiAffiliations(value: string[]) {
-    this._PiAffiliations = value;
-  }
-
-  get EdamTopics(): EdamOntologyTerm[] {
-    return this._EdamTopics;
-  }
-
-  set EdamTopics(value: EdamOntologyTerm[]) {
-    this._EdamTopics = value;
-  }
-
-  get PIElixir(): string {
-    return this._PIElixir;
-  }
-
-  set PIElixir(value: string) {
-    this._PIElixir = value;
-  }
-
-  get Dissemination(): ApplicationDissemination {
-    return this._Dissemination;
-  }
-
-  set Dissemination(value: ApplicationDissemination) {
-    this._Dissemination = value;
-  }
-
-  get PIApproved(): boolean {
-    return this._PIApproved;
-  }
-
-  set PIApproved(value: boolean) {
-    this._PIApproved = value;
-  }
-
-  get CurrentFlavors(): {
-    [id: string]: {
-      counter: number, tag: string, ram: number, rootdisk: number,
-      vcpus: number, gpu: number, epheremal_disk: number
+  private setDaysRunning(): void {
+    if (this._project_application_status === Application_States.APPROVED
+    ) {
+      // tslint:disable-next-line:max-line-length
+      this._DaysRunning = Math.ceil((Math.abs(Date.now() - new Date(this.project_application_date_approved).getTime())) / (1000 * 3600 * 24));
     }
-  } {
-    return this._CurrentFlavors
   }
 
-  set CurrentFlavors(value: {
-    [id: string]: {
-      counter: number, tag: string, ram: number, rootdisk: number,
-      vcpus: number, gpu: number, epheremal_disk: number
+  public addEdamTerm(term: EdamOntologyTerm): void {
+    if (this.project_application_edam_terms.indexOf(term) === -1) {
+      this.project_application_edam_terms.push(term);
     }
-  }) {
-    this._CurrentFlavors = value;
   }
 
-  get DateApproved(): string {
-    return this._DateApproved;
+  public removeEdamTerm(term: EdamOntologyTerm): void {
+    const idx: number = this.project_application_edam_terms.indexOf(term)
+    if (idx !== -1) {
+      this.project_application_edam_terms.splice(idx, 1);
+    }
   }
 
-  set DateApproved(value: string) {
-    this._DateApproved = value;
+  public getFlavorCounter(flavor: Flavor): number {
+    const flavs: Flavor[] = this._flavors.filter((fl: Flavor) => {
+      return fl.name === flavor.name
+    });
+    if (flavs.length > 0) {
+      return flavs[0].counter
+    }
+
+    return 0
   }
 
-  get TotalCores(): number {
-    return this._TotalCores;
+  public setFlavorInFlavors(flavor: Flavor, counter: number): void {
+    const idx: number = this._flavors.findIndex((fl: Flavor) => {
+      return fl.name === flavor.name
+    });
+    if (idx !== -1) {
+      if (counter > 0) {
+        this._flavors[idx].counter = counter;
+      } else {
+        this._flavors.splice(idx, 1)
+      }
+    } else {
+      if (counter > 0) {
+
+        flavor.counter = counter;
+
+        this._flavors.push(flavor)
+      }
+    }
   }
 
-  set TotalCores(value: number) {
-    this._TotalCores = value;
+  get project_application_report_allowed(): boolean {
+    return this._project_application_report_allowed;
   }
 
-  get TotalRam(): number {
-    return this._TotalRam;
+  set project_application_report_allowed(value: boolean) {
+    this._project_application_report_allowed = value;
   }
 
-  set TotalRam(value: number) {
-    this._TotalRam = value;
+  get project_application_user(): User {
+    return this._project_application_user;
   }
 
-  get UserAffiliations(): string[] {
-    return this._UserAffiliations
+  set project_application_user(value: User) {
+    this._project_application_user = value;
   }
 
-  set UserAffiliations(value: string[]) {
-    this._UserAffiliations = value;
+  get project_application_pi(): User {
+    return this._project_application_pi;
   }
 
-  get ApplicationExtension(): ApplicationExtension {
-    return this._ApplicationExtension;
+  set project_application_pi(value: User) {
+    this._project_application_pi = value;
   }
 
-  set ApplicationExtension(value: ApplicationExtension) {
-    this._ApplicationExtension = value;
+  get project_application_workshop(): boolean {
+    return this._project_application_workshop;
+  }
+
+  set project_application_workshop(value: boolean) {
+    this._project_application_workshop = value;
+  }
+
+  get project_application_cloud_service(): boolean {
+    return this._project_application_cloud_service;
+  }
+
+  set project_application_cloud_service(value: boolean) {
+    this._project_application_cloud_service = value;
+  }
+
+  get project_application_cloud_service_user_number(): number {
+    return this._project_application_cloud_service_user_number;
+  }
+
+  set project_application_cloud_service_user_number(value: number) {
+    this._project_application_cloud_service_user_number = value;
+  }
+
+  get project_application_openstack_basic_introduction(): boolean {
+    return this._project_application_openstack_basic_introduction;
+  }
+
+  set project_application_openstack_basic_introduction(value: boolean) {
+    this._project_application_openstack_basic_introduction = value;
+  }
+
+  get project_application_sensitive_data(): boolean {
+    return this._project_application_sensitive_data;
+  }
+
+  set project_application_sensitive_data(value: boolean) {
+    this._project_application_sensitive_data = value;
+  }
+
+  get project_application_edam_terms(): EdamOntologyTerm[] {
+    return this._project_application_edam_terms;
+  }
+
+  set project_application_edam_terms(value: EdamOntologyTerm[]) {
+    this._project_application_edam_terms = value;
+  }
+
+  get dissemination(): ApplicationDissemination {
+    return this._dissemination;
+  }
+
+  set dissemination(value: ApplicationDissemination) {
+    this._dissemination = value;
+  }
+
+  get project_application_pi_approved(): boolean {
+    return this._project_application_pi_approved;
+  }
+
+  set project_application_pi_approved(value: boolean) {
+    this._project_application_pi_approved = value;
+  }
+
+  get flavors(): Flavor[] {
+    return this._flavors;
+  }
+
+  set flavors(value: Flavor[]) {
+    this._flavors = value;
+  }
+
+  get project_application_date_approved(): string {
+    return this._project_application_date_approved;
+  }
+
+  set project_application_date_approved(value: string) {
+    this._project_application_date_approved = value;
+  }
+
+  get project_application_total_cores(): number {
+    return this._project_application_total_cores;
+  }
+
+  set project_application_total_cores(value: number) {
+    this._project_application_total_cores = value;
+  }
+
+  get project_application_total_ram(): number {
+    return this._project_application_total_ram;
+  }
+
+  set project_application_total_ram(value: number) {
+    this._project_application_total_ram = value;
+  }
+
+  get projectapplicationrenewal(): ApplicationExtension {
+    return this._projectapplicationrenewal;
+  }
+
+  set projectapplicationrenewal(value: ApplicationExtension) {
+    this._projectapplicationrenewal = value;
   }
 
   get DaysRunning(): number {
@@ -226,12 +351,12 @@ export class Application {
     this._DaysRunning = value;
   }
 
-  get OpenStackProject(): boolean {
-    return this._OpenStackProject
+  get project_application_openstack_project(): boolean {
+    return this._project_application_openstack_project
   }
 
-  set OpenStackProject(value: boolean) {
-    this._OpenStackProject = value;
+  set project_application_openstack_project(value: boolean) {
+    this._project_application_openstack_project = value;
   }
 
   get ComputeCenter(): ComputecenterComponent {
@@ -242,235 +367,179 @@ export class Application {
     this._ComputeCenter = value;
   }
 
-  get Id(): number | string {
-    return this._Id;
+  get project_application_id(): number | string {
+    return this._project_application_id;
   }
 
-  set Id(value: number | string) {
-    this._Id = value;
+  set project_application_id(value: number | string) {
+    this._project_application_id = value;
   }
 
-  get Name(): string {
-    return this._Name;
+  get project_application_name(): string {
+    return this._project_application_name;
   }
 
-  set Name(value: string) {
-    this._Name = value;
+  set project_application_name(value: string) {
+    this._project_application_name = value;
   }
 
-  set Comment(value: string) {
-    this._Comment = value;
+  set project_application_comment(value: string) {
+    this._project_application_comment = value;
   }
 
-  get Comment(): string {
-    return this._Comment;
+  get project_application_comment(): string {
+    return this._project_application_comment;
   }
 
-  get Shortname(): string {
-    return this._Shortname;
+  get project_application_shortname(): string {
+    return this._project_application_shortname;
   }
 
-  set Shortname(value: string) {
-    this._Shortname = value;
+  set project_application_shortname(value: string) {
+    this._project_application_shortname = value;
   }
 
-  get Institute(): string {
-    return this._Institute;
+  get project_application_institute(): string {
+    return this._project_application_institute;
   }
 
-  set Institute(value: string) {
-    this._Institute = value;
+  set project_application_institute(value: string) {
+    this._project_application_institute = value;
   }
 
-  get Workgroup(): string {
-    return this._Workgroup;
+  get project_application_workgroup(): string {
+    return this._project_application_workgroup;
   }
 
-  set Workgroup(value: string) {
-    this._Workgroup = value;
+  set project_application_workgroup(value: string) {
+    this._project_application_workgroup = value;
   }
 
-  get Lifetime(): number {
-    return this._Lifetime;
+  get project_application_lifetime(): number {
+    return this._project_application_lifetime;
   }
 
-  set Lifetime(value: number) {
-    this._Lifetime = value;
+  set project_application_lifetime(value: number) {
+    this._project_application_lifetime = value;
   }
 
-  get VMsRequested(): number {
-    return this._VMsRequested;
+  get project_application_vms_requested(): number {
+    return this._project_application_vms_requested;
   }
 
-  set VMsRequested(value: number) {
-    this._VMsRequested = value;
+  set project_application_vms_requested(value: number) {
+    this._project_application_vms_requested = value;
   }
 
-  get CoresPerVM(): number {
-    return this._CoresPerVM;
+  get project_application_volume_limit(): number {
+    return this._project_application_volume_limit;
   }
 
-  set CoresPerVM(value: number) {
-    this._CoresPerVM = value;
+  set project_application_volume_limit(value: number) {
+    this._project_application_volume_limit = value;
   }
 
-  get RamPerVM(): number {
-    return this._RamPerVM;
+  get project_application_volume_counter(): number {
+    return this._project_application_volume_counter;
   }
 
-  set RamPerVM(value: number) {
-    this._RamPerVM = value;
+  set project_application_volume_counter(value: number) {
+    this._project_application_volume_counter = value;
   }
 
-  get VolumeLimit(): number {
-    return this._VolumeLimit;
+  get project_application_object_storage(): number {
+    return this._project_application_object_storage;
   }
 
-  set VolumeLimit(value: number) {
-    this._VolumeLimit = value;
+  set project_application_object_storage(value: number) {
+    this._project_application_object_storage = value;
   }
 
-  get VolumeCounter(): number {
-    return this._VolumeCounter;
+  get project_application_description(): string {
+    return this._project_application_description;
   }
 
-  set VolumeCounter(value: number) {
-    this._VolumeCounter = value;
+  set project_application_description(value: string) {
+    this._project_application_description = value;
   }
 
-  get ObjectStorage(): number {
-    return this._ObjectStorage;
+  get project_application_date_submitted(): string {
+    return this._project_application_date_submitted;
   }
 
-  set ObjectStorage(value: number) {
-    this._ObjectStorage = value;
+  set project_application_date_submitted(value: string) {
+    this._project_application_date_submitted = value;
   }
 
-  get SpecialHardware(): number {
-    return this._SpecialHardware;
+  get project_application_date_status_changed(): string {
+    return this._project_application_date_status_changed;
   }
 
-  set SpecialHardware(value: number) {
-    this._SpecialHardware = value;
+  set project_application_date_status_changed(value: string) {
+    this._project_application_date_status_changed = value;
   }
 
-  get Description(): string {
-    return this._Description;
+  get project_application_status(): number {
+    return this._project_application_status;
   }
 
-  set Description(value: string) {
-    this._Description = value;
+  set project_application_status(value: number) {
+    this._project_application_status = value;
   }
 
-  get DateSubmitted(): string {
-    return this._DateSubmitted;
+  get project_application_perun_id(): number | string {
+    return this._project_application_perun_id;
   }
 
-  set DateSubmitted(value: string) {
-    this._DateSubmitted = value;
+  set project_application_perun_id(value: number | string) {
+    this._project_application_perun_id = value;
   }
 
-  get DateStatusChanged(): string {
-    return this._DateStatusChanged;
+  get project_application_bmbf_project(): string {
+    return this._project_application_bmbf_project;
   }
 
-  set DateStatusChanged(value: string) {
-    this._DateStatusChanged = value;
+  set project_application_bmbf_project(value: string) {
+    this._project_application_bmbf_project = value;
   }
 
-  get User(): string {
-    return this._User;
+  get project_application_horizon2020(): string {
+    return this._project_application_horizon2020;
   }
 
-  set User(value: string) {
-    this._User = value;
+  set project_application_horizon2020(value: string) {
+    this._project_application_horizon2020 = value;
   }
 
-  get Status(): number {
-    return this._Status;
+  get project_application_elixir_project(): string {
+    return this._project_application_elixir_project;
   }
 
-  set Status(value: number) {
-    this._Status = value;
+  set project_application_elixir_project(value: string) {
+    this._project_application_elixir_project = value;
   }
 
-  get UserEmail(): string {
-    return this._UserEmail;
+  get project_application_initial_credits(): number {
+    return Number(this._project_application_initial_credits);
   }
 
-  set UserEmail(value: string) {
-    this._UserEmail = value;
-  }
-
-  get PerunId(): number | string {
-    return this._PerunId;
-  }
-
-  set PerunId(value: number | string) {
-    this._PerunId = value;
-  }
-
-  get BMBFProject(): string {
-    return this._BMBFProject;
-  }
-
-  set BMBFProject(value: string) {
-    this._BMBFProject = value;
-  }
-
-  get Horizon2020(): string {
-    return this._Horizon2020;
-  }
-
-  set Horizon2020(value: string) {
-    this._Horizon2020 = value;
-  }
-
-  get ElixirProject(): string {
-    return this._ElixirProject;
-  }
-
-  set ElixirProject(value: string) {
-    this._ElixirProject = value;
-  }
-
-  get PI(): string {
-    return this._PI;
-  }
-
-  set PI(value: string) {
-    this._PI = value;
-  }
-
-  get PIEmail(): string {
-    return this._PIEmail;
-  }
-
-  set PIEmail(value: string) {
-    this._PIEmail = value;
-  }
-
-  get InitialCredits(): number {
-    return Number(this._InitialCredits);
-  }
-
-  set InitialCredits(value: number) {
-    this._InitialCredits = value;
+  set project_application_initial_credits(value: number) {
+    this._project_application_initial_credits = value;
   }
 
   get TotalExtensionCredits(): number {
-    if (this.ApplicationExtension != null) {
-      return Number(this.InitialCredits) + Number(this.ApplicationExtension.ExtendedCredits)
+    if (this.projectapplicationrenewal != null) {
+      return Number(this.project_application_initial_credits) + Number(this.projectapplicationrenewal.project_application_renewal_credits)
     } else {
-      return this.InitialCredits
+      return this.project_application_initial_credits
     }
   }
 
-  get CloudServiceDevelop(): boolean {
-    return this._CloudServiceDevelop;
+  get project_application_cloud_service_develop(): boolean {
+    return this._project_application_cloud_service_develop;
   }
 
-  set CloudServiceDevelop(value: boolean) {
-    this._CloudServiceDevelop = value;
+  set project_application_cloud_service_develop(value: boolean) {
+    this._project_application_cloud_service_develop = value;
   }
 }

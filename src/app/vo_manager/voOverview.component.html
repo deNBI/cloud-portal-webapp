@@ -28,7 +28,7 @@
         Get JSON
       </button>
 
-      <div class="card" style=" overflow: scroll">
+      <div class="card" style=" ">
         <div class="card-header">
           <i class="fa fa-align-justify"></i> Projects
         </div>
@@ -67,12 +67,12 @@
               </td>
               <td></td>
               <td>
-                <div class="row">
+                <div>
                   <div class="checkbox col-sm">
                     <label>
                       <input type="checkbox"
                              (change)="changeFilterStatus(project_states[project_states.ACTIVE]);applyFilter();"
-                             checked/>
+                             [checked]="filterstatus_list[project_states[project_states.ACTIVE]]"/>
                       <span style="margin-left: 5px"
                             class="badge badge-success">{{project_states[project_states.ACTIVE]}} </span>
 
@@ -82,17 +82,17 @@
                     <label>
                       <input type="checkbox"
                              (change)="changeFilterStatus(project_states[project_states.SUSPENDED]);applyFilter();"
-                             checked/>
+                             [checked]="filterstatus_list[project_states[project_states.SUSPENDED]]"/>
                       <span style="margin-left: 5px"
                             class="badge badge-warning">{{project_states[project_states.SUSPENDED]}} </span>
                     </label>
                   </div>
-                </div>
-                <div class="row">
+
                   <div class="checkbox col-sm">
                     <label>
                       <input type="checkbox"
                              (change)="changeFilterStatus(lifetime_states[lifetime_states.EXPIRED]);applyFilter();"
+                             [checked]="filterstatus_list[lifetime_states[lifetime_states.EXPIRED]]"
                       />
                       <span style="margin-left: 5px"
                             class="badge badge-danger">{{lifetime_states[lifetime_states.EXPIRED]}}</span>
@@ -103,20 +103,37 @@
                     <label>
                       <input type="checkbox"
                              (change)="changeFilterStatus(lifetime_states[lifetime_states.EXPIRES_SOON]);applyFilter();"
+                             [checked]="filterstatus_list[lifetime_states[lifetime_states.EXPIRES_SOON]]"
+
+
                       />
                       <span style="margin-left: 5px"
                             class="badge badge-warning">{{lifetime_states[lifetime_states.EXPIRES_SOON]}}</span>
                     </label>
                   </div>
-                </div>
-                <div class="row">
+
+
                   <div class="checkbox col-sm">
                     <label>
                       <input type="checkbox"
                              (change)="changeFilterStatus(application_states[application_states.WAIT_FOR_CONFIRMATION]);applyFilter();"
+                             [checked]="filterstatus_list[application_states[application_states.WAIT_FOR_CONFIRMATION]]"
+                      />
+
+
+                      <span style="margin-left: 5px"
+                            class="badge badge-info">{{application_states[application_states.WAIT_FOR_CONFIRMATION]}}</span>
+                    </label>
+                  </div>
+                  <div class="checkbox col-sm">
+                    <label>
+                      <input type="checkbox"
+                             (change)="changeFilterStatus(application_states[application_states.TERMINATION_REQUESTED]);applyFilter();"
+                             [checked]="filterstatus_list[application_states[application_states.TERMINATION_REQUESTED]]"
+
                       />
                       <span style="margin-left: 5px"
-                            class="badge badge-danger">{{application_states[application_states.WAIT_FOR_CONFIRMATION]}}</span>
+                            class="badge badge-dark">{{application_states[application_states.TERMINATION_REQUESTED]}}</span>
                     </label>
                   </div>
                 </div>
@@ -168,13 +185,13 @@
                         style="margin-left: 5px"
                         class="badge badge-warning">{{project_states[project_states.SUSPENDED]}} </span>
                   <span
-                    *ngIf="project?.Status !=  project_states.SUSPENDED && project?.Status !=  project_states.ACTIVE"
-                    style="margin-left: 5px"
-                    class="badge badge-danger">NOT SET </span>
-                  <span
                     *ngIf="project?.Status ==  application_states.WAIT_FOR_CONFIRMATION"
                     style="margin-left: 5px"
-                    class="badge badge-danger">WAIT FOR CONFIRMATION </span>
+                    class="badge badge-info">WAIT FOR CONFIRMATION </span>
+                  <span
+                    *ngIf="project?.Status ==  application_states.TERMINATION_REQUESTED"
+                    style="margin-left: 5px"
+                    class="badge badge-dark">TERMINATION REQUESTED </span>
                 </td>
 
                 <td>
@@ -182,40 +199,42 @@
                 </td>
 
                 <td>
-                  <button type="button" class="btn btn-info"
-                          data-toggle="modal"
-                          (click)="showMembersOfTheProject(project.Id, project.Name); usersModal.show(); "
+                  <div class="btn-group-vertical btn-group-xs">
+                    <button type="button" class="btn btn-info" style="margin-left: 5px;margin-bottom: 5px;"
+                            data-toggle="modal"
+                            (click)="showMembersOfTheProject(project.Id, project.Name); usersModal.show(); "
 
-                  >
-                    <i class="fa fa-users"></i>&nbsp;Show Members
-                  </button>
-                  <button *ngIf="project.Status ==  project_states.ACTIVE" style="margin-left: 5px"
-                          type="button"
-                          class="btn btn-warning"
-                          (click)="selectedProject = project;suspendModal.show();"
+                    >
+                      <i class="fa fa-users"></i>&nbsp;Show Members
+                    </button>
+                    <button *ngIf="project.Status ==  project_states.ACTIVE" style="margin-left: 5px;margin-bottom: 5px"
+                            type="button"
+                            class="btn btn-warning"
+                            (click)="selectedProject = project;suspendModal.show();"
 
-                  >
-                    <i class="fa fa-pause"></i>&nbsp;Suspend Project
-                  </button>
+                    >
+                      <i class="fa fa-pause"></i>&nbsp;Suspend Project
+                    </button>
 
-                  <button *ngIf="project.Status == project_states.SUSPENDED" style="margin-left: 5px"
-                          type="button"
-                          class="btn btn-success"
-                          (click)="selectedProject = project;resumeModal.show();"
+                    <button *ngIf="project.Status == project_states.SUSPENDED" style="margin-left: 5px"
+                            type="button"
+                            class="btn btn-success"
+                            (click)="selectedProject = project;resumeModal.show();"
 
-                  >
-                    <i class="fa fa-play"></i>&nbsp;Resume Project
-                  </button>
-                  <button
-                    *ngIf="project?.Status == project_states.ACTIVE || project?.Status == project_states.SUSPENDED"
-                    style="margin-left: 5px"
-                    type="button"
-                    class="btn btn-danger" [id]="'show_terminate_' + project?.Id"
-                    (click)="selectedProject = project;terminateModal.show();"
+                    >
+                      <i class="fa fa-play"></i>&nbsp;Resume Project
+                    </button>
+                    <button
+                      *ngIf="project?.Status == project_states.ACTIVE || project?.Status == project_states.SUSPENDED"
+                      style="margin-left: 5px"
+                      type="button"
+                      class="btn btn-danger" [id]="'show_terminate_' + project?.Id"
+                      (click)="selectedProject = project;terminateModal.show();"
 
-                  >
-                    <i class="fa fa-trash"></i>&nbsp;Terminate Project
-                  </button>
+                    >
+                      <i class="fa fa-trash"></i>&nbsp;Terminate Project
+                    </button>
+                  </div>
                 </td>
               </tr>
               </tbody>

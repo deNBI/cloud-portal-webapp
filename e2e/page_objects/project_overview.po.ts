@@ -23,8 +23,8 @@ export class ProjectOverview {
   private static EXTENSION_RESULT: string = 'extension result';
   private static EXTENSION_SUCCESSFULLY_SUBMITTED: string = 'Modify request successfully submitted!';
   private static EXTENSION_REQUEST_BTN: string = 'show_extension_modal';
-  private static DENBI_DEFAULT_OLD_ID: string = 'project_application_de.NBI default_old';
-  private static DENBI_DEFAULT_NEW_INPUT: string = 'id_project_application_renewal_de.NBI default';
+  private static DENBI_DEFAULT_OLD_ID: string = 'de.NBI default_old';
+  private static DENBI_DEFAULT_NEW_INPUT: string = 'de.NBI default';
   private static OLD_VOLUME_COUNTER_ID: string = 'project_application_volume_counter';
   private static NEW_VOLUME_COUNTER_ID: string = 'id_project_application_renewal_volume_counter';
   private static OLD_VOLUME_LIMIT_ID: string = 'project_application_volume_limit';

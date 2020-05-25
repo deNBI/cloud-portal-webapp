@@ -52,7 +52,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
   /**
    * Facilitties where the user is manager ['name',id].
    */
-  managerFacilities: [string, number][];
+  managerFacilities: [string, number][] = [];
   /**
    * Chosen facility.
    */

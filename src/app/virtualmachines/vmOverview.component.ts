@@ -14,12 +14,14 @@ import {is_vo} from '../shared/globalvar';
 import {VirtualMachineStates} from './virtualmachinemodels/virtualmachinestates';
 import {GroupService} from '../api-connector/group.service';
 import {ClientService} from '../api-connector/client.service';
-import {Client} from './clients/client.model';
+import {Client} from '../vo_manager/clients/client.model';
 import {TemplateNames} from './conda/template-names';
 import {PlaybookService} from '../api-connector/playbook.service';
 import {BiocondaService} from '../api-connector/bioconda.service';
 import {ClipboardService} from 'ngx-clipboard';
-import {WIKI_GUACAMOLE_LINK, WIKI_RSTUDIO_LINK} from '../../links/links';
+import {Volume} from './volumes/volume';
+import {VolumeStates} from './volumes/volume_states';
+import {WIKI_GUACAMOLE_LINK, WIKI_MOUNT_VOLUME, WIKI_RSTUDIO_LINK} from '../../links/links';
 
 /**
  * Vm overview componentn.
@@ -38,6 +40,10 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
   private subscription: Subscription = new Subscription();
 
   VirtualMachineStates: VirtualMachineStates = new VirtualMachineStates();
+  WIKI_MOUNT_VOLUME: string = WIKI_MOUNT_VOLUME;
+  volume_to_attach: Volume;
+  volume_to_detach: Volume;
+  detached_project_volumes: Volume[] = [];
 
   WIKI_RSTUDIO_LINK: string = WIKI_RSTUDIO_LINK;
   WIKI_GUACAMOLE_LINK: string = WIKI_GUACAMOLE_LINK;
@@ -105,6 +111,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
   status_changed: number = 0;
 
   is_facility_manager: boolean = false;
+  cluster_allowed: boolean = false;
 
   /**
    * Timeout for checking vm status.
@@ -177,6 +184,90 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
     if (this.clipboardService.isSupported) {
       this.clipboardService.copy(text);
     }
+  }
+
+  getDetachedVolumesByVSelectedMProject(): void {
+    this.virtualmachineservice.getDetachedVolumesByProject(this.selectedVm.projectid).subscribe(
+      (detached_volumes: Volume[]) => {
+        this.detached_project_volumes = detached_volumes;
+      }
+    )
+  }
+
+  check_status_loop_volume(volume: Volume, initial_timeout: number = this.checkStatusTimeout, final_state?: string): void {
+    const created: boolean = volume.volume_created_by_user;
+
+    setTimeout(
+      () => {
+        if (volume.volume_openstackid) {
+          this.subscription.add(this.virtualmachineservice.getVolumeById(volume.volume_openstackid).subscribe((vol: Volume) => {
+
+            // tslint:disable-next-line:max-line-length
+            if (volume.volume_status !== VolumeStates.AVAILABLE && volume.volume_status !== VolumeStates.NOT_FOUND && volume.volume_status !== VolumeStates.IN_USE && volume.volume_status !== final_state) {
+              this.check_status_loop_volume(volume, this.checkStatusTimeout, final_state)
+            }
+          }))
+        } else {
+          // tslint:disable-next-line:max-line-length
+          this.subscription.add(this.virtualmachineservice.getVolumeByNameAndVmName(volume.volume_name, volume.volume_virtualmachine.name).subscribe((vol: Volume) => {
+            // tslint:disable-next-line:max-line-length
+            if (volume.volume_status !== VolumeStates.AVAILABLE && volume.volume_status !== VolumeStates.NOT_FOUND && volume.volume_status !== VolumeStates.IN_USE && volume.volume_status !== final_state) {
+              this.check_status_loop_volume(volume, this.checkStatusTimeout, final_state)
+            }
+          }))
+
+        }
+      },
+      initial_timeout
+    )
+  }
+
+  attachVolume(volume: Volume, vm: VirtualMachine): void {
+    const idx: number = this.vms_content.indexOf(vm);
+
+    this.virtualmachineservice.attachVolumetoServer(volume.volume_openstackid, vm.openstackid).subscribe(
+      (result: IResponseTemplate) => {
+
+        if (result.value === 'attached') {
+          this.virtualmachineservice.getVmById(vm.openstackid).subscribe((upd_vm: VirtualMachine) => {
+            const new_vm: VirtualMachine = new VirtualMachine(upd_vm);
+            this.setForcUrl(new_vm);
+            this.checkCondaPackages(new_vm);
+            this.checkResenvByVM(new_vm);
+            this.vms_content[idx] = new_vm;
+
+          })
+        }
+      },
+      () => {
+      }
+    )
+  }
+
+  detachVolume(volume: Volume, vm: VirtualMachine): void {
+
+    const idx: number = this.vms_content.indexOf(vm);
+    this.virtualmachineservice.deleteVolumeAttachment(volume.volume_openstackid, vm.openstackid).subscribe(
+      (result: any) => {
+        if (result.value === 'deleted') {
+          this.virtualmachineservice.getVmById(vm.openstackid).subscribe((upd_vm: VirtualMachine) => {
+            const new_vm: VirtualMachine = new VirtualMachine(upd_vm);
+            this.setForcUrl(new_vm);
+            this.checkCondaPackages(new_vm);
+            this.checkResenvByVM(new_vm);
+            this.vms_content[idx] = new_vm;
+
+          })
+        }
+      },
+      () => {
+      })
+  }
+
+  set_cluster_allowed(): void {
+    this.virtualmachineservice.getClusterAllowed().subscribe((res: any) => {
+      this.cluster_allowed = res['allowed'];
+    })
   }
 
   changeFilterStatus(status: string): void {
@@ -593,6 +684,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.set_cluster_allowed();
     this.getClientForcUrls();
     this.getVms();
     this.is_vo_admin = is_vo;

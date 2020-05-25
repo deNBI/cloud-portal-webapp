@@ -9,10 +9,9 @@ import {VoService} from '../api-connector/vo.service';
 import {FacilityService} from '../api-connector/facility.service';
 import {Flavor} from '../virtualmachines/virtualmachinemodels/flavor';
 import {FlavorService} from '../api-connector/flavor.service';
-import {Client} from '../virtualmachines/clients/client.model';
+import {Client} from '../vo_manager/clients/client.model';
 import {ApplicationBaseClassComponent} from '../shared/shared_modules/baseClass/application-base-class.component';
 import {ComputecenterComponent} from '../projectmanagement/computecenter.component';
-import {IResponseTemplate} from '../api-connector/response-template';
 import {is_vo} from '../shared/globalvar';
 
 /**
@@ -109,8 +108,9 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
    */
   getFacilityProject(app: Application): void {
 
-    if (!app.ComputeCenter && app.Status !== this.application_states.SUBMITTED && app.Status !== this.application_states.TERMINATED) {
-      this.groupservice.getFacilityByGroup(app.PerunId.toString()).subscribe((res: object) => {
+    // tslint:disable-next-line:max-line-length
+    if (!app.ComputeCenter && app.project_application_status !== this.application_states.SUBMITTED && app.project_application_status !== this.application_states.TERMINATED) {
+      this.groupservice.getFacilityByGroup(app.project_application_perun_id.toString()).subscribe((res: object) => {
 
         const login: string = res['Login'];
         const suport: string = res['Support'];
@@ -129,21 +129,20 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
    * Get all Applications if user is admin.
    */
   getAllApplications(): void {
-    // todo check if user is VO Admin
-
     if (this.is_vo_admin) {
 
-      this.applicationsservice.getAllApplications().subscribe((res: any) => {
-        if (Object.keys(res).length === 0) {
+      this.applicationsservice.getAllApplications().subscribe((applications: Application[]) => {
+        if (applications.length === 0) {
           this.isLoaded_userApplication = true;
         }
-        const newApps: Application [] = this.setNewApplications(res);
-        this.all_applications.push.apply(this.all_applications, newApps);
+        for (const application of applications) {
+          this.all_applications.push(new Application(application));
 
+        }
         this.isLoaded_AllApplication = true;
         for (const app of this.all_applications) {
-          if (app.Status === this.application_states.WAIT_FOR_CONFIRMATION ||
-            app.Status === this.application_states.MODIFICATION_REQUESTED) {
+          if (app.project_application_status === this.application_states.WAIT_FOR_CONFIRMATION ||
+            app.project_application_status === this.application_states.MODIFICATION_REQUESTED) {
             this.getFacilityProject(app);
           }
         }
@@ -160,9 +159,9 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
     const index: number = this.all_applications.indexOf(application);
 
     this.applicationsservice
-      .getApplication(application.Id.toString())
-      .subscribe((aj: object) => {
-                   const newApp: Application = this.setNewApplication(aj);
+      .getApplication(application.project_application_id.toString())
+      .subscribe((aj: Application) => {
+                   const newApp: Application = new Application(aj);
                    this.all_applications[index] = newApp;
                    this.getFacilityProject(newApp);
                  },
@@ -174,9 +173,9 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
   public approveExtension(app: Application): void {
 
-    if (app.OpenStackProject) {
+    if (app.project_application_openstack_project) {
       if (!app.ComputeCenter) {
-        this.applicationsservice.approveRenewal(app.Id.toString()).subscribe((result: any) => {
+        this.applicationsservice.approveRenewal(app.project_application_id.toString()).subscribe((result: any) => {
           if (result['Error']) {
             this.extension_status = 2;
             this.updateNotificationModal('Failed', 'Failed to approve the application modification.', true, 'danger');
@@ -192,13 +191,13 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
         });
       } else {
         this.applicationstatusservice.setApplicationStatus(
-          app.Id.toString(),
+          app.project_application_id.toString(),
           this.WAIT_FOR_EXTENSION_STATUS.toString()).subscribe(() => {
           this.extension_status = 5;
           this.getApplication(app);
 
           for (const appl of this.user_applications) {
-            if (this.selectedApplication.Id.toString() === appl.Id.toString()) {
+            if (this.selectedApplication.project_application_id.toString() === appl.project_application_id.toString()) {
               break;
             }
 
@@ -206,7 +205,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
         })
       }
     } else {
-      this.applicationsservice.approveRenewal(app.Id).subscribe((result: { [key: string]: string }) => {
+      this.applicationsservice.approveRenewal(app.project_application_id).subscribe((result: { [key: string]: string }) => {
         if (result['Error']) {
           this.extension_status = 2
         } else {
@@ -239,7 +238,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
    * @param {Application} application the application
    */
   removeApplicationFromFacilityConfirmation(application: Application): void {
-    this.groupservice.removeGroupFromResource(application.PerunId.toString()).subscribe(() => {
+    this.groupservice.removeGroupFromResource(application.project_application_perun_id.toString()).subscribe(() => {
       this.getApplication(application)
     })
 
@@ -256,7 +255,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
   public createOpenStackProjectGroup(application: Application,
                                      compute_center: string): void {
     this.groupservice.createGroupOpenStack(
-      application.Id, compute_center)
+      application.project_application_id, compute_center)
       .subscribe((result: { [key: string]: string }) => {
                    if (result['Error']) {
                      this.updateNotificationModal('Failed', result['Error'], true, 'danger');
@@ -323,7 +322,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
   private reloadApplicationList(application_id: string): void {
     for (const app of this.all_applications) {
-      if (app.Id.toString() === application_id.toString()) {
+      if (app.project_application_id.toString() === application_id.toString()) {
         this.getApplication(app);
         break;
 
@@ -337,7 +336,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
    */
   public createSimpleVmProjectGroup(app: Application, compute_center_id?: string): void {
 
-    const application_id: string = <string>app.Id;
+    const application_id: string = <string>app.project_application_id;
     if (compute_center_id && compute_center_id !== 'undefined') {
       this.groupservice.createGroupByApplication(application_id, compute_center_id).subscribe(
         (res: any) => {
@@ -397,7 +396,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
             this.application_states.WAIT_FOR_CONFIRMATION.toString())
             .subscribe(() => {
               for (const app of this.all_applications) {
-                if (app.Id.toString() === application_id) {
+                if (app.project_application_id.toString() === application_id) {
                   this.getApplication(app);
 
                   break;

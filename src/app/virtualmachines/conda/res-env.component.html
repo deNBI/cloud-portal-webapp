@@ -47,7 +47,7 @@
 
       <ng-container *ngFor="let template of templates">
 
-        <div *ngIf="template.template_name !== selectedTemplate.template_name">
+        <div *ngIf="template.template_name !== selectedTemplate.template_name && templates_to_block.indexOf(template.template_name) === -1">
           <div class="card flavor-image-card" id="id_template_owl_{{template.template_name}}"
                style="cursor: default;">
             <div (click)="setSelectedTemplate(template)"
@@ -113,4 +113,22 @@
       </div>
     </div>
   </div>
+
+  <div *ngIf="!onlyNamespace" style="border-style: dashed; border-color: lightgray; padding: 10px">
+    <div class="row col">
+      <div class="form-check text-center col-2" style="margin: auto">
+        <input class="form-check-input" type="checkbox" id="create_only_backend_checkbox"
+               name="create_only_backend_checkbox_name" [(ngModel)]="create_only_backend">
+        <label class="form-check-label" for="create_only_backend_checkbox">
+          No install.
+        </label>
+      </div>
+      <div class="alert alert-info col-10" style="margin: auto">
+        Activate this option if you are sure that your chosen image/snapshot has your desired research environment installed.<br>
+        This option will only run the tasks necessary to setup access and will not install the research environment itself.
+        <strong *ngIf="selectedTemplate.template_name === 'guacamole'"><br>Guacamole will be accessable about 15 minutes after your virtual machine is ACTIVE, due to the nature of the research environment.</strong>
+      </div>
+    </div>
+  </div>
+
 </form>

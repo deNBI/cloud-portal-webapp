@@ -1,5 +1,5 @@
 <div class="animated fadeIn">
-  <div class="card" style=" overflow: scroll">
+  <div class="card" style=" ">
 
     <div class="card-header">
       <div class="row">
@@ -58,7 +58,7 @@
 
           <div class="col-10 input-group">
             <div class="input-group-prepend">
-              <div class="input-group-text" *ngIf="is_vo_admin">
+              <div class="input-group-text" *ngIf="is_vo_admin || cluster_allowed">
                 <input type="checkbox" [checked]="filter_cluster" style="margin:2px;"
                        (change)="filter_cluster=!filter_cluster">
                 <span class="badge badge-info">Cluster</span>
@@ -138,7 +138,7 @@
                      || vm?.status == VirtualMachineStates.staticSHUTOFF;
                       else statusElseBlock"
                      [routerLink]="['/virtualmachines/detail/' + vm?.openstackid]">{{vm?.name}}  </a>
-                  <ng-template #statusElseBlock><span class="h5 text-primary"
+                  <ng-template #statusElseBlock><span class="h5 text-primary" id="detail_{{vm.name}}"
                                                       style="margin-left: 10px">{{vm?.name}}  </span></ng-template>
                   <app-vmstatus [vm]="vm"></app-vmstatus>
 
@@ -235,7 +235,7 @@
 
                     <a style="margin-left: 10px"
 
-                       [routerLink]="['/virtualmachines/cluster/' + vm?.cluster.cluster_id]">{{vm?.cluster.cluster_id}}}  </a>
+                       [routerLink]="['/virtualmachines/cluster/' + vm?.cluster.cluster_id]">{{vm?.cluster.cluster_id}}  </a>
 
                     <ng-container *ngSwitchCase="'Running'">
                       <div [id]="'running_cluster_' + vm?.name"
@@ -259,7 +259,12 @@
             <div class="card-body p-x-1 py-h"
                  *ngIf="vm?.status == this.VirtualMachineStates.staticACTIVE || vm?.status == this.VirtualMachineStates.staticSHUTOFF">
               <div class="row">
-                <div class="col-6"
+                <div class="col-4">
+                  <a class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+                     [id]="'showDetailsButton_'+vm?.name"
+                     [routerLink]="['/virtualmachines/detail/' + vm?.openstackid]">Show VM details</a>
+                </div>
+                <div class="col-4"
                      *ngIf="vm.status != this.VirtualMachineStates.staticDELETED && vm.status != this.VirtualMachineStates.staticSHUTOFF">
                   <a class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary" *ngIf="vm.cardState!= 1"
                      [id]="'showHowToConnectButton_'+vm?.name"
@@ -271,7 +276,7 @@
                      (click)="selectedVm=vm; vm.cardState=0;" href="#" onClick="return false;">
                     ... Hide information</a>
                 </div>
-                <div class="col-6" *ngIf="vm.status != this.VirtualMachineStates.staticDELETED">
+                <div class="col-4" *ngIf="vm.status != this.VirtualMachineStates.staticDELETED">
                   <a class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary" *ngIf="vm.cardState!=2"
                      [id]="'showActionsButton_'+vm?.name"
                      (click)="selectedVm=vm; vm.cardState=2;" href="#" onClick="return false;">
@@ -322,19 +327,34 @@
                   <div class="col-md-2"
                        *ngIf="vm.status != this.VirtualMachineStates.staticSHUTOFF && vm.status != this.VirtualMachineStates.staticDELETED">
                     <div class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
-                       [id]="'checkStatusVMButton_' + vm?.name" (click)="checkStatus(vm);">
+                         [id]="'checkStatusVMButton_' + vm?.name" (click)="checkStatus(vm);">
                       Check status
                     </div>
                   </div>
                   <div class="col-md-2" *ngIf="vm.status ==this.VirtualMachineStates.staticACTIVE">
                     <div class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
-                       [id]="'stopVMButton_' + vm?.name" (click)="selectedVm=vm;submitStopVmModal.show();">
+                         [id]="'attachVolume' + vm?.name"
+                         (click)="selectedVm=vm;volume_to_attach == undefined;getDetachedVolumesByVSelectedMProject();attachModal.show();">
+                      Attach Volume
+                    </div>
+                  </div>
+                  <div class="col-md-2"
+                       *ngIf="vm.status ==this.VirtualMachineStates.staticACTIVE && vm?.volumes.length > 0">
+                    <div class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+                         [id]="'attachVolume' + vm?.name"
+                         (click)="selectedVm=vm;volume_to_detach == undefined;detachModal.show();">
+                      Detach Volume
+                    </div>
+                  </div>
+                  <div class="col-md-2" *ngIf="vm.status ==this.VirtualMachineStates.staticACTIVE">
+                    <div class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+                         [id]="'stopVMButton_' + vm?.name" (click)="selectedVm=vm;submitStopVmModal.show();">
                       Stop VM
                     </div>
                   </div>
                   <div class="col-md-2" *ngIf="vm.status ==this.VirtualMachineStates.staticSHUTOFF">
                     <div class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
-                       [id]="'restartVMButton_' + vm?.name" (click)="selectedVm=vm;submitRestartModal.show();">
+                         [id]="'restartVMButton_' + vm?.name" (click)="selectedVm=vm;submitRestartModal.show();">
                       Resume VM
                     </div>
                   </div>
@@ -354,7 +374,8 @@
                   </div>
                   <div class="col-md-2" *ngIf="vm.status != this.VirtualMachineStates.staticDELETED">
                     <div class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
-                       [id]="'deleteVMButton_' + vm?.name" (click)="selectedVm=vm;verifyModal.show();">
+                         style="margin-top: 5px;"
+                         [id]="'deleteVMButton_' + vm?.name" (click)="selectedVm=vm;verifyModal.show();">
                       Delete VM
                     </div>
                   </div>
@@ -934,3 +955,96 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div>
+
+<div bsModal #detachModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="Label"
+     aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Detach Volume</h4>
+        <button type="button" class="close" style="cursor: pointer"
+                (click)="detachModal.hide()"
+                aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <strong>Which volume should be detached from {{selectedVm?.name}}?</strong>
+
+        <select class="form-control col-md-6" name="selected_vm"
+                [(ngModel)]="volume_to_detach">
+          <option value="undefined" disabled selected hidden> Please Select</option>
+          <option *ngFor="let vol of selectedVm?.volumes" [ngValue]="vol"> {{vol.volume_name}} ({{vol.volume_storage}}
+            GB)
+          </option>
+
+        </select>
+
+
+      </div>
+      <div class="modal-footer">
+        <button class="btn  btn-success col-md-4"
+                [disabled]="selectedVm== undefined || volume_to_detach == undefined"
+                (click)="detachVolume(volume_to_detach,selectedVm);detachModal.hide();">
+          Detach Volume
+        </button>
+
+        <button class="btn  btn-danger col-md-4" type="reset"
+                (click)="selectedVm=undefined;volume_to_detach=undefined;detachModal.hide();">Cancel
+        </button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<div bsModal #attachModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="Label"
+     aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Attach Volume</h4>
+        <button type="button" class="close" style="cursor: pointer"
+                (click)="attachModal.hide()"
+                aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div
+
+          class="alert alert-warning" role="alert">
+
+          The volume must still be <a
+          href="{{WIKI_MOUNT_VOLUME}}" target="_blank"> mounted </a> after the attaching to use it.
+        </div>
+        <strong>Which volume should be attached?</strong>
+
+        <select class="form-control col-md-6" name="selected_vm"
+                [(ngModel)]="volume_to_attach">
+          <option value="undefined" disabled selected hidden> Please Select</option>
+          <option *ngFor="let vol of detached_project_volumes" [ngValue]="vol"> {{vol.volume_name}}
+            ({{vol.volume_storage}} GB)
+          </option>
+
+        </select>
+
+
+      </div>
+      <div class="modal-footer">
+        <button class="btn  btn-success col-md-4"
+                [disabled]="selectedVm== undefined || volume_to_attach == undefined"
+                (click)="attachVolume(volume_to_attach,selectedVm);attachModal.hide();">
+          Attach Volume
+        </button>
+
+        <button class="btn  btn-danger col-md-4" type="reset"
+                (click)="selectedVm=undefined;volume_to_attach == undefined;attachModal.hide();">Cancel
+        </button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

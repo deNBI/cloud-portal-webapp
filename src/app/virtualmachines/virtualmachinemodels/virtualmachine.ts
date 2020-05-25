@@ -1,5 +1,5 @@
 import {Flavor} from './flavor';
-import {Client} from '../clients/client.model';
+import {Client} from '../../vo_manager/clients/client.model';
 import {ImageMode} from '../../facility_manager/image-tag';
 import {Clusterinfo} from '../clusters/clusterinfo';
 import {Volume} from '../volumes/volume';
@@ -31,6 +31,7 @@ export class VirtualMachine {
   private _res_env_url: string;
   private _modes: ImageMode[];
   private _volumes: Volume[];
+  private _still_used_confirmation_requested: boolean;
 
   constructor(vm: VirtualMachine) {
     this._flavor = vm.flavor;
@@ -44,7 +45,7 @@ export class VirtualMachine {
     this._created_at = vm.created_at;
     this._stopped_at = vm.stopped_at;
     this._elixir_id = vm.elixir_id;
-    this._userlogin = vm.userlogin
+    this._userlogin = vm.userlogin;
     this._floating_ip = vm.floating_ip;
     this._ssh_command = vm.ssh_command;
     this._udp_command = vm.udp_command;
@@ -55,6 +56,7 @@ export class VirtualMachine {
     this._modes = vm.modes;
     this._cluster = vm.cluster;
     this._volumes = vm.volumes;
+    this._still_used_confirmation_requested = vm.still_used_confirmation_requested;
     this.calculateCreatedAt();
   }
 
@@ -62,6 +64,14 @@ export class VirtualMachine {
     if (this.created_at !== '') {
       this.created_at = new Date(parseInt(this.created_at, 10) * 1000).toLocaleDateString();
     }
+  }
+
+  get still_used_confirmation_requested(): boolean {
+    return this._still_used_confirmation_requested;
+  }
+
+  set still_used_confirmation_requested(value: boolean) {
+    this._still_used_confirmation_requested = value;
   }
 
   get cluster(): Clusterinfo {

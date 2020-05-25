@@ -21,12 +21,21 @@ export class Client {
   private _newVolumeLimit: number;
   private _activated: boolean;
   private _forc_url: string;
+  private _bibigrid_available: boolean;
 
   constructor(host: string, port: string, location: string, id: string) {
     this._host = host;
     this._port = port;
     this._location = location;
     this._id = id;
+  }
+
+  get bibigrid_available(): boolean {
+    return this._bibigrid_available;
+  }
+
+  set bibigrid_available(value: boolean) {
+    this._bibigrid_available = value;
   }
 
   get newVolumes(): number {

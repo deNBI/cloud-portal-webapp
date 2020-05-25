@@ -1,3 +1,18 @@
+##  (2020-05-21)
+
+
+#### Features
+
+* **vm-detail:**  alert that user management not working for resenv before 22.05 ([e3ecd37b](e3ecd37b))
+
+#### Bug Fixes
+
+* **Linting:**
+  * blacked code (#1595) ([a805b2d5](a805b2d5))
+  * blacked code ([e662cf31](e662cf31))
+  * blacked code ([0e0b322e](0e0b322e))
+  * blacked code ([0b72f297](0b72f297))
+* **projects:**  termination requestable when status is modification declined ([cc180425](cc180425))
 
 ##  (2020-03-29)
 

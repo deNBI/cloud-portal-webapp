@@ -31,6 +31,13 @@ export class VirtualmachineService {
   constructor(private http: HttpClient) {
   }
 
+  getClusterAllowed(): Observable<any> {
+    return this.http.get(`${ApiSettings.getApiBaseURL()}clusters/allowed/`, {
+      withCredentials: true,
+      headers: header
+    })
+  }
+
   startCluster(masterFlavor: string, masterImage: Image, workerFlavor: string, workerImage: Image, workerCount: string | number,
                project_id: string | number): Observable<any> {
     const params: HttpParams = new HttpParams()
@@ -243,6 +250,13 @@ export class VirtualmachineService {
       headers: header
     })
 
+  }
+
+  setVmNeeded(openstack_id: string): Observable<any> {
+    return this.http.post<any>(`${this.baseVmUrl}${openstack_id}/need/`, null, {
+      withCredentials: true,
+      headers: header
+    })
   }
 
   stopVM(openstack_id: string): Observable<VirtualMachine> {

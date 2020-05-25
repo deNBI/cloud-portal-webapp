@@ -5,6 +5,7 @@ import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Cookie} from 'ng2-cookies/ng2-cookies';
 import {RamFactor} from '../facility_manager/resources/ram-factor';
 import {CoreFactor} from '../facility_manager/resources/core-factor';
+import {Application} from '../applications/application.model/application.model';
 
 const header: HttpHeaders = new HttpHeaders({
                                               'X-CSRFToken': Cookie.get('csrftoken')
@@ -102,9 +103,9 @@ export class FacilityService {
    * @param {number} facility
    * @returns {Observable<any>}
    */
-  getFacilityApplicationsWaitingForConfirmation(facility: number | string): Observable<any> {
+  getFacilityApplicationsWaitingForConfirmation(facility: number | string): Observable<Application[]> {
 
-    return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/applications/`, {
+    return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/applications/`, {
       withCredentials: true
     });
   }
@@ -114,9 +115,9 @@ export class FacilityService {
    * @param {number} facility
    * @returns {Observable<any>}
    */
-  getFacilityApplicationsHistory(facility: number | string): Observable<any> {
+  getFacilityApplicationsHistory(facility: number | string): Observable<Application[]> {
 
-    return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/applications_history/`, {
+    return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/applications_history/`, {
       withCredentials: true
     });
   }
@@ -126,9 +127,9 @@ export class FacilityService {
    * @param facility self-speaking
    * @param id self-speaking
    */
-  getFacilityApplicationById(facility: number | string, id: string): Observable<any> {
+  getFacilityApplicationById(facility: number | string, id: string): Observable<Application> {
 
-    return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/applications/${id}/detail/`, {
+    return this.http.get<Application>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/applications/${id}/detail/`, {
       withCredentials: true
     });
   }
@@ -171,8 +172,8 @@ export class FacilityService {
    * @param {number} facility
    * @returns {Observable<any>}
    */
-  getFacilityModificationApplicationsWaitingForConfirmation(facility: number | string): Observable<any> {
-    return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/modification_applications/`, {
+  getFacilityModificationApplicationsWaitingForConfirmation(facility: number | string): Observable<Application[]> {
+    return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/modification_applications/`, {
       withCredentials: true
     });
   }

@@ -20,7 +20,7 @@
 
 </div>
 
-<div *ngIf="isLoaded" class="card" style=" overflow: scroll">
+<div *ngIf="isLoaded" class="card" style=" ">
 
   <div class="card-header">
     <strong>Volumes</strong>
@@ -117,77 +117,7 @@
                *ngIf="!volume?.volume_virtualmachine || volume?.volume_status != VolumeStates.staticIN_USE "
                id="cell_vm_free_id"></div>
           <div class="rTableCell " id="cell_name_id_{{volume?.volume_name}}">{{volume?.volume_name}}</div>
-
-          <div class="rTableCell " style="margin: auto;" [ngSwitch]="volume?.volume_status">
-
-            <ng-container *ngSwitchCase="VolumeStates.staticAVAILABLE">
-              <div id="available_{{volume?.volume_name}}"
-                   class="dot-colorless bg-success pulseAnim" style="width: 10px; height: 10px">
-              </div>
-              <strong> {{VolumeStates.staticAVAILABLE}}</strong>
-            </ng-container>
-            <ng-container *ngSwitchCase="VolumeStates.staticDETACHING">
-              <div [id]="'detaching_' + volume?.volume_name"
-                   class="dot-colorless bg-warning" style="width: 10px; height: 10px">
-                </div>
-                <strong> {{VolumeStates.staticDETACHING}}</strong>
-              </ng-container>
-              <ng-container *ngSwitchCase="VolumeStates.staticATTACHING">
-                <div [id]="'attaching_' + volume?.volume_name"
-                     class="dot-colorless bg-warning" style="width: 10px; height: 10px">
-                </div>
-                <strong> {{VolumeStates.staticATTACHING}}</strong>
-              </ng-container>
-              <ng-container *ngSwitchCase="VolumeStates.staticDELETING">
-                <div [id]="'deleting_' + volume?.volume_name"
-                     class="dot-colorless bg-warning" style="width: 10px; height: 10px">
-                </div>
-                <strong> {{VolumeStates.staticDELETING}}</strong>
-              </ng-container>
-
-              <ng-container *ngSwitchCase="VolumeStates.staticCREATING">
-                <div [id]="'creating_' + volume?.volume_name"
-                     class="dot-colorless bg-warning" style="width: 10px; height: 10px">
-                </div>
-                <strong> {{VolumeStates.staticCREATING}}</strong>
-              </ng-container>
-              <ng-container *ngSwitchCase="VolumeStates.staticRESERVED_PLANNED">
-                <div [id]="'creating_' + volume?.volume_name"
-                     class="dot-colorless bg-warning" style="width: 10px; height: 10px">
-                </div>
-                <strong> {{VolumeStates.staticRESERVED}}</strong>
-              </ng-container>
-              <ng-container *ngSwitchCase="VolumeStates.staticRESERVED">
-                <div [id]="'reserved_' + volume?.volume_name"
-                     class="dot-colorless bg-warning" style="width: 10px; height: 10px">
-                </div>
-                <strong> {{VolumeStates.staticRESERVED}}</strong>
-              </ng-container>
-              <ng-container *ngSwitchCase="VolumeStates.staticIN_USE">
-                <div [id]="'in_use_badge_' + volume?.volume_name" class="dot-colorless bg-info"
-                     style="width: 10px; height: 10px">
-                </div>
-                <strong> {{VolumeStates.staticIN_USE}}</strong>
-              </ng-container>
-              <ng-container *ngSwitchCase="VolumeStates.staticNOT_FOUND">
-                <span [id]="'not_found_badge_' + volume?.volume_name"
-                      class="dot-colorless bg-danger" style="width: 10px; height: 10px">
-                </span>
-                <strong> {{VolumeStates.staticNOT_FOUND}}</strong><br>
-                <p class="alert alert-danger" role="alert"> Please contact <a href="mailto:cloud@denbi.de">cloud@denbi.de</a>.</p>
-
-              </ng-container>
-            <ng-container *ngSwitchCase="VolumeStates.staticERROR">
-                <span [id]="'not_found_badge_' + volume?.volume_name"
-                      class="dot-colorless bg-danger" style="width: 10px; height: 10px">
-                </span>
-              <strong> {{VolumeStates.staticERROR}}</strong><br>
-              <p class="alert alert-danger" role="alert"> Please contact <a
-                href="mailto:cloud@denbi.de">cloud@denbi.de</a>.</p>
-
-            </ng-container>
-            <i *ngIf="VolumeStates.staticNOT_IN_PROCESS_STATE.indexOf(volume?.volume_status) === -1"
-               class="fa fa-spinner fa-spin"></i></div>
+          <app-volum-status   class="rTableCell" [volume]="volume"></app-volum-status>
 
 
           <div class="rTableCell ">{{volume?.volume_storage }} GB</div>

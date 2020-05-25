@@ -18,7 +18,7 @@ describe('Virtual Machine Tests', async function (): Promise<any> {
      await LoginPage.login(browser.params.login.email_user, browser.params.login.password_user, browser.params.login.auth_user, true);
   });
 
- /* it('should start a basic vm', async function (): Promise<any> {
+  it('should start a basic vm', async function (): Promise<any> {
     Util.logHeader('------------------------------Start virtual machine tests: started');
     Util.logHeader('Trying to start a vm with denbi default and Ubuntu 18.04.');
     await NewInstancePage.getNewInstanceTab();
@@ -32,7 +32,7 @@ describe('Virtual Machine Tests', async function (): Promise<any> {
     await NewInstancePage.isRedirectModalPresent();
 
     Util.logInfo('Saving basic vm name');
-    const vm_name: string = await NewInstancePage.getVMName();
+    const vm_name: string = await vmOverviewPage.getNewBasicVMName();
     Util.logInfo(vm_name);
     await vmOverviewPage.setBasicVMName(vm_name);
     await Util.waitForPage('/virtualmachines/vmOverview')
@@ -49,7 +49,9 @@ describe('Virtual Machine Tests', async function (): Promise<any> {
     await NewInstancePage.setVolume();
     Util.logInfo('Starting');
     await NewInstancePage.submitAndStartVM();
-    const vm_name: string = await NewInstancePage.getVMName();
+    Util.logInfo('Redirect Modal should be present');
+    await NewInstancePage.isRedirectModalPresent();
+    const vm_name: string = await vmOverviewPage.getNewVolumeVMName();
     Util.logInfo(vm_name);
 
     await vmOverviewPage.setVolumeVMName(vm_name);
@@ -174,7 +176,7 @@ describe('Virtual Machine Tests', async function (): Promise<any> {
     Util.logInfo(vm_name);
     await vmOverviewPage.setBasicVMName(vm_name);
     await Util.waitForPage('/virtualmachines/vmOverview')
-  });*/
+  });
 
   it('should show vm detail page with base functions for virtual machines working',
      async function (): Promise<any> {

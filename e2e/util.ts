@@ -121,8 +121,20 @@ export class Util {
     }
     const elem: ElementFinder = element(by.id(id));
     await elem.clear();
+    await elem.sendKeys(text);
+    const str: string = await elem.getAttribute('value');
 
-    return await elem.sendKeys(text);
+    if (str !== text) {
+      console.warn('Text is not send by xpath in field so i will try to send string char by char!');
+      await elem.clear();
+      for (let idx: number = 0; idx < text.length; idx++) {
+        // tslint:disable-next-line:prefer-template
+       await elem.sendKeys(text.charAt(idx) + '');
+      }
+    }
+
+    return
+
   }
 
   static async clickElementByName(name: string): Promise<void> {
@@ -186,6 +198,14 @@ export class Util {
     const until_: ProtractorExpectedConditions = protractor.ExpectedConditions;
     console.log(`Waiting until page contains element ${id}`);
     const elem: ElementFinder = element(by.id(id));
+
+    return await browser.driver.wait(until_.presenceOf(elem), timeout, 'Element taking too long to appear in the DOM');
+  }
+
+  static async waitForPresenceOfLinkByPartialId(prefix: string, id: string, timeout: number = this.timeout): Promise<boolean> {
+    const until_: ProtractorExpectedConditions = protractor.ExpectedConditions;
+    console.log(`Waiting until page contains element ${id}`);
+    const elem: ElementFinder = element(by.css(`a[id^=${prefix}${id}]`));
 
     return await browser.driver.wait(until_.presenceOf(elem), timeout, 'Element taking too long to appear in the DOM');
   }
@@ -273,5 +293,12 @@ export class Util {
     const elem: ElementFinder = element(by.name(name));
 
     return await browser.driver.wait(until_.elementToBeClickable(elem), timeout, 'Element taking too long to be clickable');
+  }
+
+  static async getTextFromLinkElement(prefix: string, name: string): Promise<string> {
+    await this.waitForPresenceOfLinkByPartialId(prefix, name);
+    const elem: ElementFinder = element(by.css(`a[id^=${prefix}${name}]`));
+
+    return elem.getText();
   }
 }

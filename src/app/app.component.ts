@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {Http, RequestOptions, XHRBackend} from '@angular/http';
-import {ModalDirective} from 'ngx-bootstrap';
+import {ModalDirective} from 'ngx-bootstrap/modal';
 import {Angulartics2Piwik} from 'angulartics2/piwik';
 import {ApplicationRef} from '@angular/core';
 import {IResponseTemplate} from './api-connector/response-template';
@@ -15,9 +15,10 @@ import {VoService} from './api-connector/vo.service';
              selector: 'body',
              templateUrl: 'app.component.html',
              providers: [{
-               provide: Http,
-               deps: [XHRBackend, RequestOptions, AppComponent]
-             }, VoService]
+    provide: Http,
+    deps: [XHRBackend, RequestOptions, AppComponent],
+    useValue: undefined
+}, VoService]
            })
 export class AppComponent implements AfterViewInit, OnInit {
 

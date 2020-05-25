@@ -20,10 +20,13 @@ import {PlaybookService} from '../../api-connector/playbook.service';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 
 import {CondaPackage} from '../condaPackage.model';
-import {TemplateNames} from '../conda/template-names';
 import {BiocondaService} from '../../api-connector/bioconda.service';
 import {ResenvTemplate} from '../conda/resenvTemplate.model';
-import {WIKI_GUACAMOLE_LINK, WIKI_RSTUDIO_LINK} from '../../../links/links';
+import {is_vo} from '../../shared/globalvar';
+import {WIKI_GUACAMOLE_LINK, WIKI_MOUNT_VOLUME, WIKI_RSTUDIO_LINK} from '../../../links/links';
+import {ClipboardService} from 'ngx-clipboard';
+import {Volume} from '../volumes/volume';
+import {VolumeStates} from '../volumes/volume_states';
 
 /**
  * VM Detail page component
@@ -44,6 +47,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
   image: Image;
   startDate: number;
   stopDate: number;
+  VolumeStates: VolumeStates = new VolumeStates()
   virtualMachineStates: VirtualMachineStates = new VirtualMachineStates();
   virtualMachine: VirtualMachine;
   resenvTemplate: ResenvTemplate;
@@ -51,10 +55,19 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
   errorMessage: boolean = false;
   private _condaPackages: CondaPackage[] = [];
   res_env_url: string = '';
+  filteredMembers: any = null;
+  backend_users: any = [];
+
+  is_vo_admin: boolean = is_vo;
   WIKI_RSTUDIO_LINK: string = WIKI_RSTUDIO_LINK;
   WIKI_GUACAMOLE_LINK: string = WIKI_GUACAMOLE_LINK;
+  WIKI_MOUNT_VOLUME: string = WIKI_MOUNT_VOLUME;
 
   DEBOUNCE_TIME: number = 300;
+
+  volume_to_attach: Volume;
+  volume_to_detach: Volume;
+  detached_project_volumes: Volume[] = [];
 
   /**
    * The changed status.
@@ -102,7 +115,8 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
               private imageService: ImageService,
               private playbookService: PlaybookService,
               private groupService: GroupService,
-              private biocondaService: BiocondaService) {
+              private biocondaService: BiocondaService,
+              private clipboardService: ClipboardService) {
     super();
   }
 
@@ -165,6 +179,15 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
       )
   }
 
+  setVmNeeded(): void {
+    this.virtualmachineService.setVmNeeded(this.virtualMachine.openstackid).subscribe((res: any) => {
+      if (res['still_needed']) {
+        this.virtualMachine.still_used_confirmation_requested = false;
+
+      }
+    })
+  }
+
   /**
    * Delete VM.
    * @param vm which will be deleted
@@ -183,6 +206,45 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
         this.status_changed = 2;
       }
     })
+  }
+
+  getDetachedVolumesByVSelectedMProject(): void {
+    this.virtualmachineService.getDetachedVolumesByProject(this.virtualMachine.projectid).subscribe(
+      (detached_volumes: Volume[]) => {
+        this.detached_project_volumes = detached_volumes;
+      }
+    )
+  }
+
+  attachVolume(volume: Volume): void {
+    volume.volume_status = VolumeStates.ATTACHING;
+
+    this.virtualmachineService.attachVolumetoServer(volume.volume_openstackid, this.virtualMachine.openstackid).subscribe(
+      (result: IResponseTemplate) => {
+
+        if (result.value === 'attached') {
+          this.getVmById();
+
+        }
+      },
+      () => {
+      }
+    )
+  }
+
+  detachVolume(volume: Volume): void {
+    volume.volume_status = VolumeStates.DETACHING;
+
+    this.virtualmachineService.deleteVolumeAttachment(volume.volume_openstackid, this.virtualMachine.openstackid).subscribe(
+      (result: any) => {
+        if (result.value === 'deleted') {
+          this.getDetachedVolumesByVSelectedMProject();
+          this.getVmById();
+
+        }
+      },
+      () => {
+      })
   }
 
   /**
@@ -380,6 +442,16 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
     })
   }
 
+  /**
+   * Copies the content of the field it get's clicked on (e.g. ssh connection information).
+   * @param text the content of the field
+   */
+  copyToClipboard(text: string): void {
+    if (this.clipboardService.isSupported) {
+      this.clipboardService.copy(text);
+    }
+  }
+
   getVmById(): void {
     this.virtualmachineService.getVmById(this.vm_id).subscribe(
       (vm: VirtualMachine) => {
@@ -435,6 +507,8 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
           this.stopDate = parseInt(this.virtualMachine.stopped_at, 10) * 1000;
           this.stopDate = parseInt(this.virtualMachine.stopped_at, 10) * 1000;
           this.getImageDetails(this.virtualMachine.projectid, this.virtualMachine.image);
+          this.getDetachedVolumesByVSelectedMProject();
+
           this.isLoaded = true;
         }
       }
@@ -455,29 +529,13 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
     return newImage;
   }
 
-  copySSHCommand(): void {
-    this.copyToClipboard(this.virtualMachine.ssh_command.substring(65, this.virtualMachine.ssh_command.length));
-  }
-  copyUDPCommand(): void {
-    this.copyToClipboard(this.virtualMachine.udp_command);
-  }
-
-  copyToClipboard(text: string): void {
-    document.addEventListener('copy', (clipEvent: ClipboardEvent) => {
-      clipEvent.clipboardData.setData('text/plain', (text));
-      clipEvent.preventDefault();
-      document.removeEventListener('copy', null);
-    });
-    document.execCommand('copy');
-  }
-
   checkAndGetForcDetails(vm: VirtualMachine): void {
-    let checkForForc: boolean = true;
-    for (const mode of vm.modes) {
-      if (TemplateNames.ALL_TEMPLATE_NAMES.indexOf(mode.name) !== -1) {
-        checkForForc = false;
-      }
-    }
+    const checkForForc: boolean = true;
+    // for (const mode of vm.modes) {
+    //   if (TemplateNames.ALL_TEMPLATE_NAMES.indexOf(mode.name) !== -1) {
+    //     checkForForc = false;
+    //   }
+    // }
     if (checkForForc) {
       this.groupService.getClientForcUrl(vm.client.id, 'true').subscribe((response: JSON) => {
         if (response['forc_url'] !== null) {
@@ -491,7 +549,32 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
             });
         }
       });
+      this.getUsersForBackend();
     }
 
+  }
+
+  filterMembers(searchString: string): void {
+    this.userService.getFilteredMembersOfdeNBIVo(searchString).subscribe((result: object) => {
+      this.filteredMembers = result;
+    })
+  }
+
+  addUserToBackend(userId: any): void {
+    this.biocondaService.addUserToBackend(this.vm_id, userId).subscribe((result: any) => {
+      this.getUsersForBackend();
+    });
+  }
+
+  getUsersForBackend(): void {
+    this.biocondaService.getUsersForBackend(this.vm_id).subscribe((result: any) => {
+      this.backend_users = result;
+    });
+  }
+
+  deleteUserFromBackend(userId: any): void {
+    this.biocondaService.deleteUserFromBackend(this.vm_id, userId.toString()).subscribe((result: any) => {
+      this.getUsersForBackend();
+    });
   }
 }

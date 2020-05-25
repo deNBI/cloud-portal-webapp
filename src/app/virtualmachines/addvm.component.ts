@@ -1,22 +1,12 @@
 import {Component, DoCheck, OnInit, ViewChild} from '@angular/core';
 import {Image} from './virtualmachinemodels/image';
 import {Flavor} from './virtualmachinemodels/flavor';
-import {ImageService} from '../api-connector/image.service';
-import {FlavorService} from '../api-connector/flavor.service';
 import {forkJoin} from 'rxjs';
-import {VirtualmachineService} from '../api-connector/virtualmachine.service';
-import {ApplicationsService} from '../api-connector/applications.service'
 import {Userinfo} from '../userinfo/userinfo.model';
-import {ApiSettings} from '../api-connector/api-settings.service';
-import {ClientService} from '../api-connector/client.service';
-import {Application} from '../applications/application.model/application.model';
-import {KeyService} from '../api-connector/key.service';
-import {GroupService} from '../api-connector/group.service';
 import {environment} from '../../environments/environment';
 import {IResponseTemplate} from '../api-connector/response-template';
-import {Client} from './clients/client.model';
+import {Client} from '../vo_manager/clients/client.model';
 import {VirtualMachine} from './virtualmachinemodels/virtualmachine';
-import {UserService} from '../api-connector/user.service';
 import {BiocondaComponent} from './conda/bioconda.component';
 import {ResEnvComponent} from './conda/res-env.component';
 import {is_vo} from '../shared/globalvar';
@@ -25,6 +15,14 @@ import {RandomNameGenerator} from '../shared/randomNameGenerator';
 import {Router} from '@angular/router';
 import {Volume} from './volumes/volume';
 import { WIKI_MOUNT_VOLUME } from 'links/links';
+import {UserService} from '../api-connector/user.service';
+import {ImageService} from '../api-connector/image.service';
+import {GroupService} from '../api-connector/group.service';
+import {KeyService} from '../api-connector/key.service';
+import {FlavorService} from '../api-connector/flavor.service';
+import {VirtualmachineService} from '../api-connector/virtualmachine.service';
+import {ApiSettings} from '../api-connector/api-settings.service';
+import {BlockedImageTagResenv} from '../facility_manager/image-tag';
 
 /**
  * Start virtualmachine component.
@@ -32,14 +30,12 @@ import { WIKI_MOUNT_VOLUME } from 'links/links';
 @Component({
              selector: 'app-new-vm',
              templateUrl: 'addvm.component.html',
-             providers: [GroupService, ImageService, KeyService, FlavorService, VirtualmachineService, ApplicationsService,
-               Application, ApiSettings, KeyService, ClientService, UserService]
+             providers: [GroupService, ImageService, KeyService, FlavorService, VirtualmachineService,
+                ApiSettings, UserService]
            })
 export class VirtualMachineComponent implements OnInit, DoCheck {
 
-  TWENTY_FIVE_PERCENT: number = 25;
   FIFTY_PERCENT: number = 50;
-  THIRTY_THIRD_PERCENT: number = 33;
   SIXTY_SIX_PERCENT: number = 66;
   SEVENTY_FIVE: number = 75;
   ACTIVE: string = 'ACTIVE';
@@ -49,7 +45,6 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
   PREPARE_PLAYBOOK_BUILD: string = 'PREPARE_PLAYBOOK_BUILD';
   BUILD_PLAYBOOK: string = 'BUILD_PLAYBOOK';
   CREATING_STATUS: string = 'Creating...';
-  BUILD_STATUS: string = 'Building..';
   CHECKING_PORT_STATUS: string = 'Checking Connection..';
   PREPARE_PLAYBOOK_STATUS: string = 'Prepare Playbook Build...';
   BUIDLING_PLAYBOOK_STATUS: string = 'Building Playbook...';
@@ -71,6 +66,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
   timeout: number = 0;
   has_forc: boolean = false;
   WIKI_MOUNT_VOLUME: string = WIKI_MOUNT_VOLUME;
+  blockedImageTagsResenv: BlockedImageTagResenv[];
 
   forc_url: string = '';
   client_id: string;
@@ -177,6 +173,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
   newRam: number = 0;
   newVms: number = 0;
   newGpus: number = 0;
+  cluster_allowed: boolean = false;
 
   /**
    * The selected project ['name',id].
@@ -234,8 +231,8 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
    */
   private checkStatusTimeout: number = 5000;
 
-  @ViewChild('bioconda', { static: false }) biocondaComponent: BiocondaComponent;
-  @ViewChild('resEnv', { static: false }) resEnvComponent: ResEnvComponent;
+  @ViewChild('bioconda') biocondaComponent: BiocondaComponent;
+  @ViewChild('resEnv') resEnvComponent: ResEnvComponent;
 
   constructor(private groupService: GroupService, private imageService: ImageService,
               private flavorService: FlavorService, private virtualmachineservice: VirtualmachineService,
@@ -533,6 +530,11 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
       this.newVm = null;
 
     }
+    setTimeout(
+      () => {
+        this.router.navigate(['/virtualmachines/vmOverview']).then().catch()
+      },
+      2000)
 
   }
 
@@ -552,7 +554,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 
     if (this.resEnvComponent && this.resEnvComponent.selectedTemplate.template_name !== 'undefined'
       && this.resEnvComponent.user_key_url.errors === null) {
-      playbook_info[this.resEnvComponent.selectedTemplate.template_name] = {};
+      playbook_info[this.resEnvComponent.selectedTemplate.template_name] = {create_only_backend: `${this.resEnvComponent.getCreateOnlyBackend()}`};
       playbook_info['user_key_url'] = {user_key_url: this.resEnvComponent.getUserKeyUrl()};
     }
 
@@ -589,8 +591,11 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 
       }
       this.selectedProjectClient = client;
-
-    })
+      this.imageService.getBlockedImageTagsResenv(Number(this.selectedProjectClient.id), 'true')
+        .subscribe((tags: BlockedImageTagResenv[]) => {
+        this.blockedImageTagsResenv = tags;
+      });
+    });
   }
 
   getForc(id: string): void {

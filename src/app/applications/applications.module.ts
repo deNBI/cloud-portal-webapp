@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 
 import {TabsModule} from 'ngx-bootstrap/tabs';
-import {AccordionModule} from 'ngx-bootstrap';
+import {AccordionModule} from 'ngx-bootstrap/accordion';
 import {ApplicationsComponent} from './applications.component';
 import {ApplicationsRoutingModule} from './applications-routing.module';
 import {CommonModule} from '@angular/common';

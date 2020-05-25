@@ -15,36 +15,40 @@ export class ApplicationDissemination {
   private _information_institution: boolean = false;
   private _information_workgroup: boolean = false;
   private _information_project_type: boolean = false;
+  private _information_edam_terms: boolean = true;
 
   private _allowed_platforms: string[] = [];
   private _allowed_informations: string[] = [];
 
-  constructor(
-    platform_denbi: boolean, platform_twitter: boolean,
-    information_title: string, information_resources: boolean, information_pi_name: boolean,
-    information_institution: boolean, information_workgroup: boolean,
-    information_project_type: boolean, information_lifetime: boolean,
-    information_project_affiliation: boolean, information_description: string) {
+  constructor(diss: ApplicationDissemination | null) {
+    if (diss) {
 
-    this._platform_denbi = platform_denbi;
-    this._platform_twitter = platform_twitter;
-    this._information_title = information_title;
-    this._information_resources = information_resources;
-    this._information_pi_name = information_pi_name;
-    this._information_institution = information_institution;
-    this._information_description = information_description;
-    if (this._information_description) {
-      this._information_description_allowed = true;
+      this._platform_denbi = diss.platform_denbi;
+      this._platform_twitter = diss.platform_twitter;
+      this._information_title = diss.information_title;
+      this._information_edam_terms = diss._information_edam_terms
+      this._information_resources = diss.information_resources;
+      this._information_pi_name = diss.information_pi_name;
+      this._information_institution = diss.information_institution;
+      this._information_description = diss.information_description;
+      if (this._information_description) {
+        this._information_description_allowed = true;
+      }
+      this._information_workgroup = diss.information_workgroup;
+      this._information_project_type = diss.information_project_type;
+      this._information_lifetime = diss.information_lifetime;
+      this._information_project_affiliation = diss.information_project_affiliation;
+
     }
-    this._information_workgroup = information_workgroup;
-    this._information_project_type = information_project_type;
-    this._information_lifetime = information_lifetime;
-    this._information_project_affiliation = information_project_affiliation;
     this.setAllowedPlatforms();
     this.setAllowedInformations();
   }
 
-  setAllFalse(): void {
+  someAllowed(): boolean {
+    return this._allowed_informations.length > 0 && this._allowed_platforms.length > 0
+  }
+
+  setAllInformationFalse(): void {
     this._information_description = '';
     this._information_description_allowed = false;
     this._information_resources = false;
@@ -54,9 +58,10 @@ export class ApplicationDissemination {
     this._information_institution = false;
     this._information_workgroup = false;
     this._information_project_type = false;
+    this.setAllowedInformations();
   }
 
-  setAllTrue(): void {
+  setAllInformationTrue(): void {
     this._information_description_allowed = true;
     this._information_resources = true;
     this._information_project_affiliation = true;
@@ -65,6 +70,7 @@ export class ApplicationDissemination {
     this._information_institution = true;
     this._information_workgroup = true;
     this._information_project_type = true;
+    this.setAllowedInformations();
 
   }
 
@@ -77,6 +83,7 @@ export class ApplicationDissemination {
     this._information_institution = !this._information_institution;
     this._information_workgroup = !this._information_workgroup;
     this._information_project_type = !this._information_project_type;
+    this.setAllowedInformations();
 
   }
 
@@ -130,6 +137,9 @@ export class ApplicationDissemination {
     if (this._information_title) {
       this._allowed_informations.push('Title')
     }
+    if (this._information_edam_terms) {
+      this._allowed_informations.push('Research Topics')
+    }
     if (this._information_resources) {
       this._allowed_informations.push('Resources')
     }
@@ -150,6 +160,14 @@ export class ApplicationDissemination {
 
   set platform_denbi(value: boolean) {
     this._platform_denbi = value;
+  }
+
+  get information_edam_terms(): boolean {
+    return this._information_edam_terms;
+  }
+
+  set information_edam_terms(value: boolean) {
+    this._information_edam_terms = value;
   }
 
   get information_description_allowed(): boolean {

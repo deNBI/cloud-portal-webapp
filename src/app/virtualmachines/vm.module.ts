@@ -5,17 +5,17 @@ import {VmRoutingModule} from './vm_routing.module';
 import {CommonModule} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ModalModule} from 'ngx-bootstrap/modal';
-import {ImageDetailComponent} from '../virtualmachines/imagedetail.component';
-import {VirtualMachineComponent} from '../virtualmachines/addvm.component';
-import {FlavorDetailComponent} from '../virtualmachines/flavordetail.component';
-import {ClientOverviewComponent} from './clients/clientOverview.component';
-import {VmOverviewComponent} from '../virtualmachines/vmOverview.component';
+import {ImageDetailComponent} from './imagedetail.component';
+import {VirtualMachineComponent} from './addvm.component';
+import {FlavorDetailComponent} from './flavordetail.component';
+import {VmOverviewComponent} from './vmOverview.component';
 import {VolumeOverviewComponent} from './volumes/volumeOverview.component';
 import {SnapshotOverviewComponent} from './snapshots/snapshotOverview.component';
 import {PaginationModule} from 'ngx-bootstrap/pagination'
 import {PublicKeyModule} from '../shared/shared_modules/public-key/public-key.module';
 import {ClickOutsideModule} from 'ng4-click-outside';
-import {AccordionModule, BsDropdownModule} from 'ngx-bootstrap';
+import {AccordionModule} from 'ngx-bootstrap/accordion';
+import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import {BiocondaComponent} from './conda/bioconda.component';
 import {HowToConnectComponent} from './shared-modal/how-to-connect.component';
 import {SharedDirectivesModule} from '../shared/shared_modules/shared_directives.module';
@@ -31,6 +31,7 @@ import {VmstatusComponent} from './vmdetail/vmstatus/vmstatus.component';
 import {ClusterOverviewComponent} from './clusters/clusteroverview/clusterOverview.component';
 import {ClusterinfoComponent} from './clusters/clusterinfo/clusterinfo.component';
 import {ClusterstatusComponent} from './clusters/clusterstatus/clusterstatus.component';
+import {VolumStatusComponent} from './volumes/volum-status/volum-status.component';
 
 /**
  * VM module.
@@ -56,7 +57,6 @@ import {ClusterstatusComponent} from './clusters/clusterstatus/clusterstatus.com
               ImageDetailComponent,
               VirtualMachineComponent,
               FlavorDetailComponent,
-              ClientOverviewComponent,
               VmOverviewComponent,
               VolumeOverviewComponent,
               SnapshotOverviewComponent,
@@ -71,7 +71,8 @@ import {ClusterstatusComponent} from './clusters/clusterstatus/clusterstatus.com
               ClusterdetailComponent,
               ClusterOverviewComponent,
               VirtualmachineinfoComponent,
-              VmstatusComponent
+              VmstatusComponent,
+              VolumStatusComponent
             ]
           })
 export class VmModule {

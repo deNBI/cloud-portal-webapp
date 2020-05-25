@@ -4,7 +4,7 @@ import {Observable} from 'rxjs';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Cookie} from 'ng2-cookies/ng2-cookies';
 import {IResponseTemplate} from './response-template';
-import {Client} from '../virtualmachines/clients/client.model';
+import {Client} from '../vo_manager/clients/client.model';
 import {ProjectEnumeration} from '../projectmanagement/project-enumeration';
 import {Doi} from '../applications/doi/doi';
 
@@ -48,6 +48,15 @@ export class GroupService {
   getClient(groupid: string): Observable<Client> {
 
     return this.http.get<Client>(`${ApiSettings.getApiBaseURL()}projects/${groupid}/client/`, {
+      withCredentials: true,
+      headers: header
+    })
+
+  }
+
+  getClientBibigrid(groupid: string): Observable<Client> {
+
+    return this.http.get<Client>(`${ApiSettings.getApiBaseURL()}projects/${groupid}/cluster/client/`, {
       withCredentials: true,
       headers: header
     })
