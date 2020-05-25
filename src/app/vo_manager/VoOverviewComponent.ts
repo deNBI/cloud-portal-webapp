@@ -120,7 +120,7 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
   }
 
   sendNewsletterToVo(subject: string, message: string, selectedProjectType: string, reply?: string): void {
-    this.voserice.sendNewsletterToVo(encodeURIComponent(subject), encodeURIComponent(message),selectedProjectType, encodeURIComponent(reply))
+    this.voserice.sendNewsletterToVo(encodeURIComponent(subject), encodeURIComponent(message), selectedProjectType, encodeURIComponent(reply))
       .subscribe((result: IResponseTemplate) => {
         if (<boolean><Boolean>result.value === true) {
           this.emailStatus = 1;
