@@ -173,6 +173,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
   newRam: number = 0;
   newVms: number = 0;
   newGpus: number = 0;
+  cluster_allowed: boolean = false;
 
   /**
    * The selected project ['name',id].
@@ -553,7 +554,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 
     if (this.resEnvComponent && this.resEnvComponent.selectedTemplate.template_name !== 'undefined'
       && this.resEnvComponent.user_key_url.errors === null) {
-      playbook_info[this.resEnvComponent.selectedTemplate.template_name] = {};
+      playbook_info[this.resEnvComponent.selectedTemplate.template_name] = {create_only_backend: `${this.resEnvComponent.getCreateOnlyBackend()}`};
       playbook_info['user_key_url'] = {user_key_url: this.resEnvComponent.getUserKeyUrl()};
     }
 
