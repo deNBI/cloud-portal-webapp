@@ -1,4 +1,5 @@
 import {Flavor} from '../virtualmachines/virtualmachinemodels/flavor';
+import {User} from './application.model/application.model';
 
 /**
  * Application Extension class.
@@ -17,6 +18,7 @@ export class ApplicationExtension {
   private _project_application_renewal_total_cores: number;
   private _project_application_renewal_total_ram: number;
   private _project_application_renewal_credits: number;
+  private _project_application_renewal_user: User;
   private _is_only_extra_credits_application: boolean;
   private _project_application_renewal_cloud_service_user_number: number;
   private _project_application_renewal_cloud_service_develop: boolean;
@@ -38,6 +40,7 @@ export class ApplicationExtension {
       this._is_only_extra_credits_application = extension.is_only_extra_credits_application;
       this._project_application_renewal_cloud_service_user_number = extension.project_application_renewal_cloud_service_user_number;
       this._project_application_renewal_cloud_service_develop = extension.project_application_renewal_cloud_service_develop;
+      this._project_application_renewal_user = extension.project_application_renewal_user;
       this._flavors = extension.flavors;
     }
   }
@@ -84,6 +87,14 @@ export class ApplicationExtension {
       }
     }
     this.calculateRamCores()
+  }
+
+  get project_application_renewal_user(): User {
+    return this._project_application_renewal_user;
+  }
+
+  set project_application_renewal_user(value: User) {
+    this._project_application_renewal_user = value;
   }
 
   public addFlavorToRequested(flavor: Flavor): void {
