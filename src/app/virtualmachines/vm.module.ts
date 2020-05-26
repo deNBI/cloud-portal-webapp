@@ -31,6 +31,7 @@ import {VmstatusComponent} from './vmdetail/vmstatus/vmstatus.component';
 import {ClusterOverviewComponent} from './clusters/clusteroverview/clusterOverview.component';
 import {ClusterinfoComponent} from './clusters/clusterinfo/clusterinfo.component';
 import {ClusterstatusComponent} from './clusters/clusterstatus/clusterstatus.component';
+import {VolumStatusComponent} from './volumes/volum-status/volum-status.component';
 
 /**
  * VM module.
@@ -70,7 +71,8 @@ import {ClusterstatusComponent} from './clusters/clusterstatus/clusterstatus.com
               ClusterdetailComponent,
               ClusterOverviewComponent,
               VirtualmachineinfoComponent,
-              VmstatusComponent
+              VmstatusComponent,
+              VolumStatusComponent
             ]
           })
 export class VmModule {

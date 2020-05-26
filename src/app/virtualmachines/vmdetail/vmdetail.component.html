@@ -87,20 +87,6 @@
                 <strong>Create Snapshot</strong>
               </button>
             </div>
-            <div class="col--2"
-                 *ngIf="virtualMachine.status ==virtualMachineStates.staticACTIVE && virtualMachine?.volumes.length > 0">
-              <button type="button" class="btn btn-secondary" style="width:100%;" id="detachVolume"
-                      (click)="volume_to_detach == undefined;detachModal.show();">
-                Detach Volume
-              </button>
-            </div>
-            <div class="col-md-2" *ngIf="virtualMachine.status ==virtualMachineStates.staticACTIVE">
-              <button type="button" class="btn btn-secondary" style="width:100%;" id="attachVolume"
-
-                      (click)="volume_to_attach == undefined;getDetachedVolumesByVSelectedMProject();attachModal.show();">
-                Attach Volume
-              </button>
-            </div>
             <div class="col-2" *ngIf="virtualMachine?.status === virtualMachineStates.staticACTIVE ||
             virtualMachine?.status === virtualMachineStates.staticSHUTOFF">
               <button type="button" class="btn btn-danger" style="width:100%;" id="deleteVMButton"
@@ -190,13 +176,13 @@
                 <img src="{{image?.logo_url}}" style="height: 42px;">
               </div>
             </div>
-            <div class="col-6">
+            <div class="col-4">
               <div class="callout">
                 <small class="text-muted">Name</small><br>
                 <strong class="text-muted">{{image?.name}}</strong>
               </div>
             </div>
-            <div class="col-2" *ngIf="image?.is_snapshot">
+            <div class="col-4" *ngIf="image?.is_snapshot">
               <div class="callout callout-warning">
                 <small class="text-muted"></small>Image-Type<br>
                 <strong class="text-muted">Snapshot</strong>
@@ -244,10 +230,17 @@
         <div class="card-header"><span class="font-weight-bold text-muted">Attached Volumes</span></div>
         <div class="card-body">
           <div class="row" *ngFor="let vol of virtualMachine?.volumes">
-            <div class="col-2">
+            <div class="col-1">
               <div class="callout">
                 <small class="text-muted">Name</small><br>
                 <strong class="text-muted">{{vol?.volume_name}}</strong>
+              </div>
+            </div>
+            <div class="col-2">
+              <div class="callout">
+                <small class="text-muted">Status</small><br>
+
+                <app-volum-status [volume]="vol"></app-volum-status>
               </div>
             </div>
             <div class="col-3">
@@ -256,7 +249,7 @@
                 <strong class="text-muted">{{vol?.volume_openstackid}}</strong>
               </div>
             </div>
-             <div class="col-3">
+            <div class="col-2" *ngIf="vol?.volume_path">
               <div class="callout">
                 <small class="text-muted">Initially mounted to</small><br>
                 <strong class="text-muted">/mnt/{{vol?.volume_path}}</strong>
@@ -268,10 +261,65 @@
                 <strong class="text-muted">{{vol?.volume_device}}</strong>
               </div>
             </div>
+            <div class="col-1">
+              <div class="callout">
+                <small class="text-muted">Storage</small><br>
+                <strong class="text-muted">{{vol?.volume_storage}} GB</strong>
+              </div>
+            </div>
+            <div class="col-2" *ngIf="vol.volume_status == VolumeStates.staticIN_USE">
+              <div class="callout">
+
+                <button type="button" class="btn btn-secondary" style="width:100%;"
+                        id="detachVolume_{{vol.volume_openstackid}}"
+                        (click)="detachVolume(vol)">
+                  Detach Volume
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style=" " *ngIf="detached_project_volumes.length > 0">
+        <div class="card-header"><span class="font-weight-bold text-muted">Attachable volumes</span></div>
+        <div class="card-body">
+          <div class="row" *ngFor="let vol of detached_project_volumes">
+            <div class="col-2">
+              <div class="callout">
+                <small class="text-muted">Name</small><br>
+                <strong class="text-muted">{{vol?.volume_name}}</strong>
+              </div>
+            </div>
+            <div class="col-2">
+              <div class="callout">
+                <small class="text-muted">Status</small><br>
+
+                <app-volum-status [volume]="vol"></app-volum-status>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="callout">
+                <small class="text-muted">Volume ID</small><br>
+                <strong class="text-muted">{{vol?.volume_openstackid}}</strong>
+              </div>
+            </div>
             <div class="col-2">
               <div class="callout">
                 <small class="text-muted">Storage</small><br>
                 <strong class="text-muted">{{vol?.volume_storage}} GB</strong>
+              </div>
+            </div>
+            <div class="col-2"
+                 *ngIf="virtualMachine.status ==virtualMachineStates.staticACTIVE && vol.volume_status == VolumeStates.staticAVAILABLE">
+              <div class="callout">
+
+                <button type="button" class="btn btn-secondary" style="width:100%;"
+                        id="attachVolume_{{vol?.volume_openstackid}}"
+
+                        (click)="volume_to_attach = vol;attachModal.show();">
+                  Attach Volume
+                </button>
               </div>
             </div>
           </div>
@@ -327,6 +375,11 @@
             </button>
           </div>
           <div class="row">
+            <div class="alert alert-warning">
+              Managing Users is a new feature, which will only work if you created your research environment after 22.05.2020.<br>
+              <strong>If you created your research environment before the 22.05.2020, these features will not work.</strong><br>
+              To get it working, you may crate a snapshot of your virtual machine and start a new virtual machine with the respective snapshot and research environment!
+            </div>
             <div class="table-responsive">
               <table class="table table-hover">
                 <thead>
@@ -904,49 +957,6 @@
 
 </div>
 
-<div bsModal #detachModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
-     aria-labelledby="Label"
-     aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Detach Volume</h4>
-        <button type="button" class="close" style="cursor: pointer"
-                (click)="detachModal.hide()"
-                aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-
-        <strong>Which volume should be detached from {{virtualMachine?.name}}?</strong>
-
-        <select class="form-control col-md-6" name="selected_vm"
-                [(ngModel)]="volume_to_detach">
-          <option value="undefined" disabled selected hidden> Please Select</option>
-          <option *ngFor="let vol of virtualMachine?.volumes" [ngValue]="vol"> {{vol.volume_name}}
-            ({{vol.volume_storage}}
-            GB)
-          </option>
-
-        </select>
-
-
-      </div>
-      <div class="modal-footer">
-        <button class="btn  btn-success col-md-4"
-                [disabled]="volume_to_detach == undefined"
-                (click)="detachVolume(volume_to_detach);detachModal.hide();">
-          Detach Volume
-        </button>
-
-        <button class="btn  btn-danger col-md-4" type="reset"
-                (click)="volume_to_detach=undefined;detachModal.hide();">Cancel
-        </button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
 
 
 <div bsModal #attachModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
@@ -970,16 +980,6 @@
           The volume must still be <a
           href="{{WIKI_MOUNT_VOLUME}}" target="_blank"> mounted </a> after the attaching to use it.
         </div>
-        <strong>Which volume should be attached?</strong>
-
-        <select class="form-control col-md-6" name="selected_vm"
-                [(ngModel)]="volume_to_attach">
-          <option value="undefined" disabled selected hidden> Please Select</option>
-          <option *ngFor="let vol of detached_project_volumes" [ngValue]="vol"> {{vol.volume_name}}
-            ({{vol.volume_storage}} GB)
-          </option>
-
-        </select>
 
 
       </div>

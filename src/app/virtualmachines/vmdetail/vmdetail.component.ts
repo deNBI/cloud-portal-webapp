@@ -26,6 +26,7 @@ import {is_vo} from '../../shared/globalvar';
 import {WIKI_GUACAMOLE_LINK, WIKI_MOUNT_VOLUME, WIKI_RSTUDIO_LINK} from '../../../links/links';
 import {ClipboardService} from 'ngx-clipboard';
 import {Volume} from '../volumes/volume';
+import {VolumeStates} from '../volumes/volume_states';
 
 /**
  * VM Detail page component
@@ -46,6 +47,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
   image: Image;
   startDate: number;
   stopDate: number;
+  VolumeStates: VolumeStates = new VolumeStates()
   virtualMachineStates: VirtualMachineStates = new VirtualMachineStates();
   virtualMachine: VirtualMachine;
   resenvTemplate: ResenvTemplate;
@@ -215,6 +217,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
   }
 
   attachVolume(volume: Volume): void {
+    volume.volume_status = VolumeStates.ATTACHING;
 
     this.virtualmachineService.attachVolumetoServer(volume.volume_openstackid, this.virtualMachine.openstackid).subscribe(
       (result: IResponseTemplate) => {
@@ -230,10 +233,12 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
   }
 
   detachVolume(volume: Volume): void {
+    volume.volume_status = VolumeStates.DETACHING;
 
     this.virtualmachineService.deleteVolumeAttachment(volume.volume_openstackid, this.virtualMachine.openstackid).subscribe(
       (result: any) => {
         if (result.value === 'deleted') {
+          this.getDetachedVolumesByVSelectedMProject();
           this.getVmById();
 
         }
@@ -502,6 +507,8 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
           this.stopDate = parseInt(this.virtualMachine.stopped_at, 10) * 1000;
           this.stopDate = parseInt(this.virtualMachine.stopped_at, 10) * 1000;
           this.getImageDetails(this.virtualMachine.projectid, this.virtualMachine.image);
+          this.getDetachedVolumesByVSelectedMProject();
+
           this.isLoaded = true;
         }
       }
