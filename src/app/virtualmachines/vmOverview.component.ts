@@ -21,7 +21,7 @@ import {BiocondaService} from '../api-connector/bioconda.service';
 import {ClipboardService} from 'ngx-clipboard';
 import {Volume} from './volumes/volume';
 import {VolumeStates} from './volumes/volume_states';
-import {WIKI_GUACAMOLE_LINK, WIKI_RSTUDIO_LINK, WIKI_MOUNT_VOLUME} from '../../links/links';
+import {WIKI_GUACAMOLE_LINK, WIKI_MOUNT_VOLUME, WIKI_RSTUDIO_LINK} from '../../links/links';
 
 /**
  * Vm overview componentn.
@@ -111,6 +111,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
   status_changed: number = 0;
 
   is_facility_manager: boolean = false;
+  cluster_allowed: boolean = false;
 
   /**
    * Timeout for checking vm status.
@@ -261,6 +262,12 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
       },
       () => {
       })
+  }
+
+  set_cluster_allowed(): void {
+    this.virtualmachineservice.getClusterAllowed().subscribe((res: any) => {
+      this.cluster_allowed = res['allowed'];
+    })
   }
 
   changeFilterStatus(status: string): void {
@@ -677,6 +684,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.set_cluster_allowed();
     this.getClientForcUrls();
     this.getVms();
     this.is_vo_admin = is_vo;
