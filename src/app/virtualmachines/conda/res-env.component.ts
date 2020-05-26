@@ -38,11 +38,17 @@ export class ResEnvComponent implements OnInit, OnChanges {
 
   WIKI_RESENV_LINK: string = WIKI_RESENV_LINK;
 
+  create_only_backend: boolean = false;
+
   constructor(private condaService: BiocondaService) {
   }
 
   getUserKeyUrl(): string {
     return this.user_key_url.value;
+  }
+
+  getCreateOnlyBackend(): boolean {
+    return this.create_only_backend;
   }
 
   setSelectedTemplate(template: ResearchEnvironment): void {
@@ -102,6 +108,7 @@ export class ResEnvComponent implements OnInit, OnChanges {
 
   setOnlyNamespace(): void {
     this.onlyNamespace = true;
+    this.create_only_backend = false;
     this.setSelectedTemplate(null);
   }
 
