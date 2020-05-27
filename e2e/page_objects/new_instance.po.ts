@@ -14,7 +14,7 @@ export class NewInstancePage {
   private static VOLUME_VM_NAME: string = Util.VOLUME_VM_NAME;
   private static ID_INSTANCE_NAME: string = 'id_instance_name';
   private static DEFAULT_FLAVOR_TITLE: string = 'de.NBI default';
-  private static UBUNTU_18_TITLE: string = 'Ubuntu 18.04 LTS (2020-01-21)';
+  private static UBUNTU_18_TITLE: string = 'Ubuntu 18.04 LTS (2020-05-10)';
   private static START_BUTTON: string = 'startVMButton';
   private static OVERVIEW_BUTTON: string = 'goToOverviewButton';
   private static FLAVOR_ID: string = 'id_flavor_detail';
