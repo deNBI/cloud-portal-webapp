@@ -296,7 +296,7 @@ export class Util {
   }
 
   static async getTextFromLinkElement(prefix: string, name: string): Promise<string> {
-    await this.waitForPresenceOfLinkByPartialId(prefix, name);
+    await this.waitForPresenceOfLinkByPartialId(prefix, name, Util.LONG_TIMEOUT);
     const elem: ElementFinder = element(by.css(`a[id^=${prefix}${name}]`));
 
     return elem.getText();
