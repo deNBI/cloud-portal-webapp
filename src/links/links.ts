@@ -11,7 +11,6 @@ export const WIKI_RESENV_LINK: string = 'https://cloud.denbi.de/wiki/simple_vm/c
 export const WIKI_NEW_INSTANCE_LINK: string = 'https://cloud.denbi.de/wiki/simple_vm/new_instance/';
 export const WIKI_INSTANCE_OVERVIEW_LINK: string = 'https://cloud.denbi.de/wiki/simple_vm/instance_overview/';
 export const WIKI_INSTANCE_DETAIL_LINK: string = 'https://cloud.denbi.de/wiki/simple_vm/instance_detail/';
-
 export const WIKI_RSTUDIO_LINK: string = 'https://cloud.denbi.de/wiki/simple_vm/customization/#rstudio';
 export const WIKI_GUACAMOLE_LINK: string = 'https://cloud.denbi.de/wiki/simple_vm/customization/#apache-guacamole';
 export const WIKI_LNKS: string[] =
