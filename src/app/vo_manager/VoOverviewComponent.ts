@@ -285,8 +285,16 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
                    this.updateNotificationModal('Success', 'The  project was terminated.', true, 'success');
 
                  },
-                 () => {
-                   this.updateNotificationModal('Failed', 'The project could not be terminated.', true, 'danger');
+                 (error: any) => {
+                   if (error['status'] === 409) {
+                  this.updateNotificationModal(
+                    'Failed',
+                    `The project could not be terminated. Reason: ${error['error']['reason']} for ${error['error']['openstackid']}`,
+                    true,
+                    'danger')
+                   } else {
+                     this.updateNotificationModal('Failed', 'The project could not be terminated.', true, 'danger');
+                   }
 
                  }
       )
