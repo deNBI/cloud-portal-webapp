@@ -845,7 +845,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
     // tslint:disable-next-line:no-for-each-push
     this.selectedMachines.forEach((vm: VirtualMachine) => {
       vm.status = VirtualMachineStates.DELETING;
-      observableBatch.push(this.virtualmachineservice.deleteVM(vm.openstackid).pipe(catchError((error: any) => of(error)))
+      observableBatch.push(this.virtualmachineservice.deleteVM(vm.openstackid).pipe(catchError(of))
       )
     });
     forkJoin(observableBatch).subscribe(
