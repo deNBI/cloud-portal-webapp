@@ -684,26 +684,29 @@
      role="dialog" aria-labelledby="Label"
      aria-hidden="true"
      id="choose_request_type_modal">
-  <div class="modal-dialog modal-lg" role="document">
+  <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
-      <div class="modal-header">
+      <!--<div class="modal-header">
         <h4 class="modal-title">Request Extension/Modification</h4>
         <button type="button" class="close" style="cursor:pointer"
                 (click)="chooseModal.hide()" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
-      </div>
+      </div> -->
       <div class="modal-body">
         <div class="jumbotron">
-          <h1 class="display-4">Please choose the type of your request</h1>
+          <h2 class="display-4">Please choose the type of your request</h2>
           <p class="lead"></p>
           <hr class="my-4">
           <p class="lead">
             <strong>Please note</strong>: If you want to extend your project as well as adjust the required resources,
             you have to submit two separate applications. The two applications will be processed
             independently of each other.
-            <a class="btn btn-primary btn-lg" href="#" role="button">Resource modification</a>
           </p>
+          <div class="btn-group btn-group-lg" role="group" style="width:100%;">
+            <button type="button" class="btn btn-secondary btn-lg" style="width:50%;">Resource modification</button>
+            <button type="button" class="btn btn-secondary btn-lg" style="width:50%;">Project extension</button>
+          </div>
         </div>
       </div>
 
