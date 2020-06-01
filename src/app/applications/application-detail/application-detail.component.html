@@ -78,7 +78,7 @@
     <tr *ngIf="is_vo_admin && application?.projectapplicationrenewal?.is_only_extra_credits_application">
       <td>Reason for extra credits</td>
       <td>
-        {{application?.projectapplicationrenewal.project_application_renewal_comment}}
+        {{application?.projectapplicationrenewal?.project_application_renewal_comment}}
       </td>
     </tr>
     <tr>
@@ -267,11 +267,11 @@
       </td>
 
       <td>
-        {{application?.projectapplicationrenewal?.project_application_renewal_user.username}}
-        ( {{application?.projectapplicationrenewal?.project_application_renewal_user.email}})
+        {{application?.projectapplicationrenewal?.project_application_renewal_user?.username}}
+        ( {{application?.projectapplicationrenewal?.project_application_renewal_user?.email}})
       </td>
       <td>
-                {{application?.projectapplicationrenewal?.project_application_renewal_user.elixir_id}}
+                {{application?.projectapplicationrenewal?.project_application_renewal_user?.elixir_id}}
 
 
       </td>
@@ -306,7 +306,7 @@
       <tr *ngIf="application?.getFlavorCounter(flavor)== 0">
         <td>Flavor: {{flavor.name}}</td>
         <td>0</td>
-        <td>{{application?.projectapplicationrenewal.getFlavorCounter(flavor)}}</td>
+        <td>{{application?.projectapplicationrenewal?.getFlavorCounter(flavor)}}</td>
 
       </tr>
     </ng-container>
