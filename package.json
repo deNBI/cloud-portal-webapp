@@ -118,7 +118,7 @@
     "source-map-loader": "^0.2.0",
     "style-loader": "^1.2.1",
     "stylus-loader": "^3.0.1",
-    "ts-node": "8.10.1",
+    "ts-node": "8.10.2",
     "tslint": "^5.20.1",
     "tslint-consistent-codestyle": "^1.16.0",
     "tslint-eslint-rules": "^5.4.0",
