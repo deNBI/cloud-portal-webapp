@@ -257,7 +257,7 @@ export class AddClusterComponent implements OnInit {
     const cpu_max_vms: number = (this.selectedProjectCoresMax - this.selectedProjectCoresUsed - this.selectedMasterFlavor.vcpus)
       / this.selectedWorkerFlavor.vcpus;
 
-    this.maxWorkerInstances = Math.min(ram_max_vms, cpu_max_vms, this.selectedProjectVmsMax - this.selectedProjectVmsUsed - 1)
+    this.maxWorkerInstances = Math.floor(Math.min(ram_max_vms, cpu_max_vms, this.selectedProjectVmsMax - this.selectedProjectVmsUsed - 1))
   }
 
   calculateNewValues(): void {
