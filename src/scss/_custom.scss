@@ -396,6 +396,7 @@ $simplevmcolour: #00ADEF;
     width: 16rem;
     margin-right: 5px;
     cursor: pointer;
+    height: auto;
   }
 
 
@@ -406,11 +407,10 @@ $simplevmcolour: #00ADEF;
   }
 
   .scroll-flavor {
-    max-height: 90px;
-    min-height: 90px;
+
     overflow-y: auto;
     overflow-x: hidden;
-    height: calc(100vh - 100px);
+    height: auto;
     border-radius:10px;
   }
 
