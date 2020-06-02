@@ -33,7 +33,8 @@
               <figure class="flavor-card-icons">
                 <img src="{{STORAGE_ICON_PATH}}" alt="">
               </figure>
-              {{selectedFlavor?.rootdisk}} GB root disk
+              {{selectedFlavor?.rootdisk}} GB root disk <span *ngIf="selectedFlavor?.ephemeral_disk">
+                    + {{selectedFlavor.ephemeral_disk}} GB ephemeral disk</span>
             </div>
           </div>
           <div class="col" *ngIf="selectedFlavor?.gpu > 0">
@@ -88,7 +89,8 @@
               <figure class="flavor-card-icons">
                 <img src="{{STORAGE_ICON_PATH}}" alt="">
               </figure>
-              {{flavor?.rootdisk}} GB root disk
+              {{flavor?.rootdisk}} GB root disk <span *ngIf="flavor?.ephemeral_disk">
+                    + {{flavor.ephemeral_disk}} GB ephemeral disk</span>
             </div>
           </div>
           <div class="col" *ngIf="flavor?.gpu > 0">
@@ -142,8 +144,10 @@
               <figure class="flavor-card-icons">
                 <img src="{{STORAGE_ICON_PATH}}" alt="">
               </figure>
-              {{selectedFlavor?.rootdisk}} GB root disk
+              {{selectedFlavor?.rootdisk}} GB root disk <span *ngIf="selectedFlavor?.ephemeral_disk">
+                    + {{selectedFlavor.ephemeral_disk}} GB ephemeral disk</span>
             </div>
+
           </div>
           <div class="col" *ngIf="selectedFlavor?.gpu > 0">
             <div class="row">
@@ -198,8 +202,11 @@
                     <figure class="flavor-card-icons">
                       <img src="{{STORAGE_ICON_PATH}}" alt="">
                     </figure>
-                    {{flavor?.rootdisk}} GB root disk
+                    {{flavor?.rootdisk}} GB root disk <span *ngIf="flavor?.ephemeral_disk">
+                    + {{flavor.ephemeral_disk}} GB ephemeral disk</span>
                   </div>
+
+
                 </div>
                 <div class="col" *ngIf="flavor?.gpu > 0">
                   <div class="row">
@@ -260,7 +267,8 @@
                     <figure class="flavor-card-icons">
                       <img src="{{STORAGE_ICON_PATH}}" alt="">
                     </figure>
-                    {{flavor?.rootdisk}} GB root disk
+                    {{flavor?.rootdisk}} GB root disk <span *ngIf="flavor?.ephemeral_disk">
+                    + {{flavor.ephemeral_disk}} GB ephemeral disk</span>
                   </div>
                 </div>
                 <div class="col" *ngIf="flavor?.gpu > 0">
