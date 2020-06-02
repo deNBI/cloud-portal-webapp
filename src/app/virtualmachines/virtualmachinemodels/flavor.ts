@@ -10,7 +10,7 @@ export class Flavor {
   private _ram: number;
   private _rootdisk: number;
   private _gpu: number;
-  private _epheremal_disk: number;
+  private _ephemeral_disk: number;
   private _type: FlavorType;
   private _simple_vm: boolean;
   private _comment: string;
@@ -80,12 +80,12 @@ export class Flavor {
     this._gpu = value;
   }
 
-  get epheremal_disk(): number {
-    return this._epheremal_disk;
+  get ephemeral_disk(): number {
+    return this._ephemeral_disk;
   }
 
-  set epheremal_disk(value: number) {
-    this._epheremal_disk = value;
+  set ephemeral_disk(value: number) {
+    this._ephemeral_disk = value;
   }
 
   get type(): FlavorType {
