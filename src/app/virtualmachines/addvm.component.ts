@@ -262,8 +262,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
     this.flavorService.getFlavors(project_id).subscribe((flavors: Flavor[]) => {
       this.flavors = flavors;
       this.flavors_loaded = true;
-      this.checkProjectDataLoaded()
-
+      this.checkProjectDataLoaded();
     });
 
   }
