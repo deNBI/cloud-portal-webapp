@@ -43,6 +43,12 @@
                 </div>
                 <strong> {{VolumeStates.staticRESERVED}}</strong>
               </ng-container>
+            <ng-container *ngSwitchCase="VolumeStates.staticEXTENDING">
+              <div [id]="'extending_' + volume?.volume_name"
+                   class="dot-colorless bg-warning" style="width: 10px; height: 10px">
+              </div>
+              <strong> {{VolumeStates.staticEXTENDING}}</strong>
+            </ng-container>
               <ng-container *ngSwitchCase="VolumeStates.staticIN_USE">
                 <div [id]="'in_use_badge_' + volume?.volume_name" class="dot-colorless bg-info"
                      style="width: 10px; height: 10px">
