@@ -774,7 +774,8 @@
           <strong>Choosing 0 additional months will only change the requested resources and will not prolong your
             project lifetime.</strong>
         </div>
-        <form id="resource_modification_application_form" #f="ngForm" (ngSubmit)="onSubmit(f, false)"
+        <form id="resource_modification_application_form" #modificationForm="ngForm"
+              (ngSubmit)="onSubmit(modificationForm, false, false)"
               class="form-horizontal">
 
           <div class="form-group row">
@@ -819,7 +820,7 @@
                       <div class="input-group">
                         <input class="form-control"
                                (change)="valuesChanged(fl,name?.value);
-                               calculateCredits(f.controls.project_application_renewal_lifetime?.value);"
+                               calculateCredits(modificationForm.controls.project_application_renewal_lifetime?.value);"
                                id="{{fl.name}}"
                                name="{{fl.name}}"
                                type="number" min="0" step="1"
@@ -873,8 +874,8 @@
                        [(ngModel)]="project_application?.projectapplicationrenewal.project_application_renewal_volume_counter"
                        appMinAmount="0" appInteger
                        [ngClass]="{
-                                'is-invalid': f.controls.project_application_renewal_volume_counter?.invalid,
-                                'is-valid': f.controls.project_application_renewal_volume_counter?.valid
+                                'is-invalid': modificationForm.controls.project_application_renewal_volume_counter?.invalid,
+                                'is-valid': modificationForm.controls.project_application_renewal_volume_counter?.valid
                                 }">
               </div>
               <span class="help-block">How many storage volumes do you need in the future?</span>
@@ -911,10 +912,10 @@
                        [(ngModel)]="project_application?.projectapplicationrenewal.project_application_renewal_volume_limit"
                        appMinAmount="1" appInteger
                        [ngClass]="{
-                                'is-invalid': f.controls.project_application_renewal_volume_limit?.invalid,
-                                'is-valid': f.controls.project_application_renewal_volume_limit?.valid
+                                'is-invalid': modificationForm.controls.project_application_renewal_volume_limit?.invalid,
+                                'is-valid': modificationForm.controls.project_application_renewal_volume_limit?.valid
                                 }"
-                       [disabled]="f.controls.project_application_renewal_volume_counter?.value == 0">
+                       [disabled]="modificationForm.controls.project_application_renewal_volume_counter?.value == 0">
                 <div class="input-group-append"><span class="input-group-text"> GB
                                     </span></div>
               </div>
@@ -955,8 +956,8 @@
                        type="number" min="0" step="1"
                        appInteger appMinAmount="0" required
                        [ngClass]="{
-                                'is-invalid': f.controls.project_application_renewal_object_storage?.invalid ,
-                                'is-valid': f.controls.project_application_renewal_object_storage?.valid
+                                'is-invalid': modificationForm.controls.project_application_renewal_object_storage?.invalid ,
+                                'is-valid': modificationForm.controls.project_application_renewal_object_storage?.valid
                                 }">
                 <div class="input-group-append"><span class="input-group-text"> GB
                                     </span></div>
@@ -1012,16 +1013,16 @@
 
 
         </form>
-        <div *ngIf="f.invalid" class="alert alert-warning" role="alert">
+        <div *ngIf="modificationForm.invalid" class="alert alert-warning" role="alert">
           <p>Some required fields are incorrect or not filled in yet.
             Please check if all required (*) fields are filled in correctly.</p>
-          <p *ngIf="f.controls.project_application_renewal_volume_counter?.invalid">
+          <p *ngIf="modificationForm.controls.project_application_renewal_volume_counter?.invalid">
             - Number of storage volumes missing
           </p>
-          <p *ngIf="f.controls.project_application_renewal_volume_limit?.invalid">
+          <p *ngIf="modificationForm.controls.project_application_renewal_volume_limit?.invalid">
             - Storage Limit missing
           </p>
-          <p *ngIf="f.controls.project_application_renewal_object_storage?.invalid">
+          <p *ngIf="modificationForm.controls.project_application_renewal_object_storage?.invalid">
             - Object Storage missing
           </p>
           <p *ngIf="!min_vm">
@@ -1036,13 +1037,11 @@
             By submitting this application you agree to the cloud usage policy.
           </div>
           <button type="button" class="btn  btn-primary"
-                  form="application_form" id="submit_renewal_btn"
-                  (click)="extension_request=true;filterEnteredData(f);calculateCredits(f.controls.project_application_renewal_lifetime?.value);
+                  form="modificationForm" id="submit_renewal_btn"
+                  (click)="extension_request=true;filterEnteredData(modifiationForm);
+                  calculateCredits(modificationForm.controls.project_application_renewal_lifetime?.value);
                   submitModal.show(); setModalOpen(true);"
-                  [disabled]="f.invalid || (!project_application?.project_application_edam_terms && selected_ontology_terms.length < 1)"><i
-            class="fa fa-dot-circle-o">
-
-          </i>
+                  [disabled]="modificationForm.invalid"><i class="fa fa-dot-circle-o"></i>
             Submit
           </button>
           <button type="button" class="btn btn-danger"
@@ -1072,7 +1071,7 @@
       </div>
       <div class="modal-body">
 
-        <form id="extension_application_form" #f="ngForm" (ngSubmit)="onSubmit(f, false)"
+        <form id="extension_application_form" #extensionForm="ngForm" (ngSubmit)="onSubmit(extensionForm, false, true)"
               class="form-horizontal">
 
 
@@ -1100,7 +1099,7 @@
             <div class="col">
               <div class="input-group">
                 <input class="form-control"
-                       (change)="calculateCredits(f.controls.project_application_renewal_lifetime?.value);"
+                       (change)="calculateCredits(extensionForm.controls.project_application_renewal_lifetime?.value);"
                        id="project_extension_application_renewal_lifetime"
                        name="project_extension_application_renewal_lifetime"
                        placeholder="e.g. 3"
@@ -1108,9 +1107,12 @@
                        type="number" min="0" max="12" step="1" required
                        appInteger appMinAmount="0" appMaxAmount="12"
                        [ngClass]="{
-                                'is-invalid': f.controls.project_application_renewal_lifetime?.invalid && (f.controls.project_application_renewal_lifetime?.dirty || f.controls.project_application_renewal_lifetime?.touched),
-                                'is-valid': f.controls.project_application_renewal_lifetime?.valid && (f.controls.project_application_renewal_lifetime?.dirty || f.controls.project_application_renewal_lifetime?.touched)
-                                }">
+                                'is-invalid': extensionForm.controls.project_application_renewal_lifetime?.invalid
+                                && (extensionForm.controls.project_application_renewal_lifetime?.dirty
+                                || extensionForm.controls.project_application_renewal_lifetime?.touched),
+                                'is-valid': extensionForm.controls.project_application_renewal_lifetime?.valid
+                                && (extensionForm.controls.project_application_renewal_lifetime?.dirty
+                                || extensionForm.controls.project_application_renewal_lifetime?.touched)}">
                 <div class="input-group-append">
                   <span class="input-group-text" style="padding: 0 !important;"> months</span>
                 </div>
@@ -1213,8 +1215,8 @@
                        type="number" min="0" step="1"
                        appInteger appMinAmount="0" required
                        [ngClass]="{
-                                'is-invalid': f.controls.project_application_renewal_cloud_service_user_number?.invalid ,
-                                'is-valid': f.controls.project_application_renewal_cloud_service_user_number?.valid
+                                'is-invalid': extensionForm.controls.project_application_renewal_cloud_service_user_number?.invalid ,
+                                'is-valid': extensionForm.controls.project_application_renewal_cloud_service_user_number?.valid
                                 }">
               </div>
               <span class="help-block">How many users are using your service?
@@ -1251,10 +1253,10 @@
 
         </form>
 
-        <div *ngIf="f.invalid" class="alert alert-warning" role="alert">
+        <div *ngIf="extensionForm.invalid" class="alert alert-warning" role="alert">
           <p>Some required fields are incorrect or not filled in yet.
             Please check if all required (*) fields are filled in correctly.</p>
-          <p *ngIf="f.controls.project_application_renewal_lifetime?.invalid">
+          <p *ngIf="extensionForm.controls.project_application_renewal_lifetime?.invalid">
             - Lifetime missing
           </p>
 
@@ -1269,10 +1271,11 @@
             By submitting this extension application you agree to the cloud usage policy.
           </div>
           <button type="button" class="btn  btn-primary"
-                  form="application_form" id="submit_extension_btn"
-                  (click)="extension_request=true;filterEnteredData(f);calculateCredits(f.controls.project_application_renewal_lifetime?.value);
+                  form="extensionForm" id="submit_extension_btn"
+                  (click)="extension_request=true;filterEnteredData(extensionForm);
+                  calculateCredits(extensionForm.controls.project_application_renewal_lifetime?.value);
                   submitModal.show(); setModalOpen(true);"
-                  [disabled]="f.invalid || (!project_application?.project_application_edam_terms && selected_ontology_terms.length < 1)"><i
+                  [disabled]="extensionForm.invalid || (!project_application?.project_application_edam_terms && selected_ontology_terms.length < 1)"><i
             class="fa fa-dot-circle-o">
 
           </i>
@@ -1304,7 +1307,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <form id="credits_application_form" #f2="ngForm" (ngSubmit)="onSubmit(f2, true)"
+        <form id="credits_application_form" #f2="ngForm" (ngSubmit)="onSubmit(f2, true, false)"
               class="form-horizontal">
 
           <div class="form-group row">
@@ -1384,7 +1387,7 @@
           </div>
           <button type="button" class="btn  btn-primary"adm
                   form="credits_application_form" id="submit_extra_credits_btn"
-                  (click)="filterEnteredData(f2);onSubmit(f2, true);extension_request=true;creditsExtensionModal.hide()"
+                  (click)="filterEnteredData(f2);onSubmit(f2, true, false);extension_request=true;creditsExtensionModal.hide()"
                   [disabled]="f2.invalid"><i
             class="fa fa-dot-circle-o">
 
@@ -1595,21 +1598,21 @@
             </div>
 
 
-            <div id="extension result" class="alert alert-success" role="alert" *ngIf="extension_status == 1">
+            <div id="extension result_submitted" class="alert alert-success" role="alert" *ngIf="extension_status == 1">
 
               Modify request successfully submitted!
             </div>
-            <div id="extension result" class="alert alert-success" role="alert" *ngIf="extension_status == 3">
+            <div id="extension result_approved" class="alert alert-success" role="alert" *ngIf="extension_status == 3">
               Modify request successfully approved!
             </div>
-            <div id="extension result" class="alert alert-success" role="alert" *ngIf="extension_status == 4">
+            <div id="extension result_declined" class="alert alert-success" role="alert" *ngIf="extension_status == 4">
               Modify request successfully declined!
             </div>
-            <div id="extension result" class="alert alert-success" role="alert" *ngIf="extension_status == 5">
+            <div id="extension result_forwarded" class="alert alert-success" role="alert" *ngIf="extension_status == 5">
               Modify request successfully approved and forwarded to facility!
             </div>
 
-            <div id="extension result" class="alert alert-warning" role="alert" *ngIf="extension_status == 2">
+            <div id="extension result_error" class="alert alert-warning" role="alert" *ngIf="extension_status == 2">
               An error occured.
 
             </div>

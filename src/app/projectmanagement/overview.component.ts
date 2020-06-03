@@ -63,6 +63,11 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
    */
   private extensionCredits: number = 0;
 
+  /**
+   * the credits for a resource modification.
+   */
+  private modificationCredits: number = 0;
+
   project_id: string;
   application_id: string;
   project: Project;
@@ -77,6 +82,12 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
    * @type {number}
    */
   extension_status: number = 0;
+  /**
+   * id of the modification status
+   * @type {number}, needs yet to be implemented
+   */
+  modification_status: number = 0;
+
   newDoi: string;
   remove_members_clicked: boolean;
   life_time_string: string;
@@ -374,7 +385,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
    * @param {NgForm} form
    * @param {boolean} isExtraCreditsApplication: whether or not only extra credits are applied for
    */
-  onSubmit(form: NgForm, isExtraCreditsApplication: boolean): void {
+  onSubmit(form: NgForm, isExtraCreditsApplication: boolean, isExtension: boolean): void {
     if (isExtraCreditsApplication) {
       this.project_application.projectapplicationrenewal.is_only_extra_credits_application = isExtraCreditsApplication;
       this.project_application.projectapplicationrenewal.project_application_renewal_comment = form.controls['project_application_extra_credits_comment'].value;
@@ -384,6 +395,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
     this.requestExtension();
 
   }
+
 
   public requestExtension(): void {
     this.applicationsservice.requestRenewal(this.project_application.projectapplicationrenewal)
