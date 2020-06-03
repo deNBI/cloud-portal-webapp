@@ -126,9 +126,9 @@ export class VoService {
     })
   }
 
-  sendNewsletterToVo(subject: string, message: string, reply?: string): Observable<IResponseTemplate> {
+  sendNewsletterToVo(subject: string, message: string, type: string, reply?: string): Observable<IResponseTemplate> {
 
-    const params: HttpParams = new HttpParams().set('subject', subject).set('message', message).set('reply', reply);
+    const params: HttpParams = new HttpParams().set('subject', subject).set('message', message).set('reply', reply).set('type', type);
 
     return this.http.post<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}voManagers/current/newsletter/`, params, {
       withCredentials: true
