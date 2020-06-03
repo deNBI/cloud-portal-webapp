@@ -396,7 +396,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
   }
 
-
   public requestExtension(): void {
     this.applicationsservice.requestRenewal(this.project_application.projectapplicationrenewal)
       .subscribe((result: { [key: string]: string }) => {
