@@ -40,6 +40,14 @@ export class UserService {
     })
   }
 
+  logoutUser(): Observable<any> {
+
+    return this.http.post(`${ApiSettings.getApiBaseURL()}users/current/logout/`, null, {
+      withCredentials: true
+      // headers: header
+    })
+  }
+
   getPendingPreferredMailUser(): Observable<IResponseTemplate> {
 
     return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}users/current/pendingPreferredEmails/`, {
