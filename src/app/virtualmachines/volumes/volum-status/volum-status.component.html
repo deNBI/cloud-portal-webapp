@@ -73,4 +73,12 @@
 
             </ng-container>
             <i *ngIf="VolumeStates.staticNOT_IN_PROCESS_STATE.indexOf(volume?.volume_status) === -1"
-               class="fa fa-spinner fa-spin"></i></div>
+               class="fa fa-spinner fa-spin"></i>
+            <br>
+            <ng-container *ngIf="volume?.error_msg !== '' && volume?.error_msg !== undefined && volume?.error_msg !== null">
+              <div [id]="'error_' + volume?.volume_name"
+                   class="dot-colorless bg-warning" style="width: 10px; height: 10px">
+              </div>
+              <strong>Error: {{volume?.error_msg}}</strong>
+            </ng-container>
+          </div>
