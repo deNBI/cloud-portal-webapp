@@ -64,6 +64,11 @@
                 <span class="badge badge-info">Cluster</span>
               </div>
               <div class="input-group-text">
+                <input type="checkbox" [checked]="filter_set_for_termination" style="margin:2px;"
+                       (change)="filter_set_for_termination=!filter_set_for_termination">
+                <span class="badge badge-info">Set for termination</span>
+              </div>
+              <div class="input-group-text">
                 <input type="checkbox" checked style="margin:2px;"
                        (change)="changeFilterStatus(VirtualMachineStates.staticACTIVE)">
                 <span class="badge badge-success">{{VirtualMachineStates.staticACTIVE}}</span>
