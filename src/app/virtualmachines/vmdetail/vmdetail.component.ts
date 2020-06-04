@@ -53,6 +53,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
   resenvTemplate: ResenvTemplate;
   snapshotSearchTerm: Subject<string> = new Subject<string>();
   errorMessage: boolean = false;
+  error_msg: string = '';
   private _condaPackages: CondaPackage[] = [];
   res_env_url: string = '';
   filteredMembers: any = null;
@@ -193,19 +194,27 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
    * @param vm which will be deleted
    */
   deleteVm(): void {
-    this.virtualmachineService.deleteVM(this.virtualMachine.openstackid).subscribe((updated_vm: VirtualMachine) => {
+    this.virtualmachineService.deleteVM(this.virtualMachine.openstackid).subscribe(
+      (updated_vm: VirtualMachine) => {
 
-      if (updated_vm.created_at !== '') {
-        updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
-      }
-      updated_vm.cardState = 0;
-      this.virtualMachine = updated_vm;
-      if (updated_vm.status === VirtualMachineStates.DELETED) {
-        this.status_changed = 1;
-      } else {
+        if (updated_vm.created_at !== '') {
+          updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
+        }
+        updated_vm.cardState = 0;
+        this.virtualMachine = updated_vm;
+        if (updated_vm.status === VirtualMachineStates.DELETED) {
+          this.status_changed = 1;
+        } else {
+          this.status_changed = 2;
+        }
+      },
+      (error1: any) => {
         this.status_changed = 2;
-      }
-    })
+        if (error1['status'] === 409) {
+          this.error_msg = 'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.'
+        }
+        this.getVmById();
+      })
   }
 
   getDetachedVolumesByVSelectedMProject(): void {
@@ -217,6 +226,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
   }
 
   attachVolume(volume: Volume): void {
+    const volume_status_backup: string = volume.volume_status;
     volume.volume_status = VolumeStates.ATTACHING;
 
     this.virtualmachineService.attachVolumetoServer(volume.volume_openstackid, this.virtualMachine.openstackid).subscribe(
@@ -224,15 +234,25 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
 
         if (result.value === 'attached') {
           this.getVmById();
-
         }
       },
-      () => {
+      (error1: any) => {
+        this.status_changed = 2;
+        if (error1['error']['error'] === '409') {
+          this.volume_to_attach.error_msg = 'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.';
+          setTimeout(() => {
+                       this.volume_to_attach.error_msg = null;
+                     },
+                     5000);
+          this.error_msg = 'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.';
+          volume.volume_status = volume_status_backup;
+        }
       }
     )
   }
 
   detachVolume(volume: Volume): void {
+    const volume_status_backup: string = volume.volume_status;
     volume.volume_status = VolumeStates.DETACHING;
 
     this.virtualmachineService.deleteVolumeAttachment(volume.volume_openstackid, this.virtualMachine.openstackid).subscribe(
@@ -243,7 +263,17 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
 
         }
       },
-      () => {
+      (error1: any) => {
+        this.status_changed = 2;
+        if (error1['error']['error'] === '409') {
+          volume.error_msg = 'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.';
+          setTimeout(() => {
+            volume.error_msg = null;
+          },
+                     5000);
+          this.error_msg = 'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.'
+          volume.volume_status = volume_status_backup;
+        }
       })
   }
 
@@ -253,18 +283,26 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
    * @param {string} reboot_type HARD|SOFT
    */
   public rebootVm(reboot_type: string): void {
-    this.virtualmachineService.rebootVM(this.virtualMachine.openstackid, reboot_type).subscribe((result: IResponseTemplate) => {
-      this.status_changed = 0;
-      this.virtualMachine.cardState = 0;
+    this.virtualmachineService.rebootVM(this.virtualMachine.openstackid, reboot_type).subscribe(
+      (result: IResponseTemplate) => {
+        this.status_changed = 0;
+        this.virtualMachine.cardState = 0;
 
-      if (<boolean><Boolean>result.value) {
-        this.status_changed = 1;
-        this.check_status_loop_when_reboot();
-      } else {
+        if (<boolean><Boolean>result.value) {
+          this.status_changed = 1;
+          this.check_status_loop_when_reboot();
+        } else {
+          this.status_changed = 2;
+        }
+
+      },
+      (error1: any) => {
         this.status_changed = 2;
-      }
-
-    })
+        this.status_check_error = true;
+        if (error1['error']['error'] === '409') {
+          this.error_msg = 'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.'
+        }
+      })
   }
 
   /**
@@ -366,29 +404,36 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
    */
   stopVm(): void {
     this.virtualmachineService.stopVM(this.virtualMachine.openstackid)
-      .subscribe((updated_vm: VirtualMachine) => {
-                   this.status_changed = 0;
+      .subscribe(
+        (updated_vm: VirtualMachine) => {
+          this.status_changed = 0;
 
-                   if (updated_vm.created_at !== '') {
-                     updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
-                   }
-                   updated_vm.cardState = 0;
-                   this.virtualMachine = updated_vm;
+          if (updated_vm.created_at !== '') {
+            updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
+          }
+          updated_vm.cardState = 0;
+          this.virtualMachine = updated_vm;
 
-                   switch (updated_vm.status) {
-                     case VirtualMachineStates.SHUTOFF:
-                       this.status_changed = 1;
-                       break;
-                     case VirtualMachineStates.POWERING_OFF:
-                       this.check_status_loop(VirtualMachineStates.SHUTOFF, true);
-                       break;
-                     default:
-                       this.status_changed = 2;
-                       break;
+          switch (updated_vm.status) {
+            case VirtualMachineStates.SHUTOFF:
+              this.status_changed = 1;
+              break;
+            case VirtualMachineStates.POWERING_OFF:
+              this.check_status_loop(VirtualMachineStates.SHUTOFF, true);
+              break;
+            default:
+              this.status_changed = 2;
+              break;
 
-                   }
+          }
 
-                 }
+        },
+        (error1: any) => {
+          this.status_changed = 2;
+          if (error1['error']['error'] === '409') {
+            this.error_msg = 'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.'
+          }
+        }
       )
   }
 
@@ -401,26 +446,33 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
   }
 
   resumeVM(): void {
-    this.virtualmachineService.resumeVM(this.virtualMachine.openstackid).subscribe((updated_vm: VirtualMachine) => {
-      this.status_changed = 0;
-      if (updated_vm.created_at === '') {
-        updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
-      }
-      updated_vm.cardState = 0;
-      this.virtualMachine = updated_vm;
-      switch (updated_vm.status) {
-        case VirtualMachineStates.ACTIVE:
-          this.status_changed = 1;
-          break;
-        case VirtualMachineStates.RESTARTING:
-          this.check_status_loop(VirtualMachineStates.ACTIVE, true);
-          break;
-        default:
-          this.status_changed = 2;
-          break;
+    this.virtualmachineService.resumeVM(this.virtualMachine.openstackid).subscribe(
+      (updated_vm: VirtualMachine) => {
+        this.status_changed = 0;
+        if (updated_vm.created_at === '') {
+          updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
+        }
+        updated_vm.cardState = 0;
+        this.virtualMachine = updated_vm;
+        switch (updated_vm.status) {
+          case VirtualMachineStates.ACTIVE:
+            this.status_changed = 1;
+            break;
+          case VirtualMachineStates.RESTARTING:
+            this.check_status_loop(VirtualMachineStates.ACTIVE, true);
+            break;
+          default:
+            this.status_changed = 2;
+            break;
 
-      }
-    })
+        }
+      },
+      (error1: any) => {
+        this.status_changed = 2;
+        if (error1['error']['error'] === '409') {
+          this.error_msg = 'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.'
+        }
+      })
   }
 
   /**
@@ -431,15 +483,23 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
   createSnapshot(snapshot_instance: string, snapshot_name: string, description ?: string
   ):
     void {
-    this.imageService.createSnapshot(snapshot_instance, snapshot_name, description).subscribe((newSnapshot: SnapshotModel) => {
-      if (newSnapshot.snapshot_openstackid) {
-        this.snapshotDone = 'true';
+    this.imageService.createSnapshot(snapshot_instance, snapshot_name, description).subscribe(
+      (newSnapshot: SnapshotModel) => {
+        if (newSnapshot.snapshot_openstackid) {
+          this.snapshotDone = 'true';
 
-      } else {
+        } else {
+          this.snapshotDone = 'error';
+        }
+
+      },
+      (error1: any) => {
         this.snapshotDone = 'error';
-      }
-
-    })
+        this.status_changed = 2;
+        if (error1['error']['error'] === '409') {
+          this.error_msg = 'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.'
+        }
+      })
   }
 
   /**
@@ -457,7 +517,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
       (vm: VirtualMachine) => {
         vm = new VirtualMachine(vm);
         if (vm == null) {
-          this.isLoaded = false
+          this.isLoaded = false;
           this.errorMessage = true;
           // TODO: Redirect back to overview
         } else {
