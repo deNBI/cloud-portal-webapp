@@ -13,13 +13,9 @@ import {UserService} from '../api-connector/user.service';
 export class TitleHeadbarComponent {
     @Input() page_title: string;
 
-
-  constructor(private userService:UserService) {
+  constructor(private userService: UserService) {
 
   }
-
-
-
 
     logout(): void {
     this.userService.logoutUser().subscribe((redirect: any) => {
