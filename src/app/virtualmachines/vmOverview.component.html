@@ -228,6 +228,11 @@
                     <strong>Image</strong>: {{vm?.image}}
                   </div>
                 </div>
+                <div *ngIf="vm?.error_msg !== '' && vm?.error_msg !== undefined && vm?.error_msg !== null" class="col-12" style="margin-left: 10px">
+                  <div style="font-size: small">
+                    <strong>Error: {{vm?.error_msg}}</strong>
+                  </div>
+                </div>
                 <div *ngIf="vm?.cluster?.cluster_id" class="col-12" style="margin-left: 10px" [ngSwitch]="vm?.cluster?.status">
                   <div style="font-size: small">
                     <strong>Cluster</strong>:
@@ -422,7 +427,8 @@
         </div>
       </div>
       <div class="alert alert-warning" role="alert" *ngIf="status_changed == 2">
-        When stopping {{selectedVm?.name}} an error occurred.
+        When stopping {{selectedVm?.name}} an error occurred.<br>
+        {{ERROR_MSG}}
       </div>
 
 
@@ -503,7 +509,8 @@
         <div *ngIf="status_check_error">
           <div class="alert alert-warning" role="alert">
 
-            An error occurred when checking the status of {{selectedVm?.name}}.
+            An error occurred when checking the status of {{selectedVm?.name}}.<br>
+            {{ERROR_MSG}}
           </div>
         </div>
       </div>
@@ -547,7 +554,8 @@
         </div>
       </div>
       <div class="alert alert-warning" role="alert" *ngIf="status_changed == 2">
-        When starting {{selectedVm?.name}} an error occurred.
+        When starting {{selectedVm?.name}} an error occurred:<br>
+        {{ERROR_MSG}}
       </div>
 
 
@@ -588,7 +596,8 @@
         </div>
       </div>
       <div class="alert alert-warning" role="alert" *ngIf="status_changed == 2">
-        When deleting {{selectedVm?.name}} an error occured.
+        When deleting {{selectedVm?.name}} an error occured:<br>
+        {{ERROR_MSG}}
       </div>
 
 
@@ -658,11 +667,11 @@
       <div class="modal-body">
         Deletion status:
         <ng-container *ngFor="let vm of selectedMachines">
-          <div class="alert alert-warning" *ngIf="vm?.status != this.VirtualMachineStates.staticDELETED">
+          <div class="alert alert-warning" *ngIf="vm?.status != VirtualMachineStates.staticDELETED">
             Deleting {{vm?.name}} <i class="fa fa-spinner fa-spin"
                                      style="font-size:24px"></i>
           </div>
-          <div class="alert alert-success" *ngIf="vm?.status == this.VirtualMachineStates.staticDELETED">
+          <div class="alert alert-success" *ngIf="vm?.status == VirtualMachineStates.staticDELETED">
             Deleted {{vm?.name}}
           </div>
         </ng-container>
@@ -706,7 +715,7 @@
       </div>
       <div class="modal-footer">
         <button class="btn  btn-success col-md-4"
-                (click)="deleteVm(selectedVm);verifyModal.hide();"
+                (click)="deleteVm(selectedVm);verifyModal.hide()"
                 id="confirm_delete_button">
           Yes
         </button>
@@ -761,7 +770,7 @@
       <div class="modal-footer">
         <button class="btn  btn-success col-md-4" id="snapshot_create_modal_button"
                 [disabled]="!validSnapshotNameBool"
-                (click)="createSnapshot(snapshot_vm.openstackid,snapshotName,snapshotDescription.value);snapshotModal.hide();snapshotResult.show()">
+                (click)="createSnapshot(snapshot_vm,snapshotName,snapshotDescription.value);snapshotModal.hide();snapshotResult.show()">
           Create Snapshot
         </button>
         <button class="btn  btn-danger col-md-4" type="reset"
@@ -803,7 +812,8 @@
         </div>
         <div class="alert alert-danger" role="alert"
              *ngIf="snapshotDone != 'true' && snapshotDone != 'Waiting'">
-          An error occured when creating the snapshot.
+          An error occured when creating the snapshot.<br>
+          {{ERROR_MSG}}
 
           <pre>{{snapshotDone}}</pre>
         </div>
