@@ -16,4 +16,5 @@ export class Volume {
   volume_created_by_user: boolean;
   volume_status: string;
   volume_device: string;
+  error_msg: string;
 }
