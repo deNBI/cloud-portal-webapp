@@ -332,17 +332,14 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
   }
 
   extendVolume(volume: Volume, new_storage: number): void {
+    volume.volume_status = VolumeStates.EXTENDING;
     this.vmService.extendVolume(volume.volume_openstackid, new_storage.toString()).subscribe(
       (res: any) => {
-        this.extendDone = true;
-        if (res['status_code'] === 202) {
-          this.vmService.getVolumeById(volume.volume_openstackid).subscribe(
-            (upd_vol: Volume) => {
-              volume.volume_storage = new_storage;
-              this.volumes[this.volumes.indexOf(volume)] = volume;
-            });
+        if (res['status_code'] === 0) {
+          this.check_status_loop(volume, 0, undefined, new_storage);
         } else {
           this.extendError = true;
+          this.check_status_loop(volume, 0);
         }
       }
     )
@@ -613,7 +610,8 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
     })
   }
 
-  check_status_loop(volume: Volume, initial_timeout: number = this.checkStatusTimeout, final_state?: string): void {
+  check_status_loop(volume: Volume, initial_timeout: number = this.checkStatusTimeout, final_state?: string, expected_storage?: number):
+    void {
     const created: boolean = volume.volume_created_by_user;
 
     setTimeout(
@@ -622,6 +620,11 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
         if (volume.volume_openstackid) {
 
           this.checkStatusSubscription.add(this.vmService.getVolumeById(volume.volume_openstackid).subscribe((vol: Volume) => {
+            if (expected_storage && vol.volume_storage !== expected_storage) {
+              return this.check_status_loop(volume, this.checkStatusTimeout, final_state, expected_storage);
+            } else if (expected_storage && vol.volume_storage === expected_storage) {
+              this.extendDone = true;
+            }
             if (volume.error_msg !== '' && volume.error_msg !== undefined && volume.error_msg !== null) {
               vol.error_msg = volume.error_msg;
               setTimeout( () => {
