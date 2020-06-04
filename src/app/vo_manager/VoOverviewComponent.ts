@@ -8,14 +8,11 @@ import {ComputecenterComponent} from '../projectmanagement/computecenter.compone
 import {FilterBaseClass} from '../shared/shared_modules/baseClass/filter-base-class';
 import {IResponseTemplate} from '../api-connector/response-template';
 import {FacilityService} from '../api-connector/facility.service';
-import {forkJoin} from 'rxjs/index';
-import {Application} from '../applications/application.model/application.model';
-import {DomSanitizer, SafeResourceUrl, SafeUrl} from '@angular/platform-browser';
+import {DomSanitizer} from '@angular/platform-browser';
 import {VirtualMachine} from '../virtualmachines/virtualmachinemodels/virtualmachine';
 import {Volume} from '../virtualmachines/volumes/volume';
 import {FullLayoutComponent} from '../layouts/full-layout.component';
 import {SnapshotModel} from '../virtualmachines/snapshots/snapshot.model';
-import {createUTCDate} from 'ngx-bootstrap/chronos/create/date-from-array';
 
 /**
  * Vo Overview component.
@@ -96,7 +93,7 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
         break;
       }
       case 1: {
-        this.sendNewsletterToVo(subject, message, reply);
+        this.sendNewsletterToVo(subject, message, this.selectedProjectType, reply);
         break;
       }
       default:
@@ -122,8 +119,9 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
 
   }
 
-  sendNewsletterToVo(subject: string, message: string, reply?: string): void {
-    this.voserice.sendNewsletterToVo(encodeURIComponent(subject), encodeURIComponent(message), encodeURIComponent(reply))
+  sendNewsletterToVo(subject: string, message: string, selectedProjectType: string, reply?: string): void {
+    this.voserice.sendNewsletterToVo(
+      encodeURIComponent(subject), encodeURIComponent(message), selectedProjectType, encodeURIComponent(reply))
       .subscribe((result: IResponseTemplate) => {
         if (<boolean><Boolean>result.value === true) {
           this.emailStatus = 1;
@@ -285,8 +283,16 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
                    this.updateNotificationModal('Success', 'The  project was terminated.', true, 'success');
 
                  },
-                 () => {
-                   this.updateNotificationModal('Failed', 'The project could not be terminated.', true, 'danger');
+                 (error: any) => {
+                   if (error['status'] === 409) {
+                  this.updateNotificationModal(
+                    'Failed',
+                    `The project could not be terminated. Reason: ${error['error']['reason']} for ${error['error']['openstackid']}`,
+                    true,
+                    'danger')
+                   } else {
+                     this.updateNotificationModal('Failed', 'The project could not be terminated.', true, 'danger');
+                   }
 
                  }
       )

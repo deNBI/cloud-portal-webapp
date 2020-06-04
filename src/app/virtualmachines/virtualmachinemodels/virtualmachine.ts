@@ -8,6 +8,7 @@ import {Volume} from '../volumes/volume';
  * Virtualmachine class.
  */
 export class VirtualMachine {
+
   private _flavor: Flavor;
 
   private _image: string;
@@ -32,6 +33,8 @@ export class VirtualMachine {
   private _modes: ImageMode[];
   private _volumes: Volume[];
   private _still_used_confirmation_requested: boolean;
+  private _error_msg: string;
+  private _days_running: number;
 
   constructor(vm: VirtualMachine) {
     this._flavor = vm.flavor;
@@ -62,8 +65,19 @@ export class VirtualMachine {
 
   public calculateCreatedAt(): void {
     if (this.created_at !== '') {
-      this.created_at = new Date(parseInt(this.created_at, 10) * 1000).toLocaleDateString();
+      const date: Date = new Date(parseInt(this.created_at, 10) * 1000);
+
+      this.days_running = Math.round((Date.now() - date.getTime()) / (1000 * 60 * 60 * 24));
+      this.created_at = date.toLocaleDateString();
     }
+  }
+
+  get days_running(): number {
+    return this._days_running;
+  }
+
+  set days_running(value: number) {
+    this._days_running = value;
   }
 
   get still_used_confirmation_requested(): boolean {
@@ -248,6 +262,14 @@ export class VirtualMachine {
 
   set ssh_command(value: string) {
     this._ssh_command = value;
+  }
+
+  get error_msg(): string {
+    return this._error_msg;
+  }
+
+  set error_msg(value: string) {
+    this._error_msg = value;
   }
 
 }
