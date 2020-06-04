@@ -8,6 +8,7 @@ import {Volume} from '../volumes/volume';
  * Virtualmachine class.
  */
 export class VirtualMachine {
+
   private _flavor: Flavor;
 
   private _image: string;
@@ -32,6 +33,7 @@ export class VirtualMachine {
   private _modes: ImageMode[];
   private _volumes: Volume[];
   private _still_used_confirmation_requested: boolean;
+  private _error_msg: string;
   private _days_running: number;
 
   constructor(vm: VirtualMachine) {
@@ -260,6 +262,14 @@ export class VirtualMachine {
 
   set ssh_command(value: string) {
     this._ssh_command = value;
+  }
+
+  get error_msg(): string {
+    return this._error_msg;
+  }
+
+  set error_msg(value: string) {
+    this._error_msg = value;
   }
 
 }

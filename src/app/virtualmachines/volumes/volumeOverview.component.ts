@@ -318,7 +318,14 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
         }
         this.check_status_loop(volume, 0)
       },
-      () => {
+      (error: any) => {
+        if (error['error']['error'] === '409') {
+          volume.error_msg = 'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.';
+          setTimeout( () => {
+                        volume.error_msg = null;
+                      },
+                      5000);
+        }
         this.check_status_loop(volume, 0)
       }
     )
@@ -393,28 +400,41 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
    */
   createAndAttachvolume(volume_name: string, diskspace: number, instance_id: string): void {
     this.volume_action_status = 7;
-    this.vmService.createVolume(volume_name, diskspace.toString(), instance_id).subscribe((newVolume: Volume) => {
-      newVolume.volume_created_by_user = true;
+    this.vmService.createVolume(volume_name, diskspace.toString(), instance_id).subscribe(
+      (newVolume: Volume) => {
+        newVolume.volume_created_by_user = true;
 
-      if (newVolume.volume_openstackid) {
-        newVolume.volume_status = VolumeStates.ATTACHING;
-        this.volumes.push(newVolume);
+        if (newVolume.volume_openstackid) {
+          newVolume.volume_status = VolumeStates.ATTACHING;
+          this.volumes.push(newVolume);
 
-        this.volume_action_status = this.volumeActionStates.ATTACHING;
+          this.volume_action_status = this.volumeActionStates.ATTACHING;
 
-        this.vmService.attachVolumetoServer(newVolume.volume_openstackid, instance_id).subscribe((res: IResponseTemplate) => {
+          this.vmService.attachVolumetoServer(newVolume.volume_openstackid, instance_id).subscribe(
+            (res: IResponseTemplate) => {
 
-          if (res.value === 'attached') {
-            this.volume_action_status = this.volumeActionStates.SUCCESSFULLY_CREATED_ATTACHED;
-          } else {
-            this.volume_action_status = this.volumeActionStates.ERROR;
-          }
-          this.check_status_loop(newVolume, 0)
-        })
-      } else {
-        this.volume_action_status = this.volumeActionStates.ERROR;
-      }
-    })
+              if (res.value === 'attached') {
+                this.volume_action_status = this.volumeActionStates.SUCCESSFULLY_CREATED_ATTACHED;
+              } else {
+                this.volume_action_status = this.volumeActionStates.ERROR;
+              }
+              this.check_status_loop(newVolume, 0)
+            },
+            (error: any) => {
+              if (error['error']['error'] === '409') {
+                newVolume.error_msg = 'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.';
+                setTimeout( () => {
+                              newVolume.error_msg = null;
+                            },
+                            5000);
+              }
+              this.check_status_loop(newVolume, 0);
+            }
+          )
+        } else {
+          this.volume_action_status = this.volumeActionStates.ERROR;
+        }
+      })
 
   }
 
@@ -464,7 +484,14 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
             this.volumes.splice(idx, 1)
           })
         },
-        () => {
+        (error: any) => {
+          if (error['error']['error'] === '409') {
+            volume.error_msg = 'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.';
+            setTimeout( () => {
+                          volume.error_msg = null;
+                        },
+                        5000);
+          }
           this.check_status_loop(volume, 0)
         }
       )
@@ -481,7 +508,14 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
           this.volumes.splice(idx, 1)
 
         },
-        () => {
+        (error: any) => {
+          if (error['error']['error'] === '409') {
+            volume.error_msg = 'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.';
+            setTimeout( () => {
+                          volume.error_msg = null;
+                        },
+                        5000);
+          }
           this.check_status_loop(volume, 0);
         })
     }
@@ -506,7 +540,14 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
         }
         this.check_status_loop(volume, 0)
       },
-      () => {
+      (error: any) => {
+        if (error['error']['error'] === '409') {
+          volume.error_msg = 'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.';
+          setTimeout( () => {
+                        volume.error_msg = null;
+                      },
+                      5000);
+        }
         this.check_status_loop(volume, 0)
       })
   }
@@ -581,6 +622,13 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
         if (volume.volume_openstackid) {
 
           this.checkStatusSubscription.add(this.vmService.getVolumeById(volume.volume_openstackid).subscribe((vol: Volume) => {
+            if (volume.error_msg !== '' && volume.error_msg !== undefined && volume.error_msg !== null) {
+              vol.error_msg = volume.error_msg;
+              setTimeout( () => {
+                            vol.error_msg = null;
+                          },
+                          5000);
+            }
             if (idx > -1) {
               vol.volume_created_by_user = created;
               this.volumes[idx] = vol;
@@ -593,6 +641,13 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
         } else {
           // tslint:disable-next-line:max-line-length
           this.checkStatusSubscription.add(this.vmService.getVolumeByNameAndVmName(volume.volume_name, volume.volume_virtualmachine.name).subscribe((vol: Volume) => {
+            if (volume.error_msg !== '' && volume.error_msg !== undefined && volume.error_msg !== null) {
+              vol.error_msg = volume.error_msg;
+              setTimeout( () => {
+                            vol.error_msg = null;
+                          },
+                          5000);
+            }
             if (idx > -1) {
               vol.volume_created_by_user = created;
               this.volumes[idx] = vol;

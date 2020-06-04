@@ -206,10 +206,10 @@
         </div>
       </div>
 
-      <div class="card"  style=" "*ngIf="this.condaPackages?.length > 0"> <!-- remove "false" as soon as request ist working -->
+      <div class="card"  style=" "*ngIf="condaPackages?.length > 0"> <!-- remove "false" as soon as request ist working -->
         <div class="card-header"><span class="font-weight-bold text-muted">Installed Conda Packages</span></div>
         <div class="card-body">
-          <div class="row" *ngFor="let pkg of this.condaPackages">
+          <div class="row" *ngFor="let pkg of condaPackages">
             <div class="col-4">
               <div class="callout">
                 <small class="text-muted">Package name</small><br>
@@ -245,7 +245,6 @@
             <div class="col-2">
               <div class="callout">
                 <small class="text-muted">Status</small><br>
-
                 <app-volum-status [volume]="vol"></app-volum-status>
               </div>
             </div>
@@ -443,19 +442,20 @@
         </div>
         <div class="modal-body">
           <div class="alert alert-info" role="alert"
-               *ngIf="status_changed == 0 && this.virtualMachine.status !=
-                this.virtualMachineStates.staticSHUTOFF">
-            Stopping {{this.virtualMachine?.name}}... <i class="fa fa-spinner fa-spin"
+               *ngIf="status_changed == 0 && virtualMachine.status !=
+                virtualMachineStates.staticSHUTOFF">
+            Stopping {{virtualMachine?.name}}... <i class="fa fa-spinner fa-spin"
                                                 style="font-size:24px"></i>
           </div>
           <div class="alert alert-success" role="alert"
-               *ngIf="status_changed == 1 || this.virtualMachine?.status == this.virtualMachineStates.staticSHUTOFF"
+               *ngIf="status_changed == 1 || virtualMachine?.status == virtualMachineStates.staticSHUTOFF"
                id="stop_success_div">
-            {{this.virtualMachine?.name}} was successfully stopped.
+            {{virtualMachine?.name}} was successfully stopped.
           </div>
         </div>
         <div class="alert alert-warning" role="alert" *ngIf="status_changed == 2">
-          When stopping {{this.virtualMachine?.name}} an error occurred.
+          When stopping {{virtualMachine?.name}} an error occurred:<br>
+          {{error_msg}}
         </div>
 
 
@@ -512,7 +512,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h4 class="modal-title"><strong>{{reboot_type}}</strong> reboot
-            {{this.virtualMachine?.name}} </h4>
+            {{virtualMachine?.name}} </h4>
 
           <button type="button" class="close" style="cursor:pointer"
                   (click)="rebootResultModal.hide()"
@@ -530,13 +530,14 @@
           <div *ngIf="reboot_done">
             <div class="alert alert-success" role="alert">
 
-              Successfully {{reboot_type}} rebooted {{this.virtualMachine?.name}}.
+              Successfully {{reboot_type}} rebooted {{virtualMachine?.name}}.
             </div>
           </div>
           <div *ngIf="status_check_error">
             <div class="alert alert-warning" role="alert">
 
-              An error occurred when checking the status of {{this.virtualMachine?.name}}.
+              An error occurred when checking the status of {{virtualMachine?.name}}:<br>
+              {{error_msg}}
             </div>
           </div>
         </div>
@@ -569,20 +570,21 @@
         </div>
         <div class="modal-body">
           <div class="alert alert-info" role="alert"
-               *ngIf="status_changed == 0  && this.virtualMachine?.status !==
-               this.virtualMachineStates.staticACTIVE">
-            Starting {{this.virtualMachine?.name}}... <i class="fa fa-spinner fa-spin"
+               *ngIf="status_changed == 0  && virtualMachine?.status !==
+               virtualMachineStates.staticACTIVE">
+            Starting {{virtualMachine?.name}}... <i class="fa fa-spinner fa-spin"
                                                 style="font-size:24px"></i>
           </div>
           <div class="alert alert-success" role="alert"
                *ngIf="status_changed == 1  ||
-               this.virtualMachine?.status == this.virtualMachineStates.staticACTIVE"
+               virtualMachine?.status == virtualMachineStates.staticACTIVE"
                id="resume_success_div">
-            {{this.virtualMachine?.name}} was successfully started.
+            {{virtualMachine?.name}} was successfully started.
           </div>
         </div>
         <div class="alert alert-warning" role="alert" *ngIf="status_changed == 2">
-          When starting {{this.virtualMachine?.name}} an error occurred.
+          When starting {{virtualMachine?.name}} an error occurred:<br>
+          {{error_msg}}
         </div>
 
 
@@ -614,16 +616,17 @@
         </div>
         <div class="modal-body">
           <div class="alert alert-info" role="alert" *ngIf="status_changed == 0">
-            Deleting {{this.virtualMachine?.name}}... <i class="fa fa-spinner fa-spin"
+            Deleting {{virtualMachine?.name}}... <i class="fa fa-spinner fa-spin"
                                                 style="font-size:24px"></i>
           </div>
           <div class="alert alert-success" role="alert" *ngIf="status_changed == 1"
                id="delete_success_div">
-            {{this.virtualMachine?.name}} was succesfully deleted.
+            {{virtualMachine?.name}} was succesfully deleted.
           </div>
         </div>
         <div class="alert alert-warning" role="alert" *ngIf="status_changed == 2">
-          When deleting {{this.virtualMachine?.name}} an error occured.
+          When deleting {{virtualMachine?.name}} an error occured:<br>
+          {{error_msg}}
         </div>
 
 
@@ -654,7 +657,7 @@
         </div>
         <div class="modal-body">
           <div class="alert alert-warning" role="alert">
-            Are you sure you want to delete {{this.virtualMachine?.name}}?
+            Are you sure you want to delete {{virtualMachine?.name}}?
           </div>
 
         </div>
@@ -757,7 +760,8 @@
           </div>
           <div class="alert alert-danger" role="alert"
                *ngIf="snapshotDone != 'true' && snapshotDone != 'Waiting'">
-            An error occured when creating the snapshot.
+            An error occured when creating the snapshot:<br>
+            {{error_msg}}
 
             <pre>{{snapshotDone}}</pre>
           </div>
@@ -781,7 +785,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Choose Reboot Type for: {{this.virtualMachine?.name}}</h4>
+          <h4 class="modal-title">Choose Reboot Type for: {{virtualMachine?.name}}</h4>
           <button type="button" class="close" style="cursor:pointer"
                   (click)="chooseRebootOptionModal.hide();" aria-label="Close">
             <span aria-hidden="true">&times;</span>
@@ -790,14 +794,14 @@
 
         <div class="modal-body">
           <div class="row" style="margin:auto; text-align:left; padding: 5px;">The following Reboot types are available
-            for machine {{this.virtualMachine?.name}}:
+            for machine {{virtualMachine?.name}}:
           </div>
           <div class="row" style="margin:5px; text-align: center; padding: 10px;">
             <div class="col-md-6">
               <button type="button" class="btn btn-primary"
-                      *ngIf="this.virtualMachine?.status != this.virtualMachineStates.staticDELETED &&
-                      this.virtualMachine?.status != this.virtualMachineStates.staticSHUTOFF &&
-                       this.virtualMachine?.client.features['VM_REBOOT']"
+                      *ngIf="virtualMachine?.status != virtualMachineStates.staticDELETED &&
+                      virtualMachine?.status != virtualMachineStates.staticSHUTOFF &&
+                       virtualMachine?.client.features['VM_REBOOT']"
                       id="softRebootVM"
                       (click)="status_check_error=false;reboot_done=false;reboot_type='SOFT';chooseRebootOptionModal.hide();rebootModal.show();">
                 Soft Reboot
@@ -806,8 +810,8 @@
             <div class="col-md-6">
               <button type="button" class="btn btn-primary"
                       id="hardRebootVM"
-                      *ngIf="this.virtualMachine?.status != this.virtualMachineStates.staticDELETED &&
-                      this.virtualMachine.client.features['VM_REBOOT']"
+                      *ngIf="virtualMachine?.status != virtualMachineStates.staticDELETED &&
+                      virtualMachine.client.features['VM_REBOOT']"
                       (click)="status_check_error=false;reboot_done=false;reboot_type='HARD'; chooseRebootOptionModal.hide(); rebootModal.show();"
               >
                 Hard Reboot
@@ -839,7 +843,7 @@
         </div>
         <div class="modal-body">
           <div class="alert alert-warning" role="alert">
-            Are you sure you want to stop {{this.virtualMachine?.name}}?
+            Are you sure you want to stop {{virtualMachine?.name}}?
           </div>
 
         </div>
@@ -871,7 +875,7 @@
         </div>
         <div class="modal-body">
           <div class="alert alert-warning" role="alert">
-            Are you sure you want to restart {{this.virtualMachine?.name}}?
+            Are you sure you want to restart {{virtualMachine?.name}}?
           </div>
 
         </div>
@@ -997,7 +1001,7 @@
         </button>
 
         <button class="btn  btn-danger col-md-4" type="reset"
-                (click)="volume_to_attach == undefined;attachModal.hide();">Cancel
+                (click)="volume_to_attach = undefined;attachModal.hide();">Cancel
         </button>
       </div>
     </div><!-- /.modal-content -->
