@@ -101,7 +101,8 @@ export class VirtualmachineService {
   }
 
   getAllVM(page: number, vm_per_site: number, filter?: string,
-           filter_status?: string[], filter_cluster: boolean = false): Observable<VirtualMachine[]> {
+           filter_status?: string[], filter_cluster: boolean = false,
+           filter_set_for_termination: boolean = false): Observable<VirtualMachine[]> {
     let params: HttpParams = new HttpParams().set('page', page.toString()).set('vm_per_site', vm_per_site.toString());
     if (filter) {
       params = params.append('filter', filter);
@@ -113,6 +114,10 @@ export class VirtualmachineService {
     }
     if (filter_cluster) {
       params = params.append('filter_cluster', 'true');
+
+    }
+    if (filter_set_for_termination) {
+      params = params.append('filter_set_for_termination', 'true');
 
     }
 
@@ -131,7 +136,8 @@ export class VirtualmachineService {
   }
 
   getVmsFromLoggedInUser(page: number, vm_per_site: number, filter?: string,
-                         filter_status?: string[], filter_cluster: boolean = false): Observable<VirtualMachine[]> {
+                         filter_status?: string[], filter_cluster: boolean = false,
+                         filter_set_for_termination: boolean = false): Observable<VirtualMachine[]> {
     let params: HttpParams = new HttpParams().set('page', page.toString()).set('vm_per_site', vm_per_site.toString());
 
     if (filter) {
@@ -144,6 +150,10 @@ export class VirtualmachineService {
     }
     if (filter_cluster) {
       params = params.append('filter_cluster', 'true');
+
+    }
+    if (filter_set_for_termination) {
+      params = params.append('filter_set_for_termination', 'true');
 
     }
 
@@ -171,7 +181,8 @@ export class VirtualmachineService {
   getVmsFromFacilitiesOfLoggedUser(facility_id: string | number,
                                    page: number, vm_per_site: number,
                                    filter?: string, filter_status?: string[],
-                                   filter_cluster: boolean = false): Observable<VirtualMachine[]> {
+                                   filter_cluster: boolean = false,
+                                   filter_set_for_termination: boolean = false): Observable<VirtualMachine[]> {
     let params: HttpParams = new HttpParams().set('page', page.toString()).set('vm_per_site', vm_per_site.toString());
     if (filter) {
       params = params.set('filter', filter);
@@ -183,6 +194,10 @@ export class VirtualmachineService {
     }
     if (filter_cluster) {
       params = params.append('filter_cluster', 'true');
+
+    }
+    if (filter_set_for_termination) {
+      params = params.append('filter_set_for_termination', 'true');
 
     }
 
