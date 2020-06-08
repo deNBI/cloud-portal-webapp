@@ -88,6 +88,12 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
    */
   modification_status: number = 0;
 
+  /**
+   * defines weither the request is an extension (1), modification (2) or credit (3) request.
+   * @type {number}, initialized with 0
+   */
+  request_type: number = 0;
+
   newDoi: string;
   remove_members_clicked: boolean;
   life_time_string: string;
@@ -190,7 +196,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
                                                     this.totalRAM, lifetime,
                                                     this.project_application.project_application_id.toString()).subscribe(
       (credits: number) => {
-        this.project_application.projectapplicationrenewal.project_application_renewal_credits = credits;
+        this.project_application.project_application_extension.project_application_extension_credits = credits;
       })
 
   }
@@ -349,11 +355,12 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
           }
 
           this.project_application = new Application(aj);
-          if (!this.project_application.projectapplicationrenewal) {
-            this.project_application.inititatenExtension();
+          if (!this.project_application.project_application_extension) {
+            this.project_application.inititateExtension();
           }
           if (this.project_application.project_application_perun_id) {
-          this.startUpdateCreditUsageLoop(); }
+            this.startUpdateCreditUsageLoop();
+          }
 
           if (this.project_application) {
             this.setLifetime();
@@ -385,11 +392,13 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
    * @param {NgForm} form
    * @param {boolean} isExtraCreditsApplication: whether or not only extra credits are applied for
    */
-  onSubmit(form: NgForm, isExtraCreditsApplication: boolean, isExtension: boolean): void {
-    if (isExtraCreditsApplication) {
-      this.project_application.projectapplicationrenewal.is_only_extra_credits_application = isExtraCreditsApplication;
-      this.project_application.projectapplicationrenewal.project_application_renewal_comment = form.controls['project_application_extra_credits_comment'].value;
-      this.project_application.projectapplicationrenewal.project_application_renewal_credits = form.controls['project_application_extra_credits'].value;
+  onSubmit(form: NgForm): void {
+    if (this.request_type == 3) {
+      this.project_application.project_application_extension.is_only_extra_credits_application = true;
+      this.project_application.project_application_extension.project_application_extension_comment =
+        form.controls['project_application_extra_credits_comment'].value;
+      this.project_application.project_application_extension.project_application_extension_credits =
+        form.controls['project_application_extra_credits'].value;
     }
 
     this.requestExtension();
@@ -397,7 +406,12 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   }
 
   public requestExtension(): void {
-    this.applicationsservice.requestRenewal(this.project_application.projectapplicationrenewal)
+    /**
+     * TODO: different api-requests
+     * for any type of requests(credits, modification, extension)
+     */
+
+    this.applicationsservice.requestExtension(this.project_application.project_application_extension)
       .subscribe((result: { [key: string]: string }) => {
         if (result['Error']) {
           this.extension_status = 2
@@ -826,7 +840,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
           }
 
           this.valuesToConfirm.push(this.matchString(key.toString(), form.controls[key].value.toString()));
-
         }
       }
 
@@ -1034,7 +1047,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   }
 
   onChangeFlavor(flavor: Flavor, value: number): void {
-    this.project_application.projectapplicationrenewal.setFlavorInFlavors(flavor, value)
+    this.project_application.project_application_modification.setFlavorInFlavors(flavor, value)
 
     this.checkIfMinVmIsSelected();
   }

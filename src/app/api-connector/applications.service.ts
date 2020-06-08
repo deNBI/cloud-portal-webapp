@@ -6,6 +6,7 @@ import {Cookie} from 'ng2-cookies/ng2-cookies';
 import {EdamOntologyTerm} from '../applications/edam-ontology-term';
 import {Application} from '../applications/application.model/application.model';
 import {ApplicationExtension} from '../applications/application_extension.model';
+import {ApplicationModification} from "../applications/application_modification.model";
 
 const header: HttpHeaders = new HttpHeaders({
                                               'X-CSRFToken': Cookie.get('csrftoken'),
@@ -119,7 +120,7 @@ export class ApplicationsService {
 
   }
 
-  requestRenewal(extension: ApplicationExtension): Observable<any> {
+  requestExtension(extension: ApplicationExtension): Observable<any> {
 
     return this.http.post(`${ApiSettings.getApiBaseURL()}applicationRenewals/`, extension, {
       headers: header,
@@ -127,6 +128,11 @@ export class ApplicationsService {
     })
 
   }
+
+  requestModification(modification: ApplicationModification): Observable<any> {
+    return null;
+  }
+
 
   approveRenewal(application_id: number | string): Observable<any> {
 

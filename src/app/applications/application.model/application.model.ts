@@ -4,6 +4,7 @@ import {ApplicationDissemination} from '../application-dissemination';
 import {EdamOntologyTerm} from '../edam-ontology-term';
 import {Flavor} from '../../virtualmachines/virtualmachinemodels/flavor';
 import {Application_States} from '../../shared/shared_modules/baseClass/abstract-base-class';
+import {ApplicationModification} from "../application_modification.model";
 
 /**
  * User Class.
@@ -73,7 +74,8 @@ export class Application {
   private _ComputeCenter: ComputecenterComponent;
   private _project_application_openstack_project: boolean;
   private _DaysRunning: number;
-  private _projectapplicationrenewal: ApplicationExtension = null;
+  private _project_application_extension: ApplicationExtension = null;
+  private _project_application_modification: ApplicationModification = null;
   private _project_application_perun_id: number | string;
   private _project_application_total_cores: number;
   private _project_application_total_ram: number;
@@ -117,8 +119,8 @@ export class Application {
       this._ComputeCenter = aj.ComputeCenter;
       this._project_application_openstack_project = aj.project_application_openstack_project;
       this._DaysRunning = aj.DaysRunning;
-      if (aj.projectapplicationrenewal) {
-        this._projectapplicationrenewal = new ApplicationExtension(aj.projectapplicationrenewal);
+      if (aj.project_application_extension) {
+        this._project_application_extension = new ApplicationExtension(aj.project_application_extension);
       }
       this._project_application_perun_id = aj.project_application_perun_id;
       this._project_application_total_cores = aj.project_application_total_cores;
@@ -145,22 +147,19 @@ export class Application {
     }
   }
 
-  public inititatenExtension(): void {
-    this._projectapplicationrenewal = new ApplicationExtension(null);
-    this._projectapplicationrenewal.project_application_id = this._project_application_id;
-    this._projectapplicationrenewal.project_application_renewal_lifetime = 0;
-    this._projectapplicationrenewal.project_application_renewal_vms_requested = this._project_application_vms_requested;
-    this._projectapplicationrenewal.project_application_renewal_volume_limit = this._project_application_volume_limit;
-    this._projectapplicationrenewal.project_application_renewal_volume_counter = this._project_application_volume_counter;
-    this._projectapplicationrenewal.project_application_renewal_object_storage = this._project_application_object_storage;
-    this._projectapplicationrenewal.project_application_renewal_comment = '';
-    this._projectapplicationrenewal.project_application_renewal_total_cores = this._project_application_total_cores;
-    this._projectapplicationrenewal.project_application_renewal_total_ram = this._project_application_total_ram;
-    this._projectapplicationrenewal.project_application_renewal_credits = 0;
-    this._projectapplicationrenewal.is_only_extra_credits_application = false;
-    // tslint:disable-next-line:max-line-length
-    this._projectapplicationrenewal.project_application_renewal_cloud_service_user_number = this._project_application_cloud_service_user_number;
-    this._projectapplicationrenewal.flavors = this.flavors;
+  public inititateExtension(): void {
+    this._project_application_extension = new ApplicationExtension(null);
+    this._project_application_extension.project_application_id = this._project_application_id;
+    this._project_application_extension.project_application_extension_lifetime = 0;
+    this._project_application_extension.project_application_extension_comment = '';
+    this._project_application_extension.project_application_extension_credits = 0;
+    this._project_application_extension.is_only_extra_credits_application = false;
+    this._project_application_extension.project_application_extension_cloud_service_user_number =
+      this._project_application_cloud_service_user_number;
+  }
+
+  public inititateModification(): void {
+    //TODO: Fill initialization
   }
 
   private setDaysRunning(): void {
@@ -170,6 +169,7 @@ export class Application {
       this._DaysRunning = Math.ceil((Math.abs(Date.now() - new Date(this.project_application_date_approved).getTime())) / (1000 * 3600 * 24));
     }
   }
+
 
   public addEdamTerm(term: EdamOntologyTerm): void {
     if (this.project_application_edam_terms.indexOf(term) === -1) {
@@ -335,12 +335,12 @@ export class Application {
     this._project_application_total_ram = value;
   }
 
-  get projectapplicationrenewal(): ApplicationExtension {
-    return this._projectapplicationrenewal;
+  get project_application_extension(): ApplicationExtension {
+    return this._project_application_extension;
   }
 
-  set projectapplicationrenewal(value: ApplicationExtension) {
-    this._projectapplicationrenewal = value;
+  set project_application_extension(value: ApplicationExtension) {
+    this._project_application_extension = value;
   }
 
   get DaysRunning(): number {
@@ -528,8 +528,9 @@ export class Application {
   }
 
   get TotalExtensionCredits(): number {
-    if (this.projectapplicationrenewal != null) {
-      return Number(this.project_application_initial_credits) + Number(this.projectapplicationrenewal.project_application_renewal_credits)
+    if (this.project_application_extension != null) {
+      return Number(this.project_application_initial_credits) +
+        Number(this.project_application_extension.project_application_extension_credits)
     } else {
       return this.project_application_initial_credits
     }
@@ -541,5 +542,13 @@ export class Application {
 
   set project_application_cloud_service_develop(value: boolean) {
     this._project_application_cloud_service_develop = value;
+  }
+
+  get project_application_modification(): ApplicationModification {
+    return this._project_application_modification;
+  }
+
+  set project_application_modification(value: ApplicationModification) {
+    this._project_application_modification = value;
   }
 }

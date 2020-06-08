@@ -124,28 +124,31 @@
             <div class="btn-group col-12">
               <button
                 id="remove_application_button"
-                *ngIf="project_application?.project_application_status == application_states.SUBMITTED || project_application?.project_application_status == application_states.DECLINED"
+                *ngIf="project_application?.project_application_status == application_states.SUBMITTED
+                || project_application?.project_application_status == application_states.DECLINED"
                 (click)="deleteModal.show();"
                 type="button" style="margin-bottom:5px;"
                 class="btn btn-danger">
                 Remove Application
               </button>
               <button id="show_credits_extension_modal"
-                      *ngIf="(project_application?.project_application_status == application_states.APPROVED || project_application?.project_application_status == application_states.MODIFICATION_DECLINED) && is_vo_admin"
+                      *ngIf="(project_application?.project_application_status == application_states.APPROVED
+                      || project_application?.project_application_status == application_states.MODIFICATION_DECLINED) && is_vo_admin"
                       (click)="newFlavors= {};initExampleFlavors();creditsExtensionModal.show()"
                       class="btn btn-success"
                       type="button" style="margin-bottom:5px;margin-right:5px">
                 Request More Credits
               </button>
               <button id="show_extension_modal"
-                      *ngIf="project_application?.project_application_status == application_states.APPROVED || project_application?.project_application_status == application_states.MODIFICATION_DECLINED"
-                      (click)="newFlavors= {};selected_ontology_terms=[];calculateCredits(f.controls.project_application_renewal_lifetime?.value);doiQuestionModal.show()"
-                      class="btn btn-warning"
-                      type="button" style="margin-bottom:5px;margin-right:5px;">
+                      *ngIf="project_application?.project_application_status == application_states.APPROVED
+                      || project_application?.project_application_status == application_states.MODIFICATION_DECLINED"
+                      (click)="newFlavors= {};selected_ontology_terms=[];doiQuestionModal.show();"
+                      class="btn btn-warning" type="button" style="margin-bottom:5px;margin-right:5px;">
                 Request Extension/Modification
               </button>
               <button id="show_termination_modal"
-                      *ngIf="project_application?.project_application_status == application_states.APPROVED || project_application?.project_application_status == application_states.MODIFICATION_DECLINED"
+                      *ngIf="project_application?.project_application_status == application_states.APPROVED
+                      || project_application?.project_application_status == application_states.MODIFICATION_DECLINED"
                       (click)="terminateModal.show()"
                       class="btn btn-danger"
                       type="button" style="margin-bottom:5px;">
@@ -177,7 +180,9 @@
     </div>
 
     <div class="col"
-         *ngIf="project && (project?.UserIsPi ||project?.UserIsAdmin)  && project_application?.project_application_status != application_states.TERMINATED  && project_application?.project_application_status != application_states.DECLINED ">
+         *ngIf="project && (project?.UserIsPi ||project?.UserIsAdmin)
+         && project_application?.project_application_status != application_states.TERMINATED
+         && project_application?.project_application_status != application_states.DECLINED ">
 
       <div class="card" style=" ">
         <div class="card-header">
@@ -1037,8 +1042,8 @@
             By submitting this application you agree to the cloud usage policy.
           </div>
           <button type="button" class="btn  btn-primary"
-                  form="modificationForm" id="submit_renewal_btn"
-                  (click)="extension_request=true;filterEnteredData(modifiationForm);
+                  form="modificationForm" id="submit_modification_btn"
+                  (click)="extension_request=true;request_type=2;filterEnteredData(modificationForm);
                   calculateCredits(modificationForm.controls.project_application_renewal_lifetime?.value);
                   submitModal.show(); setModalOpen(true);"
                   [disabled]="modificationForm.invalid"><i class="fa fa-dot-circle-o"></i>
@@ -1272,7 +1277,7 @@
           </div>
           <button type="button" class="btn  btn-primary"
                   form="extensionForm" id="submit_extension_btn"
-                  (click)="extension_request=true;filterEnteredData(extensionForm);
+                  (click)="extension_request=true;request_type=1;filterEnteredData(extensionForm);
                   calculateCredits(extensionForm.controls.project_application_renewal_lifetime?.value);
                   submitModal.show(); setModalOpen(true);"
                   [disabled]="extensionForm.invalid || (!project_application?.project_application_edam_terms && selected_ontology_terms.length < 1)"><i
@@ -1320,8 +1325,8 @@
                           placeholder=''
                           [(ngModel)]="project_application_extra_credits_comment" minlength="10"
                           [ngClass]="{
-                                'is-invalid': f2.controls.project_application_extra_credits_comment?.invalid && (f2.controls.project_application_extra_credits_comment?.dirty || f.controls.project_application_extra_credits_comment?.touched),
-                                'is-valid': f2.controls.project_application_extra_credits_comment?.valid && (f2.controls.project_application_extra_credits_comment?.dirty || f.controls.project_application_extra_credits_comment?.touched)
+                                'is-invalid': f2.controls.project_application_extra_credits_comment?.invalid && (f2.controls.project_application_extra_credits_comment?.dirty || f2.controls.project_application_extra_credits_comment?.touched),
+                                'is-valid': f2.controls.project_application_extra_credits_comment?.valid && (f2.controls.project_application_extra_credits_comment?.dirty || f2.controls.project_application_extra_credits_comment?.touched)
                                 }"
                           ></textarea>
               <span class="help-block">Please state why you need extra credits.</span>
@@ -1387,8 +1392,9 @@
           </div>
           <button type="button" class="btn  btn-primary"adm
                   form="credits_application_form" id="submit_extra_credits_btn"
-                  (click)="filterEnteredData(f2);onSubmit(f2, true, false);extension_request=true;creditsExtensionModal.hide()"
-                  [disabled]="f2.invalid"><i
+                  (click)="request_type=3;filterEnteredData(f2);
+                  onSubmit(f2, true, false);
+                  extension_request=true;creditsExtensionModal.hide()" [disabled]="f2.invalid"><i
             class="fa fa-dot-circle-o">
 
           </i>
@@ -1453,10 +1459,22 @@
       <div class="modal-footer">
 
 
-        <button id="submit_modal_btn" class="btn btn-success col-md4" type="button"
-                (click)="extensionModal.hide(); submitModal.hide(); resultModal.show(); onSubmit(f);">Confirm Application
+        <button id="confirm_extension_btn" class="btn btn-success col-md-4" type="button"
+                *ngIf="request_type==1"
+                (click)="submitModal.hide(); resultModal.show();
+                onSubmit(extensionForm);">Confirm Application
         </button>
-        <button class="btn  btn-primary col-md-4" type="reset"
+        <button id="confirm_modification_btn" class="btn btn-success col-md-4" type="button"
+                *ngIf="request_type==2"
+                (click)="submitModal.hide(); resultModal.show();
+                onSubmit(modificationForm);">Confirm Application
+        </button>
+        <button id="confirm_credits_btn" class="btn btn-success col-md-4" type="button"
+                *ngIf="request_type==3"
+                (click)="creditsExtensionModal.hide(); submitModal.hide(); resultModal.show();
+                onSubmit(f2);">Confirm Application
+        </button>
+        <button class="btn btn-primary col-md-4" type="reset"
                 (click)="submitModal.hide();">Cancel
         </button>
 
@@ -1510,7 +1528,7 @@
                            pattern="10.\d{4,9}\/[-._;()\/:a-zA-Z0-9]+" [(ngModel)]="newDoi" #doiInput></td>
 
                 <td>
-                  <button id="add_doi_btn"
+                  <button id="add_doi_btn_in_modal"
                           (click)="addDoi();"
                           [disabled]="!doiInput.validity.valid"
                           type="button"
