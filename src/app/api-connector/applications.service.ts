@@ -7,6 +7,7 @@ import {EdamOntologyTerm} from '../applications/edam-ontology-term';
 import {Application} from '../applications/application.model/application.model';
 import {ApplicationExtension} from '../applications/application_extension.model';
 import {ApplicationModification} from "../applications/application_modification.model";
+import {ApplicationCreditRequest} from "../applications/application_credit_request";
 
 const header: HttpHeaders = new HttpHeaders({
                                               'X-CSRFToken': Cookie.get('csrftoken'),
@@ -130,6 +131,10 @@ export class ApplicationsService {
   }
 
   requestModification(modification: ApplicationModification): Observable<any> {
+    return null;
+  }
+
+  requestAdditionalCredits(creditRequest: ApplicationCreditRequest): Observable<any> {
     return null;
   }
 

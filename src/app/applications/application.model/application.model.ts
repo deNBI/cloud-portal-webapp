@@ -70,7 +70,7 @@ export class Application {
   private _project_application_date_status_changed: string;
   private _project_application_user: User;
   private _project_application_pi: User = new User();
-  private _project_application_status: number;
+  private _project_application_status: [number];
   private _ComputeCenter: ComputecenterComponent;
   private _project_application_openstack_project: boolean;
   private _DaysRunning: number;
@@ -163,7 +163,7 @@ export class Application {
   }
 
   private setDaysRunning(): void {
-    if (this._project_application_status === Application_States.APPROVED
+    if (this._project_application_status.includes(Application_States.APPROVED)
     ) {
       // tslint:disable-next-line:max-line-length
       this._DaysRunning = Math.ceil((Math.abs(Date.now() - new Date(this.project_application_date_approved).getTime())) / (1000 * 3600 * 24));
@@ -479,12 +479,12 @@ export class Application {
     this._project_application_date_status_changed = value;
   }
 
-  get project_application_status(): number {
+  get project_application_status(): [number] {
     return this._project_application_status;
   }
 
-  set project_application_status(value: number) {
-    this._project_application_status = value;
+  set project_application_status(values: [number]) {
+    this._project_application_status = values;
   }
 
   get project_application_perun_id(): number | string {
