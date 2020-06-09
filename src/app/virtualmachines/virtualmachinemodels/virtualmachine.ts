@@ -72,6 +72,15 @@ export class VirtualMachine {
     }
   }
 
+  setErrorMsgWithTimeout(msg: string, timeout: number = 10000): void {
+    this._error_msg = msg;
+    setTimeout(() => {
+                 this._error_msg = null;
+               },
+               timeout);
+
+  }
+
   get days_running(): number {
     return this._days_running;
   }

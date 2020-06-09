@@ -98,8 +98,8 @@ export class SnapshotOverviewComponent implements OnInit {
    * Get snapshots by user.
    */
   getSnapshots(): void {
-    this.snapshots = [];
     this.imageService.getSnapshotsByUser(this.currentPage, this.items_per_page).subscribe((result: any) => {
+      this.snapshots = [];
       this.snapshots = result['snapshot_list'];
       this.total_items = result['total_items'];
       this.items_per_page = result['items_per_page'];
@@ -176,21 +176,26 @@ export class SnapshotOverviewComponent implements OnInit {
    * Delete snapshot.
    * @param {string} snapshot_id
    */
-  deleteSnapshot(snapshot_id: string): void {
-    this.imageService.deleteSnapshot(snapshot_id).subscribe((result: IResponseTemplate) => {
+  deleteSnapshot(snapshot: SnapshotModel): void {
+    this.imageService.deleteSnapshot(snapshot.snapshot_openstackid).subscribe((result: IResponseTemplate) => {
 
       this.delete_status = 0;
 
       if (<boolean><Boolean>result.value) {
         this.delete_status = 1;
+        const idx: number = this.snapshots.indexOf(snapshot)
+
+        this.snapshots.splice(idx, 1);
       } else if (result.value) {
         this.delete_status = 3;
+        this.getSnapshots();
 
       } else {
         this.delete_status = 2;
+        this.getSnapshots();
+
       }
 
-      this.getSnapshots();
     })
 
   }
@@ -273,7 +278,7 @@ export class SnapshotOverviewComponent implements OnInit {
 
   deleteSelectedSnapshots(): void {
     this.checked_snapshots.forEach((snap: SnapshotModel) => {
-      this.deleteSnapshot(snap.snapshot_openstackid)
+      this.deleteSnapshot(snap)
 
     });
     this.uncheckAll()

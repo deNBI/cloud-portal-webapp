@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Userinfo} from './userinfo.model'
 import {ApiSettings} from '../api-connector/api-settings.service'
 import {KeyService} from '../api-connector/key.service';
@@ -6,6 +6,7 @@ import {UserService} from '../api-connector/user.service';
 import {GroupService} from '../api-connector/group.service';
 import {IResponseTemplate} from '../api-connector/response-template';
 import {forkJoin} from 'rxjs/index';
+import {environment} from '../../environments/environment';
 
 /**
  * UserInformation component.
@@ -76,6 +77,8 @@ export class UserInfoComponent implements OnInit {
 
     })
   }
+
+
 
   ngOnInit(): void {
     this.getUserinfo();
