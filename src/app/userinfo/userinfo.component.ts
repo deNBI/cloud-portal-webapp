@@ -78,8 +78,6 @@ export class UserInfoComponent implements OnInit {
     })
   }
 
-
-
   ngOnInit(): void {
     this.getUserinfo();
     this.isFreemiumActive();

@@ -248,7 +248,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
       (error1: any) => {
         this.status_changed = 2;
         if (error1['error']['error'] === '409') {
-          vm.setErrorMsgWithTimeout(this.SNAPSHOT_CREATING_ERROR_MSG,this.ERROR_TIMER);
+          vm.setErrorMsgWithTimeout(this.SNAPSHOT_CREATING_ERROR_MSG, this.ERROR_TIMER);
         }
       }
     )
@@ -273,7 +273,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
       (error1: any) => {
         this.status_changed = 2;
         if (error1['error']['error'] === '409') {
-                   vm.setErrorMsgWithTimeout(this.SNAPSHOT_CREATING_ERROR_MSG,this.ERROR_TIMER);}
+                   vm.setErrorMsgWithTimeout(this.SNAPSHOT_CREATING_ERROR_MSG, this.ERROR_TIMER); }
 
       })
   }
@@ -385,7 +385,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
         this.status_changed = 2;
         this.checkStatus(vm);
         if (error1['status'] === 409) {
-                   vm.setErrorMsgWithTimeout(this.SNAPSHOT_CREATING_ERROR_MSG,this.ERROR_TIMER);
+                   vm.setErrorMsgWithTimeout(this.SNAPSHOT_CREATING_ERROR_MSG, this.ERROR_TIMER);
 
         }
       }))
@@ -414,7 +414,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
         this.status_check_error = true;
         this.status_changed = 2;
         if (error1['error']['error'] === '409') {
-                   vm.setErrorMsgWithTimeout(this.SNAPSHOT_CREATING_ERROR_MSG,this.ERROR_TIMER);
+                   vm.setErrorMsgWithTimeout(this.SNAPSHOT_CREATING_ERROR_MSG, this.ERROR_TIMER);
 
         }
       })
@@ -528,7 +528,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
         (error1: any) => {
           this.status_changed = 2;
           if (error1['error']['error'] === '409') {
-                    vm.setErrorMsgWithTimeout(this.SNAPSHOT_CREATING_ERROR_MSG,this.ERROR_TIMER);
+                    vm.setErrorMsgWithTimeout(this.SNAPSHOT_CREATING_ERROR_MSG, this.ERROR_TIMER);
 
           }
         }
@@ -712,7 +712,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
       (error1: any) => {
         this.status_changed = 2;
         if (error1['error']['error'] === '409') {
-                   vm.setErrorMsgWithTimeout(this.SNAPSHOT_CREATING_ERROR_MSG,this.ERROR_TIMER);
+                   vm.setErrorMsgWithTimeout(this.SNAPSHOT_CREATING_ERROR_MSG, this.ERROR_TIMER);
 
         }
       })
@@ -801,7 +801,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
         this.snapshotDone = 'error';
         this.status_changed = 2;
         if (error1['error']['error'] === '409') {
-                    vm.setErrorMsgWithTimeout(this.SNAPSHOT_CREATING_ERROR_MSG,this.ERROR_TIMER);
+                    vm.setErrorMsgWithTimeout(this.SNAPSHOT_CREATING_ERROR_MSG, this.ERROR_TIMER);
 
         }
       })
