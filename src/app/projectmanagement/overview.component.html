@@ -10,7 +10,8 @@
   <div class="row">
 
     <div class="col-12"
-         *ngIf="project && project_application?.project_application_status != application_states.TERMINATED  && project_application?.project_application_status != application_states.DECLINED ">
+         *ngIf="project && !project_application?.project_application_status.includes(application_states.TERMINATED)
+         && !project_application?.project_application_status.includes(application_states.DECLINED)">
 
 
       <div class="card" style=" ">
@@ -124,31 +125,31 @@
             <div class="btn-group col-12">
               <button
                 id="remove_application_button"
-                *ngIf="project_application?.project_application_status == application_states.SUBMITTED
-                || project_application?.project_application_status == application_states.DECLINED"
+                *ngIf="project_application?.project_application_status.includes(application_states.SUBMITTED)
+                || project_application?.project_application_status.includes(application_states.DECLINED)"
                 (click)="deleteModal.show();"
                 type="button" style="margin-bottom:5px;"
                 class="btn btn-danger">
                 Remove Application
               </button>
               <button id="show_credits_extension_modal"
-                      *ngIf="(project_application?.project_application_status == application_states.APPROVED
-                      || project_application?.project_application_status == application_states.MODIFICATION_DECLINED) && is_vo_admin"
+                      *ngIf="(project_application?.project_application_status.includes(application_states.APPROVED)
+                      || project_application?.project_application_status.includes(application_states.MODIFICATION_DECLINED) && is_vo_admin)"
                       (click)="newFlavors= {};initExampleFlavors();creditsExtensionModal.show()"
                       class="btn btn-success"
                       type="button" style="margin-bottom:5px;margin-right:5px">
                 Request More Credits
               </button>
               <button id="show_extension_modal"
-                      *ngIf="project_application?.project_application_status == application_states.APPROVED
-                      || project_application?.project_application_status == application_states.MODIFICATION_DECLINED"
+                      *ngIf="project_application?.project_application_status.includes(application_states.APPROVED)
+                      || project_application?.project_application_status.includes(application_states.MODIFICATION_DECLINED)"
                       (click)="newFlavors= {};selected_ontology_terms=[];doiQuestionModal.show();"
                       class="btn btn-warning" type="button" style="margin-bottom:5px;margin-right:5px;">
                 Request Extension/Modification
               </button>
               <button id="show_termination_modal"
-                      *ngIf="project_application?.project_application_status == application_states.APPROVED
-                      || project_application?.project_application_status == application_states.MODIFICATION_DECLINED"
+                      *ngIf="project_application?.project_application_status.includes(application_states.APPROVED)
+                      || project_application?.project_application_status.includes(application_states.MODIFICATION_DECLINED)"
                       (click)="terminateModal.show()"
                       class="btn btn-danger"
                       type="button" style="margin-bottom:5px;">
@@ -168,7 +169,7 @@
           </div>
 
           <div class="alert alert-info" style="margin-top:15px;"
-               *ngIf="project_application?.project_application_status == application_states.APPROVED">
+               *ngIf="project_application?.project_application_status.includes(application_states.APPROVED)">
             <p>You can find more information about modification requestes
               <a href="https://cloud.denbi.de/wiki/portal/modification/" target="_blank">here</a>.</p>
             <p *ngIf="is_vo_admin">Information about credits are coming soon.</p>
@@ -181,8 +182,8 @@
 
     <div class="col"
          *ngIf="project && (project?.UserIsPi ||project?.UserIsAdmin)
-         && project_application?.project_application_status != application_states.TERMINATED
-         && project_application?.project_application_status != application_states.DECLINED ">
+         && !project_application?.project_application_status.includes(application_states.TERMINATED)
+         && !project_application?.project_application_status.includes(application_states.DECLINED)">
 
       <div class="card" style=" ">
         <div class="card-header">
@@ -245,7 +246,10 @@
   </div>
   <div class="row">
     <div class="col"
-         *ngIf="project && (project_application?.project_application_status ==  application_states.APPROVED || project_application?.project_application_status ==  application_states.MODIFICATION_REQUESTED  || project_application?.project_application_status ==  application_states.MODIFICATION_DECLINED || project_application?.project_application_status ==  application_states.MODIFICATION_DECLINED)">
+         *ngIf="project && (project_application?.project_application_status.includes(application_states.APPROVED)
+         || project_application?.project_application_status.includes(application_states.MODIFICATION_REQUESTED)
+         || project_application?.project_application_status.includes(application_states.MODIFICATION_DECLINED)
+         || project_application?.project_application_status.includes(application_states.MODIFICATION_DECLINED))">
 
       <div class="card" style=" ">
         <div class="card-header">
@@ -334,7 +338,9 @@
 
 </div>
    <div class="col"
-           *ngIf="is_vo_admin && (project_application?.project_application_status ==  application_states.APPROVED || project_application?.project_application_status ==  application_states.MODIFICATION_REQUESTED  || project_application?.project_application_status ==  application_states.MODIFICATION_DECLINED || project_application?.project_application_status ==  application_states.MODIFICATION_DECLINED)">
+           *ngIf="is_vo_admin && (project_application?.project_application_status.includes(application_states.APPROVED)
+           || project_application?.project_application_status.includes(application_states.MODIFICATION_REQUESTED)
+           || project_application?.project_application_status.includes(application_states.MODIFICATION_DECLINED))">
         <div class="card" style=" ">
           <div class="card-header">
             <i class="fa fa-align-justify"></i> Credit Usage history of {{project?.Name }}
@@ -780,7 +786,7 @@
             project lifetime.</strong>
         </div>
         <form id="resource_modification_application_form" #modificationForm="ngForm"
-              (ngSubmit)="onSubmit(modificationForm, false, false)"
+              (ngSubmit)="onSubmit(modificationForm)"
               class="form-horizontal">
 
           <div class="form-group row">
@@ -831,7 +837,7 @@
                                type="number" min="0" step="1"
                                placeholder="e.g 1"
                                (ngModelChange)="onChangeFlavor(fl,$event)"
-                               [ngModel]="project_application?.projectapplicationrenewal.getFlavorCounter(fl)"
+                               [ngModel]="project_application?.project_application_modification.getFlavorCounter(fl)"
                                #name="ngModel"
                                appMinAmount="0" appIntegerOrNull
                                [ngClass]="{
@@ -876,7 +882,7 @@
                        name="project_application_renewal_volume_counter"
                        placeholder="e.g. 20"
                        type="number" min="0" step="1"
-                       [(ngModel)]="project_application?.projectapplicationrenewal.project_application_renewal_volume_counter"
+                       [(ngModel)]="project_application?.project_application_modification.project_application_modification_volume_counter"
                        appMinAmount="0" appInteger
                        [ngClass]="{
                                 'is-invalid': modificationForm.controls.project_application_renewal_volume_counter?.invalid,
@@ -914,7 +920,7 @@
                        name="project_application_renewal_volume_limit"
                        placeholder="e.g. 20"
                        type="number" min="1" step="1"
-                       [(ngModel)]="project_application?.projectapplicationrenewal.project_application_renewal_volume_limit"
+                       [(ngModel)]="project_application?.project_application_modification.project_application_modification_volume_limit"
                        appMinAmount="1" appInteger
                        [ngClass]="{
                                 'is-invalid': modificationForm.controls.project_application_renewal_volume_limit?.invalid,
@@ -957,7 +963,7 @@
                        id="id_project_application_renewal_object_storage"
                        name="project_application_renewal_object_storage"
                        placeholder="e.g. 8"
-                       [(ngModel)]="project_application?.projectapplicationrenewal.project_application_renewal_object_storage"
+                       [(ngModel)]="project_application?.project_application_modification.project_application_modification_object_storage"
                        type="number" min="0" step="1"
                        appInteger appMinAmount="0" required
                        [ngClass]="{
@@ -980,7 +986,7 @@
                           name="project_application_renewal_comment" class="form-control"
                           maxlength="8192"
                           placeholder=''
-                          [(ngModel)]="project_application?.projectapplicationrenewal.project_application_renewal_comment"></textarea>
+                          [(ngModel)]="project_application?.project_application_modification.project_application_modification_comment"></textarea>
               <span class="help-block">Additional information you want to share?</span>
             </div>
           </div>
@@ -998,26 +1004,16 @@
           <strong>
             <div *ngIf="is_vo_admin" class="form-group row">
               <label #corenumbers id="creditnumber" class="col">Expected number of extra credits: <span
-                id="modification_credits">{{project_application?.projectapplicationrenewal.project_application_renewal_credits}}</span></label>
+                id="modification_credits">{{project_application?.project_credit_request.project_credit_request_credits}}</span></label>
             </div>
             <div class="alert alert-primary" role="alert">
-              This is the expected number of extra credits that you get for your project. It accounts for an increase in requested resources.
-            </div>
-            <div class="form-group row">
-              <label #corenumbers id="corenumbers" class="col">Number of total
-                cores: <span
-                  id="total_cores">{{project_application?.projectapplicationrenewal.project_application_renewal_total_cores}}</span></label>
-            </div>
-            <div class="form-group row">
-              <label #ramnumbers id="ramnumbers" class="col">Amount of total
-                RAM: <span
-                  id="total_ram">{{project_application?.projectapplicationrenewal.project_application_renewal_total_ram}}</span>
-              </label>
+              This is the expected number of extra credits that you get for your project. It accounts for an increase in requested resources/project lifetime.
             </div>
           </strong>
 
 
         </form>
+        <!-- TODO: CHECK FOR CONFLICTS -->
         <div *ngIf="modificationForm.invalid" class="alert alert-warning" role="alert">
           <p>Some required fields are incorrect or not filled in yet.
             Please check if all required (*) fields are filled in correctly.</p>
@@ -1042,7 +1038,7 @@
             By submitting this application you agree to the cloud usage policy.
           </div>
           <button type="button" class="btn  btn-primary"
-                  form="modificationForm" id="submit_modification_btn"
+                  form="modification_form" id="submit_modification_btn"
                   (click)="extension_request=true;request_type=2;filterEnteredData(modificationForm);
                   calculateCredits(modificationForm.controls.project_application_renewal_lifetime?.value);
                   submitModal.show(); setModalOpen(true);"
@@ -1076,7 +1072,7 @@
       </div>
       <div class="modal-body">
 
-        <form id="extension_application_form" #extensionForm="ngForm" (ngSubmit)="onSubmit(extensionForm, false, true)"
+        <form id="extension_application_form" #extensionForm="ngForm" (ngSubmit)="onSubmit(extensionForm)"
               class="form-horizontal">
 
 
@@ -1108,7 +1104,7 @@
                        id="project_extension_application_renewal_lifetime"
                        name="project_extension_application_renewal_lifetime"
                        placeholder="e.g. 3"
-                       [(ngModel)]="project_application?.projectapplicationrenewal.project_application_renewal_lifetime"
+                       [(ngModel)]="project_application?.project_application_extension.project_application_extension_lifetime"
                        type="number" min="0" max="12" step="1" required
                        appInteger appMinAmount="0" appMaxAmount="12"
                        [ngClass]="{
@@ -1216,7 +1212,7 @@
                        id="project_extension_application_renewal_cloud_service_user_number"
                        name="project_application_renewal_cloud_service_user_number"
                        placeholder="e.g. 200"
-                       [(ngModel)]="project_application?.projectapplicationrenewal.project_application_renewal_cloud_service_user_number"
+                       [(ngModel)]="project_application?.project_application_extension.project_application_extension_cloud_service_user_number"
                        type="number" min="0" step="1"
                        appInteger appMinAmount="0" required
                        [ngClass]="{
@@ -1238,7 +1234,7 @@
                           name="project_application_renewal_comment" class="form-control"
                           maxlength="8192"
                           placeholder=''
-                          [(ngModel)]="project_application?.projectapplicationrenewal.project_application_renewal_comment"></textarea>
+                          [(ngModel)]="project_application?.project_application_extension.project_application_extension_comment"></textarea>
               <span class="help-block">Additional information you want to share?</span>
             </div>
           </div>
@@ -1248,7 +1244,7 @@
           <strong>
             <div *ngIf="is_vo_admin" class="form-group row">
               <label #corenumbers id="extension_creditnumber" class="col">Expected number of extra credits: <span
-                id="extension_credits">{{project_application?.projectapplicationrenewal.project_application_renewal_credits}}</span></label>
+                id="extension_credits">{{project_application?.project_application_extension.project_application_extension_credits}}</span></label>
             </div>
             <div class="alert alert-primary" role="alert">
               This is the expected number of extra credits that you get for your project. It accounts for an extended lifetime of the project.
@@ -1312,7 +1308,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <form id="credits_application_form" #f2="ngForm" (ngSubmit)="onSubmit(f2, true, false)"
+        <form id="credits_application_form" #f2="ngForm" (ngSubmit)="onSubmit(f2)"
               class="form-horizontal">
 
           <div class="form-group row">
@@ -1393,7 +1389,7 @@
           <button type="button" class="btn  btn-primary"adm
                   form="credits_application_form" id="submit_extra_credits_btn"
                   (click)="request_type=3;filterEnteredData(f2);
-                  onSubmit(f2, true, false);
+                  onSubmit(f2);
                   extension_request=true;creditsExtensionModal.hide()" [disabled]="f2.invalid"><i
             class="fa fa-dot-circle-o">
 
@@ -1441,14 +1437,14 @@
 
             <tr *ngIf="is_vo_admin" >
               <td><strong>Approximate number of extra credits:
-                {{project_application?.projectapplicationrenewal.project_application_renewal_credits}}</strong></td>
+                {{project_application?.project_application_extension.project_application_extension_credits}}</strong></td>
             </tr>
-            <tr>
+            <tr *ngIf="request_type == 2">
               <td><strong>Number of cores in total:
-                {{project_application?.projectapplicationrenewal.project_application_renewal_total_cores}}</strong></td>
+                {{project_application?.project_application_modification.project_application_modification_total_cores}}</strong></td>
             </tr>
-            <tr>
-              <td><strong>Value of RAM in total: {{project_application?.projectapplicationrenewal.project_application_renewal_total_ram}} GBs</strong>
+            <tr *ngIf="request_type == 2">
+              <td><strong>Value of RAM in total: {{project_application?.project_application_modification.project_application_modification_total_ram}} GBs</strong>
               </td>
             </tr>
           </table>
@@ -1700,7 +1696,7 @@
                     <td>{{project_application?.project_application_shortname}}</td>
                     <td>{{ project_application?.project_application_lifetime }} months</td>
                     <td>{{ project_application?.project_application_date_submitted }}</td>
-                    <td>{{ getStatusById(project_application?.project_application_status) }}</td>
+                    <td>{{ getStatusesById(project_application?.project_application_status) }}</td>
                   </tr>
 
 

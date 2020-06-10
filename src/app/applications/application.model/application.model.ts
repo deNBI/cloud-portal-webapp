@@ -5,6 +5,7 @@ import {EdamOntologyTerm} from '../edam-ontology-term';
 import {Flavor} from '../../virtualmachines/virtualmachinemodels/flavor';
 import {Application_States} from '../../shared/shared_modules/baseClass/abstract-base-class';
 import {ApplicationModification} from "../application_modification.model";
+import {ApplicationCreditRequest} from "../application_credit_request";
 
 /**
  * User Class.
@@ -76,6 +77,7 @@ export class Application {
   private _DaysRunning: number;
   private _project_application_extension: ApplicationExtension = null;
   private _project_application_modification: ApplicationModification = null;
+  private _project_credit_request: ApplicationCreditRequest = null;
   private _project_application_perun_id: number | string;
   private _project_application_total_cores: number;
   private _project_application_total_ram: number;
@@ -550,5 +552,14 @@ export class Application {
 
   set project_application_modification(value: ApplicationModification) {
     this._project_application_modification = value;
+  }
+
+
+  get project_credit_request(): ApplicationCreditRequest {
+    return this._project_credit_request;
+  }
+
+  set project_credit_request(value: ApplicationCreditRequest) {
+    this._project_credit_request = value;
   }
 }

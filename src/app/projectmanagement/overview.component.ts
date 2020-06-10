@@ -573,8 +573,9 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
    */
   getFacilityProject(): void {
 
-    if (!this.project_application.ComputeCenter && this.project_application.project_application_status !== this.application_states.SUBMITTED
-      && this.project_application.project_application_status !== this.application_states.TERMINATED) {
+    if (!this.project_application.ComputeCenter
+      && !this.project_application.project_application_status.includes(this.application_states.SUBMITTED)
+      && !this.project_application.project_application_status.includes(this.application_states.TERMINATED)) {
       this.groupService.getFacilityByGroup(this.project_application.project_application_perun_id.toString()).subscribe((res: object) => {
 
         const login: string = res['Login'];

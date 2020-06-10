@@ -7,37 +7,37 @@ import {User} from './application.model/application.model';
 export class ApplicationCreditRequest {
 
   private _Id: number;
-  private _project_application_id: number | string;
-  private _project_application_modification_comment: string;
-  private _project_application_modification_date_submitted: string;
-  private _project_application_modification_credits: number;
-  private _project_application_modification_user: User;
+  private _project_id: number | string;
+  private _project_credit_request_comment: string;
+  private _project_credit_request_date_submitted: string;
+  private _project_credit_request_credits: number;
+  private _project_credit_request_user: User;
 
   constructor(extension: ApplicationCreditRequest|null) {
     if (extension) {
-      this._project_application_id = extension.project_application_id;
-      this._project_application_modification_comment = extension.project_application_modification_comment;
-      this._project_application_modification_date_submitted = extension.project_application_modification_date_submitted;
+      this._project_id = extension.project_id;
+      this._project_credit_request_comment = extension.project_credit_request_comment;
+      this._project_credit_request_date_submitted = extension.project_credit_request_date_submitted;
 
-      this._project_application_modification_credits = extension.project_application_modification_credits;
-      this._project_application_modification_user = extension.project_application_modification_user;
+      this._project_credit_request_credits = extension.project_credit_request_credits;
+      this._project_credit_request_user = extension.project_credit_request_user;
     }
   }
 
-  get project_application_modification_user(): User {
-    return this._project_application_modification_user;
+  get project_credit_request_user(): User {
+    return this._project_credit_request_user;
   }
 
-  set project_application_modification_user(value: User) {
-    this._project_application_modification_user = value;
+  set project_credit_request_user(value: User) {
+    this._project_credit_request_user = value;
   }
 
-  get project_application_id(): number | string {
-    return this._project_application_id;
+  get project_id(): number | string {
+    return this._project_id;
   }
 
-  set project_application_id(value: number | string) {
-    this._project_application_id = value;
+  set project_id(value: number | string) {
+    this._project_id = value;
   }
 
   get Id(): number {
@@ -48,28 +48,28 @@ export class ApplicationCreditRequest {
     this._Id = value;
   }
 
-  set project_application_modification_comment(value: string) {
-    this._project_application_modification_comment = value;
+  set project_credit_request_comment(value: string) {
+    this._project_credit_request_comment = value;
   }
 
-  get project_application_modification_comment(): string {
-    return this._project_application_modification_comment;
+  get project_credit_request_comment(): string {
+    return this._project_credit_request_comment;
   }
 
-  get project_application_modification_date_submitted(): string {
-    return this._project_application_modification_date_submitted;
+  get project_credit_request_date_submitted(): string {
+    return this._project_credit_request_date_submitted;
   }
 
-  set project_application_modification_date_submitted(value: string) {
-    this._project_application_modification_date_submitted = value;
+  set project_credit_request_date_submitted(value: string) {
+    this._project_credit_request_date_submitted = value;
   }
 
-  get project_application_modification_credits(): number {
-    return Number(this._project_application_modification_credits);
+  get project_credit_request_credits(): number {
+    return Number(this._project_credit_request_credits);
   }
 
-  set project_application_modification_credits(value: number) {
-    this._project_application_modification_credits = value;
+  set project_credit_request_credits(value: number) {
+    this._project_credit_request_credits = value;
   }
 
 }

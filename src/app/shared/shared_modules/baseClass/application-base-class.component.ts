@@ -219,6 +219,17 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
     return dummy;
   }
 
+
+  /**
+   * Get status names  by status id.
+   * TODO: replace old status function, which only gives one status
+   * @param {number} id
+   * @returns {string}
+   */
+  public getStatusesById(ids: [number]): [string] {
+    return [""];
+  }
+
   /**
    * Sets the selected application.
    * @param application
