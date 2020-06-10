@@ -33,6 +33,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 
   edam_ontology_terms: EdamOntologyTerm[] = [];
   isLoaded: boolean = false;
+  submitting: boolean = false;
 
   all_dissemination_checked: boolean = false;
   initiated_validation: boolean = false;
@@ -89,6 +90,16 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
     } else {
       this.application.dissemination.setAllInformationFalse();
     }
+  }
+
+  clearApplication(): void {
+    this.application = new Application(null);
+    this.application.project_application_openstack_project = this.openstack_project;
+    if (this.openstack_project) {
+      this.application.project_application_object_storage = 0;
+    }
+    this.application.project_application_volume_counter = 3;
+    this.application.project_application_volume_limit = 20;
   }
 
   initiateFormWithApplication(): void {
@@ -271,9 +282,12 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 
   onSubmit(): void {
     this.error = null;
+    this.submitting = true;
 
     this.applicationsservice.addNewApplication(this.application).subscribe(
       (application: Application) => {
+        this.clearApplication();
+        this.submitting = false;
         this.application_id = application.project_application_id
 
         this.updateNotificationModal('Success', 'The application was submitted', true, 'success');

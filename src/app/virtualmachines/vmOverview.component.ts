@@ -8,7 +8,7 @@ import {IResponseTemplate} from '../api-connector/response-template';
 import {SnapshotModel} from './snapshots/snapshot.model';
 import {FacilityService} from '../api-connector/facility.service';
 import {catchError, debounceTime, distinctUntilChanged} from 'rxjs/operators';
-import {forkJoin, Observable, Subject, Subscription, of} from 'rxjs';
+import {forkJoin, Observable, of, Subject, Subscription} from 'rxjs';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {is_vo} from '../shared/globalvar';
 import {VirtualMachineStates} from './virtualmachinemodels/virtualmachinestates';
@@ -49,6 +49,9 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
   WIKI_GUACAMOLE_LINK: string = WIKI_GUACAMOLE_LINK;
 
   ERROR_MSG: string = '';
+  ERROR_TIMER: number = 10000;
+  SNAPSHOT_CREATING_ERROR_MSG: string
+    = 'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.'
 
   /**
    * All  vms.
@@ -245,11 +248,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
       (error1: any) => {
         this.status_changed = 2;
         if (error1['error']['error'] === '409') {
-          vm.error_msg = 'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.';
-          setTimeout( () => {
-                        vm.error_msg = null;
-                      },
-                      5000);
+          vm.setErrorMsgWithTimeout(this.SNAPSHOT_CREATING_ERROR_MSG, this.ERROR_TIMER);
         }
       }
     )
@@ -274,12 +273,8 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
       (error1: any) => {
         this.status_changed = 2;
         if (error1['error']['error'] === '409') {
-          vm.error_msg = 'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.';
-          setTimeout( () => {
-                        vm.error_msg = null;
-                      },
-                      5000);
-        }
+                   vm.setErrorMsgWithTimeout(this.SNAPSHOT_CREATING_ERROR_MSG, this.ERROR_TIMER); }
+
       })
   }
 
@@ -390,11 +385,8 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
         this.status_changed = 2;
         this.checkStatus(vm);
         if (error1['status'] === 409) {
-          vm.error_msg = 'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.';
-          setTimeout( () => {
-                        vm.error_msg = null;
-                      },
-                      5000);
+                   vm.setErrorMsgWithTimeout(this.SNAPSHOT_CREATING_ERROR_MSG, this.ERROR_TIMER);
+
         }
       }))
   }
@@ -422,11 +414,8 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
         this.status_check_error = true;
         this.status_changed = 2;
         if (error1['error']['error'] === '409') {
-          vm.error_msg = 'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.';
-          setTimeout( () => {
-                        vm.error_msg = null;
-                      },
-                      5000);
+                   vm.setErrorMsgWithTimeout(this.SNAPSHOT_CREATING_ERROR_MSG, this.ERROR_TIMER);
+
         }
       })
   }
@@ -539,11 +528,8 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
         (error1: any) => {
           this.status_changed = 2;
           if (error1['error']['error'] === '409') {
-            vm.error_msg = 'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.';
-            setTimeout( () => {
-                          vm.error_msg = null;
-                        },
-                        5000);
+                    vm.setErrorMsgWithTimeout(this.SNAPSHOT_CREATING_ERROR_MSG, this.ERROR_TIMER);
+
           }
         }
       )
@@ -726,11 +712,8 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
       (error1: any) => {
         this.status_changed = 2;
         if (error1['error']['error'] === '409') {
-          vm.error_msg = 'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.';
-          setTimeout( () => {
-                        vm.error_msg = null;
-                      },
-                      5000);
+                   vm.setErrorMsgWithTimeout(this.SNAPSHOT_CREATING_ERROR_MSG, this.ERROR_TIMER);
+
         }
       })
   }
@@ -818,11 +801,8 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
         this.snapshotDone = 'error';
         this.status_changed = 2;
         if (error1['error']['error'] === '409') {
-          vm.error_msg = 'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.';
-          setTimeout( () => {
-                        vm.error_msg = null;
-                      },
-                      5000);
+                    vm.setErrorMsgWithTimeout(this.SNAPSHOT_CREATING_ERROR_MSG, this.ERROR_TIMER);
+
         }
       })
   }
@@ -856,10 +836,10 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
           if (value[idx].hasOwnProperty('error') && value[idx].hasOwnProperty('status') && value[idx]['status'] === 409) {
             const updated_error_vm: VirtualMachine = new VirtualMachine(value[idx]['error']);
             updated_error_vm.error_msg = `Conflict detected. The virtual machine ${value[idx]['error']['name']} is currently creating a snapshot and must not be altered.`;
-            setTimeout( () => {
-                          updated_error_vm.error_msg = null;
-                        },
-                        5000);
+            setTimeout(() => {
+                         updated_error_vm.error_msg = null;
+                       },
+                       this.ERROR_TIMER);
             this.vms_content[this.vms_content.indexOf(this.selectedMachines[idx])] = updated_error_vm;
             this.selectedMachines[idx] = updated_error_vm;
             continue;

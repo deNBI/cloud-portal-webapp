@@ -234,10 +234,10 @@
                   </div>
                 </div>
                 <div *ngIf="vm?.error_msg !== '' && vm?.error_msg !== undefined && vm?.error_msg !== null" class="col-12" style="margin-left: 10px">
-                  <div style="font-size: small">
+                  <div          class="alert alert-danger" role="alert" style="font-size: small">
                     <strong>Error: {{vm?.error_msg}}</strong>
-                  </div>
-                </div>
+
+                  </div></div>
                 <div *ngIf="vm?.cluster?.cluster_id" class="col-12" style="margin-left: 10px" [ngSwitch]="vm?.cluster?.status">
                   <div style="font-size: small">
                     <strong>Cluster</strong>:
