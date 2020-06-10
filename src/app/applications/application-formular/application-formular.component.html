@@ -1034,7 +1034,7 @@
             <button *ngIf="!is_validation"
                     (click)="filterEnteredData(form);calculateInitialCredits(form); submitModal.show();"
                     id="submit_btn"
-                    [disabled]="form.invalid  ||application.project_application_edam_terms.length == 0  || (application?.flavors.length == 0  && !application?.project_application_openstack_project) || (!application?.dissemination?.isPlatformSelected()  && application.project_application_report_allowed)"
+                    [disabled]="submitting || form.invalid  ||application.project_application_edam_terms.length == 0  || (application?.flavors.length == 0  && !application?.project_application_openstack_project) || (!application?.dissemination?.isPlatformSelected()  && application.project_application_report_allowed)"
                     class="btn btn-sm btn-success"
                     type="button"><i
               class="fa fa-dot-circle-o"></i> Submit
