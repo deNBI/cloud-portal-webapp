@@ -4,8 +4,6 @@ import {ImageService} from '../../../api-connector/image.service';
 import {KeyService} from '../../../api-connector/key.service';
 import {FlavorService} from '../../../api-connector/flavor.service';
 import {VirtualmachineService} from '../../../api-connector/virtualmachine.service';
-import {ApplicationsService} from '../../../api-connector/applications.service';
-import {Application} from '../../../applications/application.model/application.model';
 import {ApiSettings} from '../../../api-connector/api-settings.service';
 import {ClientService} from '../../../api-connector/client.service';
 import {UserService} from '../../../api-connector/user.service';
@@ -252,6 +250,7 @@ export class AddClusterComponent implements OnInit {
   }
 
   calcMaxWorkerInstancesByFlavor(): void {
+    this.workerInstancesCount = null;
     const ram_max_vms: number = (this.selectedProjectRamMax - this.selectedProjectRamUsed - (this.selectedMasterFlavor.ram / 1024))
       / (this.selectedWorkerFlavor.ram / 1024);
     const cpu_max_vms: number = (this.selectedProjectCoresMax - this.selectedProjectCoresUsed - this.selectedMasterFlavor.vcpus)
