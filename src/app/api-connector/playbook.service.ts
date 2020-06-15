@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {ApiSettings} from './api-settings.service'
 import {Observable} from 'rxjs';
-import {HttpClient,} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 
 /**
  * Service which provides playbooks from database
