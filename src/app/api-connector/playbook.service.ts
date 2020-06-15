@@ -1,12 +1,7 @@
 import {Injectable} from '@angular/core';
 import {ApiSettings} from './api-settings.service'
 import {Observable} from 'rxjs';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Cookie} from 'ng2-cookies/ng2-cookies';
-
-const header: HttpHeaders = new HttpHeaders({
-  'X-CSRFToken': Cookie.get('csrftoken')
-});
+import {HttpClient,} from '@angular/common/http';
 
 /**
  * Service which provides playbooks from database
@@ -23,7 +18,6 @@ export class PlaybookService {
 
     return this.http.get<Object>(`${this.baseUrl}${vm_id}/`, {
       withCredentials: true
-      // headers: header
     });
   }
 

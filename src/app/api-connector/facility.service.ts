@@ -1,15 +1,10 @@
 import {Injectable} from '@angular/core';
 import {ApiSettings} from './api-settings.service';
 import {Observable} from 'rxjs';
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {Cookie} from 'ng2-cookies/ng2-cookies';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {RamFactor} from '../facility_manager/resources/ram-factor';
 import {CoreFactor} from '../facility_manager/resources/core-factor';
 import {Application} from '../applications/application.model/application.model';
-
-const header: HttpHeaders = new HttpHeaders({
-                                              'X-CSRFToken': Cookie.get('csrftoken')
-                                            });
 
 /**
  * Service which provides methods for the facilities.
@@ -40,7 +35,6 @@ export class FacilityService {
     const httpParams: HttpParams = new HttpParams().set('facilityID', facilityID).set('newsID', newsId);
 
     return this.http.post(`${ApiSettings.getApiBaseURL()}wp-motd-management/`, httpParams, {
-      //// headers: header,
       withCredentials: true
     });
   }
@@ -190,7 +184,6 @@ export class FacilityService {
     return this.http.post(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/applications/${application_id}/status/`,
                           params, {
                             withCredentials: true,
-                // headers:header,
                             observe: 'response'
                           });
   }
@@ -213,7 +206,6 @@ export class FacilityService {
 
     return this.http.post<CoreFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/coreFactors/`, params, {
       withCredentials: true
-      // headers: header
     });
   }
 
@@ -231,7 +223,6 @@ export class FacilityService {
 
     return this.http.post<RamFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/ramFactors/`, params, {
       withCredentials: true
-      // headers: header
     });
   }
 
@@ -245,7 +236,6 @@ export class FacilityService {
 
     return this.http.delete<RamFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/ramFactors/${factor_id}/`, {
       withCredentials: true
-      // headers: header
     });
   }
 
@@ -258,7 +248,6 @@ export class FacilityService {
 
     return this.http.get<RamFactor>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/ramFactors/${factor_id}/`, {
       withCredentials: true
-      // headers: header
     });
   }
 
@@ -271,7 +260,6 @@ export class FacilityService {
 
     return this.http.get<CoreFactor>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/coreFactors/${factor_id}/`, {
       withCredentials: true
-      // headers: header
     });
   }
 
@@ -288,7 +276,6 @@ export class FacilityService {
     // tslint:disable-next-line:max-line-length
     return this.http.post<RamFactor>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/ramFactors/${factor.id}/`, params, {
       withCredentials: true
-      // headers: header
     });
   }
 
@@ -303,7 +290,6 @@ export class FacilityService {
     // tslint:disable-next-line:max-line-length
     return this.http.post<CoreFactor>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/coreFactors/${factor.id}/`, params, {
       withCredentials: true
-      // headers: header
     });
   }
 
@@ -317,7 +303,6 @@ export class FacilityService {
 
     return this.http.delete<CoreFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/coreFactors/${factor_id}/`, {
       withCredentials: true
-      // headers: header
     })
   }
 
@@ -362,7 +347,6 @@ export class FacilityService {
 
     return this.http.post(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/applications/${application_id}/status/`, params, {
       withCredentials: true,
-      //// headers: header,
       observe: 'response'
     })
   }
@@ -393,7 +377,6 @@ export class FacilityService {
 
     return this.http.post(`${ApiSettings.getApiBaseURL()}facilityManagers/current/facilityMail/`, params, {
                             withCredentials: true,
-                // headers:header,
                             observe: 'response'
                           }
     )

@@ -1,13 +1,8 @@
 import {Injectable} from '@angular/core';
 import {ApiSettings} from './api-settings.service';
 import {Observable} from 'rxjs';
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {Cookie} from 'ng2-cookies/ng2-cookies';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {IResponseTemplate} from './response-template';
-
-const header: HttpHeaders = new HttpHeaders({
-                                              'X-CSRFToken': Cookie.get('csrftoken')
-                                            });
 
 /**
  * Service which provides user methods.
@@ -36,7 +31,6 @@ export class UserService {
 
     return this.http.post(`${ApiSettings.getApiBaseURL()}users/current/preferredEmail/`, params, {
       withCredentials: true
-      // headers: header
     })
   }
 
@@ -44,7 +38,6 @@ export class UserService {
 
     return this.http.post(`${ApiSettings.getApiBaseURL()}users/current/logout/`, null, {
       withCredentials: true
-      // headers: header
     })
   }
 
@@ -123,7 +116,6 @@ export class UserService {
 
     return this.http.post<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}newsletter/subscription/`, params, {
       withCredentials: true
-      // headers: header
     })
 
   }
@@ -133,7 +125,6 @@ export class UserService {
 
     return this.http.post<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}newsletter/subscription/`, params, {
       withCredentials: true
-      // headers: header
     })
 
   }
@@ -152,7 +143,6 @@ export class UserService {
 
     return this.http.post<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}users/current/helpMail/`, params, {
       withCredentials: true
-      // headers: header
     })
   }
 

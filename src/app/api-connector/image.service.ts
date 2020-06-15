@@ -3,14 +3,9 @@ import {Image} from '../virtualmachines/virtualmachinemodels/image';
 import {SnapshotModel} from '../virtualmachines/snapshots/snapshot.model';
 import {ApiSettings} from './api-settings.service';
 import {Observable} from 'rxjs';
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {Cookie} from 'ng2-cookies/ng2-cookies';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {IResponseTemplate} from './response-template';
 import {BlockedImageTag, BlockedImageTagResenv, ImageLogo, ImageMode, ImageTag} from '../facility_manager/image-tag';
-
-const header: HttpHeaders = new HttpHeaders({
-                                              'X-CSRFToken': Cookie.get('csrftoken')
-                                            });
 
 /**
  * Service which provides image methods.
@@ -98,7 +93,6 @@ export class ImageService {
 
     return this.http.post<ImageMode>(`${ApiSettings.getApiBaseURL()}imageModes/`, params, {
       withCredentials: true
-      // headers: header
     })
 
   }
@@ -109,7 +103,6 @@ export class ImageService {
 
     return this.http.patch<ImageMode>(`${ApiSettings.getApiBaseURL()}imageModes/${mode.id}/`, params, {
       withCredentials: true
-      // headers: header
     })
 
   }
@@ -121,7 +114,6 @@ export class ImageService {
 
     return this.http.post<ImageTag>(`${ApiSettings.getApiBaseURL()}imageTags/`, params, {
       withCredentials: true
-      // headers: header
     })
 
   }
@@ -159,7 +151,6 @@ export class ImageService {
 
     return this.http.post<ImageLogo>(`${ApiSettings.getApiBaseURL()}imageLogoTags/`, params, {
       withCredentials: true
-      // headers: header
     })
 
   }
@@ -168,7 +159,6 @@ export class ImageService {
 
     return this.http.delete<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}imageLogoTags/${imageTag}/`, {
       withCredentials: true
-      // headers: header
     })
 
   }
@@ -177,7 +167,6 @@ export class ImageService {
 
     return this.http.delete<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}imageTags/${id}/`, {
       withCredentials: true
-      // headers: header
     })
 
   }
@@ -186,7 +175,6 @@ export class ImageService {
 
     return this.http.delete<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}imageModes/${id}/`, {
       withCredentials: true
-      // headers: header
     })
 
   }
@@ -196,7 +184,6 @@ export class ImageService {
 
     return this.http.delete<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}blockedImageTags/${imageTag}/`, {
       withCredentials: true,
-      //// headers: header,
       params: params
     })
 
@@ -221,7 +208,6 @@ export class ImageService {
 
     return this.http.post<SnapshotModel>(`${ApiSettings.getApiBaseURL()}snapshots/`, params, {
       withCredentials: true
-      // headers: header
     })
 
   }
@@ -229,7 +215,6 @@ export class ImageService {
   deleteSnapshot(snapshot_id: string): Observable<IResponseTemplate> {
     return this.http.delete<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}snapshots/${snapshot_id}/`, {
       withCredentials: true
-      // headers: header
     })
 
   }

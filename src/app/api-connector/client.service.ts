@@ -2,14 +2,8 @@ import {Injectable} from '@angular/core';
 import {ApiSettings} from './api-settings.service'
 import {Client} from '../vo_manager/clients/client.model';
 import {Observable} from 'rxjs';
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-
-import {Cookie} from 'ng2-cookies/ng2-cookies';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {IResponseTemplate} from './response-template';
-
-const header: HttpHeaders = new HttpHeaders({
-    'X-CSRFToken': Cookie.get('csrftoken')
-});
 
 /**
  * Service which provides client methods.
@@ -50,14 +44,12 @@ export class ClientService {
 
         return this.http.post<Client>(this.clientURL, params, {
             withCredentials: true
-// headers:header
         })
     }
 
     deleteClient(client_id: number): Observable<any> {
         return this.http.delete(`${this.clientURL}${client_id }/`, {
             withCredentials: true
-// headers:header
         })
 
     }
@@ -67,7 +59,6 @@ export class ClientService {
 
         return this.http.patch<Client>(`${this.clientURL}${client.id }/`, params, {
             withCredentials: true
-// headers:header
         })
 
     }
