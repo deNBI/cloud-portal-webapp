@@ -19,6 +19,7 @@ export class VirtualMachine {
   private _client: Client;
   private _openstackid: string;
   private _created_at: string;
+  private _still_used_confirmation_requested_date: Date;
   private _stopped_at: string;
   private _elixir_id: string;
   private _userlogin: string;
@@ -60,7 +61,17 @@ export class VirtualMachine {
     this._cluster = vm.cluster;
     this._volumes = vm.volumes;
     this._still_used_confirmation_requested = vm.still_used_confirmation_requested;
+    this._still_used_confirmation_requested_date = vm.still_used_confirmation_requested_date;
     this.calculateCreatedAt();
+    this.getTerminationStartDateString();
+  }
+
+  public getTerminationStartDateString(): string {
+    this._still_used_confirmation_requested_date = new Date(Date.parse(this._still_used_confirmation_requested_date.toString()))
+    const term_date: Date = new Date(this._still_used_confirmation_requested_date.getTime() + (1000 * 60 * 60 * 24 * 14));
+
+    return term_date.toLocaleDateString();
+
   }
 
   public calculateCreatedAt(): void {
@@ -79,6 +90,14 @@ export class VirtualMachine {
                },
                timeout);
 
+  }
+
+  get still_used_confirmation_requested_date(): Date {
+    return this._still_used_confirmation_requested_date;
+  }
+
+  set still_used_confirmation_requested_date(value: Date) {
+    this._still_used_confirmation_requested_date = value;
   }
 
   get days_running(): number {

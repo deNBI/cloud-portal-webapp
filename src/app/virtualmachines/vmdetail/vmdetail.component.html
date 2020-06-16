@@ -11,7 +11,7 @@
     <div class="alert alert-danger col-6" role="alert">
       <strong>This machine has been running for {{virtualMachine?.days_running}} days!<br> Please confirm that you still
         need this machine.<br>
-        Otherwise, the machine is scheduled for deletion.</strong>
+        Otherwise, the machine is scheduled for deletion starting from {{virtualMachine?.getTerminationStartDateString()}}.</strong>
       <br>
       <button (click)="setVmNeeded()" type="button" class="btn btn-success" style="width:100%;" id="still_need_btn">
         <strong>Yes</strong>
