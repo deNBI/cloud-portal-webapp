@@ -97,7 +97,7 @@
     "audit-ci": "^3.0.0",
     "autoprefixer": "^9.8.0",
     "codelyzer": "^5.1.2",
-    "exports-loader": "^0.7.0",
+    "exports-loader": "^1.0.0",
     "file-loader": "^6.0.0",
     "html-webpack-plugin": "^4.3.0",
     "istanbul-instrumenter-loader": "^3.0.1",
