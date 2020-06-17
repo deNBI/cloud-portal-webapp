@@ -6,6 +6,7 @@ import {Flavor} from '../../virtualmachines/virtualmachinemodels/flavor';
 import {Application_States} from '../../shared/shared_modules/baseClass/abstract-base-class';
 import {ApplicationModification} from "../application_modification.model";
 import {ApplicationCreditRequest} from "../application_credit_request";
+import {ApplicationStatus} from "../application_status.model";
 
 /**
  * User Class.
@@ -165,10 +166,11 @@ export class Application {
   }
 
   private setDaysRunning(): void {
-    if (this._project_application_status.includes(Application_States.APPROVED)
-    ) {
-      // tslint:disable-next-line:max-line-length
-      this._DaysRunning = Math.ceil((Math.abs(Date.now() - new Date(this.project_application_date_approved).getTime())) / (1000 * 3600 * 24));
+    if (this.project_application_status != null) {
+      if (this.project_application_status.includes(Application_States.APPROVED)) {
+        // tslint:disable-next-line:max-line-length
+        this._DaysRunning = Math.ceil((Math.abs(Date.now() - new Date(this.project_application_date_approved).getTime())) / (1000 * 3600 * 24));
+      }
     }
   }
 
