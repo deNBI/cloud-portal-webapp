@@ -66,7 +66,7 @@
               <div class="input-group-text">
                 <input type="checkbox" [checked]="filter_set_for_termination" style="margin:2px;"
                        (change)="filter_set_for_termination=!filter_set_for_termination">
-                <span class="badge badge-info">Set for termination</span>
+                <span class="badge badge-secondary">Set for termination</span>
               </div>
               <div class="input-group-text">
                 <input type="checkbox" checked style="margin:2px;"
@@ -138,19 +138,25 @@
               <div class="row" style="margin-top: 5px">
                 <div class="col-5" style="margin: auto;">
 
-                  <a class="h5 text-primary"  style="margin-left: 10px" id="detail_{{vm.name}}"
+                  <a class="h5 text-primary" style="margin-left: 10px" id="detail_{{vm.name}}"
                      *ngIf="vm?.status == VirtualMachineStates.staticACTIVE
                      || vm?.status == VirtualMachineStates.staticSHUTOFF;
                       else statusElseBlock"
-                     [routerLink]="['/virtualmachines/detail/' + vm?.openstackid]">{{vm?.name}}  </a>
+                     [routerLink]="['/virtualmachines/detail/' + vm?.openstackid]"><i
+                    *ngIf="vm?.still_used_confirmation_requested && is_vo_admin" class="fas fa-exclamation-triangle"
+                    style="color:red;"></i>  {{vm?.name}}  </a>
                   <ng-template #statusElseBlock><span class="h5 text-primary" id="detail_{{vm.name}}"
-                                                      style="margin-left: 10px">{{vm?.name}}  </span></ng-template>
+                                                      style="margin-left: 10px"><i
+                    *ngIf="vm?.still_used_confirmation_requested && is_vo_admin" class="fas fa-exclamation-triangle"
+                    style="color:red;"></i>  {{vm?.name}} </span></ng-template>
                   <app-vmstatus [vm]="vm"></app-vmstatus>
 
                 </div>
 
+
                 <div class="col-3" style="margin: auto; text-align: center">
-                  <a [routerLink]="['/project-management/' + vm?.application_id]" target="_blank"><strong>{{vm?.project}}</strong></a>
+                  <a [routerLink]="['/project-management/' + vm?.application_id]"
+                     target="_blank"><strong>{{vm?.project}}</strong></a>
                 </div>
                 <div class="col-2" style="margin: auto; text-align: center">
                   {{vm?.userlogin}}
@@ -160,7 +166,8 @@
                 <div class="col-1">
                   <div class="form-check">
 
-                    <ng-container formArrayName="vmActions" *ngFor="let genre of actionsForm.controls['vmActions'].controls; let i = index">
+                    <ng-container formArrayName="vmActions"
+                                  *ngFor="let genre of actionsForm.controls['vmActions'].controls; let i = index">
 
                       <input type="checkbox" [formControlName]="i.toString()" *ngIf="vmActions[i].name == vm?.name
                       && (vm?.status == VirtualMachineStates.staticACTIVE || vm?.status == VirtualMachineStates.staticSHUTOFF)"
@@ -170,9 +177,18 @@
                 </div>
                 <div class="col-1" style="text-align: center"></div>
               </div>
+              <div *ngIf="vm?.still_used_confirmation_requested && is_vo_admin" class="alert alert-danger row"
+                   style="margin: auto; text-align: center" role="alert">
+                Confirm in the
+                <a style="margin-left:2px;margin-right:2px;" [routerLink]="['/virtualmachines/detail/' + vm?.openstackid]"> detailed overview </a>
+                of the machine that it is still needed, otherwise it will be
+                marked for deletion starting from <strong
+                style="margin-left: 2px"> {{vm?.getTerminationStartDateString()}} </strong>.
+
+              </div>
               <div style="margin-top: 10px; margin-bottom:5px;">
                 <div class="row" style="margin-left: 10px; font-size: 18px; line-height: 27px; height: 27px"
-                  *ngIf="vm.status === VirtualMachineStates.staticACTIVE || vm.status === VirtualMachineStates.staticSHUTOFF">
+                     *ngIf="vm.status === VirtualMachineStates.staticACTIVE || vm.status === VirtualMachineStates.staticSHUTOFF">
                   <div *ngIf="vm.volumes?.length > 0" class="col-md-1">
                       <span class="fas fa-hdd" style="font-size: 18px;"
                             data-toggle="tooltip" data-placement="right"
