@@ -37,10 +37,12 @@
           </div>
 
           <div *ngIf="!production">
-            <button (click)="sendTestApplication(test_name.value);notificationModal.show();">Test
-              Application
+
+            <button type="button" [disabled]="test_name.length < 5" class="btn btn-primary"
+                    (click)="sendTestApplication(test_name);notificationModal.show();">Test
+              Application 
             </button>
-            <input name="test_name" placeholder="TestAppName" #test_name>
+            <input name="test_name" placeholder="TestAppName" [(ngModel)]="test_name" >
           </div>
 
           <form id="application_form" #form="ngForm"
