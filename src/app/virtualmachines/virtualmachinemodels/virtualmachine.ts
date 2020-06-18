@@ -67,7 +67,11 @@ export class VirtualMachine {
   }
 
   public getTerminationStartDateString(): string {
-    this._still_used_confirmation_requested_date = new Date(Date.parse(this._still_used_confirmation_requested_date.toString()))
+    if (this._still_used_confirmation_requested_date === null || this._still_used_confirmation_requested_date === undefined) {
+      return '';
+    }
+
+    this._still_used_confirmation_requested_date = new Date(Date.parse(this._still_used_confirmation_requested_date.toString()));
     const term_date: Date = new Date(this._still_used_confirmation_requested_date.getTime() + (1000 * 60 * 60 * 24 * 14));
 
     return term_date.toLocaleDateString();
