@@ -237,11 +237,11 @@
                         name="selectedProjectType" id="selectedProjectType">
                   <option value="ALL" selected> All
                   </option>
-                  <option value="SVP">
-                    Simple VM
-                  </option>
                   <option value="OVP">
                     OpenStack
+                  </option>
+                  <option value="SVP">
+                    Simple VM
                   </option>
                   <option *ngFor="let project of projects " value="{{project?.Id}}">
                     {{project?.Name}}
@@ -307,7 +307,7 @@
                     }"></textarea>
               </div>
             </div>
-            <div *ngIf="sendNews" class="form-group row">
+            <div *ngIf="selectedProjectType == 'ALL'" class="form-group row">
               <label class="col-md-12 control-label"><strong>Alternative newstext (optional)</strong></label>
               <div class="col-md-12">
                             <textarea class="form-control" id="alternative_emailText"
@@ -316,7 +316,7 @@
                                       type="text"></textarea>
               </div>
             </div>
-            <div *ngIf="sendNews" class="form-group row">
+            <div *ngIf="selectedProjectType == 'ALL'" class="form-group row">
               <label class="col-md-12 control-label"><strong>Additional tags (optional - seperate by commas)</strong></label>
               <div class="col-md-12">
                             <textarea class="form-control" id="news_tags"
