@@ -34,7 +34,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
   edam_ontology_terms: EdamOntologyTerm[] = [];
   isLoaded: boolean = false;
   submitting: boolean = false;
-
+  test_name: string = '';
   all_dissemination_checked: boolean = false;
   initiated_validation: boolean = false;
   credits: number = 0;
@@ -380,9 +380,13 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
     this.application.project_application_initial_credits = 5952;
 
     this.applicationsservice.addNewApplication(this.application).subscribe(
-      () => {
+      (application: Application) => {
+        this.clearApplication();
+        this.submitting = false;
+        this.application_id = application.project_application_id
         this.updateNotificationModal('Success', 'The application was submitted', true, 'success');
         this.notificationModalStay = false;
+        this.fullLayout.getGroupsEnumeration();
       },
       (error: object) => {
         const error_json: object = error;
