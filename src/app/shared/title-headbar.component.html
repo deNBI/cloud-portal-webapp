@@ -1,4 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-<div class="w3-bar-block"><h1 id="title_headline">{{page_title}}</h1></div>
+<div class="w3-bar-block">
+  <button style="float:right;
+  margin-right: 10px;
+  position: relative;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);"  class="btn btn-secondary" (click)="logout()"><i class="fas fa-door-open"></i> Logout
+  </button>
+  <h1 id="title_headline">{{page_title}}   </h1>
+</div>
 </html>
