@@ -1,13 +1,8 @@
 import {Injectable} from '@angular/core';
 import {ApiSettings} from './api-settings.service';
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {Cookie} from 'ng2-cookies/ng2-cookies';
 import {IResponseTemplate} from './response-template';
-
-const header: HttpHeaders = new HttpHeaders({
-    'X-CSRFToken': Cookie.get('csrftoken')
-});
 
 /**
  * Service which provides public key methods.
@@ -31,8 +26,7 @@ export class KeyService {
         const params: HttpParams = new HttpParams().set('public_key', public_key);
 
         return this.http.put<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}users/current/public_key/`, params, {
-            withCredentials: true,
-            headers: header
+            withCredentials: true
         })
     }
 
