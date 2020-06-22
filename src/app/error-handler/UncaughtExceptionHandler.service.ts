@@ -7,7 +7,6 @@ import { ApiSettings } from '../api-connector/api-settings.service';
 // Runs before the Ajax Appender sends the logs to the server
 function beforeSendFunction(xhr: XMLHttpRequest, json: JSON): any {
   json = filter(json); // filter out duplicate error messages
-  xhr.setRequestHeader('X-CSRFToken', Cookie.get('csrftoken')); // add csrftoken to cookie
   xhr.withCredentials = true;
 }
 
@@ -57,7 +56,7 @@ export class UncaughtExceptionHandler implements ErrorHandler {
     console.log(`Logging error name: ${error.name}`);
     console.log(`Logging error message: ${error.message}`);
     console.log(`Logging error stack: ${error.stack}`);
-    console.log(`Logging error error: ${error.error}`);
+    console.log(`Logging error error: ${error.error.toString()}`);
     JL().fatalException('Uncaught Exception', error);
     console.log('End ------------------------------------');
   }
