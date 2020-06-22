@@ -1,13 +1,8 @@
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {Cookie} from 'ng2-cookies/ng2-cookies';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {ObjectUnsubscribedError, Observable} from 'rxjs';
 import {ApiSettings} from './api-settings.service';
 import {WordPressNews} from '../facility_manager/newsmanagement/wp-news';
-
-const header: HttpHeaders = new HttpHeaders({
-                                              'X-CSRFToken': Cookie.get('csrftoken')
-                                            });
 
 /**
  * Service which provides methods for the facilities.
@@ -19,15 +14,13 @@ export class NewsService {
 
   updateNewsInWordpress(news: WordPressNews): Observable<any> {
     return this.http.patch(`${ApiSettings.getApiBaseURL()}wp-news-management/`, news, {
-      withCredentials: true,
-      headers: header
+            withCredentials: true
     });
   }
 
   addNewsToWordpress(news: WordPressNews): Observable<any> {
     return this.http.post(`${ApiSettings.getApiBaseURL()}wp-news-management/`, news, {
-      withCredentials: true,
-      headers: header
+            withCredentials: true
     });
   }
 
@@ -38,8 +31,7 @@ export class NewsService {
     const params: HttpParams = new HttpParams().set('facility_ids', facility_ids);
 
     return this.http.get(`${ApiSettings.getApiBaseURL()}wp-news-management/`, {
-      withCredentials: true,
-      headers: header,
+            withCredentials: true,
       params: params});
   }
 
@@ -52,17 +44,15 @@ export class NewsService {
       .set('news_id', news_id);
 
     return this.http.delete(`${ApiSettings.getApiBaseURL()}wp-news-management/`, {
-        withCredentials: true,
-        headers: header,
-        params: params
+            withCredentials: true,
+       params: params
       }
     )
   }
 
   getAvailableTagsFromWordPress(): Observable<any> {
     return this.http.get(`${ApiSettings.getApiBaseURL()}wp-tags-management/`, {
-      withCredentials: true,
-      headers: header
+            withCredentials: true
     })
   }
 }
