@@ -1,13 +1,7 @@
 import {Injectable} from '@angular/core';
 import {ApiSettings} from './api-settings.service'
 import {Observable} from 'rxjs';
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-
-import {Cookie} from 'ng2-cookies/ng2-cookies';
-
-const header: HttpHeaders = new HttpHeaders({
-                                              'X-CSRFToken': Cookie.get('csrftoken')
-                                            });
+import {HttpClient, HttpParams} from '@angular/common/http';
 
 /**
  * Service which delivers functions for services related to the credit service.
