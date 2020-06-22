@@ -1,14 +1,8 @@
 import {Injectable} from '@angular/core';
 import {ApiSettings} from './api-settings.service';
 import {Observable} from 'rxjs';
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {Cookie} from 'ng2-cookies/ng2-cookies';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {IResponseTemplate} from './response-template';
-import {Userinfo} from '../userinfo/userinfo.model';
-
-const header: HttpHeaders = new HttpHeaders({
-                                              'X-CSRFToken': Cookie.get('csrftoken')
-                                            });
 
 /**
  * Service which provides user methods.
@@ -36,8 +30,14 @@ export class UserService {
     const params: HttpParams = new HttpParams().set('newPreferredEmail', email);
 
     return this.http.post(`${ApiSettings.getApiBaseURL()}users/current/preferredEmail/`, params, {
-      withCredentials: true,
-      headers: header
+      withCredentials: true
+    })
+  }
+
+  logoutUser(): Observable<any> {
+
+    return this.http.post(`${ApiSettings.getApiBaseURL()}users/current/logout/`, null, {
+      withCredentials: true
     })
   }
 
@@ -80,13 +80,13 @@ export class UserService {
     if (redirect && redirect !== '/userinfo' && redirect !== 'redirect') {
       const params: HttpParams = new HttpParams().set('redirect_after_login', redirect);
 
-      return this.http.get(`${ApiSettings.getApiBaseURL()}loggedUser/`, {
+      return this.http.get(`${ApiSettings.getApiBase()}loggedUser/`, {
         withCredentials: true,
         params: params
 
       })
     } else {
-      return this.http.get(`${ApiSettings.getApiBaseURL()}loggedUser/`, {
+      return this.http.get(`${ApiSettings.getApiBase()}loggedUser/`, {
         withCredentials: true
 
       })
@@ -115,8 +115,7 @@ export class UserService {
     const params: HttpParams = new HttpParams().set('subscribed', true.toString());
 
     return this.http.post<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}newsletter/subscription/`, params, {
-      withCredentials: true,
-      headers: header
+      withCredentials: true
     })
 
   }
@@ -125,8 +124,7 @@ export class UserService {
     const params: HttpParams = new HttpParams().set('subscribed', false.toString());
 
     return this.http.post<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}newsletter/subscription/`, params, {
-      withCredentials: true,
-      headers: header
+      withCredentials: true
     })
 
   }
@@ -144,8 +142,7 @@ export class UserService {
     const params: HttpParams = new HttpParams().set('subject', subject).set('message', message).set('reply', reply);
 
     return this.http.post<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}users/current/helpMail/`, params, {
-      withCredentials: true,
-      headers: header
+      withCredentials: true
     })
   }
 
