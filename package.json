@@ -88,7 +88,7 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.901.8",
-    "@angular/cli": "^9.1.8",
+    "@angular/cli": "^9.1.9",
     "@angular/compiler-cli": "^9.1.2",
     "@compodoc/compodoc": "^1.1.11",
     "@types/jasmine": "^3.5.11",
