@@ -5,7 +5,7 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import {RamFactor} from '../facility_manager/resources/ram-factor';
 import {CoreFactor} from '../facility_manager/resources/core-factor';
 import {Application} from '../applications/application.model/application.model';
-import {WordPressTag} from "../facility_manager/newsmanagement/wp-tags";
+import {WordPressTag} from '../facility_manager/newsmanagement/wp-tags';
 
 /**
  * Service which provides methods for the facilities.

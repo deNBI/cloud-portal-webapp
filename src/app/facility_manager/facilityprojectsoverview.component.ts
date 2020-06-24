@@ -6,14 +6,14 @@ import {ApiSettings} from '../api-connector/api-settings.service';
 import {GroupService} from '../api-connector/group.service';
 import {UserService} from '../api-connector/user.service';
 import {FacilityService} from '../api-connector/facility.service';
-import {NewsService} from "../api-connector/news.service";
+import {NewsService} from '../api-connector/news.service';
 import * as moment from 'moment';
 import {ComputecenterComponent} from '../projectmanagement/computecenter.component';
 import {FilterBaseClass} from '../shared/shared_modules/baseClass/filter-base-class';
 import {IResponseTemplate} from '../api-connector/response-template';
 import {Subject} from 'rxjs';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
-import {WordPressTag} from "./newsmanagement/wp-tags";
+import {WordPressTag} from './newsmanagement/wp-tags';
 
 /**
  * Facility Project overview component.
