@@ -307,7 +307,7 @@
                     }"></textarea>
               </div>
             </div>
-            <div *ngIf="selectedProjectType == 'ALL'" class="form-group row">
+            <div *ngIf="selectedProjectType == 'ALL' && sendNews" class="form-group row">
               <label class="col-md-12 control-label"><strong>Alternative newstext (optional)</strong></label>
               <div class="col-md-12">
                             <textarea class="form-control" id="alternative_emailText"
@@ -316,13 +316,17 @@
                                       type="text"></textarea>
               </div>
             </div>
-            <div *ngIf="selectedProjectType == 'ALL'" class="form-group row">
-              <label class="col-md-12 control-label"><strong>Additional tags (optional - seperate by commas)</strong></label>
-              <div class="col-md-12">
-                            <textarea class="form-control" id="news_tags"
-                                      name="news_tags"
-                                      [(ngModel)]="news_tags"
-                                      type="text"></textarea>
+            <div *ngIf="selectedProjectType == 'ALL' && sendNews" class="form-group row">
+              <label class="col-md-12 control-label"><strong>Tags:</strong></label>
+              <div class="form-check" id="tags_check">
+                <div *ngFor="let tag of availableNewsTags">
+                  <div class="form-row col-md-6">
+                    <input class="form-check-input" type="checkbox" id="checkbox_{{tag.id.toString()}}"
+                           (click)="manageTags(tag)"
+                           [checked]="selectedTags?.indexOf(tag.id.toString()) > -1">
+                    <label class="form-check-label" for="checkbox_{{tag.id.toString()}}">{{tag.name}}</label>
+                  </div>
+                </div>
               </div>
             </div>
           </form>
@@ -373,7 +377,7 @@
       </div>
       <div class="modal-footer">
         <button class="btn  btn-success col-md-4"
-                (click)="sendMailToFacility(selectedFacility['FacilityId'], emailSubject, emailText, emailReply, sendNews, alternative_emailText, news_tags);
+                (click)="sendMailToFacility(selectedFacility['FacilityId'], emailSubject, emailText, emailReply, sendNews, alternative_emailText);
                 verifyModal.hide();
                 resetEmailModal();
                 successModal.show()">
