@@ -6,7 +6,7 @@ import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import {TabsModule} from 'ngx-bootstrap/tabs';
 import {AppComponent} from './app.component';
 
-import {HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {ChartsModule} from 'ng2-charts';
 import {ModalModule} from 'ngx-bootstrap/modal';
 import {PaginationModule} from 'ngx-bootstrap/pagination';
@@ -14,6 +14,7 @@ import {ExportAsModule} from 'ngx-export-as';
 import {ApiSettings} from './api-connector/api-settings.service';
 import {UserService} from './api-connector/user.service';
 import {ClipboardModule} from 'ngx-clipboard';
+import {AppInterceptor} from './app.interceptor.component';
 // Routing Module
 import {AppRoutingModule} from './app.routing';
 import {ConsentInfoComponent} from './consent-info.component';
@@ -37,10 +38,7 @@ import {UncaughtExceptionHandler} from './error-handler/UncaughtExceptionHandler
 import {CookieService} from 'ngx-cookie-service';
 
 import {TitleHeadbarComponent} from './shared/title-headbar.component';
-import { ClusterinfoComponent } from './virtualmachines/clusters/clusterinfo/clusterinfo.component';
-import { ClusterstatusComponent } from './virtualmachines/clusters/clusterstatus/clusterstatus.component';
 import {VoService} from './api-connector/vo.service';
-
 /**
  * App module.
  */
@@ -81,6 +79,11 @@ import {VoService} from './api-connector/vo.service';
               TitleHeadbarComponent
             ],
             providers: [
+              {
+                provide: HTTP_INTERCEPTORS,
+                useClass: AppInterceptor,
+                multi: true
+              },
               {
                 provide: LocationStrategy,
                 useClass: HashLocationStrategy
