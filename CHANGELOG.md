@@ -1,3 +1,14 @@
+##  (2020-06-18)
+
+
+#### Bug Fixes
+
+* **fm:**  remove news optionals when not needed ([72cfd9ac](72cfd9ac))
+
+#### Features
+
+* **VirtualMachine:** added termination info ([8e304ee9](8e304ee9))
+
 ##  (2020-05-21)
 
 
