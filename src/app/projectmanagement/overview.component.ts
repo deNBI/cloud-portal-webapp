@@ -481,7 +481,9 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   }
 
   ngOnDestroy(): void {
-    clearInterval(this.updateCreditsUsedIntervals);
+    if (this.updateCreditsUsedIntervals) {
+      clearInterval(this.updateCreditsUsedIntervals);
+    }
   }
 
   getDois(): void {
