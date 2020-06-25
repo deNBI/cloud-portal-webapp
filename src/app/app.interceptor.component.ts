@@ -19,7 +19,6 @@ export class AppInterceptor implements HttpInterceptor {
       },
       (err: any) => {
         if (err instanceof HttpErrorResponse) {
-          console.log(err.url)
           if (err.status === 401 || err.status === 0) {
             window.location.href = environment.login;
 
