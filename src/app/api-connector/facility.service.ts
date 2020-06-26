@@ -5,6 +5,7 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import {RamFactor} from '../facility_manager/resources/ram-factor';
 import {CoreFactor} from '../facility_manager/resources/core-factor';
 import {Application} from '../applications/application.model/application.model';
+import {WordPressTag} from '../facility_manager/newsmanagement/wp-tags';
 
 /**
  * Service which provides methods for the facilities.
@@ -364,7 +365,7 @@ export class FacilityService {
    * @returns {Observable<any>}
    */
   sendMailToFacility(facility: string, subject: string, message: string, project_type: string,
-                     reply?: string, sendNews?: any, alternative_news_text?: string, news_tags?: string): Observable<any> {
+                     reply?: string, sendNews?: any, alternative_news_text?: string, tags?: string): Observable<any> {
     const params: HttpParams = new HttpParams()
       .set('subject', subject)
       .set('facility_id', facility)
@@ -373,7 +374,7 @@ export class FacilityService {
       .set('type', project_type)
       .set('sendNews', sendNews)
       .set('alternative_message', alternative_news_text)
-      .set('additional_tags', news_tags);
+      .set('tags', tags);
 
     return this.http.post(`${ApiSettings.getApiBaseURL()}facilityManagers/current/facilityMail/`, params, {
                             withCredentials: true,
