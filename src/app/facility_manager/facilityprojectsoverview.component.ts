@@ -6,12 +6,14 @@ import {ApiSettings} from '../api-connector/api-settings.service';
 import {GroupService} from '../api-connector/group.service';
 import {UserService} from '../api-connector/user.service';
 import {FacilityService} from '../api-connector/facility.service';
+import {NewsService} from '../api-connector/news.service';
 import * as moment from 'moment';
 import {ComputecenterComponent} from '../projectmanagement/computecenter.component';
 import {FilterBaseClass} from '../shared/shared_modules/baseClass/filter-base-class';
 import {IResponseTemplate} from '../api-connector/response-template';
 import {Subject} from 'rxjs';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
+import {WordPressTag} from './newsmanagement/wp-tags';
 
 /**
  * Facility Project overview component.
@@ -19,7 +21,7 @@ import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 @Component({
              selector: 'app-facility-projects',
              templateUrl: 'facilityprojectsoverview.component.html',
-             providers: [FacilityService, UserService, GroupService, ApiSettings]
+             providers: [FacilityService, UserService, GroupService, ApiSettings, NewsService]
            })
 export class FacilityProjectsOverviewComponent extends FilterBaseClass implements OnInit {
 
@@ -59,10 +61,13 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 
   public managerFacilities: [string, number][];
   public selectedFacility: [string, number];
+  private availableNewsTags: WordPressTag[] = [];
+  private selectedTags: string[] = [];
   projects_filtered: Project[] = [];
 
   constructor(private groupservice: GroupService,
-              private facilityservice: FacilityService) {
+              private facilityservice: FacilityService,
+              private newsService: NewsService) {
     super();
   }
 
@@ -85,6 +90,12 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
       .subscribe(() => {
         this.applyFilter();
       });
+    this.newsService.getAvailableTagsFromWordPress().subscribe((result: any) => {
+      if (result) {
+        this.availableNewsTags = result.map((tag: any) =>
+          (new WordPressTag({name: tag['name'], id: tag['id']} as WordPressTag)));
+      }
+    });
   }
 
   getProjectsByMemberElixirId(): void {
@@ -292,12 +303,35 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 
   }
 
+  /**
+   * Adds or deletes tags from the list of tags to add to the news when the corresponding checkbox gets clicked.
+   * @param tag the tag which gets added/deleted.
+   */
+  manageTags(tag: WordPressTag): void {
+    const index: number = this.selectedTags.indexOf(tag.id.toString());
+    if (index > -1) {
+      this.selectedTags.splice(index, 1);
+    } else {
+      this.selectedTags.push(tag.id.toString());
+    }
+  }
+
+  /**
+   * Sends an email to users and also posts it as a news in WordPress via newsManager if selected.
+   * @param facility the facility of the users which shall be informed
+   * @param subject the subject as a string
+   * @param message the message as a string
+   * @param reply the reply-address
+   * @param send boolean if it should be sent to WordPress
+   * @param alternative_news_text the news text for WordPress, in case it shall be different from the original text
+   */
   sendMailToFacility(facility: string, subject: string, message: string, reply?: string,
-                     send?: any, alternative_news_text?: string, news_tags?: string): void {
+                     send?: any, alternative_news_text?: string): void {
     this.emailStatus = 0;
+    const chosenTags: string = this.selectedTags.toString();
     this.facilityservice.sendMailToFacility(
       facility, encodeURIComponent(subject), encodeURIComponent(message), this.selectedProjectType,
-      encodeURIComponent(reply), send, encodeURIComponent(alternative_news_text), encodeURIComponent(news_tags)).subscribe(
+      encodeURIComponent(reply), send, encodeURIComponent(alternative_news_text), chosenTags).subscribe(
       (result: any) => {
         if (result.status === 201) {
           this.emailStatus = 1;
