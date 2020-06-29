@@ -109,8 +109,8 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
   getFacilityProject(app: Application): void {
 
     // tslint:disable-next-line:max-line-length
-    if (!app.ComputeCenter && !app.project_application_status.includes(this.application_states.SUBMITTED)
-      && !app.project_application_status.includes(this.application_states.TERMINATED)) {
+    if (!app.ComputeCenter && !app.hasSubmittedStatus()
+      && !app.hasTerminatedStatus()) {
       this.groupservice.getFacilityByGroup(app.project_application_perun_id.toString()).subscribe((res: object) => {
 
         const login: string = res['Login'];
@@ -142,8 +142,8 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
         }
         this.isLoaded_AllApplication = true;
         for (const app of this.all_applications) {
-          if (app.project_application_status.includes(this.application_states.WAIT_FOR_CONFIRMATION) ||
-            app.project_application_status.includes(this.application_states.MODIFICATION_REQUESTED)) {
+          if (app?.hasWaitForConfirmationStatus() ||
+            app?.hasModificationRequestedStatus()) {
             this.getFacilityProject(app);
           }
         }

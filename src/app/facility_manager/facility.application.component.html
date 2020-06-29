@@ -273,7 +273,7 @@
           <tbody>
           <ng-container
             *ngFor="let application of applications_history">
-            <ng-container *ngIf="application?.project_application_status != application_states.SUBMITTED">
+            <ng-container *ngIf="application?.project_application_date_submitted">
               <tr>
                 <td>
 
@@ -304,9 +304,9 @@
                 <td>{{ application?.project_application_date_submitted }}
                 </td>
                 <td>{{ application?.project_application_institute }}</td>
-                <td>{{
-                    getStatusById(application?.project_application_status)
-                  }}
+                <td><span *ngFor="let st of application?.project_application_status ">{{
+                    getStatusById(st)  }}</span>
+
                 </td>
                 <td>
                   <button (click)="getFacilityApplicationById(application);switchCollapseStatus('application_history-' + application?.project_application_id);"

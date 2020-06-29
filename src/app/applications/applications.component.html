@@ -40,7 +40,7 @@
               *ngFor="let application of all_applications">
 
               <ng-container
-                *ngIf="application?.project_application_status == application_states.SUBMITTED || application?.project_application_status == application_states.MODIFICATION_REQUESTED || application?.project_application_status == application_states.WAIT_FOR_CONFIRMATION || application?.project_application_status == application_states.CONFIRMATION_DENIED">
+                *ngIf="application?.hasSubmittedStatus() || application?.hasModificationRequestedStatus() || application?.hasWaitForConfirmationStatus() || application?.hasConfirmationDeniedStatus()">
                 <tr>
                   <td>
                                               <span *ngIf="application?.project_application_openstack_project"
@@ -95,7 +95,7 @@
 
                   <td>
                     <select
-                      [style.display]=" (application?.project_application_status == application_states.SUBMITTED || application?.project_application_status == application_states.CONFIRMATION_DENIED || (!application?.ComputeCenter?.FacilityId ))? 'inherit' :'none'"
+                      [style.display]=" (application?.hasSubmittedStatus() || application?.hasConfirmationDeniedStatus()|| (!application?.ComputeCenter?.FacilityId ))? 'inherit' :'none'"
                       class="form-control" [id]="'id_compute_center_option_' + application?.project_application_name"
                       #selectedComputeCenter>
 
@@ -107,14 +107,14 @@
                       </option>
                     </select>
                     <span
-                      *ngIf="application?.project_application_status != application_states.SUBMITTED">{{application?.ComputeCenter?.Name}}</span>
+                      *ngIf="application?.hasSubmittedStatus()">{{application?.ComputeCenter?.Name}}</span>
                   </td>
 
 
                   <td>
                     <div class="btn-group">
                       <button
-                        *ngIf="application?.project_application_status == application_states.CONFIRMATION_DENIED || (application?.project_application_status == application_states.WAIT_FOR_CONFIRMATION && !application?.ComputeCenter?.FacilityId )"
+                        *ngIf="application?.hasConfirmationDeniedStatus() || (application?.hasWaitForConfirmationStatus() && !application?.ComputeCenter?.FacilityId )"
                         style="margin: auto 2.5px"
                         (click)="resetNotificationModal();assignGroupToFacility(application?.project_application_perun_id,application?.project_application_id,selectedComputeCenter.value); notificationModal.show();"
 
@@ -125,7 +125,7 @@
                         <span class="applicationActionsButton">Assign</span>
                       </button>
                       <button
-                        *ngIf="application?.project_application_status == application_states.WAIT_FOR_CONFIRMATION && application?.ComputeCenter?.FacilityId"
+                        *ngIf="application?.hasWaitForConfirmationStatus() && application?.ComputeCenter?.FacilityId"
                         style="margin: auto 2.5px"
                         (click)="resetNotificationModal();removeApplicationFromFacilityConfirmation(application);"
 
@@ -136,7 +136,7 @@
                         <span class="applicationActionsButton">Reassign</span>
                       </button>
                       <button
-                        *ngIf="application?.project_application_status == application_states.SUBMITTED && application?.project_application_openstack_project"
+                        *ngIf="application?.project_application_date_submitted && application?.project_application_openstack_project"
                         style="margin: auto 2.5px" [id]="'approve_'+ application?.project_application_shortname"
                         (click)="resetNotificationModal();createOpenStackProjectGroup(application,selectedComputeCenter.value); notificationModal.show();"
 
@@ -148,7 +148,7 @@
                       </button>
 
                       <button
-                        *ngIf="application?.project_application_status == application_states.SUBMITTED && !application?.project_application_openstack_project"
+                        *ngIf="application?.hasSubmittedStatus() && !application?.project_application_openstack_project"
                         style="margin: auto 2.5px" [id]="'approve_' + application?.project_application_shortname"
                         (click)="resetNotificationModal();createSimpleVmProjectGroup(application,selectedComputeCenter.value); notificationModal.show();"
 
@@ -159,7 +159,7 @@
                           & Create </span>
                       </button>
                       <button [id]="'extension_approval_' + application.project_application_shortname"
-                              *ngIf="application?.project_application_status == application_states.MODIFICATION_REQUESTED"
+                              *ngIf="application?.hasModificationRequestedStatus()"
                               style="margin: auto 2.5px"
                               (click)="setSelectedApplication(application);approveExtension(application);resultModal.show();"
                               type="button"
@@ -169,7 +169,7 @@
                           Modification </span>
                       </button>
 
-                      <button *ngIf="application?.project_application_status == application_states.SUBMITTED"
+                      <button *ngIf="application?.hasSubmittedStatus()"
                               (click)='declineApplication(application?.project_application_id)'
                               type="button"
                               class="btn btn-danger"
@@ -178,7 +178,7 @@
                         <span class="applicationActionsButton">Decline</span>
                       </button>
                       <button
-                        *ngIf="application?.project_application_status == application_states.MODIFICATION_REQUESTED"
+                        *ngIf="application?.hasModificationRequestedStatus()"
                         type="button"
                         class="btn btn-danger"
                         style="margin: auto 2.5px"

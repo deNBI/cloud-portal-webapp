@@ -358,6 +358,13 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
           if (!this.project_application.project_application_extension) {
             this.project_application.inititateExtension();
           }
+          if (!this.project_application.project_application_modification) {
+            this.project_application.inititateModification();
+          }
+          if (!this.project_application.project_credit_request) {
+            this.project_application.initiateCreditsRequest();
+          }
+
           if (this.project_application.project_application_perun_id) {
             this.startUpdateCreditUsageLoop();
           }
@@ -393,7 +400,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
    * @param {boolean} isExtraCreditsApplication: whether or not only extra credits are applied for
    */
   onSubmit(form: NgForm): void {
-    if (this.request_type == 3) {
+    if (this.request_type === 3) {
       this.project_application.project_application_extension.is_only_extra_credits_application = true;
       this.project_application.project_application_extension.project_application_extension_comment =
         form.controls['project_application_extra_credits_comment'].value;
@@ -576,8 +583,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   getFacilityProject(): void {
 
     if (!this.project_application.ComputeCenter
-      && !this.project_application.project_application_status.includes(this.application_states.SUBMITTED)
-      && !this.project_application.project_application_status.includes(this.application_states.TERMINATED)) {
+      && !this.project_application.hasSubmittedStatus()
+      && !this.project_application.hasTerminatedStatus()) {
       this.groupService.getFacilityByGroup(this.project_application.project_application_perun_id.toString()).subscribe((res: object) => {
 
         const login: string = res['Login'];

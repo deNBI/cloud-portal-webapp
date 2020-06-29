@@ -10,8 +10,8 @@
   <div class="row">
 
     <div class="col-12"
-         *ngIf="project && !project_application?.project_application_status.includes(application_states.TERMINATED)
-         && !project_application?.project_application_status.includes(application_states.DECLINED)">
+         *ngIf="project && !project_application?.hasTerminatedStatus()
+         && !project_application?.hasDeclinedStatus()">
 
 
       <div class="card" style=" ">
@@ -125,31 +125,31 @@
             <div class="btn-group col-12">
               <button
                 id="remove_application_button"
-                *ngIf="project_application?.project_application_status.includes(application_states.SUBMITTED)
-                || project_application?.project_application_status.includes(application_states.DECLINED)"
+                *ngIf="project_application?.hasSubmittedStatus()
+                || project_application?.hasDeclinedStatus()"
                 (click)="deleteModal.show();"
                 type="button" style="margin-bottom:5px;"
                 class="btn btn-danger">
                 Remove Application
               </button>
               <button id="show_credits_extension_modal"
-                      *ngIf="(project_application?.project_application_status.includes(application_states.APPROVED)
-                      || project_application?.project_application_status.includes(application_states.MODIFICATION_DECLINED) && is_vo_admin)"
+                      *ngIf="(project_application?.hasApprovedStatus()
+                      || project_application?.hasModificationDeclinedStatus() && is_vo_admin)"
                       (click)="newFlavors= {};initExampleFlavors();creditsExtensionModal.show()"
                       class="btn btn-success"
                       type="button" style="margin-bottom:5px;margin-right:5px">
                 Request More Credits
               </button>
               <button id="show_extension_modal"
-                      *ngIf="project_application?.project_application_status.includes(application_states.APPROVED)
-                      || project_application?.project_application_status.includes(application_states.MODIFICATION_DECLINED)"
+                      *ngIf="project_application?.hasApprovedStatus()
+                      || project_application?.hasModificationDeclinedStatus()"
                       (click)="newFlavors= {};selected_ontology_terms=[];doiQuestionModal.show();"
                       class="btn btn-warning" type="button" style="margin-bottom:5px;margin-right:5px;">
                 Request Extension/Modification
               </button>
               <button id="show_termination_modal"
-                      *ngIf="project_application?.project_application_status.includes(application_states.APPROVED)
-                      || project_application?.project_application_status.includes(application_states.MODIFICATION_DECLINED)"
+                      *ngIf="project_application?.hasApprovedStatus()
+                      || project_application?.hasModificationDeclinedStatus()"
                       (click)="terminateModal.show()"
                       class="btn btn-danger"
                       type="button" style="margin-bottom:5px;">
@@ -169,7 +169,7 @@
           </div>
 
           <div class="alert alert-info" style="margin-top:15px;"
-               *ngIf="project_application?.project_application_status.includes(application_states.APPROVED)">
+               *ngIf="project_application?.hasApprovedStatus()">
             <p>You can find more information about modification requestes
               <a href="https://cloud.denbi.de/wiki/portal/modification/" target="_blank">here</a>.</p>
             <p *ngIf="is_vo_admin">Information about credits are coming soon.</p>
@@ -182,8 +182,8 @@
 
     <div class="col"
          *ngIf="project && (project?.UserIsPi ||project?.UserIsAdmin)
-         && !project_application?.project_application_status.includes(application_states.TERMINATED)
-         && !project_application?.project_application_status.includes(application_states.DECLINED)">
+         && !project_application?.hasTerminatedStatus()
+         && !project_application?.hasDeclinedStatus()">
 
       <div class="card" style=" ">
         <div class="card-header">
@@ -246,10 +246,10 @@
   </div>
   <div class="row">
     <div class="col"
-         *ngIf="project && (project_application?.project_application_status.includes(application_states.APPROVED)
-         || project_application?.project_application_status.includes(application_states.MODIFICATION_REQUESTED)
-         || project_application?.project_application_status.includes(application_states.MODIFICATION_DECLINED)
-         || project_application?.project_application_status.includes(application_states.MODIFICATION_DECLINED))">
+         *ngIf="project && (project_application?.hasApprovedStatus()
+         || project_application?.hasModificationRequestedStatus()
+         || project_application?.hasModificationDeclinedStatus()
+         )">
 
       <div class="card" style=" ">
         <div class="card-header">
@@ -337,20 +337,20 @@
     </div>
 
 </div>
-   <div class="col"
-           *ngIf="is_vo_admin && (project_application?.project_application_status.includes(application_states.APPROVED)
-           || project_application?.project_application_status.includes(application_states.MODIFICATION_REQUESTED)
-           || project_application?.project_application_status.includes(application_states.MODIFICATION_DECLINED))">
-        <div class="card" style=" ">
-          <div class="card-header">
-            <i class="fa fa-align-justify"></i> Credit Usage history of {{project?.Name }}
-          </div>
-          <div class="card-body">
-            <canvas #creditsChart
-              id="creditsChart" width="400" height="400"
-            >
-            </canvas>
-          </div>
+  <div class="col"
+       *ngIf="is_vo_admin && (project_application?.hasApprovedStatus()
+           || project_application?.hasModificationRequestedStatus()
+           || project_application?.hasModificationDeclinedStatus())">
+    <div class="card" style=" ">
+      <div class="card-header">
+        <i class="fa fa-align-justify"></i> Credit Usage history of {{project?.Name }}
+      </div>
+      <div class="card-body">
+        <canvas #creditsChart
+                id="creditsChart" width="400" height="400"
+        >
+        </canvas>
+      </div>
       </div>
     </div>
 
@@ -837,7 +837,7 @@
                                type="number" min="0" step="1"
                                placeholder="e.g 1"
                                (ngModelChange)="onChangeFlavor(fl,$event)"
-                               [ngModel]="project_application?.project_application_modification.getFlavorCounter(fl)"
+                               [ngModel]="project_application?.project_application_modification?.getFlavorCounter(fl)"
                                #name="ngModel"
                                appMinAmount="0" appIntegerOrNull
                                [ngClass]="{
@@ -1441,10 +1441,13 @@
             </tr>
             <tr *ngIf="request_type == 2">
               <td><strong>Number of cores in total:
-                {{project_application?.project_application_modification.project_application_modification_total_cores}}</strong></td>
+                {{project_application?.project_application_modification?.project_application_modification_total_cores}}</strong>
+              </td>
             </tr>
             <tr *ngIf="request_type == 2">
-              <td><strong>Value of RAM in total: {{project_application?.project_application_modification.project_application_modification_total_ram}} GBs</strong>
+              <td><strong>Value of RAM in
+                total: {{project_application?.project_application_modification?.project_application_modification_total_ram}}
+                GBs</strong>
               </td>
             </tr>
           </table>
@@ -1696,7 +1699,8 @@
                     <td>{{project_application?.project_application_shortname}}</td>
                     <td>{{ project_application?.project_application_lifetime }} months</td>
                     <td>{{ project_application?.project_application_date_submitted }}</td>
-                    <td>{{ getStatusesById(project_application?.project_application_status) }}</td>
+                    <td><span *ngFor="let st of project_application?.project_application_status ">{{
+                      getStatusById(st)  }}</span></td>
                   </tr>
 
 

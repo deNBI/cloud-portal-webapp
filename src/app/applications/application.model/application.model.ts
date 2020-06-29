@@ -4,9 +4,8 @@ import {ApplicationDissemination} from '../application-dissemination';
 import {EdamOntologyTerm} from '../edam-ontology-term';
 import {Flavor} from '../../virtualmachines/virtualmachinemodels/flavor';
 import {Application_States} from '../../shared/shared_modules/baseClass/abstract-base-class';
-import {ApplicationModification} from "../application_modification.model";
-import {ApplicationCreditRequest} from "../application_credit_request";
-import {ApplicationStatus} from "../application_status.model";
+import {ApplicationModification} from '../application_modification.model';
+import {ApplicationCreditRequest} from '../application_credit_request';
 
 /**
  * User Class.
@@ -72,12 +71,12 @@ export class Application {
   private _project_application_date_status_changed: string;
   private _project_application_user: User;
   private _project_application_pi: User = new User();
-  private _project_application_status: [number];
+  private _project_application_status: number[] = [];
   private _ComputeCenter: ComputecenterComponent;
   private _project_application_openstack_project: boolean;
   private _DaysRunning: number;
   private _project_application_extension: ApplicationExtension = null;
-  private _project_application_modification: ApplicationModification = null;
+  private _project_application_modification: ApplicationModification;
   private _project_credit_request: ApplicationCreditRequest = null;
   private _project_application_perun_id: number | string;
   private _project_application_total_cores: number;
@@ -150,6 +149,58 @@ export class Application {
     }
   }
 
+  public hasSubmittedStatus(): boolean {
+    return this.project_application_status.includes(Application_States.SUBMITTED)
+  }
+
+  public hasApprovedStatus(): boolean {
+    return this.project_application_status.includes(Application_States.APPROVED)
+  }
+
+  public hasTerminatedStatus(): boolean {
+    return this.project_application_status.includes(Application_States.TERMINATED)
+  }
+
+  public hasConfirmationDeniedStatus(): boolean {
+    return this.project_application_status.includes(Application_States.CONFIRMATION_DENIED)
+  }
+
+  public hasCreditsDeclinedStatus(): boolean {
+    return this.project_application_status.includes(Application_States.CREDITS_DECLINED)
+  }
+
+  public hasCreditsRequestedStatus(): boolean {
+    return this.project_application_status.includes(Application_States.CREDITS_REQUESTED)
+  }
+
+  public hasDeclinedStatus(): boolean {
+    return this.project_application_status.includes(Application_States.DECLINED)
+  }
+
+  public hasExtensionDeclinedStatus(): boolean {
+    return this.project_application_status.includes(Application_States.EXTENSION_DECLINED)
+  }
+
+  public hasExtensionRequestedStatus(): boolean {
+    return this.project_application_status.includes(Application_States.EXTENSION_REQUESTED)
+  }
+
+  public hasModificationDeclinedStatus(): boolean {
+    return this.project_application_status.includes(Application_States.MODIFICATION_DECLINED)
+  }
+
+  public hasSuspendedStatus(): boolean {
+    return this.project_application_status.includes(Application_States.SUSPENDED)
+  }
+
+  public hasWaitForConfirmationStatus(): boolean {
+    return this.project_application_status.includes(Application_States.WAIT_FOR_CONFIRMATION)
+  }
+
+  public hasModificationRequestedStatus(): boolean {
+    return this.project_application_status.includes(Application_States.MODIFICATION_REQUESTED)
+  }
+
   public inititateExtension(): void {
     this._project_application_extension = new ApplicationExtension(null);
     this._project_application_extension.project_application_id = this._project_application_id;
@@ -161,8 +212,23 @@ export class Application {
       this._project_application_cloud_service_user_number;
   }
 
+    public initiateCreditsRequest(): void {
+    this.project_credit_request = new ApplicationCreditRequest(null);
+
+
+    //Todo fill more
+  }
+
   public inititateModification(): void {
-    //TODO: Fill initialization
+    this._project_application_modification = new ApplicationModification(null);
+    this._project_application_modification.project_application_id = this._project_application_id;
+    this._project_application_modification.project_application_modification_volume_counter = this.project_application_volume_counter;
+    this._project_application_modification.project_application_modification_volume_limit = this.project_application_volume_limit;
+    if(this._project_application_openstack_project){
+      this._project_application_modification.project_application_modification_object_storage=this._project_application_object_storage;
+    }
+
+    //Todo fill more
   }
 
   private setDaysRunning(): void {
@@ -173,7 +239,6 @@ export class Application {
       }
     }
   }
-
 
   public addEdamTerm(term: EdamOntologyTerm): void {
     if (this.project_application_edam_terms.indexOf(term) === -1) {
@@ -483,11 +548,11 @@ export class Application {
     this._project_application_date_status_changed = value;
   }
 
-  get project_application_status(): [number] {
+  get project_application_status(): number [] {
     return this._project_application_status;
   }
 
-  set project_application_status(values: [number]) {
+  set project_application_status(values: number[]) {
     this._project_application_status = values;
   }
 
@@ -555,7 +620,6 @@ export class Application {
   set project_application_modification(value: ApplicationModification) {
     this._project_application_modification = value;
   }
-
 
   get project_credit_request(): ApplicationCreditRequest {
     return this._project_credit_request;

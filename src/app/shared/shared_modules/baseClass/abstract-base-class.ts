@@ -29,6 +29,24 @@ export enum Application_States {
 
 }
 
+export enum Application_States_Strings {
+  SUBMITTED = 'submitted',
+  APPROVED = 'approved',
+  DECLINED = 'declined',
+  MODIFICATION_REQUESTED = 'modification requested',
+  MODIFICATION_DECLINED = 'modification declined',
+  WAIT_FOR_CONFIRMATION = 'wait for confirmation',
+  CONFIRMATION_DENIED = 'confirmation denied',
+  TERMINATED = 'terminated',
+  SUSPENDED = 'suspended',
+  TERMINATION_REQUESTED = 'termination requested',
+  EXTENSION_REQUESTED = 'extension requested',
+  EXTENSION_DECLINED = 'extension declined',
+  CREDITS_REQUESTED = 'credits requested',
+  CREDITS_DECLINED = 'credits declined'
+
+}
+
 enum Vm_Statuses {
   ACTIVE = 1,
   SHUTOFF = 2,
