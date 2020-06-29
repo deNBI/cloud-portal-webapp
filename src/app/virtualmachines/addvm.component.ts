@@ -622,7 +622,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
    * Gets all groups of the user and his key.
    */
   initializeData(): void {
-    forkJoin(this.groupService.getSimpleVmByUser(), this.userservice.getUserInfo()).subscribe((result: any) => {
+    forkJoin([this.groupService.getSimpleVmByUser(), this.userservice.getUserInfo()]).subscribe((result: any) => {
       this.userinfo = new Userinfo(result[1]);
       this.validatePublicKey();
       const membergroups: any = result[0];
