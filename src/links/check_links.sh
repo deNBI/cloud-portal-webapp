@@ -5,7 +5,7 @@ WIKI_SNAPSHOTS=https://cloud.denbi.de/wiki/simple_vm/snapshots/
 WIKI=https://cloud.denbi.de/wiki/
 WIKI_GENERATE_KEYS=https://cloud.denbi.de/wiki/quickstart/#generate-ssh-keys
 WIKI_VOLUME_OVERVIEW=https://cloud.denbi.de/wiki/simple_vm/volumes/
-NEWS=https://cloud.denbi.de/news/
+NEWS=https://cloud.denbi.de/cloudnews/
 
 WIKI_EXTEND_VOLUME=https://cloud.denbi.de/wiki/simple_vm/volumes/#extend-a-volume;
 WIKI_RESENV_LINK=https://cloud.denbi.de/wiki/simple_vm/customization/#research-environments;
