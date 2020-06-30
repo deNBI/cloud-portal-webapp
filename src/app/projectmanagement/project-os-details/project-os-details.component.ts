@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {Project} from '../project.model';
 import {VirtualMachine} from '../../virtualmachines/virtualmachinemodels/virtualmachine';
 import {Volume} from '../../virtualmachines/volumes/volume';
@@ -14,17 +14,25 @@ import {GroupService} from '../../api-connector/group.service';
              styleUrls: ['./project-os-details.component.css'],
              providers: [GroupService]
            })
-export class ProjectOsDetailsComponent implements OnInit {
+export class ProjectOsDetailsComponent implements OnInit, OnChanges {
 
   @Input() project: Project;
   selectedProjectVms: VirtualMachine[] = [];
   selectedProjectVolumes: Volume[] = [];
   selectedProjectSnapshots: SnapshotModel[] = [];
+  details_loaded: boolean = false;
 
   constructor(private groupService: GroupService) {
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log(this.project.Id)
+    this.details_loaded = false;
+    this.getProjectDetails()
+  }
+
   ngOnInit(): void {
+    this.details_loaded = false;
     this.getProjectDetails()
   }
 
@@ -33,6 +41,7 @@ export class ProjectOsDetailsComponent implements OnInit {
       this.selectedProjectVms = res['vms'];
       this.selectedProjectVolumes = res['volumes'];
       this.selectedProjectSnapshots = res['snapshots'];
+      this.details_loaded = true;
     })
   }
 
