@@ -34,7 +34,7 @@ export class PublicKeyComponent extends AbstractBaseClasse {
 
     const re: RegExp = /\+/gi;
 
-    this.keyservice.postKey(publicKey.replace(re, '%2B')).subscribe(() => {
+    this.keyservice.postKey(publicKey.replace(re, '%2B')).subscribe((): void => {
       this.getUserPublicKey();
     });
   }
@@ -49,17 +49,12 @@ export class PublicKeyComponent extends AbstractBaseClasse {
 
   validatePublicKey(): boolean {
 
-    if (/^ssh-rsa AAAA[0-9A-Za-z+/]+[=]{0,3}( [^@]+@[^@]+)?/.test(this.public_key)) {
-      return true;
-    } else {
-
-      return false;
-    }
+    return /^ssh-rsa AAAA[0-9A-Za-z+/]+[=]{0,3}( [^@]+@[^@]+)?/.test(this.public_key);
 
   }
 
   getUserPublicKey(): void {
-    this.keyservice.getKey().subscribe((key: IResponseTemplate) => {
+    this.keyservice.getKey().subscribe((key: IResponseTemplate): void => {
       this.userinfo.PublicKey = <string>key.value;
     })
   }

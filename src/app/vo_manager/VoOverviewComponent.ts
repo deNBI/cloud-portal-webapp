@@ -73,7 +73,7 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
   ngOnInit(): void {
 
     this.getVoProjects();
-    this.voserice.getNewsletterSubscriptionCounter().subscribe((result: IResponseTemplate) => {
+    this.voserice.getNewsletterSubscriptionCounter().subscribe((result: IResponseTemplate): void => {
       this.newsletterSubscriptionCounter = <number>result.value
 
     });
@@ -102,7 +102,7 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
   }
 
   applyFilter(): void {
-    this.projects_filtered = this.projects.filter((project: Project) => this.checkFilter(project));
+    this.projects_filtered = this.projects.filter((project: Project): boolean => this.checkFilter(project));
 
   }
 
@@ -122,7 +122,7 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
   sendNewsletterToVo(subject: string, message: string, selectedProjectType: string, reply?: string): void {
     this.voserice.sendNewsletterToVo(
       encodeURIComponent(subject), encodeURIComponent(message), selectedProjectType, encodeURIComponent(reply))
-      .subscribe((result: IResponseTemplate) => {
+      .subscribe((result: IResponseTemplate): void => {
         if (<boolean><Boolean>result.value === true) {
           this.emailStatus = 1;
         } else {
@@ -134,7 +134,7 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
 
   sendMailToVo(subject: string, message: string, facility: string, type: string, reply?: string): void {
     this.voserice.sendMailToVo(encodeURIComponent(subject), encodeURIComponent(message), facility, type, encodeURIComponent(reply))
-      .subscribe((result: IResponseTemplate) => {
+      .subscribe((result: IResponseTemplate): void => {
         if (<boolean><Boolean>result.value === true) {
 
           this.emailStatus = 1;
@@ -167,7 +167,7 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
 
   getVoProjects(): void {
     this.projects = [];
-    this.voserice.getAllGroupsWithDetails().subscribe((result: any) => {
+    this.voserice.getAllGroupsWithDetails().subscribe((result: any): void => {
       const vo_projects: any = result;
       for (const group of vo_projects) {
         const dateCreated: moment.Moment = moment.unix(group['createdAt']);
@@ -253,7 +253,7 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
    * Get all computecenters.
    */
   getComputeCenters(): void {
-    this.facilityService.getComputeCenters().subscribe((result: any) => {
+    this.facilityService.getComputeCenters().subscribe((result: any): void => {
       for (const cc of result) {
         const compute_center: ComputecenterComponent = new ComputecenterComponent(
           cc['compute_center_facility_id'], cc['compute_center_name'],
@@ -273,7 +273,7 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
 
   public terminateProject(): void {
     this.voserice.terminateProject(this.selectedProject.Id)
-      .subscribe(() => {
+      .subscribe((): void => {
                    const indexAll: number = this.projects.indexOf(this.selectedProject, 0);
 
                    this.projects.splice(indexAll, 1);
@@ -283,13 +283,13 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
                    this.updateNotificationModal('Success', 'The  project was terminated.', true, 'success');
 
                  },
-                 (error: any) => {
+                 (error: any): void => {
                    if (error['status'] === 409) {
-                  this.updateNotificationModal(
-                    'Failed',
-                    `The project could not be terminated. Reason: ${error['error']['reason']} for ${error['error']['openstackid']}`,
-                    true,
-                    'danger')
+                     this.updateNotificationModal(
+                       'Failed',
+                       `The project could not be terminated. Reason: ${error['error']['reason']} for ${error['error']['openstackid']}`,
+                       true,
+                       'danger')
                    } else {
                      this.updateNotificationModal('Failed', 'The project could not be terminated.', true, 'danger');
                    }
@@ -301,7 +301,7 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
   getProjectLifetime(project: Project): void {
     this.details_loaded = false;
     if (!project.Lifetime) {
-      this.groupservice.getLifetime(project.Id.toString()).subscribe((time: IResponseTemplate) => {
+      this.groupservice.getLifetime(project.Id.toString()).subscribe((time: IResponseTemplate): void => {
         const lifetime: number = <number>time.value;
         const dateCreatedString: string = project.DateCreated;
 
@@ -324,13 +324,13 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
   }
 
   getProjectStatus(project: Project): void {
-    this.voserice.getProjectStatus(project.Id).subscribe((res: IResponseTemplate) => {
+    this.voserice.getProjectStatus(project.Id).subscribe((res: IResponseTemplate): void => {
       project.Status = <number>res.value;
     })
   }
 
   suspendProject(project: Project): void {
-    this.voserice.removeResourceFromGroup(project.Id).subscribe(() => {
+    this.voserice.removeResourceFromGroup(project.Id).subscribe((): void => {
       this.getProjectStatus(project);
       project.ComputeCenter = null;
     });
@@ -338,14 +338,14 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
   }
 
   resumeProject(project: Project): void {
-    this.voserice.resumeProject(project.Id).subscribe(() => {
+    this.voserice.resumeProject(project.Id).subscribe((): void => {
       this.getVoProjects();
     });
 
   }
 
   setProjectStatus(project: Project, status: number): void {
-    this.voserice.setProjectStatus(project.Id, status).subscribe(() => {
+    this.voserice.setProjectStatus(project.Id, status).subscribe((): void => {
       this.getProjectStatus(project)
 
     })
@@ -357,7 +357,7 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
 
   getMembesOfTheProject(projectid: number, projectname: string): void {
     this.voserice.getVoGroupRichMembers(projectid)
-      .subscribe((members: any) => {
+      .subscribe((members: any): void => {
                    this.usersModalProjectID = projectid;
                    this.usersModalProjectName = projectname;
                    this.usersModalProjectMembers = new Array();

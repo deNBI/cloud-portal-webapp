@@ -116,7 +116,7 @@ export class ClusterOverviewComponent implements OnInit, OnDestroy {
   }
 
   get_is_facility_manager(): void {
-    this.facilityService.getManagerFacilities().subscribe((result: any) => {
+    this.facilityService.getManagerFacilities().subscribe((result: any): void => {
       if (result.length > 0) {
         this.is_facility_manager = true;
       }
@@ -137,7 +137,7 @@ export class ClusterOverviewComponent implements OnInit, OnDestroy {
    */
   deleteCluster(cluster: Clusterinfo): void {
     cluster.status = VirtualMachineStates.DELETING;
-    this.subscription.add(this.virtualmachineservice.deleteCluster(cluster.cluster_id).subscribe(() => {
+    this.subscription.add(this.virtualmachineservice.deleteCluster(cluster.cluster_id).subscribe((): void => {
       cluster.status = VirtualMachineStates.DELETED
 
     }))
@@ -146,10 +146,10 @@ export class ClusterOverviewComponent implements OnInit, OnDestroy {
   check_status_loop(cluster: Clusterinfo, final_state?: string, is_selected_cluster?: boolean): void {
 
     setTimeout(
-      () => {
+      (): void => {
 
         // tslint:disable-next-line:max-line-length
-        this.subscription.add(this.virtualmachineservice.getClusterInfo(cluster.cluster_id).subscribe((updated_cluster: Clusterinfo) => {
+        this.subscription.add(this.virtualmachineservice.getClusterInfo(cluster.cluster_id).subscribe((updated_cluster: Clusterinfo): void => {
           this.clusters[this.clusters.indexOf(cluster)] = updated_cluster;
           if (is_selected_cluster) {
             this.selectedCluster = updated_cluster;
@@ -193,7 +193,7 @@ export class ClusterOverviewComponent implements OnInit, OnDestroy {
     this.virtualmachineservice.getClusters(
       this.currentPage, this.cluster_per_site,
       this.filter)
-      .subscribe((cluster_page_infos: any[]) => {
+      .subscribe((cluster_page_infos: any[]): void => {
                    this.prepareClusters(cluster_page_infos)
                  }
       );
@@ -205,7 +205,7 @@ export class ClusterOverviewComponent implements OnInit, OnDestroy {
       this.selectedFacility['FacilityId'],
       this.currentPage, this.cluster_per_site,
       this.filter)
-      .subscribe((cluster_page_infos: any[]) => {
+      .subscribe((cluster_page_infos: any[]): void => {
                    this.prepareClusters(cluster_page_infos)
                  }
       );
@@ -224,7 +224,7 @@ export class ClusterOverviewComponent implements OnInit, OnDestroy {
   }
 
   checkClustersTillRunning(): void {
-    this.clusters.forEach((cluster: Clusterinfo) => {
+    this.clusters.forEach((cluster: Clusterinfo): void => {
 
       if (cluster.status !== 'Running') {
         this.check_status_loop(cluster);
@@ -235,7 +235,7 @@ export class ClusterOverviewComponent implements OnInit, OnDestroy {
   getAllClusters(): void {
     this.virtualmachineservice.getAllVM(this.currentPage, this.cluster_per_site,
                                         this.filter)
-      .subscribe((cluster_page_infos: any[]) => {
+      .subscribe((cluster_page_infos: any[]): void => {
                    this.prepareClusters(cluster_page_infos)
                  }
       );
@@ -245,7 +245,7 @@ export class ClusterOverviewComponent implements OnInit, OnDestroy {
     this.getClusters();
     this.is_vo_admin = is_vo;
     this.get_is_facility_manager();
-    this.facilityService.getManagerFacilities().subscribe((result: any) => {
+    this.facilityService.getManagerFacilities().subscribe((result: any): void => {
       this.managerFacilities = result;
       this.selectedFacility = this.managerFacilities[0];
     });
@@ -254,14 +254,14 @@ export class ClusterOverviewComponent implements OnInit, OnDestroy {
       .pipe(
         debounceTime(this.FILTER_DEBOUNCE_TIME),
         distinctUntilChanged())
-      .subscribe(() => {
+      .subscribe((): void => {
         this.applyFilter();
       });
 
     this.clusterPerPageChange.pipe(
       debounceTime(this.DEBOUNCE_TIME),
       distinctUntilChanged())
-      .subscribe(() => {
+      .subscribe((): void => {
         this.applyFilter();
       });
 

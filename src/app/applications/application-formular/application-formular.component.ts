@@ -78,7 +78,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
     if (this.openstack_project) {
       this.simple_vm_min_vm = true;
     }
-    this.applicationsservice.getEdamOntologyTerms().subscribe((terms: EdamOntologyTerm[]) => {
+    this.applicationsservice.getEdamOntologyTerms().subscribe((terms: EdamOntologyTerm[]): void => {
       this.edam_ontology_terms = terms;
       this.initiateFormWithApplication();
     })
@@ -231,14 +231,14 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
    * gets a list of all available Flavors from the flavorservice and puts them into the array flavorList
    */
   getListOfFlavors(): void {
-    this.flavorService.getListOfFlavorsAvailable().subscribe((flavors: Flavor[]) => this.flavorList = flavors);
+    this.flavorService.getListOfFlavorsAvailable().subscribe((flavors: Flavor[]): Flavor[] => this.flavorList = flavors);
   }
 
   /**
    * Gets a list of all available types of flavors from the flavorservice and uses them in the function setListOfTypes
    */
   getListOfTypes(): void {
-    this.flavorService.getListOfTypesAvailable().subscribe((types: FlavorType[]) => {
+    this.flavorService.getListOfTypesAvailable().subscribe((types: FlavorType[]): void => {
       this.setListOfTypes(types)
     });
   }
@@ -285,7 +285,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
     this.submitting = true;
 
     this.applicationsservice.addNewApplication(this.application).subscribe(
-      (application: Application) => {
+      (application: Application): void => {
         this.clearApplication();
         this.submitting = false;
         this.application_id = application.project_application_id
@@ -295,7 +295,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 
         this.notificationModalStay = false;
       },
-      (error: object) => {
+      (error: object): void => {
         const error_json: object = error;
         this.error = [];
         for (const key of Object.keys(error_json)) {
@@ -322,35 +322,36 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
       this.totalNumberOfCores,
       this.totalRAM,
       this.application.project_application_lifetime).toPromise()
-      .then((credits: number) => {
+      .then((credits: number): void => {
         this.application.project_application_initial_credits = credits
-      }).catch((err: any) => console.log(err));
+      }).catch((err: any): void => console.log(err));
 
   }
 
   approveApplication(form: NgForm): any {
     this.calculateInitialCredits(form);
     this.application_id = this.application.project_application_id;
-    this.applicationsservice.validateApplicationAsPIByHash(this.hash, this.application).subscribe((res: any) => {
-                                                                                                    this.fullLayout.getGroupsEnumeration();
+    this.applicationsservice.validateApplicationAsPIByHash(
+      this.hash, this.application).subscribe((): void => {
+                                               this.fullLayout.getGroupsEnumeration();
 
-                                                                                                    this.updateNotificationModal(
-                                                                                                      'Success',
-                                                                                                      'The application was successfully approved.',
-                                                                                                      true,
-                                                                                                      'success');
-                                                                                                    this.notificationModalStay = false;
+                                               this.updateNotificationModal(
+                                                 'Success',
+                                                 'The application was successfully approved.',
+                                                 true,
+                                                 'success');
+                                               this.notificationModalStay = false;
 
-                                                                                                  },
-                                                                                                  () => {
-                                                                                                    this.updateNotificationModal(
-                                                                                                      'Failed',
-                                                                                                      'The application was not successfully approved.',
-                                                                                                      true,
-                                                                                                      'danger');
-                                                                                                    this.notificationModalStay = true;
+                                             },
+                                             (): void => {
+                                               this.updateNotificationModal(
+                                                 'Failed',
+                                                 'The application was not successfully approved.',
+                                                 true,
+                                                 'danger');
+                                               this.notificationModalStay = true;
 
-                                                                                                  })
+                                             })
   }
 
   /**
@@ -358,7 +359,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
    * @param name of the new test application
    */
   sendTestApplication(name: string): void {
-    const default_flav: Flavor = this.flavorList.find((fl: Flavor) => {
+    const default_flav: Flavor = this.flavorList.find((fl: Flavor): boolean => {
       return fl.name === 'de.NBI default'
     });
 
@@ -380,7 +381,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
     this.application.project_application_initial_credits = 5952;
 
     this.applicationsservice.addNewApplication(this.application).subscribe(
-      (application: Application) => {
+      (application: Application): void => {
         this.clearApplication();
         this.submitting = false;
         this.application_id = application.project_application_id
@@ -388,7 +389,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
         this.notificationModalStay = false;
         this.fullLayout.getGroupsEnumeration();
       },
-      (error: object) => {
+      (error: object): void => {
         const error_json: object = error;
         this.error = [];
         for (const key of Object.keys(error_json)) {

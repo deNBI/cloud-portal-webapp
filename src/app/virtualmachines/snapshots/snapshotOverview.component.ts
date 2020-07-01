@@ -98,7 +98,7 @@ export class SnapshotOverviewComponent implements OnInit {
    * Get snapshots by user.
    */
   getSnapshots(): void {
-    this.imageService.getSnapshotsByUser(this.currentPage, this.items_per_page).subscribe((result: any) => {
+    this.imageService.getSnapshotsByUser(this.currentPage, this.items_per_page).subscribe((result: any): void => {
       this.snapshots = [];
       this.snapshots = result['snapshot_list'];
       this.total_items = result['total_items'];
@@ -119,7 +119,7 @@ export class SnapshotOverviewComponent implements OnInit {
 
     }
 
-    this.snapshots.forEach((snap: SnapshotModel) => {
+    this.snapshots.forEach((snap: SnapshotModel): void => {
       if (!this.isSnapChecked(snap)) {
         this.checked_snapshots.push(snap);
       }
@@ -132,7 +132,7 @@ export class SnapshotOverviewComponent implements OnInit {
     let all_active: boolean = true;
 
     setTimeout(
-      () => {
+      (): void => {
         const observables: any = [];
         for (const snapshot of this.snapshots) {
           if (snapshot.snapshot_status !== 'active') {
@@ -141,7 +141,7 @@ export class SnapshotOverviewComponent implements OnInit {
           }
 
         }
-        forkJoin(observables).subscribe((res: any) => {
+        forkJoin(observables).subscribe((res: any): void => {
           for (const snap of res) {
             this.snapshots[res.indexOf(snap)].snapshot_status = snap['status'];
             if (snap['status'] !== 'active') {
@@ -163,7 +163,7 @@ export class SnapshotOverviewComponent implements OnInit {
   getFacilitySnapshots(): void {
     this.snapshots = [];
     this.facilityService.getFacilitySnapshots(this.selectedFacility['FacilityId'], this.currentPage, this.items_per_page)
-      .subscribe((res: any) => {
+      .subscribe((res: any): void => {
         this.snapshots = res['snapshot_list'];
         this.total_items = res['total_items'];
         this.items_per_page = res['items_per_page'];
@@ -177,7 +177,7 @@ export class SnapshotOverviewComponent implements OnInit {
    * @param {string} snapshot_id
    */
   deleteSnapshot(snapshot: SnapshotModel): void {
-    this.imageService.deleteSnapshot(snapshot.snapshot_openstackid).subscribe((result: IResponseTemplate) => {
+    this.imageService.deleteSnapshot(snapshot.snapshot_openstackid).subscribe((result: IResponseTemplate): void => {
 
       this.delete_status = 0;
 
@@ -206,7 +206,7 @@ export class SnapshotOverviewComponent implements OnInit {
     this.filterChanged
       .pipe(
         debounceTime(this.DEBOUNCE_TIME),
-        distinctUntilChanged(), switchMap((filterName: string) => {
+        distinctUntilChanged(), switchMap((filterName: string): any => {
           this.isSearching = true;
 
           this.filter = filterName.trim();
@@ -218,7 +218,7 @@ export class SnapshotOverviewComponent implements OnInit {
           }
 
         }))
-      .subscribe((result: any) => {
+      .subscribe((result: any): void => {
 
         this.snapshots = result['snapshot_list'];
         this.total_items = result['total_items'];
@@ -233,7 +233,7 @@ export class SnapshotOverviewComponent implements OnInit {
     this.snapshotsPerPageChange.pipe(
       debounceTime(this.DEBOUNCE_TIME),
       distinctUntilChanged())
-      .subscribe(() => {
+      .subscribe((): void => {
         this.reset();
         if (this.showFacilities) {
           this.getFacilitySnapshots();
@@ -241,7 +241,7 @@ export class SnapshotOverviewComponent implements OnInit {
           this.getSnapshots();
         }
       });
-    this.facilityService.getManagerFacilities().subscribe((result: any) => {
+    this.facilityService.getManagerFacilities().subscribe((result: any): void => {
       this.managerFacilities = result;
       this.selectedFacility = this.managerFacilities[0];
     });
@@ -250,7 +250,7 @@ export class SnapshotOverviewComponent implements OnInit {
 
   areAllSnapshotsChecked(): void {
     let all_checked: boolean = true;
-    this.snapshots.forEach((snap: SnapshotModel) => {
+    this.snapshots.forEach((snap: SnapshotModel): void => {
       if (!this.isSnapChecked(snap)) {
         all_checked = false;
 
@@ -277,7 +277,7 @@ export class SnapshotOverviewComponent implements OnInit {
   }
 
   deleteSelectedSnapshots(): void {
-    this.checked_snapshots.forEach((snap: SnapshotModel) => {
+    this.checked_snapshots.forEach((snap: SnapshotModel): void => {
       this.deleteSnapshot(snap)
 
     });

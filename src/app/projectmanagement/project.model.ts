@@ -6,14 +6,6 @@ import {ComputecenterComponent} from './computecenter.component';
  */
 export class Project {
 
-  get UserIsAdmin(): boolean {
-    return this._UserIsAdmin;
-  }
-
-  set UserIsAdmin(value: boolean) {
-    this._UserIsAdmin = value;
-  }
-
   private _Id: number | string;
   private _Name: string;
   private _Description: string;
@@ -34,6 +26,14 @@ export class Project {
 
   private _CurrentCredits: number;
   private _ApprovedCredits: number;
+
+  get UserIsAdmin(): boolean {
+    return this._UserIsAdmin;
+  }
+
+  set UserIsAdmin(value: boolean) {
+    this._UserIsAdmin = value;
+  }
 
   constructor(Id: number | string, Name: string, Description: string, DateCreated: string, DaysRunning: number,
               UserIsAdmin: boolean, UserIsPi: boolean, ComputeCenter: ComputecenterComponent,
