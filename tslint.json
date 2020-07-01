@@ -177,11 +177,49 @@
       140
     ],
     "member-access": false,
-    "member-ordering": [
-      true,
-      "static-before-instance",
-      "variables-before-functions"
-    ],
+    "member-ordering":[
+  {
+    "name": "static field",
+    "kinds": [
+      "public-static-field",
+      "protected-static-field",
+      "private-static-field"
+    ]
+  },
+  {
+    "name": "instance field",
+    "kinds": [
+      "public-instance-field",
+      "protected-instance-field",
+      "private-instance-field"
+    ]
+  },
+  {
+    "name": "static method",
+    "kinds": [
+      "public-static-method",
+      "private-static-method",
+      "protected-static-method",
+      "public-static-accessor",
+      "protected-static-accessor",
+      "private-static-accessor"
+    ]
+  },
+  {
+    "name": "instance method",
+    "kinds": [
+      "public-constructor",
+      "protected-constructor",
+      "private-constructor",
+      "public-instance-method",
+      "protected-instance-method",
+      "private-instance-method",
+      "public-instance-accessor",
+      "protected-instance-accessor",
+      "private-instance-accessor"
+    ]
+  }
+],
     "no-arg": true,
     "no-bitwise": true,
     "no-console": [
@@ -249,12 +287,8 @@
 
     "directive-selector": [true, "attribute", "app", "camelCase"],
     "component-selector": [true, "element", "app", "kebab-case"],
-    "use-input-property-decorator": true,
-    "use-output-property-decorator": true,
-    "use-host-property-decorator": true,
     "no-input-rename": true,
     "no-output-rename": true,
-    "use-life-cycle-interface": true,
     "use-pipe-transform-interface": true,
     "component-class-suffix": true,
     "directive-class-suffix": true

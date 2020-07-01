@@ -1,10 +1,6 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
-import {Http, RequestOptions, XHRBackend} from '@angular/http';
+import {AfterViewInit, ApplicationRef, Component, OnInit, ViewChild} from '@angular/core';
 import {ModalDirective} from 'ngx-bootstrap/modal';
 import {Angulartics2Piwik} from 'angulartics2/piwik';
-import {ApplicationRef} from '@angular/core';
-import {IResponseTemplate} from './api-connector/response-template';
-import {setVO} from './shared/globalvar';
 import {VoService} from './api-connector/vo.service';
 
 /**
@@ -14,11 +10,7 @@ import {VoService} from './api-connector/vo.service';
              // tslint:disable-next-line:component-selector
              selector: 'body',
              templateUrl: 'app.component.html',
-             providers: [{
-    provide: Http,
-    deps: [XHRBackend, RequestOptions, AppComponent],
-    useValue: undefined
-}, VoService]
+             providers: [VoService]
            })
 export class AppComponent implements AfterViewInit, OnInit {
 
@@ -28,7 +20,7 @@ export class AppComponent implements AfterViewInit, OnInit {
 
   @ViewChild('notificationModal', { static: true }) modal: ModalDirective;
 
-  constructor(private appRef: ApplicationRef, private angulartics2Piwik: Angulartics2Piwik, private voService: VoService) {
+  constructor(private appRef: ApplicationRef, private angulartics2Piwik: Angulartics2Piwik) {
     /*   if (environment.production) {
            const isStable = appRef.isStable.pipe(first(isStable => isStable === true));
            const intervalTime = interval(60 * 1000);

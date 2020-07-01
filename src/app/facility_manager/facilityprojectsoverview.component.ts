@@ -72,7 +72,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
   }
 
   ngOnInit(): void {
-    this.facilityservice.getManagerFacilities().subscribe((result: any) => {
+    this.facilityservice.getManagerFacilities().subscribe((result: any): void => {
       this.managerFacilities = result;
       this.selectedFacility = this.managerFacilities[0];
       this.emailSubject = `[${this.selectedFacility['Facility']}]`;
@@ -87,20 +87,20 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
       .pipe(
         debounceTime(this.FILTER_DEBOUNCE_TIME),
         distinctUntilChanged())
-      .subscribe(() => {
+      .subscribe((): void => {
         this.applyFilter();
       });
-    this.newsService.getAvailableTagsFromWordPress().subscribe((result: any) => {
+    this.newsService.getAvailableTagsFromWordPress().subscribe((result: any): void => {
       if (result) {
-        this.availableNewsTags = result.map((tag: any) =>
-          (new WordPressTag({name: tag['name'], id: tag['id']} as WordPressTag)));
+        this.availableNewsTags = result.map((tag: any): WordPressTag =>
+                                              (new WordPressTag({name: tag['name'], id: tag['id']} as WordPressTag)));
       }
     });
   }
 
   getProjectsByMemberElixirId(): void {
     // tslint:disable-next-line:max-line-length
-    this.facilityservice.getFacilityGroupsByMemberElixirId(this.managerFacilities[0]['FacilityId'], this.filter).subscribe((result: any) => {
+    this.facilityservice.getFacilityGroupsByMemberElixirId(this.managerFacilities[0]['FacilityId'], this.filter).subscribe((result: any): void => {
       this.projects_filtered = [];
       const facility_projects: any = result;
       const is_pi: boolean = false;
@@ -169,7 +169,11 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 
     }
 
-    this.projects_filtered = this.projects.filter((project: Project) => this.checkFilter(project));
+    this.projects_filtered = this.projects.filter((project: Project): any => {
+                                                    this.checkFilter(project)
+                                                  }
+    )
+    ;
 
   }
 
@@ -196,7 +200,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
   getProjectLifetime(project: Project): void {
     this.details_loaded = false;
     if (!project.Lifetime) {
-      this.groupservice.getLifetime(project.Id).subscribe((time: IResponseTemplate) => {
+      this.groupservice.getLifetime(project.Id).subscribe((time: IResponseTemplate): void => {
         const lifetime: number = <number>time.value;
         const dateCreated: Date = moment(project.DateCreated, 'DD.MM.YYYY').toDate();
 
@@ -240,7 +244,8 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
   getFacilityProjects(facility: string): void {
     this.projects = [];
 
-    this.facilityservice.getFacilityAllowedGroupsWithDetailsAndSpecificStatus(facility, this.STATUS_APPROVED).subscribe((result: any) => {
+    // tslint:disable-next-line:max-line-length
+    this.facilityservice.getFacilityAllowedGroupsWithDetailsAndSpecificStatus(facility, this.STATUS_APPROVED).subscribe((result: any): void => {
       const facility_projects: any = result;
       const is_pi: boolean = false;
       const is_admin: boolean = false;
@@ -332,14 +337,14 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
     this.facilityservice.sendMailToFacility(
       facility, encodeURIComponent(subject), encodeURIComponent(message), this.selectedProjectType,
       encodeURIComponent(reply), send, encodeURIComponent(alternative_news_text), chosenTags).subscribe(
-      (result: any) => {
+      (result: any): void => {
         if (result.status === 201) {
           this.emailStatus = 1;
         } else {
           this.emailStatus = 2;
         }
       },
-      () => {
+      (): void => {
         this.emailStatus = 2;
       })
 
@@ -347,18 +352,18 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 
   getMembesOfTheProject(projectid: number, projectname: string): void {
     this.facilityservice.getFacilityGroupRichMembers(projectid, this.selectedFacility['FacilityId'])
-      .subscribe((members: any) => {
-                   this.usersModalProjectID = projectid;
-                   this.usersModalProjectName = projectname;
-                   this.usersModalProjectMembers = [];
-                   for (const member of members) {
-                     const member_id: string = member['id'];
-                     const user_id: string = member['userId'];
-                     const fullName: string = `${member['firstName']} ${member['lastName']}`;
-                     const newMember: ProjectMember = new ProjectMember(user_id, fullName, member_id);
-                     newMember.ElixirId = member['elixirId'];
-                     newMember.Email = member['email'];
-                     this.usersModalProjectMembers.push(newMember);
+      .subscribe((members: any): void => {
+        this.usersModalProjectID = projectid;
+        this.usersModalProjectName = projectname;
+        this.usersModalProjectMembers = [];
+        for (const member of members) {
+          const member_id: string = member['id'];
+          const user_id: string = member['userId'];
+          const fullName: string = `${member['firstName']} ${member['lastName']}`;
+          const newMember: ProjectMember = new ProjectMember(user_id, fullName, member_id);
+          newMember.ElixirId = member['elixirId'];
+          newMember.Email = member['email'];
+          this.usersModalProjectMembers.push(newMember);
                    }
 
                  }

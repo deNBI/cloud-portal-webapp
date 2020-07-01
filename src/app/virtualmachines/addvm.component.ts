@@ -14,7 +14,7 @@ import {TemplateNames} from './conda/template-names';
 import {RandomNameGenerator} from '../shared/randomNameGenerator';
 import {Router} from '@angular/router';
 import {Volume} from './volumes/volume';
-import { WIKI_MOUNT_VOLUME } from 'links/links';
+import {WIKI_MOUNT_VOLUME} from 'links/links';
 import {UserService} from '../api-connector/user.service';
 import {ImageService} from '../api-connector/image.service';
 import {GroupService} from '../api-connector/group.service';
@@ -245,9 +245,9 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
    */
   getImages(project_id: number): void {
 
-    this.imageService.getImages(project_id).subscribe((images: Image[]) => {
+    this.imageService.getImages(project_id).subscribe((images: Image[]): void => {
       this.images = images;
-      this.images.sort((x_cord: any, y_cord: any) => Number(x_cord.is_snapshot) - Number(y_cord.is_snapshot));
+      this.images.sort((x_cord: any, y_cord: any): number => Number(x_cord.is_snapshot) - Number(y_cord.is_snapshot));
       this.image_loaded = true;
       this.checkProjectDataLoaded()
 
@@ -259,7 +259,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
    * @param {number} project_id
    */
   getFlavors(project_id: number): void {
-    this.flavorService.getFlavors(project_id).subscribe((flavors: Flavor[]) => {
+    this.flavorService.getFlavors(project_id).subscribe((flavors: Flavor[]): void => {
       this.flavors = flavors;
       this.flavors_loaded = true;
       this.checkProjectDataLoaded();
@@ -269,7 +269,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 
   getDetachedVolumesByProject(): void {
     this.virtualmachineservice.getDetachedVolumesByProject(this.selectedProject[1]).subscribe(
-      (detached_volumes: Volume[]) => {
+      (detached_volumes: Volume[]): void => {
         this.detached_project_volumes = detached_volumes;
       }
     )
@@ -414,8 +414,8 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
   check_status_loop(id: string): void {
 
     setTimeout(
-      () => {
-        this.virtualmachineservice.checkVmStatus(id).subscribe((newVm: VirtualMachine) => {
+      (): void => {
+        this.virtualmachineservice.checkVmStatus(id).subscribe((newVm: VirtualMachine): void => {
           if (newVm.status === this.ACTIVE) {
             this.resetProgressBar();
             this.newVm = newVm;
@@ -493,27 +493,27 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
         flavor_fixed, this.selectedImage, servername,
         project, projectid.toString(), this.http_allowed,
         this.https_allowed, this.udp_allowed, this.volumesToMount, this.volumesToAttach, play_information, user_key_url)
-        .subscribe((newVm: VirtualMachine) => {
+        .subscribe((newVm: VirtualMachine): void => {
           this.newVm = newVm;
           this.started_machine = false;
 
           if (newVm.status === 'Build') {
             setTimeout(
-              () => {
+              (): void => {
                 this.router.navigate(['/virtualmachines/vmOverview']).then().catch()
               },
               2000)
 
           } else if (newVm.status === 'mutex_locked') {
             setTimeout(
-              () => {
+              (): void => {
                 this.startVM(flavor, servername, project, projectid)
               },
               1000)
           } else if (newVm.status) {
             this.newVm = newVm;
             setTimeout(
-              () => {
+              (): void => {
                 this.router.navigate(['/virtualmachines/vmOverview']).then().catch()
               },
               2000)
@@ -530,7 +530,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 
     }
     setTimeout(
-      () => {
+      (): void => {
         this.router.navigate(['/virtualmachines/vmOverview']).then().catch()
       },
       2000)
@@ -577,7 +577,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
     this.client_checked = false;
     this.projectDataLoaded = false;
 
-    this.groupService.getClient(this.selectedProject[1].toString()).subscribe((client: Client) => {
+    this.groupService.getClient(this.selectedProject[1].toString()).subscribe((client: Client): void => {
       if (client.status && client.status === 'Connected') {
         this.client_avaiable = true;
 
@@ -591,14 +591,14 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
       }
       this.selectedProjectClient = client;
       this.imageService.getBlockedImageTagsResenv(Number(this.selectedProjectClient.id), 'true')
-        .subscribe((tags: BlockedImageTagResenv[]) => {
-        this.blockedImageTagsResenv = tags;
-      });
+        .subscribe((tags: BlockedImageTagResenv[]): void => {
+          this.blockedImageTagsResenv = tags;
+        });
     });
   }
 
   getForc(id: string): void {
-    this.groupService.getClientForcUrl(this.selectedProject[1].toString()).subscribe((response: JSON) => {
+    this.groupService.getClientForcUrl(this.selectedProject[1].toString()).subscribe((response: JSON): void => {
       if (response['forc_url'] !== null) {
         this.has_forc = true;
         this.forc_url = response['forc_url']
@@ -622,7 +622,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
    * Gets all groups of the user and his key.
    */
   initializeData(): void {
-    forkJoin([this.groupService.getSimpleVmByUser(), this.userservice.getUserInfo()]).subscribe((result: any) => {
+    forkJoin([this.groupService.getSimpleVmByUser(), this.userservice.getUserInfo()]).subscribe((result: any): void => {
       this.userinfo = new Userinfo(result[1]);
       this.validatePublicKey();
       const membergroups: any = result[0];
@@ -659,7 +659,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
     this.selectedImage = undefined;
     this.selectedFlavor = undefined;
     this.getDetachedVolumesByProject();
-    this.groupService.getGroupResources(this.selectedProject[1].toString()).subscribe((res: any) => {
+    this.groupService.getGroupResources(this.selectedProject[1].toString()).subscribe((res: any): void => {
       this.selectedProjectVmsMax = res['number_vms'];
       this.selectedProjectVmsUsed = res['used_vms'];
       this.selectedProjectDiskspaceMax = res['max_volume_storage'];
@@ -775,7 +775,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
    } else {
      let storageInList: number = 0;
 
-     this.volumesToMount.forEach((volume: Volume) => {
+     this.volumesToMount.forEach((volume: Volume): void => {
        storageInList = storageInList + volume.volume_storage;
      });
 

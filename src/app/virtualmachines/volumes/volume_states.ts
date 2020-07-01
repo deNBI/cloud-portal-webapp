@@ -34,58 +34,6 @@ export class VolumeStates {
     VolumeStates._EXTENDING
   ];
 
-  public get staticNO_ACTIONS(): string[] {
-    return VolumeStates.NO_ACTIONS;
-  }
-
-  public get staticRESERVED(): string {
-    return VolumeStates.RESERVED;
-  }
-
-  public get staticDETACHING(): string {
-    return VolumeStates.DETACHING;
-  }
-
-  public get staticATTACHING(): string {
-    return VolumeStates.ATTACHING;
-  }
-
-  public get staticIN_USE(): string {
-    return VolumeStates.IN_USE;
-  }
-
-  public get staticAVAILABLE(): string {
-    return VolumeStates.AVAILABLE;
-  }
-
-  public get staticNOT_FOUND(): string {
-    return VolumeStates.NOT_FOUND;
-  }
-
-  public get staticERROR(): string {
-    return VolumeStates.ERROR;
-  }
-
-  public get staticDELETING(): string {
-    return VolumeStates.DELETING;
-  }
-
-  public get staticNOT_IN_PROCESS_STATE(): string[] {
-    return VolumeStates.NOT_IN_PROCESS_STATES;
-  }
-
-  public get staticCREATING(): string {
-    return VolumeStates.CREATING;
-  }
-
-  public get staticRESERVED_PLANNED(): string {
-    return VolumeStates.RESERVED_PLANNED_STATUS;
-  }
-
-  public get staticEXTENDING(): string {
-    return VolumeStates.EXTENDING;
-  }
-
   static get CREATING(): string {
     return this._CREATING;
   }
@@ -140,5 +88,57 @@ export class VolumeStates {
 
   static get EXTENDING(): string {
     return this._EXTENDING;
+  }
+
+  public get staticNO_ACTIONS(): string[] {
+    return VolumeStates.NO_ACTIONS;
+  }
+
+  public get staticRESERVED(): string {
+    return VolumeStates.RESERVED;
+  }
+
+  public get staticDETACHING(): string {
+    return VolumeStates.DETACHING;
+  }
+
+  public get staticATTACHING(): string {
+    return VolumeStates.ATTACHING;
+  }
+
+  public get staticIN_USE(): string {
+    return VolumeStates.IN_USE;
+  }
+
+  public get staticAVAILABLE(): string {
+    return VolumeStates.AVAILABLE;
+  }
+
+  public get staticNOT_FOUND(): string {
+    return VolumeStates.NOT_FOUND;
+  }
+
+  public get staticERROR(): string {
+    return VolumeStates.ERROR;
+  }
+
+  public get staticDELETING(): string {
+    return VolumeStates.DELETING;
+  }
+
+  public get staticNOT_IN_PROCESS_STATE(): string[] {
+    return VolumeStates.NOT_IN_PROCESS_STATES;
+  }
+
+  public get staticCREATING(): string {
+    return VolumeStates.CREATING;
+  }
+
+  public get staticRESERVED_PLANNED(): string {
+    return VolumeStates.RESERVED_PLANNED_STATUS;
+  }
+
+  public get staticEXTENDING(): string {
+    return VolumeStates.EXTENDING;
   }
 }
