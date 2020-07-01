@@ -18,9 +18,9 @@ export class TitleHeadbarComponent {
   }
 
     logout(): void {
-    this.userService.logoutUser().subscribe((redirect: any) => {
+    this.userService.logoutUser().subscribe((redirect: any): void => {
 
-              window.location.href = redirect['redirect'];
+      window.location.href = redirect['redirect'];
     })
   }
 
