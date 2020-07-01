@@ -40,7 +40,7 @@ export class LoggedInGuard implements CanActivate {
     }
 
     return this.userservice.getOnlyLoggedUserWithRedirect(redirect_url).pipe(
-      map((res: any) => {
+      map((res: any): boolean => {
             if (res['error']) {
               window.location.href = environment.login;
 

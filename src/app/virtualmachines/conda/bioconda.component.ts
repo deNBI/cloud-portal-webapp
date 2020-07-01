@@ -73,7 +73,7 @@ export class BiocondaComponent implements OnInit {
     this.filternameChanged
       .pipe(
         debounceTime(this.DEBOUNCE_TIME),
-        distinctUntilChanged(), switchMap((filterName: string) => {
+        distinctUntilChanged(), switchMap((filterName: string): any => {
           this.isSearching = true;
 
           this.filterToolName = filterName.trim();
@@ -81,7 +81,7 @@ export class BiocondaComponent implements OnInit {
           return this.condaService.getAllTools(1, this.filterToolName)
 
         }))
-      .subscribe((res: any) => {
+      .subscribe((res: any): void => {
         this.setAllTools(res);
       });
 
@@ -99,7 +99,7 @@ export class BiocondaComponent implements OnInit {
   getAllTools(page: number): void {
     this.isSearching = true;
     this.condaService.getAllTools(page, this.filterToolName).subscribe(
-      (res: any) => {
+      (res: any): void => {
         this.all_tools = [];
         const packages_dic: any = res['packages'];
 
@@ -164,7 +164,7 @@ export class BiocondaComponent implements OnInit {
     if (!this.is_tool_name_added(tool.name)) {
       this.chosen_tools.push(tool);
     } else {
-      this.chosen_tools.forEach((item: IBiocondaTool, index: number) => {
+      this.chosen_tools.forEach((item: IBiocondaTool, index: number): void => {
         if (tool.name === item.name) {
           this.chosen_tools.splice(index, 1);
         }
@@ -179,7 +179,7 @@ export class BiocondaComponent implements OnInit {
   removeTool(tool: IBiocondaTool): void {
     let deleted: boolean = false;
 
-    this.chosen_tools.forEach((item: IBiocondaTool, index: number) => {
+    this.chosen_tools.forEach((item: IBiocondaTool, index: number): void => {
       if (tool.name === item.name && tool.version === item.version && tool.build === item.build) {
         this.chosen_tools.splice(index, 1);
         deleted = true;
@@ -192,7 +192,7 @@ export class BiocondaComponent implements OnInit {
 
   is_tool_name_added(name: string): boolean {
     let found: boolean = false;
-    this.chosen_tools.forEach((item: IBiocondaTool) => {
+    this.chosen_tools.forEach((item: IBiocondaTool): void => {
       if (name === item.name) {
         found = true;
       }
@@ -209,7 +209,7 @@ export class BiocondaComponent implements OnInit {
 
   is_added(tool: IBiocondaTool): boolean {
     let found: boolean = false;
-    this.chosen_tools.forEach((item: IBiocondaTool) => {
+    this.chosen_tools.forEach((item: IBiocondaTool): void => {
       if (tool.name === item.name && tool.version === item.version && tool.build === item.build) {
         found = true;
       }
