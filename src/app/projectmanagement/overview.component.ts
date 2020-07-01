@@ -178,7 +178,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
     this.creditsService.getExtraCreditsForExtension(this.totalNumberOfCores,
                                                     this.totalRAM, lifetime,
                                                     this.project_application.project_application_id.toString()).subscribe(
-      (credits: number) => {
+      (credits: number): void => {
         this.project_application.projectapplicationrenewal.project_application_renewal_credits = credits;
       })
 
@@ -188,10 +188,10 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
     if (this.project_application != null) {
       // tslint:disable-next-line:max-line-length
       this.creditsService.getCurrentCreditsOfProject(Number(this.project_application.project_application_perun_id.toString())).toPromise().then(
-        (credits: number) => {
+        (credits: number): void => {
           this.current_credits = credits;
         }
-      ).catch((err: Error) => console.log(err.message))
+      ).catch((err: Error): void => console.log(err.message))
     } else {
       console.log(this.project_application)
     }
@@ -201,8 +201,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   fetchCreditHistoryOfProject(): void {
     if (this.project != null) {
       this.creditsService.getCreditsUsageHistoryOfProject(Number(this.project.Id.toString())).toPromise()
-        .then((response: {}) => {
-          // tslint:disable-next-line:triple-equals
+        .then((response: {}): void => {
+                // tslint:disable-next-line:triple-equals
                 if (response['data_points'] != undefined) {
                   const data_points: number[] = response['data_points'];
                   const ceiling_line: number[] = [];
@@ -236,7 +236,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
                   })
                 }
               }
-        ).catch((err: Error) => console.log(err.message));
+        ).catch((err: Error): void => console.log(err.message));
     }
   }
 
@@ -265,45 +265,43 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
   startUpdateCreditUsageLoop(): void {
     this.updateCreditsUsedIntervals = setInterval(
-      () =>
+      (): any =>
         // tslint:disable-next-line:max-line-length
         this.creditsService.getCurrentCreditsOfProject(Number(this.project_application.project_application_perun_id.toString())).toPromise().then(
-          (credits: number) => {
+          (credits: number): void => {
             this.current_credits = credits;
           }
-        ).catch((err: Error) => {
+        ).catch((err: Error): void => {
           console.log(err.message)
         }),
       5000);
   }
 
   initExampleFlavors(): void {
-    const standardFlavors: Flavor[] = this.flavorList.
-    filter((fl: Flavor, nu: number, arr: Flavor[]) => fl.type.long_name === 'Standard Flavours');
-    const highMemFlavors: Flavor[] = this.flavorList.
-    filter((fl: Flavor, nu: number, arr: Flavor[]) => fl.type.long_name === 'High Memory Flavours');
-    standardFlavors.sort((fl1: Flavor, fl2: Flavor) => fl1.vcpus - fl2.vcpus);
-    highMemFlavors.sort((fl1: Flavor, fl2: Flavor) => fl1.vcpus - fl2.vcpus);
+    const standardFlavors: Flavor[] = this.flavorList.filter((fl: Flavor, nu: number, arr: Flavor[]): boolean => fl.type.long_name === 'Standard Flavours');
+    const highMemFlavors: Flavor[] = this.flavorList.filter((fl: Flavor, nu: number, arr: Flavor[]): boolean => fl.type.long_name === 'High Memory Flavours');
+    standardFlavors.sort((fl1: Flavor, fl2: Flavor): number => fl1.vcpus - fl2.vcpus);
+    highMemFlavors.sort((fl1: Flavor, fl2: Flavor): number => fl1.vcpus - fl2.vcpus);
     if (standardFlavors.length !== 0) {
       this.smallExampleFlavor = standardFlavors[0];
       this.creditsService.getCreditsPerHour(this.smallExampleFlavor.vcpus, this.smallExampleFlavor.ram).toPromise()
-        .then((credits: number) => {
+        .then((credits: number): void => {
           this.creditsPerHourSmallExample = credits * 4;
-        }).catch((err: Error) => console.log(err.message));
+        }).catch((err: Error): void => console.log(err.message));
     }
     if (highMemFlavors.length !== 0) {
       this.largeExampleFlavor = highMemFlavors[0];
       this.creditsService.getCreditsPerHour(this.largeExampleFlavor.vcpus, this.largeExampleFlavor.ram).toPromise()
-        .then((credits: number) => {
+        .then((credits: number): void => {
           this.creditsPerHourLargeExample = credits;
-        }).catch((err: Error) => console.log(err.message));
+        }).catch((err: Error): void => console.log(err.message));
     }
   }
 
   approveMemberApplication(project: number, application: number, membername: string): void {
     this.loaded = false;
     this.application_action_done = false;
-    this.groupService.approveGroupApplication(project, application).subscribe((tmp_application: any) => {
+    this.groupService.approveGroupApplication(project, application).subscribe((tmp_application: any): void => {
       if (tmp_application['state'] === 'APPROVED') {
         this.application_action_success = true;
       } else if (tmp_application['message']) {
@@ -329,7 +327,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
     this.applicationsservice
       .getApplication(this.application_id)
       .subscribe(
-        (aj: Application) => {
+        (aj: Application): void => {
           if (aj.project_application_name === '') {
             this.isLoaded = false;
             this.errorMessage = 'Not found';
@@ -346,7 +344,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
           if (this.project_application) {
             this.setLifetime();
-            this.applicationsservice.getApplicationPerunId(this.application_id).subscribe((id: any) => {
+            this.applicationsservice.getApplicationPerunId(this.application_id).subscribe((id: any): void => {
               if (id['perun_id']) {
                 this.project_id = id['perun_id'];
 
@@ -361,7 +359,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
             this.isLoaded = true;
           }
         },
-        (error: any) => {
+        (error: any): void => {
           this.isLoaded = false;
           this.errorMessage = `Status: ${error.status.toString()},
                    StatusText: ${error.statusText.toString()},
@@ -387,7 +385,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
   public requestExtension(): void {
     this.applicationsservice.requestRenewal(this.project_application.projectapplicationrenewal)
-      .subscribe((result: { [key: string]: string }) => {
+      .subscribe((result: { [key: string]: string }): void => {
         if (result['Error']) {
           this.extension_status = 2
         } else {
@@ -396,7 +394,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
         if (this.selected_ontology_terms.length > 0) {
           this.applicationsservice.addEdamOntologyTerms(this.application_id,
                                                         this.selected_ontology_terms
-          ).subscribe(() => {
+          ).subscribe((): void => {
             this.getApplication()
 
           });
@@ -412,14 +410,16 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
    * gets a list of all available Flavors from the flavorservice and puts them into the array flavorList
    */
   getListOfFlavors(): void {
-    this.flavorService.getListOfFlavorsAvailable().subscribe((flavors: Flavor[]) => this.flavorList = flavors);
+    this.flavorService.getListOfFlavorsAvailable().subscribe((flavors: Flavor[]): void => {
+      this.flavorList = flavors
+    });
   }
 
   /**
    * gets a list of all available types of flavors from the flavorservice and uses them in the function setListOfTypes
    */
   getListOfTypes(): void {
-    this.flavorService.getListOfTypesAvailable().subscribe((types: FlavorType[]) => this.setListOfTypes(types));
+    this.flavorService.getListOfTypesAvailable().subscribe((types: FlavorType[]): void => this.setListOfTypes(types));
   }
 
   fillUp(date: string): string {
@@ -457,12 +457,12 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   }
 
   ngOnInit(): void {
-    this.applicationsservice.getEdamOntologyTerms().subscribe((terms: EdamOntologyTerm[]) => {
+    this.applicationsservice.getEdamOntologyTerms().subscribe((terms: EdamOntologyTerm[]): void => {
       this.edam_ontology_terms = terms;
       this.searchTermsInEdamTerms()
     });
 
-    this.activatedRoute.params.subscribe((paramsId: any) => {
+    this.activatedRoute.params.subscribe((paramsId: any): void => {
       this.errorMessage = null;
       this.isLoaded = false;
       this.project = null;
@@ -487,7 +487,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   }
 
   getDois(): void {
-    this.groupService.getGroupDois(this.application_id).subscribe((dois: Doi[]) => {
+    this.groupService.getGroupDois(this.application_id).subscribe((dois: Doi[]): void => {
       this.dois = dois;
     })
   }
@@ -517,14 +517,14 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   }
 
   deleteDoi(doi: Doi): void {
-    this.groupService.deleteGroupDoi(doi.id).subscribe((dois: Doi[]) => {
+    this.groupService.deleteGroupDoi(doi.id).subscribe((dois: Doi[]): void => {
       this.dois = dois;
     })
   }
 
   addDoi(): void {
     if (this.isNewDoi()) {
-      this.groupService.addGroupDoi(this.application_id, this.newDoi).subscribe((dois: Doi[]) => {
+      this.groupService.addGroupDoi(this.application_id, this.newDoi).subscribe((dois: Doi[]): void => {
         this.newDoi = null;
         this.dois = dois;
       })
@@ -535,7 +535,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   requestProjectTermination(): void {
     this.updateNotificationModal('Waiting', 'Termination request will be submitted...', true, 'info');
 
-    this.groupService.requestProjectTermination(this.project.Id).subscribe(() => {
+    this.groupService.requestProjectTermination(this.project.Id).subscribe((): void => {
       this.fullLayout.getGroupsEnumeration();
       this.getApplicationStatus();
       this.getApplication();
@@ -552,7 +552,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
     if (!this.project_application.ComputeCenter && this.project_application.project_application_status !== this.application_states.SUBMITTED
       && this.project_application.project_application_status !== this.application_states.TERMINATED) {
-      this.groupService.getFacilityByGroup(this.project_application.project_application_perun_id.toString()).subscribe((res: object) => {
+      this.groupService.getFacilityByGroup(
+        this.project_application.project_application_perun_id.toString()).subscribe((res: object): void => {
 
         const login: string = res['Login'];
         const suport: string = res['Support'];
@@ -572,24 +573,24 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
     this.application_action_done = false;
 
     this.groupService.rejectGroupApplication(project, application)
-      .subscribe((tmp_application: any) => {
-                   this.project.ProjectMemberApplications = [];
+      .subscribe((tmp_application: any): void => {
+        this.project.ProjectMemberApplications = [];
 
-                   if (tmp_application['state'] === 'REJECTED') {
-                     this.application_action_success = true;
+        if (tmp_application['state'] === 'REJECTED') {
+          this.application_action_success = true;
 
-                   } else if (tmp_application['message']) {
-                     this.application_action_success = false;
+        } else if (tmp_application['message']) {
+          this.application_action_success = false;
 
-                     this.application_action_error_message = tmp_application['message'];
-                   } else {
-                     this.application_action_success = false;
-                   }
-                   this.application_action = 'rejected';
-                   this.application_member_name = membername;
-                   this.application_action_done = true;
-                   this.getUserProjectApplications();
-                   this.loaded = true;
+          this.application_action_error_message = tmp_application['message'];
+        } else {
+          this.application_action_success = false;
+        }
+        this.application_action = 'rejected';
+        this.application_member_name = membername;
+        this.application_action_done = true;
+        this.getUserProjectApplications();
+        this.loaded = true;
 
                  }
       );
@@ -601,7 +602,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
    */
   getUserProjectApplications(): void {
     this.loaded = false;
-    this.groupService.getGroupApplications(this.project.Id).subscribe((applications: any) => {
+    this.groupService.getGroupApplications(this.project.Id).subscribe((applications: any): void => {
 
       const newProjectApplications: ProjectMemberApplication[] = [];
       if (applications.length === 0) {
@@ -631,7 +632,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
   getProject(): void {
 
-    this.groupService.getGroupDetails(this.project_id).subscribe((group: any) => {
+    this.groupService.getGroupDetails(this.project_id).subscribe((group: any): void => {
       const dateCreated: moment.Moment = moment.unix(group['createdAt']);
       const dateDayDifference: number = Math.ceil(moment().diff(dateCreated, 'days', true));
       const is_pi: boolean = group['is_pi'];
@@ -689,9 +690,9 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
    * @param projectName
    */
   getMembersOfTheProject(): void {
-    this.groupService.getGroupMembers(this.project_id).subscribe((members: any) => {
+    this.groupService.getGroupMembers(this.project_id).subscribe((members: any): void => {
 
-      this.groupService.getGroupAdminIds(this.project_id).subscribe((result: any) => {
+      this.groupService.getGroupAdminIds(this.project_id).subscribe((result: any): void => {
         this.project_members = [];
 
         const admindIds: any = result['adminIds'];
@@ -714,7 +715,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
   setAllMembersChecked(): void {
     if (!this.allSet) {
-      this.project_members.forEach((member: ProjectMember) => {
+      this.project_members.forEach((member: ProjectMember): void => {
         if (!this.isMemberChecked(parseInt(member.MemberId.toString(), 10))
           && this.userinfo.MemberId.toString() !== member.MemberId.toString()) {
           this.checked_member_list.push(parseInt(member.MemberId.toString(), 10));
@@ -734,7 +735,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
   checkIfAllMembersChecked(): void {
     let all_set: boolean = true;
-    this.project_members.forEach((member: ProjectMember) => {
+    this.project_members.forEach((member: ProjectMember): void => {
       if (!this.isMemberChecked(parseInt(member.MemberId.toString(), 10)) && this.userinfo.MemberId !== member.MemberId) {
         all_set = false;
 
@@ -765,10 +766,10 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
     const members_in: ProjectMember[] = [];
 
     const observables: Observable<number>[] = this.checked_member_list
-      .map((id: number) => this.groupService.removeMember(groupId, id, this.project.ComputeCenter.FacilityId));
-    forkJoin(observables).subscribe(() => {
+      .map((id: number): Observable<any> => this.groupService.removeMember(groupId, id, this.project.ComputeCenter.FacilityId));
+    forkJoin(observables).subscribe((): void => {
 
-      this.project_members.forEach((member: ProjectMember) => {
+      this.project_members.forEach((member: ProjectMember): void => {
 
         if (!this.isMemberChecked(parseInt(member.MemberId.toString(), 10))) {
           members_in.push(member)
@@ -829,7 +830,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   }
 
   copyToClipboard(text: string): void {
-    document.addEventListener('copy', (clipEvent: ClipboardEvent) => {
+    document.addEventListener('copy', (clipEvent: ClipboardEvent): void => {
       clipEvent.clipboardData.setData('text/plain', (text));
       clipEvent.preventDefault();
       document.removeEventListener('copy', null);
@@ -838,7 +839,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   }
 
   filterMembers(searchString: string): void {
-    this.userservice.getFilteredMembersOfdeNBIVo(searchString).subscribe((result: object) => {
+    this.userservice.getFilteredMembersOfdeNBIVo(searchString).subscribe((result: object): void => {
       this.filteredMembers = result;
     })
   }
@@ -853,14 +854,14 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   }
 
   getUserinfo(): void {
-    this.userservice.getUserInfo().subscribe((userinfo: any) => {
+    this.userservice.getUserInfo().subscribe((userinfo: any): void => {
       this.userinfo = new Userinfo(userinfo);
     })
   }
 
   public addMember(groupid: number, memberid: number, firstName: string, lastName: string): void {
     this.groupService.addMember(groupid, memberid, this.project.ComputeCenter.FacilityId).subscribe(
-      (result: any) => {
+      (result: any): void => {
         if (result.status === 200) {
           this.updateNotificationModal('Success', `Member ${firstName} ${lastName} added.`, true, 'success');
           this.getMembersOfTheProject()
@@ -869,7 +870,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
           this.updateNotificationModal('Failed', 'Member could not be added!', true, 'danger');
         }
       },
-      (error: any) => {
+      (error: any): void => {
 
         if (error['name'] === 'AlreadyMemberException') {
           this.updateNotificationModal('Info', `${firstName} ${lastName} is already a member of the project.`, true, 'info');
@@ -882,9 +883,9 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
   public addAdmin(groupId: number, memberId: number, userId: number, firstName: string, lastName: string): void {
     this.groupService.addMember(groupId, memberId, this.project.ComputeCenter.FacilityId).subscribe(
-      () => {
+      (): void => {
         this.groupService.addAdmin(groupId, userId, this.project.ComputeCenter.FacilityId).subscribe(
-          (result: any) => {
+          (result: any): void => {
 
             if (result.status === 200) {
               this.updateNotificationModal('Success', `Admin ${firstName} ${lastName} added.`, true, 'success');
@@ -893,7 +894,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
               this.updateNotificationModal('Failed', 'Admin could not be added!', true, 'danger');
             }
           },
-          (error: any) => {
+          (error: any): void => {
             if (error['name'] === 'AlreadyAdminException') {
               this.updateNotificationModal(
                 'Info', `${firstName} ${lastName} is already a admin of the project.`,
@@ -903,9 +904,9 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
             }
           })
       },
-      () => {
+      (): void => {
         this.groupService.addAdmin(groupId, userId, this.project.ComputeCenter.FacilityId).subscribe(
-          (result: any) => {
+          (result: any): void => {
 
             if (result.status === 200) {
               this.updateNotificationModal('Success', `Admin ${firstName} ${lastName} added.`, true, 'success');
@@ -915,7 +916,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
               this.updateNotificationModal('Failed', 'Admin could not be added!', true, 'danger');
             }
           },
-          (error: any) => {
+          (error: any): void => {
             if (error['name'] === 'AlreadyAdminException') {
               this.updateNotificationModal(
                 'Info', `${firstName} ${lastName} is already a admin of the project.`,
@@ -930,7 +931,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   public promoteAdmin(groupid: number, userid: number, username: string): void {
 
     this.groupService.addAdmin(groupid, userid, this.project.ComputeCenter.FacilityId).toPromise()
-      .then((result: any) => {
+      .then((result: any): void => {
 
         if (result.status === 200) {
           this.updateNotificationModal('Success', `${username} promoted to Admin`, true, 'success');
@@ -939,7 +940,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
         } else {
           this.updateNotificationModal('Failed', `${username} could not be promoted to Admin!`, true, 'danger');
         }
-      }).catch(() => {
+      }).catch((): void => {
       this.updateNotificationModal('Failed', `${username} could not be promoted to Admin!`, true, 'danger');
     });
   }
@@ -947,7 +948,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   public removeAdmin(groupid: number, userid: number, name: string): void {
 
     this.groupService.removeAdmin(groupid, userid, this.project.ComputeCenter.FacilityId).toPromise()
-      .then((result: any) => {
+      .then((result: any): void => {
 
         if (result.status === 200) {
           this.updateNotificationModal('Success', `${name} was removed as Admin`, true, 'success');
@@ -955,7 +956,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
         } else {
           this.updateNotificationModal('Failed', `${name} could not be removed as Admin!`, true, 'danger');
         }
-      }).catch(() => {
+      }).catch((): void => {
       this.updateNotificationModal('Failed', `${name} could not be removed as Admin!`, true, 'danger'
       );
     });
@@ -975,7 +976,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
     }
 
     this.groupService.removeMember(groupid, memberid, this.project.ComputeCenter.FacilityId).subscribe(
-      (result: any) => {
+      (result: any): void => {
 
         if (result.status === 200) {
           this.updateNotificationModal('Success', `Member ${name}  removed from the group`, true, 'success');
@@ -985,7 +986,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
           this.updateNotificationModal('Failed', `Member ${name}  could not be removed !`, true, 'danger');
         }
       },
-      () => {
+      (): void => {
         this.updateNotificationModal('Failed', `Member ${name}  could not be removed !`, true, 'danger');
       });
   }
@@ -1008,13 +1009,13 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
    */
   public deleteApplication(): void {
     this.applicationsservice.deleteApplication(this.project_application.project_application_id).subscribe(
-      () => {
+      (): void => {
         this.updateNotificationModal('Success', 'The application has been successfully removed', true, 'success');
         this.fullLayout.getGroupsEnumeration();
         // tslint:disable:no-floating-promises
         this.router.navigate(['/userinfo'])
       },
-      () => {
+      (): void => {
         this.updateNotificationModal('Failed', 'Application could not be removed!', true, 'danger');
       })
 

@@ -65,7 +65,7 @@ export class ResEnvComponent implements OnInit, OnChanges {
     this.undefinedTemplate.template_name = 'undefined';
     this.templates_to_block = [];
     this.setSelectedTemplate(null);
-    this.condaService.getForcTemplates(this.clientid).subscribe((templates: ResearchEnvironment[]) => {
+    this.condaService.getForcTemplates(this.clientid).subscribe((templates: ResearchEnvironment[]): void => {
       this.templates = templates;
     });
     this.rng = new RandomNameGenerator();

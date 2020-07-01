@@ -6,7 +6,6 @@ import {UserService} from '../api-connector/user.service';
 import {GroupService} from '../api-connector/group.service';
 import {IResponseTemplate} from '../api-connector/response-template';
 import {forkJoin} from 'rxjs/index';
-import {environment} from '../../environments/environment';
 
 /**
  * UserInformation component.
@@ -66,13 +65,13 @@ export class UserInfoComponent implements OnInit {
   }
 
   requestChangePreferredMailUser(email: string): void {
-    this.userService.requestChangePreferredMailUser(email).subscribe(() => {
+    this.userService.requestChangePreferredMailUser(email).subscribe((): void => {
       this.getPendingPreferredMailUser();
     })
   }
 
   getPendingPreferredMailUser(): void {
-    this.userService.getPendingPreferredMailUser().subscribe((res: IResponseTemplate) => {
+    this.userService.getPendingPreferredMailUser().subscribe((res: IResponseTemplate): void => {
       this.userInfo.PendingEmails = <string[]>res.value;
 
     })
@@ -85,7 +84,7 @@ export class UserInfoComponent implements OnInit {
   }
 
   isFreemiumActive(): void {
-    this.groupService.isFreemiumActive().subscribe((result: IResponseTemplate) => {
+    this.groupService.isFreemiumActive().subscribe((result: IResponseTemplate): void => {
       this.freemiumActive = <boolean><Boolean>result.value;
 
     });
@@ -95,26 +94,26 @@ export class UserInfoComponent implements OnInit {
 
     const re: RegExp = /\+/gi;
 
-    this.keyService.postKey(publicKey.replace(re, '%2B')).subscribe(() => {
+    this.keyService.postKey(publicKey.replace(re, '%2B')).subscribe((): void => {
       this.getUserPublicKey();
     });
   }
 
   getUserPublicKey(): void {
-    this.keyService.getKey().subscribe((key: IResponseTemplate) => {
+    this.keyService.getKey().subscribe((key: IResponseTemplate): void => {
       this.userInfo.PublicKey = <string>key.value;
       this.isLoaded = true;
     })
   }
 
   getUserinfo(): void {
-    this.userService.getUserInfo().subscribe((userinfo: any) => {
+    this.userService.getUserInfo().subscribe((userinfo: any): void => {
       this.userInfo = new Userinfo(userinfo);
       this.title = this.title.concat(': ', this.userInfo.FirstName, ' ', this.userInfo.LastName);
 
       forkJoin(
         this.userService.getNewsletterSubscription(),
-        this.userService.getPendingPreferredMailUser()).subscribe((res: IResponseTemplate[]) => {
+        this.userService.getPendingPreferredMailUser()).subscribe((res: IResponseTemplate[]): void => {
 
         this.newsletterSubscribed = <boolean>res[0].value;
         this.userInfo.PendingEmails = <string[]>res[1].value;
@@ -127,7 +126,7 @@ export class UserInfoComponent implements OnInit {
   }
 
   isUserSimpleVmMember(): void {
-    this.groupService.getSimpleVmByUser().subscribe((result: any) => {
+    this.groupService.getSimpleVmByUser().subscribe((result: any): void => {
       if (result.length > 0) {
         this.isProjectMember = true
       } else {

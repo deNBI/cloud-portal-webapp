@@ -140,7 +140,7 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
    * Gets all available compute centers and saves them in the computeCenters attribute.
    */
   getComputeCenters(): void {
-    this.facilityService.getComputeCenters().subscribe((result: [{ [key: string]: string }]) => {
+    this.facilityService.getComputeCenters().subscribe((result: [{ [key: string]: string }]): void => {
       for (const cc of result) {
         const compute_center: ComputecenterComponent = new ComputecenterComponent(
           cc['compute_center_facility_id'],
@@ -185,7 +185,7 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
 
   public getMemberDetailsByElixirId(application: Application): void {
     this.userservice.getMemberDetailsByElixirId(application.project_application_user.elixir_id).subscribe(
-      (result: { [key: string]: string }) => {
+      (result: { [key: string]: string }): void => {
 
         application.project_application_user.username = `${result['firstName']} ${result['lastName']}`;
 
@@ -197,7 +197,7 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
    * Get all possible application stati.
    */
   getApplicationStatus(): void {
-    this.applicationstatusservice.getAllApplicationStatus().subscribe((stati: ApplicationStatus[]) => {
+    this.applicationstatusservice.getAllApplicationStatus().subscribe((stati: ApplicationStatus[]): void => {
       this.application_status = stati;
     })
   }

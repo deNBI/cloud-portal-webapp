@@ -177,7 +177,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
 
   areSelectedVolumesDetachable(): void {
     this.selected_volumes_to_detach = false;
-    this.checked_volumes.forEach((vol: Volume) => {
+    this.checked_volumes.forEach((vol: Volume): void => {
       if (vol.volume_virtualmachine) {
         this.selected_volumes_to_detach = true;
       }
@@ -191,7 +191,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
   }
 
   deleteSelectedVolumes(): void {
-    this.checked_volumes.forEach((vol: Volume) => {
+    this.checked_volumes.forEach((vol: Volume): void => {
       if (vol.volume_virtualmachine) {
         this.deleteVolume(vol, vol.volume_virtualmachine.openstackid)
       } else {
@@ -202,7 +202,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
   }
 
   detachSelectedVolumes(): void {
-    this.checked_volumes.forEach((vol: Volume) => {
+    this.checked_volumes.forEach((vol: Volume): void => {
 
       if (vol.volume_virtualmachine) {
         this.detachVolume(vol, vol.volume_virtualmachine.openstackid)
@@ -213,7 +213,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
 
   areAllVolumesChecked(): void {
     let all_checked: boolean = true;
-    this.volumes.forEach((vol: Volume) => {
+    this.volumes.forEach((vol: Volume): void => {
       if (!this.isVolChecked(vol)) {
         all_checked = false;
 
@@ -233,7 +233,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
 
     }
 
-    this.volumes.forEach((vol: Volume) => {
+    this.volumes.forEach((vol: Volume): void => {
       if (!this.isVolChecked(vol)) {
         this.checked_volumes.push(vol);
       }
@@ -250,21 +250,21 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
   ngOnInit(): void {
     this.getVolumes();
     this.getUserApprovedProjects();
-    this.facilityService.getManagerFacilities().subscribe((result: any) => {
+    this.facilityService.getManagerFacilities().subscribe((result: any): void => {
       this.managerFacilities = result;
       this.selectedFacility = this.managerFacilities[0];
     });
     this.filterChanged
       .pipe(
         debounceTime(this.DEBOUNCE_TIME),
-        distinctUntilChanged(), switchMap((filter: string) => {
+        distinctUntilChanged(), switchMap((filter: string): any => {
                                             this.isSearching = true;
 
                                             this.filter = filter.trim();
 
                                             return this.vmService.getVolumesByUser(this.items_per_page, this.currentPage, this.filter)
                                           }
-        )).subscribe((result: any) => {
+        )).subscribe((result: any): void => {
       this.volumes = result['volume_list'];
       this.total_pages = result['num_pages'];
       this.total_items = result['total_items'];
@@ -274,7 +274,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
       }
 
       this.isSearching = false;
-      this.volumes.forEach((vol: Volume) => {
+      this.volumes.forEach((vol: Volume): void => {
         // tslint:disable-next-line:max-line-length
         if (vol.volume_status !== VolumeStates.AVAILABLE && vol.volume_status !== VolumeStates.NOT_FOUND && vol.volume_status !== VolumeStates.IN_USE) {
 
@@ -286,7 +286,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
     this.volumePerPageChange.pipe(
       debounceTime(this.DEBOUNCE_TIME),
       distinctUntilChanged())
-      .subscribe(() => {
+      .subscribe((): void => {
         if (this.items_per_page && this.items_per_page > 0) {
           if (this.showFacilities) {
             this.getFacilityVolumes()
@@ -309,7 +309,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
 
     volume.volume_status = VolumeStates.ATTACHING;
     this.vmService.attachVolumetoServer(volume.volume_openstackid, instance_id).subscribe(
-      (result: IResponseTemplate) => {
+      (result: IResponseTemplate): void => {
 
         if (result.value === 'attached') {
           this.volume_action_status = this.volumeActionStates.ATTACHING_SUCCESSFULL;
@@ -318,13 +318,13 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
         }
         this.check_status_loop(volume, 0)
       },
-      (error: any) => {
+      (error: any): void => {
         if (error['error']['error'] === '409') {
           volume.error_msg = 'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.';
-          setTimeout( () => {
-                        volume.error_msg = null;
-                      },
-                      5000);
+          setTimeout((): void => {
+                       volume.error_msg = null;
+                     },
+                     5000);
         }
         this.check_status_loop(volume, 0)
       }
@@ -334,7 +334,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
   extendVolume(volume: Volume, new_storage: number): void {
     volume.volume_status = VolumeStates.EXTENDING;
     this.vmService.extendVolume(volume.volume_openstackid, new_storage.toString()).subscribe(
-      (res: any) => {
+      (res: any): void => {
         if (res['status_code'] === 0) {
           this.check_status_loop(volume, 0, undefined, new_storage);
         } else {
@@ -367,7 +367,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
 
     this.getVolumesSubscription.add(
       this.facilityService.getFacilityVolumes(
-        this.selectedFacility['FacilityId'], this.items_per_page, this.currentPage).subscribe((result: any) => {
+        this.selectedFacility['FacilityId'], this.items_per_page, this.currentPage).subscribe((result: any): void => {
         this.volumes = result['volume_list'];
         this.total_pages = result['num_pages'];
         this.total_items = result['total_items'];
@@ -378,7 +378,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
 
         this.isLoaded = true;
         this.isSearching = false;
-        this.volumes.forEach((vol: Volume) => {
+        this.volumes.forEach((vol: Volume): void => {
           // tslint:disable-next-line:max-line-length
           if (vol.volume_status !== VolumeStates.AVAILABLE && vol.volume_status !== VolumeStates.NOT_FOUND && vol.volume_status !== VolumeStates.IN_USE) {
 
@@ -398,7 +398,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
   createAndAttachvolume(volume_name: string, diskspace: number, instance_id: string): void {
     this.volume_action_status = 7;
     this.vmService.createVolume(volume_name, diskspace.toString(), instance_id).subscribe(
-      (newVolume: Volume) => {
+      (newVolume: Volume): void => {
         newVolume.volume_created_by_user = true;
 
         if (newVolume.volume_openstackid) {
@@ -408,7 +408,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
           this.volume_action_status = this.volumeActionStates.ATTACHING;
 
           this.vmService.attachVolumetoServer(newVolume.volume_openstackid, instance_id).subscribe(
-            (res: IResponseTemplate) => {
+            (res: IResponseTemplate): void => {
 
               if (res.value === 'attached') {
                 this.volume_action_status = this.volumeActionStates.SUCCESSFULLY_CREATED_ATTACHED;
@@ -417,13 +417,13 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
               }
               this.check_status_loop(newVolume, 0)
             },
-            (error: any) => {
+            (error: any): void => {
               if (error['error']['error'] === '409') {
                 newVolume.error_msg = 'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.';
-                setTimeout( () => {
-                              newVolume.error_msg = null;
-                            },
-                            5000);
+                setTimeout((): void => {
+                             newVolume.error_msg = null;
+                           },
+                           5000);
               }
               this.check_status_loop(newVolume, 0);
             }
@@ -444,7 +444,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
    */
   createVolume(volume_name: string, diskspace: number, instance_id: string): void {
     this.volume_action_status = this.volumeActionStates.WAITING;
-    this.vmService.createVolume(volume_name, diskspace.toString(), instance_id).subscribe((newVolume: Volume) => {
+    this.vmService.createVolume(volume_name, diskspace.toString(), instance_id).subscribe((newVolume: Volume): void => {
       if (newVolume.volume_openstackid) {
         this.volume_action_status = this.volumeActionStates.WAIT_CREATION;
         this.volumes.push(newVolume)
@@ -466,13 +466,13 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
     if (instance_id) {
       volume.volume_status = VolumeStates.DETACHING;
       this.vmService.deleteVolumeAttachment(volume.volume_openstackid, instance_id).subscribe(
-        (res: IResponseTemplate) => {
+        (res: IResponseTemplate): void => {
           if (res.value === 'deleted') {
             this.volume_action_status = this.volumeActionStates.WAITING;
           }
           volume.volume_status = VolumeStates.DELETING;
 
-          this.vmService.deleteVolume(volume.volume_openstackid).subscribe((result: IResponseTemplate) => {
+          this.vmService.deleteVolume(volume.volume_openstackid).subscribe((result: IResponseTemplate): void => {
             if (result.value === 'deleted') {
               this.volume_action_status = this.volumeActionStates.SUCCESS;
             } else {
@@ -481,13 +481,13 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
             this.volumes.splice(idx, 1)
           })
         },
-        (error: any) => {
+        (error: any): void => {
           if (error['error']['error'] === '409') {
             volume.error_msg = 'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.';
-            setTimeout( () => {
-                          volume.error_msg = null;
-                        },
-                        5000);
+            setTimeout((): void => {
+                         volume.error_msg = null;
+                       },
+                       5000);
           }
           this.check_status_loop(volume, 0)
         }
@@ -496,7 +496,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
     } else {
       volume.volume_status = VolumeStates.DELETING;
       this.vmService.deleteVolume(volume.volume_openstackid).subscribe(
-        (result: IResponseTemplate) => {
+        (result: IResponseTemplate): void => {
           if (result.value === 'deleted') {
             this.volume_action_status = this.volumeActionStates.SUCCESS;
           } else {
@@ -505,13 +505,13 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
           this.volumes.splice(idx, 1)
 
         },
-        (error: any) => {
+        (error: any): void => {
           if (error['error']['error'] === '409') {
             volume.error_msg = 'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.';
-            setTimeout( () => {
-                          volume.error_msg = null;
-                        },
-                        5000);
+            setTimeout((): void => {
+                         volume.error_msg = null;
+                       },
+                       5000);
           }
           this.check_status_loop(volume, 0);
         })
@@ -529,7 +529,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
     this.volume_action_status = this.volumeActionStates.DETACHING_VOLUME;
     volume.volume_status = VolumeStates.DETACHING;
     this.vmService.deleteVolumeAttachment(volume.volume_openstackid, instance_id).subscribe(
-      (result: any) => {
+      (result: any): void => {
         if (result.value === 'deleted') {
           this.volume_action_status = this.volumeActionStates.SUCCESSFULLY_DETACHED_VOLUME;
         } else {
@@ -537,13 +537,13 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
         }
         this.check_status_loop(volume, 0)
       },
-      (error: any) => {
+      (error: any): void => {
         if (error['error']['error'] === '409') {
           volume.error_msg = 'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.';
-          setTimeout( () => {
-                        volume.error_msg = null;
-                      },
-                      5000);
+          setTimeout((): void => {
+                       volume.error_msg = null;
+                     },
+                     5000);
         }
         this.check_status_loop(volume, 0)
       })
@@ -558,7 +558,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
   renameVolume(volume: Volume, new_volume_name: string): void {
     this.volume_action_status = this.volumeActionStates.CHANGING_NAME;
     this.vmService.renameVolume(volume.volume_openstackid, new_volume_name)
-      .subscribe((changed_volume: Volume) => {
+      .subscribe((changed_volume: Volume): void => {
                    if (changed_volume.volume_name === new_volume_name) {
                      this.volume_action_status = this.volumeActionStates.CHANGING_NAME_SUCESSFULL;
                    } else {
@@ -579,32 +579,34 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
     this.isSearching = true;
     this.getVolumesSubscription.unsubscribe();
     this.getVolumesSubscription = new Subscription();
-    this.getVolumesSubscription.add(this.vmService.getVolumesByUser(this.items_per_page, this.currentPage).subscribe((result: any) => {
-      this.volumes = result['volume_list'];
-      this.total_pages = result['num_pages'];
-      this.total_items = result['total_items'];
-      this.items_per_page = result['items_per_page'];
-      for (const volume of this.volumes) {
-        this.setCollapseStatus(volume.volume_openstackid, false);
-      }
+    this.getVolumesSubscription.add(
+      this.vmService.getVolumesByUser(this.items_per_page, this.currentPage)
+        .subscribe((result: any): void => {
+          this.volumes = result['volume_list'];
+          this.total_pages = result['num_pages'];
+          this.total_items = result['total_items'];
+          this.items_per_page = result['items_per_page'];
+          for (const volume of this.volumes) {
+            this.setCollapseStatus(volume.volume_openstackid, false);
+          }
 
-      this.isLoaded = true;
-      this.isSearching = false;
-      this.volumes.forEach((vol: Volume) => {
-        // tslint:disable-next-line:max-line-length
-        if (vol.volume_status !== VolumeStates.AVAILABLE && vol.volume_status !== VolumeStates.NOT_FOUND && vol.volume_status !== VolumeStates.IN_USE) {
+          this.isLoaded = true;
+          this.isSearching = false;
+          this.volumes.forEach((vol: Volume): void => {
+            // tslint:disable-next-line:max-line-length
+            if (vol.volume_status !== VolumeStates.AVAILABLE && vol.volume_status !== VolumeStates.NOT_FOUND && vol.volume_status !== VolumeStates.IN_USE) {
 
-          this.check_status_loop(vol)
-        }
-      })
+              this.check_status_loop(vol)
+            }
+          })
 
-    }))
+        }))
 
   }
 
   getVolume(volume: Volume): void {
     const idx: number = this.volumes.indexOf(volume);
-    this.vmService.getVolumeById(volume.volume_openstackid).subscribe((vol: Volume) => {
+    this.vmService.getVolumeById(volume.volume_openstackid).subscribe((vol: Volume): void => {
       this.volumes[idx] = vol;
 
     })
@@ -615,11 +617,11 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
     const created: boolean = volume.volume_created_by_user;
 
     setTimeout(
-      () => {
+      (): void => {
         const idx: number = this.volumes.indexOf(volume);
         if (volume.volume_openstackid) {
 
-          this.checkStatusSubscription.add(this.vmService.getVolumeById(volume.volume_openstackid).subscribe((vol: Volume) => {
+          this.checkStatusSubscription.add(this.vmService.getVolumeById(volume.volume_openstackid).subscribe((vol: Volume): void => {
             if (expected_storage && vol.volume_storage !== expected_storage) {
               return this.check_status_loop(volume, this.checkStatusTimeout, final_state, expected_storage);
             } else if (expected_storage && vol.volume_storage === expected_storage) {
@@ -627,10 +629,10 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
             }
             if (volume.error_msg !== '' && volume.error_msg !== undefined && volume.error_msg !== null) {
               vol.error_msg = volume.error_msg;
-              setTimeout( () => {
-                            vol.error_msg = null;
-                          },
-                          5000);
+              setTimeout((): void => {
+                           vol.error_msg = null;
+                         },
+                         5000);
             }
             if (idx > -1) {
               vol.volume_created_by_user = created;
@@ -643,13 +645,13 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
           }))
         } else {
           // tslint:disable-next-line:max-line-length
-          this.checkStatusSubscription.add(this.vmService.getVolumeByNameAndVmName(volume.volume_name, volume.volume_virtualmachine.name).subscribe((vol: Volume) => {
+          this.checkStatusSubscription.add(this.vmService.getVolumeByNameAndVmName(volume.volume_name, volume.volume_virtualmachine.name).subscribe((vol: Volume): void => {
             if (volume.error_msg !== '' && volume.error_msg !== undefined && volume.error_msg !== null) {
               vol.error_msg = volume.error_msg;
-              setTimeout( () => {
-                            vol.error_msg = null;
-                          },
-                          5000);
+              setTimeout((): void => {
+                           vol.error_msg = null;
+                         },
+                         5000);
             }
             if (idx > -1) {
               vol.volume_created_by_user = created;
@@ -672,7 +674,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
    * @returns {void}
    */
   getUserApprovedProjects(): void {
-    this.groupService.getSimpleVmByUser().subscribe((membergroups: any) => {
+    this.groupService.getSimpleVmByUser().subscribe((membergroups: any): void => {
       for (const project of membergroups) {
         this.projects.push(project);
 
@@ -711,7 +713,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
     this.selected_volume_data_loaded = false;
     forkJoin(this.groupService.getGroupMaxDiskspace(this.selectedProject[1].toString()),
              this.groupService.getGroupUsedDiskspace(this.selectedProject[1].toString()))
-      .subscribe((result: any) => {
+      .subscribe((result: any): void => {
                    if (result[0]['value']) {
                      this.selectedProjectDiskspaceMax = result[0]['value'];
 
@@ -735,7 +737,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
    * @returns {void}
    */
   getSelectedProjectDiskspace(): void {
-    this.groupService.getGroupMaxDiskspace(this.selectedProject[1].toString()).subscribe((result: IResponseTemplate) => {
+    this.groupService.getGroupMaxDiskspace(this.selectedProject[1].toString()).subscribe((result: IResponseTemplate): void => {
       if (result.value) {
 
         this.selectedProjectDiskspaceMax = <number>result.value;
@@ -745,7 +747,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
       }
 
     });
-    this.groupService.getGroupUsedDiskspace(this.selectedProject[1].toString()).subscribe((result: IResponseTemplate) => {
+    this.groupService.getGroupUsedDiskspace(this.selectedProject[1].toString()).subscribe((result: IResponseTemplate): void => {
       if (result.value) {
 
         this.selectedProjectDiskspaceUsed = <number>result.value;
@@ -762,14 +764,14 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
    * @returns {void}
    */
   getSelectedProjectVolumes(): void {
-    this.groupService.getVolumeCounter(this.selectedProject[1].toString()).subscribe((result: IResponseTemplate) => {
+    this.groupService.getVolumeCounter(this.selectedProject[1].toString()).subscribe((result: IResponseTemplate): void => {
       if (result.value) {
         this.selectedProjectVolumesMax = <number>result.value;
       } else {
         this.selectedProjectVolumesMax = 0;
       }
     });
-    this.groupService.getVolumesUsed(this.selectedProject[1].toString()).subscribe((result: IResponseTemplate) => {
+    this.groupService.getVolumesUsed(this.selectedProject[1].toString()).subscribe((result: IResponseTemplate): void => {
       if (result.value) {
         this.selectedProjectVolumesUsed = <number>result.value;
       } else {
@@ -786,7 +788,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
    * @returns {void}
    */
   getActiveVmsByProject(groupid: number | string): void {
-    this.vmService.getActiveVmsByProject(groupid.toString()).subscribe((result: any) => {
+    this.vmService.getActiveVmsByProject(groupid.toString()).subscribe((result: any): void => {
 
       this.project_vms = result;
     })

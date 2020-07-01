@@ -61,7 +61,7 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
    */
   public approveExtension(app: Application): void {
 
-    this.applicationsservice.approveRenewal(app.project_application_id).subscribe((result: any) => {
+    this.applicationsservice.approveRenewal(app.project_application_id).subscribe((result: any): void => {
       if (result['Error']) {
         this.updateNotificationModal('Failed', 'Failed to approve the application modification.', true, 'danger');
       } else {
@@ -79,7 +79,7 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
     }
     const idx: number = this.applications_history.indexOf(application);
     this.facilityService.getFacilityApplicationById(this.selectedFacility['FacilityId'], application.project_application_id.toString())
-      .subscribe((app: Application) => {
+      .subscribe((app: Application): void => {
         this.applications_history[idx] = new Application(app);
       })
   }
@@ -94,7 +94,7 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
     this.applications_history = [];
 
     // todo check if user is VO Admin
-    this.facilityService.getFacilityApplicationsHistory(facility).subscribe((applications: Application[]) => {
+    this.facilityService.getFacilityApplicationsHistory(facility).subscribe((applications: Application[]): void => {
       if (applications.length === 0) {
         this.isHistoryLoaded = true;
       }
@@ -107,7 +107,7 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 
   getFullApplications(facility: number): void {
     forkJoin(this.facilityService.getFacilityApplicationsWaitingForConfirmation(facility),
-             this.facilityService.getFacilityModificationApplicationsWaitingForConfirmation(facility)).subscribe((res: any) => {
+             this.facilityService.getFacilityModificationApplicationsWaitingForConfirmation(facility)).subscribe((res: any): void => {
       const wfc_apps: Application[] = res[0];
       const modification_apps: Application[] = res[1];
 
@@ -128,7 +128,7 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
   getAllApplicationsWFC(facility: number): void {
 
     // todo check if user is VO Admin
-    this.facilityService.getFacilityApplicationsWaitingForConfirmation(facility).subscribe((applications: Application[]) => {
+    this.facilityService.getFacilityApplicationsWaitingForConfirmation(facility).subscribe((applications: Application[]): void => {
       if (applications.length === 0) {
         this.isLoaded = true;
       }
@@ -146,13 +146,13 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 
     this.updateNotificationModal('Approving Application', 'Waiting..', true, 'info');
     this.facilityService.approveFacilityApplication(this.selectedFacility['FacilityId'], app.project_application_id).subscribe(
-      () => {
+      (): void => {
         this.updateNotificationModal('Success', 'Successfully approved the application.', true, 'success');
         this.all_applications_wfc.splice(this.all_applications_wfc.indexOf(app), 1);
 
         this.getAllApplicationsHistory(this.selectedFacility ['FacilityId']);
       },
-      () => {
+      (): void => {
         this.updateNotificationModal('Failed', 'Failed to approve the application.', true, 'danger');
 
       })
@@ -164,7 +164,7 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
    */
   public declineExtension(app: Application): void {
     const modificaton_requested: number = 4;
-    this.applicationstatusservice.setApplicationStatus(app.project_application_id, modificaton_requested).subscribe(() => {
+    this.applicationstatusservice.setApplicationStatus(app.project_application_id, modificaton_requested).subscribe((): void => {
       this.updateNotificationModal('Success', 'Successfully declined!', true, 'success');
       this.all_application_modifications.splice(this.all_application_modifications.indexOf(app), 1);
       this.getAllApplicationsHistory(this.selectedFacility ['FacilityId']);
@@ -180,13 +180,13 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
     this.updateNotificationModal('Decline Application', 'Waiting..', true, 'info');
 
     this.facilityService.declineFacilityApplication(this.selectedFacility['FacilityId'], application_id).subscribe(
-      () => {
+      (): void => {
         this.updateNotificationModal('Success', 'Successfully declined the application.', true, 'success');
 
         this.all_applications_wfc = [];
         this.getAllApplicationsWFC(this.selectedFacility['FacilityId'])
       },
-      () => {
+      (): void => {
         this.updateNotificationModal('Failed', 'Failed to decline the application.', true, 'danger');
 
       })
@@ -207,7 +207,7 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
   }
 
   ngOnInit(): void {
-    this.facilityService.getManagerFacilities().subscribe((result: any) => {
+    this.facilityService.getManagerFacilities().subscribe((result: any): void => {
       this.managerFacilities = result;
       this.selectedFacility = this.managerFacilities[0];
       this.facilityService.getFacilityResources(this.selectedFacility['FacilityId']).subscribe();
