@@ -48,9 +48,6 @@ export class AddClusterComponent implements OnInit {
   progress_bar_status: string = 'Creating..';
   progress_bar_animated: string = 'progress-bar-animated';
   progress_bar_width: number = 0;
-  http_allowed: boolean = false;
-  https_allowed: boolean = false;
-  udp_allowed: boolean = false;
   is_vo: boolean = false;
   hasTools: boolean = false;
   gaveOkay: boolean = false;
@@ -213,7 +210,7 @@ export class AddClusterComponent implements OnInit {
   }
 
   checkFlavorsUsableForCluster(): void {
-    this.flavors_usable = this.flavors.filter((flav: Flavor) => {
+    this.flavors_usable = this.flavors.filter((flav: Flavor): boolean => {
       return this.filterFlavorsTest(flav)
     });
 
@@ -288,9 +285,9 @@ export class AddClusterComponent implements OnInit {
    */
   getImages(project_id: number): void {
 
-    this.imageService.getImages(project_id).subscribe((images: Image[]) => {
+    this.imageService.getImages(project_id).subscribe((images: Image[]): void => {
       this.images = images;
-      this.images.sort((x_cord: any, y_cord: any) => Number(x_cord.is_snapshot) - Number(y_cord.is_snapshot));
+      this.images.sort((x_cord: any, y_cord: any): number => Number(x_cord.is_snapshot) - Number(y_cord.is_snapshot));
     });
   }
 
@@ -299,7 +296,7 @@ export class AddClusterComponent implements OnInit {
    * @param {number} project_id
    */
   getFlavors(project_id: number): void {
-    this.flavorService.getFlavors(project_id).subscribe((flavors: Flavor[]) => {
+    this.flavorService.getFlavors(project_id).subscribe((flavors: Flavor[]): void => {
       this.flavors = flavors;
       this.checkFlavorsUsableForCluster();
     });
@@ -326,8 +323,8 @@ export class AddClusterComponent implements OnInit {
 
   checkClusterStatusLoop(): void {
     setTimeout(
-      () => {
-        this.virtualmachineservice.getClusterInfo(this.cluster_id).subscribe((cluster_info: Clusterinfo) => {
+      (): void => {
+        this.virtualmachineservice.getClusterInfo(this.cluster_id).subscribe((cluster_info: Clusterinfo): void => {
           this.cluster_info = cluster_info;
           if (this.cluster_info.status !== 'Running' && this.cluster_info.status !== 'Deleted') {
             this.checkClusterStatusLoop()
@@ -353,10 +350,10 @@ export class AddClusterComponent implements OnInit {
       masterFlavor, this.selectedMasterImage,
       workerFlavor, this.selectedMasterImage,
       this.workerInstancesCount, this.selectedProject[1]).subscribe(
-      (res: any) => {
+      (res: any): void => {
         if (res['status'] && res['status'] === 'mutex_locked') {
           setTimeout(
-            () => {
+            (): void => {
               this.startCluster()
             },
             1000)
@@ -368,7 +365,7 @@ export class AddClusterComponent implements OnInit {
 
       }
       ,
-      (error: any) => {
+      (error: any): void => {
         console.log(error);
         this.cluster_error = error;
       })
@@ -383,7 +380,7 @@ export class AddClusterComponent implements OnInit {
     this.client_checked = false;
     this.projectDataLoaded = false;
 
-    this.groupService.getClientBibigrid(this.selectedProject[1].toString()).subscribe((client: Client) => {
+    this.groupService.getClientBibigrid(this.selectedProject[1].toString()).subscribe((client: Client): void => {
       if (client.status && client.status === 'Connected') {
         this.client_avaiable = true;
 
@@ -414,7 +411,7 @@ export class AddClusterComponent implements OnInit {
    * Gets all groups of the user and his key.
    */
   initializeData(): void {
-    forkJoin(this.groupService.getSimpleVmByUser(), this.userservice.getUserInfo()).subscribe((result: any) => {
+    forkJoin(this.groupService.getSimpleVmByUser(), this.userservice.getUserInfo()).subscribe((result: any): void => {
       this.userinfo = new Userinfo(result[1]);
       this.validatePublicKey();
       const membergroups: any = result[0];
@@ -433,7 +430,7 @@ export class AddClusterComponent implements OnInit {
     this.images = [];
     this.selectedImage = undefined;
     this.selectedFlavor = undefined;
-    this.groupService.getGroupResources(this.selectedProject[1].toString()).subscribe((res: any) => {
+    this.groupService.getGroupResources(this.selectedProject[1].toString()).subscribe((res: any): void => {
       this.selectedProjectVmsMax = res['number_vms'];
       this.selectedProjectVmsUsed = res['used_vms'];
       this.selectedProjectDiskspaceMax = res['max_volume_storage'];
@@ -468,7 +465,7 @@ export class AddClusterComponent implements OnInit {
   ngOnInit(): void {
 
     this.initializeData();
-    this.voService.isVo().subscribe((result: IResponseTemplate) => {
+    this.voService.isVo().subscribe((result: IResponseTemplate): void => {
       this.is_vo = <boolean><Boolean>result.value;
     });
 
