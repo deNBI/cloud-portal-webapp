@@ -125,7 +125,7 @@ export abstract class AbstractBaseClasse {
   }
 
   copyToClipboard(text: string): void {
-    document.addEventListener('copy', (clipEvent: ClipboardEvent) => {
+    document.addEventListener('copy', (clipEvent: ClipboardEvent): void => {
       clipEvent.clipboardData.setData('text/plain', (text));
       clipEvent.preventDefault();
       document.removeEventListener('copy', null);

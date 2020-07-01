@@ -42,7 +42,7 @@ export class MemberGuardService implements CanActivate {
       redirect_url = null;
     }
 
-    return this.userservice.getOnlyLoggedUserWithRedirect(redirect_url).pipe(switchMap((res: any) => {
+    return this.userservice.getOnlyLoggedUserWithRedirect(redirect_url).pipe(switchMap((res: any): Observable<any> => {
       if (res['error']) {
         window.location.href = environment.login;
         const subject: Subject<boolean> = new Subject<boolean>();
@@ -51,12 +51,12 @@ export class MemberGuardService implements CanActivate {
         return subject.asObservable();
 
       } else {
-        this.voService.isVo().subscribe((result: IResponseTemplate) => {
+        this.voService.isVo().subscribe((result: IResponseTemplate): void => {
           setVO(<boolean><Boolean>result.value);
 
         })
 
-        return this.userservice.getMemberByUser().pipe(map((memberinfo: any) => {
+        return this.userservice.getMemberByUser().pipe(map((memberinfo: any): any => {
           if (memberinfo['name'] === 'MemberNotExistsException') {
             return this.router.parseUrl('/registration-info');
 
