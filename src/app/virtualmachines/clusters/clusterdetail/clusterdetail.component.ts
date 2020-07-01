@@ -24,24 +24,24 @@ export class ClusterdetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.activatedRoute.params.subscribe((paramsId: any) => {
+    this.activatedRoute.params.subscribe((paramsId: any): void => {
       this.cluster_id = paramsId.id;
       this.setClusterById();
     });
   }
 
   deleteCluster(): void {
-    this.virtualmachineService.deleteCluster(this.cluster_id).subscribe(() => {
+    this.virtualmachineService.deleteCluster(this.cluster_id).subscribe((): void => {
       this.cluster.status = 'Deleted';
       this.cluster.master_instance.status = VirtualMachineStates.DELETED;
-      this.cluster.worker_instances.forEach((vm: VirtualMachine) => {
+      this.cluster.worker_instances.forEach((vm: VirtualMachine): void => {
         vm.status = VirtualMachineStates.DELETED;
       })
     })
   }
 
   setClusterById(): void {
-    this.virtualmachineService.getClusterInfo(this.cluster_id).subscribe((cluster_info: Clusterinfo) => {
+    this.virtualmachineService.getClusterInfo(this.cluster_id).subscribe((cluster_info: Clusterinfo): void => {
       this.cluster = cluster_info;
       this.isLoaded = true;
     })

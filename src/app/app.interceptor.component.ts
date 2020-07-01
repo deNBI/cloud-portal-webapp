@@ -17,7 +17,7 @@ export class AppInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
     return next.handle(request).pipe(tap(
-      (event: HttpEvent<any>) => {
+      (event: HttpEvent<any>): void => {
         if (event instanceof HttpResponse) {
           if (event.status === 302) {
             console.log('redirect');
@@ -25,7 +25,7 @@ export class AppInterceptor implements HttpInterceptor {
           }
         }
       },
-      (err: any) => {
+      (err: any): void => {
         if (err instanceof HttpErrorResponse) {
           if (err.status === 401 || err.status === 0) {
             window.location.href = environment.login;

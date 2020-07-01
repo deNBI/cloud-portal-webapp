@@ -106,7 +106,7 @@ export class HowToConnectComponent implements OnChanges, OnInit {
       return;
     } else {
       this.virtualMachineService.getLogs(current.openstackid)
-        .subscribe((logs: { [selector: string]: string | number }) => {
+        .subscribe((logs: { [selector: string]: string | number }): void => {
           if (logs['status'] === null) {
             this.playbook_run = 0;
           } else {
@@ -115,7 +115,7 @@ export class HowToConnectComponent implements OnChanges, OnInit {
           }
         });
       this.virtualMachineService.getLocationUrl(current.openstackid)
-        .subscribe((url: any) => {
+        .subscribe((url: any): void => {
           this.location_url = url;
         });
     }
@@ -127,7 +127,7 @@ export class HowToConnectComponent implements OnChanges, OnInit {
   }
 
   getForcUrl(): void {
-    this.groupService.getClientForcUrl(this.selectedVirtualMachine.client.id).subscribe((response: JSON) => {
+    this.groupService.getClientForcUrl(this.selectedVirtualMachine.client.id).subscribe((response: JSON): void => {
       if (response['forc_url'] !== null) {
         this.forc_url = response['forc_url'];
       }

@@ -71,13 +71,13 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
   }
 
   set_cluster_allowed(): void {
-    this.virtualMachineService.getClusterAllowed().subscribe((res: any) => {
+    this.virtualMachineService.getClusterAllowed().subscribe((res: any): void => {
       this.cluster_allowed = res['allowed'];
     })
   }
 
   public get_is_facility_manager(): void {
-    this.facilityService.getManagerFacilities().subscribe((result: any) => {
+    this.facilityService.getManagerFacilities().subscribe((result: any): void => {
       if (result.length > 0) {
         this.is_facility_manager = true
       }
@@ -85,7 +85,7 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
   }
 
   is_vm_project_member(): void {
-    this.groupService.getSimpleVmByUser().subscribe((result: any) => {
+    this.groupService.getSimpleVmByUser().subscribe((result: any): void => {
       if (result.length > 0) {
         this.vm_project_member = true
       }
@@ -93,12 +93,14 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
   }
 
   getGroupsEnumeration(): void {
-    this.groupService.getGroupsEnumeration().subscribe((res: ProjectEnumeration[]) => {
+    this.groupService.getGroupsEnumeration().subscribe((res: ProjectEnumeration[]): void => {
       this.project_enumeration = res;
-      this.project_enumeration.forEach((enumeration: ProjectEnumeration) => {
-         this.badgeState(enumeration).then((value: number) => {
-            this.project_badges_states[enumeration.application_id] = value;
-         }).catch((reason: any) => {console.log(reason)});
+      this.project_enumeration.forEach((enumeration: ProjectEnumeration): void => {
+        this.badgeState(enumeration).then((value: number): void => {
+          this.project_badges_states[enumeration.application_id] = value;
+        }).catch((reason: any): void => {
+          console.log(reason)
+        });
       })
     });
   }
@@ -114,7 +116,7 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
   }
 
   getLoginName(): void {
-    this.userservice.getLoginElixirName().subscribe((login: IResponseTemplate) => {
+    this.userservice.getLoginElixirName().subscribe((login: IResponseTemplate): void => {
       this.login_name = <string>login.value
     });
 

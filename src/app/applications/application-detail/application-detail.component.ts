@@ -49,9 +49,9 @@ export class ApplicationDetailComponent extends ApplicationBaseClassComponent im
 
   getCurrentCredits(): void {
     this.creditsService.getCurrentCreditsOfProject(Number(this.application.project_application_perun_id.toString())).toPromise()
-      .then((credits: number) => {
+      .then((credits: number): void => {
         this.current_credits = credits;
         this.credits_left_with_extra = this.application.TotalExtensionCredits - credits;
-      }).catch((err: Error) => console.log(err.message));
+      }).catch((err: Error): void => console.log(err.message));
   }
 }
