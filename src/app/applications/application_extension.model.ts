@@ -30,10 +30,6 @@ export class ApplicationExtension {
     }
   }
 
-
-
-
-
   get project_application_extension_user(): User {
     return this._project_application_extension_user;
   }
@@ -41,7 +37,6 @@ export class ApplicationExtension {
   set project_application_extension_user(value: User) {
     this._project_application_extension_user = value;
   }
-
 
   get project_application_id(): number | string {
     return this._project_application_id;

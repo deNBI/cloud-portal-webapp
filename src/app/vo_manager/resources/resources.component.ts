@@ -41,7 +41,7 @@ export class ResourcesComponent implements OnInit {
   }
 
   public getVoProjectResources(): void {
-    this.voservice.getVoProjectResources().subscribe((res: Resources[]) => {
+    this.voservice.getVoProjectResources().subscribe((res: Resources[]): void => {
       this.voResources = res;
       this.isLoaded = true;
     })
@@ -49,7 +49,7 @@ export class ResourcesComponent implements OnInit {
   }
 
   public tableToPDF(): void {
-    html2canvas(document.getElementById(this.tableId)).then((canvas: any) => {
+    html2canvas(document.getElementById(this.tableId)).then((canvas: HTMLCanvasElement): void => {
       // Few necessary setting options
       const imgWidth: number = 208;
       const pageHeight: number = 295;
@@ -61,7 +61,7 @@ export class ResourcesComponent implements OnInit {
       const position: number = 0;
       pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
       pdf.save('VoResources.pdf'); // Generated PDF
-    }).catch(() => {
+    }).catch((): void => {
       console.log('failed to convert to pdf')
     });
   }

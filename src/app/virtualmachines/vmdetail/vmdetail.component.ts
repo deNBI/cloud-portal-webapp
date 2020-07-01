@@ -130,14 +130,14 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
   }
 
   ngOnInit(): void {
-    this.activatedRoute.params.subscribe((paramsId: any) => {
+    this.activatedRoute.params.subscribe((paramsId: any): void => {
       this.vm_id = paramsId.id;
       this.getVmById();
       this.snapshotSearchTerm
         .pipe(
           debounceTime(this.DEBOUNCE_TIME),
           distinctUntilChanged())
-        .subscribe((event: any) => {
+        .subscribe((event: any): void => {
           this.validSnapshotName(event);
         });
     });
@@ -150,7 +150,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
    */
   validSnapshotName(event: any): any {
     this.snapshotNameCheckDone = false;
-    this.imageService.checkSnapshotNameAvailable(this.snapshotName).subscribe((res: IResponseTemplate) => {
+    this.imageService.checkSnapshotNameAvailable(this.snapshotName).subscribe((res: IResponseTemplate): void => {
 
       this.validSnapshotNameBool = this.snapshotName.length > 0 && <boolean><Boolean>res.value;
       this.snapshotNameCheckDone = true;
@@ -170,7 +170,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
    */
   checkStatus(): void {
     this.virtualmachineService.checkVmStatus(this.virtualMachine.openstackid)
-      .subscribe((updated_vm: VirtualMachine) => {
+      .subscribe((updated_vm: VirtualMachine): void => {
 
                    if (updated_vm.created_at !== '') {
                      updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
@@ -181,7 +181,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
   }
 
   setVmNeeded(): void {
-    this.virtualmachineService.setVmNeeded(this.virtualMachine.openstackid).subscribe((res: any) => {
+    this.virtualmachineService.setVmNeeded(this.virtualMachine.openstackid).subscribe((res: any): void => {
       if (res['still_needed']) {
         this.virtualMachine.still_used_confirmation_requested = false;
 
@@ -195,7 +195,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
    */
   deleteVm(): void {
     this.virtualmachineService.deleteVM(this.virtualMachine.openstackid).subscribe(
-      (updated_vm: VirtualMachine) => {
+      (updated_vm: VirtualMachine): void => {
 
         if (updated_vm.created_at !== '') {
           updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
@@ -208,7 +208,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
           this.status_changed = 2;
         }
       },
-      (error1: any) => {
+      (error1: any): void => {
         this.status_changed = 2;
         if (error1['status'] === 409) {
           this.error_msg = 'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.'
@@ -219,7 +219,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
 
   getDetachedVolumesByVSelectedMProject(): void {
     this.virtualmachineService.getDetachedVolumesByProject(this.virtualMachine.projectid).subscribe(
-      (detached_volumes: Volume[]) => {
+      (detached_volumes: Volume[]): void => {
         this.detached_project_volumes = detached_volumes;
       }
     )
@@ -230,17 +230,17 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
     volume.volume_status = VolumeStates.ATTACHING;
 
     this.virtualmachineService.attachVolumetoServer(volume.volume_openstackid, this.virtualMachine.openstackid).subscribe(
-      (result: IResponseTemplate) => {
+      (result: IResponseTemplate): void => {
 
         if (result.value === 'attached') {
           this.getVmById();
         }
       },
-      (error1: any) => {
+      (error1: any): void => {
         this.status_changed = 2;
         if (error1['error']['error'] === '409') {
           this.volume_to_attach.error_msg = 'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.';
-          setTimeout(() => {
+          setTimeout((): void => {
                        this.volume_to_attach.error_msg = null;
                      },
                      5000);
@@ -256,20 +256,20 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
     volume.volume_status = VolumeStates.DETACHING;
 
     this.virtualmachineService.deleteVolumeAttachment(volume.volume_openstackid, this.virtualMachine.openstackid).subscribe(
-      (result: any) => {
+      (result: any): void => {
         if (result.value === 'deleted') {
           this.getDetachedVolumesByVSelectedMProject();
           this.getVmById();
 
         }
       },
-      (error1: any) => {
+      (error1: any): void => {
         this.status_changed = 2;
         if (error1['error']['error'] === '409') {
           volume.error_msg = 'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.';
-          setTimeout(() => {
-            volume.error_msg = null;
-          },
+          setTimeout((): void => {
+                       volume.error_msg = null;
+                     },
                      5000);
           this.error_msg = 'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.'
           volume.volume_status = volume_status_backup;
@@ -284,7 +284,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
    */
   public rebootVm(reboot_type: string): void {
     this.virtualmachineService.rebootVM(this.virtualMachine.openstackid, reboot_type).subscribe(
-      (result: IResponseTemplate) => {
+      (result: IResponseTemplate): void => {
         this.status_changed = 0;
         this.virtualMachine.cardState = 0;
 
@@ -296,7 +296,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
         }
 
       },
-      (error1: any) => {
+      (error1: any): void => {
         this.status_changed = 2;
         this.status_check_error = true;
         if (error1['error']['error'] === '409') {
@@ -314,9 +314,9 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
   check_status_loop(final_state: string, is_selected_vm?: boolean): void {
 
     setTimeout(
-      () => {
+      (): void => {
         if (this.virtualMachine.openstackid) {
-          this.virtualmachineService.checkVmStatus(this.virtualMachine.openstackid).subscribe((updated_vm: VirtualMachine) => {
+          this.virtualmachineService.checkVmStatus(this.virtualMachine.openstackid).subscribe((updated_vm: VirtualMachine): void => {
             this.virtualMachine = updated_vm;
             this.virtualMachine.cardState = 0;
 
@@ -336,7 +336,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
 
           })
         } else {
-          this.virtualmachineService.checkVmStatus(this.virtualMachine.name).subscribe((updated_vm: VirtualMachine) => {
+          this.virtualmachineService.checkVmStatus(this.virtualMachine.name).subscribe((updated_vm: VirtualMachine): void => {
             this.virtualMachine = updated_vm;
             this.virtualMachine.cardState = 0;
 
@@ -370,8 +370,9 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
   check_status_loop_when_reboot(): void {
 
     setTimeout(
-      () => {
-        this.virtualmachineService.checkVmStatusWhenReboot(this.virtualMachine.openstackid).subscribe((updated_vm: VirtualMachine) => {
+      (): void => {
+        this.virtualmachineService.checkVmStatusWhenReboot(
+          this.virtualMachine.openstackid).subscribe((updated_vm: VirtualMachine): void => {
 
           if (updated_vm.status === VirtualMachineStates.ACTIVE) {
             this.reboot_done = true;
@@ -405,7 +406,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
   stopVm(): void {
     this.virtualmachineService.stopVM(this.virtualMachine.openstackid)
       .subscribe(
-        (updated_vm: VirtualMachine) => {
+        (updated_vm: VirtualMachine): void => {
           this.status_changed = 0;
 
           if (updated_vm.created_at !== '') {
@@ -428,7 +429,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
           }
 
         },
-        (error1: any) => {
+        (error1: any): void => {
           this.status_changed = 2;
           if (error1['error']['error'] === '409') {
             this.error_msg = 'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.'
@@ -447,7 +448,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
 
   resumeVM(): void {
     this.virtualmachineService.resumeVM(this.virtualMachine.openstackid).subscribe(
-      (updated_vm: VirtualMachine) => {
+      (updated_vm: VirtualMachine): void => {
         this.status_changed = 0;
         if (updated_vm.created_at === '') {
           updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
@@ -467,7 +468,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
 
         }
       },
-      (error1: any) => {
+      (error1: any): void => {
         this.status_changed = 2;
         if (error1['error']['error'] === '409') {
           this.error_msg = 'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.'
@@ -484,7 +485,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
   ):
     void {
     this.imageService.createSnapshot(snapshot_instance, snapshot_name, description).subscribe(
-      (newSnapshot: SnapshotModel) => {
+      (newSnapshot: SnapshotModel): void => {
         if (newSnapshot.snapshot_openstackid) {
           this.snapshotDone = 'true';
 
@@ -493,7 +494,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
         }
 
       },
-      (error1: any) => {
+      (error1: any): void => {
         this.snapshotDone = 'error';
         this.status_changed = 2;
         if (error1['error']['error'] === '409') {
@@ -514,7 +515,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
 
   getVmById(): void {
     this.virtualmachineService.getVmById(this.vm_id).subscribe(
-      (vm: VirtualMachine) => {
+      (vm: VirtualMachine): void => {
         vm = new VirtualMachine(vm);
         if (vm == null) {
           this.isLoaded = false;
@@ -522,7 +523,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
           // TODO: Redirect back to overview
         } else {
 
-          this.playbookService.getPlaybookForVM(this.vm_id).subscribe((pb: Object) => {
+          this.playbookService.getPlaybookForVM(this.vm_id).subscribe((pb: Object): void => {
             if (pb != null) {
               let pbs: string = pb['playbooks'].toString();
               if (pbs != null) {
@@ -548,10 +549,10 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
           this.checkAndGetForcDetails(vm);
           this.title = vm['name'];
           this.virtualMachine = vm;
-          this.biocondaService.getTemplateNameByVmName(vm).subscribe((tname: any) => {
+          this.biocondaService.getTemplateNameByVmName(vm).subscribe((tname: any): void => {
             if (tname != null) {
               const template_name: string = tname['template'];
-              this.biocondaService.getForcTemplates(vm.client.id).subscribe((templates: any) => {
+              this.biocondaService.getForcTemplates(vm.client.id).subscribe((templates: any): void => {
                 if (templates != null) {
                   for (const temp of templates) {
                     if (temp['template_name'] === template_name) {
@@ -578,10 +579,10 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
   getImageDetails(project_id: number, name: string): Image {
     const newImage: Image = new Image();
     this.imageService.getImageByProjectAndName(project_id, name).subscribe(
-      (image: Image) => {
+      (image: Image): void => {
         this.image = image;
       },
-      (error: any) => {
+      (): void => {
         this.isLoaded = false;
       }
     );
@@ -597,10 +598,10 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
     //   }
     // }
     if (checkForForc) {
-      this.groupService.getClientForcUrl(vm.client.id, 'true').subscribe((response: JSON) => {
+      this.groupService.getClientForcUrl(vm.client.id, 'true').subscribe((response: JSON): void => {
         if (response['forc_url'] !== null) {
           this.virtualmachineService.getLocationUrl(vm.openstackid)
-            .subscribe((url: any) => {
+            .subscribe((url: any): void => {
               if (url !== '') {
                 vm.res_env_url = `${response['forc_url']}${url}/`;
               } else {
@@ -615,25 +616,25 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
   }
 
   filterMembers(searchString: string): void {
-    this.userService.getFilteredMembersOfdeNBIVo(searchString).subscribe((result: object) => {
+    this.userService.getFilteredMembersOfdeNBIVo(searchString).subscribe((result: object): void => {
       this.filteredMembers = result;
     })
   }
 
   addUserToBackend(userId: any): void {
-    this.biocondaService.addUserToBackend(this.vm_id, userId).subscribe((result: any) => {
+    this.biocondaService.addUserToBackend(this.vm_id, userId).subscribe((): void => {
       this.getUsersForBackend();
     });
   }
 
   getUsersForBackend(): void {
-    this.biocondaService.getUsersForBackend(this.vm_id).subscribe((result: any) => {
+    this.biocondaService.getUsersForBackend(this.vm_id).subscribe((result: any): void => {
       this.backend_users = result;
     });
   }
 
   deleteUserFromBackend(userId: any): void {
-    this.biocondaService.deleteUserFromBackend(this.vm_id, userId.toString()).subscribe((result: any) => {
+    this.biocondaService.deleteUserFromBackend(this.vm_id, userId.toString()).subscribe((): void => {
       this.getUsersForBackend();
     });
   }

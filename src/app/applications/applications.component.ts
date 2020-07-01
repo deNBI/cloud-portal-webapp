@@ -107,12 +107,8 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
    * @param {Application} app
    */
   getFacilityProject(app: Application): void {
-
-    // tslint:disable-next-line:max-line-length
-    if (!app.ComputeCenter && !app.hasSubmittedStatus()
-      && !app.hasTerminatedStatus()) {
-      this.groupservice.getFacilityByGroup(app.project_application_perun_id.toString()).subscribe((res: object) => {
-
+    if (!app.ComputeCenter && app.hasSubmittedStatus() && app.hasTerminatedStatus()) {
+      this.groupservice.getFacilityByGroup(app.project_application_perun_id.toString()).subscribe((res: object): void => {
         const login: string = res['Login'];
         const suport: string = res['Support'];
         const facilityname: string = res['Facility'];
@@ -132,7 +128,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
   getAllApplications(): void {
     if (this.is_vo_admin) {
 
-      this.applicationsservice.getAllApplications().subscribe((applications: Application[]) => {
+      this.applicationsservice.getAllApplications().subscribe((applications: Application[]): void => {
         if (applications.length === 0) {
           this.isLoaded_userApplication = true;
         }
@@ -161,12 +157,12 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
     this.applicationsservice
       .getApplication(application.project_application_id.toString())
-      .subscribe((aj: Application) => {
+      .subscribe((aj: Application): void => {
                    const newApp: Application = new Application(aj);
                    this.all_applications[index] = newApp;
                    this.getFacilityProject(newApp);
                  },
-                 (error: any) => {
+                 (error: any): void => {
                    console.log(error);
                  });
 
@@ -176,7 +172,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
     if (app.project_application_openstack_project) {
       if (!app.ComputeCenter) {
-        this.applicationsservice.approveRenewal(app.project_application_id.toString()).subscribe((result: any) => {
+        this.applicationsservice.approveRenewal(app.project_application_id.toString()).subscribe((result: any): void => {
           if (result['Error']) {
             this.extension_status = 2;
             this.updateNotificationModal('Failed', 'Failed to approve the application modification.', true, 'danger');
@@ -193,7 +189,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
       } else {
         this.applicationstatusservice.setApplicationStatus(
           app.project_application_id.toString(),
-          this.WAIT_FOR_EXTENSION_STATUS.toString()).subscribe(() => {
+          this.WAIT_FOR_EXTENSION_STATUS.toString()).subscribe((): void => {
           this.extension_status = 5;
           this.getApplication(app);
 
@@ -206,7 +202,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
         })
       }
     } else {
-      this.applicationsservice.approveRenewal(app.project_application_id).subscribe((result: { [key: string]: string }) => {
+      this.applicationsservice.approveRenewal(app.project_application_id).subscribe((result: { [key: string]: string }): void => {
         if (result['Error']) {
           this.extension_status = 2
         } else {
@@ -223,7 +219,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
    * @param {number} application_id
    */
   public declineExtension(application_id: number): void {
-    this.applicationsservice.declineRenewal(application_id).subscribe((result: { [key: string]: string }) => {
+    this.applicationsservice.declineRenewal(application_id).subscribe((result: { [key: string]: string }): void => {
       if (result != null) {
         this.extension_status = 2
       } else {
@@ -239,7 +235,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
    * @param {Application} application the application
    */
   removeApplicationFromFacilityConfirmation(application: Application): void {
-    this.groupservice.removeGroupFromResource(application.project_application_perun_id.toString()).subscribe(() => {
+    this.groupservice.removeGroupFromResource(application.project_application_perun_id.toString()).subscribe((): void => {
       this.getApplication(application)
     })
 
@@ -257,7 +253,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
                                      compute_center: string): void {
     this.groupservice.createGroupOpenStack(
       application.project_application_id, compute_center)
-      .subscribe((result: { [key: string]: string }) => {
+      .subscribe((result: { [key: string]: string }): void => {
                    if (result['Error']) {
                      this.updateNotificationModal('Failed', result['Error'], true, 'danger');
 
@@ -266,7 +262,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
                    }
                    this.getApplication(application);
                  },
-                 () => {
+                 (): void => {
                    this.updateNotificationModal('Failed', 'Project could not be created!', true, 'danger');
                  })
 
@@ -289,7 +285,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
   private setNotificationClient(application_id: string): void {
     this.applicationsservice.getApplicationClient(
-      application_id).subscribe((client: object) => {
+      application_id).subscribe((client: object): void => {
       const newClient: Client = new Client(client['host'], client['port'], client['location'], client['id']);
       newClient.maxVolumeLimit = client['max_ressources']['maxTotalVolumeGigabytes'];
       newClient.maxVolumes = client['max_ressources']['maxTotalVolumes'];
@@ -340,7 +336,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
     const application_id: string = <string>app.project_application_id;
     if (compute_center_id && compute_center_id !== 'undefined') {
       this.groupservice.createGroupByApplication(application_id, compute_center_id).subscribe(
-        (res: any) => {
+        (res: any): void => {
           if (!res['client_available'] && !res['created']) {
             this.setNoResourcesClientNotification(res);
             this.updateNotificationModal('Failed', `The client ${res['client_name']} has not the necessary resources left!`,
@@ -352,13 +348,13 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
           }
 
         },
-        (error: object) => {
+        (error: object): void => {
           console.log(error);
           this.updateNotificationModal('Failed', 'Project could not be created!', true, 'danger');
         });
     } else {
       this.applicationsservice.getApplicationClientAvaiable(application_id).subscribe(
-        (res: Client) => {
+        (res: Client): void => {
           if (!res['client_available']) {
             // tslint:disable-next-line:forin
             if (res['clients']) {
@@ -371,7 +367,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
           } else {
 
-            this.groupservice.createGroupByApplication(application_id).subscribe(() => {
+            this.groupservice.createGroupByApplication(application_id).subscribe((): void => {
               this.setNotificationClient(application_id);
               this.reloadApplicationList(application_id)
 
@@ -380,7 +376,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
           }
 
         },
-        (error: object) => {
+        (error: object): void => {
           console.log(error);
           this.updateNotificationModal('Failed', 'Project could not be created!', true, 'danger');
         })
@@ -391,11 +387,11 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
   assignGroupToFacility(group_id: string, application_id: string, compute_center: string): void {
     if (compute_center !== 'undefined') {
       this.groupservice.assignGroupToResource(group_id, compute_center).subscribe(
-        () => {
+        (): void => {
           this.applicationstatusservice.setApplicationStatus(
             application_id,
             this.application_states.WAIT_FOR_CONFIRMATION.toString())
-            .subscribe(() => {
+            .subscribe((): void => {
               for (const app of this.all_applications) {
                 if (app.project_application_id.toString() === application_id) {
                   this.getApplication(app);
@@ -409,7 +405,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
             })
 
         },
-        (error: object) => {
+        (error: object): void => {
           console.log(error);
           this.updateNotificationModal('Failed', 'Project could not be created!', true, 'danger');
         });
@@ -425,13 +421,13 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
    */
   public declineApplication(application_id: string): void {
     this.applicationstatusservice.setApplicationStatus(application_id, this.getIdByStatus('declined').toString()).toPromise()
-      .then(() => {
+      .then((): void => {
         this.all_applications = [];
         this.user_applications = [];
         this.getAllApplications();
         this.updateNotificationModal('Success', 'The Application was declined', true, 'success');
       })
-      .catch(() => {
+      .catch((): void => {
         this.updateNotificationModal('Failed', 'Application could be declined!', true, 'danger');
       });
   }
