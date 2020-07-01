@@ -225,7 +225,6 @@
                       <i class="fa fa-play"></i>&nbsp;Resume Project
                     </button>
                     <button
-                      *ngIf="project?.Status == project_states.ACTIVE || project?.Status == project_states.SUSPENDED"
                       style="margin-left: 5px"
                       type="button"
                       class="btn btn-danger" [id]="'show_terminate_' + project?.Id"
