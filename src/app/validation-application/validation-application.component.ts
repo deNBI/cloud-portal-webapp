@@ -43,11 +43,11 @@ export class ValidationApplicationComponent extends ApplicationBaseClassComponen
   }
 
   ngOnInit(): void {
-    this.activatedRoute.params.subscribe((paramsId: any) => {
+    this.activatedRoute.params.subscribe((paramsId: any): void => {
       this.hash = paramsId.hash;
 
       this.applicationsService.getApplicationValidationByHash(this.hash).subscribe(
-        (app: Application) => {
+        (app: Application): void => {
           this.application = new Application(app);
           if (this.application.project_application_openstack_project) {
             this.title = 'Cloud Project Application Validation';
@@ -57,7 +57,7 @@ export class ValidationApplicationComponent extends ApplicationBaseClassComponen
           this.isLoadedApplication = true;
 
         },
-        () => {
+        (): void => {
           this.isLoadedApplication = true;
 
         })
