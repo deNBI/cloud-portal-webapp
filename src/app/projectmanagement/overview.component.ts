@@ -29,6 +29,7 @@ import {EdamOntologyTerm} from '../applications/edam-ontology-term';
 import {AutocompleteComponent} from 'angular-ng-autocomplete';
 import {DOCUMENT} from '@angular/common';
 import {Chart} from 'chart.js';
+import {ExtensionRequestType} from '../shared/shared_modules/baseClass/abstract-base-class';
 
 /**
  * Projectoverview component.
@@ -51,6 +52,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
   @ViewChild(NgForm) simpleVmForm: NgForm;
   @ViewChild('creditsChart') creditsCanvas: ElementRef;
+
 
   /**
    * If at least 1 flavor is selected.
@@ -92,7 +94,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
    * defines weither the request is an extension (1), modification (2) or credit (3) request.
    * @type {number}, initialized with 0
    */
-  request_type: number = 0;
+  request_type: number = ExtensionRequestType.NONE;
 
   newDoi: string;
   remove_members_clicked: boolean;
@@ -140,6 +142,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   private updateCreditHistoryIntervals: number;
 
   creditsChart: any;
+  ExtensionRequestType: typeof ExtensionRequestType = ExtensionRequestType;
 
   constructor(private flavorService: FlavorService,
               private groupService: GroupService,
@@ -398,7 +401,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
    * @param {boolean} isExtraCreditsApplication: whether or not only extra credits are applied for
    */
   onSubmit(form: NgForm): void {
-    if (this.request_type === 3) {
+    if (this.request_type === ExtensionRequestType.CREDIT) {
       this.project_application.project_application_extension.is_only_extra_credits_application = true;
       this.project_application.project_application_extension.project_application_extension_comment =
         form.controls['project_application_extra_credits_comment'].value;
@@ -409,6 +412,9 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
     this.requestExtension();
 
   }
+
+  public requestModification():void{}
+  public requestCreditsModification():void{}
 
   public requestExtension(): void {
     /**

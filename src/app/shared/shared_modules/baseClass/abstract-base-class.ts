@@ -11,6 +11,13 @@ enum Project_States {
 
 }
 
+export enum ExtensionRequestType {
+  NONE,
+  EXTENSION = 1,
+  MODIFICATION = 2,
+  CREDIT = 3
+}
+
 export enum Application_States {
   SUBMITTED = 1,
   APPROVED = 2,

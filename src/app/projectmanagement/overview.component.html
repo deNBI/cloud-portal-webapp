@@ -1039,7 +1039,7 @@
           </div>
           <button type="button" class="btn  btn-primary"
                   form="modification_form" id="submit_modification_btn"
-                  (click)="extension_request=true;request_type=2;filterEnteredData(modificationForm);
+                  (click)="extension_request=true;request_type=ExtensionRequestType.MODIFICATION;filterEnteredData(modificationForm);
                   calculateCredits(modificationForm.controls.project_application_renewal_lifetime?.value);
                   submitModal.show(); setModalOpen(true);"
                   [disabled]="modificationForm.invalid"><i class="fa fa-dot-circle-o"></i>
@@ -1273,7 +1273,7 @@
           </div>
           <button type="button" class="btn  btn-primary"
                   form="extensionForm" id="submit_extension_btn"
-                  (click)="extension_request=true;request_type=1;filterEnteredData(extensionForm);
+                  (click)="extension_request=true;request_type=ExtensionRequestType.EXTENSION;filterEnteredData(extensionForm);
                   calculateCredits(extensionForm.controls.project_application_renewal_lifetime?.value);
                   submitModal.show(); setModalOpen(true);"
                   [disabled]="extensionForm.invalid || (!project_application?.project_application_edam_terms && selected_ontology_terms.length < 1)"><i
@@ -1386,9 +1386,9 @@
           <div class="label">
             By submitting this application you agree to the cloud usage policy.
           </div>
-          <button type="button" class="btn  btn-primary"adm
+          <button type="button" class="btn  btn-primary" adm
                   form="credits_application_form" id="submit_extra_credits_btn"
-                  (click)="request_type=3;filterEnteredData(f2);
+                  (click)="request_type=ExtensionRequestType.CREDIT;filterEnteredData(f2);
                   onSubmit(f2);
                   extension_request=true;creditsExtensionModal.hide()" [disabled]="f2.invalid"><i
             class="fa fa-dot-circle-o">
@@ -1439,12 +1439,12 @@
               <td><strong>Approximate number of extra credits:
                 {{project_application?.project_application_extension.project_application_extension_credits}}</strong></td>
             </tr>
-            <tr *ngIf="request_type == 2">
+            <tr *ngIf="request_type == ExtensionRequestType.MODIFICATION">
               <td><strong>Number of cores in total:
                 {{project_application?.project_application_modification?.project_application_modification_total_cores}}</strong>
               </td>
             </tr>
-            <tr *ngIf="request_type == 2">
+            <tr *ngIf="request_type == ExtensionRequestType.MODIFICATION">
               <td><strong>Value of RAM in
                 total: {{project_application?.project_application_modification?.project_application_modification_total_ram}}
                 GBs</strong>
@@ -1459,17 +1459,17 @@
 
 
         <button id="confirm_extension_btn" class="btn btn-success col-md-4" type="button"
-                *ngIf="request_type==1"
+                *ngIf="request_type==ExtensionRequestType.EXTENSION"
                 (click)="submitModal.hide(); resultModal.show();
                 onSubmit(extensionForm);">Confirm Application
         </button>
         <button id="confirm_modification_btn" class="btn btn-success col-md-4" type="button"
-                *ngIf="request_type==2"
+                *ngIf="request_type==ExtensionRequestType.MODIFICATION"
                 (click)="submitModal.hide(); resultModal.show();
                 onSubmit(modificationForm);">Confirm Application
         </button>
         <button id="confirm_credits_btn" class="btn btn-success col-md-4" type="button"
-                *ngIf="request_type==3"
+                *ngIf="request_type==ExtensionRequestType.CREDIT"
                 (click)="creditsExtensionModal.hide(); submitModal.hide(); resultModal.show();
                 onSubmit(f2);">Confirm Application
         </button>
