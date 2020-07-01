@@ -43,74 +43,6 @@ export class VirtualMachineStates {
     VirtualMachineStates._ERROR
   ];
 
-  public get staticDELETING(): string {
-    return VirtualMachineStates.DELETING;
-  }
-
-  public get staticDELETING_FAILED(): string {
-    return VirtualMachineStates.DELETING_FAILED;
-  }
-
-  public get staticPREPARE_PLAYBOOK_BUILD(): string {
-    return VirtualMachineStates.PREPARE_PLAYBOOK_BUILD;
-  }
-
-  public get staticBUILD_PLAYBOOK(): string {
-    return VirtualMachineStates.BUILD_PLAYBOOK;
-  }
-
-  public get staticBUILD(): string {
-    return VirtualMachineStates.BUILD;
-  }
-
-   public get staticCHECKING_CONNECTION(): string {
-    return VirtualMachineStates.CHECKING_CONNECTION;
-  }
-
-    public get staticPORT_CLOSED(): string {
-    return VirtualMachineStates.PORT_CLOSED;
-  }
-
-  public get staticACTIVE(): string {
-    return VirtualMachineStates.ACTIVE;
-  }
-
-  public get staticDELETED(): string {
-    return VirtualMachineStates.DELETED;
-  }
-
-  public get staticSHUTOFF(): string {
-    return VirtualMachineStates.SHUTOFF;
-  }
-
-  public get staticPOWERING_OFF(): string {
-    return VirtualMachineStates.POWERING_OFF;
-  }
-
-  public get staticNOT_FOUND(): string {
-    return VirtualMachineStates.NOT_FOUND;
-  }
-
-  public get staticERROR(): string {
-    return VirtualMachineStates.ERROR;
-  }
-
-  public get staticCLIENT_OFFLINE(): string {
-    return VirtualMachineStates.CLIENT_OFFLINE;
-  }
-
-  public get staticRESTARTING(): string {
-    return VirtualMachineStates.RESTARTING;
-  }
-
-  public get staticGETTING_STATUS(): string {
-    return VirtualMachineStates.GETTING_STATUS;
-  }
-
-  public get staticNOT_IN_PROCESS_STATE(): string[] {
-    return VirtualMachineStates.NOT_IN_PROCESS_STATES;
-  }
-
   static get BUILD(): string {
     return this._BUILD;
   }
@@ -181,5 +113,73 @@ export class VirtualMachineStates {
 
   static get DELETING_FAILED(): string {
     return this._DELETING_FAILED;
+  }
+
+  public get staticDELETING(): string {
+    return VirtualMachineStates.DELETING;
+  }
+
+  public get staticDELETING_FAILED(): string {
+    return VirtualMachineStates.DELETING_FAILED;
+  }
+
+  public get staticPREPARE_PLAYBOOK_BUILD(): string {
+    return VirtualMachineStates.PREPARE_PLAYBOOK_BUILD;
+  }
+
+  public get staticBUILD_PLAYBOOK(): string {
+    return VirtualMachineStates.BUILD_PLAYBOOK;
+  }
+
+  public get staticBUILD(): string {
+    return VirtualMachineStates.BUILD;
+  }
+
+   public get staticCHECKING_CONNECTION(): string {
+    return VirtualMachineStates.CHECKING_CONNECTION;
+  }
+
+    public get staticPORT_CLOSED(): string {
+    return VirtualMachineStates.PORT_CLOSED;
+  }
+
+  public get staticACTIVE(): string {
+    return VirtualMachineStates.ACTIVE;
+  }
+
+  public get staticDELETED(): string {
+    return VirtualMachineStates.DELETED;
+  }
+
+  public get staticSHUTOFF(): string {
+    return VirtualMachineStates.SHUTOFF;
+  }
+
+  public get staticPOWERING_OFF(): string {
+    return VirtualMachineStates.POWERING_OFF;
+  }
+
+  public get staticNOT_FOUND(): string {
+    return VirtualMachineStates.NOT_FOUND;
+  }
+
+  public get staticERROR(): string {
+    return VirtualMachineStates.ERROR;
+  }
+
+  public get staticCLIENT_OFFLINE(): string {
+    return VirtualMachineStates.CLIENT_OFFLINE;
+  }
+
+  public get staticRESTARTING(): string {
+    return VirtualMachineStates.RESTARTING;
+  }
+
+  public get staticGETTING_STATUS(): string {
+    return VirtualMachineStates.GETTING_STATUS;
+  }
+
+  public get staticNOT_IN_PROCESS_STATE(): string[] {
+    return VirtualMachineStates.NOT_IN_PROCESS_STATES;
   }
 }

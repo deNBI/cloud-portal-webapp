@@ -53,9 +53,9 @@ export class ResourcesComponent implements OnInit {
       const re: any = /\,/gi;
       factor = factor.toString().replace(re, '.');
       this.facilityService.addCoresFactor(this.selectedFacility['FacilityId'], cores, factor, description)
-        .subscribe((res: CoreFactor[]) => {
+        .subscribe((res: CoreFactor[]): void => {
           this.coreFactors = res;
-          this.coreFactors.forEach((coreFactor: CoreFactor) => {
+          this.coreFactors.forEach((coreFactor: CoreFactor): void => {
             this.coresUpdateList[coreFactor.id] = false;
           });
           this.getSelectedFacilityResources()
@@ -67,9 +67,10 @@ export class ResourcesComponent implements OnInit {
     if (ram && factor) {
       const re: any = /\,/gi;
       factor = factor.toString().replace(re, '.');
-      this.facilityService.addRamFactor(this.selectedFacility['FacilityId'], ram, factor, description).subscribe((res: RamFactor[]) => {
+      // tslint:disable-next-line:max-line-length
+      this.facilityService.addRamFactor(this.selectedFacility['FacilityId'], ram, factor, description).subscribe((res: RamFactor[]): void => {
         this.ramFactors = res;
-        this.ramFactors.forEach((ramFactor: RamFactor) => {
+        this.ramFactors.forEach((ramFactor: RamFactor): void => {
           this.ramUpdateList[ramFactor.id] = false;
         })
         this.getSelectedFacilityResources()
@@ -82,7 +83,7 @@ export class ResourcesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.facilityService.getManagerFacilities().subscribe((result: [string, number][]) => {
+    this.facilityService.getManagerFacilities().subscribe((result: [string, number][]): void => {
       this.managerFacilities = result;
       this.selectedFacility = this.managerFacilities[0];
       this.getSelectedFacilityResources();
@@ -91,14 +92,14 @@ export class ResourcesComponent implements OnInit {
   }
 
   public deleteCoreFactor(id: string | number): void {
-    this.facilityService.deleteCoreFactor(this.selectedFacility['FacilityId'], id).subscribe((res: CoreFactor[]) => {
+    this.facilityService.deleteCoreFactor(this.selectedFacility['FacilityId'], id).subscribe((res: CoreFactor[]): void => {
       this.coreFactors = res;
       this.getSelectedFacilityResources()
     })
   }
 
   public deleteRamFactor(id: string | number): void {
-    this.facilityService.deleteRamFactor(this.selectedFacility['FacilityId'], id).subscribe((res: RamFactor[]) => {
+    this.facilityService.deleteRamFactor(this.selectedFacility['FacilityId'], id).subscribe((res: RamFactor[]): void => {
       this.ramFactors = res;
       this.getSelectedFacilityResources()
 
@@ -106,7 +107,7 @@ export class ResourcesComponent implements OnInit {
   }
 
   public getSelectedFacilityResources(): void {
-    this.facilityService.getFacilityResources(this.selectedFacility['FacilityId']).subscribe((res: Resources[]) => {
+    this.facilityService.getFacilityResources(this.selectedFacility['FacilityId']).subscribe((res: Resources[]): void => {
 
                                                                                                this.resources = res;
                                                                                                this.isLoaded = true;
@@ -116,13 +117,13 @@ export class ResourcesComponent implements OnInit {
   }
 
   public reloadRamFactor(rf: RamFactor): void {
-    this.facilityService.getRamFactor(this.selectedFacility['FacilityId'], rf.id).subscribe((ramFactor: RamFactor) => {
+    this.facilityService.getRamFactor(this.selectedFacility['FacilityId'], rf.id).subscribe((ramFactor: RamFactor): void => {
       this.ramFactors[this.ramFactors.indexOf(rf)] = ramFactor;
     })
   }
 
   public reloadCoreFactor(cf: CoreFactor): void {
-    this.facilityService.getCoreFactor(this.selectedFacility['FacilityId'], cf.id).subscribe((coreFactor: CoreFactor) => {
+    this.facilityService.getCoreFactor(this.selectedFacility['FacilityId'], cf.id).subscribe((coreFactor: CoreFactor): void => {
       this.coreFactors[this.coreFactors.indexOf(cf)] = coreFactor;
     })
   }
@@ -130,14 +131,14 @@ export class ResourcesComponent implements OnInit {
   public getRamCoreFactors(): void {
     forkJoin(
       this.facilityService.getCoreFactors(this.selectedFacility['FacilityId']),
-      this.facilityService.getRamFactors(this.selectedFacility['FacilityId'])).subscribe((res: any) => {
+      this.facilityService.getRamFactors(this.selectedFacility['FacilityId'])).subscribe((res: any): void => {
       this.coreFactors = res[0];
-      this.coreFactors.forEach((coreFactor: CoreFactor) => {
+      this.coreFactors.forEach((coreFactor: CoreFactor): void => {
         this.coresUpdateList[coreFactor.id] = false;
       });
 
       this.ramFactors = res[1];
-      this.ramFactors.forEach((ramFactor: RamFactor) => {
+      this.ramFactors.forEach((ramFactor: RamFactor): void => {
         this.ramUpdateList[ramFactor.id] = false;
       })
     })
@@ -146,7 +147,7 @@ export class ResourcesComponent implements OnInit {
 
   public updateRamFactor(rf: RamFactor): void {
 
-    this.facilityService.updateRamFactor(this.selectedFacility['FacilityId'], rf).subscribe((ramFactor: RamFactor) => {
+    this.facilityService.updateRamFactor(this.selectedFacility['FacilityId'], rf).subscribe((ramFactor: RamFactor): void => {
       this.ramFactors[this.ramFactors.indexOf(rf)] = ramFactor;
       this.getSelectedFacilityResources()
 
@@ -156,7 +157,7 @@ export class ResourcesComponent implements OnInit {
 
   public updateCoreFactor(cf: CoreFactor): void {
 
-    this.facilityService.updateCoreFactor(this.selectedFacility['FacilityId'], cf).subscribe((coreFactor: CoreFactor) => {
+    this.facilityService.updateCoreFactor(this.selectedFacility['FacilityId'], cf).subscribe((coreFactor: CoreFactor): void => {
       this.coreFactors[this.coreFactors.indexOf(cf)] = coreFactor;
       this.getSelectedFacilityResources()
 
@@ -179,7 +180,7 @@ export class ResourcesComponent implements OnInit {
   }
 
   public tableToPDF(): void {
-    html2canvas(document.getElementById(this.tableId)).then((canvas: any) => {
+    html2canvas(document.getElementById(this.tableId)).then((canvas: any): void => {
       // Few necessary setting options
       const imgWidth: number = 208;
       const pageHeight: number = 295;
@@ -191,7 +192,7 @@ export class ResourcesComponent implements OnInit {
       const position: number = 0;
       pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
       pdf.save(`${this.selectedFacility['Facility']}.pdf`); // Generated PDF
-    }).catch(() => {
+    }).catch((): void => {
       console.log('failed to convert to pdf')
     });
   }

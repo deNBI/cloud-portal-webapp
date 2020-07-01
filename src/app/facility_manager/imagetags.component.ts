@@ -1,6 +1,6 @@
 import {ImageService} from '../api-connector/image.service';
 import {Component, OnInit} from '@angular/core';
-import {BlockedImageTag, ImageLogo, ImageMode, ImageTag, BlockedImageTagResenv} from './image-tag';
+import {BlockedImageTag, BlockedImageTagResenv, ImageLogo, ImageMode, ImageTag} from './image-tag';
 import {forkJoin} from 'rxjs';
 import {FacilityService} from '../api-connector/facility.service';
 import {BiocondaService} from '../api-connector/bioconda.service';
@@ -89,7 +89,7 @@ export class ImageTagComponent implements OnInit {
       this.imageService.getBlockedImageTags(this.selectedFacility['FacilityId']),
       this.imageService.getImageModes(this.selectedFacility['FacilityId']),
       this.imageService.getBlockedImageTagsResenv(this.selectedFacility['FacilityId']))
-      .subscribe((res: any) => {
+      .subscribe((res: any): void => {
         this.imageTags = res[0];
         this.imageLogos = res[1];
         this.blockedImageTags = res[2];
@@ -100,7 +100,7 @@ export class ImageTagComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.facilityService.getManagerFacilities().subscribe((result: any) => {
+    this.facilityService.getManagerFacilities().subscribe((result: any): void => {
       this.managerFacilities = result;
       this.selectedFacility = this.managerFacilities[0];
       this.getTagModeSuggestions();
@@ -110,7 +110,7 @@ export class ImageTagComponent implements OnInit {
         this.imageService.getBlockedImageTags(this.selectedFacility['FacilityId']),
         this.imageService.getImageModes(this.selectedFacility['FacilityId']),
         this.imageService.getBlockedImageTagsResenv(this.selectedFacility['FacilityId']))
-        .subscribe((res: any) => {
+        .subscribe((res: any): void => {
           this.imageTags = res[0];
           this.imageLogos = res[1];
           this.blockedImageTags = res[2];
@@ -132,13 +132,13 @@ export class ImageTagComponent implements OnInit {
   }
 
   addLogoTag(): void {
-    this.imageService.addImageLogos(this.imageTag, this.imageUrl).subscribe((newTag: ImageLogo) => {
+    this.imageService.addImageLogos(this.imageTag, this.imageUrl).subscribe((newTag: ImageLogo): void => {
       this.imageLogos.push(newTag)
     })
   }
 
   removeLogoTag(logoTag: ImageLogo): void {
-    this.imageService.deleteImageLogoTag(logoTag.id).subscribe(() => {
+    this.imageService.deleteImageLogoTag(logoTag.id).subscribe((): void => {
       const idx: number = this.imageLogos.indexOf(logoTag);
       this.imageLogos.splice(idx, 1);
     })
@@ -146,7 +146,8 @@ export class ImageTagComponent implements OnInit {
 
   addTag(tag: string, input: HTMLInputElement): void {
     if (input.validity.valid) {
-      this.imageService.addImageTags(tag.trim(), this.checkedModes, this.selectedFacility['FacilityId']).subscribe((newTag: ImageTag) => {
+      this.imageService.addImageTags(
+        tag.trim(), this.checkedModes, this.selectedFacility['FacilityId']).subscribe((newTag: ImageTag): void => {
         this.checkedModes = [];
         this.imageTags.push(newTag);
       });
@@ -158,7 +159,7 @@ export class ImageTagComponent implements OnInit {
 
   addImageMode(): void {
     const newMode: ImageMode = {name: this.newModeName, description: this.newModeDescription, copy_field: this.newModeCopy};
-    this.imageService.addImageMode(newMode, this.selectedFacility['FacilityId']).subscribe((createdMode: ImageMode) => {
+    this.imageService.addImageMode(newMode, this.selectedFacility['FacilityId']).subscribe((createdMode: ImageMode): void => {
 
       this.newModeName = '';
       this.newModeDescription = '';
@@ -171,8 +172,8 @@ export class ImageTagComponent implements OnInit {
   }
 
   deleteTag(tag: ImageTag): void {
-    this.imageService.deleteImageTag(tag.id).subscribe(() => {
-      this.imageService.getImageTags(this.selectedFacility['FacilityId']).subscribe((tags: ImageTag[]) => {
+    this.imageService.deleteImageTag(tag.id).subscribe((): void => {
+      this.imageService.getImageTags(this.selectedFacility['FacilityId']).subscribe((tags: ImageTag[]): void => {
         this.imageTags = tags;
       })
     })
@@ -184,15 +185,15 @@ export class ImageTagComponent implements OnInit {
     update_mode.description = this.updateModeDescription;
     update_mode.copy_field = this.updateModeCopy;
     update_mode.name = this.updateModeName;
-    this.imageService.updateImageMode(update_mode).subscribe((updated_mode: ImageMode) => {
+    this.imageService.updateImageMode(update_mode).subscribe((updated_mode: ImageMode): void => {
       this.imageModes[idx] = updated_mode;
       this.getTagModeSuggestions();
     })
   }
 
   deleteMode(mode: ImageMode): void {
-    this.imageService.deleteImageMode(mode.id).subscribe(() => {
-      this.imageService.getImageModes(this.selectedFacility['FacilityId']).subscribe((tags: ImageMode[]) => {
+    this.imageService.deleteImageMode(mode.id).subscribe((): void => {
+      this.imageService.getImageModes(this.selectedFacility['FacilityId']).subscribe((tags: ImageMode[]): void => {
         this.imageModes = tags;
       })
     })
@@ -200,7 +201,7 @@ export class ImageTagComponent implements OnInit {
 
   addBlockedTag(tag: string, input: HTMLInputElement): void {
     if (input.validity.valid) {
-      this.imageService.addBlockedImageTag(tag.trim(), this.selectedFacility['FacilityId']).subscribe((newTag: BlockedImageTag) => {
+      this.imageService.addBlockedImageTag(tag.trim(), this.selectedFacility['FacilityId']).subscribe((newTag: BlockedImageTag): void => {
         this.blockedImageTags.push(newTag)
       });
       this.alertRed_blocked = false;
@@ -210,8 +211,8 @@ export class ImageTagComponent implements OnInit {
   }
 
   deleteBlockedTag(tag: string, facility_id: number): void {
-    this.imageService.deleteBlockedImageTag(tag, facility_id).subscribe(() => {
-      this.imageService.getBlockedImageTags(facility_id).subscribe((tags: BlockedImageTag[]) => {
+    this.imageService.deleteBlockedImageTag(tag, facility_id).subscribe((): void => {
+      this.imageService.getBlockedImageTags(facility_id).subscribe((tags: BlockedImageTag[]): void => {
         this.blockedImageTags = tags;
       })
     })
@@ -220,8 +221,8 @@ export class ImageTagComponent implements OnInit {
   getTagModeSuggestions(): void {
     this.biocondaService
       .getSuggestedForcTemplates(this.selectedFacility['FacilityId'].toString())
-      .subscribe((response: any[]) => {
-        this.suggestedModes = response.map((template: any) => template);
+      .subscribe((response: any[]): void => {
+        this.suggestedModes = response.map((template: any): any => template);
       });
   }
 
@@ -229,15 +230,15 @@ export class ImageTagComponent implements OnInit {
     if (input.validity.valid) {
       this.imageService
         .addBlockedImageTagResenv(tag.trim(), this.checkedBlockedImageTagResenv, this.selectedFacility['FacilityId'])
-        .subscribe((newTag: BlockedImageTagResenv) => {
+        .subscribe((newTag: BlockedImageTagResenv): void => {
           this.blockedImageTagsResenv.push(newTag)
         });
     }
   }
 
   deleteBlockedTagResenv(tag: string, facility_id: number): void {
-    this.imageService.deleteBlockedImageTagResenv(tag, facility_id).subscribe(() => {
-      this.imageService.getBlockedImageTagsResenv(facility_id).subscribe((tags: BlockedImageTagResenv[]) => {
+    this.imageService.deleteBlockedImageTagResenv(tag, facility_id).subscribe((): void => {
+      this.imageService.getBlockedImageTagsResenv(facility_id).subscribe((tags: BlockedImageTagResenv[]): void => {
         this.blockedImageTagsResenv = tags;
       })
     })

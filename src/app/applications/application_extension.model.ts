@@ -58,7 +58,7 @@ export class ApplicationExtension {
   }
 
   public getFlavorCounter(flavor: Flavor): number {
-    const flavs: Flavor[] = this._flavors.filter((fl: Flavor) => {
+    const flavs: Flavor[] = this._flavors.filter((fl: Flavor): boolean => {
       return fl.name === flavor.name
     });
     if (flavs.length > 0) {
@@ -69,7 +69,7 @@ export class ApplicationExtension {
   }
 
   public setFlavorInFlavors(flavor: Flavor, counter: number): void {
-    const idx: number = this._flavors.findIndex((fl: Flavor) => {
+    const idx: number = this._flavors.findIndex((fl: Flavor): boolean => {
       return fl.name === flavor.name
     });
     if (idx !== -1) {

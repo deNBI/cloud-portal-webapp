@@ -64,7 +64,7 @@ export class ClientOverviewComponent implements OnInit {
    * Get all clients status checked.
    */
   getClientsChecked(): void {
-    this.clientservice.getClientsChecked().subscribe((clients: Client[]) => {
+    this.clientservice.getClientsChecked().subscribe((clients: Client[]): void => {
       this.clients = clients;
       this.isLoaded = true;
     });
@@ -75,7 +75,7 @@ export class ClientOverviewComponent implements OnInit {
    * Get all computecenters.
    */
   getComputeCenters(): void {
-    this.facilityService.getComputeCenters().subscribe((result: any) => {
+    this.facilityService.getComputeCenters().subscribe((result: any): void => {
       for (const cc of result) {
         const compute_center: ComputecenterComponent = new ComputecenterComponent(
           cc['compute_center_facility_id'], cc['compute_center_name'],
@@ -93,7 +93,7 @@ export class ClientOverviewComponent implements OnInit {
    */
   checkClient(host: string, port: string): void {
     if (host && port) {
-      this.clientservice.checkClient(host, port).subscribe((data: IResponseTemplate) => {
+      this.clientservice.checkClient(host, port).subscribe((data: IResponseTemplate): void => {
 
         if (!data.value) {
           this.checkStatus = 'No Connection';
@@ -117,14 +117,14 @@ export class ClientOverviewComponent implements OnInit {
   postClient(host: string, port: string, location: string): void {
 
     if (host && port && location) {
-      this.clientservice.postClient(host, port, location).subscribe((newClient: Client) => {
+      this.clientservice.postClient(host, port, location).subscribe((newClient: Client): void => {
         this.clients.push(newClient);
       });
     }
   }
 
   updateClient(host: string, port: string, location: string, id: string): void {
-    this.clientservice.updateClient(new Client(host, port, location, id)).subscribe((res: Client) => {
+    this.clientservice.updateClient(new Client(host, port, location, id)).subscribe((res: Client): void => {
       this.clients[this.clients.indexOf(this.selectedClient)] = res;
       this.selectedClient = null;
       this.getClientsChecked();
