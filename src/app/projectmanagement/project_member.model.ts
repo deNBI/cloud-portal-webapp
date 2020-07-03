@@ -2,13 +2,6 @@
  * Project Member class.
  */
 export class ProjectMember {
-  get Email(): string {
-    return this._Email;
-  }
-
-  set Email(value: string) {
-    this._Email = value;
-  }
 
   private _Id: number | string;
   private _MemberId: number | string;
@@ -16,6 +9,13 @@ export class ProjectMember {
   private _IsPi: boolean;
   private _ElixirId: string;
   private _Email: string;
+  get Email(): string {
+    return this._Email;
+  }
+
+  set Email(value: string) {
+    this._Email = value;
+  }
 
   constructor(Id: number | string, Username: string, MemberId: number | string) {
     this._Id = Id;

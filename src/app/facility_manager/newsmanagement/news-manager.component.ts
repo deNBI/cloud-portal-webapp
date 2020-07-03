@@ -61,12 +61,12 @@ export class NewsManagerComponent implements OnInit {
    * Method on site initialization.
    */
   ngOnInit(): void {
-    this.facilityService.getComputeCenters().subscribe((computeCenters: any[]) => {
+    this.facilityService.getComputeCenters().subscribe((computeCenters: any[]): void => {
       this.computeCenters = computeCenters;
-      this.facilityService.getManagerFacilities().subscribe((result: any) => {
+      this.facilityService.getManagerFacilities().subscribe((result: any): void => {
         this.managerFacilities = result;
-        this.selectedFacilities = this.managerFacilities.map((facility: [string, number]) => facility);
-        this.managerFacilitiesIdOnly = this.managerFacilities.map((facility: [string, number]) => facility['FacilityId']);
+        this.selectedFacilities = this.managerFacilities.map((facility: [string, number]): [string, number] => facility);
+        this.managerFacilitiesIdOnly = this.managerFacilities.map((facility: [string, number]): number => facility['FacilityId']);
         this.setFormGroup();
         this.getWordPressNews();
         this.getTagsAvailable();
@@ -91,10 +91,10 @@ export class NewsManagerComponent implements OnInit {
    * Gets all available tags from WordPress for facility news.
    */
   getTagsAvailable(): void {
-    this.newsService.getAvailableTagsFromWordPress().subscribe((result: any[]) => {
+    this.newsService.getAvailableTagsFromWordPress().subscribe((result: any[]): void => {
       if (result) {
-        this.availableTags = result.map((tag: any) =>
-          (new WordPressTag({name: tag['name'], id: tag['id']} as WordPressTag)));
+        this.availableTags = result.map((tag: any): WordPressTag =>
+                                          (new WordPressTag({name: tag['name'], id: tag['id']} as WordPressTag)));
       }
     });
   }
@@ -113,9 +113,9 @@ export class NewsManagerComponent implements OnInit {
       news.tags = this.selectedTags.toString();
     }
     const tempArr: string[] = [];
-    this.facilitiesToPost.forEach((facility: any) => {
+    this.facilitiesToPost.forEach((facility: any): void => {
       const computeCenter: any = this.computeCenters
-        .find((center: any) => center.compute_center_facility_id === facility);
+        .find((center: any): boolean => center.compute_center_facility_id === facility);
       if (computeCenter) {
         const wordPressComputeCenterId: string = computeCenter['compute_center_news_id'];
         if (wordPressComputeCenterId) {
@@ -126,7 +126,7 @@ export class NewsManagerComponent implements OnInit {
     news.facility = tempArr.toString();
     if (update) {
       news.id = this.selectedNews.id;
-      this.newsService.updateNewsInWordpress(news).subscribe((result: any) => {
+      this.newsService.updateNewsInWordpress(news).subscribe((result: any): void => {
         if (result) {
           if (result['id']) {
             this.returnState = 1;
@@ -137,7 +137,7 @@ export class NewsManagerComponent implements OnInit {
         this.getWordPressNews();
       });
     } else {
-      this.newsService.addNewsToWordpress(news).subscribe((result: any) => {
+      this.newsService.addNewsToWordpress(news).subscribe((result: any): void => {
         if (result) {
           if (result['id']) {
             this.returnState = 2;
@@ -155,30 +155,32 @@ export class NewsManagerComponent implements OnInit {
    * @param id the id of the news in WordPress to reference it
    */
   setMOTDForFacility(id: string): void {
-    this.managerFacilities.forEach((element: [string, number]) => {
+    this.managerFacilities.forEach((element: [string, number]): void => {
       const tempCenter: any = this.computeCenters
-        .find((center: any) => center['compute_center_facility_id'] === element['FacilityId']);
+        .find((center: any): boolean => center['compute_center_facility_id'] === element['FacilityId']);
       if (tempCenter) {
         if (tempCenter['compute_center_motd_id'] === id) {
           const facilityToCheck: [string, number] = this.facilitiesToSetMOTD
-            .find((facility: [string, number]) =>
-              facility['FacilityId'] === tempCenter['compute_center_facility_id']);
+            .find((facility: [string, number]): boolean =>
+                    facility['FacilityId'] === tempCenter['compute_center_facility_id']);
           if (!facilityToCheck) {
             this.facilityService.setMOTDForFacility(element['FacilityId'], '-1')
-              .subscribe((result: any) => {
-                this.facilityService.getComputeCenters().subscribe((computeCenters: any[]) => {
-                  this.computeCenters = computeCenters; });
+              .subscribe((): void => {
+                this.facilityService.getComputeCenters().subscribe((computeCenters: any[]): void => {
+                  this.computeCenters = computeCenters;
+                });
               });
           }
         } else {
           const facilityToCheck: [string, number] = this.facilitiesToSetMOTD
-            .find((facility: [string, number]) =>
-            facility['FacilityId'] === tempCenter['compute_center_facility_id']);
+            .find((facility: [string, number]): boolean =>
+                    facility['FacilityId'] === tempCenter['compute_center_facility_id']);
           if (facilityToCheck) {
             this.facilityService.setMOTDForFacility(element['FacilityId'], id)
-              .subscribe((result: any) => {
-                this.facilityService.getComputeCenters().subscribe((computeCenters: any[]) => {
-                  this.computeCenters = computeCenters; });
+              .subscribe((): void => {
+                this.facilityService.getComputeCenters().subscribe((computeCenters: any[]): void => {
+                  this.computeCenters = computeCenters;
+                });
               });
           }
         }
@@ -191,9 +193,9 @@ export class NewsManagerComponent implements OnInit {
    */
   getWordPressNews(): void {
     this.wordPressNews = [];
-    const facility_ids: string[] = this.selectedFacilities.map((facility: [string, number]) => facility['FacilityId'].toString());
-    this.newsService.getNewsFromWordPress(facility_ids.toString()).subscribe((result: Object[]) => {
-      this.wordPressNews = result.map((news: Object) => this.createWordPressNews(news));
+    const facility_ids: string[] = this.selectedFacilities.map((facility: [string, number]): string => facility['FacilityId'].toString());
+    this.newsService.getNewsFromWordPress(facility_ids.toString()).subscribe((result: Object[]): any => {
+      this.wordPressNews = result.map((news: Object): any => this.createWordPressNews(news));
       this.setNews();
     });
 
@@ -229,7 +231,7 @@ export class NewsManagerComponent implements OnInit {
       this.selectedFacilities = [];
       this.allChecked = false;
     } else {
-      this.selectedFacilities = this.managerFacilities.map((facility: [string, number]) => facility);
+      this.selectedFacilities = this.managerFacilities.map((facility: [string, number]): [string, number] => facility);
       this.allChecked = true;
     }
     this.getWordPressNews();
@@ -268,9 +270,9 @@ export class NewsManagerComponent implements OnInit {
       } else {
         this.motdLength.next(0);
       }
-      this.managerFacilities.forEach((facility: [string, number]) => {
+      this.managerFacilities.forEach((facility: [string, number]): void => {
         const tempFacility: any = this.computeCenters.find(
-          (element: any) => element['compute_center_facility_id'] === facility['FacilityId']);
+          (element: any): boolean => element['compute_center_facility_id'] === facility['FacilityId']);
         if (tempFacility) {
           if (tempFacility['compute_center_motd_id'] === news.id.toString()) {
             this.facilitiesToSetMOTD.push(facility);
@@ -283,15 +285,15 @@ export class NewsManagerComponent implements OnInit {
       });
 
       const facilityIds: string[] = news.facility.toString().split(',');
-      this.facilitiesToPost = facilityIds.map((id: string) => this.computeCenters
-        .find((facility: any) => facility['compute_center_news_id'] === id)['compute_center_facility_id']);
+      this.facilitiesToPost = facilityIds.map((id: string): number => this.computeCenters
+        .find((facility: any): boolean => facility['compute_center_news_id'] === id)['compute_center_facility_id']);
       const tagIds: string[] = news.tags.toString().split(',');
-      this.selectedTags = tagIds.map((tag: string) => tag);
+      this.selectedTags = tagIds.map((tag: string): string => tag);
     } else {
       this.selectedNews = new WordPressNews();
       this.motdLength.next(0);
 
-      this.managerFacilities.forEach((facility: [string, number]) => {
+      this.managerFacilities.forEach((facility: [string, number]): void => {
         if (document.getElementById(`news_select_${facility['FacilityId']}_motd`)) {
           document.getElementById(`news_select_${facility['FacilityId']}_motd`)['checked'] = false;
         }
@@ -316,7 +318,7 @@ export class NewsManagerComponent implements OnInit {
     const newsId: string = news.id.toString();
     if (this.newsSetAsMOTD.includes(newsId)) {
       let facilitiesString: string = '';
-      this.computeCenters.forEach((facility: any) => {
+      this.computeCenters.forEach((facility: any): void => {
         if (newsId.localeCompare(facility['compute_center_motd_id']) === 0) {
           const temp_string: string = `${facility['compute_center_name']}, `;
           facilitiesString = facilitiesString + temp_string;
@@ -335,7 +337,7 @@ export class NewsManagerComponent implements OnInit {
    */
   listNewsSetAsMOTD(): void {
     this.newsSetAsMOTD = [];
-    this.computeCenters.forEach((facility: any) => {
+    this.computeCenters.forEach((facility: any): void => {
       const motd_string: string = facility['compute_center_motd_id'];
       if (!this.newsSetAsMOTD.includes(motd_string)) {
         if (motd_string !== '-1') {
@@ -359,7 +361,7 @@ export class NewsManagerComponent implements OnInit {
                                             tag: new FormControl(
                                               {value: this.selectedNews.tags, disabled: false})
                                           });
-    this.selectedNewsForm.controls['motd'].valueChanges.subscribe((value: any) => {
+    this.selectedNewsForm.controls['motd'].valueChanges.subscribe((value: any): void => {
       this.motdLength.next(value.length);
     });
   }
@@ -374,7 +376,7 @@ export class NewsManagerComponent implements OnInit {
       this.facilitiesToPost.push(facility['FacilityId']);
     } else {
       this.facilitiesToPost.splice(index, 1);
-      if (this.facilitiesToSetMOTD.find((element: [string, number]) => element === facility)) {
+      if (this.facilitiesToSetMOTD.find((element: [string, number]): boolean => element === facility)) {
         this.manageMOTD(facility);
         document.getElementById(`news_select_${facility['FacilityId']}_motd`)['checked'] = false;
       }
@@ -398,7 +400,7 @@ export class NewsManagerComponent implements OnInit {
    * Removes the selected news object from WordPress.
    */
   deleteNewsFromWordpress(): void {
-    this.newsService.deleteNewsFromWordpress(this.selectedNews.id).subscribe((result: any) => {
+    this.newsService.deleteNewsFromWordpress(this.selectedNews.id).subscribe((): void => {
       this.returnState = 0;
       this.infoModal.show();
       this.getWordPressNews();

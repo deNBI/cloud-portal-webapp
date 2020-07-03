@@ -32,7 +32,7 @@ export class HelpComponent {
   sendEmail(subject: string, message: string, reply: string): void {
     this.userService.sendHelpMail(
       encodeURIComponent(subject), encodeURIComponent(message),
-      encodeURIComponent(reply)).subscribe((result: IResponseTemplate) => {
+      encodeURIComponent(reply)).subscribe((result: IResponseTemplate): void => {
       if (<boolean><Boolean>result.value) {
         this.emailStatus = 1;
       } else {
