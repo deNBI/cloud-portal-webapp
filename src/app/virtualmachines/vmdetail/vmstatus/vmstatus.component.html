@@ -3,9 +3,10 @@
 
                   <ng-container *ngSwitchCase="VirtualMachineStates.staticACTIVE">
                     <div [id]="'active_badge_' + vm?.name"
-                         class="dot-colorless bg-success pulseAnim" style="width: 10px; height: 10px">
+                         class="dot-colorless bg-success pulseAnim" style="width: 10px; height: 10px"
+                    title="{{VirtualMachineStates.staticACTIVE}}">
                     </div>
-                    {{VirtualMachineStates.staticACTIVE}}
+                    <!--{{VirtualMachineStates.staticACTIVE}}-->
                   </ng-container>
                   <ng-container *ngSwitchCase="VirtualMachineStates.staticSHUTOFF" >
                     <div [id]="'shutoff_badge_' + vm?.name" class="dot-colorless bg-warning" style="width: 10px; height: 10px">
@@ -20,13 +21,13 @@
                   </ng-container>
                   <ng-container *ngSwitchCase="VirtualMachineStates.staticBUILD">
                     <div [id]="'build_badge_' + vm?.name"
-                         class="dot-colorless bg-info">
+                         class="dot-colorless pulseAnimProcess">
                     </div>
                     {{VirtualMachineStates.staticBUILD}}
                   </ng-container>
                   <ng-container *ngSwitchCase="VirtualMachineStates.staticPREPARE_PLAYBOOK_BUILD">
                     <div [id]="'ppb_badge_' + vm?.name"
-                         class="dot-colorless bg-info">
+                         class="dot-colorless pulseAnimProcess">
                     </div>
                     {{VirtualMachineStates.staticBUILD}}
                   </ng-container>
@@ -47,13 +48,13 @@
                   </ng-container>
                   <ng-container *ngSwitchCase="VirtualMachineStates.staticBUILD_PLAYBOOK">
                     <div [id]="'build_playbook_badge_' + vm?.name"
-                         class="dot-colorless bg-info">
+                         class="dot-colorless pulseAnimProcess">
                     </div>
                     {{VirtualMachineStates.staticBUILD_PLAYBOOK}}
                   </ng-container>
                    <ng-container *ngSwitchCase="VirtualMachineStates.staticDELETING">
                     <div [id]="'deleting_badge_' + vm?.name"
-                         class="dot-colorless bg-warning">
+                         class="dot-colorless pulseAnimProcess">
                     </div>
                     {{VirtualMachineStates.staticDELETING}}
                   </ng-container>
@@ -65,13 +66,13 @@
                   </ng-container>
                   <ng-container *ngSwitchCase="VirtualMachineStates.staticRESTARTING">
                     <div [id]="'restarting_badge_' + vm?.name"
-                         class="dot-colorless bg-info">
+                         class="dot-colorless pulseAnimProcess">
                     </div>
                     {{VirtualMachineStates.staticRESTARTING}}
                   </ng-container>
                   <ng-container *ngSwitchCase="VirtualMachineStates.staticPOWERING_OFF">
                     <div [id]="'powering_off_badge_' + vm?.name"
-                         class="dot-colorless bg-info">
+                         class="dot-colorless pulseAnimProcess">
                     </div>
                     {{VirtualMachineStates.staticPOWERING_OFF}}
                   </ng-container>
@@ -89,10 +90,8 @@
                   </ng-container>
                   <ng-container *ngSwitchDefault>
                     <div [id]="'default_badge_' + vm?.name"
-                         class="dot-colorless bg-info" style="width: 10px; height: 10px">
+                         class="dot-colorless pulseAnimProcess" style="width: 10px; height: 10px">
                     </div>
                     {{VirtualMachineStates.staticGETTING_STATUS}}
                   </ng-container>
-                  <i *ngIf="VirtualMachineStates.staticNOT_IN_PROCESS_STATE.indexOf(vm?.status) === -1"
-                     class="fa fa-spinner fa-spin"></i>
                </ng-container>
