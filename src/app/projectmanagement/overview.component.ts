@@ -413,8 +413,12 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
   }
 
-  public requestModification():void{}
-  public requestCreditsModification():void{}
+  public requestModification(): void {
+  }
+
+  public requestCreditsModification(): void {
+    this.applicationsservice.requestAdditionalCredits(this.project_application.project_credit_request).subscribe()
+  }
 
   public requestExtension(): void {
     /**

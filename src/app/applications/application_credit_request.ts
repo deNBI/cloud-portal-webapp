@@ -1,4 +1,3 @@
-import {Flavor} from '../virtualmachines/virtualmachinemodels/flavor';
 import {User} from './application.model/application.model';
 
 /**
@@ -8,18 +7,17 @@ export class ApplicationCreditRequest {
 
   private _Id: number;
   private _project_id: number | string;
-  private _project_credit_request_comment: string;
-  private _project_credit_request_date_submitted: string;
-  private _project_credit_request_credits: number;
+  private _comment: string;
+  private _date_submitted: string;
+  private _extra_credits: number;
   private _project_credit_request_user: User;
 
-  constructor(extension: ApplicationCreditRequest|null) {
+  constructor(extension: ApplicationCreditRequest | null) {
     if (extension) {
       this._project_id = extension.project_id;
-      this._project_credit_request_comment = extension.project_credit_request_comment;
-      this._project_credit_request_date_submitted = extension.project_credit_request_date_submitted;
-
-      this._project_credit_request_credits = extension.project_credit_request_credits;
+      this._comment = extension.comment;
+      this._date_submitted = extension.date_submitted;
+      this._extra_credits = extension.extra_credits;
       this._project_credit_request_user = extension.project_credit_request_user;
     }
   }
@@ -48,28 +46,27 @@ export class ApplicationCreditRequest {
     this._Id = value;
   }
 
-  set project_credit_request_comment(value: string) {
-    this._project_credit_request_comment = value;
+  get comment(): string {
+    return this._comment;
   }
 
-  get project_credit_request_comment(): string {
-    return this._project_credit_request_comment;
+  set comment(value: string) {
+    this._comment = value;
   }
 
-  get project_credit_request_date_submitted(): string {
-    return this._project_credit_request_date_submitted;
+  get date_submitted(): string {
+    return this._date_submitted;
   }
 
-  set project_credit_request_date_submitted(value: string) {
-    this._project_credit_request_date_submitted = value;
+  set date_submitted(value: string) {
+    this._date_submitted = value;
   }
 
-  get project_credit_request_credits(): number {
-    return Number(this._project_credit_request_credits);
+  get extra_credits(): number {
+    return this._extra_credits;
   }
 
-  set project_credit_request_credits(value: number) {
-    this._project_credit_request_credits = value;
+  set extra_credits(value: number) {
+    this._extra_credits = value;
   }
-
 }

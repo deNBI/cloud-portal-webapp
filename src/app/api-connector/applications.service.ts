@@ -5,8 +5,8 @@ import {Observable} from 'rxjs';
 import {EdamOntologyTerm} from '../applications/edam-ontology-term';
 import {Application} from '../applications/application.model/application.model';
 import {ApplicationExtension} from '../applications/application_extension.model';
-import {ApplicationModification} from "../applications/application_modification.model";
-import {ApplicationCreditRequest} from "../applications/application_credit_request";
+import {ApplicationModification} from '../applications/application_modification.model';
+import {ApplicationCreditRequest} from '../applications/application_credit_request';
 
 /**
  * Service which provides methods for creating application.
@@ -115,7 +115,9 @@ export class ApplicationsService {
   }
 
   requestAdditionalCredits(creditRequest: ApplicationCreditRequest): Observable<any> {
-    return null;
+    return this.http.post(`${ApiSettings.getApiBaseURL()}project_applications/${creditRequest.project_id}/credits/extension/`, creditRequest, {
+      withCredentials: true
+    })
   }
 
 

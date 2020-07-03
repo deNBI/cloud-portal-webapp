@@ -1004,7 +1004,7 @@
           <strong>
             <div *ngIf="is_vo_admin" class="form-group row">
               <label #corenumbers id="creditnumber" class="col">Expected number of extra credits: <span
-                id="modification_credits">{{project_application?.project_credit_request.project_credit_request_credits}}</span></label>
+                id="modification_credits">{{project_application?.project_credit_request.extra_credits}}</span></label>
             </div>
             <div class="alert alert-primary" role="alert">
               This is the expected number of extra credits that you get for your project. It accounts for an increase in requested resources/project lifetime.
@@ -1319,7 +1319,7 @@
                           name="project_application_extra_credits_comment" class="form-control"
                           maxlength="8192"
                           placeholder=''
-                          [(ngModel)]="project_application_extra_credits_comment" minlength="10"
+                          [(ngModel)]="project_application.project_credit_request.comment" minlength="10"
                           [ngClass]="{
                                 'is-invalid': f2.controls.project_application_extra_credits_comment?.invalid && (f2.controls.project_application_extra_credits_comment?.dirty || f2.controls.project_application_extra_credits_comment?.touched),
                                 'is-valid': f2.controls.project_application_extra_credits_comment?.valid && (f2.controls.project_application_extra_credits_comment?.dirty || f2.controls.project_application_extra_credits_comment?.touched)
@@ -1340,8 +1340,8 @@
                      id="project_application_extra_credits"
                      name="project_application_extra_credits"
                      placeholder="e.g. 5000"
-                     (change)="updateExampleCredits(f2.controls.project_application_extra_credits?.value);"
-                     [(ngModel)]="project_application_extra_credits" min="100" step="100" type="number"
+                     (change)="updateExampleCredits(project_application?.project_credit_request?.extra_credits);"
+                     [(ngModel)]="project_application?.project_credit_request.extra_credits" min="100" step="100" type="number"
                      appInteger appMinAmount="100"
                      [ngClass]="{
                                 'is-invalid': f2.controls.project_application_extra_credits?.invalid && (f2.controls.project_application_extra_credits?.dirty || f2.controls.project_application_extra_credits?.touched),
@@ -1373,10 +1373,10 @@
         <div *ngIf="f2.invalid" class="alert alert-warning" role="alert">
           <p>Some required fields are incorrect or not filled in yet.
             Please check if all required (*) fields are filled in correctly.</p>
-          <p *ngIf="f2.controls.project_application_extra_credits_comment?.invalid">
+          <p *ngIf="project_application?.project_credit_request.comment.length <10">
             - No reason specified (at least 10 characters)
           </p>
-          <p *ngIf="f2.controls.project_application_extra_credits?.invalid">
+          <p *ngIf="project_application?.project_credit_request.extra_credits < 1">
             - Number of extra credits not specified
           </p>
         </div>
@@ -1388,8 +1388,7 @@
           </div>
           <button type="button" class="btn  btn-primary" adm
                   form="credits_application_form" id="submit_extra_credits_btn"
-                  (click)="request_type=ExtensionRequestType.CREDIT;filterEnteredData(f2);
-                  onSubmit(f2);
+                  (click)="requestCreditsModification();
                   extension_request=true;creditsExtensionModal.hide()" [disabled]="f2.invalid"><i
             class="fa fa-dot-circle-o">
 
