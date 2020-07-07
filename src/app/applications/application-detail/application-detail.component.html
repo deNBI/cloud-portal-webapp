@@ -78,7 +78,7 @@
     <tr *ngIf="is_vo_admin && application?.project_application_extension?.is_only_extra_credits_application">
       <td>Reason for extra credits</td>
       <td>
-        {{application?.project_application_extension?.project_application_extension_comment}}
+        {{application?.project_application_extension?.comment}}
       </td>
     </tr>
     <tr>
@@ -191,7 +191,7 @@
         }}
       </td>
       <td *ngIf="(application?.hasModificationRequestedStatus() || isModification) && !application?.project_application_extension?.is_only_extra_credits_application">
-        {{application?.project_application_extension?.project_application_extension_comment}}
+        {{application?.project_application_extension?.comment}}
       </td>
 
     </tr>
@@ -203,7 +203,7 @@
       </td>
       <td *ngIf="(application?.hasModificationRequestedStatus() || isModification) && !application?.project_application_extension?.is_only_extra_credits_application">
         {{
-          application?.project_application_extension?.project_application_extension_lifetime}}
+          application?.project_application_extension?.extra_lifetime}}
       </td>
     </tr>
     <tr>
@@ -267,11 +267,11 @@
       </td>
 
       <td>
-        {{application?.project_application_extension?.project_application_extension_user?.username}}
-        ( {{application?.project_application_extension?.project_application_extension_user?.email}})
+        {{application?.project_application_extension?.user?.username}}
+        ( {{application?.project_application_extension?.user?.email}})
       </td>
       <td>
-                {{application?.project_application_extension?.project_application_extension_user?.elixir_id}}
+                {{application?.project_application_extension?.user?.elixir_id}}
 
 
       </td>

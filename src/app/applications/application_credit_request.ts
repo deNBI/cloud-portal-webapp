@@ -6,15 +6,15 @@ import {User} from './application.model/application.model';
 export class ApplicationCreditRequest {
 
   private _Id: number;
-  private _project_id: number | string;
-  private _comment: string;
+  private _project_application_id: number | string;
+  private _comment: string = '';
   private _date_submitted: string;
   private _extra_credits: number;
   private _project_credit_request_user: User;
 
   constructor(extension: ApplicationCreditRequest | null) {
     if (extension) {
-      this._project_id = extension.project_id;
+      this._project_application_id = extension.project_application_id;
       this._comment = extension.comment;
       this._date_submitted = extension.date_submitted;
       this._extra_credits = extension.extra_credits;
@@ -30,12 +30,12 @@ export class ApplicationCreditRequest {
     this._project_credit_request_user = value;
   }
 
-  get project_id(): number | string {
-    return this._project_id;
+  get project_application_id(): number | string {
+    return this._project_application_id;
   }
 
-  set project_id(value: number | string) {
-    this._project_id = value;
+  set project_application_id(value: number | string) {
+    this._project_application_id = value;
   }
 
   get Id(): number {

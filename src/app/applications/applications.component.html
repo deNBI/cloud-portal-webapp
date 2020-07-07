@@ -1,15 +1,28 @@
-<div *ngIf="  !isLoaded_AllApplication"
+<div *ngIf="  !isLoaded"
      class="loader">
 
 </div>
-<div *ngIf="isLoaded_AllApplication"
+<div *ngIf="isLoaded"
      class="animated fadeIn">
 
-    <div class="card" *ngIf="is_vo_admin == true" style=" ">
-      <div class="card-header">
-        <i class="fa fa-align-justify"></i> Applications for review
-      </div>
+  <div class="card" *ngIf="is_vo_admin == true" style=" ">
 
+
+    <div class="card-header">
+      <i class="fa fa-align-justify"></i> Applications for review
+      <div class="btn-group" role="group">
+        <button class="btn btn-info"  (click)="changeTabState(TabStates.SUBMITTED);"> Submitted Application
+        </button>
+        <button class="btn btn-danger"
+                (click)="changeTabState(TabStates.CREDITS_EXTENSION);getAllCreditExtensionRequests();"> Credit Extension
+          Request
+        </button>
+        <button class="btn btn-warning">Lifetime Extension Requests</button>
+      </div>
+    </div>
+
+    <ng-container [ngSwitch]="tab_state">
+      <ng-container *ngSwitchCase="TabStates.SUBMITTED">
       <div class="card-body"
            *ngIf="all_applications.length <= 0">
         <div class="alert alert-success" role="alert">
@@ -136,7 +149,7 @@
                         <span class="applicationActionsButton">Reassign</span>
                       </button>
                       <button
-                        *ngIf="application?.project_application_date_submitted && application?.project_application_openstack_project"
+                        *ngIf="application?.hasSubmittedStatus() && application?.project_application_openstack_project"
                         style="margin: auto 2.5px" [id]="'approve_'+ application?.project_application_shortname"
                         (click)="resetNotificationModal();createOpenStackProjectGroup(application,selectedComputeCenter.value); notificationModal.show();"
 
@@ -210,7 +223,7 @@
                     [class.collapse_no_margin]="getCollapseStatus('application_review-' + application?.project_application_id)"
                     [class.collapse]="getCollapseStatus('application_review-' + application?.project_application_id)"
                     [application]="application"
-                  [isModification]="application.projectapplicationrenewal != null && application.projectapplicationrenewal != undefined"></app-application-detail>
+                    [isModification]="application.projectapplicationrenewal != null && application.projectapplicationrenewal != undefined"></app-application-detail>
                 </td>
               </ng-container>
 
@@ -220,7 +233,8 @@
           </table>
 
         </div>
-      </div>
+      </div></ng-container>
+    </ng-container>
 
     </div>
 

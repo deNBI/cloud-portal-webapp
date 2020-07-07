@@ -4,7 +4,7 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {EdamOntologyTerm} from '../applications/edam-ontology-term';
 import {Application} from '../applications/application.model/application.model';
-import {ApplicationExtension} from '../applications/application_extension.model';
+import {ApplicationLifetimeExtension} from '../applications/application_extension.model';
 import {ApplicationModification} from '../applications/application_modification.model';
 import {ApplicationCreditRequest} from '../applications/application_credit_request';
 
@@ -94,6 +94,20 @@ export class ApplicationsService {
 
   }
 
+  getAllCreditsExtensionRequests(): Observable<Application[]> {
+    return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}project_applications/credits/extensions/`, {
+      withCredentials: true
+
+    })
+
+  }
+
+  getCreditsExtensionRequest(): Observable<any> {
+    return this.http.get(`${ApiSettings.getApiBaseURL()}project_applications/credits/extensions/`, {
+      withCredentials: true
+    })
+  }
+
   addNewApplication(application: Application): Observable<Application> {
 
     return this.http.post<Application>(`${ApiSettings.getApiBaseURL()}project_applications/`, application, {
@@ -102,8 +116,7 @@ export class ApplicationsService {
 
   }
 
-  requestExtension(extension: ApplicationExtension): Observable<any> {
-
+  requestExtension(extension: ApplicationLifetimeExtension): Observable<any> {
     return this.http.post(`${ApiSettings.getApiBaseURL()}applicationRenewals/`, extension, {
       withCredentials: true
     })
@@ -114,12 +127,19 @@ export class ApplicationsService {
     return null;
   }
 
-  requestAdditionalCredits(creditRequest: ApplicationCreditRequest): Observable<any> {
-    return this.http.post(`${ApiSettings.getApiBaseURL()}project_applications/${creditRequest.project_id}/credits/extension/`, creditRequest, {
-      withCredentials: true
-    })
+  requestAdditionalLifetime(lifetimeRequest: ApplicationLifetimeExtension): Observable<any> {
+    return this.http.post(`${ApiSettings.getApiBaseURL()}project_applications/lifetime/extensions/`,
+                          lifetimeRequest, {
+                            withCredentials: true
+                          })
   }
 
+  requestAdditionalCredits(creditRequest: ApplicationCreditRequest): Observable<any> {
+    return this.http.post(`${ApiSettings.getApiBaseURL()}project_applications/credits/extensions/`,
+                          creditRequest, {
+                            withCredentials: true
+                          })
+  }
 
   approveRenewal(application_id: number | string): Observable<any> {
 

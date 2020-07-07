@@ -1,4 +1,4 @@
-import {ApplicationExtension} from '../application_extension.model';
+import {ApplicationLifetimeExtension} from '../application_extension.model';
 import {ComputecenterComponent} from '../../projectmanagement/computecenter.component';
 import {ApplicationDissemination} from '../application-dissemination';
 import {EdamOntologyTerm} from '../edam-ontology-term';
@@ -75,7 +75,7 @@ export class Application {
   private _ComputeCenter: ComputecenterComponent;
   private _project_application_openstack_project: boolean;
   private _DaysRunning: number;
-  private _project_application_extension: ApplicationExtension = null;
+  private _project_application_extension: ApplicationLifetimeExtension = null;
   private _project_application_modification: ApplicationModification;
   private _project_credit_request: ApplicationCreditRequest = null;
   private _project_application_perun_id: number | string;
@@ -122,7 +122,7 @@ export class Application {
       this._project_application_openstack_project = aj.project_application_openstack_project;
       this._DaysRunning = aj.DaysRunning;
       if (aj.project_application_extension) {
-        this._project_application_extension = new ApplicationExtension(aj.project_application_extension);
+        this._project_application_extension = new ApplicationLifetimeExtension(aj.project_application_extension);
       }
       this._project_application_perun_id = aj.project_application_perun_id;
       this._project_application_total_cores = aj.project_application_total_cores;
@@ -166,11 +166,11 @@ export class Application {
   }
 
   public hasCreditsDeclinedStatus(): boolean {
-    return this.project_application_status.includes(Application_States.CREDITS_DECLINED)
+    return this.project_application_status.includes(Application_States.CREDITS_EXTENSION_DENIED)
   }
 
   public hasCreditsRequestedStatus(): boolean {
-    return this.project_application_status.includes(Application_States.CREDITS_REQUESTED)
+    return this.project_application_status.includes(Application_States.CREDITS_EXTENSION_REQUESTED)
   }
 
   public hasDeclinedStatus(): boolean {
@@ -202,10 +202,10 @@ export class Application {
   }
 
   public inititateExtension(): void {
-    this._project_application_extension = new ApplicationExtension(null);
+    this._project_application_extension = new ApplicationLifetimeExtension(null);
     this._project_application_extension.project_application_id = this._project_application_id;
-    this._project_application_extension.project_application_extension_lifetime = 0;
-    this._project_application_extension.project_application_extension_comment = '';
+    this._project_application_extension.extra_lifetime = 0;
+    this._project_application_extension.comment = '';
     this._project_application_extension.project_application_extension_credits = 0;
     this._project_application_extension.is_only_extra_credits_application = false;
     this._project_application_extension.project_application_extension_cloud_service_user_number =
@@ -214,9 +214,9 @@ export class Application {
 
     public initiateCreditsRequest(): void {
     this.project_credit_request = new ApplicationCreditRequest(null);
+    this.project_credit_request.project_application_id = this._project_application_id;
 
-
-    //Todo fill more
+    // Todo fill more
   }
 
   public inititateModification(): void {
@@ -224,11 +224,11 @@ export class Application {
     this._project_application_modification.project_application_id = this._project_application_id;
     this._project_application_modification.project_application_modification_volume_counter = this.project_application_volume_counter;
     this._project_application_modification.project_application_modification_volume_limit = this.project_application_volume_limit;
-    if(this._project_application_openstack_project){
-      this._project_application_modification.project_application_modification_object_storage=this._project_application_object_storage;
+    if (this._project_application_openstack_project) {
+      this._project_application_modification.project_application_modification_object_storage = this._project_application_object_storage;
     }
 
-    //Todo fill more
+    // Todo fill more
   }
 
   private setDaysRunning(): void {
@@ -404,11 +404,11 @@ export class Application {
     this._project_application_total_ram = value;
   }
 
-  get project_application_extension(): ApplicationExtension {
+  get project_application_extension(): ApplicationLifetimeExtension {
     return this._project_application_extension;
   }
 
-  set project_application_extension(value: ApplicationExtension) {
+  set project_application_extension(value: ApplicationLifetimeExtension) {
     this._project_application_extension = value;
   }
 

@@ -403,7 +403,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   onSubmit(form: NgForm): void {
     if (this.request_type === ExtensionRequestType.CREDIT) {
       this.project_application.project_application_extension.is_only_extra_credits_application = true;
-      this.project_application.project_application_extension.project_application_extension_comment =
+      this.project_application.project_application_extension.comment =
         form.controls['project_application_extra_credits_comment'].value;
       this.project_application.project_application_extension.project_application_extension_credits =
         form.controls['project_application_extra_credits'].value;
@@ -421,12 +421,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   }
 
   public requestExtension(): void {
-    /**
-     * TODO: different api-requests
-     * for any type of requests(credits, modification, extension)
-     */
-
-    this.applicationsservice.requestExtension(this.project_application.project_application_extension)
+    this.applicationsservice.requestAdditionalLifetime(this.project_application.project_application_extension)
       .subscribe((result: { [key: string]: string }): void => {
         if (result['Error']) {
           this.extension_status = 2

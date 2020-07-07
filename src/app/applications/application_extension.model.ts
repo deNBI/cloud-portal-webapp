@@ -3,39 +3,31 @@ import {User} from './application.model/application.model';
 /**
  * Application Extension class.
  */
-export class ApplicationExtension {
+export class ApplicationLifetimeExtension {
 
   private _Id: number;
   private _project_application_id: number | string;
-  private _project_application_extension_lifetime: number;
-  private _project_application_extension_comment: string;
-  private _project_application_extension_date_submitted: string;
-  private _project_application_extension_credits: number;
-  private _project_application_extension_user: User;
-  private _is_only_extra_credits_application: boolean;
-  private _project_application_extension_cloud_service_user_number: number;
-  private _project_application_extension_cloud_service_develop: boolean;
+  private _extra_lifetime: number;
+  private _comment: string;
+  private _date_submitted: string;
+  private _user: User;
 
-  constructor(extension: ApplicationExtension|null) {
+  constructor(extension: ApplicationLifetimeExtension|null) {
     if (extension) {
       this._project_application_id = extension.project_application_id;
-      this._project_application_extension_lifetime = extension.project_application_extension_lifetime;
-      this._project_application_extension_comment = extension.project_application_extension_comment;
-      this._project_application_extension_date_submitted = extension.project_application_extension_date_submitted;
-      this._project_application_extension_credits = extension.project_application_extension_credits;
-      this._is_only_extra_credits_application = extension.is_only_extra_credits_application;
-      this._project_application_extension_cloud_service_user_number = extension.project_application_extension_cloud_service_user_number;
-      this._project_application_extension_cloud_service_develop = extension.project_application_extension_cloud_service_develop;
-      this._project_application_extension_user = extension.project_application_extension_user;
+      this._extra_lifetime = extension.extra_lifetime;
+      this._comment = extension.comment;
+      this._date_submitted = extension.date_submitted;
+      this._user = extension.user;
     }
   }
 
-  get project_application_extension_user(): User {
-    return this._project_application_extension_user;
+  get user(): User {
+    return this._user;
   }
 
-  set project_application_extension_user(value: User) {
-    this._project_application_extension_user = value;
+  set user(value: User) {
+    this._user = value;
   }
 
   get project_application_id(): number | string {
@@ -46,12 +38,12 @@ export class ApplicationExtension {
     this._project_application_id = value;
   }
 
-  get project_application_extension_lifetime(): number {
-    return this._project_application_extension_lifetime;
+  get extra_lifetime(): number {
+    return this._extra_lifetime;
   }
 
-  set project_application_extension_lifetime(value: number) {
-    this._project_application_extension_lifetime = value;
+  set extra_lifetime(value: number) {
+    this._extra_lifetime = value;
   }
 
   get Id(): number {
@@ -62,20 +54,20 @@ export class ApplicationExtension {
     this._Id = value;
   }
 
-  set project_application_extension_comment(value: string) {
-    this._project_application_extension_comment = value;
+  set comment(value: string) {
+    this._comment = value;
   }
 
-  get project_application_extension_comment(): string {
-    return this._project_application_extension_comment;
+  get comment(): string {
+    return this._comment;
   }
 
-  get project_application_extension_date_submitted(): string {
-    return this._project_application_extension_date_submitted;
+  get date_submitted(): string {
+    return this._date_submitted;
   }
 
-  set project_application_extension_date_submitted(value: string) {
-    this._project_application_extension_date_submitted = value;
+  set date_submitted(value: string) {
+    this._date_submitted = value;
   }
 
   get project_application_extension_credits(): number {

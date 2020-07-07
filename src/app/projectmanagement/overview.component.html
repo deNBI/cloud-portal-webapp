@@ -133,8 +133,8 @@
                 Remove Application
               </button>
               <button id="show_credits_extension_modal"
-                      *ngIf="(project_application?.hasApprovedStatus()
-                      || project_application?.hasModificationDeclinedStatus() && is_vo_admin)"
+                      *ngIf="!project_application?.hasCreditsRequestedStatus() &&(project_application?.hasApprovedStatus()
+                      || project_application?.hasModificationDeclinedStatus() && is_vo_admin )"
                       (click)="newFlavors= {};initExampleFlavors();creditsExtensionModal.show()"
                       class="btn btn-success"
                       type="button" style="margin-bottom:5px;margin-right:5px">
@@ -1100,11 +1100,11 @@
             <div class="col">
               <div class="input-group">
                 <input class="form-control"
-                       (change)="calculateCredits(extensionForm.controls.project_application_renewal_lifetime?.value);"
+                       (change)="calculateCredits(project_application?.project_application_extension.extra_lifetime);"
                        id="project_extension_application_renewal_lifetime"
                        name="project_extension_application_renewal_lifetime"
                        placeholder="e.g. 3"
-                       [(ngModel)]="project_application?.project_application_extension.project_application_extension_lifetime"
+                       [(ngModel)]="project_application?.project_application_extension.extra_lifetime"
                        type="number" min="0" max="12" step="1" required
                        appInteger appMinAmount="0" appMaxAmount="12"
                        [ngClass]="{
@@ -1161,71 +1161,6 @@
           </div>
 
 
-          <div *ngIf="project_application?.project_application_openstack_project && project_application?.project_application_cloud_service && project_application?.project_application_cloud_service_develop" class="form-group row">
-            <label class="col-md-4 form-control-label" for="textarea-input"><strong>Service status </strong><i
-              data-balloon="Status of your service."
-              data-balloon-pos="down" data-balloon-length="large"><i
-              class="icon-question"
-              style="cursor: pointer;"></i></i></label>
-
-            <div class="col">
-            </div>
-
-            <div *ngIf="project_application?.project_application_openstack_project && project_application?.project_application_cloud_service && project_application?.project_application_cloud_service_develop" class="col">
-              <div class="input-group">
-                <label id="project_extension_application_renewal_cloud_service_develop"
-                       class="switch switch-label switch-outline-primary-alt">
-                  <input type="checkbox" class="switch-input"
-                         name="project_application_renewal_cloud_service_develop"
-                         [defaultChecked]="project_application?.project_application_cloud_service_develop"
-                         [(ngModel)]="project_application.project_application_cloud_service_develop"
-                  >
-                  <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
-                  <span class="switch-handle"></span></label>
-              </div>
-              <span class="help-block">Is your service still in development?</span>
-            </div>
-          </div>
-
-          <div *ngIf="project_application?.project_application_openstack_project && project_application?.project_application_cloud_service && (!project_application?.project_application_cloud_service_develop)" class="form-group row">
-            <label class="col-md-4 form-control-label" for="textarea-input"><strong>Cloud Service user number </strong><i
-              data-balloon="Number of user using your service."
-              data-balloon-pos="down" data-balloon-length="large"><i
-              class="icon-question"
-              style="cursor: pointer;"></i></i></label>
-
-            <div class="col">
-              <div class="input-group">
-                <input class="form-control"
-                       name="project_application_cloud_service_user_number"
-                       id="project_extension_application_cloud_service_user_number"
-                       placeholder="NA"
-                       value="{{project_application?.project_application_cloud_service_user_number}}"
-                       type="text" disabled>
-              </div>
-              <span class="help-block">Current number of users</span>
-            </div>
-
-            <div *ngIf="project_application?.project_application_openstack_project && project_application?.project_application_cloud_service && !project_application?.project_application_cloud_service_develop" class="col">
-              <div class="input-group">
-                <input class="form-control"
-                       id="project_extension_application_renewal_cloud_service_user_number"
-                       name="project_application_renewal_cloud_service_user_number"
-                       placeholder="e.g. 200"
-                       [(ngModel)]="project_application?.project_application_extension.project_application_extension_cloud_service_user_number"
-                       type="number" min="0" step="1"
-                       appInteger appMinAmount="0" required
-                       [ngClass]="{
-                                'is-invalid': extensionForm.controls.project_application_renewal_cloud_service_user_number?.invalid ,
-                                'is-valid': extensionForm.controls.project_application_renewal_cloud_service_user_number?.valid
-                                }">
-              </div>
-              <span class="help-block">How many users are using your service?
-              <br>
-              <strong>Note:</strong> we define service users as <strong>unique users per month.</strong></span>
-            </div>
-          </div>
-
           <div class="form-group row">
             <label class="col-md-4 form-control-label"
                    for="id_project_application_renewal_comment"><strong>Comment</strong></label>
@@ -1234,7 +1169,7 @@
                           name="project_application_renewal_comment" class="form-control"
                           maxlength="8192"
                           placeholder=''
-                          [(ngModel)]="project_application?.project_application_extension.project_application_extension_comment"></textarea>
+                          [(ngModel)]="project_application?.project_application_extension.comment"></textarea>
               <span class="help-block">Additional information you want to share?</span>
             </div>
           </div>
@@ -1273,13 +1208,13 @@
           </div>
           <button type="button" class="btn  btn-primary"
                   form="extensionForm" id="submit_extension_btn"
-                  (click)="extension_request=true;request_type=ExtensionRequestType.EXTENSION;filterEnteredData(extensionForm);
-                  calculateCredits(extensionForm.controls.project_application_renewal_lifetime?.value);
-                  submitModal.show(); setModalOpen(true);"
-                  [disabled]="extensionForm.invalid || (!project_application?.project_application_edam_terms && selected_ontology_terms.length < 1)"><i
-            class="fa fa-dot-circle-o">
+                  (click)="
+                  calculateCredits(project_application?.project_application_extension.extra_lifetime);requestExtension();projectExtensionModal.hide();"
+                  [disabled]="extensionForm.invalid || (!project_application?.project_application_edam_terms && selected_ontology_terms.length < 1)">
+            <i
+              class="fa fa-dot-circle-o">
 
-          </i>
+            </i>
             Submit
           </button>
           <button type="button" class="btn btn-danger"
@@ -1319,12 +1254,12 @@
                           name="project_application_extra_credits_comment" class="form-control"
                           maxlength="8192"
                           placeholder=''
-                          [(ngModel)]="project_application.project_credit_request.comment" minlength="10"
+                          [(ngModel)]="project_application?.project_credit_request.comment" minlength="10"
                           [ngClass]="{
                                 'is-invalid': f2.controls.project_application_extra_credits_comment?.invalid && (f2.controls.project_application_extra_credits_comment?.dirty || f2.controls.project_application_extra_credits_comment?.touched),
                                 'is-valid': f2.controls.project_application_extra_credits_comment?.valid && (f2.controls.project_application_extra_credits_comment?.dirty || f2.controls.project_application_extra_credits_comment?.touched)
                                 }"
-                          ></textarea>
+                ></textarea>
               <span class="help-block">Please state why you need extra credits.</span>
               <div class="alert alert-info">
                 As more credits are requested we require a more detailed description of the reasons!
@@ -1388,8 +1323,7 @@
           </div>
           <button type="button" class="btn  btn-primary" adm
                   form="credits_application_form" id="submit_extra_credits_btn"
-                  (click)="requestCreditsModification();
-                  extension_request=true;creditsExtensionModal.hide()" [disabled]="f2.invalid"><i
+                  (click)="requestCreditsModification();creditsExtensionModal.hide()" [disabled]="f2.invalid"><i
             class="fa fa-dot-circle-o">
 
           </i>
@@ -1480,6 +1414,8 @@
     </div><!-- /.modal-content -->L
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+
   <div bsModal #doiModal="bs-modal" class="modal fade" tabindex="-1"
        role="dialog" aria-labelledby="Label"
        aria-hidden="true">

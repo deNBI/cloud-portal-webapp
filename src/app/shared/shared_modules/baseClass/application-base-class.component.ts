@@ -25,7 +25,7 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
    * If all Applications are loaded, important for the loader.
    * @type {boolean}
    */
-  isLoaded_AllApplication: boolean = false;
+  isLoaded: boolean = false;
 
   /**
    * Selected Application.

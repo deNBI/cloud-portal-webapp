@@ -14,6 +14,14 @@ import {ApplicationBaseClassComponent} from '../shared/shared_modules/baseClass/
 import {ComputecenterComponent} from '../projectmanagement/computecenter.component';
 import {is_vo} from '../shared/globalvar';
 
+ enum TabStates {
+  'SUBMITTED' = 0,
+  'CREDITS_EXTENSION' = 1,
+  'LIFETIME_EXTENSION' = 2,
+  'MODIFICATION_EXTENSION' = 3
+
+}
+
 /**
  * Application Overview component.
  */
@@ -26,12 +34,15 @@ import {is_vo} from '../shared/globalvar';
 export class ApplicationsComponent extends ApplicationBaseClassComponent implements OnInit {
 
   title: string = 'Application Overview';
+  tab_state: number = TabStates.SUBMITTED;
+  TabStates: typeof TabStates = TabStates;
 
   /**
    * All Applications, just visibile for a vo admin.
    * @type {Array}
    */
   all_applications: Application[] = [];
+  all_credit_extension_appl: Application[] = [];
 
   /**
    * Limits information for Client tested/used for Simple Vm Project creation.
@@ -80,7 +91,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
       this.getComputeCenters();
 
     } else {
-      this.isLoaded_AllApplication = true;
+      this.isLoaded = true;
     }
 
   }
@@ -102,12 +113,16 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
   }
 
+  changeTabState(state: number) {
+    this.tab_state = state;
+  }
+
   /**
    * Get the facility of an application.
    * @param {Application} app
    */
   getFacilityProject(app: Application): void {
-    if (!app.ComputeCenter && app.hasSubmittedStatus() && app.hasTerminatedStatus()) {
+    if (!app.ComputeCenter && !app.hasSubmittedStatus() && !app.hasTerminatedStatus()) {
       this.groupservice.getFacilityByGroup(app.project_application_perun_id.toString()).subscribe((res: object): void => {
         const login: string = res['Login'];
         const suport: string = res['Support'];
@@ -120,6 +135,26 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
       })
     }
 
+  }
+
+  /**
+   * Get all Credit Extension Requestss if user is admin.
+   */
+  getAllCreditExtensionRequests(): void {
+    if (this.is_vo_admin) {
+      this.applicationsservice.getAllCreditsExtensionRequests().subscribe((credity_extension_applications: Application[]): void => {
+        for (const application of credity_extension_applications) {
+          this.all_credit_extension_appl.push(new Application(application));
+
+        }
+        this.isLoaded = true;
+        for (const app of this.all_credit_extension_appl) {
+
+          this.getFacilityProject(app);
+        }
+
+      })
+    }
   }
 
   /**
@@ -136,12 +171,10 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
           this.all_applications.push(new Application(application));
 
         }
-        this.isLoaded_AllApplication = true;
+        this.isLoaded = true;
         for (const app of this.all_applications) {
-          if (app?.hasWaitForConfirmationStatus() ||
-            app?.hasModificationRequestedStatus()) {
-            this.getFacilityProject(app);
-          }
+
+          this.getFacilityProject(app);
         }
 
       })
