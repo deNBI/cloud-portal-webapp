@@ -53,10 +53,26 @@ export class UncaughtExceptionHandler implements ErrorHandler {
 
   handleError(error: any): any {
     console.log('Start ------------------------------------');
-    console.log(`Logging error name: ${error.name}`);
-    console.log(`Logging error message: ${error.message}`);
-    console.log(`Logging error stack: ${error.stack}`);
-    console.log(`Logging error error: ${error.error.toString()}`);
+    try {
+      console.log(`Logging error name: ${error.name}`);
+    } catch (TypeError) {
+      console.log('No error.name');
+    }
+    try {
+      console.log(`Logging error message: ${error.message}`);
+    } catch (TypeError) {
+      console.log('No error.message');
+    }
+    try {
+      console.log(`Logging error stack: ${error.stack}`);
+    } catch (TypeError) {
+      console.log('No error.stack');
+    }
+    try {
+      console.log(`Logging error error: ${error.error.toString()}`);
+    } catch (TypeError) {
+      console.log('No error.error');
+    }
     JL().fatalException('Uncaught Exception', error);
     console.log('End ------------------------------------');
   }
