@@ -274,7 +274,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
         ).catch((err: Error): void => {
           console.log(err.message)
         }),
-      5000);
+      10000);
   }
 
   initExampleFlavors(): void {
@@ -480,9 +480,9 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   }
 
   ngOnDestroy(): void {
-    if (this.updateCreditsUsedIntervals) {
+    try {
       clearInterval(this.updateCreditsUsedIntervals);
-    }
+    } catch (someError) {}
   }
 
   getDois(): void {

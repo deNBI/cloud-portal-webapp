@@ -1162,7 +1162,7 @@
                   form="application_form" id="submit_renewal_btn"
                   (click)="extension_request=true;filterEnteredData(f);calculateCredits(f.controls.project_application_renewal_lifetime?.value);
                   submitModal.show(); setModalOpen(true);"
-                  [disabled]="f.invalid || (!project_application?.project_application_edam_terms && selected_ontology_terms.length < 1)"><i
+                  [disabled]="f.invalid || (project_application?.project_application_edam_terms.length == 0 && selected_ontology_terms.length < 1)"><i
             class="fa fa-dot-circle-o">
 
           </i>
