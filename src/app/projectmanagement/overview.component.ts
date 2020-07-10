@@ -274,7 +274,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
         ).catch((err: Error): void => {
           console.log(err.message)
         }),
-      5000);
+      10000);
   }
 
   initExampleFlavors(): void {
@@ -343,7 +343,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
           this.startUpdateCreditUsageLoop(); }
 
           if (this.project_application) {
-            this.setLifetime();
             this.applicationsservice.getApplicationPerunId(this.application_id).subscribe((id: any): void => {
               if (id['perun_id']) {
                 this.project_id = id['perun_id'];
@@ -453,7 +452,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   setLifetime(): void {
 
     // tslint:disable-next-line:max-line-length
-    this.life_time_string = `${this.project_application.project_application_date_approved} -  ${this.getEndDate(this.project_application.project_application_lifetime, this.project_application.project_application_date_approved)}`;
+    this.life_time_string = `${this.project.DateCreated} -  ${this.project.DateEnd}`;
   }
 
   ngOnInit(): void {
@@ -481,9 +480,9 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   }
 
   ngOnDestroy(): void {
-    if (this.updateCreditsUsedIntervals) {
+    try {
       clearInterval(this.updateCreditsUsedIntervals);
-    }
+    } catch (someError) {}
   }
 
   getDois(): void {
@@ -674,6 +673,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
       newProject.OpenStackProject = group['openstack_project'];
       newProject.RealName = realname;
       this.project = newProject;
+      this.setLifetime();
       if (this.project.UserIsPi || this.project.UserIsAdmin) {
         this.getMembersOfTheProject();
       } else {
