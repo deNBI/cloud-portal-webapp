@@ -10,12 +10,14 @@ export class ApplicationLifetimeExtension {
   private _extra_lifetime: number;
   private _comment: string;
   private _date_submitted: string;
+  private _extra_credits: number;
   private _user: User;
 
   constructor(extension: ApplicationLifetimeExtension|null) {
     if (extension) {
       this._project_application_id = extension.project_application_id;
       this._extra_lifetime = extension.extra_lifetime;
+      this._extra_credits = extension.extra_credits
       this._comment = extension.comment;
       this._date_submitted = extension.date_submitted;
       this._user = extension.user;
@@ -54,6 +56,14 @@ export class ApplicationLifetimeExtension {
     this._Id = value;
   }
 
+  get extra_credits(): number {
+    return this._extra_credits;
+  }
+
+  set extra_credits(value: number) {
+    this._extra_credits = value;
+  }
+
   set comment(value: string) {
     this._comment = value;
   }
@@ -70,35 +80,4 @@ export class ApplicationLifetimeExtension {
     this._date_submitted = value;
   }
 
-  get project_application_extension_credits(): number {
-    return Number(this._project_application_extension_credits);
-  }
-
-  set project_application_extension_credits(value: number) {
-    this._project_application_extension_credits = value;
-  }
-
-  get is_only_extra_credits_application(): boolean {
-    return this._is_only_extra_credits_application;
-  }
-
-  set is_only_extra_credits_application(value: boolean) {
-    this._is_only_extra_credits_application = value;
-  }
-
-  get project_application_extension_cloud_service_user_number(): number {
-    return this._project_application_extension_cloud_service_user_number;
-  }
-
-  set project_application_extension_cloud_service_user_number(value: number) {
-    this._project_application_extension_cloud_service_user_number = value;
-  }
-
-  get project_application_extension_cloud_service_develop(): boolean {
-    return this._project_application_extension_cloud_service_develop;
-  }
-
-  set project_application_extension_cloud_service_develop(value: boolean) {
-    this._project_application_extension_cloud_service_develop = value;
-  }
 }

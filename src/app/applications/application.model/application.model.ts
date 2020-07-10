@@ -149,6 +149,7 @@ export class Application {
     }
   }
 
+
   public hasSubmittedStatus(): boolean {
     return this.project_application_status.includes(Application_States.SUBMITTED)
   }
@@ -178,11 +179,11 @@ export class Application {
   }
 
   public hasExtensionDeclinedStatus(): boolean {
-    return this.project_application_status.includes(Application_States.EXTENSION_DECLINED)
+    return this.project_application_status.includes(Application_States.LIFETIME_EXTENSION_DENIED)
   }
 
   public hasExtensionRequestedStatus(): boolean {
-    return this.project_application_status.includes(Application_States.EXTENSION_REQUESTED)
+    return this.project_application_status.includes(Application_States.LIFETIME_EXTENSION_REQUESTED)
   }
 
   public hasModificationDeclinedStatus(): boolean {
@@ -206,10 +207,6 @@ export class Application {
     this._project_application_extension.project_application_id = this._project_application_id;
     this._project_application_extension.extra_lifetime = 0;
     this._project_application_extension.comment = '';
-    this._project_application_extension.project_application_extension_credits = 0;
-    this._project_application_extension.is_only_extra_credits_application = false;
-    this._project_application_extension.project_application_extension_cloud_service_user_number =
-      this._project_application_cloud_service_user_number;
   }
 
     public initiateCreditsRequest(): void {
@@ -222,10 +219,10 @@ export class Application {
   public inititateModification(): void {
     this._project_application_modification = new ApplicationModification(null);
     this._project_application_modification.project_application_id = this._project_application_id;
-    this._project_application_modification.project_application_modification_volume_counter = this.project_application_volume_counter;
-    this._project_application_modification.project_application_modification_volume_limit = this.project_application_volume_limit;
+    this._project_application_modification.volume_counter = this.project_application_volume_counter;
+    this._project_application_modification.volume_limit = this.project_application_volume_limit;
     if (this._project_application_openstack_project) {
-      this._project_application_modification.project_application_modification_object_storage = this._project_application_object_storage;
+      this._project_application_modification.object_storage = this._project_application_object_storage;
     }
 
     // Todo fill more
@@ -596,10 +593,10 @@ export class Application {
     this._project_application_initial_credits = value;
   }
 
-  get TotalExtensionCredits(): number {
-    if (this.project_application_extension != null) {
+  get TotalModificationCredits(): number {
+    if (this.project_application_modification != null) {
       return Number(this.project_application_initial_credits) +
-        Number(this.project_application_extension.project_application_extension_credits)
+        Number(this.project_application_modification.extra_credits)
     } else {
       return this.project_application_initial_credits
     }

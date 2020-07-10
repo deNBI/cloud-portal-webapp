@@ -8,33 +8,35 @@ export class ApplicationModification {
 
   private _Id: number;
   private _project_application_id: number | string;
-  private _project_application_modification_vms_requested: number;
-  private _project_application_modification_volume_limit: number;
-  private _project_application_modification_volume_counter: number;
-  private _project_application_modification_object_storage: number;
-  private _project_application_modification_comment: string;
-  private _project_application_modification_date_submitted: string;
-  private _project_application_modification_total_cores: number;
-  private _project_application_modification_total_ram: number;
-  private _project_application_modification_credits: number;
-  private _project_application_modification_user: User;
-  private _is_only_extra_credits_application: boolean;
+  private _vms_requested: number;
+  private _volume_limit: number;
+  private _volume_counter: number;
+  private _object_storage: number;
+  private _comment: string;
+  private _date_submitted: string;
+  private _total_cores: number;
+  private _total_ram: number;
+  private _extra_credits: number;
+  private _user: User;
   private _flavors: Flavor[] = [];
+  private _cloud_service_develop: boolean = false;
+  private _cloud_service_user_number: number;
 
-  constructor(extension: ApplicationModification|null) {
+  constructor(extension: ApplicationModification | null) {
     if (extension) {
       this._project_application_id = extension.project_application_id;
-      this._project_application_modification_vms_requested = extension.project_application_modification_vms_requested;
-      this._project_application_modification_volume_limit = extension.project_application_modification_volume_limit;
-      this._project_application_modification_volume_counter = extension.project_application_modification_volume_counter;
-      this._project_application_modification_object_storage = extension.project_application_modification_object_storage;
-      this._project_application_modification_comment = extension.project_application_modification_comment;
-      this._project_application_modification_date_submitted = extension.project_application_modification_date_submitted;
-      this._project_application_modification_total_cores = extension.project_application_modification_total_cores;
-      this._project_application_modification_total_ram = extension.project_application_modification_total_ram;
-      this._project_application_modification_credits = extension.project_application_modification_credits;
-      this._is_only_extra_credits_application = extension.is_only_extra_credits_application;
-      this._project_application_modification_user = extension.project_application_modification_user;
+      this._cloud_service_develop=extension.cloud_service_develop;
+      this._cloud_service_user_number=extension.cloud_service_user_number;
+      this._vms_requested = extension.vms_requested;
+      this._volume_limit = extension.volume_limit;
+      this._volume_counter = extension.volume_counter;
+      this._object_storage = extension.object_storage;
+      this._comment = extension.comment;
+      this._date_submitted = extension.date_submitted;
+      this._total_cores = extension.total_cores;
+      this._total_ram = extension.total_ram;
+      this._extra_credits = extension.extra_credits;
+      this._user = extension.user;
       this._flavors = extension.flavors;
     }
   }
@@ -47,8 +49,8 @@ export class ApplicationModification {
       cores += flavor.vcpus * flavor.counter;
 
     }
-    this._project_application_modification_total_cores = cores;
-    this._project_application_modification_total_ram = ram;
+    this._total_cores = cores;
+    this._total_ram = ram;
   }
 
   public getFlavorCounter(flavor: Flavor): number {
@@ -83,13 +85,14 @@ export class ApplicationModification {
     this.calculateRamCores()
   }
 
-  get project_application_modification_user(): User {
-    return this._project_application_modification_user;
+  get user(): User {
+    return this._user;
   }
 
-  set project_application_modification_user(value: User) {
-    this._project_application_modification_user = value;
+  set user(value: User) {
+    this._user = value;
   }
+
 
   public addFlavorToRequested(flavor: Flavor): void {
     this._flavors.push(flavor)
@@ -111,20 +114,20 @@ export class ApplicationModification {
     this._flavors = value;
   }
 
-  get project_application_modification_total_cores(): number {
-    return this._project_application_modification_total_cores;
+  get total_cores(): number {
+    return this._total_cores;
   }
 
-  set project_application_modification_total_cores(value: number) {
-    this._project_application_modification_total_cores = value;
+  set total_cores(value: number) {
+    this._total_cores = value;
   }
 
-  get project_application_modification_total_ram(): number {
-    return this._project_application_modification_total_ram;
+  get total_ram(): number {
+    return this._total_ram;
   }
 
-  set project_application_modification_total_ram(value: number) {
-    this._project_application_modification_total_ram = value;
+  set total_ram(value: number) {
+    this._total_ram = value;
   }
 
   get Id(): number {
@@ -135,68 +138,76 @@ export class ApplicationModification {
     this._Id = value;
   }
 
-  set project_application_modification_comment(value: string) {
-    this._project_application_modification_comment = value;
+  set comment(value: string) {
+    this._comment = value;
   }
 
-  get project_application_modification_comment(): string {
-    return this._project_application_modification_comment;
+  get comment(): string {
+    return this._comment;
   }
 
-  get project_application_modification_vms_requested(): number {
-    return this._project_application_modification_vms_requested;
+  get vms_requested(): number {
+    return this._vms_requested;
   }
 
-  set project_application_modification_vms_requested(value: number) {
-    this._project_application_modification_vms_requested = value;
+  set vms_requested(value: number) {
+    this._vms_requested = value;
   }
 
-  get project_application_modification_volume_limit(): number {
-    return this._project_application_modification_volume_limit;
+  get cloud_service_develop(): boolean {
+    return this._cloud_service_develop;
   }
 
-  set project_application_modification_volume_limit(value: number) {
-    this._project_application_modification_volume_limit = value;
+  set cloud_service_develop(value: boolean) {
+    this._cloud_service_develop = value;
   }
 
-  get project_application_modification_volume_counter(): number {
-    return this._project_application_modification_volume_counter;
+  get cloud_service_user_number(): number {
+    return this._cloud_service_user_number;
   }
 
-  set project_application_modification_volume_counter(value: number) {
-    this._project_application_modification_volume_counter = value;
+  set cloud_service_user_number(value: number) {
+    this._cloud_service_user_number = value;
   }
 
-  get project_application_modification_object_storage(): number {
-    return this._project_application_modification_object_storage;
+  get volume_limit(): number {
+    return this._volume_limit;
   }
 
-  set project_application_modification_object_storage(value: number) {
-    this._project_application_modification_object_storage = value;
+  set volume_limit(value: number) {
+    this._volume_limit = value;
   }
 
-  get project_application_modification_date_submitted(): string {
-    return this._project_application_modification_date_submitted;
+  get volume_counter(): number {
+    return this._volume_counter;
   }
 
-  set project_application_modification_date_submitted(value: string) {
-    this._project_application_modification_date_submitted = value;
+  set volume_counter(value: number) {
+    this._volume_counter = value;
   }
 
-  get project_application_modification_credits(): number {
-    return Number(this._project_application_modification_credits);
+  get object_storage(): number {
+    return this._object_storage;
   }
 
-  set project_application_modification_credits(value: number) {
-    this._project_application_modification_credits = value;
+  set object_storage(value: number) {
+    this._object_storage = value;
   }
 
-  get is_only_extra_credits_application(): boolean {
-    return this._is_only_extra_credits_application;
+  get date_submitted(): string {
+    return this._date_submitted;
   }
 
-  set is_only_extra_credits_application(value: boolean) {
-    this._is_only_extra_credits_application = value;
+  set date_submitted(value: string) {
+    this._date_submitted = value;
+  }
+
+  get extra_credits(): number {
+    return Number(this._extra_credits);
+  }
+
+  set extra_credits(value: number) {
+    this._extra_credits = value;
   }
 
 }

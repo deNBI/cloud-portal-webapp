@@ -124,7 +124,10 @@ export class ApplicationsService {
   }
 
   requestModification(modification: ApplicationModification): Observable<any> {
-    return null;
+   return this.http.post(`${ApiSettings.getApiBaseURL()}project_applications/modifications/`,
+                         modification, {
+                            withCredentials: true
+                          })
   }
 
   requestAdditionalLifetime(lifetimeRequest: ApplicationLifetimeExtension): Observable<any> {

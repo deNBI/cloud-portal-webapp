@@ -141,11 +141,17 @@
                 Request More Credits
               </button>
               <button id="show_extension_modal"
-                      *ngIf="project_application?.hasApprovedStatus()
-                      || project_application?.hasModificationDeclinedStatus()"
+                      *ngIf="project_application?.hasApprovedStatus() &&
+                       (!project_application?.hasModificationRequestedStatus()
+                       ||!project_application?.hasExtensionRequestedStatus())"
                       (click)="newFlavors= {};selected_ontology_terms=[];doiQuestionModal.show();"
                       class="btn btn-warning" type="button" style="margin-bottom:5px;margin-right:5px;">
-                Request Extension/Modification
+                <span *ngIf="!project_application?.hasModificationRequestedStatus()
+                 && !project_application?.hasExtensionRequestedStatus()">Request Extension/Modification</span>
+                <span *ngIf="project_application?.hasModificationRequestedStatus()
+                 && !project_application?.hasExtensionRequestedStatus()">Request Extension</span>
+                <span *ngIf="!project_application?.hasModificationRequestedStatus()
+                 && project_application?.hasExtensionRequestedStatus()">Request Modification</span>
               </button>
               <button id="show_termination_modal"
                       *ngIf="project_application?.hasApprovedStatus()
@@ -786,7 +792,6 @@
             project lifetime.</strong>
         </div>
         <form id="resource_modification_application_form" #modificationForm="ngForm"
-              (ngSubmit)="onSubmit(modificationForm)"
               class="form-horizontal">
 
           <div class="form-group row">
@@ -831,7 +836,7 @@
                       <div class="input-group">
                         <input class="form-control"
                                (change)="valuesChanged(fl,name?.value);
-                               calculateCredits(modificationForm.controls.project_application_renewal_lifetime?.value);"
+                               calculateCreditsModification();"
                                id="{{fl.name}}"
                                name="{{fl.name}}"
                                type="number" min="0" step="1"
@@ -882,7 +887,7 @@
                        name="project_application_renewal_volume_counter"
                        placeholder="e.g. 20"
                        type="number" min="0" step="1"
-                       [(ngModel)]="project_application?.project_application_modification.project_application_modification_volume_counter"
+                       [(ngModel)]="project_application?.project_application_modification.volume_counter"
                        appMinAmount="0" appInteger
                        [ngClass]="{
                                 'is-invalid': modificationForm.controls.project_application_renewal_volume_counter?.invalid,
@@ -920,7 +925,7 @@
                        name="project_application_renewal_volume_limit"
                        placeholder="e.g. 20"
                        type="number" min="1" step="1"
-                       [(ngModel)]="project_application?.project_application_modification.project_application_modification_volume_limit"
+                       [(ngModel)]="project_application?.project_application_modification.volume_limit"
                        appMinAmount="1" appInteger
                        [ngClass]="{
                                 'is-invalid': modificationForm.controls.project_application_renewal_volume_limit?.invalid,
@@ -963,7 +968,7 @@
                        id="id_project_application_renewal_object_storage"
                        name="project_application_renewal_object_storage"
                        placeholder="e.g. 8"
-                       [(ngModel)]="project_application?.project_application_modification.project_application_modification_object_storage"
+                       [(ngModel)]="project_application?.project_application_modification.object_storage"
                        type="number" min="0" step="1"
                        appInteger appMinAmount="0" required
                        [ngClass]="{
@@ -976,7 +981,79 @@
               <span class="help-block">How much Object Storage do you need in the future?</span>
             </div>
           </div>
+          <div
+            *ngIf="project_application?.project_application_openstack_project && project_application?.project_application_cloud_service && project_application?.project_application_cloud_service_develop"
+            class="form-group row">
+            <label class="col-md-4 form-control-label" for="textarea-input"><strong>Service status </strong><i
+              data-balloon="Status of your service."
+              data-balloon-pos="down" data-balloon-length="large"><i
+              class="icon-question"
+              style="cursor: pointer;"></i></i></label>
 
+            <div class="col">
+            </div>
+
+            <div
+              *ngIf="project_application?.project_application_openstack_project && project_application?.project_application_cloud_service && project_application?.project_application_cloud_service_develop"
+              class="col">
+              <div class="input-group">
+                <label id="id_project_application_renewal_cloud_service_develop"
+                       class="switch switch-label switch-outline-primary-alt">
+                  <input type="checkbox" class="switch-input"
+                         name="project_application_renewal_cloud_service_develop"
+                         [defaultChecked]="project_application?.project_application_cloud_service_develop"
+                         [(ngModel)]="project_application.project_application_cloud_service_develop"
+                  >
+                  <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                  <span class="switch-handle"></span></label>
+              </div>
+              <span class="help-block">Is your service still in development?</span>
+            </div>
+          </div>
+
+          <div
+            *ngIf="project_application?.project_application_openstack_project && project_application?.project_application_cloud_service && (!project_application?.project_application_cloud_service_develop)"
+            class="form-group row">
+            <label class="col-md-4 form-control-label" for="textarea-input"><strong>Cloud Service user
+              number </strong><i
+              data-balloon="Number of user using your service."
+              data-balloon-pos="down" data-balloon-length="large"><i
+              class="icon-question"
+              style="cursor: pointer;"></i></i></label>
+
+            <div class="col">
+              <div class="input-group">
+                <input class="form-control"
+                       name="project_application_cloud_service_user_number"
+                       id="project_application_cloud_service_user_number"
+                       placeholder="NA"
+                       value="{{project_application?.project_application_cloud_service_user_number}}"
+                       type="text" disabled>
+              </div>
+              <span class="help-block">Current number of users</span>
+            </div>
+
+            <div
+              *ngIf="project_application?.project_application_openstack_project && project_application?.project_application_cloud_service && !project_application?.project_application_cloud_service_develop"
+              class="col">
+              <div class="input-group">
+                <input class="form-control"
+                       id="id_project_application_renewal_cloud_service_user_number"
+                       name="project_application_renewal_cloud_service_user_number"
+                       placeholder="e.g. 200"
+                       [(ngModel)]="project_application?.project_application_modification.cloud_service_user_number"
+                       type="number" min="0" step="1"
+                       appInteger appMinAmount="0" required
+                       [ngClass]="{
+                                'is-invalid': modificationForm.controls.project_application_renewal_cloud_service_user_number?.invalid ,
+                                'is-valid': modificationForm.controls.project_application_renewal_cloud_service_user_number?.valid
+                                }">
+              </div>
+              <span class="help-block">How many users are using your service?
+              <br>
+              <strong>Note:</strong> we define service users as <strong>unique users per month.</strong></span>
+            </div>
+          </div>
 
           <div class="form-group row">
             <label class="col-md-4 form-control-label"
@@ -986,7 +1063,7 @@
                           name="project_application_renewal_comment" class="form-control"
                           maxlength="8192"
                           placeholder=''
-                          [(ngModel)]="project_application?.project_application_modification.project_application_modification_comment"></textarea>
+                          [(ngModel)]="project_application?.project_application_modification.comment"></textarea>
               <span class="help-block">Additional information you want to share?</span>
             </div>
           </div>
@@ -1001,13 +1078,14 @@
           </div>
 
 
-          <strong>
+          <strong *ngIf="is_vo_admin">
             <div *ngIf="is_vo_admin" class="form-group row">
               <label #corenumbers id="creditnumber" class="col">Expected number of extra credits: <span
-                id="modification_credits">{{project_application?.project_credit_request.extra_credits}}</span></label>
+                id="modification_credits">{{project_application?.project_application_modification.extra_credits}}</span></label>
             </div>
             <div class="alert alert-primary" role="alert">
-              This is the expected number of extra credits that you get for your project. It accounts for an increase in requested resources/project lifetime.
+              This is the expected number of extra credits that you get for your project. It accounts for an increase in
+              requested resources/project lifetime.
             </div>
           </strong>
 
@@ -1039,9 +1117,8 @@
           </div>
           <button type="button" class="btn  btn-primary"
                   form="modification_form" id="submit_modification_btn"
-                  (click)="extension_request=true;request_type=ExtensionRequestType.MODIFICATION;filterEnteredData(modificationForm);
-                  calculateCredits(modificationForm.controls.project_application_renewal_lifetime?.value);
-                  submitModal.show(); setModalOpen(true);"
+                  (click)="
+                  calculateCreditsModification();requestModification();resourceModificationModal.hide();"
                   [disabled]="modificationForm.invalid"><i class="fa fa-dot-circle-o"></i>
             Submit
           </button>
@@ -1072,7 +1149,7 @@
       </div>
       <div class="modal-body">
 
-        <form id="extension_application_form" #extensionForm="ngForm" (ngSubmit)="onSubmit(extensionForm)"
+        <form id="extension_application_form" #extensionForm="ngForm"
               class="form-horizontal">
 
 
@@ -1100,7 +1177,7 @@
             <div class="col">
               <div class="input-group">
                 <input class="form-control"
-                       (change)="calculateCredits(project_application?.project_application_extension.extra_lifetime);"
+                       (change)="calculateCreditsLifeTime();"
                        id="project_extension_application_renewal_lifetime"
                        name="project_extension_application_renewal_lifetime"
                        placeholder="e.g. 3"
@@ -1175,14 +1252,14 @@
           </div>
 
 
-
-          <strong>
+          <strong *ngIf="is_vo_admin">
             <div *ngIf="is_vo_admin" class="form-group row">
-              <label #corenumbers id="extension_creditnumber" class="col">Expected number of extra credits: <span
-                id="extension_credits">{{project_application?.project_application_extension.project_application_extension_credits}}</span></label>
+              <label #corenumbers id="creditnumber" class="col">Expected number of extra credits: <span
+                id="modification_credits">{{project_application?.project_application_extension.extra_credits}}</span></label>
             </div>
             <div class="alert alert-primary" role="alert">
-              This is the expected number of extra credits that you get for your project. It accounts for an extended lifetime of the project.
+              This is the expected number of extra credits that you get for your project. It accounts for an increase in
+              requested resources/project lifetime.
             </div>
           </strong>
 
@@ -1209,7 +1286,7 @@
           <button type="button" class="btn  btn-primary"
                   form="extensionForm" id="submit_extension_btn"
                   (click)="
-                  calculateCredits(project_application?.project_application_extension.extra_lifetime);requestExtension();projectExtensionModal.hide();"
+                  calculateCreditsLifeTime();requestExtension();projectExtensionModal.hide();"
                   [disabled]="extensionForm.invalid || (!project_application?.project_application_edam_terms && selected_ontology_terms.length < 1)">
             <i
               class="fa fa-dot-circle-o">
@@ -1243,7 +1320,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <form id="credits_application_form" #f2="ngForm" (ngSubmit)="onSubmit(f2)"
+        <form id="credits_application_form" #f2="ngForm"
               class="form-horizontal">
 
           <div class="form-group row">
@@ -1374,12 +1451,12 @@
             </tr>
             <tr *ngIf="request_type == ExtensionRequestType.MODIFICATION">
               <td><strong>Number of cores in total:
-                {{project_application?.project_application_modification?.project_application_modification_total_cores}}</strong>
+                {{project_application?.project_application_modification?.total_cores}}</strong>
               </td>
             </tr>
             <tr *ngIf="request_type == ExtensionRequestType.MODIFICATION">
               <td><strong>Value of RAM in
-                total: {{project_application?.project_application_modification?.project_application_modification_total_ram}}
+                total: {{project_application?.project_application_modification?.total_ram}}
                 GBs</strong>
               </td>
             </tr>
@@ -1394,17 +1471,17 @@
         <button id="confirm_extension_btn" class="btn btn-success col-md-4" type="button"
                 *ngIf="request_type==ExtensionRequestType.EXTENSION"
                 (click)="submitModal.hide(); resultModal.show();
-                onSubmit(extensionForm);">Confirm Application
+                ">Confirm Application
         </button>
         <button id="confirm_modification_btn" class="btn btn-success col-md-4" type="button"
                 *ngIf="request_type==ExtensionRequestType.MODIFICATION"
                 (click)="submitModal.hide(); resultModal.show();
-                onSubmit(modificationForm);">Confirm Application
+               ">Confirm Application
         </button>
         <button id="confirm_credits_btn" class="btn btn-success col-md-4" type="button"
                 *ngIf="request_type==ExtensionRequestType.CREDIT"
                 (click)="creditsExtensionModal.hide(); submitModal.hide(); resultModal.show();
-                onSubmit(f2);">Confirm Application
+                ">Confirm Application
         </button>
         <button class="btn btn-primary col-md-4" type="reset"
                 (click)="submitModal.hide();">Cancel
@@ -1475,7 +1552,28 @@
             </table>
 
           </div>
-          <div class="modal-footer" style="text-align:center;">
+
+
+          <div *ngIf="!project_application?.hasModificationRequestedStatus()
+                 && project_application?.hasExtensionRequestedStatus()"
+               class="modal-footer" style="text-align:center;">
+            <button id="doi_continue_btn" class="btn btn-success col-md-6" type="button"
+                    style="margin:auto;"
+                    (click)="doiModal.hide(); resourceModificationModal.show(); setModalOpen(true);">
+              Continue
+            </button>
+          </div>
+          <div *ngIf="project_application?.hasModificationRequestedStatus()
+                 && !project_application?.hasExtensionRequestedStatus()"
+               class="modal-footer" style="text-align:center;">
+            <button id="doi_continue_btn" class="btn btn-success col-md-6" type="button"
+                    style="margin:auto;" (click)="doiModal.hide(); projectExtensionModal.show(); setModalOpen(true);">
+              Continue
+            </button>
+          </div>
+          <div *ngIf="!project_application?.hasModificationRequestedStatus()
+                 && !project_application?.hasExtensionRequestedStatus()"
+               class="modal-footer" style="text-align:center;">
             <button id="doi_continue_btn" class="btn btn-success col-md-6" type="button"
                     style="margin:auto;" (click)="doiModal.hide(); chooseModal.show(); setModalOpen(true);">Continue
             </button>
@@ -1513,8 +1611,21 @@
                 </button>
               </div>
 
+
               <div class="col-6">
-                <button id="no_new_dois_btn" class="btn btn-primary" type="reset"
+                <button *ngIf="!project_application?.hasModificationRequestedStatus()
+                 && project_application?.hasExtensionRequestedStatus()" id="no_new_dois_btn" class="btn btn-primary"
+                        type="reset"
+                        (click)="doiQuestionModal.hide(); resourceModificationModal.show(); setModalOpen(true);">No
+                </button>
+                <button *ngIf="project_application?.hasModificationRequestedStatus()
+                 && !project_application?.hasExtensionRequestedStatus()" id="no_new_dois_btn" class="btn btn-primary"
+                        type="reset"
+                        (click)="doiQuestionModal.hide(); projectExtensionModal.show(); setModalOpen(true);">No
+                </button>
+                <button *ngIf="!project_application?.hasModificationRequestedStatus()
+                 && !project_application?.hasExtensionRequestedStatus()" id="no_new_dois_btn" class="btn btn-primary"
+                        type="reset"
                         (click)="doiQuestionModal.hide(); chooseModal.show(); setModalOpen(true);">No
                 </button>
               </div>

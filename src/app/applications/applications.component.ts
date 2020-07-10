@@ -138,7 +138,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
   }
 
   /**
-   * Get all Credit Extension Requestss if user is admin.
+   * Get all Credit Extension Requests if user is admin.
    */
   getAllCreditExtensionRequests(): void {
     if (this.is_vo_admin) {

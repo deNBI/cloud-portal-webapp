@@ -9,7 +9,7 @@ import * as moment from 'moment';
 import {ProjectMemberApplication} from './project_member_application';
 import {ComputecenterComponent} from './computecenter.component';
 import {Userinfo} from '../userinfo/userinfo.model';
-import {forkJoin, Observable} from 'rxjs';
+import {forkJoin, Observable, Subscription} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Application} from '../applications/application.model/application.model';
 import {ApplicationBaseClassComponent} from '../shared/shared_modules/baseClass/application-base-class.component';
@@ -52,7 +52,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
   @ViewChild(NgForm) simpleVmForm: NgForm;
   @ViewChild('creditsChart') creditsCanvas: ElementRef;
-
+  private subscription: Subscription = new Subscription();
 
   /**
    * If at least 1 flavor is selected.
@@ -191,6 +191,28 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
     this.edam_ontology.clear();
   }
 
+  calculateCreditsLifeTime(): void {
+    this.subscription.add(this.creditsService.getExtraCreditsForExtension(this.project_application.project_application_total_cores,
+                                                                          this.project_application.project_application_total_ram,
+                                                                          this.project_application.project_application_extension.extra_lifetime,
+                                                                          this.project_application.project_application_id.toString()).subscribe(
+      (credits: number): void => {
+        this.project_application.project_application_extension.extra_credits = credits;
+      }))
+
+  }
+
+  calculateCreditsModification(): void {
+    this.subscription.add(this.creditsService.getExtraCreditsForExtension(this.project_application.project_application_modification.total_cores,
+                                                                          this.project_application.project_application_modification.total_ram,
+                                                                          this.project_application.project_application_lifetime,
+                                                                          this.project_application.project_application_id.toString()).subscribe(
+      (credits: number): void => {
+        this.project_application.project_application_modification.extra_credits = credits;
+      }))
+
+  }
+
   calculateCredits(lifetime: number): void {
     if (lifetime === null || lifetime === undefined || lifetime.toString() === '') {
       lifetime = 0;
@@ -199,7 +221,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
                                                     this.totalRAM, lifetime,
                                                     this.project_application.project_application_id.toString()).subscribe(
       (credits: number): void => {
-        this.project_application.project_application_extension.project_application_extension_credits = credits;
+        this.project_application.project_application_modification.extra_credits = credits;
       })
 
   }
@@ -284,16 +306,17 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 }
 
   startUpdateCreditUsageLoop(): void {
-    this.updateCreditsUsedIntervals = setInterval(
+    this.updateCreditsUsedIntervals = window.setInterval(
       (): any =>
         // tslint:disable-next-line:max-line-length
-        this.creditsService.getCurrentCreditsOfProject(Number(this.project_application.project_application_perun_id.toString())).toPromise().then(
+        this.subscription.add(this.creditsService.getCurrentCreditsOfProject(Number(this.project_application.project_application_perun_id.toString())).subscribe(
           (credits: number): void => {
             this.current_credits = credits;
+          },
+          (err: Error): void => {
+            console.log(err.message)
           }
-        ).catch((err: Error): void => {
-          console.log(err.message)
-        }),
+        )),
       5000);
   }
 
@@ -395,25 +418,26 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
         })
   }
 
-  /**
-   * Submits an renewal request for an application.
-   * @param {NgForm} form
-   * @param {boolean} isExtraCreditsApplication: whether or not only extra credits are applied for
-   */
-  onSubmit(form: NgForm): void {
-    if (this.request_type === ExtensionRequestType.CREDIT) {
-      this.project_application.project_application_extension.is_only_extra_credits_application = true;
-      this.project_application.project_application_extension.comment =
-        form.controls['project_application_extra_credits_comment'].value;
-      this.project_application.project_application_extension.project_application_extension_credits =
-        form.controls['project_application_extra_credits'].value;
-    }
-
-    this.requestExtension();
-
-  }
-
   public requestModification(): void {
+    this.applicationsservice.requestModification(this.project_application.project_application_modification)
+      .subscribe((result: { [key: string]: string }): void => {
+        if (result['Error']) {
+          this.extension_status = 2
+        } else {
+          this.extension_status = 1;
+        }
+        if (this.selected_ontology_terms.length > 0) {
+          this.applicationsservice.addEdamOntologyTerms(this.application_id,
+                                                        this.selected_ontology_terms
+          ).subscribe((): void => {
+            this.getApplication()
+
+          });
+        } else {
+          this.getApplication()
+        }
+
+      })
   }
 
   public requestCreditsModification(): void {
@@ -518,6 +542,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   }
 
   ngOnDestroy(): void {
+    this.subscription.unsubscribe();
     if (this.updateCreditsUsedIntervals) {
       clearInterval(this.updateCreditsUsedIntervals);
     }
@@ -591,7 +616,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
     if (!this.project_application.ComputeCenter
       && !this.project_application.hasSubmittedStatus()
       && !this.project_application.hasTerminatedStatus()) {
-      this.groupService.getFacilityByGroup(this.project_application.project_application_perun_id.toString()).subscribe((res: object):void => {
+      this.groupService.getFacilityByGroup(
+        this.project_application.project_application_perun_id.toString()).subscribe((res: object): void => {
 
         const login: string = res['Login'];
         const suport: string = res['Support'];

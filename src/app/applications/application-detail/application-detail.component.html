@@ -287,7 +287,7 @@
       <td
         *ngIf="(application?.hasModificationRequestedStatus() || isModification) && !application?.project_application_extension?.is_only_extra_credits_application">
         Requested:
-        {{application?.project_application_modification?.project_application_modification_vms_requested}}
+        {{application?.project_application_modification?.vms_requested}}
       </td>
 
     </tr>
@@ -321,7 +321,7 @@
       </td>
 
       <td *ngIf="(application?.hasModificationRequestedStatus() || isModification) && !application?.project_application_extension?.is_only_extra_credits_application">
-        {{application?.project_application_modification?.project_application_modification_total_cores}}
+        {{application?.project_application_modification?.total_cores}}
       </td>
     </tr>
 
@@ -331,7 +331,7 @@
           application?.project_application_total_ram}} GB
       </td>
       <td *ngIf="(application?.hasModificationRequestedStatus() || isModification) && !application?.project_application_extension?.is_only_extra_credits_application">
-        {{application?.project_application_modification?.project_application_modification_total_ram}} GB
+        {{application?.project_application_modification?.total_ram}} GB
       </td>
     </tr>
 
@@ -342,7 +342,7 @@
           application?.project_application_initial_credits}}
       </td>
       <td *ngIf="(application?.hasModificationRequestedStatus() || isModification) && !application?.project_application_extension?.is_only_extra_credits_application">
-        Extra: {{application?.project_application_extension?.project_application_extension_credits}} (Total: {{application?.TotalExtensionCredits}})
+        Extra: {{application?.project_application_extension?.project_application_extension_credits}} (Total: {{application?.TotalModificationCredits}})
       </td>
     </tr>
 
@@ -358,7 +358,7 @@
     <tr *ngIf="is_vo_admin && application?.project_application_extension?.is_only_extra_credits_application">
       <td>Extra Credits</td>
       <td>
-        {{application?.project_application_extension?.project_application_extension_credits}} (Total: {{application?.TotalExtensionCredits}})
+        {{application?.project_application_extension?.project_application_extension_credits}} (Total: {{application?.TotalModificationCredits}})
       </td>
     </tr>
 
@@ -370,7 +370,7 @@
         }} GB
       </td>
       <td *ngIf="(application?.hasModificationRequestedStatus() || isModification) && !application?.project_application_extension?.is_only_extra_credits_application">
-        {{application?.project_application_modification?.project_application_modification_volume_limit}}
+        {{application?.project_application_modification?.volume_limit}}
         GB
       </td>
     </tr>
@@ -383,7 +383,7 @@
         }} volumes
       </td>
       <td *ngIf="(application?.hasModificationRequestedStatus() || isModification) && !application?.project_application_extension?.is_only_extra_credits_application">
-        {{application?.project_application_modification?.project_application_modification_volume_counter}} volumes
+        {{application?.project_application_modification?.volume_counter}} volumes
       </td>
     </tr>
     <tr *ngIf="application?.project_application_openstack_project">
@@ -394,7 +394,7 @@
         }} GB
       </td>
       <td *ngIf="(application?.hasModificationRequestedStatus() || isModification) && !application?.project_application_extension?.is_only_extra_credits_application">
-        {{application?.project_application_modification?.project_application_modification_object_storage}}
+        {{application?.project_application_modification?.object_storage}}
         GB
       </td>
     </tr>
