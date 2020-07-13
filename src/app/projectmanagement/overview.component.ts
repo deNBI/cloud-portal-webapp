@@ -317,7 +317,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
             console.log(err.message)
           }
         )),
-      5000);
+      10000);
   }
 
   initExampleFlavors(): void {
@@ -545,7 +545,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
     this.subscription.unsubscribe();
     if (this.updateCreditsUsedIntervals) {
       clearInterval(this.updateCreditsUsedIntervals);
-    }
+    } catch (someError) {}
   }
 
   getDois(): void {
