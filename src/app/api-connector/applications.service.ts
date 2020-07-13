@@ -144,20 +144,18 @@ export class ApplicationsService {
                           })
   }
 
-  approveRenewal(application_id: number | string): Observable<any> {
-
-    return this.http.post(`${ApiSettings.getApiBaseURL()}applicationRenewals/${application_id}/status/`, null, {
-      withCredentials: true
-    })
-
+  approveAdditionalCreditsRequest(request_id: number | string): Observable<any> {
+    return this.http.post(`${ApiSettings.getApiBaseURL()}project_applications/credits/extensions/${request_id}/approve/`,
+                          null, {
+                            withCredentials: true
+                          })
   }
 
-  declineRenewal(application_id: number | string): Observable<any> {
-
-    return this.http.delete(`${ApiSettings.getApiBaseURL()}applicationRenewals/${application_id}/status/`, {
-      withCredentials: true
-    })
-
+  approveAdditionalLifetime(request_id: number | string): Observable<any> {
+    return this.http.post(`${ApiSettings.getApiBaseURL()}project_applications/lifetime/extensions/${request_id}/approve/`,
+                          null, {
+                            withCredentials: true
+                          })
   }
 
   getAllApplicationsRenewalRequests(): Observable<any> {
