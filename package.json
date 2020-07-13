@@ -48,7 +48,7 @@
     "@ng-bootstrap/ng-bootstrap": "^6.2.0",
     "@types/jquery": "^3.5.0",
     "angular-ng-autocomplete": "^2.0.1",
-    "angulartics2": "^9.1.0",
+    "angulartics2": "^10.0.0",
     "bootstrap": "^4.5.0",
     "chart.js": "^2.9.3",
     "chromedriver": "^83.0.1",
