@@ -158,6 +158,13 @@ export class ApplicationsService {
                           })
   }
 
+  approveModification(request_id: number | string): Observable<any> {
+    return this.http.post(`${ApiSettings.getApiBaseURL()}project_applications/modifications/${request_id}/approve/`,
+                          null, {
+                            withCredentials: true
+                          })
+  }
+
   getAllApplicationsRenewalRequests(): Observable<any> {
     return this.http.get(`${ApiSettings.getApiBaseURL()}applicationsRenewals/`, {
       withCredentials: true

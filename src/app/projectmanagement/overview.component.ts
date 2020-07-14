@@ -536,7 +536,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
       this.getListOfTypes();
       this.getDois();
       this.is_vo_admin = is_vo;
-      this.applicationsservice.approveAdditionalLifetime(this.application_id).subscribe()
     });
 
   }

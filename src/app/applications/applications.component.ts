@@ -14,7 +14,7 @@ import {ApplicationBaseClassComponent} from '../shared/shared_modules/baseClass/
 import {ComputecenterComponent} from '../projectmanagement/computecenter.component';
 import {is_vo} from '../shared/globalvar';
 
- enum TabStates {
+enum TabStates {
   'SUBMITTED' = 0,
   'CREDITS_EXTENSION' = 1,
   'LIFETIME_EXTENSION' = 2,
@@ -113,7 +113,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
   }
 
-  changeTabState(state: number) {
+  changeTabState(state: number): void {
     this.tab_state = state;
   }
 
@@ -199,68 +199,6 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
                    console.log(error);
                  });
 
-  }
-
-  public approveExtension(app: Application): void {
-
-    if (app.project_application_openstack_project) {
-      if (!app.ComputeCenter) {
-        this.applicationsservice.approveRenewal(app.project_application_id.toString()).subscribe((result: any): void => {
-          if (result['Error']) {
-            this.extension_status = 2;
-            this.updateNotificationModal('Failed', 'Failed to approve the application modification.', true, 'danger');
-          } else {
-            this.extension_status = 3;
-
-            this.updateNotificationModal('Success', 'Successfully approved the application modification.', true, 'success');
-            this.all_applications = [];
-            this.user_applications = [];
-            this.getAllApplications();
-
-          }
-        });
-      } else {
-        this.applicationstatusservice.setApplicationStatus(
-          app.project_application_id.toString(),
-          this.WAIT_FOR_EXTENSION_STATUS.toString()).subscribe((): void => {
-          this.extension_status = 5;
-          this.getApplication(app);
-
-          for (const appl of this.user_applications) {
-            if (this.selectedApplication.project_application_id.toString() === appl.project_application_id.toString()) {
-              break;
-            }
-
-          }
-        })
-      }
-    } else {
-      this.applicationsservice.approveRenewal(app.project_application_id).subscribe((result: { [key: string]: string }): void => {
-        if (result['Error']) {
-          this.extension_status = 2
-        } else {
-          this.extension_status = 3;
-        }
-        this.getApplication(this.selectedApplication);
-
-      })
-    }
-  }
-
-  /**
-   * Decline an extension request.
-   * @param {number} application_id
-   */
-  public declineExtension(application_id: number): void {
-    this.applicationsservice.declineRenewal(application_id).subscribe((result: { [key: string]: string }): void => {
-      if (result != null) {
-        this.extension_status = 2
-      } else {
-        this.extension_status = 4;
-      }
-      this.getApplication(this.selectedApplication);
-
-    })
   }
 
   /**

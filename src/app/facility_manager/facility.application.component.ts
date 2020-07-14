@@ -54,24 +54,6 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 
   }
 
-  /**
-   * Approve an application extension.
-   * @param {Application} app the application
-   * @returns {void}
-   */
-  public approveExtension(app: Application): void {
-
-    this.applicationsservice.approveRenewal(app.project_application_id).subscribe((result: any): void => {
-      if (result['Error']) {
-        this.updateNotificationModal('Failed', 'Failed to approve the application modification.', true, 'danger');
-      } else {
-        this.updateNotificationModal('Success', 'Successfully approved the application modification.', true, 'success');
-        this.all_application_modifications.splice(this.all_application_modifications.indexOf(app), 1);
-        this.getAllApplicationsHistory(this.selectedFacility ['FacilityId']);
-
-      }
-    })
-  }
 
   getFacilityApplicationById(application: Application): void {
     if (application.project_application_description !== undefined) {
