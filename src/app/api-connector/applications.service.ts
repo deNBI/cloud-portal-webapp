@@ -94,6 +94,62 @@ export class ApplicationsService {
 
   }
 
+  getSubmittedApplications(): Observable<Application[]> {
+    return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}project_applications/submitted/`, {
+      withCredentials: true
+
+    })
+
+  }
+
+  getWfcSubmittedApplications(): Observable<Application[]> {
+    return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}project_applications/wfc/submitted/`, {
+      withCredentials: true
+
+    })
+
+  }
+
+  getCreditsRequestedApplications(): Observable<Application[]> {
+    return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}project_applications/credits_requests/`, {
+      withCredentials: true
+
+    })
+
+  }
+
+  getLifetimeRequestedApplications(): Observable<Application[]> {
+    return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}project_applications/wfc/credits_requests/`, {
+      withCredentials: true
+
+    })
+
+  }
+
+  getwfcLifetimeRequestedApplications(): Observable<Application[]> {
+    return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}project_applications/wfc/lifetime_requests/`, {
+      withCredentials: true
+
+    })
+
+  }
+
+  getModificationRequestedApplications(): Observable<Application[]> {
+    return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}project_applications/modifications_requested/`, {
+      withCredentials: true
+
+    })
+
+  }
+
+  getwfcModificationRequestedApplications(): Observable<Application[]> {
+    return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}project_applications/wfc/modifications_requested/`, {
+      withCredentials: true
+
+    })
+
+  }
+
   getAllCreditsExtensionRequests(): Observable<Application[]> {
     return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}project_applications/credits/extensions/`, {
       withCredentials: true
