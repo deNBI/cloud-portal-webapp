@@ -25,8 +25,8 @@ export class ApplicationModification {
   constructor(extension: ApplicationModification | null) {
     if (extension) {
       this._project_application_id = extension.project_application_id;
-      this._cloud_service_develop=extension.cloud_service_develop;
-      this._cloud_service_user_number=extension.cloud_service_user_number;
+      this._cloud_service_develop = extension.cloud_service_develop;
+      this._cloud_service_user_number = extension.cloud_service_user_number;
       this._vms_requested = extension.vms_requested;
       this._volume_limit = extension.volume_limit;
       this._volume_counter = extension.volume_counter;
@@ -92,7 +92,6 @@ export class ApplicationModification {
   set user(value: User) {
     this._user = value;
   }
-
 
   public addFlavorToRequested(flavor: Flavor): void {
     this._flavors.push(flavor)
