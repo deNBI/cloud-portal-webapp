@@ -219,7 +219,6 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
     return dummy;
   }
 
-
   /**
    * Get status names  by status id.
    * TODO: replace old status function, which only gives one status
@@ -227,7 +226,7 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
    * @returns {string}
    */
   public getStatusesById(ids: [number]): [string] {
-    return [""];
+    return [''];
   }
 
   /**
