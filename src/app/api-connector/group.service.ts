@@ -170,9 +170,6 @@ export class GroupService {
     })
   }
 
-
-
-
   setPerunGroupStatus(group_id: string, status: string): Observable<any> {
 
     const params: HttpParams = new HttpParams().set('status', status);
@@ -182,7 +179,6 @@ export class GroupService {
       // headers: header
     })
   }
-
 
   getGroupsDetails(): Observable<any> {
     return this.http.get(`${ApiSettings.getApiBaseURL()}projects/details/`, {

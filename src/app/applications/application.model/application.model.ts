@@ -149,7 +149,6 @@ export class Application {
     }
   }
 
-
   public hasSubmittedStatus(): boolean {
     return this.project_application_status.includes(Application_States.SUBMITTED)
   }
