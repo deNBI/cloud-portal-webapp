@@ -317,7 +317,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
             console.log(err.message)
           }
         )),
-      10000);
+      5000);
   }
 
   initExampleFlavors(): void {
@@ -536,6 +536,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
       this.getListOfTypes();
       this.getDois();
       this.is_vo_admin = is_vo;
+      this.applicationsservice.approveAdditionalCreditsRequest(this.application_id).subscribe()
     });
 
   }
@@ -544,7 +545,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
     this.subscription.unsubscribe();
     if (this.updateCreditsUsedIntervals) {
       clearInterval(this.updateCreditsUsedIntervals);
-    } catch (someError) {}
+    }
   }
 
   getDois(): void {

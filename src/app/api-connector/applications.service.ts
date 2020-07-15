@@ -124,8 +124,8 @@ export class ApplicationsService {
   }
 
   requestModification(modification: ApplicationModification): Observable<any> {
-   return this.http.post(`${ApiSettings.getApiBaseURL()}project_applications/modifications/`,
-                         modification, {
+    return this.http.post(`${ApiSettings.getApiBaseURL()}project_applications/modifications/`,
+                          modification, {
                             withCredentials: true
                           })
   }
@@ -144,6 +144,20 @@ export class ApplicationsService {
                           })
   }
 
+  deleteAdditionalCreditsRequests(request_id: number | string): Observable<any> {
+    return this.http.delete(`${ApiSettings.getApiBaseURL()}project_applications/credits/extensions/${request_id}/`,
+                            {
+                              withCredentials: true
+                            })
+  }
+
+  declineAdditionalCredits(request_id: number | string): Observable<any> {
+    return this.http.post(`${ApiSettings.getApiBaseURL()}project_applications/credits/extensions/${request_id}/decline/`,
+                          null, {
+                            withCredentials: true
+                          })
+  }
+
   approveAdditionalCreditsRequest(request_id: number | string): Observable<any> {
     return this.http.post(`${ApiSettings.getApiBaseURL()}project_applications/credits/extensions/${request_id}/approve/`,
                           null, {
@@ -158,25 +172,39 @@ export class ApplicationsService {
                           })
   }
 
-  approveModification(request_id: number | string): Observable<any> {
+  declineAdditionalifetime(request_id: number | string): Observable<any> {
+    return this.http.post(`${ApiSettings.getApiBaseURL()}project_applications/lifetime/extensions/${request_id}/decline/`,
+                          null, {
+                            withCredentials: true
+                          })
+  }
+
+  deleteAdditionalLifetimeRequests(request_id: number | string): Observable<any> {
+    return this.http.delete(`${ApiSettings.getApiBaseURL()}project_applications/credits/lifetime/${request_id}/`,
+                            {
+                              withCredentials: true
+                            })
+  }
+
+  approveModificationRequest(request_id: number | string): Observable<any> {
     return this.http.post(`${ApiSettings.getApiBaseURL()}project_applications/modifications/${request_id}/approve/`,
                           null, {
                             withCredentials: true
                           })
   }
 
-  getAllApplicationsRenewalRequests(): Observable<any> {
-    return this.http.get(`${ApiSettings.getApiBaseURL()}applicationsRenewals/`, {
-      withCredentials: true
-    })
-
+  declineModificationRequest(request_id: number | string): Observable<any> {
+    return this.http.post(`${ApiSettings.getApiBaseURL()}project_applications/modifications/${request_id}/decline/`,
+                          null, {
+                            withCredentials: true
+                          })
   }
 
-  getApplicationsRenewalRequest(application_id: number): Observable<any> {
-    return this.http.get(`${ApiSettings.getApiBaseURL()}applicationsRenewals/${application_id}/`, {
-      withCredentials: true
-    })
-
+  deleteModificationRequest(request_id: number | string): Observable<any> {
+    return this.http.delete(`${ApiSettings.getApiBaseURL()}project_applications/modifications/${request_id}/`,
+                            {
+                              withCredentials: true
+                            })
   }
 
   deleteApplication(application_id: string | number): Observable<any> {

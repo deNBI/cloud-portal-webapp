@@ -170,15 +170,8 @@ export class GroupService {
     })
   }
 
-  setDescription(groupid: string, description: string): Observable<any> {
 
-    const params: HttpParams = new HttpParams().set('description', description).set('groupid', groupid);
 
-    return this.http.post(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/description/`, params, {
-      withCredentials: true
-    })
-
-  }
 
   setPerunGroupStatus(group_id: string, status: string): Observable<any> {
 
@@ -190,57 +183,6 @@ export class GroupService {
     })
   }
 
-  setGroupVolumeLimit(group_id: number, value: number): Observable<any> {
-
-    const params: HttpParams = new HttpParams().set('value', value.toString());
-
-    return this.http.post(`${ApiSettings.getApiBaseURL()}projects/${group_id}attributes/volumeLimit/`, params, {
-      withCredentials: true
-      // headers: header
-    })
-  }
-
-  setGroupVolumeCounter(group_id: number, value: number): Observable<any> {
-
-    const params: HttpParams = new HttpParams().set('value', value.toString());
-
-    return this.http.post(`${ApiSettings.getApiBaseURL()}projects/${group_id}/attributes/volumesCounter/`, params, {
-      withCredentials: true
-    })
-  }
-
-  setName(groupid: string, name: string): Observable<any> {
-    const params: HttpParams = new HttpParams().set('name', name);
-
-    return this.http.post(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/name/`, params, {
-      withCredentials: true
-    })
-  }
-
-  getName(groupid: string): Observable<any> {
-    return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/name/`, {
-      withCredentials: true
-    })
-
-  }
-
-  setShortname(groupid: string, shortname: string): Observable<any> {
-    const params: HttpParams = new HttpParams().set('shortname', shortname)
-
-    return this.http.post(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/shortname/`, params, {
-      withCredentials: true
-    })
-
-  }
-
-  getShortame(groupid: string): Observable<any> {
-
-    return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/shortname/`, {
-      withCredentials: true,
-      params: {groupid: groupid}
-    })
-
-  }
 
   getGroupsDetails(): Observable<any> {
     return this.http.get(`${ApiSettings.getApiBaseURL()}projects/details/`, {
