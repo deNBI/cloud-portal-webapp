@@ -137,25 +137,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
   }
 
-  /**
-   * Get all Credit Extension Requests if user is admin.
-   */
-  getAllCreditExtensionRequests(): void {
-    if (this.is_vo_admin) {
-      this.applicationsservice.getAllCreditsExtensionRequests().subscribe((credity_extension_applications: Application[]): void => {
-        for (const application of credity_extension_applications) {
-          this.all_credit_extension_appl.push(new Application(application));
 
-        }
-        this.isLoaded = true;
-        for (const app of this.all_credit_extension_appl) {
-
-          this.getFacilityProject(app);
-        }
-
-      })
-    }
-  }
 
   /**
    * Get all Applications if user is admin.

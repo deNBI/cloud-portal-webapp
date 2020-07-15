@@ -118,7 +118,7 @@ export class ApplicationsService {
 
   }
 
-  getLifetimeRequestedApplications(): Observable<Application[]> {
+  getWfcCreditsRequestedApplications(): Observable<Application[]> {
     return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}project_applications/wfc/credits_requests/`, {
       withCredentials: true
 
@@ -126,7 +126,15 @@ export class ApplicationsService {
 
   }
 
-  getwfcLifetimeRequestedApplications(): Observable<Application[]> {
+    getLifetimeRequestedApplications(): Observable<Application[]> {
+    return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}project_applications/lifetime_requests/`, {
+      withCredentials: true
+
+    })
+
+  }
+
+  geWfcLifetimeRequestedApplications(): Observable<Application[]> {
     return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}project_applications/wfc/lifetime_requests/`, {
       withCredentials: true
 
@@ -150,13 +158,7 @@ export class ApplicationsService {
 
   }
 
-  getAllCreditsExtensionRequests(): Observable<Application[]> {
-    return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}project_applications/credits/extensions/`, {
-      withCredentials: true
 
-    })
-
-  }
 
   getCreditsExtensionRequest(): Observable<any> {
     return this.http.get(`${ApiSettings.getApiBaseURL()}project_applications/credits/extensions/`, {
