@@ -87,7 +87,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
     this.is_vo_admin = is_vo;
     this.getApplicationStatus();
     if (this.is_vo_admin) {
-      this.getAllApplications();
+      this.getSubmittedApplications();
       this.getComputeCenters();
 
     } else {
@@ -149,6 +149,30 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
         }
         this.isLoaded = true;
         for (const app of this.all_credit_extension_appl) {
+
+          this.getFacilityProject(app);
+        }
+
+      })
+    }
+  }
+
+  /**
+   * Get all Applications if user is admin.
+   */
+  getSubmittedApplications(): void {
+    if (this.is_vo_admin) {
+
+      this.applicationsservice.getSubmittedApplications().subscribe((applications: Application[]): void => {
+        if (applications.length === 0) {
+          this.isLoaded_userApplication = true;
+        }
+        for (const application of applications) {
+          this.all_applications.push(new Application(application));
+
+        }
+        this.isLoaded = true;
+        for (const app of this.all_applications) {
 
           this.getFacilityProject(app);
         }
