@@ -12,10 +12,10 @@ export const environment: any = {
   invitation_group_pre: 'https://perun.elixir-czech.cz/fed/registrar/?vo=elixir&targetnew=https%3A%2F%2Fperun.elixir-czech.cz' +
     '%2Ffed%2Fregistrar%2F%3Fvo%3Ddenbi-dev%26group%3D',
   invitation_group_post: '&targetexisting=https%3A%2F%2Fperun.elixir-czech.cz%2Ffed%2Fregistrar%2F%3Fvo%3Ddenbi-dev%26group%3D',
-  apiBaseUrl: 'http://localhost/api/v0/',
-  apiBase: 'http://localhost/',
+  apiBaseUrl: 'http://localhost:8000/api/v0/',
+  apiBase: 'http://localhost:8000/',
   voRegistrationLink: 'https://perun.elixir-czech.cz/registrar/?vo=denbi-dev',
-  login: 'http://localhost/api/v0/loggedUser/',
+  login: 'http://localhost:8000/api/v0/loggedUser/',
   webapp: 'http://localhost:8001/',
   matomoServer: ''
 
