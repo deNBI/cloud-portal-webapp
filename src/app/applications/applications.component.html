@@ -10,19 +10,20 @@
 
     <div class="card-header">
       <i class="fa fa-align-justify"></i> Applications for review
-      <div class="btn-group" role="group">
-        <button class="btn btn-info"  (click)="changeTabState(TabStates.SUBMITTED);"> Submitted Application
-        </button>
-        <button class="btn btn-danger"
-                (click)="changeTabState(TabStates.CREDITS_EXTENSION);"> Credit Extension
-          Request
-        </button>
-        <button class="btn btn-warning">Lifetime Extension Requests</button>
-      </div>
     </div>
 
+    <div class="btn-group" role="group">
+      <button class="btn btn-info"  (click)="changeTabState(TabStates.SUBMITTED);"><i class="fas fa-envelope"></i> Submitted Applications
+      </button>
+      <button class="btn btn-danger"
+              (click)="changeTabState(TabStates.CREDITS_EXTENSION);"><i class="fas fa-coins"></i> Credit Extension
+        Requests
+      </button>
+      <button class="btn btn-warning"><i class="fas fa-clock"></i> Lifetime Extension Requests</button>
+    </div>
     <ng-container [ngSwitch]="tab_state">
       <ng-container *ngSwitchCase="TabStates.SUBMITTED">
+
       <div class="card-body"
            *ngIf="all_applications.length <= 0">
         <div class="alert alert-success" role="alert">
