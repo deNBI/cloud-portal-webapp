@@ -43,7 +43,7 @@
     "@angular/router": "^10.0.1",
     "@angular/service-worker": "^10.0.1",
     "@angular/upgrade": "^10.0.1",
-    "@coreui/angular": "^2.9.2",
+    "@coreui/angular": "^2.9.4",
     "@coreui/coreui": "2.1.8",
     "@ng-bootstrap/ng-bootstrap": "^7.0.0",
     "@types/jquery": "^3.5.0",
