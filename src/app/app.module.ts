@@ -6,7 +6,7 @@ import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import {TabsModule} from 'ngx-bootstrap/tabs';
 import {AppComponent} from './app.component';
 
-import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule, HttpClientXsrfModule} from '@angular/common/http';
 import {ChartsModule} from 'ng2-charts';
 import {ModalModule} from 'ngx-bootstrap/modal';
 import {PaginationModule} from 'ngx-bootstrap/pagination';
@@ -39,12 +39,14 @@ import {CookieService} from 'ngx-cookie-service';
 
 import {TitleHeadbarComponent} from './shared/title-headbar.component';
 import {VoService} from './api-connector/vo.service';
+
 /**
  * App module.
  */
 @NgModule({
 
             imports: [
+              HttpClientXsrfModule.withOptions({cookieName: 'csrftoken', headerName: 'X-CSRFTOKEN'}),
               AppAsideModule,
               AppBreadcrumbModule.forRoot(),
               AppHeaderModule,
