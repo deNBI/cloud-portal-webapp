@@ -716,10 +716,10 @@
           <div class="btn-group btn-group-lg" role="group" style="width:100%;">
             <button (click)="resourceModificationModal.show(); chooseModal.hide();"
               type="button" class="btn btn-primary btn-lg" style="width:50%;"
-            id="resource_modification_button">Resource modification</button>
+            id="resource_modification_button">Resource Modification</button>
             <button (click)="projectExtensionModal.show(); chooseModal.hide();"
                     type="button" class="btn btn-success btn-lg" style="width:50%;"
-            id="project_extension_button">Project extension</button>
+            id="project_extension_button">Project Extension</button>
           </div>
         </div>
       </div>
@@ -1174,8 +1174,8 @@
                        name="project_extension_application_renewal_lifetime"
                        placeholder="e.g. 3"
                        [(ngModel)]="project_application?.project_application_extension.extra_lifetime"
-                       type="number" min="0" max="12" step="1" required
-                       appInteger appMinAmount="0" appMaxAmount="12"
+                       type="number" min="1" max="12" step="1" required
+                       appInteger appMinAmount="1" appMaxAmount="12"
                        [ngClass]="{
                                 'is-invalid': extensionForm.controls.project_application_renewal_lifetime?.invalid
                                 && (extensionForm.controls.project_application_renewal_lifetime?.dirty
@@ -1246,8 +1246,8 @@
 
           <strong *ngIf="is_vo_admin">
             <div *ngIf="is_vo_admin" class="form-group row">
-              <label #corenumbers id="creditnumber" class="col">Expected number of extra credits: <span
-                id="modification_credits">{{project_application?.project_application_extension.extra_credits}}</span></label>
+              <label #corenumbers id="creditnumber_extension" class="col">Expected number of extra credits: <span
+                id="extension_credits">{{project_application?.project_application_extension.extra_credits}}</span></label>
             </div>
             <div class="alert alert-primary" role="alert">
               This is the expected number of extra credits that you get for your project. It accounts for an increase in
@@ -1276,9 +1276,10 @@
             By submitting this extension application you agree to the cloud usage policy.
           </div>
           <button type="button" class="btn  btn-primary"
-                  form="extensionForm" id="submit_extension_btn"
+                  form="extension_application_form" id="submit_extension_btn"
                   (click)="
-                  calculateCreditsLifeTime();requestExtension();projectExtensionModal.hide();"
+                  calculateCreditsLifeTime();requestExtension();projectExtensionModal.hide();
+                  submitModal.show();"
                   [disabled]="extensionForm.invalid || (!project_application?.project_application_edam_terms && selected_ontology_terms.length < 1)">
             <i
               class="fa fa-dot-circle-o">
@@ -1737,7 +1738,7 @@
                     <td>{{project_application?.project_application_shortname}}</td>
                     <td>{{ project_application?.project_application_lifetime }} months</td>
                     <td>{{ project_application?.project_application_date_submitted }}</td>
-                    <td><span *ngFor="let st of project_application?.project_application_status ">{{
+                    <td><span class="badge bg-secondary" *ngFor="let st of project_application?.project_application_status ">{{
                       getStatusById(st)  }}</span></td>
                   </tr>
 

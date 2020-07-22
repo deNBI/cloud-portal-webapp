@@ -194,21 +194,21 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   calculateCreditsLifeTime(): void {
     this.subscription.add(this.creditsService.getExtraCreditsForExtension(this.project_application.project_application_total_cores,
                                                                           this.project_application.project_application_total_ram,
-                                                                          this.project_application.project_application_extension.extra_lifetime,
+                                                                          this.project_application.project_lifetime_request.extra_lifetime,
                                                                           this.project_application.project_application_id.toString()).subscribe(
       (credits: number): void => {
-        this.project_application.project_application_extension.extra_credits = credits;
+        this.project_application.project_lifetime_request.extra_credits = credits;
       }))
 
   }
 
   calculateCreditsModification(): void {
-    this.subscription.add(this.creditsService.getExtraCreditsForExtension(this.project_application.project_application_modification.total_cores,
-                                                                          this.project_application.project_application_modification.total_ram,
+    this.subscription.add(this.creditsService.getExtraCreditsForExtension(this.project_application.project_modification_request.total_cores,
+                                                                          this.project_application.project_modification_request.total_ram,
                                                                           this.project_application.project_application_lifetime,
                                                                           this.project_application.project_application_id.toString()).subscribe(
       (credits: number): void => {
-        this.project_application.project_application_modification.extra_credits = credits;
+        this.project_application.project_modification_request.extra_credits = credits;
       }))
 
   }
@@ -221,7 +221,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
                                                     this.totalRAM, lifetime,
                                                     this.project_application.project_application_id.toString()).subscribe(
       (credits: number): void => {
-        this.project_application.project_application_modification.extra_credits = credits;
+        this.project_application.project_modification_request.extra_credits = credits;
       })
 
   }
@@ -379,10 +379,10 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
           }
 
           this.project_application = new Application(aj);
-          if (!this.project_application.project_application_extension) {
+          if (!this.project_application.project_lifetime_request) {
             this.project_application.inititateExtension();
           }
-          if (!this.project_application.project_application_modification) {
+          if (!this.project_application.project_lifetime_request) {
             this.project_application.inititateModification();
           }
           if (!this.project_application.project_credit_request) {
@@ -418,7 +418,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   }
 
   public requestModification(): void {
-    this.applicationsservice.requestModification(this.project_application.project_application_modification)
+    this.applicationsservice.requestModification(this.project_application.project_modification_request)
       .subscribe((result: { [key: string]: string }): void => {
         if (result['Error']) {
           this.extension_status = 2
@@ -444,7 +444,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   }
 
   public requestExtension(): void {
-    this.applicationsservice.requestAdditionalLifetime(this.project_application.project_application_extension)
+    this.applicationsservice.requestAdditionalLifetime(this.project_application.project_lifetime_request)
       .subscribe((result: { [key: string]: string }): void => {
         if (result['Error']) {
           this.extension_status = 2
@@ -1095,7 +1095,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   }
 
   onChangeFlavor(flavor: Flavor, value: number): void {
-    this.project_application.project_application_modification.setFlavorInFlavors(flavor, value)
+    this.project_application.project_modification_request.setFlavorInFlavors(flavor, value)
 
     this.checkIfMinVmIsSelected();
   }

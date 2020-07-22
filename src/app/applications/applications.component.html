@@ -110,8 +110,8 @@
                   <td>{{application?.project_application_institute}}</td>
 
                   <td>
+                    <!-- into select: [style.display]=" (application?.hasSubmittedStatus() || application?.hasConfirmationDeniedStatus()|| (!application?.ComputeCenter?.FacilityId ))? 'inherit' :'none'"-->
                     <select
-                      [style.display]=" (application?.hasSubmittedStatus() || application?.hasConfirmationDeniedStatus()|| (!application?.ComputeCenter?.FacilityId ))? 'inherit' :'none'"
                       class="form-control" [id]="'id_compute_center_option_' + application?.project_application_name"
                       #selectedComputeCenter>
 
@@ -226,7 +226,10 @@
                     [class.collapse_no_margin]="getCollapseStatus('application_review-' + application?.project_application_id)"
                     [class.collapse]="getCollapseStatus('application_review-' + application?.project_application_id)"
                     [application]="application"
-                    [isModification]="application.project_application_extension || application.project_application_modification"></app-application-detail>
+                    [isModification]="application.project_application_status
+                      .includes(this.application_states.MODIFICATION_REQUESTED) ||
+                      application.project_application_status
+                      .includes(this.application_states.LIFETIME_EXTENSION_REQUESTED)"></app-application-detail>
                 </td>
               </ng-container>
 

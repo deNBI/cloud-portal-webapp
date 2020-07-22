@@ -75,8 +75,8 @@ export class Application {
   private _ComputeCenter: ComputecenterComponent;
   private _project_application_openstack_project: boolean;
   private _DaysRunning: number;
-  private _project_application_extension: ApplicationLifetimeExtension = null;
-  private _project_application_modification: ApplicationModification;
+  private _project_lifetime_request: ApplicationLifetimeExtension = null;
+  private _project_modification_request: ApplicationModification;
   private _project_credit_request: ApplicationCreditRequest = null;
   private _project_application_perun_id: number | string;
   private _project_application_total_cores: number;
@@ -121,8 +121,11 @@ export class Application {
       this._ComputeCenter = aj.ComputeCenter;
       this._project_application_openstack_project = aj.project_application_openstack_project;
       this._DaysRunning = aj.DaysRunning;
-      if (aj.project_application_extension) {
-        this._project_application_extension = new ApplicationLifetimeExtension(aj.project_application_extension);
+      if (aj.project_lifetime_request) {
+        this._project_lifetime_request = new ApplicationLifetimeExtension(aj.project_lifetime_request);
+      }
+      if (aj.project_modification_request){
+        this._project_modification_request = new ApplicationModification(aj.project_modification_request);
       }
       this._project_application_perun_id = aj.project_application_perun_id;
       this._project_application_total_cores = aj.project_application_total_cores;
@@ -202,10 +205,10 @@ export class Application {
   }
 
   public inititateExtension(): void {
-    this._project_application_extension = new ApplicationLifetimeExtension(null);
-    this._project_application_extension.project_application_id = this._project_application_id;
-    this._project_application_extension.extra_lifetime = 0;
-    this._project_application_extension.comment = '';
+    this._project_lifetime_request = new ApplicationLifetimeExtension(null);
+    this._project_lifetime_request.project_application_id = this._project_application_id;
+    this._project_lifetime_request.extra_lifetime = 0;
+    this._project_lifetime_request.comment = '';
   }
 
     public initiateCreditsRequest(): void {
@@ -216,12 +219,12 @@ export class Application {
   }
 
   public inititateModification(): void {
-    this._project_application_modification = new ApplicationModification(null);
-    this._project_application_modification.project_application_id = this._project_application_id;
-    this._project_application_modification.volume_counter = this.project_application_volume_counter;
-    this._project_application_modification.volume_limit = this.project_application_volume_limit;
+    this._project_modification_request = new ApplicationModification(null);
+    this._project_modification_request.project_application_id = this._project_application_id;
+    this._project_modification_request.volume_counter = this.project_application_volume_counter;
+    this._project_modification_request.volume_limit = this.project_application_volume_limit;
     if (this._project_application_openstack_project) {
-      this._project_application_modification.object_storage = this._project_application_object_storage;
+      this._project_modification_request.object_storage = this._project_application_object_storage;
     }
 
     // Todo fill more
@@ -400,12 +403,12 @@ export class Application {
     this._project_application_total_ram = value;
   }
 
-  get project_application_extension(): ApplicationLifetimeExtension {
-    return this._project_application_extension;
+  get project_lifetime_request(): ApplicationLifetimeExtension {
+    return this._project_lifetime_request;
   }
 
-  set project_application_extension(value: ApplicationLifetimeExtension) {
-    this._project_application_extension = value;
+  set project_lifetime_request(value: ApplicationLifetimeExtension) {
+    this._project_lifetime_request = value;
   }
 
   get DaysRunning(): number {
@@ -593,9 +596,9 @@ export class Application {
   }
 
   get TotalModificationCredits(): number {
-    if (this.project_application_modification != null) {
+    if (this.project_modification_request != null) {
       return Number(this.project_application_initial_credits) +
-        Number(this.project_application_modification.extra_credits)
+        Number(this.project_modification_request.extra_credits)
     } else {
       return this.project_application_initial_credits
     }
@@ -609,12 +612,12 @@ export class Application {
     this._project_application_cloud_service_develop = value;
   }
 
-  get project_application_modification(): ApplicationModification {
-    return this._project_application_modification;
+  get project_modification_request(): ApplicationModification {
+    return this._project_modification_request;
   }
 
-  set project_application_modification(value: ApplicationModification) {
-    this._project_application_modification = value;
+  set project_modification_request(value: ApplicationModification) {
+    this._project_modification_request = value;
   }
 
   get project_credit_request(): ApplicationCreditRequest {

@@ -240,6 +240,9 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
             }
             this.isLoaded = true;
             console.log(this.all_applications);
+            this.all_applications.forEach((application: Application ) => {
+              console.log(application.project_modification_request);
+            })
           });
       }
 
