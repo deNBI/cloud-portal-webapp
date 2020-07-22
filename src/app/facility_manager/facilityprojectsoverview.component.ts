@@ -300,7 +300,6 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 
         this.projects.push(newProject);
       }
-      console.log(this.projects)
       this.applyFilter();
       this.isLoaded = true;
 
