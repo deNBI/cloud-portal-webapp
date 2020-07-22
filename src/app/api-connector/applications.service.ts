@@ -143,7 +143,7 @@ export class ApplicationsService {
   }
 
   getModificationRequestedApplications(): Observable<Application[]> {
-    return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}project_applications/modifications_requested/`, {
+    return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}project_applications/modifications_requests/`, {
       withCredentials: true
 
     })
@@ -151,7 +151,7 @@ export class ApplicationsService {
   }
 
   getwfcModificationRequestedApplications(): Observable<Application[]> {
-    return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}project_applications/wfc/modifications_requested/`, {
+    return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}project_applications/wfc/modifications_requests/`, {
       withCredentials: true
 
     })
