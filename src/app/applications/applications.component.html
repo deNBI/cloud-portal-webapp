@@ -13,23 +13,25 @@
     </div>
 
     <div class="btn-group" role="group">
-      <button class="btn btn-info"  (click)="changeTabState(TabStates.SUBMITTED);"><i class="fas fa-envelope"></i> Submitted Applications
+      <button class="btn btn-info"  (click)="changeTabState(TabStates.SUBMITTED);">
+        <i class="fas fa-envelope"></i> Submitted Applications
       </button>
       <button class="btn btn-danger"
-              (click)="changeTabState(TabStates.CREDITS_EXTENSION);"><i class="fas fa-coins"></i> Credit Extension
-        Requests
+              (click)="changeTabState(TabStates.CREDITS_EXTENSION);">
+        <i class="fas fa-coins"></i> Credit Extension Requests
       </button>
-      <button class="btn btn-warning"><i class="fas fa-clock"></i> Lifetime Extension Requests</button>
+      <button class="btn btn-warning" (click)="changeTabState(TabStates.LIFETIME_EXTENSION);">
+        <i class="fas fa-clock"></i> Lifetime Extension Requests</button>
+      <button class="btn btn-light" (click)="changeTabState(TabStates.MODIFICATION_EXTENSION);">
+        <i class="fas fa-memory"></i> Resource Modification Requests
+      </button>
     </div>
     <ng-container [ngSwitch]="tab_state">
       <ng-container *ngSwitchCase="TabStates.SUBMITTED">
 
-      <div class="card-body"
-           *ngIf="all_applications.length <= 0">
+      <div class="card-body" *ngIf="all_applications.length <= 0">
         <div class="alert alert-success" role="alert">
-          <strong>No new Applications!</strong> There are no new
-          project applications for review.
-
+          <strong>No new Applications!</strong> There are no new project applications for review.
         </div>
       </div>
 
@@ -54,7 +56,7 @@
               *ngFor="let application of all_applications">
 
               <ng-container
-                *ngIf="application?.hasSubmittedStatus() || application?.hasModificationRequestedStatus() || application?.hasWaitForConfirmationStatus() || application?.hasConfirmationDeniedStatus()">
+                >
                 <tr>
                   <td>
                                               <span *ngIf="application?.project_application_openstack_project"
@@ -175,7 +177,7 @@
                       <button [id]="'extension_approval_' + application.project_application_shortname"
                               *ngIf="application?.hasModificationRequestedStatus()"
                               style="margin: auto 2.5px"
-                              (click)="setSelectedApplication(application);approveExtension(application);resultModal.show();"
+                              (click)="setSelectedApplication(application);   resultModal.show();"
                               type="button"
                               class="btn btn-success">
                         <i class="fa fa-check"></i>&nbsp;
@@ -196,7 +198,7 @@
                         type="button"
                         class="btn btn-danger"
                         style="margin: auto 2.5px"
-                        (click)="setSelectedApplication(application);declineExtension(application?.project_application_id);resultModal.show();">
+                        (click)="setSelectedApplication(application);  resultModal.show();">
                         <i
                           class="fa fa-close"></i>&nbsp;
                         <span class="applicationActionsButton">Decline Modification</span>
@@ -224,7 +226,7 @@
                     [class.collapse_no_margin]="getCollapseStatus('application_review-' + application?.project_application_id)"
                     [class.collapse]="getCollapseStatus('application_review-' + application?.project_application_id)"
                     [application]="application"
-                    [isModification]="application.projectapplicationrenewal != null && application.projectapplicationrenewal != undefined"></app-application-detail>
+                    [isModification]="application.project_application_extension || application.project_application_modification"></app-application-detail>
                 </td>
               </ng-container>
 
