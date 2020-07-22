@@ -169,11 +169,10 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 
     }
 
-    this.projects_filtered = this.projects.filter((project: Project): any => {
-                                                    this.checkFilter(project)
+    this.projects_filtered = this.projects.filter((project: Project): boolean => {
+                                                   return this.checkFilter(project)
                                                   }
-    )
-    ;
+    );
 
   }
 
