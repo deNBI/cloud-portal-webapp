@@ -834,7 +834,7 @@
                                type="number" min="0" step="1"
                                placeholder="e.g 1"
                                (ngModelChange)="onChangeFlavor(fl,$event)"
-                               [ngModel]="project_application?.project_application_modification?.getFlavorCounter(fl)"
+                               [ngModel]="project_modification?.getFlavorCounter(fl)"
                                #name="ngModel"
                                appMinAmount="0" appIntegerOrNull
                                [ngClass]="{
@@ -879,7 +879,7 @@
                        name="project_application_renewal_volume_counter"
                        placeholder="e.g. 20"
                        type="number" min="0" step="1"
-                       [(ngModel)]="project_application?.project_application_modification.volume_counter"
+                       [(ngModel)]="project_modification.volume_counter"
                        appMinAmount="0" appInteger
                        [ngClass]="{
                                 'is-invalid': modificationForm.controls.project_application_renewal_volume_counter?.invalid,
@@ -917,7 +917,7 @@
                        name="project_application_renewal_volume_limit"
                        placeholder="e.g. 20"
                        type="number" min="1" step="1"
-                       [(ngModel)]="project_application?.project_application_modification.volume_limit"
+                       [(ngModel)]="project_modification.volume_limit"
                        appMinAmount="1" appInteger
                        [ngClass]="{
                                 'is-invalid': modificationForm.controls.project_application_renewal_volume_limit?.invalid,
@@ -960,7 +960,7 @@
                        id="id_project_application_renewal_object_storage"
                        name="project_application_renewal_object_storage"
                        placeholder="e.g. 8"
-                       [(ngModel)]="project_application?.project_application_modification.object_storage"
+                       [(ngModel)]="project_modification.object_storage"
                        type="number" min="0" step="1"
                        appInteger appMinAmount="0" required
                        [ngClass]="{
@@ -994,7 +994,7 @@
                   <input type="checkbox" class="switch-input"
                          name="project_application_renewal_cloud_service_develop"
                          [defaultChecked]="project_application?.project_application_cloud_service_develop"
-                         [(ngModel)]="project_application.project_application_cloud_service_develop"
+                         [(ngModel)]="project_modification.cloud_service_develop"
                   >
                   <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
                   <span class="switch-handle"></span></label>
@@ -1033,7 +1033,7 @@
                        id="id_project_application_renewal_cloud_service_user_number"
                        name="project_application_renewal_cloud_service_user_number"
                        placeholder="e.g. 200"
-                       [(ngModel)]="project_application?.project_application_modification.cloud_service_user_number"
+                       [(ngModel)]="project_modification.cloud_service_user_number"
                        type="number" min="0" step="1"
                        appInteger appMinAmount="0" required
                        [ngClass]="{
@@ -1055,7 +1055,7 @@
                           name="project_application_renewal_comment" class="form-control"
                           maxlength="8192"
                           placeholder=''
-                          [(ngModel)]="project_application?.project_application_modification.comment"></textarea>
+                          [(ngModel)]="project_modification.comment"></textarea>
               <span class="help-block">Additional information you want to share?</span>
             </div>
           </div>
@@ -1073,7 +1073,7 @@
           <strong *ngIf="is_vo_admin">
             <div *ngIf="is_vo_admin" class="form-group row">
               <label #corenumbers id="creditnumber" class="col">Expected number of extra credits: <span
-                id="modification_credits">{{project_application?.project_application_modification.extra_credits}}</span></label>
+                id="modification_credits">{{project_modification.extra_credits}}</span></label>
             </div>
             <div class="alert alert-primary" role="alert">
               This is the expected number of extra credits that you get for your project. It accounts for an increase in
@@ -1173,7 +1173,7 @@
                        id="project_extension_application_renewal_lifetime"
                        name="project_extension_application_renewal_lifetime"
                        placeholder="e.g. 3"
-                       [(ngModel)]="project_application?.project_application_extension.extra_lifetime"
+                       [(ngModel)]="project_application?.project_lifetime_request.extra_lifetime"
                        type="number" min="1" max="12" step="1" required
                        appInteger appMinAmount="1" appMaxAmount="12"
                        [ngClass]="{
@@ -1238,7 +1238,7 @@
                           name="project_application_renewal_comment" class="form-control"
                           maxlength="8192"
                           placeholder=''
-                          [(ngModel)]="project_application?.project_application_extension.comment"></textarea>
+                          [(ngModel)]="project_extension.comment"></textarea>
               <span class="help-block">Additional information you want to share?</span>
             </div>
           </div>
@@ -1247,7 +1247,7 @@
           <strong *ngIf="is_vo_admin">
             <div *ngIf="is_vo_admin" class="form-group row">
               <label #corenumbers id="creditnumber_extension" class="col">Expected number of extra credits: <span
-                id="extension_credits">{{project_application?.project_application_extension.extra_credits}}</span></label>
+                id="extension_credits">{{project_extension.extra_credits}}</span></label>
             </div>
             <div class="alert alert-primary" role="alert">
               This is the expected number of extra credits that you get for your project. It accounts for an increase in
@@ -1345,8 +1345,8 @@
                      id="project_application_extra_credits"
                      name="project_application_extra_credits"
                      placeholder="e.g. 5000"
-                     (change)="updateExampleCredits(project_application?.project_credit_request?.extra_credits);"
-                     [(ngModel)]="project_application?.project_credit_request.extra_credits" min="100" step="100" type="number"
+                     (change)="updateExampleCredits(project_credit_request.extra_credits);"
+                     [(ngModel)]="project_credit_request.extra_credits" min="100" step="100" type="number"
                      appInteger appMinAmount="100"
                      [ngClass]="{
                                 'is-invalid': f2.controls.project_application_extra_credits?.invalid && (f2.controls.project_application_extra_credits?.dirty || f2.controls.project_application_extra_credits?.touched),
@@ -1440,16 +1440,16 @@
 
             <tr *ngIf="is_vo_admin" >
               <td><strong>Approximate number of extra credits:
-                {{project_application?.project_application_extension.project_application_extension_credits}}</strong></td>
+                {{project_application?.project_lifetime_request.extra_credits}}</strong></td>
             </tr>
             <tr *ngIf="request_type == ExtensionRequestType.MODIFICATION">
               <td><strong>Number of cores in total:
-                {{project_application?.project_application_modification?.total_cores}}</strong>
+                {{project_application?.project_modification_request?.total_cores}}</strong>
               </td>
             </tr>
             <tr *ngIf="request_type == ExtensionRequestType.MODIFICATION">
               <td><strong>Value of RAM in
-                total: {{project_application?.project_application_modification?.total_ram}}
+                total: {{project_application?.project_modification_request?.total_ram}}
                 GBs</strong>
               </td>
             </tr>

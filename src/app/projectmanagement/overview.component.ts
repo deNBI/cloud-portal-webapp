@@ -30,6 +30,9 @@ import {AutocompleteComponent} from 'angular-ng-autocomplete';
 import {DOCUMENT} from '@angular/common';
 import {Chart} from 'chart.js';
 import {ExtensionRequestType} from '../shared/shared_modules/baseClass/abstract-base-class';
+import {ApplicationLifetimeExtension} from "../applications/application_extension.model";
+import {ApplicationModification} from "../applications/application_modification.model";
+import {ApplicationCreditRequest} from "../applications/application_credit_request";
 
 /**
  * Projectoverview component.
@@ -104,6 +107,9 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   invitation_link: string;
   filteredMembers: any = null;
   project_application: Application;
+  project_extension: ApplicationLifetimeExtension;
+  project_modification: ApplicationModification;
+  project_credit_request: ApplicationCreditRequest;
   project_service_in_development: boolean = true;
   application_action: string = '';
   application_member_name: string = '';
@@ -536,6 +542,16 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
       this.getListOfTypes();
       this.getDois();
       this.is_vo_admin = is_vo;
+      if (this.project_application?.project_modification_request){
+        this.project_modification = this.project_application.project_modification_request;
+      } else this.project_modification = new ApplicationModification(null);
+      if (this.project_application?.project_lifetime_request){
+        this.project_extension = this.project_application.project_lifetime_request;
+      } else this.project_extension = new ApplicationLifetimeExtension(null);
+      if (this.project_application?.project_credit_request){
+        this.project_credit_request = this.project_application.project_credit_request;
+      } else this.project_credit_request = new ApplicationCreditRequest(null);
+
     });
 
   }

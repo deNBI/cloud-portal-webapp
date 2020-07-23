@@ -24,6 +24,8 @@ export class ApplicationLifetimeExtension {
     }
   }
 
+
+
   get user(): User {
     return this._user;
   }
