@@ -200,10 +200,10 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   calculateCreditsLifeTime(): void {
     this.subscription.add(this.creditsService.getExtraCreditsForExtension(this.project_application.project_application_total_cores,
                                                                           this.project_application.project_application_total_ram,
-                                                                          this.project_application.project_lifetime_request.extra_lifetime,
+                                                                          this.project_extension.extra_lifetime,
                                                                           this.project_application.project_application_id.toString()).subscribe(
       (credits: number): void => {
-        this.project_application.project_lifetime_request.extra_credits = credits;
+        this.project_extension.extra_credits = credits;
       }))
 
   }
@@ -372,6 +372,41 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
     });
   }
 
+  initiateLifetimeExtension(): void {
+    this.project_extension = new ApplicationLifetimeExtension(null);
+    this.project_extension.project_application_id = this.project_application.project_application_id;
+    this.project_extension.extra_lifetime = 0;
+    this.project_extension.comment = '';
+  }
+
+  initiateModificationRequest(): void {
+    this.project_modification = new ApplicationModification(null);
+    this.project_modification.project_application_id = this.project_application.project_application_id;
+    this.project_modification.volume_counter = this.project_application.project_application_volume_counter;
+    this.project_modification.volume_limit = this.project_application.project_application_volume_limit;
+    if (this.project_application.project_application_openstack_project) {
+      this.project_modification.object_storage = this.project_application.project_application_object_storage;
+      this.project_modification.cloud_service_develop =
+        this.project_application.project_application_cloud_service_develop;
+      this.project_application.project_application_cloud_service =
+        this.project_application.project_application_cloud_service;
+      this.project_application.project_application_cloud_service_user_number =
+        this.project_application.project_application_cloud_service_user_number;
+    }
+    this.project_modification.comment = this.project_application.project_application_comment;
+    this.project_modification.flavors = this.project_application.flavors;
+    this.project_modification.total_cores = this.project_application.project_application_total_cores;
+    this.project_modification.total_ram = this.project_application.project_application_total_ram;
+  }
+
+
+  initiateCreditRequest(): void {
+    this.project_credit_request = new ApplicationCreditRequest(null);
+    this.project_credit_request.project_application_id = this.project_application.project_application_id;
+    this.project_credit_request.comment = '';
+    this.project_credit_request.extra_credits = 0;
+  }
+
   getApplication(): void {
     this.applicationsservice
       .getApplication(this.application_id)
@@ -385,15 +420,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
           }
 
           this.project_application = new Application(aj);
-          if (!this.project_application.project_lifetime_request) {
-            this.project_application.inititateExtension();
-          }
-          if (!this.project_application.project_lifetime_request) {
-            this.project_application.inititateModification();
-          }
-          if (!this.project_application.project_credit_request) {
-            this.project_application.initiateCreditsRequest();
-          }
 
           if (this.project_application.project_application_perun_id) {
             this.startUpdateCreditUsageLoop();
@@ -411,6 +437,23 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
               }
 
             })
+            if (this.project_application?.project_modification_request){
+              this.project_modification = this.project_application.project_modification_request;
+            } else {
+              this.initiateModificationRequest();
+            }
+            if (this.project_application?.project_lifetime_request){
+              this.project_extension = this.project_application.project_lifetime_request;
+            } else {
+              this.initiateLifetimeExtension();
+
+            }
+            if (this.project_application?.project_credit_request){
+              this.project_credit_request = this.project_application.project_credit_request;
+            } else {
+              this.initiateCreditRequest();
+            }
+            this.isLoaded = true;
           } else {
             this.isLoaded = true;
           }
@@ -450,7 +493,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   }
 
   public requestExtension(): void {
-    this.applicationsservice.requestAdditionalLifetime(this.project_application.project_lifetime_request)
+    this.project_extension.project_application_id = this.project_application.project_application_id;
+    this.applicationsservice.requestAdditionalLifetime(this.project_extension)
       .subscribe((result: { [key: string]: string }): void => {
         if (result['Error']) {
           this.extension_status = 2
@@ -542,15 +586,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
       this.getListOfTypes();
       this.getDois();
       this.is_vo_admin = is_vo;
-      if (this.project_application?.project_modification_request){
-        this.project_modification = this.project_application.project_modification_request;
-      } else this.project_modification = new ApplicationModification(null);
-      if (this.project_application?.project_lifetime_request){
-        this.project_extension = this.project_application.project_lifetime_request;
-      } else this.project_extension = new ApplicationLifetimeExtension(null);
-      if (this.project_application?.project_credit_request){
-        this.project_credit_request = this.project_application.project_credit_request;
-      } else this.project_credit_request = new ApplicationCreditRequest(null);
 
     });
 

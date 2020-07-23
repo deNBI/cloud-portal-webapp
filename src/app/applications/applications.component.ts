@@ -171,9 +171,6 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
    */
   clearApplicationLists(): void {
     this.all_applications = [];
-    /*this.all_credit_extension_appl = [];
-    this.all_extension_applications = [];
-    this.all_modification_applications = [];*/
   }
 
   /**

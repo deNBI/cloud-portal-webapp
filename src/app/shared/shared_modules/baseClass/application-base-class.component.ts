@@ -199,6 +199,7 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
   getApplicationStatus(): void {
     this.applicationstatusservice.getAllApplicationStatus().subscribe((stati: ApplicationStatus[]): void => {
       this.application_status = stati;
+
     })
   }
 

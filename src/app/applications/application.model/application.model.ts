@@ -204,32 +204,6 @@ export class Application {
     return this.project_application_status.includes(Application_States.MODIFICATION_REQUESTED)
   }
 
-  public inititateExtension(): void {
-    this._project_lifetime_request = new ApplicationLifetimeExtension(null);
-    this._project_lifetime_request.project_application_id = this._project_application_id;
-    this._project_lifetime_request.extra_lifetime = 0;
-    this._project_lifetime_request.comment = '';
-  }
-
-    public initiateCreditsRequest(): void {
-    this.project_credit_request = new ApplicationCreditRequest(null);
-    this.project_credit_request.project_application_id = this._project_application_id;
-
-    // Todo fill more
-  }
-
-  public inititateModification(): void {
-    this._project_modification_request = new ApplicationModification(null);
-    this._project_modification_request.project_application_id = this._project_application_id;
-    this._project_modification_request.volume_counter = this.project_application_volume_counter;
-    this._project_modification_request.volume_limit = this.project_application_volume_limit;
-    if (this._project_application_openstack_project) {
-      this._project_modification_request.object_storage = this._project_application_object_storage;
-    }
-
-    // Todo fill more
-  }
-
   private setDaysRunning(): void {
     if (this.project_application_status != null) {
       if (this.project_application_status.includes(Application_States.APPROVED)) {

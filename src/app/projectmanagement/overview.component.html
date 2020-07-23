@@ -176,7 +176,7 @@
 
           <div class="alert alert-info" style="margin-top:15px;"
                *ngIf="project_application?.hasApprovedStatus()">
-            <p>You can find more information about modification requestes
+            <p>You can find more information about modification requests
               <a href="https://cloud.denbi.de/wiki/portal/modification/" target="_blank">here</a>.</p>
             <p *ngIf="is_vo_admin">Information about credits are coming soon.</p>
           </div>
@@ -1173,7 +1173,7 @@
                        id="project_extension_application_renewal_lifetime"
                        name="project_extension_application_renewal_lifetime"
                        placeholder="e.g. 3"
-                       [(ngModel)]="project_application?.project_lifetime_request.extra_lifetime"
+                       [(ngModel)]="project_extension.extra_lifetime"
                        type="number" min="1" max="12" step="1" required
                        appInteger appMinAmount="1" appMaxAmount="12"
                        [ngClass]="{
@@ -1278,7 +1278,7 @@
           <button type="button" class="btn  btn-primary"
                   form="extension_application_form" id="submit_extension_btn"
                   (click)="
-                  calculateCreditsLifeTime();requestExtension();projectExtensionModal.hide();
+                  calculateCreditsLifeTime();projectExtensionModal.hide();this.request_type = ExtensionRequestType.EXTENSION;
                   submitModal.show();"
                   [disabled]="extensionForm.invalid || (!project_application?.project_application_edam_terms && selected_ontology_terms.length < 1)">
             <i
@@ -1324,7 +1324,7 @@
                           name="project_application_extra_credits_comment" class="form-control"
                           maxlength="8192"
                           placeholder=''
-                          [(ngModel)]="project_application?.project_credit_request.comment" minlength="10"
+                          [(ngModel)]="project_credit_request.comment" minlength="10"
                           [ngClass]="{
                                 'is-invalid': f2.controls.project_application_extra_credits_comment?.invalid && (f2.controls.project_application_extra_credits_comment?.dirty || f2.controls.project_application_extra_credits_comment?.touched),
                                 'is-valid': f2.controls.project_application_extra_credits_comment?.valid && (f2.controls.project_application_extra_credits_comment?.dirty || f2.controls.project_application_extra_credits_comment?.touched)
@@ -1378,10 +1378,10 @@
         <div *ngIf="f2.invalid" class="alert alert-warning" role="alert">
           <p>Some required fields are incorrect or not filled in yet.
             Please check if all required (*) fields are filled in correctly.</p>
-          <p *ngIf="project_application?.project_credit_request.comment.length <10">
+          <p *ngIf="project_credit_request.comment.length <10">
             - No reason specified (at least 10 characters)
           </p>
-          <p *ngIf="project_application?.project_credit_request.extra_credits < 1">
+          <p *ngIf="project_credit_request.extra_credits < 1">
             - Number of extra credits not specified
           </p>
         </div>
@@ -1440,7 +1440,7 @@
 
             <tr *ngIf="is_vo_admin" >
               <td><strong>Approximate number of extra credits:
-                {{project_application?.project_lifetime_request.extra_credits}}</strong></td>
+                {{project_application?.project_lifetime_request?.extra_credits}}</strong></td>
             </tr>
             <tr *ngIf="request_type == ExtensionRequestType.MODIFICATION">
               <td><strong>Number of cores in total:
@@ -1453,6 +1453,10 @@
                 GBs</strong>
               </td>
             </tr>
+            <tr *ngIf="request_type == ExtensionRequestType.EXTENSION" >
+              <td><strong>Additional lifetime in months: {{project_extension.extra_lifetime}}</strong></td>
+
+            </tr>
           </table>
         </div>
       </div>
@@ -1463,7 +1467,7 @@
 
         <button id="confirm_extension_btn" class="btn btn-success col-md-4" type="button"
                 *ngIf="request_type==ExtensionRequestType.EXTENSION"
-                (click)="submitModal.hide(); resultModal.show();
+                (click)="submitModal.hide(); requestExtension(); resultModal.show();
                 ">Confirm Application
         </button>
         <button id="confirm_modification_btn" class="btn btn-success col-md-4" type="button"
