@@ -158,8 +158,6 @@ export class ApplicationsService {
 
   }
 
-
-
   getCreditsExtensionRequest(): Observable<any> {
     return this.http.get(`${ApiSettings.getApiBaseURL()}project_applications/credits/extensions/`, {
       withCredentials: true

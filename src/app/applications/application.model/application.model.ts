@@ -124,7 +124,7 @@ export class Application {
       if (aj.project_lifetime_request) {
         this._project_lifetime_request = new ApplicationLifetimeExtension(aj.project_lifetime_request);
       }
-      if (aj.project_modification_request){
+      if (aj.project_modification_request) {
         this._project_modification_request = new ApplicationModification(aj.project_modification_request);
       }
       this._project_application_perun_id = aj.project_application_perun_id;

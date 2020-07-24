@@ -139,8 +139,6 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
     }
   }
 
-
-
   /**
    * Get all Applications if user is admin.
    */
@@ -165,7 +163,6 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
     }
   }
 
-
   /**
    * Emptying all application lists, so applications don't get pushed to the lists multiple times.
    */
@@ -177,9 +174,9 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
    * Loading Applications dependent from the current tab selected (submitted, credits, lifetime, modification)
    */
   getApplicationsByTabState(): void {
-    if (this.is_vo_admin){
+    if (this.is_vo_admin) {
       this.clearApplicationLists();
-      if (this.tab_state === TabStates.SUBMITTED){
+      if (this.tab_state === TabStates.SUBMITTED) {
         this.applicationsservice.getSubmittedApplications().subscribe((applications: Application[]): void => {
           if (applications.length === 0) {
             this.isLoaded_userApplication = true;
@@ -193,46 +190,46 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
           this.isLoaded = true;
           console.log(this.all_applications);
         });
-      } else if (this.tab_state === TabStates.CREDITS_EXTENSION){
+      } else if (this.tab_state === TabStates.CREDITS_EXTENSION) {
           this.applicationsservice.getCreditsExtensionRequest().subscribe(
             (credit_applications: Application[]): void => {
-            if (credit_applications.length === 0){
-              //bool here?
+            if (credit_applications.length === 0) {
+              // bool here?
             }
-            for (const credit_application of credit_applications){
+            for (const credit_application of credit_applications) {
               this.all_applications.push(new Application(credit_application));
             }
-            for (const app of this.all_applications){
-              this.getFacilityProject(app);
-            }
-            this.isLoaded = true;
-              console.log(this.all_applications);
-          });
-      } else if (this.tab_state === TabStates.LIFETIME_EXTENSION){
-        this.applicationsservice.getLifetimeRequestedApplications().subscribe(
-          (lifetime_applications: Application[]) => {
-            if (lifetime_applications.length === 0){
-              //bool here?
-            }
-            for (const lifetime_application of lifetime_applications){
-              this.all_applications.push(new Application(lifetime_application));
-            }
-            for (const app of this.all_applications){
+            for (const app of this.all_applications) {
               this.getFacilityProject(app);
             }
             this.isLoaded = true;
             console.log(this.all_applications);
           });
-      } else if (this.tab_state = TabStates.MODIFICATION_EXTENSION){
+      } else if (this.tab_state === TabStates.LIFETIME_EXTENSION) {
+        this.applicationsservice.getLifetimeRequestedApplications().subscribe(
+          (lifetime_applications: Application[]) => {
+            if (lifetime_applications.length === 0) {
+              // bool here?
+            }
+            for (const lifetime_application of lifetime_applications) {
+              this.all_applications.push(new Application(lifetime_application));
+            }
+            for (const app of this.all_applications) {
+              this.getFacilityProject(app);
+            }
+            this.isLoaded = true;
+            console.log(this.all_applications);
+          });
+      } else if (this.tab_state = TabStates.MODIFICATION_EXTENSION) {
         this.applicationsservice.getModificationRequestedApplications().subscribe(
           (modification_applications: Application[]) => {
-            if (modification_applications.length === 0){
-              //bool here?
+            if (modification_applications.length === 0) {
+              // bool here?
             }
-            for (const modification_application of modification_applications){
+            for (const modification_application of modification_applications) {
               this.all_applications.push(new Application(modification_application));
             }
-            for (const app of this.all_applications){
+            for (const app of this.all_applications) {
               this.getFacilityProject(app);
             }
             this.isLoaded = true;

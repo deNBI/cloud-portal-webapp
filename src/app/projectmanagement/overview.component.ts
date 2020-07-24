@@ -30,9 +30,9 @@ import {AutocompleteComponent} from 'angular-ng-autocomplete';
 import {DOCUMENT} from '@angular/common';
 import {Chart} from 'chart.js';
 import {ExtensionRequestType} from '../shared/shared_modules/baseClass/abstract-base-class';
-import {ApplicationLifetimeExtension} from "../applications/application_extension.model";
-import {ApplicationModification} from "../applications/application_modification.model";
-import {ApplicationCreditRequest} from "../applications/application_credit_request";
+import {ApplicationLifetimeExtension} from '../applications/application_extension.model';
+import {ApplicationModification} from '../applications/application_modification.model';
+import {ApplicationCreditRequest} from '../applications/application_credit_request';
 
 /**
  * Projectoverview component.
@@ -399,7 +399,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
     this.project_modification.total_ram = this.project_application.project_application_total_ram;
   }
 
-
   initiateCreditRequest(): void {
     this.project_credit_request = new ApplicationCreditRequest(null);
     this.project_credit_request.project_application_id = this.project_application.project_application_id;
@@ -437,18 +436,18 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
               }
 
             })
-            if (this.project_application?.project_modification_request){
+            if (this.project_application?.project_modification_request) {
               this.project_modification = this.project_application.project_modification_request;
             } else {
               this.initiateModificationRequest();
             }
-            if (this.project_application?.project_lifetime_request){
+            if (this.project_application?.project_lifetime_request) {
               this.project_extension = this.project_application.project_lifetime_request;
             } else {
               this.initiateLifetimeExtension();
 
             }
-            if (this.project_application?.project_credit_request){
+            if (this.project_application?.project_credit_request) {
               this.project_credit_request = this.project_application.project_credit_request;
             } else {
               this.initiateCreditRequest();
