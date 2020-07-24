@@ -39,6 +39,8 @@ import {CookieService} from 'ngx-cookie-service';
 
 import {TitleHeadbarComponent} from './shared/title-headbar.component';
 import {VoService} from './api-connector/vo.service';
+import {TokenInterceptor} from './api-connector/token-interceptor';
+
 /**
  * App module.
  */
@@ -82,6 +84,11 @@ import {VoService} from './api-connector/vo.service';
               {
                 provide: HTTP_INTERCEPTORS,
                 useClass: AppInterceptor,
+                multi: true
+              },
+              {
+                provide: HTTP_INTERCEPTORS,
+                useClass: TokenInterceptor,
                 multi: true
               },
               {
