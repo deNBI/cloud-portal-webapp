@@ -236,7 +236,6 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
    */
   setSelectedApplication(application: Application): void {
     this.selectedApplication = application;
-
   }
 
   /**

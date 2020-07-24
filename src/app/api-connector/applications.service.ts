@@ -230,7 +230,7 @@ export class ApplicationsService {
                           })
   }
 
-  declineAdditionalifetime(request_id: number | string): Observable<any> {
+  declineAdditionalLifetime(request_id: number | string): Observable<any> {
     return this.http.post(`${ApiSettings.getApiBaseURL()}project_applications/lifetime/extensions/${request_id}/decline/`,
                           null, {
                             withCredentials: true

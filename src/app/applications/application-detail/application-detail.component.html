@@ -342,7 +342,7 @@
           application?.project_application_initial_credits}}
       </td>
       <td *ngIf="(application?.hasModificationRequestedStatus() || isModification) && !application.project_credit_request">
-        Extra: {{application?.project_credit_request.extra_credits}} (Total: {{application?.TotalModificationCredits}})
+        Extra: {{application?.project_credit_request?.extra_credits}} (Total: {{application?.TotalModificationCredits}})
       </td>
     </tr>
 
@@ -358,7 +358,7 @@
     <tr *ngIf="is_vo_admin && application?.project_credit_request">
       <td>Extra Credits</td>
       <td>
-        {{application?.project_credit_request.extra_credits}} (Total: {{application?.TotalModificationCredits}})
+        {{application?.project_credit_request?.extra_credits}} (Total: {{application?.TotalModificationCredits}})
       </td>
     </tr>
 

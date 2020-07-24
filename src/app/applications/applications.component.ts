@@ -13,6 +13,7 @@ import {Client} from '../vo_manager/clients/client.model';
 import {ApplicationBaseClassComponent} from '../shared/shared_modules/baseClass/application-base-class.component';
 import {ComputecenterComponent} from '../projectmanagement/computecenter.component';
 import {is_vo} from '../shared/globalvar';
+import {Observable} from "rxjs";
 
 enum TabStates {
   'SUBMITTED' = 0,
@@ -139,6 +140,22 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
     }
   }
 
+  approveLifetimeExtension(application: Application){
+    console.log(application.project_application_id)
+    this.applicationsservice.approveAdditionalLifetime(application.project_application_id)
+      .subscribe((result: any) => {
+      console.log(result);
+    });
+  }
+
+  declineLifetimeExtension(application: Application){
+    this.applicationsservice.approveAdditionalLifetime(application.project_lifetime_request.project_application_id)
+      .subscribe((result: any) => {
+        console.log(result);
+      });
+  }
+
+  //TODO : add for all types of actions and applications
 
 
   /**

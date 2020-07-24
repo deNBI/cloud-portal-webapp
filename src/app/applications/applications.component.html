@@ -240,12 +240,331 @@
 
         </div>
       </div></ng-container>
-      <!-- TODO: ng-containers for all 4 cases -->
       <ng-container *ngSwitchCase="TabStates.MODIFICATION_EXTENSION">
 
         <div class="card-body" *ngIf="all_applications.length <= 0">
           <div class="alert alert-success" role="alert">
             <strong>No new Resource Modification Requests!</strong>
+          </div>
+        </div>
+
+        <div *ngIf="all_applications.length > 0"
+             class="card-body">
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+              <tr>
+                <th></th>
+                <th>Project Name</th>
+                <th>Short Name</th>
+                <th>Date submitted</th>
+                <th>User</th>
+                <th>Institute</th>
+                <th>Compute Center</th>
+                <th>Actions</th>
+              </tr>
+              </thead>
+              <tbody>
+              <ng-container
+                *ngFor="let application of all_applications">
+                <ng-container
+                >
+                  <tr>
+                    <td>
+                                              <span *ngIf="application?.project_application_openstack_project"
+                                                    style="font-size: 20px"
+                                                    class="project-openstack_plain_white_redbg"
+                                                    data-toggle="tooltip"
+                                                    title="This is an Openstack project">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                  </span>
+                      <span *ngIf="!application?.project_application_openstack_project"
+                            style="font-size: 20px"
+                            class="project-simpleVM_Logo_bluebg"
+                            data-toggle="tooltip"
+                            title="This is a Simple VM project">
+                      <span class="path1"></span>
+                      <span class="path2"></span>
+                      <span class="path3"></span>
+                      <span class="path4"></span>
+                      <span class="path5"></span>
+                    </span>
+                      <span *ngIf="application?.project_application_pi_approved"
+                            style="margin: 2px"
+                            class="badge"
+                            data-toggle="tooltip" data-placement="auto"
+                            title="This application was approved by a PI">
+                                    <span class="icon icon-yes_pi" style="font-size: 20px">
+                                      <span class="path1"></span><span class="path2"></span><span
+                                      class="path3"></span><span class="path4"></span>
+                                    </span>
+                                  </span>
+                      <span *ngIf="!application?.project_application_pi_approved"
+                            style="margin: 2px" class="badge"
+                            data-toggle="tooltip" data-placement="auto"
+                            title="This application is yet not approved by a PI">
+                                    <span class="icon icon-no_pi" style="font-size: 2em">
+                                      <span class="path1"></span><span class="path2"></span><span
+                                      class="path3"></span><span class="path4"></span>
+                                    </span>
+                                  </span>
+
+                    </td>
+                    <td>{{ application?.project_application_name }}
+                    </td>
+                    <td>{{application?.project_application_shortname}}</td>
+                    <td>{{ application?.project_application_date_submitted }}
+                    </td>
+                    <td style="word-wrap: break-word;min-width: 110px; max-width: 130px; white-space: normal">
+                      {{ application?.project_application_user?.username }}
+                    </td>
+                    <td>{{application?.project_application_institute}}</td>
+
+                    <td>
+                      <!-- into select: [style.display]=" (application?.hasSubmittedStatus() || application?.hasConfirmationDeniedStatus()|| (!application?.ComputeCenter?.FacilityId ))? 'inherit' :'none'"-->
+                      <select
+                        class="form-control" [id]="'id_compute_center_option_' + application?.project_application_name"
+                        #selectedComputeCenter>
+
+                        <option value="undefined" selected> no center selected
+                        </option>
+                        <option *ngFor="let computeCenter of computeCenters"
+                                value="{{computeCenter.FacilityId}}" [id]="computeCenter.Name">
+                          {{computeCenter.Name}}
+                        </option>
+                      </select>
+                      <span
+                        *ngIf="application?.hasSubmittedStatus()">{{application?.ComputeCenter?.Name}}</span>
+                    </td>
+
+
+                    <td>
+                      <div class="btn-group">
+
+
+                        <button [id]="'extension_approval_' + application.project_application_shortname"
+                                *ngIf="application?.hasModificationRequestedStatus() || application?.project_modification_request"
+                                style="margin: auto 2.5px"
+                                (click)="setSelectedApplication(application);  resultModal.show();"
+                                type="button"
+                                class="btn btn-success">
+                          <i class="fa fa-check"></i>&nbsp;
+                          <span class="applicationActionsButton">Approve Modification</span>
+                        </button>
+
+                        <button
+                          *ngIf="application?.hasModificationRequestedStatus()"
+                          type="button"
+                          class="btn btn-danger"
+                          style="margin: auto 2.5px"
+                          (click)="setSelectedApplication(application);  resultModal.show();">
+                          <i
+                            class="fa fa-close"></i>&nbsp;
+                          <span class="applicationActionsButton">Decline Modification</span>
+                        </button>
+
+
+                        <button
+                          (click)="switchCollapseStatus('application_review-' + application?.project_application_id);  getMemberDetailsByElixirIdIfCollapsed(application,'application_review-' + application?.project_application_id);"
+                          type="button"
+                          class="btn btn-secondary"
+                          style="margin: auto 2.5px">
+                          <i class="fa fa-info-circle"></i>&nbsp;
+                          <span class="applicationActionsButton"
+                                [hidden]="!getCollapseStatus('application_review-' + application?.project_application_id)">Show</span>
+                          <span class="applicationActionsButton"
+                                [hidden]="getCollapseStatus('application_review-' + application?.project_application_id)">Hide</span>
+                          <span class="applicationActionsButton"> Information</span>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <td colspan="12">
+                    <app-application-detail
+                      [class.collapse_no_margin]="getCollapseStatus('application_review-' + application?.project_application_id)"
+                      [class.collapse]="getCollapseStatus('application_review-' + application?.project_application_id)"
+                      [application]="application"
+                      [isModification]="application.project_application_status
+                      .includes(this.application_states.MODIFICATION_REQUESTED) ||
+                      application.project_application_status
+                      .includes(this.application_states.LIFETIME_EXTENSION_REQUESTED)"></app-application-detail>
+                  </td>
+                </ng-container>
+
+              </ng-container>
+              </tbody>
+
+            </table>
+
+          </div>
+        </div></ng-container>
+      <ng-container *ngSwitchCase="TabStates.LIFETIME_EXTENSION">
+
+        <div class="card-body" *ngIf="all_applications.length <= 0">
+          <div class="alert alert-success" role="alert">
+            <strong>No new Project Extension Requests!</strong>
+          </div>
+        </div>
+
+        <div *ngIf="all_applications.length > 0"
+             class="card-body">
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+              <tr>
+                <th></th>
+                <th>Project Name</th>
+                <th>Short Name</th>
+                <th>Date submitted</th>
+                <th>User</th>
+                <th>Institute</th>
+                <th>Compute Center</th>
+                <th>Actions</th>
+              </tr>
+              </thead>
+              <tbody>
+              <ng-container
+                *ngFor="let application of all_applications">
+                <ng-container
+                >
+                  <tr>
+                    <td>
+                                              <span *ngIf="application?.project_application_openstack_project"
+                                                    style="font-size: 20px"
+                                                    class="project-openstack_plain_white_redbg"
+                                                    data-toggle="tooltip"
+                                                    title="This is an Openstack project">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                  </span>
+                      <span *ngIf="!application?.project_application_openstack_project"
+                            style="font-size: 20px"
+                            class="project-simpleVM_Logo_bluebg"
+                            data-toggle="tooltip"
+                            title="This is a Simple VM project">
+                      <span class="path1"></span>
+                      <span class="path2"></span>
+                      <span class="path3"></span>
+                      <span class="path4"></span>
+                      <span class="path5"></span>
+                    </span>
+                      <span *ngIf="application?.project_application_pi_approved"
+                            style="margin: 2px"
+                            class="badge"
+                            data-toggle="tooltip" data-placement="auto"
+                            title="This application was approved by a PI">
+                                    <span class="icon icon-yes_pi" style="font-size: 20px">
+                                      <span class="path1"></span><span class="path2"></span><span
+                                      class="path3"></span><span class="path4"></span>
+                                    </span>
+                                  </span>
+                      <span *ngIf="!application?.project_application_pi_approved"
+                            style="margin: 2px" class="badge"
+                            data-toggle="tooltip" data-placement="auto"
+                            title="This application is yet not approved by a PI">
+                                    <span class="icon icon-no_pi" style="font-size: 2em">
+                                      <span class="path1"></span><span class="path2"></span><span
+                                      class="path3"></span><span class="path4"></span>
+                                    </span>
+                                  </span>
+
+                    </td>
+                    <td>{{ application?.project_application_name }}
+                    </td>
+                    <td>{{application?.project_application_shortname}}</td>
+                    <td>{{ application?.project_application_date_submitted }}
+                    </td>
+                    <td style="word-wrap: break-word;min-width: 110px; max-width: 130px; white-space: normal">
+                      {{ application?.project_application_user?.username }}
+                    </td>
+                    <td>{{application?.project_application_institute}}</td>
+
+                    <td>
+
+                      <select [style.display]=" (application?.hasSubmittedStatus() || application?.hasConfirmationDeniedStatus()|| (!application?.ComputeCenter?.FacilityId ))? 'inherit' :'none'"
+                        class="form-control" [id]="'id_compute_center_option_' + application?.project_application_name"
+                        #selectedComputeCenter>
+
+                        <option value="undefined" selected> no center selected
+                        </option>
+                        <option *ngFor="let computeCenter of computeCenters"
+                                value="{{computeCenter.FacilityId}}" [id]="computeCenter.Name">
+                          {{computeCenter.Name}}
+                        </option>
+                      </select>
+                      <span
+                        *ngIf="application?.hasSubmittedStatus()">{{application?.ComputeCenter?.Name}}</span>
+                    </td>
+
+
+                    <td>
+                      <div class="btn-group">
+                        <button [id]="'extension_approval_' + application.project_application_shortname"
+                                *ngIf="application?.hasExtensionRequestedStatus() || application?.project_lifetime_request"
+                                style="margin: auto 2.5px"
+                                (click)="
+                                approveLifetimeExtension(application);
+                                resultModal.show();"
+                                type="button"
+                                class="btn btn-success">
+                          <i class="fa fa-check"></i>&nbsp;
+                          <span class="applicationActionsButton">Approve Extension</span>
+                        </button>
+                        <button
+                          *ngIf="application?.hasExtensionRequestedStatus() || application?.project_lifetime_request"
+                          type="button"
+                          class="btn btn-danger"
+                          style="margin: auto 2.5px"
+                          (click)="setSelectedApplication(application);
+
+                          resultModal.show();">
+                          <i
+                            class="fa fa-close"></i>&nbsp;
+                          <span class="applicationActionsButton">Decline Extension</span>
+                        </button>
+
+                        <button
+                          (click)="switchCollapseStatus('application_review-' + application?.project_application_id);  getMemberDetailsByElixirIdIfCollapsed(application,'application_review-' + application?.project_application_id);"
+                          type="button"
+                          class="btn btn-secondary"
+                          style="margin: auto 2.5px">
+                          <i class="fa fa-info-circle"></i>&nbsp;
+                          <span class="applicationActionsButton"
+                                [hidden]="!getCollapseStatus('application_review-' + application?.project_application_id)">Show</span>
+                          <span class="applicationActionsButton"
+                                [hidden]="getCollapseStatus('application_review-' + application?.project_application_id)">Hide</span>
+                          <span class="applicationActionsButton"> Information</span>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <td colspan="12">
+                    <app-application-detail
+                      [class.collapse_no_margin]="getCollapseStatus('application_review-' + application?.project_application_id)"
+                      [class.collapse]="getCollapseStatus('application_review-' + application?.project_application_id)"
+                      [application]="application"
+                      [isModification]="application.project_application_status
+                      .includes(this.application_states.MODIFICATION_REQUESTED) ||
+                      application.project_application_status
+                      .includes(this.application_states.LIFETIME_EXTENSION_REQUESTED)"></app-application-detail>
+                  </td>
+                </ng-container>
+
+              </ng-container>
+              </tbody>
+
+            </table>
+
+          </div>
+        </div></ng-container>
+      <ng-container *ngSwitchCase="TabStates.CREDITS_EXTENSION">
+
+        <div class="card-body" *ngIf="all_applications.length <= 0">
+          <div class="alert alert-success" role="alert">
+            <strong>No new Credit Requests!</strong>
           </div>
         </div>
 
@@ -457,7 +776,6 @@
 
     </div>
 
-
 </div>
 
 <div bsModal #notificationModal="bs-modal" class="modal fade" tabindex="-1"
@@ -555,7 +873,7 @@
                         style="font-size:24px"></i>
         </div>
 
-
+        <!-- TODO: adjust for extensions, credits, modifications -->
         <div class="alert alert-success" role="alert" *ngIf="extension_status == 1" id="extension result">
 
           Modify request successfully submitted!
