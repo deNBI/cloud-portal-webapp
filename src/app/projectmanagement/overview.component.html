@@ -1442,18 +1442,22 @@
               <td>{{str}}</td>
             </tr>
 
+            <tr *ngFor="let flav of this.project_modification.flavors">
+              <td>{{flav.name + ': ' + flav.counter + ' VMs'}}</td>
+            </tr>
+
             <tr *ngIf="is_vo_admin" >
               <td><strong>Approximate number of extra credits:
-                {{project_application?.project_lifetime_request?.extra_credits}}</strong></td>
+                {{project_modification?.extra_credits}}</strong></td>
             </tr>
             <tr *ngIf="request_type == ExtensionRequestType.MODIFICATION">
               <td><strong>Number of cores in total:
-                {{project_application?.project_modification_request?.total_cores}}</strong>
+                {{project_modification?.total_cores}}</strong>
               </td>
             </tr>
             <tr *ngIf="request_type == ExtensionRequestType.MODIFICATION">
               <td><strong>Value of RAM in
-                total: {{project_application?.project_modification_request?.total_ram}}
+                total: {{project_modification?.total_ram}}
                 GBs</strong>
               </td>
             </tr>
