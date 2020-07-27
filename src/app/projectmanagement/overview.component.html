@@ -709,9 +709,15 @@
           <p class="lead"></p>
           <hr class="my-4">
           <p class="lead">
-            <strong>Please note</strong>: If you want to extend your project as well as adjust the required resources,
-            you have to submit two separate applications. The two applications will be processed
+            <span>Please note: If you want to extend your project as well as adjust the required resources,
+            you have to submit two separate applications. These two applications will be processed
             independently of each other.
+            <br><br>
+            Modification Request:
+            - Modification of the requested resources, e.g.: number and type of VMs, number and size of persistent storage options.
+            <br><br>
+            Lifetime Extensions:
+              - Extension of the project period</span>
           </p>
           <div class="btn-group btn-group-lg" role="group" style="width:100%;">
             <button (click)="resourceModificationModal.show(); chooseModal.hide();"
@@ -1080,8 +1086,6 @@
               requested resources/project lifetime.
             </div>
           </strong>
-
-
         </form>
         <!-- TODO: CHECK FOR CONFLICTS -->
         <div *ngIf="modificationForm.invalid" class="alert alert-warning" role="alert">
@@ -1108,9 +1112,10 @@
             By submitting this application you agree to the cloud usage policy.
           </div>
           <button type="button" class="btn  btn-primary"
-                  form="modification_form" id="submit_modification_btn"
-                  (click)="
-                  calculateCreditsModification();requestModification();resourceModificationModal.hide();"
+                  form="resource_modification_application_form" id="submit_modification_btn"
+                  (click)="this.request_type = ExtensionRequestType.MODIFICATION;
+                  calculateRamCores(); calculateCreditsModification();
+                  resourceModificationModal.hide(); submitModal.show();"
                   [disabled]="modificationForm.invalid"><i class="fa fa-dot-circle-o"></i>
             Submit
           </button>
@@ -1277,9 +1282,8 @@
           </div>
           <button type="button" class="btn  btn-primary"
                   form="extension_application_form" id="submit_extension_btn"
-                  (click)="
-                  calculateCreditsLifeTime();projectExtensionModal.hide();this.request_type = ExtensionRequestType.EXTENSION;
-                  submitModal.show();"
+                  (click)="calculateCreditsLifeTime(); projectExtensionModal.hide();
+                  this.request_type = ExtensionRequestType.EXTENSION; submitModal.show();"
                   [disabled]="extensionForm.invalid || (!project_application?.project_application_edam_terms && selected_ontology_terms.length < 1)">
             <i
               class="fa fa-dot-circle-o">
@@ -1472,7 +1476,7 @@
         </button>
         <button id="confirm_modification_btn" class="btn btn-success col-md-4" type="button"
                 *ngIf="request_type==ExtensionRequestType.MODIFICATION"
-                (click)="submitModal.hide(); resultModal.show();
+                (click)="submitModal.hide(); requestModification(); resultModal.show();
                ">Confirm Application
         </button>
         <button id="confirm_credits_btn" class="btn btn-success col-md-4" type="button"

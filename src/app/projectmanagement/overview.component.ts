@@ -209,12 +209,12 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   }
 
   calculateCreditsModification(): void {
-    this.subscription.add(this.creditsService.getExtraCreditsForExtension(this.project_application.project_modification_request.total_cores,
-                                                                          this.project_application.project_modification_request.total_ram,
+    this.subscription.add(this.creditsService.getExtraCreditsForExtension(this.project_modification.total_cores,
+                                                                          this.project_modification.total_ram,
                                                                           this.project_application.project_application_lifetime,
                                                                           this.project_application.project_application_id.toString()).subscribe(
       (credits: number): void => {
-        this.project_application.project_modification_request.extra_credits = credits;
+        this.project_modification.extra_credits = credits;
       }))
 
   }
@@ -1146,7 +1146,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   }
 
   onChangeFlavor(flavor: Flavor, value: number): void {
-    this.project_application.project_modification_request.setFlavorInFlavors(flavor, value)
+    this.project_modification.setFlavorInFlavors(flavor, value)
 
     this.checkIfMinVmIsSelected();
   }
