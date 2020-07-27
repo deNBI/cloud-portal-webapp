@@ -7,6 +7,7 @@ import {Volume} from '../virtualmachines/volumes/volume';
 import {IResponseTemplate} from './response-template';
 import {Clusterinfo} from '../virtualmachines/clusters/clusterinfo';
 import {Image} from '../virtualmachines/virtualmachinemodels/image';
+import {Condalog} from '../virtualmachines/conda/condalog';
 
 /**
  * Service which provides vm methods.
@@ -153,7 +154,7 @@ export class VirtualmachineService {
     })
   }
 
-  getLogs(openstack_id: string): Observable<any> {
+  getCondaLogs(openstack_id: string): Observable<Condalog> {
     return this.http.post(`${this.baseVmUrl}${openstack_id}/logs/`, null, {
       withCredentials: true
     })

@@ -27,6 +27,7 @@ import {WIKI_GUACAMOLE_LINK, WIKI_MOUNT_VOLUME, WIKI_RSTUDIO_LINK} from '../../.
 import {ClipboardService} from 'ngx-clipboard';
 import {Volume} from '../volumes/volume';
 import {VolumeStates} from '../volumes/volume_states';
+import {Condalog} from '../conda/condalog';
 
 /**
  * VM Detail page component
@@ -43,6 +44,7 @@ import {VolumeStates} from '../volumes/volume_states';
 export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
 
   vm_id: string;
+  conda_logs: Condalog;
   title: string = 'Instance Detail';
   image: Image;
   startDate: number;
@@ -121,6 +123,14 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
     super();
   }
 
+  getVmCondaLogs(): void {
+    this.virtualmachineService.getCondaLogs(this.vm_id).subscribe((log: Condalog) => {
+      if (log) {
+        this.conda_logs = new Condalog(log);
+      }
+    })
+  }
+
   get condaPackages(): CondaPackage[] {
     return this._condaPackages;
   }
@@ -132,6 +142,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.params.subscribe((paramsId: any): void => {
       this.vm_id = paramsId.id;
+      this.getVmCondaLogs()
       this.getVmById();
       this.snapshotSearchTerm
         .pipe(

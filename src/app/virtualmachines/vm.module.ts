@@ -17,7 +17,6 @@ import {ClickOutsideModule} from 'ng4-click-outside';
 import {AccordionModule} from 'ngx-bootstrap/accordion';
 import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import {BiocondaComponent} from './conda/bioconda.component';
-import {HowToConnectComponent} from './shared-modal/how-to-connect.component';
 import {SharedDirectivesModule} from '../shared/shared_modules/shared_directives.module';
 import {ImageCarouselSlideComponent} from './imageCarouselSlide.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
@@ -61,7 +60,6 @@ import {VolumStatusComponent} from './volumes/volum-status/volum-status.componen
               VolumeOverviewComponent,
               SnapshotOverviewComponent,
               ClusterstatusComponent,
-              HowToConnectComponent,
               BiocondaComponent,
               VmDetailComponent,
               AddClusterComponent,
