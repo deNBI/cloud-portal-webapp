@@ -16,7 +16,8 @@ import {ValidationApplicationComponent} from '../validation-application/validati
 import {AutocompleteLibModule} from 'angular-ng-autocomplete';
 import {ApplicationDetailComponent} from './application-detail/application-detail.component';
 import {SharedDirectivesModule} from '../shared/shared_modules/shared_directives.module';
-import { ApplicationFormularComponent } from './application-formular/application-formular.component';
+import {ApplicationFormularComponent} from './application-formular/application-formular.component';
+import {FlavorCounterPipe} from './pipes/flavorcounter';
 
 /**
  * Applications Module.
@@ -35,6 +36,7 @@ import { ApplicationFormularComponent } from './application-formular/application
               SharedDirectivesModule
             ],
             declarations: [
+              FlavorCounterPipe,
               ApplicationsComponent,
               AddsimplevmComponent,
               AddcloudapplicationComponent,
@@ -43,7 +45,7 @@ import { ApplicationFormularComponent } from './application-formular/application
               ApplicationDetailComponent,
               ApplicationFormularComponent
             ],
-            exports: [ApplicationDetailComponent]
+            exports: [ApplicationDetailComponent, FlavorCounterPipe]
           })
 export class ApplicationsModule {
 }

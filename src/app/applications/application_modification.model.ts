@@ -54,11 +54,13 @@ export class ApplicationModification {
   }
 
   public getFlavorCounter(flavor: Flavor): number {
-    const flavs: Flavor[] = this._flavors.filter((fl: Flavor) => {
-      return fl.name === flavor.name
-    });
-    if (flavs.length > 0) {
-      return flavs[0].counter
+    if (this._flavors) {
+      const flavs: Flavor[] = this._flavors.filter((fl: Flavor): boolean => {
+        return fl.name === flavor.name
+      });
+      if (flavs.length > 0) {
+        return flavs[0].counter
+      }
     }
 
     return 0

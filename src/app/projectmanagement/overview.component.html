@@ -824,7 +824,7 @@
                                name="{{fl.name}}_old"
                                id="{{fl.name}}_old"
                                type="text"
-                               value="{{project_application?.getFlavorCounter(fl)}}"
+                               value="{{project_application| flavorCounter:fl}}"
                                placeholder="0" disabled>
                         <div class="input-group-append"><span class="input-group-text"> VMs</span></div>
                       </div>
@@ -840,7 +840,7 @@
                                type="number" min="0" step="1"
                                placeholder="e.g 1"
                                (ngModelChange)="onChangeFlavor(fl,$event)"
-                               [ngModel]="project_modification?.getFlavorCounter(fl)"
+                               [ngModel]="project_modification | flavorCounter:fl"
                                #name="ngModel"
                                appMinAmount="0" appIntegerOrNull
                                [ngClass]="{

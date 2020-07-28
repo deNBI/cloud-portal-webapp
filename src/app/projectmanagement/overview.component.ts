@@ -30,9 +30,9 @@ import {AutocompleteComponent} from 'angular-ng-autocomplete';
 import {DOCUMENT} from '@angular/common';
 import {Chart} from 'chart.js';
 import {ExtensionRequestType} from '../shared/shared_modules/baseClass/abstract-base-class';
-import {ApplicationLifetimeExtension} from "../applications/application_extension.model";
-import {ApplicationModification} from "../applications/application_modification.model";
-import {ApplicationCreditRequest} from "../applications/application_credit_request";
+import {ApplicationLifetimeExtension} from '../applications/application_extension.model';
+import {ApplicationModification} from '../applications/application_modification.model';
+import {ApplicationCreditRequest} from '../applications/application_credit_request';
 
 /**
  * Projectoverview component.
@@ -198,24 +198,26 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   }
 
   calculateCreditsLifeTime(): void {
-    this.subscription.add(this.creditsService.getExtraCreditsForExtension(this.project_application.project_application_total_cores,
-                                                                          this.project_application.project_application_total_ram,
-                                                                          this.project_extension.extra_lifetime,
-                                                                          this.project_application.project_application_id.toString()).subscribe(
-      (credits: number): void => {
-        this.project_extension.extra_credits = credits;
-      }))
+    this.subscription.add(
+      this.creditsService.getExtraCreditsForExtension(this.project_application.project_application_total_cores,
+                                                      this.project_application.project_application_total_ram,
+                                                      this.project_extension.extra_lifetime,
+                                                      this.project_application.project_application_id.toString()).subscribe(
+        (credits: number): void => {
+          this.project_extension.extra_credits = credits;
+        }))
 
   }
 
   calculateCreditsModification(): void {
-    this.subscription.add(this.creditsService.getExtraCreditsForExtension(this.project_modification.total_cores,
-                                                                          this.project_modification.total_ram,
-                                                                          this.project_application.project_application_lifetime,
-                                                                          this.project_application.project_application_id.toString()).subscribe(
-      (credits: number): void => {
-        this.project_modification.extra_credits = credits;
-      }))
+    this.subscription.add(
+      this.creditsService.getExtraCreditsForExtension(this.project_modification.total_cores,
+                                                      this.project_modification.total_ram,
+                                                      this.project_application.project_application_lifetime,
+                                                      this.project_application.project_application_id.toString()).subscribe(
+        (credits: number): void => {
+          this.project_modification.extra_credits = credits;
+        }))
 
   }
 
@@ -467,7 +469,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   }
 
   public requestModification(): void {
-    this.applicationsservice.requestModification(this.project_application.project_modification_request)
+    this.applicationsservice.requestModification(this.project_modification)
       .subscribe((result: { [key: string]: string }): void => {
         if (result['Error']) {
           this.extension_status = 2
