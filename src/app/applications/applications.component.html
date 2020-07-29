@@ -1,4 +1,4 @@
-<div *ngIf="  !isLoaded"
+<div *ngIf="!isLoaded"
      class="loader">
 
 </div>
@@ -26,10 +26,15 @@
         <i class="fas fa-memory"></i> Resource Modification Requests
       </button>
     </div>
+    <div class="card-body" *ngIf="loading_applications"> <!--spinner needed-->
+      <div class="alert alert-success">
+        <strong>Loading applications/requests ...</strong>
+      </div>
+    </div>
     <ng-container [ngSwitch]="tab_state">
       <ng-container *ngSwitchCase="TabStates.SUBMITTED">
 
-      <div class="card-body" *ngIf="all_applications.length <= 0">
+      <div class="card-body" *ngIf="all_applications.length <= 0 && !loading_applications">
         <div class="alert alert-success" role="alert">
           <strong>No new Applications!</strong> There are no new project applications for review.
         </div>
@@ -242,7 +247,7 @@
       </div></ng-container>
       <ng-container *ngSwitchCase="TabStates.MODIFICATION_EXTENSION">
 
-        <div class="card-body" *ngIf="all_applications.length <= 0">
+        <div class="card-body" *ngIf="all_applications.length <= 0 && !loading_applications">
           <div class="alert alert-success" role="alert">
             <strong>No new Resource Modification Requests!</strong>
           </div>
@@ -402,7 +407,7 @@
         </div></ng-container>
       <ng-container *ngSwitchCase="TabStates.LIFETIME_EXTENSION">
 
-        <div class="card-body" *ngIf="all_applications.length <= 0">
+        <div class="card-body" *ngIf="all_applications.length <= 0 && !loading_applications">
           <div class="alert alert-success" role="alert">
             <strong>No new Project Extension Requests!</strong>
           </div>
@@ -562,7 +567,7 @@
         </div></ng-container>
       <ng-container *ngSwitchCase="TabStates.CREDITS_EXTENSION">
 
-        <div class="card-body" *ngIf="all_applications.length <= 0">
+        <div class="card-body" *ngIf="all_applications.length <= 0 && !loading_applications">
           <div class="alert alert-success" role="alert">
             <strong>No new Credit Requests!</strong>
           </div>

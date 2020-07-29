@@ -11,7 +11,7 @@ import {ComputecenterComponent} from './computecenter.component';
 import {Userinfo} from '../userinfo/userinfo.model';
 import {forkJoin, Observable, Subscription} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Application} from '../applications/application.model/application.model';
+import {Application, User} from '../applications/application.model/application.model';
 import {ApplicationBaseClassComponent} from '../shared/shared_modules/baseClass/application-base-class.component';
 import {ApplicationStatusService} from '../api-connector/application-status.service';
 import {FacilityService} from '../api-connector/facility.service';
@@ -455,6 +455,12 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
             } else {
               this.initiateCreditRequest();
             }
+            this.userservice.getLoggedUser().subscribe((user: User) => {
+              this.project_extension.user = user;
+              this.project_modification.user = user;
+              this.project_credit_request.project_credit_request_user = user;
+
+            });
             this.isLoaded = true;
           } else {
             this.isLoaded = true;
@@ -499,7 +505,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
     this.applicationsservice.requestAdditionalLifetime(this.project_extension)
       .subscribe((result: { [key: string]: string }): void => {
         if (result['Error']) {
-          this.extension_status = 2
+          this.extension_status = 2;
         } else {
           this.extension_status = 1;
         }

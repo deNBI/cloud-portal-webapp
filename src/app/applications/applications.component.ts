@@ -38,6 +38,8 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
   tab_state: number = TabStates.SUBMITTED;
   TabStates: typeof TabStates = TabStates;
 
+  loading_applications: boolean = false;
+
   /**
    * All Applications, just visibile for a vo admin.
    * @type {Array}
@@ -193,8 +195,9 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
   /**
    * Loading Applications dependent from the current tab selected (submitted, credits, lifetime, modification)
    */
-  getApplicationsByTabState(): void {
-    if (this.is_vo_admin){
+   getApplicationsByTabState(): void {
+     this.loading_applications = true;
+     if (this.is_vo_admin){
       this.clearApplicationLists();
       if (this.tab_state === TabStates.SUBMITTED){
         this.applicationsservice.getSubmittedApplications().subscribe((applications: Application[]): void => {
@@ -208,7 +211,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
             this.getFacilityProject(app);
           }
           this.isLoaded = true;
-          console.log(this.all_applications);
+          this.loading_applications = false;
         });
       } else if (this.tab_state === TabStates.CREDITS_EXTENSION){
           this.applicationsservice.getCreditsExtensionRequest().subscribe(
@@ -223,7 +226,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
               this.getFacilityProject(app);
             }
             this.isLoaded = true;
-              console.log(this.all_applications);
+            this.loading_applications = false;
           });
       } else if (this.tab_state === TabStates.LIFETIME_EXTENSION){
         this.applicationsservice.getLifetimeRequestedApplications().subscribe(
@@ -238,7 +241,8 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
               this.getFacilityProject(app);
             }
             this.isLoaded = true;
-            console.log(this.all_applications);
+            this.loading_applications = false;
+
           });
       } else if (this.tab_state = TabStates.MODIFICATION_EXTENSION){
         this.applicationsservice.getModificationRequestedApplications().subscribe(
@@ -253,10 +257,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
               this.getFacilityProject(app);
             }
             this.isLoaded = true;
-            console.log(this.all_applications);
-            this.all_applications.forEach((application: Application ) => {
-              console.log(application.project_modification_request);
-            })
+            this.loading_applications = false;
           });
       }
 

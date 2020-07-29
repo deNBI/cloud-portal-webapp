@@ -202,8 +202,7 @@
         }} months
       </td>
       <td *ngIf="(application?.hasModificationRequestedStatus() || isModification) && !application.project_credit_request">
-        {{
-          application?.project_lifetime_request?.extra_lifetime}}
+        Requested: {{application?.project_lifetime_request?.extra_lifetime}} additional months
       </td>
     </tr>
     <tr>
@@ -297,8 +296,7 @@
       <td>{{flavor.counter}}</td>
       <td
         *ngIf="(application?.hasModificationRequestedStatus()  || isModification)  && !application.project_credit_request">
-                                                            <span>
-                                                                {{application?.project_modification_request?.getFlavorCounter(flavor)}}</span>
+        <span>{{application?.project_modification_request?.getFlavorCounter(flavor)}}</span>
       </td>
     </tr>
     <ng-container

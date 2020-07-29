@@ -173,6 +173,18 @@
               </button>
             </div>
           </div>
+          <div class="row" style="margin-top:5px;">
+            <div class="col" *ngIf="project_application?.hasModificationRequestedStatus()">
+              <span class="badge badge-warning">Resource Modification requested</span>
+            </div>
+            <div class="col" *ngIf="project_application?.hasExtensionRequestedStatus()">
+              <span class="badge badge-warning">Lifetime Extension requested</span>
+            </div>
+            <div class="col" *ngIf="project_application?.hasCreditsRequestedStatus()">
+              <span class="badge badge-warning">Extra Credits requested</span>
+            </div>
+          </div>
+
 
           <div class="alert alert-info" style="margin-top:15px;"
                *ngIf="project_application?.hasApprovedStatus()">
@@ -1284,11 +1296,9 @@
                   form="extension_application_form" id="submit_extension_btn"
                   (click)="calculateCreditsLifeTime(); projectExtensionModal.hide();
                   this.request_type = ExtensionRequestType.EXTENSION; submitModal.show();"
-                  [disabled]="extensionForm.invalid || (!project_application?.project_application_edam_terms && selected_ontology_terms.length < 1)">
-            <i
-              class="fa fa-dot-circle-o">
-
-            </i>
+                  [disabled]="extensionForm.invalid || (((project_application?.project_application_edam_terms?.length == 0)
+                  || !project_application?.project_application_edam_terms) && selected_ontology_terms.length < 1)">
+            <i class="fa fa-dot-circle-o"></i>
             Submit
           </button>
           <button type="button" class="btn btn-danger"
@@ -1444,6 +1454,24 @@
 
             <tr *ngFor="let flav of this.project_modification.flavors">
               <td>{{flav.name + ': ' + flav.counter + ' VMs'}}</td>
+            </tr>
+
+            <tr *ngIf="this.project_modification.volume_counter > 0">
+              <td>Number of storage volumes: {{this.project_modification.volume_counter}}</td>
+            </tr>
+
+            <tr *ngIf="(this.project_modification.volume_counter > 0) && (this.project_modification.volume_limit > 0)">
+              <td>Amount of storage space: {{this.project_modification.volume_limit}} GBs</td>
+            </tr>
+
+            <tr *ngIf="this.project_application.project_application_openstack_project
+            && this.project_modification.object_storage > 0">
+              <td>Amount of object storage: {{this.project_modification.object_storage}}</td>
+            </tr>
+
+            <tr *ngIf="this.selected_ontology_terms?.length > 0">
+              <td>Selected Terms:
+                <span *ngFor="let term of this.selected_ontology_terms" class="badge badge-info">{{term.term}}</span></td>
             </tr>
 
             <tr *ngIf="is_vo_admin" >
