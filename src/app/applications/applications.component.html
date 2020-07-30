@@ -532,8 +532,8 @@
                           class="btn btn-danger"
                           style="margin: auto 2.5px"
                           (click)="setSelectedApplication(application);
-
-                          resultModal.show();">
+                          declineLifetimeExtension(application);
+                          resetNotificationModal(); notificationModal.show();">
                           <i
                             class="fa fa-close"></i>&nbsp;
                           <span class="applicationActionsButton">Decline Extension</span>

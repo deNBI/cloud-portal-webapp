@@ -14,6 +14,7 @@ import {ApplicationBaseClassComponent} from '../shared/shared_modules/baseClass/
 import {ComputecenterComponent} from '../projectmanagement/computecenter.component';
 import {is_vo} from '../shared/globalvar';
 import {Observable} from "rxjs";
+import {HttpResponse} from "@angular/common/http";
 
 enum TabStates {
   'SUBMITTED' = 0,
@@ -146,15 +147,26 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
   approveLifetimeExtension(application: Application){
     this.applicationsservice.approveAdditionalLifetime(application.project_application_id)
-      .subscribe((result: any) => {
-    });
+      .subscribe((res: any) => {
+        this.updateNotificationModal('Success', 'The project was extended!.', true, 'success');
+        this.changeTabState(this.tab_state);
+      }, (err: any) => {
+        console.log('error', err.status);
+        this.updateNotificationModal('Failed', 'Project lifetime could not be extendend!', true, 'danger');
+        this.changeTabState(this.tab_state);
+      });
   }
 
   declineLifetimeExtension(application: Application){
-    this.applicationsservice.approveAdditionalLifetime(application.project_lifetime_request.project_application_id)
-      .subscribe((result: any) => {
-        console.log(result);
-      });
+    this.applicationsservice.declineAdditionalLifetime(application.project_application_id)
+      .subscribe((res: any) => {
+        this.updateNotificationModal('Declined', 'The project extension was declined!', true, 'success');
+        this.changeTabState(this.tab_state);
+      }, (err: any) => {
+        console.log('error', err.status);
+        this.updateNotificationModal('Failed', 'Decline of project extension failed!', true, 'danger');
+        this.changeTabState(this.tab_state);
+      })
   }
 
   //TODO : add for all types of actions and applications
