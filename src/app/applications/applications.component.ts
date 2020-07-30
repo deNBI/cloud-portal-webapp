@@ -119,8 +119,10 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
   }
 
   changeTabState(state: number): void {
-    this.tab_state = state;
-    this.getApplicationsByTabState();
+    if (!this.loading_applications){
+      this.tab_state = state;
+      this.getApplicationsByTabState();
+    }
   }
 
   /**
@@ -143,10 +145,8 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
   }
 
   approveLifetimeExtension(application: Application){
-    console.log(application.project_application_id)
     this.applicationsservice.approveAdditionalLifetime(application.project_application_id)
       .subscribe((result: any) => {
-      console.log(result);
     });
   }
 
@@ -260,7 +260,6 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
             this.loading_applications = false;
           });
       }
-
     }
   }
 

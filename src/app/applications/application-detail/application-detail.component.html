@@ -78,7 +78,7 @@
     <tr *ngIf="is_vo_admin && application?.project_credit_request">
       <td>Reason for extra credits</td>
       <td>
-        {{application?.project_lifetime_request?.comment}}
+        {{application?.project_credit_request?.comment}}
       </td>
     </tr>
     <tr>
@@ -190,7 +190,12 @@
           application?.project_application_comment
         }}
       </td>
-      <td *ngIf="(application?.hasModificationRequestedStatus() || isModification) && !application.project_credit_request">
+      <td *ngIf="application?.hasModificationRequestedStatus() && !application.project_credit_request
+        && application?.project_modification_request?.comment?.length > 0">
+        {{application?.project_modification_request?.comment}}
+      </td>
+      <td *ngIf="application?.hasExtensionRequestedStatus() && !application.project_credit_request
+        && application?.project_lifetime_request?.comment?.length > 0">
         {{application?.project_lifetime_request?.comment}}
       </td>
 

@@ -1448,30 +1448,41 @@
         </div>
         <div class="table-responsive">
           <table class="table table-striped">
-            <tr *ngFor="let str of valuesToConfirm">
-              <td>{{str}}</td>
-            </tr>
+            <ng-container *ngIf="this.request_type === ExtensionRequestType.MODIFICATION">
+              <tr *ngFor="let flav of this.project_modification.flavors">
+                <td>{{flav.name + ': ' + flav.counter + ' VMs'}}</td>
+              </tr>
+              <tr *ngIf="this.project_modification.volume_counter > 0">
+                <td>Number of storage volumes: {{this.project_modification.volume_counter}}</td>
+              </tr>
+              <tr *ngIf="(this.project_modification.volume_counter > 0) && (this.project_modification.volume_limit > 0)">
+                <td>Amount of storage space: {{this.project_modification.volume_limit}} GBs</td>
+              </tr>
 
-            <tr *ngFor="let flav of this.project_modification.flavors">
-              <td>{{flav.name + ': ' + flav.counter + ' VMs'}}</td>
-            </tr>
-
-            <tr *ngIf="this.project_modification.volume_counter > 0">
-              <td>Number of storage volumes: {{this.project_modification.volume_counter}}</td>
-            </tr>
-
-            <tr *ngIf="(this.project_modification.volume_counter > 0) && (this.project_modification.volume_limit > 0)">
-              <td>Amount of storage space: {{this.project_modification.volume_limit}} GBs</td>
-            </tr>
-
-            <tr *ngIf="this.project_application.project_application_openstack_project
+              <tr *ngIf="this.project_application.project_application_openstack_project
             && this.project_modification.object_storage > 0">
-              <td>Amount of object storage: {{this.project_modification.object_storage}}</td>
-            </tr>
+                <td>Amount of object storage: {{this.project_modification.object_storage}} GB</td>
+              </tr>
+            </ng-container>
 
             <tr *ngIf="this.selected_ontology_terms?.length > 0">
               <td>Selected Terms:
                 <span *ngFor="let term of this.selected_ontology_terms" class="badge badge-info">{{term.term}}</span></td>
+            </tr>
+
+            <tr *ngIf="(this.request_type === ExtensionRequestType.EXTENSION)
+            && this.project_extension.comment?.length > 0">
+              <td>Comment : {{this.project_extension.comment}}</td>
+            </tr>
+
+            <tr *ngIf="(this.request_type === ExtensionRequestType.MODIFICATION)
+            && this.project_modification.comment?.length > 0">
+              <td>Comment : {{this.project_modification.comment}}</td>
+            </tr>
+
+            <tr *ngIf="(this.request_type === ExtensionRequestType.CREDIT)
+            && this.project_credit_request.comment?.length > 0">
+              <td>Comment : {{this.project_credit_request.comment}}</td>
             </tr>
 
             <tr *ngIf="is_vo_admin" >
