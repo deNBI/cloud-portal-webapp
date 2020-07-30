@@ -47,6 +47,8 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 
   applications_history: Application [] = [];
 
+  allApplicationsToCheck: Application[] = [];
+
   constructor(userservice: UserService,
               applicationstatusservice: ApplicationStatusService,
               facilityService: FacilityService, applicationsservice: ApplicationsService) {
@@ -100,6 +102,8 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
       }
       this.isLoaded = true;
     })
+    
+
   }
 
   /**

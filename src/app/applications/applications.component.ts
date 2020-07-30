@@ -66,6 +66,11 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
   private WAIT_FOR_EXTENSION_STATUS: number = 6;
 
+  numberOfExtensionRequests = 0;
+  numberOfModificationRequets = 0;
+  numberOfCreditRequests = 0;
+  numberOfProjectApplications = 0;
+
   /**
    * Constructor.
    * Loads all Applications if user is vo admin and all user_applications.
@@ -95,7 +100,13 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
     if (this.is_vo_admin) {
       this.getSubmittedApplications();
       this.getComputeCenters();
-
+      this.applicationsservice.getExtensionRequestsCounter().subscribe((result: any) => {
+        console.log(result);
+        this.numberOfCreditRequests = result["credits_extension_requests_vo"];
+        this.numberOfExtensionRequests = result["lifetime_extension_requests_vo"];
+        this.numberOfModificationRequets = result["modification_requests_vo"];
+        this.numberOfProjectApplications = result["applications_submitted_vo"];
+      });
     } else {
       this.isLoaded = true;
     }

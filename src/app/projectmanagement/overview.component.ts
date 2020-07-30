@@ -497,7 +497,15 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   }
 
   public requestCreditsModification(): void {
-    this.applicationsservice.requestAdditionalCredits(this.project_application.project_credit_request).subscribe()
+    this.project_credit_request.project_application_id = this.project_application.project_application_id;
+    this.applicationsservice.requestAdditionalCredits(this.project_credit_request)
+      .subscribe((result: { [key: string]: string }): void => {
+        if (result['Error']) {
+          this.extension_status = 2;
+        } else {
+          this.extension_status = 1;
+        }
+      });
   }
 
   public requestExtension(): void {
@@ -520,7 +528,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
           this.getApplication()
         }
 
-      })
+      });
 
   }
 

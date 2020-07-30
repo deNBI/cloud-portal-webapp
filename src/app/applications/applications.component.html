@@ -15,24 +15,32 @@
     <div class="btn-group" role="group">
       <button class="btn btn-info"  (click)="changeTabState(TabStates.SUBMITTED);">
         <i class="fas fa-envelope"></i> Submitted Applications
+        <span class="badge badge-pill badge-light">{{this.numberOfProjectApplications}}</span>
         <i *ngIf="(this.tab_state === TabStates.SUBMITTED) && !this.loading_applications" class="fas fa-circle"></i>
         <i *ngIf="(this.tab_state === TabStates.SUBMITTED) && this.loading_applications" class="fas fa-dot-circle"></i>
+
       </button>
       <button class="btn btn-danger"
               (click)="changeTabState(TabStates.CREDITS_EXTENSION);">
         <i class="fas fa-coins"></i> Credit Extension Requests
+        <span class="badge badge-pill badge-light">{{this.numberOfCreditRequests}}</span>
         <i *ngIf="(this.tab_state === TabStates.CREDITS_EXTENSION) && !this.loading_applications" class="fas fa-circle"></i>
         <i *ngIf="(this.tab_state === TabStates.CREDITS_EXTENSION) && this.loading_applications" class="fas fa-dot-circle"></i>
+
       </button>
       <button class="btn btn-warning" (click)="changeTabState(TabStates.LIFETIME_EXTENSION);">
         <i class="fas fa-clock"></i> Lifetime Extension Requests
+        <span class="badge badge-pill badge-dark">{{this.numberOfExtensionRequests}}</span>
         <i *ngIf="(this.tab_state === TabStates.LIFETIME_EXTENSION) && !this.loading_applications" class="fas fa-circle"></i>
         <i *ngIf="(this.tab_state === TabStates.LIFETIME_EXTENSION) && this.loading_applications" class="fas fa-dot-circle"></i>
+
       </button>
       <button class="btn btn-light" (click)="changeTabState(TabStates.MODIFICATION_EXTENSION);">
         <i class="fas fa-memory"></i> Resource Modification Requests
+        <span class="badge badge-pill badge-dark">{{this.numberOfModificationRequets}}</span>
         <i *ngIf="(this.tab_state === TabStates.MODIFICATION_EXTENSION) && !this.loading_applications" class="fas fa-circle"></i>
         <i *ngIf="(this.tab_state === TabStates.MODIFICATION_EXTENSION) && this.loading_applications" class="fas fa-dot-circle"></i>
+
       </button>
     </div>
     <div class="card-body" *ngIf="loading_applications">
@@ -240,10 +248,8 @@
                     [class.collapse_no_margin]="getCollapseStatus('application_review-' + application?.project_application_id)"
                     [class.collapse]="getCollapseStatus('application_review-' + application?.project_application_id)"
                     [application]="application"
-                    [isModification]="application.project_application_status
-                      .includes(this.application_states.MODIFICATION_REQUESTED) ||
-                      application.project_application_status
-                      .includes(this.application_states.LIFETIME_EXTENSION_REQUESTED)"></app-application-detail>
+                    [isModification]="application.hasModificationRequestedStatus() ||
+                      application.hasExtensionRequestedStatus()"></app-application-detail>
                 </td>
               </ng-container>
 
@@ -402,10 +408,8 @@
                       [class.collapse_no_margin]="getCollapseStatus('application_review-' + application?.project_application_id)"
                       [class.collapse]="getCollapseStatus('application_review-' + application?.project_application_id)"
                       [application]="application"
-                      [isModification]="application.project_application_status
-                      .includes(this.application_states.MODIFICATION_REQUESTED) ||
-                      application.project_application_status
-                      .includes(this.application_states.LIFETIME_EXTENSION_REQUESTED)"></app-application-detail>
+                      [isModification]="application.hasModificationRequestedStatus() ||
+                      application.hasExtensionRequestedStatus()"></app-application-detail>
                   </td>
                 </ng-container>
 
@@ -562,10 +566,8 @@
                       [class.collapse_no_margin]="getCollapseStatus('application_review-' + application?.project_application_id)"
                       [class.collapse]="getCollapseStatus('application_review-' + application?.project_application_id)"
                       [application]="application"
-                      [isModification]="application.project_application_status
-                      .includes(this.application_states.MODIFICATION_REQUESTED) ||
-                      application.project_application_status
-                      .includes(this.application_states.LIFETIME_EXTENSION_REQUESTED)"></app-application-detail>
+                      [isModification]="application.hasModificationRequestedStatus() ||
+                      application.hasExtensionRequestedStatus()"></app-application-detail>
                   </td>
                 </ng-container>
 
@@ -732,10 +734,8 @@
                       [class.collapse_no_margin]="getCollapseStatus('application_review-' + application?.project_application_id)"
                       [class.collapse]="getCollapseStatus('application_review-' + application?.project_application_id)"
                       [application]="application"
-                      [isModification]="application.project_application_status
-                      .includes(this.application_states.MODIFICATION_REQUESTED) ||
-                      application.project_application_status
-                      .includes(this.application_states.LIFETIME_EXTENSION_REQUESTED)"></app-application-detail>
+                      [isModification]="application.hasModificationRequestedStatus() ||
+                      application.hasExtensionRequestedStatus()"></app-application-detail>
                   </td>
                 </ng-container>
 

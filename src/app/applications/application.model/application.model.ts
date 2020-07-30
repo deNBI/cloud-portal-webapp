@@ -153,55 +153,55 @@ export class Application {
   }
 
   public hasSubmittedStatus(): boolean {
-    return this.project_application_status.includes(Application_States.SUBMITTED)
+    return this.project_application_status?.includes(Application_States.SUBMITTED)
   }
 
   public hasApprovedStatus(): boolean {
-    return this.project_application_status.includes(Application_States.APPROVED)
+    return this.project_application_status?.includes(Application_States.APPROVED)
   }
 
   public hasTerminatedStatus(): boolean {
-    return this.project_application_status.includes(Application_States.TERMINATED)
+    return this.project_application_status?.includes(Application_States.TERMINATED)
   }
 
   public hasConfirmationDeniedStatus(): boolean {
-    return this.project_application_status.includes(Application_States.CONFIRMATION_DENIED)
+    return this.project_application_status?.includes(Application_States.CONFIRMATION_DENIED)
   }
 
   public hasCreditsDeclinedStatus(): boolean {
-    return this.project_application_status.includes(Application_States.CREDITS_EXTENSION_DENIED)
+    return this.project_application_status?.includes(Application_States.CREDITS_EXTENSION_DENIED)
   }
 
   public hasCreditsRequestedStatus(): boolean {
-    return this.project_application_status.includes(Application_States.CREDITS_EXTENSION_REQUESTED)
+    return this.project_application_status?.includes(Application_States.CREDITS_EXTENSION_REQUESTED)
   }
 
   public hasDeclinedStatus(): boolean {
-    return this.project_application_status.includes(Application_States.DECLINED)
+    return this.project_application_status?.includes(Application_States.DECLINED)
   }
 
   public hasExtensionDeclinedStatus(): boolean {
-    return this.project_application_status.includes(Application_States.LIFETIME_EXTENSION_DENIED)
+    return this.project_application_status?.includes(Application_States.LIFETIME_EXTENSION_DENIED)
   }
 
   public hasExtensionRequestedStatus(): boolean {
-    return this.project_application_status.includes(Application_States.LIFETIME_EXTENSION_REQUESTED)
+    return this.project_application_status?.includes(Application_States.LIFETIME_EXTENSION_REQUESTED)
   }
 
   public hasModificationDeclinedStatus(): boolean {
-    return this.project_application_status.includes(Application_States.MODIFICATION_DECLINED)
+    return this.project_application_status?.includes(Application_States.MODIFICATION_DECLINED)
   }
 
   public hasSuspendedStatus(): boolean {
-    return this.project_application_status.includes(Application_States.SUSPENDED)
+    return this.project_application_status?.includes(Application_States.SUSPENDED)
   }
 
   public hasWaitForConfirmationStatus(): boolean {
-    return this.project_application_status.includes(Application_States.WAIT_FOR_CONFIRMATION)
+    return this.project_application_status?.includes(Application_States.WAIT_FOR_CONFIRMATION)
   }
 
   public hasModificationRequestedStatus(): boolean {
-    return this.project_application_status.includes(Application_States.MODIFICATION_REQUESTED)
+    return this.project_application_status?.includes(Application_States.MODIFICATION_REQUESTED)
   }
 
   private setDaysRunning(): void {

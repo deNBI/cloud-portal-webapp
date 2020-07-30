@@ -184,6 +184,17 @@
               <span class="badge badge-warning">Extra Credits requested</span>
             </div>
           </div>
+          <div class="row" style="margin-top:5px;">
+            <div class="col" *ngIf="project_application?.hasCreditsDeclinedStatus()">
+              <span class="badge badge-danger">Extra Credits declined</span>
+            </div>
+            <div class="col" *ngIf="project_application?.hasExtensionDeclinedStatus()">
+              <span class="badge badge-danger">Lifetime Extension declined</span>
+            </div>
+            <div class="col" *ngIf="project_application?.hasModificationDeclinedStatus()">
+              <span class="badge badge-danger">Resource Modification declined</span>
+            </div>
+          </div>
 
 
           <div class="alert alert-info" style="margin-top:15px;"
@@ -1407,10 +1418,8 @@
           </div>
           <button type="button" class="btn  btn-primary" adm
                   form="credits_application_form" id="submit_extra_credits_btn"
-                  (click)="requestCreditsModification();creditsExtensionModal.hide()" [disabled]="f2.invalid"><i
-            class="fa fa-dot-circle-o">
-
-          </i>
+                  (click)="creditsExtensionModal.hide(); this.request_type = ExtensionRequestType.CREDIT;
+                  submitModal.show();" [disabled]="f2.invalid"><i class="fa fa-dot-circle-o"></i>
             Submit
           </button>
           <button type="button" class="btn btn-danger"
@@ -1485,10 +1494,6 @@
               <td>Comment : {{this.project_credit_request.comment}}</td>
             </tr>
 
-            <tr *ngIf="is_vo_admin" >
-              <td><strong>Approximate number of extra credits:
-                {{project_modification?.extra_credits}}</strong></td>
-            </tr>
             <tr *ngIf="request_type == ExtensionRequestType.MODIFICATION">
               <td><strong>Number of cores in total:
                 {{project_modification?.total_cores}}</strong>
@@ -1502,7 +1507,12 @@
             </tr>
             <tr *ngIf="request_type == ExtensionRequestType.EXTENSION" >
               <td><strong>Additional lifetime in months: {{project_extension.extra_lifetime}}</strong></td>
-
+            </tr>
+            <tr *ngIf="request_type == ExtensionRequestType.CREDIT">
+              <td>Amount of requested extra credits: {{project_credit_request.extra_credits}}</td>
+            </tr>
+            <tr *ngIf="is_vo_admin" >
+              <td><strong>Approximate number of extra credits:{{project_modification?.extra_credits}}</strong></td>
             </tr>
           </table>
         </div>
@@ -1524,7 +1534,7 @@
         </button>
         <button id="confirm_credits_btn" class="btn btn-success col-md-4" type="button"
                 *ngIf="request_type==ExtensionRequestType.CREDIT"
-                (click)="creditsExtensionModal.hide(); submitModal.hide(); resultModal.show();
+                (click)="submitModal.hide(); requestCreditsModification(); resultModal.show();
                 ">Confirm Application
         </button>
         <button class="btn btn-primary col-md-4" type="reset"

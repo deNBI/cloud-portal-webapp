@@ -126,7 +126,7 @@ export class ApplicationsService {
 
   }
 
-  getExtensionrRequestsCounter(): Observable<any> {
+  getExtensionRequestsCounter(): Observable<any> {
     return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}project_applications/extensions_counter/`, {
       withCredentials: true
 
