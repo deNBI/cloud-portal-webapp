@@ -230,6 +230,19 @@
             </div>
           </div>
         </div>
+        <div class="card-footer" *ngIf="conda_logs">
+          <div class="btn-group btn-group-justified">
+            <button type="button" class="btn btn-secondary" (click)="conda_logs.saveAsPDF()" style="margin-right: 5px">
+
+              Download PDF Logs
+            </button>
+            <button type="button" class="btn btn-secondary" (click)="conda_logs.saveAsTxt()">
+
+              Download txt Logs
+            </button>
+
+          </div>
+        </div>
       </div>
 
       <div class="card" style=" " *ngIf="virtualMachine?.volumes.length > 0">
