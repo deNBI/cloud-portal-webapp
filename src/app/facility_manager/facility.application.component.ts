@@ -9,6 +9,13 @@ import {ApplicationsService} from '../api-connector/applications.service';
 import {ApplicationBaseClassComponent} from '../shared/shared_modules/baseClass/application-base-class.component';
 import {forkJoin} from 'rxjs';
 
+enum TabStates {
+  'SUBMITTED' = 0,
+  'CREDITS_EXTENSION' = 1,
+  'LIFETIME_EXTENSION' = 2,
+  'MODIFICATION_EXTENSION' = 3
+}
+
 /**
  * Application component
  */
@@ -21,6 +28,8 @@ import {forkJoin} from 'rxjs';
 
            })
 export class FacilityApplicationComponent extends ApplicationBaseClassComponent implements OnInit {
+
+
 
   title: string = 'Application Overview';
   /**
@@ -48,6 +57,10 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
   applications_history: Application [] = [];
 
   allApplicationsToCheck: Application[] = [];
+
+  tab_state: number = TabStates.SUBMITTED;
+  TabStates: typeof TabStates = TabStates;
+  loadingApplications: boolean = false;
 
   constructor(userservice: UserService,
               applicationstatusservice: ApplicationStatusService,
@@ -102,7 +115,7 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
       }
       this.isLoaded = true;
     })
-    
+
 
   }
 
@@ -191,6 +204,62 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 
   }
 
+  /**
+   * may need changes due to multiple facilities for one single fm?
+   */
+  changeTabState(state: number): void {
+    if (!this.loadingApplications){
+      this.tab_state = state;
+      this.getApplicationsByTabState();
+    }
+  }
+
+  getApplicationsByTabState(){
+    this.allApplicationsToCheck = [];
+    this.loadingApplications = true;
+    if (this.tab_state === TabStates.SUBMITTED){
+      this.applicationsservice.getWfcSubmittedApplications().subscribe((applications: Application[]): void => {
+        if (applications.length === 0) {
+          this.isLoaded_userApplication = true;
+        }
+        for (const application of applications) {
+          this.allApplicationsToCheck.push(new Application(application));
+        }
+        this.loadingApplications = false;
+      });
+    } else if (this.tab_state === TabStates.MODIFICATION_EXTENSION) {
+      this.applicationsservice.getWfcModificationRequestedApplications().subscribe((applications: Application[]): void => {
+        if (applications.length === 0) {
+          this.isLoaded_userApplication = true;
+        }
+        for (const application of applications) {
+          this.allApplicationsToCheck.push(new Application(application));
+        }
+        this.loadingApplications = false;
+      });
+    } else if (this.tab_state === TabStates.CREDITS_EXTENSION){
+      this.applicationsservice.getWfcCreditsRequestedApplications().subscribe((applications: Application[]): void => {
+        if (applications.length === 0) {
+          this.isLoaded_userApplication = true;
+        }
+        for (const application of applications) {
+          this.allApplicationsToCheck.push(new Application(application));
+        }
+        this.loadingApplications = false;
+      });
+    } else if (this.tab_state === TabStates.LIFETIME_EXTENSION){
+      this.applicationsservice.getWfcLifetimeRequestedApplications().subscribe((applications: Application[]): void => {
+        if (applications.length === 0) {
+          this.isLoaded_userApplication = true;
+        }
+        for (const application of applications) {
+          this.allApplicationsToCheck.push(new Application(application));
+        }
+        this.loadingApplications = false;
+      });
+    }
+  }
+
   ngOnInit(): void {
     this.facilityService.getManagerFacilities().subscribe((result: any): void => {
       this.managerFacilities = result;
@@ -199,7 +268,6 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
       this.getApplicationStatus();
       this.getFullApplications(this.selectedFacility ['FacilityId']);
       this.getAllApplicationsHistory(this.selectedFacility ['FacilityId']);
-
     })
   }
 

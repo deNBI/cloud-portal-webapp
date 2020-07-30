@@ -142,7 +142,7 @@ export class ApplicationsService {
 
   }
 
-  geWfcLifetimeRequestedApplications(): Observable<Application[]> {
+  getWfcLifetimeRequestedApplications(): Observable<Application[]> {
     return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}project_applications/wfc/lifetime_requests/`, {
       withCredentials: true
 
@@ -158,7 +158,7 @@ export class ApplicationsService {
 
   }
 
-  getwfcModificationRequestedApplications(): Observable<Application[]> {
+  getWfcModificationRequestedApplications(): Observable<Application[]> {
     return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}project_applications/wfc/modifications_requests/`, {
       withCredentials: true
 
