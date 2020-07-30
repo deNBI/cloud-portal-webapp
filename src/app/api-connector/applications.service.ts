@@ -126,7 +126,15 @@ export class ApplicationsService {
 
   }
 
-    getLifetimeRequestedApplications(): Observable<Application[]> {
+  getExtensionrRequestsCounter(): Observable<any> {
+    return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}project_applications/extensions_counter/`, {
+      withCredentials: true
+
+    })
+
+  }
+
+  getLifetimeRequestedApplications(): Observable<Application[]> {
     return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}project_applications/lifetime_requests/`, {
       withCredentials: true
 
