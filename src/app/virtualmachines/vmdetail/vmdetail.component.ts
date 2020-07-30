@@ -150,7 +150,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
    */
   validSnapshotName(event: any): any {
     this.snapshotNameCheckDone = false;
-    this.imageService.checkSnapshotNameAvailable(this.snapshotName).subscribe((res: IResponseTemplate): void => {
+    this.imageService.checkSnapshotNameAvailable(this.snapshotName.trim()).subscribe((res: IResponseTemplate): void => {
 
       this.validSnapshotNameBool = this.snapshotName.length > 0 && <boolean><Boolean>res.value;
       this.snapshotNameCheckDone = true;
@@ -484,7 +484,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
   createSnapshot(snapshot_instance: string, snapshot_name: string, description ?: string
   ):
     void {
-    this.imageService.createSnapshot(snapshot_instance, snapshot_name, description).subscribe(
+    this.imageService.createSnapshot(snapshot_instance, snapshot_name.trim(), description).subscribe(
       (newSnapshot: SnapshotModel): void => {
         if (newSnapshot.snapshot_openstackid) {
           this.snapshotDone = 'true';
