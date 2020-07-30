@@ -98,6 +98,10 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
    */
   validSnapshotNameBool: boolean;
   /**
+   * If the snapshot name ends with whitespace.
+   */
+  endsWithWhitespace: boolean = false;
+  /**
    * String if the snapshot is done.
    * @type {string}
    */
@@ -150,6 +154,14 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
    */
   validSnapshotName(event: any): any {
     this.snapshotNameCheckDone = false;
+    if (this.snapshotName.endsWith(' ')) {
+      this.endsWithWhitespace = true;
+      this.snapshotNameCheckDone = true;
+
+      return;
+    } else {
+      this.endsWithWhitespace = false;
+    }
     this.imageService.checkSnapshotNameAvailable(this.snapshotName).subscribe((res: IResponseTemplate): void => {
 
       this.validSnapshotNameBool = this.snapshotName.length > 0 && <boolean><Boolean>res.value;

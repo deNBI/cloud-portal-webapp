@@ -28,11 +28,11 @@ import {BlockedImageTagResenv} from '../facility_manager/image-tag';
  * Start virtualmachine component.
  */
 @Component({
-             selector: 'app-new-vm',
-             templateUrl: 'addvm.component.html',
-             providers: [GroupService, ImageService, KeyService, FlavorService, VirtualmachineService,
-                ApiSettings, UserService]
-           })
+  selector: 'app-new-vm',
+  templateUrl: 'addvm.component.html',
+  providers: [GroupService, ImageService, KeyService, FlavorService, VirtualmachineService,
+    ApiSettings, UserService]
+})
 export class VirtualMachineComponent implements OnInit, DoCheck {
 
   FIFTY_PERCENT: number = 50;
@@ -493,36 +493,40 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
         flavor_fixed, this.selectedImage, servername,
         project, projectid.toString(), this.http_allowed,
         this.https_allowed, this.udp_allowed, this.volumesToMount, this.volumesToAttach, play_information, user_key_url)
-        .subscribe((newVm: VirtualMachine): void => {
-          this.newVm = newVm;
-          this.started_machine = false;
-
-          if (newVm.status === 'Build') {
-            setTimeout(
-              (): void => {
-                this.router.navigate(['/virtualmachines/vmOverview']).then().catch()
-              },
-              2000)
-
-          } else if (newVm.status === 'mutex_locked') {
-            setTimeout(
-              (): void => {
-                this.startVM(flavor, servername, project, projectid)
-              },
-              1000)
-          } else if (newVm.status) {
+        .subscribe(
+          (newVm: VirtualMachine): void => {
             this.newVm = newVm;
-            setTimeout(
-              (): void => {
-                this.router.navigate(['/virtualmachines/vmOverview']).then().catch()
-              },
-              2000)
-          } else {
-            this.loadProjectData();
-            this.create_error = <IResponseTemplate><any>newVm;
-          }
+            this.started_machine = false;
 
-        });
+            if (newVm.status === 'Build') {
+              setTimeout(
+                (): void => {
+                  this.router.navigate(['/virtualmachines/vmOverview']).then().catch()
+                },
+                2000)
+
+            } else if (newVm.status === 'mutex_locked') {
+              setTimeout(
+                (): void => {
+                  this.startVM(flavor, servername, project, projectid)
+                },
+                1000)
+            } else if (newVm.status) {
+              this.newVm = newVm;
+              setTimeout(
+                (): void => {
+                  this.router.navigate(['/virtualmachines/vmOverview']).then().catch()
+                },
+                2000)
+            } else {
+              this.loadProjectData();
+              this.create_error = <IResponseTemplate><any>newVm;
+            }
+
+          },
+          (errorResponse: any): any => {
+            console.log(errorResponse);
+          });
 
     } else {
       this.progress_bar_status = this.CREATING_STATUS;
@@ -770,16 +774,16 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
    * to the machine.
    */
   getStorageInList(): number {
-   if (this.volumesToMount.length === 0) {
-     return 0;
-   } else {
-     let storageInList: number = 0;
+    if (this.volumesToMount.length === 0) {
+      return 0;
+    } else {
+      let storageInList: number = 0;
 
-     this.volumesToMount.forEach((volume: Volume): void => {
-       storageInList = storageInList + volume.volume_storage;
-     });
+      this.volumesToMount.forEach((volume: Volume): void => {
+        storageInList = storageInList + volume.volume_storage;
+      });
 
-     return storageInList;
-   }
+      return storageInList;
+    }
   }
 }

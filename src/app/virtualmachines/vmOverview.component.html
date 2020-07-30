@@ -776,7 +776,10 @@
         <div>
           <p *ngIf="!validSnapshotNameBool && snapshotName.length > 0 && snapshotNameCheckDone"
              style="color: red">This name is already in use, please use a different
-            one.</p></div>
+            one.</p>
+          <p *ngIf="endsWithWhitespace"
+             style="color: red">The name must not end with a whitespace.</p>
+        </div>
 
         <br>
         <div
@@ -791,7 +794,7 @@
       </div>
       <div class="modal-footer">
         <button class="btn  btn-success col-md-4" id="snapshot_create_modal_button"
-                [disabled]="!validSnapshotNameBool"
+                [disabled]="!validSnapshotNameBool || endsWithWhitespace"
                 (click)="createSnapshot(snapshot_vm,snapshotName,snapshotDescription.value);snapshotModal.hide();snapshotResult.show()">
           Create Snapshot
         </button>

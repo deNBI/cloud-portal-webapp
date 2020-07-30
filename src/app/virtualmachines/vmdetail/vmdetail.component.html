@@ -702,7 +702,10 @@
           <div>
             <p *ngIf="!validSnapshotNameBool && snapshotName.length > 0 && snapshotNameCheckDone"
                style="color: red">This name is already in use, please use a different
-              one.</p></div>
+              one.</p>
+            <p *ngIf="endsWithWhitespace"
+               style="color: red">The name must not end with a whitespace.</p>
+          </div>
 
           <br>
           <div
