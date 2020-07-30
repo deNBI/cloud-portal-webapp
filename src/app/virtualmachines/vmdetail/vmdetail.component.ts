@@ -124,7 +124,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
   }
 
   getVmCondaLogs(): void {
-    this.virtualmachineService.getCondaLogs(this.vm_id).subscribe((log: Condalog) => {
+    this.virtualmachineService.getCondaLogs(this.vm_id).subscribe((log: Condalog): void => {
       if (log) {
         this.conda_logs = new Condalog(log);
       }

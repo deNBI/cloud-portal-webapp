@@ -155,7 +155,7 @@ export class VirtualmachineService {
   }
 
   getCondaLogs(openstack_id: string): Observable<Condalog> {
-    return this.http.post(`${this.baseVmUrl}${openstack_id}/logs/`, null, {
+    return this.http.post<Condalog>(`${this.baseVmUrl}${openstack_id}/logs/`, null, {
       withCredentials: true
     })
   }
