@@ -360,7 +360,8 @@
                         <button [id]="'extension_approval_' + application.project_application_shortname"
                                 *ngIf="application?.hasModificationRequestedStatus() || application?.project_modification_request"
                                 style="margin: auto 2.5px"
-                                (click)="setSelectedApplication(application);  resultModal.show();"
+                                (click)="this.resetNotificationModal(); this.approveModificationRequest(application);
+                                  this.notificationModal.show();"
                                 type="button"
                                 class="btn btn-success">
                           <i class="fa fa-check"></i>&nbsp;
@@ -372,7 +373,8 @@
                           type="button"
                           class="btn btn-danger"
                           style="margin: auto 2.5px"
-                          (click)="setSelectedApplication(application);  resultModal.show();">
+                          (click)="this.resetNotificationModal(); this.declineModificationRequest(application);
+                                this.notificationModal.show();">
                           <i
                             class="fa fa-close"></i>&nbsp;
                           <span class="applicationActionsButton">Decline Modification</span>
@@ -675,69 +677,27 @@
 
                     <td>
                       <div class="btn-group">
-                        <button
-                          *ngIf="application?.hasConfirmationDeniedStatus() || (application?.hasWaitForConfirmationStatus() && !application?.ComputeCenter?.FacilityId )"
-                          style="margin: auto 2.5px"
-                          (click)="resetNotificationModal();assignGroupToFacility(application?.project_application_perun_id,application?.project_application_id,selectedComputeCenter.value); notificationModal.show();"
 
-
-                          type="button"
-                          class="btn btn-secondary">
-                          <i class="fa fa-check"></i>&nbsp;
-                          <span class="applicationActionsButton">Assign</span>
-                        </button>
-                        <button
-                          *ngIf="application?.hasWaitForConfirmationStatus() && application?.ComputeCenter?.FacilityId"
-                          style="margin: auto 2.5px"
-                          (click)="resetNotificationModal();removeApplicationFromFacilityConfirmation(application);"
-
-
-                          type="button"
-                          class="btn btn-secondary">
-                          <i class="fa fa-check"></i>&nbsp;
-                          <span class="applicationActionsButton">Reassign</span>
-                        </button>
-                        <button
-                          *ngIf="application?.hasSubmittedStatus() && application?.project_application_openstack_project"
-                          style="margin: auto 2.5px" [id]="'approve_'+ application?.project_application_shortname"
-                          (click)="resetNotificationModal();createOpenStackProjectGroup(application,selectedComputeCenter.value); notificationModal.show();"
-
-                          type="button"
-                          class="btn btn-success">
-                          <i class="fa fa-check"></i>&nbsp;
-                          <span class="applicationActionsButton">Approve
-                          & Create </span>
-                        </button>
-
-                        <button
-                          *ngIf="application?.hasSubmittedStatus() && !application?.project_application_openstack_project"
-                          style="margin: auto 2.5px" [id]="'approve_' + application?.project_application_shortname"
-                          (click)="resetNotificationModal();createSimpleVmProjectGroup(application,selectedComputeCenter.value); notificationModal.show();"
-
-                          type="button"
-                          class="btn btn-success">
-                          <i class="fa fa-check"></i>&nbsp;
-                          <span class="applicationActionsButton">Approve
-                          & Create </span>
-                        </button>
-                        <button [id]="'extension_approval_' + application.project_application_shortname"
-                                *ngIf="application?.hasModificationRequestedStatus()"
+                        <button [id]="'credit_extension_approval_' + application.project_application_shortname"
+                                *ngIf="application?.hasCreditsRequestedStatus()"
                                 style="margin: auto 2.5px"
-                                (click)="setSelectedApplication(application);   resultModal.show();"
+                                (click)="this.resetNotificationModal(); this.approveCreditExtension(application);
+                                  notificationModal.show();"
                                 type="button"
                                 class="btn btn-success">
                           <i class="fa fa-check"></i>&nbsp;
-                          <span class="applicationActionsButton">Approve
-                          Modification </span>
+                          <span class="applicationActionsButton">Approve Credits</span>
                         </button>
 
-                        <button *ngIf="application?.hasSubmittedStatus()"
-                                (click)='declineApplication(application?.project_application_id)'
+                        <button [id]="'credit_extension_decline_' + application.project_application_shortname"
+                                *ngIf="application?.hasCreditsRequestedStatus()"
+                                (click)="this.resetNotificationModal(); this.declineCreditExtension(application);
+                                 notificationModal.show();"
                                 type="button"
                                 class="btn btn-danger"
                                 style="margin: auto 2.5px">
                           <i class="fas fa-times"></i>&nbsp;
-                          <span class="applicationActionsButton">Decline</span>
+                          <span class="applicationActionsButton">Decline Credits</span>
                         </button>
                         <button
                           *ngIf="application?.hasModificationRequestedStatus()"

@@ -158,7 +158,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
   }
 
   declineLifetimeExtension(application: Application){
-    this.applicationsservice.declineAdditionalLifetime(application.project_application_id)
+    this.applicationsservice.deleteAdditionalLifetimeRequests(application.project_application_id)
       .subscribe((res: any) => {
         this.updateNotificationModal('Declined', 'The project extension was declined!', true, 'success');
         this.changeTabState(this.tab_state);
@@ -169,7 +169,53 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
       })
   }
 
-  //TODO : add for all types of actions and applications
+  approveModificationRequest(application: Application){
+    this.applicationsservice.approveModificationRequest(application.project_application_id)
+      .subscribe((res: any) => {
+        this.updateNotificationModal('Success', 'The resource modification request was approved!', true, 'success');
+        this.changeTabState(this.tab_state);
+      }, (err: any) => {
+        console.log('error', err.status);
+        this.updateNotificationModal('Failed', 'Approval of resource modification failed!', true, 'danger');
+        this.changeTabState(this.tab_state);
+      });
+  }
+
+  declineModificationRequest(application: Application){
+    this.applicationsservice.deleteModificationRequest(application.project_application_id)
+      .subscribe((res: any) => {
+        this.updateNotificationModal('Declined', 'The resource modification request was declined!', true, 'success');
+        this.changeTabState(this.tab_state);
+      }, (err: any) => {
+        console.log('error', err.status);
+        this.updateNotificationModal('Failed', 'Decline of resource modification failed!', true, 'danger');
+        this.changeTabState(this.tab_state);
+      });
+  }
+
+  approveCreditExtension(application: Application){
+    this.applicationsservice.approveAdditionalCreditsRequest(application.project_application_id)
+      .subscribe((res: any) => {
+        this.updateNotificationModal('Success', 'The credit extension request was approved!', true, 'success');
+        this.changeTabState(this.tab_state);
+      }, (err: any) => {
+        console.log('error', err.status);
+        this.updateNotificationModal('Failed', 'Approval of credit extension failed!', true, 'danger');
+        this.changeTabState(this.tab_state);
+      });
+  }
+
+  declineCreditExtension(application: Application){
+    this.applicationsservice.deleteAdditionalCreditsRequests(application.project_application_id)
+      .subscribe((res: any) => {
+        this.updateNotificationModal('Declined', 'The credit extension request was declined!', true, 'success');
+        this.changeTabState(this.tab_state);
+      }, (err: any) => {
+        console.log('error', err.status);
+        this.updateNotificationModal('Failed', 'Decline of credit extension failed!', true, 'danger');
+        this.changeTabState(this.tab_state);
+      });
+  }
 
 
   /**
