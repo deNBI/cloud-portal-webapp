@@ -102,24 +102,8 @@ export class ApplicationsService {
 
   }
 
-  getWfcSubmittedApplications(): Observable<Application[]> {
-    return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}project_applications/wfc/submitted/`, {
-      withCredentials: true
-
-    })
-
-  }
-
   getCreditsRequestedApplications(): Observable<Application[]> {
     return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}project_applications/credits_requests/`, {
-      withCredentials: true
-
-    })
-
-  }
-
-  getWfcCreditsRequestedApplications(): Observable<Application[]> {
-    return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}project_applications/wfc/credits_requests/`, {
       withCredentials: true
 
     })
@@ -142,14 +126,6 @@ export class ApplicationsService {
 
   }
 
-  getWfcLifetimeRequestedApplications(): Observable<Application[]> {
-    return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}project_applications/wfc/lifetime_requests/`, {
-      withCredentials: true
-
-    })
-
-  }
-
   getModificationRequestedApplications(): Observable<Application[]> {
     return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}project_applications/modifications_requests/`, {
       withCredentials: true
@@ -158,13 +134,7 @@ export class ApplicationsService {
 
   }
 
-  getWfcModificationRequestedApplications(): Observable<Application[]> {
-    return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}project_applications/wfc/modifications_requests/`, {
-      withCredentials: true
 
-    })
-
-  }
 
 
 
