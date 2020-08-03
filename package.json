@@ -82,7 +82,7 @@
     "tslib": "^2.0.0",
     "tslint-angular": "^3.0.2",
     "tslint-clean-code": "^0.2.9",
-    "uglify-js": "3.10.0",
+    "uglify-js": "3.10.1",
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
