@@ -200,22 +200,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
       }
     )
   }
-
-  /**
-   * Not used yet - may be useful to check if a machine has logs or not (e.g. for showing a specific log button)
-   * @param vm the virtual machine to check
-   */
-  async hasCondaLogsPromise(vm: VirtualMachine): Promise<boolean> {
-      await this.virtualmachineservice.getCondaLogs(vm.openstackid).subscribe((log: Condalog) => {
-        if (log) {
-          return true;
-        } else {
-        return false;
-        }
-      });
-
-      return false;
-  }
+  
 
   check_status_loop_volume(volume: Volume, initial_timeout: number = this.checkStatusTimeout, final_state?: string): void {
     const created: boolean = volume.volume_created_by_user;
