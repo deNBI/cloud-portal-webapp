@@ -204,6 +204,18 @@ export class Application {
     return this.project_application_status?.includes(Application_States.MODIFICATION_REQUESTED)
   }
 
+  public hasWaitForExtensionConfirmationStatus(): boolean {
+    return this.project_application_status?.includes(Application_States.WAIT_FOR_CONFIRMATION_EXTENSION)
+  }
+
+  public hasWaitForModificationConfirmationStatus(): boolean {
+    return this.project_application_status?.includes(Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION)
+  }
+
+  public hasWaitForCreditConfirmationStatus(): boolean {
+    return this.project_application_status?.includes(Application_States.WAIT_FOR_CONFIRMATION_CREDITS)
+  }
+
   private setDaysRunning(): void {
     if (this.project_application_status != null) {
       if (this.project_application_status.includes(Application_States.APPROVED)) {

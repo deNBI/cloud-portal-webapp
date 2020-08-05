@@ -276,6 +276,7 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
       this.selectedFacility = this.managerFacilities[0];
       this.facilityService.getExtensionRequestsCounterFacility(this.selectedFacility['FacilityId'])
         .subscribe((result: any) => {
+          console.log(result);
         this.numberOfCreditRequests = result["credits_extension_requests"];
         this.numberOfExtensionRequests = result["lifetime_extension_requests"];
         this.numberOfModificationRequests = result["modification_requests"];
@@ -286,7 +287,6 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
       this.getApplicationStatus();
       this.getFullApplications(this.selectedFacility ['FacilityId']);
       this.getAllApplicationsHistory(this.selectedFacility ['FacilityId']);
-      this.isLoaded
     })
   }
 
