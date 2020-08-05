@@ -59,7 +59,7 @@ export class FacilityService {
   }
 
     getExtensionRequestsCounterFacility(facility_id: number | string): Observable<any> {
-    return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility_id}/extensions_counter/`, {
+    return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility_id}/extensions_counter/`, {
       withCredentials: true
 
     })
