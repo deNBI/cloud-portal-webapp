@@ -289,8 +289,9 @@
                 <div class="col-4">
                   <a class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
                      [id]="'showDetailsButton_'+vm?.name"
-                     [routerLink]="['/virtualmachines/detail/' + vm?.openstackid]">Show VM details</a>
+                     [routerLink]="['/virtualmachines/detail/' + vm?.openstackid]">Show VM details/logs</a>
                 </div>
+
                 <div class="col-4"
                      *ngIf="vm.status != this.VirtualMachineStates.staticDELETED && vm.status != this.VirtualMachineStates.staticSHUTOFF">
                   <a class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary" *ngIf="vm.cardState!= 1"
