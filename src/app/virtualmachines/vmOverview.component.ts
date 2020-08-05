@@ -22,7 +22,7 @@ import {ClipboardService} from 'ngx-clipboard';
 import {Volume} from './volumes/volume';
 import {VolumeStates} from './volumes/volume_states';
 import {WIKI_GUACAMOLE_LINK, WIKI_MOUNT_VOLUME, WIKI_RSTUDIO_LINK} from '../../links/links';
-import {Condalog} from "./conda/condalog";
+import {Condalog} from './conda/condalog';
 
 /**
  * Vm overview componentn.
@@ -207,11 +207,13 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
    */
   async hasCondaLogsPromise(vm: VirtualMachine): Promise<boolean> {
       await this.virtualmachineservice.getCondaLogs(vm.openstackid).subscribe((log: Condalog) => {
-        if (log){
+        if (log) {
           return true;
-        } else
+        } else {
         return false;
+        }
       });
+
       return false;
   }
 
