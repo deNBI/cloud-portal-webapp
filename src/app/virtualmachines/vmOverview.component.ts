@@ -22,6 +22,7 @@ import {ClipboardService} from 'ngx-clipboard';
 import {Volume} from './volumes/volume';
 import {VolumeStates} from './volumes/volume_states';
 import {WIKI_GUACAMOLE_LINK, WIKI_MOUNT_VOLUME, WIKI_RSTUDIO_LINK} from '../../links/links';
+import {Condalog} from "./conda/condalog";
 
 /**
  * Vm overview componentn.
@@ -198,6 +199,20 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
         this.detached_project_volumes = detached_volumes;
       }
     )
+  }
+
+  /**
+   * Not used yet - may be useful to check if a machine has logs or not (e.g. for showing a specific log button)
+   * @param vm the virtual machine to check
+   */
+  async hasCondaLogsPromise(vm: VirtualMachine): Promise<boolean> {
+      await this.virtualmachineservice.getCondaLogs(vm.openstackid).subscribe((log: Condalog) => {
+        if (log){
+          return true;
+        } else
+        return false;
+      });
+      return false;
   }
 
   check_status_loop_volume(volume: Volume, initial_timeout: number = this.checkStatusTimeout, final_state?: string): void {
