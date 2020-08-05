@@ -57,12 +57,12 @@
     </div>
     <ng-container [ngSwitch]="tab_state">
       <ng-container *ngSwitchCase="TabStates.SUBMITTED">
-        <div class="card-body" *ngIf="all_applications_wfc.length <= 0 && !loading_applications">
+        <div class="card-body" *ngIf="allApplicationsToCheck.length <= 0 && !loading_applications">
           <div class="alert alert-success" role="alert">
             <strong>No new Applications!</strong> There are no new project applications for review.
           </div>
         </div>
-        <div class="card-body" *ngIf="all_applications_wfc.length > 0">
+        <div class="card-body" *ngIf="allApplicationsToCheck.length > 0">
           <!-- work in progress -->
 
           <div class="table-responsive">
@@ -80,7 +80,7 @@
               </thead>
               <tbody>
               <ng-container
-                *ngFor="let application of all_applications_wfc">
+                *ngFor="let application of allApplicationsToCheck">
 
                 <ng-container>
                   <tr>
@@ -183,13 +183,13 @@
         </div>
       </ng-container>
       <ng-container *ngSwitchCase="TabStates.LIFETIME_EXTENSION">
-        <div class="card-body" *ngIf="all_applications_wfc.length <= 0 && !loading_applications">
+        <div class="card-body" *ngIf="allApplicationsToCheck.length <= 0 && !loading_applications">
           <div class="alert alert-success" role="alert">
             <strong>No new Applications!</strong> There are no new extension applications for review.
           </div>
         </div>
 
-        <div class="card-body" *ngIf="all_applications_wfc.length > 0">
+        <div class="card-body" *ngIf="allApplicationsToCheck.length > 0">
           <!-- work in progress -->
 
           <div class="table-responsive">
@@ -207,7 +207,7 @@
               </thead>
               <tbody>
               <ng-container
-                *ngFor="let application of all_applications_wfc">
+                *ngFor="let application of allApplicationsToCheck">
 
                 <ng-container>
                   <tr>
@@ -253,7 +253,7 @@
                     <td>
                       <div class="btn-group">
                         <button
-                          *ngIf="application?.hasWaitForExtensionConfirmationStatus()"
+
                           style="margin: auto 2.5px"
                           (click)="resetNotificationModal(); approveApplication(application); notificationModal.show();"
                           type="button"
@@ -263,7 +263,7 @@
                         </button>
 
                         <button
-                          *ngIf="application?.hasWaitForExtensionConfirmationStatus()"
+
                           style="margin: auto 2.5px" [id]="'decline_'+ application?.project_application_shortname"
                           (click)="resetNotificationModal(); declineExtension(application);
                           notificationModal.show();" type="button" class="btn btn-danger">
@@ -308,14 +308,14 @@
         </div>
       </ng-container>
       <ng-container *ngSwitchCase="TabStates.CREDITS_EXTENSION">
-        <div class="card-body" *ngIf="all_applications_wfc.length <= 0 && !loading_applications">
+        <div class="card-body" *ngIf="allApplicationsToCheck.length <= 0 && !loading_applications">
           <div class="alert alert-success" role="alert">
             <strong>No new Applications!</strong> There are no new project applications for review.
           </div>
         </div>
       </ng-container>
       <ng-container *ngSwitchCase="TabStates.MODIFICATION_EXTENSION">
-        <div class="card-body" *ngIf="all_applications_wfc.length <= 0 && !loading_applications">
+        <div class="card-body" *ngIf="allApplicationsToCheck.length <= 0 && !loading_applications">
           <div class="alert alert-success" role="alert">
             <strong>No new Applications!</strong> There are no new project applications for review.
           </div>

@@ -41,7 +41,7 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
    * All Applications waiting for confirmation for the selected facility.
    * @type {Array}
    */
-  all_applications_wfc: Application[] = [];
+
 
   /**
    * Facilitties where the user is manager ['name',id].
@@ -113,7 +113,7 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
       const modification_apps: Application[] = res[1];
 
       for (const wfcApp of wfc_apps) {
-        this.all_applications_wfc.push(new Application(wfcApp))
+        this.allApplicationsToCheck.push(new Application(wfcApp))
       }
       for (const modificationApp of modification_apps) {
         this.all_application_modifications.push(new Application(modificationApp))
@@ -134,7 +134,7 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
       if (applications.length === 0) {
         this.isLoaded = true;
       }
-      this.all_applications_wfc.push.apply(this.all_applications_wfc, applications);
+      this.allApplicationsToCheck.push.apply(this.allApplicationsToCheck, applications);
 
     });
     this.isLoaded = true;
@@ -150,7 +150,7 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
     this.facilityService.approveFacilityApplication(this.selectedFacility['FacilityId'], app.project_application_id).subscribe(
       (): void => {
         this.updateNotificationModal('Success', 'Successfully approved the application.', true, 'success');
-        this.all_applications_wfc.splice(this.all_applications_wfc.indexOf(app), 1);
+        this.allApplicationsToCheck.splice(this.allApplicationsToCheck.indexOf(app), 1);
         this.numberOfProjectApplications = this.numberOfProjectApplications - 1;
 
         this.getAllApplicationsHistory(this.selectedFacility ['FacilityId']);
@@ -164,6 +164,7 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
   /**
    * Decline an extension request.
    * @param {number} application_id
+   * TODO: CHECK WHY ITS NOT WORKING PROPERLY
    */
   public declineExtension(app: Application): void {
     const modificaton_requested: number = 4;
@@ -188,7 +189,7 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
       (): void => {
         this.updateNotificationModal('Success', 'Successfully declined the application.', true, 'success');
 
-        this.all_applications_wfc = [];
+        this.allApplicationsToCheck = [];
         this.getAllApplicationsWFC(this.selectedFacility['FacilityId'])
       },
       (): void => {
@@ -203,10 +204,10 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
    */
   onChangeSelectedFacility(): void {
     this.isLoaded = false;
-    this.all_applications_wfc = [];
+    this.allApplicationsToCheck = [];
     this.all_application_modifications = [];
     this.applications_history = [];
-    this.getFullApplications(this.selectedFacility ['FacilityId']);
+    //this.getFullApplications(this.selectedFacility ['FacilityId']);
     this.getAllApplicationsHistory(this.selectedFacility ['FacilityId']);
 
   }
@@ -282,11 +283,13 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
           this.numberOfModificationRequests = result['modification_requests'];
           this.numberOfProjectApplications = result['applications_submitted'];
         });
+      this.changeTabState(TabStates.SUBMITTED);
+      this.isLoaded = true;
 
 
       this.facilityService.getFacilityResources(this.selectedFacility['FacilityId']).subscribe();
       this.getApplicationStatus();
-      this.getFullApplications(this.selectedFacility ['FacilityId']);
+     // this.getFullApplications(this.selectedFacility ['FacilityId']);
       this.getAllApplicationsHistory(this.selectedFacility ['FacilityId']);
     })
   }
