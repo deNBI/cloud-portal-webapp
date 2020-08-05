@@ -12,7 +12,50 @@
     </option>
 
   </select></div>
-  <div class="card" style=" ">
+
+  <div class="card" *ngIf="is_vo_admin">
+    <div class="card-header">
+      <i class="fa fa-align-justify"></i> Applications for review
+    </div>
+    <div class="btn-group" role="group">
+      <button class="btn btn-info"  (click)="changeTabState(TabStates.SUBMITTED);">
+        <i class="fas fa-envelope"></i> Submitted Applications
+        <span class="badge badge-pill badge-light">{{this.numberOfProjectApplications}}</span>
+        <i *ngIf="(this.tab_state === TabStates.SUBMITTED) && !this.loading_applications" class="fas fa-circle"></i>
+        <i *ngIf="(this.tab_state === TabStates.SUBMITTED) && this.loading_applications" class="fas fa-dot-circle"></i>
+
+      </button>
+      <button class="btn btn-danger"
+              (click)="changeTabState(TabStates.CREDITS_EXTENSION);">
+        <i class="fas fa-coins"></i> Credit Extension Requests
+        <span class="badge badge-pill badge-light">{{this.numberOfCreditRequests}}</span>
+        <i *ngIf="(this.tab_state === TabStates.CREDITS_EXTENSION) && !this.loading_applications" class="fas fa-circle"></i>
+        <i *ngIf="(this.tab_state === TabStates.CREDITS_EXTENSION) && this.loading_applications" class="fas fa-dot-circle"></i>
+
+      </button>
+      <button class="btn btn-warning" (click)="changeTabState(TabStates.LIFETIME_EXTENSION);">
+        <i class="fas fa-clock"></i> Lifetime Extension Requests
+        <span class="badge badge-pill badge-dark">{{this.numberOfExtensionRequests}}</span>
+        <i *ngIf="(this.tab_state === TabStates.LIFETIME_EXTENSION) && !this.loading_applications" class="fas fa-circle"></i>
+        <i *ngIf="(this.tab_state === TabStates.LIFETIME_EXTENSION) && this.loading_applications" class="fas fa-dot-circle"></i>
+
+      </button>
+      <button class="btn btn-light" (click)="changeTabState(TabStates.MODIFICATION_EXTENSION);">
+        <i class="fas fa-memory"></i> Resource Modification Requests
+        <span class="badge badge-pill badge-dark">{{this.numberOfModificationRequests}}</span>
+        <i *ngIf="(this.tab_state === TabStates.MODIFICATION_EXTENSION) && !this.loading_applications" class="fas fa-circle"></i>
+        <i *ngIf="(this.tab_state === TabStates.MODIFICATION_EXTENSION) && this.loading_applications" class="fas fa-dot-circle"></i>
+
+      </button>
+    </div>
+
+
+    <div class="card-body" *ngIf="loading_applications">
+      <div class="alert alert-success">
+        <strong>Loading applications/requests ...</strong>
+      </div>
+    </div>
+  <div class="card">
     <div class="card-header">
       <i class="fa fa-align-justify"></i>
       Applications
@@ -122,124 +165,7 @@
         </table>
       </div>
     </div>
-
   </div>
-
-
-  <div class="card" style=" ">
-    <div class="card-header">
-      <i class="fa fa-align-justify"></i>
-      Application Modifications
-
-
-    </div>
-    <div class="card-body">
-
-      <div class="alert alert-success"
-           *ngIf="all_application_modifications.length == 0" role="alert">
-        <strong>No new Applications!</strong> There are no new project
-        application modifications for review.
-      </div>
-    </div>
-
-
-    <div *ngIf="all_application_modifications.length != 0">
-      <div class="table-responsive">
-        <table class="table table-striped">
-          <thead>
-          <tr>
-            <th></th>
-            <th>Project Name</th>
-            <th>Short Name</th>
-            <th>Date submitted</th>
-            <th>User</th>
-            <th>Institute</th>
-            <th>Actions</th>
-          </tr>
-          </thead>
-          <tbody>
-          <ng-container *ngFor="let app of all_application_modifications">
-            <ng-container>
-              <tr>
-                <td>
-
-                                     <span *ngIf="app?.project_application_openstack_project"
-                                           style="font-size: 20px"
-                                           class="project-openstack_plain_white_redbg"
-                                           data-toggle="tooltip"
-                                           title="This is an Openstack project">
-                                                <span class="path1"></span>
-                                                <span class="path2"></span>
-                                  </span>
-                  <span *ngIf="!app?.project_application_openstack_project"
-                        style="font-size: 20px"
-                        class="project-simpleVM_Logo_bluebg"
-                        data-toggle="tooltip"
-                        title="This is a Simple VM project">
-                                    <span class="path1"></span>
-                      <span class="path2"></span>
-                      <span class="path3"></span>
-                      <span class="path4"></span>
-                      <span class="path5"></span>
-                                  </span>
-
-
-                </td>
-                <td>{{ app.project_application_name }}</td>
-                <td>{{app.project_application_shortname}}</td>
-                <td>{{ app.project_application_date_submitted }}</td>
-                <td style="word-wrap: break-word;min-width: 110px; max-width: 130px; white-space: normal">
-                  {{ app.project_application_user.username }}
-                </td>
-                <td>{{app.project_application_institute}}</td>
-
-                <td>
-                  <div class="btn-group">
-                    <button type="button" [id]="'extension_approval_' + app?.project_application_shortname"
-                            (click)="resetNotificationModal();notificationModal.show();approveExtension(app)"
-                            class="btn btn-success"
-                            style="margin: auto 2.5px"><i
-                      class="fa fa-check"></i>&nbsp;
-                      Approve
-                    </button>
-                    <button
-                      (click)='resetNotificationModal();notificationModal.show();declineExtension(app)'
-                      type="button"
-                      class="btn btn-danger"
-                      style="margin: auto 2.5px"><i
-                      class="fa fa-times"></i>&nbsp;
-                      Decline
-                    </button>
-                    <button
-                      (click)="switchCollapseStatus('application_review-' + app.project_application_id);  getMemberDetailsByElixirIdIfCollapsed(app,'application_review-' + app.project_application_id);"
-                      type="button"
-                      class="btn btn-secondary"
-                      style="margin: auto 2.5px">
-                      <i class="fa fa-info-circle"></i>&nbsp;
-                      <span
-                        [hidden]="!getCollapseStatus('application_review-' + app.project_application_id)">Show</span><span
-                      [hidden]="getCollapseStatus('application_review-' + app.project_application_id)">Hide</span>
-                      Information
-                    </button>
-                  </div>
-                </td>
-              </tr>
-
-              <td colspan="12">
-                <app-application-detail [isModification]="true"
-                                        [class.collapse_no_margin]="getCollapseStatus('application_review-' + app?.project_application_id)"
-                                        [class.collapse]="getCollapseStatus('application_review-' + app?.project_application_id)"
-                                        [application]="app"></app-application-detail>
-              </td>
-            </ng-container>
-          </ng-container>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-  </div>
-
 
   <div class="card" style=" ">
     <div class="card-header">

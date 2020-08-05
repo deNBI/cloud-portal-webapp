@@ -66,10 +66,10 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
   private WAIT_FOR_EXTENSION_STATUS: number = 6;
 
-  numberOfExtensionRequests = 0;
-  numberOfModificationRequets = 0;
-  numberOfCreditRequests = 0;
-  numberOfProjectApplications = 0;
+  numberOfExtensionRequests: number = 0;
+  numberOfModificationRequests: number = 0;
+  numberOfCreditRequests: number = 0;
+  numberOfProjectApplications:number = 0;
 
   /**
    * Constructor.
@@ -101,10 +101,9 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
       this.getSubmittedApplications();
       this.getComputeCenters();
       this.applicationsservice.getExtensionRequestsCounter().subscribe((result: any) => {
-        console.log(result);
         this.numberOfCreditRequests = result["credits_extension_requests_vo"];
         this.numberOfExtensionRequests = result["lifetime_extension_requests_vo"];
-        this.numberOfModificationRequets = result["modification_requests_vo"];
+        this.numberOfModificationRequests = result["modification_requests_vo"];
         this.numberOfProjectApplications = result["applications_submitted_vo"];
       });
     } else {

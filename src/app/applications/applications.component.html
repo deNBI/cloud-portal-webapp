@@ -37,7 +37,7 @@
       </button>
       <button class="btn btn-light" (click)="changeTabState(TabStates.MODIFICATION_EXTENSION);">
         <i class="fas fa-memory"></i> Resource Modification Requests
-        <span class="badge badge-pill badge-dark">{{this.numberOfModificationRequets}}</span>
+        <span class="badge badge-pill badge-dark">{{this.numberOfModificationRequests}}</span>
         <i *ngIf="(this.tab_state === TabStates.MODIFICATION_EXTENSION) && !this.loading_applications" class="fas fa-circle"></i>
         <i *ngIf="(this.tab_state === TabStates.MODIFICATION_EXTENSION) && this.loading_applications" class="fas fa-dot-circle"></i>
 
