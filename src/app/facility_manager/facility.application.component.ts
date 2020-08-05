@@ -29,7 +29,6 @@ enum TabStates {
            })
 export class FacilityApplicationComponent extends ApplicationBaseClassComponent implements OnInit {
 
-
   numberOfExtensionRequests: number  = 0;
   numberOfModificationRequests: number = 0;
   numberOfCreditRequests: number = 0;
@@ -122,7 +121,6 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
       this.isLoaded = true;
     })
 
-
   }
 
   /**
@@ -153,6 +151,7 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
       (): void => {
         this.updateNotificationModal('Success', 'Successfully approved the application.', true, 'success');
         this.all_applications_wfc.splice(this.all_applications_wfc.indexOf(app), 1);
+        this.numberOfProjectApplications = this.numberOfProjectApplications - 1;
 
         this.getAllApplicationsHistory(this.selectedFacility ['FacilityId']);
       },
@@ -171,6 +170,8 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
     this.applicationstatusservice.setApplicationStatus(app.project_application_id, modificaton_requested).subscribe((): void => {
       this.updateNotificationModal('Success', 'Successfully declined!', true, 'success');
       this.all_application_modifications.splice(this.all_application_modifications.indexOf(app), 1);
+      this.numberOfExtensionRequests = this.numberOfExtensionRequests - 1;
+
       this.getAllApplicationsHistory(this.selectedFacility ['FacilityId']);
     })
 
@@ -214,59 +215,59 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
    * may need changes due to multiple facilities for one single fm?
    */
   changeTabState(state: number): void {
-    if (!this.loadingApplications){
+    if (!this.loadingApplications) {
       this.tab_state = state;
       this.getApplicationsByTabState();
     }
   }
 
-  getApplicationsByTabState(){
+  getApplicationsByTabState() {
     this.allApplicationsToCheck = [];
     this.loadingApplications = true;
-    if (this.tab_state === TabStates.SUBMITTED){
+    if (this.tab_state === TabStates.SUBMITTED) {
       this.facilityService.getWfcSubmittedApplications(this.selectedFacility['FacilityId'])
         .subscribe((applications: Application[]): void => {
-        if (applications.length === 0) {
-          this.isLoaded_userApplication = true;
-        }
-        for (const application of applications) {
-          this.allApplicationsToCheck.push(new Application(application));
-        }
-        this.loadingApplications = false;
-      });
+          if (applications.length === 0) {
+            this.isLoaded_userApplication = true;
+          }
+          for (const application of applications) {
+            this.allApplicationsToCheck.push(new Application(application));
+          }
+          this.loadingApplications = false;
+        });
     } else if (this.tab_state === TabStates.MODIFICATION_EXTENSION) {
       this.facilityService.getWfcModificationRequestedApplications(this.selectedFacility ['FacilityId'])
         .subscribe((applications: Application[]): void => {
-        if (applications.length === 0) {
-          this.isLoaded_userApplication = true;
-        }
-        for (const application of applications) {
-          this.allApplicationsToCheck.push(new Application(application));
-        }
-        this.loadingApplications = false;
-      });
-    } else if (this.tab_state === TabStates.CREDITS_EXTENSION){
+          if (applications.length === 0) {
+            this.isLoaded_userApplication = true;
+          }
+          for (const application of applications) {
+            this.allApplicationsToCheck.push(new Application(application));
+          }
+          this.loadingApplications = false;
+        });
+    } else if (this.tab_state === TabStates.CREDITS_EXTENSION) {
       this.facilityService.getWfcCreditsRequestedApplications(this.selectedFacility ['FacilityId'])
         .subscribe((applications: Application[]): void => {
-        if (applications.length === 0) {
-          this.isLoaded_userApplication = true;
-        }
-        for (const application of applications) {
-          this.allApplicationsToCheck.push(new Application(application));
-        }
-        this.loadingApplications = false;
-      });
-    } else if (this.tab_state === TabStates.LIFETIME_EXTENSION){
+          if (applications.length === 0) {
+            this.isLoaded_userApplication = true;
+          }
+          for (const application of applications) {
+            this.allApplicationsToCheck.push(new Application(application));
+          }
+          this.loadingApplications = false;
+        });
+    } else if (this.tab_state === TabStates.LIFETIME_EXTENSION) {
       this.facilityService.getWfcLifetimeRequestedApplications(this.selectedFacility ['FacilityId'])
         .subscribe((applications: Application[]): void => {
-        if (applications.length === 0) {
-          this.isLoaded_userApplication = true;
-        }
-        for (const application of applications) {
-          this.allApplicationsToCheck.push(new Application(application));
-        }
-        this.loadingApplications = false;
-      });
+          if (applications.length === 0) {
+            this.isLoaded_userApplication = true;
+          }
+          for (const application of applications) {
+            this.allApplicationsToCheck.push(new Application(application));
+          }
+          this.loadingApplications = false;
+        });
     }
   }
 
@@ -276,11 +277,11 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
       this.selectedFacility = this.managerFacilities[0];
       this.facilityService.getExtensionRequestsCounterFacility(this.selectedFacility['FacilityId'])
         .subscribe((result: any) => {
-        this.numberOfCreditRequests = result["credits_extension_requests"];
-        this.numberOfExtensionRequests = result["lifetime_extension_requests"];
-        this.numberOfModificationRequests = result["modification_requests"];
-        this.numberOfProjectApplications = result["applications_submitted"];
-      });
+          this.numberOfCreditRequests = result['credits_extension_requests'];
+          this.numberOfExtensionRequests = result['lifetime_extension_requests'];
+          this.numberOfModificationRequests = result['modification_requests'];
+          this.numberOfProjectApplications = result['applications_submitted'];
+        });
 
       this.facilityService.getFacilityResources(this.selectedFacility['FacilityId']).subscribe();
       this.getApplicationStatus();
