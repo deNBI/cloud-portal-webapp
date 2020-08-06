@@ -194,6 +194,13 @@ export class ApplicationsService {
                           })
   }
 
+  declineApplication(app_id: number | string): Observable<any> {
+    return this.http.post(`${ApiSettings.getApiBaseURL()}project_applications/${app_id}/decline/`,
+                          null, {
+                            withCredentials: true
+                          })
+  }
+
   approveAdditionalCreditsRequest(request_id: number | string): Observable<any> {
     return this.http.post(`${ApiSettings.getApiBaseURL()}project_applications/credits/extensions/${request_id}/approve/`,
                           null, {

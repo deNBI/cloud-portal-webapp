@@ -13,8 +13,6 @@ import {Client} from '../vo_manager/clients/client.model';
 import {ApplicationBaseClassComponent} from '../shared/shared_modules/baseClass/application-base-class.component';
 import {ComputecenterComponent} from '../projectmanagement/computecenter.component';
 import {is_vo} from '../shared/globalvar';
-import {Observable} from "rxjs";
-import {HttpResponse} from "@angular/common/http";
 
 enum TabStates {
   'SUBMITTED' = 0,
@@ -69,7 +67,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
   numberOfExtensionRequests: number = 0;
   numberOfModificationRequests: number = 0;
   numberOfCreditRequests: number = 0;
-  numberOfProjectApplications:number = 0;
+  numberOfProjectApplications: number = 0;
 
   /**
    * Constructor.
@@ -101,10 +99,10 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
       this.getSubmittedApplications();
       this.getComputeCenters();
       this.applicationsservice.getExtensionRequestsCounter().subscribe((result: any) => {
-        this.numberOfCreditRequests = result["credits_extension_requests_vo"];
-        this.numberOfExtensionRequests = result["lifetime_extension_requests_vo"];
-        this.numberOfModificationRequests = result["modification_requests_vo"];
-        this.numberOfProjectApplications = result["applications_submitted_vo"];
+        this.numberOfCreditRequests = result['credits_extension_requests_vo'];
+        this.numberOfExtensionRequests = result['lifetime_extension_requests_vo'];
+        this.numberOfModificationRequests = result['modification_requests_vo'];
+        this.numberOfProjectApplications = result['applications_submitted_vo'];
       });
     } else {
       this.isLoaded = true;
@@ -130,7 +128,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
   }
 
   changeTabState(state: number): void {
-    if (!this.loading_applications){
+    if (!this.loading_applications) {
       this.tab_state = state;
       this.getApplicationsByTabState();
     }
@@ -155,11 +153,14 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
     }
   }
 
-  approveLifetimeExtension(application: Application){
+  approveLifetimeExtension(application: Application) {
+    const idx: number = this.all_applications.indexOf(application);
+
     this.applicationsservice.approveAdditionalLifetime(application.project_application_id)
       .subscribe((res: any) => {
         this.updateNotificationModal('Success', 'The project was extended!.', true, 'success');
-        this.changeTabState(this.tab_state);
+        this.all_applications.splice(idx, 1)
+        this.numberOfExtensionRequests = this.numberOfExtensionRequests - 1;
       }, (err: any) => {
         console.log('error', err.status);
         this.updateNotificationModal('Failed', 'Project lifetime could not be extendend!', true, 'danger');
@@ -167,11 +168,15 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
       });
   }
 
-  declineLifetimeExtension(application: Application){
+  declineLifetimeExtension(application: Application) {
+    const idx: number = this.all_applications.indexOf(application);
+
     this.applicationsservice.deleteAdditionalLifetimeRequests(application.project_application_id)
       .subscribe((res: any) => {
         this.updateNotificationModal('Declined', 'The project extension was declined!', true, 'success');
-        this.changeTabState(this.tab_state);
+        this.all_applications.splice(idx, 1)
+        this.numberOfExtensionRequests = this.numberOfExtensionRequests - 1;
+
       }, (err: any) => {
         console.log('error', err.status);
         this.updateNotificationModal('Failed', 'Decline of project extension failed!', true, 'danger');
@@ -179,11 +184,15 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
       })
   }
 
-  approveModificationRequest(application: Application){
+  approveModificationRequest(application: Application) {
+    const idx: number = this.all_applications.indexOf(application);
+
     this.applicationsservice.approveModificationRequest(application.project_application_id)
       .subscribe((res: any) => {
         this.updateNotificationModal('Success', 'The resource modification request was approved!', true, 'success');
-        this.changeTabState(this.tab_state);
+        this.all_applications.splice(idx, 1)
+        this.numberOfModificationRequests = this.numberOfModificationRequests - 1;
+
       }, (err: any) => {
         console.log('error', err.status);
         this.updateNotificationModal('Failed', 'Approval of resource modification failed!', true, 'danger');
@@ -191,11 +200,15 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
       });
   }
 
-  declineModificationRequest(application: Application){
+  declineModificationRequest(application: Application) {
+    const idx: number = this.all_applications.indexOf(application);
+
     this.applicationsservice.deleteModificationRequest(application.project_application_id)
       .subscribe((res: any) => {
         this.updateNotificationModal('Declined', 'The resource modification request was declined!', true, 'success');
-        this.changeTabState(this.tab_state);
+        this.all_applications.splice(idx, 1)
+
+        this.numberOfModificationRequests = this.numberOfModificationRequests - 1;
       }, (err: any) => {
         console.log('error', err.status);
         this.updateNotificationModal('Failed', 'Decline of resource modification failed!', true, 'danger');
@@ -203,11 +216,14 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
       });
   }
 
-  approveCreditExtension(application: Application){
+  approveCreditExtension(application: Application) {
+    const idx: number = this.all_applications.indexOf(application);
+
     this.applicationsservice.approveAdditionalCreditsRequest(application.project_application_id)
       .subscribe((res: any) => {
         this.updateNotificationModal('Success', 'The credit extension request was approved!', true, 'success');
-        this.changeTabState(this.tab_state);
+        this.all_applications.splice(idx, 1)
+        this.numberOfCreditRequests = this.numberOfCreditRequests - 1;
       }, (err: any) => {
         console.log('error', err.status);
         this.updateNotificationModal('Failed', 'Approval of credit extension failed!', true, 'danger');
@@ -215,18 +231,20 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
       });
   }
 
-  declineCreditExtension(application: Application){
+  declineCreditExtension(application: Application) {
+    const idx: number = this.all_applications.indexOf(application);
+
     this.applicationsservice.deleteAdditionalCreditsRequests(application.project_application_id)
       .subscribe((res: any) => {
         this.updateNotificationModal('Declined', 'The credit extension request was declined!', true, 'success');
-        this.changeTabState(this.tab_state);
+        this.all_applications.splice(idx, 1)
+        this.numberOfCreditRequests = this.numberOfCreditRequests - 1;
       }, (err: any) => {
         console.log('error', err.status);
         this.updateNotificationModal('Failed', 'Decline of credit extension failed!', true, 'danger');
         this.changeTabState(this.tab_state);
       });
   }
-
 
   /**
    * Get all Applications if user is admin.
@@ -252,7 +270,6 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
     }
   }
 
-
   /**
    * Emptying all application lists, so applications don't get pushed to the lists multiple times.
    */
@@ -265,9 +282,9 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
    */
    getApplicationsByTabState(): void {
      this.loading_applications = true;
-     if (this.is_vo_admin){
+    if (this.is_vo_admin) {
       this.clearApplicationLists();
-      if (this.tab_state === TabStates.SUBMITTED){
+      if (this.tab_state === TabStates.SUBMITTED) {
         this.applicationsservice.getSubmittedApplications().subscribe((applications: Application[]): void => {
           if (applications.length === 0) {
             this.isLoaded_userApplication = true;
@@ -281,47 +298,47 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
           this.isLoaded = true;
           this.loading_applications = false;
         });
-      } else if (this.tab_state === TabStates.CREDITS_EXTENSION){
-          this.applicationsservice.getCreditsExtensionRequest().subscribe(
-            (credit_applications: Application[]): void => {
-            if (credit_applications.length === 0){
-              //bool here?
+      } else if (this.tab_state === TabStates.CREDITS_EXTENSION) {
+        this.applicationsservice.getCreditsExtensionRequest().subscribe(
+          (credit_applications: Application[]): void => {
+            if (credit_applications.length === 0) {
+              // bool here?
             }
-            for (const credit_application of credit_applications){
+            for (const credit_application of credit_applications) {
               this.all_applications.push(new Application(credit_application));
             }
-            for (const app of this.all_applications){
+            for (const app of this.all_applications) {
               this.getFacilityProject(app);
             }
             this.isLoaded = true;
             this.loading_applications = false;
           });
-      } else if (this.tab_state === TabStates.LIFETIME_EXTENSION){
+      } else if (this.tab_state === TabStates.LIFETIME_EXTENSION) {
         this.applicationsservice.getLifetimeRequestedApplications().subscribe(
           (lifetime_applications: Application[]) => {
-            if (lifetime_applications.length === 0){
-              //bool here?
+            if (lifetime_applications.length === 0) {
+              // bool here?
             }
-            for (const lifetime_application of lifetime_applications){
+            for (const lifetime_application of lifetime_applications) {
               this.all_applications.push(new Application(lifetime_application));
             }
-            for (const app of this.all_applications){
+            for (const app of this.all_applications) {
               this.getFacilityProject(app);
             }
             this.isLoaded = true;
             this.loading_applications = false;
 
           });
-      } else if (this.tab_state = TabStates.MODIFICATION_EXTENSION){
+      } else if (this.tab_state = TabStates.MODIFICATION_EXTENSION) {
         this.applicationsservice.getModificationRequestedApplications().subscribe(
           (modification_applications: Application[]) => {
-            if (modification_applications.length === 0){
-              //bool here?
+            if (modification_applications.length === 0) {
+              // bool here?
             }
-            for (const modification_application of modification_applications){
+            for (const modification_application of modification_applications) {
               this.all_applications.push(new Application(modification_application));
             }
-            for (const app of this.all_applications){
+            for (const app of this.all_applications) {
               this.getFacilityProject(app);
             }
             this.isLoaded = true;
@@ -559,21 +576,20 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
   }
 
-  /**
-   * Decline an application.
-   * @param application_id
-   */
-  public declineApplication(application_id: string): void {
-    this.applicationstatusservice.setApplicationStatus(application_id, this.getIdByStatus('declined').toString()).toPromise()
-      .then((): void => {
-        this.all_applications = [];
-        this.user_applications = [];
-        this.getAllApplications();
+  public declineApplication(app: Application): void {
+    const idx: number = this.all_applications.indexOf(app);
+    this.applicationsservice.declineApplication(app.project_application_id).subscribe(
+      (res: any): void => {
         this.updateNotificationModal('Success', 'The Application was declined', true, 'success');
+        this.all_applications.splice(idx, 1)
+        this.numberOfProjectApplications = this.numberOfProjectApplications - 1;
+      },
+      (error: any): void => {
+        this.updateNotificationModal('Failed', 'Application could not be declined!', true, 'danger');
+        this.changeTabState(this.tab_state);
+
       })
-      .catch((): void => {
-        this.updateNotificationModal('Failed', 'Application could be declined!', true, 'danger');
-      });
+
   }
 
 }

@@ -96,6 +96,22 @@ export class Application {
   private _project_application_cloud_service_user_number: number;
   private _flavors: Flavor[] = [];
   private _project_application_workshop: boolean;
+  private _hasSubmittedStatus: boolean = false;
+  private _hasApprovedStatus: boolean = false;
+  private _hasTerminatedStatus: boolean = false;
+  private _hasConfirmationDeniedStatus: boolean = false;
+  private _hasCreditsExtensionDeclinedStatus: boolean = false;
+  private _hasLifeTimeExtensionRequested: boolean = false;
+  private _hasCreditsRequestedStatus: boolean = false;
+  private _hasDeclinedStatus: boolean = false;
+  private _hasModificationDeclinedStatus: boolean = false;
+  private _hasSuspendedStatus: boolean = false;
+  private _hasWaitForConfirmationStatus: boolean = false;
+  private _hasModificationRequestedStatus: boolean = false;
+  private _hasWaitForExtensionConfirmationStatus: boolean = false;
+  private _hasWaitForModificationConfirmationStatus: boolean = false;
+  private _hasWaitForCreditConfirmationStatus: boolean = false;
+  private _hasLifeTimeExtensionDenied: boolean = false;
 
   constructor(aj: Application | null) {
     this._dissemination = new ApplicationDissemination(null);
@@ -150,6 +166,82 @@ export class Application {
       }
       this.setDaysRunning()
     }
+    this.setStatusValues()
+  }
+
+  private setStatusValues(): void {
+    this.project_application_status.forEach((status: number): void => {
+      switch (status) {
+        case Application_States.SUBMITTED: {
+          this._hasSubmittedStatus = true;
+          break
+        }
+        case Application_States.APPROVED: {
+          this._hasApprovedStatus = true;
+          break
+        }
+        case Application_States.TERMINATED: {
+          this._hasTerminatedStatus = true;
+          break
+        }
+        case Application_States.CONFIRMATION_DENIED: {
+          this._hasConfirmationDeniedStatus = true;
+          break
+        }
+        case Application_States.CREDITS_EXTENSION_DENIED: {
+          this._hasCreditsExtensionDeclinedStatus = true;
+          break
+        }
+        case Application_States.LIFETIME_EXTENSION_REQUESTED: {
+          this._hasLifeTimeExtensionRequested = true;
+          break
+        }
+        case Application_States.LIFETIME_EXTENSION_DENIED: {
+          this._hasLifeTimeExtensionDenied = true;
+          break
+        }
+        case Application_States.CREDITS_EXTENSION_REQUESTED: {
+          this._hasCreditsRequestedStatus = true;
+          break
+        }
+        case Application_States.DECLINED: {
+          this._hasDeclinedStatus = true;
+          break
+        }
+        case Application_States.WAIT_FOR_CONFIRMATION: {
+          this._hasWaitForConfirmationStatus = true;
+          break
+        }
+        case Application_States.WAIT_FOR_CONFIRMATION_CREDITS: {
+          this._hasWaitForCreditConfirmationStatus = true;
+          break
+        }
+        case Application_States.WAIT_FOR_CONFIRMATION_EXTENSION: {
+          this._hasWaitForExtensionConfirmationStatus = true;
+          break
+        }
+        case Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION: {
+          this._hasWaitForModificationConfirmationStatus = true;
+          break
+        }
+        case Application_States.SUSPENDED: {
+          this._hasSuspendedStatus = true;
+          break
+        }
+        case Application_States.MODIFICATION_REQUESTED: {
+          this._hasModificationRequestedStatus = true;
+          break
+        }
+        case Application_States.MODIFICATION_DECLINED: {
+          this._hasModificationDeclinedStatus = true;
+          break
+        }
+        default: {
+          break
+        }
+
+      }
+    })
   }
 
   public hasSubmittedStatus(): boolean {
