@@ -491,9 +491,9 @@
                         <button [id]="'extension_approval_' + application.project_application_shortname"
                                 *ngIf="application?.hasExtensionRequestedStatus() || application?.project_lifetime_request"
                                 style="margin: auto 2.5px"
-                                (click)="
+                                (click)="resetNotificationModal();
                                 approveLifetimeExtension(application);
-                                resetNotificationModal(); notificationModal.show();"
+                                notificationModal.show();"
                                 type="button"
                                 class="btn btn-success">
                           <i class="fa fa-check"></i>&nbsp;

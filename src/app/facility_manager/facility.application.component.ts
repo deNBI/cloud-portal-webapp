@@ -160,7 +160,7 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
   }
 
   public declineModification(app: Application): void {
-    this.applicationsservice.declineAdditionalLifetime(app.project_application_id)
+    this.applicationsservice.declineModificationRequest(app.project_application_id)
       .subscribe((result : any) => {
         this.updateNotificationModal('Success', 'Successfully declined modification!', true, 'success');
         this.allApplicationsToCheck.splice(this.allApplicationsToCheck.indexOf(app), 1);

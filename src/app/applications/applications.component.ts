@@ -162,7 +162,12 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
     this.applicationsservice.approveAdditionalLifetime(application.project_application_id)
       .subscribe((res: any) => {
-        this.updateNotificationModal('Success', 'The project was extended!.', true, 'success');
+        if (application.project_application_openstack_project)
+        {
+          this.updateNotificationModal('Success', 'The request has been sent to the facility manager.', true, 'success');
+        } else {
+          this.updateNotificationModal('Success', 'The project has been extended!', true, 'success');
+        }
         this.all_applications.splice(this.all_applications.indexOf(application), 1);
         this.numberOfExtensionRequests--;
       }, (err: any) => {
@@ -173,7 +178,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
   declineLifetimeExtension(application: Application) {
 
-    this.applicationsservice.declineAdditionalLifetime(application.project_application_id)
+    this.applicationsservice.deleteAdditionalLifetimeRequests(application.project_application_id)
       .subscribe((res: any) => {
         this.updateNotificationModal('Declined', 'The project extension was declined!', true, 'success');
 
