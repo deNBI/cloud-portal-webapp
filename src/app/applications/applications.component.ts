@@ -38,6 +38,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
   title: string = 'Application Overview';
   tab_state: number = TabStates.SUBMITTED;
   TabStates: typeof TabStates = TabStates;
+  selectedCenter: {[key: string]: string} = {};
 
   loading_applications: boolean = false;
 
@@ -110,6 +111,10 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
       this.isLoaded = true;
     }
 
+  }
+
+  printIt(): void {
+    console.log(this.selectedCenter);
   }
 
   /**
@@ -403,6 +408,8 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
                    } else {
                      this.updateNotificationModal('Success', 'The new project was created', true, 'success');
+                     this.all_applications.splice(this.all_applications.indexOf(application), 1);
+                     this.numberOfProjectApplications--;
                    }
                    this.getApplication(application);
                  },
@@ -485,10 +492,11 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
             this.setNoResourcesClientNotification(res);
             this.updateNotificationModal('Failed', `The client ${res['client_name']} has not the necessary resources left!`,
                                          true, 'danger');
-
+            this.all_applications.splice(this.all_applications.indexOf(app), 1);
+            this.numberOfProjectApplications--;
           } else {
             this.setNotificationClient(application_id);
-            this.reloadApplicationList(application_id)
+            //this.reloadApplicationList(application_id)
           }
 
         },
@@ -513,7 +521,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
             this.groupservice.createGroupByApplication(application_id).subscribe((): void => {
               this.setNotificationClient(application_id);
-              this.reloadApplicationList(application_id)
+              //this.reloadApplicationList(application_id)
 
             });
 
@@ -563,12 +571,12 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
    * Decline an application.
    * @param application_id
    */
-  public declineApplication(application_id: string): void {
-    this.applicationstatusservice.setApplicationStatus(application_id, this.getIdByStatus('declined').toString()).toPromise()
+  public declineApplication(application: Application): void {
+
+    this.applicationstatusservice.setApplicationStatus(application.project_application_id, this.getIdByStatus('declined').toString()).toPromise()
       .then((): void => {
-        this.all_applications = [];
-        this.user_applications = [];
-        this.getAllApplications();
+        this.all_applications.splice(this.all_applications.indexOf(application), 1);
+        this.numberOfProjectApplications--;
         this.updateNotificationModal('Success', 'The Application was declined', true, 'success');
       })
       .catch((): void => {

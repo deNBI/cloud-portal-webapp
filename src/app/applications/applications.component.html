@@ -5,8 +5,7 @@
 <div *ngIf="isLoaded"
      class="animated fadeIn">
 
-  <div class="card" *ngIf="is_vo_admin == true" style=" ">
-
+  <div class="card" *ngIf="is_vo_admin">
 
     <div class="card-header">
       <i class="fa fa-align-justify"></i> Applications for review
@@ -134,6 +133,8 @@
                   <td>
                     <!-- into select: [style.display]=" (application?.hasSubmittedStatus() || application?.hasConfirmationDeniedStatus()|| (!application?.ComputeCenter?.FacilityId ))? 'inherit' :'none'"-->
                     <select *ngIf="application?.hasSubmittedStatus()"
+                            [(ngModel)]="selectedCenter[application.project_application_id]"
+                            (ngModelChange)="printIt();"
                       class="form-control" [id]="'id_compute_center_option_' + application?.project_application_name"
                       #selectedComputeCenter>
 
@@ -154,7 +155,7 @@
                       <button
                         *ngIf="application?.hasConfirmationDeniedStatus() || (application?.hasWaitForConfirmationStatus() && !application?.ComputeCenter?.FacilityId )"
                         style="margin: auto 2.5px"
-                        (click)="resetNotificationModal();assignGroupToFacility(application?.project_application_perun_id,application?.project_application_id,selectedComputeCenter.value); notificationModal.show();"
+                        (click)="resetNotificationModal();assignGroupToFacility(application?.project_application_perun_id,application?.project_application_id, selectedCenter[application.project_application_id]); notificationModal.show();"
 
 
                         type="button"
@@ -176,7 +177,7 @@
                       <button
                         *ngIf="application?.hasSubmittedStatus() && application?.project_application_openstack_project"
                         style="margin: auto 2.5px" [id]="'approve_'+ application?.project_application_shortname"
-                        (click)="resetNotificationModal();createOpenStackProjectGroup(application,selectedComputeCenter.value); notificationModal.show();"
+                        (click)="resetNotificationModal();createOpenStackProjectGroup(application, selectedCenter[application.project_application_id]); notificationModal.show();"
 
                         type="button"
                         class="btn btn-success">
@@ -188,7 +189,7 @@
                       <button
                         *ngIf="application?.hasSubmittedStatus() && !application?.project_application_openstack_project"
                         style="margin: auto 2.5px" [id]="'approve_' + application?.project_application_shortname"
-                        (click)="resetNotificationModal();createSimpleVmProjectGroup(application,selectedComputeCenter.value); notificationModal.show();"
+                        (click)="resetNotificationModal();createSimpleVmProjectGroup(application,selectedCenter[application.project_application_id]); notificationModal.show();"
 
                         type="button"
                         class="btn btn-success">
@@ -198,7 +199,7 @@
                       </button>
 
                       <button *ngIf="application?.hasSubmittedStatus()"
-                              (click)='declineApplication(application?.project_application_id)'
+                              (click)='resetNotificationModal();declineApplication(application); notificationModal.show();'
                               type="button"
                               class="btn btn-danger"
                               style="margin: auto 2.5px">
@@ -727,6 +728,20 @@
         </div></ng-container>
     </ng-container>
 
+    </div>
+
+  <div class="card" *ngIf="is_vo_admin && false">
+
+    <div class="card-header">
+      <i class="fa fa-align-justify"></i> Applications history
+    </div>
+    <div class="card-body" *ngIf="!loading_applications">
+      <div class="alert alert-success" role="alert">
+        <strong>No new Applications!</strong> There are no new project applications for review.
+      </div>
+    </div>
+    <div class="card-body">
+    <!-- need to fill application history -->
     </div>
 
 </div>
