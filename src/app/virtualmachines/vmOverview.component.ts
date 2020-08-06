@@ -200,7 +200,6 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
       }
     )
   }
-  
 
   check_status_loop_volume(volume: Volume, initial_timeout: number = this.checkStatusTimeout, final_state?: string): void {
     const created: boolean = volume.volume_created_by_user;
