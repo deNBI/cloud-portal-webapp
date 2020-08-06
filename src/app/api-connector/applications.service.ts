@@ -223,7 +223,7 @@ export class ApplicationsService {
   }
 
   deleteAdditionalLifetimeRequests(request_id: number | string): Observable<any> {
-    return this.http.delete(`${ApiSettings.getApiBaseURL()}project_applications/credits/lifetime/${request_id}/`,
+    return this.http.delete(`${ApiSettings.getApiBaseURL()}project_applications/lifetime/extensions/${request_id}/`,
                             {
                               withCredentials: true
                             })
