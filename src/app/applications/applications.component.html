@@ -196,16 +196,6 @@
                         <span class="applicationActionsButton">Approve
                           & Create </span>
                       </button>
-                      <button [id]="'extension_approval_' + application.project_application_shortname"
-                              *ngIf="application?.hasModificationRequestedStatus()"
-                              style="margin: auto 2.5px"
-                              (click)="setSelectedApplication(application);   resultModal.show();"
-                              type="button"
-                              class="btn btn-success">
-                        <i class="fa fa-check"></i>&nbsp;
-                        <span class="applicationActionsButton">Approve
-                          Modification </span>
-                      </button>
 
                       <button *ngIf="application?.hasSubmittedStatus()"
                               (click)='declineApplication(application?.project_application_id)'
@@ -215,17 +205,6 @@
                         <i class="fas fa-times"></i>&nbsp;
                         <span class="applicationActionsButton">Decline</span>
                       </button>
-                      <button
-                        *ngIf="application?.hasModificationRequestedStatus()"
-                        type="button"
-                        class="btn btn-danger"
-                        style="margin: auto 2.5px"
-                        (click)="setSelectedApplication(application);  resultModal.show();">
-                        <i
-                          class="fa fa-close"></i>&nbsp;
-                        <span class="applicationActionsButton">Decline Modification</span>
-                      </button>
-
 
                       <button
                         (click)="switchCollapseStatus('application_review-' + application?.project_application_id);  getMemberDetailsByElixirIdIfCollapsed(application,'application_review-' + application?.project_application_id);"

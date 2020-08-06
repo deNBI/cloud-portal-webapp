@@ -159,11 +159,11 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
     this.applicationsservice.approveAdditionalLifetime(application.project_application_id)
       .subscribe((res: any) => {
         this.updateNotificationModal('Success', 'The project was extended!.', true, 'success');
-        this.changeTabState(this.tab_state);
+        this.all_applications.splice(this.all_applications.indexOf(application), 1);
+        this.numberOfExtensionRequests--;
       }, (err: any) => {
         console.log('error', err.status);
         this.updateNotificationModal('Failed', 'Project lifetime could not be extendend!', true, 'danger');
-        this.changeTabState(this.tab_state);
       });
   }
 
@@ -171,11 +171,11 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
     this.applicationsservice.deleteAdditionalLifetimeRequests(application.project_application_id)
       .subscribe((res: any) => {
         this.updateNotificationModal('Declined', 'The project extension was declined!', true, 'success');
-        this.changeTabState(this.tab_state);
+        this.all_applications.splice(this.all_applications.indexOf(application), 1);
+        this.numberOfExtensionRequests--;
       }, (err: any) => {
         console.log('error', err.status);
         this.updateNotificationModal('Failed', 'Decline of project extension failed!', true, 'danger');
-        this.changeTabState(this.tab_state);
       })
   }
 
@@ -183,11 +183,11 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
     this.applicationsservice.approveModificationRequest(application.project_application_id)
       .subscribe((res: any) => {
         this.updateNotificationModal('Success', 'The resource modification request was approved!', true, 'success');
-        this.changeTabState(this.tab_state);
+        this.all_applications.splice(this.all_applications.indexOf(application), 1);
+        this.numberOfModificationRequests--;
       }, (err: any) => {
         console.log('error', err.status);
         this.updateNotificationModal('Failed', 'Approval of resource modification failed!', true, 'danger');
-        this.changeTabState(this.tab_state);
       });
   }
 
@@ -195,11 +195,11 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
     this.applicationsservice.deleteModificationRequest(application.project_application_id)
       .subscribe((res: any) => {
         this.updateNotificationModal('Declined', 'The resource modification request was declined!', true, 'success');
-        this.changeTabState(this.tab_state);
+        this.all_applications.splice(this.all_applications.indexOf(application), 1);
+        this.numberOfModificationRequests--;
       }, (err: any) => {
         console.log('error', err.status);
         this.updateNotificationModal('Failed', 'Decline of resource modification failed!', true, 'danger');
-        this.changeTabState(this.tab_state);
       });
   }
 
@@ -207,11 +207,11 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
     this.applicationsservice.approveAdditionalCreditsRequest(application.project_application_id)
       .subscribe((res: any) => {
         this.updateNotificationModal('Success', 'The credit extension request was approved!', true, 'success');
-        this.changeTabState(this.tab_state);
+        this.all_applications.splice(this.all_applications.indexOf(application), 1);
+        this.numberOfCreditRequests--;
       }, (err: any) => {
         console.log('error', err.status);
         this.updateNotificationModal('Failed', 'Approval of credit extension failed!', true, 'danger');
-        this.changeTabState(this.tab_state);
       });
   }
 
@@ -219,11 +219,11 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
     this.applicationsservice.deleteAdditionalCreditsRequests(application.project_application_id)
       .subscribe((res: any) => {
         this.updateNotificationModal('Declined', 'The credit extension request was declined!', true, 'success');
-        this.changeTabState(this.tab_state);
+        this.all_applications.splice(this.all_applications.indexOf(application), 1);
+        this.numberOfCreditRequests--;
       }, (err: any) => {
         console.log('error', err.status);
         this.updateNotificationModal('Failed', 'Decline of credit extension failed!', true, 'danger');
-        this.changeTabState(this.tab_state);
       });
   }
 

@@ -106,39 +106,104 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
     });
   }
 
-  getFullApplications(facility: number): void {
-    forkJoin(this.facilityService.getFacilityApplicationsWaitingForConfirmation(facility),
-             this.facilityService.getFacilityModificationApplicationsWaitingForConfirmation(facility)).subscribe((res: any): void => {
-      const wfc_apps: Application[] = res[0];
-      const modification_apps: Application[] = res[1];
 
-      for (const wfcApp of wfc_apps) {
-        this.allApplicationsToCheck.push(new Application(wfcApp))
-      }
-      for (const modificationApp of modification_apps) {
-        this.all_application_modifications.push(new Application(modificationApp))
-      }
-      this.isLoaded = true;
-    })
 
+
+  public approveExtension(app: Application): void{
+    this.applicationsservice.approveAdditionalLifetime(app.project_application_id)
+      .subscribe((result : any) => {
+        this.updateNotificationModal('Success', 'Successfully approved extension!', true, 'success');
+        this.allApplicationsToCheck.splice(this.allApplicationsToCheck.indexOf(app), 1);
+        this.numberOfExtensionRequests--;
+        this.getAllApplicationsHistory(this.selectedFacility['FacilityId']);
+      }, (error: any) => {
+        this.updateNotificationModal('Failed',
+          'The approval of the extension request has failed.',
+          true,
+          'danger');
+        });
   }
 
   /**
-   * Gets all applications for the facility.
-   * @param {number} facility
+   * Decline an extension request.
+   * @param {number} application_id
    */
-  getAllApplicationsWFC(facility: number): void {
+  public declineExtension(app: Application): void {
 
-    // todo check if user is VO Admin
-    this.facilityService.getFacilityApplicationsWaitingForConfirmation(facility).subscribe((applications: Application[]): void => {
-      if (applications.length === 0) {
-        this.isLoaded = true;
-      }
-      this.allApplicationsToCheck.push.apply(this.allApplicationsToCheck, applications);
-
-    });
-    this.isLoaded = true;
+    this.applicationsservice.declineAdditionalLifetime(app.project_application_id)
+      .subscribe((result : any) => {
+        this.updateNotificationModal('Success', 'Successfully declined extension!', true, 'success');
+        this.allApplicationsToCheck.splice(this.allApplicationsToCheck.indexOf(app), 1);
+        this.numberOfExtensionRequests--;
+        this.getAllApplicationsHistory(this.selectedFacility['FacilityId']);
+      }, (error: any) => {
+        this.updateNotificationModal('Failed',
+          'The decline of the extension request has failed.',
+          true,
+          'danger');
+      });
   }
+
+  public approveModification(app: Application): void {
+    this.applicationsservice.approveModificationRequest(app.project_application_id)
+      .subscribe((result : any) => {
+        this.updateNotificationModal('Success', 'Successfully approved modification!', true, 'success');
+        this.allApplicationsToCheck.splice(this.allApplicationsToCheck.indexOf(app), 1);
+        this.numberOfModificationRequests--;
+        this.getAllApplicationsHistory(this.selectedFacility['FacilityId']);
+      }, (error: any) => {
+        this.updateNotificationModal('Failed',
+          'The approval of the modification request has failed.',
+          true,
+          'danger');
+      });
+  }
+
+  public declineModification(app: Application): void {
+    this.applicationsservice.declineAdditionalLifetime(app.project_application_id)
+      .subscribe((result : any) => {
+        this.updateNotificationModal('Success', 'Successfully declined modification!', true, 'success');
+        this.allApplicationsToCheck.splice(this.allApplicationsToCheck.indexOf(app), 1);
+        this.numberOfModificationRequests--;
+        this.getAllApplicationsHistory(this.selectedFacility['FacilityId']);
+      }, (error: any) => {
+        this.updateNotificationModal('Failed',
+          'The decline of the modification request has failed.',
+          true,
+          'danger');
+      });
+  }
+
+  public approveCreditRequest(app: Application): void {
+    this.applicationsservice.approveAdditionalCreditsRequest(app.project_application_id)
+      .subscribe((result : any) => {
+        this.updateNotificationModal('Success', 'Successfully approved credit extension!', true, 'success');
+        this.allApplicationsToCheck.splice(this.allApplicationsToCheck.indexOf(app), 1);
+        this.numberOfCreditRequests--;
+        this.getAllApplicationsHistory(this.selectedFacility['FacilityId']);
+      }, (error: any) => {
+        this.updateNotificationModal('Failed',
+          'The approval of the credit request has failed.',
+          true,
+          'danger');
+      });
+  }
+
+  public declineCreditRequest(app: Application): void {
+    this.applicationsservice.declineAdditionalCredits(app.project_application_id)
+      .subscribe((result : any) => {
+        this.updateNotificationModal('Success', 'Successfully declined credit extension!', true, 'success');
+        this.allApplicationsToCheck.splice(this.allApplicationsToCheck.indexOf(app), 1);
+        this.numberOfCreditRequests--;
+        this.getAllApplicationsHistory(this.selectedFacility['FacilityId']);
+      }, (error: any) => {
+        this.updateNotificationModal('Failed',
+          'The decline of the credit request has failed.',
+          true,
+          'danger');
+      });
+  }
+
 
   /**
    * Approves an  application.
@@ -152,8 +217,7 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
         this.updateNotificationModal('Success', 'Successfully approved the application.', true, 'success');
         this.allApplicationsToCheck.splice(this.allApplicationsToCheck.indexOf(app), 1);
         this.numberOfProjectApplications = this.numberOfProjectApplications - 1;
-
-        this.getAllApplicationsHistory(this.selectedFacility ['FacilityId']);
+        this.getAllApplicationsHistory(this.selectedFacility['FacilityId']);
       },
       (): void => {
         this.updateNotificationModal('Failed', 'Failed to approve the application.', true, 'danger');
@@ -162,35 +226,19 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
   }
 
   /**
-   * Decline an extension request.
-   * @param {number} application_id
-   * TODO: CHECK WHY ITS NOT WORKING PROPERLY
-   */
-  public declineExtension(app: Application): void {
-    const modificaton_requested: number = 4;
-    this.applicationstatusservice.setApplicationStatus(app.project_application_id, modificaton_requested).subscribe((): void => {
-      this.updateNotificationModal('Success', 'Successfully declined!', true, 'success');
-      this.all_application_modifications.splice(this.all_application_modifications.indexOf(app), 1);
-      this.numberOfExtensionRequests = this.numberOfExtensionRequests - 1;
-
-      this.getAllApplicationsHistory(this.selectedFacility ['FacilityId']);
-    })
-
-  }
-
-  /**
    * Declines an Application.
    * @param {number} application_id
    */
-  declineApplication(application_id: number): void {
+  declineApplication(app: Application): void {
     this.updateNotificationModal('Decline Application', 'Waiting..', true, 'info');
 
-    this.facilityService.declineFacilityApplication(this.selectedFacility['FacilityId'], application_id).subscribe(
+    this.facilityService.declineFacilityApplication(this.selectedFacility['FacilityId'], parseInt(app.project_application_id.toString()))
+      .subscribe(
       (): void => {
         this.updateNotificationModal('Success', 'Successfully declined the application.', true, 'success');
-
-        this.allApplicationsToCheck = [];
-        this.getAllApplicationsWFC(this.selectedFacility['FacilityId'])
+        this.allApplicationsToCheck.splice(this.allApplicationsToCheck.indexOf(app), 1);
+        this.numberOfProjectApplications = this.numberOfProjectApplications - 1;
+        this.getAllApplicationsHistory(this.selectedFacility['FacilityId']);
       },
       (): void => {
         this.updateNotificationModal('Failed', 'Failed to decline the application.', true, 'danger');

@@ -140,7 +140,7 @@
                         <button
                           *ngIf="application?.hasWaitForConfirmationStatus()"
                           style="margin: auto 2.5px" [id]="'decline_'+ application?.project_application_shortname"
-                          (click)="resetNotificationModal(); declineApplication(application?.project_application_id);
+                          (click)="resetNotificationModal(); declineApplication(application);
                           notificationModal.show();" type="button" class="btn btn-danger">
                           <i class="fa fa-check"></i>&nbsp;
                           <span class="applicationActionsButton">Decline</span>
@@ -255,7 +255,7 @@
                         <button
 
                           style="margin: auto 2.5px"
-                          (click)="resetNotificationModal(); approveApplication(application); notificationModal.show();"
+                          (click)="resetNotificationModal(); approveExtension(application); notificationModal.show();"
                           type="button"
                           class="btn btn-success">
                           <i class="fa fa-check"></i>&nbsp;
@@ -292,11 +292,10 @@
                       [class.collapse_no_margin]="getCollapseStatus('application_review-' + application?.project_application_id)"
                       [class.collapse]="getCollapseStatus('application_review-' + application?.project_application_id)"
                       [application]="application"
-                      [isModification]="application.hasModificationRequestedStatus() ||
-                      application.hasExtensionRequestedStatus()"></app-application-detail>
+                      [isModification]="application?.hasWaitForExtensionConfirmationStatus()
+                      || application?.hasWaitForModificationConfirmationStatus()"></app-application-detail>
                   </td>
                 </ng-container>
-
               </ng-container>
               </tbody>
 
@@ -310,15 +309,249 @@
       <ng-container *ngSwitchCase="TabStates.CREDITS_EXTENSION">
         <div class="card-body" *ngIf="allApplicationsToCheck.length <= 0 && !loading_applications">
           <div class="alert alert-success" role="alert">
-            <strong>No new Applications!</strong> There are no new project applications for review.
+            <strong>No new Credit Requests!</strong> There are no new additional credits requests for review.
           </div>
+        </div>
+
+        <div class="card-body" *ngIf="allApplicationsToCheck.length > 0">
+          <!-- work in progress -->
+
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+              <tr>
+                <th></th>
+                <th>Project Name</th>
+                <th>Short Name</th>
+                <th>Date submitted</th>
+                <th>User</th>
+                <th>Institute</th>
+                <th>Actions</th>
+              </tr>
+              </thead>
+              <tbody>
+              <ng-container
+                *ngFor="let application of allApplicationsToCheck">
+
+                <ng-container>
+                  <tr>
+                    <td>
+                      <span *ngIf="application?.project_application_openstack_project" style="font-size: 20px"
+                            class="project-openstack_plain_white_redbg" data-toggle="tooltip"
+                            title="This is an Openstack project">
+                        <span class="path1"></span>
+                        <span class="path2"></span>
+                      </span>
+
+                      <span *ngIf="application?.project_application_pi_approved"
+                            style="margin: 2px"
+                            class="badge"
+                            data-toggle="tooltip" data-placement="auto"
+                            title="This application was approved by a PI">
+                                    <span class="icon icon-yes_pi" style="font-size: 20px">
+                                      <span class="path1"></span><span class="path2"></span><span
+                                      class="path3"></span><span class="path4"></span>
+                                    </span>
+                                  </span>
+                      <span *ngIf="!application?.project_application_pi_approved"
+                            style="margin: 2px" class="badge"
+                            data-toggle="tooltip" data-placement="auto"
+                            title="This application is yet not approved by a PI">
+                                    <span class="icon icon-no_pi" style="font-size: 2em">
+                                      <span class="path1"></span><span class="path2"></span><span
+                                      class="path3"></span><span class="path4"></span>
+                                    </span>
+                                  </span>
+
+                    </td>
+                    <td>{{ application?.project_application_name }}
+                    </td>
+                    <td>{{application?.project_application_shortname}}</td>
+                    <td>{{ application?.project_application_date_submitted }}
+                    </td>
+                    <td style="word-wrap: break-word;min-width: 110px; max-width: 130px; white-space: normal">
+                      {{ application?.project_application_user?.username }}
+                    </td>
+                    <td>{{application?.project_application_institute}}</td>
+
+                    <td>
+                      <div class="btn-group">
+                        <button
+
+                          style="margin: auto 2.5px"
+                          (click)="resetNotificationModal(); approveCreditRequest(application); notificationModal.show();"
+                          type="button"
+                          class="btn btn-success">
+                          <i class="fa fa-check"></i>&nbsp;
+                          <span class="applicationActionsButton">Approve Credit Request</span>
+                        </button>
+
+                        <button
+
+                          style="margin: auto 2.5px" [id]="'decline_'+ application?.project_application_shortname"
+                          (click)="resetNotificationModal(); declineCreditRequest(application);
+                          notificationModal.show();" type="button" class="btn btn-danger">
+                          <i class="fa fa-check"></i>&nbsp;
+                          <span class="applicationActionsButton">Decline Credit Request</span>
+                        </button>
+
+                        <button
+                          (click)="switchCollapseStatus('application_review-' + application?.project_application_id);  getMemberDetailsByElixirIdIfCollapsed(application,'application_review-' + application?.project_application_id);"
+                          type="button"
+                          class="btn btn-secondary"
+                          style="margin: auto 2.5px">
+                          <i class="fa fa-info-circle"></i>&nbsp;
+                          <span class="applicationActionsButton"
+                                [hidden]="!getCollapseStatus('application_review-' + application?.project_application_id)">Show</span>
+                          <span class="applicationActionsButton"
+                                [hidden]="getCollapseStatus('application_review-' + application?.project_application_id)">Hide</span>
+                          <span class="applicationActionsButton"> Information</span>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <td colspan="12">
+                    <app-application-detail
+                      [class.collapse_no_margin]="getCollapseStatus('application_review-' + application?.project_application_id)"
+                      [class.collapse]="getCollapseStatus('application_review-' + application?.project_application_id)"
+                      [application]="application"
+                      [isModification]="application?.hasWaitForExtensionConfirmationStatus()
+                      || application?.hasWaitForModificationConfirmationStatus()"></app-application-detail>
+                  </td>
+                </ng-container>
+              </ng-container>
+              </tbody>
+
+            </table>
+
+          </div>
+
+          <!-- work above -->
         </div>
       </ng-container>
       <ng-container *ngSwitchCase="TabStates.MODIFICATION_EXTENSION">
         <div class="card-body" *ngIf="allApplicationsToCheck.length <= 0 && !loading_applications">
           <div class="alert alert-success" role="alert">
-            <strong>No new Applications!</strong> There are no new project applications for review.
+            <strong>No new Modification Requests!</strong> There are no new modification requests for review.
           </div>
+        </div>
+
+        <div class="card-body" *ngIf="allApplicationsToCheck.length > 0">
+          <!-- work in progress -->
+
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+              <tr>
+                <th></th>
+                <th>Project Name</th>
+                <th>Short Name</th>
+                <th>Date submitted</th>
+                <th>User</th>
+                <th>Institute</th>
+                <th>Actions</th>
+              </tr>
+              </thead>
+              <tbody>
+              <ng-container
+                *ngFor="let application of allApplicationsToCheck">
+
+                <ng-container>
+                  <tr>
+                    <td>
+                      <span *ngIf="application?.project_application_openstack_project" style="font-size: 20px"
+                            class="project-openstack_plain_white_redbg" data-toggle="tooltip"
+                            title="This is an Openstack project">
+                        <span class="path1"></span>
+                        <span class="path2"></span>
+                      </span>
+
+                      <span *ngIf="application?.project_application_pi_approved"
+                            style="margin: 2px"
+                            class="badge"
+                            data-toggle="tooltip" data-placement="auto"
+                            title="This application was approved by a PI">
+                                    <span class="icon icon-yes_pi" style="font-size: 20px">
+                                      <span class="path1"></span><span class="path2"></span><span
+                                      class="path3"></span><span class="path4"></span>
+                                    </span>
+                                  </span>
+                      <span *ngIf="!application?.project_application_pi_approved"
+                            style="margin: 2px" class="badge"
+                            data-toggle="tooltip" data-placement="auto"
+                            title="This application is yet not approved by a PI">
+                                    <span class="icon icon-no_pi" style="font-size: 2em">
+                                      <span class="path1"></span><span class="path2"></span><span
+                                      class="path3"></span><span class="path4"></span>
+                                    </span>
+                                  </span>
+
+                    </td>
+                    <td>{{ application?.project_application_name }}
+                    </td>
+                    <td>{{application?.project_application_shortname}}</td>
+                    <td>{{ application?.project_application_date_submitted }}
+                    </td>
+                    <td style="word-wrap: break-word;min-width: 110px; max-width: 130px; white-space: normal">
+                      {{ application?.project_application_user?.username }}
+                    </td>
+                    <td>{{application?.project_application_institute}}</td>
+
+                    <td>
+                      <div class="btn-group">
+                        <button
+
+                          style="margin: auto 2.5px"
+                          (click)="resetNotificationModal(); approveModification(application); notificationModal.show();"
+                          type="button"
+                          class="btn btn-success">
+                          <i class="fa fa-check"></i>&nbsp;
+                          <span class="applicationActionsButton">Approve Modification</span>
+                        </button>
+
+                        <button
+
+                          style="margin: auto 2.5px" [id]="'decline_'+ application?.project_application_shortname"
+                          (click)="resetNotificationModal(); declineModification(application);
+                          notificationModal.show();" type="button" class="btn btn-danger">
+                          <i class="fa fa-check"></i>&nbsp;
+                          <span class="applicationActionsButton">Decline Modification</span>
+                        </button>
+
+                        <button
+                          (click)="switchCollapseStatus('application_review-' + application?.project_application_id);  getMemberDetailsByElixirIdIfCollapsed(application,'application_review-' + application?.project_application_id);"
+                          type="button"
+                          class="btn btn-secondary"
+                          style="margin: auto 2.5px">
+                          <i class="fa fa-info-circle"></i>&nbsp;
+                          <span class="applicationActionsButton"
+                                [hidden]="!getCollapseStatus('application_review-' + application?.project_application_id)">Show</span>
+                          <span class="applicationActionsButton"
+                                [hidden]="getCollapseStatus('application_review-' + application?.project_application_id)">Hide</span>
+                          <span class="applicationActionsButton"> Information</span>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <td colspan="12">
+                    <app-application-detail
+                      [class.collapse_no_margin]="getCollapseStatus('application_review-' + application?.project_application_id)"
+                      [class.collapse]="getCollapseStatus('application_review-' + application?.project_application_id)"
+                      [application]="application"
+                      [isModification]="application?.hasWaitForExtensionConfirmationStatus()
+                      || application?.hasWaitForModificationConfirmationStatus()"></app-application-detail>
+                  </td>
+                </ng-container>
+              </ng-container>
+              </tbody>
+
+            </table>
+
+          </div>
+
+          <!-- work above -->
         </div>
       </ng-container>
     </ng-container>
