@@ -154,86 +154,71 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
   }
 
   approveLifetimeExtension(application: Application) {
-    const idx: number = this.all_applications.indexOf(application);
 
     this.applicationsservice.approveAdditionalLifetime(application.project_application_id)
       .subscribe((res: any) => {
         this.updateNotificationModal('Success', 'The project was extended!.', true, 'success');
-        this.all_applications.splice(idx, 1)
-        this.numberOfExtensionRequests = this.numberOfExtensionRequests - 1;
+        this.all_applications.splice(this.all_applications.indexOf(application), 1);
+        this.numberOfExtensionRequests--;
       }, (err: any) => {
         console.log('error', err.status);
         this.updateNotificationModal('Failed', 'Project lifetime could not be extendend!', true, 'danger');
-        this.changeTabState(this.tab_state);
       });
   }
 
   declineLifetimeExtension(application: Application) {
-    const idx: number = this.all_applications.indexOf(application);
 
     this.applicationsservice.deleteAdditionalLifetimeRequests(application.project_application_id)
       .subscribe((res: any) => {
         this.updateNotificationModal('Declined', 'The project extension was declined!', true, 'success');
-        this.all_applications.splice(idx, 1)
-        this.numberOfExtensionRequests = this.numberOfExtensionRequests - 1;
 
+        this.all_applications.splice(this.all_applications.indexOf(application), 1);
+        this.numberOfExtensionRequests--;
       }, (err: any) => {
         console.log('error', err.status);
         this.updateNotificationModal('Failed', 'Decline of project extension failed!', true, 'danger');
-        this.changeTabState(this.tab_state);
       })
   }
 
   approveModificationRequest(application: Application) {
-    const idx: number = this.all_applications.indexOf(application);
 
     this.applicationsservice.approveModificationRequest(application.project_application_id)
       .subscribe((res: any) => {
         this.updateNotificationModal('Success', 'The resource modification request was approved!', true, 'success');
-        this.all_applications.splice(idx, 1)
-        this.numberOfModificationRequests = this.numberOfModificationRequests - 1;
-
+        this.all_applications.splice(this.all_applications.indexOf(application), 1);
+        this.numberOfModificationRequests--;
       }, (err: any) => {
         console.log('error', err.status);
         this.updateNotificationModal('Failed', 'Approval of resource modification failed!', true, 'danger');
-        this.changeTabState(this.tab_state);
       });
   }
 
   declineModificationRequest(application: Application) {
-    const idx: number = this.all_applications.indexOf(application);
 
     this.applicationsservice.deleteModificationRequest(application.project_application_id)
       .subscribe((res: any) => {
         this.updateNotificationModal('Declined', 'The resource modification request was declined!', true, 'success');
-        this.all_applications.splice(idx, 1)
-
-        this.numberOfModificationRequests = this.numberOfModificationRequests - 1;
+        this.all_applications.splice(this.all_applications.indexOf(application), 1);
+        this.numberOfModificationRequests--;
       }, (err: any) => {
         console.log('error', err.status);
         this.updateNotificationModal('Failed', 'Decline of resource modification failed!', true, 'danger');
-        this.changeTabState(this.tab_state);
       });
   }
 
   approveCreditExtension(application: Application) {
-    const idx: number = this.all_applications.indexOf(application);
-
     this.applicationsservice.approveAdditionalCreditsRequest(application.project_application_id)
       .subscribe((res: any) => {
         this.updateNotificationModal('Success', 'The credit extension request was approved!', true, 'success');
-        this.all_applications.splice(idx, 1)
-        this.numberOfCreditRequests = this.numberOfCreditRequests - 1;
+        this.all_applications.splice(this.all_applications.indexOf(application), 1);
+        this.numberOfCreditRequests--;
       }, (err: any) => {
         console.log('error', err.status);
         this.updateNotificationModal('Failed', 'Approval of credit extension failed!', true, 'danger');
-        this.changeTabState(this.tab_state);
       });
   }
 
   declineCreditExtension(application: Application) {
-    const idx: number = this.all_applications.indexOf(application);
-
     this.applicationsservice.deleteAdditionalCreditsRequests(application.project_application_id)
       .subscribe((res: any) => {
         this.updateNotificationModal('Declined', 'The credit extension request was declined!', true, 'success');
@@ -242,7 +227,6 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
       }, (err: any) => {
         console.log('error', err.status);
         this.updateNotificationModal('Failed', 'Decline of credit extension failed!', true, 'danger');
-        this.changeTabState(this.tab_state);
       });
   }
 

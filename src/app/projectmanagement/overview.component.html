@@ -147,11 +147,17 @@
                       (click)="newFlavors= {};selected_ontology_terms=[];doiQuestionModal.show();"
                       class="btn btn-warning" type="button" style="margin-bottom:5px;margin-right:5px;">
                 <span *ngIf="!project_application?.hasModificationRequestedStatus()
-                 && !project_application?.hasExtensionRequestedStatus()">Request Extension/Modification</span>
-                <span *ngIf="project_application?.hasModificationRequestedStatus()
-                 && !project_application?.hasExtensionRequestedStatus()">Request Extension</span>
-                <span *ngIf="!project_application?.hasModificationRequestedStatus()
-                 && project_application?.hasExtensionRequestedStatus()">Request Modification</span>
+                 && !project_application?.hasExtensionRequestedStatus()
+                 &&!project_application?.hasWaitForExtensionConfirmationStatus()
+                 &&!project_application?.hasWaitForModificationConfirmationStatus()">Request Extension/Modification</span>
+                <span *ngIf="(project_application?.hasModificationRequestedStatus()
+                  || project_application?.hasWaitForModificationConfirmationStatus())
+                 && !(project_application?.hasExtensionRequestedStatus()
+                 || project_application?.hasWaitForExtensionConfirmationStatus())">Request Extension</span>
+                <span *ngIf="!(project_application?.hasModificationRequestedStatus()
+                  || project_application?.hasWaitForModificationConfirmationStatus())
+                 && (project_application?.hasExtensionRequestedStatus()
+                 || project_application?.hasWaitForExtensionConfirmationStatus())">Request Modification</span>
               </button>
               <button id="show_termination_modal"
                       *ngIf="project_application?.hasApprovedStatus()
@@ -174,13 +180,16 @@
             </div>
           </div>
           <div class="row" style="margin-top:5px;">
-            <div class="col" *ngIf="project_application?.hasModificationRequestedStatus()">
+            <div class="col" *ngIf="project_application?.hasModificationRequestedStatus()
+            || project_application?.hasWaitForModificationConfirmationStatus()">
               <span class="badge badge-warning">Resource Modification requested</span>
             </div>
-            <div class="col" *ngIf="project_application?.hasExtensionRequestedStatus()">
+            <div class="col" *ngIf="project_application?.hasExtensionRequestedStatus()
+            || project_application?.hasWaitForExtensionConfirmationStatus()">
               <span class="badge badge-warning">Lifetime Extension requested</span>
             </div>
-            <div class="col" *ngIf="project_application?.hasCreditsRequestedStatus()">
+            <div class="col" *ngIf="project_application?.hasCreditsRequestedStatus()
+            || project_application?.hasWaitForCreditConfirmationStatus()">
               <span class="badge badge-warning">Extra Credits requested</span>
             </div>
           </div>
@@ -1667,18 +1676,25 @@
 
 
               <div class="col-6">
-                <button *ngIf="!project_application?.hasModificationRequestedStatus()
-                 && project_application?.hasExtensionRequestedStatus()" id="no_new_dois_btn" class="btn btn-primary"
+                <button *ngIf="!(project_application?.hasModificationRequestedStatus()
+                || project_application?.hasWaitForModificationConfirmationStatus())
+                 && (project_application?.hasExtensionRequestedStatus()
+                 || project_application?.hasWaitForExtensionConfirmationStatus())" id="no_new_dois_btn" class="btn btn-primary"
                         type="reset"
                         (click)="doiQuestionModal.hide(); resourceModificationModal.show(); setModalOpen(true);">No
                 </button>
-                <button *ngIf="project_application?.hasModificationRequestedStatus()
-                 && !project_application?.hasExtensionRequestedStatus()" id="no_new_dois_btn" class="btn btn-primary"
+                <button *ngIf="(project_application?.hasModificationRequestedStatus()
+                || project_application?.hasWaitForModificationConfirmationStatus())
+                 && !(project_application?.hasExtensionRequestedStatus()
+                 || project_application?.hasWaitForExtensionConfirmationStatus())" id="no_new_dois_btn" class="btn btn-primary"
                         type="reset"
                         (click)="doiQuestionModal.hide(); projectExtensionModal.show(); setModalOpen(true);">No
                 </button>
-                <button *ngIf="!project_application?.hasModificationRequestedStatus()
-                 && !project_application?.hasExtensionRequestedStatus()" id="no_new_dois_btn" class="btn btn-primary"
+                <button *ngIf="!(project_application?.hasModificationRequestedStatus()
+                  || project_application?.hasExtensionRequestedStatus()
+                  || project_application?.hasWaitForModificationConfirmationStatus()
+                  || project_application?.hasWaitForExtensionConfirmationStatus())"
+                        id="no_new_dois_btn" class="btn btn-primary"
                         type="reset"
                         (click)="doiQuestionModal.hide(); chooseModal.show(); setModalOpen(true);">No
                 </button>

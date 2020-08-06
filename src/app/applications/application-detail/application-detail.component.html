@@ -190,11 +190,13 @@
           application?.project_application_comment
         }}
       </td>
-      <td *ngIf="application?.hasModificationRequestedStatus() && !application.project_credit_request
+      <td *ngIf="(application?.hasModificationRequestedStatus() || application?.hasWaitForModificationConfirmationStatus())
+      && !application.project_credit_request
         && application?.project_modification_request?.comment?.length > 0">
         {{application?.project_modification_request?.comment}}
       </td>
-      <td *ngIf="application?.hasExtensionRequestedStatus() && !application.project_credit_request
+      <td *ngIf="(application?.hasExtensionRequestedStatus() || application?.hasWaitForExtensionConfirmationStatus())
+      && !application.project_credit_request
         && application?.project_lifetime_request?.comment?.length > 0">
         {{application?.project_lifetime_request?.comment}}
       </td>
@@ -206,7 +208,8 @@
           application?.project_application_lifetime
         }} months
       </td>
-      <td *ngIf="(application?.hasModificationRequestedStatus() || isModification) && !application.project_credit_request">
+      <td *ngIf="(application?.hasExtensionRequestedStatus() || application?.hasWaitForExtensionConfirmationStatus()
+      || isModification) && !application.project_credit_request">
         Requested: {{application?.project_lifetime_request?.extra_lifetime}} additional months
       </td>
     </tr>
