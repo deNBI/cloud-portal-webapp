@@ -142,8 +142,8 @@
               </button>
               <button id="show_extension_modal"
                       *ngIf="project_application?.hasApprovedStatus() &&
-                       (!project_application?.hasModificationRequestedStatus()
-                       ||!project_application?.hasExtensionRequestedStatus())"
+                       !(project_application?.hasModificationRequestedStatus()
+                        && project_application?.hasExtensionRequestedStatus())"
                       (click)="newFlavors= {};selected_ontology_terms=[];doiQuestionModal.show();"
                       class="btn btn-warning" type="button" style="margin-bottom:5px;margin-right:5px;">
                 <span *ngIf="!project_application?.hasModificationRequestedStatus()

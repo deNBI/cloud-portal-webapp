@@ -173,7 +173,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
   declineLifetimeExtension(application: Application) {
 
-    this.applicationsservice.deleteAdditionalLifetimeRequests(application.project_application_id)
+    this.applicationsservice.declineAdditionalLifetime(application.project_application_id)
       .subscribe((res: any) => {
         this.updateNotificationModal('Declined', 'The project extension was declined!', true, 'success');
 
@@ -493,10 +493,10 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
             this.setNoResourcesClientNotification(res);
             this.updateNotificationModal('Failed', `The client ${res['client_name']} has not the necessary resources left!`,
                                          true, 'danger');
-            this.all_applications.splice(this.all_applications.indexOf(app), 1);
-            this.numberOfProjectApplications--;
           } else {
             this.setNotificationClient(application_id);
+            this.all_applications.splice(this.all_applications.indexOf(app), 1);
+            this.numberOfProjectApplications--;
             //this.reloadApplicationList(application_id)
           }
 

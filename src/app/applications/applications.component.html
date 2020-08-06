@@ -199,6 +199,9 @@
                       </button>
 
                       <button *ngIf="application?.hasSubmittedStatus()"
+                              type="button"
+                              class="btn btn-danger"
+                              style="margin: auto 2.5px"
                               (click)="resetNotificationModal();declineApplication(application); notificationModal.show();">
                         <i class="fas fa-times"></i>&nbsp;
                         <span class="applicationActionsButton">Decline</span>
@@ -319,20 +322,7 @@
                     <td>{{application?.project_application_institute}}</td>
 
                     <td>
-                      <!-- into select: [style.display]=" (application?.hasSubmittedStatus() || application?.hasConfirmationDeniedStatus()|| (!application?.ComputeCenter?.FacilityId ))? 'inherit' :'none'"-->
-                      <select
-                        class="form-control" [id]="'id_compute_center_option_' + application?.project_application_name"
-                        #selectedComputeCenter>
-
-                        <option value="undefined" selected> no center selected
-                        </option>
-                        <option *ngFor="let computeCenter of computeCenters"
-                                value="{{computeCenter.FacilityId}}" [id]="computeCenter.Name">
-                          {{computeCenter.Name}}
-                        </option>
-                      </select>
-                      <span
-                        *ngIf="application?.hasSubmittedStatus()">{{application?.ComputeCenter?.Name}}</span>
+                      <span>{{application?.ComputeCenter?.Name}}</span>
                     </td>
 
 
@@ -514,9 +504,9 @@
                           type="button"
                           class="btn btn-danger"
                           style="margin: auto 2.5px"
-                          (click)="setSelectedApplication(application);
+                          (click)="resetNotificationModal();
                           declineLifetimeExtension(application);
-                          resetNotificationModal(); notificationModal.show();">
+                           notificationModal.show();">
                           <i
                             class="fa fa-close"></i>&nbsp;
                           <span class="applicationActionsButton">Decline Extension</span>
