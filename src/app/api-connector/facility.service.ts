@@ -66,7 +66,6 @@ export class FacilityService {
 
   }
 
-
   /**
    * Sets the newsID of the facility news which contains the motd for facility with the corresponding facility ID.
    * @param facilityID facility id of the facility to set the id

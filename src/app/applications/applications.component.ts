@@ -162,15 +162,14 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
     this.applicationsservice.approveAdditionalLifetime(application.project_application_id)
       .subscribe((res: any) => {
-        if (application.project_application_openstack_project)
-        {
+        if (application.project_application_openstack_project) {
           this.updateNotificationModal('Success', 'The request has been sent to the facility manager.', true, 'success');
         } else {
           this.updateNotificationModal('Success', 'The project has been extended!', true, 'success');
         }
         this.all_applications.splice(this.all_applications.indexOf(application), 1);
         this.numberOfExtensionRequests--;
-      }, (err: any) => {
+      },         (err: any) => {
         console.log('error', err.status);
         this.updateNotificationModal('Failed', 'Project lifetime could not be extendend!', true, 'danger');
       });
@@ -184,7 +183,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
         this.all_applications.splice(this.all_applications.indexOf(application), 1);
         this.numberOfExtensionRequests--;
-      }, (err: any) => {
+      },         (err: any) => {
         console.log('error', err.status);
         this.updateNotificationModal('Failed', 'Decline of project extension failed!', true, 'danger');
       })
@@ -197,7 +196,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
         this.updateNotificationModal('Success', 'The resource modification request was approved!', true, 'success');
         this.all_applications.splice(this.all_applications.indexOf(application), 1);
         this.numberOfModificationRequests--;
-      }, (err: any) => {
+      },         (err: any) => {
         console.log('error', err.status);
         this.updateNotificationModal('Failed', 'Approval of resource modification failed!', true, 'danger');
       });
@@ -210,7 +209,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
         this.updateNotificationModal('Declined', 'The resource modification request was declined!', true, 'success');
         this.all_applications.splice(this.all_applications.indexOf(application), 1);
         this.numberOfModificationRequests--;
-      }, (err: any) => {
+      },         (err: any) => {
         console.log('error', err.status);
         this.updateNotificationModal('Failed', 'Decline of resource modification failed!', true, 'danger');
       });
@@ -222,7 +221,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
         this.updateNotificationModal('Success', 'The credit extension request was approved!', true, 'success');
         this.all_applications.splice(this.all_applications.indexOf(application), 1);
         this.numberOfCreditRequests--;
-      }, (err: any) => {
+      },         (err: any) => {
         console.log('error', err.status);
         this.updateNotificationModal('Failed', 'Approval of credit extension failed!', true, 'danger');
       });
@@ -234,7 +233,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
         this.updateNotificationModal('Declined', 'The credit extension request was declined!', true, 'success');
         this.all_applications.splice(this.all_applications.indexOf(application), 1)
         this.numberOfCreditRequests = this.numberOfCreditRequests - 1;
-      }, (err: any) => {
+      },         (err: any) => {
         console.log('error', err.status);
         this.updateNotificationModal('Failed', 'Decline of credit extension failed!', true, 'danger');
       });
@@ -276,7 +275,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
    */
    getApplicationsByTabState(): void {
      this.loading_applications = true;
-    if (this.is_vo_admin) {
+     if (this.is_vo_admin) {
       this.clearApplicationLists();
       if (this.tab_state === TabStates.SUBMITTED) {
         this.applicationsservice.getSubmittedApplications().subscribe((applications: Application[]): void => {
@@ -502,7 +501,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
             this.setNotificationClient(application_id);
             this.all_applications.splice(this.all_applications.indexOf(app), 1);
             this.numberOfProjectApplications--;
-            //this.reloadApplicationList(application_id)
+            // this.reloadApplicationList(application_id)
           }
 
         },
@@ -527,7 +526,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
             this.groupservice.createGroupByApplication(application_id).subscribe((): void => {
               this.setNotificationClient(application_id);
-              //this.reloadApplicationList(application_id)
+              // this.reloadApplicationList(application_id)
 
             });
 
@@ -572,7 +571,6 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
     }
 
   }
-
 
   /**
    * Decline an application.
