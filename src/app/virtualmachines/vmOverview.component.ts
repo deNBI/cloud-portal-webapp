@@ -22,6 +22,7 @@ import {ClipboardService} from 'ngx-clipboard';
 import {Volume} from './volumes/volume';
 import {VolumeStates} from './volumes/volume_states';
 import {WIKI_GUACAMOLE_LINK, WIKI_MOUNT_VOLUME, WIKI_RSTUDIO_LINK} from '../../links/links';
+import {Condalog} from './conda/condalog';
 
 /**
  * Vm overview componentn.
