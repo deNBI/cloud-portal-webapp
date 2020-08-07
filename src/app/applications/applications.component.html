@@ -469,20 +469,8 @@
                     <td>{{application?.project_application_institute}}</td>
 
                     <td>
-
-                      <select [style.display]=" (application?.hasSubmittedStatus() || application?.hasConfirmationDeniedStatus()|| (!application?.ComputeCenter?.FacilityId ))? 'inherit' :'none'"
-                        class="form-control" [id]="'id_compute_center_option_' + application?.project_application_name"
-                        #selectedComputeCenter>
-
-                        <option value="undefined" selected> no center selected
-                        </option>
-                        <option *ngFor="let computeCenter of computeCenters"
-                                value="{{computeCenter.FacilityId}}" [id]="computeCenter.Name">
-                          {{computeCenter.Name}}
-                        </option>
-                      </select>
                       <span
-                        *ngIf="application?.hasSubmittedStatus()">{{application?.ComputeCenter?.Name}}</span>
+                        *ngIf="application?.ComputeCenter">{{application?.ComputeCenter?.Name}}</span>
                     </td>
 
 
@@ -627,20 +615,9 @@
                     <td>{{application?.project_application_institute}}</td>
 
                     <td>
-                      <!-- into select: [style.display]=" (application?.hasSubmittedStatus() || application?.hasConfirmationDeniedStatus()|| (!application?.ComputeCenter?.FacilityId ))? 'inherit' :'none'"-->
-                      <select
-                        class="form-control" [id]="'id_compute_center_option_' + application?.project_application_name"
-                        #selectedComputeCenter>
 
-                        <option value="undefined" selected> no center selected
-                        </option>
-                        <option *ngFor="let computeCenter of computeCenters"
-                                value="{{computeCenter.FacilityId}}" [id]="computeCenter.Name">
-                          {{computeCenter.Name}}
-                        </option>
-                      </select>
                       <span
-                        *ngIf="application?.hasSubmittedStatus()">{{application?.ComputeCenter?.Name}}</span>
+                        *ngIf="application?.ComputeCenter">{{application?.ComputeCenter?.Name}}</span>
                     </td>
 
 
