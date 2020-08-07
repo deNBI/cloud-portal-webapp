@@ -42,7 +42,6 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
    * @type {Array}
    */
 
-
   /**
    * Facilitties where the user is manager ['name',id].
    */
@@ -106,21 +105,18 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
     });
   }
 
-
-
-
-  public approveExtension(app: Application): void{
+  public approveExtension(app: Application): void {
     this.applicationsservice.approveAdditionalLifetime(app.project_application_id)
-      .subscribe((result : any) => {
+      .subscribe((result: any) => {
         this.updateNotificationModal('Success', 'Successfully approved extension!', true, 'success');
         this.allApplicationsToCheck.splice(this.allApplicationsToCheck.indexOf(app), 1);
         this.numberOfExtensionRequests--;
         this.getAllApplicationsHistory(this.selectedFacility['FacilityId']);
-      }, (error: any) => {
+      },         (error: any) => {
         this.updateNotificationModal('Failed',
-          'The approval of the extension request has failed.',
-          true,
-          'danger');
+                                     'The approval of the extension request has failed.',
+                                     true,
+                                     'danger');
         });
   }
 
@@ -131,79 +127,78 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
   public declineExtension(app: Application): void {
 
     this.applicationsservice.declineAdditionalLifetime(app.project_application_id)
-      .subscribe((result : any) => {
+      .subscribe((result: any) => {
         this.updateNotificationModal('Success', 'Successfully declined extension!', true, 'success');
         this.allApplicationsToCheck.splice(this.allApplicationsToCheck.indexOf(app), 1);
         this.numberOfExtensionRequests--;
         this.getAllApplicationsHistory(this.selectedFacility['FacilityId']);
-      }, (error: any) => {
+      },         (error: any) => {
         this.updateNotificationModal('Failed',
-          'The decline of the extension request has failed.',
-          true,
-          'danger');
+                                     'The decline of the extension request has failed.',
+                                     true,
+                                     'danger');
       });
   }
 
   public approveModification(app: Application): void {
     this.applicationsservice.approveModificationRequest(app.project_application_id)
-      .subscribe((result : any) => {
+      .subscribe((result: any) => {
         this.updateNotificationModal('Success', 'Successfully approved modification!', true, 'success');
         this.allApplicationsToCheck.splice(this.allApplicationsToCheck.indexOf(app), 1);
         this.numberOfModificationRequests--;
         this.getAllApplicationsHistory(this.selectedFacility['FacilityId']);
-      }, (error: any) => {
+      },         (error: any) => {
         this.updateNotificationModal('Failed',
-          'The approval of the modification request has failed.',
-          true,
-          'danger');
+                                     'The approval of the modification request has failed.',
+                                     true,
+                                     'danger');
       });
   }
 
   public declineModification(app: Application): void {
     this.applicationsservice.declineModificationRequest(app.project_application_id)
-      .subscribe((result : any) => {
+      .subscribe((result: any) => {
         this.updateNotificationModal('Success', 'Successfully declined modification!', true, 'success');
         this.allApplicationsToCheck.splice(this.allApplicationsToCheck.indexOf(app), 1);
         this.numberOfModificationRequests--;
         this.getAllApplicationsHistory(this.selectedFacility['FacilityId']);
-      }, (error: any) => {
+      },         (error: any) => {
         this.updateNotificationModal('Failed',
-          'The decline of the modification request has failed.',
-          true,
-          'danger');
+                                     'The decline of the modification request has failed.',
+                                     true,
+                                     'danger');
       });
   }
 
   public approveCreditRequest(app: Application): void {
     this.applicationsservice.approveAdditionalCreditsRequest(app.project_application_id)
-      .subscribe((result : any) => {
+      .subscribe((result: any) => {
         this.updateNotificationModal('Success', 'Successfully approved credit extension!', true, 'success');
         this.allApplicationsToCheck.splice(this.allApplicationsToCheck.indexOf(app), 1);
         this.numberOfCreditRequests--;
         this.getAllApplicationsHistory(this.selectedFacility['FacilityId']);
-      }, (error: any) => {
+      },         (error: any) => {
         this.updateNotificationModal('Failed',
-          'The approval of the credit request has failed.',
-          true,
-          'danger');
+                                     'The approval of the credit request has failed.',
+                                     true,
+                                     'danger');
       });
   }
 
   public declineCreditRequest(app: Application): void {
     this.applicationsservice.declineAdditionalCredits(app.project_application_id)
-      .subscribe((result : any) => {
+      .subscribe((result: any) => {
         this.updateNotificationModal('Success', 'Successfully declined credit extension!', true, 'success');
         this.allApplicationsToCheck.splice(this.allApplicationsToCheck.indexOf(app), 1);
         this.numberOfCreditRequests--;
         this.getAllApplicationsHistory(this.selectedFacility['FacilityId']);
-      }, (error: any) => {
+      },         (error: any) => {
         this.updateNotificationModal('Failed',
-          'The decline of the credit request has failed.',
-          true,
-          'danger');
+                                     'The decline of the credit request has failed.',
+                                     true,
+                                     'danger');
       });
   }
-
 
   /**
    * Approves an  application.
@@ -255,7 +250,7 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
     this.allApplicationsToCheck = [];
     this.all_application_modifications = [];
     this.applications_history = [];
-    //this.getFullApplications(this.selectedFacility ['FacilityId']);
+    // this.getFullApplications(this.selectedFacility ['FacilityId']);
     this.getAllApplicationsHistory(this.selectedFacility ['FacilityId']);
 
   }
@@ -333,7 +328,6 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
         });
       this.changeTabState(TabStates.SUBMITTED);
       this.isLoaded = true;
-
 
       this.facilityService.getFacilityResources(this.selectedFacility['FacilityId']).subscribe();
       this.getApplicationStatus();
