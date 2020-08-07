@@ -45,9 +45,8 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
    * @type {Array}
    */
   all_applications: Application[] = [];
-  /*all_credit_extension_appl: Application[] = [];
-  all_extension_applications: Application[] = [];
-  all_modification_applications: Application[] = [];*/
+
+  applications_history: Application[] = [];
 
   /**
    * Limits information for Client tested/used for Simple Vm Project creation.
@@ -98,6 +97,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
     this.getApplicationStatus();
     if (this.is_vo_admin) {
       this.getSubmittedApplications();
+      this.getApplicationHistory();
       this.getComputeCenters();
       this.applicationsservice.getExtensionRequestsCounter().subscribe((result: any) => {
         this.numberOfCreditRequests = result['credits_extension_requests_vo'];
@@ -261,6 +261,18 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
       })
     }
+  }
+
+  getApplicationHistory(): void {
+    this.applicationsservice.getAllApplications()
+      .subscribe((applications: Application[]): void => {
+        console.log(applications);
+        if (applications.length > 0){
+          for (const application of applications){
+            this.applications_history.push(application);
+          }
+        }
+    });
   }
 
   /**
