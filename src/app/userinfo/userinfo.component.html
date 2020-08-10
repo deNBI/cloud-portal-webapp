@@ -11,13 +11,11 @@
         <table class="table table-hover">
 
           <tr>
-            <th class="col-3" style="width: 25%">
-              <div class="row" style="margin-bottom: 5px">
-                <strong class="col">Elixir Login</strong>
-              </div>
-              <div class="row"></div>
+            <th class="col-3">
+                <strong>Elixir Login</strong>
             </th>
-            <td class="col-9" style="width: 75%">{{ userInfo?.UserLogin }}</td>
+            <td class="col-6">{{ userInfo?.UserLogin }}</td>
+            <td class="col-3" style=""><a href="https://perun.elixir-czech.cz/fed/profile/#identities" target="_blank" class="btn btn-primary">Link accounts</a></td>
           </tr>
           <tr>
             <th class="col-3" style="width: 25%">
@@ -26,26 +24,22 @@
               </div>
               <div class="row"></div>
             </th>
-            <td class="col-9" style="width: 75%">{{userInfo?.ElxirId}}</td>
+            <td class="col-6" style="width: 75%">{{userInfo?.ElxirId}}</td>
           </tr>
           <tr>
             <th class="col-3" style="width: 25%">
               <div class="row" style="margin-bottom: 5px">
                 <strong class="col">Preferred Email</strong>
               </div>
-              <div class="row">
-                <div class="col">
-                  <button class="btn btn-primary" (click)="emailChangeModal.show()" type="button">Change</button>
-                </div>
-              </div>
             </th>
-            <td class="col-9" style="width: 75%">{{userInfo?.Email}}
+            <td class="col-9">{{userInfo?.Email}}
 
               <div style="color: red" *ngFor="  let pendingEmail of userInfo?.PendingEmails">You
                 have pending change
                 request. Please check inbox of: {{pendingEmail}} for validation email.
               </div>
             </td>
+            <td class="col-3"><button class="btn btn-primary" (click)="emailChangeModal.show()" type="button">Change</button></td>
           </tr>
           <tr app-public-key [userinfo]="userInfo"></tr>
 
