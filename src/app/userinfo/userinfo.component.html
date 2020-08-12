@@ -9,30 +9,36 @@
     <div class="card-body container-fluid">
       <div class="table-responsive">
         <table class="table table-hover">
-
           <tr>
-            <th class="col-3">
-                <strong>Elixir Login</strong>
-            </th>
-            <td class="col-6">{{ userInfo?.UserLogin }}</td>
-            <td class="col-3" style=""><a href="https://perun.elixir-czech.cz/fed/profile/#identities" target="_blank" class="btn btn-primary">Link accounts</a></td>
+            <th></th>
+            <th></th>
+            <th></th>
           </tr>
           <tr>
-            <th class="col-3" style="width: 25%">
+            <td class="col-3">
+                <strong>Elixir Login</strong>
+            </td>
+            <td class="col-6">{{ userInfo?.UserLogin }}</td>
+            <td class="col-3"><a href="https://perun.elixir-czech.cz/fed/profile/#identities" target="_blank" class="btn btn-primary">Link accounts</a></td>
+          </tr>
+          <tr>
+            <td class="col-3">
               <div class="row" style="margin-bottom: 5px">
                 <strong class="col">Elixir ID</strong>
               </div>
               <div class="row"></div>
-            </th>
-            <td class="col-6" style="width: 75%">{{userInfo?.ElxirId}}</td>
+            </td>
+            <td class="col-8">{{userInfo?.ElxirId}}</td>
+            <td class="col-1"></td>
+
           </tr>
           <tr>
-            <th class="col-3" style="width: 25%">
+            <td class="col-3">
               <div class="row" style="margin-bottom: 5px">
                 <strong class="col">Preferred Email</strong>
               </div>
-            </th>
-            <td class="col-9">{{userInfo?.Email}}
+            </td>
+            <td class="col-6">{{userInfo?.Email}}
 
               <div style="color: red" *ngFor="  let pendingEmail of userInfo?.PendingEmails">You
                 have pending change
@@ -44,7 +50,7 @@
           <tr app-public-key [userinfo]="userInfo"></tr>
 
           <tr>
-            <th class="col-3" style="width: 25%">
+            <td class="col-3">
               <div class="row" style="margin-bottom: 5px">
                 <strong class="col">Newsletter</strong>
               </div>
@@ -58,13 +64,14 @@
                   <!--<span class="switch-handle"></span>-->
                 </label></div>
               </div>
-            </th>
-            <td class="col-9" style="width: 75%">
+            </td>
+            <td class="col-8">
 
               Subscribe to our newsletter and get the latest news of upcoming events and current developments in de.NBI
               Cloud Portal.
               <p><strong>{{dsgvo_text}}</strong></p>
             </td>
+            <td class="col-1"></td>
           </tr>
         </table>
       </div>
