@@ -44,6 +44,9 @@ export class ProjectOverview {
   private static REMOVE_APPLICATION_BUTTON: string = 'remove_application_button';
   private static REMOVE_APPLICATION_MODAL: string = 'remove_application_modal';
   private static CONFIRM_REMOVE_APPLICATION_BUTTON: string = 'confirm_remove_application_button';
+  private static EXTENSION_MODIFICTATION_BUTTON: string = 'show_choose_modal';
+  private static CHOOSE_MODIFICATION_BUTTON: string = 'resource_modification_button';
+  private static CHOOSE_EXTENSION_BUTTON: string = 'project_extension_button';
 
   static async navigateToSimpleProjectverview(): Promise<any> {
     console.log('Navigating to simple project overview');
@@ -96,12 +99,13 @@ export class ProjectOverview {
   }
 
   static async openModificationModal(appication_name: string): Promise<any> {
-    await Util.clickElementById(this.EXTENSION_REQUEST_BTN);
+    await Util.clickElementById(this.EXTENSION_MODIFICTATION_BUTTON);
     await Util.waitForPresenceOfElementById(this.HAS_DOI_BTN);
     await Util.clickElementById(this.HAS_DOI_BTN);
     await Util.waitForPresenceOfElementById(this.DOI_CONTINUE_BTN);
     await Util.clickElementById(this.DOI_CONTINUE_BTN);
-    await Util.waitForPresenceOfElementById(this.RENEWAL_LIFETIME);
+    await Util.waitForPresenceOfElementById(this.CHOOSE_MODIFICATION_BUTTON);
+    await Util.clickElementById(this.CHOOSE_MODIFICATION_BUTTON);
   }
 
   static async sendModificationRequest(application_name: string): Promise<any> {
@@ -145,11 +149,11 @@ export class ProjectOverview {
   }
 
   static async fillModificationRequest(): Promise<any> {
-    await Util.sendTextToElementById(this.RENEWAL_LIFETIME, '1');
+    // await Util.sendTextToElementById(this.RENEWAL_LIFETIME, '1'); for extension
     await Util.sendTextToElementById(this.DENBI_DEFAULT_NEW_INPUT, '2');
     await Util.sendTextToElementById(this.NEW_VOLUME_COUNTER_ID, '1');
     await Util.sendTextToElementById(this.NEW_VOLUME_LIMIT_ID, '1');
-    await Util.sendTextToElementById('id_project_application_renewal_comment', 'This is a Protrector test modificatioN!');
+    await Util.sendTextToElementById('id_project_application_renewal_comment', 'This is a Protrector test modification!');
   }
 
   static async removeApplication(): Promise<any> {

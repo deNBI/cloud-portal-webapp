@@ -164,7 +164,7 @@
               </button>
               <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
                     title="Extension and Modification already requested for this project.">
-              <button id="show_choose_modal" class="btn btn-warning" type="button"
+              <button id="show_choose_modal_disabled" class="btn btn-warning" type="button"
                       style="margin-bottom:5px;margin-right:5px;" disabled
                       *ngIf="project_application?.hasApprovedStatus()
                       && !((!project_application?.hasModificationRequestedStatus()
@@ -755,7 +755,7 @@
             || project_application?.hasWaitForModificationConfirmationStatus()">
               <button (click)="resourceModificationModal.show(); chooseModal.hide();" disabled
                       type="button" class="btn btn-primary btn-lg" style="width:100%;"
-                      id="resource_modification_button">Resource Modification</button>
+                      id="resource_modification_button_disabled">Resource Modification</button>
             </span>
 
             <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
@@ -764,7 +764,7 @@
             || project_application?.hasWaitForExtensionConfirmationStatus()">
               <button (click)="projectExtensionModal.show(); chooseModal.hide();" disabled
                       type="button" class="btn btn-success btn-lg" style="width:100%;"
-                      id="project_extension_button">Project Extension</button>
+                      id="project_extension_button_disabled">Project Extension</button>
             </span>
 
             <button (click)="resourceModificationModal.show(); chooseModal.hide();"
