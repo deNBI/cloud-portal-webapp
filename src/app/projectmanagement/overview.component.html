@@ -885,7 +885,7 @@
                       <div class="input-group">
                         <input class="form-control"
                                (change)="valuesChanged(fl,name?.value);
-                               calculateCreditsModification();"
+                               calculateCreditsModification(); calculateRamCores();"
                                id="{{fl.name}}"
                                name="{{fl.name}}"
                                type="number" min="0" step="1"
@@ -1129,7 +1129,7 @@
 
           <strong *ngIf="is_vo_admin">
             <div *ngIf="is_vo_admin" class="form-group row">
-              <label #corenumbers id="creditnumber" class="col">Expected number of extra credits: <span
+              <label #creditnumbers id="creditnumber" class="col">Expected number of extra credits: <span
                 id="modification_credits">{{project_modification.extra_credits}}</span></label>
             </div>
             <div class="alert alert-primary" role="alert">
@@ -1137,8 +1137,18 @@
               requested resources/project lifetime.
             </div>
           </strong>
+          <div class="form-group row">
+            <label id="total_cores_label" class="col-md-8">
+              <strong>Total number of cores: {{this.totalNumberOfCores}}</strong>
+            </label>
+          </div>
+          <div class="form-group row">
+            <label id="total_ram_label" class="col-md-8">
+              <strong>Total amount of RAM: {{this.totalRAM}} GB</strong>
+            </label>
+          </div>
         </form>
-        <!-- TODO: CHECK FOR CONFLICTS -->
+
         <div *ngIf="modificationForm.invalid" class="alert alert-warning" role="alert">
           <p>Some required fields are incorrect or not filled in yet.
             Please check if all required (*) fields are filled in correctly.</p>
@@ -1732,18 +1742,17 @@
             </div>
 
 
-            <div id="extension result_submitted" class="alert alert-success" role="alert" *ngIf="extension_status == 1">
-
-              Modify request successfully submitted!
+            <div id="extension_result_submitted" class="alert alert-success" role="alert" *ngIf="extension_status == 1">
+              Modification request successfully submitted!
             </div>
-            <div id="extension result_approved" class="alert alert-success" role="alert" *ngIf="extension_status == 3">
-              Modify request successfully approved!
+            <div id="extension_result_approved" class="alert alert-success" role="alert" *ngIf="extension_status == 3">
+              Modification request successfully approved!
             </div>
-            <div id="extension result_declined" class="alert alert-success" role="alert" *ngIf="extension_status == 4">
-              Modify request successfully declined!
+            <div id="extension_result_declined" class="alert alert-success" role="alert" *ngIf="extension_status == 4">
+              Modification request successfully declined!
             </div>
-            <div id="extension result_forwarded" class="alert alert-success" role="alert" *ngIf="extension_status == 5">
-              Modify request successfully approved and forwarded to facility!
+            <div id="extension_result_forwarded" class="alert alert-success" role="alert" *ngIf="extension_status == 5">
+              Modification request successfully approved and forwarded to facility!
             </div>
 
             <div id="extension result_error" class="alert alert-warning" role="alert" *ngIf="extension_status == 2">

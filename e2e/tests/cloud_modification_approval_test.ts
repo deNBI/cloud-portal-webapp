@@ -30,6 +30,6 @@ describe('Simple Application Modification Approval Test', function (): void {
   });
 
   it('should approve cloud application', async function (): Promise<any> {
-    await FacilityOverviewPage.approveApplicationExtension(Util.OPENSTACK_APPLICATION_NAME);
+    await FacilityOverviewPage.approveApplicationModification(Util.OPENSTACK_APPLICATION_NAME);
   });
 });

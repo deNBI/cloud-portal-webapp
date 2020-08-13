@@ -21,7 +21,9 @@ export class ProjectOverview {
   private static HAS_DOI_BTN: string = 'new_dois_btn';
   private static SUBMIT_RENEWAL_BTN: string = 'submit_renewal_btn';
   private static EXTENSION_RESULT: string = 'extension result';
+  private static MODIFICATION_REQUEST_RESULT: string = 'extension_result_submitted';
   private static EXTENSION_SUCCESSFULLY_SUBMITTED: string = 'Modify request successfully submitted!';
+  private static MODIFICATION_REQUEST_SUCCESS_TEXT: string = 'Modification request successfully submitted!';
   private static EXTENSION_REQUEST_BTN: string = 'show_extension_modal';
   private static DENBI_DEFAULT_OLD_ID: string = 'de.NBI default_old';
   private static DENBI_DEFAULT_NEW_INPUT: string = 'de.NBI default';
@@ -31,8 +33,8 @@ export class ProjectOverview {
   private static NEW_VOLUME_LIMIT_ID: string = 'id_project_application_renewal_volume_limit';
   private static OLD_OBJECT_STORAGE_ID: string = 'project_application_object_storage';
   private static NEW_OBJECT_STORAGE_ID: string = 'id_project_application_renewal_object_storage';
-  private static TOTAL_RAM: string = 'total_ram';
-  private static TOTAL_CORES: string = 'total_cores';
+  private static TOTAL_RAM: string = 'total_ram_label';
+  private static TOTAL_CORES: string = 'total_cores_label';
   private static BIOINFORMATICS_TOPIC: string = 'topic_Bioinformatics';
   private static SHOW_INFORMATION_BTN: string = 'show_information_btn';
   private static DISSEMINATION_PLATFORM_LIST: string = 'dissemination_platforms';
@@ -44,9 +46,12 @@ export class ProjectOverview {
   private static REMOVE_APPLICATION_BUTTON: string = 'remove_application_button';
   private static REMOVE_APPLICATION_MODAL: string = 'remove_application_modal';
   private static CONFIRM_REMOVE_APPLICATION_BUTTON: string = 'confirm_remove_application_button';
-  private static EXTENSION_MODIFICTATION_BUTTON: string = 'show_choose_modal';
+  private static EXTENSION_MODIFICATION_BUTTON: string = 'show_choose_modal';
   private static CHOOSE_MODIFICATION_BUTTON: string = 'resource_modification_button';
   private static CHOOSE_EXTENSION_BUTTON: string = 'project_extension_button';
+  private static NO_DOI_BUTTON: string = 'no_new_dois_btn';
+  private static SUBMIT_MODIFICATION_BUTTON = 'submit_modification_btn';
+  private static CONFIRM_MODIFICATION_BUTTON = 'confirm_modification_btn';
 
   static async navigateToSimpleProjectverview(): Promise<any> {
     console.log('Navigating to simple project overview');
@@ -99,19 +104,19 @@ export class ProjectOverview {
   }
 
   static async openModificationModal(appication_name: string): Promise<any> {
-    await Util.clickElementById(this.EXTENSION_MODIFICTATION_BUTTON);
-    await Util.waitForPresenceOfElementById(this.HAS_DOI_BTN);
-    await Util.clickElementById(this.HAS_DOI_BTN);
-    await Util.waitForPresenceOfElementById(this.DOI_CONTINUE_BTN);
-    await Util.clickElementById(this.DOI_CONTINUE_BTN);
+    await Util.clickElementById(this.EXTENSION_MODIFICATION_BUTTON);
+    await Util.waitForPresenceOfElementById(this.NO_DOI_BUTTON);
+    await Util.clickElementById(this.NO_DOI_BUTTON)
     await Util.waitForPresenceOfElementById(this.CHOOSE_MODIFICATION_BUTTON);
     await Util.clickElementById(this.CHOOSE_MODIFICATION_BUTTON);
   }
 
   static async sendModificationRequest(application_name: string): Promise<any> {
-    await Util.clickElementById(this.SUBMIT_RENEWAL_BTN);
-    await Util.clickElementById(this.SUBMIT_MODAL_BTN);
-    await Util.waitForTextPresenceInElementById(this.EXTENSION_RESULT, this.EXTENSION_SUCCESSFULLY_SUBMITTED);
+    await Util.waitForPresenceOfElementById(this.SUBMIT_MODIFICATION_BUTTON);
+    await Util.clickElementById(this.SUBMIT_MODIFICATION_BUTTON);
+    await Util.waitForPresenceOfElementById(this.CHOOSE_MODIFICATION_BUTTON);
+    await Util.clickElementById(this.CONFIRM_MODIFICATION_BUTTON);
+    await Util.waitForTextPresenceInElementById(this.MODIFICATION_REQUEST_RESULT, this.MODIFICATION_REQUEST_SUCCESS_TEXT);
   }
 
   static async isBioinformaticsSet(): Promise<any> {
@@ -149,7 +154,6 @@ export class ProjectOverview {
   }
 
   static async fillModificationRequest(): Promise<any> {
-    // await Util.sendTextToElementById(this.RENEWAL_LIFETIME, '1'); for extension
     await Util.sendTextToElementById(this.DENBI_DEFAULT_NEW_INPUT, '2');
     await Util.sendTextToElementById(this.NEW_VOLUME_COUNTER_ID, '1');
     await Util.sendTextToElementById(this.NEW_VOLUME_LIMIT_ID, '1');
