@@ -34,7 +34,6 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
   numberOfCreditRequests: number = 0;
   numberOfProjectApplications: number = 0;
 
-
   title: string = 'Application Overview';
   /**
    * All Applications waiting for confirmation for the selected facility.
