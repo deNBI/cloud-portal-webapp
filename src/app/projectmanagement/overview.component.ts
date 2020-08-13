@@ -142,7 +142,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   public showLink: boolean = true;
   private project_application_extra_credits: number;
   public project_application_extra_credits_comment: string;
-  private current_credits: number = 0;
+  private current_credits: number;
   private updateCreditsUsedIntervals: number;
 
   private updateCreditHistoryIntervals: number;
