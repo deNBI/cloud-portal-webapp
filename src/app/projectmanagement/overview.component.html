@@ -47,7 +47,7 @@
               <div class="rTableHead col-1">Date created (d/m/y)</div>
               <div class="rTableHead col-1">Expiration Date (d/m/y)</div>
               <div class="rTableHead col-1">Days running</div>
-              <div class="rTableHead col-2" *ngIf="is_vo_admin">Credits Used</div>
+              <div class="rTableHead col-2" *ngIf="is_vo_admin">Credits</div>
               <div class="rTableHead col-1">Lifetime in Days</div>
               <div class="rTableHead col-3">Facility</div>
             </div>
@@ -68,7 +68,43 @@
               <div class="rTableCell col-1">{{ project?.DateCreated }}</div>
               <div class="rTableCell col-1">{{project?.DateEnd}}</div>
               <div class="rTableCell col-1">{{ project?.DaysRunning }}</div>
-              <div class="rTableCell col-2" *ngIf="is_vo_admin">{{current_credits}}/{{project?.ApprovedCredits}}</div>
+              <div class="rTableCell col-2" *ngIf="is_vo_admin">
+                <div *ngIf="current_credits == null"><i
+                  class="fa fa-spinner fa-spin"
+                 ></i>
+                </div>
+                <ng-container *ngIf="current_credits != null">
+                  <div class="rTableRowNoBorder">
+                    <div class="rTableHeadNoBorder">
+                      used:
+                    </div>
+                    <div class="rTableCellNoBorder">
+
+                      {{current_credits}}
+                    </div>
+                  </div>
+                  <div class="rTableRowNoBorder">
+                    <div class="rTableHeadNoBorder">
+                      granted:
+                    </div>
+                    <div class="rTableCellNoBorder">
+
+                      {{project?.ApprovedCredits}}
+                    </div>
+                  </div>
+                  <div class="rTableRowNoBorder">
+                    <div class="rTableHeadNoBorder">
+                      left:
+                    </div>
+                    <div class="rTableCellNoBorder">
+
+                      {{project?.ApprovedCredits - current_credits}}
+                    </div>
+                  </div>
+                </ng-container>
+              </div>
+
+
               <div class="rTableCell col-1">{{project?.LifetimeDays}}</div>
 
               <div class="rTableCell col-3">
@@ -76,8 +112,8 @@
                   <div class="rTableHeadNoBorder">
                     Name:
                   </div>
-                   <div class="rTableCellNoBorder">
-                   {{project?.ComputeCenter?.Name}}
+                  <div class="rTableCellNoBorder">
+                    {{project?.ComputeCenter?.Name}}
                   </div>
                 </div>
 
