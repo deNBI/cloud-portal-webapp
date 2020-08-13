@@ -55,6 +55,7 @@ export class ApplicationOverviewPage {
   static async approveSimpleVm(application_name: string): Promise<any> {
     await Util.waitForPage('applications');
     await Util.clickElementById(this.APPROVAL_PREFIX + application_name);
+
     return await Util.waitForTextPresenceInElementById(this.NOTIFICATION_MESSAGE, this.SIMPLE_VM_CREATED, 60000);
 
   }

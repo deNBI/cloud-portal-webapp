@@ -111,7 +111,6 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
   }
 
-
   /**
    * Checks if the key given represents a flavor and if so returns the respective Flavor
    * @param key the key which is checked
@@ -263,8 +262,8 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
   getApplicationHistory(): void {
     this.applicationsservice.getAllApplications()
       .subscribe((applications: Application[]): void => {
-        if (applications.length > 0){
-          for (const application of applications){
+        if (applications.length > 0) {
+          for (const application of applications) {
             this.applications_history.push(application);
           }
         }
