@@ -504,6 +504,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
         } else {
           this.extension_status = 1;
         }
+        this.getApplication();
       });
   }
 

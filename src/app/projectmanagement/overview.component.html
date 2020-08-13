@@ -14,7 +14,7 @@
          && !project_application?.hasDeclinedStatus()">
 
 
-      <div class="card" style=" ">
+      <div class="card">
         <div class="card-header">
           <h3>
             <a *ngIf="project?.OpenStackProject" href="https://cloud.denbi.de/openstack/" target="_blank"
@@ -133,32 +133,47 @@
                 Remove Application
               </button>
               <button id="show_credits_extension_modal"
-                      *ngIf="!project_application?.hasCreditsRequestedStatus() &&(project_application?.hasApprovedStatus()
-                      || project_application?.hasModificationDeclinedStatus() && is_vo_admin )"
-                      (click)="newFlavors= {};initExampleFlavors();creditsExtensionModal.show()"
+                      *ngIf="!( project_application?.hasCreditsRequestedStatus()
+                      || project_application?.hasWaitForCreditConfirmationStatus())
+                      && (project_application?.hasApprovedStatus() && is_vo_admin)"
+                      (click)="newFlavors={};initExampleFlavors();creditsExtensionModal.show()"
                       class="btn btn-success"
                       type="button" style="margin-bottom:5px;margin-right:5px">
                 Request More Credits
               </button>
-              <button id="show_extension_modal"
-                      *ngIf="project_application?.hasApprovedStatus() &&
-                       !(project_application?.hasModificationRequestedStatus()
-                        && project_application?.hasExtensionRequestedStatus())"
+              <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
+                    title="Additional credits are already requested for this project."
+                    *ngIf="(project_application?.hasCreditsRequestedStatus()
+                    || project_application?.hasWaitForCreditConfirmationStatus())
+                    && (project_application?.hasApprovedStatus() && is_vo_admin)">
+              <button id="show_credits_extension_modal" class="btn btn-success" disabled
+                      type="button" style="margin-bottom:5px;margin-right:5px">
+                Request More Credits
+              </button>
+              </span>
+
+              <button id="show_choose_modal"
+                      *ngIf="project_application?.hasApprovedStatus()
+                      && ((!project_application?.hasModificationRequestedStatus()
+                      && !project_application?.hasWaitForModificationConfirmationStatus())
+                      || (!project_application?.hasWaitForExtensionConfirmationStatus()
+                      && !project_application?.hasExtensionRequestedStatus()))"
                       (click)="newFlavors= {};selected_ontology_terms=[];doiQuestionModal.show();"
                       class="btn btn-warning" type="button" style="margin-bottom:5px;margin-right:5px;">
-                <span *ngIf="!project_application?.hasModificationRequestedStatus()
-                 && !project_application?.hasExtensionRequestedStatus()
-                 &&!project_application?.hasWaitForExtensionConfirmationStatus()
-                 &&!project_application?.hasWaitForModificationConfirmationStatus()">Request Extension/Modification</span>
-                <span *ngIf="(project_application?.hasModificationRequestedStatus()
-                  || project_application?.hasWaitForModificationConfirmationStatus())
-                 && !(project_application?.hasExtensionRequestedStatus()
-                 || project_application?.hasWaitForExtensionConfirmationStatus())">Request Extension</span>
-                <span *ngIf="!(project_application?.hasModificationRequestedStatus()
-                  || project_application?.hasWaitForModificationConfirmationStatus())
-                 && (project_application?.hasExtensionRequestedStatus()
-                 || project_application?.hasWaitForExtensionConfirmationStatus())">Request Modification</span>
+                Request Extension/Modification
               </button>
+              <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
+                    title="Extension and Modification already requested for this project.">
+              <button id="show_choose_modal" class="btn btn-warning" type="button"
+                      style="margin-bottom:5px;margin-right:5px;" disabled
+                      *ngIf="project_application?.hasApprovedStatus()
+                      && !((!project_application?.hasModificationRequestedStatus()
+                      && !project_application?.hasWaitForModificationConfirmationStatus())
+                      || (!project_application?.hasWaitForExtensionConfirmationStatus()
+                      && !project_application?.hasExtensionRequestedStatus()))">
+                Request Extension/Modification
+              </button>
+              </span>
               <button id="show_termination_modal"
                       *ngIf="project_application?.hasApprovedStatus()
                       || project_application?.hasModificationDeclinedStatus()"
@@ -179,31 +194,7 @@
               </button>
             </div>
           </div>
-          <div class="row" style="margin-top:5px;">
-            <div class="col" *ngIf="project_application?.hasModificationRequestedStatus()
-            || project_application?.hasWaitForModificationConfirmationStatus()">
-              <span class="badge badge-warning">Resource Modification requested</span>
-            </div>
-            <div class="col" *ngIf="project_application?.hasExtensionRequestedStatus()
-            || project_application?.hasWaitForExtensionConfirmationStatus()">
-              <span class="badge badge-warning">Lifetime Extension requested</span>
-            </div>
-            <div class="col" *ngIf="project_application?.hasCreditsRequestedStatus()
-            || project_application?.hasWaitForCreditConfirmationStatus()">
-              <span class="badge badge-warning">Extra Credits requested</span>
-            </div>
-          </div>
-          <div class="row" style="margin-top:5px;">
-            <div class="col" *ngIf="project_application?.hasCreditsDeclinedStatus()">
-              <span class="badge badge-danger">Extra Credits declined</span>
-            </div>
-            <div class="col" *ngIf="project_application?.hasExtensionDeclinedStatus()">
-              <span class="badge badge-danger">Lifetime Extension declined</span>
-            </div>
-            <div class="col" *ngIf="project_application?.hasModificationDeclinedStatus()">
-              <span class="badge badge-danger">Resource Modification declined</span>
-            </div>
-          </div>
+
 
 
           <div class="alert alert-info" style="margin-top:15px;"
@@ -735,6 +726,12 @@
      id="choose_request_type_modal">
   <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" style="cursor: pointer"
+                (click)="chooseModal.hide(); setModalOpen(false);" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
       <div class="modal-body">
         <div class="jumbotron">
           <h2 style="text-align: center;">Resource Modification / Project Extension</h2>
@@ -752,10 +749,32 @@
               - Extension of the project period</span>
           </p>
           <div class="btn-group btn-group-lg" role="group" style="width:100%;">
+            <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
+                  title="Resource modification for this project is already requested." style="width:50%;"
+                  *ngIf="project_application?.hasModificationRequestedStatus()
+            || project_application?.hasWaitForModificationConfirmationStatus()">
+              <button (click)="resourceModificationModal.show(); chooseModal.hide();" disabled
+                      type="button" class="btn btn-primary btn-lg" style="width:100%;"
+                      id="resource_modification_button">Resource Modification</button>
+            </span>
+
+            <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
+                  title="Extension for this project is already requested." style="width:50%;"
+                  *ngIf="project_application?.hasExtensionRequestedStatus()
+            || project_application?.hasWaitForExtensionConfirmationStatus()">
+              <button (click)="projectExtensionModal.show(); chooseModal.hide();" disabled
+                      type="button" class="btn btn-success btn-lg" style="width:100%;"
+                      id="project_extension_button">Project Extension</button>
+            </span>
+
             <button (click)="resourceModificationModal.show(); chooseModal.hide();"
+                    *ngIf="!(project_application?.hasModificationRequestedStatus()
+            || project_application?.hasWaitForModificationConfirmationStatus())"
               type="button" class="btn btn-primary btn-lg" style="width:50%;"
             id="resource_modification_button">Resource Modification</button>
             <button (click)="projectExtensionModal.show(); chooseModal.hide();"
+                    *ngIf="!(project_application?.hasExtensionRequestedStatus()
+            || project_application?.hasWaitForExtensionConfirmationStatus())"
                     type="button" class="btn btn-success btn-lg" style="width:50%;"
             id="project_extension_button">Project Extension</button>
           </div>
@@ -1676,26 +1695,8 @@
 
 
               <div class="col-6">
-                <button *ngIf="!(project_application?.hasModificationRequestedStatus()
-                || project_application?.hasWaitForModificationConfirmationStatus())
-                 && (project_application?.hasExtensionRequestedStatus()
-                 || project_application?.hasWaitForExtensionConfirmationStatus())" id="no_new_dois_btn" class="btn btn-primary"
-                        type="reset"
-                        (click)="doiQuestionModal.hide(); resourceModificationModal.show(); setModalOpen(true);">No
-                </button>
-                <button *ngIf="(project_application?.hasModificationRequestedStatus()
-                || project_application?.hasWaitForModificationConfirmationStatus())
-                 && !(project_application?.hasExtensionRequestedStatus()
-                 || project_application?.hasWaitForExtensionConfirmationStatus())" id="no_new_dois_btn" class="btn btn-primary"
-                        type="reset"
-                        (click)="doiQuestionModal.hide(); projectExtensionModal.show(); setModalOpen(true);">No
-                </button>
-                <button *ngIf="!(project_application?.hasModificationRequestedStatus()
-                  || project_application?.hasExtensionRequestedStatus()
-                  || project_application?.hasWaitForModificationConfirmationStatus()
-                  || project_application?.hasWaitForExtensionConfirmationStatus())"
-                        id="no_new_dois_btn" class="btn btn-primary"
-                        type="reset"
+
+                <button id="no_new_dois_btn" class="btn btn-primary" type="reset"
                         (click)="doiQuestionModal.hide(); chooseModal.show(); setModalOpen(true);">No
                 </button>
               </div>

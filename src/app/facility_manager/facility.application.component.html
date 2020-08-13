@@ -17,47 +17,40 @@
       <i class="fa fa-align-justify"></i> Applications for review
     </div>
     <div class="btn-group" role="group">
-      <button class="btn btn-info"  (click)="changeTabState(TabStates.SUBMITTED);">
+      <button class="btn"  (click)="changeTabState(TabStates.SUBMITTED);"
+              [ngClass]="{'btn-light': !(tab_state === TabStates.SUBMITTED),
+              'btn-primary': tab_state === TabStates.SUBMITTED}">
         <i class="fas fa-envelope"></i> Submitted Applications
-        <span class="badge badge-pill badge-light">{{this.numberOfProjectApplications}}</span>
-        <i *ngIf="(this.tab_state === TabStates.SUBMITTED) && !this.loading_applications" class="fas fa-circle"></i>
-        <i *ngIf="(this.tab_state === TabStates.SUBMITTED) && this.loading_applications" class="fas fa-dot-circle"></i>
-
+        <span class="badge badge-pill badge-dark">{{this.numberOfProjectApplications}}</span>
       </button>
-      <button class="btn btn-danger"
-              (click)="changeTabState(TabStates.CREDITS_EXTENSION);">
+      <button class="btn" (click)="changeTabState(TabStates.CREDITS_EXTENSION);"
+              [ngClass]="{'btn-light': !(tab_state === TabStates.CREDITS_EXTENSION),
+              'btn-primary': tab_state === TabStates.CREDITS_EXTENSION}">
         <i class="fas fa-coins"></i> Credit Extension Requests
-        <span class="badge badge-pill badge-light">{{this.numberOfCreditRequests}}</span>
-        <i *ngIf="(this.tab_state === TabStates.CREDITS_EXTENSION) && !this.loading_applications" class="fas fa-circle"></i>
-        <i *ngIf="(this.tab_state === TabStates.CREDITS_EXTENSION) && this.loading_applications" class="fas fa-dot-circle"></i>
-
+        <span class="badge badge-pill badge-dark">{{this.numberOfCreditRequests}}</span>
       </button>
-      <button class="btn btn-warning"
-              (click)="changeTabState(TabStates.LIFETIME_EXTENSION);">
+      <button class="btn" (click)="changeTabState(TabStates.LIFETIME_EXTENSION);"
+              [ngClass]="{'btn-light': !(tab_state === TabStates.LIFETIME_EXTENSION),
+              'btn-primary': tab_state === TabStates.LIFETIME_EXTENSION}">
         <i class="fas fa-clock"></i> Lifetime Extension Requests
         <span class="badge badge-pill badge-dark">{{this.numberOfExtensionRequests}}</span>
-        <i *ngIf="(this.tab_state === TabStates.LIFETIME_EXTENSION) && !this.loading_applications" class="fas fa-circle"></i>
-        <i *ngIf="(this.tab_state === TabStates.LIFETIME_EXTENSION) && this.loading_applications" class="fas fa-dot-circle"></i>
-
       </button>
-      <button class="btn btn-light"
-              (click)="changeTabState(TabStates.MODIFICATION_EXTENSION);">
+      <button class="btn" (click)="changeTabState(TabStates.MODIFICATION_EXTENSION);"
+              [ngClass]="{'btn-light': !(tab_state === TabStates.MODIFICATION_EXTENSION),
+              'btn-primary': tab_state === TabStates.MODIFICATION_EXTENSION}">
         <i class="fas fa-memory"></i> Resource Modification Requests
         <span class="badge badge-pill badge-dark">{{this.numberOfModificationRequests}}</span>
-        <i *ngIf="(this.tab_state === TabStates.MODIFICATION_EXTENSION) && !this.loading_applications" class="fas fa-circle"></i>
-        <i *ngIf="(this.tab_state === TabStates.MODIFICATION_EXTENSION) && this.loading_applications" class="fas fa-dot-circle"></i>
-
       </button>
     </div>
 
-    <div class="card-body" *ngIf="loading_applications">
+    <div class="card-body" *ngIf="loadingApplications">
       <div class="alert alert-success">
         <strong>Loading applications/requests ...</strong>
       </div>
     </div>
     <ng-container [ngSwitch]="tab_state">
       <ng-container *ngSwitchCase="TabStates.SUBMITTED">
-        <div class="card-body" *ngIf="allApplicationsToCheck.length <= 0 && !loading_applications">
+        <div class="card-body" *ngIf="allApplicationsToCheck.length <= 0 && !loadingApplications">
           <div class="alert alert-success" role="alert">
             <strong>No new Applications!</strong> There are no new project applications for review.
           </div>
@@ -183,7 +176,7 @@
         </div>
       </ng-container>
       <ng-container *ngSwitchCase="TabStates.LIFETIME_EXTENSION">
-        <div class="card-body" *ngIf="allApplicationsToCheck.length <= 0 && !loading_applications">
+        <div class="card-body" *ngIf="allApplicationsToCheck.length <= 0 && !loadingApplications">
           <div class="alert alert-success" role="alert">
             <strong>No new Applications!</strong> There are no new extension applications for review.
           </div>
@@ -267,7 +260,7 @@
                           style="margin: auto 2.5px" [id]="'decline_'+ application?.project_application_shortname"
                           (click)="resetNotificationModal(); declineExtension(application);
                           notificationModal.show();" type="button" class="btn btn-danger">
-                          <i class="fa fa-check"></i>&nbsp;
+                          <i class="fa fa-times"></i>&nbsp;
                           <span class="applicationActionsButton">Decline Extension</span>
                         </button>
 
@@ -307,7 +300,7 @@
         </div>
       </ng-container>
       <ng-container *ngSwitchCase="TabStates.CREDITS_EXTENSION">
-        <div class="card-body" *ngIf="allApplicationsToCheck.length <= 0 && !loading_applications">
+        <div class="card-body" *ngIf="allApplicationsToCheck.length <= 0 && !loadingApplications">
           <div class="alert alert-success" role="alert">
             <strong>No new Credit Requests!</strong> There are no new additional credits requests for review.
           </div>
@@ -431,7 +424,7 @@
         </div>
       </ng-container>
       <ng-container *ngSwitchCase="TabStates.MODIFICATION_EXTENSION">
-        <div class="card-body" *ngIf="allApplicationsToCheck.length <= 0 && !loading_applications">
+        <div class="card-body" *ngIf="allApplicationsToCheck.length <= 0 && !loadingApplications">
           <div class="alert alert-success" role="alert">
             <strong>No new Modification Requests!</strong> There are no new modification requests for review.
           </div>
@@ -515,7 +508,7 @@
                           style="margin: auto 2.5px" [id]="'decline_'+ application?.project_application_shortname"
                           (click)="resetNotificationModal(); declineModification(application);
                           notificationModal.show();" type="button" class="btn btn-danger">
-                          <i class="fa fa-check"></i>&nbsp;
+                          <i class="fa fa-times"></i>
                           <span class="applicationActionsButton">Decline Modification</span>
                         </button>
 

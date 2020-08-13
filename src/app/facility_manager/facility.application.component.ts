@@ -34,7 +34,6 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
   numberOfCreditRequests: number = 0;
   numberOfProjectApplications: number = 0;
 
-  loading_applications: boolean = false;
 
   title: string = 'Application Overview';
   /**
