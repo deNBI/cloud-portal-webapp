@@ -7,7 +7,9 @@ import {Application} from '../../applications/application.model/application.mode
 export class HasstatusinlistPipe implements PipeTransform {
 
   transform(appl: Application, status: number): boolean {
-    console.log('checking status list', status)
+    if (appl === undefined) {
+      return false
+    }
     return appl.project_application_status.includes(status)
   }
 

@@ -29,7 +29,7 @@ import {EdamOntologyTerm} from '../applications/edam-ontology-term';
 import {AutocompleteComponent} from 'angular-ng-autocomplete';
 import {DOCUMENT} from '@angular/common';
 import {Chart} from 'chart.js';
-import {ExtensionRequestType} from '../shared/shared_modules/baseClass/abstract-base-class';
+import {Application_States, ExtensionRequestType} from '../shared/shared_modules/baseClass/abstract-base-class';
 import {ApplicationLifetimeExtension} from '../applications/application_extension.model';
 import {ApplicationModification} from '../applications/application_modification.model';
 import {ApplicationCreditRequest} from '../applications/application_credit_request';
@@ -149,6 +149,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
   creditsChart: any;
   ExtensionRequestType: typeof ExtensionRequestType = ExtensionRequestType;
+  Application_States: typeof Application_States = Application_States;
 
   constructor(private flavorService: FlavorService,
               private groupService: GroupService,
@@ -422,11 +423,9 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
           this.project_application = new Application(aj);
 
-          if (this.project_application.project_application_perun_id) {
-            this.startUpdateCreditUsageLoop();
-          }
-
           if (this.project_application) {
+            this.startUpdateCreditUsageLoop();
+
             this.applicationsservice.getApplicationPerunId(this.application_id).subscribe((id: any): void => {
               if (id['perun_id']) {
                 this.project_id = id['perun_id'];
@@ -454,7 +453,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
             } else {
               this.initiateCreditRequest();
             }
-            this.userservice.getLoggedUser().subscribe((user: User) => {
+            this.userservice.getLoggedUser().subscribe((user: User): void => {
               this.project_extension.user = user;
               this.project_modification.user = user;
               this.project_credit_request.project_credit_request_user = user;
