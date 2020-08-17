@@ -166,86 +166,8 @@ export class Application {
       }
       this.setDaysRunning()
     }
-    this.setStatusValues()
   }
 
-  private setStatusValues(): void {
-    if (this.project_application_status) {
-      this.project_application_status.forEach((status: number): void => {
-        switch (status) {
-          case Application_States.SUBMITTED: {
-            this._hasSubmittedStatus = true;
-            break
-          }
-          case Application_States.APPROVED: {
-            this._hasApprovedStatus = true;
-            break
-          }
-          case Application_States.TERMINATED: {
-            this._hasTerminatedStatus = true;
-            break
-          }
-          case Application_States.CONFIRMATION_DENIED: {
-            this._hasConfirmationDeniedStatus = true;
-            break
-          }
-          case Application_States.CREDITS_EXTENSION_DENIED: {
-            this._hasCreditsExtensionDeclinedStatus = true;
-            break
-          }
-          case Application_States.LIFETIME_EXTENSION_REQUESTED: {
-            this._hasLifeTimeExtensionRequested = true;
-            break
-          }
-          case Application_States.LIFETIME_EXTENSION_DENIED: {
-            this._hasLifeTimeExtensionDenied = true;
-            break
-          }
-          case Application_States.CREDITS_EXTENSION_REQUESTED: {
-            this._hasCreditsRequestedStatus = true;
-            break
-          }
-          case Application_States.DECLINED: {
-            this._hasDeclinedStatus = true;
-            break
-          }
-          case Application_States.WAIT_FOR_CONFIRMATION: {
-            this._hasWaitForConfirmationStatus = true;
-            break
-          }
-          case Application_States.WAIT_FOR_CONFIRMATION_CREDITS: {
-            this._hasWaitForCreditConfirmationStatus = true;
-            break
-          }
-          case Application_States.WAIT_FOR_CONFIRMATION_EXTENSION: {
-            this._hasWaitForExtensionConfirmationStatus = true;
-            break
-          }
-          case Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION: {
-            this._hasWaitForModificationConfirmationStatus = true;
-            break
-          }
-          case Application_States.SUSPENDED: {
-            this._hasSuspendedStatus = true;
-            break
-          }
-          case Application_States.MODIFICATION_REQUESTED: {
-            this._hasModificationRequestedStatus = true;
-            break
-          }
-          case Application_States.MODIFICATION_DECLINED: {
-            this._hasModificationDeclinedStatus = true;
-            break
-          }
-          default: {
-            break
-          }
-
-        }
-      })
-    }
-
-  }
 
   public hasSubmittedStatus(): boolean {
     return this.project_application_status?.includes(Application_States.SUBMITTED)

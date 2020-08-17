@@ -681,7 +681,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
     if (!this.project_application.ComputeCenter
       && !this.project_application.hasSubmittedStatus()
-      && !this.project_application.hasTerminatedStatus()) {
+      && !(this.project_application.hasTerminatedStatus() )) {
       this.groupService.getFacilityByGroup(
         this.project_application.project_application_perun_id.toString()).subscribe((res: object): void => {
 

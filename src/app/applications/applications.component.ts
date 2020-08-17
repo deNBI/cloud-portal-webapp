@@ -13,6 +13,7 @@ import {Client} from '../vo_manager/clients/client.model';
 import {ApplicationBaseClassComponent} from '../shared/shared_modules/baseClass/application-base-class.component';
 import {ComputecenterComponent} from '../projectmanagement/computecenter.component';
 import {is_vo} from '../shared/globalvar';
+import {Application_States} from '../shared/shared_modules/baseClass/abstract-base-class';
 
 enum TabStates {
   'SUBMITTED' = 0,
@@ -68,6 +69,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
   numberOfModificationRequests: number = 0;
   numberOfCreditRequests: number = 0;
   numberOfProjectApplications: number = 0;
+  Application_States: typeof Application_States = Application_States;
 
   /**
    * Constructor.

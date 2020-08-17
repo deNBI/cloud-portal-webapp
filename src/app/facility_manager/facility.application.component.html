@@ -123,7 +123,7 @@
                     <td>
                       <div class="btn-group">
                         <button
-                          *ngIf="application?.hasWaitForConfirmationStatus()"
+                          *ngIf="(application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION) "
                           style="margin: auto 2.5px"
                           (click)="resetNotificationModal(); approveApplication(application); notificationModal.show();"
 
@@ -135,7 +135,7 @@
                         </button>
 
                         <button
-                          *ngIf="application?.hasWaitForConfirmationStatus()"
+                          *ngIf="(application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION) "
                           style="margin: auto 2.5px" [id]="'decline_'+ application?.project_application_shortname"
                           (click)="resetNotificationModal(); declineApplication(application);
                           notificationModal.show();" type="button" class="btn btn-danger">
@@ -164,8 +164,8 @@
                       [class.collapse_no_margin]="getCollapseStatus('application_review-' + application?.project_application_id)"
                       [class.collapse]="getCollapseStatus('application_review-' + application?.project_application_id)"
                       [application]="application"
-                      [isModification]="application.hasModificationRequestedStatus() ||
-                      application.hasExtensionRequestedStatus()"></app-application-detail>
+                      [isModification]="(application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED) ||
+                     (application | hasstatusinlist:Application_States.LIFETIME_EXTENSION_REQUESTED) "></app-application-detail>
                   </td>
                 </ng-container>
 
@@ -289,8 +289,8 @@
                       [class.collapse_no_margin]="getCollapseStatus('application_review-' + application?.project_application_id)"
                       [class.collapse]="getCollapseStatus('application_review-' + application?.project_application_id)"
                       [application]="application"
-                      [isModification]="application?.hasWaitForExtensionConfirmationStatus()
-                      || application?.hasWaitForModificationConfirmationStatus()"></app-application-detail>
+                      [isModification]="(application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION_EXTENSION)
+                      || (application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION) ()"></app-application-detail>
                   </td>
                 </ng-container>
               </ng-container>
@@ -413,8 +413,8 @@
                       [class.collapse_no_margin]="getCollapseStatus('application_review-' + application?.project_application_id)"
                       [class.collapse]="getCollapseStatus('application_review-' + application?.project_application_id)"
                       [application]="application"
-                      [isModification]="application?.hasWaitForExtensionConfirmationStatus()
-                      || application?.hasWaitForModificationConfirmationStatus()"></app-application-detail>
+                      [isModification]="(application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION_EXTENSION)
+                      || (application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION) ()"></app-application-detail>
                   </td>
                 </ng-container>
               </ng-container>
@@ -534,8 +534,8 @@
                       [class.collapse_no_margin]="getCollapseStatus('application_review-' + application?.project_application_id)"
                       [class.collapse]="getCollapseStatus('application_review-' + application?.project_application_id)"
                       [application]="application"
-                      [isModification]="application?.hasWaitForExtensionConfirmationStatus()
-                      || application?.hasWaitForModificationConfirmationStatus()"></app-application-detail>
+                      [isModification]="(application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION_EXTENSION)
+                      || (application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION) ()"></app-application-detail>
                   </td>
                 </ng-container>
               </ng-container>

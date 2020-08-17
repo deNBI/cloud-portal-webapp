@@ -17,6 +17,7 @@ import {AutocompleteLibModule} from 'angular-ng-autocomplete';
 import {ApplicationDetailComponent} from './application-detail/application-detail.component';
 import {SharedDirectivesModule} from '../shared/shared_modules/shared_directives.module';
 import {ApplicationFormularComponent} from './application-formular/application-formular.component';
+import {PipeModuleModule} from '../pipe-module/pipe-module.module';
 
 /**
  * Applications Module.
@@ -32,7 +33,8 @@ import {ApplicationFormularComponent} from './application-formular/application-f
               ModalModule.forRoot(),
               AppSidebarModule,
               AutocompleteLibModule,
-              SharedDirectivesModule
+              SharedDirectivesModule,
+              PipeModuleModule
             ],
             declarations: [
               ApplicationsComponent,
