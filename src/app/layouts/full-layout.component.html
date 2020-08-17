@@ -118,29 +118,41 @@
               {{application.project_name}}
             </span>
             <span class="badge badge-success" style="font-size: 8px; position: relative; top: 3px;" data-toggle="tooltip"
-                  data-placement="right" title="This project was approved within the last week."
-                  *ngIf="this.project_badges_states[application.application_id] === 0">
+                  data-placement="right" title="This project was approved within the last 2 weeks."
+                  *ngIf="this.project_badges_states[application?.application_id]?.includes(2)">
               <i class="fas fa-plus-circle"></i>
             </span>
             <span class="badge badge-warning" style="font-size: 8px; position: relative; top: 3px;" data-toggle="tooltip"
                   data-placement="right" title="The project lifetime expires soon."
-                  *ngIf="this.project_badges_states[application.application_id] === 1">
+                  *ngIf="this.project_badges_states[application?.application_id]?.includes(1)">
               <i class="fas fa-exclamation-circle"></i>
             </span>
             <span class="badge badge-danger"  style="font-size: 8px; position: relative; top: 3px;"
                   data-toggle="tooltip" data-placement="right" title="The lifetime of this project is expired."
-                  *ngIf="this.project_badges_states[application.application_id] === 2">
+                  *ngIf="this.project_badges_states[application?.application_id]?.includes(6)">
               <i class="fas fa-ban"></i>
             </span>
              <span class="badge badge-danger"  style="font-size: 8px; position: relative; top: 3px;"
                   data-toggle="tooltip" data-placement="right" title="The termination of the project was requested."
-                  *ngIf="this.project_badges_states[application.application_id] === 4">
+                  *ngIf="this.project_badges_states[application?.application_id]?.includes(0)">
               <i class="fas fa-trash"></i>
             </span>
             <span class="badge badge-secondary"  style="font-size: 8px; position: relative; top: 3px;"
                   data-toggle="tooltip" data-placement="right"
-                  title="An extension/modification request was submitted for this project."
-                  *ngIf="this.project_badges_states[application.application_id] === 3">
+                  title="An extension request was submitted for this project."
+                  *ngIf="this.project_badges_states[application?.application_id]?.includes(4)">
+              <i class="fas fa-edit"></i>
+            </span>
+            <span class="badge badge-secondary"  style="font-size: 8px; position: relative; top: 3px;"
+                  data-toggle="tooltip" data-placement="right"
+                  title="An modification request was submitted for this project."
+                  *ngIf="this.project_badges_states[application?.application_id]?.includes(5)">
+              <i class="fas fa-edit"></i>
+            </span>
+            <span class="badge badge-secondary"  style="font-size: 8px; position: relative; top: 3px;"
+                  data-toggle="tooltip" data-placement="right"
+                  title="The project application was submitted but not approved yet."
+                  *ngIf="this.project_badges_states[application?.application_id]?.includes(3)">
               <i class="fas fa-edit"></i>
             </span>
           </a>
