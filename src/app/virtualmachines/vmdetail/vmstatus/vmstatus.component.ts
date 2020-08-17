@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
 import {VirtualMachineStates} from '../../virtualmachinemodels/virtualmachinestates';
 import {VirtualMachine} from '../../virtualmachinemodels/virtualmachine';
 
@@ -8,6 +8,7 @@ import {VirtualMachine} from '../../virtualmachinemodels/virtualmachine';
 @Component({
              selector: 'app-vmstatus',
              templateUrl: './vmstatus.component.html',
+             changeDetection: ChangeDetectionStrategy.OnPush,
              styleUrls: ['./vmstatus.component.scss']
            })
 export class VmstatusComponent {

@@ -3,6 +3,7 @@ import {Client} from '../../vo_manager/clients/client.model';
 import {ImageMode} from '../../facility_manager/image-tag';
 import {Clusterinfo} from '../clusters/clusterinfo';
 import {Volume} from '../volumes/volume';
+import {VirtualMachineStates} from './virtualmachinestates';
 
 /**
  * Virtualmachine class.
@@ -37,6 +38,7 @@ export class VirtualMachine {
   private _error_msg: string;
   private _days_running: number;
 
+
   constructor(vm: VirtualMachine) {
     this._flavor = vm.flavor;
     this._image = vm.image;
@@ -62,6 +64,7 @@ export class VirtualMachine {
     this._volumes = vm.volumes;
     this._still_used_confirmation_requested = vm.still_used_confirmation_requested;
     this._still_used_confirmation_requested_date = vm.still_used_confirmation_requested_date;
+    this.setStatusValues()
     this.calculateCreatedAt();
     this.getTerminationStartDateString();
   }
@@ -95,6 +98,7 @@ export class VirtualMachine {
                timeout);
 
   }
+
 
   get still_used_confirmation_requested_date(): Date {
     return this._still_used_confirmation_requested_date;
