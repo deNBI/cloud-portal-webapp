@@ -97,13 +97,8 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
       this.project_enumeration = res;
       console.log(res);
       this.project_enumeration.forEach((enumeration: ProjectEnumeration): void => {
-        console.log(enumeration);
-        this.pushStatesForEnumeration(enumeration);
-        /* this.badgeState(enumeration).then((value: number): void => {
-          this.project_badges_states[enumeration.application_id].push(value);
-        }).catch((reason: any): void => {
-          console.log(reason)
-        }); */
+        this.project_badges_states[enumeration.application_id] = enumeration.project_status;
+        this.pushAdditionalStates(enumeration);
       });
     });
   }
@@ -132,154 +127,55 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
   }
 
   /**
-   * 0 for termination requested
-   1 for expiring soon
-   2 for new application
-   3 for submitted, not approved yet
-   4 for extension requested
-   5 for modification requested
-   6 for expired
+   SUBMITTED = 1
+   APPROVED = 2
+   DECLINED = 3
+   MODIFICATION_REQUESTED = 4
+   MODIFICATION_DECLINED = 5
+   WAIT_FOR_CONFIRMATION = 6
+   CONFIRMATION_DENIED = 7
+   TERMINATED = 8
+   SUSPENDED = 9
+   TERMINATION_REQUESTED = 10
+   WAIT_FOR_CONFIRMATION_CREDITS = 11
+   WAIT_FOR_CONFIRMATION_EXTENSION = 12
+   WAIT_FOR_CONFIRMATION_MODIFICATION = 13
+   CREDITS_EXTENSION_REQUESTED = 14
+   LIFETIME_EXTENSION_REQUESTED = 16
+   LIFETIME_EXTENSION_DECLINED = 17
+   ADDITIONAL:
+   - RUNNING_OUT = 18
+   - NEW_PROJECT = 19
+   - LIFETIME_EXPIRED = 20
    * @param enumeration
    */
-   pushStatesForEnumeration(enumeration: ProjectEnumeration): void {
-     this.project_badges_states[enumeration.application_id] = [];
-    this.badgeStateHasExtensionRequested(enumeration).then((value: boolean): void => {
-      if (value){
-        this.project_badges_states[enumeration.application_id].push(4);
-      }
-    }).catch((err: any) => {console.log(err)});
 
-    this.badgeStateHasModificationRequested(enumeration).then((value: boolean): void => {
-      if (value){
-        this.project_badges_states[enumeration.application_id].push(5);
-      }
-    }).catch((err: any) => {console.log(err)});
-
-    this.badgeStateHasTerminationRequested(enumeration).then((value: boolean): void => {
-      if (value){
-        this.project_badges_states[enumeration.application_id].push(0);
-      }
-    }).catch((err: any) => {console.log(err)});
-
-    this.badgeStateIsNewProject(enumeration).then((value: boolean): void => {
-      if (value){
-        this.project_badges_states[enumeration.application_id].push(2);
-      }
-    }).catch((err: any) => {console.log(err)});
-
-    this.badgeStateIsRunningOut(enumeration).then((value: boolean): void => {
-      if (value){
-        this.project_badges_states[enumeration.application_id].push(1);
-      }
-    }).catch((err: any) => {console.log(err)});
-
-    this.badgeStateIsSubmittedOnly(enumeration).then((value: boolean): void => {
-      if (value){
-        this.project_badges_states[enumeration.application_id].push(3);
-      }
-    }).catch((err: any) => {console.log(err)});
-
-    this.badgeStateRunOut(enumeration).then((value: boolean): void => {
-      if (value){
-        this.project_badges_states[enumeration.application_id].push(6);
-      }
-    }).catch((err: any) => {console.log(err)});
-  }
-
-  /**
-   * Function used for status badge in sidebar. Showing termination-request-badge for projects which have
-   * requested a termination TODO:adjust number
-   * @param projectEnumeration the project enumeration associated with the project.
-   */
-  async badgeStateHasTerminationRequested(projectEnumeration: ProjectEnumeration): Promise<boolean> {
-    if (projectEnumeration.project_status.includes(0)){
-      return true;
-    } else {
-      return false;
+  pushAdditionalStates(enumeration: ProjectEnumeration): void{
+    if (enumeration.project_status.includes(2) && (this.getDaysLeft(enumeration) < 14)){
+      this.project_badges_states[enumeration.application_id].push(18);
     }
+    if (enumeration.project_status.includes(2) && (this.getDaysRunning(enumeration) < 14)){
+      this.project_badges_states[enumeration.application_id].push(19);
+    }
+    if (enumeration.project_status.includes(2) && (this.getDaysLeft(enumeration) < 0)){
+      this.project_badges_states[enumeration.application_id].push(20);
+    }
+
   }
 
-  /**
-   * analogue to above functions TODO:adjust number
-   * @param projectEnumeration the project enumeration
-   */
-  async badgeStateIsSubmittedOnly(projectEnumeration: ProjectEnumeration): Promise<boolean> {
-    if (projectEnumeration.project_status.includes(0)){
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  /**
-   * analogue to above functions TODO:adjust number
-   * @param projectEnumeration the project enumeration
-   */
-  async badgeStateHasExtensionRequested(projectEnumeration: ProjectEnumeration): Promise<boolean> {
-    if (projectEnumeration.project_status.includes(0)){
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  /**
-   * analogue to above functions TODO:adjust number
-   * @param projectEnumeration the project enumeration
-   */
-  async badgeStateHasModificationRequested(projectEnumeration: ProjectEnumeration): Promise<boolean> {
-    if (projectEnumeration.project_status.includes(0)){
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  /**
-   * analogue to above functions TODO:adjust number
-   * @param projectEnumeration the project enumeration
-   */
-  async badgeStateIsNewProject(projectEnumeration: ProjectEnumeration): Promise<boolean> {
-    if (this.getDaysRunning(projectEnumeration.project_start_date) < 15){
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  /**
-   * analogue to above functions TODO:adjust number
-   * @param projectEnumeration the project enumeration
-   */
-  async badgeStateIsRunningOut(projectEnumeration: ProjectEnumeration): Promise<boolean> {
-    if ((this.getDaysLeft(projectEnumeration) < 15) && (this.getDaysLeft(projectEnumeration) > -1)){
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  /**
-   * analogue to above functions TODO:adjust number
-   * @param projectEnumeration the project enumeration
-   */
-  async badgeStateRunOut(projectEnumeration: ProjectEnumeration): Promise<boolean> {
-    if (this.getDaysLeft(projectEnumeration) < 0){
-      return true;
-    } else {
-      return false;
-    }
-  }
 
   getDaysLeft(projEnum: ProjectEnumeration): number {
     const max_days: number = 31 * projEnum.project_lifetime;
-    const daysRunning: number = this.getDaysRunning(projEnum.project_start_date);
+    const daysRunning: number = this.getDaysRunning(projEnum);
 
     return max_days - daysRunning;
   }
 
-  getDaysRunning(datestring: string): number {
-    return Math.ceil((Math.abs(Date.now() - new Date(datestring).getTime())) / (1000 * 3600 * 24));
+  getDaysRunning(projectEnumeration: ProjectEnumeration): number {
+    return Math.ceil((Math.abs(Date.now() - new Date(projectEnumeration.project_start_date).getTime()))
+      / (1000 * 3600 * 24));
   }
+
+
 
 }
