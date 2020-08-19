@@ -10,8 +10,8 @@ export class HasstatusinlistPipe implements PipeTransform {
     if (appl === undefined) {
       return false
     }
+
     return appl.project_application_status.includes(status)
   }
 
 }
-

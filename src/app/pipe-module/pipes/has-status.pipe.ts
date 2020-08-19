@@ -11,4 +11,3 @@ export class HasStatusPipe implements PipeTransform {
   }
 
 }
-

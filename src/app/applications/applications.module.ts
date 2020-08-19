@@ -43,7 +43,7 @@ import {PipeModuleModule} from '../pipe-module/pipe-module.module';
               TypeOverviewComponent,
               ValidationApplicationComponent,
               ApplicationDetailComponent,
-              ApplicationFormularComponent,
+              ApplicationFormularComponent
             ],
             exports: [ApplicationDetailComponent]
           })
