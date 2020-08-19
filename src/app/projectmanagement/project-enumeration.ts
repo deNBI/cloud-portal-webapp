@@ -9,13 +9,13 @@ export class ProjectEnumeration {
   private _is_open_stack: boolean;
   private _project_lifetime: number;
   private _project_start_date: string;
-  private _project_status: string;
+  private _project_status: number[];
 
-  get project_status(): string {
+  get project_status(): number[] {
     return this._project_status;
   }
 
-  set project_status(value: string) {
+  set project_status(value: number[]) {
     this._project_status = value;
   }
 

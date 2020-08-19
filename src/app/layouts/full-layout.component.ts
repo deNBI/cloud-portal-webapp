@@ -50,7 +50,7 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
   TITLE: string = '';
 
   project_enumeration: ProjectEnumeration[] = [];
-  project_badges_states: {[id: string]: number} = {};
+  project_badges_states: {[id: string]: number[]} = {};
 
   constructor(private voService: VoService, private groupService: GroupService, userservice: UserService,
               facilityService: FacilityService, applicationsservice: ApplicationsService,
@@ -95,15 +95,15 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
   getGroupsEnumeration(): void {
     this.groupService.getGroupsEnumeration().subscribe((res: ProjectEnumeration[]): void => {
       this.project_enumeration = res;
+      console.log(res);
       this.project_enumeration.forEach((enumeration: ProjectEnumeration): void => {
-        this.badgeState(enumeration).then((value: number): void => {
-          this.project_badges_states[enumeration.application_id] = value;
-        }).catch((reason: any): void => {
-          console.log(reason)
-        });
-      })
+        this.project_badges_states[enumeration.application_id] = enumeration.project_status;
+        this.pushAdditionalStates(enumeration);
+      });
     });
   }
+
+
 
   ngOnInit(): void {
     this.set_cluster_allowed();
@@ -127,48 +127,55 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
   }
 
   /**
-   * Preferences: Suspended > Expires soon > modification requested > new
-   * @param projEnum ProjectEnumeration which includes information about project in sidebar.
+   SUBMITTED = 1
+   APPROVED = 2
+   DECLINED = 3
+   MODIFICATION_REQUESTED = 4
+   MODIFICATION_DECLINED = 5
+   WAIT_FOR_CONFIRMATION = 6
+   CONFIRMATION_DENIED = 7
+   TERMINATED = 8
+   SUSPENDED = 9
+   TERMINATION_REQUESTED = 10
+   WAIT_FOR_CONFIRMATION_CREDITS = 11
+   WAIT_FOR_CONFIRMATION_EXTENSION = 12
+   WAIT_FOR_CONFIRMATION_MODIFICATION = 13
+   CREDITS_EXTENSION_REQUESTED = 14
+   LIFETIME_EXTENSION_REQUESTED = 16
+   LIFETIME_EXTENSION_DECLINED = 17
+   ADDITIONAL:
+   - RUNNING_OUT = 18
+   - NEW_PROJECT = 19
+   - LIFETIME_EXPIRED = 20
+   * @param enumeration
    */
-  async badgeState(projEnum: ProjectEnumeration): Promise<number> {
-    switch (projEnum.project_status) {
-      case 'termination requested': {
-        return 4;
-      }
-      case 'suspended': {
-        return 2;
 
-      }
-      case 'approved': {
-        if (this.getDaysLeft(projEnum) < 21) {
-          return 1;
-        }
-        if (this.getDaysRunning(projEnum.project_start_date) < 8) {
-          return 0;
-        }
-
-        return -1
-
-      }
-      case 'modification requested': {
-        return 3
-      }
-      default: {
-        return -1
-      }
-
+  pushAdditionalStates(enumeration: ProjectEnumeration): void{
+    if (enumeration.project_status.includes(2) && (this.getDaysLeft(enumeration) < 14)){
+      this.project_badges_states[enumeration.application_id].push(18);
     }
+    if (enumeration.project_status.includes(2) && (this.getDaysRunning(enumeration) < 14)){
+      this.project_badges_states[enumeration.application_id].push(19);
+    }
+    if (enumeration.project_status.includes(2) && (this.getDaysLeft(enumeration) < 0)){
+      this.project_badges_states[enumeration.application_id].push(20);
+    }
+
   }
+
 
   getDaysLeft(projEnum: ProjectEnumeration): number {
     const max_days: number = 31 * projEnum.project_lifetime;
-    const daysRunning: number = this.getDaysRunning(projEnum.project_start_date);
+    const daysRunning: number = this.getDaysRunning(projEnum);
 
     return max_days - daysRunning;
   }
 
-  getDaysRunning(datestring: string): number {
-    return Math.ceil((Math.abs(Date.now() - new Date(datestring).getTime())) / (1000 * 3600 * 24));
+  getDaysRunning(projectEnumeration: ProjectEnumeration): number {
+    return Math.ceil((Math.abs(Date.now() - new Date(projectEnumeration.project_start_date).getTime()))
+      / (1000 * 3600 * 24));
   }
+
+
 
 }
