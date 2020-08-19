@@ -80,7 +80,7 @@
     "rxjs": "6.6.2",
     "ts-helpers": "1.1.2",
     "tslib": "^2.0.1",
-    "tslint-angular": "^3.0.2",
+    "tslint-angular": "^3.0.3",
     "tslint-clean-code": "^0.2.9",
     "uglify-js": "3.10.1",
     "zone.js": "~0.10.2"
