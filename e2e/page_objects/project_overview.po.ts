@@ -50,8 +50,8 @@ export class ProjectOverview {
   private static CHOOSE_MODIFICATION_BUTTON: string = 'resource_modification_button';
   private static CHOOSE_EXTENSION_BUTTON: string = 'project_extension_button';
   private static NO_DOI_BUTTON: string = 'no_new_dois_btn';
-  private static SUBMIT_MODIFICATION_BUTTON = 'submit_modification_btn';
-  private static CONFIRM_MODIFICATION_BUTTON = 'confirm_modification_btn';
+  private static SUBMIT_MODIFICATION_BUTTON: string = 'submit_modification_btn';
+  private static CONFIRM_MODIFICATION_BUTTON: string = 'confirm_modification_btn';
 
   static async navigateToSimpleProjectverview(): Promise<any> {
     console.log('Navigating to simple project overview');

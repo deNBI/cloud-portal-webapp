@@ -40,6 +40,4 @@ export class Project {
     this.ApprovedCredits = ApprovedCredits;
     this.CurrentCredits = CurrentCredits;
   }
-
-
 }

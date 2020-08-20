@@ -17,6 +17,4 @@ export class ApplicationStatus {
         this.application_status_id = Id;
         this.application_status_name = Name;
     }
-
-
 }

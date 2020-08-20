@@ -1,5 +1,8 @@
 import {Pipe, PipeTransform} from '@angular/core';
 
+/**
+ * Pipe which compares status.
+ */
 @Pipe({
         name: 'hasStatus'
       })

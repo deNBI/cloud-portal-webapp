@@ -13,6 +13,4 @@ export class Image {
   is_snapshot: boolean;
   logo_url: string;
   modes: ImageMode[];
-
-
 }

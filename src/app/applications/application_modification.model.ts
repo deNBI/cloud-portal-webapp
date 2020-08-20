@@ -67,7 +67,7 @@ export class ApplicationModification {
   }
 
   public setFlavorInFlavors(flavor: Flavor, counter: number): void {
-    const idx: number = this.flavors.findIndex((fl: Flavor) => {
+    const idx: number = this.flavors.findIndex((fl: Flavor): boolean => {
       return fl.name === flavor.name
     });
     if (idx !== -1) {

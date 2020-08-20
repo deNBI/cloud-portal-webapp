@@ -101,7 +101,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
       this.getSubmittedApplications();
       this.getApplicationHistory();
       this.getComputeCenters();
-      this.applicationsservice.getExtensionRequestsCounter().subscribe((result: any) => {
+      this.applicationsservice.getExtensionRequestsCounter().subscribe((result: any): void => {
         this.numberOfCreditRequests = result['credits_extension_requests_vo'];
         this.numberOfExtensionRequests = result['lifetime_extension_requests_vo'];
         this.numberOfModificationRequests = result['modification_requests_vo'];
@@ -156,85 +156,92 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
     }
   }
 
-  approveLifetimeExtension(application: Application) {
+  approveLifetimeExtension(application: Application): void {
 
     this.applicationsservice.approveAdditionalLifetime(application.project_application_id)
-      .subscribe((res: any) => {
-        if (application.project_application_openstack_project) {
-          this.updateNotificationModal('Success', 'The request has been sent to the facility manager.', true, 'success');
-        } else {
-          this.updateNotificationModal('Success', 'The project has been extended!', true, 'success');
-        }
-        this.all_applications.splice(this.all_applications.indexOf(application), 1);
-        this.numberOfExtensionRequests--;
-      },         (err: any) => {
-        console.log('error', err.status);
-        this.updateNotificationModal('Failed', 'Project lifetime could not be extendend!', true, 'danger');
-      });
+      .subscribe((res: any): void => {
+                   if (application.project_application_openstack_project) {
+                     this.updateNotificationModal('Success', 'The request has been sent to the facility manager.', true, 'success');
+                   } else {
+                     this.updateNotificationModal('Success', 'The project has been extended!', true, 'success');
+                   }
+                   this.all_applications.splice(this.all_applications.indexOf(application), 1);
+                   this.numberOfExtensionRequests--;
+                 },
+                 (err: any): void => {
+                   console.log('error', err.status);
+                   this.updateNotificationModal('Failed', 'Project lifetime could not be extendend!', true, 'danger');
+                 });
   }
 
-  declineLifetimeExtension(application: Application) {
+  declineLifetimeExtension(application: Application): void {
 
     this.applicationsservice.deleteAdditionalLifetimeRequests(application.project_application_id)
-      .subscribe((res: any) => {
-        this.updateNotificationModal('Declined', 'The project extension was declined!', true, 'success');
+      .subscribe(
+        (res: any): void => {
+          this.updateNotificationModal('Declined', 'The project extension was declined!', true, 'success');
 
-        this.all_applications.splice(this.all_applications.indexOf(application), 1);
-        this.numberOfExtensionRequests--;
-      },         (err: any) => {
-        console.log('error', err.status);
-        this.updateNotificationModal('Failed', 'Decline of project extension failed!', true, 'danger');
-      })
+          this.all_applications.splice(this.all_applications.indexOf(application), 1);
+          this.numberOfExtensionRequests--;
+        },
+        (err: any): void => {
+          console.log('error', err.status);
+          this.updateNotificationModal('Failed', 'Decline of project extension failed!', true, 'danger');
+        })
   }
 
-  approveModificationRequest(application: Application) {
+  approveModificationRequest(application: Application): void {
 
     this.applicationsservice.approveModificationRequest(application.project_application_id)
-      .subscribe((res: any) => {
-        this.updateNotificationModal('Success', 'The resource modification request was approved!', true, 'success');
-        this.all_applications.splice(this.all_applications.indexOf(application), 1);
-        this.numberOfModificationRequests--;
-      },         (err: any) => {
-        console.log('error', err.status);
-        this.updateNotificationModal('Failed', 'Approval of resource modification failed!', true, 'danger');
-      });
+      .subscribe((res: any): void => {
+                   this.updateNotificationModal('Success', 'The resource modification request was approved!', true, 'success');
+                   this.all_applications.splice(this.all_applications.indexOf(application), 1);
+                   this.numberOfModificationRequests--;
+                 },
+                 (err: any): void => {
+                   console.log('error', err.status);
+                   this.updateNotificationModal('Failed', 'Approval of resource modification failed!', true, 'danger');
+                 });
   }
 
-  declineModificationRequest(application: Application) {
+  declineModificationRequest(application: Application): void {
 
     this.applicationsservice.deleteModificationRequest(application.project_application_id)
-      .subscribe((res: any) => {
-        this.updateNotificationModal('Declined', 'The resource modification request was declined!', true, 'success');
-        this.all_applications.splice(this.all_applications.indexOf(application), 1);
-        this.numberOfModificationRequests--;
-      },         (err: any) => {
-        console.log('error', err.status);
-        this.updateNotificationModal('Failed', 'Decline of resource modification failed!', true, 'danger');
-      });
+      .subscribe((res: any): void => {
+                   this.updateNotificationModal('Declined', 'The resource modification request was declined!', true, 'success');
+                   this.all_applications.splice(this.all_applications.indexOf(application), 1);
+                   this.numberOfModificationRequests--;
+                 },
+                 (err: any): void => {
+                   console.log('error', err.status);
+                   this.updateNotificationModal('Failed', 'Decline of resource modification failed!', true, 'danger');
+                 });
   }
 
-  approveCreditExtension(application: Application) {
+  approveCreditExtension(application: Application): void {
     this.applicationsservice.approveAdditionalCreditsRequest(application.project_application_id)
-      .subscribe((res: any) => {
-        this.updateNotificationModal('Success', 'The credit extension request was approved!', true, 'success');
-        this.all_applications.splice(this.all_applications.indexOf(application), 1);
-        this.numberOfCreditRequests--;
-      },         (err: any) => {
-        console.log('error', err.status);
-        this.updateNotificationModal('Failed', 'Approval of credit extension failed!', true, 'danger');
-      });
+      .subscribe((res: any): void => {
+                   this.updateNotificationModal('Success', 'The credit extension request was approved!', true, 'success');
+                   this.all_applications.splice(this.all_applications.indexOf(application), 1);
+                   this.numberOfCreditRequests--;
+                 },
+                 (err: any): void => {
+                   console.log('error', err.status);
+                   this.updateNotificationModal('Failed', 'Approval of credit extension failed!', true, 'danger');
+                 });
   }
 
-  declineCreditExtension(application: Application) {
+  declineCreditExtension(application: Application): void {
     this.applicationsservice.deleteAdditionalCreditsRequests(application.project_application_id)
-      .subscribe((res: any) => {
-        this.updateNotificationModal('Declined', 'The credit extension request was declined!', true, 'success');
-        this.all_applications.splice(this.all_applications.indexOf(application), 1)
-        this.numberOfCreditRequests = this.numberOfCreditRequests - 1;
-      },         (err: any) => {
-        console.log('error', err.status);
-        this.updateNotificationModal('Failed', 'Decline of credit extension failed!', true, 'danger');
-      });
+      .subscribe((res: any): void => {
+                   this.updateNotificationModal('Declined', 'The credit extension request was declined!', true, 'success');
+                   this.all_applications.splice(this.all_applications.indexOf(application), 1)
+                   this.numberOfCreditRequests = this.numberOfCreditRequests - 1;
+                 },
+                 (err: any): void => {
+                   console.log('error', err.status);
+                   this.updateNotificationModal('Failed', 'Decline of credit extension failed!', true, 'danger');
+                 });
   }
 
   /**
@@ -317,7 +324,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
           });
       } else if (this.tab_state === TabStates.LIFETIME_EXTENSION) {
         this.applicationsservice.getLifetimeRequestedApplications().subscribe(
-          (lifetime_applications: Application[]) => {
+          (lifetime_applications: Application[]): void => {
             if (lifetime_applications.length === 0) {
               // bool here?
             }
@@ -331,9 +338,9 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
             this.loading_applications = false;
 
           });
-      } else if (this.tab_state = TabStates.MODIFICATION_EXTENSION) {
+      } else if (this.tab_state === TabStates.MODIFICATION_EXTENSION) {
         this.applicationsservice.getModificationRequestedApplications().subscribe(
-          (modification_applications: Application[]) => {
+          (modification_applications: Application[]): void => {
             if (modification_applications.length === 0) {
               // bool here?
             }
