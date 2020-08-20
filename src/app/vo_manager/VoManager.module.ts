@@ -12,20 +12,22 @@ import {VoService} from '../api-connector/vo.service';
 import {ResourcesComponent} from './resources/resources.component';
 import {ProjectManagementModule} from '../projectmanagement/projectmanagement.module';
 import {ClientOverviewComponent} from './clients/clientOverview.component';
+import {PipeModuleModule} from '../pipe-module/pipe-module.module';
 
 /**
  * VO Manager module.
  */
 @NgModule({
-            imports: [
-              VoManagerRoutingModule,
-              TabsModule,
-              FormsModule,
-              CommonModule,
-              ModalModule.forRoot(),
-              ProjectManagementModule
+              imports: [
+                  VoManagerRoutingModule,
+                  TabsModule,
+                  FormsModule,
+                  CommonModule,
+                  ModalModule.forRoot(),
+                  ProjectManagementModule,
+                  PipeModuleModule
 
-            ],
+              ],
             declarations: [
               VoOverviewComponent,
               ResourcesComponent,
