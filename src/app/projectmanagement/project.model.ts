@@ -41,5 +41,4 @@ export class Project {
     this.CurrentCredits = CurrentCredits;
   }
 
-
 }

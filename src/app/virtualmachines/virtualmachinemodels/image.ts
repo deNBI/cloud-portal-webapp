@@ -14,5 +14,4 @@ export class Image {
   logo_url: string;
   modes: ImageMode[];
 
-
 }
