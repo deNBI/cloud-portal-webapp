@@ -209,7 +209,7 @@
              [routerLink]="['/virtualmachines/newVM']">
             <i class="nav-icon fas fa-desktop"></i> New Instance</a>
         </li>
-          <li class="nav-item" *ngIf="is_vo_admin || ( vm_project_member && cluster_allowed)">
+          <li class="nav-item" *ngIf="(is_vo_admin || cluster_allowed) &&  vm_project_member">
           <a *ngIf="navbar_minimized" class="nav-link" routerLinkActive="active" data-toggle="tooltip" data-placement="right" title="New Instance"
              [routerLink]="['/virtualmachines/newVM']">
             <i class="nav-icon fas fa-network-wired" ></i> New Cluster</a>

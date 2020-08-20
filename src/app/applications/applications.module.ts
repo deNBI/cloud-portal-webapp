@@ -17,7 +17,7 @@ import {AutocompleteLibModule} from 'angular-ng-autocomplete';
 import {ApplicationDetailComponent} from './application-detail/application-detail.component';
 import {SharedDirectivesModule} from '../shared/shared_modules/shared_directives.module';
 import {ApplicationFormularComponent} from './application-formular/application-formular.component';
-import {FlavorCounterPipe} from './pipes/flavorcounter';
+import {PipeModuleModule} from '../pipe-module/pipe-module.module';
 
 /**
  * Applications Module.
@@ -33,10 +33,10 @@ import {FlavorCounterPipe} from './pipes/flavorcounter';
               ModalModule.forRoot(),
               AppSidebarModule,
               AutocompleteLibModule,
-              SharedDirectivesModule
+              SharedDirectivesModule,
+              PipeModuleModule
             ],
             declarations: [
-              FlavorCounterPipe,
               ApplicationsComponent,
               AddsimplevmComponent,
               AddcloudapplicationComponent,
@@ -45,7 +45,7 @@ import {FlavorCounterPipe} from './pipes/flavorcounter';
               ApplicationDetailComponent,
               ApplicationFormularComponent
             ],
-            exports: [ApplicationDetailComponent, FlavorCounterPipe]
+            exports: [ApplicationDetailComponent]
           })
 export class ApplicationsModule {
 }

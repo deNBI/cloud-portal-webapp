@@ -130,8 +130,8 @@
                   <td>{{application?.project_application_institute}}</td>
 
                   <td>
-                    <!-- into select: [style.display]=" (application?.hasSubmittedStatus() || application?.hasConfirmationDeniedStatus()|| (!application?.ComputeCenter?.FacilityId ))? 'inherit' :'none'"-->
-                    <select *ngIf="application?.hasSubmittedStatus()"
+                    <!-- into select: [style.display]=" ((application | hasstatusinlist:Application_States.SUBMITTED)  || (application | hasstatusinlist:Application_States.CONFIRMATION_DENIED) || (!application?.ComputeCenter?.FacilityId ))? 'inherit' :'none'"-->
+                    <select *ngIf="(application | hasstatusinlist:Application_States.SUBMITTED) "
                             [(ngModel)]="selectedCenter[application.project_application_id]"
                       class="form-control" [id]="'id_compute_center_option_' + application?.project_application_name"
                       #selectedComputeCenter>
@@ -144,14 +144,14 @@
                       </option>
                     </select>
                     <span
-                      *ngIf="application?.hasWaitForConfirmationStatus()">{{application?.ComputeCenter?.Name}}</span>
+                      *ngIf="(application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION) ">{{application?.ComputeCenter?.Name}}</span>
                   </td>
 
 
                   <td>
                     <div class="btn-group">
                       <button
-                        *ngIf="application?.hasConfirmationDeniedStatus() || (application?.hasWaitForConfirmationStatus() && !application?.ComputeCenter?.FacilityId )"
+                        *ngIf="(application | hasstatusinlist:Application_States.CONFIRMATION_DENIED)  || ((application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION)  && !application?.ComputeCenter?.FacilityId )"
                         style="margin: auto 2.5px"
                         (click)="resetNotificationModal();assignGroupToFacility(application?.project_application_perun_id,application?.project_application_id, selectedCenter[application.project_application_id]); notificationModal.show();"
 
@@ -162,7 +162,7 @@
                         <span class="applicationActionsButton">Assign</span>
                       </button>
                       <button
-                        *ngIf="application?.hasWaitForConfirmationStatus() && application?.ComputeCenter?.FacilityId"
+                        *ngIf="(application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION)  && application?.ComputeCenter?.FacilityId"
                         style="margin: auto 2.5px"
                         (click)="resetNotificationModal();removeApplicationFromFacilityConfirmation(application);"
 
@@ -173,7 +173,7 @@
                         <span class="applicationActionsButton">Reassign</span>
                       </button>
                       <button
-                        *ngIf="application?.hasSubmittedStatus() && application?.project_application_openstack_project"
+                        *ngIf="(application | hasstatusinlist:Application_States.SUBMITTED) && application?.project_application_openstack_project"
                         style="margin: auto 2.5px" [id]="'approve_'+ application?.project_application_shortname"
                         (click)="resetNotificationModal();createOpenStackProjectGroup(application, selectedCenter[application.project_application_id]); notificationModal.show();"
 
@@ -184,7 +184,7 @@
                       </button>
 
                       <button
-                        *ngIf="application?.hasSubmittedStatus() && !application?.project_application_openstack_project"
+                        *ngIf="(application | hasstatusinlist:Application_States.SUBMITTED)  && !application?.project_application_openstack_project"
                         style="margin: auto 2.5px" [id]="'approve_' + application?.project_application_shortname"
                         (click)="resetNotificationModal();createSimpleVmProjectGroup(application,selectedCenter[application.project_application_id]); notificationModal.show();"
 
@@ -195,7 +195,7 @@
                           & Create </span>
                       </button>
 
-                      <button *ngIf="application?.hasSubmittedStatus()"
+                      <button *ngIf="(application | hasstatusinlist:Application_States.SUBMITTED) "
                               type="button"
                               class="btn btn-danger"
                               style="margin: auto 2.5px"
@@ -225,8 +225,8 @@
                     [class.collapse_no_margin]="getCollapseStatus('application_review-' + application?.project_application_id)"
                     [class.collapse]="getCollapseStatus('application_review-' + application?.project_application_id)"
                     [application]="application"
-                    [isModification]="application.hasModificationRequestedStatus() ||
-                      application.hasExtensionRequestedStatus()"></app-application-detail>
+                    [isModification]="(application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED) ||
+                     (application | hasstatusinlist:Application_States.LIFETIME_EXTENSION_REQUESTED) "></app-application-detail>
                 </td>
               </ng-container>
 
@@ -328,7 +328,7 @@
 
 
                         <button [id]="'modification_approval_' + application.project_application_shortname"
-                                *ngIf="application?.hasModificationRequestedStatus() || application?.project_modification_request"
+                                *ngIf="(application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || application?.project_modification_request"
                                 style="margin: auto 2.5px"
                                 (click)="this.resetNotificationModal(); this.approveModificationRequest(application);
                                   this.notificationModal.show();"
@@ -339,7 +339,7 @@
                         </button>
 
                         <button
-                          *ngIf="application?.hasModificationRequestedStatus()"
+                          *ngIf="(application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED) "
                           type="button"
                           class="btn btn-danger"
                           style="margin: auto 2.5px"
@@ -372,8 +372,8 @@
                       [class.collapse_no_margin]="getCollapseStatus('application_review-' + application?.project_application_id)"
                       [class.collapse]="getCollapseStatus('application_review-' + application?.project_application_id)"
                       [application]="application"
-                      [isModification]="application.hasModificationRequestedStatus() ||
-                      application.hasExtensionRequestedStatus()"></app-application-detail>
+                      [isModification]="(application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED) ||
+                     (application | hasstatusinlist:Application_States.LIFETIME_EXTENSION_REQUESTED) "></app-application-detail>
                   </td>
                 </ng-container>
 
@@ -474,7 +474,7 @@
                     <td>
                       <div class="btn-group">
                         <button [id]="'extension_approval_' + application.project_application_shortname"
-                                *ngIf="application?.hasExtensionRequestedStatus() || application?.project_lifetime_request"
+                                *ngIf="(application | hasstatusinlist:Application_States.LIFETIME_EXTENSION_REQUESTED)  || application?.project_lifetime_request"
                                 style="margin: auto 2.5px"
                                 (click)="resetNotificationModal();
                                 approveLifetimeExtension(application);
@@ -485,7 +485,7 @@
                           <span class="applicationActionsButton">Approve Extension</span>
                         </button>
                         <button
-                          *ngIf="application?.hasExtensionRequestedStatus() || application?.project_lifetime_request"
+                          *ngIf="(application | hasstatusinlist:Application_States.LIFETIME_EXTENSION_REQUESTED)  || application?.project_lifetime_request"
                           type="button"
                           class="btn btn-danger"
                           style="margin: auto 2.5px"
@@ -518,8 +518,8 @@
                       [class.collapse_no_margin]="getCollapseStatus('application_review-' + application?.project_application_id)"
                       [class.collapse]="getCollapseStatus('application_review-' + application?.project_application_id)"
                       [application]="application"
-                      [isModification]="application.hasModificationRequestedStatus() ||
-                      application.hasExtensionRequestedStatus()"></app-application-detail>
+                      [isModification]="(application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED) ||
+                     (application | hasstatusinlist:Application_States.LIFETIME_EXTENSION_REQUESTED) "></app-application-detail>
                   </td>
                 </ng-container>
 
@@ -622,7 +622,7 @@
                       <div class="btn-group">
 
                         <button [id]="'credit_extension_approval_' + application.project_application_shortname"
-                                *ngIf="application?.hasCreditsRequestedStatus()"
+                                *ngIf="(application | hasstatusinlist:Application_States.CREDITS_EXTENSION_REQUESTED) "
                                 style="margin: auto 2.5px"
                                 (click)="this.resetNotificationModal(); this.approveCreditExtension(application);
                                   notificationModal.show();"
@@ -633,7 +633,7 @@
                         </button>
 
                         <button [id]="'credit_extension_decline_' + application.project_application_shortname"
-                                *ngIf="application?.hasCreditsRequestedStatus()"
+                                *ngIf="(application | hasstatusinlist:Application_States.CREDITS_EXTENSION_REQUESTED) "
                                 (click)="this.resetNotificationModal(); this.declineCreditExtension(application);
                                  notificationModal.show();"
                                 type="button"
@@ -664,8 +664,8 @@
                       [class.collapse_no_margin]="getCollapseStatus('application_review-' + application?.project_application_id)"
                       [class.collapse]="getCollapseStatus('application_review-' + application?.project_application_id)"
                       [application]="application"
-                      [isModification]="application.hasModificationRequestedStatus() ||
-                      application.hasExtensionRequestedStatus()"></app-application-detail>
+                      [isModification]="(application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED) ||
+                     (application | hasstatusinlist:Application_States.LIFETIME_EXTENSION_REQUESTED) "></app-application-detail>
                   </td>
                 </ng-container>
 

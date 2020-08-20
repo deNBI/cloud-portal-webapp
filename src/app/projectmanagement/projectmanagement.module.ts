@@ -11,23 +11,25 @@ import {SharedDirectivesModule} from '../shared/shared_modules/shared_directives
 import {AutocompleteLibModule} from 'angular-ng-autocomplete';
 import {ChartsModule} from 'ng2-charts';
 import {ProjectOsDetailsComponent} from './project-os-details/project-os-details.component';
+import {PipeModuleModule} from '../pipe-module/pipe-module.module';
 
 /**
  * Projectmanagment module.
  */
 @NgModule({
-            imports: [
-              AccordionModule.forRoot(),
-              ProjectManagementRoutingModule,
-              TabsModule,
-              FormsModule,
-              CommonModule,
-              ModalModule.forRoot(),
-              ApplicationsModule,
-              SharedDirectivesModule,
-              ChartsModule,
-              AutocompleteLibModule
-            ],
+              imports: [
+                  AccordionModule.forRoot(),
+                  ProjectManagementRoutingModule,
+                  TabsModule,
+                  FormsModule,
+                  CommonModule,
+                  ModalModule.forRoot(),
+                  ApplicationsModule,
+                  SharedDirectivesModule,
+                  ChartsModule,
+                  AutocompleteLibModule,
+                  PipeModuleModule
+              ],
             declarations: [
               OverviewComponent,
               ProjectOsDetailsComponent

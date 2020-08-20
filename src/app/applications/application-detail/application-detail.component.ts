@@ -7,6 +7,7 @@ import {UserService} from '../../api-connector/user.service';
 import {FacilityService} from '../../api-connector/facility.service';
 import {is_vo} from '../../shared/globalvar';
 import {CreditsService} from '../../api-connector/credits.service';
+import {Application_States} from '../../shared/shared_modules/baseClass/abstract-base-class';
 
 /**
  * Class which displays the details of an application.
@@ -30,6 +31,7 @@ export class ApplicationDetailComponent extends ApplicationBaseClassComponent im
   is_vo_admin: boolean = false;
   current_credits: number = 0;
   credits_left_with_extra: number = 0;
+  Application_States: typeof Application_States = Application_States;
 
   constructor(applicationsservice: ApplicationsService,
               applicationstatusservice: ApplicationStatusService,

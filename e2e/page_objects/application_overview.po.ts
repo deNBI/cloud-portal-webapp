@@ -1,4 +1,4 @@
-import {by, element, browser} from 'protractor';
+import {by, element} from 'protractor';
 import {Util} from '../util';
 
 /**
@@ -17,8 +17,8 @@ export class ApplicationOverviewPage {
   private static NOTIFICATION_MESSAGE: string = 'notification_message';
   private static APPROVAL_PREFIX: string = 'approve_';
   private static MODIFICATION_TAB_BUTTON: string = 'tab_state_button_modification_request';
-  private static MODIFICATION_APPROVAL_BTN_PREFIX = 'modification_approval_';
-  private static MODIFICATION_REQUEST_RESULT_TEXT = 'The resource modification request was approved!';
+  private static MODIFICATION_APPROVAL_BTN_PREFIX: string = 'modification_approval_';
+  private static MODIFICATION_REQUEST_RESULT_TEXT: string = 'The resource modification request was approved!';
 
   static async navigateToApplicationOverview(): Promise<any> {
     console.log('Navigate to Application Overview form');
