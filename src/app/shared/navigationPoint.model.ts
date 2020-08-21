@@ -8,7 +8,7 @@ export class NavigationPoint {
 
   constructor(name: string,
               href: string,
-              subPoints: NavigationPoint[]){
+              subPoints: NavigationPoint[]) {
     this.name = name;
     this.href = href;
     this.subPoints = subPoints;
