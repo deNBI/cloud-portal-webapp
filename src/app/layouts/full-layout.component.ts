@@ -125,8 +125,7 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
   }
 
   /**
-   * Adds additional states to the project_badges_states list.
-   * 18 is for 'expires soon', 19 for 'new project' and 20 for 'lifetime expired'.
+   * Adding additional state numbers to list for expires soon (18), new project (19) and lifetime expired (20)
    * @param enumeration
    */
   pushAdditionalStates(enumeration: ProjectEnumeration): void {
