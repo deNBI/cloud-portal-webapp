@@ -7,7 +7,6 @@ import {Application} from '../applications/application.model/application.model';
 import {ApplicationStatusService} from '../api-connector/application-status.service';
 import {ApplicationsService} from '../api-connector/applications.service';
 import {ApplicationBaseClassComponent} from '../shared/shared_modules/baseClass/application-base-class.component';
-import {forkJoin} from 'rxjs';
 
 enum TabStates {
   'SUBMITTED' = 0,
@@ -29,7 +28,7 @@ enum TabStates {
            })
 export class FacilityApplicationComponent extends ApplicationBaseClassComponent implements OnInit {
 
-  numberOfExtensionRequests: number  = 0;
+  numberOfExtensionRequests: number = 0;
   numberOfModificationRequests: number = 0;
   numberOfCreditRequests: number = 0;
   numberOfProjectApplications: number = 0;
@@ -105,17 +104,18 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 
   public approveExtension(app: Application): void {
     this.applicationsservice.approveAdditionalLifetime(app.project_application_id)
-      .subscribe((result: any) => {
-        this.updateNotificationModal('Success', 'Successfully approved extension!', true, 'success');
-        this.allApplicationsToCheck.splice(this.allApplicationsToCheck.indexOf(app), 1);
-        this.numberOfExtensionRequests--;
-        this.getAllApplicationsHistory(this.selectedFacility['FacilityId']);
-      },         (error: any) => {
-        this.updateNotificationModal('Failed',
-                                     'The approval of the extension request has failed.',
-                                     true,
-                                     'danger');
-        });
+      .subscribe((): void => {
+                   this.updateNotificationModal('Success', 'Successfully approved extension!', true, 'success');
+                   this.allApplicationsToCheck.splice(this.allApplicationsToCheck.indexOf(app), 1);
+                   this.numberOfExtensionRequests--;
+                   this.getAllApplicationsHistory(this.selectedFacility['FacilityId']);
+                 },
+                 (): void => {
+                   this.updateNotificationModal('Failed',
+                                                'The approval of the extension request has failed.',
+                                                true,
+                                                'danger');
+                 });
   }
 
   /**
@@ -125,77 +125,82 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
   public declineExtension(app: Application): void {
 
     this.applicationsservice.declineAdditionalLifetime(app.project_application_id)
-      .subscribe((result: any) => {
-        this.updateNotificationModal('Success', 'Successfully declined extension!', true, 'success');
-        this.allApplicationsToCheck.splice(this.allApplicationsToCheck.indexOf(app), 1);
-        this.numberOfExtensionRequests--;
-        this.getAllApplicationsHistory(this.selectedFacility['FacilityId']);
-      },         (error: any) => {
-        this.updateNotificationModal('Failed',
-                                     'The decline of the extension request has failed.',
-                                     true,
-                                     'danger');
-      });
+      .subscribe((): void => {
+                   this.updateNotificationModal('Success', 'Successfully declined extension!', true, 'success');
+                   this.allApplicationsToCheck.splice(this.allApplicationsToCheck.indexOf(app), 1);
+                   this.numberOfExtensionRequests--;
+                   this.getAllApplicationsHistory(this.selectedFacility['FacilityId']);
+                 },
+                 (): void => {
+                   this.updateNotificationModal('Failed',
+                                                'The decline of the extension request has failed.',
+                                                true,
+                                                'danger');
+                 });
   }
 
   public approveModification(app: Application): void {
     this.applicationsservice.approveModificationRequest(app.project_application_id)
-      .subscribe((result: any) => {
-        this.updateNotificationModal('Success', 'Successfully approved modification!', true, 'success');
-        this.allApplicationsToCheck.splice(this.allApplicationsToCheck.indexOf(app), 1);
-        this.numberOfModificationRequests--;
-        this.getAllApplicationsHistory(this.selectedFacility['FacilityId']);
-      },         (error: any) => {
-        this.updateNotificationModal('Failed',
-                                     'The approval of the modification request has failed.',
-                                     true,
-                                     'danger');
-      });
+      .subscribe((): void => {
+                   this.updateNotificationModal('Success', 'Successfully approved modification!', true, 'success');
+                   this.allApplicationsToCheck.splice(this.allApplicationsToCheck.indexOf(app), 1);
+                   this.numberOfModificationRequests--;
+                   this.getAllApplicationsHistory(this.selectedFacility['FacilityId']);
+                 },
+                 (): void => {
+                   this.updateNotificationModal('Failed',
+                                                'The approval of the modification request has failed.',
+                                                true,
+                                                'danger');
+                 });
   }
 
   public declineModification(app: Application): void {
     this.applicationsservice.declineModificationRequest(app.project_application_id)
-      .subscribe((result: any) => {
-        this.updateNotificationModal('Success', 'Successfully declined modification!', true, 'success');
-        this.allApplicationsToCheck.splice(this.allApplicationsToCheck.indexOf(app), 1);
-        this.numberOfModificationRequests--;
-        this.getAllApplicationsHistory(this.selectedFacility['FacilityId']);
-      },         (error: any) => {
-        this.updateNotificationModal('Failed',
-                                     'The decline of the modification request has failed.',
-                                     true,
-                                     'danger');
-      });
+      .subscribe((): void => {
+                   this.updateNotificationModal('Success', 'Successfully declined modification!', true, 'success');
+                   this.allApplicationsToCheck.splice(this.allApplicationsToCheck.indexOf(app), 1);
+                   this.numberOfModificationRequests--;
+                   this.getAllApplicationsHistory(this.selectedFacility['FacilityId']);
+                 },
+                 (): void => {
+                   this.updateNotificationModal('Failed',
+                                                'The decline of the modification request has failed.',
+                                                true,
+                                                'danger');
+                 });
   }
 
   public approveCreditRequest(app: Application): void {
     this.applicationsservice.approveAdditionalCreditsRequest(app.project_application_id)
-      .subscribe((result: any) => {
-        this.updateNotificationModal('Success', 'Successfully approved credit extension!', true, 'success');
-        this.allApplicationsToCheck.splice(this.allApplicationsToCheck.indexOf(app), 1);
-        this.numberOfCreditRequests--;
-        this.getAllApplicationsHistory(this.selectedFacility['FacilityId']);
-      },         (error: any) => {
-        this.updateNotificationModal('Failed',
-                                     'The approval of the credit request has failed.',
-                                     true,
-                                     'danger');
-      });
+      .subscribe((): void => {
+                   this.updateNotificationModal('Success', 'Successfully approved credit extension!', true, 'success');
+                   this.allApplicationsToCheck.splice(this.allApplicationsToCheck.indexOf(app), 1);
+                   this.numberOfCreditRequests--;
+                   this.getAllApplicationsHistory(this.selectedFacility['FacilityId']);
+                 },
+                 (): void => {
+                   this.updateNotificationModal('Failed',
+                                                'The approval of the credit request has failed.',
+                                                true,
+                                                'danger');
+                 });
   }
 
   public declineCreditRequest(app: Application): void {
     this.applicationsservice.declineAdditionalCredits(app.project_application_id)
-      .subscribe((result: any) => {
-        this.updateNotificationModal('Success', 'Successfully declined credit extension!', true, 'success');
-        this.allApplicationsToCheck.splice(this.allApplicationsToCheck.indexOf(app), 1);
-        this.numberOfCreditRequests--;
-        this.getAllApplicationsHistory(this.selectedFacility['FacilityId']);
-      },         (error: any) => {
-        this.updateNotificationModal('Failed',
-                                     'The decline of the credit request has failed.',
-                                     true,
-                                     'danger');
-      });
+      .subscribe((): void => {
+                   this.updateNotificationModal('Success', 'Successfully declined credit extension!', true, 'success');
+                   this.allApplicationsToCheck.splice(this.allApplicationsToCheck.indexOf(app), 1);
+                   this.numberOfCreditRequests--;
+                   this.getAllApplicationsHistory(this.selectedFacility['FacilityId']);
+                 },
+                 (): void => {
+                   this.updateNotificationModal('Failed',
+                                                'The decline of the credit request has failed.',
+                                                true,
+                                                'danger');
+                 });
   }
 
   /**
@@ -225,16 +230,17 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
   declineApplication(app: Application): void {
     this.updateNotificationModal('Decline Application', 'Waiting..', true, 'info');
 
-    this.facilityService.declineFacilityApplication(this.selectedFacility['FacilityId'], parseInt(app.project_application_id.toString()))
+    this.facilityService.declineFacilityApplication(this.selectedFacility['FacilityId'],
+                                                    parseInt(app.project_application_id.toString(), 10))
       .subscribe(
-      (): void => {
-        this.updateNotificationModal('Success', 'Successfully declined the application.', true, 'success');
-        this.allApplicationsToCheck.splice(this.allApplicationsToCheck.indexOf(app), 1);
-        this.numberOfProjectApplications = this.numberOfProjectApplications - 1;
-        this.getAllApplicationsHistory(this.selectedFacility['FacilityId']);
-      },
-      (): void => {
-        this.updateNotificationModal('Failed', 'Failed to decline the application.', true, 'danger');
+        (): void => {
+          this.updateNotificationModal('Success', 'Successfully declined the application.', true, 'success');
+          this.allApplicationsToCheck.splice(this.allApplicationsToCheck.indexOf(app), 1);
+          this.numberOfProjectApplications = this.numberOfProjectApplications - 1;
+          this.getAllApplicationsHistory(this.selectedFacility['FacilityId']);
+        },
+        (): void => {
+          this.updateNotificationModal('Failed', 'Failed to decline the application.', true, 'danger');
 
       })
   }
@@ -263,7 +269,7 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
     }
   }
 
-  getApplicationsByTabState() {
+  getApplicationsByTabState(): void {
     this.allApplicationsToCheck = [];
     this.loadingApplications = true;
     if (this.tab_state === TabStates.SUBMITTED) {
@@ -318,11 +324,11 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
       this.managerFacilities = result;
       this.selectedFacility = this.managerFacilities[0];
       this.facilityService.getExtensionRequestsCounterFacility(this.selectedFacility['FacilityId'])
-        .subscribe((result: any) => {
-          this.numberOfCreditRequests = result['credits_extension_requests'];
-          this.numberOfExtensionRequests = result['lifetime_extension_requests'];
-          this.numberOfModificationRequests = result['modification_requests'];
-          this.numberOfProjectApplications = result['applications_submitted'];
+        .subscribe((res: any): void => {
+          this.numberOfCreditRequests = res['credits_extension_requests'];
+          this.numberOfExtensionRequests = res['lifetime_extension_requests'];
+          this.numberOfModificationRequests = res['modification_requests'];
+          this.numberOfProjectApplications = res['applications_submitted'];
         });
       this.changeTabState(TabStates.SUBMITTED);
       this.isLoaded = true;

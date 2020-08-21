@@ -200,7 +200,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
     )
   }
 
-  trackByVm(index, vm): string {
+  trackByVm(index: number | string, vm: VirtualMachine): string {
     return vm.openstackid
   }
 

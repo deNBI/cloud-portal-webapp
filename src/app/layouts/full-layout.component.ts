@@ -103,8 +103,6 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
     });
   }
 
-
-
   ngOnInit(): void {
     this.set_cluster_allowed();
     this.getGroupsEnumeration();
@@ -131,19 +129,18 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
    * 18 is for 'expires soon', 19 for 'new project' and 20 for 'lifetime expired'.
    * @param enumeration
    */
-  pushAdditionalStates(enumeration: ProjectEnumeration): void{
-    if (enumeration.project_status.includes(2) && (this.getDaysLeft(enumeration) < 14)){
+  pushAdditionalStates(enumeration: ProjectEnumeration): void {
+    if (enumeration.project_status.includes(2) && (this.getDaysLeft(enumeration) < 14)) {
       this.project_badges_states[enumeration.application_id].push(18);
     }
-    if (enumeration.project_status.includes(2) && (this.getDaysRunning(enumeration) < 14)){
+    if (enumeration.project_status.includes(2) && (this.getDaysRunning(enumeration) < 14)) {
       this.project_badges_states[enumeration.application_id].push(19);
     }
-    if (enumeration.project_status.includes(2) && (this.getDaysLeft(enumeration) < 0)){
+    if (enumeration.project_status.includes(2) && (this.getDaysLeft(enumeration) < 0)) {
       this.project_badges_states[enumeration.application_id].push(20);
     }
 
   }
-
 
   getDaysLeft(projEnum: ProjectEnumeration): number {
     const max_days: number = 31 * projEnum.project_lifetime;
@@ -156,7 +153,5 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
     return Math.ceil((Math.abs(Date.now() - new Date(projectEnumeration.project_start_date).getTime()))
       / (1000 * 3600 * 24));
   }
-
-
 
 }
