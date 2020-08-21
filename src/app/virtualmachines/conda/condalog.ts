@@ -1,5 +1,4 @@
-import * as JSPDF from 'jspdf';
-
+import { jsPDF } from 'jspdf';
 /**
  * Conda Log class
  */
@@ -7,7 +6,7 @@ export class Condalog {
   private _status: number;
   private _stdout: string;
   private _stderr: string;
-  private _log_pdf: JSPDF;
+  private _log_pdf: jsPDF;
 
   constructor(log: Condalog) {
     this._status = log.status;
@@ -34,7 +33,7 @@ export class Condalog {
   }
 
   private createLogPDF(): void {
-    const doc: JSPDF = new JSPDF('p', 'mm', 'a4');
+    const doc: jsPDF = new jsPDF('p', 'mm', 'a4');
     const lineWidth: number = doc.internal.pageSize.width;
     const margin: number = 10;
     const pageHeight: number = doc.internal.pageSize.height;
@@ -66,7 +65,7 @@ export class Condalog {
     this._log_pdf = doc;
   }
 
-  get log_pdf(): JSPDF {
+  get log_pdf(): jsPDF {
     return this._log_pdf;
   }
 
