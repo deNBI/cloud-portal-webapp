@@ -1,6 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {UserService} from '../api-connector/user.service';
-import {NavigationPoint} from "./navigationPoint.model";
+import {NavigationPoint} from './navigationPoint.model';
 
 /**
  * Title headbar component.
