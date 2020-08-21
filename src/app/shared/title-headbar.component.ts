@@ -1,5 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {UserService} from '../api-connector/user.service';
+import {NavigationPoint} from "./navigationPoint.model";
 
 /**
  * Title headbar component.
@@ -12,6 +13,7 @@ import {UserService} from '../api-connector/user.service';
            })
 export class TitleHeadbarComponent {
     @Input() page_title: string;
+    @Input() navigationPoints: NavigationPoint[];
 
   constructor(private userService: UserService) {
 

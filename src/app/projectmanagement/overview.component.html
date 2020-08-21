@@ -40,6 +40,7 @@
             {{project?.Name}}
           </h3>
         </div>
+
         <div class="card-body " >
           <div class="rTable" >
             <div class="rTableRow">
@@ -145,18 +146,8 @@
             </div>
           </div>
         </div>
-      </div>
-    </div>
-    <!--/.col-->
-  </div>
 
-  <div class="row" *ngIf="project_application && (project?.UserIsPi ||project?.UserIsAdmin  || !project)">
-    <div class="col">
-      <div class="card" style="height: calc(100% - 1.5rem);;">
-        <div class="card-header">
-          <i class="fa fa-align-justify"></i> Actions
-        </div>
-        <div class="card-body">
+        <div class="card-body" *ngIf="project_application && (project?.UserIsPi ||project?.UserIsAdmin  || !project)">
           <div class="row">
             <div class="btn-group col-12">
               <button
@@ -224,7 +215,7 @@
           <div class="row">
             <div class="btn-group col-12">
               <button id="show_information_btn" (click)="informationModal.show();getFacilityProject();"
-                    type="button" class="btn btn-info"  style="margin-top:5px;">
+                      type="button" class="btn btn-info"  style="margin-top:5px;">
                 <i class="fa fa-info-circle"></i>&nbsp;
                 <span>Show Information</span>
               </button>
@@ -241,9 +232,12 @@
           </div>
 
         </div>
-
       </div>
     </div>
+    <!--/.col-->
+  </div>
+
+  <div class="row">
 
     <div class="col"
          *ngIf="project && (project?.UserIsPi ||project?.UserIsAdmin)

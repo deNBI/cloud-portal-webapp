@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
-<div class="w3-bar-block">
+<nav class="w3-bar-block" class="navbar w3-bar-block">
+
+    <h1 id="title_headline">{{page_title}}</h1>
+      <ul class="nav nav-pills">
+        <li class="nav-item" *ngFor="let navPoint of navigationPoints">
+          <a class="nav-link" href="">Test</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="">Test</a>
+        </li>
+      </ul>
   <button style="float:right;
   margin-right: 10px;
   position: relative;
@@ -8,6 +18,5 @@
   -ms-transform: translateY(-50%);
   transform: translateY(-50%);"  class="btn btn-secondary" (click)="logout()"><i class="fas fa-door-open"></i> Logout
   </button>
-  <h1 id="title_headline">{{page_title}}   </h1>
-</div>
+</nav>
 </html>
