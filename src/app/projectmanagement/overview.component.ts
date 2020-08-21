@@ -497,7 +497,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
   public requestCreditsModification(): void {
     this.project_credit_request.project_application_id = this.project_application.project_application_id;
-    //this.project_credit_request.Id = this.project_application.project_application_id;
+    // this.project_credit_request.Id = this.project_application.project_application_id;
     console.log(this.project_credit_request);
     this.applicationsservice.requestAdditionalCredits(this.project_credit_request)
       .subscribe((result: { [key: string]: string }): void => {
