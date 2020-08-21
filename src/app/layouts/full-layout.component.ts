@@ -127,29 +127,10 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
   }
 
   /**
-   SUBMITTED = 1
-   APPROVED = 2
-   DECLINED = 3
-   MODIFICATION_REQUESTED = 4
-   MODIFICATION_DECLINED = 5
-   WAIT_FOR_CONFIRMATION = 6
-   CONFIRMATION_DENIED = 7
-   TERMINATED = 8
-   SUSPENDED = 9
-   TERMINATION_REQUESTED = 10
-   WAIT_FOR_CONFIRMATION_CREDITS = 11
-   WAIT_FOR_CONFIRMATION_EXTENSION = 12
-   WAIT_FOR_CONFIRMATION_MODIFICATION = 13
-   CREDITS_EXTENSION_REQUESTED = 14
-   LIFETIME_EXTENSION_REQUESTED = 16
-   LIFETIME_EXTENSION_DECLINED = 17
-   ADDITIONAL:
-   - RUNNING_OUT = 18
-   - NEW_PROJECT = 19
-   - LIFETIME_EXPIRED = 20
+   * Adds additional states to the project_badges_states list.
+   * 18 is for 'expires soon', 19 for 'new project' and 20 for 'lifetime expired'.
    * @param enumeration
    */
-
   pushAdditionalStates(enumeration: ProjectEnumeration): void{
     if (enumeration.project_status.includes(2) && (this.getDaysLeft(enumeration) < 14)){
       this.project_badges_states[enumeration.application_id].push(18);
