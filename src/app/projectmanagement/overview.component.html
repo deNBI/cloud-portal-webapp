@@ -6,7 +6,7 @@
 <div *ngIf="!isLoaded && errorMessage == null" class="loader"></div>
 
 
-<div class="animated fadeIn" *ngIf="isLoaded">
+<div class="animated fadeIn" *ngIf="isLoaded" data-spy="scroll" data-target="#denbiHeadbar" data-offset="0">
   <div class="row">
 
     <div class="col-12"
@@ -14,7 +14,7 @@
          && !(project_application | hasstatusinlist:Application_States.DECLINED) ">
 
 
-      <div class="card" id="test_id_for_whatever">
+      <div class="card" id="projectInformationDiv">
         <div class="card-header">
           <h3>
             <a *ngIf="project?.OpenStackProject" href="https://cloud.denbi.de/openstack/" target="_blank"
@@ -41,108 +41,94 @@
           </h3>
         </div>
 
-        <div class="card-body " >
-          <div class="rTable" >
-            <div class="rTableRow">
-              <div class="rTableHead col-2">Project Name</div>
-              <div class="rTableHead col-1">Description</div>
-              <div class="rTableHead col-1">Date created (d/m/y)</div>
-              <div class="rTableHead col-1">Expiration Date (d/m/y)</div>
-              <div class="rTableHead col-1">Days running</div>
-              <div class="rTableHead col-2" *ngIf="is_vo_admin">Credits</div>
-              <div class="rTableHead col-1">Lifetime in Days</div>
-              <div class="rTableHead col-3">Facility</div>
-            </div>
-
-
-            <div class="rTableRow">
-              <!--[ngStyle]="{'color':lifeTimeReached(project?.LifetimeDays,project?.DaysRunning)}"-->
-              <div class="rTableCell col-2">{{ project?.Name }}
+        <div class="card-body" id="projectMainInformationDiv">
+          <div class="row">
+            <div class="col-sm-3">
+              <div class="callout callout-info"
+                   title="The project has been running for {{project?.DaysRunning}} of a total of {{project?.LifetimeDays}} granted days">
+                <small class="text-muted">Project Runtime</small><br>
+                <strong class="text-muted">{{project?.DateCreated}} - {{project?.DateEnd}}</strong><br>
+                <div class="progress" style="height: 2px;">
+                  <div class="progress-bar bg-info" role="progressbar"
+                       [ngStyle]="{'width.%': (calculateProgressBar(project?.DaysRunning / project?.LifetimeDays))}"
+                       aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
               </div>
-
-              <div class="rTableCell col-1">
-                <button class="btn btn-info"
-                        (click)="infoModal.hide();descriptionModal.show();">Show
-                  Description
+            </div>
+            <div class="col-sm-3">
+              <div class="btn-group" style="margin-top:15px;">
+                <button class="btn btn-outline-secondary" (click)="doiQuestionModal.show(); request_type = 1;">Request extension</button>
+                <button class="btn btn-outline-danger" *ngIf="(project_application | hasstatusinlist:Application_States.APPROVED)"
+                     (click)="terminateModal.show()">Request termination</button>
+                <button id="remove_application_button"
+                        *ngIf="(project_application | hasstatusinlist:Application_States.SUBMITTED)
+                        || (project_application | hasstatusinlist:Application_States.DECLINED) "
+                  (click)="deleteModal.show();" type="button" style="margin-bottom:5px;"
+                  class="btn btn-outline-danger">
+                  Remove Application
                 </button>
               </div>
 
-              <div class="rTableCell col-1">{{ project?.DateCreated }}</div>
-              <div class="rTableCell col-1">{{project?.DateEnd}}</div>
-              <div class="rTableCell col-1">{{ project?.DaysRunning }}</div>
-              <div class="rTableCell col-2" *ngIf="is_vo_admin">
-                <div *ngIf="current_credits == null"><i
-                  class="fa fa-spinner fa-spin"
-                 ></i>
+            </div>
+            <div class="col-sm-3">
+              <div class="callout callout-info" title="ANOTHER TITLE">
+                <small class="text-muted">Virtual machines</small><br>
+                <strong class="text-muted">X MACHINES OF Y RUNNING</strong><br>
+                <div class="progress" style="height: 2px;">
+                  <div class="progress-bar bg-info" role="progressbar"
+                       [ngStyle]="{'width.%': '100'}"
+                       aria-valuemin="0" aria-valuemax="100" ></div>
                 </div>
-                <ng-container *ngIf="current_credits != null">
-                  <div class="rTableRowNoBorder">
-                    <div class="rTableHeadNoBorder">
-                      used:
-                    </div>
-                    <div class="rTableCellNoBorder">
-
-                      {{current_credits}}
-                    </div>
-                  </div>
-                  <div class="rTableRowNoBorder">
-                    <div class="rTableHeadNoBorder">
-                      granted:
-                    </div>
-                    <div class="rTableCellNoBorder">
-
-                      {{project?.ApprovedCredits}}
-                    </div>
-                  </div>
-                  <div class="rTableRowNoBorder">
-                    <div class="rTableHeadNoBorder">
-                      left:
-                    </div>
-                    <div class="rTableCellNoBorder">
-
-                      {{project?.ApprovedCredits - current_credits}}
-                    </div>
-                  </div>
-                </ng-container>
               </div>
-
-
-              <div class="rTableCell col-1">{{project?.LifetimeDays}}</div>
-
-              <div class="rTableCell col-3">
-                <div class="rTableRowNoBorder">
-                  <div class="rTableHeadNoBorder">
-                    Name:
-                  </div>
-                  <div class="rTableCellNoBorder">
-                    {{project?.ComputeCenter?.Name}}
-                  </div>
-                </div>
-
-                <div class="rTableRowNoBorder" *ngIf="project?.OpenStackProject">
-                  <div class="rTableHeadNoBorder">
-                    Login:
-                  </div>
-                   <div class="rTableCellNoBorder">
-                   <a
-                  target="_blank"
-                  href="{{project?.ComputeCenter?.Login}}">
-                    {{project?.ComputeCenter?.Login}}</a>
-                  </div>
-                </div>
-                <div class="rTableRowNoBorder">
-                  <div class="rTableHeadNoBorder">
-                    Support:
-                  </div>
-                   <div class="rTableCellNoBorder">
-                   <ul>
-                    <li *ngFor="let sup of project?.ComputeCenter?.Support ">
-                      <a href="mailto:{{sup}}">{{sup}}</a></li>
-                  </ul>
-                  </div>
-                </div>
-
+            </div>
+            <div class="col-sm-3">
+              <!-- check disabled enabled for both resource and lifetime extension buttons -->
+              <button class="btn btn-outline-secondary" style="margin-top:15px;"
+                (click)="doiQuestionModal.show(); request_type = 2">Request resource modification</button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-3" title="Click Contact to send a mail to the facility.">
+              <div class="callout callout-info">
+                <small class="text-muted">Facility</small><br>
+                <strong class="text-muted">{{project?.ComputeCenter.Name}}</strong>
               </div>
+            </div>
+            <div class="col-sm-3" *ngIf="this.supportMails?.length === 1">
+              <a class="btn btn-outline-secondary" target="_blank" href="mailto:{{project?.ComputeCenter.Support}}"
+                 style="margin-top:15px;">Contact</a>
+            </div>
+            <div class="col-sm-3" *ngIf="this.supportMails?.length > 1">
+              <div class="dropdown" dropdown style="margin-top:15px;">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="contactDropdownButton"
+                        data-toggle="dropdown" type="button" aria-haspopup="true" aria-expanded="false"
+                        aria-controls="dropdown-split" dropdownToggle>
+                  Contact
+                </button>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu" role="menu"
+                     *dropdownMenu id="contactDropdownMenu">
+                  <a *ngFor="let mail in supportMails" class="dropdown-item btn btn-outline-secondary"
+                  href="mailto:{{mail}}" target="_blank">{{mail}}</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-3" *ngIf="is_vo_admin">
+              <div class="callout callout-info">
+                <small class="text-muted">Credits</small><br>
+                <strong class="text-muted">Used {{project?.CurrentCredits}} of {{project?.ApprovedCredits}} credits</strong><br>
+                <div class="progress" style="height: 2px;">
+                  <div class="progress-bar bg-info" role="progressbar"
+                       [ngStyle]="{'width.%': (calculateProgressBar(project?.CurrentCredits / project?.ApprovedCredits))}"
+                       aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-3" *ngIf="is_vo_admin">
+              <button id="show_credits_extension_modal"
+              (click)="newFlavors={};initExampleFlavors();creditsExtensionModal.show();"
+              class="btn btn-outline-success"
+              type="button"style="margin-top:15px;">Request more credits</button>
             </div>
           </div>
         </div>
@@ -150,88 +136,74 @@
         <div class="card-body" *ngIf="project_application && (project?.UserIsPi ||project?.UserIsAdmin  || !project)">
           <div class="row">
             <div class="btn-group col-12">
-              <button
-                id="remove_application_button"
-                *ngIf="(project_application | hasstatusinlist:Application_States.SUBMITTED)
-                || (project_application | hasstatusinlist:Application_States.DECLINED) "
-                (click)="deleteModal.show();"
-                type="button" style="margin-bottom:5px;"
-                class="btn btn-danger">
-                Remove Application
-              </button>
-              <button id="show_credits_extension_modal"
-                      *ngIf="!( (project_application | hasstatusinlist:Application_States.CREDITS_EXTENSION_REQUESTED)
-                      || (project_application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION_CREDITS) )
-                      && ((project_application | hasstatusinlist:Application_States.APPROVED)  && is_vo_admin)"
-                      (click)="newFlavors={};initExampleFlavors();creditsExtensionModal.show()"
-                      class="btn btn-success"
-                      type="button" style="margin-bottom:5px;margin-right:5px">
-                Request More Credits
-              </button>
-              <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
-                    title="Additional credits are already requested for this project."
-                    *ngIf="((project_application | hasstatusinlist:Application_States.CREDITS_EXTENSION_REQUESTED)
-                    || (project_application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION_CREDITS) )
-                    && ((project_application | hasstatusinlist:Application_States.APPROVED)  && is_vo_admin)">
-              <button id="show_credits_extension_modal" class="btn btn-success" disabled
-                      type="button" style="margin-bottom:5px;margin-right:5px">
-                Request More Credits
-              </button>
-              </span>
-
-              <button id="show_choose_modal"
-                      *ngIf="(project_application | hasstatusinlist:Application_States.APPROVED)
-                      && ((!(project_application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)
-                      && !(project_application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION) )
-                      || (!(project_application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION_EXTENSION)
-                      && !(project_application | hasstatusinlist:Application_States.LIFETIME_EXTENSION_REQUESTED) ))"
-                      (click)="newFlavors= {};selected_ontology_terms=[];doiQuestionModal.show();"
-                      class="btn btn-warning" type="button" style="margin-bottom:5px;margin-right:5px;">
-                Request Extension/Modification
-              </button>
-              <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
-                    title="Extension and Modification already requested for this project.">
-              <button id="show_choose_modal_disabled" class="btn btn-warning" type="button"
-                      style="margin-bottom:5px;margin-right:5px;" disabled
-                      *ngIf="(project_application | hasstatusinlist:Application_States.APPROVED)
-                      && !((!(project_application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)
-                      && !(project_application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION))
-                      || (!(project_application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION_EXTENSION)
-                      && !(project_application | hasstatusinlist:Application_States.LIFETIME_EXTENSION_REQUESTED) ))">
-                Request Extension/Modification
-              </button>
-              </span>
-              <button id="show_termination_modal"
-                      *ngIf="(project_application | hasstatusinlist:Application_States.APPROVED)
-                      || (project_application | hasstatusinlist:Application_States.MODIFICATION_DECLINED) "
-                      (click)="terminateModal.show()"
-                      class="btn btn-danger"
-                      type="button" style="margin-bottom:5px;">
-                Request Termination
-              </button>
-
             </div>
           </div>
           <div class="row">
             <div class="btn-group col-12">
-              <button id="show_information_btn" (click)="informationModal.show();getFacilityProject();"
-                      type="button" class="btn btn-info"  style="margin-top:5px;">
+              <button id="show_information_btn" (click)="getFacilityProject(); this.showInformationCollapse = !this.showInformationCollapse;"
+                      type="button" class="btn btn-outline-secondary col-6" style="margin:auto;">
                 <i class="fa fa-info-circle"></i>&nbsp;
-                <span>Show Information</span>
+                <span *ngIf="this.showInformationCollapse">Hide information</span>
+                <span *ngIf="!this.showInformationCollapse">Show more information</span>
               </button>
             </div>
           </div>
-
-
-
-          <div class="alert alert-info" style="margin-top:15px;"
-               *ngIf="(project_application | hasstatusinlist:Application_States.APPROVED) ">
-            <p>You can find more information about modification requests
-              <a href="https://cloud.denbi.de/wiki/portal/modification/" target="_blank">here</a>.</p>
-            <p *ngIf="is_vo_admin">Information about credits are coming soon.</p>
-          </div>
-
         </div>
+        <!-- check collapse animation possibility -->
+        <div [ngClass]="{'collapse': !showInformationCollapse, 'collapse show': showInformationCollapse}">
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+              <tr>
+                <th></th>
+                <th>Project Name</th>
+                <th>Short Name</th>
+                <th>Lifetime</th>
+                <th>Date submitted</th>
+                <th>Status</th>
+              </tr>
+              </thead>
+              <tbody>
+              <ng-container>
+                <tr>
+                  <td>  <span *ngIf="project_application?.project_application_openstack_project"
+                              style="font-size: 20px"
+                              class="project-openstack_plain_white_redbg"
+                              data-toggle="tooltip"
+                              title="This is an Openstack project">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                  </span>
+                    <span *ngIf="!project_application?.project_application_openstack_project"
+                          style="font-size: 20px"
+                          class="project-simpleVM_Logo_bluebg"
+                          data-toggle="tooltip"
+                          title="This is a Simple VM project">
+                      <span class="path1"></span>
+                      <span class="path2"></span>
+                      <span class="path3"></span>
+                      <span class="path4"></span>
+                      <span class="path5"></span>
+                    </span></td>
+                  <td>{{ project_application?.project_application_name }}
+                  </td>
+                  <td>{{project_application?.project_application_shortname}}</td>
+                  <td>{{ project_application?.project_application_lifetime }} months</td>
+                  <td>{{ project_application?.project_application_date_submitted }}</td>
+                  <td><span class="badge bg-secondary" *ngFor="let st of project_application?.project_application_status ">{{
+                    getStatusById(st)  }}</span></td>
+                </tr>
+
+
+              </ng-container>
+              </tbody>
+            </table>
+            <app-application-detail [application]="project_application"></app-application-detail>
+
+          </div>
+        </div>
+
+
       </div>
     </div>
     <!--/.col-->
@@ -244,7 +216,7 @@
          && !(project_application | hasstatusinlist:Application_States.TERMINATED)
          && !(project_application | hasstatusinlist:Application_States.DECLINED) ">
 
-      <div class="card" style=" ">
+      <div class="card" id="doiCard">
         <div class="card-header">
           <i class="fa fa-align-justify"></i>
           <a href="https://cloud.denbi.de/wiki/citation_and_publication/#publications"
@@ -295,7 +267,7 @@
             <p>Please note that the publications entered on this page are listed publicly on
               <a href="https://cloud.denbi.de/publications" target="_blank">this page on our website</a>.
               We kindly ask you to list your publications which have been created
-              during your work in the de.NBI Cloud and/or this project. </p>
+              during your work in the de.NBI Cloud and/or this project.</p>
           </div>
         </div>
       </div>
@@ -310,7 +282,7 @@
          || (project_application | hasstatusinlist:Application_States.MODIFICATION_DECLINED)
          )">
 
-      <div class="card" style=" ">
+      <div class="card" id="projectMemberDiv">
         <div class="card-header">
           <i class="fa fa-align-justify"></i>Members of the Project {{ project?.Name }}
         </div>
@@ -749,71 +721,6 @@
   </div><!-- /.modal-dialog -->
 </div>
 
-
-<div bsModal #chooseModal="bs-modal" class="modal fade" tabindex="-1"
-     role="dialog" aria-labelledby="Label"
-     aria-hidden="true"
-     id="choose_request_type_modal">
-  <div class="modal-dialog modal-xl" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" style="cursor: pointer"
-                (click)="chooseModal.hide(); setModalOpen(false);" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="jumbotron">
-          <h2 style="text-align: center;">Resource Modification / Project Extension</h2>
-          <p class="lead"></p>
-          <hr class="my-4">
-          <p class="lead">
-            <span>Please note: If you want to extend your project as well as adjust the required resources,
-            you have to submit two separate applications. These two applications will be processed
-            independently of each other.
-            <br><br>
-            Modification Request:
-            - Modification of the requested resources, e.g.: number and type of VMs, number and size of persistent storage options.
-            <br><br>
-            Lifetime Extensions:
-              - Extension of the project period</span>
-          </p>
-          <div class="btn-group btn-group-lg" role="group" style="width:100%;">
-            <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
-                  title="Resource modification for this project is already requested." style="width:50%;"
-                  *ngIf="(project_application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)
-            || (project_application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION) ">
-              <button (click)="resourceModificationModal.show(); chooseModal.hide();" disabled
-                      type="button" class="btn btn-primary btn-lg" style="width:100%;"
-                      id="resource_modification_button_disabled">Resource Modification</button>
-            </span>
-
-            <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
-                  title="Extension for this project is already requested." style="width:50%;"
-                  *ngIf="(project_application | hasstatusinlist:Application_States.LIFETIME_EXTENSION_REQUESTED)
-            || (project_application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION_EXTENSION) ">
-              <button (click)="projectExtensionModal.show(); chooseModal.hide();" disabled
-                      type="button" class="btn btn-success btn-lg" style="width:100%;"
-                      id="project_extension_button_disabled">Project Extension</button>
-            </span>
-
-            <button (click)="resourceModificationModal.show(); chooseModal.hide();"
-                    *ngIf="!((project_application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)
-            || (project_application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION) )"
-              type="button" class="btn btn-primary btn-lg" style="width:50%;"
-            id="resource_modification_button">Resource Modification</button>
-            <button (click)="projectExtensionModal.show(); chooseModal.hide();"
-                    *ngIf="!((project_application | hasstatusinlist:Application_States.LIFETIME_EXTENSION_REQUESTED)
-            || (project_application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION_EXTENSION) )"
-                    type="button" class="btn btn-success btn-lg" style="width:50%;"
-            id="project_extension_button">Project Extension</button>
-          </div>
-        </div>
-      </div>
-
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
 
   <div bsModal #deleteModal="bs-modal" class="modal fade" tabindex="-1"
        role="dialog" aria-labelledby="Label"
@@ -1676,8 +1583,7 @@
           </div>
 
 
-          <div *ngIf="!(project_application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)
-                 && (project_application | hasstatusinlist:Application_States.LIFETIME_EXTENSION_REQUESTED) "
+          <div *ngIf="request_type === 2"
                class="modal-footer" style="text-align:center;">
             <button id="doi_continue_btn" class="btn btn-success col-md-6" type="button"
                     style="margin:auto;"
@@ -1685,16 +1591,14 @@
               Continue
             </button>
           </div>
-          <div *ngIf="(project_application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)
-                 && !(project_application | hasstatusinlist:Application_States.LIFETIME_EXTENSION_REQUESTED) "
+          <div *ngIf="request_type === 1"
                class="modal-footer" style="text-align:center;">
             <button id="doi_continue_btn" class="btn btn-success col-md-6" type="button"
                     style="margin:auto;" (click)="doiModal.hide(); projectExtensionModal.show(); setModalOpen(true);">
               Continue
             </button>
           </div>
-          <div *ngIf="!(project_application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)
-                 && !(project_application | hasstatusinlist:Application_States.LIFETIME_EXTENSION_REQUESTED) "
+          <div *ngIf="request_type === 3"
                class="modal-footer" style="text-align:center;">
             <button id="doi_continue_btn" class="btn btn-success col-md-6" type="button"
                     style="margin:auto;" (click)="doiModal.hide(); chooseModal.show(); setModalOpen(true);">Continue
@@ -1736,8 +1640,14 @@
 
               <div class="col-6">
 
-                <button id="no_new_dois_btn" class="btn btn-primary" type="reset"
-                        (click)="doiQuestionModal.hide(); chooseModal.show(); setModalOpen(true);">No
+                <button id="no_new_dois_btn" class="btn btn-primary" type="reset" *ngIf="request_type === 1"
+                        (click)="doiQuestionModal.hide(); projectExtensionModal.show(); setModalOpen(true);">No
+                </button>
+                <button id="no_new_dois_btn" class="btn btn-primary" type="reset" *ngIf="request_type === 2"
+                        (click)="doiQuestionModal.hide(); resourceModificationModal.show(); setModalOpen(true);">No
+                </button>
+                <button id="no_new_dois_btn" class="btn btn-primary" type="reset" *ngIf="request_type === 3"
+                        (click)="doiQuestionModal.hide(); creditsExtensionModal.show(); setModalOpen(true);">No
                 </button>
               </div>
             </div>
@@ -1803,79 +1713,4 @@
       </div><!-- /.modal -->
   </div>
 
-    <div bsModal #informationModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
-         aria-labelledby="infomodallabel"
-         aria-hidden="true">
-      <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h4 class="modal-title" id="information_modal_title">Information for {{project?.Name}}</h4>
-            <button type="button" class="close" id="close_info_modal" style="cursor:pointer" (click)="informationModal.hide(); setModalOpen(false);"
-                    aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <div class="table-responsive">
-              <table class="table table-hover">
-                <thead>
-                <tr>
-                  <th></th>
-                  <th>Project Name</th>
-                  <th>Short Name</th>
-                  <th>Lifetime</th>
-                  <th>Date submitted</th>
-                  <th>Status</th>
-                </tr>
-                </thead>
-                <tbody>
-                <ng-container>
-                  <tr>
-                    <td>  <span *ngIf="project_application?.project_application_openstack_project"
-                                style="font-size: 20px"
-                                class="project-openstack_plain_white_redbg"
-                                data-toggle="tooltip"
-                                title="This is an Openstack project">
-                                                <span class="path1"></span>
-                                                <span class="path2"></span>
-                                  </span>
-                      <span *ngIf="!project_application?.project_application_openstack_project"
-                            style="font-size: 20px"
-                            class="project-simpleVM_Logo_bluebg"
-                            data-toggle="tooltip"
-                            title="This is a Simple VM project">
-                      <span class="path1"></span>
-                      <span class="path2"></span>
-                      <span class="path3"></span>
-                      <span class="path4"></span>
-                      <span class="path5"></span>
-                    </span></td>
-                    <td>{{ project_application?.project_application_name }}
-                    </td>
-                    <td>{{project_application?.project_application_shortname}}</td>
-                    <td>{{ project_application?.project_application_lifetime }} months</td>
-                    <td>{{ project_application?.project_application_date_submitted }}</td>
-                    <td><span class="badge bg-secondary" *ngFor="let st of project_application?.project_application_status ">{{
-                      getStatusById(st)  }}</span></td>
-                  </tr>
-
-
-                </ng-container>
-                </tbody>
-              </table>
-              <app-application-detail [application]="project_application"></app-application-detail>
-
-            </div>
-          </div>
-          <div class="modal-footer">
-            <div class="row" style="margin:auto;">
-              <button type="button" class="btn btn-secondary"
-                      (click)="informationModal.hide(); setModalOpen(false);">Close
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
 </div>
-

@@ -100,6 +100,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
    */
   request_type: number = ExtensionRequestType.NONE;
 
+  showInformationCollapse: boolean = false;
+
   newDoi: string;
   remove_members_clicked: boolean;
   life_time_string: string;
@@ -131,9 +133,13 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   creditsPerHourLargeExample: number;
   smallExamplePossibleDays: string = '';
   largeExamplePossibleDays: string = '';
+  supportMails: string[] = [];
 
   title: string = 'Project Overview';
-  navigationPoints: NavigationPoint[] = [];
+  navigationPoints: NavigationPoint[] = [
+    new NavigationPoint('Information', 'projectInformationDiv', []),
+    new NavigationPoint('DOIs', 'doiCard', []),
+    new NavigationPoint('Member', 'projectMemberDiv', [])];
   @ViewChild('edam_ontology') edam_ontology: AutocompleteComponent;
 
   checked_member_list: number[] = [];
@@ -165,6 +171,10 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
               private creditsService: CreditsService,
               @Inject(DOCUMENT) private document: Document) {
     super(userservice, applicationstatusservice, applicationsservice, facilityService);
+  }
+
+  calculateProgressBar(numberToRoundUp: number): string {
+    return Math.ceil(numberToRoundUp * 100).toString();
   }
 
   async delay(ms: number): Promise<any> {
@@ -499,8 +509,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
   public requestCreditsModification(): void {
     this.project_credit_request.project_application_id = this.project_application.project_application_id;
-    //this.project_credit_request.Id = this.project_application.project_application_id;
-    console.log(this.project_credit_request);
     this.applicationsservice.requestAdditionalCredits(this.project_credit_request)
       .subscribe((result: { [key: string]: string }): void => {
         if (result['Error']) {
@@ -808,6 +816,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
       newProject.OpenStackProject = group['openstack_project'];
       newProject.RealName = realname;
       this.project = newProject;
+      this.setSupportMails(this.project);
       this.setLifetime();
       if (this.project.UserIsPi || this.project.UserIsAdmin) {
         this.getMembersOfTheProject();
@@ -817,6 +826,10 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
       }
     })
 
+  }
+
+  setSupportMails(project: Project){
+    this.supportMails = project.ComputeCenter.Support.toString().split(',');
   }
 
   /**

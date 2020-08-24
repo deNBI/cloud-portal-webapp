@@ -49,7 +49,7 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
   cluster_allowed: boolean = false;
 
   TITLE: string = '';
-  NAVIGATION_POINTS: NavigationPoint[] = [new NavigationPoint("test", "test_id_for_whatever", [])];
+  NAVIGATION_POINTS: NavigationPoint[] = [];
 
   project_enumeration: ProjectEnumeration[] = [];
   project_badges_states: {[id: string]: number[]} = {};
@@ -66,7 +66,6 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
 
     this.TITLE = event.title;
     this.NAVIGATION_POINTS = event.navigationPoints;
-
   }
 
   public get_is_vo_admin(): boolean {
