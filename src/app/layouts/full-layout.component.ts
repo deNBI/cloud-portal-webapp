@@ -13,7 +13,7 @@ import {ProjectEnumeration} from '../projectmanagement/project-enumeration';
 import {environment} from '../../environments/environment';
 import {is_vo} from '../shared/globalvar';
 import {VirtualmachineService} from '../api-connector/virtualmachine.service';
-import {NavigationPoint} from "../shared/navigationPoint.model";
+import {NavigationPoint} from '../shared/navigationPoint.model';
 
 /**
  * FullLayout component.
