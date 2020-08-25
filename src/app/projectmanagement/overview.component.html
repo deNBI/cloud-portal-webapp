@@ -57,7 +57,7 @@
             </div>
             <div class="col-sm-3">
               <div class="btn-group" style="margin-top:15px;">
-                <button class="btn btn-outline-secondary" (click)="doiQuestionModal.show(); request_type = 1;">Request extension</button>
+                <button class="btn btn-outline-primary" (click)="doiQuestionModal.show(); request_type = 1;">Request extension</button>
                 <button class="btn btn-outline-danger" *ngIf="(project_application | hasstatusinlist:Application_States.APPROVED)"
                      (click)="terminateModal.show()">Request termination</button>
                 <button id="remove_application_button"
@@ -71,20 +71,23 @@
 
             </div>
             <div class="col-sm-3">
-              <div class="callout callout-info" title="ANOTHER TITLE">
+              <div class="callout callout-info">
                 <small class="text-muted">Virtual machines</small><br>
-                <strong class="text-muted">X MACHINES OF Y RUNNING</strong><br>
-                <div class="progress" style="height: 2px;">
+                <strong class="text-muted" *ngIf="this.resourceDataLoaded">{{vmsInUse}} of {{maximumVMs}} in use</strong><br>
+                <div class="progress" style="height: 2px;" *ngIf="this.resourceDataLoaded">
                   <div class="progress-bar bg-info" role="progressbar"
                        [ngStyle]="{'width.%': '100'}"
-                       aria-valuemin="0" aria-valuemax="100" ></div>
-                </div>
+                       aria-valuemin="0" aria-valuemax="100"></div>
+                </div> <!-- (calculateProgressBar(vmsInUse / maximumVMs)) -->
               </div>
             </div>
             <div class="col-sm-3">
               <!-- check disabled enabled for both resource and lifetime extension buttons -->
-              <button class="btn btn-outline-secondary" style="margin-top:15px;"
-                (click)="doiQuestionModal.show(); request_type = 2">Request resource modification</button>
+              <div class="btn-group" style="margin-top:15px;">
+                <button class="btn btn-outline-primary"
+                  (click)="doiQuestionModal.show(); request_type = 2">Request resource modification</button>
+                <button class="btn btn-outline-success" *ngIf="!project?.OpenStackProject">Start a VM</button>
+              </div>
             </div>
           </div>
           <div class="row">
@@ -95,19 +98,19 @@
               </div>
             </div>
             <div class="col-sm-3" *ngIf="this.supportMails?.length === 1">
-              <a class="btn btn-outline-secondary" target="_blank" href="mailto:{{project?.ComputeCenter.Support}}"
+              <a class="btn btn-outline-primary" target="_blank" href="mailto:{{project?.ComputeCenter.Support}}"
                  style="margin-top:15px;">Contact</a>
             </div>
             <div class="col-sm-3" *ngIf="this.supportMails?.length > 1">
               <div class="dropdown" dropdown style="margin-top:15px;">
-                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="contactDropdownButton"
+                <button class="btn btn-outline-primary dropdown-toggle" type="button" id="contactDropdownButton"
                         data-toggle="dropdown" type="button" aria-haspopup="true" aria-expanded="false"
                         aria-controls="dropdown-split" dropdownToggle>
                   Contact
                 </button>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu" role="menu"
                      *dropdownMenu id="contactDropdownMenu">
-                  <a *ngFor="let mail in supportMails" class="dropdown-item btn btn-outline-secondary"
+                  <a *ngFor="let mail in supportMails" class="dropdown-item btn btn-outline-primary"
                   href="mailto:{{mail}}" target="_blank">{{mail}}</a>
                 </div>
               </div>
@@ -141,7 +144,7 @@
           <div class="row">
             <div class="btn-group col-12">
               <button id="show_information_btn" (click)="getFacilityProject(); this.showInformationCollapse = !this.showInformationCollapse;"
-                      type="button" class="btn btn-outline-secondary col-6" style="margin:auto;">
+                      type="button" class="btn btn-outline-primary col-6" style="margin:auto;">
                 <i class="fa fa-info-circle"></i>&nbsp;
                 <span *ngIf="this.showInformationCollapse">Hide information</span>
                 <span *ngIf="!this.showInformationCollapse">Show more information</span>
@@ -150,7 +153,7 @@
           </div>
         </div>
         <!-- check collapse animation possibility -->
-        <div [ngClass]="{'collapse': !showInformationCollapse, 'collapse show': showInformationCollapse}">
+        <div class="collapse" [ngClass]="{'show': showInformationCollapse}">
           <div class="table-responsive">
             <table class="table table-hover">
               <thead>
@@ -190,7 +193,7 @@
                   <td>{{project_application?.project_application_shortname}}</td>
                   <td>{{ project_application?.project_application_lifetime }} months</td>
                   <td>{{ project_application?.project_application_date_submitted }}</td>
-                  <td><span class="badge bg-secondary" *ngFor="let st of project_application?.project_application_status ">{{
+                  <td><span class="badge bg-primary" *ngFor="let st of project_application?.project_application_status ">{{
                     getStatusById(st)  }}</span></td>
                 </tr>
 
@@ -340,12 +343,12 @@
                   <div class="btn-group-vertical" role="group" style="width:100%;">
                     <button *ngIf="!member.IsPi" (click)="promoteAdmin( project?.Id,member.Id,member.Username);
                                                 notificationModal.show();
-                                               " class="btn btn-secondary" type="button" style="margin: 2px">
+                                               " class="btn btn-primary" type="button" style="margin: 2px">
                       <i class="fa fa-plus-circle"></i>&nbsp; Set Admin status
                     </button>
                     <button *ngIf="member.IsPi &&  userinfo?.MemberId != member.MemberId" (click)="removeAdmin( project?.Id,member.Id,member.Username);
                                                 notificationModal.show();
-                                               " class="btn btn-secondary" type="button" style="margin: 2px">
+                                               " class="btn btn-primary" type="button" style="margin: 2px">
                       <i class="fa fa-minus-circle"></i>&nbsp; Remove Admin status
                     </button>
                     <button [id]="'remove_member_' + member.Username" *ngIf=" userinfo?.MemberId != member.MemberId"
@@ -606,7 +609,7 @@
                 (click)="getUserProjectApplications()">
           Refresh
         </button>
-        <button type="button" class="btn btn-secondary"
+        <button type="button" class="btn btn-primary"
                 (click)="application_action_error_message=null;;applicationModal.hide();">
           Close
         </button>
@@ -635,7 +638,7 @@
       <div class="modal-footer">
         <button *ngIf="notificationModalIsClosable == true" type="button"
                 (click)="resetNotificationModal(); notificationModal.hide();" type="reset"
-                class="btn  btn-secondary" id="close_notification"> Close
+                class="btn  btn-primary" id="close_notification"> Close
         </button>
       </div>
     </div><!-- /.modal-content -->

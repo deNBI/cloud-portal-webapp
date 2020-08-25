@@ -135,6 +135,10 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   largeExamplePossibleDays: string = '';
   supportMails: string[] = [];
 
+  resourceDataLoaded: boolean = false;
+  vmsInUse: number;
+  maximumVMs: number;
+
   title: string = 'Project Overview';
   navigationPoints: NavigationPoint[] = [
     new NavigationPoint('Information', 'projectInformationDiv', []),
@@ -443,6 +447,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
                 this.project_id = id['perun_id'];
 
                 this.getProject();
+                this.getUsedResources();
 
               } else {
                 this.isLoaded = true;
@@ -617,6 +622,15 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
     });
 
+  }
+
+  getUsedResources(): void {
+    this.groupService.getGroupResources(this.application_id).subscribe(
+      (res: any) => {
+         this.vmsInUse = res['used_vms'];
+         this.maximumVMs = res['number_vms'];
+         this.resourceDataLoaded = true;
+      });
   }
 
   ngOnDestroy(): void {
