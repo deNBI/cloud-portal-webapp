@@ -29,7 +29,6 @@ import {EdamOntologyTerm} from '../applications/edam-ontology-term';
 import {AutocompleteComponent} from 'angular-ng-autocomplete';
 import {DOCUMENT} from '@angular/common';
 import {Chart} from 'chart.js';
-import Timeout = NodeJS.Timeout;
 
 /**
  * Projectoverview component.
@@ -119,8 +118,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   private project_application_extra_credits: number;
   public project_application_extra_credits_comment: string;
   private current_credits: number;
-  private updateCreditsUsedIntervals: Timeout;
-  private updateCreditsHistoryIntervals: Timeout;
+  private updateCreditsUsedIntervals: ReturnType<typeof setTimeout>;
+  private updateCreditsHistoryIntervals: ReturnType<typeof setTimeout>;
   credits_allowed: boolean = false;
   creditsChart: any;
 
@@ -172,7 +171,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   }
 
   calculateCredits(lifetime: number): void {
-    if (!this.credits_allowed) {
+    if (!this.credits_allowed && !this.is_vo_admin) {
       return;
     }
     if (lifetime === null || lifetime === undefined || lifetime.toString() === '') {
@@ -267,7 +266,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 }
 
   startUpdateCreditUsageLoop(): void {
-    if (!this.credits_allowed) {
+    if (!this.credits_allowed && !this.is_vo_admin) {
       return;
     }
     this.creditsService.getCurrentCreditsOfProject(
