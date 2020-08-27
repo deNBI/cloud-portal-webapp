@@ -127,6 +127,9 @@ export class Application {
       if (aj.project_modification_request) {
         this.project_modification_request = new ApplicationModification(aj.project_modification_request);
       }
+      if(aj.project_credit_request) {
+        this.project_credit_request = new ApplicationCreditRequest(aj.project_credit_request);
+      }
       this.project_application_perun_id = aj.project_application_perun_id;
       this.project_application_total_cores = aj.project_application_total_cores;
       this.project_application_total_ram = aj.project_application_total_ram;
