@@ -208,10 +208,25 @@
           application?.project_application_lifetime
         }} months
       </td>
-      <td *ngIf="((application | hasstatusinlist:Application_States.LIFETIME_EXTENSION_REQUESTED)  || (application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION_EXTENSION)
-      || isModification) && !application.project_credit_request">
-        Requested: {{application?.project_lifetime_request?.extra_lifetime}} additional months
+      <td *ngIf="(application | hasstatusinlist:Application_States.LIFETIME_EXTENSION_REQUESTED) ||
+        (application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_EXTENSION)">
+        <strong>Requested: {{application?.project_lifetime_request?.extra_lifetime}} additional months</strong>
       </td>
+    </tr>
+    <tr *ngIf="(application | hasstatusinlist:Application_States.LIFETIME_EXTENSION_REQUESTED)
+    || (application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_EXTENSION)">
+      <td>Lifetime Extension Requested from:
+      </td>
+
+      <td *ngIf="application?.project_lifetime_request">
+        {{application?.project_lifetime_request?.user?.username}}
+        ( {{application?.project_lifetime_request?.user?.email}})
+      </td>
+      <td>
+        {{application?.project_lifetime_request?.user?.elixir_id}}
+
+      </td>
+
     </tr>
     <tr>
       <td>Sensitive Data</td>
@@ -269,21 +284,22 @@
 
     </tr>
     </thead>
-    <tr *ngIf="(application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification">
+    <tr *ngIf="(application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)
+    || (application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION) ">
       <td>Modification Requested from:
       </td>
 
       <td>
-        {{application?.project_lifetime_request?.user?.username}}
-        ( {{application?.project_lifetime_request?.user?.email}})
+        {{application?.project_modification_request?.user?.username}}
+        ( {{application?.project_modification_request?.user?.email}})
       </td>
       <td>
-                {{application?.project_lifetime_request?.user?.elixir_id}}
-
+                {{application?.project_modification_request?.user?.elixir_id}}
 
       </td>
 
     </tr>
+
     <tr>
       <td>VMs
       </td>
