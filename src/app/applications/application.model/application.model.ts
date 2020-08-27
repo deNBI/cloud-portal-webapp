@@ -92,6 +92,7 @@ export class Application {
   private _project_application_cloud_service_user_number: number;
   private _flavors: Flavor[] = [];
   private _project_application_workshop: boolean;
+  private _credits_allowed: boolean;
 
   constructor(aj: Application | null) {
     this._dissemination = new ApplicationDissemination(null);
@@ -137,6 +138,7 @@ export class Application {
       this._project_application_cloud_service_user_number = aj.project_application_cloud_service_user_number;
       this._flavors = aj.flavors;
       this._project_application_workshop = aj.project_application_workshop;
+      this._credits_allowed = aj.credits_allowed;
       if (aj.dissemination) {
         this._dissemination = new ApplicationDissemination(aj.dissemination);
         this._project_application_report_allowed = this._dissemination.someAllowed();
@@ -541,5 +543,13 @@ export class Application {
 
   set project_application_cloud_service_develop(value: boolean) {
     this._project_application_cloud_service_develop = value;
+  }
+
+  get credits_allowed(): boolean {
+    return this._credits_allowed;
+  }
+
+  set credits_allowed(value: boolean) {
+    this._credits_allowed = value;
   }
 }
