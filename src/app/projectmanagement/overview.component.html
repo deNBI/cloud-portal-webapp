@@ -57,16 +57,18 @@
             </div>
             <div class="col-sm-3">
               <div class="btn-group" style="margin-top:15px;">
-                <button class="btn btn-outline-primary" (click)="doiQuestionModal.show(); request_type = 1;"
+                <button class="btn btn-outline-primary" id="show_doi_question_modal"
+                        (click)="doiQuestionModal.show(); request_type = 1;"
                   *ngIf="!((project_application | hasstatusinlist: Application_States.LIFETIME_EXTENSION_REQUESTED)
                   || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_EXTENSION))">
                   Request extension</button>
-                <button class="btn btn-outline-warning" disabled
+                <button class="btn btn-outline-warning" disabled id="show_doi_question_modal_disabled"
                         *ngIf="((project_application | hasstatusinlist: Application_States.LIFETIME_EXTENSION_REQUESTED)
                   || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_EXTENSION))">
                   Extension requested</button>
-                <button class="btn btn-outline-danger" *ngIf="(project_application | hasstatusinlist:Application_States.APPROVED)"
-                     (click)="terminateModal.show()">Request termination</button>
+                <button class="btn btn-outline-danger"
+                        *ngIf="(project_application | hasstatusinlist:Application_States.APPROVED)"
+                     (click)="terminateModal.show()" id="show_termination_modal_button">Request termination</button>
                 <button id="remove_application_button"
                         *ngIf="(project_application | hasstatusinlist:Application_States.SUBMITTED)
                         || (project_application | hasstatusinlist:Application_States.DECLINED) "
@@ -91,11 +93,11 @@
             <div class="col-sm-3">
               <!-- check disabled enabled for both resource and lifetime extension buttons -->
               <div class="btn-group" style="margin-top:15px;">
-                <button class="btn btn-outline-primary"
+                <button class="btn btn-outline-primary" id="show_modification_extension_button"
                         *ngIf="!((project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED)
                   || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION))"
                   (click)="doiQuestionModal.show(); request_type = 2">Request resource modification</button>
-                <button class="btn btn-outline-warning" disabled
+                <button class="btn btn-outline-warning" disabled id="show_modification_extension_button_disabled"
                         *ngIf="((project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED)
                   || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION))">
                   Resource modification requested</button>
@@ -148,7 +150,7 @@
               (click)="newFlavors={};initExampleFlavors();creditsExtensionModal.show();"
               class="btn btn-outline-success"
               type="button"style="margin-top:15px;">Request more credits</button>
-              <button id="show_credits_extension_modal" disabled class="btn btn-outline-warning"
+              <button id="show_credits_extension_modal_disabled" disabled class="btn btn-outline-warning"
                       *ngIf="((project_application | hasstatusinlist: Application_States.CREDITS_EXTENSION_REQUESTED)
                       || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_CREDITS))"
                       type="button"style="margin-top:15px;">More credits requested</button>
@@ -315,22 +317,20 @@
             <button id="add_member_btn_modal"
                     (click)="setAddUserInvitationLink(); addUserModal.show();"
 
-                    type="button" style="margin-bottom:5px;margin-right:5px"
-                    class="btn btn-success"><i class="fa fa-plus"></i>&nbsp; Add Member
+                    type="button" style="margin-bottom:5px;"
+                    class="btn btn-outline-success"><i class="fa fa-plus"></i>&nbsp; Add Member
             </button>
 
             <button
-              type="button" style="margin-bottom:5px;margin-right:5px"
+              type="button" style="margin-bottom:5px;"
               (click)="applicationModal.show();getUserProjectApplications();"
-              class="btn btn-info"><i class="fa fa-list-alt"></i>&nbsp;
+              class="btn btn-outline-primary"><i class="fa fa-list-alt"></i>&nbsp;
               Member Applications
             </button>
 
-            <button (click)="removeCheckedMembers(project_application?.project_application_perun_id)" type="button" style="margin-bottom:5px;"
-                    [disabled]="checked_member_list.length <= 0 || remove_members_clicked" class="btn btn-danger"><i
-              class="fa fa-trash"></i>&nbsp;Remove
-              Members
-            </button>
+            <button (click)="removeCheckedMembers(project_application?.project_application_perun_id)" type="button"
+                    style="margin-bottom:5px;" [disabled]="checked_member_list.length <= 0 || remove_members_clicked"
+                    class="btn btn-outline-danger"><i class="fa fa-trash"></i>&nbsp;Remove Members</button>
 
           </div>
           <div class="table-responsive">
