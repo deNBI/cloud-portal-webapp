@@ -4,6 +4,7 @@ import {UserService} from '../api-connector/user.service';
 import {GroupService} from '../api-connector/group.service';
 import {ApiSettings} from '../api-connector/api-settings.service';
 import {Application} from '../applications/application.model/application.model';
+import {Application_States} from "../shared/shared_modules/baseClass/abstract-base-class";
 import {ApplicationStatusService} from '../api-connector/application-status.service';
 import {ApplicationsService} from '../api-connector/applications.service';
 import {ApplicationBaseClassComponent} from '../shared/shared_modules/baseClass/application-base-class.component';
@@ -32,6 +33,7 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
   numberOfModificationRequests: number = 0;
   numberOfCreditRequests: number = 0;
   numberOfProjectApplications: number = 0;
+  Application_States: typeof Application_States = Application_States;
 
   title: string = 'Application Overview';
   /**

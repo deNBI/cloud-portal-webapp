@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {VoService} from '../../api-connector/vo.service';
-import * as jspdf from 'jspdf';
+import { jsPDF } from 'jspdf';
 import {Resources} from './resources';
 import html2canvas from 'html2canvas';
 import {ExportAsConfig, ExportAsService} from 'ngx-export-as'
@@ -57,7 +57,7 @@ export class ResourcesComponent implements OnInit {
       const heightLeft: number = imgHeight;
 
       const contentDataURL: string = canvas.toDataURL('image/png');
-      const pdf: jspdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF
+      const pdf: jsPDF = new jsPDF('p', 'mm', 'a4'); // A4 size page of PDF
       const position: number = 0;
       pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
       pdf.save('VoResources.pdf'); // Generated PDF

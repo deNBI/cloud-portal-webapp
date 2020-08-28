@@ -97,7 +97,6 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
   getGroupsEnumeration(): void {
     this.groupService.getGroupsEnumeration().subscribe((res: ProjectEnumeration[]): void => {
       this.project_enumeration = res;
-      console.log(res);
       this.project_enumeration.forEach((enumeration: ProjectEnumeration): void => {
         this.project_badges_states[enumeration.application_id] = enumeration.project_status;
         this.pushAdditionalStates(enumeration);
