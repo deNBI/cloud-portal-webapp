@@ -447,7 +447,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
                 this.project_id = id['perun_id'];
 
                 this.getProject();
-                this.getUsedResources();
 
               } else {
                 this.isLoaded = true;
@@ -624,8 +623,18 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
   }
 
-  getUsedResources(): void {
-    this.groupService.getGroupResources(this.application_id).subscribe(
+  isAbleToStart(){
+    if (this.resourceDataLoaded){
+      if (!this.project?.OpenStackProject){
+        if (this.vmsInUse < this.maximumVMs ){
+          return true;
+        }
+      }
+    } return false;
+  }
+
+  getUsedResources(groupid: string): void {
+    this.groupService.getGroupResources(groupid).subscribe(
       (res: any) => {
          this.vmsInUse = res['used_vms'];
          this.maximumVMs = res['number_vms'];
@@ -838,6 +847,12 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
         this.isLoaded = true;
       }
+      if(!this.project?.OpenStackProject){
+        this.getUsedResources(groupid);
+      } else {
+        this.resourceDataLoaded = true;
+      }
+
     })
 
   }

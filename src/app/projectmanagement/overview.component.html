@@ -8,7 +8,6 @@
 
 <div class="animated fadeIn" *ngIf="isLoaded" data-spy="scroll" data-target="#denbiHeadbar" data-offset="0">
   <div class="row">
-
     <div class="col-12"
          *ngIf="project && !(project_application | hasstatusinlist:Application_States.TERMINATED)
          && !(project_application | hasstatusinlist:Application_States.DECLINED) ">
@@ -41,7 +40,8 @@
           </h3>
         </div>
 
-        <div class="card-body" id="projectMainInformationDiv">
+        <div class="card-body" id="projectMainInformationDiv"
+          *ngIf="project_application | hasstatusinlist:Application_States.APPROVED">
           <div class="row">
             <div class="col-sm-3">
               <div class="callout callout-info"
@@ -57,7 +57,14 @@
             </div>
             <div class="col-sm-3">
               <div class="btn-group" style="margin-top:15px;">
-                <button class="btn btn-outline-primary" (click)="doiQuestionModal.show(); request_type = 1;">Request extension</button>
+                <button class="btn btn-outline-primary" (click)="doiQuestionModal.show(); request_type = 1;"
+                  *ngIf="!((project_application | hasstatusinlist: Application_States.LIFETIME_EXTENSION_REQUESTED)
+                  || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_EXTENSION))">
+                  Request extension</button>
+                <button class="btn btn-outline-warning" disabled
+                        *ngIf="((project_application | hasstatusinlist: Application_States.LIFETIME_EXTENSION_REQUESTED)
+                  || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_EXTENSION))">
+                  Extension requested</button>
                 <button class="btn btn-outline-danger" *ngIf="(project_application | hasstatusinlist:Application_States.APPROVED)"
                      (click)="terminateModal.show()">Request termination</button>
                 <button id="remove_application_button"
@@ -71,22 +78,29 @@
 
             </div>
             <div class="col-sm-3">
-              <div class="callout callout-info">
+              <div class="callout callout-info" *ngIf="!project?.OpenStackProject">
                 <small class="text-muted">Virtual machines</small><br>
                 <strong class="text-muted" *ngIf="this.resourceDataLoaded">{{vmsInUse}} of {{maximumVMs}} in use</strong><br>
                 <div class="progress" style="height: 2px;" *ngIf="this.resourceDataLoaded">
                   <div class="progress-bar bg-info" role="progressbar"
-                       [ngStyle]="{'width.%': '100'}"
+                       [ngStyle]="{'width.%': calculateProgressBar(vmsInUse / maximumVMs)}"
                        aria-valuemin="0" aria-valuemax="100"></div>
-                </div> <!-- (calculateProgressBar(vmsInUse / maximumVMs)) -->
+                </div>
               </div>
             </div>
             <div class="col-sm-3">
               <!-- check disabled enabled for both resource and lifetime extension buttons -->
               <div class="btn-group" style="margin-top:15px;">
                 <button class="btn btn-outline-primary"
+                        *ngIf="!((project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED)
+                  || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION))"
                   (click)="doiQuestionModal.show(); request_type = 2">Request resource modification</button>
-                <button class="btn btn-outline-success" *ngIf="!project?.OpenStackProject">Start a VM</button>
+                <button class="btn btn-outline-warning" disabled
+                        *ngIf="((project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED)
+                  || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION))">
+                  Resource modification requested</button>
+                <a class="btn btn-outline-success" href="#/virtualmachines/newVM"
+                   *ngIf="!project?.OpenStackProject && isAbleToStart()">Start a VM</a>
               </div>
             </div>
           </div>
@@ -129,9 +143,15 @@
             </div>
             <div class="col-sm-3" *ngIf="is_vo_admin">
               <button id="show_credits_extension_modal"
+                      *ngIf="!((project_application | hasstatusinlist: Application_States.CREDITS_EXTENSION_REQUESTED)
+                  || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_CREDITS))"
               (click)="newFlavors={};initExampleFlavors();creditsExtensionModal.show();"
               class="btn btn-outline-success"
               type="button"style="margin-top:15px;">Request more credits</button>
+              <button id="show_credits_extension_modal" disabled class="btn btn-outline-warning"
+                      *ngIf="((project_application | hasstatusinlist: Application_States.CREDITS_EXTENSION_REQUESTED)
+                      || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_CREDITS))"
+                      type="button"style="margin-top:15px;">More credits requested</button>
             </div>
           </div>
         </div>
