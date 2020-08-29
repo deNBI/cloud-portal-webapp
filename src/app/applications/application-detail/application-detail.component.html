@@ -342,7 +342,7 @@
 
       </td>
 
-      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) && !application.project_credit_request">
+      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) ">
         {{application?.project_modification_request?.total_cores}}
       </td>
     </tr>
@@ -352,7 +352,7 @@
       <td>{{
           application?.project_application_total_ram}} GB
       </td>
-      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) && !application.project_credit_request">
+      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification)">
         {{application?.project_modification_request?.total_ram}} GB
       </td>
     </tr>
@@ -363,7 +363,7 @@
       <td>{{
           application?.project_application_initial_credits}}
       </td>
-      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) && !application.project_credit_request">
+      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification)">
         Extra: {{application?.project_credit_request?.extra_credits}} (Total: {{application?.TotalModificationCredits}})
       </td>
     </tr>
@@ -372,7 +372,7 @@
       <td>Used Credits</td>
       <td>{{current_credits}}
       </td>
-      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) && !application.project_credit_request">
+      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification)">
         Credits left (with Extra Credits): {{credits_left_with_extra}}
       </td>
     </tr>
@@ -391,7 +391,7 @@
           application?.project_application_volume_limit
         }} GB
       </td>
-      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) && !application.project_credit_request">
+      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification)">
         {{application?.project_modification_request?.volume_limit}}
         GB
       </td>
@@ -404,7 +404,7 @@
           application?.project_application_volume_counter
         }} volumes
       </td>
-      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) && !application.project_credit_request">
+      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) ">
         {{application?.project_modification_request?.volume_counter}} volumes
       </td>
     </tr>
@@ -415,7 +415,7 @@
           application?.project_application_object_storage
         }} GB
       </td>
-      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) && !application.project_credit_request">
+      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) ">
         {{application?.project_modification_request?.object_storage}}
         GB
       </td>
@@ -428,7 +428,7 @@
           application?.project_application_date_status_changed
         }}
       </td>
-      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) && !application.project_credit_request">
+      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) ">
       </td>
     </tr>
 
