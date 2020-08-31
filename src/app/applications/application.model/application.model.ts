@@ -96,6 +96,8 @@ export class Application {
   project_application_cloud_service_user_number: number;
   flavors: Flavor[] = [];
   project_application_workshop: boolean;
+  credits_allowed: boolean;
+
 
   constructor(aj: Application | null) {
     this.dissemination = new ApplicationDissemination(null);
@@ -124,13 +126,14 @@ export class Application {
       if (aj.project_lifetime_request) {
         this.project_lifetime_request = new ApplicationLifetimeExtension(aj.project_lifetime_request);
       }
+
       if (aj.project_modification_request) {
         this.project_modification_request = new ApplicationModification(aj.project_modification_request);
       }
-      if(aj.project_credit_request) {
+      if (aj.project_credit_request) {
         this.project_credit_request = new ApplicationCreditRequest(aj.project_credit_request);
       }
-      this.project_application_perun_id = aj.project_application_perun_id;
+
       this.project_application_total_cores = aj.project_application_total_cores;
       this.project_application_total_ram = aj.project_application_total_ram;
       this.project_application_initial_credits = aj.project_application_initial_credits;
@@ -147,6 +150,7 @@ export class Application {
       this.project_application_cloud_service_user_number = aj.project_application_cloud_service_user_number;
       this.flavors = aj.flavors;
       this.project_application_workshop = aj.project_application_workshop;
+      this.credits_allowed = aj.credits_allowed;
       if (aj.dissemination) {
         this.dissemination = new ApplicationDissemination(aj.dissemination);
         this.project_application_report_allowed = this.dissemination.someAllowed();
@@ -159,64 +163,8 @@ export class Application {
     return this.project_application_status?.includes(Application_States.SUBMITTED)
   }
 
-  public hasApprovedStatus(): boolean {
-    return this.project_application_status?.includes(Application_States.APPROVED)
-  }
-
   public hasTerminatedStatus(): boolean {
     return this.project_application_status?.includes(Application_States.TERMINATED)
-  }
-
-  public hasConfirmationDeniedStatus(): boolean {
-    return this.project_application_status?.includes(Application_States.CONFIRMATION_DENIED)
-  }
-
-  public hasCreditsDeclinedStatus(): boolean {
-    return this.project_application_status?.includes(Application_States.CREDITS_EXTENSION_DENIED)
-  }
-
-  public hasCreditsRequestedStatus(): boolean {
-    return this.project_application_status?.includes(Application_States.CREDITS_EXTENSION_REQUESTED)
-  }
-
-  public hasDeclinedStatus(): boolean {
-    return this.project_application_status?.includes(Application_States.DECLINED)
-  }
-
-  public hasExtensionDeclinedStatus(): boolean {
-    return this.project_application_status?.includes(Application_States.LIFETIME_EXTENSION_DENIED)
-  }
-
-  public hasExtensionRequestedStatus(): boolean {
-    return this.project_application_status?.includes(Application_States.LIFETIME_EXTENSION_REQUESTED)
-  }
-
-  public hasModificationDeclinedStatus(): boolean {
-    return this.project_application_status?.includes(Application_States.MODIFICATION_DECLINED)
-  }
-
-  public hasSuspendedStatus(): boolean {
-    return this.project_application_status?.includes(Application_States.SUSPENDED)
-  }
-
-  public hasWaitForConfirmationStatus(): boolean {
-    return this.project_application_status?.includes(Application_States.WAIT_FOR_CONFIRMATION)
-  }
-
-  public hasModificationRequestedStatus(): boolean {
-    return this.project_application_status?.includes(Application_States.MODIFICATION_REQUESTED)
-  }
-
-  public hasWaitForExtensionConfirmationStatus(): boolean {
-    return this.project_application_status?.includes(Application_States.WAIT_FOR_CONFIRMATION_EXTENSION)
-  }
-
-  public hasWaitForModificationConfirmationStatus(): boolean {
-    return this.project_application_status?.includes(Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION)
-  }
-
-  public hasWaitForCreditConfirmationStatus(): boolean {
-    return this.project_application_status?.includes(Application_States.WAIT_FOR_CONFIRMATION_CREDITS)
   }
 
   private setDaysRunning(): void {
@@ -268,9 +216,12 @@ export class Application {
         flavor.counter = counter;
 
         this.flavors.push(flavor)
+
       }
+      this.setDaysRunning()
     }
   }
+
 
   get TotalModificationCredits(): number {
     if (this.project_modification_request != null) {

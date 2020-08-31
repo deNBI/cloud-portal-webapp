@@ -99,9 +99,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
    * @type {number}, initialized with 0
    */
   request_type: number = ExtensionRequestType.NONE;
-
   showInformationCollapse: boolean = false;
-
   newDoi: string;
   remove_members_clicked: boolean;
   life_time_string: string;
@@ -155,10 +153,9 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   private project_application_extra_credits: number;
   public project_application_extra_credits_comment: string;
   private current_credits: number;
-  private updateCreditsUsedIntervals: number;
-
-  private updateCreditHistoryIntervals: number;
-
+  private updateCreditsUsedIntervals: ReturnType<typeof setTimeout>;
+  private updateCreditsHistoryIntervals: ReturnType<typeof setTimeout>;
+  credits_allowed: boolean = false;
   creditsChart: any;
   ExtensionRequestType: typeof ExtensionRequestType = ExtensionRequestType;
   Application_States: typeof Application_States = Application_States;
@@ -239,6 +236,9 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   }
 
   calculateCredits(lifetime: number): void {
+    if (!this.credits_allowed && !this.is_vo_admin) {
+      return;
+    }
     if (lifetime === null || lifetime === undefined || lifetime.toString() === '') {
       lifetime = 0;
     }
@@ -331,7 +331,24 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 }
 
   startUpdateCreditUsageLoop(): void {
-    this.updateCreditsUsedIntervals = window.setInterval(
+
+    if (!this.credits_allowed && !this.is_vo_admin) {
+      return;
+    }
+    this.creditsService.getCurrentCreditsOfProject(
+      Number(this.project_application.project_application_perun_id.toString())
+    ).toPromise().then(
+      (credits: number): void => {
+        this.current_credits = credits;
+      }
+    ).catch((err: Error): void => {
+      console.log(err.message)
+    });
+
+    this.fetchCreditHistoryOfProject();
+
+    this.updateCreditsUsedIntervals = setInterval(
+
       (): any =>
         // tslint:disable-next-line:max-line-length
         this.subscription.add(this.creditsService.getCurrentCreditsOfProject(Number(this.project_application.project_application_perun_id.toString())).subscribe(
@@ -342,7 +359,15 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
             console.log(err.message)
           }
         )),
-      5000);
+            10000
+     );
+
+    this.updateCreditsHistoryIntervals = setInterval(
+      (): any =>
+        // tslint:disable-next-line:max-line-length
+        this.fetchCreditHistoryOfProject(),
+      30000);
+
   }
 
   initExampleFlavors(): void {
@@ -438,6 +463,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
           }
 
           this.project_application = new Application(aj);
+          this.credits_allowed = aj['credits_allowed'];
+
 
           if (this.project_application) {
             this.startUpdateCreditUsageLoop();
@@ -507,6 +534,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
         } else {
           this.getApplication()
         }
+
 
       })
   }
@@ -644,8 +672,12 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
-    if (this.updateCreditsUsedIntervals) {
-      clearInterval(this.updateCreditsUsedIntervals);
+    try {
+      if (this.updateCreditsUsedIntervals) {
+        clearInterval(this.updateCreditsUsedIntervals);
+      }
+    } catch (someError) {
+
     }
   }
 
@@ -844,8 +876,11 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
       if (this.project.UserIsPi || this.project.UserIsAdmin) {
         this.getMembersOfTheProject();
       } else {
-
         this.isLoaded = true;
+        if (this.project_application?.project_application_perun_id) {
+          this.startUpdateCreditUsageLoop();
+        }
+
       }
       if(!this.project?.OpenStackProject){
         this.getUsedResources(groupid);
@@ -884,7 +919,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
         }
         this.isLoaded = true;
-
       })
 
     });
