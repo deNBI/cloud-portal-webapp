@@ -51,7 +51,7 @@
     "angulartics2": "^10.0.0",
     "bootstrap": "^4.5.2",
     "chart.js": "^2.9.3",
-    "chromedriver": "^84.0.1",
+    "chromedriver": "^85.0.0",
     "cli-color": "^2.0.0",
     "colors": "^1.4.0",
     "core-js": "3.6.5",
