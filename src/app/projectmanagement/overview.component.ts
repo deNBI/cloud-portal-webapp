@@ -118,10 +118,9 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   private project_application_extra_credits: number;
   public project_application_extra_credits_comment: string;
   private current_credits: number;
-  private updateCreditsUsedIntervals: number;
-
-  private updateCreditHistoryIntervals: number;
-
+  private updateCreditsUsedIntervals: ReturnType<typeof setTimeout>;
+  private updateCreditsHistoryIntervals: ReturnType<typeof setTimeout>;
+  credits_allowed: boolean = false;
   creditsChart: any;
 
   constructor(private flavorService: FlavorService,
@@ -172,6 +171,9 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   }
 
   calculateCredits(lifetime: number): void {
+    if (!this.credits_allowed && !this.is_vo_admin) {
+      return;
+    }
     if (lifetime === null || lifetime === undefined || lifetime.toString() === '') {
       lifetime = 0;
     }
@@ -264,6 +266,21 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 }
 
   startUpdateCreditUsageLoop(): void {
+    if (!this.credits_allowed && !this.is_vo_admin) {
+      return;
+    }
+    this.creditsService.getCurrentCreditsOfProject(
+      Number(this.project_application.project_application_perun_id.toString())
+    ).toPromise().then(
+      (credits: number): void => {
+        this.current_credits = credits;
+      }
+    ).catch((err: Error): void => {
+      console.log(err.message)
+    })
+
+    this.fetchCreditHistoryOfProject();
+
     this.updateCreditsUsedIntervals = setInterval(
       (): any =>
         // tslint:disable-next-line:max-line-length
@@ -275,6 +292,12 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
           console.log(err.message)
         }),
       10000);
+
+    this.updateCreditsHistoryIntervals = setInterval(
+      (): any =>
+        // tslint:disable-next-line:max-line-length
+        this.fetchCreditHistoryOfProject(),
+      30000);
   }
 
   initExampleFlavors(): void {
@@ -336,11 +359,10 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
           }
 
           this.project_application = new Application(aj);
+          this.credits_allowed = aj['credits_allowed'];
           if (!this.project_application.projectapplicationrenewal) {
             this.project_application.inititatenExtension();
           }
-          if (this.project_application.project_application_perun_id) {
-          this.startUpdateCreditUsageLoop(); }
 
           if (this.project_application) {
             this.applicationsservice.getApplicationPerunId(this.application_id).subscribe((id: any): void => {
@@ -482,6 +504,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   ngOnDestroy(): void {
     try {
       clearInterval(this.updateCreditsUsedIntervals);
+      clearInterval(this.updateCreditsHistoryIntervals);
     } catch (someError) {}
   }
 
@@ -677,8 +700,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
       if (this.project.UserIsPi || this.project.UserIsAdmin) {
         this.getMembersOfTheProject();
       } else {
-
         this.isLoaded = true;
+        this.startUpdateCreditUsageLoop();
       }
     })
 
@@ -707,7 +730,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
         }
         this.isLoaded = true;
-
+        this.startUpdateCreditUsageLoop();
       })
 
     });
