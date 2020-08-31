@@ -29,9 +29,9 @@ describe('Cloud ApplicationModification Test', function (): void {
     await ProjectOverview.fillModificationRequest();
   });
 
-  it('should have total ram and cores right', async function (): Promise<any> {
+  /* it('should have total ram and cores right', async function (): Promise<any> {
     await ProjectOverview.checkTotalCoresRam();
-  });
+  }); */
 
   it('should send a modification request', async function (): Promise<any> {
     await ProjectOverview.sendModificationRequest(Util.OPENSTACK_APPLICATION_NAME);

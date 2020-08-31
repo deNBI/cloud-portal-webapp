@@ -9,7 +9,7 @@
       <td>
         {{application?.project_application_pi?.username}}
       </td>
-      <td *ngIf="(application?.project_application_status == application_states.MODIFICATION_REQUESTED || isModification) && !application?.projectapplicationrenewal?.is_only_extra_credits_application">
+      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) && !application.project_credit_request">
       </td>
     </tr>
     <tr *ngIf="application?.project_application_pi_approved">
@@ -19,7 +19,7 @@
       <td>
         {{application?.project_application_pi?.email}}
       </td>
-      <td *ngIf="(application?.project_application_status == application_states.MODIFICATION_REQUESTED || isModification) && !application?.projectapplicationrenewal?.is_only_extra_credits_application">
+      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) && !application.project_credit_request">
       </td>
     </tr>
     <tr *ngIf="application?.project_application_pi_approved">
@@ -29,7 +29,7 @@
       <td>
         {{application?.project_application_pi?.user_affiliations}}
       </td>
-      <td *ngIf="(application?.project_application_status == application_states.MODIFICATION_REQUESTED || isModification) && !application?.projectapplicationrenewal?.is_only_extra_credits_application">
+      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED) || isModification) && !application.project_credit_request">
       </td>
     </tr>
     <tr>
@@ -39,7 +39,7 @@
       <td>{{
         application?.project_application_user?.user_affiliations}}
       </td>
-      <td *ngIf="(application?.project_application_status == application_states.MODIFICATION_REQUESTED || isModification) && !application?.projectapplicationrenewal?.is_only_extra_credits_application">
+      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) && !application.project_credit_request">
       </td>
     </tr>
     <tr>
@@ -47,7 +47,7 @@
       <td>
         {{  application?.project_application_user?.username}}
       </td>
-      <td *ngIf="(application?.project_application_status == application_states.MODIFICATION_REQUESTED || isModification) && !application?.projectapplicationrenewal?.is_only_extra_credits_application">
+      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) && !application.project_credit_request">
       </td>
     </tr>
     <tr>
@@ -55,7 +55,7 @@
       <td>
         {{  application?.project_application_user?.email}}
       </td>
-      <td *ngIf="(application?.project_application_status == application_states.MODIFICATION_REQUESTED || isModification) && !application?.projectapplicationrenewal?.is_only_extra_credits_application">
+      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) && !application.project_credit_request">
       </td>
     </tr>
   </table>
@@ -65,20 +65,20 @@
     <thead>
     <tr>
       <th colspan="2" style="text-align:center"><strong>Information</strong></th>
-      <th *ngIf="(application?.project_application_status == application_states.MODIFICATION_REQUESTED || isModification) && !application?.projectapplicationrenewal?.is_only_extra_credits_application"></th>
+      <th *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED) || isModification) && !application.project_credit_request"></th>
 
     </tr>
     </thead>
-    <tr *ngIf="is_vo_admin && application?.projectapplicationrenewal?.is_only_extra_credits_application">
-      <td>Only Extra Credits Request</td>
+    <tr *ngIf="is_vo_admin && application?.project_credit_request">
+      <td>Extra Credits Request</td>
       <td>
         Yes
       </td>
     </tr>
-    <tr *ngIf="is_vo_admin && application?.projectapplicationrenewal?.is_only_extra_credits_application">
+    <tr *ngIf="is_vo_admin && application?.project_credit_request">
       <td>Reason for extra credits</td>
       <td>
-        {{application?.projectapplicationrenewal?.project_application_renewal_comment}}
+        {{application?.project_credit_request?.comment}}
       </td>
     </tr>
     <tr>
@@ -89,7 +89,7 @@
  </span>
 
       </h5></td>
-      <td *ngIf="(application?.project_application_status == application_states.MODIFICATION_REQUESTED || isModification) && !application?.projectapplicationrenewal?.is_only_extra_credits_application">
+      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) && !application.project_credit_request">
 
     </tr>
     <tr>
@@ -98,7 +98,7 @@
         <span *ngIf="application?.project_application_workshop" class="badge badge-success">Yes</span>
         <span *ngIf="!application?.project_application_workshop" class="badge badge-danger">No</span>
       </td>
-      <td *ngIf="(application?.project_application_status == application_states.MODIFICATION_REQUESTED || isModification) && !application?.projectapplicationrenewal?.is_only_extra_credits_application">
+      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) && !application.project_credit_request">
       </td>
     </tr>
     <tr *ngIf="application?.project_application_openstack_project">
@@ -107,7 +107,7 @@
         <span *ngIf="application?.project_application_cloud_service" class="badge badge-success">Yes</span>
         <span *ngIf="!application?.project_application_cloud_service" class="badge badge-danger">No</span>
       </td>
-      <td *ngIf="(application?.project_application_status == application_states.MODIFICATION_REQUESTED || isModification) && !application?.projectapplicationrenewal?.is_only_extra_credits_application">
+      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) && !application.project_credit_request">
       </td>
     </tr>
     <tr *ngIf="application?.project_application_openstack_project && application?.project_application_cloud_service">
@@ -118,25 +118,25 @@
       </td>
 
       <td
-        *ngIf="(application?.project_application_status == application_states.MODIFICATION_REQUESTED || isModification) && !application?.projectapplicationrenewal?.is_only_extra_credits_application">
-        <span *ngIf="application?.projectapplicationrenewal?.project_application_renewal_cloud_service_develop"
+        *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) && !application.project_credit_request">
+        <span *ngIf="application?.project_modification_request?.cloud_service_develop"
               class="badge badge-success">In development</span>
-        <span *ngIf="!application?.projectapplicationrenewal?.project_application_renewal_cloud_service_develop"
+        <span *ngIf="!application?.project_modification_request?.cloud_service_develop"
               class="badge badge-danger">Existing</span>
       </td>
     </tr>
     <tr
       *ngIf="application?.project_application_openstack_project
       && (!application?.project_application_cloud_service_develop
-        || (!application?.projectapplicationrenewal?.project_application_renewal_cloud_service_develop) && (application?.project_application_status == application_states.MODIFICATION_REQUESTED || isModification) )
+        || (!application?.project_modification_request?.cloud_service_develop) && (application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED) || isModification)
       && application?.project_application_cloud_service">
       <td> - approximate number of users</td>
       <td>
         <span>{{application?.project_application_cloud_service_user_number}}</span>
       </td>
       <td
-        *ngIf="(application?.project_application_status == application_states.MODIFICATION_REQUESTED || isModification) && !application?.projectapplicationrenewal?.is_only_extra_credits_application">
-        {{application?.projectapplicationrenewal?.project_application_renewal_cloud_service_user_number}}</td>
+        *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) && !application.project_credit_request">
+        {{application?.project_modification_request?.cloud_service_develop}}</td>
     </tr>
     <tr>
       <td>Description
@@ -145,7 +145,7 @@
           application?.project_application_description
         }}
       </td>
-      <td *ngIf="(application?.project_application_status == application_states.MODIFICATION_REQUESTED || isModification) && !application?.projectapplicationrenewal?.is_only_extra_credits_application">
+      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) && !application.project_credit_request">
       </td>
     </tr>
     <tr>
@@ -153,7 +153,7 @@
       <td>
         {{application?.project_application_horizon2020}}
       </td>
-      <td *ngIf="(application?.project_application_status == application_states.MODIFICATION_REQUESTED || isModification) && !application?.projectapplicationrenewal?.is_only_extra_credits_application">
+      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) && !application.project_credit_request">
       </td>
     </tr>
     <tr>
@@ -161,7 +161,7 @@
       <td>
         {{application?.project_application_elixir_project}}
       </td>
-      <td *ngIf="(application?.project_application_status == application_states.MODIFICATION_REQUESTED || isModification) && !application?.projectapplicationrenewal?.is_only_extra_credits_application">
+      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) && !application.project_credit_request">
       </td>
     </tr>
     <tr>
@@ -169,7 +169,7 @@
       <td>
         {{application?.project_application_bmbf_project}}
       </td>
-      <td *ngIf="(application?.project_application_status == application_states.MODIFICATION_REQUESTED || isModification) && !application?.projectapplicationrenewal?.is_only_extra_credits_application">
+      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) && !application.project_credit_request">
       </td>
     </tr>
 
@@ -180,7 +180,7 @@
           application?.project_application_workgroup
         }}
       </td>
-      <td *ngIf="(application?.project_application_status == application_states.MODIFICATION_REQUESTED || isModification) && !application?.projectapplicationrenewal?.is_only_extra_credits_application">
+      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) && !application.project_credit_request">
       </td>
     </tr>
 
@@ -190,8 +190,15 @@
           application?.project_application_comment
         }}
       </td>
-      <td *ngIf="(application?.project_application_status == application_states.MODIFICATION_REQUESTED || isModification) && !application?.projectapplicationrenewal?.is_only_extra_credits_application">
-        {{application?.projectapplicationrenewal?.project_application_renewal_comment}}
+      <td *ngIf="(application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || (application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION)
+      && !application.project_credit_request
+        && application?.project_modification_request?.comment?.length > 0">
+        {{application?.project_modification_request?.comment}}
+      </td>
+      <td *ngIf="((application | hasstatusinlist:Application_States.LIFETIME_EXTENSION_REQUESTED)  || (application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION_EXTENSION) )
+      && !application.project_credit_request
+        && application?.project_lifetime_request?.comment?.length > 0">
+        {{application?.project_lifetime_request?.comment}}
       </td>
 
     </tr>
@@ -201,17 +208,32 @@
           application?.project_application_lifetime
         }} months
       </td>
-      <td *ngIf="(application?.project_application_status == application_states.MODIFICATION_REQUESTED || isModification) && !application?.projectapplicationrenewal?.is_only_extra_credits_application">
-        {{
-          application?.projectapplicationrenewal?.project_application_renewal_lifetime}}
+      <td *ngIf="(application | hasstatusinlist:Application_States.LIFETIME_EXTENSION_REQUESTED) ||
+        (application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_EXTENSION)">
+        <strong>Requested: {{application?.project_lifetime_request?.extra_lifetime}} additional months</strong>
       </td>
+    </tr>
+    <tr *ngIf="(application | hasstatusinlist:Application_States.LIFETIME_EXTENSION_REQUESTED)
+    || (application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_EXTENSION)">
+      <td>Lifetime Extension Requested from:
+      </td>
+
+      <td *ngIf="application?.project_lifetime_request">
+        {{application?.project_lifetime_request?.user?.username}}
+        ( {{application?.project_lifetime_request?.user?.email}})
+      </td>
+      <td>
+        {{application?.project_lifetime_request?.user?.elixir_id}}
+
+      </td>
+
     </tr>
     <tr>
       <td>Sensitive Data</td>
       <td><p *ngIf="application?.project_application_sensitive_data"> Yes</p>
         <p *ngIf="!application?.project_application_sensitive_data"> No</p>
       </td>
-      <td *ngIf="(application?.project_application_status == application_states.MODIFICATION_REQUESTED || isModification) && !application?.projectapplicationrenewal?.is_only_extra_credits_application">
+      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) && !application.project_credit_request">
 
       </td>
     </tr>
@@ -220,7 +242,7 @@
       <td><p *ngIf="application?.project_application_openstack_basic_introduction"> Yes</p>
         <p *ngIf="!application?.project_application_openstack_basic_introduction"> No</p>
       </td>
-      <td *ngIf="(application?.project_application_status == application_states.MODIFICATION_REQUESTED || isModification) && !application?.projectapplicationrenewal?.is_only_extra_credits_application">
+      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) && !application.project_credit_request">
 
       </td>
     </tr>
@@ -230,7 +252,7 @@
     <thead>
     <tr>
       <th colspan="2" style="text-align:center"><strong>Dissemination</strong></th>
-      <th *ngIf="(application?.project_application_status == application_states.MODIFICATION_REQUESTED || isModification) && !application?.projectapplicationrenewal?.is_only_extra_credits_application"></th>
+      <th *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) && !application.project_credit_request"></th>
 
     </tr>
     </thead>
@@ -239,7 +261,7 @@
       <td id="dissemination_platforms">
         {{application?.dissemination?.allowed_platforms}}
       </td>
-      <td *ngIf="(application?.project_application_status == application_states.MODIFICATION_REQUESTED || isModification) && !application?.projectapplicationrenewal?.is_only_extra_credits_application">
+      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) && !application.project_credit_request">
       </td>
     </tr>
     <tr>
@@ -247,7 +269,7 @@
       <td id="dissemination_information">
         {{application?.dissemination?.allowed_informations}}
       </td>
-      <td *ngIf="(application?.project_application_status == application_states.MODIFICATION_REQUESTED || isModification) && !application?.projectapplicationrenewal?.is_only_extra_credits_application">
+      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) && !application.project_credit_request">
       </td>
     </tr>
   </table>
@@ -258,25 +280,26 @@
     <tr>
       <th colspan="2" style="text-align:center"><strong>Resources</strong></th>
       <th
-        *ngIf="(application?.project_application_status == application_states.MODIFICATION_REQUESTED || isModification) && !application?.projectapplicationrenewal?.is_only_extra_credits_application"></th>
+        *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) && !application.project_credit_request"></th>
 
     </tr>
     </thead>
-    <tr *ngIf="application?.project_application_status == application_states.MODIFICATION_REQUESTED || isModification">
+    <tr *ngIf="(application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)
+    || (application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION) ">
       <td>Modification Requested from:
       </td>
 
       <td>
-        {{application?.projectapplicationrenewal?.project_application_renewal_user?.username}}
-        ( {{application?.projectapplicationrenewal?.project_application_renewal_user?.email}})
+        {{application?.project_modification_request?.user?.username}}
+        ( {{application?.project_modification_request?.user?.email}})
       </td>
       <td>
-                {{application?.projectapplicationrenewal?.project_application_renewal_user?.elixir_id}}
-
+                {{application?.project_modification_request?.user?.elixir_id}}
 
       </td>
 
     </tr>
+
     <tr>
       <td>VMs
       </td>
@@ -285,9 +308,9 @@
         {{application?.project_application_vms_requested}}
       </td>
       <td
-        *ngIf="(application?.project_application_status == application_states.MODIFICATION_REQUESTED || isModification) && !application?.projectapplicationrenewal?.is_only_extra_credits_application">
+        *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) && !application.project_credit_request">
         Requested:
-        {{application?.projectapplicationrenewal?.project_application_renewal_vms_requested}}
+        {{application?.project_modification_request?.vms_requested}}
       </td>
 
     </tr>
@@ -296,17 +319,16 @@
       <td>Flavor: {{flavor.name}}</td>
       <td>{{flavor.counter}}</td>
       <td
-        *ngIf="(application?.project_application_status == application_states.MODIFICATION_REQUESTED  || isModification)  && !application?.projectapplicationrenewal?.is_only_extra_credits_application">
-                                                            <span>
-                                                                {{application?.projectapplicationrenewal?.getFlavorCounter(flavor)}}</span>
+        *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)   || isModification)  && !application.project_credit_request">
+        <span>{{application?.project_modification_request?.getFlavorCounter(flavor)}}</span>
       </td>
     </tr>
     <ng-container
-      *ngFor="let flavor of application?.projectapplicationrenewal?.flavors  ">
+      *ngFor="let flavor of application?.project_modification_request?.flavors  ">
       <tr *ngIf="application?.getFlavorCounter(flavor)== 0">
         <td>Flavor: {{flavor.name}}</td>
         <td>0</td>
-        <td>{{application?.projectapplicationrenewal?.getFlavorCounter(flavor)}}</td>
+        <td>{{application?.project_modification_request?.getFlavorCounter(flavor)}}</td>
 
       </tr>
     </ng-container>
@@ -320,8 +342,8 @@
 
       </td>
 
-      <td *ngIf="(application?.project_application_status == application_states.MODIFICATION_REQUESTED || isModification) && !application?.projectapplicationrenewal?.is_only_extra_credits_application">
-        {{application?.projectapplicationrenewal?.project_application_renewal_total_cores}}
+      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) ">
+        {{application?.project_modification_request?.total_cores}}
       </td>
     </tr>
 
@@ -330,8 +352,8 @@
       <td>{{
           application?.project_application_total_ram}} GB
       </td>
-      <td *ngIf="(application?.project_application_status == application_states.MODIFICATION_REQUESTED || isModification) && !application?.projectapplicationrenewal?.is_only_extra_credits_application">
-        {{application?.projectapplicationrenewal?.project_application_renewal_total_ram}} GB
+      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification)">
+        {{application?.project_modification_request?.total_ram}} GB
       </td>
     </tr>
 
@@ -341,8 +363,8 @@
       <td>{{
           application?.project_application_initial_credits}}
       </td>
-      <td *ngIf="(application?.project_application_status == application_states.MODIFICATION_REQUESTED || isModification) && !application?.projectapplicationrenewal?.is_only_extra_credits_application">
-        Extra: {{application?.projectapplicationrenewal?.project_application_renewal_credits}} (Total: {{application?.TotalExtensionCredits}})
+      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification)">
+        Extra: {{application?.project_credit_request?.extra_credits}} (Total: {{application?.TotalModificationCredits}})
       </td>
     </tr>
 
@@ -350,15 +372,15 @@
       <td>Used Credits</td>
       <td>{{current_credits}}
       </td>
-      <td *ngIf="(application?.project_application_status == application_states.MODIFICATION_REQUESTED || isModification) && !application?.projectapplicationrenewal?.is_only_extra_credits_application">
+      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification)">
         Credits left (with Extra Credits): {{credits_left_with_extra}}
       </td>
     </tr>
 
-    <tr *ngIf="is_vo_admin && application?.projectapplicationrenewal?.is_only_extra_credits_application">
-      <td>Extra Credits</td>
+    <tr *ngIf="is_vo_admin && application?.project_credit_request">
+      <td><strong>Requested Extra Credits</strong></td>
       <td>
-        {{application?.projectapplicationrenewal?.project_application_renewal_credits}} (Total: {{application?.TotalExtensionCredits}})
+        <strong>{{application?.project_credit_request?.extra_credits}}</strong>
       </td>
     </tr>
 
@@ -369,8 +391,8 @@
           application?.project_application_volume_limit
         }} GB
       </td>
-      <td *ngIf="(application?.project_application_status == application_states.MODIFICATION_REQUESTED || isModification) && !application?.projectapplicationrenewal?.is_only_extra_credits_application">
-        {{application?.projectapplicationrenewal?.project_application_renewal_volume_limit}}
+      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification)">
+        {{application?.project_modification_request?.volume_limit}}
         GB
       </td>
     </tr>
@@ -382,8 +404,8 @@
           application?.project_application_volume_counter
         }} volumes
       </td>
-      <td *ngIf="(application?.project_application_status == application_states.MODIFICATION_REQUESTED || isModification) && !application?.projectapplicationrenewal?.is_only_extra_credits_application">
-        {{application?.projectapplicationrenewal?.project_application_renewal_volume_counter}} volumes
+      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) ">
+        {{application?.project_modification_request?.volume_counter}} volumes
       </td>
     </tr>
     <tr *ngIf="application?.project_application_openstack_project">
@@ -393,8 +415,8 @@
           application?.project_application_object_storage
         }} GB
       </td>
-      <td *ngIf="(application?.project_application_status == application_states.MODIFICATION_REQUESTED || isModification) && !application?.projectapplicationrenewal?.is_only_extra_credits_application">
-        {{application?.projectapplicationrenewal?.project_application_renewal_object_storage}}
+      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) ">
+        {{application?.project_modification_request?.object_storage}}
         GB
       </td>
     </tr>
@@ -406,7 +428,7 @@
           application?.project_application_date_status_changed
         }}
       </td>
-      <td *ngIf="(application?.project_application_status == application_states.MODIFICATION_REQUESTED || isModification) && !application?.projectapplicationrenewal?.is_only_extra_credits_application">
+      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) ">
       </td>
     </tr>
 

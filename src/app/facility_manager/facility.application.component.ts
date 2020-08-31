@@ -4,10 +4,17 @@ import {UserService} from '../api-connector/user.service';
 import {GroupService} from '../api-connector/group.service';
 import {ApiSettings} from '../api-connector/api-settings.service';
 import {Application} from '../applications/application.model/application.model';
+import {Application_States} from '../shared/shared_modules/baseClass/abstract-base-class';
 import {ApplicationStatusService} from '../api-connector/application-status.service';
 import {ApplicationsService} from '../api-connector/applications.service';
 import {ApplicationBaseClassComponent} from '../shared/shared_modules/baseClass/application-base-class.component';
-import {forkJoin} from 'rxjs';
+
+enum TabStates {
+  'SUBMITTED' = 0,
+  'CREDITS_EXTENSION' = 1,
+  'LIFETIME_EXTENSION' = 2,
+  'MODIFICATION_EXTENSION' = 3
+}
 
 /**
  * Application component
@@ -22,12 +29,17 @@ import {forkJoin} from 'rxjs';
            })
 export class FacilityApplicationComponent extends ApplicationBaseClassComponent implements OnInit {
 
+  numberOfExtensionRequests: number = 0;
+  numberOfModificationRequests: number = 0;
+  numberOfCreditRequests: number = 0;
+  numberOfProjectApplications: number = 0;
+  Application_States: typeof Application_States = Application_States;
+
   title: string = 'Application Overview';
   /**
    * All Applications waiting for confirmation for the selected facility.
    * @type {Array}
    */
-  all_applications_wfc: Application[] = [];
 
   /**
    * Facilitties where the user is manager ['name',id].
@@ -47,30 +59,17 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 
   applications_history: Application [] = [];
 
+  allApplicationsToCheck: Application[] = [];
+
+  tab_state: number = TabStates.SUBMITTED;
+  TabStates: typeof TabStates = TabStates;
+  loadingApplications: boolean = false;
+
   constructor(userservice: UserService,
               applicationstatusservice: ApplicationStatusService,
               facilityService: FacilityService, applicationsservice: ApplicationsService) {
     super(userservice, applicationstatusservice, applicationsservice, facilityService);
 
-  }
-
-  /**
-   * Approve an application extension.
-   * @param {Application} app the application
-   * @returns {void}
-   */
-  public approveExtension(app: Application): void {
-
-    this.applicationsservice.approveRenewal(app.project_application_id).subscribe((result: any): void => {
-      if (result['Error']) {
-        this.updateNotificationModal('Failed', 'Failed to approve the application modification.', true, 'danger');
-      } else {
-        this.updateNotificationModal('Success', 'Successfully approved the application modification.', true, 'success');
-        this.all_application_modifications.splice(this.all_application_modifications.indexOf(app), 1);
-        this.getAllApplicationsHistory(this.selectedFacility ['FacilityId']);
-
-      }
-    })
   }
 
   getFacilityApplicationById(application: Application): void {
@@ -105,37 +104,105 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
     });
   }
 
-  getFullApplications(facility: number): void {
-    forkJoin(this.facilityService.getFacilityApplicationsWaitingForConfirmation(facility),
-             this.facilityService.getFacilityModificationApplicationsWaitingForConfirmation(facility)).subscribe((res: any): void => {
-      const wfc_apps: Application[] = res[0];
-      const modification_apps: Application[] = res[1];
-
-      for (const wfcApp of wfc_apps) {
-        this.all_applications_wfc.push(new Application(wfcApp))
-      }
-      for (const modificationApp of modification_apps) {
-        this.all_application_modifications.push(new Application(modificationApp))
-      }
-      this.isLoaded = true;
-    })
+  public approveExtension(app: Application): void {
+    this.applicationsservice.approveAdditionalLifetime(app.project_application_id)
+      .subscribe((): void => {
+                   this.updateNotificationModal('Success', 'Successfully approved extension!', true, 'success');
+                   this.allApplicationsToCheck.splice(this.allApplicationsToCheck.indexOf(app), 1);
+                   this.numberOfExtensionRequests--;
+                   this.getAllApplicationsHistory(this.selectedFacility['FacilityId']);
+                 },
+                 (): void => {
+                   this.updateNotificationModal('Failed',
+                                                'The approval of the extension request has failed.',
+                                                true,
+                                                'danger');
+                 });
   }
 
   /**
-   * Gets all applications for the facility.
-   * @param {number} facility
+   * Decline an extension request.
+   * @param {number} application_id
    */
-  getAllApplicationsWFC(facility: number): void {
+  public declineExtension(app: Application): void {
 
-    // todo check if user is VO Admin
-    this.facilityService.getFacilityApplicationsWaitingForConfirmation(facility).subscribe((applications: Application[]): void => {
-      if (applications.length === 0) {
-        this.isLoaded = true;
-      }
-      this.all_applications_wfc.push.apply(this.all_applications_wfc, applications);
+    this.applicationsservice.declineAdditionalLifetime(app.project_application_id)
+      .subscribe((): void => {
+                   this.updateNotificationModal('Success', 'Successfully declined extension!', true, 'success');
+                   this.allApplicationsToCheck.splice(this.allApplicationsToCheck.indexOf(app), 1);
+                   this.numberOfExtensionRequests--;
+                   this.getAllApplicationsHistory(this.selectedFacility['FacilityId']);
+                 },
+                 (): void => {
+                   this.updateNotificationModal('Failed',
+                                                'The decline of the extension request has failed.',
+                                                true,
+                                                'danger');
+                 });
+  }
 
-    });
-    this.isLoaded = true;
+  public approveModification(app: Application): void {
+    this.applicationsservice.approveModificationRequest(app.project_application_id)
+      .subscribe((): void => {
+                   this.updateNotificationModal('Success', 'Successfully approved modification!', true, 'success');
+                   this.allApplicationsToCheck.splice(this.allApplicationsToCheck.indexOf(app), 1);
+                   this.numberOfModificationRequests--;
+                   this.getAllApplicationsHistory(this.selectedFacility['FacilityId']);
+                 },
+                 (): void => {
+                   this.updateNotificationModal('Failed',
+                                                'The approval of the modification request has failed.',
+                                                true,
+                                                'danger');
+                 });
+  }
+
+  public declineModification(app: Application): void {
+    this.applicationsservice.declineModificationRequest(app.project_application_id)
+      .subscribe((): void => {
+                   this.updateNotificationModal('Success', 'Successfully declined modification!', true, 'success');
+                   this.allApplicationsToCheck.splice(this.allApplicationsToCheck.indexOf(app), 1);
+                   this.numberOfModificationRequests--;
+                   this.getAllApplicationsHistory(this.selectedFacility['FacilityId']);
+                 },
+                 (): void => {
+                   this.updateNotificationModal('Failed',
+                                                'The decline of the modification request has failed.',
+                                                true,
+                                                'danger');
+                 });
+  }
+
+  public approveCreditRequest(app: Application): void {
+    this.applicationsservice.approveAdditionalCreditsRequest(app.project_application_id)
+      .subscribe((): void => {
+                   this.updateNotificationModal('Success', 'Successfully approved credit extension!', true, 'success');
+                   this.allApplicationsToCheck.splice(this.allApplicationsToCheck.indexOf(app), 1);
+                   this.numberOfCreditRequests--;
+                   this.getAllApplicationsHistory(this.selectedFacility['FacilityId']);
+                 },
+                 (): void => {
+                   this.updateNotificationModal('Failed',
+                                                'The approval of the credit request has failed.',
+                                                true,
+                                                'danger');
+                 });
+  }
+
+  public declineCreditRequest(app: Application): void {
+    this.applicationsservice.declineAdditionalCredits(app.project_application_id)
+      .subscribe((): void => {
+                   this.updateNotificationModal('Success', 'Successfully declined credit extension!', true, 'success');
+                   this.allApplicationsToCheck.splice(this.allApplicationsToCheck.indexOf(app), 1);
+                   this.numberOfCreditRequests--;
+                   this.getAllApplicationsHistory(this.selectedFacility['FacilityId']);
+                 },
+                 (): void => {
+                   this.updateNotificationModal('Failed',
+                                                'The decline of the credit request has failed.',
+                                                true,
+                                                'danger');
+                 });
   }
 
   /**
@@ -148,9 +215,9 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
     this.facilityService.approveFacilityApplication(this.selectedFacility['FacilityId'], app.project_application_id).subscribe(
       (): void => {
         this.updateNotificationModal('Success', 'Successfully approved the application.', true, 'success');
-        this.all_applications_wfc.splice(this.all_applications_wfc.indexOf(app), 1);
-
-        this.getAllApplicationsHistory(this.selectedFacility ['FacilityId']);
+        this.allApplicationsToCheck.splice(this.allApplicationsToCheck.indexOf(app), 1);
+        this.numberOfProjectApplications = this.numberOfProjectApplications - 1;
+        this.getAllApplicationsHistory(this.selectedFacility['FacilityId']);
       },
       (): void => {
         this.updateNotificationModal('Failed', 'Failed to approve the application.', true, 'danger');
@@ -159,35 +226,23 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
   }
 
   /**
-   * Decline an extension request.
-   * @param {number} application_id
-   */
-  public declineExtension(app: Application): void {
-    const modificaton_requested: number = 4;
-    this.applicationstatusservice.setApplicationStatus(app.project_application_id, modificaton_requested).subscribe((): void => {
-      this.updateNotificationModal('Success', 'Successfully declined!', true, 'success');
-      this.all_application_modifications.splice(this.all_application_modifications.indexOf(app), 1);
-      this.getAllApplicationsHistory(this.selectedFacility ['FacilityId']);
-    })
-
-  }
-
-  /**
    * Declines an Application.
    * @param {number} application_id
    */
-  declineApplication(application_id: number): void {
+  declineApplication(app: Application): void {
     this.updateNotificationModal('Decline Application', 'Waiting..', true, 'info');
 
-    this.facilityService.declineFacilityApplication(this.selectedFacility['FacilityId'], application_id).subscribe(
-      (): void => {
-        this.updateNotificationModal('Success', 'Successfully declined the application.', true, 'success');
-
-        this.all_applications_wfc = [];
-        this.getAllApplicationsWFC(this.selectedFacility['FacilityId'])
-      },
-      (): void => {
-        this.updateNotificationModal('Failed', 'Failed to decline the application.', true, 'danger');
+    this.facilityService.declineFacilityApplication(this.selectedFacility['FacilityId'],
+                                                    parseInt(app.project_application_id.toString(), 10))
+      .subscribe(
+        (): void => {
+          this.updateNotificationModal('Success', 'Successfully declined the application.', true, 'success');
+          this.allApplicationsToCheck.splice(this.allApplicationsToCheck.indexOf(app), 1);
+          this.numberOfProjectApplications = this.numberOfProjectApplications - 1;
+          this.getAllApplicationsHistory(this.selectedFacility['FacilityId']);
+        },
+        (): void => {
+          this.updateNotificationModal('Failed', 'Failed to decline the application.', true, 'danger');
 
       })
   }
@@ -198,23 +253,92 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
    */
   onChangeSelectedFacility(): void {
     this.isLoaded = false;
-    this.all_applications_wfc = [];
+    this.allApplicationsToCheck = [];
     this.all_application_modifications = [];
     this.applications_history = [];
-    this.getFullApplications(this.selectedFacility ['FacilityId']);
+    // this.getFullApplications(this.selectedFacility ['FacilityId']);
     this.getAllApplicationsHistory(this.selectedFacility ['FacilityId']);
 
+  }
+
+  /**
+   * may need changes due to multiple facilities for one single fm?
+   */
+  changeTabState(state: number): void {
+    if (!this.loadingApplications) {
+      this.tab_state = state;
+      this.getApplicationsByTabState();
+    }
+  }
+
+  getApplicationsByTabState(): void {
+    this.allApplicationsToCheck = [];
+    this.loadingApplications = true;
+    if (this.tab_state === TabStates.SUBMITTED) {
+      this.facilityService.getWfcSubmittedApplications(this.selectedFacility['FacilityId'])
+        .subscribe((applications: Application[]): void => {
+          if (applications.length === 0) {
+            this.isLoaded_userApplication = true;
+          }
+          for (const application of applications) {
+            this.allApplicationsToCheck.push(new Application(application));
+          }
+          this.loadingApplications = false;
+        });
+    } else if (this.tab_state === TabStates.MODIFICATION_EXTENSION) {
+      this.facilityService.getWfcModificationRequestedApplications(this.selectedFacility ['FacilityId'])
+        .subscribe((applications: Application[]): void => {
+          if (applications.length === 0) {
+            this.isLoaded_userApplication = true;
+          }
+          for (const application of applications) {
+            this.allApplicationsToCheck.push(new Application(application));
+          }
+          this.loadingApplications = false;
+        });
+    } else if (this.tab_state === TabStates.CREDITS_EXTENSION) {
+      this.facilityService.getWfcCreditsRequestedApplications(this.selectedFacility ['FacilityId'])
+        .subscribe((applications: Application[]): void => {
+          if (applications.length === 0) {
+            this.isLoaded_userApplication = true;
+          }
+          for (const application of applications) {
+            this.allApplicationsToCheck.push(new Application(application));
+          }
+          this.loadingApplications = false;
+        });
+    } else if (this.tab_state === TabStates.LIFETIME_EXTENSION) {
+      this.facilityService.getWfcLifetimeRequestedApplications(this.selectedFacility ['FacilityId'])
+        .subscribe((applications: Application[]): void => {
+          if (applications.length === 0) {
+            this.isLoaded_userApplication = true;
+          }
+          for (const application of applications) {
+            this.allApplicationsToCheck.push(new Application(application));
+          }
+          this.loadingApplications = false;
+        });
+    }
   }
 
   ngOnInit(): void {
     this.facilityService.getManagerFacilities().subscribe((result: any): void => {
       this.managerFacilities = result;
       this.selectedFacility = this.managerFacilities[0];
+      this.facilityService.getExtensionRequestsCounterFacility(this.selectedFacility['FacilityId'])
+        .subscribe((res: any): void => {
+          this.numberOfCreditRequests = res['credits_extension_requests'];
+          this.numberOfExtensionRequests = res['lifetime_extension_requests'];
+          this.numberOfModificationRequests = res['modification_requests'];
+          this.numberOfProjectApplications = res['applications_submitted'];
+        });
+      this.changeTabState(TabStates.SUBMITTED);
+      this.isLoaded = true;
+
       this.facilityService.getFacilityResources(this.selectedFacility['FacilityId']).subscribe();
       this.getApplicationStatus();
-      this.getFullApplications(this.selectedFacility ['FacilityId']);
+     // this.getFullApplications(this.selectedFacility ['FacilityId']);
       this.getAllApplicationsHistory(this.selectedFacility ['FacilityId']);
-
     })
   }
 

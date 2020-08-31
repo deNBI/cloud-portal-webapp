@@ -9,9 +9,9 @@ import * as moment from 'moment';
 import {ProjectMemberApplication} from './project_member_application';
 import {ComputecenterComponent} from './computecenter.component';
 import {Userinfo} from '../userinfo/userinfo.model';
-import {forkJoin, Observable} from 'rxjs';
+import {forkJoin, Observable, Subscription} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Application} from '../applications/application.model/application.model';
+import {Application, User} from '../applications/application.model/application.model';
 import {ApplicationBaseClassComponent} from '../shared/shared_modules/baseClass/application-base-class.component';
 import {ApplicationStatusService} from '../api-connector/application-status.service';
 import {FacilityService} from '../api-connector/facility.service';
@@ -29,6 +29,10 @@ import {EdamOntologyTerm} from '../applications/edam-ontology-term';
 import {AutocompleteComponent} from 'angular-ng-autocomplete';
 import {DOCUMENT} from '@angular/common';
 import {Chart} from 'chart.js';
+import {Application_States, ExtensionRequestType} from '../shared/shared_modules/baseClass/abstract-base-class';
+import {ApplicationLifetimeExtension} from '../applications/application_extension.model';
+import {ApplicationModification} from '../applications/application_modification.model';
+import {ApplicationCreditRequest} from '../applications/application_credit_request';
 
 /**
  * Projectoverview component.
@@ -51,6 +55,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
   @ViewChild(NgForm) simpleVmForm: NgForm;
   @ViewChild('creditsChart') creditsCanvas: ElementRef;
+  private subscription: Subscription = new Subscription();
 
   /**
    * If at least 1 flavor is selected.
@@ -62,6 +67,11 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
    * The credits for the extension.
    */
   private extensionCredits: number = 0;
+
+  /**
+   * the credits for a resource modification.
+   */
+  private modificationCredits: number = 0;
 
   project_id: string;
   application_id: string;
@@ -77,6 +87,18 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
    * @type {number}
    */
   extension_status: number = 0;
+  /**
+   * id of the modification status
+   * @type {number}, needs yet to be implemented
+   */
+  modification_status: number = 0;
+
+  /**
+   * defines weither the request is an extension (1), modification (2) or credit (3) request.
+   * @type {number}, initialized with 0
+   */
+  request_type: number = ExtensionRequestType.NONE;
+
   newDoi: string;
   remove_members_clicked: boolean;
   life_time_string: string;
@@ -85,6 +107,9 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   invitation_link: string;
   filteredMembers: any = null;
   project_application: Application;
+  project_extension: ApplicationLifetimeExtension;
+  project_modification: ApplicationModification;
+  project_credit_request: ApplicationCreditRequest;
   project_service_in_development: boolean = true;
   application_action: string = '';
   application_member_name: string = '';
@@ -122,6 +147,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   private updateCreditsHistoryIntervals: ReturnType<typeof setTimeout>;
   credits_allowed: boolean = false;
   creditsChart: any;
+  ExtensionRequestType: typeof ExtensionRequestType = ExtensionRequestType;
+  Application_States: typeof Application_States = Application_States;
 
   constructor(private flavorService: FlavorService,
               private groupService: GroupService,
@@ -170,6 +197,30 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
     this.edam_ontology.clear();
   }
 
+  calculateCreditsLifeTime(): void {
+    this.subscription.add(
+      this.creditsService.getExtraCreditsForExtension(this.project_application.project_application_total_cores,
+                                                      this.project_application.project_application_total_ram,
+                                                      this.project_extension.extra_lifetime,
+                                                      this.project_application.project_application_id.toString()).subscribe(
+        (credits: number): void => {
+          this.project_extension.extra_credits = credits;
+        }))
+
+  }
+
+  calculateCreditsModification(): void {
+    this.subscription.add(
+      this.creditsService.getExtraCreditsForExtension(this.project_modification.total_cores,
+                                                      this.project_modification.total_ram,
+                                                      this.project_application.project_application_lifetime,
+                                                      this.project_application.project_application_id.toString()).subscribe(
+        (credits: number): void => {
+          this.project_modification.extra_credits = credits;
+        }))
+
+  }
+
   calculateCredits(lifetime: number): void {
     if (!this.credits_allowed && !this.is_vo_admin) {
       return;
@@ -181,7 +232,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
                                                     this.totalRAM, lifetime,
                                                     this.project_application.project_application_id.toString()).subscribe(
       (credits: number): void => {
-        this.project_application.projectapplicationrenewal.project_application_renewal_credits = credits;
+        this.project_application.project_modification_request.extra_credits = credits;
       })
 
   }
@@ -266,6 +317,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 }
 
   startUpdateCreditUsageLoop(): void {
+
     if (!this.credits_allowed && !this.is_vo_admin) {
       return;
     }
@@ -277,21 +329,24 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
       }
     ).catch((err: Error): void => {
       console.log(err.message)
-    })
+    });
 
     this.fetchCreditHistoryOfProject();
 
     this.updateCreditsUsedIntervals = setInterval(
       (): any =>
         // tslint:disable-next-line:max-line-length
-        this.creditsService.getCurrentCreditsOfProject(Number(this.project_application.project_application_perun_id.toString())).toPromise().then(
+        this.subscription.add(this.creditsService.getCurrentCreditsOfProject(Number(this.project_application.project_application_perun_id.toString())).subscribe(
           (credits: number): void => {
             this.current_credits = credits;
+          },
+          (err: Error): void => {
+            console.log(err.message)
           }
-        ).catch((err: Error): void => {
-          console.log(err.message)
-        }),
-      10000);
+
+        )),
+            10000
+     );
 
     this.updateCreditsHistoryIntervals = setInterval(
       (): any =>
@@ -346,6 +401,40 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
     });
   }
 
+  initiateLifetimeExtension(): void {
+    this.project_extension = new ApplicationLifetimeExtension(null);
+    this.project_extension.project_application_id = this.project_application.project_application_id;
+    this.project_extension.extra_lifetime = 0;
+    this.project_extension.comment = '';
+  }
+
+  initiateModificationRequest(): void {
+    this.project_modification = new ApplicationModification(null);
+    this.project_modification.project_application_id = this.project_application.project_application_id;
+    this.project_modification.volume_counter = this.project_application.project_application_volume_counter;
+    this.project_modification.volume_limit = this.project_application.project_application_volume_limit;
+    if (this.project_application.project_application_openstack_project) {
+      this.project_modification.object_storage = this.project_application.project_application_object_storage;
+      this.project_modification.cloud_service_develop =
+        this.project_application.project_application_cloud_service_develop;
+      this.project_application.project_application_cloud_service =
+        this.project_application.project_application_cloud_service;
+      this.project_application.project_application_cloud_service_user_number =
+        this.project_application.project_application_cloud_service_user_number;
+    }
+    this.project_modification.comment = this.project_application.project_application_comment;
+    this.project_modification.flavors = this.project_application.flavors;
+    this.project_modification.total_cores = this.project_application.project_application_total_cores;
+    this.project_modification.total_ram = this.project_application.project_application_total_ram;
+  }
+
+  initiateCreditRequest(): void {
+    this.project_credit_request = new ApplicationCreditRequest(null);
+    this.project_credit_request.project_application_id = this.project_application.project_application_id;
+    this.project_credit_request.comment = '';
+    this.project_credit_request.extra_credits = 0;
+  }
+
   getApplication(): void {
     this.applicationsservice
       .getApplication(this.application_id)
@@ -360,9 +449,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
           this.project_application = new Application(aj);
           this.credits_allowed = aj['credits_allowed'];
-          if (!this.project_application.projectapplicationrenewal) {
-            this.project_application.inititatenExtension();
-          }
 
           if (this.project_application) {
             this.applicationsservice.getApplicationPerunId(this.application_id).subscribe((id: any): void => {
@@ -376,6 +462,29 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
               }
 
             })
+            if (this.project_application?.project_modification_request) {
+              this.project_modification = this.project_application.project_modification_request;
+            } else {
+              this.initiateModificationRequest();
+            }
+            if (this.project_application?.project_lifetime_request) {
+              this.project_extension = this.project_application.project_lifetime_request;
+            } else {
+              this.initiateLifetimeExtension();
+
+            }
+            if (this.project_application?.project_credit_request) {
+              this.project_credit_request = this.project_application.project_credit_request;
+            } else {
+              this.initiateCreditRequest();
+            }
+            this.userservice.getLoggedUser().subscribe((user: User): void => {
+              this.project_extension.user = user;
+              this.project_modification.user = user;
+              this.project_credit_request.project_credit_request_user = user;
+
+            });
+            this.isLoaded = true;
           } else {
             this.isLoaded = true;
           }
@@ -388,24 +497,9 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
         })
   }
 
-  /**
-   * Submits an renewal request for an application.
-   * @param {NgForm} form
-   * @param {boolean} isExtraCreditsApplication: whether or not only extra credits are applied for
-   */
-  onSubmit(form: NgForm, isExtraCreditsApplication: boolean): void {
-    if (isExtraCreditsApplication) {
-      this.project_application.projectapplicationrenewal.is_only_extra_credits_application = isExtraCreditsApplication;
-      this.project_application.projectapplicationrenewal.project_application_renewal_comment = form.controls['project_application_extra_credits_comment'].value;
-      this.project_application.projectapplicationrenewal.project_application_renewal_credits = form.controls['project_application_extra_credits'].value;
-    }
+  public requestModification(): void {
 
-    this.requestExtension();
-
-  }
-
-  public requestExtension(): void {
-    this.applicationsservice.requestRenewal(this.project_application.projectapplicationrenewal)
+    this.applicationsservice.requestModification(this.project_modification)
       .subscribe((result: { [key: string]: string }): void => {
         if (result['Error']) {
           this.extension_status = 2
@@ -424,6 +518,42 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
         }
 
       })
+  }
+
+  public requestCreditsModification(): void {
+    this.project_credit_request.project_application_id = this.project_application.project_application_id;
+    this.applicationsservice.requestAdditionalCredits(this.project_credit_request)
+      .subscribe((result: { [key: string]: string }): void => {
+        if (result['Error']) {
+          this.extension_status = 2;
+        } else {
+          this.extension_status = 1;
+        }
+        this.getApplication();
+      });
+  }
+
+  public requestExtension(): void {
+    this.project_extension.project_application_id = this.project_application.project_application_id;
+    this.applicationsservice.requestAdditionalLifetime(this.project_extension)
+      .subscribe((result: { [key: string]: string }): void => {
+        if (result['Error']) {
+          this.extension_status = 2;
+        } else {
+          this.extension_status = 1;
+        }
+        if (this.selected_ontology_terms.length > 0) {
+          this.applicationsservice.addEdamOntologyTerms(this.application_id,
+                                                        this.selected_ontology_terms
+          ).subscribe((): void => {
+            this.getApplication()
+
+          });
+        } else {
+          this.getApplication()
+        }
+
+      });
 
   }
 
@@ -497,15 +627,20 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
       this.getListOfTypes();
       this.getDois();
       this.is_vo_admin = is_vo;
+
     });
 
   }
 
   ngOnDestroy(): void {
+    this.subscription.unsubscribe();
     try {
-      clearInterval(this.updateCreditsUsedIntervals);
-      clearInterval(this.updateCreditsHistoryIntervals);
-    } catch (someError) {}
+      if (this.updateCreditsUsedIntervals) {
+        clearInterval(this.updateCreditsUsedIntervals);
+      }
+    } catch (someError) {
+
+    }
   }
 
   getDois(): void {
@@ -570,10 +705,12 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
    * Get the facility of an application.
    * @param {Application} app
    */
-  getFacilityProject(): void {
+  getFacilityProject():
+    void {
 
-    if (!this.project_application.ComputeCenter && this.project_application.project_application_status !== this.application_states.SUBMITTED
-      && this.project_application.project_application_status !== this.application_states.TERMINATED) {
+    if (!this.project_application.ComputeCenter
+      && !this.project_application.hasSubmittedStatus()
+      && !(this.project_application.hasTerminatedStatus() )) {
       this.groupService.getFacilityByGroup(
         this.project_application.project_application_perun_id.toString()).subscribe((res: object): void => {
 
@@ -596,23 +733,23 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
     this.groupService.rejectGroupApplication(project, application)
       .subscribe((tmp_application: any): void => {
-        this.project.ProjectMemberApplications = [];
+                   this.project.ProjectMemberApplications = [];
 
-        if (tmp_application['state'] === 'REJECTED') {
-          this.application_action_success = true;
+                   if (tmp_application['state'] === 'REJECTED') {
+                     this.application_action_success = true;
 
-        } else if (tmp_application['message']) {
-          this.application_action_success = false;
+                   } else if (tmp_application['message']) {
+                     this.application_action_success = false;
 
-          this.application_action_error_message = tmp_application['message'];
-        } else {
-          this.application_action_success = false;
-        }
-        this.application_action = 'rejected';
-        this.application_member_name = membername;
-        this.application_action_done = true;
-        this.getUserProjectApplications();
-        this.loaded = true;
+                     this.application_action_error_message = tmp_application['message'];
+                   } else {
+                     this.application_action_success = false;
+                   }
+                   this.application_action = 'rejected';
+                   this.application_member_name = membername;
+                   this.application_action_done = true;
+                   this.getUserProjectApplications();
+                   this.loaded = true;
 
                  }
       );
@@ -701,7 +838,10 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
         this.getMembersOfTheProject();
       } else {
         this.isLoaded = true;
-        this.startUpdateCreditUsageLoop();
+        if (this.project_application?.project_application_perun_id) {
+          this.startUpdateCreditUsageLoop();
+        }
+
       }
     })
 
@@ -730,7 +870,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
         }
         this.isLoaded = true;
-        this.startUpdateCreditUsageLoop();
       })
 
     });
@@ -783,10 +922,16 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
   }
 
-  removeCheckedMembers(groupId: number | string): void {
+  removeCheckedMembers(groupId
+                         :
+                         number | string
+  ):
+    void {
     this.remove_members_clicked = true;
 
-    const members_in: ProjectMember[] = [];
+    const members_in
+      :
+      ProjectMember[] = [];
 
     const observables: Observable<number>[] = this.checked_member_list
       .map((id: number): Observable<any> => this.groupService.removeMember(groupId, id, this.project.ComputeCenter.FacilityId));
@@ -841,7 +986,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
           }
 
           this.valuesToConfirm.push(this.matchString(key.toString(), form.controls[key].value.toString()));
-
         }
       }
 
@@ -1049,7 +1193,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   }
 
   onChangeFlavor(flavor: Flavor, value: number): void {
-    this.project_application.projectapplicationrenewal.setFlavorInFlavors(flavor, value)
+    this.project_modification.setFlavorInFlavors(flavor, value)
 
     this.checkIfMinVmIsSelected();
   }

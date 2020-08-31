@@ -31,12 +31,14 @@ import {ClusterOverviewComponent} from './clusters/clusteroverview/clusterOvervi
 import {ClusterinfoComponent} from './clusters/clusterinfo/clusterinfo.component';
 import {ClusterstatusComponent} from './clusters/clusterstatus/clusterstatus.component';
 import {VolumStatusComponent} from './volumes/volum-status/volum-status.component';
+import {PipeModuleModule} from '../pipe-module/pipe-module.module';
 
 /**
  * VM module.
  */
 @NgModule({
             imports: [
+              PipeModuleModule,
               ClickOutsideModule,
               PublicKeyModule,
               VmRoutingModule,

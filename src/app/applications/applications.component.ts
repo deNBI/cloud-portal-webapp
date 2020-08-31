@@ -13,6 +13,15 @@ import {Client} from '../vo_manager/clients/client.model';
 import {ApplicationBaseClassComponent} from '../shared/shared_modules/baseClass/application-base-class.component';
 import {ComputecenterComponent} from '../projectmanagement/computecenter.component';
 import {is_vo} from '../shared/globalvar';
+import {Application_States} from '../shared/shared_modules/baseClass/abstract-base-class';
+
+enum TabStates {
+  'SUBMITTED' = 0,
+  'CREDITS_EXTENSION' = 1,
+  'LIFETIME_EXTENSION' = 2,
+  'MODIFICATION_EXTENSION' = 3
+
+}
 
 /**
  * Application Overview component.
@@ -26,12 +35,19 @@ import {is_vo} from '../shared/globalvar';
 export class ApplicationsComponent extends ApplicationBaseClassComponent implements OnInit {
 
   title: string = 'Application Overview';
+  tab_state: number = TabStates.SUBMITTED;
+  TabStates: typeof TabStates = TabStates;
+  selectedCenter: {[key: string]: string} = {};
+
+  loading_applications: boolean = false;
 
   /**
    * All Applications, just visibile for a vo admin.
    * @type {Array}
    */
   all_applications: Application[] = [];
+
+  applications_history: Application[] = [];
 
   /**
    * Limits information for Client tested/used for Simple Vm Project creation.
@@ -48,6 +64,12 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
    */
 
   private WAIT_FOR_EXTENSION_STATUS: number = 6;
+
+  numberOfExtensionRequests: number = 0;
+  numberOfModificationRequests: number = 0;
+  numberOfCreditRequests: number = 0;
+  numberOfProjectApplications: number = 0;
+  Application_States: typeof Application_States = Application_States;
 
   /**
    * Constructor.
@@ -76,11 +98,17 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
     this.is_vo_admin = is_vo;
     this.getApplicationStatus();
     if (this.is_vo_admin) {
-      this.getAllApplications();
+      this.getSubmittedApplications();
+      this.getApplicationHistory();
       this.getComputeCenters();
-
+      this.applicationsservice.getExtensionRequestsCounter().subscribe((result: any): void => {
+        this.numberOfCreditRequests = result['credits_extension_requests_vo'];
+        this.numberOfExtensionRequests = result['lifetime_extension_requests_vo'];
+        this.numberOfModificationRequests = result['modification_requests_vo'];
+        this.numberOfProjectApplications = result['applications_submitted_vo'];
+      });
     } else {
-      this.isLoaded_AllApplication = true;
+      this.isLoaded = true;
     }
 
   }
@@ -102,16 +130,20 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
   }
 
+  changeTabState(state: number): void {
+    if (!this.loading_applications) {
+      this.tab_state = state;
+      this.getApplicationsByTabState();
+    }
+  }
+
   /**
    * Get the facility of an application.
    * @param {Application} app
    */
   getFacilityProject(app: Application): void {
-
-    // tslint:disable-next-line:max-line-length
-    if (!app.ComputeCenter && app.project_application_status !== this.application_states.SUBMITTED && app.project_application_status !== this.application_states.TERMINATED) {
+    if (!app.ComputeCenter && !app.hasSubmittedStatus() && !app.hasTerminatedStatus()) {
       this.groupservice.getFacilityByGroup(app.project_application_perun_id.toString()).subscribe((res: object): void => {
-
         const login: string = res['Login'];
         const suport: string = res['Support'];
         const facilityname: string = res['Facility'];
@@ -122,7 +154,207 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
       })
     }
+  }
 
+  approveLifetimeExtension(application: Application): void {
+
+    this.applicationsservice.approveAdditionalLifetime(application.project_application_id)
+      .subscribe((res: any): void => {
+                   if (application.project_application_openstack_project) {
+                     this.updateNotificationModal('Success', 'The request has been sent to the facility manager.', true, 'success');
+                   } else {
+                     this.updateNotificationModal('Success', 'The project has been extended!', true, 'success');
+                   }
+                   this.all_applications.splice(this.all_applications.indexOf(application), 1);
+                   this.numberOfExtensionRequests--;
+                 },
+                 (err: any): void => {
+                   console.log('error', err.status);
+                   this.updateNotificationModal('Failed', 'Project lifetime could not be extendend!', true, 'danger');
+                 });
+  }
+
+  declineLifetimeExtension(application: Application): void {
+
+    this.applicationsservice.deleteAdditionalLifetimeRequests(application.project_application_id)
+      .subscribe(
+        (res: any): void => {
+          this.updateNotificationModal('Declined', 'The project extension was declined!', true, 'success');
+
+          this.all_applications.splice(this.all_applications.indexOf(application), 1);
+          this.numberOfExtensionRequests--;
+        },
+        (err: any): void => {
+          console.log('error', err.status);
+          this.updateNotificationModal('Failed', 'Decline of project extension failed!', true, 'danger');
+        })
+  }
+
+  approveModificationRequest(application: Application): void {
+
+    this.applicationsservice.approveModificationRequest(application.project_application_id)
+      .subscribe((res: any): void => {
+                   this.updateNotificationModal('Success', 'The resource modification request was approved!', true, 'success');
+                   this.all_applications.splice(this.all_applications.indexOf(application), 1);
+                   this.numberOfModificationRequests--;
+                 },
+                 (err: any): void => {
+                   console.log('error', err.status);
+                   this.updateNotificationModal('Failed', 'Approval of resource modification failed!', true, 'danger');
+                 });
+  }
+
+  declineModificationRequest(application: Application): void {
+
+    this.applicationsservice.deleteModificationRequest(application.project_application_id)
+      .subscribe((res: any): void => {
+                   this.updateNotificationModal('Declined', 'The resource modification request was declined!', true, 'success');
+                   this.all_applications.splice(this.all_applications.indexOf(application), 1);
+                   this.numberOfModificationRequests--;
+                 },
+                 (err: any): void => {
+                   console.log('error', err.status);
+                   this.updateNotificationModal('Failed', 'Decline of resource modification failed!', true, 'danger');
+                 });
+  }
+
+  approveCreditExtension(application: Application): void {
+    this.applicationsservice.approveAdditionalCreditsRequest(application.project_application_id)
+      .subscribe((res: any): void => {
+                   this.updateNotificationModal('Success', 'The credit extension request was approved!', true, 'success');
+                   this.all_applications.splice(this.all_applications.indexOf(application), 1);
+                   this.numberOfCreditRequests--;
+                 },
+                 (err: any): void => {
+                   console.log('error', err.status);
+                   this.updateNotificationModal('Failed', 'Approval of credit extension failed!', true, 'danger');
+                 });
+  }
+
+  declineCreditExtension(application: Application): void {
+    this.applicationsservice.deleteAdditionalCreditsRequests(application.project_application_id)
+      .subscribe((res: any): void => {
+                   this.updateNotificationModal('Declined', 'The credit extension request was declined!', true, 'success');
+                   this.all_applications.splice(this.all_applications.indexOf(application), 1)
+                   this.numberOfCreditRequests = this.numberOfCreditRequests - 1;
+                 },
+                 (err: any): void => {
+                   console.log('error', err.status);
+                   this.updateNotificationModal('Failed', 'Decline of credit extension failed!', true, 'danger');
+                 });
+  }
+
+  /**
+   * Get all Applications if user is admin.
+   */
+  getSubmittedApplications(): void {
+    if (this.is_vo_admin) {
+
+      this.applicationsservice.getSubmittedApplications().subscribe((applications: Application[]): void => {
+        if (applications.length === 0) {
+          this.isLoaded_userApplication = true;
+        }
+        for (const application of applications) {
+          this.all_applications.push(new Application(application));
+
+        }
+        this.isLoaded = true;
+        for (const app of this.all_applications) {
+
+          this.getFacilityProject(app);
+        }
+
+      })
+    }
+  }
+
+  getApplicationHistory(): void {
+    this.applicationsservice.getAllApplications()
+      .subscribe((applications: Application[]): void => {
+        if (applications.length > 0) {
+          for (const application of applications) {
+            this.applications_history.push(application);
+          }
+        }
+    });
+  }
+
+  /**
+   * Emptying all application lists, so applications don't get pushed to the lists multiple times.
+   */
+  clearApplicationLists(): void {
+    this.all_applications = [];
+  }
+
+  /**
+   * Loading Applications dependent from the current tab selected (submitted, credits, lifetime, modification)
+   */
+   getApplicationsByTabState(): void {
+     this.loading_applications = true;
+     if (this.is_vo_admin) {
+      this.clearApplicationLists();
+      if (this.tab_state === TabStates.SUBMITTED) {
+        this.applicationsservice.getSubmittedApplications().subscribe((applications: Application[]): void => {
+          if (applications.length === 0) {
+            this.isLoaded_userApplication = true;
+          }
+          for (const application of applications) {
+            this.all_applications.push(new Application(application));
+          }
+          for (const app of this.all_applications) {
+            this.getFacilityProject(app);
+          }
+          this.isLoaded = true;
+          this.loading_applications = false;
+        });
+      } else if (this.tab_state === TabStates.CREDITS_EXTENSION) {
+        this.applicationsservice.getCreditsExtensionRequest().subscribe(
+          (credit_applications: Application[]): void => {
+            if (credit_applications.length === 0) {
+              // bool here?
+            }
+            for (const credit_application of credit_applications) {
+              this.all_applications.push(new Application(credit_application));
+            }
+            for (const app of this.all_applications) {
+              this.getFacilityProject(app);
+            }
+            this.isLoaded = true;
+            this.loading_applications = false;
+          });
+      } else if (this.tab_state === TabStates.LIFETIME_EXTENSION) {
+        this.applicationsservice.getLifetimeRequestedApplications().subscribe(
+          (lifetime_applications: Application[]): void => {
+            if (lifetime_applications.length === 0) {
+              // bool here?
+            }
+            for (const lifetime_application of lifetime_applications) {
+              this.all_applications.push(new Application(lifetime_application));
+            }
+            for (const app of this.all_applications) {
+              this.getFacilityProject(app);
+            }
+            this.isLoaded = true;
+            this.loading_applications = false;
+
+          });
+      } else if (this.tab_state === TabStates.MODIFICATION_EXTENSION) {
+        this.applicationsservice.getModificationRequestedApplications().subscribe(
+          (modification_applications: Application[]): void => {
+            if (modification_applications.length === 0) {
+              // bool here?
+            }
+            for (const modification_application of modification_applications) {
+              this.all_applications.push(new Application(modification_application));
+            }
+            for (const app of this.all_applications) {
+              this.getFacilityProject(app);
+            }
+            this.isLoaded = true;
+            this.loading_applications = false;
+          });
+      }
+    }
   }
 
   /**
@@ -139,12 +371,10 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
           this.all_applications.push(new Application(application));
 
         }
-        this.isLoaded_AllApplication = true;
+        this.isLoaded = true;
         for (const app of this.all_applications) {
-          if (app.project_application_status === this.application_states.WAIT_FOR_CONFIRMATION ||
-            app.project_application_status === this.application_states.MODIFICATION_REQUESTED) {
-            this.getFacilityProject(app);
-          }
+
+          this.getFacilityProject(app);
         }
 
       })
@@ -168,69 +398,6 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
                  (error: any): void => {
                    console.log(error);
                  });
-
-  }
-
-  public approveExtension(app: Application): void {
-
-    if (app.project_application_openstack_project) {
-      if (!app.ComputeCenter) {
-        this.applicationsservice.approveRenewal(app.project_application_id.toString()).subscribe((result: any): void => {
-          if (result['Error']) {
-            this.extension_status = 2;
-            this.updateNotificationModal('Failed', 'Failed to approve the application modification.', true, 'danger');
-          } else {
-            this.extension_status = 3;
-
-            this.updateNotificationModal('Success', 'Successfully approved the application modification.', true, 'success');
-            this.all_applications = [];
-            this.user_applications = [];
-            this.getAllApplications();
-
-          }
-        });
-      } else {
-        this.applicationstatusservice.setApplicationStatus(
-          app.project_application_id.toString(),
-          this.WAIT_FOR_EXTENSION_STATUS.toString()).subscribe((): void => {
-          this.extension_status = 5;
-          this.getApplication(app);
-
-          for (const appl of this.user_applications) {
-            if (this.selectedApplication.project_application_id.toString() === appl.project_application_id.toString()) {
-              break;
-            }
-
-          }
-        })
-      }
-    } else {
-      this.applicationsservice.approveRenewal(app.project_application_id).subscribe((result: { [key: string]: string }): void => {
-        if (result['Error']) {
-          this.extension_status = 2
-        } else {
-          this.extension_status = 3;
-        }
-        this.getApplication(this.selectedApplication);
-
-      })
-    }
-  }
-
-  /**
-   * Decline an extension request.
-   * @param {number} application_id
-   */
-  public declineExtension(application_id: number): void {
-    this.applicationsservice.declineRenewal(application_id).subscribe((result: { [key: string]: string }): void => {
-      if (result != null) {
-        this.extension_status = 2
-      } else {
-        this.extension_status = 4;
-      }
-      this.getApplication(this.selectedApplication);
-
-    })
   }
 
   /**
@@ -262,6 +429,8 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
                    } else {
                      this.updateNotificationModal('Success', 'The new project was created', true, 'success');
+                     this.all_applications.splice(this.all_applications.indexOf(application), 1);
+                     this.numberOfProjectApplications--;
                    }
                    this.getApplication(application);
                  },
@@ -344,10 +513,11 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
             this.setNoResourcesClientNotification(res);
             this.updateNotificationModal('Failed', `The client ${res['client_name']} has not the necessary resources left!`,
                                          true, 'danger');
-
           } else {
             this.setNotificationClient(application_id);
-            this.reloadApplicationList(application_id)
+            this.all_applications.splice(this.all_applications.indexOf(app), 1);
+            this.numberOfProjectApplications--;
+            // this.reloadApplicationList(application_id)
           }
 
         },
@@ -372,7 +542,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
             this.groupservice.createGroupByApplication(application_id).subscribe((): void => {
               this.setNotificationClient(application_id);
-              this.reloadApplicationList(application_id)
+              // this.reloadApplicationList(application_id)
 
             });
 
@@ -422,17 +592,21 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
    * Decline an application.
    * @param application_id
    */
-  public declineApplication(application_id: string): void {
-    this.applicationstatusservice.setApplicationStatus(application_id, this.getIdByStatus('declined').toString()).toPromise()
-      .then((): void => {
-        this.all_applications = [];
-        this.user_applications = [];
-        this.getAllApplications();
+
+  public declineApplication(app: Application): void {
+    const idx: number = this.all_applications.indexOf(app);
+    this.applicationsservice.declineApplication(app.project_application_id).subscribe(
+      (res: any): void => {
         this.updateNotificationModal('Success', 'The Application was declined', true, 'success');
+        this.all_applications.splice(idx, 1)
+        this.numberOfProjectApplications = this.numberOfProjectApplications - 1;
+      },
+      (error: any): void => {
+        this.updateNotificationModal('Failed', 'Application could not be declined!', true, 'danger');
+        this.changeTabState(this.tab_state);
+
       })
-      .catch((): void => {
-        this.updateNotificationModal('Failed', 'Application could be declined!', true, 'danger');
-      });
+
   }
 
 }

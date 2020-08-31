@@ -119,13 +119,13 @@
                 </td>
                 <td class="col-md-4"><span style="word-break: break-all">{{ project.RealName}}</span>
                 </td>
-                <td>  <span *ngIf="project?.Status ==  project_states.ACTIVE"
+                <td>  <span *ngIf="project.Status | hasStatus:project_states.ACTIVE"
                             style="margin-left: 5px"
                             class="badge badge-success">{{project_states[project_states.ACTIVE]}} </span>
-                  <span *ngIf="project?.LifetimeReached==lifetime_states.EXPIRED"
+                  <span *ngIf="project?.LifetimeReached | hasStatus:lifetime_states.EXPIRED"
                         style="margin-left: 5px"
                         class="badge badge-danger">{{lifetime_states[lifetime_states.EXPIRED]}} </span>
-                  <span *ngIf="project?.LifetimeReached == lifetime_states.EXPIRES_SOON"
+                  <span *ngIf="project?.LifetimeReached |hasStatus:lifetime_states.EXPIRES_SOON"
                         style="margin-left: 5px"
                         class="badge badge-warning">{{lifetime_states[lifetime_states.EXPIRES_SOON]}}</span>
                 <td class="col-md-2">

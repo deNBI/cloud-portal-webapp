@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input, OnInit, ViewChild} from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {Flavor} from '../../virtualmachines/virtualmachinemodels/flavor';
 import {FlavorService} from '../../api-connector/flavor.service';

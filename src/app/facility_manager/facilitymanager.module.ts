@@ -11,21 +11,22 @@ import {ResourcesComponent} from './resources/resources.component';
 import {ExportAsModule} from 'ngx-export-as';
 import {ApplicationsModule} from '../applications/applications.module';
 import {NewsManagerComponent} from './newsmanagement/news-manager.component';
+import {PipeModuleModule} from '../pipe-module/pipe-module.module';
 
 /**
  * Facilitymanager module.
  */
 @NgModule({
-            imports: [
-              FacilitymanagerRoutingModule,
-              TabsModule,
-              FormsModule,
-              CommonModule,
-              ModalModule.forRoot(),
-              ExportAsModule, ApplicationsModule,
-              ReactiveFormsModule
+              imports: [
+                  FacilitymanagerRoutingModule,
+                  TabsModule,
+                  FormsModule,
+                  CommonModule,
+                  ModalModule.forRoot(),
+                  ExportAsModule, ApplicationsModule,
+                  ReactiveFormsModule, PipeModuleModule
 
-            ],
+              ],
             declarations: [
               FacilityProjectsOverviewComponent,
               ImageTagComponent,

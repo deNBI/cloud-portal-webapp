@@ -11,6 +11,13 @@ enum Project_States {
 
 }
 
+export enum ExtensionRequestType {
+  NONE,
+  EXTENSION = 1,
+  MODIFICATION = 2,
+  CREDIT = 3
+}
+
 export enum Application_States {
   SUBMITTED = 1,
   APPROVED = 2,
@@ -21,7 +28,32 @@ export enum Application_States {
   CONFIRMATION_DENIED = 7,
   TERMINATED = 8,
   SUSPENDED = 9,
-  TERMINATION_REQUESTED = 10
+  TERMINATION_REQUESTED = 10,
+  WAIT_FOR_CONFIRMATION_CREDITS = 11,
+  WAIT_FOR_CONFIRMATION_EXTENSION = 12,
+  WAIT_FOR_CONFIRMATION_MODIFICATION = 13,
+  CREDITS_EXTENSION_REQUESTED = 14,
+  CREDITS_EXTENSION_DENIED = 15,
+  LIFETIME_EXTENSION_REQUESTED = 16,
+  LIFETIME_EXTENSION_DENIED = 17
+
+}
+
+export enum Application_States_Strings {
+  SUBMITTED = 'submitted',
+  APPROVED = 'approved',
+  DECLINED = 'declined',
+  MODIFICATION_REQUESTED = 'modification requested',
+  MODIFICATION_DECLINED = 'modification declined',
+  WAIT_FOR_CONFIRMATION = 'wait for confirmation',
+  CONFIRMATION_DENIED = 'confirmation denied',
+  TERMINATED = 'terminated',
+  SUSPENDED = 'suspended',
+  TERMINATION_REQUESTED = 'termination requested',
+  EXTENSION_REQUESTED = 'extension requested',
+  EXTENSION_DECLINED = 'extension declined',
+  CREDITS_REQUESTED = 'credits requested',
+  CREDITS_DECLINED = 'credits declined'
 
 }
 

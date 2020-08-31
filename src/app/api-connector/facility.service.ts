@@ -5,7 +5,6 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import {RamFactor} from '../facility_manager/resources/ram-factor';
 import {CoreFactor} from '../facility_manager/resources/core-factor';
 import {Application} from '../applications/application.model/application.model';
-import {WordPressTag} from '../facility_manager/newsmanagement/wp-tags';
 
 /**
  * Service which provides methods for the facilities.
@@ -25,6 +24,46 @@ export class FacilityService {
       withCredentials: true
 
     })
+  }
+
+  getWfcSubmittedApplications(facility_id: number | string): Observable<Application[]> {
+    return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility_id}/wfc/submitted/`, {
+      withCredentials: true
+
+    })
+
+  }
+
+  getWfcLifetimeRequestedApplications(facility_id: number | string): Observable<Application[]> {
+    return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility_id}/wfc/lifetime_requests/`, {
+      withCredentials: true
+
+    })
+
+  }
+
+  getWfcModificationRequestedApplications(facility_id: number | string): Observable<Application[]> {
+    return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility_id}/wfc/modifications_requests/`, {
+      withCredentials: true
+
+    })
+
+  }
+
+  getWfcCreditsRequestedApplications(facility_id: number | string): Observable<Application[]> {
+    return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility_id}/wfc/credits_requests/`, {
+      withCredentials: true
+
+    })
+
+  }
+
+    getExtensionRequestsCounterFacility(facility_id: number | string): Observable<any> {
+    return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility_id}/extensions_counter/`, {
+      withCredentials: true
+
+    })
+
   }
 
   /**

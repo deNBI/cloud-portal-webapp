@@ -3,37 +3,14 @@
  */
 export class CondaPackage {
 
-  private _name: string;
-  private _version: string;
-  private _build: string;
+  name: string;
+  version: string;
+  build: string;
 
   constructor(name: string, version: string, build: string) {
-    this._name = name;
-    this._version = version;
-    this._build = build;
+    this.name = name;
+    this.version = version;
+    this.build = build;
   }
 
-  get name(): string {
-    return this._name;
-  }
-
-  set name(value: string) {
-    this._name = value;
-  }
-
-  get version(): string {
-    return this._version;
-  }
-
-  set version(value: string) {
-    this._version = value;
-  }
-
-  get build(): string {
-    return this._build;
-  }
-
-  set build(value: string) {
-    this._build = value;
-  }
 }

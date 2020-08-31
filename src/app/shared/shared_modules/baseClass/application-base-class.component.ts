@@ -25,7 +25,7 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
    * If all Applications are loaded, important for the loader.
    * @type {boolean}
    */
-  isLoaded_AllApplication: boolean = false;
+  isLoaded: boolean = false;
 
   /**
    * Selected Application.
@@ -199,6 +199,7 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
   getApplicationStatus(): void {
     this.applicationstatusservice.getAllApplicationStatus().subscribe((stati: ApplicationStatus[]): void => {
       this.application_status = stati;
+
     })
   }
 
@@ -220,12 +221,21 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
   }
 
   /**
+   * Get status names  by status id.
+   * TODO: replace old status function, which only gives one status
+   * @param {number} id
+   * @returns {string}
+   */
+  public getStatusesById(ids: [number]): [string] {
+    return [''];
+  }
+
+  /**
    * Sets the selected application.
    * @param application
    */
   setSelectedApplication(application: Application): void {
     this.selectedApplication = application;
-
   }
 
   /**

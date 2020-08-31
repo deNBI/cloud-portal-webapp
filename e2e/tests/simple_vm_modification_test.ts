@@ -30,9 +30,11 @@ describe('Simple Application Modification Test', function (): void {
     await ProjectOverview.fillModificationRequest();
   });
 
+  /*
   it('should have total ram and cores right', async function (): Promise<any> {
     await ProjectOverview.checkTotalCoresRam();
   });
+ */
 
   it('should send a modification request', async function (): Promise<any> {
     await ProjectOverview.sendModificationRequest(Util.SIMPLE_VM_APPLICATION_NAME);
