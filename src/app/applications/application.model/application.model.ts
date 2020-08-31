@@ -129,7 +129,7 @@ export class Application {
       if (aj.project_modification_request) {
         this.project_modification_request = new ApplicationModification(aj.project_modification_request);
       }
-      if(aj.project_credit_request) {
+      if (aj.project_credit_request) {
         this.project_credit_request = new ApplicationCreditRequest(aj.project_credit_request);
       }
 
@@ -162,11 +162,9 @@ export class Application {
     return this.project_application_status?.includes(Application_States.SUBMITTED)
   }
 
-
   public hasTerminatedStatus(): boolean {
     return this.project_application_status?.includes(Application_States.TERMINATED)
   }
-
 
   private setDaysRunning(): void {
     if (this.project_application_status != null) {
