@@ -48,7 +48,7 @@
               <div class="rTableHead col-1">Date created (d/m/y)</div>
               <div class="rTableHead col-1">Expiration Date (d/m/y)</div>
               <div class="rTableHead col-1">Days running</div>
-              <div class="rTableHead col-2" *ngIf="is_vo_admin">Credits</div>
+              <div class="rTableHead col-2" *ngIf="is_vo_admin || credits_allowed">Credits</div>
               <div class="rTableHead col-1">Lifetime in Days</div>
               <div class="rTableHead col-3">Facility</div>
             </div>
@@ -69,7 +69,7 @@
               <div class="rTableCell col-1">{{ project?.DateCreated }}</div>
               <div class="rTableCell col-1">{{project?.DateEnd}}</div>
               <div class="rTableCell col-1">{{ project?.DaysRunning }}</div>
-              <div class="rTableCell col-2" *ngIf="is_vo_admin">
+              <div class="rTableCell col-2" *ngIf="is_vo_admin || credits_allowed">
                 <div *ngIf="current_credits == null"><i
                   class="fa fa-spinner fa-spin"
                  ></i>
@@ -182,7 +182,7 @@
                     *ngIf="((project_application | hasstatusinlist:Application_States.CREDITS_EXTENSION_REQUESTED)
                     || (project_application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION_CREDITS) )
                     && ((project_application | hasstatusinlist:Application_States.APPROVED)  && is_vo_admin)">
-              <button id="show_credits_extension_modal" class="btn btn-success" disabled
+              <button id="show_credits_extension_modal_disabled" class="btn btn-success" disabled
                       type="button" style="margin-bottom:5px;margin-right:5px">
                 Request More Credits
               </button>
@@ -237,7 +237,7 @@
                *ngIf="(project_application | hasstatusinlist:Application_States.APPROVED) ">
             <p>You can find more information about modification requests
               <a href="https://cloud.denbi.de/wiki/portal/modification/" target="_blank">here</a>.</p>
-            <p *ngIf="is_vo_admin">Information about credits are coming soon.</p>
+            <p *ngIf="is_vo_admin || credits_allowed">Information about credits are coming soon.</p>
           </div>
 
         </div>
@@ -402,6 +402,7 @@
     </div>
 
 </div>
+
   <div class="col"
        *ngIf="is_vo_admin && ((project_application | hasstatusinlist:Application_States.APPROVED)
            || (project_application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)
@@ -416,8 +417,9 @@
         >
         </canvas>
       </div>
+
       </div>
-    </div>
+  </div>
 
 <div bsModal #addUserModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
      aria-hidden="true">
