@@ -450,7 +450,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
           this.project_application = new Application(aj);
           this.credits_allowed = aj['credits_allowed'];
 
-
           if (this.project_application) {
             this.applicationsservice.getApplicationPerunId(this.application_id).subscribe((id: any): void => {
               if (id['perun_id']) {
@@ -839,7 +838,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
         this.getMembersOfTheProject();
       } else {
         this.isLoaded = true;
-        if (this.project_application?.project_application_perun_id){
+        if (this.project_application?.project_application_perun_id) {
           this.startUpdateCreditUsageLoop();
         }
 
