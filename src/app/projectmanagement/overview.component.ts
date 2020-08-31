@@ -344,7 +344,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
             console.log(err.message)
           }
 
-        )), 10000
+        )),
+            10000
      );
 
     this.updateCreditsHistoryIntervals = setInterval(
@@ -634,11 +635,12 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
-    if (this.updateCreditsUsedIntervals) {
-      try {
+    try {
+      if (this.updateCreditsUsedIntervals) {
         clearInterval(this.updateCreditsUsedIntervals);
+      }
+    } catch (someError) {
 
-      } catch (someError) {}
     }
   }
 
