@@ -47,7 +47,7 @@
               <div class="rTableHead col-1">Date created (d/m/y)</div>
               <div class="rTableHead col-1">Expiration Date (d/m/y)</div>
               <div class="rTableHead col-1">Days running</div>
-              <div class="rTableHead col-2" *ngIf="is_vo_admin">Credits</div>
+              <div class="rTableHead col-2" *ngIf="is_vo_admin || credits_allowed">Credits</div>
               <div class="rTableHead col-1">Lifetime in Days</div>
               <div class="rTableHead col-3">Facility</div>
             </div>
@@ -68,7 +68,7 @@
               <div class="rTableCell col-1">{{ project?.DateCreated }}</div>
               <div class="rTableCell col-1">{{project?.DateEnd}}</div>
               <div class="rTableCell col-1">{{ project?.DaysRunning }}</div>
-              <div class="rTableCell col-2" *ngIf="is_vo_admin">
+              <div class="rTableCell col-2" *ngIf="is_vo_admin || credits_allowed">
                 <div *ngIf="current_credits == null"><i
                   class="fa fa-spinner fa-spin"
                  ></i>
@@ -167,7 +167,7 @@
                 Remove Application
               </button>
               <button id="show_credits_extension_modal"
-                      *ngIf="(project_application?.project_application_status == application_states.APPROVED || project_application?.project_application_status == application_states.MODIFICATION_DECLINED) && is_vo_admin"
+                      *ngIf="(project_application?.project_application_status == application_states.APPROVED || project_application?.project_application_status == application_states.MODIFICATION_DECLINED) && (is_vo_admin || credits_allowed)"
                       (click)="newFlavors= {};initExampleFlavors();creditsExtensionModal.show()"
                       class="btn btn-success"
                       type="button" style="margin-bottom:5px;margin-right:5px">
@@ -204,7 +204,7 @@
                *ngIf="project_application?.project_application_status == application_states.APPROVED">
             <p>You can find more information about modification requests
               <a href="https://cloud.denbi.de/wiki/portal/modification/" target="_blank">here</a>.</p>
-            <p *ngIf="is_vo_admin">Information about credits are coming soon.</p>
+            <p *ngIf="is_vo_admin || credits_allowed">Information about credits are coming soon.</p>
           </div>
 
         </div>
@@ -365,7 +365,7 @@
 
 </div>
    <div class="col"
-           *ngIf="is_vo_admin && (project_application?.project_application_status ==  application_states.APPROVED || project_application?.project_application_status ==  application_states.MODIFICATION_REQUESTED  || project_application?.project_application_status ==  application_states.MODIFICATION_DECLINED || project_application?.project_application_status ==  application_states.MODIFICATION_DECLINED)">
+           *ngIf="(is_vo_admin || credits_allowed)&& (project_application?.project_application_status ==  application_states.APPROVED || project_application?.project_application_status ==  application_states.MODIFICATION_REQUESTED  || project_application?.project_application_status ==  application_states.MODIFICATION_DECLINED || project_application?.project_application_status ==  application_states.MODIFICATION_DECLINED)">
         <div class="card" style=" ">
           <div class="card-header">
             <i class="fa fa-align-justify"></i> Credit Usage history of {{project?.Name }}
@@ -1143,7 +1143,7 @@
 
 
           <strong>
-            <div *ngIf="is_vo_admin" class="form-group row">
+            <div *ngIf="is_vo_admin || credits_allowed" class="form-group row">
               <label #corenumbers id="creditnumber" class="col">Expected number of extra credits: <span
                 id="extension_credits">{{project_application?.projectapplicationrenewal.project_application_renewal_credits}}</span></label>
             </div>
@@ -1355,7 +1355,7 @@
               <td>{{str}}</td>
             </tr>
 
-            <tr *ngIf="is_vo_admin" >
+            <tr *ngIf="is_vo_admin || credits_allowed" >
               <td><strong>Approximate number of extra credits:
                 {{project_application?.projectapplicationrenewal.project_application_renewal_credits}}</strong></td>
             </tr>
