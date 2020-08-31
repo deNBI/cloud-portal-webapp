@@ -345,7 +345,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
           }
 
         )),
-            10000
+      10000
      );
 
     this.updateCreditsHistoryIntervals = setInterval(
