@@ -66,7 +66,7 @@
     "ng2-charts": "^2.3.3",
     "ng2-cookies": "^1.0.12",
     "ng4-click-outside": "^1.0.1",
-    "ngx-bootstrap": "^5.6.1",
+    "ngx-bootstrap": "^6.1.0",
     "ngx-clipboard": "^13.0.1",
     "ngx-cookie-service": "^10.0.1",
     "ngx-export-as": "^1.4.2",
