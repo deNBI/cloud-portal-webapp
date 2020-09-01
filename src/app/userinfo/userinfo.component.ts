@@ -5,7 +5,7 @@ import {KeyService} from '../api-connector/key.service';
 import {UserService} from '../api-connector/user.service';
 import {GroupService} from '../api-connector/group.service';
 import {IResponseTemplate} from '../api-connector/response-template';
-import{WIKI_LINK_ACCOUNTS} from '../../links/links';
+import {WIKI_LINK_ACCOUNTS} from '../../links/links';
 
 import {forkJoin} from 'rxjs/index';
 
