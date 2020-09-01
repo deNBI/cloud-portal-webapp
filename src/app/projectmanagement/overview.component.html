@@ -80,8 +80,11 @@
                 </button>
               </div>
 
-
             </div>
+
+
+          </div>
+          <div class="row">
             <div class="col-sm-3">
               <div class="callout callout-info" *ngIf="!project?.OpenStackProject">
                 <small class="text-muted">Virtual machines</small><br>
@@ -99,7 +102,7 @@
                 <button class="btn btn-outline-primary" id="show_modification_extension_button"
                         *ngIf="!((project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED)
                   || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION))"
-                  (click)="doiQuestionModal.show(); request_type = 2">Request resource modification</button>
+                        (click)="doiQuestionModal.show(); request_type = 2">Request resource modification</button>
                 <button class="btn btn-outline-warning" disabled id="show_modification_extension_button_disabled"
                         *ngIf="((project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED)
                   || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION))">
@@ -134,7 +137,8 @@
                 </div>
               </div>
             </div>
-
+          </div>
+          <div class="row">
             <div class="col-sm-3" *ngIf="is_vo_admin">
               <div class="callout callout-info">
                 <small class="text-muted">Credits</small><br>
@@ -150,9 +154,9 @@
               <button id="show_credits_extension_modal"
                       *ngIf="!((project_application | hasstatusinlist: Application_States.CREDITS_EXTENSION_REQUESTED)
                   || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_CREDITS))"
-              (click)="newFlavors={};initExampleFlavors();creditsExtensionModal.show();"
-              class="btn btn-outline-success"
-              type="button"style="margin-top:15px;">Request more credits</button>
+                      (click)="newFlavors={};initExampleFlavors();creditsExtensionModal.show();"
+                      class="btn btn-outline-success"
+                      type="button"style="margin-top:15px;">Request more credits</button>
               <button id="show_credits_extension_modal_disabled" disabled class="btn btn-outline-warning"
                       *ngIf="((project_application | hasstatusinlist: Application_States.CREDITS_EXTENSION_REQUESTED)
                       || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_CREDITS))"
