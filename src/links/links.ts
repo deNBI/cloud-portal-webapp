@@ -13,6 +13,7 @@ export const WIKI_INSTANCE_OVERVIEW_LINK: string = 'https://cloud.denbi.de/wiki/
 export const WIKI_INSTANCE_DETAIL_LINK: string = 'https://cloud.denbi.de/wiki/simple_vm/instance_detail/';
 export const WIKI_RSTUDIO_LINK: string = 'https://cloud.denbi.de/wiki/simple_vm/customization/#rstudio';
 export const WIKI_GUACAMOLE_LINK: string = 'https://cloud.denbi.de/wiki/simple_vm/customization/#apache-guacamole';
+export const WIKI_LINK_ACCOUNTS: string = 'https://cloud.denbi.de/wiki/portal/user_information/#link-accounts-to-elixir';
 export const WIKI_LNKS: string[] =
   [
     WIKI_MOUNT_VOLUME,
@@ -29,5 +30,6 @@ export const WIKI_LNKS: string[] =
     WIKI_GUACAMOLE_LINK,
     WIKI_NEW_INSTANCE_LINK,
     WIKI_INSTANCE_OVERVIEW_LINK,
-    WIKI_INSTANCE_DETAIL_LINK
+    WIKI_INSTANCE_DETAIL_LINK,
+    WIKI_LINK_ACCOUNTS
   ];
