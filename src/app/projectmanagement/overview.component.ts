@@ -33,7 +33,7 @@ import {Application_States, ExtensionRequestType} from '../shared/shared_modules
 import {ApplicationLifetimeExtension} from '../applications/application_extension.model';
 import {ApplicationModification} from '../applications/application_modification.model';
 import {ApplicationCreditRequest} from '../applications/application_credit_request';
-import { NavigationPoint } from 'app/shared/navigationPoint.model';
+
 
 /**
  * Projectoverview component.
@@ -138,10 +138,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   maximumVMs: number;
 
   title: string = 'Project Overview';
-  navigationPoints: NavigationPoint[] = [
-    new NavigationPoint('Information', 'projectInformationDiv', []),
-    new NavigationPoint('DOIs', 'doiCard', []),
-    new NavigationPoint('Member', 'projectMemberDiv', [])];
   @ViewChild('edam_ontology') edam_ontology: AutocompleteComponent;
 
   checked_member_list: number[] = [];

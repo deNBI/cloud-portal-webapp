@@ -2,15 +2,7 @@
 <html lang="en">
 <nav class="w3-bar-block" class="navbar navbar-light w3-bar-block" id="denbiHeadbar">
 
-    <h1 id="title_headline" style="margin-top:25px !important; margin-right:auto;"
-      [ngStyle]="{'margin-left': navigationPoints?.length > 0 ? '25px' : 'auto'}">{{page_title}}</h1>
-      <div *ngIf="navigationPoints?.length > 0" style="margin: auto;">
-        <i class="fas fa-compass" style="color:#00ADEF"></i>
-      <div class="btn-group btn-group-sm btn-group-toggle"><!-- <ul class="nav nav-pills">-->
-          <a class="btn btn-outline-primary btn-sm" href="#{{navPoint?.href}}"
-             *ngFor="let navPoint of navigationPoints">{{navPoint?.name}}</a>
-      </div>
-      </div>
+    <h1 id="title_headline" style="margin-top:25px; margin-left: auto; margin-right: auto;">{{page_title}}</h1>
   <button class="btn btn-outline-danger"
           style="float:right;position: relative; top: 45%; -ms-transform: translateY(-50%); transform: translateY(-50%);"
           (click)="logout()"><i class="fas fa-door-open"></i> Logout

@@ -13,7 +13,7 @@ import {ProjectEnumeration} from '../projectmanagement/project-enumeration';
 import {environment} from '../../environments/environment';
 import {is_vo} from '../shared/globalvar';
 import {VirtualmachineService} from '../api-connector/virtualmachine.service';
-import {NavigationPoint} from '../shared/navigationPoint.model';
+
 
 /**
  * FullLayout component.
@@ -49,7 +49,6 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
   cluster_allowed: boolean = false;
 
   TITLE: string = '';
-  NAVIGATION_POINTS: NavigationPoint[] = [];
 
   project_enumeration: ProjectEnumeration[] = [];
   project_badges_states: {[id: string]: number[]} = {};
@@ -63,9 +62,7 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
   }
 
   componentAdded(event: any): void {
-
     this.TITLE = event.title;
-    this.NAVIGATION_POINTS = event.navigationPoints;
   }
 
   public get_is_vo_admin(): boolean {
