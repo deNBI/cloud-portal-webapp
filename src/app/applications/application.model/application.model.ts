@@ -118,6 +118,7 @@ export class Application {
       this.project_application_date_status_changed = aj.project_application_date_status_changed;
       this.project_application_user = aj.project_application_user;
       this.project_application_pi = aj.project_application_pi;
+      this.project_application_perun_id = aj.project_application_perun_id;
       this.project_application_status = aj.project_application_status;
       this.ComputeCenter = aj.ComputeCenter;
       this.project_application_openstack_project = aj.project_application_openstack_project;
