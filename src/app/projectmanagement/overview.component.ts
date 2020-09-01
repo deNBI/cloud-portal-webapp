@@ -359,7 +359,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
             console.log(err.message)
           }
         )),
-            10000
+      10000
      );
 
     this.updateCreditsHistoryIntervals = setInterval(
@@ -502,7 +502,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
               this.project_credit_request.project_credit_request_user = user;
 
             });
-            this.isLoaded = true;
           } else {
             this.isLoaded = true;
           }
