@@ -6,7 +6,7 @@ import {Application} from '../../application.model/application.model';
  */
 @Component({
              selector: 'app-application-pi-detail',
-             templateUrl: './application-pi-detail.component.html',
+             templateUrl: './application-pi-detail.component.html'
            })
 export class ApplicationPiDetailComponent {
   @Input() application: Application;

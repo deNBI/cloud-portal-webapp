@@ -6,7 +6,7 @@ import {Application} from '../../application.model/application.model';
  */
 @Component({
              selector: 'app-credits-extension-detail',
-             templateUrl: './credits-extension-detail.component.html',
+             templateUrl: './credits-extension-detail.component.html'
            })
 export class CreditsExtensionDetailComponent {
   @Input() application: Application;
