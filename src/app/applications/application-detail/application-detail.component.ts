@@ -20,18 +20,63 @@ import {Application_States} from '../../shared/shared_modules/baseClass/abstract
                ApplicationsService, CreditsService]
            })
 export class ApplicationDetailComponent extends ApplicationBaseClassComponent implements OnInit {
-  @Input() application: Application;
-  @Input() isModification: boolean = false;
+  PI_USER_TAB: number = 0;
+  INFORMATION_TAB: number = 1;
+  RESOURCE_TAB: number = 2;
+  CREDITS_TAB: number = 3;
+  MODIFICATION_TAB: number = 4;
+  EXTENSION_TAB: number = 5;
+  PI_USER_TAB_ACTIVE: boolean = true;
+  INFORMATION_TAB_ACTIVE: boolean = false;
+  RESOURCE_TAB_ACTIVE: boolean = false;
+  CREDITS_TAB_ACTIVE: boolean = false;
+  MODIFICATION_TAB_ACTIVE: boolean = false;
+  EXTENSION_TAB_ACTIVE: boolean = false;
 
-  /**
-   * If user is vo.
-   * @type {boolean}
-   */
+  @Input() application: Application;
+  @Input() default_tab: number = this.PI_USER_TAB;
+
   creditsService: CreditsService;
   is_vo_admin: boolean = false;
   current_credits: number = 0;
-  credits_left_with_extra: number = 0;
   Application_States: typeof Application_States = Application_States;
+
+  setAllTabsFalse(): void {
+    this.PI_USER_TAB_ACTIVE = false;
+    this.INFORMATION_TAB_ACTIVE = false;
+    this.RESOURCE_TAB_ACTIVE = false;
+    this.CREDITS_TAB_ACTIVE = false;
+    this.MODIFICATION_TAB_ACTIVE = false;
+    this.EXTENSION_TAB_ACTIVE = false;
+  }
+
+
+  setTab(tab_num: number): void {
+    console.log(tab_num)
+    this.setAllTabsFalse()
+    switch (tab_num) {
+      case this.PI_USER_TAB:
+        this.PI_USER_TAB_ACTIVE = true;
+        break;
+      case this.INFORMATION_TAB:
+        this.INFORMATION_TAB_ACTIVE = true;
+        break;
+      case this.RESOURCE_TAB:
+        this.RESOURCE_TAB_ACTIVE = true;
+        break;
+      case this.CREDITS_TAB:
+        this.CREDITS_TAB_ACTIVE = true;
+        break;
+      case this.MODIFICATION_TAB:
+        this.MODIFICATION_TAB_ACTIVE = true;
+        break;
+      case this.EXTENSION_TAB:
+        this.EXTENSION_TAB_ACTIVE = true;
+        break;
+      default:
+        break;
+    }
+  }
 
   constructor(applicationsservice: ApplicationsService,
               applicationstatusservice: ApplicationStatusService,
@@ -41,9 +86,12 @@ export class ApplicationDetailComponent extends ApplicationBaseClassComponent im
 
     super(userservice, applicationstatusservice, applicationsservice, facilityService);
     this.creditsService = creditsService;
+
   }
 
   ngOnInit(): void {
+    this.setTab(this.default_tab)
+
     this.getMemberDetailsByElixirId(this.application);
     if (this.application.credits_allowed) {
       this.getCurrentCredits();
@@ -55,7 +103,6 @@ export class ApplicationDetailComponent extends ApplicationBaseClassComponent im
     this.creditsService.getCurrentCreditsOfProject(Number(this.application.project_application_perun_id.toString())).toPromise()
       .then((credits: number): void => {
         this.current_credits = credits;
-        this.credits_left_with_extra = this.application.TotalModificationCredits - credits;
       }).catch((err: Error): void => console.log(err.message));
   }
 }

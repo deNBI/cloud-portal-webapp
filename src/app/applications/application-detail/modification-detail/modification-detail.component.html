@@ -1,0 +1,105 @@
+<table class="table table-striped" style="table-layout: fixed">
+
+  <tr>
+    <td>Modification Requested from:
+    </td>
+
+    <td>
+      {{application?.project_modification_request?.user?.username}}
+      ( {{application?.project_modification_request?.user?.email}} |
+      {{application?.project_modification_request?.user?.elixir_id}})
+
+    </td>
+
+
+  </tr>
+  <tr>
+    <td>Comment</td>
+    <td>{{
+      application?.project_modification_request?.comment
+      }}
+    </td>
+
+  </tr>
+  <tr *ngIf="application?.project_application_openstack_project && application?.project_application_cloud_service">
+    <td>Service status</td>
+    <td>
+        <span *ngIf="application?.project_modification_request?.cloud_service_develop"
+              class="badge badge-success">In development</span>
+      <span *ngIf="!application?.project_modification_request?.cloud_service_develop"
+            class="badge badge-danger">Existing</span>
+    </td>
+  </tr>
+  <tr>
+    <td>VMs
+    </td>
+    <td>
+      Requested:
+      {{application?.project_modification_request?.vms_requested}}
+    </td>
+
+  </tr>
+  <ng-container
+    *ngFor="let flavor of application?.project_modification_request?.flavors  ">
+    <tr *ngIf="application?.getFlavorCounter(flavor)== 0">
+      <td>Flavor: {{flavor.name}}</td>
+      <td>{{application| flavorCounter:flavor}}</td>
+
+    </tr>
+  </ng-container>
+  <tr>
+    <td>Total Cores</td>
+
+    <td>
+      {{application?.project_modification_request?.total_cores}}
+    </td>
+  </tr>
+  <tr>
+    <td>Total RAM</td>
+    <td>
+      {{application?.project_modification_request?.total_ram}} GB
+    </td>
+  </tr>
+  <tr *ngIf="is_vo_admin">
+    <td>Extra Credits</td>
+
+    <td>
+      {{application?.project_modification_request?.extra_credits}}
+      (Total: {{application?.totalModificationRequestCredits}})
+    </td>
+  </tr>
+
+  <tr>
+    <td>Storage Limit
+    </td>
+
+    <td>
+      {{application?.project_modification_request?.volume_limit}}
+      GB
+    </td>
+  </tr>
+  <tr>
+    <td>Volume
+      Counter
+    </td>
+
+    <td>
+      {{application?.project_modification_request?.volume_counter}} volumes
+    </td>
+  </tr>
+  <tr *ngIf="application?.project_application_openstack_project">
+    <td>ObjectStorage
+    </td>
+    <td>
+      {{application?.project_modification_request?.object_storage}}
+      GB
+    </td>
+  </tr>
+  <tr>
+    <td>Date Submitted</td>
+
+    <td>
+      {{application?.project_credit_request?.date_submitted}}
+    </td>
+  </tr>
+</table>
