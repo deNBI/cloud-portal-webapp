@@ -157,11 +157,11 @@
               <div class="callout callout-info">
                 <small class="text-muted">Credits</small><br>
                 <strong class="text-muted">
-                  Used {{project?.CurrentCredits}} of {{project?.ApprovedCredits}} credits :
-                  {{project?.ApprovedCredits - project?.CurrentCredits}} credits left
+                  Used {{project?.CurrentCredits | number: '1.0-2'}} of {{project?.ApprovedCredits| number: '1.0-2'}} credits :
+                  {{(project?.ApprovedCredits - project?.CurrentCredits) | number: '1.0-2'}} credits left
                   <span *ngIf="((project_application | hasstatusinlist: Application_States.CREDITS_EXTENSION_REQUESTED)
                       || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_CREDITS))">
-                     - {{project_application?.project_credit_request?.extra_credits}} additional credits requested on
+                     - {{project_application?.project_credit_request?.extra_credits | number: '1.0-0'}} additional credits requested on
                     {{project_application?.project_credit_request?.date_submitted}}
                   </span>
                 </strong><br>
