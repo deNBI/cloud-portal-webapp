@@ -45,11 +45,17 @@
         <div class="card-body" id="projectMainInformationDiv"
           *ngIf="project_application | hasstatusinlist:Application_States.APPROVED">
           <div class="row">
-            <div class="col-sm-3">
+            <div class="col-6">
               <div class="callout callout-info"
                    title="The project has been running for {{project?.DaysRunning}} of a total of {{project?.LifetimeDays}} granted days">
                 <small class="text-muted">Project Runtime</small><br>
-                <strong class="text-muted">{{project?.DateCreated}} - {{project?.DateEnd}}</strong><br>
+                <strong class="text-muted">{{project?.DateCreated}} - {{project?.DateEnd}}
+                  <span *ngIf="((project_application | hasstatusinlist: Application_States.LIFETIME_EXTENSION_REQUESTED)
+                  || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_EXTENSION))">
+                     - Extension by {{project_application?.project_lifetime_request?.extra_lifetime}} months requested on
+                     {{project_application?.project_lifetime_request?.date_submitted}}
+                  </span>
+                </strong><br>
                 <div class="progress" style="height: 2px;">
                   <div class="progress-bar bg-info" role="progressbar"
                        [ngStyle]="{'width.%': (calculateProgressBar(project?.DaysRunning / project?.LifetimeDays))}"
@@ -57,7 +63,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-sm-3">
+            <div class="col-6">
               <div class="btn-group" style="margin-top:15px;">
                 <button class="btn btn-outline-primary" id="show_doi_question_modal"
                         (click)="doiQuestionModal.show(); request_type = 1;"
@@ -85,10 +91,16 @@
 
           </div>
           <div class="row">
-            <div class="col-sm-3">
+            <div class="col-6">
               <div class="callout callout-info" *ngIf="!project?.OpenStackProject">
                 <small class="text-muted">Virtual machines</small><br>
-                <strong class="text-muted" *ngIf="this.resourceDataLoaded">{{vmsInUse}} of {{maximumVMs}} in use</strong><br>
+                <strong class="text-muted" *ngIf="this.resourceDataLoaded">{{vmsInUse}} of {{maximumVMs}} in use
+                  <span *ngIf="((project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED)
+                  || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION))">
+                     - Resource modification requested on
+                    {{project_application?.project_modification_request?.date_submitted}}
+                  </span>
+                </strong><br>
                 <div class="progress" style="height: 2px;" *ngIf="this.resourceDataLoaded">
                   <div class="progress-bar bg-info" role="progressbar"
                        [ngStyle]="{'width.%': calculateProgressBar(vmsInUse / maximumVMs)}"
@@ -96,13 +108,13 @@
                 </div>
               </div>
             </div>
-            <div class="col-sm-3">
+            <div class="col-6">
               <!-- check disabled enabled for both resource and lifetime extension buttons -->
               <div class="btn-group" style="margin-top:15px;">
                 <button class="btn btn-outline-primary" id="show_modification_extension_button"
                         *ngIf="!((project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED)
                   || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION))"
-                        (click)="doiQuestionModal.show(); request_type = 2">Request resource modification</button>
+                        (click)="resourceModificationModal.show(); request_type = 2">Request resource modification</button>
                 <button class="btn btn-outline-warning" disabled id="show_modification_extension_button_disabled"
                         *ngIf="((project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED)
                   || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION))">
@@ -113,36 +125,46 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-sm-3" title="Click Contact to send a mail to the facility.">
+            <div class="col-6" title="Click Contact to send a mail to the facility.">
               <div class="callout callout-info">
                 <small class="text-muted">Facility</small><br>
                 <strong class="text-muted">{{project?.ComputeCenter.Name}}</strong>
               </div>
             </div>
-            <div class="col-sm-3" *ngIf="this.supportMails?.length === 1">
+            <div class="col-6" *ngIf="this.supportMails?.length === 1">
               <a class="btn btn-outline-primary" target="_blank" href="mailto:{{project?.ComputeCenter.Support}}"
-                 style="margin-top:15px;">Contact</a>
+                 style="margin-top:15px;">Contact Support</a>
             </div>
-            <div class="col-sm-3" *ngIf="this.supportMails?.length > 1">
+            <div class="col-6" *ngIf="this.supportMails?.length > 1">
+
               <div class="dropdown" dropdown style="margin-top:15px;">
-                <button class="btn btn-outline-primary dropdown-toggle" type="button" id="contactDropdownButton"
-                        data-toggle="dropdown" type="button" aria-haspopup="true" aria-expanded="false"
-                        aria-controls="dropdown-split" dropdownToggle>
-                  Contact
+                <button class="btn btn-outline-primary dropdown-toggle" id="actionDropdownMenu" data-toggle="dropdown"
+                        type="button" aria-haspopup="true" aria-expanded="false"
+                        dropdownToggle>
+                  Contact Support
                 </button>
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu" role="menu"
-                     *dropdownMenu id="contactDropdownMenu">
-                  <a *ngFor="let mail in supportMails" class="dropdown-item btn btn-outline-primary"
-                  href="mailto:{{mail}}" target="_blank">{{mail}}</a>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenu" role="menu"
+                     *dropdownMenu id="dropdownMenu">
+                  <a *ngFor="let mail of supportMails" class="dropdown-item btn btn-outline-primary"
+                          href="mailto:{{mail}}" target="_blank">Contact {{mail}}</a>
                 </div>
               </div>
+
             </div>
           </div>
           <div class="row">
-            <div class="col-sm-3" *ngIf="is_vo_admin">
+            <div class="col-6" *ngIf="is_vo_admin">
               <div class="callout callout-info">
                 <small class="text-muted">Credits</small><br>
-                <strong class="text-muted">Used {{project?.CurrentCredits}} of {{project?.ApprovedCredits}} credits</strong><br>
+                <strong class="text-muted">
+                  Used {{project?.CurrentCredits}} of {{project?.ApprovedCredits}} credits :
+                  {{project?.ApprovedCredits - project?.CurrentCredits}} credits left
+                  <span *ngIf="((project_application | hasstatusinlist: Application_States.CREDITS_EXTENSION_REQUESTED)
+                      || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_CREDITS))">
+                     - {{project_application?.project_credit_request?.extra_credits}} additional credits requested on
+                    {{project_application?.project_credit_request?.date_submitted}}
+                  </span>
+                </strong><br>
                 <div class="progress" style="height: 2px;">
                   <div class="progress-bar bg-info" role="progressbar"
                        [ngStyle]="{'width.%': (calculateProgressBar(project?.CurrentCredits / project?.ApprovedCredits))}"
@@ -150,7 +172,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-sm-3" *ngIf="is_vo_admin">
+            <div class="col-6" *ngIf="is_vo_admin">
               <button id="show_credits_extension_modal"
                       *ngIf="!((project_application | hasstatusinlist: Application_States.CREDITS_EXTENSION_REQUESTED)
                   || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_CREDITS))"
@@ -390,6 +412,7 @@
 
                 </td>
               </tr>
+
 
               </tbody>
             </table>
@@ -1107,7 +1130,7 @@
             </div>
             <div class="alert alert-primary" role="alert">
               This is the expected number of extra credits that you get for your project. It accounts for an increase in
-              requested resources/project lifetime.
+              requested resources.
             </div>
           </strong>
           <div class="form-group row">
@@ -1289,8 +1312,8 @@
                 id="extension_credits">{{project_extension.extra_credits}}</span></label>
             </div>
             <div class="alert alert-primary" role="alert">
-              This is the expected number of extra credits that you get for your project. It accounts for an increase in
-              requested resources/project lifetime.
+              This is the expected number of extra credits that you get for your project.
+              It accounts for an increase in project lifetime.
             </div>
           </strong>
 
@@ -1581,7 +1604,7 @@
             href="https://cloud.denbi.de/wiki/citation_and_publication/"
             target="_blank">here</a>.
               You can also add the publications at a later date on the project overview page.</p>
-            <p>The addition or non-addition of publications/DOIs <strong>does not affect the renewal request procedure!</strong></p>
+            <p><strong>The addition or non-addition of publications/DOIs does not affect the renewal request procedure!</strong></p>
           </div>
           <div class="table-responsive">
             <table class="table ">
@@ -1621,32 +1644,9 @@
 
           </div>
 
-
-
-          <div *ngIf="!(project_application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)
-                 && (project_application | hasstatusinlist:Application_States.LIFETIME_EXTENSION_REQUESTED) "
-               class="modal-footer" style="text-align:center;">
+          <div class="modal-footer" style="text-align:center;">
             <button id="doi_continue_btn" class="btn btn-success col-md-6" type="button"
-                    style="margin:auto;"
-                    (click)="doiModal.hide(); resourceModificationModal.show(); setModalOpen(true);">
-              Continue
-            </button>
-          </div>
-
-          <div *ngIf="(project_application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)
-                 && !(project_application | hasstatusinlist:Application_States.LIFETIME_EXTENSION_REQUESTED) "
-               class="modal-footer" style="text-align:center;">
-            <button id="doi_continue_btn" class="btn btn-success col-md-6" type="button"
-                    style="margin:auto;" (click)="doiModal.hide(); projectExtensionModal.show(); setModalOpen(true);">
-              Continue
-            </button>
-          </div>
-
-          <div *ngIf="!(project_application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)
-                 && !(project_application | hasstatusinlist:Application_States.LIFETIME_EXTENSION_REQUESTED) "
-               class="modal-footer" style="text-align:center;">
-            <button id="doi_continue_btn" class="btn btn-success col-md-6" type="button"
-                    style="margin:auto;" (click)="doiModal.hide(); chooseModal.show(); setModalOpen(true);">Continue
+                    style="margin:auto;" (click)="doiModal.hide(); projectExtensionModal.show(); setModalOpen(true);">Continue
             </button>
           </div>
         </div><!-- /.modal-content -->L
@@ -1687,7 +1687,7 @@
 
 
                 <button id="no_new_dois_btn" class="btn btn-primary" type="reset"
-                        (click)="doiQuestionModal.hide(); chooseModal.show(); setModalOpen(true);">No
+                        (click)="doiQuestionModal.hide(); projectExtensionModal.show(); setModalOpen(true);">No
                 </button>
               </div>
             </div>

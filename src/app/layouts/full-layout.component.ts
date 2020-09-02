@@ -127,14 +127,16 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
    * @param enumeration
    */
   pushAdditionalStates(enumeration: ProjectEnumeration): void {
-    if (enumeration.project_status.includes(2) && (this.getDaysLeft(enumeration) < 14)) {
-      this.project_badges_states[enumeration.application_id].push(18);
-    }
-    if (enumeration.project_status.includes(2) && (this.getDaysRunning(enumeration) < 14)) {
-      this.project_badges_states[enumeration.application_id].push(19);
-    }
-    if (enumeration.project_status.includes(2) && (this.getDaysLeft(enumeration) < 0)) {
-      this.project_badges_states[enumeration.application_id].push(20);
+    if (enumeration.project_status.includes(2)) {
+      if ((this.getDaysLeft(enumeration) < 14) && (this.getDaysLeft(enumeration) >= 0)) {
+        this.project_badges_states[enumeration.application_id].push(18);
+      }
+      if ((this.getDaysRunning(enumeration) < 14)) {
+        this.project_badges_states[enumeration.application_id].push(19);
+      }
+      if ((this.getDaysLeft(enumeration) < 0)) {
+        this.project_badges_states[enumeration.application_id].push(20);
+      }
     }
 
   }

@@ -33,6 +33,7 @@ import {Application_States, ExtensionRequestType} from '../shared/shared_modules
 import {ApplicationLifetimeExtension} from '../applications/application_extension.model';
 import {ApplicationModification} from '../applications/application_modification.model';
 import {ApplicationCreditRequest} from '../applications/application_credit_request';
+import {BsDropdownModule} from "ngx-bootstrap/dropdown";
 
 
 /**
@@ -889,6 +890,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
   setSupportMails(project: Project) {
     this.supportMails = project.ComputeCenter.Support.toString().split(',');
+    console.log(this.supportMails);
   }
 
   /**
@@ -1057,7 +1059,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
   isPi(member: ProjectMember): string {
     if (member.IsPi) {
-      return 'blue'
+      return '#005AA9'
     } else {
       return 'black'
     }
