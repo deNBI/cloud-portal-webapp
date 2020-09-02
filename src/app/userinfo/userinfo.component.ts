@@ -5,6 +5,8 @@ import {KeyService} from '../api-connector/key.service';
 import {UserService} from '../api-connector/user.service';
 import {GroupService} from '../api-connector/group.service';
 import {IResponseTemplate} from '../api-connector/response-template';
+import {WIKI_LINK_ACCOUNTS} from '../../links/links';
+
 import {forkJoin} from 'rxjs/index';
 
 /**
@@ -60,6 +62,7 @@ export class UserInfoComponent implements OnInit {
    */
   dsgvo_text: string = 'By activating this option, you agree that your preferred e-mail address may be used for the newsletter. ' +
     'You will receive the newsletter until you deactivate the option in the settings again.';
+  WIKI_LINK_ACCOUNTS: string = WIKI_LINK_ACCOUNTS;
 
   constructor(private groupService: GroupService, private userService: UserService, private keyService: KeyService) {
   }
