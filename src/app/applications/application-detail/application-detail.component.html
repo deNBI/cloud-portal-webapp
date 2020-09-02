@@ -133,6 +133,10 @@
       </td>
     </tr>
 
+    <tr>
+      <td>Institute</td>
+      <td>{{application?.project_application_institute}}</td>
+    </tr>
 
     <tr>
       <td>Workgroup</td>
@@ -169,14 +173,16 @@
         <p *ngIf="!application?.project_application_openstack_basic_introduction"> No</p>
       </td>
     </tr>
+    <tr>
+      <td>Last status changed</td>
+      <td>{{application?.project_application_date_status_changed}}</td>
+    </tr>
   </table>
   <br>
   <table class="table table-striped" style="table-layout: fixed">
     <thead>
     <tr>
       <th colspan="2" style="text-align:center"><strong>Dissemination</strong></th>
-      <th *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) && !application.project_credit_request"></th>
-
     </tr>
     </thead>
     <tr>
@@ -184,69 +190,77 @@
       <td id="dissemination_platforms">
         {{application?.dissemination?.allowed_platforms}}
       </td>
-      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) && !application.project_credit_request">
-      </td>
     </tr>
     <tr>
       <td>Information</td>
       <td id="dissemination_information">
         {{application?.dissemination?.allowed_informations}}
       </td>
-      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) && !application.project_credit_request">
-      </td>
     </tr>
   </table>
   <br>
+
+  <table class="table table-striped" style="table-layout: fixed"
+         *ngIf="application | hasstatusinlist:Application_States.LIFETIME_EXTENSION_REQUESTED">
+    <thead>
+    <tr>
+      <th colspan="2" style="text-align:center"><strong>Lifetime Extension Request</strong></th>
+    </tr>
+    </thead>
+    <tr>
+      <td>Current Lifetime</td>
+      <td>{{application?.project_application_lifetime}} months</td>
+    </tr>
+    <tr>
+      <td>Requested Additional months</td>
+      <td>{{application?.project_lifetime_request?.extra_lifetime}} months</td>
+    </tr>
+    <tr>
+      <td>Extension Requested by</td>
+      <td>{{application?.project_lifetime_request?.user.username}}</td>
+    </tr>
+    <tr>
+      <td>{{application?.project_lifetime_request?.user.elixir_id}}</td>
+      <td>{{application?.project_lifetime_request?.user.email}}</td>
+    </tr>
+    <tr *ngIf="application?.project_lifetime_request?.comment">
+      <td>Comment</td>
+      <td>{{application?.project_lifetime_request?.comment}}</td>
+    </tr>
+  </table>
+
+  <br *ngIf="application | hasstatusinlist:Application_States.LIFETIME_EXTENSION_REQUESTED">
 
   <table class="table table-striped" style="table-layout: fixed">
     <thead>
     <tr>
       <th colspan="2" style="text-align:center"><strong>Resources</strong></th>
       <th
-        *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) && !application.project_credit_request"></th>
-
+        *ngIf="application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED">
+        <strong>Requested Resources</strong>
+      </th>
     </tr>
     </thead>
-    <tr *ngIf="(application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)
-    || (application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION) ">
-      <td>Modification Requested from:
-      </td>
-
-      <td>
-        {{application?.project_modification_request?.user?.username}}
-        ( {{application?.project_modification_request?.user?.email}})
-      </td>
-      <td>
-                {{application?.project_modification_request?.user?.elixir_id}}
-
-      </td>
-
-    </tr>
 
     <tr>
       <td>VMs
       </td>
-
-      <td>
-        {{application?.project_application_vms_requested}}
-      </td>
+      <td>{{application?.project_application_vms_requested}}</td>
       <td
-        *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) && !application.project_credit_request">
-        Requested:
+        *ngIf="application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED">
         {{application?.project_modification_request?.vms_requested}}
       </td>
-
     </tr>
 
     <tr *ngFor="let flavor of application?.flavors">
       <td>Flavor: {{flavor.name}}</td>
       <td>{{flavor.counter}}</td>
       <td
-        *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)   || isModification)  && !application.project_credit_request">
+        *ngIf="application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED">
         <span>{{application?.project_modification_request?.getFlavorCounter(flavor)}}</span>
       </td>
     </tr>
-    <ng-container
+    <!--<ng-container
       *ngFor="let flavor of application?.project_modification_request?.flavors  ">
       <tr *ngIf="application?.getFlavorCounter(flavor)== 0">
         <td>Flavor: {{flavor.name}}</td>
@@ -254,20 +268,15 @@
         <td>{{application?.project_modification_request?.getFlavorCounter(flavor)}}</td>
 
       </tr>
-    </ng-container>
+    </ng-container> -->
 
     <tr>
       <td>Total Cores</td>
-      <td>{{
-          application?.project_application_total_cores
-        }}
-
-
+      <td>{{application?.project_application_total_cores}}
       </td>
 
 
-      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) ">
-
+      <td *ngIf="application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED">
         {{application?.project_modification_request?.total_cores}}
       </td>
     </tr>
@@ -284,35 +293,6 @@
       </td>
     </tr>
 
-
-    <tr *ngIf="is_vo_admin">
-      <td>Initial Credits</td>
-      <td>{{
-          application?.project_application_initial_credits}}
-      </td>
-
-      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification)">
-
-        Extra: {{application?.project_credit_request?.extra_credits}} (Total: {{application?.TotalModificationCredits}})
-      </td>
-    </tr>
-
-    <tr *ngIf="is_vo_admin">
-      <td>Used Credits</td>
-      <td>{{current_credits}}
-      </td>
-
-      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification)">
-        Credits left (with Extra Credits): {{credits_left_with_extra}}
-      </td>
-    </tr>
-
-    <tr *ngIf="is_vo_admin && application?.project_credit_request">
-      <td><strong>Requested Extra Credits</strong></td>
-      <td>
-        <strong>{{application?.project_credit_request?.extra_credits}}</strong>
-      </td>
-    </tr>
 
     <tr>
       <td>Storage Limit
@@ -337,7 +317,7 @@
         }} volumes
       </td>
 
-      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) ">
+      <td *ngIf="application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED">
 
         {{application?.project_modification_request?.volume_counter}} volumes
       </td>
@@ -356,20 +336,30 @@
         GB
       </td>
     </tr>
-    <tr>
-      <td>Last status
-        changed
-      </td>
-      <td>{{
-          application?.project_application_date_status_changed
-        }}
-      </td>
 
-      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) ">
-
-      </td>
+    <tr *ngIf="application?.project_modification_request?.comment">
+      <td>Comment</td>
+      <td></td>
+      <td>{{application?.project_modification_request?.comment}}</td>
     </tr>
-
-
   </table>
 </div>
+
+<!--
+PLEASE CHECK:
+  WHO REQUESTED CHANGES?!
+  SERVICE: MODIFICATION REQUESTED ? LIFETIME?
+  WAIT_FOR_CONFIRMATION_STATES!!
+  CREDITS!
+
+  <td
+      *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) && !application.project_credit_request">
+      {{application?.project_modification_request?.cloud_service_develop}}</td>
+    <td
+      *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) && !application.project_credit_request">
+        <span *ngIf="application?.project_modification_request?.cloud_service_develop"
+              class="badge badge-success">In development</span>
+      <span *ngIf="!application?.project_modification_request?.cloud_service_develop"
+            class="badge badge-danger">Existing</span>
+    </td>
+-->
