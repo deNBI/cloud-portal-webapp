@@ -1,8 +1,8 @@
 name: Publish Docker
-on: 
+on:
   push:
-    branches: 
-      - 'dev'
+    branches:
+      - 'staging'
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -15,11 +15,11 @@ jobs:
     - name: Publish to Registry
       uses: elgohr/Publish-Docker-Github-Action@master
       env:
-          ANGULAR_MODE: stage  
+          ANGULAR_MODE: stage
       with:
         name: denbicloud/cloud-portal-webapp
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
         dockerfile: Dockerfile
-        buildargs: ANGULAR_MODE  
-        tags: "dev-staging" 
+        buildargs: ANGULAR_MODE
+        tags: "staging-staging"
