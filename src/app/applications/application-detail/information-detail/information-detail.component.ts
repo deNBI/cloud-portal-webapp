@@ -6,7 +6,7 @@ import {Application} from '../../application.model/application.model';
  */
 @Component({
              selector: 'app-information-detail',
-             templateUrl: './information-detail.component.html',
+             templateUrl: './information-detail.component.html'
            })
 export class InformationDetailComponent {
   @Input() application: Application;

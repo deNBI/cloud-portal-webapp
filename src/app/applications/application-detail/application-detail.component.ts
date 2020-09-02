@@ -50,7 +50,6 @@ export class ApplicationDetailComponent extends ApplicationBaseClassComponent im
     this.EXTENSION_TAB_ACTIVE = false;
   }
 
-
   setTab(tab_num: number): void {
     console.log(tab_num)
     this.setAllTabsFalse()

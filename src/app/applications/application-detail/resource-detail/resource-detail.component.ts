@@ -6,7 +6,7 @@ import {Application} from '../../application.model/application.model';
  */
 @Component({
              selector: 'app-resource-detail',
-             templateUrl: './resource-detail.component.html',
+             templateUrl: './resource-detail.component.html'
            })
 export class ResourceDetailComponent {
   @Input() application: Application;
