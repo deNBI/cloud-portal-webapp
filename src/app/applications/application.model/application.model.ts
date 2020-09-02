@@ -98,7 +98,6 @@ export class Application {
   project_application_workshop: boolean;
   credits_allowed: boolean;
 
-
   constructor(aj: Application | null) {
     this.dissemination = new ApplicationDissemination(null);
 
@@ -222,7 +221,6 @@ export class Application {
       this.setDaysRunning()
     }
   }
-
 
   get TotalModificationCredits(): number {
     if (this.project_modification_request != null) {

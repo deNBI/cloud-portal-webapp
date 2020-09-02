@@ -33,8 +33,7 @@ import {Application_States, ExtensionRequestType} from '../shared/shared_modules
 import {ApplicationLifetimeExtension} from '../applications/application_extension.model';
 import {ApplicationModification} from '../applications/application_modification.model';
 import {ApplicationCreditRequest} from '../applications/application_credit_request';
-import {BsDropdownModule} from "ngx-bootstrap/dropdown";
-
+import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 
 /**
  * Projectoverview component.
@@ -462,9 +461,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
           this.project_application = new Application(aj);
           this.credits_allowed = aj['credits_allowed'];
 
-
           if (this.project_application) {
-            //this.startUpdateCreditUsageLoop();
+            // this.startUpdateCreditUsageLoop();
 
             this.applicationsservice.getApplicationPerunId(this.application_id).subscribe((id: any): void => {
               if (id['perun_id']) {
@@ -530,7 +528,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
         } else {
           this.getApplication()
         }
-
 
       })
   }
@@ -647,14 +644,16 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
   }
 
-  isAbleToStart(){
-    if (this.resourceDataLoaded){
-      if (!this.project?.OpenStackProject){
-        if (this.vmsInUse < this.maximumVMs ){
+  isAbleToStart() {
+    if (this.resourceDataLoaded) {
+      if (!this.project?.OpenStackProject) {
+        if (this.vmsInUse < this.maximumVMs ) {
           return true;
         }
       }
-    } return false;
+    }
+
+    return false;
   }
 
   getUsedResources(groupid: string): void {
@@ -874,11 +873,11 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
       } else {
         this.isLoaded = true;
         if (this.project_application?.project_application_perun_id) {
-          //this.startUpdateCreditUsageLoop();
+          // this.startUpdateCreditUsageLoop();
         }
 
       }
-      if(!this.project?.OpenStackProject){
+      if (!this.project?.OpenStackProject) {
         this.getUsedResources(groupid);
       } else {
         this.resourceDataLoaded = true;

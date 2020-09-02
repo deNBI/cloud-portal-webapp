@@ -14,7 +14,6 @@ import {environment} from '../../environments/environment';
 import {is_vo} from '../shared/globalvar';
 import {VirtualmachineService} from '../api-connector/virtualmachine.service';
 
-
 /**
  * FullLayout component.
  */
