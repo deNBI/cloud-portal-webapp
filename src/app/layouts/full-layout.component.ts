@@ -51,7 +51,6 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
   TITLE: string = '';
 
   project_enumeration: ProjectEnumeration[] = [];
-  project_badges_states: { [id: string]: number[] } = {};
   Application_States: typeof Application_States = Application_States;
 
   constructor(private voService: VoService, private groupService: GroupService, userservice: UserService,
