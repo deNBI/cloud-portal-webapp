@@ -37,7 +37,6 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
   test_name: string = '';
   all_dissemination_checked: boolean = false;
   initiated_validation: boolean = false;
-  credits: number = 0;
   dissemination_platform_count: number = 0;
   flavorList: Flavor[] = [];
   production: boolean = environment.production;
