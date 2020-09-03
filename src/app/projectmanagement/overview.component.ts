@@ -496,7 +496,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
         if (this.selected_ontology_terms.length > 0) {
           this.applicationsservice.addEdamOntologyTerms(this.application_id,
-            this.selected_ontology_terms
+                                                        this.selected_ontology_terms
           ).subscribe((): void => {
             this.getApplication()
 
@@ -536,7 +536,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
         }
         if (this.selected_ontology_terms.length > 0) {
           this.applicationsservice.addEdamOntologyTerms(this.application_id,
-            this.selected_ontology_terms
+                                                        this.selected_ontology_terms
           ).subscribe((): void => {
             this.getApplication()
 
