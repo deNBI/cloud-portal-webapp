@@ -13,6 +13,7 @@ import {ProjectEnumeration} from '../projectmanagement/project-enumeration';
 import {environment} from '../../environments/environment';
 import {is_vo} from '../shared/globalvar';
 import {VirtualmachineService} from '../api-connector/virtualmachine.service';
+import {Application_States} from '../shared/shared_modules/baseClass/abstract-base-class';
 
 
 /**
@@ -51,7 +52,7 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
   TITLE: string = '';
 
   project_enumeration: ProjectEnumeration[] = [];
-  project_badges_states: {[id: string]: number[]} = {};
+  Application_States: typeof Application_States = Application_States;
 
   constructor(private voService: VoService, private groupService: GroupService, userservice: UserService,
               facilityService: FacilityService, applicationsservice: ApplicationsService,
@@ -95,7 +96,6 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
     this.groupService.getGroupsEnumeration().subscribe((res: ProjectEnumeration[]): void => {
       this.project_enumeration = res;
       this.project_enumeration.forEach((enumeration: ProjectEnumeration): void => {
-        this.project_badges_states[enumeration.application_id] = enumeration.project_status;
         this.pushAdditionalStates(enumeration);
       });
     });
@@ -127,15 +127,19 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
    * @param enumeration
    */
   pushAdditionalStates(enumeration: ProjectEnumeration): void {
-    if (enumeration.project_status.includes(2)) {
-      if ((this.getDaysLeft(enumeration) < 14) && (this.getDaysLeft(enumeration) >= 0)) {
-        this.project_badges_states[enumeration.application_id].push(18);
+
+    const days_left: number = this.getDaysLeft(enumeration);
+    const days_running: number = this.getDaysRunning(enumeration);
+    if (enumeration.project_application_status.includes(Application_States.APPROVED)) {
+      if (days_left < 14 && days_left >= 0) {
+        enumeration.project_application_status.push(Application_States.EXPIRES_SOON);
+
+      } else if (days_left < 0) {
+        enumeration.project_application_status.push(Application_States.EXPIRED);
+
       }
-      if ((this.getDaysRunning(enumeration) < 14)) {
-        this.project_badges_states[enumeration.application_id].push(19);
-      }
-      if ((this.getDaysLeft(enumeration) < 0)) {
-        this.project_badges_states[enumeration.application_id].push(20);
+      if (days_running < 14) {
+        enumeration.project_application_status.push(Application_States.APPROVED_LAST_2_WEEKS);
       }
     }
 
