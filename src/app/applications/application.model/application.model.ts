@@ -97,6 +97,9 @@ export class Application {
   flavors: Flavor[] = [];
   project_application_workshop: boolean;
   credits_allowed: boolean;
+  totalModificationRequestCredits: number = 0;
+  totalCreditsExtensionCredits: number = 0;
+  totalLifetimeExtensionCredits: number = 0;
 
 
   constructor(aj: Application | null) {
@@ -126,13 +129,18 @@ export class Application {
       this.DaysRunning = aj.DaysRunning;
       if (aj.project_lifetime_request) {
         this.project_lifetime_request = new ApplicationLifetimeExtension(aj.project_lifetime_request);
+
+        this.totalLifetimeExtensionCredits = this.calcLifetimeExtensionCredits()
       }
 
       if (aj.project_modification_request) {
         this.project_modification_request = new ApplicationModification(aj.project_modification_request);
+        this.totalModificationRequestCredits = this.calcTotalModificationCredits()
       }
       if (aj.project_credit_request) {
         this.project_credit_request = new ApplicationCreditRequest(aj.project_credit_request);
+        this.totalCreditsExtensionCredits = this.calcCreditsExtensionCredits()
+
       }
 
       this.project_application_total_cores = aj.project_application_total_cores;
@@ -157,6 +165,7 @@ export class Application {
         this.project_application_report_allowed = this.dissemination.someAllowed();
       }
       this.setDaysRunning()
+
     }
   }
 
@@ -224,7 +233,7 @@ export class Application {
   }
 
 
-  get TotalModificationCredits(): number {
+  public calcTotalModificationCredits(): number {
     if (this.project_modification_request != null) {
       return Number(this.project_application_initial_credits) +
         Number(this.project_modification_request.extra_credits)
@@ -233,4 +242,19 @@ export class Application {
     }
   }
 
+  public calcCreditsExtensionCredits(): number {
+    if (this.project_credit_request != null) {
+      return this.project_application_initial_credits + this.project_credit_request.extra_credits
+    } else {
+      return this.project_application_initial_credits
+    }
+  }
+
+  public calcLifetimeExtensionCredits(): number {
+    if (this.project_lifetime_request != null) {
+      return this.project_application_initial_credits + this.project_lifetime_request.extra_credits
+    } else {
+      return this.project_application_initial_credits
+    }
+  }
 }

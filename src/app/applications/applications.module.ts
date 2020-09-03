@@ -18,6 +18,12 @@ import {ApplicationDetailComponent} from './application-detail/application-detai
 import {SharedDirectivesModule} from '../shared/shared_modules/shared_directives.module';
 import {ApplicationFormularComponent} from './application-formular/application-formular.component';
 import {PipeModuleModule} from '../pipe-module/pipe-module.module';
+import { ApplicationPiDetailComponent } from './application-detail/application-pi-detail/application-pi-detail.component';
+import { InformationDetailComponent } from './application-detail/information-detail/information-detail.component';
+import { ResourceDetailComponent } from './application-detail/resource-detail/resource-detail.component';
+import { ModificationDetailComponent } from './application-detail/modification-detail/modification-detail.component';
+import { CreditsExtensionDetailComponent } from './application-detail/credits-extension-detail/credits-extension-detail.component';
+import { LifetimeExtensionDetailComponent } from './application-detail/lifetime-extension-detail/lifetime-extension-detail.component';
 
 /**
  * Applications Module.
@@ -43,7 +49,13 @@ import {PipeModuleModule} from '../pipe-module/pipe-module.module';
               TypeOverviewComponent,
               ValidationApplicationComponent,
               ApplicationDetailComponent,
-              ApplicationFormularComponent
+              ApplicationFormularComponent,
+              ApplicationPiDetailComponent,
+              InformationDetailComponent,
+              ResourceDetailComponent,
+              ModificationDetailComponent,
+              CreditsExtensionDetailComponent,
+              LifetimeExtensionDetailComponent
             ],
             exports: [ApplicationDetailComponent]
           })

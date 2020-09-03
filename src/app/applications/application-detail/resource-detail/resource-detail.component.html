@@ -1,0 +1,83 @@
+<table class="table table-striped" style="table-layout: fixed">
+
+
+  <tr>
+    <td>VMs
+    </td>
+
+    <td>
+      {{application?.project_application_vms_requested}}
+    </td>
+
+  </tr>
+
+  <tr *ngFor="let flavor of application?.flavors">
+    <td>Flavor: {{flavor.name}}</td>
+    <td>{{flavor.counter}}</td>
+  </tr>
+
+
+  <tr>
+    <td>Total Cores</td>
+    <td>{{
+      application?.project_application_total_cores
+      }}
+
+
+    </td>
+
+  </tr>
+
+  <tr>
+    <td>Total RAM</td>
+    <td>{{
+      application?.project_application_total_ram}} GB
+    </td>
+
+  </tr>
+
+
+  <tr *ngIf="is_vo_admin">
+    <td>Initial Credits</td>
+    <td>{{
+      application?.project_application_initial_credits}}
+    </td>
+
+  </tr>
+
+  <tr *ngIf="is_vo_admin">
+    <td>Used Credits</td>
+    <td>{{current_credits}}
+    </td>
+
+  </tr>
+
+  <tr>
+    <td>Storage Limit
+    </td>
+    <td>{{
+      application?.project_application_volume_limit
+      }} GB
+    </td>
+
+  </tr>
+  <tr>
+    <td>Volume
+      Counter
+    </td>
+    <td>{{
+      application?.project_application_volume_counter
+      }} volumes
+    </td>
+  </tr>
+  <tr *ngIf="application?.project_application_openstack_project">
+    <td>ObjectStorage
+    </td>
+    <td>{{
+      application?.project_application_object_storage
+      }} GB
+    </td>
+
+  </tr>
+
+</table>
