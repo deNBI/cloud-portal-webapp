@@ -649,7 +649,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
   }
 
-  isAbleToStart(){
+  isAbleToStart(): boolean {
     if (this.resourceDataLoaded){
       if (!this.project?.OpenStackProject){
         if (this.vmsInUse < this.maximumVMs ){
@@ -890,7 +890,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
   }
 
-  setSupportMails(project: Project) {
+  setSupportMails(project: Project): void {
     this.supportMails = project.ComputeCenter.Support.toString().split(',');
   }
 
