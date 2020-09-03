@@ -1,0 +1,53 @@
+<table class="table table-striped" style="table-layout: fixed">
+
+
+  <tr *ngIf="application?.project_application_pi_approved" id="id_pi_row">
+    <td>
+      PI Name
+    </td>
+    <td>
+      {{application?.project_application_pi?.username}}
+    </td>
+
+  </tr>
+  <tr *ngIf="application?.project_application_pi_approved">
+    <td>
+      PI Email
+    </td>
+    <td>
+      {{application?.project_application_pi?.email}}
+    </td>
+
+  </tr>
+  <tr *ngIf="application?.project_application_pi_approved">
+    <td>
+      PI Affiliations
+    </td>
+    <td>
+      {{application?.project_application_pi?.user_affiliations}}
+    </td>
+
+  </tr>
+  <tr>
+    <td>User
+      Affiliations
+    </td>
+    <td>{{
+      application?.project_application_user?.user_affiliations}}
+    </td>
+
+  </tr>
+  <tr>
+    <td>User Name</td>
+    <td>
+      {{  application?.project_application_user?.username}}
+    </td>
+  </tr>
+  <tr>
+    <td>User Email</td>
+    <td>
+      {{  application?.project_application_user?.email}}
+    </td>
+
+  </tr>
+</table>

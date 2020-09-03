@@ -1,0 +1,143 @@
+<table class="table table-striped" style="table-layout: fixed">
+
+  <td>Research Topics</td>
+  <td><h5><span *ngFor="let term of application?.project_application_edam_terms"
+                style="margin-left: 5px; "
+                class="badge badge-info"><span id="topic_{{term}}">{{term}}</span>
+ </span>
+
+  </h5></td>
+
+  <tr>
+    <td>Workshop</td>
+    <td>
+      <span *ngIf="application?.project_application_workshop" class="badge badge-success">Yes</span>
+      <span *ngIf="!application?.project_application_workshop" class="badge badge-danger">No</span>
+    </td>
+
+  </tr>
+  <tr *ngIf="application?.project_application_openstack_project">
+    <td>Service</td>
+    <td>
+      <span *ngIf="application?.project_application_cloud_service" class="badge badge-success">Yes</span>
+      <span *ngIf="!application?.project_application_cloud_service" class="badge badge-danger">No</span>
+    </td>
+
+  </tr>
+  <tr *ngIf="application?.project_application_openstack_project && application?.project_application_cloud_service">
+    <td>Service status</td>
+    <td>
+      <span *ngIf="application?.project_application_cloud_service_develop"
+            class="badge badge-success">In development</span>
+      <span *ngIf="!application?.project_application_cloud_service_develop" class="badge badge-danger">Existing</span>
+    </td>
+
+  </tr>
+
+  <tr>
+    <td>Description
+    </td>
+    <td>{{
+      application?.project_application_description
+      }}
+    </td>
+
+  </tr>
+  <tr>
+    <td>Horizon 2020</td>
+    <td>
+      {{application?.project_application_horizon2020}}
+    </td>
+  </tr>
+  <tr>
+    <td>Elixir Project</td>
+    <td>
+      {{application?.project_application_elixir_project}}
+    </td>
+
+  </tr>
+  <tr>
+    <td>BMBF Project</td>
+    <td>
+      {{application?.project_application_bmbf_project}}
+    </td>
+
+  </tr>
+
+
+  <tr>
+    <td>Workgroup</td>
+    <td>{{
+      application?.project_application_workgroup
+      }}
+    </td>
+
+  </tr>
+
+  <tr>
+    <td>Comment</td>
+    <td>{{
+      application?.project_application_comment
+      }}
+    </td>
+
+  </tr>
+  <tr>
+    <td>Lifetime</td>
+    <td>{{
+      application?.project_application_lifetime
+      }} months
+    </td>
+
+  </tr>
+  <tr>
+    <td>Sensitive Data</td>
+    <td><p *ngIf="application?.project_application_sensitive_data"> Yes</p>
+      <p *ngIf="!application?.project_application_sensitive_data"> No</p>
+    </td>
+
+  </tr>
+  <tr *ngIf="application?.project_application_openstack_project">
+    <td>Training</td>
+    <td><p *ngIf="application?.project_application_openstack_basic_introduction"> Yes</p>
+      <p *ngIf="!application?.project_application_openstack_basic_introduction"> No</p>
+    </td>
+
+  </tr>
+
+  <tr>
+    <td>Last status
+      changed
+    </td>
+    <td>{{
+      application?.project_application_date_status_changed
+      }}
+    </td>
+
+  </tr>
+
+
+</table>
+
+<table class="table table-striped" style="table-layout: fixed">
+  <thead>
+  <tr>
+    <th colspan="2" style="text-align:center"><strong>Dissemination</strong></th>
+
+  </tr>
+  </thead>
+  <tr>
+    <td>Platforms</td>
+    <td id="dissemination_platforms">
+      {{application?.dissemination?.allowed_platforms}}
+    </td>
+
+  </tr>
+  <tr>
+    <td>Information</td>
+    <td id="dissemination_information">
+      {{application?.dissemination?.allowed_informations}}
+    </td>
+
+  </tr>
+</table>
