@@ -38,11 +38,11 @@ import {ApplicationCreditRequest} from '../applications/application_credit_reque
  * Projectoverview component.
  */
 @Component({
-             selector: 'app-project-overview',
-             templateUrl: 'overview.component.html',
-             providers: [FlavorService, ApplicationStatusService, ApplicationsService,
-               FacilityService, UserService, GroupService, ApiSettings, CreditsService]
-           })
+  selector: 'app-project-overview',
+  templateUrl: 'overview.component.html',
+  providers: [FlavorService, ApplicationStatusService, ApplicationsService,
+    FacilityService, UserService, GroupService, ApiSettings, CreditsService]
+})
 export class OverviewComponent extends ApplicationBaseClassComponent implements OnInit, OnDestroy {
 
   @Input() invitation_group_post: string = environment.invitation_group_post;
@@ -199,122 +199,108 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
   calculateCreditsLifeTime(): void {
     this.subscription.add(
-      this.creditsService.getExtraCreditsForExtension(this.project_application.project_application_total_cores,
-                                                      this.project_application.project_application_total_ram,
-                                                      this.project_extension.extra_lifetime,
-                                                      this.project_application.project_application_id.toString()).subscribe(
+      this.creditsService.getExtraCreditsForLifetimeExtension(
+        this.project_extension.extra_lifetime,
+        this.project_application.project_application_id.toString()
+      ).subscribe(
         (credits: number): void => {
           this.project_extension.extra_credits = credits;
         }))
 
   }
 
-  calculateCreditsModification(): void {
+  calculateCreditsResourceModification(): void {
     this.subscription.add(
-      this.creditsService.getExtraCreditsForExtension(this.project_modification.total_cores,
-                                                      this.project_modification.total_ram,
-                                                      this.project_application.project_application_lifetime,
-                                                      this.project_application.project_application_id.toString()).subscribe(
+      this.creditsService.getExtraCreditsForResourceExtension(
+        this.project_modification.total_cores,
+        this.project_modification.total_ram,
+        this.project_application.project_application_id.toString()
+      ).subscribe(
         (credits: number): void => {
           this.project_modification.extra_credits = credits;
         }))
 
   }
 
-  calculateCredits(lifetime: number): void {
-    if (!this.credits_allowed && !this.is_vo_admin) {
-      return;
-    }
-    if (lifetime === null || lifetime === undefined || lifetime.toString() === '') {
-      lifetime = 0;
-    }
-    this.creditsService.getExtraCreditsForExtension(this.totalNumberOfCores,
-                                                    this.totalRAM, lifetime,
-                                                    this.project_application.project_application_id.toString()).subscribe(
-      (credits: number): void => {
-        this.project_application.project_modification_request.extra_credits = credits;
-      })
-
-  }
-
-  fetchCurrentCreditsOfProject(): void {
-    if (this.project_application != null) {
-      // tslint:disable-next-line:max-line-length
-      this.creditsService.getCurrentCreditsOfProject(Number(this.project_application.project_application_perun_id.toString())).toPromise().then(
+  calculateCreditsModification(): void {
+    this.subscription.add(
+      this.creditsService.getExtraCreditsForResourceExtension(
+        this.project_modification.total_cores,
+        this.project_modification.total_ram,
+        this.project_application.project_application_id.toString()
+      ).subscribe(
         (credits: number): void => {
-          this.current_credits = credits;
-        }
-      ).catch((err: Error): void => console.log(err.message))
-    } else {
-      console.log(this.project_application)
-    }
-    this.fetchCreditHistoryOfProject();
+          this.project_modification.extra_credits = credits;
+        }))
+
   }
 
   fetchCreditHistoryOfProject(): void {
     if (this.project != null) {
       this.creditsService.getCreditsUsageHistoryOfProject(Number(this.project.Id.toString())).toPromise()
         .then((response: {}): void => {
-                // tslint:disable-next-line:triple-equals
-                if (response['data_points'] != undefined) {
-                  const data_points: number[] = response['data_points'];
-                  const ceiling_line: number[] = [];
-                  const ceiling_value: number = Math.max.apply(null, data_points);
-                  // tslint:disable-next-line:id-length prefer-for-of
-                  for (let i: number = 0; i < data_points.length; i++) {
-                    ceiling_line.push(ceiling_value);
-                  }
-                  this.creditsChart = new Chart(this.creditsCanvas.nativeElement, {
-                    type: 'line',
-                    data: {
-                      labels: response['time_points'],
-                      datasets: [{
-                        label: 'Credit Usage',
-                        data: data_points,
-                        borderColor: 'rgba(54, 162, 235, 1)',
-                        backgroundColor: 'rgba(54, 162, 235, 0.2)'
-                      }, {
-                        label: 'Current Credits Used',
-                        data: ceiling_line,
-                        borderColor: 'rgba(255, 99, 132, 1)',
-                        fill: false,
-                        pointRadius: 0
-                      }]
-                    },
-                    options: {
-                      animation: {
-                        duration: 0
-                      }
-                    }
-                  })
-                }
+            // tslint:disable-next-line:triple-equals
+            if (response['data_points'] != undefined) {
+              const data_points: number[] = response['data_points'];
+              const ceiling_line: number[] = [];
+              const ceiling_value: number = Math.max.apply(null, data_points);
+              // tslint:disable-next-line:id-length prefer-for-of
+              for (let i: number = 0; i < data_points.length; i++) {
+                ceiling_line.push(ceiling_value);
               }
+              this.creditsChart = new Chart(this.creditsCanvas.nativeElement, {
+                type: 'line',
+                data: {
+                  labels: response['time_points'],
+                  datasets: [{
+                    label: 'Credit Usage',
+                    data: data_points,
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)'
+                  }, {
+                    label: 'Current Credits Used',
+                    data: ceiling_line,
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    fill: false,
+                    pointRadius: 0
+                  }]
+                },
+                options: {
+                  animation: {
+                    duration: 0
+                  }
+                }
+              })
+            }
+          }
         ).catch((err: Error): void => console.log(err.message));
     }
   }
 
   updateExampleCredits(numberOfCredits: number): void {
     const totalHoursSmall: number = Math.round((numberOfCredits / this.creditsPerHourSmallExample));
-    const totalHoursLarge: number = Math.round((numberOfCredits / this.creditsPerHourLargeExample)) ;
-    this.smallExamplePossibleHours = totalHoursSmall % 24;
-    this.largeExamplePossibleHours = totalHoursLarge % 24;
-    this.smallExamplePossibleDays = this.updateCreditsDaysString(totalHoursSmall);
-    this.largeExamplePossibleDays = this.updateCreditsDaysString(totalHoursLarge);
+    const totalHoursLarge: number = Math.round((numberOfCredits / this.creditsPerHourLargeExample));
+    this.smallExamplePossibleHours = totalHoursSmall;
+    this.largeExamplePossibleHours = totalHoursLarge;
+    // this.smallExamplePossibleHours = totalHoursSmall % 24;
+    // this.largeExamplePossibleHours = totalHoursLarge % 24;
+    // this.smallExamplePossibleDays = this.updateCreditsDaysString(totalHoursSmall);
+    // this.largeExamplePossibleDays = this.updateCreditsDaysString(totalHoursLarge);
   }
 
-  updateCreditsDaysString(hours: number): string {
-    let daysString: string = '';
-    if (Math.floor(hours / 24) === 1) {
-      daysString = ' day';
-    } else if (Math.floor(hours / 24) > 1) {
-      daysString = ' days';
-    }
-    if (daysString !== '') {
-      return Math.floor(hours / 24).toString();
-    }
-
-    return ''
-}
+  // updateCreditsDaysString(hours: number): string {
+  //   let daysString: string = '';
+  //   if (Math.floor(hours / 24) === 1) {
+  //     daysString = ' day';
+  //   } else if (Math.floor(hours / 24) > 1) {
+  //     daysString = ' days';
+  //   }
+  //   if (daysString !== '') {
+  //     return Math.floor(hours / 24).toString();
+  //   }
+  //
+  //   return ''
+  // }
 
   startUpdateCreditUsageLoop(): void {
 
@@ -346,7 +332,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
         )),
       10000
-     );
+    );
 
     this.updateCreditsHistoryIntervals = setInterval(
       (): any =>
@@ -507,7 +493,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
         }
         if (this.selected_ontology_terms.length > 0) {
           this.applicationsservice.addEdamOntologyTerms(this.application_id,
-                                                        this.selected_ontology_terms
+            this.selected_ontology_terms
           ).subscribe((): void => {
             this.getApplication()
 
@@ -543,7 +529,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
         }
         if (this.selected_ontology_terms.length > 0) {
           this.applicationsservice.addEdamOntologyTerms(this.application_id,
-                                                        this.selected_ontology_terms
+            this.selected_ontology_terms
           ).subscribe((): void => {
             this.getApplication()
 
@@ -732,25 +718,25 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
     this.groupService.rejectGroupApplication(project, application)
       .subscribe((tmp_application: any): void => {
-                   this.project.ProjectMemberApplications = [];
+          this.project.ProjectMemberApplications = [];
 
-                   if (tmp_application['state'] === 'REJECTED') {
-                     this.application_action_success = true;
+          if (tmp_application['state'] === 'REJECTED') {
+            this.application_action_success = true;
 
-                   } else if (tmp_application['message']) {
-                     this.application_action_success = false;
+          } else if (tmp_application['message']) {
+            this.application_action_success = false;
 
-                     this.application_action_error_message = tmp_application['message'];
-                   } else {
-                     this.application_action_success = false;
-                   }
-                   this.application_action = 'rejected';
-                   this.application_member_name = membername;
-                   this.application_action_done = true;
-                   this.getUserProjectApplications();
-                   this.loaded = true;
+            this.application_action_error_message = tmp_application['message'];
+          } else {
+            this.application_action_success = false;
+          }
+          this.application_action = 'rejected';
+          this.application_member_name = membername;
+          this.application_action_done = true;
+          this.getUserProjectApplications();
+          this.loaded = true;
 
-                 }
+        }
       );
   }
 
@@ -824,7 +810,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
       if (lifetime !== -1) {
         const expirationDate: string = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format('DD.MM.YYYY');
         const lifetimeDays: number = Math.abs(moment(moment(expirationDate, 'DD.MM.YYYY').toDate())
-                                                .diff(moment(dateCreated), 'days'));
+          .diff(moment(dateCreated), 'days'));
         newProject.DateEnd = expirationDate;
         newProject.LifetimeDays = lifetimeDays;
 
@@ -869,6 +855,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
         }
         this.isLoaded = true;
+        this.startUpdateCreditUsageLoop();
       })
 
     });
