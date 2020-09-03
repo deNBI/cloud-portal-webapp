@@ -222,11 +222,11 @@
 
                 <td colspan="12">
                   <app-application-detail
+                    [default_tab]="tab_state"
                     [class.collapse_no_margin]="getCollapseStatus('application_review-' + application?.project_application_id)"
                     [class.collapse]="getCollapseStatus('application_review-' + application?.project_application_id)"
                     [application]="application"
-                    [isModification]="(application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED) ||
-                     (application | hasstatusinlist:Application_States.LIFETIME_EXTENSION_REQUESTED) "></app-application-detail>
+                  ></app-application-detail>
                 </td>
               </ng-container>
 
@@ -369,11 +369,11 @@
 
                   <td colspan="12">
                     <app-application-detail
+                      [default_tab]="tab_state"
                       [class.collapse_no_margin]="getCollapseStatus('application_review-' + application?.project_application_id)"
                       [class.collapse]="getCollapseStatus('application_review-' + application?.project_application_id)"
                       [application]="application"
-                      [isModification]="(application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED) ||
-                     (application | hasstatusinlist:Application_States.LIFETIME_EXTENSION_REQUESTED) "></app-application-detail>
+                    ></app-application-detail>
                   </td>
                 </ng-container>
 
@@ -515,11 +515,12 @@
 
                   <td colspan="12">
                     <app-application-detail
+                                            [default_tab]="tab_state"
+
                       [class.collapse_no_margin]="getCollapseStatus('application_review-' + application?.project_application_id)"
                       [class.collapse]="getCollapseStatus('application_review-' + application?.project_application_id)"
                       [application]="application"
-                      [isModification]="(application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED) ||
-                     (application | hasstatusinlist:Application_States.LIFETIME_EXTENSION_REQUESTED) "></app-application-detail>
+                    ></app-application-detail>
                   </td>
                 </ng-container>
 
@@ -661,11 +662,12 @@
 
                   <td colspan="12">
                     <app-application-detail
+                                            [default_tab]="tab_state"
+
                       [class.collapse_no_margin]="getCollapseStatus('application_review-' + application?.project_application_id)"
                       [class.collapse]="getCollapseStatus('application_review-' + application?.project_application_id)"
                       [application]="application"
-                      [isModification]="(application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED) ||
-                     (application | hasstatusinlist:Application_States.LIFETIME_EXTENSION_REQUESTED) "></app-application-detail>
+                    ></app-application-detail>
                   </td>
                 </ng-container>
 
@@ -762,6 +764,8 @@
               </tr>
               <td colspan="12">
                 <app-application-detail *ngIf="!getCollapseStatus('application_history-' + application?.project_application_id)"
+                                                              [default_tab]="tab_state"
+
                                         [class.collapse_no_margin]="getCollapseStatus('application_history-' + application?.project_application_id)"
                                         [class.collapse]="getCollapseStatus('application_history-' + application?.project_application_id)"
                                         [application]="application"></app-application-detail>
