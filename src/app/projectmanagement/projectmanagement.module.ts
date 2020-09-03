@@ -12,7 +12,7 @@ import {AutocompleteLibModule} from 'angular-ng-autocomplete';
 import {ChartsModule} from 'ng2-charts';
 import {ProjectOsDetailsComponent} from './project-os-details/project-os-details.component';
 import {PipeModuleModule} from '../pipe-module/pipe-module.module';
-import {BsDropdownModule} from "ngx-bootstrap/dropdown";
+import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 
 /**
  * Projectmanagment module.
