@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FacilityService} from '../../api-connector/facility.service';
 import {Resources} from '../../vo_manager/resources/resources';
-import { jsPDF } from 'jspdf';
+import {jsPDF} from 'jspdf';
 import html2canvas from 'html2canvas';
 import {ExportAsConfig, ExportAsService} from 'ngx-export-as'
 import {CoreFactor} from './core-factor';
@@ -192,7 +192,8 @@ export class ResourcesComponent implements OnInit {
       const position: number = 0;
       pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
       pdf.save(`${this.selectedFacility['Facility']}.pdf`); // Generated PDF
-    }).catch((): void => {
+    }).catch((error: any): void => {
+      console.log(error)
       console.log('failed to convert to pdf')
     });
   }
