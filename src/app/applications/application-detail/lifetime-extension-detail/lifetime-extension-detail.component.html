@@ -1,0 +1,45 @@
+<table class="table table-striped" style="table-layout: fixed">
+
+  <tr>
+    <td>Lifetime Extension Requested from:
+    </td>
+
+    <td>
+      {{application?.project_lifetime_request?.user?.username}}
+      ( {{application?.project_lifetime_request?.user?.email}}|       {{application?.project_lifetime_request?.user?.elixir_id}}
+)
+    </td>
+
+
+  </tr>
+  <tr>
+    <td>Comment</td>
+    <td>{{
+      application?.project_lifetime_request?.comment
+      }}
+    </td>
+
+  </tr>
+  <tr>
+    <td>Extra Lifetime</td>
+
+    <td>
+      {{application?.project_lifetime_request?.extra_lifetime}}
+    </td>
+  </tr>
+  <tr>
+    <td>Extra Credits</td>
+
+    <td>
+      {{application?.project_lifetime_request?.extra_credits}} (Total: {{application?.totalLifetimeExtensionCredits}})
+    </td>
+  </tr>
+  <tr>
+    <td>Date Submitted</td>
+
+    <td>
+      {{application?.project_lifetime_request?.date_submitted}}
+    </td>
+  </tr>
+
+</table>
