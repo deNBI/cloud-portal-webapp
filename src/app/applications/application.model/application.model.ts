@@ -101,7 +101,6 @@ export class Application {
   totalCreditsExtensionCredits: number = 0;
   totalLifetimeExtensionCredits: number = 0;
 
-
   constructor(aj: Application | null) {
     this.dissemination = new ApplicationDissemination(null);
 
@@ -231,7 +230,6 @@ export class Application {
       this.setDaysRunning()
     }
   }
-
 
   public calcTotalModificationCredits(): number {
     if (this.project_modification_request != null) {
