@@ -40,7 +40,7 @@
 
             <button type="button" [disabled]="test_name.length < 5" class="btn btn-primary"
                     (click)="sendTestApplication(test_name);notificationModal.show();">Test
-              Application 
+              Application
             </button>
             <input name="test_name" placeholder="TestAppName" [(ngModel)]="test_name" >
           </div>
@@ -1160,7 +1160,7 @@
             </tr>
             <tr *ngIf="is_vo_admin">
               <td><strong>Initial Credits:
-                {{credits.toString()}}</strong></td>
+                {{application.project_application_initial_credits.toString()}}</strong></td>
             </tr>
             <tr>
               <td><strong>Number of cores in total:
