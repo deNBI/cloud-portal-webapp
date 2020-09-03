@@ -464,7 +464,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
 
           if (this.project_application) {
-            //this.startUpdateCreditUsageLoop();
 
             this.applicationsservice.getApplicationPerunId(this.application_id).subscribe((id: any): void => {
               if (id['perun_id']) {
@@ -472,10 +471,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
                 this.getProject();
 
-              } else {
-                this.isLoaded = true;
               }
-
             })
             if (this.project_application?.project_modification_request) {
               this.project_modification = this.project_application.project_modification_request;
@@ -499,16 +495,15 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
               this.project_credit_request.project_credit_request_user = user;
 
             });
-          } else {
-            this.isLoaded = true;
           }
+          this.isLoaded = true;
         },
         (error: any): void => {
           this.isLoaded = false;
           this.errorMessage = `Status: ${error.status.toString()},
                    StatusText: ${error.statusText.toString()},
                    Error Message: ${error.error.toString()}`;
-        })
+        });
   }
 
   public requestModification(): void {
@@ -890,7 +885,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
       } else {
         this.resourceDataLoaded = true;
       }
-
+      console.log("project:");
+      console.log(this.project);
     })
 
   }
