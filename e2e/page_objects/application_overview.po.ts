@@ -19,6 +19,8 @@ export class ApplicationOverviewPage {
   private static MODIFICATION_TAB_BUTTON: string = 'tab_state_button_modification_request';
   private static MODIFICATION_APPROVAL_BTN_PREFIX: string = 'modification_approval_';
   private static MODIFICATION_REQUEST_RESULT_TEXT: string = 'The resource modification request was approved!';
+  private static EXTENSION_TAB_BUTTON: string = 'tab_state_button_extension_request';
+  private static EXTENSION_RESULT_MESSAGE_TEXT: string = 'The project has been extended!';
 
   static async navigateToApplicationOverview(): Promise<any> {
     console.log('Navigate to Application Overview form');
@@ -26,21 +28,21 @@ export class ApplicationOverviewPage {
     await Util.waitForPage('applications');
   }
 
-  static async approveOPModificationRequest(application_name: string): Promise<any> {
+  static async approveModificationRequest(application_name: string): Promise<any> {
     await Util.waitForPresenceOfElementById(this.MODIFICATION_TAB_BUTTON);
     await Util.clickElementById(this.MODIFICATION_TAB_BUTTON);
     await Util.waitForPresenceOfElementById(this.MODIFICATION_APPROVAL_BTN_PREFIX + application_name);
     await Util.clickElementById(this.MODIFICATION_APPROVAL_BTN_PREFIX + application_name);
-    await Util.waitForTextPresenceInElementById(this.EXTENSION_RESULT, this.MODIFICATION_REQUEST_RESULT_TEXT);
+    await Util.waitForTextPresenceInElementById(this.NOTIFICATION_MESSAGE, this.MODIFICATION_REQUEST_RESULT_TEXT);
 
   }
 
-  static async approveSVModificationRequest(application_name: string): Promise<any> {
-    await Util.waitForPresenceOfElementById(this.MODIFICATION_TAB_BUTTON);
-    await Util.clickElementById(this.MODIFICATION_TAB_BUTTON);
-    await Util.waitForPresenceOfElementById(this.MODIFICATION_APPROVAL_BTN_PREFIX);
-    await Util.clickElementById(this.MODIFICATION_APPROVAL_BTN_PREFIX + application_name);
-    await Util.waitForTextPresenceInElementById(this.EXTENSION_RESULT, this.MODIFICATION_REQUEST_RESULT_TEXT);
+  static async approveExtensionRequest(application_name: string): Promise<any> {
+    await Util.waitForPresenceOfElementById(this.EXTENSION_TAB_BUTTON);
+    await Util.clickElementById(this.EXTENSION_TAB_BUTTON);
+    await Util.waitForPresenceOfElementById(this.EXTENSION_APPROVAL_BTN_PREFIX + application_name);
+    await Util.clickElementById(this.EXTENSION_APPROVAL_BTN_PREFIX + application_name);
+    await Util.waitForTextPresenceInElementById(this.NOTIFICATION_MESSAGE, this.EXTENSION_RESULT_MESSAGE_TEXT);
 
   }
 
