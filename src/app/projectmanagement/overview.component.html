@@ -215,6 +215,7 @@
                       || (project_application | hasstatusinlist:Application_States.MODIFICATION_DECLINED) "
                       (click)="terminateModal.show()"
                       class="btn btn-danger"
+                      [disabled]="(project_application | hasstatusinlist:Application_States.TERMINATION_REQUESTED)"
                       type="button" style="margin-bottom:5px;">
                 Request Termination
               </button>

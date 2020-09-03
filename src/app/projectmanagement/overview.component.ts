@@ -489,8 +489,11 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
         if (result['Error']) {
           this.extension_status = 2
         } else {
+          this.fullLayout.getGroupsEnumeration();
+
           this.extension_status = 1;
         }
+
         if (this.selected_ontology_terms.length > 0) {
           this.applicationsservice.addEdamOntologyTerms(this.application_id,
             this.selected_ontology_terms
@@ -512,6 +515,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
         if (result['Error']) {
           this.extension_status = 2;
         } else {
+          this.fullLayout.getGroupsEnumeration();
+
           this.extension_status = 1;
         }
         this.getApplication();
@@ -525,6 +530,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
         if (result['Error']) {
           this.extension_status = 2;
         } else {
+          this.fullLayout.getGroupsEnumeration();
+
           this.extension_status = 1;
         }
         if (this.selected_ontology_terms.length > 0) {
