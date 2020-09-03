@@ -257,7 +257,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
         }
       ).catch((err: Error): void => console.log(err.message))
     } else {
-      console.log(this.project_application)
+
     }
     this.fetchCreditHistoryOfProject();
   }
@@ -885,15 +885,13 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
       } else {
         this.resourceDataLoaded = true;
       }
-      console.log("project:");
-      console.log(this.project);
+
     })
 
   }
 
   setSupportMails(project: Project) {
     this.supportMails = project.ComputeCenter.Support.toString().split(',');
-    console.log(this.supportMails);
   }
 
   /**
