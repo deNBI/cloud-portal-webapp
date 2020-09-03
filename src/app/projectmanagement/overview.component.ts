@@ -660,7 +660,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
   getUsedResources(groupid: string): void {
     this.groupService.getGroupResources(groupid).subscribe(
-      (res: any) => {
+      (res: any): void => {
          this.vmsInUse = res['used_vms'];
          this.maximumVMs = res['number_vms'];
          this.resourceDataLoaded = true;
