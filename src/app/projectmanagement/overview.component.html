@@ -264,72 +264,7 @@
     <!--/.col-->
   </div>
 
-  <div class="row">
 
-    <div class="col"
-         *ngIf="project && (project?.UserIsPi ||project?.UserIsAdmin)
-         && !(project_application | hasstatusinlist:Application_States.TERMINATED)
-         && !(project_application | hasstatusinlist:Application_States.DECLINED) ">
-
-      <div class="card" id="doiCard">
-        <div class="card-header">
-          <i class="fa fa-align-justify"></i>
-          <a href="https://cloud.denbi.de/wiki/citation_and_publication/#publications"
-             target="_blank">Digital object identifier (DOI)</a>
-        </div>
-
-
-        <div class="card-body">
-          <div class="table-responsive">
-            <table class="table ">
-
-              <tbody>
-              <ng-container
-                *ngFor="let doi of dois">
-                <tr>
-                  <td><a target="_blank" [href]="'https://doi.org/' + doi.identifier">{{doi.identifier}}</a></td>
-
-                  <td>
-                    <button
-                      class="btn btn-danger" type="button" (click)="deleteDoi(doi);">
-
-                      <i class="fa fa-trash"></i>&nbsp;
-                    </button>
-                  </td>
-
-                </tr>
-              </ng-container>
-
-              <tr>
-                <td><input style="width: 100%" type="text" required placeholder="e.g. 10.1000/182"
-                           pattern="10.\d{4,9}\/[-._;()\/:a-zA-Z0-9]+" [(ngModel)]="newDoi" #doiInput></td>
-
-                <td>
-                  <button id="add_doi_btn"
-                          (click)="addDoi();"
-                          [disabled]="!doiInput.validity.valid"
-                          type="button"
-                          class="btn btn-success"><i class="fa fa-plus"></i>&nbsp;
-                  </button>
-                </td>
-
-              </tr>
-              </tbody>
-            </table>
-
-          </div>
-          <div class="alert alert-info">
-            <p>Please note that the publications entered on this page are listed publicly on
-              <a href="https://cloud.denbi.de/publications" target="_blank">this page on our website</a>.
-              We kindly ask you to list your publications which have been created
-              during your work in the de.NBI Cloud and/or this project.</p>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-  </div>
   <div class="row">
     <div class="col"
          *ngIf="project && ((project_application | hasstatusinlist:Application_States.APPROVED)
@@ -422,26 +357,94 @@
     </div>
 
 </div>
+  <div class="row">
 
-  <div class="col"
-       *ngIf="is_vo_admin && ((project_application | hasstatusinlist:Application_States.APPROVED)
+    <div class="col"
+         *ngIf="project && (project?.UserIsPi ||project?.UserIsAdmin)
+         && !(project_application | hasstatusinlist:Application_States.TERMINATED)
+         && !(project_application | hasstatusinlist:Application_States.DECLINED) ">
+
+      <div class="card" id="doiCard">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i>
+          <a href="https://cloud.denbi.de/wiki/citation_and_publication/#publications"
+             target="_blank">Digital object identifier (DOI)</a>
+        </div>
+
+
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table ">
+
+              <tbody>
+              <ng-container
+                *ngFor="let doi of dois">
+                <tr>
+                  <td><a target="_blank" [href]="'https://doi.org/' + doi.identifier">{{doi.identifier}}</a></td>
+
+                  <td>
+                    <button
+                      class="btn btn-danger" type="button" (click)="deleteDoi(doi);">
+
+                      <i class="fa fa-trash"></i>&nbsp;
+                    </button>
+                  </td>
+
+                </tr>
+              </ng-container>
+
+              <tr>
+                <td><input style="width: 100%" type="text" required placeholder="e.g. 10.1000/182"
+                           pattern="10.\d{4,9}\/[-._;()\/:a-zA-Z0-9]+" [(ngModel)]="newDoi" #doiInput></td>
+
+                <td>
+                  <button id="add_doi_btn"
+                          (click)="addDoi();"
+                          [disabled]="!doiInput.validity.valid"
+                          type="button"
+                          class="btn btn-success"><i class="fa fa-plus"></i>&nbsp;
+                  </button>
+                </td>
+
+              </tr>
+              </tbody>
+            </table>
+
+          </div>
+          <div class="alert alert-info">
+            <p>Please note that the publications entered on this page are listed publicly on
+              <a href="https://cloud.denbi.de/publications" target="_blank">this page on our website</a>.
+              We kindly ask you to list your publications which have been created
+              during your work in the de.NBI Cloud and/or this project.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+  <div class="row">
+    <div class="col"
+         *ngIf="is_vo_admin && ((project_application | hasstatusinlist:Application_States.APPROVED)
            || (project_application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)
            || (project_application | hasstatusinlist:Application_States.MODIFICATION_DECLINED) )">
-    <div class="card" style=" ">
-      <div class="card-header">
-        <i class="fa fa-align-justify"></i> Credit Usage history of {{project?.Name }}
+      <div class="card" style=" ">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i> Credit Usage history of {{project?.Name }}
 
 
-      </div>
-      <div class="card-body">
-        <canvas #creditsChart
-                id="creditsChart" width="400" height="400"
-        >
-        </canvas>
-      </div>
+        </div>
+        <div class="card-body">
+          <canvas #creditsChart
+                  id="creditsChart" width="400" height="400"
+          >
+          </canvas>
+        </div>
 
       </div>
+    </div>
   </div>
+
 
 <div bsModal #addUserModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
      aria-hidden="true">
