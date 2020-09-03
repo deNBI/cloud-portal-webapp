@@ -41,9 +41,9 @@
   </tr>
   <ng-container
     *ngFor="let flavor of application?.project_modification_request?.flavors  ">
-    <tr *ngIf="application?.getFlavorCounter(flavor)== 0">
+    <tr>
       <td>Flavor: {{flavor.name}}</td>
-      <td>{{application| flavorCounter:flavor}}</td>
+      <td>{{application?.project_modification_request | flavorCounter:flavor}}</td>
 
     </tr>
   </ng-container>
