@@ -11,42 +11,10 @@ import {ApplicationCreditRequest} from '../application_credit_request';
  * User Class.
  */
 export class User {
-  private _username: string;
-  private _user_affiliations: string [] = [];
-  private _elixir_id: string;
-  private _email: string;
-
-  get username(): string {
-    return this._username;
-  }
-
-  set username(value: string) {
-    this._username = value;
-  }
-
-  get user_affiliations(): string[] {
-    return this._user_affiliations;
-  }
-
-  set user_affiliations(value: string[]) {
-    this._user_affiliations = value;
-  }
-
-  get elixir_id(): string {
-    return this._elixir_id;
-  }
-
-  set elixir_id(value: string) {
-    this._elixir_id = value;
-  }
-
-  get email(): string {
-    return this._email;
-  }
-
-  set email(value: string) {
-    this._email = value;
-  }
+  username: string;
+  user_affiliations: string [] = [];
+  elixir_id: string;
+  email: string;
 }
 
 /**
@@ -75,13 +43,13 @@ export class Application {
   ComputeCenter: ComputecenterComponent;
   project_application_openstack_project: boolean;
   DaysRunning: number;
-  project_lifetime_request: ApplicationLifetimeExtension = null;
+  project_lifetime_request: ApplicationLifetimeExtension;
   project_modification_request: ApplicationModification;
   project_credit_request: ApplicationCreditRequest = null;
   project_application_perun_id: number | string;
   project_application_total_cores: number;
   project_application_total_ram: number;
-  project_application_initial_credits: number;
+  project_application_initial_credits: number = 0;
   project_application_date_approved: string;
   project_application_openstack_basic_introduction: boolean;
   project_application_horizon2020: string;
@@ -126,6 +94,8 @@ export class Application {
       this.ComputeCenter = aj.ComputeCenter;
       this.project_application_openstack_project = aj.project_application_openstack_project;
       this.DaysRunning = aj.DaysRunning;
+      this.project_application_initial_credits = Math.round(aj.project_application_initial_credits * 10) / 10;
+
       if (aj.project_lifetime_request) {
         this.project_lifetime_request = new ApplicationLifetimeExtension(aj.project_lifetime_request);
 
@@ -144,7 +114,6 @@ export class Application {
 
       this.project_application_total_cores = aj.project_application_total_cores;
       this.project_application_total_ram = aj.project_application_total_ram;
-      this.project_application_initial_credits = aj.project_application_initial_credits;
       this.project_application_date_approved = aj.project_application_date_approved;
       this.project_application_openstack_basic_introduction = aj.project_application_openstack_basic_introduction;
       this.project_application_horizon2020 = aj.project_application_horizon2020;
@@ -231,8 +200,8 @@ export class Application {
 
   public calcTotalModificationCredits(): number {
     if (this.project_modification_request != null) {
-      return Number(this.project_application_initial_credits) +
-        Number(this.project_modification_request.extra_credits)
+      return (Math.round(this.project_application_initial_credits * 10) / 10)
+        + (Math.round((this.project_modification_request.extra_credits * 10) / 10))
     } else {
       return this.project_application_initial_credits
     }
@@ -240,7 +209,8 @@ export class Application {
 
   public calcCreditsExtensonCredits(): number {
     if (this.project_credit_request != null) {
-      return this.project_application_initial_credits + this.project_credit_request.extra_credits
+      return (Math.round(this.project_application_initial_credits * 10) / 10)
+        + (Math.round((this.project_credit_request.extra_credits * 10) / 10))
     } else {
       return this.project_application_initial_credits
     }
@@ -248,7 +218,9 @@ export class Application {
 
   public calcLifetimeExtensonCredits(): number {
     if (this.project_lifetime_request != null) {
-      return this.project_application_initial_credits + this.project_lifetime_request.extra_credits
+      return (Math.round(this.project_application_initial_credits * 10) / 10)
+        + (Math.round((this.project_lifetime_request.extra_credits * 10) / 10))
+
     } else {
       return this.project_application_initial_credits
     }
