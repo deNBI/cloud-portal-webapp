@@ -304,7 +304,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
   startUpdateCreditUsageLoop(): void {
 
-    if (!this.credits_allowed && !this.is_vo_admin && !this.project_application) {
+    if (!this.credits_allowed && !this.is_vo_admin || !this.project_application) {
       return;
     }
     this.creditsService.getCurrentCreditsOfProject(
@@ -437,7 +437,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
           this.credits_allowed = aj['credits_allowed'];
 
           if (this.project_application) {
-            this.startUpdateCreditUsageLoop();
 
             this.applicationsservice.getApplicationPerunId(this.application_id).subscribe((id: any): void => {
               if (id['perun_id']) {
@@ -466,6 +465,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
             } else {
               this.initiateCreditRequest();
             }
+            this.startUpdateCreditUsageLoop();
+
           } else {
             this.isLoaded = true;
           }
