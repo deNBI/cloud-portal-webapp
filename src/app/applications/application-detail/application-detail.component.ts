@@ -51,7 +51,6 @@ export class ApplicationDetailComponent extends ApplicationBaseClassComponent im
   }
 
   setTab(tab_num: number): void {
-    console.log(tab_num)
     this.setAllTabsFalse()
     switch (tab_num) {
       case this.PI_USER_TAB:

@@ -16,7 +16,7 @@ export class ApplicationModification {
   date_submitted: string;
   total_cores: number;
   total_ram: number;
-  extra_credits: number;
+  extra_credits: number = 0;
   user: User;
   flavors: Flavor[] = [];
   cloud_service_develop: boolean = false;
@@ -35,7 +35,7 @@ export class ApplicationModification {
       this.date_submitted = extension.date_submitted;
       this.total_cores = extension.total_cores;
       this.total_ram = extension.total_ram;
-      this.extra_credits = extension.extra_credits;
+      this.extra_credits = (Math.round(extension.extra_credits * 10) / 10);
       this.user = extension.user;
       this.flavors = extension.flavors;
     }
