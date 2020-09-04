@@ -11,7 +11,7 @@ import {ComputecenterComponent} from './computecenter.component';
 import {Userinfo} from '../userinfo/userinfo.model';
 import {forkJoin, Observable, Subscription} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Application, User} from '../applications/application.model/application.model';
+import {Application} from '../applications/application.model/application.model';
 import {ApplicationBaseClassComponent} from '../shared/shared_modules/baseClass/application-base-class.component';
 import {ApplicationStatusService} from '../api-connector/application-status.service';
 import {FacilityService} from '../api-connector/facility.service';
@@ -304,7 +304,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
   startUpdateCreditUsageLoop(): void {
 
-    if (!this.credits_allowed && !this.is_vo_admin) {
+    if (!this.credits_allowed && !this.is_vo_admin && !this.project_application) {
       return;
     }
     this.creditsService.getCurrentCreditsOfProject(
@@ -437,6 +437,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
           this.credits_allowed = aj['credits_allowed'];
 
           if (this.project_application) {
+            this.startUpdateCreditUsageLoop();
+
             this.applicationsservice.getApplicationPerunId(this.application_id).subscribe((id: any): void => {
               if (id['perun_id']) {
                 this.project_id = id['perun_id'];
@@ -464,12 +466,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
             } else {
               this.initiateCreditRequest();
             }
-            this.userservice.getLoggedUser().subscribe((user: User): void => {
-              this.project_extension.user = user;
-              this.project_modification.user = user;
-              this.project_credit_request.project_credit_request_user = user;
-
-            });
           } else {
             this.isLoaded = true;
           }
