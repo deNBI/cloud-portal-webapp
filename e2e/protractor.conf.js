@@ -29,8 +29,7 @@ exports.config = {
   },
   allScriptsTimeout: 11000,
   specs: [
-    'tests/login_test.ts',
-    'tests/simple_vm_application_test.ts',
+//    'tests/simple_vm_application_test.ts',
     'tests/simple_vm_approval_test.ts',
     'tests/member_test.ts',
     'tests/simple_vm_modification_test.ts',

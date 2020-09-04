@@ -1,21 +1,21 @@
 <div class="nav-tabs-boxed">
   <ul class="nav nav-tabs " style="overflow-x:visible !important">
-    <li class="nav-item"><a class="nav-link" [ngClass]="{'active': PI_USER_TAB_ACTIVE }" (click)="setTab(PI_USER_TAB)">PI/User</a>
+    <li class="nav-item"><a class="nav-link"  id="pi_user_tab" [ngClass]="{'active': PI_USER_TAB_ACTIVE }" (click)="setTab(PI_USER_TAB)">PI/User</a>
     </li>
-    <li class="nav-item"><a class="nav-link" [ngClass]="{'active': INFORMATION_TAB_ACTIVE }"
+    <li class="nav-item"><a class="nav-link"  id="information_tab" [ngClass]="{'active': INFORMATION_TAB_ACTIVE }"
                             (click)="setTab(INFORMATION_TAB)">Informations</a></li>
-    <li class="nav-item"><a class="nav-link" [ngClass]="{'active': RESOURCE_TAB_ACTIVE }"
+    <li class="nav-item"><a class="nav-link" id="resource_tab"  [ngClass]="{'active': RESOURCE_TAB_ACTIVE }"
                             (click)="setTab(RESOURCE_TAB)">Resources</a></li>
-    <li class="nav-item"><a class="nav-link" *ngIf="(application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)
+    <li class="nav-item"><a class="nav-link" id="modification_tab"  *ngIf="(application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)
     || (application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION)"
                             [ngClass]="{'active': MODIFICATION_TAB_ACTIVE }"
                             (click)="setTab(MODIFICATION_TAB)">Modification</a></li>
-    <li class="nav-item"><a class="nav-link" *ngIf=" (is_vo_admin || application?.credits_allowed)  && ((application | hasstatusinlist:Application_States.CREDITS_EXTENSION_REQUESTED)
+    <li class="nav-item"><a class="nav-link" id="credits_tab"  *ngIf=" (is_vo_admin || application?.credits_allowed)  && ((application | hasstatusinlist:Application_States.CREDITS_EXTENSION_REQUESTED)
     || (application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_CREDITS))"
                             [ngClass]="{'active': CREDITS_TAB_ACTIVE }"
                             (click)="setTab(CREDITS_TAB)">Credits Extension</a></li>
 
-    <li class="nav-item"><a class="nav-link" *ngIf="(application | hasstatusinlist:Application_States.LIFETIME_EXTENSION_REQUESTED)
+    <li class="nav-item"><a class="nav-link"  id="extension_tab"*ngIf="(application | hasstatusinlist:Application_States.LIFETIME_EXTENSION_REQUESTED)
     || (application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_EXTENSION)"
                             [ngClass]="{'active': EXTENSION_TAB_ACTIVE }"
                             (click)="setTab(EXTENSION_TAB)">Lifetime Extension</a></li>

@@ -8,7 +8,9 @@ export class ProjectOverview {
 
   private static ADD_MEMBER_BTN_MODAL: string = 'add_member_btn_modal';
   private static SEARCH_MEMBER: string = 'add_member_input';
+  private static DEFAULT_MEMBER_EMAIL: string = 'testuserdenbi'
   private static DEFAULT_MEMBER: string = 'Test User';
+  private static INFORMATION_TAB: string = 'information_tab'
   private static ADD_MEMBER_BTN: string = 'add_member_btn';
   private static SEARCH_MEMBER_BTN: string = 'search_member_btn';
   private static SUCCESS: string = 'Success';
@@ -75,7 +77,7 @@ export class ProjectOverview {
 
   }
 
-  static async addMemberToProject(application_name: string, member: string = this.DEFAULT_MEMBER): Promise<any> {
+  static async addMemberToProject(application_name: string, member: string = this.DEFAULT_MEMBER_EMAIL): Promise<any> {
     console.log('Open add member modal');
     await Util.clickElementById(this.ADD_MEMBER_BTN_MODAL);
     await Util.sendTextToElementById(this.SEARCH_MEMBER, member);
@@ -128,6 +130,7 @@ export class ProjectOverview {
 
   static async isBioinformaticsSet(): Promise<any> {
     await Util.clickElementById(this.SHOW_INFORMATION_BTN);
+    await Util.clickElementById(this.INFORMATION_TAB);
     await Util.waitForPresenceOfElementById(this.BIOINFORMATICS_TOPIC);
   }
 
