@@ -182,19 +182,22 @@
                   *ngIf="!((project_application | hasstatusinlist: Application_States.LIFETIME_EXTENSION_REQUESTED)
                   || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_EXTENSION))">
                   Request extension</button>
-                <button class="btn btn-outline-warning" disabled id="show_doi_question_modal_disabled"
+                <button class="btn btn-outline-secondary" disabled id="show_doi_question_modal_disabled"
                         *ngIf="((project_application | hasstatusinlist: Application_States.LIFETIME_EXTENSION_REQUESTED)
                   || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_EXTENSION))">
                   Extension requested</button>
+
                 <button class="btn btn-outline-danger"
-                        *ngIf="(project_application | hasstatusinlist:Application_States.APPROVED)"
-                     (click)="terminateModal.show()" id="show_termination_modal_button">Request termination</button>
+                        *ngIf="(project_application | hasstatusinlist:Application_States.APPROVED)
+                        && !(project_application | hasstatusinlist:Application_States.TERMINATION_REQUESTED)"
+                        (click)="terminateModal.show()" id="show_termination_modal_button">Request termination</button>
+                <button class="btn btn-outline-secondary"
+                        *ngIf="(project_application | hasstatusinlist:Application_States.TERMINATION_REQUESTED)"
+                        (click)="terminateModal.show()" id="show_termination_modal_button_disabled">Termination Requested</button>
               </div>
-
             </div>
-
-
           </div>
+
           <div class="row">
             <div class="col-6">
               <div class="callout callout-info" *ngIf="!project?.OpenStackProject">
@@ -220,7 +223,7 @@
                         *ngIf="!((project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED)
                   || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION))"
                         (click)="resourceModificationModal.show(); request_type = 2">Request resource modification</button>
-                <button class="btn btn-outline-warning" disabled id="show_modification_extension_button_disabled"
+                <button class="btn btn-outline-secondary" disabled id="show_modification_extension_button_disabled"
                         *ngIf="((project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED)
                   || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION))">
                   Resource modification requested</button>
@@ -255,6 +258,7 @@
                 </div>
               </div>
 
+
             </div>
           </div>
           <div class="row">
@@ -274,6 +278,7 @@
                   <div class="progress-bar bg-info" role="progressbar"
                        [ngStyle]="{'width.%': (calculateProgressBar(project?.CurrentCredits / project?.ApprovedCredits))}"
                        aria-valuemin="0" aria-valuemax="100"></div>
+
                 </div>
               </div>
             </div>
@@ -284,7 +289,7 @@
                       (click)="newFlavors={};initExampleFlavors();creditsExtensionModal.show();"
                       class="btn btn-outline-success"
                       type="button"style="margin-top:15px;">Request more credits</button>
-              <button id="show_credits_extension_modal_disabled" disabled class="btn btn-outline-warning"
+              <button id="show_credits_extension_modal_disabled" disabled class="btn btn-outline-secondary"
                       *ngIf="((project_application | hasstatusinlist: Application_States.CREDITS_EXTENSION_REQUESTED)
                       || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_CREDITS))"
                       type="button"style="margin-top:15px;">More credits requested</button>
@@ -296,12 +301,14 @@
           <div class="row">
             <div class="btn-group col-12">
 
+
             </div>
           </div>
           <div class="row">
             <div class="btn-group col-12">
               <button id="show_information_btn" (click)="getFacilityProject(); this.showInformationCollapse = !this.showInformationCollapse;"
                       type="button" class="btn btn-outline-primary col-6" style="margin:auto;">
+
                 <i class="fa fa-info-circle"></i>&nbsp;
                 <span *ngIf="this.showInformationCollapse">Hide information</span>
                 <span *ngIf="!this.showInformationCollapse">Show more information</span>
@@ -461,6 +468,7 @@
       </div>
     </div>
 
+
 </div>
   <div class="row">
 
@@ -565,92 +573,92 @@
       </div>
       <div class="modal-body">
 
-        <div class="container-fluid">
-          <div class="row">
-            <p style=" margin-bottom: 15px;">Search and add a user to your project by providing at least
-              four characters of his name:</p>
-          </div>
-          <div class="row">
-            <div class="col-md-8">
-              <input style="width: 100%" placeholder="" id="add_member_input" #searchString>
+          <div class="container-fluid">
+            <div class="row">
+              <p style=" margin-bottom: 15px;">Search and add a user to your project by providing at least
+                four characters of his name:</p>
             </div>
-            <div class="col-md-4">
-              <button type="button" class="btn btn-primary" id="search_member_btn"
-                      (click)="filterMembers(searchString.value )"><i
-                class="fa fa-search"></i> Search Member
-              </button>
-            </div>
-          </div>
-          <br>
-          <div class="row">
-            <div class="col-md-12">
-              <strong>Please note</strong> that if you can not find the user, he is not registered for a
-              a de.NBI Cloud account. In that case you can invite him by sending him the following link:
-              <br>
-              <br>
-              <ul style="list-style-type:none;">
-
-                <li>
-                  <pre [hidden]="showLink">{{invitation_link}}</pre>
-                  <div class="btn-group-vertical">
-                    <button class="btn btn-primary" style="margin-bottom: 5px" (click)="showLink = !showLink">
-                      <span [hidden]="!showLink">Show</span>
-                      <span [hidden]="showLink">Hide</span>
-                      link
-                    </button>
-                    <button class="btn btn-success" (click)="copyToClipboard(invitation_link)">Copy link
-                    </button>
-                  </div>
-                </li>
-              </ul>
-              <br>
-              After the user registered for ELIXIR/de.NBI and applied for your group, you can approve his application.
-              Read more about the process <a target="_blank" href="{{WIKI_GROUP_INVITATIONS}}">here</a>.
-            </div>
-          </div>
-
-          <div class="table-responsive">
-            <table *ngIf="filteredMembers!==null" class="table table-bordered table-striped table-sm">
-              <thead>
-
-              <th></th>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>Email</th>
-              </thead>
-              <tbody *ngFor="  let member of filteredMembers">
-              <td>
-                <button style="padding: 5px; margin: 5px"
-                        (click)="addMember(project?.Id,member['member_id'],member['firstName'],member['lastName']);filteredMembers=null; addUserModal.hide();notificationModal.show();"
-                        class="btn btn-success" id="add_member_btn"><i class="fa fa-plus"></i> Add Member
+            <div class="row">
+              <div class="col-md-8">
+                <input style="width: 100%" placeholder="" id="add_member_input" #searchString>
+              </div>
+              <div class="col-md-4">
+                <button type="button" class="btn btn-primary" id="search_member_btn"
+                        (click)="filterMembers(searchString.value )"><i
+                  class="fa fa-search"></i> Search Member
                 </button>
-                <button style="padding: 5px; margin: 5px"
-                        (click)="addAdmin(project?.Id,member['member_id'],member['user_id'],member['firstName'],member['lastName']);filteredMembers=null; addUserModal.hide();notificationModal.show();"
-                        class="btn btn-primary"><i class="fa fa-plus"></i> Add Admin
-                </button>
-              </td>
-              <td>{{member['firstName']}}</td>
-              <td>{{member['lastName']}}</td>
-              <td>{{member['mail']}}</td>
-              </tbody>
-            </table>
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-md-12">
+                <strong>Please note</strong> that if you can not find the user, he is not registered for a
+                a de.NBI Cloud account. In that case you can invite him by sending him the following link:
+                <br>
+                <br>
+                <ul style="list-style-type:none;">
+
+                  <li>
+                    <pre [hidden]="showLink">{{invitation_link}}</pre>
+                    <div class="btn-group-vertical">
+                      <button class="btn btn-primary" style="margin-bottom: 5px" (click)="showLink = !showLink">
+                        <span [hidden]="!showLink">Show</span>
+                        <span [hidden]="showLink">Hide</span>
+                        link
+                      </button>
+                      <button class="btn btn-success" (click)="copyToClipboard(invitation_link)">Copy link
+                      </button>
+                    </div>
+                  </li>
+                </ul>
+                <br>
+                After the user registered for ELIXIR/de.NBI and applied for your group, you can approve his application.
+                Read more about the process <a target="_blank" href="{{WIKI_GROUP_INVITATIONS}}">here</a>.
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table *ngIf="filteredMembers!==null" class="table table-bordered table-striped table-sm">
+                <thead>
+
+                <th></th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                </thead>
+                <tbody *ngFor="  let member of filteredMembers">
+                <td>
+                  <button style="padding: 5px; margin: 5px"
+                          (click)="addMember(project?.Id,member['member_id'],member['firstName'],member['lastName']);filteredMembers=null; addUserModal.hide();notificationModal.show();"
+                          class="btn btn-success" id="add_member_btn"><i class="fa fa-plus"></i> Add Member
+                  </button>
+                  <button style="padding: 5px; margin: 5px"
+                          (click)="addAdmin(project?.Id,member['member_id'],member['user_id'],member['firstName'],member['lastName']);filteredMembers=null; addUserModal.hide();notificationModal.show();"
+                          class="btn btn-primary"><i class="fa fa-plus"></i> Add Admin
+                  </button>
+                </td>
+                <td>{{member['firstName']}}</td>
+                <td>{{member['lastName']}}</td>
+                <td>{{member['mail']}}</td>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="modal-footer">
-        <!--  <button type="button" (click)="addUserModal.hide();
-                                          notificationModal.show();
-                                          addMember(addUserModalProjectID, addMemberID.value)" class="btn btn-success"><i class="fa fa-dot-circle-o"></i>
-              Add User
-          </button> -->
-        <button type="button" (click)="filteredMembers=null; addUserModal.hide();"
-                type="reset"
-                class="btn  btn-danger"><i class="fa fa-ban"></i> Close
-        </button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+        <div class="modal-footer">
+          <!--  <button type="button" (click)="addUserModal.hide();
+                                            notificationModal.show();
+                                            addMember(addUserModalProjectID, addMemberID.value)" class="btn btn-success"><i class="fa fa-dot-circle-o"></i>
+                Add User
+            </button> -->
+          <button type="button" (click)="filteredMembers=null; addUserModal.hide();"
+                  type="reset"
+                  class="btn  btn-danger"><i class="fa fa-ban"></i> Close
+          </button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
   <div bsModal #terminateModal="bs-modal" class="modal fade" tabindex="-1"
        role="dialog" aria-labelledby="Label"
        aria-hidden="true">
@@ -714,178 +722,181 @@
         <div class="modal-header">
           <h4 class="modal-title">Applications for {{project?.Name}}</h4>
           <button type="button" class="close" style="cursor: pointer;" (click)="applicationModal.hide()"
-                aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
+                  aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
 
-        <div *ngIf="!loaded" style="text-align: center"><i class="fa fa-spinner fa-spin"
-                                                           style="font-size:100px; margin: auto;margin-left: auto;margin-right: auto"></i>
+          <div *ngIf="!loaded" style="text-align: center"><i class="fa fa-spinner fa-spin"
+                                                             style="font-size:100px; margin: auto;margin-left: auto;margin-right: auto"></i>
+          </div>
+
+          <div *ngIf="loaded" class="table-responsive">
+            <table class="table table-bordered table-striped table-sm">
+              <thead>
+
+              <th>Name</th>
+              <th>Date Submitted</th>
+              <th>Actions </th>
+              </thead>
+              <tbody *ngFor="  let application of project?.ProjectMemberApplications">
+
+              <td>{{application.Name}}</td>
+              <td>{{application.DateCreated}}</td>
+              <td>
+                <button
+                  (click)="approveMemberApplication(project?.Id,application.Id,application.Name); "
+                  class="btn btn-success"><i class="fa fa-check"></i> Approve
+                </button>
+                <button style="margin-left: 10px"
+                        (click)="application_action='rejected';application_member_name=application.Name;rejectMemberApplication(project?.Id,application.Id,application.Name); "
+                        class="btn btn-danger"><i class="fa fa-times"></i> Reject
+                </button>
+              </td>
+              </tbody>
+            </table>
+          </div>
         </div>
 
-        <div *ngIf="loaded" class="table-responsive">
-          <table class="table table-bordered table-striped table-sm">
-            <thead>
 
-            <th>Name</th>
-            <th>Date Submitted</th>
-            <th>Actions </th>
-            </thead>
-            <tbody *ngFor="  let application of project?.ProjectMemberApplications">
+        <div class="modal-footer">
 
-            <td>{{application.Name}}</td>
-            <td>{{application.DateCreated}}</td>
-            <td>
-              <button
-                (click)="approveMemberApplication(project?.Id,application.Id,application.Name); "
-                class="btn btn-success"><i class="fa fa-check"></i> Approve
-              </button>
-              <button style="margin-left: 10px"
-                      (click)="application_action='rejected';application_member_name=application.Name;rejectMemberApplication(project?.Id,application.Id,application.Name); "
-                      class="btn btn-danger"><i class="fa fa-times"></i> Reject
-              </button>
-            </td>
-            </tbody>
-          </table>
+          <p *ngIf="application_action_success && application_action_done" class="alert alert-success mr-auto">
+            <strong>Success:</strong> Succesfully {{application_action}} the application of
+            {{application_member_name}}.
+          </p>
+          <p *ngIf="!application_action_success && application_action_done && !application_action_error_message"
+             class="alert alert-danger mr-auto">
+            <strong>Failed:</strong> The application of {{application_member_name}} could not be
+            {{application_action}} .
+          </p>
+          <p *ngIf="!application_action_success && application_action_done && application_action_error_message"
+             class="alert alert-danger mr-auto">
+            <strong>Failed:</strong> User didn't verify his email address yet. Please wait until the email is
+            verified.
+          </p>
+          <button type="button" class="btn btn-primary"
+                  (click)="getUserProjectApplications()">
+            Refresh
+          </button>
+          <button type="button" class="btn btn-secondary"
+                  (click)="application_action_error_message=null;;applicationModal.hide();">
+            Close
+          </button>
         </div>
-      </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div>
 
 
-      <div class="modal-footer">
 
-        <p *ngIf="application_action_success && application_action_done" class="alert alert-success mr-auto">
-          <strong>Success:</strong> Succesfully {{application_action}} the application of
-          {{application_member_name}}.
-        </p>
-        <p *ngIf="!application_action_success && application_action_done && !application_action_error_message"
-           class="alert alert-danger mr-auto">
-          <strong>Failed:</strong> The application of {{application_member_name}} could not be
-          {{application_action}} .
-        </p>
-        <p *ngIf="!application_action_success && application_action_done && application_action_error_message"
-           class="alert alert-danger mr-auto">
-          <strong>Failed:</strong> User didn't verify his email address yet. Please wait until the email is
-          verified.
-        </p>
-        <button type="button" class="btn btn-primary"
-                (click)="getUserProjectApplications()">
-          Refresh
-        </button>
-        <button type="button" class="btn btn-primary"
-                (click)="application_action_error_message=null;;applicationModal.hide();">
-          Close
-        </button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div>
-
-
-<div bsModal #notificationModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
-     aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title" id="notification_title">{{ notificationModalTitle }}</h4>
-        <button type="button" class="close" style="cursor:pointer" (click)="notificationModal.hide()"
-                aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="alert alert-{{ notificationModalType }}" role="alert">
-          {{ notificationModalMessage }}
+  <div bsModal #notificationModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
+       aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="notification_title">{{ notificationModalTitle }}</h4>
+          <button type="button" class="close" style="cursor:pointer" (click)="notificationModal.hide()"
+                  aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button *ngIf="notificationModalIsClosable == true" type="button"
-                (click)="resetNotificationModal(); notificationModal.hide();" type="reset"
-                class="btn  btn-primary" id="close_notification"> Close
-        </button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-
-
-<div bsModal #infoModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
-     aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-info modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Details</h4>
-        <button type="button" class="close" style="cursor: pointer" (click)="infoModal.hide()"
-                aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-
-      <div class="modal-body">
-        <div *ngIf="!details_loaded" style="text-align: center"><i class="fa fa-spinner fa-spin"
-                                                                   style="font-size:100px; margin: auto;margin-left: auto;margin-right: auto"></i>
+        <div class="modal-body">
+          <div class="alert alert-{{ notificationModalType }}" role="alert">
+            {{ notificationModalMessage }}
+          </div>
         </div>
-        <div class="table-responsive">
-          <table *ngIf="details_loaded" class="table table-striped">
-            <thead>
-            <th>Description</th>
-            <th>Date created (d/m/y)</th>
-            <th>Expiration Date (d/m/y)</th>
-            <th>Days running</th>
-            <th>Lifetime in Days</th>
-            </thead>
-            <tbody>
-            <td>
-              <button class="btn btn-info"
-                      (click)="infoModal.hide();descriptionModal.show();">Show
-                Description
-              </button>
-            </td>
-
-            <td>{{ project?.DateCreated }}</td>
-            <td>{{project?.DateEnd}}</td>
-            <td>{{ project?.DaysRunning }}</td>
-            <td>{{project?.LifetimeDays}}</td>
-            <td>
-            </tbody>
-          </table>
+        <div class="modal-footer">
+          <button *ngIf="notificationModalIsClosable == true" type="button"
+                  (click)="resetNotificationModal(); notificationModal.hide();" type="reset"
+                  class="btn  btn-secondary" id="close_notification"> Close
+          </button>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" (click)="infoModal.hide();">
-          Close
-        </button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
 
 
-<div bsModal #descriptionModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
-     aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-info" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Description</h4>
-        <button type="button" class="close" style="cursor: pointer" (click)="descriptionModal.hide()"
-                aria-label="Close">
 
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
+  <div bsModal #infoModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+       aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-info modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Details</h4>
+          <button type="button" class="close" style="cursor: pointer" (click)="infoModal.hide()"
+                  aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
 
-      <div class="modal-body">
-        <p>{{ project?.Description }}</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary"
-                (click)="descriptionModal.hide();">
-          Close
-        </button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div>
+        <div class="modal-body">
+          <div *ngIf="!details_loaded" style="text-align: center"><i class="fa fa-spinner fa-spin"
+                                                                     style="font-size:100px; margin: auto;margin-left: auto;margin-right: auto"></i>
+          </div>
+          <div class="table-responsive">
+            <table *ngIf="details_loaded" class="table table-striped">
+              <thead>
+              <th>Description</th>
+              <th>Date created (d/m/y)</th>
+              <th>Expiration Date (d/m/y)</th>
+              <th>Days running</th>
+              <th>Lifetime in Days</th>
+              </thead>
+              <tbody>
+              <td>
+                <button class="btn btn-info"
+                        (click)="infoModal.hide();descriptionModal.show();">Show
+                  Description
+                </button>
+              </td>
+
+              <td>{{ project?.DateCreated }}</td>
+              <td>{{project?.DateEnd}}</td>
+              <td>{{ project?.DaysRunning }}</td>
+              <td>{{project?.LifetimeDays}}</td>
+              <td>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" (click)="infoModal.hide();">
+            Close
+          </button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div>
+
+
+  <div bsModal #descriptionModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+       aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-info" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Description</h4>
+          <button type="button" class="close" style="cursor: pointer" (click)="descriptionModal.hide()"
+                  aria-label="Close">
+
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <div class="modal-body">
+          <p>{{ project?.Description }}</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary"
+                  (click)="descriptionModal.hide();">
+            Close
+          </button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div>
+
 
 
 
@@ -923,570 +934,570 @@
   </div><!-- /.modal -->
 
 
-<div bsModal #resourceModificationModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
-     aria-labelledby="Label"
-     aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4>Resource Modification request for {{project_application?.project_application_shortname}}</h4>
-        <button type="button" class="close" style="cursor: pointer"
-                (click)="resourceModificationModal.hide(); setModalOpen(false);" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-
-        <div class="alert alert-info">
-          <strong>Please be aware:</strong>
-          The number of flavors, GBs of storage and storage volumes which you enter within
-          this request will be the numbers you will actually get.
-          These numbers <strong>will not be added</strong> to your current numbers, but
-          will <strong>replace them</strong>.
+  <div bsModal #resourceModificationModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+       aria-labelledby="Label"
+       aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4>Resource Modification request for {{project_application?.project_application_shortname}}</h4>
+          <button type="button" class="close" style="cursor: pointer"
+                  (click)="resourceModificationModal.hide(); setModalOpen(false);" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
-        <form id="resource_modification_application_form" #modificationForm="ngForm"
-              class="form-horizontal">
+        <div class="modal-body">
 
-          <div class="form-group row">
-            <h6 class="col-md-8 form-control-label">Resources*
-              <i data-balloon="Select the number of Virtual Machines you want to run of each specific flavour"
-                 data-balloon-pos="down">
-                <i class="icon-question"></i></i>
-            </h6>
+          <div class="alert alert-info">
+            <strong>Please be aware:</strong>
+            The number of flavors, GBs of storage and storage volumes which you enter within
+            this request will be the numbers you will actually get.
+            These numbers <strong>will not be added</strong> to your current numbers, but
+            will <strong>replace them</strong>.
           </div>
+          <form id="resource_modification_application_form" #modificationForm="ngForm"
+                class="form-horizontal">
+
+            <div class="form-group row">
+              <h6 class="col-md-8 form-control-label">Resources*
+                <i data-balloon="Select the number of Virtual Machines you want to run of each specific flavour"
+                   data-balloon-pos="down">
+                  <i class="icon-question"></i></i>
+              </h6>
+            </div>
 
 
-          <accordion>
-            <ng-container *ngFor="let t of typeList, first as isFirst">
-              <accordion-group *ngIf="project_application?.project_application_openstack_project || checkIfTypeGotSimpleVmFlavor(t)"
-                               [isOpen]="isFirst" #groupval>
-                <div accordion-heading style="width: 100%; cursor: pointer">
-                  {{t.long_name}}
-                  <i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
+            <accordion>
+              <ng-container *ngFor="let t of typeList, first as isFirst">
+                <accordion-group *ngIf="project_application?.project_application_openstack_project || checkIfTypeGotSimpleVmFlavor(t)"
+                                 [isOpen]="isFirst" #groupval>
+                  <div accordion-heading style="width: 100%; cursor: pointer">
+                    {{t.long_name}}
+                    <i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
                             'icon-arrow-up': groupval.isOpen, 'icon-arrow-down': !groupval.isOpen}"></i>
-                </div>
-                <div *ngFor="let fl of flavorList" class="form-group row">
-                  <div
-                    *ngIf="fl.type.shortcut == t.shortcut && (fl.simple_vm || project_application?.project_application_openstack_project)"
-                    class="form-group row">
-                    <label class="col-md-4 form-control-label"><strong>{{fl.name}}</strong><br>
-                      Number of cores: <span
-                        id="{{fl.name}}_cores">{{fl.vcpus}}</span><br>
-                      RAM: <span id="{{fl.name}}_ram">{{fl.ram}}</span> GB</label>
-                    <div class="col">
-                      <div class="input-group">
-                        <input class="form-control"
-                               name="{{fl.name}}_old"
-                               id="{{fl.name}}_old"
-                               type="text"
-                               value="{{project_application| flavorCounter:fl}}"
-                               placeholder="0" disabled>
-                        <div class="input-group-append"><span class="input-group-text"> VMs</span></div>
+                  </div>
+                  <div *ngFor="let fl of flavorList" class="form-group row">
+                    <div
+                      *ngIf="fl.type.shortcut == t.shortcut && (fl.simple_vm || project_application?.project_application_openstack_project)"
+                      class="form-group row">
+                      <label class="col-md-4 form-control-label"><strong>{{fl.name}}</strong><br>
+                        Number of cores: <span
+                          id="{{fl.name}}_cores">{{fl.vcpus}}</span><br>
+                        RAM: <span id="{{fl.name}}_ram">{{fl.ram}}</span> GB</label>
+                      <div class="col">
+                        <div class="input-group">
+                          <input class="form-control"
+                                 name="{{fl.name}}_old"
+                                 id="{{fl.name}}_old"
+                                 type="text"
+                                 value="{{project_application| flavorCounter:fl}}"
+                                 placeholder="0" disabled>
+                          <div class="input-group-append"><span class="input-group-text"> VMs</span></div>
+                        </div>
+                        <span class="help-block">Currently approved of this type </span>
                       </div>
-                      <span class="help-block">Currently approved of this type </span>
-                    </div>
-                    <div class="col">
-                      <div class="input-group">
-                        <input class="form-control"
-                               (change)="valuesChanged(fl,name?.value);
-                               calculateCreditsModification(); calculateRamCores();"
-                               id="{{fl.name}}"
-                               name="{{fl.name}}"
-                               type="number" min="0" step="1"
-                               placeholder="e.g 1"
-                               (ngModelChange)="onChangeFlavor(fl,$event)"
-                               [ngModel]="project_modification | flavorCounter:fl"
-                               #name="ngModel"
-                               appMinAmount="0" appIntegerOrNull
-                               [ngClass]="{
+                      <div class="col">
+                        <div class="input-group">
+                          <input class="form-control"
+                                 (change)="valuesChanged(fl,name?.value);
+                               calculateCreditsResourceModification(); calculateRamCores();"
+                                 id="{{fl.name}}"
+                                 name="{{fl.name}}"
+                                 type="number" min="0" step="1"
+                                 placeholder="e.g 1"
+                                 (ngModelChange)="onChangeFlavor(fl,$event)"
+                                 [ngModel]="project_modification | flavorCounter:fl"
+                                 #name="ngModel"
+                                 appMinAmount="0" appIntegerOrNull
+                                 [ngClass]="{
                                 'is-invalid': name?.invalid,
                                 'is-valid': name?.valid
                                 }">
-                        <div class="input-group-append"><span class="input-group-text"> VMs</span></div>
+                          <div class="input-group-append"><span class="input-group-text"> VMs</span></div>
+                        </div>
+                        <span class="help-block">Number of VMs you would like to run in the future</span>
                       </div>
-                      <span class="help-block">Number of VMs you would like to run in the future</span>
                     </div>
+
                   </div>
-
+                </accordion-group>
+              </ng-container>
+            </accordion>
+            <div class="form-group row">
+              <label class="col-md-4 form-control-label" for="project_application_volume_counter"><strong>Number
+                of storage
+                volumes*
+                <i
+                  data-balloon="Number of volumes allowed to create. The sum of the volumes size equals the value provided in the storage limit field."
+                  data-balloon-pos="down" data-balloon-length="large"><i
+                  class="icon-question"
+                  style="cursor: pointer;"></i></i></strong></label>
+              <div class="col">
+                <div class="input-group">
+                  <input required class="form-control"
+                         name="project_application_volume_counter"
+                         id="project_application_volume_counter"
+                         placeholder="NA"
+                         value="{{project_application?.project_application_volume_counter}}"
+                         type="text" disabled>
                 </div>
-              </accordion-group>
-            </ng-container>
-          </accordion>
-          <div class="form-group row">
-            <label class="col-md-4 form-control-label" for="project_application_volume_counter"><strong>Number
-              of storage
-              volumes*
-              <i
-                data-balloon="Number of volumes allowed to create. The sum of the volumes size equals the value provided in the storage limit field."
-                data-balloon-pos="down" data-balloon-length="large"><i
-                class="icon-question"
-                style="cursor: pointer;"></i></i></strong></label>
-            <div class="col">
-              <div class="input-group">
-                <input required class="form-control"
-                       name="project_application_volume_counter"
-                       id="project_application_volume_counter"
-                       placeholder="NA"
-                       value="{{project_application?.project_application_volume_counter}}"
-                       type="text" disabled>
+                <span class="help-block">Current number of storage volumes</span>
               </div>
-              <span class="help-block">Current number of storage volumes</span>
-            </div>
 
-            <div class="col">
-              <div class="input-group">
-                <input required class="form-control"
-                       id="id_project_application_renewal_volume_counter"
-                       name="project_application_renewal_volume_counter"
-                       placeholder="e.g. 20"
-                       type="number" min="0" step="1"
-                       [(ngModel)]="project_modification.volume_counter"
-                       appMinAmount="0" appInteger
-                       [ngClass]="{
+              <div class="col">
+                <div class="input-group">
+                  <input required class="form-control"
+                         id="id_project_application_renewal_volume_counter"
+                         name="project_application_renewal_volume_counter"
+                         placeholder="e.g. 20"
+                         type="number" min="0" step="1"
+                         [(ngModel)]="project_modification.volume_counter"
+                         appMinAmount="0" appInteger
+                         [ngClass]="{
                                 'is-invalid': modificationForm.controls.project_application_renewal_volume_counter?.invalid,
                                 'is-valid': modificationForm.controls.project_application_renewal_volume_counter?.valid
                                 }">
+                </div>
+                <span class="help-block">How many storage volumes do you need in the future?</span>
               </div>
-              <span class="help-block">How many storage volumes do you need in the future?</span>
             </div>
-          </div>
-          <div class="form-group row">
-            <label class="col-md-4 form-control-label" for="project_application_volume_limit"><strong>Storage
-              Limit*
-              <i
-                data-balloon="Storage limit is the sum of extra storage provided by volumes."
-                data-balloon-pos="down" data-balloon-length="medium"><i
-                class="icon-question"
-                style="cursor: pointer;"></i></i></strong></label>
-            <div class="col">
-              <div class="input-group">
-                <input class="form-control"
-                       name="project_application_volume_limit"
-                       id="project_application_volume_limit"
-                       value="{{project_application?.project_application_volume_limit}}"
-                       placeholder="NA"
-                       type="text" disabled>
-                <div class="input-group-append"><span class="input-group-text"> GB
+            <div class="form-group row">
+              <label class="col-md-4 form-control-label" for="project_application_volume_limit"><strong>Storage
+                Limit*
+                <i
+                  data-balloon="Storage limit is the sum of extra storage provided by volumes."
+                  data-balloon-pos="down" data-balloon-length="medium"><i
+                  class="icon-question"
+                  style="cursor: pointer;"></i></i></strong></label>
+              <div class="col">
+                <div class="input-group">
+                  <input class="form-control"
+                         name="project_application_volume_limit"
+                         id="project_application_volume_limit"
+                         value="{{project_application?.project_application_volume_limit}}"
+                         placeholder="NA"
+                         type="text" disabled>
+                  <div class="input-group-append"><span class="input-group-text"> GB
                                     </span></div>
+                </div>
+                <span class="help-block">Current extra storage</span>
               </div>
-              <span class="help-block">Current extra storage</span>
-            </div>
-            <div class="col">
-              <div class="input-group">
-                <input class="form-control"
-                       id="id_project_application_renewal_volume_limit"
-                       name="project_application_renewal_volume_limit"
-                       placeholder="e.g. 20"
-                       type="number" min="1" step="1"
-                       [(ngModel)]="project_modification.volume_limit"
-                       appMinAmount="1" appInteger
-                       [ngClass]="{
+              <div class="col">
+                <div class="input-group">
+                  <input class="form-control"
+                         id="id_project_application_renewal_volume_limit"
+                         name="project_application_renewal_volume_limit"
+                         placeholder="e.g. 20"
+                         type="number" min="1" step="1"
+                         [(ngModel)]="project_modification.volume_limit"
+                         appMinAmount="1" appInteger
+                         [ngClass]="{
                                 'is-invalid': modificationForm.controls.project_application_renewal_volume_limit?.invalid,
                                 'is-valid': modificationForm.controls.project_application_renewal_volume_limit?.valid
                                 }"
-                       [disabled]="modificationForm.controls.project_application_renewal_volume_counter?.value == 0">
-                <div class="input-group-append"><span class="input-group-text"> GB
+                         [disabled]="modificationForm.controls.project_application_renewal_volume_counter?.value == 0">
+                  <div class="input-group-append"><span class="input-group-text"> GB
                                     </span></div>
+                </div>
+                <span class="help-block">How much extra storage do you need in the future?</span>
               </div>
-              <span class="help-block">How much extra storage do you need in the future?</span>
-            </div>
-          </div>
-
-
-          <div *ngIf="project_application?.project_application_openstack_project" class="form-group row">
-            <label class="col-md-4 form-control-label" for="textarea-input"><strong>Object
-              Storage* </strong><i
-              data-balloon="Object storage is a method of storing data that does not use a directory tree internally. Object storage combines files with metadata and places it in a flat structure."
-              data-balloon-pos="down" data-balloon-length="large"><i
-              class="icon-question"
-              style="cursor: pointer;"></i></i></label>
-
-            <div class="col">
-              <div class="input-group">
-                <input class="form-control"
-                       name="project_application_object_storage"
-                       id="project_application_object_storage"
-                       placeholder="NA"
-                       value="{{project_application?.project_application_object_storage}}"
-                       type="text" disabled>
-                <div class="input-group-append"><span class="input-group-text"> GB
-                                    </span></div>
-              </div>
-              <span class="help-block">Current Object Storage capacity</span>
             </div>
 
-            <div *ngIf="project_application?.project_application_openstack_project" class="col">
-              <div class="input-group">
-                <input class="form-control"
-                       id="id_project_application_renewal_object_storage"
-                       name="project_application_renewal_object_storage"
-                       placeholder="e.g. 8"
-                       [(ngModel)]="project_modification.object_storage"
-                       type="number" min="0" step="1"
-                       appInteger appMinAmount="0" required
-                       [ngClass]="{
+
+            <div *ngIf="project_application?.project_application_openstack_project" class="form-group row">
+              <label class="col-md-4 form-control-label" for="textarea-input"><strong>Object
+                Storage* </strong><i
+                data-balloon="Object storage is a method of storing data that does not use a directory tree internally. Object storage combines files with metadata and places it in a flat structure."
+                data-balloon-pos="down" data-balloon-length="large"><i
+                class="icon-question"
+                style="cursor: pointer;"></i></i></label>
+
+              <div class="col">
+                <div class="input-group">
+                  <input class="form-control"
+                         name="project_application_object_storage"
+                         id="project_application_object_storage"
+                         placeholder="NA"
+                         value="{{project_application?.project_application_object_storage}}"
+                         type="text" disabled>
+                  <div class="input-group-append"><span class="input-group-text"> GB
+                                    </span></div>
+                </div>
+                <span class="help-block">Current Object Storage capacity</span>
+              </div>
+
+              <div *ngIf="project_application?.project_application_openstack_project" class="col">
+                <div class="input-group">
+                  <input class="form-control"
+                         id="id_project_application_renewal_object_storage"
+                         name="project_application_renewal_object_storage"
+                         placeholder="e.g. 8"
+                         [(ngModel)]="project_modification.object_storage"
+                         type="number" min="0" step="1"
+                         appInteger appMinAmount="0" required
+                         [ngClass]="{
                                 'is-invalid': modificationForm.controls.project_application_renewal_object_storage?.invalid ,
                                 'is-valid': modificationForm.controls.project_application_renewal_object_storage?.valid
                                 }">
-                <div class="input-group-append"><span class="input-group-text"> GB
+                  <div class="input-group-append"><span class="input-group-text"> GB
                                     </span></div>
+                </div>
+                <span class="help-block">How much Object Storage do you need in the future?</span>
               </div>
-              <span class="help-block">How much Object Storage do you need in the future?</span>
             </div>
-          </div>
-          <div
-            *ngIf="project_application?.project_application_openstack_project && project_application?.project_application_cloud_service && project_application?.project_application_cloud_service_develop"
-            class="form-group row">
-            <label class="col-md-4 form-control-label" for="textarea-input"><strong>Service status </strong><i
-              data-balloon="Status of your service."
-              data-balloon-pos="down" data-balloon-length="large"><i
-              class="icon-question"
-              style="cursor: pointer;"></i></i></label>
-
-            <div class="col">
-            </div>
-
             <div
               *ngIf="project_application?.project_application_openstack_project && project_application?.project_application_cloud_service && project_application?.project_application_cloud_service_develop"
-              class="col">
-              <div class="input-group">
-                <label id="id_project_application_renewal_cloud_service_develop"
-                       class="switch switch-label switch-outline-primary-alt">
-                  <input type="checkbox" class="switch-input"
-                         name="project_application_renewal_cloud_service_develop"
-                         [defaultChecked]="project_application?.project_application_cloud_service_develop"
-                         [(ngModel)]="project_modification.cloud_service_develop"
-                  >
-                  <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
-                  <span class="switch-handle"></span></label>
-              </div>
-              <span class="help-block">Is your service still in development?</span>
-            </div>
-          </div>
+              class="form-group row">
+              <label class="col-md-4 form-control-label" for="textarea-input"><strong>Service status </strong><i
+                data-balloon="Status of your service."
+                data-balloon-pos="down" data-balloon-length="large"><i
+                class="icon-question"
+                style="cursor: pointer;"></i></i></label>
 
-          <div
-            *ngIf="project_application?.project_application_openstack_project && project_application?.project_application_cloud_service && (!project_application?.project_application_cloud_service_develop)"
-            class="form-group row">
-            <label class="col-md-4 form-control-label" for="textarea-input"><strong>Cloud Service user
-              number </strong><i
-              data-balloon="Number of user using your service."
-              data-balloon-pos="down" data-balloon-length="large"><i
-              class="icon-question"
-              style="cursor: pointer;"></i></i></label>
-
-            <div class="col">
-              <div class="input-group">
-                <input class="form-control"
-                       name="project_application_cloud_service_user_number"
-                       id="project_application_cloud_service_user_number"
-                       placeholder="NA"
-                       value="{{project_application?.project_application_cloud_service_user_number}}"
-                       type="text" disabled>
+              <div class="col">
               </div>
-              <span class="help-block">Current number of users</span>
+
+              <div
+                *ngIf="project_application?.project_application_openstack_project && project_application?.project_application_cloud_service && project_application?.project_application_cloud_service_develop"
+                class="col">
+                <div class="input-group">
+                  <label id="id_project_application_renewal_cloud_service_develop"
+                         class="switch switch-label switch-outline-primary-alt">
+                    <input type="checkbox" class="switch-input"
+                           name="project_application_renewal_cloud_service_develop"
+                           [defaultChecked]="project_application?.project_application_cloud_service_develop"
+                           [(ngModel)]="project_modification.cloud_service_develop"
+                    >
+                    <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                    <span class="switch-handle"></span></label>
+                </div>
+                <span class="help-block">Is your service still in development?</span>
+              </div>
             </div>
 
             <div
-              *ngIf="project_application?.project_application_openstack_project && project_application?.project_application_cloud_service && !project_application?.project_application_cloud_service_develop"
-              class="col">
-              <div class="input-group">
-                <input class="form-control"
-                       id="id_project_application_renewal_cloud_service_user_number"
-                       name="project_application_renewal_cloud_service_user_number"
-                       placeholder="e.g. 200"
-                       [(ngModel)]="project_modification.cloud_service_user_number"
-                       type="number" min="0" step="1"
-                       appInteger appMinAmount="0" required
-                       [ngClass]="{
+              *ngIf="project_application?.project_application_openstack_project && project_application?.project_application_cloud_service && (!project_application?.project_application_cloud_service_develop)"
+              class="form-group row">
+              <label class="col-md-4 form-control-label" for="textarea-input"><strong>Cloud Service user
+                number </strong><i
+                data-balloon="Number of user using your service."
+                data-balloon-pos="down" data-balloon-length="large"><i
+                class="icon-question"
+                style="cursor: pointer;"></i></i></label>
+
+              <div class="col">
+                <div class="input-group">
+                  <input class="form-control"
+                         name="project_application_cloud_service_user_number"
+                         id="project_application_cloud_service_user_number"
+                         placeholder="NA"
+                         value="{{project_application?.project_application_cloud_service_user_number}}"
+                         type="text" disabled>
+                </div>
+                <span class="help-block">Current number of users</span>
+              </div>
+
+              <div
+                *ngIf="project_application?.project_application_openstack_project && project_application?.project_application_cloud_service && !project_application?.project_application_cloud_service_develop"
+                class="col">
+                <div class="input-group">
+                  <input class="form-control"
+                         id="id_project_application_renewal_cloud_service_user_number"
+                         name="project_application_renewal_cloud_service_user_number"
+                         placeholder="e.g. 200"
+                         [(ngModel)]="project_modification.cloud_service_user_number"
+                         type="number" min="0" step="1"
+                         appInteger appMinAmount="0" required
+                         [ngClass]="{
                                 'is-invalid': modificationForm.controls.project_application_renewal_cloud_service_user_number?.invalid ,
                                 'is-valid': modificationForm.controls.project_application_renewal_cloud_service_user_number?.valid
                                 }">
-              </div>
-              <span class="help-block">How many users are using your service?
+                </div>
+                <span class="help-block">How many users are using your service?
               <br>
               <strong>Note:</strong> we define service users as <strong>unique users per month.</strong></span>
+              </div>
             </div>
-          </div>
 
-          <div class="form-group row">
-            <label class="col-md-4 form-control-label"
-                   for="id_project_application_renewal_comment"><strong>Comment</strong></label>
-            <div class="col-md-8">
+            <div class="form-group row">
+              <label class="col-md-4 form-control-label"
+                     for="id_project_application_renewal_comment"><strong>Comment</strong></label>
+              <div class="col-md-8">
                 <textarea type="text" id="id_project_application_renewal_comment"
                           name="project_application_renewal_comment" class="form-control"
                           maxlength="8192"
                           placeholder=''
                           [(ngModel)]="project_modification.comment"></textarea>
-              <span class="help-block">Additional information you want to share?</span>
-            </div>
-          </div>
-          <div class="form-group row">
-            <label class="col-md-4"></label>
-            <div class="col-md-8">
-              <div class="alert alert-primary" role="alert">
-                In case you need additional and/or special resources, which are not available in the flavour selection,
-                use the comment field to state so. The same applies to unusually large amounts of resources.
+                <span class="help-block">Additional information you want to share?</span>
               </div>
             </div>
-          </div>
+            <div class="form-group row">
+              <label class="col-md-4"></label>
+              <div class="col-md-8">
+                <div class="alert alert-primary" role="alert">
+                  In case you need additional and/or special resources, which are not available in the flavour selection,
+                  use the comment field to state so. The same applies to unusually large amounts of resources.
+                </div>
+              </div>
+            </div>
 
 
-          <strong *ngIf="is_vo_admin">
-            <div *ngIf="is_vo_admin" class="form-group row">
-              <label #creditnumbers id="creditnumber" class="col">Expected number of extra credits: <span
-                id="modification_credits">{{project_modification.extra_credits}}</span></label>
+            <div *ngIf="is_vo_admin || credits_allowed" class="form-group row">
+              <label #creditnumbers id="creditnumber" class="col">
+                <strong>Expected extra credits: <span
+                  id="modification_credits">{{project_modification.extra_credits}}
+                </span></strong></label>
             </div>
             <div class="alert alert-primary" role="alert">
-              This is the expected number of extra credits that you get for your project. It accounts for an increase in
-              requested resources.
+              This is the expected number of extra credits that you get for your project. It accounts for an increase
+              or decrease in requested resources for your remaining project lifetime.
             </div>
-          </strong>
-          <div class="form-group row">
-            <label id="total_cores_label" class="col-md-8">
-              <strong>Total number of cores: {{this.totalNumberOfCores}}</strong>
-            </label>
+            <div class="form-group row">
+              <label id="total_cores_label" class="col-md-8">
+                <strong>Total number of cores: {{project_modification.total_cores}}</strong>
+              </label>
+            </div>
+            <div class="form-group row">
+              <label id="total_ram_label" class="col-md-8">
+                <strong>Total amount of RAM: {{project_modification.total_ram}} GB</strong>
+              </label>
+            </div>
+          </form>
+
+          <div *ngIf="modificationForm.invalid" class="alert alert-warning" role="alert">
+            <p>Some required fields are incorrect or not filled in yet.
+              Please check if all required (*) fields are filled in correctly.</p>
+            <p *ngIf="modificationForm.controls.project_application_renewal_volume_counter?.invalid">
+              - Number of storage volumes missing
+            </p>
+            <p *ngIf="modificationForm.controls.project_application_renewal_volume_limit?.invalid">
+              - Storage Limit missing
+            </p>
+            <p *ngIf="modificationForm.controls.project_application_renewal_object_storage?.invalid">
+              - Object Storage missing
+            </p>
+            <p *ngIf="!min_vm">
+              - Select at least one Flavor
+            </p>
+
           </div>
-          <div class="form-group row">
-            <label id="total_ram_label" class="col-md-8">
-              <strong>Total amount of RAM: {{this.totalRAM}} GB</strong>
-            </label>
-          </div>
-        </form>
-
-        <div *ngIf="modificationForm.invalid" class="alert alert-warning" role="alert">
-          <p>Some required fields are incorrect or not filled in yet.
-            Please check if all required (*) fields are filled in correctly.</p>
-          <p *ngIf="modificationForm.controls.project_application_renewal_volume_counter?.invalid">
-            - Number of storage volumes missing
-          </p>
-          <p *ngIf="modificationForm.controls.project_application_renewal_volume_limit?.invalid">
-            - Storage Limit missing
-          </p>
-          <p *ngIf="modificationForm.controls.project_application_renewal_object_storage?.invalid">
-            - Object Storage missing
-          </p>
-          <p *ngIf="!min_vm">
-            - Select at least one Flavor
-          </p>
-
-        </div>
 
 
-        <div class="modal-footer">
-          <div class="label">
-            By submitting this application you agree to the cloud usage policy.
-          </div>
-          <button type="button" class="btn  btn-primary"
-                  form="resource_modification_application_form" id="submit_modification_btn"
-                  (click)="this.request_type = ExtensionRequestType.MODIFICATION;
-                  calculateRamCores(); calculateCreditsModification();
+          <div class="modal-footer">
+            <div class="label">
+              By submitting this application you agree to the cloud usage policy.
+            </div>
+            <button type="button" class="btn  btn-primary"
+                    form="resource_modification_application_form" id="submit_modification_btn"
+                    (click)="this.request_type = ExtensionRequestType.MODIFICATION;
+                  calculateRamCores(); calculateCreditsResourceModification();
                   resourceModificationModal.hide(); submitModal.show();"
-                  [disabled]="modificationForm.invalid"><i class="fa fa-dot-circle-o"></i>
-            Submit
-          </button>
-          <button type="button" class="btn btn-danger"
-                  (click)="resourceModificationModal.hide(); setModalOpen(false);">
-            Close
-          </button>
+                    [disabled]="modificationForm.invalid"><i class="fa fa-dot-circle-o"></i>
+              Submit
+            </button>
+            <button type="button" class="btn btn-danger"
+                    (click)="resourceModificationModal.hide(); setModalOpen(false);">
+              Close
+            </button>
 
-        </div>
+          </div>
 
-      </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-  </div><!-- /.modal -->
-</div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+  </div>
 
 
   <div bsModal #projectExtensionModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
-     aria-labelledby="Label"
-     aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4>Extension request for {{project_application?.project_application_shortname}}</h4>
-        <button type="button" class="close" style="cursor: pointer"
-                (click)="projectExtensionModal.hide(); setModalOpen(false);" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
+       aria-labelledby="Label"
+       aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4>Extension request for {{project_application?.project_application_shortname}}</h4>
+          <button type="button" class="close" style="cursor: pointer"
+                  (click)="projectExtensionModal.hide(); setModalOpen(false);" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
 
-        <form id="extension_application_form" #extensionForm="ngForm"
-              class="form-horizontal">
-
-
-          <div class="form-group row">
-
-            <label class="col-md-4 form-control-label">
-              <strong>Lifetime* <i class="icon-question" data-toggle="tooltip"
-                                   title="Current timespan of your project. You can extend your project by a maximum of 12 months">
-              </i>
-              </strong>
-            </label>
+          <form id="extension_application_form" #extensionForm="ngForm"
+                class="form-horizontal">
 
 
-            <div class="col">
-              <div class="input-group">
-                <input class="form-control"
-                       name="project_application_lifetime" placeholder="NA"
-                       type="text" value="{{life_time_string}}"
-                       disabled>
+            <div class="form-group row">
 
+              <label class="col-md-4 form-control-label">
+                <strong>Lifetime* <i class="icon-question" data-toggle="tooltip"
+                                     title="Current timespan of your project. You can extend your project by a maximum of 12 months">
+                </i>
+                </strong>
+              </label>
+
+
+              <div class="col">
+                <div class="input-group">
+                  <input class="form-control"
+                         name="project_application_lifetime" placeholder="NA"
+                         type="text" value="{{life_time_string}}"
+                         disabled>
+
+                </div>
+                <span class="help-block">Current lifetime</span>
               </div>
-              <span class="help-block">Current lifetime</span>
-            </div>
 
-            <div class="col">
-              <div class="input-group">
-                <input class="form-control"
-                       (change)="calculateCreditsLifeTime();"
-                       id="project_extension_application_renewal_lifetime"
-                       name="project_extension_application_renewal_lifetime"
-                       placeholder="e.g. 3"
-                       [(ngModel)]="project_extension.extra_lifetime"
-                       type="number" min="1" max="12" step="1" required
-                       appInteger appMinAmount="1" appMaxAmount="12"
-                       [ngClass]="{
+              <div class="col">
+                <div class="input-group">
+                  <input class="form-control"
+                         (change)="calculateCreditsLifeTime();"
+                         id="project_extension_application_renewal_lifetime"
+                         name="project_extension_application_renewal_lifetime"
+                         placeholder="e.g. 3"
+                         [(ngModel)]="project_extension.extra_lifetime"
+                         type="number" min="1" max="12" step="1" required
+                         appInteger appMinAmount="1" appMaxAmount="12"
+                         [ngClass]="{
                                 'is-invalid': extensionForm.controls.project_application_renewal_lifetime?.invalid
                                 && (extensionForm.controls.project_application_renewal_lifetime?.dirty
                                 || extensionForm.controls.project_application_renewal_lifetime?.touched),
                                 'is-valid': extensionForm.controls.project_application_renewal_lifetime?.valid
                                 && (extensionForm.controls.project_application_renewal_lifetime?.dirty
                                 || extensionForm.controls.project_application_renewal_lifetime?.touched)}">
-                <div class="input-group-append">
-                  <span class="input-group-text" style="padding: 0 !important;"> months</span>
+                  <div class="input-group-append">
+                    <span class="input-group-text" style="padding: 0 !important;"> months</span>
+                  </div>
                 </div>
+                <span class="help-block">Number of months you want to extend the project </span>
               </div>
-              <span class="help-block">Number of months you want to extend the project </span>
             </div>
-          </div>
-          <div class="form-group row" *ngIf="project_application?.project_application_edam_terms.length == 0 ">
-            <label class="col-md-4 form-control-label"><strong>Research Topics* </strong></label>
-            <div class="col-md-8">
-              <div [ngClass]="{
+            <div class="form-group row" *ngIf="project_application?.project_application_edam_terms.length == 0 ">
+              <label class="col-md-4 form-control-label"><strong>Research Topics* </strong></label>
+              <div class="col-md-8">
+                <div [ngClass]="{
                                 'danger-border': selected_ontology_terms?.length <=0,
                                 'success-border':selected_ontology_terms?.length >0
                                 }">
-                <ng-autocomplete #edam_ontology id="edam_input"
-                                 [data]="edam_ontology_terms"
-                                 [searchKeyword]="ontology_search_keyword"
-                                 (selected)='selectEvent($event)'
-                                 placeHolder="Please add your research topics"
+                  <ng-autocomplete #edam_ontology id="edam_input"
+                                   [data]="edam_ontology_terms"
+                                   [searchKeyword]="ontology_search_keyword"
+                                   (selected)='selectEvent($event)'
+                                   placeHolder="Please add your research topics"
 
-                                 [itemTemplate]="itemTemplate"
-                                 [notFoundTemplate]="notFoundTemplate">
-                </ng-autocomplete>
+                                   [itemTemplate]="itemTemplate"
+                                   [notFoundTemplate]="notFoundTemplate">
+                  </ng-autocomplete>
 
-                <ng-template #itemTemplate let-item>
-                  <a [id]="item.term" [innerHTML]="item.term"></a>
-                </ng-template>
+                  <ng-template #itemTemplate let-item>
+                    <a [id]="item.term" [innerHTML]="item.term"></a>
+                  </ng-template>
 
-                <ng-template #notFoundTemplate let-notFound>
-                  <div [innerHTML]="notFound"></div>
-                </ng-template>
+                  <ng-template #notFoundTemplate let-notFound>
+                    <div [innerHTML]="notFound"></div>
+                  </ng-template>
 
 
-              </div>
-              <h5><span
+                </div>
+                <h5><span
 
-                *ngFor="let term of selected_ontology_terms"
-                style="margin-right: 5px; "
-                class="badge badge-info"> {{term.term}}
-                <span class="badge" style="cursor: pointer;" (click)="removeEDAMterm(term)">&#10060;</span>
+                  *ngFor="let term of selected_ontology_terms"
+                  style="margin-right: 5px; "
+                  class="badge badge-info"> {{term.term}}
+                  <span class="badge" style="cursor: pointer;" (click)="removeEDAMterm(term)">&#10060;</span>
  </span>
 
-              </h5>
+                </h5>
+              </div>
             </div>
-          </div>
 
 
-          <div class="form-group row">
-            <label class="col-md-4 form-control-label"
-                   for="id_project_application_renewal_comment"><strong>Comment</strong></label>
-            <div class="col-md-8">
+            <div class="form-group row">
+              <label class="col-md-4 form-control-label"
+                     for="id_project_application_renewal_comment"><strong>Comment</strong></label>
+              <div class="col-md-8">
                 <textarea type="text" id="project_extension_application_renewal_comment"
                           name="project_application_renewal_comment" class="form-control"
                           maxlength="8192"
                           placeholder=''
                           [(ngModel)]="project_extension.comment"></textarea>
-              <span class="help-block">Additional information you want to share?</span>
+                <span class="help-block">Additional information you want to share?</span>
+              </div>
             </div>
-          </div>
 
 
-          <strong *ngIf="is_vo_admin">
-            <div *ngIf="is_vo_admin" class="form-group row">
-              <label #corenumbers id="creditnumber_extension" class="col">Expected number of extra credits: <span
-                id="extension_credits">{{project_extension.extra_credits}}</span></label>
+            <div *ngIf="is_vo_admin || credits_allowed" class="form-group row">
+              <label #corenumbers id="creditnumber_extension" class="col">
+                <strong>Expected number of extra credits: <span
+                  id="extension_credits">{{project_extension.extra_credits}}</span></strong>
+              </label>
             </div>
             <div class="alert alert-primary" role="alert">
-              This is the expected number of extra credits that you get for your project.
-              It accounts for an increase in project lifetime.
+              This is the expected number of extra credits that you get for your project and your current resources.
+              It accounts for an increase in requested project lifetime.
             </div>
-          </strong>
 
 
-        </form>
+          </form>
 
-        <div *ngIf="extensionForm.invalid" class="alert alert-warning" role="alert">
-          <p>Some required fields are incorrect or not filled in yet.
-            Please check if all required (*) fields are filled in correctly.</p>
-          <p *ngIf="extensionForm.controls.project_application_renewal_lifetime?.invalid">
-            - Lifetime missing
-          </p>
+          <div *ngIf="extensionForm.invalid" class="alert alert-warning" role="alert">
+            <p>Some required fields are incorrect or not filled in yet.
+              Please check if all required (*) fields are filled in correctly.</p>
+            <p *ngIf="extensionForm.controls.project_application_renewal_lifetime?.invalid">
+              - Lifetime missing
+            </p>
 
-          <p  *ngIf="project_application?.project_application_edam_terms.length == 0 && selected_ontology_terms.length < 1">
-            - Select at least one Research Topic
-          </p>
-        </div>
-
-
-        <div class="modal-footer">
-          <div class="label">
-            By submitting this extension application you agree to the cloud usage policy.
+            <p  *ngIf="project_application?.project_application_edam_terms.length == 0 && selected_ontology_terms.length < 1">
+              - Select at least one Research Topic
+            </p>
           </div>
-          <button type="button" class="btn  btn-primary"
-                  form="extension_application_form" id="submit_extension_btn"
-                  (click)="calculateCreditsLifeTime(); projectExtensionModal.hide();
+
+
+          <div class="modal-footer">
+            <div class="label">
+              By submitting this extension application you agree to the cloud usage policy.
+            </div>
+            <button type="button" class="btn  btn-primary"
+                    form="extension_application_form" id="submit_extension_btn"
+                    (click)="calculateCreditsLifeTime(); projectExtensionModal.hide();
                   this.request_type = ExtensionRequestType.EXTENSION; submitModal.show();"
-                  [disabled]="extensionForm.invalid || (((project_application?.project_application_edam_terms?.length == 0)
+                    [disabled]="extensionForm.invalid || (((project_application?.project_application_edam_terms?.length == 0)
                   || !project_application?.project_application_edam_terms) && selected_ontology_terms.length < 1)">
-            <i class="fa fa-dot-circle-o"></i>
-            Submit
-          </button>
-          <button type="button" class="btn btn-danger"
-                  (click)="projectExtensionModal.hide(); setModalOpen(false);">
-            Close
-          </button>
+              <i class="fa fa-dot-circle-o"></i>
+              Submit
+            </button>
+            <button type="button" class="btn btn-danger"
+                    (click)="projectExtensionModal.hide(); setModalOpen(false);">
+              Close
+            </button>
+
+          </div>
 
         </div>
-
       </div>
-</div>
-</div>
-</div>
+    </div>
+  </div>
 
 
-<div bsModal #creditsExtensionModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
-     aria-labelledby="Label"
-     aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4>Extra credits request for {{project_application?.project_application_shortname}}</h4>
-        <button type="button" class="close" style="cursor: pointer"
-                (click)="creditsExtensionModal.hide()" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form id="credits_application_form" #f2="ngForm"
-              class="form-horizontal">
+  <div bsModal #creditsExtensionModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+       aria-labelledby="Label"
+       aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4>Extra credits request for {{project_application?.project_application_shortname}}</h4>
+          <button type="button" class="close" style="cursor: pointer"
+                  (click)="creditsExtensionModal.hide()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="credits_application_form" #f2="ngForm"
+                class="form-horizontal">
 
-          <div class="form-group row">
-            <label class="col-md-4 form-control-label"
-                   for="text-input"><strong>Reasons for Extension</strong></label>
-            <div class="col-md-8">
+            <div class="form-group row">
+              <label class="col-md-4 form-control-label"
+                     for="text-input"><strong>Reasons for Extension</strong></label>
+              <div class="col-md-8">
                 <textarea required type="text" id="project_application_extra_credits_comment"
                           name="project_application_extra_credits_comment" class="form-control"
                           maxlength="8192"
@@ -1497,182 +1508,182 @@
                                 'is-valid': f2.controls.project_application_extra_credits_comment?.valid && (f2.controls.project_application_extra_credits_comment?.dirty || f2.controls.project_application_extra_credits_comment?.touched)
                                 }"
                 ></textarea>
-              <span class="help-block">Please state why you need extra credits.</span>
-              <div class="alert alert-info">
-                As more credits are requested we require a more detailed description of the reasons!
+                <span class="help-block">Please state why you need extra credits.</span>
+                <div class="alert alert-info">
+                  As more credits are requested we require a more detailed description of the reasons!
+                </div>
               </div>
             </div>
-          </div>
-          <div class="form-group row">
-            <label class="col-md-4 form-control-label" for="textarea-input"><strong>Amount of extra credits needed</strong></label>
-            <div class="col-md-8">
+            <div class="form-group row">
+              <label class="col-md-4 form-control-label" for="textarea-input"><strong>Amount of extra credits needed</strong></label>
+              <div class="col-md-8">
 
-            <div class="input-group">
-              <input required class="form-control"
-                     id="project_application_extra_credits"
-                     name="project_application_extra_credits"
-                     placeholder="e.g. 5000"
-                     (change)="updateExampleCredits(project_credit_request.extra_credits);"
-                     [(ngModel)]="project_credit_request.extra_credits" min="100" step="100" type="number"
-                     appInteger appMinAmount="100"
-                     [ngClass]="{
+                <div class="input-group">
+                  <input required class="form-control"
+                         id="project_application_extra_credits"
+                         name="project_application_extra_credits"
+                         placeholder="e.g. 5000"
+                         (change)="updateExampleCredits(project_credit_request.extra_credits);"
+                         [(ngModel)]="project_credit_request.extra_credits" min="100" step="100" type="number"
+                         appInteger appMinAmount="100"
+                         [ngClass]="{
                                 'is-invalid': f2.controls.project_application_extra_credits?.invalid && (f2.controls.project_application_extra_credits?.dirty || f2.controls.project_application_extra_credits?.touched),
                                 'is-valid': f2.controls.project_application_extra_credits?.valid && (f2.controls.project_application_extra_credits?.dirty || f2.controls.project_application_extra_credits?.touched)
                                 }">
-              <div class="input-group-append"><span class="input-group-text"> Credits
+                  <div class="input-group-append"><span class="input-group-text"> Credits
                                     </span></div>
+                </div>
+                <span class="help-block">How many credits do you need for your project? You need 1 credit for 1 cpu core per hour and 0.28 credits for 1 GB of ram per hour.</span>
+              </div>
             </div>
-            <span class="help-block">How many credits do you need for your project? You need 1 credit for 1 cpu core per hour and 0.28 credits for 1 GB of ram per hour.</span>
-            </div>
-          </div>
-          <div class="form-group row">
-            <label class="col-md-4 form-control-label"><strong>Example</strong></label>
-            <div class="col-md-8">
-              <tr>
-                <strong>
-                  Runtime of exemplary VMs with the entered credits.
+            <div class="form-group row">
+              <label class="col-md-4 form-control-label"><strong>Example</strong></label>
+              <div class="col-md-8">
+                <tr>
+                  <strong>
+                    Runtime of exemplary VMs with the entered credits.
                   </strong>
-              </tr>
-              <tr>
-                <td>Enough Credits to run 4 {{smallExampleFlavor?.name}} for {{smallExamplePossibleDays}} {{smallExamplePossibleHours}} hours <strong>non-stop</strong></td>
-              </tr>
-              <tr>
-                <td>Enough Credits to run 1 {{largeExampleFlavor?.name}} for {{largeExamplePossibleDays}} {{largeExamplePossibleHours}} hours <strong>non-stop</strong></td>
-              </tr>
+                </tr>
+                <tr>
+                  <td>Enough Credits to run 4 {{smallExampleFlavor?.name}} for {{smallExamplePossibleHours}} hours <strong>non-stop</strong></td>
+                </tr>
+                <tr>
+                  <td>Enough Credits to run 1 {{largeExampleFlavor?.name}} for {{largeExamplePossibleHours}} hours <strong>non-stop</strong></td>
+                </tr>
+              </div>
             </div>
+          </form>
+          <div *ngIf="f2.invalid" class="alert alert-warning" role="alert">
+            <p>Some required fields are incorrect or not filled in yet.
+              Please check if all required (*) fields are filled in correctly.</p>
+            <p *ngIf="project_credit_request.comment.length <10">
+              - No reason specified (at least 10 characters)
+            </p>
+            <p *ngIf="project_credit_request.extra_credits < 1">
+              - Number of extra credits not specified
+            </p>
           </div>
-        </form>
-        <div *ngIf="f2.invalid" class="alert alert-warning" role="alert">
-          <p>Some required fields are incorrect or not filled in yet.
-            Please check if all required (*) fields are filled in correctly.</p>
-          <p *ngIf="project_credit_request.comment.length <10">
-            - No reason specified (at least 10 characters)
-          </p>
-          <p *ngIf="project_credit_request.extra_credits < 1">
-            - Number of extra credits not specified
-          </p>
+
+
+          <div class="modal-footer">
+            <div class="label">
+              By submitting this application you agree to the cloud usage policy.
+            </div>
+            <button type="button" class="btn  btn-primary"
+                    form="credits_application_form" id="submit_extra_credits_btn"
+                    (click)="creditsExtensionModal.hide(); this.request_type = ExtensionRequestType.CREDIT;
+                  submitModal.show();" [disabled]="f2.invalid"><i class="fa fa-dot-circle-o"></i>
+              Submit
+            </button>
+            <button type="button" class="btn btn-danger"
+                    (click)="creditsExtensionModal.hide();">
+              Close
+            </button>
+
+          </div>
+
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+  </div>
+
+  <div bsModal #submitModal="bs-modal" class="modal fade" tabindex="-1"
+       role="dialog" aria-labelledby="Label"
+       aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">{{projectName}}</h4>
+          <button type="button" class="close" style="cursor: pointer;"
+                  (click)="submitModal.hide(); setModalOpen(false);"
+                  data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+
+        </div>
+        <div class="modal-body">
+          <div class="alert alert-info">
+            <strong>Please check the data you have entered and confirm your application
+              below.</strong><br>
+            If the entered data mismatches with your requirements cancel this confirmation
+            and take changes.
+          </div>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <ng-container *ngIf="this.request_type === ExtensionRequestType.MODIFICATION">
+                <tr *ngFor="let flav of this.project_modification.flavors">
+                  <td>{{flav.name + ': ' + flav.counter + ' VMs'}}</td>
+                </tr>
+                <tr *ngIf="this.project_modification.volume_counter > 0">
+                  <td>Number of storage volumes: {{this.project_modification.volume_counter}}</td>
+                </tr>
+                <tr *ngIf="(this.project_modification.volume_counter > 0) && (this.project_modification.volume_limit > 0)">
+                  <td>Amount of storage space: {{this.project_modification.volume_limit}} GBs</td>
+                </tr>
+
+                <tr *ngIf="this.project_application.project_application_openstack_project
+            && this.project_modification.object_storage > 0">
+                  <td>Amount of object storage: {{this.project_modification.object_storage}} GB</td>
+                </tr>
+              </ng-container>
+
+              <tr *ngIf="this.selected_ontology_terms?.length > 0">
+                <td>Selected Terms:
+                  <span *ngFor="let term of this.selected_ontology_terms" class="badge badge-info">{{term.term}}</span></td>
+              </tr>
+
+              <tr *ngIf="(this.request_type === ExtensionRequestType.EXTENSION)
+            && this.project_extension.comment?.length > 0">
+                <td>Comment : {{this.project_extension.comment}}</td>
+              </tr>
+
+              <tr *ngIf="(this.request_type === ExtensionRequestType.MODIFICATION)
+            && this.project_modification.comment?.length > 0">
+
+              <td>Comment : {{this.project_modification.comment}}</td>
+            </tr>
+
+              <tr *ngIf="(this.request_type === ExtensionRequestType.CREDIT)
+            && this.project_credit_request.comment?.length > 0">
+                <td>Comment : {{this.project_credit_request.comment}}</td>
+              </tr>
+
+              <tr *ngIf="request_type == ExtensionRequestType.MODIFICATION">
+                <td><strong>Number of cores in total:
+                  {{project_modification?.total_cores}}</strong>
+                </td>
+              </tr>
+              <tr *ngIf="request_type == ExtensionRequestType.MODIFICATION">
+                <td><strong>Value of RAM in
+                  total: {{project_modification?.total_ram}}
+                  GBs</strong>
+                </td>
+              </tr>
+              <tr *ngIf="request_type == ExtensionRequestType.EXTENSION" >
+                <td><strong>Additional lifetime in months: {{project_extension.extra_lifetime}}</strong></td>
+              </tr>
+              <tr *ngIf="request_type == ExtensionRequestType.CREDIT">
+                <td>Amount of requested extra credits: {{project_credit_request.extra_credits}}</td>
+              </tr>
+              <tr *ngIf="(is_vo_admin || credits_allowed) && request_type != ExtensionRequestType.CREDIT">
+                <td><strong>Approximate number of extra credits:{{project_modification?.extra_credits}}</strong></td>
+              </tr>
+            </table>
+          </div>
         </div>
 
 
         <div class="modal-footer">
-          <div class="label">
-            By submitting this application you agree to the cloud usage policy.
-          </div>
-          <button type="button" class="btn  btn-primary" adm
-                  form="credits_application_form" id="submit_extra_credits_btn"
-                  (click)="creditsExtensionModal.hide(); this.request_type = ExtensionRequestType.CREDIT;
-                  submitModal.show();" [disabled]="f2.invalid"><i class="fa fa-dot-circle-o"></i>
-            Submit
-          </button>
-          <button type="button" class="btn btn-danger"
-                  (click)="creditsExtensionModal.hide();">
-            Close
-          </button>
-
-        </div>
-
-      </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-  </div><!-- /.modal -->
-</div>
-
-<div bsModal #submitModal="bs-modal" class="modal fade" tabindex="-1"
-     role="dialog" aria-labelledby="Label"
-     aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">{{projectName}}</h4>
-        <button type="button" class="close" style="cursor: pointer;"
-                (click)="submitModal.hide(); setModalOpen(false);"
-                data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-
-      </div>
-      <div class="modal-body">
-        <div class="alert alert-info">
-          <strong>Please check the data you have entered and confirm your application
-            below.</strong><br>
-          If the entered data mismatches with your requirements cancel this confirmation
-          and take changes.
-        </div>
-        <div class="table-responsive">
-          <table class="table table-striped">
-            <ng-container *ngIf="this.request_type === ExtensionRequestType.MODIFICATION">
-              <tr *ngFor="let flav of this.project_modification.flavors">
-                <td>{{flav.name + ': ' + flav.counter + ' VMs'}}</td>
-              </tr>
-              <tr *ngIf="this.project_modification.volume_counter > 0">
-                <td>Number of storage volumes: {{this.project_modification.volume_counter}}</td>
-              </tr>
-              <tr *ngIf="(this.project_modification.volume_counter > 0) && (this.project_modification.volume_limit > 0)">
-                <td>Amount of storage space: {{this.project_modification.volume_limit}} GBs</td>
-              </tr>
-
-              <tr *ngIf="this.project_application.project_application_openstack_project
-            && this.project_modification.object_storage > 0">
-                <td>Amount of object storage: {{this.project_modification.object_storage}} GB</td>
-              </tr>
-            </ng-container>
-
-            <tr *ngIf="this.selected_ontology_terms?.length > 0">
-              <td>Selected Terms:
-                <span *ngFor="let term of this.selected_ontology_terms" class="badge badge-info">{{term.term}}</span></td>
-            </tr>
-
-            <tr *ngIf="(this.request_type === ExtensionRequestType.EXTENSION)
-            && this.project_extension.comment?.length > 0">
-              <td>Comment : {{this.project_extension.comment}}</td>
-            </tr>
-
-            <tr *ngIf="(this.request_type === ExtensionRequestType.MODIFICATION)
-            && this.project_modification.comment?.length > 0">
-              <td>Comment : {{this.project_modification.comment}}</td>
-
-            </tr>
-
-            <tr *ngIf="(this.request_type === ExtensionRequestType.CREDIT)
-            && this.project_credit_request.comment?.length > 0">
-              <td>Comment : {{this.project_credit_request.comment}}</td>
-            </tr>
-
-            <tr *ngIf="request_type == ExtensionRequestType.MODIFICATION">
-              <td><strong>Number of cores in total:
-                {{project_modification?.total_cores}}</strong>
-              </td>
-            </tr>
-            <tr *ngIf="request_type == ExtensionRequestType.MODIFICATION">
-              <td><strong>Value of RAM in
-                total: {{project_modification?.total_ram}}
-                GBs</strong>
-              </td>
-            </tr>
-            <tr *ngIf="request_type == ExtensionRequestType.EXTENSION" >
-              <td><strong>Additional lifetime in months: {{project_extension.extra_lifetime}}</strong></td>
-            </tr>
-            <tr *ngIf="request_type == ExtensionRequestType.CREDIT">
-              <td>Amount of requested extra credits: {{project_credit_request.extra_credits}}</td>
-            </tr>
-            <tr *ngIf="is_vo_admin" >
-              <td><strong>Approximate number of extra credits:{{project_modification?.extra_credits}}</strong></td>
-            </tr>
-          </table>
-        </div>
-      </div>
 
 
-      <div class="modal-footer">
-
-
-        <button id="confirm_extension_btn" class="btn btn-success col-md-4" type="button"
-                *ngIf="request_type==ExtensionRequestType.EXTENSION"
-                (click)="submitModal.hide(); requestExtension(); resultModal.show();
+          <button id="confirm_extension_btn" class="btn btn-success col-md-4" type="button"
+                  *ngIf="request_type==ExtensionRequestType.EXTENSION"
+                  (click)="submitModal.hide(); requestExtension(); resultModal.show();
                 ">Confirm Application
-        </button>
-        <button id="confirm_modification_btn" class="btn btn-success col-md-4" type="button"
-                *ngIf="request_type==ExtensionRequestType.MODIFICATION"
-                (click)="submitModal.hide(); requestModification(); resultModal.show();
+          </button>
+          <button id="confirm_modification_btn" class="btn btn-success col-md-4" type="button"
+                  *ngIf="request_type==ExtensionRequestType.MODIFICATION"
+                  (click)="submitModal.hide(); requestModification(); resultModal.show();
                ">Confirm Application
 
         </button>
@@ -1686,10 +1697,10 @@
                 (click)="submitModal.hide();">Cancel
         </button>
 
-      </div>
-    </div><!-- /.modal-content -->L
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+        </div>
+      </div><!-- /.modal-content -->L
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
 
 
   <div bsModal #doiModal="bs-modal" class="modal fade" tabindex="-1"
@@ -1709,8 +1720,8 @@
         <div class="modal-body">
           <div class="alert alert-info">
             <p>Please add the DOIs of new publications in this form. For more information on DOIs, please look <a
-            href="https://cloud.denbi.de/wiki/citation_and_publication/"
-            target="_blank">here</a>.
+              href="https://cloud.denbi.de/wiki/citation_and_publication/"
+              target="_blank">here</a>.
               You can also add the publications at a later date on the project overview page.</p>
             <p><strong>The addition or non-addition of publications/DOIs does not affect the renewal request procedure!</strong></p>
           </div>
@@ -1779,8 +1790,8 @@
         </div>
         <div class="modal-body">
           <div>
-          <p><strong>Do you have any new publications that were made during your work with the de.NBI Cloud or
-            in which the de.NBI Cloud is mentioned?</strong></p>
+            <p><strong>Do you have any new publications that were made during your work with the de.NBI Cloud or
+              in which the de.NBI Cloud is mentioned?</strong></p>
           </div>
           <div class="modal-footer">
             <div class="row" style="margin:auto">
@@ -1807,58 +1818,58 @@
 
 
   <div bsModal #resultModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
-         aria-labelledby="Label"
-         aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h4 class="modal-title" *ngIf="extension_status == 0">
-              Waiting </h4>
-            <h4 class="modal-title" *ngIf="extension_status == 1"> Success </h4>
-            <h4 class="modal-title" *ngIf="extension_status == 2"> Error </h4>
-            <button type="button" class="close" style="cursor: pointer"
-                    (click)="resultModal.hide();extension_status= 0; setModalOpen(false);"
-                    aria-label="Close">
-              <span aria-hidden="true">&times;</span>
+       aria-labelledby="Label"
+       aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" *ngIf="extension_status == 0">
+            Waiting </h4>
+          <h4 class="modal-title" *ngIf="extension_status == 1"> Success </h4>
+          <h4 class="modal-title" *ngIf="extension_status == 2"> Error </h4>
+          <button type="button" class="close" style="cursor: pointer"
+                  (click)="resultModal.hide();extension_status= 0; setModalOpen(false);"
+                  aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <div class="modal-body">
+          <div class="alert alert-info" role="alert" *ngIf="extension_status==0">
+            Waiting... <i class="fa fa-spinner fa-spin"
+                          style="font-size:24px"></i>
+          </div>
+
+
+          <div id="extension_result_submitted" class="alert alert-success" role="alert" *ngIf="extension_status == 1">
+            Modification request successfully submitted!
+          </div>
+          <div id="extension_result_approved" class="alert alert-success" role="alert" *ngIf="extension_status == 3">
+            Modification request successfully approved!
+          </div>
+          <div id="extension_result_declined" class="alert alert-success" role="alert" *ngIf="extension_status == 4">
+            Modification request successfully declined!
+          </div>
+          <div id="extension_result_forwarded" class="alert alert-success" role="alert" *ngIf="extension_status == 5">
+            Modification request successfully approved and forwarded to facility!
+          </div>
+
+          <div id="extension result_error" class="alert alert-warning" role="alert" *ngIf="extension_status == 2">
+            An error occured.
+
+          </div>
+
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary"
+                    (click)="resultModal.hide();extension_status= 0; setModalOpen(false);">
+              Close
             </button>
           </div>
 
-          <div class="modal-body">
-            <div class="alert alert-info" role="alert" *ngIf="extension_status==0">
-              Waiting... <i class="fa fa-spinner fa-spin"
-                            style="font-size:24px"></i>
-            </div>
-
-
-            <div id="extension_result_submitted" class="alert alert-success" role="alert" *ngIf="extension_status == 1">
-              Modification request successfully submitted!
-            </div>
-            <div id="extension_result_approved" class="alert alert-success" role="alert" *ngIf="extension_status == 3">
-              Modification request successfully approved!
-            </div>
-            <div id="extension_result_declined" class="alert alert-success" role="alert" *ngIf="extension_status == 4">
-              Modification request successfully declined!
-            </div>
-            <div id="extension_result_forwarded" class="alert alert-success" role="alert" *ngIf="extension_status == 5">
-              Modification request successfully approved and forwarded to facility!
-            </div>
-
-            <div id="extension result_error" class="alert alert-warning" role="alert" *ngIf="extension_status == 2">
-              An error occured.
-
-            </div>
-
-
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary"
-                      (click)="resultModal.hide();extension_status= 0; setModalOpen(false);">
-                Close
-              </button>
-            </div>
-
-          </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-      </div><!-- /.modal -->
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
   </div>
 
 </div>
