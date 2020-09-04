@@ -220,6 +220,7 @@ export class Application {
     if (this.project_lifetime_request != null) {
       return (Math.round(this.project_application_initial_credits * 10) / 10)
         + (Math.round((this.project_lifetime_request.extra_credits * 10) / 10))
+
     } else {
       return this.project_application_initial_credits
     }
