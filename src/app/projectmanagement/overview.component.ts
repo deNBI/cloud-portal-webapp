@@ -858,6 +858,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
         }
         this.isLoaded = true;
+        this.startUpdateCreditUsageLoop();
       })
 
     });
