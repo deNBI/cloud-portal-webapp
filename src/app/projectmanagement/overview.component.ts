@@ -301,10 +301,9 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   //
   //   return ''
   // }
-
   startUpdateCreditUsageLoop(): void {
 
-    if (!this.credits_allowed && !this.is_vo_admin && !this.project_application) {
+    if (!this.credits_allowed && !this.is_vo_admin || !this.project_application) {
       return;
     }
     this.creditsService.getCurrentCreditsOfProject(
@@ -322,15 +321,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
     this.updateCreditsUsedIntervals = setInterval(
       (): any =>
         // tslint:disable-next-line:max-line-length
-        this.subscription.add(this.creditsService.getCurrentCreditsOfProject(Number(this.project_application.project_application_perun_id.toString())).subscribe(
-          (credits: number): void => {
-            this.current_credits = credits;
-          },
-          (err: Error): void => {
-            console.log(err.message)
-          }
-
-        )),
+        this.getCurrentCreditsOfProject(),
       10000
     );
 
@@ -339,6 +330,20 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
         // tslint:disable-next-line:max-line-length
         this.fetchCreditHistoryOfProject(),
       30000);
+  }
+
+  getCurrentCreditsOfProject(): void {
+    if (this.project_application) {
+      this.subscription.add(this.creditsService.getCurrentCreditsOfProject(
+        this.project_application.project_application_perun_id.toString()).subscribe(
+        (credits: number): void => {
+          this.current_credits = credits;
+        },
+        (err: Error): void => {
+          console.log(err.message)
+        }))
+    }
+
   }
 
   initExampleFlavors(): void {
@@ -437,7 +442,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
           this.credits_allowed = aj['credits_allowed'];
 
           if (this.project_application) {
-            this.startUpdateCreditUsageLoop();
 
             this.applicationsservice.getApplicationPerunId(this.application_id).subscribe((id: any): void => {
               if (id['perun_id']) {
@@ -466,6 +470,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
             } else {
               this.initiateCreditRequest();
             }
+            this.startUpdateCreditUsageLoop();
+
           } else {
             this.isLoaded = true;
           }
