@@ -1588,7 +1588,7 @@
               <tr *ngIf="request_type == ExtensionRequestType.CREDIT">
                 <td>Amount of requested extra credits: {{project_credit_request.extra_credits}}</td>
               </tr>
-              <tr *ngIf="is_vo_admin || credits_allowed" >
+              <tr *ngIf="(is_vo_admin || credits_allowed) && request_type != ExtensionRequestType.CREDIT">
                 <td><strong>Approximate number of extra credits:{{project_modification?.extra_credits}}</strong></td>
               </tr>
             </table>

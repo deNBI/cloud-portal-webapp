@@ -84,7 +84,7 @@ export class CreditsService {
    * Get current credits of project.
    * @param group_id
    */
-  public getCurrentCreditsOfProject(group_id: number): Observable<number> {
+  public getCurrentCreditsOfProject(group_id: number | string): Observable<number> {
     return this.http.get<number>(`${ApiSettings.getApiBaseURL()}creditManager/${group_id}/getUsedCredits/`, {
       withCredentials: true
     });
