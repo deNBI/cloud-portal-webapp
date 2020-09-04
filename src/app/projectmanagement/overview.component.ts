@@ -314,19 +314,10 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   // }
   startUpdateCreditUsageLoop(): void {
 
-    if (!this.credits_allowed && !this.is_vo_admin || !this.project_application) {
+    if (!this.credits_allowed && !this.is_vo_admin || !this.project_application || !this.project_application.project_application_perun_id) {
       return;
     }
-    this.creditsService.getCurrentCreditsOfProject(
-      Number(this.project_application.project_application_perun_id.toString())
-    ).toPromise().then(
-      (credits: number): void => {
-        this.current_credits = credits;
-      }
-    ).catch((err: Error): void => {
-      console.log(err.message)
-    });
-
+    this.getCurrentCreditsOfProject();
     this.fetchCreditHistoryOfProject();
 
     this.updateCreditsUsedIntervals = setInterval(
@@ -347,7 +338,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   }
 
   getCurrentCreditsOfProject(): void {
-    if (this.project_application) {
+    if (this.project_application && this.project_application.project_application_perun_id) {
       this.subscription.add(this.creditsService.getCurrentCreditsOfProject(
         this.project_application.project_application_perun_id.toString()).subscribe(
         (credits: number): void => {
