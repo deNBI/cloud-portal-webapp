@@ -1,0 +1,21 @@
+import {HttpClient, HttpParams} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {ObjectUnsubscribedError, Observable} from 'rxjs';
+import {ApiSettings} from './api-settings.service';
+
+
+@Injectable()
+export class NumbersService {
+
+
+  constructor(private http: HttpClient) {
+
+  }
+
+  getProjectCounterTimeline(): Observable<any> {
+    return this.http.get(`${ApiSettings.getApiBase()}public/statistic/projectcounter_timeline/`, {
+      withCredentials: true,
+      });
+  }
+
+}
