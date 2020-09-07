@@ -119,7 +119,7 @@
                 </td>
                 <td class="col-md-4"><span style="word-break: break-all">{{ project.RealName}}</span>
                 </td>
-                <td>  <span *ngIf="project.Status | hasStatus:project_states.ACTIVE"
+                <td>  <span *ngIf="project | hasstatusinlist:project_states.ACTIVE"
                             style="margin-left: 5px"
                             class="badge badge-success">{{project_states[project_states.ACTIVE]}} </span>
                   <span *ngIf="project?.LifetimeReached | hasStatus:lifetime_states.EXPIRED"
@@ -143,7 +143,7 @@
                 <td class="col-md-2">
                   <button type="button" class="btn btn-secondary"
                           data-toggle="modal"
-                          (click)="showMembersOfTheProject(project.Id, project.Name,project.ComputeCenter[0]); usersModal.show(); "
+                          (click)="showMembersOfTheProject(project.Id, project.Name); usersModal.show(); "
 
                   >
                     <i class="fa fa-users"></i>&nbsp;Show Members
