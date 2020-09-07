@@ -17,9 +17,9 @@ import {Application_States} from '../shared/shared_modules/baseClass/abstract-ba
 
 enum TabStates {
   'SUBMITTED' = 0,
-  'CREDITS_EXTENSION' = 1,
-  'LIFETIME_EXTENSION' = 2,
-  'MODIFICATION_EXTENSION' = 3
+  'CREDITS_EXTENSION' = 3,
+  'LIFETIME_EXTENSION' = 5,
+  'MODIFICATION_EXTENSION' = 4
 
 }
 
