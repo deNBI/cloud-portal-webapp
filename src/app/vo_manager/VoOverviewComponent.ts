@@ -113,7 +113,7 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
     }
 
     return facNameFilter
-      && this.isFilterProjectStatus(project.Status, project.LifetimeReached)
+      && this.isFilterProjectStatus(project.project_application_status, project.LifetimeReached)
       && this.isFilterProjectName(project.Name)
       && this.isFilterProjectId(project.Id.toString())
 
@@ -205,7 +205,7 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
           approvedCredits
           );
         newProject.Lifetime = lifetime;
-        newProject.Status = group['status'];
+        newProject.project_application_status = group['status'];
         newProject.OpenStackProject = group['openstack_project'];
 
         let expirationDate: string = '';
@@ -324,8 +324,8 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
   }
 
   getProjectStatus(project: Project): void {
-    this.voserice.getProjectStatus(project.Id).subscribe((res: IResponseTemplate): void => {
-      project.Status = <number>res.value;
+    this.voserice.getProjectStatus(project.Id).subscribe((res: any): void => {
+      project.project_application_status = res.value;
     })
   }
 
