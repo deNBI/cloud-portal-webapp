@@ -1,0 +1,38 @@
+<table class="table table-striped" style="table-layout: fixed">
+
+  <tr>
+    <td>Credits Extension Requested from:
+    </td>
+
+    <td>
+      {{application?.project_credit_request?.user?.username}}
+      ( {{application?.project_credit_request?.user?.email}}
+      |       {{application?.project_credit_request?.user?.elixir_id}}
+      )
+    </td>
+
+
+  </tr>
+  <tr>
+    <td>Comment</td>
+    <td>{{
+      application?.project_credit_request?.comment
+      }}
+    </td>
+
+  </tr>
+  <tr>
+    <td>Extra Credits</td>
+
+    <td>
+      {{application?.project_credit_request?.extra_credits}} (Total: {{application?.totalCreditsExtensionCredits}})
+    </td>
+  </tr>
+  <tr>
+    <td>Date Submitted</td>
+
+    <td>
+      {{application?.project_credit_request?.date_submitted}}
+    </td>
+  </tr>
+</table>

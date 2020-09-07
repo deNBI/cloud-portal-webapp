@@ -40,7 +40,7 @@
 
             <button type="button" [disabled]="test_name.length < 5" class="btn btn-primary"
                     (click)="sendTestApplication(test_name);notificationModal.show();">Test
-              Application 
+              Application
             </button>
             <input name="test_name" placeholder="TestAppName" [(ngModel)]="test_name" >
           </div>
@@ -417,8 +417,8 @@
               <label class="col-md-4 form-control-label"><strong>Research Topics* </strong></label>
               <div class="col-md-8" style="  z-index: 999;" >
                 <div [ngClass]="{
-                                'danger-border': application.project_application_edam_terms?.length <=0,
-                                'success-border':application.project_application_edam_terms?.length >0
+                                'danger-border': application?.project_application_edam_terms?.length <=0,
+                                'success-border':application?.project_application_edam_terms?.length >0
                                 }">
                   <ng-autocomplete #edam_ontology id="edam_input"
                                    [data]="edam_ontology_terms"
@@ -441,7 +441,7 @@
                 </div>
                 <h5><span
 
-                  *ngFor="let term of application.project_application_edam_terms"
+                  *ngFor="let term of application?.project_application_edam_terms"
                   style="margin-right: 5px; "
                   class="badge badge-info"> {{term.term}}
                   <span class="badge" style="cursor: pointer;"
@@ -500,7 +500,7 @@
                        class="switch switch-label switch-outline-primary-alt">
                   <input type="checkbox" class="switch-input"
                          name="project_application_cloud_service"
-                         [defaultChecked]="application.project_application_cloud_service_user_number > 0 || application.project_application_cloud_service_develop"
+                         [defaultChecked]="application?.project_application_cloud_service_user_number > 0 || application?.project_application_cloud_service_develop"
                          [(ngModel)]="application.project_application_cloud_service"
                   >
                   <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
@@ -510,7 +510,7 @@
                 </div>
               </div>
             </div>
-            <div class="form-group row" *ngIf="application.project_application_cloud_service">
+            <div class="form-group row" *ngIf="application?.project_application_cloud_service">
               <label class="col-md-4 form-control-label" for="id_project_application_cloud_service_develop"><strong>New
                 service*</strong></label>
               <div class="col-md-8">
@@ -519,7 +519,7 @@
                        class="switch switch-label switch-outline-primary-alt">
                   <input type="checkbox" class="switch-input"
                          name="project_application_cloud_service_develop"
-                         [defaultChecked]="application.project_application_cloud_service_user_number > 0 || application.project_application_cloud_service"
+                         [defaultChecked]="application?.project_application_cloud_service_user_number > 0 || application?.project_application_cloud_service"
                          [(ngModel)]="application.project_application_cloud_service_develop"
                   >
                   <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
@@ -532,7 +532,7 @@
               </div>
             </div>
             <div class="form-group row"
-                 *ngIf="!application.project_application_cloud_service_develop && application.project_application_cloud_service">
+                 *ngIf="!application?.project_application_cloud_service_develop && application?.project_application_cloud_service">
               <label class="col-md-4 form-control-label" for="id_project_application_cloud_service_user_number"><strong>Number
                 of service users*</strong></label>
               <div class="col-md-8">
@@ -584,7 +584,7 @@
                 <label id="id_project_application_elixir_switch"
                        class="switch switch-label switch-outline-primary-alt">
                   <input type="checkbox" class="switch-input" #part_elixir
-                         [defaultChecked]="application.project_application_elixir_project?.length > 1"
+                         [defaultChecked]="application?.project_application_elixir_project?.length > 1"
                          (click)="toggleProjectPart(part_elixir.checked, 'elixir')">
                   <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
                   <span class="switch-handle"></span></label>
@@ -605,7 +605,7 @@
                 <label id="id_project_application_bmbf_switch"
                        class="switch switch-label switch-outline-primary-alt">
                   <input type="checkbox" class="switch-input" #part_bmbf
-                         [defaultChecked]="application.project_application_bmbf_project?.length > 1"
+                         [defaultChecked]="application?.project_application_bmbf_project?.length > 1"
                          (click)="toggleProjectPart(part_bmbf.checked, 'bmbf')">
                   <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
                   <span class="switch-handle"></span></label>
@@ -642,7 +642,7 @@
 
 
             </div>
-            <div *ngIf="application.project_application_report_allowed">
+            <div *ngIf="application?.project_application_report_allowed">
 
               <div class="form-group row col-md-12">
                 <div class="alert alert-info col-md-auto"><span>Please specify which information about your project and which platforms may be used to publish information.
@@ -707,7 +707,7 @@
                     <div class="col-md-6">
                       <h5><span
 
-                        *ngFor="let term of application.project_application_edam_terms"
+                        *ngFor="let term of application?.project_application_edam_terms"
                         style="margin-right: 5px; "
                         class="badge badge-info"> {{term.term}}
 
@@ -847,7 +847,7 @@
 
 
                   <div class="alert-danger alert"
-                       *ngIf="!application?.dissemination?.isPlatformSelected()  && application.project_application_report_allowed">
+                       *ngIf="!application?.dissemination?.isPlatformSelected()  && application?.project_application_report_allowed">
                     Please select at least one Platform.
                   </div>
                   <div class="form-group row">
@@ -915,7 +915,7 @@
 
 
             </div>
-            <div *ngIf="application.project_application_pi_approved" class="form-group row">
+            <div *ngIf="application?.project_application_pi_approved" class="form-group row">
               <label class="col-md-4 form-control-label" for="project_application_responsibility"
                      id="project_application_responsibility_checkbox">
                 <strong>Confirmation of Responsibility*</strong>
@@ -941,7 +941,7 @@
                 </div>
               </div>
             </div>
-            <div *ngIf="!application.project_application_pi_approved && !is_validation"
+            <div *ngIf="!application?.project_application_pi_approved && !is_validation"
                  class="form-group row justify-content-center">
               <div class="col-md-4"></div>
               <div class="col-md-8 alert alert-info">Only applications approved by a principal investigator
@@ -952,14 +952,14 @@
                 where she/he will be able to approve this application.
               </div>
             </div>
-            <div *ngIf="!application.project_application_pi_approved && !is_validation" class="form-group row">
+            <div *ngIf="!application?.project_application_pi_approved && !is_validation" class="form-group row">
               <label class="col-md-4 form-control-label" for="id_project_application_pi_email"><strong>Principal
                 Investigator Email*
               </strong></label>
               <div class="col-md-8">
 
 
-                <input *ngIf="!application.project_application_pi_approved && !is_validation" required type="text"
+                <input *ngIf="!application?.project_application_pi_approved && !is_validation" required type="text"
                        id="id_project_application_pi_email"
                        name="project_application_pi_email"
                        class="form-control" maxlength="256"
@@ -970,7 +970,7 @@
                                 'is-invalid': form.controls.project_application_pi_email?.invalid && (form.controls.project_application_pi_email?.dirty || form.controls.project_application_pi_email?.touched),
                                 'is-valid': form.controls.project_application_pi_email?.valid && (form.controls.project_application_pi_email?.dirty || form.controls.project_application_pi_email?.touched)
                                 }">
-                <p *ngIf="!application.project_application_pi_approved  && !is_validation"> Please enter the e-mail
+                <p *ngIf="!application?.project_application_pi_approved  && !is_validation"> Please enter the e-mail
                   address of your
                   principal investigator. An email with further information on how to verify the application will be
                   sent to this email.</p>
@@ -990,7 +990,7 @@
             Please select at least one flavor.
           </div>
           <div
-            *ngIf="form.invalid ||application.project_application_edam_terms.length == 0 || (application?.flavors.length == 0  && !application?.project_application_openstack_project) || (!application?.dissemination.isPlatformSelected() && application.project_application_report_allowed)"
+            *ngIf="form.invalid ||application?.project_application_edam_terms.length == 0 || (application?.flavors.length == 0  && !application?.project_application_openstack_project) || (!application?.dissemination.isPlatformSelected() && application?.project_application_report_allowed)"
             class="form-group row alert alert-warning">
             Some required fields are incorrect or not filled in yet.
             Please check if all required (*) fields are filled in correctly.
@@ -1023,7 +1023,7 @@
             </div>
             <label class="col-md-4 form-control-label">
               <button (click)="notificationModal.show();approveApplication(form);"
-                      [disabled]="!respCheck.checked || form.invalid  ||application.project_application_edam_terms.length == 0  || (application?.flavors.length == 0  && !application?.project_application_openstack_project)|| (!application?.dissemination?.isPlatformSelected()  && application.project_application_report_allowed)"
+                      [disabled]="!respCheck.checked || form.invalid  ||application?.project_application_edam_terms.length == 0  || (application?.flavors.length == 0  && !application?.project_application_openstack_project)|| (!application?.dissemination?.isPlatformSelected()  && application?.project_application_report_allowed)"
 
                       class="btn btn-sm btn-success">
                 <i class="fa fa-dot-circle-o"></i>
@@ -1036,7 +1036,7 @@
             <button *ngIf="!is_validation"
                     (click)="filterEnteredData(form);calculateInitialCredits(form); submitModal.show();"
                     id="submit_btn"
-                    [disabled]="submitting || form.invalid  ||application.project_application_edam_terms.length == 0  || (application?.flavors.length == 0  && !application?.project_application_openstack_project) || (!application?.dissemination?.isPlatformSelected()  && application.project_application_report_allowed)"
+                    [disabled]="submitting || form.invalid  ||application?.project_application_edam_terms.length == 0  || (application?.flavors.length == 0  && !application?.project_application_openstack_project) || (!application?.dissemination?.isPlatformSelected()  && application?.project_application_report_allowed)"
                     class="btn btn-sm btn-success"
                     type="button"><i
               class="fa fa-dot-circle-o"></i> Submit
@@ -1160,7 +1160,7 @@
             </tr>
             <tr *ngIf="is_vo_admin">
               <td><strong>Initial Credits:
-                {{credits.toString()}}</strong></td>
+                {{application?.project_application_initial_credits.toString()}}</strong></td>
             </tr>
             <tr>
               <td><strong>Number of cores in total:

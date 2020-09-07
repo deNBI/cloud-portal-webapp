@@ -122,7 +122,7 @@
 
                     <td>
                       <div class="btn-group">
-                        <button
+                        <button id="approval_{{application?.project_application_shortname}}"
                           *ngIf="(application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION) "
                           style="margin: auto 2.5px"
                           (click)="resetNotificationModal(); approveApplication(application); notificationModal.show();"
@@ -164,8 +164,7 @@
                       [class.collapse_no_margin]="getCollapseStatus('application_review-' + application?.project_application_id)"
                       [class.collapse]="getCollapseStatus('application_review-' + application?.project_application_id)"
                       [application]="application"
-                      [isModification]="(application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED) ||
-                     (application | hasstatusinlist:Application_States.LIFETIME_EXTENSION_REQUESTED) "></app-application-detail>
+                     ></app-application-detail>
                   </td>
                 </ng-container>
 
@@ -289,8 +288,7 @@
                       [class.collapse_no_margin]="getCollapseStatus('application_review-' + application?.project_application_id)"
                       [class.collapse]="getCollapseStatus('application_review-' + application?.project_application_id)"
                       [application]="application"
-                      [isModification]="(application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_EXTENSION)
-                      || (application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION)"></app-application-detail>
+                     ></app-application-detail>
                   </td>
                 </ng-container>
               </ng-container>
@@ -412,9 +410,8 @@
                     <app-application-detail
                       [class.collapse_no_margin]="getCollapseStatus('application_review-' + application?.project_application_id)"
                       [class.collapse]="getCollapseStatus('application_review-' + application?.project_application_id)"
-                      [application]="application"
-                      [isModification]="(application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION_EXTENSION)
-                      || (application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION)"></app-application-detail>
+                      [application]="application">
+                   </app-application-detail>
                   </td>
                 </ng-container>
               </ng-container>
@@ -534,8 +531,7 @@
                       [class.collapse_no_margin]="getCollapseStatus('application_review-' + application?.project_application_id)"
                       [class.collapse]="getCollapseStatus('application_review-' + application?.project_application_id)"
                       [application]="application"
-                      [isModification]="(application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION_EXTENSION)
-                      || (application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION)"></app-application-detail>
+                    ></app-application-detail>
                   </td>
                 </ng-container>
               </ng-container>

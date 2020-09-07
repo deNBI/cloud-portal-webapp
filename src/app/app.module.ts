@@ -40,33 +40,35 @@ import {CookieService} from 'ngx-cookie-service';
 import {TitleHeadbarComponent} from './shared/title-headbar.component';
 import {VoService} from './api-connector/vo.service';
 import {TokenInterceptor} from './api-connector/token-interceptor';
+import {PipeModuleModule} from './pipe-module/pipe-module.module';
 
 /**
  * App module.
  */
 @NgModule({
 
-            imports: [
-              AppAsideModule,
-              AppBreadcrumbModule.forRoot(),
-              AppHeaderModule,
-              AppFooterModule,
-              AppSidebarModule,
-              PerfectScrollbarModule,
-              BrowserModule,
-              HttpClientModule,
-              AppRoutingModule,
-              BsDropdownModule.forRoot(),
-              TabsModule.forRoot(),
-              ChartsModule,
-              ModalModule.forRoot(),
-              PaginationModule.forRoot(),
-              ExportAsModule,
-              SharedModuleModule,
-              Angulartics2Module.forRoot(),
-              BrowserAnimationsModule,
-              ClipboardModule
-            ],
+              imports: [
+                  AppAsideModule,
+                  AppBreadcrumbModule.forRoot(),
+                  AppHeaderModule,
+                  AppFooterModule,
+                  AppSidebarModule,
+                  PerfectScrollbarModule,
+                  BrowserModule,
+                  HttpClientModule,
+                  AppRoutingModule,
+                  BsDropdownModule.forRoot(),
+                  TabsModule.forRoot(),
+                  ChartsModule,
+                  ModalModule.forRoot(),
+                  PaginationModule.forRoot(),
+                  ExportAsModule,
+                  SharedModuleModule,
+                  Angulartics2Module.forRoot(),
+                  BrowserAnimationsModule,
+                  ClipboardModule,
+                  PipeModuleModule
+              ],
             declarations: [
               AppComponent,
               FullLayoutComponent,

@@ -1,437 +1,65 @@
-<div class="table-responsive">
-  <table class="table table-striped" style="table-layout: fixed">
+<div class="nav-tabs-boxed">
+  <ul class="nav nav-tabs " style="overflow-x:visible !important">
+    <li class="nav-item"><a class="nav-link"  id="pi_user_tab" [ngClass]="{'active': PI_USER_TAB_ACTIVE }" (click)="setTab(PI_USER_TAB)">PI/User</a>
+    </li>
+    <li class="nav-item"><a class="nav-link"  id="information_tab" [ngClass]="{'active': INFORMATION_TAB_ACTIVE }"
+                            (click)="setTab(INFORMATION_TAB)">Informations</a></li>
+    <li class="nav-item"><a class="nav-link" id="resource_tab"  [ngClass]="{'active': RESOURCE_TAB_ACTIVE }"
+                            (click)="setTab(RESOURCE_TAB)">Resources</a></li>
+    <li class="nav-item"><a class="nav-link" id="modification_tab"  *ngIf="(application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)
+    || (application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION)"
+                            [ngClass]="{'active': MODIFICATION_TAB_ACTIVE }"
+                            (click)="setTab(MODIFICATION_TAB)">Modification</a></li>
+    <li class="nav-item"><a class="nav-link" id="credits_tab"  *ngIf=" (is_vo_admin || application?.credits_allowed)  && ((application | hasstatusinlist:Application_States.CREDITS_EXTENSION_REQUESTED)
+    || (application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_CREDITS))"
+                            [ngClass]="{'active': CREDITS_TAB_ACTIVE }"
+                            (click)="setTab(CREDITS_TAB)">Credits Extension</a></li>
+
+    <li class="nav-item"><a class="nav-link"  id="extension_tab"*ngIf="(application | hasstatusinlist:Application_States.LIFETIME_EXTENSION_REQUESTED)
+    || (application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_EXTENSION)"
+                            [ngClass]="{'active': EXTENSION_TAB_ACTIVE }"
+                            (click)="setTab(EXTENSION_TAB)">Lifetime Extension</a></li>
+
+  </ul>
+
+  <div class="tab-content">
+    <div *ngIf="PI_USER_TAB_ACTIVE" class="table-responsive">
+      <app-application-pi-detail [application]="application"></app-application-pi-detail>
+    </div>
+    <div *ngIf="INFORMATION_TAB_ACTIVE">
+      <app-information-detail [application]="application"></app-information-detail>
 
 
-    <tr *ngIf="application?.project_application_pi_approved" id="id_pi_row">
-      <td>
-        PI Name
-      </td>
-      <td>
-        {{application?.project_application_pi?.username}}
-      </td>
-      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) && !application.project_credit_request">
-      </td>
-    </tr>
-    <tr *ngIf="application?.project_application_pi_approved">
-      <td>
-        PI Email
-      </td>
-      <td>
-        {{application?.project_application_pi?.email}}
-      </td>
-      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) && !application.project_credit_request">
-      </td>
-    </tr>
-    <tr *ngIf="application?.project_application_pi_approved">
-      <td>
-        PI Affiliations
-      </td>
-      <td>
-        {{application?.project_application_pi?.user_affiliations}}
-      </td>
-      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED) || isModification) && !application.project_credit_request">
-      </td>
-    </tr>
-    <tr>
-      <td>User
-        Affiliations
-      </td>
-      <td>{{
-        application?.project_application_user?.user_affiliations}}
-      </td>
-      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) && !application.project_credit_request">
-      </td>
-    </tr>
-    <tr>
-      <td>User Name</td>
-      <td>
-        {{  application?.project_application_user?.username}}
-      </td>
-      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) && !application.project_credit_request">
-      </td>
-    </tr>
-    <tr>
-      <td>User Email</td>
-      <td>
-        {{  application?.project_application_user?.email}}
-      </td>
-      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) && !application.project_credit_request">
-      </td>
-    </tr>
-  </table>
-  <br>
-
-  <table class="table table-striped" style="table-layout: fixed">
-    <thead>
-    <tr>
-      <th colspan="2" style="text-align:center"><strong>Information</strong></th>
-      <th *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED) || isModification) && !application.project_credit_request"></th>
-
-    </tr>
-    </thead>
-    <tr *ngIf="is_vo_admin && application?.project_credit_request">
-      <td>Extra Credits Request</td>
-      <td>
-        Yes
-      </td>
-    </tr>
-    <tr *ngIf="is_vo_admin && application?.project_credit_request">
-      <td>Reason for extra credits</td>
-      <td>
-        {{application?.project_credit_request?.comment}}
-      </td>
-    </tr>
-    <tr>
-      <td>Research Topics</td>
-      <td><h5><span *ngFor="let term of application?.project_application_edam_terms"
-                    style="margin-left: 5px; "
-                    class="badge badge-info"><span id="topic_{{term}}">{{term}}</span>
- </span>
-
-      </h5></td>
-      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) && !application.project_credit_request">
-
-    </tr>
-    <tr>
-      <td>Workshop</td>
-      <td>
-        <span *ngIf="application?.project_application_workshop" class="badge badge-success">Yes</span>
-        <span *ngIf="!application?.project_application_workshop" class="badge badge-danger">No</span>
-      </td>
-      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) && !application.project_credit_request">
-      </td>
-    </tr>
-    <tr *ngIf="application?.project_application_openstack_project">
-      <td>Service</td>
-      <td>
-        <span *ngIf="application?.project_application_cloud_service" class="badge badge-success">Yes</span>
-        <span *ngIf="!application?.project_application_cloud_service" class="badge badge-danger">No</span>
-      </td>
-      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) && !application.project_credit_request">
-      </td>
-    </tr>
-    <tr *ngIf="application?.project_application_openstack_project && application?.project_application_cloud_service">
-      <td>Service status</td>
-      <td>
-        <span *ngIf="application?.project_application_cloud_service_develop" class="badge badge-success">In development</span>
-        <span *ngIf="!application?.project_application_cloud_service_develop" class="badge badge-danger">Existing</span>
-      </td>
-
-      <td
-        *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) && !application.project_credit_request">
-        <span *ngIf="application?.project_modification_request?.cloud_service_develop"
-              class="badge badge-success">In development</span>
-        <span *ngIf="!application?.project_modification_request?.cloud_service_develop"
-              class="badge badge-danger">Existing</span>
-      </td>
-    </tr>
-    <tr
-      *ngIf="application?.project_application_openstack_project
-      && (!application?.project_application_cloud_service_develop
-        || (!application?.project_modification_request?.cloud_service_develop) && (application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED) || isModification)
-      && application?.project_application_cloud_service">
-      <td> - approximate number of users</td>
-      <td>
-        <span>{{application?.project_application_cloud_service_user_number}}</span>
-      </td>
-      <td
-        *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) && !application.project_credit_request">
-        {{application?.project_modification_request?.cloud_service_develop}}</td>
-    </tr>
-    <tr>
-      <td>Description
-      </td>
-      <td>{{
-          application?.project_application_description
-        }}
-      </td>
-      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) && !application.project_credit_request">
-      </td>
-    </tr>
-    <tr>
-      <td>Horizon 2020</td>
-      <td>
-        {{application?.project_application_horizon2020}}
-      </td>
-      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) && !application.project_credit_request">
-      </td>
-    </tr>
-    <tr>
-      <td>Elixir Project</td>
-      <td>
-        {{application?.project_application_elixir_project}}
-      </td>
-      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) && !application.project_credit_request">
-      </td>
-    </tr>
-    <tr>
-      <td>BMBF Project</td>
-      <td>
-        {{application?.project_application_bmbf_project}}
-      </td>
-      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) && !application.project_credit_request">
-      </td>
-    </tr>
+    </div>
+    <div *ngIf="RESOURCE_TAB_ACTIVE" class="table-responsive">
+      <app-resource-detail [is_vo_admin]="is_vo_admin" [current_credits]="current_credits"
+                           [application]="application"></app-resource-detail>
 
 
-    <tr>
-      <td>Workgroup</td>
-      <td>{{
-          application?.project_application_workgroup
-        }}
-      </td>
-      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) && !application.project_credit_request">
-      </td>
-    </tr>
-
-    <tr>
-      <td>Comment</td>
-      <td>{{
-          application?.project_application_comment
-        }}
-      </td>
-      <td *ngIf="(application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || (application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION)
-      && !application.project_credit_request
-        && application?.project_modification_request?.comment?.length > 0">
-        {{application?.project_modification_request?.comment}}
-      </td>
-      <td *ngIf="((application | hasstatusinlist:Application_States.LIFETIME_EXTENSION_REQUESTED)  || (application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION_EXTENSION) )
-      && !application.project_credit_request
-        && application?.project_lifetime_request?.comment?.length > 0">
-        {{application?.project_lifetime_request?.comment}}
-      </td>
-
-    </tr>
-    <tr>
-      <td>Lifetime</td>
-      <td>{{
-          application?.project_application_lifetime
-        }} months
-      </td>
-      <td *ngIf="(application | hasstatusinlist:Application_States.LIFETIME_EXTENSION_REQUESTED) ||
-        (application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_EXTENSION)">
-        <strong>Requested: {{application?.project_lifetime_request?.extra_lifetime}} additional months</strong>
-      </td>
-    </tr>
-    <tr *ngIf="(application | hasstatusinlist:Application_States.LIFETIME_EXTENSION_REQUESTED)
-    || (application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_EXTENSION)">
-      <td>Lifetime Extension Requested from:
-      </td>
-
-      <td *ngIf="application?.project_lifetime_request">
-        {{application?.project_lifetime_request?.user?.username}}
-        ( {{application?.project_lifetime_request?.user?.email}})
-      </td>
-      <td>
-        {{application?.project_lifetime_request?.user?.elixir_id}}
-
-      </td>
-
-    </tr>
-    <tr>
-      <td>Sensitive Data</td>
-      <td><p *ngIf="application?.project_application_sensitive_data"> Yes</p>
-        <p *ngIf="!application?.project_application_sensitive_data"> No</p>
-      </td>
-      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) && !application.project_credit_request">
-
-      </td>
-    </tr>
-    <tr *ngIf="application?.project_application_openstack_project">
-      <td>Training</td>
-      <td><p *ngIf="application?.project_application_openstack_basic_introduction"> Yes</p>
-        <p *ngIf="!application?.project_application_openstack_basic_introduction"> No</p>
-      </td>
-      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) && !application.project_credit_request">
-
-      </td>
-    </tr>
-  </table>
-  <br>
-  <table class="table table-striped" style="table-layout: fixed">
-    <thead>
-    <tr>
-      <th colspan="2" style="text-align:center"><strong>Dissemination</strong></th>
-      <th *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) && !application.project_credit_request"></th>
-
-    </tr>
-    </thead>
-    <tr>
-      <td>Platforms</td>
-      <td id="dissemination_platforms">
-        {{application?.dissemination?.allowed_platforms}}
-      </td>
-      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) && !application.project_credit_request">
-      </td>
-    </tr>
-    <tr>
-      <td>Information</td>
-      <td id="dissemination_information">
-        {{application?.dissemination?.allowed_informations}}
-      </td>
-      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) && !application.project_credit_request">
-      </td>
-    </tr>
-  </table>
-  <br>
-
-  <table class="table table-striped" style="table-layout: fixed">
-    <thead>
-    <tr>
-      <th colspan="2" style="text-align:center"><strong>Resources</strong></th>
-      <th
-        *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) && !application.project_credit_request"></th>
-
-    </tr>
-    </thead>
-    <tr *ngIf="(application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)
-    || (application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION) ">
-      <td>Modification Requested from:
-      </td>
-
-      <td>
-        {{application?.project_modification_request?.user?.username}}
-        ( {{application?.project_modification_request?.user?.email}})
-      </td>
-      <td>
-                {{application?.project_modification_request?.user?.elixir_id}}
-
-      </td>
-
-    </tr>
-
-    <tr>
-      <td>VMs
-      </td>
-
-      <td>
-        {{application?.project_application_vms_requested}}
-      </td>
-      <td
-        *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) && !application.project_credit_request">
-        Requested:
-        {{application?.project_modification_request?.vms_requested}}
-      </td>
-
-    </tr>
-
-    <tr *ngFor="let flavor of application?.flavors">
-      <td>Flavor: {{flavor.name}}</td>
-      <td>{{flavor.counter}}</td>
-      <td
-        *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)   || isModification)  && !application.project_credit_request">
-        <span>{{application?.project_modification_request?.getFlavorCounter(flavor)}}</span>
-      </td>
-    </tr>
-    <ng-container
-      *ngFor="let flavor of application?.project_modification_request?.flavors  ">
-      <tr *ngIf="application?.getFlavorCounter(flavor)== 0">
-        <td>Flavor: {{flavor.name}}</td>
-        <td>0</td>
-        <td>{{application?.project_modification_request?.getFlavorCounter(flavor)}}</td>
-
-      </tr>
-    </ng-container>
-
-    <tr>
-      <td>Total Cores</td>
-      <td>{{
-          application?.project_application_total_cores
-        }}
+    </div>
+    <div *ngIf="MODIFICATION_TAB_ACTIVE && ((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)
+    || (application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION)) "
+         class="table-responsive">
+      <app-modification-detail [is_vo_admin]="is_vo_admin"
+                               [application]="application"></app-modification-detail>
 
 
-      </td>
-
-      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) ">
-        {{application?.project_modification_request?.total_cores}}
-      </td>
-    </tr>
-
-    <tr>
-      <td>Total RAM</td>
-      <td>{{
-          application?.project_application_total_ram}} GB
-      </td>
-      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification)">
-        {{application?.project_modification_request?.total_ram}} GB
-      </td>
-    </tr>
+    </div>
+    <div *ngIf="CREDITS_TAB_ACTIVE && (is_vo_admin || application?.credits_allowed) && ((application | hasstatusinlist:Application_States.CREDITS_EXTENSION_REQUESTED)
+    || (application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_CREDITS)) " class="table-responsive">
+      <app-credits-extension-detail [is_vo_admin]="is_vo_admin"
+                                    [application]="application"></app-credits-extension-detail>
 
 
-    <tr *ngIf="is_vo_admin">
-      <td>Initial Credits</td>
-      <td>{{
-          application?.project_application_initial_credits}}
-      </td>
-      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification)">
-        Extra: {{application?.project_credit_request?.extra_credits}} (Total: {{application?.TotalModificationCredits}})
-      </td>
-    </tr>
-
-    <tr *ngIf="is_vo_admin">
-      <td>Used Credits</td>
-      <td>{{current_credits}}
-      </td>
-      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification)">
-        Credits left (with Extra Credits): {{credits_left_with_extra}}
-      </td>
-    </tr>
-
-    <tr *ngIf="is_vo_admin && application?.project_credit_request">
-      <td><strong>Requested Extra Credits</strong></td>
-      <td>
-        <strong>{{application?.project_credit_request?.extra_credits}}</strong>
-      </td>
-    </tr>
-
-    <tr>
-      <td>Storage Limit
-      </td>
-      <td>{{
-          application?.project_application_volume_limit
-        }} GB
-      </td>
-      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification)">
-        {{application?.project_modification_request?.volume_limit}}
-        GB
-      </td>
-    </tr>
-    <tr>
-      <td>Volume
-        Counter
-      </td>
-      <td>{{
-          application?.project_application_volume_counter
-        }} volumes
-      </td>
-      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) ">
-        {{application?.project_modification_request?.volume_counter}} volumes
-      </td>
-    </tr>
-    <tr *ngIf="application?.project_application_openstack_project">
-      <td>ObjectStorage
-      </td>
-      <td>{{
-          application?.project_application_object_storage
-        }} GB
-      </td>
-      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) ">
-        {{application?.project_modification_request?.object_storage}}
-        GB
-      </td>
-    </tr>
-    <tr>
-      <td>Last status
-        changed
-      </td>
-      <td>{{
-          application?.project_application_date_status_changed
-        }}
-      </td>
-      <td *ngIf="((application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || isModification) ">
-      </td>
-    </tr>
+    </div>
+    <div *ngIf="EXTENSION_TAB_ACTIVE  && ((application | hasstatusinlist:Application_States.LIFETIME_EXTENSION_REQUESTED)
+    || (application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_EXTENSION)) " class="table-responsive">
+      <app-lifetime-extension-detail
+        [application]="application"></app-lifetime-extension-detail>
 
 
-  </table>
+    </div>
+  </div>
 </div>
+
+
