@@ -139,7 +139,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
           compute_center,
           currentCredits,
           approvedCredits);
-        newProject.Status = group['status'];
+        newProject.project_application_status = group['status'];
 
         if (lifetime !== -1) {
           const expirationDate: string = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format('DD.MM.YYYY');
@@ -179,11 +179,11 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
   checkFilter(project: Project): boolean {
     // tslint:disable-next-line:max-line-length
     if (this.filter === '' || !this.filter) {
-      return this.isFilterProjectStatus(project.Status, project.LifetimeReached)
+      return this.isFilterProjectStatus(project.project_application_status, project.LifetimeReached)
     } else {
 
       // tslint:disable-next-line:max-line-length
-      return (this.isFilterLongProjectName(project.RealName, this.filter) || this.isFilterProjectId(project.Id.toString(), this.filter)) || this.isFilterProjectName(project.Name, this.filter) && this.isFilterProjectStatus(project.Status, project.LifetimeReached)
+      return (this.isFilterLongProjectName(project.RealName, this.filter) || this.isFilterProjectId(project.Id.toString(), this.filter)) || this.isFilterProjectName(project.Name, this.filter) && this.isFilterProjectStatus(project.project_application_status, project.LifetimeReached)
     }
 
   }
@@ -282,7 +282,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
           compute_center,
           currentCredits,
           approvedCredits);
-        newProject.Status = group['status'];
+        newProject.project_application_status = group['status'];
 
         if (lifetime !== -1) {
           const expirationDate: string = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format('DD.MM.YYYY');
