@@ -225,4 +225,10 @@ export class Application {
       return this.project_application_initial_credits
     }
   }
+
+  public gotStatus(status: number): boolean {
+    return this.project_application_status.includes(status)
+
+  }
+
 }
