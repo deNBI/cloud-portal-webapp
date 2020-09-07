@@ -11,4 +11,9 @@ export class ProjectEnumeration {
   project_start_date: string;
   project_application_status: number[];
 
+  public gotStatus(status: number): boolean {
+    return this.project_application_status.includes(status)
+
+  }
+
 }
