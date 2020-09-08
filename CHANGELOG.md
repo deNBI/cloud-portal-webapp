@@ -1,3 +1,11 @@
+##  (2020-07-10)
+
+
+#### Bug Fixes
+
+* **lifetime:**  mod req lifetime string adjusted. try catch exception. ([97ddb284](97ddb284))
+* **mod-req:**  submit disabled if no edam ([f96ad419](f96ad419))
+
 ##  (2020-06-18)
 
 
