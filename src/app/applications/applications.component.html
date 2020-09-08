@@ -327,8 +327,8 @@
                       <div class="btn-group">
 
 
-                        <button [id]="'modification_approval_' + application.project_application_shortname"
-                                *ngIf="(application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  || application?.project_modification_request"
+                        <button [id]="'modification_approval_' + application?.project_application_shortname"
+                                *ngIf="(application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  && application?.project_modification_request"
                                 style="margin: auto 2.5px"
                                 (click)="this.resetNotificationModal(); this.approveModificationRequest(application);
                                   this.notificationModal.show();"
@@ -339,7 +339,7 @@
                         </button>
 
                         <button
-                          *ngIf="(application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED) "
+                          *ngIf="(application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED) && application?.project_modification_request "
                           type="button"
                           class="btn btn-danger"
                           style="margin: auto 2.5px"
@@ -473,8 +473,8 @@
 
                     <td>
                       <div class="btn-group">
-                        <button [id]="'extension_approval_' + application.project_application_shortname"
-                                *ngIf="(application | hasstatusinlist:Application_States.LIFETIME_EXTENSION_REQUESTED)  || application?.project_lifetime_request"
+                        <button [id]="'extension_approval_' + application?.project_application_shortname"
+                                *ngIf="(application | hasstatusinlist:Application_States.LIFETIME_EXTENSION_REQUESTED)  && application?.project_lifetime_request"
                                 style="margin: auto 2.5px"
                                 (click)="resetNotificationModal();
                                 approveLifetimeExtension(application);
@@ -485,7 +485,7 @@
                           <span class="applicationActionsButton">Approve Extension</span>
                         </button>
                         <button
-                          *ngIf="(application | hasstatusinlist:Application_States.LIFETIME_EXTENSION_REQUESTED)  || application?.project_lifetime_request"
+                          *ngIf="(application | hasstatusinlist:Application_States.LIFETIME_EXTENSION_REQUESTED)  && application?.project_lifetime_request"
                           type="button"
                           class="btn btn-danger"
                           style="margin: auto 2.5px"
@@ -622,7 +622,7 @@
                     <td>
                       <div class="btn-group">
 
-                        <button [id]="'credit_extension_approval_' + application.project_application_shortname"
+                        <button [id]="'credit_extension_approval_' + application?.project_application_shortname"
                                 *ngIf="(application | hasstatusinlist:Application_States.CREDITS_EXTENSION_REQUESTED) "
                                 style="margin: auto 2.5px"
                                 (click)="this.resetNotificationModal(); this.approveCreditExtension(application);
@@ -633,7 +633,7 @@
                           <span class="applicationActionsButton">Approve Credits</span>
                         </button>
 
-                        <button [id]="'credit_extension_decline_' + application.project_application_shortname"
+                        <button [id]="'credit_extension_decline_' + application?.project_application_shortname"
                                 *ngIf="(application | hasstatusinlist:Application_States.CREDITS_EXTENSION_REQUESTED) "
                                 (click)="this.resetNotificationModal(); this.declineCreditExtension(application);
                                  notificationModal.show();"

@@ -32,7 +32,7 @@ export class LoginPage {
   }
 
   static async useGoogle(email: string, psw: string): Promise<any> {
-    await element(by.linkText('Sign in with Google')).click()
+    await Util.clickElementByLinkText('Sign in with Google')
     // Input Email
     await Util.waitForPage('accounts.google.com/o/oauth2/');
     await Util.sendTextToElementById('identifierId', email, false);
