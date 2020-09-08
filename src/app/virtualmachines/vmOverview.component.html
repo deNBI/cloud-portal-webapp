@@ -299,24 +299,24 @@
                   <a class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
                      *ngIf="vm.cardState!= 1"
                      [id]="'showHowToConnectButton_'+vm?.name"
-                     (click)="selectedVm=vm; vm.cardState=1" href="#" onClick="return false;">
+                     (click)="selectedVm=vm; vm.cardState=1" >
                     How to connect ...</a>
 
                   <a class="font-weight-bold font-xs btn-block btn btn-secondary" *ngIf="vm.cardState==1"
                      [id]="'hideHowToConnectButton_'+vm?.name"
-                     (click)="selectedVm=vm; vm.cardState=0;" href="#" onClick="return false;">
+                     (click)="selectedVm=vm; vm.cardState=0;" >
                     ... Hide information</a>
                 </div>
                 <div class="col-4" *ngIf="!(vm?.status |hasStatus:VirtualMachineStates.staticDELETED)">
                   <a class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
                      *ngIf="vm.cardState!=2"
                      [id]="'showActionsButton_'+vm?.name"
-                     (click)="selectedVm=vm; vm.cardState=2;" href="#" onClick="return false;">
+                     (click)="selectedVm=vm; vm.cardState=2;" >
                     Show actions ...</a>
 
                   <a class="font-weight-bold font-xs btn-block btn btn-secondary" *ngIf="vm.cardState==2"
                      [id]="'hideActionsButton_'+vm?.name"
-                     (click)="selectedVm=vm; vm.cardState=0;" href="#" onClick="return false;">
+                     (click)="selectedVm=vm; vm.cardState=0;" >
                     ... Hide actions</a>
                 </div>
 
