@@ -94,9 +94,9 @@
         <li class="nav-item" *ngFor="let application of project_enumeration">
 
           <a *ngIf="!navbar_minimized" class="nav-link" routerLinkActive="active" [id]="application?.project_name"
-             [routerLink]="['/project-management/' + application.application_id]">
+             [routerLink]="['/project-management/' + application?.application_id]">
             <div class="row" style="margin:0px;">
-              <span *ngIf="application.is_open_stack"
+              <span *ngIf="application?.is_open_stack"
                     style="float:left; font-size: 20px; margin-right: 10px;"
                     class="project-openstack_plain_white_redbg"
                     data-toggle="tooltip"
@@ -116,11 +116,11 @@
                       <span class="path5"></span>
                     </span>
               <span style="display: inline-block;width: 65%;overflow: hidden;text-overflow: ellipsis;">
-              {{application.project_name}}
+              {{application?.project_name}}
             </span>
             </div>
 
-            <div class="row justify-content-center" id="status_row_{{application.application_id}}" style="margin: 2px;">
+            <div class="row justify-content-center" id="status_row_{{application?.application_id}}" style="margin: 2px;">
               <span class="badge badge-success status-badge" data-toggle="tooltip"
                     data-placement="right" title="This project was initially approved within the last 2 weeks."
                     *ngIf="(application | hasstatusinlist:Application_States.APPROVED_LAST_2_WEEKS)">
@@ -169,10 +169,10 @@
 
           </a>
 
-          <a *ngIf="navbar_minimized && !application.is_open_stack" class="nav-link" routerLinkActive="active"
+          <a *ngIf="navbar_minimized && !application?.is_open_stack" class="nav-link" routerLinkActive="active"
              style="text-align: center;"
-             [routerLink]="['/project-management/' + application.application_id]" data-toggle="tooltip"
-             data-placement="right" [title]="application.project_name">
+             [routerLink]="['/project-management/' + application?.application_id]" data-toggle="tooltip"
+             data-placement="right" [title]="application?.project_name">
             <span class="project-simpleVM_Logo_bluebg"
                   style="color: #FFF; position:relative; left:8px; font-size: 20px">
               <span class="path1"></span>
@@ -183,10 +183,10 @@
             </span>
           </a>
 
-          <a *ngIf="navbar_minimized && application.is_open_stack" class="nav-link" routerLinkActive="active"
+          <a *ngIf="navbar_minimized && application?.is_open_stack" class="nav-link" routerLinkActive="active"
              style="text-align: center;"
-             [routerLink]="['/project-management/' + application.application_id]" data-toggle="tooltip"
-             data-placement="right" [title]="application.project_name">
+             [routerLink]="['/project-management/' + application?.application_id]" data-toggle="tooltip"
+             data-placement="right" [title]="application?.project_name">
             <span class="project-openstack_plain_white_redbg"
                   style="color: #FFF; position:relative; left:8px; font-size: 20px">
                <span class="path1"></span>

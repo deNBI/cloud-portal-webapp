@@ -111,19 +111,19 @@
                     <a *ngIf="!show_connection_infO"
                        class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
                        [id]="'showHowToConnectButton_'+cluster?.cluster_id"
-                       (click)="show_connection_infO=true; " href="#" onClick="return false;">
+                       (click)="show_connection_infO=true; "  onClick="return false;">
                       How to connect ...</a>
 
                     <a *ngIf="show_connection_infO" class="font-weight-bold font-xs btn-block btn btn-secondary"
                        [id]="'hideHowToConnectButton_'+cluster?.cluster_id"
-                       (click)="show_connection_infO=false; " href="#" onClick="return false;">
+                       (click)="show_connection_infO=false; " onClick="return false;">
                       ... Hide information</a>
                   </div>
                   <div class="col-6"
                        *ngIf="cluster?.status != VirtualMachineStates.staticDELETED && cluster?.status != VirtualMachineStates.staticDELETING">
                     <a class="font-weight-bold font-xs btn-block text-muted btn btn-outline-danger"
                        [id]="'delete_'+cluster?.cluster_id"
-                       (click)="selectedCluster=cluster; verifyModal.show()" href="#" onClick="return false;">
+                       (click)="selectedCluster=cluster; verifyModal.show()"  onClick="return false;">
                       Delete</a>
 
 
@@ -144,7 +144,7 @@
                     </div>
 
                     <div class="col-md-2" style="margin: auto" *ngIf="mode.copy_field && mode.copy_field!=''"><a
-                      (click)="copyToClipboard(mode.copy_field);" href="#"
+                      (click)="copyToClipboard(mode.copy_field);"
                       onClick="return false;"
                       class="font-weight-bold font-xs btn-block text-muted">&lt;copy
                       command&gt;</a>
