@@ -256,6 +256,15 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
     this.allApplicationsToCheck = [];
     this.all_application_modifications = [];
     this.applications_history = [];
+    this.facilityService.getExtensionRequestsCounterFacility(this.selectedFacility['FacilityId'])
+      .subscribe((res: any): void => {
+        this.numberOfCreditRequests = res['credits_extension_requests'];
+        this.numberOfExtensionRequests = res['lifetime_extension_requests'];
+        this.numberOfModificationRequests = res['modification_requests'];
+        this.numberOfProjectApplications = res['applications_submitted'];
+      });
+    this.changeTabState(TabStates.SUBMITTED);
+    this.isLoaded = true;
     // this.getFullApplications(this.selectedFacility ['FacilityId']);
     this.getAllApplicationsHistory(this.selectedFacility ['FacilityId']);
 
@@ -335,7 +344,6 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
       this.changeTabState(TabStates.SUBMITTED);
       this.isLoaded = true;
 
-      this.facilityService.getFacilityResources(this.selectedFacility['FacilityId']).subscribe();
       this.getApplicationStatus();
      // this.getFullApplications(this.selectedFacility ['FacilityId']);
       this.getAllApplicationsHistory(this.selectedFacility ['FacilityId']);
