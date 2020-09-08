@@ -114,6 +114,23 @@ export class Util {
     return await elem.sendKeys(text);
   }
 
+  static async clickElementByLinkText(text: string): Promise<void> {
+    await Util.waitForElementToBeClickableByLinkText(text)
+    console.log('Clicking element with text:')
+
+    return await element(by.linkText('Sign in with Google')).click();
+
+  }
+
+  static async waitForElementToBeClickableByLinkText(text: string, timeout: number = this.timeout): Promise<boolean> {
+    const until_: ProtractorExpectedConditions = protractor.ExpectedConditions;
+
+    console.log(`Waiting until element is clickable with text:  ${text}`);
+    const elem: ElementFinder = element(by.linkText(text));
+
+    return await browser.driver.wait(until_.elementToBeClickable(elem), timeout, 'Element taking too long to be clickable');
+  }
+
   static async sendTextToElementById(id: string, text: string, show_output: boolean = true): Promise<void> {
     await this.waitForVisibilityOfElementById(id);
     if (show_output) {
