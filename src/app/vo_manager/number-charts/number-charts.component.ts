@@ -76,8 +76,8 @@ export class NumberChartsComponent implements OnInit {
       columns: [
         this.endDates,
         this.runningSimpleVM,
-        this.runningOpenstack,
         this.terminatedSimpleVM,
+        this.runningOpenstack,
         this.terminatedOpenstack
       ],
       type: 'bar',
@@ -93,7 +93,8 @@ export class NumberChartsComponent implements OnInit {
           this.runningOpenstack[0],
           this.terminatedOpenstack[0]
         ]
-      ]
+      ],
+      order: null
     },
 
      color: {
