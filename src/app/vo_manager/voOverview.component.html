@@ -168,11 +168,11 @@
 
                 <td>
                   <button class="btn btn-secondary"
-                          (click)="getProjectStatus(project);getProjectLifetime(project);selectedProject=project;infoModal.show();">
+                          (click)="selectedProject=project;infoModal.show();">
                     Show Details
                   </button>
                 </td>
-                <td>  <span *ngIf="project.Status | hasStatus:project_states.ACTIVE"
+                <td>  <span *ngIf="project | hasstatusinlist:project_states.ACTIVE"
                             style="margin-left: 5px"
                             class="badge badge-success">{{project_states[project_states.ACTIVE]}} </span>
                   <span *ngIf="project?.LifetimeReached| hasStatus:lifetime_states.EXPIRED"
@@ -181,15 +181,15 @@
                   <span *ngIf="project?.LifetimeReached| hasStatus:lifetime_states.EXPIRES_SOON"
                         style="margin-left: 5px"
                         class="badge badge-warning">{{lifetime_states[lifetime_states.EXPIRES_SOON]}}</span>
-                  <span *ngIf="project?.Status| hasStatus: project_states.SUSPENDED"
+                  <span *ngIf="project| hasstatusinlist: project_states.SUSPENDED"
                         style="margin-left: 5px"
                         class="badge badge-warning">{{project_states[project_states.SUSPENDED]}} </span>
                   <span
-                    *ngIf="project?.Status | hasStatus:application_states.WAIT_FOR_CONFIRMATION"
+                    *ngIf="project | hasstatusinlist:application_states.WAIT_FOR_CONFIRMATION"
                     style="margin-left: 5px"
                     class="badge badge-info">WAIT FOR CONFIRMATION </span>
                   <span
-                    *ngIf="project?.Status | hasStatus: application_states.TERMINATION_REQUESTED"
+                    *ngIf="project | hasstatusinlist: application_states.TERMINATION_REQUESTED"
                     style="margin-left: 5px"
                     class="badge badge-dark">TERMINATION REQUESTED </span>
                 </td>
@@ -207,7 +207,8 @@
                     >
                       <i class="fa fa-users"></i>&nbsp;Show Members
                     </button>
-                    <button *ngIf="project.Status | hasStatus: project_states.ACTIVE" style="margin-left: 5px;margin-bottom: 5px"
+                    <button *ngIf="project | hasstatusinlist: project_states.ACTIVE"
+                            style="margin-left: 5px;margin-bottom: 5px"
                             type="button"
                             class="btn btn-warning"
                             (click)="selectedProject = project;suspendModal.show();"
@@ -216,7 +217,7 @@
                       <i class="fa fa-pause"></i>&nbsp;Suspend Project
                     </button>
 
-                    <button *ngIf="project.Status | hasStatus: project_states.SUSPENDED" style="margin-left: 5px"
+                    <button *ngIf="project | hasstatusinlist: project_states.SUSPENDED" style="margin-left: 5px"
                             type="button"
                             class="btn btn-success"
                             (click)="selectedProject = project;resumeModal.show();"
