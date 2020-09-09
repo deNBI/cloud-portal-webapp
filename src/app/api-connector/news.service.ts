@@ -3,6 +3,7 @@ import {Injectable} from '@angular/core';
 import {ObjectUnsubscribedError, Observable} from 'rxjs';
 import {ApiSettings} from './api-settings.service';
 import {WordPressNews} from '../facility_manager/newsmanagement/wp-news';
+import {WordPressTag} from '../facility_manager/newsmanagement/wp-tags';
 
 /**
  * Service which provides methods for the facilities.
@@ -50,8 +51,8 @@ export class NewsService {
     )
   }
 
-  getAvailableTagsFromWordPress(): Observable<any> {
-    return this.http.get(`${ApiSettings.getApiBaseURL()}wp-tags-management/`, {
+  getAvailableTagsFromWordPress(): Observable<WordPressTag[]> {
+    return this.http.get<WordPressTag[]>(`${ApiSettings.getApiBaseURL()}wp-tags-management/`, {
             withCredentials: true
     })
   }

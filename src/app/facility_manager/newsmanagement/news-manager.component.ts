@@ -91,12 +91,15 @@ export class NewsManagerComponent implements OnInit {
    * Gets all available tags from WordPress for facility news.
    */
   getTagsAvailable(): void {
-    this.newsService.getAvailableTagsFromWordPress().subscribe((result: any[]): void => {
-      if (result) {
-        this.availableTags = result.map((tag: any): WordPressTag =>
-                                          (new WordPressTag({name: tag['name'], id: tag['id']} as WordPressTag)));
+    this.newsService.getAvailableTagsFromWordPress().subscribe((tags: WordPressTag[]): void => {
+      if (!('code' in tags) && tags['code'] === 'wp-die') {
+        if (tags) {
+
+          this.availableTags = tags
+        }
       }
-    });
+
+    })
   }
 
   /**
