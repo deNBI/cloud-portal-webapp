@@ -17,7 +17,8 @@ import * as c3 from 'c3';
 
 
 /**
- * Test class for charts in Typescript
+ *  Class for presentation of charts as svg.
+ *  TODO: add svg download possibility
  */
 export class NumberChartsComponent implements OnInit {
 
@@ -38,9 +39,6 @@ export class NumberChartsComponent implements OnInit {
 
   ngOnInit(): void {
     this.getData();
-    //this.createSvg();
-    //this.createColors();
-    //this.drawChart();
   }
 
 
