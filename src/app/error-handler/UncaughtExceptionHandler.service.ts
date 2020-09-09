@@ -1,13 +1,15 @@
-import { ErrorHandler, Injectable } from '@angular/core';
-import { JL } from 'jsnlog';
-import { Cookie } from 'ng2-cookies';
-import { ApiSettings } from '../api-connector/api-settings.service';
+import {ErrorHandler, Injectable} from '@angular/core';
+import {JL} from 'jsnlog';
+import {Cookie} from 'ng2-cookies';
+import {ApiSettings} from '../api-connector/api-settings.service';
 
 // ---Before Send Function
 // Runs before the Ajax Appender sends the logs to the server
 function beforeSendFunction(xhr: XMLHttpRequest, json: JSON): any {
   json = filter(json); // filter out duplicate error messages
   xhr.withCredentials = true;
+  xhr.setRequestHeader('X-CSRFToken', Cookie.get('csrftoken'));
+
 }
 
 // filters duplicate messages from the logs
