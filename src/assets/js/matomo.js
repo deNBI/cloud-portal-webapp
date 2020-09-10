@@ -1,7 +1,7 @@
 import {environment} from "../../environments/environment";
 
 var idSite = 2;
-var matomoTrackingApiUrl = environment.matomoServer;
+var matomoTrackingApiUrl = "https.//cloud.denbi.de/matomo/"
 
 var _paq = window._paq = window._paq || [];
 _paq.push(['setTrackerUrl', matomoTrackingApiUrl]);
