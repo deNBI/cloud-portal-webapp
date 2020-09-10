@@ -47,12 +47,17 @@ export class NumberChartsComponent implements OnInit {
   getData(): void {
     this.numbersService.getProjectCounterTimeline().subscribe(
     (result: Object[]): void => {
-      //TODO: CHECK HOW TO MAP TO MULTIPLE ARRAYS
-      result.forEach((valuePack: any) => {
+      // tslint:disable-next-line
+      result.forEach((valuePack: any): void => {
+        // tslint:disable-next-line
         this.runningOpenstack.push(valuePack["running_openstack"]);
+        // tslint:disable-next-line
         this.runningSimpleVM.push(valuePack["running_simple_vm"]);
+        // tslint:disable-next-line
         this.terminatedOpenstack.push(valuePack["terminated_openstack"]);
+        // tslint:disable-next-line
         this.terminatedSimpleVM.push(valuePack["terminated_simple_vm"]);
+        // tslint:disable-next-line
         this.endDates.push(valuePack["end_date"]);
       });
       this.drawChart();
@@ -78,7 +83,7 @@ export class NumberChartsComponent implements OnInit {
    * Draws the chart in the template.
    */
   drawChart(): void {
-
+    /* tslint:disable */
     let chart = c3.generate({
       oninit: function() {
         this.svg.attr('id', 'numberChartSVG')
