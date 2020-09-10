@@ -3,8 +3,13 @@ import {is_vo} from "../../shared/globalvar";
 import * as d3 from 'd3';
 import {NumbersService} from "../../api-connector/numbers.service";
 import * as c3 from 'c3';
+import {jsPDF} from 'jspdf';
+import 'svg2pdf.js'
 
 
+/**
+ * Component to display graphs which illustrate numbers for VO.
+ */
 @Component({
   selector: 'app-number-charts',
   templateUrl: './number-charts.component.html',
@@ -14,15 +19,10 @@ import * as c3 from 'c3';
 })
 
 
-
-
-/**
- *  Class for presentation of charts as svg.
- */
 export class NumberChartsComponent implements OnInit {
 
   is_vo_admin: boolean = true;
-  title = 'Cloud Numbers';
+  title: string = 'Cloud Numbers';
   constructor(private numbersService: NumbersService) {
 
   }
@@ -30,17 +30,16 @@ export class NumberChartsComponent implements OnInit {
   /**
    * Lists for numbers of machines per day
    */
-  private runningOpenstack = ['OS running'];
-  private runningSimpleVM = ['SVM running'];
-  private terminatedOpenstack = ['OS terminated'];
-  private terminatedSimpleVM = ['SVM terminated'];
-  private endDates = ['x'];
+  private runningOpenstack: any[] = ['OS running'];
+  private runningSimpleVM: any[] = ['SVM running'];
+  private terminatedOpenstack: any[] = ['OS terminated'];
+  private terminatedSimpleVM: any[] = ['SVM terminated'];
+  private endDates: any[] = ['x'];
 
 
   ngOnInit(): void {
     this.getData();
   }
-
 
   /**
    * Gets the Data from the API and separates it into the lists.
@@ -48,6 +47,7 @@ export class NumberChartsComponent implements OnInit {
   getData(): void {
     this.numbersService.getProjectCounterTimeline().subscribe(
     (result: Object[]): void => {
+      //TODO: CHECK HOW TO MAP TO MULTIPLE ARRAYS
       result.forEach((valuePack: any) => {
         this.runningOpenstack.push(valuePack["running_openstack"]);
         this.runningSimpleVM.push(valuePack["running_simple_vm"]);
@@ -62,6 +62,17 @@ export class NumberChartsComponent implements OnInit {
       });
   }
 
+  /**
+   * Downloads the chart as a PDF-File
+   */
+  downloadAsPDF(): void {
+    const downloader = new jsPDF();
+    const file = document.getElementById('numberChartSVG');
+    downloader.svg(file).then(() : void => {
+      downloader.save('cloudMachineNumbers.pdf');
+    })
+  }
+
 
   /**
    * Draws the chart in the template.
@@ -69,6 +80,9 @@ export class NumberChartsComponent implements OnInit {
   drawChart(): void {
 
     let chart = c3.generate({
+      oninit: function() {
+        this.svg.attr('id', 'numberChartSVG')
+      },
       bindto: '#chart',
       size: {
         height: 600

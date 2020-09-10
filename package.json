@@ -81,6 +81,7 @@
     "postcss-url": "^8.0.0",
     "protractor-stop-describe-on-failure": "^1.0.4",
     "rxjs": "6.6.2",
+    "svg2pdf.js": "^2.0.0",
     "ts-helpers": "1.1.2",
     "tslib": "^2.0.1",
     "tslint-angular": "^3.0.3",

@@ -4,6 +4,9 @@ import {ObjectUnsubscribedError, Observable} from 'rxjs';
 import {ApiSettings} from './api-settings.service';
 
 
+/**
+ * Class to get numbers from the api for graphs
+ */
 @Injectable()
 export class NumbersService {
 
