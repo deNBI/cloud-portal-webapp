@@ -850,7 +850,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
           facility['compute_center_facility_id'], facility['compute_center_name'],
           facility['compute_center_login'], facility['compute_center_support_mail']);
       }
-      this.isAdmin=is_pi
+      this.isAdmin = is_pi
 
       const newProject: Project = new Project(
         groupid,
