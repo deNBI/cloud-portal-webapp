@@ -6,7 +6,7 @@ import {ApplicationOverviewPage} from '../page_objects/application_overview.po';
 import {Util} from '../util';
 import {ProjectOverview} from '../page_objects/project_overview.po';
 
-describe('Simple Application Modification Test', function (): void {
+describe('Simple Application Extension Test', function (): void {
 
   beforeAll(async function (): Promise<any> {
     await browser.waitForAngularEnabled(false);
@@ -18,19 +18,15 @@ describe('Simple Application Modification Test', function (): void {
     await ProjectOverview.navigateToSimpleProjectverview();
   });
 
-  it('should open the modification request modal', async function (): Promise<any> {
-    await ProjectOverview.openModificationModal(Util.SIMPLE_VM_APPLICATION_NAME);
+  it('should open the extension request modal', async function (): Promise<any> {
+    await ProjectOverview.openExtensionModal(Util.SIMPLE_VM_APPLICATION_NAME);
   });
 
-  it('should have old values prefilled', async function (): Promise<any> {
-    await ProjectOverview.areDefaultValuesSetSimpleVM();
-  });
-
-  it('should fill modification formular', async function (): Promise<any> {
-    await ProjectOverview.fillModificationRequest();
+  it('should fill extension formular', async function (): Promise<any> {
+    await ProjectOverview.fillExtensionRequest();
   });
 
   it('should send a modification request', async function (): Promise<any> {
-    await ProjectOverview.sendModificationRequest(Util.SIMPLE_VM_APPLICATION_NAME);
+    await ProjectOverview.sendExtensionRequest(Util.SIMPLE_VM_APPLICATION_NAME);
   });
 });
