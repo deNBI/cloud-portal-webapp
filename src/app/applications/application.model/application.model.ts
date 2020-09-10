@@ -94,30 +94,13 @@ export class Application {
       this.ComputeCenter = aj.ComputeCenter;
       this.project_application_openstack_project = aj.project_application_openstack_project;
       this.DaysRunning = aj.DaysRunning;
-      this.project_application_initial_credits = Math.round(aj.project_application_initial_credits * 10) / 10;
-
-      if (aj.project_lifetime_request) {
-        this.project_lifetime_request = new ApplicationLifetimeExtension(aj.project_lifetime_request);
-
-        this.totalLifetimeExtensionCredits = this.calcLifetimeExtensonCredits()
-      }
-
-      if (aj.project_modification_request) {
-        this.project_modification_request = new ApplicationModification(aj.project_modification_request);
-        this.totalModificationRequestCredits = this.calcTotalModificationCredits()
-      }
-      if (aj.project_credit_request) {
-        this.project_credit_request = new ApplicationCreditRequest(aj.project_credit_request);
-        this.totalCreditsExtensionCredits = this.calcCreditsExtensonCredits()
-
-      }
-
-      this.project_application_total_cores = aj.project_application_total_cores;
       this.project_application_total_ram = aj.project_application_total_ram;
+      this.project_application_total_cores = aj.project_application_total_cores;
       this.project_application_date_approved = aj.project_application_date_approved;
-      this.project_application_openstack_basic_introduction = aj.project_application_openstack_basic_introduction;
       this.project_application_horizon2020 = aj.project_application_horizon2020;
       this.project_application_bmbf_project = aj.project_application_bmbf_project;
+      this.project_application_openstack_basic_introduction = aj.project_application_openstack_basic_introduction;
+      this.project_application_initial_credits = Math.round(aj.project_application_initial_credits * 10) / 10;
       this.project_application_edam_terms = aj.project_application_edam_terms;
       this.project_application_sensitive_data = aj.project_application_sensitive_data;
       this.project_application_elixir_project = aj.project_application_elixir_project;
@@ -134,6 +117,25 @@ export class Application {
       }
       this.setDaysRunning()
 
+
+      if (aj.project_lifetime_request) {
+        this.project_lifetime_request = new ApplicationLifetimeExtension(aj.project_lifetime_request);
+
+        this.totalLifetimeExtensionCredits = this.calcLifetimeExtensionCredits();
+
+      }
+
+      if (aj.project_modification_request) {
+        this.project_modification_request = new ApplicationModification(aj.project_modification_request);
+        this.totalModificationRequestCredits = this.calcTotalModificationCredits();
+      }
+      if (aj.project_credit_request) {
+        this.project_credit_request = new ApplicationCreditRequest(aj.project_credit_request);
+
+        this.totalCreditsExtensionCredits = this.calcCreditsExtensionCredits();
+
+
+      }
     }
   }
 
@@ -194,7 +196,9 @@ export class Application {
         flavor.counter = counter;
 
         this.flavors.push(flavor)
+
       }
+      this.setDaysRunning()
     }
   }
 
@@ -207,20 +211,22 @@ export class Application {
     }
   }
 
-  public calcCreditsExtensonCredits(): number {
+
+  public calcCreditsExtensionCredits(): number {
     if (this.project_credit_request != null) {
       return (Math.round(this.project_application_initial_credits * 10) / 10)
-        + (Math.round((this.project_credit_request.extra_credits * 10) / 10))
+      + (Math.round((this.project_credit_request.extra_credits * 10) / 10));
     } else {
       return this.project_application_initial_credits
     }
   }
 
-  public calcLifetimeExtensonCredits(): number {
+
+  public calcLifetimeExtensionCredits(): number {
+
     if (this.project_lifetime_request != null) {
       return (Math.round(this.project_application_initial_credits * 10) / 10)
-        + (Math.round((this.project_lifetime_request.extra_credits * 10) / 10))
-
+        + (Math.round((this.project_lifetime_request.extra_credits * 10) / 10));
     } else {
       return this.project_application_initial_credits
     }

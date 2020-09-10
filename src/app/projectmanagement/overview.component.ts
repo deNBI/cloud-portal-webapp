@@ -98,7 +98,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
    * @type {number}, initialized with 0
    */
   request_type: number = ExtensionRequestType.NONE;
-
+  showInformationCollapse: boolean = false;
   newDoi: string;
   remove_members_clicked: boolean;
   life_time_string: string;
@@ -130,6 +130,11 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   creditsPerHourLargeExample: number;
   smallExamplePossibleDays: string = '';
   largeExamplePossibleDays: string = '';
+  supportMails: string[] = [];
+
+  resourceDataLoaded: boolean = false;
+  vmsInUse: number;
+  maximumVMs: number;
 
   title: string = 'Project Overview';
   @ViewChild('edam_ontology') edam_ontology: AutocompleteComponent;
@@ -162,6 +167,10 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
               private creditsService: CreditsService,
               @Inject(DOCUMENT) private document: Document) {
     super(userservice, applicationstatusservice, applicationsservice, facilityService);
+  }
+
+  calculateProgressBar(numberToRoundUp: number): string {
+    return Math.ceil(numberToRoundUp * 100).toString();
   }
 
   async delay(ms: number): Promise<any> {
@@ -230,8 +239,9 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
         this.project_application.project_application_id.toString()
       ).subscribe(
         (credits: number): void => {
+
           this.project_modification.extra_credits = credits;
-        }))
+        }));
 
   }
 
@@ -310,8 +320,10 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
     this.fetchCreditHistoryOfProject();
 
     this.updateCreditsUsedIntervals = setInterval(
+
       (): any =>
         // tslint:disable-next-line:max-line-length
+
         this.getCurrentCreditsOfProject(),
       10000
     );
@@ -321,6 +333,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
         // tslint:disable-next-line:max-line-length
         this.fetchCreditHistoryOfProject(),
       30000);
+
   }
 
   getCurrentCreditsOfProject(): void {
@@ -440,10 +453,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
                 this.getProject();
 
-              } else {
-                this.isLoaded = true;
               }
-
             })
             if (this.project_application?.project_modification_request) {
               this.project_modification = this.project_application.project_modification_request;
@@ -463,16 +473,15 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
             }
             this.startUpdateCreditUsageLoop();
 
-          } else {
-            this.isLoaded = true;
           }
+          this.isLoaded = true;
         },
         (error: any): void => {
           this.isLoaded = false;
           this.errorMessage = `Status: ${error.status.toString()},
                    StatusText: ${error.statusText.toString()},
                    Error Message: ${error.error.toString()}`;
-        })
+        });
   }
 
   public requestModification(): void {
@@ -615,6 +624,53 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
     });
 
+  }
+
+  /**
+   * Checks if user is able to start a machine, when the project is a SimpleVM project.
+   */
+  isAbleToStart(): boolean {
+    if (this.resourceDataLoaded) {
+      if (!this.project?.OpenStackProject) {
+        if (this.vmsInUse < this.maximumVMs ) {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  }
+
+  /**
+   * If the application is an openstack application, the requested/approved resources will be set for maximum VMs.
+   * For SimpleVM also the VMs in use are set.
+   * @param groupid the id of the group of the application in perun
+   */
+  getUsedResources(groupid: string): void {
+    if (!this.project?.OpenStackProject) {
+      this.groupService.getGroupResources(groupid).subscribe(
+        (res: any): void => {
+          this.vmsInUse = res['used_vms'];
+          this.maximumVMs = res['number_vms'];
+          this.resourceDataLoaded = true;
+        });
+    } else {
+      this.maximumVMs = this.calculateNumberOfVMs(this.project_application?.flavors);
+      this.resourceDataLoaded = true;
+    }
+  }
+
+  /**
+   * Calculates the number of approved VMs for OpenStack Projects
+   * @param flavors the list of flavors requested in the project
+   */
+  calculateNumberOfVMs(flavors: Flavor[]): number {
+    let numberOfVMs: number = 0;
+    flavors.forEach((flavor: any): void => {
+      numberOfVMs += flavor['counter'];
+    });
+
+    return numberOfVMs;
   }
 
   ngOnDestroy(): void {
@@ -794,6 +850,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
           facility['compute_center_facility_id'], facility['compute_center_name'],
           facility['compute_center_login'], facility['compute_center_support_mail']);
       }
+      this.isAdmin=is_pi
 
       const newProject: Project = new Project(
         groupid,
@@ -818,18 +875,20 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
       newProject.OpenStackProject = group['openstack_project'];
       newProject.RealName = realname;
       this.project = newProject;
+      this.setSupportMails(this.project);
       this.setLifetime();
-      if (this.project.UserIsPi || this.project.UserIsAdmin) {
-        this.getMembersOfTheProject();
-      } else {
-        this.isLoaded = true;
-        if (this.project_application?.project_application_perun_id) {
-          this.startUpdateCreditUsageLoop();
-        }
-
+      this.getMembersOfTheProject();
+      if (this.project_application?.project_application_perun_id) {
+        // this.startUpdateCreditUsageLoop();
       }
+      this.getUsedResources(groupid);
+
     })
 
+  }
+
+  setSupportMails(project: Project): void {
+    this.supportMails = project.ComputeCenter.Support.toString().split(',');
   }
 
   /**
@@ -840,24 +899,29 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   getMembersOfTheProject(): void {
     this.groupService.getGroupMembers(this.project_id).subscribe((members: any): void => {
 
-      this.groupService.getGroupAdminIds(this.project_id).subscribe((result: any): void => {
-        this.project_members = [];
+      this.project_members = [];
+      for (const member of members) {
+        const member_id: string = member['id'];
+        const user_id: string = member['userId'];
+        const fullName: string = `${member['firstName']} ${member['lastName']}`;
+        const projectMember: ProjectMember = new ProjectMember(user_id, fullName, member_id);
+        projectMember.ElixirId = member['elixirId'];
 
-        const admindIds: any = result['adminIds'];
-        for (const member of members) {
-          const member_id: string = member['id'];
-          const user_id: string = member['userId'];
-          const fullName: string = `${member['firstName']} ${member['lastName']}`;
-          const projectMember: ProjectMember = new ProjectMember(user_id, fullName, member_id);
-          projectMember.ElixirId = member['elixirId'];
-          projectMember.IsPi = admindIds.indexOf(user_id) !== -1;
-          this.project_members.push(projectMember);
+        this.project_members.push(projectMember);
 
-        }
-        this.isLoaded = true;
-        this.startUpdateCreditUsageLoop();
-      })
+      }
+      console.log(this.isAdmin)
+      if (this.isAdmin) {
+        this.groupService.getGroupAdminIds(this.project_id).subscribe((result: any): void => {
+          const adminIds: any = result['adminIds'];
+          this.project_members.forEach((member: ProjectMember): void => {
+            member.IsPi = adminIds.indexOf(member.Id) !== -1;
+          });
 
+          this.isLoaded = true;
+          this.startUpdateCreditUsageLoop();
+        });
+      }
     });
   }
 
@@ -999,7 +1063,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
   isPi(member: ProjectMember): string {
     if (member.IsPi) {
-      return 'blue'
+      return '#005AA9'
     } else {
       return 'black'
     }

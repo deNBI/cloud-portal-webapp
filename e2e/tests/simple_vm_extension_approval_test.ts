@@ -5,7 +5,7 @@ import {FormularPage} from '../page_objects/application_formular.po';
 import {ApplicationOverviewPage} from '../page_objects/application_overview.po';
 import {Util} from '../util';
 
-describe('Simple Application Modification Approval Test', function (): void {
+describe('Simple Application Extension Approval Test', function (): void {
 
   beforeAll(async function (): Promise<any> {
     await browser.waitForAngularEnabled(false);
@@ -17,6 +17,6 @@ describe('Simple Application Modification Approval Test', function (): void {
   });
 
   it('should approve a simple vm modification request', async function (): Promise<any> {
-    await ApplicationOverviewPage.approveModificationRequest(Util.SIMPLE_VM_APPLICATION_NAME);
+    await ApplicationOverviewPage.approveExtensionRequest(Util.SIMPLE_VM_APPLICATION_NAME);
   });
 });
