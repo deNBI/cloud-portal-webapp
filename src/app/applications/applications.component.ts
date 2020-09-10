@@ -162,8 +162,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
       .subscribe((res: any): void => {
                    if (application.project_application_openstack_project) {
                      application.project_application_status = []
-                                        this.getApplication(application)
-
+                     this.getApplication(application)
 
                      this.updateNotificationModal('Success', 'The request has been sent to the facility manager.', true, 'success');
                    } else {
