@@ -3,13 +3,11 @@ import {Injectable} from '@angular/core';
 import {ObjectUnsubscribedError, Observable} from 'rxjs';
 import {ApiSettings} from './api-settings.service';
 
-
 /**
  * Class to get numbers from the api for graphs
  */
 @Injectable()
 export class NumbersService {
-
 
   constructor(private http: HttpClient) {
 
@@ -17,7 +15,7 @@ export class NumbersService {
 
   getProjectCounterTimeline(): Observable<any> {
     return this.http.get(`${ApiSettings.getApiBase()}public/statistic/projectcounter_timeline/`, {
-      withCredentials: true,
+      withCredentials: true
       });
   }
 
