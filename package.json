@@ -61,7 +61,7 @@
     "http-server": "^0.12.3",
     "is-promise": "^4.0.0",
     "jsnlog": "^2.29.0",
-    "jspdf": "^2.1.0",
+    "jspdf": "^2.1.1",
     "moment": "^2.27.0",
     "ng2-charts": "^2.4.0",
     "ng2-cookies": "^1.0.12",
