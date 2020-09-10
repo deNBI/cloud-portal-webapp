@@ -31,7 +31,7 @@ export class NewsManagerComponent implements OnInit {
   selectedTags: string[] = [];
   computeCenters: any[] = [];
   availableTags: WordPressTag[] = [];
-  wordPressNews: WordPressNews[];
+  wordPressNews: WordPressNews[] = [];
   newsSetAsMOTD: string[] = [];
   selectedNews: WordPressNews = new WordPressNews();
   newWordpressNews: WordPressNews = new WordPressNews();
@@ -91,12 +91,15 @@ export class NewsManagerComponent implements OnInit {
    * Gets all available tags from WordPress for facility news.
    */
   getTagsAvailable(): void {
-    this.newsService.getAvailableTagsFromWordPress().subscribe((result: any[]): void => {
-      if (result) {
-        this.availableTags = result.map((tag: any): WordPressTag =>
-                                          (new WordPressTag({name: tag['name'], id: tag['id']} as WordPressTag)));
+    this.newsService.getAvailableTagsFromWordPress().subscribe((tags: WordPressTag[]): void => {
+      if (!('code' in tags) && tags['code'] === 'wp-die') {
+        if (tags) {
+
+          this.availableTags = tags
+        }
       }
-    });
+
+    })
   }
 
   /**
@@ -195,8 +198,11 @@ export class NewsManagerComponent implements OnInit {
     this.wordPressNews = [];
     const facility_ids: string[] = this.selectedFacilities.map((facility: [string, number]): string => facility['FacilityId'].toString());
     this.newsService.getNewsFromWordPress(facility_ids.toString()).subscribe((result: Object[]): any => {
-      this.wordPressNews = result.map((news: Object): any => this.createWordPressNews(news));
-      this.setNews();
+      if (!('code' in result) && result['code'] === 'wp-die') {
+
+        this.wordPressNews = result.map((news: Object): any => this.createWordPressNews(news));
+        this.setNews();
+      }
     });
 
   }
