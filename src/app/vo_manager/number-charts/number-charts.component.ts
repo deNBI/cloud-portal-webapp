@@ -59,6 +59,7 @@ export class NumberChartsComponent implements OnInit {
         this.terminatedSimpleVM.push(valuePack["terminated_simple_vm"]);
         // tslint:disable-next-line
         this.endDates.push(valuePack["end_date"]);
+        // tslint:disable-next-line
       });
       this.drawChart();
 
@@ -71,11 +72,13 @@ export class NumberChartsComponent implements OnInit {
    * Downloads the chart as a PDF-File
    */
   downloadAsPDF(): void {
-    const downloader = new jsPDF();
-    const file = document.getElementById('numberChartSVG');
-    downloader.svg(file).then(() : void => {
+    const downloader: jsPDF = new jsPDF();
+    const file: HTMLElement = document.getElementById('numberChartSVG');
+    downloader.svg(file).then((reason: any) : void => {
       downloader.save('cloudMachineNumbers.pdf');
-    })
+    }).catch((err: Error) => {
+      console.log(err);
+    });
   }
 
 
