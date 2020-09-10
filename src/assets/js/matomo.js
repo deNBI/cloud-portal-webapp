@@ -1,5 +1,3 @@
-import {environment} from "../../environments/environment";
-
 var idSite = 2;
 var matomoTrackingApiUrl = "https.//cloud.denbi.de/matomo/"
 
