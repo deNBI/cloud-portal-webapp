@@ -61,7 +61,6 @@ export class NumberChartsComponent implements OnInit {
       console.log(err);
       });
   }
-  /* tslint:enable */
 
   /**
    * Downloads the chart as a PDF-File
@@ -81,7 +80,6 @@ export class NumberChartsComponent implements OnInit {
    * Draws the chart in the template.
    */
   drawChart(): void {
-    /* tslint:disable */
     let chart = c3.generate({
       oninit: function() {
         this.svg.attr('id', 'numberChartSVG')
