@@ -18,18 +18,18 @@ import * as c3 from 'c3';
 
 /**
  *  Class for presentation of charts as svg.
- *  TODO: add svg download possibility
  */
 export class NumberChartsComponent implements OnInit {
 
-  isLoaded: boolean = true;
   is_vo_admin: boolean = true;
+  title = 'Cloud Numbers';
   constructor(private numbersService: NumbersService) {
 
   }
 
-
-
+  /**
+   * Lists for numbers of machines per day
+   */
   private runningOpenstack = ['OS running'];
   private runningSimpleVM = ['SVM running'];
   private terminatedOpenstack = ['OS terminated'];
@@ -42,9 +42,9 @@ export class NumberChartsComponent implements OnInit {
   }
 
 
-
-
-
+  /**
+   * Gets the Data from the API and separates it into the lists.
+   */
   getData(): void {
     this.numbersService.getProjectCounterTimeline().subscribe(
     (result: Object[]): void => {
@@ -63,67 +63,63 @@ export class NumberChartsComponent implements OnInit {
   }
 
 
-
+  /**
+   * Draws the chart in the template.
+   */
   drawChart(): void {
-   let chart = c3.generate({
-    bindto: '#chart',
-     size: {
-       height: 600
-     },
-    data: {
-      x : 'x',
 
-      columns: [
-        this.endDates,
-        this.runningSimpleVM,
-        this.terminatedSimpleVM,
-        this.runningOpenstack,
-        this.terminatedOpenstack
-      ],
-      type: 'bar',
-      bar: {
-        width: {
-          ratio: 0.2
+    let chart = c3.generate({
+      bindto: '#chart',
+      size: {
+        height: 600
+      }, data: {
+        x : 'x',
+        columns: [
+          this.endDates,
+          this.runningSimpleVM,
+          this.terminatedSimpleVM,
+          this.runningOpenstack,
+          this.terminatedOpenstack
+        ],
+        type: 'bar',
+        bar: {
+          width: {
+            ratio: 0.2
+          }
+        },
+        groups: [
+          [
+            this.runningSimpleVM[0],
+            this.terminatedSimpleVM[0],
+            this.runningOpenstack[0],
+            this.terminatedOpenstack[0]
+          ]
+        ],
+        order: null
+      },
+
+      color: {
+        pattern: ['#00adef', '#007AAB', '#ed1944', '#8F1331']
+      },
+      grid: {
+        y: {
+          lines: [{value:0}]
         }
       },
-      groups: [
-        [
-          this.runningSimpleVM[0],
-          this.terminatedSimpleVM[0],
-          this.runningOpenstack[0],
-          this.terminatedOpenstack[0]
-        ]
-      ],
-      order: null
-    },
-
-     color: {
-      pattern: ['#00adef', '#007AAB', '#ed1944', '#8F1331']
-     },
-    grid: {
-      y: {
-        lines: [{value:0}]
+      axis: {
+        x: {
+          label: 'Date',
+          position: 'outer-right',
+          type: 'timeseries',
+          tick: {
+            format: '%Y-%m-%d'
+          }
+        },
+        y: {
+          label: 'Number of machines'
+        }
       }
-    },
-     axis: {
-       x: {
-         label: 'Date',
-         position: 'outer-right',
-         type: 'timeseries',
-         tick: {
-           format: '%Y-%m-%d'
-         }
-       },
-      y: {
-        label: 'Number of machines'
-      }
-     }
-  });
-
-
-
-
+    });
 
   }
-
 }
