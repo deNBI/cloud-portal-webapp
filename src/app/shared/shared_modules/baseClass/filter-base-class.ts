@@ -70,37 +70,62 @@ export abstract class FilterBaseClass extends AbstractBaseClasse {
     return projectName != null && projectName.includes(this.filterProjectName);
   }
 
-  isFilterProjectStatus(status_number: number, lifetime_reached: number): boolean {
+  isFilterProjectStatus(status_numbers: number[], lifetime_reached: number): boolean {
     let status: string;
     let lifetime_status: string;
-    switch (status_number) {
-      case this.project_states.ACTIVE:
-        status = this.project_states[this.project_states.ACTIVE];
-        break;
-      case this.project_states.SUSPENDED:
-        status = this.project_states[this.project_states.SUSPENDED];
-        break;
-      case this.application_states.WAIT_FOR_CONFIRMATION:
-        status = this.application_states[this.application_states.WAIT_FOR_CONFIRMATION];
-        break;
-      case this.application_states.TERMINATION_REQUESTED:
-        status = this.application_states[this.application_states.TERMINATION_REQUESTED];
-        break;
-      default:
-        break;
+    if (status_numbers && status_numbers.length > 0) {
+      for (const status_number of status_numbers) {
+        switch (status_number) {
+          case this.project_states.ACTIVE:
+            status = this.project_states[this.project_states.ACTIVE];
+            if (this.filterstatus_list[status]) {
+              return true
+            }
+
+            break;
+          case this.project_states.SUSPENDED:
+            status = this.project_states[this.project_states.SUSPENDED];
+            if (this.filterstatus_list[status]) {
+              return true
+            }
+            break;
+          case this.application_states.WAIT_FOR_CONFIRMATION:
+            status = this.application_states[this.application_states.WAIT_FOR_CONFIRMATION];
+            if (this.filterstatus_list[status]) {
+              return true
+            }
+            break;
+          case this.application_states.TERMINATION_REQUESTED:
+            status = this.application_states[this.application_states.TERMINATION_REQUESTED];
+            if (this.filterstatus_list[status]) {
+              return true
+            }
+            break;
+          default:
+            break;
+        }
+      }
     }
+
     switch (lifetime_reached) {
       case this.lifetime_states.EXPIRED:
         lifetime_status = this.lifetime_states[this.lifetime_states.EXPIRED];
+        if (this.filterstatus_list[lifetime_status]) {
+          return true
+        }
         break;
       case this.lifetime_states.EXPIRES_SOON:
         lifetime_status = this.lifetime_states[this.lifetime_states.EXPIRES_SOON];
+        if (this.filterstatus_list[lifetime_status]) {
+          return true
+        }
         break;
       default:
         break;
     }
 
-    return this.filterstatus_list[status] || this.filterstatus_list[lifetime_status];
+    return false
+
   }
 
   changeFilterStatus(status: string): void {

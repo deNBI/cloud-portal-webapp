@@ -6,7 +6,7 @@ import {Util} from '../util';
  */
 export class ApplicationOverviewPage {
   private static OWN_APPLICATION_ID: string = 'own_applications';
-  private static EXTENSION_RESULT: string = 'extension result';
+  private static EXTENSION_RESULT: string = 'notification_message';
   private static EXTENSION_SV_SUCCESSFULLY_APPROVED: string = 'Modify request successfully approved!';
   private static EXTENSION_OP_SUCCESFULLY_APPROVED: string = 'Modify request successfully approved and forwarded to facility!';
   private static EXTENSION_APPROVAL_BTN_PREFIX: string = 'extension_approval_';
@@ -37,12 +37,14 @@ export class ApplicationOverviewPage {
 
   }
 
+
   static async approveExtensionRequest(application_name: string): Promise<any> {
     await Util.waitForPresenceOfElementById(this.EXTENSION_TAB_BUTTON);
     await Util.clickElementById(this.EXTENSION_TAB_BUTTON);
     await Util.waitForPresenceOfElementById(this.EXTENSION_APPROVAL_BTN_PREFIX + application_name);
     await Util.clickElementById(this.EXTENSION_APPROVAL_BTN_PREFIX + application_name);
     await Util.waitForTextPresenceInElementById(this.NOTIFICATION_MESSAGE, this.EXTENSION_RESULT_MESSAGE_TEXT);
+
 
   }
 

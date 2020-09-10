@@ -742,8 +742,9 @@
               </thead>
               <tbody *ngFor="  let application of project?.ProjectMemberApplications">
 
-              <td>{{application.Name}}</td>
-              <td>{{application.DateCreated}}</td>
+              <td>{{application?.Name}}</td>
+              <td>{{application?.DateCreated}}</td>
+
               <td>
                 <button
                   (click)="approveMemberApplication(project?.Id,application.Id,application.Name); "
