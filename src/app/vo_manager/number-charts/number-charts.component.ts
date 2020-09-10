@@ -45,21 +45,15 @@ export class NumberChartsComponent implements OnInit {
    * Gets the Data from the API and separates it into the lists.
    */
   getData(): void {
+    /* tslint:disable */
     this.numbersService.getProjectCounterTimeline().subscribe(
     (result: Object[]): void => {
-      // tslint:disable-next-line
       result.forEach((valuePack: any): void => {
-        // tslint:disable-next-line
         this.runningOpenstack.push(valuePack["running_openstack"]);
-        // tslint:disable-next-line
         this.runningSimpleVM.push(valuePack["running_simple_vm"]);
-        // tslint:disable-next-line
         this.terminatedOpenstack.push(valuePack["terminated_openstack"]);
-        // tslint:disable-next-line
         this.terminatedSimpleVM.push(valuePack["terminated_simple_vm"]);
-        // tslint:disable-next-line
         this.endDates.push(valuePack["end_date"]);
-        // tslint:disable-next-line
       });
       this.drawChart();
 
@@ -67,6 +61,7 @@ export class NumberChartsComponent implements OnInit {
       console.log(err);
       });
   }
+  /* tslint:enable */
 
   /**
    * Downloads the chart as a PDF-File
