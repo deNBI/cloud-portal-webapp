@@ -400,7 +400,7 @@
         </div>
 
         <div class="card-body">
-          <div class="btn-group col-12" *ngIf="isAdmin">
+          <div class="btn-group col-12" *ngIf="isAdmin || is_vo_admin">
             <button id="add_member_btn_modal"
                     (click)="setAddUserInvitationLink(); addUserModal.show();"
 
@@ -420,7 +420,7 @@
                     class="btn btn-outline-danger"><i class="fa fa-trash"></i>&nbsp;Remove Members</button>
 
           </div>
-          <div class="col-12 alert alert-info" *ngIf="!isAdmin">
+          <div class="col-12 alert alert-info" *ngIf="!isAdmin && !is_vo_admin">
             <span><strong>Notice: </strong>Only project administrators are able to remove or add project members and
             change the status of members.</span>
           </div>
@@ -428,7 +428,7 @@
             <table class="table table-hover">
               <thead>
               <tr>
-                <th *ngIf="isAdmin">
+                <th *ngIf="isAdmin || is_vo_admin">
                   <input type="checkbox" id="selectAll" name="selectAll"
                            (change)="setAllMembersChecked();"
                            [checked]="allSet">
@@ -436,13 +436,13 @@
                 <th>User ID</th>
                 <th>Member ID</th>
                 <th>Full Name</th>
-                <th *ngIf="isAdmin">Actions</th>
+                <th *ngIf="isAdmin || is_vo_admin">Actions</th>
 
               </tr>
               </thead>
               <tbody>
               <tr *ngFor="let member of project_members" [ngStyle]="{'color':isPi(member)}">
-                <td *ngIf="isAdmin">
+                <td *ngIf="isAdmin || is_vo_admin">
                   <input *ngIf="userinfo?.MemberId != member.MemberId" type="checkbox" id="{{member.Id}}"
                            name="{{member.Id}}"
                            [checked]="isMemberChecked(member.MemberId)" (change)="checkUnCheckMember(member.MemberId);">
@@ -452,7 +452,7 @@
                   {{ member.Id }}</td>
                 <td>{{ member.MemberId }}</td>
                 <td>{{ member.Username }}</td>
-                <td *ngIf="isAdmin">
+                <td *ngIf="isAdmin || is_vo_admin">
                   <div class="btn-group" role="group">
                     <button *ngIf="!member.IsPi" (click)="promoteAdmin( project?.Id,member.Id,member.Username);
                                                 notificationModal.show();
