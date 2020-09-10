@@ -5,6 +5,7 @@ import {NumbersService} from "../../api-connector/numbers.service";
 import * as c3 from 'c3';
 import {jsPDF} from 'jspdf';
 import 'svg2pdf.js'
+import html2canvas from "html2canvas";
 
 
 /**
@@ -66,21 +67,33 @@ export class NumberChartsComponent implements OnInit {
    * Downloads the chart as a PDF-File
    */
   downloadAsPDF(): void {
-    const downloader: jsPDF = new jsPDF();
-    const file: HTMLElement = document.getElementById('numberChartSVG');
-    downloader.svg(file).then((reason: any) : void => {
-      downloader.save('cloudMachineNumbers.pdf');
-    }).catch((err: Error) => {
-      console.log(err);
+    html2canvas(document.getElementById('chart')).then((canvas: HTMLCanvasElement): void => {
+      // Few necessary setting options
+      const imgWidth: number = 208;
+      const pageHeight: number = 295;
+      const imgHeight: number = canvas.height * imgWidth / canvas.width;
+      const heightLeft: number = imgHeight;
+
+      const contentDataURL: string = canvas.toDataURL('image/png');
+      const pdf: jsPDF = new jsPDF('p', 'mm', 'a4'); // A4 size page of PDF
+      const position: number = 0;
+      pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
+      pdf.save('VoResources.pdf'); // Generated PDF
+    }).catch((): void => {
+      console.log('failed to convert to pdf')
     });
   }
+
+
+
 
 
   /**
    * Draws the chart in the template.
    */
   drawChart(): void {
-    let chart = c3.generate({
+
+    const chart: any  = c3.generate({
       oninit: function() {
         this.svg.attr('id', 'numberChartSVG')
       },
