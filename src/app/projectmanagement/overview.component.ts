@@ -33,7 +33,6 @@ import {Application_States, ExtensionRequestType} from '../shared/shared_modules
 import {ApplicationLifetimeExtension} from '../applications/application_extension.model';
 import {ApplicationModification} from '../applications/application_modification.model';
 import {ApplicationCreditRequest} from '../applications/application_credit_request';
-import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 
 /**
  * Projectoverview component.
@@ -631,8 +630,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
    * Checks if user is able to start a machine, when the project is a SimpleVM project.
    */
   isAbleToStart(): boolean {
-    if (this.resourceDataLoaded){
-      if (!this.project?.OpenStackProject){
+    if (this.resourceDataLoaded) {
+      if (!this.project?.OpenStackProject) {
         if (this.vmsInUse < this.maximumVMs ) {
           return true;
         }
@@ -648,7 +647,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
    * @param groupid the id of the group of the application in perun
    */
   getUsedResources(groupid: string): void {
-    if (!this.project?.OpenStackProject){
+    if (!this.project?.OpenStackProject) {
       this.groupService.getGroupResources(groupid).subscribe(
         (res: any): void => {
           this.vmsInUse = res['used_vms'];
@@ -666,10 +665,11 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
    * @param flavors the list of flavors requested in the project
    */
   calculateNumberOfVMs(flavors: Flavor[]): number {
-    let numberOfVMs : number = 0;
+    let numberOfVMs: number = 0;
     flavors.forEach((flavor: any): void => {
-      numberOfVMs+=flavor["counter"];
+      numberOfVMs += flavor['counter'];
     });
+
     return numberOfVMs;
   }
 
@@ -850,6 +850,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
           facility['compute_center_facility_id'], facility['compute_center_name'],
           facility['compute_center_login'], facility['compute_center_support_mail']);
       }
+      this.isAdmin=is_pi
 
       const newProject: Project = new Project(
         groupid,
@@ -909,10 +910,9 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
         this.project_members.push(projectMember);
 
       }
-      if (this.isAdmin){
+      console.log(this.isAdmin)
+      if (this.isAdmin) {
         this.groupService.getGroupAdminIds(this.project_id).subscribe((result: any): void => {
-
-
           const adminIds: any = result['adminIds'];
           this.project_members.forEach((member: ProjectMember): void => {
             member.IsPi = adminIds.indexOf(member.Id) !== -1;
@@ -922,8 +922,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
           this.startUpdateCreditUsageLoop();
         });
       }
-
-
     });
   }
 

@@ -451,7 +451,7 @@
                   {{ member.Id }}</td>
                 <td>{{ member.MemberId }}</td>
                 <td>{{ member.Username }}</td>
-                <td *ngIf="isAdmin || is_vo_admin">
+                <td *ngIf="this.project.UserIsPi || this.project.UserIsAdmin|| is_vo_admin">
                   <div class="btn-group" role="group">
                     <button *ngIf="!member.IsPi" (click)="promoteAdmin( project?.Id,member.Id,member.Username);
                                                 notificationModal.show();
