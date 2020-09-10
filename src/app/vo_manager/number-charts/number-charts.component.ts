@@ -28,7 +28,7 @@ export class NumberChartsComponent implements OnInit {
   }
 
   /**
-   * Lists for numbers of machines per day
+   * Lists for numbers of projects per project type and status.
    */
   private runningOpenstack: any[] = ['OS running'];
   private runningSimpleVM: any[] = ['SVM running'];
@@ -133,7 +133,7 @@ export class NumberChartsComponent implements OnInit {
           }
         },
         y: {
-          label: 'Number of machines'
+          label: 'Number of projects'
         }
       }
     });
