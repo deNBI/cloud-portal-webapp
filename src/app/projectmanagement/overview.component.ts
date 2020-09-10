@@ -667,7 +667,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
    */
   calculateNumberOfVMs(flavors: Flavor[]): number {
     let numberOfVMs : number = 0;
-    flavors.forEach((flavor: any) => {
+    flavors.forEach((flavor: any): void => {
       numberOfVMs+=flavor["counter"];
     });
     return numberOfVMs;
@@ -914,7 +914,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
 
           const adminIds: any = result['adminIds'];
-          this.project_members.forEach((member: ProjectMember) => {
+          this.project_members.forEach((member: ProjectMember): void => {
             member.IsPi = adminIds.indexOf(member.Id) !== -1;
           });
 
