@@ -95,6 +95,7 @@ export class Application {
       this.project_application_openstack_project = aj.project_application_openstack_project;
       this.DaysRunning = aj.DaysRunning;
       this.project_application_total_ram = aj.project_application_total_ram;
+      this.project_application_total_cores = aj.project_application_total_cores;
       this.project_application_date_approved = aj.project_application_date_approved;
       this.project_application_horizon2020 = aj.project_application_horizon2020;
       this.project_application_bmbf_project = aj.project_application_bmbf_project;
