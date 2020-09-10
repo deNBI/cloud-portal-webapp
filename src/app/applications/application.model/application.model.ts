@@ -117,7 +117,6 @@ export class Application {
       }
       this.setDaysRunning()
 
-
       if (aj.project_lifetime_request) {
         this.project_lifetime_request = new ApplicationLifetimeExtension(aj.project_lifetime_request);
 
@@ -133,7 +132,6 @@ export class Application {
         this.project_credit_request = new ApplicationCreditRequest(aj.project_credit_request);
 
         this.totalCreditsExtensionCredits = this.calcCreditsExtensionCredits();
-
 
       }
     }
@@ -211,7 +209,6 @@ export class Application {
     }
   }
 
-
   public calcCreditsExtensionCredits(): number {
     if (this.project_credit_request != null) {
       return (Math.round(this.project_application_initial_credits * 10) / 10)
@@ -220,7 +217,6 @@ export class Application {
       return this.project_application_initial_credits
     }
   }
-
 
   public calcLifetimeExtensionCredits(): number {
 
