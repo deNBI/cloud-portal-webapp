@@ -639,6 +639,10 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
     return false;
   }
 
+  /**
+   * TODO: DOC and add calculation for openstack-projects.
+   * @param groupid
+   */
   getUsedResources(groupid: string): void {
     this.groupService.getGroupResources(groupid).subscribe(
       (res: any): void => {

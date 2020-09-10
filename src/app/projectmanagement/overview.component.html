@@ -200,21 +200,31 @@
 
           <div class="row">
             <div class="col-6">
-              <div class="callout callout-info" *ngIf="!project?.OpenStackProject">
+              <div class="callout callout-info" *ngIf="this.resourceDataLoaded">
                 <small class="text-muted">Virtual machines</small><br>
-                <strong class="text-muted" *ngIf="this.resourceDataLoaded">{{vmsInUse}} of {{maximumVMs}} in use
+                <strong class="text-muted" *ngIf="project?.OpenStackProject">{{maximumVMs}} VMs approved
+                  <span *ngIf="((project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED)
+                  || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION))">
+                     - Resource modification requested on
+                    {{project_application?.project_modification_request?.date_submitted}}
+                  </span>
+                </strong>
+                <strong class="text-muted" *ngIf="!project?.OpenStackProject">{{vmsInUse}} of {{maximumVMs}} in use
                   <span *ngIf="((project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED)
                   || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION))">
                      - Resource modification requested on
                     {{project_application?.project_modification_request?.date_submitted}}
                   </span>
                 </strong><br>
-                <div class="progress" style="height: 2px;" *ngIf="this.resourceDataLoaded">
+                <div class="progress" style="height: 2px;" *ngIf="!project?.OpenStackProject">
                   <div class="progress-bar bg-info" role="progressbar"
                        [ngStyle]="{'width.%': calculateProgressBar(vmsInUse / maximumVMs)}"
                        aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
               </div>
+
+
+
             </div>
             <div class="col-6">
               <!-- check disabled enabled for both resource and lifetime extension buttons -->
