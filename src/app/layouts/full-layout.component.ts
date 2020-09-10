@@ -14,6 +14,7 @@ import {environment} from '../../environments/environment';
 import {is_vo} from '../shared/globalvar';
 import {VirtualmachineService} from '../api-connector/virtualmachine.service';
 import {Application_States} from '../shared/shared_modules/baseClass/abstract-base-class';
+import * as moment from 'moment';
 
 /**
  * FullLayout component.
@@ -147,10 +148,13 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
   }
 
   getDaysLeft(projEnum: ProjectEnumeration): number {
-    const max_days: number = 31 * projEnum.project_lifetime;
+
+    const expirationDate: string = moment(moment(projEnum.project_start_date).add(projEnum.project_lifetime, 'months').toDate()).format('DD.MM.YYYY');
+    const lifetimeDays: number = Math.abs(moment(moment(expirationDate, 'DD.MM.YYYY').toDate()).diff(moment(projEnum.project_start_date), 'days'));
+
     const daysRunning: number = this.getDaysRunning(projEnum);
 
-    return max_days - daysRunning;
+    return lifetimeDays - daysRunning;
   }
 
   getDaysRunning(projectEnumeration: ProjectEnumeration): number {
