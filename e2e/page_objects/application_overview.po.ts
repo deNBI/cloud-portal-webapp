@@ -37,14 +37,12 @@ export class ApplicationOverviewPage {
 
   }
 
-
   static async approveExtensionRequest(application_name: string): Promise<any> {
     await Util.waitForPresenceOfElementById(this.EXTENSION_TAB_BUTTON);
     await Util.clickElementById(this.EXTENSION_TAB_BUTTON);
     await Util.waitForPresenceOfElementById(this.EXTENSION_APPROVAL_BTN_PREFIX + application_name);
     await Util.clickElementById(this.EXTENSION_APPROVAL_BTN_PREFIX + application_name);
     await Util.waitForTextPresenceInElementById(this.NOTIFICATION_MESSAGE, this.EXTENSION_RESULT_MESSAGE_TEXT);
-
 
   }
 
