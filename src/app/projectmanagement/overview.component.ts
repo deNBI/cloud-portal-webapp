@@ -627,6 +627,9 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
   }
 
+  /**
+   * Checks if user is able to start a machine, when the project is a SimpleVM project.
+   */
   isAbleToStart(): boolean {
     if (this.resourceDataLoaded){
       if (!this.project?.OpenStackProject){
@@ -640,16 +643,34 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   }
 
   /**
-   * TODO: DOC and add calculation for openstack-projects.
-   * @param groupid
+   * If the application is an openstack application, the requested/approved resources will be set for maximum VMs.
+   * For SimpleVM also the VMs in use are set.
+   * @param groupid the id of the group of the application in perun
    */
   getUsedResources(groupid: string): void {
-    this.groupService.getGroupResources(groupid).subscribe(
-      (res: any): void => {
-         this.vmsInUse = res['used_vms'];
-         this.maximumVMs = res['number_vms'];
-         this.resourceDataLoaded = true;
-      });
+    if (!this.project?.OpenStackProject){
+      this.groupService.getGroupResources(groupid).subscribe(
+        (res: any): void => {
+          this.vmsInUse = res['used_vms'];
+          this.maximumVMs = res['number_vms'];
+          this.resourceDataLoaded = true;
+        });
+    } else {
+      this.maximumVMs = this.calculateNumberOfVMs(this.project_application?.flavors);
+      this.resourceDataLoaded = true;
+    }
+  }
+
+  /**
+   * Calculates the number of approved VMs for OpenStack Projects
+   * @param flavors the list of flavors requested in the project
+   */
+  calculateNumberOfVMs(flavors: Flavor[]): number {
+    let numberOfVMs : number = 0;
+    flavors.forEach((flavor: any) => {
+      numberOfVMs+=flavor["counter"];
+    });
+    return numberOfVMs;
   }
 
   ngOnDestroy(): void {
@@ -855,20 +876,11 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
       this.project = newProject;
       this.setSupportMails(this.project);
       this.setLifetime();
-      if (this.project.UserIsPi || this.project.UserIsAdmin) {
-        this.getMembersOfTheProject();
-      } else {
-        this.isLoaded = true;
-        if (this.project_application?.project_application_perun_id) {
-          // this.startUpdateCreditUsageLoop();
-        }
-
+      this.getMembersOfTheProject();
+      if (this.project_application?.project_application_perun_id) {
+        // this.startUpdateCreditUsageLoop();
       }
-      if (!this.project?.OpenStackProject) {
-        this.getUsedResources(groupid);
-      } else {
-        this.resourceDataLoaded = true;
-      }
+      this.getUsedResources(groupid);
 
     })
 
@@ -886,23 +898,31 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   getMembersOfTheProject(): void {
     this.groupService.getGroupMembers(this.project_id).subscribe((members: any): void => {
 
-      this.groupService.getGroupAdminIds(this.project_id).subscribe((result: any): void => {
-        this.project_members = [];
+      this.project_members = [];
+      for (const member of members) {
+        const member_id: string = member['id'];
+        const user_id: string = member['userId'];
+        const fullName: string = `${member['firstName']} ${member['lastName']}`;
+        const projectMember: ProjectMember = new ProjectMember(user_id, fullName, member_id);
+        projectMember.ElixirId = member['elixirId'];
 
-        const admindIds: any = result['adminIds'];
-        for (const member of members) {
-          const member_id: string = member['id'];
-          const user_id: string = member['userId'];
-          const fullName: string = `${member['firstName']} ${member['lastName']}`;
-          const projectMember: ProjectMember = new ProjectMember(user_id, fullName, member_id);
-          projectMember.ElixirId = member['elixirId'];
-          projectMember.IsPi = admindIds.indexOf(user_id) !== -1;
-          this.project_members.push(projectMember);
+        this.project_members.push(projectMember);
 
-        }
-        this.isLoaded = true;
-        this.startUpdateCreditUsageLoop();
-      })
+      }
+      if (this.isAdmin){
+        this.groupService.getGroupAdminIds(this.project_id).subscribe((result: any): void => {
+
+
+          const adminIds: any = result['adminIds'];
+          this.project_members.forEach((member: ProjectMember) => {
+            member.IsPi = adminIds.indexOf(member.Id) !== -1;
+          });
+
+          this.isLoaded = true;
+          this.startUpdateCreditUsageLoop();
+        });
+      }
+
 
     });
   }

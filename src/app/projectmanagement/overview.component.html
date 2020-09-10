@@ -400,7 +400,7 @@
         </div>
 
         <div class="card-body">
-          <div class="btn-group col-12">
+          <div class="btn-group col-12" *ngIf="isAdmin">
             <button id="add_member_btn_modal"
                     (click)="setAddUserInvitationLink(); addUserModal.show();"
 
@@ -420,24 +420,30 @@
                     class="btn btn-outline-danger"><i class="fa fa-trash"></i>&nbsp;Remove Members</button>
 
           </div>
+          <div class="col-12 alert alert-info" *ngIf="!isAdmin">
+            <span><strong>Notice: </strong>Only project administrators are able to remove or add project members and
+            change the status of members.</span>
+          </div>
           <div class="table-responsive">
             <table class="table table-hover">
               <thead>
               <tr>
-                <th><input type="checkbox" id="selectAll" name="selectAll"
+                <th *ngIf="isAdmin">
+                  <input type="checkbox" id="selectAll" name="selectAll"
                            (change)="setAllMembersChecked();"
                            [checked]="allSet">
                 </th>
                 <th>User ID</th>
                 <th>Member ID</th>
                 <th>Full Name</th>
-                <th>Actions</th>
+                <th *ngIf="isAdmin">Actions</th>
 
               </tr>
               </thead>
               <tbody>
               <tr *ngFor="let member of project_members" [ngStyle]="{'color':isPi(member)}">
-                <td><input *ngIf="userinfo?.MemberId != member.MemberId" type="checkbox" id="{{member.Id}}"
+                <td *ngIf="isAdmin">
+                  <input *ngIf="userinfo?.MemberId != member.MemberId" type="checkbox" id="{{member.Id}}"
                            name="{{member.Id}}"
                            [checked]="isMemberChecked(member.MemberId)" (change)="checkUnCheckMember(member.MemberId);">
                 </td>
@@ -446,8 +452,8 @@
                   {{ member.Id }}</td>
                 <td>{{ member.MemberId }}</td>
                 <td>{{ member.Username }}</td>
-                <td>
-                  <div class="btn-group-vertical" role="group" style="width:100%;">
+                <td *ngIf="isAdmin">
+                  <div class="btn-group" role="group">
                     <button *ngIf="!member.IsPi" (click)="promoteAdmin( project?.Id,member.Id,member.Username);
                                                 notificationModal.show();
                                                " class="btn btn-primary" type="button" style="margin: 2px">
