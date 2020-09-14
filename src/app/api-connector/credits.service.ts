@@ -17,7 +17,6 @@ export class CreditsService {
    * @returns {int} The expected credits for the resources.
    */
   public getCreditsForApplication(flavors: Flavor[], months: number): Observable<number> {
-    // const params: HttpParams = new HttpParams().set('flavors', flavors).set('months', months.toString());
 
     return this.http.post<number>(`${ApiSettings.getApiBaseURL()}creditManager/getCreditsForApplication/`, {flavors, months}, {
       withCredentials: true
@@ -56,14 +55,13 @@ export class CreditsService {
    * Get credits for project resource application.
    * @returns {int} The expected credits for the resources.
    */
-  public getExtraCreditsForResourceExtension(cpus: number, ram: number, projectApplicationId: string): Observable<number> {
-    const params: HttpParams = new HttpParams().set('new_cpu', cpus.toString()).set('new_ram', ram.toString())
-      .set('project_application_id', projectApplicationId);
+  public getExtraCreditsForResourceExtension(flavors: Flavor[], projectApplicationId: string): Observable<number> {
 
-    return this.http.get<number>(`${ApiSettings.getApiBaseURL()}creditManager/getExtraCreditsNumberResource/`, {
-      withCredentials: true,
-      params: params
-    });
+    return this.http.post<number>(
+      `${ApiSettings.getApiBaseURL()}creditManager/getExtraCreditsNumberResource/`,
+      {flavors, projectApplicationId},
+      {withCredentials: true}
+    );
   }
 
   /**
