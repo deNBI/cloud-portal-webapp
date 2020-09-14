@@ -238,6 +238,8 @@
                   Resource modification requested</button>
                 <a class="btn btn-outline-success" href="#/virtualmachines/newVM"
                    *ngIf="!project?.OpenStackProject && isAbleToStart()">Start a VM</a>
+                <a class="btn btn-outline-success" target="_blank" href="{{project?.ComputeCenter.Login}}"
+                   *ngIf="project?.OpenStackProject">Login to OpenStack</a>
               </div>
             </div>
           </div>
