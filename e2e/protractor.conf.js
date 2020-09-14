@@ -30,15 +30,18 @@ exports.config = {
   allScriptsTimeout: 11000,
   specs: [
     'tests/simple_vm_application_test.ts',
+
     'tests/simple_vm_approval_test.ts',
     'tests/member_test.ts',
     'tests/simple_vm_modification_test.ts',
     'tests/simple_vm_application_modification_approval.ts',
+    'tests/simple_vm_extension_test.ts',
+    'tests/simple_vmextension_approval_test.ts',
     'tests/simple_vm_no_pi_test.ts',
     'tests/cloud_application_test.ts',
     'tests/cloud_application_approval_test.ts',
     'tests/cloud_application_modification_test.ts',
-    'tests/cloud_modification_approval_test.ts',
+    'tests/cloud_modification_approval_test.ts',*/
     'tests/virtual_machine_tests.ts',
     'tests/terminate_all_pt.ts'
   ],

@@ -14,6 +14,7 @@ import {environment} from '../../environments/environment';
 import {is_vo} from '../shared/globalvar';
 import {VirtualmachineService} from '../api-connector/virtualmachine.service';
 import {Application_States} from '../shared/shared_modules/baseClass/abstract-base-class';
+import * as moment from 'moment';
 
 /**
  * FullLayout component.
@@ -62,9 +63,7 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
   }
 
   componentAdded(event: any): void {
-
     this.TITLE = event.title;
-
   }
 
   public get_is_vo_admin(): boolean {
@@ -128,6 +127,7 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
    * @param enumeration
    */
   pushAdditionalStates(enumeration: ProjectEnumeration): void {
+
     const days_left: number = this.getDaysLeft(enumeration);
     const days_running: number = this.getDaysRunning(enumeration);
     if (enumeration.project_application_status.includes(Application_States.APPROVED)) {
@@ -141,16 +141,18 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
       if (days_running < 14) {
         enumeration.project_application_status.push(Application_States.APPROVED_LAST_2_WEEKS);
       }
-
     }
 
   }
 
   getDaysLeft(projEnum: ProjectEnumeration): number {
-    const max_days: number = 31 * projEnum.project_lifetime;
+
+    const expirationDate: string = moment(moment(projEnum.project_start_date).add(projEnum.project_lifetime, 'months').toDate()).format('DD.MM.YYYY');
+    const lifetimeDays: number = Math.abs(moment(moment(expirationDate, 'DD.MM.YYYY').toDate()).diff(moment(projEnum.project_start_date), 'days'));
+
     const daysRunning: number = this.getDaysRunning(projEnum);
 
-    return max_days - daysRunning;
+    return lifetimeDays - daysRunning;
   }
 
   getDaysRunning(projectEnumeration: ProjectEnumeration): number {

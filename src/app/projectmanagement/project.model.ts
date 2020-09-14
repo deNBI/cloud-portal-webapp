@@ -16,7 +16,7 @@ export class Project {
   Lifetime: number | string;
   UserIsAdmin: boolean;
   UserIsPi: boolean;
-  Status: number;
+  project_application_status: number[];
   ComputeCenter: ComputecenterComponent;
   PerunId: number;
   ProjectMemberApplications: ProjectMemberApplication[];

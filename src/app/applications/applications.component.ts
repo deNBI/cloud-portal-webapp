@@ -102,9 +102,9 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
       this.getApplicationHistory();
       this.getComputeCenters();
       this.applicationsservice.getExtensionRequestsCounter().subscribe((result: any): void => {
-        this.numberOfCreditRequests = result['credits_extension_requests_vo'];
-        this.numberOfExtensionRequests = result['lifetime_extension_requests_vo'];
-        this.numberOfModificationRequests = result['modification_requests_vo'];
+        this.numberOfCreditRequests = result['credits_extension_requests_all'];
+        this.numberOfExtensionRequests = result['lifetime_extension_requests_all'];
+        this.numberOfModificationRequests = result['modification_requests_all'];
         this.numberOfProjectApplications = result['applications_submitted_vo'];
       });
     } else {
@@ -161,12 +161,18 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
     this.applicationsservice.approveAdditionalLifetime(application.project_application_id)
       .subscribe((res: any): void => {
                    if (application.project_application_openstack_project) {
+                     application.project_application_status = []
+                     this.getApplication(application)
+
                      this.updateNotificationModal('Success', 'The request has been sent to the facility manager.', true, 'success');
                    } else {
                      this.updateNotificationModal('Success', 'The project has been extended!', true, 'success');
                    }
-                   this.all_applications.splice(this.all_applications.indexOf(application), 1);
-                   this.numberOfExtensionRequests--;
+                   if (!application.project_application_openstack_project) {
+                     this.numberOfExtensionRequests--;
+                     this.all_applications.splice(this.all_applications.indexOf(application), 1);
+
+                   }
                  },
                  (err: any): void => {
                    console.log('error', err.status);
@@ -194,9 +200,18 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
     this.applicationsservice.approveModificationRequest(application.project_application_id)
       .subscribe((res: any): void => {
+
                    this.updateNotificationModal('Success', 'The resource modification request was approved!', true, 'success');
-                   this.all_applications.splice(this.all_applications.indexOf(application), 1);
-                   this.numberOfModificationRequests--;
+                   if (!application.project_application_openstack_project) {
+
+                     this.numberOfModificationRequests--;
+                     this.all_applications.splice(this.all_applications.indexOf(application), 1);
+
+                   } else {
+                     application.project_application_status = []
+
+                     this.getApplication(application)
+                   }
                  },
                  (err: any): void => {
                    console.log('error', err.status);
@@ -221,9 +236,18 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
   approveCreditExtension(application: Application): void {
     this.applicationsservice.approveAdditionalCreditsRequest(application.project_application_id)
       .subscribe((res: any): void => {
+
                    this.updateNotificationModal('Success', 'The credit extension request was approved!', true, 'success');
-                   this.all_applications.splice(this.all_applications.indexOf(application), 1);
-                   this.numberOfCreditRequests--;
+                   if (!application.project_application_openstack_project) {
+
+                     this.numberOfCreditRequests--;
+                     this.all_applications.splice(this.all_applications.indexOf(application), 1);
+
+                   } else {
+                     application.project_application_status = []
+
+                     this.getApplication(application)
+                   }
                  },
                  (err: any): void => {
                    console.log('error', err.status);
@@ -424,15 +448,17 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
     this.groupservice.createGroupOpenStack(
       application.project_application_id, compute_center)
       .subscribe((result: { [key: string]: string }): void => {
+
                    if (result['Error']) {
                      this.updateNotificationModal('Failed', result['Error'], true, 'danger');
 
                    } else {
+                     application.project_application_status = []
+
                      this.updateNotificationModal('Success', 'The new project was created', true, 'success');
-                     this.all_applications.splice(this.all_applications.indexOf(application), 1);
-                     this.numberOfProjectApplications--;
+                     this.getApplication(application);
+
                    }
-                   this.getApplication(application);
                  },
                  (): void => {
                    this.updateNotificationModal('Failed', 'Project could not be created!', true, 'danger');
