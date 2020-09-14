@@ -17,16 +17,8 @@ export class ProjectOverview {
   private static REMOVE_MEMBER_PREFIX: string = 'remove_member_';
   private static NOTIFICATION_TITLE: string = 'notification_title';
   private static NOTIFICATION_CLOSE: string = 'close_notification';
-  private static SUBMIT_MODAL_BTN: string = 'submit_modal_btn';
-  private static DOI_CONTINUE_BTN: string = 'doi_continue_btn';
-  private static RENEWAL_LIFETIME: string = 'project_application_renewal_lifetime';
-  private static HAS_DOI_BTN: string = 'new_dois_btn';
-  private static SUBMIT_RENEWAL_BTN: string = 'submit_renewal_btn';
-  private static EXTENSION_RESULT: string = 'extension result';
   private static MODIFICATION_REQUEST_RESULT: string = 'extension_result_submitted';
-  private static EXTENSION_SUCCESSFULLY_SUBMITTED: string = 'Modify request successfully submitted!';
   private static MODIFICATION_REQUEST_SUCCESS_TEXT: string = 'Modification request successfully submitted!';
-  private static EXTENSION_REQUEST_BTN: string = 'show_extension_modal';
   private static DENBI_DEFAULT_OLD_ID: string = 'de.NBI default_old';
   private static DENBI_DEFAULT_NEW_INPUT: string = 'de.NBI default';
   private static OLD_VOLUME_COUNTER_ID: string = 'project_application_volume_counter';
@@ -48,12 +40,15 @@ export class ProjectOverview {
   private static REMOVE_APPLICATION_BUTTON: string = 'remove_application_button';
   private static REMOVE_APPLICATION_MODAL: string = 'remove_application_modal';
   private static CONFIRM_REMOVE_APPLICATION_BUTTON: string = 'confirm_remove_application_button';
-  private static EXTENSION_MODIFICATION_BUTTON: string = 'show_choose_modal';
-  private static CHOOSE_MODIFICATION_BUTTON: string = 'resource_modification_button';
-  private static CHOOSE_EXTENSION_BUTTON: string = 'project_extension_button';
+  private static MODIFICATION_REQUEST_BUTTON: string = 'show_modification_extension_button';
   private static NO_DOI_BUTTON: string = 'no_new_dois_btn';
   private static SUBMIT_MODIFICATION_BUTTON: string = 'submit_modification_btn';
   private static CONFIRM_MODIFICATION_BUTTON: string = 'confirm_modification_btn';
+  private static SHOW_DOI_MODAL: string = 'show_doi_question_modal';
+  private static EXTENSION_LIFETIME_INPUT: string = 'project_extension_application_renewal_lifetime';
+  private static SUBMIT_EXTENSION_BUTTON: string = 'submit_extension_button';
+  private static CONFIRM_EXTENSION_BUTTON: string = 'confirm_extension_btn';
+  private static EXTENSION_REQUEST_RESULT: string = 'extension_result_submitted';
 
   static async navigateToSimpleProjectverview(): Promise<any> {
     console.log('Navigating to simple project overview');
@@ -106,19 +101,31 @@ export class ProjectOverview {
   }
 
   static async openModificationModal(appication_name: string): Promise<any> {
-    await Util.clickElementById(this.EXTENSION_MODIFICATION_BUTTON);
+    await Util.waitForPresenceOfElementById(this.MODIFICATION_REQUEST_BUTTON);
+    await Util.clickElementById(this.MODIFICATION_REQUEST_BUTTON);
+  }
+
+  static async openExtensionModal(application_Name: string): Promise<any> {
+    await Util.waitForPresenceOfElementById(this.SHOW_DOI_MODAL);
+    await Util.clickElementById(this.SHOW_DOI_MODAL);
     await Util.waitForPresenceOfElementById(this.NO_DOI_BUTTON);
-    await Util.clickElementById(this.NO_DOI_BUTTON)
-    await Util.waitForPresenceOfElementById(this.CHOOSE_MODIFICATION_BUTTON);
-    await Util.clickElementById(this.CHOOSE_MODIFICATION_BUTTON);
+    await Util.clickElementById(this.NO_DOI_BUTTON);
   }
 
   static async sendModificationRequest(application_name: string): Promise<any> {
     await Util.waitForPresenceOfElementById(this.SUBMIT_MODIFICATION_BUTTON);
     await Util.clickElementById(this.SUBMIT_MODIFICATION_BUTTON);
-    await Util.waitForPresenceOfElementById(this.CHOOSE_MODIFICATION_BUTTON);
-    await Util.clickElementById(this.CONFIRM_MODIFICATION_BUTTON);
+    await Util.waitForPresenceOfElementById(this.CONFIRM_EXTENSION_BUTTON);
+    await Util.clickElementById(this.CONFIRM_EXTENSION_BUTTON);
     await Util.waitForTextPresenceInElementById(this.MODIFICATION_REQUEST_RESULT, this.MODIFICATION_REQUEST_SUCCESS_TEXT);
+  }
+
+  static async sendExtensionRequest(application_name: string): Promise<any> {
+    await Util.waitForPresenceOfElementById(this.SUBMIT_EXTENSION_BUTTON);
+    await Util.clickElementById(this.SUBMIT_EXTENSION_BUTTON);
+    await Util.waitForPresenceOfElementById(this.CONFIRM_MODIFICATION_BUTTON);
+    await Util.clickElementById(this.CONFIRM_MODIFICATION_BUTTON);
+    await Util.waitForTextPresenceInElementById(this.EXTENSION_REQUEST_RESULT, this.MODIFICATION_REQUEST_SUCCESS_TEXT);
   }
 
   static async isBioinformaticsSet(): Promise<any> {
@@ -161,6 +168,11 @@ export class ProjectOverview {
     await Util.sendTextToElementById(this.NEW_VOLUME_COUNTER_ID, '1');
     await Util.sendTextToElementById(this.NEW_VOLUME_LIMIT_ID, '1');
     await Util.sendTextToElementById('id_project_application_renewal_comment', 'This is a Protrector test modification!');
+  }
+
+  static async fillExtensionRequest(): Promise<any> {
+    await Util.waitForPresenceOfElementById(this.EXTENSION_LIFETIME_INPUT);
+    await Util.sendTextToElementById(this.EXTENSION_LIFETIME_INPUT, '3');
   }
 
   static async removeApplication(): Promise<any> {

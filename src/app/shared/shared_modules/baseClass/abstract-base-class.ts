@@ -38,7 +38,7 @@ export enum Application_States {
   LIFETIME_EXTENSION_DENIED = 17,
   EXPIRES_SOON = 18,
   APPROVED_LAST_2_WEEKS = 19,
-  EXPIRED = 18
+  EXPIRED = 20
 
 }
 
