@@ -1,12 +1,11 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {is_vo} from "../../shared/globalvar";
+import {is_vo} from '../../shared/globalvar';
 import * as d3 from 'd3';
-import {NumbersService} from "../../api-connector/numbers.service";
+import {NumbersService} from '../../api-connector/numbers.service';
 import * as c3 from 'c3';
 import {jsPDF} from 'jspdf';
 import 'svg2pdf.js'
-import html2canvas from "html2canvas";
-
+import html2canvas from 'html2canvas';
 
 /**
  * Component to display graphs which illustrate numbers for VO.
@@ -15,10 +14,9 @@ import html2canvas from "html2canvas";
   selector: 'app-number-charts',
   templateUrl: './number-charts.component.html',
   styleUrls: ['./number-charts.component.css'],
-  providers: [NumbersService],
+  providers: [NumbersService]
 
 })
-
 
 export class NumberChartsComponent implements OnInit {
 
@@ -36,7 +34,6 @@ export class NumberChartsComponent implements OnInit {
   private terminatedOpenstack: any[] = ['OS terminated'];
   private terminatedSimpleVM: any[] = ['SVM terminated'];
   private endDates: any[] = ['x'];
-
 
   ngOnInit(): void {
     this.getData();
