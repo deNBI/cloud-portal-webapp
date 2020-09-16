@@ -301,25 +301,14 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
     const totalHoursLarge: number = Math.round((numberOfCredits / this.creditsPerHourLargeExample));
     this.smallExamplePossibleHours = totalHoursSmall;
     this.largeExamplePossibleHours = totalHoursLarge;
-    // this.smallExamplePossibleHours = totalHoursSmall % 24;
-    // this.largeExamplePossibleHours = totalHoursLarge % 24;
-    // this.smallExamplePossibleDays = this.updateCreditsDaysString(totalHoursSmall);
-    // this.largeExamplePossibleDays = this.updateCreditsDaysString(totalHoursLarge);
+    this.smallExamplePossibleDays = this.updateCreditsDaysString(totalHoursSmall);
+    this.largeExamplePossibleDays = this.updateCreditsDaysString(totalHoursLarge);
   }
 
-  // updateCreditsDaysString(hours: number): string {
-  //   let daysString: string = '';
-  //   if (Math.floor(hours / 24) === 1) {
-  //     daysString = ' day';
-  //   } else if (Math.floor(hours / 24) > 1) {
-  //     daysString = ' days';
-  //   }
-  //   if (daysString !== '') {
-  //     return Math.floor(hours / 24).toString();
-  //   }
-  //
-  //   return ''
-  // }
+  updateCreditsDaysString(hours: number): string {
+    return `${Math.floor(hours / 24)} day(s) and ${hours % 24} hour(s)`
+  }
+
   startUpdateCreditUsageLoop(): void {
 
     if (!this.credits_allowed || !this.project_application || !this.project_application.project_application_perun_id) {
