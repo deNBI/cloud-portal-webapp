@@ -13,6 +13,7 @@ import {ResourcesComponent} from './resources/resources.component';
 import {ProjectManagementModule} from '../projectmanagement/projectmanagement.module';
 import {ClientOverviewComponent} from './clients/clientOverview.component';
 import {PipeModuleModule} from '../pipe-module/pipe-module.module';
+import { NumberChartsComponent } from './number-charts/number-charts.component';
 
 /**
  * VO Manager module.
@@ -31,7 +32,8 @@ import {PipeModuleModule} from '../pipe-module/pipe-module.module';
             declarations: [
               VoOverviewComponent,
               ResourcesComponent,
-              ClientOverviewComponent
+              ClientOverviewComponent,
+              NumberChartsComponent
             ],
             providers: [
               VoService,
