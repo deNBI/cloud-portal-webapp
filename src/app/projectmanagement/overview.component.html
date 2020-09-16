@@ -201,7 +201,9 @@
             <div class="col-6">
               <div class="callout callout-info" *ngIf="this.resourceDataLoaded">
                 <small class="text-muted">Virtual machines</small><br>
-                <strong class="text-muted" *ngIf="project?.OpenStackProject">{{maximumVMs}} VMs approved
+                <strong class="text-muted" *ngIf="project?.OpenStackProject">{{maximumVMs}} VMs with a total of 
+                  {{project_application?.project_application_total_cores}} VCPUs and
+                  {{project_application?.project_application_total_ram}} GBs of RAM
                   <span *ngIf="((project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED)
                   || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION))">
                      - Resource modification requested on
