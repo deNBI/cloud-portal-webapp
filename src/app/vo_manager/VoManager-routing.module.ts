@@ -4,6 +4,7 @@ import {VoOverviewComponent} from './VoOverviewComponent';
 import {VoGuardService} from './vo-guard.service';
 import {ResourcesComponent} from './resources/resources.component';
 import {ClientOverviewComponent} from './clients/clientOverview.component';
+import {NumberChartsComponent} from './number-charts/number-charts.component';
 
 const routes: Routes = [
     {
@@ -31,7 +32,16 @@ const routes: Routes = [
             title: 'Clients'
         }
 
-    }
+    },
+
+  {
+        path: 'numbers',
+        component: NumberChartsComponent,
+        canActivate: [VoGuardService],
+        data: {
+            title: 'Cloud Numbers'
+        }
+   }
 
 ];
 
