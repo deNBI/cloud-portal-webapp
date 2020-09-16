@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {ApiSettings} from './api-settings.service'
 import {Observable} from 'rxjs';
 import {HttpClient, HttpParams} from '@angular/common/http';
-import {Flavor} from "../virtualmachines/virtualmachinemodels/flavor";
+import {Flavor} from '../virtualmachines/virtualmachinemodels/flavor';
 
 /**
  * Service which delivers functions for services related to the credit service.
