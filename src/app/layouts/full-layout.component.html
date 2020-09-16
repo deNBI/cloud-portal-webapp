@@ -393,6 +393,18 @@
             class="nav-icon fas fa-server"></i> Resources</a>
         </li>
 
+        <li class="nav-item" *ngIf="is_vo_admin && !navbar_minimized">
+          <a class="nav-link" routerLinkActive="active"
+             [routerLink]="['/vo-manager/numbers']"><i class="nav-icon fas fa-chart-pie"></i> Numbers</a>
+        </li>
+
+        <li class="nav-item" *ngIf="is_vo_admin && navbar_minimized">
+          <a class="nav-link" routerLinkActive="active" data-toggle="tooltip" data-placement="right"
+             title="VO Manager: Numbers"
+             [routerLink]="['/vo-manager/numbers']"><i class="nav-icon fas fa-chart-pie"></i> Numbers</a>
+        </li>
+
+
 
       </ul>
     </nav>
