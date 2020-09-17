@@ -316,10 +316,8 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
    * Sends a request to the BE to get the initital credits for a new application.
    */
   calculateInitialCredits(form: NgForm): void {
-
     this.creditsService.getCreditsForApplication(
-      this.totalNumberOfCores,
-      this.totalRAM,
+      this.application.flavors,
       this.application.project_application_lifetime).toPromise()
       .then((credits: number): void => {
         this.application.project_application_initial_credits = credits
