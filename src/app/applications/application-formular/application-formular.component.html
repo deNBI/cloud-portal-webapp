@@ -417,8 +417,10 @@
               <label class="col-md-4 form-control-label"><strong>Research Topics* </strong></label>
               <div class="col-md-8" style="  z-index: 999;" >
                 <div [ngClass]="{
-                                'danger-border': application?.project_application_edam_terms?.length <=0,
+                                'danger-border': application?.project_application_edam_terms?.length <=0
+                                || application?.project_application_edam_terms?.length >10,
                                 'success-border':application?.project_application_edam_terms?.length >0
+                                && application?.project_application_edam_terms?.length <=10
                                 }">
                   <ng-autocomplete #edam_ontology id="edam_input"
                                    [data]="edam_ontology_terms"
@@ -447,8 +449,10 @@
                   <span class="badge" style="cursor: pointer;"
                         (click)="application.removeEdamTerm(term)">&#10060;</span>
  </span>
-
                 </h5>
+                <div *ngIf="application?.project_application_edam_terms?.length>10" class="alert alert-warning" role="alert">
+                  You can at most choose 10 research topics for your project.
+                </div>
               </div>
             </div>
             <div class="form-group row">
@@ -990,7 +994,7 @@
             Please select at least one flavor.
           </div>
           <div
-            *ngIf="form.invalid ||application?.project_application_edam_terms.length == 0 || (application?.flavors.length == 0  && !application?.project_application_openstack_project) || (!application?.dissemination.isPlatformSelected() && application?.project_application_report_allowed)"
+            *ngIf="form.invalid ||application?.project_application_edam_terms.length == 0 || application?.project_application_edam_terms.length > 10|| (application?.flavors.length == 0  && !application?.project_application_openstack_project) || (!application?.dissemination.isPlatformSelected() && application?.project_application_report_allowed)"
             class="form-group row alert alert-warning">
             Some required fields are incorrect or not filled in yet.
             Please check if all required (*) fields are filled in correctly.
@@ -1023,7 +1027,7 @@
             </div>
             <label class="col-md-4 form-control-label">
               <button (click)="notificationModal.show();approveApplication(form);"
-                      [disabled]="!respCheck.checked || form.invalid  ||application?.project_application_edam_terms.length == 0  || (application?.flavors.length == 0  && !application?.project_application_openstack_project)|| (!application?.dissemination?.isPlatformSelected()  && application?.project_application_report_allowed)"
+                      [disabled]="!respCheck.checked || form.invalid  ||application?.project_application_edam_terms.length == 0  || application?.project_application_edam_terms.length > 10 || (application?.flavors.length == 0  && !application?.project_application_openstack_project)|| (!application?.dissemination?.isPlatformSelected()  && application?.project_application_report_allowed)"
 
                       class="btn btn-sm btn-success">
                 <i class="fa fa-dot-circle-o"></i>
@@ -1036,7 +1040,7 @@
             <button *ngIf="!is_validation"
                     (click)="filterEnteredData(form);calculateInitialCredits(form); submitModal.show();"
                     id="submit_btn"
-                    [disabled]="submitting || form.invalid  ||application?.project_application_edam_terms.length == 0  || (application?.flavors.length == 0  && !application?.project_application_openstack_project) || (!application?.dissemination?.isPlatformSelected()  && application?.project_application_report_allowed)"
+                    [disabled]="submitting || form.invalid  ||application?.project_application_edam_terms.length == 0 || application?.project_application_edam_terms.length > 10 || (application?.flavors.length == 0  && !application?.project_application_openstack_project) || (!application?.dissemination?.isPlatformSelected()  && application?.project_application_report_allowed)"
                     class="btn btn-sm btn-success"
                     type="button"><i
               class="fa fa-dot-circle-o"></i> Submit
