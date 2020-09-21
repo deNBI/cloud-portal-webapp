@@ -119,7 +119,7 @@
     "raw-loader": "^4.0.1",
     "sass-loader": "^10.0.2",
     "script-loader": "^0.7.0",
-    "source-map-loader": "^1.0.2",
+    "source-map-loader": "^1.1.0",
     "style-loader": "^1.2.1",
     "stylus-loader": "^3.0.1",
     "ts-node": "9.0.0",
