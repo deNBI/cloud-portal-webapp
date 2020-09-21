@@ -201,7 +201,9 @@
             <div class="col-6">
               <div class="callout callout-info" *ngIf="this.resourceDataLoaded">
                 <small class="text-muted">Virtual machines</small><br>
-                <strong class="text-muted" *ngIf="project?.OpenStackProject">{{maximumVMs}} VMs approved
+                <strong class="text-muted" *ngIf="project?.OpenStackProject">{{maximumVMs}} VMs with a total of
+                  {{project_application?.project_application_total_cores}} VCPUs and
+                  {{project_application?.project_application_total_ram}} GBs of RAM
                   <span *ngIf="((project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED)
                   || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION))">
                      - Resource modification requested on
@@ -238,6 +240,8 @@
                   Resource modification requested</button>
                 <a class="btn btn-outline-success" href="#/virtualmachines/newVM"
                    *ngIf="!project?.OpenStackProject && isAbleToStart()">Start a VM</a>
+                <a class="btn btn-outline-success" target="_blank" href="{{project?.ComputeCenter.Login}}"
+                   *ngIf="project?.OpenStackProject">Login to OpenStack</a>
               </div>
             </div>
           </div>
@@ -291,7 +295,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-6" *ngIf="is_vo_admin">
+            <div class="col-6">
               <button id="show_credits_extension_modal"
                       *ngIf="!((project_application | hasstatusinlist: Application_States.CREDITS_EXTENSION_REQUESTED)
                   || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_CREDITS))"
@@ -553,7 +557,7 @@
   </div>
   <div class="row">
     <div class="col"
-         *ngIf="is_vo_admin && ((project_application | hasstatusinlist:Application_States.APPROVED)
+         *ngIf="credits_allowed && ((project_application | hasstatusinlist:Application_States.APPROVED)
            || (project_application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)
            || (project_application | hasstatusinlist:Application_States.MODIFICATION_DECLINED) )">
       <div class="card" style=" ">
@@ -1258,10 +1262,10 @@
             </div>
 
 
-            <div *ngIf="is_vo_admin || credits_allowed" class="form-group row">
+            <div *ngIf="credits_allowed" class="form-group row">
               <label #creditnumbers id="creditnumber" class="col">
-                <strong>Expected extra credits: <span
-                  id="modification_credits">{{project_modification.extra_credits}}
+                <strong>Expected total credits: {{project_application?.project_application_initial_credits}} + <span
+                  id="modification_credits">({{project_modification?.extra_credits}}) = {{project_application?.project_application_initial_credits + project_modification?.extra_credits}}
                 </span></strong></label>
             </div>
             <div class="alert alert-primary" role="alert">
@@ -1391,8 +1395,10 @@
               <label class="col-md-4 form-control-label"><strong>Research Topics* </strong></label>
               <div class="col-md-8">
                 <div [ngClass]="{
-                                'danger-border': selected_ontology_terms?.length <=0,
-                                'success-border':selected_ontology_terms?.length >0
+                                'danger-border': selected_ontology_terms.length <=0
+                                || selected_ontology_terms.length >10,
+                                'success-border':selected_ontology_terms.length >0
+                                && selected_ontology_terms?.length <=10
                                 }">
                   <ng-autocomplete #edam_ontology id="edam_input"
                                    [data]="edam_ontology_terms"
@@ -1412,17 +1418,17 @@
                     <div [innerHTML]="notFound"></div>
                   </ng-template>
 
-
                 </div>
                 <h5><span
-
                   *ngFor="let term of selected_ontology_terms"
                   style="margin-right: 5px; "
                   class="badge badge-info"> {{term.term}}
                   <span class="badge" style="cursor: pointer;" (click)="removeEDAMterm(term)">&#10060;</span>
- </span>
-
+              </span>
                 </h5>
+                <div *ngIf="selected_ontology_terms.length>10" class="alert alert-warning" role="alert">
+                  You can at most choose 10 research topics for your project.
+                </div>
               </div>
             </div>
 
@@ -1441,7 +1447,7 @@
             </div>
 
 
-            <div *ngIf="is_vo_admin || credits_allowed" class="form-group row">
+            <div *ngIf="credits_allowed" class="form-group row">
               <label #corenumbers id="creditnumber_extension" class="col">
                 <strong>Expected number of extra credits: <span
                   id="extension_credits">{{project_extension.extra_credits}}</span></strong>
@@ -1561,10 +1567,10 @@
                   </strong>
                 </tr>
                 <tr>
-                  <td>Enough Credits to run 4 {{smallExampleFlavor?.name}} for {{smallExamplePossibleHours}} hours <strong>non-stop</strong></td>
+                  <td>Enough Credits to run 4 {{smallExampleFlavor?.name}} for {{smallExamplePossibleHours}} hours (i.e. {{smallExamplePossibleDays}}) <strong>non-stop</strong></td>
                 </tr>
                 <tr>
-                  <td>Enough Credits to run 1 {{largeExampleFlavor?.name}} for {{largeExamplePossibleHours}} hours <strong>non-stop</strong></td>
+                  <td>Enough Credits to run 1 {{largeExampleFlavor?.name}} for {{largeExamplePossibleHours}} hours (i.e. {{largeExamplePossibleDays}}) <strong>non-stop</strong></td>
                 </tr>
               </div>
             </div>
@@ -1681,8 +1687,9 @@
               <tr *ngIf="request_type == ExtensionRequestType.CREDIT">
                 <td>Amount of requested extra credits: {{project_credit_request.extra_credits}}</td>
               </tr>
-              <tr *ngIf="(is_vo_admin || credits_allowed) && request_type != ExtensionRequestType.CREDIT">
-                <td><strong>Approximate number of extra credits:{{project_modification?.extra_credits}}</strong></td>
+              <tr *ngIf="(credits_allowed) && request_type != ExtensionRequestType.CREDIT">
+                <td *ngIf="request_type == ExtensionRequestType.MODIFICATION"><strong>Approximate number of extra credits:{{project_modification?.extra_credits}}</strong></td>
+                <td *ngIf="request_type == ExtensionRequestType.EXTENSION"><strong>Approximate number of extra credits:{{project_extension?.extra_credits}}</strong></td>
               </tr>
             </table>
           </div>

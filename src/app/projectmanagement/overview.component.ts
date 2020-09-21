@@ -207,6 +207,14 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   }
 
   calculateCreditsLifeTime(): void {
+    if (!this.credits_allowed) {
+      return;
+    }
+    if (this.project_extension.extra_lifetime <= 0 || !Number.isInteger(this.project_extension.extra_lifetime)) {
+      this.project_extension.extra_credits = 0;
+
+      return;
+    }
     this.subscription.add(
       this.creditsService.getExtraCreditsForLifetimeExtension(
         this.project_extension.extra_lifetime,
@@ -219,31 +227,32 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   }
 
   calculateCreditsResourceModification(): void {
+    if (!this.credits_allowed) {
+      return;
+    }
     this.subscription.add(
       this.creditsService.getExtraCreditsForResourceExtension(
-        this.project_modification.total_cores,
-        this.project_modification.total_ram,
+        this.project_modification.flavors,
         this.project_application.project_application_id.toString()
       ).subscribe(
         (credits: number): void => {
           this.project_modification.extra_credits = credits;
         }))
-
   }
 
-  calculateCreditsModification(): void {
-    this.subscription.add(
-      this.creditsService.getExtraCreditsForResourceExtension(
-        this.project_modification.total_cores,
-        this.project_modification.total_ram,
-        this.project_application.project_application_id.toString()
-      ).subscribe(
-        (credits: number): void => {
-
-          this.project_modification.extra_credits = credits;
-        }));
-
-  }
+  // calculateCreditsModification(): void {
+  //   this.subscription.add(
+  //     this.creditsService.getExtraCreditsForResourceExtension(
+  //       this.project_modification.total_cores,
+  //       this.project_modification.total_ram,
+  //       this.project_application.project_application_id.toString()
+  //     ).subscribe(
+  //       (credits: number): void => {
+  //
+  //         this.project_modification.extra_credits = credits;
+  //       }));
+  //
+  // }
 
   fetchCreditHistoryOfProject(): void {
     if (this.project != null) {
@@ -292,28 +301,17 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
     const totalHoursLarge: number = Math.round((numberOfCredits / this.creditsPerHourLargeExample));
     this.smallExamplePossibleHours = totalHoursSmall;
     this.largeExamplePossibleHours = totalHoursLarge;
-    // this.smallExamplePossibleHours = totalHoursSmall % 24;
-    // this.largeExamplePossibleHours = totalHoursLarge % 24;
-    // this.smallExamplePossibleDays = this.updateCreditsDaysString(totalHoursSmall);
-    // this.largeExamplePossibleDays = this.updateCreditsDaysString(totalHoursLarge);
+    this.smallExamplePossibleDays = this.updateCreditsDaysString(totalHoursSmall);
+    this.largeExamplePossibleDays = this.updateCreditsDaysString(totalHoursLarge);
   }
 
-  // updateCreditsDaysString(hours: number): string {
-  //   let daysString: string = '';
-  //   if (Math.floor(hours / 24) === 1) {
-  //     daysString = ' day';
-  //   } else if (Math.floor(hours / 24) > 1) {
-  //     daysString = ' days';
-  //   }
-  //   if (daysString !== '') {
-  //     return Math.floor(hours / 24).toString();
-  //   }
-  //
-  //   return ''
-  // }
+  updateCreditsDaysString(hours: number): string {
+    return `${Math.floor(hours / 24)} day(s) and ${hours % 24} hour(s)`
+  }
+
   startUpdateCreditUsageLoop(): void {
 
-    if (!this.credits_allowed && !this.is_vo_admin || !this.project_application || !this.project_application.project_application_perun_id) {
+    if (!this.credits_allowed || !this.project_application || !this.project_application.project_application_perun_id) {
       return;
     }
     this.getCurrentCreditsOfProject();
