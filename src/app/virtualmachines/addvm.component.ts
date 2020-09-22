@@ -23,6 +23,7 @@ import {FlavorService} from '../api-connector/flavor.service';
 import {VirtualmachineService} from '../api-connector/virtualmachine.service';
 import {ApiSettings} from '../api-connector/api-settings.service';
 import {BlockedImageTagResenv} from '../facility_manager/image-tag';
+import {ApplicationRessourceUsage} from '../applications/application-ressource-usage/application-ressource-usage';
 
 /**
  * Start virtualmachine component.
@@ -156,24 +157,13 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
   selectedProjectRamUsed: number;
   detached_project_volumes: Volume[] = [];
 
-  /**
-   * Selected Project vms max.
-   */
-  selectedProjectVmsMax: number;
-
-  /**
-   * Selected Project vms used.
-   */
-  selectedProjectVmsUsed: number;
-
-  selectedProjectGPUsUsed: number;
-  selectedProjectGPUsMax: number;
 
   newCores: number = 0;
   newRam: number = 0;
   newVms: number = 0;
   newGpus: number = 0;
   cluster_allowed: boolean = false;
+  selectedProjectRessources: ApplicationRessourceUsage;
 
   /**
    * The selected project ['name',id].
@@ -659,19 +649,9 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
     this.selectedImage = undefined;
     this.selectedFlavor = undefined;
     this.getDetachedVolumesByProject();
-    this.groupService.getGroupResources(this.selectedProject[1].toString()).subscribe((res: any): void => {
-      this.selectedProjectVmsMax = res['number_vms'];
-      this.selectedProjectVmsUsed = res['used_vms'];
-      this.selectedProjectDiskspaceMax = res['max_volume_storage'];
-      this.selectedProjectDiskspaceUsed = res['used_volume_storage'];
-      this.selectedProjectVolumesMax = res['volume_counter'];
-      this.selectedProjectVolumesUsed = res['used_volumes'];
-      this.selectedProjectCoresMax = res['cores_total'];
-      this.selectedProjectCoresUsed = res['cores_used'];
-      this.selectedProjectRamMax = res['ram_total'];
-      this.selectedProjectRamUsed = res['ram_used'];
-      this.selectedProjectGPUsMax = res['gpus_max'];
-      this.selectedProjectGPUsUsed = res['gpus_used'];
+    this.groupService.getGroupResources(this.selectedProject[1].toString()).subscribe((res: ApplicationRessourceUsage): void => {
+      this.selectedProjectRessources = new ApplicationRessourceUsage(res);
+
       this.data_loaded = true;
       this.checkProjectDataLoaded();
     });

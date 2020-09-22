@@ -123,7 +123,7 @@
                        *ngIf="cluster?.status != VirtualMachineStates.staticDELETED && cluster?.status != VirtualMachineStates.staticDELETING">
                     <a class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
                        [id]="'scale_up_'+cluster?.cluster_id"
-                       (click)="selectedCluster=cluster; ">
+                       (click)="selectedCluster=cluster;calcRess(); ">
                       Scale-Up</a>
 
 
@@ -266,6 +266,9 @@
                    role="alert">
                 <p> This will only delete the selected machines, you have to execute the following script on the master
                   machine to configure the master correctly!</p>
+                <p>Example usage:<br><samp>bash scale-down.sh <span
+                  *ngFor="let vm of scale_down_vms">{{vm.fixed_ip}}</span></samp></p>
+
                 <input class="form-check-input" name="sclae_down_acknowledgement_checkbox" type="checkbox"
                        id="public_key_acknowledgement_checkbox" [(ngModel)]="scaling_warning_read">
                 <label class="form-check-label" for="public_key_acknowledgement_checkbox">

@@ -80,18 +80,7 @@
 
             <div
               *ngIf="client_avaiable && selectedProjectClient?.bibigrid_available && projectDataLoaded && flavors_loaded">
-              <app-resource-overview [selectedProjectCoresMax]="selectedProjectCoresMax"
-                                     [selectedProjectCoresUsed]="selectedProjectCoresUsed"
-                                     [selectedProjectDiskspaceMax]="selectedProjectDiskspaceMax"
-                                     [selectedProjectDiskspaceUsed]="selectedProjectDiskspaceUsed"
-                                     [selectedProjectGPUsMax]="selectedProjectGPUsMax"
-                                     [selectedProjectGPUsUsed]="selectedProjectGPUsUsed"
-                                     [selectedProjectRamMax]="selectedProjectRamMax"
-                                     [selectedProjectRamUsed]="selectedProjectRamUsed"
-                                     [selectedProjectVmsMax]="selectedProjectVmsMax"
-                                     [selectedProjectVmsUsed]="selectedProjectVmsUsed"
-                                     [selectedProjectVolumesMax]="selectedProjectVolumesMax"
-                                     [selectedProjectVolumesUsed]="selectedProjectVolumesUsed"
+              <app-resource-overview [ressourceUsage]="selectedProjectRessources"
                                      [newCores]="newCores" [newRam]="newRam" [newGpus]="newGpus"
                                      [newVms]="newVms"
                                      [showAdditionalRes]="true"></app-resource-overview>
@@ -99,7 +88,7 @@
 
                 <div>
                   <div class="alert alert-primary" role="alert"
-                       *ngIf="selectedProject && (selectedProjectVmsUsed + 2 ) > selectedProjectVmsMax">
+                       *ngIf="selectedProject && (selectedProjectRessources?.used_vms + 2 ) > selectedProjectRessources?.number_vms">
                     The limit for virtualmachines is too low for your project to start a new cluster.
                     Your principal
                     investigator can request more
@@ -107,7 +96,7 @@
 
                   </div>
                   <div class="alert alert-primary " role="alert"
-                       *ngIf="selectedProject && selectedProjectVmsUsed < selectedProjectVmsMax && flavors_loaded && flavors_usable.length == 0 && !selectedFlavor">
+                       *ngIf="selectedProject && selectedProjectRessources?.used_vms < selectedProjectRessources?.number_vms && flavors_loaded && flavors_usable.length == 0 && !selectedFlavor">
                     There are too few cores and not enough ram available for this project to start a new machine.
                     Your principal investigator can request more
                     resources if necessary.
@@ -119,7 +108,7 @@
               <div>
 
                 <accordion class="col"
-                           *ngIf="selectedProject && projectDataLoaded && (selectedProjectVmsUsed +2) <= selectedProjectVmsMax && (flavors.length != 0 || selectedFlavor) && images?.length> 0">
+                           *ngIf="selectedProject && projectDataLoaded && (selectedProjectRessources?.used_vms +2) <= selectedProjectRessources?.number_vms && (flavors.length != 0 || selectedFlavor) && images?.length> 0">
 
                   <accordion-group #masterInstanceGroup [isOpen]="true"
                   >
@@ -159,7 +148,7 @@
                   </accordion-group>
 
                   <div class="alert alert-info " role="alert"
-                       *ngIf="(!selectedMasterFlavor || !selectedMasterImage) &&  (selectedProjectVmsUsed + 2 ) <= selectedProjectVmsMax">
+                       *ngIf="(!selectedMasterFlavor || !selectedMasterImage) &&  (selectedProjectRessources?.used_vms + 2 ) <= selectedProjectRessources?.number_vms">
                     Please select a master instance configuration before selecting the worker instances!
                   </div>
                 </accordion>
@@ -169,7 +158,7 @@
                   <accordion-group #workerInstancesGroup [isOpen]="!(!selectedMasterFlavor || !selectedMasterImage)" (isOpenChange)="resizeFix();"
                                    [isDisabled]="!selectedMasterFlavor || !selectedMasterImage"
 
-                                   *ngIf="selectedProject && projectDataLoaded &&  (selectedProjectVmsUsed + 2 ) <= selectedProjectVmsMax &&
+                                   *ngIf="selectedProject && projectDataLoaded &&  (selectedProjectRessources?.used_vms + 2 ) <= selectedProjectRessources?.number_vms &&
                   (flavors.length != 0 || selectedFlavor)">
                     <div accordion-heading style="width: 100%; cursor: pointer"><strong
                       *ngIf="!selectedMasterFlavor || !selectedMasterImage">Worker Instances [disabled] </strong>
@@ -239,7 +228,7 @@
           </form>
 
           <div
-            *ngIf="selectedProjectClient?.bibigrid_available && (selectedProjectVmsUsed +2) <= selectedProjectVmsMax && (!selectedMasterFlavor || !selectedMasterImage || !selectedWorkerFlavor  ||!workerInstancesCount) && selectedProject && projectDataLoaded && flavors_loaded"
+            *ngIf="selectedProjectClient?.bibigrid_available && (selectedProjectRessources?.used_vms +2) <= selectedProjectRessources?.number_vms && (!selectedMasterFlavor || !selectedMasterImage || !selectedWorkerFlavor  ||!workerInstancesCount) && selectedProject && projectDataLoaded && flavors_loaded"
             class="alert alert-danger" role="alert" style="max-width: 600px;margin: 0 auto;">
             <p>Please choose the following before starting a Cluster:</p>
             <p *ngIf="!selectedMasterFlavor">- The flavor type of your Master VM
@@ -256,7 +245,7 @@
         </div>
 
         <div class="form-group row"
-             *ngIf="projectDataLoaded && (selectedProjectVmsUsed +2) <= selectedProjectVmsMax && (flavors?.length > 0  || selectedFlavor) && selectedProjectClient?.bibigrid_available">
+             *ngIf="projectDataLoaded && (selectedProjectRessources?.used_vms +2) <= selectedProjectRessources?.number_vms && (flavors?.length > 0  || selectedFlavor) && selectedProjectClient?.bibigrid_available">
 
           <button style=" margin-left: auto;margin-top: 25px;
     margin-right: auto;

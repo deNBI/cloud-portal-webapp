@@ -14,6 +14,7 @@ import {ClientService} from '../../../api-connector/client.service';
 import {Clusterinfo} from '../clusterinfo';
 import {ClipboardService} from 'ngx-clipboard';
 import {VirtualMachine} from '../../virtualmachinemodels/virtualmachine';
+import {ApplicationRessourceUsage} from '../../../applications/application-ressource-usage/application-ressource-usage';
 
 /**
  * Cluster overview componentn.
@@ -23,7 +24,7 @@ import {VirtualMachine} from '../../virtualmachinemodels/virtualmachine';
              templateUrl: './clusterOverview.component.html',
              styleUrls: ['../../vmOverview.component.scss'],
              providers: [FacilityService, ImageService, UserService,
-               VirtualmachineService, FullLayoutComponent, GroupService, ClientService]
+               VirtualmachineService, FullLayoutComponent, GroupService, ClientService, GroupService]
            })
 
 export class ClusterOverviewComponent implements OnInit, OnDestroy {
@@ -44,6 +45,7 @@ export class ClusterOverviewComponent implements OnInit, OnDestroy {
   scaling_warning_read: boolean = false;
 
   selectedCluster: Clusterinfo = null;
+  ressourceUsage: ApplicationRessourceUsage;
 
   /**
    * Facilitties where the user is manager ['name',id].
@@ -87,7 +89,7 @@ export class ClusterOverviewComponent implements OnInit, OnDestroy {
   filterChanged: Subject<string> = new Subject<string>();
   virtualMachineStates: VirtualMachineStates = new VirtualMachineStates();
 
-  constructor(private facilityService: FacilityService,
+  constructor(private facilityService: FacilityService, private groupService: GroupService,
               private imageService: ImageService, private userservice: UserService,
               private virtualmachineservice: VirtualmachineService, private fb: FormBuilder,
               private clipboardService: ClipboardService
@@ -111,6 +113,14 @@ export class ClusterOverviewComponent implements OnInit, OnDestroy {
       this.getAllCLusterFacilities()
     }
 
+  }
+
+  calcRess(): void {
+    this.groupService.getGroupResources(this.selectedCluster.master_instance.projectid.toString()).subscribe((res: ApplicationRessourceUsage): void => {
+      this.ressourceUsage = new ApplicationRessourceUsage(res);
+      let count: number = this.ressourceUsage.calcMaxScaleUpWorkerInstancesByFlavor(this.selectedCluster.worker_instances[0].flavor)
+      console.log(count)
+    });
   }
 
   resetScaleDown(): void {

@@ -18,6 +18,7 @@ import {BiocondaComponent} from '../../conda/bioconda.component';
 import {forkJoin} from 'rxjs';
 import {Clusterinfo} from '../clusterinfo';
 import {Router} from '@angular/router';
+import {ApplicationRessourceUsage} from '../../../applications/application-ressource-usage/application-ressource-usage';
 
 /**
  * Cluster Component
@@ -105,46 +106,7 @@ export class AddClusterComponent implements OnInit {
    */
   selectedProjectClient: Client;
 
-  /**
-   * Selected Project volumeStorage max.
-   */
-  selectedProjectDiskspaceMax: number;
-
-  /**
-   * Selected Project volumeStorage used.
-   */
-  selectedProjectDiskspaceUsed: number;
-
-  /**
-   * Selected Project volumes max.
-   */
-  selectedProjectVolumesMax: number;
-
-  /**
-   * Selected Project volumes used.
-   */
-  selectedProjectVolumesUsed: number;
-
-  selectedProjectCoresUsed: number;
-
-  selectedProjectCoresMax: number;
-
-  selectedProjectRamMax: number;
-
-  selectedProjectRamUsed: number;
-
-  /**
-   * Selected Project vms max.
-   */
-  selectedProjectVmsMax: number;
-
-  /**
-   * Selected Project vms used.
-   */
-  selectedProjectVmsUsed: number;
-
-  selectedProjectGPUsUsed: number;
-  selectedProjectGPUsMax: number;
+  selectedProjectRessources: ApplicationRessourceUsage;
 
   /**
    * The selected project ['name',id].
@@ -211,53 +173,25 @@ export class AddClusterComponent implements OnInit {
 
   checkFlavorsUsableForCluster(): void {
     this.flavors_usable = this.flavors.filter((flav: Flavor): boolean => {
-      return this.filterFlavorsTest(flav)
+      return this.selectedProjectRessources.filterFlavorsTest(flav, this.flavors)
     });
 
     this.flavors_loaded = true;
 
   }
 
-  filterFlavorsTest(flavor: Flavor): boolean {
-    const tmp_flavors: Flavor[] = [];
-    const available_cores: number = this.selectedProjectCoresMax - (flavor.vcpus + this.selectedProjectCoresUsed);
-    const available_ram: number = this.selectedProjectRamMax - (flavor.ram / 1024 + this.selectedProjectRamUsed);
-    const available_gpu: number = this.selectedProjectGPUsMax - (flavor.gpu + this.selectedProjectGPUsUsed);
-    console.log(flavor.name, available_cores, available_ram, available_gpu)
-    for (const fl of this.flavors) {
-      if (fl.vcpus <= available_cores && (fl.ram / 1024) <= available_ram && fl.gpu <= available_gpu) {
-        tmp_flavors.push(fl)
-      }
-    }
-
-    return tmp_flavors.length > 0;
-  }
-
   filterFlavors(): void {
-    const tmp_flavors: Flavor[] = [];
-    const available_cores: number = this.selectedProjectCoresMax - (this.newCores + this.selectedProjectCoresUsed);
-    const available_ram: number = this.selectedProjectRamMax - (this.newRam + this.selectedProjectRamUsed);
-    const available_gpu: number = this.selectedProjectGPUsMax - (this.newGpus + this.selectedProjectGPUsUsed);
-    for (const fl of this.flavors) {
-      if (fl.vcpus <= available_cores && (fl.ram / 1024) <= available_ram && fl.gpu <= available_gpu) {
-        tmp_flavors.push(fl)
-      }
-    }
-    this.flavors_usable = tmp_flavors;
+
+    this.flavors_usable = this.selectedProjectRessources.filterFlavors(this.newCores, this.newRam, this.newGpus, this.flavors);
   }
 
   calcMaxWorkerInstancesByFlavor(): void {
-    this.workerInstancesCount = null;
-    const ram_max_vms: number = (this.selectedProjectRamMax - this.selectedProjectRamUsed - (this.selectedMasterFlavor.ram / 1024))
-      / (this.selectedWorkerFlavor.ram / 1024);
-    const cpu_max_vms: number = (this.selectedProjectCoresMax - this.selectedProjectCoresUsed - this.selectedMasterFlavor.vcpus)
-      / this.selectedWorkerFlavor.vcpus;
 
-    this.maxWorkerInstances = Math.floor(Math.min(ram_max_vms, cpu_max_vms, this.selectedProjectVmsMax - this.selectedProjectVmsUsed - 1))
+    // tslint:disable-next-line:max-line-length
+    this.maxWorkerInstances = this.selectedProjectRessources.calcMaxWorkerInstancesByFlavor(this.selectedMasterFlavor, this.selectedWorkerFlavor)
   }
 
   calculateNewValues(): void {
-    console.log('test')
     let tmp_ram: number = 0;
     let tmp_cores: number = 0;
     let tmp_gpus: number = 0;
@@ -430,25 +364,15 @@ export class AddClusterComponent implements OnInit {
     this.images = [];
     this.selectedImage = undefined;
     this.selectedFlavor = undefined;
-    this.groupService.getGroupResources(this.selectedProject[1].toString()).subscribe((res: any): void => {
-      this.selectedProjectVmsMax = res['number_vms'];
-      this.selectedProjectVmsUsed = res['used_vms'];
-      this.selectedProjectDiskspaceMax = res['max_volume_storage'];
-      this.selectedProjectDiskspaceUsed = res['used_volume_storage'];
-      this.selectedProjectVolumesMax = res['volume_counter'];
-      this.selectedProjectVolumesUsed = res['used_volumes'];
-      this.selectedProjectCoresMax = res['cores_total'];
-      this.selectedProjectCoresUsed = res['cores_used'];
-      this.selectedProjectRamMax = res['ram_total'];
-      this.selectedProjectRamUsed = res['ram_used'];
-      this.selectedProjectGPUsMax = res['gpus_max'];
-      this.selectedProjectGPUsUsed = res['gpus_used'];
+    this.getImages(this.selectedProject[1]);
+
+    this.groupService.getGroupResources(this.selectedProject[1].toString()).subscribe((res: ApplicationRessourceUsage): void => {
+      this.selectedProjectRessources = new ApplicationRessourceUsage(res);
+      this.getFlavors(this.selectedProject[1]);
       this.projectDataLoaded = true;
 
-    });
 
-    this.getImages(this.selectedProject[1]);
-    this.getFlavors(this.selectedProject[1]);
+    });
 
   }
 
