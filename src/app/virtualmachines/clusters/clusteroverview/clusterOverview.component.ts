@@ -13,6 +13,7 @@ import {GroupService} from '../../../api-connector/group.service';
 import {ClientService} from '../../../api-connector/client.service';
 import {Clusterinfo} from '../clusterinfo';
 import {ClipboardService} from 'ngx-clipboard';
+import {VirtualMachine} from '../../virtualmachinemodels/virtualmachine';
 
 /**
  * Cluster overview componentn.
@@ -39,6 +40,8 @@ export class ClusterOverviewComponent implements OnInit, OnDestroy {
   FILTER_DEBOUNCE_TIME: number = 2000;
 
   isSearching: boolean = true;
+  scale_down_vms: VirtualMachine[] = []
+  scaling_warning_read: boolean = false;
 
   selectedCluster: Clusterinfo = null;
 
@@ -82,6 +85,7 @@ export class ClusterOverviewComponent implements OnInit, OnDestroy {
   clusterPerPageChange: Subject<number> = new Subject<number>();
 
   filterChanged: Subject<string> = new Subject<string>();
+  virtualMachineStates: VirtualMachineStates = new VirtualMachineStates();
 
   constructor(private facilityService: FacilityService,
               private imageService: ImageService, private userservice: UserService,
@@ -107,6 +111,38 @@ export class ClusterOverviewComponent implements OnInit, OnDestroy {
       this.getAllCLusterFacilities()
     }
 
+  }
+
+  resetScaleDown(): void {
+    this.scaling_warning_read = false;
+    this.scale_down_vms = [];
+  }
+
+  setForScaleDown(vm: VirtualMachine): void {
+    const idx: number = this.scale_down_vms.indexOf(vm)
+    if (idx === -1) {
+      this.scale_down_vms.push(vm)
+    } else {
+      this.scale_down_vms.splice(idx, 1)
+
+    }
+  }
+
+  scaleDownDeleteVm(): void {
+    this.scale_down_vms.forEach((vm: VirtualMachine): void => {
+      this.deleteVm(vm)
+    })
+  }
+
+  deleteVm(vm: VirtualMachine): void {
+    this.virtualmachineservice.deleteVM(vm.openstackid).subscribe(
+      (updated_vm: VirtualMachine): void => {
+        const idx: number = this.selectedCluster.worker_instances.indexOf(vm)
+        if (idx !== -1) {
+          this.selectedCluster.worker_instances[idx] = updated_vm
+        }
+
+      })
   }
 
   copyToClipboard(text: string): void {

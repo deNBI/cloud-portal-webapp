@@ -21,6 +21,7 @@ export class VirtualMachine {
   still_used_confirmation_requested_date: Date;
   stopped_at: string;
   elixir_id: string;
+  fixed_ip: string;
   userlogin: string;
   floating_ip: string;
   ssh_command: string;
@@ -57,6 +58,7 @@ export class VirtualMachine {
     this.projectid = vm.projectid;
     this.res_env_url = vm.res_env_url;
     this.modes = vm.modes;
+    this.fixed_ip=vm.fixed_ip;
     this.cluster = vm.cluster;
     this.volumes = vm.volumes;
     this.still_used_confirmation_requested = vm.still_used_confirmation_requested;

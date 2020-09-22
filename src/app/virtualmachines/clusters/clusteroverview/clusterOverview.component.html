@@ -106,24 +106,42 @@
               </div>
               <div class="card-body p-x-1 py-h">
                 <div class="row">
-                  <div class="col-6"
+                  <div class="col-3"
                        *ngIf="cluster?.status == 'Running' ">
                     <a *ngIf="!show_connection_infO"
                        class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
                        [id]="'showHowToConnectButton_'+cluster?.cluster_id"
-                       (click)="show_connection_infO=true; "  onClick="return false;">
+                       (click)="show_connection_infO=true; ">
                       How to connect ...</a>
 
                     <a *ngIf="show_connection_infO" class="font-weight-bold font-xs btn-block btn btn-secondary"
                        [id]="'hideHowToConnectButton_'+cluster?.cluster_id"
-                       (click)="show_connection_infO=false; " onClick="return false;">
+                       (click)="show_connection_infO=false; ">
                       ... Hide information</a>
                   </div>
-                  <div class="col-6"
+                  <div class="col-3"
+                       *ngIf="cluster?.status != VirtualMachineStates.staticDELETED && cluster?.status != VirtualMachineStates.staticDELETING">
+                    <a class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+                       [id]="'scale_up_'+cluster?.cluster_id"
+                       (click)="selectedCluster=cluster; ">
+                      Scale-Up</a>
+
+
+                  </div>
+                  <div class="col-3"
+                       *ngIf="cluster?.status != VirtualMachineStates.staticDELETED && cluster?.status != VirtualMachineStates.staticDELETING">
+                    <a class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+                       [id]="'scale_down_'+cluster?.cluster_id"
+                       (click)="selectedCluster=cluster;resetScaleDown();scaleDownModal.show()">
+                      Scale-Down</a>
+
+
+                  </div>
+                  <div class="col-3"
                        *ngIf="cluster?.status != VirtualMachineStates.staticDELETED && cluster?.status != VirtualMachineStates.staticDELETING">
                     <a class="font-weight-bold font-xs btn-block text-muted btn btn-outline-danger"
                        [id]="'delete_'+cluster?.cluster_id"
-                       (click)="selectedCluster=cluster; verifyModal.show()"  onClick="return false;">
+                       (click)="selectedCluster=cluster; verifyModal.show()" onClick="return false;">
                       Delete</a>
 
 
@@ -200,3 +218,70 @@
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+    <div bsModal #scaleDownModal="bs-modal" class="modal  fade" tabindex="-1" role="dialog"
+         aria-labelledby="Label"
+         aria-hidden="true"
+         id="scaleDownModal">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Scale-Down Cluster</h4>
+            <button type="button" class="close" style="cursor: pointer"
+                    (click)="scaleDownModal.hide()"
+                    aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="alert alert-warning" role="alert">
+              <p> Which worker instances should be deleted for scaling down your cluster?</p></div>
+
+            <div class="table-responsive">
+              <table class="table table-hover" style="word-wrap: break-word;table-layout: fixed">
+                <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Status</th>
+                  <th>Private IP</th>
+                  <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let vm of selectedCluster?.worker_instances">
+                  <td>{{ vm.name }}</td>
+                  <td>
+                    <app-vmstatus [with_text]="false" [vm]="vm"></app-vmstatus>
+                  </td>
+                  <td>{{ vm.fixed_ip}}</td>
+                  <td><input *ngIf="vm?.status !== virtualMachineStates.staticDELETED" type="checkbox"
+                             (change)="setForScaleDown(vm)" [checked]="scale_down_vms |  inList:vm"
+                  ></td>
+                </tr>
+
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+              <div class="alert" [ngClass]="{'alert-danger':!scaling_warning_read,'alert-success':scaling_warning_read}"
+                   role="alert">
+                <p> This will only delete the selected machines, you have to execute the following script on the master
+                  machine to configure the master correctly!</p>
+                <input class="form-check-input" name="sclae_down_acknowledgement_checkbox" type="checkbox"
+                       id="public_key_acknowledgement_checkbox" [(ngModel)]="scaling_warning_read">
+                <label class="form-check-label" for="public_key_acknowledgement_checkbox">
+                  Hint was read!
+                </label></div>
+
+
+              <button class="btn  btn-success col-md-4"
+                      (click)="scaleDownModal.hide();scaleDownDeleteVm();" [disabled]="!scaling_warning_read || scale_down_vms.length == 0"
+                      id="confirm-scale_down">
+                Delete selected Vms
+              </button>
+              <button class="btn  btn-danger col-md-4" type="reset"
+                      (click)="scaleDownModal.hide();">Cancel
+              </button>
+            </div>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div><!-- /.modal -->
