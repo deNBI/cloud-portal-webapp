@@ -157,7 +157,6 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
   selectedProjectRamUsed: number;
   detached_project_volumes: Volume[] = [];
 
-
   newCores: number = 0;
   newRam: number = 0;
   newVms: number = 0;
