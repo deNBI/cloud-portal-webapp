@@ -43,6 +43,9 @@ export class ClusterOverviewComponent implements OnInit, OnDestroy {
   isSearching: boolean = true;
   scale_down_vms: VirtualMachine[] = []
   scaling_warning_read: boolean = false;
+  max_scale_count: number = 0;
+  max_scale_count_loaded: boolean = false;
+  scale_worker_count: number;
 
   selectedCluster: Clusterinfo = null;
   ressourceUsage: ApplicationRessourceUsage;
@@ -116,11 +119,18 @@ export class ClusterOverviewComponent implements OnInit, OnDestroy {
   }
 
   calcRess(): void {
+    this.max_scale_count_loaded = false;
+
+    // tslint:disable-next-line:max-line-length
     this.groupService.getGroupResources(this.selectedCluster.master_instance.projectid.toString()).subscribe((res: ApplicationRessourceUsage): void => {
       this.ressourceUsage = new ApplicationRessourceUsage(res);
-      let count: number = this.ressourceUsage.calcMaxScaleUpWorkerInstancesByFlavor(this.selectedCluster.worker_instances[0].flavor)
-      console.log(count)
+      this.max_scale_count = this.ressourceUsage.calcMaxScaleUpWorkerInstancesByFlavor(this.selectedCluster.worker_instances[0].flavor)
+      this.max_scale_count_loaded = true;
     });
+  }
+
+  sclaeUpCluster(): void {
+    this.virtualmachineservice.scaleCluster(this.selectedCluster.cluster_id, this.scale_worker_count).subscribe()
   }
 
   resetScaleDown(): void {
@@ -202,7 +212,7 @@ export class ClusterOverviewComponent implements OnInit, OnDestroy {
           }
 
           if (updated_cluster.status !== 'Running' && updated_cluster.status !== 'DELETING') {
-            this.check_status_loop(updated_cluster, final_state, is_selected_cluster)
+            //  this.check_status_loop(updated_cluster, final_state, is_selected_cluster)
 
           }
 
@@ -260,7 +270,9 @@ export class ClusterOverviewComponent implements OnInit, OnDestroy {
 
   prepareClusters(cluster_page_infos: any): void {
 
-    this.clusters = cluster_page_infos['cluster_list'];
+    this.clusters = cluster_page_infos['cluster_list'].map((cluster: Clusterinfo): Clusterinfo => {
+      return new Clusterinfo(cluster)
+    })
     this.total_items = cluster_page_infos['total_items'];
     this.items_per_page = cluster_page_infos['items_per_page'];
     this.total_pages = cluster_page_infos['num_pages'];

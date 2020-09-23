@@ -47,6 +47,14 @@ export class VirtualmachineService {
     })
   }
 
+  scaleCluster(cluster_id: string, count: number): Observable<any> {
+    const params: HttpParams = new HttpParams()
+      .set('count', count.toString())
+    return this.http.post(`${ApiSettings.getApiBaseURL()}clusters/${cluster_id}/scale-up/`, params, {
+      withCredentials: true
+    })
+  }
+
   getClusters(page: number, vm_per_site: number, filter?: string): Observable<Clusterinfo[]> {
     let params: HttpParams = new HttpParams().set('page', page.toString()).set('vm_per_site', vm_per_site.toString());
 

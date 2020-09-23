@@ -42,7 +42,7 @@ export class ClusterdetailComponent implements OnInit {
 
   setClusterById(): void {
     this.virtualmachineService.getClusterInfo(this.cluster_id).subscribe((cluster_info: Clusterinfo): void => {
-      this.cluster = cluster_info;
+      this.cluster = new Clusterinfo(cluster_info);
       this.isLoaded = true;
     })
   }
