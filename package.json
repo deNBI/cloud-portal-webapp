@@ -57,7 +57,7 @@
     "cli-color": "^2.0.0",
     "colors": "^1.4.0",
     "core-js": "3.6.5",
-    "css-loader": "4.2.2",
+    "css-loader": "4.3.0",
     "cssnano": "^4.0.5",
     "d3": "^6.1.1",
     "dom-to-image": "^2.6.0",
