@@ -11,6 +11,7 @@ export class WordPressNews {
   private _tags: string;
   private _facility: string;
   private _status: string;
+  private _url: string;
 
   constructor(news?: WordPressNews) {
     if (news) {
@@ -23,7 +24,16 @@ export class WordPressNews {
       this._facility = news.facility;
       this._status = news.status;
       this._modification_date = news.modification_date;
+      this._url = news.url;
     }
+  }
+
+  get url(): string {
+    return this._url;
+  }
+
+  set url(value: string){
+    this._url = value;
   }
 
   get modification_date(): string {
