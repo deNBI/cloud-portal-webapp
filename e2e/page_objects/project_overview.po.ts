@@ -31,6 +31,7 @@ export class ProjectOverview {
   private static TOTAL_CORES: string = 'total_cores_label';
   private static BIOINFORMATICS_TOPIC: string = 'topic_Bioinformatics';
   private static SHOW_INFORMATION_BTN: string = 'show_information_btn';
+  private static SUBMITTED_SHOW_INFORMATION_BTN: string = 'submitted_show_information_btn'
   private static DISSEMINATION_PLATFORM_LIST: string = 'dissemination_platforms';
   private static DISSEMINATION_INFORMATION_LIST: string = 'dissemination_information';
   private static DEFAULT_INFORMATION_DISSEMINATION_STRING: string = 'Project affiliation,Institution,Workgroup,Project Type,' +
@@ -46,8 +47,9 @@ export class ProjectOverview {
   private static CONFIRM_MODIFICATION_BUTTON: string = 'confirm_modification_btn';
   private static SHOW_DOI_MODAL: string = 'show_doi_question_modal';
   private static EXTENSION_LIFETIME_INPUT: string = 'project_extension_application_renewal_lifetime';
-  private static SUBMIT_EXTENSION_BUTTON: string = 'submit_extension_button';
+  private static SUBMIT_EXTENSION_BUTTON: string = 'submit_extension_btn';
   private static CONFIRM_EXTENSION_BUTTON: string = 'confirm_extension_btn';
+
   private static EXTENSION_REQUEST_RESULT: string = 'extension_result_submitted';
 
   static async navigateToSimpleProjectverview(): Promise<any> {
@@ -68,7 +70,7 @@ export class ProjectOverview {
 
   static async hasPi(): Promise<boolean> {
     Util.logMethodCall('Check if pi is set');
-    await Util.clickElementById(this.SHOW_INFORMATION_BTN);
+    await Util.clickElementById(this.SUBMITTED_SHOW_INFORMATION_BTN);
 
     const isPiAbsence: boolean = await Util.waitForAbsenceOfElementById(this.PI_ROW);
     await Util.clickElementById('close_info_modal');
@@ -115,21 +117,21 @@ export class ProjectOverview {
   static async sendModificationRequest(application_name: string): Promise<any> {
     await Util.waitForPresenceOfElementById(this.SUBMIT_MODIFICATION_BUTTON);
     await Util.clickElementById(this.SUBMIT_MODIFICATION_BUTTON);
-    await Util.waitForPresenceOfElementById(this.CONFIRM_EXTENSION_BUTTON);
-    await Util.clickElementById(this.CONFIRM_EXTENSION_BUTTON);
+    await Util.waitForPresenceOfElementById(this.CONFIRM_MODIFICATION_BUTTON);
+    await Util.clickElementById(this.CONFIRM_MODIFICATION_BUTTON);
     await Util.waitForTextPresenceInElementById(this.MODIFICATION_REQUEST_RESULT, this.MODIFICATION_REQUEST_SUCCESS_TEXT);
   }
 
   static async sendExtensionRequest(application_name: string): Promise<any> {
     await Util.waitForPresenceOfElementById(this.SUBMIT_EXTENSION_BUTTON);
     await Util.clickElementById(this.SUBMIT_EXTENSION_BUTTON);
-    await Util.waitForPresenceOfElementById(this.CONFIRM_MODIFICATION_BUTTON);
-    await Util.clickElementById(this.CONFIRM_MODIFICATION_BUTTON);
+    await Util.waitForPresenceOfElementById(this.CONFIRM_EXTENSION_BUTTON);
+    await Util.clickElementById(this.CONFIRM_EXTENSION_BUTTON);
     await Util.waitForTextPresenceInElementById(this.EXTENSION_REQUEST_RESULT, this.MODIFICATION_REQUEST_SUCCESS_TEXT);
   }
 
   static async isBioinformaticsSet(): Promise<any> {
-    await Util.clickElementById(this.SHOW_INFORMATION_BTN);
+    await Util.clickElementById(this.SUBMITTED_SHOW_INFORMATION_BTN);
     await Util.clickElementById(this.INFORMATION_TAB);
     await Util.waitForPresenceOfElementById(this.BIOINFORMATICS_TOPIC);
   }
