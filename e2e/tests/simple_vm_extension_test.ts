@@ -26,7 +26,7 @@ describe('Simple Application Extension Test', function (): void {
     await ProjectOverview.fillExtensionRequest();
   });
 
-  it('should send a modification request', async function (): Promise<any> {
+  it('should send an extension request', async function (): Promise<any> {
     await ProjectOverview.sendExtensionRequest(Util.SIMPLE_VM_APPLICATION_NAME);
   });
 });
