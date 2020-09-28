@@ -36,7 +36,18 @@ export class NumberChartsComponent implements OnInit {
   private runningSimpleVM: any[] = ['simpleVM running'];
   private terminatedOpenstack: any[] = ['OpenStack terminated'];
   private terminatedSimpleVM: any[] = ['simpleVM terminated'];
-  private endDates: any[] = ['x'];
+  private endDatesProjects: any[] = ['x'];
+
+  /**
+   * Lists for ram and cores numbers.
+   */
+
+  private simpleVMRam: any[] = ['RAM simpleVM'];
+  private simpleVMCores: any[] = ['VCPUs simpleVM'];
+  private openstackRam: any [] = ['RAM OpenStack'];
+  private openstackCores: any[] = ['Cores Openstack'];
+  private endDatesResources: any ['x'];
+
 
   ngOnInit(): void {
     this.getData();
@@ -54,13 +65,29 @@ export class NumberChartsComponent implements OnInit {
         this.runningSimpleVM.push(valuePack["running_simple_vm"]);
         this.terminatedOpenstack.push(valuePack["terminated_openstack"]);
         this.terminatedSimpleVM.push(valuePack["terminated_simple_vm"]);
-        this.endDates.push(valuePack["end_date"]);
+        this.endDatesProjects.push(valuePack["end_date"]);
       });
-      this.drawChart();
+      this.drawProjectNumbersChart();
 
     }, (err: Error) => {
       console.log(err);
       });
+
+    this.numbersService.getRamCoresTimeline().subscribe(
+      (result: Object[]): void => {
+        console.log(result);
+        result.forEach((valuePack: any): void => {
+          this.openstackCores.push(valuePack["openstack_cores"]);
+          this.openstackRam.push(valuePack["openstack_ram"]);
+          this.simpleVMCores.push(valuePack["simple_vm_cores"]);
+          this.simpleVMRam.push(valuePack["simple_vm_ram"]);
+          this.endDatesResources.push(valuePack["end_date"]);
+        });
+        this.drawResourcesNumbersChart();
+      }, (err: Error) => {
+        console.log(err);
+      }
+    );
   }
 
   /**
@@ -92,25 +119,86 @@ export class NumberChartsComponent implements OnInit {
 
   }
 
-
-
-
   /**
-   * Draws the chart in the template.
+   * Maybe refactor, so only one function is necessary and undependent from chart to draw.
+   * Draws the Resources Chart into the template.
    */
-  drawChart(): void {
-
+  drawResourcesNumbersChart(): void {
     const chart: any  = c3.generate({
       oninit: function() {
-        this.svg.attr('id', 'numberChartSVG')
+        this.svg.attr('id', 'resourceNumbersSVG')
       },
-      bindto: '#chart',
+      bindto: '#resourcesChart',
       size: {
         height: 600
       }, data: {
         x : 'x',
         columns: [
-          this.endDates,
+          this.endDatesResources,
+          this.simpleVMRam,
+          this.openstackRam
+        ],
+        type: 'bar',
+        bar: {
+          width: {
+            ratio: 0.2
+          }
+        },
+        groups: [
+          [
+            this.simpleVMRam[0],
+            this.openstackRam[0]
+          ]
+        ],
+        order: null
+      },
+
+      color: {
+        pattern: ['#00adef', '#ed1944']
+      },
+      grid: {
+        y: {
+          lines: [{value:0}]
+        }
+      },
+      axis: {
+        x: {
+          label: {
+            text: 'Date',
+            position: 'outer-right'
+          },
+          type: 'timeseries',
+          tick: {
+            format: '%Y-%m-%d'
+          }
+        },
+        y: {
+          label: {
+            text: 'Amount of allocated VRAM in GB',
+            position: 'outer-right'
+          }
+        }
+      }
+    });
+  }
+
+
+  /**
+   * Draws the project numbers chart in the template.
+   */
+  drawProjectNumbersChart(): void {
+
+    const chart: any  = c3.generate({
+      oninit: function() {
+        this.svg.attr('id', 'projectNumbersSVG')
+      },
+      bindto: '#projectsChart',
+      size: {
+        height: 600
+      }, data: {
+        x : 'x',
+        columns: [
+          this.endDatesProjects,
           this.runningSimpleVM,
           this.terminatedSimpleVM,
           this.runningOpenstack,
