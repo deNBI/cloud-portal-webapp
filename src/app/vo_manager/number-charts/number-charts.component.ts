@@ -4,7 +4,10 @@ import * as d3 from 'd3';
 import {NumbersService} from '../../api-connector/numbers.service';
 import * as c3 from 'c3';
 import {jsPDF} from 'jspdf';
-import 'svg2pdf.js'
+import * as saveSVG from 'save-svg-as-png';
+import 'svg2pdf.js';
+import {domtoimage} from 'dom-to-image';
+
 import html2canvas from 'html2canvas';
 
 /**
@@ -29,10 +32,10 @@ export class NumberChartsComponent implements OnInit {
   /**
    * Lists for numbers of projects per project type and status.
    */
-  private runningOpenstack: any[] = ['OS running'];
-  private runningSimpleVM: any[] = ['SVM running'];
-  private terminatedOpenstack: any[] = ['OS terminated'];
-  private terminatedSimpleVM: any[] = ['SVM terminated'];
+  private runningOpenstack: any[] = ['OpenStack running'];
+  private runningSimpleVM: any[] = ['simpleVM running'];
+  private terminatedOpenstack: any[] = ['OpenStack terminated'];
+  private terminatedSimpleVM: any[] = ['simpleVM terminated'];
   private endDates: any[] = ['x'];
 
   ngOnInit(): void {
@@ -61,7 +64,7 @@ export class NumberChartsComponent implements OnInit {
   }
 
   /**
-   * Downloads the chart as a PDF-File
+   * Downloads the chart as a PDF-File - currently not in use
    */
   downloadAsPDF(): void {
     html2canvas(document.getElementById('chart')).then((canvas: HTMLCanvasElement): void => {
@@ -81,6 +84,13 @@ export class NumberChartsComponent implements OnInit {
     });
   }
 
+  /**
+   * Downloads the numbers graphic as a png.
+   */
+  downloadAsSVG(): void {
+    saveSVG.saveSvgAsPng(document.getElementById('numberChartSVG'), 'numberChart.png');
+
+  }
 
 
 
@@ -133,15 +143,20 @@ export class NumberChartsComponent implements OnInit {
       },
       axis: {
         x: {
-          label: 'Date',
-          position: 'outer-right',
+          label: {
+            text: 'Date',
+            position: 'outer-right'
+          },
           type: 'timeseries',
           tick: {
             format: '%Y-%m-%d'
           }
         },
         y: {
-          label: 'Number of projects'
+          label: {
+        text: 'Number of projects',
+        position: 'outer-right'
+          }
         }
       }
     });
