@@ -595,7 +595,7 @@
           <div class="container-fluid">
             <div class="row">
               <p style=" margin-bottom: 15px;">Search and add a user to your project by providing at least
-                four characters of his name:</p>
+                four characters of her/his name or their full Elixir Id:</p>
             </div>
             <div class="row">
               <div class="col-md-8">
@@ -643,7 +643,7 @@
                 <th></th>
                 <th>First Name</th>
                 <th>Last Name</th>
-                <th>Email</th>
+                <th>Elixir Id</th>
                 </thead>
                 <tbody *ngFor="  let member of filteredMembers">
                 <td>
@@ -658,7 +658,7 @@
                 </td>
                 <td>{{member['firstName']}}</td>
                 <td>{{member['lastName']}}</td>
-                <td>{{member['mail']}}</td>
+                <td>{{member['elixir_id']}}</td>
                 </tbody>
               </table>
             </div>
