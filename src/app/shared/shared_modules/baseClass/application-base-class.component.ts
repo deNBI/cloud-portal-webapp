@@ -8,7 +8,6 @@ import {FlavorType} from '../../../virtualmachines/virtualmachinemodels/flavorTy
 import {FlavorService} from '../../../api-connector/flavor.service';
 import {FacilityService} from '../../../api-connector/facility.service';
 import {Component} from '@angular/core';
-import {ApplicationStatusService} from '../../../api-connector/application-status.service';
 import {UserService} from '../../../api-connector/user.service';
 
 /**
@@ -112,7 +111,7 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
    */
   user_applications: Application[] = [];
 
-  constructor(protected userservice: UserService, protected applicationstatusservice: ApplicationStatusService,
+  constructor(protected userservice: UserService,
               protected applicationsservice: ApplicationsService,
               protected facilityService: FacilityService) {
     super();
@@ -194,16 +193,6 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
   }
 
   /**
-   * Get all possible application stati.
-   */
-  getApplicationStatus(): void {
-    this.applicationstatusservice.getAllApplicationStatus().subscribe((stati: ApplicationStatus[]): void => {
-      this.application_status = stati;
-
-    })
-  }
-
-  /**
    * Get status name  by status id.
    * @param {number} id
    * @returns {string}
@@ -218,16 +207,6 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
     }
 
     return dummy;
-  }
-
-  /**
-   * Get status names  by status id.
-   * TODO: replace old status function, which only gives one status
-   * @param {number} id
-   * @returns {string}
-   */
-  public getStatusesById(ids: [number]): [string] {
-    return [''];
   }
 
   /**
