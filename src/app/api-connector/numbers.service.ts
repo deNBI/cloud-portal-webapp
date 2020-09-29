@@ -19,4 +19,10 @@ export class NumbersService {
       });
   }
 
+  getRamCoresTimeline(): Observable<any> {
+    return this.http.get(`${ApiSettings.getApiBase()}public/statistic/counter_cores_ram/`, {
+      withCredentials: true
+    });
+  }
+
 }
