@@ -43,7 +43,7 @@ export class NumberChartsComponent implements OnInit {
    */
 
   private simpleVMRam: any[] = ['RAM simpleVM'];
-  private simpleVMCores: any[] = ['VCPUs simpleVM'];
+  private simpleVMCores: any[] = ['Cores simpleVM'];
   private openstackRam: any [] = ['RAM OpenStack'];
   private openstackCores: any[] = ['Cores Openstack'];
   private endDatesResources: any[] = ['x'];
