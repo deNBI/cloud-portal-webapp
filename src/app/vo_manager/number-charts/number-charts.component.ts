@@ -46,7 +46,7 @@ export class NumberChartsComponent implements OnInit {
   private simpleVMCores: any[] = ['VCPUs simpleVM'];
   private openstackRam: any [] = ['RAM OpenStack'];
   private openstackCores: any[] = ['Cores Openstack'];
-  private endDatesResources: any ['x'];
+  private endDatesResources: any[] =  ['x'];
 
 
   ngOnInit(): void {
@@ -75,15 +75,16 @@ export class NumberChartsComponent implements OnInit {
 
     this.numbersService.getRamCoresTimeline().subscribe(
       (result: Object[]): void => {
-        console.log(result);
-        result.forEach((valuePack: any): void => {
+
+        result.forEach((valuePack: Object): void => {
           this.openstackCores.push(valuePack["openstack_cores"]);
           this.openstackRam.push(valuePack["openstack_ram"]);
           this.simpleVMCores.push(valuePack["simple_vm_cores"]);
           this.simpleVMRam.push(valuePack["simple_vm_ram"]);
           this.endDatesResources.push(valuePack["end_date"]);
         });
-        this.drawResourcesNumbersChart();
+        this.drawRamNumbersChart();
+        this.drawCoresNumbersChart();
       }, (err: Error) => {
         console.log(err);
       }
@@ -114,21 +115,84 @@ export class NumberChartsComponent implements OnInit {
   /**
    * Downloads the numbers graphic as a png.
    */
-  downloadAsSVG(): void {
-    saveSVG.saveSvgAsPng(document.getElementById('numberChartSVG'), 'numberChart.png');
+  downloadAsSVG(elementId: string, filename: string): void {
+    saveSVG.saveSvgAsPng(document.getElementById(elementId), filename);
 
   }
 
   /**
-   * Maybe refactor, so only one function is necessary and undependent from chart to draw.
-   * Draws the Resources Chart into the template.
+   * Maybe refactor, so only one function is necessary and independent from chart to draw.
+   * Draws the cores Chart into the template.
    */
-  drawResourcesNumbersChart(): void {
-    const chart: any  = c3.generate({
+  drawCoresNumbersChart(): void {
+    const coresChart: any  = c3.generate({
       oninit: function() {
-        this.svg.attr('id', 'resourceNumbersSVG')
+        this.svg.attr('id', 'coresNumbersSVG')
       },
-      bindto: '#resourcesChart',
+      bindto: '#coresChart',
+      size: {
+        height: 600
+      }, data: {
+        x : 'x',
+        columns: [
+          this.endDatesResources,
+          this.simpleVMCores,
+          this.openstackCores
+        ],
+        type: 'bar',
+        bar: {
+          width: {
+            ratio: 0.2
+          }
+        },
+        groups: [
+          [
+            this.simpleVMCores[0],
+            this.openstackCores[0]
+          ]
+        ],
+        order: null
+      },
+
+      color: {
+        pattern: ['#00adef', '#ed1944']
+      },
+      grid: {
+        y: {
+          lines: [{value:0}]
+        }
+      },
+      axis: {
+        x: {
+          label: {
+            text: 'Date',
+            position: 'outer-right'
+          },
+          type: 'timeseries',
+          tick: {
+            format: '%Y-%m-%d'
+          }
+        },
+        y: {
+          label: {
+            text: 'Amount of allocated VCPUS',
+            position: 'outer-right'
+          }
+        }
+      }
+    });
+  }
+
+  /**
+   * Maybe refactor, so only one function is necessary and independent from chart to draw.
+   * Draws the ram Chart into the template.
+   */
+  drawRamNumbersChart(): void {
+    const ramChart: any  = c3.generate({
+      oninit: function() {
+        this.svg.attr('id', 'ramNumbersSVG')
+      },
+      bindto: '#ramChart',
       size: {
         height: 600
       }, data: {
@@ -188,7 +252,7 @@ export class NumberChartsComponent implements OnInit {
    */
   drawProjectNumbersChart(): void {
 
-    const chart: any  = c3.generate({
+    const projectNumbersChart: any  = c3.generate({
       oninit: function() {
         this.svg.attr('id', 'projectNumbersSVG')
       },
