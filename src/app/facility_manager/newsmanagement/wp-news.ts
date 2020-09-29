@@ -32,7 +32,7 @@ export class WordPressNews {
     return this._url;
   }
 
-  set url(value: string){
+  set url(value: string) {
     this._url = value;
   }
 
