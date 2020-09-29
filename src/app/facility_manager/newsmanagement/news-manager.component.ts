@@ -222,7 +222,7 @@ export class NewsManagerComponent implements OnInit {
     news.tags = wordPressNews['tags'];
     news.facility = wordPressNews['categories'];
     news.status = wordPressNews['status'];
-    news.url = wordPressNews["link"];
+    news.url = wordPressNews['link'];
 
     return news;
   }
