@@ -2,9 +2,31 @@
   <div class="card">
     <div class="card-header">Project Numbers</div>
     <div class="card-body">
-      <div id="chart"></div>
+      <div id="projectsChart"></div>
       <div>
-        <button class="btn btn-outline-primary" (click)="downloadAsSVG()">
+        <button class="btn btn-outline-primary"
+                (click)="downloadAsSVG('projectNumbersSVG', 'projectNumbers.png')">
+          Download as PNG
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header">Cloud Resources</div>
+    <div class="card-body">
+      <div id="ramChart"></div>
+      <div>
+        <button class="btn btn-outline-primary"
+                (click)="downloadAsSVG('ramNumbersSVG', 'resourcesRamNumbers.png')">
+          Download as PNG
+        </button>
+      </div>
+    </div>
+    <div class="card-body">
+      <div id="coresChart"></div>
+      <div>
+        <button class="btn btn-outline-primary"
+                (click)="downloadAsSVG('coresNumbersSVG', 'resourcesCoresNumbers.png')">
           Download as PNG
         </button>
       </div>
