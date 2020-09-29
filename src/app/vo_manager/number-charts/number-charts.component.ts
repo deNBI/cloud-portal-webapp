@@ -46,7 +46,7 @@ export class NumberChartsComponent implements OnInit {
   private simpleVMCores: any[] = ['VCPUs simpleVM'];
   private openstackRam: any [] = ['RAM OpenStack'];
   private openstackCores: any[] = ['Cores Openstack'];
-  private endDatesResources: any[] =  ['x'];
+  private endDatesResources: any[] = ['x'];
 
 
   ngOnInit(): void {
