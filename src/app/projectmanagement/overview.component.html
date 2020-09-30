@@ -210,9 +210,9 @@
                     {{project_application?.project_modification_request?.date_submitted}}
                   </span>
                 </strong>
-                <strong class="text-muted" *ngIf="!project?.OpenStackProject">{{vmsInUse}} of {{maximumVMs}} VMS with a total of
-                  {{project_application?.project_application_total_cores}} VCPUs and
-                  {{project_application?.project_application_total_ram}} GBs of RAM in use
+                <strong class="text-muted" *ngIf="!project?.OpenStackProject">{{vmsInUse}} of {{maximumVMs}} VMS,
+                  {{coresInUse}} of {{project_application?.project_application_total_cores}} VCPUs and
+                  {{ramInUse}} of {{project_application?.project_application_total_ram}} GBs RAM in use
                   <span *ngIf="((project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED)
                   || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION))">
                      - Resource modification requested on

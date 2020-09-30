@@ -135,6 +135,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   resourceDataLoaded: boolean = false;
   vmsInUse: number;
   maximumVMs: number;
+  coresInUse: number;
+  ramInUse: number;
 
   title: string = 'Project Overview';
   @ViewChild('edam_ontology') edam_ontology: AutocompleteComponent;
@@ -625,7 +627,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   }
 
   /**
-   * Checks if user is able to start a machine, when the project is a SimpleVM project.
+   * Checks if user is able to start a machine, when the
+   * project is a SimpleVM project.
    */
   isAbleToStart(): boolean {
     if (this.resourceDataLoaded) {
@@ -650,6 +653,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
         (res: any): void => {
           this.vmsInUse = res['used_vms'];
           this.maximumVMs = res['number_vms'];
+          this.coresInUse = res['cores_used'];
+          this.ramInUse = res['ram_used']
           this.resourceDataLoaded = true;
         });
     } else {
