@@ -5,7 +5,6 @@ import {GroupService} from '../api-connector/group.service';
 import {ApiSettings} from '../api-connector/api-settings.service';
 import {Application} from '../applications/application.model/application.model';
 import {Application_States} from '../shared/shared_modules/baseClass/abstract-base-class';
-import {ApplicationStatusService} from '../api-connector/application-status.service';
 import {ApplicationsService} from '../api-connector/applications.service';
 import {ApplicationBaseClassComponent} from '../shared/shared_modules/baseClass/application-base-class.component';
 
@@ -23,7 +22,7 @@ enum TabStates {
              selector: 'app-facility.application',
              templateUrl: 'facility.application.component.html',
              styleUrls: ['facility.application.component.scss'],
-             providers: [FacilityService, UserService, GroupService, ApplicationStatusService,
+             providers: [FacilityService, UserService, GroupService,
                ApplicationsService, ApiSettings]
 
            })
@@ -66,9 +65,8 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
   loadingApplications: boolean = false;
 
   constructor(userservice: UserService,
-              applicationstatusservice: ApplicationStatusService,
               facilityService: FacilityService, applicationsservice: ApplicationsService) {
-    super(userservice, applicationstatusservice, applicationsservice, facilityService);
+    super(userservice, applicationsservice, facilityService);
 
   }
 
@@ -344,7 +342,6 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
       this.changeTabState(TabStates.SUBMITTED);
       this.isLoaded = true;
 
-      this.getApplicationStatus();
      // this.getFullApplications(this.selectedFacility ['FacilityId']);
       this.getAllApplicationsHistory(this.selectedFacility ['FacilityId']);
     })
