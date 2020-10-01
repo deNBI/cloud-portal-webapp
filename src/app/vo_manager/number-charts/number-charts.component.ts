@@ -33,17 +33,17 @@ export class NumberChartsComponent implements OnInit {
    * Lists for numbers of projects per project type and status.
    */
   private runningOpenstack: any[] = ['OpenStack running'];
-  private runningSimpleVM: any[] = ['simpleVM running'];
+  private runningSimpleVM: any[] = ['SimpleVM running'];
   private terminatedOpenstack: any[] = ['OpenStack terminated'];
-  private terminatedSimpleVM: any[] = ['simpleVM terminated'];
+  private terminatedSimpleVM: any[] = ['SimpleVM terminated'];
   private endDatesProjects: any[] = ['x'];
 
   /**
    * Lists for ram and cores numbers.
    */
 
-  private simpleVMRam: any[] = ['RAM simpleVM'];
-  private simpleVMCores: any[] = ['Cores simpleVM'];
+  private simpleVMRam: any[] = ['RAM SimpleVM'];
+  private simpleVMCores: any[] = ['Cores SimpleVM'];
   private openstackRam: any [] = ['RAM OpenStack'];
   private openstackCores: any[] = ['Cores Openstack'];
   private endDatesResources: any[] = ['x'];
@@ -176,7 +176,7 @@ export class NumberChartsComponent implements OnInit {
         },
         y: {
           label: {
-            text: 'Amount of allocated VCPUS',
+            text: 'Amount of allocated cores',
             position: 'outer-right'
           }
         }
