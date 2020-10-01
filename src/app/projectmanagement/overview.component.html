@@ -1277,7 +1277,7 @@
                   id="modification_credits">({{project_modification?.extra_credits}}) = {{resource_modification_expected_credits}}
                 </span></strong></label>
             </div>
-            <div class="alert alert-primary" role="alert">
+            <div class="alert alert-primary" role="alert" *ngIf="credits_allowed">
               This is the expected number of extra credits that you get for your project. It accounts for an increase
               or decrease in requested resources for your remaining project lifetime.<br>
               <strong *ngIf="resource_modification_expected_credits === 0 && project_application?.flavors?.length > 0">
