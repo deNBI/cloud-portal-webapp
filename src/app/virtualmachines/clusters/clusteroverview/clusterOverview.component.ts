@@ -16,7 +16,6 @@ import {ClipboardService} from 'ngx-clipboard';
 import {VirtualMachine} from '../../virtualmachinemodels/virtualmachine';
 import {ApplicationRessourceUsage} from '../../../applications/application-ressource-usage/application-ressource-usage';
 import {SCALE_DOWN_SCRIPT_LINK, SCALE_UP_SCRIPT_LINK} from '../../../../links/links';
-import {DownloadService} from '../../../api-connector/download.service';
 
 /**
  * Cluster overview componentn.
@@ -26,7 +25,7 @@ import {DownloadService} from '../../../api-connector/download.service';
              templateUrl: './clusterOverview.component.html',
              styleUrls: ['../../vmOverview.component.scss'],
              providers: [FacilityService, ImageService, UserService,
-               VirtualmachineService, FullLayoutComponent, GroupService, ClientService, GroupService, DownloadService]
+               VirtualmachineService, FullLayoutComponent, GroupService, ClientService, GroupService]
            })
 
 export class ClusterOverviewComponent implements OnInit, OnDestroy {
@@ -99,7 +98,7 @@ export class ClusterOverviewComponent implements OnInit, OnDestroy {
   constructor(private facilityService: FacilityService, private groupService: GroupService,
               private imageService: ImageService, private userservice: UserService,
               private virtualmachineservice: VirtualmachineService, private fb: FormBuilder,
-              private clipboardService: ClipboardService, private downloadService: DownloadService
+              private clipboardService: ClipboardService
   ) {
 
   }
@@ -158,9 +157,6 @@ export class ClusterOverviewComponent implements OnInit, OnDestroy {
     })
   }
 
-  downloadFile(url: string): void {
-    this.downloadService.downloadFile(url)
-  }
 
   deleteVm(vm: VirtualMachine): void {
     this.virtualmachineservice.deleteVM(vm.openstackid).subscribe(
