@@ -8,7 +8,6 @@ import {VoService} from '../api-connector/vo.service';
 import {IResponseTemplate} from '../api-connector/response-template';
 import {ApplicationBaseClassComponent} from '../shared/shared_modules/baseClass/application-base-class.component';
 import {ApplicationsService} from '../api-connector/applications.service';
-import {ApplicationStatusService} from '../api-connector/application-status.service';
 import {ProjectEnumeration} from '../projectmanagement/project-enumeration';
 import {environment} from '../../environments/environment';
 import {is_vo} from '../shared/globalvar';
@@ -23,7 +22,6 @@ import * as moment from 'moment';
              selector: 'app-dashboard',
              templateUrl: './full-layout.component.html',
              providers: [ApplicationsService,
-               ApplicationStatusService,
                VirtualmachineService,
                VoService,
                GroupService,
@@ -56,9 +54,9 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
 
   constructor(private voService: VoService, private groupService: GroupService, userservice: UserService,
               facilityService: FacilityService, applicationsservice: ApplicationsService,
-              applicationstatusservice: ApplicationStatusService, private virtualMachineService: VirtualmachineService
+              private virtualMachineService: VirtualmachineService
   ) {
-    super(userservice, applicationstatusservice, applicationsservice, facilityService);
+    super(userservice, applicationsservice, facilityService);
 
   }
 
