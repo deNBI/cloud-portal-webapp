@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {Flavor} from '../../virtualmachines/virtualmachinemodels/flavor';
 import {FlavorService} from '../../api-connector/flavor.service';
@@ -65,7 +65,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
   constructor(private creditsService: CreditsService,
               private flavorService: FlavorService, private fullLayout: FullLayoutComponent,
               applicationsservice: ApplicationsService) {
-    super(null, null, applicationsservice, null);
+    super(null, applicationsservice, null);
 
   }
 

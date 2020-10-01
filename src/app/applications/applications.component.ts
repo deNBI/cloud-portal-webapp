@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {ApplicationsService} from '../api-connector/applications.service'
-import {ApplicationStatusService} from '../api-connector/application-status.service'
 import {ApiSettings} from '../api-connector/api-settings.service'
 import {Application} from './application.model/application.model';
 import {GroupService} from '../api-connector/group.service';
@@ -29,7 +28,7 @@ enum TabStates {
 @Component({
              selector: 'app-applications-list',
              templateUrl: 'applications.component.html',
-             providers: [FacilityService, VoService, UserService, GroupService, ApplicationStatusService,
+             providers: [FacilityService, VoService, UserService, GroupService,
                ApplicationsService, ApiSettings, FlavorService]
            })
 export class ApplicationsComponent extends ApplicationBaseClassComponent implements OnInit {
@@ -75,7 +74,6 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
    * Constructor.
    * Loads all Applications if user is vo admin and all user_applications.
    * @param {ApplicationsService} applicationsservice
-   * @param {ApplicationStatusService} applicationstatusservice
    * @param {UserService} userservice
    * @param {GroupService} groupservice
    * @param {VoService} voService
@@ -83,20 +81,18 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
    * @param {FlavorService} flavorService
    */
   constructor(applicationsservice: ApplicationsService,
-              applicationstatusservice: ApplicationStatusService,
               userservice: UserService,
               private groupservice: GroupService,
               private voService: VoService,
               facilityService: FacilityService,
               private flavorService: FlavorService) {
 
-    super(userservice, applicationstatusservice, applicationsservice, facilityService);
+    super(userservice, applicationsservice, facilityService);
 
   }
 
   ngOnInit(): void {
     this.is_vo_admin = is_vo;
-    this.getApplicationStatus();
     if (this.is_vo_admin) {
       this.getSubmittedApplications();
       this.getApplicationHistory();
@@ -585,29 +581,24 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
   assignGroupToFacility(group_id: string, application_id: string, compute_center: string): void {
     if (compute_center !== 'undefined') {
-      this.groupservice.assignGroupToResource(group_id, compute_center).subscribe(
-        (): void => {
-          this.applicationstatusservice.setApplicationStatus(
-            application_id,
-            this.application_states.WAIT_FOR_CONFIRMATION.toString())
+      this.groupservice.assignGroupToResource(group_id, compute_center)
             .subscribe((): void => {
-              for (const app of this.all_applications) {
-                if (app.project_application_id.toString() === application_id) {
-                  this.getApplication(app);
+                         for (const app of this.all_applications) {
+                           if (app.project_application_id.toString() === application_id) {
+                             this.getApplication(app);
 
-                  break;
+                             break;
 
-                }
-              }
-              this.updateNotificationModal('Success', 'The  project was assigned to the facility.', true, 'success');
+                           }
+                         }
+                         this.updateNotificationModal('Success', 'The  project was assigned to the facility.', true, 'success');
 
-            })
+                       },
+                       (error: object): void => {
+                         console.log(error);
+                         this.updateNotificationModal('Failed', 'Project could not be created!', true, 'danger');
+                       })
 
-        },
-        (error: object): void => {
-          console.log(error);
-          this.updateNotificationModal('Failed', 'Project could not be created!', true, 'danger');
-        });
     } else {
       this.updateNotificationModal('Failed', 'You need to select an compute center!', true, 'danger');
     }
