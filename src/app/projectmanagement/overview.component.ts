@@ -130,6 +130,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   smallExamplePossibleDays: string = '';
   largeExamplePossibleDays: string = '';
   supportMails: string[] = [];
+  resource_modification_expected_credits: number = 0;
 
   resourceDataLoaded: boolean = false;
   vmsInUse: number;
@@ -237,6 +238,12 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
       ).subscribe(
         (credits: number): void => {
           this.project_modification.extra_credits = credits;
+          this.resource_modification_expected_credits =
+            this.project_application.project_application_initial_credits
+            + this.project_modification.extra_credits;
+          if (this.resource_modification_expected_credits <= 0) {
+            this.resource_modification_expected_credits = 0;
+          }
         }))
   }
 
