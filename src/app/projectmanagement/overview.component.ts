@@ -13,7 +13,6 @@ import {forkJoin, Observable, Subscription} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Application} from '../applications/application.model/application.model';
 import {ApplicationBaseClassComponent} from '../shared/shared_modules/baseClass/application-base-class.component';
-import {ApplicationStatusService} from '../api-connector/application-status.service';
 import {FacilityService} from '../api-connector/facility.service';
 import {ApplicationsService} from '../api-connector/applications.service';
 import {FullLayoutComponent} from '../layouts/full-layout.component';
@@ -40,7 +39,7 @@ import {ApplicationCreditRequest} from '../applications/application_credit_reque
 @Component({
   selector: 'app-project-overview',
   templateUrl: 'overview.component.html',
-  providers: [FlavorService, ApplicationStatusService, ApplicationsService,
+  providers: [FlavorService, ApplicationsService,
     FacilityService, UserService, GroupService, ApiSettings, CreditsService]
 })
 export class OverviewComponent extends ApplicationBaseClassComponent implements OnInit, OnDestroy {
@@ -157,7 +156,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
   constructor(private flavorService: FlavorService,
               private groupService: GroupService,
-              applicationstatusservice: ApplicationStatusService,
               applicationsservice: ApplicationsService,
               facilityService: FacilityService,
               userservice: UserService,
@@ -166,7 +164,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
               private router: Router,
               private creditsService: CreditsService,
               @Inject(DOCUMENT) private document: Document) {
-    super(userservice, applicationstatusservice, applicationsservice, facilityService);
+    super(userservice, applicationsservice, facilityService);
   }
 
   calculateProgressBar(numberToRoundUp: number): string {
@@ -613,7 +611,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
       this.project_members = [];
       this.application_id = paramsId.id;
       this.getApplication();
-      this.getApplicationStatus();
       this.getUserinfo();
       this.getListOfFlavors();
       this.getListOfTypes();
@@ -733,7 +730,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
     this.groupService.requestProjectTermination(this.project.Id).subscribe((): void => {
       this.fullLayout.getGroupsEnumeration();
-      this.getApplicationStatus();
       this.getApplication();
       this.updateNotificationModal('Success', 'Termination was requested!', true, 'success');
 
