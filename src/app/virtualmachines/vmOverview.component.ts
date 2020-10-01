@@ -605,7 +605,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
                                        vmActions: new FormArray(formControls),
                                        selectAll: selectAllControl
                                      });
-
+    this.onChanges();
   }
 
   checkCondaPackages(vm: VirtualMachine): void {
@@ -676,7 +676,6 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
     this.vmActions = [];
 
     this.setVmActions();
-    this.onChanges();
     this.isSearching = false;
     this.checkVmTillActive()
   }
