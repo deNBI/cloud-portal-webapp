@@ -34,6 +34,7 @@ export class ApplicationDissemination {
       if (this._information_description) {
         this._information_description_allowed = true;
       }
+      this._information_description_allowed = diss.information_description_allowed;
       this._information_workgroup = diss.information_workgroup;
       this._information_project_type = diss.information_project_type;
       this._information_lifetime = diss.information_lifetime;

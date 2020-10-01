@@ -165,7 +165,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
             this.projectName = `${this.projectName.substring(0, 50)}...`;
           }
         }
-        if (key in this.constantStrings && !key === this.constantStrings['project_application_report_allowed']) {
+        if (key in this.constantStrings) {
           if (form.controls[key].disabled) {
             continue;
           }
@@ -177,7 +177,6 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
     if (!this.application.project_application_report_allowed) {
       this.valuesToConfirm.push('Dissemination allowed: No');
     } else {
-      this.valuesToConfirm.push('Dissemination allowed: Yes');
       const disseminationInformation: string[] = this.application.dissemination.allowed_informations
         .concat(this.application.dissemination.allowed_platforms)
       for (const value of disseminationInformation) {
