@@ -15,6 +15,8 @@ import {Clusterinfo} from '../clusterinfo';
 import {ClipboardService} from 'ngx-clipboard';
 import {VirtualMachine} from '../../virtualmachinemodels/virtualmachine';
 import {ApplicationRessourceUsage} from '../../../applications/application-ressource-usage/application-ressource-usage';
+import {SCALE_DOWN_SCRIPT_LINK, SCALE_UP_SCRIPT_LINK} from '../../../../links/links';
+import {DownloadService} from '../../../api-connector/download.service';
 
 /**
  * Cluster overview componentn.
@@ -24,7 +26,7 @@ import {ApplicationRessourceUsage} from '../../../applications/application-resso
              templateUrl: './clusterOverview.component.html',
              styleUrls: ['../../vmOverview.component.scss'],
              providers: [FacilityService, ImageService, UserService,
-               VirtualmachineService, FullLayoutComponent, GroupService, ClientService, GroupService]
+               VirtualmachineService, FullLayoutComponent, GroupService, ClientService, GroupService, DownloadService]
            })
 
 export class ClusterOverviewComponent implements OnInit, OnDestroy {
@@ -39,6 +41,8 @@ export class ClusterOverviewComponent implements OnInit, OnDestroy {
   currentPage: number = 1;
   DEBOUNCE_TIME: number = 300;
   FILTER_DEBOUNCE_TIME: number = 2000;
+  SCALE_DOWN_SCRIPT_LINK: string = SCALE_DOWN_SCRIPT_LINK;
+  SCALE_UP_SCRIPT_LINK: string = SCALE_UP_SCRIPT_LINK;
 
   isSearching: boolean = true;
   scale_down_vms: VirtualMachine[] = []
@@ -95,7 +99,7 @@ export class ClusterOverviewComponent implements OnInit, OnDestroy {
   constructor(private facilityService: FacilityService, private groupService: GroupService,
               private imageService: ImageService, private userservice: UserService,
               private virtualmachineservice: VirtualmachineService, private fb: FormBuilder,
-              private clipboardService: ClipboardService
+              private clipboardService: ClipboardService, private downloadService: DownloadService
   ) {
 
   }
@@ -152,6 +156,10 @@ export class ClusterOverviewComponent implements OnInit, OnDestroy {
     this.scale_down_vms.forEach((vm: VirtualMachine): void => {
       this.deleteVm(vm)
     })
+  }
+
+  downloadFile(url: string): void {
+    this.downloadService.downloadFile(url)
   }
 
   deleteVm(vm: VirtualMachine): void {
@@ -211,8 +219,8 @@ export class ClusterOverviewComponent implements OnInit, OnDestroy {
             this.selectedCluster = updated_cluster;
           }
 
-          if (updated_cluster.status !== 'Running' && updated_cluster.status !== 'DELETING') {
-            //  this.check_status_loop(updated_cluster, final_state, is_selected_cluster)
+          if (updated_cluster.status !== 'Running' && updated_cluster.status !== VirtualMachineStates.DELETING && updated_cluster.status !== VirtualMachineStates.DELETED) {
+            this.check_status_loop(updated_cluster, final_state, is_selected_cluster)
 
           }
 

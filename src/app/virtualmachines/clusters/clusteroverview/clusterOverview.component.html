@@ -48,7 +48,7 @@
                appMinAmount="1" appMaxAmount="25" appInteger
                pattern="^([1-9]|1[012])$" [(ngModel)]="cluster_per_site"
                (ngModelChange)="clusterPerPageChange.next($event)">
-        <div class="input-group-append mb-3" style="margin: 10px 0 0 0;"><span class="input-group-text"> VMs per page
+        <div class="input-group-append mb-3" style="margin: 10px 0 0 0;"><span class="input-group-text"> Clusters per page
                                     </span></div>
       </div>
     </div>
@@ -264,9 +264,12 @@
             <div class="modal-footer">
               <div class="alert" [ngClass]="{'alert-danger':!scaling_warning_read,'alert-success':scaling_warning_read}"
                    role="alert">
-                <p> This will only delete the selected machines, you have to execute the following script on the master
+                <p> This will only delete the selected machines, you have to execute the following <a
+                  (click)="downloadFile(SCALE_DOWN_SCRIPT_LINK)">
+                  script
+                </a> on the master
                   machine to configure the master correctly!</p>
-                <p>Example usage:<br><samp>bash scale-down.sh <span
+                <p>Example usage:<br><samp>./scale-down_v0.py <span
                   *ngFor="let vm of scale_down_vms">{{vm.fixed_ip}} </span></samp></p>
 
                 <input class="form-check-input" name="sclae_down_acknowledgement_checkbox" type="checkbox"
