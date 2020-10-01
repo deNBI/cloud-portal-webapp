@@ -50,6 +50,7 @@ export class VirtualmachineService {
   scaleCluster(cluster_id: string, count: number): Observable<any> {
     const params: HttpParams = new HttpParams()
       .set('count', count.toString())
+
     return this.http.post(`${ApiSettings.getApiBaseURL()}clusters/${cluster_id}/scale-up/`, params, {
       withCredentials: true
     })
