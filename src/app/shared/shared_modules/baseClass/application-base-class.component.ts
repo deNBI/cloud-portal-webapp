@@ -1,5 +1,4 @@
-import {AbstractBaseClasse} from './abstract-base-class';
-import {ApplicationStatus} from '../../../applications/application_status.model';
+import {AbstractBaseClasse, Application_States} from './abstract-base-class';
 import {Application} from '../../../applications/application.model/application.model';
 import {Flavor} from '../../../virtualmachines/virtualmachinemodels/flavor';
 import {ApplicationsService} from '../../../api-connector/applications.service';
@@ -36,12 +35,6 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
    * @type {Array}
    */
   computeCenters: ComputecenterComponent[] = [];
-
-  /**
-   * Stati of the differen Applications.
-   * @type {Array}
-   */
-  application_status: ApplicationStatus[] = [];
 
   /**
    * List of flavor types.
@@ -119,23 +112,6 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
   }
 
   /**
-   * Get id by status name.
-   * @param {string} name
-   * @returns {number}
-   */
-  getIdByStatus(name: string): number {
-    const dummy: number = -1;
-
-    for (const status of this.application_status) {
-      if (status.application_status_name === name) {
-        return status.application_status_id;
-      }
-    }
-
-    return dummy;
-  }
-
-  /**
    * Gets all available compute centers and saves them in the computeCenters attribute.
    */
   getComputeCenters(): void {
@@ -199,11 +175,8 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
    */
   public getStatusById(id: number): string {
     const dummy: string = 'Unknown';
-    for (const status of this.application_status) {
-
-      if (status.application_status_id === id) {
-        return status.application_status_name;
-      }
+    if (Application_States[id]) {
+      return Application_States[id]
     }
 
     return dummy;
