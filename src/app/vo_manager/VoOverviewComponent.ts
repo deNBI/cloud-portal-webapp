@@ -296,7 +296,6 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
                  }
       )
   }
-  
 
   getProjectStatus(project: Project): void {
     this.voserice.getProjectStatus(project.Id).subscribe((res: any): void => {
