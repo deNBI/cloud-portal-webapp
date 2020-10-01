@@ -115,10 +115,11 @@ export class NumberChartsComponent implements OnInit {
   /**
    * Downloads the numbers graphic as a png.
    */
-  downloadAsSVG(elementId: string, filename: string): void {
+  downloadAsPNG(elementId: string, filename: string): void {
     saveSVG.saveSvgAsPng(document.getElementById(elementId), filename);
 
   }
+
 
   /**
    * Maybe refactor, so only one function is necessary and independent from chart to draw.
@@ -159,7 +160,7 @@ export class NumberChartsComponent implements OnInit {
       },
       grid: {
         y: {
-          lines: [{value:0}]
+          show: true
         }
       },
       axis: {
@@ -222,7 +223,7 @@ export class NumberChartsComponent implements OnInit {
       },
       grid: {
         y: {
-          lines: [{value:0}]
+          show: true
         }
       },
       axis: {
@@ -290,7 +291,7 @@ export class NumberChartsComponent implements OnInit {
       },
       grid: {
         y: {
-          lines: [{value:0}]
+          show: true
         }
       },
       axis: {
