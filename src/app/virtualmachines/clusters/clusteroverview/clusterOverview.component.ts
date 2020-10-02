@@ -186,6 +186,7 @@ export class ClusterOverviewComponent extends AbstractBaseClasse implements OnIn
     forkJoin(observableBatch).subscribe((upd_vms: VirtualMachine[]): void => {
       upd_vms.forEach((upd_vm: VirtualMachine, index: number) => {
         const idx: number = this.selectedCluster.worker_instances.indexOf(this.scale_down_vms[index])
+
         if (idx !== -1) {
           this.selectedCluster.worker_instances[idx] = upd_vm
         }

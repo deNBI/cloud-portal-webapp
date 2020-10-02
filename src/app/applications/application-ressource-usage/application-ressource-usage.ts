@@ -39,6 +39,7 @@ export class ApplicationRessourceUsage {
         tmp_flavors.push(fl)
       }
     }
+
     return tmp_flavors.length > 0;
   }
 
@@ -52,6 +53,7 @@ export class ApplicationRessourceUsage {
         tmp_flavors.push(fl)
       }
     }
+
     return tmp_flavors
   }
 
@@ -69,6 +71,7 @@ export class ApplicationRessourceUsage {
       / (worker_flavor.ram / 1024);
     const cpu_max_vms: number = (this.cores_total - this.cores_used)
       / worker_flavor.vcpus;
+
     return Math.floor(Math.min(ram_max_vms, cpu_max_vms, this.number_vms - this.used_vms))
   }
 
