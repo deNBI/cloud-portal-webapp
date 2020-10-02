@@ -32,7 +32,7 @@ export class Clusterinfo {
     this.instances_count = cl.instances_count;
     this.launch_date = cl.launch_date;
     this.key_name = cl.key_name;
-    this.status = status;
+    this.status = cl.status;
     this.application_id = cl.application_id;
     this.project = cl.project;
     this.userlogin = cl.userlogin;
@@ -41,7 +41,7 @@ export class Clusterinfo {
   }
 
   private sortWorkerByStatus(): void {
-    this.worker_instances.sort((w1: VirtualMachine, w2: VirtualMachine) => (w1.status > w2.status) ? 1 : ((w2.status > w1.status) ? -1 : 0));
+    this.worker_instances.sort((w1: VirtualMachine, w2: VirtualMachine): any => (w1.status > w2.status) ? 1 : ((w2.status > w1.status) ? -1 : 0));
   }
 
 }

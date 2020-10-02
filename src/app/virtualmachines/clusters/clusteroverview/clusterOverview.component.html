@@ -120,7 +120,7 @@
                       ... Hide information</a>
                   </div>
                   <div class="col-3"
-                       *ngIf="cluster?.status != VirtualMachineStates.staticDELETED && cluster?.status != VirtualMachineStates.staticDELETING">
+                       *ngIf="cluster?.status != VirtualMachineStates.staticDELETED && cluster?.status != VirtualMachineStates.staticDELETING && cluster?.status == 'Running' ">
                     <a class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
                        [id]="'scale_up_'+cluster?.cluster_id"
                        (click)="selectedCluster=cluster;scaleUpModal.show();calcRess();">
@@ -129,7 +129,7 @@
 
                   </div>
                   <div class="col-3"
-                       *ngIf="cluster?.status != VirtualMachineStates.staticDELETED && cluster?.status != VirtualMachineStates.staticDELETING">
+                       *ngIf="cluster?.status != VirtualMachineStates.staticDELETED && cluster?.status != VirtualMachineStates.staticDELETING && cluster?.status == 'Running' ">
                     <a class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
                        [id]="'scale_down_'+cluster?.cluster_id"
                        (click)="selectedCluster=cluster;resetScaleDown();scaleDownModal.show()">
@@ -267,19 +267,23 @@
                 <p> This will only delete the selected machines, you have to execute the following commands on the
                   terminal of your master
                   machine to configure the cluster correctly!</p>
-                <p><br><samp>wget {{SCALE_DOWN_SCRIPT_LINK}}</samp></p>
-                <p><br><samp>./scale-down_v0.py <span
-                  *ngFor="let vm of scale_down_vms">{{vm.fixed_ip}} </span></samp></p>
+                <div class="alert alert-light"
+                     role="alert">
+                  <strong>wget {{SCALE_DOWN_SCRIPT_LINK}}</strong></div>
+                <div class="alert alert-light"
+                     role="alert"><strong>./scaling_down_v0.py <span
+                  *ngFor="let vm of scale_down_vms">{{vm.fixed_ip}} </span></strong></div>
 
                 <input class="form-check-input" name="sclae_down_acknowledgement_checkbox" type="checkbox"
                        id="public_key_acknowledgement_checkbox" [(ngModel)]="scaling_warning_read">
-                <label class="form-check-label" for="public_key_acknowledgement_checkbox">
+                <label class="form-check-label">
                   Hint was read!
                 </label></div>
 
 
               <button class="btn  btn-success col-md-4"
-                      (click)="scaleDownModal.hide();scaleDownDeleteVm();" [disabled]="!scaling_warning_read || scale_down_vms.length == 0"
+                      (click)="scaleDownModal.hide();scaleDownDeleteVm();notificationModal.show();"
+                      [disabled]="!scaling_warning_read || scale_down_vms.length == 0"
                       id="confirm-scale_down">
                 Delete selected Vms
               </button>
@@ -307,32 +311,122 @@
             </button>
           </div>
           <div class="modal-body">
-            <div class="alert-info" *ngIf="!max_scale_count_loaded"> Calculating maximum additional workers.. <i
-              class="fa fa-spinner fa-spin" style="font-size:24px"></i></div>
-            <ng-container *ngIf="max_scale_count_loaded && max_scale_count > 0">
-              <div class="alert-info"> Maximum additional
-                workers: <strong>{{max_scale_count}}</strong>
+            <div class="alert-info row" *ngIf="!max_scale_count_loaded"><strong> Calculating maximum additional
+              workers..
+              <i
+                class="fa fa-spinner fa-spin" style="font-size:24px"></i></strong></div>
 
+            <div *ngIf="max_scale_count_loaded && max_scale_count > 0">
+              <div class="row ">
+                <div class="alert-info col-6 "> Maximum additional
+                  workers: <strong>{{max_scale_count}}</strong></div>
+                <div class="alert-info col-6 "><strong> Worker Configuration</strong></div>
               </div>
-                      <div class="input-group col-3">
-                  <input id="scale_worker_count" class="form-control" style="margin: 10px 0 0 0;"
-                         name="scale_worker_count" placeholder="e.g 1"
-                         type="number" min="1" max="{{max_scale_count}}" step="1"
-                         appMinAmount="1" appMaxAmount="{{max_scale_count}}" appInteger
-                         pattern="^([1-9]|1[012])$" [(ngModel)]="scale_worker_count">
-                  <div class="input-group-append mb-3" style="margin: 10px 0 0 0;"><span class="input-group-text"> Additional Worker
-                                    </span></div>
+
+              <div class=" row">
+                <div class="col-6">
+                  <div class=" row">
+                    <br>
+                    <br>
+                    <br>
+
+
+                    <div class="alert-secondary "> Select how many additional workers you want to
+                      start:
+                    </div>
+                    <br>
+
+                    <div class="input-group">
+                      <input id="scale_worker_count" class="form-control" style="margin: 10px 0 0 0;"
+                             name="scale_worker_count" placeholder="e.g 1"
+                             type="number" min="1" max="{{max_scale_count}}" step="1"
+                             appMinAmount="1" appMaxAmount="{{max_scale_count}}" appInteger
+                             pattern="^([1-9]|1[012])$" [(ngModel)]="scale_worker_count">
+                      <div class="input-group-append"><span
+                        class="input-group-text"> Additional Worker                </span></div>
+
+
+                    </div>
+                  </div>
                 </div>
 
-            </ng-container>
+                <div class="col-6">
+                  <strong>Image: {{selectedCluster?.worker_instances[0]?.image}}</strong>
+                  <div
+                    class="card-header bg-info-flavor text-truncate" data-toggle="tooltip" data-placement="top"
+                    title="{{selectedCluster?.worker_instances[0]?.flavor?.name}}"
+                    style=" color: white !important;"> <!-- quickfix -->
+                    <strong>{{selectedCluster?.worker_instances[0]?.flavor?.name}}</strong></div>
+                  <div class="card-body">
+                    <div class="scroll-flavor">
+
+                      <div class="col">
+                        <div class="row">
+                          <figure class="flavor-card-icons">
+                            <img src="{{RAM_ICON_PATH}}" alt="">
+                          </figure>
+                          {{selectedCluster?.worker_instances[0]?.flavor?.ram}} GB Ram
+                        </div>
+                      </div>
+                      <div class="col"
+                      >
+                        <div class="row">
+                          <figure class="flavor-card-icons">
+                            <img src="{{CPU_ICON_PATH}}" alt="">
+                          </figure>
+                          {{selectedCluster?.worker_instances[0]?.flavor?.vcpus}} Cores
+                        </div>
+                      </div>
+                      <div class="col"
+                      >
+                        <div class="row">
+                          <figure class="flavor-card-icons">
+                            <img src="{{STORAGE_ICON_PATH}}" alt="">
+                          </figure>
+                          {{selectedCluster?.worker_instances[0]?.flavor?.rootdisk}} GB root disk <span
+                          *ngIf="selectedCluster?.worker_instances[0]?.flavor?.ephemeral_disk">
+                    + {{selectedCluster?.worker_instances[0]?.flavor.ephemeral_disk}} GB ephemeral disk</span>
+                        </div>
+                      </div>
+                      <div class="col" *ngIf="selectedCluster?.worker_instances[0]?.flavor?.gpu > 0">
+                        <div class="row">
+                          <figure class="flavor-card-icons">
+                            <img src="{{GPU_ICON_PATH}}" alt="">
+                          </figure>
+                          {{selectedCluster?.worker_instances[0]?.flavor?.gpu}} <span
+                          *ngIf="selectedCluster?.worker_instances[0]?.flavor?.gpu == 1"> GPU</span><span
+                          *ngIf="selectedCluster?.worker_instances[0]?.flavor?.gpu > 1"> GPUs</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
             <div class="alert-info" *ngIf="max_scale_count_loaded && max_scale_count== 0"> Not enough resources for
               scaling up your Cluster!
             </div>
 
 
             <div class="modal-footer">
-                <button class="btn  btn-success col-md-4"
-                      (click)="scaleUpModal.hide();sclaeUpCluster();" [disabled]=" max_scale_count <= 0 && scale_worker_count <=  0"
+              <div class="alert" *ngIf="max_scale_count_loaded && max_scale_count > 0"
+                   [ngClass]="{'alert-danger':!scaling_warning_read,'alert-success':scaling_warning_read}"
+                   role="alert">
+                <p> This will only start the number of selected machines with suitable settings. But you still have to
+                  configure your cluster correctly from the master.
+                  Please follow the steps which are described here!</p>
+
+                <input class="form-check-input" name="sclae_down_acknowledgement_checkbox" type="checkbox"
+                       [(ngModel)]="scaling_warning_read">
+                <label class="form-check-label">
+                  Hint was read!
+                </label></div>
+
+              <button class="btn  btn-success col-md-4" *ngIf="max_scale_count_loaded && max_scale_count > 0"
+                      (click)="scaleUpModal.hide();sclaeUpCluster();notificationModal.show()"
+                      [disabled]=" !scaling_warning_read || max_scale_count <= 0 ||   scale_worker_count <=  0 || !scale_worker_count || !max_scale_count"
                       id="confirm_scale_up">
                 Start {{scale_worker_count}} vms!
               </button>
@@ -344,3 +438,29 @@
         </div><!-- /.modal-dialog -->
       </div><!-- /.modal -->
     </div>
+
+    <div bsModal #notificationModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
+         aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="notification_title">{{ notificationModalTitle }}</h4>
+            <button type="button" class="close" style="cursor:pointer" (click)="notificationModal.hide()"
+                    aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="alert alert-{{ notificationModalType }}" role="alert">
+              {{ notificationModalMessage }}
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button *ngIf="notificationModalIsClosable == true" type="button"
+                    (click)="resetNotificationModal(); notificationModal.hide();" type="reset"
+                    class="btn  btn-secondary" id="close_notification"> Close
+            </button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->

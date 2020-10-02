@@ -4,8 +4,8 @@ import {FullLayoutComponent} from '../../../layouts/full-layout.component';
 import {UserService} from '../../../api-connector/user.service';
 import {ImageService} from '../../../api-connector/image.service';
 import {FacilityService} from '../../../api-connector/facility.service';
-import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
-import {Subject, Subscription} from 'rxjs';
+import {catchError, debounceTime, distinctUntilChanged} from 'rxjs/operators';
+import {forkJoin, Observable, of, Subject, Subscription} from 'rxjs';
 import {FormBuilder} from '@angular/forms';
 import {is_vo} from '../../../shared/globalvar';
 import {VirtualMachineStates} from '../../virtualmachinemodels/virtualmachinestates';
@@ -16,6 +16,7 @@ import {ClipboardService} from 'ngx-clipboard';
 import {VirtualMachine} from '../../virtualmachinemodels/virtualmachine';
 import {ApplicationRessourceUsage} from '../../../applications/application-ressource-usage/application-ressource-usage';
 import {SCALE_DOWN_SCRIPT_LINK, SCALE_UP_SCRIPT_LINK} from '../../../../links/links';
+import {AbstractBaseClasse} from '../../../shared/shared_modules/baseClass/abstract-base-class';
 
 /**
  * Cluster overview componentn.
@@ -28,7 +29,7 @@ import {SCALE_DOWN_SCRIPT_LINK, SCALE_UP_SCRIPT_LINK} from '../../../../links/li
                VirtualmachineService, FullLayoutComponent, GroupService, ClientService, GroupService]
            })
 
-export class ClusterOverviewComponent implements OnInit, OnDestroy {
+export class ClusterOverviewComponent extends AbstractBaseClasse implements OnInit, OnDestroy {
   title: string = 'Cluster Overview';
 
   private subscription: Subscription = new Subscription();
@@ -94,12 +95,19 @@ export class ClusterOverviewComponent implements OnInit, OnDestroy {
 
   filterChanged: Subject<string> = new Subject<string>();
   virtualMachineStates: VirtualMachineStates = new VirtualMachineStates();
+  STATIC_IMG_FOLDER: String = 'static/webapp/assets/img/';
+
+  CPU_ICON_PATH: string = `${this.STATIC_IMG_FOLDER}/new_instance/cpu_icon.svg`;
+  RAM_ICON_PATH: string = `${this.STATIC_IMG_FOLDER}/new_instance/ram_icon.svg`;
+  STORAGE_ICON_PATH: string = `${this.STATIC_IMG_FOLDER}/new_instance/storage_icon.svg`;
+  GPU_ICON_PATH: string = `${this.STATIC_IMG_FOLDER}/new_instance/gpu_icon.svg`;
 
   constructor(private facilityService: FacilityService, private groupService: GroupService,
               private imageService: ImageService, private userservice: UserService,
               private virtualmachineservice: VirtualmachineService, private fb: FormBuilder,
               private clipboardService: ClipboardService
   ) {
+    super();
 
   }
 
@@ -133,7 +141,15 @@ export class ClusterOverviewComponent implements OnInit, OnDestroy {
   }
 
   sclaeUpCluster(): void {
-    this.virtualmachineservice.scaleCluster(this.selectedCluster.cluster_id, this.scale_worker_count).subscribe()
+    this.resetNotificationModal()
+    this.updateNotificationModal('Starting Workers', `Starting ${this.scale_worker_count} additional workers..`, true, 'info')
+
+    this.virtualmachineservice.scaleCluster(this.selectedCluster.cluster_id, this.scale_worker_count).subscribe((): void => {
+      this.updateNotificationModal('Sucessfull',
+                                   `The start of ${this.scale_worker_count} workers was successfully initiated. Remember to configure your cluster!'`,
+                                   true, 'info')
+
+    })
   }
 
   resetScaleDown(): void {
@@ -152,21 +168,34 @@ export class ClusterOverviewComponent implements OnInit, OnDestroy {
   }
 
   scaleDownDeleteVm(): void {
+    let msg: string = `Deleting virtual machines:`
+    for (const vm of this.scale_down_vms) {
+      msg += ` [${vm.name}]`
+    }
+
+    this.updateNotificationModal('Deleting Workers', msg, true, 'info')
+    const observableBatch: Observable<VirtualMachine>[] = [];
+
+    // tslint:disable-next-line:no-for-each-push
     this.scale_down_vms.forEach((vm: VirtualMachine): void => {
-      this.deleteVm(vm)
-    })
-  }
-
-
-  deleteVm(vm: VirtualMachine): void {
-    this.virtualmachineservice.deleteVM(vm.openstackid).subscribe(
-      (updated_vm: VirtualMachine): void => {
-        const idx: number = this.selectedCluster.worker_instances.indexOf(vm)
+      vm.status = VirtualMachineStates.DELETING;
+      // tslint:disable-next-line:no-unnecessary-callback-wrapper
+      observableBatch.push(this.virtualmachineservice.deleteVM(vm.openstackid).pipe(catchError((error: any): Observable<any> => of(error)))
+      )
+    });
+    forkJoin(observableBatch).subscribe((upd_vms: VirtualMachine[]): void => {
+      upd_vms.forEach((upd_vm: VirtualMachine, index: number) => {
+        const idx: number = this.selectedCluster.worker_instances.indexOf(this.scale_down_vms[index])
         if (idx !== -1) {
-          this.selectedCluster.worker_instances[idx] = updated_vm
+          this.selectedCluster.worker_instances[idx] = upd_vm
         }
 
       })
+      msg = 'Successfully deleted the machines. Remember to configure your cluster!';
+      this.updateNotificationModal('Successfully Deleted!', msg, true, 'success')
+
+    })
+
   }
 
   copyToClipboard(text: string): void {
@@ -215,6 +244,7 @@ export class ClusterOverviewComponent implements OnInit, OnDestroy {
             this.selectedCluster = updated_cluster;
           }
 
+          // tslint:disable-next-line:max-line-length
           if (updated_cluster.status !== 'Running' && updated_cluster.status !== VirtualMachineStates.DELETING && updated_cluster.status !== VirtualMachineStates.DELETED) {
             this.check_status_loop(updated_cluster, final_state, is_selected_cluster)
 
@@ -277,6 +307,7 @@ export class ClusterOverviewComponent implements OnInit, OnDestroy {
     this.clusters = cluster_page_infos['cluster_list'].map((cluster: Clusterinfo): Clusterinfo => {
       return new Clusterinfo(cluster)
     })
+    this.check_status_loop_cluster_vms()
     this.total_items = cluster_page_infos['total_items'];
     this.items_per_page = cluster_page_infos['items_per_page'];
     this.total_pages = cluster_page_infos['num_pages'];
@@ -326,6 +357,45 @@ export class ClusterOverviewComponent implements OnInit, OnDestroy {
       .subscribe((): void => {
         this.applyFilter();
       });
+
+  }
+
+  check_status_loop_vm(vm: VirtualMachine, cluster: Clusterinfo, final_state: string = VirtualMachineStates.ACTIVE): void {
+
+    setTimeout(
+      (): void => {
+        this.subscription.add(
+          this.virtualmachineservice.checkVmStatus(vm.openstackid, vm.name).subscribe((updated_vm: VirtualMachine): void => {
+            updated_vm = new VirtualMachine(updated_vm);
+            cluster.worker_instances[cluster.worker_instances.indexOf(vm)] = updated_vm;
+            if (VirtualMachineStates.IN_PROCESS_STATES.indexOf(updated_vm.status) !== -1) {
+              this.check_status_loop_vm(updated_vm, cluster, final_state)
+            } else if (VirtualMachineStates.NOT_IN_PROCESS_STATES.indexOf(updated_vm.status) !== -1) {
+
+              if (final_state && updated_vm.status !== final_state) {
+                this.check_status_loop_vm(updated_vm, cluster, final_state)
+
+              } else {
+                this.check_status_loop_vm(updated_vm, cluster, final_state)
+              }
+
+            }
+
+          }))
+      },
+
+      this.checkStatusTimeout
+    );
+  }
+
+  check_status_loop_cluster_vms(): void {
+    this.clusters.forEach((cluster: Clusterinfo): void => {
+      cluster.worker_instances.forEach((vm: VirtualMachine): void => {
+        if (vm.status !== VirtualMachineStates.ACTIVE && VirtualMachineStates.NOT_IN_PROCESS_STATES.indexOf(vm.status) === -1) {
+          this.check_status_loop_vm(vm, cluster)
+        }
+      })
+    })
 
   }
 
