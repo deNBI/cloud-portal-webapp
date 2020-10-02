@@ -16,6 +16,7 @@ export const WIKI_GUACAMOLE_LINK: string = 'https://cloud.denbi.de/wiki/simple_v
 export const WIKI_LINK_ACCOUNTS: string = 'https://cloud.denbi.de/wiki/portal/user_information/#link-accounts-to-elixir';
 export const SCALE_DOWN_SCRIPT_LINK: string = 'https://raw.githubusercontent.com/deNBI/user_scripts/master/bibigrid/v0/scaling_down_v0.py'
 export const SCALE_UP_SCRIPT_LINK: string = 'https://raw.githubusercontent.com/deNBI/user_scripts/master/bibigrid/v0/scaling_up_v0.py'
+export const SCALING_UP_WIKI: string = 'https://cloud.denbi.de/wiki/simple_vm/cluster_overview/#scale-up'
 
 export const WIKI_LNKS: string[] =
   [
