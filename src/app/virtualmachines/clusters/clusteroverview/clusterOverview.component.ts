@@ -157,7 +157,6 @@ export class ClusterOverviewComponent implements OnInit, OnDestroy {
     })
   }
 
-
   deleteVm(vm: VirtualMachine): void {
     this.virtualmachineservice.deleteVM(vm.openstackid).subscribe(
       (updated_vm: VirtualMachine): void => {

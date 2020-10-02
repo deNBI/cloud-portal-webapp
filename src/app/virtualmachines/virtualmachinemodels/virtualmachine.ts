@@ -58,7 +58,7 @@ export class VirtualMachine {
     this.projectid = vm.projectid;
     this.res_env_url = vm.res_env_url;
     this.modes = vm.modes;
-    this.fixed_ip=vm.fixed_ip;
+    this.fixed_ip = vm.fixed_ip;
     this.cluster = vm.cluster;
     this.volumes = vm.volumes;
     this.still_used_confirmation_requested = vm.still_used_confirmation_requested;

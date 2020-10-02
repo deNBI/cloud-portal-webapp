@@ -371,7 +371,6 @@ export class AddClusterComponent implements OnInit {
       this.getFlavors(this.selectedProject[1]);
       this.projectDataLoaded = true;
 
-
     });
 
   }
