@@ -34,7 +34,7 @@ export class ValidationApplicationComponent extends ApplicationBaseClassComponen
 
   constructor(private applicationsService: ApplicationsService,
               private activatedRoute: ActivatedRoute, private changeDetector: ChangeDetectorRef) {
-    super(null, null, applicationsService, null);
+    super(null, applicationsService, null);
 
   }
 
