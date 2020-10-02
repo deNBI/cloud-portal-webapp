@@ -22,6 +22,7 @@ export class ClusterdetailComponent implements OnInit, OnDestroy {
   notFoundCluster: boolean = false;
   checkStatusTimeout: number = 5000;
   subscription: Subscription = new Subscription();
+  selectedWorker: VirtualMachine;
 
   constructor(private activatedRoute: ActivatedRoute, private virtualmachineService: VirtualmachineService) {
   }

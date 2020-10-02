@@ -414,9 +414,13 @@
               <div class="alert" *ngIf="max_scale_count_loaded && max_scale_count > 0"
                    [ngClass]="{'alert-danger':!scaling_warning_read,'alert-success':scaling_warning_read}"
                    role="alert">
-                <p> This will only start the number of selected machines with suitable settings. But you still have to
-                  configure your cluster correctly from the master.
-                  Please follow the steps which are described here!</p>
+                <p> This will only start the number of selected machines with suitable settings.
+                  After initiating the startup of the new machines wait until they are active, you can follow the status
+                  of the new workers on the cluster <a class="h5 text-primary" style="margin-left: 10px"  target="_blank" rel="noopener noreferrer"
+
+                                                       [routerLink]="['/virtualmachines/cluster/' + selectedCluster?.cluster_id]">
+                    details </a>page.
+                  When the machines are active please follow the steps described here!</p>
 
                 <input class="form-check-input" name="sclae_down_acknowledgement_checkbox" type="checkbox"
                        [(ngModel)]="scaling_warning_read">

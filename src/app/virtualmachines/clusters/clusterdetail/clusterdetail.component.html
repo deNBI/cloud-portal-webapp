@@ -35,7 +35,13 @@
       <div class="card-header"><span class="font-weight-bold text-muted">Worker Instances</span></div>
 
       <div class="card-body" *ngFor="let worker of cluster?.worker_instances">
-        <div class="card-title"><strong>Instance: {{worker.name}}</strong></div>
+        <div class="card-title"><strong>Instance: {{worker.name}}</strong>
+          <button type="button" class="btn-secondary" style="float: right"
+                  (click)="selectedWorker=worker;scalingInfoModal.show()"
+                  aria-label="Close">
+            Scaling YAML
+          </button>
+        </div>
         <app-virtualmachineinfo [cluster_machine]="true" [vm]="worker"></app-virtualmachineinfo>
       </div>
     </div>
@@ -77,9 +83,44 @@
                     (click)="verifyModal.hide();">Cancel
             </button>
           </div>
-        </div><!-- /.modal-content -->
+    </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
 
+<div bsModal #scalingInfoModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="Label"
+     aria-hidden="true"
+     id="scalingInfoModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Scaling Info</h4>
+        <button type="button" class="close" style="cursor: pointer"
+                (click)="scalingInfoModal.hide()"
+                aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <code>
+
+          <p>ip: {{selectedWorker?.fixed_ip}}</p>
+          <p>cores: {{selectedWorker?.flavor?.vcpus}}</p>
+          <p>hostname: {{selectedWorker?.name}}</p>
+          <p>memory: {{selectedWorker?.flavor?.ram * 1024}} </p>
+          <p>epheremals: []</p></code>
+
+
+
+      </div>
+      <div class="modal-footer">
+
+        <button class="btn  btn-danger col-md-4" type="reset"
+                (click)="scalingInfoModal.hide();">Close
+        </button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
