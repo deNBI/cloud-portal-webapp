@@ -46,7 +46,7 @@
     "@coreui/angular": "^2.9.4",
     "@coreui/coreui": "^2.1.16",
     "@ng-bootstrap/ng-bootstrap": "^7.0.0",
-    "@types/jquery": "^3.5.1",
+    "@types/jquery": "^3.5.2",
     "@types/d3": "^5.7.2",
     "angular-ng-autocomplete": "^2.0.1",
     "angulartics2": "^10.0.0",
