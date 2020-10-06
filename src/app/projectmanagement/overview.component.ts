@@ -13,7 +13,6 @@ import {forkJoin, Observable, Subscription} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Application} from '../applications/application.model/application.model';
 import {ApplicationBaseClassComponent} from '../shared/shared_modules/baseClass/application-base-class.component';
-import {ApplicationStatusService} from '../api-connector/application-status.service';
 import {FacilityService} from '../api-connector/facility.service';
 import {ApplicationsService} from '../api-connector/applications.service';
 import {FullLayoutComponent} from '../layouts/full-layout.component';
@@ -40,7 +39,7 @@ import {ApplicationCreditRequest} from '../applications/application_credit_reque
 @Component({
   selector: 'app-project-overview',
   templateUrl: 'overview.component.html',
-  providers: [FlavorService, ApplicationStatusService, ApplicationsService,
+  providers: [FlavorService, ApplicationsService,
     FacilityService, UserService, GroupService, ApiSettings, CreditsService]
 })
 export class OverviewComponent extends ApplicationBaseClassComponent implements OnInit, OnDestroy {
@@ -132,10 +131,13 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   smallExamplePossibleDays: string = '';
   largeExamplePossibleDays: string = '';
   supportMails: string[] = [];
+  resource_modification_expected_credits: number = 0;
 
   resourceDataLoaded: boolean = false;
   vmsInUse: number;
   maximumVMs: number;
+  coresInUse: number;
+  ramInUse: number;
 
   title: string = 'Project Overview';
   @ViewChild('edam_ontology') edam_ontology: AutocompleteComponent;
@@ -158,7 +160,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
   constructor(private flavorService: FlavorService,
               private groupService: GroupService,
-              applicationstatusservice: ApplicationStatusService,
               applicationsservice: ApplicationsService,
               facilityService: FacilityService,
               userservice: UserService,
@@ -167,7 +168,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
               private router: Router,
               private creditsService: CreditsService,
               @Inject(DOCUMENT) private document: Document) {
-    super(userservice, applicationstatusservice, applicationsservice, facilityService);
+    super(userservice, applicationsservice, facilityService);
   }
 
   calculateProgressBar(numberToRoundUp: number): string {
@@ -238,6 +239,12 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
       ).subscribe(
         (credits: number): void => {
           this.project_modification.extra_credits = credits;
+          this.resource_modification_expected_credits =
+            this.project_application.project_application_initial_credits
+            + this.project_modification.extra_credits;
+          if (this.resource_modification_expected_credits <= 0) {
+            this.resource_modification_expected_credits = 0;
+          }
         }))
   }
 
@@ -614,7 +621,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
       this.project_members = [];
       this.application_id = paramsId.id;
       this.getApplication();
-      this.getApplicationStatus();
       this.getUserinfo();
       this.getListOfFlavors();
       this.getListOfTypes();
@@ -626,7 +632,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   }
 
   /**
-   * Checks if user is able to start a machine, when the project is a SimpleVM project.
+   * Checks if user is able to start a machine, when the
+   * project is a SimpleVM project.
    */
   isAbleToStart(): boolean {
     if (this.resourceDataLoaded) {
@@ -651,6 +658,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
         (res: any): void => {
           this.vmsInUse = res['used_vms'];
           this.maximumVMs = res['number_vms'];
+          this.coresInUse = res['cores_used'];
+          this.ramInUse = res['ram_used']
           this.resourceDataLoaded = true;
         });
     } else {
@@ -739,7 +748,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
     this.groupService.requestProjectTermination(this.project.Id).subscribe((): void => {
       this.fullLayout.getGroupsEnumeration();
-      this.getApplicationStatus();
       this.getApplication();
       this.updateNotificationModal('Success', 'Termination was requested!', true, 'success');
 

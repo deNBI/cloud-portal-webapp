@@ -33,10 +33,20 @@ export class NumberChartsComponent implements OnInit {
    * Lists for numbers of projects per project type and status.
    */
   private runningOpenstack: any[] = ['OpenStack running'];
-  private runningSimpleVM: any[] = ['simpleVM running'];
+  private runningSimpleVM: any[] = ['SimpleVM running'];
   private terminatedOpenstack: any[] = ['OpenStack terminated'];
-  private terminatedSimpleVM: any[] = ['simpleVM terminated'];
-  private endDates: any[] = ['x'];
+  private terminatedSimpleVM: any[] = ['SimpleVM terminated'];
+  private endDatesProjects: any[] = ['x'];
+
+  /**
+   * Lists for ram and cores numbers.
+   */
+
+  private simpleVMRam: any[] = ['RAM SimpleVM'];
+  private simpleVMCores: any[] = ['Cores SimpleVM'];
+  private openstackRam: any [] = ['RAM OpenStack'];
+  private openstackCores: any[] = ['Cores Openstack'];
+  private endDatesResources: any[] = ['x'];
 
   ngOnInit(): void {
     this.getData();
@@ -54,13 +64,30 @@ export class NumberChartsComponent implements OnInit {
         this.runningSimpleVM.push(valuePack["running_simple_vm"]);
         this.terminatedOpenstack.push(valuePack["terminated_openstack"]);
         this.terminatedSimpleVM.push(valuePack["terminated_simple_vm"]);
-        this.endDates.push(valuePack["end_date"]);
+        this.endDatesProjects.push(valuePack["end_date"]);
       });
-      this.drawChart();
+      this.drawProjectNumbersChart();
 
     }, (err: Error) => {
       console.log(err);
       });
+
+    this.numbersService.getRamCoresTimeline().subscribe(
+      (result: Object[]): void => {
+
+        result.forEach((valuePack: Object): void => {
+          this.openstackCores.push(valuePack["openstack_cores"]);
+          this.openstackRam.push(valuePack["openstack_ram"]);
+          this.simpleVMCores.push(valuePack["simple_vm_cores"]);
+          this.simpleVMRam.push(valuePack["simple_vm_ram"]);
+          this.endDatesResources.push(valuePack["end_date"]);
+        });
+        this.drawRamNumbersChart();
+        this.drawCoresNumbersChart();
+      }, (err: Error) => {
+        console.log(err);
+      }
+    );
   }
 
   /**
@@ -87,30 +114,155 @@ export class NumberChartsComponent implements OnInit {
   /**
    * Downloads the numbers graphic as a png.
    */
-  downloadAsSVG(): void {
-    saveSVG.saveSvgAsPng(document.getElementById('numberChartSVG'), 'numberChart.png');
+  downloadAsPNG(elementId: string, filename: string): void {
+    saveSVG.saveSvgAsPng(document.getElementById(elementId), filename);
 
   }
 
 
-
-
   /**
-   * Draws the chart in the template.
+   * Maybe refactor, so only one function is necessary and independent from chart to draw.
+   * Draws the cores Chart into the template.
    */
-  drawChart(): void {
-
-    const chart: any  = c3.generate({
+  drawCoresNumbersChart(): void {
+    const coresChart: any  = c3.generate({
       oninit: function() {
-        this.svg.attr('id', 'numberChartSVG')
+        this.svg.attr('id', 'coresNumbersSVG')
       },
-      bindto: '#chart',
+      bindto: '#coresChart',
       size: {
         height: 600
       }, data: {
         x : 'x',
         columns: [
-          this.endDates,
+          this.endDatesResources,
+          this.simpleVMCores,
+          this.openstackCores
+        ],
+        type: 'bar',
+        bar: {
+          width: {
+            ratio: 0.2
+          }
+        },
+        groups: [
+          [
+            this.simpleVMCores[0],
+            this.openstackCores[0]
+          ]
+        ],
+        order: null
+      },
+
+      color: {
+        pattern: ['#00adef', '#ed1944']
+      },
+      grid: {
+        y: {
+          show: true
+        }
+      },
+      axis: {
+        x: {
+          label: {
+            text: 'Date',
+            position: 'outer-right'
+          },
+          type: 'timeseries',
+          tick: {
+            format: '%Y-%m-%d'
+          }
+        },
+        y: {
+          label: {
+            text: 'Amount of allocated cores',
+            position: 'outer-right'
+          }
+        }
+      }
+    });
+  }
+
+  /**
+   * Maybe refactor, so only one function is necessary and independent from chart to draw.
+   * Draws the ram Chart into the template.
+   */
+  drawRamNumbersChart(): void {
+    const ramChart: any  = c3.generate({
+      oninit: function() {
+        this.svg.attr('id', 'ramNumbersSVG')
+      },
+      bindto: '#ramChart',
+      size: {
+        height: 600
+      }, data: {
+        x : 'x',
+        columns: [
+          this.endDatesResources,
+          this.simpleVMRam,
+          this.openstackRam
+        ],
+        type: 'bar',
+        bar: {
+          width: {
+            ratio: 0.2
+          }
+        },
+        groups: [
+          [
+            this.simpleVMRam[0],
+            this.openstackRam[0]
+          ]
+        ],
+        order: null
+      },
+
+      color: {
+        pattern: ['#00adef', '#ed1944']
+      },
+      grid: {
+        y: {
+          show: true
+        }
+      },
+      axis: {
+        x: {
+          label: {
+            text: 'Date',
+            position: 'outer-right'
+          },
+          type: 'timeseries',
+          tick: {
+            format: '%Y-%m-%d'
+          }
+        },
+        y: {
+          label: {
+            text: 'Amount of allocated VRAM in GB',
+            position: 'outer-right'
+          }
+        }
+      }
+    });
+  }
+
+
+  /**
+   * Draws the project numbers chart in the template.
+   */
+  drawProjectNumbersChart(): void {
+
+    const projectNumbersChart: any  = c3.generate({
+      oninit: function() {
+        this.svg.attr('id', 'projectNumbersSVG')
+      },
+      bindto: '#projectsChart',
+      size: {
+        height: 600
+      }, data: {
+        x : 'x',
+        columns: [
+          this.endDatesProjects,
           this.runningSimpleVM,
           this.terminatedSimpleVM,
           this.runningOpenstack,
@@ -138,7 +290,7 @@ export class NumberChartsComponent implements OnInit {
       },
       grid: {
         y: {
-          lines: [{value:0}]
+          show: true
         }
       },
       axis: {

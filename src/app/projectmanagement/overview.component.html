@@ -200,7 +200,7 @@
           <div class="row">
             <div class="col-6">
               <div class="callout callout-info" *ngIf="this.resourceDataLoaded">
-                <small class="text-muted">Virtual machines</small><br>
+                <small class="text-muted">Computational Resources</small><br>
                 <strong class="text-muted" *ngIf="project?.OpenStackProject">{{maximumVMs}} VMs with a total of
                   {{project_application?.project_application_total_cores}} VCPUs and
                   {{project_application?.project_application_total_ram}} GBs of RAM
@@ -210,7 +210,9 @@
                     {{project_application?.project_modification_request?.date_submitted}}
                   </span>
                 </strong>
-                <strong class="text-muted" *ngIf="!project?.OpenStackProject">{{vmsInUse}} of {{maximumVMs}} in use
+                <strong class="text-muted" *ngIf="!project?.OpenStackProject">{{vmsInUse}} of {{maximumVMs}} VMS,
+                  {{coresInUse}} of {{project_application?.project_application_total_cores}} VCPUs and
+                  {{ramInUse}} of {{project_application?.project_application_total_ram}} GBs RAM in use
                   <span *ngIf="((project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED)
                   || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION))">
                      - Resource modification requested on
@@ -306,6 +308,13 @@
                       *ngIf="((project_application | hasstatusinlist: Application_States.CREDITS_EXTENSION_REQUESTED)
                       || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_CREDITS))"
                       type="button"style="margin-top:15px;">More credits requested</button>
+            </div>
+            <div class="col-6">
+              <div *ngIf="project_application?.project_application_initial_credits === 0" class="alert alert-info">
+                Your approved credits are lower or equal to zero.
+                Please submit a Credits Extension or contact us at <a href="mailto:cloud@denbi.de">cloud@denbi.de</a>, so we may calculate and set the correct amount for your
+                project.
+              </div>
             </div>
           </div>
         </div>
@@ -1266,12 +1275,16 @@
             <div *ngIf="credits_allowed" class="form-group row">
               <label #creditnumbers id="creditnumber" class="col">
                 <strong>Expected total credits: {{project_application?.project_application_initial_credits}} + <span
-                  id="modification_credits">({{project_modification?.extra_credits}}) = {{project_application?.project_application_initial_credits + project_modification?.extra_credits}}
+                  id="modification_credits">({{project_modification?.extra_credits}}) = {{resource_modification_expected_credits}}
                 </span></strong></label>
             </div>
-            <div class="alert alert-primary" role="alert">
+            <div class="alert alert-primary" role="alert" *ngIf="credits_allowed">
               This is the expected number of extra credits that you get for your project. It accounts for an increase
-              or decrease in requested resources for your remaining project lifetime.
+              or decrease in requested resources for your remaining project lifetime.<br>
+              <strong *ngIf="resource_modification_expected_credits === 0 && project_application?.flavors?.length > 0">
+                Your expected credits are lower or equal to zero.
+                Please submit a Credits Extension or contact us at <a href="mailto:cloud@denbi.de">cloud@denbi.de</a>, so we may calculate and set the correct amount for your project.
+              </strong>
             </div>
             <div class="form-group row">
               <label id="total_cores_label" class="col-md-8">
