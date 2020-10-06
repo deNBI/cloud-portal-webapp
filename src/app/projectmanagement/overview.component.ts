@@ -100,6 +100,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   request_type: number = ExtensionRequestType.NONE;
   showInformationCollapse: boolean = false;
   newDoi: string;
+  doiError: string;
   remove_members_clicked: boolean;
   life_time_string: string;
   dois: Doi[];
@@ -720,10 +721,15 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
   addDoi(): void {
     if (this.isNewDoi()) {
-      this.groupService.addGroupDoi(this.application_id, this.newDoi).subscribe((dois: Doi[]): void => {
-        this.newDoi = null;
-        this.dois = dois;
-      })
+      this.groupService.addGroupDoi(this.application_id, this.newDoi).subscribe(
+        (dois: Doi[]): void => {
+          this.doiError=null;
+          this.newDoi = null;
+          this.dois = dois;
+        },
+        (): void => {
+          this.doiError = `DOI ${this.newDoi} was already added by another Project!`
+        })
     }
 
   }
