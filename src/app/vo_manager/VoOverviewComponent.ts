@@ -45,11 +45,10 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
 
   public newsletterSubscriptionCounter: number;
   isLoaded: boolean = false;
-  details_loaded: boolean = false;
 
   member_id: number;
-  projects: Project[] = new Array();
-  projects_filtered: Project[] = new Array();
+  projects: Project[] = [];
+  projects_filtered: Project[] = [];
 
   // modal variables for User list
   public usersModalProjectMembers: ProjectMember[] = [];
@@ -296,31 +295,6 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
 
                  }
       )
-  }
-
-  getProjectLifetime(project: Project): void {
-    this.details_loaded = false;
-    if (!project.Lifetime) {
-      this.groupservice.getLifetime(project.Id.toString()).subscribe((time: IResponseTemplate): void => {
-        const lifetime: number = <number>time.value;
-        const dateCreatedString: string = project.DateCreated;
-
-        let expirationDate: string;
-        const dateCreated: Date = moment(dateCreatedString, 'DD.MM.YYYY').toDate();
-        if (lifetime !== -1) {
-          expirationDate = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format('DD.MM.YYYY');
-          project.LifetimeDays = Math.abs(moment(moment(expirationDate, 'DD.MM.YYYY').toDate())
-                                            .diff(moment(dateCreated), 'days'));
-
-          project.DateEnd = expirationDate;
-        }
-        project.Lifetime = lifetime;
-        this.details_loaded = true;
-
-      })
-    } else {
-      this.details_loaded = true;
-    }
   }
 
   getProjectStatus(project: Project): void {
