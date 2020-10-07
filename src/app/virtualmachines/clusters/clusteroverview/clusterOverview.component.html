@@ -199,7 +199,8 @@
           <p> Are you sure you want to delete {{selectedCluster?.cluster_id}}?</p>
           This will also delete the virtual machines:
           <p>{{selectedCluster?.master_instance.name}}</p>
-          <p *ngFor="let vm of selectedCluster?.worker_instances">{{vm.name}}</p>
+          <p *ngFor="let vm of selectedCluster?.worker_instances"><span
+            *ngIf="vm.status != VirtualMachineStates.staticDELETED">{{vm.name}}</span></p>
 
         </div>
 
