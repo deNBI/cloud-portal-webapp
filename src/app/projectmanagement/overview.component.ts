@@ -732,7 +732,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
     if (this.isNewDoi()) {
       this.groupService.addGroupDoi(this.application_id, this.newDoi).subscribe(
         (dois: Doi[]): void => {
-          this.doiError=null;
+          this.doiError = null;
           this.newDoi = null;
           this.dois = dois;
         },
