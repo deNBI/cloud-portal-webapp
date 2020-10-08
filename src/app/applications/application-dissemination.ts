@@ -111,6 +111,7 @@ export class ApplicationDissemination {
 
   set allowed_platforms(value: string[]) {
     this._allowed_platforms = value;
+    this.setAllowedInformations();
   }
 
   get allowed_informations(): string[] {
@@ -123,23 +124,12 @@ export class ApplicationDissemination {
 
   private setAllowedInformations(): void {
     this._allowed_informations = [];
-    if (this._information_project_affiliation) {
-      this._allowed_informations.push('Project affiliation')
-    }
-    if (this._information_institution) {
-      this._allowed_informations.push('Institution')
-    }
-    if (this._information_workgroup) {
-      this._allowed_informations.push('Workgroup')
-    }
-    if (this._information_project_type) {
-      this._allowed_informations.push('Project Type')
-    }
-    if (this._information_title) {
-      this._allowed_informations.push('Title')
-    }
+    this._allowed_informations.push('Title') // it's mandatory in the form
     if (this._information_edam_terms) {
       this._allowed_informations.push('Research Topics')
+    }
+    if (this._information_description_allowed) {
+      this._allowed_informations.push('Description')
     }
     if (this._information_resources) {
       this._allowed_informations.push('Resources')
@@ -147,11 +137,20 @@ export class ApplicationDissemination {
     if (this._information_lifetime) {
       this._allowed_informations.push('Lifetime')
     }
-    if (this._information_pi_name) {
-      this._allowed_informations.push('PI Name')
+    if (this._information_project_type) {
+      this._allowed_informations.push('Project Type')
     }
-    if (this._information_description) {
-      this._allowed_informations.push('Description')
+    if (this._information_pi_name) {
+      this._allowed_informations.push('Name of PI')
+    }
+    if (this._information_institution) {
+      this._allowed_informations.push('Institution')
+    }
+    if (this._information_workgroup) {
+      this._allowed_informations.push('Workgroup')
+    }
+    if (this._information_project_affiliation) {
+      this._allowed_informations.push('Project affiliation')
     }
   }
 
@@ -180,7 +179,7 @@ export class ApplicationDissemination {
     if (!this._information_description_allowed) {
       this.information_description = '';
     }
-
+    this.setAllowedInformations();
   }
 
   get platform_twitter(): boolean {
@@ -189,6 +188,7 @@ export class ApplicationDissemination {
 
   set platform_twitter(value: boolean) {
     this._platform_twitter = value;
+    this.setAllowedInformations();
   }
 
   get information_title(): string {
@@ -197,6 +197,7 @@ export class ApplicationDissemination {
 
   set information_title(value: string) {
     this._information_title = value;
+    this.setAllowedInformations();
   }
 
   get information_description(): string {
@@ -204,8 +205,8 @@ export class ApplicationDissemination {
   }
 
   set information_description(value: string) {
-
     this._information_description = value;
+    this.setAllowedInformations();
   }
 
   get information_resources(): boolean {
@@ -214,6 +215,7 @@ export class ApplicationDissemination {
 
   set information_resources(value: boolean) {
     this._information_resources = value;
+    this.setAllowedInformations();
   }
 
   get information_project_affiliation(): boolean {
@@ -222,6 +224,7 @@ export class ApplicationDissemination {
 
   set information_project_affiliation(value: boolean) {
     this._information_project_affiliation = value;
+    this.setAllowedInformations();
   }
 
   get information_lifetime(): boolean {
@@ -230,6 +233,7 @@ export class ApplicationDissemination {
 
   set information_lifetime(value: boolean) {
     this._information_lifetime = value;
+    this.setAllowedInformations();
   }
 
   get information_pi_name(): boolean {
@@ -238,6 +242,7 @@ export class ApplicationDissemination {
 
   set information_pi_name(value: boolean) {
     this._information_pi_name = value;
+    this.setAllowedInformations();
   }
 
   get information_institution(): boolean {
@@ -246,6 +251,7 @@ export class ApplicationDissemination {
 
   set information_institution(value: boolean) {
     this._information_institution = value;
+    this.setAllowedInformations();
   }
 
   get information_workgroup(): boolean {
@@ -254,6 +260,7 @@ export class ApplicationDissemination {
 
   set information_workgroup(value: boolean) {
     this._information_workgroup = value;
+    this.setAllowedInformations();
   }
 
   get information_project_type(): boolean {
@@ -262,5 +269,6 @@ export class ApplicationDissemination {
 
   set information_project_type(value: boolean) {
     this._information_project_type = value;
+    this.setAllowedInformations();
   }
 }
