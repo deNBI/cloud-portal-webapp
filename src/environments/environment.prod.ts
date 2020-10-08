@@ -1,4 +1,5 @@
 export const environment: any = {
+  WIKI_PRE: 'https://cloud.denbi.de/wiki/',
   production: true,
   vo: 3335,
   freemium_project_id: -1,
