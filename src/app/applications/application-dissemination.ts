@@ -26,7 +26,7 @@ export class ApplicationDissemination {
       this._platform_denbi = diss.platform_denbi;
       this._platform_twitter = diss.platform_twitter;
       this._information_title = diss.information_title;
-      this._information_edam_terms = diss._information_edam_terms
+      this._information_edam_terms = diss.information_edam_terms
       this._information_resources = diss.information_resources;
       this._information_pi_name = diss.information_pi_name;
       this._information_institution = diss.information_institution;
@@ -98,7 +98,7 @@ export class ApplicationDissemination {
     this._allowed_platforms = [];
 
     if (this._platform_denbi) {
-      this._allowed_platforms.push('de.NBI Platforms ')
+      this._allowed_platforms.push('de.NBI Platforms')
     }
     if (this._platform_twitter) {
       this._allowed_platforms.push('Twitter')
