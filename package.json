@@ -78,7 +78,7 @@
     "ngx-perfect-scrollbar": "^10.0.1",
     "ngx-smart-popover": "^1.4.0",
     "node-sass": "^4.14.1",
-    "postcss-loader": "^4.0.2",
+    "postcss-loader": "^4.0.3",
     "postcss-url": "^8.0.0",
     "protractor-stop-describe-on-failure": "^1.0.4",
     "svg2pdf.js": "^2.0.0",
