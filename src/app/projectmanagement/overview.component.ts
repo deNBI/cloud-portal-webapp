@@ -304,8 +304,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   }
 
   updateExampleCredits(numberOfCredits: number): void {
-    const totalHoursSmall: number = Math.round((numberOfCredits / this.creditsPerHourSmallExample));
-    const totalHoursLarge: number = Math.round((numberOfCredits / this.creditsPerHourLargeExample));
+    const totalHoursSmall: number = Math.round((numberOfCredits / this.creditsPerHourSmallExample) * 100) / 100;
+    const totalHoursLarge: number = Math.round((numberOfCredits / this.creditsPerHourLargeExample) * 100) / 100;
     this.smallExamplePossibleHours = totalHoursSmall;
     this.largeExamplePossibleHours = totalHoursLarge;
     this.smallExamplePossibleDays = this.updateCreditsDaysString(totalHoursSmall);
@@ -313,7 +313,14 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   }
 
   updateCreditsDaysString(hours: number): string {
-    return `${Math.floor(hours / 24)} day(s) and ${hours % 24} hour(s)`
+    let days: number = 0;
+    const minutes: number = Math.floor((hours % 1) * 60);
+    if (hours > 24) {
+      days = Math.floor(hours / 24);
+    }
+    hours = Math.floor(hours % 24);
+
+    return `${days} day(s), ${hours} hour(s) and ${minutes} minute(s)`
   }
 
   startUpdateCreditUsageLoop(): void {
