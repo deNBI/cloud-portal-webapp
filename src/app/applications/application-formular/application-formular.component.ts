@@ -169,15 +169,20 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
           if (form.controls[key].disabled) {
             continue;
           }
-
           this.valuesToConfirm.push(this.matchString(key.toString(), form.controls[key].value.toString()));
-
         }
       }
 
     }
     if (!this.application.project_application_report_allowed) {
       this.valuesToConfirm.push('Dissemination allowed: No');
+    } else {
+      const disseminationInformation: string[] = this.application.dissemination.allowed_informations
+        .concat(this.application.dissemination.allowed_platforms)
+      for (const value of disseminationInformation) {
+        // tslint:disable-next-line:prefer-template
+        this.valuesToConfirm.push('Dissemination allowed on: ' + value)
+      }
     }
     if (!this.application.project_application_sensitive_data) {
       this.valuesToConfirm.push('Sensitive Data: No');
