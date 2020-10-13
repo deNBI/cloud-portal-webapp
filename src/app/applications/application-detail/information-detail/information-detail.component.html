@@ -129,14 +129,14 @@
   <tr>
     <td>Platforms</td>
     <td id="dissemination_platforms">
-      {{application?.dissemination?.allowed_platforms}}
+      {{application?.dissemination?.allowed_platforms.join(", ")}}
     </td>
 
   </tr>
   <tr>
     <td>Information</td>
     <td id="dissemination_information">
-      {{application?.dissemination?.allowed_informations}}
+      {{application?.dissemination?.allowed_informations.join(", ")}}
     </td>
 
   </tr>
