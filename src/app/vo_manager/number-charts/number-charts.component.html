@@ -3,10 +3,14 @@
     <div class="card-header">Project Numbers</div>
     <div class="card-body">
       <div id="projectsChart"></div>
-      <div>
+      <div class="btn-group">
         <button class="btn btn-outline-primary"
                 (click)="downloadAsPNG('projectNumbersSVG', 'projectNumbers.png')">
           Download as PNG
+        </button>
+        <button class="btn btn-outline-primary"
+                (click)="toggleGraph('projects');">
+          {{true ? 'Show lines': 'Show grouped'}}
         </button>
       </div>
     </div>
@@ -15,19 +19,28 @@
     <div class="card-header">Cloud Resources</div>
     <div class="card-body">
       <div id="ramChart"></div>
-      <div>
+      <div class="btn-group">
         <button class="btn btn-outline-primary"
                 (click)="downloadAsPNG('ramNumbersSVG', 'resourcesRamNumbers.png')">
           Download as PNG
         </button>
+        <button class="btn btn-outline-primary"
+                (click)="toggleGraph('ram');">
+          {{true ? 'Show lines': 'Show grouped'}}
+        </button>
+
       </div>
     </div>
     <div class="card-body">
       <div id="coresChart"></div>
-      <div>
+      <div class="btn-group">
         <button class="btn btn-outline-primary"
                 (click)="downloadAsPNG('coresNumbersSVG', 'resourcesCoresNumbers.png')">
           Download as PNG
+        </button>
+        <button class="btn btn-outline-primary"
+                (click)="toggleGraph('cores');">
+          {{true ? 'Show lines': 'Show grouped'}}
         </button>
       </div>
     </div>

@@ -30,6 +30,13 @@ export class NumberChartsComponent implements OnInit {
   }
 
   /**
+   * Charts
+   */
+  public ramChart: [any, boolean];
+  public coresChart: [any, boolean];
+  public projectNumbersChart: [any, boolean];
+
+  /**
    * Lists for numbers of projects per project type and status.
    */
   private runningOpenstack: any[] = ['OpenStack running'];
@@ -125,7 +132,7 @@ export class NumberChartsComponent implements OnInit {
    * Draws the cores Chart into the template.
    */
   drawCoresNumbersChart(): void {
-    const coresChart: any  = c3.generate({
+    this.coresChart[0] = c3.generate({
       oninit: function() {
         this.svg.attr('id', 'coresNumbersSVG')
       },
@@ -138,18 +145,6 @@ export class NumberChartsComponent implements OnInit {
           this.endDatesResources,
           this.simpleVMCores,
           this.openstackCores
-        ],
-        type: 'bar',
-        bar: {
-          width: {
-            ratio: 0.2
-          }
-        },
-        groups: [
-          [
-            this.simpleVMCores[0],
-            this.openstackCores[0]
-          ]
         ],
         order: null
       },
@@ -179,8 +174,12 @@ export class NumberChartsComponent implements OnInit {
             position: 'outer-right'
           }
         }
+      },
+      point: {
+        show: false
       }
     });
+    this.coresChart[1] = false;
   }
 
   /**
@@ -188,7 +187,7 @@ export class NumberChartsComponent implements OnInit {
    * Draws the ram Chart into the template.
    */
   drawRamNumbersChart(): void {
-    const ramChart: any  = c3.generate({
+     this.ramChart[0] = c3.generate({
       oninit: function() {
         this.svg.attr('id', 'ramNumbersSVG')
       },
@@ -201,18 +200,6 @@ export class NumberChartsComponent implements OnInit {
           this.endDatesResources,
           this.simpleVMRam,
           this.openstackRam
-        ],
-        type: 'bar',
-        bar: {
-          width: {
-            ratio: 0.2
-          }
-        },
-        groups: [
-          [
-            this.simpleVMRam[0],
-            this.openstackRam[0]
-          ]
         ],
         order: null
       },
@@ -242,8 +229,12 @@ export class NumberChartsComponent implements OnInit {
             position: 'outer-right'
           }
         }
+      },
+      point: {
+        show: false
       }
     });
+    this.ramChart[1] = false;
   }
 
 
@@ -252,7 +243,7 @@ export class NumberChartsComponent implements OnInit {
    */
   drawProjectNumbersChart(): void {
 
-    const projectNumbersChart: any  = c3.generate({
+    this.projectNumbersChart[0] = c3.generate({
       oninit: function() {
         this.svg.attr('id', 'projectNumbersSVG')
       },
@@ -267,20 +258,6 @@ export class NumberChartsComponent implements OnInit {
           this.terminatedSimpleVM,
           this.runningOpenstack,
           this.terminatedOpenstack
-        ],
-        type: 'bar',
-        bar: {
-          width: {
-            ratio: 0.2
-          }
-        },
-        groups: [
-          [
-            this.runningSimpleVM[0],
-            this.terminatedSimpleVM[0],
-            this.runningOpenstack[0],
-            this.terminatedOpenstack[0]
-          ]
         ],
         order: null
       },
@@ -310,8 +287,66 @@ export class NumberChartsComponent implements OnInit {
         position: 'outer-right'
           }
         }
+      },
+      point: {
+        show: false
       }
     });
+    this.projectNumbersChart[1] = false;
+
+  }
+
+  toggleGraph(chart: string): void {
+    console.log(chart);
+    switch(chart){
+      case 'cores': {
+        if (this.coresChart[1]){
+          this.coresChart[0].groups([]);
+        } else {
+          this.coresChart[0].groups([
+            [
+              this.simpleVMCores[0],
+              this.openstackCores[0]
+            ]
+          ]);
+        }
+        this.coresChart[1] = !this.coresChart[1];
+        break;
+      }
+      case 'ram': {
+        if (this.ramChart[1]){
+          this.ramChart[0].groups([]);
+        } else
+         {
+          this.ramChart[0].groups([
+            [
+              this.simpleVMRam[0],
+              this.openstackRam[0]
+            ]
+          ]);
+
+        }
+        this.ramChart[1] = !this.ramChart[1];
+        break;
+      }
+      case 'projects' : {
+        if (this.projectNumbersChart[1]){
+          this.projectNumbersChart[0].groups([]);
+        } else {
+          this.projectNumbersChart[0].groups([
+            [
+              this.runningSimpleVM[0],
+              this.terminatedSimpleVM[0],
+              this.runningOpenstack[0],
+              this.terminatedOpenstack[0]
+            ]
+          ]);
+
+        }
+        this.projectNumbersChart[1] = !this.projectNumbersChart[1];
+        break;
+      }
+    }
 
   }
 }
