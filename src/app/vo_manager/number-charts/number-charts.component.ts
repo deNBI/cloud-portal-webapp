@@ -32,9 +32,9 @@ export class NumberChartsComponent implements OnInit {
   /**
    * Charts
    */
-  public ramChart: [any, boolean];
-  public coresChart: [any, boolean];
-  public projectNumbersChart: [any, boolean];
+  public ramChart: [any, boolean] = [null, false];
+  public coresChart: [any, boolean] = [null, false];
+  public projectNumbersChart: [any, boolean] = [null, false];
 
   /**
    * Lists for numbers of projects per project type and status.
@@ -179,7 +179,6 @@ export class NumberChartsComponent implements OnInit {
         show: false
       }
     });
-    this.coresChart[1] = false;
   }
 
   /**
@@ -234,7 +233,6 @@ export class NumberChartsComponent implements OnInit {
         show: false
       }
     });
-    this.ramChart[1] = false;
   }
 
 
@@ -292,12 +290,10 @@ export class NumberChartsComponent implements OnInit {
         show: false
       }
     });
-    this.projectNumbersChart[1] = false;
 
   }
 
   toggleGraph(chart: string): void {
-    console.log(chart);
     switch(chart){
       case 'cores': {
         if (this.coresChart[1]){
@@ -309,6 +305,10 @@ export class NumberChartsComponent implements OnInit {
               this.openstackCores[0]
             ]
           ]);
+          this.coresChart[0].transform('bar', 'Cores Openstack');
+          this.coresChart[0].transform('bar', 'Cores SimpleVM');
+
+
         }
         this.coresChart[1] = !this.coresChart[1];
         break;
