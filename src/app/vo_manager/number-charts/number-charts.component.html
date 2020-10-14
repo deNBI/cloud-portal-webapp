@@ -10,7 +10,7 @@
         </button>
         <button class="btn btn-outline-primary"
                 (click)="toggleGraph('projects');">
-          {{this.projectNumbersChart[1] ? 'Show lines': 'Show grouped'}}
+          {{this.projectNumbersChart[1] ? 'show as area chart' : 'show as bar chart'}}
         </button>
       </div>
     </div>
@@ -26,7 +26,7 @@
         </button>
         <button class="btn btn-outline-primary"
                 (click)="toggleGraph('ram');">
-          {{this.ramChart[1] ? 'Show lines': 'Show grouped'}}
+          {{this.ramChart[1] ? 'show as area chart' : 'show as bar chart'}}
         </button>
 
       </div>
@@ -40,7 +40,7 @@
         </button>
         <button class="btn btn-outline-primary"
                 (click)="toggleGraph('cores');">
-          {{this.coresChart[1] ? 'Show lines': 'Show grouped'}}
+          {{this.coresChart[1] ? 'show as area chart' : 'show as bar chart'}}
         </button>
       </div>
     </div>

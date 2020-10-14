@@ -146,6 +146,16 @@ export class NumberChartsComponent implements OnInit {
           this.simpleVMCores,
           this.openstackCores
         ],
+        type: 'area-spline',
+        area: {
+          zerobased: true
+        },
+        groups: [
+          [
+            this.simpleVMCores[0],
+            this.openstackCores[0]
+          ]
+        ],
         order: null
       },
 
@@ -200,6 +210,16 @@ export class NumberChartsComponent implements OnInit {
           this.simpleVMRam,
           this.openstackRam
         ],
+         type: 'area-spline',
+         area: {
+           zerobased: true
+         },
+         groups: [
+           [
+             this.simpleVMRam[0],
+             this.openstackRam[0]
+           ]
+         ],
         order: null
       },
 
@@ -257,11 +277,23 @@ export class NumberChartsComponent implements OnInit {
           this.runningOpenstack,
           this.terminatedOpenstack
         ],
+        type: 'area-spline',
+        area: {
+          zerobased: true,
+        },
+        groups: [
+          [
+            this.runningSimpleVM[0],
+            this.terminatedSimpleVM[0],
+            this.runningOpenstack[0],
+            this.terminatedOpenstack[0]
+          ]
+        ],
         order: null
       },
 
       color: {
-        pattern: ['#00adef', '#007AAB', '#ed1944', '#8F1331']
+        pattern: ['#00adef', '#004b69', '#ed1944', '#8F1331']
       },
       grid: {
         y: {
@@ -297,42 +329,28 @@ export class NumberChartsComponent implements OnInit {
     switch(chart){
       case 'cores': {
         if (this.coresChart[1]){
-          this.coresChart[0].groups([]);
+          this.coresChart[0].transform('area-spline');
         } else {
-          this.coresChart[0].groups([
-            [
-              this.simpleVMCores[0],
-              this.openstackCores[0]
-            ]
-          ]);
-          this.coresChart[0].transform('bar', 'Cores Openstack');
-          this.coresChart[0].transform('bar', 'Cores SimpleVM');
-
-
+          this.coresChart[0].transform('bar');
         }
         this.coresChart[1] = !this.coresChart[1];
         break;
       }
       case 'ram': {
         if (this.ramChart[1]){
-          this.ramChart[0].groups([]);
+          this.ramChart[0].transform('area-spline');
         } else
          {
-          this.ramChart[0].groups([
-            [
-              this.simpleVMRam[0],
-              this.openstackRam[0]
-            ]
-          ]);
-
+           this.ramChart[0].transform('bar');
         }
         this.ramChart[1] = !this.ramChart[1];
         break;
       }
       case 'projects' : {
         if (this.projectNumbersChart[1]){
-          this.projectNumbersChart[0].groups([]);
+          this.projectNumbersChart[0].transform('area-spline');
         } else {
+          this.projectNumbersChart[0].transform('bar');
           this.projectNumbersChart[0].groups([
             [
               this.runningSimpleVM[0],
@@ -341,7 +359,6 @@ export class NumberChartsComponent implements OnInit {
               this.terminatedOpenstack[0]
             ]
           ]);
-
         }
         this.projectNumbersChart[1] = !this.projectNumbersChart[1];
         break;
