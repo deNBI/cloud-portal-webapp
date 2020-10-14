@@ -546,6 +546,7 @@
 
 
         <div class="card-body">
+          <div *ngIf="doiError" class="alert alert-danger">{{doiError}}</div>
           <div class="table-responsive">
             <table class="table ">
 
