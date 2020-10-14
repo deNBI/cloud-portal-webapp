@@ -49,6 +49,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
   public usersModalProjectID: number;
   public usersModalProjectName: string;
   public selectedProject: Project;
+  public userSearchValue: string;
 
   public emailSubject: string;
   public emailText: string;
