@@ -6,8 +6,6 @@ import * as c3 from 'c3';
 import {jsPDF} from 'jspdf';
 import * as saveSVG from 'save-svg-as-png';
 import 'svg2pdf.js';
-import {domtoimage} from 'dom-to-image';
-
 import html2canvas from 'html2canvas';
 
 /**
@@ -30,6 +28,13 @@ export class NumberChartsComponent implements OnInit {
   }
 
   /**
+   * Charts
+   */
+  public ramChart: [any, boolean] = [null, false];
+  public coresChart: [any, boolean] = [null, false];
+  public projectNumbersChart: [any, boolean] = [null, false];
+
+  /**
    * Lists for numbers of projects per project type and status.
    */
   private runningOpenstack: any[] = ['OpenStack running'];
@@ -47,6 +52,7 @@ export class NumberChartsComponent implements OnInit {
   private openstackRam: any [] = ['RAM OpenStack'];
   private openstackCores: any[] = ['Cores Openstack'];
   private endDatesResources: any[] = ['x'];
+
 
   ngOnInit(): void {
     this.getData();
@@ -93,8 +99,8 @@ export class NumberChartsComponent implements OnInit {
   /**
    * Downloads the chart as a PDF-File - currently not in use
    */
-  downloadAsPDF(): void {
-    html2canvas(document.getElementById('chart')).then((canvas: HTMLCanvasElement): void => {
+  downloadAsPDF(elementId: string, filename: string): void {
+    html2canvas(document.getElementById(elementId)).then((canvas: HTMLCanvasElement): void => {
       // Few necessary setting options
       const imgWidth: number = 208;
       const pageHeight: number = 295;
@@ -105,27 +111,26 @@ export class NumberChartsComponent implements OnInit {
       const pdf: jsPDF = new jsPDF('p', 'mm', 'a4'); // A4 size page of PDF
       const position: number = 0;
       pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
-      pdf.save('VoResources.pdf'); // Generated PDF
+      pdf.save(filename.concat('.pdf'));
     }).catch((): void => {
       console.log('failed to convert to pdf')
     });
   }
 
+
   /**
    * Downloads the numbers graphic as a png.
    */
   downloadAsPNG(elementId: string, filename: string): void {
-    saveSVG.saveSvgAsPng(document.getElementById(elementId), filename);
-
+    saveSVG.saveSvgAsPng(document.getElementById(elementId), filename.concat('.png'), {});
   }
-
 
   /**
    * Maybe refactor, so only one function is necessary and independent from chart to draw.
    * Draws the cores Chart into the template.
    */
   drawCoresNumbersChart(): void {
-    const coresChart: any  = c3.generate({
+    this.coresChart[0] = c3.generate({
       oninit: function() {
         this.svg.attr('id', 'coresNumbersSVG')
       },
@@ -139,11 +144,9 @@ export class NumberChartsComponent implements OnInit {
           this.simpleVMCores,
           this.openstackCores
         ],
-        type: 'bar',
-        bar: {
-          width: {
-            ratio: 0.2
-          }
+        type: 'area-spline',
+        area: {
+          zerobased: true
         },
         groups: [
           [
@@ -179,6 +182,9 @@ export class NumberChartsComponent implements OnInit {
             position: 'outer-right'
           }
         }
+      },
+      point: {
+        show: false
       }
     });
   }
@@ -188,7 +194,7 @@ export class NumberChartsComponent implements OnInit {
    * Draws the ram Chart into the template.
    */
   drawRamNumbersChart(): void {
-    const ramChart: any  = c3.generate({
+     this.ramChart[0] = c3.generate({
       oninit: function() {
         this.svg.attr('id', 'ramNumbersSVG')
       },
@@ -202,18 +208,16 @@ export class NumberChartsComponent implements OnInit {
           this.simpleVMRam,
           this.openstackRam
         ],
-        type: 'bar',
-        bar: {
-          width: {
-            ratio: 0.2
-          }
-        },
-        groups: [
-          [
-            this.simpleVMRam[0],
-            this.openstackRam[0]
-          ]
-        ],
+         type: 'area-spline',
+         area: {
+           zerobased: true
+         },
+         groups: [
+           [
+             this.simpleVMRam[0],
+             this.openstackRam[0]
+           ]
+         ],
         order: null
       },
 
@@ -242,6 +246,9 @@ export class NumberChartsComponent implements OnInit {
             position: 'outer-right'
           }
         }
+      },
+      point: {
+        show: false
       }
     });
   }
@@ -252,7 +259,7 @@ export class NumberChartsComponent implements OnInit {
    */
   drawProjectNumbersChart(): void {
 
-    const projectNumbersChart: any  = c3.generate({
+    this.projectNumbersChart[0] = c3.generate({
       oninit: function() {
         this.svg.attr('id', 'projectNumbersSVG')
       },
@@ -268,11 +275,9 @@ export class NumberChartsComponent implements OnInit {
           this.runningOpenstack,
           this.terminatedOpenstack
         ],
-        type: 'bar',
-        bar: {
-          width: {
-            ratio: 0.2
-          }
+        type: 'area-spline',
+        area: {
+          zerobased: true,
         },
         groups: [
           [
@@ -286,7 +291,7 @@ export class NumberChartsComponent implements OnInit {
       },
 
       color: {
-        pattern: ['#00adef', '#007AAB', '#ed1944', '#8F1331']
+        pattern: ['#00adef', '#004b69', '#ed1944', '#8F1331']
       },
       grid: {
         y: {
@@ -310,8 +315,53 @@ export class NumberChartsComponent implements OnInit {
         position: 'outer-right'
           }
         }
+      },
+      point: {
+        show: false
       }
     });
+
+  }
+
+  toggleGraph(chart: string): void {
+    switch(chart){
+      case 'cores': {
+        if (this.coresChart[1]){
+          this.coresChart[0].transform('area-spline');
+        } else {
+          this.coresChart[0].transform('bar');
+        }
+        this.coresChart[1] = !this.coresChart[1];
+        break;
+      }
+      case 'ram': {
+        if (this.ramChart[1]){
+          this.ramChart[0].transform('area-spline');
+        } else
+         {
+           this.ramChart[0].transform('bar');
+        }
+        this.ramChart[1] = !this.ramChart[1];
+        break;
+      }
+      case 'projects' : {
+        if (this.projectNumbersChart[1]){
+          this.projectNumbersChart[0].transform('area-spline');
+        } else {
+          this.projectNumbersChart[0].transform('bar');
+          this.projectNumbersChart[0].groups([
+            [
+              this.runningSimpleVM[0],
+              this.terminatedSimpleVM[0],
+              this.runningOpenstack[0],
+              this.terminatedOpenstack[0]
+            ]
+          ]);
+        }
+        this.projectNumbersChart[1] = !this.projectNumbersChart[1];
+        break;
+      }
+    }
 
   }
 }
