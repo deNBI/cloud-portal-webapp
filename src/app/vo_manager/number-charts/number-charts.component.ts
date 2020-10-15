@@ -6,8 +6,6 @@ import * as c3 from 'c3';
 import {jsPDF} from 'jspdf';
 import * as saveSVG from 'save-svg-as-png';
 import 'svg2pdf.js';
-import {domtoimage} from 'dom-to-image';
-
 import html2canvas from 'html2canvas';
 
 /**
@@ -55,6 +53,7 @@ export class NumberChartsComponent implements OnInit {
   private openstackCores: any[] = ['Cores Openstack'];
   private endDatesResources: any[] = ['x'];
 
+
   ngOnInit(): void {
     this.getData();
   }
@@ -100,8 +99,8 @@ export class NumberChartsComponent implements OnInit {
   /**
    * Downloads the chart as a PDF-File - currently not in use
    */
-  downloadAsPDF(): void {
-    html2canvas(document.getElementById('chart')).then((canvas: HTMLCanvasElement): void => {
+  downloadAsPDF(elementId: string, filename: string): void {
+    html2canvas(document.getElementById(elementId)).then((canvas: HTMLCanvasElement): void => {
       // Few necessary setting options
       const imgWidth: number = 208;
       const pageHeight: number = 295;
@@ -112,20 +111,19 @@ export class NumberChartsComponent implements OnInit {
       const pdf: jsPDF = new jsPDF('p', 'mm', 'a4'); // A4 size page of PDF
       const position: number = 0;
       pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
-      pdf.save('VoResources.pdf'); // Generated PDF
+      pdf.save(filename.concat('.pdf'));
     }).catch((): void => {
       console.log('failed to convert to pdf')
     });
   }
 
+
   /**
    * Downloads the numbers graphic as a png.
    */
   downloadAsPNG(elementId: string, filename: string): void {
-    saveSVG.saveSvgAsPng(document.getElementById(elementId), filename);
-
+    saveSVG.saveSvgAsPng(document.getElementById(elementId), filename.concat('.png'), {});
   }
-
 
   /**
    * Maybe refactor, so only one function is necessary and independent from chart to draw.

@@ -5,9 +5,13 @@
       <div id="projectsChart"></div>
       <div class="btn-group">
         <button class="btn btn-outline-primary"
-                (click)="downloadAsPNG('projectNumbersSVG', 'projectNumbers.png')">
+                (click)="downloadAsPNG('projectNumbersSVG', 'projectNumbers')">
           Download as PNG
         </button>
+        <!--<button class="btn btn-outline-primary"
+                (click)="downloadAsPDF('projectNumbersSVG', 'projectNumbers')">
+          Download as PDF
+        </button>-->
         <button class="btn btn-outline-primary"
                 (click)="toggleGraph('projects');">
           {{this.projectNumbersChart[1] ? 'show as area chart' : 'show as bar chart'}}
@@ -21,9 +25,13 @@
       <div id="ramChart"></div>
       <div class="btn-group">
         <button class="btn btn-outline-primary"
-                (click)="downloadAsPNG('ramNumbersSVG', 'resourcesRamNumbers.png')">
+                (click)="downloadAsPNG('ramNumbersSVG', 'resourcesRamNumbers')">
           Download as PNG
         </button>
+        <!--<button class="btn btn-outline-primary"
+                (click)="downloadAsPDF('ramNumbersSVG', 'resourcesRamNumbers')">
+          Download as PDF
+        </button>-->
         <button class="btn btn-outline-primary"
                 (click)="toggleGraph('ram');">
           {{this.ramChart[1] ? 'show as area chart' : 'show as bar chart'}}
@@ -35,9 +43,13 @@
       <div id="coresChart"></div>
       <div class="btn-group">
         <button class="btn btn-outline-primary"
-                (click)="downloadAsPNG('coresNumbersSVG', 'resourcesCoresNumbers.png')">
+                (click)="downloadAsPNG('coresNumbersSVG', 'resourcesCoresNumbers')">
           Download as PNG
         </button>
+        <!--<button class="btn btn-outline-primary"
+                (click)="downloadAsPDF('coresNumbersSVG', 'resourcesCoresNumbers')">
+          Download as PDF
+        </button>-->
         <button class="btn btn-outline-primary"
                 (click)="toggleGraph('cores');">
           {{this.coresChart[1] ? 'show as area chart' : 'show as bar chart'}}
