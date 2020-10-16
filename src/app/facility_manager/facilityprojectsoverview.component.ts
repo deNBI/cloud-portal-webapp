@@ -376,7 +376,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
    * Sets the member selected in the mail modal as the member to send the mail to.
    * @param member the selected member
    */
-  setSelectedUserForMail(member: object)
+  setSelectedUserForMail(member: object): void
   {
     this.selectedMember = member;
   }
