@@ -3,10 +3,18 @@
     <div class="card-header">Project Numbers</div>
     <div class="card-body">
       <div id="projectsChart"></div>
-      <div>
+      <div class="btn-group">
         <button class="btn btn-outline-primary"
-                (click)="downloadAsPNG('projectNumbersSVG', 'projectNumbers.png')">
+                (click)="downloadAsPNG('projectNumbersSVG', 'projectNumbers')">
           Download as PNG
+        </button>
+        <!--<button class="btn btn-outline-primary"
+                (click)="downloadAsPDF('projectNumbersSVG', 'projectNumbers')">
+          Download as PDF
+        </button>-->
+        <button class="btn btn-outline-primary"
+                (click)="toggleGraph('projects');">
+          {{this.projectNumbersChart[1] ? 'show as area chart' : 'show as bar chart'}}
         </button>
       </div>
     </div>
@@ -15,19 +23,36 @@
     <div class="card-header">Cloud Resources</div>
     <div class="card-body">
       <div id="ramChart"></div>
-      <div>
+      <div class="btn-group">
         <button class="btn btn-outline-primary"
-                (click)="downloadAsPNG('ramNumbersSVG', 'resourcesRamNumbers.png')">
+                (click)="downloadAsPNG('ramNumbersSVG', 'resourcesRamNumbers')">
           Download as PNG
         </button>
+        <!--<button class="btn btn-outline-primary"
+                (click)="downloadAsPDF('ramNumbersSVG', 'resourcesRamNumbers')">
+          Download as PDF
+        </button>-->
+        <button class="btn btn-outline-primary"
+                (click)="toggleGraph('ram');">
+          {{this.ramChart[1] ? 'show as area chart' : 'show as bar chart'}}
+        </button>
+
       </div>
     </div>
     <div class="card-body">
       <div id="coresChart"></div>
-      <div>
+      <div class="btn-group">
         <button class="btn btn-outline-primary"
-                (click)="downloadAsPNG('coresNumbersSVG', 'resourcesCoresNumbers.png')">
+                (click)="downloadAsPNG('coresNumbersSVG', 'resourcesCoresNumbers')">
           Download as PNG
+        </button>
+        <!--<button class="btn btn-outline-primary"
+                (click)="downloadAsPDF('coresNumbersSVG', 'resourcesCoresNumbers')">
+          Download as PDF
+        </button>-->
+        <button class="btn btn-outline-primary"
+                (click)="toggleGraph('cores');">
+          {{this.coresChart[1] ? 'show as area chart' : 'show as bar chart'}}
         </button>
       </div>
     </div>
