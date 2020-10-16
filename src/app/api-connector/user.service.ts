@@ -153,8 +153,9 @@ export class UserService {
       params: {
         searchString: searchString
       }
-    })
-
+    });
   }
+
+
 
 }

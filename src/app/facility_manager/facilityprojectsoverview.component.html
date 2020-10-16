@@ -262,13 +262,69 @@
             </div>
 
             <div *ngIf="selectedProjectType === 'USER'">
-              <label class="col-md-12 control-label"><strong>Email
-                subject*</strong></label>
-              <div class="col-md-12">
-                <input id="userSearch" name="userSearch"
-                       placeholder="User"
-                       class="form-control"
-                       type="text" [(ngModel)]="userSearchValue" minlength="1">
+              <div class="container-fluid" *ngIf="!selectedMember">
+                <div class="row">
+                  <p style=" margin-bottom: 15px;">Search for a user to your project by providing at least
+                    four characters of his name:</p>
+                </div>
+                <div class="row">
+                  <div class="col-md-8">
+                    <input style="width: 100%" placeholder="" id="add_member_input" #searchString>
+                  </div>
+                  <div class="col-md-4">
+                    <button type="button" class="btn btn-primary" id="search_member_btn"
+                            (click)="filterMembers(searchString.value )"><i
+                      class="fa fa-search"></i> Search Member
+                    </button>
+                  </div>
+                </div>
+                <br>
+                <div class="row">
+                  <div class="col-md-12">
+                  </div>
+                </div>
+
+                <div class="table-responsive">
+                  <table *ngIf="filteredMembers!==null && !selectedMember"
+                         class="table table-bordered table-striped table-sm">
+                    <thead>
+
+                    <th></th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    </thead>
+                    <tbody *ngFor="  let member of filteredMembers">
+                    <td>
+                      <button style="padding: 5px; margin: 5px" (click)="setSelectedUserForMail(member)"
+                              class="btn btn-success" id="add_selected_member_for_mail_btn">
+                        <i class="fa fa-plus"></i> Select
+                      </button>
+                    </td>
+                    <td>{{member['firstName']}}</td>
+                    <td>{{member['lastName']}}</td>
+                    <td>{{member['mail']}}</td>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="form-group row" *ngIf="selectedMember">
+                <label class="col-md-12 control-label"><strong>Selected User</strong></label>
+              </div>
+              <div class="table-responsive" *ngIf="selectedMember">
+                <table class="table table-bordered table-striped table-sm">
+                  <tbody>
+                  <td>{{selectedMember['lastName'].concat(', ').concat(selectedMember['firstName'])}}</td>
+                  <td>{{selectedMember['mail']}}</td>
+                  <td>
+                    <button style="padding: 5px; margin: 5px"
+                            (click)="setSelectedUserForMail(null)"
+                            class="btn btn-danger" id="remove_selected_member_for_mail_button">
+                      <i class="fa fa-trash"></i> Remove
+                    </button>
+                  </td>
+                  </tbody>
+                </table>
               </div>
             </div>
             <div class="form-group row">
@@ -365,26 +421,37 @@
         </button>
       </div>
       <div class="modal-body">
-
         <div class="alert alert-warning" role="alert" *ngIf="selectedFacility">
-          Are you sure you want to send this email to <span *ngIf="selectedProjectType == 'ALL'">all</span> <span
-          *ngIf="selectedProjectType == 'SVP'">the Simple Vm  members of
-          the
-          {{selectedFacility['Facility']}}?</span> <span *ngIf="selectedProjectType == 'OVP'"> the OpenStack Project  members of
-          the
-          {{selectedFacility['Facility']}}?</span><span
-          *ngIf="selectedProjectType != 'ALL' && selectedProjectType != 'SVP' && selectedProjectType != 'OVP'">
-          the members of the
-          {{getProjectNameBySelectedProjectTypeAsId()
-          }} project?
-        </span>
-
+          Are you sure you want to send this email to
+          <span *ngIf="selectedProjectType == 'ALL'">all</span>
+          <span *ngIf="selectedProjectType == 'USER' && selectedMember">
+            {{selectedMember['firstName'].concat(' ')
+              .concat(selectedMember['lastName']).concat(' (')
+              .concat(selectedMember['mail']).concat(')?')}}
+          </span>
+          <span *ngIf="selectedProjectType == 'SVP'">
+            the Simple Vm members of the {{selectedFacility['Facility']}}?
+          </span>
+          <span *ngIf="selectedProjectType == 'OVP'">
+            the OpenStack Project members of the{{selectedFacility['Facility']}}?
+          </span>
+          <span *ngIf="selectedProjectType != 'ALL' && selectedProjectType != 'SVP'
+             && selectedProjectType != 'OVP' && selectedProjectType != 'USER'">
+            the members of the {{getProjectNameBySelectedProjectTypeAsId()}} project?
+          </span>
         </div>
 
       </div>
       <div class="modal-footer">
-        <button class="btn  btn-success col-md-4"
-                (click)="sendMailToFacility(selectedFacility['FacilityId'], emailSubject, emailText, emailReply, sendNews, alternative_emailText);
+        <button class="btn  btn-success col-md-4" *ngIf="selectedProjectType != 'USER'"
+                (click)="sendMailToFacility(selectedFacility['FacilityId'], emailSubject, emailText, emailReply, sendNews, alternative_emailText, null);
+                verifyModal.hide();
+                resetEmailModal();
+                successModal.show()">
+          Yes
+        </button>
+        <button class="btn  btn-success col-md-4" *ngIf="selectedProjectType === 'USER'"
+                (click)="sendMailToFacility(selectedFacility['FacilityId'], emailSubject, emailText, emailReply, sendNews, alternative_emailText, selectedMember);
                 verifyModal.hide();
                 resetEmailModal();
                 successModal.show()">

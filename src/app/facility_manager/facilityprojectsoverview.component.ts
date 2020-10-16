@@ -15,6 +15,7 @@ import {Subject} from 'rxjs';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {WordPressTag} from './newsmanagement/wp-tags';
 
+
 /**
  * Facility Project overview component.
  */
@@ -31,6 +32,9 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 
   title: string = 'Projects Overview';
   filter: string;
+
+  filteredMembers: object = null;
+  selectedMember: object = null;
 
   filterChanged: Subject<string> = new Subject<string>();
   isLoaded: boolean = false;
@@ -68,13 +72,15 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 
   constructor(private groupservice: GroupService,
               private facilityservice: FacilityService,
-              private newsService: NewsService) {
+              private newsService: NewsService,
+              private userService: UserService) {
     super();
   }
 
   ngOnInit(): void {
     this.facilityservice.getManagerFacilities().subscribe((result: any): void => {
       this.managerFacilities = result;
+      console.log(result);
       this.selectedFacility = this.managerFacilities[0];
       this.emailSubject = `[${this.selectedFacility['Facility']}]`;
 
@@ -99,6 +105,16 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
         }
       }
     });
+  }
+
+  searchForUserInFacility(searchString: string): void {
+    this.facilityservice.getFilteredMembersOfFacility(searchString, this.selectedFacility['FacilityId']);
+  }
+
+  filterMembers(searchString: string): void {
+    this.userService.getFilteredMembersOfdeNBIVo(searchString).subscribe((result: object): void => {
+      this.filteredMembers = result;
+    })
   }
 
   getProjectsByMemberElixirId(): void {
@@ -331,10 +347,14 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
    * @param reply the reply-address
    * @param send boolean if it should be sent to WordPress
    * @param alternative_news_text the news text for WordPress, in case it shall be different from the original text
+   * @param selectedMember the specific member the mail is sent to in case one specific member is chosen
    */
   sendMailToFacility(facility: string, subject: string, message: string, reply?: string,
-                     send?: any, alternative_news_text?: string): void {
+                     send?: any, alternative_news_text?: string, selectedMember?: object): void {
     this.emailStatus = 0;
+    if (this.selectedProjectType === 'USER'){
+      this.selectedProjectType = this.selectedMember['mail'];
+    }
     const chosenTags: string = this.selectedTags.toString();
     this.facilityservice.sendMailToFacility(
       facility, encodeURIComponent(subject), encodeURIComponent(message), this.selectedProjectType,
@@ -350,6 +370,15 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
         this.emailStatus = 2;
       })
 
+  }
+
+  /**
+   * Sets the member selected in the mail modal as the member to send the mail to.
+   * @param member the selected member
+   */
+  setSelectedUserForMail(member: object)
+  {
+    this.selectedMember = member;
   }
 
   getMembesOfTheProject(projectid: number, projectname: string): void {
@@ -386,6 +415,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
     this.sendNews = true;
     this.alternative_emailText = '';
     this.news_tags = '';
+    this.selectedMember = null;
   }
 
   public comingSoon(): void {

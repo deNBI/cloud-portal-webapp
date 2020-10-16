@@ -435,4 +435,15 @@ export class FacilityService {
     )
   }
 
+  getFilteredMembersOfFacility(searchString: string, selectedFacility: string | number): Observable<any> {
+
+    return this.http.get(`${ApiSettings.getApiBaseURL()}users/filterFacility/`, {
+      withCredentials: true,
+      params : {
+        searchString : searchString,
+        //facilities: tempArray.join(',')
+      }
+    });
+  }
+
 }
