@@ -67,7 +67,7 @@ import {PipeModuleModule} from './pipe-module/pipe-module.module';
                   Angulartics2Module.forRoot(),
                   BrowserAnimationsModule,
                   ClipboardModule,
-                  PipeModuleModule,
+                  PipeModuleModule
               ],
             declarations: [
               AppComponent,
