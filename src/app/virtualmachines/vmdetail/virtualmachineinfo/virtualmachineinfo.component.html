@@ -5,15 +5,15 @@
   </div>
   <div class="col-2">
     <div class="callout callout-success">
-      <small class="text-muted">Created at (y-m-d)</small><br>
+      <small class="text-muted">Created at (d-m-y)</small><br>
       <strong class="text-muted">{{vm.created_at}}</strong>
     </div>
   </div>
   <div class="col-2"
        *ngIf="vm.stopped_at && (vm?.status |hasStatus:VirtualMachineStates.staticSHUTOFF)">
     <div class="callout callout-warning">
-      <small class="text-muted">Stopped at (y-m-d)</small><br>
-      <strong class="text-muted">{{vm.stopped_at | date: 'yyyy.MM.dd HH:mm'}}</strong>
+      <small class="text-muted">Stopped at (d-m-y)</small><br>
+      <strong class="text-muted">{{vm.stopped_at | date: 'dd.mm.YYYY HH:mm'}}</strong>
     </div>
   </div>
   <div class="col-2">

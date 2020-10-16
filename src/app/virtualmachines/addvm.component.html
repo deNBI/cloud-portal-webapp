@@ -147,8 +147,11 @@
                   <label class="col-md-2 form-control-label"><strong>Image*</strong></label>
                   <div class="col-md-10">
 
-
-                    <app-image-detail [selectedImage]="selectedImage"
+                    <div class="alert alert-info" *ngIf="(images?.length === 0) || !images">
+                      There are no images available for selection at the moment.
+                      Please contact the support of the facility where your project is running.
+                    </div>
+                    <app-image-detail *ngIf="images?.length > 0" [selectedImage]="selectedImage"
                                       [images]="images"
                                       (selectedImageChange)="setSelectedImage($event)"
                                       id="id_image_detail"></app-image-detail>
