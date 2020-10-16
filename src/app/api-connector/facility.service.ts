@@ -440,8 +440,8 @@ export class FacilityService {
     return this.http.get(`${ApiSettings.getApiBaseURL()}users/filterFacility/`, {
       withCredentials: true,
       params : {
-        searchString : searchString,
-        //facilities: tempArray.join(',')
+        searchString : searchString
+        // facilities: tempArray.join(',')
       }
     });
   }
