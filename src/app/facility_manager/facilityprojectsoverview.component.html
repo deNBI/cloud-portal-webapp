@@ -262,7 +262,7 @@
             </div>
 
             <div *ngIf="selectedProjectType === 'USER'">
-              <div class="container-fluid" *ngIf="!selectedMember">
+              <div class="container-fluid">
                 <div class="row">
                   <p style=" margin-bottom: 15px;">Search for a user to your project by providing at least
                     four characters of his name:</p>
@@ -285,7 +285,7 @@
                 </div>
 
                 <div class="table-responsive">
-                  <table *ngIf="filteredMembers!==null && !selectedMember"
+                  <table *ngIf="filteredMembers!==null"
                          class="table table-bordered table-striped table-sm">
                     <thead>
 
@@ -294,7 +294,7 @@
                     <th>Last Name</th>
                     <th>Email</th>
                     </thead>
-                    <tbody *ngFor="  let member of filteredMembers">
+                    <tbody *ngFor="let member of filteredMembers">
                     <td>
                       <button style="padding: 5px; margin: 5px" (click)="setSelectedUserForMail(member)"
                               class="btn btn-success" id="add_selected_member_for_mail_btn">
@@ -314,15 +314,17 @@
               <div class="table-responsive" *ngIf="selectedMember">
                 <table class="table table-bordered table-striped table-sm">
                   <tbody>
-                  <td>{{selectedMember['lastName'].concat(', ').concat(selectedMember['firstName'])}}</td>
-                  <td>{{selectedMember['mail']}}</td>
-                  <td>
-                    <button style="padding: 5px; margin: 5px"
-                            (click)="setSelectedUserForMail(null)"
-                            class="btn btn-danger" id="remove_selected_member_for_mail_button">
-                      <i class="fa fa-trash"></i> Remove
-                    </button>
-                  </td>
+                  <tr *ngFor="let member of selectedMember">
+                    <td>{{member['lastName'].concat(', ').concat(member['firstName'])}}</td>
+                    <td>{{member['mail']}}</td>
+                    <td>
+                      <button style="padding: 5px; margin: 5px"
+                              (click)="removeSelectedUserForMail(member)"
+                              class="btn btn-danger" id="remove_selected_member_for_mail_button">
+                        <i class="fa fa-trash"></i> Remove
+                      </button>
+                    </td>
+                  </tr>
                   </tbody>
                 </table>
               </div>
@@ -425,9 +427,7 @@
           Are you sure you want to send this email to
           <span *ngIf="selectedProjectType == 'ALL'">all</span>
           <span *ngIf="selectedProjectType == 'USER' && selectedMember">
-            {{selectedMember['firstName'].concat(' ')
-              .concat(selectedMember['lastName']).concat(' (')
-              .concat(selectedMember['mail']).concat(')?')}}
+            <span *ngFor="let member of selectedMember">{{member['mail']}}<br></span>
           </span>
           <span *ngIf="selectedProjectType == 'SVP'">
             the Simple Vm members of the {{selectedFacility['Facility']}}?

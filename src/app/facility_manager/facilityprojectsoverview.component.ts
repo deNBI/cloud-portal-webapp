@@ -33,7 +33,8 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
   filter: string;
 
   filteredMembers: object = null;
-  selectedMember: object = null;
+  selectedMember: object[] = [];
+  selectedMemberMails: string[] = [];
 
   filterChanged: Subject<string> = new Subject<string>();
   isLoaded: boolean = false;
@@ -352,7 +353,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
                      send?: any, alternative_news_text?: string, selectedMember?: object): void {
     this.emailStatus = 0;
     if (this.selectedProjectType === 'USER') {
-      this.selectedProjectType = this.selectedMember['mail'];
+      this.selectedProjectType = this.selectedMember.join(',');
     }
     const chosenTags: string = this.selectedTags.toString();
     this.facilityservice.sendMailToFacility(
@@ -378,7 +379,16 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 
   setSelectedUserForMail(member: object): void
   {
-    this.selectedMember = member;
+    if (!this.selectedMember.includes(member)){
+      this.selectedMember.push(member);
+    }
+  }
+
+  removeSelectedUserForMail(member: object): void {
+    const index = this.selectedMember.indexOf(member);
+    if (index > -1){
+      this.selectedMember.splice(index, 1);
+    }
   }
 
   getMembesOfTheProject(projectid: number, projectname: string): void {
@@ -415,7 +425,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
     this.sendNews = true;
     this.alternative_emailText = '';
     this.news_tags = '';
-    this.selectedMember = null;
+    this.selectedMember = [];
   }
 
   public comingSoon(): void {
