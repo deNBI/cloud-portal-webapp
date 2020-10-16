@@ -15,7 +15,6 @@ import {Subject} from 'rxjs';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {WordPressTag} from './newsmanagement/wp-tags';
 
-
 /**
  * Facility Project overview component.
  */
@@ -352,7 +351,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
   sendMailToFacility(facility: string, subject: string, message: string, reply?: string,
                      send?: any, alternative_news_text?: string, selectedMember?: object): void {
     this.emailStatus = 0;
-    if (this.selectedProjectType === 'USER'){
+    if (this.selectedProjectType === 'USER') {
       this.selectedProjectType = this.selectedMember['mail'];
     }
     const chosenTags: string = this.selectedTags.toString();
@@ -376,8 +375,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
    * Sets the member selected in the mail modal as the member to send the mail to.
    * @param member the selected member
    */
-  setSelectedUserForMail(member: object)
-  {
+  setSelectedUserForMail(member: object) {
     this.selectedMember = member;
   }
 
