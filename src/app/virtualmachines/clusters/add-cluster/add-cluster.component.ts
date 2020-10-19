@@ -131,12 +131,24 @@ export class AddClusterComponent implements OnInit {
 
   changeCount(): void {
     this.newVms = Number(this.workerInstancesCount) + Number(1);
-    this.checkFlavorsUsableForCluster();
+    this.calculateNewValues()
   }
 
   checkFlavorsUsableForCluster(): void {
-    this.flavors_usable = this.flavors.filter((flav: Flavor): boolean => {
-      return this.selectedProjectRessources.filterFlavorsTest(flav, this.flavors)
+    const used_flavors: Flavor[] = []
+
+    // tslint:disable-next-line:no-for-each-push
+    this.selectedWorkerBatches.forEach((batch: WorkerBatch): void => {
+      if (batch !== this.selectedBatch) {
+        used_flavors.push(batch.worker_flavor)
+      }
+    })
+    const flavors_to_filter: Flavor[] = this.flavors.filter((flavor: Flavor): boolean => {
+      return used_flavors.indexOf(flavor) < 0
+    })
+    this.flavors_usable = flavors_to_filter.filter((flav: Flavor): boolean => {
+
+      return this.selectedProjectRessources.filterFlavorsTest(flav, flavors_to_filter, this.selectedWorkerBatches)
     });
 
     this.flavors_loaded = true;
@@ -145,13 +157,19 @@ export class AddClusterComponent implements OnInit {
 
   filterFlavors(): void {
 
-    this.flavors_usable = this.selectedProjectRessources.filterFlavors(this.newCores, this.newRam, this.newGpus, this.flavors);
+    this.flavors_usable = this.selectedProjectRessources.filterFlavors(
+      this.newCores, this.newRam, this.newGpus, this.flavors, this.selectedWorkerBatches);
   }
 
   calcMaxWorkerInstancesByFlavor(flavor: Flavor): void {
+    this.maxWorkerInstances = null;
+    this.selectedBatch.count = 0;
+    if (flavor) {
 
-    // tslint:disable-next-line:max-line-length
-    this.maxWorkerInstances = this.selectedProjectRessources.calcMaxWorkerInstancesByFlavor(this.selectedMasterFlavor, flavor, this.selectedWorkerBatches)
+      this.maxWorkerInstances = this.selectedProjectRessources.calcMaxWorkerInstancesByFlavor(
+        this.selectedMasterFlavor,
+        flavor, this.selectedWorkerBatches)
+    }
   }
 
   calculateNewValues(): void {
@@ -213,8 +231,11 @@ export class AddClusterComponent implements OnInit {
   }
 
   addBatch(): void {
-    const newBatch: WorkerBatch = new WorkerBatch(this.selectedWorkerBatches.length + 1)
+    this.selectedBatch = null;
+    this.checkFlavorsUsableForCluster()
+    const newBatch: WorkerBatch = new WorkerBatch(this.selectedWorkerBatches[this.selectedWorkerBatches.length - 1].index + 1)
     newBatch.worker_image = this.selectedMasterImage;
+    this.maxWorkerInstances = null;
     this.selectedWorkerBatches.push(newBatch);
     this.selectedBatch = newBatch;
   }
@@ -222,6 +243,7 @@ export class AddClusterComponent implements OnInit {
   removeBatch(batch: WorkerBatch): void {
     const idx: number = this.selectedWorkerBatches.indexOf(batch)
     if (batch === this.selectedBatch) {
+      this.maxWorkerInstances = null;
       if (idx !== 0) {
         this.selectedBatch = this.selectedWorkerBatches[idx - 1]
       } else {
@@ -234,7 +256,10 @@ export class AddClusterComponent implements OnInit {
       }
     }
 
-    this.selectedWorkerBatches.splice(idx)
+    this.selectedWorkerBatches.splice(idx, 1)
+
+    this.calcMaxWorkerInstancesByFlavor(this.selectedBatch.worker_flavor)
+    this.checkFlavorsUsableForCluster();
 
   }
 

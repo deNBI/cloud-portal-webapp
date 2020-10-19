@@ -133,10 +133,11 @@
 
 
                     <div class="form-group row col-md-12">
-                      <div class="alert alert-info"> This image will also be used for every worker!</div>
 
                       <label class="col-md-2 form-control-label"><strong>Image*</strong></label>
+
                       <div class="col-md-10">
+                        <div class="alert alert-info col-md-10"> This image will also be used for every worker!</div>
 
 
                         <app-image-detail [selectedImage]="selectedMasterImage"
@@ -207,41 +208,42 @@
 
                           <input class="form-control" id="workerInstancesCount_{{batch.index}}"
                                  [disabled]="!batch.worker_flavor || selectedBatch != batch"
-                                 [name]="'workerInstancesCount_' + batch.index"
-                                  placeholder="e.g 1"
+                                 name="workerInstancesCount_{{batch.index}}"
+                                 placeholder="e.g 1"
 
                                  type="number" min="1" [max]="maxWorkerInstances" step="1"
                                  [(ngModel)]="batch.count" required
                                  appMinAmount="1" appMaxAmount="{{maxWorkerInstances}}"
                                  appInteger (change)="changeCount();"
                                  [ngClass]=" {
-                        'is-invalid': f.controls.workerInstancesCount_[batch.index]?.invalid &&
-                        (f.controls.workerInstancesCount_[batch.index]?.dirty || f.controls.workerInstancesCount_[batch.index]?.touched),
-                        'is-valid': f.controls.workerInstancesCount_[batch.index]?.valid && (f.controls.workerInstancesCount_[batch.index]?.dirty ||
-                        f.controls.workerInstancesCount_[batch.index]?.touched)
+                        'is-invalid': f.controls['workerInstancesCount_' + batch.index]?.invalid &&
+                        (f.controls['workerInstancesCount_' + batch.index]?.dirty || f.controls['workerInstancesCount_' + batch.index]?.touched),
+                        'is-valid': f.controls['workerInstancesCount_' + batch.index]?.valid && (f.controls['workerInstancesCount_' + batch.index]?.dirty ||
+                        f.controls['workerInstancesCount_' + batch.index]?.touched)
                         }">
                         </div>
 
                       </div>
-                      <button
+                      <button *ngIf="this.selectedWorkerBatches.length > 1"
 
-                        type="button" style="float: right"
+                              type="button" style="float: right;margin-bottom: 5px;"
 
-                        class="btn btn-primary"
-                        data-toggle="modal"
-                        (click)="removeBatch(batch)">
+                              class="btn btn-primary"
+                              data-toggle="modal"
+                              (click)="removeBatch(batch)">
                         Remove Worker Batch
                       </button>
-                       <button *ngIf="selectedBatch == batch"
-                      [disabled]="!batch.worker_flavor || !batch.count"
+                      <button *ngIf="selectedBatch == batch"
+                              [disabled]="!batch.worker_flavor || !batch.count"
 
-                      type="button" style="float: left"
+                              type="button" style="float: left;margin-bottom: 5px;"
 
-                      class="btn btn-primary"
-                      data-toggle="modal"
-                      (click)="addBatch()">
-                      Add Worker Batch
-                    </button>
+
+                              class="btn btn-primary"
+                              data-toggle="modal"
+                              (click)="addBatch();">
+                        Add Worker Batch
+                      </button>
                     </accordion-group>
 
 
