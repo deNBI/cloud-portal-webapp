@@ -1,4 +1,5 @@
 import {Flavor} from '../../virtualmachines/virtualmachinemodels/flavor';
+import {WorkerBatch} from '../../virtualmachines/clusters/clusterinfo';
 
 export class ApplicationRessourceUsage {
   number_vms: number;
@@ -57,10 +58,17 @@ export class ApplicationRessourceUsage {
     return tmp_flavors
   }
 
-  calcMaxWorkerInstancesByFlavor(master_flavor: Flavor, worker_flavor: Flavor): number {
-    const ram_max_vms: number = (this.ram_total - this.ram_used - (master_flavor.ram / 1024))
+  calcMaxWorkerInstancesByFlavor(master_flavor: Flavor, worker_flavor: Flavor, worker_batches: WorkerBatch[]): number {
+    let batches_ram: number = 0;
+    let batches_cpu: number = 0;
+
+    worker_batches.forEach((batch: WorkerBatch): void => {
+      batches_ram += batch.worker_flavor.ram * batch.count / 1024;
+      batches_cpu += batch.worker_flavor.vcpus * batch.count;
+    });
+    const ram_max_vms: number = (this.ram_total - this.ram_used - (master_flavor.ram / 1024) - batches_ram)
       / (worker_flavor.ram / 1024);
-    const cpu_max_vms: number = (this.cores_total - this.cores_used - master_flavor.vcpus)
+    const cpu_max_vms: number = (this.cores_total - this.cores_used - master_flavor.vcpus - batches_cpu)
       / worker_flavor.vcpus;
 
     return Math.floor(Math.min(ram_max_vms, cpu_max_vms, this.number_vms - this.used_vms - 1))

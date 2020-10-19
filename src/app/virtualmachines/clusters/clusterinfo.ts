@@ -1,5 +1,28 @@
 import {VirtualMachine} from '../virtualmachinemodels/virtualmachine';
 import {Client} from '../../vo_manager/clients/client.model';
+import {Flavor} from '../virtualmachinemodels/flavor';
+import {Image} from '../virtualmachinemodels/image';
+
+/**
+ *  Cluster Worker Batch
+ */
+export class WorkerBatch {
+  index: number;
+  worker_flavor: Flavor;
+  worker_image: Image;
+  count: number = 0;
+
+  constructor(index: number) {
+    this.index = index;
+  }
+
+  escape_names(): void {
+    const re: RegExp = /\+/gi;
+
+    this.worker_flavor.name.replace(re, '%2B');
+
+  }
+}
 
 /**
  * Clusterinfo

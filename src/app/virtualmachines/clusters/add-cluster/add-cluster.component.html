@@ -54,7 +54,7 @@
               <div class="col-md-8">
                 <select required class="form-control" name="projectSelect"
                         [(ngModel)]="selectedProject" id="projectSelect"
-                        (ngModelChange)="getSelectedProjectClient(); resetChecks();"
+                        (ngModelChange)="getSelectedProjectClient(); "
                 >
                   <option value="undefined" disabled selected hidden> Please
                     Select
@@ -123,7 +123,7 @@
 
                         <app-flavor-detail [selectedFlavor]="selectedMasterFlavor"
                                            [flavors]="flavors_usable"
-                                           (selectedFlavorChange)="selectedMasterFlavor=$event;selectedWorkerFlavor=null;calculateNewValues();"
+                                           (selectedFlavorChange)="selectedMasterFlavor=$event;calculateNewValues();"
                                            id="id_flavor_detail"></app-flavor-detail>
 
                       </div>
@@ -133,15 +133,18 @@
 
 
                     <div class="form-group row col-md-12">
+                      <div class="alert alert-info"> This image will also be used for every worker!</div>
+
                       <label class="col-md-2 form-control-label"><strong>Image*</strong></label>
                       <div class="col-md-10">
 
 
                         <app-image-detail [selectedImage]="selectedMasterImage"
                                           [images]="images"
-                                          (selectedImageChange)="selectedMasterImage=$event"
+                                          (selectedImageChange)="selectedMasterImage=$event;this.selectedWorkerBatches[0].worker_image=selectedMasterImage;"
                                           id="id_image_detail"></app-image-detail>
                       </div>
+
                     </div>
 
 
@@ -166,57 +169,82 @@
                       <i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
                             'icon-arrow-up': workerInstancesGroup.isOpen, 'icon-arrow-down': !workerInstancesGroup.isOpen}"></i>
                     </div>
-                    <div class="form-group row col-md-12">
-                      <label class="col-md-2 form-control-label"><strong>Flavor*</strong></label>
-                      <div class="col-md-10">
+                    <accordion-group *ngFor="let batch of selectedWorkerBatches" [isOpen]="true" >
+                      <div accordion-heading style="width: 100%; cursor: pointer"><strong
+                        *ngIf="selectedBatch != batch">Batch {{batch.index}} [locked] </strong>
+                        <strong *ngIf="selectedBatch == batch">Batch {{batch.index}} </strong>
+
+                      </div>
+
+                      <div class="form-group row col-md-12">
+                        <label class="col-md-2 form-control-label"><strong>Flavor*</strong></label>
+                        <div class="col-md-10">
 
 
-                        <app-flavor-detail [selectedFlavor]="selectedWorkerFlavor"
-                                           [flavors]="flavors_usable"
-                                           (selectedFlavorChange)="selectedWorkerFlavor=$event;calcMaxWorkerInstancesByFlavor();"
-                                           id="id_flavor_detail"></app-flavor-detail>
+                          <app-flavor-detail *ngIf="selectedBatch == batch" [selectedFlavor]="batch.worker_flavor"
+                                             [flavors]="flavors_usable"
+                                             (selectedFlavorChange)="batch.worker_flavor=$event;calcMaxWorkerInstancesByFlavor(batch.worker_flavor);"
+                          ></app-flavor-detail>
+                          <app-flavor-detail *ngIf="selectedBatch != batch" [selectedFlavor]="batch.worker_flavor"
+                                             [flavors]="[batch.worker_flavor]"
+                          ></app-flavor-detail>
+
+                        </div>
+
 
                       </div>
 
 
-                    </div>
-
-
-                    <div class="form-group row col-md-12">
-                      <label class="col-md-2 form-control-label"><strong>Image*</strong></label>
-                      <div class="col-md-10">
-
-
-                        <app-image-slide [image]="selectedMasterImage"
-                                         [selectedImage]="selectedMasterImage"></app-image-slide>
+                      <div class="alert alert-danger" role="alert" *ngIf="!batch.worker_flavor">
+                        Please first select a worker flavor before you can set the number of workers.
                       </div>
-                    </div>
-                    <div class="alert alert-danger" role="alert" *ngIf="!selectedWorkerFlavor">
-                      Please first select a worker flavor before you can set the number of workers.
-                    </div>
-                    <div class="form-group row col-md-12">
+                      <div class="form-group row col-md-12">
 
-                      <label class="col-md-2 form-control-label"><strong>Count*
-                        <span *ngIf="maxWorkerInstances">(max {{maxWorkerInstances}})</span></strong></label>
-                      <div class="col-md-10">
+                        <label class="col-md-2 form-control-label"><strong>Count*
+                          <span *ngIf="maxWorkerInstances && selectedBatch == batch">(max {{maxWorkerInstances}})</span></strong></label>
+                        <div class="col-md-10">
 
 
-                        <input class="form-control" id="workerInstancesCount" [disabled]="!selectedWorkerFlavor"
-                               name="workerInstancesCount" placeholder="e.g 1"
+                          <input class="form-control" id="workerInstancesCount_{{batch.index}}"
+                                 [disabled]="!batch.worker_flavor || selectedBatch != batch"
+                                 [name]="'workerInstancesCount_' + batch.index"
+                                  placeholder="e.g 1"
 
-                               type="number" min="1" [max]="maxWorkerInstances" step="1"
-                               [(ngModel)]="workerInstancesCount" required
-                               appMinAmount="1" appMaxAmount="{{maxWorkerInstances}}"
-                               appInteger (change)="changeCount();"
-                               [ngClass]=" {
-                        'is-invalid': f.controls.workerInstancesCount?.invalid &&
-                        (f.controls.workerInstancesCount?.dirty || f.controls.workerInstancesCount?.touched),
-                        'is-valid': f.controls.workerInstancesCount?.valid && (f.controls.workerInstancesCount?.dirty ||
-                        f.controls.workerInstancesCount?.touched)
+                                 type="number" min="1" [max]="maxWorkerInstances" step="1"
+                                 [(ngModel)]="batch.count" required
+                                 appMinAmount="1" appMaxAmount="{{maxWorkerInstances}}"
+                                 appInteger (change)="changeCount();"
+                                 [ngClass]=" {
+                        'is-invalid': f.controls.workerInstancesCount_[batch.index]?.invalid &&
+                        (f.controls.workerInstancesCount_[batch.index]?.dirty || f.controls.workerInstancesCount_[batch.index]?.touched),
+                        'is-valid': f.controls.workerInstancesCount_[batch.index]?.valid && (f.controls.workerInstancesCount_[batch.index]?.dirty ||
+                        f.controls.workerInstancesCount_[batch.index]?.touched)
                         }">
-                      </div>
+                        </div>
 
-                    </div>
+                      </div>
+                      <button
+
+                        type="button" style="float: right"
+
+                        class="btn btn-primary"
+                        data-toggle="modal"
+                        (click)="removeBatch(batch)">
+                        Remove Worker Batch
+                      </button>
+                       <button *ngIf="selectedBatch == batch"
+                      [disabled]="!batch.worker_flavor || !batch.count"
+
+                      type="button" style="float: left"
+
+                      class="btn btn-primary"
+                      data-toggle="modal"
+                      (click)="addBatch()">
+                      Add Worker Batch
+                    </button>
+                    </accordion-group>
+
+
 
 
                   </accordion-group>

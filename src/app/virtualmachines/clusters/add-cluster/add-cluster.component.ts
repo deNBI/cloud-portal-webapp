@@ -8,7 +8,6 @@ import {ApiSettings} from '../../../api-connector/api-settings.service';
 import {ClientService} from '../../../api-connector/client.service';
 import {UserService} from '../../../api-connector/user.service';
 import {VoService} from '../../../api-connector/vo.service';
-import {VirtualMachine} from '../../virtualmachinemodels/virtualmachine';
 import {Image} from '../../virtualmachinemodels/image';
 import {IResponseTemplate} from '../../../api-connector/response-template';
 import {Flavor} from '../../virtualmachinemodels/flavor';
@@ -16,9 +15,9 @@ import {Userinfo} from '../../../userinfo/userinfo.model';
 import {Client} from '../../../vo_manager/clients/client.model';
 import {BiocondaComponent} from '../../conda/bioconda.component';
 import {forkJoin} from 'rxjs';
-import {Clusterinfo} from '../clusterinfo';
 import {Router} from '@angular/router';
 import {ApplicationRessourceUsage} from '../../../applications/application-ressource-usage/application-ressource-usage';
+import {WorkerBatch} from '../clusterinfo';
 
 /**
  * Cluster Component
@@ -32,32 +31,11 @@ import {ApplicationRessourceUsage} from '../../../applications/application-resso
            })
 export class AddClusterComponent implements OnInit {
 
-  ACTIVE: string = 'ACTIVE';
-  PLAYBOOK_FAILED: string = 'PLAYBOOK_FAILED';
-  DELETED: string = 'DELETED';
-  PORT_CLOSED: string = 'PORT_CLOSED';
-  PREPARE_PLAYBOOK_BUILD: string = 'PREPARE_PLAYBOOK_BUILD';
-  BUILD_PLAYBOOK: string = 'BUILD_PLAYBOOK';
-  CREATING_STATUS: string = 'Creating...';
-  BUILD_STATUS: string = 'Building..';
-  CHECKING_PORT_STATUS: string = 'Checking port..';
-  PREPARE_PLAYBOOK_STATUS: string = 'Prepare Playbook Build...';
-  BUIDLING_PLAYBOOK_STATUS: string = 'Building Playbook...';
-  ANIMATED_PROGRESS_BAR: string = 'progress-bar-animated';
-
-  newVm: VirtualMachine = null;
-  progress_bar_status: string = 'Creating..';
-  progress_bar_animated: string = 'progress-bar-animated';
-  progress_bar_width: number = 0;
   is_vo: boolean = false;
-  hasTools: boolean = false;
-  gaveOkay: boolean = false;
+
   client_checked: boolean = false;
   timeout: number = 0;
-
   title: string = 'New Cluster';
-
-  cluster_info: Clusterinfo;
 
   /**
    * All image of a project.
@@ -84,7 +62,9 @@ export class AddClusterComponent implements OnInit {
    */
   selectedImage: Image;
   selectedMasterImage: Image;
-  selectedWorkerImage: Image;
+  selectedWorkerBatches: WorkerBatch[] = [new WorkerBatch(1)];
+  selectedBatch: WorkerBatch = this.selectedWorkerBatches[0];
+
   maxWorkerInstances: number;
 
   /**
@@ -119,18 +99,6 @@ export class AddClusterComponent implements OnInit {
   client_avaiable: boolean = false;
 
   /**
-   * Default volume name.
-   * @type {string}
-   */
-  volumeName: string = '';
-
-  /**
-   * Default volumeStorage.
-   * @type {number}
-   */
-  diskspace: number = 0;
-
-  /**
    * If the data for the site is initialized.
    * @type {boolean}
    */
@@ -153,12 +121,6 @@ export class AddClusterComponent implements OnInit {
   newVms: number = 2;
   newGpus: number = 0;
 
-  /**
-   * Time for the check status loop.
-   * @type {number}
-   */
-  private checkStatusTimeout: number = 5000;
-
   @ViewChild('bioconda', { static: true }) biocondaComponent: BiocondaComponent;
 
   constructor(private groupService: GroupService, private imageService: ImageService,
@@ -169,6 +131,7 @@ export class AddClusterComponent implements OnInit {
 
   changeCount(): void {
     this.newVms = Number(this.workerInstancesCount) + Number(1);
+    this.checkFlavorsUsableForCluster();
   }
 
   checkFlavorsUsableForCluster(): void {
@@ -185,10 +148,10 @@ export class AddClusterComponent implements OnInit {
     this.flavors_usable = this.selectedProjectRessources.filterFlavors(this.newCores, this.newRam, this.newGpus, this.flavors);
   }
 
-  calcMaxWorkerInstancesByFlavor(): void {
+  calcMaxWorkerInstancesByFlavor(flavor: Flavor): void {
 
     // tslint:disable-next-line:max-line-length
-    this.maxWorkerInstances = this.selectedProjectRessources.calcMaxWorkerInstancesByFlavor(this.selectedMasterFlavor, this.selectedWorkerFlavor)
+    this.maxWorkerInstances = this.selectedProjectRessources.calcMaxWorkerInstancesByFlavor(this.selectedMasterFlavor, flavor, this.selectedWorkerBatches)
   }
 
   calculateNewValues(): void {
@@ -201,12 +164,15 @@ export class AddClusterComponent implements OnInit {
       tmp_gpus += this.selectedMasterFlavor.gpu;
 
     }
-    if (this.selectedWorkerFlavor && this.workerInstancesCount) {
-      tmp_ram += this.selectedWorkerFlavor.ram * this.workerInstancesCount;
-      tmp_cores += this.selectedWorkerFlavor.vcpus * this.workerInstancesCount;
-      tmp_gpus += this.selectedWorkerFlavor.gpu * this.workerInstancesCount;
+    this.selectedWorkerBatches.forEach((batch: WorkerBatch): void => {
+      if (batch.count && batch.worker_flavor) {
+        tmp_ram += batch.worker_flavor.ram * batch.count;
+        tmp_cores += batch.worker_flavor.vcpus * batch.count;
+        tmp_gpus += batch.worker_flavor.gpu * batch.count;
+      }
 
-    }
+    });
+
     this.newRam = tmp_ram / 1024;
     this.newCores = tmp_cores;
     this.newGpus = tmp_gpus;
@@ -246,30 +212,30 @@ export class AddClusterComponent implements OnInit {
 
   }
 
-  /**
-   * Reset the progress bar.
-   */
-  resetProgressBar(): void {
-    this.progress_bar_status = this.CREATING_STATUS;
-    this.progress_bar_animated = this.ANIMATED_PROGRESS_BAR;
-    this.progress_bar_width = 0;
+  addBatch(): void {
+    const newBatch: WorkerBatch = new WorkerBatch(this.selectedWorkerBatches.length + 1)
+    newBatch.worker_image = this.selectedMasterImage;
+    this.selectedWorkerBatches.push(newBatch);
+    this.selectedBatch = newBatch;
   }
 
-  checkClusterStatusLoop(): void {
-    setTimeout(
-      (): void => {
-        this.virtualmachineservice.getClusterInfo(this.cluster_id).subscribe((cluster_info: Clusterinfo): void => {
-          this.cluster_info = cluster_info;
-          if (this.cluster_info.status !== 'Running' && this.cluster_info.status !== 'Deleted') {
-            this.checkClusterStatusLoop()
-          } else {
-            this.cluster_started = true;
+  removeBatch(batch: WorkerBatch): void {
+    const idx: number = this.selectedWorkerBatches.indexOf(batch)
+    if (batch === this.selectedBatch) {
+      if (idx !== 0) {
+        this.selectedBatch = this.selectedWorkerBatches[idx - 1]
+      } else {
+        if (this.selectedWorkerBatches.length - 1 > 0) {
+          this.selectedBatch = this.selectedWorkerBatches[idx + 1]
+        } else {
+          this.selectedBatch = null;
+        }
 
-          }
+      }
+    }
 
-        })
-      },
-      this.checkStatusTimeout);
+    this.selectedWorkerBatches.splice(idx)
+
   }
 
   startCluster(): void {
@@ -278,12 +244,11 @@ export class AddClusterComponent implements OnInit {
     this.cluster_id = null;
 
     const masterFlavor: string = this.selectedMasterFlavor.name.replace(re, '%2B');
-    const workerFlavor: string = this.selectedWorkerFlavor.name.replace(re, '%2B');
 
     this.virtualmachineservice.startCluster(
-      masterFlavor, this.selectedMasterImage,
-      workerFlavor, this.selectedMasterImage,
-      this.workerInstancesCount, this.selectedProject[1]).subscribe(
+      masterFlavor,
+      this.selectedMasterImage,
+      this.selectedWorkerBatches, this.selectedProject[1]).subscribe(
       (res: any): void => {
         if (res['status'] && res['status'] === 'mutex_locked') {
           setTimeout(
@@ -331,16 +296,6 @@ export class AddClusterComponent implements OnInit {
   }
 
   /**
-   * Reset the data attribute.
-   */
-  resetData(): void {
-    if (this.newVm === null) {
-      return;
-    }
-    this.newVm = null;
-  }
-
-  /**
    * Initializes the data.
    * Gets all groups of the user and his key.
    */
@@ -375,12 +330,6 @@ export class AddClusterComponent implements OnInit {
 
   }
 
-  setSelectedImage(image: Image): void {
-
-    this.selectedImage = image;
-
-  }
-
   resizeFix(): void {
     window.dispatchEvent(new Event('resize'));
   }
@@ -394,8 +343,4 @@ export class AddClusterComponent implements OnInit {
 
   }
 
-  resetChecks(): void {
-    this.gaveOkay = false;
-    this.hasTools = false;
-  }
 }
