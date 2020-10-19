@@ -176,9 +176,17 @@
             </div>
             <div class="col-6">
               <div class="btn-group" style="margin-top:15px;">
+                <ng-container *ngIf="!isAdmin &&!((project_application | hasstatusinlist: Application_States.LIFETIME_EXTENSION_REQUESTED)
+                  || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_EXTENSION))">
+                  <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
+                        title="Only project administators are able to request project extensions.">
+                    <button class="btn btn-outline-primary" disabled>
+                      Request extension</button>
+                  </span>
+                </ng-container>
                 <button class="btn btn-outline-primary" id="show_doi_question_modal"
                         (click)="doiQuestionModal.show(); request_type = 1;"
-                  *ngIf="!((project_application | hasstatusinlist: Application_States.LIFETIME_EXTENSION_REQUESTED)
+                  *ngIf="isAdmin &&!((project_application | hasstatusinlist: Application_States.LIFETIME_EXTENSION_REQUESTED)
                   || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_EXTENSION))">
                   Request extension</button>
                 <button class="btn btn-outline-secondary" disabled id="show_doi_question_modal_disabled"
@@ -186,8 +194,16 @@
                   || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_EXTENSION))">
                   Extension requested</button>
 
+                <ng-container *ngIf="!isAdmin && (project_application | hasstatusinlist:Application_States.APPROVED)
+                        && !(project_application | hasstatusinlist:Application_States.TERMINATION_REQUESTED)">
+                  <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
+                        title="Only project administators are able to request project terminations.">
+                    <button class="btn btn-outline-danger" disabled>
+                      Request termination</button>
+                  </span>
+                </ng-container>
                 <button class="btn btn-outline-danger"
-                        *ngIf="(project_application | hasstatusinlist:Application_States.APPROVED)
+                        *ngIf="isAdmin && (project_application | hasstatusinlist:Application_States.APPROVED)
                         && !(project_application | hasstatusinlist:Application_States.TERMINATION_REQUESTED)"
                         (click)="terminateModal.show()" id="show_termination_modal_button">Request termination</button>
                 <button class="btn btn-outline-secondary"
@@ -230,10 +246,18 @@
 
             </div>
             <div class="col-6">
-              <!-- check disabled enabled for both resource and lifetime extension buttons -->
               <div class="btn-group" style="margin-top:15px;">
+                <ng-container *ngIf="!isAdmin && (project_application | hasstatusinlist:Application_States.APPROVED)
+                        && !((project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED)
+                  || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION))">
+                  <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
+                        title="Only project administators are able to request resource modifications.">
+                    <button class="btn btn-outline-primary" disabled>
+                      Request resource modification</button>
+                  </span>
+                </ng-container>
                 <button class="btn btn-outline-primary" id="show_modification_extension_button"
-                        *ngIf="!((project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED)
+                        *ngIf="isAdmin && !((project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED)
                   || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION))"
                         (click)="resourceModificationModal.show(); request_type = 2">Request resource modification</button>
                 <button class="btn btn-outline-secondary" disabled id="show_modification_extension_button_disabled"
@@ -297,17 +321,25 @@
                 </div>
               </div>
             </div>
-            <div class="col-6">
+            <div class="col-6" style="margin-top:15px;">
+              <ng-container *ngIf="!isAdmin && !((project_application | hasstatusinlist: Application_States.CREDITS_EXTENSION_REQUESTED)
+                  || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_CREDITS))">
+                  <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
+                        title="Only project administators are able to request more credits.">
+                    <button class="btn btn-outline-success" disabled>
+                      Request more credits</button>
+                  </span>
+              </ng-container>
               <button id="show_credits_extension_modal"
-                      *ngIf="!((project_application | hasstatusinlist: Application_States.CREDITS_EXTENSION_REQUESTED)
+                      *ngIf="isAdmin && !((project_application | hasstatusinlist: Application_States.CREDITS_EXTENSION_REQUESTED)
                   || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_CREDITS))"
                       (click)="newFlavors={};initExampleFlavors();creditsExtensionModal.show();"
                       class="btn btn-outline-success"
-                      type="button"style="margin-top:15px;">Request more credits</button>
+                      type="button">Request more credits</button>
               <button id="show_credits_extension_modal_disabled" disabled class="btn btn-outline-secondary"
                       *ngIf="((project_application | hasstatusinlist: Application_States.CREDITS_EXTENSION_REQUESTED)
                       || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_CREDITS))"
-                      type="button"style="margin-top:15px;">More credits requested</button>
+                      type="button">More credits requested</button>
             </div>
             <div class="col-6">
               <div *ngIf="project_application?.project_application_initial_credits === 0" class="alert alert-info">
@@ -514,6 +546,7 @@
 
 
         <div class="card-body">
+          <div *ngIf="doiError" class="alert alert-danger">{{doiError}}</div>
           <div class="table-responsive">
             <table class="table ">
 

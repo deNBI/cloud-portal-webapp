@@ -99,6 +99,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   request_type: number = ExtensionRequestType.NONE;
   showInformationCollapse: boolean = false;
   newDoi: string;
+  doiError: string;
   remove_members_clicked: boolean;
   life_time_string: string;
   dois: Doi[];
@@ -304,8 +305,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   }
 
   updateExampleCredits(numberOfCredits: number): void {
-    const totalHoursSmall: number = Math.round((numberOfCredits / this.creditsPerHourSmallExample));
-    const totalHoursLarge: number = Math.round((numberOfCredits / this.creditsPerHourLargeExample));
+    const totalHoursSmall: number = Math.round((numberOfCredits / this.creditsPerHourSmallExample) * 100) / 100;
+    const totalHoursLarge: number = Math.round((numberOfCredits / this.creditsPerHourLargeExample) * 100) / 100;
     this.smallExamplePossibleHours = totalHoursSmall;
     this.largeExamplePossibleHours = totalHoursLarge;
     this.smallExamplePossibleDays = this.updateCreditsDaysString(totalHoursSmall);
@@ -313,7 +314,14 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   }
 
   updateCreditsDaysString(hours: number): string {
-    return `${Math.floor(hours / 24)} day(s) and ${hours % 24} hour(s)`
+    let days: number = 0;
+    const minutes: number = Math.floor((hours % 1) * 60);
+    if (hours > 24) {
+      days = Math.floor(hours / 24);
+    }
+    hours = Math.floor(hours % 24);
+
+    return `${days} day(s), ${hours} hour(s) and ${minutes} minute(s)`
   }
 
   startUpdateCreditUsageLoop(): void {
@@ -729,10 +737,15 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
   addDoi(): void {
     if (this.isNewDoi()) {
-      this.groupService.addGroupDoi(this.application_id, this.newDoi).subscribe((dois: Doi[]): void => {
-        this.newDoi = null;
-        this.dois = dois;
-      })
+      this.groupService.addGroupDoi(this.application_id, this.newDoi).subscribe(
+        (dois: Doi[]): void => {
+          this.doiError = null;
+          this.newDoi = null;
+          this.dois = dois;
+        },
+        (): void => {
+          this.doiError = `DOI ${this.newDoi} was already added by another Project!`
+        })
     }
 
   }
