@@ -170,12 +170,18 @@
                       <i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
                             'icon-arrow-up': workerInstancesGroup.isOpen, 'icon-arrow-down': !workerInstancesGroup.isOpen}"></i>
                     </div>
-                    <accordion-group *ngFor="let batch of selectedWorkerBatches" [isOpen]="true" >
+                    <accordion-group *ngFor="let batch of selectedWorkerBatches" [isOpen]="true">
                       <div accordion-heading style="width: 100%; cursor: pointer"><strong
                         *ngIf="selectedBatch != batch">Batch {{batch.index}} [locked] </strong>
                         <strong *ngIf="selectedBatch == batch">Batch {{batch.index}} </strong>
 
                       </div>
+                      <div class="alert alert-warning"
+                           *ngIf="flavors_usable.length < 1 && selectedBatch == batch && !batch.worker_flavor">Not
+                        enough resources available
+                        to start another worker batch with a different flavor!
+                      </div>
+                      <span *ngIf="flavors_usable.length > 0 || selectedBatch != batch || batch.worker_flavor">
 
                       <div class="form-group row col-md-12">
                         <label class="col-md-2 form-control-label"><strong>Flavor*</strong></label>
@@ -184,7 +190,7 @@
 
                           <app-flavor-detail *ngIf="selectedBatch == batch" [selectedFlavor]="batch.worker_flavor"
                                              [flavors]="flavors_usable"
-                                             (selectedFlavorChange)="batch.worker_flavor=$event;calcMaxWorkerInstancesByFlavor(batch.worker_flavor);"
+                                             (selectedFlavorChange)="batch.worker_flavor=$event;selectedWorkerFlavorSet=true;calcMaxWorkerInstancesByFlavor(batch.worker_flavor);"
                           ></app-flavor-detail>
                           <app-flavor-detail *ngIf="selectedBatch != batch" [selectedFlavor]="batch.worker_flavor"
                                              [flavors]="[batch.worker_flavor]"
@@ -223,7 +229,7 @@
                         }">
                         </div>
 
-                      </div>
+                      </div></span>
                       <button *ngIf="this.selectedWorkerBatches.length > 1"
 
                               type="button" style="float: right;margin-bottom: 5px;"
@@ -258,17 +264,18 @@
           </form>
 
           <div
-            *ngIf="selectedProjectClient?.bibigrid_available && (selectedProjectRessources?.used_vms +2) <= selectedProjectRessources?.number_vms && (!selectedMasterFlavor || !selectedMasterImage || !selectedWorkerFlavor  ||!workerInstancesCount) && selectedProject && projectDataLoaded && flavors_loaded"
+            *ngIf=" selectedProjectClient?.bibigrid_available && (selectedProjectRessources?.used_vms +2) <= selectedProjectRessources?.number_vms && (!selectedBatch.count || selectedBatch.count == 0  ||!selectedMasterFlavor || !selectedMasterImage || !selectedWorkerFlavorSet  ) && selectedProject && projectDataLoaded && flavors_loaded"
             class="alert alert-danger" role="alert" style="max-width: 600px;margin: 0 auto;">
             <p>Please choose the following before starting a Cluster:</p>
             <p *ngIf="!selectedMasterFlavor">- The flavor type of your Master VM
             </p>
             <p *ngIf="!selectedMasterImage">- The image you want to run on your Master VM
             </p>
-            <p *ngIf="!selectedWorkerFlavor">- The flavor type of your Worker VMs
+            <p *ngIf="!selectedWorkerFlavorSet">- The flavor types of your Worker Batches.
             </p>
-            <p *ngIf="!workerInstancesCount">- The count of Worker Vms
+            <p *ngIf="!selectedBatch.count || selectedBatch.count == 0">- A count greater than 0 for your workers in your batches.
             </p>
+
 
           </div>
 
@@ -283,7 +290,7 @@
 
                   type="button"
 
-                  [disabled]="(workerInstancesCount > maxWorkerInstances) || !selectedMasterFlavor || !selectedMasterImage || !selectedWorkerFlavor  || !workerInstancesCount "
+                  [disabled]="!selectedMasterFlavor || !selectedMasterImage || !selectedWorkerFlavorSet || !selectedBatch.count || selectedBatch.count == 0"
                   class="btn btn-primary  .btn-lg offset-md-8"
                   data-toggle="modal"
                   (click)="startCluster();infoModal.show()">

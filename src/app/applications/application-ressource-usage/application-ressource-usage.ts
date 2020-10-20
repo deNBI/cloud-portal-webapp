@@ -1,6 +1,9 @@
 import {Flavor} from '../../virtualmachines/virtualmachinemodels/flavor';
 import {WorkerBatch} from '../../virtualmachines/clusters/clusterinfo';
 
+/**
+ * Ressourceusage.
+ */
 export class ApplicationRessourceUsage {
   number_vms: number;
   used_vms: number;
@@ -62,7 +65,7 @@ export class ApplicationRessourceUsage {
 
     worker_batches.forEach((batch: WorkerBatch): void => {
       if (batch.worker_flavor) {
-        batches_ram += batch.worker_flavor.ram * batch.count /1024;
+        batches_ram += Math.ceil(batch.worker_flavor.ram * batch.count / 1024);
         batches_cpu += batch.worker_flavor.vcpus * batch.count;
         batches_gpus += batch.worker_flavor.gpu * batch.count;
       }
@@ -83,25 +86,26 @@ export class ApplicationRessourceUsage {
   calcMaxWorkerInstancesByFlavor(master_flavor: Flavor, worker_flavor: Flavor, worker_batches: WorkerBatch[]): number {
     let batches_ram: number = 0;
     let batches_cpu: number = 0;
+    let batches_vms: number = 0;
 
     worker_batches.forEach((batch: WorkerBatch): void => {
       if (batch.worker_flavor) {
-        batches_ram += batch.worker_flavor.ram * batch.count / 1024;
+        batches_ram += Math.ceil(batch.worker_flavor.ram * batch.count / 1024);
         batches_cpu += batch.worker_flavor.vcpus * batch.count;
+        batches_vms += batch.count;
       }
     });
-    const ram_max_vms: number = (this.ram_total - this.ram_used - (master_flavor.ram / 1024) - batches_ram)
-      / (worker_flavor.ram / 1024);
+    const ram_max_vms: number = (this.ram_total - this.ram_used - Math.ceil((master_flavor.ram / 1024)) - batches_ram)
+      / Math.ceil((worker_flavor.ram / 1024));
     const cpu_max_vms: number = (this.cores_total - this.cores_used - master_flavor.vcpus - batches_cpu)
       / worker_flavor.vcpus;
-    console.log(Math.min(ram_max_vms, cpu_max_vms, this.number_vms - this.used_vms - 1))
 
-    return Math.floor(Math.min(ram_max_vms, cpu_max_vms, this.number_vms - this.used_vms - 1))
+    return Math.floor(Math.min(ram_max_vms, cpu_max_vms, this.number_vms - this.used_vms - 1 - batches_vms))
   }
 
   calcMaxScaleUpWorkerInstancesByFlavor(worker_flavor: Flavor): number {
     const ram_max_vms: number = (this.ram_total - this.ram_used)
-      / (worker_flavor.ram / 1024);
+      / Math.ceil((worker_flavor.ram / 1024));
     const cpu_max_vms: number = (this.cores_total - this.cores_used)
       / worker_flavor.vcpus;
 

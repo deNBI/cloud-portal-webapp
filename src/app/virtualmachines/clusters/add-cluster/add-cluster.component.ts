@@ -72,7 +72,7 @@ export class AddClusterComponent implements OnInit {
    */
   selectedMasterFlavor: Flavor;
   selectedFlavor: Flavor;
-  selectedWorkerFlavor: Flavor;
+  selectedWorkerFlavorSet: boolean = false;
 
   workerInstancesCount: number;
 
@@ -121,7 +121,7 @@ export class AddClusterComponent implements OnInit {
   newVms: number = 2;
   newGpus: number = 0;
 
-  @ViewChild('bioconda', { static: true }) biocondaComponent: BiocondaComponent;
+  @ViewChild('bioconda', {static: true}) biocondaComponent: BiocondaComponent;
 
   constructor(private groupService: GroupService, private imageService: ImageService,
               private flavorService: FlavorService, private virtualmachineservice: VirtualmachineService,
@@ -129,8 +129,18 @@ export class AddClusterComponent implements OnInit {
               private voService: VoService, private router: Router) {
   }
 
+  calcWorkerInstancesCount(): void {
+    let count: number = 0;
+    this.selectedWorkerBatches.forEach((batch: WorkerBatch): void => {
+      count += batch.count
+    })
+    this.workerInstancesCount = count;
+    this.newVms = this.workerInstancesCount + 1;
+  }
+
   changeCount(): void {
-    this.newVms = Number(this.workerInstancesCount) + Number(1);
+
+    this.calcWorkerInstancesCount()
     this.calculateNewValues()
   }
 
@@ -163,7 +173,6 @@ export class AddClusterComponent implements OnInit {
 
   calcMaxWorkerInstancesByFlavor(flavor: Flavor): void {
     this.maxWorkerInstances = null;
-    this.selectedBatch.count = 0;
     if (flavor) {
 
       this.maxWorkerInstances = this.selectedProjectRessources.calcMaxWorkerInstancesByFlavor(
@@ -191,10 +200,9 @@ export class AddClusterComponent implements OnInit {
 
     });
 
-    this.newRam = tmp_ram / 1024;
+    this.newRam = Math.ceil(tmp_ram / 1024);
     this.newCores = tmp_cores;
     this.newGpus = tmp_gpus;
-    this.filterFlavors()
   }
 
   /**
@@ -231,6 +239,7 @@ export class AddClusterComponent implements OnInit {
   }
 
   addBatch(): void {
+    this.selectedWorkerFlavorSet = false;
     this.selectedBatch = null;
     this.checkFlavorsUsableForCluster()
     const newBatch: WorkerBatch = new WorkerBatch(this.selectedWorkerBatches[this.selectedWorkerBatches.length - 1].index + 1)
@@ -246,9 +255,13 @@ export class AddClusterComponent implements OnInit {
       this.maxWorkerInstances = null;
       if (idx !== 0) {
         this.selectedBatch = this.selectedWorkerBatches[idx - 1]
+        this.selectedWorkerFlavorSet = true;
+
       } else {
         if (this.selectedWorkerBatches.length - 1 > 0) {
           this.selectedBatch = this.selectedWorkerBatches[idx + 1]
+          this.selectedWorkerFlavorSet = true;
+
         } else {
           this.selectedBatch = null;
         }
@@ -258,8 +271,10 @@ export class AddClusterComponent implements OnInit {
 
     this.selectedWorkerBatches.splice(idx, 1)
 
-    this.calcMaxWorkerInstancesByFlavor(this.selectedBatch.worker_flavor)
     this.checkFlavorsUsableForCluster();
+    this.calcWorkerInstancesCount();
+    this.calculateNewValues();
+    this.calcMaxWorkerInstancesByFlavor(this.selectedBatch.worker_flavor)
 
   }
 
