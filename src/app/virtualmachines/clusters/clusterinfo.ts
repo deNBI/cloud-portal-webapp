@@ -12,6 +12,8 @@ export class WorkerBatch {
   image: Image;
   worker_count: number = 0;
   delete_count: number = 0;
+  upscale_count: number = 0;
+  max_scale_up_count: number = 0;
 
   constructor(index: number) {
     this.index = index;
@@ -48,7 +50,7 @@ export class Clusterinfo {
     this.cluster_id = cl.cluster_id;
     this.group_id = cl.group_id;
     this.user = cl.user;
-    this.instances_count = cl.instances_count;
+    this.instances_count = cl.worker_instances.length + 1;
     this.launch_date = cl.launch_date;
     this.key_name = cl.key_name;
     this.status = cl.status;

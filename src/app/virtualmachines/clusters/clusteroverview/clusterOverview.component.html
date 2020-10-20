@@ -123,7 +123,7 @@
                        *ngIf="cluster?.status != VirtualMachineStates.staticDELETED && cluster?.status != VirtualMachineStates.staticDELETING && cluster?.status == 'Running' ">
                     <a class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
                        [id]="'scale_up_'+cluster?.cluster_id"
-                       (click)="selectedCluster=cluster;scaleUpModal.show();calcRess();">
+                       (click)="selectedCluster=cluster;scaleUpModal.show();resetScaling();calcRess();">
                       Scale-Up</a>
 
 
@@ -132,7 +132,7 @@
                        *ngIf="cluster?.status != VirtualMachineStates.staticDELETED && cluster?.status != VirtualMachineStates.staticDELETING && cluster?.status == 'Running' ">
                     <a class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
                        [id]="'scale_down_'+cluster?.cluster_id"
-                       (click)="selectedCluster=cluster;resetScaleDown();scaleDownModal.show()">
+                       (click)="selectedCluster=cluster;resetScaling();scaleDownModal.show()">
                       Scale-Down</a>
 
 
@@ -175,9 +175,9 @@
             </div>
 
           </div>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
 
 
 <div bsModal #verifyModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
@@ -243,23 +243,40 @@
                 <tr>
                   <th>Batch Index</th>
                   <th>Flavor</th>
-                  <th>Workers</th>
+                  <th>Actual Workers</th>
                   <th>Deletion count</th>
 
                 </tr>
                 </thead>
                 <tbody>
                 <tr *ngFor="let batch of selectedCluster?.worker_batches">
-                  <td>{{ batch.index }}</td>
-                  <td>{{ batch.flavor.name}}</td>
-                  <td>{{batch.worker_count}}</td>
-                  <td><input style="width: 50%"
+                  <td>{{ batch?.index }}</td>
+                  <td>
+                    <div style="font-size: small">
+                      <strong>{{batch?.flavor?.name}}</strong><br> {{batch?.flavor?.vcpus + ' VCPUs ' }}
+                      <br>{{batch?.flavor?.ram + ' GB RAM  '}}<br>{{batch?.flavor?.rootdisk + ' GB root disk'}}
+                    </div>
+                  </td>
+                  <td>{{batch?.worker_count}}</td>
+                  <td>
+                    <div class="input-group">
+
+
+                      <input style="width: 50%"
                              name="delCount_{{batch.index}}"
 
-                             type="number" min="1" [max]="batch.worker_count" step="1"
+                             type="number" min="0" [max]="batch.worker_count" step="1"
                              [(ngModel)]="batch.delete_count"
                              appMinAmount="0" appMaxAmount="{{batch.worker_count}}" (change)="checkDelCount(batch);"
-                             appInteger placeholder="e.g 1" pattern="[0-9]+"></td>
+                             appInteger placeholder="e.g 1" pattern="[0-9]+">
+                      <div class="input-group-append">
+                        <span class="input-group-text">max {{batch?.worker_count}}</span>
+                      </div>
+
+                    </div>
+
+
+                  </td>
 
                 </tr>
 
@@ -282,7 +299,7 @@
                 <div class="alert alert-info"
                      role="alert">Selected for scaling down:<br>
                   <span *ngFor="let batch of selectedCluster?.worker_batches">
-                      <strong *ngIf="batch.delete_count > 0">Batch {{batch.index}} by {{batch.delete_count}}
+                      <strong *ngIf="batch?.delete_count > 0">Batch {{batch?.index}} by {{batch?.delete_count}}
                         instances</strong>
                     </span>
                 </div>
@@ -295,7 +312,7 @@
 
 
               <button class="btn  btn-success col-md-4"
-                      (click)="scaleDownModal.hide();scaleDown();notificationModal.show();"
+                      (click)="scaleDownModal.hide();notificationModal.show();scaleDown()"
                       [disabled]="!scaling_warning_read || scale_down_count < 1"
                       id="confirm-scale_down">
                 Scale Down Batches
@@ -329,128 +346,117 @@
               <i
                 class="fa fa-spinner fa-spin" style="font-size:24px"></i></strong></div>
 
-            <div *ngIf="max_scale_count_loaded && max_scale_count > 0">
-              <div class="row ">
-                <div class="alert-info col-6 "> Maximum additional
-                  workers: <strong>{{max_scale_count}}</strong></div>
-                <div class="alert-info col-6 "><strong> Worker Configuration</strong></div>
-              </div>
+            <div *ngIf="max_scale_count_loaded">
+              <div class="modal-body">
+                <div class="alert alert-warning" role="alert">
+                  <p>Which batch should be scaled up (only one batch at a time is possible)?</p></div>
 
-              <div class=" row">
-                <div class="col-6">
-                  <div class=" row">
-                    <br>
-                    <br>
-                    <br>
+                <div class="table-responsive">
+                  <table class="table table-hover" style="word-wrap: break-word;table-layout: fixed">
+                    <thead>
+                    <tr>
+                      <th>Selected</th>
 
+                      <th>Batch Index</th>
+                      <th>Flavor</th>
+                      <th>Actual Workers</th>
+                      <th>Upscaling count</th>
 
-                    <div class="alert-secondary "> Select how many additional workers you want to
-                      start:
-                    </div>
-                    <br>
-
-                    <div class="input-group">
-                      <input id="scale_worker_count" class="form-control" style="margin: 10px 0 0 0;"
-                             name="scale_worker_count" placeholder="e.g 1"
-                             type="number" min="1" max="{{max_scale_count}}" step="1"
-                             appMinAmount="1" appMaxAmount="{{max_scale_count}}" appInteger
-                             pattern="^([1-9]|1[012])$" [(ngModel)]="scale_worker_count">
-                      <div class="input-group-append"><span
-                        class="input-group-text"> Additional Worker                </span></div>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let batch of selectedCluster?.worker_batches">
+                      <td>
+                        <div class="checkbox col-sm" *ngIf="batch?.max_scale_up_count >0 ">
+                          <label>
+                            <input type="checkbox"
+                                   (change)="setSelectedBatch(batch)"
+                                   [checked]="selectedBatch == batch">
 
 
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-6">
-                  <strong>Image: {{selectedCluster?.worker_instances[0]?.image}}</strong>
-                  <div
-                    class="card-header bg-info-flavor text-truncate" data-toggle="tooltip" data-placement="top"
-                    title="{{selectedCluster?.worker_instances[0]?.flavor?.name}}"
-                    style=" color: white !important;"> <!-- quickfix -->
-                    <strong>{{selectedCluster?.worker_instances[0]?.flavor?.name}}</strong></div>
-                  <div class="card-body">
-                    <div class="scroll-flavor">
-
-                      <div class="col">
-                        <div class="row">
-                          <figure class="flavor-card-icons">
-                            <img src="{{RAM_ICON_PATH}}" alt="">
-                          </figure>
-                          {{selectedCluster?.worker_instances[0]?.flavor?.ram}} GB Ram
+                          </label>
                         </div>
-                      </div>
-                      <div class="col"
-                      >
-                        <div class="row">
-                          <figure class="flavor-card-icons">
-                            <img src="{{CPU_ICON_PATH}}" alt="">
-                          </figure>
-                          {{selectedCluster?.worker_instances[0]?.flavor?.vcpus}} Cores
+                      </td>
+
+                      <td>{{ batch?.index }}</td>
+                      <td>
+                        <div style="font-size: small">
+                          <strong>{{batch?.flavor?.name}}</strong><br> {{batch?.flavor?.vcpus + ' VCPUs ' }}
+                          <br>{{batch?.flavor?.ram + ' GB RAM  '}}<br>{{batch?.flavor?.rootdisk + ' GB root disk'}}
                         </div>
-                      </div>
-                      <div class="col"
-                      >
-                        <div class="row">
-                          <figure class="flavor-card-icons">
-                            <img src="{{STORAGE_ICON_PATH}}" alt="">
-                          </figure>
-                          {{selectedCluster?.worker_instances[0]?.flavor?.rootdisk}} GB root disk <span
-                          *ngIf="selectedCluster?.worker_instances[0]?.flavor?.ephemeral_disk">
-                    + {{selectedCluster?.worker_instances[0]?.flavor.ephemeral_disk}} GB ephemeral disk</span>
+                      </td>
+                      <td>{{batch?.worker_count}}</td>
+                      <td>
+                        <div class="input-group">
+
+
+                          <input style="width: 50%"
+                                 [disabled]="batch?.max_scale_up_count <1 || selectedBatch != batch"
+                                 name="upCount_{{batch.index}}"
+
+                                 type="number" min="1" [max]="batch.max_scale_up_count" step="1"
+                                 [(ngModel)]="batch.upscale_count"
+                                 appMinAmount="0" appMaxAmount="{{batch.max_scale_up_count}}"
+                                 (change)="checkUpCount(batch);"
+                                 appInteger placeholder="e.g 1" pattern="[0-9]+">
+                          <div class="input-group-append">
+                            <span class="input-group-text">max {{batch?.max_scale_up_count}}</span>
+                          </div>
+
                         </div>
-                      </div>
-                      <div class="col" *ngIf="selectedCluster?.worker_instances[0]?.flavor?.gpu > 0">
-                        <div class="row">
-                          <figure class="flavor-card-icons">
-                            <img src="{{GPU_ICON_PATH}}" alt="">
-                          </figure>
-                          {{selectedCluster?.worker_instances[0]?.flavor?.gpu}} <span
-                          *ngIf="selectedCluster?.worker_instances[0]?.flavor?.gpu == 1"> GPU</span><span
-                          *ngIf="selectedCluster?.worker_instances[0]?.flavor?.gpu > 1"> GPUs</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                      </td>
+
+                    </tr>
+
+                    </tbody>
+                  </table>
                 </div>
               </div>
-            </div>
+              <div class="modal-footer">
+                <div class="alert" *ngIf="max_scale_count_loaded"
+                     [ngClass]="{'alert-danger':!scaling_warning_read,'alert-success':scaling_warning_read}"
+                     role="alert">
+                  <p> This will only start the number of selected machines with suitable settings.
+                    After initiating the startup of the new machines wait until they are active, you can follow the
+                    status
+                    of the new workers on the cluster <a class="h5 text-primary" style="margin-left: 10px"
+                                                         target="_blank" rel="noopener noreferrer"
 
+                                                         [routerLink]="['/virtualmachines/cluster/' + selectedCluster?.cluster_id]">
+                      details </a>page.
+                    When the machines are active you must
+                  execute the following commands on your master
+                  machine to configure the cluster correctly:</p>
+                  <div class="alert alert-light"
+                       role="alert">
+                    <strong>wget {{SCALE_UP_SCRIPT_LINK}}</strong></div>
+                  <div class="alert alert-light"
+                       role="alert"><strong>python3 scaling_up_v0.py </strong>
+                  </div>
 
-            <div class="alert-info" *ngIf="max_scale_count_loaded && max_scale_count== 0"> Not enough resources for
-              scaling up your Cluster!
-            </div>
+                  <div class="alert alert-info"
+                       role="alert">Selected for scaling up:<br>
+                    <strong *ngIf="selectedBatch?.upscale_count > 0"> Batch {{selectedBatch?.index}}
+                      by {{selectedBatch?.upscale_count}}
+                      instances</strong>
+                  </div>
 
+                  <input class="form-check-input" name="sclae_up_acknowledgement_checkbox" type="checkbox"
+                         [(ngModel)]="scaling_warning_read">
+                  <label class="form-check-label">
+                    Hint was read!
+                  </label></div>
 
-            <div class="modal-footer">
-              <div class="alert" *ngIf="max_scale_count_loaded && max_scale_count > 0"
-                   [ngClass]="{'alert-danger':!scaling_warning_read,'alert-success':scaling_warning_read}"
-                   role="alert">
-                <p> This will only start the number of selected machines with suitable settings.
-                  After initiating the startup of the new machines wait until they are active, you can follow the status
-                  of the new workers on the cluster <a class="h5 text-primary" style="margin-left: 10px"  target="_blank" rel="noopener noreferrer"
-
-                                                       [routerLink]="['/virtualmachines/cluster/' + selectedCluster?.cluster_id]">
-                    details </a>page.
-                  When the machines are active please follow the steps described <a target="_blank" href="{{SCALING_UP_WIKI}}">here</a>!</p>
-
-                <input class="form-check-input" name="sclae_down_acknowledgement_checkbox" type="checkbox"
-                       [(ngModel)]="scaling_warning_read">
-                <label class="form-check-label">
-                  Hint was read!
-                </label></div>
-
-              <button class="btn  btn-success col-md-4" *ngIf="max_scale_count_loaded && max_scale_count > 0"
-                      (click)="scaleUpModal.hide();sclaeUpCluster();notificationModal.show()"
-                      [disabled]=" !scaling_warning_read || max_scale_count <= 0 ||   scale_worker_count <=  0 || !scale_worker_count || !max_scale_count"
-                      id="confirm_scale_up">
-                Start {{scale_worker_count}} vms!
-              </button>
-              <button class="btn  btn-danger col-md-4" type="reset"
-                      (click)="scaleUpModal.hide();">Cancel
-              </button>
-            </div>
+                <button class="btn  btn-success col-md-4" *ngIf="max_scale_count_loaded"
+                        (click)="scaleUpModal.hide();notificationModal.show();scaleUpCluster();"
+                        [disabled]=" !scaling_warning_read || selectedBatch?.upscale_count <= 0"
+                        id="confirm_scale_up">
+                  Start {{scale_worker_count}} vms!
+                </button>
+                <button class="btn  btn-danger col-md-4" type="reset"
+                        (click)="scaleUpModal.hide();">Cancel
+                </button>
+              </div>
           </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
       </div><!-- /.modal -->

@@ -45,9 +45,9 @@ export class VirtualmachineService {
     })
   }
 
-  scaleCluster(cluster_id: string, count: number): Observable<any> {
+  scaleCluster(cluster_id: string, worker_batch: WorkerBatch): Observable<any> {
     const params: HttpParams = new HttpParams()
-      .set('count', count.toString())
+      .set('worker_batch', JSON.stringify(worker_batch))
 
     return this.http.post(`${ApiSettings.getApiBaseURL()}clusters/${cluster_id}/scale-up/`, params, {
       withCredentials: true
