@@ -235,28 +235,32 @@
           </div>
           <div class="modal-body">
             <div class="alert alert-warning" role="alert">
-              <p> Which worker instances should be deleted for scaling down your cluster?</p></div>
+              <p>From which batch do you want to delete how many workers?</p></div>
 
             <div class="table-responsive">
               <table class="table table-hover" style="word-wrap: break-word;table-layout: fixed">
                 <thead>
                 <tr>
-                  <th>Name</th>
-                  <th>Status</th>
-                  <th>Private IP</th>
-                  <th></th>
+                  <th>Batch Index</th>
+                  <th>Flavor</th>
+                  <th>Workers</th>
+                  <th>Deletion count</th>
+
                 </tr>
                 </thead>
                 <tbody>
-                <tr *ngFor="let vm of selectedCluster?.worker_instances">
-                  <td>{{ vm.name }}</td>
-                  <td>
-                    <app-vmstatus [with_text]="false" [vm]="vm"></app-vmstatus>
-                  </td>
-                  <td>{{ vm.fixed_ip}}</td>
-                  <td><input *ngIf="vm?.status !== virtualMachineStates.staticDELETED" type="checkbox"
-                             (change)="setForScaleDown(vm)" [checked]="scale_down_vms |  inList:vm"
-                  ></td>
+                <tr *ngFor="let batch of selectedCluster?.worker_batches">
+                  <td>{{ batch.index }}</td>
+                  <td>{{ batch.flavor.name}}</td>
+                  <td>{{batch.worker_count}}</td>
+                  <td><input style="width: 50%"
+                             name="delCount_{{batch.index}}"
+
+                             type="number" min="1" [max]="batch.worker_count" step="1"
+                             [(ngModel)]="batch.delete_count"
+                             appMinAmount="0" appMaxAmount="{{batch.worker_count}}" (change)="checkDelCount(batch);"
+                             appInteger placeholder="e.g 1" pattern="[0-9]+"></td>
+
                 </tr>
 
                 </tbody>
@@ -265,15 +269,23 @@
             <div class="modal-footer">
               <div class="alert" [ngClass]="{'alert-danger':!scaling_warning_read,'alert-success':scaling_warning_read}"
                    role="alert">
-                <p> This will only delete the selected machines, you have to execute the following commands on the
-                  terminal of your master
+                <p> This will only delete machines in the batches. After these have been successfully deleted, you must
+                  execute the following commands on your master
                   machine to configure the cluster correctly!</p>
                 <div class="alert alert-light"
                      role="alert">
                   <strong>wget {{SCALE_DOWN_SCRIPT_LINK}}</strong></div>
                 <div class="alert alert-light"
-                     role="alert"><strong>python3 scaling_down_v0.py <span
-                  *ngFor="let vm of scale_down_vms">{{vm.fixed_ip}} </span></strong></div>
+                     role="alert"><strong>python3 scaling_down_v0.py </strong>
+                </div>
+
+                <div class="alert alert-info"
+                     role="alert">Selected for scaling down:<br>
+                  <span *ngFor="let batch of selectedCluster?.worker_batches">
+                      <strong *ngIf="batch.delete_count > 0">Batch {{batch.index}} by {{batch.delete_count}}
+                        instances</strong>
+                    </span>
+                </div>
 
                 <input class="form-check-input" name="sclae_down_acknowledgement_checkbox" type="checkbox"
                        id="public_key_acknowledgement_checkbox" [(ngModel)]="scaling_warning_read">
@@ -283,10 +295,10 @@
 
 
               <button class="btn  btn-success col-md-4"
-                      (click)="scaleDownModal.hide();scaleDownDeleteVm();notificationModal.show();"
-                      [disabled]="!scaling_warning_read || scale_down_vms.length == 0"
+                      (click)="scaleDownModal.hide();scaleDown();notificationModal.show();"
+                      [disabled]="!scaling_warning_read || scale_down_count < 1"
                       id="confirm-scale_down">
-                Delete selected Vms
+                Scale Down Batches
               </button>
               <button class="btn  btn-danger col-md-4" type="reset"
                       (click)="scaleDownModal.hide();">Cancel

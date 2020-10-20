@@ -8,20 +8,15 @@ import {Image} from '../virtualmachinemodels/image';
  */
 export class WorkerBatch {
   index: number;
-  worker_flavor: Flavor;
-  worker_image: Image;
-  count: number = 0;
+  flavor: Flavor;
+  image: Image;
+  worker_count: number = 0;
+  delete_count: number = 0;
 
   constructor(index: number) {
     this.index = index;
   }
 
-  escape_names(): void {
-    const re: RegExp = /\+/gi;
-
-    this.worker_flavor.name.replace(re, '%2B');
-
-  }
 }
 
 /**
@@ -30,6 +25,7 @@ export class WorkerBatch {
 export class Clusterinfo {
   master_instance: VirtualMachine;
   worker_instances: VirtualMachine[];
+  worker_batches: WorkerBatch[];
   client: Client;
   public_ip: string;
   cluster_id: string;
@@ -59,6 +55,7 @@ export class Clusterinfo {
     this.application_id = cl.application_id;
     this.project = cl.project;
     this.userlogin = cl.userlogin;
+    this.worker_batches = cl.worker_batches;
     this.master_instance_openstack_id = cl.master_instance_openstack_id;
     this.sortWorkerByStatus()
   }

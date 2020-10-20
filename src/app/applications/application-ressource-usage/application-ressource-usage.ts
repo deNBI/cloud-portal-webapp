@@ -39,10 +39,10 @@ export class ApplicationRessourceUsage {
     let batches_gpus: number = 0;
 
     worker_batches.forEach((batch: WorkerBatch): void => {
-      if (batch.worker_flavor) {
-        batches_ram += batch.worker_flavor.ram * batch.count / 1024;
-        batches_cpu += batch.worker_flavor.vcpus * batch.count;
-        batches_gpus += batch.worker_flavor.gpu * batch.count;
+      if (batch.flavor) {
+        batches_ram += batch.flavor.ram * batch.worker_count / 1024;
+        batches_cpu += batch.flavor.vcpus * batch.worker_count;
+        batches_gpus += batch.flavor.gpu * batch.worker_count;
       }
     });
     const tmp_flavors: Flavor[] = [];
@@ -64,10 +64,10 @@ export class ApplicationRessourceUsage {
     let batches_gpus: number = 0;
 
     worker_batches.forEach((batch: WorkerBatch): void => {
-      if (batch.worker_flavor) {
-        batches_ram += Math.ceil(batch.worker_flavor.ram * batch.count / 1024);
-        batches_cpu += batch.worker_flavor.vcpus * batch.count;
-        batches_gpus += batch.worker_flavor.gpu * batch.count;
+      if (batch.flavor) {
+        batches_ram += Math.ceil(batch.flavor.ram * batch.worker_count / 1024);
+        batches_cpu += batch.flavor.vcpus * batch.worker_count;
+        batches_gpus += batch.flavor.gpu * batch.worker_count;
       }
     });
     const tmp_flavors: Flavor[] = [];
@@ -89,10 +89,10 @@ export class ApplicationRessourceUsage {
     let batches_vms: number = 0;
 
     worker_batches.forEach((batch: WorkerBatch): void => {
-      if (batch.worker_flavor) {
-        batches_ram += Math.ceil(batch.worker_flavor.ram * batch.count / 1024);
-        batches_cpu += batch.worker_flavor.vcpus * batch.count;
-        batches_vms += batch.count;
+      if (batch.flavor) {
+        batches_ram += Math.ceil(batch.flavor.ram * batch.worker_count / 1024);
+        batches_cpu += batch.flavor.vcpus * batch.worker_count;
+        batches_vms += batch.worker_count;
       }
     });
     const ram_max_vms: number = (this.ram_total - this.ram_used - Math.ceil((master_flavor.ram / 1024)) - batches_ram)

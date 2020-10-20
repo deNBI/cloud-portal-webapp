@@ -132,7 +132,7 @@ export class AddClusterComponent implements OnInit {
   calcWorkerInstancesCount(): void {
     let count: number = 0;
     this.selectedWorkerBatches.forEach((batch: WorkerBatch): void => {
-      count += batch.count
+      count += batch.worker_count
     })
     this.workerInstancesCount = count;
     this.newVms = this.workerInstancesCount + 1;
@@ -150,7 +150,7 @@ export class AddClusterComponent implements OnInit {
     // tslint:disable-next-line:no-for-each-push
     this.selectedWorkerBatches.forEach((batch: WorkerBatch): void => {
       if (batch !== this.selectedBatch) {
-        used_flavors.push(batch.worker_flavor)
+        used_flavors.push(batch.flavor)
       }
     })
     const flavors_to_filter: Flavor[] = this.flavors.filter((flavor: Flavor): boolean => {
@@ -192,10 +192,10 @@ export class AddClusterComponent implements OnInit {
 
     }
     this.selectedWorkerBatches.forEach((batch: WorkerBatch): void => {
-      if (batch.count && batch.worker_flavor) {
-        tmp_ram += batch.worker_flavor.ram * batch.count;
-        tmp_cores += batch.worker_flavor.vcpus * batch.count;
-        tmp_gpus += batch.worker_flavor.gpu * batch.count;
+      if (batch.worker_count && batch.flavor) {
+        tmp_ram += batch.flavor.ram * batch.worker_count;
+        tmp_cores += batch.flavor.vcpus * batch.worker_count;
+        tmp_gpus += batch.flavor.gpu * batch.worker_count;
       }
 
     });
@@ -243,7 +243,7 @@ export class AddClusterComponent implements OnInit {
     this.selectedBatch = null;
     this.checkFlavorsUsableForCluster()
     const newBatch: WorkerBatch = new WorkerBatch(this.selectedWorkerBatches[this.selectedWorkerBatches.length - 1].index + 1)
-    newBatch.worker_image = this.selectedMasterImage;
+    newBatch.image = this.selectedMasterImage;
     this.maxWorkerInstances = null;
     this.selectedWorkerBatches.push(newBatch);
     this.selectedBatch = newBatch;
@@ -274,7 +274,7 @@ export class AddClusterComponent implements OnInit {
     this.checkFlavorsUsableForCluster();
     this.calcWorkerInstancesCount();
     this.calculateNewValues();
-    this.calcMaxWorkerInstancesByFlavor(this.selectedBatch.worker_flavor)
+    this.calcMaxWorkerInstancesByFlavor(this.selectedBatch.flavor)
 
   }
 

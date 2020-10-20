@@ -4,14 +4,14 @@ import {FullLayoutComponent} from '../../../layouts/full-layout.component';
 import {UserService} from '../../../api-connector/user.service';
 import {ImageService} from '../../../api-connector/image.service';
 import {FacilityService} from '../../../api-connector/facility.service';
-import {catchError, debounceTime, distinctUntilChanged} from 'rxjs/operators';
-import {forkJoin, Observable, of, Subject, Subscription} from 'rxjs';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
+import {Subject, Subscription} from 'rxjs';
 import {FormBuilder} from '@angular/forms';
 import {is_vo} from '../../../shared/globalvar';
 import {VirtualMachineStates} from '../../virtualmachinemodels/virtualmachinestates';
 import {GroupService} from '../../../api-connector/group.service';
 import {ClientService} from '../../../api-connector/client.service';
-import {Clusterinfo} from '../clusterinfo';
+import {Clusterinfo, WorkerBatch} from '../clusterinfo';
 import {ClipboardService} from 'ngx-clipboard';
 import {VirtualMachine} from '../../virtualmachinemodels/virtualmachine';
 import {ApplicationRessourceUsage} from '../../../applications/application-ressource-usage/application-ressource-usage';
@@ -45,11 +45,11 @@ export class ClusterOverviewComponent extends AbstractBaseClasse implements OnIn
   SCALE_UP_SCRIPT_LINK: string = SCALE_UP_SCRIPT_LINK;
 
   isSearching: boolean = true;
-  scale_down_vms: VirtualMachine[] = []
   scaling_warning_read: boolean = false;
   max_scale_count: number = 0;
   max_scale_count_loaded: boolean = false;
   scale_worker_count: number;
+  scale_down_count: number = 0;
 
   selectedCluster: Clusterinfo = null;
   ressourceUsage: ApplicationRessourceUsage;
@@ -65,7 +65,6 @@ export class ClusterOverviewComponent extends AbstractBaseClasse implements OnIn
 
   filter: string;
   cluster_per_site: number = 7;
-
   total_pages: number;
   total_items: number;
   clusters: Clusterinfo[] = [];
@@ -153,51 +152,57 @@ export class ClusterOverviewComponent extends AbstractBaseClasse implements OnIn
     })
   }
 
-  resetScaleDown(): void {
-    this.scaling_warning_read = false;
-    this.scale_down_vms = [];
-  }
-
-  setForScaleDown(vm: VirtualMachine): void {
-    const idx: number = this.scale_down_vms.indexOf(vm)
-    if (idx === -1) {
-      this.scale_down_vms.push(vm)
-    } else {
-      this.scale_down_vms.splice(idx, 1)
-
+  checkDelCount(batch: WorkerBatch): void {
+    if (batch.delete_count > batch.worker_count) {
+      batch.delete_count = batch.worker_count
     }
-  }
+    this.scale_down_count = 0;
 
-  scaleDownDeleteVm(): void {
-    let msg: string = `Deleting virtual machines:`
-    for (const vm of this.scale_down_vms) {
-      msg += ` [${vm.name}]`
-    }
-
-    this.updateNotificationModal('Deleting Workers', msg, true, 'info')
-    const observableBatch: Observable<VirtualMachine>[] = [];
-
-    // tslint:disable-next-line:no-for-each-push
-    this.scale_down_vms.forEach((vm: VirtualMachine): void => {
-      vm.status = VirtualMachineStates.DELETING;
-      // tslint:disable-next-line:no-unnecessary-callback-wrapper
-      observableBatch.push(this.virtualmachineservice.deleteVM(vm.openstackid).pipe(catchError((error: any): Observable<any> => of(error)))
-      )
-    });
-    forkJoin(observableBatch).subscribe((upd_vms: VirtualMachine[]): void => {
-      upd_vms.forEach((upd_vm: VirtualMachine, index: number) => {
-        const idx: number = this.selectedCluster.worker_instances.indexOf(this.scale_down_vms[index])
-
-        if (idx !== -1) {
-          this.selectedCluster.worker_instances[idx] = upd_vm
-        }
-
-      })
-      msg = 'Successfully deleted the machines. Remember to configure your cluster!';
-      this.updateNotificationModal('Successfully Deleted!', msg, true, 'success')
+    this.selectedCluster.worker_batches.forEach((bat: WorkerBatch): void => {
+      if (bat.delete_count > 0) {
+        this.scale_down_count += bat.delete_count
+      }
 
     })
+  }
 
+  resetScaleDown(): void {
+    this.scale_down_count = 0;
+    this.scaling_warning_read = false;
+    this.resetScaleDownCount()
+  }
+
+  scaleDown(): void {
+
+    const scale_down_batches: WorkerBatch[] = [];
+    this.selectedCluster.worker_batches.forEach((batch: WorkerBatch): void => {
+      if (batch.delete_count > 0) {
+        scale_down_batches.push(batch)
+      }
+    })
+    let msg: string = `Scaling Down Batches: `
+    for (const batch of scale_down_batches) {
+      msg += ` \n[Batch ${batch.index} by ${batch.delete_count} instances ]`
+    }
+
+    this.updateNotificationModal('Scaling Down', msg, true, 'info')
+
+    this.virtualmachineservice.scaleDownCluster(this.selectedCluster.cluster_id, scale_down_batches).subscribe((): void => {
+      this.subscription.add(this.virtualmachineservice.getClusterInfo(this.selectedCluster.cluster_id).subscribe(
+        (updated_cluster: Clusterinfo): void => {
+          this.clusters[this.clusters.indexOf(this.selectedCluster)] = updated_cluster;
+          this.selectedCluster = updated_cluster;
+        }))
+      msg = 'Successfully scaled down the batches. Remember to configure your cluster!';
+      this.updateNotificationModal('Successfully Deleted!', msg, true, 'success')
+    })
+
+  }
+
+  resetScaleDownCount(): void {
+    this.selectedCluster.worker_batches.forEach((batch: WorkerBatch): void => {
+      batch.delete_count = 0;
+    })
   }
 
   copyToClipboard(text: string): void {
