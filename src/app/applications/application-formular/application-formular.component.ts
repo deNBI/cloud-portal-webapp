@@ -333,27 +333,28 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
   approveApplication(form: NgForm): any {
     this.calculateInitialCredits(form);
     this.application_id = this.application.project_application_id;
-    this.applicationsservice.validateApplicationAsPIByHash(
-      this.hash, this.application).subscribe((): void => {
-                                               this.fullLayout.getGroupsEnumeration();
+    this.applicationsservice.validateApplicationAsPIByHash(this.hash, this.application)
+      .subscribe(
+        (): void => {
+          this.fullLayout.getGroupsEnumeration();
 
-                                               this.updateNotificationModal(
-                                                 'Success',
-                                                 'The application was successfully approved.',
-                                                 true,
-                                                 'success');
-                                               this.notificationModalStay = false;
+          this.updateNotificationModal(
+            'Success',
+            'The application was successfully approved.',
+            true,
+            'success');
+          this.notificationModalStay = false;
 
-                                             },
-                                             (): void => {
-                                               this.updateNotificationModal(
-                                                 'Failed',
-                                                 'The application was not successfully approved.',
-                                                 true,
-                                                 'danger');
-                                               this.notificationModalStay = true;
+        },
+        (): void => {
+          this.updateNotificationModal(
+            'Failed',
+            'The application was not successfully approved.',
+            true,
+            'danger');
+          this.notificationModalStay = true;
 
-                                             })
+        })
   }
 
   /**
