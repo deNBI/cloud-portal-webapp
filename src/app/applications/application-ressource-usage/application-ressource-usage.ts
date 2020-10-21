@@ -83,22 +83,22 @@ export class ApplicationRessourceUsage {
     return tmp_flavors
   }
 
-  calcMaxWorkerInstancesByFlavor(master_flavor: Flavor, worker_flavor: Flavor, worker_batches: WorkerBatch[]): number {
+  calcMaxWorkerInstancesByFlavor(master_flavor: Flavor, selectedBatch: WorkerBatch, worker_batches: WorkerBatch[]): number {
     let batches_ram: number = 0;
     let batches_cpu: number = 0;
     let batches_vms: number = 0;
 
     worker_batches.forEach((batch: WorkerBatch): void => {
-      if (batch.flavor) {
+      if (batch.flavor && batch !== selectedBatch) {
         batches_ram += Math.ceil(batch.flavor.ram * batch.worker_count / 1024);
         batches_cpu += batch.flavor.vcpus * batch.worker_count;
         batches_vms += batch.worker_count;
       }
     });
     const ram_max_vms: number = (this.ram_total - this.ram_used - Math.ceil((master_flavor.ram / 1024)) - batches_ram)
-      / Math.ceil((worker_flavor.ram / 1024));
+      / Math.ceil((selectedBatch.flavor.ram / 1024));
     const cpu_max_vms: number = (this.cores_total - this.cores_used - master_flavor.vcpus - batches_cpu)
-      / worker_flavor.vcpus;
+      / selectedBatch.flavor.vcpus;
 
     return Math.floor(Math.min(ram_max_vms, cpu_max_vms, this.number_vms - this.used_vms - 1 - batches_vms))
   }

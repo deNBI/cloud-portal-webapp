@@ -14,6 +14,7 @@ export class WorkerBatch {
   delete_count: number = 0;
   upscale_count: number = 0;
   max_scale_up_count: number = 0;
+  max_worker_count: number;
 
   constructor(index: number) {
     this.index = index;

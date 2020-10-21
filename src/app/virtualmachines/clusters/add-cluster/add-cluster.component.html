@@ -190,7 +190,7 @@
 
                           <app-flavor-detail *ngIf="selectedBatch == batch" [selectedFlavor]="batch.flavor"
                                              [flavors]="flavors_usable"
-                                             (selectedFlavorChange)="batch.flavor=$event;selectedWorkerFlavorSet=true;calcMaxWorkerInstancesByFlavor(batch.flavor);"
+                                             (selectedFlavorChange)="batch.flavor=$event;selectedWorkerFlavorSet=true;calcMaxWorkerInstancesByFlavor();"
                           ></app-flavor-detail>
                           <app-flavor-detail *ngIf="selectedBatch != batch" [selectedFlavor]="batch.flavor"
                                              [flavors]="[batch.flavor]"
@@ -208,7 +208,7 @@
                       <div class="form-group row col-md-12">
 
                         <label class="col-md-2 form-control-label"><strong>Count*
-                          <span *ngIf="maxWorkerInstances && selectedBatch == batch">(max {{maxWorkerInstances}})</span></strong></label>
+                          <span *ngIf="selectedBatch.max_worker_count && selectedBatch == batch">(max {{selectedBatch.max_worker_count}})</span></strong></label>
                         <div class="col-md-10">
 
 
@@ -217,9 +217,9 @@
                                  name="workerInstancesCount_{{batch.index}}"
                                  placeholder="e.g 1"
 
-                                 type="number" min="1" [max]="maxWorkerInstances" step="1"
+                                 type="number" min="1" [max]="batch.max_worker_count" step="1"
                                  [(ngModel)]="batch.worker_count" required
-                                 appMinAmount="1" appMaxAmount="{{maxWorkerInstances}}"
+                                 appMinAmount="1" appMaxAmount="{{batch.max_worker_count}}"
                                  appInteger (change)="changeCount();"
                                  [ngClass]=" {
                         'is-invalid': f.controls['workerInstancesCount_' + batch.index]?.invalid &&

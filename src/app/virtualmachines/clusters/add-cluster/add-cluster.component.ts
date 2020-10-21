@@ -171,13 +171,12 @@ export class AddClusterComponent implements OnInit {
       this.newCores, this.newRam, this.newGpus, this.flavors, this.selectedWorkerBatches);
   }
 
-  calcMaxWorkerInstancesByFlavor(flavor: Flavor): void {
-    this.maxWorkerInstances = null;
-    if (flavor) {
+  calcMaxWorkerInstancesByFlavor(): void {
+    if (this.selectedBatch.flavor) {
 
-      this.maxWorkerInstances = this.selectedProjectRessources.calcMaxWorkerInstancesByFlavor(
+      this.selectedBatch.max_worker_count = this.selectedProjectRessources.calcMaxWorkerInstancesByFlavor(
         this.selectedMasterFlavor,
-        flavor, this.selectedWorkerBatches)
+        this.selectedBatch, this.selectedWorkerBatches)
     }
   }
 
@@ -252,19 +251,9 @@ export class AddClusterComponent implements OnInit {
   removeBatch(batch: WorkerBatch): void {
     const idx: number = this.selectedWorkerBatches.indexOf(batch)
     if (batch === this.selectedBatch) {
-      this.maxWorkerInstances = null;
       if (idx !== 0) {
         this.selectedBatch = this.selectedWorkerBatches[idx - 1]
         this.selectedWorkerFlavorSet = true;
-
-      } else {
-        if (this.selectedWorkerBatches.length - 1 > 0) {
-          this.selectedBatch = this.selectedWorkerBatches[idx + 1]
-          this.selectedWorkerFlavorSet = true;
-
-        } else {
-          this.selectedBatch = null;
-        }
 
       }
     }
@@ -274,7 +263,7 @@ export class AddClusterComponent implements OnInit {
     this.checkFlavorsUsableForCluster();
     this.calcWorkerInstancesCount();
     this.calculateNewValues();
-    this.calcMaxWorkerInstancesByFlavor(this.selectedBatch.flavor)
+    this.calcMaxWorkerInstancesByFlavor()
 
   }
 
