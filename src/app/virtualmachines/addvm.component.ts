@@ -544,7 +544,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
   }
 
   async delay(ms: number): Promise<any> {
-    await new Promise((resolve: any): any => setTimeout(resolve, ms));
+    await new Promise((resolve: any): any => setTimeout(resolve, ms)).then((): any => {});
   }
 
   getPlaybookInformation(): string {
