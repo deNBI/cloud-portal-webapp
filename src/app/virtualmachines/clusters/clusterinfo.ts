@@ -64,7 +64,8 @@ export class Clusterinfo {
   }
 
   private sortWorkerByStatus(): void {
-    this.worker_instances.sort((w1: VirtualMachine, w2: VirtualMachine): any => (w1.status > w2.status) ? 1 : ((w2.status > w1.status) ? -1 : 0));
+    this.worker_instances.sort(
+      (w1: VirtualMachine, w2: VirtualMachine): any => (w1.status > w2.status) ? 1 : ((w2.status > w1.status) ? -1 : 0));
   }
 
 }
