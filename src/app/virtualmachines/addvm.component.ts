@@ -492,7 +492,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
       }
       this.delay(500).then((): any => {
         this.progress_bar_width = 50
-      });
+      }).catch((): any => {});
       this.virtualmachineservice.startVM(
         flavor_fixed, this.selectedImage, servername,
         project, projectid.toString(), this.http_allowed,
@@ -544,7 +544,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
   }
 
   async delay(ms: number): Promise<any> {
-    await new Promise((resolve: any): any => setTimeout(resolve, ms)).then((): any => {});
+    await new Promise((resolve: any): any => setTimeout(resolve, ms));
   }
 
   getPlaybookInformation(): string {
