@@ -50,7 +50,7 @@
     "@types/d3": "^5.7.2",
     "angular-ng-autocomplete": "^2.0.1",
     "angulartics2": "^10.0.0",
-    "bootstrap": "^4.5.2",
+    "bootstrap": "^4.5.3",
     "c3": "^0.7.20",
     "chart.js": "^2.9.3",
     "chromedriver": "^85.0.1",
