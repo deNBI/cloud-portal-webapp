@@ -75,7 +75,6 @@ export class FlavorDetailComponent implements OnInit {
   setSelectedFlavor(flavor: Flavor): void {
 
     this.selectedFlavor = flavor;
-    console.log(this.selectedFlavor);
     this.selectedFlavorChange.emit(this.selectedFlavor);
 
   }
