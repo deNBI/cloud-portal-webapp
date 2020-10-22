@@ -31,10 +31,8 @@ export class ApplicationDissemination {
       this._information_pi_name = diss.information_pi_name;
       this._information_institution = diss.information_institution;
       this._information_description = diss.information_description;
-      if (this._information_description) {
-        this._information_description_allowed = true;
-      }
-      this._information_description_allowed = diss.information_description_allowed;
+      // test if information_description is set. !! converts to boolean.
+      this._information_description_allowed = !!this._information_description;
       this._information_workgroup = diss.information_workgroup;
       this._information_project_type = diss.information_project_type;
       this._information_lifetime = diss.information_lifetime;

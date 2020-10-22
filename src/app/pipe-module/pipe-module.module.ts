@@ -4,13 +4,15 @@ import {FlavorCounterPipe} from './pipes/flavorcounter';
 import { HasstatusinlistPipe } from './pipes/hasstatusinlist.pipe';
 import {HasStatusPipe} from './pipes/has-status.pipe';
 import { InListPipe } from './pipes/in-list.pipe';
+import {HasStatusPipe, StatusInProcessPipe} from './pipes/has-status.pipe';
+
 
 /**
  * Pipemodule
  */
 @NgModule({
-            declarations: [FlavorCounterPipe, HasStatusPipe, HasstatusinlistPipe, InListPipe],
-              exports: [FlavorCounterPipe, HasStatusPipe, HasstatusinlistPipe, InListPipe],
+            declarations: [FlavorCounterPipe, HasStatusPipe, HasstatusinlistPipe, InListPipe,StatusInProcessPipe],
+              exports: [FlavorCounterPipe, HasStatusPipe, HasstatusinlistPipe, InListPipe,StatusInProcessPipe],
             imports: [
               CommonModule
             ]

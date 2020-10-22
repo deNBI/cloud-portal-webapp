@@ -50,6 +50,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
   PREPARE_PLAYBOOK_STATUS: string = 'Prepare Playbook Build...';
   BUIDLING_PLAYBOOK_STATUS: string = 'Building Playbook...';
   ANIMATED_PROGRESS_BAR: string = 'progress-bar-animated';
+  redirectProgress: string = '0';
 
   newVm: VirtualMachine = null;
   progress_bar_status: string = 'Creating..';
@@ -454,6 +455,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
    * @param {string} projectid
    */
   startVM(flavor: string, servername: string, project: string, projectid: string | number): void {
+    this.progress_bar_width = 25;
     this.create_error = null;
     // tslint:disable-next-line:no-complex-conditionals
     if (this.selectedImage && flavor && servername && project) {
@@ -477,7 +479,9 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
       if (!this.mosh_mode_available) {
         this.udp_allowed = false;
       }
-
+      this.delay(500).then((): any => {
+        this.progress_bar_width = 50
+      }).catch((): any => {});
       this.virtualmachineservice.startVM(
         flavor_fixed, this.selectedImage, servername,
         project, projectid.toString(), this.http_allowed,
@@ -487,6 +491,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
           this.started_machine = false;
 
           if (newVm.status === 'Build') {
+            this.progress_bar_width = 75;
             setTimeout(
               (): void => {
                 this.router.navigate(['/virtualmachines/vmOverview']).then().catch()
@@ -501,6 +506,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
               1000)
           } else if (newVm.status) {
             this.newVm = newVm;
+            this.progress_bar_width = 75;
             setTimeout(
               (): void => {
                 this.router.navigate(['/virtualmachines/vmOverview']).then().catch()
@@ -518,12 +524,16 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
       this.newVm = null;
 
     }
-    setTimeout(
-      (): void => {
-        this.router.navigate(['/virtualmachines/vmOverview']).then().catch()
-      },
-      2000)
+    // setTimeout(
+    //   (): void => {
+    //     this.router.navigate(['/virtualmachines/vmOverview']).then().catch()
+    //   },
+    //   2000)
 
+  }
+
+  async delay(ms: number): Promise<any> {
+    await new Promise((resolve: any): any => setTimeout(resolve, ms));
   }
 
   getPlaybookInformation(): string {
