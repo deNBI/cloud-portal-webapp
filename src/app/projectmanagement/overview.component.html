@@ -123,7 +123,8 @@
 
     <div class="col-12"
          *ngIf="project && !(project_application | hasstatusinlist:Application_States.TERMINATED)
-         && !(project_application | hasstatusinlist:Application_States.DECLINED)">
+         && !(project_application | hasstatusinlist:Application_States.DECLINED)
+         && !(project_application | hasstatusinlist:Application_States.SUBMITTED)">
 
       <div class="card" id="projectInformationDiv">
 
@@ -535,7 +536,9 @@
     <div class="col"
          *ngIf="project && (project?.UserIsPi ||project?.UserIsAdmin)
          && !(project_application | hasstatusinlist:Application_States.TERMINATED)
-         && !(project_application | hasstatusinlist:Application_States.DECLINED) ">
+         && !(project_application | hasstatusinlist:Application_States.DECLINED)
+         && !(project_application | hasstatusinlist:Application_States.SUBMITTED)
+         && !(project_application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION)">
 
       <div class="card" id="doiCard">
         <div class="card-header">
@@ -546,6 +549,7 @@
 
 
         <div class="card-body">
+          <div *ngIf="doiError" class="alert alert-danger">{{doiError}}</div>
           <div class="table-responsive">
             <table class="table ">
 
