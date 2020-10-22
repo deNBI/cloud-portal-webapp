@@ -677,6 +677,13 @@
       </div>
       <div class="modal-body">
         <p>Redirecting to Instance Overview...</p>
+        <div class="progress">
+          <div class="progress-bar progress-bar-striped {{progress_bar_animated}} bg-info"
+               role="progressbar" style="width: 0%;"
+               aria-valuemin="0"
+               aria-valuemax="100" [style.width.%]="progress_bar_width">
+          </div>
+        </div>
         <span [hidden]="true" *ngIf="newVm?.name" id="new_vm_name">{{newVm?.name}}</span>
       </div>
     </div><!-- /.modal-content -->
