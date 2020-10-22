@@ -2,7 +2,6 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FlavorCounterPipe} from './pipes/flavorcounter';
 import { HasstatusinlistPipe } from './pipes/hasstatusinlist.pipe';
-import {HasStatusPipe} from './pipes/has-status.pipe';
 import { InListPipe } from './pipes/in-list.pipe';
 import {HasStatusPipe, StatusInProcessPipe} from './pipes/has-status.pipe';
 
