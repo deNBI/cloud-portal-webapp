@@ -15,7 +15,7 @@ import {Clusterinfo, WorkerBatch} from '../clusterinfo';
 import {ClipboardService} from 'ngx-clipboard';
 import {VirtualMachine} from '../../virtualmachinemodels/virtualmachine';
 import {ApplicationRessourceUsage} from '../../../applications/application-ressource-usage/application-ressource-usage';
-import {SCALE_DOWN_SCRIPT_LINK, SCALE_UP_SCRIPT_LINK, SCALING_UP_WIKI} from '../../../../links/links';
+import {SCALE_DOWN_SCRIPT_LINK, SCALE_UP_SCRIPT_LINK} from '../../../../links/links';
 import {AbstractBaseClasse} from '../../../shared/shared_modules/baseClass/abstract-base-class';
 
 /**
@@ -51,6 +51,8 @@ export class ClusterOverviewComponent extends AbstractBaseClasse implements OnIn
   selectedBatch: WorkerBatch;
   scale_worker_count: number;
   scale_down_count: number = 0;
+  scaling_up: boolean = false;
+  scaling_down: boolean = false;
 
   selectedCluster: Clusterinfo = null;
   ressourceUsage: ApplicationRessourceUsage;
@@ -94,14 +96,8 @@ export class ClusterOverviewComponent extends AbstractBaseClasse implements OnIn
   clusterPerPageChange: Subject<number> = new Subject<number>();
 
   filterChanged: Subject<string> = new Subject<string>();
-  virtualMachineStates: VirtualMachineStates = new VirtualMachineStates();
   STATIC_IMG_FOLDER: String = 'static/webapp/assets/img/';
 
-  CPU_ICON_PATH: string = `${this.STATIC_IMG_FOLDER}/new_instance/cpu_icon.svg`;
-  RAM_ICON_PATH: string = `${this.STATIC_IMG_FOLDER}/new_instance/ram_icon.svg`;
-  STORAGE_ICON_PATH: string = `${this.STATIC_IMG_FOLDER}/new_instance/storage_icon.svg`;
-  GPU_ICON_PATH: string = `${this.STATIC_IMG_FOLDER}/new_instance/gpu_icon.svg`;
-  SCALING_UP_WIKI: string = SCALING_UP_WIKI;
 
   constructor(private facilityService: FacilityService, private groupService: GroupService,
               private imageService: ImageService, private userservice: UserService,
@@ -161,8 +157,8 @@ export class ClusterOverviewComponent extends AbstractBaseClasse implements OnIn
           this.selectedCluster = updated_cluster;
         }))
       this.updateNotificationModal('Sucessfull',
-                                   `The start of ${this.selectedBatch.upscale_count} workers was successfully initiated. Remember to configure your cluster!'`,
-                                   true, 'info')
+                                   `The start of ${this.selectedBatch.upscale_count} workers was successfully initiated. Remember to configure your cluster after the machines are active!'`,
+                                   true, 'success')
 
     })
   }

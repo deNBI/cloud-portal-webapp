@@ -234,6 +234,23 @@
             <div class="alert alert-{{ notificationModalType }}" role="alert">
               {{ notificationModalMessage }}
             </div>
+            <div class="alert alert-warning" *ngIf="(scaling_up || scaling_down) && notificationModalType == 'success'"> Run the following on your master
+              instance:
+              <span *ngIf="scaling_down">
+              <div class="alert alert-light"
+                   role="alert">
+                <strong>wget {{SCALE_DOWN_SCRIPT_LINK}}</strong></div>
+              <div class="alert alert-light"
+                   role="alert"><strong>python3 scaling_down_v0.py </strong>
+              </div></span>
+              <span *ngIf="scaling_up">
+              <div class="alert alert-light"
+                   role="alert">
+                <strong>wget {{SCALE_UP_SCRIPT_LINK}}</strong></div>
+              <div class="alert alert-light"
+                   role="alert"><strong>python3 scaling_up_v0.py </strong>
+              </div></span>
+            </div>
           </div>
           <div class="modal-footer">
             <button *ngIf="notificationModalIsClosable == true" type="button"
@@ -339,7 +356,7 @@
 
 
               <button class="btn  btn-success col-md-4"
-                      (click)="scaleDownModal.hide();notificationModal.show();scaleDown()"
+                      (click)="scaleDownModal.hide();scaling_down=true;scaling_up=false;notificationModal.show();scaleDown()"
                       [disabled]="!scaling_warning_read || scale_down_count < 1"
                       id="confirm-scale_down">
                 Scale Down Batches
@@ -475,7 +492,7 @@
                   </label></div>
 
                 <button class="btn  btn-success col-md-4" *ngIf="max_scale_count_loaded"
-                        (click)="scaleUpModal.hide();notificationModal.show();scaleUpCluster();"
+                        (click)="scaleUpModal.hide();scaling_down=false;scaling_up=true;notificationModal.show();scaleUpCluster();"
                         [disabled]=" !scaling_warning_read || selectedBatch?.upscale_count <= 0"
                         id="confirm_scale_up">
                   Start {{scale_worker_count}} vms!
