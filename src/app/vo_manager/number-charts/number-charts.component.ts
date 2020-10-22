@@ -53,7 +53,6 @@ export class NumberChartsComponent implements OnInit {
   private openstackCores: any[] = ['Cores Openstack'];
   private endDatesResources: any[] = ['x'];
 
-
   ngOnInit(): void {
     this.getData();
   }
