@@ -929,7 +929,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
         this.project_members.push(projectMember);
 
       }
-      console.log(this.isAdmin)
       if (this.isAdmin) {
         this.groupService.getGroupAdminIds(this.project_id).subscribe((result: any): void => {
           const adminIds: any = result['adminIds'];

@@ -13,3 +13,17 @@ export class HasStatusPipe implements PipeTransform {
   }
 
 }
+/**
+ * Pipe which checks if status is in a list.
+ */
+@Pipe({
+  name: 'statusInProcess'
+})
+export class StatusInProcessPipe implements PipeTransform {
+
+  transform(status: string, status_list_to_compare: string[]): boolean {
+
+    return status_list_to_compare.indexOf(status) !== -1;
+  }
+
+}
