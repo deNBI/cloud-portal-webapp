@@ -182,4 +182,8 @@ export class VirtualMachineStates {
   public get staticNOT_IN_PROCESS_STATE(): string[] {
     return VirtualMachineStates.NOT_IN_PROCESS_STATES;
   }
+
+  public get staticIN_PROCESS_STATE(): string[] {
+    return VirtualMachineStates.IN_PROCESS_STATES;
+  }
 }
