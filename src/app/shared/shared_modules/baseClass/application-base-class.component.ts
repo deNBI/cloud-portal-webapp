@@ -178,6 +178,7 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
     if (Application_States_Strings[Application_States[id]]) {
       return Application_States_Strings[Application_States[id]];
     }
+
     return dummy;
   }
 
