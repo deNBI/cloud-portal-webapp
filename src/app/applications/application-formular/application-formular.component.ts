@@ -312,7 +312,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
           'danger');
         this.notificationModalStay = true;
       })
-D
+    D
   }
 
   /**
