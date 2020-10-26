@@ -4,7 +4,7 @@ update2:
     directory: "/"
     schedule:
       interval: "weekly"
-    target_branch: "dev"
+    target-branch: "dev"
     reviewers:
       - "dweinholz"
       - "eKatchko"
