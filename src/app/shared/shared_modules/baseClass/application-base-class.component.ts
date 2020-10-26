@@ -1,4 +1,4 @@
-import {AbstractBaseClasse, Application_States} from './abstract-base-class';
+import {AbstractBaseClasse, Application_States, Application_States_Strings} from './abstract-base-class';
 import {Application} from '../../../applications/application.model/application.model';
 import {Flavor} from '../../../virtualmachines/virtualmachinemodels/flavor';
 import {ApplicationsService} from '../../../api-connector/applications.service';
@@ -175,10 +175,9 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
    */
   public getStatusById(id: number): string {
     const dummy: string = 'Unknown';
-    if (Application_States[id]) {
-      return Application_States[id]
+    if (Application_States_Strings[Application_States[id]]) {
+      return Application_States_Strings[Application_States[id]];
     }
-
     return dummy;
   }
 
