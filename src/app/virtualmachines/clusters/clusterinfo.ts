@@ -11,6 +11,7 @@ export class WorkerBatch {
   flavor: Flavor;
   image: Image;
   worker_count: number = 0;
+  running_worker: number = 0;
   delete_count: number = 0;
   upscale_count: number = 0;
   max_scale_up_count: number = 0;

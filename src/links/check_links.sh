@@ -15,12 +15,11 @@ WIKI_NEW_INSTANCE_LINK=https://cloud.denbi.de/wiki/simple_vm/new_instance/
 WIKI_INSTANCE_OVERVIEW_LINK=https://cloud.denbi.de/wiki/simple_vm/instance_overview/
 WIKI_INSTANCE_DETAIL_LINK=https://cloud.denbi.de/wiki/simple_vm/instance_detail/
 WIKI_LINK_ACCOUNTS=https://cloud.denbi.de/wiki/portal/user_information/#link-accounts-to-elixir
-SCALE_DOWN_SCRIPT_LINK=https://raw.githubusercontent.com/deNBI/user_scripts/master/bibigrid/v0/scaling_down_v0.py
-SCALE_UP_SCRIPT_LINK=https://raw.githubusercontent.com/deNBI/user_scripts/master/bibigrid/v0/scaling_up_v0.py
+SCALE_SCRIPT_LINK=https://raw.githubusercontent.com/deNBI/user_scripts/master/bibigrid/v0/scaling_v0.1.0.py
 SCALING_UP_WIKI=https://cloud.denbi.de/wiki/simple_vm/cluster_overview/#scale-up
 
 
-WIKI_LNKS=("$WIKI_INSTANCE_DETAIL_LINK" "$SCALING_UP_WIKI"  "$SCALE_UP_SCRIPT_LINK" "$SCALE_DOWN_SCRIPT_LINK" "$WIKI_LINK_ACCOUNTS" "$WIKI_INSTANCE_OVERVIEW_LINK" "$WIKI_NEW_INSTANCE_LINK" "$WIKI_GUACAMOLE_LINK" "$WIKI_RSTUDIO_LINK" "$WIKI_RESENV_LINK" "$WIKI_VOLUME_OVERVIEW" "$WIKI_EXTEND_VOLUME" "$WIKI_MOUNT_VOLUME" "$WIKI_GROUP_INVITATIONS" "$WIKI_SNAPSHOTS" "$WIKI" "$WIKI_GENERATE_KEYS" "$NEWS")
+WIKI_LNKS=("$WIKI_INSTANCE_DETAIL_LINK" "$SCALING_UP_WIKI"  "$SCALE_SCRIPT_LINK" "$WIKI_LINK_ACCOUNTS" "$WIKI_INSTANCE_OVERVIEW_LINK" "$WIKI_NEW_INSTANCE_LINK" "$WIKI_GUACAMOLE_LINK" "$WIKI_RSTUDIO_LINK" "$WIKI_RESENV_LINK" "$WIKI_VOLUME_OVERVIEW" "$WIKI_EXTEND_VOLUME" "$WIKI_MOUNT_VOLUME" "$WIKI_GROUP_INVITATIONS" "$WIKI_SNAPSHOTS" "$WIKI" "$WIKI_GENERATE_KEYS" "$NEWS")
 for i in "${WIKI_LNKS[@]}"; do
   echo "$i"
   status_code=$(curl -o /dev/null -Isw '%{http_code}\n' "$i")

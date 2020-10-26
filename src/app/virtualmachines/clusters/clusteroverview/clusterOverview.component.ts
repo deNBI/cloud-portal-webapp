@@ -15,7 +15,7 @@ import {Clusterinfo, WorkerBatch} from '../clusterinfo';
 import {ClipboardService} from 'ngx-clipboard';
 import {VirtualMachine} from '../../virtualmachinemodels/virtualmachine';
 import {ApplicationRessourceUsage} from '../../../applications/application-ressource-usage/application-ressource-usage';
-import {SCALE_DOWN_SCRIPT_LINK, SCALE_UP_SCRIPT_LINK} from '../../../../links/links';
+import {SCALE_SCRIPT_LINK} from '../../../../links/links';
 import {AbstractBaseClasse} from '../../../shared/shared_modules/baseClass/abstract-base-class';
 
 /**
@@ -41,8 +41,7 @@ export class ClusterOverviewComponent extends AbstractBaseClasse implements OnIn
   currentPage: number = 1;
   DEBOUNCE_TIME: number = 300;
   FILTER_DEBOUNCE_TIME: number = 2000;
-  SCALE_DOWN_SCRIPT_LINK: string = SCALE_DOWN_SCRIPT_LINK;
-  SCALE_UP_SCRIPT_LINK: string = SCALE_UP_SCRIPT_LINK;
+  SCALING_SCRIPT_LINK: string = SCALE_SCRIPT_LINK;
 
   isSearching: boolean = true;
   scaling_warning_read: boolean = false;
@@ -151,11 +150,7 @@ export class ClusterOverviewComponent extends AbstractBaseClasse implements OnIn
     this.updateNotificationModal('Upscaling Cluster', `Starting ${this.selectedBatch.upscale_count} additional workers..`, true, 'info')
 
     this.virtualmachineservice.scaleCluster(this.selectedCluster.cluster_id, this.selectedBatch).subscribe((): void => {
-      this.subscription.add(this.virtualmachineservice.getClusterInfo(this.selectedCluster.cluster_id).subscribe(
-        (updated_cluster: Clusterinfo): void => {
-          this.clusters[this.clusters.indexOf(this.selectedCluster)] = updated_cluster;
-          this.selectedCluster = updated_cluster;
-        }))
+      this.check_worker_count_loop(this.selectedCluster)
       this.updateNotificationModal('Sucessfull',
                                    `The start of ${this.selectedBatch.upscale_count} workers was successfully initiated. Remember to configure your cluster after the machines are active!'`,
                                    true, 'success')
@@ -261,6 +256,29 @@ export class ClusterOverviewComponent extends AbstractBaseClasse implements OnIn
     }))
   }
 
+  check_worker_count_loop(cluster: Clusterinfo): void {
+    setTimeout(
+      (): void => {
+
+        // tslint:disable-next-line:max-line-length
+        this.subscription.add(this.virtualmachineservice.getClusterInfo(cluster.cluster_id).subscribe((updated_cluster: Clusterinfo): void => {
+          this.clusters[this.clusters.indexOf(cluster)] = updated_cluster;
+          // tslint:disable-next-line:max-line-length
+          for (const batch of cluster.worker_batches) {
+            if (batch.running_worker < batch.worker_count) {
+              this.check_worker_count_loop(cluster)
+              break
+            }
+          }
+
+        }));
+
+      },
+
+      this.checkStatusTimeout
+    );
+  }
+
   check_status_loop(cluster: Clusterinfo, final_state?: string, is_selected_cluster?: boolean): void {
 
     setTimeout(
@@ -277,6 +295,13 @@ export class ClusterOverviewComponent extends AbstractBaseClasse implements OnIn
           if (updated_cluster.status !== 'Running' && updated_cluster.status !== VirtualMachineStates.DELETING && updated_cluster.status !== VirtualMachineStates.DELETED) {
             this.check_status_loop(updated_cluster, final_state, is_selected_cluster)
 
+          } else {
+            for (const batch of updated_cluster.worker_batches) {
+              if (batch.running_worker < batch.worker_count) {
+                this.check_worker_count_loop(updated_cluster)
+                break
+              }
+            }
           }
 
         }));

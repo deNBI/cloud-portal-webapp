@@ -16,8 +16,8 @@ export const WIKI_INSTANCE_DETAIL_LINK: string = `${environment.WIKI_PRE}simple_
 export const WIKI_RSTUDIO_LINK: string = `${environment.WIKI_PRE}simple_vm/customization/#rstudio`;
 export const WIKI_GUACAMOLE_LINK: string = `${environment.WIKI_PRE}simple_vm/customization/#apache-guacamole`;
 export const WIKI_LINK_ACCOUNTS: string = `${environment.WIKI_PRE}portal/user_information/#link-accounts-to-elixir`;
-export const SCALE_DOWN_SCRIPT_LINK: string = 'https://raw.githubusercontent.com/deNBI/user_scripts/master/bibigrid/v0/scaling_down_v0.py'
-export const SCALE_UP_SCRIPT_LINK: string = 'https://raw.githubusercontent.com/deNBI/user_scripts/master/bibigrid/v0/scaling_up_v0.py'
+export const SCALE_SCRIPT_LINK: string = 'https://raw.githubusercontent.com/deNBI/user_scripts/master/bibigrid/v0/scaling_v0.1.0.py'
+
 export const SCALING_UP_WIKI: string = `${environment.WIKI_PRE}simple_vm/cluster_overview/#scale-up`
 
 export const WIKI_LNKS: string[] =
@@ -38,6 +38,5 @@ export const WIKI_LNKS: string[] =
     WIKI_INSTANCE_OVERVIEW_LINK,
     WIKI_INSTANCE_DETAIL_LINK,
     WIKI_LINK_ACCOUNTS,
-    SCALE_DOWN_SCRIPT_LINK,
-    SCALE_UP_SCRIPT_LINK
+    SCALE_SCRIPT_LINK,
   ];

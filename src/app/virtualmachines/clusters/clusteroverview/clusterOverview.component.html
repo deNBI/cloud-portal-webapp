@@ -99,6 +99,11 @@
                   </div>
                 </div>
                 <div class="col-12" style="margin-left: 10px">
+                  <div *ngFor="let batch of cluster.worker_batches" style="font-size: small">
+                    <strong>Batch {{batch.index}}: </strong>  {{batch.running_worker}}/{{batch.worker_count}} active
+                  </div>
+                </div>
+                <div class="col-12" style="margin-left: 10px">
                   <div style="font-size: small">
                     <strong *ngIf="cluster?.public_ip">Public IP:</strong> {{cluster?.public_ip}}
                   </div>
@@ -236,20 +241,12 @@
             </div>
             <div class="alert alert-warning" *ngIf="(scaling_up || scaling_down) && notificationModalType == 'success'"> Run the following on your master
               instance:
-              <span *ngIf="scaling_down">
               <div class="alert alert-light"
                    role="alert">
-                <strong>wget {{SCALE_DOWN_SCRIPT_LINK}}</strong></div>
+                <strong>wget {{SCALING_SCRIPT_LINK}}</strong></div>
               <div class="alert alert-light"
-                   role="alert"><strong>python3 scaling_down_v0.py </strong>
-              </div></span>
-              <span *ngIf="scaling_up">
-              <div class="alert alert-light"
-                   role="alert">
-                <strong>wget {{SCALE_UP_SCRIPT_LINK}}</strong></div>
-              <div class="alert alert-light"
-                   role="alert"><strong>python3 scaling_up_v0.py </strong>
-              </div></span>
+                   role="alert"><strong>python3 scaling_v0.1.0.py </strong>
+              </div>
             </div>
           </div>
           <div class="modal-footer">
@@ -335,23 +332,24 @@
                   machine to configure the cluster correctly!</p>
                 <div class="alert alert-light"
                      role="alert">
-                  <strong>wget {{SCALE_DOWN_SCRIPT_LINK}}</strong></div>
+                  <strong>wget {{SCALING_SCRIPT_LINK}}</strong></div>
                 <div class="alert alert-light"
-                     role="alert"><strong>python3 scaling_down_v0.py </strong>
+                     role="alert"><strong>python3 scaling_v0.1.0.py </strong>
                 </div>
 
                 <div class="alert alert-info"
                      role="alert">Selected for scaling down:<br>
                   <span *ngFor="let batch of selectedCluster?.worker_batches">
-                      <strong *ngIf="batch?.delete_count > 0">Batch {{batch?.index}} by {{batch?.delete_count}}
-                        instances</strong>
+                      <strong *ngIf="batch?.delete_count > 0">Deleting {{batch?.delete_count}} machine<span
+                        *ngIf="batch.delete_count > 1">s</span> from Batch {{batch?.index}}
+                        </strong>
                     </span>
                 </div>
 
                 <input class="form-check-input" name="sclae_down_acknowledgement_checkbox" type="checkbox"
                        id="public_key_acknowledgement_checkbox" [(ngModel)]="scaling_warning_read">
                 <label class="form-check-label">
-                  Hint was read!
+                  Read and acknowledged
                 </label></div>
 
 
@@ -473,22 +471,22 @@
                   machine to configure the cluster correctly:</p>
                   <div class="alert alert-light"
                        role="alert">
-                    <strong>wget {{SCALE_UP_SCRIPT_LINK}}</strong></div>
+                    <strong>wget {{SCALING_SCRIPT_LINK}}</strong></div>
                   <div class="alert alert-light"
-                       role="alert"><strong>python3 scaling_up_v0.py </strong>
+                       role="alert"><strong>python3 scaling_v0.1.0.py  </strong>
                   </div>
 
                   <div class="alert alert-info"
                        role="alert">Selected for scaling up:<br>
-                    <strong *ngIf="selectedBatch?.upscale_count > 0"> Batch {{selectedBatch?.index}}
-                      by {{selectedBatch?.upscale_count}}
-                      instances</strong>
+                    <strong *ngIf="selectedBatch?.upscale_count > 0"> Starting {{selectedBatch?.upscale_count}}
+                      machine<span *ngIf="selectedBatch.upscale_count > 1">s</span> in Batch {{selectedBatch?.index}}
+                    </strong>
                   </div>
 
                   <input class="form-check-input" name="sclae_up_acknowledgement_checkbox" type="checkbox"
                          [(ngModel)]="scaling_warning_read">
                   <label class="form-check-label">
-                    Hint was read!
+                    Read and acknowledged
                   </label></div>
 
                 <button class="btn  btn-success col-md-4" *ngIf="max_scale_count_loaded"
