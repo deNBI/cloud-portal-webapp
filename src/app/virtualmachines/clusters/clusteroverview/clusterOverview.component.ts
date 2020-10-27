@@ -301,11 +301,17 @@ export class ClusterOverviewComponent extends AbstractBaseClasse implements OnIn
             this.check_status_loop(updated_cluster, final_state, is_selected_cluster)
 
           } else {
-            for (const batch of updated_cluster.worker_batches) {
+
+            let stop_loop: boolean = true;
+            for (const batch of cluster.worker_batches) {
               if (batch.running_worker < batch.worker_count) {
-                this.check_worker_count_loop(updated_cluster)
+                stop_loop = false;
                 break
               }
+            }
+            if (!stop_loop) {
+              this.check_worker_count_loop(cluster)
+
             }
           }
 
@@ -438,6 +444,8 @@ export class ClusterOverviewComponent extends AbstractBaseClasse implements OnIn
                 this.check_status_loop_vm(updated_vm, cluster, final_state)
               }
 
+            } else {
+              this.check_worker_count_loop(cluster)
             }
 
           }))
