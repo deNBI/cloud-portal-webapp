@@ -26,7 +26,6 @@ export class ProjectOsDetailsComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(this.project.Id)
     this.details_loaded = false;
     this.getProjectDetails()
   }
