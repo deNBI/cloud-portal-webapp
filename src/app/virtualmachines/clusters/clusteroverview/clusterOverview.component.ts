@@ -264,11 +264,16 @@ export class ClusterOverviewComponent extends AbstractBaseClasse implements OnIn
         this.subscription.add(this.virtualmachineservice.getClusterInfo(cluster.cluster_id).subscribe((updated_cluster: Clusterinfo): void => {
           this.clusters[this.clusters.indexOf(cluster)] = updated_cluster;
           // tslint:disable-next-line:max-line-length
+          let stop_loop: boolean = true;
           for (const batch of cluster.worker_batches) {
             if (batch.running_worker < batch.worker_count) {
-              this.check_worker_count_loop(cluster)
+              stop_loop = false;
               break
             }
+          }
+          if (!stop_loop) {
+            this.check_worker_count_loop(cluster)
+
           }
 
         }));
