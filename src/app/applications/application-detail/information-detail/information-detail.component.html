@@ -104,6 +104,13 @@
     </td>
 
   </tr>
+  <tr *ngIf="application?.project_application_hash && is_vo">
+    <td>Validation Hash</td>
+    <td><p > {{application?.project_application_hash}}</p>
+
+    </td>
+
+  </tr>
 
   <tr>
     <td>Last status
