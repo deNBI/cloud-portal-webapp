@@ -25,7 +25,7 @@ export enum Application_States {
   MODIFICATION_REQUESTED = 4,
   MODIFICATION_DECLINED = 5,
   WAIT_FOR_CONFIRMATION = 6,
-  CONFIRMATION_DENIED = 7,
+  CONFIRMATION_DECLINED = 7,
   TERMINATED = 8,
   SUSPENDED = 9,
   TERMINATION_REQUESTED = 10,
@@ -33,9 +33,9 @@ export enum Application_States {
   WAIT_FOR_CONFIRMATION_EXTENSION = 12,
   WAIT_FOR_CONFIRMATION_MODIFICATION = 13,
   CREDITS_EXTENSION_REQUESTED = 14,
-  CREDITS_EXTENSION_DENIED = 15,
+  CREDITS_EXTENSION_DECLINED = 15,
   LIFETIME_EXTENSION_REQUESTED = 16,
-  LIFETIME_EXTENSION_DENIED = 17,
+  LIFETIME_EXTENSION_DECLINED = 17,
   EXPIRES_SOON = 18,
   APPROVED_LAST_2_WEEKS = 19,
   EXPIRED = 20
@@ -49,14 +49,20 @@ export enum Application_States_Strings {
   MODIFICATION_REQUESTED = 'modification requested',
   MODIFICATION_DECLINED = 'modification declined',
   WAIT_FOR_CONFIRMATION = 'wait for confirmation',
-  CONFIRMATION_DENIED = 'confirmation denied',
+  CONFIRMATION_DECLINED = 'confirmation denied',
   TERMINATED = 'terminated',
   SUSPENDED = 'suspended',
+  WAIT_FOR_CONFIRMATION_CREDITS = 'wait for credit confirmation',
+  WAIT_FOR_CONFIRMATION_EXTENSION = 'wait for extension confirmation',
+  WAIT_FOR_CONFIRMATION_MODIFICATION = 'wait for modification confirmation',
   TERMINATION_REQUESTED = 'termination requested',
-  EXTENSION_REQUESTED = 'extension requested',
-  EXTENSION_DECLINED = 'extension declined',
-  CREDITS_REQUESTED = 'credits requested',
-  CREDITS_DECLINED = 'credits declined'
+  LIFETIME_EXTENSION_REQUESTED = 'extension requested',
+  LIFETIME_EXTENSION_DECLINED = 'extension declined',
+  CREDITS_EXTENSION_REQUESTED = 'credits requested',
+  CREDITS_EXTENSION_DECLINED = 'credits declined',
+  EXPIRES_SOON = 'expires soon',
+  APPROVED_LAST_2_WEEKS = 'new project',
+  EXPIRED = 'lifetime expired'
 
 }
 
