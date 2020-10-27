@@ -67,7 +67,6 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 
   selectedVm: VirtualMachine = null;
 
-
   /**
    * Facilities where the user is manager ['name',id].
    */
