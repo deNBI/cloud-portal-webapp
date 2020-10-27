@@ -1,5 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {Application} from '../../application.model/application.model';
+import {is_vo} from '../../../shared/globalvar';
 
 /**
  * Application informations.
@@ -10,6 +11,7 @@ import {Application} from '../../application.model/application.model';
            })
 export class InformationDetailComponent {
   @Input() application: Application;
+  is_vo: boolean = is_vo;
 
   constructor() {
   }
