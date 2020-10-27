@@ -130,7 +130,7 @@
                   <td>{{application?.project_application_institute}}</td>
 
                   <td>
-                    <!-- into select: [style.display]=" ((application | hasstatusinlist:Application_States.SUBMITTED)  || (application | hasstatusinlist:Application_States.CONFIRMATION_DENIED) || (!application?.ComputeCenter?.FacilityId ))? 'inherit' :'none'"-->
+                    <!-- into select: [style.display]=" ((application | hasstatusinlist:Application_States.SUBMITTED)  || (application | hasstatusinlist:Application_States.CONFIRMATION_DECLINED) || (!application?.ComputeCenter?.FacilityId ))? 'inherit' :'none'"-->
                     <select *ngIf="(application | hasstatusinlist:Application_States.SUBMITTED) "
                             [(ngModel)]="selectedCenter[application.project_application_id]"
                       class="form-control" [id]="'id_compute_center_option_' + application?.project_application_name"
@@ -151,7 +151,7 @@
                   <td>
                     <div class="btn-group">
                       <button
-                        *ngIf="(application | hasstatusinlist:Application_States.CONFIRMATION_DENIED)  || ((application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION)  && !application?.ComputeCenter?.FacilityId )"
+                        *ngIf="(application | hasstatusinlist:Application_States.CONFIRMATION_DECLINED)  || ((application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION)  && !application?.ComputeCenter?.FacilityId )"
                         style="margin: auto 2.5px"
                         (click)="resetNotificationModal();assignGroupToFacility(application?.project_application_perun_id,application?.project_application_id, selectedCenter[application.project_application_id]); notificationModal.show();"
 
