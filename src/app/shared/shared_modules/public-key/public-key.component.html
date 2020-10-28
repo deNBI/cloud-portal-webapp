@@ -13,6 +13,9 @@
     </div>
     <div class="col-12">
       <div class="btn-group" role="group" aria-label="publicKeyButtonGroup">
+         <button class="btn btn-primary" style="float: left; margin: 2px" type="button" (click)="generateKey()"
+      id="generateSShKey">Generate Key
+      </button>
       <button class="btn btn-primary" style="float: left; margin: 2px" type="button" (click)="public_key='';pubKeyModal.show()"
       id="setPublicKeyButton">Set Key
       </button>
