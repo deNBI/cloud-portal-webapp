@@ -262,7 +262,11 @@ export class ClusterOverviewComponent extends AbstractBaseClasse implements OnIn
 
         // tslint:disable-next-line:max-line-length
         this.subscription.add(this.virtualmachineservice.getClusterInfo(cluster.cluster_id).subscribe((updated_cluster: Clusterinfo): void => {
+
           this.clusters[this.clusters.indexOf(cluster)] = updated_cluster;
+          if (cluster === this.selectedCluster) {
+            this.selectedCluster = updated_cluster;
+          }
           // tslint:disable-next-line:max-line-length
           let stop_loop: boolean = true;
           for (const batch of cluster.worker_batches) {
@@ -272,7 +276,7 @@ export class ClusterOverviewComponent extends AbstractBaseClasse implements OnIn
             }
           }
           if (!stop_loop) {
-            this.check_worker_count_loop(cluster)
+            this.check_worker_count_loop(updated_cluster)
 
           }
 
