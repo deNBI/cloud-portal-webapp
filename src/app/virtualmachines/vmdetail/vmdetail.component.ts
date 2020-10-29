@@ -23,7 +23,7 @@ import {CondaPackage} from '../condaPackage.model';
 import {BiocondaService} from '../../api-connector/bioconda.service';
 import {ResenvTemplate} from '../conda/resenvTemplate.model';
 import {is_vo} from '../../shared/globalvar';
-import {WIKI_GUACAMOLE_LINK, WIKI_MOUNT_VOLUME, WIKI_RSTUDIO_LINK} from '../../../links/links';
+import {WIKI_GUACAMOLE_LINK, WIKI_RSTUDIO_LINK, WIKI_VOLUME_OVERVIEW} from '../../../links/links';
 import {ClipboardService} from 'ngx-clipboard';
 import {Volume} from '../volumes/volume';
 import {VolumeStates} from '../volumes/volume_states';
@@ -64,7 +64,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
   is_vo_admin: boolean = is_vo;
   WIKI_RSTUDIO_LINK: string = WIKI_RSTUDIO_LINK;
   WIKI_GUACAMOLE_LINK: string = WIKI_GUACAMOLE_LINK;
-  WIKI_MOUNT_VOLUME: string = WIKI_MOUNT_VOLUME;
+  WIKI_VOLUME_OVERVIEW: string = WIKI_VOLUME_OVERVIEW;
 
   DEBOUNCE_TIME: number = 300;
 
