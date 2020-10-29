@@ -11,8 +11,12 @@ import {is_vo} from '../../../shared/globalvar';
 import {VirtualMachineStates} from '../../virtualmachinemodels/virtualmachinestates';
 import {GroupService} from '../../../api-connector/group.service';
 import {ClientService} from '../../../api-connector/client.service';
-import {Clusterinfo} from '../clusterinfo';
+import {Clusterinfo, WorkerBatch} from '../clusterinfo';
 import {ClipboardService} from 'ngx-clipboard';
+import {VirtualMachine} from '../../virtualmachinemodels/virtualmachine';
+import {ApplicationRessourceUsage} from '../../../applications/application-ressource-usage/application-ressource-usage';
+import {SCALE_SCRIPT_LINK} from '../../../../links/links';
+import {AbstractBaseClasse} from '../../../shared/shared_modules/baseClass/abstract-base-class';
 
 /**
  * Cluster overview componentn.
@@ -22,10 +26,10 @@ import {ClipboardService} from 'ngx-clipboard';
              templateUrl: './clusterOverview.component.html',
              styleUrls: ['../../vmOverview.component.scss'],
              providers: [FacilityService, ImageService, UserService,
-               VirtualmachineService, FullLayoutComponent, GroupService, ClientService]
+               VirtualmachineService, FullLayoutComponent, GroupService, ClientService, GroupService]
            })
 
-export class ClusterOverviewComponent implements OnInit, OnDestroy {
+export class ClusterOverviewComponent extends AbstractBaseClasse implements OnInit, OnDestroy {
   title: string = 'Cluster Overview';
 
   private subscription: Subscription = new Subscription();
@@ -37,10 +41,20 @@ export class ClusterOverviewComponent implements OnInit, OnDestroy {
   currentPage: number = 1;
   DEBOUNCE_TIME: number = 300;
   FILTER_DEBOUNCE_TIME: number = 2000;
+  SCALING_SCRIPT_LINK: string = SCALE_SCRIPT_LINK;
 
   isSearching: boolean = true;
+  scaling_warning_read: boolean = false;
+  max_scale_count: number = 0;
+  max_scale_count_loaded: boolean = false;
+  selectedBatch: WorkerBatch;
+  scale_worker_count: number;
+  scale_down_count: number = 0;
+  scaling_up: boolean = false;
+  scaling_down: boolean = false;
 
   selectedCluster: Clusterinfo = null;
+  ressourceUsage: ApplicationRessourceUsage;
 
   /**
    * Facilitties where the user is manager ['name',id].
@@ -53,7 +67,6 @@ export class ClusterOverviewComponent implements OnInit, OnDestroy {
 
   filter: string;
   cluster_per_site: number = 7;
-
   total_pages: number;
   total_items: number;
   clusters: Clusterinfo[] = [];
@@ -82,12 +95,15 @@ export class ClusterOverviewComponent implements OnInit, OnDestroy {
   clusterPerPageChange: Subject<number> = new Subject<number>();
 
   filterChanged: Subject<string> = new Subject<string>();
+  STATIC_IMG_FOLDER: String = 'static/webapp/assets/img/';
 
-  constructor(private facilityService: FacilityService,
+
+  constructor(private facilityService: FacilityService, private groupService: GroupService,
               private imageService: ImageService, private userservice: UserService,
               private virtualmachineservice: VirtualmachineService, private fb: FormBuilder,
               private clipboardService: ClipboardService
   ) {
+    super();
 
   }
 
@@ -107,6 +123,103 @@ export class ClusterOverviewComponent implements OnInit, OnDestroy {
       this.getAllCLusterFacilities()
     }
 
+  }
+
+  setSelectedBatch(batch: WorkerBatch): void {
+
+    this.selectedBatch = batch;
+  }
+
+  calcRess(): void {
+    this.max_scale_count_loaded = false;
+
+    // tslint:disable-next-line:max-line-length
+    this.groupService.getGroupResources(this.selectedCluster.master_instance.projectid.toString()).subscribe((res: ApplicationRessourceUsage): void => {
+      this.ressourceUsage = new ApplicationRessourceUsage(res);
+
+      this.selectedCluster.worker_batches.forEach((batch: WorkerBatch): void => {
+        batch.max_scale_up_count = this.ressourceUsage.calcMaxScaleUpWorkerInstancesByFlavor(batch.flavor)
+
+      })
+
+      this.max_scale_count_loaded = true;
+    });
+  }
+
+  scaleUpCluster(): void {
+    this.updateNotificationModal('Upscaling Cluster', `Starting ${this.selectedBatch.upscale_count} additional workers..`, true, 'info')
+
+    this.virtualmachineservice.scaleCluster(this.selectedCluster.cluster_id, this.selectedBatch).subscribe((): void => {
+      this.check_worker_count_loop(this.selectedCluster)
+      this.updateNotificationModal('Sucessfull',
+                                   `The start of ${this.selectedBatch.upscale_count} workers was successfully initiated. Remember to configure your cluster after the machines are active!'`,
+                                   true, 'success')
+
+    })
+  }
+
+  checkUpCount(batch: WorkerBatch): void {
+    if (batch.upscale_count > batch.max_scale_up_count) {
+      batch.upscale_count = batch.max_scale_up_count
+    }
+
+  }
+
+  checkDelCount(batch: WorkerBatch): void {
+    if (batch.delete_count > batch.worker_count) {
+      batch.delete_count = batch.worker_count
+    }
+    this.scale_down_count = 0;
+
+    this.selectedCluster.worker_batches.forEach((bat: WorkerBatch): void => {
+      if (bat.delete_count > 0) {
+        this.scale_down_count += bat.delete_count
+      }
+
+    })
+  }
+
+  resetScaling(): void {
+    this.resetNotificationModal()
+    this.scale_down_count = 0;
+    this.selectedBatch = null;
+    this.scaling_warning_read = false;
+    this.resetScaleCount()
+  }
+
+  scaleDown(): void {
+    this.resetNotificationModal()
+
+    const scale_down_batches: WorkerBatch[] = [];
+    this.selectedCluster.worker_batches.forEach((batch: WorkerBatch): void => {
+      if (batch.delete_count > 0) {
+        scale_down_batches.push(batch)
+      }
+    })
+    let msg: string = `Scaling Down Batches: `
+    for (const batch of scale_down_batches) {
+      msg += ` \n[Batch ${batch.index} by ${batch.delete_count} instances ]`
+    }
+
+    this.updateNotificationModal('Scaling Down', msg, true, 'info')
+
+    this.virtualmachineservice.scaleDownCluster(this.selectedCluster.cluster_id, scale_down_batches).subscribe((): void => {
+      this.subscription.add(this.virtualmachineservice.getClusterInfo(this.selectedCluster.cluster_id).subscribe(
+        (updated_cluster: Clusterinfo): void => {
+          this.clusters[this.clusters.indexOf(this.selectedCluster)] = updated_cluster;
+          this.selectedCluster = updated_cluster;
+        }))
+      msg = 'Successfully scaled down the batches. Remember to configure your cluster!';
+      this.updateNotificationModal('Successfully Deleted!', msg, true, 'success')
+    })
+
+  }
+
+  resetScaleCount(): void {
+    this.selectedCluster.worker_batches.forEach((batch: WorkerBatch): void => {
+      batch.delete_count = 0;
+      batch.upscale_count = 0;
+    })
   }
 
   copyToClipboard(text: string): void {
@@ -143,6 +256,38 @@ export class ClusterOverviewComponent implements OnInit, OnDestroy {
     }))
   }
 
+  check_worker_count_loop(cluster: Clusterinfo): void {
+    setTimeout(
+      (): void => {
+
+        // tslint:disable-next-line:max-line-length
+        this.subscription.add(this.virtualmachineservice.getClusterInfo(cluster.cluster_id).subscribe((updated_cluster: Clusterinfo): void => {
+
+          this.clusters[this.clusters.indexOf(cluster)] = updated_cluster;
+          if (cluster === this.selectedCluster) {
+            this.selectedCluster = updated_cluster;
+          }
+          // tslint:disable-next-line:max-line-length
+          let stop_loop: boolean = true;
+          for (const batch of cluster.worker_batches) {
+            if (batch.running_worker < batch.worker_count) {
+              stop_loop = false;
+              break
+            }
+          }
+          if (!stop_loop) {
+            this.check_worker_count_loop(updated_cluster)
+
+          }
+
+        }));
+
+      },
+
+      this.checkStatusTimeout
+    );
+  }
+
   check_status_loop(cluster: Clusterinfo, final_state?: string, is_selected_cluster?: boolean): void {
 
     setTimeout(
@@ -155,9 +300,23 @@ export class ClusterOverviewComponent implements OnInit, OnDestroy {
             this.selectedCluster = updated_cluster;
           }
 
-          if (updated_cluster.status !== 'Running' && updated_cluster.status !== 'DELETING') {
+          // tslint:disable-next-line:max-line-length
+          if (updated_cluster.status !== 'Running' && updated_cluster.status !== VirtualMachineStates.DELETING && updated_cluster.status !== VirtualMachineStates.DELETED) {
             this.check_status_loop(updated_cluster, final_state, is_selected_cluster)
 
+          } else {
+
+            let stop_loop: boolean = true;
+            for (const batch of cluster.worker_batches) {
+              if (batch.running_worker < batch.worker_count) {
+                stop_loop = false;
+                break
+              }
+            }
+            if (!stop_loop) {
+              this.check_worker_count_loop(cluster)
+
+            }
           }
 
         }));
@@ -214,7 +373,10 @@ export class ClusterOverviewComponent implements OnInit, OnDestroy {
 
   prepareClusters(cluster_page_infos: any): void {
 
-    this.clusters = cluster_page_infos['cluster_list'];
+    this.clusters = cluster_page_infos['cluster_list'].map((cluster: Clusterinfo): Clusterinfo => {
+      return new Clusterinfo(cluster)
+    })
+    this.check_status_loop_cluster_vms()
     this.total_items = cluster_page_infos['total_items'];
     this.items_per_page = cluster_page_infos['items_per_page'];
     this.total_pages = cluster_page_infos['num_pages'];
@@ -264,6 +426,47 @@ export class ClusterOverviewComponent implements OnInit, OnDestroy {
       .subscribe((): void => {
         this.applyFilter();
       });
+
+  }
+
+  check_status_loop_vm(vm: VirtualMachine, cluster: Clusterinfo, final_state: string = VirtualMachineStates.ACTIVE): void {
+
+    setTimeout(
+      (): void => {
+        this.subscription.add(
+          this.virtualmachineservice.checkVmStatus(vm.openstackid, vm.name).subscribe((updated_vm: VirtualMachine): void => {
+            updated_vm = new VirtualMachine(updated_vm);
+            cluster.worker_instances[cluster.worker_instances.indexOf(vm)] = updated_vm;
+            if (VirtualMachineStates.IN_PROCESS_STATES.indexOf(updated_vm.status) !== -1) {
+              this.check_status_loop_vm(updated_vm, cluster, final_state)
+            } else if (VirtualMachineStates.NOT_IN_PROCESS_STATES.indexOf(updated_vm.status) !== -1) {
+
+              if (final_state && updated_vm.status !== final_state) {
+                this.check_status_loop_vm(updated_vm, cluster, final_state)
+
+              } else {
+                this.check_status_loop_vm(updated_vm, cluster, final_state)
+              }
+
+            } else {
+              this.check_worker_count_loop(cluster)
+            }
+
+          }))
+      },
+
+      this.checkStatusTimeout
+    );
+  }
+
+  check_status_loop_cluster_vms(): void {
+    this.clusters.forEach((cluster: Clusterinfo): void => {
+      cluster.worker_instances.forEach((vm: VirtualMachine): void => {
+        if (vm.status !== VirtualMachineStates.ACTIVE && VirtualMachineStates.NOT_IN_PROCESS_STATES.indexOf(vm.status) === -1) {
+          this.check_status_loop_vm(vm, cluster)
+        }
+      })
+    })
 
   }
 

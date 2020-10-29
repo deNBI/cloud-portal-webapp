@@ -6,6 +6,7 @@ import {IResponseTemplate} from './response-template';
 import {Client} from '../vo_manager/clients/client.model';
 import {ProjectEnumeration} from '../projectmanagement/project-enumeration';
 import {Doi} from '../applications/doi/doi';
+import {ApplicationRessourceUsage} from '../applications/application-ressource-usage/application-ressource-usage';
 
 /**
  * Service which provides Group methods.
@@ -308,8 +309,8 @@ export class GroupService {
 
   }
 
-  getGroupResources(groupid: string): Observable<IResponseTemplate> {
-    return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/all/`, {
+  getGroupResources(groupid: string): Observable<ApplicationRessourceUsage> {
+    return this.http.get<ApplicationRessourceUsage>(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/all/`, {
       withCredentials: true
     })
 
