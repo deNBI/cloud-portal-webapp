@@ -35,29 +35,32 @@
       <div class="card-header"><span class="font-weight-bold text-muted">Worker Instances</span></div>
 
       <div class="card-body" *ngFor="let worker of cluster?.worker_instances">
-        <div class="card-title"><strong>Instance: {{worker.name}}</strong></div>
-        <app-virtualmachineinfo [vm]="worker"></app-virtualmachineinfo>
+        <div class="card-title"><strong>Instance: {{worker.name}}</strong>
+        </div>
+        <app-virtualmachineinfo [cluster_machine]="true" [vm]="worker"></app-virtualmachineinfo>
       </div>
     </div>
+  </div>
+</div>
 
 
-    <div bsModal #verifyModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
-         aria-labelledby="Label"
-         aria-hidden="true"1
-         id="verify_modal">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h4 class="modal-title">Delete Cluster</h4>
-            <button type="button" class="close" style="cursor: pointer"
-                    (click)="verifyModal.hide()"
-                    aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <div class="alert alert-warning" role="alert">
-              <p> Are you sure you want to delete {{cluster?.cluster_id}}?</p>
+<div bsModal #verifyModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+     aria-labelledby="Label"
+     aria-hidden="true"
+     id="verify_modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Delete Cluster</h4>
+        <button type="button" class="close" style="cursor: pointer"
+                (click)="verifyModal.hide()"
+                aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-warning" role="alert">
+          <p> Are you sure you want to delete {{cluster?.cluster_id}}?</p>
               This will also delete the virtual machines:
               <p>{{cluster?.master_instance.name}}</p>
               <p *ngFor="let vm of cluster?.worker_instances">{{vm.name}}</p>
@@ -75,10 +78,9 @@
                     (click)="verifyModal.hide();">Cancel
             </button>
           </div>
-        </div><!-- /.modal-content -->
+    </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-
 
 
 

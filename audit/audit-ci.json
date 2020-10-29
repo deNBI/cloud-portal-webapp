@@ -1,6 +1,6 @@
 {
   "moderate": true,
   "package-manager": "auto",
-  "whitelist": ["minimist", "object-path"],
+  "allowlist": ["minimist", "object-path"],
   "registry": "https://registry.npmjs.org"
 }

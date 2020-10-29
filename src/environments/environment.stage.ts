@@ -1,4 +1,5 @@
 export const environment: any = {
+  WIKI_PRE: 'https://portal-dev.denbi.de/wiki/',
   vo: 3334,
   production: true,
   freemium_project_id: 10392,
