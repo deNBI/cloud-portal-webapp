@@ -14,7 +14,7 @@ import {TemplateNames} from './conda/template-names';
 import {RandomNameGenerator} from '../shared/randomNameGenerator';
 import {Router} from '@angular/router';
 import {Volume} from './volumes/volume';
-import {WIKI_MOUNT_VOLUME} from 'links/links';
+import {WIKI_VOLUME_OVERVIEW} from 'links/links';
 import {UserService} from '../api-connector/user.service';
 import {ImageService} from '../api-connector/image.service';
 import {GroupService} from '../api-connector/group.service';
@@ -66,7 +66,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
   playbook_run: number = 0;
   timeout: number = 0;
   has_forc: boolean = false;
-  WIKI_MOUNT_VOLUME: string = WIKI_MOUNT_VOLUME;
+  WIKI_MOUNT_VOLUME: string = WIKI_VOLUME_OVERVIEW;
   blockedImageTagsResenv: BlockedImageTagResenv[];
 
   forc_url: string = '';

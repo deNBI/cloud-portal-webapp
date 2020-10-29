@@ -1,4 +1,3 @@
-export const WIKI_MOUNT_VOLUME: string = 'https://cloud.denbi.de/wiki/simple_vm/volumes/#mount-a-volume';
 export const WIKI_SNAPSHOTS: string = 'https://cloud.denbi.de/wiki/simple_vm/snapshots/';
 export const WIKI: string = 'https://cloud.denbi.de/wiki/';
 export const WIKI_GENERATE_KEYS: string = 'https://cloud.denbi.de/wiki/quickstart/#generate-ssh-keys';
@@ -19,7 +18,6 @@ export const WIKI_FAQ: string = 'https://cloud.denbi.de/wiki/FAQ/';
 export const WIKI_MOTD: string = 'https://cloud.denbi.de/wiki/cloud_admin/news_management/#message-of-the-day';
 export const WIKI_LNKS: string[] =
   [
-    WIKI_MOUNT_VOLUME,
     WIKI_SNAPSHOTS,
     WIKI,
     WIKI_GENERATE_KEYS,
