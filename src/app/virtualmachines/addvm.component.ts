@@ -66,7 +66,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
   playbook_run: number = 0;
   timeout: number = 0;
   has_forc: boolean = false;
-  WIKI_MOUNT_VOLUME: string = WIKI_VOLUME_OVERVIEW;
+  WIKI_VOLUME_OVERVIEW: string = WIKI_VOLUME_OVERVIEW;
   blockedImageTagsResenv: BlockedImageTagResenv[];
 
   forc_url: string = '';

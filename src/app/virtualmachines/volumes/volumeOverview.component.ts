@@ -8,7 +8,7 @@ import {VolumeActionStates} from './volume-action-states.enum';
 import {VolumeRequestStates} from './volume-request-states.enum';
 import {IResponseTemplate} from '../../api-connector/response-template';
 import {FacilityService} from '../../api-connector/facility.service';
-import {WIKI_EXTEND_VOLUME, WIKI_MOUNT_VOLUME, WIKI_VOLUME_OVERVIEW} from '../../../links/links';
+import {WIKI_EXTEND_VOLUME, WIKI_VOLUME_OVERVIEW} from '../../../links/links';
 import {forkJoin, Subject, Subscription} from 'rxjs';
 import {VolumeStates} from './volume_states';
 import {debounceTime, distinctUntilChanged, switchMap} from 'rxjs/operators';
@@ -26,7 +26,7 @@ import {debounceTime, distinctUntilChanged, switchMap} from 'rxjs/operators';
            })
 
 export class VolumeOverviewComponent extends AbstractBaseClasse implements OnInit, OnDestroy {
-  WIKI_MOUNT_VOLUME: string = WIKI_MOUNT_VOLUME;
+
   WIKI_EXTEND_VOLUME: string = WIKI_EXTEND_VOLUME;
   WIKI_VOLUME_OVERVIEW: string = WIKI_VOLUME_OVERVIEW;
   title: string = 'Volume Overview';
