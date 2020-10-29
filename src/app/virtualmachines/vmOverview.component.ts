@@ -21,7 +21,7 @@ import {BiocondaService} from '../api-connector/bioconda.service';
 import {ClipboardService} from 'ngx-clipboard';
 import {Volume} from './volumes/volume';
 import {VolumeStates} from './volumes/volume_states';
-import {WIKI_GUACAMOLE_LINK, WIKI_MOUNT_VOLUME, WIKI_RSTUDIO_LINK} from '../../links/links';
+import {WIKI_GUACAMOLE_LINK, WIKI_RSTUDIO_LINK, WIKI_VOLUME_OVERVIEW} from '../../links/links';
 
 /**
  * Vm overview componentn.
@@ -40,13 +40,13 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
   private subscription: Subscription = new Subscription();
 
   VirtualMachineStates: VirtualMachineStates = new VirtualMachineStates();
-  WIKI_MOUNT_VOLUME: string = WIKI_MOUNT_VOLUME;
   volume_to_attach: Volume;
   volume_to_detach: Volume;
   detached_project_volumes: Volume[] = [];
 
   WIKI_RSTUDIO_LINK: string = WIKI_RSTUDIO_LINK;
   WIKI_GUACAMOLE_LINK: string = WIKI_GUACAMOLE_LINK;
+  WIKI_VOLUME_OVERVIEW: string = WIKI_VOLUME_OVERVIEW;
 
   ERROR_MSG: string = '';
   ERROR_TIMER: number = 10000;
@@ -68,7 +68,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
   selectedVm: VirtualMachine = null;
 
   /**
-   * Facilitties where the user is manager ['name',id].
+   * Facilities where the user is manager ['name',id].
    */
   public managerFacilities: [string, number][];
   /**

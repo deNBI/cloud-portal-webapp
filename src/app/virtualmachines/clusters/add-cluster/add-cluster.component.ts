@@ -8,7 +8,6 @@ import {ApiSettings} from '../../../api-connector/api-settings.service';
 import {ClientService} from '../../../api-connector/client.service';
 import {UserService} from '../../../api-connector/user.service';
 import {VoService} from '../../../api-connector/vo.service';
-import {VirtualMachine} from '../../virtualmachinemodels/virtualmachine';
 import {Image} from '../../virtualmachinemodels/image';
 import {IResponseTemplate} from '../../../api-connector/response-template';
 import {Flavor} from '../../virtualmachinemodels/flavor';
@@ -16,8 +15,9 @@ import {Userinfo} from '../../../userinfo/userinfo.model';
 import {Client} from '../../../vo_manager/clients/client.model';
 import {BiocondaComponent} from '../../conda/bioconda.component';
 import {forkJoin} from 'rxjs';
-import {Clusterinfo} from '../clusterinfo';
 import {Router} from '@angular/router';
+import {ApplicationRessourceUsage} from '../../../applications/application-ressource-usage/application-ressource-usage';
+import {WorkerBatch} from '../clusterinfo';
 
 /**
  * Cluster Component
@@ -31,32 +31,11 @@ import {Router} from '@angular/router';
            })
 export class AddClusterComponent implements OnInit {
 
-  ACTIVE: string = 'ACTIVE';
-  PLAYBOOK_FAILED: string = 'PLAYBOOK_FAILED';
-  DELETED: string = 'DELETED';
-  PORT_CLOSED: string = 'PORT_CLOSED';
-  PREPARE_PLAYBOOK_BUILD: string = 'PREPARE_PLAYBOOK_BUILD';
-  BUILD_PLAYBOOK: string = 'BUILD_PLAYBOOK';
-  CREATING_STATUS: string = 'Creating...';
-  BUILD_STATUS: string = 'Building..';
-  CHECKING_PORT_STATUS: string = 'Checking port..';
-  PREPARE_PLAYBOOK_STATUS: string = 'Prepare Playbook Build...';
-  BUIDLING_PLAYBOOK_STATUS: string = 'Building Playbook...';
-  ANIMATED_PROGRESS_BAR: string = 'progress-bar-animated';
-
-  newVm: VirtualMachine = null;
-  progress_bar_status: string = 'Creating..';
-  progress_bar_animated: string = 'progress-bar-animated';
-  progress_bar_width: number = 0;
   is_vo: boolean = false;
-  hasTools: boolean = false;
-  gaveOkay: boolean = false;
+
   client_checked: boolean = false;
   timeout: number = 0;
-
   title: string = 'New Cluster';
-
-  cluster_info: Clusterinfo;
 
   /**
    * All image of a project.
@@ -83,7 +62,9 @@ export class AddClusterComponent implements OnInit {
    */
   selectedImage: Image;
   selectedMasterImage: Image;
-  selectedWorkerImage: Image;
+  selectedWorkerBatches: WorkerBatch[] = [new WorkerBatch(1)];
+  selectedBatch: WorkerBatch = this.selectedWorkerBatches[0];
+
   maxWorkerInstances: number;
 
   /**
@@ -91,7 +72,7 @@ export class AddClusterComponent implements OnInit {
    */
   selectedMasterFlavor: Flavor;
   selectedFlavor: Flavor;
-  selectedWorkerFlavor: Flavor;
+  selectedWorkerFlavorSet: boolean = false;
 
   workerInstancesCount: number;
 
@@ -105,46 +86,7 @@ export class AddClusterComponent implements OnInit {
    */
   selectedProjectClient: Client;
 
-  /**
-   * Selected Project volumeStorage max.
-   */
-  selectedProjectDiskspaceMax: number;
-
-  /**
-   * Selected Project volumeStorage used.
-   */
-  selectedProjectDiskspaceUsed: number;
-
-  /**
-   * Selected Project volumes max.
-   */
-  selectedProjectVolumesMax: number;
-
-  /**
-   * Selected Project volumes used.
-   */
-  selectedProjectVolumesUsed: number;
-
-  selectedProjectCoresUsed: number;
-
-  selectedProjectCoresMax: number;
-
-  selectedProjectRamMax: number;
-
-  selectedProjectRamUsed: number;
-
-  /**
-   * Selected Project vms max.
-   */
-  selectedProjectVmsMax: number;
-
-  /**
-   * Selected Project vms used.
-   */
-  selectedProjectVmsUsed: number;
-
-  selectedProjectGPUsUsed: number;
-  selectedProjectGPUsMax: number;
+  selectedProjectRessources: ApplicationRessourceUsage;
 
   /**
    * The selected project ['name',id].
@@ -155,18 +97,6 @@ export class AddClusterComponent implements OnInit {
    * If the client for a project is viable.
    */
   client_avaiable: boolean = false;
-
-  /**
-   * Default volume name.
-   * @type {string}
-   */
-  volumeName: string = '';
-
-  /**
-   * Default volumeStorage.
-   * @type {number}
-   */
-  diskspace: number = 0;
 
   /**
    * If the data for the site is initialized.
@@ -191,13 +121,7 @@ export class AddClusterComponent implements OnInit {
   newVms: number = 2;
   newGpus: number = 0;
 
-  /**
-   * Time for the check status loop.
-   * @type {number}
-   */
-  private checkStatusTimeout: number = 5000;
-
-  @ViewChild('bioconda', { static: true }) biocondaComponent: BiocondaComponent;
+  @ViewChild('bioconda', {static: true}) biocondaComponent: BiocondaComponent;
 
   constructor(private groupService: GroupService, private imageService: ImageService,
               private flavorService: FlavorService, private virtualmachineservice: VirtualmachineService,
@@ -205,59 +129,58 @@ export class AddClusterComponent implements OnInit {
               private voService: VoService, private router: Router) {
   }
 
+  calcWorkerInstancesCount(): void {
+    let count: number = 0;
+    this.selectedWorkerBatches.forEach((batch: WorkerBatch): void => {
+      count += batch.worker_count
+    })
+    this.workerInstancesCount = count;
+    this.newVms = this.workerInstancesCount + 1;
+  }
+
   changeCount(): void {
-    this.newVms = Number(this.workerInstancesCount) + Number(1);
+
+    this.calcWorkerInstancesCount()
+    this.calculateNewValues()
   }
 
   checkFlavorsUsableForCluster(): void {
-    this.flavors_usable = this.flavors.filter((flav: Flavor): boolean => {
-      return this.filterFlavorsTest(flav)
+    const used_flavors: Flavor[] = []
+
+    // tslint:disable-next-line:no-for-each-push
+    this.selectedWorkerBatches.forEach((batch: WorkerBatch): void => {
+      if (batch !== this.selectedBatch) {
+        used_flavors.push(batch.flavor)
+      }
+    })
+    const flavors_to_filter: Flavor[] = this.flavors.filter((flavor: Flavor): boolean => {
+      return used_flavors.indexOf(flavor) < 0
+    })
+    this.flavors_usable = flavors_to_filter.filter((flav: Flavor): boolean => {
+
+      return this.selectedProjectRessources.filterFlavorsTest(flav, flavors_to_filter, this.selectedWorkerBatches)
     });
 
     this.flavors_loaded = true;
 
   }
 
-  filterFlavorsTest(flavor: Flavor): boolean {
-    const tmp_flavors: Flavor[] = [];
-    const available_cores: number = this.selectedProjectCoresMax - (flavor.vcpus + this.selectedProjectCoresUsed);
-    const available_ram: number = this.selectedProjectRamMax - (flavor.ram / 1024 + this.selectedProjectRamUsed);
-    const available_gpu: number = this.selectedProjectGPUsMax - (flavor.gpu + this.selectedProjectGPUsUsed);
-    console.log(flavor.name, available_cores, available_ram, available_gpu)
-    for (const fl of this.flavors) {
-      if (fl.vcpus <= available_cores && (fl.ram / 1024) <= available_ram && fl.gpu <= available_gpu) {
-        tmp_flavors.push(fl)
-      }
-    }
-
-    return tmp_flavors.length > 0;
-  }
-
   filterFlavors(): void {
-    const tmp_flavors: Flavor[] = [];
-    const available_cores: number = this.selectedProjectCoresMax - (this.newCores + this.selectedProjectCoresUsed);
-    const available_ram: number = this.selectedProjectRamMax - (this.newRam + this.selectedProjectRamUsed);
-    const available_gpu: number = this.selectedProjectGPUsMax - (this.newGpus + this.selectedProjectGPUsUsed);
-    for (const fl of this.flavors) {
-      if (fl.vcpus <= available_cores && (fl.ram / 1024) <= available_ram && fl.gpu <= available_gpu) {
-        tmp_flavors.push(fl)
-      }
-    }
-    this.flavors_usable = tmp_flavors;
+
+    this.flavors_usable = this.selectedProjectRessources.filterFlavors(
+      this.newCores, this.newRam, this.newGpus, this.flavors, this.selectedWorkerBatches);
   }
 
   calcMaxWorkerInstancesByFlavor(): void {
-    this.workerInstancesCount = null;
-    const ram_max_vms: number = (this.selectedProjectRamMax - this.selectedProjectRamUsed - (this.selectedMasterFlavor.ram / 1024))
-      / (this.selectedWorkerFlavor.ram / 1024);
-    const cpu_max_vms: number = (this.selectedProjectCoresMax - this.selectedProjectCoresUsed - this.selectedMasterFlavor.vcpus)
-      / this.selectedWorkerFlavor.vcpus;
+    if (this.selectedBatch.flavor) {
 
-    this.maxWorkerInstances = Math.floor(Math.min(ram_max_vms, cpu_max_vms, this.selectedProjectVmsMax - this.selectedProjectVmsUsed - 1))
+      this.selectedBatch.max_worker_count = this.selectedProjectRessources.calcMaxWorkerInstancesByFlavor(
+        this.selectedMasterFlavor,
+        this.selectedBatch, this.selectedWorkerBatches)
+    }
   }
 
   calculateNewValues(): void {
-    console.log('test')
     let tmp_ram: number = 0;
     let tmp_cores: number = 0;
     let tmp_gpus: number = 0;
@@ -267,16 +190,18 @@ export class AddClusterComponent implements OnInit {
       tmp_gpus += this.selectedMasterFlavor.gpu;
 
     }
-    if (this.selectedWorkerFlavor && this.workerInstancesCount) {
-      tmp_ram += this.selectedWorkerFlavor.ram * this.workerInstancesCount;
-      tmp_cores += this.selectedWorkerFlavor.vcpus * this.workerInstancesCount;
-      tmp_gpus += this.selectedWorkerFlavor.gpu * this.workerInstancesCount;
+    this.selectedWorkerBatches.forEach((batch: WorkerBatch): void => {
+      if (batch.worker_count && batch.flavor) {
+        tmp_ram += batch.flavor.ram * batch.worker_count;
+        tmp_cores += batch.flavor.vcpus * batch.worker_count;
+        tmp_gpus += batch.flavor.gpu * batch.worker_count;
+      }
 
-    }
-    this.newRam = tmp_ram / 1024;
+    });
+
+    this.newRam = Math.ceil(tmp_ram / 1024);
     this.newCores = tmp_cores;
     this.newGpus = tmp_gpus;
-    this.filterFlavors()
   }
 
   /**
@@ -312,30 +237,34 @@ export class AddClusterComponent implements OnInit {
 
   }
 
-  /**
-   * Reset the progress bar.
-   */
-  resetProgressBar(): void {
-    this.progress_bar_status = this.CREATING_STATUS;
-    this.progress_bar_animated = this.ANIMATED_PROGRESS_BAR;
-    this.progress_bar_width = 0;
+  addBatch(): void {
+    this.selectedWorkerFlavorSet = false;
+    this.selectedBatch = null;
+    this.checkFlavorsUsableForCluster()
+    const newBatch: WorkerBatch = new WorkerBatch(this.selectedWorkerBatches[this.selectedWorkerBatches.length - 1].index + 1)
+    newBatch.image = this.selectedMasterImage;
+    this.maxWorkerInstances = null;
+    this.selectedWorkerBatches.push(newBatch);
+    this.selectedBatch = newBatch;
   }
 
-  checkClusterStatusLoop(): void {
-    setTimeout(
-      (): void => {
-        this.virtualmachineservice.getClusterInfo(this.cluster_id).subscribe((cluster_info: Clusterinfo): void => {
-          this.cluster_info = cluster_info;
-          if (this.cluster_info.status !== 'Running' && this.cluster_info.status !== 'Deleted') {
-            this.checkClusterStatusLoop()
-          } else {
-            this.cluster_started = true;
+  removeBatch(batch: WorkerBatch): void {
+    const idx: number = this.selectedWorkerBatches.indexOf(batch)
+    if (batch === this.selectedBatch) {
+      if (idx !== 0) {
+        this.selectedBatch = this.selectedWorkerBatches[idx - 1]
+        this.selectedWorkerFlavorSet = true;
 
-          }
+      }
+    }
 
-        })
-      },
-      this.checkStatusTimeout);
+    this.selectedWorkerBatches.splice(idx, 1)
+
+    this.checkFlavorsUsableForCluster();
+    this.calcWorkerInstancesCount();
+    this.calculateNewValues();
+    this.calcMaxWorkerInstancesByFlavor()
+
   }
 
   startCluster(): void {
@@ -344,12 +273,11 @@ export class AddClusterComponent implements OnInit {
     this.cluster_id = null;
 
     const masterFlavor: string = this.selectedMasterFlavor.name.replace(re, '%2B');
-    const workerFlavor: string = this.selectedWorkerFlavor.name.replace(re, '%2B');
 
     this.virtualmachineservice.startCluster(
-      masterFlavor, this.selectedMasterImage,
-      workerFlavor, this.selectedMasterImage,
-      this.workerInstancesCount, this.selectedProject[1]).subscribe(
+      masterFlavor,
+      this.selectedMasterImage,
+      this.selectedWorkerBatches, this.selectedProject[1]).subscribe(
       (res: any): void => {
         if (res['status'] && res['status'] === 'mutex_locked') {
           setTimeout(
@@ -397,16 +325,6 @@ export class AddClusterComponent implements OnInit {
   }
 
   /**
-   * Reset the data attribute.
-   */
-  resetData(): void {
-    if (this.newVm === null) {
-      return;
-    }
-    this.newVm = null;
-  }
-
-  /**
    * Initializes the data.
    * Gets all groups of the user and his key.
    */
@@ -430,31 +348,14 @@ export class AddClusterComponent implements OnInit {
     this.images = [];
     this.selectedImage = undefined;
     this.selectedFlavor = undefined;
-    this.groupService.getGroupResources(this.selectedProject[1].toString()).subscribe((res: any): void => {
-      this.selectedProjectVmsMax = res['number_vms'];
-      this.selectedProjectVmsUsed = res['used_vms'];
-      this.selectedProjectDiskspaceMax = res['max_volume_storage'];
-      this.selectedProjectDiskspaceUsed = res['used_volume_storage'];
-      this.selectedProjectVolumesMax = res['volume_counter'];
-      this.selectedProjectVolumesUsed = res['used_volumes'];
-      this.selectedProjectCoresMax = res['cores_total'];
-      this.selectedProjectCoresUsed = res['cores_used'];
-      this.selectedProjectRamMax = res['ram_total'];
-      this.selectedProjectRamUsed = res['ram_used'];
-      this.selectedProjectGPUsMax = res['gpus_max'];
-      this.selectedProjectGPUsUsed = res['gpus_used'];
+    this.getImages(this.selectedProject[1]);
+
+    this.groupService.getGroupResources(this.selectedProject[1].toString()).subscribe((res: ApplicationRessourceUsage): void => {
+      this.selectedProjectRessources = new ApplicationRessourceUsage(res);
+      this.getFlavors(this.selectedProject[1]);
       this.projectDataLoaded = true;
 
     });
-
-    this.getImages(this.selectedProject[1]);
-    this.getFlavors(this.selectedProject[1]);
-
-  }
-
-  setSelectedImage(image: Image): void {
-
-    this.selectedImage = image;
 
   }
 
@@ -471,8 +372,4 @@ export class AddClusterComponent implements OnInit {
 
   }
 
-  resetChecks(): void {
-    this.gaveOkay = false;
-    this.hasTools = false;
-  }
 }

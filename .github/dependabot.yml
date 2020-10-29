@@ -1,0 +1,21 @@
+version: 2
+update2:
+  - package-ecosystem: "javascript"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    target-branch: "dev"
+    reviewers:
+      - "dweinholz"
+      - "eKatchko"
+      - "vktrrdk"
+  - package-ecosystem: "docker"
+    directory: "/"
+   schedule:
+      interval: "weekly"
+    target_branch: "dev"
+    reviewers:
+      - "dweinholz"
+      - "eKatchko"
+      - "vktrrdk"
+

@@ -121,6 +121,7 @@ export class NumberChartsComponent implements OnInit {
    * Downloads the numbers graphic as a png.
    */
   downloadAsPNG(elementId: string, filename: string): void {
+    document.getElementById(elementId).classList.add('c3');
     saveSVG.saveSvgAsPng(document.getElementById(elementId), filename.concat('.png'), {});
   }
 
@@ -290,7 +291,7 @@ export class NumberChartsComponent implements OnInit {
       },
 
       color: {
-        pattern: ['#00adef', '#004b69', '#ed1944', '#8F1331']
+        pattern: ['#00adef', '#004b69', '#ed1944', '#590000']
       },
       grid: {
         y: {

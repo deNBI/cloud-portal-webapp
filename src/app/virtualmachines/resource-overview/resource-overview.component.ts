@@ -1,4 +1,5 @@
 import {Component, Input, OnChanges, OnInit} from '@angular/core';
+import {ApplicationRessourceUsage} from '../../applications/application-ressource-usage/application-ressource-usage';
 
 /**
  * Resource Overview Component
@@ -10,18 +11,7 @@ import {Component, Input, OnChanges, OnInit} from '@angular/core';
            })
 export class ResourceOverviewComponent implements OnInit, OnChanges {
 
-  @Input() selectedProjectDiskspaceMax: number;
-  @Input() selectedProjectDiskspaceUsed: number;
-  @Input() selectedProjectVolumesMax: number;
-  @Input() selectedProjectVolumesUsed: number;
-  @Input() selectedProjectCoresUsed: number;
-  @Input() selectedProjectCoresMax: number;
-  @Input() selectedProjectRamMax: number;
-  @Input() selectedProjectRamUsed: number;
-  @Input() selectedProjectVmsMax: number;
-  @Input() selectedProjectVmsUsed: number;
-  @Input() selectedProjectGPUsUsed: number;
-  @Input() selectedProjectGPUsMax: number;
+  @Input() ressourceUsage: ApplicationRessourceUsage;
   @Input() showAdditionalRes: boolean = false;
 
   @Input() newDiskspace: number = 0;
