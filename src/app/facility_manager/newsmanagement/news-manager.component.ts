@@ -7,7 +7,7 @@ import {BehaviorSubject} from 'rxjs';
 import {WordPressNews} from './wp-news';
 import {WordPressTag} from './wp-tags';
 import {ModalDirective} from 'ngx-bootstrap/modal';
-import {WIKI_MOTD} from "../../../links/links";
+import {WIKI_MOTD} from '../../../links/links';
 
 /**
  * News-Manager Class to manage news in wordPress.
