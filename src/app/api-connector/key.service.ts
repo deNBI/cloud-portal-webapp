@@ -30,4 +30,11 @@ export class KeyService {
         })
     }
 
+        generateKey(): Observable<any> {
+
+        return this.http.post<any>(`${ApiSettings.getApiBaseURL()}users/current/public_key/generate/`, {
+            withCredentials: true
+        })
+    }
+
 }
