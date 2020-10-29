@@ -22,7 +22,7 @@ import {FlavorType} from '../virtualmachines/virtualmachinemodels/flavorType';
 import {FlavorService} from '../api-connector/flavor.service';
 import {CreditsService} from '../api-connector/credits.service';
 import {is_vo} from '../shared/globalvar';
-import {WIKI_GROUP_INVITATIONS} from '../../links/links';
+import {WIKI_MEMBER_MANAGEMENT, WIKI_PUBLICATIONS} from '../../links/links';
 import {Doi} from '../applications/doi/doi';
 import {EdamOntologyTerm} from '../applications/edam-ontology-term';
 import {AutocompleteComponent} from 'angular-ng-autocomplete';
@@ -47,7 +47,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   @Input() invitation_group_post: string = environment.invitation_group_post;
   @Input() voRegistrationLink: string = environment.voRegistrationLink;
   @Input() invitation_group_pre: string = environment.invitation_group_pre;
-  WIKI_GROUP_INVITATIONS: string = WIKI_GROUP_INVITATIONS;
+  WIKI_MEMBER_MANAGEMENT: string = WIKI_MEMBER_MANAGEMENT;
+  WIKI_PUBLICATIONS: string = WIKI_PUBLICATIONS
   selected_ontology_terms: EdamOntologyTerm[] = [];
   edam_ontology_terms: EdamOntologyTerm[];
   ontology_search_keyword: string = 'term';
