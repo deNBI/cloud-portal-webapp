@@ -37,10 +37,16 @@
       <strong class="text-muted">{{vm.userlogin}}</strong>
     </div>
   </div>
-  <div class="col-8">
+  <div class="col-4">
     <div class="callout">
       <small class="text-muted">Elixir-ID of {{vm.userlogin}}</small><br>
       <strong class="text-muted">{{vm.elixir_id}}</strong>
+    </div>
+  </div>
+  <div class="col-4" *ngIf="cluster_machine">
+    <div class="callout">
+      <small class="text-muted">Private IP</small><br>
+      <strong class="text-muted">{{vm.fixed_ip}}</strong>
     </div>
   </div>
 </div>
