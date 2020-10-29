@@ -7,16 +7,19 @@
 
 
           <button style="margin: 5px"
-                  class="btn btn-primary"
+                  [ngClass]="(tab === 'own') ? 'btn-primary': 'btn-outline-primary'"
+                  class="btn"
                   (click)="toggleTab('own');applyFilter();">Own Machines
           </button>
 
           <button *ngIf="is_vo_admin" style="margin: 5px"
-                  class="btn btn-primary"
+                  [ngClass]="(tab === 'all') ? 'btn-primary': 'btn-outline-primary'"
+                  class="btn"
                   (click)="toggleTab('all');applyFilter();">All Machines
           </button>
           <button style="margin: 5px"
-                  class="btn btn-primary"
+                  [ngClass]="(tab === 'facility') ? 'btn-primary': 'btn-outline-primary'"
+                  class="btn"
                   (click)="toggleTab('facility');applyFilter();">Machines of your facilities
           </button>
 
