@@ -6,6 +6,7 @@ import {IResponseTemplate} from '../../../api-connector/response-template';
 import {AbstractBaseClasse} from '../baseClass/abstract-base-class';
 import {WIKI_GENERATE_KEYS} from '../../../../links/links';
 import {ClipboardService} from 'ngx-clipboard';
+import { saveAs } from 'file-saver';
 
 /**
  * Public Key component.
@@ -28,6 +29,19 @@ export class PublicKeyComponent extends AbstractBaseClasse {
   constructor(private keyservice: KeyService,
               private clipboardService: ClipboardService) {
     super()
+  }
+
+  downloadPem(data: string): void {
+    const blob: Blob = new Blob([data], {type: 'pem'});
+    const url: string = window.URL.createObjectURL(blob);
+    saveAs(url, `${this.userinfo.UserLogin}_ecdsa`)
+  }
+
+  generateKey(): void {
+    this.keyservice.generateKey().subscribe((res: any): void => {
+      this.getUserPublicKey()
+      this.downloadPem(res['private_key'])
+    })
   }
 
   importKey(publicKey: string): void {
