@@ -5,7 +5,7 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import {VirtualMachine} from '../virtualmachines/virtualmachinemodels/virtualmachine';
 import {Volume} from '../virtualmachines/volumes/volume';
 import {IResponseTemplate} from './response-template';
-import {Clusterinfo} from '../virtualmachines/clusters/clusterinfo';
+import {Clusterinfo, WorkerBatch} from '../virtualmachines/clusters/clusterinfo';
 import {Image} from '../virtualmachines/virtualmachinemodels/image';
 import {Condalog} from '../virtualmachines/conda/condalog';
 
@@ -26,14 +26,12 @@ export class VirtualmachineService {
     })
   }
 
-  startCluster(masterFlavor: string, masterImage: Image, workerFlavor: string, workerImage: Image, workerCount: string | number,
+  startCluster(masterFlavor: string, masterImage: Image, workerBatches: WorkerBatch[],
                project_id: string | number): Observable<any> {
     const params: HttpParams = new HttpParams()
       .set('master_flavor', masterFlavor)
       .set('master_image', JSON.stringify(masterImage))
-      .set('worker_image', JSON.stringify(workerImage))
-      .set('worker_flavor', workerFlavor)
-      .set('worker_count', workerCount.toString())
+      .set('worker_batches', JSON.stringify(workerBatches))
       .set('project_id', project_id.toString());
 
     return this.http.post(`${ApiSettings.getApiBaseURL()}clusters/`, params, {
@@ -43,6 +41,24 @@ export class VirtualmachineService {
 
   getClusterInfo(cluster_id: string): Observable<Clusterinfo> {
     return this.http.get<Clusterinfo>(`${ApiSettings.getApiBaseURL()}clusters/${cluster_id}/`, {
+      withCredentials: true
+    })
+  }
+
+  scaleCluster(cluster_id: string, worker_batch: WorkerBatch): Observable<any> {
+    const params: HttpParams = new HttpParams()
+      .set('worker_batch', JSON.stringify(worker_batch))
+
+    return this.http.post(`${ApiSettings.getApiBaseURL()}clusters/${cluster_id}/scale-up/`, params, {
+      withCredentials: true
+    })
+  }
+
+  scaleDownCluster(cluster_id: string, worker_batches: WorkerBatch[]): Observable<any> {
+    const params: HttpParams = new HttpParams()
+      .set('worker_batches', JSON.stringify(worker_batches))
+
+    return this.http.post(`${ApiSettings.getApiBaseURL()}clusters/${cluster_id}/scale-down/`, params, {
       withCredentials: true
     })
   }
