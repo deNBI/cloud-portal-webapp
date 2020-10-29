@@ -14,7 +14,7 @@ import {is_vo} from '../shared/globalvar';
 import {VirtualmachineService} from '../api-connector/virtualmachine.service';
 import {Application_States} from '../shared/shared_modules/baseClass/abstract-base-class';
 import * as moment from 'moment';
-import {WIKI, WIKI_FAQ} from "../../links/links";
+import {WIKI, WIKI_FAQ} from '../../links/links';
 
 /**
  * FullLayout component.
