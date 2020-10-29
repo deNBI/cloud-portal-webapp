@@ -44,19 +44,19 @@
         </li>
         <li class="nav-item">
           <a *ngIf="navbar_minimized" data-toggle="tooltip" data-placement="right" title="Wiki"
-             class="nav-link" href="https://cloud.denbi.de/wiki/" target="_blank"><i
+             class="nav-link" href="{{WIKI}}" target="_blank"><i
             class="nav-icon fas fa-info-circle"></i>
             Wiki</a>
-          <a *ngIf="!navbar_minimized" class="nav-link" href="https://cloud.denbi.de/wiki/" target="_blank"><i
+          <a *ngIf="!navbar_minimized" class="nav-link" href="{{WIKI}}" target="_blank"><i
             class="nav-icon fas fa-info-circle"></i>
             Wiki</a>
         </li>
         <li class="nav-item">
           <a *ngIf="navbar_minimized" data-toggle="tooltip" data-placement="right" title="FAQ"
-             class="nav-link" href="https://cloud.denbi.de/wiki/FAQ/" target="_blank"><i
+             class="nav-link" href="{{WIKI_FAQ}}" target="_blank"><i
             class="nav-icon fas fa-question-circle"></i>
             FAQ</a>
-          <a *ngIf="!navbar_minimized" class="nav-link" href="https://cloud.denbi.de/wiki/FAQ/" target="_blank"><i
+          <a *ngIf="!navbar_minimized" class="nav-link" href="{{WIKI_FAQ}}" target="_blank"><i
             class="nav-icon fas fa-question-circle"></i>
             FAQ</a>
         </li>

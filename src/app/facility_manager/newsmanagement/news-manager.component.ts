@@ -7,6 +7,7 @@ import {BehaviorSubject} from 'rxjs';
 import {WordPressNews} from './wp-news';
 import {WordPressTag} from './wp-tags';
 import {ModalDirective} from 'ngx-bootstrap/modal';
+import {WIKI_MOTD} from "../../../links/links";
 
 /**
  * News-Manager Class to manage news in wordPress.
@@ -20,7 +21,7 @@ export class NewsManagerComponent implements OnInit {
 
   title: string = 'News Management';
   public production: boolean = environment.production;
-
+  WIKI_MOTD: string = WIKI_MOTD;
   public managerFacilities: [string, number][];
   public managerFacilitiesIdOnly: number[];
   public selectedFacilities: [string, number][] = [];

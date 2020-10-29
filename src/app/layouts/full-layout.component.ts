@@ -14,6 +14,7 @@ import {is_vo} from '../shared/globalvar';
 import {VirtualmachineService} from '../api-connector/virtualmachine.service';
 import {Application_States} from '../shared/shared_modules/baseClass/abstract-base-class';
 import * as moment from 'moment';
+import {WIKI, WIKI_FAQ} from "../../links/links";
 
 /**
  * FullLayout component.
@@ -51,6 +52,9 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
 
   project_enumeration: ProjectEnumeration[] = [];
   Application_States: typeof Application_States = Application_States;
+
+  WIKI: string = WIKI;
+  WIKI_FAQ: string = WIKI_FAQ;
 
   constructor(private voService: VoService, private groupService: GroupService, userservice: UserService,
               facilityService: FacilityService, applicationsservice: ApplicationsService,
