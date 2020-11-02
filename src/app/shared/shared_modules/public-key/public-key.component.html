@@ -59,18 +59,19 @@
 
 
         <alert type="danger">
-          <span *ngIf="public_key?.length !=0 "><strong>Warning!</strong> Replacing your current public key with
-          a different one will
-          render all your currently running machines inaccessible.</span>
-          <br>
+          <span *ngIf="public_key?.length !=0 ">
+            <strong>Warning!</strong>
+            By replacing the current key, all machines started in the future can only be accessed with the new key.
+Already running or created machines remain accessible with the old (and hereby replaced) key.
+          </span>
            <br>
-           <br>
-           Hereby a new keypair is generated, the public key will be set automatically.
-
-A download window for the private key will also open.          <alert type="warning">
+           <br>Hereby a new keypair is generated, the public key will be set automatically. A download window for the private key will also open.
+          <strong>In order to use the new key, the permissions of the key may have to be adjusted. For this purpose call<br>
+            <code style="color:#777777">chmod 0600 nameOfTheKey</code>.</strong>
+          <alert type="warning">
 We do not store the private key anywhere!<br>
 
-So if you lose your private key, then it is lost permanently.          </alert>
+In case you lose your private key, it is lost permanently!</alert>
           <div class="form-check">
             <input class="form-check-input" name="public_key_acknowledgement_checkbox" type="checkbox"
                    id="generate_checkbox" [(ngModel)]="acknowledgement_given">
