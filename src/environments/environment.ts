@@ -4,6 +4,7 @@
 // The list of which env maps to which file can be found in `angular-cli.json`.
 
 export const environment: any = {
+  WIKI_PRE: 'https://portal-dev.denbi.de/wiki/ ',
   production: false,
   vo: 3334,
   freemium_project_id: 10392,

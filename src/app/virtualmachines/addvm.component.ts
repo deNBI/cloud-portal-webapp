@@ -14,7 +14,7 @@ import {TemplateNames} from './conda/template-names';
 import {RandomNameGenerator} from '../shared/randomNameGenerator';
 import {Router} from '@angular/router';
 import {Volume} from './volumes/volume';
-import {WIKI_MOUNT_VOLUME} from 'links/links';
+import {WIKI_VOLUME_OVERVIEW} from 'links/links';
 import {UserService} from '../api-connector/user.service';
 import {ImageService} from '../api-connector/image.service';
 import {GroupService} from '../api-connector/group.service';
@@ -23,6 +23,7 @@ import {FlavorService} from '../api-connector/flavor.service';
 import {VirtualmachineService} from '../api-connector/virtualmachine.service';
 import {ApiSettings} from '../api-connector/api-settings.service';
 import {BlockedImageTagResenv} from '../facility_manager/image-tag';
+import {ApplicationRessourceUsage} from '../applications/application-ressource-usage/application-ressource-usage';
 
 /**
  * Start virtualmachine component.
@@ -66,7 +67,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
   playbook_run: number = 0;
   timeout: number = 0;
   has_forc: boolean = false;
-  WIKI_MOUNT_VOLUME: string = WIKI_MOUNT_VOLUME;
+  WIKI_VOLUME_OVERVIEW: string = WIKI_VOLUME_OVERVIEW;
   blockedImageTagsResenv: BlockedImageTagResenv[];
 
   forc_url: string = '';
@@ -157,24 +158,12 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
   selectedProjectRamUsed: number;
   detached_project_volumes: Volume[] = [];
 
-  /**
-   * Selected Project vms max.
-   */
-  selectedProjectVmsMax: number;
-
-  /**
-   * Selected Project vms used.
-   */
-  selectedProjectVmsUsed: number;
-
-  selectedProjectGPUsUsed: number;
-  selectedProjectGPUsMax: number;
-
   newCores: number = 0;
   newRam: number = 0;
   newVms: number = 0;
   newGpus: number = 0;
   cluster_allowed: boolean = false;
+  selectedProjectRessources: ApplicationRessourceUsage;
 
   /**
    * The selected project ['name',id].
@@ -669,19 +658,9 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
     this.selectedImage = undefined;
     this.selectedFlavor = undefined;
     this.getDetachedVolumesByProject();
-    this.groupService.getGroupResources(this.selectedProject[1].toString()).subscribe((res: any): void => {
-      this.selectedProjectVmsMax = res['number_vms'];
-      this.selectedProjectVmsUsed = res['used_vms'];
-      this.selectedProjectDiskspaceMax = res['max_volume_storage'];
-      this.selectedProjectDiskspaceUsed = res['used_volume_storage'];
-      this.selectedProjectVolumesMax = res['volume_counter'];
-      this.selectedProjectVolumesUsed = res['used_volumes'];
-      this.selectedProjectCoresMax = res['cores_total'];
-      this.selectedProjectCoresUsed = res['cores_used'];
-      this.selectedProjectRamMax = res['ram_total'];
-      this.selectedProjectRamUsed = res['ram_used'];
-      this.selectedProjectGPUsMax = res['gpus_max'];
-      this.selectedProjectGPUsUsed = res['gpus_used'];
+    this.groupService.getGroupResources(this.selectedProject[1].toString()).subscribe((res: ApplicationRessourceUsage): void => {
+      this.selectedProjectRessources = new ApplicationRessourceUsage(res);
+
       this.data_loaded = true;
       this.checkProjectDataLoaded();
     });

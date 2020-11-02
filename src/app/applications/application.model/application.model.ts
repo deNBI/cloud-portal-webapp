@@ -37,6 +37,7 @@ export class Application {
   project_application_comment: string;
   project_application_date_submitted: string;
   project_application_date_status_changed: string;
+  project_application_hash: string;
   project_application_user: User;
   project_application_pi: User = new User();
   project_application_status: number[] = [];
@@ -94,6 +95,7 @@ export class Application {
       this.ComputeCenter = aj.ComputeCenter;
       this.project_application_openstack_project = aj.project_application_openstack_project;
       this.DaysRunning = aj.DaysRunning;
+      this.project_application_hash = aj.project_application_hash;
       this.project_application_total_ram = aj.project_application_total_ram;
       this.project_application_total_cores = aj.project_application_total_cores;
       this.project_application_date_approved = aj.project_application_date_approved;
