@@ -271,7 +271,7 @@
       <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h4 class="modal-title">Scale-Down Cluster</h4>
+            <h4 class="modal-title">Scale-Down Cluster {{selectedCluster?.cluster_id}}</h4>
             <button type="button" class="close" style="cursor: pointer"
                     (click)="scaleDownModal.hide()"
                     aria-label="Close">
@@ -382,7 +382,7 @@
       <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h4 class="modal-title">Scale-UP Cluster</h4>
+            <h4 class="modal-title">Scale-Up Cluster {{selectedCluster?.cluster_id}}</h4>
             <button type="button" class="close" style="cursor: pointer"
                     (click)="scaleUpModal.hide()"
                     aria-label="Close">
