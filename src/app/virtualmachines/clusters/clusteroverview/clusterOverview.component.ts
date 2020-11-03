@@ -17,7 +17,7 @@ import {VirtualMachine} from '../../virtualmachinemodels/virtualmachine';
 import {ApplicationRessourceUsage} from '../../../applications/application-ressource-usage/application-ressource-usage';
 import {SCALE_SCRIPT_LINK} from '../../../../links/links';
 import {AbstractBaseClasse} from '../../../shared/shared_modules/baseClass/abstract-base-class';
-export const SCALING_SCRIPT_NAME = 'scaling_latest.py';
+export const SCALING_SCRIPT_NAME: string = 'scaling_latest.py';
 
 /**
  * Cluster overview componentn.
