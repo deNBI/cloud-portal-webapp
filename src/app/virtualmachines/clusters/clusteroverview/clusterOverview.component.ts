@@ -97,7 +97,6 @@ export class ClusterOverviewComponent extends AbstractBaseClasse implements OnIn
   filterChanged: Subject<string> = new Subject<string>();
   STATIC_IMG_FOLDER: String = 'static/webapp/assets/img/';
 
-
   constructor(private facilityService: FacilityService, private groupService: GroupService,
               private imageService: ImageService, private userservice: UserService,
               private virtualmachineservice: VirtualmachineService, private fb: FormBuilder,
