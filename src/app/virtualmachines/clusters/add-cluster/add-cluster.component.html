@@ -170,7 +170,7 @@
                       <i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
                             'icon-arrow-up': workerInstancesGroup.isOpen, 'icon-arrow-down': !workerInstancesGroup.isOpen}"></i>
                     </div>
-                    <accordion-group *ngFor="let batch of selectedWorkerBatches" [isOpen]="true">
+                    <accordion-group *ngFor="let batch of selectedWorkerBatches" [isOpen]="true"  (isOpenChange)="resizeFix();">
                       <div accordion-heading style="width: 100%; cursor: pointer"><strong
                         *ngIf="selectedBatch != batch">Batch {{batch.index}} [locked] </strong>
                         <strong *ngIf="selectedBatch == batch">Batch {{batch.index}} </strong>
