@@ -373,7 +373,7 @@
          aria-labelledby="Label"
          aria-hidden="true"
          id="scaleUpModal">
-      <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <h4 class="modal-title">Scale-UP Cluster</h4>
@@ -453,8 +453,80 @@
 
                     </tbody>
                   </table>
+                  <div>
+                     <button
+
+                              type="button" style="float: left;margin-bottom: 5px;"
+
+
+                              class="btn btn-primary"
+                              data-toggle="modal"
+                              (click)="createNewBatchSelectedCluster();">
+                        Add Worker Batch
+                      </button></div>
                 </div>
+                 <div class="alert-info row" *ngIf="created_new_batch && (!projectDataLoaded || !flavors_loaded)"><strong> Get more possible flavors..
+              <i
+                class="fa fa-spinner fa-spin" style="font-size:24px"></i></strong></div>
+                <accordion class="col" *ngIf="created_new_batch && projectDataLoaded && flavors_loaded">
+
+                    <accordion-group [isOpen]="true" (isOpenChange)="resizeFix()">
+                      <div accordion-heading style="width: 100%; cursor: pointer"><strong
+                      >Batch {{selectedBatch.index}} </strong>
+
+                      </div>
+                      <div class="alert alert-warning"
+                           *ngIf="flavors_usable.length < 1 && !selectedBatch.flavor">Not
+                        enough resources available
+                        to start another worker batch with a different flavor!
+                      </div>
+                      <span *ngIf="flavors_usable.length > 0 || selectedBatch.flavor">
+
+                      <div class="form-group row col-md-12">
+                        <label class="col-md-2 form-control-label"><strong>Flavor*</strong></label>
+                        <div class="col-md-10">
+
+
+                          <app-flavor-detail [selectedFlavor]="selectedBatch.flavor"
+                                             [flavors]="flavors_usable"
+                                             (selectedFlavorChange)="selectedBatch.flavor=$event;calcMaxWorkerInstancesByFlavor();"
+                          ></app-flavor-detail>
+
+
+                        </div>
+
+
+                      </div>
+
+
+                      <div class="alert alert-danger" role="alert" *ngIf="!selectedBatch.flavor">
+                        Please first select a worker flavor before you can set the number of workers.
+                      </div>
+                      <div class="form-group row col-md-12">
+
+                        <label class="col-md-2 form-control-label"><strong>Count*
+                          <span *ngIf="selectedBatch.max_worker_count ">(max {{selectedBatch.max_worker_count}})</span></strong></label>
+                        <div class="col-md-10">
+
+
+                          <input class="form-control" id="workerInstancesCount_{{selectedBatch.index}}"
+                                 [disabled]="!selectedBatch.flavor"
+                                 name="workerInstancesCount_{{selectedBatch.index}}"
+                                 placeholder="e.g 1"
+
+                                 type="number" min="1" [max]="selectedBatch.max_worker_count" step="1"
+                                 [(ngModel)]="selectedBatch.worker_count" required
+                                 appMinAmount="1" appMaxAmount="{{selectedBatch.max_worker_count}}"
+                                 appInteger>
+                        </div>
+
+                      </div></span>
+
+                    </accordion-group>
+
+                </accordion>
               </div>
+            </div>
               <div class="modal-footer">
                 <div class="alert" *ngIf="max_scale_count_loaded"
                      [ngClass]="{'alert-danger':!scaling_warning_read,'alert-success':scaling_warning_read}"

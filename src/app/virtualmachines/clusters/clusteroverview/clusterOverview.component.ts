@@ -17,6 +17,8 @@ import {VirtualMachine} from '../../virtualmachinemodels/virtualmachine';
 import {ApplicationRessourceUsage} from '../../../applications/application-ressource-usage/application-ressource-usage';
 import {SCALE_SCRIPT_LINK} from '../../../../links/links';
 import {AbstractBaseClasse} from '../../../shared/shared_modules/baseClass/abstract-base-class';
+import {Flavor} from '../../virtualmachinemodels/flavor';
+import {FlavorService} from '../../../api-connector/flavor.service';
 
 /**
  * Cluster overview componentn.
@@ -26,7 +28,7 @@ import {AbstractBaseClasse} from '../../../shared/shared_modules/baseClass/abstr
              templateUrl: './clusterOverview.component.html',
              styleUrls: ['../../vmOverview.component.scss'],
              providers: [FacilityService, ImageService, UserService,
-               VirtualmachineService, FullLayoutComponent, GroupService, ClientService, GroupService]
+               VirtualmachineService, FullLayoutComponent, GroupService, ClientService, GroupService, FlavorService]
            })
 
 export class ClusterOverviewComponent extends AbstractBaseClasse implements OnInit, OnDestroy {
@@ -42,6 +44,7 @@ export class ClusterOverviewComponent extends AbstractBaseClasse implements OnIn
   DEBOUNCE_TIME: number = 300;
   FILTER_DEBOUNCE_TIME: number = 2000;
   SCALING_SCRIPT_LINK: string = SCALE_SCRIPT_LINK;
+  selectedProjectRessources: ApplicationRessourceUsage;
 
   isSearching: boolean = true;
   scaling_warning_read: boolean = false;
@@ -52,9 +55,11 @@ export class ClusterOverviewComponent extends AbstractBaseClasse implements OnIn
   scale_down_count: number = 0;
   scaling_up: boolean = false;
   scaling_down: boolean = false;
+  created_new_batch: boolean = false;
 
   selectedCluster: Clusterinfo = null;
   ressourceUsage: ApplicationRessourceUsage;
+  projectDataLoaded: boolean = false;
 
   /**
    * Facilitties where the user is manager ['name',id].
@@ -77,6 +82,9 @@ export class ClusterOverviewComponent extends AbstractBaseClasse implements OnIn
   items_per_page: number = 7;
 
   is_vo_admin: boolean;
+  flavors: Flavor[] = []
+  flavors_usable: Flavor[] = [];
+  flavors_loaded: boolean = false;
 
   /**
    * Tab which is shown own|all.
@@ -101,7 +109,7 @@ export class ClusterOverviewComponent extends AbstractBaseClasse implements OnIn
   constructor(private facilityService: FacilityService, private groupService: GroupService,
               private imageService: ImageService, private userservice: UserService,
               private virtualmachineservice: VirtualmachineService, private fb: FormBuilder,
-              private clipboardService: ClipboardService
+              private clipboardService: ClipboardService, private flavorService: FlavorService
   ) {
     super();
 
@@ -123,6 +131,13 @@ export class ClusterOverviewComponent extends AbstractBaseClasse implements OnIn
       this.getAllCLusterFacilities()
     }
 
+  }
+
+  createNewBatchSelectedCluster(): void {
+    this.created_new_batch = true;
+    this.selectedCluster.create_new_batch()
+    this.selectedBatch = this.selectedCluster.worker_batches[this.selectedCluster.worker_batches.length - 1]
+    this.loadProjectRessource()
   }
 
   setSelectedBatch(batch: WorkerBatch): void {
@@ -177,6 +192,60 @@ export class ClusterOverviewComponent extends AbstractBaseClasse implements OnIn
       }
 
     })
+  }
+
+  calcMaxWorkerInstancesByFlavor(): void {
+    if (this.selectedBatch.flavor) {
+
+      this.selectedBatch.max_worker_count = this.selectedProjectRessources.calcMaxWorkerInstancesByFlavor(
+        this.selectedCluster.master_instance.flavor,
+        this.selectedBatch, this.selectedCluster.worker_batches)
+    }
+  }
+
+  resizeFix(): void {
+    window.dispatchEvent(new Event('resize'));
+  }
+
+  getFlavors(project_id: number | string): void {
+    this.flavorService.getFlavors(project_id).subscribe((flavors: Flavor[]): void => {
+      this.flavors = flavors;
+      this.checkFlavorsUsableForCluster();
+    });
+
+  }
+
+  checkFlavorsUsableForCluster(): void {
+    const used_flavors: Flavor[] = []
+
+    // tslint:disable-next-line:no-for-each-push
+    this.selectedCluster.worker_batches.forEach((batch: WorkerBatch): void => {
+      if (batch !== this.selectedBatch) {
+        used_flavors.push(batch.flavor)
+      }
+    })
+    const flavors_to_filter: Flavor[] = this.flavors.filter((flavor: Flavor): boolean => {
+      return used_flavors.indexOf(flavor) < 0
+    })
+    this.flavors_usable = flavors_to_filter.filter((flav: Flavor): boolean => {
+
+      return this.selectedProjectRessources.filterFlavorsTest(flav, flavors_to_filter, this.selectedCluster.worker_batches)
+    });
+
+    this.flavors_loaded = true;
+
+  }
+
+  loadProjectRessource(): void {
+    this.projectDataLoaded = false;
+    this.flavors = [];
+    this.groupService.getGroupResources(this.selectedCluster.project_id).subscribe((res: ApplicationRessourceUsage): void => {
+      this.selectedProjectRessources = new ApplicationRessourceUsage(res);
+      this.getFlavors(this.selectedCluster.project_id);
+      this.projectDataLoaded = true;
+
+    });
+
   }
 
   resetScaling(): void {

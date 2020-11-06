@@ -165,11 +165,6 @@ export class AddClusterComponent implements OnInit {
 
   }
 
-  filterFlavors(): void {
-
-    this.flavors_usable = this.selectedProjectRessources.filterFlavors(
-      this.newCores, this.newRam, this.newGpus, this.flavors, this.selectedWorkerBatches);
-  }
 
   calcMaxWorkerInstancesByFlavor(): void {
     if (this.selectedBatch.flavor) {

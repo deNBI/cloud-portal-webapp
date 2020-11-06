@@ -34,6 +34,7 @@ export class Clusterinfo {
   public_ip: string;
   cluster_id: string;
   group_id: string;
+  project_id: string;
   user: string;
   instances_count: number;
   launch_date: string;
@@ -60,8 +61,18 @@ export class Clusterinfo {
     this.project = cl.project;
     this.userlogin = cl.userlogin;
     this.worker_batches = cl.worker_batches;
+    this.project_id = cl.project_id;
     this.master_instance_openstack_id = cl.master_instance_openstack_id;
     this.sortWorkerByStatus()
+  }
+
+  public create_new_batch(): void {
+    const new_batch: WorkerBatch = new WorkerBatch(this.get_batches_count() + 1)
+    this.worker_batches.push(new_batch)
+  }
+
+  private get_batches_count(): number {
+    return this.worker_batches.length
   }
 
   private sortWorkerByStatus(): void {
