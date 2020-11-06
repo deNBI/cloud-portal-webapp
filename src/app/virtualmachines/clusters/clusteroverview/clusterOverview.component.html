@@ -384,13 +384,12 @@
             </button>
           </div>
           <div class="modal-body">
-            <div class="alert-info row" *ngIf="!max_scale_count_loaded"><strong> Calculating maximum additional
+            <div class="alert alert-info " role="alert" *ngIf="!max_scale_count_loaded"><strong> Calculating maximum additional
               workers..
               <i
                 class="fa fa-spinner fa-spin" style="font-size:24px"></i></strong></div>
 
             <div *ngIf="max_scale_count_loaded">
-              <div class="modal-body">
                 <div class="alert alert-warning" role="alert">
                   <p>Which batch should be scaled up (only one batch at a time is possible)?</p></div>
 
@@ -465,10 +464,10 @@
                         Add Worker Batch
                       </button></div>
                 </div>
-                 <div class="alert-info row" *ngIf="created_new_batch && (!projectDataLoaded || !flavors_loaded)"><strong> Get more possible flavors..
+                 <div class="alert alert-info" role="alert" *ngIf="created_new_batch && (!projectDataLoaded || !flavors_loaded)"><strong> Get more possible flavors..
               <i
                 class="fa fa-spinner fa-spin" style="font-size:24px"></i></strong></div>
-                <accordion class="col" *ngIf="created_new_batch && projectDataLoaded && flavors_loaded">
+                <accordion  *ngIf="created_new_batch && projectDataLoaded && flavors_loaded">
 
                     <accordion-group [isOpen]="true" (isOpenChange)="resizeFix()">
                       <div accordion-heading style="width: 100%; cursor: pointer"><strong
@@ -526,7 +525,8 @@
 
                 </accordion>
               </div>
-            </div>
+
+          </div>
               <div class="modal-footer">
                 <div class="alert" *ngIf="max_scale_count_loaded"
                      [ngClass]="{'alert-danger':!scaling_warning_read,'alert-success':scaling_warning_read}"
