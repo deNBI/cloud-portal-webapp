@@ -74,6 +74,14 @@ export class Clusterinfo {
     this.worker_batches.push(new_batch)
   }
 
+  public remove_batch(batch: WorkerBatch): void {
+    const idx: number = this.worker_batches.indexOf(batch)
+    if (this.worker_batches.indexOf(batch) !== -1) {
+      this.worker_batches.splice(idx, 1)
+    }
+
+  }
+
   private get_batches_count(): number {
     return this.worker_batches.length
   }

@@ -140,6 +140,12 @@ export class ClusterOverviewComponent extends AbstractBaseClasse implements OnIn
     this.loadProjectRessource()
   }
 
+  removeNewBatchSelectedCluster(): void {
+    this.selectedCluster.remove_batch(this.selectedBatch)
+    this.created_new_batch = false;
+    this.selectedBatch = null;
+  }
+
   setSelectedBatch(batch: WorkerBatch): void {
 
     this.selectedBatch = batch;

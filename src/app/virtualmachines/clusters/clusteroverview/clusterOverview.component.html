@@ -390,10 +390,10 @@
                 class="fa fa-spinner fa-spin" style="font-size:24px"></i></strong></div>
 
             <div *ngIf="max_scale_count_loaded">
-                <div class="alert alert-warning" role="alert">
+                <div class="alert alert-warning" role="alert" *ngIf="!created_new_batch">
                   <p>Which batch should be scaled up (only one batch at a time is possible)?</p></div>
 
-                <div class="table-responsive">
+                <div class="table-responsive" *ngIf="!created_new_batch">
                   <table class="table table-hover" style="word-wrap: break-word;table-layout: fixed">
                     <thead>
                     <tr>
@@ -453,16 +453,16 @@
                     </tbody>
                   </table>
                   <div>
-                     <button
+                    <button
 
-                              type="button" style="float: left;margin-bottom: 5px;"
+                      type="button" style="float: left;margin-bottom: 5px;"
 
 
-                              class="btn btn-primary"
-                              data-toggle="modal"
-                              (click)="createNewBatchSelectedCluster();">
-                        Add Worker Batch
-                      </button></div>
+                      class="btn btn-primary"
+                      (click)="createNewBatchSelectedCluster();">
+                      Add new Worker Batch
+                    </button>
+                  </div>
                 </div>
                  <div class="alert alert-info" role="alert" *ngIf="created_new_batch && (!projectDataLoaded || !flavors_loaded)"><strong> Get more possible flavors..
               <i
@@ -520,8 +520,20 @@
                         </div>
 
                       </div></span>
+                      <button
+
+                        type="button" style="float: left;margin-bottom: 5px;"
+                        (click)="removeNewBatchSelectedCluster()"
+
+
+                        class="btn btn-danger"
+                      >
+                        Cancel
+                      </button>
+
 
                     </accordion-group>
+
 
                 </accordion>
               </div>
