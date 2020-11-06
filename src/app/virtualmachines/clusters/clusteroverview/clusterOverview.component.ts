@@ -17,6 +17,7 @@ import {VirtualMachine} from '../../virtualmachinemodels/virtualmachine';
 import {ApplicationRessourceUsage} from '../../../applications/application-ressource-usage/application-ressource-usage';
 import {SCALE_SCRIPT_LINK} from '../../../../links/links';
 import {AbstractBaseClasse} from '../../../shared/shared_modules/baseClass/abstract-base-class';
+export const SCALING_SCRIPT_NAME: string = 'scaling.py';
 
 /**
  * Cluster overview componentn.
@@ -55,6 +56,7 @@ export class ClusterOverviewComponent extends AbstractBaseClasse implements OnIn
 
   selectedCluster: Clusterinfo = null;
   ressourceUsage: ApplicationRessourceUsage;
+  SCALING_SCRIPT_NAME: string = SCALING_SCRIPT_NAME;
 
   /**
    * Facilitties where the user is manager ['name',id].
