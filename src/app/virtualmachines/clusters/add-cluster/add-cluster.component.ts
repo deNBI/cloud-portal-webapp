@@ -37,6 +37,8 @@ export class AddClusterComponent implements OnInit {
   timeout: number = 0;
   title: string = 'New Cluster';
 
+  CLUSTER_IMAGES_BLOCKLIST: string[] = ['16.04'];
+
   /**
    * All image of a project.
    */
@@ -206,7 +208,20 @@ export class AddClusterComponent implements OnInit {
   getImages(project_id: number): void {
 
     this.imageService.getImages(project_id).subscribe((images: Image[]): void => {
-      this.images = images;
+      this.images = images.filter((image: Image): boolean => {
+        let not_blocked: boolean = true;
+
+        this.CLUSTER_IMAGES_BLOCKLIST.forEach((str: string): void => {
+
+          if (image.name.includes(str)) {
+            not_blocked = false;
+
+          }
+
+        })
+
+        return not_blocked
+      });
       this.images.sort((x_cord: any, y_cord: any): number => Number(x_cord.is_snapshot) - Number(y_cord.is_snapshot));
     });
   }

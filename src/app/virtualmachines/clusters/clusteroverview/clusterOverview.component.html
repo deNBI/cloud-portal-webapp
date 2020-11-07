@@ -7,16 +7,19 @@
 
 
           <button style="margin-right: 5px;margin-left: 5px;margin-top:5px;margin-bottom: 5px"
-                  class="btn btn-primary"
+                  [ngClass]="(tab === 'own') ? 'btn-primary': 'btn-outline-primary'"
+                  class="btn"
                   (click)="toggleTab('own');applyFilter();">Own Clusters
           </button>
 
           <button *ngIf="is_vo_admin" style="margin-right: 5px;margin-left: 5px;margin-top: 5px;margin-bottom: 5px"
-                  class="btn btn-primary"
+                  [ngClass]="(tab === 'all') ? 'btn-primary': 'btn-outline-primary'"
+                  class="btn"
                   (click)="toggleTab('all');applyFilter();">All Clusters
           </button>
           <button style="margin-right: 5px;margin-left: 5px;margin-top: 5px;margin-bottom: 5px"
-                  class="btn btn-primary"
+                  [ngClass]="(tab === 'facility') ? 'btn-primary': 'btn-outline-primary'"
+                  class="btn"
                   (click)="toggleTab('facility');applyFilter();">Clusters of your facilities
           </button>
 
@@ -246,7 +249,7 @@
                    role="alert">
                 <strong>wget {{SCALING_SCRIPT_LINK}}</strong></div>
               <div class="alert alert-light"
-                   role="alert"><strong>python3 scaling_v0.1.0.py </strong>
+                   role="alert"><strong>python3 {{SCALING_SCRIPT_NAME}} </strong>
               </div>
             </div>
           </div>
@@ -265,10 +268,10 @@
          aria-labelledby="Label"
          aria-hidden="true"
          id="scaleDownModal">
-      <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h4 class="modal-title">Scale-Down Cluster</h4>
+            <h4 class="modal-title">Scale-Down Cluster {{selectedCluster?.cluster_id}}</h4>
             <button type="button" class="close" style="cursor: pointer"
                     (click)="scaleDownModal.hide()"
                     aria-label="Close">
@@ -326,8 +329,8 @@
               </table>
             </div>
             <div class="modal-footer">
-              <div class="alert" [ngClass]="{'alert-danger':!scaling_warning_read,'alert-success':scaling_warning_read}"
-                   role="alert">
+              <div class="alert col-md-12"
+                   [ngClass]="{'alert-danger':!scaling_warning_read,'alert-success':scaling_warning_read}">
                 <p> This will only delete machines in the batches. After these have been successfully deleted, you must
                   execute the following commands on your master
                   machine to configure the cluster correctly!</p>
@@ -335,7 +338,7 @@
                      role="alert">
                   <strong>wget {{SCALING_SCRIPT_LINK}}</strong></div>
                 <div class="alert alert-light"
-                     role="alert"><strong>python3 scaling_v0.1.0.py </strong>
+                     role="alert"><strong>python3 {{SCALING_SCRIPT_NAME}}</strong>
                 </div>
 
                 <div class="alert alert-info"
@@ -347,11 +350,14 @@
                     </span>
                 </div>
 
-                <input class="form-check-input" name="sclae_down_acknowledgement_checkbox" type="checkbox"
-                       id="public_key_acknowledgement_checkbox" [(ngModel)]="scaling_warning_read">
-                <label class="form-check-label">
-                  Read and acknowledged
-                </label></div>
+                <div class="form-check">
+                  <input class="form-check-input" name="sclae_down_acknowledgement_checkbox" type="checkbox"
+                         id="public_key_acknowledgement_checkbox" [(ngModel)]="scaling_warning_read">
+                  <label class="form-check-label">
+                    Read and acknowledged
+                  </label>
+                </div>
+                </div>
 
 
               <button class="btn  btn-success col-md-4"
@@ -376,7 +382,7 @@
       <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h4 class="modal-title">Scale-UP Cluster</h4>
+            <h4 class="modal-title">Scale-Up Cluster {{selectedCluster?.cluster_id}}</h4>
             <button type="button" class="close" style="cursor: pointer"
                     (click)="scaleUpModal.hide()"
                     aria-label="Close">
@@ -540,16 +546,15 @@
 
           </div>
               <div class="modal-footer">
-                <div class="alert" *ngIf="max_scale_count_loaded"
-                     [ngClass]="{'alert-danger':!scaling_warning_read,'alert-success':scaling_warning_read}"
-                     role="alert">
+                <div class="alert col-md-12" *ngIf="max_scale_count_loaded && !created_new_batch ||(created_new_batch && projectDataLoaded && flavors_loaded)"
+                     [ngClass]="{'alert-danger':!scaling_warning_read,'alert-success':scaling_warning_read}">
                   <p> This will only start the number of selected machines with suitable settings.
                     After initiating the startup of the new machines wait until they are active, you can follow the
                     status
-                    of the new workers on the cluster <a class="h5 text-primary" style="margin-left: 10px"
-                                                         target="_blank" rel="noopener noreferrer"
-
-                                                         [routerLink]="['/virtualmachines/cluster/' + selectedCluster?.cluster_id]">
+                    of the new workers on the cluster
+                    <a class="h5 text-primary" style="margin-left: 10px"
+                       target="_blank" rel="noopener noreferrer"
+                       [routerLink]="['/virtualmachines/cluster/' + selectedCluster?.cluster_id]">
                       details </a>page.
                     When the machines are active you must
                   execute the following commands on your master
@@ -558,7 +563,7 @@
                        role="alert">
                     <strong>wget {{SCALING_SCRIPT_LINK}}</strong></div>
                   <div class="alert alert-light"
-                       role="alert"><strong>python3 scaling_v0.1.0.py  </strong>
+                       role="alert"><strong>python3 {{SCALING_SCRIPT_NAME}}  </strong>
                   </div>
 
                   <div class="alert alert-info"
@@ -568,11 +573,14 @@
                     </strong>
                   </div>
 
-                  <input class="form-check-input" name="sclae_up_acknowledgement_checkbox" type="checkbox"
-                         [(ngModel)]="scaling_warning_read">
-                  <label class="form-check-label">
-                    Read and acknowledged
-                  </label></div>
+                  <div class="form-check">
+                    <input class="form-check-input" name="sclae_up_acknowledgement_checkbox" type="checkbox"
+                           [(ngModel)]="scaling_warning_read">
+                    <label class="form-check-label">
+                      Read and acknowledged
+                    </label>
+                  </div>
+                  </div>
 
                 <button class="btn  btn-success col-md-4" *ngIf="max_scale_count_loaded"
                         (click)="scaleUpModal.hide();scaling_down=false;scaling_up=true;notificationModal.show();scaleUpCluster();"

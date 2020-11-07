@@ -20,6 +20,8 @@ import {AbstractBaseClasse} from '../../../shared/shared_modules/baseClass/abstr
 import {Flavor} from '../../virtualmachinemodels/flavor';
 import {FlavorService} from '../../../api-connector/flavor.service';
 
+export const SCALING_SCRIPT_NAME: string = 'scaling.py';
+
 /**
  * Cluster overview componentn.
  */
@@ -56,10 +58,10 @@ export class ClusterOverviewComponent extends AbstractBaseClasse implements OnIn
   scaling_up: boolean = false;
   scaling_down: boolean = false;
   created_new_batch: boolean = false;
-
   selectedCluster: Clusterinfo = null;
   ressourceUsage: ApplicationRessourceUsage;
   projectDataLoaded: boolean = false;
+  SCALING_SCRIPT_NAME: string = SCALING_SCRIPT_NAME;
 
   /**
    * Facilitties where the user is manager ['name',id].
@@ -104,7 +106,6 @@ export class ClusterOverviewComponent extends AbstractBaseClasse implements OnIn
 
   filterChanged: Subject<string> = new Subject<string>();
   STATIC_IMG_FOLDER: String = 'static/webapp/assets/img/';
-
 
   constructor(private facilityService: FacilityService, private groupService: GroupService,
               private imageService: ImageService, private userservice: UserService,
@@ -223,16 +224,27 @@ export class ClusterOverviewComponent extends AbstractBaseClasse implements OnIn
 
   checkFlavorsUsableForCluster(): void {
     const used_flavors: Flavor[] = []
+    let flavors_to_filter: Flavor[] = []
 
     // tslint:disable-next-line:no-for-each-push
     this.selectedCluster.worker_batches.forEach((batch: WorkerBatch): void => {
-      if (batch !== this.selectedBatch) {
+      if (batch.flavor) {
         used_flavors.push(batch.flavor)
       }
+
     })
-    const flavors_to_filter: Flavor[] = this.flavors.filter((flavor: Flavor): boolean => {
-      return used_flavors.indexOf(flavor) < 0
-    })
+    if (used_flavors.length > 0) {
+      flavors_to_filter = this.flavors.filter((flavor: Flavor): boolean => {
+        used_flavors.forEach((used_flavor: Flavor): boolean => {
+          if (flavor.name === used_flavor.name) {
+            return false
+          }
+        })
+        return true
+      })
+    } else {
+      flavors_to_filter = this.flavors
+    }
     this.flavors_usable = flavors_to_filter.filter((flav: Flavor): boolean => {
 
       return this.selectedProjectRessources.filterFlavorsTest(flav, flavors_to_filter, this.selectedCluster.worker_batches)
