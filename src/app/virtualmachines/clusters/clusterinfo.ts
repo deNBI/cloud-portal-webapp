@@ -17,8 +17,34 @@ export class WorkerBatch {
   max_scale_up_count: number = 0;
   max_worker_count: number;
 
-  constructor(index: number) {
+  constructor(index: number, batch?: WorkerBatch) {
     this.index = index;
+    if (batch) {
+      this.index = batch.index;
+      this.flavor = batch.flavor;
+      this.image = batch.image;
+      this.worker_count = batch.worker_count;
+      this.running_worker = batch.running_worker;
+      this.delete_count = batch.delete_count;
+      this.upscale_count = batch.upscale_count;
+      this.max_worker_count = batch.max_worker_count;
+      this.max_scale_up_count = batch.max_scale_up_count;
+    }
+  }
+
+  public setNewScalingDownWorkerCount(): void {
+    console.log(this.worker_count, this.running_worker, this.delete_count)
+    this.worker_count = this.worker_count - this.delete_count;
+    this.running_worker = this.running_worker - this.delete_count
+    this.delete_count = 0;
+    console.log(this.worker_count, this.running_worker, this.delete_count)
+
+  }
+
+  public setNewScalingUpWorkerCount(): void {
+    this.worker_count += this.upscale_count;
+    this.upscale_count = 0;
+
   }
 
 }
@@ -60,9 +86,9 @@ export class Clusterinfo {
     this.application_id = cl.application_id;
     this.project = cl.project;
     this.userlogin = cl.userlogin;
-    this.worker_batches = cl.worker_batches;
     this.project_id = cl.project_id;
     this.master_instance_openstack_id = cl.master_instance_openstack_id;
+    this.set_worker_baches(cl.worker_batches)
     this.sortWorkerByStatus()
   }
 
@@ -79,6 +105,13 @@ export class Clusterinfo {
     if (this.worker_batches.indexOf(batch) !== -1) {
       this.worker_batches.splice(idx, 1)
     }
+
+  }
+
+  private set_worker_baches(workerBatches: WorkerBatch[]): void {
+    this.worker_batches = workerBatches.map((workerBatch: WorkerBatch): WorkerBatch => {
+      return new WorkerBatch(workerBatch.index, workerBatch)
+    })
 
   }
 

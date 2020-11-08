@@ -103,8 +103,9 @@
                 </div>
                 <div class="col-12" style="margin-left: 10px">
                   <div *ngFor="let batch of cluster.worker_batches" style="font-size: small">
+                    <span *ngIf="batch.worker_count > 0">
                     <strong>Batch {{batch.index}}: </strong>    {{batch.running_worker}}/{{batch.worker_count}} VMs
-                    active
+                    active</span>
                   </div>
                 </div>
                 <div class="col-12" style="margin-left: 10px">
@@ -520,7 +521,7 @@
                                  placeholder="e.g 1"
 
                                  type="number" min="1" [max]="selectedBatch.max_worker_count" step="1"
-                                 [(ngModel)]="selectedBatch.worker_count" required
+                                 [(ngModel)]="selectedBatch.upscale_count" required
                                  appMinAmount="1" appMaxAmount="{{selectedBatch.max_worker_count}}"
                                  appInteger>
                         </div>

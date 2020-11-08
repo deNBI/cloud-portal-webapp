@@ -142,9 +142,11 @@ export class ClusterOverviewComponent extends AbstractBaseClasse implements OnIn
   }
 
   removeNewBatchSelectedCluster(): void {
-    this.selectedCluster.remove_batch(this.selectedBatch)
-    this.created_new_batch = false;
-    this.selectedBatch = null;
+    if (this.created_new_batch && this.selectedBatch) {
+      this.selectedCluster.remove_batch(this.selectedBatch)
+      this.created_new_batch = false;
+      this.selectedBatch = null;
+    }
   }
 
   setSelectedBatch(batch: WorkerBatch): void {
@@ -169,15 +171,33 @@ export class ClusterOverviewComponent extends AbstractBaseClasse implements OnIn
   }
 
   scaleUpCluster(): void {
-    this.updateNotificationModal('Upscaling Cluster', `Starting ${this.selectedBatch.upscale_count} additional workers..`, true, 'info')
+    const scale_up_count: number = this.selectedBatch.upscale_count
+    this.updateNotificationModal('Upscaling Cluster', `Starting ${scale_up_count} additional workers..`, true, 'info')
 
-    this.virtualmachineservice.scaleCluster(this.selectedCluster.cluster_id, this.selectedBatch).subscribe((): void => {
-      this.check_worker_count_loop(this.selectedCluster)
-      this.updateNotificationModal('Sucessfull',
-                                   `The start of ${this.selectedBatch.upscale_count} workers was successfully initiated. Remember to configure your cluster after the machines are active!'`,
-                                   true, 'success')
+    if (!this.created_new_batch) {
+      this.virtualmachineservice.scaleCluster(this.selectedCluster.cluster_id, this.selectedBatch).subscribe((): void => {
+        this.selectedBatch.setNewScalingUpWorkerCount()
 
-    })
+        this.check_worker_count_loop(this.selectedCluster)
+        this.updateNotificationModal('Sucessfull',
+                                     `The start of ${scale_up_count} workers was successfully initiated. Remember to configure your cluster after the machines are active!'`,
+                                     true, 'success')
+        this.selectedBatch.setNewScalingUpWorkerCount()
+
+      })
+    } else {
+      this.virtualmachineservice.scaleClusterNewBatch(this.selectedCluster.cluster_id, this.selectedBatch).subscribe((): void => {
+
+        this.selectedBatch.setNewScalingUpWorkerCount()
+
+        this.check_worker_count_loop(this.selectedCluster)
+        this.updateNotificationModal('Sucessfull',
+                                     `The start of ${scale_up_count} workers was successfully initiated. Remember to configure your cluster after the machines are active!'`,
+                                     true, 'success')
+
+      })
+
+    }
   }
 
   checkUpCount(batch: WorkerBatch): void {
@@ -235,12 +255,16 @@ export class ClusterOverviewComponent extends AbstractBaseClasse implements OnIn
     })
     if (used_flavors.length > 0) {
       flavors_to_filter = this.flavors.filter((flavor: Flavor): boolean => {
-        used_flavors.forEach((used_flavor: Flavor): boolean => {
+        let not_used: boolean = true;
+
+        used_flavors.forEach((used_flavor: Flavor): void => {
+
           if (flavor.name === used_flavor.name) {
-            return false
+            not_used = false
           }
         })
-        return true
+
+        return not_used
       })
     } else {
       flavors_to_filter = this.flavors
@@ -267,9 +291,10 @@ export class ClusterOverviewComponent extends AbstractBaseClasse implements OnIn
   }
 
   resetScaling(): void {
+    this.removeNewBatchSelectedCluster()
+    this.selectedBatch = null;
     this.resetNotificationModal()
     this.scale_down_count = 0;
-    this.selectedBatch = null;
     this.scaling_warning_read = false;
     this.resetScaleCount()
   }
@@ -291,11 +316,14 @@ export class ClusterOverviewComponent extends AbstractBaseClasse implements OnIn
     this.updateNotificationModal('Scaling Down', msg, true, 'info')
 
     this.virtualmachineservice.scaleDownCluster(this.selectedCluster.cluster_id, scale_down_batches).subscribe((): void => {
-      this.subscription.add(this.virtualmachineservice.getClusterInfo(this.selectedCluster.cluster_id).subscribe(
-        (updated_cluster: Clusterinfo): void => {
-          this.clusters[this.clusters.indexOf(this.selectedCluster)] = updated_cluster;
-          this.selectedCluster = updated_cluster;
-        }))
+      this.selectedCluster.worker_batches.forEach((batch: WorkerBatch): void => {
+        batch.setNewScalingDownWorkerCount()
+      })
+      /*   this.subscription.add(this.virtualmachineservice.getClusterInfo(this.selectedCluster.cluster_id).subscribe(
+           (updated_cluster: Clusterinfo): void => {
+             this.clusters[this.clusters.indexOf(this.selectedCluster)] = new Clusterinfo(updated_cluster);
+             this.selectedCluster = updated_cluster;
+           }))*/
       msg = 'Successfully scaled down the batches. Remember to configure your cluster!';
       this.updateNotificationModal('Successfully Deleted!', msg, true, 'success')
     })
@@ -344,35 +372,45 @@ export class ClusterOverviewComponent extends AbstractBaseClasse implements OnIn
   }
 
   check_worker_count_loop(cluster: Clusterinfo): void {
-    setTimeout(
-      (): void => {
+    let need_check: boolean = false;
+    for (const batch of cluster.worker_batches) {
+      if (batch.running_worker < batch.worker_count) {
+        need_check = true;
+        break
+      }
+    }
 
-        // tslint:disable-next-line:max-line-length
-        this.subscription.add(this.virtualmachineservice.getClusterInfo(cluster.cluster_id).subscribe((updated_cluster: Clusterinfo): void => {
+    if (need_check) {
+      setTimeout(
+        (): void => {
 
-          this.clusters[this.clusters.indexOf(cluster)] = updated_cluster;
-          if (cluster === this.selectedCluster) {
-            this.selectedCluster = updated_cluster;
-          }
           // tslint:disable-next-line:max-line-length
-          let stop_loop: boolean = true;
-          for (const batch of cluster.worker_batches) {
-            if (batch.running_worker < batch.worker_count) {
-              stop_loop = false;
-              break
+          this.subscription.add(this.virtualmachineservice.getClusterInfo(cluster.cluster_id).subscribe((updated_cluster: Clusterinfo): void => {
+            let stop_loop: boolean = true;
+
+            this.clusters[this.clusters.indexOf(cluster)] = new Clusterinfo(updated_cluster);
+            cluster = this.clusters[this.clusters.indexOf(cluster)]
+
+            // tslint:disable-next-line:max-line-length
+            for (const batch of cluster.worker_batches) {
+              if (batch.running_worker < batch.worker_count) {
+                stop_loop = false;
+                break
+              }
             }
-          }
-          if (!stop_loop) {
-            this.check_worker_count_loop(updated_cluster)
 
-          }
+            if (!stop_loop) {
+              this.check_worker_count_loop(this.clusters[this.clusters.indexOf(cluster)])
 
-        }));
+            }
 
-      },
+          }));
 
-      this.checkStatusTimeout
-    );
+        },
+
+        this.checkStatusTimeout
+      );
+    }
   }
 
   check_status_loop(cluster: Clusterinfo, final_state?: string, is_selected_cluster?: boolean): void {
@@ -382,7 +420,7 @@ export class ClusterOverviewComponent extends AbstractBaseClasse implements OnIn
 
         // tslint:disable-next-line:max-line-length
         this.subscription.add(this.virtualmachineservice.getClusterInfo(cluster.cluster_id).subscribe((updated_cluster: Clusterinfo): void => {
-          this.clusters[this.clusters.indexOf(cluster)] = updated_cluster;
+          this.clusters[this.clusters.indexOf(cluster)] = new Clusterinfo(updated_cluster);
           if (is_selected_cluster) {
             this.selectedCluster = updated_cluster;
           }
@@ -463,7 +501,6 @@ export class ClusterOverviewComponent extends AbstractBaseClasse implements OnIn
     this.clusters = cluster_page_infos['cluster_list'].map((cluster: Clusterinfo): Clusterinfo => {
       return new Clusterinfo(cluster)
     })
-    this.check_status_loop_cluster_vms()
     this.total_items = cluster_page_infos['total_items'];
     this.items_per_page = cluster_page_infos['items_per_page'];
     this.total_pages = cluster_page_infos['num_pages'];
@@ -477,6 +514,8 @@ export class ClusterOverviewComponent extends AbstractBaseClasse implements OnIn
 
       if (cluster.status !== 'Running') {
         this.check_status_loop(cluster);
+      } else {
+        this.check_worker_count_loop(cluster)
       }
     })
   }
