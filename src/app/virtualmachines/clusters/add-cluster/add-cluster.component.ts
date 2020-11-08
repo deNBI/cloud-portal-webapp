@@ -167,7 +167,6 @@ export class AddClusterComponent implements OnInit {
 
   }
 
-
   calcMaxWorkerInstancesByFlavor(): void {
     if (this.selectedBatch.flavor) {
 
