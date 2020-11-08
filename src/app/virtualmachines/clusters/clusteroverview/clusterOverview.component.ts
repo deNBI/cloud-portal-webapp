@@ -182,7 +182,6 @@ export class ClusterOverviewComponent extends AbstractBaseClasse implements OnIn
         this.updateNotificationModal('Sucessfull',
                                      `The start of ${scale_up_count} workers was successfully initiated. Remember to configure your cluster after the machines are active!'`,
                                      true, 'success')
-        this.selectedBatch.setNewScalingUpWorkerCount()
 
       })
     } else {
@@ -316,14 +315,8 @@ export class ClusterOverviewComponent extends AbstractBaseClasse implements OnIn
     this.updateNotificationModal('Scaling Down', msg, true, 'info')
 
     this.virtualmachineservice.scaleDownCluster(this.selectedCluster.cluster_id, scale_down_batches).subscribe((): void => {
-      this.selectedCluster.worker_batches.forEach((batch: WorkerBatch): void => {
-        batch.setNewScalingDownWorkerCount()
-      })
-      /*   this.subscription.add(this.virtualmachineservice.getClusterInfo(this.selectedCluster.cluster_id).subscribe(
-           (updated_cluster: Clusterinfo): void => {
-             this.clusters[this.clusters.indexOf(this.selectedCluster)] = new Clusterinfo(updated_cluster);
-             this.selectedCluster = updated_cluster;
-           }))*/
+      this.selectedCluster.setScaleDownBatchesCount()
+
       msg = 'Successfully scaled down the batches. Remember to configure your cluster!';
       this.updateNotificationModal('Successfully Deleted!', msg, true, 'success')
     })
@@ -372,45 +365,40 @@ export class ClusterOverviewComponent extends AbstractBaseClasse implements OnIn
   }
 
   check_worker_count_loop(cluster: Clusterinfo): void {
-    let need_check: boolean = false;
-    for (const batch of cluster.worker_batches) {
-      if (batch.running_worker < batch.worker_count) {
-        need_check = true;
-        break
-      }
-    }
 
-    if (need_check) {
-      setTimeout(
-        (): void => {
+    setTimeout(
+      (): void => {
+
+        // tslint:disable-next-line:max-line-length
+        this.subscription.add(this.virtualmachineservice.getClusterInfo(cluster.cluster_id).subscribe((updated_cluster: Clusterinfo): void => {
+          let stop_loop: boolean = true;
+          const idx: number = this.clusters.indexOf(cluster)
+
+          this.clusters[idx] = new Clusterinfo(updated_cluster);
+          if (cluster === this.selectedCluster){
+            this.selectedCluster ==this.clusters[idx]
+          }
+          cluster = this.clusters[idx]
 
           // tslint:disable-next-line:max-line-length
-          this.subscription.add(this.virtualmachineservice.getClusterInfo(cluster.cluster_id).subscribe((updated_cluster: Clusterinfo): void => {
-            let stop_loop: boolean = true;
-
-            this.clusters[this.clusters.indexOf(cluster)] = new Clusterinfo(updated_cluster);
-            cluster = this.clusters[this.clusters.indexOf(cluster)]
-
-            // tslint:disable-next-line:max-line-length
-            for (const batch of cluster.worker_batches) {
-              if (batch.running_worker < batch.worker_count) {
-                stop_loop = false;
-                break
-              }
+          for (const batch of cluster.worker_batches) {
+            if (batch.running_worker < batch.worker_count) {
+              stop_loop = false;
+              break
             }
+          }
 
-            if (!stop_loop) {
-              this.check_worker_count_loop(this.clusters[this.clusters.indexOf(cluster)])
+          if (!stop_loop) {
+            this.check_worker_count_loop(cluster)
 
-            }
+          }
 
-          }));
+        }));
 
-        },
+      },
 
-        this.checkStatusTimeout
-      );
-    }
+      this.checkStatusTimeout
+    );
   }
 
   check_status_loop(cluster: Clusterinfo, final_state?: string, is_selected_cluster?: boolean): void {

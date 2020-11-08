@@ -95,20 +95,20 @@
                   {{cluster?.launch_date}}
                 </div>
               </div>
-              <div class="row" style="margin-top: 10px; margin-bottom:5px;">
+              <div class="row" style="margin-top: 10px; margin-bottom:5px;" *ngIf="cluster.status !== VirtualMachineStates.staticDELETED">
                 <div class="col-12" style="margin-left: 10px">
                   <div style="font-size: small">
                     <strong *ngIf="cluster.instances_count > 0">Inst:</strong> {{cluster.instances_count}}
                   </div>
                 </div>
-                <div class="col-12" style="margin-left: 10px">
+                <div class="col-12" style="margin-left: 10px" *ngIf="cluster.status !== VirtualMachineStates.staticDELETED">
                   <div *ngFor="let batch of cluster.worker_batches" style="font-size: small">
                     <span *ngIf="batch.worker_count > 0">
                     <strong>Batch {{batch.index}}: </strong>    {{batch.running_worker}}/{{batch.worker_count}} VMs
                     active</span>
                   </div>
                 </div>
-                <div class="col-12" style="margin-left: 10px">
+                <div class="col-12" style="margin-left: 10px" *ngIf="cluster.status !== VirtualMachineStates.staticDELETED ">
                   <div style="font-size: small">
                     <strong *ngIf="cluster?.public_ip">Public IP:</strong> {{cluster?.public_ip}}
                   </div>
@@ -197,7 +197,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">Delete VM</h4>
+        <h4 class="modal-title">Delete Cluster</h4>
         <button type="button" class="close" style="cursor: pointer"
                 (click)="verifyModal.hide()"
                 aria-label="Close">
@@ -208,6 +208,7 @@
         <div class="alert alert-warning" role="alert">
           <p> Are you sure you want to delete {{selectedCluster?.cluster_id}}?</p>
           This will also delete the virtual machines:
+          <br>
           <p>{{selectedCluster?.master_instance.name}}</p>
           <p *ngFor="let vm of selectedCluster?.worker_instances"><span
             *ngIf="vm.status != VirtualMachineStates.staticDELETED">{{vm.name}}</span></p>

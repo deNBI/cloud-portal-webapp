@@ -33,12 +33,9 @@ export class WorkerBatch {
   }
 
   public setNewScalingDownWorkerCount(): void {
-    console.log(this.worker_count, this.running_worker, this.delete_count)
     this.worker_count = this.worker_count - this.delete_count;
     this.running_worker = this.running_worker - this.delete_count
     this.delete_count = 0;
-    console.log(this.worker_count, this.running_worker, this.delete_count)
-
   }
 
   public setNewScalingUpWorkerCount(): void {
@@ -90,6 +87,18 @@ export class Clusterinfo {
     this.master_instance_openstack_id = cl.master_instance_openstack_id;
     this.set_worker_baches(cl.worker_batches)
     this.sortWorkerByStatus()
+  }
+
+  public setScaleDownBatchesCount(): void {
+    this.worker_batches.forEach((batch: WorkerBatch): void => {
+      batch.setNewScalingDownWorkerCount()
+      if (batch.worker_count === 0) {
+        this.worker_batches.splice(this.worker_batches.indexOf(batch))
+        this.setScaleDownBatchesCount()
+      }
+
+    })
+
   }
 
   public create_new_batch(): void {
