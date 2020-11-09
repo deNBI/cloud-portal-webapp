@@ -273,8 +273,8 @@
                     <div class="col-md-2"></div>
                     <div class="col-md-10">
                       <button class="btn btn-light" (click)="toggleShowAddVol();"
-                              *ngIf=" !((selectedProjectVolumesUsed + volumesToMount?.length)
-                    >= selectedProjectVolumesMax) &&showAddVol && showAttachVol && (selectedProjectDiskspaceUsed + getStorageInList() < selectedProjectDiskspaceMax)"
+                              *ngIf=" !((selectedProjectRessources.used_volumes + volumesToMount?.length)
+                    >= selectedProjectRessources.volume_counter) &&showAddVol && showAttachVol && (selectedProjectRessources.used_volume_storage + getStorageInList() <= selectedProjectRessources.max_volume_storage)"
                               id="openAddVolumeFormButton">
                         New Volume <span class="fa fa-plus-circle"></span>
                       </button>
@@ -318,17 +318,18 @@
                                  style="height: auto"
                                  id="volume_space" name="vm_volume_storage"
                                  class="form-control"
-                                 type="number" [max]="selectedProjectDiskspaceMax - selectedProjectDiskspaceUsed"
+                                 type="number"
+                                 [max]="selectedProjectRessources.max_volume_storage - selectedProjectRessources.used_volume_storage"
                                  placeholder="e.g 8"
                                  appMinAmount="0"
-                                 appMaxAmount="{{selectedProjectDiskspaceMax - selectedProjectDiskspaceUsed}}"
+                                 appMaxAmount="{{selectedProjectRessources.max_volume_storage - selectedProjectRessources.used_volume_storage}}"
                                  appInteger
                                  [ngClass]="{
                                 'is-invalid': !this.checkStorageNumber() && (f.controls.vm_volume_storage?.dirty || f.controls.vm_volume_storage?.touched),
                                 'is-valid': this.checkStorageNumber() && (f.controls.vm_volume_storage?.dirty || f.controls.vm_volume_storage?.touched)
                                 }">
                           <div class="input-group-append" style="height: auto"><span
-                            class="input-group-text"> GB (max {{selectedProjectDiskspaceMax - selectedProjectDiskspaceUsed}}
+                            class="input-group-text"> GB (max {{selectedProjectRessources.max_volume_storage - selectedProjectRessources.used_volume_storage}}
                             )
                                     </span></div>
                         </div>
@@ -362,17 +363,18 @@
 
                   </div>
                   <div class=" form-group col-md-12 row"
-                       *ngIf="(((this.selectedProjectVolumesUsed + this.volumesToMount?.length)
-                    >= this.selectedProjectVolumesMax) || ((this.selectedProjectDiskspaceUsed + getStorageInList()) >= this.selectedProjectDiskspaceMax))">
+                       *ngIf="(((this.selectedProjectRessources.used_volumes + this.volumesToMount?.length)
+                    >= this.selectedProjectRessources.volume_counter) || ((this.selectedProjectRessources.used_volume_storage + getStorageInList()) >= this.selectedProjectRessources.max_volume_storage))">
                     <div class="col-md-2"></div>
                     <div class="form-group col-md-10 row">
-                      <div class="alert alert-info " *ngIf="(this.selectedProjectVolumesUsed + this.volumesToMount?.length)
-                    >= this.selectedProjectVolumesMax"> You can't create a new volume, because you have reached
+                      <div class="alert alert-info " *ngIf="(this.selectedProjectRessources.used_volumes  + this.volumesToMount?.length)
+                    >= this.selectedProjectRessources.volume_counter"> You can't create a new volume, because you have
+                        reached
                         the maximum number of volumes available
                         for this project.
                       </div>
                       <div class="alert alert-info "
-                           *ngIf="(this.selectedProjectDiskspaceUsed + getStorageInList() >= this.selectedProjectDiskspaceMax)">
+                           *ngIf="(this.selectedProjectRessources.used_volume_storage + getStorageInList()) >= this.selectedProjectRessources.max_volume_storage">
                         You can't create a new volume, because you have reached the maximum amount of storage (in GB)
                         available for this project.
                       </div>
