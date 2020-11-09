@@ -376,7 +376,7 @@ export class ClusterOverviewComponent extends AbstractBaseClasse implements OnIn
 
           this.clusters[idx] = new Clusterinfo(updated_cluster);
           if (cluster === this.selectedCluster) {
-            this.selectedCluster === this.clusters[idx]
+            this.selectedCluster = this.clusters[idx]
           }
           cluster = this.clusters[idx]
 
