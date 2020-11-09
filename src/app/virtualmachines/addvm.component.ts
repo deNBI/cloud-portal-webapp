@@ -129,33 +129,6 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
    */
   selectedProjectClient: Client;
 
-  /**
-   * Selected Project volumeStorage max.
-   */
-  selectedProjectDiskspaceMax: number;
-
-  /**
-   * Selected Project volumeStorage used.
-   */
-  selectedProjectDiskspaceUsed: number;
-
-  /**
-   * Selected Project volumes max.
-   */
-  selectedProjectVolumesMax: number;
-
-  /**
-   * Selected Project volumes used.
-   */
-  selectedProjectVolumesUsed: number;
-
-  selectedProjectCoresUsed: number;
-
-  selectedProjectCoresMax: number;
-
-  selectedProjectRamMax: number;
-
-  selectedProjectRamUsed: number;
   detached_project_volumes: Volume[] = [];
 
   newCores: number = 0;
@@ -310,8 +283,8 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
   checkStorageNumber(): boolean {
     if (!(this.volumeStorage > 0)) {
       return false;
-    } else if ((this.selectedProjectDiskspaceUsed + this.getStorageInList() + this.volumeStorage)
-      > this.selectedProjectDiskspaceMax) {
+    } else if ((this.selectedProjectRessources.used_volume_storage + this.getStorageInList() + this.volumeStorage)
+      > this.selectedProjectRessources.max_volume_storage) {
       return false
     } else {
       return true;
