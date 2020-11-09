@@ -405,17 +405,19 @@ export class ClusterOverviewComponent extends AbstractBaseClasse implements OnIn
 
     setTimeout(
       (): void => {
+        const idx: number = this.clusters.indexOf(cluster);
 
         // tslint:disable-next-line:max-line-length
         this.subscription.add(this.virtualmachineservice.getClusterInfo(cluster.cluster_id).subscribe((updated_cluster: Clusterinfo): void => {
-          this.clusters[this.clusters.indexOf(cluster)] = new Clusterinfo(updated_cluster);
+          this.clusters[idx] = new Clusterinfo(updated_cluster);
           if (is_selected_cluster) {
-            this.selectedCluster = updated_cluster;
+            this.selectedCluster = this.clusters[idx];
           }
+          cluster = this.clusters[idx];
 
           // tslint:disable-next-line:max-line-length
-          if (updated_cluster.status !== 'Running' && updated_cluster.status !== VirtualMachineStates.DELETING && updated_cluster.status !== VirtualMachineStates.DELETED) {
-            this.check_status_loop(updated_cluster, final_state, is_selected_cluster)
+          if (cluster.status !== 'Running' && cluster.status !== VirtualMachineStates.DELETING && cluster.status !== VirtualMachineStates.DELETED) {
+            this.check_status_loop(cluster, final_state, is_selected_cluster)
 
           } else {
 
