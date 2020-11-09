@@ -38,7 +38,7 @@ jobs:
         with:
            token: ${{ secrets.GITHUB_TOKEN }}
            commit-message: fix(Linting):blacked code
-           title: Automated TsLint Linting
+           title: Automated TsLint Linting [${{github.ref}}]
            body: |
                         New Linting
                         - Fixed Linting Errors

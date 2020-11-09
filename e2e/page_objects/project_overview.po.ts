@@ -34,8 +34,7 @@ export class ProjectOverview {
   private static SUBMITTED_SHOW_INFORMATION_BTN: string = 'submitted_show_information_btn'
   private static DISSEMINATION_PLATFORM_LIST: string = 'dissemination_platforms';
   private static DISSEMINATION_INFORMATION_LIST: string = 'dissemination_information';
-  private static DEFAULT_INFORMATION_DISSEMINATION_STRING: string = 'Project affiliation,Institution,Workgroup,Project Type,' +
-    'Title,Resources,Lifetime,PI Name,Description';
+  private static DEFAULT_INFORMATION_DISSEMINATION_STRING: string = 'Title, Research Topics, Description, Resources, Lifetime, Project Type, Name of PI, Institution, Workgroup, Project affiliation';
   private static DEFAULT_PLATFORM_DISSEMINATION_STRING: string = 'de.NBI Platforms ,Twitter';
   private static PI_ROW: string = 'id_pi_row';
   private static REMOVE_APPLICATION_BUTTON: string = 'remove_application_button';
