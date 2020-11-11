@@ -14,6 +14,7 @@ export class VirtualMachineStates {
   private static readonly _RESTARTING: string = 'RESTARTING';
   private static readonly _PREPARE_PLAYBOOK_BUILD: string = 'PREPARE_PLAYBOOK_BUILD';
   private static readonly _BUILD_PLAYBOOK: string = 'BUILD_PLAYBOOK';
+  private static readonly _PLAYBOOK_FAILED: string = 'PLAYBOOK_FAILED';
   private static readonly _PORT_CLOSED: string = 'PORT_CLOSED';
   private static readonly _DELETING: string = 'DELETING';
   private static readonly _DELETING_FAILED: string = 'DELETING FAILED';
@@ -40,7 +41,8 @@ export class VirtualMachineStates {
     VirtualMachineStates._DELETED,
     VirtualMachineStates._SHUTOFF,
     VirtualMachineStates._NOT_FOUND,
-    VirtualMachineStates._ERROR
+    VirtualMachineStates._ERROR,
+    VirtualMachineStates._PLAYBOOK_FAILED
   ];
 
   static get BUILD(): string {
@@ -53,6 +55,10 @@ export class VirtualMachineStates {
 
   static get BUILD_PLAYBOOK(): string {
     return this._BUILD_PLAYBOOK;
+  }
+
+  static get PLAYBOOK_FAILED(): string {
+    return this._PLAYBOOK_FAILED;
   }
 
   static get DELETING(): string {
@@ -131,15 +137,19 @@ export class VirtualMachineStates {
     return VirtualMachineStates.BUILD_PLAYBOOK;
   }
 
+  public get staticPLAYBOOK_FAILED(): string {
+    return VirtualMachineStates.PLAYBOOK_FAILED;
+  }
+
   public get staticBUILD(): string {
     return VirtualMachineStates.BUILD;
   }
 
-   public get staticCHECKING_CONNECTION(): string {
+  public get staticCHECKING_CONNECTION(): string {
     return VirtualMachineStates.CHECKING_CONNECTION;
   }
 
-    public get staticPORT_CLOSED(): string {
+  public get staticPORT_CLOSED(): string {
     return VirtualMachineStates.PORT_CLOSED;
   }
 
