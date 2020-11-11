@@ -130,7 +130,8 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
   selectedProjectClient: Client;
 
   detached_project_volumes: Volume[] = [];
-
+  DETACHED_VOL_SWITCH_MAX: number = 5;
+  selected_detached_vol: Volume;
   newCores: number = 0;
   newRam: number = 0;
   newVms: number = 0;
@@ -317,6 +318,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
   }
 
   addAttachVolume(vol: Volume): void {
+    this.selected_detached_vol = null;
     this.volumesToAttach.push(vol);
     this.detached_project_volumes.splice(this.detached_project_volumes.indexOf(vol), 1)
     if (this.detached_project_volumes.length === 0) {
@@ -325,6 +327,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
   }
 
   removeAttachVolume(vol: Volume): void {
+    this.selected_detached_vol = null;
     const idx: number = this.volumesToAttach.indexOf(vol);
     if (idx !== -1) {
       this.volumesToAttach.splice(idx, 1);
