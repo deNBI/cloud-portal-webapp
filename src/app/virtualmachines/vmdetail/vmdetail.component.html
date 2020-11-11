@@ -5,24 +5,26 @@
 <div *ngIf="!isLoaded && !errorMessage" class="loader"></div>
 
 <div class="animated fadeIn" *ngIf="isLoaded">
-  <div class="row" *ngIf="virtualMachine?.still_used_confirmation_requested">
-    <div class="col-3"></div>
 
-    <div class="alert alert-danger col-6" role="alert">
-      <strong>This machine has been running for {{virtualMachine?.days_running}} days!<br> Please confirm that you still
-        need this machine.<br>
-        Otherwise, the machine is scheduled for deletion starting from {{virtualMachine?.getTerminationStartDateString()}}.</strong>
-      <br>
-      <button (click)="setVmNeeded()" type="button" class="btn btn-success" style="width:100%;" id="still_need_btn">
-        <strong>Still needed</strong>
-      </button>
-    </div>
-    <div class="col-3"></div>
-  </div>
   <div class="row">
     <div class="col-12">
       <div class="card" style=" ">
         <div class="card-header"><span class="font-weight-bold text-muted">{{virtualMachine?.name}}</span></div>
+        <div class="card-body" *ngIf="virtualMachine?.still_used_confirmation_requested">
+          <div class="alert alert-danger">
+            <strong>This machine has been running for {{virtualMachine?.days_running}} days!<br> Please confirm that you still
+              need this machine.<br>
+              Otherwise, the machine is scheduled for deletion starting from {{virtualMachine?.getTerminationStartDateString()}}.</strong>
+            <br>
+            <p>
+              If this machine is no longer needed, back up your data if necessary and shut down the machine and delete it.
+              Stopping the machine alone does not release the used resources. The same may also apply to old machines that are still running and no longer needed.
+            </p>
+            <button (click)="setVmNeeded()" type="button" class="btn btn-success" style="width:100%;" id="still_need_btn">
+              <strong>Still needed</strong>
+            </button>
+          </div>
+        </div>
         <div class="card-body">
 
           <app-virtualmachineinfo [vm]="virtualMachine"></app-virtualmachineinfo>
