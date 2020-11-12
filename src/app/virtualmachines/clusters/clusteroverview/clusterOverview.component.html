@@ -95,19 +95,20 @@
                   {{cluster?.launch_date}}
                 </div>
               </div>
-              <div class="row" style="margin-top: 10px; margin-bottom:5px;">
+              <div class="row" style="margin-top: 10px; margin-bottom:5px;" *ngIf="cluster.status !== VirtualMachineStates.staticDELETED">
                 <div class="col-12" style="margin-left: 10px">
                   <div style="font-size: small">
                     <strong *ngIf="cluster.instances_count > 0">Inst:</strong> {{cluster.instances_count}}
                   </div>
                 </div>
-                <div class="col-12" style="margin-left: 10px">
+                <div class="col-12" style="margin-left: 10px" *ngIf="cluster.status !== VirtualMachineStates.staticDELETED">
                   <div *ngFor="let batch of cluster.worker_batches" style="font-size: small">
+                    <span *ngIf="batch.worker_count > 0">
                     <strong>Batch {{batch.index}}: </strong>    {{batch.running_worker}}/{{batch.worker_count}} VMs
-                    active
+                    active</span>
                   </div>
                 </div>
-                <div class="col-12" style="margin-left: 10px">
+                <div class="col-12" style="margin-left: 10px" *ngIf="cluster.status !== VirtualMachineStates.staticDELETED ">
                   <div style="font-size: small">
                     <strong *ngIf="cluster?.public_ip">Public IP:</strong> {{cluster?.public_ip}}
                   </div>
@@ -196,7 +197,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">Delete VM</h4>
+        <h4 class="modal-title">Delete Cluster</h4>
         <button type="button" class="close" style="cursor: pointer"
                 (click)="verifyModal.hide()"
                 aria-label="Close">
@@ -207,6 +208,7 @@
         <div class="alert alert-warning" role="alert">
           <p> Are you sure you want to delete {{selectedCluster?.cluster_id}}?</p>
           This will also delete the virtual machines:
+          <br>
           <p>{{selectedCluster?.master_instance.name}}</p>
           <p *ngFor="let vm of selectedCluster?.worker_instances"><span
             *ngIf="vm.status != VirtualMachineStates.staticDELETED">{{vm.name}}</span></p>
@@ -249,7 +251,7 @@
                    role="alert">
                 <strong>wget {{SCALING_SCRIPT_LINK}}</strong></div>
               <div class="alert alert-light"
-                   role="alert"><strong>python3 scaling_v0.1.0.py </strong>
+                   role="alert"><strong>python3 {{SCALING_SCRIPT_NAME}} </strong>
               </div>
             </div>
           </div>
@@ -390,17 +392,16 @@
             </button>
           </div>
           <div class="modal-body">
-            <div class="alert-info row" *ngIf="!max_scale_count_loaded"><strong> Calculating maximum additional
+            <div class="alert alert-info " role="alert" *ngIf="!max_scale_count_loaded"><strong> Calculating maximum additional
               workers..
               <i
                 class="fa fa-spinner fa-spin" style="font-size:24px"></i></strong></div>
 
             <div *ngIf="max_scale_count_loaded">
-              <div class="modal-body">
-                <div class="alert alert-warning" role="alert">
+                <div class="alert alert-warning" role="alert" *ngIf="!created_new_batch">
                   <p>Which batch should be scaled up (only one batch at a time is possible)?</p></div>
 
-                <div class="table-responsive">
+                <div class="table-responsive" *ngIf="!created_new_batch">
                   <table class="table table-hover" style="word-wrap: break-word;table-layout: fixed">
                     <thead>
                     <tr>
@@ -459,10 +460,95 @@
 
                     </tbody>
                   </table>
+                  <div>
+                    <button
+
+                      type="button" style="float: left;margin-bottom: 5px;"
+
+
+                      class="btn btn-primary"
+                      (click)="createNewBatchSelectedCluster();">
+                      Add new Worker Batch
+                    </button>
+                  </div>
                 </div>
+                 <div class="alert alert-info" role="alert" *ngIf="created_new_batch && (!projectDataLoaded || !flavors_loaded)"><strong> Get more possible flavors..
+              <i
+                class="fa fa-spinner fa-spin" style="font-size:24px"></i></strong></div>
+                <accordion  *ngIf="created_new_batch && projectDataLoaded && flavors_loaded">
+
+                    <accordion-group [isOpen]="true" (isOpenChange)="resizeFix()">
+                      <div accordion-heading style="width: 100%; cursor: pointer"><strong
+                      >Batch {{selectedBatch.index}} </strong>
+
+                      </div>
+                      <div class="alert alert-warning"
+                           *ngIf="flavors_usable.length < 1 && !selectedBatch.flavor">Not
+                        enough resources available
+                        to start another worker batch with a different flavor!
+                      </div>
+                      <span *ngIf="flavors_usable.length > 0 || selectedBatch.flavor">
+
+                      <div class="form-group row col-md-12">
+                        <label class="col-md-2 form-control-label"><strong>Flavor*</strong></label>
+                        <div class="col-md-10">
+
+
+                          <app-flavor-detail [selectedFlavor]="selectedBatch.flavor"
+                                             [flavors]="flavors_usable"
+                                             (selectedFlavorChange)="selectedBatch.flavor=$event;calcMaxWorkerInstancesByFlavor();"
+                          ></app-flavor-detail>
+
+
+                        </div>
+
+
+                      </div>
+
+
+                      <div class="alert alert-danger" role="alert" *ngIf="!selectedBatch.flavor">
+                        Please first select a worker flavor before you can set the number of workers.
+                      </div>
+                      <div class="form-group row col-md-12">
+
+                        <label class="col-md-2 form-control-label"><strong>Count*
+                          <span *ngIf="selectedBatch.max_worker_count ">(max {{selectedBatch.max_worker_count}})</span></strong></label>
+                        <div class="col-md-10">
+
+
+                          <input class="form-control" id="workerInstancesCount_{{selectedBatch.index}}"
+                                 [disabled]="!selectedBatch.flavor"
+                                 name="workerInstancesCount_{{selectedBatch.index}}"
+                                 placeholder="e.g 1"
+
+                                 type="number" min="1" [max]="selectedBatch.max_worker_count" step="1"
+                                 [(ngModel)]="selectedBatch.upscale_count" required
+                                 appMinAmount="1" appMaxAmount="{{selectedBatch.max_worker_count}}"
+                                 appInteger>
+                        </div>
+
+                      </div></span>
+                      <button
+
+                        type="button" style="float: left;margin-bottom: 5px;"
+                        (click)="removeNewBatchSelectedCluster()"
+
+
+                        class="btn btn-danger"
+                      >
+                        Cancel
+                      </button>
+
+
+                    </accordion-group>
+
+
+                </accordion>
               </div>
+
+          </div>
               <div class="modal-footer">
-                <div class="alert col-md-12" *ngIf="max_scale_count_loaded"
+                <div class="alert col-md-12" *ngIf="max_scale_count_loaded && !created_new_batch ||(created_new_batch && projectDataLoaded && flavors_loaded)"
                      [ngClass]="{'alert-danger':!scaling_warning_read,'alert-success':scaling_warning_read}">
                   <p> This will only start the number of selected machines with suitable settings.
                     After initiating the startup of the new machines wait until they are active, you can follow the
@@ -479,7 +565,7 @@
                        role="alert">
                     <strong>wget {{SCALING_SCRIPT_LINK}}</strong></div>
                   <div class="alert alert-light"
-                       role="alert"><strong>python3 scaling_v0.1.0.py  </strong>
+                       role="alert"><strong>python3 {{SCALING_SCRIPT_NAME}}  </strong>
                   </div>
 
                   <div class="alert alert-info"
