@@ -34,7 +34,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 
   filteredMembers: object = null;
   selectedMember: object[] = [];
-  selectedMemberMails: string[] = [];
+
 
   filterChanged: Subject<string> = new Subject<string>();
   isLoaded: boolean = false;
@@ -47,6 +47,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
   STATUS_APPROVED: number = 2;
 
   selectedProjectType: string = 'ALL';
+  selectedProjectForUser: Project = null;
 
   // modal variables for User list
   public usersModalProjectMembers: ProjectMember[] = [];
@@ -353,9 +354,14 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
                      send?: any, alternative_news_text?: string, selectedMember?: object): void {
     this.emailStatus = 0;
     if (this.selectedProjectType === 'USER') {
-      this.selectedProjectType = this.selectedMember.join(',');
+      let tempMailList: string[] = [];
+      this.selectedMember.forEach((member: object) => {
+        tempMailList.push(member['mail']);
+      });
+      this.selectedProjectType = tempMailList.join(',');
     }
     const chosenTags: string = this.selectedTags.toString();
+    console.log(this.selectedProjectType);
     this.facilityservice.sendMailToFacility(
       facility, encodeURIComponent(subject), encodeURIComponent(message), this.selectedProjectType,
       encodeURIComponent(reply), send, encodeURIComponent(alternative_news_text), chosenTags).subscribe(
@@ -381,6 +387,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
   {
     if (!this.selectedMember.includes(member)){
       this.selectedMember.push(member);
+
     }
   }
 
