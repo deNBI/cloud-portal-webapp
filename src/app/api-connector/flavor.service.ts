@@ -14,11 +14,11 @@ export class FlavorService {
     constructor(private http: HttpClient) {
     }
 
-    getFlavors(project_id: number): Observable<Flavor[]> {
-        return this.http.get<Flavor[]>(`${ApiSettings.getApiBaseURL()}projects/${project_id}/flavors/`, {
-            withCredentials: true
+    getFlavors(project_id: number | string): Observable<Flavor[]> {
+      return this.http.get<Flavor[]>(`${ApiSettings.getApiBaseURL()}projects/${project_id}/flavors/`, {
+        withCredentials: true
 
-        })
+      })
     }
 
     getListOfTypesAvailable(): Observable<FlavorType[]> {
