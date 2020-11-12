@@ -54,6 +54,15 @@ export class VirtualmachineService {
     })
   }
 
+  scaleClusterNewBatch(cluster_id: string, worker_batch: WorkerBatch): Observable<any> {
+    const params: HttpParams = new HttpParams()
+      .set('worker_batch', JSON.stringify(worker_batch))
+
+    return this.http.post(`${ApiSettings.getApiBaseURL()}clusters/${cluster_id}/scale-up/new/`, params, {
+      withCredentials: true
+    })
+  }
+
   scaleDownCluster(cluster_id: string, worker_batches: WorkerBatch[]): Observable<any> {
     const params: HttpParams = new HttpParams()
       .set('worker_batches', JSON.stringify(worker_batches))
