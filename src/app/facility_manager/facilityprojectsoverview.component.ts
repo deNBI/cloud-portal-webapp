@@ -47,9 +47,11 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
   STATUS_APPROVED: number = 2;
 
   selectedProjectType: string = 'ALL';
-  selectedProjectForUser: Project = null;
+
 
   // modal variables for User list
+  public selectedProjectForSearch: Project;
+  public
   public usersModalProjectMembers: ProjectMember[] = [];
   public usersModalProjectID: number;
   public usersModalProjectName: string;

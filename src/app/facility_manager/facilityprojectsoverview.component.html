@@ -262,7 +262,7 @@
             </div>
 
             <div *ngIf="selectedProjectType === 'USER'">
-              <div class="container-fluid">
+              <!--<div class="container-fluid">
                 <div class="row">
                   <p style=" margin-bottom: 15px;">Search for a user to your project by providing at least
                     four characters of his name:</p>
@@ -307,7 +307,48 @@
                     </tbody>
                   </table>
                 </div>
+              </div>-->
+
+              <div class="form-group row">
+
+                <label
+                  class="col-md-12 control-label"><strong>Which project members should receive the email?</strong></label>
+                <div class="col-md-12">
+                  <select class="form-control" [(ngModel)]="selectedProjectForSearch"
+                          (ngModelChange)="getMembesOfTheProject(selectedProjectForSearch.Id, selectedProjectForSearch.Name)"
+                          name="selectProjectForSearch" id="selectedProjectForSearch">
+                    <option *ngFor="let project of projects " value="{{project}}">
+                      {{project?.Name}} ({{project?.Id}})
+                    </option>
+                  </select> <!--redirecting yet??-->
+                </div>
               </div>
+              <div class="form-group row" *ngIf="selectedProjectForSearch">
+                <div class="table-responsive">
+                  <table *ngIf="usersModalProjectMembers?.length > 0"
+                         class="table table-bordered table-striped table-sm">
+                    <thead>
+
+                    <th></th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    </thead>
+                    <tbody *ngFor="let member of usersModalProjectMembers">
+                    <td>
+                      <button style="padding: 5px; margin: 5px" (click)="setSelectedUserForMail(member)"
+                              class="btn btn-success" id="add_selected_member_for_mail_btn">
+                        <i class="fa fa-plus"></i> Select
+                      </button>
+                    </td>
+                    <td>{{member['firstName']}}</td>
+                    <td>{{member['lastName']}}</td>
+                    <td>{{member['mail']}}</td>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
               <div class="form-group row" *ngIf="selectedMember">
                 <label class="col-md-12 control-label"><strong>Selected User</strong></label>
               </div>
