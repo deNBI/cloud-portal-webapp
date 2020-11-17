@@ -736,7 +736,14 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
     })
   }
 
-  addDoi(): void {
+  addDoi(from?: string): void {
+    if (from === 'modal'){
+      this.document.getElementById('add_doi_btn_in_modal').toggleAttribute('disabled');
+      this.document.getElementById('modal_doi_input_field').toggleAttribute('disabled');
+    } else {
+      this.document.getElementById('add_doi_btn').toggleAttribute('disabled');
+      this.document.getElementById('doi_input_field').toggleAttribute('disabled');
+    }
     if (this.isNewDoi()) {
       this.groupService.addGroupDoi(this.application_id, this.newDoi).subscribe(
         (dois: Doi[]): void => {
@@ -745,8 +752,18 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
           this.dois = dois;
         },
         (): void => {
-          this.doiError = `DOI ${this.newDoi} was already added by another Project!`
-        })
+          this.doiError = `DOI ${this.newDoi} was already added by another Project!`;
+        }, (): void => {
+          if(from === 'modal'){
+            this.document.getElementById('add_doi_btn_in_modal').toggleAttribute('disabled');
+            this.document.getElementById('modal_doi_input_field').toggleAttribute('disabled');
+          } else {
+            this.document.getElementById('add_doi_btn').toggleAttribute('disabled');
+            this.document.getElementById('doi_input_field').toggleAttribute('disabled');
+          }
+          this.newDoi = "";
+        });
+      this.newDoi = 'Adding of DOI in progress...';
     }
 
   }
