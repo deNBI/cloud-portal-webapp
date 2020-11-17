@@ -24,6 +24,8 @@ export class ResourcesComponent implements OnInit {
   public managerFacilities: [string, number][];
   ramUpdateList: { [id: string]: boolean } = {};
   coresUpdateList: { [id: string]: boolean } = {};
+  RAM_TAB: number = 0;
+  RAM_TAB_ACTIVE: boolean = true;
 
   /**
    * Chosen facility.
@@ -48,6 +50,25 @@ export class ResourcesComponent implements OnInit {
 
   constructor(private facilityService: FacilityService, private exportAsService: ExportAsService) {
   }
+
+  setAllTabsFalse(): void {
+    this.RAM_TAB_ACTIVE = false;
+
+  }
+
+  setTab(tab_num: number): void {
+
+    this.setAllTabsFalse()
+    switch (tab_num) {
+      case this.RAM_TAB:
+        this.RAM_TAB_ACTIVE = true;
+        break;
+
+      default:
+        break;
+    }
+  }
+
   addCoreFactor(cores: string | number, factor: string | number, description: string): void {
     if (cores && factor) {
       const re: any = /\,/gi;
@@ -63,20 +84,7 @@ export class ResourcesComponent implements OnInit {
     }
   }
 
-  addRamFactor(ram: string | number, factor: string | number, description: string): void {
-    if (ram && factor) {
-      const re: any = /\,/gi;
-      factor = factor.toString().replace(re, '.');
-      // tslint:disable-next-line:max-line-length
-      this.facilityService.addRamFactor(this.selectedFacility['FacilityId'], ram, factor, description).subscribe((res: RamFactor[]): void => {
-        this.ramFactors = res;
-        this.ramFactors.forEach((ramFactor: RamFactor): void => {
-          this.ramUpdateList[ramFactor.id] = false;
-        })
-        this.getSelectedFacilityResources()
-      })
-    }
-  }
+
 
   onChangeSelectedFacility(): void {
     this.getSelectedFacilityResources()
@@ -98,13 +106,7 @@ export class ResourcesComponent implements OnInit {
     })
   }
 
-  public deleteRamFactor(id: string | number): void {
-    this.facilityService.deleteRamFactor(this.selectedFacility['FacilityId'], id).subscribe((res: RamFactor[]): void => {
-      this.ramFactors = res;
-      this.getSelectedFacilityResources()
 
-    })
-  }
 
   public getSelectedFacilityResources(): void {
     this.facilityService.getFacilityResources(this.selectedFacility['FacilityId']).subscribe((res: Resources[]): void => {
@@ -116,15 +118,10 @@ export class ResourcesComponent implements OnInit {
 
   }
 
-  public reloadRamFactor(rf: RamFactor): void {
-    this.facilityService.getRamFactor(this.selectedFacility['FacilityId'], rf.id).subscribe((ramFactor: RamFactor): void => {
-      this.ramFactors[this.ramFactors.indexOf(rf)] = ramFactor;
-    })
-  }
 
   public reloadCoreFactor(cf: CoreFactor): void {
     this.facilityService.getCoreFactor(this.selectedFacility['FacilityId'], cf.id).subscribe((coreFactor: CoreFactor): void => {
-      this.coreFactors[this.coreFactors.indexOf(cf)] = coreFactor;
+      this.coreFactors[this.coreFactors.indexOf(cf)] = new CoreFactor(coreFactor);
     })
   }
 
@@ -145,20 +142,11 @@ export class ResourcesComponent implements OnInit {
 
   }
 
-  public updateRamFactor(rf: RamFactor): void {
-
-    this.facilityService.updateRamFactor(this.selectedFacility['FacilityId'], rf).subscribe((ramFactor: RamFactor): void => {
-      this.ramFactors[this.ramFactors.indexOf(rf)] = ramFactor;
-      this.getSelectedFacilityResources()
-
-    })
-
-  }
 
   public updateCoreFactor(cf: CoreFactor): void {
 
     this.facilityService.updateCoreFactor(this.selectedFacility['FacilityId'], cf).subscribe((coreFactor: CoreFactor): void => {
-      this.coreFactors[this.coreFactors.indexOf(cf)] = coreFactor;
+      this.coreFactors[this.coreFactors.indexOf(cf)] = new CoreFactor(coreFactor);
       this.getSelectedFacilityResources()
 
     })
