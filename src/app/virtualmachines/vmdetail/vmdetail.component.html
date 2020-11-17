@@ -232,19 +232,6 @@
             </div>
           </div>
         </div>
-        <div class="card-footer" *ngIf="conda_logs">
-          <div class="btn-group btn-group-justified">
-            <button type="button" class="btn btn-secondary" (click)="conda_logs.saveAsPDF()" style="margin-right: 5px">
-
-              Download PDF Logs
-            </button>
-            <button type="button" class="btn btn-secondary" (click)="conda_logs.saveAsTxt()">
-
-              Download txt Logs
-            </button>
-
-          </div>
-        </div>
       </div>
 
       <div class="card" style=" " *ngIf="virtualMachine?.volumes.length > 0">
@@ -378,6 +365,7 @@
 
           </div>
         </div>
+
         <div class="card-header"><span class="font-weight-bold text-muted">User management</span></div>
         <div class="card-body">
           <div class="row">
@@ -433,6 +421,26 @@
 
           </div>
         </div>
+      </div>
+
+      <div class="card" *ngIf="conda_logs['status'] !== null">
+        <div class="card-header">
+          Ansible/Conda/Research-environment logs
+        </div>
+        <div class="card-body">
+          <div class="btn-group btn-group-justified">
+            <button type="button" class="btn btn-secondary" (click)="conda_logs.saveAsPDF()" style="margin-right: 5px">
+
+              Download PDF Logs
+            </button>
+            <button type="button" class="btn btn-secondary" (click)="conda_logs.saveAsTxt()">
+
+              Download txt Logs
+            </button>
+
+          </div>
+        </div>
+
       </div>
 
 
