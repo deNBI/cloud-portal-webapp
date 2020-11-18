@@ -249,14 +249,7 @@ export class FacilityService {
     });
   }
 
-  /**
-   * Add a new RamFactor
-   * @param {number | string} facility
-   * @param {number | string} ram
-   * @param {number | string} factor
-   * @param {string} description
-   * @returns {Observable<any>}
-   */
+
   addRamFactor(facility: number | string, newFactor: RamFactor): Observable<RamFactor[]> {
     const params: HttpParams = new HttpParams().set('ramfactor', JSON.stringify(newFactor));
 

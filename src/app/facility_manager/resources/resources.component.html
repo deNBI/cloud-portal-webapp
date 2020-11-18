@@ -132,7 +132,7 @@
           Please enter a valid number for cores factor!
         </div>
         <div class="tab-content">
-          <div *ngIf="RAM_TAB_ACTIVE" class="table-responsive">
+          <div *ngIf="RAM_TAB_ACTIVE">
             <app-ramfactor-overview [facility_id]="selectedFacility['FacilityId']"></app-ramfactor-overview>
           </div>
         </div>

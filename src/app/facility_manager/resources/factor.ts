@@ -1,7 +1,5 @@
 import {ComputecenterComponent} from '../../projectmanagement/computecenter.component';
 
-
-
 /**
  * Base class for Factors.
  */
@@ -9,7 +7,7 @@ export abstract class Factor {
   id: string;
   factor: number;
   compute_center: ComputecenterComponent;
-  description: string;
+  description: string = '';
   public: boolean;
 
   constructor(factor: Factor) {
