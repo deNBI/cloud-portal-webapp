@@ -737,7 +737,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   }
 
   addDoi(from?: string): void {
-    if (from === 'modal'){
+    if (from === 'modal') {
       this.document.getElementById('add_doi_btn_in_modal').toggleAttribute('disabled');
       this.document.getElementById('modal_doi_input_field').toggleAttribute('disabled');
     } else {
@@ -762,7 +762,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
             this.document.getElementById('add_doi_btn').toggleAttribute('disabled');
             this.document.getElementById('doi_input_field').toggleAttribute('disabled');
           }
-          this.newDoi = "";
+          this.newDoi = '';
         });
       this.newDoi = 'Adding of DOI in progress...';
     }
