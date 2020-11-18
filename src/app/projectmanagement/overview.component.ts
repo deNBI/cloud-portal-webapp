@@ -755,7 +755,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
           this.doiError = `DOI ${this.newDoi} was already added by another Project!`;
         },
         (): void => {
-          if(from === 'modal'){
+          if (from === 'modal') {
             this.document.getElementById('add_doi_btn_in_modal').toggleAttribute('disabled');
             this.document.getElementById('modal_doi_input_field').toggleAttribute('disabled');
           } else {
