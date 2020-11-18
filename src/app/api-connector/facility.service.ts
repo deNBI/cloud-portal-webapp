@@ -5,6 +5,9 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import {RamFactor} from '../facility_manager/resources/ram-factor';
 import {CoreFactor} from '../facility_manager/resources/core-factor';
 import {Application} from '../applications/application.model/application.model';
+import {GpuFactor} from '../facility_manager/resources/gpu-factor';
+import {VolumeStorageFactor} from '../facility_manager/resources/volume-storage-factor';
+import {ObjectStorageFactor} from '../facility_manager/resources/object-storage-factor';
 
 /**
  * Service which provides methods for the facilities.
@@ -238,11 +241,34 @@ export class FacilityService {
     });
   }
 
-
   addRamFactor(facility: number | string, newFactor: RamFactor): Observable<RamFactor[]> {
     const params: HttpParams = new HttpParams().set('ramfactor', JSON.stringify(newFactor));
 
     return this.http.post<RamFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/ramFactors/`, params, {
+      withCredentials: true
+    });
+  }
+
+  addGpuFactor(facility: number | string, gpuFactor: GpuFactor): Observable<GpuFactor[]> {
+    const params: HttpParams = new HttpParams().set('gpufactor', JSON.stringify(gpuFactor));
+
+    return this.http.post<GpuFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/gpuFactors/`, params, {
+      withCredentials: true
+    });
+  }
+
+  addVolumeStorageFactor(facility: number | string, volumeStorageFactor: VolumeStorageFactor): Observable<VolumeStorageFactor[]> {
+    const params: HttpParams = new HttpParams().set('volumeStorageFactor', JSON.stringify(volumeStorageFactor));
+
+    return this.http.post<VolumeStorageFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/volumeStorageFactors/`, params, {
+      withCredentials: true
+    });
+  }
+
+  addObjectStorageFactor(facility: number | string, objectStorageFactor: ObjectStorageFactor): Observable<ObjectStorageFactor[]> {
+    const params: HttpParams = new HttpParams().set('objectStorageFactor', JSON.stringify(objectStorageFactor));
+
+    return this.http.post<VolumeStorageFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/objectStorageFactors/`, params, {
       withCredentials: true
     });
   }
@@ -268,6 +294,27 @@ export class FacilityService {
   getRamFactor(facility: number | string, factor_id: number | string): Observable<RamFactor> {
 
     return this.http.get<RamFactor>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/ramFactors/${factor_id}/`, {
+      withCredentials: true
+    });
+  }
+
+  getGpuFactor(facility: number | string, factor_id: number | string): Observable<GpuFactor> {
+
+    return this.http.get<GpuFactor>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/gpuFactors/${factor_id}/`, {
+      withCredentials: true
+    });
+  }
+
+  getVolumeStorageFactor(facility: number | string, factor_id: number | string): Observable<VolumeStorageFactor> {
+
+    return this.http.get<VolumeStorageFactor>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/volumeStorageFactor/${factor_id}/`, {
+      withCredentials: true
+    });
+  }
+
+  getObjectStorageFactor(facility: number | string, factor_id: number | string): Observable<ObjectStorageFactor> {
+
+    return this.http.get<ObjectStorageFactor>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/objectStorageFactor/${factor_id}/`, {
       withCredentials: true
     });
   }
@@ -315,6 +362,48 @@ export class FacilityService {
   }
 
   /**
+   * Updates the CoreFactor.
+   * @param facility
+   * @param factor
+   */
+  updateGpuFactor(facility: number | string, factor: GpuFactor): Observable<GpuFactor> {
+    const params: HttpParams = new HttpParams().set('factor', JSON.stringify(factor));
+
+    // tslint:disable-next-line:max-line-length
+    return this.http.post<GpuFactor>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/gpuFactors/${factor.id}/`, params, {
+      withCredentials: true
+    });
+  }
+
+  /**
+   * Updates the CoreFactor.
+   * @param facility
+   * @param factor
+   */
+  updateVolumeStorageFactor(facility: number | string, factor: VolumeStorageFactor): Observable<VolumeStorageFactor> {
+    const params: HttpParams = new HttpParams().set('factor', JSON.stringify(factor));
+
+    // tslint:disable-next-line:max-line-length
+    return this.http.post<VolumeStorageFactor>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/volumeStorageFactors/${factor.id}/`, params, {
+      withCredentials: true
+    });
+  }
+
+  /**
+   * Updates the CoreFactor.
+   * @param facility
+   * @param factor
+   */
+  updateObjectStorageFactor(facility: number | string, factor: ObjectStorageFactor): Observable<ObjectStorageFactor> {
+    const params: HttpParams = new HttpParams().set('factor', JSON.stringify(factor));
+
+    // tslint:disable-next-line:max-line-length
+    return this.http.post<ObjectStorageFactor>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/objectStorageFactors/${factor.id}/`, params, {
+      withCredentials: true
+    });
+  }
+
+  /**
    * Deletes an CoreFactor.
    * @param {number | string} facility
    * @param {number | string} factor_id
@@ -323,6 +412,45 @@ export class FacilityService {
   deleteCoreFactor(facility: number | string, factor_id: number | string): Observable<CoreFactor[]> {
 
     return this.http.delete<CoreFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/coreFactors/${factor_id}/`, {
+      withCredentials: true
+    })
+  }
+
+  /**
+   * Deletes an CoreFactor.
+   * @param {number | string} facility
+   * @param {number | string} factor_id
+   * @returns {Observable<GpuFactor[]>}
+   */
+  deleteGpuFactor(facility: number | string, factor_id: number | string): Observable<GpuFactor[]> {
+
+    return this.http.delete<GpuFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/gpuFactors/${factor_id}/`, {
+      withCredentials: true
+    })
+  }
+
+  /**
+   * Deletes an CoreFactor.
+   * @param {number | string} facility
+   * @param {number | string} factor_id
+   * @returns {Observable<VolumeStorageFactor[]>}
+   */
+  deleteVolumeStorageFactor(facility: number | string, factor_id: number | string): Observable<VolumeStorageFactor[]> {
+
+    return this.http.delete<VolumeStorageFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/volumeStorageFactors/${factor_id}/`, {
+      withCredentials: true
+    })
+  }
+
+  /**
+   * Deletes an CoreFactor.
+   * @param {number | string} facility
+   * @param {number | string} factor_id
+   * @returns {Observable<ObjectStorageFactor[]>}
+   */
+  deleteObjectStorageFactor(facility: number | string, factor_id: number | string): Observable<ObjectStorageFactor[]> {
+
+    return this.http.delete<ObjectStorageFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/objectStorageFactors/${factor_id}/`, {
       withCredentials: true
     })
   }
@@ -339,6 +467,45 @@ export class FacilityService {
                                          withCredentials: true,
                                          params: params
                                        }
+    )
+  }
+
+  /**
+   * Get CoreFactors from a facility.
+   * @param {number | string} facility
+   * @returns {Observable<GpuFactor[]>}
+   */
+  getGpuFactors(facility: number | string): Observable<GpuFactor[]> {
+
+    return this.http.get<GpuFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/gpuFactors/`, {
+                                        withCredentials: true
+                                      }
+    )
+  }
+
+  /**
+   * Get CoreFactors from a facility.
+   * @param {number | string} facility
+   * @returns {Observable<VolumeStorageFactor[]>}
+   */
+  getVolumeStorageFactors(facility: number | string): Observable<VolumeStorageFactor[]> {
+
+    return this.http.get<VolumeStorageFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/volumeStorageFactors/`, {
+                                                  withCredentials: true
+                                                }
+    )
+  }
+
+  /**
+   * Get CoreFactors from a facility.
+   * @param {number | string} facility
+   * @returns {Observable<ObjectStorageFactor[]>}
+   */
+  getObjectStorageFactors(facility: number | string): Observable<ObjectStorageFactor[]> {
+
+    return this.http.get<ObjectStorageFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/objectStorageFactors/`, {
+                                                  withCredentials: true
+                                                }
     )
   }
 

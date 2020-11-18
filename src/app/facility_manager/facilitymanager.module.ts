@@ -15,6 +15,9 @@ import {PipeModuleModule} from '../pipe-module/pipe-module.module';
 import { RamfactorOverviewComponent } from './resources/ramfactor-overview/ramfactor-overview.component';
 import {SharedDirectivesModule} from '../shared/shared_modules/shared_directives.module';
 import { CorefactorOverviewComponent } from './resources/corefactor-overview/corefactor-overview.component';
+import { ObjectstoragefactorOverviewComponent } from './resources/objectstoragefactor-overview/objectstoragefactor-overview.component';
+import { VolumestoragefactorOverviewComponent } from './resources/volumestoragefactor-overview/volumestoragefactor-overview.component';
+import { GpufactorOverviewComponent } from './resources/gpufactor-overview/gpufactor-overview.component';
 
 /**
  * Facilitymanager module.
@@ -37,7 +40,10 @@ import { CorefactorOverviewComponent } from './resources/corefactor-overview/cor
               ResourcesComponent,
               NewsManagerComponent,
               RamfactorOverviewComponent,
-              CorefactorOverviewComponent
+              CorefactorOverviewComponent,
+              ObjectstoragefactorOverviewComponent,
+              VolumestoragefactorOverviewComponent,
+              GpufactorOverviewComponent
 
             ]
           })

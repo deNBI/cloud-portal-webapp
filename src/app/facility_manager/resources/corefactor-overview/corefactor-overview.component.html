@@ -61,7 +61,7 @@
 
         </select></div>
 
-        <div class="rTableCell col"><textarea type="textfield" [(ngModel)]="cF.description"
+        <div class="rTableCell col"><textarea type="textfield" class="col" [(ngModel)]="cF.description"
                                                 placeholder="Description"></textarea></div>
         <div class="rTableCell col-1"><input type="checkbox" [(ngModel)]="cF.public" [checked]="cF.public"></div>
 
@@ -94,8 +94,8 @@
       </select></div>
       <div class="rTableCell col">
         <textarea type="textfield" [(ngModel)]="newFactor.description" placeholder="Description"
-                  #ramFactorDescription></textarea></div>
-      <div class="rTableCell col-1"><input [(ngModel)]="newFactor.public" type="checkbox" #public></div>
+                  ></textarea></div>
+      <div class="rTableCell col-1"><input [(ngModel)]="newFactor.public" type="checkbox" ></div>
 
     </div>
 

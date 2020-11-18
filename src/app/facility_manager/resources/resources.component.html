@@ -133,6 +133,10 @@
           <div *ngIf="CORE_TAB_ACTIVE && selectedFacility">
             <app-corefactor-overview [facility_id]="selectedFacility['FacilityId']"></app-corefactor-overview>
           </div>
+          <div *ngIf="OBJECT_STORAGE_TAB_ACTIVE && selectedFacility">
+            <app-objectstoragefactor-overview
+              [facility_id]="selectedFacility['FacilityId']"></app-objectstoragefactor-overview>
+          </div>
         </div>
 
         <div class="modal-footer">
