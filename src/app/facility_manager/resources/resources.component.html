@@ -7,70 +7,93 @@
 
     <div class="card" style="width: 100%;">
       <div class="card-header">
-        <i class="fa fa-align-justify"></i> Resources
+        <div class="row">
 
-        <button style="float:right" class="btn btn-primary" (click)="factorModal.show()">Modify
-          Limits
-        </button>
+          <i class="fa fa-align-justify"></i> Resources
+          <div>
+
+            <button style="margin: 5px"
+                    class="btn"
+                    [ngClass]="(PUBLIC_ACTIVE) ? 'btn-primary': 'btn-outline-primary'"
+
+                    (click)="setResources(PUBLIC_RESOURCES)">Public Resources
+            </button>
+
+            <button style="margin: 5px"
+                    [ngClass]="(INTERN_ACTIVE) ? 'btn-primary': 'btn-outline-primary'"
+                    class="btn"
+                    (click)="setResources(INTERN_RESOURCES);">Intern Resources
+            </button>
+            <button style="margin: 5px"
+                    [ngClass]="(ALL_RESOURCES) ? 'btn-primary': 'btn-outline-primary'"
+                    class="btn"
+                    (click)="setResources(ALL_RESOURCES)">All Resources
+            </button>
 
 
-      </div>
-
-      <div><select [(ngModel)]="selectedFacility"
-                   (ngModelChange)="isLoaded=false;onChangeSelectedFacility($event);"
-                   class="form-control" name="selectedFacility">
-        <option *ngFor="  let facility of managerFacilities" [ngValue]="facility">
-          {{facility['Facility']}}
-        </option>
-
-      </select></div>
-
-      <div class="card-body" style="width: 100%" id="contentToConvert">
+            <button style="float:right;margin: 5px;" class="btn btn-outline-primary" (click)="factorModal.show()">Modify
+              Limits
+            </button>
+          </div>
 
 
-        <div class="table-responsive">
-          <table class="table table-striped table-bordered"
-                 style="width: 100%">
-            <thead>
-            <tr>
-              <th>{{today | date:'dd-MM-yyyy'}}</th>
+        </div>
 
-              <th *ngFor="let r of resources">{{r.resource_name}}</th>
-            </tr>
-            </thead>
-            <tbody>
+        <div><select [(ngModel)]="selectedFacility"
+                     (ngModelChange)="isLoaded=false;onChangeSelectedFacility($event);"
+                     class="form-control" name="selectedFacility">
+          <option *ngFor="  let facility of managerFacilities" [ngValue]="facility">
+            {{facility['Facility']}}
+          </option>
 
-            <tr>
-              <th>Ram [GB]</th>
-              <td *ngFor="let r of resources">{{r.totalRam}}</td>
+        </select></div>
+
+        <div class="card-body" style="width: 100%" id="contentToConvert">
+
+
+          <div class="table-responsive">
+            <table class="table table-striped table-bordered"
+                   style="width: 100%">
+              <thead>
+              <tr>
+                <th>{{today | date:'dd-MM-yyyy'}}</th>
+
+                <th *ngFor="let r of visible_resources">{{r.resource_name}}</th>
+              </tr>
+              </thead>
+              <tbody>
+
+              <tr>
+                <th>Ram [GB]</th>
+                <td *ngFor="let r of visible_resources">{{r.totalRam}}</td>
             </tr>
             <tr>
               <th>Cores</th>
-              <td *ngFor="let r of resources">{{r.totalCores}}</td>
+              <td *ngFor="let r of visible_resources">{{r.totalCores}}</td>
 
             </tr>
             <tr>
               <th>Vms</th>
-              <td *ngFor="let r of resources">{{r.totalVms}}</td>
+              <td *ngFor="let r of visible_resources">{{r.totalVms}}</td>
             </tr>
             <tr>
               <th>Volumes</th>
-              <td *ngFor="let r of resources">{{r.totalVolumeCounter}}</td>
+              <td *ngFor="let r of visible_resources">{{r.totalVolumeCounter}}</td>
 
             </tr>
             <tr>
               <th>Volumes Storage [GB]</th>
-              <td *ngFor="let r of resources">{{r.totalVolumeLimit}}</td>
+              <td *ngFor="let r of visible_resources">{{r.totalVolumeLimit}}</td>
 
             </tr>
             <tr>
               <th>Object Storage [GB]</th>
-              <td *ngFor="let r of resources">{{r.totalObjectStorage}}</td>
+              <td *ngFor="let r of visible_resources">{{r.totalObjectStorage}}</td>
 
             </tr>
             <tr>
               <th>GPU</th>
-              <td *ngFor="let r of resources">{{r.totalGPU}}</td>
+              <td *ngFor="let r of visible_resources">{{r.totalGPU}}</td>
 
             </tr>
             </tbody>

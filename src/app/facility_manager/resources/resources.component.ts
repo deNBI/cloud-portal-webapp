@@ -4,8 +4,6 @@ import {Resources} from '../../vo_manager/resources/resources';
 import {jsPDF} from 'jspdf';
 import html2canvas from 'html2canvas';
 import {ExportAsConfig, ExportAsService} from 'ngx-export-as'
-import {CoreFactor} from './core-factor';
-import {RamFactor} from './ram-factor';
 
 /**
  * Facility resource component.
@@ -21,6 +19,15 @@ export class ResourcesComponent implements OnInit {
 
   title: string = 'Resource Overview';
   managerFacilities: [string, number][];
+
+  ALL_RESOURCES: number = 0;
+  INTERN_RESOURCES: number = 1;
+  PUBLIC_RESOURCES: number = 2;
+
+  ALL_ACTIVE: boolean = false;
+  INTERN_ACTIVE: boolean = false;
+  PUBLIC_ACTIVE: boolean = true;
+
   RAM_TAB: number = 0;
   CORE_TAB: number = 1;
   GPU_TAB: number = 2;
@@ -40,14 +47,13 @@ export class ResourcesComponent implements OnInit {
 
   isLoaded: boolean = false;
   resources: Resources [];
+  visible_resources: Resources[];
 
   /**
    * Id of the table which will be converted to pdf or csv.
    */
   tableId: string = 'contentToConvert';
   today: number = Date.now();
-  coreFactors: CoreFactor[] = [];
-  ramFactors: RamFactor[] = [];
   exportAsConfigCSV: ExportAsConfig = {
     type: 'csv',
     // elementId: this.tableId
@@ -64,6 +70,33 @@ export class ResourcesComponent implements OnInit {
     this.OBJECT_STORAGE_TAB_ACTIVE = false;
     this.VOLUME_STORAGE_TAB_ACTIVE = false;
 
+  }
+
+  setAllResourcesFalse(): void {
+    this.ALL_ACTIVE = false;
+    this.PUBLIC_ACTIVE = false;
+    this.INTERN_ACTIVE = false;
+
+  }
+
+  setResources(tab_num: number): void {
+
+    this.setAllResourcesFalse()
+    switch (tab_num) {
+      case this.ALL_RESOURCES:
+        this.ALL_ACTIVE = true;
+        break;
+      case this.INTERN_RESOURCES:
+        this.INTERN_ACTIVE = true;
+        break;
+      case this.PUBLIC_RESOURCES:
+        this.PUBLIC_ACTIVE = true;
+        break;
+
+      default:
+        break;
+    }
+    this.setVisibleResources()
   }
 
   setTab(tab_num: number): void {
@@ -104,27 +137,32 @@ export class ResourcesComponent implements OnInit {
     })
   }
 
+  setVisibleResources(): void {
+    if (this.PUBLIC_ACTIVE) {
+      this.visible_resources = this.resources.filter((res: Resources): boolean => {
+        return !res.resource_name.includes('Intern') && !res.resource_name.includes('All');
+      })
+    } else if (this.INTERN_ACTIVE) {
+      this.visible_resources = this.resources.filter((res: Resources): boolean => {
+        return res.resource_name.includes('Intern');
+      })
+    } else if (this.ALL_ACTIVE) {
+      this.visible_resources = this.resources
 
+    }
+    this.isLoaded = true;
 
+  }
 
   public getSelectedFacilityResources(): void {
     this.facilityService.getFacilityResources(this.selectedFacility['FacilityId']).subscribe((res: Resources[]): void => {
 
-                                                                                               this.resources = res;
-                                                                                               this.isLoaded = true;
+      this.resources = res;
+      this.setVisibleResources()
                                                                                              }
     )
 
   }
-
-
-
-
-
-
-
-
-
 
   public tableToCSV(): void {
     this.exportAsService.save(this.exportAsConfigCSV, this.tableId);

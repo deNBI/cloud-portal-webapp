@@ -33,7 +33,6 @@ export class CorefactorOverviewComponent implements OnInit {
       this.coreFactors.forEach((coreFactor: CoreFactor): void => {
         this.coreUpdateList[coreFactor.id] = false;
       })
-      console.log(this.coreUpdateList)
     })
   }
 

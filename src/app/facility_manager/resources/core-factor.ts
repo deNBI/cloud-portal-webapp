@@ -5,7 +5,7 @@ import {Factor} from './factor';
  */
 export class CoreFactor extends Factor {
   cores: number;
-  type: string;
+  type: string = 'GENERAL_PURPOSE';
 
   constructor(coreFactor: CoreFactor | null) {
     super(coreFactor)

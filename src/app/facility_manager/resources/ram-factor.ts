@@ -6,7 +6,7 @@ import {Factor} from './factor';
 export class RamFactor extends Factor {
 
   ram: number;
-  type: string;
+  type: string = 'GENERAL_PURPOSE';
 
   constructor(ramFactor: RamFactor | null) {
     super(ramFactor)
