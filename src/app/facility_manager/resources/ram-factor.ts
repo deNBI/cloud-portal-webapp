@@ -9,8 +9,9 @@ export class RamFactor extends Factor {
   type: string;
 
   constructor(ramFactor: RamFactor | null) {
+    super(ramFactor)
+
     if (ramFactor) {
-      super(ramFactor)
       this.ram = ramFactor.ram;
       this.type = ramFactor.type;
     }

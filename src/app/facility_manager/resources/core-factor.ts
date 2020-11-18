@@ -5,11 +5,15 @@ import {Factor} from './factor';
  */
 export class CoreFactor extends Factor {
   cores: number;
+  type: string;
 
-  constructor(coreFactor: CoreFactor) {
+  constructor(coreFactor: CoreFactor | null) {
     super(coreFactor)
+    if (coreFactor) {
+      this.cores = coreFactor.cores;
+      this.type = coreFactor.type;
 
-    this.cores = coreFactor.cores;
+    }
 
   }
 

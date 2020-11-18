@@ -228,21 +228,10 @@ export class FacilityService {
                           });
   }
 
-  /**
-   * Add a new CoreFactor.
-   * @param {number | string} facility
-   * @param {number | string} cores
-   * @param {number | string} factor
-   * @param {string} description
-   * @returns {Observable<any>}
-   */
-  // tslint:disable-next-line:max-line-length
-  addCoresFactor(facility: number | string, cores: number | string, factor: number | string, description: string): Observable<CoreFactor[]> {
+  addCoresFactor(facility: number | string, coreFactor: CoreFactor): Observable<CoreFactor[]> {
     const params: HttpParams = new HttpParams()
       .set('type', 'cores')
-      .set('cores', cores.toString())
-      .set('factor', factor.toString())
-      .set('description', description);
+      .set('corefactor', JSON.stringify(coreFactor))
 
     return this.http.post<CoreFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/coreFactors/`, params, {
       withCredentials: true

@@ -26,6 +26,9 @@ export class RamfactorOverviewComponent implements OnInit {
   getRamFactors(): void {
     this.facilityService.getRamFactors(this.facility_id).subscribe((res: RamFactor[]): void => {
       this.ramFactors = res;
+      this.ramFactors.sort((a_factor: RamFactor, b_factor: RamFactor): number => {
+        return b_factor.type.localeCompare(a_factor.type)
+      })
       this.ramFactors.forEach((ramFactor: RamFactor): void => {
         this.ramUpdateList[ramFactor.id] = false;
       })

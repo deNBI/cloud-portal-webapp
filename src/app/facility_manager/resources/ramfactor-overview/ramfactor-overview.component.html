@@ -26,10 +26,10 @@
         </div>
         <div class="rTableCell col-1">{{rF.ram}}</div>
         <div class="rTableCell col-1">{{rF.factor}}</div>
-        <div class="rTableCell col-2">{{rF.type}}</div>
-        <div class="rTableCell col-4">{{rF.description}}</div>
+        <div class="rTableCell col-3"><span class="badge badge-primary">{{rF.type}}</span></div>
+        <div class="rTableCell col">{{rF.description}}</div>
 
-        <div class="rTableCell col-2"><i *ngIf="rF.public" class="fas fa-check" style="color: darkgreen;"></i>
+        <div class="rTableCell col-1"><i *ngIf="rF.public" class="fas fa-check" style="color: darkgreen;"></i>
           <i *ngIf="!rF.public" class="fas fa-times" style="color:darkred;"></i></div>
 
 
@@ -48,18 +48,20 @@
         </div>
         <div class="rTableCell col-1"><input type="text" [(ngModel)]="rF.factor" placeholder="Factor"
                                                 pattern="[0-9]+(\.[0-9]+)?"></div>
-        <div class="rTableCell col-2"><select [(ngModel)]="rF.type"
+        <div class="rTableCell col-3"><select [(ngModel)]="rF.type"
 
-                                                 class="form-control" name="selectedFacility">
+                                                 class="form-control" >
+                    <option value="undefined" disabled selected > Please Select</option>
+
           <option *ngFor="  let type of factor_types" [ngValue]="type">
             {{type}}
           </option>
 
         </select></div>
 
-        <div class="rTableCell col-4"><textarea type="textfield" [(ngModel)]="rF.description"
+        <div class="rTableCell col"><textarea type="textfield" [(ngModel)]="rF.description"
                                                    placeholder="Description"></textarea></div>
-        <div class="rTableCell col-2"><input type="checkbox" [(ngModel)]="rF.public" [checked]="rF.public"></div>
+        <div class="rTableCell col-1"><input type="checkbox" [(ngModel)]="rF.public" [checked]="rF.public"></div>
 
 
       </div>
@@ -80,7 +82,7 @@
                                               placeholder="e.g 1" [(ngModel)]="newFactor.factor"
                                               appMinAmount="0" appIntegerOrNull #ramFactor>
       </div>
-      <div class="rTableCell col-2"><select #type [(ngModel)]="newFactor.type"
+      <div class="rTableCell col-3"><select #type [(ngModel)]="newFactor.type"
 
                                                class="form-control" name="selectedFacility">
         <option *ngFor="  let type of factor_types" [ngValue]="type">
@@ -88,10 +90,10 @@
         </option>
 
       </select></div>
-      <div class="rTableCell col-4">
+      <div class="rTableCell col">
         <textarea type="textfield" [(ngModel)]="newFactor.description" placeholder="Description"
                   #ramFactorDescription></textarea></div>
-      <div class="rTableCell col-2"><input [(ngModel)]="newFactor.public" type="checkbox" #public></div>
+      <div class="rTableCell col-1"><input [(ngModel)]="newFactor.public" type="checkbox" #public></div>
 
     </div>
 

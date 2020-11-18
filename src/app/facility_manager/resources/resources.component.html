@@ -9,7 +9,7 @@
       <div class="card-header">
         <i class="fa fa-align-justify"></i> Resources
 
-        <button style="float:right" class="btn btn-primary" (click)="getRamCoreFactors();factorModal.show()">Modify
+        <button style="float:right" class="btn btn-primary" (click)="factorModal.show()">Modify
           Limits
         </button>
 
@@ -107,98 +107,33 @@
             <li class="nav-item"><a class="nav-link" id="ram_tab" [ngClass]="{'active': RAM_TAB_ACTIVE}"
                                     (click)="setTab(RAM_TAB)">Ram</a>
             </li>
-            <li class="nav-item"><a class="nav-link" id="information_tab"
-            >Cores</a></li>
-            <li class="nav-item"><a class="nav-link" id="resource_tab"
+            <li class="nav-item"><a class="nav-link" d="cores_tab" [ngClass]="{'active': CORE_TAB_ACTIVE}"
+                                    (click)="setTab(CORE_TAB)">Cores</a></li>
+            <li class="nav-item"><a class="nav-link" id="gpu_tab" [ngClass]="{'active': GPU_TAB_ACTIVE}"
+                                    (click)="setTab(GPU_TAB)"
             >GPU</a></li>
 
-            <li class="nav-item"><a class="nav-link" id="modification_tab">Storage</a></li>
+            <li class="nav-item"><a class="nav-link" id="object_storage_tab"
+                                    [ngClass]="{'active': OBJECT_STORAGE_TAB_ACTIVE}"
+                                    (click)="setTab(OBJECT_STORAGE_TAB)">Object Storage</a></li>
+            <li class="nav-item"><a class="nav-link" id="volume_storage_tab"
+                                    [ngClass]="{'active': VOLUME_STORAGE_TAB_ACTIVE}"
+                                    (click)="setTab(VOLUME_STORAGE_TAB)">Volume Storage</a></li>
 
 
           </ul>
 
 
         </div>
-        <div class="alert alert-info" role="alert">
-          Please indicate only the resources intended for de.NBI projects.
-        </div>
-        <div class="alert alert-danger" role="alert" *ngIf="!cores.checkValidity()" id="cores_validity_alert">
-          Please enter a valid number for cores!
-        </div>
 
-
-        <div class="alert alert-danger" role="alert" *ngIf="!coresFactor.checkValidity()"
-             id="cores_factor_validity_alert">
-          Please enter a valid number for cores factor!
-        </div>
         <div class="tab-content">
-          <div *ngIf="RAM_TAB_ACTIVE">
+          <div *ngIf="RAM_TAB_ACTIVE && selectedFacility">
             <app-ramfactor-overview [facility_id]="selectedFacility['FacilityId']"></app-ramfactor-overview>
           </div>
+          <div *ngIf="CORE_TAB_ACTIVE && selectedFacility">
+            <app-corefactor-overview [facility_id]="selectedFacility['FacilityId']"></app-corefactor-overview>
+          </div>
         </div>
-
-
-        <div class="table-responsive">
-          <table class="table table-striped table-bordered">
-            <thead>
-            <th>Actions</th>
-            <th>Cores</th>
-            <th>Factor</th>
-            <th>Description</th>
-            </thead>
-            <tbody>
-            <ng-container
-              *ngFor="let cF of coreFactors">
-
-              <tr *ngIf="!this.coresUpdateList[cF.id]">
-                <td>
-                  <div class="btn-group-vertical" role="group">
-                    <button (click)="deleteCoreFactor(cF.id)" class="btn btn-danger" style="margin-bottom: 5px">Remove
-                    </button>
-                    <button class="btn btn-warning" (click)="changeCoreToUpdate(cF)">Update</button>
-                  </div>
-                </td>
-                <td>{{cF.cores}}</td>
-                <td>{{cF.factor}}</td>
-                <td>{{cF.description}}</td>
-
-
-              </tr>
-                <tr *ngIf="this.coresUpdateList[cF.id]">
-                <td>
-                  <div class="btn-group-vertical" role="group">
-                    <button (click)="updateCoreFactor(cF);changeCoreToUpdate(cF);" class="btn btn-success"
-                            style="margin-bottom: 5px">Save
-                    </button>
-                    <button class="btn btn-info" (click)="reloadCoreFactor(cF);changeCoreToUpdate(cF);">Cancel</button>
-                  </div>
-                </td>
-                <td><input type="text" [(ngModel)]="cF.cores" placeholder="Ram" pattern="[0-9]+"></td>
-                <td><input type="text" [(ngModel)]="cF.factor" placeholder="Factor" pattern="[0-9]+(\.[0-9]+)?"></td>
-                <td><textarea type="textfield" [(ngModel)]="cF.description" placeholder="Description"></textarea></td>
-
-
-            </ng-container>
-
-            <tr>
-              <td>
-                <button *ngIf="cores.checkValidity() && coresFactor.checkValidity()"
-                        (click)="addCoreFactor(cores.value,coresFactor.value,coreFactorDescription.value);"
-                        class="btn btn-success"
-                >Save
-                </button>
-              </td>
-              <td><input type="text" placeholder="Cores" pattern="[0-9]+" #cores ></td>
-              <td><input type="text" placeholder="Factor" pattern="[0-9]+(\.[0-9]+)?" #coresFactor></td>
-              <td><textarea type="textfield" placeholder="Description" #coreFactorDescription></textarea></td>
-
-
-            </tr>
-            </tbody>
-          </table>
-
-        </div>
-
 
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary"

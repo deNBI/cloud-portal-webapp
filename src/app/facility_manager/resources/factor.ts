@@ -8,13 +8,15 @@ export abstract class Factor {
   factor: number;
   compute_center: ComputecenterComponent;
   description: string = '';
-  public: boolean;
+  public: boolean = false;
 
-  constructor(factor: Factor) {
-    this.id = factor.id;
-    this.factor = factor.factor;
-    this.compute_center = factor.compute_center;
-    this.description = factor.description;
-    this.public = factor.public;
+  constructor(factor: Factor | null) {
+    if (factor) {
+      this.id = factor.id;
+      this.factor = factor.factor;
+      this.compute_center = factor.compute_center;
+      this.description = factor.description;
+      this.public = factor.public;
+    }
   }
 }

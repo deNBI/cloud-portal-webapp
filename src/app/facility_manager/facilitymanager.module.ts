@@ -14,6 +14,7 @@ import {NewsManagerComponent} from './newsmanagement/news-manager.component';
 import {PipeModuleModule} from '../pipe-module/pipe-module.module';
 import { RamfactorOverviewComponent } from './resources/ramfactor-overview/ramfactor-overview.component';
 import {SharedDirectivesModule} from '../shared/shared_modules/shared_directives.module';
+import { CorefactorOverviewComponent } from './resources/corefactor-overview/corefactor-overview.component';
 
 /**
  * Facilitymanager module.
@@ -35,7 +36,8 @@ import {SharedDirectivesModule} from '../shared/shared_modules/shared_directives
               FacilityApplicationComponent,
               ResourcesComponent,
               NewsManagerComponent,
-              RamfactorOverviewComponent
+              RamfactorOverviewComponent,
+              CorefactorOverviewComponent
 
             ]
           })
