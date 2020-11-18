@@ -37,7 +37,7 @@ export class ObjectstoragefactorOverviewComponent implements OnInit {
 
       })
       this.objectStorageFactors.forEach((objectStorageFactor: ObjectStorageFactor): void => {
-        this.objectStorageFactors[objectStorageFactor.id] = false;
+        this.objectUpdateList[objectStorageFactor.id] = false;
       })
     })
   }

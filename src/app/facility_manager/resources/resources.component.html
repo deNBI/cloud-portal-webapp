@@ -137,6 +137,14 @@
             <app-objectstoragefactor-overview
               [facility_id]="selectedFacility['FacilityId']"></app-objectstoragefactor-overview>
           </div>
+          <div *ngIf="VOLUME_STORAGE_TAB_ACTIVE && selectedFacility">
+            <app-volumestoragefactor-overview
+              [facility_id]="selectedFacility['FacilityId']"></app-volumestoragefactor-overview>
+          </div>
+          <div *ngIf="GPU_TAB_ACTIVE && selectedFacility">
+            <app-gpufactor-overview
+              [facility_id]="selectedFacility['FacilityId']"></app-gpufactor-overview>
+          </div>
         </div>
 
         <div class="modal-footer">

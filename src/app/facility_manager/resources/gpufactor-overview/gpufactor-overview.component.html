@@ -1,1 +1,73 @@
-<p>gpufactor-overview works!</p>
+<div class="rTable">
+  <div class="rTableHeading">
+    <div class="rTableHead">Actions</div>
+    <div class="rTableHead">Count</div>
+    <div class="rTableHead">Description</div>
+    <div class="rTableHead">Public</div>
+  </div>
+  <div class="rTableBody">
+    <ng-container *ngFor="let oF of gpuFactors">
+      <div class="rTableRow" *ngIf="!this.gpuUpdateList[oF.id]">
+        <div class="rTableCell col-2">
+          <div class="btn-group-vertical" role="group">
+            <button (click)="deleteGpuFactor(oF.id)" class="btn btn-danger" style="margin-bottom: 5px">Remove
+            </button>
+            <button class="btn btn-warning" (click)="changeGpuToUpdate(oF)">Update</button>
+          </div>
+        </div>
+        <div class="rTableCell col-1">{{oF.count}}</div>
+        <div class="rTableCell col">{{oF.description}}</div>
+
+        <div class="rTableCell col-1"><i *ngIf="oF.public" class="fas fa-check" style="color: darkgreen;"></i>
+          <i *ngIf="!oF.public" class="fas fa-times" style="color:darkred;"></i></div>
+
+
+      </div>
+
+      <div class="rTableRow" *ngIf="this.gpuUpdateList[oF.id]">
+        <div class="rTableCell col-2">
+          <div class="btn-group-vertical" role="group">
+            <button (click)="updateGpuFactor(oF);changeGpuToUpdate(oF);" class="btn btn-success"
+                    style="margin-bottom: 5px">Save
+            </button>
+            <button class="btn btn-info" (click)="reloadGpuFactor(oF);changeGpuToUpdate(oF);">
+              Cancel
+            </button>
+          </div>
+        </div>
+        <div class="rTableCell col-1"><input type="text" [(ngModel)]="oF.count" placeholder="Storage"
+                                             pattern="[0-9]+">
+        </div>
+
+        <div class="rTableCell col"><textarea type="textfield" class="col" [(ngModel)]="oF.description"
+                                              placeholder="Description"></textarea></div>
+        <div class="rTableCell col-1"><input type="checkbox" [(ngModel)]="oF.public" [checked]="oF.public"></div>
+
+
+      </div>
+    </ng-container>
+
+    <div class="rTableRow">
+      <div class="rTableCell col-2">
+        <button style="cursor: pointer;"
+                (click)="addGpuFactor();"
+                [disabled]="!count.value    "
+                *ngIf="count.checkValidity()" class="btn btn-success">Save
+        </button>
+      </div>
+      <div class="rTableCell col-1"><input type="number" min="0" step="1"
+                                           placeholder="e.g 1" [(ngModel)]="newFactor.count"
+                                           appMinAmount="0" appIntegerOrNull #count></div>
+
+      <div class="rTableCell col">
+        <div>
+        <textarea type="textfield" class="col" [(ngModel)]="newFactor.description" placeholder="Description"
+        ></textarea></div>
+      </div>
+      <div class="rTableCell col-1"><input [(ngModel)]="newFactor.public" type="checkbox"></div>
+
+    </div>
+
+
+  </div>
+</div>

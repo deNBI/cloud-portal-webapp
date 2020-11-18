@@ -59,7 +59,7 @@
 
         </select></div>
 
-        <div class="rTableCell col"><textarea type="textfield" [(ngModel)]="rF.description"
+        <div class="rTableCell col"><textarea type="textfield" class="col" [(ngModel)]="rF.description"
                                                    placeholder="Description"></textarea></div>
         <div class="rTableCell col-1"><input type="checkbox" [(ngModel)]="rF.public" [checked]="rF.public"></div>
 
@@ -91,7 +91,7 @@
 
       </select></div>
       <div class="rTableCell col">
-        <textarea type="textfield"  class="col" [(ngModel)]="newFactor.description" placeholder="Description"
+        <textarea type="textfield"  class="col" [(ngModel)]="newFactor.description" placeholder="Description">
                   </textarea></div>
       <div class="rTableCell col-1"><input [(ngModel)]="newFactor.public" type="checkbox" #public></div>
 
