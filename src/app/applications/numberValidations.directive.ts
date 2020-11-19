@@ -1,5 +1,5 @@
 import {Directive, Input} from '@angular/core';
-import {NG_VALIDATORS, AbstractControl, ValidatorFn, Validator} from '@angular/forms';
+import {AbstractControl, NG_VALIDATORS, Validator, ValidatorFn} from '@angular/forms';
 
 /**
  * Number validation directive.
@@ -72,6 +72,52 @@ export function integerValidator(): ValidatorFn {
 
     return integer ? null : {integer: {value: control.value}};
   };
+}
+
+export function floatValidator(): ValidatorFn {
+  return (control: AbstractControl): { [key: string]: any } | null => {
+    const float: boolean = Number.isInteger(control.value) || Number(control.value) === control.value && control.value % 1 !== 0;
+
+    return float ? null : {float: {value: control.value}};
+  };
+}
+
+export function floatOrNullValidator(): ValidatorFn {
+  return (control: AbstractControl): { [key: string]: any } | null => {
+    const float: boolean = (Number.isInteger(control.value) || Number(control.value) === control.value && control.value % 1 !== 0) || !control.value;
+
+    return float ? null : {floatOrNulL: {value: control.value}};
+  };
+}
+
+/**
+ * Float directive.
+ */
+@Directive({
+             selector: '[appFloat]',
+             providers: [
+               {provide: NG_VALIDATORS, useExisting: FloatValidatorDirective, multi: true}
+             ]
+           })
+export class FloatValidatorDirective implements Validator {
+  validate(control: AbstractControl): { [key: string]: any } | null {
+    return floatValidator()(control);
+  }
+}
+
+/**
+ * Integer or Null directive.
+ */
+@Directive({
+             selector: '[appFloatOrNull]',
+             providers: [
+               {provide: NG_VALIDATORS, useExisting: FloatOrNullValidatorDirective, multi: true}
+             ]
+           })
+export class FloatOrNullValidatorDirective implements Validator {
+  validate(control: AbstractControl): { [key: string]: any } | null {
+    return floatOrNullValidator()(control);
+  }
 }
 
 /**
