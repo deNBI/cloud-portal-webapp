@@ -148,7 +148,7 @@
 
                   </div>
                   <div class="col-3"
-                       *ngIf="cluster?.status != VirtualMachineStates.staticDELETED && cluster?.status != VirtualMachineStates.staticDELETING">
+                       *ngIf="cluster?.status != VirtualMachineStates.staticDELETED && cluster?.status != VirtualMachineStates.staticNOT_FOUND && cluster?.status != VirtualMachineStates.staticDELETING">
                     <a class="font-weight-bold font-xs btn-block text-muted btn btn-outline-danger"
                        [id]="'delete_'+cluster?.cluster_id"
                        (click)="selectedCluster=cluster; verifyModal.show()" onClick="return false;">
@@ -156,6 +156,8 @@
 
 
                   </div>
+                                        <div *ngIf="cluster?.status == VirtualMachineStates.staticNOT_FOUND " class="alert alert-warning" role="alert"> Please contact <a href="mailto:cloud@denbi.de">cloud@denbi.de</a></div>
+
 
 
                 </div>
