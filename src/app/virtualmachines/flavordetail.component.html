@@ -1,7 +1,8 @@
 <div *ngIf="!carousel_activated || flavors.length <=flavors_per_row-1" class="row">
-  <div *ngIf="selectedFlavor" class="col-12" style="cursor: pointer;" [ngClass]="{'col-xl-3':window_size >= carousel_window_min_xl_9,
-       'col-xl-6':window_size >= carousel_window_min_xl6 && window_size<carousel_window_min_xl_8,
-       'col-xl-4':window_size <carousel_window_min_xl_9 && window_size>=carousel_window_min_xl_8}">
+  <div *ngIf="selectedFlavor" class="col-12" style="cursor: pointer;"
+       [ngClass]="{'col-xl-4':(window_size >= carousel_window_min_xl_9)
+       || (window_size <carousel_window_min_xl_9 && window_size>=carousel_window_min_xl_8),
+       'col-xl-6':window_size >= carousel_window_min_xl6 && window_size<carousel_window_min_xl_8}">
     <div class="card border-success flavor-image-card"
     >
       <div class="card-header bg-success text-truncate" data-toggle="tooltip" data-placement="top"
@@ -53,9 +54,10 @@
   </div>
 
  <ng-container *ngIf="flavors.length > 0 && !selectedFlavor || flavors.length>1 &&selectedFlavor">
-   <div *ngFor="  let flavor of flavors" style="cursor: pointer;" class="col-12 " [ngClass]="{'col-xl-3':window_size >= carousel_window_min_xl_9,
-       'col-xl-6':window_size >= carousel_window_min_xl6 && window_size<carousel_window_min_xl_8,
-       'col-xl-4':window_size <carousel_window_min_xl_9 && window_size>=carousel_window_min_xl_8}">
+   <div *ngFor="  let flavor of flavors" style="cursor: pointer;" class="col-12 "
+        [ngClass]="{'col-xl-4':(window_size >= carousel_window_min_xl_9)
+        || (window_size <carousel_window_min_xl_9 && window_size>=carousel_window_min_xl_8),
+       'col-xl-6':window_size >= carousel_window_min_xl6 && window_size<carousel_window_min_xl_8}">
      <div (click)="setSelectedFlavor(flavor);" class="card flavor-image-card" id="id_flavor_owl_{{flavor.name}}"
      >
        <div [ngClass]="{'bg-success':selectedFlavor==flavor}"
@@ -109,9 +111,10 @@
 
 </div>
 <div *ngIf="carousel_activated && flavors.length >=flavors_per_row" class="row">
-  <div [hidden]="!selectedFlavor" class="col-12" style="cursor: pointer; padding-top: 10px" [ngClass]="{'col-xl-3':window_size >= carousel_window_min_xl_9,
-       'col-xl-6':window_size >= carousel_window_min_xl6 && window_size<carousel_window_min_xl_8,
-       'col-xl-4':window_size <carousel_window_min_xl_9 && window_size>=carousel_window_min_xl_8}">
+  <div [hidden]="!selectedFlavor" class="col-12" style="cursor: pointer; padding-top: 10px"
+       [ngClass]="{'col-xl-4':(window_size >= carousel_window_min_xl_9)
+        || (window_size <carousel_window_min_xl_9 && window_size>=carousel_window_min_xl_8),
+       'col-xl-6':window_size >= carousel_window_min_xl6 && window_size<carousel_window_min_xl_8}">
     <div class="card border-success flavor-image-card"
     >
       <div
