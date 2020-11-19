@@ -1,6 +1,7 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FacilityService} from '../../../api-connector/facility.service';
 import {VolumeStorageFactor} from '../volume-storage-factor';
+import {Resources} from '../../../vo_manager/resources/resources';
 
 @Component({
              selector: 'app-volumestoragefactor-overview',
@@ -10,8 +11,10 @@ import {VolumeStorageFactor} from '../volume-storage-factor';
            })
 export class VolumestoragefactorOverviewComponent implements OnInit {
   volumeStorageFactors: VolumeStorageFactor[];
-  newFactor: VolumeStorageFactor;
   @Input() facility_id: number;
+  @Output() readonly factorChanged: EventEmitter<any> = new EventEmitter();
+
+  newFactor: VolumeStorageFactor;
   volumeUpdateList: { [id: string]: boolean } = {};
 
   constructor(private facilityService: FacilityService) {
@@ -45,6 +48,7 @@ export class VolumestoragefactorOverviewComponent implements OnInit {
   deleteVolumeStorageFactor(id: string | number): void {
     this.facilityService.deleteVolumeStorageFactor(this.facility_id, id).subscribe((res: VolumeStorageFactor[]): void => {
       this.volumeStorageFactors = res;
+      this.factorChanged.emit();
 
     })
   }
@@ -67,6 +71,7 @@ export class VolumestoragefactorOverviewComponent implements OnInit {
       this.volumeStorageFactors.forEach((vF: VolumeStorageFactor): void => {
         this.volumeUpdateList[vF.id] = false;
       })
+      this.factorChanged.emit();
     })
 
   }
@@ -75,10 +80,10 @@ export class VolumestoragefactorOverviewComponent implements OnInit {
 
     this.facilityService.updateVolumeStorageFactor(this.facility_id, vf).subscribe((volumeFactor: VolumeStorageFactor): void => {
       this.volumeStorageFactors[this.volumeStorageFactors.indexOf(vf)] = new VolumeStorageFactor(volumeFactor);
+      this.factorChanged.emit();
 
     })
 
   }
 
 }
-

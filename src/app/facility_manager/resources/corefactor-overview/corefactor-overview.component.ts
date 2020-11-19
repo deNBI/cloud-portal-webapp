@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {CoreFactor} from '../core-factor';
 import {FacilityService} from '../../../api-connector/facility.service';
 
@@ -13,6 +13,8 @@ export class CorefactorOverviewComponent implements OnInit {
   coreFactors: CoreFactor[];
   newFactor: CoreFactor;
   @Input() facility_id: number;
+  @Output() readonly factorChanged: EventEmitter<any> = new EventEmitter();
+
   coreUpdateList: { [id: string]: boolean } = {};
 
   constructor(private facilityService: FacilityService) {
@@ -39,6 +41,7 @@ export class CorefactorOverviewComponent implements OnInit {
   deleteCoreFactor(id: string | number): void {
     this.facilityService.deleteCoreFactor(this.facility_id, id).subscribe((res: CoreFactor[]): void => {
       this.coreFactors = res;
+      this.factorChanged.emit()
 
     })
   }
@@ -62,6 +65,8 @@ export class CorefactorOverviewComponent implements OnInit {
       this.coreFactors.forEach((coreFactor: CoreFactor): void => {
         this.coreUpdateList[coreFactor.id] = false;
       })
+      this.factorChanged.emit()
+
     })
 
   }
@@ -70,6 +75,7 @@ export class CorefactorOverviewComponent implements OnInit {
 
     this.facilityService.updateCoreFactor(this.facility_id, cf).subscribe((coreFactor: CoreFactor): void => {
       this.coreFactors[this.coreFactors.indexOf(cf)] = new CoreFactor(coreFactor);
+      this.factorChanged.emit()
 
     })
 

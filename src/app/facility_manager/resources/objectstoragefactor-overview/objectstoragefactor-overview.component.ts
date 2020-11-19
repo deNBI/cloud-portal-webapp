@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ObjectStorageFactor} from '../object-storage-factor';
 import {FacilityService} from '../../../api-connector/facility.service';
 
@@ -12,6 +12,8 @@ export class ObjectstoragefactorOverviewComponent implements OnInit {
   objectStorageFactors: ObjectStorageFactor[];
   newFactor: ObjectStorageFactor;
   @Input() facility_id: number;
+  @Output() readonly factorChanged: EventEmitter<any> = new EventEmitter();
+
   objectUpdateList: { [id: string]: boolean } = {};
 
   constructor(private facilityService: FacilityService) {
@@ -45,6 +47,7 @@ export class ObjectstoragefactorOverviewComponent implements OnInit {
   deleteObjectStorageFactor(id: string | number): void {
     this.facilityService.deleteObjectStorageFactor(this.facility_id, id).subscribe((res: ObjectStorageFactor[]): void => {
       this.objectStorageFactors = res;
+      this.factorChanged.emit()
 
     })
   }
@@ -67,6 +70,8 @@ export class ObjectstoragefactorOverviewComponent implements OnInit {
       this.objectStorageFactors.forEach((objectStorageFactor: ObjectStorageFactor): void => {
         this.objectUpdateList[objectStorageFactor.id] = false;
       })
+      this.factorChanged.emit()
+
     })
 
   }
@@ -77,6 +82,7 @@ export class ObjectstoragefactorOverviewComponent implements OnInit {
       this.objectStorageFactors[this.objectStorageFactors.indexOf(of)] = new ObjectStorageFactor(objectStorageFactor);
 
     })
+    this.factorChanged.emit()
 
   }
 

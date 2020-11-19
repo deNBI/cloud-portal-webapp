@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FacilityService} from '../../../api-connector/facility.service';
 import {GpuFactor} from '../gpu-factor';
 
@@ -13,6 +13,8 @@ export class GpufactorOverviewComponent implements OnInit {
   gpuFactors: GpuFactor[];
   newFactor: GpuFactor;
   @Input() facility_id: number;
+  @Output() readonly factorChanged: EventEmitter<any> = new EventEmitter();
+
   gpuUpdateList: { [id: string]: boolean } = {};
 
   constructor(private facilityService: FacilityService) {
@@ -46,6 +48,7 @@ export class GpufactorOverviewComponent implements OnInit {
   deleteGpuFactor(id: string | number): void {
     this.facilityService.deleteGpuFactor(this.facility_id, id).subscribe((res: GpuFactor[]): void => {
       this.gpuFactors = res;
+      this.factorChanged.emit()
 
     })
   }
@@ -68,6 +71,8 @@ export class GpufactorOverviewComponent implements OnInit {
       this.gpuFactors.forEach((gpuFactor: GpuFactor): void => {
         this.gpuUpdateList[gpuFactor.id] = false;
       })
+      this.factorChanged.emit()
+
     })
 
   }
@@ -76,6 +81,7 @@ export class GpufactorOverviewComponent implements OnInit {
 
     this.facilityService.updateGpuFactor(this.facility_id, gpuFactor).subscribe((objectStorageFactor: GpuFactor): void => {
       this.gpuFactors[this.gpuFactors.indexOf(gpuFactor)] = new GpuFactor(objectStorageFactor);
+      this.factorChanged.emit()
 
     })
 

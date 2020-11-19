@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {RamFactor} from '../ram-factor';
 import {FacilityService} from '../../../api-connector/facility.service';
 
@@ -12,6 +12,8 @@ export class RamfactorOverviewComponent implements OnInit {
   ramFactors: RamFactor[];
   newFactor: RamFactor;
   @Input() facility_id: number;
+  @Output() readonly factorChanged: EventEmitter<any> = new EventEmitter();
+
   ramUpdateList: { [id: string]: boolean } = {};
 
   constructor(private facilityService: FacilityService) {
@@ -38,6 +40,7 @@ export class RamfactorOverviewComponent implements OnInit {
   deleteRamFactor(id: string | number): void {
     this.facilityService.deleteRamFactor(this.facility_id, id).subscribe((res: RamFactor[]): void => {
       this.ramFactors = res;
+      this.factorChanged.emit()
 
     })
   }
@@ -60,6 +63,8 @@ export class RamfactorOverviewComponent implements OnInit {
       this.ramFactors.forEach((ramFactor: RamFactor): void => {
         this.ramUpdateList[ramFactor.id] = false;
       })
+      this.factorChanged.emit()
+
     })
 
   }
@@ -68,6 +73,7 @@ export class RamfactorOverviewComponent implements OnInit {
 
     this.facilityService.updateRamFactor(this.facility_id, rf).subscribe((ramFactor: RamFactor): void => {
       this.ramFactors[this.ramFactors.indexOf(rf)] = new RamFactor(ramFactor);
+      this.factorChanged.emit()
 
     })
 
