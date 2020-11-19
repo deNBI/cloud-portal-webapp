@@ -1,0 +1,104 @@
+<div class="alert alert-danger" role="alert" *ngIf="!cores.checkValidity()" id="cores_validity_alert">
+  Please enter a valid number for cores!
+</div>
+
+
+<div class="alert alert-danger" role="alert" *ngIf="!coresFactor.checkValidity()"
+     id="cores_factor_validity_alert">
+  Please enter a valid number for cores factor!
+</div>
+<div class="rTable">
+  <div class="rTableHeading">
+    <div class="rTableHead">Actions</div>
+    <div class="rTableHead">Cores</div>
+    <div class="rTableHead">Factor</div>
+    <div class="rTableHead">Type</div>
+    <div class="rTableHead">Description</div>
+    <div class="rTableHead">Public</div>
+  </div>
+  <div class="rTableBody">
+    <ng-container *ngFor="let cF of coreFactors">
+      <div class="rTableRow" *ngIf="!this.coreUpdateList[cF.id]">
+        <div class="rTableCell col-2">
+          <div class="btn-group-vertical" role="group">
+            <button (click)="deleteCoreFactor(cF.id)" class="btn btn-danger" style="margin-bottom: 5px">Remove
+            </button>
+            <button class="btn btn-warning" (click)="changeCoreToUpdate(cF)">Update</button>
+          </div>
+        </div>
+        <div class="rTableCell col-1">{{cF.cores}}</div>
+        <div class="rTableCell col-1">{{cF.factor}}</div>
+        <div class="rTableCell col-3"><span class="badge badge-primary">{{cF.type}}</span></div>
+        <div class="rTableCell col">{{cF.description}}</div>
+
+        <div class="rTableCell col-1"><i *ngIf="cF.public" class="fas fa-check" style="color: darkgreen;"></i>
+          <i *ngIf="!cF.public" class="fas fa-times" style="color:darkred;"></i></div>
+
+
+      </div>
+
+      <div class="rTableRow" *ngIf="this.coreUpdateList[cF.id]">
+        <div class="rTableCell col-2">
+          <div class="btn-group-vertical" role="group">
+            <button (click)="updateCoreFactor(cF);changeCoreToUpdate(cF);" class="btn btn-success"
+                    style="margin-bottom: 5px">Save
+            </button>
+            <button class="btn btn-info" (click)="reloadCoreFactor(cF);changeCoreToUpdate(cF);">Cancel</button>
+          </div>
+        </div>
+        <div class="rTableCell col-1"><input type="text" [(ngModel)]="cF.cores" placeholder="Core" pattern="[0-9]+">
+        </div>
+        <div class="rTableCell col-1"><input type="text" [(ngModel)]="cF.factor" placeholder="Factor"
+                                             pattern="[0-9]+(\.[0-9]+)?"></div>
+        <div class="rTableCell col-3"><select [(ngModel)]="cF.type"
+
+                                              class="form-control">
+          <option value="undefined" disabled selected> Please Select</option>
+
+          <option *ngFor="  let type of factor_types" [ngValue]="type">
+            {{type}}
+          </option>
+
+        </select></div>
+
+        <div class="rTableCell col"><textarea type="textfield" class="col" [(ngModel)]="cF.description"
+                                                placeholder="Description"></textarea></div>
+        <div class="rTableCell col-1"><input type="checkbox" [(ngModel)]="cF.public" [checked]="cF.public"></div>
+
+
+      </div>
+    </ng-container>
+
+    <div class="rTableRow">
+      <div class="rTableCell col-2">
+        <button style="cursor: pointer;"
+                (click)="addCoreFactor();"
+                [disabled]="!cores.value  || !coresFactor.value || !type.value  "
+                *ngIf="cores.checkValidity() && coresFactor.checkValidity()" class="btn btn-success">Save
+        </button>
+      </div>
+      <div class="rTableCell col-1"><input type="number" min="0" step="1"
+                                           placeholder="e.g 1" [(ngModel)]="newFactor.cores"
+                                           appMinAmount="0" appIntegerOrNull #cores></div>
+      <div class="rTableCell col-1"><input type="number" min="0" step="1"
+                                           placeholder="e.g 1" [(ngModel)]="newFactor.factor"
+                                           appMinAmount="0" appIntegerOrNull #coresFactor>
+      </div>
+      <div class="rTableCell col-3"><select #type [(ngModel)]="newFactor.type"
+
+                                            class="form-control" name="selectedFacility">
+        <option *ngFor="  let type of factor_types" [ngValue]="type">
+          {{type}}
+        </option>
+
+      </select></div>
+      <div class="rTableCell col">
+        <textarea type="textfield" class="col" [(ngModel)]="newFactor.description" placeholder="Description"
+                  ></textarea></div>
+      <div class="rTableCell col-1"><input [(ngModel)]="newFactor.public" type="checkbox" ></div>
+
+    </div>
+
+
+  </div>
+</div>

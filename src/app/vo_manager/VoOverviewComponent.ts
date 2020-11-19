@@ -45,6 +45,7 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
 
   public newsletterSubscriptionCounter: number;
   isLoaded: boolean = false;
+  error_btn_visible: boolean = false;
 
   member_id: number;
   projects: Project[] = [];
@@ -98,6 +99,11 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
       default:
         return
     }
+  }
+
+  sendTestBug(): void {
+    console.log('error')
+    this.voserice.sendTestError().subscribe()
   }
 
   applyFilter(): void {
