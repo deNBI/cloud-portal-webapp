@@ -2,7 +2,6 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {RamFactor} from '../ram-factor';
 import {FacilityService} from '../../../api-connector/facility.service';
 
-
 /**
  * Class for ramfactors..
  */
