@@ -6,12 +6,14 @@ export class TemplateNames {
   private static _THEIA: string = 'theiaide';
   private static _GUACAMOLE: string = 'guacamole';
   private static _JUPYTERNOTEBOOK: string = 'jupyternotebook';
+  private static _CWLAB: string = 'cwlab';
 
   private static _ALL_TEMPLATES: string[] =
     [TemplateNames._RSTUDIO,
       TemplateNames._THEIA,
       TemplateNames._GUACAMOLE,
-      TemplateNames._JUPYTERNOTEBOOK];
+      TemplateNames._JUPYTERNOTEBOOK,
+      TemplateNames._CWLAB];
 
   static get RSTUDIO(): string {
     return this._RSTUDIO;
@@ -43,6 +45,14 @@ export class TemplateNames {
 
   static set JUPYTERNOTEBOOK(value: string) {
     this._JUPYTERNOTEBOOK = value;
+  }
+
+  static get CWLAB(): string {
+    return this._CWLAB;
+  }
+
+  static set CWLAB(value: string) {
+    this._CWLAB = value;
   }
 
   static get ALL_TEMPLATE_NAMES(): string [] {
