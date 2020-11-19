@@ -81,6 +81,26 @@
         </div>
       </ng-container>
     </div>
+    <div class="row col">
+      <div *ngIf="selectedTemplate != undefinedTemplate" class="alert alert-warning col-12">
+        This template is known to be incompatible with: <br>
+        <ng-container *ngIf="selectedTemplate.template_name === 'guacamole'">
+          - Ubuntu 16.04 <br>
+          - Ubuntu 20.04
+        </ng-container>
+        <ng-container *ngIf="selectedTemplate.template_name === 'rstudio'">
+          - Ubuntu 20.04
+        </ng-container>
+        <ng-container *ngIf="selectedTemplate.template_name === 'theiaide'">
+          - Ubuntu 20.04
+        </ng-container>
+        <ng-container *ngIf="selectedTemplate.template_name === 'cwlab'">
+          No known incompatible Ubuntu versions.
+        </ng-container>
+        <br>
+        If you encounter an error with a version that is not listed, please contact us at <a href="mailto:cloud-portal-support@deNBI.DE">cloud-portal-support@deNBI.DE</a>.
+      </div>
+    </div>
   </div>
 
   <div *ngIf="onlyNamespace || selectedTemplate != undefinedTemplate" style="border-style: dashed; border-color: lightgray; padding: 10px">
@@ -114,7 +134,7 @@
     </div>
   </div>
 
-  <div *ngIf="!onlyNamespace" style="border-style: dashed; border-color: lightgray; padding: 10px">
+  <div *ngIf="!onlyNamespace && selectedTemplate != undefinedTemplate" style="border-style: dashed; border-color: lightgray; padding: 10px">
     <div class="row col">
       <div class="form-check text-center col-2" style="margin: auto">
         <input class="form-check-input" type="checkbox" id="create_only_backend_checkbox"
