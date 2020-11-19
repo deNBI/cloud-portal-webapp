@@ -571,7 +571,7 @@
               </ng-container>
 
               <tr>
-                <td><input style="width: 100%" type="text" required placeholder="e.g. 10.1000/182"
+                <td><input style="width: 100%" type="text" required placeholder="e.g. 10.1000/182" id="doi_input_field"
                            pattern="10.\d{4,9}\/[-._;()\/:a-zA-Z0-9]+" [(ngModel)]="newDoi" #doiInput></td>
 
                 <td>
@@ -1817,12 +1817,12 @@
               </ng-container>
 
               <tr>
-                <td><input style="width: 100%" type="text" required placeholder="e.g. 10.1000/182"
+                <td><input style="width: 100%" type="text" required placeholder="e.g. 10.1000/182" id="modal_doi_input_field"
                            pattern="10.\d{4,9}\/[-._;()\/:a-zA-Z0-9]+" [(ngModel)]="newDoi" #doiInput></td>
 
                 <td>
                   <button id="add_doi_btn_in_modal"
-                          (click)="addDoi();"
+                          (click)="addDoi('modal');"
                           [disabled]="!doiInput.validity.valid"
                           type="button"
                           class="btn btn-success"><i class="fa fa-plus"></i>&nbsp;
