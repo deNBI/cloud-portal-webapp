@@ -329,6 +329,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
   removeAttachVolume(vol: Volume): void {
     this.selected_detached_vol = null;
     const idx: number = this.volumesToAttach.indexOf(vol);
+    vol.volume_path = null;
     if (idx !== -1) {
       this.volumesToAttach.splice(idx, 1);
       this.detached_project_volumes.push(vol)
@@ -336,12 +337,12 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
     }
   }
 
-  /**
-   * Removes the volume at the position idx from the list of volumes, which will be mounted.
-   * @param idx the index of the volume within the list 'volumesToMount'
-   */
-  removeVolFromList(idx: number): void {
-    this.volumesToMount.splice(idx, 1);
+  removeVolFromList(vol: Volume): void {
+    const idx: number = this.volumesToMount.indexOf(vol)
+    vol.volume_path = null;
+    if (idx > -1) {
+      this.volumesToMount.splice(idx, 1);
+    }
   }
 
   /**
