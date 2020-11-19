@@ -12,6 +12,12 @@ import {ExportAsModule} from 'ngx-export-as';
 import {ApplicationsModule} from '../applications/applications.module';
 import {NewsManagerComponent} from './newsmanagement/news-manager.component';
 import {PipeModuleModule} from '../pipe-module/pipe-module.module';
+import { RamfactorOverviewComponent } from './resources/ramfactor-overview/ramfactor-overview.component';
+import {SharedDirectivesModule} from '../shared/shared_modules/shared_directives.module';
+import { CorefactorOverviewComponent } from './resources/corefactor-overview/corefactor-overview.component';
+import { ObjectstoragefactorOverviewComponent } from './resources/objectstoragefactor-overview/objectstoragefactor-overview.component';
+import { VolumestoragefactorOverviewComponent } from './resources/volumestoragefactor-overview/volumestoragefactor-overview.component';
+import { GpufactorOverviewComponent } from './resources/gpufactor-overview/gpufactor-overview.component';
 
 /**
  * Facilitymanager module.
@@ -24,7 +30,7 @@ import {PipeModuleModule} from '../pipe-module/pipe-module.module';
                   CommonModule,
                   ModalModule.forRoot(),
                   ExportAsModule, ApplicationsModule,
-                  ReactiveFormsModule, PipeModuleModule
+                  ReactiveFormsModule, PipeModuleModule, SharedDirectivesModule
 
               ],
             declarations: [
@@ -32,7 +38,12 @@ import {PipeModuleModule} from '../pipe-module/pipe-module.module';
               ImageTagComponent,
               FacilityApplicationComponent,
               ResourcesComponent,
-              NewsManagerComponent
+              NewsManagerComponent,
+              RamfactorOverviewComponent,
+              CorefactorOverviewComponent,
+              ObjectstoragefactorOverviewComponent,
+              VolumestoragefactorOverviewComponent,
+              GpufactorOverviewComponent
 
             ]
           })

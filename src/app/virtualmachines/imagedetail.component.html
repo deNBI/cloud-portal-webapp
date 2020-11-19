@@ -1,7 +1,7 @@
 <div *ngIf="!carousel_activated || images.length <=images_per_row-1" class="row">
   <div *ngFor="  let image of images" style="cursor: pointer;">
     <app-image-slide [image]="image" [selectedImage]="selectedImage"
-                     (selectedImageChange)="    selectedImageChange.emit(image);"
+                     (selectedImageChange)=" selectedImageChange.emit(image);"
     ></app-image-slide>
   </div>
 </div>
