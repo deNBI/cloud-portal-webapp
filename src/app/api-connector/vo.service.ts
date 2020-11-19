@@ -13,6 +13,13 @@ export class VoService {
   constructor(private http: HttpClient) {
   }
 
+   sendTestError(): Observable<IResponseTemplate> {
+
+    return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}voManagers/test_bug/`, {
+      withCredentials: true
+    })
+  }
+
   isVo(): Observable<IResponseTemplate> {
 
     return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}voManagers/current/status/`, {

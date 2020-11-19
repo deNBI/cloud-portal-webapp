@@ -1,0 +1,102 @@
+<div class="alert alert-danger" role="alert" *ngIf="!ram.checkValidity()" id="ram_validity_alert">
+  Please enter a valid number for RAM!
+</div>
+
+<div class="alert alert-danger" role="alert" *ngIf="!ramFactor.checkValidity()" id="ram_factor_validity_alert">
+  Please enter a valid (decimal) number for RAM factor!
+</div>
+<div class="rTable">
+  <div class="rTableHeading">
+    <div class="rTableHead">Actions</div>
+    <div class="rTableHead">Ram</div>
+    <div class="rTableHead">Factor</div>
+    <div class="rTableHead">Type</div>
+    <div class="rTableHead">Description</div>
+    <div class="rTableHead">Public</div>
+  </div>
+  <div class="rTableBody">
+    <ng-container *ngFor="let rF of ramFactors">
+      <div class="rTableRow" *ngIf="!this.ramUpdateList[rF.id]">
+        <div class="rTableCell col-2">
+          <div class="btn-group-vertical" role="group">
+            <button (click)="deleteRamFactor(rF.id)" class="btn btn-danger" style="margin-bottom: 5px">Remove
+            </button>
+            <button class="btn btn-warning" (click)="changeRamToUpdate(rF)">Update</button>
+          </div>
+        </div>
+        <div class="rTableCell col-1">{{rF.ram}}</div>
+        <div class="rTableCell col-1">{{rF.factor}}</div>
+        <div class="rTableCell col-3"><span class="badge badge-primary">{{rF.type}}</span></div>
+        <div class="rTableCell col">{{rF.description}}</div>
+
+        <div class="rTableCell col-1"><i *ngIf="rF.public" class="fas fa-check" style="color: darkgreen;"></i>
+          <i *ngIf="!rF.public" class="fas fa-times" style="color:darkred;"></i></div>
+
+
+      </div>
+
+      <div class="rTableRow" *ngIf="this.ramUpdateList[rF.id]">
+        <div class="rTableCell col-2">
+          <div class="btn-group-vertical" role="group">
+            <button (click)="updateRamFactor(rF);changeRamToUpdate(rF);" class="btn btn-success"
+                    style="margin-bottom: 5px">Save
+            </button>
+            <button class="btn btn-info" (click)="reloadRamFactor(rF);changeRamToUpdate(rF);">Cancel</button>
+          </div>
+        </div>
+        <div class="rTableCell col-1"><input type="text" [(ngModel)]="rF.ram" placeholder="Ram" pattern="[0-9]+">
+        </div>
+        <div class="rTableCell col-1"><input type="text" [(ngModel)]="rF.factor" placeholder="Factor"
+                                                pattern="[0-9]+(\.[0-9]+)?"></div>
+        <div class="rTableCell col-3"><select [(ngModel)]="rF.type"
+
+                                                 class="form-control" >
+                    <option value="undefined" disabled selected > Please Select</option>
+
+          <option *ngFor="  let type of factor_types" [ngValue]="type">
+            {{type}}
+          </option>
+
+        </select></div>
+
+        <div class="rTableCell col"><textarea type="textfield" class="col" [(ngModel)]="rF.description"
+                                                   placeholder="Description"></textarea></div>
+        <div class="rTableCell col-1"><input type="checkbox" [(ngModel)]="rF.public" [checked]="rF.public"></div>
+
+
+      </div>
+    </ng-container>
+
+    <div class="rTableRow">
+      <div class="rTableCell col-2">
+        <button style="cursor: pointer;"
+                (click)="addRamFactor();"
+                [disabled]="!ram.value  || !ramFactor.value || !type.value  "
+                *ngIf="ram.checkValidity() && ramFactor.checkValidity()" class="btn btn-success">Save
+        </button>
+      </div>
+      <div class="rTableCell col-1"><input type="number" min="0" step="1"
+                                              placeholder="e.g 1" [(ngModel)]="newFactor.ram"
+                                              appMinAmount="0" appIntegerOrNull #ram></div>
+      <div class="rTableCell col-1"><input type="number" min="0" step="1"
+                                              placeholder="e.g 1" [(ngModel)]="newFactor.factor"
+                                              appMinAmount="0" appIntegerOrNull #ramFactor>
+      </div>
+      <div class="rTableCell col-3"><select #type [(ngModel)]="newFactor.type"
+
+                                               class="form-control" name="selectedFacility">
+        <option *ngFor="  let type of factor_types" [ngValue]="type">
+          {{type}}
+        </option>
+
+      </select></div>
+      <div class="rTableCell col">
+        <textarea type="textfield"  class="col" [(ngModel)]="newFactor.description" placeholder="Description">
+                  </textarea></div>
+      <div class="rTableCell col-1"><input [(ngModel)]="newFactor.public" type="checkbox" #public></div>
+
+    </div>
+
+
+  </div>
+</div>
