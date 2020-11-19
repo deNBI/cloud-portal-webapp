@@ -1,8 +1,10 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FacilityService} from '../../../api-connector/facility.service';
 import {VolumeStorageFactor} from '../volume-storage-factor';
-import {Resources} from '../../../vo_manager/resources/resources';
 
+/**
+ * Class for ramfactors.
+ */
 @Component({
              selector: 'app-volumestoragefactor-overview',
              templateUrl: './volumestoragefactor-overview.component.html',

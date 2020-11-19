@@ -260,17 +260,19 @@ export class FacilityService {
   addVolumeStorageFactor(facility: number | string, volumeStorageFactor: VolumeStorageFactor): Observable<VolumeStorageFactor[]> {
     const params: HttpParams = new HttpParams().set('volumeStorageFactor', JSON.stringify(volumeStorageFactor));
 
-    return this.http.post<VolumeStorageFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/volumeStorageFactors/`, params, {
-      withCredentials: true
-    });
+    return this.http.post<VolumeStorageFactor[]>(
+      `${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/volumeStorageFactors/`, params, {
+        withCredentials: true
+      });
   }
 
   addObjectStorageFactor(facility: number | string, objectStorageFactor: ObjectStorageFactor): Observable<ObjectStorageFactor[]> {
     const params: HttpParams = new HttpParams().set('objectStorageFactor', JSON.stringify(objectStorageFactor));
 
-    return this.http.post<VolumeStorageFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/objectStorageFactors/`, params, {
-      withCredentials: true
-    });
+    return this.http.post<VolumeStorageFactor[]>(
+      `${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/objectStorageFactors/`, params, {
+        withCredentials: true
+      });
   }
 
   /**
@@ -490,9 +492,10 @@ export class FacilityService {
    */
   getVolumeStorageFactors(facility: number | string): Observable<VolumeStorageFactor[]> {
 
-    return this.http.get<VolumeStorageFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/volumeStorageFactors/`, {
-                                                  withCredentials: true
-                                                }
+    return this.http.get<VolumeStorageFactor[]>(
+      `${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/volumeStorageFactors/`, {
+        withCredentials: true
+      }
     )
   }
 
@@ -503,9 +506,10 @@ export class FacilityService {
    */
   getObjectStorageFactors(facility: number | string): Observable<ObjectStorageFactor[]> {
 
-    return this.http.get<ObjectStorageFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/objectStorageFactors/`, {
-                                                  withCredentials: true
-                                                }
+    return this.http.get<ObjectStorageFactor[]>(
+      `${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/objectStorageFactors/`, {
+        withCredentials: true
+      }
     )
   }
 

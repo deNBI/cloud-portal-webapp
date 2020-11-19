@@ -2,6 +2,9 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FacilityService} from '../../../api-connector/facility.service';
 import {GpuFactor} from '../gpu-factor';
 
+/**
+ * Class for gpufactors..
+ */
 @Component({
              selector: 'app-gpufactor-overview',
              templateUrl: './gpufactor-overview.component.html',

@@ -2,6 +2,9 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {CoreFactor} from '../core-factor';
 import {FacilityService} from '../../../api-connector/facility.service';
 
+/**
+ * Class for corefactors.
+ */
 @Component({
              selector: 'app-corefactor-overview',
              templateUrl: './corefactor-overview.component.html',

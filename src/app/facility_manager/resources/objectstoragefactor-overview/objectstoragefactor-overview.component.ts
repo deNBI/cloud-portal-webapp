@@ -2,6 +2,9 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ObjectStorageFactor} from '../object-storage-factor';
 import {FacilityService} from '../../../api-connector/facility.service';
 
+/**
+ * Class for objectfactors.
+ */
 @Component({
              selector: 'app-objectstoragefactor-overview',
              templateUrl: './objectstoragefactor-overview.component.html',

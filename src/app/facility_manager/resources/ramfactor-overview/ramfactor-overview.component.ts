@@ -2,6 +2,10 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {RamFactor} from '../ram-factor';
 import {FacilityService} from '../../../api-connector/facility.service';
 
+
+/**
+ * Class for ramfactors..
+ */
 @Component({
              selector: 'app-ramfactor-overview',
              templateUrl: './ramfactor-overview.component.html',
