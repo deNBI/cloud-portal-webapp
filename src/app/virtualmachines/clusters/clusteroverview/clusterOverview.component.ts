@@ -501,11 +501,13 @@ export class ClusterOverviewComponent extends AbstractBaseClasse implements OnIn
 
   checkClustersTillRunning(): void {
     this.clusters.forEach((cluster: Clusterinfo): void => {
+      if (cluster.status !== this.VirtualMachineStates.staticNOT_FOUND) {
 
-      if (cluster.status !== 'Running') {
-        this.check_status_loop(cluster);
-      } else {
-        this.check_worker_count_loop(cluster)
+        if (cluster.status !== 'Running') {
+          this.check_status_loop(cluster);
+        } else {
+          this.check_worker_count_loop(cluster)
+        }
       }
     })
   }
