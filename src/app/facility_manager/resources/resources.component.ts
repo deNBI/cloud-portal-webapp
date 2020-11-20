@@ -4,9 +4,6 @@ import {Resources} from '../../vo_manager/resources/resources';
 import {jsPDF} from 'jspdf';
 import html2canvas from 'html2canvas';
 import {ExportAsConfig, ExportAsService} from 'ngx-export-as'
-import {CoreFactor} from './core-factor';
-import {RamFactor} from './ram-factor';
-import {forkJoin} from 'rxjs';
 
 /**
  * Facility resource component.
@@ -21,9 +18,27 @@ import {forkJoin} from 'rxjs';
 export class ResourcesComponent implements OnInit {
 
   title: string = 'Resource Overview';
-  public managerFacilities: [string, number][];
-  ramUpdateList: { [id: string]: boolean } = {};
-  coresUpdateList: { [id: string]: boolean } = {};
+  managerFacilities: [string, number][];
+
+  ALL_RESOURCES: number = 0;
+  INTERN_RESOURCES: number = 1;
+  PUBLIC_RESOURCES: number = 2;
+
+  ALL_ACTIVE: boolean = false;
+  INTERN_ACTIVE: boolean = false;
+  PUBLIC_ACTIVE: boolean = true;
+
+  RAM_TAB: number = 0;
+  CORE_TAB: number = 1;
+  GPU_TAB: number = 2;
+  OBJECT_STORAGE_TAB: number = 3;
+  VOLUME_STORAGE_TAB: number = 4;
+
+  RAM_TAB_ACTIVE: boolean = true;
+  CORE_TAB_ACTIVE: boolean = false;
+  GPU_TAB_ACTIVE: boolean = false;
+  OBJECT_STORAGE_TAB_ACTIVE: boolean = false;
+  VOLUME_STORAGE_TAB_ACTIVE: boolean = false;
 
   /**
    * Chosen facility.
@@ -32,14 +47,13 @@ export class ResourcesComponent implements OnInit {
 
   isLoaded: boolean = false;
   resources: Resources [];
+  visible_resources: Resources[];
 
   /**
    * Id of the table which will be converted to pdf or csv.
    */
   tableId: string = 'contentToConvert';
   today: number = Date.now();
-  coreFactors: CoreFactor[] = [];
-  ramFactors: RamFactor[] = [];
   exportAsConfigCSV: ExportAsConfig = {
     type: 'csv',
     // elementId: this.tableId
@@ -48,33 +62,65 @@ export class ResourcesComponent implements OnInit {
 
   constructor(private facilityService: FacilityService, private exportAsService: ExportAsService) {
   }
-  addCoreFactor(cores: string | number, factor: string | number, description: string): void {
-    if (cores && factor) {
-      const re: any = /\,/gi;
-      factor = factor.toString().replace(re, '.');
-      this.facilityService.addCoresFactor(this.selectedFacility['FacilityId'], cores, factor, description)
-        .subscribe((res: CoreFactor[]): void => {
-          this.coreFactors = res;
-          this.coreFactors.forEach((coreFactor: CoreFactor): void => {
-            this.coresUpdateList[coreFactor.id] = false;
-          });
-          this.getSelectedFacilityResources()
-        })
-    }
+
+  setAllTabsFalse(): void {
+    this.RAM_TAB_ACTIVE = false;
+    this.CORE_TAB_ACTIVE = false;
+    this.GPU_TAB_ACTIVE = false;
+    this.OBJECT_STORAGE_TAB_ACTIVE = false;
+    this.VOLUME_STORAGE_TAB_ACTIVE = false;
+
   }
 
-  addRamFactor(ram: string | number, factor: string | number, description: string): void {
-    if (ram && factor) {
-      const re: any = /\,/gi;
-      factor = factor.toString().replace(re, '.');
-      // tslint:disable-next-line:max-line-length
-      this.facilityService.addRamFactor(this.selectedFacility['FacilityId'], ram, factor, description).subscribe((res: RamFactor[]): void => {
-        this.ramFactors = res;
-        this.ramFactors.forEach((ramFactor: RamFactor): void => {
-          this.ramUpdateList[ramFactor.id] = false;
-        })
-        this.getSelectedFacilityResources()
-      })
+  setAllResourcesFalse(): void {
+    this.ALL_ACTIVE = false;
+    this.PUBLIC_ACTIVE = false;
+    this.INTERN_ACTIVE = false;
+
+  }
+
+  setResources(tab_num: number): void {
+
+    this.setAllResourcesFalse()
+    switch (tab_num) {
+      case this.ALL_RESOURCES:
+        this.ALL_ACTIVE = true;
+        break;
+      case this.INTERN_RESOURCES:
+        this.INTERN_ACTIVE = true;
+        break;
+      case this.PUBLIC_RESOURCES:
+        this.PUBLIC_ACTIVE = true;
+        break;
+
+      default:
+        break;
+    }
+    this.setVisibleResources()
+  }
+
+  setTab(tab_num: number): void {
+
+    this.setAllTabsFalse()
+    switch (tab_num) {
+      case this.RAM_TAB:
+        this.RAM_TAB_ACTIVE = true;
+        break;
+      case this.CORE_TAB:
+        this.CORE_TAB_ACTIVE = true;
+        break;
+      case this.GPU_TAB:
+        this.GPU_TAB_ACTIVE = true;
+        break;
+      case this.OBJECT_STORAGE_TAB:
+        this.OBJECT_STORAGE_TAB_ACTIVE = true;
+        break;
+      case this.VOLUME_STORAGE_TAB:
+        this.VOLUME_STORAGE_TAB_ACTIVE = true;
+        break;
+
+      default:
+        break;
     }
   }
 
@@ -91,86 +137,30 @@ export class ResourcesComponent implements OnInit {
     })
   }
 
-  public deleteCoreFactor(id: string | number): void {
-    this.facilityService.deleteCoreFactor(this.selectedFacility['FacilityId'], id).subscribe((res: CoreFactor[]): void => {
-      this.coreFactors = res;
-      this.getSelectedFacilityResources()
-    })
-  }
+  setVisibleResources(): void {
+    if (this.PUBLIC_ACTIVE) {
+      this.visible_resources = this.resources.filter((res: Resources): boolean => {
+        return !res.resource_name.includes('Intern') && !res.resource_name.includes('All');
+      })
+    } else if (this.INTERN_ACTIVE) {
+      this.visible_resources = this.resources.filter((res: Resources): boolean => {
+        return res.resource_name.includes('Intern');
+      })
+    } else if (this.ALL_ACTIVE) {
+      this.visible_resources = this.resources
 
-  public deleteRamFactor(id: string | number): void {
-    this.facilityService.deleteRamFactor(this.selectedFacility['FacilityId'], id).subscribe((res: RamFactor[]): void => {
-      this.ramFactors = res;
-      this.getSelectedFacilityResources()
+    }
+    this.isLoaded = true;
 
-    })
   }
 
   public getSelectedFacilityResources(): void {
     this.facilityService.getFacilityResources(this.selectedFacility['FacilityId']).subscribe((res: Resources[]): void => {
 
-                                                                                               this.resources = res;
-                                                                                               this.isLoaded = true;
+      this.resources = res;
+      this.setVisibleResources()
                                                                                              }
     )
-
-  }
-
-  public reloadRamFactor(rf: RamFactor): void {
-    this.facilityService.getRamFactor(this.selectedFacility['FacilityId'], rf.id).subscribe((ramFactor: RamFactor): void => {
-      this.ramFactors[this.ramFactors.indexOf(rf)] = ramFactor;
-    })
-  }
-
-  public reloadCoreFactor(cf: CoreFactor): void {
-    this.facilityService.getCoreFactor(this.selectedFacility['FacilityId'], cf.id).subscribe((coreFactor: CoreFactor): void => {
-      this.coreFactors[this.coreFactors.indexOf(cf)] = coreFactor;
-    })
-  }
-
-  public getRamCoreFactors(): void {
-    forkJoin(
-      this.facilityService.getCoreFactors(this.selectedFacility['FacilityId']),
-      this.facilityService.getRamFactors(this.selectedFacility['FacilityId'])).subscribe((res: any): void => {
-      this.coreFactors = res[0];
-      this.coreFactors.forEach((coreFactor: CoreFactor): void => {
-        this.coresUpdateList[coreFactor.id] = false;
-      });
-
-      this.ramFactors = res[1];
-      this.ramFactors.forEach((ramFactor: RamFactor): void => {
-        this.ramUpdateList[ramFactor.id] = false;
-      })
-    })
-
-  }
-
-  public updateRamFactor(rf: RamFactor): void {
-
-    this.facilityService.updateRamFactor(this.selectedFacility['FacilityId'], rf).subscribe((ramFactor: RamFactor): void => {
-      this.ramFactors[this.ramFactors.indexOf(rf)] = ramFactor;
-      this.getSelectedFacilityResources()
-
-    })
-
-  }
-
-  public updateCoreFactor(cf: CoreFactor): void {
-
-    this.facilityService.updateCoreFactor(this.selectedFacility['FacilityId'], cf).subscribe((coreFactor: CoreFactor): void => {
-      this.coreFactors[this.coreFactors.indexOf(cf)] = coreFactor;
-      this.getSelectedFacilityResources()
-
-    })
-
-  }
-
-  public changeRamToUpdate(ramFactor: RamFactor): void {
-    this.ramUpdateList[ramFactor.id] = !this.ramUpdateList[ramFactor.id]
-  }
-
-  public changeCoreToUpdate(coreFactor: CoreFactor): void {
-    this.coresUpdateList[coreFactor.id] = !this.coresUpdateList[coreFactor.id]
 
   }
 
