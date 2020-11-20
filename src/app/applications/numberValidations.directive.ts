@@ -84,7 +84,8 @@ export function floatValidator(): ValidatorFn {
 
 export function floatOrNullValidator(): ValidatorFn {
   return (control: AbstractControl): { [key: string]: any } | null => {
-    const float: boolean = (Number.isInteger(control.value) || Number(control.value) === control.value && control.value % 1 !== 0) || !control.value;
+    const float: boolean = (Number.isInteger(control.value) ||
+      Number(control.value) === control.value && control.value % 1 !== 0) || !control.value;
 
     return float ? null : {floatOrNulL: {value: control.value}};
   };
