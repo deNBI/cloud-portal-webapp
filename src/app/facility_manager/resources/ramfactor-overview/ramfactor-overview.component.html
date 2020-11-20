@@ -78,9 +78,9 @@
       <div class="rTableCell col-1"><input type="number" min="0" step="1"
                                               placeholder="e.g 1" [(ngModel)]="newFactor.ram"
                                               appMinAmount="0" appIntegerOrNull #ram></div>
-      <div class="rTableCell col-1"><input type="number" min="0" step="1"
+      <div class="rTableCell col-1"><input type="number" min="0" step="0.1"
                                               placeholder="e.g 1" [(ngModel)]="newFactor.factor"
-                                              appMinAmount="0" appIntegerOrNull #ramFactor>
+                                              appMinAmount="1" appFloatOrNull #ramFactor>
       </div>
       <div class="rTableCell col-3"><select #type [(ngModel)]="newFactor.type"
 
