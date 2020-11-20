@@ -1,8 +1,10 @@
 import {
-  MinAmoutValidatorDirective,
-  MaxAmoutValidatorDirective,
+  FloatOrNullValidatorDirective,
+  FloatValidatorDirective,
+  IntegerOrNullValidatorDirective,
   IntegerValidatorDirective,
-  IntegerOrNullValidatorDirective
+  MaxAmoutValidatorDirective,
+  MinAmoutValidatorDirective
 } from '../../applications/numberValidations.directive';
 import {NgModule} from '@angular/core';
 
@@ -15,13 +17,17 @@ import {NgModule} from '@angular/core';
               MinAmoutValidatorDirective,
               MaxAmoutValidatorDirective,
               IntegerValidatorDirective,
-              IntegerOrNullValidatorDirective
+              IntegerOrNullValidatorDirective,
+              FloatOrNullValidatorDirective,
+              FloatValidatorDirective
             ],
             exports: [
               MinAmoutValidatorDirective,
               MaxAmoutValidatorDirective,
               IntegerValidatorDirective,
-              IntegerOrNullValidatorDirective
+              IntegerOrNullValidatorDirective,
+              FloatOrNullValidatorDirective,
+              FloatValidatorDirective
             ]
           })
 
