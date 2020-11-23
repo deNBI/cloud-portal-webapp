@@ -262,18 +262,18 @@
             </div>
 
             <div *ngIf="selectedProjectType === 'USER'">
-              <!--<div class="container-fluid">
+              <div class="container-fluid" *ngIf="membersLoaded">
                 <div class="row">
-                  <p style=" margin-bottom: 15px;">Search for a user to your project by providing at least
-                    four characters of his name:</p>
+                  <p style=" margin-bottom: 15px;">Search for a user to your project by entering a part of his name, email or elixir-ID:</p>
                 </div>
                 <div class="row">
                   <div class="col-md-8">
-                    <input style="width: 100%" placeholder="" id="add_member_input" #searchString>
+                    <input style="width: 100%" placeholder="" id="add_member_input" #searchString="ngModel"
+                      [(ngModel)]="memberFilter" [ngModelOptions]="{standalone: true}">
                   </div>
                   <div class="col-md-4">
-                    <button type="button" class="btn btn-primary" id="search_member_btn"
-                            (click)="filterMembers(searchString.value )"><i
+                    <button [disabled]="memberFilter?.length < 3" type="button" class="btn btn-primary" id="search_member_btn"
+                            (click)="filterMembers(memberFilter)"><i
                       class="fa fa-search"></i> Search Member
                     </button>
                   </div>
@@ -285,7 +285,7 @@
                 </div>
 
                 <div class="table-responsive">
-                  <table *ngIf="filteredMembers!==null"
+                  <table *ngIf="filteredMembers?.length > 0"
                          class="table table-bordered table-striped table-sm">
                     <thead>
 
@@ -303,73 +303,40 @@
                     </td>
                     <td>{{member['firstName']}}</td>
                     <td>{{member['lastName']}}</td>
-                    <td>{{member['mail']}}</td>
+                    <td>{{member['email']}}</td>
                     </tbody>
                   </table>
                 </div>
-              </div>-->
 
-              <div class="form-group row">
-
-                <label
-                  class="col-md-12 control-label"><strong>Which project members should receive the email?</strong></label>
-                <div class="col-md-12">
-                  <select class="form-control" [(ngModel)]="selectedProjectForSearch"
-                          (ngModelChange)="getMembesOfTheProject(selectedProjectForSearch.Id, selectedProjectForSearch.Name)"
-                          name="selectProjectForSearch" id="selectedProjectForSearch">
-                    <option *ngFor="let project of projects " value="{{project}}">
-                      {{project?.Name}} ({{project?.Id}})
-                    </option>
-                  </select> <!--redirecting yet??-->
+                <div class="form-group row" *ngIf="selectedMember">
+                  <label class="col-md-12 control-label"><strong>Selected Users</strong></label>
                 </div>
-              </div>
-              <div class="form-group row" *ngIf="selectedProjectForSearch">
-                <div class="table-responsive">
-                  <table *ngIf="usersModalProjectMembers?.length > 0"
-                         class="table table-bordered table-striped table-sm">
-                    <thead>
-
-                    <th></th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Email</th>
-                    </thead>
-                    <tbody *ngFor="let member of usersModalProjectMembers">
-                    <td>
-                      <button style="padding: 5px; margin: 5px" (click)="setSelectedUserForMail(member)"
-                              class="btn btn-success" id="add_selected_member_for_mail_btn">
-                        <i class="fa fa-plus"></i> Select
-                      </button>
-                    </td>
-                    <td>{{member['firstName']}}</td>
-                    <td>{{member['lastName']}}</td>
-                    <td>{{member['mail']}}</td>
+                <div class="table-responsive" *ngIf="selectedMember">
+                  <table class="table table-bordered table-striped table-sm">
+                    <tbody>
+                    <tr *ngFor="let member of selectedMember">
+                      <td>{{member['lastName'].concat(', ').concat(member['firstName'])}}</td>
+                      <td>{{member['email']}}</td>
+                      <td>
+                        <button style="padding: 5px; margin: 5px"
+                                (click)="removeSelectedUserForMail(member)"
+                                class="btn btn-danger" id="remove_selected_member_for_mail_button">
+                          <i class="fa fa-trash"></i> Remove
+                        </button>
+                      </td>
+                    </tr>
                     </tbody>
                   </table>
                 </div>
               </div>
-
-              <div class="form-group row" *ngIf="selectedMember">
-                <label class="col-md-12 control-label"><strong>Selected User</strong></label>
-              </div>
-              <div class="table-responsive" *ngIf="selectedMember">
-                <table class="table table-bordered table-striped table-sm">
-                  <tbody>
-                  <tr *ngFor="let member of selectedMember">
-                    <td>{{member['lastName'].concat(', ').concat(member['firstName'])}}</td>
-                    <td>{{member['mail']}}</td>
-                    <td>
-                      <button style="padding: 5px; margin: 5px"
-                              (click)="removeSelectedUserForMail(member)"
-                              class="btn btn-danger" id="remove_selected_member_for_mail_button">
-                        <i class="fa fa-trash"></i> Remove
-                      </button>
-                    </td>
-                  </tr>
-                  </tbody>
-                </table>
+              <div class="container-fluid" *ngIf="!membersLoaded">
+                <div class="row">
+                  <div class="alert alert-info">Loading facility members...</div>
+                </div>
               </div>
             </div>
+
+
             <div class="form-group row">
               <label class="col-md-12 control-label"><strong>Email
                 subject*</strong></label>
@@ -467,8 +434,10 @@
         <div class="alert alert-warning" role="alert" *ngIf="selectedFacility">
           Are you sure you want to send this email to
           <span *ngIf="selectedProjectType == 'ALL'">all</span>
-          <span *ngIf="selectedProjectType == 'USER' && selectedMember">
-            <span *ngFor="let member of selectedMember">{{member['mail']}}<br></span>
+          <span *ngIf="selectedProjectType == 'USER' && selectedMember"><br>
+            <span *ngFor="let member of selectedMember">
+              {{member['lastName']
+                .concat(', ', member['firstName'],': ' , member['email'])}}<br></span>
           </span>
           <span *ngIf="selectedProjectType == 'SVP'">
             the Simple Vm members of the {{selectedFacility['Facility']}}?

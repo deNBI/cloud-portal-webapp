@@ -32,7 +32,9 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
   title: string = 'Projects Overview';
   filter: string;
 
-  filteredMembers: object = null;
+  membersLoaded: boolean = false;
+  public memberFilter: string = '';
+  filteredMembers: object[] = [];
   selectedMember: object[] = [];
   facility_members: object[] = [];
 
@@ -53,6 +55,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
   public selectedProjectForSearch: Project;
   public
   public usersModalProjectMembers: ProjectMember[] = [];
+  allFacilityMembers: object[] = [];
   public usersModalProjectID: number;
   public usersModalProjectName: string;
   public selectedProject: Project;
@@ -113,10 +116,18 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
     this.facilityservice.getFilteredMembersOfFacility(searchString, this.selectedFacility['FacilityId']);
   }
 
-  filterMembers(searchString: string): void {
-    this.userService.getFilteredMembersOfdeNBIVo(searchString).subscribe((result: object): void => {
-      this.filteredMembers = result;
-    })
+  filterMembers(searchString: string): void{
+   this.filteredMembers = [];
+   let regex: RegExp = new RegExp('/'.concat(searchString, '/i'));
+   this.allFacilityMembers.forEach((member: object) => {
+
+      if (member["elixirId"].match(regex)
+      || member["email"].match(regex)
+      || member["firstName"].match(regex)
+      || member["lastName"].match(regex)){
+        this.filteredMembers.push(member);
+      }
+   })
   }
 
 
@@ -328,8 +339,12 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 
     });
     this.facilityservice.getAllMembersOfFacility(facility, this.STATUS_APPROVED).subscribe(
-      (result: any) : void => {
-        console.log(result);
+      (result: any[]) : void => {
+        this.membersLoaded = true;
+        this.allFacilityMembers = result;
+      }, (error: any) : void => {
+        console.log(error);
+        this.membersLoaded = false;
       }
     );
 
@@ -364,12 +379,12 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
     if (this.selectedProjectType === 'USER') {
       let tempMailList: string[] = [];
       this.selectedMember.forEach((member: object) => {
-        tempMailList.push(member['mail']);
+        tempMailList.push(member['email']);
       });
       this.selectedProjectType = tempMailList.join(',');
+      console.log(this.selectedProjectType);
     }
     const chosenTags: string = this.selectedTags.toString();
-    console.log(this.selectedProjectType);
     this.facilityservice.sendMailToFacility(
       facility, encodeURIComponent(subject), encodeURIComponent(message), this.selectedProjectType,
       encodeURIComponent(reply), send, encodeURIComponent(alternative_news_text), chosenTags).subscribe(
@@ -382,7 +397,13 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
       },
       (): void => {
         this.emailStatus = 2;
-      })
+      }, (): void => {
+          this.filteredMembers = [];
+          this.selectedProjectType='ALL';
+          this.emailReply = '';
+          this.selectedMember = [];
+          this.memberFilter = '';
+      });
 
   }
 
