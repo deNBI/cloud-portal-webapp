@@ -34,7 +34,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 
   filteredMembers: object = null;
   selectedMember: object[] = [];
-
+  facility_members: object[] = [];
 
   filterChanged: Subject<string> = new Subject<string>();
   isLoaded: boolean = false;
@@ -83,7 +83,6 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
   ngOnInit(): void {
     this.facilityservice.getManagerFacilities().subscribe((result: any): void => {
       this.managerFacilities = result;
-      console.log(result);
       this.selectedFacility = this.managerFacilities[0];
       this.emailSubject = `[${this.selectedFacility['Facility']}]`;
 
@@ -119,6 +118,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
       this.filteredMembers = result;
     })
   }
+
 
   getProjectsByMemberElixirId(): void {
     // tslint:disable-next-line:max-line-length
@@ -179,6 +179,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 
         this.projects_filtered.push(newProject);
       }
+
     })
   }
 
@@ -325,7 +326,12 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
       this.applyFilter();
       this.isLoaded = true;
 
-    })
+    });
+    this.facilityservice.getAllMembersOfFacility(facility, this.STATUS_APPROVED).subscribe(
+      (result: any) : void => {
+        console.log(result);
+      }
+    );
 
   }
 
@@ -400,7 +406,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
     }
   }
 
-  getMembesOfTheProject(projectid: number, projectname: string): void {
+  getMembersOfTheProject(projectid: number, projectname: string): void {
     this.facilityservice.getFacilityGroupRichMembers(projectid, this.selectedFacility['FacilityId'])
       .subscribe((members: any): void => {
         this.usersModalProjectID = projectid;
@@ -421,7 +427,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
   }
 
   public showMembersOfTheProject(project_id: number, projectname: string): void {
-    this.getMembesOfTheProject(project_id, projectname);
+    this.getMembersOfTheProject(project_id, projectname);
 
   }
 
