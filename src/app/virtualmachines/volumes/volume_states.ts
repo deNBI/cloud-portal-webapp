@@ -7,6 +7,7 @@ export class VolumeStates {
   private static readonly _RESERVED: string = 'reserved';
   private static readonly _AVAILABLE: string = 'available';
   private static readonly _DELETING: string = 'deleting';
+  private static readonly _DELETED: string = 'deleted'
   private static readonly _CREATING: string = 'creating';
   private static readonly _RESERVED_PLANNED_STATUS: string = 'reserved_planned';
   private static readonly _NOT_FOUND: string = 'NOT FOUND';
@@ -20,7 +21,7 @@ export class VolumeStates {
     VolumeStates._RESERVED, VolumeStates._DELETING, VolumeStates._DETACHING, VolumeStates._EXTENDING];
 
   private static readonly _NOT_IN_PROCESS_STATES: string[] = [
-    VolumeStates._IN_USE, VolumeStates._AVAILABLE, VolumeStates._NOT_FOUND, VolumeStates._ERROR
+    VolumeStates._IN_USE, VolumeStates._AVAILABLE, VolumeStates._NOT_FOUND, VolumeStates._ERROR, VolumeStates._DELETED
   ];
 
   private static readonly _NO_ACTIONS: string[] = [
@@ -31,7 +32,8 @@ export class VolumeStates {
     VolumeStates._RESERVED,
     VolumeStates._CREATING,
     VolumeStates._RESERVED_PLANNED_STATUS,
-    VolumeStates._EXTENDING
+    VolumeStates._EXTENDING,
+    VolumeStates._DELETED
   ];
 
   static get CREATING(): string {
@@ -82,6 +84,10 @@ export class VolumeStates {
     return this._DELETING;
   }
 
+  static get DELETED(): string {
+    return this._DELETED;
+  }
+
   static get NO_ACTIONS(): string[] {
     return this._NO_ACTIONS;
   }
@@ -124,6 +130,10 @@ export class VolumeStates {
 
   public get staticDELETING(): string {
     return VolumeStates.DELETING;
+  }
+
+  public get staticDELETED(): string {
+    return VolumeStates.DELETED;
   }
 
   public get staticNOT_IN_PROCESS_STATE(): string[] {
