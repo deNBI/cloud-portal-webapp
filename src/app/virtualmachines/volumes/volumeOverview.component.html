@@ -379,7 +379,7 @@
       <div class="modal-footer">
         <button id="verify_deletion_button"
                 *ngIf="request_status==volumeRequestStates.DELETE;" class="btn  btn-success col-md-4"
-                (click)="deleteVolume(selected_volume,selected_volume?.volume_virtualmachine?.openstackid);verifyModal.hide();">
+                (click)="deleteVolume(selected_volume);verifyModal.hide();">
           Yes
         </button>
         <button *ngIf="request_status==volumeRequestStates.DETACH;" class="btn  btn-success col-md-4"
