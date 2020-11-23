@@ -118,13 +118,14 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 
   filterMembers(searchString: string): void{
    this.filteredMembers = [];
-   let regex: RegExp = new RegExp('/'.concat(searchString, '/i'));
+    searchString = searchString.toLowerCase();
+    console.log(searchString);
    this.allFacilityMembers.forEach((member: object) => {
 
-      if (member["elixirId"].match(regex)
-      || member["email"].match(regex)
-      || member["firstName"].match(regex)
-      || member["lastName"].match(regex)){
+      if (member["elixirId"].toLowerCase().includes(searchString)
+      || member["email"].toLowerCase().includes(searchString)
+      || member["firstName"].toLowerCase().includes(searchString)
+      || member["lastName"].toLowerCase().includes(searchString)){
         this.filteredMembers.push(member);
       }
    })
@@ -416,7 +417,6 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
   {
     if (!this.selectedMember.includes(member)){
       this.selectedMember.push(member);
-
     }
   }
 

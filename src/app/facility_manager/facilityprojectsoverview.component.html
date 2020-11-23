@@ -405,8 +405,9 @@
           </form>
         </div>
         <div class="modal-footer">
-          <button type="button" [disabled]="f.invalid" class="btn btn-primary"
-                  (click)="emailModal.hide(); verifyModal.show()">Send email
+          <button type="button" [disabled]="f.invalid ||
+            (selectedProjectType == 'ALL' && (selectedMember?.length == 0))"
+                  class="btn btn-primary" (click)="emailModal.hide(); verifyModal.show()">Send email
           </button>
           <button type="button" class="btn btn-secondary"
                   (click)="emailModal.hide();resetEmailModal()">Close
