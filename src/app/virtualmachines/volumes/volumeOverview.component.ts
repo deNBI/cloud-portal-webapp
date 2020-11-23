@@ -192,11 +192,8 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
 
   deleteSelectedVolumes(): void {
     this.checked_volumes.forEach((vol: Volume): void => {
-      if (vol.volume_virtualmachine) {
-        this.deleteVolume(vol, vol.volume_virtualmachine.openstackid)
-      } else {
-        this.deleteVolume(vol)
-      }
+        this.deleteVolume(vol, false)
+
     });
     this.uncheckAll()
   }
@@ -454,18 +451,12 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
     })
   }
 
-  /**
-   * Delete Volume (detach first if attached).
-   * @param {Volume} Volume
-   * @param {string} instance_id oopenstack_id of instance
-   * @returns {void}
-   */
-  deleteVolume(volume: Volume, instance_id?: string): void {
+  deleteVolume(volume: Volume, splice: boolean = true): void {
     const idx: number = this.volumes.indexOf(volume);
 
-    if (instance_id) {
+    if (volume.volume_virtualmachine) {
       volume.volume_status = VolumeStates.DETACHING;
-      this.vmService.deleteVolumeAttachment(volume.volume_openstackid, instance_id).subscribe(
+      this.vmService.deleteVolumeAttachment(volume.volume_openstackid, volume.volume_virtualmachine.openstackid).subscribe(
         (res: IResponseTemplate): void => {
           if (res.value === 'deleted') {
             this.volume_action_status = this.volumeActionStates.WAITING;
@@ -474,11 +465,14 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
 
           this.vmService.deleteVolume(volume.volume_openstackid).subscribe((result: IResponseTemplate): void => {
             if (result.value === 'deleted') {
+              volume.volume_status = VolumeStates.DELETED
               this.volume_action_status = this.volumeActionStates.SUCCESS;
             } else {
               this.volume_action_status = this.volumeActionStates.ERROR;
             }
-            this.volumes.splice(idx, 1)
+            if (splice) {
+              this.volumes.splice(idx, 1)
+            }
           })
         },
         (error: any): void => {
@@ -498,11 +492,14 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
       this.vmService.deleteVolume(volume.volume_openstackid).subscribe(
         (result: IResponseTemplate): void => {
           if (result.value === 'deleted') {
+            volume.volume_status = VolumeStates.DELETED
             this.volume_action_status = this.volumeActionStates.SUCCESS;
           } else {
             this.volume_action_status = this.volumeActionStates.ERROR;
           }
-          this.volumes.splice(idx, 1)
+          if (splice) {
+            this.volumes.splice(idx, 1)
+          }
 
         },
         (error: any): void => {
