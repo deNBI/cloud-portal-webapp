@@ -7,70 +7,91 @@
 
     <div class="card" style="width: 100%;">
       <div class="card-header">
-        <i class="fa fa-align-justify"></i> Resources
 
-        <button style="float:right" class="btn btn-primary" (click)="getRamCoreFactors();factorModal.show()">Modify
-          Limits
-        </button>
+          <i class="fa fa-align-justify"></i> Resources
+          <div >
+
+            <button style="margin: 5px"
+                    class="btn"
+                    [ngClass]="(PUBLIC_ACTIVE) ? 'btn-primary': 'btn-outline-primary'"
+
+                    (click)="setResources(PUBLIC_RESOURCES)">Public Resources
+            </button>
+
+            <button style="margin: 5px"
+                    [ngClass]="(INTERN_ACTIVE) ? 'btn-primary': 'btn-outline-primary'"
+                    class="btn"
+                    (click)="setResources(INTERN_RESOURCES);">Intern Resources
+            </button>
+            <button style="margin: 5px"
+                    [ngClass]="(ALL_RESOURCES) ? 'btn-primary': 'btn-outline-primary'"
+                    class="btn"
+                    (click)="setResources(ALL_RESOURCES)">All Resources
+            </button>
 
 
-      </div>
-
-      <div><select [(ngModel)]="selectedFacility"
-                   (ngModelChange)="isLoaded=false;onChangeSelectedFacility($event);"
-                   class="form-control" name="selectedFacility">
-        <option *ngFor="  let facility of managerFacilities" [ngValue]="facility">
-          {{facility['Facility']}}
-        </option>
-
-      </select></div>
-
-      <div class="card-body" style="width: 100%" id="contentToConvert">
+            <button style="float:right;margin: 5px;" class="btn btn-outline-primary" (click)="factorModal.show()">Modify
+              Limits
+            </button>
+          </div>
 
 
-        <div class="table-responsive">
-          <table class="table table-striped table-bordered"
-                 style="width: 100%">
-            <thead>
-            <tr>
-              <th>{{today | date:'dd-MM-yyyy'}}</th>
 
-              <th *ngFor="let r of resources">{{r.resource_name}}</th>
-            </tr>
-            </thead>
-            <tbody>
+        <div><select [(ngModel)]="selectedFacility"
+                     (ngModelChange)="isLoaded=false;onChangeSelectedFacility($event);"
+                     class="form-control" name="selectedFacility">
+          <option *ngFor="  let facility of managerFacilities" [ngValue]="facility">
+            {{facility['Facility']}}
+          </option>
 
-            <tr>
-              <th>Ram [GB]</th>
-              <td *ngFor="let r of resources">{{r.totalRam}}</td>
+        </select></div>
+
+        <div class="card-body" style="width: 100%" id="contentToConvert">
+
+
+          <div class="table-responsive">
+            <table class="table table-striped table-bordered"
+                   style="width: 100%">
+              <thead>
+              <tr>
+                <th>{{today | date:'dd-MM-yyyy'}}</th>
+
+                <th *ngFor="let r of visible_resources">{{r.resource_name}}</th>
+              </tr>
+              </thead>
+              <tbody>
+
+              <tr>
+                <th>Ram [GB]</th>
+                <td *ngFor="let r of visible_resources">{{r.totalRam}}</td>
             </tr>
             <tr>
               <th>Cores</th>
-              <td *ngFor="let r of resources">{{r.totalCores}}</td>
+              <td *ngFor="let r of visible_resources">{{r.totalCores}}</td>
 
             </tr>
             <tr>
               <th>Vms</th>
-              <td *ngFor="let r of resources">{{r.totalVms}}</td>
+              <td *ngFor="let r of visible_resources">{{r.totalVms}}</td>
             </tr>
             <tr>
               <th>Volumes</th>
-              <td *ngFor="let r of resources">{{r.totalVolumeCounter}}</td>
+              <td *ngFor="let r of visible_resources">{{r.totalVolumeCounter}}</td>
 
             </tr>
             <tr>
               <th>Volumes Storage [GB]</th>
-              <td *ngFor="let r of resources">{{r.totalVolumeLimit}}</td>
+              <td *ngFor="let r of visible_resources">{{r.totalVolumeLimit}}</td>
 
             </tr>
             <tr>
               <th>Object Storage [GB]</th>
-              <td *ngFor="let r of resources">{{r.totalObjectStorage}}</td>
+              <td *ngFor="let r of visible_resources">{{r.totalObjectStorage}}</td>
 
             </tr>
             <tr>
               <th>GPU</th>
-              <td *ngFor="let r of resources">{{r.totalGPU}}</td>
+              <td *ngFor="let r of visible_resources">{{r.totalGPU}}</td>
 
             </tr>
             </tbody>
@@ -102,144 +123,59 @@
       </div>
 
       <div class="modal-body">
-        <div class="alert alert-info" role="alert">
-          Please indicate only the resources intended for de.NBI projects.
-        </div>
-        <div class="alert alert-danger" role="alert" *ngIf="!cores.checkValidity()" id="cores_validity_alert">
-          Please enter a valid number for cores!
-        </div>
-        <div class="alert alert-danger" role="alert" *ngIf="!ram.checkValidity()" id="ram_validity_alert">
-          Please enter a valid number for RAM!
-        </div>
+        <div class="nav-tabs-boxed">
+          <ul class="nav nav-tabs " style="overflow-x:visible !important">
+            <li class="nav-item"><a class="nav-link" id="ram_tab" [ngClass]="{'active': RAM_TAB_ACTIVE}"
+                                    (click)="setTab(RAM_TAB)">Ram</a>
+            </li>
+            <li class="nav-item"><a class="nav-link" d="cores_tab" [ngClass]="{'active': CORE_TAB_ACTIVE}"
+                                    (click)="setTab(CORE_TAB)">Cores</a></li>
+            <li class="nav-item"><a class="nav-link" id="gpu_tab" [ngClass]="{'active': GPU_TAB_ACTIVE}"
+                                    (click)="setTab(GPU_TAB)"
+            >GPU</a></li>
 
-        <div class="alert alert-danger" role="alert" *ngIf="!ramFactor.checkValidity()" id="ram_factor_validity_alert">
-          Please enter a valid (decimal) number for RAM factor!
-        </div>
-
-        <div class="alert alert-danger" role="alert" *ngIf="!coresFactor.checkValidity()" id="cores_factor_validity_alert">
-          Please enter a valid number for cores factor!
-        </div>
-
-
-        <div class="table-responsive">
-          <table class="table table-striped table-bordered">
-            <thead>
-            <th>Actions</th>
-            <th>Cores</th>
-            <th>Factor</th>
-            <th>Description</th>
-            </thead>
-            <tbody>
-            <ng-container
-              *ngFor="let cF of coreFactors">
-
-              <tr *ngIf="!this.coresUpdateList[cF.id]">
-                <td>
-                  <div class="btn-group-vertical" role="group">
-                    <button (click)="deleteCoreFactor(cF.id)" class="btn btn-danger" style="margin-bottom: 5px">Remove
-                    </button>
-                    <button class="btn btn-warning" (click)="changeCoreToUpdate(cF)">Update</button>
-                  </div>
-                </td>
-                <td>{{cF.cores}}</td>
-                <td>{{cF.factor}}</td>
-                <td>{{cF.description}}</td>
+            <li class="nav-item"><a class="nav-link" id="object_storage_tab"
+                                    [ngClass]="{'active': OBJECT_STORAGE_TAB_ACTIVE}"
+                                    (click)="setTab(OBJECT_STORAGE_TAB)">Object Storage</a></li>
+            <li class="nav-item"><a class="nav-link" id="volume_storage_tab"
+                                    [ngClass]="{'active': VOLUME_STORAGE_TAB_ACTIVE}"
+                                    (click)="setTab(VOLUME_STORAGE_TAB)">Volume Storage</a></li>
 
 
-              </tr>
-                <tr *ngIf="this.coresUpdateList[cF.id]">
-                <td>
-                  <div class="btn-group-vertical" role="group">
-                    <button (click)="updateCoreFactor(cF);changeCoreToUpdate(cF);" class="btn btn-success"
-                            style="margin-bottom: 5px">Save
-                    </button>
-                    <button class="btn btn-info" (click)="reloadCoreFactor(cF);changeCoreToUpdate(cF);">Cancel</button>
-                  </div>
-                </td>
-                <td><input type="text" [(ngModel)]="cF.cores" placeholder="Ram" pattern="[0-9]+"></td>
-                <td><input type="text" [(ngModel)]="cF.factor" placeholder="Factor" pattern="[0-9]+(\.[0-9]+)?"></td>
-                <td><textarea type="textfield" [(ngModel)]="cF.description" placeholder="Description"></textarea></td>
+          </ul>
 
-
-            </ng-container>
-
-            <tr>
-              <td>
-                <button *ngIf="cores.checkValidity() && coresFactor.checkValidity()"
-                        (click)="addCoreFactor(cores.value,coresFactor.value,coreFactorDescription.value);"
-                        class="btn btn-success"
-                >Save
-                </button>
-              </td>
-              <td><input type="text" placeholder="Cores" pattern="[0-9]+" #cores ></td>
-              <td><input type="text" placeholder="Factor" pattern="[0-9]+(\.[0-9]+)?" #coresFactor></td>
-              <td><textarea type="textfield" placeholder="Description" #coreFactorDescription></textarea></td>
-
-
-            </tr>
-            </tbody>
-          </table>
 
         </div>
 
-        <div class="table-responsive">
-          <table class="table table-striped table-bordered">
-            <thead>
-            <th>Actions</th>
-            <th>Ram</th>
-            <th>Factor</th>
-            <th>Description</th>
-            </thead>
-            <tbody>
-            <ng-container *ngFor="let rF of ramFactors">
-              <tr *ngIf="!this.ramUpdateList[rF.id]">
-                <td>
-                  <div class="btn-group-vertical" role="group">
-                    <button (click)="deleteRamFactor(rF.id)" class="btn btn-danger" style="margin-bottom: 5px">Remove
-                    </button>
-                    <button class="btn btn-warning" (click)="changeRamToUpdate(rF)">Update</button>
-                  </div>
-                </td>
-                <td>{{rF.ram}}</td>
-                <td>{{rF.factor}}</td>
-                <td>{{rF.description}}</td>
+        <div class="tab-content">
+          <div *ngIf="RAM_TAB_ACTIVE && selectedFacility">
+            <app-ramfactor-overview
+              (factorChanged)="getSelectedFacilityResources()"
+              [facility_id]="selectedFacility['FacilityId']"></app-ramfactor-overview>
+          </div>
+          <div *ngIf="CORE_TAB_ACTIVE && selectedFacility">
+            <app-corefactor-overview
+              (factorChanged)="getSelectedFacilityResources()"
 
+              [facility_id]="selectedFacility['FacilityId']"></app-corefactor-overview>
+          </div>
+          <div *ngIf="OBJECT_STORAGE_TAB_ACTIVE && selectedFacility">
+            <app-objectstoragefactor-overview
+              (factorChanged)="getSelectedFacilityResources()"
 
-              </tr>
+              [facility_id]="selectedFacility['FacilityId']"></app-objectstoragefactor-overview>
+          </div>
+          <div *ngIf="VOLUME_STORAGE_TAB_ACTIVE && selectedFacility">
+            <app-volumestoragefactor-overview
+              (factorChanged)="getSelectedFacilityResources()"
+              [facility_id]="selectedFacility['FacilityId']"></app-volumestoragefactor-overview>
+          </div>
+          <div *ngIf="GPU_TAB_ACTIVE && selectedFacility">
+            <app-gpufactor-overview
+              (factorChanged)="getSelectedFacilityResources()"
 
-              <tr *ngIf="this.ramUpdateList[rF.id]">
-                <td>
-                  <div class="btn-group-vertical" role="group">
-                    <button (click)="updateRamFactor(rF);changeRamToUpdate(rF);" class="btn btn-success"
-                            style="margin-bottom: 5px">Save
-                    </button>
-                    <button class="btn btn-info" (click)="reloadRamFactor(rF);changeRamToUpdate(rF);">Cancel</button>
-                  </div>
-                </td>
-                <td><input type="text" [(ngModel)]="rF.ram" placeholder="Ram" pattern="[0-9]+"></td>
-                <td><input type="text" [(ngModel)]="rF.factor" placeholder="Factor" pattern="[0-9]+(\.[0-9]+)?"></td>
-                <td><textarea type="textfield" [(ngModel)]="rF.description" placeholder="Description"></textarea></td>
-
-
-              </tr>
-            </ng-container>
-
-            <tr>
-              <td>
-                <button style="cursor: pointer;"
-                        (click)="addRamFactor(ram.value,ramFactor.value,ramFactorDescription.value);"
-                        *ngIf="ram.checkValidity() && ramFactor.checkValidity()" class="btn btn-success">Save
-                </button>
-              </td>
-              <td><input type="text" placeholder="Ram" pattern="[0-9]+" #ram></td>
-              <td><input type="text" placeholder="Factor" pattern="[0-9]+(\.[0-9]+)?" #ramFactor></td>
-              <td><textarea type="textfield" placeholder="Description" #ramFactorDescription></textarea></td>
-            </tr>
-
-            </tbody>
-          </table>
-
-
+              [facility_id]="selectedFacility['FacilityId']"></app-gpufactor-overview>
+          </div>
         </div>
 
         <div class="modal-footer">

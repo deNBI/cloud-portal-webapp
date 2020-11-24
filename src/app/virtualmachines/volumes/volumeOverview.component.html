@@ -108,7 +108,7 @@
           <div class="rTableCell "
                *ngIf="volume?.volume_virtualmachine && volume?.volume_status == VolumeStates.staticIN_USE"
                [id]="'cell_vm_id_' + volume?.volume_virtualmachine.name"><span *ngIf="volume?.volume_path">
-                <strong>Initial mounted to: </strong>/mnt/{{volume?.volume_path }} <br></span>
+                <strong>Initial mounted to: </strong>/vol/{{volume?.volume_path }} <br></span>
             <strong>Device: </strong>{{volume?.volume_device }}  <br><strong>VM:</strong><a class="h5 text-primary"
                                                                                            [routerLink]="['/virtualmachines/detail/' + volume?.volume_virtualmachine?.openstackid]">
               {{ volume?.volume_virtualmachine.name}}</a>
@@ -379,7 +379,7 @@
       <div class="modal-footer">
         <button id="verify_deletion_button"
                 *ngIf="request_status==volumeRequestStates.DELETE;" class="btn  btn-success col-md-4"
-                (click)="deleteVolume(selected_volume,selected_volume?.volume_virtualmachine?.openstackid);verifyModal.hide();">
+                (click)="deleteVolume(selected_volume);verifyModal.hide();">
           Yes
         </button>
         <button *ngIf="request_status==volumeRequestStates.DETACH;" class="btn  btn-success col-md-4"
