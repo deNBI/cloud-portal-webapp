@@ -11,7 +11,7 @@ updates:
       - "vktrrdk"
   - package-ecosystem: "docker"
     directory: "/"
-   schedule:
+    schedule:
       interval: "weekly"
     target_branch: "dev"
     reviewers:
