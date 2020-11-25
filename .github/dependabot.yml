@@ -1,6 +1,6 @@
 version: 2
-update2:
-  - package-ecosystem: "javascript"
+updates:
+  - package-ecosystem: "npm"
     directory: "/"
     schedule:
       interval: "weekly"
@@ -11,9 +11,9 @@ update2:
       - "vktrrdk"
   - package-ecosystem: "docker"
     directory: "/"
-   schedule:
+    schedule:
       interval: "weekly"
-    target_branch: "dev"
+    target-branch: "dev"
     reviewers:
       - "dweinholz"
       - "eKatchko"
