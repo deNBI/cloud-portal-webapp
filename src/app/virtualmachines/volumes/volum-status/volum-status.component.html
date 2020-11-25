@@ -55,6 +55,12 @@
                 </div>
                 <strong> {{VolumeStates.staticIN_USE}}</strong>
               </ng-container>
+              <ng-container *ngSwitchCase="VolumeStates.staticDELETED">
+                <div [id]="'deleted_badge_' + volume?.volume_name" class="dot-colorless bg-danger"
+                     style="width: 10px; height: 10px">
+                </div>
+                <strong> {{VolumeStates.staticDELETED}}</strong>
+              </ng-container>
               <ng-container *ngSwitchCase="VolumeStates.staticNOT_FOUND">
                 <span [id]="'not_found_badge_' + volume?.volume_name"
                       class="dot-colorless bg-danger" style="width: 10px; height: 10px">
