@@ -1,5 +1,5 @@
 version: 2
-update2:
+updates:
   - package-ecosystem: "javascript"
     directory: "/"
     schedule:
