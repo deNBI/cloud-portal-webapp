@@ -164,8 +164,10 @@
                    && selectedProject[1] != FREEMIUM_ID
                    && selectedProjectRessources?.used_vms < selectedProjectRessources?.number_vms
                    && (flavors.length != 0 || selectedFlavor)">
-                <div class="from-group row col-md-12">
+                <!-- Buttons Row -->
+                <div class="from-group row col-md-12" style="margin-bottom: 25px;">
                   <label class="col-md-2"><strong>Volumes</strong></label>
+                  <!-- New/Attach Buttons -->
                   <div class="col-md-10">
                     <button class="btn btn-light" (click)="toggleShowAddVol();"
                             [disabled]="
@@ -181,6 +183,7 @@
                     </button>
                   </div>
                 </div>
+                <!-- Error messages -->
                 <div class="row col" *ngIf="(this.selectedProjectRessources.used_volumes  + this.volumesToMount?.length)
                     >= this.selectedProjectRessources.volume_counter">
                   <div class="col-2"></div>
@@ -202,10 +205,11 @@
                   </div>
 
                 </div>
+                <!-- New/Attach volume -->
                 <div class=" form-group row col-md-12">
                   <div class="col-md-2"></div>
                   <div class="col-md-10">
-                    <div id="addVolumeDiv" *ngIf="!showAddVol">
+                    <div id="addVolumeDiv" *ngIf="showAddVol">
                       <div class="form-group row">
                         <div class="col-md-2"><strong>Name</strong></div>
                         <div class="col-md-10" style="width:100%">
@@ -251,45 +255,94 @@
                                 'is-valid': this.checkStorageNumber() && (f.controls.vm_volume_storage?.dirty || f.controls.vm_volume_storage?.touched)
                                 }">
                           <div class="input-group-append" style="height: auto"><span
-                            class="input-group-text"> GB (max {{selectedProjectRessources.max_volume_storage - selectedProjectRessources.used_volume_storage}}
+                            class="input-group-text"> GB (max {{selectedProjectRessources.max_volume_storage - (this.selectedProjectRessources.used_volume_storage + this.getStorageInList())}}
                             )
                                     </span></div>
                         </div>
                       </div>
 
                     </div>
+                    <ng-container
+                      *ngIf="showAttachVol">
+                      <select style="margin-bottom: 5px;margin-top: 5px"
+                              class="form-control" name="selected_detached_vol_select"
+                              [(ngModel)]="selected_detached_vol" id="selected_detached_vol_select"
+
+                      >
+                        <option [ngValue]="undefined_detached_vol" disabled selected> Please
+                          select a volume
+                        </option>
+                        <option *ngFor="let vol of detached_project_volumes" [ngValue]="vol"
+                                id="id_option_{{vol.volume_name}}" (click)="selected_detached_vol = vol">
+                          {{vol.volume_name}} ({{(vol.volume_storage)}} GB)
+                        </option>
+
+                      </select>
+                      <div class="rTableRow" *ngIf="selected_detached_vol && selected_detached_vol !== undefined_detached_vol">
+                        <div class="rTableCellNoBorder col-2">
+                          {{selected_detached_vol.volume_name}}
+                        </div>
+                        <div class="rTableCellNoBorder col">
+                          <div class="input-group">
+
+                            <div class="input-group-prepend">
+                              <span class="input-group-text">/vol/</span>
+                            </div>
+                            <input type="text" placeholder="path"
+                                   id="volume_attach_mount_path" class="form-control" name="volume_mount_path"
+                                   [(ngModel)]="selected_detached_vol.volume_path"
+                                   [ngClass]="{'is-invalid': !this.checkIfMountPathIsUsable(selected_detached_vol.volume_path),
+                             'is-valid':this.checkIfMountPathIsUsable(selected_detached_vol.volume_path)}">
+
+                          </div>
+                        </div>
+                        <div class="rTableCellNoBorder col-2">{{selected_detached_vol.volume_storage}} GB
+
+
+                        </div>
+                        <div class="rTableCellNoBorder col-2">
+                          <button class="btn btn-success" (click)="addAttachVolume(selected_detached_vol);"
+                                  [disabled]="!this.checkIfMountPathIsUsable(selected_detached_vol.volume_path)"
+                          >Add
+                            <span class="fa fa-plus"></span>
+                          </button>
+
+
+                        </div>
+
+
+                      </div>
+                    </ng-container>
+
 
 
                   </div>
-                  <div class=" form-group col-md-12 row">
+
+
+
+                  <div class=" form-group col-md-12 row" *ngIf="showAddVol || showAttachVol">
                     <div class="col-md-2"></div>
-
-                    <div class="alert alert-warning" role="alert" *ngIf="volumesToMount?.length > 0 || volumesToAttach?.length >0">
-                      In a few cases the automatic mounting might not work, then the volume must be <a
-                      href="{{WIKI_VOLUME_OVERVIEW}}"> mounted</a> manually!
-                    </div>
-                  </div>
-
-
-                  <div class=" form-group col-md-12 row" *ngIf="!showAddVol || !showAttachVol">
-                    <div class="col-md-2"></div>
-                    <div class="btn-toolbar col-md-10" role="group">
+                    <div class="btn-toolbar col-md-10" role="group" *ngIf="showAddVol">
                       <button class="btn btn-danger col-md-4"
-                              (click)="showAddVol=true;showAttachVol=true; volumeName=''; volumeStorage=0;"
+                              (click)="toggleShowAddVol();"
                               type="button">Discard <span class="fa fa-times"></span></button>
-
-                      <button *ngIf="!showAddVol" class="btn btn-success col-md-4"
-                              (click)="toggleShowAddVol(); this.addVolumeToList();"
+                      <button *ngIf="showAddVol" class="btn btn-success col-md-4"
+                              (click)="this.addVolumeToList(); toggleShowAddVol();"
                               [disabled]="!checkVolumeValidity()" id="addVolumeConfirmationButton"
                               type="button">Add Volume <span class="fa fa-check"></span></button>
                     </div>
-
+                    <div class="col-md-10" role="group" *ngIf="showAttachVol">
+                      <button class="btn btn-danger col-md-4"
+                              (click)="toggleShowAttachVol();"
+                              type="button">Close selection <span class="fa fa-times"></span></button>
+                    </div>
                   </div>
 
 
                 </div>
-                <div class="row col-md-12">
-                  <div class="col-md-2"></div>
+                <!-- Volume list to mount/attach/create -->
+                <div class="row col-md-12" *ngIf="(volumesToMount?.length > 0) || (volumesToAttach?.length > 0) ">
+                  <div class="col-md-2"><strong>Volumes to mount</strong></div>
                   <div class="col-md-10">
                     <div class="rTableRow"
                          [hidden]="!(volumesToMount?.length > 0 || volumesToAttach?.length >0 || selected_detached_vol)">
@@ -301,13 +354,13 @@
                     <ng-container *ngFor="let vol of volumesToMount">
                       <div class="rTableRow">
                         <div class="rTableCellNoBorder">
-                          {{vol.volume_name}}
+                          {{vol.volume_name}} (New)
 
                         </div>
                         <div class="rTableCellNoBorder">
                           /vol/{{vol.volume_path}}
                         </div>
-                        <div class="rTableCellNoBorder">{{vol.volume_storage}}
+                        <div class="rTableCellNoBorder">{{vol.volume_storage}} GB
 
 
                         </div>
@@ -325,13 +378,13 @@
                     <ng-container *ngFor="let vol of volumesToAttach">
                       <div class="rTableRow">
                         <div class="rTableCellNoBorder">
-                          {{vol.volume_name}}
+                          {{vol.volume_name}} (Existing)
 
                         </div>
                         <div class="rTableCellNoBorder">
                           /vol/{{vol.volume_path}}
                         </div>
-                        <div class="rTableCellNoBorder">{{vol.volume_storage}}
+                        <div class="rTableCellNoBorder">{{vol.volume_storage}} GB
 
 
                         </div>
@@ -345,101 +398,59 @@
                         </div>
                       </div>
                     </ng-container>
-                    <ng-container
-                      *ngIf="detached_project_volumes.length >= DETACHED_VOL_SWITCH_MAX && !showAttachVol">
-                      <div class="rTableRow" *ngIf="selected_detached_vol">
-                        <div class="rTableCellNoBorder">
-                          {{selected_detached_vol.volume_name}}
+<!--                    <ng-container *ngIf="detached_project_volumes.length < DETACHED_VOL_SWITCH_MAX">-->
+<!--                      <ng-container *ngFor="let vol of detached_project_volumes">-->
+<!--                        <div class="rTableRow" *ngIf="!showAttachVol">-->
+<!--                          <div class="rTableCellNoBorder">-->
+<!--                            {{vol.volume_name}}-->
 
-                        </div>
-                        <div class="rTableCellNoBorder">
-                          <div class="input-group">
+<!--                          </div>-->
+<!--                          <div class="rTableCellNoBorder">-->
+<!--                            <div class="input-group">-->
 
-                            <div class="input-group-prepend">
-                              <span class="input-group-text">/vol/</span>
-                            </div>
-                            <input type="text" placeholder="volume."
-                                   id="volume_attach_mount_path" class="form-control" name="volume_mount_path"
-                                   [(ngModel)]="selected_detached_vol.volume_path"
-                                   [ngClass]="{'is-invalid': !this.checkIfMountPathIsUsable(selected_detached_vol.volume_path),
-                             'is-valid':this.checkIfMountPathIsUsable(selected_detached_vol.volume_path)}">
+<!--                              <div class="input-group-prepend">-->
+<!--                                <span class="input-group-text">/vol/</span>-->
+<!--                              </div>-->
+<!--                              <input type="text" placeholder="volume."-->
+<!--                                     id="volume_attach_mount_path" class="form-control" name="volume_mount_path"-->
+<!--                                     [(ngModel)]="vol.volume_path"-->
+<!--                                     [ngClass]="{'is-invalid': !this.checkIfMountPathIsUsable(vol.volume_path),-->
+<!--                             'is-valid':this.checkIfMountPathIsUsable(vol.volume_path)}">-->
 
-                          </div>
-                        </div>
-                        <div class="rTableCellNoBorder">{{selected_detached_vol.volume_storage}}
-
-
-                        </div>
-                        <div class="rTableCellNoBorder">
-                          <button class="btn btn-success" (click)="addAttachVolume(selected_detached_vol)"
-                                  [disabled]="!this.checkIfMountPathIsUsable(selected_detached_vol.volume_path)"
-                          >Add
-                            <span class="fa fa-plus"></span>
-                          </button>
+<!--                            </div>-->
+<!--                          </div>-->
+<!--                          <div class="rTableCellNoBorder">{{vol.volume_storage}}-->
 
 
-                        </div>
+<!--                          </div>-->
+<!--                          <div class="rTableCellNoBorder">-->
+<!--                            <button class="btn btn-success" (click)="addAttachVolume(vol)"-->
+<!--                                    [disabled]="!this.checkIfMountPathIsUsable(vol.volume_path)"-->
+<!--                            >Add-->
+<!--                              <span class="fa fa-plus"></span>-->
+<!--                            </button>-->
 
 
+<!--                          </div>-->
+
+
+<!--                        </div>-->
+<!--                      </ng-container>-->
+<!--                    </ng-container>-->
+                  </div>
+                  <div class=" form-group col-md-12 row">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-10">
+                      <div class="alert alert-warning col" role="alert"
+                           *ngIf="volumesToMount?.length > 0 || volumesToAttach?.length > 0">
+                        In a few cases the automatic mounting might not work, then the volume must be <a
+                        href="{{WIKI_VOLUME_OVERVIEW}}"> mounted</a> manually!
                       </div>
-                      <select style="margin-bottom: 5px;margin-top: 5px"
-                              class="form-control" name="selected_detached_vol_select"
-                              [(ngModel)]="selected_detached_vol" id="selected_detached_vol_select"
-
-                      >
-                        <option value="undefined" disabled selected hidden> Please
-                          Select
-                        </option>
-                        <option *ngFor="let vol of detached_project_volumes" [ngValue]="vol"
-                                id="id_option_{{vol.volume_name}}">
-                          {{vol.volume_name}} ({{(vol.volume_storage)}} GB)
-                        </option>
-
-                      </select>
-
-                    </ng-container>
-                    <ng-container *ngIf="detached_project_volumes.length < DETACHED_VOL_SWITCH_MAX">
-                      <ng-container *ngFor="let vol of detached_project_volumes">
-                        <div class="rTableRow" *ngIf="!showAttachVol">
-                          <div class="rTableCellNoBorder">
-                            {{vol.volume_name}}
-
-                          </div>
-                          <div class="rTableCellNoBorder">
-                            <div class="input-group">
-
-                              <div class="input-group-prepend">
-                                <span class="input-group-text">/vol/</span>
-                              </div>
-                              <input type="text" placeholder="volume."
-                                     id="volume_attach_mount_path" class="form-control" name="volume_mount_path"
-                                     [(ngModel)]="vol.volume_path"
-                                     [ngClass]="{'is-invalid': !this.checkIfMountPathIsUsable(vol.volume_path),
-                             'is-valid':this.checkIfMountPathIsUsable(vol.volume_path)}">
-
-                            </div>
-                          </div>
-                          <div class="rTableCellNoBorder">{{vol.volume_storage}}
-
-
-                          </div>
-                          <div class="rTableCellNoBorder">
-                            <button class="btn btn-success" (click)="addAttachVolume(vol)"
-                                    [disabled]="!this.checkIfMountPathIsUsable(vol.volume_path)"
-                            >Add
-                              <span class="fa fa-plus"></span>
-                            </button>
-
-
-                          </div>
-
-
-                        </div>
-                      </ng-container>
-                    </ng-container>
+                    </div>
                   </div>
 
                 </div>
+
 
               </div>
 
