@@ -52,7 +52,6 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 
   // modal variables for User list
   public selectedProjectForSearch: Project;
-  public
   public usersModalProjectMembers: ProjectMember[] = [];
   allFacilityMembers: object[] = [];
   public usersModalProjectID: number;
@@ -118,8 +117,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
   filterMembers(searchString: string): void {
    this.filteredMembers = [];
    searchString = searchString.toLowerCase();
-   console.log(searchString);
-   this.allFacilityMembers.forEach((member: object) => {
+   this.allFacilityMembers.forEach((member: object): void => {
 
       if (member['elixirId'].toLowerCase().includes(searchString)
       || member['email'].toLowerCase().includes(searchString)
@@ -376,12 +374,8 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
                      send?: any, alternative_news_text?: string, selectedMember?: object): void {
     this.emailStatus = 0;
     if (this.selectedProjectType === 'USER') {
-      const tempMailList: string[] = [];
-      this.selectedMember.forEach((member: object) => {
-        tempMailList.push(member['email']);
-      });
+      let tempMailList: string[] = this.selectedMember.map((member: object) : string => member['email']);
       this.selectedProjectType = tempMailList.join(',');
-      console.log(this.selectedProjectType);
     }
     const chosenTags: string = this.selectedTags.toString();
     this.facilityservice.sendMailToFacility(
@@ -418,7 +412,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
   }
 
   removeSelectedUserForMail(member: object): void {
-    const index = this.selectedMember.indexOf(member);
+    const index: number = this.selectedMember.indexOf(member);
     if (index > -1) {
       this.selectedMember.splice(index, 1);
     }
