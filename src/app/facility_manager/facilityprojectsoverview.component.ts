@@ -52,7 +52,6 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 
   // modal variables for User list
   public selectedProjectForSearch: Project;
-  public
   public usersModalProjectMembers: ProjectMember[] = [];
   allFacilityMembers: object[] = [];
   public usersModalProjectID: number;
@@ -118,16 +117,16 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
   filterMembers(searchString: string): void {
    this.filteredMembers = [];
    searchString = searchString.toLowerCase();
-   console.log(searchString);
-   this.allFacilityMembers.forEach((member: object) => {
+
+   this.allFacilityMembers.forEach((member: object): void => {
 
       if (member['elixirId'].toLowerCase().includes(searchString)
-      || member['email'].toLowerCase().includes(searchString)
-      || member['firstName'].toLowerCase().includes(searchString)
-      || member['lastName'].toLowerCase().includes(searchString)) {
+        || member['email'].toLowerCase().includes(searchString)
+        || member['firstName'].toLowerCase().includes(searchString)
+        || member['lastName'].toLowerCase().includes(searchString)) {
         this.filteredMembers.push(member);
       }
-   })
+    })
   }
 
   getProjectsByMemberElixirId(): void {
@@ -341,7 +340,8 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
       (result: any[]): void => {
         this.membersLoaded = true;
         this.allFacilityMembers = result;
-      }, (error: any): void => {
+      },
+      (error: any): void => {
         console.log(error);
         this.membersLoaded = false;
       }
@@ -377,7 +377,8 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
     this.emailStatus = 0;
     if (this.selectedProjectType === 'USER') {
       const tempMailList: string[] = [];
-      this.selectedMember.forEach((member: object) => {
+      // tslint:disable-next-line:no-for-each-push
+      this.selectedMember.forEach((member: object): void => {
         tempMailList.push(member['email']);
       });
       this.selectedProjectType = tempMailList.join(',');
@@ -396,12 +397,13 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
       },
       (): void => {
         this.emailStatus = 2;
-      }, (): void => {
-          this.filteredMembers = [];
-          this.selectedProjectType = 'ALL';
-          this.emailReply = '';
-          this.selectedMember = [];
-          this.memberFilter = '';
+      },
+      (): void => {
+        this.filteredMembers = [];
+        this.selectedProjectType = 'ALL';
+        this.emailReply = '';
+        this.selectedMember = [];
+        this.memberFilter = '';
       });
 
   }
@@ -418,7 +420,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
   }
 
   removeSelectedUserForMail(member: object): void {
-    const index = this.selectedMember.indexOf(member);
+    const index: number = this.selectedMember.indexOf(member);
     if (index > -1) {
       this.selectedMember.splice(index, 1);
     }
