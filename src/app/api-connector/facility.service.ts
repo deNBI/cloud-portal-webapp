@@ -94,7 +94,7 @@ export class FacilityService {
 
   }
 
-  getAllMembersOfFacility(facility: number | string, status: number): Observable<any>{
+  getAllMembersOfFacility(facility: number | string, status: number): Observable<any> {
     return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/members/`, {
       withCredentials: true,
       params: {status: status.toString()}
@@ -110,6 +110,7 @@ export class FacilityService {
    */
   getFacilityAllowedGroupsWithDetailsAndSpecificStatus(facility: number | string, status: number): Observable<any> {
     console.log(status);
+
     return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/projects/`, {
       withCredentials: true,
       params: {status: status.toString()}

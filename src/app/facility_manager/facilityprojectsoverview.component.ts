@@ -50,7 +50,6 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 
   selectedProjectType: string = 'ALL';
 
-
   // modal variables for User list
   public selectedProjectForSearch: Project;
   public
@@ -116,21 +115,20 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
     this.facilityservice.getFilteredMembersOfFacility(searchString, this.selectedFacility['FacilityId']);
   }
 
-  filterMembers(searchString: string): void{
+  filterMembers(searchString: string): void {
    this.filteredMembers = [];
-    searchString = searchString.toLowerCase();
-    console.log(searchString);
+   searchString = searchString.toLowerCase();
+   console.log(searchString);
    this.allFacilityMembers.forEach((member: object) => {
 
-      if (member["elixirId"].toLowerCase().includes(searchString)
-      || member["email"].toLowerCase().includes(searchString)
-      || member["firstName"].toLowerCase().includes(searchString)
-      || member["lastName"].toLowerCase().includes(searchString)){
+      if (member['elixirId'].toLowerCase().includes(searchString)
+      || member['email'].toLowerCase().includes(searchString)
+      || member['firstName'].toLowerCase().includes(searchString)
+      || member['lastName'].toLowerCase().includes(searchString)) {
         this.filteredMembers.push(member);
       }
    })
   }
-
 
   getProjectsByMemberElixirId(): void {
     // tslint:disable-next-line:max-line-length
@@ -340,10 +338,10 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 
     });
     this.facilityservice.getAllMembersOfFacility(facility, this.STATUS_APPROVED).subscribe(
-      (result: any[]) : void => {
+      (result: any[]): void => {
         this.membersLoaded = true;
         this.allFacilityMembers = result;
-      }, (error: any) : void => {
+      }, (error: any): void => {
         console.log(error);
         this.membersLoaded = false;
       }
@@ -378,7 +376,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
                      send?: any, alternative_news_text?: string, selectedMember?: object): void {
     this.emailStatus = 0;
     if (this.selectedProjectType === 'USER') {
-      let tempMailList: string[] = [];
+      const tempMailList: string[] = [];
       this.selectedMember.forEach((member: object) => {
         tempMailList.push(member['email']);
       });
@@ -400,7 +398,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
         this.emailStatus = 2;
       }, (): void => {
           this.filteredMembers = [];
-          this.selectedProjectType='ALL';
+          this.selectedProjectType = 'ALL';
           this.emailReply = '';
           this.selectedMember = [];
           this.memberFilter = '';
@@ -413,16 +411,15 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
    * @param member the selected member
    */
 
-  setSelectedUserForMail(member: object): void
-  {
-    if (!this.selectedMember.includes(member)){
+  setSelectedUserForMail(member: object): void {
+    if (!this.selectedMember.includes(member)) {
       this.selectedMember.push(member);
     }
   }
 
   removeSelectedUserForMail(member: object): void {
     const index = this.selectedMember.indexOf(member);
-    if (index > -1){
+    if (index > -1) {
       this.selectedMember.splice(index, 1);
     }
   }

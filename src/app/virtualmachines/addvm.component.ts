@@ -660,8 +660,6 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 
   }
 
-
-  
   isMoshModeAvailable(): void {
     for (const mode of this.selectedImage.modes) {
       if (mode.name === 'MOSH') {
