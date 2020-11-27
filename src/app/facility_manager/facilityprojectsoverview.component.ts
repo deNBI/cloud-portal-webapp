@@ -120,12 +120,12 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
    this.allFacilityMembers.forEach((member: object): void => {
 
       if (member['elixirId'].toLowerCase().includes(searchString)
-      || member['email'].toLowerCase().includes(searchString)
-      || member['firstName'].toLowerCase().includes(searchString)
-      || member['lastName'].toLowerCase().includes(searchString)) {
+        || member['email'].toLowerCase().includes(searchString)
+        || member['firstName'].toLowerCase().includes(searchString)
+        || member['lastName'].toLowerCase().includes(searchString)) {
         this.filteredMembers.push(member);
       }
-   })
+    })
   }
 
   getProjectsByMemberElixirId(): void {
@@ -339,7 +339,8 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
       (result: any[]): void => {
         this.membersLoaded = true;
         this.allFacilityMembers = result;
-      }, (error: any): void => {
+      },
+      (error: any): void => {
         console.log(error);
         this.membersLoaded = false;
       }
@@ -390,12 +391,13 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
       },
       (): void => {
         this.emailStatus = 2;
-      }, (): void => {
-          this.filteredMembers = [];
-          this.selectedProjectType = 'ALL';
-          this.emailReply = '';
-          this.selectedMember = [];
-          this.memberFilter = '';
+      },
+      (): void => {
+        this.filteredMembers = [];
+        this.selectedProjectType = 'ALL';
+        this.emailReply = '';
+        this.selectedMember = [];
+        this.memberFilter = '';
       });
 
   }
