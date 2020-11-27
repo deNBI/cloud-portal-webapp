@@ -375,7 +375,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
                      send?: any, alternative_news_text?: string, selectedMember?: object): void {
     this.emailStatus = 0;
     if (this.selectedProjectType === 'USER') {
-      let tempMailList: string[] = this.selectedMember.map((member: object) : string => member['email']);
+      const tempMailList: string[] = this.selectedMember.map((member: object): string => member['email']);
       this.selectedProjectType = tempMailList.join(',');
     }
     const chosenTags: string = this.selectedTags.toString();
