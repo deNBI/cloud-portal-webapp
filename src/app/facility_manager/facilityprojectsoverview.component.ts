@@ -32,6 +32,12 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
   title: string = 'Projects Overview';
   filter: string;
 
+  membersLoaded: boolean = false;
+  public memberFilter: string = '';
+  filteredMembers: object[] = [];
+  selectedMember: object[] = [];
+  facility_members: object[] = [];
+
   filterChanged: Subject<string> = new Subject<string>();
   isLoaded: boolean = false;
   projects: Project[] = [];
@@ -45,10 +51,13 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
   selectedProjectType: string = 'ALL';
 
   // modal variables for User list
+  public selectedProjectForSearch: Project;
   public usersModalProjectMembers: ProjectMember[] = [];
+  allFacilityMembers: object[] = [];
   public usersModalProjectID: number;
   public usersModalProjectName: string;
   public selectedProject: Project;
+  public userSearchValue: string;
 
   public emailSubject: string;
   public emailText: string;
@@ -67,7 +76,8 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 
   constructor(private groupservice: GroupService,
               private facilityservice: FacilityService,
-              private newsService: NewsService) {
+              private newsService: NewsService,
+              private userService: UserService) {
     super();
   }
 
@@ -98,6 +108,25 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
         }
       }
     });
+  }
+
+  searchForUserInFacility(searchString: string): void {
+    this.facilityservice.getFilteredMembersOfFacility(searchString, this.selectedFacility['FacilityId']);
+  }
+
+  filterMembers(searchString: string): void {
+   this.filteredMembers = [];
+   searchString = searchString.toLowerCase();
+
+   this.allFacilityMembers.forEach((member: object): void => {
+
+      if (member['elixirId'].toLowerCase().includes(searchString)
+        || member['email'].toLowerCase().includes(searchString)
+        || member['firstName'].toLowerCase().includes(searchString)
+        || member['lastName'].toLowerCase().includes(searchString)) {
+        this.filteredMembers.push(member);
+      }
+    })
   }
 
   getProjectsByMemberElixirId(): void {
@@ -159,6 +188,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 
         this.projects_filtered.push(newProject);
       }
+
     })
   }
 
@@ -305,7 +335,17 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
       this.applyFilter();
       this.isLoaded = true;
 
-    })
+    });
+    this.facilityservice.getAllMembersOfFacility(facility, this.STATUS_APPROVED).subscribe(
+      (result: any[]): void => {
+        this.membersLoaded = true;
+        this.allFacilityMembers = result;
+      },
+      (error: any): void => {
+        console.log(error);
+        this.membersLoaded = false;
+      }
+    );
 
   }
 
@@ -330,10 +370,20 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
    * @param reply the reply-address
    * @param send boolean if it should be sent to WordPress
    * @param alternative_news_text the news text for WordPress, in case it shall be different from the original text
+   * @param selectedMember the specific member the mail is sent to in case one specific member is chosen
    */
   sendMailToFacility(facility: string, subject: string, message: string, reply?: string,
-                     send?: any, alternative_news_text?: string): void {
+                     send?: any, alternative_news_text?: string, selectedMember?: object): void {
     this.emailStatus = 0;
+    if (this.selectedProjectType === 'USER') {
+      const tempMailList: string[] = [];
+      // tslint:disable-next-line:no-for-each-push
+      this.selectedMember.forEach((member: object): void => {
+        tempMailList.push(member['email']);
+      });
+      this.selectedProjectType = tempMailList.join(',');
+      console.log(this.selectedProjectType);
+    }
     const chosenTags: string = this.selectedTags.toString();
     this.facilityservice.sendMailToFacility(
       facility, encodeURIComponent(subject), encodeURIComponent(message), this.selectedProjectType,
@@ -347,11 +397,36 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
       },
       (): void => {
         this.emailStatus = 2;
-      })
+      },
+      (): void => {
+        this.filteredMembers = [];
+        this.selectedProjectType = 'ALL';
+        this.emailReply = '';
+        this.selectedMember = [];
+        this.memberFilter = '';
+      });
 
   }
 
-  getMembesOfTheProject(projectid: number, projectname: string): void {
+  /**
+   * Sets the member selected in the mail modal as the member to send the mail to.
+   * @param member the selected member
+   */
+
+  setSelectedUserForMail(member: object): void {
+    if (!this.selectedMember.includes(member)) {
+      this.selectedMember.push(member);
+    }
+  }
+
+  removeSelectedUserForMail(member: object): void {
+    const index: number = this.selectedMember.indexOf(member);
+    if (index > -1) {
+      this.selectedMember.splice(index, 1);
+    }
+  }
+
+  getMembersOfTheProject(projectid: number, projectname: string): void {
     this.facilityservice.getFacilityGroupRichMembers(projectid, this.selectedFacility['FacilityId'])
       .subscribe((members: any): void => {
         this.usersModalProjectID = projectid;
@@ -372,7 +447,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
   }
 
   public showMembersOfTheProject(project_id: number, projectname: string): void {
-    this.getMembesOfTheProject(project_id, projectname);
+    this.getMembersOfTheProject(project_id, projectname);
 
   }
 
@@ -385,6 +460,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
     this.sendNews = true;
     this.alternative_emailText = '';
     this.news_tags = '';
+    this.selectedMember = [];
   }
 
   public comingSoon(): void {
