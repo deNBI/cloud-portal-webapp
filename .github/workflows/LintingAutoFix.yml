@@ -1,6 +1,6 @@
 name: Linting
 on:
-  worklow_dispatch:
+  workflow_dispatch:
   push:
     branches-ignore:
       - 'staging'
