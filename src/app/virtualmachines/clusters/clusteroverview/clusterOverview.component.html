@@ -437,7 +437,7 @@
                       </td>
                       <td>{{batch?.worker_count}}</td>
                       <td>
-                        <div class="input-group">
+                        <div class="input-group" *ngIf="batch?.max_scale_up_count > 0">
 
 
                           <input style="width: 50%"
@@ -454,6 +454,10 @@
                           </div>
 
                         </div>
+                        <div class="alert alert-warning" role="alert" *ngIf="!batch?.max_scale_up_count > 0"> Not enough
+                          resources left to upscale this batch!
+                        </div>
+
                       </td>
 
                     </tr>

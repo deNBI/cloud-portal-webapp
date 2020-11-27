@@ -82,7 +82,7 @@ export const routes: Routes = [
  * App routing module.
  */
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' })],
   exports: [RouterModule],
             providers: [MemberGuardService, LoggedInGuard]
 })
