@@ -92,7 +92,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 
   singleProject: boolean = false;
 
-  showAddVol: boolean = true;
+  showAddVol: boolean = false;
 
   /**
    * All image of a project.
@@ -132,6 +132,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
   detached_project_volumes: Volume[] = [];
   DETACHED_VOL_SWITCH_MAX: number = 5;
   selected_detached_vol: Volume;
+  undefined_detached_vol: Volume = new Volume();
   newCores: number = 0;
   newRam: number = 0;
   newVms: number = 0;
@@ -148,7 +149,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
    * If the client for a project is viable.
    */
   client_avaiable: boolean = false;
-  showAttachVol: boolean = true;
+  showAttachVol: boolean = false;
 
   /**
    * Default volume name.
@@ -318,9 +319,10 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
   }
 
   addAttachVolume(vol: Volume): void {
-    this.selected_detached_vol = null;
+    this.selected_detached_vol = this.undefined_detached_vol;
     this.volumesToAttach.push(vol);
-    this.detached_project_volumes.splice(this.detached_project_volumes.indexOf(vol), 1)
+    this.detached_project_volumes = this.detached_project_volumes.filter((volume: Volume): any => (vol !== volume));
+    // this.detached_project_volumes.splice(this.detached_project_volumes.indexOf(vol), 1)
     if (this.detached_project_volumes.length === 0) {
       this.toggleShowAttachVol()
     }
@@ -358,11 +360,29 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
    * Toggles the state of the showAddVol Boolean
    */
   toggleShowAddVol(): void {
-    this.showAddVol = !this.showAddVol;
+    if (!this.showAddVol) {
+      this.showAddVol = true;
+      this.showAttachVol = false;
+      this.volumeName = '';
+      this.volumeMountPath = null;
+      this.volumeStorage = 0;
+    } else {
+      this.showAddVol = false;
+      this.volumeName = '';
+      this.volumeMountPath = null;
+      this.volumeStorage = 0;
+    }
   }
 
   toggleShowAttachVol(): void {
-    this.showAttachVol = !this.showAttachVol;
+    if (!this.showAttachVol) {
+      this.showAttachVol = true;
+      this.showAddVol = false;
+      this.selected_detached_vol = this.undefined_detached_vol;
+    } else {
+      this.showAttachVol = false;
+      this.selected_detached_vol = this.undefined_detached_vol;
+    }
   }
 
   /**
