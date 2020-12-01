@@ -467,7 +467,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
           this.newVm = newVm;
           this.started_machine = false;
 
-          if (newVm.status === 'Build') {
+          if (newVm.status) {
             this.progress_bar_width = 75;
             setTimeout(
               (): void => {
@@ -475,20 +475,6 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
               },
               2000)
 
-          } else if (newVm.status === 'mutex_locked') {
-            setTimeout(
-              (): void => {
-                this.startVM(flavor, servername, project, projectid)
-              },
-              1000)
-          } else if (newVm.status) {
-            this.newVm = newVm;
-            this.progress_bar_width = 75;
-            setTimeout(
-              (): void => {
-                this.router.navigate(['/virtualmachines/vmOverview']).then().catch()
-              },
-              2000)
           } else {
             this.loadProjectData();
             this.create_error = <IResponseTemplate><any>newVm;
@@ -501,11 +487,6 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
       this.newVm = null;
 
     }
-    // setTimeout(
-    //   (): void => {
-    //     this.router.navigate(['/virtualmachines/vmOverview']).then().catch()
-    //   },
-    //   2000)
 
   }
 

@@ -385,6 +385,14 @@ export class VirtualmachineService {
     })
   }
 
+  deleteVolumes(volume_ids: string[]): Observable<IResponseTemplate> {
+    const params: HttpParams = new HttpParams().set('volume_ids', JSON.stringify(volume_ids));
+
+    return this.http.post<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}volumes/delete/`, params, {
+      withCredentials: true
+    })
+  }
+
   deleteVolumeAttachment(volume_id: string, instance_id: string): Observable<IResponseTemplate> {
 
     const params: HttpParams = new HttpParams().set('instance_id', instance_id).set('os_action', 'detach');
