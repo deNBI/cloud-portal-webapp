@@ -4,68 +4,68 @@
               <div id="available_{{volume?.volume_name}}"
                    class="dot-colorless bg-success pulseAnim" style="width: 10px; height: 10px">
               </div>
-              <strong> {{VolumeStates.staticAVAILABLE}}</strong>
+              <strong> {{VolumeStates.staticAVAILABLE| lowercase}}</strong>
             </ng-container>
             <ng-container *ngSwitchCase="VolumeStates.staticDETACHING">
               <div [id]="'detaching_' + volume?.volume_name"
                    class="dot-colorless bg-warning" style="width: 10px; height: 10px">
                 </div>
-                <strong> {{VolumeStates.staticDETACHING}}</strong>
+                <strong> {{VolumeStates.staticDETACHING| lowercase}}</strong>
               </ng-container>
               <ng-container *ngSwitchCase="VolumeStates.staticATTACHING">
                 <div [id]="'attaching_' + volume?.volume_name"
                      class="dot-colorless bg-warning" style="width: 10px; height: 10px">
                 </div>
-                <strong> {{VolumeStates.staticATTACHING}}</strong>
+                <strong> {{VolumeStates.staticATTACHING| lowercase}}</strong>
               </ng-container>
               <ng-container *ngSwitchCase="VolumeStates.staticDELETING">
                 <div [id]="'deleting_' + volume?.volume_name"
                      class="dot-colorless bg-warning" style="width: 10px; height: 10px">
                 </div>
-                <strong> {{VolumeStates.staticDELETING}}</strong>
+                <strong> {{VolumeStates.staticDELETING| lowercase}}</strong>
               </ng-container>
 
               <ng-container *ngSwitchCase="VolumeStates.staticCREATING">
                 <div [id]="'creating_' + volume?.volume_name"
                      class="dot-colorless bg-warning" style="width: 10px; height: 10px">
                 </div>
-                <strong> {{VolumeStates.staticCREATING}}</strong>
+                <strong> {{VolumeStates.staticCREATING| lowercase}}</strong>
               </ng-container>
               <ng-container *ngSwitchCase="VolumeStates.staticRESERVED_PLANNED">
                 <div [id]="'creating_' + volume?.volume_name"
                      class="dot-colorless bg-warning" style="width: 10px; height: 10px">
                 </div>
-                <strong> {{VolumeStates.staticRESERVED}}</strong>
+                <strong> {{VolumeStates.staticRESERVED| lowercase}}</strong>
               </ng-container>
               <ng-container *ngSwitchCase="VolumeStates.staticRESERVED">
                 <div [id]="'reserved_' + volume?.volume_name"
                      class="dot-colorless bg-warning" style="width: 10px; height: 10px">
                 </div>
-                <strong> {{VolumeStates.staticRESERVED}}</strong>
+                <strong> {{VolumeStates.staticRESERVED| lowercase}}</strong>
               </ng-container>
             <ng-container *ngSwitchCase="VolumeStates.staticEXTENDING">
               <div [id]="'extending_' + volume?.volume_name"
                    class="dot-colorless bg-warning" style="width: 10px; height: 10px">
               </div>
-              <strong> {{VolumeStates.staticEXTENDING}}</strong>
+              <strong> {{VolumeStates.staticEXTENDING| lowercase}}</strong>
             </ng-container>
               <ng-container *ngSwitchCase="VolumeStates.staticIN_USE">
                 <div [id]="'in_use_badge_' + volume?.volume_name" class="dot-colorless bg-info"
                      style="width: 10px; height: 10px">
                 </div>
-                <strong> {{VolumeStates.staticIN_USE}}</strong>
+                <strong> {{VolumeStates.staticIN_USE| lowercase}}</strong>
               </ng-container>
               <ng-container *ngSwitchCase="VolumeStates.staticDELETED">
                 <div [id]="'deleted_badge_' + volume?.volume_name" class="dot-colorless bg-danger"
                      style="width: 10px; height: 10px">
                 </div>
-                <strong> {{VolumeStates.staticDELETED}}</strong>
+                <strong> {{VolumeStates.staticDELETED| lowercase}}</strong>
               </ng-container>
               <ng-container *ngSwitchCase="VolumeStates.staticNOT_FOUND">
                 <span [id]="'not_found_badge_' + volume?.volume_name"
                       class="dot-colorless bg-danger" style="width: 10px; height: 10px">
                 </span>
-                <strong> {{VolumeStates.staticNOT_FOUND}}</strong><br>
+                <strong> {{VolumeStates.staticNOT_FOUND| lowercase}}</strong><br>
                 <p class="alert alert-danger" role="alert"> Please contact <a href="mailto:cloud@denbi.de">cloud@denbi.de</a>.</p>
 
               </ng-container>
@@ -73,7 +73,7 @@
                 <span [id]="'not_found_badge_' + volume?.volume_name"
                       class="dot-colorless bg-danger" style="width: 10px; height: 10px">
                 </span>
-              <strong> {{VolumeStates.staticERROR}}</strong><br>
+              <strong> {{VolumeStates.staticERROR}| lowercase}</strong><br>
               <p class="alert alert-danger" role="alert"> Please contact <a
                 href="mailto:cloud@denbi.de">cloud@denbi.de</a>.</p>
 

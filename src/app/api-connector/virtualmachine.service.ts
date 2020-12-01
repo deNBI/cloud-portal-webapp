@@ -401,4 +401,13 @@ export class VirtualmachineService {
       withCredentials: true
     })
   }
+
+  deleteVolumeAttachments(volume_ids: string[]): Observable<IResponseTemplate> {
+
+    const params: HttpParams = new HttpParams().set('volume_ids', JSON.stringify(volume_ids));
+
+    return this.http.post<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}volumes/attachments/delete/`, params, {
+      withCredentials: true
+    })
+  }
 }

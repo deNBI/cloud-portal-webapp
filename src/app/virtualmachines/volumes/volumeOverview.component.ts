@@ -9,7 +9,7 @@ import {VolumeRequestStates} from './volume-request-states.enum';
 import {IResponseTemplate} from '../../api-connector/response-template';
 import {FacilityService} from '../../api-connector/facility.service';
 import {WIKI_EXTEND_VOLUME, WIKI_VOLUME_OVERVIEW} from '../../../links/links';
-import {Subject, Subscription} from 'rxjs';
+import {forkJoin, Subject, Subscription} from 'rxjs';
 import {VolumeStates} from './volume_states';
 import {debounceTime, distinctUntilChanged, switchMap} from 'rxjs/operators';
 import {VirtualMachineStates} from '../virtualmachinemodels/virtualmachinestates';
@@ -214,13 +214,23 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
   }
 
   detachSelectedVolumes(): void {
-    this.checked_volumes.forEach((vol: Volume): void => {
+    const detach_vols: Volume[] = this.checked_volumes;
+    const vol_ids: string[] = this.checked_volumes.map((vol: Volume): string => {
+      vol.volume_status = VolumeStates.DETACHING;
 
-      if (vol.volume_virtualmachine) {
-        this.detachVolume(vol, vol.volume_virtualmachine.openstackid)
-      }
+      return vol.volume_openstackid
+
     });
+    this.vmService.deleteVolumeAttachments(vol_ids).subscribe((): void => {
+                                                                detach_vols.forEach((vol: Volume): void => {
+                                                                  this.check_status_loop(vol, 0, VolumeStates.AVAILABLE)
+
+                                                                })
+                                                              }
+    )
+
     this.uncheckAll()
+
   }
 
   areAllVolumesChecked(): void {

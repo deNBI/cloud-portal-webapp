@@ -1,21 +1,17 @@
+import {GeneralStatusStates} from '../../shared/shared_modules/baseClass/statusstates';
+
 /**
  * VolumeStates class.
  */
-export class VolumeStates {
+export class VolumeStates extends GeneralStatusStates {
 
-  private static readonly _IN_USE: string = 'in-use';
-  private static readonly _RESERVED: string = 'reserved';
-  private static readonly _AVAILABLE: string = 'available';
-  private static readonly _DELETING: string = 'deleting';
-  private static readonly _DELETED: string = 'deleted'
-  private static readonly _CREATING: string = 'creating';
-  private static readonly _RESERVED_PLANNED_STATUS: string = 'reserved_planned';
-  private static readonly _NOT_FOUND: string = 'NOT FOUND';
-  private static readonly _DETACHING: string = 'detaching';
-  private static readonly _ATTACHING: string = 'attaching';
-  private static readonly _EXTENDING: string = 'extending';
-
-  private static readonly _ERROR: string = 'error';
+  private static readonly _IN_USE: string = 'IN-USE';
+  private static readonly _RESERVED: string = 'RESERVED';
+  private static readonly _AVAILABLE: string = 'AVAILABLE';
+  private static readonly _RESERVED_PLANNED_STATUS: string = 'RESERVED_PLANNED';
+  private static readonly _DETACHING: string = 'DETACHING';
+  private static readonly _ATTACHING: string = 'ATTACHING';
+  private static readonly _EXTENDING: string = 'EXTENDING';
 
   private static readonly _IN_PROCESS_STATES: string[] = [
     VolumeStates._RESERVED, VolumeStates._DELETING, VolumeStates._DETACHING, VolumeStates._EXTENDING];
@@ -36,20 +32,8 @@ export class VolumeStates {
     VolumeStates._DELETED
   ];
 
-  static get CREATING(): string {
-    return this._CREATING;
-  }
-
   static get RESERVED_PLANNED_STATUS(): string {
     return this._RESERVED_PLANNED_STATUS;
-  }
-
-  static get NOT_FOUND(): string {
-    return this._NOT_FOUND;
-  }
-
-  static get ERROR(): string {
-    return this._ERROR;
   }
 
   static get IN_USE(): string {
@@ -77,15 +61,8 @@ export class VolumeStates {
   }
 
   static get ATTACHING(): string {
+
     return this._ATTACHING;
-  }
-
-  static get DELETING(): string {
-    return this._DELETING;
-  }
-
-  static get DELETED(): string {
-    return this._DELETED;
   }
 
   static get NO_ACTIONS(): string[] {
@@ -120,28 +97,8 @@ export class VolumeStates {
     return VolumeStates.AVAILABLE;
   }
 
-  public get staticNOT_FOUND(): string {
-    return VolumeStates.NOT_FOUND;
-  }
-
-  public get staticERROR(): string {
-    return VolumeStates.ERROR;
-  }
-
-  public get staticDELETING(): string {
-    return VolumeStates.DELETING;
-  }
-
-  public get staticDELETED(): string {
-    return VolumeStates.DELETED;
-  }
-
   public get staticNOT_IN_PROCESS_STATE(): string[] {
     return VolumeStates.NOT_IN_PROCESS_STATES;
-  }
-
-  public get staticCREATING(): string {
-    return VolumeStates.CREATING;
   }
 
   public get staticRESERVED_PLANNED(): string {
