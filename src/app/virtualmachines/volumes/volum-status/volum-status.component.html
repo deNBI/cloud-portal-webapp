@@ -25,23 +25,29 @@
                 <strong> {{VolumeStates.staticDELETING| lowercase}}</strong>
               </ng-container>
 
-              <ng-container *ngSwitchCase="VolumeStates.staticCREATING">
-                <div [id]="'creating_' + volume?.volume_name"
-                     class="dot-colorless bg-warning" style="width: 10px; height: 10px">
-                </div>
-                <strong> {{VolumeStates.staticCREATING| lowercase}}</strong>
-              </ng-container>
-              <ng-container *ngSwitchCase="VolumeStates.staticRESERVED_PLANNED">
-                <div [id]="'creating_' + volume?.volume_name"
-                     class="dot-colorless bg-warning" style="width: 10px; height: 10px">
-                </div>
-                <strong> {{VolumeStates.staticRESERVED| lowercase}}</strong>
-              </ng-container>
-              <ng-container *ngSwitchCase="VolumeStates.staticRESERVED">
-                <div [id]="'reserved_' + volume?.volume_name"
-                     class="dot-colorless bg-warning" style="width: 10px; height: 10px">
-                </div>
-                <strong> {{VolumeStates.staticRESERVED| lowercase}}</strong>
+            <ng-container *ngSwitchCase="VolumeStates.staticCREATING">
+              <div [id]="'creating_' + volume?.volume_name"
+                   class="dot-colorless bg-warning" style="width: 10px; height: 10px">
+              </div>
+              <strong> {{VolumeStates.staticCREATING| lowercase}}</strong>
+            </ng-container>
+            <ng-container *ngSwitchCase="VolumeStates.staticRESERVED_PLANNED">
+              <div [id]="'creating_' + volume?.volume_name"
+                   class="dot-colorless bg-warning" style="width: 10px; height: 10px">
+              </div>
+              <strong> {{VolumeStates.staticRESERVED| lowercase}}</strong>
+            </ng-container>
+            <ng-container *ngSwitchCase="VolumeStates.staticRESERVED_ATTACHED">
+              <div [id]="'creating_' + volume?.volume_name"
+                   class="dot-colorless bg-warning" style="width: 10px; height: 10px">
+              </div>
+              <strong> {{VolumeStates.staticRESERVED| lowercase}}</strong>
+            </ng-container>
+            <ng-container *ngSwitchCase="VolumeStates.staticRESERVED">
+              <div [id]="'reserved_' + volume?.volume_name"
+                   class="dot-colorless bg-warning" style="width: 10px; height: 10px">
+              </div>
+              <strong> {{VolumeStates.staticRESERVED| lowercase}}</strong>
               </ng-container>
             <ng-container *ngSwitchCase="VolumeStates.staticEXTENDING">
               <div [id]="'extending_' + volume?.volume_name"

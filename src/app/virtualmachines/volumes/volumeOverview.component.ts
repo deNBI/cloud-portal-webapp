@@ -216,14 +216,16 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
   detachSelectedVolumes(): void {
     const detach_vols: Volume[] = this.checked_volumes;
     const vol_ids: string[] = this.checked_volumes.map((vol: Volume): string => {
-      vol.volume_status = VolumeStates.DETACHING;
+      if (vol.volume_virtualmachine) {
+        vol.volume_status = VolumeStates.DETACHING;
 
-      return vol.volume_openstackid
+        return vol.volume_openstackid
+      }
 
     });
     this.vmService.deleteVolumeAttachments(vol_ids).subscribe((): void => {
                                                                 detach_vols.forEach((vol: Volume): void => {
-                                                                  this.check_status_loop(vol, 0, VolumeStates.AVAILABLE)
+                                                                  this.check_status_loop(vol, 2000, VolumeStates.AVAILABLE)
 
                                                                 })
                                                               }
@@ -338,7 +340,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
         } else {
           this.volume_action_status = this.volumeActionStates.ERROR;
         }
-        this.check_status_loop(volume, 0)
+        this.check_status_loop(volume, 2000, VolumeStates.IN_USE)
       },
       (error: any): void => {
         if (error['error']['error'] === '409') {

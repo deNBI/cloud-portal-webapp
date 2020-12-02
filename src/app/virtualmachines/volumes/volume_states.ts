@@ -9,6 +9,7 @@ export class VolumeStates extends GeneralStatusStates {
   private static readonly _RESERVED: string = 'RESERVED';
   private static readonly _AVAILABLE: string = 'AVAILABLE';
   private static readonly _RESERVED_PLANNED_STATUS: string = 'RESERVED_PLANNED';
+  private static readonly _RESERVED_ATTACHED: string = 'RESERVED_ATTACHED';
   private static readonly _DETACHING: string = 'DETACHING';
   private static readonly _ATTACHING: string = 'ATTACHING';
   private static readonly _EXTENDING: string = 'EXTENDING';
@@ -26,6 +27,7 @@ export class VolumeStates extends GeneralStatusStates {
     VolumeStates._NOT_FOUND,
     VolumeStates._DELETING,
     VolumeStates._RESERVED,
+    VolumeStates._RESERVED_ATTACHED,
     VolumeStates._CREATING,
     VolumeStates._RESERVED_PLANNED_STATUS,
     VolumeStates._EXTENDING,
@@ -34,6 +36,10 @@ export class VolumeStates extends GeneralStatusStates {
 
   static get RESERVED_PLANNED_STATUS(): string {
     return this._RESERVED_PLANNED_STATUS;
+  }
+
+  static get RESERVED_ATTACHED(): string {
+    return this._RESERVED_ATTACHED
   }
 
   static get IN_USE(): string {
@@ -71,6 +77,10 @@ export class VolumeStates extends GeneralStatusStates {
 
   static get EXTENDING(): string {
     return this._EXTENDING;
+  }
+
+  public get staticRESERVED_ATTACHED(): string {
+    return VolumeStates.RESERVED_ATTACHED
   }
 
   public get staticNO_ACTIONS(): string[] {
