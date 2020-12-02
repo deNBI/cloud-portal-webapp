@@ -49,12 +49,6 @@
               </div>
               <strong> {{VolumeStates.staticRESERVED| lowercase}}</strong>
             </ng-container>
-            <ng-container *ngSwitchCase="VolumeStates.staticRESERVED_PLANNED">
-              <div [id]="'reserved_planned_' + volume?.volume_name"
-                   class="dot-colorless bg-warning" style="width: 10px; height: 10px">
-              </div>
-              <strong> {{VolumeStates.staticRESERVED| lowercase}}</strong>
-            </ng-container>
             <ng-container *ngSwitchCase="VolumeStates.staticEXTENDING">
               <div [id]="'extending_' + volume?.volume_name"
                    class="dot-colorless bg-warning" style="width: 10px; height: 10px">
