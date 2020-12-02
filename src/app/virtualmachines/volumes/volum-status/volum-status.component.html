@@ -32,7 +32,7 @@
               <strong> {{VolumeStates.staticCREATING| lowercase}}</strong>
             </ng-container>
             <ng-container *ngSwitchCase="VolumeStates.staticRESERVED_PLANNED">
-              <div [id]="'creating_' + volume?.volume_name"
+              <div [id]="'reserved_planned_' + volume?.volume_name"
                    class="dot-colorless bg-warning" style="width: 10px; height: 10px">
               </div>
               <strong> {{VolumeStates.staticRESERVED| lowercase}}</strong>
@@ -48,17 +48,23 @@
                    class="dot-colorless bg-warning" style="width: 10px; height: 10px">
               </div>
               <strong> {{VolumeStates.staticRESERVED| lowercase}}</strong>
-              </ng-container>
+            </ng-container>
+            <ng-container *ngSwitchCase="VolumeStates.staticRESERVED_PLANNED">
+              <div [id]="'reserved_planned_' + volume?.volume_name"
+                   class="dot-colorless bg-warning" style="width: 10px; height: 10px">
+              </div>
+              <strong> {{VolumeStates.staticRESERVED| lowercase}}</strong>
+            </ng-container>
             <ng-container *ngSwitchCase="VolumeStates.staticEXTENDING">
               <div [id]="'extending_' + volume?.volume_name"
                    class="dot-colorless bg-warning" style="width: 10px; height: 10px">
               </div>
               <strong> {{VolumeStates.staticEXTENDING| lowercase}}</strong>
             </ng-container>
-              <ng-container *ngSwitchCase="VolumeStates.staticIN_USE">
-                <div [id]="'in_use_badge_' + volume?.volume_name" class="dot-colorless bg-info"
-                     style="width: 10px; height: 10px">
-                </div>
+            <ng-container *ngSwitchCase="VolumeStates.staticIN_USE">
+              <div [id]="'in_use_badge_' + volume?.volume_name" class="dot-colorless bg-info"
+                   style="width: 10px; height: 10px">
+              </div>
                 <strong> {{VolumeStates.staticIN_USE| lowercase}}</strong>
               </ng-container>
               <ng-container *ngSwitchCase="VolumeStates.staticDELETED">
