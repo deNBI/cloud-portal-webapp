@@ -828,6 +828,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
   deleteAll(): void {
     const vm_ids: string [] = this.selectedMachines.map((vm: VirtualMachine): string => {
       vm.status = VirtualMachineStates.DELETING;
+
       return vm.openstackid
     })
     this.virtualmachineservice.deleteVms(vm_ids).subscribe((): void => {
