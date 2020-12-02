@@ -250,6 +250,14 @@ export class VirtualmachineService {
     }
   }
 
+  deleteVms(vm_ids: string[]): Observable<IResponseTemplate> {
+    const params: HttpParams = new HttpParams().set('vm_ids', JSON.stringify(vm_ids));
+
+    return this.http.post<IResponseTemplate>(`${this.baseVmUrl}/delete/`, params, {
+      withCredentials: true
+    })
+  }
+
   checkVmStatusWhenReboot(openstack_id: string): Observable<any> {
     const params: HttpParams = new HttpParams().set('reboot', 'true');
 

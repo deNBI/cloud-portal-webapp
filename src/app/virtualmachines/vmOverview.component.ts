@@ -7,8 +7,8 @@ import {ImageService} from '../api-connector/image.service';
 import {IResponseTemplate} from '../api-connector/response-template';
 import {SnapshotModel} from './snapshots/snapshot.model';
 import {FacilityService} from '../api-connector/facility.service';
-import {catchError, debounceTime, distinctUntilChanged} from 'rxjs/operators';
-import {forkJoin, Observable, of, Subject, Subscription} from 'rxjs';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
+import {Subject, Subscription} from 'rxjs';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {is_vo} from '../shared/globalvar';
 import {VirtualMachineStates} from './virtualmachinemodels/virtualmachinestates';
@@ -826,44 +826,16 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
   }
 
   deleteAll(): void {
-    const observableBatch: Observable<VirtualMachine>[] = [];
-
-    // tslint:disable-next-line:no-for-each-push
-    this.selectedMachines.forEach((vm: VirtualMachine): void => {
+    const vm_ids: string [] = this.selectedMachines.map((vm: VirtualMachine): string => {
       vm.status = VirtualMachineStates.DELETING;
-      // tslint:disable-next-line:no-unnecessary-callback-wrapper
-      observableBatch.push(this.virtualmachineservice.deleteVM(vm.openstackid).pipe(catchError((error: any): Observable<any> => of(error)))
-      )
-    });
-    forkJoin(observableBatch).subscribe(
-      (value: any): void => {
-        for (let idx: number = 0; idx < value.length; idx++) {
-          if (value[idx].hasOwnProperty('error') && value[idx].hasOwnProperty('status') && value[idx]['status'] === 409) {
-            const updated_error_vm: VirtualMachine = new VirtualMachine(value[idx]['error']);
-            updated_error_vm.error_msg = `Conflict detected. The virtual machine ${value[idx]['error']['name']} is currently creating a snapshot and must not be altered.`;
-            setTimeout((): void => {
-                         updated_error_vm.error_msg = null;
-                       },
-                       this.ERROR_TIMER);
-            this.vms_content[this.vms_content.indexOf(this.selectedMachines[idx])] = updated_error_vm;
-            this.selectedMachines[idx] = updated_error_vm;
-            continue;
-          }
-          const updated_vm: VirtualMachine = new VirtualMachine(value[idx]);
-          this.vms_content[this.vms_content.indexOf(this.selectedMachines[idx])] = updated_vm;
-          this.selectedMachines[idx] = updated_vm;
-          if (updated_vm.status !== VirtualMachineStates.DELETED) {
-            setTimeout(
-              (): void => {
-                this.deleteVm(updated_vm)
+      return vm.openstackid
+    })
+    this.virtualmachineservice.deleteVms(vm_ids).subscribe((): void => {
+      this.selectedMachines.forEach((vm: VirtualMachine): void => {
+        this.check_status_loop(vm, VirtualMachineStates.DELETED)
+      })
+    })
 
-              },
-              this.checkStatusTimeout
-            )
-          }
-        }
-      }
-    )
   }
 
   setForcUrl(vm: VirtualMachine): void {
