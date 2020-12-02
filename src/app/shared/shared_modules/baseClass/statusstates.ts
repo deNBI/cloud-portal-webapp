@@ -1,3 +1,6 @@
+/**
+ * GerneralStatus class.
+ */
 export class GeneralStatusStates {
 
   protected static readonly _CREATING: string = 'CREATING';
