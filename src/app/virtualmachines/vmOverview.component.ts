@@ -146,8 +146,6 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
   vmActions: {id: VirtualMachine, name: string}[] = [];
   selectedMachines: VirtualMachine[] = [];
 
-  resenvInformationByVM: {[name: string]: string} = {};
-
   clientsForcUrls: {[client_id: string]: [string]} = {};
 
   /*
@@ -244,7 +242,6 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
             const new_vm: VirtualMachine = new VirtualMachine(upd_vm);
             this.setForcUrl(new_vm);
             this.checkCondaPackages(new_vm);
-            this.checkResenvByVM(new_vm);
             this.vms_content[idx] = new_vm;
 
           })
@@ -269,7 +266,6 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
             const new_vm: VirtualMachine = new VirtualMachine(upd_vm);
             this.setForcUrl(new_vm);
             this.checkCondaPackages(new_vm);
-            this.checkResenvByVM(new_vm);
             this.vms_content[idx] = new_vm;
 
           })
@@ -634,16 +630,6 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
     });
   }
 
-  checkResenvByVM (vm: VirtualMachine): void {
-    this.biocondaService.getTemplateNameByVmName(vm).subscribe((result: any): void => {
-      if (result) {
-        this.resenvInformationByVM[vm.name] = result['template'];
-      } else {
-        this.resenvInformationByVM[vm.name] = '';
-      }
-    });
-  }
-
   showCopiedMessage(name: string): void {
     const span_id: string = `${name}resenvSpan`;
     const innerHTML: string = document.getElementById(span_id).innerHTML;
@@ -664,7 +650,6 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
       const vm: VirtualMachine = new VirtualMachine(new_vm);
       this.setForcUrl(vm);
       this.checkCondaPackages(vm);
-      this.checkResenvByVM(vm);
       tmp_vms.push(vm);
 
     });

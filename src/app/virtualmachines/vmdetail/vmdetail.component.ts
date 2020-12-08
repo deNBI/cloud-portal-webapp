@@ -28,6 +28,7 @@ import {ClipboardService} from 'ngx-clipboard';
 import {Volume} from '../volumes/volume';
 import {VolumeStates} from '../volumes/volume_states';
 import {Condalog} from '../conda/condalog';
+import {Backend} from '../conda/backend/backend';
 
 /**
  * VM Detail page component
@@ -560,9 +561,9 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
           this.checkAndGetForcDetails(vm);
           this.title = vm['name'];
           this.virtualMachine = vm;
-          this.biocondaService.getTemplateNameByVmName(vm).subscribe((tname: any): void => {
-            if (tname != null) {
-              const template_name: string = tname['template'];
+          this.biocondaService.getTemplateNameByVmName(vm).subscribe((backend: Backend): void => {
+            if (backend != null) {
+              const template_name: string = backend.template;
               this.biocondaService.getForcTemplates(vm.client.id).subscribe((templates: any): void => {
                 if (templates != null) {
                   for (const temp of templates) {
