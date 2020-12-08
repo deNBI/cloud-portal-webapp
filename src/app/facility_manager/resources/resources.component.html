@@ -9,7 +9,7 @@
       <div class="card-header">
 
           <i class="fa fa-align-justify"></i> Resources
-          <div >
+          <div class="row">
 
             <button style="margin: 5px"
                     class="btn"
@@ -29,28 +29,29 @@
                     (click)="setResources(ALL_RESOURCES)">All Resources
             </button>
 
-
-            <button style="float:right;margin: 5px;" class="btn btn-outline-primary" (click)="factorModal.show()">Modify
+            <button style="margin: 5px;" class="btn btn-outline-primary" (click)="factorModal.show()">Modify
               Limits
             </button>
+            <div style="margin:5px;"><select [(ngModel)]="selectedFacility"
+                         (ngModelChange)="isLoaded=false;onChangeSelectedFacility($event);"
+                         class="form-control" name="selectedFacility">
+              <option *ngFor="  let facility of managerFacilities" [ngValue]="facility">
+                {{facility['Facility']}}
+              </option>
+
+            </select></div>
           </div>
 
 
 
-        <div><select [(ngModel)]="selectedFacility"
-                     (ngModelChange)="isLoaded=false;onChangeSelectedFacility($event);"
-                     class="form-control" name="selectedFacility">
-          <option *ngFor="  let facility of managerFacilities" [ngValue]="facility">
-            {{facility['Facility']}}
-          </option>
 
-        </select></div>
+      </div>
 
         <div class="card-body" style="width: 100%" id="contentToConvert">
 
 
           <div class="table-responsive">
-            <table class="table table-striped table-bordered"
+            <table class="table table-striped table-bordered table-hover"
                    style="width: 100%">
               <thead>
               <tr>
@@ -69,8 +70,8 @@
                     *ngIf="!(r.totalRamGeneralPurpose || r.totalRamMidClass || r.totalRamHighMemory)">{{r.totalRam}}</span>
                   <table *ngIf="r.totalRamGeneralPurpose || r.totalRamMidClass || r.totalRamHighMemory">
                     <tr>
-                      <th>Total</th>
-                      <th>{{r.totalRam}}</th>
+                      <th class="table-primary">Total</th>
+                      <th class="table-primary">{{r.totalRam}}</th>
 
                     </tr>
                     <tr>
@@ -100,8 +101,8 @@
                     *ngIf="!(r.totalCoresGeneralPurpose || r.totalCoresMidClass || r.totalCoresHighMemory)">{{r.totalCores}}</span>
                   <table *ngIf="r.totalCoresGeneralPurpose || r.totalCoresMidClass || r.totalCoresHighMemory">
                     <tr>
-                      <th>Total</th>
-                      <th>{{r.totalCores}}</th>
+                      <th class="table-primary">Total</th>
+                      <th class="table-primary">{{r.totalCores}}</th>
 
                     </tr>
                     <tr>
