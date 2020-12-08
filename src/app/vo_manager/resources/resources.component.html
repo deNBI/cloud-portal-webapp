@@ -11,7 +11,7 @@
 
 
                 <div class="table-responsive">
-                    <table class="table table-hover table-bordered"
+                    <table class="table table-striped table-bordered table-hover"
                            style="width: 100%">
                         <thead>
                         <tr>
@@ -23,12 +23,66 @@
                         <tbody>
 
                         <tr>
-                            <th>Ram [GB]</th>
-                            <td *ngFor="let r of voResources">{{r.totalRam}}</td>
+                          <th>Ram [GB]</th>
+                          <td *ngFor="let r of voResources">
+                  <span
+                    *ngIf="!(r.totalRamGeneralPurpose || r.totalRamMidClass || r.totalRamHighMemory)">{{r.totalRam}}</span>
+                            <table *ngIf="r.totalRamGeneralPurpose || r.totalRamMidClass || r.totalRamHighMemory">
+                              <tr>
+                                <th class="table-primary">Total</th>
+                                <th class="table-primary">{{r.totalRam}}</th>
+
+                              </tr>
+                              <tr>
+                                <td>General Purpose<br></td>
+                                <td>{{r.totalRamGeneralPurpose}}</td>
+
+                              </tr>
+                              <tr>
+                                <td>Mid Class<br></td>
+                                <td>{{r.totalRamMidClass}}</td>
+
+                              </tr>
+                              <tr>
+                                <td>High Memory<br></td>
+                                <td>{{r.totalRamHighMemory}}</td>
+
+                              </tr>
+                            </table>
+
+
+                          </td>
                         </tr>
                         <tr>
-                            <th>Cores</th>
-                            <td *ngFor="let r of voResources">{{r.totalCores}}</td>
+                          <th>Cores</th>
+                          <td *ngFor="let r of voResources">
+                  <span
+                    *ngIf="!(r.totalCoresGeneralPurpose || r.totalCoresMidClass || r.totalCoresHighMemory)">{{r.totalCores}}</span>
+                            <table *ngIf="r.totalCoresGeneralPurpose || r.totalCoresMidClass || r.totalCoresHighMemory">
+                              <tr>
+                                <th class="table-primary">Total</th>
+                                <th class="table-primary">{{r.totalCores}}</th>
+
+                              </tr>
+                              <tr>
+                                <td>General Purpose<br></td>
+                                <td>{{r.totalCoresGeneralPurpose}}</td>
+
+                              </tr>
+                              <tr>
+                                <td>Mid Class<br></td>
+                                <td>{{r.totalCoresMidClass}}</td>
+
+                              </tr>
+                              <tr>
+                                <td>High Memory<br></td>
+                                <td>{{r.totalCoresHighMemory}}</td>
+
+                              </tr>
+                            </table>
+
+
+                          </td>
 
                         </tr>
                         <tr>
