@@ -9,7 +9,7 @@
       <div class="card-header">
 
           <i class="fa fa-align-justify"></i> Resources
-          <div >
+          <div class="row">
 
             <button style="margin: 5px"
                     class="btn"
@@ -29,28 +29,29 @@
                     (click)="setResources(ALL_RESOURCES)">All Resources
             </button>
 
-
-            <button style="float:right;margin: 5px;" class="btn btn-outline-primary" (click)="factorModal.show()">Modify
+            <button style="margin: 5px;" class="btn btn-outline-primary" (click)="factorModal.show()">Modify
               Limits
             </button>
+            <div style="margin:5px;"><select [(ngModel)]="selectedFacility"
+                         (ngModelChange)="isLoaded=false;onChangeSelectedFacility($event);"
+                         class="form-control" name="selectedFacility">
+              <option *ngFor="  let facility of managerFacilities" [ngValue]="facility">
+                {{facility['Facility']}}
+              </option>
+
+            </select></div>
           </div>
 
 
 
-        <div><select [(ngModel)]="selectedFacility"
-                     (ngModelChange)="isLoaded=false;onChangeSelectedFacility($event);"
-                     class="form-control" name="selectedFacility">
-          <option *ngFor="  let facility of managerFacilities" [ngValue]="facility">
-            {{facility['Facility']}}
-          </option>
 
-        </select></div>
+      </div>
 
         <div class="card-body" style="width: 100%" id="contentToConvert">
 
 
           <div class="table-responsive">
-            <table class="table table-striped table-bordered"
+            <table class="table table-striped table-bordered table-hover"
                    style="width: 100%">
               <thead>
               <tr>
@@ -63,22 +64,77 @@
 
               <tr>
                 <th>Ram [GB]</th>
-                <td *ngFor="let r of visible_resources">{{r.totalRam}}</td>
-            </tr>
-            <tr>
-              <th>Cores</th>
-              <td *ngFor="let r of visible_resources">{{r.totalCores}}</td>
 
-            </tr>
-            <tr>
-              <th>Vms</th>
-              <td *ngFor="let r of visible_resources">{{r.totalVms}}</td>
-            </tr>
-            <tr>
-              <th>Volumes</th>
-              <td *ngFor="let r of visible_resources">{{r.totalVolumeCounter}}</td>
+                <td *ngFor="let r of visible_resources">
+                  <span
+                    *ngIf="!(r.totalRamGeneralPurpose || r.totalRamMidClass || r.totalRamHighMemory)">{{r.totalRam}}</span>
+                  <table *ngIf="r.totalRamGeneralPurpose || r.totalRamMidClass || r.totalRamHighMemory">
+                    <tr>
+                      <th class="table-primary">Total</th>
+                      <th class="table-primary">{{r.totalRam}}</th>
 
-            </tr>
+                    </tr>
+                    <tr>
+                      <td>General Purpose<br></td>
+                      <td>{{r.totalRamGeneralPurpose}}</td>
+
+                    </tr>
+                    <tr>
+                      <td>Mid Class<br></td>
+                      <td>{{r.totalRamMidClass}}</td>
+
+                    </tr>
+                    <tr>
+                      <td>High Memory<br></td>
+                      <td>{{r.totalRamHighMemory}}</td>
+
+                    </tr>
+                  </table>
+
+
+                </td>
+              </tr>
+              <tr>
+                <th>Cores</th>
+                <td *ngFor="let r of visible_resources">
+                  <span
+                    *ngIf="!(r.totalCoresGeneralPurpose || r.totalCoresMidClass || r.totalCoresHighMemory)">{{r.totalCores}}</span>
+                  <table *ngIf="r.totalCoresGeneralPurpose || r.totalCoresMidClass || r.totalCoresHighMemory">
+                    <tr>
+                      <th class="table-primary">Total</th>
+                      <th class="table-primary">{{r.totalCores}}</th>
+
+                    </tr>
+                    <tr>
+                      <td>General Purpose<br></td>
+                      <td>{{r.totalCoresGeneralPurpose}}</td>
+
+                    </tr>
+                    <tr>
+                      <td>Mid Class<br></td>
+                      <td>{{r.totalCoresMidClass}}</td>
+
+                    </tr>
+                    <tr>
+                      <td>High Memory<br></td>
+                      <td>{{r.totalCoresHighMemory}}</td>
+
+                    </tr>
+                  </table>
+
+
+                </td>
+
+              </tr>
+              <tr>
+                <th>Vms</th>
+                <td *ngFor="let r of visible_resources">{{r.totalVms}}</td>
+              </tr>
+              <tr>
+                <th>Volumes</th>
+                <td *ngFor="let r of visible_resources">{{r.totalVolumeCounter}}</td>
+
+              </tr>
             <tr>
               <th>Volumes Storage [GB]</th>
               <td *ngFor="let r of visible_resources">{{r.totalVolumeLimit}}</td>
