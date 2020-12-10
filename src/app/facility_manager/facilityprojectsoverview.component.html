@@ -423,7 +423,7 @@
           </form>
         </div>
         <div class="modal-footer">
-          <button type="button" [disabled]="f.invalid ||
+           <button type="button" [disabled]="f.invalid ||
             (selectedProjectType == 'USER' && (selectedMember?.length == 0))"
                   class="btn btn-primary" (click)="emailModal.hide(); verifyModal.show()">Send email
           </button>
