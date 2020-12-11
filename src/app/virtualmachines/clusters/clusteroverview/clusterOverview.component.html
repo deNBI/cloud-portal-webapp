@@ -61,6 +61,9 @@
         <div class="spinner-border text-primary" style="display:block; margin:auto;"></div>
       </div>
 
+      <div class="alert alert-info" *ngIf="clusters?.length < 1">
+        <span>There are no clusters available!</span>
+      </div>
       <div class="row" *ngFor="let cluster of clusters; first as isFirst;"
            id="vm_overview_table">
         <div class="col-md-12">
@@ -249,9 +252,14 @@
               instance:
               <div class="alert alert-light"
                    role="alert">
-                <strong>wget {{SCALING_SCRIPT_LINK}}</strong></div>
+                <strong>wget {{SCALING_SCRIPT_LINK}}</strong>
+                <button class="btn btn-outline-primary" style="margin-left: 5px;"
+                        (click)="copyToClipboard('wget ' + SCALING_SCRIPT_LINK)">Copy Command</button>
+              </div>
               <div class="alert alert-light"
                    role="alert"><strong>python3 {{SCALING_SCRIPT_NAME}} </strong>
+                <button class="btn btn-outline-primary" style="margin-left: 5px;"
+                        (click)="copyToClipboard('python3 ' + SCALING_SCRIPT_NAME)">Copy Command</button>
               </div>
             </div>
           </div>
@@ -338,9 +346,13 @@
                   machine to configure the cluster correctly!</p>
                 <div class="alert alert-light"
                      role="alert">
-                  <strong>wget {{SCALING_SCRIPT_LINK}}</strong></div>
+                  <strong>wget {{SCALING_SCRIPT_LINK}}</strong>
+                  <button class="btn btn-outline-primary" style="margin-left: 5px;"
+                          (click)="copyToClipboard('wget ' + SCALING_SCRIPT_LINK)">Copy Command</button></div>
                 <div class="alert alert-light"
                      role="alert"><strong>python3 {{SCALING_SCRIPT_NAME}}</strong>
+                  <button class="btn btn-outline-primary" style="margin-left: 5px;"
+                          (click)="copyToClipboard('python3 ' + SCALING_SCRIPT_NAME)">Copy Command</button>
                 </div>
 
                 <div class="alert alert-info"
@@ -567,9 +579,13 @@
                   machine to configure the cluster correctly:</p>
                   <div class="alert alert-light"
                        role="alert">
-                    <strong>wget {{SCALING_SCRIPT_LINK}}</strong></div>
+                    <strong>wget {{SCALING_SCRIPT_LINK}}</strong>
+                    <button class="btn btn-outline-primary" style="margin-left: 5px;"
+                            (click)="copyToClipboard('wget ' + SCALING_SCRIPT_LINK)">Copy Command</button></div>
                   <div class="alert alert-light"
                        role="alert"><strong>python3 {{SCALING_SCRIPT_NAME}}  </strong>
+                    <button class="btn btn-outline-primary" style="margin-left: 5px;"
+                            (click)="copyToClipboard('python3 ' + SCALING_SCRIPT_NAME)">Copy Command</button>
                   </div>
 
                   <div class="alert alert-info"
