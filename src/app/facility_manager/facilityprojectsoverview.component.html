@@ -1,4 +1,22 @@
-<div *ngIf="isLoaded==false" class="loader"></div>
+<div *ngIf="!isLoaded" class="loader">
+
+</div>
+     <div class="col-md-12 row" *ngIf="managerFacilities.length > 1 && !isLoaded">
+        <div class="col-md-2">
+          <button (click)="emailModal.show()" type="button " class="btn btn-outline-primary"><i
+            class="icon-envelope-letter"></i>
+            Send email
+          </button>
+        </div>
+        <div class="col-md-8" style="margin-bottom: 10px;"><select [(ngModel)]="selectedFacility"
+                                                                   (ngModelChange)="onChangeSelectedFacility($event)"
+                                                                   class="form-control" name="selectedFacility">
+          <option *ngFor="  let facility of managerFacilities" [ngValue]="facility">
+            {{facility['Facility']}}
+          </option>
+
+        </select></div>
+      </div>
 
 <div *ngIf="isLoaded" class="animated fadeIn" ng-app>
 
@@ -405,7 +423,8 @@
           </form>
         </div>
         <div class="modal-footer">
-           <button type="button" [disabled]="f.invalid ||
+          <button type="button" [disabled]="f.invalid ||
+
             (selectedProjectType == 'USER' && (selectedMember?.length == 0))"
                   class="btn btn-primary" (click)="emailModal.hide(); verifyModal.show()">Send email
           </button>
