@@ -1,6 +1,6 @@
 <div *ngIf="isLoaded==false" class="loader"></div>
 <div *ngIf="isLoaded">
-  <a style="margin-bottom: 5px"  target="_blank" class="btn btn-secondary" href="{{WIKI_VOLUME_OVERVIEW}}"
+  <a style="margin-bottom: 5px"  rel="noopener noreferrer" target="_blank" class="btn btn-secondary" href="{{WIKI_VOLUME_OVERVIEW}}"
 
           id="volume_ov">Wiki
   </a>
@@ -257,7 +257,7 @@
           *ngIf="volume_action_status == volumeActionStates.ATTACHING_SUCCESSFULL || volume_action_status == volumeActionStates.SUCCESSFULLY_CREATED_ATTACHED"
           class="alert alert-info" role="alert">
           In order to use the volume you have to <a
-          href="{{WIKI_VOLUME_OVERVIEW}}" target="_blank"> mount </a> it.
+          href="{{WIKI_VOLUME_OVERVIEW}}" rel="noopener noreferrer" target="_blank"> mount </a> it.
         </div>
       </div>
       <div class="alert alert-warning" role="alert" *ngIf="volume_action_status == volumeActionStates.ERROR">
@@ -415,7 +415,7 @@
           class="alert alert-warning" role="alert">
 
           The volume must still be <a
-          href="{{WIKI_VOLUME_OVERVIEW}}" target="_blank"> mounted </a> after the attaching to use it.
+          href="{{WIKI_VOLUME_OVERVIEW}}" rel="noopener noreferrer" target="_blank"> mounted </a> after the attaching to use it.
         </div>
         <strong>To which vm should the volume be attached?</strong>
 
@@ -788,7 +788,7 @@
 
           class="alert alert-warning" role="alert">
           In order to use the volume you have to <a
-          href="{{WIKI_VOLUME_OVERVIEW}}" target="_blank"> mount </a> it.
+          href="{{WIKI_VOLUME_OVERVIEW}}" rel="noopener noreferrer" target="_blank"> mount </a> it.
         </div>
 
       </div>
