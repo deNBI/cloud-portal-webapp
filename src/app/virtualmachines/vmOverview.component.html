@@ -161,7 +161,7 @@
 
                 <div class="col-3" style="margin: auto; text-align: center">
                   <a [routerLink]="['/project-management/' + vm?.application_id]"
-                     target="_blank"><strong>{{vm?.project}}</strong></a>
+                     target="_blank" rel="noopener noreferrer"><strong>{{vm?.project}}</strong></a>
                 </div>
                 <div class="col-2" style="margin: auto; text-align: center">
                   {{vm?.userlogin}}
@@ -376,11 +376,11 @@
                     <span class="font-weight-bold font-xs btn-block text-muted">Research Environment:</span>
                   </div>
                   <div class="col-md-11 font-weight-bold font-xs btn-block text-muted">
-                    <a href="{{vm?.res_env_url}}" target="_blank">{{vm?.res_env_url}}</a>
+                    <a href="{{vm?.res_env_url}}" target="_blank" rel="noopener noreferrer">{{vm?.res_env_url}}</a>
                     <br>
-                    For RStudio credentials please visit: <a href="{{WIKI_RSTUDIO_LINK}}" target="_blank">{{WIKI_RSTUDIO_LINK}}</a>
+                    For RStudio credentials please visit: <a href="{{WIKI_RSTUDIO_LINK}}" rel="noopener noreferrer" target="_blank">{{WIKI_RSTUDIO_LINK}}</a>
                     <br>
-                    For Apache Guacamole credentials please visit: <a href="{{WIKI_GUACAMOLE_LINK}}" target="_blank">{{WIKI_GUACAMOLE_LINK}}</a>
+                    For Apache Guacamole credentials please visit: <a href="{{WIKI_GUACAMOLE_LINK}}" rel="noopener noreferrer" target="_blank">{{WIKI_GUACAMOLE_LINK}}</a>
                   </div>
                 </div>
               </div>
@@ -1087,7 +1087,7 @@
           class="alert alert-warning" role="alert">
 
           The volume must still be <a
-          href="{{WIKI_VOLUME_OVERVIEW}}" target="_blank"> mounted </a> after the attaching to use it.
+          href="{{WIKI_VOLUME_OVERVIEW}}" target="_blank" rel="noopener noreferrer"> mounted </a> after the attaching to use it.
         </div>
         <strong>Which volume should be attached?</strong>
 
