@@ -137,7 +137,7 @@
                     <strong>Information for ephemeral flavors:</strong>
                     Ephemeral storage is not best suited for persistent data. Read more
                     <a href="https://cloud.denbi.de/wiki/simple_vm/new_instance/#information-for-ephemeral-flavors"
-                       target="_blank">here</a>.
+                       target="_blank" rel="noopener noreferrer">here</a>.
                   </div>
                 </div>
 
@@ -516,7 +516,7 @@
 
                     <label class="col-md-2 form-control-label">Working on the road</label>
                     <div class="col-md-4"><label><strong style="padding-right: 10px; bottom: 15px;position: relative;">
-                      <a href="https://cloud.denbi.de/wiki/Tutorials/Mosh/" target="_blank">Open UDP ports</a>
+                      <a href="https://cloud.denbi.de/wiki/Tutorials/Mosh/" rel="noopener noreferrer" target="_blank">Open UDP ports</a>
                       <i
                         data-balloon="This selection is necessary for using MOSH.
                         UDP is better suited for unstable/switching connections, e.g. during train travel."
@@ -534,7 +534,7 @@
                       </label>
                     </div>
                     <div class="alert alert-info col-md-6" *ngIf="!mosh_mode_available">To use MOSH with UDP ports, please select an Image which supports MOSH.
-                      Learn more about MOSH <a href="https://mosh.org" target="_blank">here</a>.</div>
+                      Learn more about MOSH <a href="https://mosh.org" target="_blank" rel="noopener noreferrer">here</a>.</div>
                   </div>
                   <div
                     *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && selectedProjectRessources?.used_vms < selectedProjectRessources?.number_vms && udp_allowed && mosh_mode_available"
