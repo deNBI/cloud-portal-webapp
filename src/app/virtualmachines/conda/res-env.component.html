@@ -3,7 +3,7 @@
     <div class="col">
       <div class="alert alert-info" style="width: 100%">
         If you are unfamiliar with research environments or want to learn more about them, please feel free to read
-        our <a href="{{WIKI_RESENV_LINK}}" target="_blank">wiki entry</a>.
+        our <a href="{{WIKI_RESENV_LINK}}" target="_blank" rel="noopener noreferrer">wiki entry</a>.
       </div>
     </div>
   </div>
@@ -38,7 +38,7 @@
               {{selectedTemplate?.description}}
             </p>
             <p *ngIf="selectedTemplate.info_url">
-              <a href="{{selectedTemplate?.info_url}}" target="_blank">Click here for more Information.</a>
+              <a href="{{selectedTemplate?.info_url}}" target="_blank"  rel="noopener noreferrer">Click here for more Information.</a>
             </p>
           </div>
         </div>
@@ -73,7 +73,7 @@
                   {{template?.description}}
                 </p>
                 <p *ngIf="template.info_url">
-                  <a href="{{template?.info_url}}" target="_blank">Click here for more Information.</a>
+                  <a href="{{template?.info_url}}" rel="noopener noreferrer" target="_blank">Click here for more Information.</a>
                 </p>
               </div>
             </div>
