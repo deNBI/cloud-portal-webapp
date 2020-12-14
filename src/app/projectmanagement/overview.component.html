@@ -13,7 +13,7 @@
 
         <div class="card-header">
           <h3>
-            <a *ngIf="project_application?.project_application_openstack_project" href="https://cloud.denbi.de/openstack/" target="_blank"
+            <a *ngIf="project_application?.project_application_openstack_project" href="https://cloud.denbi.de/openstack/" target="_blank" rel="noopener noreferrer"
                style="font-size: 2em"
                class="project-openstack_plain_white_redbg"
                data-toggle="tooltip"
@@ -22,7 +22,7 @@
               <a class="path1"></a>
               <a class="path2"></a>
             </a>
-            <a *ngIf="!project_application?.project_application_openstack_project" href="https://cloud.denbi.de/simplevm/" target="_blank"
+            <a *ngIf="!project_application?.project_application_openstack_project" href="https://cloud.denbi.de/simplevm/" target="_blank" rel="noopener noreferrer"
                style="font-size: 2em"
                class="project-simpleVM_Logo_bluebg"
                data-toggle="tooltip"
@@ -130,7 +130,7 @@
 
         <div class="card-header">
           <h3>
-            <a *ngIf="project?.OpenStackProject" href="https://cloud.denbi.de/openstack/" target="_blank"
+            <a *ngIf="project?.OpenStackProject" href="https://cloud.denbi.de/openstack/" rel="noopener noreferrer" target="_blank"
                style="font-size: 2em"
                class="project-openstack_plain_white_redbg"
                data-toggle="tooltip"
@@ -139,7 +139,7 @@
               <a class="path1"></a>
               <a class="path2"></a>
             </a>
-            <a *ngIf="!project?.OpenStackProject" href="https://cloud.denbi.de/simplevm/" target="_blank"
+            <a *ngIf="!project?.OpenStackProject" href="https://cloud.denbi.de/simplevm/" rel="noopener noreferrer" target="_blank"
                style="font-size: 2em"
                class="project-simpleVM_Logo_bluebg"
                data-toggle="tooltip"
@@ -267,7 +267,7 @@
                   Resource modification requested</button>
                 <a class="btn btn-outline-success" href="#/virtualmachines/newVM"
                    *ngIf="!project?.OpenStackProject && isAbleToStart()">Start a VM</a>
-                <a class="btn btn-outline-success" target="_blank" href="{{project?.ComputeCenter.Login}}"
+                <a class="btn btn-outline-success" target="_blank"  rel="noopener noreferrer" href="{{project?.ComputeCenter.Login}}"
                    *ngIf="project?.OpenStackProject">Login to OpenStack</a>
               </div>
             </div>
@@ -280,7 +280,7 @@
               </div>
             </div>
             <div class="col-6" *ngIf="this.supportMails?.length === 1">
-              <a class="btn btn-outline-primary" target="_blank" href="mailto:{{project?.ComputeCenter.Support}}"
+              <a class="btn btn-outline-primary" target="_blank" rel="noopener noreferrer" href="mailto:{{project?.ComputeCenter.Support}}"
                  style="margin-top:15px;">Contact Support</a>
             </div>
             <div class="col-6" *ngIf="this.supportMails?.length > 1">
@@ -294,7 +294,7 @@
                 <div class="dropdown-menu" aria-labelledby="dropdownMenu" role="menu"
                      *dropdownMenu id="dropdownMenu">
                   <a *ngFor="let mail of supportMails" class="dropdown-item btn btn-outline-primary"
-                          href="mailto:{{mail}}" target="_blank">Contact {{mail}}</a>
+                          href="mailto:{{mail}}" target="_blank" rel="noopener noreferrer">Contact {{mail}}</a>
                 </div>
               </div>
 
@@ -544,7 +544,7 @@
         <div class="card-header">
           <i class="fa fa-align-justify"></i>
           <a href="{{WIKI_PUBLICATIONS}}"
-             target="_blank">Digital object identifier (DOI)</a>
+             target="_blank" rel="noopener noreferrer">Digital object identifier (DOI)</a>
         </div>
 
 
@@ -557,7 +557,7 @@
               <ng-container
                 *ngFor="let doi of dois">
                 <tr>
-                  <td><a target="_blank" [href]="'https://doi.org/' + doi.identifier">{{doi.identifier}}</a></td>
+                  <td><a target="_blank" rel="noopener noreferrer" [href]="'https://doi.org/' + doi.identifier">{{doi.identifier}}</a></td>
 
                   <td>
                     <button
@@ -590,7 +590,7 @@
           </div>
           <div class="alert alert-info">
             <p>Please note that the publications entered on this page are listed publicly on
-              <a href="https://cloud.denbi.de/publications" target="_blank">this page on our website</a>.
+              <a href="https://cloud.denbi.de/publications" target="_blank" rel="noopener noreferrer">this page on our website</a>.
               We kindly ask you to list your publications which have been created
               during your work in the de.NBI Cloud and/or this project.</p>
           </div>
@@ -677,7 +677,7 @@
                 </ul>
                 <br>
                 After the user registered for ELIXIR/de.NBI and applied for your group, you can approve his application.
-                Read more about the process <a target="_blank" href="{{WIKI_MEMBER_MANAGEMENT}}">here</a>.
+                Read more about the process <a target="_blank" rel="noopener noreferrer" href="{{WIKI_MEMBER_MANAGEMENT}}">here</a>.
               </div>
             </div>
 
@@ -1793,7 +1793,7 @@
           <div class="alert alert-info">
             <p>Please add the DOIs of new publications in this form. For more information on DOIs, please look <a
               href="{{WIKI_PUBLICATIONS}}"
-              target="_blank">here</a>.
+              target="_blank" rel="noopener noreferrer">here</a>.
               You can also add the publications at a later date on the project overview page.</p>
             <p><strong>The addition or non-addition of publications/DOIs does not affect the renewal request procedure!</strong></p>
           </div>
@@ -1804,7 +1804,7 @@
               <ng-container
                 *ngFor="let doi of dois">
                 <tr>
-                  <td><a target="_blank" [href]="'https://doi.org/' + doi.identifier">{{doi.identifier}}</a></td>
+                  <td><a target="_blank" rel="noopener noreferrer" [href]="'https://doi.org/' + doi.identifier">{{doi.identifier}}</a></td>
 
                   <td>
                     <button
