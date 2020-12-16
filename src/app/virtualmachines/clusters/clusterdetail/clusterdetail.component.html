@@ -28,7 +28,7 @@
 
     <div class="card-body">
       <div class="card-title"><strong>Instance: {{cluster?.master_instance.name}}</strong></div>
-      <app-virtualmachineinfo [vm]="cluster?.master_instance"></app-virtualmachineinfo>
+      <app-virtualmachineinfo [virtualMachine]="cluster?.master_instance"></app-virtualmachineinfo>
     </div>
   </div>
     <div class="card" style=" ">
@@ -37,7 +37,7 @@
       <div class="card-body" *ngFor="let worker of cluster?.worker_instances">
         <div class="card-title"><strong>Instance: {{worker.name}}</strong>
         </div>
-        <app-virtualmachineinfo [cluster_machine]="true" [vm]="worker"></app-virtualmachineinfo>
+        <app-virtualmachineinfo [cluster_machine]="true" [virtualMachine]="worker"></app-virtualmachineinfo>
       </div>
     </div>
   </div>
