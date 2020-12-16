@@ -64,7 +64,7 @@
                       <div class="row">
                         <a class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
                            [id]="'goToWordPressButton_' + news.id.toString()"
-                           href="{{news.url}}" target="_blank">
+                           href="{{news.url}}" target="_blank" rel="noopener noreferrer">
                           Show in WordPress
                         </a>
                       </div>
@@ -114,7 +114,7 @@ we are happy to inform..."
                   <br>Total characters: {{ motdLength.getValue() + 76}}. (Due to appendage of newslink and timestamp).
                 </div>
                 <div class="form-group">
-                  <a href="{{WIKI_MOTD}}" target="_blank">
+                  <a href="{{WIKI_MOTD}}" target="_blank" rel="noopener noreferrer">
                     How does message of the day work? (Opens in new tab)
                   </a>
                 </div>

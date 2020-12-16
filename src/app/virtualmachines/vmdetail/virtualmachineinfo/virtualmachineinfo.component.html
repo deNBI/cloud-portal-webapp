@@ -1,52 +1,50 @@
 <div class="row">
-  <div class="col-4" style="margin:auto">
-    <app-vmstatus [with_text]="true" [vm]="vm"></app-vmstatus>
-
-  </div>
-  <div class="col-2">
+  <div class="col-3">
     <div class="callout callout-success">
       <small class="text-muted">Created at (d-m-y)</small><br>
-      <strong class="text-muted">{{vm.created_at}}</strong>
+      <strong class="text-muted">{{virtualMachine.created_at}}</strong>
     </div>
   </div>
-  <div class="col-2"
-       *ngIf="vm.stopped_at && (vm?.status |hasStatus:VirtualMachineStates.staticSHUTOFF)">
-    <div class="callout callout-warning">
-      <small class="text-muted">Stopped at (d-m-y)</small><br>
-      <strong class="text-muted">{{vm.stopped_at | date: 'dd.mm.YYYY HH:mm'}}</strong>
-    </div>
-  </div>
-  <div class="col-2">
+  <div class="col-3">
     <div class="callout">
-      <small class="text-muted">Part of</small><br>
-      <a [routerLink]="['/project-management/' + vm.application_id]" target="_blank">
-        <strong class="text-muted">{{vm.project}}</strong></a>
+      <small class="text-muted">Created by</small><br>
+      <strong class="text-muted">{{virtualMachine.userlogin}}</strong>
     </div>
   </div>
-  <div class="col-4">
+  <div class="col-6">
     <div class="callout">
-      <small class="text-muted">Openstack-ID</small><br>
-      <strong class="text-muted">{{vm.openstackid}}</strong>
+      <small class="text-muted">Elixir-ID of {{virtualMachine.userlogin}}</small><br>
+      <strong class="text-muted">{{virtualMachine.elixir_id}}</strong>
     </div>
   </div>
 </div>
 <div class="row">
-  <div class="col-4">
+  <div class="col-3">
     <div class="callout">
-      <small class="text-muted">Created by</small><br>
-      <strong class="text-muted">{{vm.userlogin}}</strong>
+      <small class="text-muted">Part of</small><br>
+      <a [routerLink]="['/project-management/' + virtualMachine.application_id]" rel="noopener noreferrer" target="_blank">
+        <strong class="text-muted">{{virtualMachine.project}}</strong></a>
     </div>
   </div>
-  <div class="col-4">
+  <div class="col-6">
     <div class="callout">
-      <small class="text-muted">Elixir-ID of {{vm.userlogin}}</small><br>
-      <strong class="text-muted">{{vm.elixir_id}}</strong>
+      <small class="text-muted">Openstack-ID</small><br>
+      <strong class="text-muted">{{virtualMachine.openstackid}}</strong>
     </div>
   </div>
-  <div class="col-4" *ngIf="cluster_machine">
+  <div class="col-3" *ngIf="cluster_machine">
     <div class="callout">
       <small class="text-muted">Private IP</small><br>
-      <strong class="text-muted">{{vm.fixed_ip}}</strong>
+      <strong class="text-muted">{{virtualMachine.fixed_ip}}</strong>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-6"
+       *ngIf="virtualMachine.stopped_at && (virtualMachine?.status |hasStatus:VirtualMachineStates.staticSHUTOFF)">
+    <div class="callout callout-warning">
+      <small class="text-muted">Stopped at (d-m-y)</small><br>
+      <strong class="text-muted">{{virtualMachine.stopped_at | date: 'dd.mm.YYYY HH:mm'}}</strong>
     </div>
   </div>
 </div>

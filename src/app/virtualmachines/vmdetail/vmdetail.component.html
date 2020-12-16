@@ -8,8 +8,8 @@
 
   <div class="row">
     <div class="col-12">
-      <div class="card" style=" ">
-        <div class="card-header"><span class="font-weight-bold text-muted">{{virtualMachine?.name}}</span></div>
+      <div class="card" >
+        <div class="card-header"><span class="font-weight-bold text-muted">{{virtualMachine?.name}}</span> <app-vmstatus [with_text]="true" [vm]="virtualMachine"></app-vmstatus></div>
         <div class="card-body" *ngIf="virtualMachine?.still_used_confirmation_requested">
           <div class="alert alert-danger">
             <strong>This machine has been running for {{virtualMachine?.days_running}} days!<br> Please confirm that you still
@@ -27,7 +27,7 @@
         </div>
         <div class="card-body">
 
-          <app-virtualmachineinfo [vm]="virtualMachine"></app-virtualmachineinfo>
+          <app-virtualmachineinfo [virtualMachine]="virtualMachine"></app-virtualmachineinfo>
 
         </div>
         <hr *ngIf="virtualMachine?.status === virtualMachineStates.staticACTIVE">
@@ -49,7 +49,7 @@
                 </div>
               </div>
 
-              <div class="col-2">
+              <div class="col-4">
                 <div class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
                      id="copyCommandButton" style="margin-top:20px;" (click)="copyToClipboard(mode.copy_field);">
                   Copy Command
@@ -62,11 +62,11 @@
                 <span class="font-weight-bold font-xs btn-block text-muted">Research Environment:</span>
               </div>
               <div class="col-md-11 font-weight-bold font-xs btn-block text-muted">
-                <a href="{{virtualMachine?.res_env_url}}" target="_blank">{{virtualMachine?.res_env_url}}</a>
+                <a href="{{virtualMachine?.res_env_url}}"  rel="noopener noreferrer" target="_blank">{{virtualMachine?.res_env_url}}</a>
                 <br>
-                For RStudio credentials please visit: <a href="{{WIKI_RSTUDIO_LINK}}" target="_blank">{{WIKI_RSTUDIO_LINK}}</a>
+                For RStudio credentials please visit: <a href="{{WIKI_RSTUDIO_LINK}}" rel="noopener noreferrer" target="_blank">{{WIKI_RSTUDIO_LINK}}</a>
                 <br>
-                For Apache Guacamole credentials please visit: <a href="{{WIKI_GUACAMOLE_LINK}}" target="_blank">{{WIKI_GUACAMOLE_LINK}}</a>
+                For Apache Guacamole credentials please visit: <a href="{{WIKI_GUACAMOLE_LINK}}" rel="noopener noreferrer" target="_blank">{{WIKI_GUACAMOLE_LINK}}</a>
               </div>
             </div>
           </div>
@@ -74,35 +74,36 @@
         </div>
         <hr>
         <div class="card-body">
-          <div class="card-title"><strong>Actions</strong></div>
-          <div class="row">
-            <div class="col-2" *ngIf="virtualMachine?.status === virtualMachineStates.staticACTIVE">
+          <span class="text-muted font-weight-bold card-title" style="margin-left: 15px;">
+              Actions</span>
+          <div class="row" style="margin-top:15px;">
+            <div class="col-3" *ngIf="virtualMachine?.status === virtualMachineStates.staticACTIVE">
               <button type="button" class="btn btn-warning" style="width:100%;" id="stopVMButton"
               (click)="submitStopVmModal.show();">
                 <strong>Stop VM</strong>
               </button>
             </div>
-            <div class="col-2" *ngIf="virtualMachine?.status === virtualMachineStates.staticACTIVE">
+            <div class="col-3" *ngIf="virtualMachine?.status === virtualMachineStates.staticACTIVE">
               <button type="button" class="btn btn-secondary" style="width:100%;" id="RebootVMButton"
               (click)="chooseRebootOptionModal.show();">
                 <strong>Reboot VM</strong>
               </button>
             </div>
-            <div class="col-2" *ngIf="virtualMachine?.status === virtualMachineStates.staticACTIVE ||
+            <div class="col-3" *ngIf="virtualMachine?.status === virtualMachineStates.staticACTIVE ||
             virtualMachine?.status === virtualMachineStates.staticSHUTOFF">
               <button type="button" class="btn btn-secondary" style="width:100%;" id="createSnapshotVMButton"
                       (click)="snapshotModal.show();">
                 <strong>Create Snapshot</strong>
               </button>
             </div>
-            <div class="col-2" *ngIf="virtualMachine?.status === virtualMachineStates.staticACTIVE ||
+            <div class="col-3" *ngIf="virtualMachine?.status === virtualMachineStates.staticACTIVE ||
             virtualMachine?.status === virtualMachineStates.staticSHUTOFF">
               <button type="button" class="btn btn-danger" style="width:100%;" id="deleteVMButton"
                       (click)="verifyModal.show();">
                 <strong>Delete VM</strong>
               </button>
             </div>
-            <div class="col-2" *ngIf="virtualMachine?.status === virtualMachineStates.staticSHUTOFF">
+            <div class="col-3" *ngIf="virtualMachine?.status === virtualMachineStates.staticSHUTOFF">
               <button type="button" class="btn btn-success" style="width:100%;" id="restartVMButton"
                       (click)="submitRestartModal.show();">
                 <strong>Restart VM</strong>
@@ -113,7 +114,7 @@
 
       </div>
 
-      <div class="card" style=" ">
+      <div class="card">
         <div class="card-header"><span class="font-weight-bold text-muted">Flavor Information</span></div>
         <div class="card-body">
           <div class="row">
@@ -123,40 +124,42 @@
                 <strong class="text-muted">{{virtualMachine?.flavor?.name}}</strong>
               </div>
             </div>
-            <div class="col-2">
+            <div class="col-4">
               <div class="callout">
                 <small class="text-muted">Number of VCPUs</small><br>
                 <strong class="text-muted">{{virtualMachine?.flavor?.vcpus}}</strong>
               </div>
             </div>
-            <div class="col-2">
+            <div class="col-4">
               <div class="callout">
                 <small class="text-muted">RAM</small><br>
                 <strong class="text-muted">{{virtualMachine?.flavor?.ram}} GB</strong>
               </div>
             </div>
-            <div class="col-2">
+          </div>
+          <div class="row">
+            <div class="col-4">
               <div class="callout">
                 <small class="text-muted">Rootdisk</small><br>
                 <strong class="text-muted">{{virtualMachine?.flavor?.rootdisk}} GB</strong>
               </div>
             </div>
-            <div class="col-2">
+            <div class="col-4">
               <div class="callout">
                 <small class="text-muted">Ephemeral disk</small><br>
-                <strong class="text-muted">{{virtualMachine?.flavor?.epheremal_disk}} GB</strong>
+                <strong class="text-muted">{{virtualMachine?.flavor?.ephemeral_disk}} GB</strong>
               </div>
             </div>
           </div>
 
           <div class="row">
-            <div class="col-4" *ngIf="virtualMachine?.flavor?.type?.long_name != 'Standard Flavours'">
+            <div class="col-3" *ngIf="virtualMachine?.flavor?.type?.long_name != 'Standard Flavours'">
               <div class="callout">
                 <small class="text-muted">Flavor type</small><br>
                 <strong class="text-muted">{{virtualMachine?.flavor?.type?.long_name}}</strong>
               </div>
             </div>
-            <div class="col-2" *ngIf="virtualMachine?.flavor?.type.shortcut === 'GPU' && virtualMachine?.flavor?.gpu > 0">
+            <div class="col-3" *ngIf="virtualMachine?.flavor?.type.shortcut === 'GPU' && virtualMachine?.flavor?.gpu > 0">
               <div class="callout">
                 <small class="text-muted">GPU cores</small><br>
                 <strong class="text-muted">{{virtualMachine?.flavor?.gpu}}</strong>
@@ -175,7 +178,7 @@
         </div>
       </div>
 
-      <div class="card" style=" ">
+      <div class="card">
         <div class="card-header"><span class="font-weight-bold text-muted">Image Information</span></div>
         <div class="card-body">
           <div class="row">
@@ -236,100 +239,108 @@
 
       <div class="card" style=" " *ngIf="virtualMachine?.volumes.length > 0">
         <div class="card-header"><span class="font-weight-bold text-muted">Attached Volumes</span></div>
-        <div class="card-body">
-          <div class="row" *ngFor="let vol of virtualMachine?.volumes">
-            <div class="col-1">
+        <div class="card-body" *ngFor="let vol of virtualMachine?.volumes">
+          <div class="row">
+            <div class="col-4">
               <div class="callout">
                 <small class="text-muted">Name</small><br>
                 <strong class="text-muted">{{vol?.volume_name}}</strong>
               </div>
             </div>
-            <div class="col-2">
+            <div class="col-4">
               <div class="callout">
                 <small class="text-muted">Status</small><br>
                 <app-volum-status [volume]="vol"></app-volum-status>
               </div>
             </div>
-            <div class="col-3">
-              <div class="callout">
-                <small class="text-muted">Volume ID</small><br>
-                <strong class="text-muted">{{vol?.volume_openstackid}}</strong>
-              </div>
-            </div>
-            <div class="col-2" *ngIf="vol?.volume_path">
-              <div class="callout">
-                <small class="text-muted">Initially mounted to</small><br>
-                <strong class="text-muted">/vol/{{vol?.volume_path}}</strong>
-              </div>
-            </div>
-            <div class="col-2">
-              <div class="callout">
-                <small class="text-muted">Device</small><br>
-                <strong class="text-muted">{{vol?.volume_device}}</strong>
-              </div>
-            </div>
-            <div class="col-1">
+            <div class="col-4">
               <div class="callout">
                 <small class="text-muted">Storage</small><br>
                 <strong class="text-muted">{{vol?.volume_storage}} GB</strong>
               </div>
             </div>
-            <div class="col-2" *ngIf="vol.volume_status == VolumeStates.staticIN_USE">
-              <div class="callout">
-
-                <button type="button" class="btn btn-secondary" style="width:100%;"
-                        id="detachVolume_{{vol.volume_openstackid}}"
-                        (click)="detachVolume(vol)">
-                  Detach Volume
-                </button>
-              </div>
-            </div>
           </div>
-        </div>
-      </div>
-
-      <div class="card" style=" " *ngIf="detached_project_volumes.length > 0">
-        <div class="card-header"><span class="font-weight-bold text-muted">Attachable volumes</span></div>
-        <div class="card-body">
-          <div class="row" *ngFor="let vol of detached_project_volumes">
-            <div class="col-2">
-              <div class="callout">
-                <small class="text-muted">Name</small><br>
-                <strong class="text-muted">{{vol?.volume_name}}</strong>
-              </div>
-            </div>
-            <div class="col-2">
-              <div class="callout">
-                <small class="text-muted">Status</small><br>
-
-                <app-volum-status [volume]="vol"></app-volum-status>
-              </div>
-            </div>
+          <div class="row">
             <div class="col-4">
               <div class="callout">
                 <small class="text-muted">Volume ID</small><br>
                 <strong class="text-muted">{{vol?.volume_openstackid}}</strong>
               </div>
             </div>
-            <div class="col-2">
+            <div class="col-4" *ngIf="vol?.volume_path">
+              <div class="callout">
+                <small class="text-muted">Initially mounted to</small><br>
+                <strong class="text-muted">/vol/{{vol?.volume_path}}</strong>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="callout">
+                <small class="text-muted">Device</small><br>
+                <strong class="text-muted">{{vol?.volume_device}}</strong>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4">
+              <div class="callout">
+                <strong class="text-muted">Actions</strong>
+              </div>
+            </div>
+            <div class="col-4" *ngIf="vol.volume_status == VolumeStates.staticIN_USE">
+              <button type="button" class="btn btn-secondary" style="width:auto; margin-top:10px;"
+                      id="detachVolume_{{vol.volume_openstackid}}"
+                      (click)="detachVolume(vol)">
+                Detach Volume
+              </button>
+            </div>
+          </div>
+          <hr>
+        </div>
+      </div>
+
+      <div class="card" style=" " *ngIf="detached_project_volumes.length > 0">
+        <div class="card-header"><span class="font-weight-bold text-muted">Attachable volumes</span></div>
+        <div class="card-body" *ngFor="let vol of detached_project_volumes">
+          <div class="row">
+            <div class="col-4">
+              <div class="callout">
+                <small class="text-muted">Name</small><br>
+                <strong class="text-muted">{{vol?.volume_name}}</strong>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="callout">
+                <small class="text-muted">Status</small><br>
+
+                <app-volum-status [volume]="vol"></app-volum-status>
+              </div>
+            </div>
+
+            <div class="col-4">
               <div class="callout">
                 <small class="text-muted">Storage</small><br>
                 <strong class="text-muted">{{vol?.volume_storage}} GB</strong>
               </div>
             </div>
-            <div class="col-2"
-                 *ngIf="virtualMachine.status ==virtualMachineStates.staticACTIVE && vol.volume_status == VolumeStates.staticAVAILABLE">
+          </div>
+          <div class="row">
+            <div class="col-6">
               <div class="callout">
-
-                <button type="button" class="btn btn-secondary" style="width:100%;"
+                <small class="text-muted">Volume ID</small><br>
+                <strong class="text-muted">{{vol?.volume_openstackid}}</strong>
+              </div>
+            </div>
+            <div class="col-6"
+                 *ngIf="virtualMachine.status ==virtualMachineStates.staticACTIVE && vol.volume_status == VolumeStates.staticAVAILABLE">
+                <button type="button" class="btn btn-secondary" style="width:auto; margin-top:10px;"
                         id="attachVolume_{{vol?.volume_openstackid}}"
 
                         (click)="volume_to_attach = vol;attachModal.show();">
                   Attach Volume
                 </button>
-              </div>
             </div>
           </div>
+          <hr>
         </div>
       </div>
 
@@ -347,7 +358,7 @@
                 <small class="text-muted">Name</small><br>
                 <strong class="text-muted" *ngIf="!resenvTemplate?.info_url">{{resenvTemplate.title}}</strong>
                 <strong class="text-muted" *ngIf="resenvTemplate?.info_url">
-                  <a href="{{resenvTemplate.info_url}}" target="_blank">{{resenvTemplate.title}}</a></strong>
+                  <a href="{{resenvTemplate.info_url}}" rel="noopener noreferrer" target="_blank">{{resenvTemplate.title}}</a></strong>
               </div>
             </div>
             <div class="col-6" *ngIf="resenvTemplate?.description">
@@ -359,7 +370,7 @@
             <div class="col-8">
               <div class="callout">
                 <small class="text-muted">URL</small><br>
-                <strong class="text-muted"><a target="_blank" href="{{virtualMachine?.res_env_url}}">{{virtualMachine.res_env_url}}</a></strong>
+                <strong class="text-muted"><a rel="noopener noreferrer" target="_blank" href="{{virtualMachine?.res_env_url}}">{{virtualMachine.res_env_url}}</a></strong>
               </div>
             </div>
 
@@ -1011,7 +1022,7 @@
           class="alert alert-warning" role="alert">
 
           The volume must still be <a
-          href="{{WIKI_VOLUME_OVERVIEW}}" target="_blank"> mounted </a> after the attaching to use it.
+          href="{{WIKI_VOLUME_OVERVIEW}}" rel="noopener noreferrer" target="_blank"> mounted </a> after the attaching to use it.
         </div>
 
 
