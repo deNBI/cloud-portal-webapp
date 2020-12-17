@@ -7,7 +7,7 @@ Try to fulfill the following points before the Pull Request is merged:
 - [ ] If the PR is merged in the master then a release should be be made.
 - [ ] The PR is responsive on smaller screens.
 - [ ] If the requirements.txt have changed, check if the patches still work
-- [ ] If the new code is well commented
+- [ ] If the new code is readable, if not it should be well commented
 - [ ] In case the code is not well commented: An respectice commenting issue with tag "important" is opened.
 - [ ] If a squash of commits is required, it has been performed or will be performed at final merge
 - [ ] Finally a second team member checks if all requirements met
