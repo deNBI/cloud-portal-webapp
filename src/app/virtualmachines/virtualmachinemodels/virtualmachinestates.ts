@@ -65,8 +65,6 @@ export class VirtualMachineStates extends GeneralStatusStates {
     return this._POWERING_ON;
   }
 
-
-
   static get PORT_CLOSED(): string {
     return this._PORT_CLOSED;
   }
@@ -118,7 +116,6 @@ export class VirtualMachineStates extends GeneralStatusStates {
    public get staticPOWERING_ON(): string {
     return VirtualMachineStates.POWERING_ON;
   }
-
 
   public get staticNOT_IN_PROCESS_STATE(): string[] {
     return VirtualMachineStates.NOT_IN_PROCESS_STATES;
