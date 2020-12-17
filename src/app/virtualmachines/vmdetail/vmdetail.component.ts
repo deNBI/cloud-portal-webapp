@@ -543,7 +543,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
           case VirtualMachineStates.ACTIVE:
             this.status_changed = 1;
             break;
-          case VirtualMachineStates.RESTARTING:
+          case VirtualMachineStates.POWERING_ON:
             this.check_status_loop(VirtualMachineStates.ACTIVE, true);
             break;
           default:

@@ -64,7 +64,7 @@
                     </div>
                     {{VirtualMachineStates.staticDELETING}}
                   </ng-container>
-    
+
                   <ng-container *ngSwitchCase="VirtualMachineStates.staticPOWERING_OFF">
                     <div [id]="'powering_off_badge_' + vm?.name"
                          class="dot-colorless pulseAnimProcess">
