@@ -9,7 +9,7 @@ export class VirtualMachineStates extends GeneralStatusStates {
   private static readonly _SHUTOFF: string = 'SHUTOFF';
   private static readonly _BUILD: string = 'BUILD';
   private static readonly _POWERING_OFF: string = 'POWERING OFF';
-  private static readonly _RESTARTING: string = 'RESTARTING';
+  private static readonly _POWERING_ON: string = 'POWERING ON';
   private static readonly _PREPARE_PLAYBOOK_BUILD: string = 'PREPARE_PLAYBOOK_BUILD';
   private static readonly _BUILD_PLAYBOOK: string = 'BUILD_PLAYBOOK';
   private static readonly _PORT_CLOSED: string = 'PORT_CLOSED';
@@ -18,7 +18,7 @@ export class VirtualMachineStates extends GeneralStatusStates {
   private static readonly _IN_PROCESS_STATES: string[] = [
     VirtualMachineStates._BUILD,
     VirtualMachineStates._POWERING_OFF,
-    VirtualMachineStates._RESTARTING,
+    VirtualMachineStates._POWERING_ON,
     VirtualMachineStates._PREPARE_PLAYBOOK_BUILD,
     VirtualMachineStates._BUILD_PLAYBOOK,
     VirtualMachineStates._DELETING,
@@ -61,9 +61,11 @@ export class VirtualMachineStates extends GeneralStatusStates {
     return this._POWERING_OFF;
   }
 
-  static get RESTARTING(): string {
-    return this._RESTARTING;
+  static get POWERING_ON(): string {
+    return this._POWERING_ON;
   }
+
+
 
   static get PORT_CLOSED(): string {
     return this._PORT_CLOSED;
@@ -113,9 +115,10 @@ export class VirtualMachineStates extends GeneralStatusStates {
     return VirtualMachineStates.POWERING_OFF;
   }
 
-  public get staticRESTARTING(): string {
-    return VirtualMachineStates.RESTARTING;
+   public get staticPOWERING_ON(): string {
+    return VirtualMachineStates.POWERING_ON;
   }
+
 
   public get staticNOT_IN_PROCESS_STATE(): string[] {
     return VirtualMachineStates.NOT_IN_PROCESS_STATES;

@@ -64,17 +64,18 @@
                     </div>
                     {{VirtualMachineStates.staticDELETING}}
                   </ng-container>
-                  <ng-container *ngSwitchCase="VirtualMachineStates.staticRESTARTING">
-                    <div [id]="'restarting_badge_' + vm?.name"
-                         class="dot-colorless pulseAnimProcess">
-                    </div>
-                    {{VirtualMachineStates.staticRESTARTING}}
-                  </ng-container>
+    
                   <ng-container *ngSwitchCase="VirtualMachineStates.staticPOWERING_OFF">
                     <div [id]="'powering_off_badge_' + vm?.name"
                          class="dot-colorless pulseAnimProcess">
                     </div>
                     {{VirtualMachineStates.staticPOWERING_OFF}}
+                  </ng-container>
+                  <ng-container *ngSwitchCase="VirtualMachineStates.staticPOWERING_ON">
+                    <div [id]="'powering_on_badge_' + vm?.name"
+                         class="dot-colorless pulseAnimProcess">
+                    </div>
+                    {{VirtualMachineStates.staticPOWERING_ON}}
                   </ng-container>
                    <ng-container *ngSwitchCase="VirtualMachineStates.staticPORT_CLOSED">
                     <div [id]="'powering_off_badge_' + vm?.name"

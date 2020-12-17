@@ -690,7 +690,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
           case VirtualMachineStates.ACTIVE:
             this.status_changed = 1;
             break;
-          case VirtualMachineStates.RESTARTING:
+          case VirtualMachineStates.POWERING_ON:
             this.check_status_loop(updated_vm, VirtualMachineStates.ACTIVE, true);
             break;
           default:

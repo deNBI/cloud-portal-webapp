@@ -215,7 +215,7 @@
 
                           </span></span>
                   </div>
-                  <div *ngIf="vm?.res_env_url && vm.backend && vm.backend.playbook_successful !== 0" class="col-md-1">
+                  <div *ngIf="vm?.res_env_url && vm.backend && vm.backend.playbook_successful !== 0 && (vm?.status |hasStatus:VirtualMachineStates.staticACTIVE)" class="col-md-1">
                       <span class="fas fa-globe" style="font-size: 18px; cursor: pointer;" data-toggle="tooltip"
                             data-placement="right"
                             title="{{'Research Environment failed to install: ' + vm?.backend?.template}}"
