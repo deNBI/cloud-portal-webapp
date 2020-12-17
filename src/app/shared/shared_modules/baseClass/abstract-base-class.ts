@@ -174,6 +174,14 @@ export abstract class AbstractBaseClasse {
     document.execCommand('copy');
   }
 
+  
+  lintingTesting(text): void {
+    let x = text.toString();
+    // SHOULD CREATE SEVERAL LINTING ISSUES
+  }
+
+
+
   isASCII(testString: string): boolean {
     return /^[\x00-\x7F]*$/.test(testString);
   }
