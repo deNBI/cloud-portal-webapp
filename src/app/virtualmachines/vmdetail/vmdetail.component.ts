@@ -61,6 +61,10 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
   res_env_url: string = '';
   filteredMembers: any = null;
   backend_users: any = [];
+  extendDone: boolean = false;
+  VOLUME_END_STATES: string[] = [VolumeStates.AVAILABLE, VolumeStates.NOT_FOUND,
+    VolumeStates.IN_USE, VirtualMachineStates.DELETED,
+    VirtualMachineStates.DELETING_FAILED]
 
   is_vo_admin: boolean = is_vo;
   WIKI_RSTUDIO_LINK: string = WIKI_RSTUDIO_LINK;
@@ -199,6 +203,74 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
 
       }
     })
+  }
+
+  checkVmVolumesStatus(): void {
+
+    this.virtualMachine.volumes.forEach((vol: Volume): void => {
+      // tslint:disable-next-line:max-line-length
+      if (vol.volume_status !== VolumeStates.AVAILABLE && vol.volume_status !== VolumeStates.NOT_FOUND && vol.volume_status !== VolumeStates.IN_USE) {
+
+        this.check_status_loop_vol(vol)
+      }
+    })
+  }
+
+  check_status_loop_vol(volume: Volume, initial_timeout: number = this.checkStatusTimeout, final_state?: string, expected_storage?: number):
+    void {
+    const created: boolean = volume.volume_created_by_user;
+
+    setTimeout(
+      (): void => {
+        const idx: number = this.virtualMachine.volumes.indexOf(volume);
+        if (volume.volume_openstackid) {
+
+          this.virtualmachineService.getVolumeById(volume.volume_openstackid).subscribe((vol: Volume): void => {
+            if (expected_storage && vol.volume_storage !== expected_storage) {
+              return this.check_status_loop_vol(volume, this.checkStatusTimeout, final_state, expected_storage);
+            } else if (expected_storage && vol.volume_storage === expected_storage) {
+              this.extendDone = true;
+            }
+            if (volume.error_msg !== '' && volume.error_msg !== undefined && volume.error_msg !== null) {
+              vol.error_msg = volume.error_msg;
+              setTimeout((): void => {
+                           vol.error_msg = null;
+                         },
+                         5000);
+            }
+            if (idx > -1) {
+              vol.volume_created_by_user = created;
+              this.virtualMachine.volumes[idx] = vol;
+            }
+            // tslint:disable-next-line:max-line-length
+            if (this.VOLUME_END_STATES.indexOf(vol.volume_status) === -1 && final_state !== vol.volume_status) {
+              this.check_status_loop_vol(this.virtualMachine.volumes[idx], this.checkStatusTimeout, final_state)
+            }
+          })
+        } else {
+          // tslint:disable-next-line:max-line-length
+          this.virtualmachineService.getVolumeByNameAndVmName(volume.volume_name, volume.volume_virtualmachine.name).subscribe((vol: Volume): void => {
+            if (volume.error_msg !== '' && volume.error_msg !== undefined && volume.error_msg !== null) {
+              vol.error_msg = volume.error_msg;
+              setTimeout((): void => {
+                           vol.error_msg = null;
+                         },
+                         5000);
+            }
+            if (idx > -1) {
+              vol.volume_created_by_user = created;
+              this.virtualMachine.volumes[idx] = vol;
+            }
+            // tslint:disable-next-line:max-line-length
+            if (vol.volume_status !== VolumeStates.AVAILABLE && vol.volume_status !== VolumeStates.NOT_FOUND && vol.volume_status !== VolumeStates.IN_USE && vol.volume_status !== final_state) {
+              this.check_status_loop_vol(this.virtualMachine.volumes[idx], this.checkStatusTimeout, final_state)
+            }
+          })
+
+        }
+      },
+      initial_timeout
+    )
   }
 
   /**
@@ -581,6 +653,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
           this.stopDate = parseInt(this.virtualMachine.stopped_at, 10) * 1000;
           this.getImageDetails(this.virtualMachine.projectid, this.virtualMachine.image);
           this.getDetachedVolumesByVSelectedMProject();
+          this.checkVmVolumesStatus()
 
           this.isLoaded = true;
         }

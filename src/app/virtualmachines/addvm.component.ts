@@ -470,9 +470,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
         play_information = null;
       }
       let user_key_url: string = null;
-      if (this.resenvSelected) {
-        user_key_url = this.resEnvComponent.getUserKeyUrl();
-      }
+
       if (!this.mosh_mode_available) {
         this.udp_allowed = false;
       }
@@ -482,7 +480,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
       this.virtualmachineservice.startVM(
         flavor_fixed, this.selectedImage, servername,
         project, projectid.toString(), this.http_allowed,
-        this.https_allowed, this.udp_allowed, this.volumesToMount, this.volumesToAttach, play_information, user_key_url)
+        this.https_allowed, this.udp_allowed, this.volumesToMount, this.volumesToAttach, play_information)
         .subscribe((newVm: VirtualMachine): void => {
           this.newVm = newVm;
           this.started_machine = false;

@@ -262,7 +262,7 @@
                 </div>
                                     <div class="col-1"></div>
 
-                    <div class="alert alert-danger col-5" style="margin-left: 10px" role="alert" *ngIf="vm?.res_env_url && vm.backend && vm.backend.playbook_successful !== 0">
+                    <div class="alert alert-danger col-5" style="margin-left: 10px" role="alert" *ngIf="vm?.res_env_url && vm.backend && vm.backend.playbook_successful !== 0 && (vm?.status |hasStatus:VirtualMachineStates.staticACTIVE)">
                       The installation of your Playbook has failed, you can download the playbook logs on the
                       detailed overview of the vm!
                     </div>
