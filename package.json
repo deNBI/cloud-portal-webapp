@@ -83,7 +83,7 @@
     "protractor-stop-describe-on-failure": "^1.0.4",
     "rxjs": "6.6.3",
     "save-svg-as-png": "^1.4.17",
-    "svg2pdf.js": "^2.0.0",
+    "svg2pdf.js": "^2.1.0",
     "ts-helpers": "1.1.2",
     "tslib": "^2.0.0",
     "tslint-angular": "^3.0.3",
