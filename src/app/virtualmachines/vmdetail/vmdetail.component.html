@@ -62,11 +62,11 @@
                 <span class="font-weight-bold font-xs btn-block text-muted">Research Environment:</span>
               </div>
               <div class="col-md-11 font-weight-bold font-xs btn-block text-muted">
-                <a href="{{virtualMachine?.res_env_url}}" target="_blank">{{virtualMachine?.res_env_url}}</a>
+                <a href="{{virtualMachine?.res_env_url}}"  rel="noopener noreferrer" target="_blank">{{virtualMachine?.res_env_url}}</a>
                 <br>
-                For RStudio credentials please visit: <a href="{{WIKI_RSTUDIO_LINK}}" target="_blank">{{WIKI_RSTUDIO_LINK}}</a>
+                For RStudio credentials please visit: <a href="{{WIKI_RSTUDIO_LINK}}" rel="noopener noreferrer" target="_blank">{{WIKI_RSTUDIO_LINK}}</a>
                 <br>
-                For Apache Guacamole credentials please visit: <a href="{{WIKI_GUACAMOLE_LINK}}" target="_blank">{{WIKI_GUACAMOLE_LINK}}</a>
+                For Apache Guacamole credentials please visit: <a href="{{WIKI_GUACAMOLE_LINK}}" rel="noopener noreferrer" target="_blank">{{WIKI_GUACAMOLE_LINK}}</a>
               </div>
             </div>
           </div>
@@ -358,7 +358,7 @@
                 <small class="text-muted">Name</small><br>
                 <strong class="text-muted" *ngIf="!resenvTemplate?.info_url">{{resenvTemplate.title}}</strong>
                 <strong class="text-muted" *ngIf="resenvTemplate?.info_url">
-                  <a href="{{resenvTemplate.info_url}}" target="_blank">{{resenvTemplate.title}}</a></strong>
+                  <a href="{{resenvTemplate.info_url}}" rel="noopener noreferrer" target="_blank">{{resenvTemplate.title}}</a></strong>
               </div>
             </div>
             <div class="col-6" *ngIf="resenvTemplate?.description">
@@ -370,7 +370,7 @@
             <div class="col-8">
               <div class="callout">
                 <small class="text-muted">URL</small><br>
-                <strong class="text-muted"><a target="_blank" href="{{virtualMachine?.res_env_url}}">{{virtualMachine.res_env_url}}</a></strong>
+                <strong class="text-muted"><a rel="noopener noreferrer" target="_blank" href="{{virtualMachine?.res_env_url}}">{{virtualMachine.res_env_url}}</a></strong>
               </div>
             </div>
 
@@ -1022,7 +1022,7 @@
           class="alert alert-warning" role="alert">
 
           The volume must still be <a
-          href="{{WIKI_VOLUME_OVERVIEW}}" target="_blank"> mounted </a> after the attaching to use it.
+          href="{{WIKI_VOLUME_OVERVIEW}}" rel="noopener noreferrer" target="_blank"> mounted </a> after the attaching to use it.
         </div>
 
 

@@ -19,7 +19,7 @@
           <div class="alert alert-info" *ngIf="openstack_project">
             If you would like to learn more about Openstack,
             <a href="https://cloud.denbi.de/openstack/"
-               target="_blank">Click Here!
+               target="_blank" rel="noopener noreferrer">Click Here!
             </a>
           </div>
           <div *ngIf="simple_vm_project">
@@ -31,7 +31,7 @@
             </div>
             <div class="alert alert-info">
               If you would like to learn more about Simple VM, <a href="https://cloud.denbi.de/simplevm/"
-                                                                  target="_blank">Click
+                                                                  target="_blank" rel="noopener noreferrer">Click
               Here!</a>
             </div>
           </div>
@@ -90,8 +90,13 @@
                   class="icon-question"
                   style="cursor: pointer;"></i></i></strong></label>
               <div class="col-md-8">
+                <div *ngIf='invalid_longname'>
+                  <strong style="color: red;">Please enter a name which only contains ASCII-Characters.</strong>
+                </div>
                 <input required type="text" id="id_project_application_name"
                        name="project_application_name"
+                       pattern="[\x00-\x7F]+"
+                       (keyup)="checkLongname(application.project_application_name)"
                        class="form-control" maxlength="128"
                        placeholder="e.g. Assembler benchmarking based on A. thaliana genome"
                        [(ngModel)]="application.project_application_name"
@@ -141,8 +146,13 @@
                   class="icon-question"
                   style="cursor: pointer;"></i></i></strong></label>
               <div class="col-md-8">
+                <div *ngIf='invalid_description'>
+                  <strong style="color: red;">Please enter a description which only contains ASCII-Characters.</strong>
+                </div>
                                 <textarea required id="id_project_application_description"
                                           name="project_application_description" rows="9"
+                                          pattern="[\x00-\x7F]+"
+                                          (keyup)="checkDescription(application.project_application_description)"
                                           class="form-control" maxlength="8192"
                                           placeholder="Full description. Consider to name tools you want to use."
                                           [(ngModel)]="application.project_application_description"
