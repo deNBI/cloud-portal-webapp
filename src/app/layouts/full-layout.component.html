@@ -90,12 +90,12 @@
           </a>
 
         </li>
+        <div *ngIf="project_enumeration?.length <= 2">
+          <li class="nav-item" *ngFor="let application of project_enumeration">
 
-        <li class="nav-item" *ngFor="let application of project_enumeration">
-
-          <a *ngIf="!navbar_minimized" class="nav-link" routerLinkActive="active" [id]="application?.project_name"
-             [routerLink]="['/project-management/' + application?.application_id]">
-            <div class="row" style="margin:0px;">
+            <a *ngIf="!navbar_minimized" class="nav-link" routerLinkActive="active" [id]="application?.project_name"
+               [routerLink]="['/project-management/' + application?.application_id]">
+              <div class="row" style="margin:0px;">
               <span *ngIf="application?.is_open_stack"
                     style="float:left; font-size: 20px; margin-right: 10px;"
                     class="project-openstack_plain_white_redbg"
@@ -104,75 +104,75 @@
               <span class="path1"></span>
               <span class="path2"></span>
             </span>
-              <span *ngIf="!application?.is_open_stack"
-                    style="float: left; font-size: 20px; margin-right: 10px"
-                    class="project-simpleVM_Logo_bluebg"
-                    data-toggle="tooltip"
-                    title="This is a Simple VM project">
+                <span *ngIf="!application?.is_open_stack"
+                      style="float: left; font-size: 20px; margin-right: 10px"
+                      class="project-simpleVM_Logo_bluebg"
+                      data-toggle="tooltip"
+                      title="This is a Simple VM project">
                       <span class="path1"></span>
                       <span class="path2"></span>
                       <span class="path3"></span>
                       <span class="path4"></span>
                       <span class="path5"></span>
                     </span>
-              <span style="display: inline-block;width: 65%;overflow: hidden;text-overflow: ellipsis;">
+                <span style="display: inline-block;width: 65%;overflow: hidden;text-overflow: ellipsis;">
               {{application?.project_name}}
             </span>
-            </div>
+              </div>
 
-            <div class="row justify-content-center" id="status_row_{{application?.application_id}}" style="margin: 2px;">
+              <div class="row justify-content-center" id="status_row_{{application?.application_id}}" style="margin: 2px;">
               <span class="badge badge-success status-badge" data-toggle="tooltip"
                     data-placement="right" title="This project was initially approved within the last 2 weeks."
                     *ngIf="(application | hasstatusinlist:Application_States.APPROVED_LAST_2_WEEKS)">
               <i class="fas fa-plus-circle"></i>
             </span>
-              <span class="badge badge-warning status-badge" data-toggle="tooltip"
-                    data-placement="right" title="The project lifetime expires soon."
-                    *ngIf="(application | hasstatusinlist:Application_States.EXPIRES_SOON) && !(application | hasstatusinlist:Application_States.EXPIRED)">
+                <span class="badge badge-warning status-badge" data-toggle="tooltip"
+                      data-placement="right" title="The project lifetime expires soon."
+                      *ngIf="(application | hasstatusinlist:Application_States.EXPIRES_SOON) && !(application | hasstatusinlist:Application_States.EXPIRED)">
               <i class="fas fa-exclamation-circle"></i>
             </span>
-              <span class="badge badge-danger status-badge" data-toggle="tooltip"
-                    data-placement="right" title="The lifetime of this project is expired."
-                    *ngIf="(application | hasstatusinlist:Application_States.EXPIRED)">
+                <span class="badge badge-danger status-badge" data-toggle="tooltip"
+                      data-placement="right" title="The lifetime of this project is expired."
+                      *ngIf="(application | hasstatusinlist:Application_States.EXPIRED)">
               <i class="fas fa-ban"></i>
             </span>
-              <span class="badge badge-danger status-badge" data-toggle="tooltip"
-                    data-placement="right" title="The termination of the project was requested."
-                    *ngIf="(application | hasstatusinlist:Application_States.TERMINATION_REQUESTED)">
+                <span class="badge badge-danger status-badge" data-toggle="tooltip"
+                      data-placement="right" title="The termination of the project was requested."
+                      *ngIf="(application | hasstatusinlist:Application_States.TERMINATION_REQUESTED)">
               <i class="fas fa-trash"></i>
             </span>
-              <span class="badge badge-secondary status-badge" data-toggle="tooltip" data-placement="right"
-                    title="An extension request was submitted for this project."
-                    *ngIf="(application | hasstatusinlist:Application_States.LIFETIME_EXTENSION_REQUESTED)
+                <span class="badge badge-secondary status-badge" data-toggle="tooltip" data-placement="right"
+                      title="An extension request was submitted for this project."
+                      *ngIf="(application | hasstatusinlist:Application_States.LIFETIME_EXTENSION_REQUESTED)
                    || (application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION_EXTENSION)">
               <i class="fas fa-edit"></i>
             </span>
-              <span class="badge badge-secondary status-badge" data-toggle="tooltip" data-placement="right"
-                    title="A modification request was submitted for this project."
-                    *ngIf="(application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)
+                <span class="badge badge-secondary status-badge" data-toggle="tooltip" data-placement="right"
+                      title="A modification request was submitted for this project."
+                      *ngIf="(application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)
                     || (application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION)">
               <i class="fas fa-edit"></i>
             </span>
-              <span class="badge badge-secondary status-badge" data-toggle="tooltip" data-placement="right"
-                    title="The project application was submitted but not approved yet."
-                    *ngIf="(application | hasstatusinlist:Application_States.SUBMITTED)">
+                <span class="badge badge-secondary status-badge" data-toggle="tooltip" data-placement="right"
+                      title="The project application was submitted but not approved yet."
+                      *ngIf="(application | hasstatusinlist:Application_States.SUBMITTED)">
               <i class="fas fa-edit"></i>
             </span>
-              <span class="badge badge-secondary status-badge" data-toggle="tooltip" data-placement="right"
-                    title="A request for additional credits was submitted for this project."
-                    *ngIf="(application | hasstatusinlist:Application_States.CREDITS_EXTENSION_REQUESTED)
+                <span class="badge badge-secondary status-badge" data-toggle="tooltip" data-placement="right"
+                      title="A request for additional credits was submitted for this project."
+                      *ngIf="(application | hasstatusinlist:Application_States.CREDITS_EXTENSION_REQUESTED)
                     || (application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION_CREDITS)">
               <i class="fas fa-coins"></i>
             </span>
 
-            </div>
+              </div>
 
-          </a>
+            </a>
 
-          <a *ngIf="navbar_minimized && !application?.is_open_stack" class="nav-link" routerLinkActive="active"
-             style="text-align: center;"
-             [routerLink]="['/project-management/' + application?.application_id]" data-toggle="tooltip"
-             data-placement="right" [title]="application?.project_name">
+            <a *ngIf="navbar_minimized && !application?.is_open_stack" class="nav-link" routerLinkActive="active"
+               style="text-align: center;"
+               [routerLink]="['/project-management/' + application?.application_id]" data-toggle="tooltip"
+               data-placement="right" [title]="application?.project_name">
             <span class="project-simpleVM_Logo_bluebg"
                   style="color: #FFF; position:relative; left:8px; font-size: 20px">
               <span class="path1"></span>
@@ -181,21 +181,142 @@
                       <span class="path4"></span>
                       <span class="path5"></span>
             </span>
-          </a>
+            </a>
 
-          <a *ngIf="navbar_minimized && application?.is_open_stack" class="nav-link" routerLinkActive="active"
-             style="text-align: center;"
-             [routerLink]="['/project-management/' + application?.application_id]" data-toggle="tooltip"
-             data-placement="right" [title]="application?.project_name">
+            <a *ngIf="navbar_minimized && application?.is_open_stack" class="nav-link" routerLinkActive="active"
+               style="text-align: center;"
+               [routerLink]="['/project-management/' + application?.application_id]" data-toggle="tooltip"
+               data-placement="right" [title]="application?.project_name">
             <span class="project-openstack_plain_white_redbg"
                   style="color: #FFF; position:relative; left:8px; font-size: 20px">
                <span class="path1"></span>
               <span class="path2"></span>
             </span>
-          </a>
+            </a>
 
 
-        </li>
+          </li>
+        </div>
+        <div *ngIf="project_enumeration?.length > 2">
+          <li class="nav-item nav-dropdown" dropdown>
+            <a class="nav-link nav-dropdown-toggle" style="cursor: pointer;" id="navbarDropdown"
+               dropdownToggle aria-controls="projectDropdown"
+               [attr.data-placement]="navbar_minimized ? 'right' : null"
+               [attr.title]="navbar_minimized ? 'Projects' : null"
+               [attr.data-toggle]="navbar_minimized ? 'tooltip' : null"
+            >
+              <i class="nav-icon fas fa-list"></i> Projects</a>
+            <ul class="nav-dropdown-items" id="projectDropdown" aria-labelledby="navbarDropdown" *dropdownMenu>
+              <li class="nav-item" *ngFor="let application of project_enumeration">
+
+                <a *ngIf="!navbar_minimized" class="nav-link" routerLinkActive="active" [id]="application?.project_name"
+                   [routerLink]="['/project-management/' + application?.application_id]">
+                  <div class="row" style="margin:0px;">
+              <span *ngIf="application?.is_open_stack"
+                    style="float:left; font-size: 20px; margin-right: 10px;"
+                    class="project-openstack_plain_white_redbg"
+                    data-toggle="tooltip"
+                    title="This is an OpenStack project">
+              <span class="path1"></span>
+              <span class="path2"></span>
+            </span>
+                    <span *ngIf="!application?.is_open_stack"
+                          style="float: left; font-size: 20px; margin-right: 10px"
+                          class="project-simpleVM_Logo_bluebg"
+                          data-toggle="tooltip"
+                          title="This is a Simple VM project">
+                      <span class="path1"></span>
+                      <span class="path2"></span>
+                      <span class="path3"></span>
+                      <span class="path4"></span>
+                      <span class="path5"></span>
+                    </span>
+                    <span style="display: inline-block;width: 65%;overflow: hidden;text-overflow: ellipsis;">
+              {{application?.project_name}}
+            </span>
+                  </div>
+
+                  <div class="row justify-content-center" id="status_row_{{application?.application_id}}" style="margin: 2px;">
+              <span class="badge badge-success status-badge" data-toggle="tooltip"
+                    data-placement="right" title="This project was initially approved within the last 2 weeks."
+                    *ngIf="(application | hasstatusinlist:Application_States.APPROVED_LAST_2_WEEKS)">
+              <i class="fas fa-plus-circle"></i>
+            </span>
+                    <span class="badge badge-warning status-badge" data-toggle="tooltip"
+                          data-placement="right" title="The project lifetime expires soon."
+                          *ngIf="(application | hasstatusinlist:Application_States.EXPIRES_SOON) && !(application | hasstatusinlist:Application_States.EXPIRED)">
+              <i class="fas fa-exclamation-circle"></i>
+            </span>
+                    <span class="badge badge-danger status-badge" data-toggle="tooltip"
+                          data-placement="right" title="The lifetime of this project is expired."
+                          *ngIf="(application | hasstatusinlist:Application_States.EXPIRED)">
+              <i class="fas fa-ban"></i>
+            </span>
+                    <span class="badge badge-danger status-badge" data-toggle="tooltip"
+                          data-placement="right" title="The termination of the project was requested."
+                          *ngIf="(application | hasstatusinlist:Application_States.TERMINATION_REQUESTED)">
+              <i class="fas fa-trash"></i>
+            </span>
+                    <span class="badge badge-secondary status-badge" data-toggle="tooltip" data-placement="right"
+                          title="An extension request was submitted for this project."
+                          *ngIf="(application | hasstatusinlist:Application_States.LIFETIME_EXTENSION_REQUESTED)
+                   || (application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION_EXTENSION)">
+              <i class="fas fa-edit"></i>
+            </span>
+                    <span class="badge badge-secondary status-badge" data-toggle="tooltip" data-placement="right"
+                          title="A modification request was submitted for this project."
+                          *ngIf="(application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)
+                    || (application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION)">
+              <i class="fas fa-edit"></i>
+            </span>
+                    <span class="badge badge-secondary status-badge" data-toggle="tooltip" data-placement="right"
+                          title="The project application was submitted but not approved yet."
+                          *ngIf="(application | hasstatusinlist:Application_States.SUBMITTED)">
+              <i class="fas fa-edit"></i>
+            </span>
+                    <span class="badge badge-secondary status-badge" data-toggle="tooltip" data-placement="right"
+                          title="A request for additional credits was submitted for this project."
+                          *ngIf="(application | hasstatusinlist:Application_States.CREDITS_EXTENSION_REQUESTED)
+                    || (application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION_CREDITS)">
+              <i class="fas fa-coins"></i>
+            </span>
+
+                  </div>
+
+                </a>
+
+                <a *ngIf="navbar_minimized && !application?.is_open_stack" class="nav-link" routerLinkActive="active"
+                   style="text-align: center;"
+                   [routerLink]="['/project-management/' + application?.application_id]" data-toggle="tooltip"
+                   data-placement="right" [title]="application?.project_name">
+            <span class="project-simpleVM_Logo_bluebg"
+                  style="color: #FFF; position:relative; left:8px; font-size: 20px">
+              <span class="path1"></span>
+                      <span class="path2"></span>
+                      <span class="path3"></span>
+                      <span class="path4"></span>
+                      <span class="path5"></span>
+            </span>
+                </a>
+
+                <a *ngIf="navbar_minimized && application?.is_open_stack" class="nav-link" routerLinkActive="active"
+                   style="text-align: center;"
+                   [routerLink]="['/project-management/' + application?.application_id]" data-toggle="tooltip"
+                   data-placement="right" [title]="application?.project_name">
+            <span class="project-openstack_plain_white_redbg"
+                  style="color: #FFF; position:relative; left:8px; font-size: 20px">
+               <span class="path1"></span>
+              <span class="path2"></span>
+            </span>
+                </a>
+
+
+              </li>
+            </ul>
+          </li>
+
+
+        </div>
 
         <li class="nav-title" *ngIf="vm_project_member ">
           Virtual Machines
