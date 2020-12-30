@@ -101,12 +101,13 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
         this.pushAdditionalStates(enumeration);
       });
       this.project_enumeration.sort((a: ProjectEnumeration, b: ProjectEnumeration): number => {
-        if (a.is_open_stack && !b.is_open_stack){
+        if (a.is_open_stack && !b.is_open_stack) {
           return -1;
         }
-        if (!a.is_open_stack && b.is_open_stack){
+        if (!a.is_open_stack && b.is_open_stack) {
           return 1;
         }
+
         return 0;
       });
     });
