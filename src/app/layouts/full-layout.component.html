@@ -197,7 +197,7 @@
 
           </li>
         </div>
-        <div *ngIf="project_enumeration?.length > 2">
+        <div *ngIf="project_enumeration?.length > 2" style="width:100% !important;">
           <li class="nav-item nav-dropdown" dropdown>
             <a class="nav-link nav-dropdown-toggle" style="cursor: pointer;" id="navbarDropdown"
                dropdownToggle aria-controls="projectDropdown"
@@ -207,7 +207,8 @@
             >
               <i class="nav-icon fas fa-list"></i> Projects</a>
             <ul class="nav-dropdown-items" id="projectDropdown" aria-labelledby="navbarDropdown" *dropdownMenu>
-              <li class="nav-item" *ngFor="let application of project_enumeration">
+              <li class="nav-item" *ngFor="let application of project_enumeration" style="width: 100% !important;"
+              [ngStyle]="{'border-radius': navbar_minimized ? '0px' : '10px'}">
 
                 <a *ngIf="!navbar_minimized" class="nav-link" routerLinkActive="active" [id]="application?.project_name"
                    [routerLink]="['/project-management/' + application?.application_id]">
@@ -286,7 +287,7 @@
                 </a>
 
                 <a *ngIf="navbar_minimized && !application?.is_open_stack" class="nav-link" routerLinkActive="active"
-                   style="text-align: center;"
+                   style="text-align: center; width: 100% !important;"
                    [routerLink]="['/project-management/' + application?.application_id]" data-toggle="tooltip"
                    data-placement="right" [title]="application?.project_name">
             <span class="project-simpleVM_Logo_bluebg"
@@ -300,7 +301,7 @@
                 </a>
 
                 <a *ngIf="navbar_minimized && application?.is_open_stack" class="nav-link" routerLinkActive="active"
-                   style="text-align: center;"
+                   style="text-align: center; width: 100% !important;"
                    [routerLink]="['/project-management/' + application?.application_id]" data-toggle="tooltip"
                    data-placement="right" [title]="application?.project_name">
             <span class="project-openstack_plain_white_redbg"
