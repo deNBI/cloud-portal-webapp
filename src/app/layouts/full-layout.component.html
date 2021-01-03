@@ -198,15 +198,13 @@
           </li>
         </div>
         <div *ngIf="project_enumeration?.length > 2" style="width:100% !important;">
-          <li class="nav-item nav-dropdown" dropdown>
-            <a class="nav-link nav-dropdown-toggle" style="cursor: pointer;" id="navbarDropdown"
-               dropdownToggle aria-controls="projectDropdown"
+          <li class="nav-item nav-dropdown" appNavDropdown>
+            <a class="nav-link nav-dropdown-toggle" style="cursor: pointer;" appNavDropdownToggle
                [attr.data-placement]="navbar_minimized ? 'right' : null"
                [attr.title]="navbar_minimized ? 'Projects' : null"
-               [attr.data-toggle]="navbar_minimized ? 'tooltip' : null"
-            >
+               [attr.data-toggle]="navbar_minimized ? 'tooltip' : null">
               <i class="nav-icon fas fa-list"></i> Projects</a>
-            <ul class="nav-dropdown-items" id="projectDropdown" aria-labelledby="navbarDropdown" *dropdownMenu>
+            <ul class="nav-dropdown-items">
               <li class="nav-item" *ngFor="let application of project_enumeration" style="width: 100% !important;"
               [ngStyle]="{'border-radius': navbar_minimized ? '0px' : '10px'}">
 
