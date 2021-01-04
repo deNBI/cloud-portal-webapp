@@ -14,8 +14,8 @@ export class VirtualMachineStates extends GeneralStatusStates {
   private static readonly _BUILD_PLAYBOOK: string = 'BUILD_PLAYBOOK';
   private static readonly _PORT_CLOSED: string = 'PORT_CLOSED';
   private static readonly _CHECKING_CONNECTION: string = 'CHECKING CONNECTION';
-  private static readonly _IMAGE_PENDING_UPLOAD = 'IMAGE_PENDING_UPLOAD'
-  private static readonly _IMAGE_UPLOADING = 'IMAGE_UPLOADING'
+  private static readonly _IMAGE_PENDING_UPLOAD: string = 'IMAGE_PENDING_UPLOAD'
+  private static readonly _IMAGE_UPLOADING: string = 'IMAGE_UPLOADING'
   private static readonly _SPAWNING: string = 'SPAWNING'
   private static readonly _SCHEDULING: string = 'SCHEDULING'
   private static readonly _IN_PROCESS_STATES: string[] = [
