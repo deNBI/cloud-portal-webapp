@@ -82,7 +82,6 @@ export class VirtualMachine {
 
   }
 
-
   public calculateCreatedAt(): void {
     if (this.created_at !== '') {
       const date: Date = new Date(parseInt(this.created_at, 10) * 1000);
