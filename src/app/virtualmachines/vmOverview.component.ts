@@ -816,8 +816,6 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 
   }
 
-
-
   getClientForcUrls(): void {
     this.clientService.getClientsChecked().subscribe((clients: Client[]): void => {
       clients.forEach((client: Client): void => {
