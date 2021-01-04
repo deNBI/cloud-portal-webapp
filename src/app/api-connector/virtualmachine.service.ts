@@ -184,8 +184,6 @@ export class VirtualmachineService {
     })
   }
 
-
-
   getVmsFromFacilitiesOfLoggedUser(facility_id: string | number,
                                    page: number, vm_per_site: number,
                                    filter?: string, filter_status?: string[],
