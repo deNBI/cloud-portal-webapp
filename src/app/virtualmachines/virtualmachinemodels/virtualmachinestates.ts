@@ -14,9 +14,13 @@ export class VirtualMachineStates extends GeneralStatusStates {
   private static readonly _BUILD_PLAYBOOK: string = 'BUILD_PLAYBOOK';
   private static readonly _PORT_CLOSED: string = 'PORT_CLOSED';
   private static readonly _CHECKING_CONNECTION: string = 'CHECKING CONNECTION';
+  private static readonly _IMAGE_PENDING_UPLOAD = 'IMAGE_PENDING_UPLOAD'
+  private static readonly _IMAGE_UPLOADING = 'IMAGE_UPLOADING'
   private static readonly _SPAWNING: string = 'SPAWNING'
   private static readonly _SCHEDULING: string = 'SCHEDULING'
   private static readonly _IN_PROCESS_STATES: string[] = [
+    VirtualMachineStates._IMAGE_UPLOADING,
+    VirtualMachineStates._IMAGE_PENDING_UPLOAD,
     VirtualMachineStates._SCHEDULING,
     VirtualMachineStates._SPAWNING,
     VirtualMachineStates._BUILD,
@@ -42,6 +46,14 @@ export class VirtualMachineStates extends GeneralStatusStates {
 
   static get BUILD(): string {
     return this._BUILD;
+  }
+
+  static get IMAGE_PENDING_UPLOAD(): string {
+    return this._IMAGE_PENDING_UPLOAD;
+  }
+
+  static get IMAGE_UPLOADING(): string {
+    return this._IMAGE_UPLOADING;
   }
 
   static get PREPARE_PLAYBOOK_BUILD(): string {
@@ -94,6 +106,14 @@ export class VirtualMachineStates extends GeneralStatusStates {
 
   public get staticPREPARE_PLAYBOOK_BUILD(): string {
     return VirtualMachineStates.PREPARE_PLAYBOOK_BUILD;
+  }
+
+  public get staticIMAGE_UPLOADING(): string {
+    return VirtualMachineStates.IMAGE_UPLOADING;
+  }
+
+  public get staticIMAGE_PENDING_UPLOAD(): string {
+    return VirtualMachineStates.IMAGE_PENDING_UPLOAD;
   }
 
   public get staticBUILD_PLAYBOOK(): string {

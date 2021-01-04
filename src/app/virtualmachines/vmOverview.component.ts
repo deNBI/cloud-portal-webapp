@@ -816,20 +816,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 
   }
 
-  setForcUrl(vm: VirtualMachine): void {
-    this.virtualmachineservice.getLocationUrl(vm.openstackid)
-      .subscribe((url: any): void => {
-        if (url !== '') {
-          if (this.clientsForcUrls.hasOwnProperty(vm.client.id)) {
-            vm.res_env_url = `${this.clientsForcUrls[vm.client.id]}${url}/`;
-          } else {
-            vm.res_env_url = '';
-          }
-        } else {
-          vm.res_env_url = '';
-        }
-      });
-  }
+
 
   getClientForcUrls(): void {
     this.clientService.getClientsChecked().subscribe((clients: Client[]): void => {

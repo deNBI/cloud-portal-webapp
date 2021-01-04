@@ -933,7 +933,7 @@
         <div class="row" style="margin:5px; text-align: center; padding: 10px;">
           <div class="col-md-6">
             <button type="button" class="btn btn-primary"
-                    *ngIf="!(selectedVm?.status |hasStatus:VirtualMachineStates.staticDELETED) && (selectedVm?.status |hasStatus:VirtualMachineStates.staticSHUTOFF) && selectedVm?.client.features['VM_REBOOT']"
+                    *ngIf="!(selectedVm?.status |hasStatus:VirtualMachineStates.staticDELETED)  && selectedVm?.client.features['VM_REBOOT']"
                     [id]="'softRebootVM_' + selectedVm?.name"
                     (click)="status_check_error=false;reboot_done=false;reboot_type='SOFT';chooseRebootOptionModal.hide();rebootModal.show();">
               Soft Reboot

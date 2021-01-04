@@ -395,7 +395,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
    * @param final_state
    * @param is_selected_vm If the vm should be the selected vm
    */
-  check_status_loop(final_state: string, is_selected_vm?: boolean): void {
+  check_status_loop(final_state: string, is_selected_vm?: boolean, timeout: number = this.checkStatusTimeout): void {
 
     setTimeout(
       (): void => {
@@ -442,7 +442,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
         }
       }
       ,
-      this.checkStatusTimeout
+      timeout
     )
     ;
   }
@@ -572,9 +572,13 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
       (newSnapshot: SnapshotModel): void => {
         if (newSnapshot.snapshot_openstackid) {
           this.snapshotDone = 'true';
+          this.virtualMachine.status = VirtualMachineStates.IMAGE_PENDING_UPLOAD;
+          this.check_status_loop(VirtualMachineStates.ACTIVE, null, 10000)
 
         } else {
           this.snapshotDone = 'error';
+          this.check_status_loop(VirtualMachineStates.ACTIVE)
+
         }
 
       },
@@ -676,27 +680,13 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
   }
 
   checkAndGetForcDetails(vm: VirtualMachine): void {
-    const checkForForc: boolean = true;
     // for (const mode of vm.modes) {
     //   if (TemplateNames.ALL_TEMPLATE_NAMES.indexOf(mode.name) !== -1) {
     //     checkForForc = false;
     //   }
     // }
-    if (checkForForc) {
-      this.groupService.getClientForcUrl(vm.client.id, 'true').subscribe((response: JSON): void => {
-        if (response['forc_url'] !== null) {
-          this.virtualmachineService.getLocationUrl(vm.openstackid)
-            .subscribe((url: any): void => {
-              if (url !== '') {
-                vm.res_env_url = `${response['forc_url']}${url}/`;
-              } else {
-                vm.res_env_url = '';
-              }
-            });
-        }
-      });
-      this.getUsersForBackend();
-    }
+
+    this.getUsersForBackend();
 
   }
 

@@ -184,11 +184,7 @@ export class VirtualmachineService {
     })
   }
 
-  getLocationUrl(openstack_id: string): Observable<any> {
-    return this.http.post(`${this.baseVmUrl}${openstack_id}/location_url/`, null, {
-      withCredentials: true
-    })
-  }
+
 
   getVmsFromFacilitiesOfLoggedUser(facility_id: string | number,
                                    page: number, vm_per_site: number,
