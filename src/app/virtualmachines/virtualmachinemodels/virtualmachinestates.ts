@@ -8,14 +8,17 @@ export class VirtualMachineStates extends GeneralStatusStates {
   private static readonly _ACTIVE: string = 'ACTIVE';
   private static readonly _SHUTOFF: string = 'SHUTOFF';
   private static readonly _BUILD: string = 'BUILD';
-  private static readonly _POWERING_OFF: string = 'POWERING OFF';
-  private static readonly _POWERING_ON: string = 'POWERING ON';
+  private static readonly _POWERING_OFF: string = 'POWERING_OFF';
+  private static readonly _POWERING_ON: string = 'POWERING_ON';
   private static readonly _PREPARE_PLAYBOOK_BUILD: string = 'PREPARE_PLAYBOOK_BUILD';
   private static readonly _BUILD_PLAYBOOK: string = 'BUILD_PLAYBOOK';
   private static readonly _PORT_CLOSED: string = 'PORT_CLOSED';
   private static readonly _CHECKING_CONNECTION: string = 'CHECKING CONNECTION';
-
+  private static readonly _SPAWNING: string = 'SPAWNING'
+  private static readonly _SCHEDULING: string = 'SCHEDULING'
   private static readonly _IN_PROCESS_STATES: string[] = [
+    VirtualMachineStates._SCHEDULING,
+    VirtualMachineStates._SPAWNING,
     VirtualMachineStates._BUILD,
     VirtualMachineStates._POWERING_OFF,
     VirtualMachineStates._POWERING_ON,
@@ -55,6 +58,14 @@ export class VirtualMachineStates extends GeneralStatusStates {
 
   static get SHUTOFF(): string {
     return this._SHUTOFF;
+  }
+
+  static get SPAWNING(): string {
+    return this._SPAWNING
+  }
+
+  static get SCHEDULING(): string {
+    return this._SCHEDULING
   }
 
   static get POWERING_OFF(): string {
@@ -103,6 +114,14 @@ export class VirtualMachineStates extends GeneralStatusStates {
 
   public get staticACTIVE(): string {
     return VirtualMachineStates.ACTIVE;
+  }
+
+  public get staticSPAWNING(): string {
+    return VirtualMachineStates.SPAWNING;
+  }
+
+    public get staticSCHEDULING(): string {
+    return VirtualMachineStates.SCHEDULING;
   }
 
   public get staticSHUTOFF(): string {

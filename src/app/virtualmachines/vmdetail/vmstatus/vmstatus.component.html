@@ -19,22 +19,34 @@
                     </div>
                     {{VirtualMachineStates.staticDELETED}}
                   </ng-container>
-                  <ng-container *ngSwitchCase="VirtualMachineStates.staticBUILD">
-                    <div [id]="'build_badge_' + vm?.name"
-                         class="dot-colorless pulseAnimProcess">
-                    </div>
-                    {{VirtualMachineStates.staticBUILD}}
-                  </ng-container>
-                  <ng-container *ngSwitchCase="VirtualMachineStates.staticPREPARE_PLAYBOOK_BUILD">
-                    <div [id]="'ppb_badge_' + vm?.name"
-                         class="dot-colorless pulseAnimProcess">
-                    </div>
-                    {{VirtualMachineStates.staticBUILD}}
-                  </ng-container>
-                  <ng-container *ngSwitchCase="VirtualMachineStates.staticNOT_FOUND">
-                    <div [id]="'not_found_badge_' + vm?.name"
-                         class="dot-colorless bg-dark">
-                    </div>
+  <ng-container *ngSwitchCase="VirtualMachineStates.staticBUILD">
+    <div [id]="'build_badge_' + vm?.name"
+         class="dot-colorless pulseAnimProcess">
+    </div>
+    {{VirtualMachineStates.staticBUILD}}
+  </ng-container>
+  <ng-container *ngSwitchCase="VirtualMachineStates.staticSCHEDULING">
+    <div [id]="'scheduling_badge_' + vm?.name"
+         class="dot-colorless pulseAnimProcess">
+    </div>
+    {{VirtualMachineStates.staticSCHEDULING}}
+  </ng-container>
+  <ng-container *ngSwitchCase="VirtualMachineStates.staticSPAWNING">
+    <div [id]="'spawning_badge_' + vm?.name"
+         class="dot-colorless pulseAnimProcess">
+    </div>
+    {{VirtualMachineStates.staticSPAWNING}}
+  </ng-container>
+  <ng-container *ngSwitchCase="VirtualMachineStates.staticPREPARE_PLAYBOOK_BUILD">
+    <div [id]="'ppb_badge_' + vm?.name"
+         class="dot-colorless pulseAnimProcess">
+    </div>
+    {{VirtualMachineStates.staticBUILD}}
+  </ng-container>
+  <ng-container *ngSwitchCase="VirtualMachineStates.staticNOT_FOUND">
+    <div [id]="'not_found_badge_' + vm?.name"
+         class="dot-colorless bg-dark">
+    </div>
                     {{VirtualMachineStates.staticNOT_FOUND}}
                       <div class="alert alert-warning" role="alert"> Please contact <a href="mailto:cloud@denbi.de">cloud@denbi.de</a></div>
 

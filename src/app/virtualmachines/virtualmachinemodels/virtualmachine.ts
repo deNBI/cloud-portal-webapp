@@ -40,6 +40,7 @@ export class VirtualMachine {
   backend: Backend;
 
   constructor(vm: VirtualMachine) {
+    this.backend = vm.backend;
     this.flavor = vm.flavor;
     this.image = vm.image;
     this.project = vm.project;
@@ -65,7 +66,6 @@ export class VirtualMachine {
     this.volumes = vm.volumes;
     this.still_used_confirmation_requested = vm.still_used_confirmation_requested;
     this.still_used_confirmation_requested_date = vm.still_used_confirmation_requested_date;
-    this.backend = vm.backend;
     this.calculateCreatedAt();
     this.getTerminationStartDateString();
   }
@@ -81,6 +81,7 @@ export class VirtualMachine {
     return term_date.toLocaleDateString();
 
   }
+
 
   public calculateCreatedAt(): void {
     if (this.created_at !== '') {

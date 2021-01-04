@@ -240,7 +240,6 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
         if (result.value === 'attached') {
           this.virtualmachineservice.getVmById(vm.openstackid).subscribe((upd_vm: VirtualMachine): void => {
             const new_vm: VirtualMachine = new VirtualMachine(upd_vm);
-            this.setForcUrl(new_vm);
             this.checkCondaPackages(new_vm);
             this.vms_content[idx] = new_vm;
 
@@ -264,7 +263,6 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
         if (result.value === 'deleted') {
           this.virtualmachineservice.getVmById(vm.openstackid).subscribe((upd_vm: VirtualMachine): void => {
             const new_vm: VirtualMachine = new VirtualMachine(upd_vm);
-            this.setForcUrl(new_vm);
             this.checkCondaPackages(new_vm);
             this.vms_content[idx] = new_vm;
 
@@ -366,12 +364,17 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
    * @param vm which will be deleted
    */
   deleteVm(vm: VirtualMachine): void {
+    if (this.vms_content.indexOf(vm) === -1) {
+      vm = this.vms_content.find((vm_cont: VirtualMachine): boolean => vm.openstackid === vm_cont.openstackid)[0]
+
+    }
+
     vm.status = VirtualMachineStates.DELETING;
     this.subscription.add(this.virtualmachineservice.deleteVM(vm.openstackid).subscribe(
       (updated_vm: VirtualMachine): void => {
         updated_vm = new VirtualMachine(updated_vm);
 
-        updated_vm.cardState = 0;
+        updated_vm.cardState = 0
         this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
         this.applyFilterStatus();
         if (updated_vm.status !== VirtualMachineStates.DELETED) {
@@ -428,7 +431,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
    * @param final_state
    * @param is_selected_vm If the vm should be the selected vm
    */
-  check_status_loop(vm: VirtualMachine, final_state?: string, is_selected_vm?: boolean): void {
+  check_status_loop(vm: VirtualMachine, final_state?: string, is_selected_vm?: boolean, timeout: number = this.checkStatusTimeout): void {
 
     setTimeout(
       (): void => {
@@ -436,34 +439,31 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
         // tslint:disable-next-line:max-line-length
         this.subscription.add(this.virtualmachineservice.checkVmStatus(vm.openstackid, vm.name).subscribe((updated_vm: VirtualMachine): void => {
           updated_vm = new VirtualMachine(updated_vm);
+          updated_vm.cardState = vm.cardState;
+          const const_entry: any = this.vmActions.filter((item: any): any => item.id.openstackid === vm.openstackid)[0]
+          const const_idx: number = this.vmActions.indexOf(const_entry)
+          const_entry.id = updated_vm
+          this.vmActions[const_idx] = const_entry
           this.vms_content[this.vms_content.indexOf(vm)] = updated_vm;
           if (is_selected_vm) {
             this.selectedVm = updated_vm;
           }
-          updated_vm.cardState = 0;
 
-          if (final_state && updated_vm.status === final_state) {
-            this.setForcUrl(updated_vm);
-
-          } else if (VirtualMachineStates.IN_PROCESS_STATES.indexOf(updated_vm.status) !== -1) {
+          if (VirtualMachineStates.IN_PROCESS_STATES.indexOf(updated_vm.status) !== -1) {
             this.check_status_loop(updated_vm, final_state, is_selected_vm)
-          } else if (VirtualMachineStates.NOT_IN_PROCESS_STATES.indexOf(updated_vm.status) !== -1) {
-            this.setForcUrl(updated_vm);
-            this.setVmActions();
+          } else if (updated_vm.status !== VirtualMachineStates.DELETED) {
+            // so not all requests are at the same time for the vms
+            const min: number = 20000;
+            const max: number = 40000;
+            this.check_status_loop(updated_vm, final_state, is_selected_vm, Math.floor(Math.random() * (max - min)) + max)
 
-            if (final_state && updated_vm.status !== final_state) {
-              this.check_status_loop(updated_vm, final_state, is_selected_vm)
-
-            }
-          } else {
-            this.check_status_loop(updated_vm, final_state, is_selected_vm)
           }
 
         }));
 
       },
 
-      this.checkStatusTimeout
+      timeout
     );
   }
 
@@ -582,11 +582,10 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 
   setVmActions(): void {
     const actions: { id: VirtualMachine, name: string }[] = [];
+    // tslint:disable-next-line:no-for-each-push
     this.vms_content.forEach((vm: VirtualMachine): void => {
-      vm.cardState = 0;
-      if (vm.status === VirtualMachineStates.ACTIVE || vm.status === VirtualMachineStates.SHUTOFF) {
         actions.push({id: vm, name: vm.name});
-      }
+
     });
     this.vmActions = actions;
 
@@ -602,6 +601,8 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
                                        selectAll: selectAllControl
                                      });
     this.onChanges();
+    this.checkVmTillActive();
+
   }
 
   checkCondaPackages(vm: VirtualMachine): void {
@@ -648,7 +649,6 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
     // tslint:disable-next-line:no-for-each-push
     vm_list.forEach((new_vm: VirtualMachine): void => {
       const vm: VirtualMachine = new VirtualMachine(new_vm);
-      this.setForcUrl(vm);
       this.checkCondaPackages(vm);
       tmp_vms.push(vm);
 
@@ -662,16 +662,14 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 
     this.setVmActions();
     this.isSearching = false;
-    this.checkVmTillActive()
   }
 
   checkVmTillActive(): void {
     this.vms_content.forEach((vm: VirtualMachine): void => {
       if (vm.status === VirtualMachineStates.DELETING_FAILED) {
         this.deleteVm(vm)
-      } else if (vm.status !== VirtualMachineStates.ACTIVE && vm.status !== VirtualMachineStates.SHUTOFF
-        && vm.status !== VirtualMachineStates.DELETED) {
-        this.check_status_loop(vm);
+      } else if (vm.status !== VirtualMachineStates.DELETED) {
+        this.check_status_loop(vm, null, null, 1000);
       }
     })
   }
@@ -811,15 +809,9 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
   }
 
   deleteAll(): void {
-    const vm_ids: string [] = this.selectedMachines.map((vm: VirtualMachine): string => {
-      vm.status = VirtualMachineStates.DELETING;
 
-      return vm.openstackid
-    })
-    this.virtualmachineservice.deleteVms(vm_ids).subscribe((): void => {
-      this.selectedMachines.forEach((vm: VirtualMachine): void => {
-        this.check_status_loop(vm, VirtualMachineStates.DELETED)
-      })
+    this.selectedMachines.forEach((vm: VirtualMachine): void => {
+      this.deleteVm(vm)
     })
 
   }
