@@ -24,20 +24,22 @@
   </div>
 </div>
 
-<div *ngIf=" isLoaded==false" class="loader"></div>
+<div *ngIf=" !isLoaded || (singleProject && !projectDataLoaded )" class="loader"></div>
 <div *ngIf=" isLoaded && userinfo?.PublicKey != 'None' && projects.length == 0">
   <div class="alert alert-warning" role="alert">
     You are not a member of any Simple VM project.
   </div>
 </div>
-<div *ngIf=" isLoaded && userinfo?.PublicKey != 'None' && projects.length > 0" class="animated fadeIn">
+<div *ngIf=" isLoaded && userinfo?.PublicKey != 'None' && projects.length > 0
+  && (!singleProject || singleProject && projectDataLoaded )"
+  class="animated fadeIn">
 
   <div class="row">
     <div class="col-md-12">
       <div class="card" style=" ">
         <div class="card-header">
           <strong>New Cluster</strong>
-          – Form
+          <span *ngIf="singleProject" id="singleProjectNameSpan"> - <strong>{{this.selectedProject[0]}}</strong></span>
         </div>
 
         <div class="card-body">
@@ -45,7 +47,7 @@
 
           <form id="application_form" #f="ngForm"
                 class="form-horizontal">
-            <div class="form-group row col-md-12">
+            <div class="form-group row col-md-12" *ngIf="!singleProject">
               <label class="col-md-2 form-control-label"><strong>Project*</strong></label>
               <span *ngIf="(client_avaiable|| selectedProject) && (!projectDataLoaded || !flavors_loaded)"
                     class="spinner-border text-info"></span>
@@ -107,8 +109,7 @@
 
               <div>
 
-                <accordion class="col"
-                           *ngIf="selectedProject && projectDataLoaded && (selectedProjectRessources?.used_vms +2) <= selectedProjectRessources?.number_vms && (flavors.length != 0 || selectedFlavor) && images?.length> 0">
+                <accordion class="col" *ngIf="selectedProject && projectDataLoaded && (selectedProjectRessources?.used_vms +2) <= selectedProjectRessources?.number_vms && (flavors.length != 0 || selectedFlavor) && images?.length> 0">
 
                   <accordion-group #masterInstanceGroup [isOpen]="true"
                   >
