@@ -4,6 +4,7 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {ResearchEnvironment} from '../virtualmachines/virtualmachinemodels/res-env';
 import {VirtualMachine} from '../virtualmachines/virtualmachinemodels/virtualmachine';
+import {Backend} from '../virtualmachines/conda/backend/backend';
 
 /**
  * Bioconda service.
@@ -45,10 +46,10 @@ export class BiocondaService {
     })
   }
 
-  getTemplateNameByVmName(vm: VirtualMachine): Observable<any> {
+  getTemplateNameByVmName(vm: VirtualMachine): Observable<Backend> {
     const params: HttpParams = new HttpParams().set('vm', vm.name);
 
-    return this.http.get(`${ApiSettings.getApiBaseURL()}forc/backends/vm_name/`, {
+    return this.http.get<Backend>(`${ApiSettings.getApiBaseURL()}forc/backends/vm_name/`, {
       withCredentials: true,
       params: params
     })
