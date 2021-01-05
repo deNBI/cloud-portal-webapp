@@ -94,7 +94,7 @@ export class VirtualmachineService {
 
   startVM(flavor: string, image: Image, servername: string, project: string, projectid: string,
           http: boolean, https: boolean, udp: boolean, new_volumes: Volume[], attach_volumes: Volume[],
-          playbook_information?: string, user_key_url?: string): Observable<any> {
+          playbook_information?: string): Observable<any> {
 
     const params: HttpParams = new HttpParams()
       .set('flavor', flavor)
@@ -108,7 +108,6 @@ export class VirtualmachineService {
       .set('https_allowed', https.toString())
       .set('udp_allowed', udp.toString())
       .set('playbook_information', playbook_information)
-      .set('user_key_url', user_key_url);
 
     return this.http.post(this.baseVmUrl, params, {
       withCredentials: true
@@ -185,12 +184,6 @@ export class VirtualmachineService {
     })
   }
 
-  getLocationUrl(openstack_id: string): Observable<any> {
-    return this.http.post(`${this.baseVmUrl}${openstack_id}/location_url/`, null, {
-      withCredentials: true
-    })
-  }
-
   getVmsFromFacilitiesOfLoggedUser(facility_id: string | number,
                                    page: number, vm_per_site: number,
                                    filter?: string, filter_status?: string[],
@@ -248,6 +241,14 @@ export class VirtualmachineService {
         withCredentials: true
       })
     }
+  }
+
+  deleteVms(vm_ids: string[]): Observable<IResponseTemplate> {
+    const params: HttpParams = new HttpParams().set('vm_ids', JSON.stringify(vm_ids));
+
+    return this.http.post<IResponseTemplate>(`${this.baseVmUrl}/delete/`, params, {
+      withCredentials: true
+    })
   }
 
   checkVmStatusWhenReboot(openstack_id: string): Observable<any> {
@@ -385,11 +386,28 @@ export class VirtualmachineService {
     })
   }
 
+  deleteVolumes(volume_ids: string[]): Observable<IResponseTemplate> {
+    const params: HttpParams = new HttpParams().set('volume_ids', JSON.stringify(volume_ids));
+
+    return this.http.post<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}volumes/delete/`, params, {
+      withCredentials: true
+    })
+  }
+
   deleteVolumeAttachment(volume_id: string, instance_id: string): Observable<IResponseTemplate> {
 
     const params: HttpParams = new HttpParams().set('instance_id', instance_id).set('os_action', 'detach');
 
     return this.http.post<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}volumes/${volume_id}/action/`, params, {
+      withCredentials: true
+    })
+  }
+
+  deleteVolumeAttachments(volume_ids: string[]): Observable<IResponseTemplate> {
+
+    const params: HttpParams = new HttpParams().set('volume_ids', JSON.stringify(volume_ids));
+
+    return this.http.post<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}volumes/attachments/delete/`, params, {
       withCredentials: true
     })
   }
