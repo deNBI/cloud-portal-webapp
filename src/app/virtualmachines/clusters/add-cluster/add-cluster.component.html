@@ -138,13 +138,17 @@
                       <label class="col-md-2 form-control-label"><strong>Image*</strong></label>
 
                       <div class="col-md-10">
-                        <div class="alert alert-info col-md-10"> This image will also be used for every worker!</div>
+                        <div class="alert alert-info" *ngIf="(images?.length === 0) || !images">
+                          There are no images available for selection at the moment.
+                          Please contact the support of the facility where your project is running.
+                        </div>
 
 
-                        <app-image-detail [selectedImage]="selectedMasterImage"
+                        <app-image-detail *ngIf="images?.length > 0" [selectedImage]="selectedMasterImage"
                                           [images]="images"
                                           (selectedImageChange)="selectedMasterImage=$event;this.selectedWorkerBatches[0].image=selectedMasterImage;"
                                           id="id_image_detail"></app-image-detail>
+                        <div class="alert alert-info" *ngIf="selectedMasterImage"> This image will also be used for every worker!</div>
                       </div>
 
                     </div>
@@ -266,7 +270,7 @@
 
           <div
             *ngIf=" selectedProjectClient?.bibigrid_available && (selectedProjectRessources?.used_vms +2) <= selectedProjectRessources?.number_vms && (!selectedBatch.worker_count || selectedBatch.worker_count == 0  ||!selectedMasterFlavor || !selectedMasterImage || !selectedWorkerFlavorSet  ) && selectedProject && projectDataLoaded && flavors_loaded"
-            class="alert alert-danger" role="alert" style="max-width: 600px;margin: 0 auto;">
+            class="alert alert-danger col-md-10" role="alert" style="margin: auto;">
             <p>Please choose the following before starting a Cluster:</p>
             <p *ngIf="!selectedMasterFlavor">- The flavor type of your Master VM
             </p>
