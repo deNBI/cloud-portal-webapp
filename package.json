@@ -85,7 +85,7 @@
     "save-svg-as-png": "^1.4.17",
     "svg2pdf.js": "^2.1.0",
     "ts-helpers": "1.1.2",
-    "tslib": "^2.0.0",
+    "tslib": "^2.1.0",
     "tslint-angular": "^3.0.3",
     "tslint-clean-code": "^0.2.9",
     "uglify-js": "3.12.3",
