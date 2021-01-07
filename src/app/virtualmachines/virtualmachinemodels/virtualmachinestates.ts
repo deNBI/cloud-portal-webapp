@@ -18,6 +18,7 @@ export class VirtualMachineStates extends GeneralStatusStates {
   private static readonly _IMAGE_UPLOADING: string = 'IMAGE_UPLOADING'
   private static readonly _SPAWNING: string = 'SPAWNING'
   private static readonly _SCHEDULING: string = 'SCHEDULING'
+  private static readonly _PLANNED: string = 'PLANNED'
   private static readonly _IN_PROCESS_STATES: string[] = [
     VirtualMachineStates._IMAGE_UPLOADING,
     VirtualMachineStates._IMAGE_PENDING_UPLOAD,
@@ -33,7 +34,9 @@ export class VirtualMachineStates extends GeneralStatusStates {
     VirtualMachineStates._CLIENT_OFFLINE,
     VirtualMachineStates._GETTING_STATUS,
     VirtualMachineStates._PORT_CLOSED,
-    VirtualMachineStates._CHECKING_CONNECTION
+    VirtualMachineStates._CHECKING_CONNECTION,
+    VirtualMachineStates._GETTING_STATUS,
+    VirtualMachineStates._PLANNED
   ];
 
   private static readonly _NOT_IN_PROCESS_STATES: string[] = [
