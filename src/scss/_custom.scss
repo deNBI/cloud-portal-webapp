@@ -612,7 +612,7 @@ $simplevmcolour: #00ADEF;
   }
 
   .nav-item{
-    border-radius: 10px !important;
+    border-radius: 10px;
   }
 
   .sidebar-nav .nav-item:hover, .sidebar-minimized .sidebar .nav-item:hover > .nav-link
@@ -714,10 +714,20 @@ $simplevmcolour: #00ADEF;
     background-color: $deNBI_lightgrey;
   }
 
+  .sidebar-minimized .sidebar .nav-item:hover {
+    width:100% !important;
+    overflow: visible;
+  }
+
+
   .sidebar .nav-dropdown.open .nav-link:hover
   {
     background-color: $deNBI_lightgrey;
     color: $deNBI_white;
+  }
+
+  .sidebar-minimized .sidebar .nav-link:hover{
+    width: 100%;
   }
 
   .sidebar .nav-dropdown.open .nav-link.active {
