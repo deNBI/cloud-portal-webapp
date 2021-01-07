@@ -45,7 +45,7 @@
     "@angular/upgrade": "^11.0.5",
     "@coreui/angular": "^2.9.4",
     "@coreui/coreui": "^2.1.16",
-    "@ng-bootstrap/ng-bootstrap": "^8.0.0",
+    "@ng-bootstrap/ng-bootstrap": "^8.0.1",
     "@types/d3": "^6.2.0",
     "@types/jquery": "^3.5.5",
     "angular-ng-autocomplete": "^2.0.2",
