@@ -605,12 +605,6 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
     this.virtualmachineService.getVmById(this.vm_id).subscribe(
       (vm: VirtualMachine): void => {
         vm = new VirtualMachine(vm);
-        if (vm == null) {
-          this.isLoaded = false;
-          this.errorMessage = true;
-          // TODO: Redirect back to overview
-        } else {
-
           this.playbookService.getPlaybookForVM(this.vm_id).subscribe((pb: Object): void => {
             if (pb != null) {
               let pbs: string = pb['playbooks'].toString();
@@ -658,9 +652,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
           this.getImageDetails(this.virtualMachine.projectid, this.virtualMachine.image);
           this.getDetachedVolumesByVSelectedMProject();
           this.checkVmVolumesStatus()
-
           this.isLoaded = true;
-        }
       }
     );
   }

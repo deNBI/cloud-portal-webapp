@@ -249,20 +249,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
         }))
   }
 
-  // calculateCreditsModification(): void {
-  //   this.subscription.add(
-  //     this.creditsService.getExtraCreditsForResourceExtension(
-  //       this.project_modification.total_cores,
-  //       this.project_modification.total_ram,
-  //       this.project_application.project_application_id.toString()
-  //     ).subscribe(
-  //       (credits: number): void => {
-  //
-  //         this.project_modification.extra_credits = credits;
-  //       }));
-  //
-  // }
-
   fetchCreditHistoryOfProject(): void {
     if (this.project != null) {
       this.creditsService.getCreditsUsageHistoryOfProject(Number(this.project.Id.toString())).toPromise()
@@ -426,10 +412,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
       this.project_modification.object_storage = this.project_application.project_application_object_storage;
       this.project_modification.cloud_service_develop =
         this.project_application.project_application_cloud_service_develop;
-      this.project_application.project_application_cloud_service =
-        this.project_application.project_application_cloud_service;
-      this.project_application.project_application_cloud_service_user_number =
-        this.project_application.project_application_cloud_service_user_number;
     }
     this.project_modification.comment = this.project_application.project_application_comment;
     this.project_modification.flavors = this.project_application.flavors;

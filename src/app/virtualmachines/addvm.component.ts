@@ -469,7 +469,6 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
       } else {
         play_information = null;
       }
-      const user_key_url: string = null;
 
       if (!this.mosh_mode_available) {
         this.udp_allowed = false;
