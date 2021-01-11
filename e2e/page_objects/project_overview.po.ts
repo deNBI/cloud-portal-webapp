@@ -35,7 +35,7 @@ export class ProjectOverview {
   private static DISSEMINATION_PLATFORM_LIST: string = 'dissemination_platforms';
   private static DISSEMINATION_INFORMATION_LIST: string = 'dissemination_information';
   private static DEFAULT_INFORMATION_DISSEMINATION_STRING: string = 'Title, Research Topics, Description, Resources, Lifetime, Project Type, Name of PI, Institution, Workgroup, Project affiliation';
-  private static DEFAULT_PLATFORM_DISSEMINATION_STRING: string = 'de.NBI Platforms ,Twitter';
+  private static DEFAULT_PLATFORM_DISSEMINATION_STRING: string = 'de.NBI Platforms, Twitter';
   private static PI_ROW: string = 'id_pi_row';
   private static REMOVE_APPLICATION_BUTTON: string = 'remove_application_button';
   private static REMOVE_APPLICATION_MODAL: string = 'remove_application_modal';
@@ -72,7 +72,7 @@ export class ProjectOverview {
     await Util.clickElementById(this.SUBMITTED_SHOW_INFORMATION_BTN);
 
     const isPiAbsence: boolean = await Util.waitForAbsenceOfElementById(this.PI_ROW);
-    await Util.clickElementById('close_info_modal');
+    await Util.clickElementById(this.SUBMITTED_SHOW_INFORMATION_BTN);
 
     return isPiAbsence
 
