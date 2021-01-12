@@ -60,6 +60,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
   https_allowed: boolean = false;
   udp_allowed: boolean = false;
   install_mosh: boolean = false;
+  vm_responsibility: boolean = false;
   is_vo: boolean = false;
   hasTools: boolean = false;
   gaveOkay: boolean = false;
