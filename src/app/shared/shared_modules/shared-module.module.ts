@@ -3,7 +3,6 @@ import {CommonModule} from '@angular/common';
 import {ApplicationBaseClassComponent} from './baseClass/application-base-class.component';
 import {ModalModule} from 'ngx-bootstrap/modal';
 
-
 /**
  * Shared module.
  */
