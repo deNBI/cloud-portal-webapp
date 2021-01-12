@@ -51,7 +51,7 @@ export class ApplicationRessourceUsage {
     const available_gpu: number = this.gpus_max - (flavor.gpu + this.gpus_used + batches_gpus);
     for (const fl of possible_flavors) {
       if (fl.vcpus <= available_cores && (fl.ram / 1024) <= available_ram && fl.gpu <= available_gpu) {
-        tmp_flavors.push(fl)
+        tmp_flavors.push(fl);
       }
     }
 

@@ -82,7 +82,7 @@ export class VMOverviewPage {
         const val: any = this.vm_names[key];
         console.log(`Key: ${key} Value: ${val}`);
         this.name_counter -= 1;
-        if (!this.isVmActive(val)) {
+        if (!await this.isVmActive(val)) {
           return false;
         }
       }
