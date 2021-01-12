@@ -14,7 +14,7 @@ export class NewInstancePage {
   private static VOLUME_VM_NAME: string = Util.VOLUME_VM_NAME;
   private static ID_INSTANCE_NAME: string = 'id_instance_name';
   private static DEFAULT_FLAVOR_TITLE: string = 'de.NBI default';
-  private static UBUNTU_18_TITLE: string = 'Ubuntu 18.04 LTS (2020-05-10)';
+  private static UBUNTU_18_TITLE: string = 'Ubuntu 18.04 LTS (2020-11-11)';
   private static START_BUTTON: string = 'startVMButton';
   private static OVERVIEW_BUTTON: string = 'goToOverviewButton';
   private static FLAVOR_ID: string = 'id_flavor_detail';
@@ -29,6 +29,7 @@ export class NewInstancePage {
   private static OPTIONAL_ACCORDION: string = 'optional_accordion';
   private static HOW_TO_CONNECT: string = 'how_to_connect_id';
   private static HTC_VM_NAME: string = 'instance_name';
+  private static VM_RESPONSIBILITY: string = 'vm_responsibility'
   private static ADD_VOLUME_FORM_BUTTON: string = 'openAddVolumeFormButton';
   private static ADD_VOLUME_CONFIRMATION_BUTTON: string = 'addVolumeConfirmationButton';
 
@@ -74,6 +75,7 @@ export class NewInstancePage {
     await element(by.id(this.FLAVOR_ID)).element(by.id(`${this.FLAVOR_PREFIX}${flavor}`)).click();
     await Util.waitForPresenceOfElementById(this.IMAGE_ID, Util.LONG_TIMEOUT);
     await element(by.id(this.IMAGE_ID)).element(by.id(`${this.IMAGE_PREFIX}${image}`)).click();
+    await Util.clickElementById(this.VM_RESPONSIBILITY)
   }
 
   static async submitAndStartVM(): Promise<any> {
