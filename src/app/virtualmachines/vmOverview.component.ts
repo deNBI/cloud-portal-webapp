@@ -382,7 +382,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
               this.deleteVm(updated_vm)
             },
             this.checkStatusTimeout
-          )
+          );
         }
       },
       (error1: any): void => {
@@ -702,7 +702,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
           vm.setErrorMsgWithTimeout(this.SNAPSHOT_CREATING_ERROR_MSG, this.ERROR_TIMER);
 
         }
-      })
+      });
   }
 
   /**

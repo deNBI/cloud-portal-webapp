@@ -431,7 +431,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
               this.progress_bar_width = this.SEVENTY_FIVE;
             }
 
-            this.check_status_loop(id)
+            this.check_status_loop(id);
           } else {
             this.resetProgressBar();
             this.loadProjectData();

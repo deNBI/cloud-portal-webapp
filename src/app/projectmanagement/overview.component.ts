@@ -442,15 +442,13 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
           this.credits_allowed = aj['credits_allowed'];
 
           if (this.project_application) {
-
             this.applicationsservice.getApplicationPerunId(this.application_id).subscribe((id: any): void => {
               if (id['perun_id']) {
                 this.project_id = id['perun_id'];
-
                 this.getProject();
-
               }
-            })
+            });
+
             if (this.project_application?.project_modification_request) {
               this.project_modification = this.project_application.project_modification_request;
             } else {
@@ -903,7 +901,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
       }
       this.getUsedResources(groupid);
 
-    })
+    });
 
   }
 
