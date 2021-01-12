@@ -185,7 +185,7 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
         const facility: any = group['compute_center'];
         let shortname: string = group['shortname'];
         if (!shortname) {
-          shortname = group['name']
+          shortname = group['name'];
         }
         let compute_center: ComputecenterComponent = null;
         if (facility) {
@@ -221,7 +221,7 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
 
           newProject.LifetimeDays = lifetimeDays;
           newProject.DateEnd = expirationDate;
-          newProject.LifetimeReached = this.lifeTimeReached(lifetimeDays, dateDayDifference)
+          newProject.LifetimeReached = this.lifeTimeReached(lifetimeDays, dateDayDifference);
 
         }
 

@@ -573,7 +573,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
         if (newSnapshot.snapshot_openstackid) {
           this.snapshotDone = 'true';
           this.virtualMachine.status = VirtualMachineStates.IMAGE_PENDING_UPLOAD;
-          this.check_status_loop(VirtualMachineStates.ACTIVE, null, 10000)
+          this.check_status_loop(VirtualMachineStates.ACTIVE, null, 10000);
 
         } else {
           this.snapshotDone = 'error';
@@ -605,13 +605,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
     this.virtualmachineService.getVmById(this.vm_id).subscribe(
       (vm: VirtualMachine): void => {
         vm = new VirtualMachine(vm);
-        if (vm == null) {
-          this.isLoaded = false;
-          this.errorMessage = true;
-          // TODO: Redirect back to overview
-        } else {
-
-          this.playbookService.getPlaybookForVM(this.vm_id).subscribe((pb: Object): void => {
+        this.playbookService.getPlaybookForVM(this.vm_id).subscribe((pb: Object): void => {
             if (pb != null) {
               let pbs: string = pb['playbooks'].toString();
               if (pbs != null) {
@@ -634,10 +628,10 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
               }
             }
           });
-          this.checkAndGetForcDetails(vm);
-          this.title = vm['name'];
-          this.virtualMachine = vm;
-          this.biocondaService.getTemplateNameByVmName(vm).subscribe((backend: Backend): void => {
+        this.checkAndGetForcDetails(vm);
+        this.title = vm['name'];
+        this.virtualMachine = vm;
+        this.biocondaService.getTemplateNameByVmName(vm).subscribe((backend: Backend): void => {
             if (backend != null) {
               const template_name: string = backend.template;
               this.biocondaService.getForcTemplates(vm.client.id).subscribe((templates: any): void => {
@@ -651,16 +645,14 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
                 }
               });
             }
-          })
-          this.startDate = parseInt(this.virtualMachine.created_at, 10) * 1000;
-          this.stopDate = parseInt(this.virtualMachine.stopped_at, 10) * 1000;
-          this.stopDate = parseInt(this.virtualMachine.stopped_at, 10) * 1000;
-          this.getImageDetails(this.virtualMachine.projectid, this.virtualMachine.image);
-          this.getDetachedVolumesByVSelectedMProject();
-          this.checkVmVolumesStatus()
-
-          this.isLoaded = true;
-        }
+          });
+        this.startDate = parseInt(this.virtualMachine.created_at, 10) * 1000;
+        this.stopDate = parseInt(this.virtualMachine.stopped_at, 10) * 1000;
+        this.stopDate = parseInt(this.virtualMachine.stopped_at, 10) * 1000;
+        this.getImageDetails(this.virtualMachine.projectid, this.virtualMachine.image);
+        this.getDetachedVolumesByVSelectedMProject();
+        this.checkVmVolumesStatus();
+        this.isLoaded = true;
       }
     );
   }
