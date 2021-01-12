@@ -12,6 +12,7 @@ import {WIKI_EXTEND_VOLUME, WIKI_VOLUME_OVERVIEW} from '../../../links/links';
 import {forkJoin, Subject, Subscription} from 'rxjs';
 import {VolumeStates} from './volume_states';
 import {debounceTime, distinctUntilChanged, switchMap} from 'rxjs/operators';
+import {VirtualMachineStates} from '../virtualmachinemodels/virtualmachinestates';
 
 /**
  * Volume overview component.
@@ -143,6 +144,9 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
   isSearching: boolean = true;
   all_volumes_checked: boolean = false;
   selected_volumes_to_detach: boolean = false;
+  VOLUME_END_STATES: string[] = [VolumeStates.AVAILABLE, VolumeStates.NOT_FOUND,
+    VolumeStates.IN_USE, VirtualMachineStates.DELETED,
+    VirtualMachineStates.DELETING_FAILED]
 
   constructor(private facilityService: FacilityService, private groupService: GroupService, private vmService: VirtualmachineService) {
     super();
@@ -191,21 +195,44 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
   }
 
   deleteSelectedVolumes(): void {
-    this.checked_volumes.forEach((vol: Volume): void => {
-        this.deleteVolume(vol, false)
+    const delete_vols: Volume[] = this.checked_volumes;
+    const vol_ids: string[] = this.checked_volumes.map((vol: Volume): string => {
+      vol.volume_status = VolumeStates.DELETING;
+
+      return vol.volume_openstackid
 
     });
+    this.vmService.deleteVolumes(vol_ids).subscribe((): void => {
+                                                      delete_vols.forEach((vol: Volume): void => {
+                                                        vol.volume_status = VolumeStates.DELETED;
+
+                                                      })
+                                                    }
+    )
+
     this.uncheckAll()
   }
 
   detachSelectedVolumes(): void {
-    this.checked_volumes.forEach((vol: Volume): void => {
-
+    const detach_vols: Volume[] = this.checked_volumes;
+    const vol_ids: string[] = this.checked_volumes.map((vol: Volume): string => {
       if (vol.volume_virtualmachine) {
-        this.detachVolume(vol, vol.volume_virtualmachine.openstackid)
+        vol.volume_status = VolumeStates.DETACHING;
+
+        return vol.volume_openstackid
       }
+
     });
+    this.vmService.deleteVolumeAttachments(vol_ids).subscribe((): void => {
+                                                                detach_vols.forEach((vol: Volume): void => {
+                                                                  this.check_status_loop(vol, 2000, VolumeStates.AVAILABLE)
+
+                                                                })
+                                                              }
+    )
+
     this.uncheckAll()
+
   }
 
   areAllVolumesChecked(): void {
@@ -313,7 +340,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
         } else {
           this.volume_action_status = this.volumeActionStates.ERROR;
         }
-        this.check_status_loop(volume, 0)
+        this.check_status_loop(volume, 2000, VolumeStates.IN_USE)
       },
       (error: any): void => {
         if (error['error']['error'] === '409') {
@@ -451,68 +478,13 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
     })
   }
 
-  deleteVolume(volume: Volume, splice: boolean = true): void {
-    const idx: number = this.volumes.indexOf(volume);
+  deleteVolume(volume: Volume): void {
+    volume.volume_status = VolumeStates.DELETING;
+    this.vmService.deleteVolume(volume.volume_openstackid).subscribe(
+      (): void => {
+        volume.volume_status = VolumeStates.DELETED;
 
-    if (volume.volume_virtualmachine) {
-      volume.volume_status = VolumeStates.DETACHING;
-      this.vmService.deleteVolumeAttachment(volume.volume_openstackid, volume.volume_virtualmachine.openstackid).subscribe(
-        (res: IResponseTemplate): void => {
-          if (res.value === 'deleted') {
-            this.volume_action_status = this.volumeActionStates.WAITING;
-          }
-          volume.volume_status = VolumeStates.DELETING;
-
-          this.vmService.deleteVolume(volume.volume_openstackid).subscribe((result: IResponseTemplate): void => {
-            if (result.value === 'deleted') {
-              volume.volume_status = VolumeStates.DELETED
-              this.volume_action_status = this.volumeActionStates.SUCCESS;
-            } else {
-              this.volume_action_status = this.volumeActionStates.ERROR;
-            }
-            if (splice) {
-              this.volumes.splice(idx, 1)
-            }
-          })
-        },
-        (error: any): void => {
-          if (error['error']['error'] === '409') {
-            volume.error_msg = 'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.';
-            setTimeout((): void => {
-                         volume.error_msg = null;
-                       },
-                       5000);
-          }
-          this.check_status_loop(volume, 0)
-        }
-      )
-
-    } else {
-      volume.volume_status = VolumeStates.DELETING;
-      this.vmService.deleteVolume(volume.volume_openstackid).subscribe(
-        (result: IResponseTemplate): void => {
-          if (result.value === 'deleted') {
-            volume.volume_status = VolumeStates.DELETED
-            this.volume_action_status = this.volumeActionStates.SUCCESS;
-          } else {
-            this.volume_action_status = this.volumeActionStates.ERROR;
-          }
-          if (splice) {
-            this.volumes.splice(idx, 1)
-          }
-
-        },
-        (error: any): void => {
-          if (error['error']['error'] === '409') {
-            volume.error_msg = 'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.';
-            setTimeout((): void => {
-                         volume.error_msg = null;
-                       },
-                       5000);
-          }
-          this.check_status_loop(volume, 0);
-        })
-    }
+      })
   }
 
   /**
@@ -636,7 +608,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
               this.volumes[idx] = vol;
             }
             // tslint:disable-next-line:max-line-length
-            if (vol.volume_status !== VolumeStates.AVAILABLE && vol.volume_status !== VolumeStates.NOT_FOUND && vol.volume_status !== VolumeStates.IN_USE && vol.volume_status !== final_state) {
+            if (this.VOLUME_END_STATES.indexOf(vol.volume_status) === -1 && final_state !== vol.volume_status) {
               this.check_status_loop(this.volumes[idx], this.checkStatusTimeout, final_state)
             }
           }))

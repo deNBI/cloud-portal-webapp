@@ -3,7 +3,7 @@ updates:
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
-      interval: "weekly"
+        interval: "weekly"
     target-branch: "dev"
     reviewers:
       - "deNBI/portal-dev"
@@ -12,10 +12,11 @@ updates:
       include: "scope"
     open-pull-requests-limit: 15
 
+
   - package-ecosystem: "docker"
     directory: "/"
     schedule:
-      interval: "weekly"
+        interval: "weekly"
     target-branch: "dev"
     reviewers:
       - "deNBI/portal-dev"

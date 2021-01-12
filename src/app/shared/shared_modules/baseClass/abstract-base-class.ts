@@ -174,4 +174,8 @@ export abstract class AbstractBaseClasse {
     document.execCommand('copy');
   }
 
+  isASCII(testString: string): boolean {
+    return /^[\x00-\x7F]*$/.test(testString);
+  }
+
 }

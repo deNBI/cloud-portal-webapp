@@ -69,6 +69,8 @@ export class AddClusterComponent implements OnInit {
 
   maxWorkerInstances: number;
 
+  singleProject: boolean = false;
+
   /**
    * Selected Flavor.
    */
@@ -110,7 +112,7 @@ export class AddClusterComponent implements OnInit {
    * All projects of the user.
    * @type {any[]}
    */
-  projects: string[] = [];
+  projects: [string, number][] = [];
 
   /**
    * If all project data is loaded.
@@ -164,7 +166,6 @@ export class AddClusterComponent implements OnInit {
     });
 
     this.flavors_loaded = true;
-
   }
 
   calcMaxWorkerInstancesByFlavor(): void {
@@ -345,6 +346,12 @@ export class AddClusterComponent implements OnInit {
       for (const project of membergroups) {
         this.projects.push(project);
 
+      }
+
+      if (this.projects.length === 1) {
+        this.selectedProject = this.projects[0];
+        this.singleProject = true;
+        this.getSelectedProjectClient();
       }
       this.isLoaded = true;
     })

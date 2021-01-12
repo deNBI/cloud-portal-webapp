@@ -42,6 +42,8 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
   production: boolean = environment.production;
   dissemination_information_open: boolean = true;
   invalid_shortname: boolean = false;
+  invalid_longname: boolean = false;
+  invalid_description: boolean = false;
   simple_vm_min_vm: boolean = false;
   error: string[];
 
@@ -227,6 +229,14 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
    */
   public checkShortname(shortname: string): void {
     this.invalid_shortname = !/^[a-zA-Z0-9\s]*$/.test(shortname);
+  }
+
+  public checkLongname(longname: string): void {
+    this.invalid_longname = !this.isASCII(longname);
+  }
+
+  public checkDescription(description: string): void {
+    this.invalid_description = !this.isASCII(description);
   }
 
   /**

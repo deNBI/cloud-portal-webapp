@@ -28,6 +28,7 @@ import {ClipboardService} from 'ngx-clipboard';
 import {Volume} from '../volumes/volume';
 import {VolumeStates} from '../volumes/volume_states';
 import {Condalog} from '../conda/condalog';
+import {Backend} from '../conda/backend/backend';
 
 /**
  * VM Detail page component
@@ -60,6 +61,10 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
   res_env_url: string = '';
   filteredMembers: any = null;
   backend_users: any = [];
+  extendDone: boolean = false;
+  VOLUME_END_STATES: string[] = [VolumeStates.AVAILABLE, VolumeStates.NOT_FOUND,
+    VolumeStates.IN_USE, VirtualMachineStates.DELETED,
+    VirtualMachineStates.DELETING_FAILED]
 
   is_vo_admin: boolean = is_vo;
   WIKI_RSTUDIO_LINK: string = WIKI_RSTUDIO_LINK;
@@ -200,6 +205,74 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
     })
   }
 
+  checkVmVolumesStatus(): void {
+
+    this.virtualMachine.volumes.forEach((vol: Volume): void => {
+      // tslint:disable-next-line:max-line-length
+      if (vol.volume_status !== VolumeStates.AVAILABLE && vol.volume_status !== VolumeStates.NOT_FOUND && vol.volume_status !== VolumeStates.IN_USE) {
+
+        this.check_status_loop_vol(vol)
+      }
+    })
+  }
+
+  check_status_loop_vol(volume: Volume, initial_timeout: number = this.checkStatusTimeout, final_state?: string, expected_storage?: number):
+    void {
+    const created: boolean = volume.volume_created_by_user;
+
+    setTimeout(
+      (): void => {
+        const idx: number = this.virtualMachine.volumes.indexOf(volume);
+        if (volume.volume_openstackid) {
+
+          this.virtualmachineService.getVolumeById(volume.volume_openstackid).subscribe((vol: Volume): void => {
+            if (expected_storage && vol.volume_storage !== expected_storage) {
+              return this.check_status_loop_vol(volume, this.checkStatusTimeout, final_state, expected_storage);
+            } else if (expected_storage && vol.volume_storage === expected_storage) {
+              this.extendDone = true;
+            }
+            if (volume.error_msg !== '' && volume.error_msg !== undefined && volume.error_msg !== null) {
+              vol.error_msg = volume.error_msg;
+              setTimeout((): void => {
+                           vol.error_msg = null;
+                         },
+                         5000);
+            }
+            if (idx > -1) {
+              vol.volume_created_by_user = created;
+              this.virtualMachine.volumes[idx] = vol;
+            }
+            // tslint:disable-next-line:max-line-length
+            if (this.VOLUME_END_STATES.indexOf(vol.volume_status) === -1 && final_state !== vol.volume_status) {
+              this.check_status_loop_vol(this.virtualMachine.volumes[idx], this.checkStatusTimeout, final_state)
+            }
+          })
+        } else {
+          // tslint:disable-next-line:max-line-length
+          this.virtualmachineService.getVolumeByNameAndVmName(volume.volume_name, volume.volume_virtualmachine.name).subscribe((vol: Volume): void => {
+            if (volume.error_msg !== '' && volume.error_msg !== undefined && volume.error_msg !== null) {
+              vol.error_msg = volume.error_msg;
+              setTimeout((): void => {
+                           vol.error_msg = null;
+                         },
+                         5000);
+            }
+            if (idx > -1) {
+              vol.volume_created_by_user = created;
+              this.virtualMachine.volumes[idx] = vol;
+            }
+            // tslint:disable-next-line:max-line-length
+            if (vol.volume_status !== VolumeStates.AVAILABLE && vol.volume_status !== VolumeStates.NOT_FOUND && vol.volume_status !== VolumeStates.IN_USE && vol.volume_status !== final_state) {
+              this.check_status_loop_vol(this.virtualMachine.volumes[idx], this.checkStatusTimeout, final_state)
+            }
+          })
+
+        }
+      },
+      initial_timeout
+    )
+  }
+
   /**
    * Delete VM.
    * @param vm which will be deleted
@@ -322,7 +395,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
    * @param final_state
    * @param is_selected_vm If the vm should be the selected vm
    */
-  check_status_loop(final_state: string, is_selected_vm?: boolean): void {
+  check_status_loop(final_state: string, is_selected_vm?: boolean, timeout: number = this.checkStatusTimeout): void {
 
     setTimeout(
       (): void => {
@@ -369,7 +442,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
         }
       }
       ,
-      this.checkStatusTimeout
+      timeout
     )
     ;
   }
@@ -470,7 +543,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
           case VirtualMachineStates.ACTIVE:
             this.status_changed = 1;
             break;
-          case VirtualMachineStates.RESTARTING:
+          case VirtualMachineStates.POWERING_ON:
             this.check_status_loop(VirtualMachineStates.ACTIVE, true);
             break;
           default:
@@ -499,9 +572,13 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
       (newSnapshot: SnapshotModel): void => {
         if (newSnapshot.snapshot_openstackid) {
           this.snapshotDone = 'true';
+          this.virtualMachine.status = VirtualMachineStates.IMAGE_PENDING_UPLOAD;
+          this.check_status_loop(VirtualMachineStates.ACTIVE, null, 10000)
 
         } else {
           this.snapshotDone = 'error';
+          this.check_status_loop(VirtualMachineStates.ACTIVE)
+
         }
 
       },
@@ -560,9 +637,9 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
           this.checkAndGetForcDetails(vm);
           this.title = vm['name'];
           this.virtualMachine = vm;
-          this.biocondaService.getTemplateNameByVmName(vm).subscribe((tname: any): void => {
-            if (tname != null) {
-              const template_name: string = tname['template'];
+          this.biocondaService.getTemplateNameByVmName(vm).subscribe((backend: Backend): void => {
+            if (backend != null) {
+              const template_name: string = backend.template;
               this.biocondaService.getForcTemplates(vm.client.id).subscribe((templates: any): void => {
                 if (templates != null) {
                   for (const temp of templates) {
@@ -580,6 +657,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
           this.stopDate = parseInt(this.virtualMachine.stopped_at, 10) * 1000;
           this.getImageDetails(this.virtualMachine.projectid, this.virtualMachine.image);
           this.getDetachedVolumesByVSelectedMProject();
+          this.checkVmVolumesStatus()
 
           this.isLoaded = true;
         }
@@ -602,27 +680,13 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
   }
 
   checkAndGetForcDetails(vm: VirtualMachine): void {
-    const checkForForc: boolean = true;
     // for (const mode of vm.modes) {
     //   if (TemplateNames.ALL_TEMPLATE_NAMES.indexOf(mode.name) !== -1) {
     //     checkForForc = false;
     //   }
     // }
-    if (checkForForc) {
-      this.groupService.getClientForcUrl(vm.client.id, 'true').subscribe((response: JSON): void => {
-        if (response['forc_url'] !== null) {
-          this.virtualmachineService.getLocationUrl(vm.openstackid)
-            .subscribe((url: any): void => {
-              if (url !== '') {
-                vm.res_env_url = `${response['forc_url']}${url}/`;
-              } else {
-                vm.res_env_url = '';
-              }
-            });
-        }
-      });
-      this.getUsersForBackend();
-    }
+
+    this.getUsersForBackend();
 
   }
 
