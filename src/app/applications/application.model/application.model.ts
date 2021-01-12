@@ -119,7 +119,7 @@ export class Application {
         this.dissemination = new ApplicationDissemination(aj.dissemination);
         this.project_application_report_allowed = this.dissemination.someAllowed();
       }
-      this.setDaysRunning()
+      this.setDaysRunning();
 
       if (aj.project_lifetime_request) {
         this.project_lifetime_request = new ApplicationLifetimeExtension(aj.project_lifetime_request);

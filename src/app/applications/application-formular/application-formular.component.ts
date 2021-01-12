@@ -180,9 +180,9 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
       this.valuesToConfirm.push('Dissemination allowed: No');
     } else {
       // tslint:disable-next-line:prefer-template
-      this.valuesToConfirm.push('Dissemination allowed on: ' + this.application.dissemination.allowed_informations.join(', '))
+      this.valuesToConfirm.push('Dissemination allowed on: ' + this.application.dissemination.allowed_informations.join(', '));
       // tslint:disable-next-line:prefer-template
-      this.valuesToConfirm.push('Platforms for Dissemination: ' + this.application.dissemination.allowed_platforms.join(', '))
+      this.valuesToConfirm.push('Platforms for Dissemination: ' + this.application.dissemination.allowed_platforms.join(', '));
     }
     if (!this.application.project_application_sensitive_data) {
       this.valuesToConfirm.push('Sensitive Data: No');
@@ -413,7 +413,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
           true,
           'danger');
         this.notificationModalStay = true;
-      })
+      });
 
   }
 
