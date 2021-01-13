@@ -125,6 +125,7 @@ export class ResourcesComponent implements OnInit {
   }
 
   onChangeSelectedFacility(): void {
+    this.setAllTabsFalse()
     this.getSelectedFacilityResources()
   }
 
