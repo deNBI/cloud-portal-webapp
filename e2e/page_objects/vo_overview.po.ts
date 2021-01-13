@@ -1,4 +1,4 @@
-import {browser, by, element, ElementFinder} from 'protractor';
+import {browser, by, element} from 'protractor';
 import {Util} from '../util';
 
 /**

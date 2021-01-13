@@ -51,7 +51,7 @@ export class ApplicationDetailComponent extends ApplicationBaseClassComponent im
 
   setTab(tab_num: number): void {
 
-    this.setAllTabsFalse()
+    this.setAllTabsFalse();
     switch (tab_num) {
       case this.PI_USER_TAB:
         this.PI_USER_TAB_ACTIVE = true;

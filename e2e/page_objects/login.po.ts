@@ -19,7 +19,7 @@ export class LoginPage {
       console.log('Need to relog');
       await this.logOut();
       await browser.waitForAngularEnabled(false);
-      await LoginPage.login(email, psw, auth)
+      await LoginPage.login(email, psw, auth);
     } else if (auth === 'google') {
       console.log('Login with Google');
       await this.useGoogle(email, psw);

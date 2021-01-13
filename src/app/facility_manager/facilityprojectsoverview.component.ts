@@ -149,7 +149,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
         const lifetime: number = group['lifetime'];
 
         if (!shortname) {
-          shortname = group['name']
+          shortname = group['name'];
         }
         if (tmp_facility) {
           compute_center = new ComputecenterComponent(
@@ -179,7 +179,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 
           newProject.LifetimeDays = lifetimeDays;
           newProject.DateEnd = expirationDate;
-          newProject.LifetimeReached = this.lifeTimeReached(lifetimeDays, dateDayDifference)
+          newProject.LifetimeReached = this.lifeTimeReached(lifetimeDays, dateDayDifference);
 
         }
         newProject.RealName = group['name'];
@@ -293,7 +293,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
         const lifetime: number = group['lifetime'];
 
         if (!shortname) {
-          shortname = group['name']
+          shortname = group['name'];
         }
         if (tmp_facility) {
           compute_center = new ComputecenterComponent(
@@ -323,7 +323,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 
           newProject.LifetimeDays = lifetimeDays;
           newProject.DateEnd = expirationDate;
-          newProject.LifetimeReached = this.lifeTimeReached(lifetimeDays, dateDayDifference)
+          newProject.LifetimeReached = this.lifeTimeReached(lifetimeDays, dateDayDifference);
 
         }
         newProject.RealName = group['name'];

@@ -60,6 +60,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
   https_allowed: boolean = false;
   udp_allowed: boolean = false;
   install_mosh: boolean = false;
+  vm_responsibility: boolean = false;
   is_vo: boolean = false;
   hasTools: boolean = false;
   gaveOkay: boolean = false;
@@ -431,7 +432,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
               this.progress_bar_width = this.SEVENTY_FIVE;
             }
 
-            this.check_status_loop(id)
+            this.check_status_loop(id);
           } else {
             this.resetProgressBar();
             this.loadProjectData();
@@ -469,7 +470,6 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
       } else {
         play_information = null;
       }
-      const user_key_url: string = null;
 
       if (!this.mosh_mode_available) {
         this.udp_allowed = false;

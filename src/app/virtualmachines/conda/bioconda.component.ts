@@ -109,7 +109,7 @@ export class BiocondaComponent implements OnInit {
                                   name: line,
                                   versions: packages_dic[line]['versions'],
                                   home: packages_dic[line]['home']
-                                })
+                                });
           }
         }
         this.toolsPerPage = res['items_per_page'];
@@ -138,7 +138,7 @@ export class BiocondaComponent implements OnInit {
                             name: line,
                             versions: packages_dic[line]['versions'],
                             home: packages_dic[line]['home']
-                          })
+                          });
     }
     this.toolsPerPage = res['items_per_page'];
     this.total_pages = res['total_items'];
