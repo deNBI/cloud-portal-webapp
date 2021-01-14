@@ -12,9 +12,9 @@ import {FullLayoutComponent} from '../../layouts/full-layout.component';
 import {CreditsService} from '../../api-connector/credits.service';
 import {Application} from '../application.model/application.model';
 import {is_vo} from '../../shared/globalvar';
-import {UserService} from "../../api-connector/user.service";
-import {UserInfo} from "os";
-import {Userinfo} from "../../userinfo/userinfo.model";
+import {UserService} from '../../api-connector/user.service';
+import {UserInfo} from 'os';
+import {Userinfo} from '../../userinfo/userinfo.model';
 
 /**
  * Application formular component.
@@ -364,7 +364,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
             this.notificationModalStay = false;
 
           },
-          (): void => {
+                                                 (): void => {
             this.updateNotificationModal(
               'Failed',
               'The application was not successfully approved.',
