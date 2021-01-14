@@ -665,9 +665,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 
   checkVmTillActive(): void {
     this.vms_content.forEach((vm: VirtualMachine): void => {
-      if (vm.status === VirtualMachineStates.DELETING_FAILED) {
-        this.deleteVm(vm)
-      } else if (vm.status !== VirtualMachineStates.DELETED) {
+    if (vm.status !== VirtualMachineStates.DELETED) {
         this.check_status_loop(vm, null, null, 1000);
       }
     })
