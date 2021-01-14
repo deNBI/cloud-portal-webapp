@@ -1,4 +1,3 @@
-import {by, element} from 'protractor';
 import {Util} from '../util';
 
 /**

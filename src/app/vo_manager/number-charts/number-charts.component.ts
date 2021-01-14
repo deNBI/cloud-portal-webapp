@@ -1,6 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {is_vo} from '../../shared/globalvar';
-import * as d3 from 'd3';
+import {Component, OnInit} from '@angular/core';
 import {NumbersService} from '../../api-connector/numbers.service';
 import * as c3 from 'c3';
 import {jsPDF} from 'jspdf';
@@ -102,10 +100,7 @@ export class NumberChartsComponent implements OnInit {
     html2canvas(document.getElementById(elementId)).then((canvas: HTMLCanvasElement): void => {
       // Few necessary setting options
       const imgWidth: number = 208;
-      const pageHeight: number = 295;
       const imgHeight: number = canvas.height * imgWidth / canvas.width;
-      const heightLeft: number = imgHeight;
-
       const contentDataURL: string = canvas.toDataURL('image/png');
       const pdf: jsPDF = new jsPDF('p', 'mm', 'a4'); // A4 size page of PDF
       const position: number = 0;

@@ -204,7 +204,6 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
   }
 
   check_status_loop_volume(volume: Volume, initial_timeout: number = this.checkStatusTimeout, final_state?: string): void {
-    const created: boolean = volume.volume_created_by_user;
 
     setTimeout(
       (): void => {
@@ -383,7 +382,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
               this.deleteVm(updated_vm)
             },
             this.checkStatusTimeout
-          )
+          );
         }
       },
       (error1: any): void => {
@@ -703,7 +702,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
           vm.setErrorMsgWithTimeout(this.SNAPSHOT_CREATING_ERROR_MSG, this.ERROR_TIMER);
 
         }
-      })
+      });
   }
 
   /**
