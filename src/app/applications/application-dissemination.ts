@@ -26,7 +26,7 @@ export class ApplicationDissemination {
       this._platform_denbi = diss.platform_denbi;
       this._platform_twitter = diss.platform_twitter;
       this._information_title = diss.information_title;
-      this._information_edam_terms = diss.information_edam_terms
+      this._information_edam_terms = diss.information_edam_terms;
       this._information_resources = diss.information_resources;
       this._information_pi_name = diss.information_pi_name;
       this._information_institution = diss.information_institution;
