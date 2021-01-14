@@ -12,6 +12,9 @@ import {FullLayoutComponent} from '../../layouts/full-layout.component';
 import {CreditsService} from '../../api-connector/credits.service';
 import {Application} from '../application.model/application.model';
 import {is_vo} from '../../shared/globalvar';
+import {UserService} from "../../api-connector/user.service";
+import {UserInfo} from "os";
+import {Userinfo} from "../../userinfo/userinfo.model";
 
 /**
  * Application formular component.
@@ -20,7 +23,7 @@ import {is_vo} from '../../shared/globalvar';
              selector: 'app-application-formular',
              templateUrl: './application-formular.component.html',
              styleUrls: ['./application-formular.component.scss'],
-             providers: [FlavorService, ApplicationsService, CreditsService]
+             providers: [FlavorService, ApplicationsService, CreditsService, UserService]
            })
 export class ApplicationFormularComponent extends ApplicationBaseClassComponent implements OnInit {
 
@@ -65,9 +68,11 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
   public collapseList: boolean[];
 
   constructor(private creditsService: CreditsService,
-              private flavorService: FlavorService, private fullLayout: FullLayoutComponent,
-              applicationsservice: ApplicationsService) {
-    super(null, applicationsservice, null);
+              private flavorService: FlavorService,
+              private fullLayout: FullLayoutComponent,
+              private applicationsService: ApplicationsService,
+              private userService: UserService) {
+    super(null, applicationsService, null);
 
   }
 
@@ -79,7 +84,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
     if (this.openstack_project) {
       this.simple_vm_min_vm = true;
     }
-    this.applicationsservice.getEdamOntologyTerms().subscribe((terms: EdamOntologyTerm[]): void => {
+    this.applicationsService.getEdamOntologyTerms().subscribe((terms: EdamOntologyTerm[]): void => {
       this.edam_ontology_terms = terms;
       this.initiateFormWithApplication();
     })
@@ -295,8 +300,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
   onSubmit(): void {
     this.error = null;
     this.submitting = true;
-
-    this.applicationsservice.addNewApplication(this.application).subscribe(
+    this.applicationsService.addNewApplication(this.application).subscribe(
       (application: Application): void => {
         this.clearApplication();
         this.submitting = false;
@@ -339,29 +343,38 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
   }
 
   approveApplication(form: NgForm): any {
-    this.calculateInitialCredits(form);
-    this.application_id = this.application.project_application_id;
-    this.applicationsservice.validateApplicationAsPIByHash(
-      this.hash, this.application).subscribe((): void => {
-                                               this.fullLayout.getGroupsEnumeration();
+    this.userService.getUserInfo().subscribe((userInformation: Userinfo): void => {
+      this.application.project_application_pi.elixir_id = userInformation.ElixirId;
+      console.log(userInformation.ElixirId);
+      this.userService.getMemberDetailsByElixirId(userInformation.ElixirId).subscribe((result: { [key: string]: string }): void => {
+        this.application.project_application_pi.username = `${result['firstName']} ${result['lastName']}`;
+        this.application.project_application_pi.email = result['email'];
+        console.log(this.application.project_application_pi);
+        this.calculateInitialCredits(form);
+        this.application_id = this.application.project_application_id;
+        this.applicationsService.validateApplicationAsPIByHash(
+          this.hash, this.application).subscribe((): void => {
+            this.fullLayout.getGroupsEnumeration();
 
-                                               this.updateNotificationModal(
-                                                 'Success',
-                                                 'The application was successfully approved.',
-                                                 true,
-                                                 'success');
-                                               this.notificationModalStay = false;
+            this.updateNotificationModal(
+              'Success',
+              'The application was successfully approved.',
+              true,
+              'success');
+            this.notificationModalStay = false;
 
-                                             },
-                                             (): void => {
-                                               this.updateNotificationModal(
-                                                 'Failed',
-                                                 'The application was not successfully approved.',
-                                                 true,
-                                                 'danger');
-                                               this.notificationModalStay = true;
+          },
+          (): void => {
+            this.updateNotificationModal(
+              'Failed',
+              'The application was not successfully approved.',
+              true,
+              'danger');
+            this.notificationModalStay = true;
 
-                                             })
+          });
+      });
+    });
   }
 
   /**
@@ -390,7 +403,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
     this.application.project_application_workgroup = 'TestApplication';
     this.application.project_application_initial_credits = 5952;
 
-    this.applicationsservice.addNewApplication(this.application).subscribe(
+    this.applicationsService.addNewApplication(this.application).subscribe(
       (application: Application): void => {
         this.clearApplication();
         this.submitting = false;
