@@ -34,7 +34,7 @@ export class ResourcesComponent implements OnInit {
   OBJECT_STORAGE_TAB: number = 3;
   VOLUME_STORAGE_TAB: number = 4;
 
-  RAM_TAB_ACTIVE: boolean = true;
+  RAM_TAB_ACTIVE: boolean = false;
   CORE_TAB_ACTIVE: boolean = false;
   GPU_TAB_ACTIVE: boolean = false;
   OBJECT_STORAGE_TAB_ACTIVE: boolean = false;
@@ -125,6 +125,7 @@ export class ResourcesComponent implements OnInit {
   }
 
   onChangeSelectedFacility(): void {
+    this.setAllTabsFalse()
     this.getSelectedFacilityResources()
   }
 
