@@ -15,7 +15,7 @@
             <button class="btn btn-warning" (click)="changeObjectStorageToUpdate(oF)">Update</button>
           </div>
         </div>
-        <div class="rTableCell col-1">{{oF.storage}}</div>
+        <div class="rTableCell col-1">{{oF.storage}} TB</div>
         <div class="rTableCell col">{{oF.description}}</div>
 
         <div class="rTableCell col-1"><i *ngIf="oF.public" class="fas fa-check" style="color: darkgreen;"></i>
@@ -35,8 +35,12 @@
             </button>
           </div>
         </div>
-        <div class="rTableCell col-1"><input type="text" [(ngModel)]="oF.storage" placeholder="Storage"
-                                             pattern="[0-9]+">
+        <div class="rTableCell col-1">
+          <div class="input-group">
+            <input type="text" [(ngModel)]="oF.storage" placeholder="Storage"
+                   pattern="[0-9]+">
+            <div class="input-group-append"><span class="input-group-text">TB</span></div>
+          </div>
         </div>
 
         <div class="rTableCell col"><textarea type="textfield" class="col" [(ngModel)]="oF.description"
@@ -55,9 +59,14 @@
                 *ngIf="storage.checkValidity()" class="btn btn-success">Save
         </button>
       </div>
-      <div class="rTableCell col-1"><input type="number" min="0" step="1"
-                                           placeholder="e.g 1" [(ngModel)]="newFactor.storage"
-                                           appMinAmount="0" appIntegerOrNull #storage></div>
+      <div class="rTableCell col-1">
+        <div class="input-group">
+          <input type="number" min="0" step="1"
+                 placeholder="e.g 1" [(ngModel)]="newFactor.storage"
+                 appMinAmount="0" appIntegerOrNull #storage>
+          <div class="input-group-append"><span class="input-group-text">TB</span></div>
+        </div>
+      </div>
 
       <div class="rTableCell col">
         <div >
