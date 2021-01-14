@@ -10,6 +10,8 @@ export class VirtualMachineStates extends GeneralStatusStates {
   private static readonly _BUILD: string = 'BUILD';
   private static readonly _POWERING_OFF: string = 'POWERING_OFF';
   private static readonly _POWERING_ON: string = 'POWERING_ON';
+  private static readonly _REBOOTING: string = 'REBOOT_STARTED';
+  private static readonly _REBOOTING_HARD: string = 'REBOOT_STARTED_HARD';
   private static readonly _PREPARE_PLAYBOOK_BUILD: string = 'PREPARE_PLAYBOOK_BUILD';
   private static readonly _BUILD_PLAYBOOK: string = 'BUILD_PLAYBOOK';
   private static readonly _PORT_CLOSED: string = 'PORT_CLOSED';
@@ -20,6 +22,8 @@ export class VirtualMachineStates extends GeneralStatusStates {
   private static readonly _SCHEDULING: string = 'SCHEDULING'
   private static readonly _PLANNED: string = 'PLANNED'
   private static readonly _IN_PROCESS_STATES: string[] = [
+    VirtualMachineStates._REBOOTING,
+    VirtualMachineStates._REBOOTING_HARD,
     VirtualMachineStates._IMAGE_UPLOADING,
     VirtualMachineStates._IMAGE_PENDING_UPLOAD,
     VirtualMachineStates._SCHEDULING,
@@ -46,6 +50,14 @@ export class VirtualMachineStates extends GeneralStatusStates {
     VirtualMachineStates._NOT_FOUND,
     VirtualMachineStates._ERROR
   ];
+
+  static get REBOOTING(): string {
+    return this._REBOOTING;
+  }
+
+  static get REBOOTING_HARD(): string {
+    return this._REBOOTING_HARD;
+  }
 
   static get BUILD(): string {
     return this._BUILD;
@@ -156,8 +168,8 @@ export class VirtualMachineStates extends GeneralStatusStates {
   }
 
    public get staticPOWERING_ON(): string {
-    return VirtualMachineStates.POWERING_ON;
-  }
+     return VirtualMachineStates.POWERING_ON;
+   }
 
   public get staticNOT_IN_PROCESS_STATE(): string[] {
     return VirtualMachineStates.NOT_IN_PROCESS_STATES;
@@ -165,5 +177,13 @@ export class VirtualMachineStates extends GeneralStatusStates {
 
   public get staticIN_PROCESS_STATE(): string[] {
     return VirtualMachineStates.IN_PROCESS_STATES;
+  }
+
+  public get staticREBOOTING(): string {
+    return VirtualMachineStates.REBOOTING;
+  }
+
+  public get staticREBOOTING_HARD(): string {
+    return VirtualMachineStates.REBOOTING_HARD;
   }
 }
