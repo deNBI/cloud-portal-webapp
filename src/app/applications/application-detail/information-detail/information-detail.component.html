@@ -43,23 +43,31 @@
     </td>
 
   </tr>
-  <tr>
+  <tr *ngIf="application?.project_application_horizon2020">
     <td>Horizon 2020</td>
     <td>
       {{application?.project_application_horizon2020}}
     </td>
   </tr>
-  <tr>
+  <tr *ngIf="application?.project_application_elixir_project">
+
     <td>Elixir Project</td>
     <td>
       {{application?.project_application_elixir_project}}
     </td>
 
   </tr>
-  <tr>
+  <tr *ngIf="application?.project_application_bmbf_project">
     <td>BMBF Project</td>
     <td>
       {{application?.project_application_bmbf_project}}
+    </td>
+
+  </tr>
+  <tr *ngIf="application?.project_application_nfdi">
+    <td>NFDI Project</td>
+    <td>
+      {{application?.project_application_nfdi}}
     </td>
 
   </tr>
