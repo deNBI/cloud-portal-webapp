@@ -8,5 +8,5 @@ export class ResearchEnvironment {
   logo_url: string;
   info_url: string;
   title: string;
-
+  incompatible_versions: string[];
 }
