@@ -634,6 +634,27 @@
                 <p>Is your project part of a BMBF project?</p>
               </div>
             </div>
+            <div class="form-group row">
+              <label class="col-md-4 form-control-label" for="id_project_application_bmbf_switch"><strong>NFDI</strong></label>
+              <div class="col-md-8">
+                <label id="id_project_application_nfdi_switch"
+                       class="switch switch-label switch-outline-primary-alt">
+                  <input type="checkbox" class="switch-input" #part_nfdi
+                         [defaultChecked]="application?.project_application_nfdi?.length > 1"
+                         (click)="toggleProjectPart(part_nfdi.checked, 'nfdi')">
+                  <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                  <span class="switch-handle"></span></label>
+                <input type="text" id="id_project_application_nfdi_project" *ngIf="part_nfdi.checked"
+                       name="project_application_nfdi_project" class="form-control"
+                       maxlength="2048" required minlength="2"
+                       [ngClass]="{
+                                'is-invalid': form.controls.project_application_nfdi?.invalid,
+                                'is-valid': form.controls.project_application_nfdi?.valid
+                                }"
+                       [(ngModel)]="application.project_application_nfdi" placeholder='Name of the project'>
+                <p>Is your project part of a NFDI project?</p>
+              </div>
+            </div>
 
 
             <div class="form-group row">
