@@ -84,17 +84,12 @@
     <div class="row col">
       <div *ngIf="selectedTemplate != undefinedTemplate" class="alert alert-warning col-12">
         This template is known to be incompatible with: <br>
-        <ng-container *ngIf="selectedTemplate.template_name === 'guacamole'">
-          - Ubuntu 16.04 <br>
-          - Ubuntu 20.04
+        <ng-container *ngIf="selectedTemplate.incompatible_versions.length !== 0">
+          <li *ngFor="let version of selectedTemplate.incompatible_versions">
+            {{version}}
+          </li>
         </ng-container>
-        <ng-container *ngIf="selectedTemplate.template_name === 'rstudio'">
-          - Ubuntu 20.04
-        </ng-container>
-        <ng-container *ngIf="selectedTemplate.template_name === 'theiaide'">
-          - Ubuntu 20.04
-        </ng-container>
-        <ng-container *ngIf="selectedTemplate.template_name === 'cwlab'">
+        <ng-container *ngIf="selectedTemplate.incompatible_versions.length === 0">
           No known incompatible Ubuntu versions.
         </ng-container>
         <br>
