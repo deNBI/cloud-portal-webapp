@@ -295,6 +295,9 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
   onSubmit(): void {
     this.error = null;
     this.submitting = true;
+    if (this.application.project_application_volume_counter <= 0 || this.application.project_application_volume_counter == null) {
+      this.application.project_application_volume_limit = 0;
+    }
 
     this.applicationsservice.addNewApplication(this.application).subscribe(
       (application: Application): void => {
