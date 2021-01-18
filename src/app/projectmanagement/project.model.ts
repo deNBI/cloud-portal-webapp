@@ -37,7 +37,7 @@ export class Project {
     this.UserIsAdmin = UserIsAdmin;
     this.UserIsPi = UserIsPi;
     this.ComputeCenter = ComputeCenter;
-    this.ApprovedCredits = ApprovedCredits;
-    this.CurrentCredits = CurrentCredits;
+    this.ApprovedCredits = Number(ApprovedCredits.toFixed(3));
+    this.CurrentCredits = Number(CurrentCredits.toFixed(3));
   }
 }
