@@ -719,6 +719,10 @@ $simplevmcolour: #00ADEF;
     overflow: visible;
   }
 
+  /*fix for projects disappearing */
+  .sidebar .nav-dropdown.open > .nav-dropdown-items{
+    max-height: unset !important;
+  }
 
   .sidebar .nav-dropdown.open .nav-link:hover
   {
