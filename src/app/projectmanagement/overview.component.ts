@@ -341,7 +341,9 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
       this.subscription.add(this.creditsService.getCurrentCreditsOfProject(
         this.project_application.project_application_perun_id.toString()).subscribe(
         (credits: number): void => {
-          this.current_credits = credits;
+          if (this.project != null) {
+            this.project.CurrentCredits = credits;
+          }
         },
         (err: Error): void => {
           console.log(err.message)
