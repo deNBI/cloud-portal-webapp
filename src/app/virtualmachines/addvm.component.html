@@ -617,7 +617,8 @@
           </p>
           <p *ngIf="!selectedImage">- The image you want to run on your VM
           </p>
-          <p *ngIf="!gaveOkay && (hasTools || install_mosh || resEnvOkayNeeded)">- Give your okay to the automated install process
+          <p *ngIf="!gaveOkay && (hasTools || install_mosh || resEnvOkayNeeded)">- Give your okay to the automated
+            install process
           </p>
           <p *ngIf="resEnvNeedsName">- An url name for your Research-Environment
           </p>
@@ -625,18 +626,20 @@
           </p>
 
         </div>
-        <div  class="alert alert-warning col-md-10" role="alert" style="margin: auto;">
-                  <input class="form-check-input"
-                         name="vm_responsibility"
-                         type="checkbox"
-                         id="vm_responsibility"
-                         [(ngModel)]="vm_responsibility"
-                         required
-                  >
-                  <label class="form-check-label"   for="vm_responsibility">
-                     I hereby confirm that I am responsible for the virtual machine and any action performed on it.
-                  </label>
-                </div>
+        <div
+          *ngIf="projectDataLoaded && selectedProjectRessources?.used_vms < selectedProjectRessources?.number_vms && (flavors?.length > 0  || selectedFlavor)"
+          class="alert alert-warning col-md-10" role="alert" style="margin: auto;">
+          <input class="form-check-input"
+                 name="vm_responsibility"
+                 type="checkbox"
+                 id="vm_responsibility"
+                 [(ngModel)]="vm_responsibility"
+                 required
+          >
+          <label class="form-check-label" for="vm_responsibility">
+            I hereby confirm that I am responsible for the virtual machine and any action performed on it.
+          </label>
+        </div>
         <div class="form-group row"
              *ngIf="projectDataLoaded && selectedProjectRessources?.used_vms < selectedProjectRessources?.number_vms && (flavors?.length > 0  || selectedFlavor)">
 
