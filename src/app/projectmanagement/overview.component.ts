@@ -483,7 +483,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
         });
   }
 
-
   public requestModification(): void {
 
     this.applicationsservice.requestModification(this.project_modification)
