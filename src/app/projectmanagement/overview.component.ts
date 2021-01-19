@@ -82,6 +82,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   errorMessage: string;
   terminate_confirmation_given: boolean = false;
 
+  application_progress = 0;
+
   /**
    * id of the extension status.
    * @type {number}
@@ -470,6 +472,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
             this.startUpdateCreditUsageLoop();
 
           }
+
           this.isLoaded = true;
         },
         (error: any): void => {
@@ -479,6 +482,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
                    Error Message: ${error.error.toString()}`;
         });
   }
+
 
   public requestModification(): void {
 

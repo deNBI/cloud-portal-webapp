@@ -25,6 +25,7 @@ import { ModificationDetailComponent } from './application-detail/modification-d
 import { CreditsExtensionDetailComponent } from './application-detail/credits-extension-detail/credits-extension-detail.component';
 import { LifetimeExtensionDetailComponent } from './application-detail/lifetime-extension-detail/lifetime-extension-detail.component';
 
+
 /**
  * Applications Module.
  */
