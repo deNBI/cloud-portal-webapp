@@ -3,7 +3,6 @@ import {ApplicationBaseClassComponent} from '../../shared/shared_modules/baseCla
 import {Application} from '../application.model/application.model';
 import {Application_States} from '../../shared/shared_modules/baseClass/abstract-base-class';
 
-
 /**
  * Components displays progress of given application.
  */

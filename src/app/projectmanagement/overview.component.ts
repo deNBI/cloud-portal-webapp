@@ -926,7 +926,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   }
 
   setSupportMails(project: Project): void {
-    if (typeof(project.ComputeCenter?.Support) !== "undefined" && project.ComputeCenter?.Support) {
+    if (typeof(project.ComputeCenter?.Support) !== 'undefined' && project.ComputeCenter?.Support) {
       this.supportMails = project.ComputeCenter.Support.toString().split(',');
     } else {
       this.supportMails = [];
