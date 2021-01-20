@@ -434,7 +434,7 @@
         </div>
       </div>
 
-      <div class="card" *ngIf="conda_logs['status'] !== null">
+      <div class="card" *ngIf="conda_logs && conda_logs.status !== null">
         <div class="card-header">
           Ansible/Conda/Research-environment logs
         </div>
