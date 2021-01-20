@@ -11,7 +11,7 @@
     <li class="list-group-item" [ngClass]="application_progress > 1 ? 'list-group-item-success' : ''"
         data-toggle="tooltip" data-placement="bottom"
         [attr.title]="application_progress > 1 ? 'The application is approved or submitted by a Principal Investigator.' :
-                  'The approval of the Principal Investigator is pending. Contact the Principal Investigator listed in the project application for further questions. '"
+                  'The approval of the Principal Investigator is pending. Contact the Principal Investigator who is responsible for the project for further questions. '"
     >Principal Investigator Review <i class="fas fa-chalkboard-teacher"></i></li>
     <li class="list-group-item" [ngClass]="application_progress > 2 ? 'list-group-item-success' : ''"
         data-toggle="tooltip" data-placement="bottom"
