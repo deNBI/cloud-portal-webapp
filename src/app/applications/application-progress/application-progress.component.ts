@@ -18,8 +18,9 @@ export class ApplicationProgressComponent extends ApplicationBaseClassComponent 
   @Input() application: Application;
   application_progress: number;
 
-  ngOnInit(): void{
+  ngOnInit(): void {
     this.calculateProgressState();
+    console.log(this.application.project_application_status);
   }
 
   calculateProgressState(): void {
