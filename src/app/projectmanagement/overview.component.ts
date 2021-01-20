@@ -81,9 +81,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
   errorMessage: string;
   terminate_confirmation_given: boolean = false;
-
-  application_progress = 0;
-
+  
   /**
    * id of the extension status.
    * @type {number}

@@ -11,13 +11,15 @@ import {Application_States} from "../../shared/shared_modules/baseClass/abstract
   providers: []
 })
 
+/**
+ * Components displays progress of given application.
+ */
 export class ApplicationProgressComponent extends ApplicationBaseClassComponent implements OnInit {
 
   @Input() application: Application;
-
   application_progress: number;
 
-  ngOnInit() {
+  ngOnInit(): void{
     this.calculateProgressState();
   }
 
