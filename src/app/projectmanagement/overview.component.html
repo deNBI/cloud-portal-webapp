@@ -38,6 +38,15 @@
         </div>
 
 
+        <div class="card-body" id="project_application_status_overview"
+             *ngIf="!project_application?.project_application_status?.includes(Application_States.APPROVED)">
+          <!-- <i class="fas fa-tasks"></i> -->
+          <app-application-progress [application]="project_application"></app-application-progress>
+
+        </div>
+
+
+
         <div class="card-body" *ngIf="project_application && (project?.UserIsPi ||project?.UserIsAdmin  || !project)">
           <div class="row">
             <div class="btn-group col-12">
@@ -121,6 +130,7 @@
       </div>
     </div>
 
+
     <div class="col-12"
          *ngIf="project && !(project_application | hasstatusinlist:Application_States.TERMINATED)
          && !(project_application | hasstatusinlist:Application_States.DECLINED)
@@ -152,6 +162,13 @@
             </a>
             {{project?.Name}}
           </h3>
+        </div>
+
+        <div class="card-body" id="project_application_status_overview_further"
+             *ngIf="!project_application?.project_application_status?.includes(Application_States.APPROVED)">
+          <!-- <i class="fas fa-tasks"></i> -->
+
+         <app-application-progress [application]="project_application"></app-application-progress>
         </div>
 
         <div class="card-body" id="projectMainInformationDiv"
