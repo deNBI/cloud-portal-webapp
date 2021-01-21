@@ -40,7 +40,8 @@ export class VirtualMachineStates extends GeneralStatusStates {
     VirtualMachineStates._PORT_CLOSED,
     VirtualMachineStates._CHECKING_CONNECTION,
     VirtualMachineStates._GETTING_STATUS,
-    VirtualMachineStates._PLANNED
+    VirtualMachineStates._PLANNED,
+    null
   ];
 
   private static readonly _NOT_IN_PROCESS_STATES: string[] = [
