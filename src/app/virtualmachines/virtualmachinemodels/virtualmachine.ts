@@ -18,7 +18,7 @@ export class VirtualMachine {
   name: string;
   client: Client;
   openstackid: string;
-  created_at: string;
+  created_at_date: string;
   still_used_confirmation_requested_date: Date;
   stopped_at: string;
   elixir_id: string;
@@ -49,7 +49,7 @@ export class VirtualMachine {
     this.name = vm.name;
     this.client = vm.client;
     this.openstackid = vm.openstackid;
-    this.created_at = vm.created_at;
+    this.created_at_date = vm.created_at_date;
     this.stopped_at = vm.stopped_at;
     this.elixir_id = vm.elixir_id;
     this.userlogin = vm.userlogin;
@@ -66,7 +66,6 @@ export class VirtualMachine {
     this.volumes = vm.volumes;
     this.still_used_confirmation_requested = vm.still_used_confirmation_requested;
     this.still_used_confirmation_requested_date = vm.still_used_confirmation_requested_date;
-    this.calculateCreatedAt();
     this.getTerminationStartDateString();
   }
 
@@ -80,15 +79,6 @@ export class VirtualMachine {
 
     return term_date.toLocaleDateString();
 
-  }
-
-  public calculateCreatedAt(): void {
-    if (this.created_at !== '') {
-      const date: Date = new Date(parseInt(this.created_at, 10) * 1000);
-
-      this.days_running = Math.round((Date.now() - date.getTime()) / (1000 * 60 * 60 * 24));
-      this.created_at = date.toLocaleDateString();
-    }
   }
 
   setErrorMsgWithTimeout(msg: string, timeout: number = 10000): void {
