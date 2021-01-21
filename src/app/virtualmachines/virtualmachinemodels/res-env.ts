@@ -9,4 +9,7 @@ export class ResearchEnvironment {
   info_url: string;
   title: string;
   incompatible_versions: string[];
+  information_for_display: {
+    [key: string]: string;
+  }
 }
