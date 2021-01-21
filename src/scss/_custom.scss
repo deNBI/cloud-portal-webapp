@@ -2,6 +2,12 @@
 @import "../node_modules/bootstrap/scss/bootstrap";
 
 
+// due to change from ngx-perfect-scrollbar to ngx-scrollbar
+
+.sidebar-minimized .sidebar .sidebar-nav{
+  padding-bottom: unset;
+}
+
 //c3 chart
 
 /*-- Chart --*/
