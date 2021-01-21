@@ -276,7 +276,6 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
     this.virtualmachineService.deleteVM(this.virtualMachine.openstackid).subscribe(
       (updated_vm: VirtualMachine): void => {
 
-
         updated_vm.cardState = 0;
         this.virtualMachine = updated_vm;
         if (updated_vm.status === VirtualMachineStates.DELETED) {
