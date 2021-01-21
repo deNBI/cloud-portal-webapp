@@ -18,7 +18,8 @@
 
 <div class="app-body">
   <app-sidebar class="sidebar">
-    <nav class="sidebar-nav" [perfectScrollbar]>
+    <nav class="sidebar-nav">
+      <ng-scrollbar visibility="hover">
       <ul class="nav">
         <li class="nav-title">
           Profile
@@ -527,6 +528,7 @@
 
 
       </ul>
+      </ng-scrollbar>
     </nav>
     <app-sidebar-minimizer (click)="setSidebarStatus()"></app-sidebar-minimizer>
 
