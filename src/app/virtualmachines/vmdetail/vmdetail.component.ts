@@ -48,8 +48,6 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
   conda_logs: Condalog;
   title: string = 'Instance Detail';
   image: Image;
-  startDate: number;
-  stopDate: number;
   VolumeStates: VolumeStates = new VolumeStates()
   virtualMachineStates: VirtualMachineStates = new VirtualMachineStates();
   virtualMachine: VirtualMachine;
@@ -188,10 +186,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
     this.virtualmachineService.checkVmStatus(this.virtualMachine.openstackid)
       .subscribe((updated_vm: VirtualMachine): void => {
 
-                   if (updated_vm.created_at !== '') {
-                     updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
-                   }
-                   this.virtualMachine = updated_vm;
+        this.virtualMachine = updated_vm;
                  }
       )
   }
@@ -281,9 +276,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
     this.virtualmachineService.deleteVM(this.virtualMachine.openstackid).subscribe(
       (updated_vm: VirtualMachine): void => {
 
-        if (updated_vm.created_at !== '') {
-          updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
-        }
+
         updated_vm.cardState = 0;
         this.virtualMachine = updated_vm;
         if (updated_vm.status === VirtualMachineStates.DELETED) {
@@ -405,9 +398,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
             this.virtualMachine.cardState = 0;
 
             if (updated_vm.status === final_state) {
-              if (updated_vm.created_at !== '') {
-                updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
-              }
+
               this.virtualMachine = updated_vm;
 
             } else {
@@ -425,9 +416,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
             this.virtualMachine.cardState = 0;
 
             if (updated_vm.status === final_state) {
-              if (updated_vm.created_at !== '') {
-                updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
-              }
+
               this.virtualMachine = updated_vm;
 
             } else {
@@ -460,11 +449,6 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
 
           if (updated_vm.status === VirtualMachineStates.ACTIVE) {
             this.reboot_done = true;
-
-            if (updated_vm.created_at !== '') {
-              updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
-            }
-
             this.virtualMachine = updated_vm;
 
           } else {
@@ -493,9 +477,6 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
         (updated_vm: VirtualMachine): void => {
           this.status_changed = 0;
 
-          if (updated_vm.created_at !== '') {
-            updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
-          }
           updated_vm.cardState = 0;
           this.virtualMachine = updated_vm;
 
@@ -534,9 +515,6 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
     this.virtualmachineService.resumeVM(this.virtualMachine.openstackid).subscribe(
       (updated_vm: VirtualMachine): void => {
         this.status_changed = 0;
-        if (updated_vm.created_at === '') {
-          updated_vm.created_at = new Date(parseInt(updated_vm.created_at, 10) * 1000).toLocaleDateString();
-        }
         updated_vm.cardState = 0;
         this.virtualMachine = updated_vm;
         switch (updated_vm.status) {
@@ -646,9 +624,6 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
               });
             }
           });
-        this.startDate = parseInt(this.virtualMachine.created_at, 10) * 1000;
-        this.stopDate = parseInt(this.virtualMachine.stopped_at, 10) * 1000;
-        this.stopDate = parseInt(this.virtualMachine.stopped_at, 10) * 1000;
         this.getImageDetails(this.virtualMachine.projectid, this.virtualMachine.image);
         this.getDetachedVolumesByVSelectedMProject();
         this.checkVmVolumesStatus();
