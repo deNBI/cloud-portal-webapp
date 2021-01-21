@@ -23,6 +23,8 @@ export class ResEnvComponent implements OnInit, OnChanges {
   @Input() selectedImageTags: string[] = [];
   @Input() blockedImageTagsResenv: BlockedImageTagResenv[];
 
+  Object: Object = Object;
+
   templates_to_block: string[] = [];
 
   user_key_url: FormControl = new FormControl('',
