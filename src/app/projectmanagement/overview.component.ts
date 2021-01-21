@@ -470,6 +470,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
             this.startUpdateCreditUsageLoop();
 
           }
+
           this.isLoaded = true;
         },
         (error: any): void => {
@@ -793,11 +794,11 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
         this.project_application.project_application_perun_id.toString()).subscribe((res: object): void => {
 
         const login: string = res['Login'];
-        const suport: string = res['Support'];
+        const support: string = res['Support'];
         const facilityname: string = res['Facility'];
         const facilityId: number = res['FacilityId'];
         if (facilityId) {
-          this.project_application.ComputeCenter = new ComputecenterComponent(facilityId.toString(), facilityname, login, suport);
+          this.project_application.ComputeCenter = new ComputecenterComponent(facilityId.toString(), facilityname, login, support);
         }
 
       })
@@ -925,7 +926,11 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   }
 
   setSupportMails(project: Project): void {
-    this.supportMails = project.ComputeCenter.Support.toString().split(',');
+    if (typeof(project.ComputeCenter?.Support) !== 'undefined' && project.ComputeCenter?.Support) {
+      this.supportMails = project.ComputeCenter.Support.toString().split(',');
+    } else {
+      this.supportMails = [];
+    }
   }
 
   /**
