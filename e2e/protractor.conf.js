@@ -52,7 +52,7 @@ exports.config = {
       args: ["--incognito"]
     }
   },
-  directConnect: true,
+  directConnect: true, //uncomment on macOS, also start webserver via webdriver-manager
   framework: 'jasmine',
   jasmineNodeOpts: {
     showColors: true,
