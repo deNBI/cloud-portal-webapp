@@ -5,7 +5,7 @@ import {FormularPage} from '../page_objects/application_formular.po';
 import {Util} from '../util';
 import {ProjectOverview} from '../page_objects/project_overview.po';
 
-describe('Simple Application Test', function (): void {
+describe('Simple Application Test without PI', function (): void {
 
   beforeAll(async function (): Promise<any> {
     await browser.waitForAngularEnabled(false);

@@ -42,7 +42,7 @@ export class FormularPage {
 
     // fill  Formular
     console.log('Fill form');
-    await Util.sendTextToElementByName('project_application_name', name);
+    await Util.sendTextToElementById('id_project_application_name', name);
     await Util.sendTextToElementByName('project_application_shortname', name);
     await Util.sendTextToElementByName('project_application_description', 'ProtractorTest Description');
     await Util.sendTextToElementByName('project_application_lifetime', '4');
