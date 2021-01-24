@@ -300,8 +300,9 @@ export class Util {
   static async clickOptionOfSelect(option: string, selectId: string): Promise<any> {
     console.log(`Getting option ${option} from select ${selectId}`);
     await this.waitForPresenceOfElementById(selectId);
+    await this.waitForPresenceOfElementById(selectId);
 
-    return await element(by.id(selectId)).element(by.id(option)).click();
+    await this.clickElementById(option)
   }
 
   static async waitForElementToBeClickableByName(name: string, timeout: number = this.timeout): Promise<boolean> {

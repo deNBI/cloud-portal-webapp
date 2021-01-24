@@ -11,6 +11,7 @@ export class VolumeOverviewPage {
 
   private static TABLE_ID: string = 'volume_table_body';
   private static VOLUME_NAME_CELL_ID_PREFIX: string = 'cell_name_id_';
+  private static VOLUME_DELETED_STATUS_BADE_PRE: string = 'deleted_badge_'
   private static VM_NAME_CELL_ID_PREFIX: string = 'cell_vm_id_';
   private static VM_CELL_FREE_ID: string = 'cell_vm_free_id';
   private static DELETE_BUTTON_PREFIX: string = 'delete_button_';
@@ -66,7 +67,8 @@ export class VolumeOverviewPage {
   static async isVolumeDeleted(): Promise<boolean> {
     await Util.waitForPresenceOfElementById(this.TABLE_ID);
 
-    return await Util.waitForAbsenceOfElementById(`${this.VOLUME_NAME_CELL_ID_PREFIX}${Util.VOLUME_NAME}`);
+    return Util.waitForPresenceOfElementById(`${this.VOLUME_DELETED_STATUS_BADE_PRE}${Util.VOLUME_NAME}`)
+
   }
 
   static async isVolumeAttachedToVM(name: string): Promise<boolean> {
