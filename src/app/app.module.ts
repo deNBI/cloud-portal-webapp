@@ -24,7 +24,7 @@ import {FullLayoutComponent} from './layouts/full-layout.component';
 import {RegistrationInfoComponent} from './registration-info.component';
 import {AsideToggleDirective} from './shared/aside.directive';
 import {SharedModuleModule} from './shared/shared_modules/shared-module.module';
-import {PerfectScrollbarModule} from 'ngx-perfect-scrollbar';
+import { NgScrollbarModule } from 'ngx-scrollbar';
 import {BreadcrumbsComponent} from './shared/breadcrumb.component';
 import {
   MobileSidebarToggleDirective,
@@ -53,7 +53,7 @@ import {PipeModuleModule} from './pipe-module/pipe-module.module';
                   AppHeaderModule,
                   AppFooterModule,
                   AppSidebarModule,
-                  PerfectScrollbarModule,
+                  NgScrollbarModule,
                   BrowserModule,
                   HttpClientModule,
                   AppRoutingModule,

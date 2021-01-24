@@ -13,6 +13,7 @@ import {ChartsModule} from 'ng2-charts';
 import {ProjectOsDetailsComponent} from './project-os-details/project-os-details.component';
 import {PipeModuleModule} from '../pipe-module/pipe-module.module';
 import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
+import {ApplicationProgressComponent} from '../applications/application-progress/application-progress.component';
 
 /**
  * Projectmanagment module.
@@ -34,8 +35,8 @@ import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
     ],
             declarations: [
               OverviewComponent,
-              ProjectOsDetailsComponent
-
+              ProjectOsDetailsComponent,
+              ApplicationProgressComponent
             ],
             exports: [
               ProjectOsDetailsComponent

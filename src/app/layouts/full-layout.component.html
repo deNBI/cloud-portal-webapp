@@ -18,7 +18,8 @@
 
 <div class="app-body">
   <app-sidebar class="sidebar">
-    <nav class="sidebar-nav" [perfectScrollbar]>
+    <nav class="sidebar-nav">
+      <ng-scrollbar visibility="hover">
       <ul class="nav">
         <li class="nav-title">
           Profile
@@ -90,7 +91,7 @@
           </a>
 
         </li>
-        <div *ngIf="project_enumeration?.length <= 2">
+        <div *ngIf="project_enumeration?.length <= 3">
           <li class="nav-item" *ngFor="let application of project_enumeration">
 
             <a *ngIf="!navbar_minimized" class="nav-link" routerLinkActive="active" [id]="application?.project_name"
@@ -197,7 +198,7 @@
 
           </li>
         </div>
-        <div *ngIf="project_enumeration?.length > 2" style="width:100% !important;">
+        <div *ngIf="project_enumeration?.length > 3" style="width:100% !important;">
           <li class="nav-item nav-dropdown" appNavDropdown>
             <a class="nav-link nav-dropdown-toggle" style="cursor: pointer;" appNavDropdownToggle
                [attr.data-placement]="navbar_minimized ? 'right' : null"
@@ -527,6 +528,7 @@
 
 
       </ul>
+      </ng-scrollbar>
     </nav>
     <app-sidebar-minimizer (click)="setSidebarStatus()"></app-sidebar-minimizer>
 
