@@ -91,7 +91,7 @@
           </a>
 
         </li>
-        <div *ngIf="project_enumeration?.length <= 2">
+        <div *ngIf="project_enumeration?.length <= 3">
           <li class="nav-item" *ngFor="let application of project_enumeration">
 
             <a *ngIf="!navbar_minimized" class="nav-link" routerLinkActive="active" [id]="application?.project_name"
@@ -198,7 +198,7 @@
 
           </li>
         </div>
-        <div *ngIf="project_enumeration?.length > 2" style="width:100% !important;">
+        <div *ngIf="project_enumeration?.length > 3" style="width:100% !important;">
           <li class="nav-item nav-dropdown" appNavDropdown>
             <a class="nav-link nav-dropdown-toggle" style="cursor: pointer;" appNavDropdownToggle
                [attr.data-placement]="navbar_minimized ? 'right' : null"
