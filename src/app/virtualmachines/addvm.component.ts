@@ -478,11 +478,14 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
       }
       this.delay(500).then((): any => {
         this.progress_bar_width = 50
-      }).catch((): any => {});
+      }).catch((): any => {
+      });
+      const additional_elixir_ids: string[] = this.members_to_add.map((mem: ProjectMember): string => mem.elixirId)
+
       this.virtualmachineservice.startVM(
         flavor_fixed, this.selectedImage, servername,
         project, projectid.toString(), this.http_allowed,
-        this.https_allowed, this.udp_allowed, this.volumesToMount, this.volumesToAttach, play_information)
+        this.https_allowed, this.udp_allowed, this.volumesToMount, this.volumesToAttach, play_information,additional_elixir_ids)
         .subscribe((newVm: VirtualMachine): void => {
           this.newVm = newVm;
           this.started_machine = false;
@@ -533,8 +536,6 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
       playbook_info[this.resEnvComponent.selectedTemplate.template_name] = {create_only_backend: `${this.resEnvComponent.getCreateOnlyBackend()}`};
       playbook_info['user_key_url'] = {user_key_url: this.resEnvComponent.getUserKeyUrl()};
     }
-
-    playbook_info['member_access'] = {elixir_ids_to_add: this.members_to_add.map((mem: ProjectMember): string => mem.elixirId).join(',')}
 
     if (this.udp_allowed && this.install_mosh) {
       playbook_info['optional'] = {mosh: 'install'};

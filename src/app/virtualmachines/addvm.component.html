@@ -501,7 +501,7 @@
                 selectedProjectRessources?.used_vms < selectedProjectRessources?.number_vms && (flavors?.length > 0 || selectedFlavor)"
                 >
                   <div accordion-heading style="width: 100%; cursor: pointer">
-                    <strong>Additional user access</strong>
+                    <strong>Grant access for specific project members of <em>{{selectedProject[0]}}</em></strong>
                     <i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
                             'icon-arrow-up': userAccess.isOpen, 'icon-arrow-down': !userAccess.isOpen}"></i>
                   </div>
