@@ -24,6 +24,7 @@ import {VirtualmachineService} from '../api-connector/virtualmachine.service';
 import {ApiSettings} from '../api-connector/api-settings.service';
 import {BlockedImageTagResenv} from '../facility_manager/image-tag';
 import {ApplicationRessourceUsage} from '../applications/application-ressource-usage/application-ressource-usage';
+import {ProjectMember} from '../projectmanagement/project_member.model';
 
 /**
  * Start virtualmachine component.
@@ -53,6 +54,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
   redirectProgress: string = '0';
 
   newVm: VirtualMachine = null;
+  members_to_add: ProjectMember[] = [];
   progress_bar_status: string = 'Creating..';
   progress_bar_animated: string = 'progress-bar-animated';
   progress_bar_width: number = 0;
@@ -532,8 +534,10 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
       playbook_info['user_key_url'] = {user_key_url: this.resEnvComponent.getUserKeyUrl()};
     }
 
+    playbook_info['member_access'] = {elixir_ids_to_add: this.members_to_add.map((mem: ProjectMember): string => mem.elixirId).join(',')}
+
     if (this.udp_allowed && this.install_mosh) {
-      playbook_info['optional'] = {mosh : 'install'};
+      playbook_info['optional'] = {mosh: 'install'};
     }
 
     return JSON.stringify(playbook_info);
