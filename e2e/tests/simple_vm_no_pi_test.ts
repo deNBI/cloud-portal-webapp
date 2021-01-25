@@ -44,8 +44,17 @@ describe('Simple Application Test without PI', function (): void {
     expect(isAbsent).toBeTruthy();
   });
 
+  it ('pi should successfully approve application', async function(): Promise<any> {
+    const validationHash: string = await ProjectOverview.copyPIHash();
+    await ProjectOverview.navigateToPIApproval(validationHash);
+    await FormularPage.approveByPI();
+    const mailPresent: boolean = await ProjectOverview.checkForPIApproval();
+    expect(mailPresent).toBeTruthy();
+  });
+
   it('should remove the application', async function(): Promise<any> {
     await ProjectOverview.removeApplication();
   });
-
 });
+
+//TODO: adjust clicking of show information (missing twice) + navigation problems under macos?

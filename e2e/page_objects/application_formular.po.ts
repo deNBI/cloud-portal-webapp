@@ -5,6 +5,8 @@ import {Util} from '../util';
  * Page object for the Application requests.
  */
 export class FormularPage {
+  private static SIDEBAR_NEW_PROJECT: string = 'sidebar_new_project';
+  private static NEW_SVM_BTN: string = 'newSimpleVMBtn';
   private static SUBMIT_BTN: string = 'submit_btn';
   private static VERIFICATION_BTN: string = 'verification_btn';
   private static ACKNOWLEDGE_BTN: string = 'acknowledge_approve_btn';
@@ -12,6 +14,8 @@ export class FormularPage {
   private static NOTIFICATION_MESSAGE: string = 'notification_message';
   public static NOTIFICATION_BTN_REDIRECT: string = 'notification_btn_redirect';
   private static NUMBER_FLAVORS: string = '3';
+  private static PI_RESPONSIBILITY: string = 'project_application_responsibility';
+  private static PI_APPROVAL_BUTTON: string = 'approveApplicationButtonPI';
 
   static async submitApplication(): Promise<any> {
     console.log('Submit Application');
@@ -22,6 +26,14 @@ export class FormularPage {
     console.log('Submitted Application');
   }
 
+  static async approveByPI(): Promise<any> {
+    console.log('Approving by PI');
+    await Util.waitForPresenceOfElementById(this.PI_RESPONSIBILITY);
+    await Util.clickElementById(this.PI_RESPONSIBILITY);
+    await Util.waitForPresenceOfElementById(this.PI_APPROVAL_BUTTON);
+    await Util.clickElementById(this.PI_APPROVAL_BUTTON);
+  }
+
   static async navigateToCloudApplication(): Promise<any> {
     await Util.navigateToAngularPage('applications/newCloudApplication');
 
@@ -29,9 +41,10 @@ export class FormularPage {
   }
 
   static async navigateToSimpleVmApplication(): Promise<any> {
-    await Util.navigateToAngularPage('applications/newSimpleVmApplication');
-    await Util.waitForPage('applications/newSimpleVmApplication');
-
+    await Util.waitForPresenceOfElementById(this.SIDEBAR_NEW_PROJECT);
+    await Util.clickElementById(this.SIDEBAR_NEW_PROJECT);
+    await Util.waitForPresenceOfElementById(this.NEW_SVM_BTN);
+    await Util.clickElementById(this.NEW_SVM_BTN);
   }
 
   static async isApplicationSubmitted(): Promise<any> {

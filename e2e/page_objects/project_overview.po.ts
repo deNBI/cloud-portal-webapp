@@ -6,11 +6,14 @@ import {browser} from 'protractor';
  */
 export class ProjectOverview {
 
+  private static PI_USER_TAB: string = 'pi_user_tab';
+  private static PI_EMAIL_FIELD: string = 'id_pi_email';
+  private static VALIDATION_HASH: string = 'validation_hash';
+  private static INFORMATION_TAB: string = 'information_tab';
   private static ADD_MEMBER_BTN_MODAL: string = 'add_member_btn_modal';
   private static SEARCH_MEMBER: string = 'add_member_input';
   private static DEFAULT_MEMBER_EMAIL: string = 'testuserdenbi'
   private static DEFAULT_MEMBER: string = 'Test User';
-  private static INFORMATION_TAB: string = 'information_tab'
   private static ADD_MEMBER_BTN: string = 'add_member_btn';
   private static SEARCH_MEMBER_BTN: string = 'search_member_btn';
   private static SUCCESS: string = 'Success';
@@ -56,6 +59,24 @@ export class ProjectOverview {
     await Util.clickElementById(Util.SIMPLE_VM_APPLICATION_NAME)
   }
 
+  static async navigateToPIApproval(validationHash: string): Promise<any> {
+    console.log('Navigating to Approval of PI');
+    await Util.navigateToAngularPage('applications/validation/'.concat(validationHash));
+  }
+
+  static async checkForPIApproval(): Promise<boolean> {
+    console.log('Checking if PI-Mail is present');
+    await Util.waitForPresenceOfElementById(this.PI_USER_TAB);
+    await Util.clickElementById(this.PI_USER_TAB);
+    await Util.waitForPresenceOfElementById(this.PI_EMAIL_FIELD);
+    const piMail: string = await Util.getElemTextById(this.PI_EMAIL_FIELD);
+    if (typeof(piMail) !== 'undefined' && piMail){
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   static async navigateToOpenStackeProjectverview(): Promise<any> {
     console.log('Navigating to openstack project overview');
     await Util.clickElementById(Util.OPENSTACK_APPLICATION_NAME)
@@ -76,6 +97,14 @@ export class ProjectOverview {
 
     return isPiAbsence
 
+  }
+
+  static async copyPIHash(): Promise<string> {
+    await Util.waitForPresenceOfElementById(this.INFORMATION_TAB);
+    await Util.clickElementById(this.INFORMATION_TAB);
+    await Util.waitForPresenceOfElementById(this.VALIDATION_HASH);
+    let validationHash: string = await Util.getElemTextById(this.VALIDATION_HASH);
+    return validationHash;
   }
 
   static async addMemberToProject(application_name: string, member: string = this.DEFAULT_MEMBER_EMAIL): Promise<any> {
