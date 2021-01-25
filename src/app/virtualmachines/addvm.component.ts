@@ -485,7 +485,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
       this.virtualmachineservice.startVM(
         flavor_fixed, this.selectedImage, servername,
         project, projectid.toString(), this.http_allowed,
-        this.https_allowed, this.udp_allowed, this.volumesToMount, this.volumesToAttach, play_information,additional_elixir_ids)
+        this.https_allowed, this.udp_allowed, this.volumesToMount, this.volumesToAttach, play_information, additional_elixir_ids)
         .subscribe((newVm: VirtualMachine): void => {
           this.newVm = newVm;
           this.started_machine = false;
