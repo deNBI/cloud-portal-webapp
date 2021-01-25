@@ -18,7 +18,7 @@ describe('Virtual Machine Tests', async function (): Promise<any> {
      await LoginPage.login(browser.params.login.email_user, browser.params.login.password_user, browser.params.login.auth_user, true);
   });
 
-  it('should start a basic vm', async function (): Promise<any> {
+  /*it('should start a basic vm', async function (): Promise<any> {
     Util.logHeader('------------------------------Start virtual machine tests: started');
     Util.logHeader('Trying to start a vm with denbi default and Ubuntu 18.04.');
     await NewInstancePage.getNewInstanceTab();
@@ -111,7 +111,7 @@ describe('Virtual Machine Tests', async function (): Promise<any> {
     const isActive: boolean = await SnapshotOverviewPage.isBasicSnapshotActive();
     expect(isPresent && isActive).toBeTruthy();
   });
-  it('should start  a  vm with the  snapshot', async function (): Promise<any> {
+  it('should start a vm with the  snapshot', async function (): Promise<any> {
     Util.logHeader('Trying to start a vm with snapshot and Ubuntu 18.04 and a volume');
     await NewInstancePage.getNewInstanceTab();
     Util.logInfo('Choosing project');
@@ -157,9 +157,10 @@ describe('Virtual Machine Tests', async function (): Promise<any> {
     Util.logHeader('Deleting the volume created by attachment');
     await VolumeOverviewPage.navigateToVolumeOverview();
     await VolumeOverviewPage.deleteVolume();
-    const deleted: boolean = await VolumeOverviewPage.isVolumeDeleted();
-    expect(deleted).toBeTruthy();
-  });
+    const isVolumeDeleted: boolean = await VolumeOverviewPage.isVolumeDeleted();
+    expect(isVolumeDeleted).toBeTruthy();
+
+  });*/
 
   it('should start a new vm', async function (): Promise<any> {
     Util.logHeader('Starting new machine for VM Detail page');
@@ -171,11 +172,14 @@ describe('Virtual Machine Tests', async function (): Promise<any> {
     await NewInstancePage.fillBasicForm();
     Util.logInfo('Starting');
     await NewInstancePage.submitAndStartVM();
+    Util.logInfo('Redirect Modal should be present');
+    await NewInstancePage.isRedirectModalPresent();
+    await Util.waitForPage('/virtualmachines/vmOverview', Util.LONG_TIMEOUT);
+
     Util.logInfo('Saving basic vm name');
-    const vm_name: string = await NewInstancePage.getVMName();
+    const vm_name: string = await vmOverviewPage.getNewBasicVMName();
     Util.logInfo(vm_name);
     await vmOverviewPage.setBasicVMName(vm_name);
-    await Util.waitForPage('/virtualmachines/vmOverview');
   });
 
   it('should show vm detail page with base functions for virtual machines working',
