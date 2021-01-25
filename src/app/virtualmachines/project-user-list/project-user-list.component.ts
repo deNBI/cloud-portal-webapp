@@ -2,10 +2,12 @@ import {Component, Input, OnInit} from '@angular/core';
 import {ProjectMember} from '../../projectmanagement/project_member.model';
 import {GroupService} from '../../api-connector/group.service';
 
+/**
+ * Project member list selection.
+ */
 @Component({
              selector: 'app-project-user-list',
              templateUrl: './project-user-list.component.html',
-             styleUrls: ['./project-user-list.component.scss'],
              providers: [GroupService]
            })
 export class ProjectUserListComponent implements OnInit {
