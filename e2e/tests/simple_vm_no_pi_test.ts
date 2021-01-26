@@ -56,4 +56,4 @@ describe('Simple Application Test without PI', function (): void {
   });
 });
 
-//TODO: adjust clicking of show information (missing twice) + navigation problems under macos?
+// TODO: adjust clicking of show information (missing twice) + navigation problems under macos?
