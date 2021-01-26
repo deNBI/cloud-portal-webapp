@@ -45,8 +45,7 @@ describe('Simple Application Test without PI', function (): void {
   });
 
   it ('pi should successfully approve application', async function(): Promise<any> {
-    const validationHash: string = await ProjectOverview.copyPIHash();
-    await ProjectOverview.navigateToPIApproval(validationHash);
+    await ProjectOverview.navigateToPIApproval();
     await FormularPage.approveByPI();
     const mailPresent: boolean = await ProjectOverview.checkForPIApproval();
     expect(mailPresent).toBeTruthy();

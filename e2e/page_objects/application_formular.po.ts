@@ -32,6 +32,8 @@ export class FormularPage {
     await Util.clickElementById(this.PI_RESPONSIBILITY);
     await Util.waitForPresenceOfElementById(this.PI_APPROVAL_BUTTON);
     await Util.clickElementById(this.PI_APPROVAL_BUTTON);
+    await Util.waitForPresenceOfElementById(this.NOTIFICATION_BTN_REDIRECT);
+    await Util.clickElementById(this.NOTIFICATION_BTN_REDIRECT);
   }
 
   static async navigateToCloudApplication(): Promise<any> {

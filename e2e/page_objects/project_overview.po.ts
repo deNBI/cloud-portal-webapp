@@ -59,13 +59,16 @@ export class ProjectOverview {
     await Util.clickElementById(Util.SIMPLE_VM_APPLICATION_NAME)
   }
 
-  static async navigateToPIApproval(validationHash: string): Promise<any> {
+  static async navigateToPIApproval(): Promise<any> {
     console.log('Navigating to Approval of PI');
-    await Util.navigateToAngularPage('applications/validation/'.concat(validationHash));
+    await Util.waitForPresenceOfElementById(this.VALIDATION_HASH);
+    await Util.clickElementById(this.VALIDATION_HASH);
   }
 
   static async checkForPIApproval(): Promise<boolean> {
     console.log('Checking if PI-Mail is present');
+    await Util.waitForPresenceOfElementById(this.SUBMITTED_SHOW_INFORMATION_BTN);
+    await Util.clickElementById(this.SUBMITTED_SHOW_INFORMATION_BTN);
     await Util.waitForPresenceOfElementById(this.PI_USER_TAB);
     await Util.clickElementById(this.PI_USER_TAB);
     await Util.waitForPresenceOfElementById(this.PI_EMAIL_FIELD);
@@ -91,11 +94,8 @@ export class ProjectOverview {
   static async hasPi(): Promise<boolean> {
     Util.logMethodCall('Check if pi is set');
     await Util.clickElementById(this.SUBMITTED_SHOW_INFORMATION_BTN);
-
     const isPiAbsence: boolean = await Util.waitForAbsenceOfElementById(this.PI_ROW);
-    await Util.clickElementById(this.SUBMITTED_SHOW_INFORMATION_BTN);
-
-    return isPiAbsence
+    return isPiAbsence;
 
   }
 
