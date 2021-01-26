@@ -55,5 +55,3 @@ describe('Simple Application Test without PI', function (): void {
     await ProjectOverview.removeApplication();
   });
 });
-
-// TODO: adjust clicking of show information (missing twice) + navigation problems under macos?
