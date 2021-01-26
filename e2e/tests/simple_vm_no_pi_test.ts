@@ -55,4 +55,3 @@ describe('Simple Application Test without PI', function (): void {
     await ProjectOverview.removeApplication();
   });
 });
-
