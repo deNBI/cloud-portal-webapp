@@ -15,3 +15,4 @@ Try running `make new_env_and_nodes`, pinning the chromedriver version in packag
 
 ##### Some solutions regarding testing
 - Do you have an environment.json in your e2e folder? It needs to be filled with login information and the url. Portal key is the url to the portal login, i.e. localhost:8000 or https://staging-url.de/portal, angular is the url to the angular pages, without the #, i.e. localhost:8001 or https://staging-url.de/portal/webapp.
+- Problems on **macOS**: In some cases, the test process does not run properly under macOS. The `directConnect: true` parameter is often the cause of problems. One solution is to comment out this parameter from the config. Running the [webdriver-manager](https://www.npmjs.com/package/webdriver-manager/) with `webriver-manager update` and `webdriver-manager start` before `ng e2e` is then necessary. 
