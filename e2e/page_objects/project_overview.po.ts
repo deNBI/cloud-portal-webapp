@@ -73,7 +73,7 @@ export class ProjectOverview {
     await Util.clickElementById(this.PI_USER_TAB);
     await Util.waitForPresenceOfElementById(this.PI_EMAIL_FIELD);
     const piMail: string = await Util.getElemTextById(this.PI_EMAIL_FIELD);
-    if (typeof(piMail) !== 'undefined' && piMail){
+    if (typeof(piMail) !== 'undefined' && piMail) {
       return true;
     } else {
       return false;
@@ -95,6 +95,7 @@ export class ProjectOverview {
     Util.logMethodCall('Check if pi is set');
     await Util.clickElementById(this.SUBMITTED_SHOW_INFORMATION_BTN);
     const isPiAbsence: boolean = await Util.waitForAbsenceOfElementById(this.PI_ROW);
+
     return isPiAbsence;
 
   }
@@ -103,7 +104,8 @@ export class ProjectOverview {
     await Util.waitForPresenceOfElementById(this.INFORMATION_TAB);
     await Util.clickElementById(this.INFORMATION_TAB);
     await Util.waitForPresenceOfElementById(this.VALIDATION_HASH);
-    let validationHash: string = await Util.getElemTextById(this.VALIDATION_HASH);
+    const validationHash: string = await Util.getElemTextById(this.VALIDATION_HASH);
+
     return validationHash;
   }
 
