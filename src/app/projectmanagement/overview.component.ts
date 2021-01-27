@@ -282,7 +282,16 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
                 options: {
                   animation: {
                     duration: 0
-                  }
+                  },
+                  layout: {
+                    padding: {
+                      left: 25,
+                      right: 25,
+                      top: 25,
+                      bottom: 50
+                    }
+                  },
+                  responsive: true
                 }
               })
             }
