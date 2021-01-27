@@ -1,0 +1,43 @@
+<div class="card text-center" style="margin:auto; border: none;">
+<div class="card-body">
+  <h5 class="card-title text-muted">
+    Project Application Review Progress
+  </h5>
+  <ul class="list-group list-group-horizontal" style="justify-content: center; cursor:default;">
+    <li class="list-group-item" [ngClass]="
+    ((application | hasstatusinlist: Application_States.SUBMITTED)
+    || (application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION))
+    ? 'list-group-item-success' : ''"
+        data-toggle="tooltip" data-placement="bottom"
+        [attr.title]="
+         ((application | hasstatusinlist: Application_States.SUBMITTED)
+          || (application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION))
+         ? 'Your application was submitted successfully.' : ''"
+    >Submitted <i class="fas fa-envelope-open-text"></i></li>
+    <li class="list-group-item" [ngClass]="(application | isPiApproved) ? 'list-group-item-success' : ''"
+        data-toggle="tooltip" data-placement="bottom"
+        [attr.title]="(application | isPiApproved) ? 'The application is approved or submitted by a Principal Investigator.' :
+                  'The approval of the Principal Investigator is pending. Contact the Principal Investigator who is responsible for the project for further questions. '"
+    >Principal Investigator Review <i class="fas fa-chalkboard-teacher"></i></li>
+    <li *ngIf="!application?.project_application_openstack_project"
+        class="list-group-item" [ngClass]="(application | hasstatusinlist: Application_States.APPROVED) ? 'list-group-item-success' : ''"
+        data-toggle="tooltip" data-placement="bottom"
+        [attr.title]="(application | hasstatusinlist: Application_States.APPROVED) ? 'The application was approved by the de.NBI Virtual Organization.' :
+                  'The approval of the de.NBI Virtual Organization is pending.'"
+    >de.NBI VO Approval <i class="fas fa-check-circle"></i></li>
+    <li *ngIf="application?.project_application_openstack_project"
+        class="list-group-item" [ngClass]="(application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION) ? 'list-group-item-success' : ''"
+        data-toggle="tooltip" data-placement="bottom"
+        [attr.title]="(application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION) ? 'The application was approved by the de.NBI Virtual Organization.' :
+                  'The approval of the de.NBI Virtual Organization is pending.'"
+    >de.NBI VO Approval <i class="fas fa-check-circle"></i></li>
+    <li *ngIf="application?.project_application_openstack_project"
+        class="list-group-item" [ngClass]="(application | hasstatusinlist: Application_States.APPROVED) ? 'list-group-item-success' : ''"
+        data-toggle="tooltip" data-placement="bottom"
+        [attr.title]="(application | hasstatusinlist: Application_States.APPROVED) ? 'The project was confirmed by the facility manager of the associated compute center.' :
+                  'The approval of the facility manager of the associated compute center is pending.'"
+    >Facility Approval <i class="fas fa-sitemap"></i>
+    </li>
+  </ul>
+</div>
+</div>
