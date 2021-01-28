@@ -29,7 +29,7 @@
                     (click)="setResources(ALL_RESOURCES)">All Resources
             </button>
 
-            <button style="margin: 5px;" class="btn btn-outline-primary" (click)="RAM_TAB_ACTIVE=true;factorModal.show()">Modify
+            <button style="margin: 5px;" class="btn btn-outline-primary" (click)="setAllTabsFalse();MACHINE_DEFINITION_TAB_ACTIVE=true;factorModal.show()">Modify
               Limits
             </button>
             <div style="margin:5px;"><select [(ngModel)]="selectedFacility"
@@ -181,14 +181,9 @@
       <div class="modal-body">
         <div class="nav-tabs-boxed">
           <ul class="nav nav-tabs " style="overflow-x:visible !important">
-            <li class="nav-item"><a class="nav-link" id="ram_tab" [ngClass]="{'active': RAM_TAB_ACTIVE}"
-                                    (click)="setTab(RAM_TAB)">Ram</a>
+            <li class="nav-item"><a class="nav-link" id="ram_tab" [ngClass]="{'active': MACHINE_DEFINITION_TAB_ACTIVE}"
+                                    (click)="setTab(MACHINE_DEFINITION_TAB)">Machine Definitions</a>
             </li>
-            <li class="nav-item"><a class="nav-link" d="cores_tab" [ngClass]="{'active': CORE_TAB_ACTIVE}"
-                                    (click)="setTab(CORE_TAB)">Cores</a></li>
-            <li class="nav-item"><a class="nav-link" id="gpu_tab" [ngClass]="{'active': GPU_TAB_ACTIVE}"
-                                    (click)="setTab(GPU_TAB)"
-            >GPU</a></li>
 
             <li class="nav-item"><a class="nav-link" id="object_storage_tab"
                                     [ngClass]="{'active': OBJECT_STORAGE_TAB_ACTIVE}"
@@ -204,16 +199,10 @@
         </div>
 
         <div class="tab-content">
-          <div *ngIf="RAM_TAB_ACTIVE && selectedFacility">
-            <app-ramfactor-overview
+          <div *ngIf="MACHINE_DEFINITION_TAB_ACTIVE && selectedFacility">
+            <app-resourcemachine-overview
               (factorChanged)="getSelectedFacilityResources()"
-              [facility_id]="selectedFacility['FacilityId']"></app-ramfactor-overview>
-          </div>
-          <div *ngIf="CORE_TAB_ACTIVE && selectedFacility">
-            <app-corefactor-overview
-              (factorChanged)="getSelectedFacilityResources()"
-
-              [facility_id]="selectedFacility['FacilityId']"></app-corefactor-overview>
+              [facility_id]="selectedFacility['FacilityId']"></app-resourcemachine-overview>
           </div>
           <div *ngIf="OBJECT_STORAGE_TAB_ACTIVE && selectedFacility">
             <app-objectstoragefactor-overview
@@ -225,12 +214,6 @@
             <app-volumestoragefactor-overview
               (factorChanged)="getSelectedFacilityResources()"
               [facility_id]="selectedFacility['FacilityId']"></app-volumestoragefactor-overview>
-          </div>
-          <div *ngIf="GPU_TAB_ACTIVE && selectedFacility">
-            <app-gpufactor-overview
-              (factorChanged)="getSelectedFacilityResources()"
-
-              [facility_id]="selectedFacility['FacilityId']"></app-gpufactor-overview>
           </div>
         </div>
 
