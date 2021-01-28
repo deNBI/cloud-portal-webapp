@@ -497,6 +497,17 @@
                                [blockedImageTagsResenv]="blockedImageTagsResenv"
                                [onlyNamespace]="resenvSelected"></app-res-env>
                 </accordion-group>
+                <accordion-group #userAccess *ngIf="selectedProject && projectDataLoaded &&
+                selectedProjectRessources?.used_vms < selectedProjectRessources?.number_vms && (flavors?.length > 0 || selectedFlavor)"
+                >
+                  <div accordion-heading style="width: 100%; cursor: pointer">
+                    <strong>Grant access for specific project members of <em>{{selectedProject[0]}}</em></strong>
+                    <i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
+                            'icon-arrow-up': userAccess.isOpen, 'icon-arrow-down': !userAccess.isOpen}"></i>
+                  </div>
+                  <app-project-user-list [members_to_add]="members_to_add" [user_member_id]="userinfo.MemberId"
+                                         [project_id]="selectedProject[1]"></app-project-user-list>
+                </accordion-group>
 
                 <accordion-group #optionalGroup id="optional_accordion"
                                  *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && selectedProjectRessources?.used_vms < selectedProjectRessources?.number_vms
