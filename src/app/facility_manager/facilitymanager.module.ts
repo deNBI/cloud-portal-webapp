@@ -45,7 +45,7 @@ import {ResourcemachineOverviewComponent} from './resources/resourcemachine-over
               ObjectstoragefactorOverviewComponent,
               VolumestoragefactorOverviewComponent,
               GpufactorOverviewComponent,
-              ResourcemachineOverviewComponent,
+              ResourcemachineOverviewComponent
 
             ]
           })

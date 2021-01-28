@@ -324,7 +324,7 @@ export class FacilityService {
   getResourceMachines(facility: number | string): Observable<ResourceMachine[]> {
 
     return this.http.get<ResourceMachine[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/resourcesMachine/`, {
-                                              withCredentials: true,
+                                              withCredentials: true
                                             }
     )
   }
