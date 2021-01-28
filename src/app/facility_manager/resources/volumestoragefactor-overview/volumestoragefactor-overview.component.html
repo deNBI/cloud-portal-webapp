@@ -1,81 +1,107 @@
-<div class="rTable">
-  <div class="rTableHeading">
-    <div class="rTableHead">Actions</div>
-    <div class="rTableHead">Storage</div>
-    <div class="rTableHead">Description</div>
-    <div class="rTableHead">Public</div>
-  </div>
-  <div class="rTableBody">
-    <ng-container *ngFor="let oF of volumeStorageFactors">
-      <div class="rTableRow" *ngIf="!this.volumeUpdateList[oF.id]">
-        <div class="rTableCell col-2">
-          <div class="btn-group-vertical" role="group">
-            <button (click)="deleteVolumeStorageFactor(oF.id)" class="btn btn-danger" style="margin-bottom: 5px">Remove
-            </button>
-            <button class="btn btn-warning" (click)="changeObjectStorageToUpdate(oF)">Update</button>
+
+<div class="card" id="{{vsFactor?.id + '_card'}}" *ngFor="let vsFactor of volumeStorageFactors"
+     style="margin:5px;" [ngClass]="this.volumeUpdateList[vsFactor.id] ? 'border-warning' : 'border-primary'">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-2" style="margin:5px;">
+        <div class="text-muted"><small>Actions</small></div>
+        <div class="btn-group-vertical" role="group">
+          <button (click)="deleteVolumeStorageFactor(vsFactor.id)" class="btn btn-danger"
+                  *ngIf="!this.volumeUpdateList[vsFactor.id]">Remove
+          </button>
+          <button class="btn btn-warning" (click)="changeVolumeStorageToUpdate(vsFactor);"
+                  *ngIf="!this.volumeUpdateList[vsFactor.id]">Update</button>
+          <button (click)="updateVolumeStorageFactor(vsFactor); changeVolumeStorageToUpdate(vsFactor);"
+                  class="btn btn-success" *ngIf="this.volumeUpdateList[vsFactor.id]">Save
+          </button>
+          <button class="btn btn-info" *ngIf="this.volumeUpdateList[vsFactor.id]"
+                  (click)="reloadVolumeStorageFactor(vsFactor); changeVolumeStorageToUpdate(vsFactor);">Cancel
+          </button>
+        </div>
+      </div>
+      <div class="col-4" style="margin:5px;">
+        <div class="text-muted"><small>Storage</small></div>
+        <div class="form-group row">
+          <label for="{{vsFactor?.id + '_storage'}}">Amount</label>
+          <div class="input-group mb-3">
+            <input class="form-control" type="number" min="1" [disabled]="!this.volumeUpdateList[vsFactor.id]"
+                   [(ngModel)]="vsFactor.storage" id="{{vsFactor?.id + '_storage'}}">
+            <div class="input-group-append">
+              <span class="input-group-text">TB</span>
+            </div>
           </div>
         </div>
-        <div class="rTableCell col-1">{{oF.storage}} TB</div>
-        <div class="rTableCell col">{{oF.description}}</div>
-
-        <div class="rTableCell col-1"><i *ngIf="oF.public" class="fas fa-check" style="color: darkgreen;"></i>
-          <i *ngIf="!oF.public" class="fas fa-times" style="color:darkred;"></i></div>
-
-
       </div>
-
-      <div class="rTableRow" *ngIf="this.volumeUpdateList[oF.id]">
-        <div class="rTableCell col-2">
-          <div class="btn-group-vertical" role="group">
-            <button (click)="updateVolumeStorageFactor(oF);changeObjectStorageToUpdate(oF);" class="btn btn-success"
-                    style="margin-bottom: 5px">Save
-            </button>
-            <button class="btn btn-info" (click)="reloadVolumeStorageFactor(oF);changeObjectStorageToUpdate(oF);">
-              Cancel
-            </button>
+      <div class="col-3" style="margin:5px;">
+        <div class="text-muted"><small>Description</small></div>
+        <div class="form-group row">
+          <div class="input-group mb-3">
+            <textarea class="form-control" type="textfield" [disabled]="!this.volumeUpdateList[vsFactor.id]"
+                      [(ngModel)]="vsFactor.description" id="{{vsFactor?.id + '_description'}}"></textarea>
           </div>
         </div>
-        <div class="rTableCell col-1">
-          <div class="input-group">
-            <input type="text" [(ngModel)]="oF.storage" placeholder="Storage"
-                   pattern="[0-9]+">
-            <div class="input-group-append"><span class="input-group-text">TB</span></div>
+      </div>
+      <div class="col-1" style="margin:5px;">
+        <div class="text-muted"><small>Visibility</small></div>
+        <div class="form-group row">
+          <label for="{{vsFactor?.id + '_visibility'}}">Public</label>
+          <div class="input-group mb-3">
+            <input class="form-control"  type="checkbox" [(ngModel)]="vsFactor.public"
+                   [disabled]="!this.volumeUpdateList[vsFactor.id]" id="{{vsFactor?.id + '_visibility'}}">
+
           </div>
         </div>
-
-        <div class="rTableCell col"><textarea type="textfield" class="col" [(ngModel)]="oF.description"
-                                              placeholder="Description"></textarea></div>
-        <div class="rTableCell col-1"><input type="checkbox" [(ngModel)]="oF.public" [checked]="oF.public"></div>
-
-
       </div>
-    </ng-container>
-
-    <div class="rTableRow">
-      <div class="rTableCell col-2">
-        <button style="cursor: pointer;"
-                (click)="addVolumeStorageFactor();"
-                [disabled]="!storage.value    "
-                *ngIf="storage.checkValidity()" class="btn btn-success">Save
-        </button>
-      </div>
-      <div class="rTableCell col-1">
-        <div class="input-group">
-          <input type="number" min="0" step="1"
-                 placeholder="e.g 1" [(ngModel)]="newFactor.storage"
-                 appMinAmount="0" appIntegerOrNull #storage>
-          <div class="input-group-append"><span class="input-group-text">TB</span></div>
-        </div>
-      </div>
-
-      <div class="rTableCell col">
-        <div >
-        <textarea type="textfield"  class="col" [(ngModel)]="newFactor.description" placeholder="Description"
-        ></textarea></div></div>
-      <div class="rTableCell col-1"><input [(ngModel)]="newFactor.public" type="checkbox"></div>
-
     </div>
-
-
   </div>
 </div>
+
+
+<div class="card border-success" id="new_volume_card" style="margin:5px;">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-2" style="margin:5px;">
+        <div class="text-muted"><small>Actions</small></div>
+        <div class="btn-group-vertical" role="group">
+          <button style="cursor: pointer;" class="btn btn-success"
+                  [disabled]="!newFactor.storage" (click)="addVolumeStorageFactor();">Save</button>
+        </div>
+      </div>
+      <div class="col-4" style="margin:5px;">
+        <div class="text-muted"><small>Storage</small></div>
+        <div class="form-group row">
+          <label for="new_volume_storage">Amount</label>
+          <div class="input-group mb-3">
+            <input class="form-control" type="number" min="1" [(ngModel)]="newFactor.storage" id="new_volume_storage">
+            <div class="input-group-append">
+              <span class="input-group-text">TB</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-3" style="margin:5px;">
+        <div class="text-muted"><small>Description</small></div>
+        <div class="form-group row">
+          <div class="input-group mb-3">
+            <textarea class="form-control" type="textfield"
+                      [(ngModel)]="newFactor.description" id="new_volume_description"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="col-1" style="margin:5px;">
+        <div class="text-muted"><small>Visibility</small></div>
+        <div class="form-group row">
+          <label for="new_volume_visibility">Public</label>
+          <div class="input-group mb-3">
+            <input [(ngModel)]="newFactor.public" type="checkbox" id="new_volume_visibility">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
