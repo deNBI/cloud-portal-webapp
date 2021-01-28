@@ -350,14 +350,14 @@ export class FacilityService {
 
   getVolumeStorageFactor(facility: number | string, factor_id: number | string): Observable<VolumeStorageFactor> {
 
-    return this.http.get<VolumeStorageFactor>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/volumeStorageFactor/${factor_id}/`, {
+    return this.http.get<VolumeStorageFactor>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/volumeStorageFactors/${factor_id}/`, {
       withCredentials: true
     });
   }
 
   getObjectStorageFactor(facility: number | string, factor_id: number | string): Observable<ObjectStorageFactor> {
 
-    return this.http.get<ObjectStorageFactor>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/objectStorageFactor/${factor_id}/`, {
+    return this.http.get<ObjectStorageFactor>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/objectStorageFactors/${factor_id}/`, {
       withCredentials: true
     });
   }
