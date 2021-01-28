@@ -324,17 +324,6 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
 
   }
 
-  setProjectStatus(project: Project, status: number): void {
-    this.voserice.setProjectStatus(project.Id, status).subscribe((): void => {
-      this.getProjectStatus(project)
-
-    })
-  }
-
-  removeResourceFromGroup(groupid: number | string): void {
-    this.voserice.removeResourceFromGroup(groupid.toString()).subscribe()
-  }
-
   getMembesOfTheProject(projectid: number, projectname: string): void {
     this.voserice.getVoGroupRichMembers(projectid)
       .subscribe((members: any): void => {

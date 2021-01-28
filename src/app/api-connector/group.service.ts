@@ -88,26 +88,10 @@ export class GroupService {
 
   }
 
-  isUserAdminOfGroup(groupid: number | string, userid: number | string): Observable<any> {
-
-    return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/members/${userid}/manager/`, {
-      withCredentials: true
-    })
-  }
-
   getGroupAdminIds(groupid: number | string): Observable<any> {
 
     return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/admins/ids/`, {
       withCredentials: true
-    })
-  }
-
-  getGroupRichMembers(groupid: number | string): Observable<any> {
-    const params: HttpParams = new HttpParams().set('groupid', groupid.toString());
-
-    return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/richMembers/`, {
-      withCredentials: true,
-      params: params
     })
   }
 
@@ -168,22 +152,6 @@ export class GroupService {
       responseType: 'text',
       body: params,
       observe: 'response'
-    })
-  }
-
-  setPerunGroupStatus(group_id: string, status: string): Observable<any> {
-
-    const params: HttpParams = new HttpParams().set('status', status);
-
-    return this.http.post(`${ApiSettings.getApiBaseURL()}projects/${group_id}/attributes/status/`, params, {
-      withCredentials: true
-      // headers: header
-    })
-  }
-
-  getGroupsDetails(): Observable<any> {
-    return this.http.get(`${ApiSettings.getApiBaseURL()}projects/details/`, {
-      withCredentials: true
     })
   }
 
@@ -324,31 +292,6 @@ export class GroupService {
 
   getVolumeCounter(groupid: string): Observable<IResponseTemplate> {
     return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/volumesCounter/`, {
-      withCredentials: true
-    })
-  }
-
-  getGroupApprovedVms(groupid: string): Observable<IResponseTemplate> {
-
-    return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/approvedVms/`, {
-      withCredentials: true
-    })
-
-  }
-
-  getGroupUsedVms(groupid: string): Observable<IResponseTemplate> {
-
-    return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/usedVms/`, {
-      withCredentials: true
-    })
-
-  }
-
-  setPerunGroupAttributes(application_id: string, groupid: string): Observable<any> {
-    const params: HttpParams = new HttpParams()
-      .set('application_id', application_id.toString());
-
-    return this.http.post(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/`, params, {
       withCredentials: true
     })
   }
