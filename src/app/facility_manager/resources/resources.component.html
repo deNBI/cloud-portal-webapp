@@ -29,7 +29,7 @@
                     (click)="setResources(ALL_RESOURCES)">All Resources
             </button>
 
-            <button style="margin: 5px;" class="btn btn-outline-primary" (click)="MACHINE_DEFINITION_TAB_ACTIVE=true;factorModal.show()">Modify
+            <button style="margin: 5px;" class="btn btn-outline-primary" (click)="setAllTabsFalse();MACHINE_DEFINITION_TAB_ACTIVE=true;factorModal.show()">Modify
               Limits
             </button>
             <div style="margin:5px;"><select [(ngModel)]="selectedFacility"

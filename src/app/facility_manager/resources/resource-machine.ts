@@ -9,9 +9,11 @@ export class ResourceMachine {
 
   compute_center: ComputecenterComponent;
   name: string;
-  ram_factor: number = 1;
+  ram_public_factor: number = 1;
+  ram_private_factor: number = 1;
   cores: number;
-  cores_factor: number = 1;
+  cores_private_factor: number = 1;
+  cores_public_factor: number = 1;
   gpus: number = 0;
   gpu_type: string;
   public_count: number;
