@@ -8,6 +8,7 @@ import {Application} from '../applications/application.model/application.model';
 import {GpuFactor} from '../facility_manager/resources/gpu-factor';
 import {VolumeStorageFactor} from '../facility_manager/resources/volume-storage-factor';
 import {ObjectStorageFactor} from '../facility_manager/resources/object-storage-factor';
+import {ProjectMember} from '../projectmanagement/project_member.model';
 
 /**
  * Service which provides methods for the facilities.
@@ -588,10 +589,10 @@ export class FacilityService {
    * @param {number} facility id of the facility
    * @returns {Observable<any>}
    */
-  getFacilityGroupRichMembers(groupid: number, facility: number): Observable<any> {
-    return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/projects/${groupid}/members/`, {
-                           withCredentials: true
-                         }
+  getFacilityGroupRichMembers(groupid: number, facility: number): Observable<ProjectMember[]> {
+    return this.http.get<ProjectMember[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/projects/${groupid}/members/`, {
+                                            withCredentials: true
+                                          }
     )
   }
 
