@@ -948,24 +948,15 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
    * @param projectName
    */
   getMembersOfTheProject(): void {
-    this.groupService.getGroupMembers(this.project_id).subscribe((members: any): void => {
+    this.groupService.getGroupMembers(this.project_id).subscribe((members: ProjectMember[]): void => {
 
-      this.project_members = [];
-      for (const member of members) {
-        const member_id: string = member['id'];
-        const user_id: string = member['userId'];
-        const fullName: string = `${member['firstName']} ${member['lastName']}`;
-        const projectMember: ProjectMember = new ProjectMember(user_id, fullName, member_id);
-        projectMember.ElixirId = member['elixirId'];
+      this.project_members = members;
 
-        this.project_members.push(projectMember);
-
-      }
       if (this.isAdmin) {
         this.groupService.getGroupAdminIds(this.project_id).subscribe((result: any): void => {
           const adminIds: any = result['adminIds'];
           this.project_members.forEach((member: ProjectMember): void => {
-            member.IsPi = adminIds.indexOf(member.Id) !== -1;
+            member.IsPi = adminIds.indexOf(member.userId) !== -1;
           });
 
           this.isLoaded = true;
@@ -978,9 +969,9 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   setAllMembersChecked(): void {
     if (!this.allSet) {
       this.project_members.forEach((member: ProjectMember): void => {
-        if (!this.isMemberChecked(parseInt(member.MemberId.toString(), 10))
-          && this.userinfo.MemberId.toString() !== member.MemberId.toString()) {
-          this.checked_member_list.push(parseInt(member.MemberId.toString(), 10));
+        if (!this.isMemberChecked(parseInt(member.memberId.toString(), 10))
+          && this.userinfo.MemberId.toString() !== member.memberId.toString()) {
+          this.checked_member_list.push(parseInt(member.memberId.toString(), 10));
         }
       });
       this.allSet = true;
@@ -998,7 +989,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   checkIfAllMembersChecked(): void {
     let all_set: boolean = true;
     this.project_members.forEach((member: ProjectMember): void => {
-      if (!this.isMemberChecked(parseInt(member.MemberId.toString(), 10)) && this.userinfo.MemberId !== member.MemberId) {
+      if (!this.isMemberChecked(parseInt(member.memberId.toString(), 10)) && this.userinfo.MemberId !== member.memberId) {
         all_set = false;
 
       }
@@ -1039,7 +1030,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
       this.project_members.forEach((member: ProjectMember): void => {
 
-        if (!this.isMemberChecked(parseInt(member.MemberId.toString(), 10))) {
+        if (!this.isMemberChecked(parseInt(member.memberId.toString(), 10))) {
           members_in.push(member)
 
         }

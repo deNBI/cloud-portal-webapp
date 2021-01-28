@@ -24,6 +24,7 @@ import {VirtualmachineService} from '../api-connector/virtualmachine.service';
 import {ApiSettings} from '../api-connector/api-settings.service';
 import {BlockedImageTagResenv} from '../facility_manager/image-tag';
 import {ApplicationRessourceUsage} from '../applications/application-ressource-usage/application-ressource-usage';
+import {ProjectMember} from '../projectmanagement/project_member.model';
 
 /**
  * Start virtualmachine component.
@@ -53,6 +54,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
   redirectProgress: string = '0';
 
   newVm: VirtualMachine = null;
+  members_to_add: ProjectMember[] = [];
   progress_bar_status: string = 'Creating..';
   progress_bar_animated: string = 'progress-bar-animated';
   progress_bar_width: number = 0;
@@ -476,11 +478,14 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
       }
       this.delay(500).then((): any => {
         this.progress_bar_width = 50
-      }).catch((): any => {});
+      }).catch((): any => {
+      });
+      const additional_elixir_ids: string[] = this.members_to_add.map((mem: ProjectMember): string => mem.elixirId)
+
       this.virtualmachineservice.startVM(
         flavor_fixed, this.selectedImage, servername,
         project, projectid.toString(), this.http_allowed,
-        this.https_allowed, this.udp_allowed, this.volumesToMount, this.volumesToAttach, play_information)
+        this.https_allowed, this.udp_allowed, this.volumesToMount, this.volumesToAttach, play_information, additional_elixir_ids)
         .subscribe((newVm: VirtualMachine): void => {
           this.newVm = newVm;
           this.started_machine = false;
@@ -533,7 +538,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
     }
 
     if (this.udp_allowed && this.install_mosh) {
-      playbook_info['optional'] = {mosh : 'install'};
+      playbook_info['optional'] = {mosh: 'install'};
     }
 
     return JSON.stringify(playbook_info);
