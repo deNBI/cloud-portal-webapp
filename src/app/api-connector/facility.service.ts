@@ -301,9 +301,10 @@ export class FacilityService {
   addResourceMachine(facility: number | string, resource_machine: ResourceMachine): Observable<ResourceMachine[]> {
     const params: HttpParams = new HttpParams().set('resource_machine', JSON.stringify(resource_machine));
 
-    return this.http.post<ResourceMachine[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/resourcesMachine/`, params, {
-      withCredentials: true
-    });
+    return this.http.post<ResourceMachine[]>(
+      `${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/resourcesMachine/`, params, {
+        withCredentials: true
+      });
   }
 
   updateResourceMachine(facility: number | string, resource_machine: ResourceMachine): Observable<ResourceMachine> {
