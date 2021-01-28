@@ -55,7 +55,7 @@ export class VolumestoragefactorOverviewComponent implements OnInit {
     })
   }
 
-  changeObjectStorageToUpdate(vF: VolumeStorageFactor): void {
+  changeVolumeStorageToUpdate(vF: VolumeStorageFactor): void {
     this.volumeUpdateList[vF.id] = !this.volumeUpdateList[vF.id]
   }
 
