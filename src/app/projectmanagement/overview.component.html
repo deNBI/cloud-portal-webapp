@@ -39,7 +39,8 @@
 
 
         <div class="card-body" id="project_application_status_overview"
-             *ngIf="!project_application?.project_application_status?.includes(Application_States.APPROVED)">
+             *ngIf="!(project_application | hasstatusinlist: Application_States.APPROVED)
+                    && !(project_application | hasstatusinlist: Application_States.TERMINATED)">
           <!-- <i class="fas fa-tasks"></i> -->
           <app-application-progress [application]="project_application"></app-application-progress>
 
@@ -505,29 +506,29 @@
               <tbody>
               <tr *ngFor="let member of project_members" [ngStyle]="{'color':isPi(member)}">
                 <td *ngIf="isAdmin || is_vo_admin">
-                  <input *ngIf="userinfo?.MemberId != member.MemberId" type="checkbox" id="{{member.Id}}"
-                           name="{{member.Id}}"
-                           [checked]="isMemberChecked(member.MemberId)" (change)="checkUnCheckMember(member.MemberId);">
+                  <input *ngIf="userinfo?.MemberId != member.memberId" type="checkbox" id="{{member.userId}}"
+                         name="{{member.userId}}"
+                         [checked]="isMemberChecked(member.memberId)" (change)="checkUnCheckMember(member.memberId);">
                 </td>
                 <td>
 
-                  {{ member.Id }}</td>
-                <td>{{ member.MemberId }}</td>
-                <td>{{ member.Username }}</td>
+                  {{ member.userId }}</td>
+                <td>{{ member.memberId }}</td>
+                <td>{{ member.userName }}</td>
                 <td *ngIf="this.project.UserIsPi || this.project.UserIsAdmin|| is_vo_admin">
                   <div class="btn-group" role="group">
-                    <button *ngIf="!member.IsPi" (click)="promoteAdmin( project?.Id,member.Id,member.Username);
+                    <button *ngIf="!member.IsPi" (click)="promoteAdmin( project?.Id,member.userId,member.userName);
                                                 notificationModal.show();
                                                " class="btn btn-primary" type="button" style="margin: 2px">
                       <i class="fa fa-plus-circle"></i>&nbsp; Set Admin status
                     </button>
-                    <button *ngIf="member.IsPi &&  userinfo?.MemberId != member.MemberId" (click)="removeAdmin( project?.Id,member.Id,member.Username);
+                    <button *ngIf="member.IsPi &&  userinfo?.MemberId != member.memberId" (click)="removeAdmin( project?.Id,member.userId,member.userName);
                                                 notificationModal.show();
                                                " class="btn btn-primary" type="button" style="margin: 2px">
                       <i class="fa fa-minus-circle"></i>&nbsp; Remove Admin status
                     </button>
-                    <button [id]="'remove_member_' + member.Username" *ngIf=" userinfo?.MemberId != member.MemberId"
-                            (click)="removeMember(project?.Id,member.MemberId,member.Username);
+                    <button [id]="'remove_member_' + member.userName" *ngIf=" userinfo?.MemberId != member.memberId"
+                            (click)="removeMember(project?.Id,member.memberId,member.userName);
                                                 notificationModal.show();
                                                " class="btn btn-danger" type="button" style="margin: 2px">
 
@@ -628,10 +629,9 @@
 
 
         </div>
-        <div class="card-body">
+        <div class="card-body" style="max-height: 800px;">
           <canvas #creditsChart
-                  id="creditsChart" width="400" height="400"
-          >
+                  id="creditsChart">
           </canvas>
         </div>
 
