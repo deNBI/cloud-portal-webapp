@@ -8,6 +8,7 @@ import {Application} from '../applications/application.model/application.model';
 import {GpuFactor} from '../facility_manager/resources/gpu-factor';
 import {VolumeStorageFactor} from '../facility_manager/resources/volume-storage-factor';
 import {ObjectStorageFactor} from '../facility_manager/resources/object-storage-factor';
+import {ResourceMachine} from '../facility_manager/resources/resource-machine';
 
 /**
  * Service which provides methods for the facilities.
@@ -286,14 +287,46 @@ export class FacilityService {
   /**
    * Deletes an RamFactor.
    * @param {number | string} facility
-   * @param {number | string} factor_id
+   * @param {number | string} resource_machine_id
    * @returns {Observable<RamFactor[]>}
    */
-  deleteRamFactor(facility: number | string, factor_id: number | string): Observable<RamFactor[]> {
+  deleteResourceMachine(facility: number | string, resource_machine_id: number | string): Observable<ResourceMachine[]> {
 
-    return this.http.delete<RamFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/ramFactors/${factor_id}/`, {
+    return this.http.delete<ResourceMachine[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/resourcesMachine/${resource_machine_id}/`, {
       withCredentials: true
     });
+  }
+
+  addResourceMachine(facility: number | string, resource_machine: ResourceMachine): Observable<ResourceMachine[]> {
+    const params: HttpParams = new HttpParams().set('resource_machine', JSON.stringify(resource_machine));
+
+    return this.http.post<ResourceMachine[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/resourcesMachine/`, params, {
+      withCredentials: true
+    });
+  }
+
+  updateResourceMachine(facility: number | string, resource_machine: ResourceMachine): Observable<ResourceMachine> {
+    const params: HttpParams = new HttpParams().set('resource_machine', JSON.stringify(resource_machine));
+
+    // tslint:disable-next-line:max-line-length
+    return this.http.post<ResourceMachine>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/resourcesMachine/${resource_machine.id}/`, params, {
+      withCredentials: true
+    });
+  }
+
+  getResourceMachine(facility: number | string, resource_machine_id: number | string): Observable<ResourceMachine> {
+
+    return this.http.get<ResourceMachine>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/resourcesMachine/${resource_machine_id}/`, {
+      withCredentials: true
+    });
+  }
+
+  getResourceMachines(facility: number | string): Observable<ResourceMachine[]> {
+
+    return this.http.get<ResourceMachine[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/resourcesMachine/`, {
+                                              withCredentials: true,
+                                            }
+    )
   }
 
   /**
@@ -411,6 +444,13 @@ export class FacilityService {
     return this.http.post<ObjectStorageFactor>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/objectStorageFactors/${factor.id}/`, params, {
       withCredentials: true
     });
+  }
+
+  deleteRamFactor(facility: number | string, factor_id: number | string): Observable<RamFactor[]> {
+
+    return this.http.delete<RamFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/ramFactors/${factor_id}/`, {
+      withCredentials: true
+    })
   }
 
   /**

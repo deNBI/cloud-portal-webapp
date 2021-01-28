@@ -1,0 +1,193 @@
+<!--div class="alert alert-danger" role="alert" *ngIf="!ram.checkValidity()" id="ram_validity_alert">
+  Please enter a valid number for RAM!
+</div>
+
+<div class="alert alert-danger" role="alert" *ngIf="!ramFactor.checkValidity()" id="ram_factor_validity_alert">
+  Please enter a valid (decimal) number for RAM factor!
+</div-->
+<div class="rTable">
+  <div class="rTableHeading">
+    <div class="rTableHead">Actions</div>
+    <div class="rTableHead">Name</div>
+    <div class="rTableHead">Ram</div>
+    <div class="rTableHead">Cores</div>
+    <div class="rTableHead">GPUs</div>
+    <div class="rTableHead">Type</div>
+
+    <div class="rTableHead">Public-Count</div>
+    <div class="rTableHead">Private-Count</div>
+
+  </div>
+  <div class="rTableBody">
+    <ng-container *ngFor="let machine of resourceMachines">
+      <div class="rTableRow" *ngIf="!this.resourceMachineUpdateList[machine.id]">
+        <div class="rTableCell col-2">
+          <div class="btn-group-vertical" role="group">
+            <button (click)="deleteResourceMachine(machine.id)" class="btn btn-danger" style="margin-bottom: 5px">Remove
+            </button>
+            <button class="btn btn-warning" (click)="changeResourceMachineToUpdate(machine)">Update</button>
+          </div>
+        </div>
+        <div class="rTableCell col-1">{{machine.name}}</div>
+        <div class="rTableCell col-1">
+
+          <p>Ram: {{machine.ram}} GB </p>
+          <p>Factor:{{machine.ram_factor}} </p>
+        </div>
+        <div class="rTableCell col-1">
+          <p>Cores: {{machine.cores}} </p>
+          <p>Factor: {{machine.cores_factor}} </p>
+        </div>
+        <div class="rTableCell col-1">
+          <p>GPUs: {{machine.gpus}} </p>
+          <p>Type: {{machine.gpu_type}} </p>
+        </div>
+        <div class="rTableCell col-1"><p>{{machine.type}} </p></div>
+
+
+        <div class="rTableCell col-1"><p>{{machine.public_count}} </p></div>
+        <div class="rTableCell col-1"><p> {{machine.private_count}} </p></div>
+
+      </div>
+
+      <div class="rTableRow" *ngIf="this.resourceMachineUpdateList[machine.id]">
+        <div class="rTableCell col-2">
+          <div class="btn-group-vertical" role="group">
+            <button (click)="updateResourceMachine(machine);changeResourceMachineToUpdate(machine);"
+                    class="btn btn-success"
+                    style="margin-bottom: 5px">Save
+            </button>
+            <button class="btn btn-info"
+                    (click)="reloadResourceMachine(machine);changeResourceMachineToUpdate(machine);">Cancel
+            </button>
+          </div>
+        </div>
+        <div class="rTableCell col-1"><input type="text" [(ngModel)]="machine.name"
+                                             placeholder="Name">
+        </div>
+        <div class="rTableCell col-1">
+          <div class="input-group-sm">
+            <input type="number" [(ngModel)]="machine.ram" placeholder="Ram" pattern="[0-9]+">
+            <div class="input-group-append">
+              <span class="input-group-text">GB</span>
+            </div>
+          </div>
+          <div class="input-group-sm">
+            <input type="text" [(ngModel)]="machine.ram_factor" placeholder="Factor" pattern="[0-9]+(\.[0-9]+)?">
+          </div>
+
+        </div>
+        <div class="rTableCell col-1">
+          <div class="input-group-sm">
+            <input type="number" [(ngModel)]="machine.cores" placeholder="Cores" pattern="[0-9]+">
+
+          </div>
+          <div class="input-group-sm">
+            <input type="text" [(ngModel)]="machine.cores_factor" placeholder="Factor" pattern="[0-9]+(\.[0-9]+)?">
+          </div>
+
+        </div>
+        <div class="rTableCell col-1">
+          <div class="input-group-sm">
+            <input type="number" [(ngModel)]="machine.gpus" placeholder="GPus" pattern="[0-9]+">
+
+          </div>
+          <div class="input-group-sm">
+            <input type="text" [(ngModel)]="machine.gpu_type" placeholder="Type">
+          </div>
+
+        </div>
+        <div class="rTableCell col-1"><select [(ngModel)]="machine.type"
+
+                                              class="form-control">
+          <option value="undefined" disabled selected> Please Select</option>
+
+          <option *ngFor="  let type of factor_types" [ngValue]="type">
+            {{type}}
+          </option>
+
+        </select></div>
+
+        <div class="rTableCell col-1"><input type="number" [(ngModel)]="machine.public_count" placeholder="public count"
+                                             pattern="[0-9]+">
+        </div>
+        <div class="rTableCell col-1"><input type="number" [(ngModel)]="machine.private_count"
+                                             placeholder="private count" pattern="[0-9]+">
+        </div>
+
+
+      </div>
+    </ng-container>
+
+    <div class="rTableRow">
+      <div class="rTableCell col-2">
+        <button style="cursor: pointer;"
+                (click)="addResourceMachine();"
+                [disabled]="!newResourceMachine.name
+                  || !newResourceMachine.ram
+                   || !newResourceMachine.cores
+                   || !newResourceMachine.public_count
+                    || !newResourceMachine.private_count"
+                class="btn btn-success">Save
+        </button>
+      </div>
+      <div class="rTableCell col-1"><input type="text" [(ngModel)]="newResourceMachine.name"
+                                           placeholder="Name">
+      </div>
+      <div class="rTableCell col-1">
+        <div class="input-group-sm">
+          <input type="number" [(ngModel)]="newResourceMachine.ram" placeholder="Ram" pattern="[0-9]+">
+          <div class="input-group-append">
+            <span class="input-group-text">GB</span>
+          </div>
+        </div>
+        <div class="input-group-sm">
+          <input type="text" [(ngModel)]="newResourceMachine.ram_factor" placeholder="Factor"
+                 pattern="[0-9]+(\.[0-9]+)?">
+        </div>
+
+      </div>
+      <div class="rTableCell col-1">
+        <div class="input-group-sm">
+          <input type="number" [(ngModel)]="newResourceMachine.cores" placeholder="Cores" pattern="[0-9]+">
+
+        </div>
+        <div class="input-group-sm">
+          <input type="text" [(ngModel)]="newResourceMachine.cores_factor" placeholder="Factor"
+                 pattern="[0-9]+(\.[0-9]+)?">
+        </div>
+
+      </div>
+      <div class="rTableCell col-1">
+        <div class="input-group-sm">
+          <input type="number" [(ngModel)]="newResourceMachine.gpus" placeholder="GPus" pattern="[0-9]+">
+
+        </div>
+        <div class="input-group-sm">
+          <input type="text" [(ngModel)]="newResourceMachine.gpu_type" placeholder="Type">
+        </div>
+
+      </div>
+      <div class="rTableCell col-1"><select [(ngModel)]="newResourceMachine.type"
+
+                                            class="form-control">
+        <option value="undefined" disabled selected> Please Select</option>
+
+        <option *ngFor="  let type of factor_types" [ngValue]="type">
+          {{type}}
+        </option>
+
+      </select></div>
+
+      <div class="rTableCell col-1"><input type="number" [(ngModel)]="newResourceMachine.public_count"
+                                           placeholder="public count"
+                                           pattern="[0-9]+">
+      </div>
+      <div class="rTableCell col-1"><input type="number" [(ngModel)]="newResourceMachine.private_count"
+                                           placeholder="private count" pattern="[0-9]+">
+      </div>
+
+    </div>
+
+
+  </div>

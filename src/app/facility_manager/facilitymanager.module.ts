@@ -18,6 +18,7 @@ import { CorefactorOverviewComponent } from './resources/corefactor-overview/cor
 import { ObjectstoragefactorOverviewComponent } from './resources/objectstoragefactor-overview/objectstoragefactor-overview.component';
 import { VolumestoragefactorOverviewComponent } from './resources/volumestoragefactor-overview/volumestoragefactor-overview.component';
 import { GpufactorOverviewComponent } from './resources/gpufactor-overview/gpufactor-overview.component';
+import {ResourcemachineOverviewComponent} from './resources/resourcemachine-overview/resourcemachine-overview.component';
 
 /**
  * Facilitymanager module.
@@ -43,7 +44,8 @@ import { GpufactorOverviewComponent } from './resources/gpufactor-overview/gpufa
               CorefactorOverviewComponent,
               ObjectstoragefactorOverviewComponent,
               VolumestoragefactorOverviewComponent,
-              GpufactorOverviewComponent
+              GpufactorOverviewComponent,
+              ResourcemachineOverviewComponent,
 
             ]
           })
