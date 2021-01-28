@@ -3,17 +3,15 @@
  */
 export class ProjectMember {
 
-  Id: number | string;
-  MemberId: number | string;
-  Username: string;
+  userId: number | string;
+  memberId: number | string;
+  userName: string;
+  firstName: string;
+  lastName: string;
+
   IsPi: boolean;
-  ElixirId: string;
+  elixirId: string;
   Email: string;
+  publicKeySet: boolean
 
-  constructor(Id: number | string, Username: string, MemberId: number | string) {
-    this.Id = Id;
-    this.Username = Username;
-    this.MemberId = MemberId;
-
-  }
 }
