@@ -36,23 +36,8 @@ export class VoService {
     })
   }
 
-  getAllVoGroups(): Observable<any> {
-
-    return this.http.get(`${ApiSettings.getApiBaseURL()}vo/projects/`, {
-      withCredentials: true
-    })
-
-  }
-
   terminateProject(groupId: number | string): Observable<object> {
     return this.http.delete(`${ApiSettings.getApiBaseURL()}vo/projects/${groupId}/`, {
-      withCredentials: true
-    })
-
-  }
-
-  getProjectDetails(groupId: number | string): Observable<object> {
-    return this.http.get(`${ApiSettings.getApiBaseURL()}vo/projects/${groupId}/details/`, {
       withCredentials: true
     })
 
