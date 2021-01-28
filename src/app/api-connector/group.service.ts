@@ -7,6 +7,7 @@ import {Client} from '../vo_manager/clients/client.model';
 import {ProjectEnumeration} from '../projectmanagement/project-enumeration';
 import {Doi} from '../applications/doi/doi';
 import {ApplicationRessourceUsage} from '../applications/application-ressource-usage/application-ressource-usage';
+import {ProjectMember} from '../projectmanagement/project_member.model';
 
 /**
  * Service which provides Group methods.
@@ -254,9 +255,9 @@ export class GroupService {
 
   }
 
-  getGroupMembers(groupid: string): Observable<any> {
+  getGroupMembers(groupid: string): Observable<ProjectMember[]> {
 
-    return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/members/`, {
+    return this.http.get<ProjectMember[]>(`${ApiSettings.getApiBaseURL()}projects/${groupid}/members/`, {
       withCredentials: true
 
     })

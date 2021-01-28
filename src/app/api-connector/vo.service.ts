@@ -4,6 +4,7 @@ import {Observable} from 'rxjs';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {IResponseTemplate} from './response-template';
 import {Resources} from '../vo_manager/resources/resources';
+import {ProjectMember} from '../projectmanagement/project_member.model';
 
 /**
  * Service which provides vo methods.
@@ -128,8 +129,8 @@ export class VoService {
    * @param {number} groupid id of the the group
    * @returns {Observable<any>}
    */
-  getVoGroupRichMembers(groupid: number | string): Observable<any> {
-    return this.http.get(`${ApiSettings.getApiBaseURL()}vo/projects/${groupid}/members/`, {
+  getVoGroupRichMembers(groupid: number | string): Observable<ProjectMember[]> {
+    return this.http.get<ProjectMember[]>(`${ApiSettings.getApiBaseURL()}vo/projects/${groupid}/members/`, {
       withCredentials: true
     })
   }
