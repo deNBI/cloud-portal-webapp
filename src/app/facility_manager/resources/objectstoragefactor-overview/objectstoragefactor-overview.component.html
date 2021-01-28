@@ -1,80 +1,107 @@
-<div class="rTable">
-  <div class="rTableHeading">
-    <div class="rTableHead">Actions</div>
-    <div class="rTableHead">Storage</div>
-    <div class="rTableHead">Description</div>
-    <div class="rTableHead">Public</div>
-  </div>
-  <div class="rTableBody">
-    <ng-container *ngFor="let oF of objectStorageFactors">
-      <div class="rTableRow" *ngIf="!this.objectUpdateList[oF.id]">
-        <div class="rTableCell col-2">
-          <div class="btn-group-vertical" role="group">
-            <button (click)="deleteObjectStorageFactor(oF.id)" class="btn btn-danger" style="margin-bottom: 5px">Remove
-            </button>
-            <button class="btn btn-warning" (click)="changeObjectStorageToUpdate(oF)">Update</button>
+
+<div class="card" id="{{obFactor?.id + '_card'}}" *ngFor="let obFactor of objectStorageFactors"
+     style="margin:5px;" [ngClass]="this.objectUpdateList[obFactor.id] ? 'border-warning' : 'border-primary'">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-2" style="margin:5px;">
+        <div class="text-muted"><small>Actions</small></div>
+        <div class="btn-group-vertical" role="group">
+          <button (click)="deleteObjectStorageFactor(obFactor.id)" class="btn btn-danger"
+                  *ngIf="!this.objectUpdateList[obFactor.id]">Remove
+          </button>
+          <button class="btn btn-warning" (click)="changeObjectStorageToUpdate(obFactor);"
+                  *ngIf="!this.objectUpdateList[obFactor.id]">Update</button>
+          <button (click)="updateObjectStorageFactor(obFactor); changeObjectStorageToUpdate(obFactor);"
+                  class="btn btn-success" *ngIf="this.objectUpdateList[obFactor.id]">Save
+          </button>
+          <button class="btn btn-info" *ngIf="this.objectUpdateList[obFactor.id]"
+                  (click)="reloadObjectStorageFactor(obFactor); changeObjectStorageToUpdate(obFactor);">Cancel
+          </button>
+        </div>
+      </div>
+      <div class="col-4" style="margin:5px;">
+        <div class="text-muted"><small>Storage</small></div>
+        <div class="form-group row">
+          <label for="{{obFactor?.id + '_storage'}}">Amount</label>
+          <div class="input-group mb-3">
+            <input class="form-control" type="number" min="1" [disabled]="!this.objectUpdateList[obFactor.id]"
+                   [(ngModel)]="obFactor.storage" id="{{obFactor?.id + '_storage'}}">
+            <div class="input-group-append">
+              <span class="input-group-text">TB</span>
+            </div>
           </div>
         </div>
-        <div class="rTableCell col-1">{{oF.storage}} TB</div>
-        <div class="rTableCell col">{{oF.description}}</div>
-
-        <div class="rTableCell col-1"><i *ngIf="oF.public" class="fas fa-check" style="color: darkgreen;"></i>
-          <i *ngIf="!oF.public" class="fas fa-times" style="color:darkred;"></i></div>
-
-
       </div>
-
-      <div class="rTableRow" *ngIf="this.objectUpdateList[oF.id]">
-        <div class="rTableCell col-2">
-          <div class="btn-group-vertical" role="group">
-            <button (click)="updateObjectStorageFactor(oF);changeObjectStorageToUpdate(oF);" class="btn btn-success"
-                    style="margin-bottom: 5px">Save
-            </button>
-            <button class="btn btn-info" (click)="reloadObjectStorageFactor(oF);changeObjectStorageToUpdate(oF);">
-              Cancel
-            </button>
+      <div class="col-3" style="margin:5px;">
+        <div class="text-muted"><small>Description</small></div>
+        <div class="form-group row">
+          <div class="input-group mb-3">
+            <textarea class="form-control" type="textfield" [disabled]="!this.objectUpdateList[obFactor.id]"
+                      [(ngModel)]="obFactor.description" id="{{obFactor?.id + '_description'}}"></textarea>
           </div>
         </div>
-        <div class="rTableCell col-1">
-          <div class="input-group">
-            <input type="text" [(ngModel)]="oF.storage" placeholder="Storage"
-                   pattern="[0-9]+">
-            <div class="input-group-append"><span class="input-group-text">TB</span></div>
+      </div>
+      <div class="col-1" style="margin:5px;">
+        <div class="text-muted"><small>Visibility</small></div>
+        <div class="form-group row">
+          <label for="{{obFactor?.id + '_visibility'}}">Public</label>
+          <div class="input-group mb-3">
+            <input class="form-control"  type="checkbox" [(ngModel)]="obFactor.public"
+                   [disabled]="!this.objectUpdateList[obFactor.id]" id="{{obFactor?.id + '_visibility'}}">
+
           </div>
         </div>
-
-        <div class="rTableCell col"><textarea type="textfield"  class="col" [(ngModel)]="oF.description"
-                                              placeholder="Description"></textarea></div>
-        <div class="rTableCell col-1"><input type="checkbox" [(ngModel)]="oF.public" [checked]="oF.public"></div>
-
-
       </div>
-    </ng-container>
-
-    <div class="rTableRow">
-      <div class="rTableCell col-2">
-        <button style="cursor: pointer;"
-                (click)="addObjectStorageFactor();"
-                [disabled]="!storage.value    "
-                *ngIf="storage.checkValidity()" class="btn btn-success">Save
-        </button>
-      </div>
-      <div class="rTableCell col-1">
-        <div class="input-group">
-          <input type="number" min="0" step="1" placeholder="e.g 1" [(ngModel)]="newFactor.storage"
-                 appMinAmount="0" appIntegerOrNull #storage>
-          <div class="input-group-append"><span class="input-group-text">TB</span></div>
-        </div>
-      </div>
-
-      <div class="rTableCell col">
-        <div >
-        <textarea type="textfield"  class="col" [(ngModel)]="newFactor.description" placeholder="Description"
-        ></textarea></div></div>
-      <div class="rTableCell col-1"><input [(ngModel)]="newFactor.public" type="checkbox"></div>
-
     </div>
-
-
   </div>
 </div>
+
+
+<div class="card border-success" id="new_object_card" style="margin:5px;">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-2" style="margin:5px;">
+        <div class="text-muted"><small>Actions</small></div>
+        <div class="btn-group-vertical" role="group">
+          <button style="cursor: pointer;" class="btn btn-success"
+                  [disabled]="!newFactor.storage" (click)="addObjectStorageFactor();">Save</button>
+        </div>
+      </div>
+      <div class="col-4" style="margin:5px;">
+        <div class="text-muted"><small>Storage</small></div>
+        <div class="form-group row">
+          <label for="new_object_storage">Amount</label>
+          <div class="input-group mb-3">
+            <input class="form-control" type="number" min="1" [(ngModel)]="newFactor.storage" id="new_object_storage">
+            <div class="input-group-append">
+              <span class="input-group-text">TB</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-3" style="margin:5px;">
+        <div class="text-muted"><small>Description</small></div>
+        <div class="form-group row">
+          <div class="input-group mb-3">
+            <textarea class="form-control" type="textfield"
+                      [(ngModel)]="newFactor.description" id="new_object_description"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="col-1" style="margin:5px;">
+        <div class="text-muted"><small>Visibility</small></div>
+        <div class="form-group row">
+          <label for="new_object_visibility">Public</label>
+          <div class="input-group mb-3">
+            <input [(ngModel)]="newFactor.public" type="checkbox" id="new_object_visibility">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
