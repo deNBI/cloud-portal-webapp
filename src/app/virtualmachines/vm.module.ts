@@ -32,6 +32,7 @@ import {ClusterinfoComponent} from './clusters/clusterinfo/clusterinfo.component
 import {ClusterstatusComponent} from './clusters/clusterstatus/clusterstatus.component';
 import {VolumStatusComponent} from './volumes/volum-status/volum-status.component';
 import {PipeModuleModule} from '../pipe-module/pipe-module.module';
+import { ProjectUserListComponent } from './project-user-list/project-user-list.component';
 
 /**
  * VM module.
@@ -72,7 +73,8 @@ import {PipeModuleModule} from '../pipe-module/pipe-module.module';
               ClusterOverviewComponent,
               VirtualmachineinfoComponent,
               VmstatusComponent,
-              VolumStatusComponent
+              VolumStatusComponent,
+              ProjectUserListComponent
             ]
           })
 export class VmModule {
