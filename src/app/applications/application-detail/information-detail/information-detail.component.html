@@ -114,7 +114,7 @@
   </tr>
   <tr *ngIf="application?.project_application_hash && is_vo">
     <td>Validation Hash</td>
-    <td><p id="validation_hash"> {{application?.project_application_hash}}</p>
+    <td><a id="validation_hash" href="#/applications/validation/{{application?.project_application_hash}}"> {{application?.project_application_hash}}</a>
 
     </td>
 

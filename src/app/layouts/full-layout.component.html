@@ -76,7 +76,7 @@
             class="nav-icon fas fa-archive"></i> Applications</a>
         </li>
         <li class="nav-item">
-          <a *ngIf="!navbar_minimized" class="nav-link" routerLinkActive="active"
+          <a *ngIf="!navbar_minimized" class="nav-link" routerLinkActive="active" id="sidebar_new_project"
              [routerLink]="['/applications/type-overview']">
             <i class="nav-icon fas fa-plus-circle">
             </i>
@@ -84,7 +84,7 @@
           </a>
           <a *ngIf="navbar_minimized" class="nav-link" routerLinkActive="active"
              [routerLink]="['/applications/type-overview']"
-             data-toggle="tooltip" data-placement="right" title="New Project">
+             data-toggle="tooltip" data-placement="right" title="New Project" id="sidebar_minimized_new_project">
             <i class="nav-icon fas fa-plus-circle">
             </i>
             New Project
