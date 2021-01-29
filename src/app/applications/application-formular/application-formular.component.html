@@ -1059,7 +1059,7 @@
             <label class="col-md-4 form-control-label">
               <button (click)="notificationModal.show();approveApplication(form);"
                       [disabled]="!respCheck.checked || form.invalid  ||application?.project_application_edam_terms.length == 0  || application?.project_application_edam_terms.length > 10 || (application?.flavors.length == 0  && !application?.project_application_openstack_project)|| (!application?.dissemination?.isPlatformSelected()  && application?.project_application_report_allowed)"
-
+                      id="approveApplicationButtonPI"
                       class="btn btn-sm btn-success">
                 <i class="fa fa-dot-circle-o"></i>
                 Approve Application
