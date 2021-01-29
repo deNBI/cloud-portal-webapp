@@ -61,6 +61,7 @@ export class ProjectOverview {
 
   static async navigateToPIApproval(): Promise<any> {
     console.log('Navigating to Approval of PI');
+    await Util.clickElementById(this.INFORMATION_TAB);
     await Util.waitForPresenceOfElementById(this.VALIDATION_HASH);
     await Util.clickElementById(this.VALIDATION_HASH);
   }
