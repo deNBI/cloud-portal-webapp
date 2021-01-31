@@ -66,6 +66,7 @@ export class VolumeOverviewPage {
 
   static async isVolumeDeleted(): Promise<boolean> {
     await Util.waitForPresenceOfElementById(this.TABLE_ID);
+
     return Util.waitForPresenceOfElementById(`${this.VOLUME_DELETED_STATUS_BADE_PRE}${Util.VOLUME_NAME}`)
 
   }

@@ -28,13 +28,13 @@ export class ResourcesComponent implements OnInit {
   INTERN_ACTIVE: boolean = false;
   PUBLIC_ACTIVE: boolean = true;
 
-  RAM_TAB: number = 0;
+  MACHINE_DEFINITION_TAB: number = 0;
   CORE_TAB: number = 1;
   GPU_TAB: number = 2;
   OBJECT_STORAGE_TAB: number = 3;
   VOLUME_STORAGE_TAB: number = 4;
 
-  RAM_TAB_ACTIVE: boolean = false;
+  MACHINE_DEFINITION_TAB_ACTIVE: boolean = false;
   CORE_TAB_ACTIVE: boolean = false;
   GPU_TAB_ACTIVE: boolean = false;
   OBJECT_STORAGE_TAB_ACTIVE: boolean = false;
@@ -64,7 +64,7 @@ export class ResourcesComponent implements OnInit {
   }
 
   setAllTabsFalse(): void {
-    this.RAM_TAB_ACTIVE = false;
+    this.MACHINE_DEFINITION_TAB_ACTIVE = false;
     this.CORE_TAB_ACTIVE = false;
     this.GPU_TAB_ACTIVE = false;
     this.OBJECT_STORAGE_TAB_ACTIVE = false;
@@ -103,8 +103,8 @@ export class ResourcesComponent implements OnInit {
 
     this.setAllTabsFalse()
     switch (tab_num) {
-      case this.RAM_TAB:
-        this.RAM_TAB_ACTIVE = true;
+      case this.MACHINE_DEFINITION_TAB:
+        this.MACHINE_DEFINITION_TAB_ACTIVE = true;
         break;
       case this.CORE_TAB:
         this.CORE_TAB_ACTIVE = true;
