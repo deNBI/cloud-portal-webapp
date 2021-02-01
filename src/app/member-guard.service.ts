@@ -9,7 +9,7 @@ import {map, switchMap} from 'rxjs/operators';
 import {now} from 'moment';
 import {IResponseTemplate} from './api-connector/response-template';
 import {VoService} from './api-connector/vo.service';
-import {setVO} from './shared/globalvar';
+import {setElixirId, setVO} from './shared/globalvar';
 
 /**
  * Guard which checks if the user is member of the vo.
@@ -54,6 +54,9 @@ export class MemberGuardService implements CanActivate {
         this.voService.isVo().subscribe((result: IResponseTemplate): void => {
           setVO(<boolean><Boolean>result.value);
 
+        })
+        this.userservice.getUserInfo().subscribe((result: any): void => {
+          setElixirId(result['ElixirId'])
         })
 
         return this.userservice.getMemberByUser().pipe(map((memberinfo: any): any => {
