@@ -316,6 +316,7 @@
                 <div class="col-4">
                   <button class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
                           [id]="'showDetailsButton_'+vm?.name"
+                          *ngIf="vm.elixir_id == user_elixir_id"
                           [disabled]="!(vm?.status |hasStatus:VirtualMachineStates.staticACTIVE)
                           && !(vm?.status |hasStatus:VirtualMachineStates.staticSHUTOFF)
                           && !(vm?.status |hasStatus:VirtualMachineStates.staticDELETED)"
@@ -336,7 +337,7 @@
                 </div>
                 <div class="col-4">
                   <button class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
-                          *ngIf="vm.cardState!=2"
+                          *ngIf="vm.cardState!=2 && vm.elixir_id == user_elixir_id"
                           [disabled]="(vm?.status | statusInProcess:VirtualMachineStates.staticIN_PROCESS_STATE)
                           || (vm?.status | hasStatus:VirtualMachineStates.staticNOT_FOUND)
                           || (vm?.status | hasStatus:VirtualMachineStates.staticERROR)"
