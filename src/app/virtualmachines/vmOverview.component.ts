@@ -10,7 +10,8 @@ import {FacilityService} from '../api-connector/facility.service';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {Subject, Subscription} from 'rxjs';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {is_vo} from '../shared/globalvar';
+import {elixir_id, is_vo} from '../shared/globalvar';
+
 import {VirtualMachineStates} from './virtualmachinemodels/virtualmachinestates';
 import {GroupService} from '../api-connector/group.service';
 import {ClientService} from '../api-connector/client.service';
@@ -88,6 +89,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
   items_per_page: number = 7;
 
   is_vo_admin: boolean;
+  user_elixir_id: string;
   /**
    * Vm which is used to create a snapshot.
    */
@@ -720,6 +722,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
     this.getClientForcUrls();
     this.getVms();
     this.is_vo_admin = is_vo;
+    this.user_elixir_id = elixir_id;
     this.get_is_facility_manager();
     this.facilityService.getManagerFacilities().subscribe((result: any): void => {
       this.managerFacilities = result;
