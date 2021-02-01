@@ -18,11 +18,10 @@ import {SnapshotModel} from '../snapshots/snapshot.model';
 import {Subject} from 'rxjs';
 import {PlaybookService} from '../../api-connector/playbook.service';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
-
 import {CondaPackage} from '../condaPackage.model';
 import {BiocondaService} from '../../api-connector/bioconda.service';
 import {ResenvTemplate} from '../conda/resenvTemplate.model';
-import {is_vo} from '../../shared/globalvar';
+import {elixir_id, is_vo} from '../../shared/globalvar';
 import {WIKI_GUACAMOLE_LINK, WIKI_RSTUDIO_LINK, WIKI_VOLUME_OVERVIEW} from '../../../links/links';
 import {ClipboardService} from 'ngx-clipboard';
 import {Volume} from '../volumes/volume';
@@ -74,6 +73,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
   volume_to_attach: Volume;
   volume_to_detach: Volume;
   detached_project_volumes: Volume[] = [];
+  user_elixir_id: string;
 
   /**
    * The changed status.
@@ -147,6 +147,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
       this.vm_id = paramsId.id;
       this.getVmCondaLogs()
       this.getVmById();
+      this.user_elixir_id = elixir_id;
       this.snapshotSearchTerm
         .pipe(
           debounceTime(this.DEBOUNCE_TIME),
