@@ -10,7 +10,7 @@
     <div class="col-12">
       <div class="card" >
         <div class="card-header"><span class="font-weight-bold text-muted">{{virtualMachine?.name}}</span> <app-vmstatus [with_text]="true" [vm]="virtualMachine"></app-vmstatus></div>
-        <div class="card-body" *ngIf="virtualMachine?.still_used_confirmation_requested">
+        <div class="card-body" *ngIf="virtualMachine?.still_used_confirmation_requested && virtualMachine?.elixir_id == user_elixir_id">
           <div class="alert alert-danger">
             <strong>This machine has been running for {{virtualMachine?.days_running}} days!<br> Please confirm that you still
               need this machine.<br>
@@ -72,8 +72,8 @@
           </div>
 
         </div>
-        <hr>
-        <div class="card-body">
+        <hr *ngIf="virtualMachine?.elixir_id == user_elixir_id">
+        <div class="card-body" *ngIf="virtualMachine?.elixir_id == user_elixir_id">
           <span class="text-muted font-weight-bold card-title" style="margin-left: 15px;">
               Actions</span>
           <div class="row" style="margin-top:15px;">
@@ -280,7 +280,7 @@
               </div>
             </div>
           </div>
-          <div class="row">
+          <div class="row" *ngIf="virtualMachine?.elixir_id == user_elixir_id">
             <div class="col-4">
               <div class="callout">
                 <strong class="text-muted">Actions</strong>
@@ -323,7 +323,7 @@
               </div>
             </div>
           </div>
-          <div class="row">
+          <div class="row" *ngIf="virtualMachine?.elixir_id == user_elixir_id">
             <div class="col-6">
               <div class="callout">
                 <small class="text-muted">Volume ID</small><br>
@@ -379,7 +379,7 @@
 
         <div class="card-header"><span class="font-weight-bold text-muted">User management</span></div>
         <div class="card-body">
-          <div class="row">
+          <div class="row" *ngIf="virtualMachine?.elixir_id == user_elixir_id">
             <button id="add_member_btn_modal"
                     (click)="addUserModal.show();"
 
@@ -417,7 +417,7 @@
                   <td>{{ member["member_id"] }}</td>
                   <td>{{ member["firstName"] }} {{member["lastName"]}}</td>
                   <td>
-                    <button id="delete_member_btn_modal"
+                    <button id="delete_member_btn_modal" *ngIf="virtualMachine?.elixir_id == user_elixir_id"
                             (click)="deleteUserFromBackend(member['member_id']);"
 
                             type="button" style="margin-bottom:5px;margin-right:5px"
