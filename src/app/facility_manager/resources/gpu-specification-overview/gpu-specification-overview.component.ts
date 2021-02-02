@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FacilityService} from '../../../api-connector/facility.service';
-import {GPUSpecification} from "../gpu-specification";
+import {GPUSpecification} from '../gpu-specification';
 
 /**
  * Class for ramfactors..
