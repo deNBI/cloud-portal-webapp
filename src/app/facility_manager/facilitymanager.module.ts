@@ -19,6 +19,7 @@ import { ObjectstoragefactorOverviewComponent } from './resources/objectstoragef
 import { VolumestoragefactorOverviewComponent } from './resources/volumestoragefactor-overview/volumestoragefactor-overview.component';
 import { GpufactorOverviewComponent } from './resources/gpufactor-overview/gpufactor-overview.component';
 import {ResourcemachineOverviewComponent} from './resources/resourcemachine-overview/resourcemachine-overview.component';
+import {GPUSpecificationOverviewComponent} from "./resources/gpu-specification-overview/gpu-specification-overview.component";
 
 /**
  * Facilitymanager module.
@@ -45,8 +46,8 @@ import {ResourcemachineOverviewComponent} from './resources/resourcemachine-over
               ObjectstoragefactorOverviewComponent,
               VolumestoragefactorOverviewComponent,
               GpufactorOverviewComponent,
-              ResourcemachineOverviewComponent
-
+              ResourcemachineOverviewComponent,
+              GPUSpecificationOverviewComponent
             ]
           })
 export class FacilitymanagerModule {

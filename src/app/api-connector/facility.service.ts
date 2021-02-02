@@ -10,6 +10,7 @@ import {VolumeStorageFactor} from '../facility_manager/resources/volume-storage-
 import {ObjectStorageFactor} from '../facility_manager/resources/object-storage-factor';
 import {ResourceMachine} from '../facility_manager/resources/resource-machine';
 import {ProjectMember} from '../projectmanagement/project_member.model';
+import {GPUSpecification} from "../facility_manager/resources/gpu-specification";
 
 /**
  * Service which provides methods for the facilities.
@@ -329,6 +330,26 @@ export class FacilityService {
                                               withCredentials: true
                                             }
     )
+  }
+
+  updateGPUSpecification(gpu_specification: GPUSpecification): Observable<GPUSpecification> {
+    return null; //TODO: add endpoint
+  }
+
+  getGPUSpecification(gpu_spec_id: number | string): Observable<GPUSpecification> {
+    return null; //TODO:add endpoint
+  }
+
+  getGPUSpecifications(): Observable<GPUSpecification[]> {
+    return null;  //TODO: add endpoint
+  }
+
+  deleteGPUSpecification(gpu_spec_id: number | string): Observable<GPUSpecification[]> {
+    return null; //TODO: add endpoint
+  }
+
+  addGPUSpecification(gpu_specification: GPUSpecification): Observable<GPUSpecification[]> {
+    return null; //TODO: add endpoint
   }
 
   /**

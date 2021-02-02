@@ -69,7 +69,6 @@ export class ResourcesComponent implements OnInit {
     this.GPU_TAB_ACTIVE = false;
     this.OBJECT_STORAGE_TAB_ACTIVE = false;
     this.VOLUME_STORAGE_TAB_ACTIVE = false;
-
   }
 
   setAllResourcesFalse(): void {

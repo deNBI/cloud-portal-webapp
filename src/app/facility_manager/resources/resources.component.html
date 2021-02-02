@@ -181,21 +181,19 @@
       <div class="modal-body">
         <div class="nav-tabs-boxed">
           <ul class="nav nav-tabs " style="overflow-x:visible !important">
-            <li class="nav-item"><a class="nav-link" id="ram_tab" [ngClass]="{'active': MACHINE_DEFINITION_TAB_ACTIVE}"
-                                    (click)="setTab(MACHINE_DEFINITION_TAB)">Machine Definitions</a>
-            </li>
-
+            <li class="nav-item"><a class="nav-link" id="ram_tab"
+                                    [ngClass]="{'active': MACHINE_DEFINITION_TAB_ACTIVE}"
+                                    (click)="setTab(MACHINE_DEFINITION_TAB)">Machine Definitions</a></li>
             <li class="nav-item"><a class="nav-link" id="object_storage_tab"
                                     [ngClass]="{'active': OBJECT_STORAGE_TAB_ACTIVE}"
                                     (click)="setTab(OBJECT_STORAGE_TAB)">Object Storage</a></li>
             <li class="nav-item"><a class="nav-link" id="volume_storage_tab"
                                     [ngClass]="{'active': VOLUME_STORAGE_TAB_ACTIVE}"
                                     (click)="setTab(VOLUME_STORAGE_TAB)">Volume Storage</a></li>
-
-
+            <li class="nav-item"><a class="nav-link" id="gpu_tab"
+                                    [ngClass]="{'active': GPU_TAB_ACTIVE}"
+                                    (click)="setTab(GPU_TAB)">Graphic Processing Units</a></li>
           </ul>
-
-
         </div>
 
         <div class="tab-content">
@@ -214,6 +212,9 @@
             <app-volumestoragefactor-overview
               (factorChanged)="getSelectedFacilityResources()"
               [facility_id]="selectedFacility['FacilityId']"></app-volumestoragefactor-overview>
+          </div>
+          <div *ngIf="GPU_TAB_ACTIVE && selectedFacility">
+            <app-gpu-specification-overview></app-gpu-specification-overview>
           </div>
         </div>
 
