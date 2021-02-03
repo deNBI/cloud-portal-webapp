@@ -1,6 +1,11 @@
 name: Create Wiki Issue
 
-on: [pull_request]
+on:
+  pull_request:
+    types: [opened]
+    branches-ignore:
+      - 'dependabot/**'
+
 
 jobs:
   wikilinks-check:
