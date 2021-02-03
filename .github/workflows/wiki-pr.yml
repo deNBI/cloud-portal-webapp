@@ -1,0 +1,27 @@
+name: Create Wiki Issue
+
+on: [pull_request]
+
+jobs:
+  wikilinks-check:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Create Issue From File
+      id: ciff
+      uses: peter-evans/create-issue-from-file@v2
+      with:
+        title: Wiki Update [${{github.ref}}]
+        content-filepath: ./.github/WIKI_ISSUE_TEMPLATE.md
+        labels: wiki
+        assignees: ${{github.actor}}
+    - name: Create or Update Project Card
+      uses: peter-evans/create-or-update-project-card@v1
+      with:
+        project-name: Weekly Sprint
+        column-name: Current Sprint
+        issue-number: ${{ steps.ciff.outputs.issue-number }}
+
+
