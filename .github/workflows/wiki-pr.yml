@@ -18,13 +18,14 @@ jobs:
       id: ciff
       uses: peter-evans/create-issue-from-file@v2
       with:
-        title: Wiki Update [${{ github.event.pull_request.title }}]
+        title: Wiki Update [${{ github.event.pull_request.branch }}]
         content-filepath: ./.github/WIKI_ISSUE_TEMPLATE.md
         labels: wiki
         assignees: ${{github.actor}}
     - name: Create or Update Project Card
       uses: peter-evans/create-or-update-project-card@v1
       with:
+        project-location: deNBI
         project-name: Weekly Sprint
         column-name: Current Sprint
         issue-number: ${{ steps.ciff.outputs.issue-number }}
