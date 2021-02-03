@@ -13,7 +13,7 @@ jobs:
       id: ciff
       uses: peter-evans/create-issue-from-file@v2
       with:
-        title: Wiki Update [${{github.ref}}]
+        title: Wiki Update [${{ github.event.pull_request.title }}]
         content-filepath: ./.github/WIKI_ISSUE_TEMPLATE.md
         labels: wiki
         assignees: ${{github.actor}}
@@ -23,5 +23,7 @@ jobs:
         project-name: Weekly Sprint
         column-name: Current Sprint
         issue-number: ${{ steps.ciff.outputs.issue-number }}
+        token: ${{ secrets.GITHUB_TOKEN }}
+
 
 
