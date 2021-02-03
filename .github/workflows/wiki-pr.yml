@@ -18,7 +18,7 @@ jobs:
       id: ciff
       uses: peter-evans/create-issue-from-file@v2
       with:
-        title: Wiki Update [${{ github.event.pull_request.branch }}]
+        title: Wiki Update [${{ github.event.pull_request.title }}]
         content-filepath: ./.github/WIKI_ISSUE_TEMPLATE.md
         labels: wiki
         assignees: ${{github.actor}}
