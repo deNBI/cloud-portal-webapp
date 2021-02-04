@@ -23,7 +23,7 @@ export class ResourcemachineOverviewComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getResourceMachines()
+    this.getResourceMachines();
     this.newResourceMachine = new ResourceMachine();
 
   }
@@ -68,9 +68,7 @@ export class ResourcemachineOverviewComponent implements OnInit {
         this.resourceMachineUpdateList[rf.id] = false;
       })
       this.factorChanged.emit()
-      console.log(this.resourceMachines)
-
-    })
+    });
 
   }
 

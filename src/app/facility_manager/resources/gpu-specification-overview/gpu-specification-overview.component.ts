@@ -23,18 +23,14 @@ export class GPUSpecificationOverviewComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getGPUSpecifications()
+    this.getGPUSpecifications();
     this.newGPUSpecification = new GPUSpecification();
 
   }
 
   getGPUSpecifications(): void {
-    this.facilityService.getGPUSpecifications().subscribe((gpus: GPUSpecification[]): void => {
+    this.facilityService.getGPUSpecifications(this.facility_id).subscribe((gpus: GPUSpecification[]): void => {
       this.gpuSpecifications = gpus;
-      /*this.gpuSpecifications.sort((a_machine: GPUSpecification, b_machine: GPUSpecification): number => {
-        return b_machine.type.localeCompare(a_machine.type)
-      })  TODO: check if sort is necessary*/
-
       this.gpuSpecifications.forEach((machine: GPUSpecification): void => {
         this.gpuSpecificationUpdateList[machine.id] = false;
       })
@@ -42,7 +38,7 @@ export class GPUSpecificationOverviewComponent implements OnInit {
   }
 
   deleteGPUSpecification(id: string | number): void {
-    this.facilityService.deleteGPUSpecification(id).subscribe((gpus: GPUSpecification[]): void => {
+    this.facilityService.deleteGPUSpecification(this.facility_id, id).subscribe((gpus: GPUSpecification[]): void => {
       this.gpuSpecifications = gpus;
       this.factorChanged.emit()
 
@@ -54,14 +50,13 @@ export class GPUSpecificationOverviewComponent implements OnInit {
   }
 
   reloadGPUSpecification(gpu: GPUSpecification): void {
-    this.facilityService.getGPUSpecification(gpu.id).subscribe((fs_gpu: GPUSpecification): void => {
+    this.facilityService.getGPUSpecification(this.facility_id, gpu.id).subscribe((fs_gpu: GPUSpecification): void => {
       this.gpuSpecifications[this.gpuSpecifications.indexOf(gpu)] = fs_gpu;
     })
   }
 
   addGPUSpecification(): void {
-
-    this.facilityService.addGPUSpecification(this.newGPUSpecification).subscribe((res: GPUSpecification[]): void => {
+    this.facilityService.addGPUSpecification(this.facility_id, this.newGPUSpecification).subscribe((res: GPUSpecification[]): void => {
       this.newGPUSpecification = new GPUSpecification();
       this.gpuSpecifications = res;
       this.gpuSpecifications.forEach((rf: GPUSpecification): void => {
@@ -72,10 +67,10 @@ export class GPUSpecificationOverviewComponent implements OnInit {
 
   }
 
-  updateGPUSpecification(rf: GPUSpecification): void {
+  updateGPUSpecification(gpu: GPUSpecification): void {
 
-    this.facilityService.updateGPUSpecification( rf).subscribe((machine: GPUSpecification): void => {
-      this.gpuSpecifications[this.gpuSpecifications.indexOf(rf)] = machine;
+    this.facilityService.updateGPUSpecification(this.facility_id, gpu).subscribe((machine: GPUSpecification): void => {
+      this.gpuSpecifications[this.gpuSpecifications.indexOf(gpu)] = machine;
       this.factorChanged.emit()
 
     })

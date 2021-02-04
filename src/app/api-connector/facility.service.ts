@@ -299,29 +299,42 @@ export class FacilityService {
   getResourceMachines(facility: number | string): Observable<ResourceMachine[]> {
 
     return this.http.get<ResourceMachine[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/resourcesMachine/`, {
-                                              withCredentials: true
-                                            }
-    )
+      withCredentials: true
+    });
   }
 
-  updateGPUSpecification(gpu_specification: GPUSpecification): Observable<GPUSpecification> {
-    return null; // TODO: add endpoint
+  updateGPUSpecification(facility: number | string, gpu_specification: GPUSpecification): Observable<GPUSpecification> {
+    const params: HttpParams = new HttpParams().set('gpu_specification', JSON.stringify(gpu_specification));
+    return this.http.post<GPUSpecification>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/gpuSpecification/${gpu_specification.id}/`, params, {
+      withCredentials: true
+    });
   }
 
-  getGPUSpecification(gpu_spec_id: number | string): Observable<GPUSpecification> {
-    return null; // TODO:add endpoint
+  getGPUSpecification(facility: number | string, gpu_spec_id: number | string): Observable<GPUSpecification> {
+    return this.http.get<GPUSpecification>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/gpuSpecification/${gpu_spec_id}`, {
+      withCredentials: true
+    });
   }
 
-  getGPUSpecifications(): Observable<GPUSpecification[]> {
-    return null;  // TODO: add endpoint
+  getGPUSpecifications(facility: number | string): Observable<GPUSpecification[]> {
+    return this.http.get<GPUSpecification[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/gpuSpecification/`, {
+      withCredentials: true
+    });
   }
 
-  deleteGPUSpecification(gpu_spec_id: number | string): Observable<GPUSpecification[]> {
-    return null; // TODO: add endpoint
+  deleteGPUSpecification(facility: number | string, gpu_spec_id: number | string): Observable<GPUSpecification[]> {
+    return this.http.delete<GPUSpecification[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/resourcesMachine/${gpu_spec_id}/`, {
+      withCredentials: true
+    });
   }
 
-  addGPUSpecification(gpu_specification: GPUSpecification): Observable<GPUSpecification[]> {
-    return null; // TODO: add endpoint
+  addGPUSpecification(facility: number | string, gpu_specification: GPUSpecification): Observable<GPUSpecification[]> {
+    const params: HttpParams = new HttpParams().set('gpu_specification', JSON.stringify(gpu_specification));
+
+    return this.http.post<GPUSpecification[]>(
+      `${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/gpuSpecification/`, params, {
+        withCredentials: true
+      });
   }
 
   getVolumeStorageFactor(facility: number | string, factor_id: number | string): Observable<VolumeStorageFactor> {
