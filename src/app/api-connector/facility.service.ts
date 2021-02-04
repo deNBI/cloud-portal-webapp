@@ -239,12 +239,6 @@ export class FacilityService {
                           });
   }
 
-
-
-
-
-
-
   addVolumeStorageFactor(facility: number | string, volumeStorageFactor: VolumeStorageFactor): Observable<VolumeStorageFactor[]> {
     const params: HttpParams = new HttpParams().set('volumeStorageFactor', JSON.stringify(volumeStorageFactor));
 
@@ -309,9 +303,6 @@ export class FacilityService {
     )
   }
 
-
-
-
   getVolumeStorageFactor(facility: number | string, factor_id: number | string): Observable<VolumeStorageFactor> {
 
     return this.http.get<VolumeStorageFactor>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/volumeStorageFactors/${factor_id}/`, {
@@ -325,7 +316,6 @@ export class FacilityService {
       withCredentials: true
     });
   }
-
 
   /**
    * Updates the CoreFactor.
@@ -354,10 +344,6 @@ export class FacilityService {
       withCredentials: true
     });
   }
-
-
-
-
 
   /**
    * Deletes an CoreFactor.
@@ -453,8 +439,6 @@ export class FacilityService {
       }
     )
   }
-
-
 
   /**
    * Declines an application for the facility
