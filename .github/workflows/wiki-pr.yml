@@ -3,6 +3,8 @@ name: Create Wiki Issue
 on:
   pull_request:
     types: [opened]
+    branches:
+      - dev
     branches-ignore:
       - 'dependabot/**'
 
