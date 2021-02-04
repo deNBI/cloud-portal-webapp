@@ -1,3 +1,46 @@
+<div class="card border-success" id="new_volume_card" style="margin:5px;">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-2" style="margin:5px;">
+        <div class="text-muted"><small>Actions</small></div>
+        <div class="btn-group-vertical" role="group">
+          <button style="cursor: pointer;" class="btn btn-success"
+                  [disabled]="!newFactor.storage" (click)="addVolumeStorageFactor();">Save</button>
+        </div>
+      </div>
+      <div class="col-4" style="margin:5px;">
+        <div class="text-muted"><small>Storage</small></div>
+        <div class="form-group row">
+          <label for="new_volume_storage">Amount</label>
+          <div class="input-group mb-3">
+            <input class="form-control" type="number" min="1" [(ngModel)]="newFactor.storage" id="new_volume_storage">
+            <div class="input-group-append">
+              <span class="input-group-text">TB</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-3" style="margin:5px;">
+        <div class="text-muted"><small>Description</small></div>
+        <div class="form-group row">
+          <div class="input-group mb-3">
+            <textarea class="form-control" type="textfield"
+                      [(ngModel)]="newFactor.description" id="new_volume_description"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="col-1" style="margin:5px;">
+        <div class="text-muted"><small>Visibility</small></div>
+        <div class="form-group row">
+          <label for="new_volume_visibility">Public</label>
+          <div class="input-group mb-3">
+            <input [(ngModel)]="newFactor.public" type="checkbox" id="new_volume_visibility">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div class="card" id="{{vsFactor?.id + '_card'}}" *ngFor="let vsFactor of volumeStorageFactors"
      style="margin:5px;" [ngClass]="this.volumeUpdateList[vsFactor.id] ? 'border-warning' : 'border-primary'">
@@ -55,52 +98,6 @@
     </div>
   </div>
 </div>
-
-
-<div class="card border-success" id="new_volume_card" style="margin:5px;">
-  <div class="card-body">
-    <div class="row">
-      <div class="col-2" style="margin:5px;">
-        <div class="text-muted"><small>Actions</small></div>
-        <div class="btn-group-vertical" role="group">
-          <button style="cursor: pointer;" class="btn btn-success"
-                  [disabled]="!newFactor.storage" (click)="addVolumeStorageFactor();">Save</button>
-        </div>
-      </div>
-      <div class="col-4" style="margin:5px;">
-        <div class="text-muted"><small>Storage</small></div>
-        <div class="form-group row">
-          <label for="new_volume_storage">Amount</label>
-          <div class="input-group mb-3">
-            <input class="form-control" type="number" min="1" [(ngModel)]="newFactor.storage" id="new_volume_storage">
-            <div class="input-group-append">
-              <span class="input-group-text">TB</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-3" style="margin:5px;">
-        <div class="text-muted"><small>Description</small></div>
-        <div class="form-group row">
-          <div class="input-group mb-3">
-            <textarea class="form-control" type="textfield"
-                      [(ngModel)]="newFactor.description" id="new_volume_description"></textarea>
-          </div>
-        </div>
-      </div>
-      <div class="col-1" style="margin:5px;">
-        <div class="text-muted"><small>Visibility</small></div>
-        <div class="form-group row">
-          <label for="new_volume_visibility">Public</label>
-          <div class="input-group mb-3">
-            <input [(ngModel)]="newFactor.public" type="checkbox" id="new_volume_visibility">
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
 
 
 
