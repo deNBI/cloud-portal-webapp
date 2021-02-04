@@ -4,6 +4,10 @@ import {Resources} from '../../vo_manager/resources/resources';
 import {jsPDF} from 'jspdf';
 import html2canvas from 'html2canvas';
 import {ExportAsConfig, ExportAsService} from 'ngx-export-as'
+import {ObjectStorageFactor} from './object-storage-factor';
+import {VolumeStorageFactor} from './volume-storage-factor';
+import {GeneralStorageFactor} from './general-storage-factor';
+import {ResourceMachine} from './resource-machine';
 
 /**
  * Facility resource component.
@@ -29,16 +33,23 @@ export class ResourcesComponent implements OnInit {
   PUBLIC_ACTIVE: boolean = true;
 
   MACHINE_DEFINITION_TAB: number = 0;
-  CORE_TAB: number = 1;
-  GPU_TAB: number = 2;
-  OBJECT_STORAGE_TAB: number = 3;
-  VOLUME_STORAGE_TAB: number = 4;
+  STORAGE_TAB: number = 1;
+  OBJECT_STORAGE_TAB: number = 2;
+  VOLUME_STORAGE_TAB: number = 3;
+  GENERAL_STORAGE_TAB: number = 4;
+  GPU_TAB: number = 5;
 
   MACHINE_DEFINITION_TAB_ACTIVE: boolean = false;
-  CORE_TAB_ACTIVE: boolean = false;
-  GPU_TAB_ACTIVE: boolean = false;
+  STORAGE_TAB_ACTIVE: boolean = false;
+  GENERAL_STORAGE_TAB_ACTIVE: boolean = false;
   OBJECT_STORAGE_TAB_ACTIVE: boolean = false;
   VOLUME_STORAGE_TAB_ACTIVE: boolean = false;
+  GPU_TAB_ACTIVE: boolean = false;
+
+  objectStorageFactors: ObjectStorageFactor[] = [];
+  volumeStorageFactors: VolumeStorageFactor[] = [];
+  generalStorageFactors: GeneralStorageFactor[] = [];
+  resourceMachines: ResourceMachine[] = [];
 
   /**
    * Chosen facility.
@@ -65,10 +76,12 @@ export class ResourcesComponent implements OnInit {
 
   setAllTabsFalse(): void {
     this.MACHINE_DEFINITION_TAB_ACTIVE = false;
-    this.CORE_TAB_ACTIVE = false;
-    this.GPU_TAB_ACTIVE = false;
+    this.GENERAL_STORAGE_TAB_ACTIVE = false;
     this.OBJECT_STORAGE_TAB_ACTIVE = false;
     this.VOLUME_STORAGE_TAB_ACTIVE = false;
+    this.GPU_TAB_ACTIVE = false;
+    this.STORAGE_TAB_ACTIVE = false;
+
   }
 
   setAllResourcesFalse(): void {
@@ -105,17 +118,28 @@ export class ResourcesComponent implements OnInit {
       case this.MACHINE_DEFINITION_TAB:
         this.MACHINE_DEFINITION_TAB_ACTIVE = true;
         break;
-      case this.CORE_TAB:
-        this.CORE_TAB_ACTIVE = true;
+      case this.STORAGE_TAB:
+        this.STORAGE_TAB_ACTIVE = true;
+        if (this.generalStorageFactors.length > 0) {
+          this.GENERAL_STORAGE_TAB_ACTIVE = true;
+        } else if (this.volumeStorageFactors.length > 0 || this.objectStorageFactors.length > 0) {
+          this.OBJECT_STORAGE_TAB_ACTIVE = true;
+        }
         break;
-      case this.GPU_TAB:
-        this.GPU_TAB_ACTIVE = true;
+      case this.GENERAL_STORAGE_TAB:
+        this.GENERAL_STORAGE_TAB_ACTIVE = true;
+        this.STORAGE_TAB_ACTIVE = true;
+
         break;
       case this.OBJECT_STORAGE_TAB:
         this.OBJECT_STORAGE_TAB_ACTIVE = true;
+        this.STORAGE_TAB_ACTIVE = true;
+
         break;
       case this.VOLUME_STORAGE_TAB:
         this.VOLUME_STORAGE_TAB_ACTIVE = true;
+        this.STORAGE_TAB_ACTIVE = true;
+
         break;
 
       default:
@@ -155,11 +179,27 @@ export class ResourcesComponent implements OnInit {
   }
 
   public getSelectedFacilityResources(): void {
-    this.facilityService.getFacilityResources(this.selectedFacility['FacilityId']).subscribe((res: Resources[]): void => {
+    this.facilityService.getObjectStorageFactors(this.selectedFacility['FacilityId']).subscribe(
+      (res: ObjectStorageFactor[]): void => {
+        this.objectStorageFactors = res;
+      })
+    this.facilityService.getGeneralStorageFactors(this.selectedFacility['FacilityId']).subscribe((res: GeneralStorageFactor[]): void => {
+      this.generalStorageFactors = res;
+    })
+    this.facilityService.getResourceMachines(this.selectedFacility['FacilityId']).subscribe((res: ResourceMachine[]): void => {
+      this.resourceMachines = res;
+    })
 
-      this.resources = res;
-      this.setVisibleResources()
-                                                                                             }
+    this.facilityService.getVolumeStorageFactors(this.selectedFacility['FacilityId']).subscribe((res: VolumeStorageFactor[]): void => {
+      this.volumeStorageFactors = res;
+    })
+    this.facilityService.getFacilityResources(
+      this.selectedFacility['FacilityId']).subscribe((res: Resources[]): void => {
+
+                                                       this.resources = res;
+
+                                                       this.setVisibleResources()
+                                                     }
     )
 
   }

@@ -5,7 +5,7 @@
         <div class="text-muted"><small>Actions</small></div>
         <div class="btn-group-vertical" role="group">
           <button style="cursor: pointer;" class="btn btn-success"
-                  [disabled]="!newFactor.storage" (click)="addObjectStorageFactor();">Save</button>
+                  [disabled]="!newFactor.storage" (click)="addGeneralStorageFactor();">Save</button>
         </div>
       </div>
       <div class="col-4" style="margin:5px;">
@@ -42,23 +42,23 @@
   </div>
 </div>
 
-<div class="card" id="{{obFactor?.id + '_card'}}" *ngFor="let obFactor of objectStorageFactors"
-     style="margin:5px;" [ngClass]="this.objectUpdateList[obFactor.id] ? 'border-warning' : 'border-primary'">
+<div class="card" id="{{obFactor?.id + '_card'}}" *ngFor="let obFactor of generalStorageFactors"
+     style="margin:5px;" [ngClass]="this.generalStorageFactors[obFactor.id] ? 'border-warning' : 'border-primary'">
   <div class="card-body">
     <div class="row">
       <div class="col-2" style="margin:5px;">
         <div class="text-muted"><small>Actions</small></div>
         <div class="btn-group-vertical" role="group">
-          <button (click)="deleteObjectStorageFactor(obFactor.id)" class="btn btn-danger"
-                  *ngIf="!this.objectUpdateList[obFactor.id]">Remove
+          <button (click)="deleteGeneralStorageFactor(obFactor.id)" class="btn btn-danger"
+                  *ngIf="!this.storageUpdateList[obFactor.id]">Remove
           </button>
-          <button class="btn btn-warning" (click)="changeObjectStorageToUpdate(obFactor);"
-                  *ngIf="!this.objectUpdateList[obFactor.id]">Update</button>
-          <button (click)="updateObjectStorageFactor(obFactor); changeObjectStorageToUpdate(obFactor);"
-                  class="btn btn-success" *ngIf="this.objectUpdateList[obFactor.id]">Save
+          <button class="btn btn-warning" (click)="changeStorageToUpdate(obFactor);"
+                  *ngIf="!this.storageUpdateList[obFactor.id]">Update</button>
+          <button (click)="updateGeneralStorageFactor(obFactor); changeStorageToUpdate(obFactor);"
+                  class="btn btn-success" *ngIf="this.storageUpdateList[obFactor.id]">Save
           </button>
-          <button class="btn btn-info" *ngIf="this.objectUpdateList[obFactor.id]"
-                  (click)="reloadObjectStorageFactor(obFactor); changeObjectStorageToUpdate(obFactor);">Cancel
+          <button class="btn btn-info" *ngIf="this.storageUpdateList[obFactor.id]"
+                  (click)="reloadGeneralStorageFactor(obFactor); changeStorageToUpdate(obFactor);">Cancel
           </button>
         </div>
       </div>
@@ -67,7 +67,7 @@
         <div class="form-group row">
           <label for="{{obFactor?.id + '_storage'}}">Amount</label>
           <div class="input-group mb-3">
-            <input class="form-control" type="number" min="1" [disabled]="!this.objectUpdateList[obFactor.id]"
+            <input class="form-control" type="number" min="1" [disabled]="!this.storageUpdateList[obFactor.id]"
                    [(ngModel)]="obFactor.storage" id="{{obFactor?.id + '_storage'}}">
             <div class="input-group-append">
               <span class="input-group-text">TB</span>
@@ -79,7 +79,7 @@
         <div class="text-muted"><small>Description</small></div>
         <div class="form-group row">
           <div class="input-group mb-3">
-            <textarea class="form-control" type="textfield" [disabled]="!this.objectUpdateList[obFactor.id]"
+            <textarea class="form-control" type="textfield" [disabled]="!this.storageUpdateList[obFactor.id]"
                       [(ngModel)]="obFactor.description" id="{{obFactor?.id + '_description'}}"></textarea>
           </div>
         </div>
@@ -90,7 +90,7 @@
           <label for="{{obFactor?.id + '_visibility'}}">Public</label>
           <div class="input-group mb-3">
             <input class="form-control"  type="checkbox" [(ngModel)]="obFactor.public"
-                   [disabled]="!this.objectUpdateList[obFactor.id]" id="{{obFactor?.id + '_visibility'}}">
+                   [disabled]="!this.storageUpdateList[obFactor.id]" id="{{obFactor?.id + '_visibility'}}">
 
           </div>
         </div>
