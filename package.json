@@ -53,7 +53,7 @@
     "bootstrap": "^4.6.0",
     "c3": "^0.7.20",
     "chart.js": "^2.9.3",
-    "chromedriver": "^87.0.5",
+    "chromedriver": "^88.0.0",
     "cli-color": "^2.0.0",
     "colors": "^1.4.0",
     "core-js": "3.8.3",
