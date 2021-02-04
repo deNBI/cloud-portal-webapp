@@ -1,4 +1,5 @@
 import {ComputecenterComponent} from '../../projectmanagement/computecenter.component';
+import {GPUSpecification} from "./gpu-specification";
 
 /**
  * ResourceMachine class.
@@ -6,7 +7,6 @@ import {ComputecenterComponent} from '../../projectmanagement/computecenter.comp
 
 export class ResourceMachine {
   id: string;
-
   compute_center: ComputecenterComponent;
   name: string;
   ram_public_factor: number = 1;
@@ -14,8 +14,8 @@ export class ResourceMachine {
   cores: number;
   cores_private_factor: number = 1;
   cores_public_factor: number = 1;
-  gpus: number = 0;
-  gpu_type: string;
+  gpu_slots: number = 0;
+  gpu_used: GPUSpecification[];
   public_count: number;
   private_count: number;
   ram: number;

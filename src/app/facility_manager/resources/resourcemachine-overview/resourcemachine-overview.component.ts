@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FacilityService} from '../../../api-connector/facility.service';
 import {ResourceMachine} from '../resource-machine';
+import {GPUSpecification} from "../gpu-specification";
 
 /**
  * Class for ramfactors..
@@ -12,6 +13,7 @@ import {ResourceMachine} from '../resource-machine';
            })
 export class ResourcemachineOverviewComponent implements OnInit {
   factor_types: string[] = ['HIGH_MEMORY', 'GENERAL_PURPOSE', 'MIDCLASS'];
+  gpu_types: GPUSpecification[] = [];
   resourceMachines: ResourceMachine[];
   newResourceMachine: ResourceMachine;
   @Input() facility_id: number;
@@ -25,7 +27,9 @@ export class ResourcemachineOverviewComponent implements OnInit {
   ngOnInit(): void {
     this.getResourceMachines();
     this.newResourceMachine = new ResourceMachine();
-
+    this.facilityService.getGPUSpecifications(this.facility_id).subscribe((specs: GPUSpecification[]): void => {
+      this.gpu_types = specs;
+    });
   }
 
   getResourceMachines(): void {
@@ -36,6 +40,7 @@ export class ResourcemachineOverviewComponent implements OnInit {
       })
 
       this.resourceMachines.forEach((machine: ResourceMachine): void => {
+        machine.gpu_used.slice(0, machine.gpu_slots);
         this.resourceMachineUpdateList[machine.id] = false;
       })
     })

@@ -7,7 +7,7 @@
         <div class="btn-group-vertical" role="group">
           <button style="cursor: pointer;"
                   (click)="addGPUSpecification();"
-                  [disabled]="!newGPUSpecification.type"
+                  [disabled]="!newGPUSpecification.type || !newGPUSpecification.cores"
                   class="btn btn-success">Save
           </button>
         </div>
@@ -22,7 +22,20 @@
           </div>
         </div>
       </div>
-      <div class="col-4" style="margin:5px;">
+      <div class="col-2" style="margin:5px;">
+        <div class="text-muted"><small>Cores</small></div>
+        <div class="form-group row">
+          <label for="new_GPU_ram">Amount</label>
+          <div class="input-group mb-3">
+            <input class="form-control" type="number" id="new_GPU_cores"
+                   [(ngModel)]="newGPUSpecification.cores" min="0">
+            <div class="input-group-append">
+              <span class="input-group-text">cores</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-2" style="margin:5px;">
         <div class="text-muted"><small>RAM (Optional)</small></div>
         <div class="form-group row">
           <label for="new_GPU_ram">Amount</label>
@@ -70,7 +83,20 @@
           </div>
         </div>
       </div>
-      <div class="col-4" style="margin:5px;">
+      <div class="col-2" style="margin:5px;">
+        <div class="text-muted"><small>Cores</small></div>
+        <div class="form-group row">
+          <label for="{{gpu?.id + '_cores'}}">Amount</label>
+          <div class="input-group mb-3">
+            <input class="form-control" type="number" min="0" [disabled]="!this.gpuSpecificationUpdateList[gpu.id]"
+                   [(ngModel)]="gpu.cores" id="{{gpu?.id + '_cores'}}">
+            <div class="input-group-append">
+              <span class="input-group-text">cores</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-2" style="margin:5px;">
         <div class="text-muted"><small>RAM</small></div>
         <div class="form-group row">
           <label for="{{gpu?.id + '_ram'}}">Amount</label>
