@@ -305,6 +305,7 @@ export class FacilityService {
 
   updateGPUSpecification(facility: number | string, gpu_specification: GPUSpecification): Observable<GPUSpecification> {
     const params: HttpParams = new HttpParams().set('gpu_specification', JSON.stringify(gpu_specification));
+
     return this.http.post<GPUSpecification>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/gpuSpecification/${gpu_specification.id}/`, params, {
       withCredentials: true
     });
