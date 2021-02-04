@@ -253,15 +253,10 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
     if (this.project != null) {
       this.creditsService.getCreditsUsageHistoryOfProject(Number(this.project.Id.toString())).toPromise()
         .then((response: {}): void => {
-            // tslint:disable-next-line:triple-equals
-            if (response['data_points'] != undefined) {
+            if (response['data_points'] !== undefined) {
               const data_points: number[] = response['data_points'];
-              const ceiling_line: number[] = [];
-              const ceiling_value: number = Math.max.apply(null, data_points);
-              // tslint:disable-next-line:id-length prefer-for-of
-              for (let i: number = 0; i < data_points.length; i++) {
-                ceiling_line.push(ceiling_value);
-              }
+              const ceiling_line: number[] = new Array(data_points.length).fill(this.project.CurrentCredits);
+
               this.creditsChart = new Chart(this.creditsCanvas.nativeElement, {
                 type: 'line',
                 data: {
