@@ -8,7 +8,7 @@ import {ObjectStorageFactor} from './object-storage-factor';
 import {VolumeStorageFactor} from './volume-storage-factor';
 import {GeneralStorageFactor} from './general-storage-factor';
 import {ResourceMachine} from './resource-machine';
-import {GPUSpecification} from "./gpu-specification";
+import {GPUSpecification} from './gpu-specification';
 
 /**
  * Facility resource component.
@@ -72,7 +72,6 @@ export class ResourcesComponent implements OnInit {
     // elementId: this.tableId
     elementIdOrContent: this.tableId
   };
-
 
   constructor(private facilityService: FacilityService, private exportAsService: ExportAsService) {
   }
