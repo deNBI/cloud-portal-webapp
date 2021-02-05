@@ -17,5 +17,6 @@ export class Resources {
   totalVolumeCounter: number = 0;
   totalObjectStorage: number = 0;
   totalGPU: number = 0;
+  totalGeneralStorage: number = 0;
 
 }
