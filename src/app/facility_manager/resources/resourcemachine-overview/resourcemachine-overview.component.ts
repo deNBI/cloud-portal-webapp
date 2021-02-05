@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FacilityService} from '../../../api-connector/facility.service';
 import {ResourceMachine} from '../resource-machine';
-import {GPUSpecification} from "../gpu-specification";
+import {GPUSpecification} from '../gpu-specification';
 
 /**
  * Class for ramfactors..
@@ -26,7 +26,7 @@ export class ResourcemachineOverviewComponent implements OnInit {
 
   ngOnInit(): void {
     this.getResourceMachines();
-    this.newResourceMachine = new ResourceMachine();
+    this.newResourceMachine = new ResourceMachine(null);
     this.facilityService.getGPUSpecifications(this.facility_id).subscribe((specs: GPUSpecification[]): void => {
       this.gpu_types = specs;
     });
@@ -34,7 +34,9 @@ export class ResourcemachineOverviewComponent implements OnInit {
 
   getResourceMachines(): void {
     this.facilityService.getResourceMachines(this.facility_id).subscribe((res: ResourceMachine[]): void => {
-      this.resourceMachines = res;
+      this.resourceMachines = res.map((machine: ResourceMachine): ResourceMachine => {
+        return new ResourceMachine(machine)
+      });
       this.resourceMachines.sort((a_machine: ResourceMachine, b_machine: ResourceMachine): number => {
         return b_machine.type.localeCompare(a_machine.type)
       })
@@ -48,7 +50,9 @@ export class ResourcemachineOverviewComponent implements OnInit {
 
   deleteResourceMachine(id: string | number): void {
     this.facilityService.deleteResourceMachine(this.facility_id, id).subscribe((res: ResourceMachine[]): void => {
-      this.resourceMachines = res;
+      this.resourceMachines = res.map((machine: ResourceMachine): ResourceMachine => {
+        return new ResourceMachine(machine)
+      });
       this.factorChanged.emit()
 
     })
@@ -60,15 +64,18 @@ export class ResourcemachineOverviewComponent implements OnInit {
 
   reloadResourceMachine(rf: ResourceMachine): void {
     this.facilityService.getResourceMachine(this.facility_id, rf.id).subscribe((machine: ResourceMachine): void => {
-      this.resourceMachines[this.resourceMachines.indexOf(rf)] = machine;
+      this.resourceMachines[this.resourceMachines.indexOf(rf)] = new ResourceMachine(machine);
     })
   }
 
   addResourceMachine(): void {
 
     this.facilityService.addResourceMachine(this.facility_id, this.newResourceMachine).subscribe((res: ResourceMachine[]): void => {
-      this.newResourceMachine = new ResourceMachine();
-      this.resourceMachines = res;
+      this.newResourceMachine = new ResourceMachine(null);
+      this.resourceMachines = res.map((machine: ResourceMachine): ResourceMachine => {
+        return new ResourceMachine(machine)
+      });
+
       this.resourceMachines.forEach((rf: ResourceMachine): void => {
         this.resourceMachineUpdateList[rf.id] = false;
       })
@@ -80,7 +87,7 @@ export class ResourcemachineOverviewComponent implements OnInit {
   updateResourceMachine(rf: ResourceMachine): void {
 
     this.facilityService.updateResourceMachine(this.facility_id, rf).subscribe((machine: ResourceMachine): void => {
-      this.resourceMachines[this.resourceMachines.indexOf(rf)] = machine;
+      this.resourceMachines[this.resourceMachines.indexOf(rf)] = new ResourceMachine(machine);
       this.factorChanged.emit()
 
     })
