@@ -425,9 +425,14 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
    * @param {Application} application the application
    */
   removeApplicationFromFacilityConfirmation(application: Application): void {
-    this.groupservice.removeGroupFromResource(application.project_application_perun_id.toString()).subscribe((): void => {
-      this.getApplication(application)
-    })
+    this.groupservice.removeGroupFromResource(application.project_application_perun_id.toString()).subscribe(
+      (res: any): void => {
+        this.getApplication(application);
+        this.updateNotificationModal('Success', 'The application was removed from the compute center', true, 'success');
+      },
+      (error: any): void => {
+        this.updateNotificationModal('Failed', 'The application was removed from the compute center', true, 'danger');
+      })
 
   }
 
@@ -584,9 +589,8 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
       this.groupservice.assignGroupToResource(group_id, compute_center)
             .subscribe((): void => {
                          for (const app of this.all_applications) {
-                           if (app.project_application_id.toString() === application_id) {
+                           if (app.project_application_id.toString() === application_id.toString()) {
                              this.getApplication(app);
-
                              break;
 
                            }
