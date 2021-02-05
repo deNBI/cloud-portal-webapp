@@ -5,8 +5,7 @@ on:
     types: [opened]
     branches:
       - dev
-    branches-ignore:
-      - 'dependabot/**'
+      - '!dependabot/**'
 
 
 jobs:
