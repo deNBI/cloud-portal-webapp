@@ -182,15 +182,11 @@
         <div class="nav-tabs-boxed">
           <ul class="nav nav-tabs " style="overflow-x:visible !important">
             <li class="nav-item"><a class="nav-link" id="ram_tab" [ngClass]="{'active': MACHINE_DEFINITION_TAB_ACTIVE}"
-                                    (click)="setTab(MACHINE_DEFINITION_TAB)">Machine Definitions</a>
+                                    (click)="setTab(MACHINE_DEFINITION_TAB)">Machine Definitions <b>[{{resourceMachines.length}}]</b></a>
             </li>
-
-            <li class="nav-item"><a class="nav-link" id="object_storage_tab"
-                                    [ngClass]="{'active': OBJECT_STORAGE_TAB_ACTIVE}"
-                                    (click)="setTab(OBJECT_STORAGE_TAB)">Object Storage</a></li>
-            <li class="nav-item"><a class="nav-link" id="volume_storage_tab"
-                                    [ngClass]="{'active': VOLUME_STORAGE_TAB_ACTIVE}"
-                                    (click)="setTab(VOLUME_STORAGE_TAB)">Volume Storage</a></li>
+            <li class="nav-item"><a class="nav-link" id="storage_tab"
+                                    [ngClass]="{'active': STORAGE_TAB_ACTIVE}"
+                                    (click)="setTab(STORAGE_TAB)">Storage <b>[{{generalStorageFactors.length + objectStorageFactors.length + volumeStorageFactors.length}}]</b></a></li>
 
 
           </ul>
@@ -204,18 +200,51 @@
               (factorChanged)="getSelectedFacilityResources()"
               [facility_id]="selectedFacility['FacilityId']"></app-resourcemachine-overview>
           </div>
-          <div *ngIf="OBJECT_STORAGE_TAB_ACTIVE && selectedFacility">
-            <app-objectstoragefactor-overview
-              (factorChanged)="getSelectedFacilityResources()"
+          <div *ngIf="STORAGE_TAB_ACTIVE && selectedFacility">
+            <div class="alert alert-info">
+              You can <b>either</b> define general storage <b>or</b> specify object and volume storage separately.<br>
+              If one of the two is defined, the other is disabled as long as the other is defined.
+            </div>
+            <div class="nav-tabs-boxed">
+              <ul class="nav nav-tabs " style="overflow-x:visible !important">
+                <li class="nav-item"><a class="nav-link" id="general_storage_tab"
 
-              [facility_id]="selectedFacility['FacilityId']"></app-objectstoragefactor-overview>
+                                        [ngClass]="{'active': GENERAL_STORAGE_TAB_ACTIVE,'disabled': objectStorageFactors.length > 0 || volumeStorageFactors.length > 0}"
+                                        (click)="setTab(GENERAL_STORAGE_TAB)">General Storage <b>[{{generalStorageFactors.length}}]</b></a></li>
+
+                <li class="nav-item"><a class="nav-link" id="object_storage_tab"
+                                        [ngClass]="{'active': OBJECT_STORAGE_TAB_ACTIVE,'disabled': generalStorageFactors.length > 0 }"
+                                        (click)="setTab(OBJECT_STORAGE_TAB)">Object Storage <b>[{{objectStorageFactors.length}}]</b></a></li>
+                <li class="nav-item"><a class="nav-link" id="volume_storage_tab"
+                                        [ngClass]="{'active': VOLUME_STORAGE_TAB_ACTIVE,'disabled': generalStorageFactors.length > 0 }"
+                                        (click)="setTab(VOLUME_STORAGE_TAB)">Volume Storage <b>[{{volumeStorageFactors.length}}] </b></a></li>
+              </ul>
+              <div class="tab-content">
+                <div *ngIf="GENERAL_STORAGE_TAB_ACTIVE && selectedFacility">
+
+                  <app-generalstoragefactor-overview
+                    (factorChanged)="getSelectedFacilityResources()"
+
+                    [facility_id]="selectedFacility['FacilityId']"></app-generalstoragefactor-overview>
+                </div>
+                <div *ngIf="OBJECT_STORAGE_TAB_ACTIVE && selectedFacility">
+                  <app-objectstoragefactor-overview
+                    (factorChanged)="getSelectedFacilityResources()"
+
+                    [facility_id]="selectedFacility['FacilityId']"></app-objectstoragefactor-overview>
+                </div>
+                <div *ngIf="VOLUME_STORAGE_TAB_ACTIVE && selectedFacility">
+                  <app-volumestoragefactor-overview
+                    (factorChanged)="getSelectedFacilityResources()"
+                    [facility_id]="selectedFacility['FacilityId']"></app-volumestoragefactor-overview>
+                </div>
+              </div>
+
+
+            </div>
+
+
           </div>
-          <div *ngIf="VOLUME_STORAGE_TAB_ACTIVE && selectedFacility">
-            <app-volumestoragefactor-overview
-              (factorChanged)="getSelectedFacilityResources()"
-              [facility_id]="selectedFacility['FacilityId']"></app-volumestoragefactor-overview>
-          </div>
-        </div>
 
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary"
