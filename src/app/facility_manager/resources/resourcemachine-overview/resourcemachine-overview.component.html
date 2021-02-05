@@ -84,13 +84,13 @@
               <select class="form-control"
                       [(ngModel)]="newResourceMachine.gpu_used[i]" id="new_machine_gpu_types_{{i}}">
                 <option selected disabled hidden [ngValue]="gpu" *ngIf="gpu.type && gpu.type != undefined">
-                  {{gpu.type}}
-                </option>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+                  {{gpu.type+ ': ' + gpu.cores}}
+                </option>
                 <option (change)="newResourceMachine.setUnusedGpuSlot(i)">
                   UNUSED
                 </option>
                 <option *ngFor="let spec of gpu_types " [ngValue]="spec">
-                  {{spec.type}}
+                  {{spec.type+ ': ' + spec.cores}}
                 </option>
               </select>
               <div class="input-group-append">
@@ -226,13 +226,13 @@
               <select class="form-control" [disabled]="!this.resourceMachineUpdateList[machine.id]"
                       [(ngModel)]="machine.gpu_used[i]" id="machine_gpu_types_{{i}}">
                 <option selected disabled hidden [ngValue]="gpu" *ngIf="gpu.type && gpu.type != undefined">
-                  {{gpu.type}}
+                  {{gpu.type + ': ' + gpu.cores}}
                 </option>
                 <option (change)="machine.setUnusedGpuSlot(i)">
                   UNUSED
                 </option>
                 <option *ngFor="let spec of gpu_types " [ngValue]="spec">
-                  {{spec.type}}
+                  {{spec.type+ ': ' + spec.cores}}
                 </option>
               </select>
               <div class="input-group-append">
