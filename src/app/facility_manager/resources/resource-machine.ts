@@ -40,35 +40,24 @@ export class ResourceMachine {
       this.type = resourceMachine.type;
       if (this.gpu_used.length < this.gpu_slots) {
         while (this.gpu_used.length < this.gpu_slots) {
-          const new_gpu: GPUSpecification = new GPUSpecification()
-          new_gpu.type = this.UNUSED
+          const new_gpu: GPUSpecification = new GPUSpecification(this.UNUSED);
           this.gpu_used.push(new_gpu)
         }
 
       }
     }
-
   }
 
   setUnusedGpuSlot(idx: number): void {
-    this.gpu_used[idx] = new GPUSpecification()
+    this.gpu_used[idx] = new GPUSpecification(this.UNUSED);
   }
 
   changeGpuUsed(): void {
-
-    if (this.gpu_used.length > this.gpu_slots) {
-      while (this.gpu_used.length > this.gpu_slots) {
-        this.gpu_used.pop()
-      }
-    } else {
-      while (this.gpu_used.length < this.gpu_slots) {
-        const new_gpu: GPUSpecification = new GPUSpecification()
-        new_gpu.type = this.UNUSED
-        this.gpu_used.push(new_gpu)
-      }
-
+    if (this.gpu_slots < this.gpu_used.length){
+      this.gpu_used = this.gpu_used.slice(0, this.gpu_slots);
+    } else if (this.gpu_slots > this.gpu_used.length){
+      this.gpu_used.push(new GPUSpecification(this.UNUSED));
     }
-
   }
 
 }
