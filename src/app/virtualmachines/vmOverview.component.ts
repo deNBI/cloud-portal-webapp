@@ -819,11 +819,14 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
   getClientForcUrls(): void {
     this.clientService.getClientsChecked().subscribe((clients: Client[]): void => {
       clients.forEach((client: Client): void => {
-        this.groupService.getClientForcUrl(client.id, 'true').subscribe((response: JSON): void => {
-          if (response['forc_url'] !== null) {
-            this.clientsForcUrls[client.id] = response['forc_url'];
-          }
-        });
+        if (client.activated && client.status === 'Connected') {
+
+          this.groupService.getClientForcUrl(client.id, 'true').subscribe((response: JSON): void => {
+            if (response['forc_url'] !== null) {
+              this.clientsForcUrls[client.id] = response['forc_url'];
+            }
+          });
+        }
       });
     });
   }

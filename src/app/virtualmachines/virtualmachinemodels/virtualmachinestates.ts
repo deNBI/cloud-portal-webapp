@@ -21,6 +21,7 @@ export class VirtualMachineStates extends GeneralStatusStates {
   private static readonly _SPAWNING: string = 'SPAWNING'
   private static readonly _SCHEDULING: string = 'SCHEDULING'
   private static readonly _PLANNED: string = 'PLANNED'
+  private static readonly _CLIENT_OFFLINE: string = 'CLIENT OFFLINE'
   private static readonly _IN_PROCESS_STATES: string[] = [
     VirtualMachineStates._REBOOTING,
     VirtualMachineStates._REBOOTING_HARD,
@@ -49,8 +50,13 @@ export class VirtualMachineStates extends GeneralStatusStates {
     VirtualMachineStates._DELETED,
     VirtualMachineStates._SHUTOFF,
     VirtualMachineStates._NOT_FOUND,
-    VirtualMachineStates._ERROR
+    VirtualMachineStates._ERROR,
+    VirtualMachineStates._CLIENT_OFFLINE
   ];
+
+  static get CLIENT_OFFLINE(): string {
+    return this._CLIENT_OFFLINE;
+  }
 
   static get REBOOTING(): string {
     return this._REBOOTING;
@@ -182,6 +188,10 @@ export class VirtualMachineStates extends GeneralStatusStates {
 
   public get staticREBOOTING(): string {
     return VirtualMachineStates.REBOOTING;
+  }
+
+  public get staticCLIENT_OFFLINE(): string {
+    return VirtualMachineStates.CLIENT_OFFLINE;
   }
 
   public get staticREBOOTING_HARD(): string {
