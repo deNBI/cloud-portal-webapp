@@ -49,8 +49,13 @@ export class VirtualMachineStates extends GeneralStatusStates {
     VirtualMachineStates._DELETED,
     VirtualMachineStates._SHUTOFF,
     VirtualMachineStates._NOT_FOUND,
-    VirtualMachineStates._ERROR
+    VirtualMachineStates._ERROR,
+    VirtualMachineStates._CLIENT_OFFLINE
   ];
+
+  static get CLIENT_OFFLINE(): string {
+    return this._CLIENT_OFFLINE;
+  }
 
   static get REBOOTING(): string {
     return this._REBOOTING;
