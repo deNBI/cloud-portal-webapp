@@ -119,16 +119,16 @@
     </div>
     {{VirtualMachineStates.staticCHECKING_CONNECTION}}
   </ng-container>
-                   <ng-container *ngSwitchCase="VirtualMachineStates.staticCLIENT_OFFLINE">
-                    <div [id]="'powering_off_badge_' + vm?.name"
-                         class="dot-colorless bg-danger">
-                    </div>
-                    {{VirtualMachineStates.staticCLIENT_OFFLINE}}
-                  </ng-container>
-                  <ng-container *ngSwitchDefault>
-                    <div [id]="'default_badge_' + vm?.name"
-                         class="dot-colorless pulseAnimProcess" style="width: 10px; height: 10px">
-                    </div>
-                    {{VirtualMachineStates.staticGETTING_STATUS}}
-                  </ng-container>
-               </ng-container>
+  <ng-container *ngSwitchCase="VirtualMachineStates.staticCLIENT_OFFLINE">
+    <div [id]="'client_offline_badge_' + vm?.name"
+         class="dot-colorless bg-danger" style="width: 10px; height: 10px">
+    </div>
+    {{VirtualMachineStates.staticCLIENT_OFFLINE}}
+  </ng-container>
+  <ng-container *ngSwitchDefault>
+    <div [id]="'default_badge_' + vm?.name"
+         class="dot-colorless pulseAnimProcess" style="width: 10px; height: 10px">
+    </div>
+    {{VirtualMachineStates.staticGETTING_STATUS}}
+  </ng-container>
+</ng-container>
