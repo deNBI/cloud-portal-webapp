@@ -86,12 +86,12 @@ export class ResourcemachineOverviewComponent implements OnInit {
   }
 
   setGPUList(rf: ResourceMachine): void {
-    let gpus: GPUSpecification[] = [];
+    const gpus: GPUSpecification[] = [];
     rf.gpu_used.forEach((gpu: GPUSpecification): void => {
-      if (gpu.type != undefined && gpu.type != 'UNUSED'){
+      if (gpu.type != undefined && gpu.type != 'UNUSED') {
         gpus.push(gpu);
       } else {
-        console.log("UNUSED!!!");
+        console.log('UNUSED!!!');
       }
     });
 

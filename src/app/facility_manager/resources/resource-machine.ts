@@ -53,9 +53,9 @@ export class ResourceMachine {
   }
 
   changeGpuUsed(): void {
-    if (this.gpu_slots < this.gpu_used.length){
+    if (this.gpu_slots < this.gpu_used.length) {
       this.gpu_used = this.gpu_used.slice(0, this.gpu_slots);
-    } else if (this.gpu_slots > this.gpu_used.length){
+    } else if (this.gpu_slots > this.gpu_used.length) {
       this.gpu_used.push(new GPUSpecification(this.UNUSED));
     }
   }
