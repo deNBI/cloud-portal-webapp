@@ -69,7 +69,7 @@ export class ResourcemachineOverviewComponent implements OnInit {
   }
 
   addResourceMachine(): void {
-    this.setGPUList(this.newResourceMachine);
+    //this.setGPUList(this.newResourceMachine);
 
     this.facilityService.addResourceMachine(this.facility_id, this.newResourceMachine).subscribe((res: ResourceMachine[]): void => {
       this.newResourceMachine = new ResourceMachine(null);
@@ -99,7 +99,7 @@ export class ResourcemachineOverviewComponent implements OnInit {
   }
 
   updateResourceMachine(rf: ResourceMachine): void {
-    this.setGPUList(rf);
+    //this.setGPUList(rf);
 
     this.facilityService.updateResourceMachine(this.facility_id, rf).subscribe((machine: ResourceMachine): void => {
       this.resourceMachines[this.resourceMachines.indexOf(rf)] = new ResourceMachine(machine);

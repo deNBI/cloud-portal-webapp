@@ -24,7 +24,7 @@ export class GPUSpecificationOverviewComponent implements OnInit {
 
   ngOnInit(): void {
     this.getGPUSpecifications();
-    this.newGPUSpecification = new GPUSpecification(null);
+    this.newGPUSpecification = new GPUSpecification();
 
   }
 
@@ -57,7 +57,7 @@ export class GPUSpecificationOverviewComponent implements OnInit {
 
   addGPUSpecification(): void {
     this.facilityService.addGPUSpecification(this.facility_id, this.newGPUSpecification).subscribe((res: GPUSpecification[]): void => {
-      this.newGPUSpecification = new GPUSpecification(null);
+      this.newGPUSpecification = new GPUSpecification();
       this.gpuSpecifications = res;
       this.gpuSpecifications.forEach((rf: GPUSpecification): void => {
         this.gpuSpecificationUpdateList[rf.id] = false;

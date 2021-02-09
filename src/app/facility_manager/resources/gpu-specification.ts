@@ -4,15 +4,11 @@
 
 export class GPUSpecification {
   id: string;
-  type: string;
-  ram: number;
-  cores: number;
+  type: string = 'UNUSED';
+  ram: number = 0;
+  cores: number = 0;
 
-  constructor(undefined_str: string | null){
-    if (undefined_str){
-      this.type = undefined_str;
-      this.ram = 0;
-      this.cores = 0;
-    }
+  constructor() {
+
   }
 }

@@ -11,16 +11,17 @@ export class ResourceMachine {
   name: string;
   ram_public_factor: number = 1;
   ram_private_factor: number = 1;
-  cores: number;
+  cores: number = 0;
   cores_private_factor: number = 1;
   cores_public_factor: number = 1;
   gpu_slots: number = 0;
   gpu_used: GPUSpecification[] = [];
-  public_count: number;
-  private_count: number;
-  ram: number;
+  public_count: number = 0;
+  private_count: number = 0;
+  ram: number = 0;
   type: string = 'GENERAL_PURPOSE';
-  private UNUSED: string = 'UNUSED'
+  local_disk_storage: number = 0;
+  local_disk_encrypted: boolean = false;
 
   constructor(resourceMachine: ResourceMachine | null) {
     if (resourceMachine) {
@@ -30,6 +31,8 @@ export class ResourceMachine {
       this.ram_public_factor = resourceMachine.ram_public_factor = 1;
       this.ram_private_factor = resourceMachine.ram_private_factor = 1;
       this.cores = resourceMachine.cores;
+      this.local_disk_storage = resourceMachine.local_disk_storage;
+      this.local_disk_encrypted = resourceMachine.local_disk_encrypted;
       this.cores_private_factor = resourceMachine.cores_private_factor;
       this.cores_public_factor = resourceMachine.cores_public_factor;
       this.gpu_slots = resourceMachine.gpu_slots;
@@ -40,23 +43,23 @@ export class ResourceMachine {
       this.type = resourceMachine.type;
       if (this.gpu_used.length < this.gpu_slots) {
         while (this.gpu_used.length < this.gpu_slots) {
-          const new_gpu: GPUSpecification = new GPUSpecification(this.UNUSED);
-          this.gpu_used.push(new_gpu)
+          this.gpu_used.push(new GPUSpecification())
         }
 
       }
     }
   }
-
   setUnusedGpuSlot(idx: number): void {
-    this.gpu_used[idx] = new GPUSpecification(this.UNUSED);
+    this.gpu_used[idx] = new GPUSpecification();
   }
 
   changeGpuUsed(): void {
-    if (this.gpu_slots < this.gpu_used.length){
+    if (this.gpu_slots < this.gpu_used.length) {
       this.gpu_used = this.gpu_used.slice(0, this.gpu_slots);
-    } else if (this.gpu_slots > this.gpu_used.length){
-      this.gpu_used.push(new GPUSpecification(this.UNUSED));
+    } else {
+      while (this.gpu_slots > this.gpu_used.length) {
+        this.gpu_used.push(new GPUSpecification())
+      }
     }
   }
 

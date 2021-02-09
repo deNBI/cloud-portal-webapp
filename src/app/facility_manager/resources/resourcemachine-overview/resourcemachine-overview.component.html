@@ -2,7 +2,7 @@
   <div class="card-body">
     <h5 class="card-title">New Machine</h5>
     <div class="row">
-      <div class="col-2">
+      <div class="col-1">
         <div class="text-muted"><small>Actions</small></div>
         <div class="btn-group-vertical" role="group">
           <button style="cursor: pointer;"
@@ -10,8 +10,8 @@
                   [disabled]="!newResourceMachine.name
                   || !newResourceMachine.ram
                    || !newResourceMachine.cores
-                   || !newResourceMachine.public_count
-                    || !newResourceMachine.private_count"
+                   || !newResourceMachine.public_count <0
+                    || !newResourceMachine.private_count<0"
                   class="btn btn-success">Save
           </button>
         </div>
@@ -22,7 +22,7 @@
           <label for="new_machine_ram">Amount</label>
           <div class="input-group mb-3">
             <input class="form-control" type="number" id="new_machine_ram"
-                   [(ngModel)]="newResourceMachine.ram" min="1">
+                   [(ngModel)]="newResourceMachine.ram" min="0">
             <div class="input-group-append">
               <span class="input-group-text">GB</span>
             </div>
@@ -45,7 +45,7 @@
           <label for="new_machine_cores">Amount</label>
           <div class="input-group mb-3">
             <input class="form-control" type="number" id="new_machine_cores"
-                   [(ngModel)]="newResourceMachine.cores" min="1">
+                   [(ngModel)]="newResourceMachine.cores" min="0">
             <div class="input-group-append">
               <span class="input-group-text">cores</span>
             </div>
@@ -69,7 +69,7 @@
           <div class="input-group  mb-3">
             <input class="form-control" type="number" id="new_machine_gpus"
                    [(ngModel)]="newResourceMachine.gpu_slots" min="0"
-                   (ngModelChange)="newResourceMachine.changeGpuUsed()">
+                   (input)="newResourceMachine.changeGpuUsed()">
             <div class="input-group-append">
               <span class="input-group-text">GPUs</span>
             </div>
@@ -84,8 +84,9 @@
               <select class="form-control"
                       [(ngModel)]="newResourceMachine.gpu_used[i]" id="new_machine_gpu_types_{{i}}">
                 <option selected disabled hidden [ngValue]="gpu">
-                  <span *ngIf="gpu != null">{{gpu.type + ': ' + gpu.cores}}</span>
-                  <span *ngIf="gpu == null">UNUSED</span>
+                  <span
+                    *ngIf="gpu != null && gpu != undefined && gpu.type != 'UNUSED'">{{gpu.type + ': ' + gpu.cores}}</span>
+                  <span *ngIf="gpu == null || gpu == undefined ||  gpu.type == 'UNUSED'">UNUSED</span>
                 </option>
                 <option (change)="newResourceMachine.setUnusedGpuSlot(i)">
                   UNUSED
@@ -101,7 +102,28 @@
           </ng-container>
         </div>
       </div>
-      <div class="col-3 card card-body" style="margin:5px;">
+      <div class="col-2 card card-body" style="margin:5px;">
+        <div class="text-muted"><small>Local Disk Storage</small></div>
+        <div class="form-group row">
+          <label for="{{newResourceMachine?.name + '_local_disk_storage'}}">Amount</label>
+          <div class="input-group mb-3">
+            <input class="form-control" type="number" min="0"
+                   [(ngModel)]="newResourceMachine.local_disk_storage"
+                   id="{{newResourceMachine?.name + '_local_disk_storage'}}">
+            <div class="input-group-append">
+              <span class="input-group-text">GB</span>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="{{newResourceMachine?.name + '_local_disk_encrypted'}}">Encrypted</label>
+          <input type="checkbox"
+                 [(ngModel)]="newResourceMachine.local_disk_encrypted"
+                 id="{{newResourceMachine?.name + '_local_disk_encrypted'}}">
+
+        </div>
+      </div>
+      <div class="col-2 card card-body" style="margin:5px;">
         <div class="text-muted"><small>Information</small></div>
         <div class="form-group row">
           <label for="new_machine_name">Name</label>
@@ -137,14 +159,15 @@
     <h5 class="card-title">{{machine?.name}}</h5>
     <p class="card-text"><small class="text-muted">{{machine?.compute_center?.Name}}</small></p>
     <div class="row">
-      <div class="col-2" style="margin:5px;">
+      <div class="col-1" style="margin:5px;">
         <div class="text-muted"><small>Actions</small></div>
         <div class="btn-group-vertical" role="group">
           <button (click)="deleteResourceMachine(machine.id)" class="btn btn-danger"
                   *ngIf="!this.resourceMachineUpdateList[machine.id]">Remove
           </button>
           <button class="btn btn-warning" (click)="changeResourceMachineToUpdate(machine)"
-                  *ngIf="!this.resourceMachineUpdateList[machine.id]">Update</button>
+                  *ngIf="!this.resourceMachineUpdateList[machine.id]">Update
+          </button>
           <button (click)="updateResourceMachine(machine);changeResourceMachineToUpdate(machine);"
                   class="btn btn-success" *ngIf="this.resourceMachineUpdateList[machine.id]">Save
           </button>
@@ -158,7 +181,7 @@
         <div class="form-group row">
           <label for="{{machine?.name + '_ram'}}">Amount</label>
           <div class="input-group mb-3">
-            <input class="form-control" type="number" min="1" [disabled]="!this.resourceMachineUpdateList[machine.id]"
+            <input class="form-control" type="number" min="0" [disabled]="!this.resourceMachineUpdateList[machine.id]"
                    [(ngModel)]="machine.ram" id="{{machine?.name + '_ram'}}">
             <div class="input-group-append">
               <span class="input-group-text">GB</span>
@@ -183,7 +206,7 @@
         <div class="form-group row">
           <label for="{{machine?.name + '_cores'}}">Amount</label>
           <div class="input-group mb-3">
-            <input class="form-control" type="number" min="1" [disabled]="!this.resourceMachineUpdateList[machine.id]"
+            <input class="form-control" type="number" min="0" [disabled]="!this.resourceMachineUpdateList[machine.id]"
                    [(ngModel)]="machine.cores" id="{{machine?.name + '_cores'}}">
             <div class="input-group-append">
               <span class="input-group-text">cores</span>
@@ -209,7 +232,7 @@
           <label for="{{machine?.name + '_gpus'}}">Amount</label>
           <div class="input-group mb-3">
             <input class="form-control" type="number" [disabled]="!this.resourceMachineUpdateList[machine.id]"
-                   (ngModelChange)="machine.changeGpuUsed()" [(ngModel)]="machine.gpu_slots"
+                   (input)="machine.changeGpuUsed()" [(ngModel)]="machine.gpu_slots"
                    id="{{machine?.name + '_gpus'}}"
                    min="0">
             <div class="input-group-append">
@@ -227,8 +250,9 @@
               <select class="form-control" [disabled]="!this.resourceMachineUpdateList[machine.id]"
                       [(ngModel)]="machine.gpu_used[i]" id="machine_gpu_types_{{i}}">
                 <option selected disabled hidden [ngValue]="gpu">
-                  <span *ngIf="gpu != null">{{gpu.type + ': ' + gpu.cores}}</span>
-                  <span *ngIf="gpu == null">UNUSED</span>
+                  <span
+                    *ngIf="gpu != null && gpu != undefined && gpu.type != 'UNUSED'">{{gpu.type + ': ' + gpu.cores}}</span>
+                  <span *ngIf="gpu == null || gpu == undefined ||  gpu.type == 'UNUSED'">UNUSED</span>
                 </option>
                 <option (change)="machine.setUnusedGpuSlot(i)">
                   UNUSED
@@ -246,7 +270,26 @@
 
         </div>
       </div>
-      <div class="col-3 card card-body" style="margin:5px;">
+      <div class="col-2 card card-body" style="margin:5px;">
+        <div class="text-muted"><small>Local Disk Storage</small></div>
+        <div class="form-group row">
+          <label for="{{machine?.name + '_local_disk_storage'}}">Amount</label>
+          <div class="input-group mb-3">
+            <input class="form-control" type="number" min="0" [disabled]="!this.resourceMachineUpdateList[machine.id]"
+                   [(ngModel)]="machine.local_disk_storage" id="{{machine?.name + '_local_disk_storage'}}">
+            <div class="input-group-append">
+              <span class="input-group-text">GB</span>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="{{machine?.name + '_local_disk_encrypted'}}">Encrypted</label>
+          <input type="checkbox" [disabled]="!this.resourceMachineUpdateList[machine.id]"
+                 [(ngModel)]="machine.local_disk_encrypted" id="{{machine?.name + '_local_disk_encrypted'}}">
+
+        </div>
+      </div>
+      <div class="col-2 card card-body" style="margin:5px;">
         <div class="text-muted"><small>Information</small></div>
         <div class="form-group row">
           <label for="{{machine?.name + '_name'}}">Name</label>
