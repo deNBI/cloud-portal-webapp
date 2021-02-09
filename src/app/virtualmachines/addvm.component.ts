@@ -560,7 +560,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
     this.groupService.getClient(this.selectedProject[1].toString()).subscribe((client: Client): void => {
               this.loadProjectData();
 
-      if (client.status && client.status === 'Connected' && client.activated) {
+              if (client.status && client.status === 'Connected' && client.activated) {
         this.client_avaiable = true;
 
         this.client_checked = true;
@@ -570,8 +570,8 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
         this.client_checked = true;
 
       }
-      this.selectedProjectClient = client;
-      this.imageService.getBlockedImageTagsResenv(Number(this.selectedProjectClient.id), 'true')
+              this.selectedProjectClient = client;
+              this.imageService.getBlockedImageTagsResenv(Number(this.selectedProjectClient.id), 'true')
         .subscribe((tags: BlockedImageTagResenv[]): void => {
           this.blockedImageTagsResenv = tags;
         });
