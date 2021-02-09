@@ -7,7 +7,7 @@
         <div class="btn-group-vertical" role="group">
           <button style="cursor: pointer;"
                   (click)="addGPUSpecification();"
-                  [disabled]="!newGPUSpecification.type || !newGPUSpecification.cores"
+                  [disabled]="!newGPUSpecification.type || !newGPUSpecification.cores || newGPUSpecification.type == 'UNUSED'"
                   class="btn btn-success">Save
           </button>
         </div>

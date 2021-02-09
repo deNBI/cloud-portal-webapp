@@ -10,8 +10,8 @@
                   [disabled]="!newResourceMachine.name
                   || !newResourceMachine.ram
                    || !newResourceMachine.cores
-                   || !newResourceMachine.public_count <0
-                    || !newResourceMachine.private_count<0"
+                   || newResourceMachine.public_count <0
+                    || newResourceMachine.private_count<0"
                   class="btn btn-success">Save
           </button>
         </div>
