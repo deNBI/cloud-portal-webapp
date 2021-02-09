@@ -558,10 +558,11 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
     this.projectDataLoaded = false;
 
     this.groupService.getClient(this.selectedProject[1].toString()).subscribe((client: Client): void => {
-      if (client.status && client.status === 'Connected') {
+              this.loadProjectData();
+
+              if (client.status && client.status === 'Connected' && client.activated) {
         this.client_avaiable = true;
 
-        this.loadProjectData();
         this.client_checked = true;
         this.getForc(client.id);
       } else {
@@ -569,8 +570,8 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
         this.client_checked = true;
 
       }
-      this.selectedProjectClient = client;
-      this.imageService.getBlockedImageTagsResenv(Number(this.selectedProjectClient.id), 'true')
+              this.selectedProjectClient = client;
+              this.imageService.getBlockedImageTagsResenv(Number(this.selectedProjectClient.id), 'true')
         .subscribe((tags: BlockedImageTagResenv[]): void => {
           this.blockedImageTagsResenv = tags;
         });
