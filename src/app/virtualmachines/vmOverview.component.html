@@ -419,7 +419,7 @@
                   <div class="col-md-2" *ngIf="(vm?.status |hasStatus:VirtualMachineStates.staticSHUTOFF) ">
                     <div class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
                          [id]="'restartVMButton_' + vm?.name" (click)="selectedVm=vm;submitRestartModal.show();">
-                      Resume VM
+                      Start VM
                     </div>
                   </div>
                   <div class="col-md-2"
