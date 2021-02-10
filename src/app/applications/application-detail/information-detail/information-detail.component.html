@@ -29,11 +29,15 @@
     <td>
       <span *ngIf="application?.project_application_cloud_service_develop"
             class="badge badge-success">In development</span>
-      <span *ngIf="!application?.project_application_cloud_service_develop" class="badge badge-danger">Existing</span>
+      <span *ngIf="!application?.project_application_cloud_service_develop"
+            class="badge badge-danger">Existing</span>
     </td>
-
   </tr>
-
+  <tr *ngIf="!application?.project_application_cloud_service_develop">
+    <td>Number of unique users per month</td>
+    <td>{{application?.project_application_cloud_service_user_number}}</td>
+  </tr>
+  
   <tr>
     <td>Description
     </td>
