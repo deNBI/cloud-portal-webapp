@@ -13,10 +13,10 @@ export class DecoiUploadService {
   constructor(private http: HttpClient) {
   }
 
-  get_presigned_urls(ims_id: string, file_size: number): Observable<any> {
-    const params: HttpParams = new HttpParams().set('ims_id', ims_id).set('size', file_size.toString());
+  get_presigned_urls(ims_id: string, file_size: number, md5_checksum: string): Observable<any> {
+    const params: HttpParams = new HttpParams().set('ims_id', ims_id).set('size', file_size.toString()).set('md5_checksum', md5_checksum)
 
-    return this.http.get(`${ApiSettings.getApiBaseURL()}decoi/testupload/`, {
+    return this.http.get(`${ApiSettings.getApiBaseURL()}decoi/upload/`, {
       withCredentials: true,
       params: params
     })
@@ -29,13 +29,13 @@ export class DecoiUploadService {
     return this.http.put(presigned_url, chunk_to_upload, {observe: 'events', reportProgress: true, headers: skip_header });
   }
 
-  complete_multipart_upload(file_name: string, upload_id: string, parts: string): Observable<any> {
+  complete_multipart_upload(ims_id: string, parts: string, md5_checksum: string): Observable<any> {
     const params: HttpParams = new HttpParams()
-      .set('key', file_name)
-      .set('upload_id', upload_id)
-      .set('parts', parts);
+      .set('ims_id', ims_id)
+      .set('parts', parts)
+      .set('md5_checksum', md5_checksum)
 
-    return this.http.post(`${ApiSettings.getApiBaseURL()}decoi/testupload/`, params, {
+    return this.http.post(`${ApiSettings.getApiBaseURL()}decoi/upload/`, params, {
       withCredentials: true
     })
   }

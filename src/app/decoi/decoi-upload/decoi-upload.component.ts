@@ -70,38 +70,40 @@ export class DecoiUploadComponent implements OnInit {
 
   }
 
-  upload_files(): void {
+  async upload_files(): Promise<any> {
     for (const metadata of this.metadata_entries) {
+
       if (metadata.upload) {
-        this.upload_service.get_presigned_urls(metadata.upload.get_file_name(), metadata.upload.get_file_size()).subscribe(
-          (result: any): any => {
-            this.prepare_file_for_upload(metadata.upload, result);
-            for (const chunk of metadata.upload['chunks']) {
-              this.upload_service.upload_chunk_to_presigned_url(chunk.get_presigned_url(), chunk.get_file()).subscribe(
-                (event: any): any => {
-                  if (event.type === HttpEventType.UploadProgress) {
-                    chunk.set_percented_complete(Math.round(100 * event.loaded / event.total));
-                  } else if (event instanceof HttpResponse) {
-                    chunk.set_percented_complete(100);
-                    event.headers.keys()
-                    const etag: string = event.headers.get('ETag');
-                    chunk.set_etag(etag);
-                    chunk.set_completed();
+
+        await new Promise<any>((resolve: any, reject: any): any => {
+          this.upload_service.get_presigned_urls(metadata.IMS_ID, metadata.upload.get_file_size(), metadata.upload.md5_checksum).subscribe(
+            async (result: any): Promise<any> => {
+              this.prepare_file_for_upload(metadata.upload, result);
+              for (const chunk of metadata.upload.chunks) {
+                this.upload_service.upload_chunk_to_presigned_url(chunk.get_presigned_url(), chunk.get_file()).subscribe(
+                  (event: any): any => {
+                    if (event.type === HttpEventType.UploadProgress) {
+                      chunk.set_percented_complete(Math.round(100 * event.loaded / event.total));
+                    } else if (event instanceof HttpResponse) {
+                      chunk.set_percented_complete(100);
+                      event.headers.keys()
+                      const etag: string = event.headers.get('ETag');
+                      chunk.set_etag(etag);
+                      chunk.set_completed();
+                    }
                   }
-                }
-              );
+                );
+              }
+              await this.complete_upload(metadata);
+              resolve();
+            },
+            (error: any): any => {
+              reject(error);
             }
-            this.sleep(10000).then((): any => {
-              this.complete_upload(metadata.upload);
-            });
-          }
-        );
+          );
+        })
       }
     }
-  }
-
-  sleep(ms: any): Promise<any> {
-    return new Promise((resolve: any): any => setTimeout(resolve, ms));
   }
 
   prepare_file_for_upload(file: Multipart, result: any): void {
@@ -121,27 +123,31 @@ export class DecoiUploadComponent implements OnInit {
     }
   }
 
-  complete_upload(file: Multipart): void {
-    if (!file.get_all_chunks_completed()) {
-      this.sleep(10000).then((): any => {
-        this.complete_upload(file);
-      })
-    } else {
-      let parts: any = [];
-      for (const chunk of file['chunks']) {
-        const etag_part: any = chunk.get_etag_part_json();
-        parts.push(etag_part);
-      }
-      parts = JSON.stringify(parts);
-      this.upload_service.complete_multipart_upload(file.get_file_name(), file.get_upload_id(), parts).subscribe(
-        (result: any): any => {
-          file.set_upload_completed();
-        },
-        (error: any): any => {
-          console.log(error);
+  async complete_upload(metadata: MetadataModel): Promise<void> {
+    return new Promise((resolve: any): any => {
+      if (!metadata.upload.get_all_chunks_completed()) {
+        setTimeout(async (): Promise<any> => {
+          await this.complete_upload(metadata);
+          resolve()
+        }, 10000);
+      } else {
+        let parts: any = [];
+        for (const chunk of metadata.upload['chunks']) {
+          const etag_part: any = chunk.get_etag_part_json();
+          parts.push(etag_part);
         }
-      );
-    }
+        parts = JSON.stringify(parts);
+        this.upload_service.complete_multipart_upload(metadata.IMS_ID, parts, metadata.upload.md5_checksum).subscribe(
+          (result: any): any => {
+            metadata.upload.set_upload_completed();
+          },
+          (error: any): any => {
+            console.log(error);
+          }
+        );
+        resolve();
+      }
+    })
   }
 
 }
