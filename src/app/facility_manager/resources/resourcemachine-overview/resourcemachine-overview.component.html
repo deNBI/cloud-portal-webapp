@@ -76,14 +76,14 @@
 
             <div class="input-group mb-3">
 
-              <select class="form-control" [(ngModel)]="newResourceMachine.gpu_used[i]"
+              <select class="form-control" formControlName="new_machine_gpu_types_{{i}}"
                       id="new_machine_gpu_types_{{i}}">
                 <option selected disabled hidden [ngValue]="gpu">
                   <span
                     *ngIf="gpu != null && gpu != undefined && gpu.type != 'UNUSED'">{{gpu.type + ': ' + gpu.cores}}</span>
                   <span *ngIf="gpu == null || gpu == undefined ||  gpu.type == 'UNUSED'">UNUSED</span>
                 </option>
-                <option (change)="newResourceMachine.setUnusedGpuSlot(i)">
+                <option [ngValue]="emptySpec">
                   UNUSED
                 </option>
                 <option *ngFor="let spec of gpu_types " [ngValue]="spec">
@@ -112,7 +112,7 @@
         </div>
         <div class="form-group row">
           <label for="{{newResourceMachine?.name + '_local_disk_encrypted'}}">Encrypted</label>
-          <input type="checkbox" [(ngModel)]="newResourceMachine.local_disk_encrypted"
+          <input type="checkbox" formControlName="new_machine_local_disk_encrypted"
                  id="{{newResourceMachine?.name + '_local_disk_encrypted'}}">
 
         </div>
@@ -125,7 +125,7 @@
         </div>
         <div class="form-group row">
           <label for="new_machine_type">Type</label>
-          <select class="form-control" [ngModel]="newResourceMachine.type" id="new_machine_type">
+          <select class="form-control" formControlName="new_machine_type" id="new_machine_type">
             <option *ngFor="  let type of factor_types" [ngValue]="type">
               {{type}}
             </option>

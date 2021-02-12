@@ -19,6 +19,7 @@ export class ResourcemachineOverviewComponent implements OnInit {
   resourceMachines: ResourceMachine[];
   newResourceMachine: ResourceMachine;
   newMachineFormGroup: FormGroup;
+  emptySpec = new GPUSpecification();
   formBuilder: FormBuilder = new FormBuilder();
   machinesFormGroups: { [id: string]: FormGroup} = {};
   name: string = '';
@@ -45,7 +46,9 @@ export class ResourcemachineOverviewComponent implements OnInit {
         'new_machine_local_disk_storage': [null, Validators.compose([Validators.required, Validators.pattern(/^\d+$/)])],
         'new_machine_name': [null, Validators.compose([Validators.required, Validators.pattern(/^(?:[A-Za-z]+)(?:[A-Za-z0-9 _]*)$/)])],
         'new_machine_private_count': [null, Validators.compose([Validators.required, Validators.pattern(/^\d+$/)])],
-        'new_machine_public_count': [null, Validators.compose([Validators.required, Validators.pattern(/^\d+$/)])]
+        'new_machine_public_count': [null, Validators.compose([Validators.required, Validators.pattern(/^\d+$/)])],
+        'new_machine_local_disk_encrypted': [null],
+        'new_machine_type': [null, Validators.required]
       });
 
     this.listenToChangesForNewMachine();
@@ -76,6 +79,13 @@ export class ResourcemachineOverviewComponent implements OnInit {
     });
     this.newMachineFormGroup.get('new_machine_gpus').valueChanges.subscribe(val => {
       this.newResourceMachine.gpu_slots = val;
+      for (let i = 0; i < val; i++){
+        if (!this.newMachineFormGroup.get('new_machine_gpu_types_' + i)){
+          this.newMachineFormGroup.addControl('new_machine_gpu_types_ ' + i, new FormControl([null]));
+
+        }
+        console.log(this.newMachineFormGroup.get('new_machine_gpu_types_' + i).value);
+      }
       this.newResourceMachine.changeGpuUsed();
     });
     this.newMachineFormGroup.get('new_machine_name').valueChanges.subscribe(val => {
@@ -90,9 +100,27 @@ export class ResourcemachineOverviewComponent implements OnInit {
     this.newMachineFormGroup.get('new_machine_public_count').valueChanges.subscribe(val => {
       this.newResourceMachine.public_count = val;
     });
+    this.newMachineFormGroup.get('new_machine_local_disk_encrypted').valueChanges.subscribe(val => {
+      this.newResourceMachine.local_disk_encrypted = val;
+    });
+    this.newMachineFormGroup.get('new_machine_type').valueChanges.subscribe(val => {
+      this.newResourceMachine.type = val;
+    });
   }
 
 
+  detectGPUChanges(machine_id: number | string, slot: number | string): void {
+    if (machine_id === -1){
+      let gpu_id : string = this.newMachineFormGroup.get('new_machine_gpu_used_' + slot).value;
+      this.newResourceMachine.gpu_used[slot] = this.gpu_types.find(i => i.id = gpu_id);
+    } else {
+      let machine = this.resourceMachines.find(i => i.id === machine_id);
+      let gpu_id : string = this.machinesFormGroups[machine_id].get(machine.id + '_gpu_used_' + slot).value;
+      machine.gpu_slots[slot] = this.gpu_types.find(i => i.id = gpu_id);
+    }
+
+
+  }
 
   getResourceMachines(): void {
     this.facilityService.getResourceMachines(this.facility_id).subscribe((res: ResourceMachine[]): void => {
@@ -183,6 +211,9 @@ export class ResourcemachineOverviewComponent implements OnInit {
   }
 
   addResourceMachine(): void {
+    for(let i = 0; i < this.newResourceMachine.gpu_slots; i++){
+      this.newResourceMachine.gpu_used[i] = this.newMachineFormGroup.get('new_machine_gpu_types_' + i).value;
+    }
 
     this.facilityService.addResourceMachine(this.facility_id, this.newResourceMachine).subscribe((res: ResourceMachine[]): void => {
       this.newResourceMachine = new ResourceMachine(null);

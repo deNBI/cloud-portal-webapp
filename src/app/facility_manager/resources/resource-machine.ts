@@ -60,8 +60,6 @@ export class ResourceMachine {
       while (this.gpu_slots > this.gpu_used.length) {
         this.gpu_used.push(new GPUSpecification())
       }
-
     }
-
   }
 }
