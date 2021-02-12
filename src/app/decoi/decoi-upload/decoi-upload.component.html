@@ -1,4 +1,20 @@
-<input type="file" [multiple]="true" (change)="load_files($event.target)">
+<div><input type="file" (change)="load_metadata($event)" #metadata></div>
+
+<div *ngIf="chosen_metadata"> You choosed {{chosen_metadata["name"]}}</div>
+<button [disabled]="!chosen_metadata" (click)="uploadMetadata();metadata.value=null;">Send Metadata</button>
+<div *ngIf="chosen_metadata_error.length > 0">
+  <div *ngFor="let error of chosen_metadata_error">{{error}}</div>
+
+</div>
+
+<div *ngIf="!chosen_metadata_error.length">
+  <div *ngFor="let entry of metadata_entries">{{entry.IMS_ID}} {{entry.FILE_NAME}}  <span *ngIf="entry.upload">File Selected</span>
+    <span *ngIf="!entry.upload">No File Selected</span>
+  </div>
+</div>
+
+
+<div><input type="file" [multiple]="true" (change)="load_files($event.target)"></div>
 
 <div *ngIf="load_error_message !== null">
   Error: {{load_error_message}}
