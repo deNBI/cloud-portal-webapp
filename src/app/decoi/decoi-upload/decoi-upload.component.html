@@ -1,0 +1,16 @@
+<input type="file" [multiple]="true" (change)="load_files($event.target)">
+
+<div *ngIf="load_error_message !== null">
+  Error: {{load_error_message}}
+</div>
+
+<div *ngFor="let chosen_file of chosen_files">
+  You chose {{chosen_file.file['name']}}.
+  <br>
+  <div *ngFor="let chunk of chosen_file['chunks']">
+    {{chunk?.part_number}}  {{chunk?.percent_completed}}  {{chunk?.upload_completed}}
+    <br>
+  </div>
+</div>
+
+<button (click)="upload_files()">Start upload</button>
