@@ -1,7 +1,9 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {FacilityService} from '../../../api-connector/facility.service';
 import {ResourceMachine} from '../resource-machine';
 import {GPUSpecification} from '../gpu-specification';
+import {FormBuilder, FormControl, FormGroup, NgForm, Validators} from "@angular/forms";
+
 
 /**
  * Class for ramfactors..
@@ -16,6 +18,10 @@ export class ResourcemachineOverviewComponent implements OnInit {
   gpu_types: GPUSpecification[] = [];
   resourceMachines: ResourceMachine[];
   newResourceMachine: ResourceMachine;
+  newMachineFormGroup: FormGroup;
+  formBuilder: FormBuilder = new FormBuilder();
+  machinesFormGroups: { [id: string]: FormGroup} = {};
+  name: string = '';
   @Input() facility_id: number;
   @Output() readonly factorChanged: EventEmitter<any> = new EventEmitter();
 
@@ -27,10 +33,66 @@ export class ResourcemachineOverviewComponent implements OnInit {
   ngOnInit(): void {
     this.getResourceMachines();
     this.newResourceMachine = new ResourceMachine(null);
+    this.newMachineFormGroup = this.formBuilder
+      .group({
+        'new_machine_ram': [null, Validators.compose([Validators.required, Validators.pattern(/^\d+$/)])],
+        'new_machine_ram_private_factor': [null, Validators.compose([Validators.required, Validators.pattern(/^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$/)])],
+        'new_machine_ram_public_factor': [null, Validators.compose([Validators.required, Validators.pattern(/^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$/)])],
+        'new_machine_cores': [null, Validators.compose([Validators.required, Validators.pattern(/^\d+$/)])],
+        'new_machine_cores_private_factor': [null, Validators.compose([Validators.required, Validators.pattern(/^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$/)])],
+        'new_machine_cores_public_factor': [null, Validators.compose([Validators.required, Validators.pattern(/^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$/)])],
+        'new_machine_gpus': [null, Validators.compose([Validators.required, Validators.pattern(/^\d+$/)])],
+        'new_machine_local_disk_storage': [null, Validators.compose([Validators.required, Validators.pattern(/^\d+$/)])],
+        'new_machine_name': [null, Validators.compose([Validators.required, Validators.pattern(/^(?:[A-Za-z]+)(?:[A-Za-z0-9 _]*)$/)])],
+        'new_machine_private_count': [null, Validators.compose([Validators.required, Validators.pattern(/^\d+$/)])],
+        'new_machine_public_count': [null, Validators.compose([Validators.required, Validators.pattern(/^\d+$/)])]
+      });
+
+    this.listenToChangesForNewMachine();
+
     this.facilityService.getGPUSpecifications(this.facility_id).subscribe((specs: GPUSpecification[]): void => {
       this.gpu_types = specs;
     });
   }
+
+  listenToChangesForNewMachine(): void {
+    this.newMachineFormGroup.get('new_machine_ram').valueChanges.subscribe(val => {
+      this.newResourceMachine.ram = val;
+    });
+    this.newMachineFormGroup.get('new_machine_ram_private_factor').valueChanges.subscribe(val => {
+      this.newResourceMachine.ram_private_factor = val;
+    });
+    this.newMachineFormGroup.get('new_machine_ram_public_factor').valueChanges.subscribe(val => {
+      this.newResourceMachine.ram_public_factor = val;
+    });
+    this.newMachineFormGroup.get('new_machine_cores').valueChanges.subscribe(val => {
+      this.newResourceMachine.cores = val;
+    });
+    this.newMachineFormGroup.get('new_machine_cores_private_factor').valueChanges.subscribe(val => {
+      this.newResourceMachine.cores_private_factor = val;
+    });
+    this.newMachineFormGroup.get('new_machine_cores_public_factor').valueChanges.subscribe(val => {
+      this.newResourceMachine.cores_public_factor = val;
+    });
+    this.newMachineFormGroup.get('new_machine_gpus').valueChanges.subscribe(val => {
+      this.newResourceMachine.gpu_slots = val;
+      this.newResourceMachine.changeGpuUsed();
+    });
+    this.newMachineFormGroup.get('new_machine_name').valueChanges.subscribe(val => {
+      this.newResourceMachine.name = val;
+    });
+    this.newMachineFormGroup.get('new_machine_local_disk_storage').valueChanges.subscribe(val => {
+      this.newResourceMachine.local_disk_storage = val;
+    });
+    this.newMachineFormGroup.get('new_machine_private_count').valueChanges.subscribe(val => {
+      this.newResourceMachine.private_count = val;
+    });
+    this.newMachineFormGroup.get('new_machine_public_count').valueChanges.subscribe(val => {
+      this.newResourceMachine.public_count = val;
+    });
+  }
+
+
 
   getResourceMachines(): void {
     this.facilityService.getResourceMachines(this.facility_id).subscribe((res: ResourceMachine[]): void => {
@@ -40,13 +102,65 @@ export class ResourcemachineOverviewComponent implements OnInit {
       this.resourceMachines.sort((a_machine: ResourceMachine, b_machine: ResourceMachine): number => {
         return b_machine.type.localeCompare(a_machine.type)
       })
-
+      this.machinesFormGroups = {};
       this.resourceMachines.forEach((machine: ResourceMachine): void => {
+
+        this.machinesFormGroups[machine.id] = this.formBuilder.group({});
+        let machine_ram: string = machine.id + '_ram',
+          machine_ram_private_factor: string = machine.id + '_ram_private_factor',
+          machine_ram_public_factor: string = machine.id + '_ram_public_factor',
+          machine_cores: string = machine.id + '_cores',
+          machine_cores_private_factor: string = machine.id + '_cores_private_factor',
+          machine_cores_public_factor: string = machine.id + '_cores_public_factor',
+          machine_gpus: string = machine.id + '_gpus',
+          machine_local_disk_storage: string = machine.id + '_machine_local_disk_storage',
+          machine_name: string = machine.id + '_name',
+          machine_private_count: string = machine.id + '_private_count',
+          machine_public_count: string = machine.id + '_public_count';
+
+        this.machinesFormGroups[machine.id].addControl(machine_ram,
+          new FormControl([null, Validators.compose([Validators.required, Validators.pattern(/^\d+$/)])]));
+        this.machinesFormGroups[machine.id].addControl(machine_ram_private_factor,
+          new FormControl([null, Validators.compose([Validators.required, Validators.pattern(/^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$/)])]));
+        this.machinesFormGroups[machine.id].addControl(machine_ram_public_factor,
+          new FormControl([null, Validators.compose([Validators.required, Validators.pattern(/^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$/)])]));
+        this.machinesFormGroups[machine.id].addControl(machine_cores,
+          new FormControl([null, Validators.compose([Validators.required, Validators.pattern(/^\d+$/)])]));
+        this.machinesFormGroups[machine.id].addControl(machine_cores_private_factor,
+          new FormControl([null, Validators.compose([Validators.required, Validators.pattern(/^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$/)])]));
+        this.machinesFormGroups[machine.id].addControl(machine_cores_public_factor,
+          new FormControl([null, Validators.compose([Validators.required, Validators.pattern(/^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$/)])]));
+        this.machinesFormGroups[machine.id].addControl(machine_gpus,
+          new FormControl([null, Validators.compose([Validators.required, Validators.pattern(/^\d+$/)])]));
+        this.machinesFormGroups[machine.id].addControl(machine_local_disk_storage,
+          new FormControl([null, Validators.compose([Validators.required, Validators.pattern(/^\d+$/)])]));
+        this.machinesFormGroups[machine.id].addControl(machine_name,
+          new FormControl([null, Validators.compose([Validators.required, Validators.pattern(/^(?:[A-Za-z]+)(?:[A-Za-z0-9 _]*)$/)])]));
+        this.machinesFormGroups[machine.id].addControl(machine_private_count,
+          new FormControl([null, Validators.compose([Validators.required, Validators.pattern(/^\d+$/)])]));
+        this.machinesFormGroups[machine.id].addControl(machine_public_count,
+          new FormControl([null, Validators.compose([Validators.required, Validators.pattern(/^\d+$/)])]));
+        this.machinesFormGroups[machine.id].setValue({
+          machine_ram: machine.ram,
+          machine_ram_private_factor: machine.ram_private_factor,
+          machine_ram_public_factor: machine.ram_public_factor,
+          machine_cores: machine.cores,
+          machine_cores_private_factor: machine.cores_private_factor,
+          machine_cores_public_factor: machine.cores_public_factor,
+          machine_gpus: machine.gpu_slots,
+          machine_local_disk_storage: machine.local_disk_storage,
+          machine_name: machine.name,
+          machine_private_count: machine.private_count,
+          machine_public_count: machine.public_count
+        });
+
         machine.gpu_used.slice(0, machine.gpu_slots);
         this.resourceMachineUpdateList[machine.id] = false;
-      })
-    })
+
+      });
+    });
   }
+
 
   deleteResourceMachine(id: string | number): void {
     this.facilityService.deleteResourceMachine(this.facility_id, id).subscribe((res: ResourceMachine[]): void => {
@@ -69,7 +183,6 @@ export class ResourcemachineOverviewComponent implements OnInit {
   }
 
   addResourceMachine(): void {
-    // this.setGPUList(this.newResourceMachine);
 
     this.facilityService.addResourceMachine(this.facility_id, this.newResourceMachine).subscribe((res: ResourceMachine[]): void => {
       this.newResourceMachine = new ResourceMachine(null);
@@ -85,22 +198,7 @@ export class ResourcemachineOverviewComponent implements OnInit {
 
   }
 
-  setGPUList(rf: ResourceMachine): void {
-    const gpus: GPUSpecification[] = [];
-    rf.gpu_used.forEach((gpu: GPUSpecification): void => {
-      if (gpu.type != undefined && gpu.type != 'UNUSED') {
-        gpus.push(gpu);
-      } else {
-        console.log('UNUSED!!!');
-      }
-    });
-
-    rf.gpu_used = gpus;
-  }
-
   updateResourceMachine(rf: ResourceMachine): void {
-    // this.setGPUList(rf);
-
     this.facilityService.updateResourceMachine(this.facility_id, rf).subscribe((machine: ResourceMachine): void => {
       this.resourceMachines[this.resourceMachines.indexOf(rf)] = new ResourceMachine(machine);
       this.factorChanged.emit()
