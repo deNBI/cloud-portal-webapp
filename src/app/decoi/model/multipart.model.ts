@@ -14,6 +14,32 @@ export class Multipart {
     this.chunks = [];
     this.upload_completed = false;
   }
+
+  get_all_chunks_completed(): boolean {
+    for (const chunk of this.chunks) {
+      if (!chunk.get_completed()) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  get_file_name(): string {
+    return this.file['name'];
+  }
+
+  get_file_size(): number {
+    return this.file['size'];
+  }
+
+  get_upload_id(): string {
+    return this.upload_id;
+  }
+
+  set_upload_completed(): void {
+    this.upload_completed = true;
+  }
 }
 
 /**
@@ -32,7 +58,7 @@ export class Chunk {
     this.percent_completed = 0;
     this.etag = '';
     this.presigned_url = signed_url;
-    this.part_number = part_number;
+    this.part_number = Number(part_number);
     this.upload_completed = false;
   }
 
@@ -49,20 +75,22 @@ export class Chunk {
   }
 
   set_etag(etag: string): void {
-    this.etag = etag;
+    this.etag = etag.replace(/["']/g, '');
+  }
+
+  get_etag_part_json(): {ETag: string, PartNumber: number} {
+    return {ETag: this.etag, PartNumber: this.part_number}
   }
 
   set_completed(): void {
     this.upload_completed = true;
   }
 
+  get_completed(): boolean {
+    return this.upload_completed;
+  }
+
   get_presigned_url(): string {
     return this.presigned_url;
   }
 }
-
-// export interface Part {
-//   number: number;
-//   signed_url: string;
-//   etag: string;
-// }

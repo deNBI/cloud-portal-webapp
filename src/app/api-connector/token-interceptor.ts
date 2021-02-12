@@ -10,11 +10,21 @@ import {Cookie} from 'ng2-cookies';
 export class TokenInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const modifiedReq: HttpRequest<any> = req.clone({
-                                                     withCredentials: true,
-                                                      headers: req.headers.set('X-CSRFToken', Cookie.get('csrftoken'))
-                                                    })
+    const skipIntercept: boolean = req.headers.has('skip');
 
-    return next.handle(modifiedReq)
+    if (skipIntercept) {
+      req = req.clone({
+        headers: req.headers.delete('skip')
+      });
+
+      return next.handle(req)
+    } else {
+      const modifiedReq: HttpRequest<any> = req.clone({
+        withCredentials: true,
+        headers: req.headers.set('X-CSRFToken', Cookie.get('csrftoken'))
+      })
+
+      return next.handle(modifiedReq)
+    }
   }
 }

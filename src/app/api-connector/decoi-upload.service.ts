@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {ApiSettings} from './api-settings.service'
-import {HttpClient, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 
 /**
@@ -22,7 +22,10 @@ export class DecoiUploadService {
   }
 
   upload_chunk_to_presigned_url(presigned_url: string, chunk_to_upload: File): Observable<any> {
-    return this.http.put(presigned_url, chunk_to_upload, {observe: 'events', reportProgress: true });
+    let skip_header: HttpHeaders = new HttpHeaders();
+    skip_header = skip_header.append('skip', 'true').append('Access-Control-Expose-Headers', 'ETag')
+
+    return this.http.put(presigned_url, chunk_to_upload, {observe: 'events', reportProgress: true, headers: skip_header });
   }
 
   complete_multipart_upload(file_name: string, upload_id: string, parts: string): Observable<any> {
