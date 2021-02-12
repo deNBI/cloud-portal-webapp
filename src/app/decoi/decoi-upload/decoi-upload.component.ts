@@ -59,7 +59,6 @@ export class DecoiUploadComponent implements OnInit {
               );
             }
             await this.complete_upload(file);
-            console.log('git here');
             resolve();
           },
           (error: any): any => {
@@ -68,10 +67,6 @@ export class DecoiUploadComponent implements OnInit {
         );
       })
     }
-  }
-
-  sleep(ms: any): Promise<any> {
-    return new Promise((resolve: any): any => setTimeout(resolve, ms));
   }
 
   prepare_file_for_upload(file: Multipart, result: any): void {
