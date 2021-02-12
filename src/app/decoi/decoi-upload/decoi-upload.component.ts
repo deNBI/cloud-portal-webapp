@@ -3,7 +3,7 @@ import {Chunk, Multipart} from '../model/multipart.model';
 import {DecoiUploadService} from '../../api-connector/decoi-upload.service';
 import {HttpEventType, HttpResponse} from '@angular/common/http';
 import {MetadataModel} from '../model/metadata.model';
-import {Md5} from 'ts-md5/dist/md5';
+
 /**
  * Upload component for decoi
  */
@@ -71,42 +71,37 @@ export class DecoiUploadComponent implements OnInit {
   }
 
   upload_files(): void {
-    for (const file of this.chosen_files) {
-      this.upload_service.get_presigned_urls(file.get_file_name(), file.get_file_size()).subscribe(
-        (result: any): any => {
-          this.prepare_file_for_upload(file, result);
-          for (const chunk of file['chunks']) {
-            this.upload_service.upload_chunk_to_presigned_url(chunk.get_presigned_url(), chunk.get_file()).subscribe(
-              (event: any): any => {
-                if (event.type === HttpEventType.UploadProgress) {
-                  chunk.set_percented_complete(Math.round(100 * event.loaded / event.total));
-                } else if (event instanceof HttpResponse) {
-                  chunk.set_percented_complete(100);
-                  event.headers.keys()
-                  const etag: string = event.headers.get('ETag');
-                  chunk.set_etag(etag);
-                  chunk.set_completed();
+    for (const metadata of this.metadata_entries) {
+      if (metadata.upload) {
+        this.upload_service.get_presigned_urls(metadata.upload.get_file_name(), metadata.upload.get_file_size()).subscribe(
+          (result: any): any => {
+            this.prepare_file_for_upload(metadata.upload, result);
+            for (const chunk of metadata.upload['chunks']) {
+              this.upload_service.upload_chunk_to_presigned_url(chunk.get_presigned_url(), chunk.get_file()).subscribe(
+                (event: any): any => {
+                  if (event.type === HttpEventType.UploadProgress) {
+                    chunk.set_percented_complete(Math.round(100 * event.loaded / event.total));
+                  } else if (event instanceof HttpResponse) {
+                    chunk.set_percented_complete(100);
+                    event.headers.keys()
+                    const etag: string = event.headers.get('ETag');
+                    chunk.set_etag(etag);
+                    chunk.set_completed();
+                  }
                 }
-              }
-            );
+              );
+            }
+            this.sleep(10000).then((): any => {
+              this.complete_upload(metadata.upload);
+            });
           }
-          this.sleep(10000).then((): any => {
-            this.complete_upload(file);
-          });
-        }
-      );
+        );
+      }
     }
   }
 
-<<<<<<< HEAD
-  complete_upload(): void {
-    for (const file of this.chosen_files) {
-
-    }
-=======
   sleep(ms: any): Promise<any> {
     return new Promise((resolve: any): any => setTimeout(resolve, ms));
->>>>>>> decoi
   }
 
   prepare_file_for_upload(file: Multipart, result: any): void {

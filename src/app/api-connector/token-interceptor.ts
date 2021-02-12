@@ -10,18 +10,7 @@ import {Cookie} from 'ng2-cookies';
 export class TokenInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-<<<<<<< HEAD
-    if (req.url.includes('openstack')) {
-      console.log("openstack found")
-      return next.handle(req)
-    }
-    const modifiedReq: HttpRequest<any> = req.clone({
-                                                      withCredentials: true,
-                                                      headers: req.headers.set('X-CSRFToken', Cookie.get('csrftoken'))
-                                                    })
-=======
     const skipIntercept: boolean = req.headers.has('skip');
->>>>>>> decoi
 
     if (skipIntercept) {
       req = req.clone({

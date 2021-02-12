@@ -13,8 +13,8 @@ export class DecoiUploadService {
   constructor(private http: HttpClient) {
   }
 
-  get_presigned_urls(file_name: string, file_size: number): Observable<any> {
-    const params: HttpParams = new HttpParams().set('key', file_name).set('size', file_size.toString());
+  get_presigned_urls(ims_id: string, file_size: number): Observable<any> {
+    const params: HttpParams = new HttpParams().set('ims_id', ims_id).set('size', file_size.toString());
 
     return this.http.get(`${ApiSettings.getApiBaseURL()}decoi/testupload/`, {
       withCredentials: true,
@@ -23,16 +23,10 @@ export class DecoiUploadService {
   }
 
   upload_chunk_to_presigned_url(presigned_url: string, chunk_to_upload: File): Observable<any> {
-<<<<<<< HEAD
-    return this.http.put(presigned_url, chunk_to_upload, {
-      observe: 'events', reportProgress: true
-    });
-=======
     let skip_header: HttpHeaders = new HttpHeaders();
     skip_header = skip_header.append('skip', 'true').append('Access-Control-Expose-Headers', 'ETag')
 
     return this.http.put(presigned_url, chunk_to_upload, {observe: 'events', reportProgress: true, headers: skip_header });
->>>>>>> decoi
   }
 
   complete_multipart_upload(file_name: string, upload_id: string, parts: string): Observable<any> {

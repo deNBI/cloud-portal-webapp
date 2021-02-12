@@ -9,24 +9,26 @@
 
 <div *ngIf="!chosen_metadata_error.length">
   <div *ngFor="let entry of metadata_entries">{{entry.IMS_ID}} {{entry.FILE_NAME}}  <span *ngIf="entry.upload">File Selected</span>
-    <span *ngIf="!entry.upload">No File Selected</span>
+    <span *ngIf="!entry.upload">No File Selected</span> <span *ngIf="entry?.upload && entry?.upload?.upload_completed"> UPLOADED</span>
+    <span *ngIf="entry?.upload && !entry?.upload?.upload_completed"> NOT_UPLOADED</span>
   </div>
 </div>
 
+<div *ngIf="metadata_entries.length > 0">
+  <div><input type="file" [multiple]="true" (change)="load_files($event.target)"></div>
 
-<div><input type="file" [multiple]="true" (change)="load_files($event.target)"></div>
+  <div *ngIf="load_error_message !== null">
+    Error: {{load_error_message}}
+  </div>
 
-<div *ngIf="load_error_message !== null">
-  Error: {{load_error_message}}
-</div>
-
-<div *ngFor="let chosen_file of chosen_files">
-  You chose {{chosen_file.file['name']}}.
-  <br>
-  <div *ngFor="let chunk of chosen_file['chunks']">
-    {{chunk?.part_number}}  {{chunk?.percent_completed}}  {{chunk?.upload_completed}}
+  <div *ngFor="let chosen_file of chosen_files">
+    You chose {{chosen_file.file['name']}}.
     <br>
+    <div *ngFor="let chunk of chosen_file['chunks']">
+      {{chunk?.part_number}}  {{chunk?.percent_completed}}  {{chunk?.upload_completed}}
+      <br>
+    </div>
   </div>
-</div>
 
-<button (click)="upload_files()">Start upload</button>
+  <button (click)="upload_files()">Start upload</button>
+</div>

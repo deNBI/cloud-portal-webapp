@@ -22,10 +22,10 @@ export class Multipart {
 
   private generate_md5_checksum(): void {
     console.log('generaate checsum')
-    const hasher: ParallelHasher = new ParallelHasher('node_modules/ts-md5/dist/md5_worker.js');
-    hasher.hash(this.file).then(function (result) {
-      console.log('md5 of fileBlob is', result);
-      return result
+    const hasher: ParallelHasher = new ParallelHasher('static/webapp/assets/js/md5_worker.js');
+    hasher.hash(this.file).then((hash: string): void => {
+      console.log('md5 of fileBlob is', hash);
+      this.md5_checksum = hash;
     });
   }
 
