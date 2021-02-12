@@ -37,31 +37,36 @@ export class DecoiUploadComponent implements OnInit {
     }
   }
 
-  upload_files(): void {
+  async upload_files(): Promise<any> {
     for (const file of this.chosen_files) {
-      this.upload_service.get_presigned_urls(file.get_file_name(), file.get_file_size()).subscribe(
-        (result: any): any => {
-          this.prepare_file_for_upload(file, result);
-          for (const chunk of file['chunks']) {
-            this.upload_service.upload_chunk_to_presigned_url(chunk.get_presigned_url(), chunk.get_file()).subscribe(
-              (event: any): any => {
-                if (event.type === HttpEventType.UploadProgress) {
-                  chunk.set_percented_complete(Math.round(100 * event.loaded / event.total));
-                } else if (event instanceof HttpResponse) {
-                  chunk.set_percented_complete(100);
-                  event.headers.keys()
-                  const etag: string = event.headers.get('ETag');
-                  chunk.set_etag(etag);
-                  chunk.set_completed();
+      await new Promise<any>((resolve: any, reject: any): any => {
+        this.upload_service.get_presigned_urls(file.get_file_name(), file.get_file_size()).subscribe(
+          async (result: any): Promise<any> => {
+            this.prepare_file_for_upload(file, result);
+            for (const chunk of file['chunks']) {
+              this.upload_service.upload_chunk_to_presigned_url(chunk.get_presigned_url(), chunk.get_file()).subscribe(
+                (event: any): any => {
+                  if (event.type === HttpEventType.UploadProgress) {
+                    chunk.set_percented_complete(Math.round(100 * event.loaded / event.total));
+                  } else if (event instanceof HttpResponse) {
+                    chunk.set_percented_complete(100);
+                    event.headers.keys()
+                    const etag: string = event.headers.get('ETag');
+                    chunk.set_etag(etag);
+                    chunk.set_completed();
+                  }
                 }
-              }
-            );
+              );
+            }
+            await this.complete_upload(file);
+            console.log('git here');
+            resolve();
+          },
+          (error: any): any => {
+            reject(error);
           }
-          this.sleep(10000).then((): any => {
-            this.complete_upload(file);
-          });
-        }
-      );
+        );
+      })
     }
   }
 
@@ -86,27 +91,28 @@ export class DecoiUploadComponent implements OnInit {
     }
   }
 
-  complete_upload(file: Multipart): void {
-    if (!file.get_all_chunks_completed()) {
-      this.sleep(10000).then((): any => {
-        this.complete_upload(file);
-      })
-    } else {
-      let parts: any = [];
-      for (const chunk of file['chunks']) {
-        const etag_part: any = chunk.get_etag_part_json();
-        parts.push(etag_part);
-      }
-      parts = JSON.stringify(parts);
-      this.upload_service.complete_multipart_upload(file.get_file_name(), file.get_upload_id(), parts).subscribe(
-        (result: any): any => {
-          file.set_upload_completed();
-        },
-        (error: any): any => {
-          console.log(error);
+  async complete_upload(file: Multipart): Promise<void> {
+    return new Promise((resolve: any): any => {
+      if (!file.get_all_chunks_completed()) {
+        setTimeout(async (): Promise<any> => {await this.complete_upload(file); resolve()}, 10000);
+      } else {
+        let parts: any = [];
+        for (const chunk of file['chunks']) {
+          const etag_part: any = chunk.get_etag_part_json();
+          parts.push(etag_part);
         }
-      );
-    }
+        parts = JSON.stringify(parts);
+        this.upload_service.complete_multipart_upload(file.get_file_name(), file.get_upload_id(), parts).subscribe(
+          (result: any): any => {
+            file.set_upload_completed();
+          },
+          (error: any): any => {
+            console.log(error);
+          }
+        );
+        resolve();
+      }
+    })
   }
 
 }
