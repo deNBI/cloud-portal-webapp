@@ -9,8 +9,7 @@
 
 <div *ngIf="!chosen_metadata_error.length">
   <div *ngFor="let entry of metadata_entries">{{entry.IMS_ID}} {{entry.FILE_NAME}}  <span *ngIf="entry.upload">File Selected</span>
-    <span *ngIf="!entry.upload">No File Selected</span> <span *ngIf="entry?.upload && entry?.upload?.upload_completed"> UPLOADED</span>
-    <span *ngIf="entry?.upload && !entry?.upload?.upload_completed"> NOT_UPLOADED</span>
+    <span *ngIf="!entry.upload">No File Selected</span> <span> {{entry.msg}}</span>
   </div>
 </div>
 

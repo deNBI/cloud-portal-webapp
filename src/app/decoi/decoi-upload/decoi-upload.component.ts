@@ -78,6 +78,11 @@ export class DecoiUploadComponent implements OnInit {
         await new Promise<any>((resolve: any, reject: any): any => {
           this.upload_service.get_presigned_urls(metadata.IMS_ID, metadata.upload.get_file_size(), metadata.upload.md5_checksum).subscribe(
             async (result: any): Promise<any> => {
+              if ('msg' in result) {
+                metadata.msg = result['msg'];
+                resolve();
+
+              }
               this.prepare_file_for_upload(metadata.upload, result);
               for (const chunk of metadata.upload.chunks) {
                 this.upload_service.upload_chunk_to_presigned_url(chunk.get_presigned_url(), chunk.get_file()).subscribe(
@@ -139,6 +144,7 @@ export class DecoiUploadComponent implements OnInit {
         parts = JSON.stringify(parts);
         this.upload_service.complete_multipart_upload(metadata.IMS_ID, parts, metadata.upload.md5_checksum).subscribe(
           (result: any): any => {
+            metadata.msg = 'UPLOADED'
             metadata.upload.set_upload_completed();
           },
           (error: any): any => {
