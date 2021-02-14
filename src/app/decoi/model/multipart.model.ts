@@ -10,6 +10,7 @@ export class Multipart {
   upload_completed: boolean;
   chunks: Chunk[];
   md5_checksum: string;
+  percent_completed: number = 0;
 
   constructor(file: File) {
     this.file = file;
@@ -53,6 +54,17 @@ export class Multipart {
 
   set_upload_completed(): void {
     this.upload_completed = true;
+  }
+
+  get_percent_completed(): number {
+    if (this.chunks.length > 0) {
+      let percentages: number = 0;
+      this.chunks.forEach((chunk: Chunk): void => {
+        percentages += chunk.percent_completed
+      })
+      this.percent_completed = percentages / this.chunks.length
+    }
+    return this.percent_completed
   }
 }
 

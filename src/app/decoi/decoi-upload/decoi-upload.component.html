@@ -1,33 +1,58 @@
-<div><input type="file" (change)="load_metadata($event)" #metadata></div>
-
-<div *ngIf="chosen_metadata"> You choosed {{chosen_metadata["name"]}}</div>
-<button [disabled]="!chosen_metadata" (click)="uploadMetadata();metadata.value=null;">Send Metadata</button>
-<div *ngIf="chosen_metadata_error.length > 0">
-  <div *ngFor="let error of chosen_metadata_error">{{error}}</div>
-
-</div>
-
-<div *ngIf="!chosen_metadata_error.length">
-  <div *ngFor="let entry of metadata_entries">{{entry.IMS_ID}} {{entry.FILE_NAME}}  <span *ngIf="entry.upload">File Selected</span>
-    <span *ngIf="!entry.upload">No File Selected</span> <span> {{entry.msg}}</span>
+<div class="card">
+  <div class="card-header">
+    <strong>DeCOI</strong>
+    –Upload
   </div>
-</div>
+  <div><input type="file" (change)="load_metadata($event)" #metadata>
 
-<div *ngIf="metadata_entries.length > 0">
-  <div><input type="file" [multiple]="true" (change)="load_files($event.target)"></div>
-
-  <div *ngIf="load_error_message !== null">
-    Error: {{load_error_message}}
+    <button [disabled]="!chosen_metadata" (click)="uploadMetadata();metadata.value=null;">Send Metadata</button>
   </div>
+  <div *ngIf="chosen_metadata_error.length > 0">
+    <div *ngFor="let error of chosen_metadata_error">{{error}}</div>
 
-  <div *ngFor="let chosen_file of chosen_files">
-    You chose {{chosen_file.file['name']}}.
-    <br>
-    <div *ngFor="let chunk of chosen_file['chunks']">
-      {{chunk?.part_number}}  {{chunk?.percent_completed}}  {{chunk?.upload_completed}}
-      <br>
+  </div>
+  <div *ngIf="metadata_entries.length > 0" class="rTable" id="metadata_entrys_table">
+    <div class="rTableHeading">
+      <div class="rTableHead col-3 ">IMS_ID</div>
+      <div class="rTableHead col-3 ">FILE_NAME</div>
+      <div class="rTableHead col-3 ">File Selected</div>
+      <div class="rTableHead col-3">Status</div>
+
+
     </div>
+    <div class="rTableRow" *ngFor="let metadata of metadata_entries">
+      <div class="rTableCell">{{metadata.IMS_ID}}</div>
+      <div class="rTableCell ">{{metadata.FILE_NAME}}</div>
+      <div class="rTableCell "><span *ngIf="metadata.upload"><i class="fa fa-check"
+                                                                style="color: green"></i></span>
+        <span *ngIf="!metadata.upload">                               <i class="fas fa-times"
+                                                                         style="color: red"></i>
+</span></div>
+      <div class="rTableCell "> {{metadata.msg}} {{metadata?.upload?.get_percent_completed()}}
+      </div>
+
+    </div>
+
+
   </div>
 
-  <button (click)="upload_files()">Start upload</button>
+
+  <div *ngIf="metadata_entries.length > 0">
+    <div><input type="file" [multiple]="true" (change)="load_files($event.target)"></div>
+
+    <div *ngIf="load_error_message !== null">
+      Error: {{load_error_message}}
+    </div>
+
+    <div *ngFor="let chosen_file of chosen_files">
+      You chose {{chosen_file.file['name']}}.
+      <br>
+      <div *ngFor="let chunk of chosen_file['chunks']">
+        {{chunk?.part_number}}  {{chunk?.percent_completed}}  {{chunk?.upload_completed}}
+        <br>
+      </div>
+    </div>
+
+    <button (click)="upload_files()">Start upload</button>
+  </div>
 </div>
