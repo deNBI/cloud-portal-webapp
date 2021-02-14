@@ -28,7 +28,15 @@
         <span *ngIf="!metadata.upload">                               <i class="fas fa-times"
                                                                          style="color: red"></i>
 </span></div>
-      <div class="rTableCell "> {{metadata.msg}} {{metadata?.upload?.get_percent_completed()}}
+      <div class="rTableCell "> {{metadata.msg}}
+        <div class="progress">
+          <div class="progress-bar progress-bar-striped progress-bar-animated bg-info"
+               role="progressbar"
+               aria-valuemin="0"
+               aria-valuemax="100"
+               [style.width.%]="metadata?.upload?.get_percent_completed()">
+          </div>
+        </div>
       </div>
 
     </div>
