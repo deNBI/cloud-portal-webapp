@@ -150,13 +150,18 @@ export class Chunk {
   part_number: number;
   upload_completed: boolean;
 
-  constructor(part_number: number, signed_url: string) {
+  constructor(part_number: number, signed_url: string, exists: boolean = false) {
     this.file = null;
     this.percent_completed = 0;
     this.etag = '';
     this.presigned_url = signed_url;
     this.part_number = Number(part_number);
     this.upload_completed = false;
+
+    if (exists) {
+      this.percent_completed = 100;
+      this.upload_completed = true;
+    }
   }
 
   set_file(file: File): void {

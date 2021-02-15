@@ -37,16 +37,16 @@ export class DecoiUploadComponent implements OnInit {
     this.chosen_metadata_error = []
     this.upload_service.postMetadata(this.chosen_metadata)
       .subscribe((
-        data: MetadataModel[]): void => {
-          this.metadata_entries = data;
-          this.chosen_metadata = null;
+                   data: MetadataModel[]): void => {
+                   this.metadata_entries = data;
+                   this.chosen_metadata = null;
 
-        },
+                 },
                  (error: any): void => {
-          this.chosen_metadata_error = error.error['errors']
-          this.chosen_metadata = null;
+                   this.chosen_metadata_error = error.error['errors']
+                   this.chosen_metadata = null;
 
-        })
+                 })
 
   }
 
@@ -94,9 +94,9 @@ export class DecoiUploadComponent implements OnInit {
           this.upload_rdy = false
           setTimeout(
             (): void => {
-            this.check_if_all_data_rdy()
+              this.check_if_all_data_rdy()
 
-          },
+            },
             5000);
 
           return
@@ -122,21 +122,27 @@ export class DecoiUploadComponent implements OnInit {
               } else {
                 this.prepare_file_for_upload(metadata.upload, result);
                 for (const chunk of metadata.upload.chunks) {
-                  this.upload_service.upload_chunk_to_presigned_url(chunk.get_presigned_url(), chunk.get_file()).subscribe(
-                    (event: any): any => {
-                      if (event.type === HttpEventType.UploadProgress) {
-                        chunk.set_percented_complete(Math.round(100 * event.loaded / event.total));
-                        metadata?.upload?.get_percent_completed()
-                      } else if (event instanceof HttpResponse) {
-                        chunk.set_percented_complete(100);
-                        event.headers.keys()
-                        const etag: string = event.headers.get('ETag');
-                        chunk.set_etag(etag);
-                        chunk.set_completed();
-                        metadata?.upload?.get_percent_completed()
+                  if (!chunk.upload_completed) {
+                    this.upload_service.upload_chunk_to_presigned_url(chunk.get_presigned_url(), chunk.get_file()).subscribe(
+                      (event: any): any => {
+                        if (event.type === HttpEventType.UploadProgress) {
+                          chunk.set_percented_complete(Math.round(100 * event.loaded / event.total));
+                          metadata?.upload?.get_percent_completed()
+                        } else if (event instanceof HttpResponse) {
+                          chunk.set_percented_complete(100);
+                          event.headers.keys()
+                          const etag: string = event.headers.get('ETag');
+                          chunk.set_etag(etag);
+                          this.upload_service.set_upload_part(metadata.IMS_ID, chunk.part_number, chunk.etag, metadata.upload.md5_checksum)
+                            .subscribe((): void => {
+                              chunk.set_completed();
+
+                            })
+                          metadata?.upload?.get_percent_completed()
+                        }
                       }
-                    }
-                  );
+                    );
+                  }
                 }
               }
               await this.complete_upload(metadata);
@@ -154,7 +160,7 @@ export class DecoiUploadComponent implements OnInit {
   prepare_file_for_upload(file: Multipart, result: any): void {
     file['upload_id'] = result['UploadId'];
     file['chunks'] = Object.entries(result['signed_parts']).map(
-      ([key, val]: any): any => (new Chunk(key, val)));
+      ([key, val]: any): any => (new Chunk(key, val['presigned_url'], val['part_exists'])));
     const fileSize: number = file.get_file_size();
     const chunkSize: number = Number(result['part_size']);
     const chunks: number = Math.ceil(fileSize / chunkSize);
@@ -182,13 +188,7 @@ export class DecoiUploadComponent implements OnInit {
         } else {
           metadata.upload.set_msg(metadata.upload.FINISHING_UPLOAD);
 
-          let parts: any = [];
-          for (const chunk of metadata.upload['chunks']) {
-            const etag_part: any = chunk.get_etag_part_json();
-            parts.push(etag_part);
-          }
-          parts = JSON.stringify(parts);
-          this.upload_service.complete_multipart_upload(metadata.IMS_ID, parts, metadata.upload.md5_checksum).subscribe(
+          this.upload_service.complete_multipart_upload(metadata.IMS_ID, metadata.upload.md5_checksum).subscribe(
             (result: any): any => {
               metadata.upload.set_upload_completed();
             },
