@@ -109,13 +109,18 @@ export class Multipart {
     this.msg = this.UPLOAD_COMPLETED
   }
 
-  set_uploading_string(): void {
+  get_uploaded_size_string(): string {
     if (this.get_file_size_in_gb().charAt(0) === '0') {
-      this.msg = `${this.UPLOADING} ${this.get_file_size_uploaded_mb()}/${this.get_file_size_in_mb()} MB`
+      return `${this.get_file_size_uploaded_mb()}/${this.get_file_size_in_mb()} MB`
     } else {
-      this.msg = `${this.UPLOADING} ${this.get_file_size_uploaded_gb()}/${this.get_file_size_in_gb()} GB`
+      return `${this.get_file_size_uploaded_gb()}/${this.get_file_size_in_gb()} GB`
 
     }
+  }
+
+  set_uploading_string(): void {
+    this.msg = `${this.UPLOADING} ${this.get_uploaded_size_string()}`
+
   }
 
   get_percent_completed(): number {
