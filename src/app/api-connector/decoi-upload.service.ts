@@ -26,13 +26,24 @@ export class DecoiUploadService {
     let skip_header: HttpHeaders = new HttpHeaders();
     skip_header = skip_header.append('skip', 'true').append('Access-Control-Expose-Headers', 'ETag')
 
-    return this.http.put(presigned_url, chunk_to_upload, {observe: 'events', reportProgress: true, headers: skip_header });
+    return this.http.put(presigned_url, chunk_to_upload, {observe: 'events', reportProgress: true, headers: skip_header});
   }
 
-  complete_multipart_upload(ims_id: string, parts: string, md5_checksum: string): Observable<any> {
+  set_upload_part(ims_id: string, part_number: number, etag: string, md5_checksum: string): Observable<any> {
     const params: HttpParams = new HttpParams()
       .set('ims_id', ims_id)
-      .set('parts', parts)
+      .set('md5_checksum', md5_checksum)
+      .set('part_number', part_number.toString())
+      .set('etag', etag)
+
+    return this.http.post(`${ApiSettings.getApiBaseURL()}decoi/upload_part/`, params, {
+      withCredentials: true
+    })
+  }
+
+  complete_multipart_upload(ims_id: string, md5_checksum: string): Observable<any> {
+    const params: HttpParams = new HttpParams()
+      .set('ims_id', ims_id)
       .set('md5_checksum', md5_checksum)
 
     return this.http.post(`${ApiSettings.getApiBaseURL()}decoi/upload/`, params, {
