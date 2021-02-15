@@ -70,25 +70,32 @@ export class Multipart {
     return this.file['name'];
   }
 
-  get_file_size_in_mb(): number {
+  get_file_size_in_mb(): string {
     const mb: number = 1024 * 1024
-    return this.get_file_size() / mb
+    const size_mb: number = this.get_file_size() / mb
+
+    return size_mb.toFixed(2)
 
   }
 
-  get_file_size_uploaded_mb(): number {
+  get_file_size_uploaded_mb(): string {
     const mb: number = 1024 * 1024
-    return this.get_file_size() / (mb * this.percent_completed)
+    const uploaded_size_mb: number = (this.get_file_size() * (this.percent_completed / 100)) / mb
+
+    return uploaded_size_mb.toFixed(2)
   }
 
-  get_file_size_uploaded_gb(): number {
+  get_file_size_uploaded_gb(): string {
     const gb: number = 1024 * 1024 * 1024
-    return this.get_file_size() / (gb * this.percent_completed)
+    const uploaded_size_gb: number = (this.get_file_size() * (this.percent_completed / 100)) / gb
+
+    return uploaded_size_gb.toFixed(2)
   }
 
-  get_file_size_in_gb(): number {
+  get_file_size_in_gb(): string {
     const gb: number = 1024 * 1024 * 1024
-    return this.get_file_size() / gb
+    const size_gb: number = this.get_file_size() / gb
+    return size_gb.toFixed(2)
 
   }
 
@@ -103,7 +110,7 @@ export class Multipart {
   }
 
   set_uploading_string(): void {
-    if (this.get_file_size_in_gb() < 1) {
+    if (this.get_file_size_in_gb().charAt(0) === '0') {
       this.msg = `${this.UPLOADING} ${this.get_file_size_uploaded_mb()}/${this.get_file_size_in_mb()} MB`
     } else {
       this.msg = `${this.UPLOADING} ${this.get_file_size_uploaded_gb()}/${this.get_file_size_in_gb()} GB`
