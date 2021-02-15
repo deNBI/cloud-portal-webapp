@@ -78,13 +78,6 @@ export class ResourcemachineOverviewComponent implements OnInit {
     });
     this.newMachineFormGroup.get('new_machine_gpus').valueChanges.subscribe(val => {
       this.newResourceMachine.gpu_slots = val;
-      for (let i = 0; i < val; i++) {
-        if (!this.newMachineFormGroup.get('new_machine_gpu_types_' + i)) {
-          this.newMachineFormGroup.addControl('new_machine_gpu_types_ ' + i, new FormControl([null]));
-
-        }
-        console.log(this.newMachineFormGroup.get('new_machine_gpu_types_' + i).value);
-      }
       this.newResourceMachine.changeGpuUsed();
     });
     this.newMachineFormGroup.get('new_machine_name').valueChanges.subscribe(val => {
@@ -131,15 +124,17 @@ export class ResourcemachineOverviewComponent implements OnInit {
       this.resourceMachines.forEach((machine: ResourceMachine): void => {
 
         this.machinesFormGroups[machine.id] = this.formBuilder.group({});
-        const machine_ram: string = machine.id + '_ram',
+        let machine_ram: string = machine.id + '_ram',
           machine_ram_private_factor: string = machine.id + '_ram_private_factor',
           machine_ram_public_factor: string = machine.id + '_ram_public_factor',
           machine_cores: string = machine.id + '_cores',
           machine_cores_private_factor: string = machine.id + '_cores_private_factor',
           machine_cores_public_factor: string = machine.id + '_cores_public_factor',
           machine_gpus: string = machine.id + '_gpus',
-          machine_local_disk_storage: string = machine.id + '_machine_local_disk_storage',
+          machine_local_disk_storage: string = machine.id + '_local_disk_storage',
+          machine_local_disk_encrypted: string = machine.id + '_local_disk_encrypted',
           machine_name: string = machine.id + '_name',
+          machine_type: string = machine.id + '_type',
           machine_private_count: string = machine.id + '_private_count',
           machine_public_count: string = machine.id + '_public_count';
 
@@ -159,29 +154,29 @@ export class ResourcemachineOverviewComponent implements OnInit {
                                                        new FormControl([null, Validators.compose([Validators.required, Validators.pattern(/^\d+$/)])]));
         this.machinesFormGroups[machine.id].addControl(machine_local_disk_storage,
                                                        new FormControl([null, Validators.compose([Validators.required, Validators.pattern(/^\d+$/)])]));
+        this.machinesFormGroups[machine.id].addControl(machine_local_disk_encrypted, new FormControl([null]))
         this.machinesFormGroups[machine.id].addControl(machine_name,
                                                        new FormControl([null, Validators.compose([Validators.required, Validators.pattern(/^(?:[A-Za-z]+)(?:[A-Za-z0-9 _]*)$/)])]));
         this.machinesFormGroups[machine.id].addControl(machine_private_count,
                                                        new FormControl([null, Validators.compose([Validators.required, Validators.pattern(/^\d+$/)])]));
+        this.machinesFormGroups[machine.id].addControl(machine_type, new FormControl([null, Validators.required]));
         this.machinesFormGroups[machine.id].addControl(machine_public_count,
                                                        new FormControl([null, Validators.compose([Validators.required, Validators.pattern(/^\d+$/)])]));
-        this.machinesFormGroups[machine.id].setValue({
-          machine_ram: machine.ram,
-          machine_ram_private_factor: machine.ram_private_factor,
-          machine_ram_public_factor: machine.ram_public_factor,
-          machine_cores: machine.cores,
-          machine_cores_private_factor: machine.cores_private_factor,
-          machine_cores_public_factor: machine.cores_public_factor,
-          machine_gpus: machine.gpu_slots,
-          machine_local_disk_storage: machine.local_disk_storage,
-          machine_name: machine.name,
-          machine_private_count: machine.private_count,
-          machine_public_count: machine.public_count
-        });
-
+        this.machinesFormGroups[machine.id].get(machine_ram).setValue(machine.ram);
+        this.machinesFormGroups[machine.id].get(machine_ram_private_factor).setValue(machine.ram_private_factor);
+        this.machinesFormGroups[machine.id].get(machine_ram_public_factor).setValue(machine.ram_public_factor);
+        this.machinesFormGroups[machine.id].get(machine_cores).setValue(machine.cores);
+        this.machinesFormGroups[machine.id].get(machine_cores_private_factor).setValue(machine.cores_private_factor);
+        this.machinesFormGroups[machine.id].get(machine_cores_public_factor).setValue(machine.cores_public_factor);
+        this.machinesFormGroups[machine.id].get(machine_gpus).setValue(machine.gpu_slots);
+        this.machinesFormGroups[machine.id].get(machine_local_disk_storage).setValue(machine.local_disk_storage);
+        this.machinesFormGroups[machine.id].get(machine_local_disk_encrypted).setValue(machine.local_disk_encrypted);
+        this.machinesFormGroups[machine.id].get(machine_name).setValue(machine.name);
+        this.machinesFormGroups[machine.id].get(machine_type).setValue(machine.type);
+        this.machinesFormGroups[machine.id].get(machine_private_count).setValue(machine.private_count);
+        this.machinesFormGroups[machine.id].get(machine_public_count).setValue(machine.local_disk_storage);
         machine.gpu_used.slice(0, machine.gpu_slots);
         this.resourceMachineUpdateList[machine.id] = false;
-
       });
     });
   }
@@ -207,10 +202,6 @@ export class ResourcemachineOverviewComponent implements OnInit {
   }
 
   addResourceMachine(): void {
-    for (let i = 0; i < this.newResourceMachine.gpu_slots; i++) {
-      this.newResourceMachine.gpu_used[i] = this.newMachineFormGroup.get('new_machine_gpu_types_' + i).value;
-    }
-
     this.facilityService.addResourceMachine(this.facility_id, this.newResourceMachine).subscribe((res: ResourceMachine[]): void => {
       this.newResourceMachine = new ResourceMachine(null);
       this.resourceMachines = res.map((machine: ResourceMachine): ResourceMachine => {
