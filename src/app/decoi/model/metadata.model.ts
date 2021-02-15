@@ -15,6 +15,5 @@ export class MetadataModel {
   OWN_FASTA_ID: string;
   FILE_NAME: string;
   upload: Multipart;
-  msg: string = 'NOT_UPLOADED';
 
 }
