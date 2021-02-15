@@ -32,6 +32,7 @@ export class DecoiUploadComponent implements OnInit {
   }
 
   uploadMetadata(): void {
+    this.chosen_metadata_error = []
     this.upload_service.postMetadata(this.chosen_metadata)
       .subscribe((
                    data: MetadataModel[]): void => {
@@ -41,6 +42,7 @@ export class DecoiUploadComponent implements OnInit {
                  },
                  (error: any): void => {
                    this.chosen_metadata_error = error.error['errors']
+                   this.chosen_metadata = null;
 
                  })
 

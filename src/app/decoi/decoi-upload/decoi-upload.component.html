@@ -4,13 +4,31 @@
     –Upload
   </div>
   <div>
-    
+    <div class="alert alert-info"><strong>Please select a suitable metadata file with the following structure:</strong>
+      <br>
+
+      <div class="rTableHeading">
+        <div class="rTableHead col-1">IMS_ID</div>
+        <div class="rTableHead col-1 ">SENDING_LAB</div>
+        <div class="rTableHead col-1 ">DATE_DRAW</div>
+        <div class="rTableHead col-1">SEQ_TYPE</div>
+        <div class="rTableHead col-1">SEQ_REASON</div>
+        <div class="rTableHead col-1">SAMPLE_TYPE</div>
+        <div class="rTableHead col-1">PUBLICATION_STATUS</div>
+        <div class="rTableHead col-1">OWN_FASTA_ID</div>
+        <div class="rTableHead col-1">FILE_NAME</div>
+
+
+      </div>
+    </div>
+
+
     <input type="file" (change)="load_metadata($event)" #metadata>
 
     <button [disabled]="!chosen_metadata" (click)="uploadMetadata();metadata.value=null;">Send Metadata</button>
   </div>
   <div *ngIf="chosen_metadata_error.length > 0">
-    <div *ngFor="let error of chosen_metadata_error">{{error}}</div>
+    <div class="alert alert-danger" *ngFor="let error of chosen_metadata_error">{{error}}</div>
 
   </div>
   <div *ngIf="metadata_entries.length > 0" class="rTable" id="metadata_entrys_table">
@@ -32,6 +50,7 @@
                                                                          style="color: red"></i>
 
 </span></div>
+
       <div class="rTableCell ">{{metadata?.upload?.msg}}</div>
 
       <div class="rTableCell ">
@@ -50,21 +69,14 @@
 
 
   </div>
+  <div *ngIf="metadata_entries.length > 0" class="alert alert-info"><strong>Please select the specified files</strong>
+  </div>
 
 
   <div *ngIf="metadata_entries.length > 0">
     <div><input type="file" [multiple]="true" (change)="load_files($event.target)"></div>
 
-    <div *ngIf="load_error_message !== null">
-      Error: {{load_error_message}}
-    </div>
 
-    <div *ngFor="let chosen_file of chosen_files">
-      You chose {{chosen_file.file['name']}}.
-      <br>
-
-    </div>
-
-    <button [disabled]="!upload_rdy" (click)="upload_files()">Start upload</button>
+    <button [disabled]="!upload_rdy" (click)="upload_files()">Start Upload</button>
   </div>
 </div>
