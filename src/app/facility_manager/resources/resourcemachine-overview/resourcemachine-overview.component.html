@@ -78,8 +78,9 @@
               <div class="input-group-prepend">
                 <span class="input-group-text">Slot {{i + 1 }}</span>
               </div>
-              <select class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="this.newResourceMachine.gpu_used[i]">
-                <option selected disabled hidden [ngValue]="gpu">
+              <select class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="this.newResourceMachine.gpu_used[i]"
+              name="new_machine_gpu_{{i}}" ngDefaultControl>
+                <option selected disabled hidden [value]="gpu">
                   <span
                     *ngIf="gpu != null && gpu != undefined && gpu.type != 'UNUSED'">{{gpu.type + ': ' + gpu.cores}}</span>
                   <span *ngIf="gpu == null || gpu == undefined ||  gpu.type == 'UNUSED'">UNUSED</span>
@@ -87,7 +88,7 @@
                 <option [ngValue]="emptySpec">
                   UNUSED
                 </option>
-                <option *ngFor="let spec of gpu_types " [ngValue]="spec">
+                <option *ngFor="let spec of gpu_types " [value]="spec">
                   <span *ngIf="spec != null">{{spec.type + ': ' + spec.cores}}</span>
                 </option>
               </select>
@@ -123,7 +124,7 @@
         </div>
         <div class="form-group row">
           <label for="new_machine_type">Type</label>
-          <select class="form-control" formControlName="new_machine_type" id="new_machine_type">
+          <select class="form-control" formControlName="new_machine_type" id="new_machine_type" ngDefaultControl>
             <option *ngFor="  let type of factor_types" [ngValue]="type">
               {{type}}
             </option>
@@ -237,7 +238,8 @@
 
 
               <select class="form-control" [attr.disabled]="!this.resourceMachineUpdateList[machine.id]">
-                <option selected disabled hidden [ngValue]="gpu" [(ngModel)]="machine.gpu_used[i]" [ngModelOptions]="{standalone:true}">
+                <option selected disabled hidden [value]="gpu" [(ngModel)]="machine.gpu_used[i]" [ngModelOptions]="{standalone:true}"
+                ngDefaultControl name="{{machine.id}}_gpu_{{i}}">
                   <span
                     *ngIf="gpu != null && gpu != undefined && gpu.type != 'UNUSED'">{{gpu.type + ': ' + gpu.cores}}</span>
                   <span *ngIf="gpu == null || gpu == undefined ||  gpu.type == 'UNUSED'">UNUSED</span>
@@ -245,7 +247,7 @@
                 <option [ngValue]="emptySpec">
                   UNUSED
                 </option>
-                <option *ngFor="let spec of gpu_types " [ngValue]="spec">
+                <option *ngFor="let spec of gpu_types" [value]="spec">
                   <span *ngIf="spec != null">{{spec.type + ': ' + spec.cores}}</span>
                 </option>
               </select>
@@ -288,7 +290,7 @@
         </div>
         <div class="form-group row">
           <label for="{{machine?.name + '_type'}}">Machine Type</label>
-          <select [attr.disabled]="!this.resourceMachineUpdateList[machine.id]"
+          <select [attr.disabled]="!this.resourceMachineUpdateList[machine.id]" ngDefaultControl
                   class="form-control" formControlName="{{machine?.id}}_type" name="{{machine.id}}_type"
                   selected id="{{machine?.name + '_type'}}">
             <option *ngFor="let type of factor_types" [ngValue]="type">{{type}}</option>
@@ -302,7 +304,7 @@
         <div class="form-group row">
           <label for="{{machine?.name + '_public_count'}}">Public count</label>
           <input class="form-control" type="number" min="0" [attr.disabled]="!this.resourceMachineUpdateList[machine.id]" id="{{machine?.name + '_public_count'}}"
-                 formControlName="{{machine.id}}_public_count" name="{{machine.id}}_public_factor">
+                 formControlName="{{machine.id}}_public_count" name="{{machine.id}}_public_count">
         </div>
       </div>
     </div>
