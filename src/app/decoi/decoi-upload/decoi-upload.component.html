@@ -1,9 +1,11 @@
 <div class="card">
   <div class="card-header">
-    <strong>DeCOI</strong>
+    <strong>DeCoi</strong>
     –Upload
   </div>
-  <div><input type="file" (change)="load_metadata($event)" #metadata>
+  <div>
+    
+    <input type="file" (change)="load_metadata($event)" #metadata>
 
     <button [disabled]="!chosen_metadata" (click)="uploadMetadata();metadata.value=null;">Send Metadata</button>
   </div>
@@ -63,6 +65,6 @@
 
     </div>
 
-    <button (click)="upload_files()">Start upload</button>
+    <button [disabled]="!upload_rdy" (click)="upload_files()">Start upload</button>
   </div>
 </div>

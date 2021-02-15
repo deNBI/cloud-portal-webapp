@@ -21,6 +21,7 @@ export class DecoiUploadComponent implements OnInit {
   chosen_metadata_error: string[] = [];
   metadata_entries: MetadataModel[] = [];
   load_error_message: string;
+  upload_rdy: boolean = false;
 
   constructor(private upload_service: DecoiUploadService) {
   }
@@ -63,10 +64,33 @@ export class DecoiUploadComponent implements OnInit {
       }
 
     })
+    this.check_if_all_data_rdy()
   }
 
   load_metadata(event): void {
+    this.upload_rdy = false;
     this.chosen_metadata = event.target.files[0];
+
+  }
+
+  check_if_all_data_rdy(): void {
+
+    this.upload_rdy = false
+
+    for (const metadata of this.metadata_entries) {
+      if (metadata.upload) {
+        if (!metadata.upload.ready_for_upload) {
+          this.upload_rdy = false
+          setTimeout((): void => {
+            this.check_if_all_data_rdy()
+
+          }, 5000);
+
+          return
+        }
+      }
+    }
+    this.upload_rdy = true
 
   }
 
