@@ -13,6 +13,9 @@ const routes: Routes = [
   }
 ];
 
+/**
+ * Routing module for decoi
+ */
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
