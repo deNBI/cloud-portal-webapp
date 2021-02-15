@@ -22,6 +22,8 @@ export class DecoiUploadComponent implements OnInit {
   metadata_entries: MetadataModel[] = [];
   load_error_message: string;
   upload_rdy: boolean = false;
+  accepted_extensions: string = '.csv,.ods,.xls,.xlsx';
+  metadata_faulty: boolean = false;
 
   constructor(private upload_service: DecoiUploadService) {
   }
@@ -70,9 +72,16 @@ export class DecoiUploadComponent implements OnInit {
   }
 
   load_metadata(event: EventTarget): void {
+    this.metadata_faulty = true;
     this.upload_rdy = false;
     this.chosen_metadata = event['files'][0];
-
+    const name_parts: string[] = this.chosen_metadata['name'].split('.');
+    const accepted_extensions: string[] = this.accepted_extensions.split(',');
+    for (const ext of accepted_extensions) {
+      if (ext.indexOf(name_parts[name_parts.length - 1]) !== -1) {
+        this.metadata_faulty = false;
+      }
+    }
   }
 
   check_if_all_data_rdy(): void {
