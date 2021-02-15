@@ -2,7 +2,7 @@ name: Publish Docker
 on:
   push:
     branches:
-      - 'ecoi'
+      - 'decoi'
 jobs:
   build:
     runs-on: ubuntu-latest
