@@ -40,7 +40,7 @@ export class DecoiUploadComponent implements OnInit {
           this.chosen_metadata = null;
 
         },
-        (error: any): void => {
+                 (error: any): void => {
           this.chosen_metadata_error = error.error['errors']
           this.chosen_metadata = null;
 
