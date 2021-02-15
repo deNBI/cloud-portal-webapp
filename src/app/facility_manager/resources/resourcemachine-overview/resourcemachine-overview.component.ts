@@ -123,77 +123,135 @@ export class ResourcemachineOverviewComponent implements OnInit {
       this.machinesFormGroups = {};
       this.resourceMachines.forEach((machine: ResourceMachine): void => {
         machine.gpu_used.slice(0, machine.gpu_slots);
-        this.machinesFormGroups[machine.id] = this.formBuilder.group({});
-        let machine_ram: string = machine.id + '_ram',
-          machine_ram_private_factor: string = machine.id + '_ram_private_factor',
-          machine_ram_public_factor: string = machine.id + '_ram_public_factor',
-          machine_cores: string = machine.id + '_cores',
-          machine_cores_private_factor: string = machine.id + '_cores_private_factor',
-          machine_cores_public_factor: string = machine.id + '_cores_public_factor',
-          machine_gpus: string = machine.id + '_gpus',
-          machine_local_disk_storage: string = machine.id + '_local_disk_storage',
-          machine_local_disk_encrypted: string = machine.id + '_local_disk_encrypted',
-          machine_name: string = machine.id + '_name',
-          machine_type: string = machine.id + '_type',
-          machine_private_count: string = machine.id + '_private_count',
-          machine_public_count: string = machine.id + '_public_count';
-
-        this.machinesFormGroups[machine.id].addControl(machine_ram,
-                                                       new FormControl([null, Validators.compose([Validators.required, Validators.pattern(/^\d+$/)])]));
-        this.machinesFormGroups[machine.id].addControl(machine_ram_private_factor,
-                                                       new FormControl([null, Validators.compose([Validators.required, Validators.pattern(/^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$/)])]));
-        this.machinesFormGroups[machine.id].addControl(machine_ram_public_factor,
-                                                       new FormControl([null, Validators.compose([Validators.required, Validators.pattern(/^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$/)])]));
-        this.machinesFormGroups[machine.id].addControl(machine_cores,
-                                                       new FormControl([null, Validators.compose([Validators.required, Validators.pattern(/^\d+$/)])]));
-        this.machinesFormGroups[machine.id].addControl(machine_cores_private_factor,
-                                                       new FormControl([null, Validators.compose([Validators.required, Validators.pattern(/^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$/)])]));
-        this.machinesFormGroups[machine.id].addControl(machine_cores_public_factor,
-                                                       new FormControl([null, Validators.compose([Validators.required, Validators.pattern(/^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$/)])]));
-        this.machinesFormGroups[machine.id].addControl(machine_gpus,
-                                                       new FormControl([null, Validators.compose([Validators.required, Validators.pattern(/^\d+$/)])]));
-        this.machinesFormGroups[machine.id].addControl(machine_local_disk_storage,
-                                                       new FormControl([null, Validators.compose([Validators.required, Validators.pattern(/^\d+$/)])]));
-        this.machinesFormGroups[machine.id].addControl(machine_local_disk_encrypted, new FormControl([null]))
-        this.machinesFormGroups[machine.id].addControl(machine_name,
-                                                       new FormControl([null, Validators.compose([Validators.required, Validators.pattern(/^[a-zA-Z0-9 ]*$/)])]));
-        this.machinesFormGroups[machine.id].addControl(machine_private_count,
-                                                       new FormControl([null, Validators.compose([Validators.required, Validators.pattern(/^\d+$/)])]));
-        this.machinesFormGroups[machine.id].addControl(machine_type, new FormControl([null]));
-        this.machinesFormGroups[machine.id].addControl(machine_public_count,
-                                                       new FormControl([null, Validators.compose([Validators.required, Validators.pattern(/^\d+$/)])]));
-        this.machinesFormGroups[machine.id].get(machine_ram).setValue(machine.ram);
-        this.machinesFormGroups[machine.id].get(machine_ram_private_factor).setValue(machine.ram_private_factor);
-        this.machinesFormGroups[machine.id].get(machine_ram_public_factor).setValue(machine.ram_public_factor);
-        this.machinesFormGroups[machine.id].get(machine_cores).setValue(machine.cores);
-        this.machinesFormGroups[machine.id].get(machine_cores_private_factor).setValue(machine.cores_private_factor);
-        this.machinesFormGroups[machine.id].get(machine_cores_public_factor).setValue(machine.cores_public_factor);
-        this.machinesFormGroups[machine.id].get(machine_gpus).setValue(machine.gpu_slots);
-        this.machinesFormGroups[machine.id].get(machine_local_disk_storage).setValue(machine.local_disk_storage);
-        this.machinesFormGroups[machine.id].get(machine_local_disk_encrypted).setValue(machine.local_disk_encrypted);
-        this.machinesFormGroups[machine.id].get(machine_name).setValue(machine.name);
-        this.machinesFormGroups[machine.id].get(machine_type).setValue(machine.type);
-        this.machinesFormGroups[machine.id].get(machine_private_count).setValue(machine.private_count);
-        this.machinesFormGroups[machine.id].get(machine_public_count).setValue(machine.local_disk_storage);
-        console.log(this.machinesFormGroups[machine.id]);
-
         this.resourceMachineUpdateList[machine.id] = false;
+        this.setupFormGroup(machine);
       });
+
     });
+  }
+
+  setupFormGroup(machine: ResourceMachine): void {
+    this.machinesFormGroups[machine.id] = this.formBuilder.group({});
+    let machine_ram: string = machine.id + '_ram',
+      machine_ram_private_factor: string = machine.id + '_ram_private_factor',
+      machine_ram_public_factor: string = machine.id + '_ram_public_factor',
+      machine_cores: string = machine.id + '_cores',
+      machine_cores_private_factor: string = machine.id + '_cores_private_factor',
+      machine_cores_public_factor: string = machine.id + '_cores_public_factor',
+      machine_gpus: string = machine.id + '_gpus',
+      machine_local_disk_storage: string = machine.id + '_local_disk_storage',
+      machine_local_disk_encrypted: string = machine.id + '_local_disk_encrypted',
+      machine_name: string = machine.id + '_name',
+      machine_type: string = machine.id + '_type',
+      machine_private_count: string = machine.id + '_private_count',
+      machine_public_count: string = machine.id + '_public_count';
+
+    this.machinesFormGroups[machine.id].addControl(machine_ram,
+      new FormControl([null, Validators.compose([Validators.required, Validators.pattern(/^\d+$/)])]));
+    this.machinesFormGroups[machine.id].addControl(machine_ram_private_factor,
+      new FormControl([null, Validators.compose([Validators.required, Validators.pattern(/^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$/)])]));
+    this.machinesFormGroups[machine.id].addControl(machine_ram_public_factor,
+      new FormControl([null, Validators.compose([Validators.required, Validators.pattern(/^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$/)])]));
+    this.machinesFormGroups[machine.id].addControl(machine_cores,
+      new FormControl([null, Validators.compose([Validators.required, Validators.pattern(/^\d+$/)])]));
+    this.machinesFormGroups[machine.id].addControl(machine_cores_private_factor,
+      new FormControl([null, Validators.compose([Validators.required, Validators.pattern(/^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$/)])]));
+    this.machinesFormGroups[machine.id].addControl(machine_cores_public_factor,
+      new FormControl([null, Validators.compose([Validators.required, Validators.pattern(/^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$/)])]));
+    this.machinesFormGroups[machine.id].addControl(machine_gpus,
+      new FormControl([null, Validators.compose([Validators.required, Validators.pattern(/^\d+$/)])]));
+    this.machinesFormGroups[machine.id].addControl(machine_local_disk_storage,
+      new FormControl([null, Validators.compose([Validators.required, Validators.pattern(/^\d+$/)])]));
+    this.machinesFormGroups[machine.id].addControl(machine_local_disk_encrypted, new FormControl([null]))
+    this.machinesFormGroups[machine.id].addControl(machine_name,
+      new FormControl([null, Validators.compose([Validators.required, Validators.pattern(/^[a-zA-Z0-9 ]*$/)])]));
+    this.machinesFormGroups[machine.id].addControl(machine_private_count,
+      new FormControl([null, Validators.compose([Validators.required, Validators.pattern(/^\d+$/)])]));
+    this.machinesFormGroups[machine.id].addControl(machine_type, new FormControl([null]));
+    this.machinesFormGroups[machine.id].addControl(machine_public_count,
+      new FormControl([null, Validators.compose([Validators.required, Validators.pattern(/^\d+$/)])]));
+    this.machinesFormGroups[machine.id].get(machine_ram).setValue(machine.ram);
+    this.machinesFormGroups[machine.id].get(machine_ram_private_factor).setValue(machine.ram_private_factor);
+    this.machinesFormGroups[machine.id].get(machine_ram_public_factor).setValue(machine.ram_public_factor);
+    this.machinesFormGroups[machine.id].get(machine_cores).setValue(machine.cores);
+    this.machinesFormGroups[machine.id].get(machine_cores_private_factor).setValue(machine.cores_private_factor);
+    this.machinesFormGroups[machine.id].get(machine_cores_public_factor).setValue(machine.cores_public_factor);
+    this.machinesFormGroups[machine.id].get(machine_gpus).setValue(machine.gpu_slots);
+    this.machinesFormGroups[machine.id].get(machine_local_disk_storage).setValue(machine.local_disk_storage);
+    this.machinesFormGroups[machine.id].get(machine_local_disk_encrypted).setValue(machine.local_disk_encrypted);
+    this.machinesFormGroups[machine.id].get(machine_name).setValue(machine.name);
+    this.machinesFormGroups[machine.id].get(machine_type).setValue(machine.type);
+    this.machinesFormGroups[machine.id].get(machine_private_count).setValue(machine.private_count);
+    this.machinesFormGroups[machine.id].get(machine_public_count).setValue(machine.local_disk_storage);
+    this.machinesFormGroups[machine.id].disable();
+  }
+
+  listenToChangesForMachine(machine: ResourceMachine): void {
+
+    this.machinesFormGroups[machine.id].get(machine.id + '_ram').valueChanges.subscribe(val => {
+      machine.ram = val;
+    });
+    this.machinesFormGroups[machine.id].get(machine.id + '_ram_private_factor').valueChanges.subscribe(val => {
+      machine.ram_private_factor = val;
+    });
+    this.machinesFormGroups[machine.id].get(machine.id + '_ram_public_factor').valueChanges.subscribe(val => {
+      machine.ram_public_factor = val;
+    });
+    this.machinesFormGroups[machine.id].get(machine.id + '_cores').valueChanges.subscribe(val => {
+      machine.cores = val;
+    });
+    this.machinesFormGroups[machine.id].get(machine.id + '_cores_private_factor').valueChanges.subscribe(val => {
+      machine.cores_private_factor = val;
+    });
+    this.machinesFormGroups[machine.id].get(machine.id + '_cores_public_factor').valueChanges.subscribe(val => {
+      machine.cores_public_factor = val;
+    });
+    this.machinesFormGroups[machine.id].get(machine.id + '_gpus').valueChanges.subscribe(val => {
+      machine.gpu_slots = val;
+      machine.changeGpuUsed();
+    });
+    this.machinesFormGroups[machine.id].get(machine.id + '_name').valueChanges.subscribe(val => {
+      machine.name = val;
+    });
+    this.machinesFormGroups[machine.id].get(machine.id + '_local_disk_storage').valueChanges.subscribe(val => {
+      machine.local_disk_storage = val;
+    });
+    this.machinesFormGroups[machine.id].get(machine.id + '_private_count').valueChanges.subscribe(val => {
+      machine.private_count = val;
+    });
+    this.machinesFormGroups[machine.id].get(machine.id + '_public_count').valueChanges.subscribe(val => {
+      machine.public_count = val;
+    });
+    this.machinesFormGroups[machine.id].get(machine.id + '_local_disk_encrypted').valueChanges.subscribe(val => {
+      machine.local_disk_encrypted = val;
+    });
+    this.machinesFormGroups[machine.id].get(machine.id + '_type').valueChanges.subscribe(val => {
+      machine.type = val;
+    });
+
   }
 
   deleteResourceMachine(id: string | number): void {
     this.facilityService.deleteResourceMachine(this.facility_id, id).subscribe((res: ResourceMachine[]): void => {
-      this.resourceMachines = res.map((machine: ResourceMachine): ResourceMachine => {
-        return new ResourceMachine(machine)
+      this.machinesFormGroups = {};
+      res.forEach((machine: ResourceMachine): void => {
+        this.setupFormGroup(machine);
       });
-      this.factorChanged.emit()
-
-    })
+      this.resourceMachines = res.map((machine: ResourceMachine): ResourceMachine => {
+        return new ResourceMachine(machine);
+      });
+      this.factorChanged.emit();
+    });
   }
 
   changeResourceMachineToUpdate(machine: ResourceMachine): void {
-    this.resourceMachineUpdateList[machine.id] = !this.resourceMachineUpdateList[machine.id]
+    if (this.resourceMachineUpdateList[machine.id]){
+      this.machinesFormGroups[machine.id].disable();
+    } else {
+      this.listenToChangesForMachine(machine);
+      this.machinesFormGroups[machine.id].enable();
+    }
+    this.resourceMachineUpdateList[machine.id] = !this.resourceMachineUpdateList[machine.id];
   }
 
   reloadResourceMachine(rf: ResourceMachine): void {
@@ -205,6 +263,10 @@ export class ResourcemachineOverviewComponent implements OnInit {
   addResourceMachine(): void {
     this.facilityService.addResourceMachine(this.facility_id, this.newResourceMachine).subscribe((res: ResourceMachine[]): void => {
       this.newResourceMachine = new ResourceMachine(null);
+      this.machinesFormGroups = {};
+      res.forEach((machine: ResourceMachine): void => {
+        this.setupFormGroup(machine);
+      });
       this.resourceMachines = res.map((machine: ResourceMachine): ResourceMachine => {
         return new ResourceMachine(machine)
       });
@@ -212,7 +274,7 @@ export class ResourcemachineOverviewComponent implements OnInit {
       this.resourceMachines.forEach((rf: ResourceMachine): void => {
         this.resourceMachineUpdateList[rf.id] = false;
       })
-      this.factorChanged.emit()
+      this.factorChanged.emit();
     });
 
   }
@@ -220,10 +282,9 @@ export class ResourcemachineOverviewComponent implements OnInit {
   updateResourceMachine(rf: ResourceMachine): void {
     this.facilityService.updateResourceMachine(this.facility_id, rf).subscribe((machine: ResourceMachine): void => {
       this.resourceMachines[this.resourceMachines.indexOf(rf)] = new ResourceMachine(machine);
-      this.factorChanged.emit()
-
-    })
-
+      this.setupFormGroup(machine);
+      this.factorChanged.emit();
+    });
   }
 
 }
