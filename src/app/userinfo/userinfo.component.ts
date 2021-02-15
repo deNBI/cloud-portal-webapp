@@ -86,9 +86,6 @@ export class UserInfoComponent implements OnInit {
     this.isUserSimpleVmMember();
   }
 
-
-
-
   isFreemiumActive(): void {
     this.groupService.isFreemiumActive().subscribe((result: IResponseTemplate): void => {
       this.freemiumActive = <boolean><Boolean>result.value;
