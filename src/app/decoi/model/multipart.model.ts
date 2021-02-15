@@ -1,8 +1,8 @@
+import {ParallelHasher} from 'ts-md5/dist/parallel_hasher';
+
 /**
  *  Model for multipart uploads
  */
-import {ParallelHasher} from 'ts-md5/dist/parallel_hasher';
-
 export class Multipart {
   PREPARING_UPLOAD: string = 'Preparing Upload...'
   READY_FOR_UPLOAD: string = 'Ready for Upload'

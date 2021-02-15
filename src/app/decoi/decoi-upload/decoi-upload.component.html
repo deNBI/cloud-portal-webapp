@@ -23,7 +23,7 @@
     </div>
 
 
-    <input type="file" (change)="load_metadata($event)" #metadata>
+    <input type="file" (change)="load_metadata($event.target)" #metadata>
 
     <button [disabled]="!chosen_metadata" (click)="uploadMetadata();metadata.value=null;">Send Metadata</button>
   </div>

@@ -8,11 +8,11 @@ import {MetadataModel} from '../model/metadata.model';
  * Upload component for decoi
  */
 @Component({
-             selector: 'app-decoi-upload',
-             templateUrl: './decoi-upload.component.html',
-             styleUrls: ['./decoi-upload.component.scss'],
-             providers: [DecoiUploadService]
-           })
+  selector: 'app-decoi-upload',
+  templateUrl: './decoi-upload.component.html',
+  styleUrls: ['./decoi-upload.component.scss'],
+  providers: [DecoiUploadService]
+})
 export class DecoiUploadComponent implements OnInit {
 
   title: string = 'DeCoi Upload';
@@ -35,16 +35,16 @@ export class DecoiUploadComponent implements OnInit {
     this.chosen_metadata_error = []
     this.upload_service.postMetadata(this.chosen_metadata)
       .subscribe((
-                   data: MetadataModel[]): void => {
-                   this.metadata_entries = data;
-                   this.chosen_metadata = null;
+        data: MetadataModel[]): void => {
+          this.metadata_entries = data;
+          this.chosen_metadata = null;
 
-                 },
-                 (error: any): void => {
-                   this.chosen_metadata_error = error.error['errors']
-                   this.chosen_metadata = null;
+        },
+        (error: any): void => {
+          this.chosen_metadata_error = error.error['errors']
+          this.chosen_metadata = null;
 
-                 })
+        })
 
   }
 
@@ -69,9 +69,9 @@ export class DecoiUploadComponent implements OnInit {
     this.check_if_all_data_rdy()
   }
 
-  load_metadata(event): void {
+  load_metadata(event: EventTarget): void {
     this.upload_rdy = false;
-    this.chosen_metadata = event.target.files[0];
+    this.chosen_metadata = event['files'][0];
 
   }
 
@@ -83,10 +83,12 @@ export class DecoiUploadComponent implements OnInit {
       if (metadata.upload) {
         if (!metadata.upload.ready_for_upload) {
           this.upload_rdy = false
-          setTimeout((): void => {
+          setTimeout(
+            (): void => {
             this.check_if_all_data_rdy()
 
-          },         5000);
+          },
+            5000);
 
           return
         }
@@ -162,10 +164,12 @@ export class DecoiUploadComponent implements OnInit {
 
       return new Promise((resolve: any): any => {
         if (!metadata.upload.get_all_chunks_completed()) {
-          setTimeout(async (): Promise<any> => {
+          setTimeout(
+            async (): Promise<any> => {
             await this.complete_upload(metadata);
             resolve()
-          },         10000);
+          },
+            10000);
         } else {
           metadata.upload.set_msg(metadata.upload.FINISHING_UPLOAD);
 
