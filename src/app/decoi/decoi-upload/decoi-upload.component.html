@@ -23,9 +23,9 @@
     </div>
 
 
-    <input type="file" (change)="load_metadata($event.target)" #metadata>
+    <input type="file" [accept]="accepted_extensions" (change)="load_metadata($event.target)" #metadata>
 
-    <button [disabled]="!chosen_metadata" (click)="uploadMetadata();metadata.value=null;">Send Metadata</button>
+    <button [disabled]="!chosen_metadata || metadata_faulty" (click)="uploadMetadata();metadata.value=null;">Send Metadata</button>
   </div>
   <div *ngIf="chosen_metadata_error.length > 0">
     <div class="alert alert-danger" *ngFor="let error of chosen_metadata_error">{{error}}</div>
