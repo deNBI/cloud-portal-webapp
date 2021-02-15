@@ -95,6 +95,7 @@ export class Multipart {
   get_file_size_in_gb(): string {
     const gb: number = 1024 * 1024 * 1024
     const size_gb: number = this.get_file_size() / gb
+
     return size_gb.toFixed(2)
 
   }

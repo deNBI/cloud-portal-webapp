@@ -86,7 +86,7 @@ export class DecoiUploadComponent implements OnInit {
           setTimeout((): void => {
             this.check_if_all_data_rdy()
 
-          }, 5000);
+          },         5000);
 
           return
         }
@@ -165,7 +165,7 @@ export class DecoiUploadComponent implements OnInit {
           setTimeout(async (): Promise<any> => {
             await this.complete_upload(metadata);
             resolve()
-          }, 10000);
+          },         10000);
         } else {
           metadata.upload.set_msg(metadata.upload.FINISHING_UPLOAD);
 
