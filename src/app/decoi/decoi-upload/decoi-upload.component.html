@@ -77,6 +77,12 @@
     <div><input type="file" [multiple]="true" (change)="load_files($event.target)"></div>
 
 
-    <button [disabled]="!upload_rdy" (click)="upload_files()">Start Upload</button>
+    <button
+      [disabled]="metadata_entries.length == 0 || chosen_files_for_upload == 0|| (upload_started && !upload_stopped)"
+      (click)="upload_files();">
+      Start Upload
+    </button>
+    <button [disabled]="upload_stopped || !upload_started" (click)="stop_upload()">Pause Upload</button>
+
   </div>
 </div>

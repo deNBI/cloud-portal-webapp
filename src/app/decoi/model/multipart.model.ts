@@ -9,22 +9,22 @@ export class Multipart {
   UPLOADING: string = 'Uploading...'
   UPLOAD_COMPLETED: string = 'Upload Completed'
   ALREADY_UPLOADED: string = 'Same File Already Exists'
-  WATING_FOR_FILE: string = 'Waiting for File Input';
   FINISHING_UPLOAD: string = 'Finishing Upload...'
+  UPLOAD_STOPPED: string = 'Upload Stopped';
+  SCHEDULED_UPLOAD: string = 'Scheduled Upload'
 
   file: File;
-  upload_completed: boolean;
-  chunks: Chunk[];
+  upload_completed: boolean = false;
+  upload_started: boolean = false;
+  chunks: Chunk[] = [];
   md5_checksum: string;
   percent_completed: number = 0;
-  msg: string = this.WATING_FOR_FILE;
+  msg: string = this.SCHEDULED_UPLOAD;
   ready_for_upload: boolean = false;
+  checksum_generation_started: boolean = false;
 
   constructor(file: File) {
     this.file = file;
-    this.chunks = [];
-    this.upload_completed = false;
-    this.generate_md5_checksum()
 
   }
 
@@ -33,8 +33,9 @@ export class Multipart {
     this.ready_for_upload = true;
   }
 
-  private generate_md5_checksum(): void {
+  generate_md5_checksum(): void {
     this.msg = this.PREPARING_UPLOAD
+    this.checksum_generation_started = true;
     const hasher: ParallelHasher = new ParallelHasher('static/webapp/assets/js/md5_worker.js');
     hasher.hash(this.file).then((hash: string): void => {
       this.md5_checksum = hash;
