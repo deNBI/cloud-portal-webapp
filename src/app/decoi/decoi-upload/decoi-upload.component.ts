@@ -111,17 +111,17 @@ export class DecoiUploadComponent implements OnInit {
 
   }
 
-  waitUntil = (condition: any): Promise<any> => {
+   waitUntil = async (condition: any): Promise<any> => {
 
-    return new Promise((resolve: any): void => {
-      const interval: any = setInterval((): void => {
-                                          if (!condition()) {
-                                            return
-                                          }
+     return new Promise((resolve: any): void => {
+       const interval: any = setInterval((): void => {
+                                           if (!condition()) {
+                                             return
+                                           }
 
-                                          clearInterval(interval)
-                                          resolve()
-                                        },
+                                           clearInterval(interval)
+                                           resolve()
+                                         },
                                         2000)
     })
   }
