@@ -142,7 +142,7 @@ export class DecoiUploadComponent implements OnInit {
                                            clearInterval(interval)
                                            resolve()
                                          },
-                                        2000)
+                                         2000)
     })
   }
 
