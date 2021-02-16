@@ -61,7 +61,6 @@ export class DecoiUploadComponent implements OnInit {
   load_files(event: EventTarget): void {
     this.chosen_files = [];
     this.load_error_message = null;
-    console.log(event['files'])
     try {
       for (const file of event['files']) {
         this.chosen_files.push(new Multipart(file));
@@ -78,13 +77,11 @@ export class DecoiUploadComponent implements OnInit {
       }
 
     })
-    console.log(this.chosen_files_for_upload)
     this.generate_checksums()
 
   }
 
   async generate_checksums(): Promise<void> {
-    console.log('start checksumsgen')
     for (const metadata of this.metadata_entries) {
       if (metadata.upload && !metadata.upload.md5_checksum && !metadata.upload.checksum_generation_started) {
         metadata.upload.generate_md5_checksum()
@@ -99,6 +96,7 @@ export class DecoiUploadComponent implements OnInit {
     this.metadata_faulty = true;
     this.upload_rdy = false;
     this.chosen_metadata = event['files'][0];
+    this.metadata_entries = []
     const name_parts: string[] = this.chosen_metadata['name'].split('.');
     const accepted_extensions: string[] = this.accepted_extensions.split(',');
     for (const ext of accepted_extensions) {
