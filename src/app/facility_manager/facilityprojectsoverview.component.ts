@@ -68,7 +68,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
   public news_tags: string = '';
   FILTER_DEBOUNCE_TIME: number = 500;
 
-  public managerFacilities: [string, number][];
+  public managerFacilities: [string, number][] = [];
   public selectedFacility: [string, number];
   private availableNewsTags: WordPressTag[] = [];
   private selectedTags: string[] = [];
@@ -137,7 +137,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
       const is_pi: boolean = false;
       const is_admin: boolean = false;
       for (const group of facility_projects) {
-        const dateCreated: moment.Moment = moment.unix(group['createdAt']);
+        const dateCreated: moment.Moment = group['createdAt'];
         const dateDayDifference: number = Math.ceil(moment().diff(dateCreated, 'days', true));
         const groupid: string = group['id'];
 
@@ -163,7 +163,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
           Number(groupid),
           shortname,
           group['description'],
-          `${dateCreated.date()}.${(dateCreated.month() + 1)}.${dateCreated.year()}`,
+          moment(dateCreated).format('DD.MM.YYYY'),
           dateDayDifference,
           is_pi,
           is_admin,
@@ -281,7 +281,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
       const is_pi: boolean = false;
       const is_admin: boolean = false;
       for (const group of facility_projects) {
-        const dateCreated: moment.Moment = moment.unix(group['createdAt']);
+        const dateCreated: moment.Moment = group['createdAt'];
         const dateDayDifference: number = Math.ceil(moment().diff(dateCreated, 'days', true));
         const groupid: string = group['id'];
 
@@ -307,7 +307,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
           Number(groupid),
           shortname,
           group['description'],
-          `${dateCreated.date()}.${(dateCreated.month() + 1)}.${dateCreated.year()}`,
+          moment(dateCreated).format('DD.MM.YYYY'),
           dateDayDifference,
           is_pi,
           is_admin,
