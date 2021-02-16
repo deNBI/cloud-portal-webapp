@@ -18,10 +18,12 @@ export class DecoiUploadComponent implements OnInit {
 
   title: string = 'DeCoi Upload';
   chosen_files: Multipart[];
+  chosen_files_for_upload: number = 0;
   chosen_metadata: File;
   chosen_metadata_error: string[] = [];
   metadata_entries: MetadataModel[] = [];
   active_metadata: MetadataModel;
+
   load_error_message: string;
   upload_rdy: boolean = false;
   upload_started: boolean = false;
@@ -40,6 +42,7 @@ export class DecoiUploadComponent implements OnInit {
 
   uploadMetadata(): void {
     this.chosen_metadata_error = []
+    this.chosen_files_for_upload = 0;
     this.upload_service.postMetadata(this.chosen_metadata)
       .subscribe((
                    data: MetadataModel[]): void => {
@@ -58,6 +61,7 @@ export class DecoiUploadComponent implements OnInit {
   load_files(event: EventTarget): void {
     this.chosen_files = [];
     this.load_error_message = null;
+    console.log(event['files'])
     try {
       for (const file of event['files']) {
         this.chosen_files.push(new Multipart(file));
@@ -69,10 +73,26 @@ export class DecoiUploadComponent implements OnInit {
       for (const metadata of this.metadata_entries) {
         if (metadata.FILE_NAME === file.file.name) {
           metadata.upload = file
+          this.chosen_files_for_upload += 1;
         }
       }
 
     })
+    console.log(this.chosen_files_for_upload)
+    this.generate_checksums()
+
+  }
+
+  async generate_checksums(): Promise<void> {
+    console.log('start checksumsgen')
+    for (const metadata of this.metadata_entries) {
+      if (metadata.upload && !metadata.upload.md5_checksum && !metadata.upload.checksum_generation_started) {
+        metadata.upload.generate_md5_checksum()
+        await this.waitUntil((): boolean => metadata.upload.ready_for_upload === true)
+
+      }
+    }
+
   }
 
   load_metadata(event: EventTarget): void {
@@ -143,7 +163,7 @@ export class DecoiUploadComponent implements OnInit {
         this.active_metadata = metadata;
 
         await new Promise<any>(async (resolve: any, reject: any): Promise<any> => {
-          if (!metadata.upload.md5_checksum) {
+          if (!metadata.upload.md5_checksum && !metadata.upload.checksum_generation_started) {
             metadata.upload.generate_md5_checksum()
           }
           await this.waitUntil((): boolean => metadata.upload.ready_for_upload === true)

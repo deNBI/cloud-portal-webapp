@@ -21,6 +21,7 @@ export class Multipart {
   percent_completed: number = 0;
   msg: string = this.SCHEDULED_UPLOAD;
   ready_for_upload: boolean = false;
+  checksum_generation_started: boolean = false;
 
   constructor(file: File) {
     this.file = file;
@@ -34,6 +35,7 @@ export class Multipart {
 
   generate_md5_checksum(): void {
     this.msg = this.PREPARING_UPLOAD
+    this.checksum_generation_started = true;
     const hasher: ParallelHasher = new ParallelHasher('static/webapp/assets/js/md5_worker.js');
     hasher.hash(this.file).then((hash: string): void => {
       this.md5_checksum = hash;
