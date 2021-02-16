@@ -58,7 +58,7 @@ export class DecoiUploadComponent implements OnInit {
 
   }
 
-  load_files(event: EventTarget): void {
+  async load_files(event: EventTarget): Promise<void> {
     this.chosen_files = [];
     this.load_error_message = null;
     try {
@@ -77,7 +77,7 @@ export class DecoiUploadComponent implements OnInit {
       }
 
     })
-    this.generate_checksums()
+    await this.generate_checksums()
 
   }
 
