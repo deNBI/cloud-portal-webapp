@@ -875,7 +875,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   getProject(): void {
 
     this.groupService.getGroupDetails(this.project_id).subscribe((group: any): void => {
-      const dateCreated: moment.Moment = moment.unix(group['createdAt']);
+      const dateCreated: moment.Moment = group['createdAt'];
       const dateDayDifference: number = Math.ceil(moment().diff(dateCreated, 'days', true));
       const is_pi: boolean = group['is_pi'];
       const groupid: string = group['id'];
