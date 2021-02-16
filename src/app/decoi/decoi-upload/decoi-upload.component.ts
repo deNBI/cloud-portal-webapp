@@ -4,6 +4,7 @@ import {DecoiUploadService} from '../../api-connector/decoi-upload.service';
 import {HttpEventType, HttpResponse} from '@angular/common/http';
 import {MetadataModel} from '../model/metadata.model';
 import {Subscription} from 'rxjs';
+import { saveAs } from 'file-saver';
 
 /**
  * Upload component for decoi
@@ -38,6 +39,14 @@ export class DecoiUploadComponent implements OnInit {
   ngOnInit(): void {
     this.chosen_files = [];
     this.load_error_message = null;
+  }
+
+  download_csv_sample(): void {
+    const csv: string = 'IMS_ID,SENDING_LAB,DATE_DRAW,SEQ_TYPE,SEQ_REASON,SAMPLE_TYPE,' +
+        'PUBLICATION_STATUS,OWN_FASTA_ID,FILE_NAME';
+
+    const blob: Blob = new Blob([csv], {type: 'text/csv' })
+    saveAs(blob, 'metadata-sample.csv');
   }
 
   uploadMetadata(): void {
