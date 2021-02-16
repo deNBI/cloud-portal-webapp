@@ -82,7 +82,7 @@
       (click)="upload_files();">
       Start Upload
     </button>
-    <button [disabled]="upload_stopped || !upload_started" (click)="stop_upload()">Pause Upload</button>
+    <button [disabled]="chosen_files_for_upload == 0 || upload_stopped || !upload_started" (click)="stop_upload()">Pause Upload</button>
 
   </div>
 </div>
