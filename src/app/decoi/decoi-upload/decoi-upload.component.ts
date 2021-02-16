@@ -52,6 +52,8 @@ export class DecoiUploadComponent implements OnInit {
   uploadMetadata(): void {
     this.chosen_metadata_error = []
     this.chosen_files_for_upload = 0;
+    this.upload_stopped = false;
+    this.upload_started = false;
     this.upload_service.postMetadata(this.chosen_metadata)
       .subscribe((
                    data: MetadataModel[]): void => {
@@ -157,7 +159,9 @@ export class DecoiUploadComponent implements OnInit {
     this.upload_stopped = true;
     this.subscription.unsubscribe()
     this.subscription = new Subscription();
-    this.active_metadata.upload.set_msg(this.active_metadata.upload.UPLOAD_STOPPED)
+    if (this.active_metadata) {
+      this.active_metadata.upload.set_msg(this.active_metadata.upload.UPLOAD_STOPPED)
+    }
 
   }
 
@@ -174,7 +178,8 @@ export class DecoiUploadComponent implements OnInit {
             metadata.upload.generate_md5_checksum()
           }
           await this.waitUntil((): boolean => metadata.upload.ready_for_upload === true)
-          this.upload_service.get_presigned_urls(metadata.IMS_ID, metadata.upload.get_file_size(), metadata.upload.md5_checksum).subscribe(
+          this.subscription.add(this.upload_service.get_presigned_urls(
+            metadata.IMS_ID, metadata.upload.get_file_size(), metadata.upload.md5_checksum).subscribe(
             async (result: any): Promise<any> => {
               if ('msg' in result) {
                 metadata.upload.set_msg(result['msg']);
@@ -213,7 +218,7 @@ export class DecoiUploadComponent implements OnInit {
             (error: any): any => {
               reject(error);
             }
-          );
+          ));
         })
       }
     }
@@ -237,15 +242,17 @@ export class DecoiUploadComponent implements OnInit {
   }
 
   async complete_upload(metadata: MetadataModel): Promise<void> {
-    if (metadata.upload.msg !== metadata.upload.ALREADY_UPLOADED) {
+    if (metadata.upload.msg !== metadata.upload.ALREADY_UPLOADED
+      && metadata.upload.msg !== metadata.upload.FINISHING_UPLOAD
+      && metadata.upload.msg !== metadata.upload.UPLOAD_COMPLETED) {
 
       return new Promise((resolve: any): any => {
         if (!metadata.upload.get_all_chunks_completed()) {
           setTimeout(
             async (): Promise<any> => {
-            await this.complete_upload(metadata);
-            resolve()
-          },
+              await this.complete_upload(metadata);
+              resolve()
+            },
             10000);
         } else {
           metadata.upload.set_msg(metadata.upload.FINISHING_UPLOAD);
@@ -255,6 +262,7 @@ export class DecoiUploadComponent implements OnInit {
               this.upload_started = false;
 
               metadata.upload.set_upload_completed();
+              this.chosen_files_for_upload -= 1;
             },
             (error: any): any => {
               this.upload_started = false;
@@ -262,6 +270,10 @@ export class DecoiUploadComponent implements OnInit {
               console.log(error);
             }
           );
+          if (metadata === this.active_metadata) {
+            this.active_metadata = null;
+          }
+
           resolve();
         }
       })
