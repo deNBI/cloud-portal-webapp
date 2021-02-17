@@ -36,10 +36,12 @@ export class Multipart {
     for (const chunk of this.chunks) {
       if (!chunk.part_pushed) {
         this.all_parts_pushed = false;
+
         return this.all_parts_pushed
       }
     }
     this.all_parts_pushed = true;
+
     return this.all_parts_pushed;
   }
 
