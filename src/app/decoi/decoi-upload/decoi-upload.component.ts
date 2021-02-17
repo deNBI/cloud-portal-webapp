@@ -221,9 +221,9 @@ export class DecoiUploadComponent implements OnInit {
                           .subscribe((): void => {
                             chunk.set_completed();
                             chunk.set_percented_complete(100);
+                            chunk.set_part_pushed(true)
 
                           })
-                        metadata?.upload?.get_percent_completed()
                       }
                     }
                   ));
@@ -231,7 +231,7 @@ export class DecoiUploadComponent implements OnInit {
                   metadata?.upload?.get_percent_completed()
                 }
               }
-              await this.waitUntil((): boolean => metadata?.upload?.percent_completed === 100)
+              await this.waitUntil((): boolean => metadata?.upload?.get_all_parts_pushed() === true)
               this.complete_upload(metadata)
 
             }

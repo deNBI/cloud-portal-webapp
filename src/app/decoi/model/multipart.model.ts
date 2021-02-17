@@ -24,10 +24,22 @@ export class Multipart {
   msg: string = this.SCHEDULED_UPLOAD;
   ready_for_upload: boolean = false;
   checksum_generation_started: boolean = false;
+  all_parts_pushed: boolean = false;
 
   constructor(file: File) {
     this.file = file;
 
+  }
+
+  get_all_parts_pushed(): boolean {
+    for (const chunk of this.chunks) {
+      if (!chunk.part_pushed) {
+        this.all_parts_pushed = false;
+        return this.all_parts_pushed
+      }
+    }
+    this.all_parts_pushed = true;
+    return this.all_parts_pushed;
   }
 
   set_rdy_for_upload(): void {
@@ -152,6 +164,7 @@ export class Chunk {
   presigned_url: string;
   part_number: number;
   upload_completed: boolean;
+  part_pushed: boolean = false;
 
   constructor(part_number: number, signed_url: string, exists: boolean = false) {
     this.file = null;
@@ -165,6 +178,10 @@ export class Chunk {
       this.percent_completed = 100;
       this.upload_completed = true;
     }
+  }
+
+  set_part_pushed(val: boolean): void {
+    this.part_pushed = val;
   }
 
   set_file(file: File): void {
