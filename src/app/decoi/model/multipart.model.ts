@@ -25,6 +25,7 @@ export class Multipart {
   ready_for_upload: boolean = false;
   checksum_generation_started: boolean = false;
   all_parts_pushed: boolean = false;
+  upload_active: boolean = false;
 
   constructor(file: File) {
     this.file = file;

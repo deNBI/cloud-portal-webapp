@@ -177,6 +177,7 @@ export class DecoiUploadComponent implements OnInit {
     this.subscription = new Subscription();
     if (this.active_metadata) {
       this.active_metadata.upload.set_msg(this.active_metadata.upload.UPLOAD_STOPPED)
+      this.active_metadata.upload.upload_active = false;
     }
 
   }
@@ -185,10 +186,15 @@ export class DecoiUploadComponent implements OnInit {
     this.check_if_still_uncompleted_uploads()
     this.upload_started = true;
     this.upload_stopped = false;
-    for (const metadata of this.metadata_entries) {
+    const upload_metadata: MetadataModel[] = this.metadata_entries.filter((data: MetadataModel): boolean => {
+      return !data.upload.upload_completed
+    })
 
-      if (metadata.upload && !metadata.upload.upload_completed && !this.upload_stopped) {
+    for (const metadata of upload_metadata) {
+
+      if (!this.upload_stopped && !metadata.upload.upload_active) {
         this.active_metadata = metadata;
+        this.active_metadata.upload.upload_active = true;
 
         if (!metadata.upload.md5_checksum && !metadata.upload.checksum_generation_started) {
           metadata.upload.generate_md5_checksum()
@@ -239,6 +245,8 @@ export class DecoiUploadComponent implements OnInit {
           }))
         await this.waitUntil((): boolean => metadata?.upload?.upload_completed === true)
 
+      } else {
+        break
       }
 
     }
