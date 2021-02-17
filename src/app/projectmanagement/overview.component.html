@@ -710,11 +710,11 @@
                 <tbody *ngFor="  let member of filteredMembers">
                 <td>
                   <button style="padding: 5px; margin: 5px"
-                          (click)="addMember(project?.Id,member['member_id'],member['firstName'],member['lastName']);filteredMembers=null; addUserModal.hide();notificationModal.show();"
+                          (click)="resetNotificationModal();addMember(project?.Id,member['member_id'],member['firstName'],member['lastName']);filteredMembers=null; notificationModal.show();"
                           class="btn btn-success" id="add_member_btn"><i class="fa fa-plus"></i> Add Member
                   </button>
                   <button style="padding: 5px; margin: 5px"
-                          (click)="addAdmin(project?.Id,member['member_id'],member['user_id'],member['firstName'],member['lastName']);filteredMembers=null; addUserModal.hide();notificationModal.show();"
+                          (click)="resetNotificationModal();addAdmin(project?.Id,member['member_id'],member['user_id'],member['firstName'],member['lastName']);filteredMembers=null; notificationModal.show();"
                           class="btn btn-primary"><i class="fa fa-plus"></i> Add Admin
                   </button>
                 </td>

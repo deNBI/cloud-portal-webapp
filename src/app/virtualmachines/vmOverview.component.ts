@@ -811,7 +811,10 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
   deleteAll(): void {
 
     this.selectedMachines.forEach((vm: VirtualMachine): void => {
-      this.deleteVm(vm)
+      // tslint:disable-next-line:triple-equals
+      if (vm != undefined) {
+        this.deleteVm(vm)
+      }
     })
 
   }
