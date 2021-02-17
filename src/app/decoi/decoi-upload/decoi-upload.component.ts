@@ -52,8 +52,8 @@ export class DecoiUploadComponent implements OnInit {
   uploadMetadata(): void {
     this.chosen_metadata_error = []
     this.upload_stopped = false;
-    this.upload_completed = false;
     this.upload_started = false;
+    this.upload_completed = true;
     this.upload_service.postMetadata(this.chosen_metadata)
       .subscribe((
                    data: MetadataModel[]): void => {
