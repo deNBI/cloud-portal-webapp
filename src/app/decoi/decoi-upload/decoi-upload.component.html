@@ -75,7 +75,7 @@
 
 
   <div *ngIf="metadata_entries.length > 0">
-    <div><input type="file" [multiple]="true" (change)="load_files($event.target)"></div>
+    <div><input type="file" [disabled]="(upload_started && !upload_stopped)" [multiple]="true" (change)="load_files($event.target)"></div>
 
 
     <button
