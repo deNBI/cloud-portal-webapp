@@ -79,11 +79,12 @@
 
 
     <button
-      [disabled]="metadata_entries.length == 0 || chosen_files_for_upload == 0|| (upload_started && !upload_stopped)"
+      [disabled]="metadata_entries.length == 0 || upload_completed|| (upload_started && !upload_stopped)"
       (click)="upload_files();">
       Start Upload
     </button>
-    <button [disabled]="chosen_files_for_upload == 0 || upload_stopped || !upload_started" (click)="stop_upload()">Pause Upload</button>
+    <button [disabled]="upload_completed || upload_stopped || !upload_started" (click)="stop_upload()">Pause Upload
+    </button>
 
   </div>
 </div>

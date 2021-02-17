@@ -19,7 +19,7 @@ export class DecoiUploadComponent implements OnInit {
 
   title: string = 'DeCoi Upload';
   chosen_files: Multipart[];
-  chosen_files_for_upload: number = 0;
+  upload_completed: boolean = false;
   chosen_metadata: File;
   chosen_metadata_error: string[] = [];
   metadata_entries: MetadataModel[] = [];
@@ -51,8 +51,8 @@ export class DecoiUploadComponent implements OnInit {
 
   uploadMetadata(): void {
     this.chosen_metadata_error = []
-    this.chosen_files_for_upload = 0;
     this.upload_stopped = false;
+    this.upload_completed = false;
     this.upload_started = false;
     this.upload_service.postMetadata(this.chosen_metadata)
       .subscribe((
@@ -79,15 +79,16 @@ export class DecoiUploadComponent implements OnInit {
     } catch (error) {
       this.load_error_message = error;
     }
+
     this.chosen_files.forEach((file: Multipart): void => {
       for (const metadata of this.metadata_entries) {
         if (metadata.FILE_NAME === file.file.name) {
           metadata.upload = file
-          this.chosen_files_for_upload += 1;
         }
       }
 
     })
+    this.check_if_still_uncompleted_uploads()
     await this.generate_checksums()
 
   }
@@ -155,6 +156,20 @@ export class DecoiUploadComponent implements OnInit {
     })
   }
 
+  check_if_still_uncompleted_uploads(): void {
+    for (const metadata of this.metadata_entries) {
+      if (metadata.upload && !metadata.upload.upload_completed) {
+        this.upload_completed = false;
+        return
+
+      }
+    }
+    this.upload_completed = true;
+    this.upload_started = false;
+    this.upload_stopped = true;
+
+  }
+
   stop_upload(): void {
     this.upload_stopped = true;
     this.subscription.unsubscribe()
@@ -166,6 +181,7 @@ export class DecoiUploadComponent implements OnInit {
   }
 
   async upload_files(): Promise<any> {
+    this.check_if_still_uncompleted_uploads()
     this.upload_started = true;
     this.upload_stopped = false;
     for (const metadata of this.metadata_entries) {
@@ -255,11 +271,8 @@ export class DecoiUploadComponent implements OnInit {
         (result: any): any => {
 
           metadata.upload.set_upload_completed();
-          this.chosen_files_for_upload -= 1;
-          if (this.chosen_files_for_upload === 0) {
-            this.upload_started = false;
-            this.upload_stopped = true;
-          }
+          this.check_if_still_uncompleted_uploads()
+
           if (this.active_metadata === metadata) {
             this.active_metadata = null;
           }
@@ -270,11 +283,8 @@ export class DecoiUploadComponent implements OnInit {
       ));
 
     } else {
-      this.chosen_files_for_upload -= 1;
-      if (this.chosen_files_for_upload === 0) {
-        this.upload_started = false;
-        this.upload_stopped = true;
-      }
+      this.check_if_still_uncompleted_uploads()
+
       if (this.active_metadata === metadata) {
         this.active_metadata = null;
       }
