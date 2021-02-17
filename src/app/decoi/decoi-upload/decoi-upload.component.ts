@@ -178,7 +178,8 @@ export class DecoiUploadComponent implements OnInit {
         }
         await this.waitUntil((): boolean => metadata.upload.ready_for_upload === true)
         metadata.upload.msg = metadata.upload.STARTING_UPLOAD
-        this.subscription.add(this.upload_service.get_presigned_urls(metadata.IMS_ID, metadata.upload.get_file_size(), metadata.upload.md5_checksum).subscribe(
+        this.subscription.add(this.upload_service.get_presigned_urls(
+          metadata.IMS_ID, metadata.upload.get_file_size(), metadata.upload.md5_checksum).subscribe(
           async (result: any): Promise<void> => {
             if ('msg' in result) {
               metadata.upload.set_msg(result['msg']);
