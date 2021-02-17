@@ -12,10 +12,12 @@ export class Multipart {
   FINISHING_UPLOAD: string = 'Finishing Upload...'
   UPLOAD_STOPPED: string = 'Upload Stopped';
   SCHEDULED_UPLOAD: string = 'Scheduled Upload'
+  STARTING_UPLOAD: string = 'Starting Upload..'
 
   file: File;
   upload_completed: boolean = false;
   upload_started: boolean = false;
+  upload_finish_started: boolean = false;
   chunks: Chunk[] = [];
   md5_checksum: string;
   percent_completed: number = 0;
