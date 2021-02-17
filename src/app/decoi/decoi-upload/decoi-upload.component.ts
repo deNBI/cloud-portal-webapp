@@ -4,7 +4,7 @@ import {DecoiUploadService} from '../../api-connector/decoi-upload.service';
 import {HttpEventType, HttpResponse} from '@angular/common/http';
 import {MetadataModel} from '../model/metadata.model';
 import {Subscription} from 'rxjs';
-import { saveAs } from 'file-saver';
+import {saveAs} from 'file-saver';
 
 /**
  * Upload component for decoi
@@ -19,7 +19,7 @@ export class DecoiUploadComponent implements OnInit {
 
   title: string = 'DeCoi Upload';
   chosen_files: Multipart[];
-  chosen_files_for_upload: number = 0;
+  upload_completed: boolean = false;
   chosen_metadata: File;
   chosen_metadata_error: string[] = [];
   metadata_entries: MetadataModel[] = [];
@@ -43,17 +43,17 @@ export class DecoiUploadComponent implements OnInit {
 
   download_csv_sample(): void {
     const csv: string = 'IMS_ID,SENDING_LAB,DATE_DRAW,SEQ_TYPE,SEQ_REASON,SAMPLE_TYPE,' +
-        'PUBLICATION_STATUS,OWN_FASTA_ID,FILE_NAME';
+      'PUBLICATION_STATUS,OWN_FASTA_ID,FILE_NAME';
 
-    const blob: Blob = new Blob([csv], {type: 'text/csv' })
+    const blob: Blob = new Blob([csv], {type: 'text/csv'})
     saveAs(blob, 'metadata-sample.csv');
   }
 
   uploadMetadata(): void {
     this.chosen_metadata_error = []
-    this.chosen_files_for_upload = 0;
     this.upload_stopped = false;
     this.upload_started = false;
+    this.upload_completed = true;
     this.upload_service.postMetadata(this.chosen_metadata)
       .subscribe((
                    data: MetadataModel[]): void => {
@@ -79,15 +79,16 @@ export class DecoiUploadComponent implements OnInit {
     } catch (error) {
       this.load_error_message = error;
     }
+
     this.chosen_files.forEach((file: Multipart): void => {
       for (const metadata of this.metadata_entries) {
         if (metadata.FILE_NAME === file.file.name) {
           metadata.upload = file
-          this.chosen_files_for_upload += 1;
         }
       }
 
     })
+    this.check_if_still_uncompleted_uploads()
     await this.generate_checksums()
 
   }
@@ -140,19 +141,34 @@ export class DecoiUploadComponent implements OnInit {
 
   }
 
-   waitUntil = async (condition: any): Promise<any> => {
+  waitUntil = async (condition: any): Promise<any> => {
 
-     return new Promise((resolve: any): void => {
-       const interval: any = setInterval((): void => {
-                                           if (!condition()) {
-                                             return
-                                           }
+    return new Promise((resolve: any): void => {
+      const interval: any = setInterval((): void => {
+                                          if (!condition()) {
+                                            return
+                                          }
 
-                                           clearInterval(interval)
-                                           resolve()
-                                         },
-                                         2000)
+                                          clearInterval(interval)
+                                          resolve()
+                                        },
+                                        2000)
     })
+  }
+
+  check_if_still_uncompleted_uploads(): void {
+    for (const metadata of this.metadata_entries) {
+      if (metadata.upload && !metadata.upload.upload_completed) {
+        this.upload_completed = false;
+
+        return
+
+      }
+    }
+    this.upload_completed = true;
+    this.upload_started = false;
+    this.upload_stopped = true;
+
   }
 
   stop_upload(): void {
@@ -166,61 +182,65 @@ export class DecoiUploadComponent implements OnInit {
   }
 
   async upload_files(): Promise<any> {
+    this.check_if_still_uncompleted_uploads()
     this.upload_started = true;
     this.upload_stopped = false;
     for (const metadata of this.metadata_entries) {
 
-      if (metadata.upload && !metadata.upload.upload_completed) {
+      if (metadata.upload && !metadata.upload.upload_completed && !this.upload_stopped) {
         this.active_metadata = metadata;
 
-        await new Promise<any>(async (resolve: any, reject: any): Promise<any> => {
-          if (!metadata.upload.md5_checksum && !metadata.upload.checksum_generation_started) {
-            metadata.upload.generate_md5_checksum()
-          }
-          await this.waitUntil((): boolean => metadata.upload.ready_for_upload === true)
-          this.subscription.add(this.upload_service.get_presigned_urls(
-            metadata.IMS_ID, metadata.upload.get_file_size(), metadata.upload.md5_checksum).subscribe(
-            async (result: any): Promise<any> => {
-              if ('msg' in result) {
-                metadata.upload.set_msg(result['msg']);
-                resolve();
+        if (!metadata.upload.md5_checksum && !metadata.upload.checksum_generation_started) {
+          metadata.upload.generate_md5_checksum()
+        }
+        await this.waitUntil((): boolean => metadata.upload.ready_for_upload === true)
+        metadata.upload.msg = metadata.upload.STARTING_UPLOAD
+        this.subscription.add(this.upload_service.get_presigned_urls(
+          metadata.IMS_ID, metadata.upload.get_file_size(), metadata.upload.md5_checksum).subscribe(
+          async (result: any): Promise<void> => {
+            if ('msg' in result) {
+              metadata.upload.set_msg(result['msg']);
+              this.check_if_still_uncompleted_uploads()
 
-              } else {
-                this.prepare_file_for_upload(metadata.upload, result);
-                for (const chunk of metadata.upload.chunks) {
-                  if (!chunk.upload_completed) {
-                    this.subscription.add(this.upload_service.upload_chunk_to_presigned_url(
-                      chunk.get_presigned_url(), chunk.get_file()).subscribe(
-                      (event: any): any => {
-                        if (event.type === HttpEventType.UploadProgress) {
-                          chunk.set_percented_complete(Math.round(100 * event.loaded / event.total));
-                          metadata?.upload?.get_percent_completed()
-                        } else if (event instanceof HttpResponse) {
-                          chunk.set_percented_complete(100);
-                          event.headers.keys()
-                          const etag: string = event.headers.get('ETag');
-                          chunk.set_etag(etag);
-                          this.upload_service.set_upload_part(metadata.IMS_ID, chunk.part_number, chunk.etag, metadata.upload.md5_checksum)
-                            .subscribe((): void => {
-                              chunk.set_completed();
+            } else {
+              this.prepare_file_for_upload(metadata.upload, result);
+              for (const chunk of metadata.upload.chunks) {
+                if (!chunk.upload_completed) {
+                  this.subscription.add(this.upload_service.upload_chunk_to_presigned_url(
+                    chunk.get_presigned_url(), chunk.get_file()).subscribe(
+                    (event: any): any => {
+                      if (event.type === HttpEventType.UploadProgress) {
+                        chunk.set_percented_complete(Math.round(100 * event.loaded / event.total));
+                        metadata?.upload?.get_percent_completed()
 
-                            })
-                          metadata?.upload?.get_percent_completed()
-                        }
+                      } else if (event instanceof HttpResponse) {
+                        event.headers.keys()
+                        const etag: string = event.headers.get('ETag');
+                        chunk.set_etag(etag);
+                        this.upload_service.set_upload_part(metadata.IMS_ID, chunk.part_number, chunk.etag, metadata.upload.md5_checksum)
+                          .subscribe((): void => {
+                            chunk.set_completed();
+                            chunk.set_percented_complete(100);
+                            chunk.set_part_pushed(true)
+
+                          })
                       }
-                    ));
-                  }
+                    }
+                  ));
+                } else {
+                  metadata?.upload?.get_percent_completed()
                 }
               }
-              await this.complete_upload(metadata);
-              resolve();
-            },
-            (error: any): any => {
-              reject(error);
+              await this.waitUntil((): boolean => metadata?.upload?.get_all_parts_pushed() === true)
+              this.complete_upload(metadata)
+
             }
-          ));
-        })
+
+          }))
+        await this.waitUntil((): boolean => metadata?.upload?.upload_completed === true)
+
       }
+
     }
   }
 
@@ -241,43 +261,36 @@ export class DecoiUploadComponent implements OnInit {
     }
   }
 
-  async complete_upload(metadata: MetadataModel): Promise<void> {
+  complete_upload(metadata: MetadataModel): void {
     if (metadata.upload.msg !== metadata.upload.ALREADY_UPLOADED
-      && metadata.upload.msg !== metadata.upload.FINISHING_UPLOAD
-      && metadata.upload.msg !== metadata.upload.UPLOAD_COMPLETED) {
+      && !metadata.upload.upload_completed
+      && !metadata.upload.upload_finish_started) {
+      metadata.upload.upload_finish_started = true;
 
-      return new Promise((resolve: any): any => {
-        if (!metadata.upload.get_all_chunks_completed()) {
-          setTimeout(
-            async (): Promise<any> => {
-              await this.complete_upload(metadata);
-              resolve()
-            },
-            10000);
-        } else {
-          metadata.upload.set_msg(metadata.upload.FINISHING_UPLOAD);
+      metadata.upload.set_msg(metadata.upload.FINISHING_UPLOAD);
 
-          this.upload_service.complete_multipart_upload(metadata.IMS_ID, metadata.upload.md5_checksum).subscribe(
-            (result: any): any => {
-              this.upload_started = false;
+      this.subscription.add(this.upload_service.complete_multipart_upload(metadata.IMS_ID, metadata.upload.md5_checksum).subscribe(
+        (result: any): any => {
 
-              metadata.upload.set_upload_completed();
-              this.chosen_files_for_upload -= 1;
-            },
-            (error: any): any => {
-              this.upload_started = false;
+          metadata.upload.set_upload_completed();
+          this.check_if_still_uncompleted_uploads()
 
-              console.log(error);
-            }
-          );
-          if (metadata === this.active_metadata) {
+          if (this.active_metadata === metadata) {
             this.active_metadata = null;
           }
-
-          resolve();
+        },
+        (error: any): any => {
+          console.log(error);
         }
-      })
+      ));
+
+    } else {
+      this.check_if_still_uncompleted_uploads()
+
+      if (this.active_metadata === metadata) {
+        this.active_metadata = null;
+      }
+
     }
   }
-
 }
