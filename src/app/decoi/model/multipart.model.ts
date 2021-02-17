@@ -177,6 +177,7 @@ export class Chunk {
     if (exists) {
       this.percent_completed = 100;
       this.upload_completed = true;
+      this.part_pushed = true;
     }
   }
 
