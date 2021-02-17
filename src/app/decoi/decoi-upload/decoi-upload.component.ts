@@ -160,6 +160,7 @@ export class DecoiUploadComponent implements OnInit {
     for (const metadata of this.metadata_entries) {
       if (metadata.upload && !metadata.upload.upload_completed) {
         this.upload_completed = false;
+
         return
 
       }
@@ -199,6 +200,7 @@ export class DecoiUploadComponent implements OnInit {
           async (result: any): Promise<void> => {
             if ('msg' in result) {
               metadata.upload.set_msg(result['msg']);
+              this.check_if_still_uncompleted_uploads()
 
             } else {
               this.prepare_file_for_upload(metadata.upload, result);
