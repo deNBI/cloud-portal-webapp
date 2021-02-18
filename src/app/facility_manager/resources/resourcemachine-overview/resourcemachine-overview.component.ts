@@ -132,7 +132,7 @@ export class ResourcemachineOverviewComponent implements OnInit {
 
   setupFormGroup(machine: ResourceMachine): void {
     this.machinesFormGroups[machine.id] = this.formBuilder.group({});
-    let machine_ram: string = machine.id + '_ram',
+    const machine_ram: string = machine.id + '_ram',
       machine_ram_private_factor: string = machine.id + '_ram_private_factor',
       machine_ram_public_factor: string = machine.id + '_ram_public_factor',
       machine_cores: string = machine.id + '_cores',
@@ -147,29 +147,29 @@ export class ResourcemachineOverviewComponent implements OnInit {
       machine_public_count: string = machine.id + '_public_count';
 
     this.machinesFormGroups[machine.id].addControl(machine_ram,
-      new FormControl([null, Validators.compose([Validators.required, Validators.pattern(/^\d+$/)])]));
+                                                   new FormControl([null, Validators.compose([Validators.required, Validators.pattern(/^\d+$/)])]));
     this.machinesFormGroups[machine.id].addControl(machine_ram_private_factor,
-      new FormControl([null, Validators.compose([Validators.required, Validators.pattern(/^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$/)])]));
+                                                   new FormControl([null, Validators.compose([Validators.required, Validators.pattern(/^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$/)])]));
     this.machinesFormGroups[machine.id].addControl(machine_ram_public_factor,
-      new FormControl([null, Validators.compose([Validators.required, Validators.pattern(/^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$/)])]));
+                                                   new FormControl([null, Validators.compose([Validators.required, Validators.pattern(/^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$/)])]));
     this.machinesFormGroups[machine.id].addControl(machine_cores,
-      new FormControl([null, Validators.compose([Validators.required, Validators.pattern(/^\d+$/)])]));
+                                                   new FormControl([null, Validators.compose([Validators.required, Validators.pattern(/^\d+$/)])]));
     this.machinesFormGroups[machine.id].addControl(machine_cores_private_factor,
-      new FormControl([null, Validators.compose([Validators.required, Validators.pattern(/^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$/)])]));
+                                                   new FormControl([null, Validators.compose([Validators.required, Validators.pattern(/^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$/)])]));
     this.machinesFormGroups[machine.id].addControl(machine_cores_public_factor,
-      new FormControl([null, Validators.compose([Validators.required, Validators.pattern(/^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$/)])]));
+                                                   new FormControl([null, Validators.compose([Validators.required, Validators.pattern(/^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$/)])]));
     this.machinesFormGroups[machine.id].addControl(machine_gpus,
-      new FormControl([null, Validators.compose([Validators.required, Validators.pattern(/^\d+$/)])]));
+                                                   new FormControl([null, Validators.compose([Validators.required, Validators.pattern(/^\d+$/)])]));
     this.machinesFormGroups[machine.id].addControl(machine_local_disk_storage,
-      new FormControl([null, Validators.compose([Validators.required, Validators.pattern(/^\d+$/)])]));
+                                                   new FormControl([null, Validators.compose([Validators.required, Validators.pattern(/^\d+$/)])]));
     this.machinesFormGroups[machine.id].addControl(machine_local_disk_encrypted, new FormControl([null]))
     this.machinesFormGroups[machine.id].addControl(machine_name,
-      new FormControl([null, Validators.compose([Validators.required, Validators.pattern(/^[a-zA-Z0-9 ]*$/)])]));
+                                                   new FormControl([null, Validators.compose([Validators.required, Validators.pattern(/^[a-zA-Z0-9 ]*$/)])]));
     this.machinesFormGroups[machine.id].addControl(machine_private_count,
-      new FormControl([null, Validators.compose([Validators.required, Validators.pattern(/^\d+$/)])]));
+                                                   new FormControl([null, Validators.compose([Validators.required, Validators.pattern(/^\d+$/)])]));
     this.machinesFormGroups[machine.id].addControl(machine_type, new FormControl([null]));
     this.machinesFormGroups[machine.id].addControl(machine_public_count,
-      new FormControl([null, Validators.compose([Validators.required, Validators.pattern(/^\d+$/)])]));
+                                                   new FormControl([null, Validators.compose([Validators.required, Validators.pattern(/^\d+$/)])]));
     this.machinesFormGroups[machine.id].get(machine_ram).setValue(machine.ram);
     this.machinesFormGroups[machine.id].get(machine_ram_private_factor).setValue(machine.ram_private_factor);
     this.machinesFormGroups[machine.id].get(machine_ram_public_factor).setValue(machine.ram_public_factor);
@@ -245,7 +245,7 @@ export class ResourcemachineOverviewComponent implements OnInit {
   }
 
   changeResourceMachineToUpdate(machine: ResourceMachine): void {
-    if (this.resourceMachineUpdateList[machine.id]){
+    if (this.resourceMachineUpdateList[machine.id]) {
       this.machinesFormGroups[machine.id].disable();
     } else {
       this.listenToChangesForMachine(machine);
