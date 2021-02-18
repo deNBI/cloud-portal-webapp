@@ -295,7 +295,6 @@ export class ResourcemachineOverviewComponent implements OnInit {
     this.machinesFormGroups[machine.id].disable();
   }
 
-
   addResourceMachine(): void {
     this.facilityService.addResourceMachine(this.facility_id, this.newResourceMachine).subscribe((res: ResourceMachine[]): void => {
       this.newResourceMachine = new ResourceMachine(null);
