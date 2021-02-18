@@ -172,6 +172,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
    * Apply filter to all vms.
    */
   applyFilter(): void {
+    this.filter = this.filter.trim();
     this.isSearching = true;
     if (typeof(this.vm_per_site) !== 'number' || this.vm_per_site <= 0) {
       this.vm_per_site = 7;
