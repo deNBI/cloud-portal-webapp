@@ -222,7 +222,6 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
           newProject.LifetimeDays = lifetimeDays;
           newProject.DateEnd = expirationDate;
           newProject.LifetimeReached = this.lifeTimeReached(lifetimeDays, dateDayDifference);
-
         }
 
         this.projects.push(newProject);
