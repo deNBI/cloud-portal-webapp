@@ -610,7 +610,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
         this.checkAndGetForcDetails(vm);
         this.title = vm['name'];
         this.virtualMachine = vm;
-        this.virtualMachine.modes.map((mode: ImageMode): ImageMode => this.checkDescriptionForHTML(mode));
+        this.virtualMachine.modes = this.virtualMachine.modes.map((mode: ImageMode): ImageMode => this.checkDescriptionForHTML(mode));
         this.biocondaService.getTemplateNameByVmName(vm).subscribe((backend: Backend): void => {
             if (backend != null) {
               const template_name: string = backend.template;
