@@ -16,6 +16,7 @@ import {SharedDirectivesModule} from '../shared/shared_modules/shared_directives
 import { ObjectstoragefactorOverviewComponent } from './resources/objectstoragefactor-overview/objectstoragefactor-overview.component';
 import { VolumestoragefactorOverviewComponent } from './resources/volumestoragefactor-overview/volumestoragefactor-overview.component';
 import {ResourcemachineOverviewComponent} from './resources/resourcemachine-overview/resourcemachine-overview.component';
+import {GPUSpecificationOverviewComponent} from './resources/gpu-specification-overview/gpu-specification-overview.component';
 import {GeneralstoragefactorOverviewComponent} from './resources/generalstoragefactor-overview/generalstoragefactor-overview.component';
 
 /**
@@ -41,8 +42,9 @@ import {GeneralstoragefactorOverviewComponent} from './resources/generalstoragef
               GeneralstoragefactorOverviewComponent,
               ObjectstoragefactorOverviewComponent,
               VolumestoragefactorOverviewComponent,
+              ResourcemachineOverviewComponent,
+              GPUSpecificationOverviewComponent,
               ResourcemachineOverviewComponent
-
             ]
           })
 export class FacilitymanagerModule {
