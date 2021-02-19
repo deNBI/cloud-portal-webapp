@@ -118,4 +118,5 @@ export class VolumeStates extends GeneralStatusStates {
   public get staticEXTENDING(): string {
     return VolumeStates.EXTENDING;
   }
+
 }
