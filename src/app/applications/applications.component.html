@@ -136,10 +136,10 @@
                       class="form-control" [id]="'id_compute_center_option_' + application?.project_application_name"
                       #selectedComputeCenter>
 
-                      <option value="undefined" selected> no center selected
+                      <option [ngValue]="undefined" selected> no center selected
                       </option>
                       <option *ngFor="let computeCenter of computeCenters"
-                              value="{{computeCenter.FacilityId}}" [id]="computeCenter.Name">
+                              [ngValue]="computeCenter.FacilityId" [id]="computeCenter.Name">
                         {{computeCenter.Name}}
                       </option>
                     </select>
@@ -154,8 +154,7 @@
                         *ngIf="(application | hasstatusinlist:Application_States.CONFIRMATION_DECLINED)  || ((application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION)  && !application?.ComputeCenter?.FacilityId )"
                         style="margin: auto 2.5px"
                         (click)="resetNotificationModal();assignGroupToFacility(application?.project_application_perun_id,application?.project_application_id, selectedCenter[application.project_application_id]); notificationModal.show();"
-
-
+                        [disabled]="!selectedCenter[application.project_application_id]"
                         type="button"
                         class="btn btn-secondary">
                         <i class="fa fa-check"></i>&nbsp;
@@ -176,7 +175,7 @@
                         *ngIf="(application | hasstatusinlist:Application_States.SUBMITTED) && application?.project_application_openstack_project"
                         style="margin: auto 2.5px" [id]="'approve_'+ application?.project_application_shortname"
                         (click)="resetNotificationModal();createOpenStackProjectGroup(application, selectedCenter[application.project_application_id]); notificationModal.show();"
-
+                        [disabled]="!selectedCenter[application.project_application_id]"
                         type="button"
                         class="btn btn-success">
                         <i class="fa fa-check"></i>&nbsp;
