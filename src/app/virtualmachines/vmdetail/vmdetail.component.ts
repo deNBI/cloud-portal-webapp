@@ -28,7 +28,7 @@ import {Volume} from '../volumes/volume';
 import {VolumeStates} from '../volumes/volume_states';
 import {Condalog} from '../conda/condalog';
 import {Backend} from '../conda/backend/backend';
-import {ImageMode} from "../../facility_manager/image-tag";
+import {ImageMode} from '../../facility_manager/image-tag';
 
 /**
  * VM Detail page component
@@ -636,6 +636,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
 
   checkDescriptionForHTML(mode: ImageMode): ImageMode {
     mode.description = mode.description.replace(/<[^>]+>/g, '');
+
     return mode;
   }
 
