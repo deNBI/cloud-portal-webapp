@@ -28,6 +28,7 @@ import {Volume} from '../volumes/volume';
 import {VolumeStates} from '../volumes/volume_states';
 import {Condalog} from '../conda/condalog';
 import {Backend} from '../conda/backend/backend';
+import {ImageMode} from "../../facility_manager/image-tag";
 
 /**
  * VM Detail page component
@@ -609,6 +610,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
         this.checkAndGetForcDetails(vm);
         this.title = vm['name'];
         this.virtualMachine = vm;
+        this.virtualMachine.modes.map((mode: ImageMode): ImageMode => this.checkDescriptionForHTML(mode));
         this.biocondaService.getTemplateNameByVmName(vm).subscribe((backend: Backend): void => {
             if (backend != null) {
               const template_name: string = backend.template;
@@ -630,6 +632,11 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
         this.isLoaded = true;
       }
     );
+  }
+
+  checkDescriptionForHTML(mode: ImageMode): ImageMode {
+    mode.description = mode.description.replace(/<[^>]+>/g, '');
+    return mode;
   }
 
   getImageDetails(project_id: number, name: string): Image {
