@@ -1,5 +1,5 @@
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
-import {NgForm} from '@angular/forms';
+import {FormGroup, NgForm} from '@angular/forms';
 import {Flavor} from '../../virtualmachines/virtualmachinemodels/flavor';
 import {FlavorService} from '../../api-connector/flavor.service';
 import {FlavorType} from '../../virtualmachines/virtualmachinemodels/flavorType';
@@ -46,6 +46,8 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
   invalid_description: boolean = false;
   simple_vm_min_vm: boolean = false;
   error: string[];
+
+  gpuInformationLinks : { [id: number]: string} = {0: 'https://google.com', 1: 'https://cloud.denbi.de'};
 
   acknowledgeModalTitle: string = 'Acknowledge';
   acknowledgeModalType: string = 'info';
@@ -252,6 +254,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
   getListOfTypes(): void {
     this.flavorService.getListOfTypesAvailable().subscribe((types: FlavorType[]): void => {
       this.setListOfTypes(types)
+      console.log(types);
     });
   }
 

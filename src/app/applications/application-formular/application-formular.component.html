@@ -267,9 +267,14 @@
                         </div>
                         <span class="help-block">Number of VMs you would like to run of this particular flavor</span>
                         <div *ngIf="f?.comment" class="alert alert-info">{{f.comment}}</div>
-
                       </div>
                     </div>
+                  </div>
+                  <div *ngIf="t.shortcut === 'GPU'" class="alert alert-light">
+                    Check which drivers are currently supported here:<br>
+                    <a href="{{gpuInformationLinks[0]}}" target="_blank" rel="noopener noreferrer">Test1</a>
+                    <br>
+                    <a href="{{gpuInformationLinks[1]}}" target="_blank" rel="noopener noreferrer">Test2</a>
                   </div>
                 </accordion-group>
               </ng-container>
