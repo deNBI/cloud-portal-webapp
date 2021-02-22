@@ -4,6 +4,7 @@ import {ImageMode} from '../../facility_manager/image-tag';
 import {Clusterinfo} from '../clusters/clusterinfo';
 import {Volume} from '../volumes/volume';
 import {Backend} from '../conda/backend/backend';
+import {CondaPackage} from '../condaPackage.model';
 
 /**
  * Virtualmachine class.
@@ -39,6 +40,7 @@ export class VirtualMachine {
   error_msg: string;
   days_running: number;
   backend: Backend;
+  conda_packages: CondaPackage[] = [];
 
   constructor(vm: VirtualMachine) {
     this.backend = vm.backend;
@@ -69,6 +71,7 @@ export class VirtualMachine {
     this.still_used_confirmation_requested_date = vm.still_used_confirmation_requested_date;
     this.getTerminationStartDateString();
     this.playbook_successful = vm.playbook_successful;
+    this.conda_packages = vm.conda_packages;
   }
 
   public getTerminationStartDateString(): string {
