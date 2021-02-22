@@ -47,7 +47,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
   simple_vm_min_vm: boolean = false;
   error: string[];
 
-  gpuInformationLinks : { [id: number]: string} = {0: 'https://google.com', 1: 'https://cloud.denbi.de'};
+  gpuInformationLinks: { [id: number]: string} = {0: 'https://google.com', 1: 'https://cloud.denbi.de'};
 
   acknowledgeModalTitle: string = 'Acknowledge';
   acknowledgeModalType: string = 'info';
