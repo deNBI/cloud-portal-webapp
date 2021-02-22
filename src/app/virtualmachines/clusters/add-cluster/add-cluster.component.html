@@ -98,7 +98,19 @@
 
                   </div>
                   <div class="alert alert-primary " role="alert"
-                       *ngIf="selectedProject && selectedProjectRessources?.used_vms < selectedProjectRessources?.number_vms && flavors_loaded && flavors_usable.length == 0 && !selectedFlavor">
+                       *ngIf="selectedProject && selectedProjectRessources?.cores_used < selectedProjectRessources?.cores_total && !(selectedProjectRessources.ram_used < selectedProjectRessources.ram_total) && flavors_loaded && flavors_usable.length == 0 && !selectedFlavor">
+                    There are too few cores available for this project to start a new machine.
+                    Your principal investigator can request more
+                    resources if necessary.
+                  </div>
+                  <div class="alert alert-primary " role="alert"
+                       *ngIf="selectedProject && !(selectedProjectRessources?.cores_used < selectedProjectRessources?.cores_total) && (selectedProjectRessources.ram_used < selectedProjectRessources.ram_total) && flavors_loaded && flavors_usable.length == 0 && !selectedFlavor">
+                    There is not enough ram available for this project to start a new machine.
+                    Your principal investigator can request more
+                    resources if necessary.
+                  </div>
+                  <div class="alert alert-primary " role="alert"
+                       *ngIf="selectedProject && selectedProjectRessources?.cores_used < selectedProjectRessources?.cores_total && selectedProjectRessources.ram_used < selectedProjectRessources.ram_total && flavors_loaded && flavors_usable.length == 0 && !selectedFlavor">
                     There are too few cores and not enough ram available for this project to start a new machine.
                     Your principal investigator can request more
                     resources if necessary.
