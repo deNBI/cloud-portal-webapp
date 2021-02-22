@@ -151,6 +151,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
   clientsForcUrls: {[client_id: string]: [string]} = {};
 
   /*
+  /*
     Key-Value-Map for Conda Packages installed on machine.
    */
   condaPackagesByVM: {[vm_id: string]: number} = {};
@@ -653,6 +654,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
     // tslint:disable-next-line:no-for-each-push
     vm_list.forEach((new_vm: VirtualMachine): void => {
       const vm: VirtualMachine = new VirtualMachine(new_vm);
+      vm.cardState = 0;
       this.checkCondaPackages(vm);
       tmp_vms.push(vm);
 
