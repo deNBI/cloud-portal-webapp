@@ -236,6 +236,10 @@
                           <span class="badge badge-pill badge-secondary"
                                 style="font-size: 10px; position: relative; top: -12px; left: -10px;">
                           {{this.condaPackagesByVM[vm.openstackid].toString()}}
+                                                         <i  *ngIf="vm?.playbook_successful !== 0 " class="fas fa-times" style="color: red"></i>
+                                                                                     <i  *ngIf="vm?.playbook_successful === 0 " class="fas fa-check" style="color: green"></i>
+
+
                           </span>
                       </span>
                     <span class="fas fa-boxes" style="font-size: 18px;" data-toggle="tooltip" data-placement="right"
@@ -244,6 +248,9 @@
                           <span class="badge badge-pill badge-secondary"
                                 style="font-size: 10px; position: relative; top: -12px; left: -10px;">
                           {{this.condaPackagesByVM[vm.openstackid].toString()}}
+                             <i  *ngIf="vm?.playbook_successful !== 0 " class="fas fa-times" style="color: red"></i>
+                                                         <i  *ngIf="vm?.playbook_successful === 0 " class="fas fa-check" style="color: green"></i>
+
                           </span>
                       </span>
                   </div>

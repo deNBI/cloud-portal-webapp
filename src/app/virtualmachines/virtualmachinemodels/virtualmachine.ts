@@ -31,6 +31,7 @@ export class VirtualMachine {
   cardState: number;
   cluster: Clusterinfo;
   projectid: number;
+  playbook_successful: boolean;
   res_env_url: string;
   modes: ImageMode[];
   volumes: Volume[];
@@ -67,6 +68,7 @@ export class VirtualMachine {
     this.still_used_confirmation_requested = vm.still_used_confirmation_requested;
     this.still_used_confirmation_requested_date = vm.still_used_confirmation_requested_date;
     this.getTerminationStartDateString();
+    this.playbook_successful = vm.playbook_successful;
   }
 
   public getTerminationStartDateString(): string {
