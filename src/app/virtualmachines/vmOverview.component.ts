@@ -153,7 +153,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
               private imageService: ImageService, private userservice: UserService,
               private virtualmachineservice: VirtualmachineService, private fb: FormBuilder,
               private groupService: GroupService,
-              private clientService: ClientService,
+              private clientService: ClientService
   ) {
     this.actionsForm = fb.group({
                                   title: fb.control('initial value', Validators.required)
