@@ -133,8 +133,6 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
     })
   }
 
-
-
   ngOnInit(): void {
     this.activatedRoute.params.subscribe((paramsId: any): void => {
       this.vm_id = paramsId.id;
