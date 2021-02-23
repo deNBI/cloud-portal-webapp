@@ -55,7 +55,6 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
   snapshotSearchTerm: Subject<string> = new Subject<string>();
   errorMessage: boolean = false;
   error_msg: string = '';
-  private _condaPackages: CondaPackage[] = [];
   res_env_url: string = '';
   filteredMembers: any = null;
   backend_users: any = [];
@@ -133,14 +132,6 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
         this.conda_logs = new Condalog(log);
       }
     })
-  }
-
-  get condaPackages(): CondaPackage[] {
-    return this._condaPackages;
-  }
-
-  set condaPackages(value: CondaPackage[]) {
-    this._condaPackages = value;
   }
 
   ngOnInit(): void {
@@ -584,29 +575,6 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
     this.virtualmachineService.getVmById(this.vm_id).subscribe(
       (vm: VirtualMachine): void => {
         vm = new VirtualMachine(vm);
-        this.playbookService.getPlaybookForVM(this.vm_id).subscribe((pb: Object): void => {
-            if (pb != null) {
-              let pbs: string = pb['playbooks'].toString();
-              if (pbs != null) {
-                pbs = pbs.replace(/\\/g, '');
-                pbs = pbs.replace('"[', '[');
-                pbs = pbs.replace(']"', ']');
-                const pkgs: Object = JSON.parse(pbs);
-                if (pkgs != null) {
-                  const package_list: Object = pkgs['bioconda'];
-                  if (package_list != null) {
-                    for (const packageObject in package_list['packages']) {
-                      if (package_list['packages'].hasOwnProperty(packageObject)) {
-                        const c_index: string = packageObject;
-                        const c_package: any = package_list['packages'][c_index];
-                        this._condaPackages.push(new CondaPackage(c_package.name, c_package.version, c_package.build));
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          });
         this.checkAndGetForcDetails(vm);
         this.title = vm['name'];
         this.virtualMachine = vm;
