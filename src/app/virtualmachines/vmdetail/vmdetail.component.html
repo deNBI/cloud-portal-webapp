@@ -45,7 +45,7 @@
               <div class="col-4">
                 <div class="callout">
                   <small class="text-muted">with</small><br>
-                  <strong class="text-muted">{{mode.description}}</strong>
+                  <strong class="text-muted" [innerHTML]="mode?.description"></strong>
                 </div>
               </div>
 
@@ -211,10 +211,10 @@
         </div>
       </div>
 
-      <div class="card"  style=" "*ngIf="condaPackages?.length > 0"> <!-- remove "false" as soon as request ist working -->
+      <div class="card"  style=" "*ngIf="virtualMachine?.conda_packages.length > 0"> <!-- remove "false" as soon as request ist working -->
         <div class="card-header"><span class="font-weight-bold text-muted">Installed Conda Packages</span></div>
         <div class="card-body">
-          <div class="row" *ngFor="let pkg of condaPackages">
+          <div class="row" *ngFor="let pkg of virtualMachine?.conda_packages">
             <div class="col-4">
               <div class="callout">
                 <small class="text-muted">Package name</small><br>
