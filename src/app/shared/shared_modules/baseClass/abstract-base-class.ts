@@ -152,6 +152,9 @@ export abstract class AbstractBaseClasse {
   }
 
   lifeTimeReached(lifetimeDays: number, running: number): Lifetime_States {
+    if (!lifetimeDays || !running) {
+      return null;
+    }
     if ((lifetimeDays - running) < 0) {
       // expired
       return this.lifetime_states.EXPIRED
