@@ -1,9 +1,7 @@
 import {browser} from 'protractor';
 import {NewInstancePage} from '../page_objects/new_instance.po';
 import {LoginPage} from '../page_objects/login.po';
-import {VolumeOverviewPage} from '../page_objects/volume_overview.po';
 import {VMOverviewPage} from '../page_objects/vm_overview.po';
-import {SnapshotOverviewPage} from '../page_objects/vm_snapshot.po';
 import {VMDetailPage} from '../page_objects/vm_detail.po';
 import {Util} from '../util';
 

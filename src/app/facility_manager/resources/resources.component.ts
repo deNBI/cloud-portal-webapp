@@ -95,7 +95,7 @@ export class ResourcesComponent implements OnInit {
 
   setResources(tab_num: number): void {
 
-    this.setAllResourcesFalse()
+    this.setAllResourcesFalse();
     switch (tab_num) {
       case this.ALL_RESOURCES:
         this.ALL_ACTIVE = true;
@@ -110,7 +110,7 @@ export class ResourcesComponent implements OnInit {
       default:
         break;
     }
-    this.setVisibleResources()
+    this.setVisibleResources();
   }
 
   setTab(tab_num: number): void {
@@ -154,8 +154,8 @@ export class ResourcesComponent implements OnInit {
   }
 
   onChangeSelectedFacility(): void {
-    this.setAllTabsFalse()
-    this.getSelectedFacilityResources()
+    this.setAllTabsFalse();
+    this.getSelectedFacilityResources();
   }
 
   ngOnInit(): void {

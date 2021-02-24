@@ -1,8 +1,8 @@
-import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FacilityService} from '../../../api-connector/facility.service';
 import {ResourceMachine} from '../resource-machine';
 import {GPUSpecification} from '../gpu-specification';
-import {FormBuilder, FormControl, FormGroup, NgForm, Validators} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 
 /**
  * Class for ramfactors..
@@ -170,7 +170,7 @@ export class ResourcemachineOverviewComponent implements OnInit {
     this.machinesFormGroups[machine.id].addControl(machine_local_disk_storage, new FormControl([null]));
     this.machinesFormGroups[machine.id].get(machine_local_disk_storage)
       .setValidators([Validators.compose([Validators.required, Validators.pattern(/^\d+$/)])]);
-    this.machinesFormGroups[machine.id].addControl(machine_local_disk_encrypted, new FormControl([null]))
+    this.machinesFormGroups[machine.id].addControl(machine_local_disk_encrypted, new FormControl([null]));
 
     this.machinesFormGroups[machine.id].addControl(machine_name, new FormControl([null]));
     this.machinesFormGroups[machine.id].get(machine_name)
