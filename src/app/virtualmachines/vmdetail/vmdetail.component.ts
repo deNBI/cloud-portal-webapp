@@ -28,6 +28,7 @@ import {Volume} from '../volumes/volume';
 import {VolumeStates} from '../volumes/volume_states';
 import {Condalog} from '../conda/condalog';
 import {Backend} from '../conda/backend/backend';
+import {ImageMode} from '../../facility_manager/image-tag';
 
 /**
  * VM Detail page component
