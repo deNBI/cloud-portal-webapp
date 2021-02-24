@@ -252,7 +252,6 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
   getListOfTypes(): void {
     this.flavorService.getListOfTypesAvailable().subscribe((types: FlavorType[]): void => {
       this.setListOfTypes(types)
-      console.log(types);
     });
   }
 
