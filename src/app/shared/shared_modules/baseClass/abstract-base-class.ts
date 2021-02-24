@@ -103,9 +103,8 @@ export abstract class AbstractBaseClasse {
   /**
    * Used in application formular and on instance detail page
    */
-  gpuInformationLinks : [string, string][] =[['https://developer.nvidia.com/cuda-gpus', 'NVIDIA'],
+  gpuInformationLinks: [string, string][] = [['https://developer.nvidia.com/cuda-gpus', 'NVIDIA'],
     ['https://en.wikipedia.org/wiki/CUDA', 'Wikipedia']];
-
 
   // notification Modal variables
   public notificationModalTitle: string = 'Notification';
