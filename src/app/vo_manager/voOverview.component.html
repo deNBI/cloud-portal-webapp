@@ -183,10 +183,10 @@
                 <td>  <span *ngIf="project | hasstatusinlist:project_states.ACTIVE"
                             style="margin-left: 5px"
                             class="badge badge-success">{{project_states[project_states.ACTIVE]}} </span>
-                  <span *ngIf="project?.LifetimeReached| hasStatus:lifetime_states.EXPIRED"
+                  <span *ngIf="(project?.LifetimeReached | hasStatus:lifetime_states.EXPIRED) && !(project | hasstatusinlist: application_states.WAIT_FOR_CONFIRMATION)"
                         style="margin-left: 5px"
                         class="badge badge-danger">{{lifetime_states[lifetime_states.EXPIRED]}} </span>
-                  <span *ngIf="project?.LifetimeReached| hasStatus:lifetime_states.EXPIRES_SOON"
+                  <span *ngIf="project?.LifetimeReached | hasStatus:lifetime_states.EXPIRES_SOON"
                         style="margin-left: 5px"
                         class="badge badge-warning">{{lifetime_states[lifetime_states.EXPIRES_SOON]}}</span>
                   <span *ngIf="project| hasstatusinlist: project_states.SUSPENDED"
@@ -605,10 +605,21 @@
               </button>
             </td>
 
-            <td>{{ selectedProject?.DateCreated }}</td>
-            <td>{{selectedProject?.DateEnd}}</td>
-            <td>{{ selectedProject?.DaysRunning }}</td>
-            <td>{{selectedProject?.LifetimeDays}}</td>
+            <td>
+              <span *ngIf="selectedProject?.DateCreated">{{selectedProject?.DateCreated}}</span>
+              <span *ngIf="!selectedProject?.DateCreated">No creation date available</span>
+            </td>
+            <td>
+              <span *ngIf="selectedProject?.DateEnd">{{selectedProject?.DateEnd}}</span>
+              <span *ngIf="!selectedProject?.DateEnd">No end date available</span>
+            </td>
+            <td>
+              <span *ngIf="selectedProject?.DaysRunning">{{selectedProject?.DaysRunning}}</span>
+              <span *ngIf="!selectedProject?.DaysRunning">No runtime available</span>
+            <td>
+              <span *ngIf="selectedProject?.LifetimeDays">{{selectedProject?.LifetimeDays}}</span>
+              <span *ngIf="!selectedProject?.LifetimeDays">No lifetime available</span>
+            </td>
 
             </tbody>
           </table>
