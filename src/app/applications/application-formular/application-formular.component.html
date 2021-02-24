@@ -271,10 +271,10 @@
                     </div>
                   </div>
                   <div *ngIf="t.shortcut === 'GPU'" class="alert alert-light">
-                    Check which drivers are currently supported here:<br>
-                    <a href="{{gpuInformationLinks[0]}}" target="_blank" rel="noopener noreferrer">Test1</a>
-                    <br>
-                    <a href="{{gpuInformationLinks[1]}}" target="_blank" rel="noopener noreferrer">Test2</a>
+                    You can check which CUDA drivers are currently supported here:<br>
+                    <div *ngFor="let link of gpuInformationLinks">
+                      <a href="{{link[0]}}" target="_blank" rel="noopener noreferrer">{{link[1]}}</a>
+                    </div>
                   </div>
                 </accordion-group>
               </ng-container>

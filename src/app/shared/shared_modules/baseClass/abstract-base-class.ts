@@ -100,6 +100,13 @@ export abstract class AbstractBaseClasse {
 
   collapse_status: { [id: string]: boolean } = {};
 
+  /**
+   * Used in application formular and on instance detail page
+   */
+  gpuInformationLinks : [string, string][] =[['https://developer.nvidia.com/cuda-gpus', 'NVIDIA'],
+    ['https://en.wikipedia.org/wiki/CUDA', 'Wikipedia']];
+
+
   // notification Modal variables
   public notificationModalTitle: string = 'Notification';
   public notificationModalMessage: string = 'Please wait...';
