@@ -91,21 +91,20 @@
         </div>
       </ng-container>
     </div>
+    <ng-container *ngIf="selectedTemplate?.incompatible_versions?.length !== 0">
     <div class="row col">
       <div *ngIf="selectedTemplate != undefinedTemplate" class="alert alert-warning col-12">
         This template is known to be incompatible with: <br>
-        <ng-container *ngIf="selectedTemplate.incompatible_versions.length !== 0">
           <li *ngFor="let version of selectedTemplate.incompatible_versions">
             {{version}}
           </li>
-        </ng-container>
-        <ng-container *ngIf="selectedTemplate.incompatible_versions.length === 0">
           No known incompatible Ubuntu versions.
-        </ng-container>
         <br>
         If you encounter an error with a version that is not listed, please contact us at <a href="mailto:cloud-portal-support@deNBI.DE">cloud-portal-support@deNBI.DE</a>.
       </div>
     </div>
+    </ng-container>
+
   </div>
 
   <div *ngIf="onlyNamespace || selectedTemplate != undefinedTemplate" style="border-style: dashed; border-color: lightgray; padding: 10px">

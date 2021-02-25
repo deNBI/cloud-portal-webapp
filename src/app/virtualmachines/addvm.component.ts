@@ -480,7 +480,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
         this.progress_bar_width = 50
       }).catch((): any => {
       });
-      const additional_elixir_ids: string[] = this.members_to_add.map((mem: ProjectMember): string => mem.elixirId)
+      const additional_elixir_ids: string[] = this.members_to_add.map((mem: ProjectMember): string => mem.elixirId);
 
       this.virtualmachineservice.startVM(
         flavor_fixed, this.selectedImage, servername,
