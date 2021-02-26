@@ -267,8 +267,13 @@
                         </div>
                         <span class="help-block">Number of VMs you would like to run of this particular flavor</span>
                         <div *ngIf="f?.comment" class="alert alert-info">{{f.comment}}</div>
-
                       </div>
+                    </div>
+                  </div>
+                  <div *ngIf="t.shortcut === 'GPU'" class="alert alert-light">
+                    You can check which CUDA drivers are currently supported here:<br>
+                    <div *ngFor="let link of gpuInformationLinks">
+                      <a href="{{link[0]}}" target="_blank" rel="noopener noreferrer">{{link[1]}}</a>
                     </div>
                   </div>
                 </accordion-group>
