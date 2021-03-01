@@ -2,6 +2,12 @@
 // https://github.com/angular/protractor/blob/master/lib/config.ts
 
 const {SpecReporter} = require('jasmine-spec-reporter');
+const HtmlScreenshotReporter = require('protractor-jasmine2-screenshot-reporter');
+
+const reporter = new HtmlScreenshotReporter({
+  dest: 'target/screenshots',
+  filename: 'my-report.html'
+});
 const DescribeFailureReporter = require('protractor-stop-describe-on-failure')
 const fs = require('fs');
 let rawdata = fs.readFileSync('e2e/environment.json');
@@ -64,10 +70,19 @@ exports.config = {
     require('ts-node').register({
       project: 'e2e/tsconfig.e2e.json'
     });
+    return new Promise(function (resolve) {
+      reporter.beforeLaunch(resolve);
+    });
   },
   onPrepare() {
+    jasmine.getEnv().addReporter(reporter);
     jasmine.getEnv().addReporter(new SpecReporter({spec: {displayStacktrace: 'pretty'}}));
     jasmine.getEnv().addReporter(DescribeFailureReporter(jasmine.getEnv()));
     browser.manage().window().setSize(parseInt(credentials["browser_w"]), parseInt(credentials["browser_h"]));
+  },
+  afterLaunch: function (exitCode) {
+    return new Promise(function (resolve) {
+      reporter.afterLaunch(resolve.bind(this, exitCode));
+    });
   }
 };
