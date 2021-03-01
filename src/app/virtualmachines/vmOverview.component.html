@@ -230,20 +230,29 @@
 
 
                   </div>
-                  <div *ngIf="condaPackagesByVM[vm?.openstackid]" class="col-md-1">
+                  <div *ngIf="vm?.conda_packages" class="col-md-1">
                       <span class="fas fa-box" style="font-size: 18px;" data-toggle="tooltip" data-placement="right"
-                            title="One installed Conda-Package" *ngIf="condaPackagesByVM[vm?.openstackid] === 1">
+                            title="One installed Conda-Package" *ngIf="vm?.conda_packages?.length === 1">
                           <span class="badge badge-pill badge-secondary"
                                 style="font-size: 10px; position: relative; top: -12px; left: -10px;">
-                          {{this.condaPackagesByVM[vm.openstackid].toString()}}
+                          {{vm?.conda_packages?.length.toString()}}
+                                                        <i *ngIf="vm?.playbook_successful == null" class="fa-spinner fa-spin"></i>
+                                                         <i  *ngIf="vm?.playbook_successful !== 0 && vm?.playbook_successful != null " class="fas fa-times" style="color: red"></i>
+                                                          <i  *ngIf="vm?.playbook_successful === 0 " class="fas fa-check" style="color: green"></i>
+
+
                           </span>
                       </span>
                     <span class="fas fa-boxes" style="font-size: 18px;" data-toggle="tooltip" data-placement="right"
-                          title="{{'Number of Conda Packages installed: ' + this.condaPackagesByVM[vm.openstackid].toString()}}"
-                          *ngIf="condaPackagesByVM[vm?.openstackid] > 1">
+                          title="{{'Number of Conda Packages installed: ' + vm?.conda_packages?.length.toString()}}"
+                          *ngIf="vm?.conda_packages?.length > 1">
                           <span class="badge badge-pill badge-secondary"
                                 style="font-size: 10px; position: relative; top: -12px; left: -10px;">
-                          {{this.condaPackagesByVM[vm.openstackid].toString()}}
+                          {{vm?.conda_packages?.length.toString()}}
+                            <i *ngIf="vm?.playbook_successful == null" class="fa-spinner fa-spin"></i>
+                             <i  *ngIf="vm?.playbook_successful !== 0 &&  vm?.playbook_successful != null" class="fas fa-times" style="color: red"></i>
+                             <i *ngIf="vm?.playbook_successful === 0 " class="fas fa-check" style="color: green"></i>
+
                           </span>
                       </span>
                   </div>
@@ -419,7 +428,7 @@
                   <div class="col-md-2" *ngIf="(vm?.status |hasStatus:VirtualMachineStates.staticSHUTOFF) ">
                     <div class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
                          [id]="'restartVMButton_' + vm?.name" (click)="selectedVm=vm;submitRestartModal.show();">
-                      Resume VM
+                      Start VM
                     </div>
                   </div>
                   <div class="col-md-2"

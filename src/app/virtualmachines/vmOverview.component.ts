@@ -17,8 +17,6 @@ import {GroupService} from '../api-connector/group.service';
 import {ClientService} from '../api-connector/client.service';
 import {Client} from '../vo_manager/clients/client.model';
 import {TemplateNames} from './conda/template-names';
-import {PlaybookService} from '../api-connector/playbook.service';
-import {BiocondaService} from '../api-connector/bioconda.service';
 import {ClipboardService} from 'ngx-clipboard';
 import {Volume} from './volumes/volume';
 import {VolumeStates} from './volumes/volume_states';
@@ -32,7 +30,7 @@ import {WIKI_GUACAMOLE_LINK, WIKI_RSTUDIO_LINK, WIKI_VOLUME_OVERVIEW} from '../.
              templateUrl: 'vmOverview.component.html',
              styleUrls: ['./vmOverview.component.scss'],
              providers: [FacilityService, ImageService, UserService,
-               VirtualmachineService, FullLayoutComponent, GroupService, ClientService, PlaybookService, BiocondaService]
+               VirtualmachineService, FullLayoutComponent, GroupService, ClientService]
            })
 
 export class VmOverviewComponent implements OnInit, OnDestroy {
@@ -150,19 +148,13 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 
   clientsForcUrls: {[client_id: string]: [string]} = {};
 
-  /*
-    Key-Value-Map for Conda Packages installed on machine.
-   */
-  condaPackagesByVM: {[vm_id: string]: number} = {};
-
   constructor(private facilityService: FacilityService,
               private clipboardService: ClipboardService,
               private imageService: ImageService, private userservice: UserService,
               private virtualmachineservice: VirtualmachineService, private fb: FormBuilder,
               private groupService: GroupService,
-              private clientService: ClientService,
-              private playbookService: PlaybookService,
-              private biocondaService: BiocondaService) {
+              private clientService: ClientService
+  ) {
     this.actionsForm = fb.group({
                                   title: fb.control('initial value', Validators.required)
                                 });
@@ -172,6 +164,9 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
    * Apply filter to all vms.
    */
   applyFilter(): void {
+    if (this.filter) {
+      this.filter = this.filter.trim();
+    }
     this.isSearching = true;
     if (typeof(this.vm_per_site) !== 'number' || this.vm_per_site <= 0) {
       this.vm_per_site = 7;
@@ -241,7 +236,6 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
         if (result.value === 'attached') {
           this.virtualmachineservice.getVmById(vm.openstackid).subscribe((upd_vm: VirtualMachine): void => {
             const new_vm: VirtualMachine = new VirtualMachine(upd_vm);
-            this.checkCondaPackages(new_vm);
             this.vms_content[idx] = new_vm;
 
           })
@@ -264,7 +258,6 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
         if (result.value === 'deleted') {
           this.virtualmachineservice.getVmById(vm.openstackid).subscribe((upd_vm: VirtualMachine): void => {
             const new_vm: VirtualMachine = new VirtualMachine(upd_vm);
-            this.checkCondaPackages(new_vm);
             this.vms_content[idx] = new_vm;
 
           })
@@ -606,32 +599,6 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 
   }
 
-  checkCondaPackages(vm: VirtualMachine): void {
-    this.playbookService.getPlaybookForVM(vm.openstackid).subscribe((pb: Object): void => {
-      if (pb != null) {
-        let pbs: string = pb['playbooks'].toString();
-        if (pbs != null) {
-          pbs = pbs.replace(/\\/g, '');
-          pbs = pbs.replace('"[', '[');
-          pbs = pbs.replace(']"', ']');
-          const pkgs: Object = JSON.parse(pbs);
-          if (pkgs != null) {
-            const package_list: Object = pkgs['bioconda'];
-            if (package_list != null) {
-              let numberOfPackages: number = 0;
-              for (const packageObject in package_list['packages']) {
-                if (package_list['packages'].hasOwnProperty(packageObject)) {
-                  numberOfPackages++;
-                }
-              }
-              this.condaPackagesByVM[vm.openstackid] = numberOfPackages;
-            }
-          }
-        }
-      }
-    });
-  }
-
   showCopiedMessage(name: string): void {
     const span_id: string = `${name}resenvSpan`;
     const innerHTML: string = document.getElementById(span_id).innerHTML;
@@ -650,7 +617,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
     // tslint:disable-next-line:no-for-each-push
     vm_list.forEach((new_vm: VirtualMachine): void => {
       const vm: VirtualMachine = new VirtualMachine(new_vm);
-      this.checkCondaPackages(vm);
+      vm.cardState = 0;
       tmp_vms.push(vm);
 
     });

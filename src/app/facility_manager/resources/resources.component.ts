@@ -8,6 +8,7 @@ import {ObjectStorageFactor} from './object-storage-factor';
 import {VolumeStorageFactor} from './volume-storage-factor';
 import {GeneralStorageFactor} from './general-storage-factor';
 import {ResourceMachine} from './resource-machine';
+import {GPUSpecification} from './gpu-specification';
 
 /**
  * Facility resource component.
@@ -37,17 +38,20 @@ export class ResourcesComponent implements OnInit {
   OBJECT_STORAGE_TAB: number = 2;
   VOLUME_STORAGE_TAB: number = 3;
   GENERAL_STORAGE_TAB: number = 4;
+  GPU_TAB: number = 5;
 
   MACHINE_DEFINITION_TAB_ACTIVE: boolean = false;
   STORAGE_TAB_ACTIVE: boolean = false;
   GENERAL_STORAGE_TAB_ACTIVE: boolean = false;
   OBJECT_STORAGE_TAB_ACTIVE: boolean = false;
   VOLUME_STORAGE_TAB_ACTIVE: boolean = false;
+  GPU_TAB_ACTIVE: boolean = false;
 
   objectStorageFactors: ObjectStorageFactor[] = [];
   volumeStorageFactors: VolumeStorageFactor[] = [];
   generalStorageFactors: GeneralStorageFactor[] = [];
   resourceMachines: ResourceMachine[] = [];
+  gpuSpecifications: GPUSpecification[] = [];
 
   /**
    * Chosen facility.
@@ -77,6 +81,7 @@ export class ResourcesComponent implements OnInit {
     this.GENERAL_STORAGE_TAB_ACTIVE = false;
     this.OBJECT_STORAGE_TAB_ACTIVE = false;
     this.VOLUME_STORAGE_TAB_ACTIVE = false;
+    this.GPU_TAB_ACTIVE = false;
     this.STORAGE_TAB_ACTIVE = false;
 
   }
@@ -90,7 +95,7 @@ export class ResourcesComponent implements OnInit {
 
   setResources(tab_num: number): void {
 
-    this.setAllResourcesFalse()
+    this.setAllResourcesFalse();
     switch (tab_num) {
       case this.ALL_RESOURCES:
         this.ALL_ACTIVE = true;
@@ -105,12 +110,12 @@ export class ResourcesComponent implements OnInit {
       default:
         break;
     }
-    this.setVisibleResources()
+    this.setVisibleResources();
   }
 
   setTab(tab_num: number): void {
 
-    this.setAllTabsFalse()
+    this.setAllTabsFalse();
     switch (tab_num) {
       case this.MACHINE_DEFINITION_TAB:
         this.MACHINE_DEFINITION_TAB_ACTIVE = true;
@@ -139,14 +144,18 @@ export class ResourcesComponent implements OnInit {
 
         break;
 
+      case this.GPU_TAB:
+        this.GPU_TAB_ACTIVE = true;
+        break;
+
       default:
         break;
     }
   }
 
   onChangeSelectedFacility(): void {
-    this.setAllTabsFalse()
-    this.getSelectedFacilityResources()
+    this.setAllTabsFalse();
+    this.getSelectedFacilityResources();
   }
 
   ngOnInit(): void {
@@ -179,25 +188,27 @@ export class ResourcesComponent implements OnInit {
     this.facilityService.getObjectStorageFactors(this.selectedFacility['FacilityId']).subscribe(
       (res: ObjectStorageFactor[]): void => {
         this.objectStorageFactors = res;
-      })
+      });
     this.facilityService.getGeneralStorageFactors(this.selectedFacility['FacilityId']).subscribe((res: GeneralStorageFactor[]): void => {
       this.generalStorageFactors = res;
-    })
+    });
     this.facilityService.getResourceMachines(this.selectedFacility['FacilityId']).subscribe((res: ResourceMachine[]): void => {
       this.resourceMachines = res;
-    })
+      console.log(this.resourceMachines);
+    });
 
     this.facilityService.getVolumeStorageFactors(this.selectedFacility['FacilityId']).subscribe((res: VolumeStorageFactor[]): void => {
       this.volumeStorageFactors = res;
-    })
+    });
+    this.facilityService.getGPUSpecifications(this.selectedFacility['FacilityId']).subscribe((specs: GPUSpecification[]): void => {
+      this.gpuSpecifications = specs;
+    });
     this.facilityService.getFacilityResources(
-      this.selectedFacility['FacilityId']).subscribe((res: Resources[]): void => {
-
-                                                       this.resources = res;
-
-                                                       this.setVisibleResources()
-                                                     }
-    )
+      this.selectedFacility['FacilityId']).subscribe(
+        (res: Resources[]): void => {
+          this.resources = res;
+          this.setVisibleResources()
+        });
 
   }
 

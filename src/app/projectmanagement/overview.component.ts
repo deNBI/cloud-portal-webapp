@@ -253,15 +253,10 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
     if (this.project != null) {
       this.creditsService.getCreditsUsageHistoryOfProject(Number(this.project.Id.toString())).toPromise()
         .then((response: {}): void => {
-            // tslint:disable-next-line:triple-equals
-            if (response['data_points'] != undefined) {
+            if (response['data_points'] !== undefined) {
               const data_points: number[] = response['data_points'];
-              const ceiling_line: number[] = [];
-              const ceiling_value: number = Math.max.apply(null, data_points);
-              // tslint:disable-next-line:id-length prefer-for-of
-              for (let i: number = 0; i < data_points.length; i++) {
-                ceiling_line.push(ceiling_value);
-              }
+              const ceiling_line: number[] = new Array(data_points.length).fill(this.project.CurrentCredits);
+
               this.creditsChart = new Chart(this.creditsCanvas.nativeElement, {
                 type: 'line',
                 data: {
@@ -880,7 +875,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   getProject(): void {
 
     this.groupService.getGroupDetails(this.project_id).subscribe((group: any): void => {
-      const dateCreated: moment.Moment = moment.unix(group['createdAt']);
+      const dateCreated: moment.Moment = group['createdAt'];
       const dateDayDifference: number = Math.ceil(moment().diff(dateCreated, 'days', true));
       const is_pi: boolean = group['is_pi'];
       const groupid: string = group['id'];
@@ -897,7 +892,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
           facility['compute_center_facility_id'], facility['compute_center_name'],
           facility['compute_center_login'], facility['compute_center_support_mail']);
       }
-      this.isAdmin = is_pi
+      this.isAdmin = is_pi;
 
       const newProject: Project = new Project(
         groupid,

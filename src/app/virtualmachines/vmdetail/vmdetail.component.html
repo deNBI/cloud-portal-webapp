@@ -45,7 +45,7 @@
               <div class="col-4">
                 <div class="callout">
                   <small class="text-muted">with</small><br>
-                  <strong class="text-muted">{{mode.description}}</strong>
+                  <strong class="text-muted" [innerHTML]="mode?.description"></strong>
                 </div>
               </div>
 
@@ -106,7 +106,7 @@
             <div class="col-3" *ngIf="virtualMachine?.status === virtualMachineStates.staticSHUTOFF">
               <button type="button" class="btn btn-success" style="width:100%;" id="restartVMButton"
                       (click)="submitRestartModal.show();">
-                <strong>Restart VM</strong>
+                <strong>Start VM</strong>
               </button>
             </div>
           </div>
@@ -165,6 +165,14 @@
                 <strong class="text-muted">{{virtualMachine?.flavor?.gpu}}</strong>
               </div>
             </div>
+            <div class="col-6" *ngIf="virtualMachine?.flavor?.type.shortcut ==='GPU'">
+              <div class="alert alert-light">
+                You can check which CUDA drivers are currently supported here:<br>
+                <div *ngFor="let link of gpuInformationLinks">
+                  <a href="{{link[0]}}" target="_blank" rel="noopener noreferrer">{{link[1]}}</a>
+                </div>
+              </div>
+            </div>
           </div>
           <div class="row">
             <div class="col-6" *ngIf="virtualMachine?.flavor?.comment">
@@ -174,7 +182,6 @@
               </div>
             </div>
           </div>
-
         </div>
       </div>
 
@@ -211,10 +218,10 @@
         </div>
       </div>
 
-      <div class="card"  style=" "*ngIf="condaPackages?.length > 0"> <!-- remove "false" as soon as request ist working -->
+      <div class="card"  style=" "*ngIf="virtualMachine?.conda_packages.length > 0"> <!-- remove "false" as soon as request ist working -->
         <div class="card-header"><span class="font-weight-bold text-muted">Installed Conda Packages</span></div>
         <div class="card-body">
-          <div class="row" *ngFor="let pkg of condaPackages">
+          <div class="row" *ngFor="let pkg of virtualMachine?.conda_packages">
             <div class="col-4">
               <div class="callout">
                 <small class="text-muted">Package name</small><br>

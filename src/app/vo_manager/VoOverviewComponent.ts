@@ -175,7 +175,7 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
     this.voserice.getAllGroupsWithDetails().subscribe((result: any): void => {
       const vo_projects: any = result;
       for (const group of vo_projects) {
-        const dateCreated: moment.Moment = moment.unix(group['createdAt']);
+        const dateCreated: moment.Moment = group['createdAt'];
         const dateDayDifference: number = Math.ceil(moment().diff(dateCreated, 'days', true));
         const is_pi: boolean = group['is_pi'];
         const lifetime: number = group['lifetime'];
@@ -201,14 +201,14 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
           Number(groupid),
           shortname,
           group['description'],
-          `${dateCreated.date()}.${(dateCreated.month() + 1)}.${dateCreated.year()}`,
+          moment(dateCreated).format('DD.MM.YYYY'),
           dateDayDifference,
           is_pi,
           true,
           compute_center,
           currentCredits,
           approvedCredits
-          );
+        );
         newProject.Lifetime = lifetime;
         newProject.project_application_status = group['status'];
         newProject.OpenStackProject = group['openstack_project'];
@@ -222,7 +222,6 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
           newProject.LifetimeDays = lifetimeDays;
           newProject.DateEnd = expirationDate;
           newProject.LifetimeReached = this.lifeTimeReached(lifetimeDays, dateDayDifference);
-
         }
 
         this.projects.push(newProject);
