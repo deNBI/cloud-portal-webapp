@@ -94,8 +94,8 @@ exports.config = {
     browserName: 'chrome',
     acceptInsecureCerts: true,
     chromeOptions: {
-       args: ["--incognito", "--ignore-certificate-errors", '--headless', "--start-maximized", '--disable-gpu', '--window-size=1200,800']
-      //args: ["--incognito", "--ignore-certificate-errors"]
+      //args: ["--incognito", "--ignore-certificate-errors", '--headless', "--start-maximized", '--disable-gpu', '--window-size=1200,800']
+      args: ["--incognito", "--ignore-certificate-errors"]
 
     }
   },
