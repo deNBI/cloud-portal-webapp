@@ -49,7 +49,7 @@ exports.config = {
     browserName: 'chrome',
     acceptInsecureCerts: true,
     chromeOptions: {
-      args: ["--incognito"]
+      args: ["--incognito", "--ignore-certificate-errors", '--headless', "--start-maximized", '--disable-gpu', '--window-size=1600x1000']
     }
   },
   directConnect: true, //uncomment on macOS, also start webserver via webdriver-manager
