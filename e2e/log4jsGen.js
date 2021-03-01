@@ -1,12 +1,11 @@
 'use strict';
 var log4js = require('log4js');
-var log4jsGen = {
-  getLogger: function getLogger() {
-    log4js.loadAppender('file');
-    log4js.addAppender(log4js.appenders.file('./logs/ExecutionLog.log'), 'logs');
-    var logger = log4js.getLogger('logs');
-    return logger;
-  }
-};
+log4js.configure({
+  appenders: [
+    {type: 'console'},
+    {type: 'file', filename: 'logs/cheese.log', category: 'logs'}
+  ]
+});
+var log4jsGen = log4js.getLogger('logs');
 
 module.exports = log4jsGen;
