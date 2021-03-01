@@ -39,13 +39,17 @@ export class LoginPage {
   static async useOrcid(email: string, psw: string): Promise<any> {
     await Util.clickElementByLinkText('Sign in with ORCID')
     // Input Email
+    console.log(await browser.driver.getCurrentUrl());
+
     await Util.waitForPage('https://orcid.org/signin');
+    console.log(await browser.driver.getCurrentUrl());
+
     await Util.sendTextToElementById('username', email, false);
     await Util.sendTextToElementById('password', psw, false);
     await Util.clickElementById('signin-button');
+    console.log(await browser.driver.getCurrentUrl());
     await Util.waitForPage('userinfo');
-        console.log(await browser.driver.getCurrentUrl());
-
+    console.log(await browser.driver.getCurrentUrl());
 
   }
 
