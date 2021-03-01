@@ -4,7 +4,7 @@ log4js.configure({
 
   appenders: {
     fileLog: {type: 'file', filename: './logs/ExecutionLog.log'},
-    console: {type: 'log4js-protractor-appender'}
+    console: {type: 'console'}
   }
 });
 var log4jsGen = log4js.getLogger('logs');
