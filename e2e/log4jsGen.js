@@ -3,7 +3,7 @@ var log4js = require('log4js');
 log4js.configure({
 
   appenders: {
-    fileLog: {type: 'file', filename: './logs/ExecutionLog.log'},
+    fileLog: {type: 'file', filename: './logs/ExecutionLog.log', category: 'logs'},
     console: {type: 'console'}
   }
 });
