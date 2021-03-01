@@ -49,7 +49,7 @@ exports.config = {
     browserName: 'chrome',
     acceptInsecureCerts: true,
     chromeOptions: {
-      args: ["--incognito", "--ignore-certificate-errors", '--headless', "--start-maximized", '--disable-gpu', '--window-size=1200,800']
+      args: ["--incognito", "--ignore-certificate-errors", '--headless', "--start-maximized", '--disable-gpu', '--window-size=1200,800','--user-agent ="Mozilla/5.0 (iPhone; U; CPU iPhone OS 5_1_1 like Mac OS X; en) AppleWebKit/534.46.0 (KHTML, like Gecko) CriOS/19.0.1084.60 Mobile/9B206 Safari/7534.48.3"']
     }
   },
   directConnect: true, //uncomment on macOS, also start webserver via webdriver-manager
