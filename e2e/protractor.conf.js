@@ -2,16 +2,8 @@
 // https://github.com/angular/protractor/blob/master/lib/config.ts
 
 const {SpecReporter} = require('jasmine-spec-reporter');
-const HtmlScreenshotReporter = require('protractor-jasmine2-screenshot-reporter');
+const HtmlReporter = require('protractor-beautiful-reporter');
 
-const reporter = new HtmlScreenshotReporter({
-  dest: 'target/screenshots',
-  filename: 'my-report.html',
-  reportFailedUrl: true,
-  fileNameDateSuffix: true,
-  takeScreenShotsOnlyForFailedSpecs: true,
-
-});
 const DescribeFailureReporter = require('protractor-stop-describe-on-failure')
 const fs = require('fs');
 let rawdata = fs.readFileSync('e2e/environment.json');
@@ -59,7 +51,9 @@ exports.config = {
     browserName: 'chrome',
     acceptInsecureCerts: true,
     chromeOptions: {
-      args: ["--incognito", "--ignore-certificate-errors", '--headless', "--start-maximized", '--disable-gpu', '--window-size=1200,800']
+      // args: ["--incognito", "--ignore-certificate-errors", '--headless', "--start-maximized", '--disable-gpu', '--window-size=1200,800']
+      args: ["--incognito", "--ignore-certificate-errors"]
+
     }
   },
   directConnect: true, //uncomment on macOS, also start webserver via webdriver-manager
@@ -74,16 +68,13 @@ exports.config = {
     require('ts-node').register({
       project: 'e2e/tsconfig.e2e.json'
     });
-    process.on('uncaughtException', function () {
-      reporter.jasmineDone();
-      reporter.afterLaunch();
-    });
-    return new Promise(function (resolve) {
-      reporter.beforeLaunch(resolve);
-    });
+
+
   },
   onPrepare() {
-    jasmine.getEnv().addReporter(reporter);
+    jasmine.getEnv().addReporter(new HtmlReporter({
+      baseDirectory: 'target/screenshots'
+    }).getJasmine2Reporter());
     jasmine.getEnv().addReporter(new SpecReporter({spec: {displayStacktrace: 'pretty'}}));
     jasmine.getEnv().addReporter(DescribeFailureReporter(jasmine.getEnv()));
     browser.manage().window().setSize(parseInt(credentials["browser_w"]), parseInt(credentials["browser_h"]));
