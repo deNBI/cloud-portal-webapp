@@ -146,6 +146,9 @@
                   <span *ngIf="project?.LifetimeReached |hasStatus:lifetime_states.EXPIRES_SOON"
                         style="margin-left: 5px"
                         class="badge badge-warning">{{lifetime_states[lifetime_states.EXPIRES_SOON]}}</span>
+                  <span *ngIf="project | hasstatusinlist: application_states.WAIT_FOR_TERMINATION_FM "
+                        style="margin-left: 5px"
+                        class="badge badge-warning">{{application_states[application_states.WAIT_FOR_TERMINATION_FM]}}</span>
                 <td class="col-md-2">
                   <button class="btn btn-secondary"
                           (click)="getProjectLifetime(project);selectedProject=project;infoModal.show();">
@@ -159,13 +162,20 @@
                 <!--td>{{ project.DaysRunning }}</td>-->
                 <!--td>{{project.LifetimeDays}}</td-->
                 <td class="col-md-2">
-                  <button type="button" class="btn btn-secondary"
-                          data-toggle="modal"
-                          (click)="showMembersOfTheProject(project.Id, project.Name); usersModal.show(); "
+                  <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-secondary"
+                            data-toggle="modal"
+                            (click)="showMembersOfTheProject(project.Id, project.Name); usersModal.show();">
+                      <i class="fa fa-users"></i>&nbsp;Show Members
+                    </button>
+                    <button type="button" class="btn btn-danger"
+                            data-toggle="modal" *ngIf="project | hasstatusinlist: application_states.WAIT_FOR_TERMINATION_FM"
+                            (click)="selectedProject = project; terminateModal.show()">
+                      <i class="fa fa-users"></i>&nbsp;Terminate Project
+                    </button>
+                  </div>
 
-                  >
-                    <i class="fa fa-users"></i>&nbsp;Show Members
-                  </button>
+
                 </td>
               </tr>
               </tbody>
@@ -616,3 +626,66 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div>
+
+<div bsModal #terminateModal="bs-modal" class="modal fade" tabindex="-1"
+     role="dialog" aria-labelledby="Label"
+     aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Terminate Project</h4>
+        <button type="button" class="close" style="cursor:pointer"
+                (click)="terminateModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <div class="alert alert-warning" role="alert">
+          Are you sure you want to terminate this project?
+        </div>
+        <app-project-os-details *ngIf="selectedProject" [project]="selectedProject"></app-project-os-details>
+      </div>
+      <div class="modal-footer">
+        <button class="btn  btn-success col-md-4" id="terminate_project_btn"
+                (click)="terminateProject();terminateModal.hide();notificationModal.show();;">
+          Yes
+        </button>
+        <button class="btn  btn-danger col-md-4" type="reset"
+                (click)="terminateModal.hide()">Cancel
+        </button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div bsModal #notificationModal="bs-modal" class="modal" tabindex="-1" role="dialog"
+     aria-labelledby="Label"
+     aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">{{ notificationModalTitle }}</h4>
+        <button type="button" class="close" style="cursor:pointer"
+                (click)="notificationModal.hide()"
+                aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-{{ notificationModalType }}" id="notification_message" role="alert">
+          {{ notificationModalMessage }}
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="close_notification"
+                type="button"
+                (click)="notificationModal.hide();resetNotificationModal();"
+                class="btn  btn-secondary"> Close
+        </button>
+
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

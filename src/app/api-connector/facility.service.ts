@@ -545,4 +545,11 @@ export class FacilityService {
     });
   }
 
+  approveTerminationByFM(groupId: number | string): Observable<object> {
+    //TODO: change URL
+      return this.http.delete(`${ApiSettings.getApiBaseURL()}vo/projects/${groupId}/`, {
+        withCredentials: true
+      });
+  }
+
 }

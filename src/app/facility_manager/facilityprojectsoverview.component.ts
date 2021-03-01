@@ -14,6 +14,7 @@ import {IResponseTemplate} from '../api-connector/response-template';
 import {Subject} from 'rxjs';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {WordPressTag} from './newsmanagement/wp-tags';
+import {VoService} from "../api-connector/vo.service";
 
 /**
  * Facility Project overview component.
@@ -456,5 +457,34 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 
   public comingSoon(): void {
     alert('This function will be implemented soon.')
+  }
+
+  // TODO: request only for OS
+  public terminateProject(): void {
+    this.facilityservice.approveTerminationByFM(this.selectedProject.Id)
+      .subscribe((): void => {
+          const indexAll: number = this.projects.indexOf(this.selectedProject, 0);
+
+          this.projects.splice(indexAll, 1);
+          this.applyFilter();
+          if (this.selectedProject.OpenStackProject) {
+            this.updateNotificationModal('Success', 'The request to terminate the project was forwarded to the facility manager.', true, 'success')
+          } else {
+            this.updateNotificationModal('Success', 'The  project was terminated.', true, 'success');
+          }
+        },
+        (error: any): void => {
+          if (error['status'] === 409) {
+            this.updateNotificationModal(
+              'Failed',
+              `The project could not be terminated. Reason: ${error['error']['reason']} for ${error['error']['openstackid']}`,
+              true,
+              'danger')
+          } else {
+            this.updateNotificationModal('Failed', 'The project could not be terminated.', true, 'danger');
+          }
+
+        }
+      )
   }
 }
