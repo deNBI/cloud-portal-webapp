@@ -130,7 +130,7 @@ export class Util {
     await Util.waitForElementToBeClickableByLinkText(text)
     this.logInfo(`Clicking element with text: [${text}]`)
 
-    return await element(by.linkText('Sign in with Google')).click();
+    return await element(by.linkText(text)).click();
 
   }
 

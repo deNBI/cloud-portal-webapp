@@ -37,11 +37,8 @@ export class LoginPage {
   }
 
   static async useOrcid(email: string, psw: string): Promise<any> {
-    Util.logInfo(await browser.driver.getPageSource());
-
     await Util.clickElementByLinkText('Sign in with ORCID')
     // Input Email
-    Util.logInfo(await browser.driver.getPageSource());
 
     await Util.waitForPage('https://orcid.org/signin');
 
