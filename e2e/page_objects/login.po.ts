@@ -37,17 +37,17 @@ export class LoginPage {
   }
 
   static async useOrcid(email: string, psw: string): Promise<any> {
+    Util.logInfo(await browser.driver.getPageSource());
+
     await Util.clickElementByLinkText('Sign in with ORCID')
     // Input Email
     Util.logInfo(await browser.driver.getPageSource());
 
     await Util.waitForPage('https://orcid.org/signin');
-    Util.logInfo(await browser.driver.getCurrentUrl());
 
     await Util.sendTextToElementById('username', email, false);
     await Util.sendTextToElementById('password', psw, false);
     await Util.clickElementById('signin-button');
-    Util.logInfo(await browser.driver.getCurrentUrl());
     await Util.waitForPage('userinfo');
     Util.logInfo(await browser.driver.getCurrentUrl());
 
@@ -70,6 +70,8 @@ export class LoginPage {
   }
 
   static async useUni(email: string, psw: string): Promise<any> {
+    Util.logInfo(await browser.driver.getPageSource());
+
     await Util.waitForPresenceOfElementById('query');
     await Util.sendTextToElementById('query', 'Bielefeld');
     await element(by.linkText('University of Bielefeld')).click();
