@@ -20,6 +20,7 @@ export class ProjectOverview {
   private static REMOVE_MEMBER_PREFIX: string = 'remove_member_';
   private static NOTIFICATION_TITLE: string = 'notification_title';
   private static NOTIFICATION_CLOSE: string = 'close_notification';
+  private static CLOSE_ADD_MEMBER_MODAL_BTN: string = 'close_add_user_modal_btn';
   private static MODIFICATION_REQUEST_RESULT: string = 'extension_result_submitted';
   private static MODIFICATION_REQUEST_SUCCESS_TEXT: string = 'Modification request successfully submitted!';
   private static DENBI_DEFAULT_OLD_ID: string = 'de.NBI default_old';
@@ -105,9 +106,9 @@ export class ProjectOverview {
     await Util.waitForPresenceOfElementById(this.INFORMATION_TAB);
     await Util.clickElementById(this.INFORMATION_TAB);
     await Util.waitForPresenceOfElementById(this.VALIDATION_HASH);
-    const validationHash: string = await Util.getElemTextById(this.VALIDATION_HASH);
 
-    return validationHash;
+    return await Util.getElemTextById(this.VALIDATION_HASH);
+
   }
 
   static async addMemberToProject(application_name: string, member: string = this.DEFAULT_MEMBER_EMAIL): Promise<any> {
@@ -119,6 +120,7 @@ export class ProjectOverview {
     await Util.waitForTextPresenceInElementById(this.NOTIFICATION_TITLE, this.SUCCESS);
     console.log('Close Modal');
     await Util.clickElementById(this.NOTIFICATION_CLOSE);
+    await Util.clickElementById(this.CLOSE_ADD_MEMBER_MODAL_BTN)
     await browser.sleep(1000);
 
   }

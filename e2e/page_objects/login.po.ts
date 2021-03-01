@@ -23,12 +23,28 @@ export class LoginPage {
     } else if (auth === 'google') {
       console.log('Login with Google');
       await this.useGoogle(email, psw);
+
+    } else if (auth === 'orcid') {
+      console.log('Login with Orcid');
+      await this.useOrcid(email, psw);
+
     } else {
       console.log('Login with University of Bielefeld');
       await this.useUni(email, psw);
     }
     console.log('Checking login success.');
     await Util.waitForPage('userinfo');
+  }
+
+  static async useOrcid(email: string, psw: string): Promise<any> {
+    await Util.clickElementByLinkText('Sign in with ORCID')
+    // Input Email
+    await Util.waitForPage('https://orcid.org/signin');
+    await Util.sendTextToElementById('username', email, false);
+    await Util.sendTextToElementById('password', psw, false);
+    await Util.clickElementById('signin-button');
+    await Util.waitForPage('userinfo');
+
   }
 
   static async useGoogle(email: string, psw: string): Promise<any> {
