@@ -67,6 +67,7 @@
     "jsnlog": "^2.30.0",
     "jspdf": "^2.3.0",
     "keypairs": "^1.2.14",
+    "log4js": "^6.3.0",
     "moment": "^2.29.0",
     "ng2-charts": "^2.4.2",
     "ng2-cookies": "^1.0.12",
