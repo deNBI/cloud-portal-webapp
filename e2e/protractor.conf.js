@@ -6,7 +6,11 @@ const HtmlScreenshotReporter = require('protractor-jasmine2-screenshot-reporter'
 
 const reporter = new HtmlScreenshotReporter({
   dest: 'target/screenshots',
-  filename: 'my-report.html'
+  filename: 'my-report.html',
+  reportFailedUrl: true,
+  fileNameDateSuffix: true,
+  takeScreenShotsOnlyForFailedSpecs: true,
+
 });
 const DescribeFailureReporter = require('protractor-stop-describe-on-failure')
 const fs = require('fs');
@@ -70,6 +74,10 @@ exports.config = {
     require('ts-node').register({
       project: 'e2e/tsconfig.e2e.json'
     });
+    process.on('uncaughtException', function () {
+      reporter.jasmineDone();
+      reporter.afterLaunch();
+    });
     return new Promise(function (resolve) {
       reporter.beforeLaunch(resolve);
     });
@@ -84,5 +92,5 @@ exports.config = {
     return new Promise(function (resolve) {
       reporter.afterLaunch(resolve.bind(this, exitCode));
     });
-  }
+  },
 };
