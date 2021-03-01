@@ -116,7 +116,7 @@ export class Util {
 
   static async clickElementByLinkText(text: string): Promise<void> {
     await Util.waitForElementToBeClickableByLinkText(text)
-    console.log('Clicking element with text:')
+    console.log(`Clicking element with text: [${text}]`)
 
     return await element(by.linkText('Sign in with Google')).click();
 
