@@ -44,6 +44,8 @@ export class LoginPage {
     await Util.sendTextToElementById('password', psw, false);
     await Util.clickElementById('signin-button');
     await Util.waitForPage('userinfo');
+        console.log(await browser.driver.getCurrentUrl());
+
 
   }
 
