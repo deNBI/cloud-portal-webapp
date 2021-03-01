@@ -80,26 +80,22 @@ export class Util {
   }
 
   static logInfo(text: string): void {
-    console.log(clc.blue(text));
-    log4jsGen.getLogger().info(clc.blue(text));
+    log4jsGen.getLogger().info(text);
 
   }
 
   static logWarn(text: string): void {
-    console.warn(clc.red(text));
-    log4jsGen.getLogger().warn(clc.red(text));
+    log4jsGen.getLogger().warn(text);
 
   }
 
-  static logHeader(text: string): void {
-    console.log(clc.magenta(text))
-    log4jsGen.getLogger().info(clc.magenta(text));
+  static logDebug(text: string): void {
+    log4jsGen.getLogger().info(text);
 
   }
 
-  static logMethodCall(text: string): void {
-    console.log(clc.cyan(text))
-    log4jsGen.getLogger().info(clc.cyan(text));
+  static logError(text: string): void {
+    log4jsGen.getLogger().error(text);
 
   }
 

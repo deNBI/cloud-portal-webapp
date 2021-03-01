@@ -43,7 +43,7 @@ export class VMDetailPage {
   private SUBMIT_STOP_MODAL: string = 'submitStopVmModal';
 
   async setBasicVMName(name: string): Promise<any> {
-    Util.logMethodCall(`Setting basic vm name as ${name}`);
+    Util.logInfo(`Setting basic vm name as ${name}`);
     this.VM_NAME = name;
   }
 
@@ -52,30 +52,30 @@ export class VMDetailPage {
   }
 
   async stopBasicVM(): Promise<any> {
-    Util.logMethodCall(`Stopping Basic vm ${this.VM_NAME}`);
+    Util.logInfo(`Stopping Basic vm ${this.VM_NAME}`);
     await Util.waitForElementToBeClickableById(this.SHUTOFF_BUTTON, Util.LONG_TIMEOUT);
     await Util.clickElementById(this.SHUTOFF_BUTTON);
     await Util.waitForElementToBeClickableById(this.VERIFY_STOP_BTN, Util.LONG_TIMEOUT);
     await Util.clickElementById(this.VERIFY_STOP_BTN);
     await Util.waitForPresenceOfElementById(this.SHUTOFF_SUCCESS, Util.LONG_TIMEOUT);
     await Util.clickElementById(this.CLOSE_STOP_MODAL);
-    Util.logMethodCall('Stopping of Basic VM completed');
+    Util.logInfo('Stopping of Basic VM completed');
   }
 
   async restartBasicVM(): Promise<any> {
-    Util.logMethodCall('Restarting basic VM');
+    Util.logInfo('Restarting basic VM');
     await Util.waitForElementToBeClickableById(this.RESUME_BUTTON, Util.LONG_TIMEOUT);
     await Util.clickElementById(this.RESUME_BUTTON);
     await Util.waitForElementToBeClickableById(this.VERIFY_RESTART_BTN, Util.LONG_TIMEOUT);
     await Util.clickElementById(this.VERIFY_RESTART_BTN);
     await Util.waitForPresenceOfElementById(this.RESUME_SUCCESS, Util.LONG_TIMEOUT);
     await Util.clickElementById(this.CLOSE_RESUME_MODAL);
-    Util.logMethodCall('Restarting of Basic VM completed');
+    Util.logInfo('Restarting of Basic VM completed');
 
   }
 
   async createSnapshotBasicVM(): Promise<any> {
-    Util.logMethodCall('Creating Snapshot of basic VM');
+    Util.logInfo('Creating Snapshot of basic VM');
     await Util.waitForElementToBeClickableById(this.SNAPSHOT_BUTTON, Util.LONG_TIMEOUT);
     await Util.clickElementById(this.SNAPSHOT_BUTTON);
     await Util.waitForPresenceOfElementById(this.SNAPSHOT_NAME_MODAL);
@@ -83,18 +83,18 @@ export class VMDetailPage {
     await Util.clickElementById(this.SNAPSHOT_CREATE_BUTTON);
     await Util.waitForPresenceOfElementById(this.SNAPSHOT_DONE_DIV, Util.LONG_TIMEOUT);
     await Util.clickElementById(this.CLOSE_SNAPSHOT_RESULT_BUTTON);
-    Util.logMethodCall('Creating of Snapshot finished');
+    Util.logInfo('Creating of Snapshot finished');
 
   }
 
   async deleteBasicVM(): Promise<any> {
-    Util.logMethodCall('Deleting Basic VM');
+    Util.logInfo('Deleting Basic VM');
     await Util.waitForElementToBeClickableById(this.DELETE_BUTTON, Util.LONG_TIMEOUT);
     await Util.clickElementById(this.DELETE_BUTTON);
     await Util.waitForElementToBeClickableById(this.CONFIRM_DELETE_BUTTON, Util.LONG_TIMEOUT);
     await Util.clickElementById(this.CONFIRM_DELETE_BUTTON);
     await Util.waitForPresenceOfElementById(this.DELETE_SUCCESS, Util.LONG_TIMEOUT);
     await Util.clickElementById(this.CLOSE_DELETE_MODAL);
-    Util.logMethodCall('Deleting of Basic VM finished');
+    Util.logInfo('Deleting of Basic VM finished');
   }
 }
