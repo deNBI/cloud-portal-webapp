@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - 'decoi'
+      - 'feat/test_as_action'
 
 
 jobs:
