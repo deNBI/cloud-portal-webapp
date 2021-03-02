@@ -14,8 +14,8 @@ import {IResponseTemplate} from '../api-connector/response-template';
 import {Subject} from 'rxjs';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {WordPressTag} from './newsmanagement/wp-tags';
-import {VoService} from "../api-connector/vo.service";
-import {FullLayoutComponent} from "../layouts/full-layout.component";
+import {VoService} from '../api-connector/vo.service';
+import {FullLayoutComponent} from '../layouts/full-layout.component';
 
 /**
  * Facility Project overview component.
@@ -470,7 +470,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
           this.fullLayout.getGroupsEnumeration();
           this.updateNotificationModal('Success', 'The  project was terminated.', true, 'success');
         },
-        (error: any): void => {
+                 (error: any): void => {
           if (error['status'] === 409) {
             this.updateNotificationModal(
               'Failed',
