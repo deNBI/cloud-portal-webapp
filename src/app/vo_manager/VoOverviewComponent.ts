@@ -286,7 +286,9 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
                    this.applyFilter();
                    this.fullLayout.getGroupsEnumeration();
                    if (this.selectedProject.OpenStackProject) {
-                     this.updateNotificationModal('Success', 'The request to terminate the project was forwarded to the facility manager.', true, 'success')
+                     this.updateNotificationModal('Success',
+                       'The request to terminate the project was forwarded to the facility manager.',
+                       true, 'success')
                    } else {
                      this.updateNotificationModal('Success', 'The  project was terminated.', true, 'success');
                    }
