@@ -18,7 +18,7 @@ import { VolumestoragefactorOverviewComponent } from './resources/volumestoragef
 import {ResourcemachineOverviewComponent} from './resources/resourcemachine-overview/resourcemachine-overview.component';
 import {GPUSpecificationOverviewComponent} from './resources/gpu-specification-overview/gpu-specification-overview.component';
 import {GeneralstoragefactorOverviewComponent} from './resources/generalstoragefactor-overview/generalstoragefactor-overview.component';
-import {ProjectManagementModule} from "../projectmanagement/projectmanagement.module";
+import {ProjectManagementModule} from '../projectmanagement/projectmanagement.module';
 
 /**
  * Facilitymanager module.
