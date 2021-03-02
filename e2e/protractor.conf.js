@@ -116,9 +116,11 @@ exports.config = {
   },
   onPrepare() {
     jasmine.getEnv().addReporter(new HtmlReporter({
-      baseDirectory: 'test_results',
-      screenshotsSubfolder: 'test_results/screenshots',
-      gatherBrowserLogs: true
+      baseDirectory: 'test_results/report',
+      screenshotsSubfolder: 'screenshots',
+      jsonsSubfolder: 'jsons',
+      gatherBrowserLogs: true,
+      preserveDirectory: false
     }).getJasmine2Reporter());
     jasmine.getEnv().addReporter(new SpecReporter({
       spec: {
@@ -134,9 +136,5 @@ exports.config = {
     jasmine.getEnv().addReporter(DescribeFailureReporter(jasmine.getEnv()));
     browser.manage().window().setSize(parseInt(credentials["browser_w"]), parseInt(credentials["browser_h"]));
   },
-  afterLaunch: function (exitCode) {
-    return new Promise(function (resolve) {
-      reporter.afterLaunch(resolve.bind(this, exitCode));
-    });
-  },
+
 };
