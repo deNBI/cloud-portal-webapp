@@ -95,9 +95,11 @@
     <div class="row col">
       <div *ngIf="selectedTemplate != undefinedTemplate" class="alert alert-warning col-12">
         This template is known to be incompatible with: <br>
+        <ul>
           <li *ngFor="let version of selectedTemplate.incompatible_versions">
             {{version}}
           </li>
+        </ul>
         <br>
         If you encounter an error with a version that is not listed, please contact us at <a href="mailto:cloud-portal-support@deNBI.DE">cloud-portal-support@deNBI.DE</a>.
       </div>
