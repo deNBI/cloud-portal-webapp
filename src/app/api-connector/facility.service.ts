@@ -110,7 +110,6 @@ export class FacilityService {
    * @returns {Observable<any>}
    */
   getFacilityAllowedGroupsWithDetailsAndSpecificStatus(facility: number | string, status: number): Observable<any> {
-    console.log(status);
 
     return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/projects/`, {
       withCredentials: true,
@@ -545,9 +544,8 @@ export class FacilityService {
     });
   }
 
-  approveTerminationByFM(groupId: number | string): Observable<object> {
-    //TODO: change URL
-      return this.http.delete(`${ApiSettings.getApiBaseURL()}vo/projects/${groupId}/`, {
+  approveTerminationByFM(groupId: number | string, facility: number): Observable<object> {
+      return this.http.delete(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/projects/${groupId}/`, {
         withCredentials: true
       });
   }

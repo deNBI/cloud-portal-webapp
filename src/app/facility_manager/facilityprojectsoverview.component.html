@@ -168,8 +168,8 @@
                             (click)="showMembersOfTheProject(project.Id, project.Name); usersModal.show();">
                       <i class="fa fa-users"></i>&nbsp;Show Members
                     </button>
-                    <button type="button" class="btn btn-danger"
-                            data-toggle="modal" *ngIf="project | hasstatusinlist: application_states.WAIT_FOR_TERMINATION_FM"
+                    <button type="button" class="btn btn-danger" data-toggle="modal"
+                            *ngIf="(project | hasstatusinlist: application_states.WAIT_FOR_TERMINATION_FM) && project.OpenStackProject"
                             (click)="selectedProject = project; terminateModal.show()">
                       <i class="fa fa-users"></i>&nbsp;Terminate Project
                     </button>

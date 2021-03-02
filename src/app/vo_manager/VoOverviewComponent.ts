@@ -280,7 +280,9 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
       .subscribe((): void => {
                    const indexAll: number = this.projects.indexOf(this.selectedProject, 0);
 
-                   this.projects.splice(indexAll, 1);
+                   if (!this.selectedProject.OpenStackProject) {
+                     this.projects.splice(indexAll, 1);
+                   }
                    this.applyFilter();
                    this.fullLayout.getGroupsEnumeration();
                    if (this.selectedProject.OpenStackProject) {

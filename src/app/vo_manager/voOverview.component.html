@@ -254,9 +254,15 @@
                       type="button"
                       class="btn btn-danger" [id]="'show_terminate_' + project?.Id"
                       (click)="selectedProject = project;terminateModal.show();"
-
-                    >
+                      *ngIf="!(project | hasstatusinlist: application_states.WAIT_FOR_TERMINATION_FM)">
                       <i class="fa fa-trash"></i>&nbsp;Terminate Project
+                    </button>
+                    <button
+                      style="margin-left: 5px" type="button" disabled
+                      class="btn btn-danger" [id]="'show_terminate_' + project?.Id"
+                      (click)="selectedProject = project;terminateModal.show();"
+                      *ngIf="project | hasstatusinlist: application_states.WAIT_FOR_TERMINATION_FM">
+                      Processed by FM
                     </button>
                   </div>
                 </td>
