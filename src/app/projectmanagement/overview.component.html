@@ -40,7 +40,8 @@
 
         <div class="card-body" id="project_application_status_overview"
              *ngIf="!(project_application | hasstatusinlist: Application_States.APPROVED)
-                    && !(project_application | hasstatusinlist: Application_States.TERMINATED)">
+                    && !(project_application | hasstatusinlist: Application_States.TERMINATED)
+                    && !(project_application | hasstatusinlist: Application_States.DECLINED)">
           <!-- <i class="fas fa-tasks"></i> -->
           <app-application-progress [application]="project_application"></app-application-progress>
 
