@@ -115,7 +115,7 @@ export class ResourcemachineOverviewComponent implements OnInit {
   getResourceMachines(): void {
     this.facilityService.getResourceMachines(this.facility_id).subscribe((res: ResourceMachine[]): void => {
       this.resourceMachines = res.map((machine: ResourceMachine): ResourceMachine => {
-        return new ResourceMachine(machine)
+        return new ResourceMachine(machine);
       });
       this.resourceMachines.sort((a_machine: ResourceMachine, b_machine: ResourceMachine): number => {
         return b_machine.type.localeCompare(a_machine.type)
@@ -196,7 +196,7 @@ export class ResourcemachineOverviewComponent implements OnInit {
     this.machinesFormGroups[machine.id].get(machine_name).setValue(machine.name);
     this.machinesFormGroups[machine.id].get(machine_type).setValue(machine.type);
     this.machinesFormGroups[machine.id].get(machine_private_count).setValue(machine.private_count);
-    this.machinesFormGroups[machine.id].get(machine_public_count).setValue(machine.local_disk_storage);
+    this.machinesFormGroups[machine.id].get(machine_public_count).setValue(machine.public_count);
     this.machinesFormGroups[machine.id].disable();
   }
 
@@ -204,7 +204,6 @@ export class ResourcemachineOverviewComponent implements OnInit {
 
     this.machinesFormGroups[machine.id].get(`${machine.id}_ram`).valueChanges.subscribe((val: number): void => {
       machine.ram = val;
-      console.log(this.machinesFormGroups[machine.id].get(`${machine.id}_ram`).valid);
     });
     this.machinesFormGroups[machine.id].get(`${machine.id}_ram_private_factor`).valueChanges.subscribe((val: number): void => {
       machine.ram_private_factor = val;

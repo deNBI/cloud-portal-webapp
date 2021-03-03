@@ -194,7 +194,6 @@ export class ResourcesComponent implements OnInit {
     });
     this.facilityService.getResourceMachines(this.selectedFacility['FacilityId']).subscribe((res: ResourceMachine[]): void => {
       this.resourceMachines = res;
-      console.log(this.resourceMachines);
     });
 
     this.facilityService.getVolumeStorageFactors(this.selectedFacility['FacilityId']).subscribe((res: VolumeStorageFactor[]): void => {
