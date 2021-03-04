@@ -173,6 +173,11 @@
                             (click)="selectedProject = project; terminateModal.show()">
                       <i class="fa fa-users"></i>&nbsp;Terminate Project
                     </button>
+                    <button type="button" class="btn btn-danger" data-toggle="modal"
+                            *ngIf="(project | hasstatusinlist: application_states.WAIT_FOR_TERMINATION_FM) && project.OpenStackProject"
+                            (click)="selectedProject = project; declineTerminationModal.show()">
+                      <i class="fa fa-cross"></i>&nbspDecline Termination
+                    </button>
                   </div>
 
 
@@ -653,6 +658,69 @@
         </button>
         <button class="btn  btn-danger col-md-4" type="reset"
                 (click)="terminateModal.hide()">Cancel
+        </button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div bsModal #notificationModal="bs-modal" class="modal" tabindex="-1" role="dialog"
+     aria-labelledby="Label"
+     aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">{{ notificationModalTitle }}</h4>
+        <button type="button" class="close" style="cursor:pointer"
+                (click)="notificationModal.hide()"
+                aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-{{ notificationModalType }}" id="notification_message" role="alert">
+          {{ notificationModalMessage }}
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="close_notification"
+                type="button"
+                (click)="notificationModal.hide();resetNotificationModal();"
+                class="btn  btn-secondary"> Close
+        </button>
+
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div bsModal #declineTerminationModal="bs-modal" class="modal fade" tabindex="-1"
+     role="dialog" aria-labelledby="Label"
+     aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Decline Termination</h4>
+        <button type="button" class="close" style="cursor:pointer"
+                (click)="declineTerminationModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <div class="alert alert-warning" role="alert">
+          Are you sure you want to decline the termination of this project?
+        </div>
+        <app-project-os-details *ngIf="selectedProject" [project]="selectedProject"></app-project-os-details>
+      </div>
+      <div class="modal-footer">
+        <button class="btn  btn-success col-md-4" id="decline_termination_project_btn"
+                (click)="declineTermination();declineTerminationModal.hide();notificationModal.show();;">
+          Yes
+        </button>
+        <button class="btn  btn-danger col-md-4" type="reset"
+                (click)="declineTerminationModal.hide()">Cancel
         </button>
       </div>
     </div><!-- /.modal-content -->

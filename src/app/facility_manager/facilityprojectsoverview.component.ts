@@ -481,6 +481,30 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
             this.updateNotificationModal('Failed', 'The project could not be terminated.', true, 'danger');
           }
         }
-      )
+      );
+  }
+
+  public declineTermination(): void {
+    this.facilityservice.declineTerminationByFM(this.selectedProject.Id, this.selectedFacility['FacilityId'])
+      .subscribe((): void => {
+          const indexAll: number = this.projects.indexOf(this.selectedProject, 0);
+
+          this.projects.splice(indexAll, 1);
+          this.applyFilter();
+          this.fullLayout.getGroupsEnumeration();
+          this.updateNotificationModal('Success', 'The termination of the project was declined.', true, 'success');
+        },
+        (error: any): void => {
+          if (error['status'] === 409) {
+            this.updateNotificationModal(
+              'Failed',
+              `The decline of the project was not successful. Reason: ${error['error']['reason']} for ${error['error']['openstackid']}`,
+              true,
+              'danger')
+          } else {
+            this.updateNotificationModal('Failed', 'The decline of the project failed.', true, 'danger');
+          }
+        }
+      );
   }
 }

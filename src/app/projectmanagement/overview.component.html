@@ -215,7 +215,9 @@
                   Extension requested</button>
 
                 <ng-container *ngIf="!isAdmin && (project_application | hasstatusinlist:Application_States.APPROVED)
-                        && !(project_application | hasstatusinlist:Application_States.TERMINATION_REQUESTED)">
+                        && !(project_application | hasstatusinlist:Application_States.TERMINATION_REQUESTED)
+                        && !(project_application | hasstatusinlist:Application_States.WAIT_FOR_TERMINATION_FM)">
+
                   <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
                         title="Only project administators are able to request project terminations.">
                     <button class="btn btn-outline-danger" disabled>
@@ -224,10 +226,12 @@
                 </ng-container>
                 <button class="btn btn-outline-danger"
                         *ngIf="isAdmin && (project_application | hasstatusinlist:Application_States.APPROVED)
-                        && !(project_application | hasstatusinlist:Application_States.TERMINATION_REQUESTED)"
+                        && !(project_application | hasstatusinlist:Application_States.TERMINATION_REQUESTED)
+                        && !(project_application | hasstatusinlist:Application_States.WAIT_FOR_TERMINATION_FM)"
                         (click)="terminateModal.show()" id="show_termination_modal_button">Request termination</button>
                 <button class="btn btn-outline-secondary"
-                        *ngIf="(project_application | hasstatusinlist:Application_States.TERMINATION_REQUESTED)"
+                        *ngIf="(project_application | hasstatusinlist:Application_States.TERMINATION_REQUESTED)
+                        || (project_application | hasstatusinlist:Application_States.WAIT_FOR_TERMINATION_FM)"
                         (click)="terminateModal.show()" id="show_termination_modal_button_disabled">Termination Requested</button>
               </div>
             </div>
