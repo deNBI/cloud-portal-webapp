@@ -13,5 +13,7 @@ export class AddcloudapplicationComponent {
   openstack_application: boolean = true;
 
   title: string = 'New OpenStack Application';
+  anotherThing = 100;
+  yesquotes: string ="quotes";
 
 }
