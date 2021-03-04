@@ -29,4 +29,5 @@ jobs:
       - uses: tinovyatkin/action-eslint@v1
         with:
           repo-token: ${{secrets.GITHUB_TOKEN}}
+          check-name: eslint 
 
