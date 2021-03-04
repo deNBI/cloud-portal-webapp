@@ -20,6 +20,7 @@ export class ProjectOverview {
   private static REMOVE_MEMBER_PREFIX: string = 'remove_member_';
   private static NOTIFICATION_TITLE: string = 'notification_title';
   private static NOTIFICATION_CLOSE: string = 'close_notification';
+  private static CLOSE_ADD_MEMBER_MODAL_BTN: string = 'close_add_user_modal_btn';
   private static MODIFICATION_REQUEST_RESULT: string = 'extension_result_submitted';
   private static MODIFICATION_REQUEST_SUCCESS_TEXT: string = 'Modification request successfully submitted!';
   private static DENBI_DEFAULT_OLD_ID: string = 'de.NBI default_old';
@@ -55,19 +56,19 @@ export class ProjectOverview {
   private static EXTENSION_REQUEST_RESULT: string = 'extension_result_submitted';
 
   static async navigateToSimpleProjectverview(): Promise<any> {
-    console.log('Navigating to simple project overview');
+    Util.logInfo('Navigating to simple project overview');
     await Util.clickElementById(Util.SIMPLE_VM_APPLICATION_NAME)
   }
 
   static async navigateToPIApproval(): Promise<any> {
-    console.log('Navigating to Approval of PI');
+    Util.logInfo('Navigating to Approval of PI');
     await Util.clickElementById(this.INFORMATION_TAB);
     await Util.waitForPresenceOfElementById(this.VALIDATION_HASH);
     await Util.clickElementById(this.VALIDATION_HASH);
   }
 
   static async checkForPIApproval(): Promise<boolean> {
-    console.log('Checking if PI-Mail is present');
+    Util.logInfo('Checking if PI-Mail is present');
     await Util.waitForPresenceOfElementById(this.SUBMITTED_SHOW_INFORMATION_BTN);
     await Util.clickElementById(this.SUBMITTED_SHOW_INFORMATION_BTN);
     await Util.waitForPresenceOfElementById(this.PI_USER_TAB);
@@ -82,22 +83,21 @@ export class ProjectOverview {
   }
 
   static async navigateToOpenStackeProjectverview(): Promise<any> {
-    console.log('Navigating to openstack project overview');
+    Util.logInfo('Navigating to openstack project overview');
     await Util.clickElementById(Util.OPENSTACK_APPLICATION_NAME)
   }
 
   static async isDisseminationSet(): Promise<any> {
-    Util.logMethodCall('Check if dissemination is set');
+    Util.logInfo('Check if dissemination is set');
     await Util.waitForTextPresenceInElementById(this.DISSEMINATION_INFORMATION_LIST, this.DEFAULT_INFORMATION_DISSEMINATION_STRING);
     await Util.waitForTextPresenceInElementById(this.DISSEMINATION_PLATFORM_LIST, this.DEFAULT_PLATFORM_DISSEMINATION_STRING);
   }
 
   static async hasPi(): Promise<boolean> {
-    Util.logMethodCall('Check if pi is set');
+    Util.logInfo('Check if pi is set');
     await Util.clickElementById(this.SUBMITTED_SHOW_INFORMATION_BTN);
-    const isPiAbsence: boolean = await Util.waitForAbsenceOfElementById(this.PI_ROW);
 
-    return isPiAbsence;
+    return await Util.waitForAbsenceOfElementById(this.PI_ROW);
 
   }
 
@@ -105,20 +105,21 @@ export class ProjectOverview {
     await Util.waitForPresenceOfElementById(this.INFORMATION_TAB);
     await Util.clickElementById(this.INFORMATION_TAB);
     await Util.waitForPresenceOfElementById(this.VALIDATION_HASH);
-    const validationHash: string = await Util.getElemTextById(this.VALIDATION_HASH);
 
-    return validationHash;
+    return await Util.getElemTextById(this.VALIDATION_HASH);
+
   }
 
   static async addMemberToProject(application_name: string, member: string = this.DEFAULT_MEMBER_EMAIL): Promise<any> {
-    console.log('Open add member modal');
+    Util.logInfo('Open add member modal');
     await Util.clickElementById(this.ADD_MEMBER_BTN_MODAL);
     await Util.sendTextToElementById(this.SEARCH_MEMBER, member);
     await Util.clickElementById(this.SEARCH_MEMBER_BTN);
     await Util.clickElementById(this.ADD_MEMBER_BTN);
     await Util.waitForTextPresenceInElementById(this.NOTIFICATION_TITLE, this.SUCCESS);
-    console.log('Close Modal');
+    Util.logInfo('Close Modal');
     await Util.clickElementById(this.NOTIFICATION_CLOSE);
+    await Util.clickElementById(this.CLOSE_ADD_MEMBER_MODAL_BTN)
     await browser.sleep(1000);
 
   }
@@ -126,7 +127,7 @@ export class ProjectOverview {
   static async removeMemberFromProject(application_name: string, member: string = this.DEFAULT_MEMBER): Promise<any> {
     await Util.clickElementById(this.REMOVE_MEMBER_PREFIX + member);
     await Util.waitForTextPresenceInElementById(this.NOTIFICATION_TITLE, this.SUCCESS);
-    console.log('Close Modal');
+    Util.logInfo('Close Modal');
 
     await Util.clickElementById(this.NOTIFICATION_CLOSE);
     await browser.sleep(1000);
@@ -183,7 +184,7 @@ export class ProjectOverview {
   }
 
   static async checkTotalCoresRam(): Promise<any> {
-    Util.logMethodCall('Check cores and ram');
+    Util.logInfo('Check cores and ram');
     const counter: string = await Util.getInputValueById(this.DENBI_DEFAULT_NEW_INPUT);
     const cores: string = await Util.getElemTextById(`${this.DENBI_DEFAULT_NEW_INPUT}_cores`);
     const ram: string = await Util.getElemTextById(`${this.DENBI_DEFAULT_NEW_INPUT}_ram`);

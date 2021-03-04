@@ -2,6 +2,7 @@
 import {browser} from 'protractor';
 import {LoginPage} from '../page_objects/login.po';
 import {VoOverviewPage} from '../page_objects/vo_overview.po';
+import {Util} from '../util';
 
 describe('Simple Application Test', function (): void {
 
@@ -11,7 +12,7 @@ describe('Simple Application Test', function (): void {
   });
 
   it('should navigate to the vo overview', async function (): Promise<any> {
-    console.log('Starting terminate simple vm application test');
+    Util.logDebug('Starting terminate simple vm application test');
     await VoOverviewPage.navigateToVolumeOverview();
   });
 

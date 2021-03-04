@@ -16,18 +16,18 @@ export class VoOverviewPage {
   private static TERMINATE_BUTTON_TEXT: string = 'Terminate Project';
 
   static async navigateToVolumeOverview(): Promise<any> {
-    Util.logMethodCall('Navigating to vo overview');
+    Util.logInfo('Navigating to vo overview');
     await Util.navigateToAngularPage(this.VO_OVERVIEW_URL);
   }
 
   static async filterForPTProjets(): Promise<any> {
-    Util.logMethodCall('Filter for PT Projects');
+    Util.logInfo('Filter for PT Projects');
     await Util.sendTextToElementById(this.FILTER_PROJECT_NAME_INPUT, 'PT');
     await browser.sleep(2000)
   }
 
   static async getAllPTProjects(): Promise<any> {
-    Util.logMethodCall('Get all PT projects');
+    Util.logInfo('Get all PT projects');
     const ele: any = element(by.buttonText(this.TERMINATE_BUTTON_TEXT));
     while (await ele.isPresent()) {
       await this.terminateProject(ele);
@@ -39,7 +39,7 @@ export class VoOverviewPage {
   }
 
   static async terminateProject(terminateBtnId: Element): Promise<any> {
-    Util.logMethodCall(`Terminate Project ${terminateBtnId}`);
+    Util.logInfo(`Terminate Project ${terminateBtnId}`);
 
     await Util.clickElementByElement(terminateBtnId);
     await Util.clickElementById(this.TERMINATE_PROJECT_BTN);
