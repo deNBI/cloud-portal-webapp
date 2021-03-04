@@ -37,7 +37,7 @@
     <td>Number of unique users per month</td>
     <td>{{application?.project_application_cloud_service_user_number}}</td>
   </tr>
-  
+
   <tr>
     <td>Description
     </td>
@@ -116,9 +116,11 @@
     </td>
 
   </tr>
-  <tr *ngIf="application?.project_application_hash && is_vo">
+  <tr
+    *ngIf="application?.project_application_hash ">
     <td>Validation Hash</td>
-    <td><a id="validation_hash" href="#/applications/validation/{{application?.project_application_hash}}"> {{application?.project_application_hash}}</a>
+    <td><a id="validation_hash"
+           href="#/applications/validation/{{application?.project_application_hash}}"> {{application?.project_application_hash}}</a>
 
     </td>
 
