@@ -14,23 +14,19 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 6
     steps:
-      - name: Workflow run cleanup action
-        uses: rokroskar/workflow-run-cleanup-action@v0.2.2
-        env:
-                GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v1
         with:
-          ref: ${{ github.event.pull_request.head.sha }}
-      - run: git status
-      - name: Prepare
-        run: npm ci
-      - name: Run ESLint
-        run: |
-          sudo npm install -g @angular/cli
-          sudo npm install eslint --save-dev
-          npm init
-          npx eslint --init
-          npx eslint . --ext .js,.jsx,.ts,.tsx
-
-
+          fetch-depth: 1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - run: npm ci --no-audit --prefer-offline
+        env:
+          PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
+          HUSKY_SKIP_INSTALL: true
+      # Alternative: if you use npm instead of yarn
+      # - run: npm ci --no-audit --prefer-offline
+      - uses: tinovyatkin/action-eslint@v1
+        with:
+          repo-token: ${{secrets.GITHUB_TOKEN}}
 
