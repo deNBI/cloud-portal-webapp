@@ -13,7 +13,7 @@ describe('Cloud Application Test', function (): void {
   });
 
   it('should navigate to cloud application form', async function (): Promise<any> {
-    console.log('Starting send a cloud  application test!');
+    Util.logInfo('Starting send a cloud  application test!');
     await FormularPage.navigateToCloudApplication();
   });
 

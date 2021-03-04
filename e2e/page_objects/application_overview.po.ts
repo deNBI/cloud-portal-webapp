@@ -23,7 +23,7 @@ export class ApplicationOverviewPage {
   private static EXTENSION_RESULT_MESSAGE_TEXT: string = 'The project has been extended!';
 
   static async navigateToApplicationOverview(): Promise<any> {
-    console.log('Navigate to Application Overview form');
+    Util.logInfo('Navigate to Application Overview form');
     await Util.navigateToAngularPage('applications');
     await Util.waitForPage('applications');
   }

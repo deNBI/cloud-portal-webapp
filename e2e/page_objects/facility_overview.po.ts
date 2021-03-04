@@ -16,7 +16,7 @@ export class FacilityOverviewPage {
     private static TAB_STATE_MODIFICATION_BUTTON: string = 'tab_state_button_modification_requests';
 
     static async navigateToFacilityOverview(): Promise<any> {
-        console.log('Navigating to facility overview');
+        Util.logInfo('Navigating to facility overview');
         await Util.navigateToAngularPage(this.FACILITY_OVERVIEW_URL);
     }
 
