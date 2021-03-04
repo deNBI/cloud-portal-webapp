@@ -28,8 +28,8 @@ jobs:
         run: |
           sudo npm install -g @angular/cli
           sudo npm install eslint --save-dev
-          sudo npx eslint --init
-          sudo npx eslint . --ext .js,.jsx,.ts,.tsx
+          npx eslint --init
+          npx eslint . --ext .js,.jsx,.ts,.tsx
 
 
 
