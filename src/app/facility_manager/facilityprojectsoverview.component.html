@@ -173,10 +173,10 @@
                             (click)="selectedProject = project; terminateModal.show()">
                       <i class="fa fa-users"></i>&nbsp;Terminate Project
                     </button>
-                    <button type="button" class="btn btn-danger" data-toggle="modal"
+                    <button type="button" class="btn btn-warning" data-toggle="modal"
                             *ngIf="(project | hasstatusinlist: application_states.WAIT_FOR_TERMINATION_FM) && project.OpenStackProject"
                             (click)="selectedProject = project; declineTerminationModal.show()">
-                      <i class="fa fa-cross"></i>&nbspDecline Termination
+                      <i class="fa fa-times"></i>&nbsp;Decline Termination
                     </button>
                   </div>
 
