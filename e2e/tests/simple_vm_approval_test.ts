@@ -12,7 +12,7 @@ describe('Simple Application Approval Test', function (): void {
   });
 
   it('should navigate to application overview', async function (): Promise<any> {
-    console.log('Starting approve a simple vm application test!');
+    Util.logInfo('Starting approve a simple vm application test!');
     await ApplicationOverviewPage.navigateToApplicationOverview();
 
   });
