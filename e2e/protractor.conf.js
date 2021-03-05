@@ -1,11 +1,57 @@
 // Protractor configuration file, see link for more information
 // https://github.com/angular/protractor/blob/master/lib/config.ts
-
+var DisplayProcessor = require('jasmine-spec-reporter').DisplayProcessor;
 const {SpecReporter} = require('jasmine-spec-reporter');
+const HtmlReporter = require('protractor-beautiful-reporter');
+const log4jsGen = require('./log4jsGen');
 const DescribeFailureReporter = require('protractor-stop-describe-on-failure')
+
 const fs = require('fs');
 let rawdata = fs.readFileSync('e2e/environment.json');
 let credentials = JSON.parse(rawdata);
+
+
+function LogInterceptor(configuration, theme) {
+}
+
+
+LogInterceptor.prototype = new DisplayProcessor();
+
+LogInterceptor.prototype.displaySuite = function (suite, log) {
+  log4jsGen.getLogger().info(log)
+  return log;
+};
+
+LogInterceptor.prototype.displaySuccessfulSpec = function (spec, log) {
+  log4jsGen.getLogger().info(log)
+
+  return log;
+};
+
+LogInterceptor.prototype.displayFailedSpec = function (spec, log) {
+  log4jsGen.getLogger().error(log)
+
+  return log;
+};
+
+LogInterceptor.prototype.displayPendingSpec = function (spec, log) {
+  log4jsGen.getLogger().info(log)
+
+  return log;
+};
+
+LogInterceptor.prototype.displaySummaryErrorMessages = function (spec, log) {
+  log4jsGen.getLogger().error(log)
+
+  return log;
+};
+
+LogInterceptor.prototype.displaySpecErrorMessages = function (spec, log) {
+  log4jsGen.getLogger().error(log)
+
+  return log;
+};
+
 
 exports.config = {
   seleniumAddress: 'http://localhost:4444/wd/hub',
@@ -30,7 +76,6 @@ exports.config = {
   allScriptsTimeout: 11000,
   specs: [
     'tests/simple_vm_application_test.ts',
-
     'tests/simple_vm_approval_test.ts',
     'tests/member_test.ts',
     'tests/simple_vm_modification_test.ts',
@@ -49,7 +94,9 @@ exports.config = {
     browserName: 'chrome',
     acceptInsecureCerts: true,
     chromeOptions: {
-      args: ["--incognito"]
+      args: ["--incognito", "--ignore-certificate-errors", '--headless', "--start-maximized", '--disable-gpu', '--window-size=1200,800']
+      //args: ["--incognito", "--ignore-certificate-errors"]
+
     }
   },
   directConnect: true, //uncomment on macOS, also start webserver via webdriver-manager
@@ -64,10 +111,30 @@ exports.config = {
     require('ts-node').register({
       project: 'e2e/tsconfig.e2e.json'
     });
+
+
   },
   onPrepare() {
-    jasmine.getEnv().addReporter(new SpecReporter({spec: {displayStacktrace: 'pretty'}}));
+    jasmine.getEnv().addReporter(new HtmlReporter({
+      baseDirectory: 'test_results/report',
+      screenshotsSubfolder: 'screenshots',
+      jsonsSubfolder: 'jsons',
+      gatherBrowserLogs: true,
+      preserveDirectory: false
+    }).getJasmine2Reporter());
+    jasmine.getEnv().addReporter(new SpecReporter({
+      spec: {
+        displayStacktrace: 'pretty',
+        displayFailuresSummary: true,
+        displayFailuredSpec: true,
+        displaySuiteNumber: true,
+        displaySpecDuration: true,
+        displayErrorMessages: true
+      },
+      customProcessors: [LogInterceptor]
+    }));
     jasmine.getEnv().addReporter(DescribeFailureReporter(jasmine.getEnv()));
     browser.manage().window().setSize(parseInt(credentials["browser_w"]), parseInt(credentials["browser_h"]));
-  }
+  },
+
 };

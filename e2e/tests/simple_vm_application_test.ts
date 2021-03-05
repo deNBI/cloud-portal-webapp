@@ -13,7 +13,7 @@ describe('Simple Application Test', function (): void {
   });
 
   it('should navigate to the simple vm form', async function (): Promise<any> {
-    console.log('Starting send a simple vm application test!');
+    Util.logInfo('Starting send a simple vm application test!');
     await FormularPage.navigateToSimpleVmApplication();
   });
 

@@ -11,24 +11,43 @@ export class LoginPage {
 
     await browser.driver.get(browser.params.portal);
 
-    console.log('Login');
+    Util.logInfo('Login');
 
     const current_url: any = await browser.driver.getCurrentUrl();
-    console.log(current_url);
+    Util.logInfo(current_url);
     if (relog) {
-      console.log('Need to relog');
+      Util.logInfo('Need to relog');
       await this.logOut();
       await browser.waitForAngularEnabled(false);
       await LoginPage.login(email, psw, auth);
     } else if (auth === 'google') {
-      console.log('Login with Google');
+      Util.logInfo('Login with Google');
       await this.useGoogle(email, psw);
+
+    } else if (auth === 'orcid') {
+      Util.logInfo('Login with Orcid');
+      await this.useOrcid(email, psw);
+
     } else {
-      console.log('Login with University of Bielefeld');
+      Util.logInfo('Login with University of Bielefeld');
       await this.useUni(email, psw);
     }
-    console.log('Checking login success.');
+    Util.logInfo('Checking login success.');
     await Util.waitForPage('userinfo');
+  }
+
+  static async useOrcid(email: string, psw: string): Promise<any> {
+    await Util.clickElementByLinkText('Sign in with ORCID')
+    // Input Email
+
+    await Util.waitForPage('https://orcid.org/signin');
+
+    await Util.sendTextToElementById('username', email, false);
+    await Util.sendTextToElementById('password', psw, false);
+    await Util.clickElementById('signin-button');
+    await Util.waitForPage('userinfo');
+    Util.logInfo(await browser.driver.getCurrentUrl());
+
   }
 
   static async useGoogle(email: string, psw: string): Promise<any> {
@@ -48,6 +67,8 @@ export class LoginPage {
   }
 
   static async useUni(email: string, psw: string): Promise<any> {
+    Util.logInfo(await browser.driver.getPageSource());
+
     await Util.waitForPresenceOfElementById('query');
     await Util.sendTextToElementById('query', 'Bielefeld');
     await element(by.linkText('University of Bielefeld')).click();
@@ -61,7 +82,7 @@ export class LoginPage {
   }
 
   static async logOut(): Promise<any> {
-    console.log('Restarting browser');
+    Util.logInfo('Restarting browser');
     await browser.restart();
     await browser.waitForAngularEnabled(false);
     await browser.manage().window().setSize(browser.params.width, browser.params.height);

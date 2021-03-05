@@ -1,6 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {Application} from '../../application.model/application.model';
-import {is_vo} from '../../../shared/globalvar';
+import {elixir_id, is_vo} from '../../../shared/globalvar';
 
 /**
  * Application informations.
@@ -12,6 +12,7 @@ import {is_vo} from '../../../shared/globalvar';
 export class InformationDetailComponent {
   @Input() application: Application;
   is_vo: boolean = is_vo;
+  elixir_id: string = elixir_id;
 
   constructor() {
   }

@@ -18,16 +18,16 @@ export class FormularPage {
   private static PI_APPROVAL_BUTTON: string = 'approveApplicationButtonPI';
 
   static async submitApplication(): Promise<any> {
-    console.log('Submit Application');
+    Util.logInfo('Submit Application');
 
     await Util.clickElementById(this.SUBMIT_BTN);
     await Util.clickElementById(this.VERIFICATION_BTN);
     await Util.clickElementById(this.ACKNOWLEDGE_BTN);
-    console.log('Submitted Application');
+    Util.logInfo('Submitted Application');
   }
 
   static async approveByPI(): Promise<any> {
-    console.log('Approving by PI');
+    Util.logInfo('Approving by PI');
     await Util.waitForPresenceOfElementById(this.PI_RESPONSIBILITY);
     await Util.clickElementById(this.PI_RESPONSIBILITY);
     await Util.waitForPresenceOfElementById(this.PI_APPROVAL_BUTTON);
@@ -56,7 +56,7 @@ export class FormularPage {
   static async fillApplicationFormular(name: string, is_pi?: boolean): Promise<any> {
 
     // fill  Formular
-    console.log('Fill form');
+    Util.logInfo('Fill form');
     await Util.sendTextToElementById('id_project_application_name', name);
     await Util.sendTextToElementByName('project_application_shortname', name);
     await Util.sendTextToElementByName('project_application_description', 'ProtractorTest Description');

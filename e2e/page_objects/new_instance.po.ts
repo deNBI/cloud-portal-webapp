@@ -34,7 +34,7 @@ export class NewInstancePage {
   private static ADD_VOLUME_CONFIRMATION_BUTTON: string = 'addVolumeConfirmationButton';
 
   static async getNewInstanceTab(): Promise<any> {
-    Util.logMethodCall('Navigating to New Instance Tab');
+    Util.logInfo('Navigating to New Instance Tab');
     await Util.navigateToAngularPage(this.NEW_INSTANCE_URL);
 
     return await Util.waitForPage(this.NEW_INSTANCE_URL);
@@ -47,27 +47,27 @@ export class NewInstancePage {
     if (!waitElementawait) {
       await Util.waitForPresenceOfElementById(this.PROJECT_SELECT_ID);
       await Util.waitForElementToBeClickableById(this.PROJECT_SELECT_ID);
-      console.log('Getting option from select');
+      Util.logInfo('Getting option from select');
       await Util.clickOptionOfSelect(this.PROJECT_NAME, this.PROJECT_SELECT_ID);
     } else {
-      console.log('Single Project automatically selected');
+      Util.logInfo('Single Project automatically selected');
     }
   }
 
   static async fillBasicForm(name: string= this.BASIC_VM_NAME): Promise<any> {
-    Util.logMethodCall('Fill new instance basic form');
+    Util.logInfo('Fill new instance basic form');
 
     await this.fillMandatoryFormWith(name, this.DEFAULT_FLAVOR_TITLE, this.UBUNTU_18_TITLE);
   }
 
   static async fillBasicVolumeForm(): Promise<any> {
-    Util.logMethodCall('Fill new instance basic volume form');
+    Util.logInfo('Fill new instance basic volume form');
 
     await this.fillMandatoryFormWith(this.VOLUME_VM_NAME, this.DEFAULT_FLAVOR_TITLE, this.UBUNTU_18_TITLE);
   }
 
   static async fillMandatoryFormWith(instance_name: string, flavor: string, image: string): Promise<any> {
-    Util.logMethodCall('Fill new instance mandatory form');
+    Util.logInfo('Fill new instance mandatory form');
 
     await Util.waitForPresenceOfElementById(this.ID_INSTANCE_NAME);
     await Util.sendTextToElementById(this.ID_INSTANCE_NAME, instance_name);
@@ -79,7 +79,7 @@ export class NewInstancePage {
   }
 
   static async submitAndStartVM(): Promise<any> {
-    Util.logMethodCall('Submit and start VM');
+    Util.logInfo('Submit and start VM');
 
     await Util.waitForElementToBeClickableById(this.START_BUTTON);
     await Util.clickElementById(this.START_BUTTON);
@@ -96,15 +96,15 @@ export class NewInstancePage {
   }
 
   static async setVolume(): Promise<any> {
-    Util.logMethodCall('Set Volume');
+    Util.logInfo('Set Volume');
 
     await Util.clickElementById(this.ADD_VOLUME_FORM_BUTTON);
-    console.log('Setting Volume name');
+    Util.logInfo('Setting Volume name');
     await Util.sendTextToElementById(this.VOLUME_NAME_ID, Util.VOLUME_NAME);
-    console.log('Setting Volume mount path');
+    Util.logInfo('Setting Volume mount path');
     await Util.sendTextToElementById(this.VOLUME_MOUNT_PATH_ID, Util.VOLUME_MOUNT_PATH_STRING);
 
-    console.log('Setting Volume space');
+    Util.logInfo('Setting Volume space');
     await Util.sendTextToElementById(this.VOLUME_SPACE_ID, this.VOLUME_SPACE);
     await Util.clickElementById(this.ADD_VOLUME_CONFIRMATION_BUTTON);
   }
