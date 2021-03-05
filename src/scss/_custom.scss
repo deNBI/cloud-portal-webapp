@@ -512,12 +512,6 @@ $simplevmcolour: #00ADEF;
     left: 0px;
   }
 
-  #title_headline
-  {
-    font-size: 20px !important;
-  }
-
-
   app-dashboard
   {
     position: relative;
@@ -689,12 +683,13 @@ $simplevmcolour: #00ADEF;
   #title_headline
   {
     font-family: Raleway;
+    font-size: 20px !important;
     text-align: center;
     bottom:5px;
     color: $deNBI_blue;
     height: 100%;
     margin-top:15px;
-
+    min-width:25%;
   }
 
   .w3-bar-block
