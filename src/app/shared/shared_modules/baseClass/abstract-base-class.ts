@@ -36,9 +36,10 @@ export enum Application_States {
   CREDITS_EXTENSION_DECLINED = 15,
   LIFETIME_EXTENSION_REQUESTED = 16,
   LIFETIME_EXTENSION_DECLINED = 17,
-  EXPIRES_SOON = 18,
-  APPROVED_LAST_2_WEEKS = 19,
-  EXPIRED = 20
+  WAIT_FOR_TERMINATION_FM = 18,
+  EXPIRES_SOON = 19,
+  APPROVED_LAST_2_WEEKS = 20,
+  EXPIRED = 21
 
 }
 
@@ -62,7 +63,8 @@ export enum Application_States_Strings {
   CREDITS_EXTENSION_DECLINED = 'credits declined',
   EXPIRES_SOON = 'expires soon',
   APPROVED_LAST_2_WEEKS = 'new project',
-  EXPIRED = 'lifetime expired'
+  EXPIRED = 'lifetime expired',
+  WAIT_FOR_TERMINATION_FM = 'wait for termination by fm'
 
 }
 
