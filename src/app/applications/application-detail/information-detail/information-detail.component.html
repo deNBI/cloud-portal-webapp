@@ -33,7 +33,7 @@
             class="badge badge-danger">Existing</span>
     </td>
   </tr>
-  <tr *ngIf="!application?.project_application_cloud_service_develop">
+  <tr *ngIf="!application?.project_application_cloud_service_develop && application?.project_application_cloud_service">
     <td>Number of unique users per month</td>
     <td>{{application?.project_application_cloud_service_user_number}}</td>
   </tr>
