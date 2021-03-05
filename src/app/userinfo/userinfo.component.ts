@@ -35,18 +35,21 @@ export class UserInfoComponent implements OnInit {
 
   /**
    * If every data is loaded.
+   *
    * @type {boolean}
    */
   isLoaded: boolean = false;
 
   /**
    * If the user is part of a project.
+   *
    * @type {boolean}
    */
   isProjectMember: boolean = true;
 
   /**
    * If freemium is active.
+   *
    * @type {boolean}
    */
   freemiumActive: boolean = false;

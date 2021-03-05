@@ -159,7 +159,7 @@ export class BiocondaComponent implements OnInit {
   }
 
   addTool(name: string, version: string, build: string): void {
-    const tool: IBiocondaTool = {name: name, version: version, build: build};
+    const tool: IBiocondaTool = {name, version, build};
 
     if (!this.is_tool_name_added(tool.name)) {
       this.chosen_tools.push(tool);
@@ -202,7 +202,7 @@ export class BiocondaComponent implements OnInit {
   }
 
   is_added_values(name: string, version: string, build: string): boolean {
-    const tool: IBiocondaTool = {name: name, version: version, build: build};
+    const tool: IBiocondaTool = {name, version, build};
 
     return this.is_added(tool);
   }

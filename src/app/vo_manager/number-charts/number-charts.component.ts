@@ -63,11 +63,11 @@ export class NumberChartsComponent implements OnInit {
     this.numbersService.getProjectCounterTimeline().subscribe(
     (result: Object[]): void => {
       result.forEach((valuePack: any): void => {
-        this.runningOpenstack.push(valuePack["running_openstack"]);
-        this.runningSimpleVM.push(valuePack["running_simple_vm"]);
-        this.terminatedOpenstack.push(valuePack["terminated_openstack"]);
-        this.terminatedSimpleVM.push(valuePack["terminated_simple_vm"]);
-        this.endDatesProjects.push(valuePack["end_date"]);
+        this.runningOpenstack.push(valuePack['running_openstack']);
+        this.runningSimpleVM.push(valuePack['running_simple_vm']);
+        this.terminatedOpenstack.push(valuePack['terminated_openstack']);
+        this.terminatedSimpleVM.push(valuePack['terminated_simple_vm']);
+        this.endDatesProjects.push(valuePack['end_date']);
       });
       this.drawProjectNumbersChart();
 
@@ -79,11 +79,11 @@ export class NumberChartsComponent implements OnInit {
       (result: Object[]): void => {
 
         result.forEach((valuePack: Object): void => {
-          this.openstackCores.push(valuePack["openstack_cores"]);
-          this.openstackRam.push(valuePack["openstack_ram"]);
-          this.simpleVMCores.push(valuePack["simple_vm_cores"]);
-          this.simpleVMRam.push(valuePack["simple_vm_ram"]);
-          this.endDatesResources.push(valuePack["end_date"]);
+          this.openstackCores.push(valuePack['openstack_cores']);
+          this.openstackRam.push(valuePack['openstack_ram']);
+          this.simpleVMCores.push(valuePack['simple_vm_cores']);
+          this.simpleVMRam.push(valuePack['simple_vm_ram']);
+          this.endDatesResources.push(valuePack['end_date']);
         });
         this.drawRamNumbersChart();
         this.drawCoresNumbersChart();
@@ -126,7 +126,7 @@ export class NumberChartsComponent implements OnInit {
    */
   drawCoresNumbersChart(): void {
     this.coresChart[0] = c3.generate({
-      oninit: function() {
+      oninit() {
         this.svg.attr('id', 'coresNumbersSVG')
       },
       bindto: '#coresChart',
@@ -190,7 +190,7 @@ export class NumberChartsComponent implements OnInit {
    */
   drawRamNumbersChart(): void {
      this.ramChart[0] = c3.generate({
-      oninit: function() {
+      oninit() {
         this.svg.attr('id', 'ramNumbersSVG')
       },
       bindto: '#ramChart',
@@ -255,7 +255,7 @@ export class NumberChartsComponent implements OnInit {
   drawProjectNumbersChart(): void {
 
     this.projectNumbersChart[0] = c3.generate({
-      oninit: function() {
+      oninit() {
         this.svg.attr('id', 'projectNumbersSVG')
       },
       bindto: '#projectsChart',
@@ -272,7 +272,7 @@ export class NumberChartsComponent implements OnInit {
         ],
         type: 'area-spline',
         area: {
-          zerobased: true,
+          zerobased: true
         },
         groups: [
           [
@@ -332,8 +332,7 @@ export class NumberChartsComponent implements OnInit {
       case 'ram': {
         if (this.ramChart[1]){
           this.ramChart[0].transform('area-spline');
-        } else
-         {
+        } else {
            this.ramChart[0].transform('bar');
         }
         this.ramChart[1] = !this.ramChart[1];

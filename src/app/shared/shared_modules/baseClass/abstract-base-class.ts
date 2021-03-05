@@ -83,12 +83,14 @@ export abstract class AbstractBaseClasse {
 
   /**
    * If the site is loaded with values.
+   *
    * @type {boolean}
    */
   isLoaded: boolean = false;
 
   /**
    * If the user is a vo admin.
+   *
    * @type {boolean}
    */
   is_vo_admin: boolean = false;
@@ -130,8 +132,9 @@ export abstract class AbstractBaseClasse {
 
   /**
    * Get a collapse status.
-   * @param {string} id
-   * @returns {boolean}
+   *
+   * @param id
+   * @returns
    */
   public getCollapseStatus(id: string): boolean {
     if (id in this.collapse_status) {
@@ -151,7 +154,8 @@ export abstract class AbstractBaseClasse {
 
   /**
    * Switch status of collapse.
-   * @param {string} id
+   *
+   * @param id
    */
   public switchCollapseStatus(id: string): void {
     this.collapse_status[id] = !this.getCollapseStatus(id);
