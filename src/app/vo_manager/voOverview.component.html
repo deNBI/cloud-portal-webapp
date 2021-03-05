@@ -144,6 +144,17 @@
                             class="badge badge-dark">{{application_states[application_states.TERMINATION_REQUESTED]}}</span>
                     </label>
                   </div>
+                  <div class="checkbox col-sm">
+                    <label>
+                      <input type="checkbox"
+                             (change)="changeFilterStatus(application_states[application_states.WAIT_FOR_TERMINATION_FM]);applyFilter();"
+                             [checked]="filterstatus_list[application_states[application_states.WAIT_FOR_TERMINATION_FM]]"
+
+                      />
+                      <span style="margin-left: 5px"
+                            class="badge badge-dark">{{application_states[application_states.WAIT_FOR_TERMINATION_FM]}}</span>
+                    </label>
+                  </div>
                 </div>
 
               </td>
@@ -200,6 +211,11 @@
                     *ngIf="project | hasstatusinlist: application_states.TERMINATION_REQUESTED"
                     style="margin-left: 5px"
                     class="badge badge-dark">TERMINATION REQUESTED </span>
+                  <span
+                    *ngIf="project | hasstatusinlist: application_states.WAIT_FOR_TERMINATION_FM"
+                    style="margin-left: 5px"
+                    class="badge badge-dark">WAIT FOR TERMINATION BY FM </span>
+
                 </td>
 
                 <td>
@@ -238,9 +254,15 @@
                       type="button"
                       class="btn btn-danger" [id]="'show_terminate_' + project?.Id"
                       (click)="selectedProject = project;terminateModal.show();"
-
-                    >
+                      *ngIf="!(project | hasstatusinlist: application_states.WAIT_FOR_TERMINATION_FM)">
                       <i class="fa fa-trash"></i>&nbsp;Terminate Project
+                    </button>
+                    <button
+                      style="margin-left: 5px" type="button" disabled
+                      class="btn btn-danger" [id]="'show_terminate_' + project?.Id"
+                      (click)="selectedProject = project;terminateModal.show();"
+                      *ngIf="project | hasstatusinlist: application_states.WAIT_FOR_TERMINATION_FM">
+                      Processed by FM
                     </button>
                   </div>
                 </td>
