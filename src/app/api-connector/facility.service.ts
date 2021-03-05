@@ -233,7 +233,7 @@ export class FacilityService {
     const params: HttpParams = new HttpParams().set('action', 'approve');
 
     return this.http.post(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/applications/${application_id}/status/`,
-      params, {
+                          params, {
         withCredentials: true,
         observe: 'response'
       });

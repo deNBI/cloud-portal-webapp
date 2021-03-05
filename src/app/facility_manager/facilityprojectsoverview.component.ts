@@ -494,7 +494,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
           this.fullLayout.getGroupsEnumeration();
           this.updateNotificationModal('Success', 'The termination of the project was declined.', true, 'success');
         },
-        (error: any): void => {
+                 (error: any): void => {
           if (error['status'] === 409) {
             this.updateNotificationModal(
               'Failed',
