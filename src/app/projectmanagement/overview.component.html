@@ -229,7 +229,7 @@
                         && !(project_application | hasstatusinlist:Application_States.TERMINATION_REQUESTED)
                         && !(project_application | hasstatusinlist:Application_States.WAIT_FOR_TERMINATION_FM)"
                         (click)="terminateModal.show()" id="show_termination_modal_button">Request termination</button>
-                <button class="btn btn-outline-secondary"
+                <button class="btn btn-outline-secondary" disabled
                         *ngIf="(project_application | hasstatusinlist:Application_States.TERMINATION_REQUESTED)
                         || (project_application | hasstatusinlist:Application_States.WAIT_FOR_TERMINATION_FM)"
                         (click)="terminateModal.show()" id="show_termination_modal_button_disabled">Termination Requested</button>
