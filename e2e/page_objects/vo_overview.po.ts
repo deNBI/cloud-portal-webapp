@@ -28,14 +28,12 @@ export class VoOverviewPage {
     await browser.sleep(2000)
   }
 
-  static async getAllPTProjects(): Promise<any> {
+  static async terminateAllPTProjects(): Promise<any> {
     Util.logInfo('Terminate all PT projects');
-    const ele: any = element(by.buttonText(this.TERMINATE_BUTTON_TEXT));
+    let ele: any = element(by.buttonText(this.TERMINATE_BUTTON_TEXT));
     while (await ele.isPresent()) {
       await this.terminateProject(ele);
-      await this.navigateToVolumeOverview();
-      await this.filterForPTProjets();
-      await this.getAllPTProjects();
+      ele = element(by.buttonText(this.TERMINATE_BUTTON_TEXT));
     }
 
   }
