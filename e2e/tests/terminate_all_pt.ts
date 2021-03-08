@@ -3,6 +3,7 @@ import {browser} from 'protractor';
 import {LoginPage} from '../page_objects/login.po';
 import {VoOverviewPage} from '../page_objects/vo_overview.po';
 import {Util} from '../util';
+import {FmProjectsOverview} from '../page_objects/fm_project_overview.po';
 
 describe('Simple Application Test', function (): void {
 
@@ -21,10 +22,23 @@ describe('Simple Application Test', function (): void {
 
   });
 
-  it('should terminate projects', async function (): Promise<any> {
+  it('should terminate vo projects', async function (): Promise<any> {
     await VoOverviewPage.getAllPTProjects();
 
-    // await VoOverviewPage.terminateProject('show_terminate_12086')
+  });
+
+  it('should navigate to the fm projects', async function (): Promise<any> {
+    await FmProjectsOverview.navigateToFMProjectsOverview()
+
+  });
+
+  it('should filter projects', async function (): Promise<any> {
+    await FmProjectsOverview.filterForPTProjets();
+
+  });
+
+  it('should terminate vo projects', async function (): Promise<any> {
+    await FmProjectsOverview.getAllPTProjects();
 
   });
 
