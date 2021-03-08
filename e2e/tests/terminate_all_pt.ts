@@ -2,8 +2,8 @@
 import {browser} from 'protractor';
 import {LoginPage} from '../page_objects/login.po';
 import {VoOverviewPage} from '../page_objects/vo_overview.po';
-import {Util} from '../util';
 import {FmProjectsOverview} from '../page_objects/fm_project_overview.po';
+import {ApplicationOverviewPage} from '../page_objects/application_overview.po';
 
 describe('Simple Application Test', function (): void {
 
@@ -12,8 +12,13 @@ describe('Simple Application Test', function (): void {
     await LoginPage.login(browser.params.login.email_vo, browser.params.login.password_vo, browser.params.login.auth_vo, true);
   });
 
+  it('should decline all open PT Applications', async function (): Promise<any> {
+
+    await ApplicationOverviewPage.navigateToApplicationOverview();
+    await ApplicationOverviewPage.declinePTApplications();
+  });
+
   it('should navigate to the vo overview', async function (): Promise<any> {
-    Util.logDebug('Starting terminate simple vm application test');
     await VoOverviewPage.navigateToVolumeOverview();
   });
 
@@ -23,7 +28,7 @@ describe('Simple Application Test', function (): void {
   });
 
   it('should terminate vo projects', async function (): Promise<any> {
-    await VoOverviewPage.getAllPTProjects();
+    await VoOverviewPage.terminateAllPTProjects();
 
   });
 
@@ -37,8 +42,8 @@ describe('Simple Application Test', function (): void {
 
   });
 
-  it('should terminate vo projects', async function (): Promise<any> {
-    await FmProjectsOverview.getAllPTProjects();
+  it('should terminate fm projects', async function (): Promise<any> {
+    await FmProjectsOverview.terminateAllPTProjects();
 
   });
 
