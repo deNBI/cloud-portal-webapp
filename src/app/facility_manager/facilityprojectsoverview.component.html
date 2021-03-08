@@ -52,7 +52,7 @@
         <div class="card-body" style="overflow-x: visible; overflow-y: visible">
           <div class="row">
             <div class="col-3">
-              <input type="text" placeholder="member-elixir_id,id,name" name="filter"
+              <input type="text" id="filter_project_name" placeholder="member-elixir_id,id,name" name="filter"
                      [(ngModel)]="filter" (ngModelChange)="filterChanged.next($event)" style="width:100%;">
             </div>
             <div class="col-3">
@@ -168,7 +168,7 @@
                             (click)="showMembersOfTheProject(project.Id, project.Name); usersModal.show();">
                       <i class="fa fa-users"></i>&nbsp;Show Members
                     </button>
-                    <button type="button" class="btn btn-danger" data-toggle="modal"
+                    <button  type="button" class="btn btn-danger" data-toggle="modal"
                             *ngIf="(project | hasstatusinlist: application_states.WAIT_FOR_TERMINATION_FM) && project.OpenStackProject"
                             (click)="selectedProject = project; terminateModal.show()">
                       <i class="fa fa-users"></i>&nbsp;Terminate Project
@@ -670,7 +670,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">{{ notificationModalTitle }}</h4>
+        <h4 class="modal-title" id="notification_modal_title">{{ notificationModalTitle }}</h4>
         <button type="button" class="close" style="cursor:pointer"
                 (click)="notificationModal.hide()"
                 aria-label="Close">
