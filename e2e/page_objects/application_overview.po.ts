@@ -21,11 +21,36 @@ export class ApplicationOverviewPage {
   private static MODIFICATION_REQUEST_RESULT_TEXT: string = 'The resource modification request was approved!';
   private static EXTENSION_TAB_BUTTON: string = 'tab_state_button_extension_request';
   private static EXTENSION_RESULT_MESSAGE_TEXT: string = 'The project has been extended!';
+  private static DECLINE_PT_OPEN_APPLICATION_PRE: string = 'btn_decline_PTOpenStack'
+  private static DECLINE_PT_SIMPLE_APPLICATION_PRE: string = 'btn_decline_PTOpenStack'
+  private static SUCCESSFULL_DECLINED: string = 'The Application was declined'
+  private static CLOSE_NOTIFICATION_MODAL: string = 'close_notification_modal_btn'
 
   static async navigateToApplicationOverview(): Promise<any> {
     Util.logInfo('Navigate to Application Overview form');
     await Util.navigateToAngularPage('applications');
     await Util.waitForPage('applications');
+  }
+
+  static async declinePTApplications(): Promise<any> {
+
+    let openstack_ele: any = element(by.buttonText(this.DECLINE_PT_OPEN_APPLICATION_PRE));
+    while (await openstack_ele.isPresent()) {
+      await Util.clickElementByElement(openstack_ele);
+      await Util.waitForTextPresenceInElementById(this.NOTIFICATION_MESSAGE, this.SUCCESSFULL_DECLINED);
+      await Util.clickElementById(this.CLOSE_NOTIFICATION_MODAL)
+      openstack_ele = element(by.buttonText(this.DECLINE_PT_OPEN_APPLICATION_PRE));
+
+    }
+    let simple_ele: any = element(by.buttonText(this.DECLINE_PT_OPEN_APPLICATION_PRE));
+    while (await simple_ele.isPresent()) {
+      await Util.clickElementByElement(simple_ele);
+      await Util.waitForTextPresenceInElementById(this.NOTIFICATION_MESSAGE, this.SUCCESSFULL_DECLINED);
+      await Util.clickElementById(this.CLOSE_NOTIFICATION_MODAL)
+      simple_ele = element(by.buttonText(this.DECLINE_PT_OPEN_APPLICATION_PRE));
+
+    }
+
   }
 
   static async approveModificationRequest(application_name: string): Promise<any> {
