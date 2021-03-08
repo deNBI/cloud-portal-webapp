@@ -2,11 +2,11 @@ import {browser, by, element} from 'protractor';
 import {Util} from '../util';
 
 /**
- *  Vo Overview Page.
+ *  FM Overview Page.
  */
-export class VoOverviewPage {
+export class FmProjectsOverview {
 
-  private static VO_OVERVIEW_URL: string = 'vo-manager/overview';
+  private static FM_OVERVIEW_URL: string = 'facility-manager/facilityProjects';
   private static FILTER_PROJECT_NAME_INPUT: string = 'filter_project_name';
   private static SHOW_TERMINATE_PREFIX: string = 'show_terminate_';
   private static TERMINATE_PROJECT_BTN: string = 'terminate_project_btn';
@@ -17,9 +17,9 @@ export class VoOverviewPage {
   private static NOTIFICATION_MODAL_TITLE: string = 'notification_modal_title'
   private static SUCCESS: string = 'Success'
 
-  static async navigateToVolumeOverview(): Promise<any> {
-    Util.logInfo('Navigating to vo overview');
-    await Util.navigateToAngularPage(this.VO_OVERVIEW_URL);
+  static async navigateToFMProjectsOverview(): Promise<any> {
+    Util.logInfo('Navigating to fm projects overview');
+    await Util.navigateToAngularPage(this.FM_OVERVIEW_URL);
   }
 
   static async filterForPTProjets(): Promise<any> {
@@ -33,7 +33,7 @@ export class VoOverviewPage {
     const ele: any = element(by.buttonText(this.TERMINATE_BUTTON_TEXT));
     while (await ele.isPresent()) {
       await this.terminateProject(ele);
-      await this.navigateToVolumeOverview();
+      await this.navigateToFMProjectsOverview();
       await this.filterForPTProjets();
       await this.getAllPTProjects();
     }
