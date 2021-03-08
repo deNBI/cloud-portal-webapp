@@ -36,9 +36,10 @@ export enum Application_States {
   CREDITS_EXTENSION_DECLINED = 15,
   LIFETIME_EXTENSION_REQUESTED = 16,
   LIFETIME_EXTENSION_DECLINED = 17,
-  EXPIRES_SOON = 18,
-  APPROVED_LAST_2_WEEKS = 19,
-  EXPIRED = 20
+  WAIT_FOR_TERMINATION_FM = 18,
+  EXPIRES_SOON = 19,
+  APPROVED_LAST_2_WEEKS = 20,
+  EXPIRED = 21
 
 }
 
@@ -62,7 +63,8 @@ export enum Application_States_Strings {
   CREDITS_EXTENSION_DECLINED = 'credits declined',
   EXPIRES_SOON = 'expires soon',
   APPROVED_LAST_2_WEEKS = 'new project',
-  EXPIRED = 'lifetime expired'
+  EXPIRED = 'lifetime expired',
+  WAIT_FOR_TERMINATION_FM = 'wait for termination by fm'
 
 }
 
@@ -99,6 +101,12 @@ export abstract class AbstractBaseClasse {
   vm_statuses: typeof Vm_Statuses = Vm_Statuses;
 
   collapse_status: { [id: string]: boolean } = {};
+
+  /**
+   * Used in application formular and on instance detail page
+   */
+  gpuInformationLinks: [string, string][] = [['https://developer.nvidia.com/cuda-gpus', 'NVIDIA'],
+    ['https://en.wikipedia.org/wiki/CUDA', 'Wikipedia']];
 
   // notification Modal variables
   public notificationModalTitle: string = 'Notification';
@@ -152,6 +160,9 @@ export abstract class AbstractBaseClasse {
   }
 
   lifeTimeReached(lifetimeDays: number, running: number): Lifetime_States {
+    if (!lifetimeDays || !running) {
+      return null;
+    }
     if ((lifetimeDays - running) < 0) {
       // expired
       return this.lifetime_states.EXPIRED

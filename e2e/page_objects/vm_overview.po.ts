@@ -44,7 +44,7 @@ export class VMOverviewPage {
   private name_counter: number = 0;
 
   async navigateToOverview(): Promise<any> {
-    Util.logMethodCall('Navigating to VM Overview Page');
+    Util.logInfo('Navigating to VM Overview Page');
     await Util.navigateToAngularPage(this.VM_OVERVIEW_URL);
     await Util.waitForPage(this.VM_OVERVIEW_URL, this.LONG_TIMEOUT);
 
@@ -52,19 +52,19 @@ export class VMOverviewPage {
   }
 
   async setBasicVMName(name: string): Promise<any> {
-    Util.logMethodCall(`Setting basic vm name as ${name}`);
+    Util.logInfo(`Setting basic vm name as ${name}`);
     this.vm_names[this.BASIC_VM_NAME_KEY] = name;
     this.name_counter += 1;
   }
 
   async setVolumeVMName(name: string): Promise<any> {
-    Util.logMethodCall(`Setting volume vm name as ${name}`);
+    Util.logInfo(`Setting volume vm name as ${name}`);
     this.vm_names[this.VOLUME_VM_NAME_KEY] = name;
     this.name_counter += 1;
   }
 
   async isVmActive(name: string): Promise<boolean> {
-    Util.logMethodCall(`Checking if ${name} is active`);
+    Util.logInfo(`Checking if ${name} is active`);
     await Util.waitForPresenceOfElementById(this.TABLE_ID);
 
     return await Util.waitForPresenceOfElementById(`${this.ACTIVE_BADGE_PREFIX}${name}`, this.LONG_TIMEOUT);
@@ -75,7 +75,7 @@ export class VMOverviewPage {
   }
 
   async areAllVMActive(): Promise<boolean> {
-    Util.logMethodCall(`Checking active for ${this.name_counter} active vm`);
+    Util.logInfo(`Checking active for ${this.name_counter} active vm`);
 
     for (const key in this.vm_names) {
       if (key in this.vm_names) {
@@ -92,7 +92,7 @@ export class VMOverviewPage {
   }
 
   async isVMShutoff(name: string): Promise<boolean> {
-    Util.logMethodCall(`Checking if ${name} is shutoff`);
+    Util.logInfo(`Checking if ${name} is shutoff`);
     await Util.waitForPresenceOfElementById(this.TABLE_ID);
 
     return await Util.waitForPresenceOfElementById(`${this.SHUTOFF_BADGE_PREFIX}${name}`, this.LONG_TIMEOUT);
@@ -108,7 +108,7 @@ export class VMOverviewPage {
   }
 
   async isVMDeleted(name: string): Promise<boolean> {
-    Util.logMethodCall(`Checking if ${name} is deleted`);
+    Util.logInfo(`Checking if ${name} is deleted`);
 
     await Util.waitForPresenceOfElementById(this.TABLE_ID);
 
@@ -124,7 +124,7 @@ export class VMOverviewPage {
   }
 
   async shutoffVM(name: string): Promise<any> {
-    Util.logMethodCall(`Shutting off ${name}`);
+    Util.logInfo(`Shutting off ${name}`);
     await Util.waitForPresenceOfElementById(`${this.ACTIVE_BADGE_PREFIX}${name}`);
     await Util.clickElementById(`${this.SHOW_ACTIONS_PREFIX}${name}`);
     await Util.clickElementById(`${this.SHUTOFF_BUTTON_PREFIX}${name}`);
@@ -132,7 +132,7 @@ export class VMOverviewPage {
     await Util.clickElementById(this.VERIFY_STOP_BTN);
     await browser.sleep(1000);
 
-    Util.logMethodCall(`Shutoff method for ${name} completed`)
+    Util.logInfo(`Shutoff method for ${name} completed`)
   }
 
   async shutOffBasicVM(): Promise<any> {
@@ -140,14 +140,14 @@ export class VMOverviewPage {
   }
 
   async resumeVM(name: string): Promise<any> {
-    Util.logMethodCall(`Resume vm ${name}`);
+    Util.logInfo(`Resume vm ${name}`);
     await Util.waitForPresenceOfElementById(`${this.SHUTOFF_BADGE_PREFIX}${name}`);
     await Util.clickElementById(`${this.SHOW_ACTIONS_PREFIX}${name}`);
     await Util.clickElementById(`${this.RESUME_BUTTON_PREFIX}${name}`);
     await Util.waitForPresenceOfElementById(this.VERIFY_RESTART_MODAL);
     await Util.clickElementById(this.VERIFY_RESTART_BTN);
     await browser.sleep(1000);
-    Util.logMethodCall(`Resuming method for ${name} completed`)
+    Util.logInfo(`Resuming method for ${name} completed`)
   }
 
   async resumeBasicVM(): Promise<any> {
@@ -183,7 +183,7 @@ export class VMOverviewPage {
   }
 
   async deleteVM(name: string): Promise<any> {
-    Util.logMethodCall(`Deleting ${name}`);
+    Util.logInfo(`Deleting ${name}`);
     if (element(by.id(`${this.SHOW_ACTIONS_PREFIX}${name}`)).isPresent()) {
       await Util.clickElementById(`${this.SHOW_ACTIONS_PREFIX}${name}`);
     }
@@ -193,7 +193,7 @@ export class VMOverviewPage {
     await Util.clickElementById(this.CONFIRM_DELETE_BUTTON);
     await Util.waitForPresenceOfElementById(`${this.DELETED_BADGE_PREFIX}${name}`, this.LONG_TIMEOUT);
 
-    Util.logMethodCall(`Deletion method for ${name} completed`)
+    Util.logInfo(`Deletion method for ${name} completed`)
   }
 
   async deleteBasicVM(): Promise<any> {
@@ -205,7 +205,7 @@ export class VMOverviewPage {
   }
 
   async createSnapshotOfVM(name: string): Promise<any> {
-    Util.logMethodCall(`Creating snapshot of ${name}`);
+    Util.logInfo(`Creating snapshot of ${name}`);
 
     if (element(by.id(`${this.SHOW_ACTIONS_PREFIX}${name}`)).isPresent()) {
       await Util.clickElementById(`${this.SHOW_ACTIONS_PREFIX}${name}`);
@@ -217,7 +217,7 @@ export class VMOverviewPage {
     await Util.waitForPresenceOfElementById(this.SNAPSHOT_RESULT_MODAL);
     await Util.waitForPresenceOfElementById(this.SNAPSHOT_DONE_DIV);
     await Util.clickElementById(this.CLOSE_SNAPSHOT_RESULT_BUTTON);
-    Util.logMethodCall(`Creating snapshot method for ${name} completed`);
+    Util.logInfo(`Creating snapshot method for ${name} completed`);
   }
 
   async createSnapshotOfBasicVM(): Promise<any> {
@@ -229,7 +229,7 @@ export class VMOverviewPage {
     const vm_name: string = await this.getBasicVMName();
 
     await this.isVmActive(vm_name);
-    Util.logMethodCall(`Going to VM Detail page for ${this.vm_names[this.BASIC_VM_NAME_KEY]}`);
+    Util.logInfo(`Going to VM Detail page for ${this.vm_names[this.BASIC_VM_NAME_KEY]}`);
 
     return await Util.clickElementById(`${this.DETAIL_PRE}${vm_name}`)
   }

@@ -45,7 +45,7 @@
               <div class="col-4">
                 <div class="callout">
                   <small class="text-muted">with</small><br>
-                  <strong class="text-muted">{{mode.description}}</strong>
+                  <strong class="text-muted" [innerHTML]="mode?.description"></strong>
                 </div>
               </div>
 
@@ -165,6 +165,14 @@
                 <strong class="text-muted">{{virtualMachine?.flavor?.gpu}}</strong>
               </div>
             </div>
+            <div class="col-6" *ngIf="virtualMachine?.flavor?.type.shortcut ==='GPU'">
+              <div class="alert alert-light">
+                You can check which CUDA drivers are currently supported here:<br>
+                <div *ngFor="let link of gpuInformationLinks">
+                  <a href="{{link[0]}}" target="_blank" rel="noopener noreferrer">{{link[1]}}</a>
+                </div>
+              </div>
+            </div>
           </div>
           <div class="row">
             <div class="col-6" *ngIf="virtualMachine?.flavor?.comment">
@@ -174,7 +182,6 @@
               </div>
             </div>
           </div>
-
         </div>
       </div>
 

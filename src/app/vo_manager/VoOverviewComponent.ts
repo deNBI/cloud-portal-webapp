@@ -13,6 +13,7 @@ import {VirtualMachine} from '../virtualmachines/virtualmachinemodels/virtualmac
 import {Volume} from '../virtualmachines/volumes/volume';
 import {FullLayoutComponent} from '../layouts/full-layout.component';
 import {SnapshotModel} from '../virtualmachines/snapshots/snapshot.model';
+import {Application_States} from '../shared/shared_modules/baseClass/abstract-base-class';
 
 /**
  * Vo Overview component.
@@ -63,7 +64,7 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
 
   constructor(private fullLayout: FullLayoutComponent,
               private sanitizer: DomSanitizer,
-              private voserice: VoService,
+              private voService: VoService,
               private groupservice: GroupService,
               private facilityService: FacilityService) {
     super();
@@ -73,17 +74,17 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
   ngOnInit(): void {
 
     this.getVoProjects();
-    this.voserice.getNewsletterSubscriptionCounter().subscribe((result: IResponseTemplate): void => {
+    this.voService.getNewsletterSubscriptionCounter().subscribe((result: IResponseTemplate): void => {
       this.newsletterSubscriptionCounter = <number>result.value
 
     });
   }
 
   getApplicationInfos(): void {
-    this.voserice.getVoProjectResourcesTimeframes().subscribe()
+    this.voService.getVoProjectResourcesTimeframes().subscribe()
 
-    this.voserice.getVoProjectCounter().subscribe();
-    this.voserice.getVoProjectDates().subscribe();
+    this.voService.getVoProjectCounter().subscribe();
+    this.voService.getVoProjectDates().subscribe();
   }
 
   sendEmail(subject: string, message: string, reply?: string): void {
@@ -103,7 +104,7 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
 
   sendTestBug(): void {
     console.log('error')
-    this.voserice.sendTestError().subscribe()
+    this.voService.sendTestError().subscribe()
   }
 
   applyFilter(): void {
@@ -125,7 +126,7 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
   }
 
   sendNewsletterToVo(subject: string, message: string, selectedProjectType: string, reply?: string): void {
-    this.voserice.sendNewsletterToVo(
+    this.voService.sendNewsletterToVo(
       encodeURIComponent(subject), encodeURIComponent(message), selectedProjectType, encodeURIComponent(reply))
       .subscribe((result: IResponseTemplate): void => {
         if (<boolean><Boolean>result.value === true) {
@@ -138,7 +139,7 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
   }
 
   sendMailToVo(subject: string, message: string, facility: string, type: string, reply?: string): void {
-    this.voserice.sendMailToVo(encodeURIComponent(subject), encodeURIComponent(message), facility, type, encodeURIComponent(reply))
+    this.voService.sendMailToVo(encodeURIComponent(subject), encodeURIComponent(message), facility, type, encodeURIComponent(reply))
       .subscribe((result: IResponseTemplate): void => {
         if (<boolean><Boolean>result.value === true) {
 
@@ -172,7 +173,7 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
 
   getVoProjects(): void {
     this.projects = [];
-    this.voserice.getAllGroupsWithDetails().subscribe((result: any): void => {
+    this.voService.getAllGroupsWithDetails().subscribe((result: any): void => {
       const vo_projects: any = result;
       for (const group of vo_projects) {
         const dateCreated: moment.Moment = group['createdAt'];
@@ -222,7 +223,6 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
           newProject.LifetimeDays = lifetimeDays;
           newProject.DateEnd = expirationDate;
           newProject.LifetimeReached = this.lifeTimeReached(lifetimeDays, dateDayDifference);
-
         }
 
         this.projects.push(newProject);
@@ -277,16 +277,21 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
   }
 
   public terminateProject(): void {
-    this.voserice.terminateProject(this.selectedProject.Id)
+    this.voService.terminateProject(this.selectedProject.Id)
       .subscribe((): void => {
                    const indexAll: number = this.projects.indexOf(this.selectedProject, 0);
 
                    this.projects.splice(indexAll, 1);
+
                    this.applyFilter();
                    this.fullLayout.getGroupsEnumeration();
-
-                   this.updateNotificationModal('Success', 'The  project was terminated.', true, 'success');
-
+                   if (this.selectedProject.OpenStackProject) {
+                     this.updateNotificationModal('Success',
+                                                  'The request to terminate the project was forwarded to the facility manager.',
+                                                  true, 'success')
+                   } else {
+                     this.updateNotificationModal('Success', 'The  project was terminated.', true, 'success');
+                   }
                  },
                  (error: any): void => {
                    if (error['status'] === 409) {
@@ -304,13 +309,13 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
   }
 
   getProjectStatus(project: Project): void {
-    this.voserice.getProjectStatus(project.Id).subscribe((res: any): void => {
+    this.voService.getProjectStatus(project.Id).subscribe((res: any): void => {
       project.project_application_status = res.value;
     })
   }
 
   suspendProject(project: Project): void {
-    this.voserice.removeResourceFromGroup(project.Id).subscribe((): void => {
+    this.voService.removeResourceFromGroup(project.Id).subscribe((): void => {
       this.getProjectStatus(project);
       project.ComputeCenter = null;
     });
@@ -318,14 +323,14 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
   }
 
   resumeProject(project: Project): void {
-    this.voserice.resumeProject(project.Id).subscribe((): void => {
+    this.voService.resumeProject(project.Id).subscribe((): void => {
       this.getVoProjects();
     });
 
   }
 
-  getMembesOfTheProject(projectid: number, projectname: string): void {
-    this.voserice.getVoGroupRichMembers(projectid)
+  getMembersOfTheProject(projectid: number, projectname: string): void {
+    this.voService.getVoGroupRichMembers(projectid)
       .subscribe((members: ProjectMember[]): void => {
                    this.usersModalProjectID = projectid;
                    this.usersModalProjectName = projectname;
@@ -336,7 +341,7 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
   }
 
   showMembersOfTheProject(projectid: number, projectname: string): void {
-    this.getMembesOfTheProject(projectid, projectname);
+    this.getMembersOfTheProject(projectid, projectname);
 
   }
 

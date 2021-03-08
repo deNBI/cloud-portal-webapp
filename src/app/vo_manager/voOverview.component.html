@@ -144,6 +144,17 @@
                             class="badge badge-dark">{{application_states[application_states.TERMINATION_REQUESTED]}}</span>
                     </label>
                   </div>
+                  <div class="checkbox col-sm">
+                    <label>
+                      <input type="checkbox"
+                             (change)="changeFilterStatus(application_states[application_states.WAIT_FOR_TERMINATION_FM]);applyFilter();"
+                             [checked]="filterstatus_list[application_states[application_states.WAIT_FOR_TERMINATION_FM]]"
+
+                      />
+                      <span style="margin-left: 5px"
+                            class="badge badge-dark">{{application_states[application_states.WAIT_FOR_TERMINATION_FM]}}</span>
+                    </label>
+                  </div>
                 </div>
 
               </td>
@@ -183,10 +194,10 @@
                 <td>  <span *ngIf="project | hasstatusinlist:project_states.ACTIVE"
                             style="margin-left: 5px"
                             class="badge badge-success">{{project_states[project_states.ACTIVE]}} </span>
-                  <span *ngIf="project?.LifetimeReached| hasStatus:lifetime_states.EXPIRED"
+                  <span *ngIf="(project?.LifetimeReached | hasStatus:lifetime_states.EXPIRED) && !(project | hasstatusinlist: application_states.WAIT_FOR_CONFIRMATION)"
                         style="margin-left: 5px"
                         class="badge badge-danger">{{lifetime_states[lifetime_states.EXPIRED]}} </span>
-                  <span *ngIf="project?.LifetimeReached| hasStatus:lifetime_states.EXPIRES_SOON"
+                  <span *ngIf="project?.LifetimeReached | hasStatus:lifetime_states.EXPIRES_SOON"
                         style="margin-left: 5px"
                         class="badge badge-warning">{{lifetime_states[lifetime_states.EXPIRES_SOON]}}</span>
                   <span *ngIf="project| hasstatusinlist: project_states.SUSPENDED"
@@ -200,6 +211,11 @@
                     *ngIf="project | hasstatusinlist: application_states.TERMINATION_REQUESTED"
                     style="margin-left: 5px"
                     class="badge badge-dark">TERMINATION REQUESTED </span>
+                  <span
+                    *ngIf="project | hasstatusinlist: application_states.WAIT_FOR_TERMINATION_FM"
+                    style="margin-left: 5px"
+                    class="badge badge-dark">WAIT FOR TERMINATION BY FM </span>
+
                 </td>
 
                 <td>
@@ -238,9 +254,15 @@
                       type="button"
                       class="btn btn-danger" [id]="'show_terminate_' + project?.Id"
                       (click)="selectedProject = project;terminateModal.show();"
-
-                    >
+                      *ngIf="!(project | hasstatusinlist: application_states.WAIT_FOR_TERMINATION_FM)">
                       <i class="fa fa-trash"></i>&nbsp;Terminate Project
+                    </button>
+                    <button
+                      style="margin-left: 5px" type="button" disabled
+                      class="btn btn-danger" [id]="'show_terminate_' + project?.Id"
+                      (click)="selectedProject = project;terminateModal.show();"
+                      *ngIf="project | hasstatusinlist: application_states.WAIT_FOR_TERMINATION_FM">
+                      Processed by FM
                     </button>
                   </div>
                 </td>
@@ -605,10 +627,21 @@
               </button>
             </td>
 
-            <td>{{ selectedProject?.DateCreated }}</td>
-            <td>{{selectedProject?.DateEnd}}</td>
-            <td>{{ selectedProject?.DaysRunning }}</td>
-            <td>{{selectedProject?.LifetimeDays}}</td>
+            <td>
+              <span *ngIf="selectedProject?.DateCreated">{{selectedProject?.DateCreated}}</span>
+              <span *ngIf="!selectedProject?.DateCreated">No creation date available</span>
+            </td>
+            <td>
+              <span *ngIf="selectedProject?.DateEnd">{{selectedProject?.DateEnd}}</span>
+              <span *ngIf="!selectedProject?.DateEnd">No end date available</span>
+            </td>
+            <td>
+              <span *ngIf="selectedProject?.DaysRunning">{{selectedProject?.DaysRunning}}</span>
+              <span *ngIf="!selectedProject?.DaysRunning">No runtime available</span>
+            <td>
+              <span *ngIf="selectedProject?.LifetimeDays">{{selectedProject?.LifetimeDays}}</span>
+              <span *ngIf="!selectedProject?.LifetimeDays">No lifetime available</span>
+            </td>
 
             </tbody>
           </table>
@@ -664,7 +697,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">{{ notificationModalTitle }}</h4>
+        <h4 class="modal-title" id="notification_modal_title">{{ notificationModalTitle }}</h4>
         <button type="button" class="close" style="cursor:pointer"
                 (click)="notificationModal.hide()"
                 aria-label="Close">
