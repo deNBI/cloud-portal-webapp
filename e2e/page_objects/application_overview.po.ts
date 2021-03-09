@@ -38,7 +38,8 @@ export class ApplicationOverviewPage {
     await Util.waitForPresenceOfElementById(this.SUBMITTED_APPLICATIONS_TAB)
 
     let openstack_ele: ElementFinder = element.all(by.buttonText(this.DECLINE_PT_OPEN_APPLICATION_PRE)).first();
-    while (openstack_ele) {
+    Util.logInfo(openstack_ele)
+    while (openstack_ele.isPresent()) {
       await Util.clickElementByElement(openstack_ele);
       await Util.waitForTextPresenceInElementById(this.NOTIFICATION_MESSAGE, this.SUCCESSFULL_DECLINED);
       await Util.clickElementById(this.CLOSE_NOTIFICATION_MODAL)
@@ -46,7 +47,7 @@ export class ApplicationOverviewPage {
 
     }
     let simple_ele: ElementFinder = element.all(by.buttonText(this.DECLINE_PT_SIMPLE_APPLICATION_PRE)).first();
-    while (simple_ele) {
+    while (simple_ele.isPresent()) {
       await Util.clickElementByElement(simple_ele);
       await Util.waitForTextPresenceInElementById(this.NOTIFICATION_MESSAGE, this.SUCCESSFULL_DECLINED);
       await Util.clickElementById(this.CLOSE_NOTIFICATION_MODAL)
