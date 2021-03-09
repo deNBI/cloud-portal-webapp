@@ -1,4 +1,4 @@
-import {by, element} from 'protractor';
+import {by, element, ElementFinder} from 'protractor';
 import {Util} from '../util';
 
 /**
@@ -22,9 +22,10 @@ export class ApplicationOverviewPage {
   private static EXTENSION_TAB_BUTTON: string = 'tab_state_button_extension_request';
   private static EXTENSION_RESULT_MESSAGE_TEXT: string = 'The project has been extended!';
   private static DECLINE_PT_OPEN_APPLICATION_PRE: string = 'btn_decline_PTOpenStack'
-  private static DECLINE_PT_SIMPLE_APPLICATION_PRE: string = 'btn_decline_PTOpenStack'
+  private static DECLINE_PT_SIMPLE_APPLICATION_PRE: string = 'btn_decline_PTSimpleVM'
   private static SUCCESSFULL_DECLINED: string = 'The Application was declined'
   private static CLOSE_NOTIFICATION_MODAL: string = 'close_notification_modal_btn'
+  private static SUBMITTED_APPLICATIONS_TAB: string = 'tab_state_button_submitted_applications'
 
   static async navigateToApplicationOverview(): Promise<any> {
     Util.logInfo('Navigate to Application Overview form');
@@ -33,21 +34,23 @@ export class ApplicationOverviewPage {
   }
 
   static async declinePTApplications(): Promise<any> {
+    Util.logInfo('Decline all PT applications');
+    await Util.waitForPresenceOfElementById(this.SUBMITTED_APPLICATIONS_TAB)
 
-    let openstack_ele: any = element(by.buttonText(this.DECLINE_PT_OPEN_APPLICATION_PRE));
-    while (await openstack_ele.isPresent()) {
+    let openstack_ele: ElementFinder = element.all(by.buttonText(this.DECLINE_PT_OPEN_APPLICATION_PRE)).first();
+    while (openstack_ele) {
       await Util.clickElementByElement(openstack_ele);
       await Util.waitForTextPresenceInElementById(this.NOTIFICATION_MESSAGE, this.SUCCESSFULL_DECLINED);
       await Util.clickElementById(this.CLOSE_NOTIFICATION_MODAL)
-      openstack_ele = element(by.buttonText(this.DECLINE_PT_OPEN_APPLICATION_PRE));
+      openstack_ele = element.all(by.buttonText(this.DECLINE_PT_OPEN_APPLICATION_PRE)).first();
 
     }
-    let simple_ele: any = element(by.buttonText(this.DECLINE_PT_OPEN_APPLICATION_PRE));
-    while (await simple_ele.isPresent()) {
+    let simple_ele: ElementFinder = element.all(by.buttonText(this.DECLINE_PT_SIMPLE_APPLICATION_PRE)).first();
+    while (simple_ele) {
       await Util.clickElementByElement(simple_ele);
       await Util.waitForTextPresenceInElementById(this.NOTIFICATION_MESSAGE, this.SUCCESSFULL_DECLINED);
       await Util.clickElementById(this.CLOSE_NOTIFICATION_MODAL)
-      simple_ele = element(by.buttonText(this.DECLINE_PT_OPEN_APPLICATION_PRE));
+      simple_ele = element.all(by.buttonText(this.DECLINE_PT_SIMPLE_APPLICATION_PRE)).first();
 
     }
 
