@@ -44,6 +44,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
   details_loaded: boolean = false;
   /**
    * Approved group status.
+   *
    * @type {number}
    */
   STATUS_APPROVED: number = 2;
@@ -201,9 +202,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 
     }
 
-    this.projects_filtered = this.projects.filter((project: Project): boolean => {
-                                                   return this.checkFilter(project)
-                                                  }
+    this.projects_filtered = this.projects.filter((project: Project): boolean => this.checkFilter(project)
     );
 
   }
@@ -260,7 +259,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
     if (!id) {
       return 'NOT_FOUND';
     }
-    const project: Project = this.projects.find(function (element: Project): boolean {
+    const project: Project = this.projects.find(function(element: Project): boolean {
 
       return element.Id.toString() === id.toString();
 
@@ -351,6 +350,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 
   /**
    * Adds or deletes tags from the list of tags to add to the news when the corresponding checkbox gets clicked.
+   *
    * @param tag the tag which gets added/deleted.
    */
   manageTags(tag: WordPressTag): void {
@@ -364,6 +364,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 
   /**
    * Sends an email to users and also posts it as a news in WordPress via newsManager if selected.
+   *
    * @param facility the facility of the users which shall be informed
    * @param subject the subject as a string
    * @param message the message as a string
@@ -410,6 +411,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 
   /**
    * Sets the member selected in the mail modal as the member to send the mail to.
+   *
    * @param member the selected member
    */
 

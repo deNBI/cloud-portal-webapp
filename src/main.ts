@@ -14,7 +14,7 @@ platformBrowserDynamic().bootstrapModule(AppModule).then(() => {
 
   if (navigator.serviceWorker && environment.production) {
     navigator.serviceWorker.getRegistrations().then(
-      function (registrations) {
+      function(registrations) {
 
         for (const registration of registrations) {
 

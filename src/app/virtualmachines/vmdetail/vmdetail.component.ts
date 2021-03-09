@@ -77,11 +77,13 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
 
   /**
    * The changed status.
+   *
    * @type {number}
    */
   status_changed: number = 0;
   /**
    * Timeout for checking vm status.
+   *
    * @type {number}
    */
   private checkStatusTimeout: number = 1500;
@@ -104,6 +106,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
   validSnapshotNameBool: boolean;
   /**
    * String if the snapshot is done.
+   *
    * @type {string}
    */
   snapshotNameCheckDone: boolean = false;
@@ -153,6 +156,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
   // from vmOverview.component.ts - may be refactored in the future
   /**
    * Check if the snapshot name is valid.
+   *
    * @param e
    */
   validSnapshotName(event: any): any {
@@ -173,7 +177,8 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
 
   /**
    * Check status of vm.
-   * @param {VirtualMachine} vm instance
+   *
+   * @param vm instance
    */
   checkStatus(): void {
     this.virtualmachineService.checkVmStatus(this.virtualMachine.openstackid)
@@ -263,6 +268,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
 
   /**
    * Delete VM.
+   *
    * @param vm which will be deleted
    */
   deleteVm(): void {
@@ -348,8 +354,9 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
 
   /**
    * Reboot a vm.
+   *
    * @param vm which will be rebooted
-   * @param {string} reboot_type HARD|SOFT
+   * @param reboot_type HARD|SOFT
    */
   public rebootVm(reboot_type: string): void {
     this.virtualmachineService.rebootVM(this.virtualMachine.openstackid, reboot_type).subscribe(
@@ -376,6 +383,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
 
   /**
    * Check Status of vm in loop till final state is reached.
+   *
    * @param vm
    * @param final_state
    * @param is_selected_vm If the vm should be the selected vm
@@ -430,6 +438,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
 
   /**
    * Check Status of vm in loop till active.
+   *
    * @param vm
    */
   check_status_loop_when_reboot(): void {
@@ -461,7 +470,8 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
 
   /**
    * Stop a vm.
-   * @param {string} openstack_id of instance.
+   *
+   * @param openstack_id of instance.
    */
   stopVm(): void {
     this.virtualmachineService.stopVM(this.virtualMachine.openstackid)
@@ -532,10 +542,11 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
 
   /**
    * Create snapshot.
-   * @param {string} snapshot_instance which is used for creating the snapshot
-   * @param {string} snapshot_name name of the snapshot
+   *
+   * @param snapshot_instance which is used for creating the snapshot
+   * @param snapshot_name name of the snapshot
    */
-  createSnapshot(snapshot_instance: string, snapshot_name: string, description ?: string
+  createSnapshot(snapshot_instance: string, snapshot_name: string, description?: string
   ):
     void {
     this.imageService.createSnapshot(snapshot_instance, snapshot_name.trim(), description).subscribe(
@@ -563,6 +574,7 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
 
   /**
    * Copies the content of the field it get's clicked on (e.g. ssh connection information).
+   *
    * @param text the content of the field
    */
   copyToClipboard(text: string): void {

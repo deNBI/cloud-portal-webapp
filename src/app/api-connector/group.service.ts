@@ -62,7 +62,7 @@ export class GroupService {
 
       return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/client/getForc/`, {
         withCredentials: true,
-        params: params
+        params
       })
     } else {
       return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/client/getForc/`, {
@@ -205,7 +205,7 @@ export class GroupService {
 
     return this.http.get<Doi[]>(`${ApiSettings.getApiBaseURL()}doi/`, {
       withCredentials: true,
-      params: params
+      params
     })
   }
 

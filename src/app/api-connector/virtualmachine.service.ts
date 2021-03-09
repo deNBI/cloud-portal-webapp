@@ -82,7 +82,7 @@ export class VirtualmachineService {
 
     return this.http.get<Clusterinfo[]>(`${ApiSettings.getApiBaseURL()}clusters/`, {
       withCredentials: true,
-      params: params
+      params
     })
   }
 
@@ -138,7 +138,7 @@ export class VirtualmachineService {
 
     return this.http.get<VirtualMachine[]>(`${ApiSettings.getApiBaseURL()}voManager/vms/`, {
       withCredentials: true,
-      params: params
+      params
 
     })
   }
@@ -174,7 +174,7 @@ export class VirtualmachineService {
 
     return this.http.get<VirtualMachine[]>(this.baseVmUrl, {
       withCredentials: true,
-      params: params
+      params
 
     })
   }
@@ -211,7 +211,6 @@ export class VirtualmachineService {
     return this.http.get<VirtualMachine[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility_id}/vms/`,
                                            {
                                              withCredentials: true,
-                                             params:
                                              params
 
                                            }
@@ -317,7 +316,7 @@ export class VirtualmachineService {
 
     return this.http.get<Volume[]>(`${ApiSettings.getApiBaseURL()}volumes/`, {
       withCredentials: true,
-      params: params
+      params
     })
 
   }
@@ -334,7 +333,7 @@ export class VirtualmachineService {
 
     return this.http.get<Volume>(`${ApiSettings.getApiBaseURL()}volumes/vms/${virtualmachine_name}/`, {
       withCredentials: true,
-      params: params
+      params
     })
 
   }

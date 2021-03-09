@@ -71,7 +71,7 @@ export class UserService {
 
     return this.http.get(`${ApiSettings.getApiBaseURL()}users/current/`, {
       withCredentials: true,
-      params: params
+      params
 
     })
   }
@@ -82,7 +82,7 @@ export class UserService {
 
       return this.http.get(`${ApiSettings.getApiBase()}loggedUser/`, {
         withCredentials: true,
-        params: params
+        params
 
       })
     } else {
@@ -151,7 +151,7 @@ export class UserService {
     return this.http.get(`${ApiSettings.getApiBaseURL()}users/filter/`, {
       withCredentials: true,
       params: {
-        searchString: searchString
+        searchString
       }
     });
   }

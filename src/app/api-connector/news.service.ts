@@ -26,6 +26,7 @@ export class NewsService {
   }
 
   /** Get existing News from Wordpress from facilites listed in facility_ids
+   *
    * @param facility_ids string of all facility ids for which we want the news in wp
    */
   getNewsFromWordPress(facility_ids: string): Observable<Object[]> {
@@ -33,12 +34,13 @@ export class NewsService {
 
     return this.http.get<Object[]>(`${ApiSettings.getApiBaseURL()}wp-news-management/`, {
       withCredentials: true,
-      params: params
+      params
     });
   }
 
   /**
    * Delete existing News from Wordpress by news_id
+   *
    * @param news_id
    */
   deleteNewsFromWordpress(news_id: string): Observable<any> {
@@ -47,7 +49,7 @@ export class NewsService {
 
     return this.http.delete(`${ApiSettings.getApiBaseURL()}wp-news-management/`, {
             withCredentials: true,
-       params: params
+       params
       }
     )
   }
