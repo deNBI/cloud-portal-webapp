@@ -41,7 +41,23 @@
           }
         ],
         "@angular-eslint/no-forward-ref": "error",
-        "@angular-eslint/prefer-output-readonly": "error",
+        "@typescript-eslint/naming-convention": "off",
+        "@typescript-eslint/ban-types": "off",
+        "eqeqeq": "error",
+        "max-len": [
+          "error",
+          {
+            "code": 150,
+            "ignoreComments": true,
+            "ignoreUrls": true,
+            "ignoreTemplateLiterals": true,
+            "ignoreRegExpLiterals": true
+          }
+        ],
+        "no-shadow": "error",
+        "require-jsdoc": "warn",
+        "guard-for-in": "off",
+        "@typescript-eslint/consistent-type-assertions": "warn",
         "@typescript-eslint/array-type": [
           "error",
           {
@@ -93,17 +109,17 @@
           "1tbs"
         ],
         "comma-dangle": "error",
-        "default-case": "error",
+        "default-case": "warn",
         "id-blacklist": "off",
         "id-match": "off",
         "import/no-default-export": "error",
         "import/no-unassigned-import": "off",
         "linebreak-style": "error",
-        "max-lines": "error",
+        "max-lines": "off",
         "no-constant-condition": "error",
-        "no-control-regex": "error",
+        "no-control-regex": "warn",
         "no-invalid-regexp": "error",
-        "no-invalid-this": "error",
+        "no-invalid-this": "off",
         "no-irregular-whitespace": "error",
         "no-multiple-empty-lines": "error",
         "no-null/no-null": "off",
