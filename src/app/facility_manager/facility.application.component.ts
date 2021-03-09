@@ -64,6 +64,7 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
   allApplicationsToCheck: Application[] = [];
 
   tab_state: number = TabStates.SUBMITTED;
+  TabStates: typeof TabStates = TabStates;
   loadingApplications: boolean = false;
 
   constructor(userservice: UserService,

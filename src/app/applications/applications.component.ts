@@ -35,6 +35,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
   title: string = 'Application Overview';
   tab_state: number = TabStates.SUBMITTED;
+  TabStates: typeof TabStates = TabStates;
   selectedCenter: {[key: string]: string} = {};
 
   loading_applications: boolean = false;

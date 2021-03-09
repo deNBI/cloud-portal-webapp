@@ -56,7 +56,7 @@ export class SnapshotOverviewComponent implements OnInit {
    * @type {Snapshot_Delete_Statuses}
    */
   delete_status: number = Snapshot_Delete_Statuses.WAITING;
-  delete_statuses: typeof Snapshot_Delete_Statuses
+  delete_statuses: typeof Snapshot_Delete_Statuses = Snapshot_Delete_Statuses;
   /**
    * If site was initialized.
    *
