@@ -63,7 +63,7 @@ export class FacilityService {
 
   }
 
-    getExtensionRequestsCounterFacility(facility_id: number | string): Observable<any> {
+  getExtensionRequestsCounterFacility(facility_id: number | string): Observable<any> {
     return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility_id}/extensions_counter/`, {
       withCredentials: true
 
@@ -114,7 +114,6 @@ export class FacilityService {
    * @returns
    */
   getFacilityAllowedGroupsWithDetailsAndSpecificStatus(facility: number | string, status: number): Observable<any> {
-    console.log(status);
 
     return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/projects/`, {
       withCredentials: true,
@@ -248,9 +247,9 @@ export class FacilityService {
 
     return this.http.post(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/applications/${application_id}/status/`,
                           params, {
-                            withCredentials: true,
-                            observe: 'response'
-                          });
+        withCredentials: true,
+        observe: 'response'
+      });
   }
 
   addVolumeStorageFactor(facility: number | string, volumeStorageFactor: VolumeStorageFactor): Observable<VolumeStorageFactor[]> {
@@ -537,9 +536,9 @@ export class FacilityService {
       .set('tags', tags);
 
     return this.http.post(`${ApiSettings.getApiBaseURL()}facilityManagers/current/facilityMail/`, params, {
-                            withCredentials: true,
-                            observe: 'response'
-                          }
+        withCredentials: true,
+        observe: 'response'
+      }
     )
   }
 
@@ -552,8 +551,8 @@ export class FacilityService {
    */
   getFacilityGroupRichMembers(groupid: number, facility: number): Observable<ProjectMember[]> {
     return this.http.get<ProjectMember[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/projects/${groupid}/members/`, {
-                                            withCredentials: true
-                                          }
+        withCredentials: true
+      }
     )
   }
 
@@ -563,9 +562,19 @@ export class FacilityService {
       withCredentials: true,
       params : {
         searchString
-        // facilities: tempArray.join(',')
       }
     });
   }
 
+  approveTerminationByFM(groupId: number | string, facility: number): Observable<object> {
+    return this.http.delete(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/projects/${groupId}/`, {
+      withCredentials: true
+    });
+  }
+
+  declineTerminationByFM(groupId: number | string, facility: number): Observable<object> {
+    return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/projects/${groupId}/`, {
+      withCredentials: true
+    });
+  }
 }

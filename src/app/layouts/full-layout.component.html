@@ -139,7 +139,8 @@
             </span>
                 <span class="badge badge-danger status-badge" data-toggle="tooltip"
                       data-placement="right" title="The termination of the project was requested."
-                      *ngIf="(application | hasstatusinlist:Application_States.TERMINATION_REQUESTED)">
+                      *ngIf="(application | hasstatusinlist:Application_States.TERMINATION_REQUESTED)
+                        ||(application | hasstatusinlist:Application_States.WAIT_FOR_TERMINATION_FM)">
               <i class="fas fa-trash"></i>
             </span>
                 <span class="badge badge-secondary status-badge" data-toggle="tooltip" data-placement="right"

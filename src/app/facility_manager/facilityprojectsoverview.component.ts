@@ -14,6 +14,8 @@ import {IResponseTemplate} from '../api-connector/response-template';
 import {Subject} from 'rxjs';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {WordPressTag} from './newsmanagement/wp-tags';
+import {VoService} from '../api-connector/vo.service';
+import {FullLayoutComponent} from '../layouts/full-layout.component';
 
 /**
  * Facility Project overview component.
@@ -75,14 +77,15 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
   private selectedTags: string[] = [];
   projects_filtered: Project[] = [];
 
-  constructor(private groupservice: GroupService,
-              private facilityservice: FacilityService,
-              private newsService: NewsService) {
+  constructor(private groupService: GroupService,
+              private facilityService: FacilityService,
+              private newsService: NewsService,
+              private fullLayout: FullLayoutComponent) {
     super();
   }
 
   ngOnInit(): void {
-    this.facilityservice.getManagerFacilities().subscribe((result: any): void => {
+    this.facilityService.getManagerFacilities().subscribe((result: any): void => {
       this.managerFacilities = result;
       this.selectedFacility = this.managerFacilities[0];
       this.emailSubject = `[${this.selectedFacility['Facility']}]`;
@@ -111,7 +114,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
   }
 
   searchForUserInFacility(searchString: string): void {
-    this.facilityservice.getFilteredMembersOfFacility(searchString, this.selectedFacility['FacilityId']);
+    this.facilityService.getFilteredMembersOfFacility(searchString, this.selectedFacility['FacilityId']);
   }
 
   filterMembers(searchString: string): void {
@@ -131,7 +134,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 
   getProjectsByMemberElixirId(): void {
     // tslint:disable-next-line:max-line-length
-    this.facilityservice.getFacilityGroupsByMemberElixirId(this.managerFacilities[0]['FacilityId'], this.filter).subscribe((result: any): void => {
+    this.facilityService.getFacilityGroupsByMemberElixirId(this.managerFacilities[0]['FacilityId'], this.filter).subscribe((result: any): void => {
       this.projects_filtered = [];
       const facility_projects: any = result;
       const is_pi: boolean = false;
@@ -228,7 +231,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
   getProjectLifetime(project: Project): void {
     this.details_loaded = false;
     if (!project.Lifetime) {
-      this.groupservice.getLifetime(project.Id).subscribe((time: IResponseTemplate): void => {
+      this.groupService.getLifetime(project.Id).subscribe((time: IResponseTemplate): void => {
         const lifetime: number = <number>time.value;
         const dateCreated: Date = moment(project.DateCreated, 'DD.MM.YYYY').toDate();
 
@@ -273,7 +276,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
     this.projects = [];
 
     // tslint:disable-next-line:max-line-length
-    this.facilityservice.getFacilityAllowedGroupsWithDetailsAndSpecificStatus(facility, this.STATUS_APPROVED).subscribe((result: any): void => {
+    this.facilityService.getFacilityAllowedGroupsWithDetailsAndSpecificStatus(facility, this.STATUS_APPROVED).subscribe((result: any): void => {
       const facility_projects: any = result;
       const is_pi: boolean = false;
       const is_admin: boolean = false;
@@ -333,7 +336,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
       this.isLoaded = true;
 
     });
-    this.facilityservice.getAllMembersOfFacility(facility, this.STATUS_APPROVED).subscribe(
+    this.facilityService.getAllMembersOfFacility(facility, this.STATUS_APPROVED).subscribe(
       (result: any[]): void => {
         this.membersLoaded = true;
         this.allFacilityMembers = result;
@@ -384,7 +387,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
       console.log(this.selectedProjectType);
     }
     const chosenTags: string = this.selectedTags.toString();
-    this.facilityservice.sendMailToFacility(
+    this.facilityService.sendMailToFacility(
       facility, encodeURIComponent(subject), encodeURIComponent(message), this.selectedProjectType,
       encodeURIComponent(reply), send, encodeURIComponent(alternative_news_text), chosenTags).subscribe(
       (result: any): void => {
@@ -427,7 +430,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
   }
 
   getMembersOfTheProject(projectid: number, projectname: string): void {
-    this.facilityservice.getFacilityGroupRichMembers(projectid, this.selectedFacility['FacilityId'])
+    this.facilityService.getFacilityGroupRichMembers(projectid, this.selectedFacility['FacilityId'])
       .subscribe((members: ProjectMember[]): void => {
                    this.usersModalProjectID = projectid;
                    this.usersModalProjectName = projectname;
@@ -456,5 +459,53 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 
   public comingSoon(): void {
     alert('This function will be implemented soon.')
+  }
+
+  public terminateProject(): void {
+    this.facilityService.approveTerminationByFM(this.selectedProject.Id, this.selectedFacility['FacilityId'])
+      .subscribe((): void => {
+          const indexAll: number = this.projects.indexOf(this.selectedProject, 0);
+
+          this.projects.splice(indexAll, 1);
+          this.applyFilter();
+          this.fullLayout.getGroupsEnumeration();
+          this.updateNotificationModal('Success', 'The  project was terminated.', true, 'success');
+        },
+                 (error: any): void => {
+          if (error['status'] === 409) {
+            this.updateNotificationModal(
+              'Failed',
+              `The project could not be terminated. Reason: ${error['error']['reason']} for ${error['error']['openstackid']}`,
+              true,
+              'danger')
+          } else {
+            this.updateNotificationModal('Failed', 'The project could not be terminated.', true, 'danger');
+          }
+        }
+      );
+  }
+
+  public declineTermination(): void {
+    this.facilityService.declineTerminationByFM(this.selectedProject.Id, this.selectedFacility['FacilityId'])
+      .subscribe((): void => {
+          const indexAll: number = this.projects.indexOf(this.selectedProject, 0);
+
+          this.projects.splice(indexAll, 1);
+          this.applyFilter();
+          this.fullLayout.getGroupsEnumeration();
+          this.updateNotificationModal('Success', 'The termination of the project was declined.', true, 'success');
+        },
+                 (error: any): void => {
+          if (error['status'] === 409) {
+            this.updateNotificationModal(
+              'Failed',
+              `The decline of the project was not successful. Reason: ${error['error']['reason']} for ${error['error']['openstackid']}`,
+              true,
+              'danger')
+          } else {
+            this.updateNotificationModal('Failed', 'The decline of the project failed.', true, 'danger');
+          }
+        }
+      );
   }
 }
