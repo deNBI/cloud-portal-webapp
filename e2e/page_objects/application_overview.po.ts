@@ -36,21 +36,24 @@ export class ApplicationOverviewPage {
   static async declinePTApplications(): Promise<any> {
     Util.logInfo('Decline all PT applications');
     await Util.waitForPresenceOfElementById(this.SUBMITTED_APPLICATIONS_TAB)
+    Util.logInfo('Decline open PT OpenStack applications');
 
-    let openstack_ele: ElementFinder = await element.all(by.id(this.DECLINE_PT_OPEN_APPLICATION_PRE)).first();
+    let openstack_ele: ElementFinder = element.all(by.id(this.DECLINE_PT_OPEN_APPLICATION_PRE)).first();
     while (openstack_ele.isPresent()) {
       await Util.clickElementByElement(openstack_ele);
       await Util.waitForTextPresenceInElementById(this.NOTIFICATION_MESSAGE, this.SUCCESSFULL_DECLINED);
       await Util.clickElementById(this.CLOSE_NOTIFICATION_MODAL)
-      openstack_ele = await element.all(by.id(this.DECLINE_PT_OPEN_APPLICATION_PRE)).first();
+      openstack_ele = element.all(by.id(this.DECLINE_PT_OPEN_APPLICATION_PRE)).first();
 
     }
-    let simple_ele: ElementFinder = await element.all(by.id(this.DECLINE_PT_SIMPLE_APPLICATION_PRE)).first();
+    Util.logInfo('Decline open PT SimpleVM applications');
+
+    let simple_ele: ElementFinder = element.all(by.id(this.DECLINE_PT_SIMPLE_APPLICATION_PRE)).first();
     while (simple_ele.isPresent()) {
       await Util.clickElementByElement(simple_ele);
       await Util.waitForTextPresenceInElementById(this.NOTIFICATION_MESSAGE, this.SUCCESSFULL_DECLINED);
       await Util.clickElementById(this.CLOSE_NOTIFICATION_MODAL)
-      simple_ele = await element.all(by.id(this.DECLINE_PT_SIMPLE_APPLICATION_PRE)).first();
+      simple_ele = element.all(by.id(this.DECLINE_PT_SIMPLE_APPLICATION_PRE)).first();
 
     }
 
