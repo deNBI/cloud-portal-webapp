@@ -1,4 +1,4 @@
-import {by, element, ElementArrayFinder, ElementFinder} from 'protractor';
+import {by, element, ElementFinder} from 'protractor';
 import {Util} from '../util';
 
 /**
@@ -38,27 +38,23 @@ export class ApplicationOverviewPage {
     await Util.waitForPresenceOfElementById(this.SUBMITTED_APPLICATIONS_TAB)
     Util.logInfo('Decline open PT OpenStack applications');
 
-    let openstack_ele: ElementArrayFinder = element.all(by.id(this.DECLINE_PT_OPEN_APPLICATION_PRE));
-    Util.logInfo(openstack_ele.getSize().toString());
+    let openstack_ele: ElementFinder = element(by.id(this.DECLINE_PT_OPEN_APPLICATION_PRE));
 
-    while (openstack_ele.isPresent()) {
-      const op_ele: ElementFinder = openstack_ele.first()
-      await Util.clickElementByElement(op_ele);
+    while (await openstack_ele.isPresent()) {
+      await Util.clickElementByElement(openstack_ele);
       await Util.waitForTextPresenceInElementById(this.NOTIFICATION_MESSAGE, this.SUCCESSFULL_DECLINED);
       await Util.clickElementById(this.CLOSE_NOTIFICATION_MODAL)
-      openstack_ele = element.all(by.id(this.DECLINE_PT_OPEN_APPLICATION_PRE));
+      openstack_ele = await element(by.id(this.DECLINE_PT_OPEN_APPLICATION_PRE))
 
     }
     Util.logInfo('Decline open PT SimpleVM applications');
 
-    let simple_ele: ElementArrayFinder = element.all(by.id(this.DECLINE_PT_SIMPLE_APPLICATION_PRE));
-    while (simple_ele.isPresent()) {
-      const si_el: ElementFinder = simple_ele.first()
-
-      await Util.clickElementByElement(si_el);
+    let simple_ele: ElementFinder = element(by.id(this.DECLINE_PT_SIMPLE_APPLICATION_PRE));
+    while (await simple_ele.isPresent()) {
+      await Util.clickElementByElement(simple_ele);
       await Util.waitForTextPresenceInElementById(this.NOTIFICATION_MESSAGE, this.SUCCESSFULL_DECLINED);
       await Util.clickElementById(this.CLOSE_NOTIFICATION_MODAL)
-      simple_ele = element.all(by.id(this.DECLINE_PT_SIMPLE_APPLICATION_PRE));
+      simple_ele = element(by.id(this.DECLINE_PT_SIMPLE_APPLICATION_PRE));
 
     }
 
