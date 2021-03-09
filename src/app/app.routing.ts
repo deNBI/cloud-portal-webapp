@@ -1,4 +1,4 @@
-/* tslint:disable */
+/* eslint-disable */
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 // Layouts
@@ -36,12 +36,14 @@ export const routes: Routes = [
         path: 'userinfo',
         canActivate: [LoggedInGuard],
 
+        // eslint-disable-next-line @typescript-eslint/promise-function-async
         loadChildren: () => import('./userinfo/userinfo.module').then(m => m.UserinfoModule)
       },
       {
         path: 'help',
         canActivate: [LoggedInGuard],
 
+        // eslint-disable-next-line @typescript-eslint/promise-function-async
         loadChildren: () => import('./help/help.module').then(m => m.HelpModule)
 
       },
@@ -88,3 +90,5 @@ export const routes: Routes = [
 })
 export class AppRoutingModule {
 }
+
+/* eslint-enable */

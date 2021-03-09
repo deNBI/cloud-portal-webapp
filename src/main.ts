@@ -7,8 +7,7 @@ import {environment} from './environments/environment';
 if (environment.production) {
   enableProdMode();
 }
-// tslint:disable
-
+/* eslint-disable */
 
 platformBrowserDynamic().bootstrapModule(AppModule).then(() => {
 
@@ -24,3 +23,5 @@ platformBrowserDynamic().bootstrapModule(AppModule).then(() => {
       })
   }
 });
+
+/* eslint-enable */

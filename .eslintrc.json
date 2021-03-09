@@ -57,6 +57,8 @@
         "no-shadow": "error",
         "require-jsdoc": "warn",
         "guard-for-in": "off",
+        "jsdoc/newline-after-description": "off",
+        "jsdoc/no-types": "off",
         "@typescript-eslint/consistent-type-assertions": "warn",
         "@typescript-eslint/array-type": [
           "error",
