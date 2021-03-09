@@ -1,6 +1,8 @@
-import {browser, by, element, ElementFinder, protractor, ProtractorExpectedConditions, until} from 'protractor';
+import {browser, by, element, ElementFinder, protractor, ProtractorExpectedConditions} from 'protractor';
 // tslint:disable-next-line:no-require-imports no-var-requires typedef
 const clc = require('cli-color');
+// tslint:disable-next-line:no-require-imports no-var-requires typedef
+const log4jsGen = require('./log4jsGen');
 
 /**
  * Util test class.
@@ -78,20 +80,28 @@ export class Util {
   }
 
   static logInfo(text: string): void {
-    console.log(clc.blue(text));
+    log4jsGen.getLogger().info(text);
+
   }
 
-  static logHeader(text: string): void {
-    console.log(clc.magenta(text))
+  static logWarn(text: string): void {
+    log4jsGen.getLogger().warn(text);
+
   }
 
-  static logMethodCall(text: string): void {
-    console.log(clc.cyan(text))
+  static logDebug(text: string): void {
+    log4jsGen.getLogger().info(text);
+
+  }
+
+  static logError(text: string): void {
+    log4jsGen.getLogger().error(text);
+
   }
 
   static async waitForPage(url: string, timeout: number = this.timeout): Promise<boolean> {
     const until_: ProtractorExpectedConditions = protractor.ExpectedConditions;
-    console.log(`Waiting until page contains ${url}`);
+    this.logInfo(`Waiting until page contains ${url}`)
     await browser.sleep(2000);
 
     return await browser.driver.wait(until_.urlContains(url), timeout);
@@ -99,7 +109,8 @@ export class Util {
 
   static async sendTextToElementByName(name: string, text: string, show_output: boolean = true): Promise<void> {
     if (show_output) {
-      console.log(`Send text [${text}] to element ${name}`);
+      this.logInfo(`Send text [${text}] to element ${name}`)
+
     }
     const elem: ElementFinder = element(by.name(name));
 
@@ -108,7 +119,8 @@ export class Util {
 
   static async sendTextToElementByElement(elem: any, text: string, show_output: boolean = true): Promise<void> {
     if (show_output) {
-      this.logInfo(`Send text [${text}] to element  [${elem}]`);
+      this.logInfo(`Send text [${text}] to element  [${elem}]`)
+
     }
 
     return await elem.sendKeys(text);
@@ -116,25 +128,26 @@ export class Util {
 
   static async clickElementByLinkText(text: string): Promise<void> {
     await Util.waitForElementToBeClickableByLinkText(text)
-    console.log('Clicking element with text:')
+    this.logInfo(`Clicking element with text: [${text}]`)
 
-    return await element(by.linkText('Sign in with Google')).click();
+    return await element(by.linkText(text)).click();
 
   }
 
   static async waitForElementToBeClickableByLinkText(text: string, timeout: number = this.timeout): Promise<boolean> {
     const until_: ProtractorExpectedConditions = protractor.ExpectedConditions;
+    this.logInfo(`Waiting until element is clickable with text:  ${text}`)
 
-    console.log(`Waiting until element is clickable with text:  ${text}`);
     const elem: ElementFinder = element(by.linkText(text));
 
-    return await browser.driver.wait(until_.elementToBeClickable(elem), timeout, 'Element taking too long to be clickable');
+    return await browser.driver.wait(until_.elementToBeClickable(elem), timeout, `Element [${text}] taking too long to be clickable`);
   }
 
   static async sendTextToElementById(id: string, text: string, show_output: boolean = true): Promise<void> {
     await this.waitForVisibilityOfElementById(id);
     if (show_output) {
-      console.log(`Send text [${text}] to element ${id}`);
+      this.logInfo(`Send text [${text}] to element ${id}`)
+
     }
     const elem: ElementFinder = element(by.id(id));
     await elem.clear();
@@ -142,11 +155,12 @@ export class Util {
     const str: string = await elem.getAttribute('value');
 
     if (str !== text) {
-      console.warn('Text is not send by xpath in field so i will try to send string char by char!');
+      this.logWarn('Text  is not send by xpath in field so i will try to send string char by char!')
+
       await elem.clear();
       for (let idx: number = 0; idx < text.length; idx++) {
         // tslint:disable-next-line:prefer-template
-       await elem.sendKeys(text.charAt(idx) + '');
+        await elem.sendKeys(text.charAt(idx) + '');
       }
     }
 
@@ -170,14 +184,15 @@ export class Util {
   }
 
   static async getInputValueById(id: string, timeout: number = this.timeout): Promise<string> {
-    console.log(`Get input value from ${id}`);
+    this.logInfo(`Get input value from ${id}`);
+
     await this.waitForVisibilityOfElementById(id, timeout);
 
     return await element(by.id(id)).getAttribute('value');
   }
 
   static async getElemTextById(id: string, timeout: number = this.timeout): Promise<string> {
-    console.log(`Get elem text from ${id}`);
+    this.logInfo(`Get elem text from ${id}`);
 
     await this.waitForVisibilityOfElementById(id, timeout);
 
@@ -204,77 +219,82 @@ export class Util {
 
   static async waitForTextPresenceInElementById(id: string, text: string, timeout: number = this.timeout): Promise<boolean> {
     const until_: ProtractorExpectedConditions = protractor.ExpectedConditions;
+    this.logInfo(`Waiting until text [${text}] appears in  element ${id}`);
 
-    console.log(`Waiting until text [${text}] appears in  element ${id}`);
     const elem: ElementFinder = element(by.id(id));
 
-    return await browser.driver.wait(until_.textToBePresentInElement(elem, text), timeout, 'Text taking too long to appear in the Element');
+    return await browser.driver.wait(until_.textToBePresentInElement(elem, text), timeout, `Text [${id}] taking too long to appear in the Element`);
   }
 
   static async waitForPresenceOfElementById(id: string, timeout: number = this.timeout): Promise<boolean> {
     const until_: ProtractorExpectedConditions = protractor.ExpectedConditions;
-    console.log(`Waiting until page contains element ${id}`);
+    this.logInfo(`Waiting until page contains element ${id}`);
+
     const elem: ElementFinder = element(by.id(id));
 
-    return await browser.driver.wait(until_.presenceOf(elem), timeout, 'Element taking too long to appear in the DOM');
+    return await browser.driver.wait(until_.presenceOf(elem), timeout, `Element  [${id}] taking too long to appear in the DOM`);
   }
 
   static async waitForPresenceOfLinkByPartialId(prefix: string, id: string, timeout: number = this.timeout): Promise<boolean> {
     const until_: ProtractorExpectedConditions = protractor.ExpectedConditions;
-    console.log(`Waiting until page contains element ${id}`);
+    this.logInfo(`Waiting until page contains element ${id}`);
+
     const elem: ElementFinder = element(by.css(`a[id^=${prefix}${id}]`));
 
-    return await browser.driver.wait(until_.presenceOf(elem), timeout, 'Element taking too long to appear in the DOM');
+    return await browser.driver.wait(until_.presenceOf(elem), timeout, `Element [${prefix}${id}] taking too long to appear in the DOM`);
   }
 
   static async waitForPresenceByElement(elem: any, timeout: number = this.timeout, id: string = 'Elementfinder'): Promise<boolean> {
     const until_: ProtractorExpectedConditions = protractor.ExpectedConditions;
-    console.log(`Waiting until page contains element ${id}`);
+    this.logInfo(`Waiting until page contains element ${id}`);
 
-    return await browser.driver.wait(until_.presenceOf(elem), timeout, 'Element taking too long to appear in the DOM');
+    return await browser.driver.wait(until_.presenceOf(elem), timeout, `Element [${id}] taking too long to appear in the DOM`);
   }
 
   static async waitForAbsenceOfElementById(id: string, timeout: number = this.timeout): Promise<boolean> {
     const until_: ProtractorExpectedConditions = protractor.ExpectedConditions;
-    console.log(`Waiting until page does not contain element ${id}`);
+    this.logInfo(`Waiting until page does not contain element ${id}`);
+
     const elem: ElementFinder = element(by.id(id));
 
-    return await browser.driver.wait(until_.not(until_.presenceOf(elem)), timeout, 'Element taking too long to appear in the DOM');
+    return await browser.driver.wait(until_.not(until_.presenceOf(elem)), timeout, `Element [${id}] taking too long to appear in the DOM`);
   }
 
   static async waitForVisibilityOfElementById(id: string, timeout: number = this.timeout): Promise<boolean> {
     const until_: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
-    console.log(`Waiting until element ${id} is visibile`);
+    this.logInfo(`Waiting until element ${id} is visibile`);
+
     const elem: ElementFinder = element(by.id(id));
 
-    return await browser.driver.wait(until_.visibilityOf(elem), timeout, 'Element taking too long to be visibile');
+    return await browser.driver.wait(until_.visibilityOf(elem), timeout, `Element [${id}] taking too long to be visibile`);
   }
 
   static async waitForInvisibilityOfElementByElement(elem: any,
                                                      timeout: number = this.timeout,
                                                      id: string = 'Elementfinder'): Promise<boolean> {
     const until_: ProtractorExpectedConditions = protractor.ExpectedConditions;
-    console.log(`Waiting until element ${id} is invisibile`);
+    this.logInfo(`Waiting until element ${id} is invisibile`);
 
-    return await browser.driver.wait(until_.invisibilityOf(elem), timeout, 'Element taking too long to be invisibile');
+    return await browser.driver.wait(until_.invisibilityOf(elem), timeout, `Element [${id}] taking too long to be invisibile`);
   }
 
   static async waitForInvisibilityOfElementById(id: string, timeout: number = this.timeout): Promise<boolean> {
     const until_: ProtractorExpectedConditions = protractor.ExpectedConditions;
-    console.log(`Waiting until element ${id} is invisibile`);
+    this.logInfo(`Waiting until element ${id} is invisibile`);
+
     const elem: any = element(by.id(id));
 
-    return await browser.driver.wait(until_.invisibilityOf(elem), timeout, 'Element taking too long to be invisibile');
+    return await browser.driver.wait(until_.invisibilityOf(elem), timeout, `Element [${id}] taking too long to be invisibile`);
   }
 
   static async waitForElementToBeClickableById(id: string, timeout: number = this.timeout): Promise<boolean> {
     const until_: ProtractorExpectedConditions = protractor.ExpectedConditions;
+    this.logInfo(`Waiting until element is clickable ${id}`);
 
-    console.log(`Waiting until element is clickable ${id}`);
     const elem: ElementFinder = element(by.id(id));
 
-    return await browser.driver.wait(until_.elementToBeClickable(elem), timeout, 'Element taking too long to be clickable');
+    return await browser.driver.wait(until_.elementToBeClickable(elem), timeout, `Element [${id}] taking too long to be clickable`);
   }
 
   static async waitForElementToBeClickableByElement(
@@ -282,35 +302,39 @@ export class Util {
     timeout: number = this.timeout,
     id: string = 'Elementfinder'): Promise<boolean> {
     const until_: ProtractorExpectedConditions = protractor.ExpectedConditions;
-    console.log(`Waiting until element is clickable ${id}`);
+    this.logInfo(`Waiting until element is clickable ${id}`);
 
-    return await browser.driver.wait(until_.elementToBeClickable(elem), timeout, 'Element taking too long to be clickable');
+    return await browser.driver.wait(until_.elementToBeClickable(elem), timeout, `Element [${id}] taking too long to be clickable`);
   }
 
   static async navigateToAngularPage(url_suffix: string): Promise<any> {
-    console.log(`Navigating to ${this.angular_url}/#/${url_suffix}`);
+    this.logInfo(`Navigating to ${this.angular_url}/#/${url_suffix}`);
 
     return await browser.get(`${this.angular_url}/#/${url_suffix}`);
   }
 
   static async waitForTextInUrl(text: string): Promise<any> {
-    return browser.wait(until.urlContains(text), this.timeout)
+    const until_: ProtractorExpectedConditions = protractor.ExpectedConditions;
+
+    return browser.wait(until_.urlContains(text), this.timeout)
   }
 
   static async clickOptionOfSelect(option: string, selectId: string): Promise<any> {
-    console.log(`Getting option ${option} from select ${selectId}`);
-    await this.waitForPresenceOfElementById(selectId);
-    await this.waitForPresenceOfElementById(selectId);
+    this.logInfo(`Getting option ${option} from select ${selectId}`);
 
-    await this.clickElementById(option)
+    await this.waitForPresenceOfElementById(selectId);
+    const elem: any = element(by.id(selectId)).element(by.id(option))
+
+    return await elem.click();
   }
 
   static async waitForElementToBeClickableByName(name: string, timeout: number = this.timeout): Promise<boolean> {
     const until_: ProtractorExpectedConditions = protractor.ExpectedConditions;
-    console.log(`Waiting until element is clickable ${name}`);
+    this.logInfo(`Waiting until element is clickable ${name}`);
+
     const elem: ElementFinder = element(by.name(name));
 
-    return await browser.driver.wait(until_.elementToBeClickable(elem), timeout, 'Element taking too long to be clickable');
+    return await browser.driver.wait(until_.elementToBeClickable(elem), timeout, `Element  [${name}]taking too long to be clickable`);
   }
 
   static async getTextFromLinkElement(prefix: string, name: string): Promise<string> {
