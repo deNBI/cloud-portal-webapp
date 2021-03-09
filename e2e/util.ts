@@ -323,7 +323,7 @@ export class Util {
     this.logInfo(`Getting option ${option} from select ${selectId}`);
 
     await this.waitForPresenceOfElementById(selectId);
-    const elem: any = await element(by.id(selectId)).element(by.id(option))
+    const elem: any = element(by.id(selectId)).element(by.id(option))
 
     return await elem.click();
   }

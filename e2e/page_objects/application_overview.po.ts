@@ -44,7 +44,7 @@ export class ApplicationOverviewPage {
       await Util.clickElementByElement(openstack_ele);
       await Util.waitForTextPresenceInElementById(this.NOTIFICATION_MESSAGE, this.SUCCESSFULL_DECLINED);
       await Util.clickElementById(this.CLOSE_NOTIFICATION_MODAL)
-      openstack_ele = await element(by.id(this.DECLINE_PT_OPEN_APPLICATION_PRE))
+      openstack_ele = element(by.id(this.DECLINE_PT_OPEN_APPLICATION_PRE))
 
     }
     Util.logInfo('Decline open PT SimpleVM applications');
