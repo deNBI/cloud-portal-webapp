@@ -8,6 +8,7 @@ describe('TypeOverviewComponent', () => {
   let fixture: ComponentFixture<TypeOverviewComponent>;
 
   beforeEach(waitForAsync(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     TestBed.configureTestingModule({
                                      declarations: [TypeOverviewComponent]
                                    })

@@ -61,7 +61,7 @@ export class ClusterdetailComponent implements OnInit, OnDestroy {
           this.virtualmachineService.checkVmStatus(vm.openstackid, vm.name).subscribe((updated_vm: VirtualMachine): void => {
             updated_vm = new VirtualMachine(updated_vm);
             // tslint:disable-next-line:triple-equals
-            if (vm != undefined) {
+            if (vm !== undefined) {
               this.cluster.worker_instances[this.cluster.worker_instances.indexOf(vm)] = updated_vm;
               if (VirtualMachineStates.IN_PROCESS_STATES.indexOf(updated_vm.status) !== -1) {
                 this.check_status_loop_vm(updated_vm, final_state)

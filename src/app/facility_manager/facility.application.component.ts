@@ -8,6 +8,7 @@ import {Application_States} from '../shared/shared_modules/baseClass/abstract-ba
 import {ApplicationsService} from '../api-connector/applications.service';
 import {ApplicationBaseClassComponent} from '../shared/shared_modules/baseClass/application-base-class.component';
 
+// eslint-disable-next-line no-shadow
 enum TabStates {
   'SUBMITTED' = 0,
   'CREDITS_EXTENSION' = 1,
@@ -63,7 +64,6 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
   allApplicationsToCheck: Application[] = [];
 
   tab_state: number = TabStates.SUBMITTED;
-  TabStates: typeof TabStates = TabStates;
   loadingApplications: boolean = false;
 
   constructor(userservice: UserService,

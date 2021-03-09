@@ -18,6 +18,10 @@ export class MinAmoutValidatorDirective implements Validator {
   }
 }
 
+/**
+ * Returns a validatorFn which checks if the value to control is less the comparison
+ * @param val the value to check
+ */
 export function minAmountValidator(val: number): ValidatorFn {
   return (control: AbstractControl): { [key: string]: any } | null => {
     const less: boolean = control.value < val;
@@ -43,6 +47,10 @@ export class MaxAmoutValidatorDirective implements Validator {
   }
 }
 
+/**
+ * Returns a validatorFn which checks if the value to control is more the comparison
+ * @param val the value to check
+ */
 export function maxAmountValidator(val: number): ValidatorFn {
   return (control: AbstractControl): { [key: string]: any } | null => {
     const more: boolean = control.value > val;
@@ -66,6 +74,9 @@ export class IntegerValidatorDirective implements Validator {
   }
 }
 
+/**
+ * Returns a validator for integers
+ */
 export function integerValidator(): ValidatorFn {
   return (control: AbstractControl): { [key: string]: any } | null => {
     const integer: boolean = Number.isInteger(control.value);
@@ -74,6 +85,9 @@ export function integerValidator(): ValidatorFn {
   };
 }
 
+/**
+ * Returns a validator for floats
+ */
 export function floatValidator(): ValidatorFn {
   return (control: AbstractControl): { [key: string]: any } | null => {
     const float: boolean = Number.isInteger(control.value) || Number(control.value) === control.value && control.value % 1 !== 0;
@@ -82,6 +96,9 @@ export function floatValidator(): ValidatorFn {
   };
 }
 
+/**
+ * Returns a validator for floats or null values
+ */
 export function floatOrNullValidator(): ValidatorFn {
   return (control: AbstractControl): { [key: string]: any } | null => {
     const float: boolean = (Number.isInteger(control.value) ||
@@ -136,6 +153,9 @@ export class IntegerOrNullValidatorDirective implements Validator {
   }
 }
 
+/**
+ * Returns a validator for integers or null values
+ */
 export function integerOrNullValidator(): ValidatorFn {
   return (control: AbstractControl): { [key: string]: any } | null => {
     const integer: boolean = (Number.isInteger(control.value) || !control.value);

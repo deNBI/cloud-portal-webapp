@@ -505,7 +505,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
             this.progress_bar_width = 75;
             setTimeout(
               (): void => {
-                this.router.navigate(['/virtualmachines/vmOverview']).then().catch()
+                void this.router.navigate(['/virtualmachines/vmOverview']).then().catch()
               },
               2000)
 

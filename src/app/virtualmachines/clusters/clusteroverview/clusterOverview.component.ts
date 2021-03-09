@@ -161,7 +161,8 @@ export class ClusterOverviewComponent extends AbstractBaseClasse implements OnIn
     this.max_scale_count_loaded = false;
 
     // tslint:disable-next-line:max-line-length
-    this.groupService.getGroupResources(this.selectedCluster.master_instance.projectid.toString()).subscribe((res: ApplicationRessourceUsage): void => {
+    this.groupService.getGroupResources(this.selectedCluster.master_instance.projectid.toString())
+      .subscribe((res: ApplicationRessourceUsage): void => {
       this.ressourceUsage = new ApplicationRessourceUsage(res);
 
       this.selectedCluster.worker_batches.forEach((batch: WorkerBatch): void => {
@@ -271,7 +272,8 @@ export class ClusterOverviewComponent extends AbstractBaseClasse implements OnIn
     } else {
       flavors_to_filter = this.flavors
     }
-    this.flavors_usable = flavors_to_filter.filter((flav: Flavor): boolean => this.selectedProjectRessources.filterFlavorsTest(flav, flavors_to_filter, this.selectedCluster.worker_batches));
+    this.flavors_usable = flavors_to_filter.filter((flav: Flavor): boolean => this.selectedProjectRessources
+      .filterFlavorsTest(flav, flavors_to_filter, this.selectedCluster.worker_batches));
 
     this.flavors_loaded = true;
 

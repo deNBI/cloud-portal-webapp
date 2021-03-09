@@ -161,8 +161,8 @@ export class AddClusterComponent implements OnInit {
       }
     })
     const flavors_to_filter: Flavor[] = this.flavors.filter((flavor: Flavor): boolean => used_flavors.indexOf(flavor) < 0)
-    this.flavors_usable = flavors_to_filter.filter((flav: Flavor): boolean => this.selectedProjectRessources.filterFlavorsTest(flav, flavors_to_filter, this.selectedWorkerBatches));
-
+    this.flavors_usable = flavors_to_filter.filter((flav: Flavor): boolean => this.selectedProjectRessources
+      .filterFlavorsTest(flav, flavors_to_filter, this.selectedWorkerBatches));
     this.flavors_loaded = true;
   }
 
@@ -296,7 +296,7 @@ export class AddClusterComponent implements OnInit {
             },
             1000)
         } else {
-          this.router.navigate(['/virtualmachines/clusterOverview']).then().catch()
+          void this.router.navigate(['/virtualmachines/clusterOverview']).then().catch()
 
           this.cluster_id = res['id'];
         }

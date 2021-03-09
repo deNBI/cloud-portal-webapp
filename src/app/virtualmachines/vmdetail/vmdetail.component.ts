@@ -242,7 +242,8 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
           })
         } else {
           // tslint:disable-next-line:max-line-length
-          this.virtualmachineService.getVolumeByNameAndVmName(volume.volume_name, volume.volume_virtualmachine.name).subscribe((vol: Volume): void => {
+          this.virtualmachineService.getVolumeByNameAndVmName(volume.volume_name, volume.volume_virtualmachine.name)
+            .subscribe((vol: Volume): void => {
             if (volume.error_msg !== '' && volume.error_msg !== undefined && volume.error_msg !== null) {
               vol.error_msg = volume.error_msg;
               setTimeout((): void => {
@@ -255,7 +256,8 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
               this.virtualMachine.volumes[idx] = vol;
             }
             // tslint:disable-next-line:max-line-length
-            if (vol.volume_status !== VolumeStates.AVAILABLE && vol.volume_status !== VolumeStates.NOT_FOUND && vol.volume_status !== VolumeStates.IN_USE && vol.volume_status !== final_state) {
+            if (vol.volume_status !== VolumeStates.AVAILABLE && vol.volume_status !== VolumeStates.NOT_FOUND
+              && vol.volume_status !== VolumeStates.IN_USE && vol.volume_status !== final_state) {
               this.check_status_loop_vol(this.virtualMachine.volumes[idx], this.checkStatusTimeout, final_state)
             }
           })

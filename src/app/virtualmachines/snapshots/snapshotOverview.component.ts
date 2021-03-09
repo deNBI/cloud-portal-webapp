@@ -7,6 +7,7 @@ import {FacilityService} from '../../api-connector/facility.service';
 import {WIKI_SNAPSHOTS} from '../../../links/links';
 import {debounceTime, distinctUntilChanged, switchMap} from 'rxjs/operators';
 
+// eslint-disable-next-line no-shadow
 enum Snapshot_Delete_Statuses {
   WAITING = 0,
   SUCCESS = 1,
@@ -50,17 +51,11 @@ export class SnapshotOverviewComponent implements OnInit {
    */
   selected_snapshot: SnapshotModel;
   /**
-   * All possible statuses when deleting.
-   *
-   * @type {Snapshot_Delete_Statuses}
-   */
-  delete_statuses: typeof Snapshot_Delete_Statuses = Snapshot_Delete_Statuses;
-  /**
    * Actual delete status.
    *
    * @type {Snapshot_Delete_Statuses}
    */
-  delete_status: number = this.delete_statuses.WAITING;
+  delete_status: number = Snapshot_Delete_Statuses.WAITING;
   /**
    * If site was initialized.
    *

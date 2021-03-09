@@ -1,13 +1,13 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ResourcesComponent } from './resources.component';
-// tslint:disable
+
 describe('ResourcesComponent', () => {
   let component: ResourcesComponent;
   let fixture: ComponentFixture<ResourcesComponent>;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+   void TestBed.configureTestingModule({
       declarations: [ ResourcesComponent ]
     })
     .compileComponents();

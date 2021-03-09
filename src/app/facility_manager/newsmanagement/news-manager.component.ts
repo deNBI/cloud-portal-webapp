@@ -261,7 +261,11 @@ export class NewsManagerComponent implements OnInit {
     if (this.selectedFacilities.length === 0) {
       this.setNews();
     }
-    this.selectedFacilities.length === this.managerFacilities.length ? this.allChecked = true : this.allChecked = false;
+    if (this.selectedFacilities.length === this.managerFacilities.length) {
+      this.allChecked = true
+    } else {
+      this.allChecked = false;
+    }
     this.getWordPressNews();
   }
 

@@ -169,7 +169,8 @@ export class ResourcesComponent implements OnInit {
 
   setVisibleResources(): void {
     if (this.PUBLIC_ACTIVE) {
-      this.visible_resources = this.resources.filter((res: Resources): boolean => !res.resource_name.includes('Intern') && !res.resource_name.includes('All'))
+      this.visible_resources = this.resources
+        .filter((res: Resources): boolean => !res.resource_name.includes('Intern') && !res.resource_name.includes('All'))
     } else if (this.INTERN_ACTIVE) {
       this.visible_resources = this.resources.filter((res: Resources): boolean => res.resource_name.includes('Intern'))
     } else if (this.ALL_ACTIVE) {

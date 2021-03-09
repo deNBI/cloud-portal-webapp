@@ -1,3 +1,4 @@
+/* eslint-disable */
 enum Lifetime_States {
   EXPIRED = 0,
   EXPIRES_SOON = 1,
@@ -75,6 +76,8 @@ enum Vm_Statuses {
   RESTARTING = 6,
   'NOT FOUND' = 7
 }
+
+/* eslint-enable */
 
 /**
  * Abstract class for basic things.

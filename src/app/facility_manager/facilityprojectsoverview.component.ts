@@ -77,8 +77,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 
   constructor(private groupservice: GroupService,
               private facilityservice: FacilityService,
-              private newsService: NewsService,
-              private userService: UserService) {
+              private newsService: NewsService) {
     super();
   }
 
@@ -208,15 +207,14 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
   }
 
   checkFilter(project: Project): boolean {
-    // tslint:disable-next-line:max-line-length
     if (this.filter === '' || !this.filter) {
       return this.isFilterProjectStatus(project.project_application_status, project.LifetimeReached)
     } else {
-
-      // tslint:disable-next-line:max-line-length
-      return (this.isFilterLongProjectName(project.RealName, this.filter) || this.isFilterProjectId(project.Id.toString(), this.filter)) || this.isFilterProjectName(project.Name, this.filter) && this.isFilterProjectStatus(project.project_application_status, project.LifetimeReached)
+      return (this.isFilterLongProjectName(project.RealName, this.filter)
+        || this.isFilterProjectId(project.Id.toString(), this.filter))
+        || this.isFilterProjectName(project.Name, this.filter)
+        && this.isFilterProjectStatus(project.project_application_status, project.LifetimeReached);
     }
-
   }
 
   /**

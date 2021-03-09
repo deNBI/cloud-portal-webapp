@@ -189,7 +189,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
   setModalOpen(bool: boolean): void {
     // tslint:disable-next-line:typedef
-    (async () => {
+    void (async () => {
         await this.delay(750).then().catch(); // needed, because bootstraps class-toggle-function seems to be too slow
         if (bool) {
           this.document.body.classList.add('modal-open');
@@ -361,8 +361,10 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   }
 
   initExampleFlavors(): void {
-    const standardFlavors: Flavor[] = this.flavorList.filter((fl: Flavor, nu: number, arr: Flavor[]): boolean => fl.type.long_name === 'Standard Flavours');
-    const highMemFlavors: Flavor[] = this.flavorList.filter((fl: Flavor, nu: number, arr: Flavor[]): boolean => fl.type.long_name === 'High Memory Flavours');
+    const standardFlavors: Flavor[] = this.flavorList
+      .filter((fl: Flavor, nu: number, arr: Flavor[]): boolean => fl.type.long_name === 'Standard Flavours');
+    const highMemFlavors: Flavor[] = this.flavorList
+      .filter((fl: Flavor, nu: number, arr: Flavor[]): boolean => fl.type.long_name === 'High Memory Flavours');
     standardFlavors.sort((fl1: Flavor, fl2: Flavor): number => fl1.vcpus - fl2.vcpus);
     highMemFlavors.sort((fl1: Flavor, fl2: Flavor): number => fl1.vcpus - fl2.vcpus);
     if (standardFlavors.length !== 0) {
@@ -1277,7 +1279,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
         this.updateNotificationModal('Success', 'The application has been successfully removed', true, 'success');
         this.fullLayout.getGroupsEnumeration();
         // tslint:disable:no-floating-promises
-        this.router.navigate(['/userinfo'])
+        void this.router.navigate(['/userinfo'])
       },
       (): void => {
         this.updateNotificationModal('Failed', 'Application could not be removed!', true, 'danger');

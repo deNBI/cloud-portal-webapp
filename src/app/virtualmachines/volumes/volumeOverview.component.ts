@@ -304,8 +304,8 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
 
       this.isSearching = false;
       this.volumes.forEach((vol: Volume): void => {
-        // tslint:disable-next-line:max-line-length
-        if (vol.volume_status !== VolumeStates.AVAILABLE && vol.volume_status !== VolumeStates.NOT_FOUND && vol.volume_status !== VolumeStates.IN_USE) {
+        if (vol.volume_status !== VolumeStates.AVAILABLE && vol.volume_status !== VolumeStates.NOT_FOUND
+          && vol.volume_status !== VolumeStates.IN_USE) {
 
           this.check_status_loop(vol)
         }
@@ -410,8 +410,8 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
         this.isLoaded = true;
         this.isSearching = false;
         this.volumes.forEach((vol: Volume): void => {
-          // tslint:disable-next-line:max-line-length
-          if (vol.volume_status !== VolumeStates.AVAILABLE && vol.volume_status !== VolumeStates.NOT_FOUND && vol.volume_status !== VolumeStates.IN_USE) {
+          if (vol.volume_status !== VolumeStates.AVAILABLE && vol.volume_status !== VolumeStates.NOT_FOUND
+            && vol.volume_status !== VolumeStates.IN_USE) {
 
             this.check_status_loop(vol)
           }
@@ -574,8 +574,8 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
           this.isLoaded = true;
           this.isSearching = false;
           this.volumes.forEach((vol: Volume): void => {
-            // tslint:disable-next-line:max-line-length
-            if (vol.volume_status !== VolumeStates.AVAILABLE && vol.volume_status !== VolumeStates.NOT_FOUND && vol.volume_status !== VolumeStates.IN_USE) {
+            if (vol.volume_status !== VolumeStates.AVAILABLE && vol.volume_status !== VolumeStates.NOT_FOUND
+              && vol.volume_status !== VolumeStates.IN_USE) {
 
               this.check_status_loop(vol)
             }
@@ -619,14 +619,13 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
               vol.volume_created_by_user = created;
               this.volumes[idx] = vol;
             }
-            // tslint:disable-next-line:max-line-length
             if (this.VOLUME_END_STATES.indexOf(vol.volume_status) === -1 && final_state !== vol.volume_status) {
               this.check_status_loop(this.volumes[idx], this.checkStatusTimeout, final_state)
             }
           }))
         } else {
-          // tslint:disable-next-line:max-line-length
-          this.checkStatusSubscription.add(this.vmService.getVolumeByNameAndVmName(volume.volume_name, volume.volume_virtualmachine.name).subscribe((vol: Volume): void => {
+          this.checkStatusSubscription.add(this.vmService.getVolumeByNameAndVmName(volume.volume_name, volume.volume_virtualmachine.name)
+            .subscribe((vol: Volume): void => {
             if (volume.error_msg !== '' && volume.error_msg !== undefined && volume.error_msg !== null) {
               vol.error_msg = volume.error_msg;
               setTimeout((): void => {
@@ -638,8 +637,8 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
               vol.volume_created_by_user = created;
               this.volumes[idx] = vol;
             }
-            // tslint:disable-next-line:max-line-length
-            if (vol.volume_status !== VolumeStates.AVAILABLE && vol.volume_status !== VolumeStates.NOT_FOUND && vol.volume_status !== VolumeStates.IN_USE && vol.volume_status !== final_state) {
+            if (vol.volume_status !== VolumeStates.AVAILABLE && vol.volume_status !== VolumeStates.NOT_FOUND
+              && vol.volume_status !== VolumeStates.IN_USE && vol.volume_status !== final_state) {
               this.check_status_loop(this.volumes[idx], this.checkStatusTimeout, final_state)
             }
           }))

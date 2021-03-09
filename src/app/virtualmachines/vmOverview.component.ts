@@ -212,15 +212,18 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
           this.subscription.add(this.virtualmachineservice.getVolumeById(volume.volume_openstackid).subscribe((vol: Volume): void => {
 
             // tslint:disable-next-line:max-line-length
-            if (volume.volume_status !== VolumeStates.AVAILABLE && volume.volume_status !== VolumeStates.NOT_FOUND && volume.volume_status !== VolumeStates.IN_USE && volume.volume_status !== final_state) {
+            if (volume.volume_status !== VolumeStates.AVAILABLE && volume.volume_status !== VolumeStates.NOT_FOUND
+              && volume.volume_status !== VolumeStates.IN_USE && volume.volume_status !== final_state) {
               this.check_status_loop_volume(volume, this.checkStatusTimeout, final_state)
             }
           }))
         } else {
           // tslint:disable-next-line:max-line-length
-          this.subscription.add(this.virtualmachineservice.getVolumeByNameAndVmName(volume.volume_name, volume.volume_virtualmachine.name).subscribe((vol: Volume): void => {
+          this.subscription.add(this.virtualmachineservice.getVolumeByNameAndVmName(volume.volume_name, volume.volume_virtualmachine.name)
+            .subscribe((vol: Volume): void => {
             // tslint:disable-next-line:max-line-length
-            if (volume.volume_status !== VolumeStates.AVAILABLE && volume.volume_status !== VolumeStates.NOT_FOUND && volume.volume_status !== VolumeStates.IN_USE && volume.volume_status !== final_state) {
+            if (volume.volume_status !== VolumeStates.AVAILABLE && volume.volume_status !== VolumeStates.NOT_FOUND
+              && volume.volume_status !== VolumeStates.IN_USE && volume.volume_status !== final_state) {
               this.check_status_loop_volume(volume, this.checkStatusTimeout, final_state)
             }
           }))
@@ -793,7 +796,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 
     this.selectedMachines.forEach((vm: VirtualMachine): void => {
       // tslint:disable-next-line:triple-equals
-      if (vm != undefined) {
+      if (vm !== undefined) {
         this.deleteVm(vm)
       }
     })

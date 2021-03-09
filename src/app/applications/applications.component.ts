@@ -14,12 +14,12 @@ import {ComputecenterComponent} from '../projectmanagement/computecenter.compone
 import {is_vo} from '../shared/globalvar';
 import {Application_States} from '../shared/shared_modules/baseClass/abstract-base-class';
 
+// eslint-disable-next-line no-shadow
 enum TabStates {
   'SUBMITTED' = 0,
   'CREDITS_EXTENSION' = 3,
   'LIFETIME_EXTENSION' = 5,
   'MODIFICATION_EXTENSION' = 4
-
 }
 
 /**
@@ -35,7 +35,6 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
   title: string = 'Application Overview';
   tab_state: number = TabStates.SUBMITTED;
-  TabStates: typeof TabStates = TabStates;
   selectedCenter: {[key: string]: string} = {};
 
   loading_applications: boolean = false;

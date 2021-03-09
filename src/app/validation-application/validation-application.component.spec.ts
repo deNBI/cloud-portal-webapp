@@ -9,7 +9,7 @@ describe('ValidationApplicationComponent', () => {
   let fixture: ComponentFixture<ValidationApplicationComponent>;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+    void TestBed.configureTestingModule({
                                      declarations: [ValidationApplicationComponent]
                                    })
       .compileComponents();
