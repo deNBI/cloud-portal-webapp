@@ -22,7 +22,7 @@ export class BiocondaService {
 
     return this.http.get(`${ApiSettings.getApiBaseURL()}conda/all/`, {
       withCredentials: true,
-      params: params
+      params
     })
   }
 
@@ -32,7 +32,7 @@ export class BiocondaService {
 
     return this.http.get<ResearchEnvironment[]>(`${ApiSettings.getApiBaseURL()}forc/templates/`, {
       withCredentials: true,
-      params: params
+      params
     })
   }
 
@@ -42,7 +42,7 @@ export class BiocondaService {
 
     return this.http.get(`${ApiSettings.getApiBaseURL()}forc/templates/allowed/`, {
       withCredentials: true,
-      params: params
+      params
     })
   }
 
@@ -51,7 +51,7 @@ export class BiocondaService {
 
     return this.http.get<Backend>(`${ApiSettings.getApiBaseURL()}forc/backends/vm_name/`, {
       withCredentials: true,
-      params: params
+      params
     })
   }
 
@@ -60,7 +60,7 @@ export class BiocondaService {
 
     return this.http.get(`${ApiSettings.getApiBaseURL()}forc/backs/users/`, {
       withCredentials: true,
-      params: params
+      params
     })
   }
 
@@ -77,7 +77,7 @@ export class BiocondaService {
 
     return this.http.delete(`${ApiSettings.getApiBaseURL()}forc/backs/users/`, {
       withCredentials: true,
-      params: params
+      params
     })
   }
 }

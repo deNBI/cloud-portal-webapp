@@ -46,6 +46,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
 
   /**
    * Enum of all request states.
+   *
    * @type {VolumeRequestStates}
    */
   volumeRequestStates: typeof VolumeRequestStates = VolumeRequestStates;
@@ -73,6 +74,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
   selected_vm: VirtualMachine;
   /**
    * If the site is loaded.
+   *
    * @type {boolean}
    */
   isLoaded: boolean = false;
@@ -106,16 +108,19 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
   selectedProject: [string, number];
   /**
    * List of all projects from the user.
+   *
    * @type {any[]}
    */
   projects: string[] = [];
   /**
    * Default volumeStorage.
+   *
    * @type {number}
    */
   diskspace: number = 1;
   /**
    * Default volumename.
+   *
    * @type {string}
    */
   volumeName: string = '';
@@ -325,9 +330,10 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
 
   /**
    * Attach a volume to an instance.
-   * @param {string} volume_id openstack_id of the volume
-   * @param {string} instance_id openstack_id of the instance
-   * @returns {void}
+   *
+   * @param volume_id openstack_id of the volume
+   * @param instance_id openstack_id of the instance
+   * @returns
    */
   attachVolume(volume: Volume, instance_id: string): void {
 
@@ -371,6 +377,7 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
 
   /**
    * Load volumes depending on page.
+   *
    * @param event
    */
   pageChanged(event: any): void {
@@ -414,10 +421,11 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
 
   /**
    * Create an volume and attach to an instance.
-   * @param {string} volume_name name of the volume
-   * @param {number} diskspace volumeStorage of the volume
-   * @param {string} instance_id opentack_id of the instance
-   * @returns {void}
+   *
+   * @param volume_name name of the volume
+   * @param diskspace volumeStorage of the volume
+   * @param instance_id opentack_id of the instance
+   * @returns
    */
   createAndAttachvolume(volume_name: string, diskspace: number, instance_id: string): void {
     this.volume_action_status = 7;
@@ -461,10 +469,11 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
 
   /**
    * Create an volume.
-   * @param {string} volume_name name of the volume.
-   * @param {number} diskspace volumeStorage of the new volume
-   * @param {string} instance_id openstack_id of instance.
-   * @returns {void}
+   *
+   * @param volume_name name of the volume.
+   * @param diskspace volumeStorage of the new volume
+   * @param instance_id openstack_id of instance.
+   * @returns
    */
   createVolume(volume_name: string, diskspace: number, instance_id: string): void {
     this.volume_action_status = this.volumeActionStates.WAITING;
@@ -489,9 +498,10 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
 
   /**
    * Detach volume from instance.
-   * @param {Volume} volume
-   * @param {string} instance_id openstack_id of the  instance
-   * @returns {void}
+   *
+   * @param volume
+   * @param instance_id openstack_id of the  instance
+   * @returns
    */
   detachVolume(volume: Volume, instance_id: string): void {
 
@@ -520,9 +530,10 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
 
   /**
    * Rename a volume ( just in Django DB not in OpenStack).
-   * @param {string} volume_id openstack_id of volume
-   * @param {string} new_volume_name the new name
-   * @returns {void}
+   *
+   * @param volume_id openstack_id of volume
+   * @param new_volume_name the new name
+   * @returns
    */
   renameVolume(volume: Volume, new_volume_name: string): void {
     this.volume_action_status = this.volumeActionStates.CHANGING_NAME;
@@ -542,7 +553,8 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
 
   /**
    * Get all volumes from user.
-   * @returns {void}
+   *
+   * @returns
    */
   getVolumes(): void {
     this.isSearching = true;
@@ -640,7 +652,8 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
 
   /**
    * Get all approved projects from the user.
-   * @returns {void}
+   *
+   * @returns
    */
   getUserApprovedProjects(): void {
     this.groupService.getSimpleVmByUser().subscribe((membergroups: any): void => {
@@ -653,8 +666,9 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
 
   /**
    * Set request status.
-   * @param {number} status
-   * @returns {void}
+   *
+   * @param status
+   * @returns
    */
   setRequestStatus(status: number): void {
     this.request_status = status;
@@ -662,8 +676,9 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
 
   /**
    * Set selected volume.
-   * @param {Volume} volume
-   * @returns {void}
+   *
+   * @param volume
+   * @returns
    */
   setSelectedVolume(volume: Volume): void {
     this.selected_volume = volume;
@@ -703,7 +718,8 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
 
   /**
    * Get volumeStorage of selected project.
-   * @returns {void}
+   *
+   * @returns
    */
   getSelectedProjectDiskspace(): void {
     this.groupService.getGroupMaxDiskspace(this.selectedProject[1].toString()).subscribe((result: IResponseTemplate): void => {
@@ -730,7 +746,8 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
 
   /**
    * Get volumes of selected project.
-   * @returns {void}
+   *
+   * @returns
    */
   getSelectedProjectVolumes(): void {
     this.groupService.getVolumeCounter(this.selectedProject[1].toString()).subscribe((result: IResponseTemplate): void => {
@@ -753,8 +770,9 @@ export class VolumeOverviewComponent extends AbstractBaseClasse implements OnIni
 
   /**
    * Get all active vms from a project.
-   * @param {number} groupid id of the perun group from the project.
-   * @returns {void}
+   *
+   * @param groupid id of the perun group from the project.
+   * @returns
    */
   getActiveVmsByProject(groupid: number | string): void {
     this.vmService.getActiveVmsByProject(groupid.toString()).subscribe((result: any): void => {

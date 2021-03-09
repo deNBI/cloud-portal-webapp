@@ -41,6 +41,7 @@ export class SnapshotOverviewComponent implements OnInit {
 
   /**
    * All snapshots.
+   *
    * @type {Array}
    */
   snapshots: SnapshotModel[] = [];
@@ -50,16 +51,19 @@ export class SnapshotOverviewComponent implements OnInit {
   selected_snapshot: SnapshotModel;
   /**
    * All possible statuses when deleting.
+   *
    * @type {Snapshot_Delete_Statuses}
    */
   delete_statuses: typeof Snapshot_Delete_Statuses = Snapshot_Delete_Statuses;
   /**
    * Actual delete status.
+   *
    * @type {Snapshot_Delete_Statuses}
    */
   delete_status: number = this.delete_statuses.WAITING;
   /**
    * If site was initialized.
+   *
    * @type {boolean}
    */
   isLoaded: boolean = false;
@@ -88,7 +92,8 @@ export class SnapshotOverviewComponent implements OnInit {
 
   /**
    * Set selected Snapshot.
-   * @param {SnapshotModel} snapshot
+   *
+   * @param snapshot
    */
   setSelectedSnapshot(snapshot: SnapshotModel): void {
     this.selected_snapshot = snapshot;
@@ -174,7 +179,8 @@ export class SnapshotOverviewComponent implements OnInit {
 
   /**
    * Delete snapshot.
-   * @param {string} snapshot_id
+   *
+   * @param snapshot_id
    */
   deleteSnapshot(snapshot: SnapshotModel): void {
     this.imageService.deleteSnapshot(snapshot.snapshot_openstackid).subscribe((result: IResponseTemplate): void => {
@@ -291,6 +297,7 @@ export class SnapshotOverviewComponent implements OnInit {
 
   /**
    * Load vms depending on page.
+   *
    * @param event
    */
   pageChanged(event: any): void {

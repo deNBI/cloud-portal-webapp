@@ -42,6 +42,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
   /**
    * All Applications, just visibile for a vo admin.
+   *
    * @type {Array}
    */
   all_applications: Application[] = [];
@@ -55,6 +56,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
   /**
    * id of the extension status.
+   *
    * @type {number}
    */
   extension_status: number = 0;
@@ -73,12 +75,13 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
   /**
    * Constructor.
    * Loads all Applications if user is vo admin and all user_applications.
-   * @param {ApplicationsService} applicationsservice
-   * @param {UserService} userservice
-   * @param {GroupService} groupservice
-   * @param {VoService} voService
-   * @param {FacilityService} facilityService
-   * @param {FlavorService} flavorService
+   *
+   * @param applicationsservice
+   * @param userservice
+   * @param groupservice
+   * @param voService
+   * @param facilityService
+   * @param flavorService
    */
   constructor(applicationsservice: ApplicationsService,
               userservice: UserService,
@@ -111,6 +114,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
   /**
    * Checks if the key given represents a flavor and if so returns the respective Flavor
+   *
    * @param key the key which is checked
    */
   isKeyFlavor(key: string): Flavor {
@@ -135,7 +139,8 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
   /**
    * Get the facility of an application.
-   * @param {Application} app
+   *
+   * @param app
    */
   getFacilityProject(app: Application): void {
     if (!app.ComputeCenter && !app.hasSubmittedStatus() && !app.hasTerminatedStatus()) {
@@ -403,7 +408,8 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
   /**
    * Updates an application with the actual values.
-   * @param {Application} application
+   *
+   * @param application
    */
   public getApplication(application: Application): void {
     const index: number = this.all_applications.indexOf(application);
@@ -422,7 +428,8 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
   /**
    * Remove Application from facility , where it is for confirmation
-   * @param {Application} application the application
+   *
+   * @param application the application
    */
   removeApplicationFromFacilityConfirmation(application: Application): void {
     this.groupservice.removeGroupFromResource(application.project_application_perun_id.toString()).subscribe(
@@ -438,6 +445,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
   /**
    * Create a new Group in perun with the specific attributes.
+   *
    * @param name
    * @param description
    * @param manager_elixir_id
@@ -528,6 +536,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
   /**
    * Create a new Group in perun with the specific attributes.
+   *
    * @param app
    */
   public createSimpleVmProjectGroup(app: Application, compute_center_id?: string): void {
@@ -611,6 +620,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
   /**
    * Decline an application.
+   *
    * @param application_id
    */
 
