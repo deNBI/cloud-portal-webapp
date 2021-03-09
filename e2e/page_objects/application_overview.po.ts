@@ -38,26 +38,25 @@ export class ApplicationOverviewPage {
     await Util.waitForPresenceOfElementById(this.SUBMITTED_APPLICATIONS_TAB)
     Util.logInfo('Decline open PT OpenStack applications');
 
-    let openstack_ele: any = await element.all(by.id(this.DECLINE_PT_OPEN_APPLICATION_PRE));
+    let openstack_ele: any = element.all(by.id(this.DECLINE_PT_OPEN_APPLICATION_PRE));
     while (openstack_ele.isPresent()) {
       openstack_ele = openstack_ele.first()
       await Util.clickElementByElement(openstack_ele);
       await Util.waitForTextPresenceInElementById(this.NOTIFICATION_MESSAGE, this.SUCCESSFULL_DECLINED);
       await Util.clickElementById(this.CLOSE_NOTIFICATION_MODAL)
       openstack_ele = element.all(by.id(this.DECLINE_PT_OPEN_APPLICATION_PRE));
-      ;
 
     }
     Util.logInfo('Decline open PT SimpleVM applications');
 
-    let simple_ele: any = await element.all(by.id(this.DECLINE_PT_SIMPLE_APPLICATION_PRE));
+    let simple_ele: any = element.all(by.id(this.DECLINE_PT_SIMPLE_APPLICATION_PRE));
     while (simple_ele.isPresent()) {
       simple_ele = simple_ele.first()
 
       await Util.clickElementByElement(simple_ele);
       await Util.waitForTextPresenceInElementById(this.NOTIFICATION_MESSAGE, this.SUCCESSFULL_DECLINED);
       await Util.clickElementById(this.CLOSE_NOTIFICATION_MODAL)
-      simple_ele = await element.all(by.id(this.DECLINE_PT_SIMPLE_APPLICATION_PRE));
+      simple_ele = element.all(by.id(this.DECLINE_PT_SIMPLE_APPLICATION_PRE));
 
     }
 
