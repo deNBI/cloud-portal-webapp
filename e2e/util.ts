@@ -323,8 +323,9 @@ export class Util {
     this.logInfo(`Getting option ${option} from select ${selectId}`);
 
     await this.waitForPresenceOfElementById(selectId);
+    const elem: any = await element(by.id(selectId)).element(by.id(option))
 
-    await this.clickElementById(option)
+    return await elem.click();
   }
 
   static async waitForElementToBeClickableByName(name: string, timeout: number = this.timeout): Promise<boolean> {
