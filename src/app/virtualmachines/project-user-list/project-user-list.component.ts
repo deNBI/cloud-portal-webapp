@@ -22,9 +22,7 @@ export class ProjectUserListComponent implements OnInit {
   getMembersOfTheProject(): void {
     this.groupService.getGroupMembers(this.project_id.toString()).subscribe((members: ProjectMember[]): void => {
 
-      this.project_members = members.filter((mem: ProjectMember): boolean => {
-        return mem.memberId.toString() !== this.user_member_id.toString()
-      });
+      this.project_members = members.filter((mem: ProjectMember): boolean => mem.memberId.toString() !== this.user_member_id.toString());
 
     })
   }

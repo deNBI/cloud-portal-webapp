@@ -59,6 +59,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
   /**
    * If at least 1 flavor is selected.
+   *
    * @type {boolean}
    */
   public min_vm: boolean = true;
@@ -84,17 +85,20 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
   /**
    * id of the extension status.
+   *
    * @type {number}
    */
   extension_status: number = 0;
   /**
    * id of the modification status
+   *
    * @type {number}, needs yet to be implemented
    */
   modification_status: number = 0;
 
   /**
    * defines weither the request is an extension (1), modification (2) or credit (3) request.
+   *
    * @type {number}, initialized with 0
    */
   request_type: number = ExtensionRequestType.NONE;
@@ -578,6 +582,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
   /**
    * Returns a string with the end-date of a application which depends on the day it was approved and the lifetime in months
+   *
    * @param approval date in string when the application was approved
    * @param months number of months the application is permitted
    */
@@ -645,6 +650,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   /**
    * If the application is an openstack application, the requested/approved resources will be set for maximum VMs.
    * For SimpleVM also the VMs in use are set.
+   *
    * @param groupid the id of the group of the application in perun
    */
   getUsedResources(groupid: string): void {
@@ -665,6 +671,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
   /**
    * Calculates the number of approved VMs for OpenStack Projects
+   *
    * @param flavors the list of flavors requested in the project
    */
   calculateNumberOfVMs(flavors: Flavor[]): number {
@@ -786,7 +793,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
   /**
    * Get the facility of an application.
-   * @param {Application} app
+   *
+   * @param app
    */
   getFacilityProject():
     void {
@@ -840,6 +848,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
   /**
    * Get all user applications for a project.
+   *
    * @param projectId id of the project
    */
   getUserProjectApplications(): void {
@@ -939,6 +948,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
   /**
    * Get all members of a project.
+   *
    * @param projectId id of the project
    * @param projectName
    */
@@ -1008,15 +1018,13 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
   }
 
-  removeCheckedMembers(groupId
-                         :
+  removeCheckedMembers(groupId:
                          number | string
   ):
     void {
     this.remove_members_clicked = true;
 
-    const members_in
-      :
+    const members_in:
       ProjectMember[] = [];
 
     const observables: Observable<number>[] = this.checked_member_list
@@ -1053,6 +1061,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
   /**
    * Uses the data from the application form to fill the confirmation-modal with information.
+   *
    * @param form the application form with corresponding data
    */
   filterEnteredData(form: NgForm): void {
@@ -1217,6 +1226,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
   /**
    * Remove an member from a group.
+   *
    * @param groupid  of the group
    * @param memberid of the member
    * @param name  of the member
@@ -1258,6 +1268,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
   /**
    * Delete an application.
+   *
    * @param application_id
    */
   public deleteApplication(): void {

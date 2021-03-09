@@ -32,16 +32,19 @@ export class ClientOverviewComponent implements OnInit {
   selectedClient: Client;
   /**
    * If user is vo.
+   *
    * @type {boolean}
    */
   is_vo_admin: boolean = false;
   /**
    * Default status not added client.
+   *
    * @type {string}
    */
   checkStatus: string = 'Not checked';
   /**
    * All computecenters.
+   *
    * @type {Array}
    */
   computeCenters: ComputecenterComponent[] = [];
@@ -51,6 +54,7 @@ export class ClientOverviewComponent implements OnInit {
   selectedComputeCenter: ComputecenterComponent;
   /**
    * If site is initialized with data.
+   *
    * @type {boolean}
    */
   isLoaded: boolean = false;
@@ -88,8 +92,9 @@ export class ClientOverviewComponent implements OnInit {
 
   /**
    * Check status of client.
-   * @param {string} host of client
-   * @param {string} port of client
+   *
+   * @param host of client
+   * @param port of client
    */
   checkClient(host: string, port: string): void {
     if (host && port) {
@@ -110,9 +115,10 @@ export class ClientOverviewComponent implements OnInit {
 
   /**
    * Add a new client.
-   * @param {string} host
-   * @param {string} port
-   * @param {string} location
+   *
+   * @param host
+   * @param port
+   * @param location
    */
   postClient(host: string, port: string, location: string): void {
 
