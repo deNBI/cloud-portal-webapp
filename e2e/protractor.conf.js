@@ -4,7 +4,7 @@ var DisplayProcessor = require('jasmine-spec-reporter').DisplayProcessor;
 const {SpecReporter} = require('jasmine-spec-reporter');
 const HtmlReporter = require('protractor-beautiful-reporter');
 const log4jsGen = require('./log4jsGen');
-const DescribeFailureReporter = require('protractor-stop-describe-on-failure')
+const DescribeFailureReporter = require('protractor-stop-describe-on-failure');
 
 const fs = require('fs');
 let rawdata = fs.readFileSync('e2e/environment.json');
@@ -18,36 +18,36 @@ function LogInterceptor(configuration, theme) {
 LogInterceptor.prototype = new DisplayProcessor();
 
 LogInterceptor.prototype.displaySuite = function (suite, log) {
-  log4jsGen.getLogger().info(log)
+  log4jsGen.getLogger().info(log);
   return log;
 };
 
 LogInterceptor.prototype.displaySuccessfulSpec = function (spec, log) {
-  log4jsGen.getLogger().info(log)
+  log4jsGen.getLogger().info(log);
 
   return log;
 };
 
 LogInterceptor.prototype.displayFailedSpec = function (spec, log) {
-  log4jsGen.getLogger().error(log)
+  log4jsGen.getLogger().error(log);
 
   return log;
 };
 
 LogInterceptor.prototype.displayPendingSpec = function (spec, log) {
-  log4jsGen.getLogger().info(log)
+  log4jsGen.getLogger().info(log);
 
   return log;
 };
 
 LogInterceptor.prototype.displaySummaryErrorMessages = function (spec, log) {
-  log4jsGen.getLogger().error(log)
+  log4jsGen.getLogger().error(log);
 
   return log;
 };
 
 LogInterceptor.prototype.displaySpecErrorMessages = function (spec, log) {
-  log4jsGen.getLogger().error(log)
+  log4jsGen.getLogger().error(log);
 
   return log;
 };

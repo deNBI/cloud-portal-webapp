@@ -12,10 +12,9 @@ import {ApiSettings} from '../api-connector/api-settings.service';
  * @param json
  */
 function beforeSendFunction(xhr: XMLHttpRequest, json: JSON): any {
-  json = filter(json); // filter out duplicate error messages
+  json = filter(json);
   xhr.withCredentials = true;
   xhr.setRequestHeader('X-CSRFToken', Cookie.get('csrftoken'));
-
 }
 
 /**
