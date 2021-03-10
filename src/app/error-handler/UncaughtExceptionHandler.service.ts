@@ -6,10 +6,9 @@ import {ApiSettings} from '../api-connector/api-settings.service';
 // ---Before Send Function
 // Runs before the Ajax Appender sends the logs to the server
 function beforeSendFunction(xhr: XMLHttpRequest, json: JSON): any {
-  json = filter(json); // filter out duplicate error messages
+  json = filter(json);
   xhr.withCredentials = true;
   xhr.setRequestHeader('X-CSRFToken', Cookie.get('csrftoken'));
-
 }
 
 // filters duplicate messages from the logs

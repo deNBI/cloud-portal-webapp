@@ -18,7 +18,6 @@ import {SnapshotModel} from '../snapshots/snapshot.model';
 import {Subject} from 'rxjs';
 import {PlaybookService} from '../../api-connector/playbook.service';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
-import {CondaPackage} from '../condaPackage.model';
 import {BiocondaService} from '../../api-connector/bioconda.service';
 import {ResenvTemplate} from '../conda/resenvTemplate.model';
 import {elixir_id, is_vo} from '../../shared/globalvar';
@@ -28,7 +27,6 @@ import {Volume} from '../volumes/volume';
 import {VolumeStates} from '../volumes/volume_states';
 import {Condalog} from '../conda/condalog';
 import {Backend} from '../conda/backend/backend';
-import {ImageMode} from '../../facility_manager/image-tag';
 
 /**
  * VM Detail page component
@@ -55,7 +53,6 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
   snapshotSearchTerm: Subject<string> = new Subject<string>();
   errorMessage: boolean = false;
   error_msg: string = '';
-  res_env_url: string = '';
   filteredMembers: any = null;
   backend_users: any = [];
   extendDone: boolean = false;
@@ -71,7 +68,6 @@ export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
   DEBOUNCE_TIME: number = 300;
 
   volume_to_attach: Volume;
-  volume_to_detach: Volume;
   detached_project_volumes: Volume[] = [];
   user_elixir_id: string;
 
