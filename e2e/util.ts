@@ -1,6 +1,6 @@
 import {browser, by, element, ElementFinder, protractor, ProtractorExpectedConditions} from 'protractor';
 // tslint:disable-next-line:no-require-imports no-var-requires typedef
-const clc = require('cli-color');
+// const clc = require('cli-color');
 // tslint:disable-next-line:no-require-imports no-var-requires typedef
 const log4jsGen = require('./log4jsGen');
 
