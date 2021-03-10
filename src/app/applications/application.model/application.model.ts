@@ -43,6 +43,8 @@ export class Application {
   project_application_status: number[] = [];
   ComputeCenter: ComputecenterComponent;
   project_application_openstack_project: boolean;
+  project_application_total_gpu: number = 0;
+
   DaysRunning: number;
   project_lifetime_request: ApplicationLifetimeExtension;
   project_modification_request: ApplicationModification;
@@ -113,6 +115,7 @@ export class Application {
       this.project_application_cloud_service_develop = aj.project_application_cloud_service_develop;
       this.project_application_cloud_service_user_number = aj.project_application_cloud_service_user_number;
       this.flavors = aj.flavors;
+      this.project_application_total_gpu = aj.project_application_total_gpu;
       this.project_application_workshop = aj.project_application_workshop;
       this.credits_allowed = aj.credits_allowed;
       if (aj.dissemination) {
