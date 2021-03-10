@@ -5,7 +5,8 @@ import {ApiSettings} from '../api-connector/api-settings.service';
 
 // ---Before Send Function
 // Runs before the Ajax Appender sends the logs to the server
-function beforeSendFunction(xhr: XMLHttpRequest): any {
+function beforeSendFunction(xhr: XMLHttpRequest, json: JSON): any {
+  json = filter(json);
   xhr.withCredentials = true;
   xhr.setRequestHeader('X-CSRFToken', Cookie.get('csrftoken'));
 }
