@@ -14,7 +14,6 @@ import {IResponseTemplate} from '../api-connector/response-template';
 import {Subject} from 'rxjs';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {WordPressTag} from './newsmanagement/wp-tags';
-import {VoService} from '../api-connector/vo.service';
 import {FullLayoutComponent} from '../layouts/full-layout.component';
 
 /**
@@ -26,8 +25,6 @@ import {FullLayoutComponent} from '../layouts/full-layout.component';
              providers: [FacilityService, UserService, GroupService, ApiSettings, NewsService]
            })
 export class FacilityProjectsOverviewComponent extends FilterBaseClass implements OnInit {
-
-  debug_module: boolean = false;
 
   @Input() voRegistrationLink: string = environment.voRegistrationLink;
 

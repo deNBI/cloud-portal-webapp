@@ -119,7 +119,7 @@ export class ProjectOverview {
     await Util.waitForTextPresenceInElementById(this.NOTIFICATION_TITLE, this.SUCCESS);
     Util.logInfo('Close Modal');
     await Util.clickElementById(this.NOTIFICATION_CLOSE);
-    await Util.clickElementById(this.CLOSE_ADD_MEMBER_MODAL_BTN)
+    await Util.clickElementById(this.CLOSE_ADD_MEMBER_MODAL_BTN);
     await browser.sleep(1000);
 
   }
