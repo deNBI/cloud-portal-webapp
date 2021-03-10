@@ -13,7 +13,7 @@ enum TabStates {
   'CREDITS_EXTENSION' = 1,
   'LIFETIME_EXTENSION' = 2,
   'MODIFICATION_EXTENSION' = 3,
-  'TERMINATION_REQUEST' = 4,
+  'TERMINATION_REQUEST' = 4
 }
 
 /**
@@ -213,7 +213,7 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
           this.getAllApplicationsHistory(this.selectedFacility['FacilityId']);
           this.updateNotificationModal('Success', 'The  project was terminated.', true, 'success');
         },
-        (error: any): void => {
+                 (error: any): void => {
           if (error['status'] === 409) {
             this.updateNotificationModal(
               'Failed',
@@ -235,7 +235,7 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
           this.getAllApplicationsHistory(this.selectedFacility['FacilityId']);
           this.updateNotificationModal('Success', 'The termination of the project was declined.', true, 'success');
         },
-        (error: any): void => {
+                 (error: any): void => {
           if (error['status'] === 409) {
             this.updateNotificationModal(
               'Failed',
