@@ -156,6 +156,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 
   /**
    * Default volume name.
+   *
    * @type {string}
    */
   volumeName: string = '';
@@ -163,30 +164,35 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 
   /**
    * Default volumeStorage.
+   *
    * @type {number}
    */
   volumeStorage: number = 0;
 
   /**
    * If the data for the site is initialized.
+   *
    * @type {boolean}
    */
   isLoaded: boolean = false;
 
   /**
    * All projects of the user.
+   *
    * @type {any[]}
    */
   projects: [string, number][] = [];
 
   /**
    * If all project data is loaded.
+   *
    * @type {boolean}
    */
   projectDataLoaded: boolean = false;
 
   /**
    * id of the freemium project.
+   *
    * @type {number}
    */
   FREEMIUM_ID: number = environment.freemium_project_id;
@@ -195,6 +201,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 
   /**
    * Time for the check status loop.
+   *
    * @type {number}
    */
   private checkStatusTimeout: number = 5000;
@@ -209,7 +216,8 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 
   /**
    * Get images for the project.
-   * @param {number} project_id
+   *
+   * @param project_id
    */
   getImages(project_id: number): void {
 
@@ -224,7 +232,8 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 
   /**
    * Get flavors for the project.
-   * @param {number} project_id
+   *
+   * @param project_id
    */
   getFlavors(project_id: number): void {
     this.flavorService.getFlavors(project_id).subscribe((flavors: Flavor[]): void => {
@@ -399,7 +408,8 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 
   /**
    * Check the status of the started vm in a loop.
-   * @param {string} id
+   *
+   * @param id
    */
   check_status_loop(id: string): void {
 
@@ -448,11 +458,12 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 
   /**
    * Start a virtual machine with specific params.
-   * @param {string} flavor
-   * @param {string} image
-   * @param {string} servername
-   * @param {string} project
-   * @param {string} projectid
+   *
+   * @param flavor
+   * @param image
+   * @param servername
+   * @param project
+   * @param projectid
    */
   startVM(flavor: string, servername: string, project: string, projectid: string | number): void {
     this.progress_bar_width = 25;
@@ -494,7 +505,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
             this.progress_bar_width = 75;
             setTimeout(
               (): void => {
-                this.router.navigate(['/virtualmachines/vmOverview']).then().catch()
+                void this.router.navigate(['/virtualmachines/vmOverview']).then().catch()
               },
               2000)
 

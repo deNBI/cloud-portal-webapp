@@ -175,9 +175,7 @@ export class Application {
   }
 
   public getFlavorCounter(flavor: Flavor): number {
-    const flavs: Flavor[] = this.flavors.filter((fl: Flavor): boolean => {
-      return fl.name === flavor.name
-    });
+    const flavs: Flavor[] = this.flavors.filter((fl: Flavor): boolean => fl.name === flavor.name);
     if (flavs.length > 0) {
       return flavs[0].counter
     }
@@ -186,9 +184,7 @@ export class Application {
   }
 
   public setFlavorInFlavors(flavor: Flavor, counter: number): void {
-    const idx: number = this.flavors.findIndex((fl: Flavor): boolean => {
-      return fl.name === flavor.name
-    });
+    const idx: number = this.flavors.findIndex((fl: Flavor): boolean => fl.name === flavor.name);
     if (idx !== -1) {
       if (counter > 0) {
         this.flavors[idx].counter = counter;

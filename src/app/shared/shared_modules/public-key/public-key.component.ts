@@ -12,8 +12,7 @@ import { saveAs } from 'file-saver';
  * Public Key component.
  */
 @Component({
-             // tslint:disable-next-line:component-selector
-             selector: '[app-public-key]',
+             selector: 'app-public-key',
              templateUrl: './public-key.component.html',
              styleUrls: ['./public-key.component.scss'],
              providers: [ApiSettings, KeyService]
@@ -26,7 +25,7 @@ export class PublicKeyComponent extends AbstractBaseClasse {
   acknowledgement_given: boolean = false;
   @Input() userinfo: Userinfo;
 
-  constructor(private keyservice: KeyService,
+  constructor(private keyService: KeyService,
               private clipboardService: ClipboardService) {
     super()
   }
@@ -38,7 +37,7 @@ export class PublicKeyComponent extends AbstractBaseClasse {
   }
 
   generateKey(): void {
-    this.keyservice.generateKey().subscribe((res: any): void => {
+    this.keyService.generateKey().subscribe((res: any): void => {
       this.getUserPublicKey()
       this.downloadPem(res['private_key'])
     })
@@ -48,7 +47,7 @@ export class PublicKeyComponent extends AbstractBaseClasse {
 
     const re: RegExp = /\+/gi;
 
-    this.keyservice.postKey(publicKey.replace(re, '%2B')).subscribe((): void => {
+    this.keyService.postKey(publicKey.replace(re, '%2B')).subscribe((): void => {
       this.getUserPublicKey();
     });
   }
@@ -72,7 +71,7 @@ export class PublicKeyComponent extends AbstractBaseClasse {
   }
 
   getUserPublicKey(): void {
-    this.keyservice.getKey().subscribe((key: IResponseTemplate): void => {
+    this.keyService.getKey().subscribe((key: IResponseTemplate): void => {
       this.userinfo.PublicKey = <string>key.value;
     })
   }

@@ -77,6 +77,7 @@ export class NewsManagerComponent implements OnInit {
 
   /**
    * Manages the list which contains the facilities that will get the current News id set as the MOTD id.
+   *
    * @param facility the facility of the checkbox that got clicked
    */
   manageMOTD(facility: [string, number]): void {
@@ -105,6 +106,7 @@ export class NewsManagerComponent implements OnInit {
 
   /**
    * Adds or updates news in WordPress
+   *
    * @param news the news with all necessary attributes
    * @param update decides whether the news get updated or not
    */
@@ -156,6 +158,7 @@ export class NewsManagerComponent implements OnInit {
 
   /**
    * Sets and replaces or deletes the MOTD for all facilities affected from the news or its update.
+   *
    * @param id the id of the news in WordPress to reference it
    */
   setMOTDForFacility(id: string): void {
@@ -207,6 +210,7 @@ export class NewsManagerComponent implements OnInit {
 
   /**
    * Method to create news to save it in the list of existing news.
+   *
    * @param wordPressNews the response as an Object from WordPress
    */
   createWordPressNews(wordPressNews: Object): WordPressNews {
@@ -244,6 +248,7 @@ export class NewsManagerComponent implements OnInit {
 
   /**
    * Adds or deletes a facility from the list of facilities for which the news shall be loaded and shown.
+   *
    * @param facility the facility which gets added/deleted
    */
   selectFacility(facility: [string, number]): void {
@@ -256,12 +261,17 @@ export class NewsManagerComponent implements OnInit {
     if (this.selectedFacilities.length === 0) {
       this.setNews();
     }
-    this.selectedFacilities.length === this.managerFacilities.length ? this.allChecked = true : this.allChecked = false;
+    if (this.selectedFacilities.length === this.managerFacilities.length) {
+      this.allChecked = true
+    } else {
+      this.allChecked = false;
+    }
     this.getWordPressNews();
   }
 
   /**
    * Sets the news which got selected or creates a new news object. Also empties all relevant lists.
+   *
    * @param news the news which got clicked or null in all other cases
    */
   setNews(news?: WordPressNews): void {
@@ -317,6 +327,7 @@ export class NewsManagerComponent implements OnInit {
   /**
    * Returns all public names of the facilities for which the news got posted as a concatenated string.
    * The names are separated with commas.
+   *
    * @param news the news for which the string shall be returned
    */
   facilitiesAsString(news: WordPressNews): string {
@@ -338,6 +349,7 @@ export class NewsManagerComponent implements OnInit {
 
   /**
    * Checks if a news-object is set as a Message Of The Day in any facility.
+   *
    * @param news the news which get's checked
    */
   listNewsSetAsMOTD(): void {
@@ -373,6 +385,7 @@ export class NewsManagerComponent implements OnInit {
 
   /**
    * Adds or deletes a facility from the list of facilities to which the news shall be uploaded/updated.
+   *
    * @param facility the facility which gets added/deleted
    */
   setFacility(facility: [string, number]): void {
@@ -390,6 +403,7 @@ export class NewsManagerComponent implements OnInit {
 
   /**
    * Adds or deletes tags from the list of tags to add to the news when the corresponding checkbox gets clicked.
+   *
    * @param tag the tag which gets added/deleted.
    */
   manageTags(tag: WordPressTag): void {

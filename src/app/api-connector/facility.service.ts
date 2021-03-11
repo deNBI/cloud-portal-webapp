@@ -20,7 +20,8 @@ export class FacilityService {
 
   /**
    * Get all available computecenters.
-   * @returns {Observable<any>}
+   *
+   * @returns
    */
   getComputeCenters(): Observable<any> {
 
@@ -74,6 +75,7 @@ export class FacilityService {
 
   /**
    * Sets the newsID of the facility news which contains the motd for facility with the corresponding facility ID.
+   *
    * @param facilityID facility id of the facility to set the id
    * @param newsId the id of the news containing the motd
    */
@@ -87,7 +89,8 @@ export class FacilityService {
 
   /**
    * Get all facility, where the current user is manager.
-   * @returns {Observable<any>}
+   *
+   * @returns
    */
   getManagerFacilities(): Observable<any> {
 
@@ -107,9 +110,10 @@ export class FacilityService {
 
   /**
    * Get allowed groups from a facility with a specific status.
-   * @param {number} facility
-   * @param {number} status
-   * @returns {Observable<any>}
+   *
+   * @param facility
+   * @param status
+   * @returns
    */
   getFacilityAllowedGroupsWithDetailsAndSpecificStatus(facility: number | string, status: number): Observable<any> {
 
@@ -122,6 +126,7 @@ export class FacilityService {
 
   /**
    * Gets FacilityGroups by the elixirId of the member.
+   *
    * @param facility the facility
    * @param elixir_id the id of the member
    */
@@ -135,8 +140,9 @@ export class FacilityService {
 
   /**
    * Get all resources assigned to a facility.
-   * @param {number} facility id of the facility
-   * @returns {Observable<any>}
+   *
+   * @param facility id of the facility
+   * @returns
    */
   getFacilityResources(facility: number | string): Observable<any> {
 
@@ -147,8 +153,9 @@ export class FacilityService {
 
   /**
    * Gets all facility applications which are waiting for conirmation.
-   * @param {number} facility
-   * @returns {Observable<any>}
+   *
+   * @param facility
+   * @returns
    */
   getFacilityApplicationsWaitingForConfirmation(facility: number | string): Observable<Application[]> {
 
@@ -159,8 +166,9 @@ export class FacilityService {
 
   /**
    * Gets all facility applications history.
-   * @param {number} facility
-   * @returns {Observable<any>}
+   *
+   * @param facility
+   * @returns
    */
   getFacilityApplicationsHistory(facility: number | string): Observable<Application[]> {
 
@@ -171,6 +179,7 @@ export class FacilityService {
 
   /**
    * Get application for facility by id.
+   *
    * @param facility self-speaking
    * @param id self-speaking
    */
@@ -183,24 +192,26 @@ export class FacilityService {
 
   /**
    * Gets all volumes from a specific facility.
-   * @param {number} facility
-   * @returns {Observable<any>}
+   *
+   * @param facility
+   * @returns
    */
   getFacilityVolumes(facility: number | string, items_per_page: number, current_page: number): Observable<any> {
     const params: HttpParams = new HttpParams().set('items_per_page', items_per_page.toString()).set('page', current_page.toString());
 
     return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/volumes/`, {
       withCredentials: true,
-      params: params
+      params
     });
   }
 
   /**
    * Gets all volumes from a specific facility.
-   * @param {number | string} facility
-   * @param {number} currentPage
-   * @param {number} snapsPerSite
-   * @returns {Observable<any>}
+   *
+   * @param facility
+   * @param currentPage
+   * @param snapsPerSite
+   * @returns
    */
   getFacilitySnapshots(facility: number | string, currentPage: number, snapsPerSite: number, filter?: string): Observable<any> {
     let params: HttpParams = new HttpParams().set('page', currentPage.toString()).set('snaps_per_site', snapsPerSite.toString());
@@ -210,14 +221,15 @@ export class FacilityService {
 
     return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/snapshots/`, {
       withCredentials: true,
-      params: params
+      params
     });
   }
 
   /**
    * Gets all facility modification applications which are waiting for conirmation.
-   * @param {number} facility
-   * @returns {Observable<any>}
+   *
+   * @param facility
+   * @returns
    */
   getFacilityModificationApplicationsWaitingForConfirmation(facility: number | string): Observable<Application[]> {
     return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/modification_applications/`, {
@@ -227,9 +239,10 @@ export class FacilityService {
 
   /**
    * Approves an facility application.
-   * @param {number} facility
-   * @param {number} application_id
-   * @returns {Observable<any>}
+   *
+   * @param facility
+   * @param application_id
+   * @returns
    */
   approveFacilityApplication(facility: number | string, application_id: number | string): Observable<any> {
     const params: HttpParams = new HttpParams().set('action', 'approve');
@@ -261,9 +274,10 @@ export class FacilityService {
 
   /**
    * Deletes an RamFactor.
-   * @param {number | string} facility
-   * @param {number | string} resource_machine_id
-   * @returns {Observable<RamFactor[]>}
+   *
+   * @param facility
+   * @param resource_machine_id
+   * @returns
    */
   deleteResourceMachine(facility: number | string, resource_machine_id: number | string): Observable<ResourceMachine[]> {
 
@@ -355,6 +369,7 @@ export class FacilityService {
 
   /**
    * Updates the CoreFactor.
+   *
    * @param facility
    * @param factor
    */
@@ -369,6 +384,7 @@ export class FacilityService {
 
   /**
    * Updates the CoreFactor.
+   *
    * @param facility
    * @param factor
    */
@@ -383,9 +399,10 @@ export class FacilityService {
 
   /**
    * Deletes an CoreFactor.
-   * @param {number | string} facility
-   * @param {number | string} factor_id
-   * @returns {Observable<VolumeStorageFactor[]>}
+   *
+   * @param facility
+   * @param factor_id
+   * @returns
    */
   deleteVolumeStorageFactor(facility: number | string, factor_id: number | string): Observable<VolumeStorageFactor[]> {
 
@@ -396,9 +413,10 @@ export class FacilityService {
 
   /**
    * Deletes an CoreFactor.
-   * @param {number | string} facility
-   * @param {number | string} factor_id
-   * @returns {Observable<ObjectStorageFactor[]>}
+   *
+   * @param facility
+   * @param factor_id
+   * @returns
    */
   deleteObjectStorageFactor(facility: number | string, factor_id: number | string): Observable<ObjectStorageFactor[]> {
 
@@ -450,8 +468,9 @@ export class FacilityService {
 
   /**
    * Get CoreFactors from a facility.
-   * @param {number | string} facility
-   * @returns {Observable<VolumeStorageFactor[]>}
+   *
+   * @param facility
+   * @returns
    */
   getVolumeStorageFactors(facility: number | string): Observable<VolumeStorageFactor[]> {
 
@@ -464,8 +483,9 @@ export class FacilityService {
 
   /**
    * Get CoreFactors from a facility.
-   * @param {number | string} facility
-   * @returns {Observable<ObjectStorageFactor[]>}
+   *
+   * @param facility
+   * @returns
    */
   getObjectStorageFactors(facility: number | string): Observable<ObjectStorageFactor[]> {
 
@@ -478,9 +498,10 @@ export class FacilityService {
 
   /**
    * Declines an application for the facility
-   * @param {number} facility
-   * @param {number} application_id
-   * @returns {Observable<any>}
+   *
+   * @param facility
+   * @param application_id
+   * @returns
    */
   declineFacilityApplication(facility: number, application_id: number): Observable<any> {
     const params: HttpParams = new HttpParams().set('action', 'decline');
@@ -493,6 +514,7 @@ export class FacilityService {
 
   /**
    * Sends an email to all members of the facility.
+   *
    * @param facility facility that should be contacted
    * @param subject email subject
    * @param message email message
@@ -501,7 +523,7 @@ export class FacilityService {
    * @param sendNews boolean if news should be send
    * @param alternative_news_text an alternative news text
    * @param news_tags additional tags
-   * @returns {Observable<any>}
+   * @returns
    */
   sendMailToFacility(facility: string, subject: string, message: string, project_type: string,
                      reply?: string, sendNews?: any, alternative_news_text?: string, tags?: string): Observable<any> {
@@ -524,9 +546,10 @@ export class FacilityService {
 
   /**
    * Get Members of a project with emails.
-   * @param {number} groupid id of the group
-   * @param {number} facility id of the facility
-   * @returns {Observable<any>}
+   *
+   * @param groupid id of the group
+   * @param facility id of the facility
+   * @returns
    */
   getFacilityGroupRichMembers(groupid: number, facility: number): Observable<ProjectMember[]> {
     return this.http.get<ProjectMember[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/projects/${groupid}/members/`, {
@@ -539,9 +562,8 @@ export class FacilityService {
 
     return this.http.get(`${ApiSettings.getApiBaseURL()}users/filterFacility/`, {
       withCredentials: true,
-      params: {
-        searchString: searchString
-        // facilities: tempArray.join(',')
+      params : {
+        searchString
       }
     });
   }

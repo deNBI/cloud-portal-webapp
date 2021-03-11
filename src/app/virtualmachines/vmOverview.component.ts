@@ -98,6 +98,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
   validSnapshotNameBool: boolean;
   /**
    * String if the snapshot is done.
+   *
    * @type {string}
    */
   snapshotNameCheckDone: boolean = false;
@@ -108,11 +109,13 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
   snapshotName: string = '';
   /**
    * Tab which is shown own|all.
+   *
    * @type {string}
    */
   tab: string = 'own';
   /**
    * The changed status.
+   *
    * @type {number}
    */
   status_changed: number = 0;
@@ -122,6 +125,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 
   /**
    * Timeout for checking vm status.
+   *
    * @type {number}
    */
   private checkStatusTimeout: number = 5000;
@@ -208,15 +212,18 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
           this.subscription.add(this.virtualmachineservice.getVolumeById(volume.volume_openstackid).subscribe((vol: Volume): void => {
 
             // tslint:disable-next-line:max-line-length
-            if (volume.volume_status !== VolumeStates.AVAILABLE && volume.volume_status !== VolumeStates.NOT_FOUND && volume.volume_status !== VolumeStates.IN_USE && volume.volume_status !== final_state) {
+            if (volume.volume_status !== VolumeStates.AVAILABLE && volume.volume_status !== VolumeStates.NOT_FOUND
+              && volume.volume_status !== VolumeStates.IN_USE && volume.volume_status !== final_state) {
               this.check_status_loop_volume(volume, this.checkStatusTimeout, final_state)
             }
           }))
         } else {
           // tslint:disable-next-line:max-line-length
-          this.subscription.add(this.virtualmachineservice.getVolumeByNameAndVmName(volume.volume_name, volume.volume_virtualmachine.name).subscribe((vol: Volume): void => {
+          this.subscription.add(this.virtualmachineservice.getVolumeByNameAndVmName(volume.volume_name, volume.volume_virtualmachine.name)
+            .subscribe((vol: Volume): void => {
             // tslint:disable-next-line:max-line-length
-            if (volume.volume_status !== VolumeStates.AVAILABLE && volume.volume_status !== VolumeStates.NOT_FOUND && volume.volume_status !== VolumeStates.IN_USE && volume.volume_status !== final_state) {
+            if (volume.volume_status !== VolumeStates.AVAILABLE && volume.volume_status !== VolumeStates.NOT_FOUND
+              && volume.volume_status !== VolumeStates.IN_USE && volume.volume_status !== final_state) {
               this.check_status_loop_volume(volume, this.checkStatusTimeout, final_state)
             }
           }))
@@ -299,7 +306,8 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 
   /**
    * Toggle tab own|all.
-   * @param {string} tabString
+   *
+   * @param tabString
    */
   toggleTab(tabString: string): void {
     this.tab = tabString;
@@ -307,6 +315,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 
   /**
    * Check if the snapshot name is valid.
+   *
    * @param event: name of snapshot
    */
   validSnapshotName(event: any): any {
@@ -328,7 +337,8 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 
   /**
    * Check status of vm.
-   * @param {VirtualMachine} vm instance
+   *
+   * @param vm instance
    */
   checkStatus(vm: VirtualMachine): void {
     this.virtualmachineservice.checkVmStatus(vm.openstackid)
@@ -355,6 +365,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 
   /**
    * Delete VM.
+   *
    * @param vm which will be deleted
    */
   deleteVm(vm: VirtualMachine): void {
@@ -392,8 +403,9 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 
   /**
    * Reboot a vm.
+   *
    * @param vm which will be rebooted
-   * @param {string} reboot_type HARD|SOFT
+   * @param reboot_type HARD|SOFT
    */
   public rebootVm(vm: VirtualMachine, reboot_type: string): void {
     this.virtualmachineservice.rebootVM(vm.openstackid, reboot_type).subscribe(
@@ -421,6 +433,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 
   /**
    * Check Status of vm in loop till final state is reached.
+   *
    * @param vm
    * @param final_state
    * @param is_selected_vm If the vm should be the selected vm
@@ -463,6 +476,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 
   /**
    * Check Status of vm in loop till active.
+   *
    * @param vm
    */
   check_status_loop_when_reboot(vm: VirtualMachine): void {
@@ -495,7 +509,8 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 
   /**
    * Stop a vm.
-   * @param {VirtualMachine} vm: virtual machine to stop.
+   *
+   * @param vm: virtual machine to stop.
    */
   stopVm(vm: VirtualMachine): void {
     this.virtualmachineservice.stopVM(vm.openstackid)
@@ -533,6 +548,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 
   /**
    * Load vms depending on page.
+   *
    * @param event
    */
   pageChanged(event: any): void {
@@ -735,10 +751,11 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 
   /**
    * Create snapshot.
-   * @param {string} vm which is used for creating the snapshot
-   * @param {string} snapshot_name name of the snapshot
+   *
+   * @param vm which is used for creating the snapshot
+   * @param snapshot_name name of the snapshot
    */
-  createSnapshot(vm: VirtualMachine, snapshot_name: string, description ?: string
+  createSnapshot(vm: VirtualMachine, snapshot_name: string, description?: string
   ):
     void {
     this.imageService.createSnapshot(vm.openstackid, snapshot_name.trim(), description).subscribe(
@@ -779,7 +796,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 
     this.selectedMachines.forEach((vm: VirtualMachine): void => {
       // tslint:disable-next-line:triple-equals
-      if (vm != undefined) {
+      if (vm !== undefined) {
         this.deleteVm(vm)
       }
     })

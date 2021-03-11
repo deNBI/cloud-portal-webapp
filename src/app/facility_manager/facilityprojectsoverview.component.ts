@@ -43,6 +43,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
   details_loaded: boolean = false;
   /**
    * Approved group status.
+   *
    * @type {number}
    */
   STATUS_APPROVED: number = 2;
@@ -73,15 +74,15 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
   private selectedTags: string[] = [];
   projects_filtered: Project[] = [];
 
-  constructor(private groupservice: GroupService,
-              private facilityservice: FacilityService,
+  constructor(private groupService: GroupService,
+              private facilityService: FacilityService,
               private newsService: NewsService,
               private fullLayout: FullLayoutComponent) {
     super();
   }
 
   ngOnInit(): void {
-    this.facilityservice.getManagerFacilities().subscribe((result: any): void => {
+    this.facilityService.getManagerFacilities().subscribe((result: any): void => {
       this.managerFacilities = result;
       this.selectedFacility = this.managerFacilities[0];
       this.emailSubject = `[${this.selectedFacility['Facility']}]`;
@@ -110,7 +111,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
   }
 
   searchForUserInFacility(searchString: string): void {
-    this.facilityservice.getFilteredMembersOfFacility(searchString, this.selectedFacility['FacilityId']);
+    this.facilityService.getFilteredMembersOfFacility(searchString, this.selectedFacility['FacilityId']);
   }
 
   filterMembers(searchString: string): void {
@@ -130,7 +131,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 
   getProjectsByMemberElixirId(): void {
     // tslint:disable-next-line:max-line-length
-    this.facilityservice.getFacilityGroupsByMemberElixirId(this.managerFacilities[0]['FacilityId'], this.filter).subscribe((result: any): void => {
+    this.facilityService.getFacilityGroupsByMemberElixirId(this.managerFacilities[0]['FacilityId'], this.filter).subscribe((result: any): void => {
       this.projects_filtered = [];
       const facility_projects: any = result;
       const is_pi: boolean = false;
@@ -200,23 +201,20 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 
     }
 
-    this.projects_filtered = this.projects.filter((project: Project): boolean => {
-                                                   return this.checkFilter(project)
-                                                  }
+    this.projects_filtered = this.projects.filter((project: Project): boolean => this.checkFilter(project)
     );
 
   }
 
   checkFilter(project: Project): boolean {
-    // tslint:disable-next-line:max-line-length
     if (this.filter === '' || !this.filter) {
       return this.isFilterProjectStatus(project.project_application_status, project.LifetimeReached)
     } else {
-
-      // tslint:disable-next-line:max-line-length
-      return (this.isFilterLongProjectName(project.RealName, this.filter) || this.isFilterProjectId(project.Id.toString(), this.filter)) || this.isFilterProjectName(project.Name, this.filter) && this.isFilterProjectStatus(project.project_application_status, project.LifetimeReached)
+      return (this.isFilterLongProjectName(project.RealName, this.filter)
+        || this.isFilterProjectId(project.Id.toString(), this.filter))
+        || this.isFilterProjectName(project.Name, this.filter)
+        && this.isFilterProjectStatus(project.project_application_status, project.LifetimeReached);
     }
-
   }
 
   /**
@@ -230,7 +228,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
   getProjectLifetime(project: Project): void {
     this.details_loaded = false;
     if (!project.Lifetime) {
-      this.groupservice.getLifetime(project.Id).subscribe((time: IResponseTemplate): void => {
+      this.groupService.getLifetime(project.Id).subscribe((time: IResponseTemplate): void => {
         const lifetime: number = <number>time.value;
         const dateCreated: Date = moment(project.DateCreated, 'DD.MM.YYYY').toDate();
 
@@ -259,7 +257,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
     if (!id) {
       return 'NOT_FOUND';
     }
-    const project: Project = this.projects.find(function (element: Project): boolean {
+    const project: Project = this.projects.find(function(element: Project): boolean {
 
       return element.Id.toString() === id.toString();
 
@@ -275,7 +273,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
     this.projects = [];
 
     // tslint:disable-next-line:max-line-length
-    this.facilityservice.getFacilityAllowedGroupsWithDetailsAndSpecificStatus(facility, this.STATUS_APPROVED).subscribe((result: any): void => {
+    this.facilityService.getFacilityAllowedGroupsWithDetailsAndSpecificStatus(facility, this.STATUS_APPROVED).subscribe((result: any): void => {
       const facility_projects: any = result;
       const is_pi: boolean = false;
       const is_admin: boolean = false;
@@ -335,7 +333,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
       this.isLoaded = true;
 
     });
-    this.facilityservice.getAllMembersOfFacility(facility, this.STATUS_APPROVED).subscribe(
+    this.facilityService.getAllMembersOfFacility(facility, this.STATUS_APPROVED).subscribe(
       (result: any[]): void => {
         this.membersLoaded = true;
         this.allFacilityMembers = result;
@@ -350,6 +348,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 
   /**
    * Adds or deletes tags from the list of tags to add to the news when the corresponding checkbox gets clicked.
+   *
    * @param tag the tag which gets added/deleted.
    */
   manageTags(tag: WordPressTag): void {
@@ -363,6 +362,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 
   /**
    * Sends an email to users and also posts it as a news in WordPress via newsManager if selected.
+   *
    * @param facility the facility of the users which shall be informed
    * @param subject the subject as a string
    * @param message the message as a string
@@ -384,7 +384,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
       console.log(this.selectedProjectType);
     }
     const chosenTags: string = this.selectedTags.toString();
-    this.facilityservice.sendMailToFacility(
+    this.facilityService.sendMailToFacility(
       facility, encodeURIComponent(subject), encodeURIComponent(message), this.selectedProjectType,
       encodeURIComponent(reply), send, encodeURIComponent(alternative_news_text), chosenTags).subscribe(
       (result: any): void => {
@@ -409,6 +409,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 
   /**
    * Sets the member selected in the mail modal as the member to send the mail to.
+   *
    * @param member the selected member
    */
 
@@ -426,7 +427,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
   }
 
   getMembersOfTheProject(projectid: number, projectname: string): void {
-    this.facilityservice.getFacilityGroupRichMembers(projectid, this.selectedFacility['FacilityId'])
+    this.facilityService.getFacilityGroupRichMembers(projectid, this.selectedFacility['FacilityId'])
       .subscribe((members: ProjectMember[]): void => {
                    this.usersModalProjectID = projectid;
                    this.usersModalProjectName = projectname;
