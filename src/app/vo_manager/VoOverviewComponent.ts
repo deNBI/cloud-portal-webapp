@@ -13,7 +13,6 @@ import {VirtualMachine} from '../virtualmachines/virtualmachinemodels/virtualmac
 import {Volume} from '../virtualmachines/volumes/volume';
 import {FullLayoutComponent} from '../layouts/full-layout.component';
 import {SnapshotModel} from '../virtualmachines/snapshots/snapshot.model';
-import {Application_States} from '../shared/shared_modules/baseClass/abstract-base-class';
 
 /**
  * Vo Overview component.
@@ -46,8 +45,6 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
 
   public newsletterSubscriptionCounter: number;
   isLoaded: boolean = false;
-  error_btn_visible: boolean = false;
-
   member_id: number;
   projects: Project[] = [];
   projects_filtered: Project[] = [];
@@ -56,8 +53,6 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
   public usersModalProjectMembers: ProjectMember[] = [];
   public usersModalProjectID: number;
   public usersModalProjectName: string;
-  public downloadJsonHref: string;
-
   public managerFacilities: [string, number][];
 
   // public selectedFacility: [string, number];
@@ -103,13 +98,11 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
   }
 
   sendTestBug(): void {
-    console.log('error')
-    this.voService.sendTestError().subscribe()
+    this.voService.sendTestError().subscribe();
   }
 
   applyFilter(): void {
     this.projects_filtered = this.projects.filter((project: Project): boolean => this.checkFilter(project));
-
   }
 
   checkFilter(project: Project): boolean {
@@ -142,7 +135,6 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
     this.voService.sendMailToVo(encodeURIComponent(subject), encodeURIComponent(message), facility, type, encodeURIComponent(reply))
       .subscribe((result: IResponseTemplate): void => {
         if (<boolean><Boolean>result.value === true) {
-
           this.emailStatus = 1;
         } else {
           this.emailStatus = 2;
