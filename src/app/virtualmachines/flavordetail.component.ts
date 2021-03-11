@@ -70,6 +70,7 @@ export class FlavorDetailComponent implements OnInit {
   /**
    * Sets the selected Flavor.
    * If a selectedFlavor exist it will be added to the flavor list and the new selectedFlavor will be removed.
+   *
    * @param flavor Flavor which will become the selected Flavor.
    */
   setSelectedFlavor(flavor: Flavor): void {
@@ -81,6 +82,7 @@ export class FlavorDetailComponent implements OnInit {
 
   /**
    * Converts MB to GB
+   *
    * @param input MB number
    */
   convertMbToGb(input: number): number {

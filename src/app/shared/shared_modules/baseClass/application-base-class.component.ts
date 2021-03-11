@@ -21,6 +21,7 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
 
   /**
    * If all Applications are loaded, important for the loader.
+   *
    * @type {boolean}
    */
   isLoaded: boolean = false;
@@ -32,6 +33,7 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
 
   /**
    * All available compute centers.
+   *
    * @type {Array}
    */
   computeCenters: ComputecenterComponent[] = [];
@@ -47,11 +49,13 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
 
   /**
    * Total number of cores.
+   *
    * @type {number}
    */
   totalNumberOfCores: number = 0;
   /**
    * Total number of ram.
+   *
    * @type {number}
    */
   totalRAM: number = 0;
@@ -70,6 +74,7 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
 
   /**
    * If shortname is valid.
+   *
    * @type {boolean}
    */
   public wronginput: boolean = false;
@@ -85,6 +90,7 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
 
   /**
    * If all userApplications are loaded, important for the loader.
+   *
    * @type {boolean}
    */
   isLoaded_userApplication: boolean = false;
@@ -100,6 +106,7 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
 
   /**
    * Applications of the user viewing the Application overview.
+   *
    * @type {Array}
    */
   user_applications: Application[] = [];
@@ -129,7 +136,7 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
   }
 
   valuesChanged(flavor: Flavor, counter: number, lifetime?: string): void {
-    this.newFlavors[flavor.name] = {counter: counter, flavor: flavor};
+    this.newFlavors[flavor.name] = {counter, flavor};
     this.calculateRamCores();
   }
 
@@ -146,8 +153,9 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
 
   /**
    * Get details of member like name and email by elixir.
-   * @param {string} elixir_id
-   * @param {string} collapse_id
+   *
+   * @param elixir_id
+   * @param collapse_id
    */
   public getMemberDetailsByElixirIdIfCollapsed(application: Application, collapse_id: string): void {
     if (!this.getCollapseStatus(collapse_id)) {
@@ -167,8 +175,9 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
 
   /**
    * Get status name  by status id.
-   * @param {number} id
-   * @returns {string}
+   *
+   * @param id
+   * @returns
    */
   public getStatusById(id: number): string {
     const dummy: string = 'Unknown';
@@ -181,6 +190,7 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
 
   /**
    * Sets the selected application.
+   *
    * @param application
    */
   setSelectedApplication(application: Application): void {
@@ -190,6 +200,7 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
   /**
    * Uses the param types to safe the available FlavorTypes to the array typeList.
    * Also it fills the array collapseList with booleans of value 'false' so all flavor-categories are shown in the application form.
+   *
    * @param types array of all available FlavorTypes
    */
   setListOfTypes(types: FlavorType[]): void {
@@ -207,7 +218,8 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
 
   /**
    * Check if short name is valid.
-   * @param {string} shortname
+   *
+   * @param shortname
    */
   public checkShortname(shortname: string): void {
     this.wronginput = !/^[a-zA-Z0-9\s]*$/.test(shortname);
@@ -253,6 +265,7 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
   /**
    * This function concatenates a given key combined with a given value to a string
    * which is used on the confirmation-modal.
+   *
    * @param key the key to access a string in the array constantStrings
    * @param val the value that is concatenated with the string from the array and an optional addition (depending on the key)
    * @returns the concatenated string for the confirmation-modal

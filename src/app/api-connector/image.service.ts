@@ -20,7 +20,7 @@ export class ImageService {
 
     return this.http.get<Image[]>(`${ApiSettings.getApiBaseURL()}images/`, {
       withCredentials: true,
-      params: params
+      params
     })
 
   }
@@ -30,7 +30,7 @@ export class ImageService {
 
     return this.http.get<Image>(`${ApiSettings.getApiBaseURL()}images/project/${project_id}/`, {
       withCredentials: true,
-      params: params
+      params
     })
 
   }
@@ -39,7 +39,7 @@ export class ImageService {
 
     return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}snapshots/names/`, {
       withCredentials: true,
-      params: {snapshot_name: snapshot_name}
+      params: {snapshot_name}
 
     })
 
@@ -58,7 +58,7 @@ export class ImageService {
 
     return this.http.get(`${ApiSettings.getApiBaseURL()}imageTags/`, {
       withCredentials: true,
-      params: params
+      params
     })
 
   }
@@ -68,7 +68,7 @@ export class ImageService {
 
     return this.http.get(`${ApiSettings.getApiBaseURL()}imageModes/`, {
       withCredentials: true,
-      params: params
+      params
     })
 
   }
@@ -83,7 +83,7 @@ export class ImageService {
   getBlockedImageTagsResenv(facility_id: number, is_client?: string): Observable<any> {
     return this.http.get(`${ApiSettings.getApiBaseURL()}blockedImageTagsResenv/`, {
       withCredentials: true,
-      params: {facility_id: facility_id.toString(), is_client: is_client}
+      params: {facility_id: facility_id.toString(), is_client}
     })
   }
 
@@ -184,7 +184,7 @@ export class ImageService {
 
     return this.http.delete<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}blockedImageTags/${imageTag}/`, {
       withCredentials: true,
-      params: params
+      params
     })
 
   }
@@ -194,7 +194,7 @@ export class ImageService {
 
     return this.http.delete<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}blockedImageTagsResenv/${imageTag}/`, {
       withCredentials: true,
-      params: params
+      params
     })
 
   }
@@ -228,7 +228,7 @@ export class ImageService {
 
     return this.http.get<SnapshotModel[]>(`${ApiSettings.getApiBaseURL()}snapshots/`, {
       withCredentials: true,
-      params: params
+      params
     })
 
   }

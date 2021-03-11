@@ -40,7 +40,7 @@ export class MobileSidebarToggleDirective {
 
   // Check if element has class
   private hasClass(target: any, elementClassName: string) {
-    return new RegExp('(\\s|^)' + elementClassName + '(\\s|$)').test(target.className);
+    return new RegExp(`(\\s|^)${  elementClassName  }(\\s|$)`).test(target.className);
   }
 
   @HostListener('click', ['$event']) toggleOpen($event: any) {
@@ -61,19 +61,19 @@ export class SidebarOffCanvasCloseDirective {
 
   // Check if element has class
   private hasClass(target: any, elementClassName: string) {
-    return new RegExp('(\\s|^)' + elementClassName + '(\\s|$)').test(target.className);
+    return new RegExp(`(\\s|^)${  elementClassName  }(\\s|$)`).test(target.className);
   }
 
   // Toggle element class
   private toggleClass(elem: any, elementClassName: string) {
-    let newClass = ' ' + elem.className.replace(/[\t\r\n]/g, ' ') + ' ';
+    let newClass = ` ${  elem.className.replace(/[\t\r\n]/g, ' ')  } `;
     if (this.hasClass(elem, elementClassName)) {
-      while (newClass.indexOf(' ' + elementClassName + ' ') >= 0) {
-        newClass = newClass.replace(' ' + elementClassName + ' ', ' ');
+      while (newClass.indexOf(` ${  elementClassName  } `) >= 0) {
+        newClass = newClass.replace(` ${  elementClassName  } `, ' ');
       }
       elem.className = newClass.replace(/^\s+|\s+$/g, '');
     } else {
-      elem.className += ' ' + elementClassName;
+      elem.className += ` ${  elementClassName}`;
     }
   }
 
