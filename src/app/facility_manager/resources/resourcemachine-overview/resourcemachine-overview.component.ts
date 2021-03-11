@@ -114,12 +114,8 @@ export class ResourcemachineOverviewComponent implements OnInit {
 
   getResourceMachines(): void {
     this.facilityService.getResourceMachines(this.facility_id).subscribe((res: ResourceMachine[]): void => {
-      this.resourceMachines = res.map((machine: ResourceMachine): ResourceMachine => {
-        return new ResourceMachine(machine);
-      });
-      this.resourceMachines.sort((a_machine: ResourceMachine, b_machine: ResourceMachine): number => {
-        return b_machine.type.localeCompare(a_machine.type)
-      });
+      this.resourceMachines = res.map((machine: ResourceMachine): ResourceMachine => new ResourceMachine(machine));
+      this.resourceMachines.sort((a_machine: ResourceMachine, b_machine: ResourceMachine): number => b_machine.type.localeCompare(a_machine.type));
       this.machinesFormGroups = {};
       this.resourceMachines.forEach((machine: ResourceMachine): void => {
         machine.gpu_used.slice(0, machine.gpu_slots);
@@ -250,9 +246,7 @@ export class ResourcemachineOverviewComponent implements OnInit {
       res.forEach((machine: ResourceMachine): void => {
         this.setupFormGroup(machine);
       });
-      this.resourceMachines = res.map((machine: ResourceMachine): ResourceMachine => {
-        return new ResourceMachine(machine);
-      });
+      this.resourceMachines = res.map((machine: ResourceMachine): ResourceMachine => new ResourceMachine(machine));
       this.factorChanged.emit();
     });
   }
@@ -312,9 +306,7 @@ export class ResourcemachineOverviewComponent implements OnInit {
       res.forEach((machine: ResourceMachine): void => {
         this.setupFormGroup(machine);
       });
-      this.resourceMachines = res.map((machine: ResourceMachine): ResourceMachine => {
-        return new ResourceMachine(machine)
-      });
+      this.resourceMachines = res.map((machine: ResourceMachine): ResourceMachine => new ResourceMachine(machine));
 
       this.resourceMachines.forEach((rf: ResourceMachine): void => {
         this.resourceMachineUpdateList[rf.id] = false;

@@ -136,6 +136,7 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
 
   /**
    * Adding additional state numbers to list for expires soon (18), new project (19) and lifetime expired (20)
+   *
    * @param enumeration
    */
   pushAdditionalStates(enumeration: ProjectEnumeration): void {

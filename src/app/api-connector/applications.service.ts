@@ -77,8 +77,9 @@ export class ApplicationsService {
 
   /**
    * Checks if some client has the ressource avaiable for an application.
-   * @param {string} app_id
-   * @returns {Observable<any>}
+   *
+   * @param app_id
+   * @returns
    */
   getApplicationClientAvaiable(app_id: string): Observable<any> {
     return this.http.get(`${ApiSettings.getApiBaseURL()}project_applications/${app_id}/clients/resource/`, {

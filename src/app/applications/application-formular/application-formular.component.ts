@@ -154,6 +154,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 
   /**
    * Uses the data from the application form to fill the confirmation-modal with information.
+   *
    * @param form the application form with corresponding data
    */
   filterEnteredData(form: NgForm): void {
@@ -180,9 +181,9 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
       this.valuesToConfirm.push('Dissemination allowed: No');
     } else {
       // tslint:disable-next-line:prefer-template
-      this.valuesToConfirm.push('Dissemination allowed on: ' + this.application.dissemination.allowed_informations.join(', '));
+      this.valuesToConfirm.push(`Dissemination allowed on: ${  this.application.dissemination.allowed_informations.join(', ')}`);
       // tslint:disable-next-line:prefer-template
-      this.valuesToConfirm.push('Platforms for Dissemination: ' + this.application.dissemination.allowed_platforms.join(', '));
+      this.valuesToConfirm.push(`Platforms for Dissemination: ${  this.application.dissemination.allowed_platforms.join(', ')}`);
     }
     if (!this.application.project_application_sensitive_data) {
       this.valuesToConfirm.push('Sensitive Data: No');
@@ -225,7 +226,8 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 
   /**
    * Check if shortname is valid.
-   * @param {string} shortname
+   *
+   * @param shortname
    */
   public checkShortname(shortname: string): void {
     this.invalid_shortname = !/^[a-zA-Z0-9\s]*$/.test(shortname);
@@ -258,6 +260,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
   /**
    * Uses the param types to safe the available FlavorTypes to the array typeList.
    * Also it fills the array collapseList with booleans of value 'false' so all flavor-categories are shown in the application form.
+   *
    * @param types array of all available FlavorTypes
    */
   setListOfTypes(types: FlavorType[]): void {
@@ -369,12 +372,11 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 
   /**
    * Creates a test application
+   *
    * @param name of the new test application
    */
   sendTestApplication(name: string): void {
-    const default_flav: Flavor = this.flavorList.find((fl: Flavor): boolean => {
-      return fl.name === 'de.NBI default'
-    });
+    const default_flav: Flavor = this.flavorList.find((fl: Flavor): boolean => fl.name === 'de.NBI default');
 
     this.application.project_application_bmbf_project = 'BMBF';
     this.application.project_application_horizon2020 = 'horizon';

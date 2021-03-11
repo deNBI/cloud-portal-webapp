@@ -5,13 +5,22 @@ import {ApiSettings} from '../api-connector/api-settings.service';
 
 // ---Before Send Function
 // Runs before the Ajax Appender sends the logs to the server
+
+/**
+ * checks the XHR and JSON before sending exception-messages
+ * @param xhr
+ * @param json
+ */
 function beforeSendFunction(xhr: XMLHttpRequest, json: JSON): any {
   json = filter(json);
   xhr.withCredentials = true;
   xhr.setRequestHeader('X-CSRFToken', Cookie.get('csrftoken'));
 }
 
-// filters duplicate messages from the logs
+/**
+ * filters duplicate messages from the logs
+ * @param json
+ */
 function filter(json: JSON): JSON {
   const ems: string[] = []; // save messages temporarily in an array
   for (let count: number = 0; count < json['lg'].length; count++) { // iterate over the messages

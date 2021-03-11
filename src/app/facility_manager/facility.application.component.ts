@@ -8,6 +8,7 @@ import {Application_States} from '../shared/shared_modules/baseClass/abstract-ba
 import {ApplicationsService} from '../api-connector/applications.service';
 import {ApplicationBaseClassComponent} from '../shared/shared_modules/baseClass/application-base-class.component';
 
+// eslint-disable-next-line no-shadow
 enum TabStates {
   'SUBMITTED' = 0,
   'CREDITS_EXTENSION' = 1,
@@ -39,6 +40,7 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
   title: string = 'Application Overview';
   /**
    * All Applications waiting for confirmation for the selected facility.
+   *
    * @type {Array}
    */
 
@@ -53,6 +55,7 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 
   /**
    * List of all application modifications.
+   *
    * @type {Array}
    */
   all_application_modifications: Application [] = [];
@@ -85,7 +88,8 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 
   /**
    * Get all application ( with all stati) for a facility.
-   * @param {number} facility id of the facility
+   *
+   * @param facility id of the facility
    */
   getAllApplicationsHistory(facility: number): void {
     this.isHistoryLoaded = false;
@@ -122,7 +126,8 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 
   /**
    * Decline an extension request.
-   * @param {number} application_id
+   *
+   * @param application_id
    */
   public declineExtension(app: Application): void {
 
@@ -251,7 +256,8 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 
   /**
    * Approves an  application.
-   * @param {number} application_id
+   *
+   * @param application_id
    */
   approveApplication(app: Application): void {
 
@@ -271,7 +277,8 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 
   /**
    * Declines an Application.
-   * @param {number} application_id
+   *
+   * @param application_id
    */
   declineApplication(app: Application): void {
     this.updateNotificationModal('Decline Application', 'Waiting..', true, 'info');
@@ -293,6 +300,7 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 
   /**
    * If the selected facility changes, reload the applicatins.
+   *
    * @param value
    */
   onChangeSelectedFacility(): void {
