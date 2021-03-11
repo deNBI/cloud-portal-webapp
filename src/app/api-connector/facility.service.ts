@@ -27,15 +27,14 @@ export class FacilityService {
 
     return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/`, {
       withCredentials: true
-
-    })
+    });
   }
 
   getWfcSubmittedApplications(facility_id: number | string): Observable<Application[]> {
     return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility_id}/wfc/submitted/`, {
       withCredentials: true
 
-    })
+    });
 
   }
 
@@ -43,31 +42,34 @@ export class FacilityService {
     return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility_id}/wfc/lifetime_requests/`, {
       withCredentials: true
 
-    })
+    });
 
+  }
+
+  getWfcTerminationRequestedApplications(facility_id: number | string): Observable<Application[]> {
+    return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility_id}/wfc/termination_requests/`, {
+      withCredentials: true
+    });
   }
 
   getWfcModificationRequestedApplications(facility_id: number | string): Observable<Application[]> {
     return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility_id}/wfc/modifications_requests/`, {
       withCredentials: true
-
-    })
+    });
 
   }
 
   getWfcCreditsRequestedApplications(facility_id: number | string): Observable<Application[]> {
     return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility_id}/wfc/credits_requests/`, {
       withCredentials: true
-
-    })
+    });
 
   }
 
   getExtensionRequestsCounterFacility(facility_id: number | string): Observable<any> {
     return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility_id}/extensions_counter/`, {
       withCredentials: true
-
-    })
+    });
 
   }
 
