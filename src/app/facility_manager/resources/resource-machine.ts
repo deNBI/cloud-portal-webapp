@@ -43,14 +43,10 @@ export class ResourceMachine {
       this.type = resourceMachine.type;
       if (this.gpu_used.length < this.gpu_slots) {
         while (this.gpu_used.length < this.gpu_slots) {
-          this.gpu_used.push(new GPUSpecification())
+          this.gpu_used.push(new GPUSpecification());
         }
-
       }
     }
-  }
-  setUnusedGpuSlot(idx: number): void {
-    this.gpu_used[idx] = new GPUSpecification();
   }
 
   changeGpuUsed(): void {

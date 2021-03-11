@@ -14,7 +14,6 @@ import {IResponseTemplate} from '../api-connector/response-template';
 import {Subject} from 'rxjs';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {WordPressTag} from './newsmanagement/wp-tags';
-import {VoService} from '../api-connector/vo.service';
 import {FullLayoutComponent} from '../layouts/full-layout.component';
 
 /**
@@ -26,8 +25,6 @@ import {FullLayoutComponent} from '../layouts/full-layout.component';
              providers: [FacilityService, UserService, GroupService, ApiSettings, NewsService]
            })
 export class FacilityProjectsOverviewComponent extends FilterBaseClass implements OnInit {
-
-  debug_module: boolean = false;
 
   @Input() voRegistrationLink: string = environment.voRegistrationLink;
 
@@ -460,51 +457,4 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
     alert('This function will be implemented soon.')
   }
 
-  public terminateProject(): void {
-    this.facilityservice.approveTerminationByFM(this.selectedProject.Id, this.selectedFacility['FacilityId'])
-      .subscribe((): void => {
-          const indexAll: number = this.projects.indexOf(this.selectedProject, 0);
-
-          this.projects.splice(indexAll, 1);
-          this.applyFilter();
-          this.fullLayout.getGroupsEnumeration();
-          this.updateNotificationModal('Success', 'The  project was terminated.', true, 'success');
-        },
-                 (error: any): void => {
-          if (error['status'] === 409) {
-            this.updateNotificationModal(
-              'Failed',
-              `The project could not be terminated. Reason: ${error['error']['reason']} for ${error['error']['openstackid']}`,
-              true,
-              'danger')
-          } else {
-            this.updateNotificationModal('Failed', 'The project could not be terminated.', true, 'danger');
-          }
-        }
-      );
-  }
-
-  public declineTermination(): void {
-    this.facilityservice.declineTerminationByFM(this.selectedProject.Id, this.selectedFacility['FacilityId'])
-      .subscribe((): void => {
-          const indexAll: number = this.projects.indexOf(this.selectedProject, 0);
-
-          this.projects.splice(indexAll, 1);
-          this.applyFilter();
-          this.fullLayout.getGroupsEnumeration();
-          this.updateNotificationModal('Success', 'The termination of the project was declined.', true, 'success');
-        },
-                 (error: any): void => {
-          if (error['status'] === 409) {
-            this.updateNotificationModal(
-              'Failed',
-              `The decline of the project was not successful. Reason: ${error['error']['reason']} for ${error['error']['openstackid']}`,
-              true,
-              'danger')
-          } else {
-            this.updateNotificationModal('Failed', 'The decline of the project failed.', true, 'danger');
-          }
-        }
-      );
-  }
 }

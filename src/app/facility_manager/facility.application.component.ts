@@ -12,7 +12,8 @@ enum TabStates {
   'SUBMITTED' = 0,
   'CREDITS_EXTENSION' = 1,
   'LIFETIME_EXTENSION' = 2,
-  'MODIFICATION_EXTENSION' = 3
+  'MODIFICATION_EXTENSION' = 3,
+  'TERMINATION_REQUEST' = 4
 }
 
 /**
@@ -32,6 +33,7 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
   numberOfModificationRequests: number = 0;
   numberOfCreditRequests: number = 0;
   numberOfProjectApplications: number = 0;
+  numberOfTerminationRequests: number = 0;
   Application_States: typeof Application_States = Application_States;
 
   title: string = 'Application Overview';
@@ -203,6 +205,50 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
                  });
   }
 
+  approveTermination(app: Application): void {
+    this.facilityService.approveTerminationByFM(app.project_application_perun_id, this.selectedFacility['FacilityId'])
+      .subscribe((): void => {
+          this.allApplicationsToCheck.splice(this.allApplicationsToCheck.indexOf(app), 1);
+          this.numberOfTerminationRequests--;
+          this.getAllApplicationsHistory(this.selectedFacility['FacilityId']);
+          this.updateNotificationModal('Success', 'The  project was terminated.', true, 'success');
+        },
+                 (error: any): void => {
+          if (error['status'] === 409) {
+            this.updateNotificationModal(
+              'Failed',
+              `The project could not be terminated. Reason: ${error['error']['reason']} for ${error['error']['openstackid']}`,
+              true,
+              'danger')
+          } else {
+            this.updateNotificationModal('Failed', 'The project could not be terminated.', true, 'danger');
+          }
+        }
+      );
+  }
+
+  declineTermination(app: Application): void {
+    this.facilityService.declineTerminationByFM(app.project_application_perun_id, this.selectedFacility['FacilityId'])
+      .subscribe((): void => {
+          this.allApplicationsToCheck.splice(this.allApplicationsToCheck.indexOf(app), 1);
+          this.numberOfTerminationRequests--;
+          this.getAllApplicationsHistory(this.selectedFacility['FacilityId']);
+          this.updateNotificationModal('Success', 'The termination of the project was declined.', true, 'success');
+        },
+                 (error: any): void => {
+          if (error['status'] === 409) {
+            this.updateNotificationModal(
+              'Failed',
+              `The decline of the project was not successful. Reason: ${error['error']['reason']} for ${error['error']['openstackid']}`,
+              true,
+              'danger')
+          } else {
+            this.updateNotificationModal('Failed', 'The decline of the project failed.', true, 'danger');
+          }
+        }
+      );
+  }
+
   /**
    * Approves an  application.
    * @param {number} application_id
@@ -260,6 +306,7 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
         this.numberOfExtensionRequests = res['lifetime_extension_requests'];
         this.numberOfModificationRequests = res['modification_requests'];
         this.numberOfProjectApplications = res['applications_submitted'];
+        this.numberOfTerminationRequests = res['termination_requests'];
       });
     this.changeTabState(TabStates.SUBMITTED);
     this.isLoaded = true;
@@ -325,6 +372,17 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
           }
           this.loadingApplications = false;
         });
+    } else if (this.tab_state === TabStates.TERMINATION_REQUEST) {
+      this.facilityService.getWfcTerminationRequestedApplications(this.selectedFacility['FacilityId'])
+        .subscribe((applications: Application[]): void => {
+          if (applications.length === 0) {
+            this.isLoaded_userApplication = true;
+          }
+          for (const application of applications) {
+            this.allApplicationsToCheck.push(new Application(application));
+          }
+          this.loadingApplications = false;
+        });
     }
   }
 
@@ -338,6 +396,7 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
           this.numberOfExtensionRequests = res['lifetime_extension_requests'];
           this.numberOfModificationRequests = res['modification_requests'];
           this.numberOfProjectApplications = res['applications_submitted'];
+          this.numberOfTerminationRequests = res['termination_requests'];
         });
       this.changeTabState(TabStates.SUBMITTED);
       this.isLoaded = true;
