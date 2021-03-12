@@ -13,7 +13,7 @@ import {VirtualMachine} from '../virtualmachines/virtualmachinemodels/virtualmac
 import {Volume} from '../virtualmachines/volumes/volume';
 import {FullLayoutComponent} from '../layouts/full-layout.component';
 import {SnapshotModel} from '../virtualmachines/snapshots/snapshot.model';
-import {Application_States} from "../shared/shared_modules/baseClass/abstract-base-class";
+import {Application_States} from '../shared/shared_modules/baseClass/abstract-base-class';
 
 /**
  * Vo Overview component.
@@ -306,7 +306,7 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
 
   getProjectStatus(project: Project): void {
     this.voService.getProjectStatus(project.Id).subscribe((res: any): void => {
-      project.project_application_status = res["status"];
+      project.project_application_status = res['status'];
     })
   }
 
