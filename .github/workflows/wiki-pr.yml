@@ -16,6 +16,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Create Issue From File
+      if: github.actor!= 'dependabot-preview'
       id: ciff
       uses: peter-evans/create-issue-from-file@v2
       with:
@@ -23,14 +24,15 @@ jobs:
         content-filepath: ./.github/WIKI_ISSUE_TEMPLATE.md
         labels: wiki
         assignees: ${{github.actor}}
-    - name: Create or Update Project Card
-      uses: peter-evans/create-or-update-project-card@v1
+    - name: comment PR
+      uses: unsplash/comment-on-pr@master
+      if: github.actor!= 'dependabot-preview'
+
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        project-location: deNBI
-        project-name: Weekly Sprint
-        column-name: Current Sprint
-        issue-number: ${{ steps.ciff.outputs.issue-number }}
-        token: ${{ secrets.GITHUB_TOKEN }}
+          msg: "Wiki Issue Opened:  #${{ steps.ciff.outputs.issue-number }}"
+          check_for_duplicate_msg: false  # OPTIONAL 
 
 
 
