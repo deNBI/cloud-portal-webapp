@@ -11,6 +11,7 @@ import {environment} from '../environments/environment';
 export class AppInterceptor implements HttpInterceptor {
   /**
    * Intercepts recurring request error (302 response)
+   *
    * @param request the httpRequest to check
    * @param next the httpHandler
    */

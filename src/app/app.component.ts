@@ -7,7 +7,7 @@ import {VoService} from './api-connector/vo.service';
  * App component.
  */
 @Component({
-             // tslint:disable-next-line:component-selector
+  // eslint-disable-next-line @angular-eslint/component-selector
              selector: 'body',
              templateUrl: 'app.component.html',
              providers: [VoService]

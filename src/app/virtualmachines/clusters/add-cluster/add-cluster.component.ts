@@ -104,18 +104,21 @@ export class AddClusterComponent implements OnInit {
 
   /**
    * If the data for the site is initialized.
+   *
    * @type {boolean}
    */
   isLoaded: boolean = false;
 
   /**
    * All projects of the user.
+   *
    * @type {any[]}
    */
   projects: [string, number][] = [];
 
   /**
    * If all project data is loaded.
+   *
    * @type {boolean}
    */
   projectDataLoaded: boolean = false;
@@ -157,14 +160,9 @@ export class AddClusterComponent implements OnInit {
         used_flavors.push(batch.flavor)
       }
     })
-    const flavors_to_filter: Flavor[] = this.flavors.filter((flavor: Flavor): boolean => {
-      return used_flavors.indexOf(flavor) < 0
-    })
-    this.flavors_usable = flavors_to_filter.filter((flav: Flavor): boolean => {
-
-      return this.selectedProjectRessources.filterFlavorsTest(flav, flavors_to_filter, this.selectedWorkerBatches)
-    });
-
+    const flavors_to_filter: Flavor[] = this.flavors.filter((flavor: Flavor): boolean => used_flavors.indexOf(flavor) < 0)
+    this.flavors_usable = flavors_to_filter.filter((flav: Flavor): boolean => this.selectedProjectRessources
+      .filterFlavorsTest(flav, flavors_to_filter, this.selectedWorkerBatches));
     this.flavors_loaded = true;
   }
 
@@ -203,7 +201,8 @@ export class AddClusterComponent implements OnInit {
 
   /**
    * Get images for the project.
-   * @param {number} project_id
+   *
+   * @param project_id
    */
   getImages(project_id: number): void {
 
@@ -228,7 +227,8 @@ export class AddClusterComponent implements OnInit {
 
   /**
    * Get flavors for the project.
-   * @param {number} project_id
+   *
+   * @param project_id
    */
   getFlavors(project_id: number): void {
     this.flavorService.getFlavors(project_id).subscribe((flavors: Flavor[]): void => {
@@ -296,7 +296,7 @@ export class AddClusterComponent implements OnInit {
             },
             1000)
         } else {
-          this.router.navigate(['/virtualmachines/clusterOverview']).then().catch()
+          void this.router.navigate(['/virtualmachines/clusterOverview']).then().catch()
 
           this.cluster_id = res['id'];
         }

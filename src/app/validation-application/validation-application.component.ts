@@ -23,11 +23,13 @@ export class ValidationApplicationComponent extends ApplicationBaseClassComponen
   title: string;
   /**
    * Total number of cores.
+   *
    * @type {number}
    */
   public totalNumberOfCores: number = 0;
   /**
    * Total number of ram.
+   *
    * @type {number}
    */
   public totalRAM: number = 0;

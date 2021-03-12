@@ -90,6 +90,7 @@ export class ClusterOverviewComponent extends AbstractBaseClasse implements OnIn
 
   /**
    * Tab which is shown own|all.
+   *
    * @type {string}
    */
   tab: string = 'own';
@@ -98,6 +99,7 @@ export class ClusterOverviewComponent extends AbstractBaseClasse implements OnIn
 
   /**
    * Timeout for checking vm status.
+   *
    * @type {number}
    */
   private checkStatusTimeout: number = 5000;
@@ -159,7 +161,8 @@ export class ClusterOverviewComponent extends AbstractBaseClasse implements OnIn
     this.max_scale_count_loaded = false;
 
     // tslint:disable-next-line:max-line-length
-    this.groupService.getGroupResources(this.selectedCluster.master_instance.projectid.toString()).subscribe((res: ApplicationRessourceUsage): void => {
+    this.groupService.getGroupResources(this.selectedCluster.master_instance.projectid.toString())
+      .subscribe((res: ApplicationRessourceUsage): void => {
       this.ressourceUsage = new ApplicationRessourceUsage(res);
 
       this.selectedCluster.worker_batches.forEach((batch: WorkerBatch): void => {
@@ -269,10 +272,8 @@ export class ClusterOverviewComponent extends AbstractBaseClasse implements OnIn
     } else {
       flavors_to_filter = this.flavors
     }
-    this.flavors_usable = flavors_to_filter.filter((flav: Flavor): boolean => {
-
-      return this.selectedProjectRessources.filterFlavorsTest(flav, flavors_to_filter, this.selectedCluster.worker_batches)
-    });
+    this.flavors_usable = flavors_to_filter.filter((flav: Flavor): boolean => this.selectedProjectRessources
+      .filterFlavorsTest(flav, flavors_to_filter, this.selectedCluster.worker_batches));
 
     this.flavors_loaded = true;
 
@@ -347,7 +348,8 @@ export class ClusterOverviewComponent extends AbstractBaseClasse implements OnIn
 
   /**
    * Toggle tab own|all.
-   * @param {string} tabString
+   *
+   * @param tabString
    */
   toggleTab(tabString: string): void {
     this.tab = tabString;
@@ -355,6 +357,7 @@ export class ClusterOverviewComponent extends AbstractBaseClasse implements OnIn
 
   /**
    * Delete VM.
+   *
    * @param cluster
    */
   deleteCluster(cluster: Clusterinfo): void {
@@ -445,6 +448,7 @@ export class ClusterOverviewComponent extends AbstractBaseClasse implements OnIn
 
   /**
    * Load vms depending on page.
+   *
    * @param event
    */
   pageChanged(event: any): void {
@@ -489,9 +493,7 @@ export class ClusterOverviewComponent extends AbstractBaseClasse implements OnIn
 
   prepareClusters(cluster_page_infos: any): void {
 
-    this.clusters = cluster_page_infos['cluster_list'].map((cluster: Clusterinfo): Clusterinfo => {
-      return new Clusterinfo(cluster)
-    })
+    this.clusters = cluster_page_infos['cluster_list'].map((cluster: Clusterinfo): Clusterinfo => new Clusterinfo(cluster))
     this.total_items = cluster_page_infos['total_items'];
     this.items_per_page = cluster_page_infos['items_per_page'];
     this.total_pages = cluster_page_infos['num_pages'];

@@ -26,18 +26,18 @@ export class BreadcrumbsComponent implements OnInit {
     this.router.events.pipe(filter(event => event instanceof NavigationEnd))
       .subscribe(event => {
         this.breadcrumbs = [];
-        let currentRoute = this.route.root,
-          url = '';
+        let currentRoute = this.route.root;
+          let url = '';
         do {
           const childrenRoutes = currentRoute.children;
           currentRoute = null;
           childrenRoutes.forEach(route => {
             if (route.outlet === 'primary') {
               const routeSnapshot = route.snapshot;
-              url += '/' + routeSnapshot.url.map(segment => segment.path).join('/');
+              url += `/${  routeSnapshot.url.map(segment => segment.path).join('/')}`;
               this.breadcrumbs.push({
                                       label: route.snapshot.data,
-                                      url: url
+                                      url
                                     });
               currentRoute = route;
             }
