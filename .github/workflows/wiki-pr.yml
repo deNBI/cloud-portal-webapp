@@ -1,0 +1,38 @@
+name: Create Wiki Issue
+
+on:
+  pull_request:
+    types: [opened]
+    branches:
+      - dev
+      - '!dependabot/**'
+
+
+jobs:
+  create-wiki-issue:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Create Issue From File
+      if: github.actor!= 'dependabot-preview'
+      id: ciff
+      uses: peter-evans/create-issue-from-file@v2
+      with:
+        title: Wiki Update [${{ github.event.pull_request.title }}]
+        content-filepath: ./.github/WIKI_ISSUE_TEMPLATE.md
+        labels: wiki
+        assignees: ${{github.actor}}
+    - name: comment PR
+      uses: unsplash/comment-on-pr@master
+      if: github.actor!= 'dependabot-preview'
+
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+          msg: "Wiki Issue Opened:  #${{ steps.ciff.outputs.issue-number }}"
+          check_for_duplicate_msg: false  # OPTIONAL 
+
+
+
