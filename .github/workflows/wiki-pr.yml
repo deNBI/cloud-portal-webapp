@@ -9,7 +9,7 @@ on:
 
 
 jobs:
-  wikilinks-check:
+  create-wiki-issue:
 
     runs-on: ubuntu-latest
 
