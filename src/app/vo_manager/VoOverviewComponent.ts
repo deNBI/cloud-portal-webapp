@@ -13,6 +13,7 @@ import {VirtualMachine} from '../virtualmachines/virtualmachinemodels/virtualmac
 import {Volume} from '../virtualmachines/volumes/volume';
 import {FullLayoutComponent} from '../layouts/full-layout.component';
 import {SnapshotModel} from '../virtualmachines/snapshots/snapshot.model';
+import {Application_States} from '../shared/shared_modules/baseClass/abstract-base-class';
 
 /**
  * Vo Overview component.
@@ -273,10 +274,13 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
       .subscribe((): void => {
                    const indexAll: number = this.projects.indexOf(this.selectedProject, 0);
 
-                   this.projects.splice(indexAll, 1);
-
-                   this.applyFilter();
+                   if (!this.selectedProject.OpenStackProject) {
+                     this.projects.splice(indexAll, 1);
+                   } else {
+                     this.getProjectStatus(this.projects[indexAll]);
+                   }
                    this.fullLayout.getGroupsEnumeration();
+                   this.applyFilter();
                    if (this.selectedProject.OpenStackProject) {
                      this.updateNotificationModal('Success',
                                                   'The request to terminate the project was forwarded to the facility manager.',
@@ -302,7 +306,7 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
 
   getProjectStatus(project: Project): void {
     this.voService.getProjectStatus(project.Id).subscribe((res: any): void => {
-      project.project_application_status = res.value;
+      project.project_application_status = res['status'];
     })
   }
 
