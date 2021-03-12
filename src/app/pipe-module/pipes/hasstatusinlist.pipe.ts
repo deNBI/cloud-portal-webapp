@@ -7,7 +7,8 @@ import {Project} from '../../projectmanagement/project.model';
  * Pipe which checks if status is in list.
  */
 @Pipe({
-        name: 'hasstatusinlist'
+        name: 'hasstatusinlist',
+        pure: false
       })
 export class HasstatusinlistPipe implements PipeTransform {
 
