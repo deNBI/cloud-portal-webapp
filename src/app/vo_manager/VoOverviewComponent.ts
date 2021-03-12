@@ -277,7 +277,7 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
                    if (!this.selectedProject.OpenStackProject) {
                      this.projects.splice(indexAll, 1);
                    } else {
-                     this.getVoProjects();
+                     this.getProjectStatus(this.projects[indexAll]);
                    }
                    this.fullLayout.getGroupsEnumeration();
                    this.applyFilter();
