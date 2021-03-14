@@ -42,8 +42,8 @@ export class LoginPage {
 
     await Util.waitForPage('https://orcid.org/signin');
 
-    await Util.sendTextToElementById('username', email, false);
-    await Util.sendTextToElementById('password', psw, false);
+    await Util.sendTextToElementByIdSecure('username', email);
+    await Util.sendTextToElementByIdSecure('password', psw);
     await Util.clickElementById('signin-button');
     await Util.waitForPage('userinfo');
     Util.logInfo(await browser.driver.getCurrentUrl());
@@ -54,7 +54,7 @@ export class LoginPage {
     await Util.clickElementByLinkText('Sign in with Google')
     // Input Email
     await Util.waitForPage('accounts.google.com/o/oauth2/');
-    await Util.sendTextToElementById('identifierId', email, false);
+    await Util.sendTextToElementByIdSecure('identifierId', email);
 
     // Click next btn
     await Util.clickElementById('identifierNext');
@@ -70,11 +70,11 @@ export class LoginPage {
     Util.logInfo(await browser.driver.getPageSource());
 
     await Util.waitForPresenceOfElementById('query');
-    await Util.sendTextToElementById('query', 'Bielefeld');
+    await Util.sendTextToElementByIdUnsecure('query', 'Bielefeld');
     await element(by.linkText('University of Bielefeld')).click();
     await Util.waitForElementToBeClickableById('password');
-    await Util.sendTextToElementById('username', email, false);
-    await Util.sendTextToElementById('password', psw, false);
+    await Util.sendTextToElementByIdSecure('username', email);
+    await Util.sendTextToElementByIdSecure('password', psw);
     await Util.clickElementByName('_eventId_proceed');
     await Util.waitForPage('execution=e1s2');
     await Util.clickElementByName('_eventId_proceed');

@@ -113,7 +113,7 @@ export class ProjectOverview {
   static async addMemberToProject(application_name: string, member: string = this.DEFAULT_MEMBER_EMAIL): Promise<any> {
     Util.logInfo('Open add member modal');
     await Util.clickElementById(this.ADD_MEMBER_BTN_MODAL);
-    await Util.sendTextToElementById(this.SEARCH_MEMBER, member);
+    await Util.sendTextToElementByIdUnsecure(this.SEARCH_MEMBER, member);
     await Util.clickElementById(this.SEARCH_MEMBER_BTN);
     await Util.clickElementById(this.ADD_MEMBER_BTN);
     await Util.waitForTextPresenceInElementById(this.NOTIFICATION_TITLE, this.SUCCESS);
@@ -198,15 +198,15 @@ export class ProjectOverview {
   }
 
   static async fillModificationRequest(): Promise<any> {
-    await Util.sendTextToElementById(this.DENBI_DEFAULT_NEW_INPUT, '2');
-    await Util.sendTextToElementById(this.NEW_VOLUME_COUNTER_ID, '1');
-    await Util.sendTextToElementById(this.NEW_VOLUME_LIMIT_ID, '1');
-    await Util.sendTextToElementById('id_project_application_renewal_comment', 'This is a Protrector test modification!');
+    await Util.sendTextToElementByIdUnsecure(this.DENBI_DEFAULT_NEW_INPUT, '2');
+    await Util.sendTextToElementByIdUnsecure(this.NEW_VOLUME_COUNTER_ID, '1');
+    await Util.sendTextToElementByIdUnsecure(this.NEW_VOLUME_LIMIT_ID, '1');
+    await Util.sendTextToElementByIdUnsecure('id_project_application_renewal_comment', 'This is a Protrector test modification!');
   }
 
   static async fillExtensionRequest(): Promise<any> {
     await Util.waitForPresenceOfElementById(this.EXTENSION_LIFETIME_INPUT);
-    await Util.sendTextToElementById(this.EXTENSION_LIFETIME_INPUT, '3');
+    await Util.sendTextToElementByIdUnsecure(this.EXTENSION_LIFETIME_INPUT, '3');
   }
 
   static async removeApplication(): Promise<any> {

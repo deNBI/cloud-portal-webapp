@@ -57,7 +57,7 @@ export class FormularPage {
 
     // fill  Formular
     Util.logInfo('Fill form');
-    await Util.sendTextToElementById('id_project_application_name', name);
+    await Util.sendTextToElementByIdUnsecure('id_project_application_name', name);
     await Util.sendTextToElementByName('project_application_shortname', name);
     await Util.sendTextToElementByName('project_application_description', 'ProtractorTest Description');
     await Util.sendTextToElementByName('project_application_lifetime', '4');
@@ -67,12 +67,12 @@ export class FormularPage {
     await Util.sendTextToElementByName('project_application_bmbf_project', 'BMBF Project');
     await Util.clickElementById('id_project_application_elixir_switch');
     await Util.sendTextToElementByName('project_application_elixir_project', 'Elixir Project');
-    await Util.sendTextToElementById('de.NBI default', this.NUMBER_FLAVORS);
+    await Util.sendTextToElementByIdUnsecure('de.NBI default', this.NUMBER_FLAVORS);
     await Util.sendTextToElementByElement(element(by.className('input-container')).element(by.tagName('input')), 'Bioinformatics');
     await Util.clickElementById('<b>Bioinformatics</b>');
     await Util.clickElementById('id_project_application_horizon_switch');
     await Util.sendTextToElementByName('project_application_horizon2020', 'Horizon2020Project');
-    await Util.sendTextToElementById('id_project_application_volume_limit', '2');
+    await Util.sendTextToElementByIdUnsecure('id_project_application_volume_limit', '2');
     await Util.clickElementById('id_project_application_report_allowed');
     await Util.clickElementById('id_project_application_sensitive_data');
     // await Util.sendTextToElementByName('information_public_title_input', 'A Public Title');
@@ -92,7 +92,7 @@ export class FormularPage {
       await Util.clickElementById('project_application_pi_approved_checkbox');
       await Util.clickElementById('project_application_responsibility_checkbox');
     } else {
-      await Util.sendTextToElementById('id_project_application_pi_email', Util.PI_EMAIL);
+      await Util.sendTextToElementByIdUnsecure('id_project_application_pi_email', Util.PI_EMAIL);
     }
   }
 }
