@@ -32,12 +32,12 @@ describe('Simple Application Test', function (): void {
 
   });
 
-  it('should navigate to the fm applications', async function (): Promise<any> {
-    await FacilityOverviewPage.navigateToFacilityOverview()
-
+  it('should relog with fm', async function (): Promise<any> {
+    await LoginPage.login(browser.params.login.email_fm, browser.params.login.password_fm, browser.params.login.auth_fm, true);
   });
 
   it('should terminate fm projects', async function (): Promise<any> {
+    await FacilityOverviewPage.navigateToFacilityOverview()
     await FacilityOverviewPage.terminatePTApplications();
 
   });
