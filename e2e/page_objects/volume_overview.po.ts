@@ -57,8 +57,8 @@ export class VolumeOverviewPage {
     browser.sleep(2000).then().catch();
     await Util.waitForPresenceOfElementById(this.VM_SELECT_ID);
     await Util.clickOptionOfSelect(`${this.OPTION_VM_PREFIX}${vm}`, this.VM_SELECT_ID);
-    await Util.sendTextToElementById(this.NAME_INPUT_ID, Util.VOLUME_NAME);
-    await Util.sendTextToElementById(this.SPACE_INPUT_ID, Util.VOLUME_SPACE);
+    await Util.sendTextToElementByIdUnsecure(this.NAME_INPUT_ID, Util.VOLUME_NAME);
+    await Util.sendTextToElementByIdUnsecure(this.SPACE_INPUT_ID, Util.VOLUME_SPACE);
     await Util.clickElementById(this.VERIFY_CA_BUTTON);
 
     Util.logInfo(' creating and attaching probably successful');

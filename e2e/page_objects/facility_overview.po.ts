@@ -40,7 +40,7 @@ export class FacilityOverviewPage {
 
   static async terminatePTApplications(): Promise<any> {
     await Util.waitForPresenceOfElementById(this.TAB_STATE_TERMINATION_BUTTON, Util.LONG_TIMEOUT);
-    await Util.clickElementById(this.TAB_STATE_MODIFICATION_BUTTON);
+    await Util.clickElementById(this.TAB_STATE_TERMINATION_BUTTON);
     await Util.waitForAbsenceOfElementById(this.LOADING_APPLICATIONS, Util.LONG_TIMEOUT)
     await Util.waitForPresenceOfElementById(this.TERMINATION_TABLE, Util.LONG_TIMEOUT);
 
