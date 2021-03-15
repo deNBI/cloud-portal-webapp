@@ -59,7 +59,6 @@ export class FacilityOverviewPage {
     await Util.clickElementById(this.TERMINATE_PROJECT_BTN);
     await Util.waitForTextPresenceInElementById(this.NOTIFICATION_MESSAGE, this.WAS_TERMINATED, Util.LONG_TIMEOUT);
     await Util.clickElementById(this.CLOSE_NOTIFICATION_BTN);
-    await browser.sleep(5000)
 
   }
 
