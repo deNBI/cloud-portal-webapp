@@ -20,6 +20,8 @@ export class FacilityOverviewPage {
   private static TERMINATE_PROJECT_BTN: string = 'terminate_project_btn';
   private static WAS_TERMINATED: string = 'The project was terminated.'
   private static CLOSE_NOTIFICATION_BTN: string = 'close_notification';
+  private static LOADING_APPLICATIONS: string = 'loading_applications';
+  private static TERMINATION_TABLE: string = 'termination_table';
 
   static async navigateToFacilityOverview(): Promise<any> {
     Util.logInfo('Navigating to facility overview');
@@ -39,6 +41,9 @@ export class FacilityOverviewPage {
   static async terminatePTApplications(): Promise<any> {
     await Util.waitForPresenceOfElementById(this.TAB_STATE_TERMINATION_BUTTON);
     await Util.clickElementById(this.TAB_STATE_MODIFICATION_BUTTON);
+    await Util.waitForAbsenceOfElementById(this.LOADING_APPLICATIONS)
+    await Util.waitForPresenceOfElementById(this.TERMINATION_TABLE);
+
     Util.logInfo('Terminate all PT projects');
     let ele: any = element(by.buttonText(this.TERMINATE_PT_APPLICATION_BTN));
     while (await ele.isPresent()) {
