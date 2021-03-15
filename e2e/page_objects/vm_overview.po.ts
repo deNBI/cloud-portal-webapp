@@ -212,7 +212,7 @@ export class VMOverviewPage {
     }
     await Util.clickElementById(`${this.SNAPSHOT_BUTTON_PREFIX}${name}`);
     await Util.waitForPresenceOfElementById(this.SNAPSHOT_NAME_MODAL);
-    await Util.sendTextToElementById(this.SNAPSHOT_NAME_INPUT, Util.BASIC_SNAPSHOT_NAME);
+    await Util.sendTextToElementByIdUnsecure(this.SNAPSHOT_NAME_INPUT, Util.BASIC_SNAPSHOT_NAME);
     await Util.clickElementById(this.SNAPSHOT_CREATE_BUTTON);
     await Util.waitForPresenceOfElementById(this.SNAPSHOT_RESULT_MODAL);
     await Util.waitForPresenceOfElementById(this.SNAPSHOT_DONE_DIV);

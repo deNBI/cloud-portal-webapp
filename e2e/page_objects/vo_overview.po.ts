@@ -24,7 +24,7 @@ export class VoOverviewPage {
 
   static async filterForPTProjets(): Promise<any> {
     Util.logInfo('Filter for PT Projects');
-    await Util.sendTextToElementById(this.FILTER_PROJECT_NAME_INPUT, 'PT');
+    await Util.sendTextToElementByIdUnsecure(this.FILTER_PROJECT_NAME_INPUT, 'PT');
     await browser.sleep(2000)
   }
 
