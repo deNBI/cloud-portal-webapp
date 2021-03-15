@@ -39,10 +39,10 @@ export class FacilityOverviewPage {
   }
 
   static async terminatePTApplications(): Promise<any> {
-    await Util.waitForPresenceOfElementById(this.TAB_STATE_TERMINATION_BUTTON);
+    await Util.waitForPresenceOfElementById(this.TAB_STATE_TERMINATION_BUTTON, Util.LONG_TIMEOUT);
     await Util.clickElementById(this.TAB_STATE_MODIFICATION_BUTTON);
-    await Util.waitForAbsenceOfElementById(this.LOADING_APPLICATIONS)
-    await Util.waitForPresenceOfElementById(this.TERMINATION_TABLE);
+    await Util.waitForAbsenceOfElementById(this.LOADING_APPLICATIONS, Util.LONG_TIMEOUT)
+    await Util.waitForPresenceOfElementById(this.TERMINATION_TABLE, Util.LONG_TIMEOUT);
 
     Util.logInfo('Terminate all PT projects');
     let ele: any = element(by.buttonText(this.TERMINATE_PT_APPLICATION_BTN));
