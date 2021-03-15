@@ -101,6 +101,12 @@ export abstract class FilterBaseClass extends AbstractBaseClasse {
               return true
             }
             break;
+          case this.application_states.WAIT_FOR_TERMINATION_FM:
+            status = this.application_states[this.application_states.WAIT_FOR_TERMINATION_FM];
+            if (this.filterstatus_list[status]) {
+              return true
+            }
+            break;
           default:
             break;
         }

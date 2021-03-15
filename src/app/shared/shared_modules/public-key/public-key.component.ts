@@ -12,7 +12,8 @@ import { saveAs } from 'file-saver';
  * Public Key component.
  */
 @Component({
-             selector: 'app-public-key',
+             // eslint-disable-next-line @angular-eslint/component-selector
+             selector: '[app-public-key]',
              templateUrl: './public-key.component.html',
              styleUrls: ['./public-key.component.scss'],
              providers: [ApiSettings, KeyService]
