@@ -44,7 +44,7 @@
                     <div class="form-group row">
                         <label class="col-md-12 control-label"><strong>Reply to*</strong></label>
                         <div class="col-md-12">
-                            <input required id="Reply to" name="emailReply" placeholder="" class="form-control"
+                            <input required id="reply_to" name="emailReply" placeholder="" class="form-control"
                                    type="text" [(ngModel)]="emailReply" #emailRep="ngModel"
                                    pattern="(?!(^[.-].*|[^@]*[.-]@|.*\.{2,}.*)|^.{254}.)([a-zA-Z0-9!#$%&'*+\/=?^_`{|}~.-]+@)(?!-.*|.*-\.)([a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,15}"
                                    [ngClass]="{'is-invalid':emailRep.invalid && (emailRep.dirty || emailRep.touched),
