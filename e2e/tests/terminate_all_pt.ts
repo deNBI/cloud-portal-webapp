@@ -2,8 +2,8 @@
 import {browser} from 'protractor';
 import {LoginPage} from '../page_objects/login.po';
 import {VoOverviewPage} from '../page_objects/vo_overview.po';
-import {FmProjectsOverview} from '../page_objects/fm_project_overview.po';
 import {ApplicationOverviewPage} from '../page_objects/application_overview.po';
+import {FacilityOverviewPage} from '../page_objects/facility_overview.po';
 
 describe('Simple Application Test', function (): void {
 
@@ -32,18 +32,13 @@ describe('Simple Application Test', function (): void {
 
   });
 
-  it('should navigate to the fm projects', async function (): Promise<any> {
-    await FmProjectsOverview.navigateToFMProjectsOverview()
-
-  });
-
-  it('should filter projects', async function (): Promise<any> {
-    await FmProjectsOverview.filterForPTProjets();
+  it('should navigate to the fm applications', async function (): Promise<any> {
+    await FacilityOverviewPage.navigateToFacilityOverview()
 
   });
 
   it('should terminate fm projects', async function (): Promise<any> {
-    await FmProjectsOverview.terminateAllPTProjects();
+    await FacilityOverviewPage.terminatePTApplications();
 
   });
 
