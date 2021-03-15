@@ -45,10 +45,10 @@ export class FacilityOverviewPage {
     await Util.waitForPresenceOfElementById(this.TERMINATION_TABLE, Util.LONG_TIMEOUT);
 
     Util.logInfo('Terminate all PT projects');
-    let ele: any = element(by.buttonText(this.TERMINATE_PT_APPLICATION_BTN));
+    let ele: any = element(by.id(this.TERMINATE_PT_APPLICATION_BTN));
     while (await ele.isPresent()) {
       await this.terminateProject(ele);
-      ele = element(by.buttonText(this.TERMINATE_PT_APPLICATION_BTN));
+      ele = element(by.id(this.TERMINATE_PT_APPLICATION_BTN));
     }
   }
 
