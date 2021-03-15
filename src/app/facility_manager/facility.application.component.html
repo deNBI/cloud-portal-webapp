@@ -54,7 +54,7 @@
       </button>
     </div>
 
-    <div class="card-body" *ngIf="loadingApplications">
+    <div class="card-body" id="loading_applications" *ngIf="loadingApplications">
       <div class="alert alert-success">
         <strong>Loading applications/requests ...</strong>
       </div>
@@ -561,7 +561,7 @@
         <div class="card-body" *ngIf="allApplicationsToCheck.length > 0">
           <!-- work in progress -->
 
-          <div class="table-responsive">
+          <div class="table-responsive" id="termination_table">
             <table class="table table-striped">
               <thead>
               <tr>
