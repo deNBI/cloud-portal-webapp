@@ -143,12 +143,8 @@ export class Util {
     return await browser.driver.wait(until_.elementToBeClickable(elem), timeout, `Element [${text}] taking too long to be clickable`);
   }
 
-  static async sendTextToElementById(id: string, text: string, show_output: boolean = true): Promise<void> {
+  static async sendTextToElementByIdSecure(id: string, text: string): Promise<void> {
     await this.waitForVisibilityOfElementById(id);
-    if (show_output) {
-      this.logInfo(`Send text [${text}] to element ${id}`)
-
-    }
     const elem: ElementFinder = element(by.id(id));
     await elem.clear();
     await elem.sendKeys(text);
@@ -160,7 +156,30 @@ export class Util {
       await elem.clear();
       for (let idx: number = 0; idx < text.length; idx++) {
         // tslint:disable-next-line:prefer-template
-        await elem.sendKeys(text.charAt(idx) + '');
+        await elem.sendKeys(`${text.charAt(idx)}`);
+      }
+    }
+
+    return;
+
+  }
+
+  static async sendTextToElementByIdUnsecure(id: string, text: string): Promise<void> {
+    await this.waitForVisibilityOfElementById(id);
+    this.logInfo(`Send text [${text}] to element ${id}`)
+
+    const elem: ElementFinder = element(by.id(id));
+    await elem.clear();
+    await elem.sendKeys(text);
+    const str: string = await elem.getAttribute('value');
+
+    if (str !== text) {
+      this.logWarn('Text  is not send by xpath in field so i will try to send string char by char!')
+
+      await elem.clear();
+      for (let idx: number = 0; idx < text.length; idx++) {
+        // tslint:disable-next-line:prefer-template
+        await elem.sendKeys(`${text.charAt(idx)}`);
       }
     }
 
