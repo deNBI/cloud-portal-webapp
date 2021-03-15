@@ -79,7 +79,7 @@ export class VMDetailPage {
     await Util.waitForElementToBeClickableById(this.SNAPSHOT_BUTTON, Util.LONG_TIMEOUT);
     await Util.clickElementById(this.SNAPSHOT_BUTTON);
     await Util.waitForPresenceOfElementById(this.SNAPSHOT_NAME_MODAL);
-    await Util.sendTextToElementById(this.SNAPSHOT_NAME_INPUT, Util.ALTERNATIVE_SNAPSHOT_NAME);
+    await Util.sendTextToElementByIdUnsecure(this.SNAPSHOT_NAME_INPUT, Util.ALTERNATIVE_SNAPSHOT_NAME);
     await Util.clickElementById(this.SNAPSHOT_CREATE_BUTTON);
     await Util.waitForPresenceOfElementById(this.SNAPSHOT_DONE_DIV, Util.LONG_TIMEOUT);
     await Util.clickElementById(this.CLOSE_SNAPSHOT_RESULT_BUTTON);
