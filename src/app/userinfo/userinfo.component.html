@@ -50,8 +50,12 @@
                 request. Please check inbox of: {{pendingEmail}} for validation email.
               </div>
             </td>
-            <td class="col-3"><button class="btn btn-primary" (click)="emailChangeModal.show()" type="button">Change</button></td>
+            <td class="col-3">
+              <button class="btn btn-primary" (click)="emailChangeModal.show()" type="button">Change</button>
+            </td>
           </tr>
+
+
           <tr app-public-key [userinfo]="userInfo"></tr>
 
           <tr>
@@ -64,7 +68,7 @@
                   class="switch switch-label switch-outline-primary-alt">
                   <input type="checkbox" class="switch-input"
                          [(ngModel)]="newsletterSubscribed"
-                         (change)="setNewsletterSubscription($event)">
+                         (change)="setNewsletterSubscription()">
                   <span class="switch-slider" data-checked="On" data-unchecked="Off"></span>
                   <!--<span class="switch-handle"></span>-->
                 </label></div>

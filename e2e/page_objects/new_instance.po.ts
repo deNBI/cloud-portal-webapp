@@ -70,7 +70,7 @@ export class NewInstancePage {
     Util.logInfo('Fill new instance mandatory form');
 
     await Util.waitForPresenceOfElementById(this.ID_INSTANCE_NAME);
-    await Util.sendTextToElementById(this.ID_INSTANCE_NAME, instance_name);
+    await Util.sendTextToElementByIdUnsecure(this.ID_INSTANCE_NAME, instance_name);
     await Util.waitForPresenceOfElementById(this.FLAVOR_ID);
     await element(by.id(this.FLAVOR_ID)).element(by.id(`${this.FLAVOR_PREFIX}${flavor}`)).click();
     await Util.waitForPresenceOfElementById(this.IMAGE_ID, Util.LONG_TIMEOUT);
@@ -100,12 +100,12 @@ export class NewInstancePage {
 
     await Util.clickElementById(this.ADD_VOLUME_FORM_BUTTON);
     Util.logInfo('Setting Volume name');
-    await Util.sendTextToElementById(this.VOLUME_NAME_ID, Util.VOLUME_NAME);
+    await Util.sendTextToElementByIdUnsecure(this.VOLUME_NAME_ID, Util.VOLUME_NAME);
     Util.logInfo('Setting Volume mount path');
-    await Util.sendTextToElementById(this.VOLUME_MOUNT_PATH_ID, Util.VOLUME_MOUNT_PATH_STRING);
+    await Util.sendTextToElementByIdUnsecure(this.VOLUME_MOUNT_PATH_ID, Util.VOLUME_MOUNT_PATH_STRING);
 
     Util.logInfo('Setting Volume space');
-    await Util.sendTextToElementById(this.VOLUME_SPACE_ID, this.VOLUME_SPACE);
+    await Util.sendTextToElementByIdUnsecure(this.VOLUME_SPACE_ID, this.VOLUME_SPACE);
     await Util.clickElementById(this.ADD_VOLUME_CONFIRMATION_BUTTON);
   }
 
