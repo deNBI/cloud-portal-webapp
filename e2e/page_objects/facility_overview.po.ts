@@ -42,6 +42,7 @@ export class FacilityOverviewPage {
   static async terminatePTApplications(): Promise<any> {
     await Util.waitForPresenceOfElementById(this.TAB_STATE_TERMINATION_BUTTON, Util.LONG_TIMEOUT);
     const term_counter: string = await Util.getElemTextById(this.TERMINATION_COUNTER)
+    Util.logInfo(`Termination counter: ${term_counter}`)
     if (parseInt(term_counter, 10) > 0) {
       await Util.clickElementById(this.TAB_STATE_TERMINATION_BUTTON);
       await Util.waitForAbsenceOfElementById(this.LOADING_APPLICATIONS, Util.LONG_TIMEOUT)
