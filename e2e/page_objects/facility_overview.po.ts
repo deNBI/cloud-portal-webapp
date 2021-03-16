@@ -22,6 +22,7 @@ export class FacilityOverviewPage {
   private static CLOSE_NOTIFICATION_BTN: string = 'close_notification';
   private static LOADING_APPLICATIONS: string = 'loading_applications';
   private static TERMINATION_TABLE: string = 'termination_table';
+  private static TERMINATION_COUNTER: string = 'termination_counter'
 
   static async navigateToFacilityOverview(): Promise<any> {
     Util.logInfo('Navigating to facility overview');
@@ -40,15 +41,22 @@ export class FacilityOverviewPage {
 
   static async terminatePTApplications(): Promise<any> {
     await Util.waitForPresenceOfElementById(this.TAB_STATE_TERMINATION_BUTTON, Util.LONG_TIMEOUT);
-    await Util.clickElementById(this.TAB_STATE_TERMINATION_BUTTON);
-    await Util.waitForAbsenceOfElementById(this.LOADING_APPLICATIONS, Util.LONG_TIMEOUT)
-    await Util.waitForPresenceOfElementById(this.TERMINATION_TABLE, Util.LONG_TIMEOUT);
+    const term_counter: string = await Util.getElemTextById(this.TERMINATION_COUNTER)
+    if (parseInt(term_counter, 10) > 0) {
+      await Util.clickElementById(this.TAB_STATE_TERMINATION_BUTTON);
+      await Util.waitForAbsenceOfElementById(this.LOADING_APPLICATIONS, Util.LONG_TIMEOUT)
 
-    Util.logInfo('Terminate all PT projects');
-    let ele: any = element(by.id(this.TERMINATE_PT_APPLICATION_BTN));
-    while (await ele.isPresent()) {
-      await this.terminateProject(ele);
-      ele = element(by.id(this.TERMINATE_PT_APPLICATION_BTN));
+      await Util.waitForPresenceOfElementById(this.TERMINATION_TABLE, Util.LONG_TIMEOUT);
+
+      Util.logInfo('Terminate all PT projects');
+      let ele: any = element(by.id(this.TERMINATE_PT_APPLICATION_BTN));
+      while (await ele.isPresent()) {
+        await this.terminateProject(ele);
+        ele = element(by.id(this.TERMINATE_PT_APPLICATION_BTN));
+      }
+    } else {
+      Util.logInfo('No FM Applications to terminate')
+
     }
   }
 
