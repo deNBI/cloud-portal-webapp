@@ -215,7 +215,7 @@ export class Util {
 
     await this.waitForVisibilityOfElementById(id, timeout);
 
-    return await element(by.id(id)).getText();
+    return await element(by.id(id)).getAttribute('textContent') ;
   }
 
   static async clickElementByElement(elem: any,
