@@ -45,7 +45,6 @@ export class VoOverviewPage {
     await Util.clickElementById(this.TERMINATE_PROJECT_BTN);
     await Util.waitForTextPresenceInElementById(this.NOTIFICATION_MODAL_TITLE, this.SUCCESS, Util.LONG_TIMEOUT);
     await Util.clickElementById(this.CLOSE_NOTIFICATION_BTN);
-    await browser.sleep(5000)
 
   }
 
