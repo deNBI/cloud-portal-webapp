@@ -1,5 +1,5 @@
 import {Util} from '../util';
-import {browser, by, element} from 'protractor';
+import {by, element} from 'protractor';
 
 /**
  * Facilityoverivew page.
@@ -22,6 +22,7 @@ export class FacilityOverviewPage {
   private static CLOSE_NOTIFICATION_BTN: string = 'close_notification';
   private static LOADING_APPLICATIONS: string = 'loading_applications';
   private static TERMINATION_TABLE: string = 'termination_table';
+  private static TERMINATION_COUNTER: string = 'termination_counter'
 
   static async navigateToFacilityOverview(): Promise<any> {
     Util.logInfo('Navigating to facility overview');
@@ -39,17 +40,25 @@ export class FacilityOverviewPage {
   }
 
   static async terminatePTApplications(): Promise<any> {
-    await Util.waitForPresenceOfElementById(this.TAB_STATE_TERMINATION_BUTTON);
-    await Util.clickElementById(this.TAB_STATE_TERMINATION_BUTTON);
-    await Util.waitForAbsenceOfElementById(this.LOADING_APPLICATIONS)
-    await Util.waitForPresenceOfElementById(this.TERMINATION_TABLE);
+    await Util.waitForPresenceOfElementById(this.TAB_STATE_TERMINATION_BUTTON, Util.LONG_TIMEOUT);
+    const term_counter: string = await Util.getElemTextById(this.TERMINATION_COUNTER)
+    Util.logInfo(`Termination counter: ${term_counter}`)
+   // if (parseInt(term_counter, 10) > 0) {
+      await Util.clickElementById(this.TAB_STATE_TERMINATION_BUTTON);
+      await Util.waitForAbsenceOfElementById(this.LOADING_APPLICATIONS, Util.LONG_TIMEOUT)
 
-    Util.logInfo('Terminate all PT projects');
-    let ele: any = element(by.buttonText(this.TERMINATE_PT_APPLICATION_BTN));
-    while (await ele.isPresent()) {
-      await this.terminateProject(ele);
-      ele = element(by.buttonText(this.TERMINATE_PT_APPLICATION_BTN));
-    }
+     // await Util.waitForPresenceOfElementById(this.TERMINATION_TABLE, Util.LONG_TIMEOUT);
+
+      Util.logInfo('Terminate all PT projects');
+      let ele: any = element(by.id(this.TERMINATE_PT_APPLICATION_BTN));
+      while (await ele.isPresent()) {
+        await this.terminateProject(ele);
+        ele = element(by.id(this.TERMINATE_PT_APPLICATION_BTN));
+        //    }
+        // } else {
+        //  Util.logInfo('No FM Applications to terminate')
+
+      }
   }
 
   static async terminateProject(terminateBtnId: Element): Promise<any> {
@@ -59,16 +68,16 @@ export class FacilityOverviewPage {
     await Util.clickElementById(this.TERMINATE_PROJECT_BTN);
     await Util.waitForTextPresenceInElementById(this.NOTIFICATION_MESSAGE, this.WAS_TERMINATED, Util.LONG_TIMEOUT);
     await Util.clickElementById(this.CLOSE_NOTIFICATION_BTN);
-    await browser.sleep(5000)
 
   }
 
   static async approveApplicationModification(application_name: string): Promise<any> {
-    await Util.waitForPresenceOfElementById(this.TAB_STATE_MODIFICATION_BUTTON);
+    await Util.waitForPresenceOfElementById(this.TAB_STATE_MODIFICATION_BUTTON, Util.LONG_TIMEOUT);
     await Util.clickElementById(this.TAB_STATE_MODIFICATION_BUTTON);
-    await Util.waitForPresenceOfElementById(this.MODIFICATION_APPROVAL_BTN_PREFIX + application_name);
+    await Util.waitForAbsenceOfElementById(this.LOADING_APPLICATIONS, Util.LONG_TIMEOUT)
+    await Util.waitForPresenceOfElementById(this.MODIFICATION_APPROVAL_BTN_PREFIX + application_name, Util.LONG_TIMEOUT);
     await Util.clickElementById(this.MODIFICATION_APPROVAL_BTN_PREFIX + application_name);
-    await Util.waitForTextPresenceInElementById(this.NOTIFICATION_MESSAGE, this.MODIFICATION_EXTENSION_SUCCESS_TEXT);
+    await Util.waitForTextPresenceInElementById(this.NOTIFICATION_MESSAGE, this.MODIFICATION_EXTENSION_SUCCESS_TEXT, Util.LONG_TIMEOUT);
   }
 
 }
