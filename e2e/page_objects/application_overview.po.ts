@@ -64,6 +64,8 @@ export class ApplicationOverviewPage {
   static async approveModificationRequest(application_name: string): Promise<any> {
     await Util.waitForPresenceOfElementById(this.MODIFICATION_TAB_BUTTON, Util.LONG_TIMEOUT);
     await Util.clickElementById(this.MODIFICATION_TAB_BUTTON);
+    await Util.waitForAbsenceOfElementById(this.LOADING_APPLICATIONS, Util.LONG_TIMEOUT)
+
     await Util.waitForPresenceOfElementById(this.MODIFICATION_APPROVAL_BTN_PREFIX + application_name, Util.LONG_TIMEOUT);
     await Util.clickElementById(this.MODIFICATION_APPROVAL_BTN_PREFIX + application_name);
     await Util.waitForTextPresenceInElementById(this.NOTIFICATION_MESSAGE, this.MODIFICATION_REQUEST_RESULT_TEXT);
@@ -71,8 +73,11 @@ export class ApplicationOverviewPage {
   }
 
   static async approveExtensionRequest(application_name: string): Promise<any> {
+
     await Util.waitForPresenceOfElementById(this.EXTENSION_TAB_BUTTON, Util.LONG_TIMEOUT);
     await Util.clickElementById(this.EXTENSION_TAB_BUTTON);
+    await Util.waitForAbsenceOfElementById(this.LOADING_APPLICATIONS, Util.LONG_TIMEOUT)
+
     await Util.waitForPresenceOfElementById(this.EXTENSION_APPROVAL_BTN_PREFIX + application_name, Util.LONG_TIMEOUT);
     await Util.clickElementById(this.EXTENSION_APPROVAL_BTN_PREFIX + application_name);
     await Util.waitForTextPresenceInElementById(this.NOTIFICATION_MESSAGE, this.EXTENSION_RESULT_MESSAGE_TEXT);
@@ -89,6 +94,7 @@ export class ApplicationOverviewPage {
 
   static async approveSimpleVm(application_name: string): Promise<any> {
     await Util.waitForPage('applications');
+    await Util.waitForAbsenceOfElementById(this.LOADING_APPLICATIONS, Util.LONG_TIMEOUT)
     await Util.waitForPresenceOfElementById(this.COMPUTE_CENTER_SELECTION_PREFIX + application_name, Util.LONG_TIMEOUT);
     await Util.clickOptionOfSelect(this.DEFAULT_DENBI_COMPUTE_CENTER, this.COMPUTE_CENTER_SELECTION_PREFIX + application_name);
     await Util.clickElementById(this.APPROVAL_PREFIX + application_name);
@@ -99,6 +105,7 @@ export class ApplicationOverviewPage {
 
   static async approveCloudApplication(application_name: string): Promise<any> {
     await Util.waitForPage('applications');
+    await Util.waitForAbsenceOfElementById(this.LOADING_APPLICATIONS, Util.LONG_TIMEOUT)
     await Util.waitForPresenceOfElementById(this.COMPUTE_CENTER_SELECTION_PREFIX + application_name, Util.LONG_TIMEOUT);
     await Util.clickOptionOfSelect(this.DEFAULT_DENBI_COMPUTE_CENTER, this.COMPUTE_CENTER_SELECTION_PREFIX + application_name);
     await Util.clickElementById(this.APPROVAL_PREFIX + application_name);
