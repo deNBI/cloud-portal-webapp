@@ -43,22 +43,22 @@ export class FacilityOverviewPage {
     await Util.waitForPresenceOfElementById(this.TAB_STATE_TERMINATION_BUTTON, Util.LONG_TIMEOUT);
     const term_counter: string = await Util.getElemTextById(this.TERMINATION_COUNTER)
     Util.logInfo(`Termination counter: ${term_counter}`)
-    if (parseInt(term_counter, 10) > 0) {
+   // if (parseInt(term_counter, 10) > 0) {
       await Util.clickElementById(this.TAB_STATE_TERMINATION_BUTTON);
       await Util.waitForAbsenceOfElementById(this.LOADING_APPLICATIONS, Util.LONG_TIMEOUT)
 
-      await Util.waitForPresenceOfElementById(this.TERMINATION_TABLE, Util.LONG_TIMEOUT);
+     // await Util.waitForPresenceOfElementById(this.TERMINATION_TABLE, Util.LONG_TIMEOUT);
 
       Util.logInfo('Terminate all PT projects');
       let ele: any = element(by.id(this.TERMINATE_PT_APPLICATION_BTN));
       while (await ele.isPresent()) {
         await this.terminateProject(ele);
         ele = element(by.id(this.TERMINATE_PT_APPLICATION_BTN));
-      }
-    } else {
-      Util.logInfo('No FM Applications to terminate')
+        //    }
+        // } else {
+        //  Util.logInfo('No FM Applications to terminate')
 
-    }
+      }
   }
 
   static async terminateProject(terminateBtnId: Element): Promise<any> {
