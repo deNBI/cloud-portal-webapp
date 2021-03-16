@@ -1,5 +1,5 @@
 import {Util} from '../util';
-import {browser, by, element} from 'protractor';
+import {by, element} from 'protractor';
 
 /**
  * Facilityoverivew page.
@@ -63,11 +63,12 @@ export class FacilityOverviewPage {
   }
 
   static async approveApplicationModification(application_name: string): Promise<any> {
-    await Util.waitForPresenceOfElementById(this.TAB_STATE_MODIFICATION_BUTTON);
+    await Util.waitForPresenceOfElementById(this.TAB_STATE_MODIFICATION_BUTTON, Util.LONG_TIMEOUT);
     await Util.clickElementById(this.TAB_STATE_MODIFICATION_BUTTON);
-    await Util.waitForPresenceOfElementById(this.MODIFICATION_APPROVAL_BTN_PREFIX + application_name);
+    await Util.waitForAbsenceOfElementById(this.LOADING_APPLICATIONS, Util.LONG_TIMEOUT)
+    await Util.waitForPresenceOfElementById(this.MODIFICATION_APPROVAL_BTN_PREFIX + application_name, Util.LONG_TIMEOUT);
     await Util.clickElementById(this.MODIFICATION_APPROVAL_BTN_PREFIX + application_name);
-    await Util.waitForTextPresenceInElementById(this.NOTIFICATION_MESSAGE, this.MODIFICATION_EXTENSION_SUCCESS_TEXT);
+    await Util.waitForTextPresenceInElementById(this.NOTIFICATION_MESSAGE, this.MODIFICATION_EXTENSION_SUCCESS_TEXT, Util.LONG_TIMEOUT);
   }
 
 }
