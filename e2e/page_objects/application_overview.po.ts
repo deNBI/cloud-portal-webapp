@@ -26,6 +26,7 @@ export class ApplicationOverviewPage {
   private static SUCCESSFULL_DECLINED: string = 'The Application was declined'
   private static CLOSE_NOTIFICATION_MODAL: string = 'close_notification_modal_btn'
   private static SUBMITTED_APPLICATIONS_TAB: string = 'tab_state_button_submitted_applications'
+  private static LOADING_APPLICATIONS: string = 'loading_applications';
 
   static async navigateToApplicationOverview(): Promise<any> {
     Util.logInfo('Navigate to Application Overview form');
@@ -35,7 +36,7 @@ export class ApplicationOverviewPage {
 
   static async declinePTApplications(): Promise<any> {
     Util.logInfo('Decline all PT applications');
-    await Util.waitForPresenceOfElementById(this.SUBMITTED_APPLICATIONS_TAB)
+    await Util.waitForPresenceOfElementById(this.SUBMITTED_APPLICATIONS_TAB, Util.LONG_TIMEOUT)
     Util.logInfo('Decline open PT OpenStack applications');
 
     let openstack_ele: ElementFinder = element(by.id(this.DECLINE_PT_OPEN_APPLICATION_PRE));
@@ -61,18 +62,23 @@ export class ApplicationOverviewPage {
   }
 
   static async approveModificationRequest(application_name: string): Promise<any> {
-    await Util.waitForPresenceOfElementById(this.MODIFICATION_TAB_BUTTON);
+    await Util.waitForPresenceOfElementById(this.MODIFICATION_TAB_BUTTON, Util.LONG_TIMEOUT);
     await Util.clickElementById(this.MODIFICATION_TAB_BUTTON);
-    await Util.waitForPresenceOfElementById(this.MODIFICATION_APPROVAL_BTN_PREFIX + application_name);
+    await Util.waitForAbsenceOfElementById(this.LOADING_APPLICATIONS, Util.LONG_TIMEOUT)
+
+    await Util.waitForPresenceOfElementById(this.MODIFICATION_APPROVAL_BTN_PREFIX + application_name, Util.LONG_TIMEOUT);
     await Util.clickElementById(this.MODIFICATION_APPROVAL_BTN_PREFIX + application_name);
     await Util.waitForTextPresenceInElementById(this.NOTIFICATION_MESSAGE, this.MODIFICATION_REQUEST_RESULT_TEXT);
 
   }
 
   static async approveExtensionRequest(application_name: string): Promise<any> {
-    await Util.waitForPresenceOfElementById(this.EXTENSION_TAB_BUTTON);
+
+    await Util.waitForPresenceOfElementById(this.EXTENSION_TAB_BUTTON, Util.LONG_TIMEOUT);
     await Util.clickElementById(this.EXTENSION_TAB_BUTTON);
-    await Util.waitForPresenceOfElementById(this.EXTENSION_APPROVAL_BTN_PREFIX + application_name);
+    await Util.waitForAbsenceOfElementById(this.LOADING_APPLICATIONS, Util.LONG_TIMEOUT)
+
+    await Util.waitForPresenceOfElementById(this.EXTENSION_APPROVAL_BTN_PREFIX + application_name, Util.LONG_TIMEOUT);
     await Util.clickElementById(this.EXTENSION_APPROVAL_BTN_PREFIX + application_name);
     await Util.waitForTextPresenceInElementById(this.NOTIFICATION_MESSAGE, this.EXTENSION_RESULT_MESSAGE_TEXT);
 
@@ -88,7 +94,8 @@ export class ApplicationOverviewPage {
 
   static async approveSimpleVm(application_name: string): Promise<any> {
     await Util.waitForPage('applications');
-    await Util.waitForPresenceOfElementById(this.COMPUTE_CENTER_SELECTION_PREFIX + application_name);
+    await Util.waitForAbsenceOfElementById(this.LOADING_APPLICATIONS, Util.LONG_TIMEOUT)
+    await Util.waitForPresenceOfElementById(this.COMPUTE_CENTER_SELECTION_PREFIX + application_name, Util.LONG_TIMEOUT);
     await Util.clickOptionOfSelect(this.DEFAULT_DENBI_COMPUTE_CENTER, this.COMPUTE_CENTER_SELECTION_PREFIX + application_name);
     await Util.clickElementById(this.APPROVAL_PREFIX + application_name);
 
@@ -98,7 +105,8 @@ export class ApplicationOverviewPage {
 
   static async approveCloudApplication(application_name: string): Promise<any> {
     await Util.waitForPage('applications');
-    await Util.waitForPresenceOfElementById(this.COMPUTE_CENTER_SELECTION_PREFIX + application_name);
+    await Util.waitForAbsenceOfElementById(this.LOADING_APPLICATIONS, Util.LONG_TIMEOUT)
+    await Util.waitForPresenceOfElementById(this.COMPUTE_CENTER_SELECTION_PREFIX + application_name, Util.LONG_TIMEOUT);
     await Util.clickOptionOfSelect(this.DEFAULT_DENBI_COMPUTE_CENTER, this.COMPUTE_CENTER_SELECTION_PREFIX + application_name);
     await Util.clickElementById(this.APPROVAL_PREFIX + application_name);
 
