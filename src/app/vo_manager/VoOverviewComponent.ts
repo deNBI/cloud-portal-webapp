@@ -325,6 +325,15 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
 
   }
 
+  setProtected(project: Project, set: boolean): void {
+    this.voService.setProtected(project.Id, set).subscribe((result: any): void => {
+      console.log(result);
+      this.updateNotificationModal('Success',
+        'Something has been done.',
+        true, 'success')
+    });
+  }
+
   getMembersOfTheProject(projectid: number, projectname: string): void {
     this.voService.getVoGroupRichMembers(projectid)
       .subscribe((members: ProjectMember[]): void => {
