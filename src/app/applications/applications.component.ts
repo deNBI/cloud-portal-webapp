@@ -40,6 +40,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
   selectedCenter: {[key: string]: string} = {};
 
   loading_applications: boolean = false;
+  atLeastOneVM: boolean = false;
 
   /**
    * All Applications, just visible for a vo admin.
@@ -128,6 +129,55 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
   setApplicationToAdjust(application: Application): void {
     this.selectedApplication = application;
     this.adjustedApplication = new Application(application);
+  }
+
+  onChangeFlavor(flavor: Flavor, value: number): void {
+    this.adjustedApplication.setFlavorInFlavors(flavor, value);
+    this.checkIfMinimumSelected();
+  }
+
+  public setFlavorInFlavors(flavor: Flavor, counter: number): void {
+    const idx: number = this.adjustedApplication.flavors.findIndex((fl: Flavor): boolean => fl.name === flavor.name);
+    if (idx !== -1) {
+      if (counter > 0) {
+        this.adjustedApplication.flavors[idx].counter = counter;
+      } else {
+        this.adjustedApplication.flavors.splice(idx, 1)
+      }
+    } else {
+      if (counter > 0) {
+
+        flavor.counter = counter;
+
+        this.adjustedApplication.flavors.push(flavor)
+      }
+    }
+    this.calculateRamCores()
+  }
+
+  checkIfMinimumSelected(): void {
+    let numberOfVMs: number = 0;
+    for (const fl of this.adjustedApplication.flavors) {
+      numberOfVMs += this.adjustedApplication.getFlavorCounter(fl);
+    }
+    if (numberOfVMs > 0 || this.adjustedApplication.project_application_openstack_project) {
+      this.atLeastOneVM = true;
+    } else {
+      this.atLeastOneVM = false;
+    }
+  }
+
+  adjustApplication(): void {
+    this.applicationsservice.adjustApplication(this.adjustedApplication).subscribe((adjustmentResult: Application): void => {
+      const index: number = this.all_applications.indexOf(this.selectedApplication);
+      const newApp: Application = new Application(adjustmentResult);
+      this.all_applications[index] = newApp;
+      this.updateNotificationModal('Success',
+        'The resources of the application were adjusted successfully!',
+        true, 'success')
+      }, (error: any): void => {
+        this.updateNotificationModal('Failed', 'The adjustment of the resources has failed!', true, 'danger');
+      });
   }
 
   /**

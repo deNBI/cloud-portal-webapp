@@ -921,6 +921,7 @@
                                  name="{{fl.name}}_granted"
                                  type="number" min="0" step="1"
                                  placeholder="e.g 1"
+                                 (ngModelChange)="onChangeFlavor(fl,$event)"
                                  [ngModel]="adjustedApplication | flavorCounter:fl"
                                  #name="ngModel"
                                  appMinAmount="0" appIntegerOrNull
@@ -1073,22 +1074,25 @@
             <p *ngIf="resourceAdjustmentForm.controls.granted_object_storage?.invalid">
               - Object Storage missing
             </p>
+            <p *ngIf="!atLeastOneVM">
+              - Please select at least one Flavor
+            </p>
           </div>
 
 
           <div class="modal-footer">
             <div class="label">
-              By submitting this application you agree to the cloud usage policy.
+              The application values will be adjusted. The adjusted values still need to be approved separately.
             </div>
             <button type="button" class="btn  btn-primary"
                     form="resource_adjustment_form" id="submitAdjustmentButton"
-                    (click)="calculateRamCores(); adjustModal.hide()"
-                    [disabled]="resourceAdjustmentForm.invalid"><i class="fa fa-dot-circle-o"></i>
+                    (click)="adjustModal.hide(); resetNotificationModal(); notificationModal.show(); adjustApplication();"
+                    [disabled]="resourceAdjustmentForm.invalid || !atLeastOneVM"><i class="fa fa-dot-circle-o"></i>
               Adjust
             </button>
             <button type="button" class="btn btn-danger"
                     (click)="adjustModal.hide();">
-              Close
+              Discard
             </button>
 
           </div>
