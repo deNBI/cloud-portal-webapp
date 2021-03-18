@@ -13,6 +13,7 @@ import {ApplicationBaseClassComponent} from '../shared/shared_modules/baseClass/
 import {ComputecenterComponent} from '../projectmanagement/computecenter.component';
 import {is_vo} from '../shared/globalvar';
 import {Application_States} from '../shared/shared_modules/baseClass/abstract-base-class';
+import {FlavorType} from '../virtualmachines/virtualmachinemodels/flavorType';
 
 // eslint-disable-next-line no-shadow
 enum TabStates {
@@ -41,12 +42,13 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
   loading_applications: boolean = false;
 
   /**
-   * All Applications, just visibile for a vo admin.
+   * All Applications, just visible for a vo admin.
    *
    * @type {Array}
    */
   all_applications: Application[] = [];
-
+  selectedApplication: Application;
+  adjustedApplication: Application;
   applications_history: Application[] = [];
 
   /**
@@ -100,6 +102,12 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
       this.getSubmittedApplications();
       this.getApplicationHistory();
       this.getComputeCenters();
+      this.flavorService.getListOfFlavorsAvailable().subscribe((flavList: Flavor[]): void => {
+        this.flavorList = flavList;
+      });
+      this.flavorService.getListOfTypesAvailable().subscribe((availableTypes: FlavorType[]): void => {
+        this.typeList = availableTypes;
+      });
       this.applicationsservice.getExtensionRequestsCounter().subscribe((result: any): void => {
         this.numberOfCreditRequests = result['credits_extension_requests_all'];
         this.numberOfExtensionRequests = result['lifetime_extension_requests_all'];
@@ -111,6 +119,31 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
     }
 
   }
+
+  /**
+   * Sets both the selected application and the adjusted application which serves as a model for the
+   * application adjustment of the VO
+   * @param application
+   */
+  setApplicationToAdjust(application: Application): void {
+    this.selectedApplication = application;
+    this.adjustedApplication = new Application(application);
+  }
+
+  /**
+   * Checks if the flavor is available for SimpleVM
+   * @param type
+   */
+  checkIfTypeGotSimpleVmFlavor(type: FlavorType): boolean {
+    for (const flav of this.flavorList) {
+      if (flav.type.shortcut === type.shortcut && flav.simple_vm) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
 
   /**
    * Checks if the key given represents a flavor and if so returns the respective Flavor
