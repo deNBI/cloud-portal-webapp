@@ -38,9 +38,10 @@ export enum Application_States {
   LIFETIME_EXTENSION_REQUESTED = 16,
   LIFETIME_EXTENSION_DECLINED = 17,
   WAIT_FOR_TERMINATION_FM = 18,
-  EXPIRES_SOON = 19,
-  APPROVED_LAST_2_WEEKS = 20,
-  EXPIRED = 21
+  PROTECTED = 19,
+  EXPIRES_SOON = 20,
+  APPROVED_LAST_2_WEEKS = 21,
+  EXPIRED = 22
 
 }
 
@@ -65,7 +66,8 @@ export enum Application_States_Strings {
   EXPIRES_SOON = 'expires soon',
   APPROVED_LAST_2_WEEKS = 'new project',
   EXPIRED = 'lifetime expired',
-  WAIT_FOR_TERMINATION_FM = 'wait for termination by fm'
+  WAIT_FOR_TERMINATION_FM = 'wait for termination by fm',
+  PROTECTED = 'project is protected'
 
 }
 
