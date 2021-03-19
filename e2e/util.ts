@@ -99,6 +99,22 @@ export class Util {
 
   }
 
+  static async waitForPageIgnoreError(url: string, timeout: number = this.timeout): Promise<boolean> {
+    const until_: ProtractorExpectedConditions = protractor.ExpectedConditions;
+    await browser.sleep(2000);
+
+    this.logInfo(`Waiting until page contains ${url}`)
+    try {
+      await browser.driver.wait(until_.urlContains(url), timeout);
+    } catch (error) {
+      this.logInfo(`Didn't load ${url} - Ignore Error`)
+
+      return false
+    }
+
+    return true
+  }
+
   static async waitForPage(url: string, timeout: number = this.timeout): Promise<boolean> {
     const until_: ProtractorExpectedConditions = protractor.ExpectedConditions;
     this.logInfo(`Waiting until page contains ${url}`)

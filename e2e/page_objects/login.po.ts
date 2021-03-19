@@ -6,6 +6,8 @@ import {Util} from '../util';
  */
 export class LoginPage {
   private static timeout: number = browser.params.timeout;
+  private static TEST_RP_WARNING: string = 'testRpWarning';
+  private static TEST_RP_CONTINUE: string = 'Continue'
 
   static async login(email: string, psw: string, auth: string, relog: boolean = false): Promise<any> {
 
@@ -45,6 +47,9 @@ export class LoginPage {
     await Util.sendTextToElementByIdSecure('username', email);
     await Util.sendTextToElementByIdSecure('password', psw);
     await Util.clickElementById('signin-button');
+    if (await Util.waitForPageIgnoreError(this.TEST_RP_WARNING)) {
+      await Util.clickElementByName(this.TEST_RP_CONTINUE)
+    }
     await Util.waitForPage('userinfo');
     Util.logInfo(await browser.driver.getCurrentUrl());
 
@@ -62,6 +67,9 @@ export class LoginPage {
     await Util.waitForElementToBeClickableById('password');
     await Util.sendTextToElementByName('password', psw, false);
     await Util.clickElementById('passwordNext');
+    if (await Util.waitForPageIgnoreError(this.TEST_RP_WARNING)) {
+      await Util.clickElementByName(this.TEST_RP_CONTINUE)
+    }
     await Util.waitForPage('userinfo');
 
   }
@@ -78,7 +86,11 @@ export class LoginPage {
     await Util.clickElementByName('_eventId_proceed');
     await Util.waitForPage('execution=e1s2');
     await Util.clickElementByName('_eventId_proceed');
+    if (await Util.waitForPageIgnoreError(this.TEST_RP_WARNING)) {
+      await Util.clickElementByName(this.TEST_RP_CONTINUE)
+    }
     await Util.waitForPage('userinfo');
+
   }
 
   static async logOut(): Promise<any> {
