@@ -48,7 +48,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
   @Input() voRegistrationLink: string = environment.voRegistrationLink;
   @Input() invitation_group_pre: string = environment.invitation_group_pre;
   WIKI_MEMBER_MANAGEMENT: string = WIKI_MEMBER_MANAGEMENT;
-  WIKI_PUBLICATIONS: string = WIKI_PUBLICATIONS
+  WIKI_PUBLICATIONS: string = WIKI_PUBLICATIONS;
   selected_ontology_terms: EdamOntologyTerm[] = [];
   edam_ontology_terms: EdamOntologyTerm[];
   ontology_search_keyword: string = 'term';

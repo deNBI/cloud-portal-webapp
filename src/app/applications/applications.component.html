@@ -203,7 +203,12 @@
                         <i class="fas fa-times"></i>&nbsp;
                         <span class="applicationActionsButton">Decline</span>
                       </button>
-
+                      <button type="button" id="btn_adjust_{{application.project_application_shortname}}"
+                              class="btn btn-primary" style="margin: auto 2.5px"
+                              (click)="setApplicationToAdjust(application); adjustModal.show();">
+                        <i class="fa fa-pen"></i>&nbsp;
+                        <span class="applicationActionsButton"> Adjust</span>
+                      </button>
                       <button
                         (click)="switchCollapseStatus('application_review-' + application?.project_application_id);  getMemberDetailsByElixirIdIfCollapsed(application,'application_review-' + application?.project_application_id);"
                         type="button"
@@ -853,6 +858,249 @@
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+
+<div bsModal #adjustModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+       aria-labelledby="Label"
+       aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4>Adjust resources for {{selectedApplication?.project_application_shortname}}</h4>
+          <button type="button" class="close" style="cursor: pointer"
+                  (click)="adjustModal.hide();" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" *ngIf="selectedApplication">
+          <form id="resource_adjustment_form" #resourceAdjustmentForm="ngForm"
+                class="form-horizontal">
+
+            <div class="form-group row">
+              <h6 class="col-md-8 form-control-label">Resources*
+                <i data-balloon="Select the number of Virtual Machines you want to grant."
+                   data-balloon-pos="down">
+                  <i class="icon-question"></i></i>
+              </h6>
+            </div>
+
+
+            <accordion>
+              <ng-container *ngFor="let t of typeList, first as isFirst">
+                <accordion-group *ngIf="selectedApplication?.project_application_openstack_project || checkIfTypeGotSimpleVmFlavor(t)"
+                                 [isOpen]="isFirst" #groupval>
+                  <div accordion-heading style="width: 100%; cursor: pointer">
+                    {{t.long_name}}
+                    <i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
+                            'icon-arrow-up': groupval.isOpen, 'icon-arrow-down': !groupval.isOpen}"></i>
+                  </div>
+                  <div *ngFor="let fl of flavorList" class="form-group row">
+                    <div
+                      *ngIf="fl.type.shortcut == t.shortcut && (fl.simple_vm || selectedApplication?.project_application_openstack_project)"
+                      class="form-group row">
+                      <label class="col-md-4 form-control-label"><strong>{{fl.name}}</strong><br>
+                        Number of cores: <span
+                          id="{{fl.name}}_cores">{{fl.vcpus}}</span><br>
+                        RAM: <span id="{{fl.name}}_ram">{{fl.ram}}</span> GB</label>
+                      <div class="col">
+                        <div class="input-group">
+                          <input class="form-control"
+                                 name="{{fl.name}}_requested"
+                                 id="{{fl.name}}_requested"
+                                 type="text"
+                                 value="{{selectedApplication | flavorCounter:fl}}"
+                                 placeholder="0" disabled>
+                          <div class="input-group-append"><span class="input-group-text"> VMs</span></div>
+                        </div>
+                        <span class="help-block">Initially requested of this type </span>
+                      </div>
+                      <div class="col">
+                        <div class="input-group">
+                          <input class="form-control"
+                                 (change)="valuesChanged(fl,name?.value); calculateRamCores();"
+                                 id="{{fl.name}}_granted"
+                                 name="{{fl.name}}_granted"
+                                 type="number" min="0" step="1"
+                                 placeholder="e.g 1"
+                                 (ngModelChange)="onChangeFlavor(fl,$event)"
+                                 [ngModel]="adjustedApplication | flavorCounter:fl"
+                                 #name="ngModel"
+                                 appMinAmount="0" appIntegerOrNull
+                                 [ngClass]="{
+                                'is-invalid': name?.invalid,
+                                'is-valid': name?.valid
+                                }">
+                          <div class="input-group-append"><span class="input-group-text"> VMs</span></div>
+                        </div>
+                        <span class="help-block">Number of VMs you want to actually grant.</span>
+                      </div>
+                    </div>
+
+                  </div>
+                </accordion-group>
+              </ng-container>
+            </accordion>
+            <div class="form-group row">
+              <label class="col-md-4 form-control-label" for="requested_volume_counter"><strong>Number of storage volumes*
+                <i
+                  data-balloon="Number of volumes allowed to create. The sum of the volumes size equals the value provided in the storage limit field."
+                  data-balloon-pos="down" data-balloon-length="large"><i
+                  class="icon-question"
+                  style="cursor: pointer;"></i></i></strong></label>
+              <div class="col">
+                <div class="input-group">
+                  <input required class="form-control"
+                         name="requested_volume_counter"
+                         id="requested_volume_counter"
+                         placeholder="NA"
+                         value="{{selectedApplication?.project_application_volume_counter}}"
+                         type="text" disabled>
+                </div>
+                <span class="help-block">Requested number of storage volumes</span>
+              </div>
+
+              <div class="col">
+                <div class="input-group">
+                  <input required class="form-control"
+                         id="granted_volume_counter"
+                         name="granted_volume_counter"
+                         placeholder="e.g. 20"
+                         type="number" min="0" step="1"
+                         [(ngModel)]="adjustedApplication.project_application_volume_counter"
+                         appMinAmount="0" appInteger
+                         [ngClass]="{
+                                'is-invalid': resourceAdjustmentForm.controls.granted_volume_counter?.invalid,
+                                'is-valid': resourceAdjustmentForm.controls.grated_volume_counter?.valid
+                                }">
+                </div>
+                <span class="help-block">Number of storage volumes you want to grant</span>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-md-4 form-control-label" for="requested_volume_limit"><strong>Storage
+                Limit*
+                <i
+                  data-balloon="Storage limit is the sum of extra storage provided by volumes."
+                  data-balloon-pos="down" data-balloon-length="medium"><i
+                  class="icon-question"
+                  style="cursor: pointer;"></i></i></strong></label>
+              <div class="col">
+                <div class="input-group">
+                  <input class="form-control"
+                         name="requested_volume_limit"
+                         id="requested_volume_limit"
+                         value="{{selectedApplication?.project_application_volume_limit}}"
+                         placeholder="NA"
+                         type="text" disabled>
+                  <div class="input-group-append"><span class="input-group-text"> GB
+                                    </span></div>
+                </div>
+                <span class="help-block">Requested extra storage</span>
+              </div>
+              <div class="col">
+                <div class="input-group">
+                  <input class="form-control"
+                         id="granted_volume_limit"
+                         name="granted_volume_limit"
+                         placeholder="e.g. 20"
+                         type="number" min="1" step="1"
+                         [(ngModel)]="adjustedApplication.project_application_volume_limit"
+                         appMinAmount="1" appInteger
+                         [ngClass]="{
+                                'is-invalid': resourceAdjustmentForm.controls.granted_volume_limit?.invalid,
+                                'is-valid': resourceAdjustmentForm.controls.granted_volume_limit?.valid
+                                }"
+                         [disabled]="resourceAdjustmentForm.controls.granted_volume_counter?.value == 0">
+                  <div class="input-group-append"><span class="input-group-text"> GB
+                                    </span></div>
+                </div>
+                <span class="help-block">Amount of extra storage you want to grant</span>
+              </div>
+            </div>
+
+
+            <div *ngIf="selectedApplication?.project_application_openstack_project" class="form-group row">
+              <label class="col-md-4 form-control-label" for="requested_object_storage"><strong>Object
+                Storage* </strong><i
+                data-balloon="Object storage is a method of storing data that does not use a directory tree internally. Object storage combines files with metadata and places it in a flat structure."
+                data-balloon-pos="down" data-balloon-length="large"><i
+                class="icon-question"
+                style="cursor: pointer;"></i></i></label>
+
+              <div class="col">
+                <div class="input-group">
+                  <input class="form-control"
+                         name="requested_object_storage"
+                         id="requested_object_storage"
+                         placeholder="NA"
+                         value="{{selectedApplication?.project_application_object_storage}}"
+                         type="text" disabled>
+                  <div class="input-group-append"><span class="input-group-text"> GB
+                                    </span></div>
+                </div>
+                <span class="help-block">Requested Object storage</span>
+              </div>
+
+              <div *ngIf="selectedApplication?.project_application_openstack_project" class="col">
+                <div class="input-group">
+                  <input class="form-control"
+                         id="granted_object_storage"
+                         name="granted_object_storage"
+                         placeholder="e.g. 8"
+                         [(ngModel)]="adjustedApplication.project_application_object_storage"
+                         type="number" min="0" step="1"
+                         appInteger appMinAmount="0" required
+                         [ngClass]="{
+                                'is-invalid': resourceAdjustmentForm.controls.granted_object_storage?.invalid ,
+                                'is-valid': resourceAdjustmentForm.controls.granted_object_storage?.valid
+                                }">
+                  <div class="input-group-append"><span class="input-group-text"> GB
+                                    </span></div>
+                </div>
+                <span class="help-block">How much Object Storage do you need in the future?</span>
+              </div>
+            </div>
+
+          </form>
+
+          <div *ngIf="resourceAdjustmentForm.invalid" class="alert alert-warning" role="alert">
+            <p>Some required fields are incorrect or not filled in yet.
+              Please check if all required (*) fields are filled in correctly.</p>
+            <p *ngIf="resourceAdjustmentForm.controls.granted_volume_counter?.invalid">
+              - Number of storage volumes missing
+            </p>
+            <p *ngIf="resourceAdjustmentForm.controls.granted_volume_limit?.invalid">
+              - Storage Limit missing
+            </p>
+            <p *ngIf="resourceAdjustmentForm.controls.granted_object_storage?.invalid">
+              - Object Storage missing
+            </p>
+            <p *ngIf="!atLeastOneVM">
+              - Please select at least one Flavor
+            </p>
+          </div>
+
+
+          <div class="modal-footer">
+            <div class="label">
+              The application values will be adjusted. The adjusted values still need to be approved separately.
+            </div>
+            <button type="button" class="btn  btn-primary"
+                    form="resource_adjustment_form" id="submitAdjustmentButton"
+                    (click)="adjustModal.hide(); resetNotificationModal(); notificationModal.show(); adjustApplication();"
+                    [disabled]="resourceAdjustmentForm.invalid || !atLeastOneVM"><i class="fa fa-dot-circle-o"></i>
+              Adjust
+            </button>
+            <button type="button" class="btn btn-danger"
+                    (click)="adjustModal.hide();">
+              Discard
+            </button>
+
+          </div>
+
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+  </div>
 
 <div bsModal #resultModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
      aria-labelledby="Label"
