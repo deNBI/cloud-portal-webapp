@@ -31,7 +31,7 @@
   },
   "private": true,
   "dependencies": {
-    "@angular-eslint/eslint-plugin": "1.2.0",
+    "@angular-eslint/eslint-plugin": "2.0.0",
     "@angular/animations": "^11.2.6",
     "@angular/cdk": "^11.2.5",
     "@angular/common": "^11.2.6",
