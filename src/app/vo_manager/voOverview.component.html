@@ -215,6 +215,10 @@
                     *ngIf="project | hasstatusinlist: application_states.WAIT_FOR_TERMINATION_FM"
                     style="margin-left: 5px"
                     class="badge badge-dark">WAIT FOR TERMINATION BY FM </span>
+                  <span
+                    *ngIf="project | hasstatusinlist: application_states.PROTECTED"
+                    style="margin-left: 5px"
+                    class="badge badge-secondary">PROTECTED </span>
 
                 </td>
 
@@ -259,10 +263,26 @@
                     </button>
                     <button
                       style="margin-left: 5px" type="button" disabled
-                      class="btn btn-danger" [id]="'show_terminate_' + project?.Id"
+                      class="btn btn-warning" [id]="'show_terminate_' + project?.Id"
                       (click)="selectedProject = project;terminateModal.show();"
                       *ngIf="project | hasstatusinlist: application_states.WAIT_FOR_TERMINATION_FM">
                       Processed by FM
+                    </button>
+                    <button
+                      style="margin-left: 5px"
+                      type="button"
+                      class="btn btn-info" [id]="'set_protected_' + project?.Id"
+                      (click)="setProtected(project, true); notificationModal.show();"
+                      *ngIf="!(project | hasstatusinlist: application_states.PROTECTED)">
+                      <i class="fa fa-trash"></i>&nbsp;Set Protected
+                    </button>
+                    <button
+                      style="margin-left: 5px"
+                      type="button"
+                      class="btn btn-info" [id]="'set_unprotected_' + project?.Id"
+                      (click)="setProtected(project, false); notificationModal.show();"
+                      *ngIf="(project | hasstatusinlist: application_states.PROTECTED)">
+                      <i class="fa fa-trash"></i>&nbsp;Set Unprotected
                     </button>
                   </div>
                 </td>
