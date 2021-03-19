@@ -16,6 +16,12 @@ export class ApplicationsService {
   constructor(private http: HttpClient) {
   }
 
+  adjustApplication(application: Application): Observable<Application> {
+    return this.http.post<Application>(`${ApiSettings.getApiBaseURL()}project_applications/adjust/`, application, {
+      withCredentials: true
+    });
+  }
+
   getUserApplications(): Observable<any> {
     return this.http.get(`${ApiSettings.getApiBaseURL()}users/current/project_applications/`, {
       withCredentials: true
