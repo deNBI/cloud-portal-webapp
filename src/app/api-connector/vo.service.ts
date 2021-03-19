@@ -5,6 +5,7 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import {IResponseTemplate} from './response-template';
 import {Resources} from '../vo_manager/resources/resources';
 import {ProjectMember} from '../projectmanagement/project_member.model';
+import {Project} from '../projectmanagement/project.model';
 
 /**
  * Service which provides vo methods.
@@ -134,6 +135,15 @@ export class VoService {
     return this.http.get<ProjectMember[]>(`${ApiSettings.getApiBaseURL()}vo/projects/${groupid}/members/`, {
       withCredentials: true
     })
+  }
+
+  setProtected(groupid: number | string, set: boolean): Observable<any> {
+    const parameters: HttpParams = new HttpParams().set('action', set ? 'set' : 'unset');
+
+    return this.http.get(`${ApiSettings.getApiBaseURL()}vo/projects/${groupid}/protected/`,{
+      withCredentials: true,
+      params: parameters
+    });
   }
 
 }

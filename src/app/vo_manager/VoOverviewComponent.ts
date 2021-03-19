@@ -325,6 +325,21 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
 
   }
 
+  setProtected(project: Project, set: boolean): void {
+    this.voService.setProtected(project.Id, set).subscribe((result: any): void => {
+      this.updateNotificationModal('Success',
+          result['result'] === 'set' ? 'The project was successfully set as protected.'
+            : 'The status "Protected" was removed successfully',
+          true, 'success');
+      const indexAll: number = this.projects.indexOf(project, 0);
+      this.getProjectStatus(this.projects[indexAll]);
+    }, (error: any): void => {
+      if (error['status'] === 500){
+        this.updateNotificationModal('Failed', 'The status change was not successful.', true, 'danger');
+      }
+    });
+  }
+
   getMembersOfTheProject(projectid: number, projectname: string): void {
     this.voService.getVoGroupRichMembers(projectid)
       .subscribe((members: ProjectMember[]): void => {
