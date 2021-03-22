@@ -7,7 +7,7 @@ import {Util} from '../util';
 export class LoginPage {
   private static timeout: number = browser.params.timeout;
   private static TEST_RP_WARNING: string = 'testRpWarning';
-  private static TEST_RP_CONTINUE: string = 'Continue'
+  private static TEST_RP_CONTINUE: string = 'continue'
 
   static async login(email: string, psw: string, auth: string, relog: boolean = false): Promise<any> {
 
