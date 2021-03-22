@@ -1,0 +1,3 @@
+[clog]
+repository = "https://github.com/deNBI/cloud-portal-webapp"
+from-latest-tag = true
