@@ -76,6 +76,7 @@ exports.config = {
   allScriptsTimeout: 11000,
   specs: [
     'tests/terminate_all_pt.ts',
+    'tests/public_key_test.ts',
     'tests/simple_vm_application_test.ts',
     'tests/simple_vm_approval_test.ts',
     'tests/member_test.ts',
@@ -89,8 +90,6 @@ exports.config = {
     'tests/cloud_application_modification_test.ts',
     'tests/cloud_modification_approval_test.ts',
     'tests/virtual_machine_tests.ts',
-    'tests/terminate_all_pt.ts',
-    'tests/public_key_test.ts'
   ],
   capabilities: {
     browserName: 'chrome',
