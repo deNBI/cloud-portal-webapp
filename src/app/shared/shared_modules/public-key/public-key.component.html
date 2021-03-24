@@ -126,7 +126,7 @@ In case you lose your private key, it is lost permanently!</alert>
         <alert type="danger" *ngIf="!validatePublicKey() && public_key?.length >0">
           <strong>Warning</strong> This is not a valid public key!
         </alert>
-        <textarea rows="8" type="text" class="form-control input-lg"
+        <textarea rows="8" type="text" class="form-control input-lg" id="public_key_enter_area"
                   placeholder="Please enter a new valid public key." name="public_key" [(ngModel)]="public_key"
                   #publickey></textarea>
 
