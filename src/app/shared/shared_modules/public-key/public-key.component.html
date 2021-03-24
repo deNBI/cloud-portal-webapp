@@ -37,14 +37,14 @@
   <span *ngIf="userinfo.PublicKey != 'None'"
         style="word-wrap: break-word; max-width: 80px; white-space: normal">
 
-            <div style="word-break: break-all">{{userinfo?.PublicKey}}</div></span>
+            <div style="word-break: break-all" id="user_public_key">{{userinfo?.PublicKey}}</div></span>
 </td>
 <td></td>
 
 
 <div bsModal #generateKeyModal="bs-modal" class="modal fade" tabindex="-1"
      role="dialog" aria-labelledby="Label"
-     aria-hidden="true">
+     aria-hidden="true" id="generate_key_modal">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -87,7 +87,7 @@ In case you lose your private key, it is lost permanently!</alert>
 
 
         <button [disabled]="!acknowledgement_given"
-                class="btn btn-success col-md4" type="button"
+                class="btn btn-success col-md4" type="button" id="set_new_ssh_key_button"
                 (click)="generateKey();generateKeyModal.hide();">Set
         </button>
         <button class="btn  btn-primary col-md-4" type="reset"
@@ -95,7 +95,7 @@ In case you lose your private key, it is lost permanently!</alert>
         </button>
 
       </div>
-    </div><!-- /.modal-content -->L
+    </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
@@ -126,7 +126,7 @@ In case you lose your private key, it is lost permanently!</alert>
         <alert type="danger" *ngIf="!validatePublicKey() && public_key?.length >0">
           <strong>Warning</strong> This is not a valid public key!
         </alert>
-        <textarea rows="8" type="text" class="form-control input-lg"
+        <textarea rows="8" type="text" class="form-control input-lg" id="public_key_enter_area"
                   placeholder="Please enter a new valid public key." name="public_key" [(ngModel)]="public_key"
                   #publickey></textarea>
 
