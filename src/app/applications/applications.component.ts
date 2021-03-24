@@ -14,6 +14,8 @@ import {ComputecenterComponent} from '../projectmanagement/computecenter.compone
 import {is_vo} from '../shared/globalvar';
 import {Application_States} from '../shared/shared_modules/baseClass/abstract-base-class';
 import {FlavorType} from '../virtualmachines/virtualmachinemodels/flavorType';
+import {NgForm} from "@angular/forms";
+import {CreditsService} from "../api-connector/credits.service";
 
 // eslint-disable-next-line no-shadow
 enum TabStates {
@@ -30,7 +32,7 @@ enum TabStates {
              selector: 'app-applications-list',
              templateUrl: 'applications.component.html',
              providers: [FacilityService, VoService, UserService, GroupService,
-               ApplicationsService, ApiSettings, FlavorService]
+               ApplicationsService, ApiSettings, FlavorService, CreditsService]
            })
 export class ApplicationsComponent extends ApplicationBaseClassComponent implements OnInit {
 
@@ -85,13 +87,15 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
    * @param voService
    * @param facilityService
    * @param flavorService
+   * @param creditsService
    */
   constructor(applicationsservice: ApplicationsService,
               userservice: UserService,
               private groupservice: GroupService,
               private voService: VoService,
               facilityService: FacilityService,
-              private flavorService: FlavorService) {
+              private flavorService: FlavorService,
+              private creditsService: CreditsService) {
 
     super(userservice, applicationsservice, facilityService);
 
@@ -134,6 +138,12 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
   onChangeFlavor(flavor: Flavor, value: number): void {
     this.adjustedApplication.setFlavorInFlavors(flavor, value);
     this.checkIfMinimumSelected();
+    this.creditsService.getCreditsForApplication(
+      this.adjustedApplication.flavors,
+      this.adjustedApplication.project_application_lifetime).toPromise()
+      .then((credits: number): void => {
+        this.adjustedApplication.project_application_initial_credits = credits;
+      }).catch((err: any): void => console.log(err));
   }
 
   public setFlavorInFlavors(flavor: Flavor, counter: number): void {
