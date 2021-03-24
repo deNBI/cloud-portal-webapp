@@ -39,7 +39,7 @@ export class ProfilePage {
     await Util.clickElementById(this.OPEN_SET_KEY_BUTTON);
     Util.logInfo('Copying public key into textfield.');
     await Util.waitForPresenceOfElementById(this.ENTER_PUBLIC_KEY_AREA);
-    await Util.sendTextToElementByElement(Util.getElemTextById(this.ENTER_PUBLIC_KEY_AREA), this.TEST_PUBLIC_KEY);
+    await Util.sendTextToElementByIdUnsecure(this.ENTER_PUBLIC_KEY_AREA, this.TEST_PUBLIC_KEY);
     Util.logInfo('Clicking on Set-Button');
     await Util.waitForPresenceOfElementById(this.SET_NEW_PUBLIC_KEY_BUTTON);
     await Util.clickElementById(this.SET_NEW_PUBLIC_KEY_BUTTON);
