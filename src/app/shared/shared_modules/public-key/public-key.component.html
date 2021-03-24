@@ -151,7 +151,7 @@ In case you lose your private key, it is lost permanently!</alert>
 
 
         <button [disabled]="!validatePublicKey() || !acknowledgement_given"
-                class="btn btn-success col-md4" type="button"
+                class="btn btn-success col-md4" type="button" id="set_new_public_key_button"
                 (click)="importKey(publickey.value);pubKeyModal.hide();">Set
         </button>
         <button class="btn  btn-primary col-md-4" type="reset" (click)="public_key = userinfo.PublicKey ;pubKeyModal.hide();">Cancel
