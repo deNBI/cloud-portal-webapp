@@ -14,8 +14,8 @@ import {ComputecenterComponent} from '../projectmanagement/computecenter.compone
 import {is_vo} from '../shared/globalvar';
 import {Application_States} from '../shared/shared_modules/baseClass/abstract-base-class';
 import {FlavorType} from '../virtualmachines/virtualmachinemodels/flavorType';
-import {NgForm} from "@angular/forms";
-import {CreditsService} from "../api-connector/credits.service";
+import {NgForm} from '@angular/forms';
+import {CreditsService} from '../api-connector/credits.service';
 
 // eslint-disable-next-line no-shadow
 enum TabStates {
