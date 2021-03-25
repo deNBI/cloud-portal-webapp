@@ -10,6 +10,7 @@ import { IResponseTemplate } from './response-template';
 @Injectable()
 export class UserService {
 	constructor(private http: HttpClient) {
+		this.http = http;
 	}
 
 	getLoginElixirName(): Observable<IResponseTemplate> {
@@ -48,8 +49,8 @@ export class UserService {
 		});
 	}
 
-	getMemberDetailsByElixirId(elixir_id: string): Observable<any> {
-		elixir_id = elixir_id.substring(0, elixir_id.indexOf('@'));
+	getMemberDetailsByElixirId(elixir_id_param: string): Observable<any> {
+		const elixir_id: string = elixir_id_param.substring(0, elixir_id_param.indexOf('@'));
 
 		return this.http.get(`${ApiSettings.getApiBaseURL()}users/${elixir_id}/member/`, {
 			withCredentials: true,

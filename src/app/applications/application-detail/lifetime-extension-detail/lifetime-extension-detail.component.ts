@@ -10,8 +10,4 @@ import { Application } from '../../application.model/application.model';
 })
 export class LifetimeExtensionDetailComponent {
   @Input() application: Application;
-
-  constructor() {
-  }
-
 }

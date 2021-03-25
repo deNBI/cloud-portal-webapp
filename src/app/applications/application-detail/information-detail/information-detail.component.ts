@@ -13,8 +13,4 @@ export class InformationDetailComponent {
   @Input() application: Application;
   is_vo: boolean = is_vo;
   elixir_id: string = elixir_id;
-
-  constructor() {
-  }
-
 }

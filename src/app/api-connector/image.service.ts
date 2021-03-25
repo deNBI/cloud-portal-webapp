@@ -15,6 +15,7 @@ import {
 @Injectable()
 export class ImageService {
 	constructor(private http: HttpClient) {
+		this.http = http;
 	}
 
 	getImages(project_id: number): Observable<Image[]> {

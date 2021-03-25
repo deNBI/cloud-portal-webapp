@@ -11,6 +11,7 @@ import { WordPressTag } from '../facility_manager/newsmanagement/wp-tags';
 @Injectable()
 export class NewsService {
 	constructor(private http: HttpClient) {
+		this.http = http;
 	}
 
 	updateNewsInWordpress(news: WordPressNews): Observable<any> {

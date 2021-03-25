@@ -13,6 +13,7 @@ import { Backend } from '../virtualmachines/conda/backend/backend';
 export class BiocondaService {
 
 	constructor(private http: HttpClient) {
+		this.http = http;
 	}
 
 	getAllTools(page: number, name?: string): Observable<any> {

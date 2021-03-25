@@ -10,56 +10,56 @@ import { IResponseTemplate } from './response-template';
  */
 @Injectable()
 export class ClientService {
-    clientURL: string = `${ApiSettings.getApiBaseURL()}clients/`;
+	clientURL: string = `${ApiSettings.getApiBaseURL()}clients/`;
 
-    constructor(private http: HttpClient) {
-    }
+	constructor(private http: HttpClient) {
+		this.http = http;
+	}
 
-    isClientAvaiable(): Observable<Client> {
+	isClientAvaiable(): Observable<Client> {
+		return this.http.get<Client>(`${this.clientURL}active/`, {
+			withCredentials: true,
+		});
+	}
 
-    	return this.http.get<Client>(`${this.clientURL}active/`, {
-    		withCredentials: true,
-    	});
-    }
+	getClientsChecked(): Observable<Client[]> {
 
-    getClientsChecked(): Observable<Client[]> {
+		return this.http.get<Client[]>(this.clientURL, {
+			withCredentials: true,
+		});
+	}
 
-    	return this.http.get<Client[]>(this.clientURL, {
-    		withCredentials: true,
-    	});
-    }
+	checkClient(host: string, port: string): Observable<IResponseTemplate> {
+		const params: HttpParams = new HttpParams().set('host', host).set('port', port);
 
-    checkClient(host: string, port: string): Observable<IResponseTemplate> {
-    	const params: HttpParams = new HttpParams().set('host', host).set('port', port);
+		return this.http.post<IResponseTemplate>(`${this.clientURL}checkClient/`, params, {
+			withCredentials: true,
+		});
 
-    	return this.http.post<IResponseTemplate>(`${this.clientURL}checkClient/`, params, {
-    		withCredentials: true,
-    	});
+	}
 
-    }
+	postClient(host: string, port: string, location: string): Observable<Client> {
 
-    postClient(host: string, port: string, location: string): Observable<Client> {
+		const params: HttpParams = new HttpParams().set('host', host).set('port', port).set('location', location);
 
-    	const params: HttpParams = new HttpParams().set('host', host).set('port', port).set('location', location);
+		return this.http.post<Client>(this.clientURL, params, {
+			withCredentials: true,
+		});
+	}
 
-    	return this.http.post<Client>(this.clientURL, params, {
-    		withCredentials: true,
-    	});
-    }
+	deleteClient(client_id: number): Observable<any> {
+		return this.http.delete(`${this.clientURL}${client_id}/`, {
+			withCredentials: true,
+		});
 
-    deleteClient(client_id: number): Observable<any> {
-    	return this.http.delete(`${this.clientURL}${client_id}/`, {
-    		withCredentials: true,
-    	});
+	}
 
-    }
+	updateClient(client: Client): Observable<Client> {
+		const params: HttpParams = new HttpParams().set('host', client.host).set('port', client.port).set('location', client.location);
 
-    updateClient(client: Client): Observable<Client> {
-    	const params: HttpParams = new HttpParams().set('host', client.host).set('port', client.port).set('location', client.location);
+		return this.http.patch<Client>(`${this.clientURL}${client.id}/`, params, {
+			withCredentials: true,
+		});
 
-    	return this.http.patch<Client>(`${this.clientURL}${client.id}/`, params, {
-    		withCredentials: true,
-    	});
-
-    }
+	}
 }

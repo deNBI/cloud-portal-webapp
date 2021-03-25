@@ -12,8 +12,4 @@ export class ResourceDetailComponent {
   @Input() application: Application;
   @Input() is_vo_admin: boolean;
   @Input() current_credits: number;
-
-  constructor() {
-  }
-
 }

@@ -8,17 +8,18 @@ import { ApiSettings } from './api-settings.service';
  */
 @Injectable()
 export class PlaybookService {
-  data: string;
-  baseUrl: string = `${ApiSettings.getApiBaseURL()}playbooks/`;
+	data: string;
+	baseUrl: string = `${ApiSettings.getApiBaseURL()}playbooks/`;
 
-  constructor(private http: HttpClient) {
-  }
+	constructor(private http: HttpClient) {
+		this.http = http;
+	}
 
-  getPlaybookForVM(vm_id: string): Observable<any> {
+	getPlaybookForVM(vm_id: string): Observable<any> {
 
-  	return this.http.get<Object>(`${this.baseUrl}${vm_id}/`, {
-  		withCredentials: true,
-  	});
-  }
+		return this.http.get<Object>(`${this.baseUrl}${vm_id}/`, {
+			withCredentials: true,
+		});
+	}
 
 }

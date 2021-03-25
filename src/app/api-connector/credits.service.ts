@@ -10,6 +10,7 @@ import { Flavor } from '../virtualmachines/virtualmachinemodels/flavor';
 @Injectable()
 export class CreditsService {
 	constructor(private http: HttpClient) {
+		this.http = http;
 	}
 
 	/**

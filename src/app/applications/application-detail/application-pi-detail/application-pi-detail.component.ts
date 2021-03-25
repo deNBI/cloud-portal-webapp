@@ -10,8 +10,4 @@ import { Application } from '../../application.model/application.model';
 })
 export class ApplicationPiDetailComponent {
   @Input() application: Application;
-
-  constructor() {
-  }
-
 }

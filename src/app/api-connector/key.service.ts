@@ -11,6 +11,7 @@ import { IResponseTemplate } from './response-template';
 export class KeyService {
 
 	constructor(private http: HttpClient) {
+		this.http = http;
 	}
 
 	getKey(): Observable<IResponseTemplate> {
@@ -21,8 +22,8 @@ export class KeyService {
 
 	}
 
-	postKey(public_key: string): Observable<IResponseTemplate> {
-		public_key = public_key.replace(/\r?\n|\r/gi, '');
+	postKey(public_key_param: string): Observable<IResponseTemplate> {
+		const public_key: string = public_key_param.replace(/\r?\n|\r/gi, '');
 		const params: HttpParams = new HttpParams().set('public_key', public_key);
 
 		return this.http.put<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}users/current/public_key/`, params, {

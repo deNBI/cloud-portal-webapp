@@ -112,7 +112,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
   }
 
   searchForUserInFacility(searchString: string): void {
-  	this.facilityService.getFilteredMembersOfFacility(searchString, this.selectedFacility['FacilityId']);
+  	this.facilityService.getFilteredMembersOfFacility(searchString);
   }
 
   filterMembers(searchString: string): void {

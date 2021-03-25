@@ -16,6 +16,7 @@ import { GeneralStorageFactor } from '../facility_manager/resources/general-stor
 @Injectable()
 export class FacilityService {
 	constructor(private http: HttpClient) {
+		this.http = http;
 	}
 
 	/**
@@ -561,7 +562,7 @@ export class FacilityService {
 		});
 	}
 
-	getFilteredMembersOfFacility(searchString: string, selectedFacility: string | number): Observable<any> {
+	getFilteredMembersOfFacility(searchString: string): Observable<any> {
 
 		return this.http.get(`${ApiSettings.getApiBaseURL()}users/filterFacility/`, {
 			withCredentials: true,

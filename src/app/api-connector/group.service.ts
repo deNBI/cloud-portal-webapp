@@ -16,6 +16,7 @@ import { ProjectMember } from '../projectmanagement/project_member.model';
 export class GroupService {
 
 	constructor(private http: HttpClient) {
+		this.http = http;
 	}
 
 	getProjectOSDetails(groupId: number | string): Observable<object> {

@@ -13,8 +13,4 @@ export class ModificationDetailComponent {
   @Input() application: Application;
   @Input() is_vo_admin: boolean;
   Application_States: typeof Application_States = Application_States;
-
-  constructor() {
-  }
-
 }

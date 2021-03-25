@@ -10,7 +10,7 @@ import { ApiSettings } from './api-settings.service';
 export class NumbersService {
 
 	constructor(private http: HttpClient) {
-
+		this.http = http;
 	}
 
 	getProjectCounterTimeline(): Observable<any> {

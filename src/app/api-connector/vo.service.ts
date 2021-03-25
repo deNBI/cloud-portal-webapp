@@ -5,7 +5,6 @@ import { ApiSettings } from './api-settings.service';
 import { IResponseTemplate } from './response-template';
 import { Resources } from '../vo_manager/resources/resources';
 import { ProjectMember } from '../projectmanagement/project_member.model';
-import { Project } from '../projectmanagement/project.model';
 
 /**
  * Service which provides vo methods.
@@ -13,6 +12,7 @@ import { Project } from '../projectmanagement/project.model';
 @Injectable()
 export class VoService {
 	constructor(private http: HttpClient) {
+		this.http = http;
 	}
 
 	sendTestError(): Observable<IResponseTemplate> {

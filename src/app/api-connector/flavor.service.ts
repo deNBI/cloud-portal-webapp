@@ -12,6 +12,7 @@ import { FlavorType } from '../virtualmachines/virtualmachinemodels/flavorType';
 export class FlavorService {
 
 	constructor(private http: HttpClient) {
+		this.http = http;
 	}
 
 	getFlavors(project_id: number | string): Observable<Flavor[]> {

@@ -11,8 +11,4 @@ import { Application } from '../../application.model/application.model';
 export class CreditsExtensionDetailComponent {
   @Input() application: Application;
   @Input() is_vo_admin: boolean;
-
-  constructor() {
-  }
-
 }
