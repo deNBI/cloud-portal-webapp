@@ -259,10 +259,10 @@
 
                   <div *ngIf="vm?.cluster.cluster_id" class="col-md-1">
                       <span class="fas fa-network-wired" style="font-size: 18px;" data-toggle="tooltip" data-placement="right"
-                            title="{{'Master node of cluster with ' + vm?.cluster.worker_instances?.length.toString() + ' slaves'}}" (click)="this.copyToClipboard(vm?.res_env_url)">
+                            title="{{'Master node of cluster with ' + (vm?.cluster.instances_count - 1) + ' slaves'}}" (click)="this.copyToClipboard(vm?.res_env_url)">
                           <span class="badge badge-pill badge-secondary"
                                 style="font-size: 10px; position: relative; top: -12px; left: -10px;">
-                            {{vm?.cluster.worker_instances?.length.toString()}}
+                            {{vm?.cluster.instances_count - 1}}
                           </span>
                       </span>
                   </div>
