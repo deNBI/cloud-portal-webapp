@@ -1,17 +1,19 @@
-import {AfterViewInit, ApplicationRef, Component, OnInit, ViewChild} from '@angular/core';
-import {ModalDirective} from 'ngx-bootstrap/modal';
-import {Angulartics2Piwik} from 'angulartics2/piwik';
-import {VoService} from './api-connector/vo.service';
+import {
+	AfterViewInit, ApplicationRef, Component, OnInit, ViewChild,
+} from '@angular/core';
+import { ModalDirective } from 'ngx-bootstrap/modal';
+import { Angulartics2Piwik } from 'angulartics2/piwik';
+import { VoService } from './api-connector/vo.service';
 
 /**
  * App component.
  */
 @Component({
-  // eslint-disable-next-line @angular-eslint/component-selector
-             selector: 'body',
-             templateUrl: 'app.component.html',
-             providers: [VoService]
-           })
+	// eslint-disable-next-line @angular-eslint/component-selector
+	selector: 'body',
+	templateUrl: 'app.component.html',
+	providers: [VoService],
+})
 export class AppComponent implements AfterViewInit, OnInit {
 
   notificationModalTitle: string = 'Update available';
@@ -21,7 +23,7 @@ export class AppComponent implements AfterViewInit, OnInit {
   @ViewChild('notificationModal', { static: true }) modal: ModalDirective;
 
   constructor(private appRef: ApplicationRef, private angulartics2Piwik: Angulartics2Piwik) {
-    /*   if (environment.production) {
+  	/*   if (environment.production) {
            const isStable = appRef.isStable.pipe(first(isStable => isStable === true));
            const intervalTime = interval(60 * 1000);
            const checkUpdatesInIntervall = concat(isStable, intervalTime);
@@ -31,19 +33,19 @@ export class AppComponent implements AfterViewInit, OnInit {
 
                })
            }))
-       }*/
+       } */
 
   }
 
   reloadSite(): void {
-    window.location.reload()
+  	window.location.reload();
   }
 
   ngOnInit(): void {
-    this.angulartics2Piwik.startTracking();
-    // this.voService.isVo().subscribe((result: IResponseTemplate) => {
-     // setVO(<boolean><Boolean>result.value);
-    // })
+  	this.angulartics2Piwik.startTracking();
+  	// this.voService.isVo().subscribe((result: IResponseTemplate) => {
+  	// setVO(<boolean><Boolean>result.value);
+  	// })
   }
 
   ngAfterViewInit(): void {

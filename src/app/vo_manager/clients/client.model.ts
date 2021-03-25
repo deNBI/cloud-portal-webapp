@@ -24,10 +24,10 @@ export class Client {
   bibigrid_available: boolean;
 
   constructor(host: string, port: string, location: string, id: string) {
-    this.host = host;
-    this.port = port;
-    this.location = location;
-    this.id = id;
+  	this.host = host;
+  	this.port = port;
+  	this.location = location;
+  	this.id = id;
   }
 
 }

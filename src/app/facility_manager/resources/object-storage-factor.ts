@@ -1,4 +1,4 @@
-import {Factor} from './factor';
+import { Factor } from './factor';
 
 /**
  * ObjectStorageFactor class.
@@ -8,11 +8,11 @@ export class ObjectStorageFactor extends Factor {
   storage: number;
 
   constructor(objectStorageFactor: ObjectStorageFactor | null) {
-    super(objectStorageFactor)
+  	super(objectStorageFactor);
 
-    if (objectStorageFactor) {
-      this.storage = objectStorageFactor.storage;
-    }
+  	if (objectStorageFactor) {
+  		this.storage = objectStorageFactor.storage;
+  	}
 
   }
 }

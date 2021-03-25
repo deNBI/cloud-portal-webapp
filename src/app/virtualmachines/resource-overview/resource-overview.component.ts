@@ -1,14 +1,16 @@
-import {Component, Input, OnChanges, OnInit} from '@angular/core';
-import {ApplicationRessourceUsage} from '../../applications/application-ressource-usage/application-ressource-usage';
+import {
+	Component, Input, OnChanges, OnInit,
+} from '@angular/core';
+import { ApplicationRessourceUsage } from '../../applications/application-ressource-usage/application-ressource-usage';
 
 /**
  * Resource Overview Component
  */
 @Component({
-             selector: 'app-resource-overview',
-             templateUrl: './resource-overview.component.html',
-             styleUrls: ['./resource-overview.component.scss']
-           })
+	selector: 'app-resource-overview',
+	templateUrl: './resource-overview.component.html',
+	styleUrls: ['./resource-overview.component.scss'],
+})
 export class ResourceOverviewComponent implements OnInit, OnChanges {
 
   @Input() ressourceUsage: ApplicationRessourceUsage;
@@ -27,11 +29,11 @@ export class ResourceOverviewComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(): void {
-    if (this.newDiskspace > 0) {
-      this.newVolumes = 1;
-    } else {
-      this.newVolumes = 0;
-    }
+  	if (this.newDiskspace > 0) {
+  		this.newVolumes = 1;
+  	} else {
+  		this.newVolumes = 0;
+  	}
   }
 
   ngOnInit(): void {

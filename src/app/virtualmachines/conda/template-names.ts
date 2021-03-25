@@ -10,52 +10,52 @@ export class TemplateNames {
 
   private static _ALL_TEMPLATES: string[] =
     [TemplateNames._RSTUDIO,
-      TemplateNames._THEIA,
-      TemplateNames._GUACAMOLE,
-      TemplateNames._JUPYTERNOTEBOOK,
-      TemplateNames._CWLAB];
+    	TemplateNames._THEIA,
+    	TemplateNames._GUACAMOLE,
+    	TemplateNames._JUPYTERNOTEBOOK,
+    	TemplateNames._CWLAB];
 
   static get RSTUDIO(): string {
-    return this._RSTUDIO;
+  	return this._RSTUDIO;
   }
 
   static set RSTUDIO(value: string) {
-    this._RSTUDIO = value;
+  	this._RSTUDIO = value;
   }
 
   static get THEIA(): string {
-    return this._THEIA;
+  	return this._THEIA;
   }
 
   static set THEIA(value: string) {
-    this._THEIA = value;
+  	this._THEIA = value;
   }
 
   static get GUACAMOLE(): string {
-    return this._GUACAMOLE;
+  	return this._GUACAMOLE;
   }
 
   static set GUACAMOLE(value: string) {
-    this._GUACAMOLE = value;
+  	this._GUACAMOLE = value;
   }
 
   static get JUPYTERNOTEBOOK(): string {
-    return this._JUPYTERNOTEBOOK;
+  	return this._JUPYTERNOTEBOOK;
   }
 
   static set JUPYTERNOTEBOOK(value: string) {
-    this._JUPYTERNOTEBOOK = value;
+  	this._JUPYTERNOTEBOOK = value;
   }
 
   static get CWLAB(): string {
-    return this._CWLAB;
+  	return this._CWLAB;
   }
 
   static set CWLAB(value: string) {
-    this._CWLAB = value;
+  	this._CWLAB = value;
   }
 
   static get ALL_TEMPLATE_NAMES(): string [] {
-    return this._ALL_TEMPLATES;
+  	return this._ALL_TEMPLATES;
   }
 }

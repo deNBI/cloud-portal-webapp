@@ -14,14 +14,14 @@ export class Userinfo {
   PendingEmails: string[];
 
   constructor(userInfo: any) {
-    this.Id = userInfo.project_application_id;
-    this.FirstName = userInfo.FirstName;
-    this.LastName = userInfo.LastName;
-    this.MemberId = userInfo.MemberId;
-    this.ElixirId = userInfo.ElixirId;
-    this.PublicKey = userInfo.PublicKey;
-    this.UserLogin = userInfo.UserLogin;
-    this.Email = userInfo.Email;
-    this.PendingEmails = userInfo.PendingEmails;
+  	this.Id = userInfo.project_application_id;
+  	this.FirstName = userInfo.FirstName;
+  	this.LastName = userInfo.LastName;
+  	this.MemberId = userInfo.MemberId;
+  	this.ElixirId = userInfo.ElixirId;
+  	this.PublicKey = userInfo.PublicKey;
+  	this.UserLogin = userInfo.UserLogin;
+  	this.Email = userInfo.Email;
+  	this.PendingEmails = userInfo.PendingEmails;
   }
 }

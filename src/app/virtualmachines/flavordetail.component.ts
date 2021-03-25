@@ -1,15 +1,17 @@
-import {Component, EventEmitter, HostListener, Input, OnInit, Output} from '@angular/core';
-import {Flavor} from './virtualmachinemodels/flavor'
-import {OwlOptions} from 'ngx-owl-carousel-o';
+import {
+	Component, EventEmitter, HostListener, Input, OnInit, Output,
+} from '@angular/core';
+import { OwlOptions } from 'ngx-owl-carousel-o';
+import { Flavor } from './virtualmachinemodels/flavor';
 
 /**
  * Flavor detail component.
  */
 @Component({
-             selector: 'app-flavor-detail',
-             templateUrl: 'flavordetail.component.html'
+	selector: 'app-flavor-detail',
+	templateUrl: 'flavordetail.component.html',
 
-           })
+})
 export class FlavorDetailComponent implements OnInit {
   @Input() selectedFlavor: Flavor;
   @Input() flavors: Flavor[];
@@ -32,39 +34,39 @@ export class FlavorDetailComponent implements OnInit {
   GPU_ICON_PATH: string = `${this.STATIC_IMG_FOLDER}/new_instance/gpu_icon.svg`;
 
   customOptions: OwlOptions = {
-    loop: false,
-    mouseDrag: false,
-    touchDrag: false,
-    pullDrag: false,
-    dots: true,
-    navSpeed: 700,
-    navText: ['<i class=\'fa fa-chevron-left\'></i>',
-      '<i class=\'fa fa-chevron-right\'></i>'],
-    responsive: {
-      0: {
-        items: 1
-      },
-      550: {
-        items: 2
+  	loop: false,
+  	mouseDrag: false,
+  	touchDrag: false,
+  	pullDrag: false,
+  	dots: true,
+  	navSpeed: 700,
+  	navText: ['<i class=\'fa fa-chevron-left\'></i>',
+  		'<i class=\'fa fa-chevron-right\'></i>'],
+  	responsive: {
+  		0: {
+  			items: 1,
+  		},
+  		550: {
+  			items: 2,
 
-      },
-      800: {
-        items: 3
-      },
-      1200: {
-        items: 4
-      }
-    },
-    nav: true
+  		},
+  		800: {
+  			items: 3,
+  		},
+  		1200: {
+  			items: 4,
+  		},
+  	},
+  	nav: true,
   };
 
   ngOnInit(): void {
-    this.window_size = window.innerWidth;
+  	this.window_size = window.innerWidth;
 
   }
 
   @HostListener('window:resize', ['$event']) onResize(event: any): void {
-    this.window_size = window.innerWidth;
+  	this.window_size = window.innerWidth;
   }
 
   /**
@@ -75,8 +77,8 @@ export class FlavorDetailComponent implements OnInit {
    */
   setSelectedFlavor(flavor: Flavor): void {
 
-    this.selectedFlavor = flavor;
-    this.selectedFlavorChange.emit(this.selectedFlavor);
+  	this.selectedFlavor = flavor;
+  	this.selectedFlavorChange.emit(this.selectedFlavor);
 
   }
 
@@ -86,6 +88,6 @@ export class FlavorDetailComponent implements OnInit {
    * @param input MB number
    */
   convertMbToGb(input: number): number {
-    return Math.floor(input / 1024)
+  	return Math.floor(input / 1024);
   }
 }
