@@ -8,9 +8,9 @@ export class CondaPackage {
   build: string;
 
   constructor(name: string, version: string, build: string) {
-    this.name = name;
-    this.version = version;
-    this.build = build;
+  	this.name = name;
+  	this.version = version;
+  	this.build = build;
   }
 
 }

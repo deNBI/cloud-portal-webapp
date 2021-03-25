@@ -12,7 +12,7 @@ export class ProjectEnumeration {
   project_application_status: number[];
 
   public gotStatus(status: number): boolean {
-    return this.project_application_status.includes(status)
+  	return this.project_application_status.includes(status);
 
   }
 

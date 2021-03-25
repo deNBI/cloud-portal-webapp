@@ -1,22 +1,22 @@
-import {Component, OnInit} from '@angular/core';
-import {Client} from './client.model';
-import {ClientService} from '../../api-connector/client.service';
-import {ApiSettings} from '../../api-connector/api-settings.service';
-import {GroupService} from '../../api-connector/group.service';
-import {UserService} from '../../api-connector/user.service';
-import {ComputecenterComponent} from '../../projectmanagement/computecenter.component';
-import {FacilityService} from '../../api-connector/facility.service';
-import {IResponseTemplate} from '../../api-connector/response-template';
-import {is_vo} from '../../shared/globalvar';
+import { Component, OnInit } from '@angular/core';
+import { Client } from './client.model';
+import { ClientService } from '../../api-connector/client.service';
+import { ApiSettings } from '../../api-connector/api-settings.service';
+import { GroupService } from '../../api-connector/group.service';
+import { UserService } from '../../api-connector/user.service';
+import { ComputecenterComponent } from '../../projectmanagement/computecenter.component';
+import { FacilityService } from '../../api-connector/facility.service';
+import { IResponseTemplate } from '../../api-connector/response-template';
+import { is_vo } from '../../shared/globalvar';
 
 /**
  * Client component.
  */
 @Component({
-             selector: 'app-client-overview',
-             templateUrl: 'clientOverview.html',
-             providers: [FacilityService, UserService, GroupService, ClientService, ApiSettings]
-           })
+	selector: 'app-client-overview',
+	templateUrl: 'clientOverview.html',
+	providers: [FacilityService, UserService, GroupService, ClientService, ApiSettings],
+})
 
 export class ClientOverviewComponent implements OnInit {
 
@@ -68,10 +68,10 @@ export class ClientOverviewComponent implements OnInit {
    * Get all clients status checked.
    */
   getClientsChecked(): void {
-    this.clientservice.getClientsChecked().subscribe((clients: Client[]): void => {
-      this.clients = clients;
-      this.isLoaded = true;
-    });
+  	this.clientservice.getClientsChecked().subscribe((clients: Client[]): void => {
+  		this.clients = clients;
+  		this.isLoaded = true;
+  	});
 
   }
 
@@ -79,15 +79,16 @@ export class ClientOverviewComponent implements OnInit {
    * Get all computecenters.
    */
   getComputeCenters(): void {
-    this.facilityService.getComputeCenters().subscribe((result: any): void => {
-      for (const cc of result) {
-        const compute_center: ComputecenterComponent = new ComputecenterComponent(
-          cc['compute_center_facility_id'], cc['compute_center_name'],
-          cc['compute_center_login'], cc['compute_center_support_mail']);
-        this.computeCenters.push(compute_center)
-      }
+  	this.facilityService.getComputeCenters().subscribe((result: any): void => {
+  		for (const cc of result) {
+  			const compute_center: ComputecenterComponent = new ComputecenterComponent(
+  				cc['compute_center_facility_id'], cc['compute_center_name'],
+  				cc['compute_center_login'], cc['compute_center_support_mail'],
+  			);
+  			this.computeCenters.push(compute_center);
+  		}
 
-    })
+  	});
   }
 
   /**
@@ -97,20 +98,20 @@ export class ClientOverviewComponent implements OnInit {
    * @param port of client
    */
   checkClient(host: string, port: string): void {
-    if (host && port) {
-      this.clientservice.checkClient(host, port).subscribe((data: IResponseTemplate): void => {
+  	if (host && port) {
+  		this.clientservice.checkClient(host, port).subscribe((data: IResponseTemplate): void => {
 
-        if (!data.value) {
-          this.checkStatus = 'No Connection';
-        } else if (data.value) {
-          this.checkStatus = 'Connected';
-        } else {
-          this.checkStatus = 'check failed';
+  			if (!data.value) {
+  				this.checkStatus = 'No Connection';
+  			} else if (data.value) {
+  				this.checkStatus = 'Connected';
+  			} else {
+  				this.checkStatus = 'check failed';
 
-        }
+  			}
 
-      });
-    }
+  		});
+  	}
   }
 
   /**
@@ -122,26 +123,26 @@ export class ClientOverviewComponent implements OnInit {
    */
   postClient(host: string, port: string, location: string): void {
 
-    if (host && port && location) {
-      this.clientservice.postClient(host, port, location).subscribe((newClient: Client): void => {
-        this.clients.push(newClient);
-      });
-    }
+  	if (host && port && location) {
+  		this.clientservice.postClient(host, port, location).subscribe((newClient: Client): void => {
+  			this.clients.push(newClient);
+  		});
+  	}
   }
 
   updateClient(host: string, port: string, location: string, id: string): void {
-    this.clientservice.updateClient(new Client(host, port, location, id)).subscribe((res: Client): void => {
-      this.clients[this.clients.indexOf(this.selectedClient)] = res;
-      this.selectedClient = null;
-      this.getClientsChecked();
-    })
+  	this.clientservice.updateClient(new Client(host, port, location, id)).subscribe((res: Client): void => {
+  		this.clients[this.clients.indexOf(this.selectedClient)] = res;
+  		this.selectedClient = null;
+  		this.getClientsChecked();
+  	});
 
   }
 
   ngOnInit(): void {
-    this.is_vo_admin = is_vo;
-    this.getClientsChecked();
-    this.getComputeCenters();
+  	this.is_vo_admin = is_vo;
+  	this.getClientsChecked();
+  	this.getComputeCenters();
   }
 
 }

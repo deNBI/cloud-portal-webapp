@@ -8,33 +8,33 @@ export class EdamOntologyTerm {
   private _uri: string;
 
   constructor(storid: number, name: string, term: string, uri: string, is_a: number[]) {
-    this._name = name;
-    this._term = term;
-    this._uri = uri;
+  	this._name = name;
+  	this._term = term;
+  	this._uri = uri;
   }
 
   get name(): string {
-    return this._name;
+  	return this._name;
   }
 
   set name(value: string) {
-    this._name = value;
+  	this._name = value;
   }
 
   get term(): string {
-    return this._term;
+  	return this._term;
   }
 
   set term(value: string) {
-    this._term = value;
+  	this._term = value;
   }
 
   get uri(): string {
-    return this._uri;
+  	return this._uri;
   }
 
   set uri(value: string) {
-    this._uri = value;
+  	this._uri = value;
   }
 
 }

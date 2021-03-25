@@ -1,4 +1,4 @@
-import {GeneralStatusStates} from '../../shared/shared_modules/baseClass/statusstates';
+import { GeneralStatusStates } from '../../shared/shared_modules/baseClass/statusstates';
 
 /**
  * Virtualmachine class.
@@ -22,174 +22,174 @@ export class VirtualMachineStates extends GeneralStatusStates {
   private static readonly _SCHEDULING: string = 'SCHEDULING'
   private static readonly _PLANNED: string = 'PLANNED'
   private static readonly _IN_PROCESS_STATES: string[] = [
-    VirtualMachineStates._REBOOTING,
-    VirtualMachineStates._REBOOTING_HARD,
-    VirtualMachineStates._IMAGE_UPLOADING,
-    VirtualMachineStates._IMAGE_PENDING_UPLOAD,
-    VirtualMachineStates._SCHEDULING,
-    VirtualMachineStates._SPAWNING,
-    VirtualMachineStates._BUILD,
-    VirtualMachineStates._POWERING_OFF,
-    VirtualMachineStates._POWERING_ON,
-    VirtualMachineStates._PREPARE_PLAYBOOK_BUILD,
-    VirtualMachineStates._BUILD_PLAYBOOK,
-    VirtualMachineStates._DELETING,
-    VirtualMachineStates._DELETING_FAILED,
-    VirtualMachineStates._CLIENT_OFFLINE,
-    VirtualMachineStates._GETTING_STATUS,
-    VirtualMachineStates._PORT_CLOSED,
-    VirtualMachineStates._CHECKING_CONNECTION,
-    VirtualMachineStates._GETTING_STATUS,
-    VirtualMachineStates._PLANNED,
-    null
+  	VirtualMachineStates._REBOOTING,
+  	VirtualMachineStates._REBOOTING_HARD,
+  	VirtualMachineStates._IMAGE_UPLOADING,
+  	VirtualMachineStates._IMAGE_PENDING_UPLOAD,
+  	VirtualMachineStates._SCHEDULING,
+  	VirtualMachineStates._SPAWNING,
+  	VirtualMachineStates._BUILD,
+  	VirtualMachineStates._POWERING_OFF,
+  	VirtualMachineStates._POWERING_ON,
+  	VirtualMachineStates._PREPARE_PLAYBOOK_BUILD,
+  	VirtualMachineStates._BUILD_PLAYBOOK,
+  	VirtualMachineStates._DELETING,
+  	VirtualMachineStates._DELETING_FAILED,
+  	VirtualMachineStates._CLIENT_OFFLINE,
+  	VirtualMachineStates._GETTING_STATUS,
+  	VirtualMachineStates._PORT_CLOSED,
+  	VirtualMachineStates._CHECKING_CONNECTION,
+  	VirtualMachineStates._GETTING_STATUS,
+  	VirtualMachineStates._PLANNED,
+  	null,
   ];
 
   private static readonly _NOT_IN_PROCESS_STATES: string[] = [
-    VirtualMachineStates._ACTIVE,
-    VirtualMachineStates._DELETED,
-    VirtualMachineStates._SHUTOFF,
-    VirtualMachineStates._NOT_FOUND,
-    VirtualMachineStates._ERROR,
-    VirtualMachineStates._CLIENT_OFFLINE
+  	VirtualMachineStates._ACTIVE,
+  	VirtualMachineStates._DELETED,
+  	VirtualMachineStates._SHUTOFF,
+  	VirtualMachineStates._NOT_FOUND,
+  	VirtualMachineStates._ERROR,
+  	VirtualMachineStates._CLIENT_OFFLINE,
   ];
 
   static get CLIENT_OFFLINE(): string {
-    return this._CLIENT_OFFLINE;
+  	return this._CLIENT_OFFLINE;
   }
 
   static get REBOOTING(): string {
-    return this._REBOOTING;
+  	return this._REBOOTING;
   }
 
   static get REBOOTING_HARD(): string {
-    return this._REBOOTING_HARD;
+  	return this._REBOOTING_HARD;
   }
 
   static get BUILD(): string {
-    return this._BUILD;
+  	return this._BUILD;
   }
 
   static get IMAGE_PENDING_UPLOAD(): string {
-    return this._IMAGE_PENDING_UPLOAD;
+  	return this._IMAGE_PENDING_UPLOAD;
   }
 
   static get IMAGE_UPLOADING(): string {
-    return this._IMAGE_UPLOADING;
+  	return this._IMAGE_UPLOADING;
   }
 
   static get PREPARE_PLAYBOOK_BUILD(): string {
-    return this._PREPARE_PLAYBOOK_BUILD;
+  	return this._PREPARE_PLAYBOOK_BUILD;
   }
 
   static get BUILD_PLAYBOOK(): string {
-    return this._BUILD_PLAYBOOK;
+  	return this._BUILD_PLAYBOOK;
   }
 
   static get ACTIVE(): string {
-    return this._ACTIVE;
+  	return this._ACTIVE;
   }
 
   static get SHUTOFF(): string {
-    return this._SHUTOFF;
+  	return this._SHUTOFF;
   }
 
   static get SPAWNING(): string {
-    return this._SPAWNING
+  	return this._SPAWNING;
   }
 
   static get SCHEDULING(): string {
-    return this._SCHEDULING
+  	return this._SCHEDULING;
   }
 
   static get POWERING_OFF(): string {
-    return this._POWERING_OFF;
+  	return this._POWERING_OFF;
   }
 
   static get POWERING_ON(): string {
-    return this._POWERING_ON;
+  	return this._POWERING_ON;
   }
 
   static get PORT_CLOSED(): string {
-    return this._PORT_CLOSED;
+  	return this._PORT_CLOSED;
   }
 
   static get CHECKING_CONNECTION(): string {
-    return this._CHECKING_CONNECTION;
+  	return this._CHECKING_CONNECTION;
   }
 
   static get IN_PROCESS_STATES(): string[] {
-    return this._IN_PROCESS_STATES;
+  	return this._IN_PROCESS_STATES;
   }
 
   static get NOT_IN_PROCESS_STATES(): string[] {
-    return this._NOT_IN_PROCESS_STATES;
+  	return this._NOT_IN_PROCESS_STATES;
   }
 
   public get staticPREPARE_PLAYBOOK_BUILD(): string {
-    return VirtualMachineStates.PREPARE_PLAYBOOK_BUILD;
+  	return VirtualMachineStates.PREPARE_PLAYBOOK_BUILD;
   }
 
   public get staticIMAGE_UPLOADING(): string {
-    return VirtualMachineStates.IMAGE_UPLOADING;
+  	return VirtualMachineStates.IMAGE_UPLOADING;
   }
 
   public get staticIMAGE_PENDING_UPLOAD(): string {
-    return VirtualMachineStates.IMAGE_PENDING_UPLOAD;
+  	return VirtualMachineStates.IMAGE_PENDING_UPLOAD;
   }
 
   public get staticBUILD_PLAYBOOK(): string {
-    return VirtualMachineStates.BUILD_PLAYBOOK;
+  	return VirtualMachineStates.BUILD_PLAYBOOK;
   }
 
   public get staticBUILD(): string {
-    return VirtualMachineStates.BUILD;
+  	return VirtualMachineStates.BUILD;
   }
 
   public get staticCHECKING_CONNECTION(): string {
-    return VirtualMachineStates.CHECKING_CONNECTION;
+  	return VirtualMachineStates.CHECKING_CONNECTION;
   }
 
   public get staticPORT_CLOSED(): string {
-    return VirtualMachineStates.PORT_CLOSED;
+  	return VirtualMachineStates.PORT_CLOSED;
   }
 
   public get staticACTIVE(): string {
-    return VirtualMachineStates.ACTIVE;
+  	return VirtualMachineStates.ACTIVE;
   }
 
   public get staticSPAWNING(): string {
-    return VirtualMachineStates.SPAWNING;
+  	return VirtualMachineStates.SPAWNING;
   }
 
-    public get staticSCHEDULING(): string {
-    return VirtualMachineStates.SCHEDULING;
+  public get staticSCHEDULING(): string {
+  	return VirtualMachineStates.SCHEDULING;
   }
 
   public get staticSHUTOFF(): string {
-    return VirtualMachineStates.SHUTOFF;
+  	return VirtualMachineStates.SHUTOFF;
   }
 
   public get staticPOWERING_OFF(): string {
-    return VirtualMachineStates.POWERING_OFF;
+  	return VirtualMachineStates.POWERING_OFF;
   }
 
-   public get staticPOWERING_ON(): string {
-     return VirtualMachineStates.POWERING_ON;
-   }
+  public get staticPOWERING_ON(): string {
+  	return VirtualMachineStates.POWERING_ON;
+  }
 
   public get staticNOT_IN_PROCESS_STATE(): string[] {
-    return VirtualMachineStates.NOT_IN_PROCESS_STATES;
+  	return VirtualMachineStates.NOT_IN_PROCESS_STATES;
   }
 
   public get staticIN_PROCESS_STATE(): string[] {
-    return VirtualMachineStates.IN_PROCESS_STATES;
+  	return VirtualMachineStates.IN_PROCESS_STATES;
   }
 
   public get staticREBOOTING(): string {
-    return VirtualMachineStates.REBOOTING;
+  	return VirtualMachineStates.REBOOTING;
   }
 
   public get staticREBOOTING_HARD(): string {
-    return VirtualMachineStates.REBOOTING_HARD;
+  	return VirtualMachineStates.REBOOTING_HARD;
   }
 }

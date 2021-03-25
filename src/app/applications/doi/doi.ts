@@ -7,18 +7,18 @@ export class Doi {
   private _id: number | string;
 
   get identifier(): string {
-    return this._identifier;
+  	return this._identifier;
   }
 
   set identifier(value: string) {
-    this._identifier = value;
+  	this._identifier = value;
   }
 
   get id(): number | string {
-    return this._id;
+  	return this._id;
   }
 
   set id(value: number | string) {
-    this._id = value;
+  	this._id = value;
   }
 }
