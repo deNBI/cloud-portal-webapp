@@ -211,11 +211,11 @@ export class ResourcesComponent implements OnInit {
 
   transformGbToTb(res: Resources[]): Resources[] {
     res.forEach((resource: Resources) => {
-      if (resource["resource_name"] === "Expired | In-Use"
-          || resource["resource_name"] === "Total Used"
-          || resource["resource_name"] === "Simple VM"
-          || resource["resource_name"] === "Wait for Confirmation: OpenStack"
-          || resource["resource_name"] === "Running: OpenStack") {
+      if (resource['resource_name'] === 'Expired | In-Use'
+          || resource['resource_name'] === 'Total Used'
+          || resource['resource_name'] === 'Simple VM'
+          || resource['resource_name'] === 'Wait for Confirmation: OpenStack'
+          || resource['resource_name'] === 'Running: OpenStack') {
         resource['totalObjectStorage'] = resource['totalObjectStorage'] / 1024;
         resource['totalObjectStorage'] = Math.round((resource['totalObjectStorage'] + Number.EPSILON) * 1000) / 1000
         resource['totalVolumeLimit'] = resource['totalVolumeLimit'] / 1024;
