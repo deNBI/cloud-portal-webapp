@@ -1084,6 +1084,9 @@
             <div class="label">
               The application values will be adjusted. The adjusted values still need to be approved separately.
             </div>
+            <div>
+              New initial credits: {{adjustedApplication?.project_application_initial_credits}}
+            </div>
             <button type="button" class="btn  btn-primary"
                     form="resource_adjustment_form" id="submitAdjustmentButton"
                     (click)="adjustModal.hide(); resetNotificationModal(); notificationModal.show(); adjustApplication();"
