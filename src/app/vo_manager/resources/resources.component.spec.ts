@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
 import { ResourcesComponent } from './resources.component';
-
+/* eslint-disable */
 describe('ResourcesComponent', () => {
 	let component: ResourcesComponent;
 	let fixture: ComponentFixture<ResourcesComponent>;
@@ -23,3 +22,4 @@ describe('ResourcesComponent', () => {
 		expect(component).toBeTruthy();
 	});
 });
+/* eslint-enable */

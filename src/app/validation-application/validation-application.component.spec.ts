@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ValidationApplicationComponent } from './validation-application.component';
 
-// tslint:disable
+/* eslint-disable */
 
 describe('ValidationApplicationComponent', () => {
 	let component: ValidationApplicationComponent;
@@ -25,3 +25,4 @@ describe('ValidationApplicationComponent', () => {
 		expect(component).toBeTruthy();
 	});
 });
+/* eslint-enable */

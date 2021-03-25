@@ -141,6 +141,7 @@
         "no-irregular-whitespace": "error",
         "no-multiple-empty-lines": "error",
         "no-null/no-null": "off",
+        "no-param-reassign": "off",
         "no-redeclare": "error",
         "no-regex-spaces": "error",
         "no-restricted-syntax": ["off", "ForInStatement"],
@@ -150,6 +151,7 @@
         "no-underscore-dangle": "off",
         "no-use-before-define": "off",
         "no-useless-constructor": "off",
+        "no-void": "off",
         "@typescript-eslint/no-useless-constructor": ["error"],
         "padding-line-between-statements": [
           "error",

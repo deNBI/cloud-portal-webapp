@@ -11,7 +11,4 @@ import { Clusterinfo } from '../clusterinfo';
 export class ClusterinfoComponent {
   @Input() cluster: Clusterinfo;
 
-  constructor() {
-  }
-
 }
