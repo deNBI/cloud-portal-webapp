@@ -16,7 +16,8 @@ import {
 import { NgScrollbarModule } from 'ngx-scrollbar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Angulartics2Module } from 'angulartics2';
-import {AppComponent} from './app.component';
+import { CookieService } from 'ngx-cookie-service';
+import { AppComponent } from './app.component';
 
 import { ApiSettings } from './api-connector/api-settings.service';
 import { UserService } from './api-connector/user.service';
@@ -37,7 +38,6 @@ import {
 	SidebarToggleDirective,
 } from './shared/sidebar.directive';
 import { UncaughtExceptionHandler } from './error-handler/UncaughtExceptionHandler.service';
-import { CookieService } from 'ngx-cookie-service';
 
 import { TitleHeadbarComponent } from './shared/title-headbar.component';
 import { VoService } from './api-connector/vo.service';
