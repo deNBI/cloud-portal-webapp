@@ -475,14 +475,14 @@
       </div>
       <div class="modal-footer">
         <button class="btn  btn-success col-md-4" *ngIf="selectedProjectType != 'USER'"
-                (click)="sendMailToFacility(selectedFacility['FacilityId'], emailSubject, emailText, emailReply, sendNews, alternative_emailText, null);
+                (click)="sendMailToFacility(selectedFacility['FacilityId'], emailSubject, emailText, emailReply, sendNews, alternative_emailText);
                 verifyModal.hide();
                 resetEmailModal();
                 successModal.show()">
           Yes
         </button>
         <button class="btn  btn-success col-md-4" *ngIf="selectedProjectType === 'USER'"
-                (click)="sendMailToFacility(selectedFacility['FacilityId'], emailSubject, emailText, emailReply, sendNews, alternative_emailText, selectedMember);
+                (click)="sendMailToFacility(selectedFacility['FacilityId'], emailSubject, emailText, emailReply, sendNews, alternative_emailText);
                 verifyModal.hide();
                 resetEmailModal();
                 successModal.show()">

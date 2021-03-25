@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { ErrorHandler, Injectable } from '@angular/core';
 import { JL } from 'jsnlog';
 import { Cookie } from 'ng2-cookies';
@@ -86,3 +87,4 @@ export class UncaughtExceptionHandler implements ErrorHandler {
 		console.log('End ------------------------------------');
 	}
 }
+/* eslint-enable */
