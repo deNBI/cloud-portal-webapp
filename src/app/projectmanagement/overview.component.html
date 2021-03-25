@@ -115,8 +115,13 @@
                   <td>{{project_application?.project_application_shortname}}</td>
                   <td>{{ project_application?.project_application_lifetime }} months</td>
                   <td>{{ project_application?.project_application_date_submitted }}</td>
-                  <td><span class="badge bg-primary" *ngFor="let st of project_application?.project_application_status ">{{
-                    getStatusById(st)  }}</span></td>
+                  <td>
+                    <ng-container *ngFor="let st of project_application?.project_application_status">
+                      <span class="badge bg-primary" style="margin-left: 3px; margin-right: 3px" *ngIf="st !== 19">
+                        {{getStatusById(st)}}
+                      </span>
+                    </ng-container>
+                  </td>
                 </tr>
 
 
@@ -435,8 +440,13 @@
                   <td>{{project_application?.project_application_shortname}}</td>
                   <td>{{ project_application?.project_application_lifetime }} months</td>
                   <td>{{ project_application?.project_application_date_submitted }}</td>
-                  <td><span class="badge bg-primary" *ngFor="let st of project_application?.project_application_status ">{{
-                    getStatusById(st)  }}</span></td>
+                  <td>
+                    <ng-container *ngFor="let st of project_application?.project_application_status">
+                      <span style="margin-left: 3px; margin-right: 3px" class="badge bg-primary" *ngIf="st !== 19">
+                        {{getStatusById(st)}}
+                      </span>
+                    </ng-container>
+                  </td>
                 </tr>
 
 
