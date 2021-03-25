@@ -29,7 +29,4 @@ export class ApiSettings {
 	static getApiFormat(): string {
 		return 'json';
 	}
-
-	constructor() {
-	}
 }

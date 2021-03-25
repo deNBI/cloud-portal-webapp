@@ -144,6 +144,7 @@
         "no-regex-spaces": "error",
         "no-restricted-syntax": ["off", "ForInStatement"],
         "no-sparse-arrays": "error",
+        "no-tabs": "off",
         "no-template-curly-in-string": "error",
         "no-underscore-dangle": "off",
         "no-use-before-define": "off",
