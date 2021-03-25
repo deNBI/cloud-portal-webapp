@@ -67,7 +67,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 	public collapseList: boolean[];
 
 	constructor(private creditsService: CreditsService, private flavorService: FlavorService,
-		private fullLayout: FullLayoutComponent, private applicationsService: ApplicationsService) {
+		private fullLayout: FullLayoutComponent, applicationsService: ApplicationsService) {
 		super(null, applicationsService, null);
 
 	}

@@ -17,8 +17,8 @@ import { environment } from '../environments/environment';
 export class LoggedInGuard implements CanActivate {
 
 	constructor(private http: HttpClient, private cookieService: CookieService,
-              private router: Router, private userservice: UserService) {
-
+              private router: Router, private userService: UserService) {
+		// constructor for LoggedInGuard
 	}
 
 	canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | boolean {
@@ -41,7 +41,7 @@ export class LoggedInGuard implements CanActivate {
 			redirect_url = null;
 		}
 
-		return this.userservice.getOnlyLoggedUserWithRedirect(redirect_url).pipe(
+		return this.userService.getOnlyLoggedUserWithRedirect(redirect_url).pipe(
 			map((res: any): boolean => {
 				if (res['error']) {
 					window.location.href = environment.login;

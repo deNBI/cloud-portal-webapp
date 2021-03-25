@@ -16,7 +16,7 @@ import { Clusterinfo, WorkerBatch } from '../clusterinfo';
 import { VirtualMachine } from '../../virtualmachinemodels/virtualmachine';
 import { ApplicationRessourceUsage } from '../../../applications/application-ressource-usage/application-ressource-usage';
 import { SCALE_SCRIPT_LINK } from '../../../../links/links';
-import { AbstractBaseClasse } from '../../../shared/shared_modules/baseClass/abstract-base-class';
+import { AbstractBaseClass } from '../../../shared/shared_modules/baseClass/abstract-base-class';
 import { Flavor } from '../../virtualmachinemodels/flavor';
 import { FlavorService } from '../../../api-connector/flavor.service';
 
@@ -33,7 +33,7 @@ export const SCALING_SCRIPT_NAME: string = 'scaling.py';
 		VirtualmachineService, FullLayoutComponent, GroupService, ClientService, GroupService, FlavorService],
 })
 
-export class ClusterOverviewComponent extends AbstractBaseClasse implements OnInit, OnDestroy {
+export class ClusterOverviewComponent extends AbstractBaseClass implements OnInit, OnDestroy {
   title: string = 'Cluster Overview';
 
   private subscription: Subscription = new Subscription();
@@ -110,7 +110,7 @@ export class ClusterOverviewComponent extends AbstractBaseClasse implements OnIn
   STATIC_IMG_FOLDER: String = 'static/webapp/assets/img/';
 
   constructor(private facilityService: FacilityService, private groupService: GroupService,
-              private imageService: ImageService, private userservice: UserService,
+              private imageService: ImageService, private userService: UserService,
               private virtualmachineservice: VirtualmachineService, private fb: FormBuilder,
               private clipboardService: ClipboardService, private flavorService: FlavorService) {
   	super();

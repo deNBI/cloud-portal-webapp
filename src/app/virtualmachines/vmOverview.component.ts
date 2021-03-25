@@ -156,7 +156,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 
   constructor(private facilityService: FacilityService,
               private clipboardService: ClipboardService,
-              private imageService: ImageService, private userservice: UserService,
+              private imageService: ImageService, private userService: UserService,
               private virtualmachineservice: VirtualmachineService, private fb: FormBuilder,
               private groupService: GroupService,
               private clientService: ClientService) {

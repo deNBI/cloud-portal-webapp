@@ -5,7 +5,7 @@ import { Volume } from './volume';
 import { VirtualmachineService } from '../../api-connector/virtualmachine.service';
 import { VirtualMachine } from '../virtualmachinemodels/virtualmachine';
 import { GroupService } from '../../api-connector/group.service';
-import { AbstractBaseClasse } from '../../shared/shared_modules/baseClass/abstract-base-class';
+import { AbstractBaseClass } from '../../shared/shared_modules/baseClass/abstract-base-class';
 import { VolumeActionStates } from './volume-action-states.enum';
 import { VolumeRequestStates } from './volume-request-states.enum';
 import { IResponseTemplate } from '../../api-connector/response-template';
@@ -26,7 +26,7 @@ import { VirtualMachineStates } from '../virtualmachinemodels/virtualmachinestat
 
 })
 
-export class VolumeOverviewComponent extends AbstractBaseClasse implements OnInit, OnDestroy {
+export class VolumeOverviewComponent extends AbstractBaseClass implements OnInit, OnDestroy {
 
   WIKI_EXTEND_VOLUME: string = WIKI_EXTEND_VOLUME;
   WIKI_VOLUME_OVERVIEW: string = WIKI_VOLUME_OVERVIEW;

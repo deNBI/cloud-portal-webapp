@@ -127,6 +127,7 @@
         "import/prefer-default-export": "off",
         "import/no-unassigned-import": "off",
         "import/no-unresolved": "off",
+        "import/no-mutable-exports": "off",
         "import/extensions": "off",
         "indent": ["error", "tab", {"SwitchCase": 1}],
         "linebreak-style": "error",

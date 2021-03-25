@@ -56,10 +56,10 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
 	WIKI: string = WIKI;
 	WIKI_FAQ: string = WIKI_FAQ;
 
-	constructor(private voService: VoService, private groupService: GroupService, userservice: UserService,
-		facilityService: FacilityService, applicationsservice: ApplicationsService,
+	constructor(private voService: VoService, private groupService: GroupService, userService: UserService,
+		facilityService: FacilityService, applicationsService: ApplicationsService,
 		private virtualMachineService: VirtualmachineService) {
-		super(userservice, applicationsservice, facilityService);
+		super(userService, applicationsService, facilityService);
 	}
 
 	componentAdded(event: any): void {
@@ -122,7 +122,7 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
 	}
 
 	getLoginName(): void {
-		this.userservice.getLoginElixirName().subscribe((login: IResponseTemplate): void => {
+		this.userService.getLoginElixirName().subscribe((login: IResponseTemplate): void => {
 			this.login_name = <string>login.value;
 		});
 

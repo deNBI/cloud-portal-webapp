@@ -22,6 +22,7 @@ export class GeneralstoragefactorOverviewComponent implements OnInit {
 	storageUpdateList: { [id: string]: boolean } = {};
 
 	constructor(private facilityService: FacilityService) {
+		this.facilityService = facilityService;
 	}
 
 	ngOnInit(): void {

@@ -1,7 +1,5 @@
 import { Directive, HostListener } from '@angular/core';
 
-// tslint:disable
-
 /**
  * Allows the aside to be toggled via click.
  */
@@ -9,8 +7,6 @@ import { Directive, HostListener } from '@angular/core';
 	selector: '[appAsideMenuToggler]',
 })
 export class AsideToggleDirective {
-	constructor() {
-	}
 
   @HostListener('click', ['$event']) toggleOpen($event: any) {
 		$event.preventDefault();

@@ -20,8 +20,8 @@ import { setElixirId, setVO } from './shared/globalvar';
 export class MemberGuardService implements CanActivate {
 
 	constructor(private http: HttpClient, private cookieService: CookieService,
-              private router: Router, private userservice: UserService, private voService: VoService) {
-
+              private router: Router, private userService: UserService, private voService: VoService) {
+		// constructor for MemberGuardService
 	}
 
 	canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | boolean {
@@ -44,7 +44,7 @@ export class MemberGuardService implements CanActivate {
 			redirect_url = null;
 		}
 
-		return this.userservice.getOnlyLoggedUserWithRedirect(redirect_url).pipe(switchMap((res: any): Observable<any> => {
+		return this.userService.getOnlyLoggedUserWithRedirect(redirect_url).pipe(switchMap((res: any): Observable<any> => {
 			if (res['error']) {
 				window.location.href = environment.login;
 				const subject: Subject<boolean> = new Subject<boolean>();
@@ -57,11 +57,11 @@ export class MemberGuardService implements CanActivate {
 					setVO(<boolean><Boolean>result.value);
 
 				});
-				this.userservice.getUserInfo().subscribe((result: any): void => {
+				this.userService.getUserInfo().subscribe((result: any): void => {
 					setElixirId(result['ElixirId']);
 				});
 
-				return this.userservice.getMemberByUser().pipe(map((memberinfo: any): any => {
+				return this.userService.getMemberByUser().pipe(map((memberinfo: any): any => {
 					if (memberinfo['name'] === 'MemberNotExistsException') {
 						return this.router.parseUrl('/registration-info');
 

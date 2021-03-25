@@ -25,6 +25,7 @@ export class ProjectOsDetailsComponent implements OnInit, OnChanges {
 	details_loaded: boolean = false;
 
 	constructor(private groupService: GroupService) {
+		this.groupService = groupService;
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars

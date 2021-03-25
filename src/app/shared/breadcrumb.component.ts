@@ -17,32 +17,35 @@ import { filter } from 'rxjs/operators';
                  </ng-template>`,
 })
 export class BreadcrumbsComponent implements OnInit {
-  breadcrumbs: Object[];
+	breadcrumbs: Object[];
 
-  constructor(private router: Router, private route: ActivatedRoute) {
-  }
+	constructor(private router: Router, private route: ActivatedRoute) {
+		this.router = router;
+		this.route = route;
+	}
 
-  ngOnInit(): void {
-  	this.router.events.pipe(filter(event => event instanceof NavigationEnd))
-  		.subscribe(event => {
-  			this.breadcrumbs = [];
-  			let currentRoute = this.route.root;
-  			let url = '';
-  			do {
-  				const childrenRoutes = currentRoute.children;
-  				currentRoute = null;
-  				childrenRoutes.forEach(route => {
-  					if (route.outlet === 'primary') {
-  						const routeSnapshot = route.snapshot;
-  						url += `/${routeSnapshot.url.map(segment => segment.path).join('/')}`;
-  						this.breadcrumbs.push({
-  							label: route.snapshot.data,
-  							url,
-  						});
-  						currentRoute = route;
-  					}
-  				});
-  			} while (currentRoute);
-  		});
-  }
+	ngOnInit(): void {
+		this.router.events.pipe(filter(event => event instanceof NavigationEnd))
+			.subscribe(() => {
+				this.breadcrumbs = [];
+				let currentRoute = this.route.root;
+				let url = '';
+				do {
+					const childrenRoutes = currentRoute.children;
+					currentRoute = null;
+					// eslint-disable-next-line no-loop-func
+					childrenRoutes.forEach(route => {
+						if (route.outlet === 'primary') {
+							const routeSnapshot = route.snapshot;
+							url += `/${routeSnapshot.url.map(segment => segment.path).join('/')}`;
+							this.breadcrumbs.push({
+								label: route.snapshot.data,
+								url,
+							});
+							currentRoute = route;
+						}
+					});
+				} while (currentRoute);
+			});
+	}
 }

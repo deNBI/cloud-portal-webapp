@@ -132,7 +132,7 @@ export class AddClusterComponent implements OnInit {
 
   constructor(private groupService: GroupService, private imageService: ImageService,
               private flavorService: FlavorService, private virtualmachineservice: VirtualmachineService,
-              private keyservice: KeyService, private userservice: UserService,
+              private keyservice: KeyService, private userService: UserService,
               private voService: VoService, private router: Router) {
   }
 
@@ -342,7 +342,7 @@ export class AddClusterComponent implements OnInit {
    * Gets all groups of the user and his key.
    */
   initializeData(): void {
-  	forkJoin(this.groupService.getSimpleVmByUser(), this.userservice.getUserInfo()).subscribe((result: any): void => {
+  	forkJoin(this.groupService.getSimpleVmByUser(), this.userService.getUserInfo()).subscribe((result: any): void => {
   		this.userinfo = new Userinfo(result[1]);
   		this.validatePublicKey();
   		const membergroups: any = result[0];

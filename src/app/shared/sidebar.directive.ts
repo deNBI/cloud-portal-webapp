@@ -1,3 +1,4 @@
+// eslint-disable-next-line max-classes-per-file
 import { Directive, HostListener } from '@angular/core';
 
 // tslint:disable
@@ -9,8 +10,6 @@ import { Directive, HostListener } from '@angular/core';
 	selector: '[appSidebarToggler]',
 })
 export class SidebarToggleDirective {
-	constructor() {
-	}
 
   @HostListener('click', ['$event']) toggleOpen($event: any) {
 		$event.preventDefault();
@@ -22,8 +21,6 @@ export class SidebarToggleDirective {
 	selector: '[appSidebarMinimizer]',
 })
 export class SidebarMinimizeDirective {
-	constructor() {
-	}
 
   @HostListener('click', ['$event']) toggleOpen($event: any) {
 		$event.preventDefault();
@@ -35,9 +32,6 @@ export class SidebarMinimizeDirective {
 	selector: '[appMobileSidebarToggler]',
 })
 export class MobileSidebarToggleDirective {
-	constructor() {
-	}
-
 	// Check if element has class
 	private hasClass(target: any, elementClassName: string) {
 		return new RegExp(`(\\s|^)${elementClassName}(\\s|$)`).test(target.className);
@@ -56,8 +50,6 @@ export class MobileSidebarToggleDirective {
 	selector: '[appSidebarClose]',
 })
 export class SidebarOffCanvasCloseDirective {
-	constructor() {
-	}
 
 	// Check if element has class
 	private hasClass(target: any, elementClassName: string) {
@@ -71,8 +63,10 @@ export class SidebarOffCanvasCloseDirective {
 			while (newClass.indexOf(` ${elementClassName} `) >= 0) {
 				newClass = newClass.replace(` ${elementClassName} `, ' ');
 			}
+			// eslint-disable-next-line no-param-reassign
 			elem.className = newClass.replace(/^\s+|\s+$/g, '');
 		} else {
+			// eslint-disable-next-line no-param-reassign
 			elem.className += ` ${elementClassName}`;
 		}
 	}

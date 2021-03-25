@@ -213,7 +213,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 
   constructor(private groupService: GroupService, private imageService: ImageService,
               private flavorService: FlavorService, private virtualmachineservice: VirtualmachineService,
-              private keyservice: KeyService, private userservice: UserService, private router: Router) {
+              private keyservice: KeyService, private userService: UserService, private router: Router) {
   }
 
   /**
@@ -619,7 +619,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
    * Gets all groups of the user and his key.
    */
   initializeData(): void {
-  	forkJoin([this.groupService.getSimpleVmByUser(), this.userservice.getUserInfo()]).subscribe((result: any): void => {
+  	forkJoin([this.groupService.getSimpleVmByUser(), this.userService.getUserInfo()]).subscribe((result: any): void => {
   		this.userinfo = new Userinfo(result[1]);
   		this.validatePublicKey();
   		const membergroups: any = result[0];

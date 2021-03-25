@@ -59,7 +59,7 @@ export class ClientOverviewComponent implements OnInit {
    */
   isLoaded: boolean = false;
 
-  constructor(private facilityService: FacilityService, private userservice: UserService,
+  constructor(private facilityService: FacilityService, private userService: UserService,
               private clientservice: ClientService) {
 
   }

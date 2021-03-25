@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AbstractBaseClasse, Application_States, Application_States_Strings } from './abstract-base-class';
+import { AbstractBaseClass, Application_States, Application_States_Strings } from './abstract-base-class';
 import { Application } from '../../../applications/application.model/application.model';
 import { Flavor } from '../../../virtualmachines/virtualmachinemodels/flavor';
 import { ApplicationsService } from '../../../api-connector/applications.service';
@@ -17,7 +17,7 @@ import { UserService } from '../../../api-connector/user.service';
 	template: '',
 	providers: [FacilityService, ApplicationsService, FlavorService],
 })
-export class ApplicationBaseClassComponent extends AbstractBaseClasse {
+export class ApplicationBaseClassComponent extends AbstractBaseClass {
 
 	/**
 	 * If all Applications are loaded, important for the loader.

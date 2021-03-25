@@ -78,22 +78,22 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 	 * Constructor.
 	 * Loads all Applications if user is vo admin and all user_applications.
 	 *
-	 * @param applicationsservice
-	 * @param userservice
+	 * @param applicationsService
+	 * @param userService
 	 * @param groupservice
 	 * @param voService
 	 * @param facilityService
 	 * @param flavorService
 	 * @param creditsService
 	 */
-	constructor(applicationsservice: ApplicationsService,
-		userservice: UserService,
+	constructor(applicationsService: ApplicationsService,
+		userService: UserService,
 		private groupservice: GroupService,
 		private voService: VoService,
 		facilityService: FacilityService,
 		private flavorService: FlavorService,
 		private creditsService: CreditsService) {
-		super(userservice, applicationsservice, facilityService);
+		super(userService, applicationsService, facilityService);
 	}
 
 	ngOnInit(): void {
@@ -108,7 +108,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 			this.flavorService.getListOfTypesAvailable().subscribe((availableTypes: FlavorType[]): void => {
 				this.typeList = availableTypes;
 			});
-			this.applicationsservice.getExtensionRequestsCounter().subscribe((result: any): void => {
+			this.applicationsService.getExtensionRequestsCounter().subscribe((result: any): void => {
 				this.numberOfCreditRequests = result['credits_extension_requests_all'];
 				this.numberOfExtensionRequests = result['lifetime_extension_requests_all'];
 				this.numberOfModificationRequests = result['modification_requests_all'];
@@ -171,7 +171,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 	}
 
 	adjustApplication(): void {
-		this.applicationsservice.adjustApplication(this.adjustedApplication).subscribe((adjustmentResult: Application): void => {
+		this.applicationsService.adjustApplication(this.adjustedApplication).subscribe((adjustmentResult: Application): void => {
 			const index: number = this.all_applications.indexOf(this.selectedApplication);
 			const newApp: Application = new Application(adjustmentResult);
 			this.all_applications[index] = newApp;
@@ -244,7 +244,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 	}
 
 	approveLifetimeExtension(application: Application): void {
-		this.applicationsservice.approveAdditionalLifetime(application.project_application_id)
+		this.applicationsService.approveAdditionalLifetime(application.project_application_id)
 			.subscribe((): void => {
 				if (application.project_application_openstack_project) {
 					const applicationToGet: Application = application;
@@ -266,7 +266,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
 	declineLifetimeExtension(application: Application): void {
 
-		this.applicationsservice.deleteAdditionalLifetimeRequests(application.project_application_id)
+		this.applicationsService.deleteAdditionalLifetimeRequests(application.project_application_id)
 			.subscribe(
 				(): void => {
 					this.updateNotificationModal('Declined', 'The project extension was declined!', true, 'success');
@@ -282,7 +282,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
 	approveModificationRequest(application: Application): void {
 
-		this.applicationsservice.approveModificationRequest(application.project_application_id)
+		this.applicationsService.approveModificationRequest(application.project_application_id)
 			.subscribe((): void => {
 				this.updateNotificationModal('Success', 'The resource modification request was approved!', true, 'success');
 				if (!application.project_application_openstack_project) {
@@ -301,7 +301,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
 	declineModificationRequest(application: Application): void {
 
-		this.applicationsservice.deleteModificationRequest(application.project_application_id)
+		this.applicationsService.deleteModificationRequest(application.project_application_id)
 			.subscribe((): void => {
 				this.updateNotificationModal('Declined', 'The resource modification request was declined!', true, 'success');
 				this.all_applications.splice(this.all_applications.indexOf(application), 1);
@@ -313,7 +313,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 	}
 
 	approveCreditExtension(application: Application): void {
-		this.applicationsservice.approveAdditionalCreditsRequest(application.project_application_id)
+		this.applicationsService.approveAdditionalCreditsRequest(application.project_application_id)
 			.subscribe((): void => {
 
 				this.updateNotificationModal('Success', 'The credit extension request was approved!', true, 'success');
@@ -332,7 +332,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 	}
 
 	declineCreditExtension(application: Application): void {
-		this.applicationsservice.deleteAdditionalCreditsRequests(application.project_application_id)
+		this.applicationsService.deleteAdditionalCreditsRequests(application.project_application_id)
 			.subscribe((): void => {
 				this.updateNotificationModal('Declined', 'The credit extension request was declined!', true, 'success');
 				this.all_applications.splice(this.all_applications.indexOf(application), 1);
@@ -349,7 +349,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 	getSubmittedApplications(): void {
 		if (this.is_vo_admin) {
 
-			this.applicationsservice.getSubmittedApplications().subscribe((applications: Application[]): void => {
+			this.applicationsService.getSubmittedApplications().subscribe((applications: Application[]): void => {
 				if (applications.length === 0) {
 					this.isLoaded_userApplication = true;
 				}
@@ -368,7 +368,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 	}
 
 	getApplicationHistory(): void {
-		this.applicationsservice.getAllApplications()
+		this.applicationsService.getAllApplications()
 			.subscribe((applications: Application[]): void => {
 				if (applications.length > 0) {
 					for (const application of applications) {
@@ -393,7 +393,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 		if (this.is_vo_admin) {
 			this.clearApplicationLists();
 			if (this.tab_state === TabStates.SUBMITTED) {
-				this.applicationsservice.getSubmittedApplications().subscribe((applications: Application[]): void => {
+				this.applicationsService.getSubmittedApplications().subscribe((applications: Application[]): void => {
 					if (applications.length === 0) {
 						this.isLoaded_userApplication = true;
 					}
@@ -407,7 +407,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 					this.loading_applications = false;
 				});
 			} else if (this.tab_state === TabStates.CREDITS_EXTENSION) {
-				this.applicationsservice.getCreditsExtensionRequest().subscribe(
+				this.applicationsService.getCreditsExtensionRequest().subscribe(
 					(credit_applications: Application[]): void => {
 						if (credit_applications.length === 0) {
 							// bool here?
@@ -423,7 +423,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 					},
 				);
 			} else if (this.tab_state === TabStates.LIFETIME_EXTENSION) {
-				this.applicationsservice.getLifetimeRequestedApplications().subscribe(
+				this.applicationsService.getLifetimeRequestedApplications().subscribe(
 					(lifetime_applications: Application[]): void => {
 						if (lifetime_applications.length === 0) {
 							// bool here?
@@ -440,7 +440,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 					},
 				);
 			} else if (this.tab_state === TabStates.MODIFICATION_EXTENSION) {
-				this.applicationsservice.getModificationRequestedApplications().subscribe(
+				this.applicationsService.getModificationRequestedApplications().subscribe(
 					(modification_applications: Application[]): void => {
 						if (modification_applications.length === 0) {
 							// bool here?
@@ -465,7 +465,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 	getAllApplications(): void {
 		if (this.is_vo_admin) {
 
-			this.applicationsservice.getAllApplications().subscribe((applications: Application[]): void => {
+			this.applicationsService.getAllApplications().subscribe((applications: Application[]): void => {
 				if (applications.length === 0) {
 					this.isLoaded_userApplication = true;
 				}
@@ -491,7 +491,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 	public getApplication(application: Application): void {
 		const index: number = this.all_applications.indexOf(application);
 
-		this.applicationsservice
+		this.applicationsService
 			.getApplication(application.project_application_id.toString())
 			.subscribe((aj: Application): void => {
 				const newApp: Application = new Application(aj);
@@ -562,7 +562,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 	}
 
 	private setNotificationClient(application_id: string): void {
-		this.applicationsservice.getApplicationClient(
+		this.applicationsService.getApplicationClient(
 			application_id,
 		).subscribe((client: object): void => {
 			const newClient: Client = new Client(client['host'], client['port'], client['location'], client['id']);
@@ -636,7 +636,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 				},
 			);
 		} else {
-			this.applicationsservice.getApplicationClientAvaiable(application_id).subscribe(
+			this.applicationsService.getApplicationClientAvaiable(application_id).subscribe(
 				(res: Client): void => {
 					if (!res['client_available']) {
 						// tslint:disable-next-line:forin
@@ -697,7 +697,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
 	public declineApplication(app: Application): void {
 		const idx: number = this.all_applications.indexOf(app);
-		this.applicationsservice.declineApplication(app.project_application_id).subscribe(
+		this.applicationsService.declineApplication(app.project_application_id).subscribe(
 			(): void => {
 				this.updateNotificationModal('Success', 'The Application was declined', true, 'success');
 				this.all_applications.splice(idx, 1);

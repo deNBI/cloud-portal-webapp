@@ -10,7 +10,7 @@ import { VoService } from '../../api-connector/vo.service';
 import { UserService } from '../../api-connector/user.service';
 import { GroupService } from '../../api-connector/group.service';
 import { CreditsService } from '../../api-connector/credits.service';
-import { AbstractBaseClasse } from '../../shared/shared_modules/baseClass/abstract-base-class';
+import { AbstractBaseClass } from '../../shared/shared_modules/baseClass/abstract-base-class';
 import { VirtualMachine } from '../virtualmachinemodels/virtualmachine';
 import { VirtualmachineService } from '../../api-connector/virtualmachine.service';
 import { ImageService } from '../../api-connector/image.service';
@@ -40,7 +40,7 @@ import { Backend } from '../conda/backend/backend';
 		VoService, CreditsService, VirtualmachineService, ImageService, PlaybookService, BiocondaService],
 })
 
-export class VmDetailComponent extends AbstractBaseClasse implements OnInit {
+export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 
   vm_id: string;
   conda_logs: Condalog;

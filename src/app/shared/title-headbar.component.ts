@@ -12,17 +12,17 @@ import { UserService } from '../api-connector/user.service';
 })
 export class TitleHeadbarComponent {
 
-    @Input() page_title: string;
+	@Input() page_title: string;
 
-    constructor(private userService: UserService) {
+	constructor(private userService: UserService) {
+		this.userService = userService;
+	}
 
-    }
+	logout(): void {
+		this.userService.logoutUser().subscribe((redirect: any): void => {
 
-    logout(): void {
-    	this.userService.logoutUser().subscribe((redirect: any): void => {
-
-    		window.location.href = redirect['redirect'];
-    	});
-    }
+			window.location.href = redirect['redirect'];
+		});
+	}
 
 }

@@ -27,8 +27,8 @@ export class Project {
 	ApprovedCredits: number;
 
 	constructor(Id: number | string, Name: string, Description: string, DateCreated: string, DaysRunning: number,
-	            UserIsAdmin: boolean, UserIsPi: boolean, ComputeCenter: ComputecenterComponent,
-	            CurrentCredits: number, ApprovedCredits: number) {
+		UserIsAdmin: boolean, UserIsPi: boolean, ComputeCenter: ComputecenterComponent,
+		CurrentCredits: number, ApprovedCredits: number) {
 		this.Id = Id;
 		this.Name = Name;
 		this.Description = Description;

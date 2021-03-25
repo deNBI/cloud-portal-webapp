@@ -70,8 +70,8 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 	loadingApplications: boolean = false;
 
 	constructor(userService: UserService,
-		facilityService: FacilityService, applicationsservice: ApplicationsService) {
-		super(userService, applicationsservice, facilityService);
+		facilityService: FacilityService, applicationsService: ApplicationsService) {
+		super(userService, applicationsService, facilityService);
 	}
 
 	getFacilityApplicationById(application: Application): void {
@@ -108,7 +108,7 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 	}
 
 	public approveExtension(app: Application): void {
-		this.applicationsservice.approveAdditionalLifetime(app.project_application_id)
+		this.applicationsService.approveAdditionalLifetime(app.project_application_id)
 			.subscribe((): void => {
 				this.updateNotificationModal('Success', 'Successfully approved extension!', true, 'success');
 				this.allApplicationsToCheck.splice(this.allApplicationsToCheck.indexOf(app), 1);
@@ -129,7 +129,7 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 	 */
 	public declineExtension(app: Application): void {
 
-		this.applicationsservice.declineAdditionalLifetime(app.project_application_id)
+		this.applicationsService.declineAdditionalLifetime(app.project_application_id)
 			.subscribe((): void => {
 				this.updateNotificationModal('Success', 'Successfully declined extension!', true, 'success');
 				this.allApplicationsToCheck.splice(this.allApplicationsToCheck.indexOf(app), 1);
@@ -144,7 +144,7 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 	}
 
 	public approveModification(app: Application): void {
-		this.applicationsservice.approveModificationRequest(app.project_application_id)
+		this.applicationsService.approveModificationRequest(app.project_application_id)
 			.subscribe((): void => {
 				this.updateNotificationModal('Success', 'Successfully approved modification!', true, 'success');
 				this.allApplicationsToCheck.splice(this.allApplicationsToCheck.indexOf(app), 1);
@@ -159,7 +159,7 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 	}
 
 	public declineModification(app: Application): void {
-		this.applicationsservice.declineModificationRequest(app.project_application_id)
+		this.applicationsService.declineModificationRequest(app.project_application_id)
 			.subscribe((): void => {
 				this.updateNotificationModal('Success', 'Successfully declined modification!', true, 'success');
 				this.allApplicationsToCheck.splice(this.allApplicationsToCheck.indexOf(app), 1);
@@ -174,7 +174,7 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 	}
 
 	public approveCreditRequest(app: Application): void {
-		this.applicationsservice.approveAdditionalCreditsRequest(app.project_application_id)
+		this.applicationsService.approveAdditionalCreditsRequest(app.project_application_id)
 			.subscribe((): void => {
 				this.updateNotificationModal('Success', 'Successfully approved credit extension!', true, 'success');
 				this.allApplicationsToCheck.splice(this.allApplicationsToCheck.indexOf(app), 1);
@@ -189,7 +189,7 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 	}
 
 	public declineCreditRequest(app: Application): void {
-		this.applicationsservice.declineAdditionalCredits(app.project_application_id)
+		this.applicationsService.declineAdditionalCredits(app.project_application_id)
 			.subscribe((): void => {
 				this.updateNotificationModal('Success', 'Successfully declined credit extension!', true, 'success');
 				this.allApplicationsToCheck.splice(this.allApplicationsToCheck.indexOf(app), 1);
