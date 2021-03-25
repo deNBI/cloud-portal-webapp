@@ -20,7 +20,7 @@ export class AppComponent implements AfterViewInit, OnInit {
 	notificationModalMessage: string = 'A new update is available. Please reload the site to use the new version of the portal.';
 	notificationModalType: string = 'info';
 
-	@ViewChild('notificationModal', {static: true}) modal: ModalDirective;
+	@ViewChild('notificationModal', { static: true }) modal: ModalDirective;
 
 	constructor(private appRef: ApplicationRef, private angulartics2Piwik: Angulartics2Piwik) {
 		/*   if (environment.production) {

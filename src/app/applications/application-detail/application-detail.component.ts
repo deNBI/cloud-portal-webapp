@@ -53,26 +53,26 @@ export class ApplicationDetailComponent extends ApplicationBaseClassComponent im
 
 		this.setAllTabsFalse();
 		switch (tab_num) {
-		case this.PI_USER_TAB:
-			this.PI_USER_TAB_ACTIVE = true;
-			break;
-		case this.INFORMATION_TAB:
-			this.INFORMATION_TAB_ACTIVE = true;
-			break;
-		case this.RESOURCE_TAB:
-			this.RESOURCE_TAB_ACTIVE = true;
-			break;
-		case this.CREDITS_TAB:
-			this.CREDITS_TAB_ACTIVE = true;
-			break;
-		case this.MODIFICATION_TAB:
-			this.MODIFICATION_TAB_ACTIVE = true;
-			break;
-		case this.EXTENSION_TAB:
-			this.EXTENSION_TAB_ACTIVE = true;
-			break;
-		default:
-			break;
+			case this.PI_USER_TAB:
+				this.PI_USER_TAB_ACTIVE = true;
+				break;
+			case this.INFORMATION_TAB:
+				this.INFORMATION_TAB_ACTIVE = true;
+				break;
+			case this.RESOURCE_TAB:
+				this.RESOURCE_TAB_ACTIVE = true;
+				break;
+			case this.CREDITS_TAB:
+				this.CREDITS_TAB_ACTIVE = true;
+				break;
+			case this.MODIFICATION_TAB:
+				this.MODIFICATION_TAB_ACTIVE = true;
+				break;
+			case this.EXTENSION_TAB:
+				this.EXTENSION_TAB_ACTIVE = true;
+				break;
+			default:
+				break;
 		}
 	}
 
