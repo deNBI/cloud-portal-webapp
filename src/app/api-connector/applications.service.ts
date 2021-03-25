@@ -14,6 +14,7 @@ import { ApplicationCreditRequest } from '../applications/application_credit_req
 @Injectable()
 export class ApplicationsService {
 	constructor(private http: HttpClient) {
+		// constructor for applicationService
 	}
 
 	adjustApplication(application: Application): Observable<Application> {
