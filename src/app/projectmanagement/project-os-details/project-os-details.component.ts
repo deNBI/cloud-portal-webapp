@@ -18,32 +18,33 @@ import { GroupService } from '../../api-connector/group.service';
 })
 export class ProjectOsDetailsComponent implements OnInit, OnChanges {
 
-  @Input() project: Project;
-  selectedProjectVms: VirtualMachine[] = [];
-  selectedProjectVolumes: Volume[] = [];
-  selectedProjectSnapshots: SnapshotModel[] = [];
-  details_loaded: boolean = false;
+	@Input() project: Project;
+	selectedProjectVms: VirtualMachine[] = [];
+	selectedProjectVolumes: Volume[] = [];
+	selectedProjectSnapshots: SnapshotModel[] = [];
+	details_loaded: boolean = false;
 
-  constructor(private groupService: GroupService) {
-  }
+	constructor(private groupService: GroupService) {
+	}
 
-  ngOnChanges(changes: SimpleChanges): void {
-  	this.details_loaded = false;
-  	this.getProjectDetails();
-  }
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	ngOnChanges(changes: SimpleChanges): void {
+		this.details_loaded = false;
+		this.getProjectDetails();
+	}
 
-  ngOnInit(): void {
-  	this.details_loaded = false;
-  	this.getProjectDetails();
-  }
+	ngOnInit(): void {
+		this.details_loaded = false;
+		this.getProjectDetails();
+	}
 
-  getProjectDetails(): void {
-  	this.groupService.getProjectOSDetails(this.project.Id).subscribe((res: any): void => {
-  		this.selectedProjectVms = res['vms'];
-  		this.selectedProjectVolumes = res['volumes'];
-  		this.selectedProjectSnapshots = res['snapshots'];
-  		this.details_loaded = true;
-  	});
-  }
+	getProjectDetails(): void {
+		this.groupService.getProjectOSDetails(this.project.Id).subscribe((res: any): void => {
+			this.selectedProjectVms = res['vms'];
+			this.selectedProjectVolumes = res['volumes'];
+			this.selectedProjectSnapshots = res['snapshots'];
+			this.details_loaded = true;
+		});
+	}
 
 }

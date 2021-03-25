@@ -221,7 +221,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 		this.details_loaded = false;
 		if (!project.Lifetime) {
 			this.groupService.getLifetime(project.Id).subscribe((time: IResponseTemplate): void => {
-				const lifetime: number = <number>time.value;
+				const lifetime: number = time.value as number;
 				const dateCreated: Date = moment(project.DateCreated, 'DD.MM.YYYY').toDate();
 
 				if (lifetime !== -1) {

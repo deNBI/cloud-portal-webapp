@@ -5,14 +5,14 @@ import { Factor } from './factor';
  */
 export class ObjectStorageFactor extends Factor {
 
-  storage: number;
+	storage: number;
 
-  constructor(objectStorageFactor: ObjectStorageFactor | null) {
-  	super(objectStorageFactor);
+	constructor(objectStorageFactor: ObjectStorageFactor | null) {
+		super(objectStorageFactor);
 
-  	if (objectStorageFactor) {
-  		this.storage = objectStorageFactor.storage;
-  	}
+		if (objectStorageFactor) {
+			this.storage = objectStorageFactor.storage;
+		}
 
-  }
+	}
 }

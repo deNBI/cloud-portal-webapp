@@ -12,8 +12,8 @@ export class ProjectEnumeration {
   project_application_status: number[];
 
   public gotStatus(status: number): boolean {
+    // eslint-disable-next-line no-mixed-spaces-and-tabs
   	return this.project_application_status.includes(status);
-
   }
 
 }
