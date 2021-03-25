@@ -110,11 +110,10 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 	STATIC_IMG_FOLDER: String = 'static/webapp/assets/img/';
 
 	constructor(private facilityService: FacilityService, private groupService: GroupService,
-	            private imageService: ImageService, private userService: UserService,
-	            private virtualmachineservice: VirtualmachineService, private fb: FormBuilder,
-	            private clipboardService: ClipboardService, private flavorService: FlavorService) {
+		private imageService: ImageService, private userService: UserService,
+		private virtualmachineservice: VirtualmachineService, private fb: FormBuilder,
+		private clipboardService: ClipboardService, private flavorService: FlavorService) {
 		super();
-
 	}
 
 	/**
@@ -374,33 +373,26 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 			(): void => {
 
 				// tslint:disable-next-line:max-line-length
-				this.subscription.add(this.virtualmachineservice.getClusterInfo(cluster.cluster_id).subscribe((updated_cluster: Clusterinfo): void => {
-					let stop_loop: boolean = true;
-					const idx: number = this.clusters.indexOf(cluster);
-
-					this.clusters[idx] = new Clusterinfo(updated_cluster);
-					if (cluster === this.selectedCluster) {
-						this.selectedCluster = this.clusters[idx];
-					}
-					cluster = this.clusters[idx];
-
-					// tslint:disable-next-line:max-line-length
-					for (const batch of cluster.worker_batches) {
-						if (batch.running_worker < batch.worker_count) {
-							stop_loop = false;
-							break;
+				this.subscription.add(this.virtualmachineservice.getClusterInfo(cluster.cluster_id)
+					.subscribe((updated_cluster: Clusterinfo): void => {
+						let stop_loop: boolean = true;
+						const idx: number = this.clusters.indexOf(cluster);
+						this.clusters[idx] = new Clusterinfo(updated_cluster);
+						if (cluster === this.selectedCluster) {
+							this.selectedCluster = this.clusters[idx];
 						}
-					}
-
-					if (!stop_loop) {
-						this.check_worker_count_loop(cluster);
-
-					}
-
-				}));
-
+						cluster = this.clusters[idx];
+						for (const batch of cluster.worker_batches) {
+							if (batch.running_worker < batch.worker_count) {
+								stop_loop = false;
+								break;
+							}
+						}
+						if (!stop_loop) {
+							this.check_worker_count_loop(cluster);
+						}
+					}));
 			},
-
 			this.checkStatusTimeout,
 		);
 	}
@@ -410,38 +402,30 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 		setTimeout(
 			(): void => {
 				const idx: number = this.clusters.indexOf(cluster);
-
-				// tslint:disable-next-line:max-line-length
-				this.subscription.add(this.virtualmachineservice.getClusterInfo(cluster.cluster_id).subscribe((updated_cluster: Clusterinfo): void => {
-					this.clusters[idx] = new Clusterinfo(updated_cluster);
-					if (is_selected_cluster) {
-						this.selectedCluster = this.clusters[idx];
-					}
-					cluster = this.clusters[idx];
-
-					// tslint:disable-next-line:max-line-length
-					if (cluster.status !== 'Running' && cluster.status !== VirtualMachineStates.DELETING && cluster.status !== VirtualMachineStates.DELETED) {
-						this.check_status_loop(cluster, final_state, is_selected_cluster);
-
-					} else {
-
-						let stop_loop: boolean = true;
-						for (const batch of cluster.worker_batches) {
-							if (batch.running_worker < batch.worker_count) {
-								stop_loop = false;
-								break;
+				this.subscription.add(this.virtualmachineservice.getClusterInfo(cluster.cluster_id)
+					.subscribe((updated_cluster: Clusterinfo): void => {
+						this.clusters[idx] = new Clusterinfo(updated_cluster);
+						if (is_selected_cluster) {
+							this.selectedCluster = this.clusters[idx];
+						}
+						cluster = this.clusters[idx];
+						if (cluster.status !== 'Running' && cluster.status !== VirtualMachineStates.DELETING
+							&& cluster.status !== VirtualMachineStates.DELETED) {
+							this.check_status_loop(cluster, final_state, is_selected_cluster);
+						} else {
+							let stop_loop: boolean = true;
+							for (const batch of cluster.worker_batches) {
+								if (batch.running_worker < batch.worker_count) {
+									stop_loop = false;
+									break;
+								}
+							}
+							if (!stop_loop) {
+								this.check_worker_count_loop(cluster);
 							}
 						}
-						if (!stop_loop) {
-							this.check_worker_count_loop(cluster);
-
-						}
-					}
-
-				}));
-
+					}));
 			},
-
 			this.checkStatusTimeout,
 		);
 	}

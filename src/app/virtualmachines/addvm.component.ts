@@ -214,6 +214,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 	constructor(private groupService: GroupService, private imageService: ImageService,
 		private flavorService: FlavorService, private virtualmachineservice: VirtualmachineService,
 		private keyservice: KeyService, private userService: UserService, private router: Router) {
+		// constructor for VirtualMachineComponent
 	}
 
 	/**

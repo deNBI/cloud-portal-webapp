@@ -141,6 +141,7 @@
         "no-irregular-whitespace": "error",
         "no-multiple-empty-lines": "error",
         "no-null/no-null": "off",
+        "no-nested-ternary": "off",
         "no-param-reassign": "off",
         "no-redeclare": "error",
         "no-regex-spaces": "error",

@@ -11,32 +11,33 @@ import { GroupService } from '../../api-connector/group.service';
 	providers: [GroupService],
 })
 export class ProjectUserListComponent implements OnInit {
-  @Input() project_id: string | number;
-  @Input() user_member_id: string;
-  project_members: ProjectMember[] = [];
-  @Input() members_to_add: ProjectMember[] = [];
+	@Input() project_id: string | number;
+	@Input() user_member_id: string;
+	project_members: ProjectMember[] = [];
+	@Input() members_to_add: ProjectMember[] = [];
 
-  constructor(private groupService: GroupService) {
-  }
+	constructor(private groupService: GroupService) {
+		this.groupService = groupService;
+	}
 
-  getMembersOfTheProject(): void {
-  	this.groupService.getGroupMembers(this.project_id.toString()).subscribe((members: ProjectMember[]): void => {
+	getMembersOfTheProject(): void {
+		this.groupService.getGroupMembers(this.project_id.toString()).subscribe((members: ProjectMember[]): void => {
 
-  		this.project_members = members.filter((mem: ProjectMember): boolean => mem.memberId.toString() !== this.user_member_id.toString());
+			this.project_members = members.filter((mem: ProjectMember): boolean => mem.memberId.toString() !== this.user_member_id.toString());
 
-  	});
-  }
+		});
+	}
 
-  addMember(member: ProjectMember): void {
-  	this.members_to_add.push(member);
-  }
+	addMember(member: ProjectMember): void {
+		this.members_to_add.push(member);
+	}
 
-  removeMember(member: ProjectMember): void {
-  	this.members_to_add.splice(this.members_to_add.indexOf(member), 1);
-  }
+	removeMember(member: ProjectMember): void {
+		this.members_to_add.splice(this.members_to_add.indexOf(member), 1);
+	}
 
-  ngOnInit(): void {
-  	this.getMembersOfTheProject();
-  }
+	ngOnInit(): void {
+		this.getMembersOfTheProject();
+	}
 
 }
