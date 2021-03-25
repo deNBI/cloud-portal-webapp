@@ -128,7 +128,7 @@
         "import/no-unassigned-import": "off",
         "import/no-unresolved": "off",
         "import/extensions": "off",
-        "indent": ["error", "tab"],
+        "indent": ["error", "tab", {"SwitchCase": 1}],
         "linebreak-style": "error",
         "max-lines": "off",
         "no-continue": "off",

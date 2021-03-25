@@ -28,7 +28,7 @@ export class VirtualmachineService {
 	}
 
 	startCluster(masterFlavor: string, masterImage: Image, workerBatches: WorkerBatch[],
-	             project_id: string | number): Observable<any> {
+		project_id: string | number): Observable<any> {
 		const params: HttpParams = new HttpParams()
 			.set('master_flavor', masterFlavor)
 			.set('master_image', JSON.stringify(masterImage))
@@ -94,8 +94,8 @@ export class VirtualmachineService {
 	}
 
 	startVM(flavor: string, image: Image, servername: string, project: string, projectid: string,
-	        http: boolean, https: boolean, udp: boolean, new_volumes: Volume[], attach_volumes: Volume[],
-	        playbook_information?: string, additional_elixir_ids?: string[]): Observable<any> {
+		http: boolean, https: boolean, udp: boolean, new_volumes: Volume[], attach_volumes: Volume[],
+		playbook_information?: string, additional_elixir_ids?: string[]): Observable<any> {
 
 		const params: HttpParams = new HttpParams()
 			.set('flavor', flavor)
@@ -117,8 +117,8 @@ export class VirtualmachineService {
 	}
 
 	getAllVM(page: number, vm_per_site: number, filter?: string,
-	         filter_status?: string[], filter_cluster: boolean = false,
-	         filter_set_for_termination: boolean = false): Observable<VirtualMachine[]> {
+		filter_status?: string[], filter_cluster: boolean = false,
+		filter_set_for_termination: boolean = false): Observable<VirtualMachine[]> {
 		let params: HttpParams = new HttpParams().set('page', page.toString()).set('vm_per_site', vm_per_site.toString());
 		if (filter) {
 			params = params.append('filter', filter);
