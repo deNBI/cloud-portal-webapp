@@ -32,7 +32,7 @@ export class PublicKeyComponent extends AbstractBaseClass {
 	}
 
 	downloadPem(data: string): void {
-		const blob: Blob = new Blob([data], {type: 'pem'});
+		const blob: Blob = new Blob([data], { type: 'pem' });
 		const url: string = window.URL.createObjectURL(blob);
 		saveAs(url, `${this.userinfo.UserLogin}_ecdsa`);
 	}
