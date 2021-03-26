@@ -165,7 +165,6 @@ export class ResourcesComponent implements OnInit {
 			this.managerFacilities = result;
 			this.selectedFacility = this.managerFacilities[0];
 			this.getSelectedFacilityResources();
-
 		});
 	}
 
@@ -202,15 +201,31 @@ export class ResourcesComponent implements OnInit {
 		this.facilityService.getGPUSpecifications(this.selectedFacility['FacilityId']).subscribe((specs: GPUSpecification[]): void => {
 			this.gpuSpecifications = specs;
 		});
-		this.facilityService.getFacilityResources(
-			this.selectedFacility['FacilityId'],
-		).subscribe(
+		this.facilityService.getFacilityResources(this.selectedFacility['FacilityId']).subscribe(
 			(res: Resources[]): void => {
+				res = this.transformGbToTb(res);
 				this.resources = res;
 				this.setVisibleResources();
 			},
 		);
 
+	}
+
+	transformGbToTb(res: Resources[]): Resources[] {
+		res.forEach((resource: Resources) => {
+			if (resource['resource_name'] === 'Expired | In-Use'
+				|| resource['resource_name'] === 'Total Used'
+				|| resource['resource_name'] === 'Simple VM'
+				|| resource['resource_name'] === 'Wait for Confirmation: OpenStack'
+				|| resource['resource_name'] === 'Running: OpenStack') {
+				resource['totalObjectStorage'] /= 1024;
+				resource['totalObjectStorage'] = Math.round((resource['totalObjectStorage'] + Number.EPSILON) * 1000) / 1000;
+				resource['totalVolumeLimit'] /= 1024;
+				resource['totalVolumeLimit'] = Math.round((resource['totalVolumeLimit'] + Number.EPSILON) * 1000) / 1000;
+			}
+		});
+
+		return res;
 	}
 
 	public tableToCSV(): void {
@@ -224,9 +239,8 @@ export class ResourcesComponent implements OnInit {
 			const imgWidth: number = 208;
 			const imgHeight: number = (canvas.height * imgWidth) / canvas.width;
 			const contentDataURL: string = canvas.toDataURL('image/png');
-			/* eslint-disable */
+			// eslint-disable-next-line new-cap
 			const pdf: jsPDF = new jsPDF('p', 'mm', 'a4'); // A4 size page of PDF
-			/* eslint-enable */
 			const position: number = 0;
 			pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
 			pdf.save(`${this.selectedFacility['Facility']}.pdf`); // Generated PDF
@@ -235,5 +249,4 @@ export class ResourcesComponent implements OnInit {
 			console.log('failed to convert to pdf');
 		});
 	}
-
 }
