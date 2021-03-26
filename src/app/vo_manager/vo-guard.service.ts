@@ -12,6 +12,7 @@ import { is_vo } from '../shared/globalvar';
 export class VoGuardService implements CanActivate {
 
 	constructor(private router: Router) {
+		this.router = router;
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
