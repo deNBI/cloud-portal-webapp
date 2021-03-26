@@ -14,9 +14,6 @@ export class VolumStatusComponent implements OnInit {
   VolumeStates: VolumeStates = new VolumeStates();
   @Input() volume: Volume;
 
-  constructor() {
-  }
-
   ngOnInit(): void {
   }
 

@@ -62,6 +62,8 @@ export class BiocondaComponent implements OnInit {
 	}
 
 	constructor(private condaService: BiocondaService, private cdr: ChangeDetectorRef) {
+		this.condaService = condaService;
+		this.cdr = cdr;
 	}
 
 	pageChanged(event: any): void {
@@ -209,7 +211,7 @@ export class BiocondaComponent implements OnInit {
 	}
 
 	is_added_values(name: string, version: string, build: string): boolean {
-		const tool: IBiocondaTool = {name, version, build};
+		const tool: IBiocondaTool = { name, version, build };
 
 		return this.is_added(tool);
 	}

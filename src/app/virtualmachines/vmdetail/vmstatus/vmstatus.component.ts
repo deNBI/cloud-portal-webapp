@@ -14,8 +14,4 @@ export class VmstatusComponent {
   VirtualMachineStates: VirtualMachineStates = new VirtualMachineStates();
   @Input() vm: VirtualMachine;
   @Input() with_text: boolean = false;
-
-  constructor() {
-  }
-
 }

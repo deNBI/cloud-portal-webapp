@@ -13,30 +13,27 @@ import { ApplicationRessourceUsage } from '../../applications/application-ressou
 })
 export class ResourceOverviewComponent implements OnInit, OnChanges {
 
-  @Input() ressourceUsage: ApplicationRessourceUsage;
-  @Input() showAdditionalRes: boolean = false;
+	@Input() ressourceUsage: ApplicationRessourceUsage;
+	@Input() showAdditionalRes: boolean = false;
 
-  @Input() newDiskspace: number = 0;
-  newVolumes: number = 0;
-  @Input() newCores: number = 0;
-  @Input() newRam: number = 0;
-  @Input() newVms: number = 0;
-  @Input() newGpus: number = 0;
+	@Input() newDiskspace: number = 0;
+	newVolumes: number = 0;
+	@Input() newCores: number = 0;
+	@Input() newRam: number = 0;
+	@Input() newVms: number = 0;
+	@Input() newGpus: number = 0;
 
-  info_background: string = '#17a2b8';
+	info_background: string = '#17a2b8';
 
-  constructor() {
-  }
+	ngOnChanges(): void {
+		if (this.newDiskspace > 0) {
+			this.newVolumes = 1;
+		} else {
+			this.newVolumes = 0;
+		}
+	}
 
-  ngOnChanges(): void {
-  	if (this.newDiskspace > 0) {
-  		this.newVolumes = 1;
-  	} else {
-  		this.newVolumes = 0;
-  	}
-  }
+	ngOnInit(): void {
 
-  ngOnInit(): void {
-
-  }
+	}
 }

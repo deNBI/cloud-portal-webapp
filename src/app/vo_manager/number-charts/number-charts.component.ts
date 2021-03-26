@@ -23,7 +23,7 @@ export class NumberChartsComponent implements OnInit {
 	title: string = 'Cloud Numbers';
 
 	constructor(private numbersService: NumbersService) {
-
+		this.numbersService = numbersService;
 	}
 
 	/**

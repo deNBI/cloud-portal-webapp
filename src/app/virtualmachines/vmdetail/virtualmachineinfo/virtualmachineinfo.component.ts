@@ -15,8 +15,4 @@ export class VirtualmachineinfoComponent {
   VirtualMachineStates: VirtualMachineStates = new VirtualMachineStates();
   @Input() virtualMachine: VirtualMachine;
   @Input() cluster_machine: boolean = false;
-
-  constructor() {
-  }
-
 }
