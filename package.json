@@ -98,7 +98,7 @@
     "@angular/cli": "^11.2.5",
     "@angular/compiler-cli": "^11.2.6",
     "@compodoc/compodoc": "^1.1.11",
-    "@types/jasmine": "~3.6.4",
+    "@types/jasmine": "~3.6.7",
     "@types/node": "^14.14.34",
     "audit-ci": "^3.1.1",
     "autoprefixer": "^10.2.5",
