@@ -50,7 +50,7 @@ export class SnapshotOverviewPage {
     Util.logInfo(`Checking if snapshot ${name} is active`);
     await Util.waitForPresenceOfElementById(this.TABLE_ID, 1000000);
 
-    return await Util.waitForPresenceOfElementById(`${this.SNAPSHOT_ACTIVE_PREFIX}${name}`, Util.LONG_TIMEOUT);
+    return await Util.waitForPresenceOfElementById(`${this.SNAPSHOT_ACTIVE_PREFIX}${name}`, Util.MIN_TIMEOUT_15);
   }
 
   static async isBasicSnapshotActive(): Promise<boolean> {

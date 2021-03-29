@@ -8,8 +8,6 @@ export class VMOverviewPage {
 
   private VM_OVERVIEW_URL: string = 'virtualmachines/vmOverview';
   private TABLE_ID: string = 'vm_overview_table';
-  private LONG_TIMEOUT: number = Util.LONG_TIMEOUT;
-
   private SHOW_ACTIONS_PREFIX: string = 'showActionsButton_';
   private ACTIVE_BADGE_PREFIX: string = 'active_badge_';
   private SHUTOFF_BADGE_PREFIX: string = 'shutoff_badge_';
@@ -46,7 +44,7 @@ export class VMOverviewPage {
   async navigateToOverview(): Promise<any> {
     Util.logInfo('Navigating to VM Overview Page');
     await Util.navigateToAngularPage(this.VM_OVERVIEW_URL);
-    await Util.waitForPage(this.VM_OVERVIEW_URL, this.LONG_TIMEOUT);
+    await Util.waitForPage(this.VM_OVERVIEW_URL);
 
     return await browser.driver.sleep(10000);
   }
@@ -67,7 +65,7 @@ export class VMOverviewPage {
     Util.logInfo(`Checking if ${name} is active`);
     await Util.waitForPresenceOfElementById(this.TABLE_ID);
 
-    return await Util.waitForPresenceOfElementById(`${this.ACTIVE_BADGE_PREFIX}${name}`, this.LONG_TIMEOUT);
+    return await Util.waitForPresenceOfElementById(`${this.ACTIVE_BADGE_PREFIX}${name}`);
   }
 
   async isBasicVMActive(): Promise<boolean> {
@@ -95,7 +93,7 @@ export class VMOverviewPage {
     Util.logInfo(`Checking if ${name} is shutoff`);
     await Util.waitForPresenceOfElementById(this.TABLE_ID);
 
-    return await Util.waitForPresenceOfElementById(`${this.SHUTOFF_BADGE_PREFIX}${name}`, this.LONG_TIMEOUT);
+    return await Util.waitForPresenceOfElementById(`${this.SHUTOFF_BADGE_PREFIX}${name}`, Util.MIN_TIMEOUT_15);
   }
 
   async isBasicVMShutoff(): Promise<boolean> {
@@ -191,7 +189,7 @@ export class VMOverviewPage {
     await Util.clickElementById(`${this.DELETE_BUTTON_PREFIX}${name}`);
     await Util.waitForPresenceOfElementById(this.VERIFY_MODAL);
     await Util.clickElementById(this.CONFIRM_DELETE_BUTTON);
-    await Util.waitForPresenceOfElementById(`${this.DELETED_BADGE_PREFIX}${name}`, this.LONG_TIMEOUT);
+    await Util.waitForPresenceOfElementById(`${this.DELETED_BADGE_PREFIX}${name}`, Util.MIN_TIMEOUT_15);
 
     Util.logInfo(`Deletion method for ${name} completed`)
   }

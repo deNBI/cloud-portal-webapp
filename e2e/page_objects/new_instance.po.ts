@@ -71,7 +71,7 @@ export class NewInstancePage {
     await Util.sendTextToElementByIdUnsecure(this.ID_INSTANCE_NAME, instance_name);
     await Util.waitForPresenceOfElementById(this.FLAVOR_ID);
     await element(by.id(this.FLAVOR_ID)).element(by.id(`${this.FLAVOR_PREFIX}${flavor}`)).click();
-    await Util.waitForPresenceOfElementById(this.IMAGE_ID, Util.LONG_TIMEOUT);
+    await Util.waitForPresenceOfElementById(this.IMAGE_ID);
     await element(by.id(this.IMAGE_ID)).element(by.id(`${this.IMAGE_PREFIX}${image}`)).click();
     await Util.clickElementById(this.VM_RESPONSIBILITY)
   }
@@ -85,7 +85,7 @@ export class NewInstancePage {
   }
 
   static async waitForConfirmation(): Promise<boolean> {
-    return await Util.waitForPresenceOfElementById(this.OVERVIEW_BUTTON, Util.LONG_TIMEOUT);
+    return await Util.waitForPresenceOfElementById(this.OVERVIEW_BUTTON);
   }
 
   static async isRedirectModalPresent(): Promise<boolean> {
