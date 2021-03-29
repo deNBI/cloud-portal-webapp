@@ -13,8 +13,6 @@ export class NewInstancePage {
   private static NEW_INSTANCE_NAME_SPAN: string = 'new_vm_name';
   private static VOLUME_VM_NAME: string = Util.VOLUME_VM_NAME;
   private static ID_INSTANCE_NAME: string = 'id_instance_name';
-  private static DEFAULT_FLAVOR_TITLE: string = 'de.NBI default';
-  private static UBUNTU_18_TITLE: string = 'Ubuntu 18.04 LTS (2021-02-01)';
   private static START_BUTTON: string = 'startVMButton';
   private static OVERVIEW_BUTTON: string = 'goToOverviewButton';
   private static FLAVOR_ID: string = 'id_flavor_detail';
@@ -57,13 +55,13 @@ export class NewInstancePage {
   static async fillBasicForm(name: string= this.BASIC_VM_NAME): Promise<any> {
     Util.logInfo('Fill new instance basic form');
 
-    await this.fillMandatoryFormWith(name, this.DEFAULT_FLAVOR_TITLE, this.UBUNTU_18_TITLE);
+    await this.fillMandatoryFormWith(name, Util.DEFAULT_FLAVOR_NAME, Util.UBUNTU_18_TITLE);
   }
 
   static async fillBasicVolumeForm(): Promise<any> {
     Util.logInfo('Fill new instance basic volume form');
 
-    await this.fillMandatoryFormWith(this.VOLUME_VM_NAME, this.DEFAULT_FLAVOR_TITLE, this.UBUNTU_18_TITLE);
+    await this.fillMandatoryFormWith(this.VOLUME_VM_NAME, Util.DEFAULT_FLAVOR_NAME, Util.UBUNTU_18_TITLE);
   }
 
   static async fillMandatoryFormWith(instance_name: string, flavor: string, image: string): Promise<any> {

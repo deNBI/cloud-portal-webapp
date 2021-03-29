@@ -21,6 +21,10 @@ export class Util {
   private static _VOLUME_NAME: string = 'ProtractorVolume';
   private static _VOLUME_SPACE: string = '1';
   private static _LONG_TIMEOUT: number = 420000;
+  private static _VERY_LONG_TIMEOUT: number = 600000;
+  private static _DEFAULT_FLAVOR_TITLE: string = 'de.NBI default';
+  private static _UBUNTU_18_TITLE: string = 'Ubuntu 18.04 LTS (2021-02-01)';
+
   private static _VOLUME_MOUNT_PATH_STRING: string = 'path';
 
   private static _BASIC_SNAPSHOT_NAME: string = 'PTSnap';
@@ -29,6 +33,14 @@ export class Util {
   // tslint:disable-next-line:no-require-imports
   static get PI_EMAIL(): string {
     return this._PI_EMAIL;
+  }
+
+  static get DEFAULT_FLAVOR_NAME(): string {
+    return this._DEFAULT_FLAVOR_TITLE
+  }
+
+  static get UBUNTU_18_TITLE(): string {
+    return this._UBUNTU_18_TITLE
   }
 
   static get VOLUME_MOUNT_PATH_STRING(): string {
@@ -49,6 +61,10 @@ export class Util {
 
   static get LONG_TIMEOUT(): number {
     return this._LONG_TIMEOUT;
+  }
+
+  static get VERY_LONG_TIMEOUT(): number {
+    return this._VERY_LONG_TIMEOUT;
   }
 
   static get BASIC_SNAPSHOT_NAME(): string {
