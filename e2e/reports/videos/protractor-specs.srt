@@ -1,0 +1,336 @@
+1
+00:00:00,029 --> 00:00:29,138
+<font color="red">FAILED</font> should decline all open PT Applications
+
+2
+00:00:29,179 --> 00:00:29,202
+<font color="yellow">PENDING</font> should navigate to the vo overview
+
+3
+00:00:29,233 --> 00:00:29,248
+<font color="yellow">PENDING</font> should filter projects
+
+4
+00:00:29,269 --> 00:00:29,271
+<font color="yellow">PENDING</font> should terminate vo projects
+
+5
+00:00:29,319 --> 00:00:29,321
+<font color="yellow">PENDING</font> should relog with fm
+
+6
+00:00:29,340 --> 00:00:29,341
+<font color="yellow">PENDING</font> should terminate fm projects
+
+7
+00:01:09,274 --> 00:02:09,390
+<font color="red">FAILED</font> should generate a new ssh-keypair
+
+8
+00:02:09,427 --> 00:02:09,432
+<font color="yellow">PENDING</font> should set a new ssh-keypair without previous generation
+
+9
+00:02:35,672 --> 00:02:35,672
+<font color="yellow">PENDING</font> should navigate to the simple vm form
+
+10
+00:02:35,683 --> 00:02:35,687
+<font color="yellow">PENDING</font> should fill the simple vm form
+
+11
+00:02:35,699 --> 00:02:35,717
+<font color="yellow">PENDING</font> should submit the simple vm form
+
+12
+00:02:35,728 --> 00:02:35,730
+<font color="yellow">PENDING</font> should successfully submitted the application
+
+13
+00:02:35,741 --> 00:02:35,764
+<font color="yellow">PENDING</font> should load project overview
+
+14
+00:02:35,776 --> 00:02:35,778
+<font color="yellow">PENDING</font> should have Bioinformatics in the research topics
+
+15
+00:02:35,789 --> 00:02:35,803
+<font color="yellow">PENDING</font> should have dissemination 
+
+16
+00:02:55,872 --> 00:02:56,006
+<font color="red">FAILED</font> should navigate to application overview
+
+17
+00:02:56,263 --> 00:02:56,289
+<font color="yellow">PENDING</font> should approve A SIMPLE VM APPLICATION
+
+18
+00:02:56,503 --> 00:02:56,654
+<font color="red">FAILED</font> should navigate to project overview
+
+19
+00:02:56,939 --> 00:02:56,970
+<font color="yellow">PENDING</font> should add member
+
+20
+00:02:57,042 --> 00:02:57,046
+<font color="yellow">PENDING</font> should remove member
+
+21
+00:02:57,203 --> 00:02:57,309
+<font color="red">FAILED</font> should navigate to application overview
+
+22
+00:02:57,585 --> 00:02:57,613
+<font color="yellow">PENDING</font> should open the modification request modal
+
+23
+00:02:57,662 --> 00:02:57,675
+<font color="yellow">PENDING</font> should have old values prefilled
+
+24
+00:02:57,715 --> 00:02:57,717
+<font color="yellow">PENDING</font> should fill modification formular
+
+25
+00:02:57,781 --> 00:02:57,940
+<font color="yellow">PENDING</font> should send a modification request
+
+26
+00:02:58,218 --> 00:02:58,385
+<font color="red">FAILED</font> should navigate to application overview
+
+27
+00:02:58,621 --> 00:02:58,645
+<font color="yellow">PENDING</font> should approve a simple vm modification request
+
+28
+00:02:58,872 --> 00:02:58,908
+<font color="red">FAILED</font> should navigate to application overview
+
+29
+00:02:59,101 --> 00:02:59,111
+<font color="yellow">PENDING</font> should open the extension request modal
+
+30
+00:02:59,159 --> 00:02:59,171
+<font color="yellow">PENDING</font> should fill extension formular
+
+31
+00:02:59,227 --> 00:02:59,229
+<font color="yellow">PENDING</font> should send an extension request
+
+32
+00:02:59,438 --> 00:02:59,649
+<font color="red">FAILED</font> should navigate to application overview
+
+33
+00:02:59,873 --> 00:02:59,882
+<font color="yellow">PENDING</font> should approve a simple vm modification request
+
+34
+00:03:00,065 --> 00:03:00,066
+<font color="yellow">PENDING</font> should navigate to the simple vm form
+
+35
+00:03:00,092 --> 00:03:00,095
+<font color="yellow">PENDING</font> should fill the simple vm form
+
+36
+00:03:00,119 --> 00:03:00,218
+<font color="yellow">PENDING</font> should submit the simple vm form
+
+37
+00:03:00,270 --> 00:03:00,273
+<font color="yellow">PENDING</font> should successfully submitted the application
+
+38
+00:03:00,316 --> 00:03:00,422
+<font color="yellow">PENDING</font> should load project overview
+
+39
+00:03:00,500 --> 00:03:00,502
+<font color="yellow">PENDING</font> should have no pi set
+
+40
+00:03:00,581 --> 00:03:00,658
+<font color="yellow">PENDING</font> pi should successfully approve application
+
+41
+00:03:00,680 --> 00:03:00,682
+<font color="yellow">PENDING</font> should remove the application
+
+42
+00:03:00,844 --> 00:03:01,012
+<font color="red">FAILED</font> should navigate to cloud application form
+
+43
+00:03:01,193 --> 00:03:01,212
+<font color="yellow">PENDING</font> should fill cloud application form
+
+44
+00:03:01,259 --> 00:03:01,263
+<font color="yellow">PENDING</font> should submit cloud application 
+
+45
+00:03:01,291 --> 00:03:01,292
+<font color="yellow">PENDING</font> should successfully submitted the application
+
+46
+00:03:01,317 --> 00:03:01,424
+<font color="yellow">PENDING</font> should load project overview
+
+47
+00:03:01,450 --> 00:03:01,455
+<font color="yellow">PENDING</font> should have Bioinformatics in the research topics
+
+48
+00:03:01,507 --> 00:03:01,599
+<font color="yellow">PENDING</font> should have dissemination 
+
+49
+00:03:01,835 --> 00:03:01,978
+<font color="red">FAILED</font> should navigate to application overview
+
+50
+00:03:02,205 --> 00:03:02,234
+<font color="yellow">PENDING</font> should approve cloud application with denbi default facility
+
+51
+00:03:02,294 --> 00:03:02,298
+<font color="yellow">PENDING</font> should relog with facility manager
+
+52
+00:03:02,336 --> 00:03:02,338
+<font color="yellow">PENDING</font> should navigate to facility overview
+
+53
+00:03:02,375 --> 00:03:02,453
+<font color="yellow">PENDING</font> should approve cloud application
+
+54
+00:03:02,594 --> 00:03:02,777
+<font color="red">FAILED</font> should navigate to openstack project overview
+
+55
+00:03:02,916 --> 00:03:02,925
+<font color="yellow">PENDING</font> should open the modification request modal
+
+56
+00:03:02,949 --> 00:03:02,966
+<font color="yellow">PENDING</font> should have old values prefilled
+
+57
+00:03:02,989 --> 00:03:02,990
+<font color="yellow">PENDING</font> should fill modification formular
+
+58
+00:03:03,008 --> 00:03:03,009
+<font color="yellow">PENDING</font> should send a modification request
+
+59
+00:03:03,128 --> 00:03:03,132
+<font color="yellow">PENDING</font> should navigate to application overview
+
+60
+00:03:03,158 --> 00:03:03,159
+<font color="yellow">PENDING</font> should approve a cloud  modification request
+
+61
+00:03:03,180 --> 00:03:03,214
+<font color="yellow">PENDING</font> should relog with facility manager
+
+62
+00:03:03,237 --> 00:03:03,239
+<font color="yellow">PENDING</font> should navigate to facility overview
+
+63
+00:03:03,258 --> 00:03:03,288
+<font color="yellow">PENDING</font> should approve cloud application
+
+64
+00:03:03,384 --> 00:03:03,497
+<font color="red">FAILED</font> should start a basic vm
+
+65
+00:03:03,556 --> 00:03:03,568
+<font color="yellow">PENDING</font> should start a basic vm with a volume
+
+66
+00:03:03,586 --> 00:03:03,589
+<font color="yellow">PENDING</font> should show all virtual machines as active
+
+67
+00:03:03,603 --> 00:03:03,605
+<font color="yellow">PENDING</font> should shutdown the basic vm
+
+68
+00:03:03,618 --> 00:03:03,658
+<font color="yellow">PENDING</font> should resume the basic vm
+
+69
+00:03:03,673 --> 00:03:03,674
+<font color="yellow">PENDING</font> should delete the volume vm without deleting the volume
+
+70
+00:03:03,686 --> 00:03:03,706
+<font color="yellow">PENDING</font> should delete the vm created volume
+
+71
+00:03:03,718 --> 00:03:03,719
+<font color="yellow">PENDING</font> should create a snapshot of the basic vm
+
+72
+00:03:03,732 --> 00:03:03,760
+<font color="yellow">PENDING</font> should start a vm with the  snapshot
+
+73
+00:03:03,776 --> 00:03:03,778
+<font color="yellow">PENDING</font> should create and attach a volume to basic vm
+
+74
+00:03:03,795 --> 00:03:03,822
+<font color="yellow">PENDING</font> should delete the snapshot of the basic vm
+
+75
+00:03:03,841 --> 00:03:03,842
+<font color="yellow">PENDING</font> should should delete the basic vm without deleting the volume
+
+76
+00:03:03,861 --> 00:03:03,888
+<font color="yellow">PENDING</font> should delete the manually created volume
+
+77
+00:03:03,908 --> 00:03:03,911
+<font color="yellow">PENDING</font> should start a new vm
+
+78
+00:03:03,930 --> 00:03:03,960
+<font color="yellow">PENDING</font> should show vm detail page with base functions for virtual machines working
+
+79
+00:03:04,026 --> 00:03:04,028
+<font color="yellow">PENDING</font> should decline all open PT Applications
+
+80
+00:03:04,042 --> 00:03:04,043
+<font color="yellow">PENDING</font> should navigate to the vo overview
+
+81
+00:03:04,055 --> 00:03:04,075
+<font color="yellow">PENDING</font> should filter projects
+
+82
+00:03:04,088 --> 00:03:04,089
+<font color="yellow">PENDING</font> should terminate vo projects
+
+83
+00:03:04,101 --> 00:03:04,120
+<font color="yellow">PENDING</font> should relog with fm
+
+84
+00:03:04,133 --> 00:03:04,134
+<font color="yellow">PENDING</font> should terminate fm projects
+
