@@ -1761,10 +1761,6 @@
                   GBs</strong>
                 </td>
               </tr>
-              <tr *ngIf="request_type == ExtensionRequestType.MODIFICATION">
-                <td><strong>Number of GPUs in total: {{project_modification?.total_gpu}}</strong>
-                </td>
-              </tr>
               <tr *ngIf="request_type == ExtensionRequestType.EXTENSION" >
                 <td><strong>Additional lifetime in months: {{project_extension.extra_lifetime}}</strong></td>
               </tr>
