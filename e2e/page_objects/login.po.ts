@@ -87,7 +87,7 @@ export class LoginPage {
     await Util.waitForPage('execution=e1s2');
     await Util.clickElementByName('_eventId_proceed');
     if (await Util.waitForPageIgnoreError(this.TEST_RP_WARNING)) {
-      await Util.clickElementByName(this.TEST_RP_CONTINUE)
+      await Util.clickElementByName(this.TEST_RP_CONTINUE);
     }
     await Util.waitForPage('userinfo');
 
