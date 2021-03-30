@@ -10,7 +10,7 @@ export class NewClusterPage {
   private static FLAVOR_PREFIX: string = 'id_flavor_owl_';
   private static IMAGE_PREFIX: string = 'id_image_owl_';
   private static SELECTED_BATCH_WORKER_FLAVOR_SELECTION = 'selected_batch_id_flavor_detail';
-  private static SELECTED_BATCH_WORKER_COUNT: string = 'selected_batch_worker_count';
+  private static SELECTED_BATCH_WORKER_COUNT: string = 'workerInstancesCount_1';
   private static START_BUTTON: string = 'startClusterButton';
   private static NEW_CLUSTER_ID_FIELD: string = 'new_cluster_id';
   private static INFO_MODAL: string = 'info_modal';
