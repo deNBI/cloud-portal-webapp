@@ -161,15 +161,13 @@ export class VMOverviewPage {
   }
 
   async getNewBasicVMName(): Promise<string> {
-    const basicName: string = await Util.getTextFromLinkElement(this.DETAIL_LINK, Util.BASIC_VM_NAME);
+    return await Util.getTextFromLinkElement(this.DETAIL_LINK, Util.BASIC_VM_NAME);
 
-    return basicName;
   }
 
   async getNewVolumeVMName(): Promise<string> {
-    const volumeName: string = await Util.getTextFromLinkElement(this.DETAIL_LINK, Util.VOLUME_VM_NAME);
+    return await Util.getTextFromLinkElement(this.DETAIL_LINK, Util.VOLUME_VM_NAME);
 
-    return volumeName;
   }
 
   async getVolumeVMName(): Promise<string> {
