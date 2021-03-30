@@ -199,7 +199,7 @@ export class ProjectOverview {
   }
 
   static async fillModificationRequest(): Promise<any> {
-    await Util.sendTextToElementByIdUnsecure(this.DENBI_DEFAULT_NEW_INPUT, '2');
+    await Util.sendTextToElementByIdUnsecure(this.DENBI_DEFAULT_NEW_INPUT, '5');
     await Util.sendTextToElementByIdUnsecure(this.NEW_VOLUME_COUNTER_ID, '1');
     await Util.sendTextToElementByIdUnsecure(this.NEW_VOLUME_LIMIT_ID, '1');
     await Util.sendTextToElementByIdUnsecure('id_project_application_renewal_comment', 'This is a Protrector test modification!');
