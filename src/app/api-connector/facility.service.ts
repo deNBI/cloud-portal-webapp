@@ -9,6 +9,7 @@ import {ResourceMachine} from '../facility_manager/resources/resource-machine';
 import {ProjectMember} from '../projectmanagement/project_member.model';
 import {GPUSpecification} from '../facility_manager/resources/gpu-specification';
 import {GeneralStorageFactor} from '../facility_manager/resources/general-storage-factor';
+import {Clusterinfo} from '../virtualmachines/clusters/clusterinfo';
 
 /**
  * Service which provides methods for the facilities.
@@ -50,6 +51,20 @@ export class FacilityService {
     return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility_id}/wfc/termination_requests/`, {
       withCredentials: true
     });
+  }
+
+  getClustersFacility(facility_id: string, page: number, vm_per_site: number, filter?: string): Observable<Clusterinfo[]> {
+    let params: HttpParams = new HttpParams().set('page', page.toString()).set('cluster_per_site', vm_per_site.toString());
+
+    if (filter) {
+      params = params.set('filter', filter);
+
+    }
+
+    return this.http.get<Clusterinfo[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility_id}/clusters/`, {
+      withCredentials: true,
+      params
+    })
   }
 
   getWfcModificationRequestedApplications(facility_id: number | string): Observable<Application[]> {
