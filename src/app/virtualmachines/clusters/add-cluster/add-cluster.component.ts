@@ -297,12 +297,13 @@ export class AddClusterComponent implements OnInit {
             1000)
         } else {
           this.cluster_id = res['id'];
+          this.cluster_started = true;
 
           setTimeout(
             (): void => {
               void this.router.navigate(['/virtualmachines/clusterOverview']).then().catch()
             },
-            3000)
+            4000)
 
         }
 

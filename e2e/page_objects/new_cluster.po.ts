@@ -1,5 +1,5 @@
 import {Util} from '../util';
-import {by, element} from 'protractor';
+import {browser, by, element} from 'protractor';
 
 export class NewClusterPage {
   private static NEW_CLUSTER_URL: string = 'virtualmachines/newCluster';
@@ -10,7 +10,7 @@ export class NewClusterPage {
   private static FLAVOR_PREFIX: string = 'id_flavor_owl_';
   private static IMAGE_PREFIX: string = 'id_image_owl_';
   private static SELECTED_BATCH_WORKER_FLAVOR_SELECTION = 'selected_batch_id_flavor_detail';
-  private static SELECTED_BATCH_WORKER_COUNT: string = 'selected_batch_worker_count';
+  private static SELECTED_BATCH_WORKER_COUNT: string = 'workerInstancesCount_1';
   private static START_BUTTON: string = 'startClusterButton';
   private static NEW_CLUSTER_ID_FIELD: string = 'new_cluster_id';
   private static INFO_MODAL: string = 'info_modal';
@@ -39,7 +39,7 @@ export class NewClusterPage {
     static async fillBasicForm(): Promise<any> {
     Util.logInfo('Fill new instance basic form');
 
-    await this.fillMandatoryFormWith(name, Util.DEFAULT_FLAVOR_NAME, Util.UBUNTU_18_TITLE);
+    await this.fillMandatoryFormWith(Util.DEFAULT_FLAVOR_NAME, Util.UBUNTU_18_TITLE);
   }
 
 
@@ -50,6 +50,7 @@ export class NewClusterPage {
     await element(by.id(this.MASTER_FLAVOR_ID)).element(by.id(`${this.FLAVOR_PREFIX}${flavor}`)).click();
     await Util.waitForPresenceOfElementById(this.MASTER_IMAGE_ID);
     await element(by.id(this.MASTER_IMAGE_ID)).element(by.id(`${this.IMAGE_PREFIX}${image}`)).click();
+    await browser.sleep(5000)
     await Util.waitForPresenceOfElementById(this.SELECTED_BATCH_WORKER_FLAVOR_SELECTION);
     await element(by.id(this.SELECTED_BATCH_WORKER_FLAVOR_SELECTION)).element(by.id(`${this.FLAVOR_PREFIX}${flavor}`)).click();
     await Util.waitForPresenceOfElementById(this.SELECTED_BATCH_WORKER_COUNT);

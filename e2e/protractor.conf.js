@@ -89,6 +89,22 @@ exports.config = {
       'tests/simple_vm_no_pi_test.ts',
       'tests/terminate_all_pt_after.ts',
     ],
+    simple_vm_cluster: [
+      'tests/terminate_all_pt.ts',
+      'tests/public_key_test.ts',
+      'tests/simple_vm_application_test.ts',
+      'tests/simple_vm_approval_test.ts',
+      'tests/cluster_tests.ts',
+      'tests/terminate_all_pt_after.ts',
+    ],
+    simple_vm_vms: [
+      'tests/terminate_all_pt.ts',
+      'tests/public_key_test.ts',
+      'tests/simple_vm_application_test.ts',
+      'tests/simple_vm_approval_test.ts',
+      'tests/virtual_machine_tests.ts',
+      'tests/terminate_all_pt_after.ts',
+    ],
     simple_vm_full: [
       'tests/terminate_all_pt.ts',
       'tests/public_key_test.ts',
@@ -100,6 +116,7 @@ exports.config = {
       'tests/simple_vm_extension_test.ts',
       'tests/simple_vm_extension_approval_test.ts',
       'tests/simple_vm_no_pi_test.ts',
+      'tests/cluster_tests.ts',
       'tests/virtual_machine_tests.ts',
       'tests/terminate_all_pt_after.ts',
     ],
@@ -135,7 +152,7 @@ exports.config = {
     browserName: 'chrome',
     acceptInsecureCerts: true,
     chromeOptions: {
-      args: ["--incognito", "--ignore-certificate-errors", '--headless', "--window-size=1690,1000", '--disable-gpu', '--window-size=1600,1000']
+      args: ["--incognito", "--ignore-certificate-errors", '--headless', "--window-size=1920,1280", '--disable-gpu']
       //args: ["--incognito", "--ignore-certificate-errors"]
 
     }
