@@ -35,7 +35,6 @@ export class ClusterOverviewPage {
 
   static async isClusterActive(name: string=this.CLUSTER_NAME): Promise<boolean> {
     Util.logInfo(`Checking if ${name} is active`);
-    await Util.waitForPresenceOfElementById(this.INSTANCE_PREFIX + name);
 
     return await Util.waitForPresenceOfElementById(`${this.RUNNING_BADE_PREFIX}${name}`, Util.MIN_TIMOEUT_30);
   }

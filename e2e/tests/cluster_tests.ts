@@ -30,7 +30,7 @@ describe('Cluster Tests', async function(): Promise<any> {
   it('cluster should become active', async function(): Promise<any> {
     Util.logDebug('------------------------------Overview cluster tests: started');
     await ClusterOverviewPage.navigateToOverview();
-    Util.logInfo(`Checking if cluster ${ClusterOverviewPage.getClusterName()} is active`);
+    Util.logInfo(`Checking if cluster ${ ClusterOverviewPage.getClusterName()} is active`);
     const areActive: boolean = await ClusterOverviewPage.isClusterActive();
     expect(areActive).toBeTruthy();
   });
