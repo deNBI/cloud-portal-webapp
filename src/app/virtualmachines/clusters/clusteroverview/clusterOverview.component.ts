@@ -469,7 +469,7 @@ export class ClusterOverviewComponent extends AbstractBaseClasse implements OnIn
   getClusters(): void {
 
     this.virtualmachineservice.getClusters(
-      this.currentPage, this.cluster_per_site,
+      this.currentPage, this.cluster_per_site
       )
       .subscribe((cluster_page_infos: any[]): void => {
                    this.prepareClusters(cluster_page_infos)
@@ -481,7 +481,7 @@ export class ClusterOverviewComponent extends AbstractBaseClasse implements OnIn
 
     this.virtualmachineservice.getVmsFromFacilitiesOfLoggedUser(
       this.selectedFacility['FacilityId'],
-      this.currentPage, this.cluster_per_site,
+      this.currentPage, this.cluster_per_site
       )
       .subscribe((cluster_page_infos: any[]): void => {
                    this.prepareClusters(cluster_page_infos)
