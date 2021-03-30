@@ -142,6 +142,7 @@ exports.config = {
       'tests/cloud_application_approval_test.ts',
       'tests/cloud_application_modification_test.ts',
       'tests/cloud_modification_approval_test.ts',
+      'tests/cluster_tests.ts',
       'tests/virtual_machine_tests.ts',
       'tests/terminate_all_pt_after.ts',]
   },
