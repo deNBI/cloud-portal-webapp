@@ -120,6 +120,21 @@ export class Util {
 
   }
 
+  static async clickElementByLinkTextIgnoreError(text: string, timeout: number = this.timeout): Promise<boolean> {
+    await Util.waitForElementToBeClickableByLinkText(text)
+    this.logInfo(`Clicking element with text: [${text}]`)
+
+    try {
+      await element(by.linkText(text)).click();
+    } catch (error) {
+      this.logInfo(`Coudln't click ${text} - Ignore Error`)
+
+      return false
+    }
+
+    return true
+  }
+
   static async waitForPageIgnoreError(url: string, timeout: number = this.timeout): Promise<boolean> {
     const until_: ProtractorExpectedConditions = protractor.ExpectedConditions;
     await browser.sleep(2000);
