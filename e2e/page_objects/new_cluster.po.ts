@@ -1,5 +1,5 @@
 import {Util} from '../util';
-import {by, element} from 'protractor';
+import {browser, by, element} from 'protractor';
 
 export class NewClusterPage {
   private static NEW_CLUSTER_URL: string = 'virtualmachines/newCluster';
@@ -50,6 +50,7 @@ export class NewClusterPage {
     await element(by.id(this.MASTER_FLAVOR_ID)).element(by.id(`${this.FLAVOR_PREFIX}${flavor}`)).click();
     await Util.waitForPresenceOfElementById(this.MASTER_IMAGE_ID);
     await element(by.id(this.MASTER_IMAGE_ID)).element(by.id(`${this.IMAGE_PREFIX}${image}`)).click();
+    await browser.sleep(5000)
     await Util.waitForPresenceOfElementById(this.SELECTED_BATCH_WORKER_FLAVOR_SELECTION);
     await element(by.id(this.SELECTED_BATCH_WORKER_FLAVOR_SELECTION)).element(by.id(`${this.FLAVOR_PREFIX}${flavor}`)).click();
     await Util.waitForPresenceOfElementById(this.SELECTED_BATCH_WORKER_COUNT);

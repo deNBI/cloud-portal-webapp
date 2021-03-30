@@ -5,15 +5,15 @@ import {Util} from '../util';
 import {NewClusterPage} from '../page_objects/new_cluster.po';
 import {ClusterOverviewPage} from '../page_objects/cluster_overview.po';
 
-describe('Cluster Tests', async function (): Promise<any> {
+describe('Cluster Tests', async function(): Promise<any> {
 
-  beforeAll(async function (): Promise<any> {
+  beforeAll(async function(): Promise<any> {
     Util.logDebug('------------------------------Cluster tests: started');
     await browser.waitForAngularEnabled(false);
     await LoginPage.login(browser.params.login.email_user, browser.params.login.password_user, browser.params.login.auth_user, true);
   });
 
-  it('should start a cluster', async function (): Promise<any> {
+  it('should start a cluster', async function(): Promise<any> {
     Util.logDebug('------------------------------Start cluster test: started');
     Util.logDebug('Trying to start a new cluster');
     await NewClusterPage.navigateToNewClusterPage();
@@ -27,7 +27,7 @@ describe('Cluster Tests', async function (): Promise<any> {
 
   });
 
-  it('cluster should become active', async function (): Promise<any> {
+  it('cluster should become active', async function(): Promise<any> {
     Util.logDebug('------------------------------Overview cluster tests: started');
     await ClusterOverviewPage.navigateToOverview();
     Util.logInfo(`Checking if cluster ${ClusterOverviewPage.getClusterName()} is active`);
@@ -35,7 +35,7 @@ describe('Cluster Tests', async function (): Promise<any> {
     expect(areActive).toBeTruthy();
   });
 
-  it('cluster should be deleted', async function (): Promise<any> {
+  it('cluster should be deleted', async function(): Promise<any> {
     await ClusterOverviewPage.navigateToOverview();
     Util.logInfo(`Checking if cluster ${ClusterOverviewPage.getClusterName()} is active`);
     const areActive: boolean = await ClusterOverviewPage.isClusterActive();
