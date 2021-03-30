@@ -39,7 +39,7 @@ export class NewClusterPage {
     static async fillBasicForm(): Promise<any> {
     Util.logInfo('Fill new instance basic form');
 
-    await this.fillMandatoryFormWith(name, Util.DEFAULT_FLAVOR_NAME, Util.UBUNTU_18_TITLE);
+    await this.fillMandatoryFormWith(Util.DEFAULT_FLAVOR_NAME, Util.UBUNTU_18_TITLE);
   }
 
 
