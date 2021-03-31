@@ -120,11 +120,19 @@ export class Util {
 
   }
 
+  static async scrollToElement(scrollTo: ElementFinder): Promise<void> {
+    const location = await scrollTo.getLocation()
+    this.logInfo(`Scroll to Element [${location}] `)
+
+    await browser.executeScriptWithDescription(`window.scrollTo(${location.x}, ${location.y});`, 'Scroll to element');
+  }
+
   static async clickElementByLinkTextIgnoreError(text: string, timeout: number = this.timeout): Promise<boolean> {
     await Util.waitForElementToBeClickableByLinkText(text)
     this.logInfo(`Clicking element with text: [${text}]`)
 
     try {
+      await this.scrollToElement(element(by.linkText(text)))
       await element(by.linkText(text)).click();
     } catch (error) {
       this.logInfo(`Coudln't click ${text} - Ignore Error`)
@@ -180,6 +188,8 @@ export class Util {
 
   static async clickElementByLinkText(text: string): Promise<void> {
     await Util.waitForElementToBeClickableByLinkText(text)
+    await this.scrollToElement(element(by.linkText(text)))
+
     this.logInfo(`Clicking element with text: [${text}]`)
 
     return await element(by.linkText(text)).click();
@@ -243,6 +253,7 @@ export class Util {
     await this.waitForElementToBeClickableByName(name);
     this.logInfo(`Clicking element ${name}`);
     const elem: ElementFinder = element(by.name(name));
+    await this.scrollToElement(element(by.name(name)))
 
     return await elem.click();
   }
@@ -274,6 +285,8 @@ export class Util {
                                      timeout: number = this.timeout,
                                      id: string = 'Elementfinder'): Promise<void> {
     await this.waitForElementToBeClickableByElement(elem, timeout, id);
+    await this.scrollToElement(elem)
+
     this.logInfo(`Clicking element ${id}`);
 
     return await elem.click();
@@ -282,6 +295,8 @@ export class Util {
   static async clickElementById(id: string, timeout: number = this.timeout): Promise<void> {
     await this.waitForVisibilityOfElementById(id, timeout);
     await this.waitForElementToBeClickableById(id, timeout);
+    await this.scrollToElement(element(by.id(id)))
+
     this.logInfo(`Clicking element ${id}`);
     const elem: ElementFinder = element(by.id(id));
 
@@ -361,6 +376,8 @@ export class Util {
 
   static async waitForElementToBeClickableById(id: string, timeout: number = this.timeout): Promise<boolean> {
     const until_: ProtractorExpectedConditions = protractor.ExpectedConditions;
+    await this.scrollToElement(element(by.id(id)))
+
     this.logInfo(`Waiting until element is clickable ${id}`);
 
     const elem: ElementFinder = element(by.id(id));
@@ -394,6 +411,8 @@ export class Util {
     this.logInfo(`Getting option ${option} from select ${selectId}`);
 
     await this.waitForPresenceOfElementById(selectId);
+    await this.scrollToElement(element(by.id(selectId)).element(by.id(option)))
+
     const elem: any = element(by.id(selectId)).element(by.id(option))
 
     return await elem.click();
