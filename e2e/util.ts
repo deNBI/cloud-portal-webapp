@@ -122,7 +122,7 @@ export class Util {
 
   static async scrollToElement(scrollTo: ElementFinder): Promise<void> {
     const location = await scrollTo.getLocation()
-    this.logInfo(`Scroll to Element [${location}] `)
+    this.logInfo(`Scroll to Element [${location.x}${location.y}] `)
 
     await browser.executeScriptWithDescription(`window.scrollTo(${location.x}, ${location.y});`, 'Scroll to element');
   }
