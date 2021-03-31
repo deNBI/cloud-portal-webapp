@@ -187,12 +187,14 @@ describe('Virtual Machine Tests', async function(): Promise<any> {
        Util.logDebug('showing instance detail page');
        await vmOverviewPage.navigateToOverview();
        await vmOverviewPage.goToVmDetail();
-    // TODO: test stop, restart and other basic functions of virtual machines on the vmDetailPage
+       // TODO: test stop, restart and other basic functions of virtual machines on the vmDetailPage
        await vmDetailPage.setBasicVMName((await vmOverviewPage.getBasicVMName()));
        await vmDetailPage.stopBasicVM();
+       await vmOverviewPage.navigateToOverview();
+       await vmOverviewPage.goToVmDetail();
        await vmDetailPage.restartBasicVM();
        await vmDetailPage.createSnapshotBasicVM();
        await vmDetailPage.deleteBasicVM();
-  });
+     });
 
 });

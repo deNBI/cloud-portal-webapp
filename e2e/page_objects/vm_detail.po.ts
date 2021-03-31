@@ -66,7 +66,6 @@ export class VMDetailPage {
 
   async restartBasicVM(): Promise<any> {
     Util.logInfo('Restarting basic VM');
-    await Util.waitForElementToBeClickableById(this.RESUME_BUTTON);
     await Util.clickElementById(this.RESUME_BUTTON);
     await Util.waitForElementToBeClickableById(this.VERIFY_RESTART_BTN);
     await Util.clickElementById(this.VERIFY_RESTART_BTN);
