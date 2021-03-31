@@ -56,7 +56,6 @@ LogInterceptor.prototype.displaySpecErrorMessages = function (spec, log) {
 exports.config = {
   seleniumAddress: 'http://localhost:4444/wd/hub',
   params: {
-    timeout: credentials['timeout'],
     portal: credentials['portal'],
     angular: credentials['angular'],
     width: credentials["browser_w"],
@@ -163,7 +162,7 @@ exports.config = {
   framework: 'jasmine',
   jasmineNodeOpts: {
     showColors: true,
-    defaultTimeoutInterval: 900000,
+    defaultTimeoutInterval: Util.MIN_TIMOEUT_30,
     print: function () {
     }
   },
@@ -194,7 +193,7 @@ exports.config = {
       customProcessors: [LogInterceptor]
     }));
     jasmine.getEnv().addReporter(DescribeFailureReporter(jasmine.getEnv()));
-    browser.manage().window().setSize(1600, 1000);
+    browser.manage().window().setSize(1920, 1280);
   },
 
 };
