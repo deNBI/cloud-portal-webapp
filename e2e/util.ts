@@ -252,10 +252,9 @@ export class Util {
   static async clickElementByName(name: string): Promise<void> {
     await this.waitForElementToBeClickableByName(name);
     this.logInfo(`Clicking element ${name}`);
-    const elem: ElementFinder = element(by.name(name));
     await this.scrollToElement(element(by.name(name)))
 
-    return await elem.click();
+    return await element(by.name(name)).click();
   }
 
   static async checkInputsByIdsGotSameValue(id_1: string, id_2: string, timeout: number = this.timeout): Promise<any> {
@@ -298,9 +297,8 @@ export class Util {
     await this.scrollToElement(element(by.id(id)))
 
     this.logInfo(`Clicking element ${id}`);
-    const elem: ElementFinder = element(by.id(id));
 
-    return await elem.click();
+    return await element(by.id(id)).click();
   }
 
   static async waitForTextPresenceInElementById(id: string, text: string, timeout: number = this.timeout): Promise<boolean> {
