@@ -9,8 +9,8 @@ export class VMDetailPage {
   private VM_DETAIL_URL: string = 'virtualmachines/detail/';
   private VM_DETAIL_FULL_URL: string;
 
-  private ACTIVE_BADGE_PREFIX: string = 'active_badge';
-  private SHUTOFF_BADGE_PREFIX: string = 'shutoff_badge';
+  private ACTIVE_BADGE_PREFIX: string = 'active_badge_';
+  private SHUTOFF_BADGE_PREFIX: string = 'shutoff_badge_';
 
   private VERIFY_STOP_BTN: string = 'verifyStopButton';
   private VERIFY_RESTART_BTN: string = 'verifyRestartButton';
