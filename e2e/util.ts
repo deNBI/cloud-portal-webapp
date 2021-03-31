@@ -122,7 +122,7 @@ export class Util {
 
   static async scrollToElement(scrollTo: ElementFinder): Promise<void> {
     const location = await scrollTo.getLocation()
-    this.logInfo(`Scroll to Element [${location.x}${location.y}] `)
+    this.logInfo(`Scroll to Element [X-${location.x} : Y-${location.y}] `)
 
     await browser.executeScriptWithDescription(`window.scrollTo(${location.x}, ${location.y});`, 'Scroll to element');
   }
@@ -376,7 +376,6 @@ export class Util {
 
   static async waitForElementToBeClickableById(id: string, timeout: number = this.timeout): Promise<boolean> {
     const until_: ProtractorExpectedConditions = protractor.ExpectedConditions;
-    await this.scrollToElement(element(by.id(id)))
 
     this.logInfo(`Waiting until element is clickable ${id}`);
 

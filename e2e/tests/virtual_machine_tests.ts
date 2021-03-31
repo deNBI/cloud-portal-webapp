@@ -7,18 +7,18 @@ import {VolumeOverviewPage} from '../page_objects/volume_overview.po';
 import {SnapshotOverviewPage} from '../page_objects/vm_snapshot.po';
 import {Util} from '../util';
 
-describe('Virtual Machine Tests', async function (): Promise<any> {
+describe('Virtual Machine Tests', async function(): Promise<any> {
 
   const vmOverviewPage: VMOverviewPage = new VMOverviewPage();
   const vmDetailPage: VMDetailPage = new VMDetailPage();
 
-  beforeAll(async function (): Promise<any> {
+  beforeAll(async function(): Promise<any> {
      Util.logDebug('------------------------------All virtual machine tests: started');
      await browser.waitForAngularEnabled(false);
      await LoginPage.login(browser.params.login.email_user, browser.params.login.password_user, browser.params.login.auth_user, true);
   });
 
-  it('should start a basic vm', async function (): Promise<any> {
+  it('should start a basic vm', async function(): Promise<any> {
     Util.logDebug('------------------------------Start virtual machine tests: started');
     Util.logDebug('Trying to start a vm with denbi default and Ubuntu 18.04.');
     await NewInstancePage.getNewInstanceTab();
@@ -38,7 +38,7 @@ describe('Virtual Machine Tests', async function (): Promise<any> {
     await vmOverviewPage.setBasicVMName(vm_name);
   });
 
-  it('should start a basic vm with a volume', async function (): Promise<any> {
+  it('should start a basic vm with a volume', async function(): Promise<any> {
     Util.logDebug('Trying to start a vm with denbi default and Ubuntu 18.04 and a volume');
     await NewInstancePage.getNewInstanceTab();
     Util.logInfo('Choosing project');
@@ -65,7 +65,7 @@ describe('Virtual Machine Tests', async function (): Promise<any> {
     Util.logInfo('------------------------------Start virtual machine tests: ended');
   });
 
-  it('should show all virtual machines as active', async function (): Promise<any> {
+  it('should show all virtual machines as active', async function(): Promise<any> {
     Util.logDebug('------------------------------Overview virtual machine tests: started');
     await vmOverviewPage.navigateToOverview();
     Util.logInfo('Checking if every VM is active');
@@ -73,21 +73,21 @@ describe('Virtual Machine Tests', async function (): Promise<any> {
     expect(areActive).toBeTruthy();
   });
 
-  it('should shutdown the basic vm', async function (): Promise<any> {
+  it('should shutdown the basic vm', async function(): Promise<any> {
     Util.logDebug('Shutting down the basic vm');
     await vmOverviewPage.shutOffBasicVM();
     const isShutoff: boolean = await vmOverviewPage.isBasicVMShutoff();
     expect(isShutoff).toBeTruthy();
   });
 
-  it('should resume the basic vm', async function (): Promise<any> {
+  it('should resume the basic vm', async function(): Promise<any> {
     Util.logDebug('Resuming the basic vm');
     await vmOverviewPage.resumeBasicVM();
     const isActive: boolean = await vmOverviewPage.isBasicVMActive();
     expect(isActive).toBeTruthy();
   });
 
-  it('should delete the volume vm without deleting the volume', async function (): Promise<any> {
+  it('should delete the volume vm without deleting the volume', async function(): Promise<any> {
     Util.logDebug('Deleting the volume vm');
     await vmOverviewPage.deleteVolumeVM();
     await VolumeOverviewPage.navigateToVolumeOverview();
@@ -95,14 +95,14 @@ describe('Virtual Machine Tests', async function (): Promise<any> {
     expect(isVolumePresent).toBeTruthy();
   });
 
-  it('should delete the vm created volume', async function (): Promise<any> {
+  it('should delete the vm created volume', async function(): Promise<any> {
     Util.logDebug('Deleting the volume created in new instance tab');
     await VolumeOverviewPage.deleteVolume();
     const deleted: boolean = await VolumeOverviewPage.isVolumeDeleted();
     expect(deleted).toBeTruthy();
   });
 
-  it('should create a snapshot of the basic vm', async function (): Promise<any> {
+  it('should create a snapshot of the basic vm', async function(): Promise<any> {
     Util.logDebug('Creating a snapshot of the basic vm');
     await vmOverviewPage.navigateToOverview();
     await vmOverviewPage.createSnapshotOfBasicVM();
@@ -111,7 +111,7 @@ describe('Virtual Machine Tests', async function (): Promise<any> {
     const isActive: boolean = await SnapshotOverviewPage.isBasicSnapshotActive();
     expect(isPresent && isActive).toBeTruthy();
   });
-  it('should start a vm with the  snapshot', async function (): Promise<any> {
+  it('should start a vm with the  snapshot', async function(): Promise<any> {
     Util.logDebug('Trying to start a vm with snapshot and Ubuntu 18.04 and a volume');
     await NewInstancePage.getNewInstanceTab();
     Util.logInfo('Choosing project');
@@ -126,7 +126,7 @@ describe('Virtual Machine Tests', async function (): Promise<any> {
     Util.logInfo('------------------------------Start virtual machine with snapshot ended');
   });
 
-  it('should create and attach a volume to basic vm', async function (): Promise<any> {
+  it('should create and attach a volume to basic vm', async function(): Promise<any> {
     Util.logDebug('Creating and attaching a volume to basic vm');
     await VolumeOverviewPage.navigateToVolumeOverview();
     await VolumeOverviewPage.createAndAttachVolumeToProjectVm(await vmOverviewPage.getBasicVMName());
@@ -135,7 +135,7 @@ describe('Virtual Machine Tests', async function (): Promise<any> {
     expect(present && attached).toBeTruthy();
   });
 
-  it('should delete the snapshot of the basic vm', async function (): Promise<any> {
+  it('should delete the snapshot of the basic vm', async function(): Promise<any> {
     Util.logDebug('Deleting the snapshot of the basic vm');
     await SnapshotOverviewPage.navigateToSnapshotOverview();
     await SnapshotOverviewPage.deleteBasicSnapshot();
@@ -143,7 +143,7 @@ describe('Virtual Machine Tests', async function (): Promise<any> {
     expect(isDeleted).toBeTruthy();
   });
 
-  it('should should delete the basic vm without deleting the volume', async function (): Promise<any> {
+  it('should should delete the basic vm without deleting the volume', async function(): Promise<any> {
     Util.logDebug('Deleting the volume vm');
     await vmOverviewPage.navigateToOverview();
     await vmOverviewPage.deleteBasicVM();
@@ -153,7 +153,7 @@ describe('Virtual Machine Tests', async function (): Promise<any> {
     expect(isVolumePresent && notAttached).toBeTruthy();
   });
 
-  it('should delete the manually created volume', async function (): Promise<any> {
+  it('should delete the manually created volume', async function(): Promise<any> {
     Util.logDebug('Deleting the volume created by attachment');
     await VolumeOverviewPage.navigateToVolumeOverview();
     await VolumeOverviewPage.deleteVolume();
@@ -162,7 +162,7 @@ describe('Virtual Machine Tests', async function (): Promise<any> {
 
   });
 
-  it('should start a new vm', async function (): Promise<any> {
+  it('should start a new vm', async function(): Promise<any> {
     Util.logDebug('Starting new machine for VM Detail page');
     Util.logDebug('Trying to start a new vm with denbi default and Ubuntu 18.04.');
     await NewInstancePage.getNewInstanceTab();
@@ -183,7 +183,7 @@ describe('Virtual Machine Tests', async function (): Promise<any> {
   });
 
   it('should show vm detail page with base functions for virtual machines working',
-     async function (): Promise<any> {
+     async function(): Promise<any> {
        Util.logDebug('showing instance detail page');
        await vmOverviewPage.navigateToOverview();
        await vmOverviewPage.goToVmDetail();
