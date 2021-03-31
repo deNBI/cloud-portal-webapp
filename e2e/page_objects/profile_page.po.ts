@@ -1,8 +1,7 @@
 // @ts-ignore
-import {by, element} from 'protractor';
+import {browser, by, element} from 'protractor';
 // @ts-ignore
 import {Util} from '../util';
-import {ClipboardService} from 'ngx-clipboard';
 
 /**
  * New Instance Page.
@@ -28,7 +27,10 @@ export class ProfilePage {
     Util.logInfo('Clicking on Set-Button');
     await Util.waitForPresenceOfElementById(this.GENERATE_KEY_BUTTON);
     await Util.clickElementById(this.GENERATE_KEY_BUTTON);
+    await browser.sleep(5000)
     await Util.waitForPresenceOfElementById(this.USER_PUBLIC_KEY_FIELD);
+    await browser.sleep(5000);
+
 
     return await Util.getElemTextById(this.USER_PUBLIC_KEY_FIELD);
   }
@@ -43,6 +45,8 @@ export class ProfilePage {
     Util.logInfo('Clicking on Set-Button');
     await Util.waitForPresenceOfElementById(this.SET_NEW_PUBLIC_KEY_BUTTON);
     await Util.clickElementById(this.SET_NEW_PUBLIC_KEY_BUTTON);
+    await browser.sleep(5000)
+
 
     return await Util.getElemTextById(this.USER_PUBLIC_KEY_FIELD);
   }
