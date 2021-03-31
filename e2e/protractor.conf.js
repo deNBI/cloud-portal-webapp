@@ -193,7 +193,7 @@ exports.config = {
       customProcessors: [LogInterceptor]
     }));
     jasmine.getEnv().addReporter(DescribeFailureReporter(jasmine.getEnv()));
-    browser.manage().window().setSize(1920, 1280);
+    browser.manage().window().setSize(1600, 1000);
   },
 
 };
