@@ -137,7 +137,7 @@
                         <app-flavor-detail [selectedFlavor]="selectedMasterFlavor"
                                            [flavors]="flavors_usable"
                                            (selectedFlavorChange)="selectedMasterFlavor=$event;calculateNewValues();"
-                                           id="id_flavor_detail"></app-flavor-detail>
+                                           id="master_id_flavor_detail"></app-flavor-detail>
 
                       </div>
 
@@ -159,7 +159,7 @@
                         <app-image-detail *ngIf="images?.length > 0" [selectedImage]="selectedMasterImage"
                                           [images]="images"
                                           (selectedImageChange)="selectedMasterImage=$event;this.selectedWorkerBatches[0].image=selectedMasterImage;"
-                                          id="id_image_detail"></app-image-detail>
+                                          id="master_id_image_detail"></app-image-detail>
                         <div class="alert alert-info" *ngIf="selectedMasterImage"> This image will also be used for every worker!</div>
                       </div>
 
@@ -207,6 +207,7 @@
 
                           <app-flavor-detail *ngIf="selectedBatch == batch" [selectedFlavor]="batch.flavor"
                                              [flavors]="flavors_usable"
+                                               id="selected_batch_id_flavor_detail"
                                              (selectedFlavorChange)="batch.flavor=$event;selectedWorkerFlavorSet=true;calcMaxWorkerInstancesByFlavor();"
                           ></app-flavor-detail>
                           <app-flavor-detail *ngIf="selectedBatch != batch" [selectedFlavor]="batch.flavor"
@@ -233,6 +234,7 @@
                                  [disabled]="!batch.flavor || selectedBatch != batch"
                                  name="workerInstancesCount_{{batch.index}}"
                                  placeholder="e.g 1"
+                                 id="selected_batck_worker_count"
 
                                  type="number" min="1" [max]="batch.max_worker_count" step="1"
                                  [(ngModel)]="batch.worker_count" required
@@ -303,7 +305,7 @@
 
           <button style=" margin-left: auto;margin-top: 25px;
     margin-right: auto;
-    width: 8em" id="startVMButton"
+    width: 8em" id="startClusterButton"
 
                   type="button"
 
@@ -349,7 +351,7 @@
         <span *ngIf="!cluster_started">        Starting Cluster..
 </span>
         <span
-          *ngIf="cluster_id && cluster_started"> The ID of your new cluster is <strong>{{cluster_id}}</strong>.</span>
+          *ngIf="cluster_id && cluster_started"> The ID of your new cluster is <strong id="new_cluster_id">{{cluster_id}}</strong>.</span>
         <span *ngIf="cluster_error">  {{cluster_error}}.</span>
 
       </div>

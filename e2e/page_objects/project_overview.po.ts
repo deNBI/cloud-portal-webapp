@@ -38,6 +38,7 @@ export class ProjectOverview {
   private static SUBMITTED_SHOW_INFORMATION_BTN: string = 'submitted_show_information_btn'
   private static DISSEMINATION_PLATFORM_LIST: string = 'dissemination_platforms';
   private static DISSEMINATION_INFORMATION_LIST: string = 'dissemination_information';
+  // eslint-disable-next-line max-len
   private static DEFAULT_INFORMATION_DISSEMINATION_STRING: string = 'Title, Research Topics, Description, Resources, Lifetime, Project Type, Name of PI, Institution, Workgroup, Project affiliation';
   private static DEFAULT_PLATFORM_DISSEMINATION_STRING: string = 'de.NBI Platforms, Twitter';
   private static PI_ROW: string = 'id_pi_row';
@@ -198,7 +199,7 @@ export class ProjectOverview {
   }
 
   static async fillModificationRequest(): Promise<any> {
-    await Util.sendTextToElementByIdUnsecure(this.DENBI_DEFAULT_NEW_INPUT, '2');
+    await Util.sendTextToElementByIdUnsecure(this.DENBI_DEFAULT_NEW_INPUT, '5');
     await Util.sendTextToElementByIdUnsecure(this.NEW_VOLUME_COUNTER_ID, '1');
     await Util.sendTextToElementByIdUnsecure(this.NEW_VOLUME_LIMIT_ID, '1');
     await Util.sendTextToElementByIdUnsecure('id_project_application_renewal_comment', 'This is a Protrector test modification!');

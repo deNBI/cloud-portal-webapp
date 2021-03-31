@@ -13,7 +13,7 @@ export class FormularPage {
   private static APPLICATION_SUBMITTED: string = 'The application was submitted';
   private static NOTIFICATION_MESSAGE: string = 'notification_message';
   public static NOTIFICATION_BTN_REDIRECT: string = 'notification_btn_redirect';
-  private static NUMBER_FLAVORS: string = '3';
+  private static NUMBER_FLAVORS: string = '5';
   private static PI_RESPONSIBILITY: string = 'project_application_responsibility';
   private static PI_APPROVAL_BUTTON: string = 'approveApplicationButtonPI';
 

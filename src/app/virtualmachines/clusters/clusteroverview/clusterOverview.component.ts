@@ -122,7 +122,6 @@ export class ClusterOverviewComponent extends AbstractBaseClasse implements OnIn
    * Apply filter to all vms.
    */
   applyFilter(): void {
-    this.filter = this.filter.trim();
     this.isSearching = true;
     if (typeof (this.cluster_per_site) !== 'number' || this.cluster_per_site <= 0) {
       this.cluster_per_site = 7;
@@ -470,8 +469,7 @@ export class ClusterOverviewComponent extends AbstractBaseClasse implements OnIn
   getClusters(): void {
 
     this.virtualmachineservice.getClusters(
-      this.currentPage, this.cluster_per_site,
-      this.filter)
+      this.currentPage, this.cluster_per_site)
       .subscribe((cluster_page_infos: any[]): void => {
                    this.prepareClusters(cluster_page_infos)
                  }
@@ -479,11 +477,9 @@ export class ClusterOverviewComponent extends AbstractBaseClasse implements OnIn
   }
 
   getAllCLusterFacilities(): void {
-
-    this.virtualmachineservice.getVmsFromFacilitiesOfLoggedUser(
+    this.facilityService.getClustersFacility(
       this.selectedFacility['FacilityId'],
-      this.currentPage, this.cluster_per_site,
-      this.filter)
+      this.currentPage, this.cluster_per_site)
       .subscribe((cluster_page_infos: any[]): void => {
                    this.prepareClusters(cluster_page_infos)
                  }
@@ -516,8 +512,7 @@ export class ClusterOverviewComponent extends AbstractBaseClasse implements OnIn
   }
 
   getAllClusters(): void {
-    this.virtualmachineservice.getAllVM(this.currentPage, this.cluster_per_site,
-                                        this.filter)
+    this.virtualmachineservice.getAllClusters(this.currentPage, this.cluster_per_site)
       .subscribe((cluster_page_infos: any[]): void => {
                    this.prepareClusters(cluster_page_infos)
                  }

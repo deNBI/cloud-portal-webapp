@@ -30,7 +30,7 @@ describe('Virtual Machine Tests', async function (): Promise<any> {
     await NewInstancePage.submitAndStartVM();
     Util.logInfo('Redirect Modal should be present');
     await NewInstancePage.isRedirectModalPresent();
-    await Util.waitForPage('/virtualmachines/vmOverview', Util.LONG_TIMEOUT);
+    await Util.waitForPage('/virtualmachines/vmOverview');
 
     Util.logInfo('Saving basic vm name');
     const vm_name: string = await vmOverviewPage.getNewBasicVMName();
@@ -174,7 +174,7 @@ describe('Virtual Machine Tests', async function (): Promise<any> {
     await NewInstancePage.submitAndStartVM();
     Util.logInfo('Redirect Modal should be present');
     await NewInstancePage.isRedirectModalPresent();
-    await Util.waitForPage('/virtualmachines/vmOverview', Util.LONG_TIMEOUT);
+    await Util.waitForPage('/virtualmachines/vmOverview');
 
     Util.logInfo('Saving basic vm name');
     const vm_name: string = await vmOverviewPage.getNewBasicVMName();
