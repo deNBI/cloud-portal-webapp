@@ -59,6 +59,8 @@ export class VMDetailPage {
     await Util.clickElementById(this.VERIFY_STOP_BTN);
     await Util.waitForPresenceOfElementById(this.SHUTOFF_SUCCESS, Util.MIN_TIMEOUT_15);
     await Util.clickElementById(this.CLOSE_STOP_MODAL);
+    await Util.waitForPresenceOfElementById(this.SHUTOFF_BADGE_PREFIX + this.VM_NAME)
+
     Util.logInfo('Stopping of Basic VM completed');
   }
 
@@ -70,6 +72,7 @@ export class VMDetailPage {
     await Util.clickElementById(this.VERIFY_RESTART_BTN);
     await Util.waitForPresenceOfElementById(this.RESUME_SUCCESS, Util.MIN_TIMEOUT_15);
     await Util.clickElementById(this.CLOSE_RESUME_MODAL);
+    await Util.waitForPresenceOfElementById(this.ACTIVE_BADGE_PREFIX + this.VM_NAME)
     Util.logInfo('Restarting of Basic VM completed');
 
   }
