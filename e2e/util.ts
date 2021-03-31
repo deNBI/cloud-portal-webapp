@@ -123,8 +123,8 @@ export class Util {
   static async scrollToElement(scrollTo: ElementFinder): Promise<void> {
     const location = await scrollTo.getLocation()
     this.logInfo(`Scroll to Element [X-${location.x} : Y-${location.y}] `)
+    await browser.executeScript('arguments[0].scrollIntoView()', scrollTo.getWebElement())
 
-    await browser.executeScriptWithDescription(`window.scrollTo(${location.x}, ${location.y});`, 'Scroll to element');
   }
 
   static async clickElementByLinkTextIgnoreError(text: string, timeout: number = this.timeout): Promise<boolean> {
