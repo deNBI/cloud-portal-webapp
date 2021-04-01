@@ -292,9 +292,11 @@ export class Util {
   }
 
   static async clickElementById(id: string, timeout: number = this.timeout): Promise<void> {
+
     await this.waitForVisibilityOfElementById(id, timeout);
-    await this.waitForElementToBeClickableById(id, timeout);
     await this.scrollToElement(element(by.id(id)))
+
+    await this.waitForElementToBeClickableById(id, timeout);
 
     this.logInfo(`Clicking element ${id}`);
 
@@ -425,6 +427,7 @@ export class Util {
   }
 
   static async getTextFromLinkElement(prefix: string, name: string): Promise<string> {
+    this.logInfo(`Get Text from ${prefix}${name}`)
     await this.waitForPresenceOfLinkByPartialId(prefix, name);
     const elem: ElementFinder = element(by.css(`a[id^=${prefix}${name}]`));
 

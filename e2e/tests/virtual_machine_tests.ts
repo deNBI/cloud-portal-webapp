@@ -55,11 +55,11 @@ describe('Virtual Machine Tests', async function(): Promise<any> {
     Util.logInfo(vm_name);
 
     await vmOverviewPage.setVolumeVMName(vm_name);
-    browser.sleep(8000).then().catch();
+    await browser.sleep(8000)
 
     Util.logInfo('Checking volume overview if volume present');
     await VolumeOverviewPage.navigateToVolumeOverview();
-    browser.sleep(8000).then().catch();
+    await browser.sleep(8000)
     const isVolumePresent: boolean = await VolumeOverviewPage.isVolumePresent();
     expect(isVolumePresent).toBeTruthy();
     Util.logInfo('------------------------------Start virtual machine tests: ended');
@@ -190,8 +190,6 @@ describe('Virtual Machine Tests', async function(): Promise<any> {
        // TODO: test stop, restart and other basic functions of virtual machines on the vmDetailPage
        await vmDetailPage.setBasicVMName((await vmOverviewPage.getBasicVMName()));
        await vmDetailPage.stopBasicVM();
-       await vmOverviewPage.navigateToOverview();
-       await vmOverviewPage.goToVmDetail();
        await vmDetailPage.restartBasicVM();
        await vmDetailPage.createSnapshotBasicVM();
        await vmDetailPage.deleteBasicVM();
