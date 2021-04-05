@@ -369,7 +369,7 @@
                       *ngIf="((project_application | hasstatusinlist: Application_States.CREDITS_EXTENSION_REQUESTED)
                       || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_CREDITS))"
                       type="button">More credits requested</button>
-            </div>
+            </div>current_credits
             <div class="col-6">
               <div *ngIf="project_application?.project_application_initial_credits === 0" class="alert alert-info">
                 Your approved credits are lower or equal to zero.
