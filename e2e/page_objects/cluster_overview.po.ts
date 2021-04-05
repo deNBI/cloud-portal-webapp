@@ -39,7 +39,7 @@ export class ClusterOverviewPage {
     return await Util.waitForPresenceOfElementById(`${this.RUNNING_BADE_PREFIX}${name}`, Util.MIN_TIMOEUT_30);
   }
 
-  static async scaleUpCluster(name: string): Promise<any> {
+  static async scaleUpCluster(name: string = this.CLUSTER_NAME): Promise<any> {
     Util.logInfo(`Scale Up ${name}`);
 
     await Util.clickElementById(this.SCALE_UP_PREFIX + name)
@@ -47,7 +47,7 @@ export class ClusterOverviewPage {
     Util.logInfo(`Deletion method for ${name} completed`)
   }
 
-  static async deleteCluster(name: string): Promise<any> {
+  static async deleteCluster(name: string = this.CLUSTER_NAME): Promise<any> {
     Util.logInfo(`Deleting ${name}`);
 
     await Util.clickElementById(this.DELETE_CLUSTER_PREFIX + name)
