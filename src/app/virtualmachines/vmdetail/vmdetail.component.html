@@ -83,7 +83,7 @@
                 <strong>Stop VM</strong>
               </button>
             </div>
-            <div class="col-3" *ngIf="virtualMachine?.status === virtualMachineStates.staticACTIVE">
+            <div class="col-3" *ngIf="virtualMachine?.status === virtualMachineStates.staticACTIVE || virtualMachine?.status === virtualMachineStates.staticSHUTOFF">
               <button type="button" class="btn btn-secondary" style="width:100%;" id="RebootVMButton"
               (click)="chooseRebootOptionModal.show();">
                 <strong>Reboot VM</strong>
