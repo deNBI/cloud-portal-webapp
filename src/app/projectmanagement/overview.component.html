@@ -334,8 +334,12 @@
               <div class="callout callout-info">
                 <small class="text-muted">Credits</small><br>
                 <strong class="text-muted">
-                  Used {{project?.CurrentCredits }} of {{project?.ApprovedCredits}} credits :
-                  {{(project?.ApprovedCredits - project?.CurrentCredits) }} credits left
+                   <span *ngIf="project?.ApprovedCredits - project?.CurrentCredits >0">
+                  Used {{project?.CurrentCredits }} of {{project?.ApprovedCredits}} credits <br>
+                     {{(project?.ApprovedCredits - project?.CurrentCredits) }} credits left</span>
+                  <span *ngIf="project?.ApprovedCredits - project?.CurrentCredits <=0">
+                     Used {{project?.ApprovedCredits }} of {{project?.ApprovedCredits}} credits
+                    <br>No credits left!</span>
                   <span *ngIf="((project_application | hasstatusinlist: Application_States.CREDITS_EXTENSION_REQUESTED)
                       || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_CREDITS))">
                      - {{project_application?.project_credit_request?.extra_credits }} additional credits requested on
