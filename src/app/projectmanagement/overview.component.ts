@@ -259,7 +259,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
         .then((response: {}): void => {
             if (response['data_points'] !== undefined) {
               const data_points: number[] = response['data_points'];
-              const ceiling_line: number[] = new Array(data_points.length).fill(this.project.CurrentCredits);
 
               this.creditsChart = new Chart(this.creditsCanvas.nativeElement, {
                 type: 'line',
@@ -270,12 +269,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
                     data: data_points,
                     borderColor: 'rgba(54, 162, 235, 1)',
                     backgroundColor: 'rgba(54, 162, 235, 0.2)'
-                  }, {
-                    label: 'Current Credits Used',
-                    data: ceiling_line,
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                    fill: false,
-                    pointRadius: 0
                   }]
                 },
                 options: {
