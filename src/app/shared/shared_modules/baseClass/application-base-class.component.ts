@@ -64,6 +64,11 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
    */
   valuesToConfirm: string[];
 
+  /**
+   * Total number of GPUs
+   */
+  totalGPU: number = 0;
+
   newFlavors: {
     [id: string]: {
       counter: number, flavor: Flavor
@@ -143,11 +148,13 @@ export class ApplicationBaseClassComponent extends AbstractBaseClasse {
   calculateRamCores(): void {
     this.totalNumberOfCores = 0;
     this.totalRAM = 0;
+    this.totalGPU = 0;
     // tslint:disable-next-line:forin
     for (const extensionFlavorsKey in this.newFlavors) {
       const fl: any = this.newFlavors[extensionFlavorsKey];
       this.totalRAM = this.totalRAM + fl.flavor.ram * fl.counter;
       this.totalNumberOfCores = this.totalNumberOfCores + fl.flavor.vcpus * fl.counter;
+      this.totalGPU += fl.flavor.gpu * fl.counter;
     }
   }
 
