@@ -29,17 +29,20 @@ describe('Cluster Tests', async function(): Promise<any> {
 
   it('cluster should become active', async function(): Promise<any> {
     Util.logDebug('------------------------------Overview cluster tests: started');
-    await ClusterOverviewPage.navigateToOverview();
-    Util.logInfo(`Checking if cluster ${ ClusterOverviewPage.getClusterName()} is active`);
+    await ClusterOverviewPage.navigateToOverview()
+    const cluster_id: string = await ClusterOverviewPage.getClusterName();
+
+    Util.logInfo(`Checking if cluster ${cluster_id} is active`);
     const areActive: boolean = await ClusterOverviewPage.isClusterActive();
     expect(areActive).toBeTruthy();
   });
 
   it('cluster should be deleted', async function(): Promise<any> {
     await ClusterOverviewPage.navigateToOverview();
-    Util.logInfo(`Checking if cluster ${ClusterOverviewPage.getClusterName()} is active`);
-    const areActive: boolean = await ClusterOverviewPage.isClusterActive();
-    expect(areActive).toBeTruthy();
+    const cluster_id: string = await ClusterOverviewPage.getClusterName();
+
+    Util.logInfo(`Start deleting  cluster ${cluster_id}!`);
+    await ClusterOverviewPage.deleteCluster();
   });
 
 });

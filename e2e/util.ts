@@ -20,7 +20,7 @@ export class Util {
   private static _VOLUME_NAME: string = 'ProtractorVolume';
   private static _VOLUME_SPACE: string = '1';
   private static _ONE_MINUTE_TIMEOUT: number = 60000;
-  private static _timeout: number = Util._ONE_MINUTE_TIMEOUT * 2;
+  private static _timeout: number = Util._ONE_MINUTE_TIMEOUT * 3;
   private static _15_MIN_TIMEOUT: number = Util._ONE_MINUTE_TIMEOUT * 15;
   private static _30_MIN_TIMEOUT: number = Util._ONE_MINUTE_TIMEOUT * 30;
   private static _DEFAULT_FLAVOR_TITLE: string = 'de.NBI default';
@@ -120,11 +120,19 @@ export class Util {
 
   }
 
+  static async scrollToElement(scrollTo: ElementFinder): Promise<void> {
+    const location = await scrollTo.getLocation()
+    this.logInfo(`Scroll to Element [X-${location.x} : Y-${location.y}] `)
+    await browser.executeScript('arguments[0].scrollIntoView()', scrollTo.getWebElement())
+
+  }
+
   static async clickElementByLinkTextIgnoreError(text: string, timeout: number = this.timeout): Promise<boolean> {
     await Util.waitForElementToBeClickableByLinkText(text)
     this.logInfo(`Clicking element with text: [${text}]`)
 
     try {
+      await this.scrollToElement(element(by.linkText(text)))
       await element(by.linkText(text)).click();
     } catch (error) {
       this.logInfo(`Coudln't click ${text} - Ignore Error`)
@@ -180,6 +188,8 @@ export class Util {
 
   static async clickElementByLinkText(text: string): Promise<void> {
     await Util.waitForElementToBeClickableByLinkText(text)
+    await this.scrollToElement(element(by.linkText(text)))
+
     this.logInfo(`Clicking element with text: [${text}]`)
 
     return await element(by.linkText(text)).click();
@@ -242,9 +252,9 @@ export class Util {
   static async clickElementByName(name: string): Promise<void> {
     await this.waitForElementToBeClickableByName(name);
     this.logInfo(`Clicking element ${name}`);
-    const elem: ElementFinder = element(by.name(name));
+    await this.scrollToElement(element(by.name(name)))
 
-    return await elem.click();
+    return await element(by.name(name)).click();
   }
 
   static async checkInputsByIdsGotSameValue(id_1: string, id_2: string, timeout: number = this.timeout): Promise<any> {
@@ -274,18 +284,23 @@ export class Util {
                                      timeout: number = this.timeout,
                                      id: string = 'Elementfinder'): Promise<void> {
     await this.waitForElementToBeClickableByElement(elem, timeout, id);
+    await this.scrollToElement(elem)
+
     this.logInfo(`Clicking element ${id}`);
 
     return await elem.click();
   }
 
   static async clickElementById(id: string, timeout: number = this.timeout): Promise<void> {
-    await this.waitForVisibilityOfElementById(id, timeout);
-    await this.waitForElementToBeClickableById(id, timeout);
-    this.logInfo(`Clicking element ${id}`);
-    const elem: ElementFinder = element(by.id(id));
 
-    return await elem.click();
+    await this.waitForVisibilityOfElementById(id, timeout);
+    await this.scrollToElement(element(by.id(id)))
+
+    await this.waitForElementToBeClickableById(id, timeout);
+
+    this.logInfo(`Clicking element ${id}`);
+
+    return await element(by.id(id)).click();
   }
 
   static async waitForTextPresenceInElementById(id: string, text: string, timeout: number = this.timeout): Promise<boolean> {
@@ -361,6 +376,7 @@ export class Util {
 
   static async waitForElementToBeClickableById(id: string, timeout: number = this.timeout): Promise<boolean> {
     const until_: ProtractorExpectedConditions = protractor.ExpectedConditions;
+
     this.logInfo(`Waiting until element is clickable ${id}`);
 
     const elem: ElementFinder = element(by.id(id));
@@ -394,6 +410,8 @@ export class Util {
     this.logInfo(`Getting option ${option} from select ${selectId}`);
 
     await this.waitForPresenceOfElementById(selectId);
+    await this.scrollToElement(element(by.id(selectId)).element(by.id(option)))
+
     const elem: any = element(by.id(selectId)).element(by.id(option))
 
     return await elem.click();
@@ -409,6 +427,7 @@ export class Util {
   }
 
   static async getTextFromLinkElement(prefix: string, name: string): Promise<string> {
+    this.logInfo(`Get Text from ${prefix}${name}`)
     await this.waitForPresenceOfLinkByPartialId(prefix, name);
     const elem: ElementFinder = element(by.css(`a[id^=${prefix}${name}]`));
 
