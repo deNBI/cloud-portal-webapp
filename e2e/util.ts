@@ -134,6 +134,7 @@ export class Util {
    // try {
       const location = await element(by.linkText(text)).getLocation()
       await browser.actions().mouseMove({x: location.x, y: location.y}).click().perform()
+    this.logInfo("clicked or not ")
    /* } catch (error) {
       this.logInfo(error)
       this.logInfo(`Coudln't click ${text} - Ignore Error`)
