@@ -41,7 +41,7 @@ export class Util {
   }
 
   static get UBUNTU_18_TITLE(): string {
-    return this._UBUNTU_18_TITLE
+    return this._UBUNTU_18_TITLE;
   }
 
   static get VOLUME_MOUNT_PATH_STRING(): string {
@@ -132,8 +132,8 @@ export class Util {
     this.logInfo(`Clicking element with text: [${text}]`)
 
     try {
-      await this.scrollToElement(element(by.linkText(text)))
-      await element(by.linkText(text)).click();
+      const location = await element(by.linkText(text)).getLocation()
+      await browser.actions().mouseMove({x: location.x, y: location.y}).click().perform()
     } catch (error) {
       this.logInfo(`Coudln't click ${text} - Ignore Error`)
 
@@ -188,11 +188,11 @@ export class Util {
 
   static async clickElementByLinkText(text: string): Promise<void> {
     await Util.waitForElementToBeClickableByLinkText(text)
-    await this.scrollToElement(element(by.linkText(text)))
 
     this.logInfo(`Clicking element with text: [${text}]`)
+    const location = await element(by.linkText(text)).getLocation()
 
-    return await element(by.linkText(text)).click();
+    return await browser.actions().mouseMove({x: location.x, y: location.y}).click().perform()
 
   }
 
@@ -252,9 +252,10 @@ export class Util {
   static async clickElementByName(name: string): Promise<void> {
     await this.waitForElementToBeClickableByName(name);
     this.logInfo(`Clicking element ${name}`);
-    await this.scrollToElement(element(by.name(name)))
+    const location = await element(by.name(name)).getLocation()
 
-    return await element(by.name(name)).click();
+    return await browser.actions().mouseMove({x: location.x, y: location.y}).click().perform()
+
   }
 
   static async checkInputsByIdsGotSameValue(id_1: string, id_2: string, timeout: number = this.timeout): Promise<any> {
@@ -284,23 +285,25 @@ export class Util {
                                      timeout: number = this.timeout,
                                      id: string = 'Elementfinder'): Promise<void> {
     await this.waitForElementToBeClickableByElement(elem, timeout, id);
-    await this.scrollToElement(elem)
-
     this.logInfo(`Clicking element ${id}`);
 
-    return await elem.click();
+    const location = await elem.getLocation()
+
+    return await browser.actions().mouseMove({x: location.x, y: location.y}).click().perform()
+
   }
 
   static async clickElementById(id: string, timeout: number = this.timeout): Promise<void> {
 
     await this.waitForVisibilityOfElementById(id, timeout);
-    await this.scrollToElement(element(by.id(id)))
 
     await this.waitForElementToBeClickableById(id, timeout);
-
     this.logInfo(`Clicking element ${id}`);
 
-    return await element(by.id(id)).click();
+    const location = await element(by.id(id)).getLocation()
+
+    return await browser.actions().mouseMove({x: location.x, y: location.y}).click().perform()
+
   }
 
   static async waitForTextPresenceInElementById(id: string, text: string, timeout: number = this.timeout): Promise<boolean> {
@@ -410,11 +413,11 @@ export class Util {
     this.logInfo(`Getting option ${option} from select ${selectId}`);
 
     await this.waitForPresenceOfElementById(selectId);
-    await this.scrollToElement(element(by.id(selectId)).element(by.id(option)))
+    const location = await element(by.id(selectId)).element(by.id(option)).getLocation()
 
-    const elem: any = element(by.id(selectId)).element(by.id(option))
+    return await browser.actions().mouseMove({x: location.x, y: location.y}).click().perform()
 
-    return await elem.click();
+
   }
 
   static async waitForElementToBeClickableByName(name: string, timeout: number = this.timeout): Promise<boolean> {
