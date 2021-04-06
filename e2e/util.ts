@@ -426,7 +426,7 @@ export class Util {
   }
 
   static async getTextFromLinkElement(prefix: string, name: string): Promise<string> {
-    z
+    
     await this.waitForPresenceOfLinkByPartialId(prefix, name);
     const elem: ElementFinder = element(by.css(`a[id^=${prefix}${name}]`));
 
