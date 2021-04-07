@@ -153,7 +153,7 @@ exports.config = {
     browserName: 'chrome',
     acceptInsecureCerts: true,
     chromeOptions: {
-      args: ["--incognito", "--ignore-certificate-errors", '--headless', "--window-size=1600,1000", '--disable-gpu']
+      args: ["--incognito", "--ignore-certificate-errors", '--headless', '--disable-gpu']
       //args: ["--incognito", "--ignore-certificate-errors"]
 
     }
@@ -193,7 +193,7 @@ exports.config = {
       customProcessors: [LogInterceptor]
     }));
     jasmine.getEnv().addReporter(DescribeFailureReporter(jasmine.getEnv()));
-    browser.manage().window().setSize(1600, 1000);
+    browser.manage().window().maximize();
   },
 
 };
