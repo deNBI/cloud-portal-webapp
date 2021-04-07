@@ -12,7 +12,7 @@ import {FullLayoutComponent} from '../../layouts/full-layout.component';
 import {CreditsService} from '../../api-connector/credits.service';
 import {Application} from '../application.model/application.model';
 import {is_vo} from '../../shared/globalvar';
-import {CREDITS_WIKI} from "../../../links/links";
+import {CREDITS_WIKI} from '../../../links/links';
 
 /**
  * Application formular component.
