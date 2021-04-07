@@ -155,7 +155,9 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	public project_members: ProjectMember[] = [];
 	public isLoaded: boolean = false;
 	public showLink: boolean = true;
+	private project_application_extra_credits: number;
 	public project_application_extra_credits_comment: string;
+	private current_credits: number;
 	private updateCreditsUsedIntervals: ReturnType<typeof setTimeout>;
 	private updateCreditsHistoryIntervals: ReturnType<typeof setTimeout>;
 	credits_allowed: boolean = false;
@@ -165,15 +167,15 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
 	constructor(private flavorService: FlavorService,
 		private groupService: GroupService,
-		applicationsService: ApplicationsService,
+		applicationsservice: ApplicationsService,
 		facilityService: FacilityService,
-		userService: UserService,
+		userservice: UserService,
 		private activatedRoute: ActivatedRoute,
 		private fullLayout: FullLayoutComponent,
 		private router: Router,
 		private creditsService: CreditsService,
 		@Inject(DOCUMENT) private document: Document) {
-		super(userService, applicationsService, facilityService);
+		super(userservice, applicationsservice, facilityService);
 	}
 
 	calculateProgressBar(numberToRoundUp: number): string {
@@ -188,8 +190,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	}
 
 	setModalOpen(bool: boolean): void {
-
-		// eslint-disable-next-line no-void
+		// tslint:disable-next-line:typedef
 		void (async () => {
 			await this.delay(750).then().catch(); // needed, because bootstraps class-toggle-function seems to be too slow
 			if (bool) {
@@ -197,7 +198,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 			} else {
 				this.document.body.classList.remove('modal-open');
 			}
-		})().then().catch();
+		}
+		)().then().catch();
 	}
 
 	removeEDAMterm(term: EdamOntologyTerm): void {
@@ -262,7 +264,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 				.then((response: {}): void => {
 					if (response['data_points'] !== undefined) {
 						const data_points: number[] = response['data_points'];
-						const ceiling_line: number[] = new Array(data_points.length).fill(this.project.CurrentCredits);
 
 						this.creditsChart = new Chart(this.creditsCanvas.nativeElement, {
 							type: 'line',
@@ -273,12 +274,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 									data: data_points,
 									borderColor: 'rgba(54, 162, 235, 1)',
 									backgroundColor: 'rgba(54, 162, 235, 0.2)',
-								}, {
-									label: 'Current Credits Used',
-									data: ceiling_line,
-									borderColor: 'rgba(255, 99, 132, 1)',
-									fill: false,
-									pointRadius: 0,
 								}],
 							},
 							options: {
@@ -316,9 +311,9 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 		if (hours > 24) {
 			days = Math.floor(hours / 24);
 		}
-		const new_hours: number = Math.floor(hours % 24);
+		hours = Math.floor(hours % 24);
 
-		return `${days} day(s), ${new_hours} hour(s) and ${minutes} minute(s)`;
+		return `${days} day(s), ${hours} hour(s) and ${minutes} minute(s)`;
 	}
 
 	startUpdateCreditUsageLoop(): void {
@@ -329,9 +324,15 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 		this.getCurrentCreditsOfProject();
 		this.fetchCreditHistoryOfProject();
 
-		this.updateCreditsUsedIntervals = setInterval((): any => this.getCurrentCreditsOfProject(), 10000);
+		this.updateCreditsUsedIntervals = setInterval(
+			(): any => this.getCurrentCreditsOfProject(),
+			10000,
+		);
 
-		this.updateCreditsHistoryIntervals = setInterval((): any => this.fetchCreditHistoryOfProject(), 30000);
+		this.updateCreditsHistoryIntervals = setInterval(
+			(): any => this.fetchCreditHistoryOfProject(),
+			30000,
+		);
 
 	}
 
@@ -355,9 +356,11 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
 	initExampleFlavors(): void {
 		const standardFlavors: Flavor[] = this.flavorList
-			.filter((fl: Flavor): boolean => fl.type.long_name === 'Standard Flavours');
+			// eslint-disable-next-line @typescript-eslint/no-unused-vars
+			.filter((fl: Flavor, nu: number, arr: Flavor[]): boolean => fl.type.long_name === 'Standard Flavours');
 		const highMemFlavors: Flavor[] = this.flavorList
-			.filter((fl: Flavor): boolean => fl.type.long_name === 'High Memory Flavours');
+			// eslint-disable-next-line @typescript-eslint/no-unused-vars
+			.filter((fl: Flavor, nu: number, arr: Flavor[]): boolean => fl.type.long_name === 'High Memory Flavours');
 		standardFlavors.sort((fl1: Flavor, fl2: Flavor): number => fl1.vcpus - fl2.vcpus);
 		highMemFlavors.sort((fl1: Flavor, fl2: Flavor): number => fl1.vcpus - fl2.vcpus);
 		if (standardFlavors.length !== 0) {

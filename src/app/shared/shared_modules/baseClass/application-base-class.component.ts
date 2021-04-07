@@ -64,6 +64,11 @@ export class ApplicationBaseClassComponent extends AbstractBaseClass {
 	 */
 	valuesToConfirm: string[];
 
+	/**
+	 * Total number of GPUs
+	 */
+	totalGPU: number = 0;
+
 	newFlavors: {
 		[id: string]: {
 			counter: number, flavor: Flavor
@@ -111,10 +116,11 @@ export class ApplicationBaseClassComponent extends AbstractBaseClass {
 	 */
 	user_applications: Application[] = [];
 
-	constructor(protected userService: UserService,
-		protected applicationsService: ApplicationsService,
+	constructor(protected userservice: UserService,
+		protected applicationsservice: ApplicationsService,
 		protected facilityService: FacilityService) {
 		super();
+
 	}
 
 	/**
@@ -135,7 +141,8 @@ export class ApplicationBaseClassComponent extends AbstractBaseClass {
 		});
 	}
 
-	valuesChanged(flavor: Flavor, counter: number): void {
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	valuesChanged(flavor: Flavor, counter: number, lifetime?: string): void {
 		this.newFlavors[flavor.name] = { counter, flavor };
 		this.calculateRamCores();
 	}
@@ -143,11 +150,13 @@ export class ApplicationBaseClassComponent extends AbstractBaseClass {
 	calculateRamCores(): void {
 		this.totalNumberOfCores = 0;
 		this.totalRAM = 0;
+		this.totalGPU = 0;
 		// tslint:disable-next-line:forin
 		for (const extensionFlavorsKey in this.newFlavors) {
 			const fl: any = this.newFlavors[extensionFlavorsKey];
 			this.totalRAM += fl.flavor.ram * fl.counter;
 			this.totalNumberOfCores += fl.flavor.vcpus * fl.counter;
+			this.totalGPU += fl.flavor.gpu * fl.counter;
 		}
 	}
 
@@ -164,12 +173,11 @@ export class ApplicationBaseClassComponent extends AbstractBaseClass {
 	}
 
 	public getMemberDetailsByElixirId(application: Application): void {
-		this.userService.getMemberDetailsByElixirId(application.project_application_user.elixir_id).subscribe(
+		this.userservice.getMemberDetailsByElixirId(application.project_application_user.elixir_id).subscribe(
 			(result: { [key: string]: string }): void => {
 
-				// eslint-disable-next-line no-param-reassign
 				application.project_application_user.username = `${result['firstName']} ${result['lastName']}`;
-				// eslint-disable-next-line no-param-reassign
+
 				application.project_application_user.email = result['email'];
 			},
 		);
@@ -294,9 +302,9 @@ export class ApplicationBaseClassComponent extends AbstractBaseClass {
 					return (`${this.constantStrings[key]}${val}`);
 				}
 			}
+		} else {
+			return null;
 		}
-
-		return null;
 	}
 
 }

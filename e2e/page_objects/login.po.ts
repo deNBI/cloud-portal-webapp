@@ -39,7 +39,10 @@ export class LoginPage {
   }
 
   static async useOrcid(email: string, psw: string): Promise<any> {
-    await Util.clickElementByLinkText('Sign in with ORCID')
+    if (!await Util.clickElementByLinkTextIgnoreError('ORCID')) {
+      await Util.clickElementByLinkText('Sign in with ORCID')
+
+    }
     // Input Email
 
     await Util.waitForPage('https://orcid.org/signin');
@@ -56,7 +59,10 @@ export class LoginPage {
   }
 
   static async useGoogle(email: string, psw: string): Promise<any> {
-    await Util.clickElementByLinkText('Sign in with Google')
+    if (!await Util.clickElementByLinkTextIgnoreError('Google')) {
+      await Util.clickElementByLinkText('Sign in with Google')
+
+    }
     // Input Email
     await Util.waitForPage('accounts.google.com/o/oauth2/');
     await Util.sendTextToElementByIdSecure('identifierId', email);

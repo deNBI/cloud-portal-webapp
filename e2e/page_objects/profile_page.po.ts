@@ -1,7 +1,5 @@
-// @ts-ignore
 // eslint-disable-next-line @typescript-eslint/no-unused-vars,import/no-extraneous-dependencies
-import { by, element } from 'protractor';
-// @ts-ignore
+import { browser, by, element } from 'protractor';
 import { Util } from '../util';
 
 /**
@@ -28,7 +26,9 @@ export class ProfilePage {
 		Util.logInfo('Clicking on Set-Button');
 		await Util.waitForPresenceOfElementById(this.GENERATE_KEY_BUTTON);
 		await Util.clickElementById(this.GENERATE_KEY_BUTTON);
+		await browser.sleep(5000);
 		await Util.waitForPresenceOfElementById(this.USER_PUBLIC_KEY_FIELD);
+		await browser.sleep(5000);
 
 		// eslint-disable-next-line no-return-await
 		return await Util.getElemTextById(this.USER_PUBLIC_KEY_FIELD);
@@ -44,6 +44,7 @@ export class ProfilePage {
 		Util.logInfo('Clicking on Set-Button');
 		await Util.waitForPresenceOfElementById(this.SET_NEW_PUBLIC_KEY_BUTTON);
 		await Util.clickElementById(this.SET_NEW_PUBLIC_KEY_BUTTON);
+		await browser.sleep(5000);
 
 		// eslint-disable-next-line no-return-await
 		return await Util.getElemTextById(this.USER_PUBLIC_KEY_FIELD);
