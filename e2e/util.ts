@@ -20,7 +20,7 @@ export class Util {
   private static _VOLUME_NAME: string = 'ProtractorVolume';
   private static _VOLUME_SPACE: string = '1';
   private static _ONE_MINUTE_TIMEOUT: number = 60000;
-  private static _timeout: number = Util._ONE_MINUTE_TIMEOUT * 3;
+  private static _timeout: number = Util._ONE_MINUTE_TIMEOUT * 2;
   private static _15_MIN_TIMEOUT: number = Util._ONE_MINUTE_TIMEOUT * 15;
   private static _30_MIN_TIMEOUT: number = Util._ONE_MINUTE_TIMEOUT * 30;
   private static _DEFAULT_FLAVOR_TITLE: string = 'de.NBI default';
@@ -123,6 +123,7 @@ export class Util {
   static async scrollToElement(scrollTo: ElementFinder): Promise<void> {
     const location = await scrollTo.getLocation()
     this.logInfo(`Scroll to Element [X-${location.x} : Y-${location.y}] `)
+    await browser.sleep(500)
     await browser.executeScript('arguments[0].scrollIntoView()', scrollTo.getWebElement())
 
   }
@@ -292,11 +293,9 @@ export class Util {
   }
 
   static async clickElementById(id: string, timeout: number = this.timeout): Promise<void> {
-
     await this.waitForVisibilityOfElementById(id, timeout);
-    await this.scrollToElement(element(by.id(id)))
-
     await this.waitForElementToBeClickableById(id, timeout);
+    await this.scrollToElement(element(by.id(id)))
 
     this.logInfo(`Clicking element ${id}`);
 
@@ -427,7 +426,7 @@ export class Util {
   }
 
   static async getTextFromLinkElement(prefix: string, name: string): Promise<string> {
-    this.logInfo(`Get Text from ${prefix}${name}`)
+    
     await this.waitForPresenceOfLinkByPartialId(prefix, name);
     const elem: ElementFinder = element(by.css(`a[id^=${prefix}${name}]`));
 
