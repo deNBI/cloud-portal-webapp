@@ -40,12 +40,12 @@ export class FacilityOverviewPage {
   }
 
   static async terminatePTApplications(): Promise<any> {
-    await Util.waitForPresenceOfElementById(this.TAB_STATE_TERMINATION_BUTTON, Util.LONG_TIMEOUT);
+    await Util.waitForPresenceOfElementById(this.TAB_STATE_TERMINATION_BUTTON);
     const term_counter: string = await Util.getElemTextById(this.TERMINATION_COUNTER)
     Util.logInfo(`Termination counter: ${term_counter}`)
    // if (parseInt(term_counter, 10) > 0) {
       await Util.clickElementById(this.TAB_STATE_TERMINATION_BUTTON);
-      await Util.waitForAbsenceOfElementById(this.LOADING_APPLICATIONS, Util.LONG_TIMEOUT)
+      await Util.waitForAbsenceOfElementById(this.LOADING_APPLICATIONS)
 
      // await Util.waitForPresenceOfElementById(this.TERMINATION_TABLE, Util.LONG_TIMEOUT);
 
@@ -66,18 +66,18 @@ export class FacilityOverviewPage {
 
     await Util.clickElementByElement(terminateBtnId);
     await Util.clickElementById(this.TERMINATE_PROJECT_BTN);
-    await Util.waitForTextPresenceInElementById(this.NOTIFICATION_MESSAGE, this.WAS_TERMINATED, Util.LONG_TIMEOUT);
+    await Util.waitForTextPresenceInElementById(this.NOTIFICATION_MESSAGE, this.WAS_TERMINATED);
     await Util.clickElementById(this.CLOSE_NOTIFICATION_BTN);
 
   }
 
   static async approveApplicationModification(application_name: string): Promise<any> {
-    await Util.waitForPresenceOfElementById(this.TAB_STATE_MODIFICATION_BUTTON, Util.LONG_TIMEOUT);
+    await Util.waitForPresenceOfElementById(this.TAB_STATE_MODIFICATION_BUTTON);
     await Util.clickElementById(this.TAB_STATE_MODIFICATION_BUTTON);
-    await Util.waitForAbsenceOfElementById(this.LOADING_APPLICATIONS, Util.LONG_TIMEOUT)
-    await Util.waitForPresenceOfElementById(this.MODIFICATION_APPROVAL_BTN_PREFIX + application_name, Util.LONG_TIMEOUT);
+    await Util.waitForAbsenceOfElementById(this.LOADING_APPLICATIONS)
+    await Util.waitForPresenceOfElementById(this.MODIFICATION_APPROVAL_BTN_PREFIX + application_name);
     await Util.clickElementById(this.MODIFICATION_APPROVAL_BTN_PREFIX + application_name);
-    await Util.waitForTextPresenceInElementById(this.NOTIFICATION_MESSAGE, this.MODIFICATION_EXTENSION_SUCCESS_TEXT, Util.LONG_TIMEOUT);
+    await Util.waitForTextPresenceInElementById(this.NOTIFICATION_MESSAGE, this.MODIFICATION_EXTENSION_SUCCESS_TEXT);
   }
 
 }

@@ -5,7 +5,7 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import {IResponseTemplate} from './response-template';
 
 /**
- * Service which provides user methods.
+ * Service which provides user methods. 
  */
 @Injectable()
 export class UserService {

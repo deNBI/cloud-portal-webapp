@@ -351,7 +351,7 @@
                            &&  !(vm?.status | hasStatus:VirtualMachineStates.staticPORT_CLOSED )
                             &&  !(vm?.status | hasStatus:VirtualMachineStates.staticCHECKING_CONNECTION)
                           || (vm?.status | hasStatus:VirtualMachineStates.staticNOT_FOUND)
-                          || (vm?.status | hasStatus:VirtualMachineStates.staticERROR)"
+                          "
                           [id]="'showActionsButton_'+vm?.name"
                           (click)="selectedVm=vm; vm.cardState=2;">
                     Show actions ...
@@ -367,7 +367,7 @@
               </div>
             </div>
             <div class="card-footer p-x-1 py-h"
-                 *ngIf="((vm?.status |hasStatus:VirtualMachineStates.staticACTIVE) || (vm?.status |hasStatus:VirtualMachineStates.staticCHECKING_CONNECTION) || (vm?.status |hasStatus:VirtualMachineStates.staticPORT_CLOSED) || (vm?.status |hasStatus:VirtualMachineStates.staticSHUTOFF)) && vm?.cardState != 0">
+                 *ngIf="((vm?.status |hasStatus:VirtualMachineStates.staticACTIVE) || (vm?.status |hasStatus:VirtualMachineStates.staticCHECKING_CONNECTION) || (vm?.status |hasStatus:VirtualMachineStates.staticPORT_CLOSED) || (vm?.status |hasStatus:VirtualMachineStates.staticERROR) || (vm?.status |hasStatus:VirtualMachineStates.staticSHUTOFF)) && vm?.cardState != 0">
               <div *ngIf="vm?.cardState == 1">
                 <div class="row" *ngFor="let mode of vm?.modes">
                   <div class="col-md-1">
@@ -443,7 +443,7 @@
                     </div>
                   </div>
                   <div class="col-md-2"
-                       *ngIf="!(vm?.status |hasStatus:VirtualMachineStates.staticDELETED) && !(vm?.status |hasStatus:VirtualMachineStates.staticPORT_CLOSED) && !(vm?.status |hasStatus:VirtualMachineStates.staticCHECKING_CONNECTION)">
+                       *ngIf="!(vm?.status |hasStatus:VirtualMachineStates.staticDELETED) && !(vm?.status |hasStatus:VirtualMachineStates.staticERROR)  && !(vm?.status |hasStatus:VirtualMachineStates.staticPORT_CLOSED) && !(vm?.status |hasStatus:VirtualMachineStates.staticCHECKING_CONNECTION)">
                     <div class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
                          [id]="'createSnapshotVMButton_' + vm?.name"
                          (click)="snapshot_vm=vm;resetSnapshotResult();snapshotModal.show();">

@@ -10,7 +10,6 @@ const log4jsGen = require('./log4jsGen');
 export class Util {
   private static angular_url: string = browser.params.angular;
 
-  private static _timeout: number = browser.params.timeout;
   private static auth: string = browser.params.login.auth;
   private static _SIMPLE_VM_APPLICATION_NAME_NO_PI: string = 'PTSimpleVMNoPi';
   private static _OPENSTACK_APPLICATION_NAME: string = 'PTOpenStack';
@@ -20,7 +19,13 @@ export class Util {
   private static _VOLUME_VM_NAME: string = 'ProtractorVMVolume';
   private static _VOLUME_NAME: string = 'ProtractorVolume';
   private static _VOLUME_SPACE: string = '1';
-  private static _LONG_TIMEOUT: number = 420000;
+  private static _ONE_MINUTE_TIMEOUT: number = 60000;
+  private static _timeout: number = Util._ONE_MINUTE_TIMEOUT * 2;
+  private static _15_MIN_TIMEOUT: number = Util._ONE_MINUTE_TIMEOUT * 15;
+  private static _30_MIN_TIMEOUT: number = Util._ONE_MINUTE_TIMEOUT * 30;
+  private static _DEFAULT_FLAVOR_TITLE: string = 'de.NBI default';
+  private static _UBUNTU_18_TITLE: string = 'Ubuntu 18.04 LTS (2021-02-01)';
+
   private static _VOLUME_MOUNT_PATH_STRING: string = 'path';
 
   private static _BASIC_SNAPSHOT_NAME: string = 'PTSnap';
@@ -29,6 +34,14 @@ export class Util {
   // tslint:disable-next-line:no-require-imports
   static get PI_EMAIL(): string {
     return this._PI_EMAIL;
+  }
+
+  static get DEFAULT_FLAVOR_NAME(): string {
+    return this._DEFAULT_FLAVOR_TITLE
+  }
+
+  static get UBUNTU_18_TITLE(): string {
+    return this._UBUNTU_18_TITLE
   }
 
   static get VOLUME_MOUNT_PATH_STRING(): string {
@@ -47,8 +60,16 @@ export class Util {
     return this._SIMPLE_VM_APPLICATION_NAME;
   }
 
-  static get LONG_TIMEOUT(): number {
-    return this._LONG_TIMEOUT;
+  static get MIN_TIMEOUT_1(): number {
+    return this._ONE_MINUTE_TIMEOUT;
+  }
+
+  static get MIN_TIMEOUT_15(): number {
+    return this._15_MIN_TIMEOUT;
+  }
+
+  static get MIN_TIMOEUT_30(): number {
+    return this._30_MIN_TIMEOUT;
   }
 
   static get BASIC_SNAPSHOT_NAME(): string {
@@ -99,6 +120,30 @@ export class Util {
 
   }
 
+  static async scrollToElement(scrollTo: ElementFinder): Promise<void> {
+    const location = await scrollTo.getLocation()
+    this.logInfo(`Scroll to Element [X-${location.x} : Y-${location.y}] `)
+    await browser.sleep(500)
+    await browser.executeScript('arguments[0].scrollIntoView()', scrollTo.getWebElement())
+
+  }
+
+  static async clickElementByLinkTextIgnoreError(text: string, timeout: number = this.timeout): Promise<boolean> {
+    await Util.waitForElementToBeClickableByLinkText(text)
+    this.logInfo(`Clicking element with text: [${text}]`)
+
+    try {
+      await this.scrollToElement(element(by.linkText(text)))
+      await element(by.linkText(text)).click();
+    } catch (error) {
+      this.logInfo(`Coudln't click ${text} - Ignore Error`)
+
+      return false
+    }
+
+    return true
+  }
+
   static async waitForPageIgnoreError(url: string, timeout: number = this.timeout): Promise<boolean> {
     const until_: ProtractorExpectedConditions = protractor.ExpectedConditions;
     await browser.sleep(2000);
@@ -144,6 +189,8 @@ export class Util {
 
   static async clickElementByLinkText(text: string): Promise<void> {
     await Util.waitForElementToBeClickableByLinkText(text)
+    await this.scrollToElement(element(by.linkText(text)))
+
     this.logInfo(`Clicking element with text: [${text}]`)
 
     return await element(by.linkText(text)).click();
@@ -206,9 +253,9 @@ export class Util {
   static async clickElementByName(name: string): Promise<void> {
     await this.waitForElementToBeClickableByName(name);
     this.logInfo(`Clicking element ${name}`);
-    const elem: ElementFinder = element(by.name(name));
+    await this.scrollToElement(element(by.name(name)))
 
-    return await elem.click();
+    return await element(by.name(name)).click();
   }
 
   static async checkInputsByIdsGotSameValue(id_1: string, id_2: string, timeout: number = this.timeout): Promise<any> {
@@ -238,6 +285,8 @@ export class Util {
                                      timeout: number = this.timeout,
                                      id: string = 'Elementfinder'): Promise<void> {
     await this.waitForElementToBeClickableByElement(elem, timeout, id);
+    await this.scrollToElement(elem)
+
     this.logInfo(`Clicking element ${id}`);
 
     return await elem.click();
@@ -246,10 +295,11 @@ export class Util {
   static async clickElementById(id: string, timeout: number = this.timeout): Promise<void> {
     await this.waitForVisibilityOfElementById(id, timeout);
     await this.waitForElementToBeClickableById(id, timeout);
-    this.logInfo(`Clicking element ${id}`);
-    const elem: ElementFinder = element(by.id(id));
+    await this.scrollToElement(element(by.id(id)))
 
-    return await elem.click();
+    this.logInfo(`Clicking element ${id}`);
+
+    return await element(by.id(id)).click();
   }
 
   static async waitForTextPresenceInElementById(id: string, text: string, timeout: number = this.timeout): Promise<boolean> {
@@ -325,6 +375,7 @@ export class Util {
 
   static async waitForElementToBeClickableById(id: string, timeout: number = this.timeout): Promise<boolean> {
     const until_: ProtractorExpectedConditions = protractor.ExpectedConditions;
+
     this.logInfo(`Waiting until element is clickable ${id}`);
 
     const elem: ElementFinder = element(by.id(id));
@@ -358,6 +409,8 @@ export class Util {
     this.logInfo(`Getting option ${option} from select ${selectId}`);
 
     await this.waitForPresenceOfElementById(selectId);
+    await this.scrollToElement(element(by.id(selectId)).element(by.id(option)))
+
     const elem: any = element(by.id(selectId)).element(by.id(option))
 
     return await elem.click();
@@ -373,7 +426,8 @@ export class Util {
   }
 
   static async getTextFromLinkElement(prefix: string, name: string): Promise<string> {
-    await this.waitForPresenceOfLinkByPartialId(prefix, name, Util.LONG_TIMEOUT);
+    
+    await this.waitForPresenceOfLinkByPartialId(prefix, name);
     const elem: ElementFinder = element(by.css(`a[id^=${prefix}${name}]`));
 
     return elem.getText();

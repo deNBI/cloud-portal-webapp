@@ -43,7 +43,7 @@ export class VoOverviewPage {
 
     await Util.clickElementByElement(terminateBtnId);
     await Util.clickElementById(this.TERMINATE_PROJECT_BTN);
-    await Util.waitForTextPresenceInElementById(this.NOTIFICATION_MODAL_TITLE, this.SUCCESS, Util.LONG_TIMEOUT);
+    await Util.waitForTextPresenceInElementById(this.NOTIFICATION_MODAL_TITLE, this.SUCCESS);
     await Util.clickElementById(this.CLOSE_NOTIFICATION_BTN);
 
   }
