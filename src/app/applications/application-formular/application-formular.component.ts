@@ -12,6 +12,7 @@ import {FullLayoutComponent} from '../../layouts/full-layout.component';
 import {CreditsService} from '../../api-connector/credits.service';
 import {Application} from '../application.model/application.model';
 import {is_vo} from '../../shared/globalvar';
+import {CREDITS_WIKI} from '../../../links/links';
 
 /**
  * Application formular component.
@@ -46,6 +47,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
   invalid_description: boolean = false;
   simple_vm_min_vm: boolean = false;
   error: string[];
+  CREDITS_WIKI: string = CREDITS_WIKI;
 
   acknowledgeModalTitle: string = 'Acknowledge';
   acknowledgeModalType: string = 'info';
