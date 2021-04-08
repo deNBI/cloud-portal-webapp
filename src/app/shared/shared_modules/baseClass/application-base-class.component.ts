@@ -116,8 +116,8 @@ export class ApplicationBaseClassComponent extends AbstractBaseClass {
 	 */
 	user_applications: Application[] = [];
 
-	constructor(protected userservice: UserService,
-		protected applicationsservice: ApplicationsService,
+	constructor(protected userService: UserService,
+		protected applicationsService: ApplicationsService,
 		protected facilityService: FacilityService) {
 		super();
 
@@ -173,7 +173,7 @@ export class ApplicationBaseClassComponent extends AbstractBaseClass {
 	}
 
 	public getMemberDetailsByElixirId(application: Application): void {
-		this.userservice.getMemberDetailsByElixirId(application.project_application_user.elixir_id).subscribe(
+		this.userService.getMemberDetailsByElixirId(application.project_application_user.elixir_id).subscribe(
 			(result: { [key: string]: string }): void => {
 
 				application.project_application_user.username = `${result['firstName']} ${result['lastName']}`;

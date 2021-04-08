@@ -167,15 +167,15 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
 	constructor(private flavorService: FlavorService,
 		private groupService: GroupService,
-		applicationsservice: ApplicationsService,
+		applicationsService: ApplicationsService,
 		facilityService: FacilityService,
-		userservice: UserService,
+		userService: UserService,
 		private activatedRoute: ActivatedRoute,
 		private fullLayout: FullLayoutComponent,
 		private router: Router,
 		private creditsService: CreditsService,
 		@Inject(DOCUMENT) private document: Document) {
-		super(userservice, applicationsservice, facilityService);
+		super(userService, applicationsService, facilityService);
 	}
 
 	calculateProgressBar(numberToRoundUp: number): string {

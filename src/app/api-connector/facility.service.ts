@@ -577,8 +577,7 @@ export class FacilityService {
 		});
 	}
 
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	getFilteredMembersOfFacility(searchString: string, selectedFacility: string | number): Observable<any> {
+	getFilteredMembersOfFacility(searchString: string): Observable<any> {
 
 		return this.http.get(`${ApiSettings.getApiBaseURL()}users/filterFacility/`, {
 			withCredentials: true,

@@ -111,7 +111,7 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 	STATIC_IMG_FOLDER: String = 'static/webapp/assets/img/';
 
 	constructor(private facilityService: FacilityService, private groupService: GroupService,
-		private imageService: ImageService, private userservice: UserService,
+		private imageService: ImageService, private userService: UserService,
 		private virtualmachineservice: VirtualmachineService, private fb: FormBuilder,
 		private clipboardService: ClipboardService, private flavorService: FlavorService) {
 		super();
