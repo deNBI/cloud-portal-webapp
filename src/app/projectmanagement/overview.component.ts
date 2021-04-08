@@ -420,6 +420,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
     }
     this.project_modification.comment = this.project_application.project_application_comment;
     this.project_modification.flavors = this.project_application.flavors;
+    this.project_modification.total_gpu = this.project_application.project_application_total_gpu;
     this.project_modification.total_cores = this.project_application.project_application_total_cores;
     this.project_modification.total_ram = this.project_application.project_application_total_ram;
   }
