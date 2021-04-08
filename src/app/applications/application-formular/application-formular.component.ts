@@ -14,6 +14,7 @@ import { FullLayoutComponent } from '../../layouts/full-layout.component';
 import { CreditsService } from '../../api-connector/credits.service';
 import { Application } from '../application.model/application.model';
 import { is_vo } from '../../shared/globalvar';
+import { CREDITS_WIKI } from '../../../links/links';
 
 /**
  * Application formular component.
@@ -48,6 +49,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 	invalid_description: boolean = false;
 	simple_vm_min_vm: boolean = false;
 	error: string[];
+	CREDITS_WIKI: string = CREDITS_WIKI;
 
 	acknowledgeModalTitle: string = 'Acknowledge';
 	acknowledgeModalType: string = 'info';
@@ -66,8 +68,9 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 	 */
 	public collapseList: boolean[];
 
-	constructor(private creditsService: CreditsService, private flavorService: FlavorService,
-		private fullLayout: FullLayoutComponent, applicationsService: ApplicationsService) {
+	constructor(private creditsService: CreditsService,
+		private flavorService: FlavorService, private fullLayout: FullLayoutComponent,
+		applicationsService: ApplicationsService) {
 		super(null, applicationsService, null);
 
 	}
@@ -220,7 +223,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 		if (checked) {
 			this.dissemination_platform_count += 1;
 		} else {
-			this.dissemination_platform_count -= 1;
+			this.dissemination_platform_count += 1;
 		}
 	}
 
@@ -245,9 +248,8 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 	 * gets a list of all available Flavors from the flavorservice and puts them into the array flavorList
 	 */
 	getListOfFlavors(): void {
-		this.flavorService.getListOfFlavorsAvailable().subscribe((flavors: Flavor[]): void => {
-			this.flavorList = flavors;
-		});
+		// eslint-disable-next-line no-return-assign
+		this.flavorService.getListOfFlavorsAvailable().subscribe((flavors: Flavor[]): Flavor[] => this.flavorList = flavors);
 	}
 
 	/**
@@ -338,7 +340,8 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 	/**
 	 * Sends a request to the BE to get the initital credits for a new application.
 	 */
-	calculateInitialCredits(): void {
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	calculateInitialCredits(form: NgForm): void {
 		this.creditsService.getCreditsForApplication(
 			this.application.flavors,
 			this.application.project_application_lifetime,
@@ -349,8 +352,8 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 
 	}
 
-	approveApplication(): any {
-		this.calculateInitialCredits();
+	approveApplication(form: NgForm): any {
+		this.calculateInitialCredits(form);
 		this.application_id = this.application.project_application_id;
 		this.applicationsService.validateApplicationAsPIByHash(
 			this.hash, this.application,
@@ -364,7 +367,9 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 				'success',
 			);
 			this.notificationModalStay = false;
-		}, (): void => {
+
+		},
+		(): void => {
 			this.updateNotificationModal(
 				'Failed',
 				'The application was not successfully approved.',

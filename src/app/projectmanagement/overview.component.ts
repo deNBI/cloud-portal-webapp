@@ -8,16 +8,13 @@ import { NgForm } from '@angular/forms';
 import { AutocompleteComponent } from 'angular-ng-autocomplete';
 import { DOCUMENT } from '@angular/common';
 import { Chart } from 'chart.js';
-import { Project } from './project.model';
-import { ProjectMember } from './project_member.model';
 import { environment } from '../../environments/environment';
-import { ApiSettings } from '../api-connector/api-settings.service';
-import { GroupService } from '../api-connector/group.service';
-import { UserService } from '../api-connector/user.service';
 import { ProjectMemberApplication } from './project_member_application';
 import { ComputecenterComponent } from './computecenter.component';
 import { Userinfo } from '../userinfo/userinfo.model';
+import { UserService } from '../api-connector/user.service';
 import { Application } from '../applications/application.model/application.model';
+import { GroupService } from '../api-connector/group.service';
 import { ApplicationBaseClassComponent } from '../shared/shared_modules/baseClass/application-base-class.component';
 import { FacilityService } from '../api-connector/facility.service';
 import { ApplicationsService } from '../api-connector/applications.service';
@@ -27,13 +24,16 @@ import { FlavorType } from '../virtualmachines/virtualmachinemodels/flavorType';
 import { FlavorService } from '../api-connector/flavor.service';
 import { CreditsService } from '../api-connector/credits.service';
 import { is_vo } from '../shared/globalvar';
-import { WIKI_MEMBER_MANAGEMENT, WIKI_PUBLICATIONS } from '../../links/links';
+import { WIKI_MEMBER_MANAGEMENT, WIKI_PUBLICATIONS, CREDITS_WIKI } from '../../links/links';
 import { Doi } from '../applications/doi/doi';
 import { EdamOntologyTerm } from '../applications/edam-ontology-term';
+import { ApiSettings } from '../api-connector/api-settings.service';
 import { Application_States, ExtensionRequestType } from '../shared/shared_modules/baseClass/abstract-base-class';
 import { ApplicationLifetimeExtension } from '../applications/application_extension.model';
 import { ApplicationModification } from '../applications/application_modification.model';
 import { ApplicationCreditRequest } from '../applications/application_credit_request';
+import { ProjectMember } from './project_member.model';
+import { Project } from './project.model';
 
 /**
  * Projectoverview component.
@@ -51,6 +51,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	@Input() invitation_group_pre: string = environment.invitation_group_pre;
 	WIKI_MEMBER_MANAGEMENT: string = WIKI_MEMBER_MANAGEMENT;
 	WIKI_PUBLICATIONS: string = WIKI_PUBLICATIONS;
+	CREDITS_WIKI: string = CREDITS_WIKI;
 	selected_ontology_terms: EdamOntologyTerm[] = [];
 	edam_ontology_terms: EdamOntologyTerm[];
 	ontology_search_keyword: string = 'term';
