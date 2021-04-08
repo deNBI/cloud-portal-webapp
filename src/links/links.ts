@@ -22,6 +22,8 @@ export const SCALE_SCRIPT_LINK: string = 'https://raw.githubusercontent.com/deNB
 export const WIKI_MOUNT_VOLUME: string = `${environment.WIKI_PRE}simple_vm/volumes/#mount-a-volume`;
 export const WIKI_GROUP_INVITATIONS: string = `${environment.WIKI_PRE}simple_vm/project_overview/#inviting-members`;
 export const SCALING_UP_WIKI: string = `${environment.WIKI_PRE}simple_vm/cluster_overview/#scale-up`;
+export const CREDITS_WIKI: string = `${environment.WIKI_PRE}portal/credits/`;
+
 
 export const WIKI_LNKS: string[] =
   [
