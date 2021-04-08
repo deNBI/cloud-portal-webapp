@@ -148,11 +148,11 @@
                      || (vm?.status |hasStatus:VirtualMachineStates.staticSHUTOFF);
                       else statusElseBlock"
                      [routerLink]="['/virtualmachines/detail/' + vm?.openstackid]"><i
-                    *ngIf="vm?.still_used_confirmation_requested && is_vo_admin" class="fas fa-exclamation-triangle"
+                    *ngIf="vm?.still_used_confirmation_requested" class="fas fa-exclamation-triangle"
                     style="color:red;"></i>  {{vm?.name}}  </a>
                   <ng-template #statusElseBlock><span class="h5 text-primary" id="detail_{{vm.name}}"
                                                       style="margin-left: 10px"><i
-                    *ngIf="vm?.still_used_confirmation_requested && is_vo_admin" class="fas fa-exclamation-triangle"
+                    *ngIf="vm?.still_used_confirmation_requested" class="fas fa-exclamation-triangle"
                     style="color:red;"></i>  {{vm?.name}} </span></ng-template>
                   <app-vmstatus [vm]="vm"></app-vmstatus>
 
@@ -181,7 +181,7 @@
                 </div>
                 <div class="col-1" style="text-align: center"></div>
               </div>
-              <div *ngIf="vm?.still_used_confirmation_requested && is_vo_admin" class="alert alert-danger row"
+              <div *ngIf="vm?.still_used_confirmation_requested" class="alert alert-danger row"
                    style="margin: auto; text-align: center" role="alert">
                 Confirm in the
                 <a style="margin-left:2px;margin-right:2px;" [routerLink]="['/virtualmachines/detail/' + vm?.openstackid]"> detailed overview </a>

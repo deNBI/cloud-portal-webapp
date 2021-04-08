@@ -17,8 +17,15 @@
               Otherwise, the machine is scheduled for deletion starting from {{virtualMachine?.getTerminationStartDateString()}}.</strong>
             <br>
             <p>
-              If this machine is no longer needed, back up your data if necessary and shut down the machine and delete it.
+              If this machine is no longer needed, back up your data if necessary, shut down the machine and <strong>delete</strong> it.
               Stopping the machine alone does not release the used resources. The same may also apply to old machines that are still running and no longer needed.
+              <br>
+              Note:
+              You can save the state of your machine in a snapshot before shutting down and deleting the machine, and continue working based on that snapshot.
+              Learn more about creating snapshots <a href="https://cloud.denbi.de/wiki/simple_vm/snapshots/#create-snapshot" target="_blank" rel="noopener noreferrer">here</a>.
+              <br>
+              If necessary, do not forget to back up important data, for example on a volume. You can continue to use these volumes after starting a new machine.
+              You can find out more about this <a href="https://cloud.denbi.de/wiki/simple_vm/volumes/" rel="noopener noreferrer" target="_blank">here</a>.
             </p>
             <button (click)="setVmNeeded()" type="button" class="btn btn-success" style="width:100%;" id="still_need_btn">
               <strong>Still needed</strong>
