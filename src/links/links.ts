@@ -24,7 +24,6 @@ export const WIKI_GROUP_INVITATIONS: string = `${environment.WIKI_PRE}simple_vm/
 export const SCALING_UP_WIKI: string = `${environment.WIKI_PRE}simple_vm/cluster_overview/#scale-up`;
 export const CREDITS_WIKI: string = `${environment.WIKI_PRE}portal/credits/`;
 
-
 export const WIKI_LNKS: string[] = [
 	WIKI_SNAPSHOTS,
 	WIKI,
