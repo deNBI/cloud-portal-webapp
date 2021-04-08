@@ -334,10 +334,10 @@
               <div class="callout callout-info">
                 <small class="text-muted">Credits</small><br>
                 <strong class="text-muted">
-                   <span *ngIf="project?.ApprovedCredits - project?.CurrentCredits >0">
+                   <span *ngIf="project?.ApprovedCredits - project?.CurrentCredits > 0">
                   Used {{project?.CurrentCredits }} of {{project?.ApprovedCredits}} credits <br>
                      {{(project?.ApprovedCredits - project?.CurrentCredits) }} credits left</span>
-                  <span *ngIf="project?.ApprovedCredits - project?.CurrentCredits <=0">
+                  <span *ngIf="project?.ApprovedCredits - project?.CurrentCredits <= 0">
                      Used {{project?.ApprovedCredits }} of {{project?.ApprovedCredits}} credits
                     <br>No credits left!</span>
                   <span *ngIf="((project_application | hasstatusinlist: Application_States.CREDITS_EXTENSION_REQUESTED)
@@ -345,13 +345,24 @@
                      - {{project_application?.project_credit_request?.extra_credits }} additional credits requested on
                     {{project_application?.project_credit_request?.date_submitted}}
                   </span>
-                </strong><br>
+                </strong>
+                <br>
                 <div class="progress" style="height: 2px;">
                   <div class="progress-bar bg-info" role="progressbar"
                        [ngStyle]="{'width.%': (calculateProgressBar(project?.CurrentCredits / project?.ApprovedCredits))}"
                        aria-valuemin="0" aria-valuemax="100"></div>
 
                 </div>
+                <br>
+                <strong class="text-muted">Why do I see this?</strong>
+                <br>
+                <div class="text-muted">We selected your project as one of the few project where we track the resource usage with Cloud
+                  Credits usage.
+                  You should have received an E-Mail with information about Cloud Credits, if this is not the case,
+                  please message
+                  us at <a href="mailto:cloud@denbi.de">cloud@denbi.de</a>. For general information about Cloud Credits
+                  please visit:<br>
+                  - <a href="{{CREDITS_WIKI}}" target="_blank" rel="noopener noreferrer">Cloud Credits Wiki page</a></div>
               </div>
             </div>
             <div class="col-6" style="margin-top:15px;">
