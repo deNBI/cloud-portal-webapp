@@ -24,7 +24,7 @@ import { FlavorType } from '../virtualmachines/virtualmachinemodels/flavorType';
 import { FlavorService } from '../api-connector/flavor.service';
 import { CreditsService } from '../api-connector/credits.service';
 import { is_vo } from '../shared/globalvar';
-import { WIKI_MEMBER_MANAGEMENT, WIKI_PUBLICATIONS, CREDITS_WIKI } from '../../links/links';
+import { CREDITS_WIKI, WIKI_MEMBER_MANAGEMENT, WIKI_PUBLICATIONS } from '../../links/links';
 import { Doi } from '../applications/doi/doi';
 import { EdamOntologyTerm } from '../applications/edam-ontology-term';
 import { ApiSettings } from '../api-connector/api-settings.service';
@@ -423,6 +423,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 		}
 		this.project_modification.comment = this.project_application.project_application_comment;
 		this.project_modification.flavors = this.project_application.flavors;
+		this.project_modification.total_gpu = this.project_application.project_application_total_gpu;
 		this.project_modification.total_cores = this.project_application.project_application_total_cores;
 		this.project_modification.total_ram = this.project_application.project_application_total_ram;
 	}
