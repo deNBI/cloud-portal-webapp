@@ -7,8 +7,4 @@ export class GPUSpecification {
   type: string = 'UNUSED';
   ram: number = 0;
   cores: number = 0;
-
-  constructor() {
-
-  }
 }
