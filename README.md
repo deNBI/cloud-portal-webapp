@@ -120,3 +120,12 @@ npm run compodoc
 ~~~BASH
 firefox documentation/overview.html
 ~~~
+
+### Linting
+
+### Tool: ESLint
+
+We currently use the [ESLint](https://eslint.org) tool for linting the web app.
+The current configuration is based on the standard ESLint rules combined with the [Airbnb Style Guide](https://github.com/airbnb/javascript).
+This style guide is designed for plain javascript, so some adjustments have been made due to the use of TypeScript, as well as project-specific circumstances.
+The adapted rules can be found in the [configuration file](https://github.com/deNBI/cloud-portal-webapp/blob/master/.eslintrc.json).
