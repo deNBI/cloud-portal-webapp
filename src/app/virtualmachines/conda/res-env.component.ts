@@ -1,141 +1,146 @@
-import {Component, Input, OnChanges, OnInit} from '@angular/core';
-import {FormControl, Validators} from '@angular/forms';
-import {BiocondaService} from '../../api-connector/bioconda.service';
-import {ResearchEnvironment} from '../virtualmachinemodels/res-env';
-import {RandomNameGenerator} from '../../shared/randomNameGenerator';
-import {WIKI_RESENV_LINK} from '../../../links/links';
-import {BlockedImageTagResenv} from '../../facility_manager/image-tag';
+import {
+	Component, Input, OnChanges, OnInit,
+} from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
+import { BiocondaService } from '../../api-connector/bioconda.service';
+import { ResearchEnvironment } from '../virtualmachinemodels/res-env';
+import { RandomNameGenerator } from '../../shared/randomNameGenerator';
+import { WIKI_RESENV_LINK } from '../../../links/links';
+import { BlockedImageTagResenv } from '../../facility_manager/image-tag';
 
 /**
  * ResEnv.
  */
 @Component({
-             selector: 'app-res-env',
-             templateUrl: 'res-env.component.html',
-             providers: [BiocondaService]
-           })
+	selector: 'app-res-env',
+	templateUrl: 'res-env.component.html',
+	providers: [BiocondaService],
+})
 export class ResEnvComponent implements OnInit, OnChanges {
 
-  @Input() clientid: string;
-  @Input() forc_url: string;
-  @Input() onlyNamespace: boolean = false;
-  @Input() imageName: string = '';
-  @Input() selectedImageTags: string[] = [];
-  @Input() blockedImageTagsResenv: BlockedImageTagResenv[];
+	@Input() clientid: string;
+	@Input() forc_url: string;
+	@Input() onlyNamespace: boolean = false;
+	@Input() imageName: string = '';
+	@Input() selectedImageTags: string[] = [];
+	@Input() blockedImageTagsResenv: BlockedImageTagResenv[];
 
-  Object: Object = Object;
+	Object: Object = Object;
 
-  templates_to_block: string[] = [];
+	templates_to_block: string[] = [];
 
-  user_key_url: FormControl = new FormControl('',
-                                              [Validators.required, Validators.pattern('[a-zA-Z]*')]);
+	user_key_url: FormControl = new FormControl('',
+		[Validators.required, Validators.pattern('[a-zA-Z]*')]);
 
-  selectedTemplate: ResearchEnvironment = null;
+	selectedTemplate: ResearchEnvironment = null;
 
-  templates: ResearchEnvironment[] = [];
+	templates: ResearchEnvironment[] = [];
 
-  undefinedTemplate: ResearchEnvironment = new ResearchEnvironment();
+	undefinedTemplate: ResearchEnvironment = new ResearchEnvironment();
 
-  rng: RandomNameGenerator;
+	rng: RandomNameGenerator;
 
-  WIKI_RESENV_LINK: string = WIKI_RESENV_LINK;
+	WIKI_RESENV_LINK: string = WIKI_RESENV_LINK;
 
-  create_only_backend: boolean = false;
+	create_only_backend: boolean = false;
 
-  constructor(private condaService: BiocondaService) {
-  }
+	constructor(private condaService: BiocondaService) {
+		this.condaService = condaService;
+	}
 
-  getUserKeyUrl(): string {
-    return this.user_key_url.value;
-  }
+	getUserKeyUrl(): string {
+		return this.user_key_url.value;
+	}
 
-  getCreateOnlyBackend(): boolean {
-    return this.create_only_backend;
-  }
+	getCreateOnlyBackend(): boolean {
+		return this.create_only_backend;
+	}
 
-  setSelectedTemplate(template: ResearchEnvironment): void {
-    if (template === null) {
-      this.selectedTemplate = this.undefinedTemplate;
-      this.user_key_url.setValue('');
+	setSelectedTemplate(template: ResearchEnvironment): void {
+		if (template === null) {
+			this.selectedTemplate = this.undefinedTemplate;
+			this.user_key_url.setValue('');
 
-      return;
-    }
-    this.selectedTemplate = template;
-  }
+			return;
+		}
+		this.selectedTemplate = template;
+	}
 
-  ngOnInit(): void {
-    this.undefinedTemplate.template_name = 'undefined';
-    this.templates_to_block = [];
-    this.setSelectedTemplate(null);
-    this.condaService.getForcTemplates(this.clientid).subscribe((templates: ResearchEnvironment[]): void => {
-      this.templates = templates;
-    });
-    this.rng = new RandomNameGenerator();
-  }
+	ngOnInit(): void {
+		this.undefinedTemplate.template_name = 'undefined';
+		this.templates_to_block = [];
+		this.setSelectedTemplate(null);
+		this.condaService.getForcTemplates(this.clientid).subscribe((templates: ResearchEnvironment[]): void => {
+			this.templates = templates;
+		});
+		this.rng = new RandomNameGenerator();
+	}
 
-  ngOnChanges(): void {
-    this.checkBlocked();
-  }
+	ngOnChanges(): void {
+		this.checkBlocked();
+	}
 
-  isValid(): boolean {
-    if (this.onlyNamespace) {
+	isValid(): boolean {
+		if (this.onlyNamespace) {
 
-      return this.user_key_url.errors === null;
-    } else {
-      if (this.selectedTemplate.template_name === 'undefined') {
+			return this.user_key_url.errors === null;
+		} else if (this.selectedTemplate.template_name === 'undefined') {
 
-        return this.user_key_url.value.length === 0;
-      } else {
+			return this.user_key_url.value.length === 0;
+		} else {
 
-        return this.user_key_url.errors === null;
-      }
-    }
-  }
+			return this.user_key_url.errors === null;
+		}
+	}
 
-  needsName(): boolean {
-    if (this.onlyNamespace || this.selectedTemplate.template_name !== 'undefined') {
-      return this.user_key_url.errors !== null;
-    }
-  }
+	needsName(): boolean {
+		if (this.onlyNamespace || this.selectedTemplate.template_name !== 'undefined') {
+			return this.user_key_url.errors !== null;
+		}
 
-  needsTemplate(): boolean {
-    if (this.user_key_url.value.length !== 0 && !this.onlyNamespace) {
-      return this.selectedTemplate.template_name === 'undefined';
-    }
-  }
+		return false;
+	}
 
-  okayNeeded(): boolean {
-    return (!this.onlyNamespace && this.selectedTemplate.template_name !== 'undefined');
-  }
+	needsTemplate(): boolean {
+		if (this.user_key_url.value.length !== 0 && !this.onlyNamespace) {
+			return this.selectedTemplate.template_name === 'undefined';
+		}
 
-  setOnlyNamespace(): void {
-    this.onlyNamespace = true;
-    this.create_only_backend = false;
-    this.setSelectedTemplate(null);
-  }
+		return false;
+	}
 
-  unsetOnlyNamespace(): void {
-    this.onlyNamespace = false;
-    this.user_key_url.setValue('');
-    this.setSelectedTemplate(null);
-  }
+	okayNeeded(): boolean {
+		return (!this.onlyNamespace && this.selectedTemplate.template_name !== 'undefined');
+	}
 
-  generateRandomName(): void {
-    this.user_key_url.setValue(this.rng.randomName())
-  }
+	setOnlyNamespace(): void {
+		this.onlyNamespace = true;
+		this.create_only_backend = false;
+		this.setSelectedTemplate(null);
+	}
 
-  checkBlocked(): void {
-    if (this.selectedImageTags === null || this.selectedImageTags === undefined) {
-      return;
-    }
-    for (const blockedTag of this.blockedImageTagsResenv) {
-      if (this.selectedImageTags.indexOf(blockedTag.tag) !== -1) {
-        this.templates_to_block = blockedTag.resenvs;
+	unsetOnlyNamespace(): void {
+		this.onlyNamespace = false;
+		this.user_key_url.setValue('');
+		this.setSelectedTemplate(null);
+	}
 
-        return;
-      }
-    }
-    this.templates_to_block = [];
-  }
+	generateRandomName(): void {
+		this.user_key_url.setValue(this.rng.randomName());
+	}
+
+	checkBlocked(): void {
+		if (this.selectedImageTags === null || this.selectedImageTags === undefined) {
+			return;
+		}
+		for (const blockedTag of this.blockedImageTagsResenv) {
+			if (this.selectedImageTags.indexOf(blockedTag.tag) !== -1) {
+				this.templates_to_block = blockedTag.resenvs;
+
+				return;
+			}
+		}
+		this.templates_to_block = [];
+	}
 
 }
