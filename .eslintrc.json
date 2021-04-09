@@ -18,7 +18,9 @@
       "extends": [
         "plugin:@angular-eslint/ng-cli-compat",
         "plugin:@angular-eslint/ng-cli-compat--formatting-add-on",
-        "plugin:@angular-eslint/template/process-inline-templates"
+        "plugin:@angular-eslint/template/process-inline-templates",
+        "eslint:recommended",
+        "airbnb-base"
       ],
       "plugins": [
         "eslint-plugin-no-null"
@@ -43,7 +45,12 @@
         "@angular-eslint/no-forward-ref": "error",
         "@typescript-eslint/naming-convention": "off",
         "@typescript-eslint/ban-types": "off",
+        "camelcase": "off",
+        "class-methods-use-this": "off",
+        "dot-notation": "off",
         "eqeqeq": "error",
+        "lines-between-class-members": "off",
+        "padded-blocks": "off",
         "max-len": [
           "error",
           {
@@ -88,6 +95,8 @@
             }
           }
         ],
+        "no-unused-vars": "off",
+        "@typescript-eslint/no-unused-vars": ["error"],
         "@typescript-eslint/member-ordering": "off",
         "@typescript-eslint/no-floating-promises": "error",
         "@typescript-eslint/no-for-in-array": "off",
@@ -114,22 +123,37 @@
         "default-case": "warn",
         "id-blacklist": "off",
         "id-match": "off",
-        "import/no-default-export": "error",
+        "import/no-default-export": "off",
+        "import/prefer-default-export": "off",
         "import/no-unassigned-import": "off",
+        "import/no-unresolved": "off",
+        "import/no-mutable-exports": "off",
+        "import/extensions": "off",
+        "indent": ["error", "tab", {"SwitchCase": 1}],
         "linebreak-style": "error",
         "max-lines": "off",
+        "no-continue": "off",
         "no-constant-condition": "error",
         "no-control-regex": "warn",
+        "no-else-return": "off",
         "no-invalid-regexp": "error",
         "no-invalid-this": "off",
         "no-irregular-whitespace": "error",
         "no-multiple-empty-lines": "error",
         "no-null/no-null": "off",
+        "no-nested-ternary": "off",
+        "no-param-reassign": "off",
         "no-redeclare": "error",
         "no-regex-spaces": "error",
+        "no-restricted-syntax": ["off", "ForInStatement"],
         "no-sparse-arrays": "error",
+        "no-tabs": "off",
         "no-template-curly-in-string": "error",
         "no-underscore-dangle": "off",
+        "no-use-before-define": "off",
+        "no-useless-constructor": "off",
+        "no-void": "off",
+        "@typescript-eslint/no-useless-constructor": ["error"],
         "padding-line-between-statements": [
           "error",
           {
@@ -139,7 +163,8 @@
           }
         ],
         "prefer-arrow/prefer-arrow-functions": "off",
-        "prefer-template": "error"
+        "prefer-template": "error",
+        "prefer-destructuring": "off"
       }
     },
     {
