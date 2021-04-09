@@ -1,4 +1,4 @@
-import {FlavorType} from './flavorType';
+import { FlavorType } from './flavorType';
 
 /**
  * Flavor Class.
