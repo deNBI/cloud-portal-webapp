@@ -128,6 +128,8 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 	setApplicationToAdjust(application: Application): void {
 		this.selectedApplication = application;
 		this.adjustedApplication = new Application(application);
+		this.checkIfMinimumSelected();
+
 	}
 
 	onChangeFlavor(flavor: Flavor, value: number): void {
