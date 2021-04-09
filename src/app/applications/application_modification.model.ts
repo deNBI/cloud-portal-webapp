@@ -16,7 +16,7 @@ export class ApplicationModification {
 	date_submitted: string;
 	total_cores: number;
 	total_ram: number;
-	total_gpu: number;
+	total_gpu: number = 0;
 	extra_credits: number = 0;
 	user: User;
 	flavors: Flavor[] = [];
