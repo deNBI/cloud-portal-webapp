@@ -4,6 +4,7 @@ import {
 import { forkJoin } from 'rxjs';
 import { Router } from '@angular/router';
 import { WIKI_VOLUME_OVERVIEW } from 'links/links';
+import { KeyValue } from '@angular/common';
 import { Image } from './virtualmachinemodels/image';
 import { Flavor } from './virtualmachinemodels/flavor';
 import { Userinfo } from '../userinfo/userinfo.model';
@@ -356,7 +357,8 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 		}
 	}
 
-	unsorted(): number {
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	unsorted(a: KeyValue<number, string>, b: KeyValue<number, string>): number {
 		return 0;
 	}
 
