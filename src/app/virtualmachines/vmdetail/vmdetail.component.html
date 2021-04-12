@@ -12,7 +12,7 @@
         <div class="card-header"><span class="font-weight-bold text-muted">{{virtualMachine?.name}}</span> <app-vmstatus [with_text]="true" [vm]="virtualMachine"></app-vmstatus></div>
         <div class="card-body" *ngIf="virtualMachine?.still_used_confirmation_requested && virtualMachine?.elixir_id == user_elixir_id">
           <div class="alert alert-danger">
-            <strong>This machine has been running for {{virtualMachine?.days_running}} days!<br> Please confirm that you still
+            <strong>This machine has been consuming resources since {{virtualMachine?.days_running}} days!<br> Please confirm that you still
               need this machine.<br>
               Otherwise, the machine is scheduled for deletion starting from {{virtualMachine?.getTerminationStartDateString()}}.</strong>
             <br>
@@ -20,12 +20,14 @@
               If this machine is no longer needed, back up your data if necessary, shut down the machine and <strong>delete</strong> it.
               Stopping the machine alone does not release the used resources. The same may also apply to old machines that are still running and no longer needed.
               <br>
-              Note:
+              <strong>Note:</strong>
               You can save the state of your machine in a snapshot before shutting down and deleting the machine, and continue working based on that snapshot.
               Learn more about creating snapshots <a href="https://cloud.denbi.de/wiki/simple_vm/snapshots/#create-snapshot" target="_blank" rel="noopener noreferrer">here</a>.
               <br>
-              If necessary, do not forget to back up important data, for example on a volume. You can continue to use these volumes after starting a new machine.
-              You can find out more about this <a href="https://cloud.denbi.de/wiki/simple_vm/volumes/" rel="noopener noreferrer" target="_blank">here</a>.
+              If necessary, do not forget to back up important data. Please save the data on a suitable medium. At best, save the data offline.
+              You can use volumes, but these are subject to the usual risk of cloud services. You can learn more about the use of volumes <a href="https://cloud.denbi.de/wiki/simple_vm/volumes/" rel="noopener noreferrer" target="_blank">here</a>.
+              <br>
+              <strong>We are not liable for the loss of data due to faulty machines or volumes.</strong>
             </p>
             <button (click)="setVmNeeded()" type="button" class="btn btn-success" style="width:100%;" id="still_need_btn">
               <strong>Still needed</strong>
