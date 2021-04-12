@@ -1576,7 +1576,7 @@
             <button type="button" class="btn  btn-primary"
                     form="extension_application_form" id="submit_extension_btn"
                     (click)="calculateCreditsLifeTime(); projectExtensionModal.hide();
-                  this.request_type = ExtensionRequestType.EXTENSION; submitModal.show();"
+                  this.request_type = ExtensionRequestType.EXTENSION; setModalOpen(true); submitModal.show();"
                     [disabled]="extensionForm.invalid || (((project_application?.project_application_edam_terms?.length == 0)
                   || !project_application?.project_application_edam_terms) && selected_ontology_terms.length < 1)">
               <i class="fa fa-dot-circle-o"></i>
