@@ -5,7 +5,7 @@ import { ApiSettings } from './api-settings.service';
 import { IResponseTemplate } from './response-template';
 
 /**
- * Service which provides user methods. 
+ * Service which provides user methods.
  */
 @Injectable()
 export class UserService {
