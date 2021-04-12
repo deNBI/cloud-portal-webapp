@@ -4,6 +4,7 @@ import {
 import { forkJoin } from 'rxjs';
 import { Router } from '@angular/router';
 import { WIKI_VOLUME_OVERVIEW } from 'links/links';
+import { KeyValue } from '@angular/common';
 import { Image } from './virtualmachinemodels/image';
 import { Flavor } from './virtualmachinemodels/flavor';
 import { Userinfo } from '../userinfo/userinfo.model';
@@ -89,683 +90,735 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 
 	title: string = 'New Instance';
 
-	vm_name: string;
-
-	started_machine: boolean = false;
-
-	conda_img_path: string = 'static/webapp/assets/img/conda_logo.svg';
-
-	singleProject: boolean = false;
-
-	showAddVol: boolean = false;
-
-	/**
-	 * All image of a project.
-	 */
-	images: Image[];
-	image_loaded: boolean = false;
-
-	flavors_loaded: boolean = false;
-
-	create_error: IResponseTemplate;
-
-	/**
-	 * All flavors of a project.
-	 */
-	flavors: Flavor[] = [];
-
-	/**
-	 * Selected Image.
-	 */
-	selectedImage: Image;
-
-	/**
-	 * Selected Flavor.
-	 */
-	selectedFlavor: Flavor;
-
-	/**
-	 * Userinfo from the user.
-	 */
-	userinfo: Userinfo;
-
-	/**
-	 * Selected Project vms client.
-	 */
-	selectedProjectClient: Client;
-
-	detached_project_volumes: Volume[] = [];
-	DETACHED_VOL_SWITCH_MAX: number = 5;
-	selected_detached_vol: Volume;
-	undefined_detached_vol: Volume = new Volume();
-	newCores: number = 0;
-	newRam: number = 0;
-	newVms: number = 0;
-	newGpus: number = 0;
-	cluster_allowed: boolean = false;
-	selectedProjectRessources: ApplicationRessourceUsage;
-
-	/**
-	 * The selected project ['name',id].
-	 */
-	selectedProject: [string, number];
-
-	/**
-	 * If the client for a project is viable.
-	 */
-	client_avaiable: boolean = false;
-	showAttachVol: boolean = false;
-
-	/**
-	 * Default volume name.
-	 *
-	 * @type {string}
-	 */
-	volumeName: string = '';
-	volumeMountPath: string;
-
-	/**
-	 * Default volumeStorage.
-	 *
-	 * @type {number}
-	 */
-	volumeStorage: number = 0;
-
-	/**
-	 * If the data for the site is initialized.
-	 *
-	 * @type {boolean}
-	 */
-	isLoaded: boolean = false;
-
-	/**
-	 * All projects of the user.
-	 *
-	 * @type {any[]}
-	 */
-	projects: [string, number][] = [];
-
-	/**
-	 * If all project data is loaded.
-	 *
-	 * @type {boolean}
-	 */
-	projectDataLoaded: boolean = false;
-
-	/**
-	 * id of the freemium project.
-	 *
-	 * @type {number}
-	 */
-	FREEMIUM_ID: number = environment.freemium_project_id;
-
-	prod: boolean = environment.production;
-
-	/**
-	 * Time for the check status loop.
-	 *
-	 * @type {number}
-	 */
-	private checkStatusTimeout: number = 5000;
-
-	@ViewChild('bioconda') biocondaComponent: BiocondaComponent;
-	@ViewChild('resEnv') resEnvComponent: ResEnvComponent;
-
-	constructor(private groupService: GroupService, private imageService: ImageService,
-		private flavorService: FlavorService, private virtualmachineservice: VirtualmachineService,
-		private keyservice: KeyService, private userService: UserService, private router: Router) {
-		// constructor for VirtualMachineComponent
-	}
-
-	/**
-	 * Get images for the project.
-	 *
-	 * @param project_id
-	 */
-	getImages(project_id: number): void {
-
-		this.imageService.getImages(project_id).subscribe((images: Image[]): void => {
-			this.images = images;
-			this.images.sort((x_cord: any, y_cord: any): number => Number(x_cord.is_snapshot) - Number(y_cord.is_snapshot));
-			this.image_loaded = true;
-			this.checkProjectDataLoaded();
-
-		});
-	}
-
-	/**
-	 * Get flavors for the project.
-	 *
-	 * @param project_id
-	 */
-	getFlavors(project_id: number): void {
-		this.flavorService.getFlavors(project_id).subscribe((flavors: Flavor[]): void => {
-			this.flavors = flavors;
-			this.flavors_loaded = true;
-			this.checkProjectDataLoaded();
-		});
-
-	}
-
-	getDetachedVolumesByProject(): void {
-		this.virtualmachineservice.getDetachedVolumesByProject(this.selectedProject[1]).subscribe(
-			(detached_volumes: Volume[]): void => {
-				this.detached_project_volumes = detached_volumes;
-			},
-		);
-	}
-
-	checkIfMountPathIsUsable(path?: string): boolean {
-		if (path) {
-			for (const vol of this.volumesToMount) {
-				if (vol.volume_path === path) {
-					return false;
-				}
-
-			}
-
-			for (const vol of this.volumesToAttach) {
-				if (vol.volume_path === path) {
-					return false;
-				}
-
-			}
-
-			return true;
-		}
-
-		return false;
-	}
-
-	/**
-	 * Checks if the name which is entered for a new volume is valid.
-	 */
-	checkInputVolumeString(text?: string): boolean {
-		if (text) {
-			if (!(text.length > 0)) {
-				return false;
-			}
-
-			return new RegExp('^[\\w]+$', 'i').test(text);
-		}
-
-		return false;
-	}
-
-	/**
-	 * Checks if the amount of storage that is entered for a new volume is valid.
-	 * Depends on free storage-space in the project and the amount of storage already 'reserved' by the volumes
-	 * in the 'volumesToMount'-list.
-	 */
-	checkStorageNumber(): boolean {
-		if (!(this.volumeStorage > 0)) {
-			return false;
-		} else if ((this.selectedProjectRessources.used_volume_storage + this.getStorageInList() + this.volumeStorage)
-			> this.selectedProjectRessources.max_volume_storage) {
-			return false;
-		} else {
-			return true;
-		}
-	}
-
-	/**
-	 * Checks if the entered amount of storage and the entered name for a new volume are both okay.
-	 * A new volume can only be added to the list, if this function returns true.
-	 */
-	checkVolumeValidity(): boolean {
-		return (this.checkStorageNumber()
-			&& this.checkIfMountPathIsUsable(this.volumeMountPath)
-			&& this.checkInputVolumeString(this.volumeMountPath) && this.checkInputVolumeString(this.volumeName));
-	}
-
-	/**
-	 *  Adds a new volume to the list of volumes which will be mounted to the machine when it gets started.
-	 */
-	addVolumeToList(): void {
-		const newVol: Volume = new Volume();
-		newVol.volume_storage = this.volumeStorage;
-		newVol.volume_name = this.volumeName;
-		newVol.volume_path = this.volumeMountPath;
-		newVol.volume_device = 'test';
-		this.volumesToMount.push(newVol);
-		this.volumeStorage = 0;
-		this.volumeName = '';
-		this.volumeMountPath = '';
-	}
-
-	addAttachVolume(vol: Volume): void {
-		this.selected_detached_vol = this.undefined_detached_vol;
-		this.volumesToAttach.push(vol);
-		this.detached_project_volumes = this.detached_project_volumes.filter((volume: Volume): any => (vol !== volume));
-		// this.detached_project_volumes.splice(this.detached_project_volumes.indexOf(vol), 1)
-		if (this.detached_project_volumes.length === 0) {
-			this.toggleShowAttachVol();
-		}
-	}
-
-	removeAttachVolume(vol: Volume): void {
-		this.selected_detached_vol = null;
-		const idx: number = this.volumesToAttach.indexOf(vol);
-		vol.volume_path = null;
-		if (idx !== -1) {
-			this.volumesToAttach.splice(idx, 1);
-			this.detached_project_volumes.push(vol);
-
-		}
-	}
-
-	removeVolFromList(vol: Volume): void {
-		const idx: number = this.volumesToMount.indexOf(vol);
-		vol.volume_path = null;
-		if (idx > -1) {
-			this.volumesToMount.splice(idx, 1);
-		}
-	}
-
-	/**
-	 * Validate the public key of the user.
-	 */
-	validatePublicKey(): boolean {
-
-		return /ssh-rsa AAAA[0-9A-Za-z+/]+[=]{0,3}( [^@]+@[^@]+)?/.test(this.userinfo.PublicKey);
-
-	}
-
-	/**
-	 * Toggles the state of the showAddVol Boolean
-	 */
-	toggleShowAddVol(): void {
-		if (!this.showAddVol) {
-			this.showAddVol = true;
-			this.showAttachVol = false;
-			this.volumeName = '';
-			this.volumeMountPath = null;
-			this.volumeStorage = 0;
-		} else {
-			this.showAddVol = false;
-			this.volumeName = '';
-			this.volumeMountPath = null;
-			this.volumeStorage = 0;
-		}
-	}
-
-	toggleShowAttachVol(): void {
-		if (!this.showAttachVol) {
-			this.showAttachVol = true;
-			this.showAddVol = false;
-			this.selected_detached_vol = this.undefined_detached_vol;
-		} else {
-			this.showAttachVol = false;
-			this.selected_detached_vol = this.undefined_detached_vol;
-		}
-	}
-
-	/**
-	 * Reset the progress bar.
-	 */
-	resetProgressBar(): void {
-		this.progress_bar_status = this.CREATING_STATUS;
-		this.progress_bar_animated = this.ANIMATED_PROGRESS_BAR;
-		this.progress_bar_width = 0;
-	}
-
-	/**
-	 * Check the status of the started vm in a loop.
-	 *
-	 * @param id
-	 */
-	check_status_loop(id: string): void {
-
-		setTimeout(
-			(): void => {
-				this.virtualmachineservice.checkVmStatus(id).subscribe((newVm: VirtualMachine): void => {
-					if (newVm.status === this.ACTIVE) {
-						this.resetProgressBar();
-						this.newVm = newVm;
-						this.loadProjectData();
-
-					} else if (newVm.status === this.PLAYBOOK_FAILED || newVm.status === this.DELETED) {
-						this.newVm.status = this.DELETED;
-						this.resetProgressBar();
-						this.create_error = <IResponseTemplate><any>newVm;
-						this.loadProjectData();
-					} else if (newVm.status) {
-						if (newVm.status === this.PORT_CLOSED) {
-							this.progress_bar_status = this.CHECKING_PORT_STATUS;
-							if (this.hasTools) {
-								this.progress_bar_width = this.FIFTY_PERCENT;
-							} else {
-								this.progress_bar_width = this.SIXTY_SIX_PERCENT;
-							}
-
-						} else if (newVm.status === this.PREPARE_PLAYBOOK_BUILD) {
-							this.progress_bar_status = this.PREPARE_PLAYBOOK_STATUS;
-							this.progress_bar_width = this.SIXTY_SIX_PERCENT;
-
-						} else if (newVm.status === this.BUILD_PLAYBOOK) {
-							this.progress_bar_status = this.BUIDLING_PLAYBOOK_STATUS;
-							this.progress_bar_width = this.SEVENTY_FIVE;
-						}
-
-						this.check_status_loop(id);
-					} else {
-						this.resetProgressBar();
-						this.loadProjectData();
-						this.create_error = <IResponseTemplate><any>newVm;
-					}
-
-				});
-			},
-			this.checkStatusTimeout,
-		);
-	}
-
-	/**
-	 * Start a virtual machine with specific params.
-	 *
-	 * @param flavor
-	 * @param image
-	 * @param servername
-	 * @param project
-	 * @param projectid
-	 */
-	startVM(flavor: string, servername: string, project: string, projectid: string | number): void {
-		this.progress_bar_width = 25;
-		this.create_error = null;
-		// tslint:disable-next-line:no-complex-conditionals
-		if (this.selectedImage && flavor && servername && project) {
-			this.create_error = null;
-			this.started_machine = true;
-
-			const re: RegExp = /\+/gi;
-
-			const flavor_fixed: string = flavor.replace(re, '%2B');
-			// Playbook and Research-Environment stuff
-			let play_information: string = this.getPlaybookInformation();
-			if (play_information !== '{}') {
-				this.playbook_run = 1;
-			} else {
-				play_information = null;
-			}
-
-			if (!this.mosh_mode_available) {
-				this.udp_allowed = false;
-			}
-			this.delay(500).then((): any => {
-				this.progress_bar_width = 50;
-			}).catch((): any => {
-			});
-			const additional_elixir_ids: string[] = this.members_to_add.map((mem: ProjectMember): string => mem.elixirId);
-
-			this.virtualmachineservice.startVM(
-				flavor_fixed, this.selectedImage, servername,
-				project, projectid.toString(), this.http_allowed,
-				this.https_allowed, this.udp_allowed, this.volumesToMount, this.volumesToAttach, play_information, additional_elixir_ids,
-			)
-				.subscribe((newVm: VirtualMachine): void => {
-					this.newVm = newVm;
-					this.started_machine = false;
-
-					if (newVm.status) {
-						this.progress_bar_width = 75;
-						setTimeout(
-							(): void => {
-								void this.router.navigate(['/virtualmachines/vmOverview']).then().catch();
-							},
-							2000,
-						);
-
-					} else {
-						this.loadProjectData();
-						this.create_error = <IResponseTemplate><any>newVm;
-					}
-
-				});
-
-		} else {
-			this.progress_bar_status = this.CREATING_STATUS;
-			this.newVm = null;
-
-		}
-
-	}
-
-	async delay(ms: number): Promise<any> {
-		await new Promise((resolve: any): any => setTimeout(resolve, ms));
-	}
-
-	getPlaybookInformation(): string {
-		const playbook_info: {
-			[name: string]: {
-				[variable: string]: string
-			}
-		} = {};
-		this.timeout = 300;
-		if (this.biocondaComponent.hasChosenTools()) {
-			playbook_info['bioconda'] = {
-				packages: this.biocondaComponent.getChosenTools(),
-			};
-			this.timeout += this.biocondaComponent.getTimeout();
-		}
-
-		if (this.resEnvComponent && this.resEnvComponent.selectedTemplate.template_name !== 'undefined'
-			&& this.resEnvComponent.user_key_url.errors === null) {
-			playbook_info[this.resEnvComponent.selectedTemplate.template_name] = { create_only_backend: `${this.resEnvComponent.getCreateOnlyBackend()}` };
-			playbook_info['user_key_url'] = { user_key_url: this.resEnvComponent.getUserKeyUrl() };
-		}
-
-		if (this.udp_allowed && this.install_mosh) {
-			playbook_info['optional'] = { mosh: 'install' };
-		}
-
-		return JSON.stringify(playbook_info);
-	}
-
-	/**
-	 * Get the client from the selected project.
-	 * If connected geht vm,volumes etc.
-	 */
-	getSelectedProjectClient(): void {
-		this.newCores = 0;
-		this.newGpus = 0;
-		this.newVms = 0;
-		this.volumesToAttach = [];
-		this.volumesToMount = [];
-		this.client_checked = false;
-		this.projectDataLoaded = false;
-
-		this.groupService.getClient(this.selectedProject[1].toString()).subscribe((client: Client): void => {
-			this.loadProjectData();
-
-			if (client.status && client.status === 'Connected' && client.activated) {
-				this.client_avaiable = true;
-
-				this.client_checked = true;
-				this.getForc(client.id);
-			} else {
-				this.client_avaiable = false;
-				this.client_checked = true;
-
-			}
-			this.selectedProjectClient = client;
-			this.imageService.getBlockedImageTagsResenv(Number(this.selectedProjectClient.id), 'true')
-				.subscribe((tags: BlockedImageTagResenv[]): void => {
-					this.blockedImageTagsResenv = tags;
-				});
-		});
-	}
-
-	getForc(id: string): void {
-		this.groupService.getClientForcUrl(this.selectedProject[1].toString()).subscribe((response: JSON): void => {
-			if (response['forc_url'] !== null) {
-				this.has_forc = true;
-				this.forc_url = response['forc_url'];
-			}
-		});
-		this.client_id = id;
-	}
-
-	/**
-	 * Reset the data attribute.
-	 */
-	resetData(): void {
-		if (this.newVm === null) {
-			return;
-		}
-		this.newVm = null;
-	}
-
-	/**
-	 * Initializes the data.
-	 * Gets all groups of the user and his key.
-	 */
-	initializeData(): void {
-		forkJoin([this.groupService.getSimpleVmByUser(), this.userService.getUserInfo()]).subscribe((result: any): void => {
-			this.userinfo = new Userinfo(result[1]);
-			this.validatePublicKey();
-			const membergroups: any = result[0];
-			for (const project of membergroups) {
-				this.projects.push(project);
-
-			}
-
-			if (this.projects.length === 1) {
-				this.resetChecks();
-				this.selectedProject = this.projects[0];
-				this.getSelectedProjectClient();
-				this.singleProject = true;
-			}
-			this.isLoaded = true;
-		});
-	}
-
-	checkProjectDataLoaded(): void {
-		if (this.image_loaded && this.flavors_loaded && this.data_loaded) {
-			this.generateRandomName();
-			this.projectDataLoaded = true;
-			this.isLoaded = true;
-		}
-	}
-
-	loadProjectData(): void {
-		this.projectDataLoaded = false;
-		this.flavors = [];
-		this.image_loaded = false;
-		this.data_loaded = false;
-		this.flavors_loaded = false;
-		this.images = [];
-		this.selectedImage = undefined;
-		this.selectedFlavor = undefined;
-		this.getDetachedVolumesByProject();
-		this.groupService.getGroupResources(this.selectedProject[1].toString()).subscribe((res: ApplicationRessourceUsage): void => {
-			this.selectedProjectRessources = new ApplicationRessourceUsage(res);
-
-			this.data_loaded = true;
-			this.checkProjectDataLoaded();
-		});
-
-		this.getImages(this.selectedProject[1]);
-		this.getFlavors(this.selectedProject[1]);
-
-	}
-
-	generateRandomName(): void {
-		const rng: RandomNameGenerator = new RandomNameGenerator();
-		this.vm_name = rng.randomName();
-	}
-
-	setSelectedImage(image: Image): void {
-
-		this.selectedImage = image;
-		this.isMoshModeAvailable();
-		this.hasImageResenv();
-
-	}
-
-	isMoshModeAvailable(): void {
-		for (const mode of this.selectedImage.modes) {
-			if (mode.name === 'MOSH') {
-				this.mosh_mode_available = true;
-
-				return;
-			}
-
-		}
-		this.mosh_mode_available = false;
-
-	}
-
-	hasImageResenv(): void {
-
-		if (!this.resEnvComponent) {
-			return;
-		}
-		for (const mode of this.selectedImage.modes) {
-			if (TemplateNames.ALL_TEMPLATE_NAMES.indexOf(mode.name) !== -1) {
-				this.resenvSelected = true;
-				this.resEnvComponent.setOnlyNamespace();
-
-				return;
-			}
-		}
-		this.resenvSelected = false;
-		if (this.resEnvComponent) {
-			this.resEnvComponent.unsetOnlyNamespace();
-		}
-
-	}
-
-	setSelectedFlavor(flavor: Flavor): void {
-		this.selectedFlavor = flavor;
-		this.newCores = this.selectedFlavor.vcpus;
-		this.newRam = this.selectedFlavor.ram / 1024;
-		this.newGpus = this.selectedFlavor.gpu;
-	}
-
-	ngOnInit(): void {
-		this.initializeData();
-		this.is_vo = is_vo;
-
-	}
-
-	ngDoCheck(): void {
-		if (this.resEnvComponent) {
-
-			this.resEnvValid = this.resEnvComponent.isValid();
-			this.resEnvNeedsName = this.resEnvComponent.needsName();
-			this.resEnvNeedsTemplate = this.resEnvComponent.needsTemplate();
-			this.resEnvOkayNeeded = this.resEnvComponent.okayNeeded();
-		}
-	}
-
-	hasChosenTools(hasSomeTools: boolean): void {
-		this.hasTools = hasSomeTools;
-	}
-
-	getTimeoutMinutes(): number {
-		return Math.ceil(this.timeout / 60);
-	}
-
-	resetChecks(): void {
-		this.gaveOkay = false;
-		this.hasTools = false;
-	}
-
-	/**
-	 * Calculates the amount of storage that is used when all volumes which are currently listed will be mounted
-	 * to the machine.
-	 */
-	getStorageInList(): number {
-		if (this.volumesToMount.length === 0) {
-			return 0;
-		} else {
-			let storageInList: number = 0;
-
-			this.volumesToMount.forEach((volume: Volume): void => {
-				storageInList += volume.volume_storage;
-			});
-
-			return storageInList;
-		}
-	}
+  vm_name: string;
+
+  started_machine: boolean = false;
+
+  conda_img_path: string = 'static/webapp/assets/img/conda_logo.svg';
+
+  singleProject: boolean = false;
+
+  showAddVol: boolean = false;
+
+  /**
+   * All image of a project.
+   */
+  images: Image[];
+  image_loaded: boolean = false;
+
+  flavors_loaded: boolean = false;
+
+  create_error: IResponseTemplate;
+
+  /**
+   * All flavors of a project.
+   */
+  flavors: Flavor[] = [];
+  selected_flavor_types: Flavor[] = [];
+  selected_flavor_type: string = 'Standard Flavours';
+
+  flavor_types: { [name: string]: Flavor[] } = {};
+
+  STANDARD_TAB_ACTIVE: boolean = true;
+  HIGHMEM_TAB_ACTIVE: boolean = false;
+  GPU_TAB_ACTIVE: boolean = false;
+  STANDARD_TAB: number = 0;
+  HIGHMEM_TAB: number = 1;
+  GPU_TAB: number = 2;
+
+  /**
+   * Selected Image.
+   */
+  selectedImage: Image;
+
+  /**
+   * Selected Flavor.
+   */
+  selectedFlavor: Flavor;
+
+  /**
+   * Userinfo from the user.
+   */
+  userinfo: Userinfo;
+
+  /**
+   * Selected Project vms client.
+   */
+  selectedProjectClient: Client;
+
+  detached_project_volumes: Volume[] = [];
+  DETACHED_VOL_SWITCH_MAX: number = 5;
+  selected_detached_vol: Volume;
+  undefined_detached_vol: Volume = new Volume();
+  newCores: number = 0;
+  newRam: number = 0;
+  newVms: number = 0;
+  newGpus: number = 0;
+  cluster_allowed: boolean = false;
+  selectedProjectRessources: ApplicationRessourceUsage;
+
+  /**
+   * The selected project ['name',id].
+   */
+  selectedProject: [string, number];
+
+  /**
+   * If the client for a project is viable.
+   */
+  client_avaiable: boolean = false;
+  showAttachVol: boolean = false;
+
+  /**
+   * Default volume name.
+   *
+   * @type {string}
+   */
+  volumeName: string = '';
+  volumeMountPath: string;
+
+  /**
+   * Default volumeStorage.
+   *
+   * @type {number}
+   */
+  volumeStorage: number = 0;
+
+  /**
+   * If the data for the site is initialized.
+   *
+   * @type {boolean}
+   */
+  isLoaded: boolean = false;
+
+  /**
+   * All projects of the user.
+   *
+   * @type {any[]}
+   */
+  projects: [string, number][] = [];
+
+  /**
+   * If all project data is loaded.
+   *
+   * @type {boolean}
+   */
+  projectDataLoaded: boolean = false;
+
+  /**
+   * id of the freemium project.
+   *
+   * @type {number}
+   */
+  FREEMIUM_ID: number = environment.freemium_project_id;
+
+  prod: boolean = environment.production;
+
+  /**
+   * Time for the check status loop.
+   *
+   * @type {number}
+   */
+  private checkStatusTimeout: number = 5000;
+
+  @ViewChild('bioconda') biocondaComponent: BiocondaComponent;
+  @ViewChild('resEnv') resEnvComponent: ResEnvComponent;
+
+  constructor(private groupService: GroupService, private imageService: ImageService,
+              private flavorService: FlavorService, private virtualmachineservice: VirtualmachineService,
+              private keyservice: KeyService, private userService: UserService, private router: Router) {
+  	// constructor for VirtualMachineComponent
+  }
+
+  /**
+   * Get images for the project.
+   *
+   * @param project_id
+   */
+  getImages(project_id: number): void {
+
+  	this.imageService.getImages(project_id).subscribe((images: Image[]): void => {
+  		this.images = images;
+  		this.images.sort((x_cord: any, y_cord: any): number => Number(x_cord.is_snapshot) - Number(y_cord.is_snapshot));
+  		this.image_loaded = true;
+  		this.checkProjectDataLoaded();
+
+  	});
+  }
+
+  /**
+   * Get flavors for the project.
+   *
+   * @param project_id
+   */
+  getFlavors(project_id: number): void {
+  	this.flavorService.getFlavors(project_id).subscribe((flavors: Flavor[]): void => {
+  		this.flavors = flavors;
+  		for (const flavor of this.flavors) {
+  			if (flavor.type.long_name in this.flavor_types) {
+  				this.flavor_types[flavor.type.long_name].push(flavor);
+  			} else {
+  				this.flavor_types[flavor.type.long_name] = [flavor];
+  			}
+
+  		}
+  		this.flavors_loaded = true;
+  		this.checkProjectDataLoaded();
+  	});
+
+  }
+
+  getDetachedVolumesByProject(): void {
+  	this.virtualmachineservice.getDetachedVolumesByProject(this.selectedProject[1]).subscribe(
+  		(detached_volumes: Volume[]): void => {
+  			this.detached_project_volumes = detached_volumes;
+  		},
+  	);
+  }
+
+  checkIfMountPathIsUsable(path?: string): boolean {
+  	if (path) {
+  		for (const vol of this.volumesToMount) {
+  			if (vol.volume_path === path) {
+  				return false;
+  			}
+
+  		}
+
+  		for (const vol of this.volumesToAttach) {
+  			if (vol.volume_path === path) {
+  				return false;
+  			}
+
+  		}
+
+  		return true;
+  	}
+
+  	return false;
+  }
+
+  setAllTabsFalse(): void {
+  	this.HIGHMEM_TAB_ACTIVE = false;
+  	this.GPU_TAB_ACTIVE = false;
+  	this.STANDARD_TAB_ACTIVE = false;
+  }
+
+  setSelectedFlavorType(key: string): void {
+  	this.selected_flavor_type = key;
+  }
+
+  setTab(tab_num: number): void {
+
+  	this.setAllTabsFalse();
+  	switch (tab_num) {
+  		case this.HIGHMEM_TAB:
+  			this.HIGHMEM_TAB_ACTIVE = true;
+  			break;
+  		case this.GPU_TAB:
+  			this.GPU_TAB_ACTIVE = true;
+  			break;
+  		case this.STANDARD_TAB:
+  			this.STANDARD_TAB_ACTIVE = true;
+  			break;
+
+  		default:
+  			break;
+  	}
+  }
+
+  /**
+   * Checks if the name which is entered for a new volume is valid.
+   */
+  checkInputVolumeString(text?: string): boolean {
+  	if (text) {
+  		if (!(text.length > 0)) {
+  			return false;
+  		}
+
+  		return new RegExp('^[\\w]+$', 'i').test(text);
+  	}
+
+  	return false;
+  }
+
+  /**
+   * Checks if the amount of storage that is entered for a new volume is valid.
+   * Depends on free storage-space in the project and the amount of storage already 'reserved' by the volumes
+   * in the 'volumesToMount'-list.
+   */
+  checkStorageNumber(): boolean {
+  	if (!(this.volumeStorage > 0)) {
+  		return false;
+  	} else if ((this.selectedProjectRessources.used_volume_storage + this.getStorageInList() + this.volumeStorage)
+      > this.selectedProjectRessources.max_volume_storage) {
+  		return false;
+  	} else {
+  		return true;
+  	}
+  }
+
+  unsorted(a: KeyValue<number, string>, b: KeyValue<number, string>): number {
+  	return 0;
+  }
+
+  /**
+   * Checks if the entered amount of storage and the entered name for a new volume are both okay.
+   * A new volume can only be added to the list, if this function returns true.
+   */
+  checkVolumeValidity(): boolean {
+  	return (this.checkStorageNumber()
+      && this.checkIfMountPathIsUsable(this.volumeMountPath)
+      && this.checkInputVolumeString(this.volumeMountPath) && this.checkInputVolumeString(this.volumeName));
+  }
+
+  /**
+   *  Adds a new volume to the list of volumes which will be mounted to the machine when it gets started.
+   */
+  addVolumeToList(): void {
+  	const newVol: Volume = new Volume();
+  	newVol.volume_storage = this.volumeStorage;
+  	newVol.volume_name = this.volumeName;
+  	newVol.volume_path = this.volumeMountPath;
+  	newVol.volume_device = 'test';
+  	this.volumesToMount.push(newVol);
+  	this.volumeStorage = 0;
+  	this.volumeName = '';
+  	this.volumeMountPath = '';
+  }
+
+  addAttachVolume(vol: Volume): void {
+  	this.selected_detached_vol = this.undefined_detached_vol;
+  	this.volumesToAttach.push(vol);
+  	this.detached_project_volumes = this.detached_project_volumes.filter((volume: Volume): any => (vol !== volume));
+  	// this.detached_project_volumes.splice(this.detached_project_volumes.indexOf(vol), 1)
+  	if (this.detached_project_volumes.length === 0) {
+  		this.toggleShowAttachVol();
+  	}
+  }
+
+  removeAttachVolume(vol: Volume): void {
+  	this.selected_detached_vol = null;
+  	const idx: number = this.volumesToAttach.indexOf(vol);
+  	vol.volume_path = null;
+  	if (idx !== -1) {
+  		this.volumesToAttach.splice(idx, 1);
+  		this.detached_project_volumes.push(vol);
+
+  	}
+  }
+
+  removeVolFromList(vol: Volume): void {
+  	const idx: number = this.volumesToMount.indexOf(vol);
+  	vol.volume_path = null;
+  	if (idx > -1) {
+  		this.volumesToMount.splice(idx, 1);
+  	}
+  }
+
+  /**
+   * Validate the public key of the user.
+   */
+  validatePublicKey(): boolean {
+
+  	return /ssh-rsa AAAA[0-9A-Za-z+/]+[=]{0,3}( [^@]+@[^@]+)?/.test(this.userinfo.PublicKey);
+
+  }
+
+  /**
+   * Toggles the state of the showAddVol Boolean
+   */
+  toggleShowAddVol(): void {
+  	if (!this.showAddVol) {
+  		this.showAddVol = true;
+  		this.showAttachVol = false;
+  		this.volumeName = '';
+  		this.volumeMountPath = null;
+  		this.volumeStorage = 0;
+  	} else {
+  		this.showAddVol = false;
+  		this.volumeName = '';
+  		this.volumeMountPath = null;
+  		this.volumeStorage = 0;
+  	}
+  }
+
+  toggleShowAttachVol(): void {
+  	if (!this.showAttachVol) {
+  		this.showAttachVol = true;
+  		this.showAddVol = false;
+  		this.selected_detached_vol = this.undefined_detached_vol;
+  	} else {
+  		this.showAttachVol = false;
+  		this.selected_detached_vol = this.undefined_detached_vol;
+  	}
+  }
+
+  /**
+   * Reset the progress bar.
+   */
+  resetProgressBar(): void {
+  	this.progress_bar_status = this.CREATING_STATUS;
+  	this.progress_bar_animated = this.ANIMATED_PROGRESS_BAR;
+  	this.progress_bar_width = 0;
+  }
+
+  /**
+   * Check the status of the started vm in a loop.
+   *
+   * @param id
+   */
+  check_status_loop(id: string): void {
+
+  	setTimeout(
+  		(): void => {
+  			this.virtualmachineservice.checkVmStatus(id).subscribe((newVm: VirtualMachine): void => {
+  				if (newVm.status === this.ACTIVE) {
+  					this.resetProgressBar();
+  					this.newVm = newVm;
+  					this.loadProjectData();
+
+  				} else if (newVm.status === this.PLAYBOOK_FAILED || newVm.status === this.DELETED) {
+  					this.newVm.status = this.DELETED;
+  					this.resetProgressBar();
+  					this.create_error = <IResponseTemplate><any>newVm;
+  					this.loadProjectData();
+  				} else if (newVm.status) {
+  					if (newVm.status === this.PORT_CLOSED) {
+  						this.progress_bar_status = this.CHECKING_PORT_STATUS;
+  						if (this.hasTools) {
+  							this.progress_bar_width = this.FIFTY_PERCENT;
+  						} else {
+  							this.progress_bar_width = this.SIXTY_SIX_PERCENT;
+  						}
+
+  					} else if (newVm.status === this.PREPARE_PLAYBOOK_BUILD) {
+  						this.progress_bar_status = this.PREPARE_PLAYBOOK_STATUS;
+  						this.progress_bar_width = this.SIXTY_SIX_PERCENT;
+
+  					} else if (newVm.status === this.BUILD_PLAYBOOK) {
+  						this.progress_bar_status = this.BUIDLING_PLAYBOOK_STATUS;
+  						this.progress_bar_width = this.SEVENTY_FIVE;
+  					}
+
+  					this.check_status_loop(id);
+  				} else {
+  					this.resetProgressBar();
+  					this.loadProjectData();
+  					this.create_error = <IResponseTemplate><any>newVm;
+  				}
+
+  			});
+  		},
+  		this.checkStatusTimeout,
+  	);
+  }
+
+  /**
+   * Start a virtual machine with specific params.
+   *
+   * @param flavor
+   * @param image
+   * @param servername
+   * @param project
+   * @param projectid
+   */
+  startVM(flavor: string, servername: string, project: string, projectid: string | number): void {
+  	this.progress_bar_width = 25;
+  	this.create_error = null;
+  	// tslint:disable-next-line:no-complex-conditionals
+  	if (this.selectedImage && flavor && servername && project) {
+  		this.create_error = null;
+  		this.started_machine = true;
+
+  		const re: RegExp = /\+/gi;
+
+  		const flavor_fixed: string = flavor.replace(re, '%2B');
+  		// Playbook and Research-Environment stuff
+  		let play_information: string = this.getPlaybookInformation();
+  		if (play_information !== '{}') {
+  			this.playbook_run = 1;
+  		} else {
+  			play_information = null;
+  		}
+
+  		if (!this.mosh_mode_available) {
+  			this.udp_allowed = false;
+  		}
+  		this.delay(500).then((): any => {
+  			this.progress_bar_width = 50;
+  		}).catch((): any => {
+  		});
+  		const additional_elixir_ids: string[] = this.members_to_add.map((mem: ProjectMember): string => mem.elixirId);
+
+  		this.virtualmachineservice.startVM(
+  			flavor_fixed, this.selectedImage, servername,
+  			project, projectid.toString(), this.http_allowed,
+  			this.https_allowed, this.udp_allowed, this.volumesToMount, this.volumesToAttach, play_information, additional_elixir_ids,
+  		)
+  			.subscribe((newVm: VirtualMachine): void => {
+  				this.newVm = newVm;
+  				this.started_machine = false;
+
+  				if (newVm.status) {
+  					this.progress_bar_width = 75;
+  					setTimeout(
+  						(): void => {
+  							void this.router.navigate(['/virtualmachines/vmOverview']).then().catch();
+  						},
+  						2000,
+  					);
+
+  				} else {
+  					this.loadProjectData();
+  					this.create_error = <IResponseTemplate><any>newVm;
+  				}
+
+  			});
+
+  	} else {
+  		this.progress_bar_status = this.CREATING_STATUS;
+  		this.newVm = null;
+
+  	}
+
+  }
+
+  async delay(ms: number): Promise<any> {
+  	await new Promise((resolve: any): any => setTimeout(resolve, ms));
+  }
+
+  getPlaybookInformation(): string {
+  	const playbook_info: {
+      [name: string]: {
+        [variable: string]: string
+      }
+    } = {};
+  	this.timeout = 300;
+  	if (this.biocondaComponent.hasChosenTools()) {
+  		playbook_info['bioconda'] = {
+  			packages: this.biocondaComponent.getChosenTools(),
+  		};
+  		this.timeout += this.biocondaComponent.getTimeout();
+  	}
+
+  	if (this.resEnvComponent && this.resEnvComponent.selectedTemplate.template_name !== 'undefined'
+      && this.resEnvComponent.user_key_url.errors === null) {
+  		playbook_info[this.resEnvComponent.selectedTemplate.template_name] = { create_only_backend: `${this.resEnvComponent.getCreateOnlyBackend()}` };
+  		playbook_info['user_key_url'] = { user_key_url: this.resEnvComponent.getUserKeyUrl() };
+  	}
+
+  	if (this.udp_allowed && this.install_mosh) {
+  		playbook_info['optional'] = { mosh: 'install' };
+  	}
+
+  	return JSON.stringify(playbook_info);
+  }
+
+  /**
+   * Get the client from the selected project.
+   * If connected geht vm,volumes etc.
+   */
+  getSelectedProjectClient(): void {
+  	this.newCores = 0;
+  	this.newGpus = 0;
+  	this.newVms = 0;
+  	this.volumesToAttach = [];
+  	this.volumesToMount = [];
+  	this.client_checked = false;
+  	this.projectDataLoaded = false;
+
+  	this.groupService.getClient(this.selectedProject[1].toString()).subscribe((client: Client): void => {
+  		this.loadProjectData();
+
+  		if (client.status && client.status === 'Connected' && client.activated) {
+  			this.client_avaiable = true;
+
+  			this.client_checked = true;
+  			this.getForc(client.id);
+  		} else {
+  			this.client_avaiable = false;
+  			this.client_checked = true;
+
+  		}
+  		this.selectedProjectClient = client;
+  		this.imageService.getBlockedImageTagsResenv(Number(this.selectedProjectClient.id), 'true')
+  			.subscribe((tags: BlockedImageTagResenv[]): void => {
+  				this.blockedImageTagsResenv = tags;
+  			});
+  	});
+  }
+
+  getForc(id: string): void {
+  	this.groupService.getClientForcUrl(this.selectedProject[1].toString()).subscribe((response: JSON): void => {
+  		if (response['forc_url'] !== null) {
+  			this.has_forc = true;
+  			this.forc_url = response['forc_url'];
+  		}
+  	});
+  	this.client_id = id;
+  }
+
+  /**
+   * Reset the data attribute.
+   */
+  resetData(): void {
+  	if (this.newVm === null) {
+  		return;
+  	}
+  	this.newVm = null;
+  }
+
+  /**
+   * Initializes the data.
+   * Gets all groups of the user and his key.
+   */
+  initializeData(): void {
+  	forkJoin([this.groupService.getSimpleVmByUser(), this.userService.getUserInfo()]).subscribe((result: any): void => {
+  		this.userinfo = new Userinfo(result[1]);
+  		this.validatePublicKey();
+  		const membergroups: any = result[0];
+  		for (const project of membergroups) {
+  			this.projects.push(project);
+
+  		}
+
+  		if (this.projects.length === 1) {
+  			this.resetChecks();
+  			this.selectedProject = this.projects[0];
+  			this.getSelectedProjectClient();
+  			this.singleProject = true;
+  		}
+  		this.isLoaded = true;
+  	});
+  }
+
+  checkProjectDataLoaded(): void {
+  	if (this.image_loaded && this.flavors_loaded && this.data_loaded) {
+  		this.generateRandomName();
+  		this.projectDataLoaded = true;
+  		this.isLoaded = true;
+  	}
+  }
+
+  loadProjectData(): void {
+  	this.projectDataLoaded = false;
+  	this.flavors = [];
+  	this.image_loaded = false;
+  	this.data_loaded = false;
+  	this.flavors_loaded = false;
+  	this.images = [];
+  	this.selectedImage = undefined;
+  	this.selectedFlavor = undefined;
+  	this.getDetachedVolumesByProject();
+  	this.groupService.getGroupResources(this.selectedProject[1].toString()).subscribe((res: ApplicationRessourceUsage): void => {
+  		this.selectedProjectRessources = new ApplicationRessourceUsage(res);
+
+  		this.data_loaded = true;
+  		this.checkProjectDataLoaded();
+  	});
+
+  	this.getImages(this.selectedProject[1]);
+  	this.getFlavors(this.selectedProject[1]);
+
+  }
+
+  generateRandomName(): void {
+  	const rng: RandomNameGenerator = new RandomNameGenerator();
+  	this.vm_name = rng.randomName();
+  }
+
+  setSelectedImage(image: Image): void {
+
+  	this.selectedImage = image;
+  	this.isMoshModeAvailable();
+  	this.hasImageResenv();
+
+  }
+
+  isMoshModeAvailable(): void {
+  	for (const mode of this.selectedImage.modes) {
+  		if (mode.name === 'MOSH') {
+  			this.mosh_mode_available = true;
+
+  			return;
+  		}
+
+  	}
+  	this.mosh_mode_available = false;
+
+  }
+
+  hasImageResenv(): void {
+
+  	if (!this.resEnvComponent) {
+  		return;
+  	}
+  	for (const mode of this.selectedImage.modes) {
+  		if (TemplateNames.ALL_TEMPLATE_NAMES.indexOf(mode.name) !== -1) {
+  			this.resenvSelected = true;
+  			this.resEnvComponent.setOnlyNamespace();
+
+  			return;
+  		}
+  	}
+  	this.resenvSelected = false;
+  	if (this.resEnvComponent) {
+  		this.resEnvComponent.unsetOnlyNamespace();
+  	}
+
+  }
+
+  setSelectedFlavor(flavor: Flavor): void {
+  	this.selectedFlavor = flavor;
+  	this.newCores = this.selectedFlavor.vcpus;
+  	this.newRam = this.selectedFlavor.ram / 1024;
+  	this.newGpus = this.selectedFlavor.gpu;
+  }
+
+  ngOnInit(): void {
+  	this.initializeData();
+  	this.is_vo = is_vo;
+
+  }
+
+  ngDoCheck(): void {
+  	if (this.resEnvComponent) {
+
+  		this.resEnvValid = this.resEnvComponent.isValid();
+  		this.resEnvNeedsName = this.resEnvComponent.needsName();
+  		this.resEnvNeedsTemplate = this.resEnvComponent.needsTemplate();
+  		this.resEnvOkayNeeded = this.resEnvComponent.okayNeeded();
+  	}
+  }
+
+  hasChosenTools(hasSomeTools: boolean): void {
+  	this.hasTools = hasSomeTools;
+  }
+
+  getTimeoutMinutes(): number {
+  	return Math.ceil(this.timeout / 60);
+  }
+
+  resetChecks(): void {
+  	this.gaveOkay = false;
+  	this.hasTools = false;
+  }
+
+  /**
+   * Calculates the amount of storage that is used when all volumes which are currently listed will be mounted
+   * to the machine.
+   */
+  getStorageInList(): number {
+  	if (this.volumesToMount.length === 0) {
+  		return 0;
+  	} else {
+  		let storageInList: number = 0;
+
+  		this.volumesToMount.forEach((volume: Volume): void => {
+  			storageInList += volume.volume_storage;
+  		});
+
+  		return storageInList;
+  	}
+  }
 }
