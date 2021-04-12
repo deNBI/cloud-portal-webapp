@@ -1406,7 +1406,7 @@
                     form="resource_modification_application_form" id="submit_modification_btn"
                     (click)="this.request_type = ExtensionRequestType.MODIFICATION;
                   calculateRamCores(); calculateCreditsResourceModification();
-                  resourceModificationModal.hide(); submitModal.show();"
+                  resourceModificationModal.hide(); setModalOpen(true); submitModal.show();"
                     [disabled]="modificationForm.invalid"><i class="fa fa-dot-circle-o"></i>
               Submit
             </button>
@@ -1689,6 +1689,7 @@
             <button type="button" class="btn  btn-primary"
                     form="credits_application_form" id="submit_extra_credits_btn"
                     (click)="creditsExtensionModal.hide(); this.request_type = ExtensionRequestType.CREDIT;
+                    setModalOpen(true);
                   submitModal.show();" [disabled]="f2.invalid"><i class="fa fa-dot-circle-o"></i>
               Submit
             </button>
