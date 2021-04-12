@@ -1195,9 +1195,28 @@
         </div>
         <div class="table-responsive">
           <table class="table table-striped">
-            <tr *ngFor="let str of valuesToConfirm">
-              <td>{{str}}</td>
+            <tr><td><strong>Project Information</strong></td></tr>
+            <tr><td>Shortname: {{application?.project_application_shortname}}</td></tr>
+            <tr><td>Description: {{application?.project_application_description}}</td></tr>
+            <tr><td>Lifetime: {{application?.project_application_lifetime}} <span *ngIf="application?.project_application_lifetime === 1">month</span><span *ngIf="application?.project_application_lifetime > 1">months</span></td></tr>
+            <tr><td>Institute: {{application?.project_application_institute}}</td></tr>
+            <tr><td>Workgroup: {{application?.project_application_workgroup}}</td></tr>
+            <tr><td>Research Topics: <span *ngFor="let topic of application?.project_application_edam_terms" class="badge badge-info" style="margin: 2px;">{{topic.term}}</span></td></tr>
+            <tr><td>Workshop planed: <span *ngIf="application?.project_application_workshop">Yes</span><span *ngIf="!application?.project_application_workshop"></span></td></tr>
+            <tr><td>Dissemination Allowed: <span *ngIf="application?.dissemination?.someAllowed()">Yes</span><span *ngIf="!application?.dissemination.someAllowed()">No</span></td></tr>
+            <tr *ngIf="application?.dissemination.someAllowed()">
+              <td> - for:
+                <span class="badge badge-info" style="margin: 2px;" *ngFor="let information of application?.dissemination.allowed_informations">{{information}}</span></td></tr>
+            <tr *ngIf="application?.dissemination.someAllowed()">
+              <td> - on:
+                <span class="badge badge-info" style="margin: 2px;" *ngFor="let platform of application?.dissemination.allowed_platforms">{{platform}}</span></td>
             </tr>
+            <tr><td *ngIf="application?.project_application_sensitive_data">Sensitive Data: Yes</td><td *ngIf="!application?.project_application_sensitive_data">Sensitive Data: No</td></tr>
+            <tr><td><strong>Resources</strong></td></tr>
+            <ng-container *ngFor="let flavor of application?.flavors">
+             <tr *ngIf="flavor.counter > 0"><td>{{flavor.name}}: {{flavor.counter}}</td></tr>
+            </ng-container>
+            
             <tr>
               <td><strong>Initial Cloud Credits:
                 {{application?.project_application_initial_credits.toString()}}</strong>
