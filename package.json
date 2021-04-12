@@ -31,7 +31,7 @@
   },
   "private": true,
   "dependencies": {
-    "@angular-eslint/eslint-plugin": "2.0.2",
+    "@angular-eslint/eslint-plugin": "2.1.0",
     "@angular/animations": "^11.2.6",
     "@angular/cdk": "^11.2.5",
     "@angular/common": "^11.2.6",
@@ -137,7 +137,7 @@
     "eslint-plugin-jsdoc": "32.3.0",
     "eslint-plugin-prefer-arrow": "1.2.2",
     "@angular-eslint/builder": "^2.0.0",
-    "@angular-eslint/eslint-plugin": "^2.0.2",
+    "@angular-eslint/eslint-plugin": "^2.1.0",
     "@angular-eslint/eslint-plugin-template": "^2.0.0",
     "@angular-eslint/schematics": "2.0.2",
     "@angular-eslint/template-parser": "^2.0.0",
