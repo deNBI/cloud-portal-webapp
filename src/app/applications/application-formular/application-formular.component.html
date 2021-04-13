@@ -1074,7 +1074,7 @@
           </div>
           <div>
             <button *ngIf="!is_validation"
-                    (click)="filterEnteredData(form);calculateInitialCredits(form); submitModal.show();"
+                    (click)="calculateInitialCredits(form); submitModal.show();"
                     id="submit_btn"
                     [disabled]="submitting || form.invalid  ||application?.project_application_edam_terms.length == 0 || application?.project_application_edam_terms.length > 10 || (application?.flavors.length == 0  && !application?.project_application_openstack_project) || (!application?.dissemination?.isPlatformSelected()  && application?.project_application_report_allowed)"
                     class="btn btn-sm btn-success"
