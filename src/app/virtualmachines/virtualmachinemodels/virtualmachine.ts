@@ -80,7 +80,7 @@ export class VirtualMachine {
 	public calculateDaysRunning(): number {
 		const createdDate: Date = new Date(this.created_at_date);
 
-		return Math.ceil((Date.now() - createdDate.getTime()) / 86400000);
+		return Math.floor((Date.now() - createdDate.getTime()) / 86400000);
 
 	}
 

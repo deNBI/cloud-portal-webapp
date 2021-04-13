@@ -12,13 +12,12 @@
         <div class="card-header"><span class="font-weight-bold text-muted">{{virtualMachine?.name}}</span> <app-vmstatus [with_text]="true" [vm]="virtualMachine"></app-vmstatus></div>
         <div class="card-body" *ngIf="virtualMachine?.still_used_confirmation_requested && virtualMachine?.elixir_id == user_elixir_id">
           <div class="alert alert-danger">
-            <strong>This machine has been consuming resources since {{virtualMachine?.days_running}} days!<br> Please confirm that you still
+            <strong>This machine has been consuming resources for {{virtualMachine?.days_running}} days!<br> Please confirm that you still
               need this machine.<br>
               Otherwise, the machine is scheduled for deletion starting from {{virtualMachine?.getTerminationStartDateString()}}.</strong>
             <br>
             <p>
-              If this machine is no longer needed, back up your data if necessary, shut down the machine and <strong>delete</strong> it.
-              Stopping the machine alone does not release the used resources. The same may also apply to old machines that are still running and no longer needed.
+              If this machine is no longer needed, back up your data if necessary and delete the machine. Stopping the machine alone does not release the used resources.
               <br>
               <strong>Note:</strong>
               You can save the state of your machine in a snapshot before shutting down and deleting the machine, and continue working based on that snapshot.
