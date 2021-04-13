@@ -1202,7 +1202,17 @@
             <tr><td>Institute: {{application?.project_application_institute}}</td></tr>
             <tr><td>Workgroup: {{application?.project_application_workgroup}}</td></tr>
             <tr><td>Research Topics: <span *ngFor="let topic of application?.project_application_edam_terms" class="badge badge-info" style="margin: 2px;">{{topic.term}}</span></td></tr>
-            <tr><td>Workshop planed: <span *ngIf="application?.project_application_workshop">Yes</span><span *ngIf="!application?.project_application_workshop"></span></td></tr>
+            <tr><td>Workshop planed: <span *ngIf="application?.project_application_workshop">Yes</span><span *ngIf="!application?.project_application_workshop">No</span></td></tr>
+            <ng-container *ngIf="application?.project_application_openstack_project">
+              <tr><td>Service: <span *ngIf="application?.project_application_cloud_service && !application?.project_application_cloud_service_develop">Existing: {{application?.project_application_cloud_service_user_number}} unique users per month</span>
+                <span *ngIf="application?.project_application_cloud_service && application?.project_application_cloud_service_develop">In development</span>
+              </td></tr>
+            </ng-container>
+            <tr *ngIf="application?.project_application_openstack_project"><td>OpenStack Basic Introduction:
+              <span *ngIf="application?.project_application_openstack_basic_introduction">Yes</span>
+              <span *ngIf="!application?.project_application_openstack_basic_introduction">No</span>
+            </td></tr>
+
             <tr><td>Dissemination Allowed: <span *ngIf="application?.dissemination?.someAllowed()">Yes</span><span *ngIf="!application?.dissemination.someAllowed()">No</span></td></tr>
             <tr *ngIf="application?.dissemination.someAllowed()">
               <td> - for:
@@ -1211,12 +1221,29 @@
               <td> - on:
                 <span class="badge badge-info" style="margin: 2px;" *ngFor="let platform of application?.dissemination.allowed_platforms">{{platform}}</span></td>
             </tr>
+            <tr *ngIf="application?.project_application_comment"><td>Comment: {{application?.project_application_comment}}</td></tr>
             <tr><td *ngIf="application?.project_application_sensitive_data">Sensitive Data: Yes</td><td *ngIf="!application?.project_application_sensitive_data">Sensitive Data: No</td></tr>
+            <ng-container *ngIf="application?.project_application_horizon2020 || application?.project_application_elixir_project
+                || application?.project_application_bmbf_project || application?.project_application_nfdi">
+            <tr><td>Project Affiliations:
+              <span class="badge badge-info" style="margin: 2px;" *ngIf="application?.project_application_horizon2020">
+                Horizon 2020: {{application?.project_application_horizon2020}}</span>
+              <span class="badge badge-info" style="margin: 2px;" *ngIf="application?.project_application_elixir_project">
+                Elixir Project: {{application?.project_application_elixir_project}}</span>
+              <span class="badge badge-info" style="margin: 2px;" *ngIf="application?.project_application_bmbf_project">
+                BMBF Project: {{application?.project_application_bmbf_project}}</span>
+              <span class="badge badge-info" style="margin: 2px;" *ngIf="application?.project_application_nfdi">
+                NFDI Project: {{application?.project_application_nfdi}}</span>
+            </td></tr>
+            </ng-container>
+
             <tr><td><strong>Resources</strong></td></tr>
             <ng-container *ngFor="let flavor of application?.flavors">
              <tr *ngIf="flavor.counter > 0"><td>{{flavor.name}}: {{flavor.counter}}</td></tr>
             </ng-container>
-            
+            <tr><td>Volumes: {{application?.project_application_volume_counter}}</td></tr>
+            <tr><td>Volume Limit: {{application?.project_application_volume_limit}} GBs</td></tr>
+            <tr *ngIf="application?.project_application_openstack_project"><td>Object Storage: {{application?.project_application_object_storage}} GBs</td></tr>
             <tr>
               <td><strong>Initial Cloud Credits:
                 {{application?.project_application_initial_credits.toString()}}</strong>
@@ -1240,6 +1267,11 @@
               <td><strong>Value of RAM in total: {{totalRAM.toString()}} GBs</strong>
               </td>
             </tr>
+            <tr *ngIf="!application?.project_application_pi_approved && !is_validation
+              && application?.project_application_pi?.email"><td>
+              Principal Investigator Mail: {{application?.project_application_pi?.email}}
+            </td></tr>
+
           </table>
         </div>
       </div>
