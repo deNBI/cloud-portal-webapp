@@ -203,6 +203,14 @@
                         <i class="fas fa-times"></i>&nbsp;
                         <span class="applicationActionsButton">Decline</span>
                       </button>
+                      <button *ngIf="application.project_application_pi_approved && (application | hasstatusinlist:Application_States.SUBMITTED) " type="button"
+                              id="btn_reset_pi_{{application.project_application_shortname}}"
+                              class="btn btn-warning" style="margin: auto 2.5px"
+                              (click)="setSelectedApplication(application);unsetPiModal.show();"
+                      >
+                        <i class="fa fa-user-times"></i>&nbsp;
+                        <span class="applicationActionsButton"> Unset PI</span>
+                      </button>
                       <button type="button" id="btn_adjust_{{application.project_application_shortname}}"
                               class="btn btn-primary" style="margin: auto 2.5px"
                               (click)="setApplicationToAdjust(application); adjustModal.show();">
@@ -210,15 +218,15 @@
                         <span class="applicationActionsButton"> Adjust</span>
                       </button>
                       <button
-                        (click)="switchCollapseStatus('application_review-' + application?.project_application_id);  getMemberDetailsByElixirIdIfCollapsed(application,'application_review-' + application?.project_application_id);"
-                        type="button"
-                        class="btn btn-secondary"
-                        style="margin: auto 2.5px">
+                              (click)="switchCollapseStatus('application_review-' + application?.project_application_id);  getMemberDetailsByElixirIdIfCollapsed(application,'application_review-' + application?.project_application_id);"
+                              type="button"
+                              class="btn btn-secondary"
+                              style="margin: auto 2.5px">
                         <i class="fa fa-info-circle"></i>&nbsp;
                         <span class="applicationActionsButton"
-                          [hidden]="!getCollapseStatus('application_review-' + application?.project_application_id)">Show</span>
+                              [hidden]="!getCollapseStatus('application_review-' + application?.project_application_id)">Show</span>
                         <span class="applicationActionsButton"
-                        [hidden]="getCollapseStatus('application_review-' + application?.project_application_id)">Hide</span>
+                              [hidden]="getCollapseStatus('application_review-' + application?.project_application_id)">Hide</span>
                         <span class="applicationActionsButton"> Information</span>
                       </button>
                     </div>
@@ -786,7 +794,42 @@
 
     </div>
 
+  </div>
 </div>
+
+
+  <div bsModal #unsetPiModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+       aria-labelledby="Label"
+       aria-hidden="true"
+       id="delete_modal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title"> Unset PI </h4>
+
+        </div>
+        <div class="modal-body">
+          <div class="alert alert-info">
+          Do you really want to unset the PI from the project {{selectedApplication?.project_application_shortname}}?</div>
+
+        </div>
+
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success"
+                  (click)="resetApplicationPI(selectedApplication);unsetPiModal.hide();"
+                  id="unset_pi">Unset PI
+          </button>
+          <button type="button" class="btn btn-danger"
+                  (click)="unsetPiModal.hide()"
+                  id="close_unset_pi_modal">Close
+          </button>
+        </div>
+
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
 
 <div bsModal #notificationModal="bs-modal" class="modal fade" tabindex="-1"
      role="dialog" aria-labelledby="Label"
@@ -1160,3 +1203,4 @@
     </div><!-- /.modal-dialog -->
   </div><!-- /.modal -->
 </div>
+
