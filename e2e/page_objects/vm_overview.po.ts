@@ -227,7 +227,7 @@ export class VMOverviewPage {
     await this.isVmActive(vm_name);
     Util.logInfo(`Going to VM Detail page for ${this.vm_names[this.BASIC_VM_NAME_KEY]}`);
 
-    return await Util.clickElementById(`${this.DETAIL_PRE}${vm_name}`)
+    return await Util.clickElementById(`${this.DETAIL_LINK}${vm_name}`)
   }
 
 }
