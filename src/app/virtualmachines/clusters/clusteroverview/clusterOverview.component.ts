@@ -27,11 +27,11 @@ export const SCALING_SCRIPT_NAME: string = 'scaling.py';
  */
 @Component({
 
-	selector: 'app-vm-overview',
-	templateUrl: './clusterOverview.component.html',
-	styleUrls: ['../../vmOverview.component.scss'],
-	providers: [FacilityService, ImageService, UserService,
-		VirtualmachineService, FullLayoutComponent, GroupService, ClientService, GroupService, FlavorService],
+	           selector: 'app-vm-overview',
+	           templateUrl: './clusterOverview.component.html',
+	           styleUrls: ['../../vmOverview.component.scss'],
+	           providers: [FacilityService, ImageService, UserService,
+		           VirtualmachineService, FullLayoutComponent, GroupService, ClientService, GroupService, FlavorService],
 })
 
 export class ClusterOverviewComponent extends AbstractBaseClass implements OnInit, OnDestroy {
@@ -163,11 +163,10 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 		this.groupService.getGroupResources(this.selectedCluster.master_instance.projectid.toString())
 			.subscribe((res: ApplicationRessourceUsage): void => {
 				this.ressourceUsage = new ApplicationRessourceUsage(res);
+				for (const workerBatch of this.selectedCluster.worker_batches) {
+					workerBatch.max_scale_up_count = this.ressourceUsage.calcMaxScaleUpWorkerInstancesByFlavor(workerBatch.flavor);
 
-				this.selectedCluster.worker_batches.forEach((batch: WorkerBatch): void => {
-					batch.max_scale_up_count = this.ressourceUsage.calcMaxScaleUpWorkerInstancesByFlavor(batch.flavor);
-
-				});
+				}
 
 				this.max_scale_count_loaded = true;
 			});
@@ -375,26 +374,37 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 
 				this.subscription.add(this.virtualmachineservice.getClusterInfo(cluster.cluster_id)
 					.subscribe((updated_cluster: Clusterinfo): void => {
-						let stop_loop: boolean = true;
 						const idx: number = this.clusters.indexOf(cluster);
 
 						this.clusters[idx] = new Clusterinfo(updated_cluster);
 						if (cluster === this.selectedCluster) {
+							for (const workerBatch of this.clusters[idx].worker_batches) {
+								for (const old_batch of cluster.worker_batches) {
+									if (workerBatch.index === old_batch.index) {
+										workerBatch.max_scale_up_count = old_batch.max_scale_up_count;
+										workerBatch.upscale_count = old_batch.upscale_count;
+										workerBatch.delete_count = old_batch.delete_count;
+										workerBatch.max_worker_count = old_batch.max_worker_count;
+										if (workerBatch.index === this.selectedBatch.index) {
+											this.selectedBatch = workerBatch;
+										}
+										break;
+									}
+								}
+
+							}
+
 							this.selectedCluster = this.clusters[idx];
+
 						}
 						cluster = this.clusters[idx];
 
-						// tslint:disable-next-line:max-line-length
 						for (const batch of cluster.worker_batches) {
 							if (batch.running_worker < batch.worker_count) {
-								stop_loop = false;
+								this.check_worker_count_loop(cluster);
+
 								break;
 							}
-						}
-
-						if (!stop_loop) {
-							this.check_worker_count_loop(cluster);
-
 						}
 
 					}));
@@ -506,7 +516,13 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 				if (cluster.status !== 'Running') {
 					this.check_status_loop(cluster);
 				} else {
-					this.check_worker_count_loop(cluster);
+					for (const batch of cluster.worker_batches) {
+						if (batch.running_worker < batch.worker_count) {
+							this.check_worker_count_loop(cluster);
+							break;
+
+						}
+					}
 				}
 			}
 		});
