@@ -119,13 +119,6 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 
 	flavor_types: { [name: string]: Flavor[] } = {};
 
-	STANDARD_TAB_ACTIVE: boolean = true;
-	HIGHMEM_TAB_ACTIVE: boolean = false;
-	GPU_TAB_ACTIVE: boolean = false;
-	STANDARD_TAB: number = 0;
-	HIGHMEM_TAB: number = 1;
-	GPU_TAB: number = 2;
-
 	/**
 	 * Selected Image.
 	 */
@@ -297,33 +290,8 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 		return false;
 	}
 
-	setAllTabsFalse(): void {
-		this.HIGHMEM_TAB_ACTIVE = false;
-		this.GPU_TAB_ACTIVE = false;
-		this.STANDARD_TAB_ACTIVE = false;
-	}
-
 	setSelectedFlavorType(key: string): void {
 		this.selected_flavor_type = key;
-	}
-
-	setTab(tab_num: number): void {
-
-		this.setAllTabsFalse();
-		switch (tab_num) {
-			case this.HIGHMEM_TAB:
-				this.HIGHMEM_TAB_ACTIVE = true;
-				break;
-			case this.GPU_TAB:
-				this.GPU_TAB_ACTIVE = true;
-				break;
-			case this.STANDARD_TAB:
-				this.STANDARD_TAB_ACTIVE = true;
-				break;
-
-			default:
-				break;
-		}
 	}
 
 	/**
