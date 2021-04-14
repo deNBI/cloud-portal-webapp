@@ -206,7 +206,7 @@
                       <button *ngIf="application.project_application_pi_approved && (application | hasstatusinlist:Application_States.SUBMITTED) " type="button"
                               id="btn_reset_pi_{{application.project_application_shortname}}"
                               class="btn btn-warning" style="margin: auto 2.5px"
-                              (click)="setSelectedApplication(application);unsetPiModal.show();"
+                              (click)="setApplicationToAdjust(application);unsetPiModal.show();"
                       >
                         <i class="fa fa-user-times"></i>&nbsp;
                         <span class="applicationActionsButton"> Unset PI</span>
@@ -801,7 +801,7 @@
   <div bsModal #unsetPiModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
        aria-labelledby="Label"
        aria-hidden="true"
-       id="delete_modal">
+       id="unsetPiModal">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -917,6 +917,23 @@
         <div class="modal-body" *ngIf="selectedApplication">
           <form id="resource_adjustment_form" #resourceAdjustmentForm="ngForm"
                 class="form-horizontal">
+
+                      <div class="form-group row">
+              <label class="col-md-4 form-control-label"><strong>Project Type</strong></label>
+              <div class="col-md-8">
+
+                <label id="adjusted_project_type_switch"
+                       class="switch switch-label" >
+                  <input type="checkbox" class="switch-input"
+                                                [ngModelOptions]="{standalone: true}"
+
+                         [(ngModel)]="adjustedApplication.project_application_openstack_project"
+                         >
+                  <span class="switch-slider" data-checked="OS" data-unchecked="SV"  [ngStyle]="{'background-color': adjustedApplication.project_application_openstack_project ? '#FF0000':'#00adef'}"></span>
+                  </label>
+                <p>Is this project an openstack project (OS) or a simple vm project (SV) ?</p>
+              </div>
+            </div>
 
             <div class="form-group row">
               <h6 class="col-md-8 form-control-label">Resources*
