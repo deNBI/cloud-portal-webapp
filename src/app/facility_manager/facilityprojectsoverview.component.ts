@@ -447,8 +447,4 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 		this.selectedMember = [];
 	}
 
-	public comingSoon(): void {
-		alert('This function will be implemented soon.');
-	}
-
 }

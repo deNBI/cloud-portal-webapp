@@ -394,7 +394,7 @@ export class AddClusterComponent implements OnInit {
 
 		this.initializeData();
 		this.voService.isVo().subscribe((result: IResponseTemplate): void => {
-			this.is_vo = <boolean><Boolean>result.value;
+			this.is_vo = result.value as boolean;
 		});
 
 	}
