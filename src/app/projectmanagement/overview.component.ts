@@ -911,7 +911,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 				currentCredits,
 				approvedCredits,
 			);
-			const lifetime: number | string = <number>group['lifetime'];
+			const lifetime: number | string = group['lifetime'] as number;
 			if (lifetime !== -1) {
 				const expirationDate: string = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format('DD.MM.YYYY');
 				const lifetimeDays: number = Math.abs(moment(moment(expirationDate, 'DD.MM.YYYY').toDate())
@@ -1286,10 +1286,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 			},
 		);
 
-	}
-
-	public comingSoon(): void {
-		alert('This function will be implemented soon.');
 	}
 
 	onChangeFlavor(flavor: Flavor, value: number): void {
