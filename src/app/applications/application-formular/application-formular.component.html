@@ -1074,7 +1074,7 @@
           </div>
           <div>
             <button *ngIf="!is_validation"
-                    (click)="filterEnteredData(form);calculateInitialCredits(form); submitModal.show();"
+                    (click)="calculateInitialCredits(form); submitModal.show();"
                     id="submit_btn"
                     [disabled]="submitting || form.invalid  ||application?.project_application_edam_terms.length == 0 || application?.project_application_edam_terms.length > 10 || (application?.flavors.length == 0  && !application?.project_application_openstack_project) || (!application?.dissemination?.isPlatformSelected()  && application?.project_application_report_allowed)"
                     class="btn btn-sm btn-success"
@@ -1195,20 +1195,68 @@
         </div>
         <div class="table-responsive">
           <table class="table table-striped">
-            <tr *ngFor="let str of valuesToConfirm">
-              <td>{{str}}</td>
+            <tr><td><strong>Project Information</strong></td></tr>
+            <tr><td>Shortname: {{application?.project_application_shortname}}</td></tr>
+            <tr><td>Description: {{application?.project_application_description}}</td></tr>
+            <tr><td>Lifetime: {{application?.project_application_lifetime}} <span *ngIf="application?.project_application_lifetime === 1">month</span><span *ngIf="application?.project_application_lifetime > 1">months</span></td></tr>
+            <tr><td>Institute: {{application?.project_application_institute}}</td></tr>
+            <tr><td>Workgroup: {{application?.project_application_workgroup}}</td></tr>
+            <tr><td>Research Topics: <span *ngFor="let topic of application?.project_application_edam_terms" class="badge badge-info" style="margin: 2px;">{{topic.term}}</span></td></tr>
+            <tr><td>Workshop planed: <span *ngIf="application?.project_application_workshop">Yes</span><span *ngIf="!application?.project_application_workshop">No</span></td></tr>
+            <ng-container *ngIf="application?.project_application_openstack_project">
+              <tr><td>Service: <span *ngIf="application?.project_application_cloud_service && !application?.project_application_cloud_service_develop">Existing: {{application?.project_application_cloud_service_user_number}} unique users per month</span>
+                <span *ngIf="application?.project_application_cloud_service && application?.project_application_cloud_service_develop">In development</span>
+              </td></tr>
+            </ng-container>
+            <tr *ngIf="application?.project_application_openstack_project"><td>OpenStack Basic Introduction:
+              <span *ngIf="application?.project_application_openstack_basic_introduction">Yes</span>
+              <span *ngIf="!application?.project_application_openstack_basic_introduction">No</span>
+            </td></tr>
+
+            <tr><td>Dissemination Allowed: <span *ngIf="application?.dissemination?.someAllowed()">Yes</span><span *ngIf="!application?.dissemination.someAllowed()">No</span></td></tr>
+            <tr *ngIf="application?.dissemination.someAllowed()">
+              <td> - for:
+                <span class="badge badge-info" style="margin: 2px;" *ngFor="let information of application?.dissemination.allowed_informations">{{information}}</span></td></tr>
+            <tr *ngIf="application?.dissemination.someAllowed()">
+              <td> - on:
+                <span class="badge badge-info" style="margin: 2px;" *ngFor="let platform of application?.dissemination.allowed_platforms">{{platform}}</span></td>
             </tr>
+            <tr *ngIf="application?.project_application_comment"><td>Comment: {{application?.project_application_comment}}</td></tr>
+            <tr><td *ngIf="application?.project_application_sensitive_data">Sensitive Data: Yes</td><td *ngIf="!application?.project_application_sensitive_data">Sensitive Data: No</td></tr>
+            <ng-container *ngIf="application?.project_application_horizon2020 || application?.project_application_elixir_project
+                || application?.project_application_bmbf_project || application?.project_application_nfdi">
+            <tr><td>Project Affiliations:
+              <span class="badge badge-info" style="margin: 2px;" *ngIf="application?.project_application_horizon2020">
+                Horizon 2020: {{application?.project_application_horizon2020}}</span>
+              <span class="badge badge-info" style="margin: 2px;" *ngIf="application?.project_application_elixir_project">
+                Elixir Project: {{application?.project_application_elixir_project}}</span>
+              <span class="badge badge-info" style="margin: 2px;" *ngIf="application?.project_application_bmbf_project">
+                BMBF Project: {{application?.project_application_bmbf_project}}</span>
+              <span class="badge badge-info" style="margin: 2px;" *ngIf="application?.project_application_nfdi">
+                NFDI Project: {{application?.project_application_nfdi}}</span>
+            </td></tr>
+            </ng-container>
+
+            <tr><td><strong>Resources</strong></td></tr>
+            <ng-container *ngFor="let flavor of application?.flavors">
+             <tr *ngIf="flavor.counter > 0"><td>{{flavor.name}}: {{flavor.counter}}</td></tr>
+            </ng-container>
+            <tr><td>Volumes: {{application?.project_application_volume_counter}}</td></tr>
+            <tr><td>Volume Limit: {{application?.project_application_volume_limit}} GBs</td></tr>
+            <tr *ngIf="application?.project_application_openstack_project"><td>Object Storage: {{application?.project_application_object_storage}} GBs</td></tr>
             <tr>
               <td><strong>Initial Cloud Credits:
                 {{application?.project_application_initial_credits.toString()}}</strong>
                 <br>
-                We are slowly rolling out the implementation of Cloud Credits which assist in tracking resource usage.
+                <div class="alert alert-info">
+                  We are slowly rolling out the implementation of Cloud Credits which assist in tracking resource usage.
                 We show the initial Cloud Credits to all new project applications but will track the used Cloud Credits
                 only for a few selected projects. If your project is one of the few selected projects, you will get an
                 E-Mail notification which will contain more information on the goals, the implementation and
                 the usage of Cloud Credits. In the case that you are already interested in learning more about Cloud Credits,
                 please visit <a href="{{CREDITS_WIKI}}"
                                 target="_blank" rel="noopener noreferrer">our Wiki page</a>.
+                </div>
               </td>
             </tr>
             <tr>
@@ -1219,6 +1267,11 @@
               <td><strong>Value of RAM in total: {{totalRAM.toString()}} GBs</strong>
               </td>
             </tr>
+            <tr *ngIf="!application?.project_application_pi_approved && !is_validation
+              && application?.project_application_pi?.email"><td>
+              Principal Investigator Mail: {{application?.project_application_pi?.email}}
+            </td></tr>
+
           </table>
         </div>
       </div>
