@@ -28,7 +28,8 @@ jobs:
     - name: Run replace host command
       run: |
          sed -i '/const API_HOST/c\const API_HOST: string = \x27${{ github.event.inputs.host }}\x27;' src/environments/environment.kubernetes.ts
-
+    - name: Print Env
+      run: cat src/environments/environment.kubernetes.ts
     - name: Publish to Registry
       uses: elgohr/Publish-Docker-Github-Action@master
       env:
