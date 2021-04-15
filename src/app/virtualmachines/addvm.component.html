@@ -149,7 +149,7 @@
                     </div>
 
 
-                    <app-flavor-detail *ngIf="STANDARD_TAB_ACTIVE" [selectedFlavor]="selectedFlavor"
+                    <app-flavor-detail [selectedFlavor]="selectedFlavor"
                                        [flavors]="flavor_types[selected_flavor_type]"
                                        (selectedFlavorChange)="setSelectedFlavor($event)"
                     ></app-flavor-detail>
