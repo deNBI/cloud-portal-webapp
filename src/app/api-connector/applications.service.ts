@@ -36,6 +36,13 @@ export class ApplicationsService {
 		});
 	}
 
+	resetPIValidation(application: Application): Observable<Application> {
+
+		return this.http.post<Application>(`${ApiSettings.getApiBaseURL()}project_applications/validation/${application.project_application_id}/reset/`, null, {
+			withCredentials: true,
+		});
+	}
+
 	validateApplicationAsPIByHash(hash: string, application: Application): Observable<any> {
 
 		return this.http.post(`${ApiSettings.getApiBaseURL()}project_applications/validation/${hash}/`, application, {
