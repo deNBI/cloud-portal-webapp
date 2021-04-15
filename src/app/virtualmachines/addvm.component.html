@@ -126,18 +126,33 @@
                 </div>
               </div>
 
-              <div *ngIf="selectedProjectRessources?.used_vms < selectedProjectRessources?.number_vms && (flavors?.length > 0 || selectedFlavor)">
+              <div
+                *ngIf="selectedProjectRessources?.used_vms < selectedProjectRessources?.number_vms && (flavors?.length > 0 || selectedFlavor)">
 
 
                 <div *ngIf="selectedProject" class="form-group row col-md-12">
                   <label class="col-md-2 form-control-label"><strong>Flavor*</strong></label>
                   <div class="col-md-10">
+                    <ul class="nav nav-pills" style="margin-bottom: 5px;">
+                      <li class="nav-item " style="  cursor: pointer"
+                          *ngFor="let item of flavor_types | keyvalue:unsorted"><a
+                        [ngClass]="{'active': selected_flavor_type === item.key }"
+                        (click)="setSelectedFlavorType(item.key)" class="nav-link">{{item.key}} </a>
+
+                      </li>
+
+
+                    </ul>
+                    <div *ngIf="flavor_types[selected_flavor_type].length >0 && flavor_types[selected_flavor_type][0]?.type?.description" class="alert alert-info">
+
+                      {{flavor_types[selected_flavor_type][0].type.description}}
+                    </div>
 
 
                     <app-flavor-detail [selectedFlavor]="selectedFlavor"
-                                       [flavors]="flavors"
+                                       [flavors]="flavor_types[selected_flavor_type]"
                                        (selectedFlavorChange)="setSelectedFlavor($event)"
-                                       id="id_flavor_detail"></app-flavor-detail>
+                    ></app-flavor-detail>
 
                   </div>
 
