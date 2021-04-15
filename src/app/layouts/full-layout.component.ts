@@ -123,7 +123,7 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
 
 	getLoginName(): void {
 		this.userService.getLoginElixirName().subscribe((login: IResponseTemplate): void => {
-			this.login_name = <string>login.value;
+			this.login_name = login.value as string;
 		});
 
 	}
