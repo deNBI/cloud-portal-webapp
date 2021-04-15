@@ -176,14 +176,14 @@ export class SnapshotOverviewComponent implements OnInit {
 	/**
 	 * Delete snapshot.
 	 *
-	 * @param snapshot_id
+	 * @param snapshot
 	 */
 	deleteSnapshot(snapshot: SnapshotModel): void {
 		this.imageService.deleteSnapshot(snapshot.snapshot_openstackid).subscribe((result: IResponseTemplate): void => {
 
 			this.delete_status = 0;
 
-			if (<boolean><Boolean>result.value) {
+			if (result.value as boolean) {
 				this.delete_status = 1;
 				const idx: number = this.snapshots.indexOf(snapshot);
 

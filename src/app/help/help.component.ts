@@ -34,7 +34,7 @@ export class HelpComponent {
 			encodeURIComponent(subject), encodeURIComponent(message),
 			encodeURIComponent(reply),
 		).subscribe((result: IResponseTemplate): void => {
-			if (<boolean><Boolean>result.value) {
+			if (result.value as boolean) {
 				this.emailStatus = 1;
 			} else {
 				this.emailStatus = 2;

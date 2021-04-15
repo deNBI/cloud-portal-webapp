@@ -4,6 +4,7 @@ import {
 import { forkJoin } from 'rxjs';
 import { Router } from '@angular/router';
 import { WIKI_VOLUME_OVERVIEW } from 'links/links';
+import { KeyValue } from '@angular/common';
 import { Image } from './virtualmachinemodels/image';
 import { Flavor } from './virtualmachinemodels/flavor';
 import { Userinfo } from '../userinfo/userinfo.model';
@@ -113,6 +114,10 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 	 * All flavors of a project.
 	 */
 	flavors: Flavor[] = [];
+	selected_flavor_types: Flavor[] = [];
+	selected_flavor_type: string = 'Standard Flavours';
+
+	flavor_types: { [name: string]: Flavor[] } = {};
 
 	/**
 	 * Selected Image.
@@ -212,8 +217,8 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 	@ViewChild('resEnv') resEnvComponent: ResEnvComponent;
 
 	constructor(private groupService: GroupService, private imageService: ImageService,
-		private flavorService: FlavorService, private virtualmachineservice: VirtualmachineService,
-		private keyservice: KeyService, private userService: UserService, private router: Router) {
+							private flavorService: FlavorService, private virtualmachineservice: VirtualmachineService,
+							private keyservice: KeyService, private userService: UserService, private router: Router) {
 		// constructor for VirtualMachineComponent
 	}
 
@@ -241,6 +246,14 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 	getFlavors(project_id: number): void {
 		this.flavorService.getFlavors(project_id).subscribe((flavors: Flavor[]): void => {
 			this.flavors = flavors;
+			for (const flavor of this.flavors) {
+				if (flavor.type.long_name in this.flavor_types) {
+					this.flavor_types[flavor.type.long_name].push(flavor);
+				} else {
+					this.flavor_types[flavor.type.long_name] = [flavor];
+				}
+
+			}
 			this.flavors_loaded = true;
 			this.checkProjectDataLoaded();
 		});
@@ -277,6 +290,10 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 		return false;
 	}
 
+	setSelectedFlavorType(key: string): void {
+		this.selected_flavor_type = key;
+	}
+
 	/**
 	 * Checks if the name which is entered for a new volume is valid.
 	 */
@@ -300,12 +317,13 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 	checkStorageNumber(): boolean {
 		if (!(this.volumeStorage > 0)) {
 			return false;
-		} else if ((this.selectedProjectRessources.used_volume_storage + this.getStorageInList() + this.volumeStorage)
-			> this.selectedProjectRessources.max_volume_storage) {
-			return false;
-		} else {
-			return true;
-		}
+			// eslint-disable-next-line max-len
+		} else return (this.selectedProjectRessources.used_volume_storage + this.getStorageInList() + this.volumeStorage) <= this.selectedProjectRessources.max_volume_storage;
+	}
+
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	unsorted(a: KeyValue<number, string>, b: KeyValue<number, string>): number {
+		return 0;
 	}
 
 	/**
@@ -427,6 +445,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 					} else if (newVm.status === this.PLAYBOOK_FAILED || newVm.status === this.DELETED) {
 						this.newVm.status = this.DELETED;
 						this.resetProgressBar();
+						// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
 						this.create_error = <IResponseTemplate><any>newVm;
 						this.loadProjectData();
 					} else if (newVm.status) {
@@ -451,6 +470,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 					} else {
 						this.resetProgressBar();
 						this.loadProjectData();
+						// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
 						this.create_error = <IResponseTemplate><any>newVm;
 					}
 
@@ -517,6 +537,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 
 					} else {
 						this.loadProjectData();
+						// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
 						this.create_error = <IResponseTemplate><any>newVm;
 					}
 

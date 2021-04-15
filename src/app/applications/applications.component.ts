@@ -18,10 +18,10 @@ import { CreditsService } from '../api-connector/credits.service';
 
 // eslint-disable-next-line no-shadow
 enum TabStates {
-  'SUBMITTED' = 0,
-  'CREDITS_EXTENSION' = 3,
-  'LIFETIME_EXTENSION' = 5,
-  'MODIFICATION_EXTENSION' = 4
+	'SUBMITTED' = 0,
+	'CREDITS_EXTENSION' = 3,
+	'LIFETIME_EXTENSION' = 5,
+	'MODIFICATION_EXTENSION' = 4
 }
 
 /**
@@ -165,18 +165,13 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 		for (const fl of this.adjustedApplication.flavors) {
 			numberOfVMs += this.adjustedApplication.getFlavorCounter(fl);
 		}
-		if (numberOfVMs > 0 || this.adjustedApplication.project_application_openstack_project) {
-			this.atLeastOneVM = true;
-		} else {
-			this.atLeastOneVM = false;
-		}
+		this.atLeastOneVM = numberOfVMs > 0 || this.adjustedApplication.project_application_openstack_project;
 	}
 
 	adjustApplication(): void {
 		this.applicationsService.adjustApplication(this.adjustedApplication).subscribe((adjustmentResult: Application): void => {
 			const index: number = this.all_applications.indexOf(this.selectedApplication);
-			const newApp: Application = new Application(adjustmentResult);
-			this.all_applications[index] = newApp;
+			this.all_applications[index] = new Application(adjustmentResult);
 			this.updateNotificationModal('Success',
 				'The resources of the application were adjusted successfully!',
 				true, 'success');
@@ -599,16 +594,6 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
 	}
 
-	private reloadApplicationList(application_id: string): void {
-		for (const app of this.all_applications) {
-			if (app.project_application_id.toString() === application_id.toString()) {
-				this.getApplication(app);
-				break;
-
-			}
-		}
-	}
-
 	/**
 	 * Create a new Group in perun with the specific attributes.
 	 *
@@ -668,6 +653,12 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 			);
 		}
 
+	}
+
+	resetApplicationPI(application: Application): void {
+		this.applicationsService.resetPIValidation(application).subscribe((app: Application) => {
+			this.all_applications[this.all_applications.indexOf(application)] = new Application(app);
+		});
 	}
 
 	assignGroupToFacility(group_id: string, application_id: string, compute_center: string): void {
