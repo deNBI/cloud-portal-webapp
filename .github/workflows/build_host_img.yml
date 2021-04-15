@@ -20,9 +20,15 @@ jobs:
       with:
         repository: deNBI/cloud-portal-webapp
         ref: ${{ github.event.inputs.branch }}
+    - name: Set tag
+      run: sed 's/\//-/g'  <<< "::set-output name=TAG::${{ github.event.inputs.branch }}-${{ github.event.inputs.host }}"
+      id: tag
+    - name: Get tag
+      run: echo "The selected tag is ${{ steps.tag.outputs.TAG }}"
     - name: Run replace host command
       run: |
          sed -i '/const API_HOST/c\const API_HOST: string = \x27${{ github.event.inputs.host }}\x27;' src/environments/environment.kubernetes.ts
+
     - name: Publish to Registry
       uses: elgohr/Publish-Docker-Github-Action@master
       env:
@@ -33,4 +39,4 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
         dockerfile: Dockerfile
         buildargs: ANGULAR_MODE
-        tags: ${{ github.event.inputs.branch }}-${{ github.event.inputs.host }}
+        tags: ${{ steps.tag.outputs.TAG }
