@@ -18,6 +18,7 @@ declare let __karma__: any;
 declare let require: any;
 
 // Prevent Karma from running prematurely.
+// eslint-disable-next-line func-names
 __karma__.loaded = function () {
 };
 
