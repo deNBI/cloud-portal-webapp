@@ -72,6 +72,16 @@ export class VirtualMachine {
 		this.getTerminationStartDateString();
 		this.playbook_successful = vm.playbook_successful;
 		this.conda_packages = vm.conda_packages;
+		if (this.days_running == null) {
+			this.days_running = this.calculateDaysRunning();
+		}
+	}
+
+	public calculateDaysRunning(): number {
+		const createdDate: Date = new Date(this.created_at_date);
+
+		return Math.floor((Date.now() - createdDate.getTime()) / 86400000);
+
 	}
 
 	public getTerminationStartDateString(): string {
