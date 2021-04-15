@@ -73,7 +73,7 @@ export class PublicKeyComponent extends AbstractBaseClass {
 
 	getUserPublicKey(): void {
 		this.keyService.getKey().subscribe((key: IResponseTemplate): void => {
-			this.userinfo.PublicKey = <string>key.value;
+			this.userinfo.PublicKey = key.value as string;
 		});
 	}
 }
