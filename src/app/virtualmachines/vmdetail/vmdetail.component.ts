@@ -159,7 +159,7 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 		this.snapshotNameCheckDone = false;
 		this.imageService.checkSnapshotNameAvailable(this.snapshotName.trim()).subscribe((res: IResponseTemplate): void => {
 
-			this.validSnapshotNameBool = this.snapshotName.length > 0 && <boolean><Boolean>res.value;
+			this.validSnapshotNameBool = this.snapshotName.length > 0 && res.value as boolean;
 			this.snapshotNameCheckDone = true;
 		});
 	}
@@ -361,7 +361,7 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 				this.status_changed = 0;
 				this.virtualMachine.cardState = 0;
 
-				if (<boolean><Boolean>result.value) {
+				if (result.value as boolean) {
 					this.status_changed = 1;
 					this.check_status_loop_when_reboot();
 				} else {
