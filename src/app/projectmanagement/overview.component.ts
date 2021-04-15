@@ -1055,38 +1055,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
 	}
 
-	/**
-	 * Uses the data from the application form to fill the confirmation-modal with information.
-	 *
-	 * @param form the application form with corresponding data
-	 */
-	filterEnteredData(form: NgForm): void {
-		this.generateConstants();
-		this.valuesToConfirm = [];
-		for (const key in form.controls) {
-			if (form.controls[key].value) {
-				if (key === 'project_application_name') {
-					this.projectName = form.controls[key].value;
-					if (this.projectName.length > 50) {
-						this.projectName = `${this.projectName.substring(0, 50)}...`;
-					}
-				}
-				if (key in this.constantStrings) {
-					if (form.controls[key].disabled) {
-						continue;
-					}
-
-					this.valuesToConfirm.push(this.matchString(key.toString(), form.controls[key].value.toString()));
-				}
-			}
-
-		}
-		if (!this.project_application_report_allowed) {
-			this.valuesToConfirm.push('Dissemination allowed: No');
-		}
-
-	}
-
 	copyToClipboard(text: string): void {
 		document.addEventListener('copy', (clipEvent: ClipboardEvent): void => {
 			clipEvent.clipboardData.setData('text/plain', (text));
