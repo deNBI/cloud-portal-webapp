@@ -300,12 +300,8 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 	checkStorageNumber(): boolean {
 		if (!(this.volumeStorage > 0)) {
 			return false;
-		} else if ((this.selectedProjectRessources.used_volume_storage + this.getStorageInList() + this.volumeStorage)
-			> this.selectedProjectRessources.max_volume_storage) {
-			return false;
-		} else {
-			return true;
-		}
+			// eslint-disable-next-line max-len
+		} else return (this.selectedProjectRessources.used_volume_storage + this.getStorageInList() + this.volumeStorage) <= this.selectedProjectRessources.max_volume_storage;
 	}
 
 	/**
@@ -427,6 +423,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 					} else if (newVm.status === this.PLAYBOOK_FAILED || newVm.status === this.DELETED) {
 						this.newVm.status = this.DELETED;
 						this.resetProgressBar();
+						// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
 						this.create_error = <IResponseTemplate><any>newVm;
 						this.loadProjectData();
 					} else if (newVm.status) {
@@ -451,6 +448,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 					} else {
 						this.resetProgressBar();
 						this.loadProjectData();
+						// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
 						this.create_error = <IResponseTemplate><any>newVm;
 					}
 
@@ -517,6 +515,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 
 					} else {
 						this.loadProjectData();
+						// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
 						this.create_error = <IResponseTemplate><any>newVm;
 					}
 

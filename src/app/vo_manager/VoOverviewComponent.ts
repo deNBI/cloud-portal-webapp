@@ -69,7 +69,7 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
 
 		this.getVoProjects();
 		this.voService.getNewsletterSubscriptionCounter().subscribe((result: IResponseTemplate): void => {
-			this.newsletterSubscriptionCounter = <number>result.value;
+			this.newsletterSubscriptionCounter = result.value as number;
 
 		});
 	}
@@ -122,7 +122,7 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
 			encodeURIComponent(subject), encodeURIComponent(message), selectedProjectType, encodeURIComponent(reply),
 		)
 			.subscribe((result: IResponseTemplate): void => {
-				if (<boolean><Boolean>result.value === true) {
+				if (result.value as boolean === true) {
 					this.emailStatus = 1;
 				} else {
 					this.emailStatus = 2;
@@ -134,7 +134,7 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
 	sendMailToVo(subject: string, message: string, facility: string, type: string, reply?: string): void {
 		this.voService.sendMailToVo(encodeURIComponent(subject), encodeURIComponent(message), facility, type, encodeURIComponent(reply))
 			.subscribe((result: IResponseTemplate): void => {
-				if (<boolean><Boolean>result.value === true) {
+				if (result.value as boolean === true) {
 					this.emailStatus = 1;
 				} else {
 					this.emailStatus = 2;
