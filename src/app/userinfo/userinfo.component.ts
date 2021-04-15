@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { forkJoin } from 'rxjs/index';
+import { forkJoin } from 'rxjs';
 import { Userinfo } from './userinfo.model';
 import { ApiSettings } from '../api-connector/api-settings.service';
 import { KeyService } from '../api-connector/key.service';
@@ -80,7 +80,7 @@ export class UserInfoComponent implements OnInit {
 
 	getPendingPreferredMailUser(): void {
 		this.userService.getPendingPreferredMailUser().subscribe((res: IResponseTemplate): void => {
-			this.userInfo.PendingEmails = <string[]>res.value;
+			this.userInfo.PendingEmails = res.value as string[];
 
 		});
 	}
@@ -93,7 +93,7 @@ export class UserInfoComponent implements OnInit {
 
 	isFreemiumActive(): void {
 		this.groupService.isFreemiumActive().subscribe((result: IResponseTemplate): void => {
-			this.freemiumActive = <boolean><Boolean>result.value;
+			this.freemiumActive = result.value as boolean;
 
 		});
 	}
@@ -109,7 +109,7 @@ export class UserInfoComponent implements OnInit {
 
 	getUserPublicKey(): void {
 		this.keyService.getKey().subscribe((key: IResponseTemplate): void => {
-			this.userInfo.PublicKey = <string>key.value;
+			this.userInfo.PublicKey = key.value as string;
 			this.isLoaded = true;
 		});
 	}
@@ -124,8 +124,8 @@ export class UserInfoComponent implements OnInit {
 				this.userService.getPendingPreferredMailUser(),
 			).subscribe((res: IResponseTemplate[]): void => {
 
-				this.newsletterSubscribed = <boolean>res[0].value;
-				this.userInfo.PendingEmails = <string[]>res[1].value;
+				this.newsletterSubscribed = res[0].value as boolean;
+				this.userInfo.PendingEmails = res[1].value as string[];
 
 				this.isLoaded = true;
 
@@ -136,11 +136,7 @@ export class UserInfoComponent implements OnInit {
 
 	isUserSimpleVmMember(): void {
 		this.groupService.getSimpleVmByUser().subscribe((result: any): void => {
-			if (result.length > 0) {
-				this.isProjectMember = true;
-			} else {
-				this.isProjectMember = false;
-			}
+			this.isProjectMember = result.length > 0;
 		});
 	}
 
@@ -155,12 +151,7 @@ export class UserInfoComponent implements OnInit {
 
 	validatePublicKey(): boolean {
 
-		if (/ssh-rsa AAAA[0-9A-Za-z+/]+[=]{0,3}( [^@]+@[^@]+)?/.test(this.newPublicKey)) {
-			return true;
-		} else {
-
-			return false;
-		}
+		return /ssh-rsa AAAA[0-9A-Za-z+/]+[=]{0,3}( [^@]+@[^@]+)?/.test(this.newPublicKey);
 
 	}
 
