@@ -165,18 +165,13 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 		for (const fl of this.adjustedApplication.flavors) {
 			numberOfVMs += this.adjustedApplication.getFlavorCounter(fl);
 		}
-		if (numberOfVMs > 0 || this.adjustedApplication.project_application_openstack_project) {
-			this.atLeastOneVM = true;
-		} else {
-			this.atLeastOneVM = false;
-		}
+		this.atLeastOneVM = numberOfVMs > 0 || this.adjustedApplication.project_application_openstack_project;
 	}
 
 	adjustApplication(): void {
 		this.applicationsService.adjustApplication(this.adjustedApplication).subscribe((adjustmentResult: Application): void => {
 			const index: number = this.all_applications.indexOf(this.selectedApplication);
-			const newApp: Application = new Application(adjustmentResult);
-			this.all_applications[index] = newApp;
+			this.all_applications[index] = new Application(adjustmentResult);
 			this.updateNotificationModal('Success',
 				'The resources of the application were adjusted successfully!',
 				true, 'success');
