@@ -95,9 +95,8 @@ export class NewsManagerComponent implements OnInit {
 	 */
 	getTagsAvailable(): void {
 		this.newsService.getAvailableTagsFromWordPress().subscribe((tags: WordPressTag[]): void => {
-			if (!('code' in tags) && tags['code'] === 'wp-die') {
+			if (!(('code' in tags) && tags['code'] === 'wp-die')) {
 				if (tags) {
-
 					this.availableTags = tags;
 				}
 			}
