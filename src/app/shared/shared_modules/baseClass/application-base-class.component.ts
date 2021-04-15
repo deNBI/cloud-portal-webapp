@@ -59,10 +59,6 @@ export class ApplicationBaseClassComponent extends AbstractBaseClass {
 	 * @type {number}
 	 */
 	totalRAM: number = 0;
-	/**
-	 * Values to confirm.
-	 */
-	valuesToConfirm: string[];
 
 	/**
 	 * Total number of GPUs
