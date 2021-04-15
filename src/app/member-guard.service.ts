@@ -54,7 +54,7 @@ export class MemberGuardService implements CanActivate {
 
 			} else {
 				this.voService.isVo().subscribe((result: IResponseTemplate): void => {
-					setVO(<boolean><Boolean>result.value);
+					setVO(result.value as boolean);
 
 				});
 				this.userService.getUserInfo().subscribe((result: any): void => {

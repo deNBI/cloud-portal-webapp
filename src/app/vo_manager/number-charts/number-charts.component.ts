@@ -359,6 +359,7 @@ export class NumberChartsComponent implements OnInit {
 				this.projectNumbersChart[1] = !this.projectNumbersChart[1];
 				break;
 			}
+			default: { break; }
 		}
 
 	}
