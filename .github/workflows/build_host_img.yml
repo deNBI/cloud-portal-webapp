@@ -39,4 +39,4 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
         dockerfile: Dockerfile
         buildargs: ANGULAR_MODE
-        tags: ${{ steps.tag.outputs.TAG }
+        tags: ${{ steps.tag.outputs.TAG }}
