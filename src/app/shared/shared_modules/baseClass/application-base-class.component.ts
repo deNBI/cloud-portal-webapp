@@ -42,10 +42,6 @@ export class ApplicationBaseClassComponent extends AbstractBaseClass {
 	 * List of flavor types.
 	 */
 	typeList: FlavorType[];
-	/**
-	 * List of all collapse booleans.
-	 */
-	collapseList: boolean[];
 
 	/**
 	 * Total number of cores.
@@ -59,10 +55,6 @@ export class ApplicationBaseClassComponent extends AbstractBaseClass {
 	 * @type {number}
 	 */
 	totalRAM: number = 0;
-	/**
-	 * Values to confirm.
-	 */
-	valuesToConfirm: string[];
 
 	/**
 	 * Total number of GPUs
@@ -117,8 +109,8 @@ export class ApplicationBaseClassComponent extends AbstractBaseClass {
 	user_applications: Application[] = [];
 
 	constructor(protected userService: UserService,
-		protected applicationsService: ApplicationsService,
-		protected facilityService: FacilityService) {
+							protected applicationsService: ApplicationsService,
+							protected facilityService: FacilityService) {
 		super();
 
 	}
@@ -214,16 +206,20 @@ export class ApplicationBaseClassComponent extends AbstractBaseClass {
 	 * @param types array of all available FlavorTypes
 	 */
 	setListOfTypes(types: FlavorType[]): void {
-		this.typeList = types;
-		this.collapseList = new Array(types.length) as boolean[];
-		for (const type of types) {
-
-			this.collapseList.push(false); // AS FIX
-			if (type.long_name === 'Standart Flavor') {
-				this.collapseList[this.typeList.indexOf(type)] = true;
+		let index: number = -1;
+		for (let i: number = 0; i < types.length; i += 1) {
+			if (types[i].shortcut === 'std') {
+				index = i;
+				break;
 			}
 		}
 
+		if (index !== -1) {
+			const spliced: FlavorType[] = types.splice(index, 1);
+			types.unshift(spliced[0]);
+		}
+
+		this.typeList = types;
 	}
 
 	/**

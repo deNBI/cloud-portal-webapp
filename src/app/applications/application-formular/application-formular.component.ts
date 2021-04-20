@@ -59,14 +59,10 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 	@ViewChild('edam_ontology', { static: true }) edam_ontology: AutocompleteComponent;
 	@ViewChild(NgForm, { static: true }) application_form: NgForm;
 
-	/**
-	 * List of flavor types.
-	 */
-	public typeList: FlavorType[] = [];
-	/**
-	 * List of all collapse booleans.
-	 */
-	public collapseList: boolean[];
+	// /**
+	//  * List of flavor types.
+	//  */
+	// public typeList: FlavorType[] = [];
 
 	constructor(private creditsService: CreditsService,
 		private flavorService: FlavorService, private fullLayout: FullLayoutComponent,
@@ -155,70 +151,6 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 		}
 	}
 
-	/**
-	 * Uses the data from the application form to fill the confirmation-modal with information.
-	 *
-	 * @param form the application form with corresponding data
-	 */
-	filterEnteredData(form: NgForm): void {
-		this.generateConstants();
-		this.valuesToConfirm = [];
-		for (const key in form.controls) {
-			if (form.controls[key].value) {
-				if (key === 'project_application_name') {
-					this.projectName = form.controls[key].value;
-					if (this.projectName.length > 50) {
-						this.projectName = `${this.projectName.substring(0, 50)}...`;
-					}
-				}
-				if (key in this.constantStrings) {
-					if (form.controls[key].disabled) {
-						continue;
-					}
-					this.valuesToConfirm.push(this.matchString(key.toString(), form.controls[key].value.toString()));
-				}
-			}
-
-		}
-		if (!this.application.project_application_report_allowed) {
-			this.valuesToConfirm.push('Dissemination allowed: No');
-		} else {
-			// tslint:disable-next-line:prefer-template
-			this.valuesToConfirm.push(`Dissemination allowed on: ${this.application.dissemination.allowed_informations.join(', ')}`);
-			// tslint:disable-next-line:prefer-template
-			this.valuesToConfirm.push(`Platforms for Dissemination: ${this.application.dissemination.allowed_platforms.join(', ')}`);
-		}
-		if (!this.application.project_application_sensitive_data) {
-			this.valuesToConfirm.push('Sensitive Data: No');
-		} else {
-			this.valuesToConfirm.push('Sensitive Data: Yes');
-		}
-
-		if (!this.application.project_application_workshop) {
-			this.valuesToConfirm.push('Workshops: No');
-		} else {
-			this.valuesToConfirm.push('Workshops: Yes');
-		}
-
-		if (this.openstack_project) {
-			if (!this.application.project_application_openstack_basic_introduction) {
-				this.valuesToConfirm.push('Training: No');
-			} else {
-				this.valuesToConfirm.push('Training: Yes');
-			}
-			if (!this.application.project_application_cloud_service) {
-				this.valuesToConfirm.push('CloudService: No');
-			} else {
-				this.valuesToConfirm.push('CloudService: Yes');
-			}
-		}
-		let research: string = 'Research Topics: ';
-		for (const term of this.application.project_application_edam_terms) {
-			research = research.concat(` ${term.term},`);
-		}
-		this.valuesToConfirm.push(research);
-	}
-
 	count_platform(checked: boolean): void {
 		if (checked) {
 			this.dissemination_platform_count += 1;
@@ -259,25 +191,6 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 		this.flavorService.getListOfTypesAvailable().subscribe((types: FlavorType[]): void => {
 			this.setListOfTypes(types);
 		});
-	}
-
-	/**
-	 * Uses the param types to safe the available FlavorTypes to the array typeList.
-	 * Also it fills the array collapseList with booleans of value 'false' so all flavor-categories are shown in the application form.
-	 *
-	 * @param types array of all available FlavorTypes
-	 */
-	setListOfTypes(types: FlavorType[]): void {
-		this.typeList = types;
-		this.collapseList = new Array(types.length) as boolean[];
-		for (const type of types) {
-
-			this.collapseList.push(false); // AS FIX
-			if (type.long_name === 'Standart Flavor') {
-				this.collapseList[this.typeList.indexOf(type)] = true;
-			}
-		}
-
 	}
 
 	checkIfMinVmIsSelected(): void {

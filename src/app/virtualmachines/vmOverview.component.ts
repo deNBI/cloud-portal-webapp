@@ -222,7 +222,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 				} else {
 					this.subscription.add(this.virtualmachineservice.getVolumeByNameAndVmName(volume.volume_name, volume.volume_virtualmachine.name)
 						// eslint-disable-next-line @typescript-eslint/no-unused-vars
-						.subscribe((vol: Volume): void => {
+						.subscribe((): void => {
 							if (volume.volume_status !== VolumeStates.AVAILABLE && volume.volume_status !== VolumeStates.NOT_FOUND
 								&& volume.volume_status !== VolumeStates.IN_USE && volume.volume_status !== final_state) {
 								this.check_status_loop_volume(volume, this.checkStatusTimeout, final_state);
@@ -243,8 +243,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 
 				if (result.value === 'attached') {
 					this.virtualmachineservice.getVmById(vm.openstackid).subscribe((upd_vm: VirtualMachine): void => {
-						const new_vm: VirtualMachine = new VirtualMachine(upd_vm);
-						this.vms_content[idx] = new_vm;
+						this.vms_content[idx] = new VirtualMachine(upd_vm);
 
 					});
 				}
@@ -265,8 +264,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 			(result: any): void => {
 				if (result.value === 'deleted') {
 					this.virtualmachineservice.getVmById(vm.openstackid).subscribe((upd_vm: VirtualMachine): void => {
-						const new_vm: VirtualMachine = new VirtualMachine(upd_vm);
-						this.vms_content[idx] = new_vm;
+						this.vms_content[idx] = new VirtualMachine(upd_vm);
 
 					});
 				}
@@ -325,7 +323,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 		this.snapshotNameCheckDone = false;
 		this.imageService.checkSnapshotNameAvailable(this.snapshotName.trim()).subscribe((res: IResponseTemplate): void => {
 
-			this.validSnapshotNameBool = this.snapshotName.length > 0 && <boolean><Boolean>res.value;
+			this.validSnapshotNameBool = this.snapshotName.length > 0 && res.value as boolean;
 			this.snapshotNameCheckDone = true;
 		});
 
@@ -416,7 +414,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 				this.status_changed = 0;
 				vm.cardState = 0;
 
-				if (<boolean><Boolean>result.value) {
+				if (result.value as boolean) {
 					this.status_changed = 1;
 					this.check_status_loop_when_reboot(vm);
 				} else {
