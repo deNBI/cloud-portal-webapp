@@ -53,7 +53,7 @@
 
   </div>
 
- <ng-container *ngIf="flavors.length > 0 && !selectedFlavor || flavors.length>1 &&selectedFlavor">
+ <ng-container *ngIf="(flavors.length > 0 && !selectedFlavor) || (flavors.length > 0 && selectedFlavor)">
    <div *ngFor="  let flavor of flavors" style="cursor: pointer;" class="col-12 "
         [ngClass]="{'col-xl-4':(window_size >= carousel_window_min_xl_9)
         || (window_size <carousel_window_min_xl_9 && window_size>=carousel_window_min_xl_8),
