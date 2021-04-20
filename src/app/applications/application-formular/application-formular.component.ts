@@ -59,14 +59,10 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 	@ViewChild('edam_ontology', { static: true }) edam_ontology: AutocompleteComponent;
 	@ViewChild(NgForm, { static: true }) application_form: NgForm;
 
-	/**
-	 * List of flavor types.
-	 */
-	public typeList: FlavorType[] = [];
-	/**
-	 * List of all collapse booleans.
-	 */
-	public collapseList: boolean[];
+	// /**
+	//  * List of flavor types.
+	//  */
+	// public typeList: FlavorType[] = [];
 
 	constructor(private creditsService: CreditsService,
 		private flavorService: FlavorService, private fullLayout: FullLayoutComponent,
@@ -195,25 +191,6 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 		this.flavorService.getListOfTypesAvailable().subscribe((types: FlavorType[]): void => {
 			this.setListOfTypes(types);
 		});
-	}
-
-	/**
-	 * Uses the param types to safe the available FlavorTypes to the array typeList.
-	 * Also it fills the array collapseList with booleans of value 'false' so all flavor-categories are shown in the application form.
-	 *
-	 * @param types array of all available FlavorTypes
-	 */
-	setListOfTypes(types: FlavorType[]): void {
-		this.typeList = types;
-		this.collapseList = new Array(types.length) as boolean[];
-		for (const type of types) {
-
-			this.collapseList.push(false); // AS FIX
-			if (type.long_name === 'Standart Flavor') {
-				this.collapseList[this.typeList.indexOf(type)] = true;
-			}
-		}
-
 	}
 
 	checkIfMinVmIsSelected(): void {
