@@ -43,7 +43,7 @@
             ]
           },
           "configurations": {
-            "production": {
+            "custom": {
               "budgets": [
                 {
                   "type": "anyComponentStyle",
@@ -61,51 +61,7 @@
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
-                }
-              ]
-            },
-            "stage": {
-              "budgets": [
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "6kb"
-                }
-              ],
-              "optimization": true,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "namedChunks": false,
-              "aot": true,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.stage.ts"
-                }
-              ]
-            },
-            "kubernetes": {
-              "budgets": [
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "6kb"
-                }
-              ],
-              "optimization": true,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "namedChunks": false,
-              "aot": true,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.kubernetes.ts"
+                  "with": "src/environments/environment.custom.ts"
                 }
               ]
             },
@@ -134,15 +90,6 @@
             "port": 8001,
             "host": "localhost",
             "ssl": false
-          },
-          "configurations": {
-            "production": {
-              "browserTarget": "cloud-webapp:build:production"
-            },
-            "stage": {
-              "browserTarget": "cloud-webapp:build:stage",
-              "host": "portal-dev.denbi.de"
-            }
           }
         },
         "extract-i18n": {
@@ -180,16 +127,6 @@
               "src/manifest.json"
             ]
           },
-          "configurations": {
-            "production": {
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
-                }
-              ]
-            }
-          }
         },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
