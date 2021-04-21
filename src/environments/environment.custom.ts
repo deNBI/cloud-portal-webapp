@@ -1,9 +1,9 @@
-const API_HOST: string = 'k8s-master.portal-pool-dev.projects.bi.denbi.de';
+const API_HOST: string = window['env']['API_HOST'] || 'portal-dev.denbi.de';
 
 export const environment: any = {
 	WIKI_PRE: `https:/${API_HOST}/wiki/`,
-	vo: 3334,
-	production: true,
+	vo: window['env']['VO'] || 3334,
+	production: window['env']['PRODUCTION'] || false,
 	freemium_project_id: 10392,
 	domain: API_HOST,
 	invitation_group_pre: 'https://perun.elixir-czech.cz/fed/registrar/?vo=elixir&targetnew=https%3A%2F%2Fperun.elixir-czech.cz'
