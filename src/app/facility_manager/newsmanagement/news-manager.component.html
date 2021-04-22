@@ -170,13 +170,17 @@ we are happy to inform..."
             </div>
             <div class="card-footer">
               <button class="btn btn-primary" style="margin: 5px"
-                      *ngIf="selectedNews" (click)="setNews()">New News
+                      *ngIf="selectedNews.id" (click)="setNews()">
+                New entry
               </button>
+              <button class="btn btn-warning" style="margin: 5px"
+                               *ngIf="!selectedNews.id" (click)="setNews()">Clear fields
+            </button>
               <button class="btn btn-success"
                       style="margin: 5px"
                       (click)="addModal.show();"
                       [disabled]="selectedNewsForm.invalid || facilitiesToPost.length == 0"
-                      *ngIf="selectedNews.id == null">Upload News
+                      *ngIf="selectedNews.id == null">Create & Upload News
               </button>
               <button class="btn btn-secondary" style="margin: 5px"
                       [disabled]="selectedNewsForm.invalid || facilitiesToPost.length == 0"
