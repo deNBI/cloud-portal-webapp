@@ -1242,7 +1242,9 @@
              <tr *ngIf="flavor.counter > 0"><td>{{flavor.name}}: {{flavor.counter}}</td></tr>
             </ng-container>
             <tr><td>Volumes: {{application?.project_application_volume_counter}}</td></tr>
-            <tr><td>Volume Limit: {{application?.project_application_volume_limit}} GBs</td></tr>
+            <tr *ngIf="application?.project_application_volume_counter > 0">
+              <td>Volume Limit: {{application?.project_application_volume_limit}} GBs</td>
+            </tr>
             <tr *ngIf="application?.project_application_openstack_project"><td>Object Storage: {{application?.project_application_object_storage}} GBs</td></tr>
             <tr>
               <td><strong>Initial Cloud Credits:
