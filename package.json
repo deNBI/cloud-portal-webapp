@@ -58,7 +58,7 @@
     "cli-color": "^2.0.0",
     "colors": "^1.4.0",
     "core-js": "3.10.0",
-    "css-loader": "5.2.1",
+    "css-loader": "5.2.2",
     "cssnano": "^5.0.0",
     "d3": "^6.6.2",
     "eslint": "^7.23.0",
@@ -137,10 +137,10 @@
     "eslint-plugin-jsdoc": "32.3.0",
     "eslint-plugin-prefer-arrow": "1.2.3",
     "@angular-eslint/builder": "^2.1.0",
-    "@angular-eslint/eslint-plugin-template": "^2.1.0",
+    "@angular-eslint/eslint-plugin-template": "^4.0.0",
     "@angular-eslint/schematics": "2.1.0",
-    "@angular-eslint/template-parser": "^2.0.0",
-    "@typescript-eslint/eslint-plugin": "4.19.0",
+    "@angular-eslint/template-parser": "^4.0.0",
+    "@typescript-eslint/eslint-plugin": "4.22.0",
     "@typescript-eslint/parser": "4.20.0",
     "eslint-plugin-no-null": "latest"
   }
