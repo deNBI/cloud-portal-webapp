@@ -301,11 +301,13 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 
 	scaleDown(): void {
 		this.resetNotificationModal();
+		let scale_down_count: number = 0;
 
 		const scale_down_batches: WorkerBatch[] = [];
 		this.selectedCluster.worker_batches.forEach((batch: WorkerBatch): void => {
 			if (batch.delete_count > 0) {
 				scale_down_batches.push(batch);
+				scale_down_count += batch.delete_count;
 			}
 		});
 		let msg: string = 'Scaling Down Batches: ';
@@ -317,6 +319,7 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 
 		this.virtualmachineservice.scaleDownCluster(this.selectedCluster.cluster_id, scale_down_batches).subscribe((): void => {
 			this.selectedCluster.setScaleDownBatchesCount();
+			this.selectedCluster.instances_count -= scale_down_count;
 
 			msg = 'Successfully scaled down the batches. Remember to configure your cluster!';
 			this.updateNotificationModal('Successfully Deleted!', msg, true, 'success');
