@@ -133,7 +133,7 @@
                 <div *ngIf="selectedProject" class="form-group row col-md-12">
                   <label class="col-md-2 form-control-label"><strong>Flavor*</strong></label>
                   <div class="col-md-10">
-                    <ul class="nav nav-pills" style="margin-bottom: 5px;">
+                    <ul class="nav nav-pills " style="margin-bottom: 5px;">
                       <li class="nav-item " style="  cursor: pointer"
                           *ngFor="let item of flavor_types | keyvalue:unsorted"><a
                         [ngClass]="{'active': selected_flavor_type === item.key }"
