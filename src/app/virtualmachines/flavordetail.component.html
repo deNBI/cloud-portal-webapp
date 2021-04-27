@@ -177,15 +177,5 @@
 </div>
 
 
-<div class="row ">
-  <div class="ml-auto mr-3"
-       *ngIf="carousel_activated && (!selectedFlavor &&flavors.length > flavors_per_row || selectedFlavor &&flavors.length > flavors_per_row-1)  "
-       (click)="carousel_activated=false;" style="cursor: pointer;"><strong class="text-info">Show
-    all
-    flavors</strong></div>
-  <div class="ml-auto mr-3"
-       *ngIf="!carousel_activated && (!selectedFlavor &&flavors.length > flavors_per_row || selectedFlavor &&flavors.length > flavors_per_row-1)"
-       (click)="carousel_activated=true;" style="cursor: pointer;"><strong class="text-info">Hide
-    flavors</strong></div>
-</div>
+
 
