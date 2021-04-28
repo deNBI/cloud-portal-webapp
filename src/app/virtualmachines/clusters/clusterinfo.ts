@@ -17,6 +17,8 @@ export class WorkerBatch {
 	upscale_count: number = 0;
 	max_scale_up_count: number = 0;
 	max_worker_count: number;
+	usable_flavors: Flavor[] = [];
+	valid_batch: boolean = false;
 
 	constructor(index: number, batch?: WorkerBatch) {
 		this.index = index;
