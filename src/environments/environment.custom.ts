@@ -1,7 +1,7 @@
 const API_HOST: string = window['env']['API_HOST'] || 'portal-dev.denbi.de';
 
 export const environment: any = {
-	WIKI_PRE: `https:/${API_HOST}/wiki/`,
+	WIKI_PRE: `https://${API_HOST}/wiki/`,
 	vo: window['env']['VO'] || 3334,
 	production: window['env']['PRODUCTION'] || false,
 	freemium_project_id: 10392,
