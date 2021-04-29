@@ -33,24 +33,30 @@ export class ApplicationRessourceUsage {
 		this.gpus_used = usage.gpus_used;
 	}
 
-	filterFlavorsTest(flavor: Flavor, possible_flavors: Flavor[], worker_batches: WorkerBatch[]): boolean {
+	filterFlavorsTest(flavor: Flavor, possible_flavors: Flavor[], worker_batches: WorkerBatch[], master_flavor?: Flavor): boolean {
 		let batches_ram: number = 0;
 		let batches_cpu: number = 0;
 		let batches_gpus: number = 0;
 
+		if (master_flavor) {
+			batches_ram += master_flavor.ram;
+			batches_cpu += master_flavor.vcpus;
+			batches_gpus += master_flavor.gpu;
+		}
+
 		worker_batches.forEach((batch: WorkerBatch): void => {
 			if (batch.flavor) {
-				batches_ram += (batch.flavor.ram * batch.worker_count) / 1024;
+				batches_ram += (batch.flavor.ram * batch.worker_count);
 				batches_cpu += batch.flavor.vcpus * batch.worker_count;
 				batches_gpus += batch.flavor.gpu * batch.worker_count;
 			}
 		});
 		const tmp_flavors: Flavor[] = [];
 		const available_cores: number = this.cores_total - (flavor.vcpus + this.cores_used + batches_cpu);
-		const available_ram: number = this.ram_total - (flavor.ram / 1024 + this.ram_used + batches_ram);
+		const available_ram: number = this.ram_total - (flavor.ram + this.ram_used + batches_ram);
 		const available_gpu: number = this.gpus_max - (flavor.gpu + this.gpus_used + batches_gpus);
 		for (const fl of possible_flavors) {
-			if (fl.vcpus <= available_cores && (fl.ram / 1024) <= available_ram && fl.gpu <= available_gpu) {
+			if (fl.vcpus <= available_cores && fl.ram <= available_ram && fl.gpu <= available_gpu) {
 				tmp_flavors.push(fl);
 			}
 		}
@@ -65,7 +71,7 @@ export class ApplicationRessourceUsage {
 
 		worker_batches.forEach((batch: WorkerBatch): void => {
 			if (batch.flavor) {
-				batches_ram += Math.ceil((batch.flavor.ram * batch.worker_count) / 1024);
+				batches_ram += (batch.flavor.ram * batch.worker_count);
 				batches_cpu += batch.flavor.vcpus * batch.worker_count;
 				batches_gpus += batch.flavor.gpu * batch.worker_count;
 			}
@@ -75,7 +81,7 @@ export class ApplicationRessourceUsage {
 		const available_ram: number = this.ram_total - (new_ram + this.ram_used + batches_ram);
 		const available_gpu: number = this.gpus_max - (new_gpus + this.gpus_used + batches_gpus);
 		for (const fl of possible_flavors) {
-			if (fl.vcpus <= available_cores && (fl.ram / 1024) <= available_ram && fl.gpu <= available_gpu) {
+			if (fl.vcpus <= available_cores && fl.ram <= available_ram && fl.gpu <= available_gpu) {
 				tmp_flavors.push(fl);
 			}
 		}
@@ -90,22 +96,23 @@ export class ApplicationRessourceUsage {
 
 		worker_batches.forEach((batch: WorkerBatch): void => {
 			if (batch.flavor && batch !== selectedBatch) {
-				batches_ram += Math.ceil((batch.flavor.ram * batch.worker_count) / 1024);
+				batches_ram += Math.ceil(batch.flavor.ram * batch.worker_count);
 				batches_cpu += batch.flavor.vcpus * batch.worker_count;
 				batches_vms += batch.worker_count;
 			}
 		});
-		const ram_max_vms: number = (this.ram_total - this.ram_used - Math.ceil((master_flavor.ram / 1024)) - batches_ram)
-			/ Math.ceil((selectedBatch.flavor.ram / 1024));
+		const ram_max_vms: number = (this.ram_total - this.ram_used - master_flavor.ram - batches_ram)
+			/ selectedBatch.flavor.ram;
 		const cpu_max_vms: number = (this.cores_total - this.cores_used - master_flavor.vcpus - batches_cpu)
 			/ selectedBatch.flavor.vcpus;
+		console.log(Math.floor(Math.min(ram_max_vms, cpu_max_vms, this.number_vms - this.used_vms - 1 - batches_vms)));
 
 		return Math.floor(Math.min(ram_max_vms, cpu_max_vms, this.number_vms - this.used_vms - 1 - batches_vms));
 	}
 
 	calcMaxScaleUpWorkerInstancesByFlavor(worker_flavor: Flavor): number {
 		const ram_max_vms: number = (this.ram_total - this.ram_used)
-			/ Math.ceil((worker_flavor.ram / 1024));
+			/ worker_flavor.ram;
 		const cpu_max_vms: number = (this.cores_total - this.cores_used)
 			/ worker_flavor.vcpus;
 
