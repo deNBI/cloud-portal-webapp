@@ -142,6 +142,12 @@ export class AddClusterComponent implements OnInit {
 	calcWorkerInstancesCount(): void {
 		let count: number = 0;
 		this.selectedWorkerBatches.forEach((batch: WorkerBatch): void => {
+			if (batch.worker_count <= batch.max_worker_count && batch.worker_count > 0) {
+				batch.valid_batch = true;
+			} else {
+				batch.valid_batch = false;
+
+			}
 			count += batch.worker_count;
 		});
 		this.workerInstancesCount = count;
@@ -189,18 +195,21 @@ export class AddClusterComponent implements OnInit {
 			tmp_gpus += this.selectedMasterFlavor.gpu;
 
 		}
-		this.selectedWorkerBatches.forEach((batch: WorkerBatch): void => {
-			if (batch.worker_count && batch.flavor) {
-				tmp_ram += batch.flavor.ram * batch.worker_count;
-				tmp_cores += batch.flavor.vcpus * batch.worker_count;
-				tmp_gpus += batch.flavor.gpu * batch.worker_count;
-			}
+		if (this.selectedWorkerBatches) {
+			this.selectedWorkerBatches.forEach((batch: WorkerBatch): void => {
+				if (batch.worker_count && batch.flavor) {
+					tmp_ram += batch.flavor.ram * batch.worker_count;
+					tmp_cores += batch.flavor.vcpus * batch.worker_count;
+					tmp_gpus += batch.flavor.gpu * batch.worker_count;
+				}
 
-		});
+			});
+		}
 
-		this.newRam = Math.ceil(tmp_ram / 1024);
+		this.newRam = tmp_ram;
 		this.newCores = tmp_cores;
 		this.newGpus = tmp_gpus;
+
 	}
 
 	/**
@@ -251,11 +260,32 @@ export class AddClusterComponent implements OnInit {
 
 	}
 
+	resetBatches(): void {
+		this.selectedWorkerBatches = [new WorkerBatch(1)];
+		this.setBatchUsableFlavors(this.selectedWorkerBatches[0]);
+		this.selectedBatch = this.selectedWorkerBatches[0];
+
+	}
+
+	setBatchUsableFlavors(batch: WorkerBatch): void {
+		const used_flavors: Flavor[] = [];
+
+		// tslint:disable-next-line:no-for-each-push
+		this.selectedWorkerBatches.forEach((existingBatch: WorkerBatch): void => {
+			if (existingBatch !== this.selectedBatch) {
+				used_flavors.push(existingBatch.flavor);
+			}
+		});
+		const flavors_to_filter: Flavor[] = this.flavors.filter((flavor: Flavor): boolean => used_flavors.indexOf(flavor) < 0);
+		batch.usable_flavors = flavors_to_filter.filter((flav: Flavor): boolean => this.selectedProjectRessources
+			.filterFlavorsTest(flav, flavors_to_filter, this.selectedWorkerBatches, this.selectedMasterFlavor));
+	}
+
 	addBatch(): void {
 		this.selectedWorkerFlavorSet = false;
 		this.selectedBatch = null;
-		this.checkFlavorsUsableForCluster();
 		const newBatch: WorkerBatch = new WorkerBatch(this.selectedWorkerBatches[this.selectedWorkerBatches.length - 1].index + 1);
+		this.setBatchUsableFlavors(newBatch);
 		newBatch.image = this.selectedMasterImage;
 		this.maxWorkerInstances = null;
 		this.selectedWorkerBatches.push(newBatch);

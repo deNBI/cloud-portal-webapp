@@ -163,9 +163,9 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 		// tslint:disable-next-line:max-line-length
 		this.groupService.getGroupResources(this.selectedCluster.master_instance.projectid.toString())
 			.subscribe((res: ApplicationRessourceUsage): void => {
-				this.ressourceUsage = new ApplicationRessourceUsage(res);
+				this.selectedProjectRessources = new ApplicationRessourceUsage(res);
 				for (const workerBatch of this.selectedCluster.worker_batches) {
-					workerBatch.max_scale_up_count = this.ressourceUsage.calcMaxScaleUpWorkerInstancesByFlavor(workerBatch.flavor);
+					workerBatch.max_scale_up_count = this.selectedProjectRessources.calcMaxScaleUpWorkerInstancesByFlavor(workerBatch.flavor);
 
 				}
 

@@ -107,7 +107,7 @@
                        *ngIf="selectedProject && !(selectedProjectRessources?.cores_used < selectedProjectRessources?.cores_total) && (selectedProjectRessources.ram_used < selectedProjectRessources.ram_total) && flavors_loaded && flavors_usable.length == 0 && !selectedFlavor">
                     There is not enough ram available for this project to start a new machine.
                     Your principal investigator can request more
-                    resources if necessary.
+                    <resour></resour>ces if necessary.
                   </div>
                   <div class="alert alert-primary " role="alert"
                        *ngIf="selectedProject && selectedProjectRessources?.cores_used < selectedProjectRessources?.cores_total && selectedProjectRessources.ram_used < selectedProjectRessources.ram_total && flavors_loaded && flavors_usable.length == 0 && !selectedFlavor">
@@ -136,7 +136,7 @@
 
                         <app-flavor-detail [selectedFlavor]="selectedMasterFlavor"
                                            [flavors]="flavors_usable"
-                                           (selectedFlavorChange)="selectedMasterFlavor=$event;calculateNewValues();"
+                                           (selectedFlavorChange)="selectedMasterFlavor=$event;resetBatches();calculateNewValues();"
                                            id="master_id_flavor_detail"></app-flavor-detail>
 
                       </div>
@@ -194,11 +194,11 @@
 
                       </div>
                       <div class="alert alert-warning"
-                           *ngIf="flavors_usable.length < 1 && selectedBatch == batch && !batch.flavor">Not
+                           *ngIf="batch.usable_flavors.length < 1 && selectedBatch == batch && !batch.flavor">Not
                         enough resources available
                         to start another worker batch with a different flavor!
                       </div>
-                      <span *ngIf="flavors_usable.length > 0 || selectedBatch != batch || batch.flavor">
+                      <span *ngIf="batch.usable_flavors.length > 0 || selectedBatch != batch || batch.flavor">
 
                       <div class="form-group row col-md-12">
                         <label class="col-md-2 form-control-label"><strong>Flavor*</strong></label>
@@ -206,7 +206,7 @@
 
 
                           <app-flavor-detail *ngIf="selectedBatch == batch" [selectedFlavor]="batch.flavor"
-                                             [flavors]="flavors_usable"
+                                             [flavors]="batch.usable_flavors"
                                                id="selected_batch_id_flavor_detail"
                                              (selectedFlavorChange)="batch.flavor=$event;selectedWorkerFlavorSet=true;calcMaxWorkerInstancesByFlavor();"
                           ></app-flavor-detail>
@@ -239,7 +239,7 @@
                                  type="number" min="1" [max]="batch.max_worker_count" step="1"
                                  [(ngModel)]="batch.worker_count" required
                                  appMinAmount="1" appMaxAmount="{{batch.max_worker_count}}"
-                                 appInteger (change)="changeCount();"
+                                 appInteger (ngModelChange)="changeCount();"
                                  [ngClass]=" {
                         'is-invalid': f.controls['workerInstancesCount_' + batch.index]?.invalid &&
                         (f.controls['workerInstancesCount_' + batch.index]?.dirty || f.controls['workerInstancesCount_' + batch.index]?.touched),
@@ -309,7 +309,7 @@
 
                   type="button"
 
-                  [disabled]="!selectedMasterFlavor || !selectedMasterImage || !selectedWorkerFlavorSet || !selectedBatch.worker_count || selectedBatch.worker_count == 0"
+                  [disabled]="!selectedMasterFlavor || !selectedMasterImage || !selectedWorkerFlavorSet || !selectedBatch.valid_batch || !selectedBatch.worker_count || selectedBatch.worker_count == 0"
                   class="btn btn-primary  .btn-lg offset-md-8"
                   data-toggle="modal"
                   (click)="startCluster();infoModal.show()">
