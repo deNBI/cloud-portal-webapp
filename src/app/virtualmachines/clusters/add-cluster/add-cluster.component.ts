@@ -23,11 +23,11 @@ import { WorkerBatch } from '../clusterinfo';
  * Cluster Component
  */
 @Component({
-	           selector: 'app-add-cluster',
-	           templateUrl: './add-cluster.component.html',
-	           styleUrls: ['./add-cluster.component.scss'],
-	           providers: [GroupService, ImageService, KeyService, FlavorService, VirtualmachineService,
-		           ApiSettings, KeyService, ClientService, UserService, VoService],
+	selector: 'app-add-cluster',
+	templateUrl: './add-cluster.component.html',
+	styleUrls: ['./add-cluster.component.scss'],
+	providers: [GroupService, ImageService, KeyService, FlavorService, VirtualmachineService,
+		ApiSettings, KeyService, ClientService, UserService, VoService],
 })
 export class AddClusterComponent implements OnInit {
 
@@ -269,9 +269,9 @@ export class AddClusterComponent implements OnInit {
 		const used_flavors: Flavor[] = [];
 
 		// tslint:disable-next-line:no-for-each-push
-		this.selectedWorkerBatches.forEach((batch: WorkerBatch): void => {
-			if (batch !== this.selectedBatch) {
-				used_flavors.push(batch.flavor);
+		this.selectedWorkerBatches.forEach((existingBatch: WorkerBatch): void => {
+			if (existingBatch !== this.selectedBatch) {
+				used_flavors.push(existingBatch.flavor);
 			}
 		});
 		const flavors_to_filter: Flavor[] = this.flavors.filter((flavor: Flavor): boolean => used_flavors.indexOf(flavor) < 0);
