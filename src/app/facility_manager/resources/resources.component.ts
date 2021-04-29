@@ -20,10 +20,10 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
  * Facility resource component.
  */
 @Component({
-	           selector: 'app-resources',
-	           templateUrl: './resources.component.html',
-	           styleUrls: ['./resources.component.scss'],
-	           providers: [FacilityService, ExportAsService],
+	selector: 'app-resources',
+	templateUrl: './resources.component.html',
+	styleUrls: ['./resources.component.scss'],
+	providers: [FacilityService, ExportAsService],
 
 })
 export class ResourcesComponent implements OnInit {
@@ -263,7 +263,11 @@ export class ResourcesComponent implements OnInit {
 		// const doc = new jsPDF();
 		const pdfTable = this.pdfTable.nativeElement;
 		const html = htmlToPdfmake(pdfTable.innerHTML);
-		const documentDefinition = { content: html, pageOrientation: 'portrait', pageSize: { width: pdfTable.offsetWidth, height: pdfTable.offsetHeight } };
+		const documentDefinition = {
+			content: html,
+			pageOrientation: 'portrait',
+			pageSize: { width: pdfTable.offsetWidth, height: pdfTable.offsetHeight },
+		};
 		pdfMake.createPdf(documentDefinition).download(`${this.selectedFacility['Facility']}_resources.pdf`);
 
 	}
