@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 import { forkJoin } from 'rxjs';
 import { Router } from '@angular/router';
-import { WIKI_VOLUME_OVERVIEW } from 'links/links';
+import { WIKI_VOLUME_OVERVIEW, CLOUD_PORTAL_SUPPORT_MAIL } from 'links/links';
 import { KeyValue } from '@angular/common';
 import { Image } from './virtualmachinemodels/image';
 import { Flavor } from './virtualmachinemodels/flavor';
@@ -74,6 +74,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 	timeout: number = 0;
 	has_forc: boolean = false;
 	WIKI_VOLUME_OVERVIEW: string = WIKI_VOLUME_OVERVIEW;
+	CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL;
 	blockedImageTagsResenv: BlockedImageTagResenv[];
 
 	forc_url: string = '';
