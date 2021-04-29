@@ -739,7 +739,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 	setSelectedFlavor(flavor: Flavor): void {
 		this.selectedFlavor = flavor;
 		this.newCores = this.selectedFlavor.vcpus;
-		this.newRam = this.selectedFlavor.ram / 1024;
+		this.newRam = this.selectedFlavor.ram;
 		this.newGpus = this.selectedFlavor.gpu;
 	}
 
