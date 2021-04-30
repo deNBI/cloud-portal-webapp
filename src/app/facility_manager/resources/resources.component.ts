@@ -1,7 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { jsPDF } from 'jspdf';
-import html2canvas from 'html2canvas';
+import {
+	Component, ElementRef, OnInit, ViewChild,
+} from '@angular/core';
 import { ExportAsConfig, ExportAsService } from 'ngx-export-as';
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+import htmlToPdfmake from 'html-to-pdfmake';
+import { ExportToCsv } from 'export-to-csv';
 import { Resources } from '../../vo_manager/resources/resources';
 import { FacilityService } from '../../api-connector/facility.service';
 import { ObjectStorageFactor } from './object-storage-factor';
@@ -9,6 +13,8 @@ import { VolumeStorageFactor } from './volume-storage-factor';
 import { GeneralStorageFactor } from './general-storage-factor';
 import { ResourceMachine } from './resource-machine';
 import { GPUSpecification } from './gpu-specification';
+
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 /**
  * Facility resource component.
@@ -23,6 +29,10 @@ import { GPUSpecification } from './gpu-specification';
 export class ResourcesComponent implements OnInit {
 
 	title: string = 'Resource Overview';
+
+		tableId: string = 'contentToConvert';
+		@ViewChild('contentToConvert') pdfTable: ElementRef;
+
 	managerFacilities: [string, number][];
 
 	ALL_RESOURCES: number = 0;
@@ -65,7 +75,6 @@ export class ResourcesComponent implements OnInit {
 	/**
 	 * Id of the table which will be converted to pdf or csv.
 	 */
-	tableId: string = 'contentToConvert';
 	today: number = Date.now();
 	exportAsConfigCSV: ExportAsConfig = {
 		type: 'csv',
@@ -229,24 +238,38 @@ export class ResourcesComponent implements OnInit {
 	}
 
 	public tableToCSV(): void {
-		this.exportAsService.save(this.exportAsConfigCSV, this.tableId);
+		console.log('to csv');
+		const options = {
+			fieldSeparator: ',',
+			quoteStrings: '"',
+			decimalSeparator: '.',
+			showLabels: true,
+			showTitle: false,
+			// title: `${this.selectedFacility['Facility']} Resources`,
+			filename: `${this.selectedFacility['Facility']}_resources.csv`,
+			useTextFile: false,
+			useBom: true,
+			useKeysAsHeaders: true,
+			// headers: ['Column 1', 'Column 2', etc...] <-- Won't work with useKeysAsHeaders present!
+		};
+
+		const csvExporter = new ExportToCsv(options);
+
+		csvExporter.generateCsv(this.visible_resources);
 
 	}
 
 	public tableToPDF(): void {
-		html2canvas(document.getElementById(this.tableId)).then((canvas: any): void => {
-			// Few necessary setting options
-			const imgWidth: number = 208;
-			const imgHeight: number = (canvas.height * imgWidth) / canvas.width;
-			const contentDataURL: string = canvas.toDataURL('image/png');
-			// eslint-disable-next-line new-cap
-			const pdf: jsPDF = new jsPDF('p', 'mm', 'a4'); // A4 size page of PDF
-			const position: number = 0;
-			pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
-			pdf.save(`${this.selectedFacility['Facility']}.pdf`); // Generated PDF
-		}).catch((error: any): void => {
-			console.log(error);
-			console.log('failed to convert to pdf');
-		});
+		// const doc = new jsPDF();
+		const pdfTable = this.pdfTable.nativeElement;
+		const html = htmlToPdfmake(pdfTable.innerHTML);
+		const documentDefinition = {
+			content: html,
+			pageOrientation: 'portrait',
+			pageSize: { width: pdfTable.offsetWidth, height: pdfTable.offsetHeight },
+		};
+		pdfMake.createPdf(documentDefinition).download(`${this.selectedFacility['Facility']}_resources.pdf`);
+
 	}
+
 }
