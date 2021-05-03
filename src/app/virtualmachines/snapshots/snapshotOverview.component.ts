@@ -5,7 +5,7 @@ import { ImageService } from '../../api-connector/image.service';
 import { SnapshotModel } from './snapshot.model';
 import { IResponseTemplate } from '../../api-connector/response-template';
 import { FacilityService } from '../../api-connector/facility.service';
-import { WIKI_SNAPSHOTS } from '../../../links/links';
+import { WIKI_SNAPSHOTS, CLOUD_PORTAL_SUPPORT_MAIL } from '../../../links/links';
 
 // eslint-disable-next-line no-shadow
 enum Snapshot_Delete_Statuses {
@@ -25,6 +25,7 @@ enum Snapshot_Delete_Statuses {
 
 export class SnapshotOverviewComponent implements OnInit {
 	WIKI_SNAPSHOTS: string = WIKI_SNAPSHOTS;
+	CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL;
 	checked_snapshots: SnapshotModel [] = [];
 
 	title: string = 'Snapshot Overview';
