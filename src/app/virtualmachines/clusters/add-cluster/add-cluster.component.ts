@@ -18,6 +18,7 @@ import { Client } from '../../../vo_manager/clients/client.model';
 import { BiocondaComponent } from '../../conda/bioconda.component';
 import { ApplicationRessourceUsage } from '../../../applications/application-ressource-usage/application-ressource-usage';
 import { WorkerBatch } from '../clusterinfo';
+import { CLOUD_PORTAL_SUPPORT_MAIL } from '../../../../links/links';
 
 /**
  * Cluster Component
@@ -32,6 +33,7 @@ import { WorkerBatch } from '../clusterinfo';
 export class AddClusterComponent implements OnInit {
 
 	is_vo: boolean = false;
+  CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL;
 
 	client_checked: boolean = false;
 	timeout: number = 0;
