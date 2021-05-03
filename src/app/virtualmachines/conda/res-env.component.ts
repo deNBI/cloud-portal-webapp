@@ -5,7 +5,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { BiocondaService } from '../../api-connector/bioconda.service';
 import { ResearchEnvironment } from '../virtualmachinemodels/res-env';
 import { RandomNameGenerator } from '../../shared/randomNameGenerator';
-import { WIKI_RESENV_LINK } from '../../../links/links';
+import { WIKI_RESENV_LINK, CLOUD_PORTAL_SUPPORT_MAIL } from '../../../links/links';
 import { BlockedImageTagResenv } from '../../facility_manager/image-tag';
 
 /**
@@ -41,6 +41,7 @@ export class ResEnvComponent implements OnInit, OnChanges {
 	rng: RandomNameGenerator;
 
 	WIKI_RESENV_LINK: string = WIKI_RESENV_LINK;
+	CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL;
 
 	create_only_backend: boolean = false;
 
