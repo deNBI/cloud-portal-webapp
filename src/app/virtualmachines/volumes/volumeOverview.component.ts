@@ -10,7 +10,7 @@ import { VolumeActionStates } from './volume-action-states.enum';
 import { VolumeRequestStates } from './volume-request-states.enum';
 import { IResponseTemplate } from '../../api-connector/response-template';
 import { FacilityService } from '../../api-connector/facility.service';
-import { WIKI_EXTEND_VOLUME, WIKI_VOLUME_OVERVIEW } from '../../../links/links';
+import { WIKI_EXTEND_VOLUME, WIKI_VOLUME_OVERVIEW, CLOUD_PORTAL_SUPPORT_MAIL } from '../../../links/links';
 import { VolumeStates } from './volume_states';
 import { VirtualMachineStates } from '../virtualmachinemodels/virtualmachinestates';
 
@@ -30,6 +30,7 @@ export class VolumeOverviewComponent extends AbstractBaseClass implements OnInit
 
 	WIKI_EXTEND_VOLUME: string = WIKI_EXTEND_VOLUME;
 	WIKI_VOLUME_OVERVIEW: string = WIKI_VOLUME_OVERVIEW;
+	CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL;
 	title: string = 'Volume Overview';
 	selected_volume_data_loaded: boolean = false;
 	filter: string;
