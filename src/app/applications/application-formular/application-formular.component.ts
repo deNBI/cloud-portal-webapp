@@ -14,7 +14,7 @@ import { FullLayoutComponent } from '../../layouts/full-layout.component';
 import { CreditsService } from '../../api-connector/credits.service';
 import { Application } from '../application.model/application.model';
 import { is_vo } from '../../shared/globalvar';
-import { CREDITS_WIKI } from '../../../links/links';
+import { CREDITS_WIKI, CLOUD_MAIL } from '../../../links/links';
 
 /**
  * Application formular component.
@@ -50,6 +50,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 	simple_vm_min_vm: boolean = false;
 	error: string[];
 	CREDITS_WIKI: string = CREDITS_WIKI;
+	CLOUD_MAIL: string = CLOUD_MAIL;
 
 	acknowledgeModalTitle: string = 'Acknowledge';
 	acknowledgeModalType: string = 'info';
