@@ -83,12 +83,4 @@ export class FlavorDetailComponent implements OnInit {
 
 	}
 
-	/**
-	 * Converts MB to GB
-	 *
-	 * @param input MB number
-	 */
-	convertMbToGb(input: number): number {
-		return Math.floor(input / 1024);
-	}
 }

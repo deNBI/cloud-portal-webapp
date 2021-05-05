@@ -16,7 +16,7 @@ import { ClientService } from '../../../api-connector/client.service';
 import { Clusterinfo, WorkerBatch } from '../clusterinfo';
 import { VirtualMachine } from '../../virtualmachinemodels/virtualmachine';
 import { ApplicationRessourceUsage } from '../../../applications/application-ressource-usage/application-ressource-usage';
-import { SCALE_SCRIPT_LINK } from '../../../../links/links';
+import { SCALE_SCRIPT_LINK, CLOUD_PORTAL_SUPPORT_MAIL } from '../../../../links/links';
 import { AbstractBaseClass } from '../../../shared/shared_modules/baseClass/abstract-base-class';
 import { Flavor } from '../../virtualmachinemodels/flavor';
 import { FlavorService } from '../../../api-connector/flavor.service';
@@ -48,6 +48,7 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 	DEBOUNCE_TIME: number = 300;
 	FILTER_DEBOUNCE_TIME: number = 2000;
 	SCALING_SCRIPT_LINK: string = SCALE_SCRIPT_LINK;
+	CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL;
 	selectedProjectRessources: ApplicationRessourceUsage;
 
 	isSearching: boolean = true;
@@ -162,9 +163,9 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 		// tslint:disable-next-line:max-line-length
 		this.groupService.getGroupResources(this.selectedCluster.master_instance.projectid.toString())
 			.subscribe((res: ApplicationRessourceUsage): void => {
-				this.ressourceUsage = new ApplicationRessourceUsage(res);
+				this.selectedProjectRessources = new ApplicationRessourceUsage(res);
 				for (const workerBatch of this.selectedCluster.worker_batches) {
-					workerBatch.max_scale_up_count = this.ressourceUsage.calcMaxScaleUpWorkerInstancesByFlavor(workerBatch.flavor);
+					workerBatch.max_scale_up_count = this.selectedProjectRessources.calcMaxScaleUpWorkerInstancesByFlavor(workerBatch.flavor);
 
 				}
 

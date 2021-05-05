@@ -160,7 +160,7 @@
 
 
                   </div>
-                                        <div *ngIf="cluster?.status == VirtualMachineStates.staticNOT_FOUND " class="alert alert-warning" role="alert"> Please contact <a href="mailto:cloud@denbi.de">cloud@denbi.de</a></div>
+                                        <div *ngIf="cluster?.status == VirtualMachineStates.staticNOT_FOUND " class="alert alert-warning" role="alert"> Please contact <a href="mailto:{{CLOUD_PORTAL_SUPPORT_MAIL}}">{{CLOUD_PORTAL_SUPPORT_MAIL}}</a></div>
 
 
 
@@ -417,6 +417,10 @@
                 class="fa fa-spinner fa-spin" style="font-size:24px"></i></strong></div>
 
             <div *ngIf="max_scale_count_loaded">
+               <app-resource-overview [ressourceUsage]="selectedProjectRessources"
+              >
+
+              </app-resource-overview>
                 <div class="alert alert-warning" role="alert" *ngIf="!created_new_batch">
                   <p>Which batch should be scaled up (only one batch at a time is possible)?</p></div>
 
@@ -618,7 +622,7 @@
                         (click)="scaleUpModal.hide();scaling_down=false;scaling_up=true;notificationModal.show();scaleUpCluster();"
                         [disabled]=" !scaling_warning_read || selectedBatch?.upscale_count <= 0"
                         id="confirm_scale_up">
-                  Start {{scale_worker_count}} vms!
+                  Start {{scale_worker_count}} VMs!
                 </button>
                 <button class="btn  btn-danger col-md-4" type="reset"
                         (click)="scaleUpModal.hide();">Cancel

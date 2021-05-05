@@ -13,7 +13,7 @@
               <figure class="flavor-card-icons">
                 <img src="{{RAM_ICON_PATH}}" alt="">
               </figure>
-              {{convertMbToGb(selectedFlavor?.ram)}} GB Ram
+              {{selectedFlavor?.ram}} GB Ram
             </div>
           </div>
           <div class="col"
@@ -71,7 +71,7 @@
                     <figure class="flavor-card-icons">
                       <img src="{{RAM_ICON_PATH}}" alt="">
                     </figure>
-                    {{convertMbToGb(flavor?.ram)}} GB Ram
+                    {{flavor?.ram}} GB Ram
                   </div>
                 </div>
                 <div class="col"
@@ -136,7 +136,7 @@
                     <figure class="flavor-card-icons">
                       <img src="{{RAM_ICON_PATH}}" alt="">
                     </figure>
-                    {{convertMbToGb(flavor?.ram)}} GB Ram
+                    {{flavor?.ram}} GB Ram
                   </div>
                 </div>
                 <div class="col"
@@ -177,15 +177,5 @@
 </div>
 
 
-<div class="row ">
-  <div class="ml-auto mr-3"
-       *ngIf="carousel_activated && (!selectedFlavor &&flavors.length > flavors_per_row || selectedFlavor &&flavors.length > flavors_per_row-1)  "
-       (click)="carousel_activated=false;" style="cursor: pointer;"><strong class="text-info">Show
-    all
-    flavors</strong></div>
-  <div class="ml-auto mr-3"
-       *ngIf="!carousel_activated && (!selectedFlavor &&flavors.length > flavors_per_row || selectedFlavor &&flavors.length > flavors_per_row-1)"
-       (click)="carousel_activated=true;" style="cursor: pointer;"><strong class="text-info">Hide
-    flavors</strong></div>
-</div>
+
 

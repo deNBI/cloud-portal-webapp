@@ -24,7 +24,9 @@ import { FlavorType } from '../virtualmachines/virtualmachinemodels/flavorType';
 import { FlavorService } from '../api-connector/flavor.service';
 import { CreditsService } from '../api-connector/credits.service';
 import { is_vo } from '../shared/globalvar';
-import { CREDITS_WIKI, WIKI_MEMBER_MANAGEMENT, WIKI_PUBLICATIONS } from '../../links/links';
+import {
+	CREDITS_WIKI, WIKI_MEMBER_MANAGEMENT, WIKI_PUBLICATIONS, CLOUD_MAIL,
+} from '../../links/links';
 import { Doi } from '../applications/doi/doi';
 import { EdamOntologyTerm } from '../applications/edam-ontology-term';
 import { ApiSettings } from '../api-connector/api-settings.service';
@@ -52,6 +54,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	WIKI_MEMBER_MANAGEMENT: string = WIKI_MEMBER_MANAGEMENT;
 	WIKI_PUBLICATIONS: string = WIKI_PUBLICATIONS;
 	CREDITS_WIKI: string = CREDITS_WIKI;
+	CLOUD_MAIL: string = CLOUD_MAIL;
 	selected_ontology_terms: EdamOntologyTerm[] = [];
 	edam_ontology_terms: EdamOntologyTerm[];
 	ontology_search_keyword: string = 'term';

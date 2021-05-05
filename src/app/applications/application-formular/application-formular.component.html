@@ -307,7 +307,7 @@
             </div>
             <div class="form-group row" [hidden]="form.controls.project_application_volume_counter?.value == 0">
               <label class="col-md-4 form-control-label" for="id_project_application_volume_limit"><strong> Volume
-                Storage
+                Storage Total
                 Limit*
                 <i
                   data-balloon="Storage limit is the sum of extra storage provided by volumes."
@@ -331,7 +331,7 @@
                   <div class="input-group-append"><span class="input-group-text"> GB
                                     </span></div>
                 </div>
-                <span class="help-block">How much extra storage do you need for your VMs?</span>
+                <span class="help-block">How much total extra storage do you need for your VMs?</span>
               </div>
             </div>
             <div class="form-group row" *ngIf="openstack_project">
@@ -1020,7 +1020,7 @@
           <div *ngIf="is_validation" class="row">
             <div class="col-4"></div>
             <div class="col-8 alert-warning">
-              If you do not approve of this application, please contact <a href="mailto:cloud@denbi.de">cloud@denbi.de</a>
+              If you do not approve of this application, please contact <a href="mailto:{{CLOUD_MAIL}}">{{CLOUD_MAIL}}</a>
             </div>
           </div>
         </div>
@@ -1243,7 +1243,7 @@
             </ng-container>
             <tr><td>Volumes: {{application?.project_application_volume_counter}}</td></tr>
             <tr *ngIf="application?.project_application_volume_counter > 0">
-              <td>Volume Limit: {{application?.project_application_volume_limit}} GBs</td>
+              <td>Volume Total Limit: {{application?.project_application_volume_limit}} GBs</td>
             </tr>
             <tr *ngIf="application?.project_application_openstack_project"><td>Object Storage: {{application?.project_application_object_storage}} GBs</td></tr>
             <tr>
