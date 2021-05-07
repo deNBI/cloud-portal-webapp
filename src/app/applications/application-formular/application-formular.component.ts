@@ -20,10 +20,10 @@ import { CLOUD_MAIL, CREDITS_WIKI, SURVEY_LINK } from '../../../links/links';
  * Application formular component.
  */
 @Component({
-	           selector: 'app-application-formular',
-	           templateUrl: './application-formular.component.html',
-	           styleUrls: ['./application-formular.component.scss'],
-	           providers: [FlavorService, ApplicationsService, CreditsService],
+	selector: 'app-application-formular',
+	templateUrl: './application-formular.component.html',
+	styleUrls: ['./application-formular.component.scss'],
+	providers: [FlavorService, ApplicationsService, CreditsService],
 })
 export class ApplicationFormularComponent extends ApplicationBaseClassComponent implements OnInit {
 
@@ -68,8 +68,9 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 	// public typeList: FlavorType[] = [];
 
 	constructor(private creditsService: CreditsService,
-	            private flavorService: FlavorService, private fullLayout: FullLayoutComponent,
-	            applicationsService: ApplicationsService) {
+	private flavorService: FlavorService,
+	private fullLayout: FullLayoutComponent,
+	applicationsService: ApplicationsService) {
 		super(null, applicationsService, null);
 
 	}
