@@ -246,7 +246,6 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 	 */
 	getFlavors(project_id: number): void {
 		this.flavorService.getFlavors(project_id).subscribe((flavors: Flavor[]): void => {
-			console.log(flavors);
 			this.flavors = flavors;
 			for (const flavor of this.flavors) {
 				if (flavor.type.long_name in this.flavor_types) {
@@ -682,7 +681,6 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 		this.getDetachedVolumesByProject();
 		this.groupService.getGroupResources(this.selectedProject[1].toString()).subscribe((res: ApplicationRessourceUsage): void => {
 			this.selectedProjectRessources = new ApplicationRessourceUsage(res);
-
 			this.data_loaded = true;
 			this.checkProjectDataLoaded();
 		});
