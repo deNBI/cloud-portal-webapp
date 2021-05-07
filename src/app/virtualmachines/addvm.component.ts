@@ -246,6 +246,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 	 */
 	getFlavors(project_id: number): void {
 		this.flavorService.getFlavors(project_id).subscribe((flavors: Flavor[]): void => {
+			console.log(flavors);
 			this.flavors = flavors;
 			for (const flavor of this.flavors) {
 				if (flavor.type.long_name in this.flavor_types) {
