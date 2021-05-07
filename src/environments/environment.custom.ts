@@ -1,9 +1,9 @@
-const API_HOST: string = window['env']['API_HOST'] || 'portal-dev.denbi.de';
+const API_HOST: string = window['env']['API_HOST'] || 'cloud.denbi.de';
 
 export const environment: any = {
 	WIKI_PRE: `https://${API_HOST}/wiki/`,
-	vo: window['env']['VO'] || 3334,
-	production: window['env']['PRODUCTION'] || false,
+	vo: window['env']['VO'] || 3335,
+	production: window['env']['PRODUCTION'] === 'true' || false,
 	freemium_project_id: 10392,
 	domain: API_HOST,
 	invitation_group_pre: 'https://perun.elixir-czech.cz/fed/registrar/?vo=elixir&targetnew=https%3A%2F%2Fperun.elixir-czech.cz'
