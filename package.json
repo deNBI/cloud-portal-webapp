@@ -57,7 +57,7 @@
     "chromedriver": "^90.0.0",
     "cli-color": "^2.0.0",
     "colors": "^1.4.0",
-    "core-js": "3.11.1",
+    "core-js": "3.12.1",
     "css-loader": "5.2.4",
     "cssnano": "^5.0.2",
     "d3": "^6.7.0",
@@ -92,7 +92,7 @@
     "svg2pdf.js": "^2.1.0",
     "ts-helpers": "1.1.2",
     "tslib": "^2.2.0",
-    "uglify-js": "3.13.3",
+    "uglify-js": "3.13.5",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
@@ -140,10 +140,10 @@
     "eslint-plugin-prefer-arrow": "1.2.3",
     "@angular-eslint/builder": "^4.0.0",
     "@angular-eslint/eslint-plugin-template": "^4.2.0",
-    "@angular-eslint/schematics": "2.1.0",
-    "@angular-eslint/template-parser": "^4.0.0",
+    "@angular-eslint/template-parser": "^4.2.0",
+    "@angular-eslint/schematics": "4.2.0",
     "@typescript-eslint/eslint-plugin": "4.22.0",
-    "@typescript-eslint/parser": "4.22.0",
+    "@typescript-eslint/parser": "4.22.1",
     "eslint-plugin-no-null": "latest"
   }
 }
