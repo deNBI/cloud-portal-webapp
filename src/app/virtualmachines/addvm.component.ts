@@ -770,6 +770,35 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 	resetChecks(): void {
 		this.gaveOkay = false;
 		this.hasTools = false;
+		this.newVm = null;
+		this.members_to_add = [];
+		this.http_allowed = false;
+		this.https_allowed = false;
+		this.udp_allowed = false;
+		this.install_mosh = false;
+		this.vm_responsibility = false;
+		this.client_checked = false;
+		this.playbook_run = 0;
+		this.has_forc = false;
+		this.forc_url = '';
+		this.mosh_mode_available = false;
+		this.resenvSelected = false;
+		this.resEnvValid = true;
+		this.resEnvNeedsName = false;
+		this.resEnvNeedsTemplate = false;
+		this.resEnvOkayNeeded = false;
+		this.data_loaded = false;
+		this.volumesToMount = [];
+		this.volumesToAttach = [];
+		this.started_machine = false;
+		this.showAddVol = false;
+		this.images = [];
+		this.image_loaded = false;
+		this.flavors_loaded = false;
+		this.flavors = [];
+		this.selected_flavor_types = [];
+		this.flavor_types = {};
+		this.detached_project_volumes = [];
 	}
 
 	/**
