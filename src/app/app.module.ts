@@ -8,7 +8,6 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ChartsModule } from 'ng2-charts';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
-import { ExportAsModule } from 'ngx-export-as';
 import { ClipboardModule } from 'ngx-clipboard';
 import {
 	AppAsideModule, AppBreadcrumbModule, AppFooterModule, AppHeaderModule, AppSidebarModule,
@@ -64,7 +63,6 @@ import { PipeModuleModule } from './pipe-module/pipe-module.module';
 		ChartsModule,
 		ModalModule.forRoot(),
 		PaginationModule.forRoot(),
-		ExportAsModule,
 		SharedModuleModule,
 		Angulartics2Module.forRoot(),
 		BrowserAnimationsModule,
