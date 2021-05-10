@@ -140,8 +140,8 @@
     "eslint-plugin-prefer-arrow": "1.2.3",
     "@angular-eslint/builder": "^4.0.0",
     "@angular-eslint/eslint-plugin-template": "^4.2.0",
-    "@angular-eslint/schematics": "2.1.0",
     "@angular-eslint/template-parser": "^4.2.0",
+    "@angular-eslint/schematics": "4.2.0",
     "@typescript-eslint/eslint-plugin": "4.22.0",
     "@typescript-eslint/parser": "4.22.1",
     "eslint-plugin-no-null": "latest"
