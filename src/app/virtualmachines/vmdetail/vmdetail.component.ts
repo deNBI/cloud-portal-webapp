@@ -64,6 +64,7 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 	WIKI_RSTUDIO_LINK: string = WIKI_RSTUDIO_LINK;
 	WIKI_GUACAMOLE_LINK: string = WIKI_GUACAMOLE_LINK;
 	WIKI_VOLUME_OVERVIEW: string = WIKI_VOLUME_OVERVIEW;
+	SNAPSHOT_MAX_RAM: number = 256;
 
 	DEBOUNCE_TIME: number = 300;
 
