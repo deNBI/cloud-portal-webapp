@@ -1,7 +1,6 @@
 import {
 	Component, ElementRef, OnInit, ViewChild,
 } from '@angular/core';
-import { ExportAsConfig, ExportAsService } from 'ngx-export-as';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 import htmlToPdfmake from 'html-to-pdfmake';
@@ -23,7 +22,7 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 	selector: 'app-resources',
 	templateUrl: './resources.component.html',
 	styleUrls: ['./resources.component.scss'],
-	providers: [FacilityService, ExportAsService],
+	providers: [FacilityService],
 
 })
 export class ResourcesComponent implements OnInit {
@@ -76,15 +75,9 @@ export class ResourcesComponent implements OnInit {
 	 * Id of the table which will be converted to pdf or csv.
 	 */
 	today: number = Date.now();
-	exportAsConfigCSV: ExportAsConfig = {
-		type: 'csv',
-		// elementId: this.tableId
-		elementIdOrContent: this.tableId,
-	};
 
-	constructor(private facilityService: FacilityService, private exportAsService: ExportAsService) {
+	constructor(private facilityService: FacilityService) {
 		this.facilityService = facilityService;
-		this.exportAsService = exportAsService;
 	}
 
 	setAllTabsFalse(): void {
