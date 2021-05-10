@@ -2,7 +2,6 @@ import {
 	Component, ElementRef, OnInit, ViewChild,
 } from '@angular/core';
 
-import { ExportAsConfig, ExportAsService } from 'ngx-export-as';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 import htmlToPdfmake from 'html-to-pdfmake';
@@ -19,7 +18,7 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 	selector: 'app-resources',
 	templateUrl: './resources.component.html',
 	styleUrls: ['./resources.component.scss'],
-	providers: [VoService, ExportAsService],
+	providers: [VoService],
 })
 export class ResourcesComponent implements OnInit {
 
@@ -32,13 +31,7 @@ export class ResourcesComponent implements OnInit {
 	tableId: string = 'resourcesTable';
 	today: number = Date.now();
 
-	exportAsConfigCSV: ExportAsConfig = {
-		type: 'csv',
-		// elementId: this.tableId
-		elementIdOrContent: this.tableId,
-	};
-
-	constructor(private voservice: VoService, private exportAsService: ExportAsService) {
+	constructor(private voservice: VoService) {
 		this.getVoProjectResources();
 
 	}
