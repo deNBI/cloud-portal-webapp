@@ -8,7 +8,7 @@ export const environment: any = {
 	freemium_project_id: 10392,
 	domain: API_HOST,
 	invitation_group_pre: 'https://perun.elixir-czech.cz/fed/registrar/?vo=elixir&targetnew=https%3A%2F%2Fperun.elixir-czech.cz'
-		+ `%2Ffed%2Fregistrar%2F%3Fvo%3D${VO_NAME}26group%3D`,
+		+ `%2Ffed%2Fregistrar%2F%3Fvo%3D${VO_NAME}%26group%3D`,
 	invitation_group_post: `&targetexisting=https%3A%2F%2Fperun.elixir-czech.cz%2Ffed%2Fregistrar%2F%3Fvo%3D${VO_NAME}%26group%3D`,
 	apiBaseUrl: `https://${API_HOST}/portal/api/v0/`,
 	apiBase: `https://${API_HOST}/portal/`,
