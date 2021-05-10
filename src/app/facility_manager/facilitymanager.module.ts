@@ -29,7 +29,7 @@ import { ProjectManagementModule } from '../projectmanagement/projectmanagement.
 		FormsModule,
 		CommonModule,
 		ModalModule.forRoot(),
-		 ApplicationsModule,
+		ApplicationsModule,
 		ReactiveFormsModule, PipeModuleModule, SharedDirectivesModule, ProjectManagementModule,
 
 	],
