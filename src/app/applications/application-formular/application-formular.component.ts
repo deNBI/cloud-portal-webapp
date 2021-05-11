@@ -14,7 +14,7 @@ import { FullLayoutComponent } from '../../layouts/full-layout.component';
 import { CreditsService } from '../../api-connector/credits.service';
 import { Application } from '../application.model/application.model';
 import { is_vo } from '../../shared/globalvar';
-import { CREDITS_WIKI, CLOUD_MAIL } from '../../../links/links';
+import { CLOUD_MAIL, CREDITS_WIKI, SURVEY_LINK } from '../../../links/links';
 
 /**
  * Application formular component.
@@ -51,6 +51,8 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 	error: string[];
 	CREDITS_WIKI: string = CREDITS_WIKI;
 	CLOUD_MAIL: string = CLOUD_MAIL;
+	SURVEY_LINK: string = SURVEY_LINK;
+	survey_link_visible: boolean = false;
 
 	acknowledgeModalTitle: string = 'Acknowledge';
 	acknowledgeModalType: string = 'info';
@@ -66,8 +68,9 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 	// public typeList: FlavorType[] = [];
 
 	constructor(private creditsService: CreditsService,
-		private flavorService: FlavorService, private fullLayout: FullLayoutComponent,
-		applicationsService: ApplicationsService) {
+	private flavorService: FlavorService,
+	private fullLayout: FullLayoutComponent,
+	applicationsService: ApplicationsService) {
 		super(null, applicationsService, null);
 
 	}
@@ -224,6 +227,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 			(application: Application): void => {
 				this.clearApplication();
 				this.submitting = false;
+				this.survey_link_visible = true;
 				this.application_id = application.project_application_id;
 
 				this.updateNotificationModal('Success', 'The application was submitted', true, 'success');
@@ -232,6 +236,8 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 				this.notificationModalStay = false;
 			},
 			(error: object): void => {
+				this.survey_link_visible = false;
+
 				const error_json: object = error;
 				this.error = [];
 				for (const key of Object.keys(error_json)) {
