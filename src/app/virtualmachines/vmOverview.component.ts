@@ -28,11 +28,11 @@ import { WIKI_GUACAMOLE_LINK, WIKI_RSTUDIO_LINK, WIKI_VOLUME_OVERVIEW } from '..
  * Vm overview componentn.
  */
 @Component({
-	           selector: 'app-vm-overview',
-	           templateUrl: 'vmOverview.component.html',
-	           styleUrls: ['./vmOverview.component.scss'],
-	           providers: [FacilityService, ImageService, UserService,
-		           VirtualmachineService, FullLayoutComponent, GroupService, ClientService],
+	selector: 'app-vm-overview',
+	templateUrl: 'vmOverview.component.html',
+	styleUrls: ['./vmOverview.component.scss'],
+	providers: [FacilityService, ImageService, UserService,
+		VirtualmachineService, FullLayoutComponent, GroupService, ClientService],
 })
 
 export class VmOverviewComponent implements OnInit, OnDestroy {
