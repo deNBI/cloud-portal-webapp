@@ -48,7 +48,7 @@ export class ResourcemachineOverviewComponent implements OnInit {
 				new_machine_cores_public_factor: [null, Validators.compose([Validators.required, Validators.pattern(/^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$/)])],
 				new_machine_gpus: [null, Validators.compose([Validators.required, Validators.pattern(/^\d+$/)])],
 				new_machine_local_disk_storage: [null, Validators.compose([Validators.required, Validators.pattern(/^\d+$/)])],
-				new_machine_name: [null, Validators.compose([Validators.required, Validators.pattern(/^[a-zA-Z0-9 ]*$/)])],
+				new_machine_name: [null, Validators.compose([Validators.required, Validators.pattern(/^([A-Za-z0-9]+[ ]*)+$/)])],
 				new_machine_private_count: [null, Validators.compose([Validators.required, Validators.pattern(/^\d+$/)])],
 				new_machine_public_count: [null, Validators.compose([Validators.required, Validators.pattern(/^\d+$/)])],
 				new_machine_local_disk_encrypted: [null],
@@ -176,7 +176,7 @@ export class ResourcemachineOverviewComponent implements OnInit {
 
 		this.machinesFormGroups[machine.id].addControl(machine_name, new FormControl([null]));
 		this.machinesFormGroups[machine.id].get(machine_name)
-			.setValidators([Validators.compose([Validators.required, Validators.pattern(/^[a-zA-Z0-9 ]*$/)])]);
+			.setValidators([Validators.compose([Validators.required, Validators.pattern(/^([A-Za-z0-9]+[ ]*)+$/)])]);
 		this.machinesFormGroups[machine.id].addControl(machine_type, new FormControl([null]));
 
 		this.machinesFormGroups[machine.id].addControl(machine_private_count, new FormControl([null]));
@@ -307,6 +307,7 @@ export class ResourcemachineOverviewComponent implements OnInit {
 	}
 
 	addResourceMachine(): void {
+		this.newResourceMachine.name = this.newResourceMachine.name.trim();
 		this.facilityService.addResourceMachine(this.facility_id, this.newResourceMachine).subscribe((res: ResourceMachine[]): void => {
 			this.newResourceMachine = new ResourceMachine(null);
 			this.machinesFormGroups = {};
@@ -324,6 +325,7 @@ export class ResourcemachineOverviewComponent implements OnInit {
 	}
 
 	updateResourceMachine(rf: ResourceMachine): void {
+		rf.name = rf.name.trim();
 		this.facilityService.updateResourceMachine(this.facility_id, rf).subscribe((machine: ResourceMachine): void => {
 			this.resourceMachines[this.resourceMachines.indexOf(rf)] = new ResourceMachine(machine);
 			this.setupFormGroup(machine);
