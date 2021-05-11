@@ -90,6 +90,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 
 	is_vo_admin: boolean;
 	user_elixir_id: string;
+
 	/**
 	 * Vm which is used to create a snapshot.
 	 */
@@ -153,6 +154,9 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 	selectedMachines: VirtualMachine[] = [];
 
 	clientsForcUrls: { [client_id: string]: [string] } = {};
+
+	vms_admin: string[] = [];
+	user_perun_id: string;
 
 	constructor(private facilityService: FacilityService,
 		private clipboardService: ClipboardService,
@@ -620,6 +624,22 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 		}, 1000);
 	}
 
+	checkVMAdminState(): void {
+		this.userService.getMemberByUser().subscribe(
+			(res: any): void => {
+				this.user_perun_id = res['userId'];
+				this.vms_content.forEach((vm: VirtualMachine): void => {
+					this.groupService.getGroupAdminIds(vm.projectid).subscribe((result): any => {
+						if (result['adminIds'].indexOf(this.user_perun_id) > -1) {
+							this.vms_admin.push(vm.openstackid);
+						}
+					});
+				});
+			},
+		);
+
+	}
+
 	prepareVMS(vms: any): void {
 
 		const vm_list: VirtualMachine[] = vms['vm_list'];
@@ -634,6 +654,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 		});
 		this.vms_content = [];
 		this.vms_content = tmp_vms;
+		this.checkVMAdminState();
 		this.total_items = vms['total_items'];
 		this.items_per_page = vms['items_per_page'];
 		this.total_pages = vms['num_pages'];
