@@ -23,7 +23,7 @@ export const WIKI_MOUNT_VOLUME: string = `${environment.WIKI_PRE}simple_vm/volum
 export const WIKI_GROUP_INVITATIONS: string = `${environment.WIKI_PRE}simple_vm/project_overview/#inviting-members`;
 export const SCALING_UP_WIKI: string = `${environment.WIKI_PRE}simple_vm/cluster_overview/#scale-up`;
 export const CREDITS_WIKI: string = `${environment.WIKI_PRE}portal/credits/`;
-
+export const SURVEY_LINK: string = 'https://www.surveymonkey.de/r/HQW9V7C';
 export const CLOUD_MAIL: string = 'cloud@denbi.de';
 export const CLOUD_PORTAL_SUPPORT_MAIL = 'cloud-portal-support@denbi.de';
 
