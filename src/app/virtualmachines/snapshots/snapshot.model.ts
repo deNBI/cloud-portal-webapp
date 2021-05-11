@@ -5,6 +5,8 @@ import { Client } from '../../vo_manager/clients/client.model';
  */
 export class SnapshotModel {
 
+    static MAX_RAM: number = 256;
+
   snapshot_openstackid: string;
   snapshot_client: Client;
   snapshot_name: string;
