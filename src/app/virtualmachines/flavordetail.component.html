@@ -36,6 +36,7 @@
             </div>
 
           </div>
+
           <div class="col" *ngIf="selectedFlavor?.gpu > 0">
             <div class="row">
               <figure class="flavor-card-icons">
@@ -43,6 +44,15 @@
               </figure>
               {{selectedFlavor?.gpu}} <span *ngIf="selectedFlavor?.gpu == 1"> GPU</span><span
               *ngIf="selectedFlavor?.gpu > 1"> GPUs</span>
+            </div>
+          </div>
+
+          <div class="col" *ngIf="selectedFlavor?.credits_per_hour">
+            <div class="row">
+              <figure class="flavor-card-icons">
+                <img src="{{CREDITS_ICON_PATH}}" alt="">
+              </figure>
+              <span>{{selectedFlavor?.credits_per_hour}} Credits/hour</span>
             </div>
           </div>
         </div>
@@ -103,6 +113,16 @@
                     {{flavor?.gpu}} <span *ngIf="flavor?.gpu == 1"> GPU</span><span *ngIf="flavor?.gpu > 1"> GPUs</span>
                   </div>
                 </div>
+
+                <div class="col" *ngIf="flavor?.credits_per_hour">
+                  <div class="row">
+                    <figure class="flavor-card-icons">
+                      <img src="{{CREDITS_ICON_PATH}}" alt="">
+                    </figure>
+                    <span>{{flavor?.credits_per_hour}} Credits/hour</span>
+                  </div>
+                </div>
+
               </div>
             </div>
           </div>
@@ -158,12 +178,22 @@
                     + {{flavor.ephemeral_disk}} GB ephemeral disk</span>
                   </div>
                 </div>
+
                 <div class="col" *ngIf="flavor?.gpu > 0">
                   <div class="row">
                     <figure class="flavor-card-icons">
                       <img src="{{GPU_ICON_PATH}}" alt="">
                     </figure>
                     {{flavor?.gpu}} <span *ngIf="flavor?.gpu == 1"> GPU</span><span *ngIf="flavor?.gpu > 1"> GPUs</span>
+                  </div>
+                </div>
+
+                <div class="col" *ngIf="flavor?.credits_per_hour">
+                  <div class="row">
+                    <figure class="flavor-card-icons">
+                      <img src="{{CREDITS_ICON_PATH}}" alt="">
+                    </figure>
+                    <span>{{flavor?.credits_per_hour}} Credits/hour</span>
                   </div>
                 </div>
               </div>

@@ -681,7 +681,6 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 		this.getDetachedVolumesByProject();
 		this.groupService.getGroupResources(this.selectedProject[1].toString()).subscribe((res: ApplicationRessourceUsage): void => {
 			this.selectedProjectRessources = new ApplicationRessourceUsage(res);
-
 			this.data_loaded = true;
 			this.checkProjectDataLoaded();
 		});
