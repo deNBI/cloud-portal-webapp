@@ -624,6 +624,9 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 		}, 1000);
 	}
 
+	/**
+	 * Checks and lists machines for which the visiting user is a project-administrator
+	 */
 	checkVMAdminState(): void {
 		this.userService.getMemberByUser().subscribe(
 			(res: any): void => {

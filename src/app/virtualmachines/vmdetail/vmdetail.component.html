@@ -81,7 +81,7 @@
 
         </div>
         <hr *ngIf="virtualMachine?.elixir_id == user_elixir_id">
-        <div class="card-body" *ngIf="virtualMachine?.elixir_id == user_elixir_id">
+        <div class="card-body" *ngIf="virtualMachine?.elixir_id == user_elixir_id || is_project_admin">
           <span class="text-muted font-weight-bold card-title" style="margin-left: 15px;">
               Actions</span>
           <div class="row" style="margin-top:15px;">
