@@ -51,6 +51,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 
 	ERROR_MSG: string = '';
 	ERROR_TIMER: number = 10000;
+	SNAPSHOT_MAX_RAM: number = SnapshotModel.MAX_RAM;
 	SNAPSHOT_CREATING_ERROR_MSG: string
 		= 'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.'
 
