@@ -15,4 +15,5 @@ export class Flavor {
   simple_vm: boolean;
   comment: string;
   counter: number;
+  credits_per_hour: number;
 }
