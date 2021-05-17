@@ -47,6 +47,7 @@ export class Application {
 	project_application_date_approved: string;
 	project_application_openstack_basic_introduction: boolean;
 	project_application_horizon2020: string;
+	project_application_dfg: string;
 	project_application_bmbf_project: string;
 	project_application_nfdi: string;
 	project_application_edam_terms: EdamOntologyTerm[] = [];
@@ -94,6 +95,7 @@ export class Application {
 			this.project_application_total_cores = aj.project_application_total_cores;
 			this.project_application_date_approved = aj.project_application_date_approved;
 			this.project_application_horizon2020 = aj.project_application_horizon2020;
+			this.project_application_dfg = aj.project_application_dfg;
 			this.project_application_bmbf_project = aj.project_application_bmbf_project;
 			this.project_application_nfdi = aj.project_application_nfdi;
 			this.project_application_openstack_basic_introduction = aj.project_application_openstack_basic_introduction;
