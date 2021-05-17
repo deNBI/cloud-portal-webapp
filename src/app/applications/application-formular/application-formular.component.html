@@ -619,6 +619,27 @@
               </div>
             </div>
             <div class="form-group row">
+              <label class="col-md-4 form-control-label" for="id_project_application_dfg_switch"><strong>DFG</strong></label>
+              <div class="col-md-8">
+                <label id="id_project_application_bmbf_switch"
+                       class="switch switch-label switch-outline-primary-alt">
+                  <input type="checkbox" class="switch-input" #part_dfg
+                         [defaultChecked]="application?.project_application_dfg?.length > 1"
+                         (click)="toggleProjectPart(part_dfg.checked, 'dfg')">
+                  <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+                  <span class="switch-handle"></span></label>
+                <input type="text" id="id_project_application_dfg" *ngIf="part_dfg.checked"
+                       name="project_application_dfg" class="form-control"
+                       maxlength="2048" required minlength="2"
+                       [ngClass]="{
+                                'is-invalid': form.controls.project_application_dfg?.invalid,
+                                'is-valid': form.controls.project_application_dfg?.valid
+                                }"
+                       [(ngModel)]="application.project_application_dfg" placeholder='Name of the project'>
+                <p>Is your project part of a DFG project?</p>
+              </div>
+            </div>
+            <div class="form-group row">
               <label class="col-md-4 form-control-label" for="id_project_application_bmbf_switch"><strong>BMBF</strong></label>
               <div class="col-md-8">
                 <label id="id_project_application_bmbf_switch"
