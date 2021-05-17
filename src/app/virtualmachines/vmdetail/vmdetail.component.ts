@@ -72,6 +72,8 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 	detached_project_volumes: Volume[] = [];
 	user_elixir_id: string;
 
+	is_project_admin: boolean = false;
+
 	/**
 	 * The changed status.
 	 *
@@ -121,7 +123,8 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 		private imageService: ImageService,
 		private playbookService: PlaybookService,
 		private biocondaService: BiocondaService,
-		private clipboardService: ClipboardService) {
+		private clipboardService: ClipboardService,
+		private groupService: GroupService) {
 		super();
 	}
 
@@ -580,6 +583,24 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 		}
 	}
 
+	/**
+	 * Checks if the user visiting the detail-page is admin of the project
+	 */
+	checkVMAdminState(): void {
+		this.userService.getMemberByUser().subscribe(
+			(res: any): void => {
+				const user_id: string = res['userId'];
+				this.groupService.getGroupAdminIds(this.virtualMachine.projectid).subscribe((result): any => {
+					if (result['adminIds'].indexOf(user_id) > -1) {
+						this.is_project_admin = true;
+					}
+				});
+
+			},
+		);
+
+	}
+
 	getVmById(): void {
 		this.virtualmachineService.getVmById(this.vm_id).subscribe(
 			(vm: VirtualMachine): void => {
@@ -587,6 +608,7 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 				this.checkAndGetForcDetails(vm);
 				this.title = vm['name'];
 				this.virtualMachine = vm;
+				this.checkVMAdminState();
 				this.biocondaService.getTemplateNameByVmName(vm).subscribe((backend: Backend): void => {
 					if (backend != null) {
 						const template_name: string = backend.template;
