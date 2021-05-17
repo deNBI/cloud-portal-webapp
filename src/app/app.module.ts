@@ -16,6 +16,8 @@ import { NgScrollbarModule } from 'ngx-scrollbar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Angulartics2Module } from 'angulartics2';
 import { CookieService } from 'ngx-cookie-service';
+import { TimepickerModule } from 'ngx-bootstrap/timepicker';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { AppComponent } from './app.component';
 
 import { ApiSettings } from './api-connector/api-settings.service';
@@ -68,6 +70,8 @@ import { PipeModuleModule } from './pipe-module/pipe-module.module';
 		BrowserAnimationsModule,
 		ClipboardModule,
 		PipeModuleModule,
+		TimepickerModule.forRoot(),
+		BsDatepickerModule.forRoot(),
 	],
 	declarations: [
 		AppComponent,
