@@ -325,7 +325,7 @@
                 <div class="col-4">
                   <button class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
                           [id]="'showDetailsButton_'+vm?.name"
-                          *ngIf="vm.elixir_id == user_elixir_id || is_vo_admin"
+                          *ngIf="vm.elixir_id == user_elixir_id || is_vo_admin || (vms_admin.indexOf(vm.openstackid) > -1)"
                           [disabled]="!(vm?.status |hasStatus:VirtualMachineStates.staticACTIVE)
                           && !(vm?.status |hasStatus:VirtualMachineStates.staticSHUTOFF)
                           && !(vm?.status |hasStatus:VirtualMachineStates.staticDELETED)"
@@ -346,7 +346,7 @@
                 </div>
                 <div class="col-4">
                   <button class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
-                          *ngIf="vm.cardState!=2 && (vm.elixir_id == user_elixir_id || is_vo_admin)"
+                          *ngIf="vm.cardState!=2 && (vm.elixir_id == user_elixir_id || is_vo_admin || (vms_admin.indexOf(vm.openstackid) > -1))"
                           [disabled]="(vm?.status | statusInProcess:VirtualMachineStates.staticIN_PROCESS_STATE)
                            &&  !(vm?.status | hasStatus:VirtualMachineStates.staticPORT_CLOSED )
                             &&  !(vm?.status | hasStatus:VirtualMachineStates.staticCHECKING_CONNECTION)
