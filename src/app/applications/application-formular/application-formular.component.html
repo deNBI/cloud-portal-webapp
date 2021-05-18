@@ -1109,6 +1109,13 @@
           {{ notificationModalMessage }}
 
         </div>
+              <div class="alert alert-info" id="survey" role="alert" *ngIf="survey_link_visible">
+         We are very interested in making the application process understandable, clear and easy to complete, so we would appreciate it if you would fill out this short anonymous survey:<br>
+          <a [href]="SURVEY_LINK" target="_blank">Application Process Survey</a>
+
+
+        </div>
+
       </div>
       <div class="modal-footer">
         <button id="notification_btn_redirect"
@@ -1257,7 +1264,9 @@
                 E-Mail notification which will contain more information on the goals, the implementation and
                 the usage of Cloud Credits. In the case that you are already interested in learning more about Cloud Credits,
                 please visit <a href="{{CREDITS_WIKI}}"
-                                target="_blank" rel="noopener noreferrer">our Wiki page</a>.
+                                target="_blank" rel="noopener noreferrer">our Wiki page</a>.<br>
+									This value is only an approximation. The final value may differ because some flavors have a
+									different amount of resources depending on the facility in which your project will run.
                 </div>
               </td>
             </tr>

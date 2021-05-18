@@ -14,6 +14,7 @@ import { Flavor } from './virtualmachinemodels/flavor';
 })
 export class FlavorDetailComponent implements OnInit {
 	@Input() selectedFlavor: Flavor;
+	@Input() creditsAllowed: boolean;
 	@Input() flavors: Flavor[];
 	@Output() readonly selectedFlavorChange: EventEmitter<Flavor> = new EventEmitter();
 
@@ -32,6 +33,7 @@ export class FlavorDetailComponent implements OnInit {
 	RAM_ICON_PATH: string = `${this.STATIC_IMG_FOLDER}/new_instance/ram_icon.svg`;
 	STORAGE_ICON_PATH: string = `${this.STATIC_IMG_FOLDER}/new_instance/storage_icon.svg`;
 	GPU_ICON_PATH: string = `${this.STATIC_IMG_FOLDER}/new_instance/gpu_icon.svg`;
+	CREDITS_ICON_PATH: string = `${this.STATIC_IMG_FOLDER}/new_instance/credits_icon.svg`;
 
 	customOptions: OwlOptions = {
 		loop: false,

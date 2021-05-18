@@ -28,6 +28,7 @@ import { ApiSettings } from '../api-connector/api-settings.service';
 import { BlockedImageTagResenv } from '../facility_manager/image-tag';
 import { ApplicationRessourceUsage } from '../applications/application-ressource-usage/application-ressource-usage';
 import { ProjectMember } from '../projectmanagement/project_member.model';
+import { ApplicationsService } from '../api-connector/applications.service';
 
 /**
  * Start virtualmachine component.
@@ -36,7 +37,7 @@ import { ProjectMember } from '../projectmanagement/project_member.model';
 	selector: 'app-new-vm',
 	templateUrl: 'addvm.component.html',
 	providers: [GroupService, ImageService, KeyService, FlavorService, VirtualmachineService,
-		ApiSettings, UserService],
+		ApiSettings, UserService, ApplicationsService],
 })
 export class VirtualMachineComponent implements OnInit, DoCheck {
 
@@ -161,6 +162,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 	 */
 	client_avaiable: boolean = false;
 	showAttachVol: boolean = false;
+	credits_allowed: boolean = false;
 
 	/**
 	 * Default volume name.
@@ -219,7 +221,8 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 
 	constructor(private groupService: GroupService, private imageService: ImageService,
 							private flavorService: FlavorService, private virtualmachineservice: VirtualmachineService,
-							private keyservice: KeyService, private userService: UserService, private router: Router) {
+							private keyservice: KeyService, private userService: UserService, private router: Router,
+							private applicationsService: ApplicationsService) {
 		// constructor for VirtualMachineComponent
 	}
 
@@ -588,6 +591,10 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 	 * If connected geht vm,volumes etc.
 	 */
 	getSelectedProjectClient(): void {
+		this.applicationsService.getCreditsAllowedByPerunId(this.selectedProject[1]).subscribe((res: any): void => {
+			console.log(res);
+			this.credits_allowed = res['credits_allowed'];
+		});
 		this.newCores = 0;
 		this.newGpus = 0;
 		this.newVms = 0;
@@ -650,7 +657,6 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 				this.projects.push(project);
 
 			}
-
 			if (this.projects.length === 1) {
 				this.resetChecks();
 				this.selectedProject = this.projects[0];
@@ -681,7 +687,6 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 		this.getDetachedVolumesByProject();
 		this.groupService.getGroupResources(this.selectedProject[1].toString()).subscribe((res: ApplicationRessourceUsage): void => {
 			this.selectedProjectRessources = new ApplicationRessourceUsage(res);
-
 			this.data_loaded = true;
 			this.checkProjectDataLoaded();
 		});
