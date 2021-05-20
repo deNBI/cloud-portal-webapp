@@ -22,6 +22,10 @@ export class FlavorService {
 		});
 	}
 
+	getAllFlavors(): Observable<Flavor[]> {
+		return this.http.get<Flavor[]>(`${ApiSettings.getApiBase()}public/flavors/`);
+	}
+
 	getListOfTypesAvailable(): Observable<FlavorType[]> {
 		return this.http.get<FlavorType[]>(`${ApiSettings.getApiBaseURL()}project_applications/flavorTypes/`, {
 			withCredentials: true,

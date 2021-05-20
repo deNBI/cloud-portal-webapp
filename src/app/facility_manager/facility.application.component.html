@@ -764,10 +764,18 @@
                 </td>
               </tr>
               <td colspan="12">
-                <app-application-detail *ngIf="!getCollapseStatus('application_history-' + application?.project_application_id)"
-                  [class.collapse_no_margin]="getCollapseStatus('application_history-' + application?.project_application_id)"
-                  [class.collapse]="getCollapseStatus('application_history-' + application?.project_application_id)"
-                  [application]="application"></app-application-detail>
+                <app-application-detail
+                        *ngIf="application?.project_application_description && !getCollapseStatus('application_history-' + application?.project_application_id)"
+                        [class.collapse_no_margin]="getCollapseStatus('application_history-' + application?.project_application_id)"
+                        [class.collapse]="getCollapseStatus('application_history-' + application?.project_application_id)"
+                        [application]="application"></app-application-detail>
+                <div class="d-flex justify-content-center"
+                     *ngIf="!application?.project_application_description && !getCollapseStatus('application_history-' + application?.project_application_id)">
+                  <div class="spinner-border" role="status">
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                </div>
+
               </td>
 
             </ng-container>
