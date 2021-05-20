@@ -41,7 +41,6 @@ export class CreditsCalculatorComponent implements OnInit {
 	timestamp_group: FormGroup = new FormGroup(
 		{
 			date_picker: new FormControl(new Date()),
-			time_picker: new FormControl(new Date()),
 		},
 	)
 
@@ -120,7 +119,6 @@ export class CreditsCalculatorComponent implements OnInit {
 		this.total_cost_per_hour_needed = 0;
 		this.total_cost_per_hour_time = 0;
 		this.timestamp_group.get('date_picker').setValue(new Date());
-		this.timestamp_group.get('time_picker').setValue(new Date());
 	}
 
 	filter_flavors_by_facility(): void {
@@ -171,14 +169,10 @@ export class CreditsCalculatorComponent implements OnInit {
 
 	calculate_timestamp(): number {
 		const date: Date = this.timestamp_group.get('date_picker').value;
-		const time: Date = this.timestamp_group.get('time_picker').value;
 		const date_time: Date = new Date(
 			date.getFullYear(),
 			date.getMonth(),
 			date.getDate(),
-			time.getHours(),
-			time.getMinutes(),
-			time.getSeconds(),
 		);
 
 		return date_time.getTime() / 1000;
