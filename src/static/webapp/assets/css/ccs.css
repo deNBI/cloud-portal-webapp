@@ -20,7 +20,7 @@
 }
 */
 
- [class^="icon-"]:before, [class*=" icon-"]:before {
+ [class^="ccs-"]:before, [class*=" ccs-"]:before {
   font-family: "ccs";
   font-style: normal;
   font-weight: normal;
@@ -55,4 +55,4 @@
   /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
 }
 
-.icon-credits_icon:before { content: '\e800'; } /* '' */
+.ccs-credits_icon:before { content: '\e800'; } /* '' */
