@@ -106,4 +106,34 @@ export class CreditsService {
 			withCredentials: true,
 		});
 	}
+
+	public getPublicCreditsNeeded(
+		hours: number,
+		flavor_pairs: [string, number][],
+		compute_center_name: string,
+		start_timestamp: number,
+	): Observable<{}> {
+		const params: {} = {
+			hours, flavor_pairs, compute_center_name, start_timestamp,
+		};
+
+		return this.http.post(`${ApiSettings.getApiBase()}public/credits_calculator/needed/`, params, {
+			withCredentials: true,
+		});
+	}
+
+	public getPublicHoursPossible(
+		credits: number,
+		flavor_pairs: [string, number][],
+		compute_center_name: string,
+		start_timestamp: number,
+	): Observable<{}> {
+		const params: {} = {
+			credits, flavor_pairs, compute_center_name, start_timestamp,
+		};
+
+		return this.http.post(`${ApiSettings.getApiBase()}public/credits_calculator/time/`, params, {
+			withCredentials: true,
+		});
+	}
 }
