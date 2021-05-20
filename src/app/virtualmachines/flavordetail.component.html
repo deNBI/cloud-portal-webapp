@@ -47,7 +47,7 @@
             </div>
           </div>
 
-          <div class="col" *ngIf="selectedFlavor?.credits_per_hour">
+          <div class="col" *ngIf="selectedFlavor?.credits_per_hour && creditsAllowed">
             <div class="row">
               <figure class="flavor-card-icons">
                 <img src="{{CREDITS_ICON_PATH}}" alt="">
@@ -114,7 +114,7 @@
                   </div>
                 </div>
 
-                <div class="col" *ngIf="flavor?.credits_per_hour">
+                <div class="col" *ngIf="flavor?.credits_per_hour && creditsAllowed">
                   <div class="row">
                     <figure class="flavor-card-icons">
                       <img src="{{CREDITS_ICON_PATH}}" alt="">
@@ -188,7 +188,7 @@
                   </div>
                 </div>
 
-                <div class="col" *ngIf="flavor?.credits_per_hour">
+                <div class="col" *ngIf="flavor?.credits_per_hour && creditsAllowed">
                   <div class="row">
                     <figure class="flavor-card-icons">
                       <img src="{{CREDITS_ICON_PATH}}" alt="">
