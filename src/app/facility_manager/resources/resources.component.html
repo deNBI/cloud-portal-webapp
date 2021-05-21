@@ -242,7 +242,7 @@
             </div>
           </div>
           <div *ngIf="GPU_TAB_ACTIVE && selectedFacility">
-            <app-gpu-specification-overview></app-gpu-specification-overview>
+            <app-gpu-specification-overview [facility_id]="selectedFacility['FacilityId']"></app-gpu-specification-overview>
           </div>
         </div>
         <div class="modal-footer">
