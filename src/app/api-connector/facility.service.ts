@@ -346,7 +346,7 @@ export class FacilityService {
 	}
 
 	getGPUSpecification(facility: number | string, gpu_spec_id: number | string): Observable<GPUSpecification> {
-		return this.http.get<GPUSpecification>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/gpuSpecification/${gpu_spec_id}`, {
+		return this.http.get<GPUSpecification>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/gpuSpecification/${gpu_spec_id}/`, {
 			withCredentials: true,
 		});
 	}
@@ -358,7 +358,7 @@ export class FacilityService {
 	}
 
 	deleteGPUSpecification(facility: number | string, gpu_spec_id: number | string): Observable<GPUSpecification[]> {
-		return this.http.delete<GPUSpecification[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/resourcesMachine/${gpu_spec_id}/`, {
+		return this.http.delete<GPUSpecification[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/gpuSpecification/${gpu_spec_id}/`, {
 			withCredentials: true,
 		});
 	}
