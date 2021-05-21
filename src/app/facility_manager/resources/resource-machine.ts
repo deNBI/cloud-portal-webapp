@@ -45,7 +45,7 @@ export class ResourceMachine {
 			this.type = resourceMachine.type;
 			if (this.gpu_used.length < this.gpu_slots) {
 				while (this.gpu_used.length < this.gpu_slots) {
-					this.gpu_used.push(new GPUSpecification());
+					this.gpu_used.push(new GPUSpecification(null));
 				}
 			}
 		}
@@ -56,7 +56,7 @@ export class ResourceMachine {
 			this.gpu_used = this.gpu_used.slice(0, this.gpu_slots);
 		} else {
 			while (this.gpu_slots > this.gpu_used.length) {
-				this.gpu_used.push(new GPUSpecification());
+				this.gpu_used.push(new GPUSpecification(null));
 			}
 		}
 	}
