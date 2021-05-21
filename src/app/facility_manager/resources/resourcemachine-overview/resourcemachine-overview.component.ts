@@ -22,7 +22,7 @@ export class ResourcemachineOverviewComponent implements OnInit {
 	resourceMachines: ResourceMachine[];
 	newResourceMachine: ResourceMachine;
 	newMachineFormGroup: FormGroup;
-	emptySpec: GPUSpecification = new GPUSpecification();
+	emptySpec: GPUSpecification = new GPUSpecification(null);
 	formBuilder: FormBuilder = new FormBuilder();
 	machinesFormGroups: { [id: string]: FormGroup } = {};
 	name: string = '';
@@ -128,7 +128,6 @@ export class ResourcemachineOverviewComponent implements OnInit {
 				this.resourceMachineUpdateList[machine.id] = false;
 				this.setupFormGroup(machine);
 			});
-
 		});
 	}
 
