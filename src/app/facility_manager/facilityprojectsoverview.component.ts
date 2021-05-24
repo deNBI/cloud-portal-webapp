@@ -214,7 +214,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 	 */
 	onChangeSelectedFacility(): void {
 		this.getFacilityProjects(this.selectedFacility['FacilityId']);
-		this.emailSubject = `[${this.selectedFacility['Facility']}`;
+		this.emailSubject = `[${this.selectedFacility['Facility']}]`;
 	}
 
 	getProjectLifetime(project: Project): void {
