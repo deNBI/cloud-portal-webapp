@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { AlertModule } from 'ngx-bootstrap/alert';
 import { CreditsCalculatorComponent } from './credits-calculator.component';
 import { SharedDirectivesModule } from '../shared/shared_modules/shared_directives.module';
 import { PipeModuleModule } from '../pipe-module/pipe-module.module';
@@ -19,6 +20,7 @@ import { PipeModuleModule } from '../pipe-module/pipe-module.module';
 		BsDatepickerModule.forRoot(),
 		ReactiveFormsModule,
 		PipeModuleModule,
+		AlertModule,
 	],
 })
 export class CreditsCalculatorModule { }

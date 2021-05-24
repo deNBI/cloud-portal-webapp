@@ -10,6 +10,8 @@ export class ProjectEnumeration {
 	project_lifetime: number;
 	project_start_date: string;
 	project_application_status: number[];
+	compute_center_id: number;
+	compute_center_name: string;
 
 	public gotStatus(status: number): boolean {
 		return this.project_application_status.includes(status);

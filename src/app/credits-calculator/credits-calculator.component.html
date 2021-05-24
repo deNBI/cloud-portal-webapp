@@ -5,11 +5,17 @@
 			Calculate credits for {{selected_facility[0]}}
 		</div>
 		<div class="card-body">
-			<div class="alert alert-info">
+			<alert type="danger" dismissible="true">
+				We are slowly rolling out the implementation of Cloud Credits which assist in tracking resource usage.<br>
+				<strong>These Cloud Credits only affect some selected projects and each selected project will get
+					a message with detailed instructions and information.</strong><br>
+			</alert>
+			<alert type="info" dismissible="true">
 				Below you may calculate needed Cloud Credits for an amount of time respectively how long you may run a set of
 				machines non-stop with an available amount of Cloud Credits.<br>
-				Flavors may differ in their resources with each facility, therefore you can either choose the facility below or
-				select the Default which is an approximation of each flavor.<br>
+				Flavors may differ in their resources with each facility, therefore you can either choose a facility below
+				(if you are member of an approved project running in that facility) or select the Default which is an
+				approximation of each flavor.<br>
 				As our weight function for Cloud Credits computation takes the timestamp of VM creation into account, you may set
 				it below to a different date and time. You will find a link to our weight function on our
 				<a href="{{CREDITS_WIKI}}" target="_blank" rel="noopener noreferrer">Wiki page</a>.<br>
@@ -17,7 +23,7 @@
 				<a href="{{CREDITS_WIKI}}" target="_blank" rel="noopener noreferrer">Wiki page</a>.<br>
 				If you have questions, suggestions or need help, please E-Mail us at
 				<a class="alert-link" href="mailto: {{CLOUD_PORTAL_SUPPORT_MAIL}}">{{CLOUD_PORTAL_SUPPORT_MAIL}}</a>.
-			</div>
+			</alert>
 			<label for="select_facility">Please select either a facility or Default:</label>
 			<select
 				[(ngModel)]="selected_facility"

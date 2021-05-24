@@ -10,12 +10,15 @@ import {
 	minAmountValidator,
 } from '../applications/numberValidations.directive';
 import { CREDITS_WIKI, CLOUD_PORTAL_SUPPORT_MAIL } from '../../links/links';
+import { GroupService } from '../api-connector/group.service';
+import { ProjectEnumeration } from '../projectmanagement/project-enumeration';
+import { Application_States } from '../shared/shared_modules/baseClass/abstract-base-class';
 
 @Component({
 	selector: 'app-credits-calculator',
 	templateUrl: './credits-calculator.component.html',
 	styleUrls: ['./credits-calculator.component.scss'],
-	providers: [FacilityService, FlavorService, CreditsService],
+	providers: [FacilityService, FlavorService, CreditsService, GroupService],
 })
 export class CreditsCalculatorComponent implements OnInit {
 
@@ -58,7 +61,8 @@ export class CreditsCalculatorComponent implements OnInit {
 
 	constructor(private facility_service: FacilityService,
 							private flavor_service: FlavorService,
-							private credits_service: CreditsService) {
+							private credits_service: CreditsService,
+							private group_service: GroupService) {
 		// Empty comment for ESLint
 	}
 
@@ -69,16 +73,28 @@ export class CreditsCalculatorComponent implements OnInit {
 			},
 		);
 		this.all_facilities.push(['Default', null]);
-		this.facility_service.getComputeCenters().subscribe(
-			(result: any) => {
-				for (const facility of result) {
-					this.all_facilities.push([facility['compute_center_name'], facility['id']]);
-				}
+		this.get_facilities();
+	}
+
+	get_facilities(): void {
+		const facilities: number[] = [];
+		this.group_service.getGroupsEnumeration().subscribe(
+			(result: ProjectEnumeration[]): void => {
+				result.forEach((enumeration: ProjectEnumeration): void => {
+					if (enumeration.project_application_status.includes(Application_States.APPROVED)) {
+						if (!facilities.includes(enumeration.compute_center_id)) {
+							this.all_facilities.push(
+								[enumeration.compute_center_name, enumeration.compute_center_id],
+							);
+							facilities.push(enumeration.compute_center_id);
+						}
+					}
+				});
 				this.selected_facility = this.all_facilities[0];
 				this.got_all_cc = true;
 				this.reload_data();
 			},
-			(error: any) => {
+			(error: any): void => {
 				console.log(error);
 			},
 		);
