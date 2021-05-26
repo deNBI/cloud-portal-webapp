@@ -108,7 +108,7 @@ export class CreditsCalculatorComponent implements OnInit {
 				this.all_flavors = result;
 				for (const flavor of this.all_flavors) {
 					if (flavor.type.long_name in this.shown_flavors
-							&& flavor['public']) {
+							&& flavor['public'] !== false && flavor['default'] !== false) {
 						this.shown_flavors[flavor.type.long_name].push(flavor);
 					}
 				}
@@ -138,17 +138,21 @@ export class CreditsCalculatorComponent implements OnInit {
 	}
 
 	filter_flavors_by_facility(): void {
-		if (this.selected_facility[1] === -1) {
+		// Default as facility is chosen, do not filter by facility
+		if (this.selected_facility[1] === null) {
 			return;
 		}
 		for (const flavor of this.all_flavors) {
 			let changed: boolean = false;
+			// Flavor does not belong to the facility, continue
 			if (flavor['compute_center'] !== this.selected_facility[1]) {
 				continue;
 			}
+			// Check if flavor with same name is already in shown_flavors list
 			for (const flavor_type in this.shown_flavors) {
 				for (const shown_flavor of this.shown_flavors[flavor_type]) {
 					if (shown_flavor.name === flavor.name) {
+						// Flavor with same name found, updating it instead of pushing
 						this.shown_flavors[flavor_type][
 							this.shown_flavors[flavor_type].indexOf(shown_flavor)
 						] = flavor;
@@ -156,6 +160,7 @@ export class CreditsCalculatorComponent implements OnInit {
 					}
 				}
 			}
+			// Flavor with same name not found, pushing it instead of updating
 			if (!changed) {
 				if (flavor.type.long_name in this.shown_flavors) {
 					this.shown_flavors[flavor.type.long_name].push(flavor);

@@ -147,7 +147,7 @@
 									</div>
 									<button class="btn btn-primary col" [disabled]="chosen_flavors.length === 0 || hours_wanted_group?.invalid"
 													(click)="calculate_credits_needed()">Calculate</button>
-									<div *ngIf="credits_needed > 0">
+									<div *ngIf="credits_needed > 0" style="margin-top: 5px">
 										You will need <strong>{{credits_needed}} Cloud Credits</strong> to run this configuration for
 										{{hours_wanted_group.get('hours_wanted_form').value | floorInteger}} hours
 										non-stop. The configuration costs a total of {{total_cost_per_hour_needed}} CCs/h.
@@ -183,7 +183,7 @@
 									</div>
 									<button class="btn btn-primary col" [disabled]="chosen_flavors.length === 0 || credits_wanted_group?.invalid"
 													(click)="calculate_time_possible()">Calculate</button>
-									<div *ngIf="hours_possible > 0">
+									<div *ngIf="hours_possible > 0" style="margin-top: 5px">
 										You may run this configuration for <strong>{{hours_possible}} hours</strong> non-stop with
 										{{credits_wanted_group.get('credits_wanted_form').value | floorInteger}} Cloud Credits.
 										The configuration costs a total of {{total_cost_per_hour_time}} CCs/h.
