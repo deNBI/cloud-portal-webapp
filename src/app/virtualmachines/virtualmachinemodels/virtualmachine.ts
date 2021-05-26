@@ -20,6 +20,7 @@ export class VirtualMachine {
 	client: Client;
 	openstackid: string;
 	created_at_date: string;
+	deleted_at_date: string;
 	still_used_confirmation_requested_date: Date;
 	stopped_at: string;
 	elixir_id: string;
@@ -53,6 +54,7 @@ export class VirtualMachine {
 		this.client = vm.client;
 		this.openstackid = vm.openstackid;
 		this.created_at_date = vm.created_at_date;
+		this.deleted_at_date = vm.deleted_at_date;
 		this.stopped_at = vm.stopped_at;
 		this.elixir_id = vm.elixir_id;
 		this.userlogin = vm.userlogin;
