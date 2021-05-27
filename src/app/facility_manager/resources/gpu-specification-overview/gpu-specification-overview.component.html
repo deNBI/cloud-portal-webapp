@@ -1,7 +1,7 @@
 <div class="card border-success" id="new_GPU_card" style="margin:5px;">
   <div class="card-body">
-    <h5 class="card-title">New gpu</h5>
-    <div class="row">
+    <h5 class="card-title">New GPU</h5>
+    <div class="row" [formGroup]="newGPUFormGroup">
       <div class="col-2">
         <div class="text-muted"><small>Actions</small></div>
         <div class="btn-group-vertical" role="group">
@@ -17,8 +17,9 @@
         <div class="form-group row">
           <label for="new_GPU_type">Name</label>
           <div class="input-group mb-3">
-            <input class="form-control" type="text" id="new_GPU_type"
-                   [(ngModel)]="newGPUSpecification.type">
+            <input class="form-control" type="text" id="new_GPU_type" formControlName="new_gpu_type"
+                   [ngClass]="{'is-invalid': newGPUFormGroup.controls['new_gpu_type'].invalid && newGPUFormGroup.controls['new_gpu_type'].dirty,
+                   'is-valid': newGPUFormGroup.controls['new_gpu_type'].valid}">
           </div>
         </div>
       </div>
@@ -27,8 +28,9 @@
         <div class="form-group row">
           <label for="new_GPU_ram">Amount</label>
           <div class="input-group mb-3">
-            <input class="form-control" type="number" id="new_GPU_cores"
-                   [(ngModel)]="newGPUSpecification.cores" min="0">
+            <input class="form-control" type="number" id="new_GPU_cores" formControlName="new_gpu_cores"
+                   [ngClass]="{'is-invalid': newGPUFormGroup.controls['new_gpu_cores'].invalid && newGPUFormGroup.controls['new_gpu_cores'].dirty,
+                   'is-valid': newGPUFormGroup.controls['new_gpu_cores'].valid}" min="0" step="1">
             <div class="input-group-append">
               <span class="input-group-text">cores</span>
             </div>
@@ -36,12 +38,13 @@
         </div>
       </div>
       <div class="col-2" style="margin:5px;">
-        <div class="text-muted"><small>RAM (Optional)</small></div>
+        <div class="text-muted"><small>RAM</small></div>
         <div class="form-group row">
           <label for="new_GPU_ram">Amount</label>
           <div class="input-group mb-3">
-            <input class="form-control" type="number" id="new_GPU_ram"
-                   [(ngModel)]="newGPUSpecification.ram" min="0">
+            <input class="form-control" type="number" id="new_GPU_ram" formControlName="new_gpu_ram"
+                   [ngClass]="{'is-invalid': newGPUFormGroup.controls['new_gpu_ram'].invalid && newGPUFormGroup.controls['new_gpu_ram'].dirty,
+                   'is-valid': newGPUFormGroup.controls['new_gpu_ram'].valid}" min="0" step="1">
             <div class="input-group-append">
               <span class="input-group-text">GB</span>
             </div>
@@ -56,7 +59,7 @@
      style="margin:5px;" [ngClass]="this.gpuSpecificationUpdateList[gpu.id] ? 'border-warning' : 'border-primary'">
   <div class="card-body">
     <h5 class="card-title">{{gpu?.type}}</h5>
-    <div class="row">
+    <div class="row" [formGroup]="gpuFormGroups[gpu.id]">
       <div class="col-2" style="margin:5px;">
         <div class="text-muted"><small>Actions</small></div>
         <div class="btn-group-vertical" role="group">
@@ -78,8 +81,7 @@
         <div class="form-group row">
           <label for="{{gpu?.id + '_type'}}">Name</label>
           <div class="input-group mb-3">
-            <input class="form-control" type="text" [disabled]="!this.gpuSpecificationUpdateList[gpu.id]"
-                   [(ngModel)]="gpu.type" id="{{gpu?.id + '_type'}}">
+            <input class="form-control" type="text" formControlName="{{gpu?.id}}_type" id="{{gpu?.id + '_type'}}">
           </div>
         </div>
       </div>
@@ -88,8 +90,7 @@
         <div class="form-group row">
           <label for="{{gpu?.id + '_cores'}}">Amount</label>
           <div class="input-group mb-3">
-            <input class="form-control" type="number" min="0" [disabled]="!this.gpuSpecificationUpdateList[gpu.id]"
-                   [(ngModel)]="gpu.cores" id="{{gpu?.id + '_cores'}}">
+            <input class="form-control" type="number" min="0" step="1" formControlName="{{gpu.id}}_cores" id="{{gpu?.id + '_cores'}}">
             <div class="input-group-append">
               <span class="input-group-text">cores</span>
             </div>
@@ -101,8 +102,7 @@
         <div class="form-group row">
           <label for="{{gpu?.id + '_ram'}}">Amount</label>
           <div class="input-group mb-3">
-            <input class="form-control" type="number" min="0" [disabled]="!this.gpuSpecificationUpdateList[gpu.id]"
-                   [(ngModel)]="gpu.ram" id="{{gpu?.id + '_ram'}}">
+            <input class="form-control" type="number" min="0" step="1" formControlName="{{gpu.id}}_ram" id="{{gpu?.id + '_ram'}}">
             <div class="input-group-append">
               <span class="input-group-text">GB</span>
             </div>

@@ -7,6 +7,7 @@ import {FullLayoutComponent} from './layouts/full-layout.component';
 import {MemberGuardService} from './member-guard.service';
 import {RegistrationInfoComponent} from './registration-info.component';
 import {LoggedInGuard} from './logged-in-guard.service';
+import {CreditsCalculatorComponent} from "./credits-calculator/credits-calculator.component";
 
 export const routes: Routes = [
   {
@@ -74,7 +75,14 @@ export const routes: Routes = [
         canActivate: [LoggedInGuard],
 
         loadChildren: () => import('./facility_manager/facilitymanager.module').then(m => m.FacilitymanagerModule)
-      }
+      },
+			{
+				path: 'credits-calculator',
+				canActivate: [LoggedInGuard],
+				component: CreditsCalculatorComponent,
+
+				loadChildren: () => import('./credits-calculator/credits-calculator.module').then(m => m.CreditsCalculatorModule)
+			}
 
     ]
   }
