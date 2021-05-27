@@ -121,9 +121,9 @@ export class Clusterinfo {
 	}
 
 	private set_worker_baches(workerBatches: WorkerBatch[]): void {
-
-		this.worker_batches = workerBatches.map((workerBatch: WorkerBatch): WorkerBatch => new WorkerBatch(workerBatch.index, workerBatch));
-
+		this.worker_batches = workerBatches.map(
+			(workerBatch: WorkerBatch): WorkerBatch => new WorkerBatch(workerBatch.index, workerBatch),
+		);
 	}
 
 	private get_batches_count(): number {
