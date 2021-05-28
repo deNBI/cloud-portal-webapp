@@ -25,7 +25,8 @@
 				<a class="alert-link" href="mailto: {{CLOUD_PORTAL_SUPPORT_MAIL}}">{{CLOUD_PORTAL_SUPPORT_MAIL}}</a>.
 			</alert>
 			<label for="select_facility">Please select either a facility or Default:</label>
-			<select
+			<div class="col-6">
+			<div class="row"><select
 				[(ngModel)]="selected_facility"
 				class="form-control "
 				(ngModelChange)="reload_data();"
@@ -39,6 +40,63 @@
 					{{facility[0]}}
 				</option>
 			</select>
+			</div>
+			</div>
+			<div class="col-6">
+				<accordion>
+					<ng-container>
+						<accordion-group [isOpen]="weightsOpen" #weightsgroup>
+							<div accordion-heading style="width: 100%; cursor: pointer">
+								<strong>Weights</strong>
+								<i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
+                            'icon-arrow-up': weightsgroup.isOpen, 'icon-arrow-down': !weightsgroup.isOpen}"></i>
+							</div>
+							<div *ngFor="let weight of resourceWeights">
+								<div class="form-group row">
+
+									<label class="col-md-4 form-control-label"
+										   for="{{f.name}}"><strong>{{f.name}}</strong><br>
+										Number of cores: {{f.vcpus}}<br>
+										RAM: {{f.ram}} GB<br>
+										<span *ngIf="f.type.shortcut == 'GPU'">
+                                                GPU: {{f.gpu}}
+                                            </span></label>
+									<div class="col-md-8">
+
+										<div class="input-group">
+											<input class="form-control"
+												   id="{{f.name}}"
+												   name="{{f.name}}"
+												   type="number" min="0" step="1"
+												   placeholder="0"
+												   [ngModel]="application?.getFlavorCounter(f)"
+												   (change)="valuesChanged(f,name?.value)"
+
+												   #name="ngModel"
+												   (ngModelChange)="onChangeFlavor(f,$event)"
+												   appMinAmount="0" appInteger
+												   [ngClass]="{
+                                'is-invalid': name?.invalid,
+                                'is-valid': name?.valid
+                                }">
+											<div class="input-group-append"><span class="input-group-text"> VMs
+                                    </span></div>
+										</div>
+										<span class="help-block">Number of VMs you would like to run of this particular flavor</span>
+										<div *ngIf="f?.comment" class="alert alert-info">{{f.comment}}</div>
+									</div>
+								</div>
+							</div>
+							<div *ngIf="t.shortcut === 'GPU'" class="alert alert-light">
+								You can check which CUDA drivers are currently supported here:<br>
+								<div *ngFor="let link of gpuInformationLinks">
+									<a href="{{link[0]}}" target="_blank" rel="noopener noreferrer">{{link[1]}}</a>
+								</div>
+							</div>
+						</accordion-group>
+					</ng-container>
+				</accordion>
+			</div>
 			<div *ngIf="!got_all_flavor" class="row" style="padding-bottom: 500px">
 				<div class="loader"></div>
 			</div>

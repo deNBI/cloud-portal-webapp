@@ -13,6 +13,7 @@ import { CREDITS_WIKI, CLOUD_PORTAL_SUPPORT_MAIL } from '../../links/links';
 import { GroupService } from '../api-connector/group.service';
 import { ProjectEnumeration } from '../projectmanagement/project-enumeration';
 import { Application_States } from '../shared/shared_modules/baseClass/abstract-base-class';
+import { ResourceWeight } from './resource-weights.model/resource-weights.model';
 
 @Component({
 	selector: 'app-credits-calculator',
@@ -31,6 +32,8 @@ export class CreditsCalculatorComponent implements OnInit {
 	all_flavors: Flavor[] = [];
 	shown_flavors: { [name: string]: Flavor[] } = {};
 	chosen_flavors: [string, number][] = [];
+	weightsOpen: boolean = false;
+	resourceWeights: ResourceWeight[] = [];
 
 	credits_needed: number = 0;
 	hours_possible: number = 0;
