@@ -87,7 +87,7 @@ export class Clusterinfo {
 		this.project = cl.project;
 		this.userlogin = cl.userlogin;
 		this.project_id = cl.project_id;
-		this.master_instance_openstack_id = cl.master_instance_openstack_id;
+		this.master_instance_openstack_id = cl.master_instance.openstackid;
 		this.set_worker_baches(cl.worker_batches);
 		this.sortWorkerByStatus();
 	}
@@ -121,9 +121,9 @@ export class Clusterinfo {
 	}
 
 	private set_worker_baches(workerBatches: WorkerBatch[]): void {
-
-		this.worker_batches = workerBatches.map((workerBatch: WorkerBatch): WorkerBatch => new WorkerBatch(workerBatch.index, workerBatch));
-
+		this.worker_batches = workerBatches.map(
+			(workerBatch: WorkerBatch): WorkerBatch => new WorkerBatch(workerBatch.index, workerBatch),
+		);
 	}
 
 	private get_batches_count(): number {
