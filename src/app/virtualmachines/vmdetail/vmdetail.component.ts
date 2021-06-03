@@ -161,11 +161,12 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	validSnapshotName(event: any): any {
 		this.snapshotNameCheckDone = false;
-		this.imageService.checkSnapshotNameAvailable(this.snapshotName.trim()).subscribe((res: IResponseTemplate): void => {
+		this.imageService.checkSnapshotNameAvailable(this.snapshotName.trim(), this.virtualMachine.client.id)
+			.subscribe((res: IResponseTemplate): void => {
 
-			this.validSnapshotNameBool = this.snapshotName.length > 0 && res.value as boolean;
-			this.snapshotNameCheckDone = true;
-		});
+				this.validSnapshotNameBool = this.snapshotName.length > 0 && res.value as boolean;
+				this.snapshotNameCheckDone = true;
+			});
 	}
 
 	/**

@@ -129,6 +129,7 @@
         "import/no-unresolved": "off",
         "import/no-mutable-exports": "off",
         "import/extensions": "off",
+				"import/no-extraneous-dependencies": "off",
         "indent": ["error", "tab", {"SwitchCase": 1}],
         "linebreak-style": "error",
         "max-lines": "off",
