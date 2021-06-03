@@ -38,6 +38,7 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
 	public status: { isopen: boolean } = { isopen: false };
 	is_vo_admin: boolean = false;
 	public is_facility_manager: boolean = false;
+	public is_simple_vm_manager: boolean = false;
 	public vm_project_member: boolean = false;
 	public login_name: string = '';
 	public production: boolean = environment.production;
@@ -80,6 +81,14 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
 		this.facilityService.getManagerFacilities().subscribe((result: any): void => {
 			if (result.length > 0) {
 				this.is_facility_manager = true;
+				let svm_manager: boolean = false;
+				for (const facility of result) {
+					if (facility['SimpleVM']) {
+						svm_manager = true;
+						break;
+					}
+				}
+				this.is_simple_vm_manager = svm_manager;
 			}
 		});
 	}
