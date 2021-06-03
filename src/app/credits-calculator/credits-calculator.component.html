@@ -24,9 +24,9 @@
 				If you have questions, suggestions or need help, please E-Mail us at
 				<a class="alert-link" href="mailto: {{CLOUD_PORTAL_SUPPORT_MAIL}}">{{CLOUD_PORTAL_SUPPORT_MAIL}}</a>.
 			</alert>
-			<label for="select_facility">Please select either a facility or Default:</label>
-			<div class="row">
+			<div class="row justify-content-center">
 				<div class="col-6">
+					<label for="select_facility">Please select either a facility or Default:</label>
 					<select
 						[(ngModel)]="selected_facility"
 						class="form-control "
@@ -43,7 +43,7 @@
 					</select>
 				</div>
 			</div>
-			<div class="row">
+			<div class="row justify-content-center">
 				<div class="col-6">
 					<accordion>
 						<ng-container>
@@ -77,10 +77,10 @@
 				</div>
 			</div>
 
-			<div class="row col" style="margin-top: 5px">
+			<div class="row col justify-content-center" style="margin-top: 5px">
 				Here you may select the start date of your flavor configuration to affect the weight function:<br>
 			</div>
-			<form [formGroup]="timestamp_group" class="row">
+			<form [formGroup]="timestamp_group" class="row justify-content-center">
 				<label class="input-group col-2">
 					<input
 						type="text"
