@@ -465,13 +465,13 @@
         </li>
 
 
-        <li *ngIf="!navbar_minimized  && (is_facility_manager || is_vo_admin)" class="nav-item">
+        <li *ngIf="!navbar_minimized  && ((is_facility_manager && is_simple_vm_manager) || is_vo_admin)" class="nav-item">
           <a class="nav-link" routerLinkActive="active"
              [routerLink]="['/facility-manager/imageTags']"><i
             class="nav-icon fas fa-tags"></i> Image Tags</a>
         </li>
 
-        <li *ngIf="navbar_minimized  && (is_facility_manager || is_vo_admin)" class="nav-item">
+        <li *ngIf="navbar_minimized  && ((is_facility_manager && is_simple_vm_manager) || is_vo_admin)" class="nav-item">
           <a class="nav-link" routerLinkActive="active" data-toggle="tooltip" data-placement="right" title="Image Tags"
              [routerLink]="['/facility-manager/imageTags']"><i
             class="nav-icon fas fa-tags"></i> Image Tags</a>
