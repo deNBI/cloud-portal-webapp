@@ -25,105 +25,86 @@
 				<a class="alert-link" href="mailto: {{CLOUD_PORTAL_SUPPORT_MAIL}}">{{CLOUD_PORTAL_SUPPORT_MAIL}}</a>.
 			</alert>
 			<label for="select_facility">Please select either a facility or Default:</label>
-			<div class="col-6">
-			<div class="row"><select
-				[(ngModel)]="selected_facility"
-				class="form-control "
-				(ngModelChange)="reload_data();"
-				name="selected_facility"
-				id="select_facility"
-			>
-				<option
-					*ngFor="let facility of all_facilities"
-					[ngValue]="facility"
-				>
-					{{facility[0]}}
-				</option>
-			</select>
+			<div class="row">
+				<div class="col-6">
+					<select
+						[(ngModel)]="selected_facility"
+						class="form-control "
+						(ngModelChange)="reload_data();"
+						name="selected_facility"
+						id="select_facility"
+					>
+						<option
+							*ngFor="let facility of all_facilities"
+							[ngValue]="facility"
+						>
+							{{facility[0]}}
+						</option>
+					</select>
+				</div>
 			</div>
-			</div>
-			<div class="col-6">
-				<accordion>
-					<ng-container>
-						<accordion-group [isOpen]="weightsOpen" #weightsgroup>
-							<div accordion-heading style="width: 100%; cursor: pointer">
-								<strong>Weights</strong>
-								<i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
+			<div class="row">
+				<div class="col-6">
+					<accordion>
+						<ng-container>
+							<accordion-group [isOpen]="weights_open" #weightsgroup>
+								<div accordion-heading style="width: 100%; cursor: pointer">
+									<strong>Weights</strong>
+									<i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
                             'icon-arrow-up': weightsgroup.isOpen, 'icon-arrow-down': !weightsgroup.isOpen}"></i>
-							</div>
-							<div *ngFor="let weight of resourceWeights">
-								<div class="form-group row">
-
-									<label class="col-md-4 form-control-label"
-										   for="{{f.name}}"><strong>{{f.name}}</strong><br>
-										Number of cores: {{f.vcpus}}<br>
-										RAM: {{f.ram}} GB<br>
-										<span *ngIf="f.type.shortcut == 'GPU'">
-                                                GPU: {{f.gpu}}
-                                            </span></label>
-									<div class="col-md-8">
-
-										<div class="input-group">
-											<input class="form-control"
-												   id="{{f.name}}"
-												   name="{{f.name}}"
-												   type="number" min="0" step="1"
-												   placeholder="0"
-												   [ngModel]="application?.getFlavorCounter(f)"
-												   (change)="valuesChanged(f,name?.value)"
-
-												   #name="ngModel"
-												   (ngModelChange)="onChangeFlavor(f,$event)"
-												   appMinAmount="0" appInteger
-												   [ngClass]="{
-                                'is-invalid': name?.invalid,
-                                'is-valid': name?.valid
-                                }">
-											<div class="input-group-append"><span class="input-group-text"> VMs
-                                    </span></div>
+								</div>
+								<div *ngFor="let weight of resource_weights"
+										 class="callout" [ngClass]="{'callout-success': weight.used}">
+									<div class="row" style="margin-bottom: 5px">
+										Weights for {{weight.resource_set_date | date:'YYYY-MM-dd'}}:
+									</div>
+									<div class="row">
+										<div class="col">
+											<div class="row" *ngFor="let vcpu_weight of weight.vcpus" style="margin-bottom: 3px">
+												VCPUS: {{vcpu_weight.value}} - Weight: {{vcpu_weight.weight}}
+											</div>
 										</div>
-										<span class="help-block">Number of VMs you would like to run of this particular flavor</span>
-										<div *ngIf="f?.comment" class="alert alert-info">{{f.comment}}</div>
+										<div class="col">
+											<div class="row" *ngFor="let ram_weight of weight.memory_mb">
+												RAM: {{ram_weight.value}} - Weight: {{ram_weight.weight}}
+											</div>
+										</div>
 									</div>
 								</div>
-							</div>
-							<div *ngIf="t.shortcut === 'GPU'" class="alert alert-light">
-								You can check which CUDA drivers are currently supported here:<br>
-								<div *ngFor="let link of gpuInformationLinks">
-									<a href="{{link[0]}}" target="_blank" rel="noopener noreferrer">{{link[1]}}</a>
-								</div>
-							</div>
-						</accordion-group>
-					</ng-container>
-				</accordion>
+							</accordion-group>
+						</ng-container>
+					</accordion>
+				</div>
 			</div>
+
+			<div class="row col" style="margin-top: 5px">
+				Here you may select the start date of your flavor configuration to affect the weight function:<br>
+			</div>
+			<form [formGroup]="timestamp_group" class="row">
+				<label class="input-group col-2">
+					<input
+						type="text"
+						class="form-control"
+						bsDatepicker
+						#dp="bsDatepicker"
+						(bsValueChange)="reset_used()"
+						[bsConfig]="{
+								adaptivePosition: true,
+								dateInputFormat: 'YYYY-MM-DD',
+								containerClass: 'theme-dark-blue'}"
+						formControlName="date_picker">
+					<button class="btn input-group-append input-group-text"
+									(click)="dp.show()"
+									[attr.aria-expanded]="dp.isOpen"
+									type="button">
+						<i class="fa fa-clock"></i>
+					</button>
+				</label>
+			</form>
 			<div *ngIf="!got_all_flavor" class="row" style="padding-bottom: 500px">
 				<div class="loader"></div>
 			</div>
 			<div *ngIf="got_all_flavor" class="animated fadeIn">
-				<div class="row col" style="margin-top: 5px">
-					Here you may select the start date of your flavor configuration to affect the weight function:<br>
-				</div>
-				<form [formGroup]="timestamp_group" class="row">
-					<label class="input-group col-2">
-						<input
-							type="text"
-							class="form-control"
-							bsDatepicker
-							#dp="bsDatepicker"
-							[bsConfig]="{
-								adaptivePosition: true,
-								dateInputFormat: 'YYYY-MM-DD',
-								containerClass: 'theme-dark-blue'}"
-							formControlName="date_picker">
-						<button class="btn input-group-append input-group-text"
-										(click)="dp.show()"
-										[attr.aria-expanded]="dp.isOpen"
-										type="button">
-							<i class="fa fa-clock"></i>
-						</button>
-					</label>
-				</form>
 				<div class="row">
 					<div class="col-6">
 						<div style="margin-top: 10px">
@@ -185,8 +166,8 @@
 									</label>
 									<div class="input-group" style="margin-bottom: 5px" [formGroup]="hours_wanted_group">
 										<input type="number" class="form-control" formControlName="hours_wanted_form"
-														id="ccs_needed"
-														[ngClass]="{
+													 id="ccs_needed"
+													 [ngClass]="{
                                 'is-invalid': hours_wanted_group?.invalid,
                                 'is-valid': hours_wanted_group?.valid
                                 }"
@@ -222,7 +203,7 @@
 									</label>
 									<div class="input-group" style="margin-bottom: 5px" [formGroup]="credits_wanted_group">
 										<input type="number" class="form-control" formControlName="credits_wanted_form"
-										id="ccs_time" [ngClass]="{
+													 id="ccs_time" [ngClass]="{
                                 'is-invalid': credits_wanted_group?.invalid,
                                 'is-valid': credits_wanted_group?.valid
                                 }">

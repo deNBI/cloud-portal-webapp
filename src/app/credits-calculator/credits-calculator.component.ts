@@ -32,8 +32,8 @@ export class CreditsCalculatorComponent implements OnInit {
 	all_flavors: Flavor[] = [];
 	shown_flavors: { [name: string]: Flavor[] } = {};
 	chosen_flavors: [string, number][] = [];
-	weightsOpen: boolean = false;
-	resourceWeights: ResourceWeight[] = [];
+	weights_open: boolean = false;
+	resource_weights: ResourceWeight[] = [];
 
 	credits_needed: number = 0;
 	hours_possible: number = 0;
@@ -77,6 +77,7 @@ export class CreditsCalculatorComponent implements OnInit {
 		);
 		this.all_facilities.push(['Default', null]);
 		this.get_facilities();
+		this.get_weights();
 	}
 
 	get_facilities(): void {
@@ -103,6 +104,47 @@ export class CreditsCalculatorComponent implements OnInit {
 		);
 	}
 
+	get_weights(): void {
+		this.credits_service.getCreditsWeights().subscribe(
+			(weights: ResourceWeight[]) => {
+				this.resource_weights = weights;
+				this.resource_weights.sort(
+					(a, b)	=>	(a.resource_set_timestamp < b.resource_set_timestamp ? -1 : 1),
+				);
+				const len: number = this.resource_weights.length;
+				for (let i = 0; i < len; i += 1) {
+					if (this.calculate_timestamp() <= this.resource_weights[i].resource_set_timestamp
+						|| (i + 1) === len) {
+						this.resource_weights[i].set_used();
+						break;
+					}
+				}
+			},
+		);
+	}
+
+	reset_used(): void {
+		const len: number = this.resource_weights.length;
+		for (let i = 0; i < len; i += 1) {
+			this.resource_weights[i].set_unused();
+			if (this.calculate_timestamp() <= this.resource_weights[i].resource_set_timestamp
+				|| (i + 1) === len) {
+				this.resource_weights[i].set_used();
+				this.set_rest_unused(i + 1);
+				break;
+			}
+		}
+	}
+
+	set_rest_unused(start: number): void {
+		const len: number = this.resource_weights.length;
+		if (start < len) {
+			for (let i = start; i < len; i += 1) {
+				this.resource_weights[i].set_unused();
+			}
+		}
+	}
+
 	reload_data(): void {
 		this.got_all_flavor = false;
 		this.reset_data();
@@ -111,7 +153,7 @@ export class CreditsCalculatorComponent implements OnInit {
 				this.all_flavors = result;
 				for (const flavor of this.all_flavors) {
 					if (flavor.type.long_name in this.shown_flavors
-							&& flavor['public'] !== false && flavor['default'] !== false) {
+						&& flavor['public'] !== false && flavor['default'] !== false) {
 						this.shown_flavors[flavor.type.long_name].push(flavor);
 					}
 				}
@@ -137,7 +179,6 @@ export class CreditsCalculatorComponent implements OnInit {
 		this.hours_possible = 0;
 		this.total_cost_per_hour_needed = 0;
 		this.total_cost_per_hour_time = 0;
-		this.timestamp_group.get('date_picker').setValue(new Date());
 	}
 
 	filter_flavors_by_facility(): void {
