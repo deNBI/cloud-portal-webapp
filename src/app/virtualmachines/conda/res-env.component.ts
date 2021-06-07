@@ -30,7 +30,7 @@ export class ResEnvComponent implements OnInit, OnChanges {
 	templates_to_block: string[] = [];
 
 	user_key_url: FormControl = new FormControl('',
-		[Validators.required, Validators.pattern('[a-zA-Z]{3,25}')]);
+		[Validators.required, Validators.pattern('[a-zA-Z]{3,20}')]);
 
 	selectedTemplate: ResearchEnvironment = null;
 
