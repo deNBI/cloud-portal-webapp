@@ -130,7 +130,9 @@
           </div>
         </div>
         <div *ngIf="user_key_url.invalid && (user_key_url?.dirty || user_key_url?.touched)">
-          <div class="alert alert-warning" *ngIf="user_key_url.errors.pattern">Allowed characters are upper and lower
+          <div class="alert alert-warning" *ngIf="user_key_url.errors.pattern">At least three characters are required.<br>
+
+            Allowed characters are upper and lower
             case
             letters (a-z A-Z).
           </div>
