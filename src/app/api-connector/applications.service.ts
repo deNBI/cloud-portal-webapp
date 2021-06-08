@@ -68,13 +68,6 @@ export class ApplicationsService {
 		});
 	}
 
-	getCreditsAllowedByPerunId(perun_id: number | string): Observable<any> {
-		return this.http.get(`${ApiSettings.getApiBaseURL()}project_applications/${perun_id}/credits_allowed_perun/`,
-			{
-				withCredentials: true,
-			});
-	}
-
 	getApplicationClient(app_id: string): Observable<any> {
 		return this.http.get(`${ApiSettings.getApiBaseURL()}project_applications/${app_id}/client/`, {
 			withCredentials: true,
