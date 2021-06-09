@@ -12,13 +12,10 @@ export class ApplicationCreditRequest {
 	extra_credits: number = 0;
 	user: User;
 
-	constructor(extension: ApplicationCreditRequest | null) {
+	constructor(extension?: Partial<ApplicationCreditRequest>) {
+		Object.assign(this, extension);
 		if (extension) {
-			this.project_application_id = extension.project_application_id;
-			this.comment = extension.comment;
-			this.date_submitted = extension.date_submitted;
 			this.extra_credits = (Math.round(extension.extra_credits * 10) / 10);
-			this.user = extension.user;
 		}
 	}
 }

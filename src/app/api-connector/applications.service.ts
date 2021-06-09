@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { ApiSettings } from './api-settings.service';
 import { EdamOntologyTerm } from '../applications/edam-ontology-term';
 import { Application } from '../applications/application.model/application.model';
@@ -59,7 +60,11 @@ export class ApplicationsService {
 	getApplication(app_id: string): Observable<Application> {
 		return this.http.get<Application>(`${ApiSettings.getApiBaseURL()}project_applications/${app_id}/`, {
 			withCredentials: true,
-		});
+		}).pipe(
+			map(
+				(app: Application) => new Application(app),
+			),
+		);
 	}
 
 	getApplicationPerunId(app_id: string): Observable<any> {

@@ -1,0 +1,80 @@
+<div class="modal-dialog modal-lg" role="document">
+	<div class="modal-content">
+		<div class="modal-header">
+			<h4>Resource Modification request</h4>
+			<button type="button" class="close" style="cursor: pointer"
+							(click)="bsModalRef.hide();" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		<div class="modal-body">
+
+			<div class="alert alert-info">
+				<strong>Please be aware:</strong>
+				The number of flavors, GBs of storage and storage volumes which you enter within
+				this request will be the numbers you will actually get.
+				These numbers <strong>will not be added</strong> to your current numbers, but
+				will <strong>replace them</strong>.
+			</div>
+			<form id="resource_modification_application_form" #modificationForm="ngForm"
+						class="form-horizontal">
+
+				<div class="form-group row">
+					<h6 class="col-md-8 form-control-label">Resources*
+						<i data-balloon="Select the number of Virtual Machines you want to run of each specific flavour"
+							 data-balloon-pos="down">
+							<i class="icon-question"></i></i>
+					</h6>
+				</div>
+
+				<div class="form-group row">
+					<label id="total_cores_label" class="col-md-8">
+						<strong>Total number of cores: {{project_modification.total_cores}}</strong>
+					</label>
+				</div>
+				<div class="form-group row">
+					<label id="total_ram_label" class="col-md-8">
+						<strong>Total amount of RAM: {{project_modification.total_ram}} GB</strong>
+					</label>
+				</div>
+			</form>
+
+			<div *ngIf="modificationForm.invalid" class="alert alert-warning" role="alert">
+				<p>Some required fields are incorrect or not filled in yet.
+					Please check if all required (*) fields are filled in correctly.</p>
+				<p *ngIf="modificationForm.controls.project_application_renewal_volume_counter?.invalid">
+					- Number of storage volumes missing
+				</p>
+				<p *ngIf="modificationForm.controls.project_application_renewal_volume_limit?.invalid">
+					- Storage Limit missing
+				</p>
+				<p *ngIf="modificationForm.controls.project_application_renewal_object_storage?.invalid">
+					- Object Storage missing
+				</p>
+				<p *ngIf="!min_vm">
+					- Select at least one Flavor
+				</p>
+
+			</div>
+
+
+			<div class="modal-footer">
+				<div class="label">
+					By submitting this application you agree to the cloud usage policy.
+				</div>
+				<button type="button" class="btn  btn-primary"
+								form="resource_modification_application_form" id="submit_modification_btn"
+								(click)="bsModalRef.hide(); showSubmitModal();"
+								[disabled]="modificationForm.invalid"><i class="fa fa-dot-circle-o"></i>
+					Submit
+				</button>
+				<button type="button" class="btn btn-danger"
+								(click)=bsModalRef.hide()>
+					Close
+				</button>
+
+			</div>
+
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

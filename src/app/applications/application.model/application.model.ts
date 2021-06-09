@@ -60,57 +60,15 @@ export class Application {
 	project_application_cloud_service_user_number: number;
 	flavors: Flavor[] = [];
 	project_application_workshop: boolean;
-	credits_allowed: boolean;
+	credits_allowed: boolean = false;
 	totalModificationRequestCredits: number = 0;
 	totalCreditsExtensionCredits: number = 0;
 	totalLifetimeExtensionCredits: number = 0;
 
-	constructor(aj: Application | null) {
+	constructor(aj?: Partial<Application>) {
 		this.dissemination = new ApplicationDissemination(null);
-
+		Object.assign(this, aj);
 		if (aj) {
-			this.project_application_id = aj.project_application_id;
-			this.project_application_name = aj.project_application_name;
-			this.project_application_shortname = aj.project_application_shortname;
-			this.project_application_institute = aj.project_application_institute;
-			this.project_application_workgroup = aj.project_application_workgroup;
-			this.project_application_lifetime = aj.project_application_lifetime;
-			this.project_application_vms_requested = aj.project_application_vms_requested;
-			this.project_application_volume_limit = aj.project_application_volume_limit;
-			this.project_application_volume_counter = aj.project_application_volume_counter;
-			this.project_application_object_storage = aj.project_application_object_storage;
-			this.project_application_description = aj.project_application_description;
-			this.project_application_comment = aj.project_application_comment;
-			this.project_application_date_submitted = aj.project_application_date_submitted;
-			this.project_application_date_status_changed = aj.project_application_date_status_changed;
-			this.project_application_user = aj.project_application_user;
-			this.project_application_pi = aj.project_application_pi;
-			this.project_application_perun_id = aj.project_application_perun_id;
-			this.project_application_status = aj.project_application_status;
-			this.ComputeCenter = aj.ComputeCenter;
-			this.project_application_openstack_project = aj.project_application_openstack_project;
-			this.DaysRunning = aj.DaysRunning;
-			this.project_application_hash = aj.project_application_hash;
-			this.project_application_total_ram = aj.project_application_total_ram;
-			this.project_application_total_cores = aj.project_application_total_cores;
-			this.project_application_date_approved = aj.project_application_date_approved;
-			this.project_application_horizon2020 = aj.project_application_horizon2020;
-			this.project_application_dfg = aj.project_application_dfg;
-			this.project_application_bmbf_project = aj.project_application_bmbf_project;
-			this.project_application_nfdi = aj.project_application_nfdi;
-			this.project_application_openstack_basic_introduction = aj.project_application_openstack_basic_introduction;
-			this.project_application_initial_credits = Math.round(aj.project_application_initial_credits * 10) / 10;
-			this.project_application_edam_terms = aj.project_application_edam_terms;
-			this.project_application_sensitive_data = aj.project_application_sensitive_data;
-			this.project_application_elixir_project = aj.project_application_elixir_project;
-			this.project_application_pi_approved = aj.project_application_pi_approved;
-			this.project_application_cloud_service = aj.project_application_cloud_service;
-			this.project_application_cloud_service_develop = aj.project_application_cloud_service_develop;
-			this.project_application_cloud_service_user_number = aj.project_application_cloud_service_user_number;
-			this.flavors = aj.flavors;
-			this.project_application_total_gpu = aj.project_application_total_gpu;
-			this.project_application_workshop = aj.project_application_workshop;
-			this.credits_allowed = aj.credits_allowed;
 			if (aj.dissemination) {
 				this.dissemination = new ApplicationDissemination(aj.dissemination);
 				this.project_application_report_allowed = this.dissemination.someAllowed();
@@ -119,20 +77,20 @@ export class Application {
 
 			if (aj.project_lifetime_request) {
 				this.project_lifetime_request = new ApplicationLifetimeExtension(aj.project_lifetime_request);
-
 				this.totalLifetimeExtensionCredits = this.calcLifetimeExtensionCredits();
-
 			}
 
 			if (aj.project_modification_request) {
 				this.project_modification_request = new ApplicationModification(aj.project_modification_request);
 				this.totalModificationRequestCredits = this.calcTotalModificationCredits();
+			} else {
+				this.project_modification_request = new ApplicationModification();
+				this.project_modification_request.setByApp(this);
 			}
+
 			if (aj.project_credit_request) {
 				this.project_credit_request = new ApplicationCreditRequest(aj.project_credit_request);
-
 				this.totalCreditsExtensionCredits = this.calcCreditsExtensionCredits();
-
 			}
 		}
 	}

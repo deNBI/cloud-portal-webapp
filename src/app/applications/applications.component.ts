@@ -491,7 +491,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 		this.applicationsService
 			.getApplication(application.project_application_id.toString())
 			.subscribe((aj: Application): void => {
-				const newApp: Application = new Application(aj);
+				const newApp: Application = aj;
 				this.all_applications[index] = newApp;
 				this.getFacilityProject(newApp);
 			}, (error: any): void => {

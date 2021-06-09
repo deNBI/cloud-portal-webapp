@@ -8,6 +8,7 @@ import { NgForm } from '@angular/forms';
 import { AutocompleteComponent } from 'angular-ng-autocomplete';
 import { DOCUMENT } from '@angular/common';
 import { Chart } from 'chart.js';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { environment } from '../../environments/environment';
 import { ProjectMemberApplication } from './project_member_application';
 import { ComputecenterComponent } from './computecenter.component';
@@ -36,6 +37,7 @@ import { ApplicationModification } from '../applications/application_modificatio
 import { ApplicationCreditRequest } from '../applications/application_credit_request';
 import { ProjectMember } from './project_member.model';
 import { Project } from './project.model';
+import { ModificationRequestComponent } from './modals/modification-request/modification-request.component';
 
 /**
  * Projectoverview component.
@@ -47,6 +49,8 @@ import { Project } from './project.model';
 		FacilityService, UserService, GroupService, ApiSettings, CreditsService],
 })
 export class OverviewComponent extends ApplicationBaseClassComponent implements OnInit, OnDestroy {
+
+	bsModalRef: BsModalRef;
 
 	@Input() invitation_group_post: string = environment.invitation_group_post;
 	@Input() voRegistrationLink: string = environment.voRegistrationLink;
@@ -171,6 +175,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
 	constructor(private flavorService: FlavorService,
 		private groupService: GroupService,
+		private modalService: BsModalService,
 		applicationsService: ApplicationsService,
 		facilityService: FacilityService,
 		userService: UserService,
@@ -191,6 +196,14 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 		return new Promise((resolve: any) => {
 			setTimeout(resolve, ms);
 		});
+	}
+
+	showResourceModal(): void {
+		const initialState = {
+			old_project_modification: this.project_application.project_modification_request,
+			project_modification: this.project_modification,
+		};
+		this.bsModalRef = this.modalService.show(ModificationRequestComponent, { initialState });
 	}
 
 	setModalOpen(bool: boolean): void {
@@ -415,21 +428,10 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 		this.project_extension.comment = '';
 	}
 
-	initiateModificationRequest(): void {
-		this.project_modification = new ApplicationModification(null);
-		this.project_modification.project_application_id = this.project_application.project_application_id;
-		this.project_modification.volume_counter = this.project_application.project_application_volume_counter;
-		this.project_modification.volume_limit = this.project_application.project_application_volume_limit;
-		if (this.project_application.project_application_openstack_project) {
-			this.project_modification.object_storage = this.project_application.project_application_object_storage;
-			this.project_modification.cloud_service_develop = this.project_application.project_application_cloud_service_develop;
-		}
-		this.project_modification.comment = this.project_application.project_application_comment;
-		this.project_modification.flavors = this.project_application.flavors;
-		this.project_modification.total_gpu = this.project_application.project_application_total_gpu;
-		this.project_modification.total_cores = this.project_application.project_application_total_cores;
-		this.project_modification.total_ram = this.project_application.project_application_total_ram;
-	}
+	// initiateModificationRequest(): void {
+	// 	this.project_modification = new ApplicationModification(null);
+	//
+	// }
 
 	initiateCreditRequest(): void {
 		this.project_credit_request = new ApplicationCreditRequest(null);
@@ -450,8 +452,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 						return;
 					}
 
-					this.project_application = new Application(aj);
-					this.credits_allowed = aj['credits_allowed'];
+					this.project_application = aj;
+					this.credits_allowed = aj.credits_allowed;
 
 					if (this.project_application) {
 						this.applicationsService.getApplicationPerunId(this.application_id).subscribe((id: any): void => {
@@ -462,9 +464,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 						});
 
 						if (this.project_application?.project_modification_request) {
-							this.project_modification = this.project_application.project_modification_request;
-						} else {
-							this.initiateModificationRequest();
+							this.project_modification = new ApplicationModification(this.project_application.project_modification_request);
 						}
 						if (this.project_application?.project_lifetime_request) {
 							this.project_extension = this.project_application.project_lifetime_request;
