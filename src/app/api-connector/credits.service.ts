@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
+import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { ApiSettings } from './api-settings.service';
 import { Flavor } from '../virtualmachines/virtualmachinemodels/flavor';
+import { ResourceWeight, IResourceWeight } from '../credits-calculator/resource-weights.model/resource-weights.model';
 
 /**
  * Service which delivers functions for services related to the credit service.
@@ -135,5 +137,16 @@ export class CreditsService {
 		return this.http.post(`${ApiSettings.getApiBase()}public/credits_calculator/time/`, params, {
 			withCredentials: true,
 		});
+	}
+
+	public getCreditsWeights(): Observable<ResourceWeight[]> {
+
+		return this.http.get<IResourceWeight[]>(`${ApiSettings.getApiBase()}public/creditsweights/`).pipe(
+			map(
+				(weights: IResourceWeight[]): ResourceWeight[] => weights.map(
+					(weight: IResourceWeight): ResourceWeight => new ResourceWeight(weight),
+				),
+			),
+		);
 	}
 }

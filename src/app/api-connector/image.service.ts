@@ -38,11 +38,11 @@ export class ImageService {
 
 	}
 
-	checkSnapshotNameAvailable(snapshot_name: string): Observable<IResponseTemplate> {
+	checkSnapshotNameAvailable(snapshot_name: string, client_id: string): Observable<IResponseTemplate> {
 
 		return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}snapshots/names/`, {
 			withCredentials: true,
-			params: { snapshot_name },
+			params: { snapshot_name, client_id },
 
 		});
 

@@ -1,9 +1,43 @@
 <div class="row">
   <div class="col-3">
-    <div class="callout callout-success">
-      <small class="text-muted">Created at (d-m-y)</small><br>
-      <strong class="text-muted">{{virtualMachine.created_at_date}}</strong>
-    </div>
+		<ng-container [ngSwitch]="virtualMachine?.status">
+			<ng-container *ngSwitchCase="VirtualMachineStates.staticACTIVE">
+				<div class="callout callout-success">
+					<small class="text-muted">Created at (d-m-y)</small><br>
+					<strong class="text-muted">{{virtualMachine.created_at_date}}</strong>
+				</div>
+			</ng-container>
+			<ng-container *ngSwitchCase="VirtualMachineStates.staticSHUTOFF">
+				<div class="callout callout-warning">
+					<small class="text-muted">Created at (d-m-y)</small><br>
+					<strong class="text-muted">{{virtualMachine.created_at_date}}</strong>
+				</div>
+			</ng-container>
+			<ng-container *ngSwitchCase="VirtualMachineStates.staticPOWERING_OFF">
+				<div class="callout callout-warning">
+					<small class="text-muted">Created at (d-m-y)</small><br>
+					<strong class="text-muted">{{virtualMachine.created_at_date}}</strong>
+				</div>
+			</ng-container>
+			<ng-container *ngSwitchCase="VirtualMachineStates.staticDELETING">
+				<div class="callout callout-danger">
+					<small class="text-muted">Created at (d-m-y)</small><br>
+					<strong class="text-muted">{{virtualMachine.created_at_date}}</strong>
+				</div>
+			</ng-container>
+			<ng-container *ngSwitchCase="VirtualMachineStates.staticDELETED">
+				<div class="callout callout-danger">
+					<small class="text-muted">Deleted at (d-m-y)</small><br>
+					<strong class="text-muted">{{virtualMachine.deleted_at_date | date: 'dd-MM-yyyy'}}</strong>
+				</div>
+			</ng-container>
+			<ng-container *ngSwitchDefault>
+				<div class="callout callout-info">
+					<small class="text-muted">Created at (d-m-y)</small><br>
+					<strong class="text-muted">{{virtualMachine.created_at_date}}</strong>
+				</div>
+			</ng-container>
+		</ng-container>
   </div>
   <div class="col-3">
     <div class="callout">
@@ -36,15 +70,6 @@
     <div class="callout">
       <small class="text-muted">Private IP</small><br>
       <strong class="text-muted">{{virtualMachine.fixed_ip}}</strong>
-    </div>
-  </div>
-</div>
-<div class="row">
-  <div class="col-6"
-       *ngIf="virtualMachine.stopped_at && (virtualMachine?.status |hasStatus:VirtualMachineStates.staticSHUTOFF)">
-    <div class="callout callout-warning">
-      <small class="text-muted">Stopped at (d-m-y)</small><br>
-      <strong class="text-muted">{{virtualMachine.stopped_at | date: 'dd.mm.YYYY HH:mm'}}</strong>
     </div>
   </div>
 </div>

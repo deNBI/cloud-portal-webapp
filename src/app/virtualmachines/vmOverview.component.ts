@@ -322,15 +322,16 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 	 * Check if the snapshot name is valid.
 	 *
 	 * @param event: name of snapshot
+	 * @param vm: Virtual machine to check
 	 */
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	validSnapshotName(event: any): any {
+	validSnapshotName(event: any, vm: VirtualMachine): any {
 		this.snapshotNameCheckDone = false;
-		this.imageService.checkSnapshotNameAvailable(this.snapshotName.trim()).subscribe((res: IResponseTemplate): void => {
-
-			this.validSnapshotNameBool = this.snapshotName.length > 0 && res.value as boolean;
-			this.snapshotNameCheckDone = true;
-		});
+		this.imageService.checkSnapshotNameAvailable(this.snapshotName.trim(), vm.client.id)
+			.subscribe((res: IResponseTemplate): void => {
+				this.validSnapshotNameBool = this.snapshotName.length > 0 && res.value as boolean;
+				this.snapshotNameCheckDone = true;
+			});
 
 	}
 
@@ -746,7 +747,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 				distinctUntilChanged(),
 			)
 			.subscribe((event: any): void => {
-				this.validSnapshotName(event);
+				this.validSnapshotName(event, this.snapshot_vm);
 			});
 	}
 
