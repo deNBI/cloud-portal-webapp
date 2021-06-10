@@ -591,7 +591,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 	 * If connected geht vm,volumes etc.
 	 */
 	getSelectedProjectClient(): void {
-		this.applicationsService.getCreditsAllowedByPerunId(this.selectedProject[1]).subscribe((res: any): void => {
+		this.groupService.getCreditsAllowedByPerunId(this.selectedProject[1]).subscribe((res: any): void => {
 			console.log(res);
 			this.credits_allowed = res['credits_allowed'];
 		});
