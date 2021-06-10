@@ -90,6 +90,13 @@ export class GroupService {
 
 	}
 
+	getCreditsAllowedByPerunId(groupid: number | string): Observable<any> {
+		return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/credits_allowed_perun/`,
+			{
+				withCredentials: true,
+			});
+	}
+
 	getGroupAdminIds(groupid: number | string): Observable<any> {
 
 		return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/admins/ids/`, {
