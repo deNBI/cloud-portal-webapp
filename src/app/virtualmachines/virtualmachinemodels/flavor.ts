@@ -16,4 +16,18 @@ export class Flavor {
   comment: string;
   counter: number;
   credits_per_hour: number;
+  compute_center: number;
+  disabled: boolean;
+
+  constructor(flavor?: Partial<Flavor>) {
+  	Object.assign(this, flavor);
+  	this.disabled = false;
+  	if (flavor['credits_costs_per_hour']) {
+  		this.credits_per_hour = flavor['credits_costs_per_hour'];
+  	}
+  }
+
+  public setDisabled(disabled: boolean): void {
+  	this.disabled = disabled;
+  }
 }

@@ -33,11 +33,11 @@ import { EdamOntologyTerm } from '../applications/edam-ontology-term';
 import { ApiSettings } from '../api-connector/api-settings.service';
 import { Application_States, ExtensionRequestType } from '../shared/shared_modules/baseClass/abstract-base-class';
 import { ApplicationLifetimeExtension } from '../applications/application_extension.model';
-import { ApplicationModification } from '../applications/application_modification.model';
 import { ApplicationCreditRequest } from '../applications/application_credit_request';
 import { ProjectMember } from './project_member.model';
 import { Project } from './project.model';
 import { ModificationRequestComponent } from './modals/modification-request/modification-request.component';
+import { LifetimeRequestComponent } from './modals/lifetime-request/lifetime-request.component';
 
 /**
  * Projectoverview component.
@@ -51,6 +51,8 @@ import { ModificationRequestComponent } from './modals/modification-request/modi
 export class OverviewComponent extends ApplicationBaseClassComponent implements OnInit, OnDestroy {
 
 	bsModalRef: BsModalRef;
+	modificationRequestSend: boolean = false;
+	lifetimeExtensionSend: boolean = false;
 
 	@Input() invitation_group_post: string = environment.invitation_group_post;
 	@Input() voRegistrationLink: string = environment.voRegistrationLink;
@@ -68,26 +70,13 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	private subscription: Subscription = new Subscription();
 
 	/**
-	 * If at least 1 flavor is selected.
-	 *
-	 * @type {boolean}
-	 */
-	public min_vm: boolean = true;
-
-	/**
 	 * The credits for the extension.
 	 */
 	private extensionCredits: number = 0;
 
-	/**
-	 * the credits for a resource modification.
-	 */
-	private modificationCredits: number = 0;
-
 	project_id: string;
 	application_id: string;
 	project: Project;
-	application_details_visible: boolean = false;
 	credits: number = 0;
 
 	errorMessage: string;
@@ -99,12 +88,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	 * @type {number}
 	 */
 	extension_status: number = 0;
-	/**
-	 * id of the modification status
-	 *
-	 * @type {number}, needs yet to be implemented
-	 */
-	modification_status: number = 0;
 
 	/**
 	 * defines weither the request is an extension (1), modification (2) or credit (3) request.
@@ -123,9 +106,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	filteredMembers: any = null;
 	project_application: Application;
 	project_extension: ApplicationLifetimeExtension;
-	project_modification: ApplicationModification;
 	project_credit_request: ApplicationCreditRequest;
-	project_service_in_development: boolean = true;
 	application_action: string = '';
 	application_member_name: string = '';
 	application_action_done: boolean = false;
@@ -146,7 +127,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	smallExamplePossibleDays: string = '';
 	largeExamplePossibleDays: string = '';
 	supportMails: string[] = [];
-	resource_modification_expected_credits: number = 0;
 
 	resourceDataLoaded: boolean = false;
 	vmsInUse: number;
@@ -200,10 +180,35 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
 	showResourceModal(): void {
 		const initialState = {
-			old_project_modification: this.project_application.project_modification_request,
-			project_modification: this.project_modification,
+			project: this.project_application,
 		};
 		this.bsModalRef = this.modalService.show(ModificationRequestComponent, { initialState });
+		this.bsModalRef.setClass('modal-lg');
+		this.subscribeForExtensionResult();
+	}
+
+	showLifetimeExtensionModal(): void {
+		const initialState = {
+			project: this.project_application,
+			life_time_string: `${this.project.DateCreated} -  ${this.project.DateEnd}`,
+		};
+		this.bsModalRef = this.modalService.show(LifetimeRequestComponent, { initialState });
+		this.bsModalRef.setClass('modal-lg');
+		this.subscribeForExtensionResult();
+	}
+
+	subscribeForExtensionResult(): void {
+		this.subscription.add(
+			this.bsModalRef.content.event.subscribe(
+				(result: any) => {
+					if ('reload' in result && result['reload']) {
+						this.lifetimeExtensionSend = true;
+						this.fullLayout.getGroupsEnumeration();
+						this.getApplication();
+					}
+				},
+			),
+		);
 	}
 
 	setModalOpen(bool: boolean): void {
@@ -252,27 +257,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 			),
 		);
 
-	}
-
-	calculateCreditsResourceModification(): void {
-		if (!this.credits_allowed) {
-			return;
-		}
-		this.subscription.add(
-			this.creditsService.getExtraCreditsForResourceExtension(
-				this.project_modification.flavors,
-				this.project_application.project_application_id.toString(),
-			).subscribe(
-				(credits: number): void => {
-					this.project_modification.extra_credits = credits;
-					this.resource_modification_expected_credits = this.project_application.project_application_initial_credits
-						+ this.project_modification.extra_credits;
-					if (this.resource_modification_expected_credits <= 0) {
-						this.resource_modification_expected_credits = 0;
-					}
-				},
-			),
-		);
 	}
 
 	fetchCreditHistoryOfProject(): void {
@@ -428,11 +412,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 		this.project_extension.comment = '';
 	}
 
-	// initiateModificationRequest(): void {
-	// 	this.project_modification = new ApplicationModification(null);
-	//
-	// }
-
 	initiateCreditRequest(): void {
 		this.project_credit_request = new ApplicationCreditRequest(null);
 		this.project_credit_request.project_application_id = this.project_application.project_application_id;
@@ -462,10 +441,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 								this.getProject();
 							}
 						});
-
-						if (this.project_application?.project_modification_request) {
-							this.project_modification = new ApplicationModification(this.project_application.project_modification_request);
-						}
 						if (this.project_application?.project_lifetime_request) {
 							this.project_extension = this.project_application.project_lifetime_request;
 						} else {
@@ -490,31 +465,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
                    Error Message: ${error.error.toString()}`;
 				},
 			);
-	}
-
-	public requestModification(): void {
-
-		this.applicationsService.requestModification(this.project_modification)
-			.subscribe((result: { [key: string]: string }): void => {
-				if (result['Error']) {
-					this.extension_status = 2;
-				} else {
-					this.fullLayout.getGroupsEnumeration();
-
-					this.extension_status = 1;
-				}
-
-				if (this.selected_ontology_terms.length > 0) {
-					this.applicationsService.addEdamOntologyTerms(this.application_id,
-						this.selected_ontology_terms).subscribe((): void => {
-						this.getApplication();
-
-					});
-				} else {
-					this.getApplication();
-				}
-
-			});
 	}
 
 	public requestCreditsModification(): void {
@@ -1227,18 +1177,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 		);
 	}
 
-	checkIfTypeGotSimpleVmFlavor(type: FlavorType): boolean {
-		for (const flav of this.flavorList) {
-			if (flav.type.shortcut === type.shortcut && flav.simple_vm) {
-				return true;
-			}
-
-		}
-
-		return false;
-
-	}
-
 	/**
 	 * Delete an application.
 	 *
@@ -1257,29 +1195,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 			},
 		);
 
-	}
-
-	onChangeFlavor(flavor: Flavor, value: number): void {
-		this.project_modification.setFlavorInFlavors(flavor, value);
-
-		this.checkIfMinVmIsSelected();
-	}
-
-	checkIfMinVmIsSelected(): void {
-		let nr_vm: number = 0;
-		for (const fl of this.flavorList) {
-			const control: string = `project_application_renewal_${fl.name}`;
-			if (control in this.simpleVmForm.controls) {
-				if (this.simpleVmForm.controls[control].value > 0) {
-					nr_vm += this.simpleVmForm.controls[control].value;
-				}
-			}
-		}
-		if (nr_vm > 0 || this.project_application.project_application_openstack_project) {
-			this.min_vm = true;
-		} else if (nr_vm === 0) {
-			this.min_vm = false;
-		}
 	}
 
 }

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { map } from 'rxjs/operators';
 import { Flavor } from '../virtualmachines/virtualmachinemodels/flavor';
 import { ApiSettings } from './api-settings.service';
 import { FlavorType } from '../virtualmachines/virtualmachinemodels/flavorType';
@@ -32,10 +33,19 @@ export class FlavorService {
 		});
 	}
 
-	getListOfFlavorsAvailable(): Observable<Flavor[]> {
+	getListOfFlavorsAvailable(project_id: string = ''): Observable<Flavor[]> {
+		const params: HttpParams = new HttpParams().set('project_id', project_id);
+
 		return this.http.get<Flavor[]>(`${ApiSettings.getApiBaseURL()}project_applications/flavors/`, {
 			withCredentials: true,
-		});
+			params,
+		}).pipe(
+			map(
+				(flavors: Flavor[]): Flavor[] => flavors.map(
+					(flavor: Flavor): Flavor => new Flavor(flavor),
+				),
+			),
+		);
 	}
 
 }

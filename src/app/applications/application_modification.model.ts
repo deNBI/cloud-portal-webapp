@@ -33,6 +33,12 @@ export class ApplicationModification {
 			} else {
 				this.total_gpu = this.calculateGpuOnly(extension.flavors);
 			}
+			if (extension.flavors) {
+				this.flavors = [];
+				for (const flavor of extension.flavors) {
+					this.flavors.push(new Flavor(flavor));
+				}
+			}
 		}
 	}
 
@@ -45,7 +51,10 @@ export class ApplicationModification {
 			this.cloud_service_develop = app.project_application_cloud_service_develop;
 		}
 		this.comment = app.project_application_comment;
-		this.flavors = app.flavors;
+		this.flavors = [];
+		for (const flavor of app.flavors) {
+			this.flavors.push(new Flavor(flavor));
+		}
 		this.total_gpu = app.project_application_total_gpu;
 		this.total_cores = app.project_application_total_cores;
 		this.total_ram = app.project_application_total_ram;
@@ -74,15 +83,17 @@ export class ApplicationModification {
 		this.total_gpu = gpu;
 	}
 
-	public getFlavorCounter(flavor: Flavor): number {
+	public getFlavorCounter(flavor_to_test: Flavor): number {
 		if (this.flavors) {
-			const flavs: Flavor[] = this.flavors.filter((fl: Flavor): boolean => fl.name === flavor.name);
-			if (flavs.length > 0) {
-				return flavs[0].counter;
+			for (const flavor of this.flavors) {
+				if (flavor.name === flavor_to_test.name) {
+					return flavor.counter;
+				}
 			}
-		}
 
-		return 0;
+			return 0;
+
+		} else return 0;
 	}
 
 	public setFlavorInFlavors(flavor_param: Flavor, counter: number): void {

@@ -83,15 +83,21 @@ export class Application {
 			if (aj.project_modification_request) {
 				this.project_modification_request = new ApplicationModification(aj.project_modification_request);
 				this.totalModificationRequestCredits = this.calcTotalModificationCredits();
-			} else {
-				this.project_modification_request = new ApplicationModification();
-				this.project_modification_request.setByApp(this);
 			}
 
 			if (aj.project_credit_request) {
 				this.project_credit_request = new ApplicationCreditRequest(aj.project_credit_request);
 				this.totalCreditsExtensionCredits = this.calcCreditsExtensionCredits();
 			}
+
+			if (aj.flavors) {
+				this.flavors = [];
+				for (const flavor of aj.flavors) {
+					this.flavors.push(new Flavor(flavor));
+				}
+			}
+
+			this.project_application_initial_credits = Number(aj.project_application_initial_credits);
 		}
 	}
 
@@ -125,13 +131,18 @@ export class Application {
 		}
 	}
 
-	public getFlavorCounter(flavor: Flavor): number {
-		const flavs: Flavor[] = this.flavors.filter((fl: Flavor): boolean => fl.name === flavor.name);
-		if (flavs.length > 0) {
-			return flavs[0].counter;
-		}
+	public getFlavorCounter(flavor_to_test: Flavor): number {
+		if (this.flavors) {
+			for (const flavor of this.flavors) {
+				if (flavor.name === flavor_to_test.name) {
 
-		return 0;
+					return flavor.counter;
+				}
+			}
+
+			return 0;
+
+		} else return 0;
 	}
 
 	public setFlavorInFlavors(flavor_param: Flavor, counter: number): void {
@@ -182,11 +193,6 @@ export class Application {
 		} else {
 			return this.project_application_initial_credits;
 		}
-	}
-
-	public gotStatus(status: number): boolean {
-		return this.project_application_status.includes(status);
-
 	}
 
 }
