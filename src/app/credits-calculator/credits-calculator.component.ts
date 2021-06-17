@@ -139,6 +139,7 @@ export class CreditsCalculatorComponent implements OnInit {
 	set_rest_unused(start: number): void {
 		if (start >= 0) {
 			for (let i = start; i >= 0; i -= 1) {
+
 				this.resource_weights[i].set_unused();
 			}
 		}
