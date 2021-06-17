@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { ApiSettings } from './api-settings.service';
 import { IResponseTemplate } from './response-template';
 
@@ -78,21 +78,18 @@ export class UserService {
 	}
 
 	getOnlyLoggedUserWithRedirect(redirect?: string): Observable<any> {
-		let skip_header: HttpHeaders = new HttpHeaders();
-		skip_header = skip_header.append('skip-x-requested-with', 'true');
-
 		if (redirect && redirect !== '/userinfo' && redirect !== 'redirect') {
 			const params: HttpParams = new HttpParams().set('redirect_after_login', redirect);
 
 			return this.http.get(`${ApiSettings.getApiBase()}loggedUser/`, {
 				withCredentials: true,
 				params,
-				headers: skip_header,
+
 			});
 		} else {
 			return this.http.get(`${ApiSettings.getApiBase()}loggedUser/`, {
 				withCredentials: true,
-				headers: skip_header,
+
 			});
 		}
 
