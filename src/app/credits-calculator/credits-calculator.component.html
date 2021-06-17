@@ -13,19 +13,18 @@
 			<alert type="info" dismissible="true">
 				Below you may calculate needed Cloud Credits for an amount of time respectively how long you may run a set of
 				machines non-stop with an available amount of Cloud Credits.<br>
-				Flavors may differ in their resources with each facility, therefore the values displayed here may differ slightly
-				from the values at the final project facility. You can either choose a facility below
+				Flavors may differ in their resources with each facility, therefore the values displayed here may differ slightly from the values at the final project facility.<!-- TODO: remove when weights are fixed you can either choose a facility below
 				(if you are member of an approved project running in that facility) or select the Default which is an
 				approximation of each flavor.<br>
 				As our weight function for Cloud Credits computation takes the timestamp of VM creation into account, you may set
 				it below to a different date and time. You will find a link to our weight function on our
-				<a href="{{CREDITS_WIKI}}" target="_blank" rel="noopener noreferrer">Wiki page</a>.<br>
+				<a href="{{CREDITS_WIKI}}" target="_blank" rel="noopener noreferrer">Wiki page</a>. --><br>
 				To learn more about Cloud Credits, what they are used for and how they are calculated, please visit our
 				<a href="{{CREDITS_WIKI}}" target="_blank" rel="noopener noreferrer">Wiki page</a>.<br>
 				If you have questions, suggestions or need help, please E-Mail us at
 				<a class="alert-link" href="mailto: {{CLOUD_PORTAL_SUPPORT_MAIL}}">{{CLOUD_PORTAL_SUPPORT_MAIL}}</a>.
 			</alert>
-			<div class="row justify-content-center">
+			<!-- TODO: wait until weights are changed<div class="row justify-content-center">
 				<div class="col-6">
 					<label for="select_facility">Please select either a facility or Default:</label>
 					<select
@@ -101,7 +100,7 @@
 						<i class="fa fa-clock"></i>
 					</button>
 				</label>
-			</form>
+			</form> -->
 			<div *ngIf="!got_all_flavor" class="row" style="padding-bottom: 500px">
 				<div class="loader"></div>
 			</div>
