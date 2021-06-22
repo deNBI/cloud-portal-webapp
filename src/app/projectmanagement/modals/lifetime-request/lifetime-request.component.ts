@@ -31,6 +31,7 @@ export class LifetimeRequestComponent implements OnInit, OnDestroy {
 
 	private subscription: Subscription = new Subscription();
 	public event: EventEmitter<any> = new EventEmitter();
+	submitted: boolean = false;
 
 	constructor(
 		public bsModalRef: BsModalRef,
@@ -56,6 +57,9 @@ export class LifetimeRequestComponent implements OnInit, OnDestroy {
 
 	ngOnDestroy() {
 		this.subscription.unsubscribe();
+		if (!this.submitted) {
+			this.event.emit({ reload: false });
+		}
 	}
 
 	calculateCreditsLifetime(): void {
@@ -108,6 +112,7 @@ export class LifetimeRequestComponent implements OnInit, OnDestroy {
 			extension: this.temp_project_extension,
 			lifetimeExtension: true,
 		};
+		this.submitted = true;
 		this.bsModalRef = this.modalService.show(ResultComponent, { initialState });
 		this.bsModalRef.setClass('modal-lg');
 		this.bsModalRef.content.event.subscribe(

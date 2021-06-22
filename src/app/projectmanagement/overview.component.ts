@@ -38,6 +38,7 @@ import { ProjectMember } from './project_member.model';
 import { Project } from './project.model';
 import { ModificationRequestComponent } from './modals/modification-request/modification-request.component';
 import { LifetimeRequestComponent } from './modals/lifetime-request/lifetime-request.component';
+import { DoiComponent } from './modals/doi/doi.component';
 
 /**
  * Projectoverview component.
@@ -61,18 +62,10 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	WIKI_PUBLICATIONS: string = WIKI_PUBLICATIONS;
 	CREDITS_WIKI: string = CREDITS_WIKI;
 	CLOUD_MAIL: string = CLOUD_MAIL;
-	selected_ontology_terms: EdamOntologyTerm[] = [];
-	edam_ontology_terms: EdamOntologyTerm[];
-	ontology_search_keyword: string = 'term';
 
 	@ViewChild(NgForm) simpleVmForm: NgForm;
 	@ViewChild('creditsChart') creditsCanvas: ElementRef;
 	private subscription: Subscription = new Subscription();
-
-	/**
-	 * The credits for the extension.
-	 */
-	private extensionCredits: number = 0;
 
 	project_id: string;
 	application_id: string;
@@ -114,7 +107,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	application_action_error_message: boolean;
 	projects: Project[] = [];
 	loaded: boolean = true;
-	details_loaded: boolean = false;
 	userinfo: Userinfo;
 	allSet: boolean = false;
 	renderer: Renderer2;
@@ -145,7 +137,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	public showLink: boolean = true;
 	private project_application_extra_credits: number;
 	public project_application_extra_credits_comment: string;
-	private current_credits: number;
 	private updateCreditsUsedIntervals: ReturnType<typeof setTimeout>;
 	private updateCreditsHistoryIntervals: ReturnType<typeof setTimeout>;
 	credits_allowed: boolean = false;
@@ -179,32 +170,69 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	}
 
 	showResourceModal(): void {
+		if (this.modificationRequestDisabled) {
+			return;
+		}
+
+		this.modificationRequestDisabled = true;
+
 		const initialState = {
 			project: this.project_application,
 		};
 		this.bsModalRef = this.modalService.show(ModificationRequestComponent, { initialState });
 		this.bsModalRef.setClass('modal-lg');
-		this.subscribeForExtensionResult();
+		this.subscribeForExtensionResult(this.ExtensionRequestType.MODIFICATION);
 	}
 
 	showLifetimeExtensionModal(): void {
+		if (this.lifetimeExtensionDisabled) {
+			return;
+		}
+
+		this.lifetimeExtensionDisabled = true;
+
 		const initialState = {
 			project: this.project_application,
 			life_time_string: `${this.project.DateCreated} -  ${this.project.DateEnd}`,
 		};
 		this.bsModalRef = this.modalService.show(LifetimeRequestComponent, { initialState });
 		this.bsModalRef.setClass('modal-lg');
-		this.subscribeForExtensionResult();
+		this.subscribeForExtensionResult(this.ExtensionRequestType.EXTENSION);
 	}
 
-	subscribeForExtensionResult(): void {
+	showDoiModal(): void {
+		const initialState = {
+			dois: this.dois,
+			application_id: this.application_id,
+		};
+
+		this.bsModalRef = this.modalService.show(DoiComponent, { initialState });
+		this.bsModalRef.setClass('modal-lg');
+		this.subscription.add(
+			this.bsModalRef.content.event.subscribe(
+				() => {
+					this.showLifetimeExtensionModal();
+				},
+			),
+		);
+	}
+
+	subscribeForExtensionResult(type: ExtensionRequestType): void {
 		this.subscription.add(
 			this.bsModalRef.content.event.subscribe(
 				(result: any) => {
 					if ('reload' in result && result['reload']) {
-						this.lifetimeExtensionDisabled = true;
+						if (type === this.ExtensionRequestType.EXTENSION) {
+							this.lifetimeExtensionDisabled = true;
+						} else if (type === this.ExtensionRequestType.MODIFICATION) {
+							this.modificationRequestDisabled = true;
+						}
 						this.fullLayout.getGroupsEnumeration();
 						this.getApplication();
+					} else if (type === this.ExtensionRequestType.EXTENSION) {
+						this.lifetimeExtensionDisabled = false;
+					} else if (type === this.ExtensionRequestType.MODIFICATION) {
+						this.modificationRequestDisabled = false;
 					}
 				},
 			),
@@ -222,41 +250,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 			}
 		}
 		)().then().catch();
-	}
-
-	removeEDAMterm(term: EdamOntologyTerm): void {
-		const indexOf: number = this.selected_ontology_terms.indexOf(term);
-		this.selected_ontology_terms.splice(indexOf, 1);
-
-	}
-
-	selectEvent(item: any): void {
-		if (this.selected_ontology_terms.indexOf(item) === -1) {
-			this.selected_ontology_terms.push(item);
-		}
-		this.edam_ontology.clear();
-	}
-
-	calculateCreditsLifeTime(): void {
-		if (!this.credits_allowed) {
-			return;
-		}
-		if (this.project_extension.extra_lifetime <= 0 || !Number.isInteger(this.project_extension.extra_lifetime)) {
-			this.project_extension.extra_credits = 0;
-
-			return;
-		}
-		this.subscription.add(
-			this.creditsService.getExtraCreditsForLifetimeExtension(
-				this.project_extension.extra_lifetime,
-				this.project_application.project_application_id.toString(),
-			).subscribe(
-				(credits: number): void => {
-					this.project_extension.extra_credits = credits;
-				},
-			),
-		);
-
 	}
 
 	fetchCreditHistoryOfProject(): void {
@@ -482,31 +475,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 			});
 	}
 
-	public requestExtension(): void {
-		this.project_extension.project_application_id = this.project_application.project_application_id;
-		this.applicationsService.requestAdditionalLifetime(this.project_extension)
-			.subscribe((result: { [key: string]: string }): void => {
-				if (result['Error']) {
-					this.extension_status = 2;
-				} else {
-					this.fullLayout.getGroupsEnumeration();
-
-					this.extension_status = 1;
-				}
-				if (this.selected_ontology_terms.length > 0) {
-					this.applicationsService.addEdamOntologyTerms(this.application_id,
-						this.selected_ontology_terms).subscribe((): void => {
-						this.getApplication();
-
-					});
-				} else {
-					this.getApplication();
-				}
-
-			});
-
-	}
-
 	/**
 	 * gets a list of all available Flavors from the flavorservice and puts them into the array flavorList
 	 */
@@ -523,35 +491,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 		this.flavorService.getListOfTypesAvailable().subscribe((types: FlavorType[]): void => this.setListOfTypes(types));
 	}
 
-	fillUp(date: string): string {
-		if (date.length === 1) {
-			return `0${date}`;
-		}
-
-		return date;
-	}
-
-	/**
-	 * Returns a string with the end-date of a application which depends on the day it was approved and the lifetime in months
-	 *
-	 * @param approval date in string when the application was approved
-	 * @param months number of months the application is permitted
-	 */
-	getEndDate(months: number, approval?: string): string {
-		if (!approval) {
-			return '';
-		}
-		let date1: Date = new Date(Number(approval.substring(0, 4)), Number(approval.substring(5, 7)) - 1, Number(approval.substring(8)));
-		const month: number = date1.getMonth();
-		if ((month + months) > 11) {
-			date1 = new Date(date1.getFullYear() + 1, (month + months - 12), date1.getDate());
-		} else {
-			date1.setMonth(date1.getMonth() + months);
-		}
-
-		return `${date1.getFullYear()}-${this.fillUp((date1.getMonth() + 1).toString())}-${this.fillUp(date1.getDate().toString())}`;
-	}
-
 	setLifetime(): void {
 
 		// tslint:disable-next-line:max-line-length
@@ -559,11 +498,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	}
 
 	ngOnInit(): void {
-		this.applicationsService.getEdamOntologyTerms().subscribe((terms: EdamOntologyTerm[]): void => {
-			this.edam_ontology_terms = terms;
-			this.searchTermsInEdamTerms();
-		});
-
 		this.activatedRoute.params.subscribe((paramsId: any): void => {
 			this.errorMessage = null;
 			this.isLoaded = false;
@@ -579,7 +513,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 			this.is_vo_admin = is_vo;
 
 		});
-
 	}
 
 	/**
@@ -662,30 +595,15 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 		return true;
 	}
 
-	searchTermsInEdamTerms(): void {
-		const tmp: EdamOntologyTerm[] = [];
-		this.selected_ontology_terms.forEach(ele => {
-			// @ts-ignore
-			const td = this.edam_ontology_terms.find(term => term.term === ele);
-			tmp.push(td);
-		});
-		this.selected_ontology_terms = tmp;
-	}
-
 	deleteDoi(doi: Doi): void {
 		this.groupService.deleteGroupDoi(doi.id).subscribe((dois: Doi[]): void => {
 			this.dois = dois;
 		});
 	}
 
-	addDoi(from?: string): void {
-		if (from === 'modal') {
-			this.document.getElementById('add_doi_btn_in_modal').toggleAttribute('disabled');
-			this.document.getElementById('modal_doi_input_field').toggleAttribute('disabled');
-		} else {
-			this.document.getElementById('add_doi_btn').toggleAttribute('disabled');
-			this.document.getElementById('doi_input_field').toggleAttribute('disabled');
-		}
+	addDoi(): void {
+		this.document.getElementById('add_doi_btn').toggleAttribute('disabled');
+		this.document.getElementById('doi_input_field').toggleAttribute('disabled');
 		if (this.isNewDoi()) {
 			this.groupService.addGroupDoi(this.application_id, this.newDoi).subscribe(
 				(dois: Doi[]): void => {
@@ -695,38 +613,21 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 				},
 				(): void => {
 					this.doiError = `DOI ${this.newDoi} was already added by another Project!`;
-
-					if (from === 'modal') {
-						this.document.getElementById('add_doi_btn_in_modal').toggleAttribute('disabled');
-						this.document.getElementById('modal_doi_input_field').toggleAttribute('disabled');
-					} else {
-						this.document.getElementById('add_doi_btn').toggleAttribute('disabled');
-						this.document.getElementById('doi_input_field').toggleAttribute('disabled');
-					}
+					this.document.getElementById('add_doi_btn').toggleAttribute('disabled');
+					this.document.getElementById('doi_input_field').toggleAttribute('disabled');
 				},
 				(): void => {
-					if (from === 'modal') {
-						this.document.getElementById('add_doi_btn_in_modal').toggleAttribute('disabled');
-						this.document.getElementById('modal_doi_input_field').toggleAttribute('disabled');
-					} else {
-						this.document.getElementById('add_doi_btn').toggleAttribute('disabled');
-						this.document.getElementById('doi_input_field').toggleAttribute('disabled');
-					}
+					this.document.getElementById('add_doi_btn').toggleAttribute('disabled');
+					this.document.getElementById('doi_input_field').toggleAttribute('disabled');
 					this.newDoi = null;
 				},
 			);
 		} else {
 			this.doiError = `DOI ${this.newDoi} was already added by this Project!`;
 			this.newDoi = null;
-			if (from === 'modal') {
-				this.document.getElementById('add_doi_btn_in_modal').toggleAttribute('disabled');
-				this.document.getElementById('modal_doi_input_field').toggleAttribute('disabled');
-			} else {
-				this.document.getElementById('add_doi_btn').toggleAttribute('disabled');
-				this.document.getElementById('doi_input_field').toggleAttribute('disabled');
-			}
+			this.document.getElementById('add_doi_btn').toggleAttribute('disabled');
+			this.document.getElementById('doi_input_field').toggleAttribute('disabled');
 		}
-
 	}
 
 	requestProjectTermination(): void {
@@ -995,11 +896,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
 		});
 		this.allSet = false;
-	}
-
-	resetCheckedMemberList(): void {
-		this.allSet = false;
-		this.checked_member_list = [];
 	}
 
 	setAddUserInvitationLink(): void {

@@ -51,10 +51,14 @@ export class ResultComponent implements OnInit, OnDestroy {
 
 	ngOnDestroy() {
 		this.subscription.unsubscribe();
+		if (!this.result) {
+			this.event.emit({ reload: false });
+		}
 	}
 
 	submitModificationRequest(): void {
 		this.setToResultState();
+
 		this.subscription.add(
 			this.applicationsService.requestModification(this.extension as ApplicationModification)
 				.subscribe((result: { [key: string]: string }): void => {
@@ -66,17 +70,6 @@ export class ResultComponent implements OnInit, OnDestroy {
 					}
 
 					this.event.emit({ reload: true });
-
-					// if (this.selected_ontology_terms.length > 0) {
-					// 	this.applicationsService.addEdamOntologyTerms(this.application_id,
-					// 		this.selected_ontology_terms).subscribe((): void => {
-					// 		this.getApplication();
-					//
-					// 	});
-					// } else {
-					// 	this.getApplication();
-					// }
-
 				}),
 		);
 	}
@@ -88,6 +81,7 @@ export class ResultComponent implements OnInit, OnDestroy {
 			.subscribe((result: { [key: string]: string }): void => {
 				if (result['Error']) {
 					this.extensionStatus = 2;
+					this.errorMessage = result['Error'];
 				} else {
 					this.extensionStatus = 1;
 				}

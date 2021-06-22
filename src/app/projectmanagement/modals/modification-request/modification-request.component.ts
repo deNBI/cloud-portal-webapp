@@ -32,6 +32,7 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 
 	private subscription: Subscription = new Subscription();
 	public event: EventEmitter<any> = new EventEmitter();
+	submitted: boolean = false;
 
 	constructor(
 		public bsModalRef: BsModalRef,
@@ -43,6 +44,9 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 
 	ngOnDestroy(): void {
 		this.subscription.unsubscribe();
+		if (!this.submitted) {
+			this.event.emit({ reload: false });
+		}
 	}
 
 	ngOnInit(): void {
@@ -154,6 +158,7 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 			modificationExtension: true,
 			expectedTotalCredits: this.resource_modification_expected_credits,
 		};
+		this.submitted = true;
 		this.bsModalRef = this.modalService.show(ResultComponent, { initialState });
 		this.bsModalRef.setClass('modal-lg');
 		this.bsModalRef.content.event.subscribe(
