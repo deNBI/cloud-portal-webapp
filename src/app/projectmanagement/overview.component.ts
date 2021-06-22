@@ -51,8 +51,8 @@ import { LifetimeRequestComponent } from './modals/lifetime-request/lifetime-req
 export class OverviewComponent extends ApplicationBaseClassComponent implements OnInit, OnDestroy {
 
 	bsModalRef: BsModalRef;
-	modificationRequestSend: boolean = false;
-	lifetimeExtensionSend: boolean = false;
+	modificationRequestDisabled: boolean = false;
+	lifetimeExtensionDisabled: boolean = false;
 
 	@Input() invitation_group_post: string = environment.invitation_group_post;
 	@Input() voRegistrationLink: string = environment.voRegistrationLink;
@@ -202,7 +202,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 			this.bsModalRef.content.event.subscribe(
 				(result: any) => {
 					if ('reload' in result && result['reload']) {
-						this.lifetimeExtensionSend = true;
+						this.lifetimeExtensionDisabled = true;
 						this.fullLayout.getGroupsEnumeration();
 						this.getApplication();
 					}

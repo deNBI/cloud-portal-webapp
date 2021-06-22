@@ -213,12 +213,12 @@
 												(click)="doiQuestionModal.show(); request_type = 1;"
 												*ngIf="isAdmin &&!((project_application | hasstatusinlist: Application_States.LIFETIME_EXTENSION_REQUESTED)
                   || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_EXTENSION)
-                  || lifetimeExtensionSend)">
+                  || lifetimeExtensionDisabled)">
 									Request extension</button>
 								<button class="btn btn-outline-secondary" disabled id="show_doi_question_modal_disabled"
 												*ngIf="((project_application | hasstatusinlist: Application_States.LIFETIME_EXTENSION_REQUESTED)
                   || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_EXTENSION)
-                  || lifetimeExtensionSend)">
+                  || lifetimeExtensionDisabled)">
 									Extension requested</button>
 
 								<ng-container *ngIf="!isAdmin && (project_application | hasstatusinlist:Application_States.APPROVED)
@@ -290,13 +290,13 @@
 								<button class="btn btn-outline-primary" id="show_modification_extension_button"
 												*ngIf="isAdmin && !((project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED)
                   || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION)
-                  || modificationRequestSend)"
+                  || modificationRequestDisabled)"
 
 																				(click)="showResourceModal();">Request resource modification</button>
 								<button class="btn btn-outline-secondary" disabled id="show_modification_extension_button_disabled"
 												*ngIf="((project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED)
                   || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION)
-                  || modificationRequestSend)">
+                  || modificationRequestDisabled)">
 									Resource modification requested</button>
 								<a class="btn btn-outline-success" href="#/virtualmachines/newVM"
 									 *ngIf="!project?.OpenStackProject && isAbleToStart()">Start a VM</a>
