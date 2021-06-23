@@ -125,21 +125,20 @@ export class CreditsCalculatorComponent implements OnInit {
 
 	reset_used(): void {
 		const len: number = this.resource_weights.length;
-		for (let i = 0; i < len; i += 1) {
+		for (let i = len - 1; i >= 0; i -= 1) {
 			this.resource_weights[i].set_unused();
-			if (this.calculate_timestamp() <= this.resource_weights[i].resource_set_timestamp
-				|| (i + 1) === len) {
+			if (this.calculate_timestamp() >= this.resource_weights[i].resource_set_timestamp
+				|| i === 0) {
 				this.resource_weights[i].set_used();
-				this.set_rest_unused(i + 1);
+				this.set_rest_unused(i - 1);
 				break;
 			}
 		}
 	}
 
 	set_rest_unused(start: number): void {
-		const len: number = this.resource_weights.length;
-		if (start < len) {
-			for (let i = start; i < len; i += 1) {
+		if (start >= 0) {
+			for (let i = start; i >= 0; i -= 1) {
 				this.resource_weights[i].set_unused();
 			}
 		}
