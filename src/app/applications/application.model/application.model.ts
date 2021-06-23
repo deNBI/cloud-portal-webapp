@@ -165,14 +165,14 @@ export class Application {
 
 	public calcTotalModificationCredits(): number {
 		if (this.project_modification_request != null) {
-			const total_credits: number = this.project_application_initial_credits + this.project_modification_request.extra_credits;
+			const total_credits: number = Number(this.project_application_initial_credits) + Number(this.project_modification_request.extra_credits);
 			if (total_credits <= 0) {
 				return 0;
 			} else {
 				return total_credits;
 			}
 		} else {
-			return this.project_application_initial_credits;
+			return Number(this.project_application_initial_credits);
 		}
 	}
 
