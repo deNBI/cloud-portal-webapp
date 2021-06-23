@@ -31,8 +31,6 @@ import {
 import { Doi } from '../applications/doi/doi';
 import { ApiSettings } from '../api-connector/api-settings.service';
 import { Application_States, ExtensionRequestType } from '../shared/shared_modules/baseClass/abstract-base-class';
-import { ApplicationLifetimeExtension } from '../applications/application_extension.model';
-import { ApplicationCreditRequest } from '../applications/application_credit_request';
 import { ProjectMember } from './project_member.model';
 import { Project } from './project.model';
 import { ModificationRequestComponent } from './modals/modification-request/modification-request.component';
