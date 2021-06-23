@@ -341,13 +341,13 @@
 		<div *ngIf="project?.credits_allowed" class="form-group row">
 			<label id="creditnumber" class="col">
 				<strong>Expected total credits: {{project?.project_application_initial_credits}} + <span
-					id="modification_credits">({{temp_project_modification?.extra_credits}}) = {{resource_modification_expected_credits}}
+					id="modification_credits">({{temp_project_modification?.extra_credits}}) = {{expected_total_credits}}
                 </span></strong></label>
 		</div>
 		<div class="alert alert-primary" role="alert" *ngIf="project?.credits_allowed">
 			This is the expected number of extra credits that you get for your project. It accounts for an increase
 			or decrease in requested resources for your remaining project lifetime.<br>
-			<strong *ngIf="resource_modification_expected_credits === 0 && project?.flavors?.length > 0">
+			<strong *ngIf="expected_total_credits === 0 && project?.flavors?.length > 0">
 				Your expected credits are lower or equal to zero.
 				Please submit a Credits Extension or contact us at <a href="mailto:{{CLOUD_MAIL}}">{{CLOUD_MAIL}}</a>,
 				so we may calculate and set the correct amount for your project.

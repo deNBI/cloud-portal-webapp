@@ -18,7 +18,6 @@ import { ApplicationProgressComponent } from './application-progress/application
 import { LifetimeRequestComponent } from './modals/lifetime-request/lifetime-request.component';
 import { ModificationRequestComponent } from './modals/modification-request/modification-request.component';
 import { CreditsRequestComponent } from './modals/credits-request/credits-request.component';
-import { MemberModalComponent } from './modals/member-modal/member-modal.component';
 import { DoiComponent } from './modals/doi/doi.component';
 import { ResultComponent } from './modals/result/result.component';
 
@@ -48,7 +47,6 @@ import { ResultComponent } from './modals/result/result.component';
 		LifetimeRequestComponent,
 		CreditsRequestComponent,
 		ModificationRequestComponent,
-		MemberModalComponent,
 		DoiComponent,
 		ResultComponent,
 	],

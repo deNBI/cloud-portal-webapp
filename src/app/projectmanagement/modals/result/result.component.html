@@ -37,10 +37,10 @@
 					</tr>
 				</ng-container>
 
-				<!--			<tr *ngIf="selected_ontology_terms?.length > 0">-->
-				<!--				<td>Selected Terms:-->
-				<!--					<span *ngFor="let term of selected_ontology_terms" class="badge badge-info">{{term.term}}</span></td>-->
-				<!--			</tr>-->
+				<tr *ngIf="selected_ontology_terms?.length > 0">
+					<td>Selected Terms:
+						<span *ngFor="let term of selected_ontology_terms" class="badge badge-info">{{term.term}}</span></td>
+				</tr>
 
 				<tr *ngIf="(modificationExtension || lifetimeExtension || creditsExtension)
             && extension.comment?.length > 0">
@@ -77,13 +77,13 @@
 						<strong>Approximate number of total credits:{{expectedTotalCredits}}</strong>
 						<br>
 						<alert type="info" *ngIf="modificationExtension">
-							Pleas note, that the approximate credits amounts shown here are calculated for the currently approved
+							Please note, that the approximate credits amounts shown here are calculated for the currently approved
 							remaining
 							lifetime of this project. This amount will be calculated anew at extension approval and may therefore
 							vary.
 						</alert>
 						<alert type="info" *ngIf="lifetimeExtension">
-							Pleas note, that the approximate credits amounts shown here are calculated for the currently approved
+							Please note, that the approximate credits amounts shown here are calculated for the currently approved
 							resource
 							configuration of this project. This amount will be calculated anew at extension approval and may therefore
 							vary.
@@ -107,7 +107,7 @@
 		</button>
 		<button id="confirm_credits_btn" class="btn btn-success col-md-4" type="button"
 						*ngIf="creditsExtension"
-						(click)="bsModalRef.hide();">
+						(click)="submitCreditsModification();">
 			Confirm
 		</button>
 		<button class="btn btn-primary col-md-4" type="reset"

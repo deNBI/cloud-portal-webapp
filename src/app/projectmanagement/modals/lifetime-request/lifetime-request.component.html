@@ -39,12 +39,12 @@
 								 type="number" min="1" max="12" step="1" required
 								 appInteger appMinAmount="1" appMaxAmount="12"
 								 [ngClass]="{
-                                'is-invalid': extensionForm.controls.project_application_renewal_lifetime?.invalid
-                                && (extensionForm.controls.project_application_renewal_lifetime?.dirty
-                                || extensionForm.controls.project_application_renewal_lifetime?.touched),
-                                'is-valid': extensionForm.controls.project_application_renewal_lifetime?.valid
-                                && (extensionForm.controls.project_application_renewal_lifetime?.dirty
-                                || extensionForm.controls.project_application_renewal_lifetime?.touched)}">
+                                'is-invalid': extensionForm.controls.temp_project_extension_application_renewal_lifetime?.invalid
+                                && (extensionForm.controls.temp_project_extension_application_renewal_lifetime?.dirty
+                                || extensionForm.controls.temp_project_extension_application_renewal_lifetime?.touched),
+                                'is-valid': extensionForm.controls.temp_project_extension_application_renewal_lifetime?.valid
+                                && (extensionForm.controls.temp_project_extension_application_renewal_lifetime?.dirty
+                                || extensionForm.controls.temp_project_extension_application_renewal_lifetime?.touched)}">
 					<div class="input-group-append">
 						<span class="input-group-text" style="padding: 0 !important;"> months</span>
 					</div>
@@ -118,14 +118,12 @@
 			This is the expected number of extra credits that you get for your project and your current resources.
 			It accounts for an increase in requested project lifetime.
 		</div>
-
-
 	</form>
 
 	<div *ngIf="extensionForm.invalid" class="alert alert-warning" role="alert">
 		<p>Some required fields are incorrect or not filled in yet.
 			Please check if all required (*) fields are filled in correctly.</p>
-		<p *ngIf="extensionForm.controls.project_application_renewal_lifetime?.invalid">
+		<p *ngIf="extensionForm.controls.temp_project_extension_application_renewal_lifetime?.invalid">
 			- Lifetime missing
 		</p>
 
@@ -151,7 +149,5 @@
 						(click)="bsModalRef.hide()">
 			Close
 		</button>
-
 	</div>
-
 </div>

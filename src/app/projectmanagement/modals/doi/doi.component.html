@@ -67,11 +67,12 @@
 				<tr>
 					<td>
 						<input style="width: 100%" type="text" required placeholder="e.g. 10.1000/182" id="modal_doi_input_field"
-										 pattern="10.\d{4,9}\/[-._;()\/:a-zA-Z0-9]+" [(ngModel)]="newDoi" #doiInput></td>
+									 [disabled]="disableInput"
+									 pattern="10.\d{4,9}\/[-._;()\/:a-zA-Z0-9]+" [(ngModel)]="newDoi" #doiInput></td>
 					<td>
 						<button id="add_doi_btn_in_modal"
 										(click)="addDoi();"
-										[disabled]="!doiInput.validity.valid"
+										[disabled]="!doiInput.validity.valid || disableInput"
 										type="button"
 										class="btn btn-success"><i class="fa fa-plus"></i>&nbsp;
 						</button>

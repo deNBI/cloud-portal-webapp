@@ -29,7 +29,6 @@ import {
 	CREDITS_WIKI, WIKI_MEMBER_MANAGEMENT, WIKI_PUBLICATIONS, CLOUD_MAIL,
 } from '../../links/links';
 import { Doi } from '../applications/doi/doi';
-import { EdamOntologyTerm } from '../applications/edam-ontology-term';
 import { ApiSettings } from '../api-connector/api-settings.service';
 import { Application_States, ExtensionRequestType } from '../shared/shared_modules/baseClass/abstract-base-class';
 import { ApplicationLifetimeExtension } from '../applications/application_extension.model';
@@ -39,6 +38,7 @@ import { Project } from './project.model';
 import { ModificationRequestComponent } from './modals/modification-request/modification-request.component';
 import { LifetimeRequestComponent } from './modals/lifetime-request/lifetime-request.component';
 import { DoiComponent } from './modals/doi/doi.component';
+import { CreditsRequestComponent } from './modals/credits-request/credits-request.component';
 
 /**
  * Projectoverview component.
@@ -54,6 +54,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	bsModalRef: BsModalRef;
 	modificationRequestDisabled: boolean = false;
 	lifetimeExtensionDisabled: boolean = false;
+	creditsExtensionDisabled: boolean = false;
 
 	@Input() invitation_group_post: string = environment.invitation_group_post;
 	@Input() voRegistrationLink: string = environment.voRegistrationLink;
@@ -75,31 +76,17 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	errorMessage: string;
 	terminate_confirmation_given: boolean = false;
 
-	/**
-	 * id of the extension status.
-	 *
-	 * @type {number}
-	 */
-	extension_status: number = 0;
-
-	/**
-	 * defines weither the request is an extension (1), modification (2) or credit (3) request.
-	 *
-	 * @type {number}, initialized with 0
-	 */
-	request_type: number = ExtensionRequestType.NONE;
 	showInformationCollapse: boolean = false;
 	newDoi: string;
 	doiError: string;
 	remove_members_clicked: boolean;
 	life_time_string: string;
 	dois: Doi[];
+	disabledDoiInput: boolean = false;
 	isAdmin: boolean = false;
 	invitation_link: string;
 	filteredMembers: any = null;
 	project_application: Application;
-	project_extension: ApplicationLifetimeExtension;
-	project_credit_request: ApplicationCreditRequest;
 	application_action: string = '';
 	application_member_name: string = '';
 	application_action_done: boolean = false;
@@ -110,14 +97,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	userinfo: Userinfo;
 	allSet: boolean = false;
 	renderer: Renderer2;
-	smallExampleFlavor: Flavor;
-	largeExampleFlavor: Flavor;
-	smallExamplePossibleHours: number = 0;
-	largeExamplePossibleHours: number = 0;
-	creditsPerHourSmallExample: number;
-	creditsPerHourLargeExample: number;
-	smallExamplePossibleDays: string = '';
-	largeExamplePossibleDays: string = '';
 	supportMails: string[] = [];
 
 	resourceDataLoaded: boolean = false;
@@ -135,8 +114,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	public project_members: ProjectMember[] = [];
 	public isLoaded: boolean = false;
 	public showLink: boolean = true;
-	private project_application_extra_credits: number;
-	public project_application_extra_credits_comment: string;
 	private updateCreditsUsedIntervals: ReturnType<typeof setTimeout>;
 	private updateCreditsHistoryIntervals: ReturnType<typeof setTimeout>;
 	credits_allowed: boolean = false;
@@ -184,6 +161,27 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 		this.subscribeForExtensionResult(this.ExtensionRequestType.MODIFICATION);
 	}
 
+	showDoiModal(): void {
+		const initialState = {
+			dois: this.dois,
+			application_id: this.application_id,
+		};
+
+		this.bsModalRef = this.modalService.show(DoiComponent, { initialState });
+		this.bsModalRef.setClass('modal-lg');
+		this.subscription.add(
+			this.bsModalRef.content.event.subscribe(
+				(result: any) => {
+					if ('reloadDoi' in result && result['reloadDoi']) {
+						this.getDois();
+					} else if ('reloadDoi' in result && !result['reloadDoi']) {
+						this.showLifetimeExtensionModal();
+					}
+				},
+			),
+		);
+	}
+
 	showLifetimeExtensionModal(): void {
 		if (this.lifetimeExtensionDisabled) {
 			return;
@@ -200,21 +198,20 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 		this.subscribeForExtensionResult(this.ExtensionRequestType.EXTENSION);
 	}
 
-	showDoiModal(): void {
-		const initialState = {
-			dois: this.dois,
-			application_id: this.application_id,
-		};
+	showCreditsExtensionModal(): void {
+		if (this.creditsExtensionDisabled) {
+			return;
+		}
 
-		this.bsModalRef = this.modalService.show(DoiComponent, { initialState });
+		this.creditsExtensionDisabled = true;
+
+		const initialState = {
+			project: this.project_application,
+			flavorList: this.flavorList,
+		};
+		this.bsModalRef = this.modalService.show(CreditsRequestComponent, { initialState });
 		this.bsModalRef.setClass('modal-lg');
-		this.subscription.add(
-			this.bsModalRef.content.event.subscribe(
-				() => {
-					this.showLifetimeExtensionModal();
-				},
-			),
-		);
+		this.subscribeForExtensionResult(this.ExtensionRequestType.CREDIT);
 	}
 
 	subscribeForExtensionResult(type: ExtensionRequestType): void {
@@ -226,6 +223,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 							this.lifetimeExtensionDisabled = true;
 						} else if (type === this.ExtensionRequestType.MODIFICATION) {
 							this.modificationRequestDisabled = true;
+						} else if (type === this.ExtensionRequestType.CREDIT) {
+							this.creditsExtensionDisabled = true;
 						}
 						this.fullLayout.getGroupsEnumeration();
 						this.getApplication();
@@ -233,23 +232,12 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 						this.lifetimeExtensionDisabled = false;
 					} else if (type === this.ExtensionRequestType.MODIFICATION) {
 						this.modificationRequestDisabled = false;
+					} else if (type === this.ExtensionRequestType.CREDIT) {
+						this.creditsExtensionDisabled = false;
 					}
 				},
 			),
 		);
-	}
-
-	setModalOpen(bool: boolean): void {
-		// tslint:disable-next-line:typedef
-		void (async () => {
-			await this.delay(750).then().catch(); // needed, because bootstraps class-toggle-function seems to be too slow
-			if (bool) {
-				this.document.body.classList.add('modal-open');
-			} else {
-				this.document.body.classList.remove('modal-open');
-			}
-		}
-		)().then().catch();
 	}
 
 	fetchCreditHistoryOfProject(): void {
@@ -290,26 +278,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 		}
 	}
 
-	updateExampleCredits(numberOfCredits: number): void {
-		const totalHoursSmall: number = Math.round((numberOfCredits / this.creditsPerHourSmallExample) * 100) / 100;
-		const totalHoursLarge: number = Math.round((numberOfCredits / this.creditsPerHourLargeExample) * 100) / 100;
-		this.smallExamplePossibleHours = totalHoursSmall;
-		this.largeExamplePossibleHours = totalHoursLarge;
-		this.smallExamplePossibleDays = this.updateCreditsDaysString(totalHoursSmall);
-		this.largeExamplePossibleDays = this.updateCreditsDaysString(totalHoursLarge);
-	}
-
-	updateCreditsDaysString(hours: number): string {
-		let days: number = 0;
-		const minutes: number = Math.floor((hours % 1) * 60);
-		if (hours > 24) {
-			days = Math.floor(hours / 24);
-		}
-		hours = Math.floor(hours % 24);
-
-		return `${days} day(s), ${hours} hour(s) and ${minutes} minute(s)`;
-	}
-
 	startUpdateCreditUsageLoop(): void {
 
 		if (!this.credits_allowed || !this.project_application || !this.project_application.project_application_perun_id) {
@@ -348,31 +316,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
 	}
 
-	initExampleFlavors(): void {
-		const standardFlavors: Flavor[] = this.flavorList
-			// eslint-disable-next-line @typescript-eslint/no-unused-vars
-			.filter((fl: Flavor, nu: number, arr: Flavor[]): boolean => fl.type.long_name === 'Standard Flavours');
-		const highMemFlavors: Flavor[] = this.flavorList
-			// eslint-disable-next-line @typescript-eslint/no-unused-vars
-			.filter((fl: Flavor, nu: number, arr: Flavor[]): boolean => fl.type.long_name === 'High Memory Flavours');
-		standardFlavors.sort((fl1: Flavor, fl2: Flavor): number => fl1.vcpus - fl2.vcpus);
-		highMemFlavors.sort((fl1: Flavor, fl2: Flavor): number => fl1.vcpus - fl2.vcpus);
-		if (standardFlavors.length !== 0) {
-			this.smallExampleFlavor = standardFlavors[0];
-			this.creditsService.getCreditsPerHour(this.smallExampleFlavor.vcpus, this.smallExampleFlavor.ram).toPromise()
-				.then((credits: number): void => {
-					this.creditsPerHourSmallExample = credits * 4;
-				}).catch((err: Error): void => console.log(err.message));
-		}
-		if (highMemFlavors.length !== 0) {
-			this.largeExampleFlavor = highMemFlavors[0];
-			this.creditsService.getCreditsPerHour(this.largeExampleFlavor.vcpus, this.largeExampleFlavor.ram).toPromise()
-				.then((credits: number): void => {
-					this.creditsPerHourLargeExample = credits;
-				}).catch((err: Error): void => console.log(err.message));
-		}
-	}
-
 	approveMemberApplication(project: number, application: number, membername: string): void {
 		this.loaded = false;
 		this.application_action_done = false;
@@ -398,20 +341,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 		});
 	}
 
-	initiateLifetimeExtension(): void {
-		this.project_extension = new ApplicationLifetimeExtension(null);
-		this.project_extension.project_application_id = this.project_application.project_application_id;
-		this.project_extension.extra_lifetime = 0;
-		this.project_extension.comment = '';
-	}
-
-	initiateCreditRequest(): void {
-		this.project_credit_request = new ApplicationCreditRequest(null);
-		this.project_credit_request.project_application_id = this.project_application.project_application_id;
-		this.project_credit_request.comment = '';
-		this.project_credit_request.extra_credits = 0;
-	}
-
 	getApplication(): void {
 		this.applicationsService
 			.getApplication(this.application_id)
@@ -434,17 +363,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 								this.getProject();
 							}
 						});
-						if (this.project_application?.project_lifetime_request) {
-							this.project_extension = this.project_application.project_lifetime_request;
-						} else {
-							this.initiateLifetimeExtension();
-
-						}
-						if (this.project_application?.project_credit_request) {
-							this.project_credit_request = this.project_application.project_credit_request;
-						} else {
-							this.initiateCreditRequest();
-						}
 						this.startUpdateCreditUsageLoop();
 
 					}
@@ -458,21 +376,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
                    Error Message: ${error.error.toString()}`;
 				},
 			);
-	}
-
-	public requestCreditsModification(): void {
-		this.project_credit_request.project_application_id = this.project_application.project_application_id;
-		this.applicationsService.requestAdditionalCredits(this.project_credit_request)
-			.subscribe((result: { [key: string]: string }): void => {
-				if (result['Error']) {
-					this.extension_status = 2;
-				} else {
-					this.fullLayout.getGroupsEnumeration();
-
-					this.extension_status = 1;
-				}
-				this.getApplication();
-			});
 	}
 
 	/**
@@ -492,7 +395,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	}
 
 	setLifetime(): void {
-
 		// tslint:disable-next-line:max-line-length
 		this.life_time_string = `${this.project.DateCreated} -  ${this.project.DateEnd}`;
 	}
@@ -511,7 +413,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 			this.getListOfTypes();
 			this.getDois();
 			this.is_vo_admin = is_vo;
-
 		});
 	}
 
@@ -601,9 +502,12 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 		});
 	}
 
+	toggleDoiDisabledInput(): void {
+		this.disabledDoiInput = !this.disabledDoiInput;
+	}
+
 	addDoi(): void {
-		this.document.getElementById('add_doi_btn').toggleAttribute('disabled');
-		this.document.getElementById('doi_input_field').toggleAttribute('disabled');
+		this.toggleDoiDisabledInput();
 		if (this.isNewDoi()) {
 			this.groupService.addGroupDoi(this.application_id, this.newDoi).subscribe(
 				(dois: Doi[]): void => {
@@ -613,20 +517,17 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 				},
 				(): void => {
 					this.doiError = `DOI ${this.newDoi} was already added by another Project!`;
-					this.document.getElementById('add_doi_btn').toggleAttribute('disabled');
-					this.document.getElementById('doi_input_field').toggleAttribute('disabled');
+					this.toggleDoiDisabledInput();
 				},
 				(): void => {
-					this.document.getElementById('add_doi_btn').toggleAttribute('disabled');
-					this.document.getElementById('doi_input_field').toggleAttribute('disabled');
+					this.toggleDoiDisabledInput();
 					this.newDoi = null;
 				},
 			);
 		} else {
 			this.doiError = `DOI ${this.newDoi} was already added by this Project!`;
 			this.newDoi = null;
-			this.document.getElementById('add_doi_btn').toggleAttribute('disabled');
-			this.document.getElementById('doi_input_field').toggleAttribute('disabled');
+			this.toggleDoiDisabledInput();
 		}
 	}
 

@@ -25,7 +25,7 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 	project: Application;
 	temp_project_modification: ApplicationModification;
 
-	resource_modification_expected_credits: number = 0;
+	expected_total_credits: number = 0;
 	flavorTypes: FlavorType[] = [];
 	shown_flavors: { [name: string]: Flavor[] } = {};
 	min_vm: boolean = true;
@@ -141,10 +141,10 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 			).subscribe(
 				(credits: number): void => {
 					this.temp_project_modification.extra_credits = credits;
-					this.resource_modification_expected_credits = this.project.project_application_initial_credits
+					this.expected_total_credits = this.project.project_application_initial_credits
 						+ this.temp_project_modification.extra_credits;
-					if (this.resource_modification_expected_credits <= 0) {
-						this.resource_modification_expected_credits = 0;
+					if (this.expected_total_credits <= 0) {
+						this.expected_total_credits = 0;
 					}
 				},
 			),
@@ -156,7 +156,7 @@ export class ModificationRequestComponent implements OnInit, OnDestroy {
 			project: this.project,
 			extension: this.temp_project_modification,
 			modificationExtension: true,
-			expectedTotalCredits: this.resource_modification_expected_credits,
+			expectedTotalCredits: this.expected_total_credits,
 		};
 		this.submitted = true;
 		this.bsModalRef = this.modalService.show(ResultComponent, { initialState });

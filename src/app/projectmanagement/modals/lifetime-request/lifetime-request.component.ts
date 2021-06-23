@@ -111,6 +111,8 @@ export class LifetimeRequestComponent implements OnInit, OnDestroy {
 			project: this.project,
 			extension: this.temp_project_extension,
 			lifetimeExtension: true,
+			expectedTotalCredits: (this.project.project_application_initial_credits + this.temp_project_extension.extra_credits),
+			selected_ontology_terms: this.selected_ontology_terms,
 		};
 		this.submitted = true;
 		this.bsModalRef = this.modalService.show(ResultComponent, { initialState });

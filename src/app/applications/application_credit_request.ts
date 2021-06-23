@@ -1,4 +1,5 @@
 import { User } from './application.model/user.model';
+import { Application } from './application.model/application.model';
 
 /**
  * Application Extension class.
@@ -17,5 +18,9 @@ export class ApplicationCreditRequest {
 		if (extension) {
 			this.extra_credits = (Math.round(extension.extra_credits * 10) / 10);
 		}
+	}
+
+	setByApp(app: Application): void {
+		this.project_application_id = app.project_application_id;
 	}
 }

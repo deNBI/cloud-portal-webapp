@@ -8,6 +8,7 @@ import { ApplicationModification } from '../../../applications/application_modif
 import { ApplicationLifetimeExtension } from '../../../applications/application_extension.model';
 import { ApplicationCreditRequest } from '../../../applications/application_credit_request';
 import { ApplicationsService } from '../../../api-connector/applications.service';
+import { EdamOntologyTerm } from '../../../applications/edam-ontology-term';
 
 @Component({
 	selector: 'app-result',
@@ -34,6 +35,7 @@ export class ResultComponent implements OnInit, OnDestroy {
 
 	expectedTotalCredits: number = 0;
 	extensionStatus: number = 0;
+	selected_ontology_terms: EdamOntologyTerm[];
 
 	errorMessage: any;
 
@@ -88,6 +90,22 @@ export class ResultComponent implements OnInit, OnDestroy {
 
 				this.event.emit({ reload: true });
 			});
+	}
+
+	submitCreditsModification(): void {
+		this.setToResultState();
+
+		this.subscription.add(
+			this.applicationsService.requestAdditionalCredits(this.extension as ApplicationCreditRequest)
+				.subscribe((result: { [key: string]: string }): void => {
+					if (result['Error']) {
+						this.extensionStatus = 2;
+					} else {
+						this.extensionStatus = 1;
+					}
+					this.event.emit({ reload: true });
+				}),
+		);
 	}
 
 	setToResultState(): void {

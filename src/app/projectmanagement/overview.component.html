@@ -211,7 +211,7 @@
                   </span>
 								</ng-container>
 								<button class="btn btn-outline-primary" id="show_doi_question_modal"
-												(click)="doiQuestionModal.show(); request_type = 1;"
+												(click)="showDoiModal()"
 												*ngIf="isAdmin &&!((project_application | hasstatusinlist: Application_States.LIFETIME_EXTENSION_REQUESTED)
                   || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_EXTENSION)
                   || lifetimeExtensionDisabled)">
@@ -281,7 +281,8 @@
 							<div class="btn-group" style="margin-top:15px;">
 								<ng-container *ngIf="!isAdmin && (project_application | hasstatusinlist:Application_States.APPROVED)
                         && !((project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED)
-                  || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION))">
+                  || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION)
+                  || modificationRequestDisabled)">
                   <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
 												title="Only project administators are able to request resource modifications.">
                     <button class="btn btn-outline-primary" disabled>
@@ -293,7 +294,7 @@
                   || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION)
                   || modificationRequestDisabled)"
 
-																				(click)="showResourceModal();">Request resource modification</button>
+												(click)="showResourceModal();">Request resource modification</button>
 								<button class="btn btn-outline-secondary" disabled id="show_modification_extension_button_disabled"
 												*ngIf="((project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED)
                   || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION)
@@ -373,7 +374,8 @@
 						</div>
 						<div class="col-6" style="margin-top:15px;">
 							<ng-container *ngIf="!isAdmin && !((project_application | hasstatusinlist: Application_States.CREDITS_EXTENSION_REQUESTED)
-                  || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_CREDITS))">
+                  || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_CREDITS)
+                  || creditsExtensionDisabled)">
                   <span class="d-inline-block" tabindex="0" data-toggle="tooltip"
 												title="Only project administators are able to request more credits.">
                     <button class="btn btn-outline-success" disabled>
@@ -382,13 +384,15 @@
 							</ng-container>
 							<button id="show_credits_extension_modal"
 											*ngIf="isAdmin && !((project_application | hasstatusinlist: Application_States.CREDITS_EXTENSION_REQUESTED)
-                  || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_CREDITS))"
-											(click)="newFlavors={};initExampleFlavors();creditsExtensionModal.show();"
+                  || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_CREDITS)
+                  || creditsExtensionDisabled)"
+											(click)="showCreditsExtensionModal();"
 											class="btn btn-outline-success"
 											type="button">Request more credits</button>
 							<button id="show_credits_extension_modal_disabled" disabled class="btn btn-outline-secondary"
 											*ngIf="((project_application | hasstatusinlist: Application_States.CREDITS_EXTENSION_REQUESTED)
-                      || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_CREDITS))"
+                      || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_CREDITS)
+                      || creditsExtensionDisabled)"
 											type="button">More credits requested</button>
 						</div>
 						<div class="col-6">
@@ -543,7 +547,7 @@
 							<tr *ngFor="let member of project_members" [ngStyle]="{'color':isPi(member)}">
 								<td *ngIf="isAdmin || is_vo_admin">
 									<input *ngIf="userinfo?.MemberId != member.memberId" type="checkbox" id="{{member.userId}}"
-												 name="{{member.userId}}"
+												 name="member.userId"
 												 [checked]="isMemberChecked(member.memberId)" (change)="checkUnCheckMember(member.memberId);">
 								</td>
 								<td>
@@ -625,13 +629,14 @@
 							</ng-container>
 
 							<tr>
-								<td><input style="width: 100%" type="text"  placeholder="e.g. 10.1000/182" id="doi_input_field"
-													 pattern="10.\d{4,9}\/[-._;()\/:a-zA-Z0-9]+" [(ngModel)]="newDoi" #doiInput></td>
-
+								<td>
+									<input style="width: 100%" type="text"  placeholder="e.g. 10.1000/182" id="doi_input_field"
+												 [disabled]="disabledDoiInput"
+												 pattern="10.\d{4,9}\/[-._;()\/:a-zA-Z0-9]+" [(ngModel)]="newDoi" #doiInput></td>
 								<td>
 									<button id="add_doi_btn"
 													(click)="addDoi();"
-													[disabled]="!doiInput.validity.valid"
+													[disabled]="!doiInput.validity.valid || disabledDoiInput"
 													type="button"
 													class="btn btn-success"><i class="fa fa-plus"></i>&nbsp;
 									</button>
@@ -932,32 +937,6 @@
 		</div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->
 
-	<div bsModal #descriptionModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
-			 aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-dialog modal-info" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title">Description</h4>
-					<button type="button" class="close" style="cursor: pointer" (click)="descriptionModal.hide()"
-									aria-label="Close">
-
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-
-				<div class="modal-body">
-					<p>{{ project?.Description }}</p>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-primary"
-									(click)="descriptionModal.hide();">
-						Close
-					</button>
-				</div>
-			</div><!-- /.modal-content -->
-		</div><!-- /.modal-dialog -->
-	</div>
-
 	<div bsModal #deleteModal="bs-modal" class="modal fade" tabindex="-1"
 			 role="dialog" aria-labelledby="Label"
 			 aria-hidden="true"
@@ -990,337 +969,5 @@
 			</div><!-- /.modal-content -->
 		</div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->
-
-	<div bsModal #creditsExtensionModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
-			 aria-labelledby="Label"
-			 aria-hidden="true">
-		<div class="modal-dialog modal-lg" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4>Extra credits request for {{project_application?.project_application_shortname}}</h4>
-					<button type="button" class="close" style="cursor: pointer"
-									(click)="creditsExtensionModal.hide()" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<div class="modal-body">
-					<form id="credits_application_form" #f2="ngForm"
-								class="form-horizontal">
-
-						<div class="form-group row">
-							<label class="col-md-4 form-control-label"
-										 for="text-input"><strong>Reasons for Extension</strong></label>
-							<div class="col-md-8">
-                <textarea required type="text" id="project_application_extra_credits_comment"
-													name="project_application_extra_credits_comment" class="form-control"
-													maxlength="8192"
-													placeholder=''
-													[(ngModel)]="project_credit_request.comment" minlength="10"
-													[ngClass]="{
-                                'is-invalid': f2.controls.project_application_extra_credits_comment?.invalid && (f2.controls.project_application_extra_credits_comment?.dirty || f2.controls.project_application_extra_credits_comment?.touched),
-                                'is-valid': f2.controls.project_application_extra_credits_comment?.valid && (f2.controls.project_application_extra_credits_comment?.dirty || f2.controls.project_application_extra_credits_comment?.touched)
-                                }"
-								></textarea>
-								<span class="help-block">Please state why you need extra credits.</span>
-								<div class="alert alert-info">
-									As more credits are requested we require a more detailed description of the reasons!
-								</div>
-							</div>
-						</div>
-						<div class="form-group row">
-							<label class="col-md-4 form-control-label" for="textarea-input"><strong>Amount of extra credits needed</strong></label>
-							<div class="col-md-8">
-
-								<div class="input-group">
-									<input required class="form-control"
-												 id="project_application_extra_credits"
-												 name="project_application_extra_credits"
-												 placeholder="e.g. 5000"
-												 (change)="updateExampleCredits(project_credit_request.extra_credits);"
-												 [(ngModel)]="project_credit_request.extra_credits" min="100" step="100" type="number"
-												 appInteger appMinAmount="100"
-												 [ngClass]="{
-                                'is-invalid': f2.controls.project_application_extra_credits?.invalid && (f2.controls.project_application_extra_credits?.dirty || f2.controls.project_application_extra_credits?.touched),
-                                'is-valid': f2.controls.project_application_extra_credits?.valid && (f2.controls.project_application_extra_credits?.dirty || f2.controls.project_application_extra_credits?.touched)
-                                }">
-									<div class="input-group-append"><span class="input-group-text"> Credits
-                                    </span></div>
-								</div>
-								<span class="help-block">How many credits do you need for your project? You need 1 credit for 1 cpu core per hour and 0.28 credits for 1 GB of ram per hour.</span>
-							</div>
-						</div>
-						<div class="form-group row">
-							<label class="col-md-4 form-control-label"><strong>Example</strong></label>
-							<div class="col-md-8">
-								<tr>
-									<strong>
-										Runtime of exemplary VMs with the entered credits.
-									</strong>
-								</tr>
-								<tr>
-									<td>Enough Credits to run 4 {{smallExampleFlavor?.name}} for {{smallExamplePossibleHours}} hours (i.e. {{smallExamplePossibleDays}}) <strong>non-stop</strong></td>
-								</tr>
-								<tr>
-									<td>Enough Credits to run 1 {{largeExampleFlavor?.name}} for {{largeExamplePossibleHours}} hours (i.e. {{largeExamplePossibleDays}}) <strong>non-stop</strong></td>
-								</tr>
-							</div>
-						</div>
-					</form>
-					<div *ngIf="f2.invalid" class="alert alert-warning" role="alert">
-						<p>Some required fields are incorrect or not filled in yet.
-							Please check if all required (*) fields are filled in correctly.</p>
-						<p *ngIf="project_credit_request.comment.length <10">
-							- No reason specified (at least 10 characters)
-						</p>
-						<p *ngIf="project_credit_request.extra_credits < 1">
-							- Number of extra credits not specified
-						</p>
-					</div>
-
-
-					<div class="modal-footer">
-						<div class="label">
-							By submitting this application you agree to the cloud usage policy.
-						</div>
-						<button type="button" class="btn  btn-primary"
-										form="credits_application_form" id="submit_extra_credits_btn"
-										(click)="creditsExtensionModal.hide(); this.request_type = ExtensionRequestType.CREDIT;
-                    setModalOpen(true);
-                  submitModal.show();" [disabled]="f2.invalid"><i class="fa fa-dot-circle-o"></i>
-							Submit
-						</button>
-						<button type="button" class="btn btn-danger"
-										(click)="creditsExtensionModal.hide();">
-							Close
-						</button>
-
-					</div>
-
-				</div><!-- /.modal-content -->
-			</div><!-- /.modal-dialog -->
-		</div><!-- /.modal -->
-	</div>
-
-	<div bsModal #submitModal="bs-modal" class="modal fade" tabindex="-1"
-			 role="dialog" aria-labelledby="Label"
-			 aria-hidden="true">
-		<div class="modal-dialog modal-lg" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title">{{projectName}}</h4>
-					<button type="button" class="close" style="cursor: pointer;"
-									(click)="submitModal.hide(); setModalOpen(false);"
-									data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-
-				</div>
-				<div class="modal-body">
-					<div class="alert alert-info">
-						<strong>Please check the data you have entered and confirm your application
-							below.</strong><br>
-						If the entered data mismatches with your requirements cancel this confirmation
-						and take changes.
-					</div>
-					<div class="table-responsive">
-						<table class="table table-striped">
-							<tr *ngIf="(this.request_type === ExtensionRequestType.CREDIT)
-            && this.project_credit_request.comment?.length > 0">
-								<td>Comment : {{this.project_credit_request.comment}}</td>
-							</tr>
-							<tr *ngIf="request_type == ExtensionRequestType.CREDIT">
-								<td>Amount of requested extra credits: {{project_credit_request.extra_credits}}</td>
-							</tr>
-							<tr *ngIf="(credits_allowed) && request_type != ExtensionRequestType.CREDIT">
-								<td *ngIf="request_type == ExtensionRequestType.EXTENSION"><strong>Approximate number of extra credits:{{project_extension?.extra_credits}}</strong></td>
-							</tr>
-						</table>
-					</div>
-				</div>
-
-
-				<div class="modal-footer">
-
-					<button id="confirm_credits_btn" class="btn btn-success col-md-4" type="button"
-									*ngIf="request_type==ExtensionRequestType.CREDIT"
-									(click)="submitModal.hide(); requestCreditsModification(); resultModal.show();
-                ">Confirm Application
-					</button>
-
-					<button class="btn btn-primary col-md-4" type="reset"
-									(click)="submitModal.hide();">Cancel
-					</button>
-
-				</div>
-			</div><!-- /.modal-content -->L
-		</div><!-- /.modal-dialog -->
-	</div><!-- /.modal -->
-
-	<div bsModal #doiModal="bs-modal" class="modal fade" tabindex="-1"
-			 role="dialog" aria-labelledby="Label"
-			 aria-hidden="true">
-		<div class="modal-dialog modal-lg" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title">Digital object identifier (DOI)</h4>
-					<button type="button" class="close" style="cursor: pointer;"
-									(click)="doiModal.hide(); setModalOpen(false);"
-									data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-
-				</div>
-				<div class="modal-body">
-					<div class="alert alert-info">
-						<p>Please add the DOIs of new publications in this form. For more information on DOIs, please look <a
-							href="{{WIKI_PUBLICATIONS}}"
-							target="_blank" rel="noopener noreferrer">here</a>.
-							You can also add the publications at a later date on the project overview page.</p>
-						<p><strong>The addition or non-addition of publications/DOIs does not affect the renewal request procedure!</strong></p>
-					</div>
-					<div class="table-responsive">
-						<table class="table ">
-
-							<tbody>
-							<ng-container
-								*ngFor="let doi of dois">
-								<tr>
-									<td><a target="_blank" rel="noopener noreferrer" [href]="'https://doi.org/' + doi.identifier">{{doi.identifier}}</a></td>
-
-									<td>
-										<button
-											class="btn btn-danger" type="button" (click)="deleteDoi(doi);">
-											<i class="fa fa-trash"></i>&nbsp;
-										</button>
-									</td>
-
-								</tr>
-							</ng-container>
-
-							<tr>
-								<td><input style="width: 100%" type="text" required placeholder="e.g. 10.1000/182" id="modal_doi_input_field"
-													 pattern="10.\d{4,9}\/[-._;()\/:a-zA-Z0-9]+" [(ngModel)]="newDoi" #doiInput></td>
-
-								<td>
-									<button id="add_doi_btn_in_modal"
-													(click)="addDoi('modal');"
-													[disabled]="!doiInput.validity.valid"
-													type="button"
-													class="btn btn-success"><i class="fa fa-plus"></i>&nbsp;
-									</button>
-								</td>
-
-							</tr>
-							</tbody>
-						</table>
-
-					</div>
-
-					<div class="modal-footer" style="text-align:center;">
-						<button id="doi_continue_btn" class="btn btn-success col-md-6" type="button"
-										style="margin:auto;" (click)="doiModal.hide(); showLifetimeExtensionModal();">Continue
-						</button>
-					</div>
-				</div><!-- /.modal-content -->L
-			</div><!-- /.modal-dialog -->
-		</div><!-- /.modal -->
-	</div>
-
-	<div bsModal #doiQuestionModal="bs-modal" class="modal fade" tabindex="-1"
-			 role="dialog" aria-labelledby="Label"
-			 aria-hidden="true">
-		<div class="modal-dialog modal-lg" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title">Publications</h4>
-					<button type="button" class="close" style="cursor: pointer;"
-									(click)="doiQuestionModal.hide(); setModalOpen(false);"
-									data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-
-				</div>
-				<div class="modal-body">
-					<div>
-						<p><strong>Do you have any new publications that were made during your work with the de.NBI Cloud or
-							in which the de.NBI Cloud is mentioned?</strong></p>
-					</div>
-					<div class="modal-footer">
-						<div class="row" style="margin:auto">
-							<div class="col-6">
-								<button id="new_dois_btn" class="btn btn-success" type="button"
-												(click)="doiQuestionModal.hide(); doiModal.show(); setModalOpen(true)">Yes
-								</button>
-							</div>
-
-
-							<div class="col-6">
-
-
-								<button id="no_new_dois_btn" class="btn btn-primary" type="reset"
-												(click)="doiQuestionModal.hide(); showLifetimeExtensionModal();">No
-								</button>
-							</div>
-						</div>
-					</div>
-				</div><!-- /.modal-content -->
-			</div><!-- /.modal-dialog -->
-		</div><!-- /.modal -->
-	</div>
-
-	<div bsModal #resultModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
-			 aria-labelledby="Label"
-			 aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title" *ngIf="extension_status == 0">
-						Waiting </h4>
-					<h4 class="modal-title" *ngIf="extension_status == 1"> Success </h4>
-					<h4 class="modal-title" *ngIf="extension_status == 2"> Error </h4>
-					<button type="button" class="close" style="cursor: pointer"
-									(click)="resultModal.hide();extension_status= 0; setModalOpen(false);"
-									aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-
-				<div class="modal-body">
-					<div class="alert alert-info" role="alert" *ngIf="extension_status==0">
-						Waiting... <i class="fa fa-spinner fa-spin"
-													style="font-size:24px"></i>
-					</div>
-
-
-					<div id="extension_result_submitted" class="alert alert-success" role="alert" *ngIf="extension_status == 1">
-						Modification request successfully submitted!
-					</div>
-					<div id="extension_result_approved" class="alert alert-success" role="alert" *ngIf="extension_status == 3">
-						Modification request successfully approved!
-					</div>
-					<div id="extension_result_declined" class="alert alert-success" role="alert" *ngIf="extension_status == 4">
-						Modification request successfully declined!
-					</div>
-					<div id="extension_result_forwarded" class="alert alert-success" role="alert" *ngIf="extension_status == 5">
-						Modification request successfully approved and forwarded to facility!
-					</div>
-
-					<div id="extension_result_error" class="alert alert-warning" role="alert" *ngIf="extension_status == 2">
-						An error occured.
-
-					</div>
-
-
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary"
-										(click)="resultModal.hide();extension_status= 0; setModalOpen(false);">
-							Close
-						</button>
-					</div>
-
-				</div><!-- /.modal-content -->
-			</div><!-- /.modal-dialog -->
-		</div><!-- /.modal -->
-	</div>
 
 </div>

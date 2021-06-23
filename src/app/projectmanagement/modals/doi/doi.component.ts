@@ -1,5 +1,5 @@
 import {
-	Component, EventEmitter, OnDestroy, OnInit,
+	Component, EventEmitter, OnDestroy,
 } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Subscription } from 'rxjs';
@@ -13,7 +13,7 @@ import { GroupService } from '../../../api-connector/group.service';
 	styleUrls: ['./doi.component.scss'],
 	providers: [GroupService],
 })
-export class DoiComponent implements OnInit, OnDestroy {
+export class DoiComponent implements OnDestroy {
 
 	WIKI_PUBLICATIONS: string = WIKI_PUBLICATIONS;
 
@@ -21,6 +21,7 @@ export class DoiComponent implements OnInit, OnDestroy {
 	doiError: string;
 	dois: Doi[];
 	application_id: string | number;
+	disableInput: boolean = false;
 
 	doiQuestionModal: boolean = true;
 	doiModal: boolean = false;
@@ -35,13 +36,9 @@ export class DoiComponent implements OnInit, OnDestroy {
 		// eslint-disable-next-line no-empty-function
 	}
 
-	ngOnInit(): void {
-	}
-
 	ngOnDestroy() {
-		if (this.doiQuestionModal) {
-			this.event.emit({ newDoi: false });
-		}
+		this.subscription.unsubscribe();
+		this.event.emit({ reloadDoi: false });
 	}
 
 	isNewDoi(): boolean {
@@ -54,40 +51,45 @@ export class DoiComponent implements OnInit, OnDestroy {
 		return true;
 	}
 
+	toggleDisabledInput(): void {
+		this.disableInput = !this.disableInput;
+	}
+
 	addDoi(): void {
-		this.document.getElementById('add_doi_btn').toggleAttribute('disabled');
-		this.document.getElementById('doi_input_field').toggleAttribute('disabled');
+		this.toggleDisabledInput();
 		if (this.isNewDoi()) {
-			this.groupService.addGroupDoi(this.application_id, this.newDoi).subscribe(
-				(dois: Doi[]): void => {
-					this.doiError = null;
-					this.newDoi = null;
-					this.dois = dois;
-				},
-				(): void => {
-					this.doiError = `DOI ${this.newDoi} was already added by another Project!`;
-					this.document.getElementById('add_doi_btn').toggleAttribute('disabled');
-					this.document.getElementById('doi_input_field').toggleAttribute('disabled');
-				},
-				(): void => {
-					this.document.getElementById('add_doi_btn').toggleAttribute('disabled');
-					this.document.getElementById('doi_input_field').toggleAttribute('disabled');
-					this.newDoi = null;
-				},
+			this.subscription.add(
+				this.groupService.addGroupDoi(this.application_id, this.newDoi).subscribe(
+					(dois: Doi[]): void => {
+						this.doiError = null;
+						this.newDoi = null;
+						this.dois = dois;
+						this.event.emit({ reloadDoi: true });
+					},
+					(): void => {
+						this.doiError = `DOI ${this.newDoi} was already added by another Project!`;
+						this.toggleDisabledInput();
+					},
+					(): void => {
+						this.toggleDisabledInput();
+						this.newDoi = null;
+					},
+				),
 			);
 		} else {
 			this.doiError = `DOI ${this.newDoi} was already added by this Project!`;
 			this.newDoi = null;
-			this.document.getElementById('add_doi_btn').toggleAttribute('disabled');
-			this.document.getElementById('doi_input_field').toggleAttribute('disabled');
+			this.toggleDisabledInput();
 		}
 	}
 
 	deleteDoi(doi: Doi): void {
-		this.groupService.deleteGroupDoi(doi.id).subscribe((dois: Doi[]): void => {
-			this.dois = dois;
-			this.event.emit({ deletedDoi: true });
-		});
+		this.subscription.add(
+			this.groupService.deleteGroupDoi(doi.id).subscribe((dois: Doi[]): void => {
+				this.dois = dois;
+				this.event.emit({ reloadDoi: true });
+			}),
+		);
 	}
 
 	setDoiModalState(): void {
