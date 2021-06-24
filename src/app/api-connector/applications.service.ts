@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { ApiSettings } from './api-settings.service';
 import { EdamOntologyTerm } from '../applications/edam-ontology-term';
 import { Application } from '../applications/application.model/application.model';
@@ -19,12 +20,6 @@ export class ApplicationsService {
 
 	adjustApplication(application: Application): Observable<Application> {
 		return this.http.post<Application>(`${ApiSettings.getApiBaseURL()}project_applications/adjust/`, application, {
-			withCredentials: true,
-		});
-	}
-
-	getUserApplications(): Observable<any> {
-		return this.http.get(`${ApiSettings.getApiBaseURL()}users/current/project_applications/`, {
 			withCredentials: true,
 		});
 	}
@@ -50,16 +45,14 @@ export class ApplicationsService {
 		});
 	}
 
-	getUserApplication(project_id: string | number): Observable<any> {
-		return this.http.get(`${ApiSettings.getApiBaseURL()}users/current/project_applications/${project_id}/`, {
-			withCredentials: true,
-		});
-	}
-
 	getApplication(app_id: string): Observable<Application> {
 		return this.http.get<Application>(`${ApiSettings.getApiBaseURL()}project_applications/${app_id}/`, {
 			withCredentials: true,
-		});
+		}).pipe(
+			map(
+				(app: Application) => new Application(app),
+			),
+		);
 	}
 
 	getApplicationPerunId(app_id: string): Observable<any> {
@@ -117,14 +110,6 @@ export class ApplicationsService {
 
 	}
 
-	getCreditsRequestedApplications(): Observable<Application[]> {
-		return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}project_applications/credits_requests/`, {
-			withCredentials: true,
-
-		});
-
-	}
-
 	getExtensionRequestsCounter(): Observable<any> {
 		return this.http.get(`${ApiSettings.getApiBaseURL()}project_applications/extensions_counter/`, {
 			withCredentials: true,
@@ -158,13 +143,6 @@ export class ApplicationsService {
 	addNewApplication(application: Application): Observable<Application> {
 
 		return this.http.post<Application>(`${ApiSettings.getApiBaseURL()}project_applications/`, application, {
-			withCredentials: true,
-		});
-
-	}
-
-	requestExtension(extension: ApplicationLifetimeExtension): Observable<any> {
-		return this.http.post(`${ApiSettings.getApiBaseURL()}applicationRenewals/`, extension, {
 			withCredentials: true,
 		});
 

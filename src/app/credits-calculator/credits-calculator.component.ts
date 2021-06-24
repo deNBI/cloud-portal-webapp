@@ -66,7 +66,7 @@ export class CreditsCalculatorComponent implements OnInit {
 							private flavor_service: FlavorService,
 							private credits_service: CreditsService,
 							private group_service: GroupService) {
-		// Empty comment for ESLint
+		// eslint-disable-next-line no-empty-function
 	}
 
 	ngOnInit(): void {
@@ -188,7 +188,7 @@ export class CreditsCalculatorComponent implements OnInit {
 		for (const flavor of this.all_flavors) {
 			let changed: boolean = false;
 			// Flavor does not belong to the facility, continue
-			if (flavor['compute_center'] !== this.selected_facility[1]) {
+			if (flavor.compute_center !== this.selected_facility[1]) {
 				continue;
 			}
 			// Check if flavor with same name is already in shown_flavors list
