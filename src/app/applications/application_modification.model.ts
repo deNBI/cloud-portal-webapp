@@ -1,5 +1,6 @@
 import { Flavor } from '../virtualmachines/virtualmachinemodels/flavor';
 import { User } from './application.model/user.model';
+import { Application } from './application.model/application.model';
 
 /**
  * Application Extension class.
@@ -23,28 +24,40 @@ export class ApplicationModification {
 	cloud_service_develop: boolean = false;
 	cloud_service_user_number: number;
 
-	constructor(extension: ApplicationModification | null) {
+	constructor(extension?: Partial<ApplicationModification>) {
+		Object.assign(this, extension);
 		if (extension) {
-			this.project_application_id = extension.project_application_id;
-			this.cloud_service_develop = extension.cloud_service_develop;
-			this.cloud_service_user_number = extension.cloud_service_user_number;
-			this.vms_requested = extension.vms_requested;
-			this.volume_limit = extension.volume_limit;
-			this.volume_counter = extension.volume_counter;
-			this.object_storage = extension.object_storage;
-			this.comment = extension.comment;
-			this.date_submitted = extension.date_submitted;
-			this.total_cores = extension.total_cores;
-			this.total_ram = extension.total_ram;
 			this.extra_credits = (Math.round(extension.extra_credits * 10) / 10);
-			this.user = extension.user;
-			this.flavors = extension.flavors;
 			if (extension.total_gpu) {
 				this.total_gpu = extension.total_gpu;
 			} else {
 				this.total_gpu = this.calculateGpuOnly(extension.flavors);
 			}
+			if (extension.flavors) {
+				this.flavors = [];
+				for (const flavor of extension.flavors) {
+					this.flavors.push(new Flavor(flavor));
+				}
+			}
 		}
+	}
+
+	public setByApp(app: Application): void {
+		this.project_application_id = app.project_application_id;
+		this.volume_counter = app.project_application_volume_counter;
+		this.volume_limit = app.project_application_volume_limit;
+		if (app.project_application_openstack_project) {
+			this.object_storage = app.project_application_object_storage;
+			this.cloud_service_develop = app.project_application_cloud_service_develop;
+		}
+		this.comment = app.project_application_comment;
+		this.flavors = [];
+		for (const flavor of app.flavors) {
+			this.flavors.push(new Flavor(flavor));
+		}
+		this.total_gpu = app.project_application_total_gpu;
+		this.total_cores = app.project_application_total_cores;
+		this.total_ram = app.project_application_total_ram;
 	}
 
 	public calculateGpuOnly(flavors: Flavor[]): number {
@@ -70,15 +83,17 @@ export class ApplicationModification {
 		this.total_gpu = gpu;
 	}
 
-	public getFlavorCounter(flavor: Flavor): number {
+	public getFlavorCounter(flavor_to_test: Flavor): number {
 		if (this.flavors) {
-			const flavs: Flavor[] = this.flavors.filter((fl: Flavor): boolean => fl.name === flavor.name);
-			if (flavs.length > 0) {
-				return flavs[0].counter;
+			for (const flavor of this.flavors) {
+				if (flavor.name === flavor_to_test.name) {
+					return flavor.counter;
+				}
 			}
-		}
 
-		return 0;
+			return 0;
+
+		} else return 0;
 	}
 
 	public setFlavorInFlavors(flavor_param: Flavor, counter: number): void {
