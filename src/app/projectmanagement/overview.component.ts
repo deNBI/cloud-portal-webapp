@@ -8,6 +8,7 @@ import { NgForm } from '@angular/forms';
 import { AutocompleteComponent } from 'angular-ng-autocomplete';
 import { DOCUMENT } from '@angular/common';
 import { Chart } from 'chart.js';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { environment } from '../../environments/environment';
 import { ProjectMemberApplication } from './project_member_application';
 import { ComputecenterComponent } from './computecenter.component';
@@ -28,14 +29,14 @@ import {
 	CREDITS_WIKI, WIKI_MEMBER_MANAGEMENT, WIKI_PUBLICATIONS, CLOUD_MAIL,
 } from '../../links/links';
 import { Doi } from '../applications/doi/doi';
-import { EdamOntologyTerm } from '../applications/edam-ontology-term';
 import { ApiSettings } from '../api-connector/api-settings.service';
 import { Application_States, ExtensionRequestType } from '../shared/shared_modules/baseClass/abstract-base-class';
-import { ApplicationLifetimeExtension } from '../applications/application_extension.model';
-import { ApplicationModification } from '../applications/application_modification.model';
-import { ApplicationCreditRequest } from '../applications/application_credit_request';
 import { ProjectMember } from './project_member.model';
 import { Project } from './project.model';
+import { ModificationRequestComponent } from './modals/modification-request/modification-request.component';
+import { LifetimeRequestComponent } from './modals/lifetime-request/lifetime-request.component';
+import { DoiComponent } from './modals/doi/doi.component';
+import { CreditsRequestComponent } from './modals/credits-request/credits-request.component';
 
 /**
  * Projectoverview component.
@@ -48,6 +49,11 @@ import { Project } from './project.model';
 })
 export class OverviewComponent extends ApplicationBaseClassComponent implements OnInit, OnDestroy {
 
+	bsModalRef: BsModalRef;
+	modificationRequestDisabled: boolean = false;
+	lifetimeExtensionDisabled: boolean = false;
+	creditsExtensionDisabled: boolean = false;
+
 	@Input() invitation_group_post: string = environment.invitation_group_post;
 	@Input() voRegistrationLink: string = environment.voRegistrationLink;
 	@Input() invitation_group_pre: string = environment.invitation_group_pre;
@@ -55,73 +61,30 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	WIKI_PUBLICATIONS: string = WIKI_PUBLICATIONS;
 	CREDITS_WIKI: string = CREDITS_WIKI;
 	CLOUD_MAIL: string = CLOUD_MAIL;
-	selected_ontology_terms: EdamOntologyTerm[] = [];
-	edam_ontology_terms: EdamOntologyTerm[];
-	ontology_search_keyword: string = 'term';
 
 	@ViewChild(NgForm) simpleVmForm: NgForm;
 	@ViewChild('creditsChart') creditsCanvas: ElementRef;
 	private subscription: Subscription = new Subscription();
 
-	/**
-	 * If at least 1 flavor is selected.
-	 *
-	 * @type {boolean}
-	 */
-	public min_vm: boolean = true;
-
-	/**
-	 * The credits for the extension.
-	 */
-	private extensionCredits: number = 0;
-
-	/**
-	 * the credits for a resource modification.
-	 */
-	private modificationCredits: number = 0;
-
 	project_id: string;
 	application_id: string;
 	project: Project;
-	application_details_visible: boolean = false;
 	credits: number = 0;
 
 	errorMessage: string;
 	terminate_confirmation_given: boolean = false;
 
-	/**
-	 * id of the extension status.
-	 *
-	 * @type {number}
-	 */
-	extension_status: number = 0;
-	/**
-	 * id of the modification status
-	 *
-	 * @type {number}, needs yet to be implemented
-	 */
-	modification_status: number = 0;
-
-	/**
-	 * defines weither the request is an extension (1), modification (2) or credit (3) request.
-	 *
-	 * @type {number}, initialized with 0
-	 */
-	request_type: number = ExtensionRequestType.NONE;
 	showInformationCollapse: boolean = false;
 	newDoi: string;
 	doiError: string;
 	remove_members_clicked: boolean;
 	life_time_string: string;
 	dois: Doi[];
+	disabledDoiInput: boolean = false;
 	isAdmin: boolean = false;
 	invitation_link: string;
 	filteredMembers: any = null;
 	project_application: Application;
-	project_extension: ApplicationLifetimeExtension;
-	project_modification: ApplicationModification;
-	project_credit_request: ApplicationCreditRequest;
-	project_service_in_development: boolean = true;
 	application_action: string = '';
 	application_member_name: string = '';
 	application_action_done: boolean = false;
@@ -129,20 +92,10 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	application_action_error_message: boolean;
 	projects: Project[] = [];
 	loaded: boolean = true;
-	details_loaded: boolean = false;
 	userinfo: Userinfo;
 	allSet: boolean = false;
 	renderer: Renderer2;
-	smallExampleFlavor: Flavor;
-	largeExampleFlavor: Flavor;
-	smallExamplePossibleHours: number = 0;
-	largeExamplePossibleHours: number = 0;
-	creditsPerHourSmallExample: number;
-	creditsPerHourLargeExample: number;
-	smallExamplePossibleDays: string = '';
-	largeExamplePossibleDays: string = '';
 	supportMails: string[] = [];
-	resource_modification_expected_credits: number = 0;
 
 	resourceDataLoaded: boolean = false;
 	vmsInUse: number;
@@ -159,9 +112,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	public project_members: ProjectMember[] = [];
 	public isLoaded: boolean = false;
 	public showLink: boolean = true;
-	private project_application_extra_credits: number;
-	public project_application_extra_credits_comment: string;
-	private current_credits: number;
 	private updateCreditsUsedIntervals: ReturnType<typeof setTimeout>;
 	private updateCreditsHistoryIntervals: ReturnType<typeof setTimeout>;
 	credits_allowed: boolean = false;
@@ -171,6 +121,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
 	constructor(private flavorService: FlavorService,
 		private groupService: GroupService,
+		private modalService: BsModalService,
 		applicationsService: ApplicationsService,
 		facilityService: FacilityService,
 		userService: UserService,
@@ -193,69 +144,94 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 		});
 	}
 
-	setModalOpen(bool: boolean): void {
-		// tslint:disable-next-line:typedef
-		void (async () => {
-			await this.delay(750).then().catch(); // needed, because bootstraps class-toggle-function seems to be too slow
-			if (bool) {
-				this.document.body.classList.add('modal-open');
-			} else {
-				this.document.body.classList.remove('modal-open');
-			}
-		}
-		)().then().catch();
-	}
-
-	removeEDAMterm(term: EdamOntologyTerm): void {
-		const indexOf: number = this.selected_ontology_terms.indexOf(term);
-		this.selected_ontology_terms.splice(indexOf, 1);
-
-	}
-
-	selectEvent(item: any): void {
-		if (this.selected_ontology_terms.indexOf(item) === -1) {
-			this.selected_ontology_terms.push(item);
-		}
-		this.edam_ontology.clear();
-	}
-
-	calculateCreditsLifeTime(): void {
-		if (!this.credits_allowed) {
+	showResourceModal(): void {
+		if (this.modificationRequestDisabled) {
 			return;
 		}
-		if (this.project_extension.extra_lifetime <= 0 || !Number.isInteger(this.project_extension.extra_lifetime)) {
-			this.project_extension.extra_credits = 0;
 
-			return;
-		}
+		this.modificationRequestDisabled = true;
+
+		const initialState = {
+			project: this.project_application,
+		};
+		this.bsModalRef = this.modalService.show(ModificationRequestComponent, { initialState });
+		this.bsModalRef.setClass('modal-lg');
+		this.subscribeForExtensionResult(this.ExtensionRequestType.MODIFICATION);
+	}
+
+	showDoiModal(): void {
+		const initialState = {
+			dois: this.dois,
+			application_id: this.application_id,
+		};
+
+		this.bsModalRef = this.modalService.show(DoiComponent, { initialState });
+		this.bsModalRef.setClass('modal-lg');
 		this.subscription.add(
-			this.creditsService.getExtraCreditsForLifetimeExtension(
-				this.project_extension.extra_lifetime,
-				this.project_application.project_application_id.toString(),
-			).subscribe(
-				(credits: number): void => {
-					this.project_extension.extra_credits = credits;
+			this.bsModalRef.content.event.subscribe(
+				(result: any) => {
+					if ('reloadDoi' in result && result['reloadDoi']) {
+						this.getDois();
+					} else if ('reloadDoi' in result && !result['reloadDoi']) {
+						this.showLifetimeExtensionModal();
+					}
 				},
 			),
 		);
-
 	}
 
-	calculateCreditsResourceModification(): void {
-		if (!this.credits_allowed) {
+	showLifetimeExtensionModal(): void {
+		if (this.lifetimeExtensionDisabled) {
 			return;
 		}
+
+		this.lifetimeExtensionDisabled = true;
+
+		const initialState = {
+			project: this.project_application,
+			life_time_string: `${this.project.DateCreated} -  ${this.project.DateEnd}`,
+		};
+		this.bsModalRef = this.modalService.show(LifetimeRequestComponent, { initialState });
+		this.bsModalRef.setClass('modal-lg');
+		this.subscribeForExtensionResult(this.ExtensionRequestType.EXTENSION);
+	}
+
+	showCreditsExtensionModal(): void {
+		if (this.creditsExtensionDisabled) {
+			return;
+		}
+
+		this.creditsExtensionDisabled = true;
+
+		const initialState = {
+			project: this.project_application,
+			flavorList: this.flavorList,
+		};
+		this.bsModalRef = this.modalService.show(CreditsRequestComponent, { initialState });
+		this.bsModalRef.setClass('modal-lg');
+		this.subscribeForExtensionResult(this.ExtensionRequestType.CREDIT);
+	}
+
+	subscribeForExtensionResult(type: ExtensionRequestType): void {
 		this.subscription.add(
-			this.creditsService.getExtraCreditsForResourceExtension(
-				this.project_modification.flavors,
-				this.project_application.project_application_id.toString(),
-			).subscribe(
-				(credits: number): void => {
-					this.project_modification.extra_credits = credits;
-					this.resource_modification_expected_credits = this.project_application.project_application_initial_credits
-						+ this.project_modification.extra_credits;
-					if (this.resource_modification_expected_credits <= 0) {
-						this.resource_modification_expected_credits = 0;
+			this.bsModalRef.content.event.subscribe(
+				(result: any) => {
+					if ('reload' in result && result['reload']) {
+						if (type === this.ExtensionRequestType.EXTENSION) {
+							this.lifetimeExtensionDisabled = true;
+						} else if (type === this.ExtensionRequestType.MODIFICATION) {
+							this.modificationRequestDisabled = true;
+						} else if (type === this.ExtensionRequestType.CREDIT) {
+							this.creditsExtensionDisabled = true;
+						}
+						this.fullLayout.getGroupsEnumeration();
+						this.getApplication();
+					} else if (type === this.ExtensionRequestType.EXTENSION) {
+						this.lifetimeExtensionDisabled = false;
+					} else if (type === this.ExtensionRequestType.MODIFICATION) {
+						this.modificationRequestDisabled = false;
+					} else if (type === this.ExtensionRequestType.CREDIT) {
+						this.creditsExtensionDisabled = false;
 					}
 				},
 			),
@@ -300,26 +276,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 		}
 	}
 
-	updateExampleCredits(numberOfCredits: number): void {
-		const totalHoursSmall: number = Math.round((numberOfCredits / this.creditsPerHourSmallExample) * 100) / 100;
-		const totalHoursLarge: number = Math.round((numberOfCredits / this.creditsPerHourLargeExample) * 100) / 100;
-		this.smallExamplePossibleHours = totalHoursSmall;
-		this.largeExamplePossibleHours = totalHoursLarge;
-		this.smallExamplePossibleDays = this.updateCreditsDaysString(totalHoursSmall);
-		this.largeExamplePossibleDays = this.updateCreditsDaysString(totalHoursLarge);
-	}
-
-	updateCreditsDaysString(hours: number): string {
-		let days: number = 0;
-		const minutes: number = Math.floor((hours % 1) * 60);
-		if (hours > 24) {
-			days = Math.floor(hours / 24);
-		}
-		hours = Math.floor(hours % 24);
-
-		return `${days} day(s), ${hours} hour(s) and ${minutes} minute(s)`;
-	}
-
 	startUpdateCreditUsageLoop(): void {
 
 		if (!this.credits_allowed || !this.project_application || !this.project_application.project_application_perun_id) {
@@ -358,31 +314,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
 	}
 
-	initExampleFlavors(): void {
-		const standardFlavors: Flavor[] = this.flavorList
-			// eslint-disable-next-line @typescript-eslint/no-unused-vars
-			.filter((fl: Flavor, nu: number, arr: Flavor[]): boolean => fl.type.long_name === 'Standard Flavours');
-		const highMemFlavors: Flavor[] = this.flavorList
-			// eslint-disable-next-line @typescript-eslint/no-unused-vars
-			.filter((fl: Flavor, nu: number, arr: Flavor[]): boolean => fl.type.long_name === 'High Memory Flavours');
-		standardFlavors.sort((fl1: Flavor, fl2: Flavor): number => fl1.vcpus - fl2.vcpus);
-		highMemFlavors.sort((fl1: Flavor, fl2: Flavor): number => fl1.vcpus - fl2.vcpus);
-		if (standardFlavors.length !== 0) {
-			this.smallExampleFlavor = standardFlavors[0];
-			this.creditsService.getCreditsPerHour(this.smallExampleFlavor.vcpus, this.smallExampleFlavor.ram).toPromise()
-				.then((credits: number): void => {
-					this.creditsPerHourSmallExample = credits * 4;
-				}).catch((err: Error): void => console.log(err.message));
-		}
-		if (highMemFlavors.length !== 0) {
-			this.largeExampleFlavor = highMemFlavors[0];
-			this.creditsService.getCreditsPerHour(this.largeExampleFlavor.vcpus, this.largeExampleFlavor.ram).toPromise()
-				.then((credits: number): void => {
-					this.creditsPerHourLargeExample = credits;
-				}).catch((err: Error): void => console.log(err.message));
-		}
-	}
-
 	approveMemberApplication(project: number, application: number, membername: string): void {
 		this.loaded = false;
 		this.application_action_done = false;
@@ -408,36 +339,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 		});
 	}
 
-	initiateLifetimeExtension(): void {
-		this.project_extension = new ApplicationLifetimeExtension(null);
-		this.project_extension.project_application_id = this.project_application.project_application_id;
-		this.project_extension.extra_lifetime = 0;
-		this.project_extension.comment = '';
-	}
-
-	initiateModificationRequest(): void {
-		this.project_modification = new ApplicationModification(null);
-		this.project_modification.project_application_id = this.project_application.project_application_id;
-		this.project_modification.volume_counter = this.project_application.project_application_volume_counter;
-		this.project_modification.volume_limit = this.project_application.project_application_volume_limit;
-		if (this.project_application.project_application_openstack_project) {
-			this.project_modification.object_storage = this.project_application.project_application_object_storage;
-			this.project_modification.cloud_service_develop = this.project_application.project_application_cloud_service_develop;
-		}
-		this.project_modification.comment = this.project_application.project_application_comment;
-		this.project_modification.flavors = this.project_application.flavors;
-		this.project_modification.total_gpu = this.project_application.project_application_total_gpu;
-		this.project_modification.total_cores = this.project_application.project_application_total_cores;
-		this.project_modification.total_ram = this.project_application.project_application_total_ram;
-	}
-
-	initiateCreditRequest(): void {
-		this.project_credit_request = new ApplicationCreditRequest(null);
-		this.project_credit_request.project_application_id = this.project_application.project_application_id;
-		this.project_credit_request.comment = '';
-		this.project_credit_request.extra_credits = 0;
-	}
-
 	getApplication(): void {
 		this.applicationsService
 			.getApplication(this.application_id)
@@ -450,8 +351,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 						return;
 					}
 
-					this.project_application = new Application(aj);
-					this.credits_allowed = aj['credits_allowed'];
+					this.project_application = aj;
+					this.credits_allowed = aj.credits_allowed;
 
 					if (this.project_application) {
 						this.applicationsService.getApplicationPerunId(this.application_id).subscribe((id: any): void => {
@@ -460,23 +361,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 								this.getProject();
 							}
 						});
-
-						if (this.project_application?.project_modification_request) {
-							this.project_modification = this.project_application.project_modification_request;
-						} else {
-							this.initiateModificationRequest();
-						}
-						if (this.project_application?.project_lifetime_request) {
-							this.project_extension = this.project_application.project_lifetime_request;
-						} else {
-							this.initiateLifetimeExtension();
-
-						}
-						if (this.project_application?.project_credit_request) {
-							this.project_credit_request = this.project_application.project_credit_request;
-						} else {
-							this.initiateCreditRequest();
-						}
 						this.startUpdateCreditUsageLoop();
 
 					}
@@ -490,71 +374,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
                    Error Message: ${error.error.toString()}`;
 				},
 			);
-	}
-
-	public requestModification(): void {
-
-		this.applicationsService.requestModification(this.project_modification)
-			.subscribe((result: { [key: string]: string }): void => {
-				if (result['Error']) {
-					this.extension_status = 2;
-				} else {
-					this.fullLayout.getGroupsEnumeration();
-
-					this.extension_status = 1;
-				}
-
-				if (this.selected_ontology_terms.length > 0) {
-					this.applicationsService.addEdamOntologyTerms(this.application_id,
-						this.selected_ontology_terms).subscribe((): void => {
-						this.getApplication();
-
-					});
-				} else {
-					this.getApplication();
-				}
-
-			});
-	}
-
-	public requestCreditsModification(): void {
-		this.project_credit_request.project_application_id = this.project_application.project_application_id;
-		this.applicationsService.requestAdditionalCredits(this.project_credit_request)
-			.subscribe((result: { [key: string]: string }): void => {
-				if (result['Error']) {
-					this.extension_status = 2;
-				} else {
-					this.fullLayout.getGroupsEnumeration();
-
-					this.extension_status = 1;
-				}
-				this.getApplication();
-			});
-	}
-
-	public requestExtension(): void {
-		this.project_extension.project_application_id = this.project_application.project_application_id;
-		this.applicationsService.requestAdditionalLifetime(this.project_extension)
-			.subscribe((result: { [key: string]: string }): void => {
-				if (result['Error']) {
-					this.extension_status = 2;
-				} else {
-					this.fullLayout.getGroupsEnumeration();
-
-					this.extension_status = 1;
-				}
-				if (this.selected_ontology_terms.length > 0) {
-					this.applicationsService.addEdamOntologyTerms(this.application_id,
-						this.selected_ontology_terms).subscribe((): void => {
-						this.getApplication();
-
-					});
-				} else {
-					this.getApplication();
-				}
-
-			});
-
 	}
 
 	/**
@@ -573,47 +392,12 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 		this.flavorService.getListOfTypesAvailable().subscribe((types: FlavorType[]): void => this.setListOfTypes(types));
 	}
 
-	fillUp(date: string): string {
-		if (date.length === 1) {
-			return `0${date}`;
-		}
-
-		return date;
-	}
-
-	/**
-	 * Returns a string with the end-date of a application which depends on the day it was approved and the lifetime in months
-	 *
-	 * @param approval date in string when the application was approved
-	 * @param months number of months the application is permitted
-	 */
-	getEndDate(months: number, approval?: string): string {
-		if (!approval) {
-			return '';
-		}
-		let date1: Date = new Date(Number(approval.substring(0, 4)), Number(approval.substring(5, 7)) - 1, Number(approval.substring(8)));
-		const month: number = date1.getMonth();
-		if ((month + months) > 11) {
-			date1 = new Date(date1.getFullYear() + 1, (month + months - 12), date1.getDate());
-		} else {
-			date1.setMonth(date1.getMonth() + months);
-		}
-
-		return `${date1.getFullYear()}-${this.fillUp((date1.getMonth() + 1).toString())}-${this.fillUp(date1.getDate().toString())}`;
-	}
-
 	setLifetime(): void {
-
 		// tslint:disable-next-line:max-line-length
 		this.life_time_string = `${this.project.DateCreated} -  ${this.project.DateEnd}`;
 	}
 
 	ngOnInit(): void {
-		this.applicationsService.getEdamOntologyTerms().subscribe((terms: EdamOntologyTerm[]): void => {
-			this.edam_ontology_terms = terms;
-			this.searchTermsInEdamTerms();
-		});
-
 		this.activatedRoute.params.subscribe((paramsId: any): void => {
 			this.errorMessage = null;
 			this.isLoaded = false;
@@ -627,9 +411,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 			this.getListOfTypes();
 			this.getDois();
 			this.is_vo_admin = is_vo;
-
 		});
-
 	}
 
 	/**
@@ -712,30 +494,18 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 		return true;
 	}
 
-	searchTermsInEdamTerms(): void {
-		const tmp: EdamOntologyTerm[] = [];
-		this.selected_ontology_terms.forEach(ele => {
-			// @ts-ignore
-			const td = this.edam_ontology_terms.find(term => term.term === ele);
-			tmp.push(td);
-		});
-		this.selected_ontology_terms = tmp;
-	}
-
 	deleteDoi(doi: Doi): void {
 		this.groupService.deleteGroupDoi(doi.id).subscribe((dois: Doi[]): void => {
 			this.dois = dois;
 		});
 	}
 
-	addDoi(from?: string): void {
-		if (from === 'modal') {
-			this.document.getElementById('add_doi_btn_in_modal').toggleAttribute('disabled');
-			this.document.getElementById('modal_doi_input_field').toggleAttribute('disabled');
-		} else {
-			this.document.getElementById('add_doi_btn').toggleAttribute('disabled');
-			this.document.getElementById('doi_input_field').toggleAttribute('disabled');
-		}
+	toggleDoiDisabledInput(): void {
+		this.disabledDoiInput = !this.disabledDoiInput;
+	}
+
+	addDoi(): void {
+		this.toggleDoiDisabledInput();
 		if (this.isNewDoi()) {
 			this.groupService.addGroupDoi(this.application_id, this.newDoi).subscribe(
 				(dois: Doi[]): void => {
@@ -745,38 +515,18 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 				},
 				(): void => {
 					this.doiError = `DOI ${this.newDoi} was already added by another Project!`;
-
-					if (from === 'modal') {
-						this.document.getElementById('add_doi_btn_in_modal').toggleAttribute('disabled');
-						this.document.getElementById('modal_doi_input_field').toggleAttribute('disabled');
-					} else {
-						this.document.getElementById('add_doi_btn').toggleAttribute('disabled');
-						this.document.getElementById('doi_input_field').toggleAttribute('disabled');
-					}
+					this.toggleDoiDisabledInput();
 				},
 				(): void => {
-					if (from === 'modal') {
-						this.document.getElementById('add_doi_btn_in_modal').toggleAttribute('disabled');
-						this.document.getElementById('modal_doi_input_field').toggleAttribute('disabled');
-					} else {
-						this.document.getElementById('add_doi_btn').toggleAttribute('disabled');
-						this.document.getElementById('doi_input_field').toggleAttribute('disabled');
-					}
+					this.toggleDoiDisabledInput();
 					this.newDoi = null;
 				},
 			);
 		} else {
 			this.doiError = `DOI ${this.newDoi} was already added by this Project!`;
 			this.newDoi = null;
-			if (from === 'modal') {
-				this.document.getElementById('add_doi_btn_in_modal').toggleAttribute('disabled');
-				this.document.getElementById('modal_doi_input_field').toggleAttribute('disabled');
-			} else {
-				this.document.getElementById('add_doi_btn').toggleAttribute('disabled');
-				this.document.getElementById('doi_input_field').toggleAttribute('disabled');
-			}
+			this.toggleDoiDisabledInput();
 		}
-
 	}
 
 	requestProjectTermination(): void {
@@ -1047,11 +797,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 		this.allSet = false;
 	}
 
-	resetCheckedMemberList(): void {
-		this.allSet = false;
-		this.checked_member_list = [];
-	}
-
 	setAddUserInvitationLink(): void {
 		const uri: string = this.invitation_group_pre + this.project.RealName + this.invitation_group_post + this.project.RealName;
 		this.invitation_link = uri;
@@ -1227,18 +972,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 		);
 	}
 
-	checkIfTypeGotSimpleVmFlavor(type: FlavorType): boolean {
-		for (const flav of this.flavorList) {
-			if (flav.type.shortcut === type.shortcut && flav.simple_vm) {
-				return true;
-			}
-
-		}
-
-		return false;
-
-	}
-
 	/**
 	 * Delete an application.
 	 *
@@ -1257,29 +990,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 			},
 		);
 
-	}
-
-	onChangeFlavor(flavor: Flavor, value: number): void {
-		this.project_modification.setFlavorInFlavors(flavor, value);
-
-		this.checkIfMinVmIsSelected();
-	}
-
-	checkIfMinVmIsSelected(): void {
-		let nr_vm: number = 0;
-		for (const fl of this.flavorList) {
-			const control: string = `project_application_renewal_${fl.name}`;
-			if (control in this.simpleVmForm.controls) {
-				if (this.simpleVmForm.controls[control].value > 0) {
-					nr_vm += this.simpleVmForm.controls[control].value;
-				}
-			}
-		}
-		if (nr_vm > 0 || this.project_application.project_application_openstack_project) {
-			this.min_vm = true;
-		} else if (nr_vm === 0) {
-			this.min_vm = false;
-		}
 	}
 
 }

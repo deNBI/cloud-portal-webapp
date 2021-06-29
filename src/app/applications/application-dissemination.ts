@@ -20,24 +20,11 @@ export class ApplicationDissemination {
 	private _allowed_platforms: string[] = [];
 	private _allowed_informations: string[] = [];
 
-	constructor(diss: ApplicationDissemination | null) {
+	constructor(diss?: Partial<ApplicationDissemination>) {
 		if (diss) {
-
-			this._platform_denbi = diss.platform_denbi;
-			this._platform_twitter = diss.platform_twitter;
-			this._information_title = diss.information_title;
-			this._information_edam_terms = diss.information_edam_terms;
-			this._information_resources = diss.information_resources;
-			this._information_pi_name = diss.information_pi_name;
-			this._information_institution = diss.information_institution;
-			this._information_description = diss.information_description;
+			Object.assign(this, diss);
 			// test if information_description is set. !! converts to boolean.
 			this._information_description_allowed = !!this._information_description;
-			this._information_workgroup = diss.information_workgroup;
-			this._information_project_type = diss.information_project_type;
-			this._information_lifetime = diss.information_lifetime;
-			this._information_project_affiliation = diss.information_project_affiliation;
-
 		}
 		this.setAllowedPlatforms();
 		this.setAllowedInformations();
