@@ -23,6 +23,7 @@ export class ProjectOverview {
 	private static CLOSE_ADD_MEMBER_MODAL_BTN: string = 'close_add_user_modal_btn';
 	private static MODIFICATION_REQUEST_RESULT: string = 'extension_result_submitted';
 	private static MODIFICATION_REQUEST_SUCCESS_TEXT: string = 'Modification request successfully submitted!';
+	private static EXTENSION_REQUEST_SUCCESS_TEXT: string = 'Lifetime extension request successfully submitted!';
 	private static DENBI_DEFAULT_OLD_ID: string = 'de.NBI default_old';
 	private static DENBI_DEFAULT_NEW_INPUT: string = 'de.NBI default';
 	private static OLD_VOLUME_COUNTER_ID: string = 'project_application_volume_counter';
@@ -160,7 +161,7 @@ export class ProjectOverview {
 		await Util.clickElementById(this.SUBMIT_EXTENSION_BUTTON);
 		await Util.waitForPresenceOfElementById(this.CONFIRM_EXTENSION_BUTTON);
 		await Util.clickElementById(this.CONFIRM_EXTENSION_BUTTON);
-		await Util.waitForTextPresenceInElementById(this.EXTENSION_REQUEST_RESULT, this.MODIFICATION_REQUEST_SUCCESS_TEXT);
+		await Util.waitForTextPresenceInElementById(this.EXTENSION_REQUEST_RESULT, this.EXTENSION_REQUEST_SUCCESS_TEXT);
 	}
 
 	static async isBioinformaticsSet(): Promise<any> {
