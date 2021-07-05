@@ -69,6 +69,6 @@ export class NewClusterPage {
   	await Util.waitForPresenceOfElementById(this.INFO_MODAL);
   	await Util.waitForPresenceOfElementById(this.NEW_CLUSTER_ID_FIELD);
 
-  	return await element(by.id(this.NEW_CLUSTER_ID_FIELD)).getAttribute('textContent');
+  	return await element(by.id(this.NEW_CLUSTER_ID_FIELD)).getText();
   }
 }
