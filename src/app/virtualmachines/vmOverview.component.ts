@@ -13,7 +13,7 @@ import { ImageService } from '../api-connector/image.service';
 import { IResponseTemplate } from '../api-connector/response-template';
 import { SnapshotModel } from './snapshots/snapshot.model';
 import { FacilityService } from '../api-connector/facility.service';
-import { elixir_id, is_vo } from '../shared/globalvar';
+import { global_event, is_vo } from '../shared/globalvar';
 
 import { VirtualMachineStates } from './virtualmachinemodels/virtualmachinestates';
 import { GroupService } from '../api-connector/group.service';
@@ -575,7 +575,6 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 			this.filter, this.filter_status_list, this.filter_cluster, this.filter_set_for_termination,
 		)
 			.subscribe((vms: any): void => {
-				console.log(vms);
 				this.prepareVMS(vms);
 			});
 	}
@@ -726,7 +725,6 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 		this.getClientForcUrls();
 		this.getVms();
 		this.is_vo_admin = is_vo;
-		this.user_elixir_id = elixir_id;
 		this.get_is_facility_manager();
 		this.facilityService.getManagerFacilities().subscribe((result: any): void => {
 			this.managerFacilities = result;
@@ -749,6 +747,13 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 			.subscribe((event: any): void => {
 				this.validSnapshotName(event, this.snapshot_vm);
 			});
+		global_event.subscribe(
+			(result: any) => {
+				if ('elixir_id' in result) {
+					this.user_elixir_id = result['elixir_id'];
+				}
+			},
+		);
 	}
 
 	ngOnDestroy(): void {
