@@ -1,5 +1,5 @@
-import {Util} from '../util';
-import {by, element} from 'protractor';
+import { by, element } from 'protractor';
+import { Util } from '../util';
 
 /**
  * Facilityoverivew page.
@@ -25,59 +25,59 @@ export class FacilityOverviewPage {
   private static TERMINATION_COUNTER: string = 'termination_counter'
 
   static async navigateToFacilityOverview(): Promise<any> {
-    Util.logInfo('Navigating to facility overview');
-    await Util.navigateToAngularPage(this.FACILITY_OVERVIEW_URL);
+  	Util.logInfo('Navigating to facility overview');
+  	await Util.navigateToAngularPage(this.FACILITY_OVERVIEW_URL);
   }
 
   static async approveApplication(application_name: string): Promise<any> {
-    await Util.clickElementById(this.APPLICATION_APPROVAL_BTN_PREFIX + application_name);
-    await Util.waitForTextPresenceInElementById(this.NOTIFICATION_MESSAGE, this.SUCCESSFULLY_APPROVED_APPL);
+  	await Util.clickElementById(this.APPLICATION_APPROVAL_BTN_PREFIX + application_name);
+  	await Util.waitForTextPresenceInElementById(this.NOTIFICATION_MESSAGE, this.SUCCESSFULLY_APPROVED_APPL);
   }
 
   static async approveApplicationExtension(application_name: string): Promise<any> {
-    await Util.clickElementById(this.EXTENSION_APPROVAL_BTN_PREFIX + application_name);
-    await Util.waitForTextPresenceInElementById(this.NOTIFICATION_MESSAGE, this.EXTENSION_SUCCESSFULLY);
+  	await Util.clickElementById(this.EXTENSION_APPROVAL_BTN_PREFIX + application_name);
+  	await Util.waitForTextPresenceInElementById(this.NOTIFICATION_MESSAGE, this.EXTENSION_SUCCESSFULLY);
   }
 
   static async terminatePTApplications(): Promise<any> {
-    await Util.waitForPresenceOfElementById(this.TAB_STATE_TERMINATION_BUTTON);
-    const term_counter: string = await Util.getElemTextById(this.TERMINATION_COUNTER)
-    Util.logInfo(`Termination counter: ${term_counter}`)
-   // if (parseInt(term_counter, 10) > 0) {
-      await Util.clickElementById(this.TAB_STATE_TERMINATION_BUTTON);
-      await Util.waitForAbsenceOfElementById(this.LOADING_APPLICATIONS)
+  	await Util.waitForPresenceOfElementById(this.TAB_STATE_TERMINATION_BUTTON);
+  	const term_counter: string = await Util.getElemTextById(this.TERMINATION_COUNTER);
+  	Util.logInfo(`Termination counter: ${term_counter}`);
+  	// if (parseInt(term_counter, 10) > 0) {
+  	await Util.clickElementById(this.TAB_STATE_TERMINATION_BUTTON);
+  	await Util.waitForAbsenceOfElementById(this.LOADING_APPLICATIONS);
 
-     // await Util.waitForPresenceOfElementById(this.TERMINATION_TABLE, Util.LONG_TIMEOUT);
+  	// await Util.waitForPresenceOfElementById(this.TERMINATION_TABLE, Util.LONG_TIMEOUT);
 
-      Util.logInfo('Terminate all PT projects');
-      let ele: any = element(by.id(this.TERMINATE_PT_APPLICATION_BTN));
-      while (await ele.isPresent()) {
-        await this.terminateProject(ele);
-        ele = element(by.id(this.TERMINATE_PT_APPLICATION_BTN));
-        //    }
-        // } else {
-        //  Util.logInfo('No FM Applications to terminate')
+  	Util.logInfo('Terminate all PT projects');
+  	let ele: any = element(by.id(this.TERMINATE_PT_APPLICATION_BTN));
+  	while (await ele.isPresent()) {
+  		await this.terminateProject(ele);
+  		ele = element(by.id(this.TERMINATE_PT_APPLICATION_BTN));
+  		//    }
+  		// } else {
+  		//  Util.logInfo('No FM Applications to terminate')
 
-      }
+  	}
   }
 
   static async terminateProject(terminateBtnId: Element): Promise<any> {
-    Util.logInfo(`Terminate Project ${terminateBtnId}`);
+  	Util.logInfo(`Terminate Project ${terminateBtnId}`);
 
-    await Util.clickElementByElement(terminateBtnId);
-    await Util.clickElementById(this.TERMINATE_PROJECT_BTN);
-    await Util.waitForTextPresenceInElementById(this.NOTIFICATION_MESSAGE, this.WAS_TERMINATED);
-    await Util.clickElementById(this.CLOSE_NOTIFICATION_BTN);
+  	await Util.clickElementByElement(terminateBtnId);
+  	await Util.clickElementById(this.TERMINATE_PROJECT_BTN);
+  	await Util.waitForTextPresenceInElementById(this.NOTIFICATION_MESSAGE, this.WAS_TERMINATED);
+  	await Util.clickElementById(this.CLOSE_NOTIFICATION_BTN);
 
   }
 
   static async approveApplicationModification(application_name: string): Promise<any> {
-    await Util.waitForPresenceOfElementById(this.TAB_STATE_MODIFICATION_BUTTON);
-    await Util.clickElementById(this.TAB_STATE_MODIFICATION_BUTTON);
-    await Util.waitForAbsenceOfElementById(this.LOADING_APPLICATIONS)
-    await Util.waitForPresenceOfElementById(this.MODIFICATION_APPROVAL_BTN_PREFIX + application_name);
-    await Util.clickElementById(this.MODIFICATION_APPROVAL_BTN_PREFIX + application_name);
-    await Util.waitForTextPresenceInElementById(this.NOTIFICATION_MESSAGE, this.MODIFICATION_EXTENSION_SUCCESS_TEXT);
+  	await Util.waitForPresenceOfElementById(this.TAB_STATE_MODIFICATION_BUTTON);
+  	await Util.clickElementById(this.TAB_STATE_MODIFICATION_BUTTON);
+  	await Util.waitForAbsenceOfElementById(this.LOADING_APPLICATIONS);
+  	await Util.waitForPresenceOfElementById(this.MODIFICATION_APPROVAL_BTN_PREFIX + application_name);
+  	await Util.clickElementById(this.MODIFICATION_APPROVAL_BTN_PREFIX + application_name);
+  	await Util.waitForTextPresenceInElementById(this.NOTIFICATION_MESSAGE, this.MODIFICATION_EXTENSION_SUCCESS_TEXT);
   }
 
 }
