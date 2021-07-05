@@ -21,7 +21,7 @@ import { SnapshotModel } from '../snapshots/snapshot.model';
 import { PlaybookService } from '../../api-connector/playbook.service';
 import { BiocondaService } from '../../api-connector/bioconda.service';
 import { ResenvTemplate } from '../conda/resenvTemplate.model';
-import { elixir_id, is_vo } from '../../shared/globalvar';
+import { global_event, is_vo } from '../../shared/globalvar';
 import { WIKI_GUACAMOLE_LINK, WIKI_RSTUDIO_LINK, WIKI_VOLUME_OVERVIEW } from '../../../links/links';
 import { Volume } from '../volumes/volume';
 import { VolumeStates } from '../volumes/volume_states';
@@ -137,11 +137,17 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 	}
 
 	ngOnInit(): void {
+		global_event.subscribe(
+			(result: any) => {
+				if ('elixir_id' in result) {
+					this.user_elixir_id = result['elixir_id'];
+				}
+			},
+		);
 		this.activatedRoute.params.subscribe((paramsId: any): void => {
 			this.vm_id = paramsId.id;
 			this.getVmCondaLogs();
 			this.getVmById();
-			this.user_elixir_id = elixir_id;
 			this.snapshotSearchTerm
 				.pipe(
 					debounceTime(this.DEBOUNCE_TIME),
