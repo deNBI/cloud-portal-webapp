@@ -1057,10 +1057,8 @@
             Please check if all required (*) fields are filled in correctly.
           </div>
           <div class="form-group row" *ngIf="!is_validation">
-            <p class="col-md-12 form-control-label">By submitting this application you
-              agree to the
-              cloud
-              usage policy.</p>
+            <p class="col-md-12 form-control-label">
+							By submitting this application you agree to the <a [href]="POLICY_LINK" target="_blank">cloud usage policy</a>.</p>
           </div>
           <div *ngIf="is_validation " class="form-group row">
             <label class="col-md-4 form-control-label" for="project_application_responsibility">
