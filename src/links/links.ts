@@ -26,6 +26,7 @@ export const CREDITS_WIKI: string = `${environment.WIKI_PRE}portal/credits/`;
 export const SURVEY_LINK: string = 'https://www.surveymonkey.de/r/HQW9V7C';
 export const CLOUD_MAIL: string = 'cloud@denbi.de';
 export const CLOUD_PORTAL_SUPPORT_MAIL = 'cloud-portal-support@denbi.de';
+export const POLICY_LINK: string = 'https://cloud.denbi.de/policies/';
 
 export const WIKI_LNKS: string[] = [
 	WIKI_SNAPSHOTS,
