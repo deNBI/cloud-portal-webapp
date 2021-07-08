@@ -8,6 +8,6 @@ jobs:
               uses: rokroskar/workflow-run-cleanup-action@v0.2.2
               env:
                 GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-                PYTHON: 3.7
+                PYTHON: "/usr/lib/python3.8"
             - uses: actions/checkout@v2
             - run: docker build --no-cache  -t webapp .
