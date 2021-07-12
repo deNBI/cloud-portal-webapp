@@ -6,6 +6,7 @@ import { NewsService } from '../../api-connector/news.service';
 import { FacilityService } from '../../api-connector/facility.service';
 import { environment } from '../../../environments/environment';
 import { WordPressNews } from './wp-news';
+import { FacilityNews } from './facility-news';
 import { WordPressTag } from './wp-tags';
 import { WIKI_MOTD } from '../../../links/links';
 
@@ -33,6 +34,9 @@ export class NewsManagerComponent implements OnInit {
 	computeCenters: any[] = [];
 	availableTags: WordPressTag[] = [];
 	wordPressNews: WordPressNews[] = [];
+	// in implementation
+	facilityNews: FacilityNews[] = [];
+
 	newsSetAsMOTD: string[] = [];
 	selectedNews: WordPressNews = new WordPressNews();
 	newWordpressNews: WordPressNews = new WordPressNews();
@@ -70,8 +74,10 @@ export class NewsManagerComponent implements OnInit {
 				this.selectedFacilities = this.managerFacilities.map((facility: [string, number]): [string, number] => facility);
 				this.managerFacilitiesIdOnly = this.managerFacilities.map((facility: [string, number]): number => facility['FacilityId']);
 				this.setFormGroup();
-				this.getWordPressNews();
-				this.getTagsAvailable();
+				this.getNewsFromAPI();
+
+				// this.getWordPressNews();
+				// this.getTagsAvailable();
 			});
 		});
 	}
@@ -207,6 +213,14 @@ export class NewsManagerComponent implements OnInit {
 
 	}
 
+	getNewsFromAPI(): void {
+		this.facilityNews = [];
+		const facility_ids: string[] = this.selectedFacilities.map((facility: [string, number]): string => facility['FacilityId'].toString());
+		this.newsService.getFacilityNews(facility_ids.toString()).subscribe((result: Object[]): any => {
+			this.facilityNews = result.map((news: Object): any => this.createFacilityNews(news));
+		});
+	}
+
 	/**
 	 * Method to create news to save it in the list of existing news.
 	 *
@@ -227,6 +241,17 @@ export class NewsManagerComponent implements OnInit {
 		news.facility = wordPressNews['categories'];
 		news.status = wordPressNews['status'];
 		news.url = wordPressNews['link'];
+
+		return news;
+	}
+
+	createFacilityNews(facilityNews: Object): FacilityNews {
+		const news: FacilityNews = new FacilityNews();
+		news.id = facilityNews['id'];
+		news.title = facilityNews['title'];
+		news.text = facilityNews['text'];
+		news.motd = facilityNews['motd'];
+		news.facility = facilityNews['facilities'];
 
 		return news;
 	}

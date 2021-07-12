@@ -39,6 +39,15 @@ export class NewsService {
 		});
 	}
 
+	getFacilityNews(facility_ids: string): Observable<Object[]> {
+		const params: HttpParams = new HttpParams().set('facility_ids', facility_ids);
+
+		return this.http.get<Object[]>(`${ApiSettings.getApiBaseURL()}facility-news-management/`, {
+			withCredentials: true,
+			params,
+		});
+	}
+
 	/**
 	 * Delete existing News from Wordpress by news_id
 	 *
