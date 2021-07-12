@@ -99,7 +99,7 @@
     "@angular-devkit/build-angular": "0.1102.13",
     "@angular/cli": "^11.2.14",
     "@angular/compiler-cli": "^11.2.10",
-    "@compodoc/compodoc": "^1.1.11",
+    "@compodoc/compodoc": "^1.1.13",
     "@types/jasmine": "~3.7.7",
     "@types/node": "^16.0.0",
     "audit-ci": "^4.1.0",
