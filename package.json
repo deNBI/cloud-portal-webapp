@@ -143,7 +143,7 @@
     "@angular-eslint/template-parser": "^4.3.0",
     "@angular-eslint/schematics": "4.3.0",
     "@typescript-eslint/eslint-plugin": "4.28.0",
-    "@typescript-eslint/parser": "4.27.0",
+    "@typescript-eslint/parser": "4.28.2",
     "eslint-plugin-no-null": "latest"
   }
 }
