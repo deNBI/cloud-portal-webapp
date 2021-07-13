@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { ApiSettings } from './api-settings.service';
 import { WordPressNews } from '../facility_manager/newsmanagement/wp-news';
 import { WordPressTag } from '../facility_manager/newsmanagement/wp-tags';
+import { FacilityNews } from '../facility_manager/newsmanagement/facility-news';
 
 /**
  * Service which provides methods for the facilities.
@@ -22,6 +23,12 @@ export class NewsService {
 
 	addNewsToWordpress(news: WordPressNews): Observable<any> {
 		return this.http.post(`${ApiSettings.getApiBaseURL()}wp-news-management/`, news, {
+			withCredentials: true,
+		});
+	}
+
+	addNewsToAPI(news: FacilityNews): Observable<any> {
+		return this.http.post(`${ApiSettings.getApiBaseURL()}facility-news-management/`, news, {
 			withCredentials: true,
 		});
 	}

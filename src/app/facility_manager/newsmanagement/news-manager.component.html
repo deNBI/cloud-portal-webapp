@@ -286,9 +286,11 @@ we are happy to inform..."
             <p><strong>Please note: this may change the current Message of the day for multiple facilities!</strong></p>
           </div>
         </div>
+        <!-- (click)="addNewsToWordpress(newWordpressNews, false); addModal.hide()" -->
         <div class="modal-footer">
           <button type="button" class="btn btn-success"
-                  (click)="addNewsToWordpress(newWordpressNews, false); addModal.hide()"
+                 
+                  (click)="addNewsToAPI(newFacilityNews); addModal.hide()"
                   id="approve_add_modal"><i class="fas fa-plus"></i> Add News
           </button>
           <button type="button" class="btn btn-secondary"

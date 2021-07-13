@@ -36,6 +36,7 @@ export class NewsManagerComponent implements OnInit {
 	wordPressNews: WordPressNews[] = [];
 	// in implementation
 	facilityNews: FacilityNews[] = [];
+	newFacilityNews: FacilityNews = new FacilityNews();
 
 	newsSetAsMOTD: string[] = [];
 	selectedNews: WordPressNews = new WordPressNews();
@@ -108,6 +109,26 @@ export class NewsManagerComponent implements OnInit {
 			}
 
 		});
+	}
+
+	addNewsToAPI(bare_news: FacilityNews): void {
+		const news: FacilityNews = bare_news;
+		news.title = this.selectedNewsForm.controls['title'].value;
+		news.text = this.selectedNewsForm.controls['text'].value;
+		news.motd = this.selectedNewsForm.controls['motd'].value;
+		news.facility = this.facilitiesToPost;
+
+		this.newsService.addNewsToAPI(news).subscribe((result: any): void => {
+			if (result) {
+				if (result['id']) {
+					this.returnState = 2;
+					this.setMOTDForFacility(result['id'].toString());
+					this.infoModal.show();
+				}
+			}
+			this.getNewsFromAPI();
+		});
+
 	}
 
 	/**
@@ -217,7 +238,9 @@ export class NewsManagerComponent implements OnInit {
 		this.facilityNews = [];
 		const facility_ids: string[] = this.selectedFacilities.map((facility: [string, number]): string => facility['FacilityId'].toString());
 		this.newsService.getFacilityNews(facility_ids.toString()).subscribe((result: Object[]): any => {
+			console.log(result);
 			this.facilityNews = result.map((news: Object): any => this.createFacilityNews(news));
+			console.log(this.facilityNews);
 		});
 	}
 
@@ -247,11 +270,12 @@ export class NewsManagerComponent implements OnInit {
 
 	createFacilityNews(facilityNews: Object): FacilityNews {
 		const news: FacilityNews = new FacilityNews();
-		news.id = facilityNews['id'];
+		news.id = facilityNews['pk'];
 		news.title = facilityNews['title'];
-		news.text = facilityNews['text'];
+		news.text = facilityNews['message'];
 		news.motd = facilityNews['motd'];
 		news.facility = facilityNews['facilities'];
+		news.date = facilityNews['date_created'];
 
 		return news;
 	}
