@@ -118,7 +118,7 @@
     "eslint-plugin-jsdoc": "^35.4.3",
     "eslint-plugin-no-null": "latest",
     "eslint-plugin-prefer-arrow": "1.2.3",
-    "exports-loader": "^1.1.1",
+    "exports-loader": "^3.0.0",
     "file-loader": "^6.1.0",
     "html-webpack-plugin": "^4.5.1",
     "istanbul-instrumenter-loader": "^3.0.1",
