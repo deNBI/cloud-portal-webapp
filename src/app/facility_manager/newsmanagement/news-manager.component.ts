@@ -37,6 +37,7 @@ export class NewsManagerComponent implements OnInit {
 	// in implementation
 	facilityNews: FacilityNews[] = [];
 	newFacilityNews: FacilityNews = new FacilityNews();
+	selectedFacilityNews: FacilityNews = new FacilityNews();
 
 	newsSetAsMOTD: string[] = [];
 	selectedNews: WordPressNews = new WordPressNews();
@@ -116,7 +117,7 @@ export class NewsManagerComponent implements OnInit {
 		news.title = this.selectedNewsForm.controls['title'].value;
 		news.text = this.selectedNewsForm.controls['text'].value;
 		news.motd = this.selectedNewsForm.controls['motd'].value;
-		news.facility = this.facilitiesToPost;
+		news.facilities = this.facilitiesToPost;
 
 		this.newsService.addNewsToAPI(news).subscribe((result: any): void => {
 			if (result) {
@@ -274,7 +275,12 @@ export class NewsManagerComponent implements OnInit {
 		news.title = facilityNews['title'];
 		news.text = facilityNews['message'];
 		news.motd = facilityNews['motd'];
-		news.facility = facilityNews['facilities'];
+		const facilities: any = facilityNews['facilities'];
+		const fac_temp: number[] = [];
+		facilities.forEach((facility: any): void => {
+			fac_temp.push(facility['compute_center_facility_id']);
+		});
+		news.facilities = fac_temp;
 		news.date = facilityNews['date_created'];
 
 		return news;
@@ -317,6 +323,14 @@ export class NewsManagerComponent implements OnInit {
 		this.getWordPressNews();
 	}
 
+	setCurrentNews(news?: FacilityNews): void {
+		this.facilitiesToPost = [];
+		this.facilitiesToSetMOTD = [];
+		this.selectedTags = [];
+		if (news) {
+			this.selectedFacilityNews = news;
+		}
+	}
 	/**
 	 * Sets the news which got selected or creates a new news object. Also empties all relevant lists.
 	 *
@@ -378,7 +392,7 @@ export class NewsManagerComponent implements OnInit {
 	 *
 	 * @param news the news for which the string shall be returned
 	 */
-	facilitiesAsString(news: WordPressNews): string {
+	facilitiesAsString(news: WordPressNews|FacilityNews): string {
 		const newsId: string = news.id.toString();
 		if (this.newsSetAsMOTD.includes(newsId)) {
 			let facilitiesString: string = '';

@@ -71,7 +71,7 @@ export class FacilityNews {
 		return this._facilities;
 	}
 
-	set facility(value: number[]) {
+	set facilities(value: number[]) {
 		this._facilities = value;
 	}
 }

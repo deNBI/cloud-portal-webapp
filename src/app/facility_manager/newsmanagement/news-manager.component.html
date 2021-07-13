@@ -25,11 +25,11 @@
             </div>
             <div class="card-body">
               <form>
-                <div *ngIf="wordPressNews?.length === 0" class="alert alert-info">
+                <div *ngIf="facilityNews?.length === 0" class="alert alert-info">
                   <span>No news available for the facilities selected.</span>
                 </div>
-                <div *ngFor="let news of wordPressNews">
-                  <div class="card" style="cursor: pointer;" (click)="setNews(news)" [ngStyle]="{
+                <div *ngFor="let news of facilityNews">
+                  <div class="card" style="cursor: pointer;" (click)="setCurrentNews(news)" [ngStyle]="{
                     'border-color': news.id == selectedNews.id ? '#005aa9' : '#c8ced3'}">
                     <div class="card-header text-truncate"
                          data-toggle="tooltip" id="{{news.id}}_header" data-placement="auto"
@@ -54,20 +54,20 @@
                       </div>
                       <div class="row">
                         <div class="text-truncate col" data-toggle="tooltip"
-                             data-placement="auto"><strong>Message of the Day: </strong>{{news.excerpt}}</div>
+                             data-placement="auto"><strong>Message of the Day: </strong>{{news.motd}}</div>
                       </div>
                       <div class="row">
                         <div class="text-truncate col" data-toggle="tooltip"
-                             data-placement="auto"><strong>Uploaded: </strong>{{news.modification_date}}</div>
+                             data-placement="auto"><strong>Uploaded: </strong>{{news.date}}</div>
                       </div>
                       <br>
-                      <div class="row">
+                      <!--<div class="row">
                         <a class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
                            [id]="'goToWordPressButton_' + news.id.toString()"
                            href="{{news.url}}" target="_blank" rel="noopener noreferrer">
                           Show in WordPress
                         </a>
-                      </div>
+                      </div> -->
                     </div>
                   </div>
                 </div>
@@ -289,7 +289,7 @@ we are happy to inform..."
         <!-- (click)="addNewsToWordpress(newWordpressNews, false); addModal.hide()" -->
         <div class="modal-footer">
           <button type="button" class="btn btn-success"
-                 
+
                   (click)="addNewsToAPI(newFacilityNews); addModal.hide()"
                   id="approve_add_modal"><i class="fas fa-plus"></i> Add News
           </button>
