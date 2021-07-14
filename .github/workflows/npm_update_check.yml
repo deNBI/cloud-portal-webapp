@@ -9,23 +9,21 @@ jobs:
   npm:
     runs-on: ubuntu-latest
     steps:
-      - name: Test the released step
-        id: test_released
-        uses: fzwael/ncu-action@v1
-      #- uses: actions/checkout@v1
-      #- run: npm install
-      #  - uses: MeilCli/npm-update-check-action@v4
-      #   id: outdated
-      #- name: Check if outdated
+    - uses: actions/checkout@v1
+    - run: npm install
+    - uses: MeilCli/npm-update-check-action@v4
+      id: outdated
+    - name: Check if failure
+      run:  steps.outdated.outputs.has_npm_update == 'false'
 
-      # - name: Rocket.Chat Notification
-      #  uses: RocketChat/Rocket.Chat.GitHub.Action.Notification@master
-      # if: steps.outdated.outputs.has_npm_update != 'false'
-      #with:
-      #   type: ${{ job.status }}
-      #  job_name: ':older_man: NPM Outdated'
-      # mention_if: 'always'
-      #mention: ${{ steps.outdated.outputs.npm_update_text }}
-      #url: ${{ secrets.ROCKETCHAT_WEBHOOK }}
-      #token: ${{secrets.GITHUB_TOKEN}}
+    - name: Rocket.Chat Notification
+      uses: RocketChat/Rocket.Chat.GitHub.Action.Notification@master
+      if:  ${{ failure() }}
+      with:
+          type: ${{ job.status }}
+          job_name: ':older_man: NPM Outdated'
+          mention_if: 'always'
+          mention: ${{ steps.outdated.outputs.npm_update_text }}
+          url: ${{ secrets.ROCKETCHAT_WEBHOOK }}
+          token: ${{secrets.GITHUB_TOKEN}}
 
