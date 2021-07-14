@@ -2,7 +2,6 @@ name: Check Package
 
 on:
   workflow_dispatch:
-  push:
   schedule:
     - cron: '0 8 * * 5' # every friday AM 8:0
 jobs:
