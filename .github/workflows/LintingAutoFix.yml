@@ -26,7 +26,7 @@ jobs:
         run: npm ci
       - name: Lint
         run: |
-          sudo npm install -g @angular/cli
+          npm i
           npx ng lint cloud-webapp --fix --force
       - name: Check for modified files
         id: git-check
