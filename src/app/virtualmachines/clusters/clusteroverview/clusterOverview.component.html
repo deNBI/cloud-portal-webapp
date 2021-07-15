@@ -25,7 +25,7 @@
 
 
         </div>
-        <div *ngIf="tab=='facility'" class="col-4"><select [(ngModel)]="selectedFacility"
+        <div *ngIf="tab==='facility'" class="col-4"><select [(ngModel)]="selectedFacility"
                                                            class="form-control " name="selectedFacility">
           <option *ngFor="  let facility of managerFacilities"
                   [ngValue]="facility">
@@ -121,7 +121,7 @@
               <div class="card-body p-x-1 py-h">
                 <div class="row">
                   <div class="col-3"
-                       *ngIf="cluster?.status == 'Running' ">
+                       *ngIf="cluster?.status === 'Running' ">
                     <a *ngIf="!show_connection_infO"
                        class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
                        [id]="'showHowToConnectButton_'+cluster?.cluster_id"
@@ -134,7 +134,7 @@
                       ... Hide information</a>
                   </div>
                   <div class="col-3"
-                       *ngIf="cluster?.status != VirtualMachineStates.staticDELETED && cluster?.status != VirtualMachineStates.staticDELETING && cluster?.status == 'Running' ">
+                       *ngIf="cluster?.status != VirtualMachineStates.staticDELETED && cluster?.status != VirtualMachineStates.staticDELETING && cluster?.status === 'Running' ">
                     <a class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
                        [id]="'scale_up_'+cluster?.cluster_id"
                        (click)="selectedCluster=cluster;resetScaling();calcRess();scaleUpModal.show();">
@@ -143,7 +143,7 @@
 
                   </div>
                   <div class="col-3"
-                       *ngIf="cluster?.status != VirtualMachineStates.staticDELETED && cluster?.status != VirtualMachineStates.staticDELETING && cluster?.status == 'Running' ">
+                       *ngIf="cluster?.status != VirtualMachineStates.staticDELETED && cluster?.status != VirtualMachineStates.staticDELETING && cluster?.status === 'Running' ">
                     <a class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
                        [id]="'scale_down_'+cluster?.cluster_id"
                        (click)="selectedCluster=cluster;resetScaling();scaleDownModal.show()">
@@ -177,7 +177,7 @@
                       <span class="font-weight-bold font-xs btn-block text-muted" [innerHTML]="mode.description"></span>
                     </div>
 
-                    <div class="col-md-2" style="margin: auto" *ngIf="mode.copy_field && mode.copy_field!=''">
+                    <div class="col-md-2" style="margin: auto" *ngIf="mode.copy_field && mode.copy_field!==''">
                       <div class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
                            (click)="copyToClipboard(mode.copy_field)">Copy command</div>
                     </div>
@@ -249,7 +249,7 @@
             <div class="alert alert-{{ notificationModalType }}" role="alert">
               {{ notificationModalMessage }}
             </div>
-            <div class="alert alert-warning" *ngIf="(scaling_up || scaling_down) && notificationModalType == 'success'"> Run the following on your master
+            <div class="alert alert-warning" *ngIf="(scaling_up || scaling_down) && notificationModalType === 'success'"> Run the following on your master
               instance:
               <div class="alert alert-light"
                    role="alert">

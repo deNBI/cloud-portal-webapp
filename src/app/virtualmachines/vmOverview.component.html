@@ -25,7 +25,7 @@
 
 
         </div>
-        <div *ngIf="tab=='facility'" class="col-4"><select [(ngModel)]="selectedFacility"
+        <div *ngIf="tab==='facility'" class="col-4"><select [(ngModel)]="selectedFacility"
                                                            class="form-control " name="selectedFacility">
           <option *ngFor="  let facility of managerFacilities"
                   [ngValue]="facility">
@@ -377,14 +377,14 @@
                     <span class="font-weight-bold font-xs btn-block text-muted" [innerHTML]="mode.description"></span>
                   </div>
 
-                  <div class="col-md-2" style="margin: auto" *ngIf="mode.copy_field && mode.copy_field!=''">
+                  <div class="col-md-2" style="margin: auto" *ngIf="mode.copy_field && mode.copy_field!==''">
                     <div class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
                          (click)="copyToClipboard(mode.copy_field)">Copy command</div>
                   </div>
                 </div>
 
 
-                <div class="row" *ngIf="vm?.res_env_url != '' && vm?.res_env_url != null && vm?.res_env_url != undefined && resenv_by_play(vm)">
+                <div class="row" *ngIf="vm?.res_env_url !== '' && vm?.res_env_url != null && vm?.res_env_url != undefined && resenv_by_play(vm)">
                   <div class="col-md-1">
                     <span class="font-weight-bold font-xs btn-block text-muted">Research Environment:</span>
                   </div>
@@ -877,12 +877,12 @@
         </button>
       </div>
       <div class="modal-body">
-        <div class="alert alert-info" role="alert" *ngIf="snapshotDone == 'Waiting' ">
+        <div class="alert alert-info" role="alert" *ngIf="snapshotDone === 'Waiting' ">
           Wait until Snapshot is queued....
         </div>
 
 
-        <div class="alert alert-success" role="alert" *ngIf="snapshotDone == 'true' " id="snapshot_done">
+        <div class="alert alert-success" role="alert" *ngIf="snapshotDone === 'true' " id="snapshot_done">
           Successfully queued Snapshot.
           It might take some minutes till you can use it for starting a new instance at the "New Instance" tab.
           You can see the current status in the<a
@@ -890,7 +890,7 @@
           [routerLink]="['/virtualmachines/snapshotOverview']"> Snapshot Overview </a>.
         </div>
         <div class="alert alert-danger" role="alert"
-             *ngIf="snapshotDone != 'true' && snapshotDone != 'Waiting'">
+             *ngIf="snapshotDone !== 'true' && snapshotDone !== 'Waiting'">
           An error occured when creating the snapshot.<br>
           {{ERROR_MSG}}
 
