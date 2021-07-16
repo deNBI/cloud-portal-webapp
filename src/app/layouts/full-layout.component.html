@@ -17,8 +17,8 @@
 </app-header>
 
 <div class="app-body">
-  <app-sidebar class="sidebar">
-    <nav class="sidebar-nav">
+  <app-sidebar class="c-sidebar c-sidebar-fixed c-sidebar-lg-show">
+    <nav class="c-sidebar-nav">
       <ng-scrollbar visibility="hover">
       <ul class="nav">
         <li class="nav-title">
@@ -551,13 +551,13 @@
     </nav>
     <app-sidebar-minimizer (click)="setSidebarStatus()"></app-sidebar-minimizer>
 
-    <app-footer *ngIf="!navbar_minimized">
+    <app-footer  class="c-footer" *ngIf="!navbar_minimized">
 
       <a href="https://www.denbi.de">de.NBI&nbsp;</a> &copy; {{ year }}
 
     </app-footer>
 
-    <app-footer *ngIf="navbar_minimized">
+    <app-footer class="c-footer" *ngIf="navbar_minimized">
 
       <a href="https://www.denbi.de" data-toogle="tooltip" data-placement="right" [title]="'&copy; de.NBI ' + year "
          style="font-size: 18px !important;">&copy;</a>
