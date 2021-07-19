@@ -306,10 +306,6 @@ $simplevmcolour: #00ADEF;
 }
 
 
-.brand-minimized .app-header .navbar-brand
-{
-  margin-left: 0px !important;
-}
 
 .status-badge {
   font-size: 10px; position: relative; top: 3px; margin:2px;
@@ -353,7 +349,7 @@ $simplevmcolour: #00ADEF;
 }
 
 
-.c-sidebar-fixed .app-header + .app-body .c-body {
+.c-sidebar-fixed .c-body {
   height: calc(100vh - 175px);
   border: 20px;
   border-radius: 10px;
@@ -361,7 +357,7 @@ $simplevmcolour: #00ADEF;
   margin: 15px;
 }
 
-.c-sidebar .nav .nav-item .nav-link .c-sidebar {
+.c-sidebar .c-header.nav .c-sidebar-nav-item .c-sidebar-nav-link .c-sidebar {
 
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -436,15 +432,11 @@ $simplevmcolour: #00ADEF;
   display: table-row-group;
 }
 
-.c-sidebar .nav .nav-item {
+.c-sidebar .c-sidebar-nav .c-sidebar-nav-item {
   width: 100%;
 }
 
 
-.app-header .navbar-brand {
-  width: 100%;
-  margin-right: 10px;
-}
 
 //modals
 
@@ -470,13 +462,9 @@ $simplevmcolour: #00ADEF;
     position: relative;
   }
 
-  .brand-minimized .app-header .navbar-brand
-  {
-    margin-left: 0px !important;
-  }
 
 
-.c-sidebar-fixed .app-header + .app-body .c-sidebar .c-body {
+.c-sidebar-fixed  .c-sidebar .c-body {
   height: calc(100vh - 175px);
   border: 20px;
   border-radius: 10px;
@@ -484,35 +472,15 @@ $simplevmcolour: #00ADEF;
   margin: 15px;
 }
 
-.c-sidebar .nav .nav-item .nav-link {
+.c-sidebar .c-header-nav .c-sidebar-nav-item .c-sidebar-nav-link {
 
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
 }
 
-.c-sidebar .nav .nav-item {
-  width: 100%;
-}
 
 
-  .app-header .navbar-brand
-  {
-    width: 100%;
-    margin-right: 10px;
-    position: unset !important;
-  }
-
-.app-header.navbar {
-  float: left;
-  position: fixed;
-  width: 200px;
-  left: 0px;
-}
-
-.c-sidebar-minimized .c-sidebar-nav {
-  padding-bottom: 0px !important;
-}
 
 app-dashboard {
   position: relative;
@@ -527,10 +495,6 @@ app-dashboard {
 .c-main-maximized{
     margin-left: 55px !important;
 
-}
-
-.btn {
-  cursor: pointer;
 }
 
 //colors for buttons and alerts >>>
@@ -613,7 +577,9 @@ app-dashboard {
     border-radius: 10px;
   }
 
-.c-sidebar-nav .nav-item:hover, .c-sidebar-minimized .c-sidebar .nav-item:hover > .nav-link
+
+
+.c-sidebar-nav-item:hover
   {
     background-color: $deNBI_lightgrey !important;
   }
@@ -735,32 +701,32 @@ app-dashboard {
   background-color: $deNBI_white;
 }
 
-.c-sidebar .nav-link:hover
+.c-sidebar .c-sidebar-nav-link:hover
   {
     background-color: $deNBI_lightgrey;
   }
 
-.c-sidebar-minimized .c-sidebar .nav-item:hover {
+.c-sidebar-minimized .c-sidebar .c-sidebar-nav-link:hover {
   width: 100% !important;
   overflow: visible;
 }
 
   /*fix for projects disappearing */
-.c-sidebar .nav-dropdown.open > .nav-dropdown-items {
+.c-sidebar .c-sidebar-nav-dropdown.open > .c-sidebar-nav-dropdown-items {
   max-height: unset !important;
 }
 
-.c-sidebar .nav-dropdown.open .nav-link:hover
+.c-sidebar .c-sidebar-nav-dropdown.open .c-sidebar-nav-link:hover
   {
     background-color: $deNBI_lightgrey;
     color: $deNBI_white;
   }
 
-.c-sidebar-minimized .c-sidebar .nav-link:hover {
+.c-sidebar-minimized .c-sidebar .c-sidebar-nav-link:hover {
   width: 100%;
 }
 
-.c-sidebar .nav-dropdown.open .nav-link.active {
+.c-sidebar .nav-dropdown.open .c-sidebar-nav-link.active {
   background-color: $deNBI_cyan;
   color: $deNBI_white;
 }
@@ -788,19 +754,19 @@ app-dashboard {
     color: $deNBI_white;
   }
 
-.c-sidebar .nav-item.nav-dropdown:hover
+.c-sidebar .c-sidebar-nav-item.nav-dropdown:hover
   {
     background-color: $deNBI_lightgrey;
     color: $deNBI_white;
   }
 
-.c-sidebar .nav-link.active {
+.c-sidebar .c-sidebar-nav-link.active {
   background-color: $deNBI_cyan;
   color: $deNBI_white;
 }
 
 
-.c-sidebar .nav-link.active .nav-icon {
+.c-sidebar .c-sidebar-nav-link.active .nav-icon {
   color: $deNBI_white;
 }
 
@@ -844,12 +810,12 @@ app-dashboard {
 
   }
 
-.c-sidebar .nav-dropdown.open .nav-link {
+.c-sidebar .c-sidebar-nav-dropdown.open .c-sidebar-nav-link {
   color: $deNBI_blue;
   background-color: $deNBI_white;
 }
 
-.c-sidebar .nav-dropdown-items .nav-item {
+.c-sidebar .c-sidebar-nav-dropdown-items .c-sidebar-nav-item {
   color: $deNBI_blue;
   background-color: $deNBI_white;
 }
@@ -929,13 +895,8 @@ app-dashboard {
     left: -35px;
   }
 
-.c-sidebar-minimized .c-main
-  {
-    margin-left: 45px !important;
-  }
 
-
-.c-header-minimízed {
+.c-header-right-maximized{
   width: calc(100vw - 110px);
   margin: auto;
 }
