@@ -6,7 +6,7 @@
 
 // due to change from ngx-perfect-scrollbar to ngx-scrollbar
 
-.sidebar-minimized .sidebar .sidebar-nav{
+.c-sidebar-minimized .c-sidebar .c-sidebar-nav {
   padding-bottom: unset;
 }
 
@@ -301,12 +301,10 @@ $simplevmcolour: #00ADEF;
 }
 
 
-
-.navbar-brand-minimized
-{
-  left:5px;
-  position: relative;
+.c-sidebar {
+  width: 200px;
 }
+
 
 .brand-minimized .app-header .navbar-brand
 {
@@ -355,7 +353,7 @@ $simplevmcolour: #00ADEF;
 }
 
 
-.sidebar-fixed .app-header + .app-body .sidebar{
+.c-sidebar-fixed .app-header + .app-body .c-body {
   height: calc(100vh - 175px);
   border: 20px;
   border-radius: 10px;
@@ -363,7 +361,7 @@ $simplevmcolour: #00ADEF;
   margin: 15px;
 }
 
-.sidebar .nav .nav-item .nav-link {
+.c-sidebar .nav .nav-item .nav-link .c-sidebar {
 
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -438,7 +436,7 @@ $simplevmcolour: #00ADEF;
   display: table-row-group;
 }
 
-.sidebar .nav .nav-item {
+.c-sidebar .nav .nav-item {
   width: 100%;
 }
 
@@ -478,25 +476,24 @@ $simplevmcolour: #00ADEF;
   }
 
 
+.c-sidebar-fixed .app-header + .app-body .c-sidebar .c-body {
+  height: calc(100vh - 175px);
+  border: 20px;
+  border-radius: 10px;
+  top: 75px;
+  margin: 15px;
+}
 
-  .sidebar-fixed .app-header + .app-body .sidebar{
-    height: calc(100vh - 175px);
-    border: 20px;
-    border-radius: 10px;
-    top: 75px;
-    margin: 15px;
-  }
+.c-sidebar .nav .nav-item .nav-link {
 
-  .sidebar .nav .nav-item .nav-link {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
 
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-  }
-
-  .sidebar .nav .nav-item {
-    width:100%;
-  }
+.c-sidebar .nav .nav-item {
+  width: 100%;
+}
 
 
   .app-header .navbar-brand
@@ -506,35 +503,37 @@ $simplevmcolour: #00ADEF;
     position: unset !important;
   }
 
-  .app-header.navbar
-  {
-    float: left;
-    position: fixed;
-    width: 200px;
-    left: 0px;
-  }
+.app-header.navbar {
+  float: left;
+  position: fixed;
+  width: 200px;
+  left: 0px;
+}
 
-  app-dashboard
-  {
-    position: relative;
-  }
+.c-sidebar-minimized .c-sidebar-nav {
+  padding-bottom: 0px !important;
+}
 
-  .header-fixed .app-header
-  {
-    margin: 15px;
-    border-radius: 10px;
-  }
+app-dashboard {
+  position: relative;
+}
 
-  main{
-    margin-top: 35px !important;
-    margin-left: 195px !important;
-  }
 
-  .btn{
-    cursor: pointer;
-  }
+.c-main {
+  margin-top: 35px !important;
+  margin-left: 195px !important;
+}
 
-  //colors for buttons and alerts >>>
+.c-main-maximized{
+    margin-left: 55px !important;
+
+}
+
+.btn {
+  cursor: pointer;
+}
+
+//colors for buttons and alerts >>>
 
   .btn-primary {
     background-color: $deNBI_cyan;
@@ -563,10 +562,7 @@ $simplevmcolour: #00ADEF;
     cursor: pointer;
   }
 
-  header {
-    color: red;
 
-  }
   #header-help {
     padding-right: 19px;
   }
@@ -601,23 +597,23 @@ $simplevmcolour: #00ADEF;
     margin: 0;
   }
 
-  .sidebar .sidebar-minimizer {
-    background-color: $deNBI_white !important;
-    color: $deNBI_cyan !important;
-    position: relative !important;
-    border-radius:10px;
-  }
+.c-sidebar .c-sidebar-minimizer .c-sidebar .c-sidebar-minimizer:hover {
+  background-color: $deNBI_white !important;
+  color: $deNBI_cyan !important;
+  position: relative !important;
+  border-radius: 10px;
+}
 
-  .sidebar .sidebar-minimizer:hover {
-    background-color: $deNBI_lightgrey !important;
-    border-radius: 10px;
-  }
+.c-sidebar .c-sidebar-minimizer:hover .c-sidebar-minimizer:hover {
+  background-color: $deNBI_lightgrey !important;
+  border-radius: 10px;
+}
 
   .nav-item{
     border-radius: 10px;
   }
 
-  .sidebar-nav .nav-item:hover, .sidebar-minimized .sidebar .nav-item:hover > .nav-link
+.c-sidebar-nav .nav-item:hover, .c-sidebar-minimized .c-sidebar .nav-item:hover > .nav-link
   {
     background-color: $deNBI_lightgrey !important;
   }
@@ -649,10 +645,10 @@ $simplevmcolour: #00ADEF;
     @include button-outline-variant($simplevmcolour, #222222, lighten($simplevmcolour,5%), $simplevmcolour);
   }
   // Google Font as on landing page.
-  .app-body {
-    color: $deNBI_darkgrey;
-    font-family: 'Raleway', sans-serif;
-  }
+.app-body .c-body {
+  color: $deNBI_darkgrey;
+  font-family: 'Raleway', sans-serif;
+}
 
   .flavor-image-card {
     width: 16rem;
@@ -677,7 +673,7 @@ $simplevmcolour: #00ADEF;
   }
 
 
-  .main .container-fluid
+.c-main .container-fluid
   {
     padding: 0 15px 0 30px;
   }
@@ -687,65 +683,93 @@ $simplevmcolour: #00ADEF;
     font-family: Raleway;
     font-size: 20px !important;
     text-align: center;
-    bottom:5px;
+    bottom: 5px;
     color: $deNBI_blue;
     height: 100%;
-    margin-top:15px;
-    min-width:25%;
+    margin-top: 15px;
+    min-width: 25%;
   }
 
-  .w3-bar-block
-  {
-    background-color: $deNBI_white;
-    height: 54px;
-    border-radius: 10px;
-    width: calc(100vw - 240px);
-    position: fixed;
-    top: 15px;
-    right: 15px;
-    text-align: center;
-    margin:auto;
-    z-index: 100;
-  }
 
-  .sidebar {
-    background-color: $deNBI_white;
-  }
+.c-header-left {
+  background-color: $deNBI_white;
+  height: 54px;
+  border-radius: 10px;
+  width: calc(100vw - (100vw - 200px));
+  position: fixed;
+  top: 15px;
+  text-align: center;
+  margin: auto;
+  margin-left: 10px;
+  margin-right:10px;
+  z-index: 100;
 
-  .sidebar .nav-link:hover
+
+}
+.navbar-brand-minimized
+{
+  left:5px;
+  position: relative;
+}
+
+.c-header-left-minimized{
+   width: calc(100vw - (100vw - 60px));
+   margin-left: 10px;
+  margin-right:10px;
+}
+
+.c-header-right {
+  background-color: $deNBI_white;
+  height: 54px;
+  border-radius: 10px;
+  width: calc(100vw - 250px);
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  text-align: center;
+  margin: auto;
+  z-index: 100;
+}
+
+.c-sidebar {
+  background-color: $deNBI_white;
+}
+
+.c-sidebar .nav-link:hover
   {
     background-color: $deNBI_lightgrey;
   }
 
-  .sidebar-minimized .sidebar .nav-item:hover {
-    width:100% !important;
-    overflow: visible;
-  }
+.c-sidebar-minimized .c-sidebar .nav-item:hover {
+  width: 100% !important;
+  overflow: visible;
+}
 
   /*fix for projects disappearing */
-  .sidebar .nav-dropdown.open > .nav-dropdown-items{
-    max-height: unset !important;
-  }
+.c-sidebar .nav-dropdown.open > .nav-dropdown-items {
+  max-height: unset !important;
+}
 
-  .sidebar .nav-dropdown.open .nav-link:hover
+.c-sidebar .nav-dropdown.open .nav-link:hover
   {
     background-color: $deNBI_lightgrey;
     color: $deNBI_white;
   }
 
-  .sidebar-minimized .sidebar .nav-link:hover{
-    width: 100%;
-  }
+.c-sidebar-minimized .c-sidebar .nav-link:hover {
+  width: 100%;
+}
 
-  .sidebar .nav-dropdown.open .nav-link.active {
-    background-color: $deNBI_cyan;
-    color: $deNBI_white;
-  }
-  .scroll-image {
-    max-height: 120px;
-    min-height: 120px;
-    overflow-y: auto;
-  }
+.c-sidebar .nav-dropdown.open .nav-link.active {
+  background-color: $deNBI_cyan;
+  color: $deNBI_white;
+}
+
+.scroll-image {
+  max-height: 120px;
+  min-height: 120px;
+  overflow-y: auto;
+}
 
   .collapse_no_margin {
     margin: 0;
@@ -764,46 +788,48 @@ $simplevmcolour: #00ADEF;
     color: $deNBI_white;
   }
 
-  .sidebar .nav-item.nav-dropdown:hover
+.c-sidebar .nav-item.nav-dropdown:hover
   {
     background-color: $deNBI_lightgrey;
     color: $deNBI_white;
   }
 
-  .sidebar .nav-link.active {
-    background-color: $deNBI_cyan;
-    color: $deNBI_white;
-  }
+.c-sidebar .nav-link.active {
+  background-color: $deNBI_cyan;
+  color: $deNBI_white;
+}
 
 
-  .sidebar .nav-link.active .nav-icon {
-    color: $deNBI_white;
-  }
-  .card-header.bg-info-image {
+.c-sidebar .nav-link.active .nav-icon {
+  color: $deNBI_white;
+}
 
-    color: $deNBI_white;
-  }
+.card-header.bg-info-image {
 
-  .sidebar .nav-link {
-    color: $deNBI_blue;
-  }
+  color: $deNBI_white;
+}
 
-  .sidebar .nav-title {
-    color: $deNBI_darkgrey;
-  }
+.c-sidebar .nav-link {
+  color: $deNBI_blue;
+}
 
-  .sidebar .nav-item .nav-dropdown-toggle{
-    color: $deNBI_blue;
-    background-color: $deNBI_white;
-  }
+.c-sidebar .nav-title {
+  color: $deNBI_darkgrey;
+}
 
-  .sidebar .nav-item .nav-dropdown-toggle:hover {
-    color: $deNBI_white;
-    background-color: $deNBI_lightgrey;
-  }
-  .btn-openstack {
-    @include button-variant($openstackcolour, darken($openstackcolour, 7.5%), darken($openstackcolour, 10%), lighten($openstackcolour, 5%), lighten($openstackcolour, 10%), darken($openstackcolour, 30%));
-  }
+.c-sidebar .nav-item .nav-dropdown-toggle {
+  color: $deNBI_blue;
+  background-color: $deNBI_white;
+}
+
+.c-sidebar .nav-item .nav-dropdown-toggle:hover {
+  color: $deNBI_white;
+  background-color: $deNBI_lightgrey;
+}
+
+.btn-openstack {
+  @include button-variant($openstackcolour, darken($openstackcolour, 7.5%), darken($openstackcolour, 10%), lighten($openstackcolour, 5%), lighten($openstackcolour, 10%), darken($openstackcolour, 30%));
+}
 
   .btn-outline-openstack {
     @include button-outline-variant($openstackcolour, #222222, lighten($openstackcolour, 5%), $openstackcolour);
@@ -818,15 +844,15 @@ $simplevmcolour: #00ADEF;
 
   }
 
-  .sidebar .nav-dropdown.open .nav-link{
-    color: $deNBI_blue;
-    background-color: $deNBI_white;
-  }
+.c-sidebar .nav-dropdown.open .nav-link {
+  color: $deNBI_blue;
+  background-color: $deNBI_white;
+}
 
-  .sidebar .nav-dropdown-items .nav-item{
-    color: $deNBI_blue;
-    background-color: $deNBI_white;
-  }
+.c-sidebar .nav-dropdown-items .nav-item {
+  color: $deNBI_blue;
+  background-color: $deNBI_white;
+}
 
   #newsbadge {
     margin: 15px !important;
@@ -849,6 +875,7 @@ $simplevmcolour: #00ADEF;
     transition: 0.5s;
 
   }
+
 
   .modal .table-responsive tbody tr td button {
     width: 200px;
@@ -889,7 +916,7 @@ $simplevmcolour: #00ADEF;
   {
     background-color: #FFFFFF;
     width: 200px;
-    left: -185px;
+    /*left: -185px;*/
     border-radius: 10px;
     font-family: 'Raleway', sans-serif;
     bottom: 10px;
@@ -897,24 +924,24 @@ $simplevmcolour: #00ADEF;
     height: 54px;
   }
 
-  .sidebar-minimized .app-footer
+.c-sidebar-minimized .app-footer
   {
     left: -35px;
   }
 
-  .sidebar-minimized .main
+.c-sidebar-minimized .c-main
   {
     margin-left: 45px !important;
   }
 
-  .sidebar-minimized .w3-bar-block
-  {
-    width: calc(100vw - 90px);
-    margin:auto;
-  }
+
+.c-header-minimízed {
+  width: calc(100vw - 110px);
+  margin: auto;
+}
 
 
-  // project-icon part >>>
+// project-icon part >>>
 
   @font-face {
     font-family: 'os_pr';
