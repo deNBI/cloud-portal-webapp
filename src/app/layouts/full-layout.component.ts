@@ -47,6 +47,9 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
 	navbar_minimized: boolean = false;
 	brand_logo: string = 'static/webapp/assets/img/denbi-logo-color.svg';
 	brand_logo_minimized: string = 'static/webapp/assets/img/denbi-logo-minimized.svg';
+	simple_vm_logo: string = 'static/webapp/assets/img/simpleVM_Logo.svg';
+	openstack_logo: string= 'static/webapp/assets/img/openstack_plain_red.svg';
+
 	cluster_allowed: boolean = false;
 
 	TITLE: string = '';

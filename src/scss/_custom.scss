@@ -4,11 +4,7 @@
 @import "../node_modules/bootstrap/scss/bootstrap";
 
 
-// due to change from ngx-perfect-scrollbar to ngx-scrollbar
 
-.c-sidebar-minimized .c-sidebar .c-sidebar-nav {
-  padding-bottom: unset;
-}
 
 //c3 chart
 
@@ -301,9 +297,6 @@ $simplevmcolour: #00ADEF;
 }
 
 
-.c-sidebar {
-  width: 200px;
-}
 
 
 
@@ -349,20 +342,7 @@ $simplevmcolour: #00ADEF;
 }
 
 
-.c-sidebar-fixed .c-body {
-  height: calc(100vh - 175px);
-  border: 20px;
-  border-radius: 10px;
-  top: 75px;
-  margin: 15px;
-}
 
-.c-sidebar .c-header.nav .c-sidebar-nav-item .c-sidebar-nav-link .c-sidebar {
-
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-}
 
 .rTable {
   display: table;
@@ -432,9 +412,7 @@ $simplevmcolour: #00ADEF;
   display: table-row-group;
 }
 
-.c-sidebar .c-sidebar-nav .c-sidebar-nav-item {
-  width: 100%;
-}
+
 
 
 
@@ -464,38 +442,7 @@ $simplevmcolour: #00ADEF;
 
 
 
-.c-sidebar-fixed  .c-sidebar .c-body {
-  height: calc(100vh - 175px);
-  border: 20px;
-  border-radius: 10px;
-  top: 75px;
-  margin: 15px;
-}
 
-.c-sidebar .c-header-nav .c-sidebar-nav-item .c-sidebar-nav-link {
-
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-}
-
-
-
-
-app-dashboard {
-  position: relative;
-}
-
-
-.c-main {
-  margin-top: 35px !important;
-  margin-left: 195px !important;
-}
-
-.c-main-maximized{
-    margin-left: 55px !important;
-
-}
 
 //colors for buttons and alerts >>>
 
@@ -561,38 +508,7 @@ app-dashboard {
     margin: 0;
   }
 
-.c-sidebar .c-sidebar-minimizer .c-sidebar .c-sidebar-minimizer:hover {
-  background-color: $deNBI_white !important;
-  color: $deNBI_cyan !important;
-  position: relative !important;
-  border-radius: 10px;
-}
 
-.c-sidebar .c-sidebar-minimizer:hover .c-sidebar-minimizer:hover {
-  background-color: $deNBI_lightgrey !important;
-  border-radius: 10px;
-}
-
-  .nav-item{
-    border-radius: 10px;
-  }
-
-
-
-.c-sidebar-nav-item:hover
-  {
-    background-color: $deNBI_lightgrey !important;
-  }
-
-  .nav
-  {
-    overflow-x: hidden !important;
-    overflow-y: visible;
-  }
-
-  .app {
-    background-color: #F1F1F1;
-  }
 
 
   .btn-openstack {
@@ -639,10 +555,6 @@ app-dashboard {
   }
 
 
-.c-main .container-fluid
-  {
-    padding: 0 15px 0 30px;
-  }
 
   #title_headline
   {
@@ -656,6 +568,48 @@ app-dashboard {
     min-width: 25%;
   }
 
+
+.app-dashboard {
+  position: relative;
+}
+
+
+.c-main {
+  margin-top: 35px !important;
+  margin-left: 195px !important;
+}
+
+.c-main-maximized {
+  margin-left: 55px !important;
+
+}
+
+.c-sidebar-nav-dropdown-item{
+  display:block !important;
+  padding-left: 0px;
+}
+
+.c-sidebar .c-sidebar-minimizer .c-sidebar .c-sidebar-minimizer:hover {
+  background-color: $deNBI_white !important;
+  color: $deNBI_cyan !important;
+  position: relative !important;
+  border-radius: 10px;
+}
+
+.c-sidebar .c-sidebar-minimizer:hover .c-sidebar-minimizer:hover {
+  background-color: $deNBI_lightgrey !important;
+  border-radius: 10px;
+}
+
+
+.c-sidebar-nav-item:hover {
+  background-color: $deNBI_lightgrey !important;
+}
+
+
+.c-main .container-fluid {
+  padding: 0 15px 0 30px;
+}
 
 .c-header-left {
   background-color: $deNBI_white;
@@ -698,35 +652,29 @@ app-dashboard {
 }
 
 .c-sidebar {
+  width: 200px;
   background-color: $deNBI_white;
+
 }
 
-.c-sidebar .c-sidebar-nav-link:hover
-  {
-    background-color: $deNBI_lightgrey;
-  }
 
-.c-sidebar-minimized .c-sidebar .c-sidebar-nav-link:hover {
-  width: 100% !important;
-  overflow: visible;
+.c-sidebar.c-sidebar-light .c-sidebar-nav-link:hover {
+  background-color: $deNBI_lightgrey;
 }
 
-  /*fix for projects disappearing */
+
+/*fix for projects disappearing */
 .c-sidebar .c-sidebar-nav-dropdown.open > .c-sidebar-nav-dropdown-items {
   max-height: unset !important;
 }
 
-.c-sidebar .c-sidebar-nav-dropdown.open .c-sidebar-nav-link:hover
-  {
-    background-color: $deNBI_lightgrey;
-    color: $deNBI_white;
-  }
-
-.c-sidebar-minimized .c-sidebar .c-sidebar-nav-link:hover {
-  width: 100%;
+.c-sidebar .c-sidebar-nav-dropdown.open .c-sidebar-nav-link:hover {
+  background-color: $deNBI_lightgrey;
+  color: $deNBI_white;
 }
 
-.c-sidebar .nav-dropdown.open .c-sidebar-nav-link.active {
+
+.c-sidebar .c-sidebar-nav-dropdow.open .c-sidebar-nav-link.active {
   background-color: $deNBI_cyan;
   color: $deNBI_white;
 }
@@ -754,41 +702,39 @@ app-dashboard {
     color: $deNBI_white;
   }
 
-.c-sidebar .c-sidebar-nav-item.nav-dropdown:hover
-  {
-    background-color: $deNBI_lightgrey;
-    color: $deNBI_white;
-  }
-
-.c-sidebar .c-sidebar-nav-link.active {
-  background-color: $deNBI_cyan;
-  color: $deNBI_white;
-}
-
-
-.c-sidebar .c-sidebar-nav-link.active .nav-icon {
-  color: $deNBI_white;
-}
 
 .card-header.bg-info-image {
 
   color: $deNBI_white;
 }
 
-.c-sidebar .nav-link {
+.c-sidebar .c-sidebar-nav-item .c-sidebar-nav-link {
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.c-sidebar .c-sidebar-nav-item.nav-dropdown:hover {
+  background-color: $deNBI_lightgrey;
+  color: $deNBI_white;
+}
+
+
+.c-sidebar .c-sidebar-nav-link {
   color: $deNBI_blue;
 }
 
-.c-sidebar .nav-title {
+.c-sidebar .c-sidebar-nav-title {
   color: $deNBI_darkgrey;
 }
 
-.c-sidebar .nav-item .nav-dropdown-toggle {
+.c-sidebar c-sidebar-.nav-item .c-sidebar-nav-dropdown-toggle {
   color: $deNBI_blue;
   background-color: $deNBI_white;
 }
 
-.c-sidebar .nav-item .nav-dropdown-toggle:hover {
+.c-sidebar .c-sidebar-nav-item .c-sidebar-nav-dropdown-toggle:hover {
   color: $deNBI_white;
   background-color: $deNBI_lightgrey;
 }
