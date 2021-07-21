@@ -279,23 +279,100 @@ $simplevmcolour: #00ADEF;
 }
 //media-query for applications-overview buttons
 
-@media (max-width: 1350px)
-{
-  .applicationActionsButton
-  {
+@media (max-width: 1350px) {
+  .applicationActionsButton {
     display: none;
 
   }
 }
 
+.sidebar-fixed .sidebar {
+  height: calc(100vh - 10.938rem);
+  border: 1.25rem;
+  border-radius: 0.625rem;
+  top: 4.688rem;
+  margin: 0.938rem;
+  width: 13rem;
+}
 
-.navbar-brand-full
-{
-  bottom:8px;
+
+.sidebar {
+  background-color: $deNBI_white;
+  margin-left: 0.9375rem !important;
+  width: 12.5rem;
+  margin-top: 6.25rem !important;
+
+}
+
+.sidebar .nav-title {
+  color: $deNBI_darkgrey;
+
+}
+
+.sidebar .nav-link {
+  color: $deNBI_blue;
+}
+
+.sidebar .nav-link .nav-icon {
+  color: #73818f;
+}
+
+.sidebar .nav .nav-item .nav-link {
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+
+
+.header-left {
+  background-color: $deNBI_white;
+  height: 54px;
+  border-radius: 10px;
+  width: calc(100vw - (100vw - 200px));
+  position: fixed;
+  top: 15px;
+  text-align: center;
+  margin: auto;
+  margin-left: 0.9375rem !important;
+  margin-right: 10px;
+  z-index: 100;
+}
+.header-left-minimized {
+  width: calc(100vw - (100vw - 60px));
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+
+
+
+
+.header-right {
+  background-color: $deNBI_white;
+  height: 54px;
+  border-radius: 10px;
+  width: calc(100vw - 250px);
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  text-align: center;
+  margin: auto;
+  z-index: 100;
+}
+
+.header-right-maximized {
+  width: calc(100vw - 110px);
+  margin: auto;
+}
+
+.navbar-brand-full {
+  bottom: 8px;
   position: relative;
 }
 
-.instance-card{
+.instance-card {
   margin-top: 10px;
   margin-bottom:5px;
 }
@@ -355,20 +432,6 @@ $simplevmcolour: #00ADEF;
 }
 
 
-.sidebar-fixed .app-header + .app-body .sidebar{
-  height: calc(100vh - 175px);
-  border: 20px;
-  border-radius: 10px;
-  top: 75px;
-  margin: 15px;
-}
-
-.sidebar .nav .nav-item .nav-link {
-
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-}
 
 .rTable {
   display: table;
@@ -479,13 +542,7 @@ $simplevmcolour: #00ADEF;
 
 
 
-  .sidebar-fixed .app-header + .app-body .sidebar{
-    height: calc(100vh - 175px);
-    border: 20px;
-    border-radius: 10px;
-    top: 75px;
-    margin: 15px;
-  }
+
 
   .sidebar .nav .nav-item .nav-link {
 
@@ -519,15 +576,17 @@ $simplevmcolour: #00ADEF;
     position: relative;
   }
 
-  .header-fixed .app-header
-  {
-    margin: 15px;
-    border-radius: 10px;
+  .nav-group-items{
+    background-color: #FFF;
   }
 
-  main{
-    margin-top: 35px !important;
-    margin-left: 195px !important;
+  .main {
+    margin-top: 100px !important;
+    margin-left: 220px !important;
+  }
+
+  .main-maximized{
+    margin-left: 3.438rem !important;
   }
 
   .btn{
@@ -601,23 +660,12 @@ $simplevmcolour: #00ADEF;
     margin: 0;
   }
 
-  .sidebar .sidebar-minimizer {
-    background-color: $deNBI_white !important;
-    color: $deNBI_cyan !important;
-    position: relative !important;
-    border-radius:10px;
-  }
 
-  .sidebar .sidebar-minimizer:hover {
-    background-color: $deNBI_lightgrey !important;
+.nav-item{
     border-radius: 10px;
   }
 
-  .nav-item{
-    border-radius: 10px;
-  }
-
-  .sidebar-nav .nav-item:hover, .sidebar-minimized .sidebar .nav-item:hover > .nav-link
+  .sidebar-nav .nav-item:hover, .sidebar .nav-item:hover > .nav-link
   {
     background-color: $deNBI_lightgrey !important;
   }
@@ -651,6 +699,7 @@ $simplevmcolour: #00ADEF;
   // Google Font as on landing page.
   .app-body {
     color: $deNBI_darkgrey;
+    background-color:#ebedef;
     font-family: 'Raleway', sans-serif;
   }
 
@@ -708,36 +757,30 @@ $simplevmcolour: #00ADEF;
     z-index: 100;
   }
 
-  .sidebar {
-    background-color: $deNBI_white;
-  }
 
-  .sidebar .nav-link:hover
-  {
-    background-color: $deNBI_lightgrey;
-  }
-
-  .sidebar-minimized .sidebar .nav-item:hover {
-    width:100% !important;
-    overflow: visible;
-  }
-
-  /*fix for projects disappearing */
-  .sidebar .nav-dropdown.open > .nav-dropdown-items{
-    max-height: unset !important;
-  }
-
-  .sidebar .nav-dropdown.open .nav-link:hover
+.sidebar .nav-dropdown.show .nav-link:hover
   {
     background-color: $deNBI_lightgrey;
     color: $deNBI_white;
   }
 
-  .sidebar-minimized .sidebar .nav-link:hover{
-    width: 100%;
+.sidebar-toggler{
+  background-color: white;
+}
+
+.sidebar .nav-group-toggle .nav-link:hover
+  {
+    background-color: $deNBI_lightgrey;
+    color: $deNBI_white;
   }
 
-  .sidebar .nav-dropdown.open .nav-link.active {
+   .sidebar .nav-link:hover{
+    width: 100%;
+         background-color: $deNBI_lightgrey;
+
+  }
+
+  .sidebar .nav-link.active {
     background-color: $deNBI_cyan;
     color: $deNBI_white;
   }
@@ -764,43 +807,12 @@ $simplevmcolour: #00ADEF;
     color: $deNBI_white;
   }
 
-  .sidebar .nav-item.nav-dropdown:hover
-  {
-    background-color: $deNBI_lightgrey;
-    color: $deNBI_white;
-  }
-
-  .sidebar .nav-link.active {
-    background-color: $deNBI_cyan;
-    color: $deNBI_white;
-  }
-
-
-  .sidebar .nav-link.active .nav-icon {
-    color: $deNBI_white;
-  }
   .card-header.bg-info-image {
 
     color: $deNBI_white;
   }
 
-  .sidebar .nav-link {
-    color: $deNBI_blue;
-  }
 
-  .sidebar .nav-title {
-    color: $deNBI_darkgrey;
-  }
-
-  .sidebar .nav-item .nav-dropdown-toggle{
-    color: $deNBI_blue;
-    background-color: $deNBI_white;
-  }
-
-  .sidebar .nav-item .nav-dropdown-toggle:hover {
-    color: $deNBI_white;
-    background-color: $deNBI_lightgrey;
-  }
   .btn-openstack {
     @include button-variant($openstackcolour, darken($openstackcolour, 7.5%), darken($openstackcolour, 10%), lighten($openstackcolour, 5%), lighten($openstackcolour, 10%), darken($openstackcolour, 30%));
   }
@@ -897,21 +909,6 @@ $simplevmcolour: #00ADEF;
     height: 54px;
   }
 
-  .sidebar-minimized .app-footer
-  {
-    left: -35px;
-  }
-
-  .sidebar-minimized .main
-  {
-    margin-left: 45px !important;
-  }
-
-  .sidebar-minimized .w3-bar-block
-  {
-    width: calc(100vw - 90px);
-    margin:auto;
-  }
 
 
   // project-icon part >>>

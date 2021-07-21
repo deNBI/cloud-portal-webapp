@@ -42,11 +42,16 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
 	public vm_project_member: boolean = false;
 	public login_name: string = '';
 	public production: boolean = environment.production;
+	show_projects: boolean=false;
 	navbar_state: string = 'closed';
 	overview_state: string = 'closed';
 	navbar_minimized: boolean = false;
+	show_overviews: boolean= false;
 	brand_logo: string = 'static/webapp/assets/img/denbi-logo-color.svg';
 	brand_logo_minimized: string = 'static/webapp/assets/img/denbi-logo-minimized.svg';
+	simple_vm_logo: string = 'static/webapp/assets/img/simpleVM_Logo.svg';
+	openstack_logo: string= 'static/webapp/assets/img/openstack_plain_red.svg';
+
 	cluster_allowed: boolean = false;
 
 	TITLE: string = '';
@@ -139,6 +144,13 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
 
 	setSidebarStatus(): void {
 		this.navbar_minimized = !this.navbar_minimized;
+	}
+
+	toggleOverviews(): void {
+		this.show_overviews = !this.show_overviews;
+	}
+	toggleProjectsNav(): void {
+		this.show_projects = !this.show_projects;
 	}
 
 	/**
