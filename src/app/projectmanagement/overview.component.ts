@@ -409,6 +409,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 				// empty catch
 			}
 			this.subscription.unsubscribe();
+			this.subscription = new Subscription();
 			this.errorMessage = null;
 			this.isLoaded = false;
 			this.project = null;
