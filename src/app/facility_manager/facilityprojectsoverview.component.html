@@ -265,7 +265,7 @@
 
                 </select></div>
             </div>
-            <div *ngIf="selectedProjectType == 'ALL'">
+            <div *ngIf="selectedProjectType === 'ALL'">
               <div class="col">
                 <label id="id_send_to_news_allowed_label"
                        class="switch switch-label switch-outline-primary-alt">
@@ -399,7 +399,7 @@
                     }"></textarea>
               </div>
             </div>
-            <div *ngIf="selectedProjectType == 'ALL' && sendNews" class="form-group row">
+            <div *ngIf="selectedProjectType === 'ALL' && sendNews" class="form-group row">
               <label class="col-md-12 control-label"><strong>Alternative newstext (optional)</strong></label>
               <div class="col-md-12">
                             <textarea class="form-control" id="alternative_emailText"
@@ -408,7 +408,7 @@
                                       type="text"></textarea>
               </div>
             </div>
-            <div *ngIf="selectedProjectType == 'ALL' && sendNews" class="form-group row">
+            <div *ngIf="selectedProjectType === 'ALL' && sendNews" class="form-group row">
               <label class="col-md-12 control-label"><strong>Tags:</strong></label>
               <div class="form-check" id="tags_check">
                 <div *ngFor="let tag of availableNewsTags">
@@ -426,7 +426,7 @@
         <div class="modal-footer">
           <button type="button" [disabled]="f.invalid ||
 
-            (selectedProjectType == 'USER' && (selectedMember?.length == 0))"
+            (selectedProjectType === 'USER' && (selectedMember?.length == 0))"
                   class="btn btn-primary" (click)="emailModal.hide(); verifyModal.show()">Send email
           </button>
           <button type="button" class="btn btn-secondary"
@@ -454,27 +454,27 @@
       <div class="modal-body">
         <div class="alert alert-warning" role="alert" *ngIf="selectedFacility">
           Are you sure you want to send this email to
-          <span *ngIf="selectedProjectType == 'ALL'">all</span>
-          <span *ngIf="selectedProjectType == 'USER' && selectedMember"><br>
+          <span *ngIf="selectedProjectType === 'ALL'">all</span>
+          <span *ngIf="selectedProjectType === 'USER' && selectedMember"><br>
             <span *ngFor="let member of selectedMember">
               {{member['lastName']
                 .concat(', ', member['firstName'],': ' , member['email'])}}<br></span>
           </span>
-          <span *ngIf="selectedProjectType == 'SVP'">
+          <span *ngIf="selectedProjectType === 'SVP'">
             the Simple Vm members of the {{selectedFacility['Facility']}}?
           </span>
-          <span *ngIf="selectedProjectType == 'OVP'">
+          <span *ngIf="selectedProjectType === 'OVP'">
             the OpenStack Project members of the{{selectedFacility['Facility']}}?
           </span>
-          <span *ngIf="selectedProjectType != 'ALL' && selectedProjectType != 'SVP'
-             && selectedProjectType != 'OVP' && selectedProjectType != 'USER'">
+          <span *ngIf="selectedProjectType !== 'ALL' && selectedProjectType !== 'SVP'
+             && selectedProjectType !== 'OVP' && selectedProjectType !== 'USER'">
             the members of the {{getProjectNameBySelectedProjectTypeAsId()}} project?
           </span>
         </div>
 
       </div>
       <div class="modal-footer">
-        <button class="btn  btn-success col-md-4" *ngIf="selectedProjectType != 'USER'"
+        <button class="btn  btn-success col-md-4" *ngIf="selectedProjectType !== 'USER'"
                 (click)="sendMailToFacility(selectedFacility['FacilityId'], emailSubject, emailText, emailReply, sendNews, alternative_emailText);
                 verifyModal.hide();
                 resetEmailModal();
