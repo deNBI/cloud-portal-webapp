@@ -61,6 +61,7 @@ export class Application {
 	flavors: Flavor[] = [];
 	project_application_workshop: boolean;
 	credits_allowed: boolean = false;
+	credits_loop_started: boolean = false;
 	totalModificationRequestCredits: number = 0;
 	totalCreditsExtensionCredits: number = 0;
 	totalLifetimeExtensionCredits: number = 0;
@@ -193,6 +194,10 @@ export class Application {
 		} else {
 			return this.project_application_initial_credits;
 		}
+	}
+
+	public setCreditsLoopStarted(): void {
+		this.credits_loop_started = true;
 	}
 
 }

@@ -114,7 +114,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	public showLink: boolean = true;
 	private updateCreditsUsedIntervals: ReturnType<typeof setTimeout>;
 	private updateCreditsHistoryIntervals: ReturnType<typeof setTimeout>;
-	credits_allowed: boolean = false;
 	creditsChart: any;
 	ExtensionRequestType: typeof ExtensionRequestType = ExtensionRequestType;
 	Application_States: typeof Application_States = Application_States;
@@ -239,7 +238,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	}
 
 	fetchCreditHistoryOfProject(): void {
-		if (this.project != null) {
+		if (this.project != null && this.project_application.credits_allowed) {
 			this.creditsService.getCreditsUsageHistoryOfProject(Number(this.project.Id.toString())).toPromise()
 				.then((response: {}): void => {
 					if (response['data_points'] !== undefined) {
@@ -277,8 +276,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	}
 
 	startUpdateCreditUsageLoop(): void {
-
-		if (!this.credits_allowed || !this.project_application || !this.project_application.project_application_perun_id) {
+		if (!this.project_application.credits_allowed || !this.project_application || !this.project_application.project_application_perun_id) {
 			return;
 		}
 		this.getCurrentCreditsOfProject();
@@ -297,7 +295,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	}
 
 	getCurrentCreditsOfProject(): void {
-		if (this.project_application && this.project_application.project_application_perun_id) {
+		if (this.project_application && this.project_application.project_application_perun_id && this.project_application.credits_allowed) {
 			this.subscription.add(this.creditsService.getCurrentCreditsOfProject(
 				this.project_application.project_application_perun_id.toString(),
 			).subscribe(
@@ -311,7 +309,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 				},
 			));
 		}
-
 	}
 
 	approveMemberApplication(project: number, application: number, membername: string): void {
@@ -352,7 +349,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 					}
 
 					this.project_application = aj;
-					this.credits_allowed = aj.credits_allowed;
 
 					if (this.project_application) {
 						this.applicationsService.getApplicationPerunId(this.application_id).subscribe((id: any): void => {
@@ -361,7 +357,10 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 								this.getProject();
 							}
 						});
-						this.startUpdateCreditUsageLoop();
+						if (this.project_application.credits_allowed && !this.project_application.credits_loop_started) {
+							this.project_application.setCreditsLoopStarted();
+							this.startUpdateCreditUsageLoop();
+						}
 
 					}
 
@@ -399,6 +398,17 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
 	ngOnInit(): void {
 		this.activatedRoute.params.subscribe((paramsId: any): void => {
+			try {
+				if (this.updateCreditsUsedIntervals) {
+					clearInterval(this.updateCreditsUsedIntervals);
+				}
+				if (this.updateCreditsHistoryIntervals) {
+					clearInterval(this.updateCreditsHistoryIntervals);
+				}
+			} catch (someError) {
+				// empty catch
+			}
+			this.subscription.unsubscribe();
 			this.errorMessage = null;
 			this.isLoaded = false;
 			this.project = null;
@@ -472,6 +482,9 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 		try {
 			if (this.updateCreditsUsedIntervals) {
 				clearInterval(this.updateCreditsUsedIntervals);
+			}
+			if (this.updateCreditsHistoryIntervals) {
+				clearInterval(this.updateCreditsHistoryIntervals);
 			}
 		} catch (someError) {
 			// empty catch
@@ -716,7 +729,10 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 					});
 
 					this.isLoaded = true;
-					this.startUpdateCreditUsageLoop();
+					if (this.project_application && this.project_application.credits_allowed && !this.project_application.credits_loop_started) {
+						this.project_application.setCreditsLoopStarted();
+						this.startUpdateCreditUsageLoop();
+					}
 				});
 			}
 		});
