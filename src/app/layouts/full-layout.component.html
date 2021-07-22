@@ -1,5 +1,5 @@
 
-<app-title-headbar [navbar_minimized]="navbar_minimized" [page_title]="TITLE"></app-title-headbar>
+<app-title-headbar [navbar_minimized]="sidebar_minimized" [page_title]="TITLE"></app-title-headbar>
 
 
 <!--div class="app-body">
@@ -554,7 +554,9 @@
 
   -->
 
-<div class="sidebar sidebar-fixed" [ngClass]="{'sidebar-narrow-unfoldable':navbar_minimized}">
+
+<div class="sidebar sidebar-fixed" (mouseleave)="mouseLeaveSidebar()" (mouseenter)="mouseEnterSidebar()"
+     [ngClass]="{'sidebar-narrow-unfoldable':navbar_minimized}">
     <ng-scrollbar class="ng-scrollbar" visibility="hover">
 
         <ul class="sidebar-nav">
@@ -613,6 +615,86 @@
 
 
             </li>
+            <ng-container class="nav-group" *ngIf="project_enumeration?.length <= 3">
+
+                <li class="nav-item" *ngFor="let application of project_enumeration"
+                    style="width: 100% !important;"
+                >
+
+                    <a class="nav-link" routerLinkActive="active"
+                       [id]="application?.project_name"
+                       [routerLink]="['/project-management/' + application?.application_id]">
+
+                        <img class="nav-icon" *ngIf="!application?.is_open_stack" data-toggle="tooltip"
+                             title="This is a Simple VM project" src="{{simple_vm_logo}}">
+                        <img class="nav-icon" *ngIf="application?.is_open_stack" data-toggle="tooltip"
+                             title="This is an OpenStack project" src="{{openstack_logo}}">
+                        <span style="display: inline-block;width: 65%;overflow: hidden;text-overflow: ellipsis;"
+                              data-toggle="tooltip"
+                              title="{{application?.project_name}}">
+              {{application?.project_name}}
+                      </span>
+
+
+
+                    </a>
+
+                            <div *ngIf="!navbar_minimized" class="row justify-content-center"
+                                 id="status_row_{{application?.application_id}}"
+                                 style="margin: 2px;">
+              <div class="badge badge-success status-badge col-3" data-toggle="tooltip"
+                    data-placement="right" title="This project was initially approved within the last 2 weeks."
+                    *ngIf="(application | hasstatusinlist:Application_States.APPROVED_LAST_2_WEEKS)">
+              <i class="fas fa-plus-circle"></i>
+            </div>
+                                <div class="badge badge-warning status-badge col-3" data-toggle="tooltip"
+                                      data-placement="right" title="The project lifetime expires soon."
+                                      *ngIf="(application | hasstatusinlist:Application_States.EXPIRES_SOON) && !(application | hasstatusinlist:Application_States.EXPIRED)">
+              <i class="fas fa-exclamation-circle"></i>
+            </div>
+                                <div class="badge badge-danger status-badge col-3" data-toggle="tooltip"
+                                      data-placement="right" title="The lifetime of this project is expired."
+                                      *ngIf="(application | hasstatusinlist:Application_States.EXPIRED)">
+              <i class="fas fa-ban"></i>
+            </div>
+                                <div class="badge badge-danger status-badge col-3" data-toggle="tooltip"
+                                      data-placement="right" title="The termination of the project was requested."
+                                      *ngIf="(application | hasstatusinlist:Application_States.TERMINATION_REQUESTED)">
+              <i class="fas fa-trash"></i>
+            </div>
+                                <div class="badge badge-secondary status-badge col-3" data-toggle="tooltip"
+                                      data-placement="right"
+                                      title="An extension request was submitted for this project."
+                                      *ngIf="(application | hasstatusinlist:Application_States.LIFETIME_EXTENSION_REQUESTED)
+                   || (application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION_EXTENSION)">
+              <i class="fas fa-edit"></i>
+            </div>
+                                <div class="badge badge-secondary status-badge col-3" data-toggle="tooltip"
+                                      data-placement="right"
+                                      title="A modification request was submitted for this project."
+                                      *ngIf="(application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)
+                    || (application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION)">
+              <i class="fas fa-edit"></i>
+            </div>
+                                <div class="badge badge-secondary status-badge col-3" data-toggle="tooltip"
+                                      data-placement="right"
+                                      title="The project application was submitted but not approved yet."
+                                      *ngIf="(application | hasstatusinlist:Application_States.SUBMITTED)">
+              <i class="fas fa-edit"></i>
+            </div>
+                                <div class="badge badge-secondary status-badge col-3" data-toggle="tooltip"
+                                      data-placement="right"
+                                      title="A request for additional credits was submitted for this project."
+                                      *ngIf="(application | hasstatusinlist:Application_States.CREDITS_EXTENSION_REQUESTED)
+                    || (application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION_CREDITS)">
+              <i class="fas fa-coins"></i>
+            </div>
+
+                            </div>
+
+
+                </li>
+            </ng-container>
             <li class="nav-group" [ngClass]="{'show':show_projects}" *ngIf="project_enumeration?.length > 3">
                 <a class="nav-link nav-group-toggle" (click)="toggleProjectsNav()"
                 >
@@ -637,60 +719,61 @@
                       </span>
 
 
-                            <div *ngIf="!navbar_minimized" class="row justify-content-center"
+
+                        </a>
+
+                         <div *ngIf="!navbar_minimized" class="row justify-content-center"
                                  id="status_row_{{application?.application_id}}"
                                  style="margin: 2px;">
-              <span class="badge badge-success status-badge" data-toggle="tooltip"
+              <div class="badge badge-success status-badge col-3" data-toggle="tooltip"
                     data-placement="right" title="This project was initially approved within the last 2 weeks."
                     *ngIf="(application | hasstatusinlist:Application_States.APPROVED_LAST_2_WEEKS)">
               <i class="fas fa-plus-circle"></i>
-            </span>
-                                <span class="badge badge-warning status-badge" data-toggle="tooltip"
+            </div>
+                                <div class="badge badge-warning status-badge col-3" data-toggle="tooltip"
                                       data-placement="right" title="The project lifetime expires soon."
                                       *ngIf="(application | hasstatusinlist:Application_States.EXPIRES_SOON) && !(application | hasstatusinlist:Application_States.EXPIRED)">
               <i class="fas fa-exclamation-circle"></i>
-            </span>
-                                <span class="badge badge-danger status-badge" data-toggle="tooltip"
+            </div>
+                                <div class="badge badge-danger status-badge col-3" data-toggle="tooltip"
                                       data-placement="right" title="The lifetime of this project is expired."
                                       *ngIf="(application | hasstatusinlist:Application_States.EXPIRED)">
               <i class="fas fa-ban"></i>
-            </span>
-                                <span class="badge badge-danger status-badge" data-toggle="tooltip"
+            </div>
+                                <div class="badge badge-danger status-badge col-3" data-toggle="tooltip"
                                       data-placement="right" title="The termination of the project was requested."
                                       *ngIf="(application | hasstatusinlist:Application_States.TERMINATION_REQUESTED)">
               <i class="fas fa-trash"></i>
-            </span>
-                                <span class="badge badge-secondary status-badge" data-toggle="tooltip"
+            </div>
+                                <div class="badge badge-secondary status-badge col-3" data-toggle="tooltip"
                                       data-placement="right"
                                       title="An extension request was submitted for this project."
                                       *ngIf="(application | hasstatusinlist:Application_States.LIFETIME_EXTENSION_REQUESTED)
                    || (application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION_EXTENSION)">
               <i class="fas fa-edit"></i>
-            </span>
-                                <span class="badge badge-secondary status-badge" data-toggle="tooltip"
+            </div>
+                                <div class="badge badge-secondary status-badge col-3" data-toggle="tooltip"
                                       data-placement="right"
                                       title="A modification request was submitted for this project."
                                       *ngIf="(application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)
                     || (application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION)">
               <i class="fas fa-edit"></i>
-            </span>
-                                <span class="badge badge-secondary status-badge" data-toggle="tooltip"
+            </div>
+                                <div class="badge badge-secondary status-badge col-3" data-toggle="tooltip"
                                       data-placement="right"
                                       title="The project application was submitted but not approved yet."
                                       *ngIf="(application | hasstatusinlist:Application_States.SUBMITTED)">
               <i class="fas fa-edit"></i>
-            </span>
-                                <span class="badge badge-secondary status-badge" data-toggle="tooltip"
+            </div>
+                                <div class="badge badge-secondary status-badge col-3" data-toggle="tooltip"
                                       data-placement="right"
                                       title="A request for additional credits was submitted for this project."
                                       *ngIf="(application | hasstatusinlist:Application_States.CREDITS_EXTENSION_REQUESTED)
                     || (application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION_CREDITS)">
               <i class="fas fa-coins"></i>
-            </span>
+            </div>
 
                             </div>
-                        </a>
-
 
                     </li>
                 </ul>
@@ -814,11 +897,24 @@
 
         </ul>
     </ng-scrollbar>
+
     <button class="sidebar-toggler" (click)="setSidebarStatus()" type="button"></button>
+    <app-footer *ngIf="!sidebar_minimized">
+
+        <a href="https://www.denbi.de">de.NBI&nbsp;</a> &copy; {{ year }}
+
+    </app-footer>
+
+    <app-footer class="app-footer-minimized" *ngIf="sidebar_minimized">
+
+        <a href="https://www.denbi.de" data-toogle="tooltip" data-placement="right" [title]="'&copy; de.NBI ' + year "
+           style="font-size: 18px !important;">&copy;</a>
+
+    </app-footer>
 </div>
 
 
-<main class="bg-light main" [ngClass]="{'main-maximized':navbar_minimized}">
+<main class="bg-light main" [ngClass]="{'main-maximized':sidebar_minimized}">
 
     <!-- Breadcrumb-->
 

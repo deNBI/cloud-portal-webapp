@@ -297,11 +297,22 @@ $simplevmcolour: #00ADEF;
 
 
 .sidebar {
+  height: calc(100vh - 10.938rem) !important;
+  padding-bottom: 0px !important;
+
+  color: $deNBI_darkgrey;
   background-color: $deNBI_white;
+  border-radius: 0.625rem;
+
   margin-left: 0.9375rem !important;
   width: 12.5rem;
   margin-top: 6.25rem !important;
 
+}
+
+.sidebar-narrow-unfoldable:not(:hover) .sidebar-toggler, .sidebar-narrow .sidebar-toggler {
+  position: unset !important;
+  bottom: 0;
 }
 
 .sidebar .nav-title {
@@ -324,11 +335,14 @@ $simplevmcolour: #00ADEF;
   overflow: hidden;
 }
 
-
+.header{
+  min-height: 3rem;
+  padding:0rem;
+}
 
 .header-left {
   background-color: $deNBI_white;
-  height: 54px;
+  height: 3rem;
   border-radius: 10px;
   width: calc(100vw - (100vw - 200px));
   position: fixed;
@@ -339,6 +353,34 @@ $simplevmcolour: #00ADEF;
   margin-right: 10px;
   z-index: 100;
 }
+
+.app-footer {
+  background-color: $deNBI_white;
+  width: calc(100vw - (100vw - 200px));
+  border-radius: 10px;
+  font-family: 'Raleway', sans-serif;
+  align-items: center;
+  padding: 0 1rem;
+  display: flex;
+  bottom: 10px;
+  position: fixed;
+  height: 54px;
+}
+
+.app-footer-minimized {
+  background-color: $deNBI_white;
+  width: calc(100vw - (100vw - 60px));
+  border-radius: 10px;
+  font-family: 'Raleway', sans-serif;
+  align-items: center;
+  padding: 0 1rem;
+  display: flex;
+  bottom: 10px;
+  position: fixed;
+  height: 54px;
+}
+
+
 .header-left-minimized {
   width: calc(100vw - (100vw - 60px));
   margin-left: 10px;
@@ -348,12 +390,12 @@ $simplevmcolour: #00ADEF;
 
 
 
-
 .header-right {
   background-color: $deNBI_white;
-  height: 54px;
+  height: 3rem;
   border-radius: 10px;
   width: calc(100vw - 250px);
+
   position: fixed;
   top: 15px;
   right: 15px;
@@ -699,6 +741,7 @@ $simplevmcolour: #00ADEF;
   // Google Font as on landing page.
   .app-body {
     color: $deNBI_darkgrey;
+    font-size: 0.875rem;
     background-color:#ebedef;
     font-family: 'Raleway', sans-serif;
   }
@@ -897,17 +940,6 @@ $simplevmcolour: #00ADEF;
     }
   }
 
-  .app-footer
-  {
-    background-color: #FFFFFF;
-    width: 200px;
-    left: -185px;
-    border-radius: 10px;
-    font-family: 'Raleway', sans-serif;
-    bottom: 10px;
-    position: fixed;
-    height: 54px;
-  }
 
 
 
