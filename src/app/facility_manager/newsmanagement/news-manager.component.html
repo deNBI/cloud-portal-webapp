@@ -30,14 +30,14 @@
                 </div>
                 <div *ngFor="let news of facilityNews">
                   <div class="card" style="cursor: pointer;" (click)="setCurrentNews(news)" [ngStyle]="{
-                    'border-color': news.id == selectedNews.id ? '#005aa9' : '#c8ced3'}">
+                    'border-color': news.id == selectedFacilityNews.id ? '#005aa9' : '#c8ced3'}">
                     <div class="card-header text-truncate"
                          data-toggle="tooltip" id="{{news.id}}_header" data-placement="auto"
                          style="color: white !important;"
-                         [ngStyle]="{'background-color': news.id == selectedNews.id ? '#005aa9' : '#00adef'}">
+                         [ngStyle]="{'background-color': news.id == selectedFacilityNews.id ? '#005aa9' : '#00adef'}">
                       <strong>{{news.title}}</strong>
                       <span class="badge badge-light" style="margin-left:5px;"
-                            [ngStyle]="{'color': news.id == selectedNews.id ? '#005aa9' : '#00adef'}"
+                            [ngStyle]="{'color': news.id == selectedFacilityNews.id ? '#005aa9' : '#00adef'}"
                             *ngIf="newsSetAsMOTD.includes(news.id.toString())"
                             title="{{'Set as MOTD in: ' + facilitiesAsString(news)}}">
                         <i style="margin-right: 2px;" class="fas fa-terminal">MOTD</i></span>
@@ -170,24 +170,24 @@ we are happy to inform..."
             </div>
             <div class="card-footer">
               <button class="btn btn-primary" style="margin: 5px"
-                      *ngIf="selectedNews.id" (click)="setNews()">
+                      *ngIf="selectedFacilityNews.id" (click)="setNews()">
                 New entry
               </button>
               <button class="btn btn-warning" style="margin: 5px"
-                               *ngIf="!selectedNews.id" (click)="setNews()">Clear fields
+                               *ngIf="!selectedFacilityNews.id" (click)="setNews()">Clear fields
             </button>
               <button class="btn btn-success"
                       style="margin: 5px"
                       (click)="addModal.show();"
                       [disabled]="selectedNewsForm.invalid || facilitiesToPost.length == 0"
-                      *ngIf="selectedNews.id == null">Create & Upload News
+                      *ngIf="selectedFacilityNews.id == null">Create & Upload News
               </button>
               <button class="btn btn-secondary" style="margin: 5px"
                       [disabled]="selectedNewsForm.invalid || facilitiesToPost.length == 0"
-                      (click)="updateModal.show();" *ngIf="selectedNews?.id">Update News
+                      (click)="updateModal.show();" *ngIf="selectedFacilityNews?.id">Update News
               </button>
               <button class="btn btn-danger" style="margin: 5px"
-                      (click)="deleteModal.show();" *ngIf="selectedNews?.id">Delete News
+                      (click)="deleteModal.show();" *ngIf="selectedFacilityNews?.id">Delete News
               </button>
             </div>
           </div>
@@ -203,7 +203,7 @@ we are happy to inform..."
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title"> Delete News: {{this.selectedNews.title}} ?</h4>
+          <h4 class="modal-title"> Delete News: {{this.selectedFacilityNews.title}} ?</h4>
           <button type="button" class="close" style="cursor:pointer"
                   (click)="deleteModal.hide()"
                   aria-label="Close">
@@ -212,13 +212,17 @@ we are happy to inform..."
         </div>
         <div class="modal-body">
           <div class="alert alert-info" role="alert">
-            <p>Are you sure, that you want to delete <strong>{{this.selectedNews.title}}</strong> ?</p>
+            <p>Are you sure, that you want to delete <strong>{{this.selectedFacilityNews.title}}</strong> ?</p>
             <p><strong>Please note: this may remove the current Message of the day for multiple facilities!</strong></p>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-danger"
+          <!--<button type="button" class="btn btn-danger"
                   (click)="this.deleteNewsFromWordpress(); deleteModal.hide()"
+                  id="approve_delete_modal"><i class="fas fa-trash"></i> Delete
+          </button> -->
+          <button type="button" class="btn btn-danger"
+                  (click)="this.deleteNewsFromAPI(); deleteModal.hide()"
                   id="approve_delete_modal"><i class="fas fa-trash"></i> Delete
           </button>
           <button type="button" class="btn btn-secondary"

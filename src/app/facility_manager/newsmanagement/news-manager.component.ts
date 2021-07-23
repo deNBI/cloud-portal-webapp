@@ -117,7 +117,7 @@ export class NewsManagerComponent implements OnInit {
 		news.title = this.selectedNewsForm.controls['title'].value;
 		news.text = this.selectedNewsForm.controls['text'].value;
 		news.motd = this.selectedNewsForm.controls['motd'].value;
-		news.facilities = this.facilitiesToPost;
+		news.facility = this.facilitiesToPost[0];
 
 		this.newsService.addNewsToAPI(news).subscribe((result: any): void => {
 			if (result) {
@@ -271,17 +271,12 @@ export class NewsManagerComponent implements OnInit {
 
 	createFacilityNews(facilityNews: Object): FacilityNews {
 		const news: FacilityNews = new FacilityNews();
-		news.id = facilityNews['pk'];
+		news.id = facilityNews['id'];
 		news.title = facilityNews['title'];
-		news.text = facilityNews['message'];
+		news.text = facilityNews['text'];
 		news.motd = facilityNews['motd'];
-		const facilities: any = facilityNews['facilities'];
-		const fac_temp: number[] = [];
-		facilities.forEach((facility: any): void => {
-			fac_temp.push(facility['compute_center_facility_id']);
-		});
-		news.facilities = fac_temp;
-		news.date = facilityNews['date_created'];
+		news.facility = facilityNews['facility'];
+		news.date = facilityNews['posted_at'];
 
 		return news;
 	}
@@ -330,6 +325,7 @@ export class NewsManagerComponent implements OnInit {
 		if (news) {
 			this.selectedFacilityNews = news;
 		}
+		this.setFormGroup();
 	}
 	/**
 	 * Sets the news which got selected or creates a new news object. Also empties all relevant lists.
@@ -432,16 +428,16 @@ export class NewsManagerComponent implements OnInit {
 	setFormGroup(): void {
 		this.selectedNewsForm = new FormGroup({
 			title: new FormControl(
-				{ value: this.selectedNews.title, disabled: false }, Validators.required,
+				{ value: this.selectedFacilityNews.title, disabled: false }, Validators.required,
 			),
 			text: new FormControl(
-				{ value: this.selectedNews.text, disabled: false }, Validators.required,
+				{ value: this.selectedFacilityNews.text, disabled: false }, Validators.required,
 			),
 			motd: new FormControl(
-				{ value: this.selectedNews.excerpt, disabled: false },
+				{ value: this.selectedFacilityNews.motd, disabled: false },
 			),
 			tag: new FormControl(
-				{ value: this.selectedNews.tags, disabled: false },
+				{ value: this.selectedFacilityNews.tags, disabled: false },
 			),
 		});
 		this.selectedNewsForm.controls['motd'].valueChanges.subscribe((value: any): void => {
@@ -489,6 +485,14 @@ export class NewsManagerComponent implements OnInit {
 			this.returnState = 0;
 			this.infoModal.show();
 			this.getWordPressNews();
+		});
+	}
+
+	deleteNewsFromAPI(): void {
+		this.newsService.deleteNewsFromAPI(this.selectedFacilityNews.id).subscribe((): void => {
+			this.returnState = 0;
+			this.infoModal.show();
+			this.getNewsFromAPI();
 		});
 	}
 }

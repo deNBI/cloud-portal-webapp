@@ -5,7 +5,7 @@ export class FacilityNews {
 	private _text: string;
 	private _motd: string;
 	private _tags: string[];
-	private _facilities: number[];
+	private _facility: number;
 
 	constructor(news?: FacilityNews) {
 		if (news) {
@@ -15,7 +15,7 @@ export class FacilityNews {
 			this._text = news.text;
 			this._motd = news.motd;
 			this._tags = news.tags;
-			this._facilities = news.facilities;
+			this._facility = news.facility;
 		}
 	}
 
@@ -67,11 +67,11 @@ export class FacilityNews {
 		this._tags = value;
 	}
 
-	get facilities(): number[] {
-		return this._facilities;
+	get facility(): number {
+		return this._facility;
 	}
 
-	set facilities(value: number[]) {
-		this._facilities = value;
+	set facility(value: number) {
+		this._facility = value;
 	}
 }

@@ -64,6 +64,16 @@ export class NewsService {
 		const params: HttpParams = new HttpParams()
 			.set('news_id', news_id);
 
+		return this.http.delete(`${ApiSettings.getApiBaseURL()}facility-news-management/`, {
+			withCredentials: true,
+			params,
+		});
+	}
+
+	deleteNewsFromAPI(news_id: string): Observable<any> {
+		const params: HttpParams = new HttpParams()
+			.set('news_id', news_id);
+
 		return this.http.delete(`${ApiSettings.getApiBaseURL()}wp-news-management/`, {
 			withCredentials: true,
 			params,
