@@ -62,7 +62,7 @@
                          (change)="changeFilterStatus(project_states[project_states.ACTIVE]);applyFilter();"
                          checked/>
                   <span style="margin-left: 5px; bottom: 5px; position: relative;"
-                        class="badge badge-success">{{project_states[project_states.ACTIVE]}}  </span>
+                        class="badge bg-success">{{project_states[project_states.ACTIVE]}}  </span>
 
                 </label>
               </div>
@@ -76,7 +76,7 @@
                          (change)="changeFilterStatus(lifetime_states[lifetime_states.EXPIRES_SOON]);applyFilter();"
                          checked/>
                   <span style="margin-left: 5px; bottom: 5px; position: relative;"
-                        class="badge badge-warning">{{lifetime_states[lifetime_states.EXPIRES_SOON]}}</span>
+                        class="badge bg-warning">{{lifetime_states[lifetime_states.EXPIRES_SOON]}}</span>
                 </label>
               </div>
             </div>
@@ -88,7 +88,7 @@
                          (change)="changeFilterStatus(lifetime_states[lifetime_states.EXPIRED]);applyFilter();"
                   />
                   <span style="margin-left: 5px; bottom: 5px; position: relative;"
-                        class="badge badge-danger">{{lifetime_states[lifetime_states.EXPIRED]}}</span>
+                        class="badge bg-danger">{{lifetime_states[lifetime_states.EXPIRED]}}</span>
                 </label>
               </div>
             </div>
@@ -139,16 +139,16 @@
                 </td>
                 <td>  <span *ngIf="project | hasstatusinlist:project_states.ACTIVE"
                             style="margin-left: 5px"
-                            class="badge badge-success">{{project_states[project_states.ACTIVE]}} </span>
+                            class="badge bg-success">{{project_states[project_states.ACTIVE]}} </span>
                   <span *ngIf="project?.LifetimeReached | hasStatus:lifetime_states.EXPIRED"
                         style="margin-left: 5px"
-                        class="badge badge-danger">{{lifetime_states[lifetime_states.EXPIRED]}} </span>
+                        class="badge bg-danger">{{lifetime_states[lifetime_states.EXPIRED]}} </span>
                   <span *ngIf="project?.LifetimeReached |hasStatus:lifetime_states.EXPIRES_SOON"
                         style="margin-left: 5px"
-                        class="badge badge-warning">{{lifetime_states[lifetime_states.EXPIRES_SOON]}}</span>
+                        class="badge bg-warning">{{lifetime_states[lifetime_states.EXPIRES_SOON]}}</span>
                   <span *ngIf="project | hasstatusinlist: application_states.WAIT_FOR_TERMINATION_FM "
                         style="margin-left: 5px"
-                        class="badge badge-warning">{{application_states[application_states.WAIT_FOR_TERMINATION_FM]}}</span>
+                        class="badge bg-warning">{{application_states[application_states.WAIT_FOR_TERMINATION_FM]}}</span>
                 <td class="col-md-2">
                   <button class="btn btn-secondary"
                           (click)="getProjectLifetime(project);selectedProject=project;infoModal.show();">

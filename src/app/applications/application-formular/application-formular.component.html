@@ -460,7 +460,7 @@
 
                   *ngFor="let term of application?.project_application_edam_terms"
                   style="margin-right: 5px; "
-                  class="badge badge-info"> {{term.term}}
+                  class="badge bg-info"> {{term.term}}
                   <span class="badge" style="cursor: pointer;"
                         (click)="application.removeEdamTerm(term)">&#10060;</span>
  </span>
@@ -770,7 +770,7 @@
 
                         *ngFor="let term of application?.project_application_edam_terms"
                         style="margin-right: 5px; "
-                        class="badge badge-info"> {{term.term}}
+                        class="badge bg-info"> {{term.term}}
 
  </span>
 
@@ -1227,7 +1227,7 @@
             <tr><td>Lifetime: {{application?.project_application_lifetime}} <span *ngIf="application?.project_application_lifetime === 1">month</span><span *ngIf="application?.project_application_lifetime > 1">months</span></td></tr>
             <tr><td>Institute: {{application?.project_application_institute}}</td></tr>
             <tr><td>Workgroup: {{application?.project_application_workgroup}}</td></tr>
-            <tr><td>Research Topics: <span *ngFor="let topic of application?.project_application_edam_terms" class="badge badge-info" style="margin: 2px;">{{topic.term}}</span></td></tr>
+            <tr><td>Research Topics: <span *ngFor="let topic of application?.project_application_edam_terms" class="badge bg-info" style="margin: 2px;">{{topic.term}}</span></td></tr>
             <tr><td>Workshop planed: <span *ngIf="application?.project_application_workshop">Yes</span><span *ngIf="!application?.project_application_workshop">No</span></td></tr>
             <ng-container *ngIf="application?.project_application_openstack_project">
               <tr><td>Service: <span *ngIf="application?.project_application_cloud_service && !application?.project_application_cloud_service_develop">Existing: {{application?.project_application_cloud_service_user_number}} unique users per month</span>
@@ -1242,23 +1242,23 @@
             <tr><td>Dissemination Allowed: <span *ngIf="application?.dissemination?.someAllowed()">Yes</span><span *ngIf="!application?.dissemination.someAllowed()">No</span></td></tr>
             <tr *ngIf="application?.dissemination.someAllowed()">
               <td> - for:
-                <span class="badge badge-info" style="margin: 2px;" *ngFor="let information of application?.dissemination.allowed_informations">{{information}}</span></td></tr>
+                <span class="badge bg-info" style="margin: 2px;" *ngFor="let information of application?.dissemination.allowed_informations">{{information}}</span></td></tr>
             <tr *ngIf="application?.dissemination.someAllowed()">
               <td> - on:
-                <span class="badge badge-info" style="margin: 2px;" *ngFor="let platform of application?.dissemination.allowed_platforms">{{platform}}</span></td>
+                <span class="badge bg-info" style="margin: 2px;" *ngFor="let platform of application?.dissemination.allowed_platforms">{{platform}}</span></td>
             </tr>
             <tr *ngIf="application?.project_application_comment"><td>Comment: {{application?.project_application_comment}}</td></tr>
             <tr><td *ngIf="application?.project_application_sensitive_data">Sensitive Data: Yes</td><td *ngIf="!application?.project_application_sensitive_data">Sensitive Data: No</td></tr>
             <ng-container *ngIf="application?.project_application_horizon2020 || application?.project_application_elixir_project
                 || application?.project_application_bmbf_project || application?.project_application_nfdi">
             <tr><td>Project Affiliations:
-              <span class="badge badge-info" style="margin: 2px;" *ngIf="application?.project_application_horizon2020">
+              <span class="badge bg-info" style="margin: 2px;" *ngIf="application?.project_application_horizon2020">
                 Horizon 2020: {{application?.project_application_horizon2020}}</span>
-              <span class="badge badge-info" style="margin: 2px;" *ngIf="application?.project_application_elixir_project">
+              <span class="badge bg-info" style="margin: 2px;" *ngIf="application?.project_application_elixir_project">
                 Elixir Project: {{application?.project_application_elixir_project}}</span>
-              <span class="badge badge-info" style="margin: 2px;" *ngIf="application?.project_application_bmbf_project">
+              <span class="badge bg-info" style="margin: 2px;" *ngIf="application?.project_application_bmbf_project">
                 BMBF Project: {{application?.project_application_bmbf_project}}</span>
-              <span class="badge badge-info" style="margin: 2px;" *ngIf="application?.project_application_nfdi">
+              <span class="badge bg-info" style="margin: 2px;" *ngIf="application?.project_application_nfdi">
                 NFDI Project: {{application?.project_application_nfdi}}</span>
             </td></tr>
             </ng-container>

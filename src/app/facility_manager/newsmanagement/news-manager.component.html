@@ -36,7 +36,7 @@
                          style="color: white !important;"
                          [ngStyle]="{'background-color': news.id == selectedNews.id ? '#005aa9' : '#00adef'}">
                       <strong>{{news.title}}</strong>
-                      <span class="badge badge-light" style="margin-left:5px;"
+                      <span class="badge bg-light" style="margin-left:5px;"
                             [ngStyle]="{'color': news.id == selectedNews.id ? '#005aa9' : '#00adef'}"
                             *ngIf="newsSetAsMOTD.includes(news.id.toString())"
                             title="{{'Set as MOTD in: ' + facilitiesAsString(news)}}">

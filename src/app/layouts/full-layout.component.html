@@ -125,45 +125,45 @@
               </div>
 
               <div class="row justify-content-center" id="status_row_{{application?.application_id}}" style="margin: 2px;">
-              <span class="badge badge-success status-badge" data-toggle="tooltip"
+              <span class="badge bg-success status-badge" data-toggle="tooltip"
                     data-placement="right" title="This project was initially approved within the last 2 weeks."
                     *ngIf="(application | hasstatusinlist:Application_States.APPROVED_LAST_2_WEEKS)">
               <i class="fas fa-plus-circle"></i>
             </span>
-                <span class="badge badge-warning status-badge" data-toggle="tooltip"
+                <span class="badge bg-warning status-badge" data-toggle="tooltip"
                       data-placement="right" title="The project lifetime expires soon."
                       *ngIf="(application | hasstatusinlist:Application_States.EXPIRES_SOON) && !(application | hasstatusinlist:Application_States.EXPIRED)">
               <i class="fas fa-exclamation-circle"></i>
             </span>
-                <span class="badge badge-danger status-badge" data-toggle="tooltip"
+                <span class="badge bg-danger status-badge" data-toggle="tooltip"
                       data-placement="right" title="The lifetime of this project is expired."
                       *ngIf="(application | hasstatusinlist:Application_States.EXPIRED)">
               <i class="fas fa-ban"></i>
             </span>
-                <span class="badge badge-danger status-badge" data-toggle="tooltip"
+                <span class="badge bg-danger status-badge" data-toggle="tooltip"
                       data-placement="right" title="The termination of the project was requested."
                       *ngIf="(application | hasstatusinlist:Application_States.TERMINATION_REQUESTED)
                         ||(application | hasstatusinlist:Application_States.WAIT_FOR_TERMINATION_FM)">
               <i class="fas fa-trash"></i>
             </span>
-                <span class="badge badge-secondary status-badge" data-toggle="tooltip" data-placement="right"
+                <span class="badge bg-secondary status-badge" data-toggle="tooltip" data-placement="right"
                       title="An extension request was submitted for this project."
                       *ngIf="(application | hasstatusinlist:Application_States.LIFETIME_EXTENSION_REQUESTED)
                    || (application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION_EXTENSION)">
               <i class="fas fa-edit"></i>
             </span>
-                <span class="badge badge-secondary status-badge" data-toggle="tooltip" data-placement="right"
+                <span class="badge bg-secondary status-badge" data-toggle="tooltip" data-placement="right"
                       title="A modification request was submitted for this project."
                       *ngIf="(application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)
                     || (application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION)">
               <i class="fas fa-edit"></i>
             </span>
-                <span class="badge badge-secondary status-badge" data-toggle="tooltip" data-placement="right"
+                <span class="badge bg-secondary status-badge" data-toggle="tooltip" data-placement="right"
                       title="The project application was submitted but not approved yet."
                       *ngIf="(application | hasstatusinlist:Application_States.SUBMITTED)">
               <i class="fas fa-edit"></i>
             </span>
-                <span class="badge badge-secondary status-badge" data-toggle="tooltip" data-placement="right"
+                <span class="badge bg-secondary status-badge" data-toggle="tooltip" data-placement="right"
                       title="A request for additional credits was submitted for this project."
                       *ngIf="(application | hasstatusinlist:Application_States.CREDITS_EXTENSION_REQUESTED)
                     || (application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION_CREDITS)">
@@ -242,44 +242,44 @@
                   </div>
 
                   <div class="row justify-content-center" id="status_row_{{application?.application_id}}" style="margin: 2px;">
-              <span class="badge badge-success status-badge" data-toggle="tooltip"
+              <span class="badge bg-success status-badge" data-toggle="tooltip"
                     data-placement="right" title="This project was initially approved within the last 2 weeks."
                     *ngIf="(application | hasstatusinlist:Application_States.APPROVED_LAST_2_WEEKS)">
               <i class="fas fa-plus-circle"></i>
             </span>
-                    <span class="badge badge-warning status-badge" data-toggle="tooltip"
+                    <span class="badge bg-warning status-badge" data-toggle="tooltip"
                           data-placement="right" title="The project lifetime expires soon."
                           *ngIf="(application | hasstatusinlist:Application_States.EXPIRES_SOON) && !(application | hasstatusinlist:Application_States.EXPIRED)">
               <i class="fas fa-exclamation-circle"></i>
             </span>
-                    <span class="badge badge-danger status-badge" data-toggle="tooltip"
+                    <span class="badge bg-danger status-badge" data-toggle="tooltip"
                           data-placement="right" title="The lifetime of this project is expired."
                           *ngIf="(application | hasstatusinlist:Application_States.EXPIRED)">
               <i class="fas fa-ban"></i>
             </span>
-                    <span class="badge badge-danger status-badge" data-toggle="tooltip"
+                    <span class="badge bg-danger status-badge" data-toggle="tooltip"
                           data-placement="right" title="The termination of the project was requested."
                           *ngIf="(application | hasstatusinlist:Application_States.TERMINATION_REQUESTED)">
               <i class="fas fa-trash"></i>
             </span>
-                    <span class="badge badge-secondary status-badge" data-toggle="tooltip" data-placement="right"
+                    <span class="badge bg-secondary status-badge" data-toggle="tooltip" data-placement="right"
                           title="An extension request was submitted for this project."
                           *ngIf="(application | hasstatusinlist:Application_States.LIFETIME_EXTENSION_REQUESTED)
                    || (application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION_EXTENSION)">
               <i class="fas fa-edit"></i>
             </span>
-                    <span class="badge badge-secondary status-badge" data-toggle="tooltip" data-placement="right"
+                    <span class="badge bg-secondary status-badge" data-toggle="tooltip" data-placement="right"
                           title="A modification request was submitted for this project."
                           *ngIf="(application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)
                     || (application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION)">
               <i class="fas fa-edit"></i>
             </span>
-                    <span class="badge badge-secondary status-badge" data-toggle="tooltip" data-placement="right"
+                    <span class="badge bg-secondary status-badge" data-toggle="tooltip" data-placement="right"
                           title="The project application was submitted but not approved yet."
                           *ngIf="(application | hasstatusinlist:Application_States.SUBMITTED)">
               <i class="fas fa-edit"></i>
             </span>
-                    <span class="badge badge-secondary status-badge" data-toggle="tooltip" data-placement="right"
+                    <span class="badge bg-secondary status-badge" data-toggle="tooltip" data-placement="right"
                           title="A request for additional credits was submitted for this project."
                           *ngIf="(application | hasstatusinlist:Application_States.CREDITS_EXTENSION_REQUESTED)
                     || (application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION_CREDITS)">
@@ -642,47 +642,47 @@
                             <div *ngIf="!navbar_minimized" class="row justify-content-center"
                                  id="status_row_{{application?.application_id}}"
                                  style="margin: 2px;">
-              <div class="badge badge-success status-badge col-3" data-toggle="tooltip"
+              <div class="badge bg-success status-badge col-3" data-toggle="tooltip"
                     data-placement="right" title="This project was initially approved within the last 2 weeks."
                     *ngIf="(application | hasstatusinlist:Application_States.APPROVED_LAST_2_WEEKS)">
               <i class="fas fa-plus-circle"></i>
             </div>
-                                <div class="badge badge-warning status-badge col-3" data-toggle="tooltip"
+                                <div class="badge bg-warning status-badge col-3" data-toggle="tooltip"
                                       data-placement="right" title="The project lifetime expires soon."
                                       *ngIf="(application | hasstatusinlist:Application_States.EXPIRES_SOON) && !(application | hasstatusinlist:Application_States.EXPIRED)">
               <i class="fas fa-exclamation-circle"></i>
             </div>
-                                <div class="badge badge-danger status-badge col-3" data-toggle="tooltip"
+                                <div class="badge bg-danger status-badge col-3" data-toggle="tooltip"
                                       data-placement="right" title="The lifetime of this project is expired."
                                       *ngIf="(application | hasstatusinlist:Application_States.EXPIRED)">
               <i class="fas fa-ban"></i>
             </div>
-                                <div class="badge badge-danger status-badge col-3" data-toggle="tooltip"
+                                <div class="badge bg-danger status-badge col-3" data-toggle="tooltip"
                                       data-placement="right" title="The termination of the project was requested."
                                       *ngIf="(application | hasstatusinlist:Application_States.TERMINATION_REQUESTED)">
               <i class="fas fa-trash"></i>
             </div>
-                                <div class="badge badge-secondary status-badge col-3" data-toggle="tooltip"
+                                <div class="badge bg-secondary status-badge col-3" data-toggle="tooltip"
                                       data-placement="right"
                                       title="An extension request was submitted for this project."
                                       *ngIf="(application | hasstatusinlist:Application_States.LIFETIME_EXTENSION_REQUESTED)
                    || (application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION_EXTENSION)">
               <i class="fas fa-edit"></i>
             </div>
-                                <div class="badge badge-secondary status-badge col-3" data-toggle="tooltip"
+                                <div class="badge bg-secondary status-badge col-3" data-toggle="tooltip"
                                       data-placement="right"
                                       title="A modification request was submitted for this project."
                                       *ngIf="(application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)
                     || (application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION)">
               <i class="fas fa-edit"></i>
             </div>
-                                <div class="badge badge-secondary status-badge col-3" data-toggle="tooltip"
+                                <div class="badge bg-secondary status-badge col-3" data-toggle="tooltip"
                                       data-placement="right"
                                       title="The project application was submitted but not approved yet."
                                       *ngIf="(application | hasstatusinlist:Application_States.SUBMITTED)">
               <i class="fas fa-edit"></i>
             </div>
-                                <div class="badge badge-secondary status-badge col-3" data-toggle="tooltip"
+                                <div class="badge bg-secondary status-badge col-3" data-toggle="tooltip"
                                       data-placement="right"
                                       title="A request for additional credits was submitted for this project."
                                       *ngIf="(application | hasstatusinlist:Application_States.CREDITS_EXTENSION_REQUESTED)
@@ -725,47 +725,47 @@
                          <div *ngIf="!navbar_minimized" class="row justify-content-center"
                                  id="status_row_{{application?.application_id}}"
                                  style="margin: 2px;">
-              <div class="badge badge-success status-badge col-3" data-toggle="tooltip"
+              <div class="badge bg-success status-badge col-3" data-toggle="tooltip"
                     data-placement="right" title="This project was initially approved within the last 2 weeks."
                     *ngIf="(application | hasstatusinlist:Application_States.APPROVED_LAST_2_WEEKS)">
               <i class="fas fa-plus-circle"></i>
             </div>
-                                <div class="badge badge-warning status-badge col-3" data-toggle="tooltip"
+                                <div class="badge bg-warning status-badge col-3" data-toggle="tooltip"
                                       data-placement="right" title="The project lifetime expires soon."
                                       *ngIf="(application | hasstatusinlist:Application_States.EXPIRES_SOON) && !(application | hasstatusinlist:Application_States.EXPIRED)">
               <i class="fas fa-exclamation-circle"></i>
             </div>
-                                <div class="badge badge-danger status-badge col-3" data-toggle="tooltip"
+                                <div class="badge bg-danger status-badge col-3" data-toggle="tooltip"
                                       data-placement="right" title="The lifetime of this project is expired."
                                       *ngIf="(application | hasstatusinlist:Application_States.EXPIRED)">
               <i class="fas fa-ban"></i>
             </div>
-                                <div class="badge badge-danger status-badge col-3" data-toggle="tooltip"
+                                <div class="badge bg-danger status-badge col-3" data-toggle="tooltip"
                                       data-placement="right" title="The termination of the project was requested."
                                       *ngIf="(application | hasstatusinlist:Application_States.TERMINATION_REQUESTED)">
               <i class="fas fa-trash"></i>
             </div>
-                                <div class="badge badge-secondary status-badge col-3" data-toggle="tooltip"
+                                <div class="badge bg-secondary status-badge col-3" data-toggle="tooltip"
                                       data-placement="right"
                                       title="An extension request was submitted for this project."
                                       *ngIf="(application | hasstatusinlist:Application_States.LIFETIME_EXTENSION_REQUESTED)
                    || (application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION_EXTENSION)">
               <i class="fas fa-edit"></i>
             </div>
-                                <div class="badge badge-secondary status-badge col-3" data-toggle="tooltip"
+                                <div class="badge bg-secondary status-badge col-3" data-toggle="tooltip"
                                       data-placement="right"
                                       title="A modification request was submitted for this project."
                                       *ngIf="(application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)
                     || (application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION)">
               <i class="fas fa-edit"></i>
             </div>
-                                <div class="badge badge-secondary status-badge col-3" data-toggle="tooltip"
+                                <div class="badge bg-secondary status-badge col-3" data-toggle="tooltip"
                                       data-placement="right"
                                       title="The project application was submitted but not approved yet."
                                       *ngIf="(application | hasstatusinlist:Application_States.SUBMITTED)">
               <i class="fas fa-edit"></i>
             </div>
-                                <div class="badge badge-secondary status-badge col-3" data-toggle="tooltip"
+                                <div class="badge bg-secondary status-badge col-3" data-toggle="tooltip"
                                       data-placement="right"
                                       title="A request for additional credits was submitted for this project."
                                       *ngIf="(application | hasstatusinlist:Application_States.CREDITS_EXTENSION_REQUESTED)

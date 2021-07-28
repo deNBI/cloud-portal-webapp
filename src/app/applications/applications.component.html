@@ -17,28 +17,28 @@
               'btn-primary': tab_state === TabStates.SUBMITTED}"
               id="tab_state_button_submitted_applications">
         <i class="fas fa-envelope"></i> Submitted Applications
-        <span class="badge badge-pill badge-dark">{{this.numberOfProjectApplications}}</span>
+        <span class="badge badge-pill bg-dark">{{this.numberOfProjectApplications}}</span>
       </button>
       <button class="btn" (click)="changeTabState(TabStates.CREDITS_EXTENSION);"
               [ngClass]="{'btn-light': !(tab_state === TabStates.CREDITS_EXTENSION),
               'btn-primary': tab_state === TabStates.CREDITS_EXTENSION}"
               id="tab_state_button_credit_request">
         <i class="fas fa-coins"></i> Credit Extension Requests
-        <span class="badge badge-pill badge-dark">{{this.numberOfCreditRequests}}</span>
+        <span class="badge badge-pill bg-dark">{{this.numberOfCreditRequests}}</span>
       </button>
       <button class="btn" (click)="changeTabState(TabStates.LIFETIME_EXTENSION);"
               [ngClass]="{'btn-light': !(tab_state === TabStates.LIFETIME_EXTENSION),
               'btn-primary': tab_state === TabStates.LIFETIME_EXTENSION}"
               id="tab_state_button_extension_request">
         <i class="fas fa-clock"></i> Lifetime Extension Requests
-        <span class="badge badge-pill badge-dark">{{this.numberOfExtensionRequests}}</span>
+        <span class="badge badge-pill bg-dark">{{this.numberOfExtensionRequests}}</span>
       </button>
       <button class="btn" (click)="changeTabState(TabStates.MODIFICATION_EXTENSION);"
               [ngClass]="{'btn-light': !(tab_state === TabStates.MODIFICATION_EXTENSION),
               'btn-primary': tab_state === TabStates.MODIFICATION_EXTENSION}"
               id="tab_state_button_modification_request">
         <i class="fas fa-memory"></i> Resource Modification Requests
-        <span class="badge badge-pill badge-dark">{{this.numberOfModificationRequests}}</span>
+        <span class="badge badge-pill bg-dark">{{this.numberOfModificationRequests}}</span>
       </button>
     </div>
     <div class="card-body" *ngIf="loading_applications" id="loading_applications">

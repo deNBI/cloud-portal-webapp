@@ -64,27 +64,27 @@
             <div class="input-group-text" *ngIf="is_vo_admin || cluster_allowed">
               <input type="checkbox" [checked]="filter_cluster" style="margin:2px;"
                      (change)="filter_cluster=!filter_cluster">
-              <span class="badge badge-info">Cluster</span>
+              <span class="badge bg-info">Cluster</span>
             </div>
             <div class="input-group-text">
               <input type="checkbox" [checked]="filter_set_for_termination" style="margin:2px;"
                      (change)="filter_set_for_termination=!filter_set_for_termination">
-              <span class="badge badge-secondary">Set for termination</span>
+              <span class="badge bg-secondary">Set for termination</span>
             </div>
             <div class="input-group-text">
               <input type="checkbox" checked style="margin:2px;"
                      (change)="changeFilterStatus(VirtualMachineStates.staticACTIVE)">
-              <span class="badge badge-success">{{VirtualMachineStates.staticACTIVE}}</span>
+              <span class="badge bg-success">{{VirtualMachineStates.staticACTIVE}}</span>
             </div>
             <div class="input-group-text">
               <input type="checkbox" checked style="margin:2px;"
                      (change)="changeFilterStatus(VirtualMachineStates.staticSHUTOFF)">
-              <span class="badge badge-warning">{{VirtualMachineStates.staticSHUTOFF}}</span>
+              <span class="badge bg-warning">{{VirtualMachineStates.staticSHUTOFF}}</span>
             </div>
             <div class="input-group-text">
               <input type="checkbox" style="margin:2px;"
                      (change)="changeFilterStatus(VirtualMachineStates.staticDELETED)">
-              <span class="badge badge-danger">{{VirtualMachineStates.staticDELETED}}</span>
+              <span class="badge bg-danger">{{VirtualMachineStates.staticDELETED}}</span>
             </div>
           </div>
           <div class="input-group-text col-5">
@@ -196,7 +196,7 @@
                       <span class="fas fa-hdd" style="font-size: 18px;"
                             data-toggle="tooltip" data-placement="right"
                             title="{{'Volumes mounted: ' + vm?.volumes?.length}}">
-                        <span class="badge badge-pill badge-secondary"
+                        <span class="badge badge-pill bg-secondary"
                               style="font-size: 10px; position: relative; top: -12px; left: -10px;">
                           {{vm?.volumes.length}}</span>
                       </span>
@@ -206,7 +206,7 @@
                             data-placement="right"
                             title="{{'Research Environment installed: ' + vm?.backend?.template}}"
                             (click)="this.copyToClipboard(vm?.res_env_url); this.showCopiedMessage(vm.name);">
-                          <span class="badge badge-pill badge-secondary" id="{{vm.name + 'resenvSpan'}}"
+                          <span class="badge badge-pill bg-secondary" id="{{vm.name + 'resenvSpan'}}"
                                 style="font-size: 10px; position: relative; top: -12px; left: -10px;">
                             <i class="fas fa-check"
                                *ngIf="(vm?.status | hasStatus:VirtualMachineStates.staticACTIVE) "></i>
@@ -220,7 +220,7 @@
                             data-placement="right"
                             title="{{'Research Environment failed to install: ' + vm?.backend?.template}}"
                             (click)="this.copyToClipboard(vm?.res_env_url); this.showCopiedMessage(vm.name);">
-                          <span class="badge badge-pill badge-secondary" id="{{vm.name + 'resenvFailedSpan'}}"
+                          <span class="badge badge-pill bg-secondary" id="{{vm.name + 'resenvFailedSpan'}}"
                                 style="font-size: 10px; position: relative; top: -12px; left: -10px;">
 
                                 <i class="fas fa-times" style="color: red"></i>
@@ -233,7 +233,7 @@
                   <div *ngIf="vm?.conda_packages" class="col-md-1">
                       <span class="fas fa-box" style="font-size: 18px;" data-toggle="tooltip" data-placement="right"
                             title="One installed Conda-Package" *ngIf="vm?.conda_packages?.length === 1">
-                          <span class="badge badge-pill badge-secondary"
+                          <span class="badge badge-pill bg-secondary"
                                 style="font-size: 10px; position: relative; top: -12px; left: -10px;">
                           {{vm?.conda_packages?.length.toString()}}
                                                         <i *ngIf="vm?.playbook_successful == null" class="fa-spinner fa-spin"></i>
@@ -246,7 +246,7 @@
                     <span class="fas fa-boxes" style="font-size: 18px;" data-toggle="tooltip" data-placement="right"
                           title="{{'Number of Conda Packages installed: ' + vm?.conda_packages?.length.toString()}}"
                           *ngIf="vm?.conda_packages?.length > 1">
-                          <span class="badge badge-pill badge-secondary"
+                          <span class="badge badge-pill bg-secondary"
                                 style="font-size: 10px; position: relative; top: -12px; left: -10px;">
                           {{vm?.conda_packages?.length.toString()}}
                             <i *ngIf="vm?.playbook_successful == null" class="fa-spinner fa-spin"></i>
@@ -260,7 +260,7 @@
                   <div *ngIf="vm?.cluster.cluster_id" class="col-md-1">
                       <span class="fas fa-network-wired" style="font-size: 18px;" data-toggle="tooltip" data-placement="right"
                             title="{{'Master node of cluster with ' + (vm?.cluster.instances_count) + ' slaves'}}" (click)="this.copyToClipboard(vm?.res_env_url)">
-                          <span class="badge badge-pill badge-secondary"
+                          <span class="badge badge-pill bg-secondary"
                                 style="font-size: 10px; position: relative; top: -12px; left: -10px;">
                             {{vm?.cluster.instances_count}}
                           </span>
