@@ -827,7 +827,7 @@
 
         <div>
           <input  [disabled]="snapshot_vm?.flavor?.ram > SNAPSHOT_MAX_RAM" type="text" style="width: 100%" placeholder="Snapshot Name" [(ngModel)]="snapshotName"
-                 (ngModelChange)="snapshotSearchTerm.next($event);" id="snapshot_name_input">
+                 (ngModelChange)="snapshotSearchTerm.next($event);" class="form-control" id="snapshot_name_input">
 
         </div>
         <div>

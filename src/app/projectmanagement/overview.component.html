@@ -631,7 +631,7 @@
 							<tr>
 								<td>
 									<input style="width: 100%" type="text"  placeholder="e.g. 10.1000/182" id="doi_input_field"
-												 [disabled]="disabledDoiInput"
+												 [disabled]="disabledDoiInput" class="form-control"
 												 pattern="10.\d{4,9}\/[-._;()\/:a-zA-Z0-9]+" [(ngModel)]="newDoi" #doiInput></td>
 								<td>
 									<button id="add_doi_btn"
@@ -702,7 +702,7 @@
 						</div>
 						<div class="row">
 							<div class="col-md-8">
-								<input style="width: 100%" placeholder="" id="add_member_input" #searchString>
+								<input style="width: 100%" placeholder="" class="form-control" id="add_member_input" #searchString>
 							</div>
 							<div class="col-md-4">
 								<button type="button" class="btn btn-primary" id="search_member_btn"
@@ -748,7 +748,8 @@
 								<th>Last Name</th>
 								<th>Email</th>
 								</thead>
-								<tbody *ngFor="  let member of filteredMembers">
+								<tbody >
+								<tr *ngFor="  let member of filteredMembers">
 								<td>
 									<button style="padding: 5px; margin: 5px"
 													(click)="resetNotificationModal();addMember(project?.Id,member['member_id'],member['firstName'],member['lastName']);filteredMembers=null; notificationModal.show();"
@@ -761,7 +762,7 @@
 								</td>
 								<td>{{member['firstName']}}</td>
 								<td>{{member['lastName']}}</td>
-								<td>{{member['mail']}}</td>
+								<td>{{member['mail']}}</td></tr>
 								</tbody>
 							</table>
 						</div>

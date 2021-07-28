@@ -45,7 +45,7 @@
         </pagination>
       </div>
        <div class="col">
-          <input type="text" placeholder="name,openstackid,project,virtualmachine"
+          <input type="text" class="form-control" placeholder="name,openstackid,project,virtualmachine"
                  name="filter" (ngModelChange)='changedFilter($event)'
                  [ngModel]="filter" (keydown.enter)="$event.preventDefault();">
         </div>
@@ -463,7 +463,7 @@
 
         <div>
           <div class="input-group ">
-            <input type="text" placeholder="Name" #newName>
+            <input type="text" placeholder="Name"  class="form-control"#newName>
           </div>
         </div>
 
@@ -755,7 +755,7 @@
           <label class="col-md-3 form-control-label">Volumename</label>
           <div class="col-md-9">
             <div class="input-group">
-              <input type="text" placeholder="Volumename" [value]="volumeName"
+              <input type="text" class="form-control" placeholder="Volumename" [value]="volumeName"
                      (input)="volumeName = $event.target.value"
                      id="name_input_id">
             </div>

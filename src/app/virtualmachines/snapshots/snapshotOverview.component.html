@@ -32,7 +32,7 @@
           </pagination>
         </div>
         <div class="col">
-          <input type="text" placeholder="name,project,openstackid"
+          <input type="text" placeholder="name,project,openstackid" class="form-control"
                  name="filter" (ngModelChange)='changedFilter($event)'
                  [ngModel]="filter" (keydown.enter)="$event.preventDefault();">
         </div>

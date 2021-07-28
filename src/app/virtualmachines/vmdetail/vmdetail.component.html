@@ -750,7 +750,7 @@
 
           <div>
             <input  [disabled]="virtualMachine?.flavor?.ram > SNAPSHOT_MAX_RAM" type="text" style="width: 100%" placeholder="Snapshot Name" [(ngModel)]="snapshotName"
-                   (ngModelChange)="snapshotSearchTerm.next($event);" id="snapshot_name_input">
+                   (ngModelChange)="snapshotSearchTerm.next($event);" class="form-control" id="snapshot_name_input">
 
           </div>
           <div>
@@ -968,7 +968,7 @@
             </div>
             <div class="row">
               <div class="col-md-8">
-                <input style="width: 100%" placeholder="" id="add_member_input" #searchString>
+                <input style="width: 100%" placeholder="" class="form-control" type="text" id="add_member_input" #searchString>
               </div>
               <div class="col-md-4">
                 <button type="button" class="btn btn-primary" id="search_member_btn"

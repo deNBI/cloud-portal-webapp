@@ -6,6 +6,7 @@
 
 // due to change from ngx-perfect-scrollbar to ngx-scrollbar
 
+
 .sidebar-minimized .sidebar .sidebar-nav{
   padding-bottom: unset;
 }
@@ -306,7 +307,7 @@ $simplevmcolour: #00ADEF;
 
   margin-left: 0.9375rem !important;
   width: 12.5rem;
-  margin-top: 6.25rem !important;
+  margin-top: 5rem !important;
 
 }
 
@@ -623,8 +624,8 @@ $simplevmcolour: #00ADEF;
   }
 
   .main {
-    margin-top: 100px !important;
-    margin-left: 220px !important;
+    margin-top: 5rem !important;
+    margin-left: 13.75rem !important;
   }
 
   .main-maximized{
@@ -705,6 +706,7 @@ $simplevmcolour: #00ADEF;
 
 .nav-item{
     border-radius: 10px;
+    cursor:pointer;
   }
 
   .sidebar-nav .nav-item:hover, .sidebar .nav-item:hover > .nav-link
@@ -771,7 +773,7 @@ $simplevmcolour: #00ADEF;
 
   .main .container-fluid
   {
-    padding: 0 15px 0 30px;
+    padding: 0 15px 0 0px;
   }
 
   #title_headline
@@ -904,6 +906,8 @@ $simplevmcolour: #00ADEF;
     transition: 0.5s;
 
   }
+
+
 
   .modal .table-responsive tbody tr td button {
     width: 200px;
