@@ -32,11 +32,11 @@ import { Backend } from '../conda/backend/backend';
  * VM Detail page component
  */
 @Component({
-	           selector: 'app-virtual-machine-detail',
-	           templateUrl: 'vmdetail.component.html',
-	           styleUrls: ['./vmdetail.component.scss'],
+	selector: 'app-virtual-machine-detail',
+	templateUrl: 'vmdetail.component.html',
+	styleUrls: ['./vmdetail.component.scss'],
 
-	           providers: [FlavorService, FacilityService, VoService, UserService, GroupService,
+	providers: [FlavorService, FacilityService, VoService, UserService, GroupService,
 		VoService, CreditsService, VirtualmachineService, ImageService, PlaybookService, BiocondaService],
 })
 

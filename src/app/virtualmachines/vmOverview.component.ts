@@ -13,7 +13,7 @@ import { ImageService } from '../api-connector/image.service';
 import { IResponseTemplate } from '../api-connector/response-template';
 import { SnapshotModel } from './snapshots/snapshot.model';
 import { FacilityService } from '../api-connector/facility.service';
-import { global_event, is_vo, elixir_id } from '../shared/globalvar';
+import { is_vo, elixir_id } from '../shared/globalvar';
 
 import { VirtualMachineStates } from './virtualmachinemodels/virtualmachinestates';
 import { GroupService } from '../api-connector/group.service';
