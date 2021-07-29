@@ -21,7 +21,7 @@ import { SnapshotModel } from '../snapshots/snapshot.model';
 import { PlaybookService } from '../../api-connector/playbook.service';
 import { BiocondaService } from '../../api-connector/bioconda.service';
 import { ResenvTemplate } from '../conda/resenvTemplate.model';
-import { global_event, is_vo } from '../../shared/globalvar';
+import { elixir_id, is_vo } from '../../shared/globalvar';
 import { WIKI_GUACAMOLE_LINK, WIKI_RSTUDIO_LINK, WIKI_VOLUME_OVERVIEW } from '../../../links/links';
 import { Volume } from '../volumes/volume';
 import { VolumeStates } from '../volumes/volume_states';
@@ -32,11 +32,11 @@ import { Backend } from '../conda/backend/backend';
  * VM Detail page component
  */
 @Component({
-	selector: 'app-virtual-machine-detail',
-	templateUrl: 'vmdetail.component.html',
-	styleUrls: ['./vmdetail.component.scss'],
+	           selector: 'app-virtual-machine-detail',
+	           templateUrl: 'vmdetail.component.html',
+	           styleUrls: ['./vmdetail.component.scss'],
 
-	providers: [FlavorService, FacilityService, VoService, UserService, GroupService,
+	           providers: [FlavorService, FacilityService, VoService, UserService, GroupService,
 		VoService, CreditsService, VirtualmachineService, ImageService, PlaybookService, BiocondaService],
 })
 
@@ -70,7 +70,7 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 
 	volume_to_attach: Volume;
 	detached_project_volumes: Volume[] = [];
-	user_elixir_id: string;
+	user_elixir_id: string = elixir_id;
 
 	is_project_admin: boolean = false;
 
@@ -137,13 +137,6 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 	}
 
 	ngOnInit(): void {
-		global_event.subscribe(
-			(result: any) => {
-				if ('elixir_id' in result) {
-					this.user_elixir_id = result['elixir_id'];
-				}
-			},
-		);
 		this.activatedRoute.params.subscribe((paramsId: any): void => {
 			this.vm_id = paramsId.id;
 			this.getVmCondaLogs();
@@ -595,10 +588,9 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 	 */
 	checkVMAdminState(): void {
 		this.userService.getMemberByUser().subscribe(
-			(res: any): void => {
-				const user_id: string = res['userId'];
-				this.groupService.getGroupAdminIds(this.virtualMachine.projectid).subscribe((result): any => {
-					if (result['adminIds'].indexOf(user_id) > -1) {
+			(): void => {
+				this.groupService.isLoggedUserGroupAdmin(this.virtualMachine.projectid).subscribe((result): any => {
+					if (result['admin']) {
 						this.is_project_admin = true;
 					}
 				});
