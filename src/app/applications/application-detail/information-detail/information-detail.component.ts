@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Application } from '../../application.model/application.model';
-import { global_event, is_vo } from '../../../shared/globalvar';
+import { is_vo, elixir_id } from '../../../shared/globalvar';
 
 /**
  * Application informations.
@@ -12,15 +12,9 @@ import { global_event, is_vo } from '../../../shared/globalvar';
 export class InformationDetailComponent implements OnInit {
 	@Input() application: Application;
 	is_vo: boolean = is_vo;
-	elixir_id: string = '';
+	elixir_id: string = elixir_id;
 
 	ngOnInit() {
-		global_event.subscribe(
-			(result: any) => {
-				if ('elixir_id' in result) {
-					this.elixir_id = result['elixir_id'];
-				}
-			},
-		);
+
 	}
 }
