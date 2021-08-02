@@ -104,6 +104,13 @@ export class GroupService {
 		});
 	}
 
+	isLoggedUserGroupAdmin(groupid: number | string): Observable<any> {
+
+		return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/admin/`, {
+			withCredentials: true,
+		});
+	}
+
 	addMember(group_id: string | number, member_id: string | number, facility_id?: string | number): Observable<any> {
 		const params: HttpParams = new HttpParams();
 		if (facility_id !== null) {
