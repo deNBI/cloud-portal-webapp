@@ -16,7 +16,7 @@ import { ClientService } from '../../../api-connector/client.service';
 import { Clusterinfo, WorkerBatch } from '../clusterinfo';
 import { VirtualMachine } from '../../virtualmachinemodels/virtualmachine';
 import { ApplicationRessourceUsage } from '../../../applications/application-ressource-usage/application-ressource-usage';
-import { SCALE_SCRIPT_LINK, CLOUD_PORTAL_SUPPORT_MAIL } from '../../../../links/links';
+import { CLOUD_PORTAL_SUPPORT_MAIL, SCALE_SCRIPT_LINK } from '../../../../links/links';
 import { AbstractBaseClass } from '../../../shared/shared_modules/baseClass/abstract-base-class';
 import { Flavor } from '../../virtualmachinemodels/flavor';
 import { FlavorService } from '../../../api-connector/flavor.service';
@@ -28,8 +28,8 @@ export const SCALING_SCRIPT_NAME: string = 'scaling.py';
  */
 @Component({
 
-	selector: 'app-vm-overview',
-	templateUrl: './clusterOverview.component.html',
+	           selector: 'app-vm-overview',
+	           templateUrl: './clusterOverview.component.html',
 	styleUrls: ['../../vmOverview.component.scss'],
 	providers: [FacilityService, ImageService, UserService,
 		VirtualmachineService, FullLayoutComponent, GroupService, ClientService, GroupService, FlavorService],
@@ -173,29 +173,38 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 			});
 	}
 
+	generatePassword(): void {
+		this.selectedCluster.password = null;
+		this.virtualmachineservice.generatePasswordCluster(this.selectedCluster.cluster_id).subscribe((res: any) => {
+			this.selectedCluster.password = res['password'];
+		});
+	}
+
 	scaleUpCluster(): void {
 		const scale_up_count: number = this.selectedBatch.upscale_count;
 		this.updateNotificationModal('Upscaling Cluster', `Starting ${scale_up_count} additional workers..`, true, 'info');
 
 		if (!this.created_new_batch) {
-			this.virtualmachineservice.scaleCluster(this.selectedCluster.cluster_id, this.selectedBatch).subscribe((): void => {
+			this.virtualmachineservice.scaleCluster(this.selectedCluster.cluster_id, this.selectedBatch).subscribe((res: any): void => {
 				this.selectedBatch.setNewScalingUpWorkerCount();
+				this.selectedCluster.password = res['password'];
 
 				this.check_worker_count_loop(this.selectedCluster);
 				this.updateNotificationModal('Sucessfull',
-											 `The start of ${scale_up_count} workers was successfully initiated. Remember to configure your cluster after the machines are active!'`,
-											 true, 'success');
+				                             `The start of ${scale_up_count} workers was successfully initiated. Remember to configure your cluster after the machines are active!'`,
+				                             true, 'success');
 
 			});
 		} else {
-			this.virtualmachineservice.scaleClusterNewBatch(this.selectedCluster.cluster_id, this.selectedBatch).subscribe((): void => {
+			this.virtualmachineservice.scaleClusterNewBatch(this.selectedCluster.cluster_id, this.selectedBatch).subscribe((res: any): void => {
 
 				this.selectedBatch.setNewScalingUpWorkerCount();
+				this.selectedCluster.password = res['password'];
 
 				this.check_worker_count_loop(this.selectedCluster);
 				this.updateNotificationModal('Sucessfull',
-											 `The start of ${scale_up_count} workers was successfully initiated. Remember to configure your cluster after the machines are active!'`,
-											 true, 'success');
+				                             `The start of ${scale_up_count} workers was successfully initiated. Remember to configure your cluster after the machines are active!'`,
+				                             true, 'success');
 
 			});
 
@@ -318,7 +327,9 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 
 		this.updateNotificationModal('Scaling Down', msg, true, 'info');
 
-		this.virtualmachineservice.scaleDownCluster(this.selectedCluster.cluster_id, scale_down_batches).subscribe((): void => {
+		this.virtualmachineservice.scaleDownCluster(this.selectedCluster.cluster_id, scale_down_batches).subscribe((res: any): void => {
+			this.selectedCluster.password = res['password'];
+
 			this.selectedCluster.setScaleDownBatchesCount();
 			this.selectedCluster.instances_count -= scale_down_count;
 
@@ -382,6 +393,7 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 											  const idx: number = this.clusters.indexOf(cluster);
 
 											  this.clusters[idx] = new Clusterinfo(updated_cluster);
+
 											  if (cluster === this.selectedCluster) {
 												  for (const workerBatch of this.clusters[idx].worker_batches) {
 													  for (const old_batch of cluster.worker_batches) {
@@ -398,6 +410,7 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 													  }
 
 												  }
+												  this.clusters[idx].password = this.selectedCluster.password;
 
 												  this.selectedCluster = this.clusters[idx];
 

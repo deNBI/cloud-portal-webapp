@@ -120,7 +120,7 @@
               </div>
               <div class="card-body p-x-1 py-h">
                 <div class="row">
-                  <div class="col-3"
+                  <div class="col-2"
                        *ngIf="cluster?.status == 'Running' ">
                     <a *ngIf="!show_connection_infO"
                        class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
@@ -133,7 +133,7 @@
                        (click)="show_connection_infO=false; ">
                       ... Hide information</a>
                   </div>
-                  <div class="col-3"
+                  <div class="col-2"
                        *ngIf="cluster?.status != VirtualMachineStates.staticDELETED && cluster?.status != VirtualMachineStates.staticDELETING && cluster?.status == 'Running' ">
                     <a class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
                        [id]="'scale_up_'+cluster?.cluster_id"
@@ -142,7 +142,7 @@
 
 
                   </div>
-                  <div class="col-3"
+                  <div class="col-2"
                        *ngIf="cluster?.status != VirtualMachineStates.staticDELETED && cluster?.status != VirtualMachineStates.staticDELETING && cluster?.status == 'Running' ">
                     <a class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
                        [id]="'scale_down_'+cluster?.cluster_id"
@@ -151,7 +151,16 @@
 
 
                   </div>
-                  <div class="col-3"
+                   <div class="col-2"
+                       *ngIf="cluster?.status != VirtualMachineStates.staticDELETED && cluster?.status != VirtualMachineStates.staticDELETING && cluster?.status == 'Running' ">
+                    <a class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+                       [id]="'generate_password_'+cluster?.cluster_id"
+                       (click)="selectedCluster=cluster;generatePassword();passwordModal.show()">
+                      Generate Password</a>
+
+
+                  </div>
+                  <div class="col-2"
                        *ngIf="cluster?.status != VirtualMachineStates.staticDELETED && cluster?.status != VirtualMachineStates.staticNOT_FOUND && cluster?.status != VirtualMachineStates.staticDELETING">
                     <a class="font-weight-bold font-xs btn-block text-muted btn btn-outline-danger"
                        [id]="'delete_'+cluster?.cluster_id"
@@ -234,6 +243,37 @@
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+        <div bsModal #passwordModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
+         aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="notification_title">Generate Password: Cluster {{selectedCluster?.cluster_id}}</h4>
+            <button type="button" class="close" style="cursor:pointer" (click)="passwordModal.hide()"
+                    aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="alert alert-warning" role="alert">
+              The password generated here is needed to scale the cluster. It is shown here only once and is not again retrievable - but it can be regenerated at any time.
+          </div>
+            <div class="alert alert-info" role="alert">
+               <span *ngIf="!selectedCluster?.password"> Generating... <i class="fa fa-spinner fa-spin"
+                                   style="font-size:24px"></i></span>
+              <span *ngIf="selectedCluster?.password">               {{ selectedCluster?.password }}</span>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button  type="button"
+                    (click)="passwordModal.hide();"
+                    class="btn  btn-secondary" id="close_notification"> Close
+            </button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
     <div bsModal #notificationModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
          aria-hidden="true">
       <div class="modal-dialog" role="document">
@@ -261,10 +301,18 @@
                    role="alert"><strong>python3 {{SCALING_SCRIPT_NAME}} </strong>
                 <button class="btn btn-outline-primary" style="margin-left: 5px;"
                         (click)="copyToClipboard('python3 ' + SCALING_SCRIPT_NAME)">Copy Command</button>
+              </div>
+
+                <div class="alert alert-info" role="alert">
+                      The following password is requested by the script:
+                  <div class="alert alert-light" role="alert"> {{selectedCluster?.password}}
+                       <button class="btn btn-outline-primary" style="margin-left: 5px;"
+                        (click)="copyToClipboard(selectedCluster?.password)">Copy</button>
+                  </div>
+                However, a new password can also be generated in the cluster overview</div>
                 <div class="alert alert-warning" role="alert">
                       If you run this script, all own changes to the cluster configuration will be overwritten!
                     </div>
-              </div>
             </div>
           </div>
           <div class="modal-footer">

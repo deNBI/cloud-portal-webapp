@@ -56,6 +56,12 @@ export class VirtualmachineService {
 		});
 	}
 
+	generatePasswordCluster(cluster_id: string) {
+		return this.http.post(`${ApiSettings.getApiBaseURL()}clusters/${cluster_id}/password/`, {
+			withCredentials: true,
+		});
+	}
+
 	scaleClusterNewBatch(cluster_id: string, worker_batch: WorkerBatch): Observable<any> {
 		const params: HttpParams = new HttpParams()
 			.set('worker_batch', encodeURIComponent(JSON.stringify(worker_batch)));
