@@ -13,4 +13,8 @@ export class Image {
   is_snapshot: boolean;
   logo_url: string;
   modes: ImageMode[];
+
+  constructor(image?: Partial<Image>) {
+  	Object.assign(this, image);
+  }
 }

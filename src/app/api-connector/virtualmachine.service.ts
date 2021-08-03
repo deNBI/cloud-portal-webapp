@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { map } from 'rxjs/operators';
 import { ApiSettings } from './api-settings.service';
 import { VirtualMachine } from '../virtualmachines/virtualmachinemodels/virtualmachine';
 import { Volume } from '../virtualmachines/volumes/volume';
@@ -191,8 +192,13 @@ export class VirtualmachineService {
 		return this.http.get<VirtualMachine[]>(this.baseVmUrl, {
 			withCredentials: true,
 			params,
-
-		});
+		}).pipe(
+			map(
+				(vms: VirtualMachine[]): VirtualMachine[] => vms.map(
+					(vm: VirtualMachine): VirtualMachine => new VirtualMachine(vm),
+				),
+			),
+		);
 	}
 
 	getCondaLogs(openstack_id: string): Observable<Condalog> {

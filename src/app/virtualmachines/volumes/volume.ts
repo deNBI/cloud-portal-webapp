@@ -17,4 +17,13 @@ export class Volume {
   volume_status: string;
   volume_device: string;
   error_msg: string;
+
+  constructor(volume?: Partial<Volume>) {
+  	Object.assign(this, volume);
+
+  	if (volume) {
+  		this.volume_client = new Client(volume.volume_client);
+  		this.volume_virtualmachine = new VirtualMachine(volume.volume_virtualmachine);
+  	}
+  }
 }

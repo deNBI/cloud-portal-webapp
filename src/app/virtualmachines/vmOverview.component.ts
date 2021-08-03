@@ -574,7 +574,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 			this.currentPage, this.vm_per_site,
 			this.filter, this.filter_status_list, this.filter_cluster, this.filter_set_for_termination,
 		)
-			.subscribe((vms: any): void => {
+			.subscribe((vms: VirtualMachine[]): void => {
 				this.prepareVMS(vms);
 			});
 	}
@@ -644,7 +644,7 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 
 	}
 
-	prepareVMS(vms: any): void {
+	prepareVMS(vms: VirtualMachine[]): void {
 
 		const vm_list: VirtualMachine[] = vms['vm_list'];
 		const tmp_vms: VirtualMachine[] = [];
