@@ -69,7 +69,7 @@ export class Clusterinfo {
 	application_id: string;
 	project: string;
 	userlogin: string;
-	password:string;
+	password: string;
 	master_instance_openstack_id: string;
 
 	constructor(cl: Clusterinfo) {
