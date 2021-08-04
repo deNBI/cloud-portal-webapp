@@ -67,6 +67,14 @@ export class UserService {
 		});
 	}
 
+	getLoggedUserElixirId(): Observable<any> {
+
+		return this.http.get<any>(`${ApiSettings.getApiBaseURL()}users/current/elixir_id/`, {
+			withCredentials: true,
+
+		});
+	}
+
 	getLoggedUser(): Observable<any> {
 		const params: HttpParams = new HttpParams().set('redirect_after_login', 'redirect');
 
