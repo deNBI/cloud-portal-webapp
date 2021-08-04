@@ -1,3 +1,4 @@
+import { Subscription } from 'rxjs';
 import { Flavor } from './flavor';
 import { Client } from '../../vo_manager/clients/client.model';
 import { ImageMode } from '../../facility_manager/image-tag';
@@ -5,6 +6,8 @@ import { Clusterinfo } from '../clusters/clusterinfo';
 import { Volume } from '../volumes/volume';
 import { Backend } from '../conda/backend/backend';
 import { CondaPackage } from '../condaPackage.model';
+import { VirtualmachineService } from '../../api-connector/virtualmachine.service';
+import { VirtualMachineStates } from './virtualmachinestates';
 
 /**
  * Virtualmachine class.
@@ -45,18 +48,31 @@ export class VirtualMachine {
 
 	constructor(vm?: Partial<VirtualMachine>) {
 		Object.assign(this, vm);
+		this.cardState = 0;
 		if (vm) {
-			this.flavor = new Flavor(vm.flavor);
-			this.client = new Client(vm.client);
-			this.cluster = new Clusterinfo(vm.cluster);
-			this.volumes = [];
-			for (const volume of vm.volumes) {
-				this.volumes.push(new Volume(volume));
+			if (vm.flavor) {
+				this.flavor = new Flavor(vm.flavor);
 			}
-			this.backend = new Backend(vm.backend);
+			if (vm.client) {
+				this.client = new Client(vm.client);
+			}
+			if (vm.cluster) {
+				this.cluster = new Clusterinfo(vm.cluster);
+			}
+			this.volumes = [];
+			if (vm.volumes) {
+				for (const volume of vm.volumes) {
+					this.volumes.push(new Volume(volume));
+				}
+			}
+			if (vm.backend) {
+				this.backend = new Backend(vm.backend);
+			}
 			this.conda_packages = [];
-			for (const conda_package of vm.conda_packages) {
-				this.conda_packages.push(new CondaPackage(conda_package));
+			if (vm.conda_packages) {
+				for (const conda_package of vm.conda_packages) {
+					this.conda_packages.push(new CondaPackage(conda_package));
+				}
 			}
 		}
 		this.getTerminationStartDateString();
@@ -90,5 +106,21 @@ export class VirtualMachine {
 			this.error_msg = null;
 		}, timeout);
 	}
+}
 
+export class VirtualMachinePage {
+	vm_list: VirtualMachine[];
+	total_pages: number;
+	total_items: number;
+	items_per_page: number = 7;
+
+	constructor(vm_page?: Partial<VirtualMachinePage>) {
+		Object.assign(this, vm_page);
+		if (vm_page) {
+			this.vm_list = [];
+			for (const vm of vm_page.vm_list) {
+				this.vm_list.push(new VirtualMachine(vm));
+			}
+		}
+	}
 }

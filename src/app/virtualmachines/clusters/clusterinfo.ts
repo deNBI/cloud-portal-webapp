@@ -22,12 +22,18 @@ export class WorkerBatch {
 
 	constructor(index: number, batch?: Partial<WorkerBatch>) {
 		this.index = index;
+		Object.assign(this, batch);
 		if (batch) {
-			Object.assign(this, batch);
-			this.flavor = new Flavor(batch.flavor);
-			this.image = new Image(batch.image);
-			for (const flavor of batch.usable_flavors) {
-				this.usable_flavors.push(new Flavor(flavor));
+			if (batch.flavor) {
+				this.flavor = new Flavor(batch.flavor);
+			}
+			if (batch.image) {
+				this.image = new Image(batch.image);
+			}
+			if (batch.usable_flavors) {
+				for (const flavor of batch.usable_flavors) {
+					this.usable_flavors.push(new Flavor(flavor));
+				}
 			}
 		}
 	}
@@ -69,15 +75,23 @@ export class Clusterinfo {
 	master_instance_openstack_id: string;
 
 	constructor(cl?: Partial<Clusterinfo>) {
+		Object.assign(this, cl);
 		if (cl) {
-			this.master_instance = new VirtualMachine(cl.master_instance);
-			this.worker_instances = [];
-			for (const clWorkerInstance of cl.worker_instances) {
-				this.worker_instances.push(new VirtualMachine(clWorkerInstance));
+			if (cl.master_instance) {
+				this.master_instance = new VirtualMachine(cl.master_instance);
 			}
+			this.worker_instances = [];
+			if (cl.worker_instances) {
+				for (const clWorkerInstance of cl.worker_instances) {
+					this.worker_instances.push(new VirtualMachine(clWorkerInstance));
+				}
+			}
+			if (cl.worker_batches) {
+				this.worker_batches = [];
+				this.set_worker_batches(cl.worker_batches);
+			}
+			this.sortWorkerByStatus();
 		}
-		this.set_worker_baches(cl.worker_batches);
-		this.sortWorkerByStatus();
 	}
 
 	public setScaleDownBatchesCount(): void {
@@ -108,7 +122,10 @@ export class Clusterinfo {
 
 	}
 
-	private set_worker_baches(workerBatches: WorkerBatch[]): void {
+	private set_worker_batches(workerBatches: WorkerBatch[]): void {
+		// for (const worker_batch of workerBatches) {
+		// 	this.worker_batches.push(new WorkerBatch(worker_batch.index, worker_batch));
+		// }
 		this.worker_batches = workerBatches.map(
 			(workerBatch: WorkerBatch): WorkerBatch => new WorkerBatch(workerBatch.index, workerBatch),
 		);

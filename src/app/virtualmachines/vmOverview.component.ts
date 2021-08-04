@@ -5,8 +5,9 @@ import {
 	FormArray, FormBuilder, FormControl, FormGroup, Validators,
 } from '@angular/forms';
 import { ClipboardService } from 'ngx-clipboard';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { VirtualmachineService } from '../api-connector/virtualmachine.service';
-import { VirtualMachine } from './virtualmachinemodels/virtualmachine';
+import { VirtualMachine, VirtualMachinePage } from './virtualmachinemodels/virtualmachine';
 import { FullLayoutComponent } from '../layouts/full-layout.component';
 import { UserService } from '../api-connector/user.service';
 import { ImageService } from '../api-connector/image.service';
@@ -23,6 +24,7 @@ import { TemplateNames } from './conda/template-names';
 import { Volume } from './volumes/volume';
 import { VolumeStates } from './volumes/volume_states';
 import { WIKI_GUACAMOLE_LINK, WIKI_RSTUDIO_LINK, WIKI_VOLUME_OVERVIEW } from '../../links/links';
+import { StopVMComponent } from './modals/stopVM.component';
 
 /**
  * Vm overview componentn.
@@ -32,15 +34,19 @@ import { WIKI_GUACAMOLE_LINK, WIKI_RSTUDIO_LINK, WIKI_VOLUME_OVERVIEW } from '..
 	templateUrl: 'vmOverview.component.html',
 	styleUrls: ['./vmOverview.component.scss'],
 	providers: [FacilityService, ImageService, UserService,
-		VirtualmachineService, FullLayoutComponent, GroupService, ClientService],
+		FullLayoutComponent, GroupService, ClientService],
 })
 
 export class VmOverviewComponent implements OnInit, OnDestroy {
 	title: string = 'Instance Overview';
 
+	bsModalRef: BsModalRef;
 	private subscription: Subscription = new Subscription();
 
 	VirtualMachineStates: VirtualMachineStates = new VirtualMachineStates();
+
+	vm_page: VirtualMachinePage = null;
+
 	volume_to_attach: Volume;
 	volume_to_detach: Volume;
 	detached_project_volumes: Volume[] = [];
@@ -164,10 +170,17 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 		private imageService: ImageService, private userService: UserService,
 		private virtualmachineservice: VirtualmachineService, private fb: FormBuilder,
 		private groupService: GroupService,
-		private clientService: ClientService) {
+		private clientService: ClientService,
+		private modalService: BsModalService) {
 		this.actionsForm = fb.group({
 			title: fb.control('initial value', Validators.required),
 		});
+	}
+
+	showStopModal(vm: VirtualMachine): void {
+		const initialState = { virtualMachine: vm };
+
+		this.bsModalRef = this.modalService.show(StopVMComponent, { initialState });
 	}
 
 	/**
@@ -574,8 +587,9 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 			this.currentPage, this.vm_per_site,
 			this.filter, this.filter_status_list, this.filter_cluster, this.filter_set_for_termination,
 		)
-			.subscribe((vms: VirtualMachine[]): void => {
-				this.prepareVMS(vms);
+			.subscribe((vm_page: VirtualMachinePage): void => {
+				this.vm_page = vm_page;
+				this.prepareVMS(null, vm_page);
 			});
 	}
 
@@ -644,28 +658,39 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 
 	}
 
-	prepareVMS(vms: VirtualMachine[]): void {
+	prepareVMS(vms?: VirtualMachine[], vm_page?: VirtualMachinePage): void {
+		if (!vm_page) {
+			const vm_list: VirtualMachine[] = vms['vm_list'];
+			const tmp_vms: VirtualMachine[] = [];
 
-		const vm_list: VirtualMachine[] = vms['vm_list'];
-		const tmp_vms: VirtualMachine[] = [];
+			// tslint:disable-next-line:no-for-each-push
+			vm_list.forEach((new_vm: VirtualMachine): void => {
+				const vm: VirtualMachine = new VirtualMachine(new_vm);
+				vm.cardState = 0;
+				tmp_vms.push(vm);
 
-		// tslint:disable-next-line:no-for-each-push
-		vm_list.forEach((new_vm: VirtualMachine): void => {
-			const vm: VirtualMachine = new VirtualMachine(new_vm);
-			vm.cardState = 0;
-			tmp_vms.push(vm);
+			});
+			this.vms_content = [];
+			this.vms_content = tmp_vms;
+			this.checkVMAdminState();
+			this.total_items = vms['total_items'];
+			this.items_per_page = vms['items_per_page'];
+			this.total_pages = vms['num_pages'];
+			this.vmActions = [];
 
-		});
-		this.vms_content = [];
-		this.vms_content = tmp_vms;
-		this.checkVMAdminState();
-		this.total_items = vms['total_items'];
-		this.items_per_page = vms['items_per_page'];
-		this.total_pages = vms['num_pages'];
-		this.vmActions = [];
+			this.setVmActions();
+			this.isSearching = false;
+		} else {
+			this.vms_content = vm_page.vm_list;
+			this.checkVMAdminState();
+			this.total_items = vm_page.total_items;
+			this.items_per_page = vm_page.items_per_page;
+			this.total_pages = vm_page.total_pages;
+			this.vmActions = [];
 
-		this.setVmActions();
-		this.isSearching = false;
+			this.setVmActions();
+			this.isSearching = false;
+		}
 	}
 
 	checkVmTillActive(): void {

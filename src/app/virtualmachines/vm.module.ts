@@ -33,6 +33,7 @@ import { ClusterstatusComponent } from './clusters/clusterstatus/clusterstatus.c
 import { VolumStatusComponent } from './volumes/volum-status/volum-status.component';
 import { PipeModuleModule } from '../pipe-module/pipe-module.module';
 import { ProjectUserListComponent } from './project-user-list/project-user-list.component';
+import { StopVMComponent } from './modals/stopVM.component';
 
 /**
  * VM module.
@@ -75,6 +76,7 @@ import { ProjectUserListComponent } from './project-user-list/project-user-list.
 		VmstatusComponent,
 		VolumStatusComponent,
 		ProjectUserListComponent,
+		StopVMComponent,
 	],
 })
 export class VmModule {

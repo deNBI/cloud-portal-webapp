@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { ApiSettings } from './api-settings.service';
-import { VirtualMachine } from '../virtualmachines/virtualmachinemodels/virtualmachine';
+import { VirtualMachine, VirtualMachinePage } from '../virtualmachines/virtualmachinemodels/virtualmachine';
 import { Volume } from '../virtualmachines/volumes/volume';
 import { IResponseTemplate } from './response-template';
 import { Clusterinfo, WorkerBatch } from '../virtualmachines/clusters/clusterinfo';
@@ -13,7 +13,9 @@ import { Condalog } from '../virtualmachines/conda/condalog';
 /**
  * Service which provides vm methods.
  */
-@Injectable()
+@Injectable({
+	providedIn: 'root',
+})
 export class VirtualmachineService {
 
 	data: string;
@@ -169,7 +171,7 @@ export class VirtualmachineService {
 
 	getVmsFromLoggedInUser(page: number, vm_per_site: number, filter?: string,
 		filter_status?: string[], filter_cluster: boolean = false,
-		filter_set_for_termination: boolean = false): Observable<VirtualMachine[]> {
+		filter_set_for_termination: boolean = false): Observable<VirtualMachinePage> {
 		let params: HttpParams = new HttpParams().set('page', page.toString()).set('vm_per_site', vm_per_site.toString());
 
 		if (filter) {
@@ -189,14 +191,12 @@ export class VirtualmachineService {
 
 		}
 
-		return this.http.get<VirtualMachine[]>(this.baseVmUrl, {
+		return this.http.get<VirtualMachinePage>(this.baseVmUrl, {
 			withCredentials: true,
 			params,
 		}).pipe(
 			map(
-				(vms: VirtualMachine[]): VirtualMachine[] => vms.map(
-					(vm: VirtualMachine): VirtualMachine => new VirtualMachine(vm),
-				),
+				(vm_page: VirtualMachinePage) => new VirtualMachinePage(vm_page),
 			),
 		);
 	}
