@@ -554,6 +554,10 @@ $simplevmcolour: #00ADEF;
   margin-right: 10px;
 }
 
+.navbar-brand {
+  padding: 0 !important;
+}
+
 //modals
 
 .modal-header {
@@ -629,7 +633,7 @@ $simplevmcolour: #00ADEF;
   }
 
   .main-maximized{
-    margin-left: 3.438rem !important;
+    margin-left: 5.313rem !important;
   }
 
   .btn{

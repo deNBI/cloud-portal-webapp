@@ -202,14 +202,13 @@
                    style="cursor: pointer;"></i></i></strong></label>
               <div class="col-md-8">
                 <div class="input-group">
-                  <label id="id_project_application_workshop"
-                         class="switch switch-label switch-outline-primary-alt">
-                    <input type="checkbox" class="switch-input"
+                  <div id="id_project_application_workshop" class="form-check">
+                    <input class="form-check-input" type="checkbox"
                            name="project_application_workshop"
-                           [(ngModel)]="application.project_application_workshop"
-                    >
-                    <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
-                    <span class="switch-handle"></span></label>
+                           [(ngModel)]="application.project_application_workshop">
+
+                  </div>
+
                 </div>
                 <span class="help-block">
                   Would you like to conduct a workshop with the requested resources in the context of this project?
@@ -474,15 +473,15 @@
               <label class="col-md-4 form-control-label" for="id_project_application_sensitive_data"><strong>Sensitive
                 Data*</strong></label>
               <div class="col-md-8">
-
-                <label id="id_project_application_sensitive_data"
-                       class="switch switch-label switch-outline-primary-alt">
-                  <input type="checkbox" class="switch-input"
+                <div id="id_project_application_sensitive_data" class="form-check">
+                  <input class="form-check-input" type="checkbox"
                          name="project_application_sensitive_data"
                          [(ngModel)]="application.project_application_sensitive_data"
                   >
-                  <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
-                  <span class="switch-handle"></span></label>
+
+                </div>
+
+
                 <div class="alert alert-info" role="alert">
                   According to our usage policy it is not allowed to process person related data in the de.NBI Cloud
                   with
@@ -495,15 +494,15 @@
               <label class="col-md-4 form-control-label"
                      for="id_project_application_openstack_basic_introduction"><strong>Training</strong></label>
               <div class="col-md-8">
-
-                <label id="id_project_application_openstack_basic_introduction"
-                       class="switch switch-label switch-outline-primary-alt">
-                  <input type="checkbox" class="switch-input"
+                <div id="id_project_application_openstack_basic_introduction" class="form-check">
+                  <input class="form-check-input" type="checkbox"
                          name="project_application_openstack_basic_introduction"
                          [(ngModel)]="application.project_application_openstack_basic_introduction"
                   >
-                  <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
-                  <span class="switch-handle"></span></label>
+
+                </div>
+
+
                 <div class="alert alert-info" role="alert">
                   Are you interested in a short OpenStack introduction workshop? You and your project members will be
                   notified as soon as a workshop is organized.
@@ -514,16 +513,16 @@
               <label class="col-md-4 form-control-label"
                      for="id_project_application_cloud_service"><strong>Service</strong></label>
               <div class="col-md-8">
-
-                <label id="id_project_application_cloud_service"
-                       class="switch switch-label switch-outline-primary-alt">
-                  <input type="checkbox" class="switch-input"
+                <div id="id_project_application_cloud_service" class="form-check">
+                  <input class="form-check-input" type="checkbox"
                          name="project_application_cloud_service"
                          [defaultChecked]="application?.project_application_cloud_service_user_number > 0 || application?.project_application_cloud_service_develop"
                          [(ngModel)]="application.project_application_cloud_service"
                   >
-                  <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
-                  <span class="switch-handle"></span></label>
+
+                </div>
+
+
                 <div class="alert alert-info" role="alert">
                   Do you plan to offer a service?
                 </div>
@@ -533,16 +532,16 @@
               <label class="col-md-4 form-control-label" for="id_project_application_cloud_service_develop"><strong>New
                 service*</strong></label>
               <div class="col-md-8">
-
-                <label id="id_project_application_cloud_service_develop"
-                       class="switch switch-label switch-outline-primary-alt">
-                  <input type="checkbox" class="switch-input"
+                <div id="id_project_application_cloud_service_develop" class="form-check">
+                  <input class="form-check-input" type="checkbox"
                          name="project_application_cloud_service_develop"
                          [defaultChecked]="application?.project_application_cloud_service_user_number > 0 || application?.project_application_cloud_service"
                          [(ngModel)]="application.project_application_cloud_service_develop"
                   >
-                  <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
-                  <span class="switch-handle"></span></label>
+
+                </div>
+
+
                 <div class="alert alert-info" role="alert">
                   Are you developing a new service?
                   <br>
@@ -578,13 +577,14 @@
               <label class="col-md-4 form-control-label" for="id_project_application_horizon_switch"><strong>Horizon
                 2020</strong></label>
               <div class="col-md-8">
-                <label id="id_project_application_horizon_switch"
-                       class="switch switch-label switch-outline-primary-alt">
-                  <input type="checkbox" class="switch-input" #part_horizon
+                <div id="id_project_application_horizon_switch" class="form-check">
+                  <input class="form-check-input" type="checkbox"
+                         #part_horizon
                          [defaultChecked]="application?.project_application_horizon2020?.length > 1"
                          (click)="toggleProjectPart(part_horizon.checked, 'horizon')">
-                  <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
-                  <span class="switch-handle"></span></label>
+
+                </div>
+
                 <input type="text" id="id_project_application_horizon2020" *ngIf="part_horizon.checked"
                        name="project_application_horizon2020" class="form-control"
                        maxlength="2048" required minlength="2"
@@ -600,13 +600,15 @@
               <label class="col-md-4 form-control-label" for="id_project_application_elixir_switch"><strong>Elixir
                 Project</strong></label>
               <div class="col-md-8">
-                <label id="id_project_application_elixir_switch"
-                       class="switch switch-label switch-outline-primary-alt">
-                  <input type="checkbox" class="switch-input" #part_elixir
+                <div id="id_project_application_elixir_switch" class="form-check">
+                  <input class="form-check-input" type="checkbox"
+                         #part_elixir
                          [defaultChecked]="application?.project_application_elixir_project?.length > 1"
                          (click)="toggleProjectPart(part_elixir.checked, 'elixir')">
-                  <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
-                  <span class="switch-handle"></span></label>
+
+                </div>
+
+
                 <input type="text" id="id_project_application_elixir_project" *ngIf="part_elixir.checked"
                        name="project_application_elixir_project" class="form-control"
                        maxlength="2048" required minlength="2"
@@ -621,13 +623,14 @@
             <div class="form-group row">
               <label class="col-md-4 form-control-label" for="id_project_application_dfg_switch"><strong>DFG</strong></label>
               <div class="col-md-8">
-                <label id="id_project_application_dfg_switch"
-                       class="switch switch-label switch-outline-primary-alt">
-                  <input type="checkbox" class="switch-input" #part_dfg
+                <div id="id_project_application_dfg_switch" class="form-check">
+                  <input class="form-check-input" type="checkbox"
+                         #part_dfg
                          [defaultChecked]="application?.project_application_dfg?.length > 1"
                          (click)="toggleProjectPart(part_dfg.checked, 'dfg')">
-                  <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
-                  <span class="switch-handle"></span></label>
+
+                </div>
+
                 <input type="text" id="id_project_application_dfg" *ngIf="part_dfg.checked"
                        name="project_application_dfg" class="form-control"
                        maxlength="2048" required minlength="2"
@@ -642,13 +645,14 @@
             <div class="form-group row">
               <label class="col-md-4 form-control-label" for="id_project_application_bmbf_switch"><strong>BMBF</strong></label>
               <div class="col-md-8">
-                <label id="id_project_application_bmbf_switch"
-                       class="switch switch-label switch-outline-primary-alt">
-                  <input type="checkbox" class="switch-input" #part_bmbf
+                <div id="id_project_application_bmbf_switch" class="form-check">
+                  <input class="form-check-input" type="checkbox"
+                         #part_bmbf
                          [defaultChecked]="application?.project_application_bmbf_project?.length > 1"
                          (click)="toggleProjectPart(part_bmbf.checked, 'bmbf')">
-                  <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
-                  <span class="switch-handle"></span></label>
+
+                </div>
+
                 <input type="text" id="id_project_application_bmbf_project" *ngIf="part_bmbf.checked"
                        name="project_application_bmbf_project" class="form-control"
                        maxlength="2048" required minlength="2"
@@ -663,13 +667,12 @@
             <div class="form-group row">
               <label class="col-md-4 form-control-label" for="id_project_application_bmbf_switch"><strong>NFDI</strong></label>
               <div class="col-md-8">
-                <label id="id_project_application_nfdi_switch"
-                       class="switch switch-label switch-outline-primary-alt">
-                  <input type="checkbox" class="switch-input" #part_nfdi
+                <div id="id_project_application_nfdi_switch" class="form-check">
+                  <input class="form-check-input" type="checkbox" #part_nfdi
                          [defaultChecked]="application?.project_application_nfdi?.length > 1"
                          (click)="toggleProjectPart(part_nfdi.checked, 'nfdi')">
-                  <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
-                  <span class="switch-handle"></span></label>
+
+                </div>
                 <input type="text" id="id_project_application_nfdi_project" *ngIf="part_nfdi.checked"
                        name="project_application_nfdi_project" class="form-control"
                        maxlength="2048" required minlength="2"
@@ -686,16 +689,13 @@
             <div class="form-group row">
               <label class="col-md-4 form-control-label" for="id_project_application_report_allowed"><strong>Dissemination</strong></label>
               <div class="col-md-8">
-
-
-                <label id="id_project_application_report_allowed"
-                       class="switch switch-label switch-outline-primary-alt">
-                  <input type="checkbox" class="switch-input"
-                         name="project_application_report_allowed"
+                <div id="id_project_application_report_allowed" class="form-check">
+                  <input class="form-check-input" type="checkbox" name="project_application_report_allowed"
                          [(ngModel)]="application.project_application_report_allowed"
                   >
-                  <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
-                  <span class="switch-handle"></span></label>
+
+                </div>
+
                 <p> Do you permit the de.NBI Cloud to publicly mention your
                   project's participation?</p>
 
@@ -729,26 +729,30 @@
                   <div class="form-group row">
                     <label class="col-md-4 form-control-label"><strong>All</strong></label>
                     <div class="col-md-2">
-                      <label class="switch switch-label switch-outline-primary-alt">
-                        <input type="checkbox" class="switch-input" name="information_all"
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox"
+                               name="information_all"
                                [(ngModel)]="all_dissemination_checked" (ngModelChange)="onAllDissChange($event)"
                         >
-                        <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
-                        <span class="switch-handle"></span>
-                      </label>
+
+                      </div>
+
+
                     </div>
                   </div>
 
                   <div class="form-group row">
                     <label class="col-md-4 form-control-label">Project Title</label>
                     <div class="col-md-2">
-                      <label class="switch switch-label switch-outline-primary-alt">
-                        <input type="checkbox" class="switch-input" name="information_title" checked
+                      <div class="form-check">
+                        <input type="checkbox" class="form-check-input" name="information_title" checked
                                disabled>
-                        <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
-                        <span class="switch-handle"></span>
-                      </label>
+
+                      </div>
+
                     </div>
+
+
                     <div class="col-md-6"><input type="text" class="form-control" name="information_public_title_input"
                                                  placeholder="Choose a public title - Leave blank for existing title."
 
@@ -758,12 +762,12 @@
                   <div class="form-group row">
                     <label class="col-md-4 form-control-label">Research Topics</label>
                     <div class="col-md-2">
-                      <label class="switch switch-label switch-outline-primary-alt">
-                        <input type="checkbox" class="switch-input" name="information_edam_terms" checked
+                      <div class="form-check">
+                        <input type="checkbox" class="form-check-input" name="information_edam_terms" checked
                                disabled>
-                        <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
-                        <span class="switch-handle"></span>
-                      </label>
+
+                      </div>
+
                     </div>
                     <div class="col-md-6">
                       <h5><span
@@ -782,14 +786,14 @@
                   <div class="form-group row">
                     <label class="col-md-4 form-control-label">Description</label>
                     <div class="col-md-2">
-                      <label class="switch switch-label switch-outline-primary-alt" id="public_description_enabled">
-                        <input type="checkbox" class="switch-input"
+                      <div class="form-check" id="public_description_enabled">
+                        <input type="checkbox" class="form-check-input"
                                [(ngModel)]="application.dissemination.information_description_allowed"
                                name="information_description_allowed"
                         >
-                        <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
-                        <span class="switch-handle"></span>
-                      </label>
+
+                      </div>
+
                     </div>
                     <div *ngIf="application?.dissemination.information_description_allowed" class="col-md-6">
                     <textarea type="text" class="form-control" maxlength="8192"
@@ -802,99 +806,98 @@
                   <div class="form-group row">
                     <label class="col-md-4 form-control-label">Resources</label>
                     <div class="col-md-4">
-                      <label class="switch switch-label switch-outline-primary-alt" id="information_resources_checkbox">
-                        <input type="checkbox" class="switch-input" name="information_resources"
+                      <div class="form-check" id="information_resources_checkbox">
+                        <input type="checkbox" class="form-check-input" name="information_resources"
                                [(ngModel)]="application.dissemination.information_resources">
-                        <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
-                        <span class="switch-handle"></span>
-                      </label>
+
+                      </div>
+
                     </div>
                   </div>
 
                   <div class="form-group row">
                     <label class="col-md-4 form-control-label">Lifetime</label>
                     <div class="col-md-4">
-                      <label class="switch switch-label switch-outline-primary-alt" id="information_lifetime_checkbox">
-                        <input type="checkbox" class="switch-input" name="information_lifetime"
+                      <div class="form-check" id="information_lifetime_checkbox">
+                        <input type="checkbox" class="form-check-input" name="information_lifetime"
                                [(ngModel)]="application.dissemination.information_lifetime"
 
                         >
-                        <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
-                        <span class="switch-handle"></span>
-                      </label>
+
+                      </div>
+
                     </div>
                   </div>
 
                   <div class="form-group row">
                     <label class="col-md-4 form-control-label">Project Type</label>
                     <div class="col-md-4">
-                      <label class="switch switch-label switch-outline-primary-alt"
-                             id="information_project_type_checkbox">
-                        <input type="checkbox" class="switch-input" name="information_project_type"
+                      <div class="form-check" id="information_project_type_checkbox">
+                        <input type="checkbox" class="form-check-input" name="information_project_type"
                                [(ngModel)]="application.dissemination.information_project_type"
 
                         >
-                        <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
-                        <span class="switch-handle"></span>
-                      </label>
+
+                      </div>
+
+
                     </div>
                   </div>
 
                   <div class="form-group row">
                     <label class="col-md-4 form-control-label">Name of PI</label>
                     <div class="col-md-4">
-                      <label class="switch switch-label switch-outline-primary-alt" id="information_pi_name_checkbox">
-                        <input type="checkbox" class="switch-input" name="information_pi_name"
+                      <div class="form-check" id="information_pi_name_checkbox">
+                        <input type="checkbox" class="form-check-input" name="information_pi_name"
                                [(ngModel)]="application.dissemination.information_pi_name"
 
                         >
-                        <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
-                        <span class="switch-handle"></span>
-                      </label>
+
+                      </div>
+
+
                     </div>
                   </div>
 
                   <div class="form-group row">
                     <label class="col-md-4 form-control-label">Institution</label>
                     <div class="col-md-4">
-                      <label class="switch switch-label switch-outline-primary-alt"
-                             id="information_institution_checkbox">
-                        <input type="checkbox" class="switch-input" name="information_institution"
+                      <div class="form-check" id="information_institution_checkbox">
+                        <input type="checkbox" class="form-check-input" name="information_institution"
                                [(ngModel)]="application.dissemination.information_institution"
 
                         >
-                        <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
-                        <span class="switch-handle"></span>
-                      </label>
+
+                      </div>
+
                     </div>
                   </div>
 
                   <div class="form-group row">
                     <label class="col-md-4 form-control-label">Workgroup</label>
                     <div class="col-md-4">
-                      <label class="switch switch-label switch-outline-primary-alt" id="information_workgroup_checkbox">
-                        <input type="checkbox" class="switch-input" name="information_workgroup"
-                               [(ngModel)]="application.dissemination.information_workgroup"
+                        <div class="form-check" id="information_workgroup_checkbox">
+                          <input type="checkbox" class="form-check-input" name="information_workgroup"
+                                 [(ngModel)]="application.dissemination.information_workgroup"
 
-                        >
-                        <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
-                        <span class="switch-handle"></span>
-                      </label>
+                          >
+
+                        </div>
+
+                      </div>
                     </div>
-                  </div>
 
                   <div class="form-group row">
                     <label class="col-md-4 form-control-label">Project Affiliation</label>
                     <div class="col-md-4">
-                      <label class="switch switch-label switch-outline-primary-alt"
-                             id="information_project_affiliation_checkbox">
-                        <input type="checkbox" class="switch-input" name="information_project_affiliation"
+                      <div class="form-check" id="information_project_affiliation_checkbox">
+                        <input type="checkbox" class="form-check-input" name="information_project_affiliation"
                                [(ngModel)]="application.dissemination.information_project_affiliation"
 
                         >
-                        <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
-                        <span class="switch-handle"></span>
-                      </label>
+
+                      </div>
+
                     </div>
                   </div>
 
@@ -914,16 +917,15 @@
                   <div class="form-group row">
                     <label class="col-md-4 form-control-label">de.NBI Platforms</label>
                     <div class="col-md-4">
+                      <div class="form-check" id="platform_denbi_checkbox">
+                        <input type="checkbox" class="form-check-input"
+                               [(ngModel)]="application.dissemination.platform_denbi" name="platform_denbi"
 
-                      <label class="switch switch-label switch-outline-primary-alt" id="platform_denbi_checkbox">
-                        <input type="checkbox" class="switch-input" #denbi
-                               [(ngModel)]="application.dissemination.platform_denbi"
-                               (change)="count_platform(denbi.checked)"
-                               name="platform_denbi">
+                        >
 
-                        <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
-                        <span class="switch-handle"></span>
-                      </label>
+                      </div>
+
+
                     </div>
                   </div>
 
@@ -931,16 +933,16 @@
                   <div class="form-group row">
                     <label class="col-md-4 form-control-label">Twitter</label>
                     <div class="col-md-4">
-
-                      <label class="switch switch-label switch-outline-primary-alt" id="platform_twitter_checkbox">
-                        <input type="checkbox" class="switch-input" #twitter
-                               [(ngModel)]="application.dissemination.platform_twitter"
+                      <div class="form-check" id="platform_twitter_checkbox">
+                        <input type="checkbox" class="form-check-input" #twitter
+                               [(ngModel)]="application.dissemination.platform_twitter" name="platform_twitter"
                                (change)="count_platform(twitter.checked)"
-                               name="platform_twitter"
+
+
                         >
-                        <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
-                        <span class="switch-handle"></span>
-                      </label>
+
+                      </div>
+
                     </div>
                   </div>
 
@@ -959,16 +961,15 @@
                   class="icon-question menu_links"
                   style="cursor: pointer;"></i></i></strong></label>
               <div class="col-md-8">
-
-
-                <label
-                  class="switch switch-label switch-outline-primary-alt" id="project_application_pi_approved_checkbox">
-                  <input type="checkbox" class="switch-input"
-                         name="project_application_pi_approved"
+                <div class="form-check" id="project_application_pi_approved_checkbox">
+                  <input type="checkbox" class="form-check-input"
                          [(ngModel)]="application.project_application_pi_approved"
+                         name="project_application_pi_approved"
+
                   >
-                  <span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
-                  <span class="switch-handle"></span></label>
+
+                </div>
+
 
                 <p> Are you a principal investigator?</p>
 
