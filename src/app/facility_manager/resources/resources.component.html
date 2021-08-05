@@ -9,7 +9,7 @@
       <div class="card-header">
 
           <i class="fa fa-align-justify"></i> Resources
-          <div class="row">
+
 
             <button style="margin: 5px"
                     class="btn"
@@ -33,16 +33,13 @@
               Resources
             </button>
             <div style="margin:5px;"><select [(ngModel)]="selectedFacility"
-                         (ngModelChange)="isLoaded=false;onChangeSelectedFacility($event);"
-                         class="form-control" name="selectedFacility">
+                                             (ngModelChange)="isLoaded=false;onChangeSelectedFacility($event);"
+                                             class="form-control" name="selectedFacility">
               <option *ngFor="  let facility of managerFacilities" [ngValue]="facility">
                 {{facility['Facility']}}
               </option>
 
             </select></div>
-          </div>
-
-
 
 
       </div>
