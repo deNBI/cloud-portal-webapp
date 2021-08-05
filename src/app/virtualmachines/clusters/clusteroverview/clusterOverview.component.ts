@@ -233,13 +233,7 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 	}
 
 	calcMaxWorkerInstancesByFlavor(): void {
-		if (this.selectedBatch.flavor) {
-
-			this.selectedBatch.max_worker_count = this.selectedProjectRessources.calcMaxWorkerInstancesByFlavor(
-				this.selectedCluster.master_instance.flavor,
-				this.selectedBatch, this.selectedCluster.worker_batches,
-			);
-		}
+		this.selectedBatch.setMaxWorkerCount(this.selectedProjectRessources);
 	}
 
 	resizeFix(): void {

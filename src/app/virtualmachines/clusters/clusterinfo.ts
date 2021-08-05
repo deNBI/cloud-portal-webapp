@@ -3,6 +3,7 @@ import { VirtualMachine } from '../virtualmachinemodels/virtualmachine';
 import { Client } from '../../vo_manager/clients/client.model';
 import { Flavor } from '../virtualmachinemodels/flavor';
 import { Image } from '../virtualmachinemodels/image';
+import { ApplicationRessourceUsage } from '../../applications/application-ressource-usage/application-ressource-usage';
 
 /**
  *  Cluster Worker Batch
@@ -32,6 +33,15 @@ export class WorkerBatch {
 			this.upscale_count = batch.upscale_count;
 			this.max_worker_count = batch.max_worker_count;
 			this.max_scale_up_count = batch.max_scale_up_count;
+		}
+	}
+
+	public setMaxWorkerCount(ressource_usage: ApplicationRessourceUsage): void {
+		if (this.flavor) {
+
+			this.max_worker_count = ressource_usage.calcMaxScaleUpWorkerInstancesByFlavor(
+				this.flavor,
+			);
 		}
 	}
 
