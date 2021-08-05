@@ -661,7 +661,7 @@
 	</div>
 	<div class="row">
 		<div class="col"
-				 *ngIf="credits_allowed && ((project_application | hasstatusinlist:Application_States.APPROVED)
+				 *ngIf="project_application.credits_allowed && ((project_application | hasstatusinlist:Application_States.APPROVED)
            || (project_application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)
            || (project_application | hasstatusinlist:Application_States.MODIFICATION_DECLINED) )">
 			<div class="card" style=" ">
