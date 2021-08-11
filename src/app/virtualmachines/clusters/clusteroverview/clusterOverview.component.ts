@@ -16,7 +16,7 @@ import { ClientService } from '../../../api-connector/client.service';
 import { Clusterinfo, WorkerBatch } from '../clusterinfo';
 import { VirtualMachine } from '../../virtualmachinemodels/virtualmachine';
 import { ApplicationRessourceUsage } from '../../../applications/application-ressource-usage/application-ressource-usage';
-import { SCALE_SCRIPT_LINK, CLOUD_PORTAL_SUPPORT_MAIL } from '../../../../links/links';
+import { CLOUD_PORTAL_SUPPORT_MAIL, SCALE_SCRIPT_LINK } from '../../../../links/links';
 import { AbstractBaseClass } from '../../../shared/shared_modules/baseClass/abstract-base-class';
 import { Flavor } from '../../virtualmachinemodels/flavor';
 import { FlavorService } from '../../../api-connector/flavor.service';
@@ -28,11 +28,11 @@ export const SCALING_SCRIPT_NAME: string = 'scaling.py';
  */
 @Component({
 
-	selector: 'app-vm-overview',
-	templateUrl: './clusterOverview.component.html',
-	styleUrls: ['../../vmOverview.component.scss'],
-	providers: [FacilityService, ImageService, UserService,
-		VirtualmachineService, FullLayoutComponent, GroupService, ClientService, GroupService, FlavorService],
+	           selector: 'app-vm-overview',
+	           templateUrl: './clusterOverview.component.html',
+	           styleUrls: ['../../vmOverview.component.scss'],
+	           providers: [FacilityService, ImageService, UserService,
+		           VirtualmachineService, FullLayoutComponent, GroupService, ClientService, GroupService, FlavorService],
 })
 
 export class ClusterOverviewComponent extends AbstractBaseClass implements OnInit, OnDestroy {
@@ -145,11 +145,12 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 	}
 
 	removeNewBatchSelectedCluster(): void {
+
 		if (this.created_new_batch && this.selectedBatch) {
 			this.selectedCluster.remove_batch(this.selectedBatch);
-			this.created_new_batch = false;
-			this.selectedBatch = null;
 		}
+		this.created_new_batch = false;
+		this.selectedBatch = null;
 	}
 
 	setSelectedBatch(batch: WorkerBatch): void {
