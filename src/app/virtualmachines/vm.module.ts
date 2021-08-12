@@ -85,10 +85,10 @@ import { RebootVmComponent } from './modals/reboot-vm/reboot-vm.component';
 		VmCardComponent,
 		StopVmComponent,
 		ResumeVMComponent,
-  DeleteVmComponent,
-  SnapshotVmComponent,
-  VolumeVmComponent,
-  RebootVmComponent,
+		DeleteVmComponent,
+		SnapshotVmComponent,
+		VolumeVmComponent,
+		RebootVmComponent,
 	],
 })
 export class VmModule {
