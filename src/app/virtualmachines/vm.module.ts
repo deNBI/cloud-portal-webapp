@@ -33,7 +33,13 @@ import { ClusterstatusComponent } from './clusters/clusterstatus/clusterstatus.c
 import { VolumStatusComponent } from './volumes/volum-status/volum-status.component';
 import { PipeModuleModule } from '../pipe-module/pipe-module.module';
 import { ProjectUserListComponent } from './project-user-list/project-user-list.component';
-import { StopVMComponent } from './modals/stopVM.component';
+import { StopVmComponent } from './modals/stop-vm/stop-vm.component';
+import { VmCardComponent } from './vmcard/vmcard.component';
+import { ResumeVMComponent } from './modals/resume-vm/resume-vm.component';
+import { DeleteVmComponent } from './modals/delete-vm/delete-vm.component';
+import { SnapshotVmComponent } from './modals/snapshot-vm/snapshot-vm.component';
+import { VolumeVmComponent } from './modals/volume-vm/volume-vm.component';
+import { RebootVmComponent } from './modals/reboot-vm/reboot-vm.component';
 
 /**
  * VM module.
@@ -76,7 +82,13 @@ import { StopVMComponent } from './modals/stopVM.component';
 		VmstatusComponent,
 		VolumStatusComponent,
 		ProjectUserListComponent,
-		StopVMComponent,
+		VmCardComponent,
+		StopVmComponent,
+		ResumeVMComponent,
+  DeleteVmComponent,
+  SnapshotVmComponent,
+  VolumeVmComponent,
+  RebootVmComponent,
 	],
 })
 export class VmModule {

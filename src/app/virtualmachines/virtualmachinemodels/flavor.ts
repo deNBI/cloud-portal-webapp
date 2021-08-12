@@ -22,7 +22,9 @@ export class Flavor {
 	constructor(flavor?: Partial<Flavor>) {
 		Object.assign(this, flavor);
 		if (flavor) {
-			this.type = new FlavorType(flavor.type);
+			if (flavor.type) {
+				this.type = new FlavorType(flavor.type);
+			}
 		}
 		this.disabled = false;
 		if (flavor['credits_costs_per_hour']) {

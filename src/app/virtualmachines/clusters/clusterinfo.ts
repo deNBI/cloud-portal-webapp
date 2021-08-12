@@ -3,6 +3,7 @@ import { VirtualMachine } from '../virtualmachinemodels/virtualmachine';
 import { Client } from '../../vo_manager/clients/client.model';
 import { Flavor } from '../virtualmachinemodels/flavor';
 import { Image } from '../virtualmachinemodels/image';
+import { VirtualMachineStates } from '../virtualmachinemodels/virtualmachinestates';
 
 /**
  *  Cluster Worker Batch
@@ -79,6 +80,12 @@ export class Clusterinfo {
 		if (cl) {
 			if (cl.master_instance) {
 				this.master_instance = new VirtualMachine(cl.master_instance);
+				/**
+				 * TODO: Remove once cluster status is updated by api
+				 */
+				if (this.master_instance.status === VirtualMachineStates.SHUTOFF) {
+					this.status = VirtualMachineStates.SHUTOFF;
+				}
 			}
 			this.worker_instances = [];
 			if (cl.worker_instances) {

@@ -1,4 +1,3 @@
-import { Subscription } from 'rxjs';
 import { Flavor } from './flavor';
 import { Client } from '../../vo_manager/clients/client.model';
 import { ImageMode } from '../../facility_manager/image-tag';
@@ -6,7 +5,6 @@ import { Clusterinfo } from '../clusters/clusterinfo';
 import { Volume } from '../volumes/volume';
 import { Backend } from '../conda/backend/backend';
 import { CondaPackage } from '../condaPackage.model';
-import { VirtualmachineService } from '../../api-connector/virtualmachine.service';
 import { VirtualMachineStates } from './virtualmachinestates';
 
 /**
@@ -42,6 +40,7 @@ export class VirtualMachine {
 	volumes: Volume[];
 	still_used_confirmation_requested: boolean;
 	error_msg: string;
+	msg: string;
 	days_running: number;
 	backend: Backend;
 	conda_packages: CondaPackage[] = [];
@@ -106,21 +105,20 @@ export class VirtualMachine {
 			this.error_msg = null;
 		}, timeout);
 	}
-}
 
-export class VirtualMachinePage {
-	vm_list: VirtualMachine[];
-	total_pages: number;
-	total_items: number;
-	items_per_page: number = 7;
+	setMsgWithTimeout(msg: string, timeout: number = 10000): void {
+		this.msg = msg;
+		setTimeout((): void => {
+			this.msg = null;
+		}, timeout);
+	}
 
-	constructor(vm_page?: Partial<VirtualMachinePage>) {
-		Object.assign(this, vm_page);
-		if (vm_page) {
-			this.vm_list = [];
-			for (const vm of vm_page.vm_list) {
-				this.vm_list.push(new VirtualMachine(vm));
-			}
+	updateClusterStatus(): void {
+		if (!this.cluster) {
+			return;
+		}
+		if (this.status === VirtualMachineStates.SHUTOFF) {
+			this.cluster.status = VirtualMachineStates.SHUTOFF;
 		}
 	}
 }
