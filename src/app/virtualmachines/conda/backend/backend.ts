@@ -10,4 +10,8 @@ export class Backend {
 	backend_id: number;
 	location_url: string;
 	playbook_successful: number;
+
+	constructor(backend?: Partial<Backend>) {
+		Object.assign(this, backend);
+	}
 }

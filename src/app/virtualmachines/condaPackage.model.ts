@@ -7,10 +7,8 @@ export class CondaPackage {
 	version: string;
 	build: string;
 
-	constructor(name: string, version: string, build: string) {
-		this.name = name;
-		this.version = version;
-		this.build = build;
+	constructor(condaPackage?: Partial<CondaPackage>) {
+		Object.assign(this, condaPackage);
 	}
 
 }
