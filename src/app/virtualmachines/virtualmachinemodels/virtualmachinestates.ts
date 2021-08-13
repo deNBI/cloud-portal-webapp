@@ -34,8 +34,8 @@ export class VirtualMachineStates extends GeneralStatusStates {
 		VirtualMachineStates._PREPARE_PLAYBOOK_BUILD,
 		VirtualMachineStates._BUILD_PLAYBOOK,
 		VirtualMachineStates._DELETING,
-		VirtualMachineStates._DELETING_FAILED,
-		VirtualMachineStates._CLIENT_OFFLINE,
+		// VirtualMachineStates._DELETING_FAILED,
+		// VirtualMachineStates._CLIENT_OFFLINE,
 		VirtualMachineStates._GETTING_STATUS,
 		VirtualMachineStates._PORT_CLOSED,
 		VirtualMachineStates._CHECKING_CONNECTION,
@@ -51,6 +51,7 @@ export class VirtualMachineStates extends GeneralStatusStates {
 		VirtualMachineStates._NOT_FOUND,
 		VirtualMachineStates._ERROR,
 		VirtualMachineStates._CLIENT_OFFLINE,
+		VirtualMachineStates._DELETING_FAILED,
 	];
 
 	static get CLIENT_OFFLINE(): string {

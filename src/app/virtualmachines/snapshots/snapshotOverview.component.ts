@@ -6,12 +6,13 @@ import { SnapshotModel } from './snapshot.model';
 import { IResponseTemplate } from '../../api-connector/response-template';
 import { FacilityService } from '../../api-connector/facility.service';
 import { WIKI_SNAPSHOTS, CLOUD_PORTAL_SUPPORT_MAIL } from '../../../links/links';
+import { SnapshotPage } from './snapshotPage.model';
 
 // eslint-disable-next-line no-shadow
 enum Snapshot_Delete_Statuses {
-  WAITING = 0,
-  SUCCESS = 1,
-  ERROR = 2
+	WAITING = 0,
+	SUCCESS = 1,
+	ERROR = 2
 }
 
 /**
@@ -24,6 +25,8 @@ enum Snapshot_Delete_Statuses {
 })
 
 export class SnapshotOverviewComponent implements OnInit {
+
+	snapshot_page: SnapshotPage = new SnapshotPage();
 	WIKI_SNAPSHOTS: string = WIKI_SNAPSHOTS;
 	CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL;
 	checked_snapshots: SnapshotModel [] = [];
@@ -41,12 +44,6 @@ export class SnapshotOverviewComponent implements OnInit {
 	 */
 	selectedFacility: [string, number];
 
-	/**
-	 * All snapshots.
-	 *
-	 * @type {Array}
-	 */
-	snapshots: SnapshotModel[] = [];
 	/**
 	 * Selected snapshot.
 	 */
@@ -71,9 +68,6 @@ export class SnapshotOverviewComponent implements OnInit {
 	private checkStatusTimeout: number = 5000;
 
 	currentPage: number = 1;
-	total_pages: number;
-	total_items: number;
-	items_per_page: number = 7;
 	snapshotsPerPageChange: Subject<number> = new Subject<number>();
 	isSearching: boolean = true;
 	DEBOUNCE_TIME: number = 300;
@@ -101,16 +95,13 @@ export class SnapshotOverviewComponent implements OnInit {
 	 * Get snapshots by user.
 	 */
 	getSnapshots(): void {
-		this.imageService.getSnapshotsByUser(this.currentPage, this.items_per_page).subscribe((result: any): void => {
-			this.snapshots = [];
-			this.snapshots = result['snapshot_list'];
-			this.total_items = result['total_items'];
-			this.items_per_page = result['items_per_page'];
-			this.total_pages = result['num_pages'];
-			this.isLoaded = true;
-			this.checkSnapShotsStatus();
-			this.isSearching = false;
-		});
+		this.imageService.getSnapshotsByUser(this.currentPage, this.snapshot_page.items_per_page)
+			.subscribe((snapshot_page: SnapshotPage): void => {
+				this.snapshot_page = snapshot_page;
+				this.isLoaded = true;
+				this.checkSnapShotsStatus();
+				this.isSearching = false;
+			});
 	}
 
 	changeCheckAllSnapshots(): void {
@@ -122,7 +113,7 @@ export class SnapshotOverviewComponent implements OnInit {
 
 		}
 
-		this.snapshots.forEach((snap: SnapshotModel): void => {
+		this.snapshot_page.snapshot_list.forEach((snap: SnapshotModel): void => {
 			if (!this.isSnapChecked(snap)) {
 				this.checked_snapshots.push(snap);
 			}
@@ -137,7 +128,7 @@ export class SnapshotOverviewComponent implements OnInit {
 		setTimeout(
 			(): void => {
 				const observables: any = [];
-				for (const snapshot of this.snapshots) {
+				for (const snapshot of this.snapshot_page.snapshot_list) {
 					if (snapshot.snapshot_status !== 'active') {
 
 						observables.push(this.imageService.getSnapshot(snapshot.snapshot_openstackid));
@@ -146,7 +137,7 @@ export class SnapshotOverviewComponent implements OnInit {
 				}
 				forkJoin(observables).subscribe((res: any): void => {
 					for (const snap of res) {
-						this.snapshots[res.indexOf(snap)].snapshot_status = snap['status'];
+						this.snapshot_page.snapshot_list[res.indexOf(snap)].snapshot_status = snap['status'];
 						if (snap['status'] !== 'active') {
 							all_active = false;
 						}
@@ -163,13 +154,9 @@ export class SnapshotOverviewComponent implements OnInit {
 	}
 
 	getFacilitySnapshots(): void {
-		this.snapshots = [];
-		this.facilityService.getFacilitySnapshots(this.selectedFacility['FacilityId'], this.currentPage, this.items_per_page)
-			.subscribe((res: any): void => {
-				this.snapshots = res['snapshot_list'];
-				this.total_items = res['total_items'];
-				this.items_per_page = res['items_per_page'];
-				this.total_pages = res['num_pages'];
+		this.facilityService.getFacilitySnapshots(this.selectedFacility['FacilityId'], this.currentPage, this.snapshot_page.items_per_page)
+			.subscribe((snapshot_page: SnapshotPage): void => {
+				this.snapshot_page = snapshot_page;
 				this.isSearching = false;
 			});
 	}
@@ -186,9 +173,9 @@ export class SnapshotOverviewComponent implements OnInit {
 
 			if (result.value as boolean) {
 				this.delete_status = 1;
-				const idx: number = this.snapshots.indexOf(snapshot);
+				const idx: number = this.snapshot_page.snapshot_list.indexOf(snapshot);
 
-				this.snapshots.splice(idx, 1);
+				this.snapshot_page.snapshot_list.splice(idx, 1);
 			} else if (result.value) {
 				this.delete_status = 3;
 				this.getSnapshots();
@@ -215,19 +202,17 @@ export class SnapshotOverviewComponent implements OnInit {
 					this.filter = filterName.trim();
 					if (this.showFacilities) {
 						return this.facilityService
-							.getFacilitySnapshots(this.selectedFacility['FacilityId'], this.currentPage, this.items_per_page, this.filter);
+							.getFacilitySnapshots(this.selectedFacility['FacilityId'], this.currentPage,
+								this.snapshot_page.items_per_page, this.filter);
 					} else {
-						return this.imageService.getSnapshotsByUser(this.currentPage, this.items_per_page, this.filter);
+						return this.imageService.getSnapshotsByUser(this.currentPage, this.snapshot_page.items_per_page, this.filter);
 					}
 
 				}),
 			)
-			.subscribe((result: any): void => {
+			.subscribe((snapshot_page: SnapshotPage): void => {
 
-				this.snapshots = result['snapshot_list'];
-				this.total_items = result['total_items'];
-				this.items_per_page = result['items_per_page'];
-				this.total_pages = result['num_pages'];
+				this.snapshot_page = snapshot_page;
 				this.isLoaded = true;
 				this.checkSnapShotsStatus();
 				this.isSearching = false;
@@ -255,7 +240,7 @@ export class SnapshotOverviewComponent implements OnInit {
 
 	areAllSnapshotsChecked(): void {
 		let all_checked: boolean = true;
-		this.snapshots.forEach((snap: SnapshotModel): void => {
+		this.snapshot_page.snapshot_list.forEach((snap: SnapshotModel): void => {
 			if (!this.isSnapChecked(snap)) {
 				all_checked = false;
 
@@ -311,10 +296,9 @@ export class SnapshotOverviewComponent implements OnInit {
 	}
 
 	reset(): void {
+		this.snapshot_page = new SnapshotPage();
 		this.isSearching = true;
 		this.currentPage = 1;
-		this.total_pages = null;
-		this.total_items = null;
 	}
 
 }
