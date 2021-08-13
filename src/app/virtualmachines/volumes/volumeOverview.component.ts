@@ -13,6 +13,7 @@ import { FacilityService } from '../../api-connector/facility.service';
 import { WIKI_EXTEND_VOLUME, WIKI_VOLUME_OVERVIEW, CLOUD_PORTAL_SUPPORT_MAIL } from '../../../links/links';
 import { VolumeStates } from './volume_states';
 import { VirtualMachineStates } from '../virtualmachinemodels/virtualmachinestates';
+import { VolumePage } from './volumePage.model';
 
 /**
  * Volume overview component.
@@ -27,6 +28,8 @@ import { VirtualMachineStates } from '../virtualmachinemodels/virtualmachinestat
 })
 
 export class VolumeOverviewComponent extends AbstractBaseClass implements OnInit, OnDestroy {
+
+	volume_page: VolumePage = new VolumePage();
 
 	WIKI_EXTEND_VOLUME: string = WIKI_EXTEND_VOLUME;
 	WIKI_VOLUME_OVERVIEW: string = WIKI_VOLUME_OVERVIEW;
@@ -61,10 +64,6 @@ export class VolumeOverviewComponent extends AbstractBaseClass implements OnInit
 	 */
 	selectedFacility: [string, number];
 
-	/**
-	 * Array of all volumes.
-	 */
-	volumes: Volume[] = [];
 	/**
 	 * Array of volumes from the selected Project.
 	 */
@@ -140,9 +139,6 @@ export class VolumeOverviewComponent extends AbstractBaseClass implements OnInit
 	private getVolumesSubscription: Subscription = new Subscription();
 	private checkStatusTimeout: number = 5000;
 	VolumeStates: VolumeStates = new VolumeStates();
-	items_per_page: number = 7;
-	total_pages: number;
-	total_items: number;
 	volumePerPageChange: Subject<number> = new Subject<number>();
 	filterChanged: Subject<string> = new Subject<string>();
 	DEBOUNCE_TIME: number = 1000;
@@ -243,7 +239,7 @@ export class VolumeOverviewComponent extends AbstractBaseClass implements OnInit
 
 	areAllVolumesChecked(): void {
 		let all_checked: boolean = true;
-		this.volumes.forEach((vol: Volume): void => {
+		this.volume_page.volume_list.forEach((vol: Volume): void => {
 			if (!this.isVolChecked(vol)) {
 				all_checked = false;
 
@@ -263,7 +259,7 @@ export class VolumeOverviewComponent extends AbstractBaseClass implements OnInit
 
 		}
 
-		this.volumes.forEach((vol: Volume): void => {
+		this.volume_page.volume_list.forEach((vol: Volume): void => {
 			if (!this.isVolChecked(vol)) {
 				this.checked_volumes.push(vol);
 			}
@@ -292,18 +288,16 @@ export class VolumeOverviewComponent extends AbstractBaseClass implements OnInit
 
 					this.filter = filter.trim();
 
-					return this.vmService.getVolumesByUser(this.items_per_page, this.currentPage, this.filter);
+					return this.vmService.getVolumesByUser(this.volume_page.items_per_page, this.currentPage, this.filter);
 				}),
-			).subscribe((result: any): void => {
-				this.volumes = result['volume_list'];
-				this.total_pages = result['num_pages'];
-				this.total_items = result['total_items'];
-				this.items_per_page = result['items_per_page'];
-				for (const volume of this.volumes) {
+			)
+			.subscribe((volume_page: VolumePage): void => {
+				this.volume_page = volume_page;
+				for (const volume of this.volume_page.volume_list) {
 					this.setCollapseStatus(volume.volume_openstackid, false);
 				}
 				this.isSearching = false;
-				this.volumes.forEach((vol: Volume): void => {
+				this.volume_page.volume_list.forEach((vol: Volume): void => {
 					if (vol.volume_status !== VolumeStates.AVAILABLE && vol.volume_status !== VolumeStates.NOT_FOUND
 						&& vol.volume_status !== VolumeStates.IN_USE) {
 						this.check_status_loop(vol);
@@ -315,7 +309,7 @@ export class VolumeOverviewComponent extends AbstractBaseClass implements OnInit
 			distinctUntilChanged(),
 		)
 			.subscribe((): void => {
-				if (this.items_per_page && this.items_per_page > 0) {
+				if (this.volume_page.items_per_page && this.volume_page.items_per_page > 0) {
 					if (this.showFacilities) {
 						this.getFacilityVolumes();
 					} else {
@@ -396,19 +390,16 @@ export class VolumeOverviewComponent extends AbstractBaseClass implements OnInit
 
 		this.getVolumesSubscription.add(
 			this.facilityService.getFacilityVolumes(
-				this.selectedFacility['FacilityId'], this.items_per_page, this.currentPage,
-			).subscribe((result: any): void => {
-				this.volumes = result['volume_list'];
-				this.total_pages = result['num_pages'];
-				this.total_items = result['total_items'];
-				this.items_per_page = result['items_per_page'];
-				for (const volume of this.volumes) {
+				this.selectedFacility['FacilityId'], this.volume_page.items_per_page, this.currentPage,
+			).subscribe((volume_page: VolumePage): void => {
+				this.volume_page = volume_page;
+				for (const volume of this.volume_page.volume_list) {
 					this.setCollapseStatus(volume.volume_openstackid, false);
 				}
 
 				this.isLoaded = true;
 				this.isSearching = false;
-				this.volumes.forEach((vol: Volume): void => {
+				this.volume_page.volume_list.forEach((vol: Volume): void => {
 					if (vol.volume_status !== VolumeStates.AVAILABLE && vol.volume_status !== VolumeStates.NOT_FOUND
 						&& vol.volume_status !== VolumeStates.IN_USE) {
 
@@ -435,7 +426,7 @@ export class VolumeOverviewComponent extends AbstractBaseClass implements OnInit
 
 				if (newVolume.volume_openstackid) {
 					newVolume.volume_status = VolumeStates.ATTACHING;
-					this.volumes.push(newVolume);
+					this.volume_page.volume_list.push(newVolume);
 
 					this.volume_action_status = this.volumeActionStates.ATTACHING;
 
@@ -481,7 +472,7 @@ export class VolumeOverviewComponent extends AbstractBaseClass implements OnInit
 		this.vmService.createVolume(volume_name, diskspace.toString(), instance_id).subscribe((newVolume: Volume): void => {
 			if (newVolume.volume_openstackid) {
 				this.volume_action_status = this.volumeActionStates.WAIT_CREATION;
-				this.volumes.push(newVolume);
+				this.volume_page.volume_list.push(newVolume);
 			} else {
 				this.volume_action_status = this.volumeActionStates.ERROR;
 			}
@@ -546,7 +537,7 @@ export class VolumeOverviewComponent extends AbstractBaseClass implements OnInit
 				} else {
 					this.volume_action_status = this.volumeActionStates.ERROR;
 				}
-				this.volumes[this.volumes.indexOf(volume)] = changed_volume;
+				this.volume_page.volume_list[this.volume_page.volume_list.indexOf(volume)] = changed_volume;
 
 			});
 
@@ -562,19 +553,16 @@ export class VolumeOverviewComponent extends AbstractBaseClass implements OnInit
 		this.getVolumesSubscription.unsubscribe();
 		this.getVolumesSubscription = new Subscription();
 		this.getVolumesSubscription.add(
-			this.vmService.getVolumesByUser(this.items_per_page, this.currentPage)
-				.subscribe((result: any): void => {
-					this.volumes = result['volume_list'];
-					this.total_pages = result['num_pages'];
-					this.total_items = result['total_items'];
-					this.items_per_page = result['items_per_page'];
-					for (const volume of this.volumes) {
+			this.vmService.getVolumesByUser(this.volume_page.items_per_page, this.currentPage)
+				.subscribe((volume_page: VolumePage): void => {
+					this.volume_page = volume_page;
+					for (const volume of this.volume_page.volume_list) {
 						this.setCollapseStatus(volume.volume_openstackid, false);
 					}
 
 					this.isLoaded = true;
 					this.isSearching = false;
-					this.volumes.forEach((vol: Volume): void => {
+					this.volume_page.volume_list.forEach((vol: Volume): void => {
 						if (vol.volume_status !== VolumeStates.AVAILABLE && vol.volume_status !== VolumeStates.NOT_FOUND
 							&& vol.volume_status !== VolumeStates.IN_USE) {
 
@@ -588,9 +576,9 @@ export class VolumeOverviewComponent extends AbstractBaseClass implements OnInit
 	}
 
 	getVolume(volume: Volume): void {
-		const idx: number = this.volumes.indexOf(volume);
+		const idx: number = this.volume_page.volume_list.indexOf(volume);
 		this.vmService.getVolumeById(volume.volume_openstackid).subscribe((vol: Volume): void => {
-			this.volumes[idx] = vol;
+			this.volume_page.volume_list[idx] = vol;
 
 		});
 	}
@@ -601,7 +589,7 @@ export class VolumeOverviewComponent extends AbstractBaseClass implements OnInit
 
 		setTimeout(
 			(): void => {
-				const idx: number = this.volumes.indexOf(volume);
+				const idx: number = this.volume_page.volume_list.indexOf(volume);
 				if (volume.volume_openstackid) {
 
 					// eslint-disable-next-line consistent-return
@@ -619,10 +607,10 @@ export class VolumeOverviewComponent extends AbstractBaseClass implements OnInit
 						}
 						if (idx > -1) {
 							vol.volume_created_by_user = created;
-							this.volumes[idx] = vol;
+							this.volume_page.volume_list[idx] = vol;
 						}
 						if (this.VOLUME_END_STATES.indexOf(vol.volume_status) === -1 && final_state !== vol.volume_status) {
-							this.check_status_loop(this.volumes[idx], this.checkStatusTimeout, final_state);
+							this.check_status_loop(this.volume_page.volume_list[idx], this.checkStatusTimeout, final_state);
 						}
 					}));
 				} else {
@@ -636,11 +624,11 @@ export class VolumeOverviewComponent extends AbstractBaseClass implements OnInit
 							}
 							if (idx > -1) {
 								vol.volume_created_by_user = created;
-								this.volumes[idx] = vol;
+								this.volume_page.volume_list[idx] = vol;
 							}
 							if (vol.volume_status !== VolumeStates.AVAILABLE && vol.volume_status !== VolumeStates.NOT_FOUND
 								&& vol.volume_status !== VolumeStates.IN_USE && vol.volume_status !== final_state) {
-								this.check_status_loop(this.volumes[idx], this.checkStatusTimeout, final_state);
+								this.check_status_loop(this.volume_page.volume_list[idx], this.checkStatusTimeout, final_state);
 							}
 						}));
 

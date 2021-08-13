@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { ApiSettings } from './api-settings.service';
 import { Application } from '../applications/application.model/application.model';
@@ -9,7 +10,9 @@ import { ResourceMachine } from '../facility_manager/resources/resource-machine'
 import { ProjectMember } from '../projectmanagement/project_member.model';
 import { GPUSpecification } from '../facility_manager/resources/gpu-specification';
 import { GeneralStorageFactor } from '../facility_manager/resources/general-storage-factor';
-import { Clusterinfo } from '../virtualmachines/clusters/clusterinfo';
+import { ClusterPage } from '../virtualmachines/clusters/clusterPage.model';
+import { VolumePage } from '../virtualmachines/volumes/volumePage.model';
+import { SnapshotPage } from '../virtualmachines/snapshots/snapshotPage.model';
 
 /**
  * Service which provides methods for the facilities.
@@ -54,7 +57,7 @@ export class FacilityService {
 		});
 	}
 
-	getClustersFacility(facility_id: string, page: number, vm_per_site: number, filter?: string): Observable<Clusterinfo[]> {
+	getClustersFacility(facility_id: string, page: number, vm_per_site: number, filter?: string): Observable<ClusterPage> {
 		let params: HttpParams = new HttpParams().set('page', page.toString()).set('cluster_per_site', vm_per_site.toString());
 
 		if (filter) {
@@ -62,10 +65,14 @@ export class FacilityService {
 
 		}
 
-		return this.http.get<Clusterinfo[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility_id}/clusters/`, {
+		return this.http.get<ClusterPage>(`${ApiSettings.getApiBaseURL()}computecenters/${facility_id}/clusters/`, {
 			withCredentials: true,
 			params,
-		});
+		}).pipe(
+			map(
+				(cluster_page: ClusterPage): ClusterPage => new ClusterPage(cluster_page),
+			),
+		);
 	}
 
 	getWfcModificationRequestedApplications(facility_id: number | string): Observable<Application[]> {
@@ -212,13 +219,17 @@ export class FacilityService {
 	 * @param facility
 	 * @returns
 	 */
-	getFacilityVolumes(facility: number | string, items_per_page: number, current_page: number): Observable<any> {
+	getFacilityVolumes(facility: number | string, items_per_page: number, current_page: number): Observable<VolumePage> {
 		const params: HttpParams = new HttpParams().set('items_per_page', items_per_page.toString()).set('page', current_page.toString());
 
-		return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/volumes/`, {
+		return this.http.get<VolumePage>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/volumes/`, {
 			withCredentials: true,
 			params,
-		});
+		}).pipe(
+			map(
+				(volume_page: VolumePage): VolumePage => new VolumePage(volume_page),
+			),
+		);
 	}
 
 	/**
@@ -229,16 +240,20 @@ export class FacilityService {
 	 * @param snapsPerSite
 	 * @returns
 	 */
-	getFacilitySnapshots(facility: number | string, currentPage: number, snapsPerSite: number, filter?: string): Observable<any> {
+	getFacilitySnapshots(facility: number | string, currentPage: number, snapsPerSite: number, filter?: string): Observable<SnapshotPage> {
 		let params: HttpParams = new HttpParams().set('page', currentPage.toString()).set('snaps_per_site', snapsPerSite.toString());
 		if (filter) {
 			params = params.set('filter', filter);
 		}
 
-		return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/snapshots/`, {
+		return this.http.get<SnapshotPage>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/snapshots/`, {
 			withCredentials: true,
 			params,
-		});
+		}).pipe(
+			map(
+				(snapshot_page: SnapshotPage): SnapshotPage => new SnapshotPage(snapshot_page),
+			),
+		);
 	}
 
 	/**
