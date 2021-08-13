@@ -23,11 +23,22 @@ export class Client {
 	forc_url: string;
 	bibigrid_available: boolean;
 
-	constructor(host: string, port: string, location: string, id: string) {
-		this.host = host;
-		this.port = port;
-		this.location = location;
-		this.id = id;
+	constructor(client?: Partial<Client>, host?: string, port?: string, location?: string, id?: string) {
+		if (client) {
+			Object.assign(this, client);
+		} else {
+			this.host = host;
+			this.port = port;
+			this.location = location;
+			this.id = id;
+		}
 	}
+
+	// constructor(host: string, port: string, location: string, id: string) {
+	// 	this.host = host;
+	// 	this.port = port;
+	// 	this.location = location;
+	// 	this.id = id;
+	// }
 
 }

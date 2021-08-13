@@ -133,7 +133,7 @@ export class ClientOverviewComponent implements OnInit {
 	}
 
 	updateClient(host: string, port: string, location: string, id: string): void {
-		this.clientservice.updateClient(new Client(host, port, location, id)).subscribe((res: Client): void => {
+		this.clientservice.updateClient(new Client(null, host, port, location, id)).subscribe((res: Client): void => {
 			this.clients[this.clients.indexOf(this.selectedClient)] = res;
 			this.selectedClient = null;
 			this.getClientsChecked();
