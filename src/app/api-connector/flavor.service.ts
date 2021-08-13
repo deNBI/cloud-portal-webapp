@@ -19,18 +19,35 @@ export class FlavorService {
 	getFlavors(project_id: number | string): Observable<Flavor[]> {
 		return this.http.get<Flavor[]>(`${ApiSettings.getApiBaseURL()}projects/${project_id}/flavors/`, {
 			withCredentials: true,
-
-		});
+		}).pipe(
+			map(
+				(flavors: Flavor[]): Flavor[] => flavors.map(
+					(flavor: Flavor): Flavor => new Flavor(flavor),
+				),
+			),
+		);
 	}
 
 	getAllFlavors(): Observable<Flavor[]> {
-		return this.http.get<Flavor[]>(`${ApiSettings.getApiBase()}public/flavors/`);
+		return this.http.get<Flavor[]>(`${ApiSettings.getApiBase()}public/flavors/`).pipe(
+			map(
+				(flavors: Flavor[]): Flavor[] => flavors.map(
+					(flavor: Flavor): Flavor => new Flavor(flavor),
+				),
+			),
+		);
 	}
 
 	getListOfTypesAvailable(): Observable<FlavorType[]> {
 		return this.http.get<FlavorType[]>(`${ApiSettings.getApiBaseURL()}project_applications/flavorTypes/`, {
 			withCredentials: true,
-		});
+		}).pipe(
+			map(
+				(flavors: FlavorType[]): FlavorType[] => flavors.map(
+					(flavor: FlavorType): FlavorType => new FlavorType(flavor),
+				),
+			),
+		);
 	}
 
 	getListOfFlavorsAvailable(project_id: string = ''): Observable<Flavor[]> {
