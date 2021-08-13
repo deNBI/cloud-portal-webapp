@@ -562,7 +562,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 		this.applicationsService.getApplicationClient(
 			application_id,
 		).subscribe((client: object): void => {
-			const newClient: Client = new Client(client['host'], client['port'], client['location'], client['id']);
+			const newClient: Client = new Client(null, client['host'], client['port'], client['location'], client['id']);
 			newClient.maxVolumeLimit = client['max_ressources']['maxTotalVolumeGigabytes'];
 			newClient.maxVolumes = client['max_ressources']['maxTotalVolumes'];
 			newClient.maxVMs = client['max_ressources']['maxTotalInstances'];
@@ -580,7 +580,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 	}
 
 	private setNoResourcesClientNotification(client: any): void {
-		const newClient: Client = new Client(null, null, client['client_location'], null);
+		const newClient: Client = new Client(null, null, null, client['client_location'], null);
 		newClient.maxVolumeLimit = client['max_volume_gb'];
 		newClient.maxVolumes = client['max_volumes'];
 		newClient.maxVMs = client['max_instances'];

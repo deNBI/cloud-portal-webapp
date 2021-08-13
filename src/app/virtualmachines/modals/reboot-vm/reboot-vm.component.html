@@ -1,0 +1,67 @@
+<ng-container *ngIf="choosingType">
+	<div class="modal-header">
+		<h4 class="modal-title">Choose Reboot Type for: {{virtualMachine?.name}}</h4>
+		<button type="button" class="close" style="cursor:pointer"
+						(click)="bsModalRef.hide();" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
+	</div>
+	<div class="modal-body">
+		<div class="row" style="margin:auto; text-align:left; padding: 5px;">The following Reboot types are available
+			for machine {{virtualMachine?.name}}:
+		</div>
+		<div class="row" style="margin:5px; text-align: center; padding: 10px;">
+			<div class="col-md-6">
+				<button type="button" class="btn btn-primary"
+								*ngIf="!(virtualMachine?.status |hasStatus:VirtualMachineStates.staticDELETED)  && virtualMachine?.client.features['VM_REBOOT']"
+								[id]="'softRebootVM_' + virtualMachine?.name" (click)="softRebootShow();">
+					<!--							(click)="status_check_error=false;reboot_done=false;reboot_type='SOFT';chooseRebootOptionModal.hide();rebootModal.show();">-->
+					Soft Reboot
+				</button>
+			</div>
+			<div class="col-md-6">
+				<button type="button" class="btn btn-primary"
+								[id]="'hardRebootVM_' + virtualMachine?.name"
+								*ngIf="!(virtualMachine?.status |hasStatus:VirtualMachineStates.staticDELETED) && virtualMachine?.client.features['VM_REBOOT']"
+								(click)="hardRebootShow();">
+					<!--							(click)="status_check_error=false;reboot_done=false;reboot_type='HARD'; chooseRebootOptionModal.hide(); rebootModal.show();">-->
+					Hard Reboot
+				</button>
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-secondary" (click)="bsModalRef.hide();"
+						[id]="'closeRebootOptionModalButton'">Close
+		</button>
+	</div>
+</ng-container>
+
+<ng-container *ngIf="confirm">
+				<div class="modal-header">
+					<h4 class="modal-title"><strong>{{reboot_type}}</strong> reboot
+						{{virtualMachine?.name}} </h4>
+
+					<button type="button" class="close" style="cursor:pointer"
+									(click)="bsModalRef.hide()"
+									aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="alert alert-warning" role="alert">
+
+						Restarted instances will lose any data not saved in persistent storage.
+						Are you sure to <strong>{{reboot_type}}</strong> reboot {{virtualMachine?.name}}?
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button class="btn  btn-success col-md-4"
+									(click)="rebootVm()">
+						Yes
+					</button>
+					<button class="btn  btn-danger col-md-4" type="reset"
+									(click)="bsModalRef.hide();">Cancel
+					</button>
+				</div>
+</ng-container>
