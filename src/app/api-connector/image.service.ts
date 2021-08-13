@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { map } from 'rxjs/operators';
 import { Image } from '../virtualmachines/virtualmachinemodels/image';
 import { SnapshotModel } from '../virtualmachines/snapshots/snapshot.model';
 import { ApiSettings } from './api-settings.service';
@@ -8,6 +9,7 @@ import { IResponseTemplate } from './response-template';
 import {
 	BlockedImageTag, BlockedImageTagResenv, ImageLogo, ImageMode, ImageTag,
 } from '../facility_manager/image-tag';
+import { SnapshotPage } from '../virtualmachines/snapshots/snapshotPage.model';
 
 /**
  * Service which provides image methods.
@@ -24,7 +26,13 @@ export class ImageService {
 		return this.http.get<Image[]>(`${ApiSettings.getApiBaseURL()}images/`, {
 			withCredentials: true,
 			params,
-		});
+		}).pipe(
+			map(
+				(images: Image[]): Image[] => images.map(
+					(image: Image): Image => new Image(image),
+				),
+			),
+		);
 
 	}
 
@@ -34,7 +42,11 @@ export class ImageService {
 		return this.http.get<Image>(`${ApiSettings.getApiBaseURL()}images/project/${project_id}/`, {
 			withCredentials: true,
 			params,
-		});
+		}).pipe(
+			map(
+				(image: Image): Image => new Image(image),
+			),
+		);
 
 	}
 
@@ -52,7 +64,11 @@ export class ImageService {
 
 		return this.http.get<Image>(`${ApiSettings.getApiBaseURL()}snapshots/${openstack_id}/status/`, {
 			withCredentials: true,
-		});
+		}).pipe(
+			map(
+				(image: Image): Image => new Image(image),
+			),
+		);
 
 	}
 
@@ -211,7 +227,11 @@ export class ImageService {
 
 		return this.http.post<SnapshotModel>(`${ApiSettings.getApiBaseURL()}snapshots/`, params, {
 			withCredentials: true,
-		});
+		}).pipe(
+			map(
+				(snapshot: SnapshotModel): SnapshotModel => new SnapshotModel(snapshot),
+			),
+		);
 
 	}
 
@@ -222,17 +242,21 @@ export class ImageService {
 
 	}
 
-	getSnapshotsByUser(currentPage: number, snapsPerSite: number, filter?: string): Observable<SnapshotModel[]> {
+	getSnapshotsByUser(currentPage: number, snapsPerSite: number, filter?: string): Observable<SnapshotPage> {
 		let params: HttpParams = new HttpParams().set('page', currentPage.toString()).set('snaps_per_site', snapsPerSite.toString());
 
 		if (filter) {
 			params = params.set('filter', filter);
 		}
 
-		return this.http.get<SnapshotModel[]>(`${ApiSettings.getApiBaseURL()}snapshots/`, {
+		return this.http.get<SnapshotPage>(`${ApiSettings.getApiBaseURL()}snapshots/`, {
 			withCredentials: true,
 			params,
-		});
+		}).pipe(
+			map(
+				(snapshot_page: SnapshotPage): SnapshotPage => new SnapshotPage(snapshot_page),
+			),
+		);
 
 	}
 
