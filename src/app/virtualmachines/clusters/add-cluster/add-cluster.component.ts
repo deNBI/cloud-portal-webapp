@@ -142,12 +142,7 @@ export class AddClusterComponent implements OnInit {
 	calcWorkerInstancesCount(): void {
 		let count: number = 0;
 		this.selectedWorkerBatches.forEach((batch: WorkerBatch): void => {
-			if (batch.worker_count <= batch.max_worker_count && batch.worker_count > 0) {
-				batch.valid_batch = true;
-			} else {
-				batch.valid_batch = false;
-
-			}
+			batch.valid_batch = batch.worker_count <= batch.max_worker_count && batch.worker_count > 0;
 			count += batch.worker_count;
 		});
 		this.workerInstancesCount = count;
@@ -317,6 +312,7 @@ export class AddClusterComponent implements OnInit {
 		this.cluster_id = null;
 
 		const masterFlavor: string = this.selectedMasterFlavor.name.replace(re, '%2B');
+		console.log(masterFlavor, this.selectedMasterImage, this.selectedWorkerBatches, this.selectedProject[1]);
 
 		this.virtualmachineservice.startCluster(
 			masterFlavor,
@@ -324,6 +320,7 @@ export class AddClusterComponent implements OnInit {
 			this.selectedWorkerBatches, this.selectedProject[1],
 		).subscribe(
 			(res: any): void => {
+				console.log(res);
 				if (res['status'] && res['status'] === 'mutex_locked') {
 					setTimeout(
 						(): void => {

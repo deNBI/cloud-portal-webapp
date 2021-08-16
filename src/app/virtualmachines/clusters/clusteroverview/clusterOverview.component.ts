@@ -20,6 +20,7 @@ import { CLOUD_PORTAL_SUPPORT_MAIL, SCALE_SCRIPT_LINK } from '../../../../links/
 import { AbstractBaseClass } from '../../../shared/shared_modules/baseClass/abstract-base-class';
 import { Flavor } from '../../virtualmachinemodels/flavor';
 import { FlavorService } from '../../../api-connector/flavor.service';
+import { ClusterPage } from '../clusterPage.model';
 
 export const SCALING_SCRIPT_NAME: string = 'scaling.py';
 
@@ -42,7 +43,7 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 
 	VirtualMachineStates: VirtualMachineStates = new VirtualMachineStates();
 
-	cluster_content: Clusterinfo[] = [];
+	cluster_page: ClusterPage = new ClusterPage();
 	show_connection_infO: boolean = false;
 	currentPage: number = 1;
 	DEBOUNCE_TIME: number = 300;
@@ -161,16 +162,16 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 		this.max_scale_count_loaded = false;
 
 		// tslint:disable-next-line:max-line-length
-		this.groupService.getGroupResources(this.selectedCluster.master_instance.projectid.toString())
-			.subscribe((res: ApplicationRessourceUsage): void => {
-				this.selectedProjectRessources = new ApplicationRessourceUsage(res);
-				for (const workerBatch of this.selectedCluster.worker_batches) {
-					workerBatch.max_scale_up_count = this.selectedProjectRessources.calcMaxScaleUpWorkerInstancesByFlavor(workerBatch.flavor);
-
-				}
-
-				this.max_scale_count_loaded = true;
-			});
+		this.subscription.add(
+			this.groupService.getGroupResources(this.selectedCluster.master_instance.projectid.toString())
+				.subscribe((res: ApplicationRessourceUsage): void => {
+					this.selectedProjectRessources = new ApplicationRessourceUsage(res);
+					for (const workerBatch of this.selectedCluster.worker_batches) {
+						workerBatch.max_scale_up_count = this.selectedProjectRessources.calcMaxScaleUpWorkerInstancesByFlavor(workerBatch.flavor);
+					}
+					this.max_scale_count_loaded = true;
+				}),
+		);
 	}
 
 	generatePassword(): void {
@@ -185,29 +186,35 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 		this.updateNotificationModal('Upscaling Cluster', `Starting ${scale_up_count} additional workers..`, true, 'info');
 
 		if (!this.created_new_batch) {
-			this.virtualmachineservice.scaleCluster(this.selectedCluster.cluster_id, this.selectedBatch).subscribe((res: any): void => {
-				this.selectedBatch.setNewScalingUpWorkerCount();
-				this.selectedCluster.password = res['password'];
 
-				this.check_worker_count_loop(this.selectedCluster);
-				this.updateNotificationModal('Sucessfull',
-				                             `The start of ${scale_up_count} workers was successfully initiated. Remember to configure your cluster after the machines are active!'`,
-				                             true, 'success');
+			this.subscription.add(
+				this.virtualmachineservice.scaleCluster(this.selectedCluster.cluster_id, this.selectedBatch).subscribe((): void => {
+					this.selectedBatch.setNewScalingUpWorkerCount();
+          this.selectedCluster.password = res['password'];
 
-			});
+
+					this.check_worker_count_loop(this.selectedCluster);
+					this.updateNotificationModal('Sucessfull',
+						`The start of ${scale_up_count} workers was successfully initiated. Remember to configure your cluster after the machines are active!'`,
+						true, 'success');
+				}),
+			);
 		} else {
-			this.virtualmachineservice.scaleClusterNewBatch(this.selectedCluster.cluster_id, this.selectedBatch).subscribe((res: any): void => {
 
-				this.selectedBatch.setNewScalingUpWorkerCount();
-				this.selectedCluster.password = res['password'];
+			this.subscription.add(
+				this.virtualmachineservice.scaleClusterNewBatch(this.selectedCluster.cluster_id, this.selectedBatch).subscribe((): void => {
 
-				this.check_worker_count_loop(this.selectedCluster);
-				this.updateNotificationModal('Sucessfull',
-				                             `The start of ${scale_up_count} workers was successfully initiated. Remember to configure your cluster after the machines are active!'`,
-				                             true, 'success');
+					this.selectedBatch.setNewScalingUpWorkerCount();
+          				this.selectedCluster.password = res['password'];
 
-			});
 
+					this.check_worker_count_loop(this.selectedCluster);
+					this.updateNotificationModal('Sucessfull',
+						`The start of ${scale_up_count} workers was successfully initiated. Remember to configure your cluster after the machines are active!'`,
+						true, 'success');
+
+				}),
+			);
 		}
 	}
 
@@ -241,11 +248,12 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 	}
 
 	getFlavors(project_id: number | string): void {
-		this.flavorService.getFlavors(project_id).subscribe((flavors: Flavor[]): void => {
-			this.flavors = flavors;
-			this.checkFlavorsUsableForCluster();
-		});
-
+		this.subscription.add(
+			this.flavorService.getFlavors(project_id).subscribe((flavors: Flavor[]): void => {
+				this.flavors = flavors;
+				this.checkFlavorsUsableForCluster();
+			}),
+		);
 	}
 
 	checkFlavorsUsableForCluster(): void {
@@ -285,13 +293,13 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 	loadProjectRessource(): void {
 		this.projectDataLoaded = false;
 		this.flavors = [];
-		this.groupService.getGroupResources(this.selectedCluster.project_id).subscribe((res: ApplicationRessourceUsage): void => {
-			this.selectedProjectRessources = new ApplicationRessourceUsage(res);
-			this.getFlavors(this.selectedCluster.project_id);
-			this.projectDataLoaded = true;
-
-		});
-
+		this.subscription.add(
+			this.groupService.getGroupResources(this.selectedCluster.project_id).subscribe((res: ApplicationRessourceUsage): void => {
+				this.selectedProjectRessources = new ApplicationRessourceUsage(res);
+				this.getFlavors(this.selectedCluster.project_id);
+				this.projectDataLoaded = true;
+			}),
+		);
 	}
 
 	resetScaling(): void {
@@ -321,16 +329,19 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 
 		this.updateNotificationModal('Scaling Down', msg, true, 'info');
 
-		this.virtualmachineservice.scaleDownCluster(this.selectedCluster.cluster_id, scale_down_batches).subscribe((res: any): void => {
-			this.selectedCluster.password = res['password'];
 
-			this.selectedCluster.setScaleDownBatchesCount();
-			this.selectedCluster.instances_count -= scale_down_count;
+		this.subscription.add(
+			this.virtualmachineservice.scaleDownCluster(this.selectedCluster.cluster_id, scale_down_batches).subscribe((): void => {
+        			this.selectedCluster.password = res['password'];
 
-			msg = 'Successfully scaled down the batches. Remember to configure your cluster!';
-			this.updateNotificationModal('Successfully Deleted!', msg, true, 'success');
-		});
+				this.selectedCluster.setScaleDownBatchesCount();
+      
+				this.selectedCluster.instances_count -= scale_down_count;
 
+				msg = 'Successfully scaled down the batches. Remember to configure your cluster!';
+				this.updateNotificationModal('Successfully Deleted!', msg, true, 'success');
+			}),
+		);
 	}
 
 	resetScaleCount(): void {
@@ -347,11 +358,13 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 	}
 
 	get_is_facility_manager(): void {
-		this.facilityService.getManagerFacilities().subscribe((result: any): void => {
-			if (result.length > 0) {
-				this.is_facility_manager = true;
-			}
-		});
+		this.subscription.add(
+			this.facilityService.getManagerFacilities().subscribe((result: any): void => {
+				if (result.length > 0) {
+					this.is_facility_manager = true;
+				}
+			}),
+		);
 	}
 
 	/**
@@ -372,7 +385,6 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 		cluster.status = VirtualMachineStates.DELETING;
 		this.subscription.add(this.virtualmachineservice.deleteCluster(cluster.cluster_id).subscribe((): void => {
 			cluster.status = VirtualMachineStates.DELETED;
-
 		}));
 	}
 
@@ -384,12 +396,12 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 				this.subscription.add(
 					this.virtualmachineservice.getClusterInfo(cluster.cluster_id)
 										  .subscribe((updated_cluster: Clusterinfo): void => {
-											  const idx: number = this.clusters.indexOf(cluster);
+											  const idx: number = this.cluster_page.cluster_list.indexOf(cluster);
 
-											  this.clusters[idx] = new Clusterinfo(updated_cluster);
 
+											  this.cluster_page.cluster_list[idx] = new Clusterinfo(updated_cluster);
 											  if (cluster === this.selectedCluster) {
-												  for (const workerBatch of this.clusters[idx].worker_batches) {
+												  for (const workerBatch of this.cluster_page.cluster_list[idx].worker_batches) {
 													  for (const old_batch of cluster.worker_batches) {
 														  if (workerBatch.index === old_batch.index) {
 															  workerBatch.max_scale_up_count = old_batch.max_scale_up_count;
@@ -406,10 +418,10 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 												  }
 												  this.clusters[idx].password = this.selectedCluster.password;
 
-												  this.selectedCluster = this.clusters[idx];
+												  this.selectedCluster = this.cluster_page.cluster_list[idx];
 
 											  }
-											  cluster = this.clusters[idx];
+											  cluster = this.cluster_page.cluster_list[idx];
 
 											  for (const batch of cluster.worker_batches) {
 												  if (batch.running_worker < batch.worker_count) {
@@ -432,15 +444,15 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 
 		setTimeout(
 			(): void => {
-				const idx: number = this.clusters.indexOf(cluster);
+				const idx: number = this.cluster_page.cluster_list.indexOf(cluster);
 
 				this.subscription.add(this.virtualmachineservice.getClusterInfo(cluster.cluster_id)
 										  .subscribe((updated_cluster: Clusterinfo): void => {
-											  this.clusters[idx] = new Clusterinfo(updated_cluster);
+											  this.cluster_page.cluster_list[idx] = new Clusterinfo(updated_cluster);
 											  if (is_selected_cluster) {
-												  this.selectedCluster = this.clusters[idx];
+												  this.selectedCluster = this.cluster_page.cluster_list[idx];
 											  }
-											  cluster = this.clusters[idx];
+											  cluster = this.cluster_page.cluster_list[idx];
 
 											  if (cluster.status !== 'Running' && cluster.status !== VirtualMachineStates.DELETING
 												  && cluster.status !== VirtualMachineStates.DELETED) {
@@ -491,39 +503,41 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 	 * Get all vms of user.
 	 */
 	getClusters(): void {
-
-		this.virtualmachineservice.getClusters(
-			this.currentPage, this.cluster_per_site,
-		)
-			.subscribe((cluster_page_infos: any[]): void => {
-				this.prepareClusters(cluster_page_infos);
-			});
+		this.subscription.add(
+			this.virtualmachineservice.getClusters(
+				this.currentPage, this.cluster_per_site,
+			)
+				.subscribe((cluster_page: ClusterPage): void => {
+					this.prepareClusters(cluster_page);
+				}),
+		);
 	}
 
 	getAllCLusterFacilities(): void {
-		this.facilityService.getClustersFacility(
-			this.selectedFacility['FacilityId'],
-			this.currentPage, this.cluster_per_site,
-		)
-			.subscribe((cluster_page_infos: any[]): void => {
-				this.prepareClusters(cluster_page_infos);
-			});
-
+		this.subscription.add(
+			this.facilityService.getClustersFacility(
+				this.selectedFacility['FacilityId'],
+				this.currentPage, this.cluster_per_site,
+			)
+				.subscribe((cluster_page_infos: ClusterPage): void => {
+					this.prepareClusters(cluster_page_infos);
+				}),
+		);
 	}
 
-	prepareClusters(cluster_page_infos: any): void {
-
-		this.clusters = cluster_page_infos['cluster_list'].map((cluster: Clusterinfo): Clusterinfo => new Clusterinfo(cluster));
-		this.total_items = cluster_page_infos['total_items'];
-		this.items_per_page = cluster_page_infos['items_per_page'];
-		this.total_pages = cluster_page_infos['num_pages'];
+	prepareClusters(cluster_page_infos: ClusterPage): void {
+		this.cluster_page = cluster_page_infos;
+		// this.clusters = cluster_page_infos['cluster_list'].map((cluster: Clusterinfo): Clusterinfo => new Clusterinfo(cluster));
+		// this.total_items = cluster_page_infos['total_items'];
+		// this.items_per_page = cluster_page_infos['items_per_page'];
+		// this.total_pages = cluster_page_infos['num_pages'];
 
 		this.isSearching = false;
 		this.checkClustersTillRunning();
 	}
 
 	checkClustersTillRunning(): void {
-		this.clusters.forEach((cluster: Clusterinfo): void => {
+		this.cluster_page.cluster_list.forEach((cluster: Clusterinfo): void => {
 			if (cluster.status !== this.VirtualMachineStates.staticNOT_FOUND) {
 
 				if (cluster.status !== 'Running') {
@@ -542,38 +556,45 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 	}
 
 	getAllClusters(): void {
-		this.virtualmachineservice.getAllClusters(this.currentPage, this.cluster_per_site)
-			.subscribe((cluster_page_infos: any[]): void => {
-				this.prepareClusters(cluster_page_infos);
-			});
+		this.subscription.add(
+			this.virtualmachineservice.getAllClusters(this.currentPage, this.cluster_per_site)
+				.subscribe((cluster_page_infos: ClusterPage): void => {
+					this.prepareClusters(cluster_page_infos);
+				}),
+		);
 	}
 
 	ngOnInit(): void {
 		this.getClusters();
 		this.is_vo_admin = is_vo;
 		this.get_is_facility_manager();
-		this.facilityService.getManagerFacilities().subscribe((result: any): void => {
-			this.managerFacilities = result;
-			this.selectedFacility = this.managerFacilities[0];
-		});
+		this.subscription.add(
+			this.facilityService.getManagerFacilities().subscribe((result: any): void => {
+				this.managerFacilities = result;
+				this.selectedFacility = this.managerFacilities[0];
+			}),
+		);
 
-		this.filterChanged
-			.pipe(
-				debounceTime(this.FILTER_DEBOUNCE_TIME),
+		this.subscription.add(
+			this.filterChanged
+				.pipe(
+					debounceTime(this.FILTER_DEBOUNCE_TIME),
+					distinctUntilChanged(),
+				)
+				.subscribe((): void => {
+					this.applyFilter();
+				}),
+		);
+
+		this.subscription.add(
+			this.clusterPerPageChange.pipe(
+				debounceTime(this.DEBOUNCE_TIME),
 				distinctUntilChanged(),
 			)
-			.subscribe((): void => {
-				this.applyFilter();
-			});
-
-		this.clusterPerPageChange.pipe(
-			debounceTime(this.DEBOUNCE_TIME),
-			distinctUntilChanged(),
-		)
-			.subscribe((): void => {
-				this.applyFilter();
-			});
-
+				.subscribe((): void => {
+					this.applyFilter();
+				}),
+		);
 	}
 
 	check_status_loop_vm(vm: VirtualMachine, cluster: Clusterinfo, final_state: string = VirtualMachineStates.ACTIVE): void {
@@ -608,7 +629,7 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 	}
 
 	check_status_loop_cluster_vms(): void {
-		this.clusters.forEach((cluster: Clusterinfo): void => {
+		this.cluster_page.cluster_list.forEach((cluster: Clusterinfo): void => {
 			cluster.worker_instances.forEach((vm: VirtualMachine): void => {
 				if (vm.status !== VirtualMachineStates.ACTIVE && VirtualMachineStates.NOT_IN_PROCESS_STATES.indexOf(vm.status) === -1) {
 					this.check_status_loop_vm(vm, cluster);

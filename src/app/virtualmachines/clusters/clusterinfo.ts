@@ -4,6 +4,7 @@ import { Client } from '../../vo_manager/clients/client.model';
 import { Flavor } from '../virtualmachinemodels/flavor';
 import { Image } from '../virtualmachinemodels/image';
 import { ApplicationRessourceUsage } from '../../applications/application-ressource-usage/application-ressource-usage';
+import { VirtualMachineStates } from '../virtualmachinemodels/virtualmachinestates';
 
 /**
  *  Cluster Worker Batch
@@ -21,18 +22,21 @@ export class WorkerBatch {
 	usable_flavors: Flavor[] = [];
 	valid_batch: boolean = false;
 
-	constructor(index: number, batch?: WorkerBatch) {
+	constructor(index: number, batch?: Partial<WorkerBatch>) {
 		this.index = index;
+		Object.assign(this, batch);
 		if (batch) {
-			this.index = batch.index;
-			this.flavor = batch.flavor;
-			this.image = batch.image;
-			this.worker_count = batch.worker_count;
-			this.running_worker = batch.running_worker;
-			this.delete_count = batch.delete_count;
-			this.upscale_count = batch.upscale_count;
-			this.max_worker_count = batch.max_worker_count;
-			this.max_scale_up_count = batch.max_scale_up_count;
+			if (batch.flavor) {
+				this.flavor = new Flavor(batch.flavor);
+			}
+			if (batch.image) {
+				this.image = new Image(batch.image);
+			}
+			if (batch.usable_flavors) {
+				for (const flavor of batch.usable_flavors) {
+					this.usable_flavors.push(new Flavor(flavor));
+				}
+			}
 		}
 	}
 
@@ -82,25 +86,30 @@ export class Clusterinfo {
 	password: string;
 	master_instance_openstack_id: string;
 
-	constructor(cl: Clusterinfo) {
-		this.master_instance = cl.master_instance;
-		this.worker_instances = cl.worker_instances;
-		this.client = cl.client;
-		this.public_ip = cl.public_ip;
-		this.cluster_id = cl.cluster_id;
-		this.group_id = cl.group_id;
-		this.user = cl.user;
-		this.instances_count = cl.worker_instances.length + 1;
-		this.launch_date = cl.launch_date;
-		this.key_name = cl.key_name;
-		this.status = cl.status;
-		this.application_id = cl.application_id;
-		this.project = cl.project;
-		this.userlogin = cl.userlogin;
-		this.project_id = cl.project_id;
-		this.master_instance_openstack_id = cl.master_instance.openstackid;
-		this.set_worker_baches(cl.worker_batches);
-		this.sortWorkerByStatus();
+	constructor(cl?: Partial<Clusterinfo>) {
+		Object.assign(this, cl);
+		if (cl) {
+			if (cl.master_instance) {
+				this.master_instance = new VirtualMachine(cl.master_instance);
+				/**
+				 * TODO: Remove once cluster status is updated by api
+				 */
+				if (this.master_instance.status === VirtualMachineStates.SHUTOFF) {
+					this.status = VirtualMachineStates.SHUTOFF;
+				}
+			}
+			this.worker_instances = [];
+			if (cl.worker_instances) {
+				for (const clWorkerInstance of cl.worker_instances) {
+					this.worker_instances.push(new VirtualMachine(clWorkerInstance));
+				}
+			}
+			if (cl.worker_batches) {
+				this.worker_batches = [];
+				this.set_worker_batches(cl.worker_batches);
+			}
+			this.sortWorkerByStatus();
+		}
 	}
 
 	public setScaleDownBatchesCount(): void {
@@ -131,7 +140,10 @@ export class Clusterinfo {
 
 	}
 
-	private set_worker_baches(workerBatches: WorkerBatch[]): void {
+	private set_worker_batches(workerBatches: WorkerBatch[]): void {
+		// for (const worker_batch of workerBatches) {
+		// 	this.worker_batches.push(new WorkerBatch(worker_batch.index, worker_batch));
+		// }
 		this.worker_batches = workerBatches.map(
 			(workerBatch: WorkerBatch): WorkerBatch => new WorkerBatch(workerBatch.index, workerBatch),
 		);
