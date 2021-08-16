@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { ApiSettings } from './api-settings.service';
 import { ResearchEnvironment } from '../virtualmachines/virtualmachinemodels/res-env';
 import { VirtualMachine } from '../virtualmachines/virtualmachinemodels/virtualmachine';
@@ -34,7 +35,13 @@ export class BiocondaService {
 		return this.http.get<ResearchEnvironment[]>(`${ApiSettings.getApiBaseURL()}forc/templates/`, {
 			withCredentials: true,
 			params,
-		});
+		}).pipe(
+			map(
+				(resenvs: ResearchEnvironment[]): ResearchEnvironment[] => resenvs.map(
+					(resenv: ResearchEnvironment): ResearchEnvironment => new ResearchEnvironment(resenv),
+				),
+			),
+		);
 	}
 
 	getSuggestedForcTemplates(facility_id?: string): Observable<any> {

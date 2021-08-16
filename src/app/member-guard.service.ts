@@ -57,8 +57,8 @@ export class MemberGuardService implements CanActivate {
 					setVO(result.value as boolean);
 
 				});
-				this.userService.getUserInfo().subscribe((result: any): void => {
-					setElixirId(result['ElixirId']);
+				this.userService.getLoggedUserElixirId().subscribe((result: any): void => {
+					setElixirId(result['elixir_id']);
 				});
 
 				return this.userService.getMemberByUser().pipe(map((memberinfo: any): any => {

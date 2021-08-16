@@ -37,9 +37,9 @@
   <div class="card-body">
 
     <div class="row justify-content-end">
-      <div class="col" [hidden]="total_pages < 2">
+      <div class="col" [hidden]="volume_page.num_pages < 2">
         <pagination
-          [totalItems]="total_items" [itemsPerPage]="items_per_page"
+          [totalItems]="volume_page.total_items" [itemsPerPage]="volume_page.items_per_page"
           (pageChanged)="pageChanged($event)" [(ngModel)]="currentPage"
           [boundaryLinks]="true" [maxSize]="5" [rotate]="false" #pagination>
         </pagination>
@@ -50,11 +50,11 @@
                  [ngModel]="filter" (keydown.enter)="$event.preventDefault();">
         </div>
       <div class="input-group col-3">
-        <input id="vm_per_site" class="form-control" [disabled]="isSearching"
-               name="vm_per_site" placeholder="e.g 3"
+        <input id="items_per_page" class="form-control" [disabled]="isSearching"
+               name="volume_page.items_per_page" placeholder="e.g 3"
                type="number" min="1" max="10" step="1"
                appMinAmount="1" appMaxAmount="10" appInteger
-               pattern="^([1-9]|1[012])$" [(ngModel)]="items_per_page"
+               pattern="^([1-9]|1[012])$" [(ngModel)]="volume_page.items_per_page"
                (ngModelChange)="volumePerPageChange.next($event)">
         <div class="input-group-append mb-3 "><span class="input-group-text"> Volumes per page
                                     </span></div>
@@ -103,7 +103,7 @@
 
         </div>
 
-        <div class="rTableRow" *ngFor="let volume of volumes">
+        <div class="rTableRow" *ngFor="let volume of volume_page.volume_list">
           <div class="rTableCell ">{{volume?.volume_project}}</div>
           <div class="rTableCell "
                *ngIf="volume?.volume_virtualmachine && volume?.volume_status == VolumeStates.staticIN_USE"
