@@ -256,8 +256,12 @@ we are happy to inform..."
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary"
+         <!-- <button type="button" class="btn btn-primary"
                   (click)="addNewsToWordpress(newWordpressNews, true); updateModal.hide()"
+                  id="approve_update_modal"><i class="fas fa-edit"></i> Update
+          </button> -->
+          <button type="button" class="btn btn-primary"
+                  (click)="updateNewsInAPI(selectedFacilityNews); updateModal.hide()"
                   id="approve_update_modal"><i class="fas fa-edit"></i> Update
           </button>
           <button type="button" class="btn btn-secondary"

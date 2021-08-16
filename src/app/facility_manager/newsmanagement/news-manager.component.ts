@@ -132,6 +132,23 @@ export class NewsManagerComponent implements OnInit {
 
 	}
 
+	updateNewsInAPI(bare_news: FacilityNews): void {
+		const news: FacilityNews = bare_news;
+		news.title = this.selectedNewsForm.controls['title'].value;
+		news.text = this.selectedNewsForm.controls['text'].value;
+		news.motd = this.selectedNewsForm.controls['motd'].value;
+		news.facility = this.facilitiesToPost[0];
+		this.newsService.updateNewsInAPI(news).subscribe((result: any): void => {
+			if (result) {
+				if (result['id']) {
+					this.returnState = 2;
+					this.infoModal.show();
+				}
+			}
+			this.getNewsFromAPI();
+		});
+	}
+
 	/**
 	 * Adds or updates news in WordPress
 	 *

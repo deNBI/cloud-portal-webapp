@@ -21,6 +21,12 @@ export class NewsService {
 		});
 	}
 
+	updateNewsInAPI(news: FacilityNews): Observable<any> {
+		return this.http.patch(`${ApiSettings.getApiBaseURL()}facility-news-management/`, news, {
+			withCredentials: true,
+		});
+	}
+
 	addNewsToWordpress(news: WordPressNews): Observable<any> {
 		return this.http.post(`${ApiSettings.getApiBaseURL()}wp-news-management/`, news, {
 			withCredentials: true,
@@ -74,7 +80,7 @@ export class NewsService {
 		const params: HttpParams = new HttpParams()
 			.set('news_id', news_id);
 
-		return this.http.delete(`${ApiSettings.getApiBaseURL()}wp-news-management/`, {
+		return this.http.delete(`${ApiSettings.getApiBaseURL()}facility-news-management/`, {
 			withCredentials: true,
 			params,
 		});
