@@ -40,6 +40,7 @@ import { DeleteVmComponent } from './modals/delete-vm/delete-vm.component';
 import { SnapshotVmComponent } from './modals/snapshot-vm/snapshot-vm.component';
 import { VolumeVmComponent } from './modals/volume-vm/volume-vm.component';
 import { RebootVmComponent } from './modals/reboot-vm/reboot-vm.component';
+import { ClustercardComponent } from './clustercard/clustercard.component';
 
 /**
  * VM module.
@@ -61,35 +62,36 @@ import { RebootVmComponent } from './modals/reboot-vm/reboot-vm.component';
 		SharedDirectivesModule,
 		NgbModule,
 		ReactiveFormsModule],
-	declarations: [
-		ImageCarouselSlideComponent,
-		ImageDetailComponent,
-		VirtualMachineComponent,
-		FlavorDetailComponent,
-		VmOverviewComponent,
-		VolumeOverviewComponent,
-		SnapshotOverviewComponent,
-		ClusterstatusComponent,
-		BiocondaComponent,
-		VmDetailComponent,
-		AddClusterComponent,
-		ResourceOverviewComponent,
-		ResEnvComponent,
-		ClusterinfoComponent,
-		ClusterdetailComponent,
-		ClusterOverviewComponent,
-		VirtualmachineinfoComponent,
-		VmstatusComponent,
-		VolumStatusComponent,
-		ProjectUserListComponent,
-		VmCardComponent,
-		StopVmComponent,
-		ResumeVMComponent,
-		DeleteVmComponent,
-		SnapshotVmComponent,
-		VolumeVmComponent,
-		RebootVmComponent,
-	],
+	          declarations: [
+		          ImageCarouselSlideComponent,
+		          ImageDetailComponent,
+		          VirtualMachineComponent,
+		          FlavorDetailComponent,
+		          VmOverviewComponent,
+		          VolumeOverviewComponent,
+		          SnapshotOverviewComponent,
+		          ClusterstatusComponent,
+		          BiocondaComponent,
+		          VmDetailComponent,
+		          AddClusterComponent,
+		          ResourceOverviewComponent,
+		          ResEnvComponent,
+		          ClusterinfoComponent,
+		          ClusterdetailComponent,
+		          ClusterOverviewComponent,
+		          VirtualmachineinfoComponent,
+		          VmstatusComponent,
+		          VolumStatusComponent,
+		          ProjectUserListComponent,
+		          VmCardComponent,
+		          StopVmComponent,
+		          ResumeVMComponent,
+		          DeleteVmComponent,
+		          SnapshotVmComponent,
+		          VolumeVmComponent,
+		          RebootVmComponent,
+		          ClustercardComponent,
+	          ],
 })
 export class VmModule {
 }

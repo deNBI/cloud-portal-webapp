@@ -9,7 +9,7 @@ import { FullLayoutComponent } from '../../../layouts/full-layout.component';
 import { UserService } from '../../../api-connector/user.service';
 import { ImageService } from '../../../api-connector/image.service';
 import { FacilityService } from '../../../api-connector/facility.service';
-import { is_vo } from '../../../shared/globalvar';
+import { elixir_id, is_vo } from '../../../shared/globalvar';
 import { VirtualMachineStates } from '../../virtualmachinemodels/virtualmachinestates';
 import { GroupService } from '../../../api-connector/group.service';
 import { ClientService } from '../../../api-connector/client.service';
@@ -29,7 +29,7 @@ export const SCALING_SCRIPT_NAME: string = 'scaling.py';
  */
 @Component({
 
-	           selector: 'app-vm-overview',
+	           selector: 'app-cluster-overview',
 	           templateUrl: './clusterOverview.component.html',
 	styleUrls: ['../../vmOverview.component.scss'],
 	providers: [FacilityService, ImageService, UserService,
@@ -51,6 +51,7 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 	SCALING_SCRIPT_LINK: string = SCALE_SCRIPT_LINK;
 	CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL;
 	selectedProjectRessources: ApplicationRessourceUsage;
+	user_elixir_id: string = elixir_id;
 
 	isSearching: boolean = true;
 	scaling_warning_read: boolean = false;
@@ -174,11 +175,13 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 		);
 	}
 
-	generatePassword(): void {
-		this.selectedCluster.password = null;
-		this.virtualmachineservice.generatePasswordCluster(this.selectedCluster.cluster_id).subscribe((res: any) => {
-			this.selectedCluster.password = res['password'];
-		});
+	/**
+	 * How to track the child cluster cards.
+	 * @param index Track by a number or a string.
+	 * @param vm Track by vm openstackid.
+	 */
+	trackByCluster(index: number | string, cluster: Clusterinfo): string {
+		return cluster.cluster_id;
 	}
 
 	scaleUpCluster(): void {
