@@ -188,30 +188,28 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 		if (!this.created_new_batch) {
 
 			this.subscription.add(
-				this.virtualmachineservice.scaleCluster(this.selectedCluster.cluster_id, this.selectedBatch).subscribe((): void => {
+				this.virtualmachineservice.scaleCluster(this.selectedCluster.cluster_id, this.selectedBatch).subscribe((res: any): void => {
 					this.selectedBatch.setNewScalingUpWorkerCount();
-          this.selectedCluster.password = res['password'];
-
+					this.selectedCluster.password = res['password'];
 
 					this.check_worker_count_loop(this.selectedCluster);
 					this.updateNotificationModal('Sucessfull',
-						`The start of ${scale_up_count} workers was successfully initiated. Remember to configure your cluster after the machines are active!'`,
-						true, 'success');
+					                             `The start of ${scale_up_count} workers was successfully initiated. Remember to configure your cluster after the machines are active!'`,
+					                             true, 'success');
 				}),
 			);
 		} else {
 
 			this.subscription.add(
-				this.virtualmachineservice.scaleClusterNewBatch(this.selectedCluster.cluster_id, this.selectedBatch).subscribe((): void => {
+				this.virtualmachineservice.scaleClusterNewBatch(this.selectedCluster.cluster_id, this.selectedBatch).subscribe((res: any): void => {
 
 					this.selectedBatch.setNewScalingUpWorkerCount();
-          				this.selectedCluster.password = res['password'];
-
+					this.selectedCluster.password = res['password'];
 
 					this.check_worker_count_loop(this.selectedCluster);
 					this.updateNotificationModal('Sucessfull',
-						`The start of ${scale_up_count} workers was successfully initiated. Remember to configure your cluster after the machines are active!'`,
-						true, 'success');
+					                             `The start of ${scale_up_count} workers was successfully initiated. Remember to configure your cluster after the machines are active!'`,
+					                             true, 'success');
 
 				}),
 			);
@@ -329,13 +327,12 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 
 		this.updateNotificationModal('Scaling Down', msg, true, 'info');
 
-
 		this.subscription.add(
-			this.virtualmachineservice.scaleDownCluster(this.selectedCluster.cluster_id, scale_down_batches).subscribe((): void => {
-        			this.selectedCluster.password = res['password'];
+			this.virtualmachineservice.scaleDownCluster(this.selectedCluster.cluster_id, scale_down_batches).subscribe((res: any): void => {
+				this.selectedCluster.password = res['password'];
 
 				this.selectedCluster.setScaleDownBatchesCount();
-      
+
 				this.selectedCluster.instances_count -= scale_down_count;
 
 				msg = 'Successfully scaled down the batches. Remember to configure your cluster!';
@@ -397,7 +394,6 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 					this.virtualmachineservice.getClusterInfo(cluster.cluster_id)
 										  .subscribe((updated_cluster: Clusterinfo): void => {
 											  const idx: number = this.cluster_page.cluster_list.indexOf(cluster);
-
 
 											  this.cluster_page.cluster_list[idx] = new Clusterinfo(updated_cluster);
 											  if (cluster === this.selectedCluster) {
