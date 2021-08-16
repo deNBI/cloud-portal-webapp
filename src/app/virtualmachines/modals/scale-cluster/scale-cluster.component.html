@@ -1,4 +1,5 @@
-<ng-container *ngIf="scale_down">
+   <ng-container *ngIf="scale_down">
+
     <div class="modal-header">
         <h4 class="modal-title">Scale-Down Cluster {{cluster?.cluster_id}}</h4>
         <button type="button" class="close" style="cursor: pointer"
@@ -113,7 +114,8 @@
                 (click)="bsModalRef.hide()">Cancel
         </button>
     </div>
-</ng-container>
+   </ng-container>
+
 <ng-container *ngIf="scale_up">
     <div class="modal-header">
         <h4 class="modal-title">Scale-Up Cluster {{cluster?.cluster_id}}</h4>

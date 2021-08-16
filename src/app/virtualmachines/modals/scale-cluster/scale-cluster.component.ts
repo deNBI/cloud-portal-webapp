@@ -1,4 +1,6 @@
-import { Component, EventEmitter, OnDestroy } from '@angular/core';
+import {
+	Component, EventEmitter, OnDestroy, OnInit,
+} from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { ClipboardService } from 'ngx-clipboard';
 import { Subscription } from 'rxjs';
@@ -15,7 +17,7 @@ import { GroupService } from '../../../api-connector/group.service';
 	           templateUrl: './scale-cluster.component.html',
 	           providers: [FlavorService, GroupService],
 })
-export class ScaleClusterComponent implements OnDestroy {
+export class ScaleClusterComponent implements OnDestroy, OnInit {
 
 	/**
 	 * Possible virtual machine states.
@@ -39,6 +41,7 @@ export class ScaleClusterComponent implements OnDestroy {
 	selectedProjectRessources: ApplicationRessourceUsage;
 	max_scale_up_count: number = 0;
 	max_scale_up_count_loaded: boolean = false;
+	mode: string;
 
 	cluster: Clusterinfo;
 	public event: EventEmitter<any> = new EventEmitter();
@@ -46,6 +49,18 @@ export class ScaleClusterComponent implements OnDestroy {
 
 	constructor(public bsModalRef: BsModalRef, private clipboardService: ClipboardService, private flavorService: FlavorService, private groupService: GroupService) {
 		// eslint-disable-next-line no-empty-function
+	}
+
+	ngOnInit(): void {
+		console.log(this.mode);
+		if (this.mode === 'scale_up') {
+
+			this.scale_up = true;
+			this.calcRess();
+
+		} else if (this.mode === 'scale_down') {
+			this.scale_down = true;
+		}
 	}
 
 	/**
@@ -89,6 +104,23 @@ export class ScaleClusterComponent implements OnDestroy {
 		}
 
 	}
+
+	calcRess(): void {
+		this.max_scale_up_count_loaded = false;
+
+		// tslint:disable-next-line:max-line-length
+		this.subscription.add(
+			this.groupService.getGroupResources(this.cluster.master_instance.projectid.toString())
+				.subscribe((res: ApplicationRessourceUsage): void => {
+					this.selectedProjectRessources = new ApplicationRessourceUsage(res);
+					for (const workerBatch of this.cluster.worker_batches) {
+						workerBatch.max_scale_up_count = this.selectedProjectRessources.calcMaxScaleUpWorkerInstancesByFlavor(workerBatch.flavor);
+					}
+					this.max_scale_up_count_loaded = true;
+				}),
+		);
+	}
+
 	setSelectedBatch(batch: WorkerBatch): void {
 
 		this.selectedBatch = batch;

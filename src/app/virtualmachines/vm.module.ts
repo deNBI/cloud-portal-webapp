@@ -41,16 +41,18 @@ import { SnapshotVmComponent } from './modals/snapshot-vm/snapshot-vm.component'
 import { VolumeVmComponent } from './modals/volume-vm/volume-vm.component';
 import { RebootVmComponent } from './modals/reboot-vm/reboot-vm.component';
 import { ClustercardComponent } from './clustercard/clustercard.component';
+import { ScaleClusterComponent } from './modals/scale-cluster/scale-cluster.component';
+import { DeleteClusterComponent } from './modals/delete-cluster/delete-cluster.component';
 
 /**
  * VM module.
  */
 @NgModule({
-	imports: [
-		PipeModuleModule,
-		ClickOutsideModule,
-		PublicKeyModule,
-		VmRoutingModule,
+	          imports: [
+		          PipeModuleModule,
+		          ClickOutsideModule,
+		          PublicKeyModule,
+		          VmRoutingModule,
 		TabsModule,
 		CommonModule,
 		FormsModule,
@@ -91,6 +93,8 @@ import { ClustercardComponent } from './clustercard/clustercard.component';
 		          VolumeVmComponent,
 		          RebootVmComponent,
 		          ClustercardComponent,
+		          ScaleClusterComponent,
+		          DeleteClusterComponent,
 	          ],
 })
 export class VmModule {

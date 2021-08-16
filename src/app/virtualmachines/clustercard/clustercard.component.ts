@@ -24,6 +24,9 @@ import { ScaleClusterComponent } from '../modals/scale-cluster/scale-cluster.com
 
 export class ClustercardComponent implements OnInit, OnDestroy {
 
+	SCALE_UP: string = 'scale_up';
+	SCALE_DOWN: string = 'scale_down';
+
 	/**
 	 * The virtual machine this card is for.
 	 */
@@ -160,9 +163,9 @@ export class ClustercardComponent implements OnInit, OnDestroy {
 	/**
 	 * Show password modal
 	 */
-	showScaleModal(): void {
+	showScaleModal(mode: string): void {
 		this.stopCheckStatusTimer();
-		const initialState = { cluster: this.cluster };
+		const initialState = { cluster: this.cluster, mode };
 
 		this.bsModalRef = this.modalService.show(ScaleClusterComponent, { initialState });
 		this.bsModalRef.setClass('modal-lg');

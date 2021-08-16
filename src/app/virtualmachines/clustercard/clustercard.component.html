@@ -60,7 +60,7 @@
                        *ngIf="cluster?.status != VirtualMachineStates.staticDELETED && cluster?.status != VirtualMachineStates.staticDELETING && cluster?.status == 'Running' ">
                     <a class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
                        [id]="'scale_up_'+cluster?.cluster_id"
-                       (click)="showScaleModal()">
+                       (click)="showScaleModal(SCALE_UP)">
                       Scale-Up</a>
 
 
@@ -69,7 +69,7 @@
                        *ngIf="cluster?.status != VirtualMachineStates.staticDELETED && cluster?.status != VirtualMachineStates.staticDELETING && cluster?.status == 'Running' ">
                     <a class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
                        [id]="'scale_down_'+cluster?.cluster_id"
-                       (click)="showScaleModal()">
+                       (click)="showScaleModal(SCALE_DOWN)">
                       Scale-Down</a>
 
 
