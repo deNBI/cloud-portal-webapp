@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 import { ClipboardService } from 'ngx-clipboard';
 import { Subscription } from 'rxjs';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalService } from 'ngx-bootstrap/modal';
 import { VirtualMachineStates } from '../virtualmachinemodels/virtualmachinestates';
 import { VirtualmachineService } from '../../api-connector/virtualmachine.service';
 import { ImageService } from '../../api-connector/image.service';
@@ -11,6 +11,7 @@ import { Clusterinfo, WorkerBatch } from '../clusters/clusterinfo';
 import { DeleteClusterComponent } from '../modals/delete-cluster/delete-cluster.component';
 import { PasswordClusterComponent } from '../modals/password-cluster/password-cluster.component';
 import { ScaleClusterComponent } from '../modals/scale-cluster/scale-cluster.component';
+import { SharedModal } from '../../shared/shared_modules/baseClass/shared-modal';
 
 /**
  * Vm card component to be used by vm-overview. Holds information about a virtual machine.
@@ -22,10 +23,11 @@ import { ScaleClusterComponent } from '../modals/scale-cluster/scale-cluster.com
 	           providers: [ImageService],
 })
 
-export class ClustercardComponent implements OnInit, OnDestroy {
+export class ClustercardComponent extends SharedModal implements OnInit, OnDestroy {
 
 	SCALE_UP: string = 'scale_up';
 	SCALE_DOWN: string = 'scale_down';
+	SCALE_SUCCESS: string = 'scale_success'
 
 	/**
 	 * The virtual machine this card is for.
@@ -75,7 +77,7 @@ export class ClustercardComponent implements OnInit, OnDestroy {
 	/**
 	 * Modal reference to be changed/showed/hidden depending on chosen modal.
 	 */
-	bsModalRef: BsModalRef;
+	// bsModalRef: BsModalRef;
 
 	/**
 	 * Default wait time between status checks if no other value specified.
@@ -94,37 +96,19 @@ export class ClustercardComponent implements OnInit, OnDestroy {
 	checkStatusTimer: ReturnType<typeof setTimeout>;
 
 	constructor(private clipboardService: ClipboardService,
-	            private modalService: BsModalService,
+	            modalService: BsModalService,
 	            private virtualmachineservice: VirtualmachineService,
 	            private imageService: ImageService) {
-		// eslint-disable-next-line no-empty-function
+		super(modalService);
 	}
 
 	ngOnInit() {
-		this.resumeCheckStatusTimer();
+		this.checkClusterTillRunning();
 	}
 
 	ngOnDestroy() {
 		this.subscription.unsubscribe();
 		this.stopCheckStatusTimer();
-	}
-
-	/**
-	 * Start the check status loop without arguments.
-	 */
-	resumeCheckStatusTimer(): void {
-		// this.check_status_loop();
-	}
-
-	/**
-	 * Stop and clear the check status loop. Then resume it with a value between 1 second and 3 seconds.
-	 */
-	restartAndResumeCheckStatusTimer(): void {
-		this.stopCheckStatusTimer();
-		// so not all requests are at the same time for the vms
-		const min: number = 1000;
-		const max: number = 3000;
-		// this.check_status_loop(null, Math.floor(Math.random() * (max - min)) + min);
 	}
 
 	/**
@@ -163,17 +147,118 @@ export class ClustercardComponent implements OnInit, OnDestroy {
 	/**
 	 * Show password modal
 	 */
-	showScaleModal(mode: string): void {
+	showScaleModal(mode: string, msg?: string): void {
+		this.hideCurrentModal();
 		this.stopCheckStatusTimer();
-		const initialState = { cluster: this.cluster, mode };
-
+		const initialState = { cluster: this.cluster, mode, msg };
 		this.bsModalRef = this.modalService.show(ScaleClusterComponent, { initialState });
-		this.bsModalRef.setClass('modal-lg');
+		this.bsModalRef.setClass('modal-xl');
 		this.subscribeToBsModalRef();
 	}
 
-	scaleUpCluster(selectedBatch): void {
+	scaleUpCluster(selectedBatch: WorkerBatch, created_new_batch: boolean = false): void {
+		const scale_up_count: number = selectedBatch.upscale_count;
+		this.showNotificationModal('Upscaling Cluster', `Starting ${scale_up_count} additional workers..`, 'info');
 
+		if (!created_new_batch) {
+
+			this.subscription.add(
+				this.virtualmachineservice.scaleCluster(this.cluster.cluster_id, selectedBatch).subscribe((res: any): void => {
+					selectedBatch.setNewScalingUpWorkerCount();
+					this.cluster.password = res['password'];
+
+					this.check_worker_count_loop();
+					this.showScaleModal(this.SCALE_SUCCESS, `The start of ${scale_up_count} workers was successfully initiated. Remember to configure your cluster after the machines are active!'`);
+
+				}),
+			);
+		} else {
+
+			this.subscription.add(
+				this.virtualmachineservice.scaleClusterNewBatch(this.cluster.cluster_id, selectedBatch).subscribe((res: any): void => {
+
+					selectedBatch.setNewScalingUpWorkerCount();
+					this.cluster.password = res['password'];
+
+					this.check_worker_count_loop();
+					this.showScaleModal(this.SCALE_SUCCESS, `The start of ${scale_up_count} workers was successfully initiated. Remember to configure your cluster after the machines are active!'`);
+
+				}),
+			);
+		}
+
+	}
+
+	checkClusterTillRunning(): void {
+
+		if (this.cluster.status !== this.VirtualMachineStates.staticNOT_FOUND) {
+
+			if (this.cluster.status !== 'Running') {
+				this.check_status_loop();
+			} else {
+
+				this.check_worker_count_loop();
+
+			}
+		}
+
+	}
+
+	check_status_loop(final_state?: string): void {
+
+		setTimeout(
+			(): void => {
+
+				this.subscription.add(this.virtualmachineservice.getClusterInfo(this.cluster.cluster_id)
+					                      .subscribe((updated_cluster: Clusterinfo): void => {
+						                      const password: string = this.cluster.password;
+						                      this.cluster = new Clusterinfo(updated_cluster);
+						                      this.cluster.password = password;
+
+						                      if (this.cluster.status !== 'Running' && this.cluster.status !== VirtualMachineStates.DELETING
+							                      && this.cluster.status !== VirtualMachineStates.DELETED) {
+							                      this.check_status_loop(final_state);
+
+						                      } else {
+
+							                      this.check_worker_count_loop();
+
+						                      }
+
+					                      }));
+
+			},
+
+			this.checkStatusTimeout,
+		);
+	}
+
+	check_worker_count_loop(): void {
+
+		setTimeout(
+			(): void => {
+
+				this.subscription.add(
+					this.virtualmachineservice.getClusterInfo(this.cluster.cluster_id)
+						.subscribe((updated_cluster: Clusterinfo): void => {
+							const password: string = this.cluster.password;
+							this.cluster = new Clusterinfo(updated_cluster);
+							this.cluster.password = password;
+							for (const batch of this.cluster.worker_batches) {
+								if (batch.running_worker < batch.worker_count) {
+									this.check_worker_count_loop();
+
+									break;
+								}
+							}
+
+						}),
+				);
+
+			},
+
+			this.checkStatusTimeout,
+		);
 	}
 
 	scaleDownCluster(cluster: Clusterinfo): void {
@@ -191,6 +276,7 @@ export class ClustercardComponent implements OnInit, OnDestroy {
 		for (const batch of scale_down_batches) {
 			msg += ` \n[Batch ${batch.index} by ${batch.delete_count} instances ]`;
 		}
+		this.showNotificationModal('Scaling Down', msg, 'info');
 
 		this.subscription.add(
 			this.virtualmachineservice.scaleDownCluster(this.cluster.cluster_id, scale_down_batches).subscribe((res: any): void => {
@@ -199,6 +285,7 @@ export class ClustercardComponent implements OnInit, OnDestroy {
 				this.cluster.setScaleDownBatchesCount();
 
 				this.cluster.instances_count -= scale_down_count;
+				this.showScaleModal(this.SCALE_SUCCESS, 'Successfully Scaled Down!');
 
 			}),
 		);
@@ -225,6 +312,8 @@ export class ClustercardComponent implements OnInit, OnDestroy {
 						this.deleteCluster();
 					} else if ('scaleDownCluster' in result) {
 						this.scaleDownCluster(result['cluster']);
+					} else if ('scaleUpCluster' in result) {
+						this.scaleUpCluster(result['selectedBatch'], result['created_new_batch']);
 					}
 				},
 			),

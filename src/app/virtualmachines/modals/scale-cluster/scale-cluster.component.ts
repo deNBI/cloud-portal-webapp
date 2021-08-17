@@ -30,6 +30,7 @@ export class ScaleClusterComponent implements OnDestroy, OnInit {
 	SCALING_SCRIPT_NAME: string = 'scaling.py';
 	scale_down: boolean = false;
 	scale_up: boolean = false;
+	scale_success: boolean = false;
 	projectDataLoaded: boolean = false;
 	selectedBatch: WorkerBatch;
 	scale_down_count: number = 0;
@@ -42,8 +43,10 @@ export class ScaleClusterComponent implements OnDestroy, OnInit {
 	max_scale_up_count: number = 0;
 	max_scale_up_count_loaded: boolean = false;
 	mode: string;
+	msg: string;
 
 	cluster: Clusterinfo;
+	old_cluster: Clusterinfo;
 	public event: EventEmitter<any> = new EventEmitter();
 	private submitted: boolean = false;
 
@@ -52,7 +55,6 @@ export class ScaleClusterComponent implements OnDestroy, OnInit {
 	}
 
 	ngOnInit(): void {
-		console.log(this.mode);
 		if (this.mode === 'scale_up') {
 
 			this.scale_up = true;
@@ -60,7 +62,10 @@ export class ScaleClusterComponent implements OnDestroy, OnInit {
 
 		} else if (this.mode === 'scale_down') {
 			this.scale_down = true;
+		} else if (this.mode === 'scale_success') {
+			this.scale_success = true;
 		}
+
 	}
 
 	/**
@@ -200,15 +205,24 @@ export class ScaleClusterComponent implements OnDestroy, OnInit {
 
 	scaleUpCluster(): void {
 		this.submitted = true;
-		this.event.emit({ scaleUpCluster: true, cluster: this.cluster, batch: this.selectedBatch });
+		this.event.emit({ scaleUpCluster: true, selectedBatch: this.selectedBatch, created_new_batch: this.created_new_batch });
 
 		this.bsModalRef.hide();
+	}
+
+	resetScalingBatches(): void {
+		for (const workerBatch of this.cluster.worker_batches) {
+			workerBatch.upscale_count = 0;
+			workerBatch.delete_count = 0;
+		}
 	}
 
 	ngOnDestroy() {
 		this.subscription.unsubscribe();
 
 		if (!this.submitted) {
+			this.removeNewBatchSelectedCluster();
+			this.resetScalingBatches();
 			this.event.emit({ resume: true });
 		}
 	}
