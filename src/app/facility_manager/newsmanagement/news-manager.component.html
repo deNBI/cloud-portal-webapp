@@ -119,36 +119,24 @@ we are happy to inform..."
                   </a>
                 </div>
               </div>
-              <div class="form-group">
-                <label class="col-form-label">Tags:</label>
-                <div class="form-check" id="tags_check">
-                  <ng-container *ngFor="let tag of availableTags">
-                    <div class="form-row">
-                      <input class="form-check-input" type="checkbox" id="checkbox_{{tag.id.toString()}}"
-                             (click)="manageTags(tag)"
-                             [checked]="selectedTags?.indexOf(tag.id.toString()) > -1">
-                      <label class="form-check-label" for="checkbox_{{tag.id.toString()}}">{{tag.name}}</label>
-                    </div>
-                  </ng-container>
-                </div>
-              </div>
+
               <label for="facility_check">Facilities:</label>
               <div class="form-check" id="facility_check">
                 <ng-container *ngFor="let facility of managerFacilities">
                   <div class="form-row">
                     <div class="col-6">
-                    <input class="form-check-input" type="checkbox"
+                    <input class="form-check-input" type="radio" name="facility_radios"
                            id="news_select_{{facility['FacilityId']}}"
                            (click)="setFacility(facility)"
-                           [checked]="facilitiesToPost?.indexOf(facility['FacilityId']) != -1">
+                           [checked]="facility['FacilityId'] == facilityToPost">
                     <label class="form-check-label"
                            for="news_select_{{facility['FacilityId']}}">{{facility['Facility']}}</label>
                     </div>
                     <div class="col-6">
                       <input class="form-check-input" type="checkbox" id="news_select_{{facility['FacilityId']}}_motd"
                              (click)="manageMOTD(facility);"
-                             [disabled]="facilitiesToPost?.indexOf(facility['FacilityId']) == -1"
-                             [checked]="facilitiesToSetMOTD?.indexOf(facility['FacilityId']) > (-1)">
+                             [disabled]="facility['FacilityId'] != facilityToPost"
+                             [checked]="facility['FacilityId'] == facilityToSetMOTD">
                       <label class="form-check-label" for="news_select_{{facility['FacilityId']}}_motd">
                         Set as MOTD for facility</label>
                     </div>
@@ -156,11 +144,11 @@ we are happy to inform..."
                 </ng-container>
               </div>
               <br>
-              <div *ngIf="facilitiesToPost.length == 0" class="alert alert-warning">At least one facility needs to be
+              <div *ngIf="!facilityToPost" class="alert alert-warning">At least one facility needs to be
                 selected.
               </div>
             </div>
-            <div class="card-body" *ngIf="!selectedNews"> <!-- check case here -->
+            <div class="card-body" *ngIf="!selectedFacilityNews"> <!-- check case here -->
               <div class="alert alert-info">
                 This news is also published for a facility you are not the manager of, which means you are not allowed
                 to edit or delete this news.
@@ -170,20 +158,20 @@ we are happy to inform..."
             </div>
             <div class="card-footer">
               <button class="btn btn-primary" style="margin: 5px"
-                      *ngIf="selectedFacilityNews.id" (click)="setNews()">
+                      *ngIf="selectedFacilityNews.id" (click)="setCurrentNews()">
                 New entry
               </button>
               <button class="btn btn-warning" style="margin: 5px"
-                               *ngIf="!selectedFacilityNews.id" (click)="setNews()">Clear fields
+                               *ngIf="!selectedFacilityNews.id" (click)="setCurrentNews()">Clear fields
             </button>
               <button class="btn btn-success"
                       style="margin: 5px"
                       (click)="addModal.show();"
-                      [disabled]="selectedNewsForm.invalid || facilitiesToPost.length == 0"
+                      [disabled]="selectedNewsForm.invalid || !facilityToPost"
                       *ngIf="selectedFacilityNews.id == null">Create & Upload News
               </button>
               <button class="btn btn-secondary" style="margin: 5px"
-                      [disabled]="selectedNewsForm.invalid || facilitiesToPost.length == 0"
+                      [disabled]="selectedNewsForm.invalid || !facilityToPost"
                       (click)="updateModal.show();" *ngIf="selectedFacilityNews?.id">Update News
               </button>
               <button class="btn btn-danger" style="margin: 5px"
@@ -242,7 +230,7 @@ we are happy to inform..."
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title"> Update News: {{this.selectedNews.title}} ?</h4>
+          <h4 class="modal-title"> Update News: {{this.selectedFacilityNews.title}} ?</h4>
           <button type="button" class="close" style="cursor:pointer"
                   (click)="updateModal.hide()"
                   aria-label="Close">
@@ -251,7 +239,7 @@ we are happy to inform..."
         </div>
         <div class="modal-body">
           <div class="alert alert-info" role="alert">
-            <p>Are you sure, that you want to update <strong>{{this.selectedNews.title}}</strong> ?</p>
+            <p>Are you sure, that you want to update <strong>{{this.selectedFacilityNews.title}}</strong> ?</p>
             <p><strong>Please note: this may change the current Message of the day for multiple facilities!</strong></p>
           </div>
         </div>
@@ -290,7 +278,7 @@ we are happy to inform..."
         </div>
         <div class="modal-body">
           <div class="alert alert-info" role="alert">
-            <p>Are you sure, that you want to upload <strong>{{this.selectedNews.title}}</strong> ?</p>
+            <p>Are you sure, that you want to upload <strong>{{this.selectedFacilityNews.title}}</strong> ?</p>
             <p><strong>Please note: this may change the current Message of the day for multiple facilities!</strong></p>
           </div>
         </div>

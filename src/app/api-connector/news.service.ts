@@ -15,40 +15,15 @@ export class NewsService {
 		this.http = http;
 	}
 
-	updateNewsInWordpress(news: WordPressNews): Observable<any> {
-		return this.http.patch(`${ApiSettings.getApiBaseURL()}wp-news-management/`, news, {
-			withCredentials: true,
-		});
-	}
-
-	updateNewsInAPI(news: FacilityNews): Observable<any> {
+	updateFacilityNews(news: FacilityNews): Observable<any> {
 		return this.http.patch(`${ApiSettings.getApiBaseURL()}facility-news-management/`, news, {
 			withCredentials: true,
 		});
 	}
 
-	addNewsToWordpress(news: WordPressNews): Observable<any> {
-		return this.http.post(`${ApiSettings.getApiBaseURL()}wp-news-management/`, news, {
-			withCredentials: true,
-		});
-	}
-
-	addNewsToAPI(news: FacilityNews): Observable<any> {
+	addFacilityNews(news: FacilityNews): Observable<any> {
 		return this.http.post(`${ApiSettings.getApiBaseURL()}facility-news-management/`, news, {
 			withCredentials: true,
-		});
-	}
-
-	/** Get existing News from Wordpress from facilites listed in facility_ids
-	 *
-	 * @param facility_ids string of all facility ids for which we want the news in wp
-	 */
-	getNewsFromWordPress(facility_ids: string): Observable<Object[]> {
-		const params: HttpParams = new HttpParams().set('facility_ids', facility_ids);
-
-		return this.http.get<Object[]>(`${ApiSettings.getApiBaseURL()}wp-news-management/`, {
-			withCredentials: true,
-			params,
 		});
 	}
 
@@ -56,21 +31,6 @@ export class NewsService {
 		const params: HttpParams = new HttpParams().set('facility_ids', facility_ids);
 
 		return this.http.get<Object[]>(`${ApiSettings.getApiBaseURL()}facility-news-management/`, {
-			withCredentials: true,
-			params,
-		});
-	}
-
-	/**
-	 * Delete existing News from Wordpress by news_id
-	 *
-	 * @param news_id
-	 */
-	deleteNewsFromWordpress(news_id: string): Observable<any> {
-		const params: HttpParams = new HttpParams()
-			.set('news_id', news_id);
-
-		return this.http.delete(`${ApiSettings.getApiBaseURL()}facility-news-management/`, {
 			withCredentials: true,
 			params,
 		});
@@ -86,9 +46,10 @@ export class NewsService {
 		});
 	}
 
-	getAvailableTagsFromWordPress(): Observable<WordPressTag[]> {
-		return this.http.get<WordPressTag[]>(`${ApiSettings.getApiBaseURL()}wp-tags-management/`, {
+	getFacilitiesFromWagtail(): Observable<Object[]> {
+		return this.http.get<Object[]>(`${ApiSettings.getApiBaseURL()}facility-management/`, {
 			withCredentials: true,
 		});
 	}
+
 }
