@@ -37,50 +37,66 @@
       </div>
 
     </div>
-    <div class="row justify-content-end " style="margin-bottom: 5px !important;padding-right: 15px;padding-left: 15px;">
-      <div class="col container-fluid" style="margin: 10px 0 0 0;" *ngIf="total_pages > 1">
-        <pagination
-          [totalItems]="cluster_page.total_items" [itemsPerPage]="cluster_page.items_per_page"
-          (pageChanged)="pageChanged($event)" [(ngModel)]="currentPage"
-          [boundaryLinks]="true" [maxSize]="cluster_page.total_pages" [rotate]="false" #pagination>
-        </pagination>
-      </div>
-      <div class="input-group  col-3">
-        <input id="cluster_per_site" class="form-control" style="margin: 10px 0 0 0;"
-               name="cluster_per_site" placeholder="e.g 3"
-               type="number" min="1" max="25" step="1"
-               appMinAmount="1" appMaxAmount="25" appInteger
-               pattern="^([1-9]|1[012])$" [(ngModel)]="cluster_per_site"
-               (ngModelChange)="clusterPerPageChange.next($event)">
-        <div class="input-group-append mb-3" style="margin: 10px 0 0 0;"><span class="input-group-text"> Clusters per page
+
+      <div class="row justify-content-end "
+           style="margin-bottom: 5px !important;padding-right: 15px;padding-left: 15px;">
+        <div class="col container-fluid" style="margin: 10px 0 0 0;" *ngIf="total_pages > 1">
+          <pagination
+                  [totalItems]="cluster_page.total_items" [itemsPerPage]="cluster_page.items_per_page"
+                  (pageChanged)="pageChanged($event)" [(ngModel)]="currentPage"
+                  [boundaryLinks]="true" [maxSize]="cluster_page.total_pages" [rotate]="false" #pagination>
+          </pagination>
+        </div>
+        <div class="input-group  col-3">
+          <input id="cluster_per_site" class="form-control" style="margin: 10px 0 0 0;"
+                 name="cluster_per_site" placeholder="e.g 3"
+                 type="number" min="1" max="25" step="1"
+                 appMinAmount="1" appMaxAmount="25" appInteger
+                 pattern="^([1-9]|1[012])$" [(ngModel)]="cluster_per_site"
+                 (ngModelChange)="clusterPerPageChange.next($event)">
+          <div class="input-group-append mb-3" style="margin: 10px 0 0 0;"><span class="input-group-text"> Clusters per page
                                     </span></div>
-      </div>
-    </div>
-
-    <div class="container-fluid">
-      <div *ngIf="isSearching" id="search_spinner" style="margin:10px; padding:10px;">
-        <div class="spinner-border text-primary" style="display:block; margin:auto;"></div>
-      </div>
-
-      <div class="alert alert-info" *ngIf="cluster_page?.cluster_list?.length < 1 && !isSearching ">
-        <span>There are no clusters available!</span>
-      </div>
-      <div class="row" *ngFor="let cluster of cluster_page?.cluster_list; trackBy:trackByCluster"
-           id="cluster_overview_table">
-        <div class="col-md-12">
-          <app-cluster-card
-                  [cluster]="cluster"
-                  [user_elixir_id]="user_elixir_id"
-                  [is_cluster_admin]="false"
-                  [is_vo_admin]="is_vo_admin"
-          >
-          </app-cluster-card>
         </div>
       </div>
 
+      <div class="container-fluid">
+        <div *ngIf="isSearching" id="search_spinner" style="margin:10px; padding:10px;">
+          <div class="spinner-border text-primary" style="display:block; margin:auto;"></div>
+        </div>
 
+        <div class="alert alert-info" *ngIf="cluster_page?.cluster_list?.length < 1 && !isSearching ">
+          <span>There are no clusters available!</span>
+        </div>
+            <div class="row"
+         id="cluster_overview_table">
+      <div class="col-md-12">
+        <div class="card instance-card" style="margin-bottom:15px;">
+          <div class="card-header">
+            <div class="row">
+              <div class="col-6"><strong>Cluster ID</strong></div>
+              <div class="col-3" style="text-align: center"><strong>Project</strong></div>
+              <div class="col-3" style="text-align: center"><strong>Created (by/at)</strong></div>
+
+            </div>
+          </div>
+        </div>
+      </div></div>
+        <div class="row" *ngFor="let cluster of cluster_page?.cluster_list; trackBy:trackByCluster"
+            >
+          <div class="col-md-12">
+            <app-cluster-card [id]="'instanceCard_' + cluster?.cluster_id"
+                              [cluster]="cluster"
+                              [user_elixir_id]="user_elixir_id"
+                              [is_cluster_admin]="false"
+                              [is_vo_admin]="is_vo_admin"
+            >
+            </app-cluster-card>
+          </div>
+        </div>
+
+
+      </div>
     </div>
-  </div>
 </div>
 
 
