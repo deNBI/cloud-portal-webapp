@@ -1,0 +1,52 @@
+<div class="modal-header">
+	<h4 class="modal-title">Create Snapshot</h4>
+	<button type="button" class="close" style="cursor:pointer"
+					(click)="bsModalRef.hide()"
+					aria-label="Close">
+		<span aria-hidden="true">&times;</span>
+	</button>
+</div>
+<div class="modal-body" id="snapshot_name_modal">
+	<div>
+		<strong>Snapshot Name*</strong>
+	</div>
+	<div *ngIf="virtualMachine?.flavor?.ram > SNAPSHOT_MAX_RAM">
+		A snapshot also preserves the full state of RAM, therefore only snapshots up to a maximum of 256 GB RAM are
+		supported.
+	</div>
+	<div>
+		<input
+			[disabled]="virtualMachine?.flavor?.ram > SNAPSHOT_MAX_RAM" type="text" style="width: 100%"
+			placeholder="Snapshot Name" [(ngModel)]="snapshotName"
+			(ngModelChange)="snapshotSearchTerm.next($event);" id="snapshot_name_input">
+	</div>
+	<div>
+		<p *ngIf="!validSnapshotNameBool && snapshotName.length > 0 && snapshotNameCheckDone"
+			 style="color: red">This name is already in use, please use a different
+			one.
+		</p>
+	</div>
+	<br>
+	<div>
+		<strong>Description</strong>
+	</div>
+	<div>
+		<textarea style="width: 100%" type="textfield" placeholder="Description"
+							[disabled]="virtualMachine?.flavor?.ram > SNAPSHOT_MAX_RAM"
+							#snapshotDescription></textarea>
+	</div>
+	<div class="alert alert-info" role="alert">
+		A snapshot is an image which preserves the disk state of a running instance.
+	</div>
+</div>
+<div class="modal-footer">
+	<button class="btn  btn-success col-md-4" id="snapshot_create_modal_button"
+					[disabled]="!validSnapshotNameBool || virtualMachine?.flavor?.ram > SNAPSHOT_MAX_RAM"
+					(click)="snapshotVM(snapshotDescription.value)">
+		Create Snapshot
+	</button>
+	<button class="btn  btn-danger col-md-4" type="reset"
+					(click)="bsModalRef.hide()">
+		Cancel
+	</button>
+</div>
