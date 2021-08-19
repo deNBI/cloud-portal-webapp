@@ -1,24 +1,24 @@
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { map } from 'rxjs/operators';
-import { ApiSettings } from './api-settings.service';
-import { VirtualMachine } from '../virtualmachines/virtualmachinemodels/virtualmachine';
-import { Volume } from '../virtualmachines/volumes/volume';
-import { IResponseTemplate } from './response-template';
-import { Clusterinfo, WorkerBatch } from '../virtualmachines/clusters/clusterinfo';
-import { Image } from '../virtualmachines/virtualmachinemodels/image';
-import { Condalog } from '../virtualmachines/conda/condalog';
-import { VirtualMachinePage } from '../virtualmachines/virtualmachinemodels/virtualMachinePage';
-import { VolumePage } from '../virtualmachines/volumes/volumePage.model';
-import { ClusterPage } from '../virtualmachines/clusters/clusterPage.model';
+import {Injectable} from '@angular/core';
+import {Observable} from 'rxjs';
+import {HttpClient, HttpParams} from '@angular/common/http';
+import {map} from 'rxjs/operators';
+import {ApiSettings} from './api-settings.service';
+import {VirtualMachine} from '../virtualmachines/virtualmachinemodels/virtualmachine';
+import {Volume} from '../virtualmachines/volumes/volume';
+import {IResponseTemplate} from './response-template';
+import {Clusterinfo, WorkerBatch} from '../virtualmachines/clusters/clusterinfo';
+import {Image} from '../virtualmachines/virtualmachinemodels/image';
+import {Condalog} from '../virtualmachines/conda/condalog';
+import {VirtualMachinePage} from '../virtualmachines/virtualmachinemodels/virtualMachinePage';
+import {VolumePage} from '../virtualmachines/volumes/volumePage.model';
+import {ClusterPage} from '../virtualmachines/clusters/clusterPage.model';
 
 /**
  * Service which provides vm methods.
  */
 @Injectable({
 	            providedIn: 'root',
-})
+            })
 export class VirtualmachineService {
 
 	data: string;
@@ -116,6 +116,12 @@ export class VirtualmachineService {
 
 	resumeCluster(cluster_id: string): Observable<void> {
 		return this.http.post<void>(`${ApiSettings.getApiBaseURL()}clusters/${cluster_id}/resume/`, {
+			withCredentials: true,
+		});
+	}
+
+	stopCluster(cluster_id: string): Observable<void> {
+		return this.http.post<void>(`${ApiSettings.getApiBaseURL()}clusters/${cluster_id}/stop/`, {
 			withCredentials: true,
 		});
 	}

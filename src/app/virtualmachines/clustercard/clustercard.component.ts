@@ -13,6 +13,7 @@ import { PasswordClusterComponent } from '../modals/password-cluster/password-cl
 import { ScaleClusterComponent } from '../modals/scale-cluster/scale-cluster.component';
 import { SharedModal } from '../../shared/shared_modules/baseClass/shared-modal';
 import { ResumeClusterComponent } from '../modals/resume-cluster/resume-cluster.component';
+import { StopClusterComponent } from '../modals/stop-cluster/stop-cluster.component';
 
 /**
  * Vm card component to be used by vm-overview. Holds information about a virtual machine.
@@ -84,7 +85,7 @@ export class ClustercardComponent extends SharedModal implements OnInit, OnDestr
 	 * Default wait time between status checks if no other value specified.
 	 * @private
 	 */
-	private checkStatusTimeout: number = 5000;
+	private checkStatusTimeout: number = 6000;
 
 	/**
 	 * Default time in ms to show an error message if no other value specified.
@@ -104,7 +105,7 @@ export class ClustercardComponent extends SharedModal implements OnInit, OnDestr
 	}
 
 	ngOnInit() {
-		this.checkClusterTillRunning();
+		this.check_status_loop();
 	}
 
 	ngOnDestroy() {
@@ -125,10 +126,20 @@ export class ClustercardComponent extends SharedModal implements OnInit, OnDestr
 	 * Show Cluster Resume modal
 	 */
 	showResumeModal(): void {
-		this.stopCheckStatusTimer();
 		const initialState = { cluster: this.cluster };
 
 		this.bsModalRef = this.modalService.show(ResumeClusterComponent, { initialState });
+		this.bsModalRef.setClass('modal-lg');
+		this.subscribeToBsModalRef();
+	}
+
+	/**
+	 * Show Cluster Stop modal
+	 */
+	showStopModal(): void {
+		const initialState = { cluster: this.cluster };
+
+		this.bsModalRef = this.modalService.show(StopClusterComponent, { initialState });
 		this.bsModalRef.setClass('modal-lg');
 		this.subscribeToBsModalRef();
 	}
@@ -197,21 +208,6 @@ export class ClustercardComponent extends SharedModal implements OnInit, OnDestr
 
 				}),
 			);
-		}
-
-	}
-
-	checkClusterTillRunning(): void {
-
-		if (this.cluster.status !== this.VirtualMachineStates.staticNOT_FOUND) {
-
-			if (this.cluster.status !== 'Running') {
-				this.check_status_loop();
-			} else {
-
-				this.check_worker_count_loop();
-
-			}
 		}
 
 	}
@@ -316,7 +312,15 @@ export class ClustercardComponent extends SharedModal implements OnInit, OnDestr
 	resumeCluster(): void {
 		this.cluster.status = VirtualMachineStates.POWERING_ON;
 		this.subscription.add(this.virtualmachineservice.resumeCluster(this.cluster.cluster_id).subscribe((): void => {
-			this.checkClusterTillRunning();
+			this.check_status_loop();
+
+		}));
+	}
+
+	stopCluster(): void {
+		this.cluster.status = VirtualMachineStates.POWERING_OFF;
+		this.subscription.add(this.virtualmachineservice.stopCluster(this.cluster.cluster_id).subscribe((): void => {
+			this.check_status_loop();
 
 		}));
 	}
@@ -335,6 +339,8 @@ export class ClustercardComponent extends SharedModal implements OnInit, OnDestr
 						this.scaleUpCluster(result['selectedBatch'], result['created_new_batch']);
 					} else if ('resumeCluster' in result) {
 						this.resumeCluster();
+					} else if ('stopCluster' in result) {
+						this.stopCluster();
 					}
 
 				},

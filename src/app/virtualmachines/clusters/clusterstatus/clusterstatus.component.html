@@ -8,6 +8,9 @@
       <div *ngSwitchCase="VirtualMachineStates.staticPOWERING_ON" [id]="'powering_on_badge_' + cluster?.cluster_id"
            class="dot-colorless bg-warning pulseAnim" style="width: 15px; height: 15px;">
       </div>
+       <div *ngSwitchCase="VirtualMachineStates.staticPOWERING_OFF" [id]="'powering_off_badge_' + cluster?.cluster_id"
+           class="dot-colorless bg-warning pulseAnim" style="width: 15px; height: 15px;">
+      </div>
       <div *ngSwitchCase="VirtualMachineStates.staticDELETING" [id]="'deleting_badge_' + cluster?.cluster_id"
            class="dot-colorless bg-warning pulseAnim" style="width: 15px; height: 15px;">
       </div>
