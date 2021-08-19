@@ -19,9 +19,9 @@ import { WordPressTag } from './newsmanagement/wp-tags';
  * Facility Project overview component.
  */
 @Component({
-	selector: 'app-facility-projects',
-	templateUrl: 'facilityprojectsoverview.component.html',
-	providers: [FacilityService, UserService, GroupService, ApiSettings, NewsService],
+	           selector: 'app-facility-projects',
+	           templateUrl: 'facilityprojectsoverview.component.html',
+	           providers: [FacilityService, UserService, GroupService, ApiSettings, NewsService],
 })
 export class FacilityProjectsOverviewComponent extends FilterBaseClass implements OnInit {
 
@@ -74,9 +74,36 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 	projects_filtered: Project[] = [];
 
 	constructor(private groupService: GroupService,
-		private facilityService: FacilityService,
-		private newsService: NewsService) {
+	            private facilityService: FacilityService,
+	            private newsService: NewsService) {
 		super();
+	}
+
+	setEmailSubject(): void {
+		switch (this.selectedProjectType) {
+			case 'ALL':
+				this.emailSubject = `[${this.selectedFacility['Facility']}]`;
+				break;
+			case 'OVP':
+				this.emailSubject = `[${this.selectedFacility['Facility']}: OpenStack]`;
+				break;
+			case 'SVP':
+				this.emailSubject = `[${this.selectedFacility['Facility']}: SimpleVm]`;
+				break;
+			case 'USER':
+				this.emailSubject = `[${this.selectedFacility['Facility']}: Specific Members]`;
+				break;
+			default:
+				// eslint-disable-next-line no-case-declarations
+				const pro: Project = this.projects.find((project: Project): boolean => project.Id.toString() === this.selectedProjectType.toString());
+				if (pro) {
+					this.emailSubject = `[${this.selectedFacility['Facility']}: ${pro.Name}]`;
+				} else {
+					this.emailSubject = `[${this.selectedFacility['Facility']}]`;
+
+				}
+				break;
+		}
 	}
 
 	ngOnInit(): void {
