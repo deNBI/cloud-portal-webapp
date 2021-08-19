@@ -84,11 +84,29 @@
 
                   </div>
                   <div class="col-2"
+                       *ngIf="cluster?.status != VirtualMachineStates.staticDELETED && cluster?.status != VirtualMachineStates.staticDELETING && cluster?.status == 'Running' ">
+                    <a class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+                       [id]="'stop_'+cluster?.cluster_id"
+                       (click)="showStopModal()" onClick="return false;">
+                      Stop</a>
+
+
+                  </div>
+                  <div class="col-2"
                        *ngIf="cluster?.status != VirtualMachineStates.staticDELETED && cluster?.status != VirtualMachineStates.staticNOT_FOUND && cluster?.status != VirtualMachineStates.staticDELETING">
                     <a class="font-weight-bold font-xs btn-block text-muted btn btn-outline-danger"
                        [id]="'delete_'+cluster?.cluster_id"
                        (click)="showDeleteModal()" onClick="return false;">
                       Delete</a>
+
+
+                  </div>
+                   <div class="col-2"
+                       *ngIf="cluster?.status == VirtualMachineStates.staticSHUTOFF">
+                    <a class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+                       [id]="'restart_'+cluster?.cluster_id"
+                       (click)="showResumeModal()" onClick="return false;">
+                      Start</a>
 
 
                   </div>
