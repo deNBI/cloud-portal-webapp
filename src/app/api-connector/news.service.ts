@@ -52,4 +52,15 @@ export class NewsService {
 		});
 	}
 
+	updateFacilityMOTD(news_id: number, facility_id: number): Observable<any> {
+		const params: HttpParams = new HttpParams()
+			.set('news_id', news_id)
+			.set('facility_id', facility_id);
+
+		return this.http.post<Object[]>(`${ApiSettings.getApiBaseURL()}facility-management/`, {
+			withCredentials: true,
+			params,
+		});
+	}
+
 }

@@ -25,7 +25,7 @@ export class NewsManagerComponent implements OnInit {
 	public managerFacilitiesIdOnly: number[];
 	public selectedFacilities: [string, number][] = [];
 	public facilityToSetMOTD: number;
-	public facilityMOTDPairs: [number, number][] = []
+	public facilityMOTDPairs: {[key: number]: number} = {}
 	facilityToPost: number;
 	returnState: number = -1;
 	@ViewChild('infoModal', { static: true }) infoModal: ModalDirective;
@@ -96,7 +96,15 @@ export class NewsManagerComponent implements OnInit {
 
 		this.newsService.addFacilityNews(news).subscribe((result: any): void => {
 			if (result) {
+				console.log(result);
 				if (result['id']) {
+					console.log('YES');
+
+					this.newsService.updateFacilityMOTD(result['id'], this.facilityToSetMOTD)
+						.subscribe((sub_result: any): void => {
+							console.log('another_yes');
+						});
+
 					this.returnState = 2;
 					this.infoModal.show();
 				}
@@ -125,8 +133,11 @@ export class NewsManagerComponent implements OnInit {
 
 	getFacilitiesFromWagtail(): void {
 		this.facilityMOTDPairs = [];
-		this.newsService.getFacilitiesFromWagtail().subscribe((result: any): void => {
-			console.log(result);
+		this.newsService.getFacilitiesFromWagtail().subscribe((facilities: any[]): void => {
+			for (let i = 0; i < facilities.length; i++) {
+				this.facilityMOTDPairs[facilities[i]['id']] = facilities[i]['motd'];
+			}
+			console.log(this.facilityMOTDPairs);
 		});
 	}
 
@@ -196,6 +207,8 @@ export class NewsManagerComponent implements OnInit {
 		if (news) {
 			this.selectedFacilityNews = news;
 			this.facilityToPost = news.facility;
+		} else {
+			this.selectedFacilityNews = new FacilityNews();
 		}
 		this.setFormGroup();
 	}
