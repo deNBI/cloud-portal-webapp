@@ -17,10 +17,7 @@
             "tsConfig": "src/tsconfig.app.json",
             "polyfills": "src/polyfills.ts",
             "assets": [
-              "src/static/webapp/assets",
               "src/static/webapp",
-              "src/static/webapp/assets/img",
-              "src/manifest.json",
               "src/manifest.json"
             ],
             "styles": [
@@ -112,7 +109,7 @@
               "buildOptimizer": true
             }
           },
-          "defaultConfiguration": ""
+          "defaultConfiguration": "custom"
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
@@ -152,10 +149,7 @@
               ]
             },
             "assets": [
-              "src/static/webapp/assets",
               "src/static/webapp",
-              "src/manifest.json",
-              "src/manifest.json",
               "src/manifest.json"
             ]
           },
