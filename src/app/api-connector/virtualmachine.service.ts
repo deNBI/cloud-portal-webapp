@@ -17,7 +17,7 @@ import { ClusterPage } from '../virtualmachines/clusters/clusterPage.model';
  * Service which provides vm methods.
  */
 @Injectable({
-	providedIn: 'root',
+	            providedIn: 'root',
 })
 export class VirtualmachineService {
 
@@ -114,9 +114,15 @@ export class VirtualmachineService {
 		});
 	}
 
+	resumeCluster(cluster_id: string): Observable<void> {
+		return this.http.post<void>(`${ApiSettings.getApiBaseURL()}clusters/${cluster_id}/resume/`, {
+			withCredentials: true,
+		});
+	}
+
 	startVM(flavor: string, image: Image, servername: string, project: string, projectid: string,
-		http: boolean, https: boolean, udp: boolean, new_volumes: Volume[], attach_volumes: Volume[],
-		playbook_information?: string, additional_elixir_ids?: string[]): Observable<any> {
+	        http: boolean, https: boolean, udp: boolean, new_volumes: Volume[], attach_volumes: Volume[],
+	        playbook_information?: string, additional_elixir_ids?: string[]): Observable<any> {
 
 		const params: HttpParams = new HttpParams()
 			.set('flavor', flavor)

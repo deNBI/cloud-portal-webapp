@@ -12,6 +12,7 @@ import { DeleteClusterComponent } from '../modals/delete-cluster/delete-cluster.
 import { PasswordClusterComponent } from '../modals/password-cluster/password-cluster.component';
 import { ScaleClusterComponent } from '../modals/scale-cluster/scale-cluster.component';
 import { SharedModal } from '../../shared/shared_modules/baseClass/shared-modal';
+import { ResumeClusterComponent } from '../modals/resume-cluster/resume-cluster.component';
 
 /**
  * Vm card component to be used by vm-overview. Holds information about a virtual machine.
@@ -120,6 +121,17 @@ export class ClustercardComponent extends SharedModal implements OnInit, OnDestr
 		}
 	}
 
+	/**
+	 * Show Cluster Resume modal
+	 */
+	showResumeModal(): void {
+		this.stopCheckStatusTimer();
+		const initialState = { cluster: this.cluster };
+
+		this.bsModalRef = this.modalService.show(ResumeClusterComponent, { initialState });
+		this.bsModalRef.setClass('modal-lg');
+		this.subscribeToBsModalRef();
+	}
 	/**
 	 * Show deletion modal
 	 */
@@ -301,6 +313,13 @@ export class ClustercardComponent extends SharedModal implements OnInit, OnDestr
 		}));
 	}
 
+	resumeCluster(): void {
+		this.cluster.status = VirtualMachineStates.POWERING_ON;
+		this.subscription.add(this.virtualmachineservice.resumeCluster(this.cluster.cluster_id).subscribe((): void => {
+			this.checkClusterTillRunning();
+
+		}));
+	}
 	/**
 	 * Function to listen to modal results.
 	 */
@@ -314,7 +333,10 @@ export class ClustercardComponent extends SharedModal implements OnInit, OnDestr
 						this.scaleDownCluster(result['cluster']);
 					} else if ('scaleUpCluster' in result) {
 						this.scaleUpCluster(result['selectedBatch'], result['created_new_batch']);
+					} else if ('resumeCluster' in result) {
+						this.resumeCluster();
 					}
+
 				},
 			),
 		);

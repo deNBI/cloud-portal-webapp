@@ -35,7 +35,8 @@ import { PipeModuleModule } from '../pipe-module/pipe-module.module';
 import { ProjectUserListComponent } from './project-user-list/project-user-list.component';
 import { StopVmComponent } from './modals/stop-vm/stop-vm.component';
 import { VmCardComponent } from './vmcard/vmcard.component';
-import { ResumeVMComponent } from './modals/resume-vm/resume-vm.component';
+import { ResumeVmComponent } from './modals/resume-vm/resume-vm.component';
+import { ResumeClusterComponent } from './modals/resume-cluster/resume-cluster.component';
 import { DeleteVmComponent } from './modals/delete-vm/delete-vm.component';
 import { SnapshotVmComponent } from './modals/snapshot-vm/snapshot-vm.component';
 import { VolumeVmComponent } from './modals/volume-vm/volume-vm.component';
@@ -87,7 +88,8 @@ import { DeleteClusterComponent } from './modals/delete-cluster/delete-cluster.c
 		          ProjectUserListComponent,
 		          VmCardComponent,
 		          StopVmComponent,
-		          ResumeVMComponent,
+		          ResumeClusterComponent,
+		          ResumeVmComponent,
 		          DeleteVmComponent,
 		          SnapshotVmComponent,
 		          VolumeVmComponent,

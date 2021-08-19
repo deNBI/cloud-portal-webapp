@@ -92,6 +92,15 @@
 
 
                   </div>
+                   <div class="col-2"
+                       *ngIf="cluster?.status == VirtualMachineStates.staticSHUTOFF">
+                    <a class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+                       [id]="'restart_'+cluster?.cluster_id"
+                       (click)="showResumeModal()" onClick="return false;">
+                      Start</a>
+
+
+                  </div>
                                         <div *ngIf="cluster?.status == VirtualMachineStates.staticNOT_FOUND " class="alert alert-warning" role="alert"> Please contact <a href="mailto:{{CLOUD_PORTAL_SUPPORT_MAIL}}">{{CLOUD_PORTAL_SUPPORT_MAIL}}</a></div>
 
 

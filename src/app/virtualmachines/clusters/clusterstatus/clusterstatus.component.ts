@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Clusterinfo } from '../clusterinfo';
+import { VirtualMachineStates } from '../../virtualmachinemodels/virtualmachinestates';
 
 /**
  * Clusterstatus component.
@@ -10,5 +11,6 @@ import { Clusterinfo } from '../clusterinfo';
 })
 export class ClusterstatusComponent {
   @Input() cluster: Clusterinfo;
+  VirtualMachineStates: VirtualMachineStates = new VirtualMachineStates();
 
 }
