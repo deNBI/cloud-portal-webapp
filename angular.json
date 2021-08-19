@@ -54,6 +54,14 @@
             "namedChunks": true
           },
           "configurations": {
+            "development": {
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "buildOptimizer": false,
+              "sourceMap": true,
+              "optimization": false,
+              "namedChunks": true
+            },
             "custom": {
               "budgets": [
                 {
@@ -113,8 +121,9 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+           "defaultConfiguration": "",
           "options": {
-            "browserTarget": "cloud-webapp:build",
+            "browserTarget": "cloud-webapp:build:development",
             "port": 8001,
             "host": "localhost",
             "ssl": false
