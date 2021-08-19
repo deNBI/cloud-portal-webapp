@@ -390,8 +390,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 	 * @param alternative_news_text the news text for WordPress, in case it shall be different from the original text
 	 * @param selectedMember the specific member the mail is sent to in case one specific member is chosen
 	 */
-	sendMailToFacility(facility: string, subject: string, message: string, reply?: string,
-										 send?: any, alternative_news_text?: string): void {
+	sendMailToFacility(facility: string, subject: string, message: string, reply?: string, send?: any, alternative_news_text?: string): void {
 		this.emailStatus = 0;
 		if (this.selectedProjectType === 'USER') {
 			const tempMailList: string[] = [];
