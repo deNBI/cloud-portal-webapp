@@ -19,9 +19,9 @@ import { WordPressTag } from './newsmanagement/wp-tags';
  * Facility Project overview component.
  */
 @Component({
-	           selector: 'app-facility-projects',
-	           templateUrl: 'facilityprojectsoverview.component.html',
-	           providers: [FacilityService, UserService, GroupService, ApiSettings, NewsService],
+	selector: 'app-facility-projects',
+	templateUrl: 'facilityprojectsoverview.component.html',
+	providers: [FacilityService, UserService, GroupService, ApiSettings, NewsService],
 })
 export class FacilityProjectsOverviewComponent extends FilterBaseClass implements OnInit {
 
@@ -74,8 +74,8 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 	projects_filtered: Project[] = [];
 
 	constructor(private groupService: GroupService,
-	            private facilityService: FacilityService,
-	            private newsService: NewsService) {
+							private facilityService: FacilityService,
+							private newsService: NewsService) {
 		super();
 	}
 
@@ -232,7 +232,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 			return (this.isFilterLongProjectName(project.RealName, this.filter)
 				|| this.isFilterProjectId(project.Id.toString(), this.filter))
 				|| (this.isFilterProjectName(project.Name, this.filter)
-				&& this.isFilterProjectStatus(project.project_application_status, project.LifetimeReached));
+					&& this.isFilterProjectStatus(project.project_application_status, project.LifetimeReached));
 		}
 	}
 
@@ -391,7 +391,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 	 * @param selectedMember the specific member the mail is sent to in case one specific member is chosen
 	 */
 	sendMailToFacility(facility: string, subject: string, message: string, reply?: string,
-		send?: any, alternative_news_text?: string): void {
+										 send?: any, alternative_news_text?: string): void {
 		this.emailStatus = 0;
 		if (this.selectedProjectType === 'USER') {
 			const tempMailList: string[] = [];
