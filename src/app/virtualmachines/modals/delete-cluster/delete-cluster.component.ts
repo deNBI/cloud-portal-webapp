@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Clusterinfo } from '../../clusters/clusterinfo';
-import {VirtualMachineStates} from '../../virtualmachinemodels/virtualmachinestates';
+import { VirtualMachineStates } from '../../virtualmachinemodels/virtualmachinestates';
 
 @Component({
 	selector: 'app-delete-cluster',
@@ -15,7 +15,6 @@ export class DeleteClusterComponent implements OnDestroy {
 	 * Possible virtual machine states.
 	 */
 	VirtualMachineStates: VirtualMachineStates = new VirtualMachineStates();
-
 
 	cluster: Clusterinfo;
 	public event: EventEmitter<any> = new EventEmitter();

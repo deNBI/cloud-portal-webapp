@@ -15,6 +15,7 @@ export class PasswordClusterComponent implements OnInit {
 	password: string = null;
 	public event: EventEmitter<any> = new EventEmitter();
 
+	// eslint-disable-next-line no-empty-function
 	constructor(public bsModalRef: BsModalRef, private clipboardService: ClipboardService, private virtualmachineservice: VirtualmachineService) {
 	}
 

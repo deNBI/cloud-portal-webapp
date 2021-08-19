@@ -99,8 +99,7 @@ export class ClustercardComponent extends SharedModal implements OnInit, OnDestr
 
 	constructor(private clipboardService: ClipboardService,
 	            modalService: BsModalService,
-	            private virtualmachineservice: VirtualmachineService,
-	            private imageService: ImageService) {
+	            private virtualmachineservice: VirtualmachineService) {
 		super(modalService);
 	}
 

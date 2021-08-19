@@ -50,6 +50,7 @@ export class ScaleClusterComponent implements OnDestroy, OnInit {
 	public event: EventEmitter<any> = new EventEmitter();
 	private submitted: boolean = false;
 
+	// eslint-disable-next-line max-len
 	constructor(public bsModalRef: BsModalRef, private clipboardService: ClipboardService, private flavorService: FlavorService, private groupService: GroupService) {
 		// eslint-disable-next-line no-empty-function
 	}

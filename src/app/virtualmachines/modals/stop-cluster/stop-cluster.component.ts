@@ -1,8 +1,7 @@
 import {
-	Component, EventEmitter, OnDestroy,
+	Component, EventEmitter,
 } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
-import { VirtualMachine } from '../../virtualmachinemodels/virtualmachine';
 import { Clusterinfo } from '../../clusters/clusterinfo';
 
 @Component({
