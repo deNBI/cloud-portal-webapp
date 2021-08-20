@@ -3,6 +3,7 @@ import { VirtualMachine } from '../virtualmachinemodels/virtualmachine';
 import { Client } from '../../vo_manager/clients/client.model';
 import { Flavor } from '../virtualmachinemodels/flavor';
 import { Image } from '../virtualmachinemodels/image';
+import { ApplicationRessourceUsage } from '../../applications/application-ressource-usage/application-ressource-usage';
 import { VirtualMachineStates } from '../virtualmachinemodels/virtualmachinestates';
 
 /**
@@ -36,6 +37,15 @@ export class WorkerBatch {
 					this.usable_flavors.push(new Flavor(flavor));
 				}
 			}
+		}
+	}
+
+	public setMaxWorkerCount(ressource_usage: ApplicationRessourceUsage): void {
+		if (this.flavor) {
+
+			this.max_worker_count = ressource_usage.calcMaxScaleUpWorkerInstancesByFlavor(
+				this.flavor,
+			);
 		}
 	}
 
@@ -73,6 +83,7 @@ export class Clusterinfo {
 	application_id: string;
 	project: string;
 	userlogin: string;
+	password: string;
 	master_instance_openstack_id: string;
 
 	constructor(cl?: Partial<Clusterinfo>) {
