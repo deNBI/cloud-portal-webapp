@@ -155,6 +155,7 @@
         "no-useless-constructor": "off",
         "no-void": "off",
         "@typescript-eslint/no-useless-constructor": ["error"],
+        "no-mixed-spaces-and-tabs": [2,"smart-tabs"],
         "padding-line-between-statements": [
           "error",
           {

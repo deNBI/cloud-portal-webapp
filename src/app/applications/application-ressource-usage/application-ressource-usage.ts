@@ -105,7 +105,6 @@ export class ApplicationRessourceUsage {
 			/ selectedBatch.flavor.ram;
 		const cpu_max_vms: number = (this.cores_total - this.cores_used - master_flavor.vcpus - batches_cpu)
 			/ selectedBatch.flavor.vcpus;
-		console.log(Math.floor(Math.min(ram_max_vms, cpu_max_vms, this.number_vms - this.used_vms - 1 - batches_vms)));
 
 		return Math.floor(Math.min(ram_max_vms, cpu_max_vms, this.number_vms - this.used_vms - 1 - batches_vms));
 	}
