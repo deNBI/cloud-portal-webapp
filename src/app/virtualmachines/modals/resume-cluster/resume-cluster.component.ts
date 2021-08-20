@@ -2,15 +2,15 @@ import {
 	Component, EventEmitter, OnDestroy,
 } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
-import { VirtualMachine } from '../../virtualmachinemodels/virtualmachine';
+import { Clusterinfo } from '../../clusters/clusterinfo';
 
 @Component({
-	selector: 'app-resume-vm',
-	templateUrl: './resume-vm.component.html',
+	selector: 'app-resume-cluster',
+	templateUrl: './resume-cluster.component.html',
 })
-export class ResumeVmComponent implements OnDestroy {
+export class ResumeClusterComponent implements OnDestroy {
 
-	virtualMachine: VirtualMachine;
+	cluster: Clusterinfo;
 	public event: EventEmitter<any> = new EventEmitter();
 	private submitted: boolean = false;
 
@@ -18,9 +18,9 @@ export class ResumeVmComponent implements OnDestroy {
 		// eslint-disable-next-line no-empty-function
 	}
 
-	resumeVM(): void {
+	resumeCluster(): void {
 		this.submitted = true;
-		this.event.emit({ resumeVM: true });
+		this.event.emit({ resumeCluster: true });
 		this.bsModalRef.hide();
 	}
 
