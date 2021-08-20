@@ -22,7 +22,7 @@ You can find current releases on GitHub.
 
 1. Clone the cloud-portal-webapp repository.
 ~~~BASH
-git clone -b dev https://github.com/deNBI/cloud-portal-webapp.git
+git clone -b dev git@github.com:deNBI/cloud-portal-webapp.git
 cd cloud-portal-webapp
 ~~~
 

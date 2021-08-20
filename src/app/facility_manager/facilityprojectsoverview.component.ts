@@ -74,9 +74,36 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 	projects_filtered: Project[] = [];
 
 	constructor(private groupService: GroupService,
-		private facilityService: FacilityService,
-		private newsService: NewsService) {
+							private facilityService: FacilityService,
+							private newsService: NewsService) {
 		super();
+	}
+
+	setEmailSubject(): void {
+		switch (this.selectedProjectType) {
+			case 'ALL':
+				this.emailSubject = `[${this.selectedFacility['Facility']}]`;
+				break;
+			case 'OVP':
+				this.emailSubject = `[${this.selectedFacility['Facility']}: OpenStack]`;
+				break;
+			case 'SVP':
+				this.emailSubject = `[${this.selectedFacility['Facility']}: SimpleVm]`;
+				break;
+			case 'USER':
+				this.emailSubject = `[${this.selectedFacility['Facility']}: Specific Members]`;
+				break;
+			default:
+				// eslint-disable-next-line no-case-declarations
+				const pro: Project = this.projects.find((project: Project): boolean => project.Id.toString() === this.selectedProjectType.toString());
+				if (pro) {
+					this.emailSubject = `[${this.selectedFacility['Facility']}: ${pro.Name}]`;
+				} else {
+					this.emailSubject = `[${this.selectedFacility['Facility']}]`;
+
+				}
+				break;
+		}
 	}
 
 	ngOnInit(): void {
@@ -206,7 +233,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 			return (this.isFilterLongProjectName(project.RealName, this.filter)
 				|| this.isFilterProjectId(project.Id.toString(), this.filter))
 				|| (this.isFilterProjectName(project.Name, this.filter)
-				&& this.isFilterProjectStatus(project.project_application_status, project.LifetimeReached));
+					&& this.isFilterProjectStatus(project.project_application_status, project.LifetimeReached));
 		}
 	}
 
@@ -364,8 +391,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 	 * @param alternative_news_text the news text for WordPress, in case it shall be different from the original text
 	 * @param selectedMember the specific member the mail is sent to in case one specific member is chosen
 	 */
-	sendMailToFacility(facility: string, subject: string, message: string, reply?: string,
-		send?: any, alternative_news_text?: string): void {
+	sendMailToFacility(facility: string, subject: string, message: string, reply?: string, send?: any, alternative_news_text?: string): void {
 		this.emailStatus = 0;
 		if (this.selectedProjectType === 'USER') {
 			const tempMailList: string[] = [];
