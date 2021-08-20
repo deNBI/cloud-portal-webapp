@@ -10,7 +10,7 @@ import { WIKI_GUACAMOLE_LINK, WIKI_RSTUDIO_LINK } from '../../../links/links';
 import { TemplateNames } from '../conda/template-names';
 import { StopVmComponent } from '../modals/stop-vm/stop-vm.component';
 import { VirtualmachineService } from '../../api-connector/virtualmachine.service';
-import { ResumeVMComponent } from '../modals/resume-vm/resume-vm.component';
+import { ResumeVmComponent } from '../modals/resume-vm/resume-vm.component';
 import { DeleteVmComponent } from '../modals/delete-vm/delete-vm.component';
 import { SnapshotModel } from '../snapshots/snapshot.model';
 import { ImageService } from '../../api-connector/image.service';
@@ -260,7 +260,7 @@ export class VmCardComponent implements OnInit, OnDestroy {
 		this.stopCheckStatusTimer();
 		const initialState = { virtualMachine: this.vm };
 
-		this.bsModalRef = this.modalService.show(ResumeVMComponent, { initialState });
+		this.bsModalRef = this.modalService.show(ResumeVmComponent, { initialState });
 		this.bsModalRef.setClass('modal-lg');
 		this.subscribeToBsModalRef();
 	}
@@ -450,14 +450,6 @@ export class VmCardComponent implements OnInit, OnDestroy {
 			(): void => {
 				this.subscription.add(this.virtualmachineservice.checkVmStatus(this.vm.openstackid, this.vm.name)
 					.subscribe((updated_vm: VirtualMachine): void => {
-
-						if (updated_vm.status !== VirtualMachineStates.ACTIVE || updated_vm.status !== VirtualMachineStates.SHUTOFF) {
-							this.is_checked = false;
-							/**
-							 * TODO: Remove once status updated by api
-							 */
-							updated_vm.updateClusterStatus();
-						}
 						updated_vm.cardState = this.vm.cardState;
 						if (this.vm.msg) {
 							updated_vm.setMsgWithTimeout(this.vm.msg);
