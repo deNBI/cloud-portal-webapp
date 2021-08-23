@@ -323,7 +323,7 @@
                                 details </a>page.
                             When the machines are active you must
                             execute the following commands to configure the cluster correctly:</p>
-                      
+
                             <div class="alert alert-light" role="alert">
                 <strong>Connect to your master instance:</strong>
                 <div class="row" *ngFor="let mode of cluster?.master_instance?.modes">
@@ -394,7 +394,7 @@
 
 <ng-container *ngIf="scale_success">
     <div class="modal-header">
-        <h4 class="modal-title">Scaling sucessfull {{cluster?.cluster_id}}</h4>
+        <h4 class="modal-title">Scaling successful {{cluster?.cluster_id}}</h4>
         <button type="button" class="close" style="cursor: pointer"
                 (click)="bsModalRef.hide()"
                 aria-label="Close">
@@ -404,6 +404,25 @@
     <div class="modal-body">
         <div class="alert alert-info" role="alert">
               {{ msg }}
+            </div>
+                    <div class="alert alert-warning" role="alert">
+                <strong>Connect to your master instance:</strong>
+                <div class="row" *ngFor="let mode of cluster?.master_instance?.modes">
+                    <div class="col-md-1">
+                        <span class="font-weight-bold font-xs btn-block text-muted">{{mode.name}}:</span>
+                    </div>
+                    <div class="col-md-9">
+                        <span class="font-weight-bold font-xs btn-block text-muted"
+                              [innerHTML]="mode.description"></span>
+                    </div>
+
+                    <div class="col-md-2" style="margin: auto" *ngIf="mode.copy_field && mode.copy_field!=''">
+                        <div class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+                             (click)="copyToClipboard(mode.copy_field)">Copy command
+                        </div>
+                    </div>
+                </div>
+
             </div>
         <div class="alert alert-warning"> Run the following on your master instance:
             <div class="alert alert-light"
