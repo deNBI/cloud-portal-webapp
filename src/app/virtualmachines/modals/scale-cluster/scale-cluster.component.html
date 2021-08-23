@@ -403,9 +403,11 @@
     </div>
     <div class="modal-body">
         <div class="alert alert-info" role="alert">
-              {{ msg }}
-            </div>
-                    <div class="alert alert-warning" role="alert">
+            {{ msg }}
+        </div>
+            
+        <div class="alert alert-warning">
+            <div class="alert alert-light" role="alert">
                 <strong>Connect to your master instance:</strong>
                 <div class="row" *ngFor="let mode of cluster?.master_instance?.modes">
                     <div class="col-md-1">
@@ -424,7 +426,6 @@
                 </div>
 
             </div>
-        <div class="alert alert-warning"> Run the following on your master instance:
             <div class="alert alert-light"
                  role="alert">
                 <strong>wget {{SCALING_SCRIPT_LINK}}</strong>
