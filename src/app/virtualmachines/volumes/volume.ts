@@ -23,7 +23,9 @@ export class Volume {
 
 		if (volume) {
 			this.volume_client = new Client(volume.volume_client);
-			this.volume_virtualmachine = new VirtualMachine(volume.volume_virtualmachine);
+			if (volume.volume_virtualmachine) {
+				this.volume_virtualmachine = new VirtualMachine(volume.volume_virtualmachine);
+			}
 		}
 	}
 }
