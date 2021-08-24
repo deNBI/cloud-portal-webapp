@@ -85,12 +85,12 @@ export class ClustercardComponent extends SharedModal implements OnInit, OnDestr
 	 * Default wait time between status checks if no other value specified.
 	 * @private
 	 */
-	private checkStatusTimeout: number = 6000;
+	private checkStatusTimeout: number = 10000;
 
 	/**
 	 * Default time in ms to show an error message if no other value specified.
 	 */
-	ERROR_TIMER: number = 10000;
+	ERROR_TIMER: number = 20000;
 
 	/**
 	 * Timeout object to control check status loop (i.e. stopping and starting check status loop).
