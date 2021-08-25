@@ -38,8 +38,8 @@ export class VMOverviewPage {
 
   private BASIC_VM_NAME_KEY: string = 'basic_vm_name';
   private VOLUME_VM_NAME_KEY: string = 'volume_vm_name';
-  private vm_names: { [key: string]: string } = {};
-  private name_counter: number = 0;
+  private static vm_names: { [key: string]: string } = {};
+  private static name_counter: number = 0;
 
   async navigateToOverview(): Promise<any> {
   	Util.logInfo('Navigating to VM Overview Page');
@@ -50,15 +50,19 @@ export class VMOverviewPage {
   }
 
   async setBasicVMName(name: string): Promise<any> {
-  	Util.logInfo(`Setting basic vm name as ${name}`);
-  	this.vm_names[this.BASIC_VM_NAME_KEY] = name;
-  	this.name_counter += 1;
+	  Util.logInfo(`Setting basic vm name as ${name}`);
+	  VMOverviewPage.vm_names[this.BASIC_VM_NAME_KEY] = name;
+	  VMOverviewPage.VMname_counter += 1;
+	  Util.logInfo(`VM_names: ${VMOverviewPage.vm_names}`);
+
   }
 
   async setVolumeVMName(name: string): Promise<any> {
-  	Util.logInfo(`Setting volume vm name as ${name}`);
-  	this.vm_names[this.VOLUME_VM_NAME_KEY] = name;
-  	this.name_counter += 1;
+	  Util.logInfo(`Setting volume vm name as ${name}`);
+	  VMOverviewPage.vm_names[this.VOLUME_VM_NAME_KEY] = name;
+	  VMOverviewPage.name_counter += 1;
+	  Util.logInfo(`VM_names: ${VMOverviewPage.vm_names}`);
+
   }
 
   async isVmActive(name: string): Promise<boolean> {
@@ -69,17 +73,17 @@ export class VMOverviewPage {
   }
 
   async isBasicVMActive(): Promise<boolean> {
-  	return await this.isVmActive(this.vm_names[this.BASIC_VM_NAME_KEY]);
+  	return await this.isVmActive(VMOverviewPage.vm_names[this.BASIC_VM_NAME_KEY]);
   }
 
   async areAllVMActive(): Promise<boolean> {
-  	Util.logInfo(`Checking active for ${this.name_counter} active vm`);
+  	Util.logInfo(`Checking active for ${VMOverviewPage.name_counter} active vm`);
 
-  	for (const key in this.vm_names) {
-  		if (key in this.vm_names) {
-  			const val: any = this.vm_names[key];
+  	for (const key in VMOverviewPage.vm_names) {
+  		if (key in VMOverviewPage.vm_names) {
+  			const val: any = VMOverviewPage.vm_names[key];
   			console.log(`Key: ${key} Value: ${val}`);
-  			this.name_counter -= 1;
+  			VMOverviewPage.name_counter -= 1;
   			if (!await this.isVmActive(val)) {
   				return false;
   			}
@@ -97,7 +101,7 @@ export class VMOverviewPage {
   }
 
   async isBasicVMShutoff(): Promise<boolean> {
-  	return await this.isVMShutoff(this.vm_names[this.BASIC_VM_NAME_KEY]);
+  	return await this.isVMShutoff(VMOverviewPage.vm_names[this.BASIC_VM_NAME_KEY]);
   }
 
   async showDeleted(): Promise<any> {
@@ -114,11 +118,11 @@ export class VMOverviewPage {
   }
 
   async isBasicVMDeleted(): Promise<boolean> {
-  	return await this.isVMDeleted(this.vm_names[this.BASIC_VM_NAME_KEY]);
+  	return await this.isVMDeleted(VMOverviewPage.vm_names[this.BASIC_VM_NAME_KEY]);
   }
 
   async isVolumeVMDeleted(): Promise<boolean> {
-  	return await this.isVMDeleted(this.vm_names[this.VOLUME_VM_NAME_KEY]);
+  	return await this.isVMDeleted(VMOverviewPage.vm_names[this.VOLUME_VM_NAME_KEY]);
   }
 
   async shutoffVM(name: string): Promise<any> {
@@ -134,7 +138,7 @@ export class VMOverviewPage {
   }
 
   async shutOffBasicVM(): Promise<any> {
-  	return await this.shutoffVM(this.vm_names[this.BASIC_VM_NAME_KEY]);
+  	return await this.shutoffVM(VMOverviewPage.vm_names[this.BASIC_VM_NAME_KEY]);
   }
 
   async resumeVM(name: string): Promise<any> {
@@ -149,12 +153,12 @@ export class VMOverviewPage {
   }
 
   async resumeBasicVM(): Promise<any> {
-  	return await this.resumeVM(this.vm_names[this.BASIC_VM_NAME_KEY]);
+  	return await this.resumeVM(VMOverviewPage.vm_names[this.BASIC_VM_NAME_KEY]);
   }
 
   async getBasicVMName(): Promise<string> {
-  	if (this.vm_names[this.BASIC_VM_NAME_KEY]) {
-  		return this.vm_names[this.BASIC_VM_NAME_KEY];
+  	if (VMOverviewPage.vm_names[this.BASIC_VM_NAME_KEY]) {
+  		return VMOverviewPage.vm_names[this.BASIC_VM_NAME_KEY];
   	} else {
   		return '';
   	}
@@ -171,8 +175,8 @@ export class VMOverviewPage {
   }
 
   async getVolumeVMName(): Promise<string> {
-  	if (this.vm_names[this.VOLUME_VM_NAME_KEY]) {
-  		return this.vm_names[this.VOLUME_VM_NAME_KEY];
+  	if (VMOverviewPage.vm_names[this.VOLUME_VM_NAME_KEY]) {
+  		return VMOverviewPage.vm_names[this.VOLUME_VM_NAME_KEY];
   	} else {
   		return '';
   	}
@@ -189,17 +193,19 @@ export class VMOverviewPage {
 	  await Util.clickElementById(this.CONFIRM_DELETE_BUTTON);
 	  await Util.waitForPresenceOfElementById(`${this.DELETED_BADGE_PREFIX}${name}`, Util.MIN_TIMEOUT_15);
 	  Util.logInfo(`Remove  ${name}  from vm list `);
-	  delete this.vm_names[name];
+	  delete VMOverviewPage.vm_names[name];
+	  VMOverviewPage.name_counter -= 1;
+	  Util.logInfo(`Remaining vm_names: ${VMOverviewPage.vm_names}`);
 
 	  Util.logInfo(`Deletion method for ${name} completed`);
   }
 
   async deleteBasicVM(): Promise<any> {
-  	return await this.deleteVM(this.vm_names[this.BASIC_VM_NAME_KEY]);
+  	return await this.deleteVM(VMOverviewPage.vm_names[this.BASIC_VM_NAME_KEY]);
   }
 
   async deleteVolumeVM(): Promise<any> {
-  	return await this.deleteVM(this.vm_names[this.VOLUME_VM_NAME_KEY]);
+  	return await this.deleteVM(VMOverviewPage.vm_names[this.VOLUME_VM_NAME_KEY]);
   }
 
   async createSnapshotOfVM(name: string): Promise<any> {
@@ -220,7 +226,7 @@ export class VMOverviewPage {
   }
 
   async createSnapshotOfBasicVM(): Promise<any> {
-  	return await this.createSnapshotOfVM(this.vm_names[this.BASIC_VM_NAME_KEY]);
+  	return await this.createSnapshotOfVM(VMOverviewPage.vm_names[this.BASIC_VM_NAME_KEY]);
 
   }
 
@@ -228,7 +234,7 @@ export class VMOverviewPage {
   	const vm_name: string = await this.getBasicVMName();
 
   	await this.isVmActive(vm_name);
-  	Util.logInfo(`Going to VM Detail page for ${this.vm_names[this.BASIC_VM_NAME_KEY]}`);
+  	Util.logInfo(`Going to VM Detail page for ${VMOverviewPage.vm_names[this.BASIC_VM_NAME_KEY]}`);
 
   	return await Util.clickElementById(`${this.DETAIL_LINK}${vm_name}`);
   }
