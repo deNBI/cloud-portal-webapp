@@ -6,10 +6,10 @@ import { Util } from '../util';
  */
 export class VMOverviewPage {
 
-  private VM_OVERVIEW_URL: string = 'virtualmachines/vmOverview';
-  private TABLE_ID: string = 'vm_overview_table';
-  private SHOW_ACTIONS_PREFIX: string = 'showActionsButton_';
-  private ACTIVE_BADGE_PREFIX: string = 'active_badge_';
+	private VM_OVERVIEW_URL: string = 'virtualmachines/vmOverview';
+	private TABLE_ID: string = 'vm_overview_table';
+	private SHOW_ACTIONS_PREFIX: string = 'showActionsButton_';
+	private ACTIVE_BADGE_PREFIX: string = 'active_badge_';
   private SHUTOFF_BADGE_PREFIX: string = 'shutoff_badge_';
   private DELETED_BADGE_PREFIX: string = 'deleted_badge_';
   private CHECKBOX_DELETED: string = 'checkbox_deleted';
@@ -179,18 +179,19 @@ export class VMOverviewPage {
   }
 
   async deleteVM(name: string): Promise<any> {
-  	Util.logInfo(`Deleting ${name}`);
-  	if (element(by.id(`${this.SHOW_ACTIONS_PREFIX}${name}`)).isPresent()) {
-  		await Util.clickElementById(`${this.SHOW_ACTIONS_PREFIX}${name}`);
-  	}
+	  Util.logInfo(`Deleting ${name}`);
+	  if (element(by.id(`${this.SHOW_ACTIONS_PREFIX}${name}`)).isPresent()) {
+		  await Util.clickElementById(`${this.SHOW_ACTIONS_PREFIX}${name}`);
+	  }
 
-  	await Util.clickElementById(`${this.DELETE_BUTTON_PREFIX}${name}`);
-  	await Util.waitForPresenceOfElementById(this.VERIFY_MODAL);
-  	await Util.clickElementById(this.CONFIRM_DELETE_BUTTON);
-  	await Util.waitForPresenceOfElementById(`${this.DELETED_BADGE_PREFIX}${name}`, Util.MIN_TIMEOUT_15);
-  	delete this.vm_names[name];
+	  await Util.clickElementById(`${this.DELETE_BUTTON_PREFIX}${name}`);
+	  await Util.waitForPresenceOfElementById(this.VERIFY_MODAL);
+	  await Util.clickElementById(this.CONFIRM_DELETE_BUTTON);
+	  await Util.waitForPresenceOfElementById(`${this.DELETED_BADGE_PREFIX}${name}`, Util.MIN_TIMEOUT_15);
+	  Util.logInfo(`Remove  ${name}  from vm list `);
+	  delete this.vm_names[name];
 
-  	Util.logInfo(`Deletion method for ${name} completed`);
+	  Util.logInfo(`Deletion method for ${name} completed`);
   }
 
   async deleteBasicVM(): Promise<any> {
