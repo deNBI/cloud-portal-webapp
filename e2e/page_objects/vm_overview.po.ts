@@ -49,8 +49,9 @@ export class VMOverviewPage {
 		return await browser.driver.sleep(10000);
 	}
 
-	async logVmNames(): Promise<void> {
+	static logVmNames(): void {
 		Util.logInfo(`Name_Counter: ${VMOverviewPage.name_counter}`);
+
 		Util.logInfo('VM Names:');
 		for (const key in VMOverviewPage.vm_names) {
 			const val: any = VMOverviewPage.vm_names[key];
@@ -63,7 +64,7 @@ export class VMOverviewPage {
 		Util.logInfo(`Setting basic vm name as ${name}`);
 		VMOverviewPage.vm_names[this.BASIC_VM_NAME_KEY] = name;
 		VMOverviewPage.name_counter += 1;
-		await this.logVmNames();
+		VMOverviewPage.logVmNames();
 
 	}
 
@@ -71,7 +72,7 @@ export class VMOverviewPage {
 		Util.logInfo(`Setting volume vm name as ${name}`);
 		VMOverviewPage.vm_names[this.VOLUME_VM_NAME_KEY] = name;
 		VMOverviewPage.name_counter += 1;
-		await this.logVmNames();
+		VMOverviewPage.logVmNames();
 
 	}
 
@@ -185,29 +186,46 @@ export class VMOverviewPage {
 	}
 
 	async getVolumeVMName(): Promise<string> {
-  	if (VMOverviewPage.vm_names[this.VOLUME_VM_NAME_KEY]) {
-  		return VMOverviewPage.vm_names[this.VOLUME_VM_NAME_KEY];
-  	} else {
-  		return '';
-  	}
+		if (VMOverviewPage.vm_names[this.VOLUME_VM_NAME_KEY]) {
+			return VMOverviewPage.vm_names[this.VOLUME_VM_NAME_KEY];
+		} else {
+			return '';
+		}
+	}
+
+	static removeNameFromVmNames(key_or_val: string): void {
+		if (key_or_val in VMOverviewPage.vm_names) {
+			delete VMOverviewPage.vm_names[key_or_val];
+			VMOverviewPage.name_counter -= 1;
+		} else {
+			for (const key in VMOverviewPage.vm_names) {
+				const val: any = VMOverviewPage.vm_names[key];
+				if (val === key_or_val) {
+					delete VMOverviewPage.vm_names[key];
+					VMOverviewPage.name_counter -= 1;
+					Util.logInfo(`Removed ${key}:{$val} from vm_names`);
+					break;
+				}
+
+			}
+		}
+		VMOverviewPage.logVmNames();
 	}
 
 	async deleteVM(name: string): Promise<any> {
-	  Util.logInfo(`Deleting ${name}`);
-	  if (element(by.id(`${this.SHOW_ACTIONS_PREFIX}${name}`)).isPresent()) {
-		  await Util.clickElementById(`${this.SHOW_ACTIONS_PREFIX}${name}`);
-	  }
+		Util.logInfo(`Deleting ${name}`);
+		if (element(by.id(`${this.SHOW_ACTIONS_PREFIX}${name}`)).isPresent()) {
+			await Util.clickElementById(`${this.SHOW_ACTIONS_PREFIX}${name}`);
+		}
 
-	  await Util.clickElementById(`${this.DELETE_BUTTON_PREFIX}${name}`);
-	  await Util.waitForPresenceOfElementById(this.VERIFY_MODAL);
-	  await Util.clickElementById(this.CONFIRM_DELETE_BUTTON);
-	  await Util.waitForPresenceOfElementById(`${this.DELETED_BADGE_PREFIX}${name}`, Util.MIN_TIMEOUT_15);
-	  Util.logInfo(`Remove  ${name}  from vm list `);
-	  delete VMOverviewPage.vm_names[name];
-	  VMOverviewPage.name_counter -= 1;
-	  await this.logVmNames();
+		await Util.clickElementById(`${this.DELETE_BUTTON_PREFIX}${name}`);
+		await Util.waitForPresenceOfElementById(this.VERIFY_MODAL);
+		await Util.clickElementById(this.CONFIRM_DELETE_BUTTON);
+		await Util.waitForPresenceOfElementById(`${this.DELETED_BADGE_PREFIX}${name}`, Util.MIN_TIMEOUT_15);
+		Util.logInfo(`Remove  ${name}  from vm list `);
+		VMOverviewPage.removeNameFromVmNames(name);
 
-	  Util.logInfo(`Deletion method for ${name} completed`);
+		Util.logInfo(`Deletion method for ${name} completed`);
 	}
 
 	async deleteBasicVM(): Promise<any> {
