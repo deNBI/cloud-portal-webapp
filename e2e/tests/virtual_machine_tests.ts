@@ -122,6 +122,9 @@ describe('Virtual Machine Tests', async (): Promise<any> => {
 		Util.logInfo('Starting');
 		await NewInstancePage.submitAndStartVM();
 		await Util.waitForPage('/virtualmachines/vmOverview');
+		Util.logInfo('Checking if every VM is active');
+		const areActive: boolean = await vmOverviewPage.areAllVMActive();
+		expect(areActive).toBeTruthy();
 
 		Util.logInfo('------------------------------Start virtual machine with snapshot ended');
 	});
