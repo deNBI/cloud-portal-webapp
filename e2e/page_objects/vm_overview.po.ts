@@ -188,6 +188,7 @@ export class VMOverviewPage {
   	await Util.waitForPresenceOfElementById(this.VERIFY_MODAL);
   	await Util.clickElementById(this.CONFIRM_DELETE_BUTTON);
   	await Util.waitForPresenceOfElementById(`${this.DELETED_BADGE_PREFIX}${name}`, Util.MIN_TIMEOUT_15);
+  	delete this.vm_names[name];
 
   	Util.logInfo(`Deletion method for ${name} completed`);
   }
