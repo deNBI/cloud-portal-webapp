@@ -273,12 +273,34 @@
 					</div>
 				</div>
 				<div class="col-md-2"
+					 *ngIf="(vm?.status |hasStatus:VirtualMachineStates.staticSHUTOFF)  && vm?.volumes.length > 0">
+					<span class="d-inline-block" tabindex="0" data-toggle="tooltip" style="width:100%;"
+						  title="Reboot the virtual machine to attach volumes">
+						<button class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+							 [id]="'attachVolume' + vm?.name" disabled
+							 (click)="showVolumeModal('attach')">
+						Attach Volume
+						</button>
+					</span>
+				</div>
+				<div class="col-md-2"
 						 *ngIf="(vm?.status |hasStatus:VirtualMachineStates.staticACTIVE)  && vm?.volumes.length > 0">
 					<div class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
 							 [id]="'attachVolume' + vm?.name"
 							 (click)="showVolumeModal('detach')">
 						Detach Volume
 					</div>
+				</div>
+				<div class="col-md-2"
+					 *ngIf="(vm?.status |hasStatus:VirtualMachineStates.staticSHUTOFF)  && vm?.volumes.length > 0">
+					<span class="d-inline-block" tabindex="0" data-toggle="tooltip" style="width:100%;"
+						title="Reboot the virtual machine to detach volumes">
+						<button class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+							   [id]="'attachVolume' + vm?.name" disabled
+							   (click)="showVolumeModal('detach')">
+						Detach Volume
+						</button>
+					</span>
 				</div>
 				<div class="col-md-2" *ngIf="(vm?.status |hasStatus:VirtualMachineStates.staticACTIVE) ">
 					<div class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
