@@ -52,7 +52,7 @@ export class VMOverviewPage {
   async setBasicVMName(name: string): Promise<any> {
 	  Util.logInfo(`Setting basic vm name as ${name}`);
 	  VMOverviewPage.vm_names[this.BASIC_VM_NAME_KEY] = name;
-	  VMOverviewPage.VMname_counter += 1;
+	  VMOverviewPage.name_counter += 1;
 	  Util.logInfo(`VM_names: ${VMOverviewPage.vm_names}`);
 
   }
