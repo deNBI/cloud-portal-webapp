@@ -65,18 +65,37 @@
         <div class="alert col-md-12"
              [ngClass]="{'alert-danger':!scaling_warning_read,'alert-success':scaling_warning_read}">
             <p> This will only delete machines in the batches. After these have been successfully deleted, you must
-                execute the following commands on your master
-                machine to configure the cluster correctly!</p>
+                execute the following commands
+                to configure the cluster correctly!</p>
+            <div class="alert alert-light" role="alert">
+                <strong>Connect to your master instance:</strong>
+                <div class="row" *ngFor="let mode of cluster?.master_instance?.modes">
+                    <div class="col-md-1">
+                        <span class="font-weight-bold font-xs btn-block text-muted">{{mode.name}}:</span>
+                    </div>
+                    <div class="col-md-9">
+                        <span class="font-weight-bold font-xs btn-block text-muted"
+                              [innerHTML]="mode.description"></span>
+                    </div>
+
+                    <div class="col-md-2" style="margin: auto" *ngIf="mode.copy_field && mode.copy_field!=''">
+                        <div class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+                             (click)="copyToClipboard(mode.copy_field)">Copy command
+                        </div>
+                    </div>
+                </div>
+
+            </div>
             <div class="alert alert-light"
                  role="alert">
-                <strong>wget {{SCALING_SCRIPT_LINK}}</strong>
-                <button class="btn btn-outline-primary" style="margin-left: 5px;"
-                        (click)="copyToClipboard('wget ' + SCALING_SCRIPT_LINK)">Copy Command
+                <strong>wget -O {{SCALING_SCRIPT_NAME}} {{SCALING_SCRIPT_LINK}}</strong>
+                <button class=" font-weight-bold font-xs text-muted btn btn-outline-secondary" style="margin-left: 5px;"
+                        (click)="copyToClipboard('wget -O' + SCALING_SCRIPT_NAME + SCALING_SCRIPT_LINK)">Copy Command
                 </button>
             </div>
             <div class="alert alert-light"
                  role="alert"><strong>python3 {{SCALING_SCRIPT_NAME}}</strong>
-                <button class="btn btn-outline-primary" style="margin-left: 5px;"
+                <button class=" font-weight-bold font-xs text-muted btn btn-outline-secondary" style="margin-left: 5px;"
                         (click)="copyToClipboard('python3 ' + SCALING_SCRIPT_NAME)">Copy Command
                 </button>
                 <div class="alert alert-warning" role="alert">
@@ -292,28 +311,52 @@
 
     <div class="modal-footer">
                     <div class="alert col-md-12" *ngIf="max_scale_up_count_loaded && !created_new_batch ||(created_new_batch && projectDataLoaded && flavors_loaded)"
-                     [ngClass]="{'alert-danger':!scaling_warning_read,'alert-success':scaling_warning_read}">
-                  <p> This will only start the number of selected machines with suitable settings.
-                    After initiating the startup of the new machines wait until they are active, you can follow the
-                    status
-                    of the new workers on the cluster
-                    <a class="h5 text-primary" style="margin-left: 10px"
-                       target="_blank" rel="noopener noreferrer"
-                       [routerLink]="['/virtualmachines/cluster/' + cluster?.cluster_id]">
-                      details </a>page.
-                    When the machines are active you must
-                  execute the following commands on your master
-                  machine to configure the cluster correctly:</p>
-                  <div class="alert alert-light"
-                       role="alert">
-                    <strong>wget {{SCALING_SCRIPT_LINK}}</strong>
-                    <button class="btn btn-outline-primary" style="margin-left: 5px;"
-                            (click)="copyToClipboard('wget ' + SCALING_SCRIPT_LINK)">Copy Command</button></div>
-                  <div class="alert alert-light"
-                       role="alert"><strong>python3 {{SCALING_SCRIPT_NAME}}  </strong>
-                    <button class="btn btn-outline-primary" style="margin-left: 5px;"
-                            (click)="copyToClipboard('python3 ' + SCALING_SCRIPT_NAME)">Copy Command</button>
-                    <div class="alert alert-warning" role="alert">
+                         [ngClass]="{'alert-danger':!scaling_warning_read,'alert-success':scaling_warning_read}">
+                        <p> This will only start the number of selected machines with suitable settings.
+                            After initiating the startup of the new machines wait until they are active, you can follow
+                            the
+                            status
+                            of the new workers on the cluster
+                            <a class="h5 text-primary" style="margin-left: 10px"
+                               target="_blank" rel="noopener noreferrer"
+                               [routerLink]="['/virtualmachines/cluster/' + cluster?.cluster_id]">
+                                details </a>page.
+                            When the machines are active you must
+                            execute the following commands to configure the cluster correctly:</p>
+
+                            <div class="alert alert-light" role="alert">
+                <strong>Connect to your master instance:</strong>
+                <div class="row" *ngFor="let mode of cluster?.master_instance?.modes">
+                    <div class="col-md-1">
+                        <span class="font-weight-bold font-xs btn-block text-muted">{{mode.name}}:</span>
+                    </div>
+                    <div class="col-md-9">
+                        <span class="font-weight-bold font-xs btn-block text-muted"
+                              [innerHTML]="mode.description"></span>
+                    </div>
+
+                    <div class="col-md-2" style="margin: auto" *ngIf="mode.copy_field && mode.copy_field!=''">
+                        <div class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+                             (click)="copyToClipboard(mode.copy_field)">Copy command
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+                        <div class="alert alert-light"
+                             role="alert">
+                            <strong>wget -O {{SCALING_SCRIPT_NAME}} {{SCALING_SCRIPT_LINK}}</strong>
+                            <button class=" font-weight-bold font-xs text-muted btn btn-outline-secondary" style="margin-left: 5px;"
+                                    (click)="copyToClipboard('wget -O'+  SCALING_SCRIPT_NAME + SCALING_SCRIPT_LINK)">Copy Command
+                            </button>
+                        </div>
+                        <div class="alert alert-light"
+                             role="alert"><strong>python3 {{SCALING_SCRIPT_NAME}}  </strong>
+                            <button class=" font-weight-bold font-xs text-muted btn btn-outline-secondary" style="margin-left: 5px;"
+                                    (click)="copyToClipboard('python3 ' + SCALING_SCRIPT_NAME)">Copy Command
+                            </button>
+                            <div class="alert alert-warning" role="alert">
                       If you run this script, all own changes to the cluster configuration will be overwritten!
                     </div>
                   </div>
@@ -351,7 +394,7 @@
 
 <ng-container *ngIf="scale_success">
     <div class="modal-header">
-        <h4 class="modal-title">Scaling sucessfull {{cluster?.cluster_id}}</h4>
+        <h4 class="modal-title">Scaling successful {{cluster?.cluster_id}}</h4>
         <button type="button" class="close" style="cursor: pointer"
                 (click)="bsModalRef.hide()"
                 aria-label="Close">
@@ -360,14 +403,34 @@
     </div>
     <div class="modal-body">
         <div class="alert alert-info" role="alert">
-              {{ msg }}
+            {{ msg }}
+        </div>
+            
+        <div class="alert alert-warning">
+            <div class="alert alert-light" role="alert">
+                <strong>Connect to your master instance:</strong>
+                <div class="row" *ngFor="let mode of cluster?.master_instance?.modes">
+                    <div class="col-md-1">
+                        <span class="font-weight-bold font-xs btn-block text-muted">{{mode.name}}:</span>
+                    </div>
+                    <div class="col-md-9">
+                        <span class="font-weight-bold font-xs btn-block text-muted"
+                              [innerHTML]="mode.description"></span>
+                    </div>
+
+                    <div class="col-md-2" style="margin: auto" *ngIf="mode.copy_field && mode.copy_field!=''">
+                        <div class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+                             (click)="copyToClipboard(mode.copy_field)">Copy command
+                        </div>
+                    </div>
+                </div>
+
             </div>
-        <div class="alert alert-warning"> Run the following on your master instance:
             <div class="alert alert-light"
                  role="alert">
-                <strong>wget {{SCALING_SCRIPT_LINK}}</strong>
+                <strong>wget -O {{SCALING_SCRIPT_NAME}} {{SCALING_SCRIPT_LINK}}</strong>
                 <button class="btn btn-outline-primary" style="margin-left: 5px;"
-                        (click)="copyToClipboard('wget ' + SCALING_SCRIPT_LINK)">Copy Command
+                        (click)="copyToClipboard('wget -O' +  SCALING_SCRIPT_NAME + SCALING_SCRIPT_LINK)">Copy Command
                 </button>
             </div>
             <div class="alert alert-light"
