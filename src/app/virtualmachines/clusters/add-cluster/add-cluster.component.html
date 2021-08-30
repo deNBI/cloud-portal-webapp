@@ -297,33 +297,43 @@
 
 
           </div>
+					<div
+						*ngIf="projectDataLoaded && (selectedProjectRessources?.used_vms +2) <= selectedProjectRessources?.number_vms && (flavors?.length > 0  || selectedFlavor) && selectedProjectClient?.bibigrid_available"
+						class="alert alert-warning col-md-10" role="alert" style="margin: auto;">
+						<input class="form-check-input"
+									 name="cluster_responsibility"
+									 type="checkbox"
+									 id="cluster_responsibility"
+									 [(ngModel)]="cluster_responsibility"
+									 required
+						>
+						<label class="form-check-label" for="cluster_responsibility">
+							I hereby confirm that I am responsible for the cluster and any action performed on it.
+						</label>
+					</div>
+					<div class="form-group row"
+							 *ngIf="projectDataLoaded && (selectedProjectRessources?.used_vms +2) <= selectedProjectRessources?.number_vms && (flavors?.length > 0  || selectedFlavor) && selectedProjectClient?.bibigrid_available">
 
-        </div>
-
-        <div class="form-group row"
-             *ngIf="projectDataLoaded && (selectedProjectRessources?.used_vms +2) <= selectedProjectRessources?.number_vms && (flavors?.length > 0  || selectedFlavor) && selectedProjectClient?.bibigrid_available">
-
-          <button style=" margin-left: auto;margin-top: 25px;
+						<button style=" margin-left: auto;margin-top: 25px;
     margin-right: auto;
     width: 8em" id="startClusterButton"
 
-                  type="button"
+										type="button"
 
-                  [disabled]="!selectedMasterFlavor || !selectedMasterImage || !selectedWorkerFlavorSet || !selectedBatch.valid_batch || !selectedBatch.worker_count || selectedBatch.worker_count == 0"
-                  class="btn btn-primary  .btn-lg offset-md-8"
-                  data-toggle="modal"
-                  (click)="startCluster();infoModal.show()">
-            Start Cluster
-          </button>
+										[disabled]="!cluster_responsibility || !selectedMasterFlavor || !selectedMasterImage || !selectedWorkerFlavorSet || !selectedBatch.valid_batch || !selectedBatch.worker_count || selectedBatch.worker_count == 0"
+										class="btn btn-primary  .btn-lg offset-md-8"
+										data-toggle="modal"
+										(click)="startCluster();infoModal.show()">
+							Start Cluster
+						</button>
+					</div>
         </div>
-
 
         <div class="alert alert-danger"
              *ngIf="isLoaded && !client_avaiable && selectedProject && client_checked">The
           corresponding client is currently offline.
           If you have any questions please contact <a href="mailto:{{CLOUD_PORTAL_SUPPORT_MAIL}}">{{CLOUD_PORTAL_SUPPORT_MAIL}}</a>.
         </div>
-
 
       </div>
 
