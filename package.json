@@ -143,6 +143,6 @@
     "ts-node": "10.2.1",
     "typescript": "4.3.5",
     "url-loader": "^4.1.1",
-    "webpack-cli": "^4.7.2"
+    "webpack-cli": "^4.8.0"
   }
 }
