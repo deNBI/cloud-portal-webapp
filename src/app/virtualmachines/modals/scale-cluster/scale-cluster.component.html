@@ -88,9 +88,9 @@
             </div>
             <div class="alert alert-light"
                  role="alert">
-                <strong>wget {{SCALING_SCRIPT_LINK}}</strong>
+                <strong>wget -O {{SCALING_SCRIPT_NAME}} {{SCALING_SCRIPT_LINK}}</strong>
                 <button class=" font-weight-bold font-xs text-muted btn btn-outline-secondary" style="margin-left: 5px;"
-                        (click)="copyToClipboard('wget ' + SCALING_SCRIPT_LINK)">Copy Command
+                        (click)="copyToClipboard('wget -O' + SCALING_SCRIPT_NAME + SCALING_SCRIPT_LINK)">Copy Command
                 </button>
             </div>
             <div class="alert alert-light"
@@ -346,9 +346,9 @@
 
                         <div class="alert alert-light"
                              role="alert">
-                            <strong>wget {{SCALING_SCRIPT_LINK}}</strong>
+                            <strong>wget -O {{SCALING_SCRIPT_NAME}} {{SCALING_SCRIPT_LINK}}</strong>
                             <button class=" font-weight-bold font-xs text-muted btn btn-outline-secondary" style="margin-left: 5px;"
-                                    (click)="copyToClipboard('wget ' + SCALING_SCRIPT_LINK)">Copy Command
+                                    (click)="copyToClipboard('wget -O'+  SCALING_SCRIPT_NAME + SCALING_SCRIPT_LINK)">Copy Command
                             </button>
                         </div>
                         <div class="alert alert-light"
@@ -428,9 +428,9 @@
             </div>
             <div class="alert alert-light"
                  role="alert">
-                <strong>wget {{SCALING_SCRIPT_LINK}}</strong>
+                <strong>wget -O {{SCALING_SCRIPT_NAME}} {{SCALING_SCRIPT_LINK}}</strong>
                 <button class="btn btn-outline-primary" style="margin-left: 5px;"
-                        (click)="copyToClipboard('wget ' + SCALING_SCRIPT_LINK)">Copy Command
+                        (click)="copyToClipboard('wget -O' +  SCALING_SCRIPT_NAME + SCALING_SCRIPT_LINK)">Copy Command
                 </button>
             </div>
             <div class="alert alert-light"
