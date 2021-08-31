@@ -58,7 +58,7 @@
     "cli-color": "^2.0.0",
     "colors": "^1.4.0",
     "core-js": "3.16.4",
-    "css-loader": "5.2.7",
+    "css-loader": "6.2.0",
     "cssnano": "^5.0.8",
     "d3": "^7.0.1",
     "eslint": "^7.32.0",
