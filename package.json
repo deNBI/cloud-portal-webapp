@@ -81,7 +81,7 @@
     "ngx-clipboard": "^14.0.1",
     "ngx-cookie-service": "^12.0.0",
     "ngx-owl-carousel-o": "^6.0.0",
-    "ngx-scrollbar": "^7.5.6",
+    "ngx-scrollbar": "^8.0.0",
     "ngx-smart-popover": "^1.4.0",
     "pdfmake": "^0.2.2",
     "postcss-loader": "^6.1.1",
@@ -91,8 +91,8 @@
     "save-svg-as-png": "^1.4.17",
     "svg2pdf.js": "^2.1.0",
     "ts-helpers": "1.1.2",
+    "uglify-js": "3.14.1",
     "tslib": "^2.3.1",
-    "uglify-js": "3.13.10",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
@@ -107,7 +107,7 @@
     "@types/jasmine": "^3.8.2",
     "@types/node": "^16.3.2",
     "@typescript-eslint/eslint-plugin": "^4.30.0",
-    "@typescript-eslint/parser": "4.28.3",
+    "@typescript-eslint/parser": "4.30.0",
     "audit-ci": "^4.1.0",
     "autoprefixer": "^10.3.3",
     "codelyzer": "^6.0.2",
