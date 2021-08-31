@@ -98,6 +98,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	supportMails: string[] = [];
 
 	resourceDataLoaded: boolean = false;
+	creditHistoryLoaded: boolean = false;
 	vmsInUse: number;
 	maximumVMs: number;
 	coresInUse: number;
@@ -270,6 +271,9 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 								responsive: true,
 							},
 						});
+					}
+					if (!this.creditHistoryLoaded) {
+						this.creditHistoryLoaded = true;
 					}
 				}).catch((err: Error): void => console.log(err.message));
 		}
