@@ -166,33 +166,15 @@
 					<strong>Info: <span [innerHTML]="vm?.msg"></span></strong>
 				</div>
 			</div>
-			<div *ngIf="vm?.cluster?.cluster_id" class="col-12" style="margin-left: 10px" [ngSwitch]="vm?.cluster?.status">
+			<div *ngIf="vm?.cluster?.cluster_id" class="col-12" style="margin-left: 10px" >
 				<div style="font-size: small">
 					<strong>Cluster</strong>:
 					<a style="margin-left: 10px"
 						 [routerLink]="['/virtualmachines/cluster/' + vm?.cluster.cluster_id]">
 						{{vm?.cluster.cluster_id}}
 					</a>
-					<ng-container *ngSwitchCase="'Running'">
-						<div [id]="'running_cluster_' + vm?.name"
-								 class="dot-colorless bg-success">
-						</div>
-					</ng-container>
-					<ng-container *ngSwitchCase="'SHUTOFF'">
-						<div [id]="'running_cluster_' + vm?.name"
-								 class="dot-colorless bg-warning">
-						</div>
-					</ng-container>
-					<ng-container *ngSwitchCase="'Creating'">
-						<div [id]="'creating_cluster_' + vm?.name"
-								 class="dot-colorless bg-warning">
-						</div>
-					</ng-container>
-					<ng-container *ngSwitchCase="'Configuring'">
-						<div [id]="'configuring_cluster_' + vm?.name"
-								 class="dot-colorless bg-info">
-						</div>
-					</ng-container>
+					                  <app-clusterstatus [show_text_status]="false" [cluster]="vm?.cluster"></app-clusterstatus>
+
 				</div>
 			</div>
 		</div>
@@ -291,12 +273,34 @@
 					</div>
 				</div>
 				<div class="col-md-2"
+					 *ngIf="(vm?.status |hasStatus:VirtualMachineStates.staticSHUTOFF)  && vm?.volumes.length > 0">
+					<span class="d-inline-block" tabindex="0" data-toggle="tooltip" style="width:100%;"
+						  title="Start the virtual machine to attach volumes">
+						<button class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+							 [id]="'attachVolume' + vm?.name" disabled
+							 (click)="showVolumeModal('attach')">
+						Attach Volume
+						</button>
+					</span>
+				</div>
+				<div class="col-md-2"
 						 *ngIf="(vm?.status |hasStatus:VirtualMachineStates.staticACTIVE)  && vm?.volumes.length > 0">
 					<div class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
 							 [id]="'attachVolume' + vm?.name"
 							 (click)="showVolumeModal('detach')">
 						Detach Volume
 					</div>
+				</div>
+				<div class="col-md-2"
+					 *ngIf="(vm?.status |hasStatus:VirtualMachineStates.staticSHUTOFF)  && vm?.volumes.length > 0">
+					<span class="d-inline-block" tabindex="0" data-toggle="tooltip" style="width:100%;"
+						title="Start the virtual machine to detach volumes">
+						<button class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+							   [id]="'attachVolume' + vm?.name" disabled
+							   (click)="showVolumeModal('detach')">
+						Detach Volume
+						</button>
+					</span>
 				</div>
 				<div class="col-md-2" *ngIf="(vm?.status |hasStatus:VirtualMachineStates.staticACTIVE) ">
 					<div class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
