@@ -72,19 +72,8 @@ export class NewsManagerComponent implements OnInit {
 				this.setFormGroup();
 				this.getNewsFromAPI();
 
-				// this.getWordPressNews();
-				// this.getTagsAvailable();
 			});
 		});
-	}
-
-	/**
-	 * Manages the list which contains the facilities that will get the current News id set as the MOTD id.
-	 *
-	 * @param facility the facility of the checkbox that got clicked
-	 */
-	manageMOTD(facility: [string, number]): void {
-		this.facilityToSetMOTD = facility['FacilityId'];
 	}
 
 	addNewsToAPI(bare_news: FacilityNews): void {
@@ -93,18 +82,20 @@ export class NewsManagerComponent implements OnInit {
 		news.text = this.selectedNewsForm.controls['text'].value;
 		news.motd = this.selectedNewsForm.controls['motd'].value;
 		news.facility = this.facilityToPost;
+		if (document.getElementById(`news_select_${this.facilityToPost}_motd`)['checked']) {
+			this.facilityToSetMOTD = this.facilityToPost;
+		} else {
+			this.facilityToSetMOTD = null;
+		}
 
 		this.newsService.addFacilityNews(news).subscribe((result: any): void => {
 			if (result) {
-				console.log(result);
 				if (result['id']) {
-					console.log('YES');
-
-					this.newsService.updateFacilityMOTD(result['id'], this.facilityToSetMOTD)
-						.subscribe((sub_result: any): void => {
-							console.log('another_yes');
-						});
-
+					if (this.facilityToSetMOTD != null) {
+						this.newsService.updateFacilityMOTD(result['id'], this.facilityToSetMOTD)
+							.subscribe((sub_result: any): void => {
+							});
+					}
 					this.returnState = 2;
 					this.infoModal.show();
 				}
@@ -120,9 +111,21 @@ export class NewsManagerComponent implements OnInit {
 		news.text = this.selectedNewsForm.controls['text'].value;
 		news.motd = this.selectedNewsForm.controls['motd'].value;
 		news.facility = this.facilityToPost;
+		if (document.getElementById(`news_select_${this.facilityToPost}_motd`)['checked']) {
+			this.facilityToSetMOTD = this.facilityToPost;
+		} else {
+			this.facilityToSetMOTD = null;
+		}
+
 		this.newsService.updateFacilityNews(news).subscribe((result: any): void => {
 			if (result) {
 				if (result['id']) {
+					if (this.facilityToSetMOTD != null) {
+						this.newsService.updateFacilityMOTD(result['id'], this.facilityToSetMOTD)
+							.subscribe((sub_result: any): void => {
+							});
+					}
+
 					this.returnState = 2;
 					this.infoModal.show();
 				}
@@ -134,6 +137,7 @@ export class NewsManagerComponent implements OnInit {
 	getFacilitiesFromWagtail(): void {
 		this.facilityMOTDPairs = [];
 		this.newsService.getFacilitiesFromWagtail().subscribe((facilities: any[]): void => {
+			// eslint-disable-next-line @typescript-eslint/prefer-for-of,no-plusplus
 			for (let i = 0; i < facilities.length; i++) {
 				this.facilityMOTDPairs[facilities[i]['id']] = facilities[i]['motd'];
 			}
@@ -283,9 +287,6 @@ export class NewsManagerComponent implements OnInit {
 	 */
 	setFacility(facility: [string, number]): void {
 		this.facilityToPost = facility['FacilityId'];
-		// this.manageMOTD(facility);
-		// document.getElementById(`news_select_${facility['FacilityId']}_motd`)['checked'] = false;
-
 	}
 
 	deleteNewsFromAPI(): void {

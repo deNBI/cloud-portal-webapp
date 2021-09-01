@@ -52,14 +52,11 @@ export class NewsService {
 		});
 	}
 
-	updateFacilityMOTD(news_id: number, facility_id: number): Observable<any> {
-		const params: HttpParams = new HttpParams()
-			.set('news_id', news_id)
-			.set('facility_id', facility_id);
+	updateFacilityMOTD(news: number, facility: number): Observable<any> {
+		const request_object: { news_id: number, facility_id: number} = { news_id: news, facility_id: facility };
 
-		return this.http.post<Object[]>(`${ApiSettings.getApiBaseURL()}facility-management/`, {
+		return this.http.post(`${ApiSettings.getApiBaseURL()}facility-management/`, request_object, {
 			withCredentials: true,
-			params,
 		});
 	}
 
