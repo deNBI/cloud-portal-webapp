@@ -1,5 +1,5 @@
-import {by, element} from 'protractor';
-import {Util} from '../util';
+import { by, element } from 'protractor';
+import { Util } from '../util';
 
 /**
  * New Instance Page.
@@ -32,90 +32,90 @@ export class NewInstancePage {
   private static ADD_VOLUME_CONFIRMATION_BUTTON: string = 'addVolumeConfirmationButton';
 
   static async getNewInstanceTab(): Promise<any> {
-    Util.logInfo('Navigating to New Instance Tab');
-    await Util.navigateToAngularPage(this.NEW_INSTANCE_URL);
+  	Util.logInfo('Navigating to New Instance Tab');
+  	await Util.navigateToAngularPage(this.NEW_INSTANCE_URL);
 
-    return await Util.waitForPage(this.NEW_INSTANCE_URL);
+  	return await Util.waitForPage(this.NEW_INSTANCE_URL);
   }
 
   static async chooseProject(): Promise<any> {
-    await Util.waitForPresenceOfElementById('application_form');
+  	await Util.waitForPresenceOfElementById('application_form');
 
-    const waitElementawait: any = await Util.waitForPresenceOfElementById('singleProjectNameSpan', 15000);
-    if (!waitElementawait) {
-      await Util.waitForPresenceOfElementById(this.PROJECT_SELECT_ID);
-      await Util.waitForElementToBeClickableById(this.PROJECT_SELECT_ID);
-      Util.logInfo('Getting option from select');
-      await Util.clickOptionOfSelect(this.PROJECT_NAME, this.PROJECT_SELECT_ID);
-    } else {
-      Util.logInfo('Single Project automatically selected');
-    }
+  	const waitElementawait: any = await Util.waitForPresenceOfElementById('singleProjectNameSpan', 15000);
+  	if (!waitElementawait) {
+  		await Util.waitForPresenceOfElementById(this.PROJECT_SELECT_ID);
+  		await Util.waitForElementToBeClickableById(this.PROJECT_SELECT_ID);
+  		Util.logInfo('Getting option from select');
+  		await Util.clickOptionOfSelect(this.PROJECT_NAME, this.PROJECT_SELECT_ID);
+  	} else {
+  		Util.logInfo('Single Project automatically selected');
+  	}
   }
 
-  static async fillBasicForm(name: string= this.BASIC_VM_NAME): Promise<any> {
-    Util.logInfo('Fill new instance basic form');
+  static async fillBasicForm(name: string = this.BASIC_VM_NAME): Promise<any> {
+  	Util.logInfo('Fill new instance basic form');
 
-    await this.fillMandatoryFormWith(name, Util.DEFAULT_FLAVOR_NAME, Util.UBUNTU_18_TITLE);
+  	await this.fillMandatoryFormWith(name, Util.DEFAULT_FLAVOR_NAME, Util.UBUNTU_18_TITLE);
   }
 
   static async fillBasicVolumeForm(): Promise<any> {
-    Util.logInfo('Fill new instance basic volume form');
+  	Util.logInfo('Fill new instance basic volume form');
 
-    await this.fillMandatoryFormWith(this.VOLUME_VM_NAME, Util.DEFAULT_FLAVOR_NAME, Util.UBUNTU_18_TITLE);
+  	await this.fillMandatoryFormWith(this.VOLUME_VM_NAME, Util.DEFAULT_FLAVOR_NAME, Util.UBUNTU_18_TITLE);
   }
 
   static async fillMandatoryFormWith(instance_name: string, flavor: string, image: string): Promise<any> {
-    Util.logInfo('Fill new instance mandatory form');
+  	Util.logInfo('Fill new instance mandatory form');
 
-    await Util.waitForPresenceOfElementById(this.ID_INSTANCE_NAME);
-    await Util.sendTextToElementByIdUnsecure(this.ID_INSTANCE_NAME, instance_name);
-    await Util.waitForPresenceOfElementById(this.FLAVOR_ID);
-    await element(by.id(this.FLAVOR_ID)).element(by.id(`${this.FLAVOR_PREFIX}${flavor}`)).click();
-    await Util.waitForPresenceOfElementById(this.IMAGE_ID);
-    await element(by.id(this.IMAGE_ID)).element(by.id(`${this.IMAGE_PREFIX}${image}`)).click();
-    await Util.clickElementById(this.VM_RESPONSIBILITY)
+  	await Util.waitForPresenceOfElementById(this.ID_INSTANCE_NAME);
+  	await Util.sendTextToElementByIdUnsecure(this.ID_INSTANCE_NAME, instance_name);
+  	await Util.waitForPresenceOfElementById(this.FLAVOR_ID);
+  	await element(by.id(this.FLAVOR_ID)).element(by.id(`${this.FLAVOR_PREFIX}${flavor}`)).click();
+  	await Util.waitForPresenceOfElementById(this.IMAGE_ID);
+  	await element(by.id(this.IMAGE_ID)).element(by.id(`${this.IMAGE_PREFIX}${image}`)).click();
+  	await Util.clickElementById(this.VM_RESPONSIBILITY);
   }
 
   static async submitAndStartVM(): Promise<any> {
-    Util.logInfo('Submit and start VM');
+  	Util.logInfo('Submit and start VM');
 
-    await Util.waitForElementToBeClickableById(this.START_BUTTON);
-    await Util.clickElementById(this.START_BUTTON);
-    // await Util.waitForPage('/virtualmachines/vmOverview')
+  	await Util.waitForElementToBeClickableById(this.START_BUTTON);
+  	await Util.clickElementById(this.START_BUTTON);
+  	// await Util.waitForPage('/virtualmachines/vmOverview')
   }
 
   static async waitForConfirmation(): Promise<boolean> {
-    return await Util.waitForPresenceOfElementById(this.OVERVIEW_BUTTON);
+  	return await Util.waitForPresenceOfElementById(this.OVERVIEW_BUTTON);
   }
 
   static async isRedirectModalPresent(): Promise<boolean> {
-    return await Util.waitForPresenceOfElementById(this.REDIRECT_MODAL);
+  	return await Util.waitForPresenceOfElementById(this.REDIRECT_MODAL);
 
   }
 
   static async setVolume(): Promise<any> {
-    Util.logInfo('Set Volume');
+  	Util.logInfo('Set Volume');
 
-    await Util.clickElementById(this.ADD_VOLUME_FORM_BUTTON);
-    Util.logInfo('Setting Volume name');
-    await Util.sendTextToElementByIdUnsecure(this.VOLUME_NAME_ID, Util.VOLUME_NAME);
-    Util.logInfo('Setting Volume mount path');
-    await Util.sendTextToElementByIdUnsecure(this.VOLUME_MOUNT_PATH_ID, Util.VOLUME_MOUNT_PATH_STRING);
+  	await Util.clickElementById(this.ADD_VOLUME_FORM_BUTTON);
+  	Util.logInfo('Setting Volume name');
+  	await Util.sendTextToElementByIdUnsecure(this.VOLUME_NAME_ID, Util.VOLUME_NAME);
+  	Util.logInfo('Setting Volume mount path');
+  	await Util.sendTextToElementByIdUnsecure(this.VOLUME_MOUNT_PATH_ID, Util.VOLUME_MOUNT_PATH_STRING);
 
-    Util.logInfo('Setting Volume space');
-    await Util.sendTextToElementByIdUnsecure(this.VOLUME_SPACE_ID, this.VOLUME_SPACE);
-    await Util.clickElementById(this.ADD_VOLUME_CONFIRMATION_BUTTON);
+  	Util.logInfo('Setting Volume space');
+  	await Util.sendTextToElementByIdUnsecure(this.VOLUME_SPACE_ID, this.VOLUME_SPACE);
+  	await Util.clickElementById(this.ADD_VOLUME_CONFIRMATION_BUTTON);
   }
 
   static async closeInfoModal(): Promise<any> {
-    await Util.clickElementById(this.CLOSE_INFO_MODAL)
+  	await Util.clickElementById(this.CLOSE_INFO_MODAL);
   }
 
   static async getVMName(): Promise<string> {
-    await Util.waitForPresenceOfElementById(this.REDIRECT_MODAL);
-    await Util.waitForPresenceOfElementById(this.NEW_INSTANCE_NAME_SPAN);
+  	await Util.waitForPresenceOfElementById(this.REDIRECT_MODAL);
+  	await Util.waitForPresenceOfElementById(this.NEW_INSTANCE_NAME_SPAN);
 
-    return await element(by.id(this.NEW_INSTANCE_NAME_SPAN)).getAttribute('textContent');
+  	return await element(by.id(this.NEW_INSTANCE_NAME_SPAN)).getAttribute('textContent');
   }
 
 }
