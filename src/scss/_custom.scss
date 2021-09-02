@@ -322,11 +322,11 @@ $simplevmcolour: #00ADEF;
 }
 
 .sidebar .nav-link {
-  color: $deNBI_blue;
+  color: $deNBI_darkgrey;
 }
 
 .sidebar .nav-link .nav-icon {
-  color: #73818f;
+  color: $deNBI_darkgrey;
 }
 
 .sidebar .nav .nav-item .nav-link {
@@ -548,14 +548,13 @@ $simplevmcolour: #00ADEF;
   width: 100%;
 }
 
-
 .app-header .navbar-brand {
   width: 100%;
   margin-right: 10px;
 }
 
-.navbar-brand {
-  padding: 0 !important;
+.navbar-brand img {
+  max-width: 90%;
 }
 
 //modals
@@ -587,8 +586,43 @@ $simplevmcolour: #00ADEF;
     margin-left: 0px !important;
   }
 
+.fadeIn {
+  max-height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
 
+.btn-outline-primary {
+  color: $deNBI_darkgrey;
+  border-color: $deNBI_darkgrey;
+}
 
+.btn-primary {
+  color: white;
+  background-color: $deNBI_darkgrey;
+}
+
+.btn-primary:hover {
+  color: white;
+  background-color: $deNBI_lightgrey;
+}
+
+.btn-outline-primary:hover {
+  color: $deNBI_white;
+  background-color: $deNBI_darkgrey;
+}
+
+.callout-info {
+  border-left-color: $deNBI_lightgrey;
+}
+
+.bg-primary {
+  background-color: $deNBI_darkgrey;
+}
+
+.bg-info {
+  color: white;
+}
 
 
   .sidebar .nav .nav-item .nav-link {
@@ -623,8 +657,21 @@ $simplevmcolour: #00ADEF;
     position: relative;
   }
 
-  .nav-group-items{
-    background-color: #FFF;
+  .nav-group-items {
+    background-color: white;
+  }
+
+  .nav-group-items .nav-item {
+    background-color: white;
+  }
+
+  .nav-group-items .nav-item:hover {
+    background-color: $deNBI_lightgrey;
+    color: white;
+  }
+
+  .nav-group-items:hover {
+    color: white;
   }
 
   .main {
@@ -642,11 +689,6 @@ $simplevmcolour: #00ADEF;
 
   //colors for buttons and alerts >>>
 
-  .btn-primary {
-    background-color: $deNBI_cyan;
-    border: none;
-  }
-
   .btn-secondary, .btn-info
   {
     background-color: $deNBI_lightgrey;
@@ -663,6 +705,12 @@ $simplevmcolour: #00ADEF;
     background-color: #C9E7F2;
     border-color: #00ADEF;
     color: #336573;
+  }
+
+  .loader {
+    position: fixed;
+    top: 50%;
+    left:50%;
   }
 
   .btn {
@@ -750,6 +798,7 @@ $simplevmcolour: #00ADEF;
     font-size: 0.875rem;
     background-color:#ebedef;
     font-family: 'Raleway', sans-serif;
+    overflow-y: hidden;
   }
 
   .flavor-image-card {
@@ -786,7 +835,7 @@ $simplevmcolour: #00ADEF;
     font-size: 20px !important;
     text-align: center;
     bottom:5px;
-    color: $deNBI_blue;
+    color: $deNBI_darkgrey !important;
     height: 100%;
     margin-top:15px;
     min-width:25%;
@@ -817,6 +866,11 @@ $simplevmcolour: #00ADEF;
   background-color: white;
 }
 
+.sidebar .nav-group.show {
+  color: white;
+  background-color: $deNBI_lightgrey;
+}
+
 .sidebar .nav-group-toggle .nav-link:hover
   {
     background-color: $deNBI_lightgrey;
@@ -830,7 +884,7 @@ $simplevmcolour: #00ADEF;
   }
 
   .sidebar .nav-link.active {
-    background-color: $deNBI_cyan;
+    background-color: $deNBI_darkgrey;
     color: $deNBI_white;
   }
   .scroll-image {
@@ -863,6 +917,10 @@ $simplevmcolour: #00ADEF;
 
   a{
     text-decoration: unset !important;
+  }
+
+  a:visited {
+    color: $deNBI_blue;
   }
 
 

@@ -2,13 +2,13 @@
 <header class="header header-left" id="denbiBrand" [ngClass]="{'header-left-minimized':navbar_minimized}">
 
     <a class="navbar-brand" href="#/">
-        <img *ngIf="!navbar_minimized" style="max-width: 100%" src="{{brand_logo}}">
-        <img *ngIf="navbar_minimized" style="max-width: 100%" [ngClass]="{'navbar-brand-minimized':navbar_minimized}"
+        <img *ngIf="!navbar_minimized" src="{{brand_logo}}">
+        <img *ngIf="navbar_minimized" [ngClass]="{'navbar-brand-minimized':navbar_minimized}"
              src="{{brand_logo_minimized}}">
 
     </a>
 </header>
-<header class="header header-right header-light " id="denbiHeadbar"
+<header class="header header-right header-light" id="denbiHeadbar"
         [ngClass]="{'header-right-maximized':navbar_minimized}">
 
     <h1 id="title_headline" style="margin:auto; position:relative; top:25%;">{{page_title}}</h1>
