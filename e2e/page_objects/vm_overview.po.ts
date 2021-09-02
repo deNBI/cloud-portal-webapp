@@ -63,7 +63,7 @@ export class VMOverviewPage {
 
   async isVmActive(name: string): Promise<boolean> {
   	Util.logInfo(`Checking if ${name} is active`);
-  	await Util.waitForPresenceOfElementById(this.TABLE_ID);
+  	await Util.waitForPresenceOfElementById(this.TABLE_ID, Util.MIN_TIMEOUT_15);
 
   	return await Util.waitForPresenceOfElementById(`${this.ACTIVE_BADGE_PREFIX}${name}`);
   }
