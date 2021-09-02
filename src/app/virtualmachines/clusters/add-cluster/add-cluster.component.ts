@@ -60,6 +60,7 @@ export class AddClusterComponent implements OnInit {
 	cluster_id: string;
 	cluster_error: string;
 	cluster_started: boolean = false;
+	cluster_responsibility: boolean = false;
 
 	/**
 	 * Selected Image.
