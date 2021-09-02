@@ -27,7 +27,7 @@ jobs:
       - name: Get tag
         run: echo "The selected tag is ${{ steps.tag.outputs.TAG }}"
       - name: Publish to Registry
-        uses: elgohr/Publish-Docker-Github-Action@master
+        uses: elgohr/Publish-Docker-Github-Action@3.04
         with:
           name: denbicloud/cloud-portal-webapp
           username: ${{ secrets.DOCKER_USERNAME }}
