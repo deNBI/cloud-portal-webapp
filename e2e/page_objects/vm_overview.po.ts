@@ -80,7 +80,7 @@ export class VMOverviewPage {
 		Util.logInfo(`Checking if ${name} is active`);
 		await Util.waitForPresenceOfElementById(this.TABLE_ID);
 
-		return await Util.waitForPresenceOfElementById(`${this.ACTIVE_BADGE_PREFIX}${name}`);
+		return await Util.waitForPresenceOfElementById(`${this.ACTIVE_BADGE_PREFIX}${name}`, Util.MIN_TIMEOUT_15);
 	}
 
 	async isBasicVMActive(): Promise<boolean> {
