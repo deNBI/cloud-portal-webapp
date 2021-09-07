@@ -188,7 +188,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
 		const initialState = {
 			project: this.project_application,
-			life_time_string: `${this.project.DateCreated} -  ${this.project.DateEnd}`,
+			life_time_string: `${this.project.DateCreated} - ${this.project.DateEnd}`,
 		};
 		this.bsModalRef = this.modalService.show(LifetimeRequestComponent, { initialState });
 		this.bsModalRef.setClass('modal-lg');
