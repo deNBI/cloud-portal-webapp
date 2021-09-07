@@ -329,6 +329,30 @@ $simplevmcolour: #00ADEF;
   color: $deNBI_darkgrey;
 }
 
+.sidebar .nav-link .nav-icon path{
+  fill: $deNBI_darkgrey !important;
+}
+
+.nav-pills .nav-link {
+  background: $deNBI_lightgrey;
+}
+
+.nav-pills .nav-link.active {
+  background: $deNBI_cyan;
+}
+
+.nav-pills .nav-link:hover {
+  background: $deNBI_darkgrey;
+}
+
+.nav-pills .nav-link.active:hover {
+  background: $deNBI_blue;
+}
+
+.panel {
+  margin: 10px;
+}
+
 .sidebar .nav .nav-item .nav-link {
 
   text-overflow: ellipsis;
@@ -593,23 +617,30 @@ $simplevmcolour: #00ADEF;
 }
 
 .btn-outline-primary {
-  color: $deNBI_darkgrey;
-  border-color: $deNBI_darkgrey;
-}
-
-.btn-primary {
-  color: white;
-  background-color: $deNBI_darkgrey;
-}
-
-.btn-primary:hover {
-  color: white;
-  background-color: $deNBI_lightgrey;
+  color: $deNBI_lightgrey;
+  border-color: $deNBI_lightgrey;
 }
 
 .btn-outline-primary:hover {
   color: $deNBI_white;
+  background-color: $deNBI_lightgrey;
+}
+
+.btn-primary {
+  color: white;
+  background-color: $deNBI_lightgrey;
+  border: none;
+}
+
+.btn-primary:active {
   background-color: $deNBI_darkgrey;
+  border: none;
+}
+
+.btn-primary:hover {
+  color: white;
+  background-color: $deNBI_darkgrey;
+  border: none;
 }
 
 .callout-info {
@@ -617,15 +648,14 @@ $simplevmcolour: #00ADEF;
 }
 
 .bg-primary {
-  background-color: $deNBI_darkgrey;
+  background-color: $deNBI_cyan !important;
 }
 
 .bg-info {
   color: white;
 }
 
-
-  .sidebar .nav .nav-item .nav-link {
+.sidebar .nav .nav-item .nav-link {
 
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -666,7 +696,7 @@ $simplevmcolour: #00ADEF;
   }
 
   .nav-group-items .nav-item:hover {
-    background-color: $deNBI_lightgrey;
+    background-color: $deNBI_darkgrey;
     color: white;
   }
 
@@ -761,11 +791,6 @@ $simplevmcolour: #00ADEF;
     cursor:pointer;
   }
 
-  .sidebar-nav .nav-item:hover, .sidebar .nav-item:hover > .nav-link
-  {
-    background-color: $deNBI_lightgrey !important;
-  }
-
   .nav
   {
     overflow-x: hidden !important;
@@ -803,7 +828,7 @@ $simplevmcolour: #00ADEF;
 
   .flavor-image-card {
     width: 16rem;
-    margin-right: 5px;
+    margin: 5px;
     cursor: pointer;
     height: auto;
   }
@@ -823,11 +848,6 @@ $simplevmcolour: #00ADEF;
     border-radius:10px;
   }
 
-
-  .main .container-fluid
-  {
-    padding: 0 15px 0 0px;
-  }
 
   #title_headline
   {
@@ -858,7 +878,12 @@ $simplevmcolour: #00ADEF;
 
 .sidebar .nav-dropdown.show .nav-link:hover
   {
-    background-color: $deNBI_lightgrey;
+    background-color: $deNBI_darkgrey;
+    color: $deNBI_white;
+  }
+
+.sidebar .nav-dropdown.show .nav-link:hover .nav-icon
+  {
     color: $deNBI_white;
   }
 
@@ -868,7 +893,36 @@ $simplevmcolour: #00ADEF;
 
 .sidebar .nav-group.show {
   color: white;
-  background-color: $deNBI_lightgrey;
+  background-color: $deNBI_darkgrey;
+}
+
+.sidebar .nav-group.show .nav-group-items .nav-item {
+  background-color: white;
+  color: $deNBI_darkgrey;
+}
+
+.sidebar .nav-group.show .nav-link.nav-group-toggle, .sidebar .nav-group.show .nav-icon{
+  color: white;
+}
+
+.sidebar .nav-group.show .nav-group-items .nav-link .nav-icon {
+  color: $deNBI_darkgrey;
+}
+
+.sidebar .nav-group.show .nav-group-items .nav-link:hover .nav-icon {
+  color: $white;
+}
+
+.sidebar-nav .nav-item:hover, .sidebar .nav-item:hover > .nav-link
+{
+  background-color: $deNBI_lightgrey
+}
+
+.sidebar-nav .nav-group-toggle::after {
+  color: $deNBI_darkgrey;
+}
+.sidebar-nav .nav-group-toggle:hover::after {
+  color: white;
 }
 
 .sidebar .nav-group-toggle .nav-link:hover
@@ -877,16 +931,25 @@ $simplevmcolour: #00ADEF;
     color: $deNBI_white;
   }
 
-   .sidebar .nav-link:hover{
+.sidebar .nav-group-toggle .nav-link:hover path
+{
+  fill: #FFF !important;
+}
+
+.sidebar .nav-link:hover{
     width: 100%;
          background-color: $deNBI_lightgrey;
-
-  }
+ }
 
   .sidebar .nav-link.active {
     background-color: $deNBI_darkgrey;
     color: $deNBI_white;
   }
+
+.sidebar .nav-group.show .nav-link.active .nav-icon {
+    color: white;
+  }
+
   .scroll-image {
     max-height: 120px;
     min-height: 120px;
@@ -902,11 +965,11 @@ $simplevmcolour: #00ADEF;
   }
 
   .bg-info-flavor {
-    background-color: $deNBI_blue;
+    background-color: $deNBI_lightgrey;
   }
 
   .bg-info-image {
-    background-color: $deNBI_cyan;
+    background-color: $deNBI_lightgrey;
     color: $deNBI_white;
   }
 
@@ -917,6 +980,11 @@ $simplevmcolour: #00ADEF;
 
   a{
     text-decoration: unset !important;
+    color: $deNBI_cyan;
+  }
+
+  a:hover {
+    color: $deNBI_blue;
   }
 
   a:visited {

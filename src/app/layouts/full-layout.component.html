@@ -1,9 +1,8 @@
 
-<app-title-headbar [navbar_minimized]="sidebar_minimized" [page_title]="TITLE"></app-title-headbar>
+<app-title-headbar [navbar_minimized]="false" [page_title]="TITLE"></app-title-headbar>
 
 
-<div class="sidebar sidebar-fixed" (mouseleave)="mouseLeaveSidebar()" (mouseenter)="mouseEnterSidebar()"
-     [ngClass]="{'sidebar-narrow-unfoldable':navbar_minimized}">
+<div class="sidebar sidebar-fixed">
     <ng-scrollbar class="ng-scrollbar" visibility="hover">
 
         <ul class="sidebar-nav">
@@ -337,23 +336,16 @@
         </ul>
     </ng-scrollbar>
 
-    <button class="sidebar-toggler" (click)="setSidebarStatus()" type="button"></button>
-    <app-footer *ngIf="!sidebar_minimized">
+    <app-footer>
 
         <a href="https://www.denbi.de">de.NBI&nbsp;</a> &copy; {{ year }}
 
     </app-footer>
 
-    <app-footer class="app-footer-minimized" *ngIf="sidebar_minimized">
-
-        <a href="https://www.denbi.de" data-toogle="tooltip" data-placement="right" [title]="'&copy; de.NBI ' + year "
-           style="font-size: 18px !important;">&copy;</a>
-
-    </app-footer>
 </div>
 
 
-<main class="bg-light main" [ngClass]="{'main-maximized':sidebar_minimized}">
+<main class="bg-light main">
 
     <!-- Breadcrumb-->
 

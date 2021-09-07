@@ -45,11 +45,9 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
 	show_projects: boolean = false;
 	navbar_state: string = 'closed';
 	overview_state: string = 'closed';
-	sidebar_minimized: boolean = false;
-	navbar_minimized: boolean = false;
 	show_overviews: boolean = false;
 	brand_logo: string = 'static/webapp/assets/img/denbi-logo-color.svg';
-	brand_logo_minimized: string = 'static/webapp/assets/img/denbi-logo-minimized.svg';
+	// brand_logo_minimized: string = 'static/webapp/assets/img/denbi-logo-minimized.svg';
 	simple_vm_logo: string = 'static/webapp/assets/img/simpleVM_Logo.svg';
 	openstack_logo: string = 'static/webapp/assets/img/openstack_plain_red.svg';
 
@@ -141,26 +139,6 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
 			this.login_name = login.value as string;
 		});
 
-	}
-
-	setSidebarStatus(): void {
-		this.navbar_minimized = !this.navbar_minimized;
-		// this.sidebar_minimized = this.navbar_minimized;
-
-	}
-
-	mouseEnterSidebar(): void {
-		if (this.navbar_minimized) {
-			this.sidebar_minimized = false;
-		}
-	}
-
-	mouseLeaveSidebar(): void {
-		if (this.navbar_minimized) {
-			this.sidebar_minimized = true;
-		} else {
-			this.sidebar_minimized = false;
-		}
 	}
 
 	toggleOverviews(): void {
