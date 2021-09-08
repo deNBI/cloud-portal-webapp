@@ -61,7 +61,7 @@
         <div class="spinner-border text-primary" style="display:block; margin:auto;"></div>
       </div>
 
-      <div class="alert alert-info" *ngIf="clusters?.length < 1 && !isSearching ">
+      <div class="alert alert-primary" *ngIf="clusters?.length < 1 && !isSearching ">
         <span>There are no clusters available!</span>
       </div>
 
@@ -362,7 +362,7 @@
                     </div>
                 </div>
 
-                <div class="alert alert-info"
+                <div class="alert alert-primary"
                      role="alert">Selected for scaling down:<br>
                   <span *ngFor="let batch of selectedCluster?.worker_batches">
                       <strong *ngIf="batch?.delete_count > 0">Deleting {{batch?.delete_count}} machine<span
@@ -411,7 +411,7 @@
             </button>
           </div>
           <div class="modal-body">
-            <div class="alert alert-info " role="alert" *ngIf="!max_scale_count_loaded"><strong> Calculating maximum additional
+            <div class="alert alert-primary " role="alert" *ngIf="!max_scale_count_loaded"><strong> Calculating maximum additional
               workers..
               <i
                 class="fa fa-spinner fa-spin" style="font-size:24px"></i></strong></div>
@@ -499,7 +499,7 @@
                     </button>
                   </div>
                 </div>
-                 <div class="alert alert-info" role="alert" *ngIf="created_new_batch && (!projectDataLoaded || !flavors_loaded)"><strong> Get more possible flavors..
+                 <div class="alert alert-primary" role="alert" *ngIf="created_new_batch && (!projectDataLoaded || !flavors_loaded)"><strong> Get more possible flavors..
               <i
                 class="fa fa-spinner fa-spin" style="font-size:24px"></i></strong></div>
                 <accordion  *ngIf="created_new_batch && projectDataLoaded && flavors_loaded">
@@ -602,7 +602,7 @@
                     </div>
                   </div>
 
-                  <div class="alert alert-info"
+                  <div class="alert alert-primary"
                        role="alert">Selected for scaling up:<br>
                     <strong *ngIf="selectedBatch?.upscale_count > 0"> Starting {{selectedBatch?.upscale_count}}
                       machine<span *ngIf="selectedBatch.upscale_count > 1">s</span> in Batch {{selectedBatch?.index}}

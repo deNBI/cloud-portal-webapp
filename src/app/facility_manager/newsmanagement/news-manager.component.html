@@ -25,7 +25,7 @@
             </div>
             <div class="card-body">
               <form>
-                <div *ngIf="wordPressNews?.length === 0" class="alert alert-info">
+                <div *ngIf="wordPressNews?.length === 0" class="alert alert-primary">
                   <span>No news available for the facilities selected.</span>
                 </div>
                 <div *ngFor="let news of wordPressNews">
@@ -161,7 +161,7 @@ we are happy to inform..."
               </div>
             </div>
             <div class="card-body" *ngIf="!selectedNews"> <!-- check case here -->
-              <div class="alert alert-info">
+              <div class="alert alert-primary">
                 This news is also published for a facility you are not the manager of, which means you are not allowed
                 to edit or delete this news.
                 Methods to disconnect this news from your selected facilities and re-add and edit this news for your
@@ -211,7 +211,7 @@ we are happy to inform..."
           </button>
         </div>
         <div class="modal-body">
-          <div class="alert alert-info" role="alert">
+          <div class="alert alert-primary" role="alert">
             <p>Are you sure, that you want to delete <strong>{{this.selectedNews.title}}</strong> ?</p>
             <p><strong>Please note: this may remove the current Message of the day for multiple facilities!</strong></p>
           </div>
@@ -246,7 +246,7 @@ we are happy to inform..."
           </button>
         </div>
         <div class="modal-body">
-          <div class="alert alert-info" role="alert">
+          <div class="alert alert-primary" role="alert">
             <p>Are you sure, that you want to update <strong>{{this.selectedNews.title}}</strong> ?</p>
             <p><strong>Please note: this may change the current Message of the day for multiple facilities!</strong></p>
           </div>
@@ -281,7 +281,7 @@ we are happy to inform..."
           </button>
         </div>
         <div class="modal-body">
-          <div class="alert alert-info" role="alert">
+          <div class="alert alert-primary" role="alert">
             <p>Are you sure, that you want to upload <strong>{{this.selectedNews.title}}</strong> ?</p>
             <p><strong>Please note: this may change the current Message of the day for multiple facilities!</strong></p>
           </div>
@@ -316,7 +316,7 @@ we are happy to inform..."
           </button>
         </div>
         <div class="modal-body">
-          <div class="alert alert-info" role="alert">
+          <div class="alert alert-primary" role="alert">
             <p *ngIf="returnState === 0">The selected news got deleted!</p>
             <p *ngIf="returnState === 1">The selected news got updated!</p>
             <p *ngIf="returnState === 2">The news got uploaded!</p>

@@ -11,25 +11,25 @@
           – Form
         </div>
         <div class="card-body">
-          <div class="alert alert-info">
+          <div class="alert alert-primary">
             <strong>Please be aware:</strong> Only applications approved by a principal
             investigator of a
             german university or research facility will be accepted!
           </div>
-          <div class="alert alert-info" *ngIf="openstack_project">
+          <div class="alert alert-primary" *ngIf="openstack_project">
             If you would like to learn more about Openstack,
             <a href="https://cloud.denbi.de/openstack/"
                target="_blank" rel="noopener noreferrer">Click Here!
             </a>
           </div>
           <div *ngIf="simple_vm_project">
-            <div class="alert alert-info">
+            <div class="alert alert-primary">
               This project mode is a beta version. Virtual machines might get lost or can
               not be
               started
               temporarily.
             </div>
-            <div class="alert alert-info">
+            <div class="alert alert-primary">
               If you would like to learn more about Simple VM, <a href="https://cloud.denbi.de/simplevm/"
                                                                   target="_blank" rel="noopener noreferrer">Click
               Here!</a>
@@ -161,7 +161,7 @@
                                 'is-valid': form.controls.project_application_description?.valid && (form.controls.project_application_description?.dirty || form.controls.project_application_description?.touched)
                                 }"></textarea>
                 <span class="help-block">Describe what would you want to do in your project.</span>
-                <div class="alert alert-info">
+                <div class="alert alert-primary">
                   As more resources are requested we require a more detailed description of your project, data and used
                   tools!
 
@@ -227,7 +227,7 @@
                     <i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
                             'icon-arrow-up': groupval.isOpen, 'icon-arrow-down': !groupval.isOpen}"></i>
                   </div>
-                  <div *ngIf="isFirst" class="alert alert-info"> You will have default access to all flavors in the
+                  <div *ngIf="isFirst" class="alert alert-primary"> You will have default access to all flavors in the
                     standard category.<br>
                     However, your selection will determine how many machines, how many cores and how much RAM will be
                     available for your project.
@@ -265,7 +265,7 @@
                                     </span></div>
                         </div>
                         <span class="help-block">Number of VMs you would like to run of this particular flavor</span>
-                        <div *ngIf="f?.comment" class="alert alert-info">{{f.comment}}</div>
+                        <div *ngIf="f?.comment" class="alert alert-primary">{{f.comment}}</div>
                       </div>
                     </div>
                   </div>
@@ -482,7 +482,7 @@
                 </div>
 
 
-                <div class="alert alert-info" role="alert">
+                <div class="alert alert-primary" role="alert">
                   According to our usage policy it is not allowed to process person related data in the de.NBI Cloud
                   with
                   the exception that an additional agreement is made with the corresponding cloud site operator.
@@ -503,7 +503,7 @@
                 </div>
 
 
-                <div class="alert alert-info" role="alert">
+                <div class="alert alert-primary" role="alert">
                   Are you interested in a short OpenStack introduction workshop? You and your project members will be
                   notified as soon as a workshop is organized.
                 </div>
@@ -523,7 +523,7 @@
                 </div>
 
 
-                <div class="alert alert-info" role="alert">
+                <div class="alert alert-primary" role="alert">
                   Do you plan to offer a service?
                 </div>
               </div>
@@ -542,7 +542,7 @@
                 </div>
 
 
-                <div class="alert alert-info" role="alert">
+                <div class="alert alert-primary" role="alert">
                   Are you developing a new service?
                   <br>
                   <strong>Note:</strong> if you plan to offer an existing service, please set this switch to No.
@@ -706,7 +706,7 @@
             <div *ngIf="application?.project_application_report_allowed">
 
               <div class="form-group row col-md-12">
-                <div class="alert alert-info col-md-auto"><span>Please specify which information about your project and which platforms may be used to publish information.
+                <div class="alert alert-primary col-md-auto"><span>Please specify which information about your project and which platforms may be used to publish information.
             Select or deselect options by enabling or disabling the switches within the fields below. To do this, open the Dissemination Options.
             If publication is permitted, at least the title (or optionally a public title) and at least one platform must be selected.</span>
                 </div>
@@ -1006,7 +1006,7 @@
             <div *ngIf="!application?.project_application_pi_approved && !is_validation"
                  class="form-group row justify-content-center">
               <div class="col-md-4"></div>
-              <div class="col-md-8 alert alert-info">Only applications approved by a principal investigator
+              <div class="col-md-8 alert alert-primary">Only applications approved by a principal investigator
                 of a german university or research facility will be accepted.
                 You are able to enter an email address of your principal investigator whom
                 we will send an email, containing your name and email address and a link informing her/him about the
@@ -1129,7 +1129,7 @@
           {{ notificationModalMessage }}
 
         </div>
-              <div class="alert alert-info" id="survey" role="alert" *ngIf="survey_link_visible">
+              <div class="alert alert-primary" id="survey" role="alert" *ngIf="survey_link_visible">
          We are very interested in making the application process understandable, clear and easy to complete, so we would appreciate it if you would fill out this short anonymous survey:<br>
           <a [href]="SURVEY_LINK" target="_blank">Application Process Survey</a>
 
@@ -1214,7 +1214,7 @@
 
       </div>
       <div class="modal-body">
-        <div class="alert alert-info">
+        <div class="alert alert-primary">
           <strong>Please check the data you have entered and confirm your application
             below.</strong><br>
           If the entered data mismatches with your requirements cancel this confirmation
@@ -1277,7 +1277,7 @@
               <td><strong>Initial Cloud Credits:
                 {{application?.project_application_initial_credits.toString()}}</strong>
                 <br>
-                <div class="alert alert-info">
+                <div class="alert alert-primary">
                   We are slowly rolling out the implementation of Cloud Credits which assist in tracking resource usage.
                 We show the initial Cloud Credits to all new project applications but will track the used Cloud Credits
                 only for a few selected projects. If your project is one of the few selected projects, you will get an

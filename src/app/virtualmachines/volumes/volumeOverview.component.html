@@ -206,26 +206,26 @@
 
       <div class="modal-body">
 
-        <div class="alert alert-info" role="alert" *ngIf="volume_action_status == volumeActionStates.CHANGING_NAME">
+        <div class="alert alert-primary" role="alert" *ngIf="volume_action_status == volumeActionStates.CHANGING_NAME">
           Renaming volume?... <i class="fa fa-spinner fa-spin"
                                 style="font-size:24px"></i>
         </div>
-        <div class="alert alert-info" role="alert" *ngIf="volume_action_status == volumeActionStates.WAIT_CREATION">
+        <div class="alert alert-primary" role="alert" *ngIf="volume_action_status == volumeActionStates.WAIT_CREATION">
           Creating volume?... <i class="fa fa-spinner fa-spin"
                                 style="font-size:24px"></i>
         </div>
-        <div class="alert alert-info" role="alert" *ngIf="volume_action_status == volumeActionStates.DETACHING_VOLUME">
+        <div class="alert alert-primary" role="alert" *ngIf="volume_action_status == volumeActionStates.DETACHING_VOLUME">
           Detaching {{selected_volume?.volume_name}}... <i class="fa fa-spinner fa-spin"
                                                            style="font-size:24px"></i>
         </div>
 
-        <div class="alert alert-info" role="alert" *ngIf="volume_action_status == volumeActionStates.ATTACHING">
+        <div class="alert alert-primary" role="alert" *ngIf="volume_action_status == volumeActionStates.ATTACHING">
           Attaching Volume {{selected_volume?.volume_name}} to Virtualmachine
           {{selected_vm.name}}...
           <i class="fa fa-spinner fa-spin"
              style="font-size:24px"></i>
         </div>
-        <div class="alert alert-info" role="alert" *ngIf="volume_action_status == volumeActionStates.WAITING">
+        <div class="alert alert-primary" role="alert" *ngIf="volume_action_status == volumeActionStates.WAITING">
           Deleting {{selected_volume?.volume_name}}... <i class="fa fa-spinner fa-spin"
                                                           style="font-size:24px"></i>
         </div>
@@ -255,7 +255,7 @@
 
         <div
           *ngIf="volume_action_status == volumeActionStates.ATTACHING_SUCCESSFULL || volume_action_status == volumeActionStates.SUCCESSFULLY_CREATED_ATTACHED"
-          class="alert alert-info" role="alert">
+          class="alert alert-primary" role="alert">
           In order to use the volume you have to <a
           href="{{WIKI_VOLUME_OVERVIEW}}" rel="noopener noreferrer" target="_blank"> mount </a> it.
         </div>
@@ -512,7 +512,7 @@
           class="alert-link" href="mailto: {{CLOUD_PORTAL_SUPPORT_MAIL}}">{{CLOUD_PORTAL_SUPPORT_MAIL}}</a>
 
         </div>
-        <div class="alert alert-info" role="alert"
+        <div class="alert alert-primary" role="alert"
              *ngIf="!extendDone && selected_volume?.volume_status === VolumeStates.staticEXTENDING">
           Extending {{selected_volume?.volume_name}}... <i class="fa fa-spinner fa-spin"
                                                            style="font-size:24px"></i>

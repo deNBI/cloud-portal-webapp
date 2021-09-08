@@ -7,7 +7,7 @@
 
       <div class="card-body">
 
-        <div style="padding:5px" class="alert alert-info"><strong>Info: </strong>
+        <div style="padding:5px" class="alert alert-primary"><strong>Info: </strong>
           You need to set a valid SSH Key before you can start a machine. Please set a
           valid key below or on
           your <a
@@ -143,7 +143,7 @@
 
 
                     </ul>
-                    <div *ngIf="flavor_types[selected_flavor_type].length >0 && flavor_types[selected_flavor_type][0]?.type?.description" class="alert alert-info">
+                    <div *ngIf="flavor_types[selected_flavor_type].length >0 && flavor_types[selected_flavor_type][0]?.type?.description" class="alert alert-primary">
 
                       {{flavor_types[selected_flavor_type][0].type.description}}
                     </div>
@@ -162,7 +162,7 @@
                 </div>
                 <div class="row col-md-12" *ngIf="selectedFlavor?.ephemeral_disk > 0">
                   <div class="col-md-2"></div>
-                  <div class="col-md-10 alert alert-info">
+                  <div class="col-md-10 alert alert-primary">
                     <strong>Information for ephemeral flavors:</strong>
                     Ephemeral storage is not best suited for persistent data. Read more
                     <a href="https://cloud.denbi.de/wiki/simple_vm/new_instance/#information-for-ephemeral-flavors"
@@ -176,7 +176,7 @@
                       <label class="col-md-2 form-control-label"><strong>Image*</strong></label>
                   <div class="col-md-10">
 
-                    <div class="alert alert-info" *ngIf="(images?.length === 0) || !images">
+                    <div class="alert alert-primary" *ngIf="(images?.length === 0) || !images">
                       There are no images available for selection at the moment.
                       Please contact the support of the facility where your project is running.
                     </div>
@@ -217,7 +217,7 @@
                     >= this.selectedProjectRessources.volume_counter">
                   <div class="col-2"></div>
                   <div class="col-10">
-                    <div class="alert alert-info">You can't create a new volume, because you have
+                    <div class="alert alert-primary">You can't create a new volume, because you have
                       reached
                       the maximum number of volumes available
                       for this project.</div>
@@ -227,7 +227,7 @@
                      *ngIf="(this.selectedProjectRessources.used_volume_storage + getStorageInList()) >= this.selectedProjectRessources.max_volume_storage">
                   <div class="col-2"></div>
                   <div class="col-10">
-                    <div class="alert alert-info">
+                    <div class="alert alert-primary">
                       You can't create a new volume, because you have reached the maximum amount of storage (in
                       GB)
                       available for this project.</div>
@@ -573,7 +573,7 @@
                         <!--<span class="switch-handle"></span>-->
                       </label>
                     </div>
-                    <div class="alert alert-info col-md-6" *ngIf="!mosh_mode_available">To use MOSH with UDP ports, please select an Image which supports MOSH.
+                    <div class="alert alert-primary col-md-6" *ngIf="!mosh_mode_available">To use MOSH with UDP ports, please select an Image which supports MOSH.
                       Learn more about MOSH <a href="https://mosh.org" target="_blank" rel="noopener noreferrer">here</a>.</div>
                   </div>
                   <div

@@ -7,7 +7,7 @@
 
       <div class="card-body">
 
-        <div style="padding:5px" class="alert alert-info"><strong>Info: </strong>
+        <div style="padding:5px" class="alert alert-primary"><strong>Info: </strong>
           You need to set a valid SSH Key before you can start a machine. Please set a
           valid key below or on
           your <a
@@ -150,7 +150,7 @@
                       <label class="col-md-2 form-control-label"><strong>Image*</strong></label>
 
                       <div class="col-md-10">
-                        <div class="alert alert-info" *ngIf="(images?.length === 0) || !images">
+                        <div class="alert alert-primary" *ngIf="(images?.length === 0) || !images">
                           There are no images available for selection at the moment.
                           Please contact the support of the facility where your project is running.
                         </div>
@@ -160,7 +160,7 @@
                                           [images]="images"
                                           (selectedImageChange)="selectedMasterImage=$event;this.selectedWorkerBatches[0].image=selectedMasterImage;"
                                           id="master_id_image_detail"></app-image-detail>
-                        <div class="alert alert-info" *ngIf="selectedMasterImage"> This image will also be used for every worker!</div>
+                        <div class="alert alert-primary" *ngIf="selectedMasterImage"> This image will also be used for every worker!</div>
                       </div>
 
                     </div>
@@ -168,7 +168,7 @@
 
                   </accordion-group>
 
-                  <div class="alert alert-info " role="alert"
+                  <div class="alert alert-primary " role="alert"
                        *ngIf="(!selectedMasterFlavor || !selectedMasterImage) &&  (selectedProjectRessources?.used_vms + 2 ) <= selectedProjectRessources?.number_vms">
                     Please select a master instance configuration before selecting the worker instances!
                   </div>

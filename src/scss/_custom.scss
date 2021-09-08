@@ -264,6 +264,7 @@ $deNBI_darkgrey: #58595B;
 $deNBI_lightgrey: #939496;
 $deNBI_white: #FFFFFF;
 $deNBI_black: #000000;
+$deNBI_disabled: #D9DCDE;
 
 //project-type-colors
 
@@ -610,37 +611,91 @@ $simplevmcolour: #00ADEF;
     margin-left: 0px !important;
   }
 
-.fadeIn {
-  max-height: 100vh;
+.container-fluid {
+  max-height: calc(100vh - 90px);
   overflow-y: auto;
   overflow-x: hidden;
+  border-radius: 5px;
 }
 
-.btn-outline-primary {
+.btn-outline-primary, .btn-outline-secondary {
   color: $deNBI_lightgrey;
   border-color: $deNBI_lightgrey;
 }
 
-.btn-outline-primary:hover {
+.btn-outline-primary:hover, .btn-outline-secondary:hover {
   color: $deNBI_white;
   background-color: $deNBI_lightgrey;
+  border-color: $deNBI_lightgrey;
 }
 
-.btn-primary {
+.btn-outline-primary:active, .btn-outline-secondary:active {
+  color: white;
+  background-color: $deNBI_darkgrey;
+}
+
+.btn-primary, .btn-info, .btn-secondary {
   color: white;
   background-color: $deNBI_lightgrey;
   border: none;
 }
 
-.btn-primary:active {
+.btn-primary:disabled, .btn-secondary:disabled, .btn-info:disabled {
+  background-color: $deNBI_disabled;
+}
+
+.btn-outline-primary:disabled, .btn-outline-secondary:disabled {
+  border-color: $deNBI_disabled;
+}
+
+.btn-primary:active, .btn-secondary:active, .btn-info:active, .btn-primary:target, .btn-secondary:target, .btn-info:target, {
+  background-color: $deNBI_darkgrey !important;
+  border: none;
+}
+
+.btn-primary:focus, .btn-secondary:focus, .btn-info:focus {
+  background-color: $deNBI_cyan;
+  border: none;
+}
+
+.btn-outline-primary:focus, .btn-primary:focus,
+{
+  background-color: $deNBI_lightgrey;
+  border-color: $deNBI_lightgrey;
+  box-shadow: none;
+}
+
+.btn-outline-primary:focus, .btn-primary:focus
+{
+  background-color: $deNBI_darkgrey;
+  border-color: $deNBI_darkgrey;
+  box-shadow: none;
+}
+
+.btn:focus {
+  box-shadow: none;
+}
+
+.form-control:focus {
+  box-shadow: none;
+  border-color: $deNBI_lightgrey;
+}
+
+select option:hover, select option:focus, select option:target {
+  background-color: $deNBI_cyan;
+}
+
+.btn-primary:hover, .btn-secondary:hover, .btn-info:hover {
+  color: $deNBI_white;
   background-color: $deNBI_darkgrey;
   border: none;
 }
 
-.btn-primary:hover {
-  color: white;
-  background-color: $deNBI_darkgrey;
-  border: none;
+.form-check-input:checked {
+  background-color: $deNBI_cyan;
+}
+.form-check-input:focus {
+  box-shadow: none;
 }
 
 .callout-info {
@@ -653,6 +708,7 @@ $simplevmcolour: #00ADEF;
 
 .bg-info {
   color: white;
+  background-color: $deNBI_lightgrey !important;
 }
 
 .sidebar .nav .nav-item .nav-link {
@@ -719,6 +775,12 @@ $simplevmcolour: #00ADEF;
 
   //colors for buttons and alerts >>>
 
+  .alert-primary, .alert-info {
+    color: #81868A;
+    background-color: #DFE6ED;
+    border-color: #BBC1C7;
+  }
+
   .btn-secondary, .btn-info
   {
     background-color: $deNBI_lightgrey;
@@ -726,15 +788,13 @@ $simplevmcolour: #00ADEF;
     color: $deNBI_white;
   }
 
-  .btn-primary:hover, .btn-secondary:hover, .btn-info:hover
-  {
-    color: $deNBI_white;
+  .btn-primary-outline:focus {
+    background-color: $deNBI_darkgrey;
+    box-shadow: none;
   }
 
-  .alert-info, .alert-primary {
-    background-color: #C9E7F2;
-    border-color: #00ADEF;
-    color: #336573;
+  .btn-primary-outline:hover {
+    border-color: $deNBI_lightgrey;
   }
 
   .loader {
@@ -833,6 +893,10 @@ $simplevmcolour: #00ADEF;
     height: auto;
   }
 
+  .flavor-image-card .card-header {
+    color: white;
+  }
+
 
   .flavor-card-icons {
     margin: 0px 5px 10px 0px;
@@ -875,6 +939,13 @@ $simplevmcolour: #00ADEF;
     z-index: 100;
   }
 
+  .nav-link, .nav-link.active {
+    color: $deNBI_darkgrey;
+  }
+
+  .nav-link:hover, .nav-link:hover {
+    color: $deNBI_lightgrey;
+  }
 
 .sidebar .nav-dropdown.show .nav-link:hover
   {
@@ -978,17 +1049,26 @@ $simplevmcolour: #00ADEF;
     color: $deNBI_white;
   }
 
-  a{
-    text-decoration: unset !important;
+  a, .text-primary {
+    text-decoration: unset;
     color: $deNBI_cyan;
   }
 
-  a:hover {
+  a:hover, .text-primary:hover {
     color: $deNBI_blue;
   }
 
-  a:visited {
+  a:visited, .text-primary:visited {
     color: $deNBI_blue;
+  }
+
+  a.btn-outline-success:visited {
+    color: rgb(46, 184, 92);
+  }
+
+  .btn-outline-success:hover, a.btn-outline-success:visited:hover {
+
+    color: white;
   }
 
 

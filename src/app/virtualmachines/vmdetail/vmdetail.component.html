@@ -1,4 +1,4 @@
-<div *ngIf="errorMessage" class="alert alert-info">
+<div *ngIf="errorMessage" class="alert alert-primary">
   <strong>The Virtual Machine could not be found.</strong>
 </div>
 
@@ -58,7 +58,7 @@
               </div>
 
               <div class="col-4">
-                <div class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+                <div class="font-weight-bold font-xs btn-block btn btn-outline-secondary"
                      id="copyCommandButton" style="margin-top:20px;" (click)="copyToClipboard(mode.copy_field);">
                   Copy Command
                 </div>
@@ -490,7 +490,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <div class="alert alert-info" role="alert"
+          <div class="alert alert-primary" role="alert"
                *ngIf="status_changed == 0 && virtualMachine.status !=
                 virtualMachineStates.staticSHUTOFF">
             Stopping {{virtualMachine?.name}}... <i class="fa fa-spinner fa-spin"
@@ -571,7 +571,7 @@
         </div>
         <div class="modal-body">
           <div *ngIf="!reboot_done">
-            <div class="alert alert-info" role="alert">
+            <div class="alert alert-primary" role="alert">
 
               Waiting until rebooted..
             </div>
@@ -618,7 +618,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <div class="alert alert-info" role="alert"
+          <div class="alert alert-primary" role="alert"
                *ngIf="status_changed == 0  && virtualMachine?.status !==
                virtualMachineStates.staticACTIVE">
             Starting {{virtualMachine?.name}}... <i class="fa fa-spinner fa-spin"
@@ -664,7 +664,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <div class="alert alert-info" role="alert" *ngIf="status_changed == 0">
+          <div class="alert alert-primary" role="alert" *ngIf="status_changed == 0">
             Deleting {{virtualMachine?.name}}... <i class="fa fa-spinner fa-spin"
                                                 style="font-size:24px"></i>
           </div>
@@ -763,7 +763,7 @@
           ><strong>Description</strong></div>
           <div><textarea  [disabled]="virtualMachine?.flavor?.ram > SNAPSHOT_MAX_RAM"  style="width: 100%" type="textfield" placeholder="Description"
                          #snapshotDescription></textarea></div>
-          <div class="alert alert-info" role="alert">
+          <div class="alert alert-primary" role="alert">
             A snapshot is an image which preserves the disk state of a running instance.
           </div>
 
@@ -800,7 +800,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <div class="alert alert-info" role="alert" *ngIf="snapshotDone == 'Waiting' ">
+          <div class="alert alert-primary" role="alert" *ngIf="snapshotDone == 'Waiting' ">
             Wait until Snapshot is queued....
           </div>
 

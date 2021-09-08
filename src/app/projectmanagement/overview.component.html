@@ -396,7 +396,7 @@
 											type="button">More credits requested</button>
 						</div>
 						<div class="col-6">
-							<div *ngIf="project_application?.project_application_initial_credits === 0" class="alert alert-info">
+							<div *ngIf="project_application?.project_application_initial_credits === 0" class="alert alert-primary">
 								Your approved credits are lower or equal to zero.
 								Please submit a Credits Extension or contact us at <a href="mailto:{{CLOUD_MAIL}}">{{CLOUD_MAIL}}</a>, so we may calculate and set the correct amount for your
 								project.
@@ -523,7 +523,7 @@
 										class="btn btn-outline-danger"><i class="fa fa-trash"></i>&nbsp;Remove Members</button>
 
 					</div>
-					<div class="col-12 alert alert-info" *ngIf="!isAdmin && !is_vo_admin">
+					<div class="col-12 alert alert-primary" *ngIf="!isAdmin && !is_vo_admin">
             <span><strong>Notice: </strong>Only project administrators are able to remove or add project members and
             change the status of members.</span>
 					</div>
@@ -647,7 +647,7 @@
 						</table>
 
 					</div>
-					<div class="alert alert-info">
+					<div class="alert alert-primary">
 						<p>Please note that the publications entered on this page are listed publicly on
 							<a href="https://cloud.denbi.de/publications" target="_blank" rel="noopener noreferrer">this page on our website</a>.
 							We kindly ask you to list your publications which have been created

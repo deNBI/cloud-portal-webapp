@@ -350,7 +350,7 @@
               </div>
               <div class="container-fluid" *ngIf="!membersLoaded">
                 <div class="row">
-                  <div class="alert alert-info">Loading facility members...</div>
+                  <div class="alert alert-primary">Loading facility members...</div>
                 </div>
               </div>
             </div>
@@ -514,7 +514,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <div class="alert alert-info" role="alert" *ngIf="emailStatus == 0">
+        <div class="alert alert-primary" role="alert" *ngIf="emailStatus == 0">
           Sending the email. <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
         </div>
         <div class="alert alert-success" role="alert" *ngIf="emailStatus == 1">

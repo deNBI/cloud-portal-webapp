@@ -323,7 +323,7 @@
             <div class="card-body p-x-1 py-h">
               <div class="row">
                 <div class="col-4">
-                  <button class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+                  <button class="font-weight-bold font-xs btn-block btn btn-outline-secondary"
                           [id]="'showDetailsButton_'+vm?.name"
                           *ngIf="vm.elixir_id == user_elixir_id || is_vo_admin || (vms_admin.indexOf(vm.openstackid) > -1)"
                           [disabled]="!(vm?.status |hasStatus:VirtualMachineStates.staticACTIVE)
@@ -333,7 +333,7 @@
                 </div>
 
                 <div class="col-4">
-                  <button class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+                  <button class="font-weight-bold font-xs btn-block btn btn-outline-secondary"
                           *ngIf="vm.cardState!= 1" [disabled]="!(vm?.status |hasStatus:VirtualMachineStates.staticACTIVE)"
                           [id]="'showHowToConnectButton_'+vm?.name"
                           (click)="selectedVm=vm; vm.cardState=1" >
@@ -345,7 +345,7 @@
                     ... Hide information</button>
                 </div>
                 <div class="col-4">
-                  <button class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+                  <button class="font-weight-bold font-xs btn-block btn btn-outline-secondary"
                           *ngIf="vm.cardState!=2 && (vm.elixir_id == user_elixir_id || is_vo_admin || (vms_admin.indexOf(vm.openstackid) > -1))"
                           [disabled]="(vm?.status | statusInProcess:VirtualMachineStates.staticIN_PROCESS_STATE)
                            &&  !(vm?.status | hasStatus:VirtualMachineStates.staticPORT_CLOSED )
@@ -371,14 +371,14 @@
               <div *ngIf="vm?.cardState == 1">
                 <div class="row" *ngFor="let mode of vm?.modes">
                   <div class="col-md-1">
-                    <span class="font-weight-bold font-xs btn-block text-muted">{{mode.name}}:</span>
+                    <span class="font-weight-bold font-xs btn-block">{{mode.name}}:</span>
                   </div>
                   <div class="col-md-9">
-                    <span class="font-weight-bold font-xs btn-block text-muted" [innerHTML]="mode.description"></span>
+                    <span class="font-weight-bold font-xs btn-block" [innerHTML]="mode.description"></span>
                   </div>
 
                   <div class="col-md-2" style="margin: auto" *ngIf="mode.copy_field && mode.copy_field!=''">
-                    <div class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+                    <div class="font-weight-bold font-xs btn-block btn btn-outline-secondary"
                          (click)="copyToClipboard(mode.copy_field)">Copy command</div>
                   </div>
                 </div>
@@ -386,9 +386,9 @@
 
                 <div class="row" *ngIf="vm?.res_env_url != '' && vm?.res_env_url != null && vm?.res_env_url != undefined && resenv_by_play(vm)">
                   <div class="col-md-1">
-                    <span class="font-weight-bold font-xs btn-block text-muted">Research Environment:</span>
+                    <span class="font-weight-bold font-xs btn-block">Research Environment:</span>
                   </div>
-                  <div class="col-md-11 font-weight-bold font-xs btn-block text-muted">
+                  <div class="col-md-11 font-weight-bold font-xs btn-block">
                     <a href="{{vm?.res_env_url}}" target="_blank" rel="noopener noreferrer">{{vm?.res_env_url}}</a>
                     <br>
                     For RStudio credentials please visit: <a href="{{WIKI_RSTUDIO_LINK}}" rel="noopener noreferrer" target="_blank">{{WIKI_RSTUDIO_LINK}}</a>
@@ -402,13 +402,13 @@
                 <div class="row">
                   <div class="col-md-2"
                        *ngIf="(vm?.status |hasStatus:VirtualMachineStates.staticSHUTOFF) && (vm?.status |hasStatus:VirtualMachineStates.staticDELETED) ">
-                    <div class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+                    <div class="font-weight-bold font-xs btn-block btn btn-outline-secondary"
                          [id]="'checkStatusVMButton_' + vm?.name" (click)="checkStatus(vm);">
                       Check status
                     </div>
                   </div>
                   <div class="col-md-2" *ngIf="(vm?.status |hasStatus:VirtualMachineStates.staticACTIVE) ">
-                    <div class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+                    <div class="font-weight-bold font-xs btn-block btn btn-outline-secondary"
                          [id]="'attachVolume' + vm?.name"
                          (click)="selectedVm=vm;volume_to_attach == undefined;getDetachedVolumesByVSelectedMProject();attachModal.show();">
                       Attach Volume
@@ -416,27 +416,27 @@
                   </div>
                   <div class="col-md-2"
                        *ngIf="(vm?.status |hasStatus:VirtualMachineStates.staticACTIVE)  && vm?.volumes.length > 0">
-                    <div class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+                    <div class="font-weight-bold font-xs btn-block btn btn-outline-secondary"
                          [id]="'attachVolume' + vm?.name"
                          (click)="selectedVm=vm;volume_to_detach == undefined;detachModal.show();">
                       Detach Volume
                     </div>
                   </div>
                   <div class="col-md-2" *ngIf="(vm?.status |hasStatus:VirtualMachineStates.staticACTIVE) ">
-                    <div class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+                    <div class="font-weight-bold font-xs btn-block btn btn-outline-secondary"
                          [id]="'stopVMButton_' + vm?.name" (click)="selectedVm=vm;submitStopVmModal.show();">
                       Stop VM
                     </div>
                   </div>
                   <div class="col-md-2" *ngIf="(vm?.status |hasStatus:VirtualMachineStates.staticSHUTOFF) ">
-                    <div class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+                    <div class="font-weight-bold font-xs btn-block btn btn-outline-secondary"
                          [id]="'restartVMButton_' + vm?.name" (click)="selectedVm=vm;submitRestartModal.show();">
                       Start VM
                     </div>
                   </div>
                   <div class="col-md-2"
                        *ngIf="vm.client.features['VM_REBOOT'] && !(vm?.status |hasStatus:VirtualMachineStates.staticDELETED)">
-                    <div class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+                    <div class="font-weight-bold font-xs btn-block btn btn-outline-secondary"
                          [id]="'chooseRebootVMButton_' + vm?.name"
                          (click)="selectedVm=vm; chooseRebootOptionModal.show();">
                       Reboot VM
@@ -444,29 +444,25 @@
                   </div>
                   <div class="col-md-2"
                        *ngIf="!(vm?.status |hasStatus:VirtualMachineStates.staticDELETED) && !(vm?.status |hasStatus:VirtualMachineStates.staticERROR)  && !(vm?.status |hasStatus:VirtualMachineStates.staticPORT_CLOSED) && !(vm?.status |hasStatus:VirtualMachineStates.staticCHECKING_CONNECTION)">
-                    <div class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+                    <div class="font-weight-bold font-xs btn-block btn btn-outline-secondary"
                          [id]="'createSnapshotVMButton_' + vm?.name"
                          (click)="snapshot_vm=vm;resetSnapshotResult();snapshotModal.show();">
                       Create Snapshot
                     </div>
                   </div>
                   <div class="col-md-2" *ngIf="!(vm?.status |hasStatus:VirtualMachineStates.staticDELETED)">
-                    <div class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+                    <div class="font-weight-bold font-xs btn-block btn btn-outline-secondary"
                          [id]="'deleteVMButton_' + vm?.name" (click)="selectedVm=vm;verifyModal.show();">
                       Delete VM
                     </div>
-
                   </div>
-
-
                 </div>
               </div>
             </div>
           </div>
-
         </div>
       </div>
-      <div *ngIf="vms_content?.length === 0 && !isSearching" class="row col-md-10 alert alert-info" style="margin:10px;">There are no machines to show.</div>
+      <div *ngIf="vms_content?.length === 0 && !isSearching" class="row col-md-10 alert alert-primary" style="margin:10px;">There are no machines to show.</div>
     </div>
   </div>
 
@@ -489,7 +485,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <div class="alert alert-info" role="alert"
+        <div class="alert alert-primary" role="alert"
              *ngIf="status_changed == 0 &&  !(selectedVm?.status |hasStatus:VirtualMachineStates.staticSHUTOFF)">
           Stopping {{selectedVm?.name}}... <i class="fa fa-spinner fa-spin"
                                               style="font-size:24px"></i>
@@ -569,7 +565,7 @@
       </div>
       <div class="modal-body">
         <div *ngIf="!reboot_done">
-          <div class="alert alert-info" role="alert">
+          <div class="alert alert-primary" role="alert">
 
             Waiting until rebooted..
           </div>
@@ -616,7 +612,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <div class="alert alert-info" role="alert"
+        <div class="alert alert-primary" role="alert"
              *ngIf="status_changed == 0  && !(selectedVm?.status |hasStatus:VirtualMachineStates.staticACTIVE)">
           Starting {{selectedVm?.name}}... <i class="fa fa-spinner fa-spin"
                                               style="font-size:24px"></i>
@@ -660,7 +656,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <div class="alert alert-info" role="alert" *ngIf="status_changed == 0">
+        <div class="alert alert-primary" role="alert" *ngIf="status_changed == 0">
           Deleting {{selectedVm?.name}}... <i class="fa fa-spinner fa-spin"
                                               style="font-size:24px"></i>
         </div>
@@ -840,7 +836,7 @@
         ><strong>Description</strong></div>
         <div><textarea style="width: 100%" type="textfield" placeholder="Description" [disabled]="snapshot_vm?.flavor?.ram > SNAPSHOT_MAX_RAM"
                        #snapshotDescription></textarea></div>
-        <div class="alert alert-info" role="alert">
+        <div class="alert alert-primary" role="alert">
           A snapshot is an image which preserves the disk state of a running instance.
         </div>
 
@@ -877,7 +873,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <div class="alert alert-info" role="alert" *ngIf="snapshotDone == 'Waiting' ">
+        <div class="alert alert-primary" role="alert" *ngIf="snapshotDone == 'Waiting' ">
           Wait until Snapshot is queued....
         </div>
 
