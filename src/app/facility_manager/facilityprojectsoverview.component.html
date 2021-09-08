@@ -252,7 +252,7 @@
               <label
                 class="col-md-12 control-label"><strong>Which project members should receive the email?</strong></label>
               <div class="col-md-12">
-                <select class="form-control" [(ngModel)]="selectedProjectType"
+                <select class="form-control" [(ngModel)]="selectedProjectType" (ngModelChange)="setEmailSubject()"
                         name="selectedProjectType" id="selectedProjectType">
                   <option value="ALL" selected>All</option>
                   <option value="OVP">OpenStack</option>

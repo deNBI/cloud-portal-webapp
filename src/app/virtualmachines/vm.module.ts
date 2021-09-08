@@ -33,16 +33,27 @@ import { ClusterstatusComponent } from './clusters/clusterstatus/clusterstatus.c
 import { VolumStatusComponent } from './volumes/volum-status/volum-status.component';
 import { PipeModuleModule } from '../pipe-module/pipe-module.module';
 import { ProjectUserListComponent } from './project-user-list/project-user-list.component';
+import { StopVmComponent } from './modals/stop-vm/stop-vm.component';
+import { VmCardComponent } from './vmcard/vmcard.component';
+import { ResumeVmComponent } from './modals/resume-vm/resume-vm.component';
+import { ResumeClusterComponent } from './modals/resume-cluster/resume-cluster.component';
+import { DeleteVmComponent } from './modals/delete-vm/delete-vm.component';
+import { SnapshotVmComponent } from './modals/snapshot-vm/snapshot-vm.component';
+import { VolumeVmComponent } from './modals/volume-vm/volume-vm.component';
+import { RebootVmComponent } from './modals/reboot-vm/reboot-vm.component';
+import { ClustercardComponent } from './clustercard/clustercard.component';
+import { ScaleClusterComponent } from './modals/scale-cluster/scale-cluster.component';
+import { DeleteClusterComponent } from './modals/delete-cluster/delete-cluster.component';
 
 /**
  * VM module.
  */
 @NgModule({
-	imports: [
-		PipeModuleModule,
-		ClickOutsideModule,
-		PublicKeyModule,
-		VmRoutingModule,
+	          imports: [
+		          PipeModuleModule,
+		          ClickOutsideModule,
+		          PublicKeyModule,
+		          VmRoutingModule,
 		TabsModule,
 		CommonModule,
 		FormsModule,
@@ -54,28 +65,39 @@ import { ProjectUserListComponent } from './project-user-list/project-user-list.
 		SharedDirectivesModule,
 		NgbModule,
 		ReactiveFormsModule],
-	declarations: [
-		ImageCarouselSlideComponent,
-		ImageDetailComponent,
-		VirtualMachineComponent,
-		FlavorDetailComponent,
-		VmOverviewComponent,
-		VolumeOverviewComponent,
-		SnapshotOverviewComponent,
-		ClusterstatusComponent,
-		BiocondaComponent,
-		VmDetailComponent,
-		AddClusterComponent,
-		ResourceOverviewComponent,
-		ResEnvComponent,
-		ClusterinfoComponent,
-		ClusterdetailComponent,
-		ClusterOverviewComponent,
-		VirtualmachineinfoComponent,
-		VmstatusComponent,
-		VolumStatusComponent,
-		ProjectUserListComponent,
-	],
+	          declarations: [
+		          ImageCarouselSlideComponent,
+		          ImageDetailComponent,
+		          VirtualMachineComponent,
+		          FlavorDetailComponent,
+		          VmOverviewComponent,
+		          VolumeOverviewComponent,
+		          SnapshotOverviewComponent,
+		          ClusterstatusComponent,
+		          BiocondaComponent,
+		          VmDetailComponent,
+		          AddClusterComponent,
+		          ResourceOverviewComponent,
+		          ResEnvComponent,
+		          ClusterinfoComponent,
+		          ClusterdetailComponent,
+		          ClusterOverviewComponent,
+		          VirtualmachineinfoComponent,
+		          VmstatusComponent,
+		          VolumStatusComponent,
+		          ProjectUserListComponent,
+		          VmCardComponent,
+		          StopVmComponent,
+		          ResumeClusterComponent,
+		          ResumeVmComponent,
+		          DeleteVmComponent,
+		          SnapshotVmComponent,
+		          VolumeVmComponent,
+		          RebootVmComponent,
+		          ClustercardComponent,
+		          ScaleClusterComponent,
+		          DeleteClusterComponent,
+	          ],
 })
 export class VmModule {
 }

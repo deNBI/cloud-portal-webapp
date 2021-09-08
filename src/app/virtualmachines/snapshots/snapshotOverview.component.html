@@ -24,9 +24,9 @@
     </div>
     <div class="card-body">
     <div class="row justify-content-end">
-        <div class="col" *ngIf="total_pages > 1">
+        <div class="col" *ngIf="snapshot_page.num_pages > 1">
           <pagination
-            [totalItems]="total_items" [itemsPerPage]="items_per_page"
+            [totalItems]="snapshot_page.total_items" [itemsPerPage]="snapshot_page.items_per_page"
             (pageChanged)="pageChanged($event)" [(ngModel)]="currentPage"
             [boundaryLinks]="true" [maxSize]="5" [rotate]="false" #pagination>
           </pagination>
@@ -37,11 +37,11 @@
                  [ngModel]="filter" (keydown.enter)="$event.preventDefault();">
         </div>
       <div class="input-group col-3">
-        <input id="vm_per_site" class="form-control"
-               name="vm_per_site" placeholder="e.g 3"
+        <input id="items_per_page" class="form-control"
+               name="items_per_page" placeholder="e.g 3"
                type="number" min="1" max="10" step="1"
                appMinAmount="1" appMaxAmount="10" appInteger
-               pattern="^([1-9]|1[012])$" [(ngModel)]="items_per_page"
+               pattern="^([1-9]|1[012])$" [(ngModel)]="snapshot_page.items_per_page"
                (ngModelChange)="snapshotsPerPageChange.next($event)">
         <div class="input-group-append mb-3 "><span class="input-group-text"> Snapshots per page
                                     </span></div>
@@ -87,7 +87,7 @@
 
             </div>
 
-            <div class="rTableRow" *ngFor="let snapshot of snapshots">
+            <div class="rTableRow" *ngFor="let snapshot of snapshot_page.snapshot_list">
               <div class="rTableCell " id="{{snapshot?.snapshot_name}}">{{snapshot?.snapshot_name}}</div>
               <div class="rTableCell ">{{snapshot?.snapshot_project}}</div>
               <div class="rTableCell ">
@@ -120,7 +120,7 @@
       </div>
     </div>
   </div>
-  <div *ngIf="snapshots.length == 0 && isLoaded && !isSearching">
+  <div *ngIf="snapshot_page.snapshot_list.length == 0 && isLoaded && !isSearching">
     <div class="alert alert-primary">No snapshots available. Click
       this <a class="alert-link" href="{{WIKI_SNAPSHOTS}}">link</a> to see how to use and
       create a snapshot.
