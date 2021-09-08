@@ -98,7 +98,7 @@ import { AddWorkshopComponent } from './workshop/add-workshop/add-workshop.compo
 		          ClustercardComponent,
 		          ScaleClusterComponent,
 		          DeleteClusterComponent,
-            AddWorkshopComponent,
+		AddWorkshopComponent,
 	          ],
 })
 export class VmModule {
