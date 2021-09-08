@@ -564,9 +564,23 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 		).subscribe((client: object): void => {
 			const newClient: Client = new Client(null, client['host'], client['port'], client['location'], client['id']);
 			newClient.maxVolumeLimit = client['max_ressources']['maxTotalVolumeGigabytes'];
+			newClient.currentUsedVolumeStorage = client['max_ressources']['totalGigabytesUsed'];
+
 			newClient.maxVolumes = client['max_ressources']['maxTotalVolumes'];
-			newClient.maxVMs = client['max_ressources']['maxTotalInstances'];
+			newClient.currentUsedVolumes = client['max_ressources']['totalVolumesUsed'];
+
+			newClient.maxVMs = client['max_ressources']['max_total_instances'];
+			newClient.currentUsedVms = client['max_ressources']['total_instances_used'];
+
+			newClient.maxCores = client['max_ressources']['max_total_cores'];
+			newClient.currentUsedCores = client['max_ressources']['total_cores_used'];
+
+			newClient.maxRam = client['max_ressources']['max_total_ram_size'];
+			newClient.currentUsedRam = client['max_ressources']['total_ram_used'];
+
 			newClient.assignedVMs = client['assigned_ressources']['vms'];
+			newClient.assignedRam = client['assigned_ressources']['ram'];
+			newClient.assignedCores = client['assigned_ressources']['cores'];
 			newClient.assignedVolumes = client['assigned_ressources']['volumes'];
 			newClient.assignedVolumesStorage = client['assigned_ressources']['volumeLimit'];
 			this.notificationClientInfo.push(newClient);
@@ -581,15 +595,31 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
 	private setNoResourcesClientNotification(client: any): void {
 		const newClient: Client = new Client(null, null, null, client['client_location'], null);
-		newClient.maxVolumeLimit = client['max_volume_gb'];
-		newClient.maxVolumes = client['max_volumes'];
-		newClient.maxVMs = client['max_instances'];
-		newClient.assignedVMs = client['assigned_instances'];
-		newClient.assignedVolumes = client['assigned_volumes'];
+		newClient.maxVolumeLimit = client['maxTotalVolumeGigabytes'];
 		newClient.assignedVolumesStorage = client['assigned_volume_gb'];
-		newClient.newVms = client['additional_instances'];
+		newClient.currentUsedVolumeStorage = client['totalGigabytesUsed'];
 		newClient.newVolumeLimit = client['new_volume_gb'];
+
+		newClient.maxVolumes = client['maxTotalVolumes'];
+		newClient.assignedVolumes = client['assigned_volumes'];
+		newClient.currentUsedVolumes = client['totalVolumesUsed'];
 		newClient.newVolumes = client['new_volumes'];
+
+		newClient.maxVMs = client['max_total_instances'];
+		newClient.assignedVMs = client['assigned_instances'];
+		newClient.currentUsedVms = client['total_instances_used'];
+		newClient.newVms = client['additional_instances'];
+
+		newClient.maxCores = client['max_total_cores'];
+		newClient.assignedCores = client['assigned_cores'];
+		newClient.currentUsedCores = client['total_cores_used'];
+		newClient.newCores = client['new_cores'];
+
+		newClient.maxRam = client['max_total_ram_size'];
+		newClient.assignedRam = client['assigned_ram'];
+		newClient.currentUsedRam = client['total_ram_used'];
+		newClient.newRam = client['new_ram'];
+
 		this.notificationClientInfo.push(newClient);
 
 	}

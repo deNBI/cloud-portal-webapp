@@ -857,6 +857,7 @@
               <thead>
               <tr>
                 <td></td>
+                <td>Current Used Ressources</td>
                 <td>Assigned Ressources</td>
                 <td>Max Ressources</td>
               </tr>
@@ -864,20 +865,45 @@
               <tbody>
               <tr>
                 <td>VMs</td>
+                <td>{{c.currentUsedVms}}
+                </td>
                 <td>{{c.assignedVMs}}<span *ngIf="c.newVms"
                                            [ngStyle]="{'color':c.assignedVMs + c.newVms <= c.maxVMs? 'green':'red'}"> + {{c.newVms}}</span>
                 </td>
                 <td>{{c.maxVMs}} </td>
               </tr>
               <tr>
+                <td>Cores</td>
+                <td>{{c.currentUsedCores}}
+                </td>
+                <td>{{c.assignedCores}}<span *ngIf="c.newCores"
+                                             [ngStyle]="{'color':c.assignedCores + c.newCores <= c.maxCores? 'green':'red'}"> + {{c.newCores}}</span>
+                </td>
+                <td>{{c.maxCores}} </td>
+              </tr>
+              <tr>
+                <td>Ram [GB]</td>
+                <td>{{c.currentUsedRam}}
+                </td>
+                <td>{{c.assignedRam}}<span *ngIf="c.newRam"
+                                           [ngStyle]="{'color':c.assignedRam + c.newRam <= c.maxRam? 'green':'red'}"> + {{c.newRam}}</span>
+                </td>
+                <td>{{c.maxRam}} </td>
+              </tr>
+
+              <tr>
                 <td>Volumes</td>
+                <td>{{c.currentUsedVolumes}}
+                </td>
                 <td>{{c.assignedVolumes}} <span *ngIf="c.newVolumes"
                                                 [ngStyle]="{'color':c.assignedVolumes + c.newVolumes <= c.maxVolumes? 'green':'red'}"> + {{c.newVolumes}}</span>
                 </td>
                 <td>{{c.maxVolumes}}</td>
               </tr>
               <tr>
-                <td>Volume Storage</td>
+                <td>Volume Storage [GB]</td>
+                <td>{{c.currentUsedVolumeStorage}}
+                </td>
                 <td>{{c.assignedVolumesStorage}} <span *ngIf="c.newVolumeLimit"
                                                        [ngStyle]="{'color':c.assignedVolumesStorage + c.newVolumeLimit <= c.maxVolumeLimit? 'green':'red'}"> + {{c.newVolumeLimit}}</span>
                 </td>
