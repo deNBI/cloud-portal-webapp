@@ -91,7 +91,7 @@
     "save-svg-as-png": "^1.4.17",
     "svg2pdf.js": "^2.1.0",
     "ts-helpers": "1.1.2",
-    "uglify-js": "3.14.1",
+    "uglify-js": "3.14.2",
     "tslib": "^2.3.1",
     "zone.js": "~0.11.4"
   },
@@ -104,7 +104,7 @@
     "@angular/cli": "^12.1.1",
     "@angular/compiler-cli": "^12.1.1",
     "@compodoc/compodoc": "^1.1.14",
-    "@types/node": "^16.7.10",
+    "@types/node": "^16.7.13",
     "@types/jasmine": "^3.9.0",
     "@typescript-eslint/eslint-plugin": "^4.31.0",
     "@typescript-eslint/parser": "4.31.0",
