@@ -845,8 +845,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	}
 
 	getUserinfo(): void {
-		this.userService.getUserInfo().subscribe((userinfo: any): void => {
-			this.userinfo = new Userinfo(userinfo);
+		this.userService.getUserInfo().subscribe((userinfo: Userinfo): void => {
+			this.userinfo = userinfo;
 		});
 	}
 
