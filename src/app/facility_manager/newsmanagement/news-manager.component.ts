@@ -93,7 +93,7 @@ export class NewsManagerComponent implements OnInit {
 				if (result['id']) {
 					if (this.facilityToSetMOTD != null) {
 						this.newsService.updateFacilityMOTD(result['id'], this.facilityToSetMOTD)
-							.subscribe((sub_result: any): void => {
+							.subscribe((): void => {
 							});
 					}
 					this.returnState = 2;
@@ -122,7 +122,7 @@ export class NewsManagerComponent implements OnInit {
 				if (result['id']) {
 					if (this.facilityToSetMOTD != null) {
 						this.newsService.updateFacilityMOTD(result['id'], this.facilityToSetMOTD)
-							.subscribe((sub_result: any): void => {
+							.subscribe((): void => {
 							});
 					}
 

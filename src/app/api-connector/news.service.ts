@@ -2,8 +2,6 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiSettings } from './api-settings.service';
-import { WordPressNews } from '../facility_manager/newsmanagement/wp-news';
-import { WordPressTag } from '../facility_manager/newsmanagement/wp-tags';
 import { FacilityNews } from '../facility_manager/newsmanagement/facility-news';
 
 /**
