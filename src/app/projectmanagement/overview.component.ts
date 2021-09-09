@@ -239,7 +239,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	}
 
 	fetchCreditHistoryOfProject(): void {
-		this.creditHistoryLoaded = false;
 		if (this.project != null && this.project_application.credits_allowed) {
 			this.creditsService.getCreditsUsageHistoryOfProject(Number(this.project.Id.toString())).toPromise()
 				.then((response: {}): void => {
@@ -273,7 +272,9 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 							},
 						});
 					}
-					this.creditHistoryLoaded = true;
+					if (!this.creditHistoryLoaded) {
+						this.creditHistoryLoaded = true;
+					}
 				}).catch((err: Error): void => console.log(err.message));
 		}
 	}
@@ -407,6 +408,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 				}
 				if (this.updateCreditsHistoryIntervals) {
 					clearInterval(this.updateCreditsHistoryIntervals);
+					this.creditHistoryLoaded = false;
 				}
 			} catch (someError) {
 				// empty catch
