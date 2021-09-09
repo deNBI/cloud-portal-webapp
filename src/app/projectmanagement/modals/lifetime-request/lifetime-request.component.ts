@@ -23,6 +23,8 @@ export class LifetimeRequestComponent implements OnInit, OnDestroy {
 	temp_project_extension: ApplicationLifetimeExtension;
 
 	life_time_string: string;
+	end_date: Date;
+	new_end_date: Date;
 
 	selected_ontology_terms: EdamOntologyTerm[] = [];
 	edam_ontology_terms: EdamOntologyTerm[];
@@ -52,6 +54,10 @@ export class LifetimeRequestComponent implements OnInit, OnDestroy {
 		} else {
 			this.temp_project_extension = new ApplicationLifetimeExtension();
 			this.temp_project_extension.setByApp(this.project);
+		}
+		const end_date_info = (this.life_time_string?.split(' - ')[1]).split('.') ?? [];
+		if (end_date_info.length === 3) {
+			this.end_date = new Date(Number(end_date_info[2]), Number(end_date_info[1]) - 1, Number(end_date_info[0]));
 		}
 	}
 
@@ -139,4 +145,8 @@ export class LifetimeRequestComponent implements OnInit, OnDestroy {
 		);
 	}
 
+	calculateNewEndDate() {
+		this.new_end_date = new Date(this.end_date);
+		this.new_end_date.setMonth(this.end_date.getMonth() + this.temp_project_extension.extra_lifetime);
+	}
 }
