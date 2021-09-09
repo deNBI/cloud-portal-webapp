@@ -426,7 +426,7 @@
         <div class="modal-footer">
           <button type="button" [disabled]="f.invalid ||
 
-            (selectedProjectType === 'USER' && (selectedMember?.length == 0))"
+            (selectedProjectType === 'USER' && (selectedMember?.length === 0))"
                   class="btn btn-primary" (click)="emailModal.hide(); verifyModal.show()">Send email
           </button>
           <button type="button" class="btn btn-secondary"
@@ -466,7 +466,7 @@
           <span *ngIf="selectedProjectType === 'OVP'">
             the OpenStack Project members of the{{selectedFacility['Facility']}}?
           </span>
-          <span *ngIf="selectedProjectType !== 'ALL' && selectedProjectType !== 'SVP'
+          <span *ngIf="selectedProjectType !=== 'ALL' && selectedProjectType !== 'SVP'
              && selectedProjectType !== 'OVP' && selectedProjectType !== 'USER'">
             the members of the {{getProjectNameBySelectedProjectTypeAsId()}} project?
           </span>
@@ -504,9 +504,9 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title" *ngIf="emailStatus == 0"> Waiting </h4>
-        <h4 class="modal-title" *ngIf="emailStatus == 1"> Success </h4>
-        <h4 class="modal-title" *ngIf="emailStatus == 2"> Error </h4>
+        <h4 class="modal-title" *ngIf="emailStatus === 0"> Waiting </h4>
+        <h4 class="modal-title" *ngIf="emailStatus === 1"> Success </h4>
+        <h4 class="modal-title" *ngIf="emailStatus === 2"> Error </h4>
         <button type="button" class="close" style="cursor:pointer"
                 (click)="successModal.hide()"
                 aria-label="Close">
@@ -514,14 +514,14 @@
         </button>
       </div>
       <div class="modal-body">
-        <div class="alert alert-primary" role="alert" *ngIf="emailStatus == 0">
+        <div class="alert alert-primary" role="alert" *ngIf="emailStatus === 0">
           Sending the email. <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
         </div>
-        <div class="alert alert-success" role="alert" *ngIf="emailStatus == 1">
+        <div class="alert alert-success" role="alert" *ngIf="emailStatus === 1">
           The email has been send successfully.
         </div>
       </div>
-      <div class="alert alert-warning" role="alert" *ngIf="emailStatus == 2">
+      <div class="alert alert-warning" role="alert" *ngIf="emailStatus === 2">
         When sending the email an error has occurred.
       </div>
 

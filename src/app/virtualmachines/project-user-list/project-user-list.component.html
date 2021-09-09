@@ -32,7 +32,7 @@
 
           </td>
           <td>
-            <button *ngIf="members_to_add.indexOf(member) ==-1"
+            <button *ngIf="members_to_add.indexOf(member) === -1"
 
                     type="button"
                     [disabled]="!member.publicKeySet"
@@ -42,7 +42,7 @@
             >
               Add User
             </button>
-            <button *ngIf="members_to_add.indexOf(member) !=-1"
+            <button *ngIf="members_to_add.indexOf(member) !== -1"
 
                     type="button"
                     [disabled]="!member.publicKeySet"

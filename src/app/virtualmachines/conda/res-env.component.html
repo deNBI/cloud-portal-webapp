@@ -21,17 +21,17 @@
                   aria-label="Close">
             <i class="fas fa-minus-circle"></i>
           </button>
-          <strong *ngIf="selectedTemplate.title != null">{{selectedTemplate.title}}</strong>
-          <strong *ngIf="selectedTemplate.title == null">{{selectedTemplate.template_name}}</strong>
+          <strong *ngIf="selectedTemplate.title !== null">{{selectedTemplate.title}}</strong>
+          <strong *ngIf="selectedTemplate.title === null">{{selectedTemplate.template_name}}</strong>
         </div>
         <div class="card-body">
           <div class="scroll-image">
             <p>
               <img src="{{selectedTemplate?.logo_url}}" alt="{{selectedTemplate.title}}®"
-                   *ngIf="selectedTemplate.title != null"
+                   *ngIf="selectedTemplate.title !== null"
                    style="width: 70px;">
               <img src="{{selectedTemplate?.logo_url}}" alt="{{selectedTemplate.template_name}}®"
-                   *ngIf="selectedTemplate.title == null"
+                   *ngIf="selectedTemplate.title === null"
                    style="width: 70px;">
             </p>
             <p>
@@ -40,7 +40,7 @@
             <p *ngIf="selectedTemplate.info_url">
               <a href="{{selectedTemplate?.info_url}}" target="_blank"  rel="noopener noreferrer">Click here for more Information.</a>
             </p>
-            <ng-container *ngIf="selectedTemplate.information_for_display != null">
+            <ng-container *ngIf="selectedTemplate.information_for_display !== null">
               <li *ngFor="let info of Object.keys(selectedTemplate.information_for_display)">
                 {{info}}:{{selectedTemplate.information_for_display[info]}}
               </li>
@@ -63,15 +63,15 @@
               <button type="button" class="close">
                 <i class="fas fa-plus-circle"></i>
               </button>
-              <strong *ngIf="template.title != null">{{template.title}}</strong>
-              <strong *ngIf="template.title == null">{{template.template_name}}</strong>
+              <strong *ngIf="template.title !== null">{{template.title}}</strong>
+              <strong *ngIf="template.title === null">{{template.template_name}}</strong>
             </div>
             <div class="card-body">
               <div class="scroll-image">
                 <p>
-                  <img src="{{template?.logo_url}}" alt="{{template.title}}®" *ngIf="template.title != null"
+                  <img src="{{template?.logo_url}}" alt="{{template.title}}®" *ngIf="template.title !== null"
                        style="width: 70px;">
-                  <img src="{{template?.logo_url}}" alt="{{template.template_name}}®" *ngIf="template.title == null"
+                  <img src="{{template?.logo_url}}" alt="{{template.template_name}}®" *ngIf="template.title === null"
                        style="width: 70px;">
                 </p>
                 <p>
@@ -80,7 +80,7 @@
                 <p *ngIf="template.info_url">
                   <a href="{{template?.info_url}}" rel="noopener noreferrer" target="_blank">Click here for more Information.</a>
                 </p>
-                <ng-container *ngIf="template.information_for_display != null">
+                <ng-container *ngIf="template.information_for_display !== null">
                   <li *ngFor="let info of Object.keys(template.information_for_display)">
                     {{info}}: {{template.information_for_display[info]}}
                   </li>
@@ -93,7 +93,7 @@
     </div>
     <ng-container *ngIf="selectedTemplate?.incompatible_versions?.length !== 0">
     <div class="row col">
-      <div *ngIf="selectedTemplate != undefinedTemplate" class="alert alert-warning col-12">
+      <div *ngIf="selectedTemplate !== undefinedTemplate" class="alert alert-warning col-12">
         This template is known to be incompatible with: <br>
         <ul>
           <li *ngFor="let version of selectedTemplate.incompatible_versions">
@@ -108,7 +108,7 @@
 
   </div>
 
-  <div *ngIf="onlyNamespace || selectedTemplate != undefinedTemplate" style="border-style: dashed; border-color: lightgray; padding: 10px">
+  <div *ngIf="onlyNamespace || selectedTemplate !== undefinedTemplate" style="border-style: dashed; border-color: lightgray; padding: 10px">
     <div class="row col">
       <strong>Please select a research environment name:</strong>
     </div>
@@ -141,7 +141,7 @@
     </div>
   </div>
 
-  <div *ngIf="!onlyNamespace && selectedTemplate != undefinedTemplate" style="border-style: dashed; border-color: lightgray; padding: 10px">
+  <div *ngIf="!onlyNamespace && selectedTemplate !== undefinedTemplate" style="border-style: dashed; border-color: lightgray; padding: 10px">
     <div class="row col">
       <div class="form-check text-center col-2" style="margin: auto">
         <input class="form-check-input" type="checkbox" id="create_only_backend_checkbox"

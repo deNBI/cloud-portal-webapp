@@ -11,7 +11,7 @@
         <div *ngFor="let facility of managerFacilities" class="form-check-inline">
           <input class="form-check-input" type="checkbox" id="select_{{facility['Facility']}}"
                  (click)="selectFacility(facility)"
-                 [checked]="selectedFacilities?.indexOf(facility) != -1">
+                 [checked]="selectedFacilities?.indexOf(facility) !== -1">
           <label class="form-check-label" for="select_{{facility['Facility']}}">{{facility['FacilityId']}}
             : {{facility['Facility']}}</label>
         </div>
@@ -30,14 +30,14 @@
                 </div>
                 <div *ngFor="let news of wordPressNews">
                   <div class="card" style="cursor: pointer;" (click)="setNews(news)" [ngStyle]="{
-                    'border-color': news.id == selectedNews.id ? '#005aa9' : '#c8ced3'}">
+                    'border-color': news.id === selectedNews.id ? '#005aa9' : '#c8ced3'}">
                     <div class="card-header text-truncate"
                          data-toggle="tooltip" id="{{news.id}}_header" data-placement="auto"
                          style="color: white !important;"
-                         [ngStyle]="{'background-color': news.id == selectedNews.id ? '#005aa9' : '#00adef'}">
+                         [ngStyle]="{'background-color': news.id === selectedNews.id ? '#005aa9' : '#00adef'}">
                       <strong>{{news.title}}</strong>
                       <span class="badge bg-light" style="margin-left:5px;"
-                            [ngStyle]="{'color': news.id == selectedNews.id ? '#005aa9' : '#00adef'}"
+                            [ngStyle]="{'color': news.id === selectedNews.id ? '#005aa9' : '#00adef'}"
                             *ngIf="newsSetAsMOTD.includes(news.id.toString())"
                             title="{{'Set as MOTD in: ' + facilitiesAsString(news)}}">
                         <i style="margin-right: 2px;" class="fas fa-terminal">MOTD</i></span>
@@ -140,14 +140,14 @@ we are happy to inform..."
                     <input class="form-check-input" type="checkbox"
                            id="news_select_{{facility['FacilityId']}}"
                            (click)="setFacility(facility)"
-                           [checked]="facilitiesToPost?.indexOf(facility['FacilityId']) != -1">
+                           [checked]="facilitiesToPost?.indexOf(facility['FacilityId']) !== -1">
                     <label class="form-check-label"
                            for="news_select_{{facility['FacilityId']}}">{{facility['Facility']}}</label>
                     </div>
                     <div class="col-6">
                       <input class="form-check-input" type="checkbox" id="news_select_{{facility['FacilityId']}}_motd"
                              (click)="manageMOTD(facility);"
-                             [disabled]="facilitiesToPost?.indexOf(facility['FacilityId']) == -1"
+                             [disabled]="facilitiesToPost?.indexOf(facility['FacilityId']) === -1"
                              [checked]="facilitiesToSetMOTD?.indexOf(facility['FacilityId']) > (-1)">
                       <label class="form-check-label" for="news_select_{{facility['FacilityId']}}_motd">
                         Set as MOTD for facility</label>
@@ -156,7 +156,7 @@ we are happy to inform..."
                 </ng-container>
               </div>
               <br>
-              <div *ngIf="facilitiesToPost.length == 0" class="alert alert-warning">At least one facility needs to be
+              <div *ngIf="facilitiesToPost.length === 0" class="alert alert-warning">At least one facility needs to be
                 selected.
               </div>
             </div>
@@ -179,11 +179,11 @@ we are happy to inform..."
               <button class="btn btn-success"
                       style="margin: 5px"
                       (click)="addModal.show();"
-                      [disabled]="selectedNewsForm.invalid || facilitiesToPost.length == 0"
-                      *ngIf="selectedNews.id == null">Create & Upload News
+                      [disabled]="selectedNewsForm.invalid || facilitiesToPost.length === 0"
+                      *ngIf="selectedNews.id === null">Create & Upload News
               </button>
               <button class="btn btn-secondary" style="margin: 5px"
-                      [disabled]="selectedNewsForm.invalid || facilitiesToPost.length == 0"
+                      [disabled]="selectedNewsForm.invalid || facilitiesToPost.length === 0"
                       (click)="updateModal.show();" *ngIf="selectedNews?.id">Update News
               </button>
               <button class="btn btn-danger" style="margin: 5px"

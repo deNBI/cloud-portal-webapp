@@ -1,4 +1,4 @@
-<div *ngIf="image !=selectedImage" (click)="selectedImageChange.emit(image);" class="card flavor-image-card"
+<div *ngIf="image !== selectedImage" (click)="selectedImageChange.emit(image);" class="card flavor-image-card"
      id="id_image_owl_{{image?.name}}"
 >
   <div
@@ -23,7 +23,7 @@
   </div>
 </div>
 
-<div *ngIf="image == selectedImage" class="card border-success flavor-image-card"
+<div *ngIf="image === selectedImage" class="card border-success flavor-image-card"
 >
   <div
     class="card-header bg-success text-truncate" data-toggle="tooltip" data-placement="top"

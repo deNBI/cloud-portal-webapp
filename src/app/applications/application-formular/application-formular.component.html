@@ -233,7 +233,7 @@
                     available for your project.
                   </div>
                   <div *ngFor="let f of flavorList">
-                    <div *ngIf="f.type.shortcut == t.shortcut && f.simple_vm"
+                    <div *ngIf="f.type.shortcut === t.shortcut && f.simple_vm"
                          class="form-group row">
 
                       <label class="col-md-4 form-control-label"
@@ -304,7 +304,7 @@
                 <span class="help-block">How many storage volumes do you want to use?</span>
               </div>
             </div>
-            <div class="form-group row" [hidden]="form.controls.project_application_volume_counter?.value == 0">
+            <div class="form-group row" [hidden]="form.controls.project_application_volume_counter?.value === 0">
               <label class="col-md-4 form-control-label" for="id_project_application_volume_limit"><strong> Volume
                 Storage Total
                 Limit*
@@ -326,7 +326,7 @@
                                 'is-invalid': form.controls.project_application_volume_limit?.invalid,
                                 'is-valid': form.controls.project_application_volume_limit?.valid
                                 }"
-                         [disabled]="form.controls.project_application_volume_counter?.value == 0">
+                         [disabled]="form.controls.project_application_volume_counter?.value === 0">
                   <div class="input-group-append"><span class="input-group-text"> GB
                                     </span></div>
                 </div>
@@ -1048,11 +1048,11 @@
         </div>
         <div class="card-footer">
 
-          <div *ngIf="application?.flavors.length == 0 && !application?.project_application_openstack_project" class="form-group row alert alert-danger">
+          <div *ngIf="application?.flavors.length === 0 && !application?.project_application_openstack_project" class="form-group row alert alert-danger">
             Please select at least one flavor.
           </div>
           <div
-            *ngIf="form.invalid ||application?.project_application_edam_terms.length == 0 || application?.project_application_edam_terms.length > 10|| (application?.flavors.length == 0  && !application?.project_application_openstack_project) || (!application?.dissemination.isPlatformSelected() && application?.project_application_report_allowed)"
+            *ngIf="form.invalid ||application?.project_application_edam_terms.length === 0 || application?.project_application_edam_terms.length > 10|| (application?.flavors.length === 0  && !application?.project_application_openstack_project) || (!application?.dissemination.isPlatformSelected() && application?.project_application_report_allowed)"
             class="form-group row alert alert-warning">
             Some required fields are incorrect or not filled in yet.
             Please check if all required (*) fields are filled in correctly.
@@ -1083,7 +1083,7 @@
             </div>
             <label class="col-md-4 form-control-label">
               <button (click)="notificationModal.show();approveApplication(form);"
-                      [disabled]="!respCheck.checked || form.invalid  ||application?.project_application_edam_terms.length == 0  || application?.project_application_edam_terms.length > 10 || (application?.flavors.length == 0  && !application?.project_application_openstack_project)|| (!application?.dissemination?.isPlatformSelected()  && application?.project_application_report_allowed)"
+                      [disabled]="!respCheck.checked || form.invalid  ||application?.project_application_edam_terms.length === 0  || application?.project_application_edam_terms.length > 10 || (application?.flavors.length === 0  && !application?.project_application_openstack_project)|| (!application?.dissemination?.isPlatformSelected()  && application?.project_application_report_allowed)"
                       id="approveApplicationButtonPI"
                       class="btn btn-sm btn-success">
                 <i class="fa fa-dot-circle-o"></i>
@@ -1096,7 +1096,7 @@
             <button *ngIf="!is_validation"
                     (click)="calculateInitialCredits(form); submitModal.show();"
                     id="submit_btn"
-                    [disabled]="submitting || form.invalid  ||application?.project_application_edam_terms.length == 0 || application?.project_application_edam_terms.length > 10 || (application?.flavors.length == 0  && !application?.project_application_openstack_project) || (!application?.dissemination?.isPlatformSelected()  && application?.project_application_report_allowed)"
+                    [disabled]="submitting || form.invalid  ||application?.project_application_edam_terms.length === 0 || application?.project_application_edam_terms.length > 10 || (application?.flavors.length === 0  && !application?.project_application_openstack_project) || (!application?.dissemination?.isPlatformSelected()  && application?.project_application_report_allowed)"
                     class="btn btn-sm btn-success"
                     type="button"><i
               class="fa fa-dot-circle-o"></i> Submit
@@ -1139,12 +1139,12 @@
       </div>
       <div class="modal-footer">
         <button id="notification_btn_redirect"
-                *ngIf="(notificationModalIsClosable == true) && (notificationModalStay==true)"
+                *ngIf="(notificationModalIsClosable === true) && (notificationModalStay === true)"
                 type="button"
                 (click)="notificationModal.hide();resetNotificationModal()"
                 class="btn  btn-secondary"> Close
         </button>
-        <a *ngIf="(notificationModalIsClosable == true) && (notificationModalStay==false)"
+        <a *ngIf="(notificationModalIsClosable === true) && (notificationModalStay === false)"
            [routerLink]="['/project-management/' + application_id]">
           <button type="button" id="notification_btn_redirect"
                   (click)="notificationModal.hide();resetNotificationModal()"

@@ -42,7 +42,7 @@
               <figure class="flavor-card-icons">
                 <img src="{{GPU_ICON_PATH}}" alt="">
               </figure>
-              {{selectedFlavor?.gpu}} <span *ngIf="selectedFlavor?.gpu == 1"> GPU</span><span
+              {{selectedFlavor?.gpu}} <span *ngIf="selectedFlavor?.gpu === 1"> GPU</span><span
               *ngIf="selectedFlavor?.gpu > 1"> GPUs</span>
             </div>
           </div>
@@ -65,12 +65,12 @@
       <ng-container *ngFor="let flavor of flavors">
         <ng-template carouselSlide>
           <div (click)="setSelectedFlavor(flavor);" class="card flavor-image-card"
-               [ngClass]="{'border-success':selectedFlavor==flavor}" id="id_flavor_owl_{{flavor.name}}"
+               [ngClass]="{'border-success':selectedFlavor === flavor}" id="id_flavor_owl_{{flavor.name}}"
           >
             <div
               class="card-header bg-info-flavor text-truncate" data-toggle="tooltip" data-placement="top"
               title="{{flavor?.name}}"
-              [ngClass]="{'bg-success':selectedFlavor==flavor}">
+              [ngClass]="{'bg-success':selectedFlavor === flavor}">
               <strong>{{flavor.name}}</strong></div>
             <div class="card-body">
               <div class="scroll-flavor">
@@ -109,7 +109,7 @@
                     <figure class="flavor-card-icons">
                       <img src="{{GPU_ICON_PATH}}" alt="">
                     </figure>
-                    {{flavor?.gpu}} <span *ngIf="flavor?.gpu == 1"> GPU</span><span *ngIf="flavor?.gpu > 1"> GPUs</span>
+                    {{flavor?.gpu}} <span *ngIf="flavor?.gpu === 1"> GPU</span><span *ngIf="flavor?.gpu > 1"> GPUs</span>
                   </div>
                 </div>
 
@@ -139,11 +139,11 @@
       <ng-container *ngFor="let flavor of flavors">
         <ng-template carouselSlide>
           <div (click)="setSelectedFlavor(flavor);" class="card flavor-image-card"
-               [ngClass]="{'border-success':selectedFlavor==flavor}" id="id_flavor_owl_{{flavor.name}}"
+               [ngClass]="{'border-success':selectedFlavor === flavor}" id="id_flavor_owl_{{flavor.name}}"
           >
             <div
               class="card-header bg-info-flavor text-truncate" data-toggle="tooltip" data-placement="top"
-              [ngClass]="{'bg-success':selectedFlavor==flavor}"
+              [ngClass]="{'bg-success':selectedFlavor === flavor}"
               title="{{flavor?.name}}">
               <strong>{{flavor.name}}</strong></div>
             <div class=" card-body
@@ -183,7 +183,7 @@
                     <figure class="flavor-card-icons">
                       <img src="{{GPU_ICON_PATH}}" alt="">
                     </figure>
-                    {{flavor?.gpu}} <span *ngIf="flavor?.gpu == 1"> GPU</span><span *ngIf="flavor?.gpu > 1"> GPUs</span>
+                    {{flavor?.gpu}} <span *ngIf="flavor?.gpu === 1"> GPU</span><span *ngIf="flavor?.gpu > 1"> GPUs</span>
                   </div>
                 </div>
 

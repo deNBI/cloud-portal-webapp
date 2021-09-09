@@ -1,8 +1,8 @@
-<div *ngIf="errorMessage != null">
+<div *ngIf="errorMessage !== null">
 	An Error has occurred. {{errorMessage}}
 </div>
 
-<div *ngIf="!isLoaded && errorMessage == null" class="loader"></div>
+<div *ngIf="!isLoaded && errorMessage === null" class="loader"></div>
 
 
 <div class="animated fadeIn" *ngIf="isLoaded">
@@ -546,7 +546,7 @@
 							<tbody>
 							<tr *ngFor="let member of project_members" [ngStyle]="{'color':isPi(member)}">
 								<td *ngIf="isAdmin || is_vo_admin">
-									<input *ngIf="userinfo?.MemberId != member.memberId" type="checkbox" id="{{member.userId}}"
+									<input *ngIf="userinfo?.MemberId !== member.memberId" type="checkbox" id="{{member.userId}}"
 												 name="member.userId"
 												 [checked]="isMemberChecked(member.memberId)" (change)="checkUnCheckMember(member.memberId);">
 								</td>
@@ -562,12 +562,12 @@
                                                " class="btn btn-primary" type="button" style="margin: 2px">
 											<i class="fa fa-plus-circle"></i>&nbsp; Set Admin status
 										</button>
-										<button *ngIf="member.IsPi &&  userinfo?.MemberId != member.memberId" (click)="removeAdmin( project?.Id,member.userId,member.userName);
+										<button *ngIf="member.IsPi &&  userinfo?.MemberId !== member.memberId" (click)="removeAdmin( project?.Id,member.userId,member.userName);
                                                 notificationModal.show();
                                                " class="btn btn-primary" type="button" style="margin: 2px">
 											<i class="fa fa-minus-circle"></i>&nbsp; Remove Admin status
 										</button>
-										<button [id]="'remove_member_' + member.userName" *ngIf=" userinfo?.MemberId != member.memberId"
+										<button [id]="'remove_member_' + member.userName" *ngIf=" userinfo?.MemberId !== member.memberId"
 														(click)="removeMember(project?.Id,member.memberId,member.userName);
                                                 notificationModal.show();
                                                " class="btn btn-danger" type="button" style="margin: 2px">
@@ -741,7 +741,7 @@
 						</div>
 
 						<div class="table-responsive">
-							<table *ngIf="filteredMembers!==null" class="table table-bordered table-striped table-sm">
+							<table *ngIf="filteredMembers !== null" class="table table-bordered table-striped table-sm">
 								<thead>
 
 								<th></th>
@@ -930,7 +930,7 @@
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button *ngIf="notificationModalIsClosable == true" type="button"
+					<button *ngIf="notificationModalIsClosable === true" type="button"
 									(click)="resetNotificationModal(); notificationModal.hide();" type="reset"
 									class="btn  btn-secondary" id="close_notification"> Close
 					</button>

@@ -1,4 +1,4 @@
-<div *ngIf="isLoaded==false" class="loader"></div>
+<div *ngIf="isLoaded === false" class="loader"></div>
 <div *ngIf="isLoaded">
   <a style="margin-bottom: 5px"  rel="noopener noreferrer" target="_blank" class="btn btn-secondary" href="{{WIKI_VOLUME_OVERVIEW}}"
 
@@ -69,7 +69,7 @@
           </button>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu" role="menu"
                *dropdownMenu id="dropdownMenu">
-            <button [disabled]="checked_volumes?.length == 0" class="dropdown-item btn btn-secondary"
+            <button [disabled]="checked_volumes?.length === 0" class="dropdown-item btn btn-secondary"
                     id="deleteAllSelectedVolumesButton" (click)="deleteSelectedModal.show()"
             >
               Delete selected Volumes
@@ -106,7 +106,7 @@
         <div class="rTableRow" *ngFor="let volume of volume_page.volume_list">
           <div class="rTableCell ">{{volume?.volume_project}}</div>
           <div class="rTableCell "
-               *ngIf="volume?.volume_virtualmachine && volume?.volume_status == VolumeStates.staticIN_USE"
+               *ngIf="volume?.volume_virtualmachine && volume?.volume_status === VolumeStates.staticIN_USE"
                [id]="'cell_vm_id_' + volume?.volume_virtualmachine.name"><span *ngIf="volume?.volume_path">
                 <strong>Initial mounted to: </strong>/vol/{{volume?.volume_path }} <br></span>
             <strong>Device: </strong>{{volume?.volume_device }}  <br><strong>VM:</strong><a class="h5 text-primary"
@@ -114,7 +114,7 @@
               {{ volume?.volume_virtualmachine.name}}</a>
           </div>
           <div class="rTableCell "
-               *ngIf="!volume?.volume_virtualmachine || volume?.volume_status != VolumeStates.staticIN_USE "
+               *ngIf="!volume?.volume_virtualmachine || volume?.volume_status !== VolumeStates.staticIN_USE "
                id="cell_vm_free_id"></div>
           <div class="rTableCell " id="cell_name_id_{{volume?.volume_name}}">{{volume?.volume_name}}</div>
           <app-volum-status   class="rTableCell" [volume]="volume"></app-volum-status>
@@ -134,20 +134,20 @@
                       type="button" aria-haspopup="true" aria-expanded="false"
                         dropdownToggle aria-controls="dropdown-split"></button>
                 <ul class="dropdown-menu" style="cursor: pointer" role="menu" *dropdownMenu>
-                  <li *ngIf="volume?.volume_virtualmachine && volume?.volume_status != VolumeStates.staticERROR"
+                  <li *ngIf="volume?.volume_virtualmachine && volume?.volume_status !== VolumeStates.staticERROR"
                       role="menuitem">
                     <a class="dropdown-item"
                        (click)="setRequestStatus(1);setSelectedVolume(volume);verifyModal.show();">Detach
                       Volume</a>
                   </li>
 
-                  <li *ngIf="!volume?.volume_virtualmachine  && volume?.volume_status != VolumeStates.staticERROR"
+                  <li *ngIf="!volume?.volume_virtualmachine  && volume?.volume_status !== VolumeStates.staticERROR"
                       role="menuitem">
                     <a class="dropdown-item"
                        (click)="getActiveVmsByProject(volume?.volume_projectid);setSelectedVolume(volume);attachModal.show();">Attach
                       Volume</a>
                   </li>
-                  <li *ngIf=" volume?.volume_status != VolumeStates.staticERROR"
+                  <li *ngIf=" volume?.volume_status !== VolumeStates.staticERROR"
                       role="menuitem">
                     <a class="dropdown-item "
                        (click)="extendVolumeStorage=volume?.volume_storage+1;selected_volume=volume;getSelectedVolumeStorage();extendModal.show();">Extend
@@ -189,12 +189,12 @@
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title"
-            *ngIf="volume_action_status == volumeActionStates.WAITING || volume_action_status == volumeActionStates.DETACHING_VOLUME || volume_action_status == volumeActionStates.ATTACHING || volume_action_status == volumeActionStates.CHANGING_NAME">
+            *ngIf="volume_action_status === volumeActionStates.WAITING || volume_action_status === volumeActionStates.DETACHING_VOLUME || volume_action_status === volumeActionStates.ATTACHING || volume_action_status === volumeActionStates.CHANGING_NAME">
           Waiting </h4>
         <h4 class="modal-title"
-            *ngIf="volume_action_status == volumeActionStates.SUCCESS || volume_action_status == volumeActionStates.SUCCESSFULLY_DETACHED_VOLUME || volume_action_status ==  volumeActionStates.CHANGING_NAME_SUCESSFULL || volume_action_status == volumeActionStates.ATTACHING_SUCCESSFULL || volume_action_status == volumeActionStates.SUCCESSFULLY_CREATED_ATTACHED">
+            *ngIf="volume_action_status === volumeActionStates.SUCCESS || volume_action_status === volumeActionStates.SUCCESSFULLY_DETACHED_VOLUME || volume_action_status ===  volumeActionStates.CHANGING_NAME_SUCESSFULL || volume_action_status === volumeActionStates.ATTACHING_SUCCESSFULL || volume_action_status === volumeActionStates.SUCCESSFULLY_CREATED_ATTACHED">
           Success </h4>
-        <h4 class="modal-title" *ngIf="volume_action_status == volumeActionStates.ERROR"> Error </h4>
+        <h4 class="modal-title" *ngIf="volume_action_status === volumeActionStates.ERROR"> Error </h4>
 
         <button type="button" class="close" style="cursor:pointer"
                 (click)="resultModal.hide()"
@@ -206,61 +206,61 @@
 
       <div class="modal-body">
 
-        <div class="alert alert-primary" role="alert" *ngIf="volume_action_status == volumeActionStates.CHANGING_NAME">
+        <div class="alert alert-primary" role="alert" *ngIf="volume_action_status === volumeActionStates.CHANGING_NAME">
           Renaming volume?... <i class="fa fa-spinner fa-spin"
                                 style="font-size:24px"></i>
         </div>
-        <div class="alert alert-primary" role="alert" *ngIf="volume_action_status == volumeActionStates.WAIT_CREATION">
+        <div class="alert alert-primary" role="alert" *ngIf="volume_action_status === volumeActionStates.WAIT_CREATION">
           Creating volume?... <i class="fa fa-spinner fa-spin"
                                 style="font-size:24px"></i>
         </div>
-        <div class="alert alert-primary" role="alert" *ngIf="volume_action_status == volumeActionStates.DETACHING_VOLUME">
+        <div class="alert alert-primary" role="alert" *ngIf="volume_action_status === volumeActionStates.DETACHING_VOLUME">
           Detaching {{selected_volume?.volume_name}}... <i class="fa fa-spinner fa-spin"
                                                            style="font-size:24px"></i>
         </div>
 
-        <div class="alert alert-primary" role="alert" *ngIf="volume_action_status == volumeActionStates.ATTACHING">
+        <div class="alert alert-primary" role="alert" *ngIf="volume_action_status === volumeActionStates.ATTACHING">
           Attaching Volume {{selected_volume?.volume_name}} to Virtualmachine
           {{selected_vm.name}}...
           <i class="fa fa-spinner fa-spin"
              style="font-size:24px"></i>
         </div>
-        <div class="alert alert-primary" role="alert" *ngIf="volume_action_status == volumeActionStates.WAITING">
+        <div class="alert alert-primary" role="alert" *ngIf="volume_action_status === volumeActionStates.WAITING">
           Deleting {{selected_volume?.volume_name}}... <i class="fa fa-spinner fa-spin"
                                                           style="font-size:24px"></i>
         </div>
         <div id="successfully_created_attached_div"
              class="alert alert-success" role="alert"
-             *ngIf="volume_action_status == volumeActionStates.SUCCESSFULLY_CREATED_ATTACHED">
+             *ngIf="volume_action_status === volumeActionStates.SUCCESSFULLY_CREATED_ATTACHED">
           Successfully created and attached volume?.
 
         </div>
         <div class="alert alert-success" role="alert"
-             *ngIf="volume_action_status == volumeActionStates.CHANGING_NAME_SUCESSFULL">
+             *ngIf="volume_action_status === volumeActionStates.CHANGING_NAME_SUCESSFULL">
           Successfully renamed volume?.
 
         </div>
-        <div class="alert alert-success" role="alert" *ngIf="volume_action_status == volumeActionStates.SUCCESS"
+        <div class="alert alert-success" role="alert" *ngIf="volume_action_status === volumeActionStates.SUCCESS"
              id="successfully_deleted_div">
           {{selected_volume?.volume_name}} was successfully deleted.
         </div>
         <div class="alert alert-success" role="alert"
-             *ngIf="volume_action_status == volumeActionStates.SUCCESSFULLY_DETACHED_VOLUME">
+             *ngIf="volume_action_status === volumeActionStates.SUCCESSFULLY_DETACHED_VOLUME">
           {{selected_volume?.volume_openstackid}} was successfully detached.
         </div>
         <div class="alert alert-success" role="alert"
-             *ngIf="volume_action_status == volumeActionStates.ATTACHING_SUCCESSFULL">
+             *ngIf="volume_action_status === volumeActionStates.ATTACHING_SUCCESSFULL">
           {{selected_volume?.volume_name}} was successfully attached.
         </div>
 
         <div
-          *ngIf="volume_action_status == volumeActionStates.ATTACHING_SUCCESSFULL || volume_action_status == volumeActionStates.SUCCESSFULLY_CREATED_ATTACHED"
+          *ngIf="volume_action_status === volumeActionStates.ATTACHING_SUCCESSFULL || volume_action_status === volumeActionStates.SUCCESSFULLY_CREATED_ATTACHED"
           class="alert alert-primary" role="alert">
           In order to use the volume you have to <a
           href="{{WIKI_VOLUME_OVERVIEW}}" rel="noopener noreferrer" target="_blank"> mount </a> it.
         </div>
       </div>
-      <div class="alert alert-warning" role="alert" *ngIf="volume_action_status == volumeActionStates.ERROR">
+      <div class="alert alert-warning" role="alert" *ngIf="volume_action_status === volumeActionStates.ERROR">
         An error occurred.
       </div>
 
@@ -367,10 +367,10 @@
       </div>
       <div class="modal-body">
 
-        <div *ngIf="request_status == volumeRequestStates.DELETE;" class="alert alert-warning" role="alert">
+        <div *ngIf="request_status === volumeRequestStates.DELETE;" class="alert alert-warning" role="alert">
           Are you sure you want to delete Volume {{selected_volume?.volume_name}}?
         </div>
-        <div *ngIf="request_status == volumeRequestStates.DETACH;" class="alert alert-warning" role="alert">
+        <div *ngIf="request_status === volumeRequestStates.DETACH;" class="alert alert-warning" role="alert">
           Are you sure you want to detach Volume {{selected_volume?.volume_name}} from
           {{selected_volume?.volume_virtualmachine?.name}}?
         </div>
@@ -378,11 +378,11 @@
       </div>
       <div class="modal-footer">
         <button id="verify_deletion_button"
-                *ngIf="request_status==volumeRequestStates.DELETE;" class="btn  btn-success col-md-4"
+                *ngIf="request_status === volumeRequestStates.DELETE;" class="btn  btn-success col-md-4"
                 (click)="deleteVolume(selected_volume);verifyModal.hide();">
           Yes
         </button>
-        <button *ngIf="request_status==volumeRequestStates.DETACH;" class="btn  btn-success col-md-4"
+        <button *ngIf="request_status === volumeRequestStates.DETACH;" class="btn  btn-success col-md-4"
                 (click)="detachVolume(selected_volume,selected_volume?.volume_virtualmachine.openstackid);verifyModal.hide();">
           Yes
         </button>
@@ -431,7 +431,7 @@
       </div>
       <div class="modal-footer">
         <button class="btn  btn-success col-md-4"
-                [disabled]="selected_vm== undefined"
+                [disabled]="selected_vm === undefined"
                 (click)="attachVolume(selected_volume,selected_vm.openstackid);attachModal.hide();">
           Attach Volume
         </button>
@@ -595,7 +595,7 @@
         <div class="form-group row alert alert-danger"
 
              *ngIf="
-                    selectedProjectDiskspaceUsed == selectedProjectDiskspaceMax">
+                    selectedProjectDiskspaceUsed === selectedProjectDiskspaceMax">
           This project has already reached its storage limit.
         </div>
 
@@ -716,21 +716,21 @@
         </div>
         <div class="form-group row" class="alert alert-danger"
 
-             *ngIf="selectedProject && (selectedProjectVolumesUsed == selectedProjectVolumesMax ||
-                    selectedProjectDiskspaceUsed == selectedProjectDiskspaceMax)">
+             *ngIf="selectedProject && (selectedProjectVolumesUsed === selectedProjectVolumesMax ||
+                    selectedProjectDiskspaceUsed === selectedProjectDiskspaceMax)">
           This project has already reached its storage or volume limit.
         </div>
 
 
         <div class="form-group row"
-             *ngIf="selectedProject && !(selectedProjectVolumesUsed == selectedProjectVolumesMax || selectedProjectDiskspaceUsed == selectedProjectDiskspaceMax)">
+             *ngIf="selectedProject && !(selectedProjectVolumesUsed === selectedProjectVolumesMax || selectedProjectDiskspaceUsed === selectedProjectDiskspaceMax)">
 
 
           <label class="col-md-12"><strong>To which Vm the Volume should be
             attached?</strong></label>
         </div>
         <div
-          *ngIf="selectedProject && !(selectedProjectVolumesUsed == selectedProjectVolumesMax || selectedProjectDiskspaceUsed == selectedProjectDiskspaceMax)"
+          *ngIf="selectedProject && !(selectedProjectVolumesUsed === selectedProjectVolumesMax || selectedProjectDiskspaceUsed === selectedProjectDiskspaceMax)"
           class="form-group row">
 
           <label class="col-md-3 form-control-label">Vm</label>
@@ -795,7 +795,7 @@
       <div class="modal-footer">
         <button id="verify_create_attach_button"
                 class="btn  btn-success col-md-6"
-                [disabled]="selected_vm == undefined || diskspace <= 0 || volumeName.length == 0 || (selectedProjectDiskSpaceSum > selectedProjectDiskspaceMax)"
+                [disabled]="selected_vm === undefined || diskspace <= 0 || volumeName.length === 0 || (selectedProjectDiskSpaceSum > selectedProjectDiskspaceMax)"
                 (click)="createAndAttachvolume(volumeName,diskspace,selected_vm.openstackid);createModal.hide();">
           Create & Attach Volume
         </button>

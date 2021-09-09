@@ -97,7 +97,7 @@
                   UNUSED
                 </option>
                 <option *ngFor="let spec of gpu_types " [ngValue]="spec">
-                  <span *ngIf="spec != null">{{spec.type + ': ' + spec.cores}}</span>
+                  <span *ngIf="spec !== null">{{spec.type + ': ' + spec.cores}}</span>
                 </option>
               </select>
             </div>
@@ -254,7 +254,7 @@
                   UNUSED
                 </option>
                 <option *ngFor="let spec of gpu_types" [ngValue]="spec">
-                  <span *ngIf="spec != null">{{spec.type + ': ' + spec.cores}}</span>
+                  <span *ngIf="spec !== null">{{spec.type + ': ' + spec.cores}}</span>
                 </option>
               </select>
               <div class="input-group-append">
