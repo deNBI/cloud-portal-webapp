@@ -440,6 +440,8 @@ export class AddWorkshopComponent implements OnInit, OnDestroy, DoCheck {
 
 	reset_on_project_change(): void {
 		this.reset_on_workshop_change();
+		this.has_forc = false;
+		this.forc_url = '';
 		this.selected_project_client = null;
 		this.client_checked = false;
 		this.client_available = false;
@@ -453,6 +455,9 @@ export class AddWorkshopComponent implements OnInit, OnDestroy, DoCheck {
 		this.credits_allowed = false;
 		this.project_members = [];
 		this.member_data_loaded = false;
+		this.selected_project_ressources = null;
+		this.flavor_types = {};
+		this.new_workshop = false;
 	}
 
 	reset_on_workshop_change(): void {
@@ -463,6 +468,7 @@ export class AddWorkshopComponent implements OnInit, OnDestroy, DoCheck {
 		this.workshop_data_loaded = false;
 		this.selected_image = undefined;
 		this.selected_flavor = undefined;
+		this.selected_flavor_type = 'Standard Flavours';
 		this.members_to_add = [];
 		this.vm_responsibility = false;
 		this.started_machine = false;
@@ -471,6 +477,9 @@ export class AddWorkshopComponent implements OnInit, OnDestroy, DoCheck {
 		this.res_env_needs_template = false;
 		this.res_env_okay_needed = false;
 		this.gave_okay = false;
+		this.progress_bar_width = 0;
+		this.invalid_longname = false;
+		this.invalid_shortname = false;
 		if (this.res_env_component) {
 			this.res_env_component.resetData();
 		}
