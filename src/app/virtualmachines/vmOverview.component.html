@@ -25,7 +25,7 @@
 
 
 				</div>
-				<div *ngIf="tab=='facility'" class="col-4"><select [(ngModel)]="selectedFacility"
+				<div *ngIf="tab==='facility'" class="col-4"><select [(ngModel)]="selectedFacility"
 																													 class="form-control " name="selectedFacility">
 					<option *ngFor="  let facility of managerFacilities"
 									[ngValue]="facility">

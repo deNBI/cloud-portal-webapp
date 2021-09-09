@@ -1,4 +1,4 @@
-<div *ngIf="isLoaded && userinfo?.PublicKey == 'None'">
+<div *ngIf="isLoaded && userinfo?.PublicKey === 'None'">
   <div>
     <div class="card">
       <div class="card-header">
@@ -25,13 +25,13 @@
 </div>
 
 <div *ngIf=" !isLoaded || (singleProject && !projectDataLoaded )" class="loader"></div>
-<div *ngIf=" isLoaded && userinfo?.PublicKey != 'None' && projects.length == 0">
+<div *ngIf=" isLoaded && userinfo?.PublicKey != ='None' && projects.length == 0">
   <div class="alert alert-warning" role="alert">
     You are not a member of any Simple VM project.
   </div>
 </div>
 <div
-  *ngIf=" isLoaded && userinfo?.PublicKey != 'None' && projects.length > 0 && (!singleProject || (singleProject && projectDataLoaded))"
+  *ngIf=" isLoaded && userinfo?.PublicKey != ='None' && projects.length > 0 && (!singleProject || (singleProject && projectDataLoaded))"
   class="animated fadeIn">
 
   <div class="row">
@@ -728,12 +728,12 @@
      aria-labelledby="myModalLabel" aria-hidden="true"
      id="info_modal">
   <div class="modal-dialog modal-info" role="document"
-       [ngClass]="newVm?.status =='ACTIVE' ? 'modal-lg':''">
+       [ngClass]="newVm?.status ==='ACTIVE' ? 'modal-lg':''">
 
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title" *ngIf="newVm?.status != 'ACTIVE'">Status</h4>
-        <h4 class="modal-title" *ngIf="newVm?.status == 'ACTIVE'">How to Connect</h4>
+        <h4 class="modal-title" *ngIf="newVm?.status !== 'ACTIVE'">Status</h4>
+        <h4 class="modal-title" *ngIf="newVm?.status === 'ACTIVE'">How to Connect</h4>
 
         <button type="button" class="close" style="cursor: pointer"
                 (click)="infoModal.hide()"
@@ -742,7 +742,7 @@
         </button>
       </div>
       <div class="modal-body"
-           *ngIf="(newVm?.status == 'BUILD' || newVm?.status == 'PORT_CLOSED' || newVm ==null) && !create_error?.error ">
+           *ngIf="(newVm?.status === 'BUILD' || newVm?.status === 'PORT_CLOSED' || newVm ==null) && !create_error?.error ">
         <p *ngIf="playbook_run == 0">We are setting up a machine for you. This can take up to 5 minutes.</p>
         <p *ngIf="playbook_run == 1">We are setting up a machine for you.
           This can take some time, depending on your chosen tools.
@@ -760,7 +760,7 @@
           machine on the
           instance overview site</p>
       </div>
-      <div class="modal-body" *ngIf="newVm?.status == 'ACTIVE' || newVm?.status == 'DELETED'">
+      <div class="modal-body" *ngIf="newVm?.status === 'ACTIVE' || newVm?.status === 'DELETED'">
         <app-how-to-connect id="how_to_connect_id" [selectedVirtualMachine]="newVm"
                             [playbook_run]="playbook_run"></app-how-to-connect>
       </div>
@@ -769,7 +769,7 @@
         <pre><code>{{create_error.error}}</code></pre>
       </div>
       <div class="modal-footer">
-        <button *ngIf="newVm?.status == 'ACTIVE'"
+        <button *ngIf="newVm?.status === 'ACTIVE'"
                 id="goToOverviewButton"
                 routerLinkActive="active"
                 [routerLink]="['/virtualmachines/vmOverview']"

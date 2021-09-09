@@ -65,7 +65,7 @@
               </div>
 
             </div>
-            <div class="row" *ngIf="virtualMachine?.res_env_url != '' && virtualMachine?.res_env_url != null && virtualMachine?.res_env_url != undefined">
+            <div class="row" *ngIf="virtualMachine?.res_env_url !== '' && virtualMachine?.res_env_url != null && virtualMachine?.res_env_url != undefined">
               <div class="col-md-1">
                 <span class="font-weight-bold font-xs btn-block text-muted">Research Environment:</span>
               </div>
@@ -161,7 +161,7 @@
           </div>
 
           <div class="row">
-            <div class="col-3" *ngIf="virtualMachine?.flavor?.type?.long_name != 'Standard Flavours'">
+            <div class="col-3" *ngIf="virtualMachine?.flavor?.type?.long_name !== 'Standard Flavours'">
               <div class="callout">
                 <small class="text-muted">Flavor type</small><br>
                 <strong class="text-muted">{{virtualMachine?.flavor?.type?.long_name}}</strong>
@@ -800,12 +800,12 @@
           </button>
         </div>
         <div class="modal-body">
-          <div class="alert alert-primary" role="alert" *ngIf="snapshotDone == 'Waiting' ">
+          <div class="alert alert-primary" role="alert" *ngIf="snapshotDone === 'Waiting' ">
             Wait until Snapshot is queued....
           </div>
 
 
-          <div class="alert alert-success" role="alert" *ngIf="snapshotDone == 'true' " id="snapshot_done">
+          <div class="alert alert-success" role="alert" *ngIf="snapshotDone === 'true' " id="snapshot_done">
             Successfully queued Snapshot.
             It might take some minutes till you can use it for starting a new instance at the "New Instance" tab.
             You can see the current status in the<a
@@ -813,7 +813,7 @@
             [routerLink]="['/virtualmachines/snapshotOverview']"> Snapshot Overview </a>.
           </div>
           <div class="alert alert-danger" role="alert"
-               *ngIf="snapshotDone != 'true' && snapshotDone != 'Waiting'">
+               *ngIf="snapshotDone !== 'true' && snapshotDone !== 'Waiting'">
             An error occured when creating the snapshot:<br>
             {{error_msg}}
 
