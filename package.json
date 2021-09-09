@@ -31,7 +31,7 @@
   },
   "private": true,
   "dependencies": {
-    "@angular-eslint/eslint-plugin": "^12.3.1",
+    "@angular-eslint/eslint-plugin": "^4.3.0",
     "@angular/animations": "^12.2.4",
     "@angular/cdk": "^12.2.4",
     "@angular/common": "^12.2.4",
@@ -107,8 +107,6 @@
     "@types/node": "^16.7.13",
     "@typescript-eslint/eslint-plugin": "^4.31.0",
     "@typescript-eslint/parser": "^4.31.0",
-    "@typescript-eslint/typescript-estree": "^4.31.0",
-    "@typescript-eslint/types": "^4.31.0",
     "audit-ci": "^4.1.0",
     "autoprefixer": "^10.3.4",
     "codelyzer": "^6.0.2",
