@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { map } from 'rxjs/operators';
 import { ApiSettings } from './api-settings.service';
 import { IResponseTemplate } from './response-template';
 import { Client } from '../vo_manager/clients/client.model';
@@ -9,8 +8,6 @@ import { ProjectEnumeration } from '../projectmanagement/project-enumeration';
 import { Doi } from '../applications/doi/doi';
 import { ApplicationRessourceUsage } from '../applications/application-ressource-usage/application-ressource-usage';
 import { ProjectMember } from '../projectmanagement/project_member.model';
-import { Application } from '../applications/application.model/application.model';
-import { ApplicationsService } from './applications.service';
 
 /**
  * Service which provides Group methods.
