@@ -466,7 +466,7 @@
           <span *ngIf="selectedProjectType === 'OVP'">
             the OpenStack Project members of the{{selectedFacility['Facility']}}?
           </span>
-          <span *ngIf="selectedProjectType !=== 'ALL' && selectedProjectType !== 'SVP'
+          <span *ngIf="selectedProjectType !== 'ALL' && selectedProjectType !== 'SVP'
              && selectedProjectType !== 'OVP' && selectedProjectType !== 'USER'">
             the members of the {{getProjectNameBySelectedProjectTypeAsId()}} project?
           </span>
