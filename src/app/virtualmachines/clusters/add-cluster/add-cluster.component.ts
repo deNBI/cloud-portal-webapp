@@ -381,7 +381,7 @@ export class AddClusterComponent implements OnInit {
 	 */
 	initializeData(): void {
 		forkJoin(this.groupService.getSimpleVmByUser(), this.userService.getUserInfo()).subscribe((result: any): void => {
-			this.userinfo = new Userinfo(result[1]);
+			this.userinfo = result[1];
 			this.validatePublicKey();
 			const membergroups: any = result[0];
 			for (const project of membergroups) {

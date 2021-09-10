@@ -115,8 +115,8 @@ export class UserInfoComponent implements OnInit {
 	}
 
 	getUserinfo(): void {
-		this.userService.getUserInfo().subscribe((userinfo: any): void => {
-			this.userInfo = new Userinfo(userinfo);
+		this.userService.getUserInfo().subscribe((userinfo: Userinfo): void => {
+			this.userInfo = userinfo;
 			this.title = this.title.concat(': ', this.userInfo.FirstName, ' ', this.userInfo.LastName);
 
 			forkJoin(
