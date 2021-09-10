@@ -1,7 +1,8 @@
 import {
-	Component, Input, OnChanges, OnInit,
+	Component, Input, OnChanges, OnDestroy, OnInit,
 } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
 import { BiocondaService } from '../../api-connector/bioconda.service';
 import { ResearchEnvironment } from '../virtualmachinemodels/res-env';
 import { RandomNameGenerator } from '../../shared/randomNameGenerator';
@@ -16,7 +17,7 @@ import { BlockedImageTagResenv } from '../../facility_manager/image-tag';
 	templateUrl: 'res-env.component.html',
 	providers: [BiocondaService],
 })
-export class ResEnvComponent implements OnInit, OnChanges {
+export class ResEnvComponent implements OnInit, OnChanges, OnDestroy {
 
 	@Input() clientid: string;
 	@Input() forc_url: string;
@@ -24,6 +25,7 @@ export class ResEnvComponent implements OnInit, OnChanges {
 	@Input() imageName: string = '';
 	@Input() selectedImageTags: string[] = [];
 	@Input() blockedImageTagsResenv: BlockedImageTagResenv[];
+	@Input() workshopMode: boolean = false;
 
 	Object: Object = Object;
 
@@ -44,6 +46,8 @@ export class ResEnvComponent implements OnInit, OnChanges {
 	CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL;
 
 	create_only_backend: boolean = false;
+
+	subscription: Subscription = new Subscription();
 
 	constructor(private condaService: BiocondaService) {
 		this.condaService = condaService;
@@ -71,10 +75,16 @@ export class ResEnvComponent implements OnInit, OnChanges {
 		this.undefinedTemplate.template_name = 'undefined';
 		this.templates_to_block = [];
 		this.setSelectedTemplate(null);
-		this.condaService.getForcTemplates(this.clientid).subscribe((templates: ResearchEnvironment[]): void => {
-			this.templates = templates;
-		});
+		this.subscription.add(
+			this.condaService.getForcTemplates(this.clientid).subscribe((templates: ResearchEnvironment[]): void => {
+				this.templates = templates;
+			}),
+		);
 		this.rng = new RandomNameGenerator();
+	}
+
+	ngOnDestroy() {
+		this.subscription.unsubscribe();
 	}
 
 	ngOnChanges(): void {
@@ -83,13 +93,20 @@ export class ResEnvComponent implements OnInit, OnChanges {
 
 	isValid(): boolean {
 		if (this.onlyNamespace) {
-
-			return this.user_key_url.errors === null;
+			if (this.workshopMode) {
+				return true;
+			} else {
+				return this.user_key_url.errors === null;
+			}
 		} else if (this.selectedTemplate.template_name === 'undefined') {
-
-			return this.user_key_url.value.length === 0;
+			if (this.workshopMode) {
+				return false;
+			} else {
+				return this.user_key_url.value.length === 0;
+			}
+		} else if (this.workshopMode) {
+			return true;
 		} else {
-
 			return this.user_key_url.errors === null;
 		}
 	}
@@ -103,7 +120,9 @@ export class ResEnvComponent implements OnInit, OnChanges {
 	}
 
 	needsTemplate(): boolean {
-		if (this.user_key_url.value.length !== 0 && !this.onlyNamespace) {
+		if (this.workshopMode && this.selectedTemplate.template_name === 'undefined') {
+			return true;
+		} else if (this.user_key_url.value.length !== 0 && !this.onlyNamespace) {
 			return this.selectedTemplate.template_name === 'undefined';
 		}
 
@@ -142,6 +161,11 @@ export class ResEnvComponent implements OnInit, OnChanges {
 			}
 		}
 		this.templates_to_block = [];
+	}
+
+	resetData(): void {
+		this.setSelectedTemplate(null);
+		this.create_only_backend = false;
 	}
 
 }
