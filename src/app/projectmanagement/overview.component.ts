@@ -98,6 +98,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	supportMails: string[] = [];
 
 	resourceDataLoaded: boolean = false;
+	creditHistoryLoaded: boolean = false;
 	vmsInUse: number;
 	maximumVMs: number;
 	coresInUse: number;
@@ -188,7 +189,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
 		const initialState = {
 			project: this.project_application,
-			life_time_string: `${this.project.DateCreated} -  ${this.project.DateEnd}`,
+			life_time_string: `${this.project.DateCreated} - ${this.project.DateEnd}`,
 		};
 		this.bsModalRef = this.modalService.show(LifetimeRequestComponent, { initialState });
 		this.bsModalRef.setClass('modal-lg');
@@ -270,6 +271,9 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 								responsive: true,
 							},
 						});
+					}
+					if (!this.creditHistoryLoaded) {
+						this.creditHistoryLoaded = true;
 					}
 				}).catch((err: Error): void => console.log(err.message));
 		}
@@ -404,6 +408,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 				}
 				if (this.updateCreditsHistoryIntervals) {
 					clearInterval(this.updateCreditsHistoryIntervals);
+					this.creditHistoryLoaded = false;
 				}
 			} catch (someError) {
 				// empty catch
