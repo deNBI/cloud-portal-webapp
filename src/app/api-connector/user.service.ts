@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { map } from 'rxjs/operators';
 import { ApiSettings } from './api-settings.service';
 import { IResponseTemplate } from './response-template';
+import { Userinfo } from '../userinfo/userinfo.model';
 
 /**
  * Service which provides user methods.
@@ -59,12 +61,15 @@ export class UserService {
 
 	}
 
-	getUserInfo(): Observable<any> {
+	getUserInfo(): Observable<Userinfo> {
 
-		return this.http.get<any>(`${ApiSettings.getApiBaseURL()}users/current/userInfo/`, {
+		return this.http.get<Userinfo>(`${ApiSettings.getApiBaseURL()}users/current/userInfo/`, {
 			withCredentials: true,
-
-		});
+		}).pipe(
+			map(
+				(userinfo: Userinfo): Userinfo => new Userinfo(userinfo),
+			),
+		);
 	}
 
 	getLoggedUserElixirId(): Observable<any> {

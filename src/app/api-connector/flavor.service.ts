@@ -65,4 +65,17 @@ export class FlavorService {
 		);
 	}
 
+	sortFlavors(flavors: Flavor[]): { [name: string]: Flavor[] } {
+		const flavor_types: { [name: string]: Flavor[] } = {};
+		for (const flavor of flavors) {
+			if (flavor.type.long_name in flavor_types) {
+				flavor_types[flavor.type.long_name].push(flavor);
+			} else {
+				flavor_types[flavor.type.long_name] = [flavor];
+			}
+		}
+
+		return flavor_types;
+	}
+
 }
