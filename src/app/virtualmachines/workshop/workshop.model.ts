@@ -1,0 +1,32 @@
+import { ProjectMember } from '../../projectmanagement/project_member.model';
+import { Application } from '../../applications/application.model/application.model';
+import { WorkshopVM } from './workshop-vm.model';
+
+export class Workshop {
+	application: Application;
+	members: ProjectMember[];
+	vm_list: WorkshopVM[];
+	longname: string = '';
+	shortname: string = '';
+
+	constructor(workshop?: Partial<Workshop>) {
+		Object.assign(this, workshop);
+		this.members = [];
+		this.vm_list = [];
+		if (workshop) {
+			if (workshop.application) {
+				this.application = new Application(workshop.application);
+			}
+			if (workshop.members) {
+				for (const member of workshop.members) {
+					this.members.push(new ProjectMember(member));
+				}
+			}
+			if (workshop.vm_list) {
+				for (const vm of workshop.vm_list) {
+					this.vm_list.push(new WorkshopVM(vm));
+				}
+			}
+		}
+	}
+}

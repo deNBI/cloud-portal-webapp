@@ -214,6 +214,12 @@ export class GroupService {
 		});
 	}
 
+	getSimpleVmByUserWhereWorkshopAndAdmin(): Observable<any> {
+		return this.http.get<any>(`${ApiSettings.getApiBaseURL()}projects/simpleVmWorkshops/`, {
+			withCredentials: true,
+		});
+	}
+
 	getGroupDois(application_id: string | number): Observable<Doi[]> {
 		const params: HttpParams = new HttpParams()
 			.set('application', application_id.toString());
