@@ -71,6 +71,7 @@
     "jsnlog": "^2.30.0",
     "jspdf": "^2.3.1",
     "keypairs": "^1.2.14",
+    "@sindresorhus/transliterate": "1.4.0",
     "log4js": "^6.3.0",
     "log4js-protractor-appender": "^1.1.2",
     "moment": "^2.29.0",
