@@ -48,6 +48,7 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
 	brand_logo: string = 'static/webapp/assets/img/denbi-logo-color.svg';
 	brand_logo_minimized: string = 'static/webapp/assets/img/denbi-logo-minimized.svg';
 	cluster_allowed: boolean = false;
+	has_workshops: boolean = false;
 
 	TITLE: string = '';
 
@@ -101,6 +102,14 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
 		});
 	}
 
+	is_workshop_admin(): void {
+		this.groupService.getSimpleVmByUserWhereWorkshopAndAdmin().subscribe((result: any): void => {
+			if (result.length > 0) {
+				this.has_workshops = true;
+			}
+		});
+	}
+
 	getGroupsEnumeration(): void {
 		this.groupService.getGroupsEnumeration().subscribe((res: ProjectEnumeration[]): void => {
 			this.project_enumeration = res;
@@ -124,6 +133,7 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
 		this.set_cluster_allowed();
 		this.getGroupsEnumeration();
 		this.is_vm_project_member();
+		this.is_workshop_admin();
 		this.get_is_facility_manager();
 		this.getLoginName();
 
