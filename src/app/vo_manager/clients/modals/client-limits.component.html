@@ -1,7 +1,7 @@
 <div class="modal-dialog" role="document">
     <div class="modal-content">
-        <div class="modal-header">
-            <div *ngIf="limits_message" class="alert alert-{{ message_type }}"
+        <div class="modal-header" *ngIf="limits_message">
+            <div class="alert alert-{{ message_type }}"
                  role="alert" id="notification_message">
                 {{ limits_message }}
             </div>
@@ -84,6 +84,11 @@
 
         </div>
         <div class="modal-footer">
+            <button id="approve_modification"
+                    [disabled]="!approvable"
+                    type="reset" (click)="approve();"
+                    class="btn  btn-success"> Approve
+            </button>
             <button id="close_notification_modal_btn"
                     type="reset" (click)="bsModalRef.hide();"
                     class="btn  btn-secondary"> Close

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Subscription } from 'rxjs';
 import { ApplicationsService } from '../api-connector/applications.service';
@@ -37,7 +37,7 @@ enum TabStates {
 	           providers: [FacilityService, VoService, UserService, GroupService,
 		           ApplicationsService, ApiSettings, FlavorService, CreditsService],
 })
-export class ApplicationsComponent extends ApplicationBaseClassComponent implements OnInit {
+export class ApplicationsComponent extends ApplicationBaseClassComponent implements OnInit, OnDestroy {
 
 	title: string = 'Application Overview';
 	tab_state: number = TabStates.SUBMITTED;
@@ -47,7 +47,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 	loading_applications: boolean = false;
 	atLeastOneVM: boolean = false;
 	bsModalRef: BsModalRef;
-		subscription: Subscription = new Subscription();
+	subscription: Subscription = new Subscription();
 
 	/**
 	 * All Applications, just visible for a vo admin.
@@ -101,6 +101,10 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 	            private flavorService: FlavorService,
 	            private creditsService: CreditsService) {
 		super(userService, applicationsService, facilityService);
+	}
+
+	ngOnDestroy() {
+		this.subscription.unsubscribe();
 	}
 
 	ngOnInit(): void {
@@ -565,77 +569,11 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 		document.body.classList.remove('modal-open');
 	}
 
-	private setNotificationClient(application_id: string): void {
-		this.applicationsService.getApplicationClient(
-			application_id,
-		).subscribe((client: object): void => {
-			const newClient: Client = new Client(null, client['host'], client['port'], client['location'], client['id']);
-			newClient.maxVolumeLimit = client['max_ressources']['maxTotalVolumeGigabytes'];
-			newClient.currentUsedVolumeStorage = client['max_ressources']['totalGigabytesUsed'];
-
-			newClient.maxVolumes = client['max_ressources']['maxTotalVolumes'];
-			newClient.currentUsedVolumes = client['max_ressources']['totalVolumesUsed'];
-
-			newClient.maxVMs = client['max_ressources']['max_total_instances'];
-			newClient.currentUsedVms = client['max_ressources']['total_instances_used'];
-
-			newClient.maxCores = client['max_ressources']['max_total_cores'];
-			newClient.currentUsedCores = client['max_ressources']['total_cores_used'];
-
-			newClient.maxRam = client['max_ressources']['max_total_ram_size'];
-			newClient.currentUsedRam = client['max_ressources']['total_ram_used'];
-
-			newClient.assignedVMs = client['assigned_ressources']['vms'];
-			newClient.assignedRam = client['assigned_ressources']['ram'];
-			newClient.assignedCores = client['assigned_ressources']['cores'];
-			newClient.assignedVolumes = client['assigned_ressources']['volumes'];
-			newClient.assignedVolumesStorage = client['assigned_ressources']['volumeLimit'];
-			this.notificationClientInfo.push(newClient);
-			this.showNotificationModal(
-				'Success', `The new project was created and assigned to ${newClient.location}.`,
-				'success',
-			);
-
-		});
-	}
-
-	showClientsLimitsModal(compute_center_id: string, application: Application): void {
-		const initialState = { compute_center_id, application };
+	showClientsLimitsModal(compute_center_id: string, application: Application, is_modification_request: boolean = false): void {
+		const initialState = { compute_center_id, application, is_modification_request };
 
 		this.bsModalRef = this.modalService.show(ClientLimitsComponent, { initialState });
-		// this.bsModalRef.setClass('modal-lg');
-		// this.subscribeToBsModalRef();
-	}
-
-	private setNoResourcesClientNotification(client: any): void {
-		const newClient: Client = new Client(null, null, null, client['client_location'], null);
-		newClient.maxVolumeLimit = client['maxTotalVolumeGigabytes'];
-		newClient.assignedVolumesStorage = client['assigned_volume_gb'];
-		newClient.currentUsedVolumeStorage = client['totalGigabytesUsed'];
-		newClient.newVolumeLimit = client['new_volume_gb'];
-
-		newClient.maxVolumes = client['maxTotalVolumes'];
-		newClient.assignedVolumes = client['assigned_volumes'];
-		newClient.currentUsedVolumes = client['totalVolumesUsed'];
-		newClient.newVolumes = client['new_volumes'];
-
-		newClient.maxVMs = client['max_total_instances'];
-		newClient.assignedVMs = client['assigned_instances'];
-		newClient.currentUsedVms = client['total_instances_used'];
-		newClient.newVms = client['additional_instances'];
-
-		newClient.maxCores = client['max_total_cores'];
-		newClient.assignedCores = client['assigned_cores'];
-		newClient.currentUsedCores = client['total_cores_used'];
-		newClient.newCores = client['new_cores'];
-
-		newClient.maxRam = client['max_total_ram_size'];
-		newClient.assignedRam = client['assigned_ram'];
-		newClient.currentUsedRam = client['total_ram_used'];
-		newClient.newRam = client['new_ram'];
-
-		this.notificationClientInfo.push(newClient);
-
+		this.subscribeToBsModalRef();
 	}
 
 	showNotificationModal(notificationModalTitle: string,
@@ -643,6 +581,9 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 	                      notificationModalType: string) {
 
 		const initialState = { notificationModalTitle, notificationModalType, notificationModalMessage };
+		if (this.bsModalRef) {
+			this.bsModalRef.hide();
+		}
 
 		this.bsModalRef = this.modalService.show(NotificationModalComponent, { initialState });
 		this.bsModalRef.setClass('modal-lg');
@@ -656,7 +597,10 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 			this.bsModalRef.content.event.subscribe(
 				(result: any) => {
 					if ('createSimpleVM' in result) {
-					//	this.createSimpleVmProjectGroup();
+						this.createSimpleVmProjectGroup(result['application'], result['compute_center_id']);
+					}
+					if ('approveModification' in result) {
+						this.approveModificationRequest(result['application']);
 					}
 
 				},
@@ -665,6 +609,8 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 	}
 
 	public createSimpleVmProjectGroup(app: Application, compute_center_id?: string): void {
+		this.showNotificationModal('Info', 'Creating Project...',
+		                           'info');
 
 		const application_id: string = app.project_application_id as string;
 		if (compute_center_id && compute_center_id !== 'undefined') {
