@@ -206,13 +206,14 @@
                     <input class="form-check-input" type="checkbox"
                            name="project_application_workshop"
                            [(ngModel)]="application.project_application_workshop">
+                    <span class="help-block">
+                  Would you like to conduct a workshop with the requested resources in the context of this project?
+                </span>
 
                   </div>
 
                 </div>
-                <span class="help-block">
-                  Would you like to conduct a workshop with the requested resources in the context of this project?
-                </span>
+
               </div>
             </div>
 
@@ -476,17 +477,13 @@
                 <div id="id_project_application_sensitive_data" class="form-check">
                   <input class="form-check-input" type="checkbox"
                          name="project_application_sensitive_data"
-                         [(ngModel)]="application.project_application_sensitive_data"
-                  >
-
-                </div>
-
-
-                <div class="alert alert-primary" role="alert">
-                  According to our usage policy it is not allowed to process person related data in the de.NBI Cloud
-                  with
-                  the exception that an additional agreement is made with the corresponding cloud site operator.
-                  If you want to process person related data please click on the checkbox!
+                         [(ngModel)]="application.project_application_sensitive_data">
+                  <div class="alert alert-primary" role="alert">
+                    According to our usage policy it is not allowed to process person related data in the de.NBI Cloud
+                    with
+                    the exception that an additional agreement is made with the corresponding cloud site operator.
+                    If you want to process person related data please click on the checkbox!
+                  </div>
                 </div>
               </div>
             </div>
@@ -497,16 +494,14 @@
                 <div id="id_project_application_openstack_basic_introduction" class="form-check">
                   <input class="form-check-input" type="checkbox"
                          name="project_application_openstack_basic_introduction"
-                         [(ngModel)]="application.project_application_openstack_basic_introduction"
-                  >
+                         [(ngModel)]="application.project_application_openstack_basic_introduction">
+                  <div class="alert alert-primary" role="alert">
+                    Are you interested in a short OpenStack introduction workshop? You and your project members will be
+                    notified as soon as a workshop is organized.
+                  </div>
 
                 </div>
 
-
-                <div class="alert alert-primary" role="alert">
-                  Are you interested in a short OpenStack introduction workshop? You and your project members will be
-                  notified as soon as a workshop is organized.
-                </div>
               </div>
             </div>
             <div class="form-group row" *ngIf="openstack_project">
@@ -517,15 +512,12 @@
                   <input class="form-check-input" type="checkbox"
                          name="project_application_cloud_service"
                          [defaultChecked]="application?.project_application_cloud_service_user_number > 0 || application?.project_application_cloud_service_develop"
-                         [(ngModel)]="application.project_application_cloud_service"
-                  >
-
+                         [(ngModel)]="application.project_application_cloud_service">
+                  <div class="alert alert-primary" role="alert">
+                    Do you plan to offer a service?
+                  </div>
                 </div>
 
-
-                <div class="alert alert-primary" role="alert">
-                  Do you plan to offer a service?
-                </div>
               </div>
             </div>
             <div class="form-group row" *ngIf="application?.project_application_cloud_service">
@@ -536,17 +528,14 @@
                   <input class="form-check-input" type="checkbox"
                          name="project_application_cloud_service_develop"
                          [defaultChecked]="application?.project_application_cloud_service_user_number > 0 || application?.project_application_cloud_service"
-                         [(ngModel)]="application.project_application_cloud_service_develop"
-                  >
-
+                         [(ngModel)]="application.project_application_cloud_service_develop">
+                  <div class="alert alert-primary" role="alert">
+                    Are you developing a new service?
+                    <br>
+                    <strong>Note:</strong> if you plan to offer an existing service, please set this switch to No.
+                  </div>
                 </div>
 
-
-                <div class="alert alert-primary" role="alert">
-                  Are you developing a new service?
-                  <br>
-                  <strong>Note:</strong> if you plan to offer an existing service, please set this switch to No.
-                </div>
               </div>
             </div>
             <div class="form-group row"
@@ -582,6 +571,7 @@
                          #part_horizon
                          [defaultChecked]="application?.project_application_horizon2020?.length > 1"
                          (click)="toggleProjectPart(part_horizon.checked, 'horizon')">
+                  <span class="help-block">Is your project part of a Horizon 2020 project?</span>
 
                 </div>
 
@@ -593,7 +583,6 @@
                                 'is-valid': form.controls.project_application_horizon2020?.valid
                                 }"
                        [(ngModel)]="application.project_application_horizon2020" placeholder='Name of the project'>
-                <p>Is your project part of a Horizon 2020 project?</p>
               </div>
             </div>
             <div class="form-group row">
@@ -605,6 +594,7 @@
                          #part_elixir
                          [defaultChecked]="application?.project_application_elixir_project?.length > 1"
                          (click)="toggleProjectPart(part_elixir.checked, 'elixir')">
+                  <span class="help-block">Is your project part of an Elixir project?</span>
 
                 </div>
 
@@ -617,7 +607,6 @@
                                 'is-valid': form.controls.project_application_elixir_project?.valid
                                 }"
                        [(ngModel)]="application.project_application_elixir_project" placeholder='Name of the project'>
-                <p>Is your project part of an Elixir project?</p>
               </div>
             </div>
             <div class="form-group row">
@@ -628,6 +617,7 @@
                          #part_dfg
                          [defaultChecked]="application?.project_application_dfg?.length > 1"
                          (click)="toggleProjectPart(part_dfg.checked, 'dfg')">
+                  <span class="help-block">Is your project part of a DFG project?</span>
 
                 </div>
 
@@ -639,7 +629,6 @@
                                 'is-valid': form.controls.project_application_dfg?.valid
                                 }"
                        [(ngModel)]="application.project_application_dfg" placeholder='Name of the project'>
-                <p>Is your project part of a DFG project?</p>
               </div>
             </div>
             <div class="form-group row">
@@ -650,6 +639,7 @@
                          #part_bmbf
                          [defaultChecked]="application?.project_application_bmbf_project?.length > 1"
                          (click)="toggleProjectPart(part_bmbf.checked, 'bmbf')">
+                  <span class="help-block">Is your project part of a BMBF project?</span>
 
                 </div>
 
@@ -661,7 +651,7 @@
                                 'is-valid': form.controls.project_application_bmbf_project?.valid
                                 }"
                        [(ngModel)]="application.project_application_bmbf_project" placeholder='Name of the project'>
-                <p>Is your project part of a BMBF project?</p>
+
               </div>
             </div>
             <div class="form-group row">
@@ -671,7 +661,7 @@
                   <input class="form-check-input" type="checkbox" #part_nfdi
                          [defaultChecked]="application?.project_application_nfdi?.length > 1"
                          (click)="toggleProjectPart(part_nfdi.checked, 'nfdi')">
-
+                  <span class="help-block">Is your project part of a NFDI project?</span>
                 </div>
                 <input type="text" id="id_project_application_nfdi_project" *ngIf="part_nfdi.checked"
                        name="project_application_nfdi_project" class="form-control"
@@ -681,27 +671,18 @@
                                 'is-valid': form.controls.project_application_nfdi?.valid
                                 }"
                        [(ngModel)]="application.project_application_nfdi" placeholder='Name of the project'>
-                <p>Is your project part of a NFDI project?</p>
               </div>
             </div>
-
-
             <div class="form-group row">
               <label class="col-md-4 form-control-label" for="id_project_application_report_allowed"><strong>Dissemination</strong></label>
               <div class="col-md-8">
                 <div id="id_project_application_report_allowed" class="form-check">
                   <input class="form-check-input" type="checkbox" name="project_application_report_allowed"
-                         [(ngModel)]="application.project_application_report_allowed"
-                  >
-
+                         [(ngModel)]="application.project_application_report_allowed">
+                  <span class="help-block"> Do you permit the de.NBI Cloud to publicly mention your
+                  project's participation?</span>
                 </div>
-
-                <p> Do you permit the de.NBI Cloud to publicly mention your
-                  project's participation?</p>
-
               </div>
-
-
             </div>
             <div *ngIf="application?.project_application_report_allowed">
 
@@ -964,18 +945,10 @@
                 <div class="form-check" id="project_application_pi_approved_checkbox">
                   <input type="checkbox" class="form-check-input"
                          [(ngModel)]="application.project_application_pi_approved"
-                         name="project_application_pi_approved"
-
-                  >
-
+                         name="project_application_pi_approved">
+                  <span class="help-block"> Are you a principal investigator?</span>
                 </div>
-
-
-                <p> Are you a principal investigator?</p>
-
               </div>
-
-
             </div>
             <div *ngIf="application?.project_application_pi_approved" class="form-group row">
               <label class="col-md-4 form-control-label" for="project_application_responsibility"
