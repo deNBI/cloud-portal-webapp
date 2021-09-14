@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { Subscription } from 'rxjs';
 import { ApplicationsService } from '../api-connector/applications.service';
 import { ApiSettings } from '../api-connector/api-settings.service';
 import { Application } from './application.model/application.model';
@@ -15,6 +17,8 @@ import { is_vo } from '../shared/globalvar';
 import { Application_States } from '../shared/shared_modules/baseClass/abstract-base-class';
 import { FlavorType } from '../virtualmachines/virtualmachinemodels/flavorType';
 import { CreditsService } from '../api-connector/credits.service';
+import { ClientLimitsComponent } from '../vo_manager/clients/modals/client-limits..component';
+import { NotificationModalComponent } from '../shared/modal/notification-modal';
 
 // eslint-disable-next-line no-shadow
 enum TabStates {
@@ -28,10 +32,10 @@ enum TabStates {
  * Application Overview component.
  */
 @Component({
-	selector: 'app-applications-list',
-	templateUrl: 'applications.component.html',
-	providers: [FacilityService, VoService, UserService, GroupService,
-		ApplicationsService, ApiSettings, FlavorService, CreditsService],
+	           selector: 'app-applications-list',
+	           templateUrl: 'applications.component.html',
+	           providers: [FacilityService, VoService, UserService, GroupService,
+		           ApplicationsService, ApiSettings, FlavorService, CreditsService],
 })
 export class ApplicationsComponent extends ApplicationBaseClassComponent implements OnInit {
 
@@ -42,6 +46,8 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
 	loading_applications: boolean = false;
 	atLeastOneVM: boolean = false;
+	bsModalRef: BsModalRef;
+		subscription: Subscription = new Subscription();
 
 	/**
 	 * All Applications, just visible for a vo admin.
@@ -87,12 +93,13 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 	 * @param creditsService
 	 */
 	constructor(applicationsService: ApplicationsService,
-		userService: UserService,
-		private groupservice: GroupService,
-		private voService: VoService,
-		facilityService: FacilityService,
-		private flavorService: FlavorService,
-		private creditsService: CreditsService) {
+	            userService: UserService,
+	            private groupservice: GroupService,
+	            private modalService: BsModalService,
+	            private voService: VoService,
+	            facilityService: FacilityService,
+	            private flavorService: FlavorService,
+	            private creditsService: CreditsService) {
 		super(userService, applicationsService, facilityService);
 	}
 
@@ -172,11 +179,11 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 		this.applicationsService.adjustApplication(this.adjustedApplication).subscribe((adjustmentResult: Application): void => {
 			const index: number = this.all_applications.indexOf(this.selectedApplication);
 			this.all_applications[index] = new Application(adjustmentResult);
-			this.updateNotificationModal('Success',
-				'The resources of the application were adjusted successfully!',
-				true, 'success');
+			this.showNotificationModal('Success',
+			                           'The resources of the application were adjusted successfully!',
+			                           'success');
 		}, (): void => {
-			this.updateNotificationModal('Failed', 'The adjustment of the resources has failed!', true, 'danger');
+			this.showNotificationModal('Failed', 'The adjustment of the resources has failed!', 'danger');
 		});
 	}
 
@@ -247,9 +254,9 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 					const applicationToGet: Application = application;
 					applicationToGet.project_application_status = [];
 					this.getApplication(applicationToGet);
-					this.updateNotificationModal('Success', 'The request has been sent to the facility manager.', true, 'success');
+					this.showNotificationModal('Success', 'The request has been sent to the facility manager.', 'success');
 				} else {
-					this.updateNotificationModal('Success', 'The project has been extended!', true, 'success');
+					this.showNotificationModal('Success', 'The project has been extended!', 'success');
 				}
 				if (!application.project_application_openstack_project) {
 					this.numberOfExtensionRequests -= 1;
@@ -257,7 +264,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 				}
 			}, (err: any): void => {
 				console.log('error', err.status);
-				this.updateNotificationModal('Failed', 'Project lifetime could not be extendend!', true, 'danger');
+				this.showNotificationModal('Failed', 'Project lifetime could not be extendend!', 'danger');
 			});
 	}
 
@@ -266,13 +273,13 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 		this.applicationsService.deleteAdditionalLifetimeRequests(application.project_application_id)
 			.subscribe(
 				(): void => {
-					this.updateNotificationModal('Declined', 'The project extension was declined!', true, 'success');
+					this.showNotificationModal('Declined', 'The project extension was declined!', 'success');
 					this.all_applications.splice(this.all_applications.indexOf(application), 1);
 					this.numberOfExtensionRequests -= 1;
 				},
 				(err: any): void => {
 					console.log('error', err.status);
-					this.updateNotificationModal('Failed', 'Decline of project extension failed!', true, 'danger');
+					this.showNotificationModal('Failed', 'Decline of project extension failed!', 'danger');
 				},
 			);
 	}
@@ -281,7 +288,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
 		this.applicationsService.approveModificationRequest(application.project_application_id)
 			.subscribe((): void => {
-				this.updateNotificationModal('Success', 'The resource modification request was approved!', true, 'success');
+				this.showNotificationModal('Success', 'The resource modification request was approved!', 'success');
 				if (!application.project_application_openstack_project) {
 					this.numberOfModificationRequests -= 1;
 					this.all_applications.splice(this.all_applications.indexOf(application), 1);
@@ -292,7 +299,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 				}
 			}, (err: any): void => {
 				console.log('error', err.status);
-				this.updateNotificationModal('Failed', 'Approval of resource modification failed!', true, 'danger');
+				this.showNotificationModal('Failed', 'Approval of resource modification failed!', 'danger');
 			});
 	}
 
@@ -300,12 +307,12 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
 		this.applicationsService.deleteModificationRequest(application.project_application_id)
 			.subscribe((): void => {
-				this.updateNotificationModal('Declined', 'The resource modification request was declined!', true, 'success');
+				this.showNotificationModal('Declined', 'The resource modification request was declined!', 'success');
 				this.all_applications.splice(this.all_applications.indexOf(application), 1);
 				this.numberOfModificationRequests -= 1;
 			}, (err: any): void => {
 				console.log('error', err.status);
-				this.updateNotificationModal('Failed', 'Decline of resource modification failed!', true, 'danger');
+				this.showNotificationModal('Failed', 'Decline of resource modification failed!', 'danger');
 			});
 	}
 
@@ -313,7 +320,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 		this.applicationsService.approveAdditionalCreditsRequest(application.project_application_id)
 			.subscribe((): void => {
 
-				this.updateNotificationModal('Success', 'The credit extension request was approved!', true, 'success');
+				this.showNotificationModal('Success', 'The credit extension request was approved!', 'success');
 				if (!application.project_application_openstack_project) {
 					this.numberOfCreditRequests -= 1;
 					this.all_applications.splice(this.all_applications.indexOf(application), 1);
@@ -324,19 +331,19 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 				}
 			}, (err: any): void => {
 				console.log('error', err.status);
-				this.updateNotificationModal('Failed', 'Approval of credit extension failed!', true, 'danger');
+				this.showNotificationModal('Failed', 'Approval of credit extension failed!', 'danger');
 			});
 	}
 
 	declineCreditExtension(application: Application): void {
 		this.applicationsService.deleteAdditionalCreditsRequests(application.project_application_id)
 			.subscribe((): void => {
-				this.updateNotificationModal('Declined', 'The credit extension request was declined!', true, 'success');
+				this.showNotificationModal('Declined', 'The credit extension request was declined!', 'success');
 				this.all_applications.splice(this.all_applications.indexOf(application), 1);
 				this.numberOfCreditRequests -= 1;
 			}, (err: any): void => {
 				console.log('error', err.status);
-				this.updateNotificationModal('Failed', 'Decline of credit extension failed!', true, 'danger');
+				this.showNotificationModal('Failed', 'Decline of credit extension failed!', 'danger');
 			});
 	}
 
@@ -508,10 +515,10 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 		this.groupservice.removeGroupFromResource(application.project_application_perun_id.toString()).subscribe(
 			(): void => {
 				this.getApplication(application);
-				this.updateNotificationModal('Success', 'The application was removed from the compute center', true, 'success');
+				this.showNotificationModal('Success', 'The application was removed from the compute center', 'success');
 			},
 			(): void => {
-				this.updateNotificationModal('Failed', 'The application was removed from the compute center', true, 'danger');
+				this.showNotificationModal('Failed', 'The application was removed from the compute center', 'danger');
 			},
 		);
 
@@ -530,16 +537,16 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 		this.groupservice.createGroupOpenStack(application.project_application_id, compute_center)
 			.subscribe((result: { [key: string]: string }): void => {
 				if (result['Error']) {
-					this.updateNotificationModal('Failed', result['Error'], true, 'danger');
+					this.showNotificationModal('Failed', result['Error'], 'danger');
 				} else {
 					const applicationToGet: Application = application;
 					applicationToGet.project_application_status = [];
-					this.updateNotificationModal('Success', 'The new project was created', true, 'success');
+					this.showNotificationModal('Success', 'The new project was created', 'success');
 					this.getApplication(applicationToGet);
 
 				}
 			}, (): void => {
-				this.updateNotificationModal('Failed', 'Project could not be created!', true, 'danger');
+				this.showNotificationModal('Failed', 'Project could not be created!', 'danger');
 			});
 	}
 
@@ -584,13 +591,20 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 			newClient.assignedVolumes = client['assigned_ressources']['volumes'];
 			newClient.assignedVolumesStorage = client['assigned_ressources']['volumeLimit'];
 			this.notificationClientInfo.push(newClient);
-			this.updateNotificationModal(
+			this.showNotificationModal(
 				'Success', `The new project was created and assigned to ${newClient.location}.`,
-				true,
 				'success',
 			);
 
 		});
+	}
+
+	showClientsLimitsModal(compute_center_id: string, application: Application): void {
+		const initialState = { compute_center_id, application };
+
+		this.bsModalRef = this.modalService.show(ClientLimitsComponent, { initialState });
+		// this.bsModalRef.setClass('modal-lg');
+		// this.subscribeToBsModalRef();
 	}
 
 	private setNoResourcesClientNotification(client: any): void {
@@ -624,11 +638,32 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
 	}
 
+	showNotificationModal(notificationModalTitle: string,
+	                      notificationModalMessage: string,
+	                      notificationModalType: string) {
+
+		const initialState = { notificationModalTitle, notificationModalType, notificationModalMessage };
+
+		this.bsModalRef = this.modalService.show(NotificationModalComponent, { initialState });
+		this.bsModalRef.setClass('modal-lg');
+	}
+
 	/**
-	 * Create a new Group in perun with the specific attributes.
-	 *
-	 * @param app
+	 * Function to listen to modal results.
 	 */
+	subscribeToBsModalRef(): void {
+		this.subscription.add(
+			this.bsModalRef.content.event.subscribe(
+				(result: any) => {
+					if ('createSimpleVM' in result) {
+					//	this.createSimpleVmProjectGroup();
+					}
+
+				},
+			),
+		);
+	}
+
 	public createSimpleVmProjectGroup(app: Application, compute_center_id?: string): void {
 
 		const application_id: string = app.project_application_id as string;
@@ -636,49 +671,20 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 			this.groupservice.createGroupByApplication(application_id, compute_center_id).subscribe(
 				(res: any): void => {
 					if (!res['client_available'] && !res['created']) {
-						this.setNoResourcesClientNotification(res);
-						this.updateNotificationModal('Failed', `The client ${res['client_name']} has not the necessary resources left!`,
-							true, 'danger');
+						this.showNotificationModal('Failed', `The client ${res['client_name']} has not the necessary resources left!`,
+						                           'danger');
 					} else {
-						this.setNotificationClient(application_id);
 						this.all_applications.splice(this.all_applications.indexOf(app), 1);
 						this.numberOfProjectApplications -= 1;
+						this.showNotificationModal('Success', 'The project was created!',
+						                           'success');
 						// this.reloadApplicationList(application_id)
 					}
 
 				},
 				(error: object): void => {
 					console.log(error);
-					this.updateNotificationModal('Failed', 'Project could not be created!', true, 'danger');
-				},
-			);
-		} else {
-			this.applicationsService.getApplicationClientAvaiable(application_id).subscribe(
-				(res: Client): void => {
-					if (!res['client_available']) {
-						// tslint:disable-next-line:forin
-						if (res['clients']) {
-							for (const client of res['clients']) {
-								this.setNoResourcesClientNotification(client);
-
-							}
-						}
-						this.updateNotificationModal('Failed', 'No client with the necessary resources online!', true, 'danger');
-
-					} else {
-
-						this.groupservice.createGroupByApplication(application_id).subscribe((): void => {
-							this.setNotificationClient(application_id);
-							// this.reloadApplicationList(application_id)
-
-						});
-
-					}
-
-				},
-				(error: object): void => {
-					console.log(error);
-					this.updateNotificationModal('Failed', 'Project could not be created!', true, 'danger');
+					this.showNotificationModal('Failed', 'Project could not be created!', 'danger');
 				},
 			);
 		}
@@ -701,13 +707,13 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 							break;
 						}
 					}
-					this.updateNotificationModal('Success', 'The  project was assigned to the facility.', true, 'success');
+					this.showNotificationModal('Success', 'The  project was assigned to the facility.', 'success');
 				}, (error: object): void => {
 					console.log(error);
-					this.updateNotificationModal('Failed', 'Project could not be created!', true, 'danger');
+					this.showNotificationModal('Failed', 'Project could not be created!', 'danger');
 				});
 		} else {
-			this.updateNotificationModal('Failed', 'You need to select an compute center!', true, 'danger');
+			this.showNotificationModal('Failed', 'You need to select an compute center!', 'danger');
 		}
 
 	}
@@ -722,12 +728,12 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 		const idx: number = this.all_applications.indexOf(app);
 		this.applicationsService.declineApplication(app.project_application_id).subscribe(
 			(): void => {
-				this.updateNotificationModal('Success', 'The Application was declined', true, 'success');
+				this.showNotificationModal('Success', 'The Application was declined', 'success');
 				this.all_applications.splice(idx, 1);
 				this.numberOfProjectApplications -= 1;
 			},
 			(): void => {
-				this.updateNotificationModal('Failed', 'Application could not be declined!', true, 'danger');
+				this.showNotificationModal('Failed', 'Application could not be declined!', 'danger');
 				this.changeTabState(this.tab_state);
 			},
 		);

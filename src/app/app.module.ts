@@ -1,4 +1,4 @@
-import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { HashLocationStrategy, LocationStrategy, CommonModule } from '@angular/common';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -60,6 +60,7 @@ import { PipeModuleModule } from './pipe-module/pipe-module.module';
 		BrowserModule,
 		HttpClientModule,
 		AppRoutingModule,
+		CommonModule,
 		BsDropdownModule.forRoot(),
 		TabsModule.forRoot(),
 		ChartsModule,

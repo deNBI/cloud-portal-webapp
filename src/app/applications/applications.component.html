@@ -153,7 +153,7 @@
                       <button
                         *ngIf="(application | hasstatusinlist:Application_States.CONFIRMATION_DECLINED)  || ((application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION)  && !application?.ComputeCenter?.FacilityId )"
                         style="margin: auto 2.5px"
-                        (click)="resetNotificationModal();assignGroupToFacility(application?.project_application_perun_id,application?.project_application_id, selectedCenter[application.project_application_id]); notificationModal.show();"
+                        (click)="assignGroupToFacility(application?.project_application_perun_id,application?.project_application_id, selectedCenter[application.project_application_id]); "
                         [disabled]="!selectedCenter[application.project_application_id]"
                         type="button"
                         class="btn btn-secondary">
@@ -163,7 +163,7 @@
                       <button
                         *ngIf="(application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION)  && application?.ComputeCenter?.FacilityId"
                         style="margin: auto 2.5px"
-                        (click)="resetNotificationModal();removeApplicationFromFacilityConfirmation(application); notificationModal.show();"
+                        (click)="removeApplicationFromFacilityConfirmation(application); "
 
 
                         type="button"
@@ -174,7 +174,7 @@
                       <button
                         *ngIf="(application | hasstatusinlist:Application_States.SUBMITTED) && application?.project_application_openstack_project"
                         style="margin: auto 2.5px" [id]="'approve_'+ application?.project_application_shortname"
-                        (click)="resetNotificationModal();createOpenStackProjectGroup(application, selectedCenter[application.project_application_id]); notificationModal.show();"
+                        (click)="createOpenStackProjectGroup(application, selectedCenter[application.project_application_id]); "
                         [disabled]="!selectedCenter[application.project_application_id]"
                         type="button"
                         class="btn btn-success">
@@ -185,7 +185,7 @@
                       <button
                         *ngIf="(application | hasstatusinlist:Application_States.SUBMITTED)  && !application?.project_application_openstack_project"
                         style="margin: auto 2.5px" [id]="'approve_' + application?.project_application_shortname"
-                        (click)="resetNotificationModal();createSimpleVmProjectGroup(application,selectedCenter[application.project_application_id]); notificationModal.show();"
+                        (click)="showClientsLimitsModal(application,selectedCenter[application.project_application_id]); "
 
                         type="button"
                         class="btn btn-success">
@@ -199,7 +199,7 @@
                               class="btn btn-danger"
                               id="btn_decline_{{application.project_application_shortname}}"
                               style="margin: auto 2.5px"
-                              (click)="resetNotificationModal();declineApplication(application); notificationModal.show();">
+                              (click)="declineApplication(application); ">
                         <i class="fas fa-times"></i>&nbsp;
                         <span class="applicationActionsButton">Decline</span>
                       </button>
@@ -343,8 +343,8 @@
                         <button [id]="'modification_approval_' + application?.project_application_shortname"
                                 *ngIf="(application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  && application?.project_modification_request"
                                 style="margin: auto 2.5px"
-                                (click)="this.resetNotificationModal(); this.approveModificationRequest(application);
-                                  this.notificationModal.show();"
+                                (click)=" approveModificationRequest(application);
+                                  "
                                 type="button"
                                 class="btn btn-success">
                           <i class="fa fa-check"></i>&nbsp;
@@ -356,8 +356,8 @@
                           type="button"
                           class="btn btn-danger"
                           style="margin: auto 2.5px"
-                          (click)="this.resetNotificationModal(); this.declineModificationRequest(application);
-                                this.notificationModal.show();">
+                          (click)=" declineModificationRequest(application);
+                                ">
                           <i
                             class="fa fa-times"></i>&nbsp;
                           <span class="applicationActionsButton">Decline Modification</span>
@@ -489,9 +489,9 @@
                         <button [id]="'extension_approval_' + application?.project_application_shortname"
                                 *ngIf="(application | hasstatusinlist:Application_States.LIFETIME_EXTENSION_REQUESTED)  && application?.project_lifetime_request"
                                 style="margin: auto 2.5px"
-                                (click)="resetNotificationModal();
+                                (click)="
                                 approveLifetimeExtension(application);
-                                notificationModal.show();"
+                                "
                                 type="button"
                                 class="btn btn-success">
                           <i class="fa fa-check"></i>&nbsp;
@@ -502,9 +502,9 @@
                           type="button"
                           class="btn btn-danger"
                           style="margin: auto 2.5px"
-                          (click)="resetNotificationModal();
+                          (click)="
                           declineLifetimeExtension(application);
-                           notificationModal.show();">
+                           ">
                           <i
                             class="fa fa-times"></i>&nbsp;
                           <span class="applicationActionsButton">Decline Extension</span>
@@ -638,8 +638,8 @@
                         <button [id]="'credit_extension_approval_' + application?.project_application_shortname"
                                 *ngIf="(application | hasstatusinlist:Application_States.CREDITS_EXTENSION_REQUESTED) "
                                 style="margin: auto 2.5px"
-                                (click)="this.resetNotificationModal(); this.approveCreditExtension(application);
-                                  notificationModal.show();"
+                                (click)="this. this.approveCreditExtension(application);
+                                  "
                                 type="button"
                                 class="btn btn-success">
                           <i class="fa fa-check"></i>&nbsp;
@@ -648,8 +648,8 @@
 
                         <button [id]="'credit_extension_decline_' + application?.project_application_shortname"
                                 *ngIf="(application | hasstatusinlist:Application_States.CREDITS_EXTENSION_REQUESTED) "
-                                (click)="this.resetNotificationModal(); this.declineCreditExtension(application);
-                                 notificationModal.show();"
+                                (click)="this. this.declineCreditExtension(application);
+                                 "
                                 type="button"
                                 class="btn btn-danger"
                                 style="margin: auto 2.5px">
@@ -829,103 +829,6 @@
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
   </div><!-- /.modal -->
-
-
-<div bsModal #notificationModal="bs-modal" class="modal fade" tabindex="-1"
-     role="dialog" aria-labelledby="Label"
-     aria-hidden="true">
-  <div class="modal-dialog" role="document"
-       [ngClass]="notificationClientInfo.length > 0 ? 'modal-lg':''">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">{{ notificationModalTitle }}</h4>
-        <button type="button" class="close" style="cursor:pointer"
-                (click)="notificationModal.hide()" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="alert alert-{{ notificationModalType }}"
-             role="alert" id="notification_message">
-          {{ notificationModalMessage }}
-        </div>
-        <div *ngIf="notificationClientInfo.length > 0">
-          <div *ngFor="let c of notificationClientInfo" class="table-responsive">
-            <br>
-            <p>Client: {{c.location}}</p>
-            <table class="table table-hover">
-              <thead>
-              <tr>
-                <td></td>
-                <td>Current Used Ressources</td>
-                <td>Assigned Ressources</td>
-                <td>Max Ressources</td>
-              </tr>
-              </thead>
-              <tbody>
-              <tr>
-                <td>VMs</td>
-                <td>{{c.currentUsedVms}}
-                </td>
-                <td>{{c.assignedVMs}}<span *ngIf="c.newVms"
-                                           [ngStyle]="{'color':c.assignedVMs + c.newVms <= c.maxVMs? 'green':'red'}"> + {{c.newVms}}</span>
-                </td>
-                <td>{{c.maxVMs}} </td>
-              </tr>
-              <tr>
-                <td>Cores</td>
-                <td>{{c.currentUsedCores}}
-                </td>
-                <td>{{c.assignedCores}}<span *ngIf="c.newCores"
-                                             [ngStyle]="{'color':c.assignedCores + c.newCores <= c.maxCores? 'green':'red'}"> + {{c.newCores}}</span>
-                </td>
-                <td>{{c.maxCores}} </td>
-              </tr>
-              <tr>
-                <td>Ram [GB]</td>
-                <td>{{c.currentUsedRam}}
-                </td>
-                <td>{{c.assignedRam}}<span *ngIf="c.newRam"
-                                           [ngStyle]="{'color':c.assignedRam + c.newRam <= c.maxRam? 'green':'red'}"> + {{c.newRam}}</span>
-                </td>
-                <td>{{c.maxRam}} </td>
-              </tr>
-
-              <tr>
-                <td>Volumes</td>
-                <td>{{c.currentUsedVolumes}}
-                </td>
-                <td>{{c.assignedVolumes}} <span *ngIf="c.newVolumes"
-                                                [ngStyle]="{'color':c.assignedVolumes + c.newVolumes <= c.maxVolumes? 'green':'red'}"> + {{c.newVolumes}}</span>
-                </td>
-                <td>{{c.maxVolumes}}</td>
-              </tr>
-              <tr>
-                <td>Volume Storage [GB]</td>
-                <td>{{c.currentUsedVolumeStorage}}
-                </td>
-                <td>{{c.assignedVolumesStorage}} <span *ngIf="c.newVolumeLimit"
-                                                       [ngStyle]="{'color':c.assignedVolumesStorage + c.newVolumeLimit <= c.maxVolumeLimit? 'green':'red'}"> + {{c.newVolumeLimit}}</span>
-                </td>
-                <td>{{c.maxVolumeLimit}}</td>
-              </tr>
-              </tbody>
-            </table>
-
-
-          </div>
-        </div>
-
-      </div>
-      <div class="modal-footer">
-        <button *ngIf="notificationModalIsClosable == true" id="close_notification_modal_btn"
-                (click)="resetNotificationModal();notificationModal.hide();" type="reset"
-                class="btn  btn-secondary"> Close
-        </button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
 
 
 <div bsModal #adjustModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
@@ -1175,7 +1078,7 @@
             </div>
             <button type="button" class="btn  btn-primary"
                     form="resource_adjustment_form" id="submitAdjustmentButton"
-                    (click)="adjustModal.hide(); resetNotificationModal(); notificationModal.show(); adjustApplication();"
+                    (click)="adjustModal.hide();   adjustApplication();"
                     [disabled]="resourceAdjustmentForm.invalid || !atLeastOneVM"><i class="fa fa-dot-circle-o"></i>
               Adjust
             </button>
