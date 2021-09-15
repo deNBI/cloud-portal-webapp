@@ -5,13 +5,12 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Client } from '../client.model';
 import { ClientService } from '../../../api-connector/client.service';
 import { Application } from '../../../applications/application.model/application.model';
-import { ApplicationsService } from '../../../api-connector/applications.service';
 import { FacilityService } from '../../../api-connector/facility.service';
 
 @Component({
 	           selector: 'app-client-limits',
 	           templateUrl: './client-limits.component.html',
-	           providers: [FacilityService, ApplicationsService, ClientService],
+	           providers: [FacilityService, ClientService],
 })
 export class ClientLimitsComponent implements OnDestroy, OnInit {
 
@@ -24,12 +23,13 @@ export class ClientLimitsComponent implements OnDestroy, OnInit {
 	message_type: string;
 	public event: EventEmitter<any> = new EventEmitter();
 
-	constructor(public bsModalRef: BsModalRef, private clientService: ClientService, private facilityService: FacilityService, private applicationsService: ApplicationsService) {
+	constructor(public bsModalRef: BsModalRef, private clientService: ClientService, private facilityService: FacilityService) {
 		// eslint-disable-next-line no-empty-function
 	}
 
 	getComputeCenterClientModificationLimitsAvailable() {
 
+		// eslint-disable-next-line max-len
 		this.facilityService.getComputeCenterClientLimitsAvailable(this.compute_center_id, this.application.project_application_id.toString()).subscribe((cl: any) => {
 			this.client = new Client(null, null, null, cl['client_name'], null);
 			this.client.maxVolumeLimit = cl['maxTotalVolumeGigabytes'];
@@ -73,6 +73,7 @@ export class ClientLimitsComponent implements OnDestroy, OnInit {
 
 	getComputeCenterClientLimitsAvailable() {
 
+		// eslint-disable-next-line max-len
 		this.facilityService.getComputeCenterClientLimitsAvailable(this.compute_center_id, this.application.project_application_id.toString()).subscribe((cl: any) => {
 			this.client = new Client(null, null, null, cl['client_name'], null);
 			this.client.maxVolumeLimit = cl['maxTotalVolumeGigabytes'];
