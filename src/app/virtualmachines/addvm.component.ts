@@ -250,14 +250,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 	getFlavors(project_id: number): void {
 		this.flavorService.getFlavors(project_id).subscribe((flavors: Flavor[]): void => {
 			this.flavors = flavors;
-			for (const flavor of this.flavors) {
-				if (flavor.type.long_name in this.flavor_types) {
-					this.flavor_types[flavor.type.long_name].push(flavor);
-				} else {
-					this.flavor_types[flavor.type.long_name] = [flavor];
-				}
-
-			}
+			this.flavor_types = this.flavorService.sortFlavors(this.flavors);
 			this.flavors_loaded = true;
 			this.checkProjectDataLoaded();
 		});
@@ -432,59 +425,6 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 	}
 
 	/**
-	 * Check the status of the started vm in a loop.
-	 *
-	 * @param id
-	 */
-	check_status_loop(id: string): void {
-
-		setTimeout(
-			(): void => {
-				this.virtualmachineservice.checkVmStatus(id).subscribe((newVm: VirtualMachine): void => {
-					if (newVm.status === this.ACTIVE) {
-						this.resetProgressBar();
-						this.newVm = newVm;
-						this.loadProjectData();
-
-					} else if (newVm.status === this.PLAYBOOK_FAILED || newVm.status === this.DELETED) {
-						this.newVm.status = this.DELETED;
-						this.resetProgressBar();
-						// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-						this.create_error = <IResponseTemplate><any>newVm;
-						this.loadProjectData();
-					} else if (newVm.status) {
-						if (newVm.status === this.PORT_CLOSED) {
-							this.progress_bar_status = this.CHECKING_PORT_STATUS;
-							if (this.hasTools) {
-								this.progress_bar_width = this.FIFTY_PERCENT;
-							} else {
-								this.progress_bar_width = this.SIXTY_SIX_PERCENT;
-							}
-
-						} else if (newVm.status === this.PREPARE_PLAYBOOK_BUILD) {
-							this.progress_bar_status = this.PREPARE_PLAYBOOK_STATUS;
-							this.progress_bar_width = this.SIXTY_SIX_PERCENT;
-
-						} else if (newVm.status === this.BUILD_PLAYBOOK) {
-							this.progress_bar_status = this.BUIDLING_PLAYBOOK_STATUS;
-							this.progress_bar_width = this.SEVENTY_FIVE;
-						}
-
-						this.check_status_loop(id);
-					} else {
-						this.resetProgressBar();
-						this.loadProjectData();
-						// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-						this.create_error = <IResponseTemplate><any>newVm;
-					}
-
-				});
-			},
-			this.checkStatusTimeout,
-		);
-	}
-
-	/**
 	 * Start a virtual machine with specific params.
 	 *
 	 * @param flavor
@@ -650,7 +590,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 	 */
 	initializeData(): void {
 		forkJoin([this.groupService.getSimpleVmByUser(), this.userService.getUserInfo()]).subscribe((result: any): void => {
-			this.userinfo = new Userinfo(result[1]);
+			this.userinfo = result[1];
 			this.validatePublicKey();
 			const membergroups: any = result[0];
 			for (const project of membergroups) {
