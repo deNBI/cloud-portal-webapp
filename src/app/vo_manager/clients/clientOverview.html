@@ -28,10 +28,15 @@
             <td>{{client.port}}</td>
             <td>{{client.status}}</td>
             <td>
-              <button type="button" class="btn btn-primary" (click)="selectedClient=client;updateModal.show();">
+              <button type="button" class="btn btn-primary" style="margin-left: 5px; margin-right: 5px"
+											(click)="selectedClient=client; updateModal.show();">
                 Update
                 Client
               </button>
+							<button type="button" class="btn btn-primary" style="margin-left: 5px; margin-right: 5px"
+											(click)="selectedClient=client; switchActiveModal.show()">
+								Switch active
+							</button>
             </td>
             <td>{{client.activated}}</td>
 
@@ -140,4 +145,34 @@
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div bsModal #switchActiveModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+		 aria-labelledby="Label"
+		 aria-hidden="true">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Switch active status Client</h4>
+				<button type="button" class="close" style="cursor:pointer"
+								(click)="switchActiveModal.hide()"
+								aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				Do you want to switch the active status for this client?
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary navbar-inverse"
+								(click)="switchActiveClient(selectedClient.id);switchActiveModal.hide();">Switch
+				</button>
+				<button class="btn  btn-danger col-md-4" type="reset"
+								(click)="switchActiveModal.hide()">Cancel
+				</button>
+
+
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->

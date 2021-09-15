@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { map } from 'rxjs/operators';
 import { ApiSettings } from './api-settings.service';
 import { Client } from '../vo_manager/clients/client.model';
 import { IResponseTemplate } from './response-template';
@@ -26,7 +27,13 @@ export class ClientService {
 
 		return this.http.get<Client[]>(this.clientURL, {
 			withCredentials: true,
-		});
+		}).pipe(
+			map(
+				(clients: Client[]): Client[] => clients.map(
+					(client: Client): Client => new Client(client),
+				),
+			),
+		);
 	}
 
 	checkClient(host: string, port: string): Observable<IResponseTemplate> {
@@ -61,5 +68,11 @@ export class ClientService {
 			withCredentials: true,
 		});
 
+	}
+
+	switchActive(client_id: string): Observable<Client> {
+		return this.http.post<Client>(`${this.clientURL}${client_id}/switchActive/`, null, {
+			withCredentials: true,
+		});
 	}
 }
