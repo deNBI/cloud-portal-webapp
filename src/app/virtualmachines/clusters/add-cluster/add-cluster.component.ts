@@ -368,7 +368,7 @@ export class AddClusterComponent implements OnInit {
 			} else {
 				this.client_avaiable = false;
 				this.client_checked = true;
-
+				this.projectDataLoaded = true;
 			}
 			this.selectedProjectClient = client;
 
