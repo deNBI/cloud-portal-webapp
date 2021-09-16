@@ -28,15 +28,20 @@
             <td>{{client.port}}</td>
             <td>{{client.status}}</td>
             <td>
-              <button type="button" class="btn btn-primary" style="margin-left: 5px; margin-right: 5px"
+              <button type="button" class="btn btn-primary navbar-inverse" style="margin-left: 5px; margin-right: 5px"
 											(click)="selectedClient=client; updateModal.show();">
                 Update
                 Client
               </button>
-							<button type="button" class="btn btn-primary" style="margin-left: 5px; margin-right: 5px"
+							<button type="button" class="btn btn-primary navbar-inverse" style="margin-left: 5px; margin-right: 5px"
 											(click)="selectedClient=client; switchActiveModal.show()">
 								Switch active
 							</button>
+              <button type="button" [disabled]="!client.activated" style="margin-left: 5px; margin-right: 5px" 
+                      class="btn btn-primary navbar-inverse" (click)="showClientsLimitsModal(client)">
+                Show
+                Limits
+              </button>
             </td>
             <td>{{client.activated}}</td>
 

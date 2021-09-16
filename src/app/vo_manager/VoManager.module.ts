@@ -14,6 +14,7 @@ import { ProjectManagementModule } from '../projectmanagement/projectmanagement.
 import { ClientOverviewComponent } from './clients/clientOverview.component';
 import { PipeModuleModule } from '../pipe-module/pipe-module.module';
 import { NumberChartsComponent } from './number-charts/number-charts.component';
+import { ClientLimitsComponent } from './clients/modals/client-limits..component';
 
 /**
  * VO Manager module.
@@ -34,6 +35,7 @@ import { NumberChartsComponent } from './number-charts/number-charts.component';
 		ResourcesComponent,
 		ClientOverviewComponent,
 		NumberChartsComponent,
+		ClientLimitsComponent,
 	],
 	providers: [
 		VoService,

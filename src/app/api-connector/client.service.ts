@@ -45,6 +45,14 @@ export class ClientService {
 
 	}
 
+	getClientLimits(client_id: number | string): Observable<any> {
+
+		return this.http.get(`${this.clientURL}${client_id}/limits/`, {
+			withCredentials: true,
+		});
+
+	}
+
 	postClient(host: string, port: string, location: string): Observable<Client> {
 
 		const params: HttpParams = new HttpParams().set('host', host).set('port', port).set('location', location);
