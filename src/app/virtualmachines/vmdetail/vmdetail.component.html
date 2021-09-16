@@ -1,4 +1,4 @@
-<div *ngIf="errorMessage" class="alert alert-info">
+<div *ngIf="errorMessage" class="alert alert-primary">
   <strong>The Virtual Machine could not be found.</strong>
 </div>
 
@@ -10,7 +10,7 @@
     <div class="col-12">
       <div class="card" >
         <div class="card-header"><span class="font-weight-bold text-muted">{{virtualMachine?.name}}</span> <app-vmstatus [with_text]="true" [vm]="virtualMachine"></app-vmstatus></div>
-        <div class="card-body" *ngIf="virtualMachine?.still_used_confirmation_requested && virtualMachine?.elixir_id == user_elixir_id">
+        <div class="card-body" *ngIf="virtualMachine?.still_used_confirmation_requested && virtualMachine?.elixir_id === user_elixir_id">
           <div class="alert alert-danger">
             <strong>This machine has been consuming resources for {{virtualMachine?.days_running}} days!<br> Please confirm that you still
               need this machine.<br>
@@ -58,14 +58,14 @@
               </div>
 
               <div class="col-4">
-                <div class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+                <div class="font-weight-bold font-xs btn-block btn btn-outline-secondary"
                      id="copyCommandButton" style="margin-top:20px;" (click)="copyToClipboard(mode.copy_field);">
                   Copy Command
                 </div>
               </div>
 
             </div>
-            <div class="row" *ngIf="virtualMachine?.res_env_url != '' && virtualMachine?.res_env_url != null && virtualMachine?.res_env_url != undefined">
+            <div class="row" *ngIf="virtualMachine?.res_env_url !== '' && virtualMachine?.res_env_url !== null && virtualMachine?.res_env_url !== undefined">
               <div class="col-md-1">
                 <span class="font-weight-bold font-xs btn-block text-muted">Research Environment:</span>
               </div>
@@ -80,8 +80,8 @@
           </div>
 
         </div>
-        <hr *ngIf="virtualMachine?.elixir_id == user_elixir_id">
-        <div class="card-body" *ngIf="virtualMachine?.elixir_id == user_elixir_id || is_project_admin">
+        <hr *ngIf="virtualMachine?.elixir_id === user_elixir_id">
+        <div class="card-body" *ngIf="virtualMachine?.elixir_id === user_elixir_id || is_project_admin">
           <span class="text-muted font-weight-bold card-title" style="margin-left: 15px;">
               Actions</span>
           <div class="row" style="margin-top:15px;">
@@ -161,7 +161,7 @@
           </div>
 
           <div class="row">
-            <div class="col-3" *ngIf="virtualMachine?.flavor?.type?.long_name != 'Standard Flavours'">
+            <div class="col-3" *ngIf="virtualMachine?.flavor?.type?.long_name !== 'Standard Flavours'">
               <div class="callout">
                 <small class="text-muted">Flavor type</small><br>
                 <strong class="text-muted">{{virtualMachine?.flavor?.type?.long_name}}</strong>
@@ -295,13 +295,13 @@
               </div>
             </div>
           </div>
-          <div class="row" *ngIf="virtualMachine?.elixir_id == user_elixir_id">
+          <div class="row" *ngIf="virtualMachine?.elixir_id === user_elixir_id">
             <div class="col-4">
               <div class="callout">
                 <strong class="text-muted">Actions</strong>
               </div>
             </div>
-            <div class="col-4" *ngIf="vol.volume_status == VolumeStates.staticIN_USE">
+            <div class="col-4" *ngIf="vol.volume_status === VolumeStates.staticIN_USE">
               <button type="button" class="btn btn-secondary" style="width:auto; margin-top:10px;"
                       id="detachVolume_{{vol.volume_openstackid}}"
                       (click)="detachVolume(vol)">
@@ -338,7 +338,7 @@
               </div>
             </div>
           </div>
-          <div class="row" *ngIf="virtualMachine?.elixir_id == user_elixir_id">
+          <div class="row" *ngIf="virtualMachine?.elixir_id === user_elixir_id">
             <div class="col-6">
               <div class="callout">
                 <small class="text-muted">Volume ID</small><br>
@@ -346,7 +346,7 @@
               </div>
             </div>
             <div class="col-6"
-                 *ngIf="virtualMachine.status ==virtualMachineStates.staticACTIVE && vol.volume_status == VolumeStates.staticAVAILABLE">
+                 *ngIf="virtualMachine.status === virtualMachineStates.staticACTIVE && vol.volume_status === VolumeStates.staticAVAILABLE">
                 <button type="button" class="btn btn-secondary" style="width:auto; margin-top:10px;"
                         id="attachVolume_{{vol?.volume_openstackid}}"
 
@@ -394,7 +394,7 @@
 
         <div class="card-header"><span class="font-weight-bold text-muted">User management</span></div>
         <div class="card-body">
-          <div class="row" *ngIf="virtualMachine?.elixir_id == user_elixir_id">
+          <div class="row" *ngIf="virtualMachine?.elixir_id === user_elixir_id">
             <button id="add_member_btn_modal"
                     (click)="addUserModal.show();"
 
@@ -432,7 +432,7 @@
                   <td>{{ member["member_id"] }}</td>
                   <td>{{ member["firstName"] }} {{member["lastName"]}}</td>
                   <td>
-                    <button id="delete_member_btn_modal" *ngIf="virtualMachine?.elixir_id == user_elixir_id"
+                    <button id="delete_member_btn_modal" *ngIf="virtualMachine?.elixir_id === user_elixir_id"
                             (click)="deleteUserFromBackend(member['member_id']);"
 
                             type="button" style="margin-bottom:5px;margin-right:5px"
@@ -480,9 +480,9 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title" *ngIf="status_changed == 0"> Waiting </h4>
-          <h4 class="modal-title" *ngIf="status_changed == 1"> Success </h4>
-          <h4 class="modal-title" *ngIf="status_changed == 2"> Error </h4>
+          <h4 class="modal-title" *ngIf="status_changed === 0"> Waiting </h4>
+          <h4 class="modal-title" *ngIf="status_changed === 1"> Success </h4>
+          <h4 class="modal-title" *ngIf="status_changed === 2"> Error </h4>
           <button type="button" class="close" style="cursor:pointer"
                   (click)="stopModal.hide()"
                   aria-label="Close">
@@ -490,19 +490,19 @@
           </button>
         </div>
         <div class="modal-body">
-          <div class="alert alert-info" role="alert"
-               *ngIf="status_changed == 0 && virtualMachine.status !=
+          <div class="alert alert-primary" role="alert"
+               *ngIf="status_changed === 0 && virtualMachine.status !==
                 virtualMachineStates.staticSHUTOFF">
             Stopping {{virtualMachine?.name}}... <i class="fa fa-spinner fa-spin"
                                                 style="font-size:24px"></i>
           </div>
           <div class="alert alert-success" role="alert"
-               *ngIf="status_changed == 1 || virtualMachine?.status == virtualMachineStates.staticSHUTOFF"
+               *ngIf="status_changed === 1 || virtualMachine?.status === virtualMachineStates.staticSHUTOFF"
                id="stop_success_div">
             {{virtualMachine?.name}} was successfully stopped.
           </div>
         </div>
-        <div class="alert alert-warning" role="alert" *ngIf="status_changed == 2">
+        <div class="alert alert-warning" role="alert" *ngIf="status_changed === 2">
           When stopping {{virtualMachine?.name}} an error occurred:<br>
           {{error_msg}}
         </div>
@@ -571,7 +571,7 @@
         </div>
         <div class="modal-body">
           <div *ngIf="!reboot_done">
-            <div class="alert alert-info" role="alert">
+            <div class="alert alert-primary" role="alert">
 
               Waiting until rebooted..
             </div>
@@ -608,9 +608,9 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title" *ngIf="status_changed == 0"> Waiting </h4>
-          <h4 class="modal-title" *ngIf="status_changed == 1"> Success </h4>
-          <h4 class="modal-title" *ngIf="status_changed == 2"> Error </h4>
+          <h4 class="modal-title" *ngIf="status_changed === 0"> Waiting </h4>
+          <h4 class="modal-title" *ngIf="status_changed === 1"> Success </h4>
+          <h4 class="modal-title" *ngIf="status_changed === 2"> Error </h4>
           <button type="button" class="close" style="cursor:pointer"
                   (click)="resumeModal.hide()"
                   aria-label="Close">
@@ -618,20 +618,20 @@
           </button>
         </div>
         <div class="modal-body">
-          <div class="alert alert-info" role="alert"
-               *ngIf="status_changed == 0  && virtualMachine?.status !==
+          <div class="alert alert-primary" role="alert"
+               *ngIf="status_changed === 0  && virtualMachine?.status !==
                virtualMachineStates.staticACTIVE">
             Starting {{virtualMachine?.name}}... <i class="fa fa-spinner fa-spin"
                                                 style="font-size:24px"></i>
           </div>
           <div class="alert alert-success" role="alert"
-               *ngIf="status_changed == 1  ||
-               virtualMachine?.status == virtualMachineStates.staticACTIVE"
+               *ngIf="status_changed === 1  ||
+               virtualMachine?.status === virtualMachineStates.staticACTIVE"
                id="resume_success_div">
             {{virtualMachine?.name}} was successfully started.
           </div>
         </div>
-        <div class="alert alert-warning" role="alert" *ngIf="status_changed == 2">
+        <div class="alert alert-warning" role="alert" *ngIf="status_changed === 2">
           When starting {{virtualMachine?.name}} an error occurred:<br>
           {{error_msg}}
         </div>
@@ -654,9 +654,9 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title" *ngIf="status_changed == 0"> Waiting </h4>
-          <h4 class="modal-title" *ngIf="status_changed == 1"> Success </h4>
-          <h4 class="modal-title" *ngIf="status_changed == 2"> Error </h4>
+          <h4 class="modal-title" *ngIf="status_changed === 0"> Waiting </h4>
+          <h4 class="modal-title" *ngIf="status_changed === 1"> Success </h4>
+          <h4 class="modal-title" *ngIf="status_changed === 2"> Error </h4>
           <button type="button" class="close" style="cursor:pointer"
                   (click)="deleteModal.hide()"
                   aria-label="Close">
@@ -664,16 +664,16 @@
           </button>
         </div>
         <div class="modal-body">
-          <div class="alert alert-info" role="alert" *ngIf="status_changed == 0">
+          <div class="alert alert-primary" role="alert" *ngIf="status_changed === 0">
             Deleting {{virtualMachine?.name}}... <i class="fa fa-spinner fa-spin"
                                                 style="font-size:24px"></i>
           </div>
-          <div class="alert alert-success" role="alert" *ngIf="status_changed == 1"
+          <div class="alert alert-success" role="alert" *ngIf="status_changed === 1"
                id="delete_success_div">
             {{virtualMachine?.name}} was succesfully deleted.
           </div>
         </div>
-        <div class="alert alert-warning" role="alert" *ngIf="status_changed == 2">
+        <div class="alert alert-warning" role="alert" *ngIf="status_changed === 2">
           When deleting {{virtualMachine?.name}} an error occured:<br>
           {{error_msg}}
         </div>
@@ -750,7 +750,7 @@
 
           <div>
             <input  [disabled]="virtualMachine?.flavor?.ram > SNAPSHOT_MAX_RAM" type="text" style="width: 100%" placeholder="Snapshot Name" [(ngModel)]="snapshotName"
-                   (ngModelChange)="snapshotSearchTerm.next($event);" id="snapshot_name_input">
+                   (ngModelChange)="snapshotSearchTerm.next($event);" class="form-control" id="snapshot_name_input">
 
           </div>
           <div>
@@ -763,7 +763,7 @@
           ><strong>Description</strong></div>
           <div><textarea  [disabled]="virtualMachine?.flavor?.ram > SNAPSHOT_MAX_RAM"  style="width: 100%" type="textfield" placeholder="Description"
                          #snapshotDescription></textarea></div>
-          <div class="alert alert-info" role="alert">
+          <div class="alert alert-primary" role="alert">
             A snapshot is an image which preserves the disk state of a running instance.
           </div>
 
@@ -800,12 +800,12 @@
           </button>
         </div>
         <div class="modal-body">
-          <div class="alert alert-info" role="alert" *ngIf="snapshotDone == 'Waiting' ">
+          <div class="alert alert-primary" role="alert" *ngIf="snapshotDone === 'Waiting' ">
             Wait until Snapshot is queued....
           </div>
 
 
-          <div class="alert alert-success" role="alert" *ngIf="snapshotDone == 'true' " id="snapshot_done">
+          <div class="alert alert-success" role="alert" *ngIf="snapshotDone === 'true' " id="snapshot_done">
             Successfully queued Snapshot.
             It might take some minutes till you can use it for starting a new instance at the "New Instance" tab.
             You can see the current status in the<a
@@ -813,7 +813,7 @@
             [routerLink]="['/virtualmachines/snapshotOverview']"> Snapshot Overview </a>.
           </div>
           <div class="alert alert-danger" role="alert"
-               *ngIf="snapshotDone != 'true' && snapshotDone != 'Waiting'">
+               *ngIf="snapshotDone !== 'true' && snapshotDone !== 'Waiting'">
             An error occured when creating the snapshot:<br>
             {{error_msg}}
 
@@ -853,8 +853,8 @@
           <div class="row" style="margin:5px; text-align: center; padding: 10px;">
             <div class="col-md-6">
               <button type="button" class="btn btn-primary"
-                      *ngIf="virtualMachine?.status != virtualMachineStates.staticDELETED &&
-                      virtualMachine?.status != virtualMachineStates.staticSHUTOFF &&
+                      *ngIf="virtualMachine?.status !== virtualMachineStates.staticDELETED &&
+                      virtualMachine?.status !== virtualMachineStates.staticSHUTOFF &&
                        virtualMachine?.client.features['VM_REBOOT']"
                       id="softRebootVM"
                       (click)="status_check_error=false;reboot_done=false;reboot_type='SOFT';chooseRebootOptionModal.hide();rebootModal.show();">
@@ -864,7 +864,7 @@
             <div class="col-md-6">
               <button type="button" class="btn btn-primary"
                       id="hardRebootVM"
-                      *ngIf="virtualMachine?.status != virtualMachineStates.staticDELETED &&
+                      *ngIf="virtualMachine?.status !== virtualMachineStates.staticDELETED &&
                       virtualMachine.client.features['VM_REBOOT']"
                       (click)="status_check_error=false;reboot_done=false;reboot_type='HARD'; chooseRebootOptionModal.hide(); rebootModal.show();"
               >
@@ -968,7 +968,7 @@
             </div>
             <div class="row">
               <div class="col-md-8">
-                <input style="width: 100%" placeholder="" id="add_member_input" #searchString>
+                <input style="width: 100%" placeholder="" class="form-control" type="text" id="add_member_input" #searchString>
               </div>
               <div class="col-md-4">
                 <button type="button" class="btn btn-primary" id="search_member_btn"
@@ -986,7 +986,7 @@
             </div>
 
             <div class="table-responsive">
-              <table *ngIf="filteredMembers!==null" class="table table-bordered table-striped table-sm">
+              <table *ngIf="filteredMembers !== null" class="table table-bordered table-striped table-sm">
                 <thead>
 
                 <th></th>
@@ -1049,7 +1049,7 @@
       </div>
       <div class="modal-footer">
         <button class="btn  btn-success col-md-4"
-                [disabled]="volume_to_attach == undefined"
+                [disabled]="volume_to_attach === undefined"
                 (click)="attachVolume(volume_to_attach);attachModal.hide();">
           Attach Volume
         </button>

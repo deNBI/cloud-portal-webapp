@@ -9,19 +9,36 @@ export class Client {
 	port: string;
 	version: string;
 	features: string[];
+
 	maxVolumes: number;
 	assignedVolumes: number;
+	currentUsedVolumes: number;
+	newVolumes: number;
+
 	maxVMs: number;
 	assignedVMs: number;
-	location: string;
-	maxVolumeLimit: number;
-	assignedVolumesStorage: number;
-	newVolumes: number;
+	currentUsedVms: number;
 	newVms: number;
+
+	maxVolumeLimit: number;
+	currentUsedVolumeStorage: number;
+	assignedVolumesStorage: number;
 	newVolumeLimit: number;
+
+	maxCores: number;
+	assignedCores: number;
+	currentUsedCores: number;
+	newCores: number;
+
+	maxRam: number;
+	assignedRam: number;
+	currentUsedRam: number;
+	newRam: number;
+
 	activated: boolean;
 	forc_url: string;
 	bibigrid_available: boolean;
+	location: string;
 
 	constructor(client?: Partial<Client>, host?: string, port?: string, location?: string, id?: string) {
 		if (client) {
