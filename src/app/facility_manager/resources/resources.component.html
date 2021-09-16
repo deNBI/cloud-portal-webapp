@@ -1,4 +1,4 @@
-<div *ngIf="isLoaded==false" class="loader"></div>
+<div *ngIf="isLoaded === false" class="loader"></div>
 
 <div *ngIf="isLoaded" class="animated fadeIn" ng-app style="width: 100%">
 
@@ -9,7 +9,7 @@
       <div class="card-header">
 
           <i class="fa fa-align-justify"></i> Resources
-          <div class="row">
+
 
             <button style="margin: 5px"
                     class="btn"
@@ -33,16 +33,13 @@
               Resources
             </button>
             <div style="margin:5px;"><select [(ngModel)]="selectedFacility"
-                         (ngModelChange)="isLoaded=false;onChangeSelectedFacility($event);"
-                         class="form-control" name="selectedFacility">
+                                             (ngModelChange)="isLoaded=false;onChangeSelectedFacility($event);"
+                                             class="form-control form-select" name="selectedFacility">
               <option *ngFor="  let facility of managerFacilities" [ngValue]="facility">
                 {{facility['Facility']}}
               </option>
 
             </select></div>
-          </div>
-
-
 
 
       </div>
@@ -156,7 +153,7 @@
         </div>
       </div>
       <div>
-        <button (click)="tableToPDF()">Download PDF</button>
+        <!-- <button (click)="tableToPDF()">Download PDF</button> -->
         <button (click)="tableToCSV()">Download CSV</button>
       </div>            <!-- DivTable.com -->
     </div>
@@ -200,7 +197,7 @@
               [facility_id]="selectedFacility['FacilityId']"></app-resourcemachine-overview>
           </div>
           <div *ngIf="STORAGE_TAB_ACTIVE && selectedFacility">
-            <div class="alert alert-info">
+            <div class="alert alert-primary">
               You can <b>either</b> define general storage <b>or</b> specify object and volume storage separately.<br>
               If one of the two is defined, the other is disabled as long as the other is defined.
             </div>
