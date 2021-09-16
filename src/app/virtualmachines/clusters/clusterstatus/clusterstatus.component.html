@@ -34,6 +34,6 @@
          class="dot-colorless bg-info" style="width: 15px; height: 15px">
     </div>
     <span style="margin-left:15px;" *ngIf="show_text_status" class="text-muted font-weight-bold">Status: {{cluster?.status}}</span>
-    <i *ngIf="cluster?.status== 'Configuring' || cluster?.status == 'Creating' || cluster?.status== 'Deleting'"
+    <i *ngIf="cluster?.status=== 'Configuring' || cluster?.status === 'Creating' || cluster?.status=== 'Deleting'"
        class="fa fa-spinner fa-spin"></i>
   </ng-container>

@@ -3,7 +3,7 @@
   <td>Research Topics</td>
   <td><h5><span *ngFor="let term of application?.project_application_edam_terms"
                 style="margin-left: 5px; "
-                class="badge badge-info"><span id="topic_{{term}}">{{term}}</span>
+                class="badge bg-info"><span id="topic_{{term}}">{{term}}</span>
  </span>
 
   </h5></td>
@@ -11,16 +11,16 @@
   <tr>
     <td>Workshop</td>
     <td>
-      <span *ngIf="application?.project_application_workshop" class="badge badge-success">Yes</span>
-      <span *ngIf="!application?.project_application_workshop" class="badge badge-danger">No</span>
+      <span *ngIf="application?.project_application_workshop" class="badge bg-success">Yes</span>
+      <span *ngIf="!application?.project_application_workshop" class="badge bg-danger">No</span>
     </td>
 
   </tr>
   <tr *ngIf="application?.project_application_openstack_project">
     <td>Service</td>
     <td>
-      <span *ngIf="application?.project_application_cloud_service" class="badge badge-success">Yes</span>
-      <span *ngIf="!application?.project_application_cloud_service" class="badge badge-danger">No</span>
+      <span *ngIf="application?.project_application_cloud_service" class="badge bg-success">Yes</span>
+      <span *ngIf="!application?.project_application_cloud_service" class="badge bg-danger">No</span>
     </td>
 
   </tr>
@@ -28,9 +28,9 @@
     <td>Service status</td>
     <td>
       <span *ngIf="application?.project_application_cloud_service_develop"
-            class="badge badge-success">In development</span>
+            class="badge bg-success">In development</span>
       <span *ngIf="!application?.project_application_cloud_service_develop"
-            class="badge badge-danger">Existing</span>
+            class="badge bg-danger">Existing</span>
     </td>
   </tr>
   <tr *ngIf="!application?.project_application_cloud_service_develop && application?.project_application_cloud_service">

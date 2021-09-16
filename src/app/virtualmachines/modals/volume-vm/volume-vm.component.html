@@ -13,7 +13,7 @@
 			after attaching to use it.
 		</div>
 		<strong>Which volume should be attached?</strong>
-		<select class="form-control col-md-6" name="selected_vm"
+		<select class="form-control form-select col-md-6" name="selected_vm"
 						[(ngModel)]="selectedVolume">
 			<option value="undefined" disabled selected hidden> Please Select</option>
 			<option *ngFor="let vol of detached_project_volumes" [ngValue]="vol"> {{vol.volume_name}}
@@ -45,7 +45,7 @@
 	</div>
 	<div class="modal-body">
 		<strong>Which volume should be detached from {{virtualMachine?.name}}?</strong>
-		<select class="form-control col-md-6" name="virtualMachine"
+		<select class="form-control form-select col-md-6" name="virtualMachine"
 						[(ngModel)]="selectedVolume">
 			<option value="undefined" disabled selected hidden> Please Select</option>
 			<option *ngFor="let vol of virtualMachine?.volumes" [ngValue]="vol">

@@ -11,7 +11,7 @@
 		Are you sure you want to delete {{virtualMachine?.name}}?
 	</div>
 
-	<div class="alert alert-danger" *ngIf="virtualMachine?.openstackid == virtualMachine?.cluster?.master_instance_openstack_id" role="alert">
+	<div class="alert alert-danger" *ngIf="virtualMachine?.openstackid === virtualMachine?.cluster?.master_instance_openstack_id" role="alert">
 		If you delete the master of a cluster, your worker machines will become useless!
 	</div>
 
