@@ -162,7 +162,7 @@
 
                 </div>
 
-                <accordion class="col" *ngIf="selectedProject && projectDataLoaded && (selectedProjectRessources?.used_vms +2) <= selectedProjectRessources?.number_vms && (flavors.length != 0 || selectedFlavor) && images?.length> 0">
+                <accordion class="col" *ngIf="selectedProject && projectDataLoaded && (selectedProjectRessources?.used_vms +2) <= selectedProjectRessources?.number_vms && (flavors.length !== 0 || selectedFlavor) && images?.length> 0">
 
                   <div class="alert alert-primary " role="alert"
                        *ngIf="(!selectedMasterFlavor || !selectedMasterImage) &&  (selectedProjectRessources?.used_vms + 2 ) <= selectedProjectRessources?.number_vms">
