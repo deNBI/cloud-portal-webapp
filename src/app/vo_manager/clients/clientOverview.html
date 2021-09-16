@@ -28,9 +28,13 @@
             <td>{{client.port}}</td>
             <td>{{client.status}}</td>
             <td>
-              <button type="button" class="btn btn-primary" (click)="selectedClient=client;updateModal.show();">
+              <button type="button" style="padding-right: 5px;margin-right: 5px"  class="btn btn-primary navbar-inverse"(click)="selectedClient=client;updateModal.show();">
                 Update
                 Client
+              </button>
+              <button type="button" [disabled]="!client.activated" class="btn btn-primary navbar-inverse" (click)="showClientsLimitsModal(client)">
+                Show
+                Limits
               </button>
             </td>
             <td>{{client.activated}}</td>
