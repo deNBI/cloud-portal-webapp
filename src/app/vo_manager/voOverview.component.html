@@ -1,4 +1,4 @@
-<div *ngIf="isLoaded==false" class="loader"></div>
+<div *ngIf="isLoaded === false" class="loader"></div>
 
 <div *ngIf="isLoaded" class="animated fadeIn" ng-app>
   <div class="row">
@@ -58,17 +58,17 @@
               </thead>
               <tbody>
               <td></td>
-              <td><input style="width: 110px;" type="text" placeholder="Filter"
+              <td><input style="width: 110px;" type="text" placeholder="Filter" class="form-control"
                          name="filterFacilityName"
                          [(ngModel)]="filterFacilityName"
                          (ngModelChange)="applyFilter();">
               </td>
-              <td><input style="width: 110px;" type="text" placeholder="Filter"
+              <td><input style="width: 110px;" type="text" placeholder="Filter" class="form-control"
                          name="filterProjectId"
                          [(ngModel)]="filterProjectId"
                          (ngModelChange)="applyFilter();">
               </td>
-              <td><input style="width: 110px;" type="text" placeholder="Filter"
+              <td><input style="width: 110px;" type="text" placeholder="Filter" class="form-control"
                          name="filterProjectName" id="filter_project_name"
                          [(ngModel)]="filterProjectName"
                          (ngModelChange)="applyFilter();">
@@ -82,7 +82,7 @@
                              (change)="changeFilterStatus(project_states[project_states.ACTIVE]);applyFilter();"
                              [checked]="filterstatus_list[project_states[project_states.ACTIVE]]"/>
                       <span style="margin-left: 5px"
-                            class="badge badge-success">{{project_states[project_states.ACTIVE]}} </span>
+                            class="badge bg-success">{{project_states[project_states.ACTIVE]}} </span>
 
                     </label>
                   </div>
@@ -92,7 +92,7 @@
                              (change)="changeFilterStatus(project_states[project_states.SUSPENDED]);applyFilter();"
                              [checked]="filterstatus_list[project_states[project_states.SUSPENDED]]"/>
                       <span style="margin-left: 5px"
-                            class="badge badge-warning">{{project_states[project_states.SUSPENDED]}} </span>
+                            class="badge bg-warning">{{project_states[project_states.SUSPENDED]}} </span>
                     </label>
                   </div>
 
@@ -103,7 +103,7 @@
                              [checked]="filterstatus_list[lifetime_states[lifetime_states.EXPIRED]]"
                       />
                       <span style="margin-left: 5px"
-                            class="badge badge-danger">{{lifetime_states[lifetime_states.EXPIRED]}}</span>
+                            class="badge bg-danger">{{lifetime_states[lifetime_states.EXPIRED]}}</span>
 
                     </label>
                   </div>
@@ -116,7 +116,7 @@
 
                       />
                       <span style="margin-left: 5px"
-                            class="badge badge-warning">{{lifetime_states[lifetime_states.EXPIRES_SOON]}}</span>
+                            class="badge bg-warning">{{lifetime_states[lifetime_states.EXPIRES_SOON]}}</span>
                     </label>
                   </div>
 
@@ -130,7 +130,7 @@
 
 
                       <span style="margin-left: 5px"
-                            class="badge badge-info">{{application_states[application_states.WAIT_FOR_CONFIRMATION]}}</span>
+                            class="badge bg-info">{{application_states[application_states.WAIT_FOR_CONFIRMATION]}}</span>
                     </label>
                   </div>
                   <div class="checkbox col-sm">
@@ -141,7 +141,7 @@
 
                       />
                       <span style="margin-left: 5px"
-                            class="badge badge-dark">{{application_states[application_states.TERMINATION_REQUESTED]}}</span>
+                            class="badge bg-dark">{{application_states[application_states.TERMINATION_REQUESTED]}}</span>
                     </label>
                   </div>
                   <div class="checkbox col-sm">
@@ -152,7 +152,7 @@
 
                       />
                       <span style="margin-left: 5px"
-                            class="badge badge-dark">{{application_states[application_states.WAIT_FOR_TERMINATION_FM]}}</span>
+                            class="badge bg-dark">{{application_states[application_states.WAIT_FOR_TERMINATION_FM]}}</span>
                     </label>
                   </div>
                 </div>
@@ -193,32 +193,32 @@
                 </td>
                 <td>  <span *ngIf="project | hasstatusinlist:project_states.ACTIVE"
                             style="margin-left: 5px"
-                            class="badge badge-success">{{project_states[project_states.ACTIVE]}} </span>
+                            class="badge bg-success">{{project_states[project_states.ACTIVE]}} </span>
                   <span *ngIf="(project?.LifetimeReached | hasStatus:lifetime_states.EXPIRED) && !(project | hasstatusinlist: application_states.WAIT_FOR_CONFIRMATION)"
                         style="margin-left: 5px"
-                        class="badge badge-danger">{{lifetime_states[lifetime_states.EXPIRED]}} </span>
+                        class="badge bg-danger">{{lifetime_states[lifetime_states.EXPIRED]}} </span>
                   <span *ngIf="project?.LifetimeReached | hasStatus:lifetime_states.EXPIRES_SOON"
                         style="margin-left: 5px"
-                        class="badge badge-warning">{{lifetime_states[lifetime_states.EXPIRES_SOON]}}</span>
+                        class="badge bg-warning">{{lifetime_states[lifetime_states.EXPIRES_SOON]}}</span>
                   <span *ngIf="project| hasstatusinlist: project_states.SUSPENDED"
                         style="margin-left: 5px"
-                        class="badge badge-warning">{{project_states[project_states.SUSPENDED]}} </span>
+                        class="badge bg-warning">{{project_states[project_states.SUSPENDED]}} </span>
                   <span
                     *ngIf="project | hasstatusinlist:application_states.WAIT_FOR_CONFIRMATION"
                     style="margin-left: 5px"
-                    class="badge badge-info">WAIT FOR CONFIRMATION </span>
+                    class="badge bg-info">WAIT FOR CONFIRMATION </span>
                   <span
                     *ngIf="project | hasstatusinlist: application_states.TERMINATION_REQUESTED"
                     style="margin-left: 5px"
-                    class="badge badge-dark">TERMINATION REQUESTED </span>
+                    class="badge bg-dark">TERMINATION REQUESTED </span>
                   <span
                     *ngIf="project | hasstatusinlist: application_states.WAIT_FOR_TERMINATION_FM"
                     style="margin-left: 5px"
-                    class="badge badge-dark">WAIT FOR TERMINATION BY FM </span>
+                    class="badge bg-dark">WAIT FOR TERMINATION BY FM </span>
                   <span
                     *ngIf="project | hasstatusinlist: application_states.PROTECTED"
                     style="margin-left: 5px"
-                    class="badge badge-secondary">PROTECTED </span>
+                    class="badge bg-secondary">PROTECTED </span>
 
                 </td>
 
@@ -364,11 +364,11 @@
         <form class="form-horizontal" id="email_form" #f="ngForm">
 
 
-          <div class="form-group row" *ngIf="emailType == 0">
+          <div class="form-group row" *ngIf="emailType === 0">
             <label
               class="col-md-12 control-label"><strong>Which facility should receive the email?</strong></label>
             <div class="col-md-12">
-              <select class="form-control" [(ngModel)]="selectedFacility"
+              <select class="form-control form-select" [(ngModel)]="selectedFacility"
                       name="selectedFacility" id="selectedFacility">
                 <option value="ALL"> All
                 <option *ngFor="let cc of computecenters" [ngValue]="cc.FacilityId">
@@ -382,7 +382,7 @@
             <label
               class="col-md-12 control-label"><strong>Which project members should receive the email?</strong></label>
             <div class="col-md-12">
-              <select class="form-control" [(ngModel)]="selectedProjectType"
+              <select class="form-control form-select" [(ngModel)]="selectedProjectType"
                       name="selectedProjectType" id="selectedProjectType">
                 <option value="ALL" selected> All
                 </option>
@@ -558,9 +558,9 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title" *ngIf="emailStatus == 0"> Waiting </h4>
-        <h4 class="modal-title" *ngIf="emailStatus == 1"> Success </h4>
-        <h4 class="modal-title" *ngIf="emailStatus == 2"> Error </h4>
+        <h4 class="modal-title" *ngIf="emailStatus === 0"> Waiting </h4>
+        <h4 class="modal-title" *ngIf="emailStatus === 1"> Success </h4>
+        <h4 class="modal-title" *ngIf="emailStatus === 2"> Error </h4>
         <button type="button" class="close" style="cursor:pointer"
                 (click)="successModal.hide()"
                 aria-label="Close">
@@ -568,14 +568,14 @@
         </button>
       </div>
       <div class="modal-body">
-        <div class="alert alert-info" role="alert" *ngIf="emailStatus == 0">
+        <div class="alert alert-primary" role="alert" *ngIf="emailStatus === 0">
           Sending the email. <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
         </div>
-        <div class="alert alert-success" role="alert" *ngIf="emailStatus == 1">
+        <div class="alert alert-success" role="alert" *ngIf="emailStatus === 1">
           The email has been send successfully.
         </div>
       </div>
-      <div class="alert alert-warning" role="alert" *ngIf="emailStatus == 2">
+      <div class="alert alert-warning" role="alert" *ngIf="emailStatus === 2">
         when sending the email an error has occurred.
       </div>
 

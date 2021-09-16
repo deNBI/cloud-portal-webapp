@@ -17,28 +17,28 @@
               'btn-primary': tab_state === TabStates.SUBMITTED}"
               id="tab_state_button_submitted_applications">
         <i class="fas fa-envelope"></i> Submitted Applications
-        <span class="badge badge-pill badge-dark">{{this.numberOfProjectApplications}}</span>
+        <span class="badge badge-pill bg-dark">{{this.numberOfProjectApplications}}</span>
       </button>
       <button class="btn" (click)="changeTabState(TabStates.CREDITS_EXTENSION);"
               [ngClass]="{'btn-light': !(tab_state === TabStates.CREDITS_EXTENSION),
               'btn-primary': tab_state === TabStates.CREDITS_EXTENSION}"
               id="tab_state_button_credit_request">
         <i class="fas fa-coins"></i> Credit Extension Requests
-        <span class="badge badge-pill badge-dark">{{this.numberOfCreditRequests}}</span>
+        <span class="badge badge-pill bg-dark">{{this.numberOfCreditRequests}}</span>
       </button>
       <button class="btn" (click)="changeTabState(TabStates.LIFETIME_EXTENSION);"
               [ngClass]="{'btn-light': !(tab_state === TabStates.LIFETIME_EXTENSION),
               'btn-primary': tab_state === TabStates.LIFETIME_EXTENSION}"
               id="tab_state_button_extension_request">
         <i class="fas fa-clock"></i> Lifetime Extension Requests
-        <span class="badge badge-pill badge-dark">{{this.numberOfExtensionRequests}}</span>
+        <span class="badge badge-pill bg-dark">{{this.numberOfExtensionRequests}}</span>
       </button>
       <button class="btn" (click)="changeTabState(TabStates.MODIFICATION_EXTENSION);"
               [ngClass]="{'btn-light': !(tab_state === TabStates.MODIFICATION_EXTENSION),
               'btn-primary': tab_state === TabStates.MODIFICATION_EXTENSION}"
               id="tab_state_button_modification_request">
         <i class="fas fa-memory"></i> Resource Modification Requests
-        <span class="badge badge-pill badge-dark">{{this.numberOfModificationRequests}}</span>
+        <span class="badge badge-pill bg-dark">{{this.numberOfModificationRequests}}</span>
       </button>
     </div>
     <div class="card-body" *ngIf="loading_applications" id="loading_applications">
@@ -133,7 +133,7 @@
                     <!-- into select: [style.display]=" ((application | hasstatusinlist:Application_States.SUBMITTED)  || (application | hasstatusinlist:Application_States.CONFIRMATION_DECLINED) || (!application?.ComputeCenter?.FacilityId ))? 'inherit' :'none'"-->
                     <select *ngIf="(application | hasstatusinlist:Application_States.SUBMITTED) || (application | hasstatusinlist:Application_States.CONFIRMATION_DECLINED)  || ((application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION)  && !application?.ComputeCenter?.FacilityId )"
                             [(ngModel)]="selectedCenter[application.project_application_id]"
-                      class="form-control" [id]="'id_compute_center_option_' + application?.project_application_name"
+                      class="form-control form-select" [id]="'id_compute_center_option_' + application?.project_application_name"
                       #selectedComputeCenter>
 
                       <option [ngValue]="undefined" selected> no center selected
@@ -710,7 +710,7 @@
     <div class="card-header">
       <i class="fa fa-align-justify"></i> Applications history
     </div>
-    <div class="card-body" *ngIf="this.applications_history?.length == 0">
+    <div class="card-body" *ngIf="this.applications_history?.length === 0">
       <div class="alert alert-success" role="alert">
         <strong>No submitted Applications</strong> There are no applications at all.
       </div>
@@ -819,7 +819,7 @@
 
         </div>
         <div class="modal-body">
-          <div class="alert alert-info">
+          <div class="alert alert-primary">
           Do you really want to unset the PI from the project {{selectedApplication?.project_application_shortname}}?</div>
 
         </div>
@@ -839,6 +839,7 @@
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
   </div><!-- /.modal -->
+
 
 
 <div bsModal #adjustModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
@@ -894,7 +895,7 @@
                   </div>
                   <div *ngFor="let fl of flavorList" class="form-group row">
                     <div
-                      *ngIf="fl.type.shortcut == t.shortcut && (fl.simple_vm || selectedApplication?.project_application_openstack_project)"
+                      *ngIf="fl.type.shortcut === t.shortcut && (fl.simple_vm || selectedApplication?.project_application_openstack_project)"
                       class="form-group row">
                       <label class="col-md-4 form-control-label"><strong>{{fl.name}}</strong><br>
                         Number of cores: <span
@@ -1008,7 +1009,7 @@
                                 'is-invalid': resourceAdjustmentForm.controls.granted_volume_limit?.invalid,
                                 'is-valid': resourceAdjustmentForm.controls.granted_volume_limit?.valid
                                 }"
-                         [disabled]="resourceAdjustmentForm.controls.granted_volume_counter?.value == 0">
+                         [disabled]="resourceAdjustmentForm.controls.granted_volume_counter?.value === 0">
                   <div class="input-group-append"><span class="input-group-text"> GB
                                     </span></div>
                 </div>
@@ -1110,10 +1111,10 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title" *ngIf="extension_status == 0">
+        <h4 class="modal-title" *ngIf="extension_status === 0">
           Waiting </h4>
-        <h4 class="modal-title" *ngIf="extension_status == 1"> Success </h4>
-        <h4 class="modal-title" *ngIf="extension_status == 2"> Error </h4>
+        <h4 class="modal-title" *ngIf="extension_status === 1"> Success </h4>
+        <h4 class="modal-title" *ngIf="extension_status === 2"> Error </h4>
         <button type="button" class="close" style="cursor: pointer"
                 (click)="resultModal.hide();extension_status= 0;removeModalOpen();"
                 aria-label="Close">
@@ -1122,27 +1123,27 @@
       </div>
 
       <div class="modal-body">
-        <div class="alert alert-info" role="alert" *ngIf="extension_status==0" id="extension_result">
+        <div class="alert alert-primary" role="alert" *ngIf="extension_status === 0" id="extension_result">
           Waiting... <i class="fa fa-spinner fa-spin"
                         style="font-size:24px"></i>
         </div>
 
 
-        <div class="alert alert-success" role="alert" *ngIf="extension_status == 1" id="extension_result">
+        <div class="alert alert-success" role="alert" *ngIf="extension_status === 1" id="extension_result">
 
           Modify request successfully submitted!
         </div>
-        <div class="alert alert-success" role="alert" *ngIf="extension_status == 3" id="extension_result">
+        <div class="alert alert-success" role="alert" *ngIf="extension_status === 3" id="extension_result">
           Modify request successfully approved!
         </div>
-        <div class="alert alert-success" role="alert" *ngIf="extension_status == 4" id="extension_result">
+        <div class="alert alert-success" role="alert" *ngIf="extension_status === 4" id="extension_result">
           Modify request successfully declined!
         </div>
-        <div class="alert alert-success" role="alert" *ngIf="extension_status == 5" id="extension_result">
+        <div class="alert alert-success" role="alert" *ngIf="extension_status === 5" id="extension_result">
           Modify request successfully approved and forwarded to facility!
         </div>
 
-        <div class="alert alert-warning" role="alert" *ngIf="extension_status == 2" id="extension_result">
+        <div class="alert alert-warning" role="alert" *ngIf="extension_status === 2" id="extension_result">
           An error occured.
 
         </div>
