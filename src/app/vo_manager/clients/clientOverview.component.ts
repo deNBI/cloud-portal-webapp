@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Client } from './client.model';
 import { ClientService } from '../../api-connector/client.service';
 import { ApiSettings } from '../../api-connector/api-settings.service';
@@ -8,14 +9,15 @@ import { ComputecenterComponent } from '../../projectmanagement/computecenter.co
 import { FacilityService } from '../../api-connector/facility.service';
 import { IResponseTemplate } from '../../api-connector/response-template';
 import { is_vo } from '../../shared/globalvar';
+import { ClientLimitsComponent } from './modals/client-limits..component';
 
 /**
  * Client component.
  */
 @Component({
-	selector: 'app-client-overview',
-	templateUrl: 'clientOverview.html',
-	providers: [FacilityService, UserService, GroupService, ClientService, ApiSettings],
+	           selector: 'app-client-overview',
+	           templateUrl: 'clientOverview.html',
+	           providers: [FacilityService, UserService, GroupService, ClientService, ApiSettings],
 })
 
 export class ClientOverviewComponent implements OnInit {
@@ -25,6 +27,7 @@ export class ClientOverviewComponent implements OnInit {
 	 * All clients.
 	 */
 	clients: Client[];
+	bsModalRef: BsModalRef;
 
 	/**
 	 * Selected Client;
@@ -60,7 +63,7 @@ export class ClientOverviewComponent implements OnInit {
 	isLoaded: boolean = false;
 
 	constructor(private facilityService: FacilityService, private userService: UserService,
-		private clientservice: ClientService) {
+	            private clientservice: ClientService, private modalService: BsModalService) {
 		this.facilityService = facilityService;
 		this.userService = userService;
 		this.facilityService = facilityService;
@@ -75,6 +78,14 @@ export class ClientOverviewComponent implements OnInit {
 			this.isLoaded = true;
 		});
 
+	}
+
+	showClientsLimitsModal(cl: Client): void {
+		const initialState = { client: cl };
+
+		this.bsModalRef = this.modalService.show(ClientLimitsComponent, { initialState });
+		// this.bsModalRef.setClass('modal-lg');
+		// this.subscribeToBsModalRef();
 	}
 
 	/**
