@@ -189,7 +189,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
 		const initialState = {
 			project: this.project_application,
-			life_time_string: `${this.project.DateCreated} -  ${this.project.DateEnd}`,
+			life_time_string: `${this.project.DateCreated} - ${this.project.DateEnd}`,
 		};
 		this.bsModalRef = this.modalService.show(LifetimeRequestComponent, { initialState });
 		this.bsModalRef.setClass('modal-lg');
@@ -850,8 +850,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	}
 
 	getUserinfo(): void {
-		this.userService.getUserInfo().subscribe((userinfo: any): void => {
-			this.userinfo = new Userinfo(userinfo);
+		this.userService.getUserInfo().subscribe((userinfo: Userinfo): void => {
+			this.userinfo = userinfo;
 		});
 	}
 

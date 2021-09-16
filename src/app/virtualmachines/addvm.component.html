@@ -153,7 +153,6 @@
                                        [flavors]="flavor_types[selected_flavor_type]"
                                        [creditsAllowed]="credits_allowed"
                                        (selectedFlavorChange)="setSelectedFlavor($event)"
-                                       id="id_flavor_detail"
                     ></app-flavor-detail>
 
                   </div>
@@ -555,23 +554,18 @@
                     class="form-group row">
 
                     <label class="col-md-2 form-control-label">Working on the road</label>
-                    <div class="col-md-4"><label><strong style="padding-right: 10px; bottom: 15px;position: relative;">
-                      <a href="https://cloud.denbi.de/wiki/Tutorials/Mosh/" rel="noopener noreferrer" target="_blank">Open UDP ports</a>
-                      <i
-                        data-balloon="This selection is necessary for using MOSH.
-                        UDP is better suited for unstable/switching connections, e.g. during train travel."
-                        data-balloon-pos="down" data-balloon-length="large"><i
-                        class="icon-question menu_links"
-                        style="cursor: pointer; margin-left: 2px;"></i></i></strong></label>
-
-                      <label
-                        class="switch switch-label switch-pill switch-success">
-                        <input type="checkbox" class="switch-input"
+                    <div class="col-md-4 form-check">
+                        <input type="checkbox" class="form-check-input"
                                name="udp_allowed" [disabled]="!mosh_mode_available"
                                [(ngModel)]="udp_allowed">
-                        <div class="switch-slider" data-checked="✓" data-unchecked="✕"></div>
-                        <!--<span class="switch-handle"></span>-->
-                      </label>
+                      <label class="form-check-label"><strong>
+                        <a href="https://cloud.denbi.de/wiki/Tutorials/Mosh/" rel="noopener noreferrer" target="_blank">Open UDP ports</a>
+                        <i
+                                data-balloon="This selection is necessary for using MOSH.
+                        UDP is better suited for unstable/switching connections, e.g. during train travel."
+                                data-balloon-pos="down" data-balloon-length="large"><i
+                                class="icon-question menu_links"
+                                style="cursor: pointer; margin-left: 2px;"></i></i></strong></label>
                     </div>
                     <div class="alert alert-primary col-md-6" *ngIf="!mosh_mode_available">To use MOSH with UDP ports, please select an Image which supports MOSH.
                       Learn more about MOSH <a href="https://mosh.org" target="_blank" rel="noopener noreferrer">here</a>.</div>
@@ -612,13 +606,12 @@
                                 }">
           <div class="form-check col">
             <input class="form-check-input"
-                   name="ansible_need_okay"
+                   name="gaveOkay"
                    type="checkbox"
                    id="ansible_need_okay"
                    [(ngModel)]="gaveOkay"
                    #respCheck
-                   required
-            >
+                   required>
             <label class="form-check-label" for="ansible_need_okay">
               I hereby confirm that I read and acknowledge the following:<br>
               To set up your virtual machine with your chosen options, we generate a new rsa-keypair which we use
@@ -670,16 +663,16 @@
         <div
           *ngIf="client_avaiable && projectDataLoaded && selectedProjectRessources?.used_vms < selectedProjectRessources?.number_vms && (flavors?.length > 0  || selectedFlavor)"
           class="alert alert-warning col-md-10" role="alert" style="margin: auto;">
-          <input class="form-check-input"
-                 name="vm_responsibility"
-                 type="checkbox"
-                 id="vm_responsibility"
-                 [(ngModel)]="vm_responsibility"
-                 required
-          >
-          <label class="form-check-label" for="vm_responsibility">
-            I hereby confirm that I am responsible for the virtual machine and any action performed on it.
-          </label>
+          <div class="form-check"><input class="form-check-input"
+                                         name="vm_responsibility"
+                                         type="checkbox"
+                                         id="vm_responsibility"
+                                         [(ngModel)]="vm_responsibility"
+                                         required>
+            <label class="form-check-label" for="vm_responsibility">
+              I hereby confirm that I am responsible for the virtual machine and any action performed on it.
+            </label></div>
+
         </div>
         <div class="form-group row"
              *ngIf=" client_avaiable && projectDataLoaded && selectedProjectRessources?.used_vms < selectedProjectRessources?.number_vms && (flavors?.length > 0  || selectedFlavor)">
@@ -724,67 +717,6 @@
 </div>
 
 
-<div bsModal #infoModal="bs-modal" class="modal fade " tabindex="-1" role="dialog"
-     aria-labelledby="myModalLabel" aria-hidden="true"
-     id="info_modal">
-  <div class="modal-dialog modal-info" role="document"
-       [ngClass]="newVm?.status ==='ACTIVE' ? 'modal-lg':''">
-
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title" *ngIf="newVm?.status !== 'ACTIVE'">Status</h4>
-        <h4 class="modal-title" *ngIf="newVm?.status === 'ACTIVE'">How to Connect</h4>
-
-        <button type="button" class="close" style="cursor: pointer"
-                (click)="infoModal.hide()"
-                aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body"
-           *ngIf="(newVm?.status === 'BUILD' || newVm?.status === 'PORT_CLOSED' || newVm === null) && !create_error?.error ">
-        <p *ngIf="playbook_run === 0">We are setting up a machine for you. This can take up to 5 minutes.</p>
-        <p *ngIf="playbook_run === 1">We are setting up a machine for you.
-          This can take some time, depending on your chosen tools.
-          At maximum it can take up to {{getTimeoutMinutes()}} minutes.</p>
-
-        <div class="progress">
-          <div class="progress-bar progress-bar-striped {{progress_bar_animated}} bg-info"
-               role="progressbar" style="width: 33%;"
-               aria-valuemin="0"
-               aria-valuemax="100" [style.width.%]="progress_bar_width"><font
-            color="black">{{progress_bar_status}}</font>
-          </div>
-        </div>
-        <p>If you close this modal you can find instructions how to connect to the virtual
-          machine on the
-          instance overview site</p>
-      </div>
-      <div class="modal-body" *ngIf="newVm?.status === 'ACTIVE' || newVm?.status === 'DELETED'">
-        <app-how-to-connect id="how_to_connect_id" [selectedVirtualMachine]="newVm"
-                            [playbook_run]="playbook_run"></app-how-to-connect>
-      </div>
-      <div class="modal-body" *ngIf="create_error?.error">
-        An Error occurred.<br><br>
-        <pre><code>{{create_error.error}}</code></pre>
-      </div>
-      <div class="modal-footer">
-        <button *ngIf="newVm?.status === 'ACTIVE'"
-                id="goToOverviewButton"
-                routerLinkActive="active"
-                [routerLink]="['/virtualmachines/vmOverview']"
-                type="button" class="btn btn-info nav-link"
-                (click)="infoModal.hide();resetData()">Instance Overview
-        </button>
-        <button type="button" class="btn btn-secondary"
-                (click)="infoModal.hide();resetData()"
-                id="close_info_modal">Close
-        </button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-
 <div bsModal #redirectModal="bs-modal" class="modal fade " tabindex="-1" role="dialog"
      aria-labelledby="myModalLabel" aria-hidden="true"
      id="redirect_modal">
@@ -797,7 +729,7 @@
         <p>Redirecting to Instance Overview...</p>
         <div class="progress">
           <div class="progress-bar progress-bar-striped {{progress_bar_animated}} bg-info"
-               role="progressbar" style="width: 0%;"
+               role="progressbar" style="width: 0;"
                aria-valuemin="0"
                aria-valuemax="100" [style.width.%]="progress_bar_width">
           </div>

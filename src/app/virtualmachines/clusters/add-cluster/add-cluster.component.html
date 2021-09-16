@@ -107,7 +107,7 @@
                        *ngIf="selectedProject && !(selectedProjectRessources?.cores_used < selectedProjectRessources?.cores_total) && (selectedProjectRessources.ram_used < selectedProjectRessources.ram_total) && flavors_loaded && flavors_usable.length === 0 && !selectedFlavor">
                     There is not enough ram available for this project to start a new machine.
                     Your principal investigator can request more
-                    <resour></resour>ces if necessary.
+                    resources if necessary.
                   </div>
                   <div class="alert alert-primary " role="alert"
                        *ngIf="selectedProject && selectedProjectRessources?.cores_used < selectedProjectRessources?.cores_total && selectedProjectRessources.ram_used < selectedProjectRessources.ram_total && flavors_loaded && flavors_usable.length === 0 && !selectedFlavor">
@@ -121,52 +121,48 @@
 
               <div>
 
-                <accordion class="col" *ngIf="selectedProject && projectDataLoaded && (selectedProjectRessources?.used_vms +2) <= selectedProjectRessources?.number_vms && (flavors.length !== 0 || selectedFlavor) && images?.length> 0">
 
-                  <accordion-group #masterInstanceGroup [isOpen]="true"
-                  >
-                    <div accordion-heading style="width: 100%; cursor: pointer"><strong>Master Instance</strong>
-                      <i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
-                            'icon-arrow-up': masterInstanceGroup.isOpen, 'icon-arrow-down': !masterInstanceGroup.isOpen}"></i>
-                    </div>
-                    <div class="form-group row col-md-12">
-                      <label class="col-md-2 form-control-label"><strong>Flavor*</strong></label>
-                      <div class="col-md-10">
+                <div class="form-group row col-md-12">
+                  <label class="col-md-2 form-control-label"><strong>Master Instance</strong></label>
+                </div>
+
+                <div class="form-group row col-md-12">
+                  <label class="col-md-2 form-control-label"><strong>Flavor*</strong></label>
+                  <div class="col-md-10">
 
 
-                        <app-flavor-detail [selectedFlavor]="selectedMasterFlavor"
-                                           [flavors]="flavors_usable"
-                                           (selectedFlavorChange)="selectedMasterFlavor=$event;resetBatches();calculateNewValues();"
-                                           id="master_id_flavor_detail"></app-flavor-detail>
+                    <app-flavor-detail [selectedFlavor]="selectedMasterFlavor"
+                                       [flavors]="flavors_usable"
+                                       (selectedFlavorChange)="selectedMasterFlavor=$event;resetBatches();calculateNewValues();"
+                                       id="master_id_flavor_detail"></app-flavor-detail>
 
-                      </div>
-
-
-                    </div>
+                  </div>
 
 
-                    <div class="form-group row col-md-12">
-
-                      <label class="col-md-2 form-control-label"><strong>Image*</strong></label>
-
-                      <div class="col-md-10">
-                        <div class="alert alert-primary" *ngIf="(images?.length === 0) || !images">
-                          There are no images available for selection at the moment.
-                          Please contact the support of the facility where your project is running.
-                        </div>
+                </div>
 
 
-                        <app-image-detail *ngIf="images?.length > 0" [selectedImage]="selectedMasterImage"
-                                          [images]="images"
-                                          (selectedImageChange)="selectedMasterImage=$event;this.selectedWorkerBatches[0].image=selectedMasterImage;"
-                                          id="master_id_image_detail"></app-image-detail>
-                        <div class="alert alert-primary" *ngIf="selectedMasterImage"> This image will also be used for every worker!</div>
-                      </div>
+                <div class="form-group row col-md-12">
 
+                  <label class="col-md-2 form-control-label"><strong>Image*</strong></label>
+
+                  <div class="col-md-10">
+                    <div class="alert alert-info" *ngIf="(images?.length === 0) || !images">
+                      There are no images available for selection at the moment.
+                      Please contact the support of the facility where your project is running.
                     </div>
 
 
-                  </accordion-group>
+                    <app-image-detail *ngIf="images?.length > 0" [selectedImage]="selectedMasterImage"
+                                      [images]="images"
+                                      (selectedImageChange)="selectedMasterImage=$event;this.selectedWorkerBatches[0].image=selectedMasterImage;"
+                                      id="master_id_image_detail"></app-image-detail>
+                    <div class="alert alert-info" *ngIf="selectedMasterImage"> This image will also be used for every worker!</div>
+                  </div>
+
+                </div>
+
+                <accordion class="col" *ngIf="selectedProject && projectDataLoaded && (selectedProjectRessources?.used_vms +2) <= selectedProjectRessources?.number_vms && (flavors.length != 0 || selectedFlavor) && images?.length> 0">
 
                   <div class="alert alert-primary " role="alert"
                        *ngIf="(!selectedMasterFlavor || !selectedMasterImage) &&  (selectedProjectRessources?.used_vms + 2 ) <= selectedProjectRessources?.number_vms">

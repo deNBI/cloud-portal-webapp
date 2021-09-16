@@ -297,6 +297,10 @@ $simplevmcolour: #00ADEF;
   width: 13rem;
 }
 
+.row > .ng-star-inserted {
+  width: unset;
+}
+
 
 .sidebar {
   height: calc(100vh - 90px) !important;

@@ -475,14 +475,16 @@
                 Data*</strong></label>
               <div class="col-md-8">
                 <div id="id_project_application_sensitive_data" class="form-check">
-                  <input class="form-check-input" type="checkbox"
-                         name="project_application_sensitive_data"
-                         [(ngModel)]="application.project_application_sensitive_data">
                   <div class="alert alert-primary" role="alert">
-                    According to our usage policy it is not allowed to process person related data in the de.NBI Cloud
-                    with
-                    the exception that an additional agreement is made with the corresponding cloud site operator.
-                    If you want to process person related data please click on the checkbox!
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox"
+                             name="project_application_sensitive_data"
+                             [(ngModel)]="application.project_application_sensitive_data">
+                      <label class="form-check-label">According to our usage policy it is not allowed to process person related data in the de.NBI Cloud
+                        with
+                        the exception that an additional agreement is made with the corresponding cloud site operator.
+                        If you want to process person related data please click on the checkbox!</label>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -492,12 +494,14 @@
                      for="id_project_application_openstack_basic_introduction"><strong>Training</strong></label>
               <div class="col-md-8">
                 <div id="id_project_application_openstack_basic_introduction" class="form-check">
-                  <input class="form-check-input" type="checkbox"
-                         name="project_application_openstack_basic_introduction"
-                         [(ngModel)]="application.project_application_openstack_basic_introduction">
+
                   <div class="alert alert-primary" role="alert">
-                    Are you interested in a short OpenStack introduction workshop? You and your project members will be
-                    notified as soon as a workshop is organized.
+                    <div class="form-check"><input class="form-check-input" type="checkbox"
+                           name="project_application_openstack_basic_introduction"
+                           [(ngModel)]="application.project_application_openstack_basic_introduction">
+                    <label class="form-check-label">Are you interested in a short OpenStack introduction workshop? You and your project members will be
+                      notified as soon as a workshop is organized.</label>
+                    </div>
                   </div>
 
                 </div>
@@ -509,12 +513,14 @@
                      for="id_project_application_cloud_service"><strong>Service</strong></label>
               <div class="col-md-8">
                 <div id="id_project_application_cloud_service" class="form-check">
-                  <input class="form-check-input" type="checkbox"
-                         name="project_application_cloud_service"
-                         [defaultChecked]="application?.project_application_cloud_service_user_number > 0 || application?.project_application_cloud_service_develop"
-                         [(ngModel)]="application.project_application_cloud_service">
+
                   <div class="alert alert-primary" role="alert">
-                    Do you plan to offer a service?
+                    <div class="form-check"><input class="form-check-input" type="checkbox"
+                           name="project_application_cloud_service"
+                           [defaultChecked]="application?.project_application_cloud_service_user_number > 0 || application?.project_application_cloud_service_develop"
+                           [(ngModel)]="application.project_application_cloud_service">
+                    <label class="form-check-label">Do you plan to offer a service?</label>
+                    </div>
                   </div>
                 </div>
 

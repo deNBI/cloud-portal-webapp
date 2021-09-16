@@ -319,7 +319,6 @@
                         class="nav-icon fas fa-cloud"></i> Overview</a>
             </li>
 
-
             <li class="nav-item" *ngIf="is_vo_admin">
                 <a class="nav-link" routerLinkActive="active"
                    [routerLink]="['/vo-manager/resources']"><i
@@ -347,14 +346,9 @@
 
 <main class="bg-light main">
 
-    <!-- Breadcrumb-->
 
-    <!-- <cui-breadcrumb>
-
-     </cui-breadcrumb> -->
 
     <div class="container-fluid">
         <router-outlet (activate)="componentAdded($event)"></router-outlet>
     </div><!-- /.conainer-fluid -->
 </main>
-
