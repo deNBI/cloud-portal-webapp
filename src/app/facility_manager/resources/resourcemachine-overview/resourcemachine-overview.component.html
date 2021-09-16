@@ -91,7 +91,7 @@
               <div class="input-group-prepend">
                 <span class="input-group-text">Slot {{i + 1 }}</span>
               </div>
-              <select class="form-control" [ngModelOptions]="{standalone: true}" [(ngModel)]="this.newResourceMachine.gpu_used[i]"
+              <select class="form-control form-select" [ngModelOptions]="{standalone: true}" [(ngModel)]="this.newResourceMachine.gpu_used[i]"
               name="new_machine_gpu_{{i}}" ngDefaultControl>
                 <option [ngValue]="emptySpec">
                   UNUSED
@@ -134,7 +134,7 @@
         </div>
         <div class="form-group row">
           <label for="new_machine_type">Type</label>
-          <select class="form-control" formControlName="new_machine_type" id="new_machine_type" ngDefaultControl>
+          <select class="form-control form-select" formControlName="new_machine_type" id="new_machine_type" ngDefaultControl>
             <option selected disabled [ngValue]="null">---</option>
             <option *ngFor="  let type of factor_types" [ngValue]="type">
               {{type}}
@@ -247,7 +247,7 @@
             <div class="input-group mb-3">
 
 
-              <select class="form-control" [disabled]="!resourceMachineUpdateList[machine.id]"
+              <select class="form-control form-select" [disabled]="!resourceMachineUpdateList[machine.id]"
                       [(ngModel)]="machine.gpu_used[i]" [ngModelOptions]="{standalone:true}">
                 <option [ngValue]="machine.gpu_used[i]" selected>{{machine.gpu_used[i].type}}</option>
                 <option [ngValue]="emptySpec">
@@ -296,7 +296,7 @@
         <div class="form-group row">
           <label for="{{machine?.name + '_type'}}">Machine Type</label>
           <select  ngDefaultControl
-                  class="form-control" formControlName="{{machine?.id}}_type" name="{{machine.id}}_type"
+                  class="form-control form-select" formControlName="{{machine?.id}}_type" name="{{machine.id}}_type"
                   selected id="{{machine?.name + '_type'}}">
             <option *ngFor="let type of factor_types" [ngValue]="type">{{type}}</option>
           </select>

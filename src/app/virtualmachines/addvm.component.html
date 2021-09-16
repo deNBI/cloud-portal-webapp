@@ -53,7 +53,7 @@
 
 
               <div class="col-md-8">
-                <select required class="form-control" name="projectSelect" *ngIf="!singleProject"
+                <select required class="form-control form-select" name="projectSelect" *ngIf="!singleProject"
                         [(ngModel)]="selectedProject" id="projectSelect"
                         (ngModelChange)="getSelectedProjectClient(); resetChecks();"
                 >
@@ -293,7 +293,7 @@
                     <ng-container
                       *ngIf="showAttachVol">
                       <select style="margin-bottom: 5px;margin-top: 5px"
-                              class="form-control" name="selected_detached_vol_select"
+                              class="form-control form-select" name="selected_detached_vol_select"
                               [(ngModel)]="selected_detached_vol" id="selected_detached_vol_select"
 
                       >

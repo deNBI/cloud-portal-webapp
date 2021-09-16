@@ -26,8 +26,8 @@
     <strong>Volumes</strong>
     –Overview
   </div>
-  <div *ngIf="showFacilities" style="margin-bottom: 10px"><select [(ngModel)]="selectedFacility"
-                                                                  class="form-control " name="selectedFacility">
+  <div *ngIf="showFacilities" style="margin-bottom: 10px">
+    <select [(ngModel)]="selectedFacility" class="form-control form-select" name="selectedFacility">
     <option *ngFor="  let facility of managerFacilities"
             [ngValue]="facility">
       {{facility['Facility']}}
@@ -419,7 +419,7 @@
         </div>
         <strong>To which vm should the volume be attached?</strong>
 
-        <select class="form-control col-md-6" name="selected_vm"
+        <select class="form-control col-md-6 form-select" name="selected_vm"
                 [(ngModel)]="selected_vm">
           <option value="undefined" disabled selected hidden> Please Select</option>
           <option *ngFor="let vm of project_vms" [ngValue]="vm"> {{vm.name}}
@@ -676,7 +676,7 @@
           <div class="col-md-6">
 
             <select id="select_project_id"
-                    class="form-control"
+                    class="form-control form-select"
                     name="selectedProject" [(ngModel)]="selectedProject"
                     (ngModelChange)="getActiveVmsByProject(selectedProject[1]);getSelectedProjectDiskspace();getSelectedProjectVolumes();">
               <option value="undefined" disabled selected hidden> Please Select
@@ -735,7 +735,7 @@
 
           <label class="col-md-3 form-control-label">Vm</label>
           <div class="col-md-9">
-            <select class="form-control col-md-6" name="selected_vm"
+            <select class="form-control form-select col-md-6" name="selected_vm"
                     [(ngModel)]="selected_vm"
                     id="select_vm_id">
               <option value="undefined" disabled selected hidden> Please Select

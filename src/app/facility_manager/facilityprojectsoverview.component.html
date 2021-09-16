@@ -10,7 +10,7 @@
         </div>
         <div class="col-md-8" style="margin-bottom: 10px;"><select [(ngModel)]="selectedFacility"
                                                                    (ngModelChange)="onChangeSelectedFacility($event)"
-                                                                   class="form-control" name="selectedFacility">
+                                                                   class="form-control form-select" name="selectedFacility">
           <option *ngFor="  let facility of managerFacilities" [ngValue]="facility">
             {{facility['Facility']}}
           </option>
@@ -35,7 +35,7 @@
         </div>
         <div class="col-md-8" style="margin-bottom: 10px;"><select [(ngModel)]="selectedFacility"
                                                                    (ngModelChange)="onChangeSelectedFacility($event)"
-                                                                   class="form-control" name="selectedFacility">
+                                                                   class="form-control form-select" name="selectedFacility">
           <option *ngFor="  let facility of managerFacilities" [ngValue]="facility">
             {{facility['Facility']}}
           </option>
@@ -252,7 +252,7 @@
               <label
                 class="col-md-12 control-label"><strong>Which project members should receive the email?</strong></label>
               <div class="col-md-12">
-                <select class="form-control" [(ngModel)]="selectedProjectType" (ngModelChange)="setEmailSubject()"
+                <select class="form-control form-select" [(ngModel)]="selectedProjectType" (ngModelChange)="setEmailSubject()"
                         name="selectedProjectType" id="selectedProjectType">
                   <option value="ALL" selected>All</option>
                   <option value="OVP">OpenStack</option>

@@ -368,7 +368,7 @@
             <label
               class="col-md-12 control-label"><strong>Which facility should receive the email?</strong></label>
             <div class="col-md-12">
-              <select class="form-control" [(ngModel)]="selectedFacility"
+              <select class="form-control form-select" [(ngModel)]="selectedFacility"
                       name="selectedFacility" id="selectedFacility">
                 <option value="ALL"> All
                 <option *ngFor="let cc of computecenters" [ngValue]="cc.FacilityId">
@@ -382,7 +382,7 @@
             <label
               class="col-md-12 control-label"><strong>Which project members should receive the email?</strong></label>
             <div class="col-md-12">
-              <select class="form-control" [(ngModel)]="selectedProjectType"
+              <select class="form-control form-select" [(ngModel)]="selectedProjectType"
                       name="selectedProjectType" id="selectedProjectType">
                 <option value="ALL" selected> All
                 </option>

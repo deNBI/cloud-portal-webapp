@@ -14,7 +14,7 @@
           <i class="fa fa-align-justify"></i> Image Tags
         </div>
         <div>
-          <select [(ngModel)]="selectedFacility" class="form-control " (ngModelChange)="reloadData() ;"
+          <select [(ngModel)]="selectedFacility" class="form-control form-select" (ngModelChange)="reloadData() ;"
                   name="selectedFacility">
             <option *ngFor="  let facility of managerFacilities" [ngValue]="facility">
               {{facility['Facility']}}

@@ -34,7 +34,7 @@
             </button>
             <div style="margin:5px;"><select [(ngModel)]="selectedFacility"
                                              (ngModelChange)="isLoaded=false;onChangeSelectedFacility($event);"
-                                             class="form-control" name="selectedFacility">
+                                             class="form-control form-select" name="selectedFacility">
               <option *ngFor="  let facility of managerFacilities" [ngValue]="facility">
                 {{facility['Facility']}}
               </option>

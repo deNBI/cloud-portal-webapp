@@ -4,7 +4,7 @@
 
   <div style="margin-bottom: 10px"><select [(ngModel)]="selectedFacility"
                                            (ngModelChange)="onChangeSelectedFacility($event)"
-                                           class="form-control " name="selectedFacility">
+                                           class="form-control form-select" name="selectedFacility">
     <option *ngFor="  let facility of managerFacilities"
             [ngValue]="facility">
       {{facility['Facility']}}

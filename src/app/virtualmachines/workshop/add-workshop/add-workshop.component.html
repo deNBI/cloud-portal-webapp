@@ -40,7 +40,7 @@
 							<label class="col-2 form-label" for="projectSelect"><strong>Project*</strong></label>
 							<span *ngIf="client_available && !project_data_loaded" class="spinner-border text-info"></span>
 							<div class="col-8">
-								<select required class="form-control" name="selected_project"
+								<select required class="form-control form-select" name="selected_project"
 												[(ngModel)]="selected_project" id="projectSelect"
 												(ngModelChange)="reset_on_project_change(); get_workshops_for_application(); get_selected_project_client();">
 									<option value="undefined" disabled selected hidden> Please
