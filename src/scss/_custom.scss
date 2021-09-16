@@ -6,6 +6,7 @@
 
 // due to change from ngx-perfect-scrollbar to ngx-scrollbar
 
+
 .sidebar-minimized .sidebar .sidebar-nav{
   padding-bottom: unset;
 }
@@ -263,6 +264,7 @@ $deNBI_darkgrey: #58595B;
 $deNBI_lightgrey: #939496;
 $deNBI_white: #FFFFFF;
 $deNBI_black: #000000;
+$deNBI_disabled: #D9DCDE;
 
 //project-type-colors
 
@@ -279,23 +281,170 @@ $simplevmcolour: #00ADEF;
 }
 //media-query for applications-overview buttons
 
-@media (max-width: 1350px)
-{
-  .applicationActionsButton
-  {
+@media (max-width: 1350px) {
+  .applicationActionsButton {
     display: none;
 
   }
 }
 
+.sidebar-fixed .sidebar {
+  height: calc(100vh - 10.938rem);
+  border: 1.25rem;
+  border-radius: 0.625rem;
+  top: 4.688rem;
+  margin: 0.938rem;
+  width: 13rem;
+}
 
-.navbar-brand-full
-{
-  bottom:8px;
+.row > .ng-star-inserted {
+  width: unset;
+}
+
+
+.sidebar {
+  height: calc(100vh - 90px) !important;
+  padding-bottom: 0px !important;
+
+  color: $deNBI_darkgrey;
+  background-color: $deNBI_white;
+  border-radius: 0.625rem;
+
+  margin-left: 0.9375rem !important;
+  width: 12.5rem;
+  margin-top: 5rem !important;
+
+}
+
+.sidebar-narrow-unfoldable:not(:hover) .sidebar-toggler, .sidebar-narrow .sidebar-toggler {
+  position: unset !important;
+  bottom: 0;
+}
+
+.sidebar .nav-title {
+  color: $deNBI_darkgrey;
+
+}
+
+.sidebar .nav-link {
+  color: $deNBI_darkgrey;
+}
+
+.sidebar .nav-link .nav-icon {
+  color: $deNBI_darkgrey;
+}
+
+.sidebar .nav-link .nav-icon path{
+  fill: $deNBI_darkgrey !important;
+}
+
+.nav-pills .nav-link {
+  background: $deNBI_lightgrey;
+}
+
+.nav-pills .nav-link.active {
+  background: $deNBI_cyan;
+}
+
+.nav-pills .nav-link:hover {
+  background: $deNBI_darkgrey;
+}
+
+.nav-pills .nav-link.active:hover {
+  background: $deNBI_blue;
+}
+
+.panel {
+  margin: 10px;
+}
+
+.sidebar .nav .nav-item .nav-link {
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.header{
+  min-height: 3rem;
+  padding:0rem;
+}
+
+.header-left {
+  background-color: $deNBI_white;
+  height: 3rem;
+  border-radius: 10px;
+  width: calc(100vw - (100vw - 200px));
+  position: fixed;
+  top: 15px;
+  text-align: center;
+  margin: auto;
+  margin-left: 0.9375rem !important;
+  margin-right: 10px;
+  z-index: 100;
+}
+
+.app-footer {
+  background-color: $deNBI_white;
+  width: calc(100vw - (100vw - 200px));
+  border-radius: 10px;
+  font-family: 'Raleway', sans-serif;
+  align-items: center;
+  padding: 0 1rem;
+  display: flex;
+  bottom: 10px;
+  position: fixed;
+  height: 54px;
+}
+
+.app-footer-minimized {
+  background-color: $deNBI_white;
+  width: calc(100vw - (100vw - 60px));
+  border-radius: 10px;
+  font-family: 'Raleway', sans-serif;
+  align-items: center;
+  padding: 0 1rem;
+  display: flex;
+  bottom: 10px;
+  position: fixed;
+  height: 54px;
+}
+
+
+.header-left-minimized {
+  width: calc(100vw - (100vw - 60px));
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+
+
+
+.header-right {
+  background-color: $deNBI_white;
+  height: 3rem;
+  border-radius: 10px;
+  width: calc(100vw - 250px);
+
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  text-align: center;
+  margin: auto;
+  z-index: 100;
+}
+
+.header-right-maximized {
+  width: calc(100vw - 110px);
+  margin: auto;
+}
+
+.navbar-brand-full {
+  bottom: 8px;
   position: relative;
 }
 
-.instance-card{
+.instance-card {
   margin-top: 10px;
   margin-bottom:5px;
 }
@@ -355,20 +504,6 @@ $simplevmcolour: #00ADEF;
 }
 
 
-.sidebar-fixed .app-header + .app-body .sidebar{
-  height: calc(100vh - 175px);
-  border: 20px;
-  border-radius: 10px;
-  top: 75px;
-  margin: 15px;
-}
-
-.sidebar .nav .nav-item .nav-link {
-
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-}
 
 .rTable {
   display: table;
@@ -442,10 +577,13 @@ $simplevmcolour: #00ADEF;
   width: 100%;
 }
 
-
 .app-header .navbar-brand {
   width: 100%;
   margin-right: 10px;
+}
+
+.navbar-brand img {
+  max-width: 90%;
 }
 
 //modals
@@ -477,17 +615,107 @@ $simplevmcolour: #00ADEF;
     margin-left: 0px !important;
   }
 
+.container-fluid {
+  max-height: calc(100vh - 90px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  border-radius: 5px;
+}
 
+.btn-outline-primary, .btn-outline-secondary {
+  color: $deNBI_lightgrey;
+  border-color: $deNBI_lightgrey;
+}
 
-  .sidebar-fixed .app-header + .app-body .sidebar{
-    height: calc(100vh - 175px);
-    border: 20px;
-    border-radius: 10px;
-    top: 75px;
-    margin: 15px;
-  }
+.btn-outline-primary:hover, .btn-outline-secondary:hover {
+  color: $deNBI_white;
+  background-color: $deNBI_lightgrey;
+  border-color: $deNBI_lightgrey;
+}
 
-  .sidebar .nav .nav-item .nav-link {
+.btn-outline-primary:active, .btn-outline-secondary:active {
+  color: white;
+  background-color: $deNBI_darkgrey;
+}
+
+.btn-primary, .btn-info, .btn-secondary {
+  color: white;
+  background-color: $deNBI_lightgrey;
+  border: none;
+}
+
+.btn-primary:disabled, .btn-secondary:disabled, .btn-info:disabled {
+  background-color: $deNBI_disabled;
+}
+
+.btn-outline-primary:disabled, .btn-outline-secondary:disabled {
+  border-color: $deNBI_disabled;
+}
+
+.btn-primary:active, .btn-secondary:active, .btn-info:active, .btn-primary:target, .btn-secondary:target, .btn-info:target, {
+  background-color: $deNBI_darkgrey !important;
+  border: none;
+}
+
+.btn-primary:focus, .btn-secondary:focus, .btn-info:focus {
+  background-color: $deNBI_cyan;
+  border: none;
+}
+
+.btn-outline-primary:focus, .btn-primary:focus,
+{
+  background-color: $deNBI_lightgrey;
+  border-color: $deNBI_lightgrey;
+  box-shadow: none;
+}
+
+.btn-outline-primary:focus, .btn-primary:focus
+{
+  background-color: $deNBI_darkgrey;
+  border-color: $deNBI_darkgrey;
+  box-shadow: none;
+}
+
+.btn:focus {
+  box-shadow: none;
+}
+
+.form-control:focus {
+  box-shadow: none;
+  border-color: $deNBI_lightgrey;
+}
+
+select option:hover, select option:focus, select option:target {
+  background-color: $deNBI_cyan;
+}
+
+.btn-primary:hover, .btn-secondary:hover, .btn-info:hover {
+  color: $deNBI_white;
+  background-color: $deNBI_darkgrey;
+  border: none;
+}
+
+.form-check-input:checked {
+  background-color: $deNBI_cyan;
+}
+.form-check-input:focus {
+  box-shadow: none;
+}
+
+.callout-info {
+  border-left-color: $deNBI_lightgrey;
+}
+
+.bg-primary {
+  background-color: $deNBI_cyan !important;
+}
+
+.bg-info {
+  color: white;
+  background-color: $deNBI_lightgrey !important;
+}
+
+.sidebar .nav .nav-item .nav-link {
 
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -519,15 +747,30 @@ $simplevmcolour: #00ADEF;
     position: relative;
   }
 
-  .header-fixed .app-header
-  {
-    margin: 15px;
-    border-radius: 10px;
+  .nav-group-items {
+    background-color: white;
   }
 
-  main{
-    margin-top: 35px !important;
-    margin-left: 195px !important;
+  .nav-group-items .nav-item {
+    background-color: white;
+  }
+
+  .nav-group-items .nav-item:hover {
+    background-color: $deNBI_darkgrey;
+    color: white;
+  }
+
+  .nav-group-items:hover {
+    color: white;
+  }
+
+  .main {
+    margin-top: 5rem !important;
+    margin-left: 13.75rem !important;
+  }
+
+  .main-maximized{
+    margin-left: 5.313rem !important;
   }
 
   .btn{
@@ -536,9 +779,10 @@ $simplevmcolour: #00ADEF;
 
   //colors for buttons and alerts >>>
 
-  .btn-primary {
-    background-color: $deNBI_cyan;
-    border: none;
+  .alert-primary, .alert-info {
+    color: #81868A;
+    background-color: #DFE6ED;
+    border-color: #BBC1C7;
   }
 
   .btn-secondary, .btn-info
@@ -548,15 +792,19 @@ $simplevmcolour: #00ADEF;
     color: $deNBI_white;
   }
 
-  .btn-primary:hover, .btn-secondary:hover, .btn-info:hover
-  {
-    color: $deNBI_white;
+  .btn-primary-outline:focus {
+    background-color: $deNBI_darkgrey;
+    box-shadow: none;
   }
 
-  .alert-info, .alert-primary {
-    background-color: #C9E7F2;
-    border-color: #00ADEF;
-    color: #336573;
+  .btn-primary-outline:hover {
+    border-color: $deNBI_lightgrey;
+  }
+
+  .loader {
+    position: fixed;
+    top: 50%;
+    left:50%;
   }
 
   .btn {
@@ -601,25 +849,10 @@ $simplevmcolour: #00ADEF;
     margin: 0;
   }
 
-  .sidebar .sidebar-minimizer {
-    background-color: $deNBI_white !important;
-    color: $deNBI_cyan !important;
-    position: relative !important;
-    border-radius:10px;
-  }
 
-  .sidebar .sidebar-minimizer:hover {
-    background-color: $deNBI_lightgrey !important;
+.nav-item{
     border-radius: 10px;
-  }
-
-  .nav-item{
-    border-radius: 10px;
-  }
-
-  .sidebar-nav .nav-item:hover, .sidebar-minimized .sidebar .nav-item:hover > .nav-link
-  {
-    background-color: $deNBI_lightgrey !important;
+    cursor:pointer;
   }
 
   .nav
@@ -651,14 +884,21 @@ $simplevmcolour: #00ADEF;
   // Google Font as on landing page.
   .app-body {
     color: $deNBI_darkgrey;
+    font-size: 0.875rem;
+    background-color:#ebedef;
     font-family: 'Raleway', sans-serif;
+    overflow-y: hidden;
   }
 
   .flavor-image-card {
     width: 16rem;
-    margin-right: 5px;
+    margin: 5px;
     cursor: pointer;
     height: auto;
+  }
+
+  .flavor-image-card .card-header {
+    color: white;
   }
 
 
@@ -677,18 +917,13 @@ $simplevmcolour: #00ADEF;
   }
 
 
-  .main .container-fluid
-  {
-    padding: 0 15px 0 30px;
-  }
-
   #title_headline
   {
     font-family: Raleway;
     font-size: 20px !important;
     text-align: center;
     bottom:5px;
-    color: $deNBI_blue;
+    color: $deNBI_darkgrey !important;
     height: 100%;
     margin-top:15px;
     min-width:25%;
@@ -708,39 +943,88 @@ $simplevmcolour: #00ADEF;
     z-index: 100;
   }
 
-  .sidebar {
-    background-color: $deNBI_white;
+  .nav-link, .nav-link.active {
+    color: $deNBI_darkgrey;
   }
 
-  .sidebar .nav-link:hover
+  .nav-link:hover, .nav-link:hover {
+    color: $deNBI_lightgrey;
+  }
+
+.sidebar .nav-dropdown.show .nav-link:hover
   {
-    background-color: $deNBI_lightgrey;
+    background-color: $deNBI_darkgrey;
+    color: $deNBI_white;
   }
 
-  .sidebar-minimized .sidebar .nav-item:hover {
-    width:100% !important;
-    overflow: visible;
+.sidebar .nav-dropdown.show .nav-link:hover .nav-icon
+  {
+    color: $deNBI_white;
   }
 
-  /*fix for projects disappearing */
-  .sidebar .nav-dropdown.open > .nav-dropdown-items{
-    max-height: unset !important;
-  }
+.sidebar-toggler{
+  background-color: white;
+}
 
-  .sidebar .nav-dropdown.open .nav-link:hover
+.sidebar .nav-group.show {
+  color: white;
+  background-color: $deNBI_darkgrey;
+}
+
+.sidebar .nav-group.show .nav-group-items .nav-item {
+  background-color: white;
+  color: $deNBI_darkgrey;
+}
+
+.sidebar .nav-group.show .nav-link.nav-group-toggle, .sidebar .nav-group.show .nav-icon{
+  color: white;
+}
+
+.sidebar .nav-group.show .nav-group-items .nav-link .nav-icon {
+  color: $deNBI_darkgrey;
+}
+
+.sidebar .nav-group.show .nav-group-items .nav-link:hover .nav-icon {
+  color: $white;
+}
+
+.sidebar-nav .nav-item:hover, .sidebar .nav-item:hover > .nav-link
+{
+  background-color: $deNBI_lightgrey
+}
+
+.sidebar-nav .nav-group-toggle::after {
+  color: $deNBI_darkgrey;
+}
+.sidebar-nav .nav-group-toggle:hover::after {
+  color: white;
+}
+
+.sidebar .nav-group-toggle .nav-link:hover
   {
     background-color: $deNBI_lightgrey;
     color: $deNBI_white;
   }
 
-  .sidebar-minimized .sidebar .nav-link:hover{
+.sidebar .nav-group-toggle .nav-link:hover path
+{
+  fill: #FFF !important;
+}
+
+.sidebar .nav-link:hover{
     width: 100%;
-  }
+         background-color: $deNBI_lightgrey;
+ }
 
-  .sidebar .nav-dropdown.open .nav-link.active {
-    background-color: $deNBI_cyan;
+  .sidebar .nav-link.active {
+    background-color: $deNBI_darkgrey;
     color: $deNBI_white;
   }
+
+.sidebar .nav-group.show .nav-link.active .nav-icon {
+    color: white;
+  }
+
   .scroll-image {
     max-height: 120px;
     min-height: 120px;
@@ -756,51 +1040,42 @@ $simplevmcolour: #00ADEF;
   }
 
   .bg-info-flavor {
-    background-color: $deNBI_blue;
+    background-color: $deNBI_lightgrey;
   }
 
   .bg-info-image {
-    background-color: $deNBI_cyan;
-    color: $deNBI_white;
-  }
-
-  .sidebar .nav-item.nav-dropdown:hover
-  {
     background-color: $deNBI_lightgrey;
     color: $deNBI_white;
   }
 
-  .sidebar .nav-link.active {
-    background-color: $deNBI_cyan;
-    color: $deNBI_white;
-  }
-
-
-  .sidebar .nav-link.active .nav-icon {
-    color: $deNBI_white;
-  }
   .card-header.bg-info-image {
 
     color: $deNBI_white;
   }
 
-  .sidebar .nav-link {
+  a, .text-primary {
+    text-decoration: unset;
+    color: $deNBI_cyan;
+  }
+
+  a:hover, .text-primary:hover {
     color: $deNBI_blue;
   }
 
-  .sidebar .nav-title {
-    color: $deNBI_darkgrey;
-  }
-
-  .sidebar .nav-item .nav-dropdown-toggle{
+  a:visited, .text-primary:visited {
     color: $deNBI_blue;
-    background-color: $deNBI_white;
   }
 
-  .sidebar .nav-item .nav-dropdown-toggle:hover {
-    color: $deNBI_white;
-    background-color: $deNBI_lightgrey;
+  a.btn-outline-success:visited {
+    color: rgb(46, 184, 92);
   }
+
+  .btn-outline-success:hover, a.btn-outline-success:visited:hover {
+
+    color: white;
+  }
+
+
   .btn-openstack {
     @include button-variant($openstackcolour, darken($openstackcolour, 7.5%), darken($openstackcolour, 10%), lighten($openstackcolour, 5%), lighten($openstackcolour, 10%), darken($openstackcolour, 30%));
   }
@@ -850,6 +1125,8 @@ $simplevmcolour: #00ADEF;
 
   }
 
+
+
   .modal .table-responsive tbody tr td button {
     width: 200px;
   }
@@ -885,33 +1162,7 @@ $simplevmcolour: #00ADEF;
     }
   }
 
-  .app-footer
-  {
-    background-color: #FFFFFF;
-    width: 200px;
-    left: -185px;
-    border-radius: 10px;
-    font-family: 'Raleway', sans-serif;
-    bottom: 10px;
-    position: fixed;
-    height: 54px;
-  }
 
-  .sidebar-minimized .app-footer
-  {
-    left: -35px;
-  }
-
-  .sidebar-minimized .main
-  {
-    margin-left: 45px !important;
-  }
-
-  .sidebar-minimized .w3-bar-block
-  {
-    width: calc(100vw - 90px);
-    margin:auto;
-  }
 
 
   // project-icon part >>>

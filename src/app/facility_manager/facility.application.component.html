@@ -4,7 +4,7 @@
 
   <div style="margin-bottom: 10px"><select [(ngModel)]="selectedFacility"
                                            (ngModelChange)="onChangeSelectedFacility($event)"
-                                           class="form-control " name="selectedFacility">
+                                           class="form-control form-select" name="selectedFacility">
     <option *ngFor="  let facility of managerFacilities"
             [ngValue]="facility">
       {{facility['Facility']}}
@@ -22,35 +22,35 @@
               'btn-primary': tab_state === TabStates.SUBMITTED}"
               id="tab_state_button_submitted_applications">
         <i class="fas fa-envelope"></i> Submitted Applications
-        <span class="badge badge-pill badge-dark">{{this.numberOfProjectApplications}}</span>
+        <span class="badge badge-pill bg-dark">{{this.numberOfProjectApplications}}</span>
       </button>
       <button class="btn" (click)="changeTabState(TabStates.CREDITS_EXTENSION);"
               [ngClass]="{'btn-light': !(tab_state === TabStates.CREDITS_EXTENSION),
               'btn-primary': tab_state === TabStates.CREDITS_EXTENSION}"
               id="tab_state_button_credit_requests">
         <i class="fas fa-coins"></i> Credit Extension Requests
-        <span class="badge badge-pill badge-dark">{{this.numberOfCreditRequests}}</span>
+        <span class="badge badge-pill bg-dark">{{this.numberOfCreditRequests}}</span>
       </button>
       <button class="btn" (click)="changeTabState(TabStates.LIFETIME_EXTENSION);"
               [ngClass]="{'btn-light': !(tab_state === TabStates.LIFETIME_EXTENSION),
               'btn-primary': tab_state === TabStates.LIFETIME_EXTENSION}"
               id="tab_state_button_lifetime_requests">
         <i class="fas fa-clock"></i> Lifetime Extension Requests
-        <span class="badge badge-pill badge-dark">{{this.numberOfExtensionRequests}}</span>
+        <span class="badge badge-pill bg-dark">{{this.numberOfExtensionRequests}}</span>
       </button>
       <button class="btn" (click)="changeTabState(TabStates.MODIFICATION_EXTENSION);"
               [ngClass]="{'btn-light': !(tab_state === TabStates.MODIFICATION_EXTENSION),
               'btn-primary': tab_state === TabStates.MODIFICATION_EXTENSION}"
               id="tab_state_button_modification_requests">
         <i class="fas fa-memory"></i> Resource Modification Requests
-        <span class="badge badge-pill badge-dark">{{this.numberOfModificationRequests}}</span>
+        <span class="badge badge-pill bg-dark">{{this.numberOfModificationRequests}}</span>
       </button>
       <button class="btn" (click)="changeTabState(TabStates.TERMINATION_REQUEST);"
               [ngClass]="{'btn-light': !(tab_state === TabStates.TERMINATION_REQUEST),
               'btn-primary': tab_state === TabStates.TERMINATION_REQUEST}"
               id="tab_state_button_termination_requests">
         <i class="fas fa-trash"></i> Termination Requests
-        <span class="badge badge-pill badge-dark" id="termination_counter">{{this.numberOfTerminationRequests}}</span>
+        <span class="badge badge-pill bg-dark" id="termination_counter">{{this.numberOfTerminationRequests}}</span>
       </button>
     </div>
 
@@ -683,7 +683,7 @@
       <div *ngIf="!isHistoryLoaded" id="search_spinner" style="margin:10px; padding:10px;">
         <div class="spinner-border text-primary" style="display:block; margin:auto;"></div>
       </div>
-    <div class="card-body" *ngIf="applications_history.length == 0 && isHistoryLoaded">
+    <div class="card-body" *ngIf="applications_history.length === 0 && isHistoryLoaded">
       <div class="alert alert-warning" role="alert">
         <strong>No Applications!</strong> There are no
         applications at all!
@@ -739,7 +739,7 @@
                 <td>{{ application?.project_application_date_submitted }}
                 </td>
                 <td>{{ application?.project_application_institute }}</td>
-                <td><span class="badge badge-info"
+                <td><span class="badge bg-info"
                           *ngFor="let st of application?.project_application_status ">
                   {{getStatusById(st)}}
                 </span>
@@ -874,7 +874,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button *ngIf="notificationModalIsClosable == true"  id="close_notification"
+        <button *ngIf="notificationModalIsClosable === true"  id="close_notification"
                 (click)="notificationModal.hide();" type="reset"
                 class="btn  btn-secondary"> Close
         </button>
