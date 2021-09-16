@@ -9,7 +9,7 @@
 	</div>
 
 	<div class="modal-body">
-		<div class="alert alert-info">
+		<div class="alert alert-primary">
 			<strong>
 				Please check the data you have entered and confirm your application
 				below.
@@ -39,7 +39,7 @@
 
 				<tr *ngIf="selected_ontology_terms?.length > 0">
 					<td>Selected Terms:
-						<span *ngFor="let term of selected_ontology_terms" class="badge badge-info">{{term.term}}</span></td>
+						<span *ngFor="let term of selected_ontology_terms" class="badge bg-info">{{term.term}}</span></td>
 				</tr>
 
 				<tr *ngIf="(modificationExtension || lifetimeExtension || creditsExtension)
@@ -119,10 +119,10 @@
 
 <ng-container *ngIf="result">
 	<div class="modal-header">
-		<h4 class="modal-title" *ngIf="extensionStatus == 0">
+		<h4 class="modal-title" *ngIf="extensionStatus === 0">
 			Waiting </h4>
-		<h4 class="modal-title" *ngIf="extensionStatus == 1"> Success </h4>
-		<h4 class="modal-title" *ngIf="extensionStatus == 2"> Error </h4>
+		<h4 class="modal-title" *ngIf="extensionStatus === 1"> Success </h4>
+		<h4 class="modal-title" *ngIf="extensionStatus === 2"> Error </h4>
 		<button type="button" class="close" style="cursor: pointer"
 						(click)="bsModalRef.hide();"
 						aria-label="Close">
@@ -131,14 +131,14 @@
 	</div>
 
 	<div class="modal-body">
-		<div class="alert alert-info" role="alert"
-				 *ngIf="extensionStatus == 0">
+		<div class="alert alert-primary" role="alert"
+				 *ngIf="extensionStatus === 0">
 			Waiting...
 			<i class="fa fa-spinner fa-spin"
 				 style="font-size:24px">
 			</i>
 		</div>
-		<div id="extension_result_submitted" class="alert alert-success" role="alert" *ngIf="extensionStatus == 1">
+		<div id="extension_result_submitted" class="alert alert-success" role="alert" *ngIf="extensionStatus === 1">
 			<div *ngIf="modificationExtension">
 				Modification request successfully submitted!
 			</div>
@@ -149,7 +149,7 @@
 				Credits extension request successfully submitted!
 			</div>
 		</div>
-		<div id="extension_result_error" class="alert alert-warning" role="alert" *ngIf="extensionStatus == 2">
+		<div id="extension_result_error" class="alert alert-warning" role="alert" *ngIf="extensionStatus === 2">
 			An error occured:<br>
 			{{errorMessage}}
 		</div>

@@ -13,7 +13,7 @@
         This will also delete the virtual machines:
         <p><strong>{{cluster?.master_instance.name}}</strong></p>
         <p *ngFor="let vm of cluster?.worker_instances"><span
-                *ngIf="vm.status != VirtualMachineStates.staticDELETED && vm.status != VirtualMachineStates.staticNOT_FOUND"><strong>{{vm.name}}</strong></span>
+                *ngIf="vm.status !== VirtualMachineStates.staticDELETED && vm.status !== VirtualMachineStates.staticNOT_FOUND"><strong>{{vm.name}}</strong></span>
         </p>
 
     </div>
