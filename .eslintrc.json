@@ -2,7 +2,7 @@
   "root": true,
   "ignorePatterns": [
     "projects/**/*",
-    "**/*.json"
+		"package-lock.json"
   ],
   "overrides": [
     {
