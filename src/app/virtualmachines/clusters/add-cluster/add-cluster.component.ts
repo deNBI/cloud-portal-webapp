@@ -35,7 +35,7 @@ import { CLOUD_PORTAL_SUPPORT_MAIL } from '../../../../links/links';
 export class AddClusterComponent implements OnInit, OnDestroy {
 
 	is_vo: boolean = false;
-  CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL;
+	CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL;
 
 	client_checked: boolean = false;
 	timeout: number = 0;
@@ -384,7 +384,7 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 				} else {
 					this.client_avaiable = false;
 					this.client_checked = true;
-
+					this.projectDataLoaded = true;
 				}
 				this.selectedProjectClient = client;
 
