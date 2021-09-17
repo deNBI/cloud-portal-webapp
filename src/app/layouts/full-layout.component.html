@@ -233,6 +233,15 @@
                     <i class="nav-icon fas fa-network-wired"></i> New Cluster</a>
 
             </li>
+            <li class="nav-item" *ngIf="has_workshops &&  vm_project_member">
+                <a class="nav-link" routerLinkActive="active" data-toggle="tooltip" data-placement="right"
+                   title="New Cluster"
+                   [routerLink]="['/virtualmachines/newWorkshop']">
+                    <i class="nav-icon fas fa-chalkboard-teacher"></i> New Workshop</a>
+
+
+            </li>
+
             <li *ngIf="vm_project_member"
                 class="nav-group " [ngClass]="{'show':show_overviews}">
                 <a class="nav-link nav-group-toggle " (click)="toggleOverviews()"

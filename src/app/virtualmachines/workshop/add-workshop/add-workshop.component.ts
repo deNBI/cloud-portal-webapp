@@ -250,12 +250,21 @@ export class AddWorkshopComponent implements OnInit, OnDestroy, DoCheck {
 
 	get_flavors(id: number): void {
 		this.subscription.add(
-			this.flavor_service.getFlavors(id).subscribe((flavors: Flavor[]): void => {
-				this.flavors = flavors;
-				this.flavor_types = this.flavor_service.sortFlavors(this.flavors);
-				this.flavors_loaded = true;
-				this.check_project_data_loaded();
-			}),
+			this.flavor_service.getFlavors(id).subscribe(
+				(flavors: Flavor[]): void => {
+					this.flavors = flavors;
+					this.flavor_types = this.flavor_service.sortFlavors(this.flavors);
+					this.flavors_loaded = true;
+					this.check_project_data_loaded();
+				},
+				(error: any) => {
+					console.log(error);
+					this.flavors = [];
+					this.flavor_types = {};
+					this.flavors_loaded = true;
+					this.check_project_data_loaded();
+				},
+			),
 		);
 	}
 
