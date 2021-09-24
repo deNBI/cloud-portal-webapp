@@ -9,6 +9,7 @@ import { ApplicationLifetimeExtension } from '../applications/application_extens
 import { ApplicationModification } from '../applications/application_modification.model';
 import { ApplicationCreditRequest } from '../applications/application_credit_request';
 import { Workshop } from '../virtualmachines/workshop/workshop.model';
+import { WorkshopUrlInfoModel } from '../virtualmachines/workshop/workshop-urlinfo.model';
 
 /**
  * Service which provides methods for creating application.
@@ -245,6 +246,22 @@ export class ApplicationsService {
 			withCredentials: true,
 		});
 
+	}
+
+	getWorkshopInfoUrl(application_id: string | number): Observable<WorkshopUrlInfoModel[]> {
+		const params: HttpParams = new HttpParams()
+			.set('application_id', application_id);
+
+		return this.http.get<WorkshopUrlInfoModel[]>(`${ApiSettings.getApiBaseURL()}workshops/url_info/`, {
+			withCredentials: true,
+			params,
+		}).pipe(
+			map(
+				(workshops_infos: WorkshopUrlInfoModel[]): WorkshopUrlInfoModel[] => workshops_infos.map(
+					(workshops_info: WorkshopUrlInfoModel): WorkshopUrlInfoModel => new WorkshopUrlInfoModel(workshops_info),
+				),
+			),
+		);
 	}
 
 	getWorkshops(application_id: string | number): Observable<Workshop[]> {
