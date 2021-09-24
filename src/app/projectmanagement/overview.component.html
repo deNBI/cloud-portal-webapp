@@ -1,8 +1,8 @@
-<div *ngIf="errorMessage != null">
+<div *ngIf="errorMessage !== null">
 	An Error has occurred. {{errorMessage}}
 </div>
 
-<div *ngIf="!isLoaded && errorMessage == null" class="loader"></div>
+<div *ngIf="!isLoaded && errorMessage === null" class="loader"></div>
 
 
 <div class="animated fadeIn" *ngIf="isLoaded">
@@ -396,7 +396,7 @@
 											type="button">More credits requested</button>
 						</div>
 						<div class="col-6">
-							<div *ngIf="project_application?.project_application_initial_credits === 0" class="alert alert-info">
+							<div *ngIf="project_application?.project_application_initial_credits === 0" class="alert alert-primary">
 								Your approved credits are lower or equal to zero.
 								Please submit a Credits Extension or contact us at <a href="mailto:{{CLOUD_MAIL}}">{{CLOUD_MAIL}}</a>, so we may calculate and set the correct amount for your
 								project.
@@ -523,7 +523,7 @@
 										class="btn btn-outline-danger"><i class="fa fa-trash"></i>&nbsp;Remove Members</button>
 
 					</div>
-					<div class="col-12 alert alert-info" *ngIf="!isAdmin && !is_vo_admin">
+					<div class="col-12 alert alert-primary" *ngIf="!isAdmin && !is_vo_admin">
             <span><strong>Notice: </strong>Only project administrators are able to remove or add project members and
             change the status of members.</span>
 					</div>
@@ -546,7 +546,7 @@
 							<tbody>
 							<tr *ngFor="let member of project_members" [ngStyle]="{'color':isPi(member)}">
 								<td *ngIf="isAdmin || is_vo_admin">
-									<input *ngIf="userinfo?.MemberId != member.memberId" type="checkbox" id="{{member.userId}}"
+									<input *ngIf="userinfo?.MemberId !== member.memberId" type="checkbox" id="{{member.userId}}"
 												 name="member.userId"
 												 [checked]="isMemberChecked(member.memberId)" (change)="checkUnCheckMember(member.memberId);">
 								</td>
@@ -562,12 +562,12 @@
                                                " class="btn btn-primary" type="button" style="margin: 2px">
 											<i class="fa fa-plus-circle"></i>&nbsp; Set Admin status
 										</button>
-										<button *ngIf="member.IsPi &&  userinfo?.MemberId != member.memberId" (click)="removeAdmin( project?.Id,member.userId,member.userName);
+										<button *ngIf="member.IsPi &&  userinfo?.MemberId !== member.memberId" (click)="removeAdmin( project?.Id,member.userId,member.userName);
                                                 notificationModal.show();
                                                " class="btn btn-primary" type="button" style="margin: 2px">
 											<i class="fa fa-minus-circle"></i>&nbsp; Remove Admin status
 										</button>
-										<button [id]="'remove_member_' + member.userName" *ngIf=" userinfo?.MemberId != member.memberId"
+										<button [id]="'remove_member_' + member.userName" *ngIf=" userinfo?.MemberId !== member.memberId"
 														(click)="removeMember(project?.Id,member.memberId,member.userName);
                                                 notificationModal.show();
                                                " class="btn btn-danger" type="button" style="margin: 2px">
@@ -640,16 +640,30 @@
 							<tr *ngFor="let info of selected_workshop_info?.url_data ">
 
 								<td>
-
-									{{ info?.user_name }}</td>
-								<td>{{ info?.user_email }}</td>
-								<td>{{ info?.resenv_url }}</td>
+									<input style="width: 100%" type="text"  placeholder="e.g. 10.1000/182" id="doi_input_field"
+												 [disabled]="disabledDoiInput" class="form-control"
+												 pattern="10.\d{4,9}\/[-._;()\/:a-zA-Z0-9]+" [(ngModel)]="newDoi" #doiInput></td>
+								<td>
+									<button id="add_doi_btn"
+													(click)="addDoi();"
+													[disabled]="!doiInput.validity.valid || disabledDoiInput"
+													type="button"
+													class="btn btn-success"><i class="fa fa-plus"></i>&nbsp;
+									</button>
+								</td>
 
 							</tr>
 
 
 							</tbody>
 						</table>
+
+					</div>
+					<div class="alert alert-primary">
+						<p>Please note that the publications entered on this page are listed publicly on
+							<a href="https://cloud.denbi.de/publications" target="_blank" rel="noopener noreferrer">this page on our website</a>.
+							We kindly ask you to list your publications which have been created
+							during your work in the de.NBI Cloud and/or this project.</p>
 					</div>
 
 				</div>
@@ -766,72 +780,36 @@
 								<span aria-hidden="true">&times;</span>
 							</button>
 						</div>
-						<div class="modal-body">
-
-							<div class="container-fluid">
-								<div class="row">
-									<p style=" margin-bottom: 15px;">Search and add a user to your project by providing
-										at least
-										four characters of his name:</p>
-								</div>
-								<div class="row">
-									<div class="col-md-8">
-										<input style="width: 100%" placeholder="" id="add_member_input" #searchString>
-									</div>
-									<div class="col-md-4">
-										<button type="button" class="btn btn-primary" id="search_member_btn"
+						<div class="row">
+							<div class="col-md-8">
+								<input style="width: 100%" placeholder="" class="form-control" id="add_member_input" #searchString>
+							</div>
+							<div class="col-md-4">
+								<button type="button" class="btn btn-primary" id="search_member_btn"
 												(click)="filterMembers(searchString.value )"><i
 												class="fa fa-search"></i> Search Member
 										</button>
 									</div>
 								</div>
 								<br>
-								<div class="row">
-									<div class="col-md-12">
-										<strong>Please note</strong> that if you can not find the user, he is not
-										registered for a
-										a de.NBI Cloud account. In that case you can invite him by sending him the
-										following link:
-										<br>
-										<br>
-										<ul style="list-style-type:none;">
+								After the user registered for ELIXIR/de.NBI and applied for your group, you can approve his application.
+								Read more about the process <a target="_blank" rel="noopener noreferrer" href="{{WIKI_MEMBER_MANAGEMENT}}">here</a>.
+							</div>
+						</div>
 
-											<li>
-												<pre [hidden]="showLink">{{invitation_link}}</pre>
-												<div class="btn-group-vertical">
-													<button class="btn btn-primary" style="margin-bottom: 5px"
-															(click)="showLink = !showLink">
-														<span [hidden]="!showLink">Show</span>
-														<span [hidden]="showLink">Hide</span>
-														link
-													</button>
-													<button class="btn btn-success"
-															(click)="copyToClipboard(invitation_link)">Copy link
-													</button>
-												</div>
-											</li>
-										</ul>
-										<br>
-										After the user registered for ELIXIR/de.NBI and applied for your group, you can
-										approve his application.
-										Read more about the process <a target="_blank" rel="noopener noreferrer"
-																	   href="{{WIKI_MEMBER_MANAGEMENT}}">here</a>.
-									</div>
-								</div>
+						<div class="table-responsive">
+							<table *ngIf="filteredMembers !== null" class="table table-bordered table-striped table-sm">
+								<thead>
 
-								<div class="table-responsive">
-									<table *ngIf="filteredMembers!==null"
-										   class="table table-bordered table-striped table-sm">
-										<thead>
-
-										<th></th>
-										<th>First Name</th>
-										<th>Last Name</th>
-										<th>Email</th>
-										</thead>
-										<tbody *ngFor="  let member of filteredMembers">
-										<td>
-											<button style="padding: 5px; margin: 5px"
+								<th></th>
+								<th>First Name</th>
+								<th>Last Name</th>
+								<th>Email</th>
+								</thead>
+								<tbody >
+								<tr *ngFor="  let member of filteredMembers">
+								<td>
+									<button style="padding: 5px; margin: 5px"
 													(click)="resetNotificationModal();addMember(project?.Id,member['member_id'],member['firstName'],member['lastName']);filteredMembers=null; notificationModal.show();"
 													class="btn btn-success" id="add_member_btn"><i
 													class="fa fa-plus"></i> Add Member
@@ -839,15 +817,13 @@
 											<button style="padding: 5px; margin: 5px"
 													(click)="resetNotificationModal();addAdmin(project?.Id,member['member_id'],member['user_id'],member['firstName'],member['lastName']);filteredMembers=null; notificationModal.show();"
 													class="btn btn-primary"><i class="fa fa-plus"></i> Add Admin
-											</button>
-										</td>
-										<td>{{member['firstName']}}</td>
-										<td>{{member['lastName']}}</td>
-										<td>{{member['mail']}}</td>
-										</tbody>
-									</table>
-								</div>
-							</div>
+									</button>
+								</td>
+								<td>{{member['firstName']}}</td>
+								<td>{{member['lastName']}}</td>
+								<td>{{member['mail']}}</td></tr>
+								</tbody>
+							</table>
 						</div>
 						<div class="modal-footer">
 							<!--  <button type="button" (click)="addUserModal.hide();
@@ -1007,16 +983,16 @@
 							<button type="button" class="close" style="cursor:pointer"
 									(click)="notificationModal.hide()"
 									aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-						</div>
-						<div class="modal-body">
-							<div class="alert alert-{{ notificationModalType }}" role="alert">
-								{{ notificationModalMessage }}
-							</div>
-						</div>
-						<div class="modal-footer">
-							<button *ngIf="notificationModalIsClosable == true" type="button"
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="alert alert-{{ notificationModalType }}" role="alert">
+						{{ notificationModalMessage }}
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button *ngIf="notificationModalIsClosable === true" type="button"
 									(click)="resetNotificationModal(); notificationModal.hide();" type="reset"
 									class="btn  btn-secondary" id="close_notification"> Close
 							</button>

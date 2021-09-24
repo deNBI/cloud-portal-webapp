@@ -137,10 +137,18 @@ export class ScaleClusterComponent implements OnDestroy, OnInit {
 
 	getFlavors(project_id: number | string): void {
 		this.subscription.add(
-			this.flavorService.getFlavors(project_id).subscribe((flavors: Flavor[]): void => {
-				this.flavors = flavors;
-				this.checkFlavorsUsableForCluster();
-			}),
+			this.flavorService.getFlavors(project_id).subscribe(
+				(flavors: Flavor[]): void => {
+					this.flavors = flavors;
+					this.checkFlavorsUsableForCluster();
+				},
+				(error: any) => {
+					console.log(error);
+					this.flavors = [];
+					this.flavors_usable = [];
+					this.flavors_loaded = true;
+				},
+			),
 		);
 	}
 

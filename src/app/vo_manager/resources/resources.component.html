@@ -1,4 +1,4 @@
-<div *ngIf="isLoaded==false" class="loader"></div>
+<div *ngIf="isLoaded === false" class="loader"></div>
 
 <div *ngIf="isLoaded" class="animated fadeIn" ng-app>
     <div>
@@ -115,7 +115,7 @@
 
             </div>
             <div>
-                <button (click)="tableToPDF()">Download PDF</button>
+               <!-- <button (click)="tableToPDF()">Download PDF</button> -->
                 <button (click)="tableToCSV()">Download CSV</button>
             </div>
             <!-- DivTable.com -->

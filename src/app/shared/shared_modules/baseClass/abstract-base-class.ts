@@ -1,4 +1,6 @@
 /* eslint-disable */
+import {SharedModal} from './shared-modal';
+
 enum Lifetime_States {
   EXPIRED = 0,
   EXPIRES_SOON = 1,

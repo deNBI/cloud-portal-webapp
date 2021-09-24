@@ -2,14 +2,14 @@ import {
 	Component, ElementRef, OnInit, ViewChild,
 } from '@angular/core';
 
-import pdfMake from 'pdfmake/build/pdfmake';
+/* import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
-import htmlToPdfmake from 'html-to-pdfmake';
+import htmlToPdfmake from 'html-to-pdfmake'; */
 import { ExportToCsv } from 'export-to-csv';
 import { VoService } from '../../api-connector/vo.service';
 import { Resources } from './resources';
 
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
+// pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 /**
  * Resource component.
@@ -66,7 +66,7 @@ export class ResourcesComponent implements OnInit {
 
 	}
 
-	public tableToPDF(): void {
+	/* public tableToPDF(): void {
 		// const doc = new jsPDF();
 		const pdfTable = this.pdfTable.nativeElement;
 		const html = htmlToPdfmake(pdfTable.innerHTML);
@@ -77,7 +77,7 @@ export class ResourcesComponent implements OnInit {
 		};
 		pdfMake.createPdf(documentDefinition).download('vo_resources.pdf');
 
-	}
+	} */
 
 	ngOnInit(): void {
 	}
