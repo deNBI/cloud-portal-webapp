@@ -75,6 +75,20 @@ export class FacilityService {
 		);
 	}
 
+	getComputeCenterClientLimits(facility_id): Observable<any> {
+
+		return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility_id}/simpleVM/limits/`, {
+			withCredentials: true,
+		});
+	}
+
+	getComputeCenterClientLimitsAvailable(facility_id, application_id): Observable<any> {
+
+		return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility_id}/simpleVM/${application_id}/limits/`, {
+			withCredentials: true,
+		});
+	}
+
 	getWfcModificationRequestedApplications(facility_id: number | string): Observable<Application[]> {
 		return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility_id}/wfc/modifications_requests/`, {
 			withCredentials: true,

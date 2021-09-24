@@ -1,4 +1,4 @@
-import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { HashLocationStrategy, LocationStrategy, CommonModule } from '@angular/common';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -9,9 +9,7 @@ import { ChartsModule } from 'ng2-charts';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ClipboardModule } from 'ngx-clipboard';
-import {
-	AppAsideModule, AppBreadcrumbModule, AppFooterModule, AppHeaderModule, AppSidebarModule,
-} from '@coreui/angular';
+
 import { NgScrollbarModule } from 'ngx-scrollbar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Angulartics2Module } from 'angulartics2';
@@ -51,15 +49,11 @@ import { PipeModuleModule } from './pipe-module/pipe-module.module';
 @NgModule({
 
 	imports: [
-		AppAsideModule,
-		AppBreadcrumbModule.forRoot(),
-		AppHeaderModule,
-		AppFooterModule,
-		AppSidebarModule,
 		NgScrollbarModule,
 		BrowserModule,
 		HttpClientModule,
 		AppRoutingModule,
+		CommonModule,
 		BsDropdownModule.forRoot(),
 		TabsModule.forRoot(),
 		ChartsModule,

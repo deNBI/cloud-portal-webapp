@@ -1,4 +1,4 @@
-<div *ngIf="notFoundCluster" class="alert alert-info">
+<div *ngIf="notFoundCluster" class="alert alert-primary">
   <strong>The Cluster could not be found.</strong>
 </div>
 
@@ -10,7 +10,7 @@
     <div class="card-body">
      <app-clusterinfo [cluster]="cluster"></app-clusterinfo>
 
-    <div class="card-body" *ngIf="cluster?.status != 'Deleted'">
+    <div class="card-body" *ngIf="cluster?.status !== 'Deleted'">
       <div class="card-title"><strong>Actions</strong></div>
       <div class="row">
         <div class="col-2">
