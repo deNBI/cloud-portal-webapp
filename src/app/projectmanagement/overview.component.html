@@ -606,7 +606,7 @@
 				</div>
 
 					<div class="card-body" style="max-height: 800px;" *ngIf="!workshopInfosLoaded">
-				
+
 						          <div class="spinner-border text-primary" style="display:block; margin:auto;"></div>
 
 
@@ -617,8 +617,8 @@
 					<div class="btn-group" *ngFor="let info of workshop_infos ">
 
 						<button id="select_workshop_{{info?.shortname}}_btn"
-								[ngClass]="{'btn-outline-success': info.shortname == selected_workshop_info.shortname,
-								'btn-outline-warning' : info.shortname != selected_workshop_info.shortname}"
+								[ngClass]="{'btn-outline-success': info.shortname === selected_workshop_info.shortname,
+								'btn-outline-warning' : info.shortname !== selected_workshop_info.shortname}"
                                 (click)="setSelectedWorkshopInfo(info)"
 
 								type="button" style="margin-bottom:5px;margin-right:5px;"
