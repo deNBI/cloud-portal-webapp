@@ -589,117 +589,182 @@
 
 
 	</div>
-	<div class="row">
+	<div class="row"
+		 *ngIf="project && (project?.UserIsPi ||project?.UserIsAdmin) && project_application?.project_application_workshop ">
 
 		<div class="col"
-				 *ngIf="project && (project?.UserIsPi ||project?.UserIsAdmin)
+			 *ngIf="project && (project?.UserIsPi ||project?.UserIsAdmin)
          && !(project_application | hasstatusinlist:Application_States.TERMINATED)
          && !(project_application | hasstatusinlist:Application_States.DECLINED)
          && !(project_application | hasstatusinlist:Application_States.SUBMITTED)
          && !(project_application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION)">
 
-			<div class="card" id="doiCard">
+			<div class="card" id="workshioCard">
 				<div class="card-header">
 					<i class="fa fa-align-justify"></i>
-					<a href="{{WIKI_PUBLICATIONS}}"
-						 target="_blank" rel="noopener noreferrer">Digital object identifier (DOI)</a>
+					Workshops
 				</div>
 
+					<div class="card-body" style="max-height: 800px;" *ngIf="!workshopInfosLoaded">
 
-				<div class="card-body">
-					<div *ngIf="doiError" class="alert alert-danger">{{doiError}}</div>
+						          <div class="spinner-border text-primary" style="display:block; margin:auto;"></div>
+
+
+						</div>
+
+
+				<div class="card-body" *ngIf="workshopInfosLoaded">
+					<div class="btn-group" *ngFor="let info of workshop_infos ">
+
+						<button id="select_workshop_{{info?.shortname}}_btn"
+								[ngClass]="{'btn-outline-success': info.shortname === selected_workshop_info.shortname,
+								'btn-outline-warning' : info.shortname !== selected_workshop_info.shortname}"
+                                (click)="setSelectedWorkshopInfo(info)"
+
+								type="button" style="margin-bottom:5px;margin-right:5px;"
+								class="btn">{{info.shortname}}
+						</button>
+
+
+					</div>
 					<div class="table-responsive">
-						<table class="table ">
-
-							<tbody>
-							<ng-container
-								*ngFor="let doi of dois">
-								<tr>
-									<td><a target="_blank" rel="noopener noreferrer" [href]="'https://doi.org/' + doi.identifier">{{doi.identifier}}</a></td>
-
-									<td>
-										<button
-											class="btn btn-danger" type="button" (click)="deleteDoi(doi);">
-
-											<i class="fa fa-trash"></i>&nbsp;
-										</button>
-									</td>
-
-								</tr>
-							</ng-container>
-
+						<table class="table table-hover">
+							<thead>
 							<tr>
+								<th>User</th>
+								<th>Email</th>
+								<th>Url</th>
+							</tr>
+							</thead>
+							<tbody>
+							<tr *ngFor="let info of selected_workshop_info?.url_data ">
+
 								<td>
-									<input style="width: 100%" type="text"  placeholder="e.g. 10.1000/182" id="doi_input_field"
-												 [disabled]="disabledDoiInput" class="form-control"
-												 pattern="10.\d{4,9}\/[-._;()\/:a-zA-Z0-9]+" [(ngModel)]="newDoi" #doiInput></td>
-								<td>
-									<button id="add_doi_btn"
+
+									{{ info?.user_name }}</td>
+								<td>{{ info?.user_email }}</td>
+								<td>{{ info?.resenv_url }}</td>
+
+							</tr>
+
+
+							</tbody>
+						</table>
+					</div>
+
+				</div>
+
+			</div>
+			<div class="row">
+
+				<div class="col"
+					 *ngIf="project && (project?.UserIsPi ||project?.UserIsAdmin)
+         && !(project_application | hasstatusinlist:Application_States.TERMINATED)
+         && !(project_application | hasstatusinlist:Application_States.DECLINED)
+         && !(project_application | hasstatusinlist:Application_States.SUBMITTED)
+         && !(project_application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION)">
+
+					<div class="card" id="doiCard">
+						<div class="card-header">
+							<i class="fa fa-align-justify"></i>
+							<a href="{{WIKI_PUBLICATIONS}}"
+							   target="_blank" rel="noopener noreferrer">Digital object identifier (DOI)</a>
+						</div>
+
+
+						<div class="card-body">
+							<div *ngIf="doiError" class="alert alert-danger">{{doiError}}</div>
+							<div class="table-responsive">
+								<table class="table ">
+
+									<tbody>
+									<ng-container
+											*ngFor="let doi of dois">
+										<tr>
+											<td><a target="_blank" rel="noopener noreferrer"
+												   [href]="'https://doi.org/' + doi.identifier">{{doi.identifier}}</a>
+											</td>
+
+											<td>
+												<button
+														class="btn btn-danger" type="button" (click)="deleteDoi(doi);">
+
+													<i class="fa fa-trash"></i>&nbsp;
+												</button>
+											</td>
+
+										</tr>
+									</ng-container>
+
+									<tr>
+										<td>
+											<input style="width: 100%" type="text" placeholder="e.g. 10.1000/182"
+												   id="doi_input_field"
+												   [disabled]="disabledDoiInput"
+												   pattern="10.\d{4,9}\/[-._;()\/:a-zA-Z0-9]+" [(ngModel)]="newDoi"
+												   #doiInput></td>
+										<td>
+											<button id="add_doi_btn"
 													(click)="addDoi();"
 													[disabled]="!doiInput.validity.valid || disabledDoiInput"
 													type="button"
 													class="btn btn-success"><i class="fa fa-plus"></i>&nbsp;
-									</button>
-								</td>
+											</button>
+										</td>
 
-							</tr>
-							</tbody>
-						</table>
+									</tr>
+									</tbody>
+								</table>
 
+							</div>
+							<div class="alert alert-info">
+								<p>Please note that the publications entered on this page are listed publicly on
+									<a href="https://cloud.denbi.de/publications" target="_blank"
+									   rel="noopener noreferrer">this page on our website</a>.
+									We kindly ask you to list your publications which have been created
+									during your work in the de.NBI Cloud and/or this project.</p>
+							</div>
+						</div>
 					</div>
-					<div class="alert alert-primary">
-						<p>Please note that the publications entered on this page are listed publicly on
-							<a href="https://cloud.denbi.de/publications" target="_blank" rel="noopener noreferrer">this page on our website</a>.
-							We kindly ask you to list your publications which have been created
-							during your work in the de.NBI Cloud and/or this project.</p>
-					</div>
+
 				</div>
+
 			</div>
-
-		</div>
-
-	</div>
-	<div class="row">
-		<div class="col"
-				 *ngIf="project_application.credits_allowed && ((project_application | hasstatusinlist:Application_States.APPROVED)
+			<div class="row">
+				<div class="col"
+					 *ngIf="project_application.credits_allowed && ((project_application | hasstatusinlist:Application_States.APPROVED)
            || (project_application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)
            || (project_application | hasstatusinlist:Application_States.MODIFICATION_DECLINED) )">
-			<div class="card" style=" ">
-				<div class="card-header">
-					<i class="fa fa-align-justify"></i> Credit Usage history of {{project?.Name }}
+					<div class="card" style=" ">
+						<div class="card-header">
+							<i class="fa fa-align-justify"></i> Credit Usage history of {{project?.Name }}
 
 
-				</div>
-				<div class="card-body" style="max-height: 800px;">
-					<div *ngIf="!creditHistoryLoaded" class="loader" style="margin-left: -42px; margin-top: -18px;"></div>
-					<canvas #creditsChart
+						</div>
+						<div class="card-body" style="max-height: 800px;">
+							<div *ngIf="!creditHistoryLoaded" class="loader"
+								 style="margin-left: -42px; margin-top: -18px;"></div>
+							<canvas #creditsChart
 									id="creditsChart">
-					</canvas>
-				</div>
+							</canvas>
+						</div>
 
+					</div>
+				</div>
 			</div>
-		</div>
-	</div>
 
 
-	<div bsModal #addUserModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
-			 aria-hidden="true">
-		<div class="modal-dialog modal-lg" role="document">
-			<div class="modal-content ">
-				<div class="modal-header">
-					<h4 class="modal-title">Add member to the project {{project?.Name }}
-					</h4>
-					<button type="button" class="close" style="cursor:pointer" (click)="addUserModal.hide()"
+			<div bsModal #addUserModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
+				 aria-hidden="true">
+				<div class="modal-dialog modal-lg" role="document">
+					<div class="modal-content ">
+						<div class="modal-header">
+							<h4 class="modal-title">Add member to the project {{project?.Name }}
+							</h4>
+							<button type="button" class="close" style="cursor:pointer" (click)="addUserModal.hide()"
 									aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<div class="modal-body">
-
-					<div class="container-fluid">
-						<div class="row">
-							<p style=" margin-bottom: 15px;">Search and add a user to your project by providing at least
-								four characters of his name:</p>
+								<span aria-hidden="true">&times;</span>
+							</button>
 						</div>
 						<div class="row">
 							<div class="col-md-8">
@@ -708,32 +773,10 @@
 							<div class="col-md-4">
 								<button type="button" class="btn btn-primary" id="search_member_btn"
 												(click)="filterMembers(searchString.value )"><i
-									class="fa fa-search"></i> Search Member
-								</button>
-							</div>
-						</div>
-						<br>
-						<div class="row">
-							<div class="col-md-12">
-								<strong>Please note</strong> that if you can not find the user, he is not registered for a
-								a de.NBI Cloud account. In that case you can invite him by sending him the following link:
-								<br>
-								<br>
-								<ul style="list-style-type:none;">
-
-									<li>
-										<pre [hidden]="showLink">{{invitation_link}}</pre>
-										<div class="btn-group-vertical">
-											<button class="btn btn-primary" style="margin-bottom: 5px" (click)="showLink = !showLink">
-												<span [hidden]="!showLink">Show</span>
-												<span [hidden]="showLink">Hide</span>
-												link
-											</button>
-											<button class="btn btn-success" (click)="copyToClipboard(invitation_link)">Copy link
-											</button>
-										</div>
-									</li>
-								</ul>
+												class="fa fa-search"></i> Search Member
+										</button>
+									</div>
+								</div>
 								<br>
 								After the user registered for ELIXIR/de.NBI and applied for your group, you can approve his application.
 								Read more about the process <a target="_blank" rel="noopener noreferrer" href="{{WIKI_MEMBER_MANAGEMENT}}">here</a>.
@@ -754,9 +797,10 @@
 								<td>
 									<button style="padding: 5px; margin: 5px"
 													(click)="resetNotificationModal();addMember(project?.Id,member['member_id'],member['firstName'],member['lastName']);filteredMembers=null; notificationModal.show();"
-													class="btn btn-success" id="add_member_btn"><i class="fa fa-plus"></i> Add Member
-									</button>
-									<button style="padding: 5px; margin: 5px"
+													class="btn btn-success" id="add_member_btn"><i
+													class="fa fa-plus"></i> Add Member
+											</button>
+											<button style="padding: 5px; margin: 5px"
 													(click)="resetNotificationModal();addAdmin(project?.Id,member['member_id'],member['user_id'],member['firstName'],member['lastName']);filteredMembers=null; notificationModal.show();"
 													class="btn btn-primary"><i class="fa fa-plus"></i> Add Admin
 									</button>
@@ -767,159 +811,163 @@
 								</tbody>
 							</table>
 						</div>
-					</div>
-				</div>
-				<div class="modal-footer">
-					<!--  <button type="button" (click)="addUserModal.hide();
-																						notificationModal.show();
-																						addMember(addUserModalProjectID, addMemberID.value)" class="btn btn-success"><i class="fa fa-dot-circle-o"></i>
-								Add User
-						</button> -->
-					<button  id="close_add_user_modal_btn" type="button" (click)="filteredMembers=null; addUserModal.hide();"
-									 class="btn  btn-danger"><i class="fa fa-ban"></i> Close
-					</button>
-				</div>
-			</div><!-- /.modal-content -->
-		</div><!-- /.modal-dialog -->
-	</div><!-- /.modal -->
+						<div class="modal-footer">
+							<!--  <button type="button" (click)="addUserModal.hide();
+                                                                                                notificationModal.show();
+                                                                                                addMember(addUserModalProjectID, addMemberID.value)" class="btn btn-success"><i class="fa fa-dot-circle-o"></i>
+                                        Add User
+                                </button> -->
+							<button id="close_add_user_modal_btn" type="button"
+									(click)="filteredMembers=null; addUserModal.hide();"
+									class="btn  btn-danger"><i class="fa fa-ban"></i> Close
+							</button>
+						</div>
+					</div><!-- /.modal-content -->
+				</div><!-- /.modal-dialog -->
+			</div><!-- /.modal -->
 
-	<div bsModal #terminateModal="bs-modal" class="modal fade" tabindex="-1"
-			 role="dialog" aria-labelledby="Label"
-			 aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title">Terminate Project</h4>
-					<button type="button" class="close" style="cursor:pointer"
+			<div bsModal #terminateModal="bs-modal" class="modal fade" tabindex="-1"
+				 role="dialog" aria-labelledby="Label"
+				 aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h4 class="modal-title">Terminate Project</h4>
+							<button type="button" class="close" style="cursor:pointer"
 									(click)="terminateModal.hide()" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<div class="modal-body">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
 
-					<div class="alert alert-warning" role="alert">
-						Are you sure you want to terminate this project?
-					</div>
-					<app-project-os-details *ngIf="project" [project]="project"></app-project-os-details>
-					<div class="alert alert-danger" role="alert">
-						All used resources will be scheduled for deletion and then irreversibly terminated!
+							<div class="alert alert-warning" role="alert">
+								Are you sure you want to terminate this project?
+							</div>
+							<app-project-os-details *ngIf="project" [project]="project"></app-project-os-details>
+							<div class="alert alert-danger" role="alert">
+								All used resources will be scheduled for deletion and then irreversibly terminated!
 
-					</div>
-					<div class="alert  form-check"
-							 [ngClass]="{'alert-danger':!terminate_confirmation_given,'alert-success':terminate_confirmation_given}"
-					>
-
-						<label class="form-check-label">
-							<input class="form-check-input"
-										 name="terminate_confirmation_given"
-										 type="checkbox"
-										 id="terminate_confirmation_given"
-										 [checked]="terminate_confirmation_given"
-										 [(ngModel)]="terminate_confirmation_given"
-
+							</div>
+							<div class="alert  form-check"
+								 [ngClass]="{'alert-danger':!terminate_confirmation_given,'alert-success':terminate_confirmation_given}"
 							>
-							I hereby confirm that the project shall be terminated.
-						</label>
-					</div>
+
+								<label class="form-check-label">
+									<input class="form-check-input"
+										   name="terminate_confirmation_given"
+										   type="checkbox"
+										   id="terminate_confirmation_given"
+										   [checked]="terminate_confirmation_given"
+										   [(ngModel)]="terminate_confirmation_given"
+
+									>
+									I hereby confirm that the project shall be terminated.
+								</label>
+							</div>
 
 
-				</div>
-				<div class="modal-footer">
-					<button class="btn  btn-success col-md-4" id="terminate_project_btn"
+						</div>
+						<div class="modal-footer">
+							<button class="btn  btn-success col-md-4" id="terminate_project_btn"
 									[disabled]="!terminate_confirmation_given"
 									(click)="terminateModal.hide();notificationModal.show();requestProjectTermination();">
-						Yes
-					</button>
-					<button class="btn  btn-danger col-md-4" type="reset"
+								Yes
+							</button>
+							<button class="btn  btn-danger col-md-4" type="reset"
 									(click)="terminateModal.hide()">Cancel
-					</button>
-				</div>
-			</div><!-- /.modal-content -->
-		</div><!-- /.modal-dialog -->
-	</div><!-- /.modal -->
+							</button>
+						</div>
+					</div><!-- /.modal-content -->
+				</div><!-- /.modal-dialog -->
+			</div><!-- /.modal -->
 
-	<div bsModal #applicationModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
-			 aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-dialog modal-lg" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title">Applications for {{project?.Name}}</h4>
-					<button type="button" class="close" style="cursor: pointer;" (click)="applicationModal.hide()"
+			<div bsModal #applicationModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+				 aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog modal-lg" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h4 class="modal-title">Applications for {{project?.Name}}</h4>
+							<button type="button" class="close" style="cursor: pointer;"
+									(click)="applicationModal.hide()"
 									aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<div class="modal-body">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
 
-					<div *ngIf="!loaded" style="text-align: center"><i class="fa fa-spinner fa-spin"
-																														 style="font-size:100px; margin: auto;margin-left: auto;margin-right: auto"></i>
-					</div>
+							<div *ngIf="!loaded" style="text-align: center"><i class="fa fa-spinner fa-spin"
+																			   style="font-size:100px; margin: auto;margin-left: auto;margin-right: auto"></i>
+							</div>
 
-					<div *ngIf="loaded" class="table-responsive">
-						<table class="table table-bordered table-striped table-sm">
-							<thead>
+							<div *ngIf="loaded" class="table-responsive">
+								<table class="table table-bordered table-striped table-sm">
+									<thead>
 
-							<th>Name</th>
-							<th>Date Submitted</th>
-							<th>Actions </th>
-							</thead>
-							<tbody *ngFor="  let application of project?.ProjectMemberApplications">
+									<th>Name</th>
+									<th>Date Submitted</th>
+									<th>Actions</th>
+									</thead>
+									<tbody *ngFor="  let application of project?.ProjectMemberApplications">
 
-							<td>{{application?.Name}}</td>
-							<td>{{application?.DateCreated}}</td>
+									<td>{{application?.Name}}</td>
+									<td>{{application?.DateCreated}}</td>
 
-							<td>
-								<button
-									(click)="approveMemberApplication(project?.Id,application.Id,application.Name); "
-									class="btn btn-success"><i class="fa fa-check"></i> Approve
-								</button>
-								<button style="margin-left: 10px"
+									<td>
+										<button
+												(click)="approveMemberApplication(project?.Id,application.Id,application.Name); "
+												class="btn btn-success"><i class="fa fa-check"></i> Approve
+										</button>
+										<button style="margin-left: 10px"
 												(click)="application_action='rejected';application_member_name=application.Name;rejectMemberApplication(project?.Id,application.Id,application.Name); "
 												class="btn btn-danger"><i class="fa fa-times"></i> Reject
-								</button>
-							</td>
-							</tbody>
-						</table>
-					</div>
-				</div>
+										</button>
+									</td>
+									</tbody>
+								</table>
+							</div>
+						</div>
 
 
-				<div class="modal-footer">
+						<div class="modal-footer">
 
-					<p *ngIf="application_action_success && application_action_done" class="alert alert-success mr-auto">
-						<strong>Success:</strong> Succesfully {{application_action}} the application of
-						{{application_member_name}}.
-					</p>
-					<p *ngIf="!application_action_success && application_action_done && !application_action_error_message"
-						 class="alert alert-danger mr-auto">
-						<strong>Failed:</strong> The application of {{application_member_name}} could not be
-						{{application_action}} .
-					</p>
-					<p *ngIf="!application_action_success && application_action_done && application_action_error_message"
-						 class="alert alert-danger mr-auto">
-						<strong>Failed:</strong> User didn't verify his email address yet. Please wait until the email is
-						verified.
-					</p>
-					<button type="button" class="btn btn-primary"
+							<p *ngIf="application_action_success && application_action_done"
+							   class="alert alert-success mr-auto">
+								<strong>Success:</strong> Succesfully {{application_action}} the application of
+								{{application_member_name}}.
+							</p>
+							<p *ngIf="!application_action_success && application_action_done && !application_action_error_message"
+							   class="alert alert-danger mr-auto">
+								<strong>Failed:</strong> The application of {{application_member_name}} could not be
+								{{application_action}} .
+							</p>
+							<p *ngIf="!application_action_success && application_action_done && application_action_error_message"
+							   class="alert alert-danger mr-auto">
+								<strong>Failed:</strong> User didn't verify his email address yet. Please wait until the
+								email is
+								verified.
+							</p>
+							<button type="button" class="btn btn-primary"
 									(click)="getUserProjectApplications()">
-						Refresh
-					</button>
-					<button type="button" class="btn btn-secondary"
+								Refresh
+							</button>
+							<button type="button" class="btn btn-secondary"
 									(click)="application_action_error_message=null;;applicationModal.hide();">
-						Close
-					</button>
-				</div>
-			</div><!-- /.modal-content -->
-		</div><!-- /.modal-dialog -->
-	</div>
+								Close
+							</button>
+						</div>
+					</div><!-- /.modal-content -->
+				</div><!-- /.modal-dialog -->
+			</div>
 
-	<div bsModal #notificationModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
-			 aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title" id="notification_title">{{ notificationModalTitle }}</h4>
-					<button type="button" class="close" style="cursor:pointer" (click)="notificationModal.hide()"
+			<div bsModal #notificationModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+				 aria-labelledby="Label"
+				 aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h4 class="modal-title" id="notification_title">{{ notificationModalTitle }}</h4>
+							<button type="button" class="close" style="cursor:pointer"
+									(click)="notificationModal.hide()"
 									aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
@@ -933,43 +981,43 @@
 					<button *ngIf="notificationModalIsClosable === true" type="button"
 									(click)="resetNotificationModal(); notificationModal.hide();" type="reset"
 									class="btn  btn-secondary" id="close_notification"> Close
-					</button>
-				</div>
-			</div><!-- /.modal-content -->
-		</div><!-- /.modal-dialog -->
-	</div><!-- /.modal -->
+							</button>
+						</div>
+					</div><!-- /.modal-content -->
+				</div><!-- /.modal-dialog -->
+			</div><!-- /.modal -->
 
-	<div bsModal #deleteModal="bs-modal" class="modal fade" tabindex="-1"
-			 role="dialog" aria-labelledby="Label"
-			 aria-hidden="true"
-			 id="remove_application_modal">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title">Delete Application</h4>
-					<button type="button" class="close" style="cursor:pointer"
+			<div bsModal #deleteModal="bs-modal" class="modal fade" tabindex="-1"
+				 role="dialog" aria-labelledby="Label"
+				 aria-hidden="true"
+				 id="remove_application_modal">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h4 class="modal-title">Delete Application</h4>
+							<button type="button" class="close" style="cursor:pointer"
 									(click)="deleteModal.hide()" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<div class="modal-body">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
 
-					<div class="alert alert-warning" role="alert">
-						Are you sure you want to remove this application?
-					</div>
+							<div class="alert alert-warning" role="alert">
+								Are you sure you want to remove this application?
+							</div>
 
-				</div>
-				<div class="modal-footer">
-					<button class="btn  btn-success col-md-4" id="confirm_remove_application_button"
+						</div>
+						<div class="modal-footer">
+							<button class="btn  btn-success col-md-4" id="confirm_remove_application_button"
 									(click)="deleteApplication();deleteModal.hide();notificationModal.show()">
-						Yes
-					</button>
-					<button class="btn  btn-danger col-md-4" type="reset"
+								Yes
+							</button>
+							<button class="btn  btn-danger col-md-4" type="reset"
 									(click)="deleteModal.hide()">Cancel
-					</button>
-				</div>
-			</div><!-- /.modal-content -->
-		</div><!-- /.modal-dialog -->
-	</div><!-- /.modal -->
+							</button>
+						</div>
+					</div><!-- /.modal-content -->
+				</div><!-- /.modal-dialog -->
+			</div><!-- /.modal -->
 
-</div>
+		</div>

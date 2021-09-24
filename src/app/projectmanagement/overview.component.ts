@@ -8,7 +8,7 @@ import { NgForm } from '@angular/forms';
 import { AutocompleteComponent } from 'angular-ng-autocomplete';
 import { DOCUMENT } from '@angular/common';
 import { Chart } from 'chart.js';
-import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { environment } from '../../environments/environment';
 import { ProjectMemberApplication } from './project_member_application';
 import { ComputecenterComponent } from './computecenter.component';
@@ -26,7 +26,7 @@ import { FlavorService } from '../api-connector/flavor.service';
 import { CreditsService } from '../api-connector/credits.service';
 import { is_vo } from '../shared/globalvar';
 import {
-	CREDITS_WIKI, WIKI_MEMBER_MANAGEMENT, WIKI_PUBLICATIONS, CLOUD_MAIL,
+	CLOUD_MAIL, CREDITS_WIKI, WIKI_MEMBER_MANAGEMENT, WIKI_PUBLICATIONS,
 } from '../../links/links';
 import { Doi } from '../applications/doi/doi';
 import { ApiSettings } from '../api-connector/api-settings.service';
@@ -37,15 +37,16 @@ import { ModificationRequestComponent } from './modals/modification-request/modi
 import { LifetimeRequestComponent } from './modals/lifetime-request/lifetime-request.component';
 import { DoiComponent } from './modals/doi/doi.component';
 import { CreditsRequestComponent } from './modals/credits-request/credits-request.component';
+import { WorkshopUrlInfoModel } from '../virtualmachines/workshop/workshop-urlinfo.model';
 
 /**
  * Projectoverview component.
  */
 @Component({
-	selector: 'app-project-overview',
-	templateUrl: 'overview.component.html',
-	providers: [FlavorService, ApplicationsService,
-		FacilityService, UserService, GroupService, ApiSettings, CreditsService],
+	           selector: 'app-project-overview',
+	           templateUrl: 'overview.component.html',
+	           providers: [FlavorService, ApplicationsService,
+		           FacilityService, UserService, GroupService, ApiSettings, CreditsService],
 })
 export class OverviewComponent extends ApplicationBaseClassComponent implements OnInit, OnDestroy {
 
@@ -70,6 +71,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	application_id: string;
 	project: Project;
 	credits: number = 0;
+	workshop_infos: WorkshopUrlInfoModel[];
+	selected_workshop_info: WorkshopUrlInfoModel;
 
 	errorMessage: string;
 	terminate_confirmation_given: boolean = false;
@@ -80,6 +83,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	remove_members_clicked: boolean;
 	life_time_string: string;
 	dois: Doi[];
+	workshopInfosLoaded: boolean = false;
 	disabledDoiInput: boolean = false;
 	isAdmin: boolean = false;
 	invitation_link: string;
@@ -355,6 +359,10 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 					this.project_application = aj;
 
 					if (this.project_application) {
+						if ((this.is_vo_admin || this.isAdmin) && this.project_application.project_application_workshop) {
+							this.getWorkshopUrlInfo();
+
+						}
 						this.applicationsService.getApplicationPerunId(this.application_id).subscribe((id: any): void => {
 							if (id['perun_id']) {
 								this.project_id = id['perun_id'];
@@ -427,7 +435,26 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 			this.getListOfTypes();
 			this.getDois();
 			this.is_vo_admin = is_vo;
+
 		});
+	}
+
+	setSelectedWorkshopInfo(info: WorkshopUrlInfoModel): void {
+		this.selected_workshop_info = info;
+	}
+
+	getWorkshopUrlInfo(): void {
+		this.workshopInfosLoaded = false;
+		this.applicationsService.getWorkshopInfoUrl(this.application_id).subscribe(
+			(infos: WorkshopUrlInfoModel[]) => {
+				this.workshopInfosLoaded = true;
+				this.workshop_infos = infos;
+				if (this.workshop_infos.length > 0) {
+					this.selected_workshop_info = this.workshop_infos[0];
+				}
+
+			},
+		);
 	}
 
 	/**
