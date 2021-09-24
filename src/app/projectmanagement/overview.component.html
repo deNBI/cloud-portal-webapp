@@ -640,30 +640,16 @@
 							<tr *ngFor="let info of selected_workshop_info?.url_data ">
 
 								<td>
-									<input style="width: 100%" type="text"  placeholder="e.g. 10.1000/182" id="doi_input_field"
-												 [disabled]="disabledDoiInput" class="form-control"
-												 pattern="10.\d{4,9}\/[-._;()\/:a-zA-Z0-9]+" [(ngModel)]="newDoi" #doiInput></td>
-								<td>
-									<button id="add_doi_btn"
-													(click)="addDoi();"
-													[disabled]="!doiInput.validity.valid || disabledDoiInput"
-													type="button"
-													class="btn btn-success"><i class="fa fa-plus"></i>&nbsp;
-									</button>
-								</td>
+
+									{{ info?.user_name }}</td>
+								<td>{{ info?.user_email }}</td>
+								<td>{{ info?.resenv_url }}</td>
 
 							</tr>
 
 
 							</tbody>
 						</table>
-
-					</div>
-					<div class="alert alert-primary">
-						<p>Please note that the publications entered on this page are listed publicly on
-							<a href="https://cloud.denbi.de/publications" target="_blank" rel="noopener noreferrer">this page on our website</a>.
-							We kindly ask you to list your publications which have been created
-							during your work in the de.NBI Cloud and/or this project.</p>
 					</div>
 
 				</div>
