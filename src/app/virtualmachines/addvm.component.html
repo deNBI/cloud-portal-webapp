@@ -1,4 +1,4 @@
-<div *ngIf="isLoaded && userinfo?.PublicKey == 'None'">
+<div *ngIf="isLoaded && userinfo?.PublicKey === 'None'">
   <div>
     <div class="card">
       <div class="card-header">
@@ -7,7 +7,7 @@
 
       <div class="card-body">
 
-        <div style="padding:5px" class="alert alert-info"><strong>Info: </strong>
+        <div style="padding:5px" class="alert alert-primary"><strong>Info: </strong>
           You need to set a valid SSH Key before you can start a machine. Please set a
           valid key below or on
           your <a
@@ -25,13 +25,13 @@
 </div>
 
 <div *ngIf=" !isLoaded || (singleProject && !projectDataLoaded )" class="loader"></div>
-<div *ngIf=" isLoaded && userinfo?.PublicKey != 'None' && projects.length == 0">
+<div *ngIf=" isLoaded && userinfo?.PublicKey !== 'None' && projects.length === 0">
   <div class="alert alert-warning" role="alert">
     You are not a member of any Simple VM project.
   </div>
 </div>
 <div
-  *ngIf=" isLoaded && userinfo?.PublicKey != 'None' && projects.length > 0 && (!singleProject || (singleProject && projectDataLoaded))"
+  *ngIf=" isLoaded && userinfo?.PublicKey !=='None' && projects.length > 0 && (!singleProject || (singleProject && projectDataLoaded))"
   class="animated fadeIn">
 
   <div class="row">
@@ -53,7 +53,7 @@
 
 
               <div class="col-md-8">
-                <select required class="form-control" name="projectSelect" *ngIf="!singleProject"
+                <select required class="form-control form-select" name="projectSelect" *ngIf="!singleProject"
                         [(ngModel)]="selectedProject" id="projectSelect"
                         (ngModelChange)="getSelectedProjectClient(); resetChecks();"
                 >
@@ -86,19 +86,19 @@
 
               </div>
               <div class="alert alert-primary " role="alert"
-                   *ngIf="selectedProject && selectedProjectRessources?.cores_used < selectedProjectRessources?.cores_total && !(selectedProjectRessources.ram_used < selectedProjectRessources.ram_total) && flavors_loaded && flavors.length == 0 && !selectedFlavor">
+                   *ngIf="selectedProject && selectedProjectRessources?.cores_used < selectedProjectRessources?.cores_total && !(selectedProjectRessources.ram_used < selectedProjectRessources.ram_total) && flavors_loaded && flavors.length === 0 && !selectedFlavor">
                 There is not enough ram available for this project to start a new machine.
                 Your principal investigator can request more
                 resources if necessary.
               </div>
               <div class="alert alert-primary " role="alert"
-                   *ngIf="selectedProject && !(selectedProjectRessources?.cores_used < selectedProjectRessources?.cores_total) && (selectedProjectRessources.ram_used < selectedProjectRessources.ram_total) && flavors_loaded && flavors.length == 0 && !selectedFlavor">
+                   *ngIf="selectedProject && !(selectedProjectRessources?.cores_used < selectedProjectRessources?.cores_total) && (selectedProjectRessources.ram_used < selectedProjectRessources.ram_total) && flavors_loaded && flavors.length === 0 && !selectedFlavor">
                 There are too few cores available for this project to start a new machine.
                 Your principal investigator can request more
                 resources if necessary.
               </div>
               <div class="alert alert-primary" role="alert"
-                   *ngIf="selectedProject && selectedProjectRessources?.cores_used < selectedProjectRessources?.cores_total && selectedProjectRessources.ram_used < selectedProjectRessources.ram_total && flavors_loaded && flavors.length == 0 && !selectedFlavor">
+                   *ngIf="selectedProject && selectedProjectRessources?.cores_used < selectedProjectRessources?.cores_total && selectedProjectRessources.ram_used < selectedProjectRessources.ram_total && flavors_loaded && flavors.length === 0 && !selectedFlavor">
                 There are too few cores and not enough ram available for this project to start a new machine.
                 Your principal investigator can request more
                 resources if necessary.
@@ -143,7 +143,7 @@
 
 
                     </ul>
-                    <div *ngIf="flavor_types[selected_flavor_type].length >0 && flavor_types[selected_flavor_type][0]?.type?.description" class="alert alert-info">
+                    <div *ngIf="flavor_types[selected_flavor_type].length >0 && flavor_types[selected_flavor_type][0]?.type?.description" class="alert alert-primary">
 
                       {{flavor_types[selected_flavor_type][0].type.description}}
                     </div>
@@ -161,7 +161,7 @@
                 </div>
                 <div class="row col-md-12" *ngIf="selectedFlavor?.ephemeral_disk > 0">
                   <div class="col-md-2"></div>
-                  <div class="col-md-10 alert alert-info">
+                  <div class="col-md-10 alert alert-primary">
                     <strong>Information for ephemeral flavors:</strong>
                     Ephemeral storage is not best suited for persistent data. Read more
                     <a href="https://cloud.denbi.de/wiki/simple_vm/new_instance/#information-for-ephemeral-flavors"
@@ -172,10 +172,10 @@
 
 
                 <div *ngIf="selectedProject" class="form-group row col-md-12">
-                  <label class="col-md-2 form-control-label"><strong>Image*</strong></label>
+                      <label class="col-md-2 form-control-label"><strong>Image*</strong></label>
                   <div class="col-md-10">
 
-                    <div class="alert alert-info" *ngIf="(images?.length === 0) || !images">
+                    <div class="alert alert-primary" *ngIf="(images?.length === 0) || !images">
                       There are no images available for selection at the moment.
                       Please contact the support of the facility where your project is running.
                     </div>
@@ -189,9 +189,9 @@
 
               <div id="volumeDiv" style="margin-bottom: 25px;"
                    *ngIf="selectedProject
-                   && selectedProject[1] != FREEMIUM_ID
+                   && selectedProject[1] !== FREEMIUM_ID
                    && selectedProjectRessources?.used_vms < selectedProjectRessources?.number_vms
-                   && (flavors.length != 0 || selectedFlavor)">
+                   && (flavors.length !== 0 || selectedFlavor)">
                 <!-- Buttons Row -->
                 <div class="from-group row col-md-12" style="margin-bottom: 25px;">
                   <label class="col-md-2"><strong>Volumes</strong></label>
@@ -216,7 +216,7 @@
                     >= this.selectedProjectRessources.volume_counter">
                   <div class="col-2"></div>
                   <div class="col-10">
-                    <div class="alert alert-info">You can't create a new volume, because you have
+                    <div class="alert alert-primary">You can't create a new volume, because you have
                       reached
                       the maximum number of volumes available
                       for this project.</div>
@@ -226,7 +226,7 @@
                      *ngIf="(this.selectedProjectRessources.used_volume_storage + getStorageInList()) >= this.selectedProjectRessources.max_volume_storage">
                   <div class="col-2"></div>
                   <div class="col-10">
-                    <div class="alert alert-info">
+                    <div class="alert alert-primary">
                       You can't create a new volume, because you have reached the maximum amount of storage (in
                       GB)
                       available for this project.</div>
@@ -293,7 +293,7 @@
                     <ng-container
                       *ngIf="showAttachVol">
                       <select style="margin-bottom: 5px;margin-top: 5px"
-                              class="form-control" name="selected_detached_vol_select"
+                              class="form-control form-select" name="selected_detached_vol_select"
                               [(ngModel)]="selected_detached_vol" id="selected_detached_vol_select"
 
                       >
@@ -486,11 +486,11 @@
               <accordion class="col-md-12">
 
                 <accordion-group #autoGroup
-                                 *ngIf="selectedProject && projectDataLoaded && selectedProjectRessources?.used_vms < selectedProjectRessources?.number_vms && (flavors.length != 0 || selectedFlavor)">
+                                 *ngIf="selectedProject && projectDataLoaded && selectedProjectRessources?.used_vms < selectedProjectRessources?.number_vms && (flavors.length !== 0 || selectedFlavor)">
                   <div accordion-heading style="width: 100%; cursor: pointer">
                     <strong>Tools </strong> powered by <img src="{{conda_img_path}}" alt="Conda® "
                                                             style="height: 12px; width: auto"><span
-                    class="badge badge-primary" style="margin-left:5px;">BETA</span>
+                    class="badge bg-primary" style="margin-left:5px;">BETA</span>
                     <i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
                             'icon-arrow-up': autoGroup.isOpen, 'icon-arrow-down': !autoGroup.isOpen}"></i>
                   </div>
@@ -514,7 +514,7 @@
                   <div accordion-heading style="width: 100%; cursor: pointer">
                     <strong>Browser-based Research Environments</strong>
                     (e.g. RStudio, Apache Guacamole, Theia IDE)
-                    <span class="badge badge-primary">BETA</span>
+                    <span class="badge bg-primary">BETA</span>
                     <i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
                             'icon-arrow-up': resEnvGroup.isOpen, 'icon-arrow-down': !resEnvGroup.isOpen}"></i>
                   </div>
@@ -538,8 +538,8 @@
                 </accordion-group>
 
                 <accordion-group #optionalGroup id="optional_accordion"
-                                 *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && selectedProjectRessources?.used_vms < selectedProjectRessources?.number_vms
-                                  && (flavors.length != 0 || selectedFlavor)">
+                                 *ngIf="selectedProject && selectedProject[1] !== FREEMIUM_ID && selectedProjectRessources?.used_vms < selectedProjectRessources?.number_vms
+                                  && (flavors.length !== 0 || selectedFlavor)">
 
                   <div accordion-heading style="width: 100%; cursor: pointer">
                     <strong>Optional parameters</strong>
@@ -550,33 +550,28 @@
 
 
                   <div
-                    *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && selectedProjectRessources?.used_vms < selectedProjectRessources?.number_vms"
+                    *ngIf="selectedProject && selectedProject[1] !== FREEMIUM_ID && selectedProjectRessources?.used_vms < selectedProjectRessources?.number_vms"
                     class="form-group row">
 
                     <label class="col-md-2 form-control-label">Working on the road</label>
-                    <div class="col-md-4"><label><strong style="padding-right: 10px; bottom: 15px;position: relative;">
-                      <a href="https://cloud.denbi.de/wiki/Tutorials/Mosh/" rel="noopener noreferrer" target="_blank">Open UDP ports</a>
-                      <i
-                        data-balloon="This selection is necessary for using MOSH.
-                        UDP is better suited for unstable/switching connections, e.g. during train travel."
-                        data-balloon-pos="down" data-balloon-length="large"><i
-                        class="icon-question menu_links"
-                        style="cursor: pointer; margin-left: 2px;"></i></i></strong></label>
-
-                      <label
-                        class="switch switch-label switch-pill switch-success">
-                        <input type="checkbox" class="switch-input"
+                    <div class="col-md-4 form-check">
+                        <input type="checkbox" class="form-check-input"
                                name="udp_allowed" [disabled]="!mosh_mode_available"
                                [(ngModel)]="udp_allowed">
-                        <div class="switch-slider" data-checked="✓" data-unchecked="✕"></div>
-                        <!--<span class="switch-handle"></span>-->
-                      </label>
+                      <label class="form-check-label"><strong>
+                        <a href="https://cloud.denbi.de/wiki/Tutorials/Mosh/" rel="noopener noreferrer" target="_blank">Open UDP ports</a>
+                        <i
+                                data-balloon="This selection is necessary for using MOSH.
+                        UDP is better suited for unstable/switching connections, e.g. during train travel."
+                                data-balloon-pos="down" data-balloon-length="large"><i
+                                class="icon-question menu_links"
+                                style="cursor: pointer; margin-left: 2px;"></i></i></strong></label>
                     </div>
-                    <div class="alert alert-info col-md-6" *ngIf="!mosh_mode_available">To use MOSH with UDP ports, please select an Image which supports MOSH.
+                    <div class="alert alert-primary col-md-6" *ngIf="!mosh_mode_available">To use MOSH with UDP ports, please select an Image which supports MOSH.
                       Learn more about MOSH <a href="https://mosh.org" target="_blank" rel="noopener noreferrer">here</a>.</div>
                   </div>
                   <div
-                    *ngIf="selectedProject && selectedProject[1] != FREEMIUM_ID && selectedProjectRessources?.used_vms < selectedProjectRessources?.number_vms && udp_allowed && mosh_mode_available"
+                    *ngIf="selectedProject && selectedProject[1] !== FREEMIUM_ID && selectedProjectRessources?.used_vms < selectedProjectRessources?.number_vms && udp_allowed && mosh_mode_available"
                     class="form-group row">
 
                     <label class="col-md-2 form-control-label">Install MOSH</label>
@@ -640,8 +635,8 @@
             || (!gaveOkay && (hasTools || install_mosh || resEnvOkayNeeded))
             || (!resEnvValid && resEnvComponent)
             || !selectedImage
-            || (!selectedFlavor && flavors.length != 0 )
-            || (volumeStorage != 0 && !volumeName)
+            || (!selectedFlavor && flavors.length !== 0 )
+            || (volumeStorage !== 0 && !volumeName)
             || (!resEnvValid && resEnvComponent))
           && flavors.length > 0
           && projectDataLoaded
@@ -668,16 +663,16 @@
         <div
           *ngIf="client_avaiable && projectDataLoaded && selectedProjectRessources?.used_vms < selectedProjectRessources?.number_vms && (flavors?.length > 0  || selectedFlavor)"
           class="alert alert-warning col-md-10" role="alert" style="margin: auto;">
-          <input class="form-check-input"
-                 name="vm_responsibility"
-                 type="checkbox"
-                 id="vm_responsibility"
-                 [(ngModel)]="vm_responsibility"
-                 required
-          >
-          <label class="form-check-label" for="vm_responsibility">
-            I hereby confirm that I am responsible for the virtual machine and any action performed on it.
-          </label>
+          <div class="form-check"><input class="form-check-input"
+                                         name="vm_responsibility"
+                                         type="checkbox"
+                                         id="vm_responsibility"
+                                         [(ngModel)]="vm_responsibility"
+                                         required>
+            <label class="form-check-label" for="vm_responsibility">
+              I hereby confirm that I am responsible for the virtual machine and any action performed on it.
+            </label></div>
+
         </div>
         <div class="form-group row"
              *ngIf=" client_avaiable && projectDataLoaded && selectedProjectRessources?.used_vms < selectedProjectRessources?.number_vms && (flavors?.length > 0  || selectedFlavor)">
@@ -720,6 +715,7 @@
   </div>
 
 </div>
+
 
 <div bsModal #redirectModal="bs-modal" class="modal fade " tabindex="-1" role="dialog"
      aria-labelledby="myModalLabel" aria-hidden="true"

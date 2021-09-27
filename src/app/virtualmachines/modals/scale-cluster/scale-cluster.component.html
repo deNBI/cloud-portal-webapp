@@ -78,7 +78,7 @@
                               [innerHTML]="mode.description"></span>
                     </div>
 
-                    <div class="col-md-2" style="margin: auto" *ngIf="mode.copy_field && mode.copy_field!=''">
+                    <div class="col-md-2" style="margin: auto" *ngIf="mode.copy_field && mode.copy_field !== ''">
                         <div class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
                              (click)="copyToClipboard(mode.copy_field)">Copy command
                         </div>
@@ -178,7 +178,7 @@
                           <label>
                             <input type="checkbox"
                                    (change)="setSelectedBatch(batch)"
-                                   [checked]="selectedBatch == batch">
+                                   [checked]="selectedBatch === batch">
 
 
                           </label>
@@ -198,7 +198,7 @@
 
 
                           <input style="width: 50%"
-                                 [disabled]="batch?.max_scale_up_count <1 || selectedBatch != batch"
+                                 [disabled]="batch?.max_scale_up_count <1 || selectedBatch !== batch"
                                  name="upCount_{{batch.index}}"
 
                                  type="number" min="0" [max]="batch.max_scale_up_count" step="1"
@@ -211,7 +211,7 @@
                           </div>
 
                         </div>
-                        <div class="alert alert-warning" role="alert" *ngIf="batch?.max_scale_up_count == 0"> Not enough
+                        <div class="alert alert-warning" role="alert" *ngIf="batch?.max_scale_up_count === 0"> Not enough
                           resources left to upscale this batch!
                         </div>
 
@@ -335,7 +335,7 @@
                               [innerHTML]="mode.description"></span>
                     </div>
 
-                    <div class="col-md-2" style="margin: auto" *ngIf="mode.copy_field && mode.copy_field!=''">
+                    <div class="col-md-2" style="margin: auto" *ngIf="mode.copy_field && mode.copy_field !== ''">
                         <div class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
                              (click)="copyToClipboard(mode.copy_field)">Copy command
                         </div>
@@ -418,7 +418,7 @@
                               [innerHTML]="mode.description"></span>
                     </div>
 
-                    <div class="col-md-2" style="margin: auto" *ngIf="mode.copy_field && mode.copy_field!=''">
+                    <div class="col-md-2" style="margin: auto" *ngIf="mode.copy_field && mode.copy_field !== ''">
                         <div class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
                              (click)="copyToClipboard(mode.copy_field)">Copy command
                         </div>

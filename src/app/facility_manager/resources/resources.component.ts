@@ -1,9 +1,9 @@
 import {
 	Component, ElementRef, OnInit, ViewChild,
 } from '@angular/core';
-import pdfMake from 'pdfmake/build/pdfmake';
+/* import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
-import htmlToPdfmake from 'html-to-pdfmake';
+import htmlToPdfmake from 'html-to-pdfmake'; */
 import { ExportToCsv } from 'export-to-csv';
 import { Resources } from '../../vo_manager/resources/resources';
 import { FacilityService } from '../../api-connector/facility.service';
@@ -13,7 +13,7 @@ import { GeneralStorageFactor } from './general-storage-factor';
 import { ResourceMachine } from './resource-machine';
 import { GPUSpecification } from './gpu-specification';
 
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
+// pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 /**
  * Facility resource component.
@@ -252,7 +252,7 @@ export class ResourcesComponent implements OnInit {
 
 	}
 
-	public tableToPDF(): void {
+	/* public tableToPDF(): void {
 		// const doc = new jsPDF();
 		const pdfTable = this.pdfTable.nativeElement;
 		const html = htmlToPdfmake(pdfTable.innerHTML);
@@ -263,6 +263,6 @@ export class ResourcesComponent implements OnInit {
 		};
 		pdfMake.createPdf(documentDefinition).download(`${this.selectedFacility['Facility']}_resources.pdf`);
 
-	}
+	} */
 
 }
