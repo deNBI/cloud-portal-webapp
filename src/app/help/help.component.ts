@@ -16,5 +16,6 @@ export class HelpComponent {
 	WIKI: string = WIKI;
 	CLOUD_MAIL: string = CLOUD_MAIL;
 	CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL;
+	title: string = 'Help';
 
 }

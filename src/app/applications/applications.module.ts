@@ -6,7 +6,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { ClickOutsideModule } from 'ng4-click-outside';
-import { AppSidebarModule } from '@coreui/angular';
 import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 import { ApplicationsComponent } from './applications.component';
 import { ApplicationsRoutingModule } from './applications-routing.module';
@@ -37,7 +36,6 @@ import { LifetimeExtensionDetailComponent } from './application-detail/lifetime-
 		CommonModule,
 		FormsModule,
 		ModalModule.forRoot(),
-		AppSidebarModule,
 		AutocompleteLibModule,
 		SharedDirectivesModule,
 		PipeModuleModule,

@@ -54,7 +54,7 @@
 				<span class="help-block">Number of months you want to extend the project </span>
 			</div>
 		</div>
-		<div class="form-group row" *ngIf="project?.project_application_edam_terms.length == 0 ">
+		<div class="form-group row" *ngIf="project?.project_application_edam_terms.length === 0 ">
 			<label class="col-md-4 form-control-label"><strong>Research Topics* </strong></label>
 			<div class="col-md-8">
 				<div [ngClass]="{
@@ -85,7 +85,7 @@
 				<h5><span
 					*ngFor="let term of selected_ontology_terms"
 					style="margin-right: 5px; "
-					class="badge badge-info"> {{term.term}}
+					class="badge bg-info"> {{term.term}}
 					<span class="badge" style="cursor: pointer;" (click)="removeEDAMterm(term)">&#10060;</span>
               </span>
 				</h5>
@@ -129,7 +129,7 @@
 			- Lifetime missing
 		</p>
 
-		<p  *ngIf="project?.project_application_edam_terms.length == 0 && selected_ontology_terms.length < 1">
+		<p  *ngIf="project?.project_application_edam_terms.length === 0 && selected_ontology_terms.length < 1">
 			- Select at least one Research Topic
 		</p>
 	</div>
@@ -142,7 +142,7 @@
 		<button type="button" class="btn  btn-primary"
 						form="extension_application_form" id="submit_extension_btn"
 						(click)="bsModalRef.hide(); calculateCreditsLifetime(); showSubmitModal();"
-						[disabled]="extensionForm.invalid || (((project?.project_application_edam_terms?.length == 0)
+						[disabled]="extensionForm.invalid || (((project?.project_application_edam_terms?.length === 0)
                   || !project?.project_application_edam_terms) && selected_ontology_terms.length < 1)">
 			<i class="fa fa-dot-circle-o"></i>
 			Submit

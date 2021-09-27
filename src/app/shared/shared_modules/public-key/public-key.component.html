@@ -20,7 +20,8 @@
       id="setPublicKeyButton">Set Key
       </button>
       <button class="btn btn-primary" style="float: right; margin: 2px" type="button" (click)="copyToClipboard(userinfo?.PublicKey)"
-              *ngIf="userinfo?.PublicKey != 'None'"
+
+              *ngIf="userinfo?.PublicKey !== 'None'"
               id="copyPublicKeyButton">Copy Key
       </button>
       </div>
@@ -33,8 +34,8 @@
   </div>
 </th>
 <td class="col-9" style="width: 75%">
-  <span *ngIf="userinfo.PublicKey == 'None'"> No public key is set</span>
-  <span *ngIf="userinfo.PublicKey != 'None'"
+  <span *ngIf="userinfo.PublicKey === 'None'"> No public key is set</span>
+  <span *ngIf="userinfo.PublicKey !== 'None'"
         style="word-wrap: break-word; max-width: 80px; white-space: normal">
 
             <div style="word-break: break-all" id="user_public_key">{{userinfo?.PublicKey}}</div></span>
@@ -59,7 +60,9 @@
 
 
         <alert type="danger">
-          <span *ngIf="userinfo?.PublicKey != 'None'">
+
+          <span *ngIf="userinfo?.PublicKey !== 'None'">
+
             <strong>Warning!</strong>
             By replacing the current key, all machines started in the future can only be accessed with the new key.
 Already running or created machines remain accessible with the old (and hereby replaced) key.
@@ -114,7 +117,7 @@ In case you lose your private key, it is lost permanently!</alert>
 
       </div>
       <div class="modal-body">
-        <alert type="info" *ngIf="public_key?.length ==0 ">
+        <alert type="info" *ngIf="public_key?.length === 0 ">
           <strong>Info: </strong> Please enter a valid public key!
 
         </alert>
