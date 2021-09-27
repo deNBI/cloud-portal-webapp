@@ -1,4 +1,4 @@
-<div *ngIf="isLoaded==false" class="loader"></div>
+<div *ngIf="isLoaded === false" class="loader"></div>
 <div *ngIf="isLoaded" class="animated fadeIn">
 
 
@@ -9,10 +9,11 @@
     <div class="card-body container-fluid">
       <div class="table-responsive">
         <table class="table table-hover">
+          <tbody>
           <tr style="border-top-style: none;">
             <td class="col-3" style="border-top-style:none;">
                 <strong>Elixir Login</strong>
-              <div class="alert alert-info" style="margin-top:5px; margin-bottom: 0px;">
+              <div class="alert alert-primary" style="margin-top:5px; margin-bottom: 0px;">
                 <strong>
                   Read more about linking accounts <a target="_blank"  rel="noopener noreferrer" class="alert-link"
                                                       href="{{WIKI_LINK_ACCOUNTS}}">here.</a>
@@ -82,6 +83,7 @@
             </td>
             <td class="col-1"></td>
           </tr>
+          </tbody>
         </table>
       </div>
     </div>

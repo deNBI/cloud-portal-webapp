@@ -1,5 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { forkJoin } from 'rxjs';
+import {
+	Component, OnDestroy, OnInit, ViewChild,
+} from '@angular/core';
+import { forkJoin, Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { GroupService } from '../../../api-connector/group.service';
 import { ImageService } from '../../../api-connector/image.service';
@@ -30,10 +32,10 @@ import { CLOUD_PORTAL_SUPPORT_MAIL } from '../../../../links/links';
 	providers: [GroupService, ImageService, KeyService, FlavorService, VirtualmachineService,
 		ApiSettings, KeyService, ClientService, UserService, VoService],
 })
-export class AddClusterComponent implements OnInit {
+export class AddClusterComponent implements OnInit, OnDestroy {
 
 	is_vo: boolean = false;
-  CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL;
+	CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL;
 
 	client_checked: boolean = false;
 	timeout: number = 0;
@@ -130,14 +132,19 @@ export class AddClusterComponent implements OnInit {
 	newRam: number = 0;
 	newVms: number = 2;
 	newGpus: number = 0;
+	subscription: Subscription = new Subscription();
 
 	@ViewChild('bioconda', { static: true }) biocondaComponent: BiocondaComponent;
 
-	constructor(private groupService: GroupService, private imageService: ImageService,
-		private flavorService: FlavorService, private virtualmachineservice: VirtualmachineService,
-		private keyservice: KeyService, private userService: UserService,
-		private voService: VoService, private router: Router) {
-		// noEmptyConst
+	constructor(private groupService: GroupService,
+							private imageService: ImageService,
+							private flavorService: FlavorService,
+							private virtualmachineservice: VirtualmachineService,
+							private keyservice: KeyService,
+							private userService: UserService,
+							private voService: VoService,
+							private router: Router) {
+		// eslint-disable-next-line no-empty-function
 	}
 
 	calcWorkerInstancesCount(): void {
@@ -214,24 +221,21 @@ export class AddClusterComponent implements OnInit {
 	 * @param project_id
 	 */
 	getImages(project_id: number): void {
+		this.subscription.add(
+			this.imageService.getImages(project_id).subscribe((images: Image[]): void => {
+				this.images = images.filter((image: Image): boolean => {
+					let not_blocked: boolean = true;
+					this.CLUSTER_IMAGES_BLOCKLIST.forEach((str: string): void => {
+						if (image.name.includes(str)) {
+							not_blocked = false;
+						}
+					});
 
-		this.imageService.getImages(project_id).subscribe((images: Image[]): void => {
-			this.images = images.filter((image: Image): boolean => {
-				let not_blocked: boolean = true;
-
-				this.CLUSTER_IMAGES_BLOCKLIST.forEach((str: string): void => {
-
-					if (image.name.includes(str)) {
-						not_blocked = false;
-
-					}
-
+					return not_blocked;
 				});
-
-				return not_blocked;
-			});
-			this.images.sort((x_cord: any, y_cord: any): number => Number(x_cord.is_snapshot) - Number(y_cord.is_snapshot));
-		});
+				this.images.sort((x_cord: any, y_cord: any): number => Number(x_cord.is_snapshot) - Number(y_cord.is_snapshot));
+			}),
+		);
 	}
 
 	/**
@@ -240,11 +244,20 @@ export class AddClusterComponent implements OnInit {
 	 * @param project_id
 	 */
 	getFlavors(project_id: number): void {
-		this.flavorService.getFlavors(project_id).subscribe((flavors: Flavor[]): void => {
-			this.flavors = flavors;
-			this.checkFlavorsUsableForCluster();
-		});
-
+		this.subscription.add(
+			this.flavorService.getFlavors(project_id).subscribe(
+				(flavors: Flavor[]): void => {
+					this.flavors = flavors;
+					this.checkFlavorsUsableForCluster();
+				},
+				(error: any) => {
+					console.log(error);
+					this.flavors = [];
+					this.flavors_usable = [];
+					this.flavors_loaded = true;
+				},
+			),
+		);
 	}
 
 	/**
@@ -313,42 +326,42 @@ export class AddClusterComponent implements OnInit {
 		this.cluster_id = null;
 
 		const masterFlavor: string = this.selectedMasterFlavor.name.replace(re, '%2B');
-		console.log(masterFlavor, this.selectedMasterImage, this.selectedWorkerBatches, this.selectedProject[1]);
 
-		this.virtualmachineservice.startCluster(
-			masterFlavor,
-			this.selectedMasterImage,
-			this.selectedWorkerBatches, this.selectedProject[1],
-		).subscribe(
-			(res: any): void => {
-				console.log(res);
-				if (res['status'] && res['status'] === 'mutex_locked') {
-					setTimeout(
-						(): void => {
-							this.startCluster();
-						},
-						1000,
-					);
-				} else {
-					this.cluster_id = res['id'];
-					this.cluster_started = true;
+		this.subscription.add(
+			this.virtualmachineservice.startCluster(
+				masterFlavor,
+				this.selectedMasterImage,
+				this.selectedWorkerBatches, this.selectedProject[1],
+			).subscribe(
+				(res: any): void => {
+					console.log(res);
+					if (res['status'] && res['status'] === 'mutex_locked') {
+						setTimeout(
+							(): void => {
+								this.startCluster();
+							},
+							1000,
+						);
+					} else {
+						this.cluster_id = res['id'];
+						this.cluster_started = true;
 
-					setTimeout(
-						(): void => {
-							void this.router.navigate(['/virtualmachines/clusterOverview']).then().catch();
-						},
-						4000,
-					);
+						setTimeout(
+							(): void => {
+								void this.router.navigate(['/virtualmachines/clusterOverview']).then().catch();
+							},
+							4000,
+						);
 
-				}
+					}
 
-			},
-			(error: any): void => {
-				console.log(error);
-				this.cluster_error = error;
-			},
+				},
+				(error: any): void => {
+					console.log(error);
+					this.cluster_error = error;
+				},
+			),
 		);
-
 	}
 
 	/**
@@ -359,20 +372,24 @@ export class AddClusterComponent implements OnInit {
 		this.client_checked = false;
 		this.projectDataLoaded = false;
 
-		this.groupService.getClientBibigrid(this.selectedProject[1].toString()).subscribe((client: Client): void => {
-			if (client.status && client.status === 'Connected') {
-				this.client_avaiable = true;
+		this.subscription.unsubscribe();
+		this.subscription = new Subscription();
+		this.subscription.add(
+			this.groupService.getClientBibigrid(this.selectedProject[1].toString()).subscribe((client: Client): void => {
+				if (client.status && client.status === 'Connected') {
+					this.client_avaiable = true;
 
-				this.loadProjectData();
-				this.client_checked = true;
-			} else {
-				this.client_avaiable = false;
-				this.client_checked = true;
-				this.projectDataLoaded = true;
-			}
-			this.selectedProjectClient = client;
+					this.loadProjectData();
+					this.client_checked = true;
+				} else {
+					this.client_avaiable = false;
+					this.client_checked = true;
+					this.projectDataLoaded = true;
+				}
+				this.selectedProjectClient = client;
 
-		});
+			}),
+		);
 	}
 
 	/**
@@ -380,22 +397,24 @@ export class AddClusterComponent implements OnInit {
 	 * Gets all groups of the user and his key.
 	 */
 	initializeData(): void {
-		forkJoin(this.groupService.getSimpleVmByUser(), this.userService.getUserInfo()).subscribe((result: any): void => {
-			this.userinfo = result[1];
-			this.validatePublicKey();
-			const membergroups: any = result[0];
-			for (const project of membergroups) {
-				this.projects.push(project);
+		this.subscription.add(
+			forkJoin(this.groupService.getSimpleVmByUser(), this.userService.getUserInfo()).subscribe((result: any): void => {
+				this.userinfo = result[1];
+				this.validatePublicKey();
+				const membergroups: any = result[0];
+				for (const project of membergroups) {
+					this.projects.push(project);
 
-			}
+				}
 
-			if (this.projects.length === 1) {
-				this.selectedProject = this.projects[0];
-				this.singleProject = true;
-				this.getSelectedProjectClient();
-			}
-			this.isLoaded = true;
-		});
+				if (this.projects.length === 1) {
+					this.selectedProject = this.projects[0];
+					this.singleProject = true;
+					this.getSelectedProjectClient();
+				}
+				this.isLoaded = true;
+			}),
+		);
 	}
 
 	loadProjectData(): void {
@@ -406,14 +425,13 @@ export class AddClusterComponent implements OnInit {
 		this.selectedImage = undefined;
 		this.selectedFlavor = undefined;
 		this.getImages(this.selectedProject[1]);
-
-		this.groupService.getGroupResources(this.selectedProject[1].toString()).subscribe((res: ApplicationRessourceUsage): void => {
-			this.selectedProjectRessources = new ApplicationRessourceUsage(res);
-			this.getFlavors(this.selectedProject[1]);
-			this.projectDataLoaded = true;
-
-		});
-
+		this.subscription.add(
+			this.groupService.getGroupResources(this.selectedProject[1].toString()).subscribe((res: ApplicationRessourceUsage): void => {
+				this.selectedProjectRessources = new ApplicationRessourceUsage(res);
+				this.getFlavors(this.selectedProject[1]);
+				this.projectDataLoaded = true;
+			}),
+		);
 	}
 
 	resizeFix(): void {
@@ -421,12 +439,16 @@ export class AddClusterComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
-
 		this.initializeData();
-		this.voService.isVo().subscribe((result: IResponseTemplate): void => {
-			this.is_vo = result.value as boolean;
-		});
+		this.subscription.add(
+			this.voService.isVo().subscribe((result: IResponseTemplate): void => {
+				this.is_vo = result.value as boolean;
+			}),
+		);
+	}
 
+	ngOnDestroy() {
+		this.subscription.unsubscribe();
 	}
 
 }

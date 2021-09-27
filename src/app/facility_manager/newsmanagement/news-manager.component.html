@@ -11,7 +11,7 @@
         <div *ngFor="let facility of managerFacilities" class="form-check-inline">
           <input class="form-check-input" type="checkbox" id="select_{{facility['Facility']}}"
                  (click)="selectFacility(facility)"
-                 [checked]="selectedFacilities?.indexOf(facility) != -1">
+                 [checked]="selectedFacilities?.indexOf(facility) !== -1">
           <label class="form-check-label" for="select_{{facility['Facility']}}">{{facility['FacilityId']}}
             : {{facility['Facility']}}</label>
         </div>
@@ -25,19 +25,19 @@
             </div>
             <div class="card-body">
               <form>
-                <div *ngIf="wordPressNews?.length === 0" class="alert alert-info">
+                <div *ngIf="wordPressNews?.length === 0" class="alert alert-primary">
                   <span>No news available for the facilities selected.</span>
                 </div>
                 <div *ngFor="let news of wordPressNews">
                   <div class="card" style="cursor: pointer;" (click)="setNews(news)" [ngStyle]="{
-                    'border-color': news.id == selectedNews.id ? '#005aa9' : '#c8ced3'}">
+                    'border-color': news.id === selectedNews.id ? '#005aa9' : '#c8ced3'}">
                     <div class="card-header text-truncate"
                          data-toggle="tooltip" id="{{news.id}}_header" data-placement="auto"
                          style="color: white !important;"
-                         [ngStyle]="{'background-color': news.id == selectedNews.id ? '#005aa9' : '#00adef'}">
+                         [ngStyle]="{'background-color': news.id === selectedNews.id ? '#005aa9' : '#00adef'}">
                       <strong>{{news.title}}</strong>
-                      <span class="badge badge-light" style="margin-left:5px;"
-                            [ngStyle]="{'color': news.id == selectedNews.id ? '#005aa9' : '#00adef'}"
+                      <span class="badge bg-light" style="margin-left:5px;"
+                            [ngStyle]="{'color': news.id === selectedNews.id ? '#005aa9' : '#00adef'}"
                             *ngIf="newsSetAsMOTD.includes(news.id.toString())"
                             title="{{'Set as MOTD in: ' + facilitiesAsString(news)}}">
                         <i style="margin-right: 2px;" class="fas fa-terminal">MOTD</i></span>
@@ -140,14 +140,14 @@ we are happy to inform..."
                     <input class="form-check-input" type="checkbox"
                            id="news_select_{{facility['FacilityId']}}"
                            (click)="setFacility(facility)"
-                           [checked]="facilitiesToPost?.indexOf(facility['FacilityId']) != -1">
+                           [checked]="facilitiesToPost?.indexOf(facility['FacilityId']) !== -1">
                     <label class="form-check-label"
                            for="news_select_{{facility['FacilityId']}}">{{facility['Facility']}}</label>
                     </div>
                     <div class="col-6">
                       <input class="form-check-input" type="checkbox" id="news_select_{{facility['FacilityId']}}_motd"
                              (click)="manageMOTD(facility);"
-                             [disabled]="facilitiesToPost?.indexOf(facility['FacilityId']) == -1"
+                             [disabled]="facilitiesToPost?.indexOf(facility['FacilityId']) === -1"
                              [checked]="facilitiesToSetMOTD?.indexOf(facility['FacilityId']) > (-1)">
                       <label class="form-check-label" for="news_select_{{facility['FacilityId']}}_motd">
                         Set as MOTD for facility</label>
@@ -156,12 +156,12 @@ we are happy to inform..."
                 </ng-container>
               </div>
               <br>
-              <div *ngIf="facilitiesToPost.length == 0" class="alert alert-warning">At least one facility needs to be
+              <div *ngIf="facilitiesToPost.length === 0" class="alert alert-warning">At least one facility needs to be
                 selected.
               </div>
             </div>
             <div class="card-body" *ngIf="!selectedNews"> <!-- check case here -->
-              <div class="alert alert-info">
+              <div class="alert alert-primary">
                 This news is also published for a facility you are not the manager of, which means you are not allowed
                 to edit or delete this news.
                 Methods to disconnect this news from your selected facilities and re-add and edit this news for your
@@ -179,11 +179,11 @@ we are happy to inform..."
               <button class="btn btn-success"
                       style="margin: 5px"
                       (click)="addModal.show();"
-                      [disabled]="selectedNewsForm.invalid || facilitiesToPost.length == 0"
-                      *ngIf="selectedNews.id == null">Create & Upload News
+                      [disabled]="selectedNewsForm.invalid || facilitiesToPost.length === 0"
+                      *ngIf="selectedNews.id === null">Create & Upload News
               </button>
               <button class="btn btn-secondary" style="margin: 5px"
-                      [disabled]="selectedNewsForm.invalid || facilitiesToPost.length == 0"
+                      [disabled]="selectedNewsForm.invalid || facilitiesToPost.length === 0"
                       (click)="updateModal.show();" *ngIf="selectedNews?.id">Update News
               </button>
               <button class="btn btn-danger" style="margin: 5px"
@@ -211,7 +211,7 @@ we are happy to inform..."
           </button>
         </div>
         <div class="modal-body">
-          <div class="alert alert-info" role="alert">
+          <div class="alert alert-primary" role="alert">
             <p>Are you sure, that you want to delete <strong>{{this.selectedNews.title}}</strong> ?</p>
             <p><strong>Please note: this may remove the current Message of the day for multiple facilities!</strong></p>
           </div>
@@ -246,7 +246,7 @@ we are happy to inform..."
           </button>
         </div>
         <div class="modal-body">
-          <div class="alert alert-info" role="alert">
+          <div class="alert alert-primary" role="alert">
             <p>Are you sure, that you want to update <strong>{{this.selectedNews.title}}</strong> ?</p>
             <p><strong>Please note: this may change the current Message of the day for multiple facilities!</strong></p>
           </div>
@@ -281,7 +281,7 @@ we are happy to inform..."
           </button>
         </div>
         <div class="modal-body">
-          <div class="alert alert-info" role="alert">
+          <div class="alert alert-primary" role="alert">
             <p>Are you sure, that you want to upload <strong>{{this.selectedNews.title}}</strong> ?</p>
             <p><strong>Please note: this may change the current Message of the day for multiple facilities!</strong></p>
           </div>
@@ -316,7 +316,7 @@ we are happy to inform..."
           </button>
         </div>
         <div class="modal-body">
-          <div class="alert alert-info" role="alert">
+          <div class="alert alert-primary" role="alert">
             <p *ngIf="returnState === 0">The selected news got deleted!</p>
             <p *ngIf="returnState === 1">The selected news got updated!</p>
             <p *ngIf="returnState === 2">The news got uploaded!</p>
