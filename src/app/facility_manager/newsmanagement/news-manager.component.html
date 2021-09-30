@@ -25,19 +25,20 @@
             </div>
             <div class="card-body">
               <form>
-                <div *ngIf="wordPressNews?.length === 0" class="alert alert-primary">
+                <div *ngIf="facilityNews?.length === 0" class="alert alert-info">
                   <span>No news available for the facilities selected.</span>
                 </div>
-                <div *ngFor="let news of wordPressNews">
-                  <div class="card" style="cursor: pointer;" (click)="setNews(news)" [ngStyle]="{
-                    'border-color': news.id === selectedNews.id ? '#005aa9' : '#c8ced3'}">
+                <div *ngFor="let news of facilityNews">
+                  <div class="card" style="cursor: pointer;" (click)="setCurrentNews(news)" [ngStyle]="{
+                    'border-color': news.id === selectedFacilityNews.id ? '#005aa9' : '#c8ced3'}">
                     <div class="card-header text-truncate"
                          data-toggle="tooltip" id="{{news.id}}_header" data-placement="auto"
                          style="color: white !important;"
-                         [ngStyle]="{'background-color': news.id === selectedNews.id ? '#005aa9' : '#00adef'}">
+                         [ngStyle]="{'background-color': news.id === selectedFacilityNews.id ? '#005aa9' : '#00adef'}">
                       <strong>{{news.title}}</strong>
-                      <span class="badge bg-light" style="margin-left:5px;"
-                            [ngStyle]="{'color': news.id === selectedNews.id ? '#005aa9' : '#00adef'}"
+                      <span class="badge badge-light" style="margin-left:5px;"
+                            [ngStyle]="{'color': news.id === selectedFacilityNews.id ? '#005aa9' : '#00adef'}"
+
                             *ngIf="newsSetAsMOTD.includes(news.id.toString())"
                             title="{{'Set as MOTD in: ' + facilitiesAsString(news)}}">
                         <i style="margin-right: 2px;" class="fas fa-terminal">MOTD</i></span>
@@ -54,20 +55,20 @@
                       </div>
                       <div class="row">
                         <div class="text-truncate col" data-toggle="tooltip"
-                             data-placement="auto"><strong>Message of the Day: </strong>{{news.excerpt}}</div>
+                             data-placement="auto"><strong>Message of the Day: </strong>{{news.motd}}</div>
                       </div>
                       <div class="row">
                         <div class="text-truncate col" data-toggle="tooltip"
-                             data-placement="auto"><strong>Uploaded: </strong>{{news.modification_date}}</div>
+                             data-placement="auto"><strong>Uploaded: </strong>{{news.date}}</div>
                       </div>
                       <br>
-                      <div class="row">
+                      <!--<div class="row">
                         <a class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
                            [id]="'goToWordPressButton_' + news.id.toString()"
                            href="{{news.url}}" target="_blank" rel="noopener noreferrer">
                           Show in WordPress
                         </a>
-                      </div>
+                      </div> -->
                     </div>
                   </div>
                 </div>
@@ -119,36 +120,24 @@ we are happy to inform..."
                   </a>
                 </div>
               </div>
-              <div class="form-group">
-                <label class="col-form-label">Tags:</label>
-                <div class="form-check" id="tags_check">
-                  <ng-container *ngFor="let tag of availableTags">
-                    <div class="form-row">
-                      <input class="form-check-input" type="checkbox" id="checkbox_{{tag.id.toString()}}"
-                             (click)="manageTags(tag)"
-                             [checked]="selectedTags?.indexOf(tag.id.toString()) > -1">
-                      <label class="form-check-label" for="checkbox_{{tag.id.toString()}}">{{tag.name}}</label>
-                    </div>
-                  </ng-container>
-                </div>
-              </div>
+
               <label for="facility_check">Facilities:</label>
               <div class="form-check" id="facility_check">
                 <ng-container *ngFor="let facility of managerFacilities">
                   <div class="form-row">
                     <div class="col-6">
-                    <input class="form-check-input" type="checkbox"
+                    <input class="form-check-input" type="radio" name="facility_radios"
                            id="news_select_{{facility['FacilityId']}}"
                            (click)="setFacility(facility)"
-                           [checked]="facilitiesToPost?.indexOf(facility['FacilityId']) !== -1">
+                           [checked]="facility['FacilityId'] === facilityToPost">
                     <label class="form-check-label"
                            for="news_select_{{facility['FacilityId']}}">{{facility['Facility']}}</label>
                     </div>
                     <div class="col-6">
                       <input class="form-check-input" type="checkbox" id="news_select_{{facility['FacilityId']}}_motd"
-                             (click)="manageMOTD(facility);"
-                             [disabled]="facilitiesToPost?.indexOf(facility['FacilityId']) === -1"
-                             [checked]="facilitiesToSetMOTD?.indexOf(facility['FacilityId']) > (-1)">
+                             [disabled]="facility['FacilityId'] !== facilityToPost"
+                             [checked]="facilityMOTDPairs[facility['FacilityId']] === selectedFacilityNews.id && facility['FacilityId'] === facilityToPost">
+
                       <label class="form-check-label" for="news_select_{{facility['FacilityId']}}_motd">
                         Set as MOTD for facility</label>
                     </div>
@@ -156,12 +145,12 @@ we are happy to inform..."
                 </ng-container>
               </div>
               <br>
-              <div *ngIf="facilitiesToPost.length === 0" class="alert alert-warning">At least one facility needs to be
+              <div *ngIf="!facilityToPost" class="alert alert-warning">At least one facility needs to be
                 selected.
               </div>
             </div>
-            <div class="card-body" *ngIf="!selectedNews"> <!-- check case here -->
-              <div class="alert alert-primary">
+            <div class="card-body" *ngIf="!selectedFacilityNews"> <!-- check case here -->
+              <div class="alert alert-info">
                 This news is also published for a facility you are not the manager of, which means you are not allowed
                 to edit or delete this news.
                 Methods to disconnect this news from your selected facilities and re-add and edit this news for your
@@ -170,24 +159,24 @@ we are happy to inform..."
             </div>
             <div class="card-footer">
               <button class="btn btn-primary" style="margin: 5px"
-                      *ngIf="selectedNews.id" (click)="setNews()">
+                      *ngIf="selectedFacilityNews.id" (click)="setCurrentNews(null)">
                 New entry
               </button>
               <button class="btn btn-warning" style="margin: 5px"
-                               *ngIf="!selectedNews.id" (click)="setNews()">Clear fields
+                               *ngIf="!selectedFacilityNews.id" (click)="setCurrentNews(null)">Clear fields
             </button>
               <button class="btn btn-success"
                       style="margin: 5px"
                       (click)="addModal.show();"
-                      [disabled]="selectedNewsForm.invalid || facilitiesToPost.length === 0"
-                      *ngIf="selectedNews.id === null">Create & Upload News
+                      [disabled]="selectedNewsForm.invalid || !facilityToPost"
+                      *ngIf="selectedFacilityNews.id === null">Create & Upload News
               </button>
               <button class="btn btn-secondary" style="margin: 5px"
-                      [disabled]="selectedNewsForm.invalid || facilitiesToPost.length === 0"
-                      (click)="updateModal.show();" *ngIf="selectedNews?.id">Update News
+                      [disabled]="selectedNewsForm.invalid || !facilityToPost"
+                      (click)="updateModal.show();" *ngIf="selectedFacilityNews?.id">Update News
               </button>
               <button class="btn btn-danger" style="margin: 5px"
-                      (click)="deleteModal.show();" *ngIf="selectedNews?.id">Delete News
+                      (click)="deleteModal.show();" *ngIf="selectedFacilityNews?.id">Delete News
               </button>
             </div>
           </div>
@@ -203,7 +192,7 @@ we are happy to inform..."
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title"> Delete News: {{this.selectedNews.title}} ?</h4>
+          <h4 class="modal-title"> Delete News: {{this.selectedFacilityNews.title}} ?</h4>
           <button type="button" class="close" style="cursor:pointer"
                   (click)="deleteModal.hide()"
                   aria-label="Close">
@@ -211,14 +200,19 @@ we are happy to inform..."
           </button>
         </div>
         <div class="modal-body">
-          <div class="alert alert-primary" role="alert">
-            <p>Are you sure, that you want to delete <strong>{{this.selectedNews.title}}</strong> ?</p>
+          <div class="alert alert-info" role="alert">
+            <p>Are you sure, that you want to delete <strong>{{this.selectedFacilityNews.title}}</strong> ?</p>
+
             <p><strong>Please note: this may remove the current Message of the day for multiple facilities!</strong></p>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-danger"
+          <!--<button type="button" class="btn btn-danger"
                   (click)="this.deleteNewsFromWordpress(); deleteModal.hide()"
+                  id="approve_delete_modal"><i class="fas fa-trash"></i> Delete
+          </button> -->
+          <button type="button" class="btn btn-danger"
+                  (click)="this.deleteNewsFromAPI(); deleteModal.hide()"
                   id="approve_delete_modal"><i class="fas fa-trash"></i> Delete
           </button>
           <button type="button" class="btn btn-secondary"
@@ -238,7 +232,7 @@ we are happy to inform..."
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title"> Update News: {{this.selectedNews.title}} ?</h4>
+          <h4 class="modal-title"> Update News: {{this.selectedFacilityNews.title}} ?</h4>
           <button type="button" class="close" style="cursor:pointer"
                   (click)="updateModal.hide()"
                   aria-label="Close">
@@ -246,14 +240,18 @@ we are happy to inform..."
           </button>
         </div>
         <div class="modal-body">
-          <div class="alert alert-primary" role="alert">
-            <p>Are you sure, that you want to update <strong>{{this.selectedNews.title}}</strong> ?</p>
+          <div class="alert alert-info" role="alert">
+            <p>Are you sure, that you want to update <strong>{{this.selectedFacilityNews.title}}</strong> ?</p>
             <p><strong>Please note: this may change the current Message of the day for multiple facilities!</strong></p>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary"
+         <!-- <button type="button" class="btn btn-primary"
                   (click)="addNewsToWordpress(newWordpressNews, true); updateModal.hide()"
+                  id="approve_update_modal"><i class="fas fa-edit"></i> Update
+          </button> -->
+          <button type="button" class="btn btn-primary"
+                  (click)="updateNewsInAPI(selectedFacilityNews); updateModal.hide()"
                   id="approve_update_modal"><i class="fas fa-edit"></i> Update
           </button>
           <button type="button" class="btn btn-secondary"
@@ -281,14 +279,16 @@ we are happy to inform..."
           </button>
         </div>
         <div class="modal-body">
-          <div class="alert alert-primary" role="alert">
-            <p>Are you sure, that you want to upload <strong>{{this.selectedNews.title}}</strong> ?</p>
+          <div class="alert alert-info" role="alert">
+            <p>Are you sure, that you want to upload <strong>{{this.selectedFacilityNews.title}}</strong> ?</p>
             <p><strong>Please note: this may change the current Message of the day for multiple facilities!</strong></p>
           </div>
         </div>
+        <!-- (click)="addNewsToWordpress(newWordpressNews, false); addModal.hide()" -->
         <div class="modal-footer">
           <button type="button" class="btn btn-success"
-                  (click)="addNewsToWordpress(newWordpressNews, false); addModal.hide()"
+
+                  (click)="addNewsToAPI(newFacilityNews); addModal.hide()"
                   id="approve_add_modal"><i class="fas fa-plus"></i> Add News
           </button>
           <button type="button" class="btn btn-secondary"
