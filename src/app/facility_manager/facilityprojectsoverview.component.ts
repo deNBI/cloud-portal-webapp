@@ -125,13 +125,14 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 			.subscribe((): void => {
 				this.applyFilter();
 			});
-		this.newsService.getAvailableTagsFromWordPress().subscribe((tags: WordPressTag[]): void => {
+		/** needs refactoring in case we introduce tags to wagtail
+		 * this.newsService.getAvailableTagsFromWordPress().subscribe((tags: WordPressTag[]): void => {
 			if (!(('code' in tags) && tags['code'] === 'wp-die')) {
 				if (tags) {
 					this.availableNewsTags = tags;
 				}
 			}
-		});
+		}); * */
 	}
 
 	searchForUserInFacility(searchString: string): void {
