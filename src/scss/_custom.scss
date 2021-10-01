@@ -638,7 +638,7 @@ $simplevmcolour: #00ADEF;
   background-color: $deNBI_darkgrey;
 }
 
-.btn-primary, .btn-info, .btn-secondary {
+.btn-primary, .btn-info, .btn-secondary, .table .btn-primary {
   color: white;
   background-color: $deNBI_lightgrey;
   border: none;
@@ -652,7 +652,7 @@ $simplevmcolour: #00ADEF;
   border-color: $deNBI_disabled;
 }
 
-.btn-primary:active, .btn-secondary:active, .btn-info:active, .btn-primary:target, .btn-secondary:target, .btn-info:target, {
+.btn-primary:active, .btn-secondary:active, .btn-info:active, .btn-primary:target, .btn-secondary:target, .btn-info:target, .table .btn-primary:active {
   background-color: $deNBI_darkgrey !important;
   border: none;
 }
@@ -669,7 +669,7 @@ $simplevmcolour: #00ADEF;
   box-shadow: none;
 }
 
-.btn-outline-primary:focus, .btn-primary:focus
+.btn-outline-primary:focus, .btn-primary:focus, .table .btn-primary:focus
 {
   background-color: $deNBI_darkgrey;
   border-color: $deNBI_darkgrey;
@@ -689,7 +689,7 @@ select option:hover, select option:focus, select option:target {
   background-color: $deNBI_cyan;
 }
 
-.btn-primary:hover, .btn-secondary:hover, .btn-info:hover {
+.btn-primary:hover, .btn-secondary:hover, .btn-info:hover, .table .btn-primary:hover {
   color: $deNBI_white;
   background-color: $deNBI_darkgrey;
   border: none;
@@ -1057,7 +1057,6 @@ select option:hover, select option:focus, select option:target {
     text-decoration: unset;
     color: $deNBI_cyan;
   }
-
   a:hover, .text-primary:hover {
     color: $deNBI_blue;
   }
@@ -1072,6 +1071,10 @@ select option:hover, select option:focus, select option:target {
 
   .btn-outline-success:hover, a.btn-outline-success:visited:hover {
 
+    color: white;
+  }
+
+  .btn-primary:visited, .btn-secondary:visited, .table .btn-primary:visited, .table .btn-primary{
     color: white;
   }
 
