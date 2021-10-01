@@ -163,10 +163,7 @@ export class AddWorkshopComponent implements OnInit, OnDestroy, DoCheck {
 		this.subscription.add(
 			this.group_service.getGroupMembers(this.selected_project[1].toString()).subscribe(
 				(members: ProjectMember[]): void => {
-					this.project_members = members.filter(
-						(mem: ProjectMember): boolean => mem.memberId.toString() !== this.userinfo.MemberId.toString(),
-					);
-					// this.project_members.unshift(this.userinfo);
+					this.project_members = members;
 					this.member_data_loaded = true;
 					this.check_project_data_loaded();
 				},
