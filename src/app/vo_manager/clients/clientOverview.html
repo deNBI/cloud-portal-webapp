@@ -49,7 +49,7 @@
 
           <tr>
             <td>
-              <select class="form-control form-select col-md-6" name="selectedComputeCenter" [(ngModel)]="selectedComputeCenter">
+              <select class="form-select" name="selectedComputeCenter" [(ngModel)]="selectedComputeCenter">
                 <option value="undefined" disabled selected hidden> Please Select</option>
                 <option *ngFor="  let computecenter of computeCenters" [ngValue]="computecenter">
                   {{computecenter.Name}}
