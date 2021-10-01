@@ -41,7 +41,7 @@
     "@angular/localize": "^12.2.5",
     "@angular/platform-browser": "^12.2.4",
     "@angular/platform-browser-dynamic": "^12.2.7",
-    "@angular/router": "^12.2.4",
+    "@angular/router": "^12.2.8",
     "@angular/service-worker": "^12.2.4",
     "@angular/upgrade": "^12.2.4",
     "@coreui/coreui": "^4.0.1",
