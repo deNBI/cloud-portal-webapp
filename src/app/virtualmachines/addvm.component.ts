@@ -1,7 +1,7 @@
 import {
-	Component, DoCheck, OnInit, ViewChild,
+	Component, DoCheck, OnDestroy, OnInit, ViewChild,
 } from '@angular/core';
-import { forkJoin } from 'rxjs';
+import { forkJoin, Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { WIKI_VOLUME_OVERVIEW, CLOUD_PORTAL_SUPPORT_MAIL } from 'links/links';
 import { KeyValue } from '@angular/common';
@@ -39,21 +39,17 @@ import { ApplicationsService } from '../api-connector/applications.service';
 	providers: [GroupService, ImageService, KeyService, FlavorService, VirtualmachineService,
 		ApiSettings, UserService, ApplicationsService],
 })
-export class VirtualMachineComponent implements OnInit, DoCheck {
+export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 
-	FIFTY_PERCENT: number = 50;
 	SIXTY_SIX_PERCENT: number = 66;
 	SEVENTY_FIVE: number = 75;
 	ACTIVE: string = 'ACTIVE';
-	PLAYBOOK_FAILED: string = 'PLAYBOOK_FAILED';
 	DELETED: string = 'DELETED';
 	PORT_CLOSED: string = 'PORT_CLOSED';
 	PREPARE_PLAYBOOK_BUILD: string = 'PREPARE_PLAYBOOK_BUILD';
-	BUILD_PLAYBOOK: string = 'BUILD_PLAYBOOK';
 	CREATING_STATUS: string = 'Creating...';
 	CHECKING_PORT_STATUS: string = 'Checking Connection..';
 	PREPARE_PLAYBOOK_STATUS: string = 'Prepare Playbook Build...';
-	BUIDLING_PLAYBOOK_STATUS: string = 'Building Playbook...';
 	ANIMATED_PROGRESS_BAR: string = 'progress-bar-animated';
 	redirectProgress: string = '0';
 
@@ -142,7 +138,6 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 	selectedProjectClient: Client;
 
 	detached_project_volumes: Volume[] = [];
-	DETACHED_VOL_SWITCH_MAX: number = 5;
 	selected_detached_vol: Volume;
 	undefined_detached_vol: Volume = new Volume();
 	newCores: number = 0;
@@ -208,6 +203,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 	FREEMIUM_ID: number = environment.freemium_project_id;
 
 	prod: boolean = environment.production;
+	subscription: Subscription = new Subscription();
 
 	/**
 	 * Time for the check status loop.
@@ -219,11 +215,14 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 	@ViewChild('bioconda') biocondaComponent: BiocondaComponent;
 	@ViewChild('resEnv') resEnvComponent: ResEnvComponent;
 
-	constructor(private groupService: GroupService, private imageService: ImageService,
-							private flavorService: FlavorService, private virtualmachineservice: VirtualmachineService,
-							private keyservice: KeyService, private userService: UserService, private router: Router,
-							private applicationsService: ApplicationsService) {
-		// constructor for VirtualMachineComponent
+	constructor(private groupService: GroupService,
+							private imageService: ImageService,
+							private flavorService: FlavorService,
+							private virtualmachineservice: VirtualmachineService,
+							private keyservice: KeyService,
+							private userService: UserService,
+							private router: Router) {
+		// eslint-disable-next-line no-empty-function
 	}
 
 	/**
@@ -232,14 +231,14 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 	 * @param project_id
 	 */
 	getImages(project_id: number): void {
-
-		this.imageService.getImages(project_id).subscribe((images: Image[]): void => {
-			this.images = images;
-			this.images.sort((x_cord: any, y_cord: any): number => Number(x_cord.is_snapshot) - Number(y_cord.is_snapshot));
-			this.image_loaded = true;
-			this.checkProjectDataLoaded();
-
-		});
+		this.subscription.add(
+			this.imageService.getImages(project_id).subscribe((images: Image[]): void => {
+				this.images = images;
+				this.images.sort((x_cord: any, y_cord: any): number => Number(x_cord.is_snapshot) - Number(y_cord.is_snapshot));
+				this.image_loaded = true;
+				this.checkProjectDataLoaded();
+			}),
+		);
 	}
 
 	/**
@@ -248,27 +247,32 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 	 * @param project_id
 	 */
 	getFlavors(project_id: number): void {
-		this.flavorService.getFlavors(project_id).subscribe((flavors: Flavor[]): void => {
-			this.flavors = flavors;
-			for (const flavor of this.flavors) {
-				if (flavor.type.long_name in this.flavor_types) {
-					this.flavor_types[flavor.type.long_name].push(flavor);
-				} else {
-					this.flavor_types[flavor.type.long_name] = [flavor];
-				}
-
-			}
-			this.flavors_loaded = true;
-			this.checkProjectDataLoaded();
-		});
-
+		this.subscription.add(
+			this.flavorService.getFlavors(project_id).subscribe(
+				(flavors: Flavor[]): void => {
+					this.flavors = flavors;
+					this.flavor_types = this.flavorService.sortFlavors(this.flavors);
+					this.flavors_loaded = true;
+					this.checkProjectDataLoaded();
+				},
+				(error: any) => {
+					console.log(error);
+					this.flavors = [];
+					this.flavor_types = {};
+					this.flavors_loaded = true;
+					this.checkProjectDataLoaded();
+				},
+			),
+		);
 	}
 
 	getDetachedVolumesByProject(): void {
-		this.virtualmachineservice.getDetachedVolumesByProject(this.selectedProject[1]).subscribe(
-			(detached_volumes: Volume[]): void => {
-				this.detached_project_volumes = detached_volumes;
-			},
+		this.subscription.add(
+			this.virtualmachineservice.getDetachedVolumesByProject(this.selectedProject[1]).subscribe(
+				(detached_volumes: Volume[]): void => {
+					this.detached_project_volumes = detached_volumes;
+				},
+			),
 		);
 	}
 
@@ -278,14 +282,12 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 				if (vol.volume_path === path) {
 					return false;
 				}
-
 			}
 
 			for (const vol of this.volumesToAttach) {
 				if (vol.volume_path === path) {
 					return false;
 				}
-
 			}
 
 			return true;
@@ -337,7 +339,8 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 	checkVolumeValidity(): boolean {
 		return (this.checkStorageNumber()
 			&& this.checkIfMountPathIsUsable(this.volumeMountPath)
-			&& this.checkInputVolumeString(this.volumeMountPath) && this.checkInputVolumeString(this.volumeName));
+			&& this.checkInputVolumeString(this.volumeMountPath)
+			&& this.checkInputVolumeString(this.volumeName));
 	}
 
 	/**
@@ -359,7 +362,6 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 		this.selected_detached_vol = this.undefined_detached_vol;
 		this.volumesToAttach.push(vol);
 		this.detached_project_volumes = this.detached_project_volumes.filter((volume: Volume): any => (vol !== volume));
-		// this.detached_project_volumes.splice(this.detached_project_volumes.indexOf(vol), 1)
 		if (this.detached_project_volumes.length === 0) {
 			this.toggleShowAttachVol();
 		}
@@ -372,7 +374,6 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 		if (idx !== -1) {
 			this.volumesToAttach.splice(idx, 1);
 			this.detached_project_volumes.push(vol);
-
 		}
 	}
 
@@ -388,9 +389,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 	 * Validate the public key of the user.
 	 */
 	validatePublicKey(): boolean {
-
 		return /ssh-rsa AAAA[0-9A-Za-z+/]+[=]{0,3}( [^@]+@[^@]+)?/.test(this.userinfo.PublicKey);
-
 	}
 
 	/**
@@ -432,63 +431,9 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 	}
 
 	/**
-	 * Check the status of the started vm in a loop.
-	 *
-	 * @param id
-	 */
-	check_status_loop(id: string): void {
-
-		setTimeout(
-			(): void => {
-				this.virtualmachineservice.checkVmStatus(id).subscribe((newVm: VirtualMachine): void => {
-					if (newVm.status === this.ACTIVE) {
-						this.resetProgressBar();
-						this.newVm = newVm;
-						this.loadProjectData();
-
-					} else if (newVm.status === this.PLAYBOOK_FAILED || newVm.status === this.DELETED) {
-						this.newVm.status = this.DELETED;
-						this.resetProgressBar();
-						// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-						this.create_error = <IResponseTemplate><any>newVm;
-						this.loadProjectData();
-					} else if (newVm.status) {
-						if (newVm.status === this.PORT_CLOSED) {
-							this.progress_bar_status = this.CHECKING_PORT_STATUS;
-							if (this.hasTools) {
-								this.progress_bar_width = this.FIFTY_PERCENT;
-							} else {
-								this.progress_bar_width = this.SIXTY_SIX_PERCENT;
-							}
-
-						} else if (newVm.status === this.PREPARE_PLAYBOOK_BUILD) {
-							this.progress_bar_status = this.PREPARE_PLAYBOOK_STATUS;
-							this.progress_bar_width = this.SIXTY_SIX_PERCENT;
-
-						} else if (newVm.status === this.BUILD_PLAYBOOK) {
-							this.progress_bar_status = this.BUIDLING_PLAYBOOK_STATUS;
-							this.progress_bar_width = this.SEVENTY_FIVE;
-						}
-
-						this.check_status_loop(id);
-					} else {
-						this.resetProgressBar();
-						this.loadProjectData();
-						// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-						this.create_error = <IResponseTemplate><any>newVm;
-					}
-
-				});
-			},
-			this.checkStatusTimeout,
-		);
-	}
-
-	/**
 	 * Start a virtual machine with specific params.
 	 *
 	 * @param flavor
-	 * @param image
 	 * @param servername
 	 * @param project
 	 * @param projectid
@@ -520,33 +465,33 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 			}).catch((): any => {
 			});
 			const additional_elixir_ids: string[] = this.members_to_add.map((mem: ProjectMember): string => mem.elixirId);
+			this.subscription.add(
+				this.virtualmachineservice.startVM(
+					flavor_fixed, this.selectedImage, servername,
+					project, projectid.toString(), this.http_allowed,
+					this.https_allowed, this.udp_allowed, this.volumesToMount, this.volumesToAttach, play_information, additional_elixir_ids,
+				)
+					.subscribe((newVm: VirtualMachine): void => {
+						this.newVm = newVm;
+						this.started_machine = false;
 
-			this.virtualmachineservice.startVM(
-				flavor_fixed, this.selectedImage, servername,
-				project, projectid.toString(), this.http_allowed,
-				this.https_allowed, this.udp_allowed, this.volumesToMount, this.volumesToAttach, play_information, additional_elixir_ids,
-			)
-				.subscribe((newVm: VirtualMachine): void => {
-					this.newVm = newVm;
-					this.started_machine = false;
+						if (newVm.status) {
+							this.progress_bar_width = 75;
+							setTimeout(
+								(): void => {
+									void this.router.navigate(['/virtualmachines/vmOverview']).then().catch();
+								},
+								2000,
+							);
 
-					if (newVm.status) {
-						this.progress_bar_width = 75;
-						setTimeout(
-							(): void => {
-								void this.router.navigate(['/virtualmachines/vmOverview']).then().catch();
-							},
-							2000,
-						);
+						} else {
+							this.loadProjectData();
+							// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+							this.create_error = <IResponseTemplate><any>newVm;
+						}
 
-					} else {
-						this.loadProjectData();
-						// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-						this.create_error = <IResponseTemplate><any>newVm;
-					}
-
-				});
-
+					}),
+			);
 		} else {
 			this.progress_bar_status = this.CREATING_STATUS;
 			this.newVm = null;
@@ -591,10 +536,13 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 	 * If connected geht vm,volumes etc.
 	 */
 	getSelectedProjectClient(): void {
-		this.groupService.getCreditsAllowedByPerunId(this.selectedProject[1]).subscribe((res: any): void => {
-			console.log(res);
-			this.credits_allowed = res['credits_allowed'];
-		});
+		this.subscription.unsubscribe();
+		this.subscription = new Subscription();
+		this.subscription.add(
+			this.groupService.getCreditsAllowedByPerunId(this.selectedProject[1]).subscribe((res: any): void => {
+				this.credits_allowed = res['credits_allowed'];
+			}),
+		);
 		this.newCores = 0;
 		this.newGpus = 0;
 		this.newVms = 0;
@@ -602,35 +550,40 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 		this.volumesToMount = [];
 		this.client_checked = false;
 		this.projectDataLoaded = false;
+		this.subscription.add(
+			this.groupService.getClient(this.selectedProject[1].toString()).subscribe((client: Client): void => {
+				this.loadProjectData();
 
-		this.groupService.getClient(this.selectedProject[1].toString()).subscribe((client: Client): void => {
-			this.loadProjectData();
+				if (client.status && client.status === 'Connected' && client.activated) {
+					this.client_avaiable = true;
 
-			if (client.status && client.status === 'Connected' && client.activated) {
-				this.client_avaiable = true;
+					this.client_checked = true;
+					this.getForc(client.id);
+				} else {
+					this.client_avaiable = false;
+					this.client_checked = true;
 
-				this.client_checked = true;
-				this.getForc(client.id);
-			} else {
-				this.client_avaiable = false;
-				this.client_checked = true;
-
-			}
-			this.selectedProjectClient = client;
-			this.imageService.getBlockedImageTagsResenv(Number(this.selectedProjectClient.id), 'true')
-				.subscribe((tags: BlockedImageTagResenv[]): void => {
-					this.blockedImageTagsResenv = tags;
-				});
-		});
+				}
+				this.selectedProjectClient = client;
+				this.subscription.add(
+					this.imageService.getBlockedImageTagsResenv(Number(this.selectedProjectClient.id), 'true')
+						.subscribe((tags: BlockedImageTagResenv[]): void => {
+							this.blockedImageTagsResenv = tags;
+						}),
+				);
+			}),
+		);
 	}
 
 	getForc(id: string): void {
-		this.groupService.getClientForcUrl(this.selectedProject[1].toString()).subscribe((response: JSON): void => {
-			if (response['forc_url'] !== null) {
-				this.has_forc = true;
-				this.forc_url = response['forc_url'];
-			}
-		});
+		this.subscription.add(
+			this.groupService.getClientForcUrl(this.selectedProject[1].toString()).subscribe((response: JSON): void => {
+				if (response['forc_url'] !== null) {
+					this.has_forc = true;
+					this.forc_url = response['forc_url'];
+				}
+			}),
+		);
 		this.client_id = id;
 	}
 
@@ -649,22 +602,24 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 	 * Gets all groups of the user and his key.
 	 */
 	initializeData(): void {
-		forkJoin([this.groupService.getSimpleVmByUser(), this.userService.getUserInfo()]).subscribe((result: any): void => {
-			this.userinfo = new Userinfo(result[1]);
-			this.validatePublicKey();
-			const membergroups: any = result[0];
-			for (const project of membergroups) {
-				this.projects.push(project);
+		this.subscription.add(
+			forkJoin([this.groupService.getSimpleVmByUser(), this.userService.getUserInfo()]).subscribe((result: any): void => {
+				this.userinfo = result[1];
+				this.validatePublicKey();
+				const membergroups: any = result[0];
+				for (const project of membergroups) {
+					this.projects.push(project);
 
-			}
-			if (this.projects.length === 1) {
-				this.resetChecks();
-				this.selectedProject = this.projects[0];
-				this.getSelectedProjectClient();
-				this.singleProject = true;
-			}
-			this.isLoaded = true;
-		});
+				}
+				if (this.projects.length === 1) {
+					this.resetChecks();
+					this.selectedProject = this.projects[0];
+					this.getSelectedProjectClient();
+					this.singleProject = true;
+				}
+				this.isLoaded = true;
+			}),
+		);
 	}
 
 	checkProjectDataLoaded(): void {
@@ -685,11 +640,13 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 		this.selectedImage = undefined;
 		this.selectedFlavor = undefined;
 		this.getDetachedVolumesByProject();
-		this.groupService.getGroupResources(this.selectedProject[1].toString()).subscribe((res: ApplicationRessourceUsage): void => {
-			this.selectedProjectRessources = new ApplicationRessourceUsage(res);
-			this.data_loaded = true;
-			this.checkProjectDataLoaded();
-		});
+		this.subscription.add(
+			this.groupService.getGroupResources(this.selectedProject[1].toString()).subscribe((res: ApplicationRessourceUsage): void => {
+				this.selectedProjectRessources = new ApplicationRessourceUsage(res);
+				this.data_loaded = true;
+				this.checkProjectDataLoaded();
+			}),
+		);
 
 		this.getImages(this.selectedProject[1]);
 		this.getFlavors(this.selectedProject[1]);
@@ -702,7 +659,6 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 	}
 
 	setSelectedImage(image: Image): void {
-
 		this.selectedImage = image;
 		this.isMoshModeAvailable();
 		this.hasImageResenv();
@@ -716,14 +672,12 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 
 				return;
 			}
-
 		}
 		this.mosh_mode_available = false;
 
 	}
 
 	hasImageResenv(): void {
-
 		if (!this.resEnvComponent) {
 			return;
 		}
@@ -752,12 +706,14 @@ export class VirtualMachineComponent implements OnInit, DoCheck {
 	ngOnInit(): void {
 		this.initializeData();
 		this.is_vo = is_vo;
+	}
 
+	ngOnDestroy() {
+		this.subscription.unsubscribe();
 	}
 
 	ngDoCheck(): void {
 		if (this.resEnvComponent) {
-
 			this.resEnvValid = this.resEnvComponent.isValid();
 			this.resEnvNeedsName = this.resEnvComponent.needsName();
 			this.resEnvNeedsTemplate = this.resEnvComponent.needsTemplate();

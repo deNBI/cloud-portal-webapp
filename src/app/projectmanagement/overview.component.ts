@@ -8,7 +8,7 @@ import { NgForm } from '@angular/forms';
 import { AutocompleteComponent } from 'angular-ng-autocomplete';
 import { DOCUMENT } from '@angular/common';
 import { Chart } from 'chart.js';
-import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { environment } from '../../environments/environment';
 import { ProjectMemberApplication } from './project_member_application';
 import { ComputecenterComponent } from './computecenter.component';
@@ -26,7 +26,7 @@ import { FlavorService } from '../api-connector/flavor.service';
 import { CreditsService } from '../api-connector/credits.service';
 import { is_vo } from '../shared/globalvar';
 import {
-	CREDITS_WIKI, WIKI_MEMBER_MANAGEMENT, WIKI_PUBLICATIONS, CLOUD_MAIL,
+	CLOUD_MAIL, CREDITS_WIKI, WIKI_MEMBER_MANAGEMENT, WIKI_PUBLICATIONS,
 } from '../../links/links';
 import { Doi } from '../applications/doi/doi';
 import { ApiSettings } from '../api-connector/api-settings.service';
@@ -37,6 +37,7 @@ import { ModificationRequestComponent } from './modals/modification-request/modi
 import { LifetimeRequestComponent } from './modals/lifetime-request/lifetime-request.component';
 import { DoiComponent } from './modals/doi/doi.component';
 import { CreditsRequestComponent } from './modals/credits-request/credits-request.component';
+import { WorkshopUrlInfoModel } from '../virtualmachines/workshop/workshop-urlinfo.model';
 
 /**
  * Projectoverview component.
@@ -70,6 +71,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	application_id: string;
 	project: Project;
 	credits: number = 0;
+	workshop_infos: WorkshopUrlInfoModel[];
+	selected_workshop_info: WorkshopUrlInfoModel;
 
 	errorMessage: string;
 	terminate_confirmation_given: boolean = false;
@@ -80,6 +83,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	remove_members_clicked: boolean;
 	life_time_string: string;
 	dois: Doi[];
+	workshopInfosLoaded: boolean = false;
 	disabledDoiInput: boolean = false;
 	isAdmin: boolean = false;
 	invitation_link: string;
@@ -98,6 +102,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	supportMails: string[] = [];
 
 	resourceDataLoaded: boolean = false;
+	creditHistoryLoaded: boolean = false;
 	vmsInUse: number;
 	maximumVMs: number;
 	coresInUse: number;
@@ -119,16 +124,16 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	Application_States: typeof Application_States = Application_States;
 
 	constructor(private flavorService: FlavorService,
-		private groupService: GroupService,
-		private modalService: BsModalService,
-		applicationsService: ApplicationsService,
-		facilityService: FacilityService,
-		userService: UserService,
-		private activatedRoute: ActivatedRoute,
-		private fullLayout: FullLayoutComponent,
-		private router: Router,
-		private creditsService: CreditsService,
-		@Inject(DOCUMENT) private document: Document) {
+							private groupService: GroupService,
+							private modalService: BsModalService,
+							applicationsService: ApplicationsService,
+							facilityService: FacilityService,
+							userService: UserService,
+							private activatedRoute: ActivatedRoute,
+							private fullLayout: FullLayoutComponent,
+							private router: Router,
+							private creditsService: CreditsService,
+							@Inject(DOCUMENT) private document: Document) {
 		super(userService, applicationsService, facilityService);
 	}
 
@@ -188,7 +193,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
 		const initialState = {
 			project: this.project_application,
-			life_time_string: `${this.project.DateCreated} -  ${this.project.DateEnd}`,
+			life_time_string: `${this.project.DateCreated} - ${this.project.DateEnd}`,
 		};
 		this.bsModalRef = this.modalService.show(LifetimeRequestComponent, { initialState });
 		this.bsModalRef.setClass('modal-lg');
@@ -271,6 +276,9 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 							},
 						});
 					}
+					if (!this.creditHistoryLoaded) {
+						this.creditHistoryLoaded = true;
+					}
 				}).catch((err: Error): void => console.log(err.message));
 		}
 	}
@@ -351,6 +359,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 					this.project_application = aj;
 
 					if (this.project_application) {
+
 						this.applicationsService.getApplicationPerunId(this.application_id).subscribe((id: any): void => {
 							if (id['perun_id']) {
 								this.project_id = id['perun_id'];
@@ -404,6 +413,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 				}
 				if (this.updateCreditsHistoryIntervals) {
 					clearInterval(this.updateCreditsHistoryIntervals);
+					this.creditHistoryLoaded = false;
 				}
 			} catch (someError) {
 				// empty catch
@@ -422,7 +432,26 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 			this.getListOfTypes();
 			this.getDois();
 			this.is_vo_admin = is_vo;
+
 		});
+	}
+
+	setSelectedWorkshopInfo(info: WorkshopUrlInfoModel): void {
+		this.selected_workshop_info = info;
+	}
+
+	getWorkshopUrlInfo(): void {
+		this.workshopInfosLoaded = false;
+		this.applicationsService.getWorkshopInfoUrl(this.application_id).subscribe(
+			(infos: WorkshopUrlInfoModel[]) => {
+				this.workshopInfosLoaded = true;
+				this.workshop_infos = infos;
+				if (this.workshop_infos.length > 0) {
+					this.selected_workshop_info = this.workshop_infos[0];
+				}
+
+			},
+		);
 	}
 
 	/**
@@ -697,6 +726,10 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 				// this.startUpdateCreditUsageLoop();
 			}
 			this.getUsedResources(groupid);
+			if ((this.is_vo_admin || this.isAdmin) && this.project_application.project_application_workshop) {
+				this.getWorkshopUrlInfo();
+
+			}
 
 		});
 
@@ -845,8 +878,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	}
 
 	getUserinfo(): void {
-		this.userService.getUserInfo().subscribe((userinfo: any): void => {
-			this.userinfo = new Userinfo(userinfo);
+		this.userService.getUserInfo().subscribe((userinfo: Userinfo): void => {
+			this.userinfo = userinfo;
 		});
 	}
 

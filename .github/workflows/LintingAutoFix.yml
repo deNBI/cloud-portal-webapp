@@ -15,7 +15,7 @@ jobs:
     timeout-minutes: 6
     steps:
       - name: Workflow run cleanup action
-        uses: rokroskar/workflow-run-cleanup-action@v0.2.2
+        uses: rokroskar/workflow-run-cleanup-action@v0.3.3
         env:
                 GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
       - uses: actions/checkout@v2
@@ -30,11 +30,11 @@ jobs:
           npx ng lint cloud-webapp --fix --force
       - name: Check for modified files
         id: git-check
-        run: echo ::set-output name=modified::$(if git diff-index --quiet HEAD --; then echo "false"; else echo "true"; fi)
+        run: echo ::set-output name=modified::$(if git diff-index --quiet HEAD -- ':(exclude)package-lock.json'; then echo "false"; else echo "true"; fi)
       - name: Create Pull Request
         if: steps.git-check.outputs.modified == 'true'
         id: cpr
-        uses: peter-evans/create-pull-request@v3.5.2
+        uses: peter-evans/create-pull-request@v3.10.1
         with:
            token: ${{ secrets.GITHUB_TOKEN }}
            commit-message: fix(Linting):blacked code

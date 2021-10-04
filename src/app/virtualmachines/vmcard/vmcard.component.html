@@ -44,8 +44,8 @@
 			<div class="col-1" style="text-align: center">
 			</div>
 		</div>
-		<div *ngIf="vm?.still_used_confirmation_requested" class="alert alert-danger row"
-				 style="margin: auto; text-align: center" role="alert">
+		<div *ngIf="vm?.still_used_confirmation_requested" class="alert alert-danger"
+				 style="margin: auto;" role="alert">
 			Confirm in the
 			<a style="margin-left:2px;margin-right:2px;" [routerLink]="['/virtualmachines/detail/' + vm?.openstackid]"> detailed overview </a>
 			of the machine that it is still in use, otherwise it will be
@@ -101,9 +101,9 @@
                           <span class="badge badge-pill badge-secondary"
 																style="font-size: 10px; position: relative; top: -12px; left: -10px;">
                           {{vm?.conda_packages?.length.toString()}}
-														<i *ngIf="vm?.playbook_successful == null" class="fa-spinner fa-spin">
+														<i *ngIf="vm?.playbook_successful === null" class="fa-spinner fa-spin">
 														</i>
-                            <i *ngIf="!vm?.playbook_successful && vm?.playbook_successful != undefined" class="fas fa-times" style="color: red">
+                            <i *ngIf="!vm?.playbook_successful && vm?.playbook_successful !== undefined" class="fas fa-times" style="color: red">
 														</i>
                             <i  *ngIf="vm?.playbook_successful" class="fas fa-check" style="color: green">
 														</i>
@@ -115,9 +115,9 @@
                           <span class="badge badge-pill badge-secondary"
 																style="font-size: 10px; position: relative; top: -12px; left: -10px;">
                           {{vm?.conda_packages?.length.toString()}}
-														<i *ngIf="vm?.playbook_successful == null" class="fa-spinner fa-spin">
+														<i *ngIf="vm?.playbook_successful === null" class="fa-spinner fa-spin">
 														</i>
-														<i  *ngIf="!vm?.playbook_successful &&  vm?.playbook_successful != undefined" class="fas fa-times" style="color: red">
+														<i  *ngIf="!vm?.playbook_successful &&  vm?.playbook_successful !== undefined" class="fas fa-times" style="color: red">
 														</i>
 														<i *ngIf="vm?.playbook_successful" class="fas fa-check" style="color: green">
 														</i>
@@ -185,7 +185,7 @@
 			<div class="col-4">
 				<button class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
 								[id]="'showDetailsButton_'+vm?.name"
-								*ngIf="vm.elixir_id == user_elixir_id || is_vo_admin || is_vm_admin"
+								*ngIf="vm.elixir_id === user_elixir_id || is_vo_admin || is_vm_admin"
 								[disabled]="!(vm?.status |hasStatus:VirtualMachineStates.staticACTIVE)
                           && !(vm?.status |hasStatus:VirtualMachineStates.staticSHUTOFF)
                           && !(vm?.status |hasStatus:VirtualMachineStates.staticDELETED)"
@@ -193,12 +193,12 @@
 			</div>
 			<div class="col-4">
 				<button class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
-								*ngIf="vm.cardState!= 1" [disabled]="!(vm?.status |hasStatus:VirtualMachineStates.staticACTIVE)"
+								*ngIf="vm.cardState !== 1" [disabled]="!(vm?.status |hasStatus:VirtualMachineStates.staticACTIVE)"
 								[id]="'showHowToConnectButton_'+vm?.name"
 								(click)="vm.cardState=1" >
 					How to connect ...
 				</button>
-				<button class="font-weight-bold font-xs btn-block btn btn-secondary" *ngIf="vm.cardState==1"
+				<button class="font-weight-bold font-xs btn-block btn btn-secondary" *ngIf="vm.cardState === 1"
 								[id]="'hideHowToConnectButton_'+vm?.name"
 								(click)="vm.cardState=0;" >
 					... Hide information
@@ -206,7 +206,7 @@
 			</div>
 			<div class="col-4">
 				<button class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
-								*ngIf="vm.cardState!=2 && (vm.elixir_id == user_elixir_id || is_vo_admin || is_vm_admin)"
+								*ngIf="vm.cardState !== 2 && (vm.elixir_id === user_elixir_id || is_vo_admin || is_vm_admin)"
 								[disabled]="(vm?.status | statusInProcess:VirtualMachineStates.staticIN_PROCESS_STATE)
                          && !(vm?.status | hasStatus:VirtualMachineStates.staticPORT_CLOSED )
                          && !(vm?.status | hasStatus:VirtualMachineStates.staticCHECKING_CONNECTION)
@@ -216,7 +216,7 @@
 								(click)="vm.cardState=2;">
 					Show actions ...
 				</button>
-				<button class="font-weight-bold font-xs btn-block btn btn-secondary" *ngIf="vm.cardState==2"
+				<button class="font-weight-bold font-xs btn-block btn btn-secondary" *ngIf="vm.cardState === 2"
 								[id]="'hideActionsButton_'+vm?.name"
 								(click)="vm.cardState=0;">
 					... Hide actions</button>
@@ -230,8 +230,8 @@
 			 || (vm?.status |hasStatus:VirtualMachineStates.staticPORT_CLOSED)
 			 || (vm?.status |hasStatus:VirtualMachineStates.staticERROR)
 			 || (vm?.status |hasStatus:VirtualMachineStates.staticSHUTOFF))
-			 && vm?.cardState != 0">
-		<div *ngIf="vm?.cardState == 1">
+			 && vm?.cardState !== 0">
+		<div *ngIf="vm?.cardState === 1">
 			<div class="row" *ngFor="let mode of vm?.modes">
 				<div class="col-md-1">
 					<span class="font-weight-bold font-xs btn-block text-muted">{{mode.name}}:</span>
@@ -239,13 +239,13 @@
 				<div class="col-md-9">
 					<span class="font-weight-bold font-xs btn-block text-muted" [innerHTML]="mode.description"></span>
 				</div>
-				<div class="col-md-2" style="margin: auto" *ngIf="mode.copy_field && mode.copy_field!=''">
+				<div class="col-md-2" style="margin: auto" *ngIf="mode.copy_field && mode.copy_field !== ''">
 					<div class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
 							 (click)="copyToClipboard(mode.copy_field)">Copy command</div>
 				</div>
 			</div>
 
-			<div class="row" *ngIf="vm?.res_env_url != '' && vm?.res_env_url != null && vm?.res_env_url != undefined && resenv_by_play(vm)">
+			<div class="row" *ngIf="vm?.res_env_url !== '' && vm?.res_env_url !== null && vm?.res_env_url !== undefined && resenv_by_play(vm)">
 				<div class="col-md-1">
 					<span class="font-weight-bold font-xs btn-block text-muted">Research Environment:</span>
 				</div>
@@ -263,7 +263,7 @@
 			</div>
 		</div>
 
-		<div *ngIf="vm?.cardState == 2">
+		<div *ngIf="vm?.cardState === 2">
 			<div class="row">
 				<div class="col-md-2" *ngIf="(vm?.status |hasStatus:VirtualMachineStates.staticACTIVE) ">
 					<div class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
@@ -273,12 +273,34 @@
 					</div>
 				</div>
 				<div class="col-md-2"
+					 *ngIf="(vm?.status |hasStatus:VirtualMachineStates.staticSHUTOFF)  && vm?.volumes.length > 0">
+					<span class="d-inline-block" tabindex="0" data-toggle="tooltip" style="width:100%;"
+						  title="Start the virtual machine to attach volumes">
+						<button class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+							 [id]="'attachVolume' + vm?.name" disabled
+							 (click)="showVolumeModal('attach')">
+						Attach Volume
+						</button>
+					</span>
+				</div>
+				<div class="col-md-2"
 						 *ngIf="(vm?.status |hasStatus:VirtualMachineStates.staticACTIVE)  && vm?.volumes.length > 0">
 					<div class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
 							 [id]="'attachVolume' + vm?.name"
 							 (click)="showVolumeModal('detach')">
 						Detach Volume
 					</div>
+				</div>
+				<div class="col-md-2"
+					 *ngIf="(vm?.status |hasStatus:VirtualMachineStates.staticSHUTOFF)  && vm?.volumes.length > 0">
+					<span class="d-inline-block" tabindex="0" data-toggle="tooltip" style="width:100%;"
+						title="Start the virtual machine to detach volumes">
+						<button class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+							   [id]="'attachVolume' + vm?.name" disabled
+							   (click)="showVolumeModal('detach')">
+						Detach Volume
+						</button>
+					</span>
 				</div>
 				<div class="col-md-2" *ngIf="(vm?.status |hasStatus:VirtualMachineStates.staticACTIVE) ">
 					<div class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"

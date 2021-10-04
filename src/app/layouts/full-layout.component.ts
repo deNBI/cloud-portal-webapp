@@ -20,16 +20,16 @@ import { WIKI, WIKI_FAQ } from '../../links/links';
  * FullLayout component.
  */
 @Component({
-	selector: 'app-dashboard',
-	templateUrl: './full-layout.component.html',
-	providers: [ApplicationsService,
-		VirtualmachineService,
-		VoService,
-		GroupService,
-		UserService,
-		FacilityService,
-		ClientService,
-		ApiSettings],
+	           selector: 'app-dashboard',
+	           templateUrl: './full-layout.component.html',
+	           providers: [ApplicationsService,
+		           VirtualmachineService,
+		           VoService,
+		           GroupService,
+		           UserService,
+		           FacilityService,
+		           ClientService,
+		           ApiSettings],
 })
 export class FullLayoutComponent extends ApplicationBaseClassComponent implements OnInit {
 
@@ -42,12 +42,17 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
 	public vm_project_member: boolean = false;
 	public login_name: string = '';
 	public production: boolean = environment.production;
+	show_projects: boolean = false;
 	navbar_state: string = 'closed';
 	overview_state: string = 'closed';
-	navbar_minimized: boolean = false;
+	show_overviews: boolean = false;
 	brand_logo: string = 'static/webapp/assets/img/denbi-logo-color.svg';
-	brand_logo_minimized: string = 'static/webapp/assets/img/denbi-logo-minimized.svg';
+	// brand_logo_minimized: string = 'static/webapp/assets/img/denbi-logo-minimized.svg';
+	simple_vm_logo: string = 'static/webapp/assets/img/simpleVM_Logo.svg';
+	openstack_logo: string = 'static/webapp/assets/img/openstack_plain_red.svg';
+
 	cluster_allowed: boolean = false;
+	has_workshops: boolean = false;
 
 	TITLE: string = '';
 
@@ -101,6 +106,14 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
 		});
 	}
 
+	is_workshop_admin(): void {
+		this.groupService.getSimpleVmByUserWhereWorkshopAndAdmin().subscribe((result: any): void => {
+			if (result.length > 0) {
+				this.has_workshops = true;
+			}
+		});
+	}
+
 	getGroupsEnumeration(): void {
 		this.groupService.getGroupsEnumeration().subscribe((res: ProjectEnumeration[]): void => {
 			this.project_enumeration = res;
@@ -124,6 +137,7 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
 		this.set_cluster_allowed();
 		this.getGroupsEnumeration();
 		this.is_vm_project_member();
+		this.is_workshop_admin();
 		this.get_is_facility_manager();
 		this.getLoginName();
 
@@ -137,8 +151,11 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
 
 	}
 
-	setSidebarStatus(): void {
-		this.navbar_minimized = !this.navbar_minimized;
+	toggleOverviews(): void {
+		this.show_overviews = !this.show_overviews;
+	}
+	toggleProjectsNav(): void {
+		this.show_projects = !this.show_projects;
 	}
 
 	/**

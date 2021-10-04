@@ -64,44 +64,9 @@
     <div class="modal-footer">
         <div class="alert col-md-12"
              [ngClass]="{'alert-danger':!scaling_warning_read,'alert-success':scaling_warning_read}">
-            <p> This will only delete machines in the batches. After these have been successfully deleted, you must
-                execute the following commands
-                to configure the cluster correctly!</p>
-            <div class="alert alert-light" role="alert">
-                <strong>Connect to your master instance:</strong>
-                <div class="row" *ngFor="let mode of cluster?.master_instance?.modes">
-                    <div class="col-md-1">
-                        <span class="font-weight-bold font-xs btn-block text-muted">{{mode.name}}:</span>
-                    </div>
-                    <div class="col-md-9">
-                        <span class="font-weight-bold font-xs btn-block text-muted"
-                              [innerHTML]="mode.description"></span>
-                    </div>
+            <p> This will only delete machines in the batches. Once the machine(s) have been deleted, you will be shown the commands for configuring the cluster.
+                Execute these commands to configure the cluster correctly!</p>
 
-                    <div class="col-md-2" style="margin: auto" *ngIf="mode.copy_field && mode.copy_field!=''">
-                        <div class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
-                             (click)="copyToClipboard(mode.copy_field)">Copy command
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-            <div class="alert alert-light"
-                 role="alert">
-                <strong>wget {{SCALING_SCRIPT_LINK}}</strong>
-                <button class=" font-weight-bold font-xs text-muted btn btn-outline-secondary" style="margin-left: 5px;"
-                        (click)="copyToClipboard('wget ' + SCALING_SCRIPT_LINK)">Copy Command
-                </button>
-            </div>
-            <div class="alert alert-light"
-                 role="alert"><strong>python3 {{SCALING_SCRIPT_NAME}}</strong>
-                <button class=" font-weight-bold font-xs text-muted btn btn-outline-secondary" style="margin-left: 5px;"
-                        (click)="copyToClipboard('python3 ' + SCALING_SCRIPT_NAME)">Copy Command
-                </button>
-                <div class="alert alert-warning" role="alert">
-                    If you run this script, all own changes to the cluster configuration will be overwritten!
-                </div>
-            </div>
 
             <div class="alert alert-info"
                  role="alert">Selected for scaling down:<br>
@@ -178,7 +143,7 @@
                           <label>
                             <input type="checkbox"
                                    (change)="setSelectedBatch(batch)"
-                                   [checked]="selectedBatch == batch">
+                                   [checked]="selectedBatch === batch">
 
 
                           </label>
@@ -198,7 +163,7 @@
 
 
                           <input style="width: 50%"
-                                 [disabled]="batch?.max_scale_up_count <1 || selectedBatch != batch"
+                                 [disabled]="batch?.max_scale_up_count <1 || selectedBatch !== batch"
                                  name="upCount_{{batch.index}}"
 
                                  type="number" min="0" [max]="batch.max_scale_up_count" step="1"
@@ -211,7 +176,7 @@
                           </div>
 
                         </div>
-                        <div class="alert alert-warning" role="alert" *ngIf="batch?.max_scale_up_count == 0"> Not enough
+                        <div class="alert alert-warning" role="alert" *ngIf="batch?.max_scale_up_count === 0"> Not enough
                           resources left to upscale this batch!
                         </div>
 
@@ -321,45 +286,8 @@
                                target="_blank" rel="noopener noreferrer"
                                [routerLink]="['/virtualmachines/cluster/' + cluster?.cluster_id]">
                                 details </a>page.
-                            When the machines are active you must
-                            execute the following commands to configure the cluster correctly:</p>
-
-                            <div class="alert alert-light" role="alert">
-                <strong>Connect to your master instance:</strong>
-                <div class="row" *ngFor="let mode of cluster?.master_instance?.modes">
-                    <div class="col-md-1">
-                        <span class="font-weight-bold font-xs btn-block text-muted">{{mode.name}}:</span>
-                    </div>
-                    <div class="col-md-9">
-                        <span class="font-weight-bold font-xs btn-block text-muted"
-                              [innerHTML]="mode.description"></span>
-                    </div>
-
-                    <div class="col-md-2" style="margin: auto" *ngIf="mode.copy_field && mode.copy_field!=''">
-                        <div class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
-                             (click)="copyToClipboard(mode.copy_field)">Copy command
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-                        <div class="alert alert-light"
-                             role="alert">
-                            <strong>wget {{SCALING_SCRIPT_LINK}}</strong>
-                            <button class=" font-weight-bold font-xs text-muted btn btn-outline-secondary" style="margin-left: 5px;"
-                                    (click)="copyToClipboard('wget ' + SCALING_SCRIPT_LINK)">Copy Command
-                            </button>
-                        </div>
-                        <div class="alert alert-light"
-                             role="alert"><strong>python3 {{SCALING_SCRIPT_NAME}}  </strong>
-                            <button class=" font-weight-bold font-xs text-muted btn btn-outline-secondary" style="margin-left: 5px;"
-                                    (click)="copyToClipboard('python3 ' + SCALING_SCRIPT_NAME)">Copy Command
-                            </button>
-                            <div class="alert alert-warning" role="alert">
-                      If you run this script, all own changes to the cluster configuration will be overwritten!
-                    </div>
-                  </div>
+                            Once the machine is started, you will be shown the commands for configuring the cluster.
+                            Execute these commands to configure the cluster correctly.</p>
 
                   <div class="alert alert-info"
                        role="alert">Selected for scaling up:<br>
@@ -418,7 +346,7 @@
                               [innerHTML]="mode.description"></span>
                     </div>
 
-                    <div class="col-md-2" style="margin: auto" *ngIf="mode.copy_field && mode.copy_field!=''">
+                    <div class="col-md-2" style="margin: auto" *ngIf="mode.copy_field && mode.copy_field !== ''">
                         <div class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
                              (click)="copyToClipboard(mode.copy_field)">Copy command
                         </div>
@@ -428,9 +356,9 @@
             </div>
             <div class="alert alert-light"
                  role="alert">
-                <strong>wget {{SCALING_SCRIPT_LINK}}</strong>
+                <strong>wget -O {{SCALING_SCRIPT_NAME}} {{SCALING_SCRIPT_LINK}}</strong>
                 <button class="btn btn-outline-primary" style="margin-left: 5px;"
-                        (click)="copyToClipboard('wget ' + SCALING_SCRIPT_LINK)">Copy Command
+                        (click)="copyToClipboard('wget -O' +  SCALING_SCRIPT_NAME + SCALING_SCRIPT_LINK)">Copy Command
                 </button>
             </div>
             <div class="alert alert-light"

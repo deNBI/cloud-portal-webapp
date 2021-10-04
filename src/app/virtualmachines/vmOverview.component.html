@@ -25,8 +25,8 @@
 
 
 				</div>
-				<div *ngIf="tab=='facility'" class="col-4"><select [(ngModel)]="selectedFacility"
-																													 class="form-control " name="selectedFacility">
+				<div *ngIf="tab==='facility'" class="col-4">
+					<select [(ngModel)]="selectedFacility" class="form-control form-select" name="selectedFacility">
 					<option *ngFor="  let facility of managerFacilities"
 									[ngValue]="facility">
 						{{facility['Facility']}}
@@ -52,6 +52,7 @@
 							 pattern="^([1-9]|1[012])$" [(ngModel)]="vm_page.items_per_page" (ngModelChange)="vmPerPageChange.next($event)">
 				<div class="input-group-append mb-3" style="margin: 10px 0 0 0;"><span class="input-group-text"> VMs per page
                                     </span></div>
+
 			</div>
 		</div>
 
@@ -59,7 +60,7 @@
 
 			<div class="row">
 
-				<div class="col-10 input-group">
+				<div class="col input-group">
 					<div class="input-group-prepend">
 						<div class="input-group-text" *ngIf="is_vo_admin || cluster_allowed">
 							<input type="checkbox" [checked]="filter_cluster" style="margin:2px;"

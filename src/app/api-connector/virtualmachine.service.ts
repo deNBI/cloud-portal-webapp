@@ -149,6 +149,21 @@ export class VirtualmachineService {
 		});
 	}
 
+	startWorkshopVMs(flavor: string, image: Image, servers: {[key: string]: string}[],
+									 project: string, projectid: string, workshopShortname: string): Observable<any> {
+		const params: HttpParams = new HttpParams()
+			.set('flavor', flavor)
+			.set('image', JSON.stringify(image))
+			.set('servers', JSON.stringify(servers))
+			.set('project', project)
+			.set('projectid', projectid)
+			.set('workshopShortname', workshopShortname);
+
+		return this.http.post(`${this.baseVmUrl}/workshop/`, params, {
+			withCredentials: true,
+		});
+	}
+
 	getAllVM(page: number, vm_per_site: number, filter?: string,
 		filter_status?: string[], filter_cluster: boolean = false,
 		filter_set_for_termination: boolean = false): Observable<VirtualMachinePage> {
