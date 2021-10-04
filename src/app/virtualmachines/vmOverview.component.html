@@ -168,6 +168,10 @@
 		 id="verify_all_modal">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
+
+
+<!--			TODO: Use delete-vm component instead -->
+
 			<div class="modal-header">
 				<h4 class="modal-title">Delete the following VM</h4>
 				<button type="button" class="close" style="cursor: pointer"
@@ -183,7 +187,11 @@
 						{{vm.vm.name}}
 					</div>
 				</div>
-
+				<div *ngIf="otherSelectedMachines.length > 0" class="alert alert-danger">
+					These virtual machines are not yours:
+					<div *ngFor="let ovm of otherSelectedMachines">
+						{{ovm.vm.name}} owned by {{ovm.vm.userlogin}}
+				</div>
 			</div>
 			<div class="modal-footer">
 				<button class="btn  btn-success col-md-4"
@@ -192,9 +200,12 @@
 					Yes
 				</button>
 				<button class="btn  btn-danger col-md-4" type="reset"
-								(click)="verifyAllModal.hide();">Cancel
+								(click)="verifyAllModal.hide();">
+					Cancel
 				</button>
-			</div>
+
+
+
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
