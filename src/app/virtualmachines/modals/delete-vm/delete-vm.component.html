@@ -15,10 +15,25 @@
 		If you delete the master of a cluster, your worker machines will become useless!
 	</div>
 
+	<div class="alert alert-danger" *ngIf="elixir_id !== virtualMachine?.elixir_id" role="alert">
+		This is not your own machine.
+		<br>
+		<input class="form-check-input"
+					 name="delete_foreign_vm"
+					 type="checkbox"
+					 id="delete_foreign_vm"
+					 [(ngModel)]="delete_foreign_vm"
+					 required
+		>
+		<label class="form-check-label" for="delete_foreign_vm">
+			I hereby confirm that I want to delete a virtual machine not owned by me.
+		</label>
+	</div>
 </div>
 <div class="modal-footer">
 	<button class="btn  btn-success col-md-4"
 					(click)="deleteVM();"
+					[disabled]="!delete_foreign_vm"
 					id="confirm_delete_button">
 		Yes
 	</button>
