@@ -16,7 +16,7 @@ export class DeleteVmComponent implements OnDestroy {
 	public event: EventEmitter<any> = new EventEmitter();
 	private submitted: boolean = false;
 
-	elixir_id: string = elixir_id;
+	user_elixir_id: string = elixir_id;
 
 	/**
 	 * To check if the user agreed to deleting someone else's VM
