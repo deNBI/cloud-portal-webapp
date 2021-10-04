@@ -1,15 +1,15 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { ApiSettings } from './api-settings.service';
-import { EdamOntologyTerm } from '../applications/edam-ontology-term';
-import { Application } from '../applications/application.model/application.model';
-import { ApplicationLifetimeExtension } from '../applications/application_extension.model';
-import { ApplicationModification } from '../applications/application_modification.model';
-import { ApplicationCreditRequest } from '../applications/application_credit_request';
-import { Workshop } from '../virtualmachines/workshop/workshop.model';
-import { WorkshopUrlInfoModel } from '../virtualmachines/workshop/workshop-urlinfo.model';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpParams} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
+import {ApiSettings} from './api-settings.service';
+import {EdamOntologyTerm} from '../applications/edam-ontology-term';
+import {Application} from '../applications/application.model/application.model';
+import {ApplicationLifetimeExtension} from '../applications/application_extension.model';
+import {ApplicationModification} from '../applications/application_modification.model';
+import {ApplicationCreditRequest} from '../applications/application_credit_request';
+import {Workshop} from '../virtualmachines/workshop/workshop.model';
+import {WorkshopUrlInfoModel} from '../virtualmachines/workshop/workshop-urlinfo.model';
 
 /**
  * Service which provides methods for creating application.
@@ -76,7 +76,7 @@ export class ApplicationsService {
 	}
 
 	addEdamOntologyTerms(application_id: number | string, data: EdamOntologyTerm[]): Observable<any> {
-		const params: any = { edam_ontology_terms: data };
+		const params: any = {edam_ontology_terms: data};
 
 		return this.http.post(`${ApiSettings.getApiBaseURL()}project_applications/${application_id}/edam_terms/`, params, {
 			withCredentials: true,
@@ -195,6 +195,8 @@ export class ApplicationsService {
 		return this.http.post(`${ApiSettings.getApiBaseURL()}project_applications/credits/extensions/${request_id}/approve/`,
 			null, {
 				withCredentials: true,
+				observe: 'response'
+
 			});
 	}
 
@@ -202,6 +204,7 @@ export class ApplicationsService {
 		return this.http.post(`${ApiSettings.getApiBaseURL()}project_applications/lifetime/extensions/${request_id}/approve/`,
 			null, {
 				withCredentials: true,
+				observe: 'response'
 			});
 	}
 
@@ -223,6 +226,8 @@ export class ApplicationsService {
 		return this.http.post(`${ApiSettings.getApiBaseURL()}project_applications/modifications/${request_id}/approve/`,
 			null, {
 				withCredentials: true,
+				observe: 'response'
+
 			});
 	}
 
