@@ -2,9 +2,9 @@ import {
 	Component, EventEmitter, OnDestroy,
 } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
-import { VirtualMachine } from "../../virtualmachinemodels/virtualmachine";
+import { VirtualMachine } from '../../virtualmachinemodels/virtualmachine';
 // import { User} from "../../../applications/application.model/user.model";
-import { elixir_id } from "../../../shared/globalvar";
+import { elixir_id } from '../../../shared/globalvar';
 
 @Component({
 	selector: 'app-delete-vm',
@@ -22,7 +22,6 @@ export class DeleteVmComponent implements OnDestroy {
 	 * To check if the user agreed to deleting someone else's VM
 	 */
 	delete_foreign_vm: boolean = false;
-
 
 	constructor(public bsModalRef: BsModalRef) {
 		// eslint-disable-next-line no-empty-function
