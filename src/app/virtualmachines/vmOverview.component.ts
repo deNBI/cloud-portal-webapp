@@ -421,13 +421,12 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 			(child: VmCardComponent) => {
 				if (child.is_checked) {
 					if (this.user_elixir_id !== child.vm.elixir_id) {
-						this.otherSelectedMachines.push(child)
+						this.otherSelectedMachines.push(child);
 					}
 					this.selectedMachines.push(child);
 				}
 			},
 		);
 	}
-
 
 }
