@@ -32,7 +32,7 @@
   "private": true,
   "dependencies": {
     "@angular-eslint/eslint-plugin": "^4.3.0",
-    "@angular/animations": "^12.2.5",
+    "@angular/animations": "^12.2.8",
     "@angular/cdk": "^12.2.4",
     "@angular/common": "^12.2.5",
     "@angular/compiler": "^12.2.8",
@@ -44,7 +44,7 @@
     "@angular/router": "^12.2.4",
     "@angular/service-worker": "^12.2.4",
     "@angular/upgrade": "^12.2.8",
-    "@coreui/coreui": "^4.0.1",
+    "@coreui/coreui": "^4.0.4",
     "@ng-bootstrap/ng-bootstrap": "^10.0.0",
     "@sindresorhus/transliterate": "1.4.0",
     "@types/d3": "^7.0.0",
