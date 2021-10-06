@@ -71,7 +71,7 @@ export class NewsManagerComponent implements OnInit {
 				this.managerFacilitiesIdOnly = this.managerFacilities.map((facility: [string, number]): number => facility['FacilityId']);
 				this.setFormGroup();
 				this.getNewsFromAPI();
-
+				this.setCurrentNews(null);
 			});
 		});
 	}
