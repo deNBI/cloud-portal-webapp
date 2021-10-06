@@ -16,6 +16,6 @@ describe('Simple Application Modification Approval Test', function (): void {
   });
 
   it('should approve a simple vm modification request', async function (): Promise<any> {
-    await ApplicationOverviewPage.approveModificationRequest(Util.SIMPLE_VM_APPLICATION_NAME);
+    await ApplicationOverviewPage.approveSimpleVMModificationRequest(Util.SIMPLE_VM_APPLICATION_NAME);
   });
 });

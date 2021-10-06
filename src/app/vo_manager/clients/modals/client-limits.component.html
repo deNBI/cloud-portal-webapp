@@ -84,7 +84,7 @@
 
         </div>
         <div class="modal-footer">
-            <button id="approve_modification"
+            <button id="approve_{{application?.project_application_shortname}}"
                     [disabled]="!approvable"
                     type="reset" (click)="approve();"
                     class="btn  btn-success"> Approve
