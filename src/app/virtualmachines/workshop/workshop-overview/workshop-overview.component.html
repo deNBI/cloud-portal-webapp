@@ -1,0 +1,77 @@
+<div *ngIf="errorMessage !== null">
+	An Error has occurred. {{errorMessage}}
+</div>
+
+<div *ngIf="!isLoaded && errorMessage === null" class="loader"></div>
+
+<div class="animated fadeIn card" *ngIf="isLoaded">
+	<div class="card-body">
+		<div *ngIf="projects.length > 0">
+
+			<div class="row">
+				<label class="col-2 form-label" for="projectSelect"><strong>Project*</strong></label>
+				<span *ngIf="projectWorkshopsLoading" class="spinner-border text-info"></span>
+				<div class="col-10">
+					<select required class="form-control form-select" name="selectedProject"
+									[(ngModel)]="selectedProject" id="projectSelect"
+									(ngModelChange)="resetDataOnProjectChange(); getWorkshopsForProject();">
+						<option value="undefined" disabled selected hidden> Please
+							Select
+						</option>
+						<option *ngFor="let project of projects" [ngValue]="project"
+										id="id_option_{{project[0]}}">
+							{{project[0]}}
+						</option>
+					</select>
+				</div>
+			</div>
+
+			<div class="row" *ngIf="projectWorkshopsLoaded">
+				<div class="card" id="workshioCard">
+					<div class="card-header">
+						<i class="fa fa-align-justify"></i>
+						Workshops
+					</div>
+					<div class="card-body">
+						<div class="btn-group" *ngFor="let workshop of workshops ">
+							<button id="select_workshop_{{workshop?.shortname}}_btn"
+											[ngClass]="{'btn-outline-success': workshop.shortname === selectedWorkshop.shortname,
+								'btn-outline-warning' : workshop.shortname !== selectedWorkshop.shortname}"
+											(click)="setSelectedWorkshop(workshop)"
+											type="button" style="margin-bottom:5px;margin-right:5px;"
+											class="btn">{{workshop.shortname}}
+							</button>
+						</div>
+						<div class="table-responsive">
+							<table class="table table-hover">
+								<thead>
+								<tr>
+									<th>User</th>
+									<th>Email</th>
+									<th>Url</th>
+								</tr>
+								</thead>
+								<tbody>
+								<tr *ngFor="let vm of selectedWorkshop.vm_list ">
+									<ng-container *ngIf="vm.loadingUrlData">
+										<div class="spinner-border text-primary" style="display:block; margin:auto;"></div>
+									</ng-container>
+									<ng-container *ngIf="vm.loadingUrlData">
+										<td>{{ vm?.urlData?.user_name }}</td>
+										<td>{{ vm?.urlData?.user_email }}</td>
+										<td>{{ vm?.urlData?.resenv_url }}</td>
+									</ng-container>
+								</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<div *ngIf="projects.length === 0" class="alert alert-warning" role="alert">
+			You are not a member of a project with workshop functionality.
+		</div>
+	</div>
+</div>

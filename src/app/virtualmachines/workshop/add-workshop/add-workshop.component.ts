@@ -7,7 +7,6 @@ import transliterate from '@sindresorhus/transliterate';
 import { Router } from '@angular/router';
 import { Workshop } from '../workshop.model';
 import { Userinfo } from '../../../userinfo/userinfo.model';
-import { ApplicationsService } from '../../../api-connector/applications.service';
 import { GroupService } from '../../../api-connector/group.service';
 import { Client } from '../../../vo_manager/clients/client.model';
 import { BlockedImageTagResenv } from '../../../facility_manager/image-tag';
@@ -22,12 +21,14 @@ import { ResEnvComponent } from '../../conda/res-env.component';
 import { ProjectMember } from '../../../projectmanagement/project_member.model';
 import { CLOUD_PORTAL_SUPPORT_MAIL } from '../../../../links/links';
 import { VirtualmachineService } from '../../../api-connector/virtualmachine.service';
+import { WorkshopService } from '../../../api-connector/workshop.service';
 
 @Component({
 	selector: 'app-add-workshop',
 	templateUrl: './add-workshop.component.html',
 	styleUrls: ['./add-workshop.component.scss'],
-	providers: [ApplicationsService, GroupService, ImageService, FlavorService, UserService, VirtualmachineService],
+	providers: [GroupService, ImageService, FlavorService, UserService, VirtualmachineService,
+		WorkshopService],
 })
 export class AddWorkshopComponent implements OnInit, OnDestroy, DoCheck {
 
@@ -108,12 +109,12 @@ export class AddWorkshopComponent implements OnInit, OnDestroy, DoCheck {
 	invalid_shortname: boolean = false;
 	invalid_longname: boolean = false;
 
-	constructor(private application_service: ApplicationsService,
-							private group_service: GroupService,
+	constructor(private group_service: GroupService,
 							private image_service: ImageService,
 							private flavor_service: FlavorService,
 							private user_service: UserService,
 							private virtual_machine_service: VirtualmachineService,
+							private workshop_service: WorkshopService,
 							private router: Router) {
 		// eslint-disable-next-line no-empty-function
 	}
@@ -202,7 +203,7 @@ export class AddWorkshopComponent implements OnInit, OnDestroy, DoCheck {
 
 	get_workshops_for_application(): void {
 		this.subscription.add(
-			this.application_service.getWorkshops(this.selected_project[1]).subscribe(
+			this.workshop_service.getWorkshops(this.selected_project[1]).subscribe(
 				(workshops: Workshop[]) => {
 					this.workshops = workshops;
 				},
@@ -275,7 +276,7 @@ export class AddWorkshopComponent implements OnInit, OnDestroy, DoCheck {
 	create_new_workshop(): void {
 		this.selected_workshop.shortname = this.selected_workshop.shortname.replace(/\s/g, '');
 		this.subscription.add(
-			this.application_service.createWorkshop(this.selected_project[1], this.selected_workshop).subscribe(
+			this.workshop_service.createWorkshop(this.selected_project[1], this.selected_workshop).subscribe(
 				(workshop: Workshop) => {
 					this.workshops.push(workshop);
 					this.set_selected_workshop(workshop);

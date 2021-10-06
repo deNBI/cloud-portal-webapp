@@ -248,49 +248,4 @@ export class ApplicationsService {
 
 	}
 
-	getWorkshopInfoUrl(application_id: string | number): Observable<WorkshopUrlInfoModel[]> {
-		const params: HttpParams = new HttpParams()
-			.set('application_id', application_id);
-
-		return this.http.get<WorkshopUrlInfoModel[]>(`${ApiSettings.getApiBaseURL()}workshops/url_info/`, {
-			withCredentials: true,
-			params,
-		}).pipe(
-			map(
-				(workshops_infos: WorkshopUrlInfoModel[]): WorkshopUrlInfoModel[] => workshops_infos.map(
-					(workshops_info: WorkshopUrlInfoModel): WorkshopUrlInfoModel => new WorkshopUrlInfoModel(workshops_info),
-				),
-			),
-		);
-	}
-
-	getWorkshops(application_id: string | number): Observable<Workshop[]> {
-		const params: HttpParams = new HttpParams()
-			.set('application_id', application_id);
-
-		return this.http.get<Workshop[]>(`${ApiSettings.getApiBaseURL()}workshops/`, {
-			withCredentials: true,
-			params,
-		}).pipe(
-			map(
-				(workshops: Workshop[]): Workshop[] => workshops.map(
-					(workshop: Workshop): Workshop => new Workshop(workshop),
-				),
-			),
-		);
-	}
-
-	createWorkshop(application_id: string | number, workshop: Workshop): Observable<Workshop> {
-		const params: HttpParams = new HttpParams()
-			.set('application_id', application_id)
-			.set('workshop', encodeURIComponent(JSON.stringify(workshop)));
-
-		return this.http.post<Workshop>(`${ApiSettings.getApiBaseURL()}workshops/`, params, {
-			withCredentials: true,
-		}).pipe(
-			map(
-				(workshop_new: Workshop): Workshop => new Workshop(workshop_new),
-			),
-		);
-	}
 }
