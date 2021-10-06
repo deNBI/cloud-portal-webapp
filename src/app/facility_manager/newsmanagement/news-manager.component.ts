@@ -101,6 +101,7 @@ export class NewsManagerComponent implements OnInit {
 				}
 			}
 			this.getNewsFromAPI();
+			this.setCurrentNews(null);
 		});
 
 	}
@@ -213,6 +214,7 @@ export class NewsManagerComponent implements OnInit {
 			this.facilityToPost = news.facility;
 		} else {
 			this.selectedFacilityNews = new FacilityNews();
+			this.selectedFacilityNews.id = null;
 		}
 		this.setFormGroup();
 	}
