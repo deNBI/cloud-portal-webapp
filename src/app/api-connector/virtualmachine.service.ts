@@ -12,7 +12,6 @@ import { Condalog } from '../virtualmachines/conda/condalog';
 import { VirtualMachinePage } from '../virtualmachines/virtualmachinemodels/virtualMachinePage';
 import { VolumePage } from '../virtualmachines/volumes/volumePage.model';
 import { ClusterPage } from '../virtualmachines/clusters/clusterPage.model';
-import { UrlData } from '../virtualmachines/workshop/workshop-urlinfo.model';
 
 /**
  * Service which provides vm methods.
@@ -163,19 +162,6 @@ export class VirtualmachineService {
 		return this.http.post(`${this.baseVmUrl}/workshop/`, params, {
 			withCredentials: true,
 		});
-	}
-
-	getUrlInfoForWorkshopVM(vmOpenstackId: string): Observable<UrlData> {
-		const params: HttpParams = new HttpParams()
-			.set('vmOpenstackId', vmOpenstackId);
-
-		return this.http.post<UrlData>(`${this.baseVmUrl}/workshop/`, params, {
-			withCredentials: true,
-		}).pipe(
-			map(
-				(urlData: UrlData): UrlData => new UrlData(urlData),
-			),
-		);
 	}
 
 	getAllVM(page: number, vm_per_site: number, filter?: string,
