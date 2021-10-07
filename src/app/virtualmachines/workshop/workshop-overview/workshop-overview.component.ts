@@ -4,6 +4,13 @@ import { Workshop } from '../workshop.model';
 import { GroupService } from '../../../api-connector/group.service';
 import { UrlData } from '../workshop-urlinfo.model';
 import { WorkshopService } from '../../../api-connector/workshop.service';
+import { ProjectMember } from '../../../projectmanagement/project_member.model';
+import { WorkshopVM } from '../workshop-vm.model';
+
+interface MemberVm {
+	projectMember: ProjectMember;
+	workshopVmLink: { [key: number]: WorkshopVM[] };
+}
 
 @Component({
 	selector: 'app-overview',
@@ -16,15 +23,20 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 	title: string = 'Workshop Overview';
 
 	subscription: Subscription = new Subscription();
-	urlDataSubscription: Subscription = new Subscription();
 	workshops: Workshop[] = [];
 	selectedWorkshop: Workshop;
+	memberVms: MemberVm[] = [];
+	loadedVmsForWorkshop: number[] = [];
 	projects: [string, number][] = [];
 	selectedProject: [string, number];
 	errorMessage: string = null;
 	isLoaded: boolean = false;
 	projectWorkshopsLoading: boolean = false;
 	projectWorkshopsLoaded: boolean = false;
+	projectMembersLoading: boolean = false;
+	projectMembersLoaded: boolean = false;
+	deleting: boolean = false;
+	deleteSuccess: boolean = false;
 
 	constructor(private workshopService: WorkshopService,
 							private groupService: GroupService) {
@@ -37,7 +49,6 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 
 	ngOnDestroy(): void {
 		this.subscription.unsubscribe();
-		this.urlDataSubscription.unsubscribe();
 	}
 
 	getProjects(): void {
@@ -54,10 +65,10 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 		);
 	}
 
-	resetDataOnProjectChange(): void {
-		this.projectWorkshopsLoaded = false;
-		this.projectWorkshopsLoading = false;
-		this.workshops = [];
+	projectChange(): void {
+		this.resetsOnProjectChange();
+		this.getWorkshopsForProject();
+		this.getMembersOfTheProject();
 	}
 
 	getWorkshopsForProject(): void {
@@ -66,6 +77,7 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 			this.workshopService.getWorkshops(this.selectedProject[1]).subscribe(
 				(workshops: Workshop[]) => {
 					this.workshops = workshops;
+					this.selectedWorkshop = new Workshop();
 					this.projectWorkshopsLoading = false;
 					this.projectWorkshopsLoaded = true;
 				},
@@ -73,32 +85,118 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 		);
 	}
 
-	getUrlDataForWorkshopVms(): void {
-		for (const vm of this.selectedWorkshop.vm_list) {
-			if (vm.vm.openstackid && vm.vm.openstackid !== '') {
-				vm.setLoadingUrlData(true);
-				this.urlDataSubscription.add(
-					this.workshopService.getUrlDataForWorkshopVm(this.selectedProject[1], this.selectedWorkshop.shortname, vm.vm.openstackid)
-						.subscribe(
-							(urlData: UrlData) => {
-								vm.setLoadingUrlData(false);
-								vm.setUrlData(urlData);
-							},
-						),
-				);
+	getMembersOfTheProject(): void {
+		this.projectMembersLoading = true;
+		this.memberVms = [];
+		this.subscription.add(
+			this.groupService.getWorkshopMembers(this.selectedProject[1].toString()).subscribe(
+				(members: ProjectMember[]): void => {
+					for (const member of members) {
+						const workshopVmLink: {[key: number]: WorkshopVM[]} = {};
+						const membervm: MemberVm = { projectMember: member, workshopVmLink };
+						this.memberVms.push(membervm);
+						this.projectMembersLoading = false;
+						this.projectMembersLoaded = true;
+					}
+				},
+			),
+		);
+	}
+
+	workshopChange(workshop: Workshop): void {
+		this.selectedWorkshop = workshop;
+		this.loadVmsForSelectedProject();
+	}
+
+	loadVmsForSelectedProject(): void {
+		if (this.loadedVmsForWorkshop.includes(this.selectedWorkshop.id)) {
+			return;
+		}
+
+		this.subscription.add(
+			this.workshopService.loadWorkshopWithVms(this.selectedWorkshop.id).subscribe(
+				(workshopIncoming: Workshop) => {
+					for (let workshop of this.workshops) {
+						if (workshop.id === workshopIncoming.id) {
+							workshop = workshopIncoming;
+							this.loadedVmsForWorkshop.push(workshop.id);
+							this.addVmsToProjectMembers(workshop);
+							this.getUrlDataForWorkshopVms(workshop);
+						}
+					}
+				},
+			),
+		);
+	}
+
+	addVmsToProjectMembers(workshop: Workshop): void {
+		for (const member of this.memberVms) {
+			if (!(workshop.id in member.workshopVmLink)) {
+				member.workshopVmLink[workshop.id] = [];
+			}
+			for (const vm of workshop.vm_list) {
+				if (member.projectMember.elixirId === vm.elixirid) {
+					member.workshopVmLink[workshop.id].push(vm);
+				}
 			}
 		}
 	}
 
-	setSelectedWorkshop(workshop: Workshop): void {
-		this.selectedWorkshop = workshop;
-		this.urlDataSubscription.unsubscribe();
-		this.urlDataSubscription = new Subscription();
-		this.getUrlDataForWorkshopVms();
+	getUrlDataForWorkshopVms(workshop: Workshop): void {
+		for (const member of this.memberVms) {
+			if (!(workshop.id in member.workshopVmLink)) {
+				continue;
+			}
+			for (const vm of member.workshopVmLink[workshop.id]) {
+				if (vm.vm.openstackid && vm.vm.openstackid !== '') {
+					vm.setLoadingUrlData(true);
+					this.subscription.add(
+						this.workshopService.getUrlDataForWorkshopVm(workshop.id, vm.vm.openstackid)
+							.subscribe(
+								(urlData: UrlData) => {
+									vm.setLoadingUrlData(false);
+									vm.setUrlData(urlData);
+								},
+							),
+					);
+				}
+			}
+		}
 	}
 
-	check_project_data_loaded(): void {}
+	cleanupWorkshop(): void {
+		const selectedId = this.selectedWorkshop.id;
+		this.selectedWorkshop = new Workshop();
+		this.deleting = true;
+		this.subscription.add(
+			this.workshopService.deleteWorkshop(selectedId).subscribe(
+				(result: boolean) => {
+					this.deleting = false;
+					if (result) {
+						this.deleteSuccess = true;
+						for (const workshop of this.workshops) {
+							if (workshop.id === selectedId) {
+								this.workshops.splice(this.workshops.indexOf(workshop), 1);
+							}
+						}
+					} else {
+						this.deleteSuccess = false;
+					}
+				},
+			),
+		);
+	}
 
-	cleanupWorkshop(): void {}
+	resetsOnProjectChange(): void {
+		this.projectWorkshopsLoading = false;
+		this.projectWorkshopsLoaded = false;
+
+		this.projectWorkshopsLoading = false;
+		this.projectMembersLoaded = false;
+
+		this.workshops = [];
+		this.memberVms = [];
+		this.loadedVmsForWorkshop = [];
+	}
 
 }

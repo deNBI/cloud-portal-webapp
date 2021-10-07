@@ -11,7 +11,7 @@ export class ProjectMember {
 
 	IsPi: boolean;
 	elixirId: string;
-	Email: string;
+	email: string;
 	publicKeySet: boolean;
 	groupAdmin: boolean;
 	hasVM: boolean = false;

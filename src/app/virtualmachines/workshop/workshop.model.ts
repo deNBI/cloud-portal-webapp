@@ -3,6 +3,7 @@ import { WorkshopVM } from './workshop-vm.model';
 import { UrlData } from './workshop-urlinfo.model';
 
 export class Workshop {
+	id: number;
 	members: ProjectMember[];
 	vm_list: WorkshopVM[];
 	longname: string = '';

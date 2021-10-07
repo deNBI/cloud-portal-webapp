@@ -23,24 +23,32 @@ export class WorkshopService {
 		}).pipe(
 			map(
 				(workshops_infos: WorkshopUrlInfoModel[]): WorkshopUrlInfoModel[] => workshops_infos.map(
-					(workshops_info: WorkshopUrlInfoModel): WorkshopUrlInfoModel => new WorkshopUrlInfoModel(workshops_info),
+					(workshop_info: WorkshopUrlInfoModel): WorkshopUrlInfoModel => new WorkshopUrlInfoModel(workshop_info),
 				),
 			),
 		);
 	}
 
-	getUrlDataForWorkshopVm(applicationId: number, workshopShortname: string, openstackid: string): Observable<UrlData> {
+	getUrlDataForWorkshopVm(workshop_id: number, openstackid: string): Observable<UrlData> {
 		const params: HttpParams = new HttpParams()
-			.set('application_id', applicationId)
-			.set('workshop_shortname', workshopShortname)
 			.set('openstackid', openstackid);
 
-		return this.http.get<UrlData>(`${ApiSettings.getApiBaseURL()}workshops/url_info/one_vm/`, {
+		return this.http.get<UrlData>(`${ApiSettings.getApiBaseURL()}workshops/${workshop_id}/url_info/one_vm/`, {
 			withCredentials: true,
 			params,
 		}).pipe(
 			map(
 				(urlData: UrlData): UrlData => new UrlData(urlData),
+			),
+		);
+	}
+
+	loadWorkshopWithVms(workshop_id: number): Observable<Workshop> {
+		return this.http.get<Workshop>(`${ApiSettings.getApiBaseURL()}workshops/${workshop_id}/vms/`, {
+			withCredentials: true,
+		}).pipe(
+			map(
+				(workshop: Workshop): Workshop => new Workshop(workshop),
 			),
 		);
 	}
@@ -75,8 +83,10 @@ export class WorkshopService {
 		);
 	}
 
-	deleteWorkshop(applicationId: string, workshopShortname: string): void {
-
+	deleteWorkshop(workshop_id: number): Observable<boolean> {
+		return this.http.delete<boolean>(`${ApiSettings.getApiBaseURL()}workshops/${workshop_id}/`, {
+			withCredentials: true,
+		});
 	}
 
 }

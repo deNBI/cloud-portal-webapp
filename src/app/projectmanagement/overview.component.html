@@ -185,7 +185,7 @@
 						 *ngIf="project_application | hasstatusinlist:Application_States.APPROVED">
 					<div class="row">
 						<div class="col-6">
-							<div class="callout callout-info"
+							<div class="callout callout-info" style="border-top-width: 0; border-bottom-width: 0; border-right-width: 0"
 									 title="The project has been running for {{project?.DaysRunning}} of a total of {{project?.LifetimeDays}} granted days">
 								<small class="text-muted">Project Runtime</small><br>
 								<strong class="text-muted">{{project?.DateCreated}} - {{project?.DateEnd}}
@@ -255,7 +255,8 @@
 
 					<div class="row">
 						<div class="col-6">
-							<div class="callout callout-info" *ngIf="this.resourceDataLoaded">
+							<div class="callout callout-info" *ngIf="this.resourceDataLoaded"
+									 style="border-top-width: 0; border-bottom-width: 0; border-right-width: 0">
 								<small class="text-muted">Computational Resources</small><br>
 								<strong class="text-muted" *ngIf="project?.OpenStackProject">{{maximumVMs}} VMs with a total of
 									{{project_application?.project_application_total_cores}} VCPUs and
@@ -319,7 +320,8 @@
 					</div>
 					<div class="row">
 						<div class="col-6" title="Click Contact to send a mail to the facility.">
-							<div class="callout callout-info">
+							<div class="callout callout-info"
+									 style="border-top-width: 0; border-bottom-width: 0; border-right-width: 0">
 								<small class="text-muted">Facility</small><br>
 								<strong class="text-muted">{{project?.ComputeCenter.Name}}</strong>
 							</div>
@@ -349,7 +351,8 @@
 					</div>
 					<div class="row" *ngIf="project_application?.credits_allowed">
 						<div class="col-6">
-							<div class="callout callout-info">
+							<div class="callout callout-info"
+									 style="border-top-width: 0; border-bottom-width: 0; border-right-width: 0">
 								<small class="text-muted">Credits</small><br>
 								<strong class="text-muted">
                    <span *ngIf="project?.ApprovedCredits - project?.CurrentCredits > 0">

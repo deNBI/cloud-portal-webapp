@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ApiSettings } from './api-settings.service';
@@ -8,8 +8,6 @@ import { Application } from '../applications/application.model/application.model
 import { ApplicationLifetimeExtension } from '../applications/application_extension.model';
 import { ApplicationModification } from '../applications/application_modification.model';
 import { ApplicationCreditRequest } from '../applications/application_credit_request';
-import { Workshop } from '../virtualmachines/workshop/workshop.model';
-import { WorkshopUrlInfoModel } from '../virtualmachines/workshop/workshop-urlinfo.model';
 
 /**
  * Service which provides methods for creating application.

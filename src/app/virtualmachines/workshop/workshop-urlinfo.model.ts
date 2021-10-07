@@ -11,12 +11,12 @@ export class UrlData {
 
 export class WorkshopUrlInfoModel {
 
-	longname: string = '';
-	shortname: string = '';
+	longname: string;
+	shortname: string;
 	url_data: UrlData[];
 
 	constructor(workshop_info?: Partial<WorkshopUrlInfoModel>) {
-		Object.assign(this, WorkshopUrlInfoModel);
+		Object.assign(this, workshop_info);
 		if (workshop_info) {
 			if (workshop_info.url_data) {
 				this.url_data = [];
