@@ -78,7 +78,7 @@ export class VmCardComponent implements OnInit, OnDestroy {
 	WIKI_GUACAMOLE_LINK: string = WIKI_GUACAMOLE_LINK;
 
 	/**
-	 * Subscription objcet to listen to different events.
+	 * Subscription object to listen to different events.
 	 */
 	subscription: Subscription = new Subscription();
 

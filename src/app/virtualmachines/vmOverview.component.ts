@@ -149,6 +149,11 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 	otherSelectedMachines: VmCardComponent[] = [];
 
 	/**
+	 * To check if the user agreed to deleting someone else's VMs
+	 */
+	deleteOtherMachines_confirmation: boolean = false;
+
+	/**
 	 * List of groups of which the user is admin.
 	 */
 	vms_admin: string[] = [];
@@ -428,6 +433,5 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 			},
 		);
 	}
-
 
 }
