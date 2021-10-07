@@ -3,7 +3,6 @@ import {
 } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { VirtualMachine } from "../../virtualmachinemodels/virtualmachine";
-// import { User} from "../../../applications/application.model/user.model";
 import { elixir_id } from "../../../shared/globalvar";
 
 @Component({
@@ -15,7 +14,6 @@ export class DeleteVmComponent implements OnDestroy {
 	virtualMachine: VirtualMachine;
 	public event: EventEmitter<any> = new EventEmitter();
 	private submitted: boolean = false;
-
 	user_elixir_id: string = elixir_id;
 
 	/**
