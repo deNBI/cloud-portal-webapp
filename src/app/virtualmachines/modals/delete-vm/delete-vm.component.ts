@@ -21,7 +21,6 @@ export class DeleteVmComponent implements OnDestroy {
 	 */
 	delete_foreign_vm: boolean = false;
 
-
 	constructor(public bsModalRef: BsModalRef) {
 		// eslint-disable-next-line no-empty-function
 	}
