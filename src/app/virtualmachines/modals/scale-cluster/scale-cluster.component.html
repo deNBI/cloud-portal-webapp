@@ -333,7 +333,7 @@
         <div class="alert alert-info" role="alert">
             {{ msg }}
         </div>
-            
+
         <div class="alert alert-warning">
             <div class="alert alert-light" role="alert">
                 <strong>Connect to your master instance:</strong>
@@ -347,32 +347,33 @@
                     </div>
 
                     <div class="col-md-2" style="margin: auto" *ngIf="mode.copy_field && mode.copy_field !== ''">
-                        <div class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+                        <button class="btn btn-outline-secondary " style="float:right"
                              (click)="copyToClipboard(mode.copy_field)">Copy command
-                        </div>
+                        </button>
                     </div>
                 </div>
 
             </div>
             <div class="alert alert-light"
-                 role="alert">
+                 role="alert" style="margin-top: 20px">
                 <strong>wget -O {{SCALING_SCRIPT_NAME}} {{SCALING_SCRIPT_LINK}}</strong>
-                <button class="btn btn-outline-primary" style="margin-left: 5px;"
+                <button class="btn btn-outline-primary" style="float:right;"
                         (click)="copyToClipboard('wget -O' +  SCALING_SCRIPT_NAME + SCALING_SCRIPT_LINK)">Copy Command
                 </button>
             </div>
-            <div class="alert alert-light"
+            <div class="alert alert-light" style="margin-top: 20px"
                  role="alert"><strong>python3 {{SCALING_SCRIPT_NAME}} </strong>
-                <button class="btn btn-outline-primary" style="margin-left: 5px;"
+
+                <button class="btn btn-outline-primary" style="float:right;"
                         (click)="copyToClipboard('python3 ' + SCALING_SCRIPT_NAME)">Copy Command
                 </button>
-                <div class="alert alert-warning" role="alert">
+                <div class="alert alert-warning" role="alert" style="margin-top: 20px">
                     If you run this script, all own changes to the cluster configuration will be overwritten!
                 </div>
-                <div class="alert alert-info" role="alert">
+                <div class="alert alert-info" role="alert" style="margin-top: 20px">
                     The following password is requested by the script:
                     <div class="alert alert-light" role="alert"> {{cluster?.password}}
-                        <button class="btn btn-outline-primary" style="margin-left: 5px;"
+                        <button class="btn btn-outline-primary" style="float:right;"
                                 (click)="copyToClipboard(cluster?.password)">Copy
                         </button>
                     </div>
