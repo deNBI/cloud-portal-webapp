@@ -195,6 +195,8 @@ export class ApplicationsService {
 		return this.http.post(`${ApiSettings.getApiBaseURL()}project_applications/credits/extensions/${request_id}/approve/`,
 			null, {
 				withCredentials: true,
+				observe: 'response',
+
 			});
 	}
 
@@ -202,6 +204,7 @@ export class ApplicationsService {
 		return this.http.post(`${ApiSettings.getApiBaseURL()}project_applications/lifetime/extensions/${request_id}/approve/`,
 			null, {
 				withCredentials: true,
+				observe: 'response',
 			});
 	}
 
@@ -223,6 +226,8 @@ export class ApplicationsService {
 		return this.http.post(`${ApiSettings.getApiBaseURL()}project_applications/modifications/${request_id}/approve/`,
 			null, {
 				withCredentials: true,
+				observe: 'response',
+
 			});
 	}
 
