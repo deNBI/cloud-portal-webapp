@@ -243,6 +243,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	}
 
 	fetchCreditHistoryOfProject(): void {
+		this.creditHistoryLoaded = false;
 		if (this.project != null && this.project_application.credits_allowed) {
 			this.creditsService.getCreditsUsageHistoryOfProject(Number(this.project.Id.toString())).toPromise()
 				.then((response: {}): void => {
@@ -418,8 +419,12 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 			} catch (someError) {
 				// empty catch
 			}
+
 			this.subscription.unsubscribe();
 			this.subscription = new Subscription();
+			this.modificationRequestDisabled = false;
+			this.lifetimeExtensionDisabled = false;
+			this.creditsExtensionDisabled = false;
 			this.errorMessage = null;
 			this.isLoaded = false;
 			this.project = null;
@@ -477,6 +482,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	 * @param groupid the id of the group of the application in perun
 	 */
 	getUsedResources(groupid: string): void {
+		this.resourceDataLoaded = false;
+
 		if (!this.project?.OpenStackProject) {
 			this.groupService.getGroupResources(groupid).subscribe(
 				(res: any): void => {
