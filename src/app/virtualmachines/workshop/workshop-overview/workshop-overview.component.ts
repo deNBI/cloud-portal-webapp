@@ -151,7 +151,7 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 				if (vm.vm.openstackid && vm.vm.openstackid !== '') {
 					vm.setLoadingUrlData(true);
 					this.subscription.add(
-						this.workshopService.getUrlDataForWorkshopVm(workshop.id, vm.vm.openstackid)
+						this.workshopService.getResenvUrlForWorkshopVm(workshop.id, vm.vm.openstackid)
 							.subscribe(
 								(urlData: UrlData) => {
 									vm.setLoadingUrlData(false);

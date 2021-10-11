@@ -37,7 +37,7 @@
 					<div class="btn-group">
 						<button id="select_workshop_{{workshop?.shortname}}_btn" *ngFor="let workshop of workshops "
 										[ngClass]="{'btn-outline-success': workshop.shortname === selectedWorkshop?.shortname,
-								'btn-outline-warning' : workshop.shortname !== selectedWorkshop?.shortname}"
+								'btn-outline-secondary' : workshop.shortname !== selectedWorkshop?.shortname}"
 										(click)="workshopChange(workshop)"
 										type="button" style="margin-bottom:5px;margin-right:5px;"
 										class="btn">{{workshop.shortname}}

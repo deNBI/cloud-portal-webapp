@@ -43,6 +43,20 @@ export class WorkshopService {
 		);
 	}
 
+	getResenvUrlForWorkshopVm(workshop_id: number, openstackid: string): Observable<UrlData> {
+		const params: HttpParams = new HttpParams()
+			.set('openstackid', openstackid);
+
+		return this.http.get<UrlData>(`${ApiSettings.getApiBaseURL()}workshops/${workshop_id}/url_info/one_vm/resenv_only/`, {
+			withCredentials: true,
+			params,
+		}).pipe(
+			map(
+				(urlData: UrlData): UrlData => new UrlData(urlData),
+			),
+		);
+	}
+
 	loadWorkshopWithVms(workshop_id: number): Observable<Workshop> {
 		return this.http.get<Workshop>(`${ApiSettings.getApiBaseURL()}workshops/${workshop_id}/vms/`, {
 			withCredentials: true,
