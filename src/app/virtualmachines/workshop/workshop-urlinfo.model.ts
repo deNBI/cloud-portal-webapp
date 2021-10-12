@@ -1,23 +1,29 @@
 // eslint-disable-next-line max-classes-per-file
-class UrlData {
+export class UrlData {
 	user_email: string;
 	user_name: string;
 	resenv_url: string;
+
+	constructor(url_data?: Partial<UrlData>) {
+		Object.assign(this, url_data);
+	}
 }
 
 export class WorkshopUrlInfoModel {
 
-	longname: string = '';
-	shortname: string = '';
+	longname: string;
+	shortname: string;
 	url_data: UrlData[];
 
 	constructor(workshop_info?: Partial<WorkshopUrlInfoModel>) {
-		Object.assign(this, WorkshopUrlInfoModel);
+		Object.assign(this, workshop_info);
 		if (workshop_info) {
-			this.longname = workshop_info.longname;
-			this.shortname = workshop_info.shortname;
-			this.url_data = workshop_info.url_data;
-
+			if (workshop_info.url_data) {
+				this.url_data = [];
+				for (const url_data of workshop_info.url_data) {
+					this.url_data.push(new UrlData(url_data));
+				}
+			}
 		}
 	}
 
