@@ -325,75 +325,76 @@
 </ng-container>
 
 <ng-container *ngIf="scale_success">
-	<div class="modal-header">
-		<h4 class="modal-title">Scaling successful {{cluster?.cluster_id}}</h4>
-		<button type="button" class="close" style="cursor: pointer"
-						(click)="bsModalRef.hide()"
-						aria-label="Close">
-			<span aria-hidden="true">&times;</span>
-		</button>
-	</div>
-	<div class="modal-body">
-		<div class="alert alert-info" role="alert">
-			{{ msg }}
-		</div>
+    <div class="modal-header">
+        <h4 class="modal-title">Scaling successful {{cluster?.cluster_id}}</h4>
+        <button type="button" class="close" style="cursor: pointer"
+                (click)="bsModalRef.hide()"
+                aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="alert alert-info" role="alert">
+            {{ msg }}
+        </div>
 
-		<div class="alert alert-warning">
-			<div class="alert alert-light" role="alert">
-				<strong>Connect to your master instance:</strong>
-				<div class="row" *ngFor="let mode of cluster?.master_instance?.modes">
-					<div class="col-md-1">
-						<span class="font-weight-bold font-xs btn-block text-muted">{{mode.name}}:</span>
-					</div>
-					<div class="col-md-9">
+        <div class="alert alert-warning">
+            <div class="alert alert-light" role="alert">
+                <strong>Connect to your master instance:</strong>
+                <div class="row" *ngFor="let mode of cluster?.master_instance?.modes">
+                    <div class="col-md-1">
+                        <span class="font-weight-bold font-xs btn-block text-muted">{{mode.name}}:</span>
+                    </div>
+                    <div class="col-md-9">
                         <span class="font-weight-bold font-xs btn-block text-muted"
-															[innerHTML]="mode.description"></span>
-					</div>
+                              [innerHTML]="mode.description"></span>
+                    </div>
 
-					<div class="col-md-2" style="margin: auto" *ngIf="mode.copy_field && mode.copy_field !== ''">
-						<div class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary" style="float:right"
-								 (click)="copyToClipboard(mode.copy_field)">Copy command
-						</div>
-					</div>
-				</div>
+                    <div class="col-md-2" style="margin: auto" *ngIf="mode.copy_field && mode.copy_field !== ''">
+                        <button class="btn btn-outline-secondary " style="float:right"
+                             (click)="copyToClipboard(mode.copy_field)">Copy command
+                        </button>
+                    </div>
+                </div>
 
-			</div>
-			<div class="alert alert-light"
-					 role="alert">
-				<strong>wget -O {{SCALING_SCRIPT_NAME}} {{SCALING_SCRIPT_LINK}}</strong>
-				<button class="btn btn-outline-primary" style="margin-left: 5px; float:right;"
-								(click)="copyToClipboard('wget -O' +  SCALING_SCRIPT_NAME + SCALING_SCRIPT_LINK)">Copy Command
-				</button>
-			</div>
-			<div class="alert alert-light"
-					 role="alert"><strong>python3 {{SCALING_SCRIPT_NAME}} </strong>
-				<button class="btn btn-outline-primary" style="margin-left: 5px;float:right;"
-								(click)="copyToClipboard('python3 ' + SCALING_SCRIPT_NAME)">Copy Command
-				</button>
-				<div class="alert alert-warning" role="alert">
-					If you run this script, all own changes to the cluster configuration will be overwritten!
-				</div>
-				<div class="alert alert-info" role="alert">
-					The following password is requested by the script:
-					<div class="alert alert-light" role="alert"> {{cluster?.password}}
-						<button class="btn btn-outline-primary" style="margin-left: 5px;"
-										(click)="copyToClipboard(cluster?.password)">Copy
-						</button>
-					</div>
-					However, a new password can also be generated in the cluster overview
-				</div>
+            </div>
+            <div class="alert alert-light"
+                 role="alert" style="margin-top: 20px">
+                <strong>wget -O {{SCALING_SCRIPT_NAME}} {{SCALING_SCRIPT_LINK}}</strong>
+                <button class="btn btn-outline-primary" style="float:right;"
+                        (click)="copyToClipboard('wget -O' +  SCALING_SCRIPT_NAME + SCALING_SCRIPT_LINK)">Copy Command
+                </button>
+            </div>
+            <div class="alert alert-light" style="margin-top: 20px"
+                 role="alert"><strong>python3 {{SCALING_SCRIPT_NAME}} </strong>
 
-			</div>
-		</div>
-	</div>
+                <button class="btn btn-outline-primary" style="float:right;"
+                        (click)="copyToClipboard('python3 ' + SCALING_SCRIPT_NAME)">Copy Command
+                </button>
+                <div class="alert alert-warning" role="alert" style="margin-top: 20px">
+                    If you run this script, all own changes to the cluster configuration will be overwritten!
+                </div>
+                <div class="alert alert-info" role="alert" style="margin-top: 20px">
+                    The following password is requested by the script:
+                    <div class="alert alert-light" role="alert"> {{cluster?.password}}
+                        <button class="btn btn-outline-primary" style="float:right;"
+                                (click)="copyToClipboard(cluster?.password)">Copy
+                        </button>
+                    </div>
+                    However, a new password can also be generated in the cluster overview
+                </div>
+
+            </div>
+        </div>
+    </div>
 
 
-	<div class="modal-footer">
+    <div class="modal-footer">
 
-		<button class="btn  btn-danger col-md-4" type="reset"
-						(click)="bsModalRef.hide()">Close
-		</button>
-	</div>
+        <button class="btn  btn-danger col-md-4" type="reset"
+                (click)="bsModalRef.hide()">Close
+        </button>
+    </div>
 
 
 </ng-container>

@@ -424,9 +424,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
 			this.subscription.unsubscribe();
 			this.subscription = new Subscription();
-			this.modificationRequestDisabled = false;
-			this.lifetimeExtensionDisabled = false;
-			this.creditsExtensionDisabled = false;
+			this.resourceDataLoaded = false;
+			this.creditHistoryLoaded = false;
 			this.errorMessage = null;
 			this.isLoaded = false;
 			this.project = null;
