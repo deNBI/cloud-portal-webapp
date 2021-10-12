@@ -755,7 +755,7 @@
 	</div>
 	<div class="row">
 		<div class="col"
-				 *ngIf="project_application.credits_allowed && ((project_application | hasstatusinlist:Application_States.APPROVED)
+				 *ngIf="project && project_application.credits_allowed && ((project_application | hasstatusinlist:Application_States.APPROVED)
            || (project_application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)
            || (project_application | hasstatusinlist:Application_States.MODIFICATION_DECLINED) )">
 			<div class="card" style=" ">
@@ -764,9 +764,12 @@
 
 
 				</div>
-				<div class="card-body" style="max-height: 800px;">
-					<div *ngIf="!creditHistoryLoaded" class="loader"
-							 style="margin-left: -42px; margin-top: -18px;"></div>
+				<div class="card-body justify-content-center align-items-center">
+					<div *ngIf="!creditHistoryLoaded" id="overlay">
+						<div class="w-100 d-flex justify-content-center align-items-center">
+							<div class="spinner"></div>
+						</div>
+					</div>
 					<canvas #creditsChart
 									id="creditsChart">
 					</canvas>
@@ -872,7 +875,7 @@
 							Add User
 					</button> -->
 				<button id="close_add_user_modal_btn" type="button" (click)="filteredMembers=null; addUserModal.hide();"
-								class="btn  btn-danger"><i class="fa fa-ban"></i> Close
+								class="btn  btn-danger"><i class="fa fa-times"></i> Close
 				</button>
 			</div>
 		</div><!-- /.modal-content -->
