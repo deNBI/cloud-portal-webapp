@@ -3,7 +3,7 @@ name: NPM AUDIT
 on: [push]
 
 jobs:
-  build:
+  audit:
 
     runs-on: ubuntu-latest
 
