@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ApiSettings } from './api-settings.service';
@@ -8,8 +8,6 @@ import { Application } from '../applications/application.model/application.model
 import { ApplicationLifetimeExtension } from '../applications/application_extension.model';
 import { ApplicationModification } from '../applications/application_modification.model';
 import { ApplicationCreditRequest } from '../applications/application_credit_request';
-import { Workshop } from '../virtualmachines/workshop/workshop.model';
-import { WorkshopUrlInfoModel } from '../virtualmachines/workshop/workshop-urlinfo.model';
 
 /**
  * Service which provides methods for creating application.
@@ -248,49 +246,4 @@ export class ApplicationsService {
 
 	}
 
-	getWorkshopInfoUrl(application_id: string | number): Observable<WorkshopUrlInfoModel[]> {
-		const params: HttpParams = new HttpParams()
-			.set('application_id', application_id);
-
-		return this.http.get<WorkshopUrlInfoModel[]>(`${ApiSettings.getApiBaseURL()}workshops/url_info/`, {
-			withCredentials: true,
-			params,
-		}).pipe(
-			map(
-				(workshops_infos: WorkshopUrlInfoModel[]): WorkshopUrlInfoModel[] => workshops_infos.map(
-					(workshops_info: WorkshopUrlInfoModel): WorkshopUrlInfoModel => new WorkshopUrlInfoModel(workshops_info),
-				),
-			),
-		);
-	}
-
-	getWorkshops(application_id: string | number): Observable<Workshop[]> {
-		const params: HttpParams = new HttpParams()
-			.set('application_id', application_id);
-
-		return this.http.get<Workshop[]>(`${ApiSettings.getApiBaseURL()}workshops/`, {
-			withCredentials: true,
-			params,
-		}).pipe(
-			map(
-				(workshops: Workshop[]): Workshop[] => workshops.map(
-					(workshop: Workshop): Workshop => new Workshop(workshop),
-				),
-			),
-		);
-	}
-
-	createWorkshop(application_id: string | number, workshop: Workshop): Observable<Workshop> {
-		const params: HttpParams = new HttpParams()
-			.set('application_id', application_id)
-			.set('workshop', encodeURIComponent(JSON.stringify(workshop)));
-
-		return this.http.post<Workshop>(`${ApiSettings.getApiBaseURL()}workshops/`, params, {
-			withCredentials: true,
-		}).pipe(
-			map(
-				(workshop_new: Workshop): Workshop => new Workshop(workshop_new),
-			),
-		);
-	}
 }
