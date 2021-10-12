@@ -45,6 +45,7 @@ import { ClustercardComponent } from './clustercard/clustercard.component';
 import { ScaleClusterComponent } from './modals/scale-cluster/scale-cluster.component';
 import { DeleteClusterComponent } from './modals/delete-cluster/delete-cluster.component';
 import { AddWorkshopComponent } from './workshop/add-workshop/add-workshop.component';
+import { WorkshopOverviewComponent } from './workshop/workshop-overview/workshop-overview.component';
 
 /**
  * VM module.
@@ -99,6 +100,7 @@ import { AddWorkshopComponent } from './workshop/add-workshop/add-workshop.compo
 		          ScaleClusterComponent,
 		          DeleteClusterComponent,
 		AddWorkshopComponent,
+		WorkshopOverviewComponent,
 	          ],
 })
 export class VmModule {
