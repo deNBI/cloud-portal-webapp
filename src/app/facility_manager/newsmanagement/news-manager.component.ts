@@ -5,8 +5,7 @@ import { ModalDirective } from 'ngx-bootstrap/modal';
 import { NewsService } from '../../api-connector/news.service';
 import { FacilityService } from '../../api-connector/facility.service';
 import { environment } from '../../../environments/environment';
-import { WordPressNews } from './wp-news';
-import { WordPressTag } from './wp-tags';
+import { FacilityNews } from './facility-news';
 import { WIKI_MOTD } from '../../../links/links';
 
 /**
@@ -25,23 +24,24 @@ export class NewsManagerComponent implements OnInit {
 	public managerFacilities: [string, number][];
 	public managerFacilitiesIdOnly: number[];
 	public selectedFacilities: [string, number][] = [];
-	public facilitiesToPost: number[] = [];
+	public facilityToSetMOTD: number;
+	public facilityMOTDPairs: {[key: number]: number} = {}
+	facilityToPost: number;
 	returnState: number = -1;
 	@ViewChild('infoModal', { static: true }) infoModal: ModalDirective;
-	facilitiesToSetMOTD: [string, number][] = [];
 	selectedTags: string[] = [];
 	computeCenters: any[] = [];
-	availableTags: WordPressTag[] = [];
-	wordPressNews: WordPressNews[] = [];
+	facilityNews: FacilityNews[] = [];
+	newFacilityNews: FacilityNews = new FacilityNews();
+	selectedFacilityNews: FacilityNews = new FacilityNews();
+
 	newsSetAsMOTD: string[] = [];
-	selectedNews: WordPressNews = new WordPressNews();
-	newWordpressNews: WordPressNews = new WordPressNews();
 	selectedNewsForm: FormGroup = new FormGroup({
-		title: new FormControl({ value: this.newWordpressNews.title, disabled: false },
+		title: new FormControl({ value: this.newFacilityNews.title, disabled: false },
 			Validators.required),
-		text: new FormControl({ value: this.newWordpressNews.text, disabled: false },
+		text: new FormControl({ value: this.newFacilityNews.text, disabled: false },
 			Validators.required),
-		motd: new FormControl({ value: this.newWordpressNews.excerpt, disabled: false }),
+		motd: new FormControl({ value: this.newFacilityNews.motd, disabled: false }),
 	});
 	allChecked: boolean = true;
 	deletionStatus: number = 0;
@@ -70,163 +70,100 @@ export class NewsManagerComponent implements OnInit {
 				this.selectedFacilities = this.managerFacilities.map((facility: [string, number]): [string, number] => facility);
 				this.managerFacilitiesIdOnly = this.managerFacilities.map((facility: [string, number]): number => facility['FacilityId']);
 				this.setFormGroup();
-				this.getWordPressNews();
-				this.getTagsAvailable();
+				this.getNewsFromAPI();
+				this.setCurrentNews(null);
 			});
 		});
 	}
 
-	/**
-	 * Manages the list which contains the facilities that will get the current News id set as the MOTD id.
-	 *
-	 * @param facility the facility of the checkbox that got clicked
-	 */
-	manageMOTD(facility: [string, number]): void {
-		const index: number = this.facilitiesToSetMOTD.indexOf(facility);
-		if (index > -1) {
-			this.facilitiesToSetMOTD.splice(index, 1);
-		} else {
-			this.facilitiesToSetMOTD.push(facility);
-		}
-	}
-
-	/**
-	 * Gets all available tags from WordPress for facility news.
-	 */
-	getTagsAvailable(): void {
-		this.newsService.getAvailableTagsFromWordPress().subscribe((tags: WordPressTag[]): void => {
-			if (!(('code' in tags) && tags['code'] === 'wp-die')) {
-				if (tags) {
-					this.availableTags = tags;
-				}
-			}
-
-		});
-	}
-
-	/**
-	 * Adds or updates news in WordPress
-	 *
-	 * @param news the news with all necessary attributes
-	 * @param update decides whether the news get updated or not
-	 */
-	addNewsToWordpress(bare_news: WordPressNews, update: boolean): void {
-		const news: WordPressNews = bare_news;
-		news.status = 'publish';
+	addNewsToAPI(bare_news: FacilityNews): void {
+		const news: FacilityNews = bare_news;
 		news.title = this.selectedNewsForm.controls['title'].value;
 		news.text = this.selectedNewsForm.controls['text'].value;
-		news.excerpt = this.selectedNewsForm.controls['motd'].value;
-		if (this.selectedTags.length > 0) {
-			news.tags = this.selectedTags.toString();
-		}
-		const tempArr: string[] = [];
-		this.facilitiesToPost.forEach((facility: any): void => {
-			const computeCenter: any = this.computeCenters
-				.find((center: any): boolean => center.compute_center_facility_id === facility);
-			if (computeCenter) {
-				const wordPressComputeCenterId: string = computeCenter['compute_center_news_id'];
-				if (wordPressComputeCenterId) {
-					tempArr.push(wordPressComputeCenterId);
-				}
-			}
-		});
-		news.facility = tempArr.toString();
-		if (update) {
-			news.id = this.selectedNews.id;
-			this.newsService.updateNewsInWordpress(news).subscribe((result: any): void => {
-				if (result) {
-					if (result['id']) {
-						this.returnState = 1;
-						this.setMOTDForFacility(result['id'].toString());
-						this.infoModal.show();
-					}
-				}
-				this.getWordPressNews();
-			});
+		news.motd = this.selectedNewsForm.controls['motd'].value;
+		news.facility = this.facilityToPost;
+		if (document.getElementById(`news_select_${this.facilityToPost}_motd`)['checked']) {
+			this.facilityToSetMOTD = this.facilityToPost;
 		} else {
-			this.newsService.addNewsToWordpress(news).subscribe((result: any): void => {
-				if (result) {
-					if (result['id']) {
-						this.returnState = 2;
-						this.setMOTDForFacility(result['id'].toString());
-						this.infoModal.show();
-					}
-				}
-				this.getWordPressNews();
-			});
+			this.facilityToSetMOTD = null;
 		}
-	}
 
-	/**
-	 * Sets and replaces or deletes the MOTD for all facilities affected from the news or its update.
-	 *
-	 * @param id the id of the news in WordPress to reference it
-	 */
-	setMOTDForFacility(id: string): void {
-		this.managerFacilities.forEach((element: [string, number]): void => {
-			const tempCenter: any = this.computeCenters
-				.find((center: any): boolean => center['compute_center_facility_id'] === element['FacilityId']);
-			if (tempCenter) {
-				if (tempCenter['compute_center_motd_id'] === id) {
-					const facilityToCheck: [string, number] = this.facilitiesToSetMOTD
-						.find((facility: [string, number]): boolean => facility['FacilityId'] === tempCenter['compute_center_facility_id']);
-					if (!facilityToCheck) {
-						this.facilityService.setMOTDForFacility(element['FacilityId'], '-1')
+		this.newsService.addFacilityNews(news).subscribe((result: any): void => {
+			if (result) {
+				if (result['id']) {
+					if (this.facilityToSetMOTD != null) {
+						this.newsService.updateFacilityMOTD(result['id'], this.facilityToSetMOTD)
 							.subscribe((): void => {
-								this.facilityService.getComputeCenters().subscribe((computeCenters: any[]): void => {
-									this.computeCenters = computeCenters;
-								});
 							});
 					}
-				} else {
-					const facilityToCheck: [string, number] = this.facilitiesToSetMOTD
-						.find((facility: [string, number]): boolean => facility['FacilityId'] === tempCenter['compute_center_facility_id']);
-					if (facilityToCheck) {
-						this.facilityService.setMOTDForFacility(element['FacilityId'], id)
-							.subscribe((): void => {
-								this.facilityService.getComputeCenters().subscribe((computeCenters: any[]): void => {
-									this.computeCenters = computeCenters;
-								});
-							});
-					}
+					this.returnState = 2;
+					this.infoModal.show();
 				}
 			}
+			this.getNewsFromAPI();
+			this.setCurrentNews(null);
+		});
+
+	}
+
+	updateNewsInAPI(bare_news: FacilityNews): void {
+		const news: FacilityNews = bare_news;
+		news.title = this.selectedNewsForm.controls['title'].value;
+		news.text = this.selectedNewsForm.controls['text'].value;
+		news.motd = this.selectedNewsForm.controls['motd'].value;
+		news.facility = this.facilityToPost;
+		if (document.getElementById(`news_select_${this.facilityToPost}_motd`)['checked']) {
+			this.facilityToSetMOTD = this.facilityToPost;
+		} else {
+			this.facilityToSetMOTD = null;
+		}
+
+		this.newsService.updateFacilityNews(news).subscribe((result: any): void => {
+			if (result) {
+				if (result['id']) {
+					if (this.facilityToSetMOTD != null) {
+						this.newsService.updateFacilityMOTD(result['id'], this.facilityToSetMOTD)
+							.subscribe((): void => {
+							});
+					}
+
+					this.returnState = 2;
+					this.infoModal.show();
+				}
+			}
+			this.getNewsFromAPI();
 		});
 	}
 
-	/**
-	 * Gets all available news for the facilities of the facility manager from WordPress.
-	 */
-	getWordPressNews(): void {
-		this.wordPressNews = [];
+	getFacilitiesFromWagtail(): void {
+		this.facilityMOTDPairs = [];
+		this.newsService.getFacilitiesFromWagtail().subscribe((facilities: any[]): void => {
+			// eslint-disable-next-line @typescript-eslint/prefer-for-of,no-plusplus
+			for (let i = 0; i < facilities.length; i++) {
+				this.facilityMOTDPairs[facilities[i]['id']] = facilities[i]['motd'];
+			}
+			console.log(this.facilityMOTDPairs);
+		});
+	}
+
+	getNewsFromAPI(): void {
+		this.facilityNews = [];
 		const facility_ids: string[] = this.selectedFacilities.map((facility: [string, number]): string => facility['FacilityId'].toString());
-		this.newsService.getNewsFromWordPress(facility_ids.toString()).subscribe((result: Object[]): any => {
-			this.wordPressNews = result.map((news: Object): any => this.createWordPressNews(news));
-			this.setNews();
+		this.newsService.getFacilityNews(facility_ids.toString()).subscribe((result: Object[]): any => {
+			this.facilityNews = result.map((news: Object): any => this.createFacilityNews(news));
+			console.log(this.facilityNews);
 		});
-
+		this.getFacilitiesFromWagtail();
 	}
 
-	/**
-	 * Method to create news to save it in the list of existing news.
-	 *
-	 * @param wordPressNews the response as an Object from WordPress
-	 */
-	createWordPressNews(wordPressNews: Object): WordPressNews {
-		const news: WordPressNews = new WordPressNews();
-		news.id = wordPressNews['id'];
-		const rendered_title: string = wordPressNews['title']['rendered'];
-		news.title = rendered_title.replace(/(<([^>]+)>)/ig, '');
-		news.date = wordPressNews['date'];
-		news.modification_date = wordPressNews['modified'];
-		const rendered_text: string = wordPressNews['content']['rendered'];
-		news.text = rendered_text.replace(/(<([^>]+)>)/ig, '');
-		const rendered_excerpt: string = wordPressNews['excerpt']['rendered'];
-		news.excerpt = rendered_excerpt.replace(/(<([^>]+)>)/ig, '');
-		news.tags = wordPressNews['tags'];
-		news.facility = wordPressNews['categories'];
-		news.status = wordPressNews['status'];
-		news.url = wordPressNews['link'];
+	createFacilityNews(facilityNews: Object): FacilityNews {
+		const news: FacilityNews = new FacilityNews();
+		news.id = facilityNews['id'];
+		news.title = facilityNews['title'];
+		news.text = facilityNews['text'];
+		news.motd = facilityNews['motd'];
+		news.facility = facilityNews['facility'];
+		news.date = facilityNews['posted_at'];
 
 		return news;
 	}
@@ -242,7 +179,7 @@ export class NewsManagerComponent implements OnInit {
 			this.selectedFacilities = this.managerFacilities.map((facility: [string, number]): [string, number] => facility);
 			this.allChecked = true;
 		}
-		this.getWordPressNews();
+		this.getNewsFromAPI();
 	}
 
 	/**
@@ -258,69 +195,28 @@ export class NewsManagerComponent implements OnInit {
 			this.selectedFacilities.splice(index, 1);
 		}
 		if (this.selectedFacilities.length === 0) {
-			this.setNews();
+			this.setCurrentNews();
 		}
 		if (this.selectedFacilities.length === this.managerFacilities.length) {
 			this.allChecked = true;
 		} else {
 			this.allChecked = false;
 		}
-		this.getWordPressNews();
+		this.getNewsFromAPI();
 	}
 
-	/**
-	 * Sets the news which got selected or creates a new news object. Also empties all relevant lists.
-	 *
-	 * @param news the news which got clicked or null in all other cases
-	 */
-	setNews(news?: WordPressNews): void {
-		this.facilitiesToPost = [];
-		this.facilitiesToSetMOTD = [];
+	setCurrentNews(news?: FacilityNews): void {
+		this.facilityToPost = null;
+		this.facilityToSetMOTD = null;
 		this.selectedTags = [];
 		if (news) {
-			this.selectedNews = news;
-			if (this.selectedNews.excerpt) {
-				this.motdLength.next(this.selectedNews.excerpt.length);
-			} else {
-				this.motdLength.next(0);
-			}
-			this.managerFacilities.forEach((facility: [string, number]): void => {
-				const tempFacility: any = this.computeCenters.find(
-					(element: any): boolean => element['compute_center_facility_id'] === facility['FacilityId'],
-				);
-				if (tempFacility) {
-					if (tempFacility['compute_center_motd_id'] === news.id.toString()) {
-						this.facilitiesToSetMOTD.push(facility);
-						document.getElementById(`news_select_${facility['FacilityId']}_motd`)['checked'] = true;
-					} else {
-						document.getElementById(`news_select_${facility['FacilityId']}_motd`)['checked'] = false;
-					}
-				}
-			});
-
-			const facilityIds: string[] = news.facility.toString().split(',');
-			this.facilitiesToPost = facilityIds.map((id: string): number => this.computeCenters
-				.find((facility: any): boolean => facility['compute_center_news_id'] === id)['compute_center_facility_id']);
-			const tagIds: string[] = news.tags.toString().split(',');
-			this.selectedTags = tagIds.map((tag: string): string => tag);
+			this.selectedFacilityNews = news;
+			this.facilityToPost = news.facility;
 		} else {
-			this.selectedNews = new WordPressNews();
-			this.motdLength.next(0);
-
-			this.managerFacilities.forEach((facility: [string, number]): void => {
-				if (document.getElementById(`news_select_${facility['FacilityId']}_motd`)) {
-					document.getElementById(`news_select_${facility['FacilityId']}_motd`)['checked'] = false;
-				}
-			});
-			this.selectedTags = [];
-			this.facilitiesToPost = [];
+			this.selectedFacilityNews = new FacilityNews();
+			this.selectedFacilityNews.id = null;
 		}
-		this.deletionStatus = 0;
-		this.patchingStatus = 0;
-		this.addingStatus = 0;
-		this.error_string = '';
 		this.setFormGroup();
-		this.listNewsSetAsMOTD();
 	}
 
 	/**
@@ -329,7 +225,7 @@ export class NewsManagerComponent implements OnInit {
 	 *
 	 * @param news the news for which the string shall be returned
 	 */
-	facilitiesAsString(news: WordPressNews): string {
+	facilitiesAsString(news: FacilityNews): string {
 		const newsId: string = news.id.toString();
 		if (this.newsSetAsMOTD.includes(newsId)) {
 			let facilitiesString: string = '';
@@ -369,16 +265,16 @@ export class NewsManagerComponent implements OnInit {
 	setFormGroup(): void {
 		this.selectedNewsForm = new FormGroup({
 			title: new FormControl(
-				{ value: this.selectedNews.title, disabled: false }, Validators.required,
+				{ value: this.selectedFacilityNews.title, disabled: false }, Validators.required,
 			),
 			text: new FormControl(
-				{ value: this.selectedNews.text, disabled: false }, Validators.required,
+				{ value: this.selectedFacilityNews.text, disabled: false }, Validators.required,
 			),
 			motd: new FormControl(
-				{ value: this.selectedNews.excerpt, disabled: false },
+				{ value: this.selectedFacilityNews.motd, disabled: false },
 			),
 			tag: new FormControl(
-				{ value: this.selectedNews.tags, disabled: false },
+				{ value: this.selectedFacilityNews.tags, disabled: false },
 			),
 		});
 		this.selectedNewsForm.controls['motd'].valueChanges.subscribe((value: any): void => {
@@ -392,40 +288,14 @@ export class NewsManagerComponent implements OnInit {
 	 * @param facility the facility which gets added/deleted
 	 */
 	setFacility(facility: [string, number]): void {
-		const index: number = this.facilitiesToPost.indexOf(facility['FacilityId']);
-		if (index === -1) {
-			this.facilitiesToPost.push(facility['FacilityId']);
-		} else {
-			this.facilitiesToPost.splice(index, 1);
-			if (this.facilitiesToSetMOTD.find((element: [string, number]): boolean => element === facility)) {
-				this.manageMOTD(facility);
-				document.getElementById(`news_select_${facility['FacilityId']}_motd`)['checked'] = false;
-			}
-		}
+		this.facilityToPost = facility['FacilityId'];
 	}
 
-	/**
-	 * Adds or deletes tags from the list of tags to add to the news when the corresponding checkbox gets clicked.
-	 *
-	 * @param tag the tag which gets added/deleted.
-	 */
-	manageTags(tag: WordPressTag): void {
-		const index: number = this.selectedTags.indexOf(tag.id.toString());
-		if (index > -1) {
-			this.selectedTags.splice(index, 1);
-		} else {
-			this.selectedTags.push(tag.id.toString());
-		}
-	}
-
-	/**
-	 * Removes the selected news object from WordPress.
-	 */
-	deleteNewsFromWordpress(): void {
-		this.newsService.deleteNewsFromWordpress(this.selectedNews.id).subscribe((): void => {
+	deleteNewsFromAPI(): void {
+		this.newsService.deleteNewsFromAPI(this.selectedFacilityNews.id).subscribe((): void => {
 			this.returnState = 0;
 			this.infoModal.show();
-			this.getWordPressNews();
+			this.getNewsFromAPI();
 		});
 	}
 }

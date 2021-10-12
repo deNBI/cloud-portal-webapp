@@ -44,8 +44,8 @@
 			<div class="col-1" style="text-align: center">
 			</div>
 		</div>
-		<div *ngIf="vm?.still_used_confirmation_requested" class="alert alert-danger row"
-				 style="margin: auto; text-align: center" role="alert">
+		<div *ngIf="vm?.still_used_confirmation_requested" class="alert alert-danger"
+				 style="margin: auto;" role="alert">
 			Confirm in the
 			<a style="margin-left:2px;margin-right:2px;" [routerLink]="['/virtualmachines/detail/' + vm?.openstackid]"> detailed overview </a>
 			of the machine that it is still in use, otherwise it will be

@@ -2,42 +2,43 @@ import {
 	Component, ElementRef, Inject, Input, OnDestroy, OnInit, Renderer2, ViewChild,
 } from '@angular/core';
 import * as moment from 'moment';
-import {forkJoin, Observable, Subscription} from 'rxjs';
-import {ActivatedRoute, Router} from '@angular/router';
-import {NgForm} from '@angular/forms';
-import {AutocompleteComponent} from 'angular-ng-autocomplete';
-import {DOCUMENT} from '@angular/common';
-import {Chart} from 'chart.js';
-import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
-import {environment} from '../../environments/environment';
-import {ProjectMemberApplication} from './project_member_application';
-import {ComputecenterComponent} from './computecenter.component';
-import {Userinfo} from '../userinfo/userinfo.model';
-import {UserService} from '../api-connector/user.service';
-import {Application} from '../applications/application.model/application.model';
-import {GroupService} from '../api-connector/group.service';
-import {ApplicationBaseClassComponent} from '../shared/shared_modules/baseClass/application-base-class.component';
-import {FacilityService} from '../api-connector/facility.service';
-import {ApplicationsService} from '../api-connector/applications.service';
-import {FullLayoutComponent} from '../layouts/full-layout.component';
-import {Flavor} from '../virtualmachines/virtualmachinemodels/flavor';
-import {FlavorType} from '../virtualmachines/virtualmachinemodels/flavorType';
-import {FlavorService} from '../api-connector/flavor.service';
-import {CreditsService} from '../api-connector/credits.service';
-import {is_vo} from '../shared/globalvar';
+import { forkJoin, Observable, Subscription } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { NgForm } from '@angular/forms';
+import { AutocompleteComponent } from 'angular-ng-autocomplete';
+import { DOCUMENT } from '@angular/common';
+import { Chart } from 'chart.js';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { environment } from '../../environments/environment';
+import { ProjectMemberApplication } from './project_member_application';
+import { ComputecenterComponent } from './computecenter.component';
+import { Userinfo } from '../userinfo/userinfo.model';
+import { UserService } from '../api-connector/user.service';
+import { Application } from '../applications/application.model/application.model';
+import { GroupService } from '../api-connector/group.service';
+import { ApplicationBaseClassComponent } from '../shared/shared_modules/baseClass/application-base-class.component';
+import { FacilityService } from '../api-connector/facility.service';
+import { ApplicationsService } from '../api-connector/applications.service';
+import { FullLayoutComponent } from '../layouts/full-layout.component';
+import { Flavor } from '../virtualmachines/virtualmachinemodels/flavor';
+import { FlavorType } from '../virtualmachines/virtualmachinemodels/flavorType';
+import { FlavorService } from '../api-connector/flavor.service';
+import { CreditsService } from '../api-connector/credits.service';
+import { is_vo } from '../shared/globalvar';
 import {
 	CLOUD_MAIL, CREDITS_WIKI, WIKI_MEMBER_MANAGEMENT, WIKI_PUBLICATIONS,
 } from '../../links/links';
-import {Doi} from '../applications/doi/doi';
-import {ApiSettings} from '../api-connector/api-settings.service';
-import {Application_States, ExtensionRequestType} from '../shared/shared_modules/baseClass/abstract-base-class';
-import {ProjectMember} from './project_member.model';
-import {Project} from './project.model';
-import {ModificationRequestComponent} from './modals/modification-request/modification-request.component';
-import {LifetimeRequestComponent} from './modals/lifetime-request/lifetime-request.component';
-import {DoiComponent} from './modals/doi/doi.component';
-import {CreditsRequestComponent} from './modals/credits-request/credits-request.component';
-import {WorkshopUrlInfoModel} from '../virtualmachines/workshop/workshop-urlinfo.model';
+import { Doi } from '../applications/doi/doi';
+import { ApiSettings } from '../api-connector/api-settings.service';
+import { Application_States, ExtensionRequestType } from '../shared/shared_modules/baseClass/abstract-base-class';
+import { ProjectMember } from './project_member.model';
+import { Project } from './project.model';
+import { ModificationRequestComponent } from './modals/modification-request/modification-request.component';
+import { LifetimeRequestComponent } from './modals/lifetime-request/lifetime-request.component';
+import { DoiComponent } from './modals/doi/doi.component';
+import { CreditsRequestComponent } from './modals/credits-request/credits-request.component';
+import { WorkshopUrlInfoModel } from '../virtualmachines/workshop/workshop-urlinfo.model';
+import { WorkshopService } from '../api-connector/workshop.service';
 
 /**
  * Projectoverview component.
@@ -46,7 +47,7 @@ import {WorkshopUrlInfoModel} from '../virtualmachines/workshop/workshop-urlinfo
 	selector: 'app-project-overview',
 	templateUrl: 'overview.component.html',
 	providers: [FlavorService, ApplicationsService,
-		FacilityService, UserService, GroupService, ApiSettings, CreditsService],
+		FacilityService, UserService, GroupService, ApiSettings, CreditsService, WorkshopService],
 })
 export class OverviewComponent extends ApplicationBaseClassComponent implements OnInit, OnDestroy {
 
@@ -133,7 +134,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 							private fullLayout: FullLayoutComponent,
 							private router: Router,
 							private creditsService: CreditsService,
-							@Inject(DOCUMENT) private document: Document) {
+							@Inject(DOCUMENT) private document: Document,
+							private workshopService: WorkshopService) {
 		super(userService, applicationsService, facilityService);
 	}
 
@@ -158,7 +160,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 		const initialState = {
 			project: this.project_application,
 		};
-		this.bsModalRef = this.modalService.show(ModificationRequestComponent, {initialState});
+		this.bsModalRef = this.modalService.show(ModificationRequestComponent, { initialState });
 		this.bsModalRef.setClass('modal-lg');
 		this.subscribeForExtensionResult(this.ExtensionRequestType.MODIFICATION);
 	}
@@ -169,7 +171,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 			application_id: this.application_id,
 		};
 
-		this.bsModalRef = this.modalService.show(DoiComponent, {initialState});
+		this.bsModalRef = this.modalService.show(DoiComponent, { initialState });
 		this.bsModalRef.setClass('modal-lg');
 		this.subscription.add(
 			this.bsModalRef.content.event.subscribe(
@@ -195,7 +197,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 			project: this.project_application,
 			life_time_string: `${this.project.DateCreated} - ${this.project.DateEnd}`,
 		};
-		this.bsModalRef = this.modalService.show(LifetimeRequestComponent, {initialState});
+		this.bsModalRef = this.modalService.show(LifetimeRequestComponent, { initialState });
 		this.bsModalRef.setClass('modal-lg');
 		this.subscribeForExtensionResult(this.ExtensionRequestType.EXTENSION);
 	}
@@ -211,7 +213,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 			project: this.project_application,
 			flavorList: this.flavorList,
 		};
-		this.bsModalRef = this.modalService.show(CreditsRequestComponent, {initialState});
+		this.bsModalRef = this.modalService.show(CreditsRequestComponent, { initialState });
 		this.bsModalRef.setClass('modal-lg');
 		this.subscribeForExtensionResult(this.ExtensionRequestType.CREDIT);
 	}
@@ -243,6 +245,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	}
 
 	fetchCreditHistoryOfProject(): void {
+		this.creditHistoryLoaded = false;
 		if (this.project != null && this.project_application.credits_allowed) {
 			this.creditsService.getCreditsUsageHistoryOfProject(Number(this.project.Id.toString())).toPromise()
 				.then((response: {}): void => {
@@ -418,8 +421,11 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 			} catch (someError) {
 				// empty catch
 			}
+
 			this.subscription.unsubscribe();
 			this.subscription = new Subscription();
+			this.resourceDataLoaded = false;
+			this.creditHistoryLoaded = false;
 			this.errorMessage = null;
 			this.isLoaded = false;
 			this.project = null;
@@ -442,7 +448,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
 	getWorkshopUrlInfo(): void {
 		this.workshopInfosLoaded = false;
-		this.applicationsService.getWorkshopInfoUrl(this.application_id).subscribe(
+		this.workshopService.getWorkshopInfoUrl(this.application_id).subscribe(
 			(infos: WorkshopUrlInfoModel[]) => {
 				this.workshopInfosLoaded = true;
 				this.workshop_infos = infos;
@@ -477,6 +483,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	 * @param groupid the id of the group of the application in perun
 	 */
 	getUsedResources(groupid: string): void {
+		this.resourceDataLoaded = false;
+
 		if (!this.project?.OpenStackProject) {
 			this.groupService.getGroupResources(groupid).subscribe(
 				(res: any): void => {
@@ -971,8 +979,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 					this.updateNotificationModal('Failed', `${username} could not be promoted to Admin!`, true, 'danger');
 				}
 			}).catch((): void => {
-			this.updateNotificationModal('Failed', `${username} could not be promoted to Admin!`, true, 'danger');
-		});
+				this.updateNotificationModal('Failed', `${username} could not be promoted to Admin!`, true, 'danger');
+			});
 	}
 
 	public removeAdmin(groupid: number, userid: number, name: string): void {
@@ -987,8 +995,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 					this.updateNotificationModal('Failed', `${name} could not be removed as Admin!`, true, 'danger');
 				}
 			}).catch((): void => {
-			this.updateNotificationModal('Failed', `${name} could not be removed as Admin!`, true, 'danger');
-		});
+				this.updateNotificationModal('Failed', `${name} could not be removed as Admin!`, true, 'danger');
+			});
 	}
 
 	/**

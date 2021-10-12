@@ -133,7 +133,7 @@
                     <!-- into select: [style.display]=" ((application | hasstatusinlist:Application_States.SUBMITTED)  || (application | hasstatusinlist:Application_States.CONFIRMATION_DECLINED) || (!application?.ComputeCenter?.FacilityId ))? 'inherit' :'none'"-->
                     <select *ngIf="(application | hasstatusinlist:Application_States.SUBMITTED) || (application | hasstatusinlist:Application_States.CONFIRMATION_DECLINED)  || ((application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION)  && !application?.ComputeCenter?.FacilityId )"
                             [(ngModel)]="selectedCenter[application.project_application_id]"
-                      class="form-control form-select" [id]="'id_compute_center_option_' + application?.project_application_name"
+                      class="form-select" [id]="'id_compute_center_option_' + application?.project_application_name"
                       #selectedComputeCenter>
 
                       <option [ngValue]="undefined" selected> no center selected
