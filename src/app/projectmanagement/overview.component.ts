@@ -38,6 +38,7 @@ import { LifetimeRequestComponent } from './modals/lifetime-request/lifetime-req
 import { DoiComponent } from './modals/doi/doi.component';
 import { CreditsRequestComponent } from './modals/credits-request/credits-request.component';
 import { WorkshopUrlInfoModel } from '../virtualmachines/workshop/workshop-urlinfo.model';
+import { WorkshopService } from '../api-connector/workshop.service';
 
 /**
  * Projectoverview component.
@@ -46,7 +47,7 @@ import { WorkshopUrlInfoModel } from '../virtualmachines/workshop/workshop-urlin
 	selector: 'app-project-overview',
 	templateUrl: 'overview.component.html',
 	providers: [FlavorService, ApplicationsService,
-		FacilityService, UserService, GroupService, ApiSettings, CreditsService],
+		FacilityService, UserService, GroupService, ApiSettings, CreditsService, WorkshopService],
 })
 export class OverviewComponent extends ApplicationBaseClassComponent implements OnInit, OnDestroy {
 
@@ -133,7 +134,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 							private fullLayout: FullLayoutComponent,
 							private router: Router,
 							private creditsService: CreditsService,
-							@Inject(DOCUMENT) private document: Document) {
+							@Inject(DOCUMENT) private document: Document,
+							private workshopService: WorkshopService) {
 		super(userService, applicationsService, facilityService);
 	}
 
@@ -243,6 +245,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	}
 
 	fetchCreditHistoryOfProject(): void {
+		this.creditHistoryLoaded = false;
 		if (this.project != null && this.project_application.credits_allowed) {
 			this.creditsService.getCreditsUsageHistoryOfProject(Number(this.project.Id.toString())).toPromise()
 				.then((response: {}): void => {
@@ -418,8 +421,11 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 			} catch (someError) {
 				// empty catch
 			}
+
 			this.subscription.unsubscribe();
 			this.subscription = new Subscription();
+			this.resourceDataLoaded = false;
+			this.creditHistoryLoaded = false;
 			this.errorMessage = null;
 			this.isLoaded = false;
 			this.project = null;
@@ -442,7 +448,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
 	getWorkshopUrlInfo(): void {
 		this.workshopInfosLoaded = false;
-		this.applicationsService.getWorkshopInfoUrl(this.application_id).subscribe(
+		this.workshopService.getWorkshopInfoUrl(this.application_id).subscribe(
 			(infos: WorkshopUrlInfoModel[]) => {
 				this.workshopInfosLoaded = true;
 				this.workshop_infos = infos;
@@ -477,6 +483,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	 * @param groupid the id of the group of the application in perun
 	 */
 	getUsedResources(groupid: string): void {
+		this.resourceDataLoaded = false;
+
 		if (!this.project?.OpenStackProject) {
 			this.groupService.getGroupResources(groupid).subscribe(
 				(res: any): void => {
