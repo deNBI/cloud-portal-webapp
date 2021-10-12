@@ -18,6 +18,7 @@ export const WIKI_PUBLICATIONS: string = `${environment.WIKI_PRE}citation_and_pu
 export const WIKI_MEMBER_MANAGEMENT: string = `${environment.WIKI_PRE}portal/project_overview/#member-management`;
 export const WIKI_FAQ: string = `${environment.WIKI_PRE}FAQ/`;
 export const WIKI_MOTD: string = `${environment.WIKI_PRE}cloud_admin/news_management/#message-of-the-day`;
+export const WIKI_WORKSHOPS: string = `${environment.WIKI_PRE}simple_vm/workshop`;
 export const SCALE_SCRIPT_LINK: string = 'https://raw.githubusercontent.com/deNBI/user_scripts/master/bibigrid/scaling.py';
 export const WIKI_MOUNT_VOLUME: string = `${environment.WIKI_PRE}simple_vm/volumes/#mount-a-volume`;
 export const WIKI_GROUP_INVITATIONS: string = `${environment.WIKI_PRE}simple_vm/project_overview/#inviting-members`;
