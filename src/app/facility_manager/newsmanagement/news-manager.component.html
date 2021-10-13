@@ -320,6 +320,7 @@ we are happy to inform..."
             <p *ngIf="returnState === 0">The selected news got deleted!</p>
             <p *ngIf="returnState === 1">The selected news got updated!</p>
             <p *ngIf="returnState === 2">The news got uploaded!</p>
+						<p *ngIf="returnState === -1">An error occured: {{error_string}}</p>
           </div>
         </div>
         <div class="modal-footer">
