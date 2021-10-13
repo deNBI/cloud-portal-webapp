@@ -2,8 +2,8 @@ import {
 	Component, EventEmitter, OnDestroy,
 } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
-import { VirtualMachine } from "../../virtualmachinemodels/virtualmachine";
-import { elixir_id } from "../../../shared/globalvar";
+import { VirtualMachine } from '../../virtualmachinemodels/virtualmachine';
+import { elixir_id } from '../../../shared/globalvar';
 
 @Component({
 	selector: 'app-delete-vm',

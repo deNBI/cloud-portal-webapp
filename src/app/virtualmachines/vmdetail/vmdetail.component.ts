@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {Subject, Subscription} from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { ClipboardService } from 'ngx-clipboard';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { FlavorService } from '../../api-connector/flavor.service';
 import { ApplicationsService } from '../../api-connector/applications.service';
 import { FacilityService } from '../../api-connector/facility.service';
@@ -27,8 +28,7 @@ import { Volume } from '../volumes/volume';
 import { VolumeStates } from '../volumes/volume_states';
 import { Condalog } from '../conda/condalog';
 import { Backend } from '../conda/backend/backend';
-import { DeleteVmComponent} from "../modals/delete-vm/delete-vm.component";
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { DeleteVmComponent } from '../modals/delete-vm/delete-vm.component';
 
 /**
  * VM Detail page component
