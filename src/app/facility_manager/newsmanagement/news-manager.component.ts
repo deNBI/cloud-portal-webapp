@@ -1,6 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {
+	Component, OnDestroy, OnInit, ViewChild,
+} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { NewsService } from '../../api-connector/news.service';
 import { FacilityService } from '../../api-connector/facility.service';
@@ -16,7 +18,7 @@ import { WIKI_MOTD } from '../../../links/links';
 	templateUrl: 'news-manager.component.html',
 	providers: [NewsService, FacilityService],
 })
-export class NewsManagerComponent implements OnInit {
+export class NewsManagerComponent implements OnInit, OnDestroy {
 
 	title: string = 'News Management';
 	public production: boolean = environment.production;
@@ -51,11 +53,12 @@ export class NewsManagerComponent implements OnInit {
 	reg1: RegExp = /\[/g;
 	reg2: RegExp = /]/g;
 	reg3: RegExp = /'/g;
+	subscription: Subscription = new Subscription();
 
 	public motdLength: BehaviorSubject<number> = new BehaviorSubject(0);
 
 	constructor(private newsService: NewsService,
-		private facilityService: FacilityService) {
+							private facilityService: FacilityService) {
 		// constructor for NewsManager
 	}
 
@@ -63,17 +66,25 @@ export class NewsManagerComponent implements OnInit {
 	 * Method on site initialization.
 	 */
 	ngOnInit(): void {
-		this.facilityService.getComputeCenters().subscribe((computeCenters: any[]): void => {
-			this.computeCenters = computeCenters;
-			this.facilityService.getManagerFacilities().subscribe((result: any): void => {
-				this.managerFacilities = result;
-				this.selectedFacilities = this.managerFacilities.map((facility: [string, number]): [string, number] => facility);
-				this.managerFacilitiesIdOnly = this.managerFacilities.map((facility: [string, number]): number => facility['FacilityId']);
-				this.setFormGroup();
-				this.getNewsFromAPI();
-				this.setCurrentNews(null);
-			});
-		});
+		this.subscription.add(
+			this.facilityService.getComputeCenters().subscribe((computeCenters: any[]): void => {
+				this.computeCenters = computeCenters;
+				this.subscription.add(
+					this.facilityService.getManagerFacilities().subscribe((result: any): void => {
+						this.managerFacilities = result;
+						this.selectedFacilities = this.managerFacilities.map((facility: [string, number]): [string, number] => facility);
+						this.managerFacilitiesIdOnly = this.managerFacilities.map((facility: [string, number]): number => facility['FacilityId']);
+						this.setFormGroup();
+						this.getNewsFromAPI();
+						this.setCurrentNews(null);
+					}),
+				);
+			}),
+		);
+	}
+
+	ngOnDestroy() {
+		this.subscription.unsubscribe();
 	}
 
 	addNewsToAPI(bare_news: FacilityNews): void {
@@ -88,22 +99,43 @@ export class NewsManagerComponent implements OnInit {
 			this.facilityToSetMOTD = null;
 		}
 
-		this.newsService.addFacilityNews(news).subscribe((result: any): void => {
-			if (result) {
-				if (result['id']) {
-					if (this.facilityToSetMOTD != null) {
-						this.newsService.updateFacilityMOTD(result['id'], this.facilityToSetMOTD)
-							.subscribe((): void => {
-							});
+		this.subscription.add(
+			this.newsService.addFacilityNews(news).subscribe(
+				(result: any): void => {
+					if (result) {
+						if (result['id']) {
+							if (this.facilityToSetMOTD != null) {
+								this.subscription.add(
+									this.newsService.updateFacilityMOTD(result['id'], this.facilityToSetMOTD).subscribe(
+										(): void => {
+										},
+										(error: any) => {
+											console.log(error);
+											if ('error' in error) {
+												this.error_string = error['error']['error'];
+											}
+										},
+									),
+								);
+							}
+							this.returnState = 2;
+							this.infoModal.show();
+						}
 					}
-					this.returnState = 2;
+					this.getNewsFromAPI();
+					this.setCurrentNews(null);
+				},
+				(error: any) => {
+					console.log(error);
+					this.returnState = -1;
 					this.infoModal.show();
-				}
-			}
-			this.getNewsFromAPI();
-			this.setCurrentNews(null);
-		});
-
+					if ('error' in error) {
+						this.error_string = error['error']['error'];
+					}
+					this.getNewsFromAPI();
+				},
+			),
+		);
 	}
 
 	updateNewsInAPI(bare_news: FacilityNews): void {
@@ -117,42 +149,65 @@ export class NewsManagerComponent implements OnInit {
 		} else {
 			this.facilityToSetMOTD = null;
 		}
+		this.subscription.add(
+			this.newsService.updateFacilityNews(news).subscribe(
+				(result: any): void => {
+					if (result) {
+						if (result['id']) {
+							if (this.facilityToSetMOTD != null) {
+								this.subscription.add(
+									this.newsService.updateFacilityMOTD(result['id'], this.facilityToSetMOTD).subscribe(
+										(): void => {
+										},
+										(error: any) => {
+											console.log(error);
+											if ('error' in error) {
+												this.error_string = error['error']['error'];
+											}
+										},
+									),
+								);
+							}
 
-		this.newsService.updateFacilityNews(news).subscribe((result: any): void => {
-			if (result) {
-				if (result['id']) {
-					if (this.facilityToSetMOTD != null) {
-						this.newsService.updateFacilityMOTD(result['id'], this.facilityToSetMOTD)
-							.subscribe((): void => {
-							});
+							this.returnState = 2;
+							this.infoModal.show();
+						}
 					}
-
-					this.returnState = 2;
+					this.getNewsFromAPI();
+				},
+				(error: any) => {
+					console.log(error);
+					this.returnState = -1;
 					this.infoModal.show();
-				}
-			}
-			this.getNewsFromAPI();
-		});
+					if ('error' in error) {
+						this.error_string = error['error']['error'];
+					}
+					this.getNewsFromAPI();
+				},
+			),
+		);
 	}
 
 	getFacilitiesFromWagtail(): void {
 		this.facilityMOTDPairs = [];
-		this.newsService.getFacilitiesFromWagtail().subscribe((facilities: any[]): void => {
-			// eslint-disable-next-line @typescript-eslint/prefer-for-of,no-plusplus
-			for (let i = 0; i < facilities.length; i++) {
-				this.facilityMOTDPairs[facilities[i]['id']] = facilities[i]['motd'];
-			}
-			console.log(this.facilityMOTDPairs);
-		});
+		this.subscription.add(
+			this.newsService.getFacilitiesFromWagtail().subscribe((facilities: any[]): void => {
+				// eslint-disable-next-line @typescript-eslint/prefer-for-of,no-plusplus
+				for (let i = 0; i < facilities.length; i++) {
+					this.facilityMOTDPairs[facilities[i]['id']] = facilities[i]['motd'];
+				}
+			}),
+		);
 	}
 
 	getNewsFromAPI(): void {
 		this.facilityNews = [];
 		const facility_ids: string[] = this.selectedFacilities.map((facility: [string, number]): string => facility['FacilityId'].toString());
-		this.newsService.getFacilityNews(facility_ids.toString()).subscribe((result: Object[]): any => {
-			this.facilityNews = result.map((news: Object): any => this.createFacilityNews(news));
-			console.log(this.facilityNews);
-		});
+		this.subscription.add(
+			this.newsService.getFacilityNews(facility_ids.toString()).subscribe((result: Object[]): any => {
+				this.facilityNews = result.map((news: Object): any => this.createFacilityNews(news));
+			}),
+		);
 		this.getFacilitiesFromWagtail();
 	}
 
@@ -197,11 +252,7 @@ export class NewsManagerComponent implements OnInit {
 		if (this.selectedFacilities.length === 0) {
 			this.setCurrentNews();
 		}
-		if (this.selectedFacilities.length === this.managerFacilities.length) {
-			this.allChecked = true;
-		} else {
-			this.allChecked = false;
-		}
+		this.allChecked = this.selectedFacilities.length === this.managerFacilities.length;
 		this.getNewsFromAPI();
 	}
 
@@ -277,9 +328,11 @@ export class NewsManagerComponent implements OnInit {
 				{ value: this.selectedFacilityNews.tags, disabled: false },
 			),
 		});
-		this.selectedNewsForm.controls['motd'].valueChanges.subscribe((value: any): void => {
-			this.motdLength.next(value.length);
-		});
+		this.subscription.add(
+			this.selectedNewsForm.controls['motd'].valueChanges.subscribe((value: any): void => {
+				this.motdLength.next(value.length);
+			}),
+		);
 	}
 
 	/**
@@ -292,10 +345,23 @@ export class NewsManagerComponent implements OnInit {
 	}
 
 	deleteNewsFromAPI(): void {
-		this.newsService.deleteNewsFromAPI(this.selectedFacilityNews.id).subscribe((): void => {
-			this.returnState = 0;
-			this.infoModal.show();
-			this.getNewsFromAPI();
-		});
+		this.subscription.add(
+			this.newsService.deleteNewsFromAPI(this.selectedFacilityNews.id).subscribe(
+				(): void => {
+					this.returnState = 0;
+					this.infoModal.show();
+					this.getNewsFromAPI();
+				},
+				(error: any) => {
+					console.log(error);
+					this.returnState = -1;
+					this.infoModal.show();
+					if ('error' in error) {
+						this.error_string = error['error']['error'];
+					}
+					this.getNewsFromAPI();
+				},
+			),
+		);
 	}
 }
