@@ -19,7 +19,7 @@ import { UserService } from '../../../api-connector/user.service';
 import { TemplateNames } from '../../conda/template-names';
 import { ResEnvComponent } from '../../conda/res-env.component';
 import { ProjectMember } from '../../../projectmanagement/project_member.model';
-import { CLOUD_PORTAL_SUPPORT_MAIL } from '../../../../links/links';
+import { CLOUD_PORTAL_SUPPORT_MAIL, WIKI_WORKSHOPS } from '../../../../links/links';
 import { VirtualmachineService } from '../../../api-connector/virtualmachine.service';
 import { WorkshopService } from '../../../api-connector/workshop.service';
 
@@ -33,6 +33,8 @@ import { WorkshopService } from '../../../api-connector/workshop.service';
 export class AddWorkshopComponent implements OnInit, OnDestroy, DoCheck {
 
 	title: string = 'New Workshop';
+
+	WIKI_WORKSHOPS: string = WIKI_WORKSHOPS;
 
 	/**
 	 * The selected workshop.
