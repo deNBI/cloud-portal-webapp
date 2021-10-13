@@ -6,6 +6,7 @@ import { UrlData } from '../workshop-urlinfo.model';
 import { WorkshopService } from '../../../api-connector/workshop.service';
 import { ProjectMember } from '../../../projectmanagement/project_member.model';
 import { WorkshopVM } from '../workshop-vm.model';
+import { WIKI_WORKSHOPS } from '../../../../links/links';
 
 interface MemberVm {
 	projectMember: ProjectMember;
@@ -21,6 +22,8 @@ interface MemberVm {
 export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 
 	title: string = 'Workshop Overview';
+
+	WIKI_WORKSHOPS: string = WIKI_WORKSHOPS;
 
 	subscription: Subscription = new Subscription();
 	workshops: Workshop[] = [];
