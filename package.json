@@ -56,7 +56,7 @@
     "c3": "^0.7.20",
     "chart.js": "^2.9.3",
     "chromedriver": "^94.0.0",
-    "cli-color": "^2.0.0",
+    "cli-color": "^2.0.1",
     "colors": "^1.4.0",
     "core-js": "3.18.1",
     "css-loader": "6.3.0",
