@@ -19,7 +19,7 @@ export class DeleteVmComponent implements OnDestroy {
 	/**
 	 * To check if the user agreed to deleting someone else's VM
 	 */
-	delete_foreign_vm: boolean = false;
+	delete_foreign_vm_consent: boolean = false;
 
 	constructor(public bsModalRef: BsModalRef) {
 		// eslint-disable-next-line no-empty-function

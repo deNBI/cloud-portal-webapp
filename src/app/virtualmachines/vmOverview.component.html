@@ -185,11 +185,12 @@
 						{{vm.vm.name}}
 					</div>
 				</div>
-				<!--	TODO Align checkbox properly-->
-				<div *ngIf="otherSelectedMachines.length > 0" class="alert alert-danger">
-					You are about to delete machines owned by someone else.
+				<div class="alert  form-check"
+						 [ngClass]="{'alert-danger':!deleteOtherMachines_confirmation,'alert-success':deleteOtherMachines_confirmation}"
+						 *ngIf="otherSelectedMachines.length > 0" role="alert">
+					You are about to delete machines owned by someone else!
 					<br>
-					<input class="form-check-input"
+					<div class="form-check"><input class="form-check-input"
 								 name="deleteOtherMachines_confirmation"
 								 type="checkbox"
 								 id="deleteOtherMachines_confirmation"
