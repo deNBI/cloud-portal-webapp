@@ -2,7 +2,7 @@ import {
 	AfterViewInit, ApplicationRef, Component, OnInit, ViewChild,
 } from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap/modal';
-import { Angulartics2Piwik } from 'angulartics2/piwik';
+// import { Angulartics2Piwik } from 'angulartics2/piwik';
 import { VoService } from './api-connector/vo.service';
 
 /**
@@ -22,7 +22,7 @@ export class AppComponent implements AfterViewInit, OnInit {
 
 	@ViewChild('notificationModal', { static: true }) modal: ModalDirective;
 
-	constructor(private appRef: ApplicationRef, private angulartics2Piwik: Angulartics2Piwik) {
+	constructor(private appRef: ApplicationRef) {
 		/*   if (environment.production) {
 			 const isStable = appRef.isStable.pipe(first(isStable => isStable === true));
 			 const intervalTime = interval(60 * 1000);
@@ -42,7 +42,7 @@ export class AppComponent implements AfterViewInit, OnInit {
 	}
 
 	ngOnInit(): void {
-		this.angulartics2Piwik.startTracking();
+		// this.angulartics2Piwik.startTracking();
 		// this.voService.isVo().subscribe((result: IResponseTemplate) => {
 		// setVO(<boolean><Boolean>result.value);
 		// })
