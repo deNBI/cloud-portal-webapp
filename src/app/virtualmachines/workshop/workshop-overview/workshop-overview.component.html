@@ -6,11 +6,13 @@
 
 <div class="animated fadeIn card" *ngIf="isLoaded">
 	<div class="card-body">
+		<alert type="info" dismissible="true">
+			To learn more about workshops, please see our <a [href]="WIKI_WORKSHOPS" target="_blank" rel="noopener noreferrer">WIKI</a>.
+		</alert>
 		<div *ngIf="projects.length > 0">
 
 			<div class="row" style="margin-bottom: 5px">
 				<label class="col-2 form-label" for="projectSelect"><strong>Project*</strong></label>
-				<span *ngIf="projectWorkshopsLoading" class="spinner-border text-info"></span>
 				<div class="col-10">
 					<select required class="form-control form-select" name="selectedProject"
 									[(ngModel)]="selectedProject" id="projectSelect"
@@ -26,7 +28,32 @@
 				</div>
 			</div>
 
-			<div *ngIf="projectWorkshopsLoaded"
+			<div *ngIf="projectWorkshopsLoading || projectMembersLoading">
+				<div class="row" style="height: 30px; margin-bottom: 10px">
+					<strong class="col-3">Getting workshops...</strong>
+					<div class="col-2" *ngIf="projectWorkshopsLoading">
+						<div class="spinner-border text-muted">
+						</div>
+					</div>
+					<div class="col-2" *ngIf="projectWorkshopsLoaded">
+						<i class="fa fa-check" style="color: green">
+						</i>
+					</div>
+				</div>
+				<div class="row" style="height: 30px; margin-bottom: 10px">
+					<strong class="col-3">Getting project members...</strong>
+					<div class="col-2" *ngIf="projectMembersLoading">
+						<div class="spinner-border text-muted">
+						</div>
+					</div>
+					<div class="col-2" *ngIf="projectMembersLoaded">
+						<i class="fa fa-check" style="color: green">
+						</i>
+					</div>
+				</div>
+			</div>
+
+			<div *ngIf="projectWorkshopsLoaded && projectMembersLoaded"
 					 class="card"
 					 id="workshioCard">
 				<div class="card-header">
@@ -34,6 +61,9 @@
 					Workshops
 				</div>
 				<div class="card-body">
+					<div *ngIf="!selectedWorkshop.id">
+						Please select a workshop:
+					</div>
 					<div class="btn-group">
 						<button id="select_workshop_{{workshop?.shortname}}_btn" *ngFor="let workshop of workshops "
 										[ngClass]="{'btn-outline-success': workshop.shortname === selectedWorkshop?.shortname,
@@ -50,10 +80,6 @@
 										style="margin-bottom:5px;margin-right:5px;">
 							Cleanup Workshop
 						</button>
-					</div>
-					<div *ngIf="projectMembersLoading"
-							 class="spinner-border text-primary"
-							 style="display:block; margin:auto;">
 					</div>
 					<div class="table-responsive" *ngIf="projectMembersLoaded">
 						<table class="table table-hover">
