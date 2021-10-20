@@ -106,7 +106,7 @@
     "@angular/compiler-cli": "^12.2.9",
     "@compodoc/compodoc": "^1.1.11",
     "@types/jasmine": "^3.9.1",
-    "@types/node": "^16.10.2",
+    "@types/node": "^16.10.3",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
     "audit-ci": "^4.1.0",
