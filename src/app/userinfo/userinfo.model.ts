@@ -3,6 +3,7 @@
  */
 export class Userinfo {
 
+	Id: number;
 	project_application_id: number;
 	FirstName: string;
 	LastName: string;
