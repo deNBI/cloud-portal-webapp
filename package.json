@@ -51,7 +51,7 @@
     "@types/jquery": "^3.5.6",
     "acorn": "^8.5.0",
     "angular-ng-autocomplete": "^2.0.5",
-    "angulartics2": "^10.0.0",
+    "angulartics2": "10.1.0",
     "bootstrap": "^4.6.0",
     "c3": "^0.7.20",
     "chart.js": "^2.9.3",
