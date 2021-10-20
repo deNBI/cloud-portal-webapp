@@ -31,7 +31,7 @@
 		<div class="col-md-12">
 			<div class="card">
 				<div class="card-header">
-					<strong>New Workshop</strong>
+					<strong>Add workshop VMs</strong>
 				</div>
 				<div class="card-body">
 					<alert type="info" dismissible="true">
@@ -61,68 +61,14 @@
 								The client is currently unavailable.
 							</div>
 						</div>
-						<div class="row" *ngIf="project_data_loaded && client_available" style="margin-top: 15px">
-							<label class="col-2 form-label"><strong>Workshop*</strong></label>
-							<div class="col-4">
-								<button class="btn btn-primary" (click)="blank_workshop()">
-									New Workshop
-								</button>
-							</div>
-							<div class="w-100"></div>
-						</div>
-						<div class="row" *ngIf="project_data_loaded && new_workshop && client_available">
-							<label class="form-label col-2" for="workshop_longname" style="margin-top: 10px">
-								Longname
-							</label>
-							<div class="col-4">
-								<input required type="text" id="workshop_longname" style="margin-top: 10px"
-											 class="form-control" name="selected_workshop.longname"
-											 (keyup)="checkLongname(selected_workshop.longname)"
-											 [(ngModel)]="selected_workshop.longname" #longname=ngModel
-											 [minlength]="3" [maxlength]="256" pattern="[a-zA-Z0-9]+"
-											 [ngClass]="{
-                                'is-invalid': invalid_longname && (longname.dirty),
-                                'is-valid': !invalid_longname && (longname.dirty)
-                                }">
-								<small class="form-text text-muted">
-									Your workshop longname must contain between 3 and 256 characters and may only contain letters and numbers.
-								</small>
-							</div>
-							<div class="w-100"></div>
-							<label class="form-label col-2" for="workshop_shortname" style="margin-top: 10px">
-								Shortname
-							</label>
-							<div class="col-4">
-								<input required type="text" id="workshop_shortname" style="margin-top: 10px"
-											 class="form-control" name="selected_workshop.shortname"
-											 (keyup)="checkShortname(selected_workshop.shortname)"
-											 [(ngModel)]="selected_workshop.shortname" #shortname=ngModel
-											 [minlength]="3" [maxlength]="8" pattern="[a-zA-Z0-9]+"
-											 [ngClass]="{
-                                'is-invalid': invalid_shortname && (shortname.dirty),
-                                'is-valid': !invalid_shortname && (shortname.dirty)
-                                }">
-								<small class="form-text text-muted">
-									Your workshop shortname must contain between 3 and 8 characters, may only contain letters and numbers
-									and has to be unique among your project.
-								</small>
-							</div>
-							<div class="w-100"></div>
-							<div class="col-2" style="margin-top: 10px"></div>
-							<div class="col-4">
-								<button class="btn btn-primary" (click)="create_new_workshop()" type="button" style="margin-bottom: 15px; margin-top: 10px">
-									Create workshop
-								</button>
-							</div>
-							<div class="w-100"></div>
-						</div>
 						<div class="row" *ngIf="project_data_loaded && client_available" style="margin-top: 10px">
+							<div *ngIf="!workshops || workshops.length === 0" class="alert alert-warning" role="alert">
+								No workshops found. Please create a new workshop on the workshop management page.
+							</div>
 							<div class="col-3" *ngFor="let workshop of workshops">
 								<div class="card" (click)="reset_on_workshop_change(); set_selected_workshop(workshop);"
 										 style="cursor: pointer; width: 16rem; height: auto;">
 									<div class="card-header text-truncate"
-											 [ngClass]="{'bg-success': (workshop.shortname === selected_workshop?.shortname && !new_workshop),
-											 						 'bg-danger': (workshop.shortname === selected_workshop?.shortname && new_workshop)}"
 											 data-toggle="tooltip" data-placement="top">
 										{{workshop.shortname}} - {{workshop.longname}}
 									</div>

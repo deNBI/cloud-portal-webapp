@@ -32,7 +32,7 @@ import { WorkshopService } from '../../../api-connector/workshop.service';
 })
 export class AddWorkshopComponent implements OnInit, OnDestroy, DoCheck {
 
-	title: string = 'New Workshop';
+	title: string = 'New workshop VMs';
 
 	WIKI_WORKSHOPS: string = WIKI_WORKSHOPS;
 
@@ -98,7 +98,6 @@ export class AddWorkshopComponent implements OnInit, OnDestroy, DoCheck {
 	selected_project_ressources: ApplicationRessourceUsage;
 	selected_flavor_type: string = 'Standard Flavours';
 	flavor_types: { [name: string]: Flavor[] } = {};
-	new_workshop: boolean = false;
 	workshop_data_loaded: boolean = false;
 	members_to_add: ProjectMember[] = [];
 	project_members: ProjectMember[] = [];
@@ -108,8 +107,6 @@ export class AddWorkshopComponent implements OnInit, OnDestroy, DoCheck {
 	started_machine: boolean = false;
 	progress_bar_animated: string = 'progress-bar-animated';
 	progress_bar_width: number = 0;
-	invalid_shortname: boolean = false;
-	invalid_longname: boolean = false;
 
 	constructor(private group_service: GroupService,
 							private image_service: ImageService,
@@ -275,30 +272,7 @@ export class AddWorkshopComponent implements OnInit, OnDestroy, DoCheck {
 		}
 	}
 
-	create_new_workshop(): void {
-		this.selected_workshop.shortname = this.selected_workshop.shortname.replace(/\s/g, '');
-		this.subscription.add(
-			this.workshop_service.createWorkshop(this.selected_project[1], this.selected_workshop).subscribe(
-				(workshop: Workshop) => {
-					this.workshops.push(workshop);
-					this.set_selected_workshop(workshop);
-				}, (error: any) => {
-					if ('error' in error) {
-						console.log(error);
-					}
-				},
-			),
-		);
-	}
-
-	blank_workshop(): void {
-		this.new_workshop = true;
-		this.workshop_data_loaded = false;
-		this.selected_workshop = new Workshop();
-	}
-
 	set_selected_workshop(workshop: Workshop): void {
-		this.new_workshop = false;
 		this.selected_workshop = workshop;
 		this.workshop_data_loaded = true;
 
@@ -426,19 +400,6 @@ export class AddWorkshopComponent implements OnInit, OnDestroy, DoCheck {
 		this.members_to_add.splice(this.members_to_add.indexOf(member), 1);
 	}
 
-	checkShortname(shortname: string): void {
-		this.invalid_shortname = shortname.length < 3 || shortname.length > 8 || !/^[a-zA-Z0-9\s]*$/.test(shortname);
-	}
-
-	checkLongname(longname: string): void {
-		this.invalid_longname = longname.length < 3 || longname.length > 256 || !this.isASCII(longname);
-	}
-
-	isASCII(testString: string): boolean {
-		// eslint-disable-next-line no-control-regex
-		return /^[\x00-\x7F]*$/.test(testString);
-	}
-
 	reset_all_data(): void {
 		this.selected_project = null;
 		this.selected_workshop = null;
@@ -466,7 +427,6 @@ export class AddWorkshopComponent implements OnInit, OnDestroy, DoCheck {
 		this.member_data_loaded = false;
 		this.selected_project_ressources = null;
 		this.flavor_types = {};
-		this.new_workshop = false;
 	}
 
 	reset_on_workshop_change(): void {
@@ -487,8 +447,6 @@ export class AddWorkshopComponent implements OnInit, OnDestroy, DoCheck {
 		this.res_env_okay_needed = false;
 		this.gave_okay = false;
 		this.progress_bar_width = 0;
-		this.invalid_longname = false;
-		this.invalid_shortname = false;
 		if (this.res_env_component) {
 			this.res_env_component.resetData();
 		}
