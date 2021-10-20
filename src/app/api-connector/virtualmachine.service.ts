@@ -159,7 +159,7 @@ export class VirtualmachineService {
 			.set('projectid', projectid)
 			.set('workshopShortname', workshopShortname);
 
-		return this.http.post(`${this.baseVmUrl}/workshop/`, params, {
+		return this.http.post(`${this.baseVmUrl}workshop/`, params, {
 			withCredentials: true,
 		});
 	}
