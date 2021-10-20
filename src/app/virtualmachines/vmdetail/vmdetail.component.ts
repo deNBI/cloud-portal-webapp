@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Subject } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { ClipboardService } from 'ngx-clipboard';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { FlavorService } from '../../api-connector/flavor.service';
 import { ApplicationsService } from '../../api-connector/applications.service';
 import { FacilityService } from '../../api-connector/facility.service';
@@ -27,6 +28,7 @@ import { Volume } from '../volumes/volume';
 import { VolumeStates } from '../volumes/volume_states';
 import { Condalog } from '../conda/condalog';
 import { Backend } from '../conda/backend/backend';
+import { DeleteVmComponent } from '../modals/delete-vm/delete-vm.component';
 
 /**
  * VM Detail page component
@@ -115,8 +117,27 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 	 */
 	snapshotName: string = '';
 
+	/**
+	 * Modal reference to be changed/showed/hidden depending on chosen modal.
+	 */
+	bsModalRef: BsModalRef;
+
+	/**
+	 * Default time in ms to show an error message if no other value specified.
+	 */
+	ERROR_TIMER: number = 10000;
+
+	/**
+	 * Error message to show if 409 status was returned, typically returned if vm is creating a snapshot.
+	 */
+	SNAPSHOT_CREATING_ERROR_MSG: string
+		= 'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.';
+
 	constructor(private activatedRoute: ActivatedRoute,
 		private virtualmachineService: VirtualmachineService,
+		private modalService: BsModalService,
+		// public bsModalRef: BsModalRef, TODO: bsModalRef in constructor?
+		private router: Router,
 		private userService: UserService,
 		private applicationService: ApplicationsService,
 		private flavorService: FlavorService,
@@ -272,6 +293,7 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 	 * @param vm which will be deleted
 	 */
 	deleteVm(): void {
+		this.virtualMachine.status = VirtualMachineStates.DELETING;
 		this.virtualmachineService.deleteVM(this.virtualMachine.openstackid).subscribe(
 			(updated_vm: VirtualMachine): void => {
 
@@ -291,6 +313,51 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 				this.getVmById();
 			},
 		);
+	}
+
+	/**
+	 * Subscription object to listen to different events.
+	 */
+	subscription: Subscription = new Subscription();
+
+	/**
+	 * Function to listen to modal results.
+	 */
+	subscribeToBsModalRef(): void {
+		this.subscription.add(
+			this.bsModalRef.content.event.subscribe(
+				(result: any) => {
+					if ('deleteVM' in result) {
+						this.deleteVm();
+					// } else if ('stopVM' in result) {
+					// 	this.stopVM();
+					// } else if ('resumeVM' in result) {
+					// 	this.resumeVM();
+					// } else if ('resume' in result) {
+					// 	this.resumeCheckStatusTimer();
+					// 	} else if ('snapshotVM' in result) {
+					// 	this.createSnapshot(result['snapshotName'], result['description']);
+					// } else if ('attachVolume' in result) {
+					// 	this.attachVolume(result['volume']);
+					// } else if ('detachVolume' in result) {
+					// 	this.detachVolume(result['volume']);
+					// } else if ('reboot_type' in result) {
+					// 	this.rebootVM(result['reboot_type']);
+					}
+				},
+			),
+		);
+	}
+
+	/**
+	 * Show deletion modal
+	 */
+	showDeleteModal(): void {
+		const initialState = { virtualMachine: this.virtualMachine };
+
+		this.bsModalRef = this.modalService.show(DeleteVmComponent, { initialState });
+		this.bsModalRef.setClass('modal-lg');
+		this.subscribeToBsModalRef();
 	}
 
 	getDetachedVolumesByVSelectedMProject(): void {
