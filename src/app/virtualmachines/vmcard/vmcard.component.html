@@ -331,7 +331,9 @@
 						Create Snapshot
 					</div>
 				</div>
-				<div class="col-md-2" *ngIf="!(vm?.status |hasStatus:VirtualMachineStates.staticDELETED)">
+				<div class="col-md-2" *ngIf="(vm?.status |hasStatus:VirtualMachineStates.staticACTIVE)
+																		 || (vm?.status |hasStatus:VirtualMachineStates.staticSHUTOFF)
+																		 || (vm?.status |hasStatus:VirtualMachineStates.staticERROR)">
 					<div class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
 							 [id]="'deleteVMButton_' + vm?.name" (click)="showDeleteModal();">
 						Delete VM
