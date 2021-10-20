@@ -12,7 +12,7 @@ import { ClipboardModule } from 'ngx-clipboard';
 
 import { NgScrollbarModule } from 'ngx-scrollbar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { Angulartics2Module } from 'angulartics2';
+// import { Angulartics2Module } from 'angulartics2';
 import { CookieService } from 'ngx-cookie-service';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
@@ -60,7 +60,7 @@ import { PipeModuleModule } from './pipe-module/pipe-module.module';
 		ModalModule.forRoot(),
 		PaginationModule.forRoot(),
 		SharedModuleModule,
-		Angulartics2Module.forRoot(),
+		// Angulartics2Module.forRoot(),
 		BrowserAnimationsModule,
 		ClipboardModule,
 		PipeModuleModule,
