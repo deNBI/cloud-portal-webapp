@@ -32,7 +32,7 @@ const routes: Routes = [
 		path: 'newWorkshop',
 		component: AddWorkshopComponent,
 		data: {
-			title: 'New Workshop',
+			title: 'New Workshop VMs',
 		},
 
 	},
@@ -48,7 +48,7 @@ const routes: Routes = [
 		path: 'workshopOverview',
 		component: WorkshopOverviewComponent,
 		data: {
-			title: 'Workshop Overview',
+			title: 'Workshop management',
 		},
 
 	},
