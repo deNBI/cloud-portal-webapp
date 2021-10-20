@@ -201,10 +201,19 @@ export class AddWorkshopComponent implements OnInit, OnDestroy, DoCheck {
 	}
 
 	get_workshops_for_application(): void {
+		this.workshops = [];
 		this.subscription.add(
 			this.workshop_service.getWorkshops(this.selected_project[1]).subscribe(
 				(workshops: Workshop[]) => {
-					this.workshops = workshops;
+					for (const workshop of workshops) {
+						this.subscription.add(
+							this.workshop_service.loadWorkshopWithVms(workshop.id).subscribe(
+								(workshop_with_vms: Workshop) => {
+									this.workshops.push(workshop_with_vms);
+								},
+							),
+						);
+					}
 				},
 			),
 		);
@@ -277,10 +286,12 @@ export class AddWorkshopComponent implements OnInit, OnDestroy, DoCheck {
 		this.workshop_data_loaded = true;
 
 		for (const member of this.project_members) {
+			member.vm_amount = 0;
 			member.hasVM = false;
 			for (const workshopvm of this.selected_workshop.vm_list) {
 				if (member.elixirId === workshopvm.elixirid) {
 					member.hasVM = true;
+					member.vm_amount += 1;
 				}
 			}
 		}
