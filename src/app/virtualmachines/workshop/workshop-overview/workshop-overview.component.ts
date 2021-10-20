@@ -21,7 +21,7 @@ interface MemberVm {
 })
 export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 
-	title: string = 'Workshop Overview';
+	title: string = 'Workshop management';
 
 	WIKI_WORKSHOPS: string = WIKI_WORKSHOPS;
 
@@ -40,6 +40,9 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 	projectMembersLoaded: boolean = false;
 	deleting: boolean = false;
 	deleteSuccess: boolean = false;
+	invalidShortname: boolean = false;
+	invalidLongname: boolean = false;
+	newWorkshop: boolean = false;
 
 	constructor(private workshopService: WorkshopService,
 							private groupService: GroupService) {
@@ -108,6 +111,9 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 
 	workshopChange(workshop: Workshop): void {
 		this.selectedWorkshop = workshop;
+		this.newWorkshop = false;
+		this.invalidShortname = false;
+		this.invalidLongname = false;
 		this.loadVmsForSelectedProject();
 	}
 
@@ -200,6 +206,44 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 		this.workshops = [];
 		this.memberVms = [];
 		this.loadedVmsForWorkshop = [];
+
+		this.newWorkshop = false;
+		this.invalidLongname = false;
+		this.invalidShortname = false;
+	}
+
+	checkShortname(shortname: string): void {
+		this.invalidShortname = shortname.length < 3 || shortname.length > 8 || !/^[a-zA-Z0-9\s]*$/.test(shortname);
+	}
+
+	checkLongname(longname: string): void {
+		this.invalidLongname = longname.length < 3 || longname.length > 256 || !this.isASCII(longname);
+	}
+
+	isASCII(testString: string): boolean {
+		// eslint-disable-next-line no-control-regex
+		return /^[\x00-\x7F]*$/.test(testString);
+	}
+
+	blankWorkshop(): void {
+		this.newWorkshop = true;
+		this.selectedWorkshop = new Workshop();
+	}
+
+	createNewWorkshop(): void {
+		this.selectedWorkshop.shortname = this.selectedWorkshop.shortname.replace(/\s/g, '');
+		this.subscription.add(
+			this.workshopService.createWorkshop(this.selectedProject[1], this.selectedWorkshop).subscribe(
+				(workshop: Workshop) => {
+					this.workshops.push(workshop);
+					this.workshopChange(workshop);
+				}, (error: any) => {
+					if ('error' in error) {
+						console.log(error);
+					}
+				},
+			),
+		);
 	}
 
 }
