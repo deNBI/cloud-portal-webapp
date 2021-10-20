@@ -233,12 +233,6 @@
 					<i class="nav-icon fas fa-network-wired"></i> New Cluster</a>
 
 			</li>
-			<li class="nav-item" *ngIf="has_workshops &&  vm_project_member">
-				<a class="nav-link" routerLinkActive="active" data-toggle="tooltip" data-placement="right"
-					 title="New Cluster"
-					 [routerLink]="['/virtualmachines/newWorkshop']">
-					<i class="nav-icon fas fa-chalkboard-teacher"></i> New Workshop</a>
-			</li>
 
 			<li *ngIf="vm_project_member"
 					class="nav-group " [ngClass]="{'show':show_overviews}">
@@ -256,11 +250,6 @@
 							 [routerLink]="['/virtualmachines/clusterOverview']"><i
 							class="nav-icon fas fa-network-wired"></i> Clusters</a>
 					</li>
-					<li class="nav-item" *ngIf="has_workshops && vm_project_member">
-						<a class="nav-link" routerLinkActive="active"
-							 [routerLink]="['/virtualmachines/workshopOverview']"><i
-							class="nav-icon fas fa-chalkboard"></i> Workshops</a>
-					</li>
 					<li class="nav-item" *ngIf="vm_project_member || is_vo_admin || is_facility_manager">
 						<a class="nav-link" routerLinkActive="active"
 							 [routerLink]="['/virtualmachines/volumeOverview']"><i
@@ -275,6 +264,22 @@
 				</ul>
 
 			</li>
+			<ng-container *ngIf="has_workshops && vm_project_member">
+				<li class="nav-title">
+					Workshops
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" routerLinkActive="active" data-toggle="tooltip" data-placement="right"
+						 title="New Cluster"
+						 [routerLink]="['/virtualmachines/newWorkshop']">
+						<i class="nav-icon fas fa-chalkboard-teacher"></i> Add workshop VMs</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" routerLinkActive="active"
+						 [routerLink]="['/virtualmachines/workshopOverview']"><i
+						class="nav-icon fas fa-chalkboard"></i> Manage workshops</a>
+				</li>
+			</ng-container>
 			<li *ngIf="is_facility_manager || is_vo_admin" class="nav-title">
 				Facilities
 			</li>
