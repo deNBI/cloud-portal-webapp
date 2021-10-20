@@ -69,6 +69,7 @@
 								<div class="card" (click)="reset_on_workshop_change(); set_selected_workshop(workshop);"
 										 style="cursor: pointer; width: 16rem; height: auto;">
 									<div class="card-header text-truncate"
+											 [ngClass]="{'bg-success': (workshop.shortname === selected_workshop?.shortname)}"
 											 data-toggle="tooltip" data-placement="top">
 										{{workshop.shortname}} - {{workshop.longname}}
 									</div>
@@ -214,7 +215,7 @@
 													<thead>
 													<tr>
 														<th>Full Name</th>
-														<th>Has VM</th>
+														<th>Vm started for this user in this workshop</th>
 														<th>Action</th>
 													</tr>
 													</thead>
@@ -224,6 +225,7 @@
 														<td>
 															<span *ngIf="member.hasVM" class="badge badge-success">
 																<span class="icon icon-check"></span>
+																{{member.vm_amount}} VMs started in this workshop for this user
 															</span>
 															<span *ngIf="!member.hasVM" class="badge badge-danger">
 																<span class="icon icon-close"></span>
