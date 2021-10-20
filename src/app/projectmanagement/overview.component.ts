@@ -767,7 +767,9 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 							});
 
 							this.isLoaded = true;
-							if (this.project_application && this.project_application.credits_allowed && !this.project_application.credits_loop_started) {
+							if (this.project_application
+								&& this.project_application.credits_allowed
+								&& !this.project_application.credits_loop_started) {
 								this.project_application.setCreditsLoopStarted();
 								this.startUpdateCreditUsageLoop();
 							}
