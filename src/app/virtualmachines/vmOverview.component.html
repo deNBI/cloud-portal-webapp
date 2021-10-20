@@ -108,7 +108,8 @@
 							<div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu" role="menu"
 									 *dropdownMenu id="dropdownMenu">
 								<button class="dropdown-item btn btn-secondary" id="deleteAllSelectedVMsButton" (click)="verifyAllModal.show(); gatherAllSelectedVMs();">
-									Delete selected VMs</button>
+									Delete selected VMs
+								</button>
 							</div>
 						</div>
 				</div>
@@ -184,18 +185,48 @@
 						{{vm.vm.name}}
 					</div>
 				</div>
-
+				<div class="alert  form-check"
+						 [ngClass]="{'alert-danger':!deleteOtherMachines_confirmation,'alert-success':deleteOtherMachines_confirmation}"
+						 *ngIf="otherSelectedMachines.length > 0" role="alert">
+					You are about to delete machines owned by someone else!
+					<br>
+					<div class="form-check"><input class="form-check-input"
+								 name="deleteOtherMachines_confirmation"
+								 type="checkbox"
+								 id="deleteOtherMachines_confirmation"
+								 [(ngModel)]="deleteOtherMachines_confirmation"
+								 required
+					>
+					<label class="form-check-label" for="deleteOtherMachines_confirmation">
+						I hereby confirm that I want to delete following virtual machines not owned by me:
+						<div *ngFor="let ovm of otherSelectedMachines">
+							{{ovm.vm.name}} owned by {{ovm.vm.userlogin}}
+						</div>
+					</label>
+				</div>
 			</div>
 			<div class="modal-footer">
 				<button class="btn  btn-success col-md-4"
+								*ngIf="otherSelectedMachines.length === 0; else notVMowner"
 								(click)="deleteAllCheckedVms();verifyAllModal.hide();"
 								id="confirm_delete_all_button">
 					Yes
 				</button>
+				<ng-template #notVMowner>
+					<button class="btn  btn-success col-md-4"
+									(click)="deleteAllCheckedVms();verifyAllModal.hide();"
+									[disabled]="!deleteOtherMachines_confirmation"
+									id="confirm_delete_foreign_vms_button">
+						Yes
+					</button>
+				</ng-template>
 				<button class="btn  btn-danger col-md-4" type="reset"
-								(click)="verifyAllModal.hide();">Cancel
+								(click)="verifyAllModal.hide();">
+					Cancel
 				</button>
 			</div>
+
+
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
