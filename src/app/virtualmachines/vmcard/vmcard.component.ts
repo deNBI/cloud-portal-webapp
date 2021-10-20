@@ -386,6 +386,7 @@ export class VmCardComponent implements OnInit, OnDestroy {
 	 * Run function to delete a vm.
 	 */
 	deleteVM(): void {
+		this.is_checked = false;
 		this.vm.status = VirtualMachineStates.DELETING;
 		this.vm.cardState = 0;
 		this.subscription.add(this.virtualmachineservice.deleteVM(this.vm.openstackid).subscribe(
