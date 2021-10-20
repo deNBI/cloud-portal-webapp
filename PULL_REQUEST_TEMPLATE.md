@@ -2,6 +2,7 @@ Try to fulfill the following points before the Pull Request is merged:
 
 - [ ] Give a meaningfull description for the PR
 - [ ] The PR is reviewed by one of the team members.
+- [ ] If a linting PR exists, it must be merged before this PR is allowed to be merged.
 - [ ] It must be checked if anything in the Readme must be adjusted (development-, production-, setup).
 - [ ] It must be checked if any section in the wiki (https://cloud.denbi.de/wiki/) should be adjusted.
 - [ ] If the PR is merged in the master then a release should be be made.
