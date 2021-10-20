@@ -18,7 +18,7 @@ import { ClientService } from '../api-connector/client.service';
 import { VmCardComponent } from './vmcard/vmcard.component';
 
 /**
- * Vm overview componentn.
+ * Vm overview component.
  */
 @Component({
 	selector: 'app-vm-overview',
@@ -142,6 +142,16 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 	 * List for all machines which are checked.
 	 */
 	selectedMachines: VmCardComponent[] = [];
+
+	/**
+	 * List for all not user-owned machines which are checked.
+	 */
+	otherSelectedMachines: VmCardComponent[] = [];
+
+	/**
+	 * To check if the user agreed to deleting someone else's VMs
+	 */
+	deleteOtherMachines_confirmation: boolean = false;
 
 	/**
 	 * List of groups of which the user is admin.
@@ -412,12 +422,17 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 	 */
 	gatherAllSelectedVMs(): void {
 		this.selectedMachines = [];
+		this.otherSelectedMachines = [];
 		this.children.forEach(
 			(child: VmCardComponent) => {
 				if (child.is_checked) {
+					if (this.user_elixir_id !== child.vm.elixir_id) {
+						this.otherSelectedMachines.push(child);
+					}
 					this.selectedMachines.push(child);
 				}
 			},
 		);
 	}
+
 }
