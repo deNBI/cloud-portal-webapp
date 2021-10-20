@@ -15,14 +15,40 @@
 		If you delete the master of a cluster, your worker machines will become useless!
 	</div>
 
+	<div class="alert  form-check"
+			 [ngClass]="{'alert-danger':!delete_foreign_vm_consent,'alert-success':delete_foreign_vm_consent}"
+			 *ngIf="user_elixir_id !== virtualMachine?.elixir_id" role="alert">
+		This is not your own machine!
+		<br>
+		<div class="form-check"><input class="form-check-input"
+					 name="delete_foreign_vm_consent"
+					 type="checkbox"
+					 id="delete_foreign_vm"
+					 [(ngModel)]="delete_foreign_vm_consent"
+					 required
+		>
+		<label class="form-check-label" for="delete_foreign_vm">
+			I hereby confirm that I want to delete a virtual machine not owned by me.
+		</label>
+	</div>
 </div>
 <div class="modal-footer">
 	<button class="btn  btn-success col-md-4"
+					*ngIf="user_elixir_id === virtualMachine?.elixir_id; else notVMowner"
 					(click)="deleteVM();"
 					id="confirm_delete_button">
 		Yes
 	</button>
+	<ng-template #notVMowner>
+		<button class="btn  btn-success col-md-4"
+						[disabled]="!delete_foreign_vm_consent"
+						(click)="deleteVM();"
+						id="confirm_delete_foreign_vm_button">
+			Yes
+		</button>
+	</ng-template>
 	<button class="btn  btn-danger col-md-4" type="reset"
-					(click)="bsModalRef.hide()">Cancel
+					(click)="bsModalRef.hide()">
+		Cancel
 	</button>
 </div>
