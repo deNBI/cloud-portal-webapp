@@ -1,34 +1,34 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Subject, Subscription } from 'rxjs';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { ClipboardService } from 'ngx-clipboard';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { FlavorService } from '../../api-connector/flavor.service';
-import { ApplicationsService } from '../../api-connector/applications.service';
-import { FacilityService } from '../../api-connector/facility.service';
-import { VoService } from '../../api-connector/vo.service';
-import { UserService } from '../../api-connector/user.service';
-import { GroupService } from '../../api-connector/group.service';
-import { CreditsService } from '../../api-connector/credits.service';
-import { AbstractBaseClass } from '../../shared/shared_modules/baseClass/abstract-base-class';
-import { VirtualMachine } from '../virtualmachinemodels/virtualmachine';
-import { VirtualmachineService } from '../../api-connector/virtualmachine.service';
-import { ImageService } from '../../api-connector/image.service';
-import { Image } from '../virtualmachinemodels/image';
-import { VirtualMachineStates } from '../virtualmachinemodels/virtualmachinestates';
-import { IResponseTemplate } from '../../api-connector/response-template';
-import { SnapshotModel } from '../snapshots/snapshot.model';
-import { PlaybookService } from '../../api-connector/playbook.service';
-import { BiocondaService } from '../../api-connector/bioconda.service';
-import { ResenvTemplate } from '../conda/resenvTemplate.model';
-import { elixir_id, is_vo } from '../../shared/globalvar';
-import { WIKI_GUACAMOLE_LINK, WIKI_RSTUDIO_LINK, WIKI_VOLUME_OVERVIEW } from '../../../links/links';
-import { Volume } from '../volumes/volume';
-import { VolumeStates } from '../volumes/volume_states';
-import { Condalog } from '../conda/condalog';
-import { Backend } from '../conda/backend/backend';
-import { DeleteVmComponent } from '../modals/delete-vm/delete-vm.component';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Subject, Subscription} from 'rxjs';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
+import {ClipboardService} from 'ngx-clipboard';
+import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
+import {FlavorService} from '../../api-connector/flavor.service';
+import {ApplicationsService} from '../../api-connector/applications.service';
+import {FacilityService} from '../../api-connector/facility.service';
+import {VoService} from '../../api-connector/vo.service';
+import {UserService} from '../../api-connector/user.service';
+import {GroupService} from '../../api-connector/group.service';
+import {CreditsService} from '../../api-connector/credits.service';
+import {AbstractBaseClass} from '../../shared/shared_modules/baseClass/abstract-base-class';
+import {VirtualMachine} from '../virtualmachinemodels/virtualmachine';
+import {VirtualmachineService} from '../../api-connector/virtualmachine.service';
+import {ImageService} from '../../api-connector/image.service';
+import {Image} from '../virtualmachinemodels/image';
+import {VirtualMachineStates} from '../virtualmachinemodels/virtualmachinestates';
+import {IResponseTemplate} from '../../api-connector/response-template';
+import {SnapshotModel} from '../snapshots/snapshot.model';
+import {PlaybookService} from '../../api-connector/playbook.service';
+import {BiocondaService} from '../../api-connector/bioconda.service';
+import {ResenvTemplate} from '../conda/resenvTemplate.model';
+import {elixir_id, is_vo} from '../../shared/globalvar';
+import {WIKI_GUACAMOLE_LINK, WIKI_RSTUDIO_LINK, WIKI_VOLUME_OVERVIEW} from '../../../links/links';
+import {Volume} from '../volumes/volume';
+import {VolumeStates} from '../volumes/volume_states';
+import {Condalog} from '../conda/condalog';
+import {Backend} from '../conda/backend/backend';
+import {DeleteVmComponent} from '../modals/delete-vm/delete-vm.component';
 
 /**
  * VM Detail page component
@@ -134,18 +134,18 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 		= 'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.';
 
 	constructor(private activatedRoute: ActivatedRoute,
-		private virtualmachineService: VirtualmachineService,
-		private modalService: BsModalService,
-		// public bsModalRef: BsModalRef, TODO: bsModalRef in constructor?
-		private router: Router,
-		private userService: UserService,
-		private applicationService: ApplicationsService,
-		private flavorService: FlavorService,
-		private imageService: ImageService,
-		private playbookService: PlaybookService,
-		private biocondaService: BiocondaService,
-		private clipboardService: ClipboardService,
-		private groupService: GroupService) {
+							private virtualmachineService: VirtualmachineService,
+							private modalService: BsModalService,
+							// public bsModalRef: BsModalRef, TODO: bsModalRef in constructor?
+							private router: Router,
+							private userService: UserService,
+							private applicationService: ApplicationsService,
+							private flavorService: FlavorService,
+							private imageService: ImageService,
+							private playbookService: PlaybookService,
+							private biocondaService: BiocondaService,
+							private clipboardService: ClipboardService,
+							private groupService: GroupService) {
 		super();
 	}
 
@@ -329,20 +329,20 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 				(result: any) => {
 					if ('deleteVM' in result) {
 						this.deleteVm();
-					// } else if ('stopVM' in result) {
-					// 	this.stopVM();
-					// } else if ('resumeVM' in result) {
-					// 	this.resumeVM();
-					// } else if ('resume' in result) {
-					// 	this.resumeCheckStatusTimer();
-					// 	} else if ('snapshotVM' in result) {
-					// 	this.createSnapshot(result['snapshotName'], result['description']);
-					// } else if ('attachVolume' in result) {
-					// 	this.attachVolume(result['volume']);
-					// } else if ('detachVolume' in result) {
-					// 	this.detachVolume(result['volume']);
-					// } else if ('reboot_type' in result) {
-					// 	this.rebootVM(result['reboot_type']);
+						// } else if ('stopVM' in result) {
+						// 	this.stopVM();
+						// } else if ('resumeVM' in result) {
+						// 	this.resumeVM();
+						// } else if ('resume' in result) {
+						// 	this.resumeCheckStatusTimer();
+						// 	} else if ('snapshotVM' in result) {
+						// 	this.createSnapshot(result['snapshotName'], result['description']);
+						// } else if ('attachVolume' in result) {
+						// 	this.attachVolume(result['volume']);
+						// } else if ('detachVolume' in result) {
+						// 	this.detachVolume(result['volume']);
+						// } else if ('reboot_type' in result) {
+						// 	this.rebootVM(result['reboot_type']);
 					}
 				},
 			),
@@ -353,9 +353,9 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 	 * Show deletion modal
 	 */
 	showDeleteModal(): void {
-		const initialState = { virtualMachine: this.virtualMachine };
+		const initialState = {virtualMachine: this.virtualMachine};
 
-		this.bsModalRef = this.modalService.show(DeleteVmComponent, { initialState });
+		this.bsModalRef = this.modalService.show(DeleteVmComponent, {initialState});
 		this.bsModalRef.setClass('modal-lg');
 		this.subscribeToBsModalRef();
 	}
@@ -725,7 +725,7 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 	}
 
 	filterMembers(searchString: string): void {
-		this.userService.getFilteredMembersOfdeNBIVo(searchString).subscribe((result: object): void => {
+		this.groupService.getFilteredMembersByProject(searchString, this.virtualMachine.projectid).subscribe((result: object): void => {
 			this.filteredMembers = result;
 		});
 	}
