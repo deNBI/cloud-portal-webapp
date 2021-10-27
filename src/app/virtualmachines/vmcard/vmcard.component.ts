@@ -78,7 +78,7 @@ export class VmCardComponent implements OnInit, OnDestroy {
 	WIKI_GUACAMOLE_LINK: string = WIKI_GUACAMOLE_LINK;
 
 	/**
-	 * Subscription objcet to listen to different events.
+	 * Subscription object to listen to different events.
 	 */
 	subscription: Subscription = new Subscription();
 
@@ -386,6 +386,7 @@ export class VmCardComponent implements OnInit, OnDestroy {
 	 * Run function to delete a vm.
 	 */
 	deleteVM(): void {
+		this.is_checked = false;
 		this.vm.status = VirtualMachineStates.DELETING;
 		this.vm.cardState = 0;
 		this.subscription.add(this.virtualmachineservice.deleteVM(this.vm.openstackid).subscribe(
