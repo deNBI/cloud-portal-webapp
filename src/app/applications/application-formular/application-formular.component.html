@@ -208,6 +208,7 @@
                            [(ngModel)]="application.project_application_workshop">
                     <span class="help-block">
                   Would you like to conduct a workshop with the requested resources in the context of this project?
+                      Learn more about workshops <a [href]="WIKI_WORKSHOPS" target="_blank" rel="noopener noreferrer">here</a>.
                 </span>
 
                   </div>
@@ -489,12 +490,12 @@
                 </div>
               </div>
             </div>
+
             <div class="form-group row" *ngIf="openstack_project">
               <label class="col-md-4 form-control-label"
                      for="id_project_application_openstack_basic_introduction"><strong>Training</strong></label>
               <div class="col-md-8">
                 <div id="id_project_application_openstack_basic_introduction" class="form-check">
-
                   <div class="alert alert-primary" role="alert">
                     <div class="form-check"><input class="form-check-input" type="checkbox"
                            name="project_application_openstack_basic_introduction"
@@ -503,47 +504,49 @@
                       notified as soon as a workshop is organized.</label>
                     </div>
                   </div>
-
                 </div>
-
               </div>
             </div>
+
             <div class="form-group row" *ngIf="openstack_project">
               <label class="col-md-4 form-control-label"
                      for="id_project_application_cloud_service"><strong>Service</strong></label>
               <div class="col-md-8">
                 <div id="id_project_application_cloud_service" class="form-check">
-
                   <div class="alert alert-primary" role="alert">
-                    <div class="form-check"><input class="form-check-input" type="checkbox"
+                    <div class="form-check">
+											<input class="form-check-input" type="checkbox"
                            name="project_application_cloud_service"
                            [defaultChecked]="application?.project_application_cloud_service_user_number > 0 || application?.project_application_cloud_service_develop"
                            [(ngModel)]="application.project_application_cloud_service">
-                    <label class="form-check-label">Do you plan to offer a service?</label>
+                    	<label class="form-check-label">Do you plan to offer a service?</label>
                     </div>
                   </div>
                 </div>
-
               </div>
             </div>
+
             <div class="form-group row" *ngIf="application?.project_application_cloud_service">
               <label class="col-md-4 form-control-label" for="id_project_application_cloud_service_develop"><strong>New
                 service*</strong></label>
               <div class="col-md-8">
                 <div id="id_project_application_cloud_service_develop" class="form-check">
-                  <input class="form-check-input" type="checkbox"
-                         name="project_application_cloud_service_develop"
-                         [defaultChecked]="application?.project_application_cloud_service_user_number > 0 || application?.project_application_cloud_service"
-                         [(ngModel)]="application.project_application_cloud_service_develop">
                   <div class="alert alert-primary" role="alert">
-                    Are you developing a new service?
-                    <br>
+										<div class="form-check">
+											<input class="form-check-input" type="checkbox"
+														 name="project_application_cloud_service_develop"
+														 [defaultChecked]="application?.project_application_cloud_service_user_number > 0 || application?.project_application_cloud_service"
+														 [(ngModel)]="application.project_application_cloud_service_develop">
+											<label class="form-check-label">
+												Are you developing a new service?
+											</label>
+										</div>
                     <strong>Note:</strong> if you plan to offer an existing service, please set this switch to No.
                   </div>
                 </div>
-
               </div>
             </div>
+
             <div class="form-group row"
                  *ngIf="!application?.project_application_cloud_service_develop && application?.project_application_cloud_service">
               <label class="col-md-4 form-control-label" for="id_project_application_cloud_service_user_number"><strong>Number
@@ -943,7 +946,7 @@
             <div class="form-group row" *ngIf="!is_validation">
               <label class="col-md-4 form-control-label"><strong>Principal Investigator*
                 <i
-                  data-balloon="Only applications which have been approved/submitted by an principal investigator will be accepted. If you are not a principal investigator please provide his email."
+                  data-balloon="Only applications which have been approved/submitted by an principal investigator will be accepted. If you are not a principal investigator please provide their email."
                   data-balloon-pos="right" data-balloon-length="large"><i
                   class="icon-question menu_links"
                   style="cursor: pointer;"></i></i></strong></label>
@@ -988,9 +991,9 @@
               <div class="col-md-8 alert alert-primary">Only applications approved by a principal investigator
                 of a german university or research facility will be accepted.
                 You are able to enter an email address of your principal investigator whom
-                we will send an email, containing your name and email address and a link informing her/him about the
+                we will send an email, containing your name and email address and a link informing them about the
                 requested resources,
-                where she/he will be able to approve this application.
+                where they will be able to approve this application.
               </div>
             </div>
             <div *ngIf="!application?.project_application_pi_approved && !is_validation" class="form-group row">

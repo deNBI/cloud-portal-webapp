@@ -3,352 +3,360 @@
 
 
 <div class="sidebar sidebar-fixed">
-    <ng-scrollbar class="ng-scrollbar" visibility="hover">
+	<ng-scrollbar class="ng-scrollbar" visibility="hover">
 
-        <ul class="sidebar-nav">
-            <li class="nav-title">
-                Profile
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="tooltip" data-placement="right"
-                   title="Profile" routerLinkActive="active" [routerLink]="['/userinfo']"
-                   href="#"><i
-                        class="nav-icon fas fa-user"></i>Profile</a>
-            </li>
+		<ul class="sidebar-nav">
+			<li class="nav-title">
+				Profile
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" data-toggle="tooltip" data-placement="right"
+					 title="Profile" routerLinkActive="active" [routerLink]="['/userinfo']"
+					 href="#"><i
+					class="nav-icon fas fa-user"></i>Profile</a>
+			</li>
 
-            <li class="nav-item">
+			<li class="nav-item">
 
-                <a class="nav-link" href="#/help" routerLinkActive="active" [routerLink]="['/help']"><i
-                        class="nav-icon fas fa-comments"></i>
-                    Help</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{WIKI}}" target="_blank" rel="noopener noreferrer"><i
-                        class="nav-icon fas fa-info-circle"></i>
-                    Wiki</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{WIKI_FAQ}}" target="_blank" rel="noopener noreferrer"><i
-                        class="nav-icon fas fa-question-circle"></i>
-                    FAQ</a>
-            </li>
-            <li class="nav-title">
-                Project management
-            </li>
-            <li class="nav-item">
+				<a class="nav-link" href="#/help" routerLinkActive="active" [routerLink]="['/help']"><i
+					class="nav-icon fas fa-comments"></i>
+					Help</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="{{WIKI}}" target="_blank" rel="noopener noreferrer"><i
+					class="nav-icon fas fa-info-circle"></i>
+					Wiki</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="{{WIKI_FAQ}}" target="_blank" rel="noopener noreferrer"><i
+					class="nav-icon fas fa-question-circle"></i>
+					FAQ</a>
+			</li>
+			<li class="nav-title">
+				Project management
+			</li>
+			<li class="nav-item">
 
-                <a class="nav-link" *ngIf="is_vo_admin" [routerLinkActiveOptions]="{exact:true}"
-                   routerLinkActive="active" [routerLink]="['/applications']"><i
-                        class="nav-icon fas fa-archive"></i> Applications</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" routerLinkActive="active" id="sidebar_credits_calculator"
-                   [routerLink]="['/credits-calculator']">
-                    <i class="nav-icon ccs-credits_icon">
-                    </i>
-                    Credits Calculator
-                </a>
-
-
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" routerLinkActive="active" id="sidebar_new_project"
-                   [routerLink]="['/applications/type-overview']">
-                    <i class="nav-icon fas fa-plus-circle">
-                    </i>
-                    New Project
-                </a>
+				<a class="nav-link" *ngIf="is_vo_admin" [routerLinkActiveOptions]="{exact:true}"
+					 routerLinkActive="active" [routerLink]="['/applications']"><i
+					class="nav-icon fas fa-archive"></i> Applications</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" routerLinkActive="active" id="sidebar_credits_calculator"
+					 [routerLink]="['/credits-calculator']">
+					<i class="nav-icon ccs-credits_icon">
+					</i>
+					Credits Calculator
+				</a>
 
 
-            </li>
-            <ng-container class="nav-group" *ngIf="project_enumeration?.length <= 3">
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" routerLinkActive="active" id="sidebar_new_project"
+					 [routerLink]="['/applications/type-overview']">
+					<i class="nav-icon fas fa-plus-circle">
+					</i>
+					New Project
+				</a>
 
-                <li class="nav-item" *ngFor="let application of project_enumeration"
-                    style="width: 100% !important;"
-                >
 
-                    <a class="nav-link" routerLinkActive="active"
-                       [id]="application?.project_name"
-                       [routerLink]="['/project-management/' + application?.application_id]">
+			</li>
+			<ng-container class="nav-group" *ngIf="project_enumeration?.length <= 3">
 
-                        <img class="nav-icon" *ngIf="!application?.is_open_stack" data-toggle="tooltip"
-                             title="This is a Simple VM project" src="{{simple_vm_logo}}">
-                        <img class="nav-icon" *ngIf="application?.is_open_stack" data-toggle="tooltip"
-                             title="This is an OpenStack project" src="{{openstack_logo}}">
-                        <span style="display: inline-block;width: 65%;overflow: hidden;text-overflow: ellipsis;"
-                              data-toggle="tooltip"
-                              title="{{application?.project_name}}">
+				<li class="nav-item" *ngFor="let application of project_enumeration"
+						style="width: 100% !important;"
+				>
+
+					<a class="nav-link" routerLinkActive="active"
+						 [id]="application?.project_name"
+						 [routerLink]="['/project-management/' + application?.application_id]">
+
+						<img class="nav-icon" *ngIf="!application?.is_open_stack" data-toggle="tooltip"
+								 title="This is a Simple VM project" src="{{simple_vm_logo}}">
+						<img class="nav-icon" *ngIf="application?.is_open_stack" data-toggle="tooltip"
+								 title="This is an OpenStack project" src="{{openstack_logo}}">
+						<span style="display: inline-block;width: 65%;overflow: hidden;text-overflow: ellipsis;"
+									data-toggle="tooltip"
+									title="{{application?.project_name}}">
               {{application?.project_name}}
                       </span>
-                        <div class="badge bg-success status-badge col-2" data-toggle="tooltip"
-                             data-placement="right" title="This project was initially approved within the last 2 weeks."
-                             *ngIf="(application | hasstatusinlist:Application_States.APPROVED_LAST_2_WEEKS)">
-                            <i class="fas fa-plus-circle"></i>
-                        </div>
-                        <div class="badge bg-warning status-badge col-2" data-toggle="tooltip"
-                             data-placement="right" title="The project lifetime expires soon."
-                             *ngIf="(application | hasstatusinlist:Application_States.EXPIRES_SOON) && !(application | hasstatusinlist:Application_States.EXPIRED)">
-                            <i class="fas fa-exclamation-circle"></i>
-                        </div>
-                        <div class="badge bg-danger status-badge col-2" data-toggle="tooltip"
-                             data-placement="right" title="The lifetime of this project is expired."
-                             *ngIf="(application | hasstatusinlist:Application_States.EXPIRED)">
-                            <i class="fas fa-ban"></i>
-                        </div>
-                        <div class="badge bg-danger status-badge col-2" data-toggle="tooltip"
-                             data-placement="right" title="The termination of the project was requested."
-                             *ngIf="(application | hasstatusinlist:Application_States.TERMINATION_REQUESTED)">
-                            <i class="fas fa-trash"></i>
-                        </div>
-                        <div class="badge bg-secondary status-badge col-2" data-toggle="tooltip"
-                             data-placement="right"
-                             title="An extension request was submitted for this project."
-                             *ngIf="(application | hasstatusinlist:Application_States.LIFETIME_EXTENSION_REQUESTED)
+						<div class="badge bg-success status-badge col-2" data-toggle="tooltip"
+								 data-placement="right" title="This project was initially approved within the last 2 weeks."
+								 *ngIf="(application | hasstatusinlist:Application_States.APPROVED_LAST_2_WEEKS)">
+							<i class="fas fa-plus-circle"></i>
+						</div>
+						<div class="badge bg-warning status-badge col-2" data-toggle="tooltip"
+								 data-placement="right" title="The project lifetime expires soon."
+								 *ngIf="(application | hasstatusinlist:Application_States.EXPIRES_SOON) && !(application | hasstatusinlist:Application_States.EXPIRED)">
+							<i class="fas fa-exclamation-circle"></i>
+						</div>
+						<div class="badge bg-danger status-badge col-2" data-toggle="tooltip"
+								 data-placement="right" title="The lifetime of this project is expired."
+								 *ngIf="(application | hasstatusinlist:Application_States.EXPIRED)">
+							<i class="fas fa-ban"></i>
+						</div>
+						<div class="badge bg-danger status-badge col-2" data-toggle="tooltip"
+								 data-placement="right" title="The termination of the project was requested."
+								 *ngIf="(application | hasstatusinlist:Application_States.TERMINATION_REQUESTED)">
+							<i class="fas fa-trash"></i>
+						</div>
+						<div class="badge bg-secondary status-badge col-2" data-toggle="tooltip"
+								 data-placement="right"
+								 title="An extension request was submitted for this project."
+								 *ngIf="(application | hasstatusinlist:Application_States.LIFETIME_EXTENSION_REQUESTED)
                    || (application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION_EXTENSION)">
-                            <i class="fas fa-edit"></i>
-                        </div>
-                        <div class="badge bg-secondary status-badge col-2" data-toggle="tooltip"
-                             data-placement="right"
-                             title="A modification request was submitted for this project."
-                             *ngIf="(application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)
+							<i class="fas fa-edit"></i>
+						</div>
+						<div class="badge bg-secondary status-badge col-2" data-toggle="tooltip"
+								 data-placement="right"
+								 title="A modification request was submitted for this project."
+								 *ngIf="(application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)
                     || (application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION)">
-                            <i class="fas fa-edit"></i>
-                        </div>
-                        <div class="badge bg-secondary status-badge col-2" data-toggle="tooltip"
-                             data-placement="right"
-                             title="The project application was submitted but not approved yet."
-                             *ngIf="(application | hasstatusinlist:Application_States.SUBMITTED)">
-                            <i class="fas fa-edit"></i>
-                        </div>
-                        <div class="badge bg-secondary status-badge col-2" data-toggle="tooltip"
-                             data-placement="right"
-                             title="A request for additional credits was submitted for this project."
-                             *ngIf="(application | hasstatusinlist:Application_States.CREDITS_EXTENSION_REQUESTED)
+							<i class="fas fa-edit"></i>
+						</div>
+						<div class="badge bg-secondary status-badge col-2" data-toggle="tooltip"
+								 data-placement="right"
+								 title="The project application was submitted but not approved yet."
+								 *ngIf="(application | hasstatusinlist:Application_States.SUBMITTED)">
+							<i class="fas fa-edit"></i>
+						</div>
+						<div class="badge bg-secondary status-badge col-2" data-toggle="tooltip"
+								 data-placement="right"
+								 title="A request for additional credits was submitted for this project."
+								 *ngIf="(application | hasstatusinlist:Application_States.CREDITS_EXTENSION_REQUESTED)
                     || (application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION_CREDITS)">
-                            <i class="fas fa-coins"></i>
-                        </div>
+							<i class="fas fa-coins"></i>
+						</div>
 
 
-                    </a>
+					</a>
 
-                </li>
-            </ng-container>
-            <li class="nav-group" [ngClass]="{'show':show_projects}" *ngIf="project_enumeration?.length > 3">
-                <a class="nav-link nav-group-toggle" (click)="toggleProjectsNav()"
-                >
-                    <i class="nav-icon fas fa-list"></i> Projects</a>
-                <ul class="nav-group-items">
-                    <li class="nav-item" *ngFor="let application of project_enumeration"
-                        style="width: 100% !important;"
-                    >
+				</li>
+			</ng-container>
+			<li class="nav-group" [ngClass]="{'show':show_projects}" *ngIf="project_enumeration?.length > 3">
+				<a class="nav-link nav-group-toggle" (click)="toggleProjectsNav()"
+				>
+					<i class="nav-icon fas fa-list"></i> Projects</a>
+				<ul class="nav-group-items">
+					<li class="nav-item" *ngFor="let application of project_enumeration"
+							style="width: 100% !important;"
+					>
 
-                        <a class="nav-link" routerLinkActive="active"
-                           [id]="application?.project_name"
-                           [routerLink]="['/project-management/' + application?.application_id]">
+						<a class="nav-link" routerLinkActive="active"
+							 [id]="application?.project_name"
+							 [routerLink]="['/project-management/' + application?.application_id]">
 
-                            <img class="nav-icon" *ngIf="!application?.is_open_stack" data-toggle="tooltip"
-                                 title="This is a Simple VM project" src="{{simple_vm_logo}}">
-                            <img class="nav-icon" *ngIf="application?.is_open_stack" data-toggle="tooltip"
-                                 title="This is an OpenStack project" src="{{openstack_logo}}">
-                            <span style="display: inline-block;width: 65%;overflow: hidden;text-overflow: ellipsis;"
-                                  data-toggle="tooltip"
-                                  title="{{application?.project_name}}">
+							<img class="nav-icon" *ngIf="!application?.is_open_stack" data-toggle="tooltip"
+									 title="This is a Simple VM project" src="{{simple_vm_logo}}">
+							<img class="nav-icon" *ngIf="application?.is_open_stack" data-toggle="tooltip"
+									 title="This is an OpenStack project" src="{{openstack_logo}}">
+							<span style="display: inline-block;width: 65%;overflow: hidden;text-overflow: ellipsis;"
+										data-toggle="tooltip"
+										title="{{application?.project_name}}">
               {{application?.project_name}}
                       </span>
 
 
 
-                        </a>
+						</a>
 
-                         <div *ngIf="!navbar_minimized" class="row justify-content-center"
-                                 id="status_row_{{application?.application_id}}"
-                                 style="margin: 2px;">
-              <div class="badge bg-success status-badge col-3" data-toggle="tooltip"
-                    data-placement="right" title="This project was initially approved within the last 2 weeks."
-                    *ngIf="(application | hasstatusinlist:Application_States.APPROVED_LAST_2_WEEKS)">
-              <i class="fas fa-plus-circle"></i>
-            </div>
-                                <div class="badge bg-warning status-badge col-3" data-toggle="tooltip"
-                                      data-placement="right" title="The project lifetime expires soon."
-                                      *ngIf="(application | hasstatusinlist:Application_States.EXPIRES_SOON) && !(application | hasstatusinlist:Application_States.EXPIRED)">
-              <i class="fas fa-exclamation-circle"></i>
-            </div>
-                                <div class="badge bg-danger status-badge col-3" data-toggle="tooltip"
-                                      data-placement="right" title="The lifetime of this project is expired."
-                                      *ngIf="(application | hasstatusinlist:Application_States.EXPIRED)">
-              <i class="fas fa-ban"></i>
-            </div>
-                                <div class="badge bg-danger status-badge col-3" data-toggle="tooltip"
-                                      data-placement="right" title="The termination of the project was requested."
-                                      *ngIf="(application | hasstatusinlist:Application_States.TERMINATION_REQUESTED)">
-              <i class="fas fa-trash"></i>
-            </div>
-                                <div class="badge bg-secondary status-badge col-3" data-toggle="tooltip"
-                                      data-placement="right"
-                                      title="An extension request was submitted for this project."
-                                      *ngIf="(application | hasstatusinlist:Application_States.LIFETIME_EXTENSION_REQUESTED)
+						<div *ngIf="!navbar_minimized" class="row justify-content-center"
+								 id="status_row_{{application?.application_id}}"
+								 style="margin: 2px;">
+							<div class="badge bg-success status-badge col-3" data-toggle="tooltip"
+									 data-placement="right" title="This project was initially approved within the last 2 weeks."
+									 *ngIf="(application | hasstatusinlist:Application_States.APPROVED_LAST_2_WEEKS)">
+								<i class="fas fa-plus-circle"></i>
+							</div>
+							<div class="badge bg-warning status-badge col-3" data-toggle="tooltip"
+									 data-placement="right" title="The project lifetime expires soon."
+									 *ngIf="(application | hasstatusinlist:Application_States.EXPIRES_SOON) && !(application | hasstatusinlist:Application_States.EXPIRED)">
+								<i class="fas fa-exclamation-circle"></i>
+							</div>
+							<div class="badge bg-danger status-badge col-3" data-toggle="tooltip"
+									 data-placement="right" title="The lifetime of this project is expired."
+									 *ngIf="(application | hasstatusinlist:Application_States.EXPIRED)">
+								<i class="fas fa-ban"></i>
+							</div>
+							<div class="badge bg-danger status-badge col-3" data-toggle="tooltip"
+									 data-placement="right" title="The termination of the project was requested."
+									 *ngIf="(application | hasstatusinlist:Application_States.TERMINATION_REQUESTED)">
+								<i class="fas fa-trash"></i>
+							</div>
+							<div class="badge bg-secondary status-badge col-3" data-toggle="tooltip"
+									 data-placement="right"
+									 title="An extension request was submitted for this project."
+									 *ngIf="(application | hasstatusinlist:Application_States.LIFETIME_EXTENSION_REQUESTED)
                    || (application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION_EXTENSION)">
-              <i class="fas fa-edit"></i>
-            </div>
-                                <div class="badge bg-secondary status-badge col-3" data-toggle="tooltip"
-                                      data-placement="right"
-                                      title="A modification request was submitted for this project."
-                                      *ngIf="(application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)
+								<i class="fas fa-edit"></i>
+							</div>
+							<div class="badge bg-secondary status-badge col-3" data-toggle="tooltip"
+									 data-placement="right"
+									 title="A modification request was submitted for this project."
+									 *ngIf="(application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)
                     || (application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION)">
-              <i class="fas fa-edit"></i>
-            </div>
-                                <div class="badge bg-secondary status-badge col-3" data-toggle="tooltip"
-                                      data-placement="right"
-                                      title="The project application was submitted but not approved yet."
-                                      *ngIf="(application | hasstatusinlist:Application_States.SUBMITTED)">
-              <i class="fas fa-edit"></i>
-            </div>
-                                <div class="badge bg-secondary status-badge col-3" data-toggle="tooltip"
-                                      data-placement="right"
-                                      title="A request for additional credits was submitted for this project."
-                                      *ngIf="(application | hasstatusinlist:Application_States.CREDITS_EXTENSION_REQUESTED)
+								<i class="fas fa-edit"></i>
+							</div>
+							<div class="badge bg-secondary status-badge col-3" data-toggle="tooltip"
+									 data-placement="right"
+									 title="The project application was submitted but not approved yet."
+									 *ngIf="(application | hasstatusinlist:Application_States.SUBMITTED)">
+								<i class="fas fa-edit"></i>
+							</div>
+							<div class="badge bg-secondary status-badge col-3" data-toggle="tooltip"
+									 data-placement="right"
+									 title="A request for additional credits was submitted for this project."
+									 *ngIf="(application | hasstatusinlist:Application_States.CREDITS_EXTENSION_REQUESTED)
                     || (application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION_CREDITS)">
-              <i class="fas fa-coins"></i>
-            </div>
+								<i class="fas fa-coins"></i>
+							</div>
 
-                            </div>
+						</div>
 
-                    </li>
-                </ul>
-            </li>
-            <li class="nav-title" *ngIf="vm_project_member ">
-                Virtual Machines
-            </li>
-            <li class="nav-item" *ngIf="vm_project_member ">
-                <a class="nav-link" routerLinkActive="active" data-toggle="tooltip"
-                   data-placement="right" title="New Instance"
-                   [routerLink]="['/virtualmachines/newVM']">
-                    <i class="nav-icon fas fa-desktop"></i> New Instance</a>
+					</li>
+				</ul>
+			</li>
+			<li class="nav-title" *ngIf="vm_project_member ">
+				Virtual Machines
+			</li>
+			<li class="nav-item" *ngIf="vm_project_member ">
+				<a class="nav-link" routerLinkActive="active" data-toggle="tooltip"
+					 data-placement="right" title="New Instance"
+					 [routerLink]="['/virtualmachines/newVM']">
+					<i class="nav-icon fas fa-desktop"></i> New Instance</a>
 
-            </li>
-            <li class="nav-item" *ngIf="(is_vo_admin || cluster_allowed) &&  vm_project_member">
-                <a class="nav-link" routerLinkActive="active" data-toggle="tooltip" data-placement="right"
-                   title="New Cluster"
-                   [routerLink]="['/virtualmachines/newCluster']">
-                    <i class="nav-icon fas fa-network-wired"></i> New Cluster</a>
+			</li>
+			<li class="nav-item" *ngIf="(is_vo_admin || cluster_allowed) &&  vm_project_member">
+				<a class="nav-link" routerLinkActive="active" data-toggle="tooltip" data-placement="right"
+					 title="New Cluster"
+					 [routerLink]="['/virtualmachines/newCluster']">
+					<i class="nav-icon fas fa-network-wired"></i> New Cluster</a>
 
-            </li>
-            <li class="nav-item" *ngIf="has_workshops &&  vm_project_member">
-                <a class="nav-link" routerLinkActive="active" data-toggle="tooltip" data-placement="right"
-                   title="New Cluster"
-                   [routerLink]="['/virtualmachines/newWorkshop']">
-                    <i class="nav-icon fas fa-chalkboard-teacher"></i> New Workshop</a>
+			</li>
 
+			<li *ngIf="vm_project_member"
+					class="nav-group " [ngClass]="{'show':show_overviews}">
+				<a class="nav-link nav-group-toggle " (click)="toggleOverviews()"
+				><i
+					class="nav-icon fas fa-ellipsis-h"></i> Overviews</a>
+				<ul class="nav-group-items" *ngIf="vm_project_member">
+					<li class="nav-item">
+						<a class="nav-link" routerLinkActive="active"
+							 [routerLink]="['/virtualmachines/vmOverview']"><i
+							class="nav-icon fas fa-list"></i> Instances</a>
+					</li>
+					<li class="nav-item" *ngIf="is_vo_admin || ( vm_project_member && cluster_allowed)">
+						<a class="nav-link" routerLinkActive="active"
+							 [routerLink]="['/virtualmachines/clusterOverview']"><i
+							class="nav-icon fas fa-network-wired"></i> Clusters</a>
+					</li>
+					<li class="nav-item" *ngIf="vm_project_member || is_vo_admin || is_facility_manager">
+						<a class="nav-link" routerLinkActive="active"
+							 [routerLink]="['/virtualmachines/volumeOverview']"><i
+							class="nav-icon fas fa-hdd"></i> Volumes</a>
+					</li>
+					<li class="nav-item" *ngIf="vm_project_member || is_vo_admin || is_facility_manager">
+						<a class="nav-link" routerLinkActive="active"
+							 [routerLink]="['/virtualmachines/snapshotOverview']"><i
+							class="nav-icon fas fa-camera"></i>Snapshots</a>
+					</li>
 
-            </li>
+				</ul>
 
-            <li *ngIf="vm_project_member"
-                class="nav-group " [ngClass]="{'show':show_overviews}">
-                <a class="nav-link nav-group-toggle " (click)="toggleOverviews()"
-                ><i
-                        class="nav-icon fas fa-ellipsis-h"></i> Overviews</a>
-                <ul class="nav-group-items" *ngIf="vm_project_member">
-                    <li class="nav-item">
-                        <a class="nav-link" routerLinkActive="active"
-                           [routerLink]="['/virtualmachines/vmOverview']"><i
-                                class="nav-icon fas fa-list"></i> Instances</a>
-                    </li>
-                    <li class="nav-item" *ngIf="is_vo_admin || ( vm_project_member && cluster_allowed)">
-                        <a class="nav-link" routerLinkActive="active"
-                           [routerLink]="['/virtualmachines/clusterOverview']"><i
-                                class="nav-icon fas fa-network-wired"></i> Clusters</a>
-                    </li>
-                    <li class="nav-item" *ngIf="vm_project_member || is_vo_admin || is_facility_manager">
-                        <a class="nav-link" routerLinkActive="active"
-                           [routerLink]="['/virtualmachines/volumeOverview']"><i
-                                class="nav-icon fas fa-hdd"></i> Volumes</a>
-                    </li>
-                    <li class="nav-item" *ngIf="vm_project_member || is_vo_admin || is_facility_manager">
-                        <a class="nav-link" routerLinkActive="active"
-                           [routerLink]="['/virtualmachines/snapshotOverview']"><i
-                                class="nav-icon fas fa-camera"></i>Snapshots</a>
-                    </li>
-
-                </ul>
-
-            </li>
-            <li *ngIf="is_facility_manager || is_vo_admin" class="nav-title">
-                Facilities
-            </li>
-
-
-            <li *ngIf="(is_facility_manager || is_vo_admin) " class="nav-item">
-                <a class="nav-link" routerLinkActive="active"
-                   [routerLink]="['/facility-manager/facilityProjects']"><i
-                        class="nav-icon fas fa-boxes"></i> Projects</a>
-            </li>
-
-
-            <li *ngIf="(is_facility_manager || is_vo_admin)" class="nav-item">
-                <a class="nav-link" routerLinkActive="active"
-                   [routerLink]="['/facility-manager/facilityApplications']"><i
-                        class="nav-icon fas fa-archive"></i> Applications</a>
-            </li>
+			</li>
+			<ng-container *ngIf="has_workshops && vm_project_member">
+				<li class="nav-title">
+					Workshops
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" routerLinkActive="active" data-toggle="tooltip" data-placement="right"
+						 title="New Cluster"
+						 [routerLink]="['/virtualmachines/newWorkshop']">
+						<i class="nav-icon fas fa-chalkboard-teacher"></i> Add workshop VMs</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" routerLinkActive="active"
+						 [routerLink]="['/virtualmachines/workshopOverview']"><i
+						class="nav-icon fas fa-chalkboard"></i> Manage workshops</a>
+				</li>
+			</ng-container>
+			<li *ngIf="is_facility_manager || is_vo_admin" class="nav-title">
+				Facilities
+			</li>
 
 
-            <li *ngIf="(is_facility_manager || is_vo_admin)" class="nav-item">
-                <a class="nav-link" routerLinkActive="active"
-                   [routerLink]="['/facility-manager/facilityResources']"><i
-                        class="nav-icon fas fa-server"></i> Resources</a>
-            </li>
+			<li *ngIf="(is_facility_manager || is_vo_admin) " class="nav-item">
+				<a class="nav-link" routerLinkActive="active"
+					 [routerLink]="['/facility-manager/facilityProjects']"><i
+					class="nav-icon fas fa-boxes"></i> Projects</a>
+			</li>
 
 
-            <li *ngIf="((is_facility_manager && is_simple_vm_manager) || is_vo_admin)" class="nav-item">
-                <a class="nav-link" routerLinkActive="active"
-                   [routerLink]="['/facility-manager/imageTags']"><i
-                        class="nav-icon fas fa-tags"></i> Image Tags</a>
-            </li>
+			<li *ngIf="(is_facility_manager || is_vo_admin)" class="nav-item">
+				<a class="nav-link" routerLinkActive="active"
+					 [routerLink]="['/facility-manager/facilityApplications']"><i
+					class="nav-icon fas fa-archive"></i> Applications</a>
+			</li>
 
 
-            <li *ngIf="(is_facility_manager || is_vo_admin)" class="nav-item">
-                <a class="nav-link" routerLinkActive="active"
-                   [routerLink]="['/facility-manager/news-manager']"><i
-                        class="nav-icon fas fa-newspaper"></i> News Management</a>
-            </li>
-
-            <li class="nav-title" *ngIf="is_vo_admin">
-                Vo Manager
-            </li>
+			<li *ngIf="(is_facility_manager || is_vo_admin)" class="nav-item">
+				<a class="nav-link" routerLinkActive="active"
+					 [routerLink]="['/facility-manager/facilityResources']"><i
+					class="nav-icon fas fa-server"></i> Resources</a>
+			</li>
 
 
-            <li class="nav-item" *ngIf="is_vo_admin">
-                <a class="nav-link" routerLinkActive="active"
-                   [routerLink]="['/vo-manager/clientsOverview']"><i
-                        class="nav-icon fas fa-plug"></i> Clients</a>
-            </li>
-
-            <li class="nav-item" *ngIf="is_vo_admin">
-                <a class="nav-link" routerLinkActive="active"
-                   [routerLink]="['/vo-manager/overview']"><i
-                        class="nav-icon fas fa-cloud"></i> Overview</a>
-            </li>
-
-            <li class="nav-item" *ngIf="is_vo_admin">
-                <a class="nav-link" routerLinkActive="active"
-                   [routerLink]="['/vo-manager/resources']"><i
-                        class="nav-icon fas fa-server"></i> Resources</a>
-            </li>
+			<li *ngIf="((is_facility_manager && is_simple_vm_manager) || is_vo_admin)" class="nav-item">
+				<a class="nav-link" routerLinkActive="active"
+					 [routerLink]="['/facility-manager/imageTags']"><i
+					class="nav-icon fas fa-tags"></i> Image Tags</a>
+			</li>
 
 
-            <li class="nav-item" *ngIf="is_vo_admin">
-                <a class="nav-link" routerLinkActive="active"
-                   [routerLink]="['/vo-manager/numbers']"><i class="nav-icon fas fa-chart-pie"></i> Numbers</a>
-            </li>
+			<li *ngIf="(is_facility_manager || is_vo_admin)" class="nav-item">
+				<a class="nav-link" routerLinkActive="active"
+					 [routerLink]="['/facility-manager/news-manager']"><i
+					class="nav-icon fas fa-newspaper"></i> News Management</a>
+			</li>
+
+			<li class="nav-title" *ngIf="is_vo_admin">
+				Vo Manager
+			</li>
 
 
-        </ul>
-    </ng-scrollbar>
+			<li class="nav-item" *ngIf="is_vo_admin">
+				<a class="nav-link" routerLinkActive="active"
+					 [routerLink]="['/vo-manager/clientsOverview']"><i
+					class="nav-icon fas fa-plug"></i> Clients</a>
+			</li>
 
-    <div style="margin: 15px auto;">
+			<li class="nav-item" *ngIf="is_vo_admin">
+				<a class="nav-link" routerLinkActive="active"
+					 [routerLink]="['/vo-manager/overview']"><i
+					class="nav-icon fas fa-cloud"></i> Overview</a>
+			</li>
 
-        <a href="https://www.denbi.de">de.NBI&nbsp;</a> &copy; {{ year }}
+			<li class="nav-item" *ngIf="is_vo_admin">
+				<a class="nav-link" routerLinkActive="active"
+					 [routerLink]="['/vo-manager/resources']"><i
+					class="nav-icon fas fa-server"></i> Resources</a>
+			</li>
 
-    </div>
+
+			<li class="nav-item" *ngIf="is_vo_admin">
+				<a class="nav-link" routerLinkActive="active"
+					 [routerLink]="['/vo-manager/numbers']"><i class="nav-icon fas fa-chart-pie"></i> Numbers</a>
+			</li>
+
+
+		</ul>
+	</ng-scrollbar>
+
+	<div style="margin: 15px auto;">
+
+		<a href="https://www.denbi.de">de.NBI&nbsp;</a> &copy; {{ year }}
+
+	</div>
 
 </div>
 
@@ -357,7 +365,7 @@
 
 
 
-    <div class="container-fluid">
-        <router-outlet (activate)="componentAdded($event)"></router-outlet>
-    </div><!-- /.conainer-fluid -->
+	<div class="container-fluid">
+		<router-outlet (activate)="componentAdded($event)"></router-outlet>
+	</div><!-- /.conainer-fluid -->
 </main>

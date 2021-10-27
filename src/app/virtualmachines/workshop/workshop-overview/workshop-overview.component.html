@@ -1,0 +1,272 @@
+<div *ngIf="errorMessage !== null">
+	An Error has occurred. {{errorMessage}}
+</div>
+
+<div *ngIf="!isLoaded && errorMessage === null" class="loader"></div>
+
+<div class="animated fadeIn card" *ngIf="isLoaded">
+	<div class="card-body">
+		<alert type="info" dismissible="true">
+			To learn more about workshops, please see our <a [href]="WIKI_WORKSHOPS" target="_blank" rel="noopener noreferrer">WIKI</a>.
+		</alert>
+		<div *ngIf="projects.length > 0">
+
+			<div class="row" style="margin-bottom: 5px">
+				<label class="col-2 form-label" for="projectSelect"><strong>Project*</strong></label>
+				<div class="col-10">
+					<select required class="form-control form-select" name="selectedProject"
+									[(ngModel)]="selectedProject" id="projectSelect"
+									(ngModelChange)="projectChange();">
+						<option value="undefined" disabled selected hidden> Please
+							Select
+						</option>
+						<option *ngFor="let project of projects" [ngValue]="project"
+										id="id_option_{{project[0]}}">
+							{{project[0]}}
+						</option>
+					</select>
+				</div>
+			</div>
+
+			<div *ngIf="projectWorkshopsLoading || projectMembersLoading">
+				<div class="row" style="height: 30px; margin-bottom: 10px">
+					<strong class="col-3">Getting workshops...</strong>
+					<div class="col-2" *ngIf="projectWorkshopsLoading">
+						<div class="spinner-border text-muted">
+						</div>
+					</div>
+					<div class="col-2" *ngIf="projectWorkshopsLoaded">
+						<i class="fa fa-check" style="color: green">
+						</i>
+					</div>
+				</div>
+				<div class="row" style="height: 30px; margin-bottom: 10px">
+					<strong class="col-3">Getting project members...</strong>
+					<div class="col-2" *ngIf="projectMembersLoading">
+						<div class="spinner-border text-muted">
+						</div>
+					</div>
+					<div class="col-2" *ngIf="projectMembersLoaded">
+						<i class="fa fa-check" style="color: green">
+						</i>
+					</div>
+				</div>
+			</div>
+
+			<div *ngIf="projectWorkshopsLoaded && projectMembersLoaded"
+					 class="card"
+					 id="workshioCard">
+				<div class="card-header">
+					<i class="fa fa-align-justify"></i>
+					Workshops
+				</div>
+				<div class="card-body">
+					<div *ngIf="!selectedWorkshop.id">
+						Please select a workshop:
+					</div>
+					<div class="btn-group">
+						<button id="select_workshop_{{workshop?.shortname}}_btn" *ngFor="let workshop of workshops "
+										[ngClass]="{'btn-outline-success': workshop.shortname === selectedWorkshop?.shortname,
+								'btn-outline-secondary' : workshop.shortname !== selectedWorkshop?.shortname}"
+										(click)="workshopChange(workshop)"
+										type="button" style="margin-bottom:5px;margin-right:5px;"
+										class="btn">{{workshop.shortname}}
+						</button>
+						<button class="btn btn-danger"
+										(click)="verifyDeleteModal.show()"
+										type="button"
+										[disabled]="deleting"
+										*ngIf="selectedWorkshop?.id"
+										style="margin-bottom:5px;margin-right:5px;">
+							Cleanup Workshop
+						</button>
+						<button class="btn btn-info" type="button"
+										style="margin-bottom:5px;margin-right:5px;" (click)="blankWorkshop()">
+							New Workshop
+						</button>
+					</div>
+					<div class="row" *ngIf="newWorkshop">
+						<label class="form-label col-2" for="workshop_longname" style="margin-top: 10px">
+							Longname
+						</label>
+						<div class="col-4">
+							<input required type="text" id="workshop_longname" style="margin-top: 10px"
+										 class="form-control" name="selected_workshop.longname"
+										 (keyup)="checkLongname(selectedWorkshop.longname)"
+										 [(ngModel)]="selectedWorkshop.longname" #longname=ngModel
+										 [minlength]="3" [maxlength]="256" pattern="[a-zA-Z0-9]+"
+										 [ngClass]="{
+                                'is-invalid': invalidLongname && (longname.dirty),
+                                'is-valid': !invalidLongname && (longname.dirty)
+                                }">
+							<small class="form-text text-muted">
+								Your workshop longname must contain between 3 and 256 characters and may only contain letters and numbers.
+							</small>
+						</div>
+						<div class="w-100"></div>
+						<label class="form-label col-2" for="workshop_shortname" style="margin-top: 10px">
+							Shortname
+						</label>
+						<div class="col-4">
+							<input required type="text" id="workshop_shortname" style="margin-top: 10px"
+										 class="form-control" name="selected_workshop.shortname"
+										 (keyup)="checkShortname(selectedWorkshop.shortname)"
+										 [(ngModel)]="selectedWorkshop.shortname" #shortname=ngModel
+										 [minlength]="3" [maxlength]="8" pattern="[a-zA-Z0-9]+"
+										 [ngClass]="{
+                                'is-invalid': invalidShortname && (shortname.dirty),
+                                'is-valid': !invalidShortname && (shortname.dirty)
+                                }">
+							<small class="form-text text-muted">
+								Your workshop shortname must contain between 3 and 8 characters, may only contain letters and numbers
+								and has to be unique among your project.
+							</small>
+						</div>
+						<div class="w-100"></div>
+						<div class="col-2" style="margin-top: 10px"></div>
+						<div class="col-4">
+							<button class="btn btn-primary" (click)="createNewWorkshop()" type="button" style="margin-bottom: 15px; margin-top: 10px">
+								Create workshop
+							</button>
+						</div>
+						<div class="w-100"></div>
+					</div>
+					<div class="table-responsive" *ngIf="projectMembersLoaded">
+						<table class="table table-hover">
+							<thead>
+							<tr>
+								<th style="width: 50%">User Info</th>
+								<th style="width: 50%">Vm Info</th>
+							</tr>
+							</thead>
+							<tbody>
+							<tr *ngFor="let member of memberVms">
+								<td>
+									<div class="callout callout-info"
+											 style="border-top-width: 0; border-bottom-width: 0; border-right-width: 0;">
+										<i class="fa fa-id-card" style="width: 1.5em"></i>{{member.projectMember.userName}}<br>
+										<i class="fa fa-envelope" style="width: 1.5em"></i>{{member.projectMember.email}}<br>
+										<i class="fa fa-user-cog" style="width: 1.5em"></i>
+										<ng-container *ngIf="member.projectMember.groupAdmin">Admin</ng-container>
+										<ng-container *ngIf="!member.projectMember.groupAdmin">Participant</ng-container>
+									</div>
+								</td>
+								<ng-container *ngIf="!selectedWorkshop.id">
+									<td class="align-middle">No workshop selected.</td>
+								</ng-container>
+								<ng-container *ngIf="selectedWorkshop && member.workshopVmLink[selectedWorkshop?.id]?.length === 0">
+									<td class="align-middle">No vms for this user.</td>
+								</ng-container>
+								<ng-container *ngIf="selectedWorkshop && member.workshopVmLink[selectedWorkshop?.id]?.length > 0">
+									<td>
+										<div *ngFor="let vm of member.workshopVmLink[selectedWorkshop?.id]" class="row">
+											<div class="callout callout-info"
+													 style="border-top-width: 0; border-bottom-width: 0; border-right-width: 0">
+												<ng-container *ngIf="vm.loadingUrlData">
+													<div class="spinner-border text-primary"
+															 style="display:block; margin:auto;">
+													</div>
+												</ng-container>
+												<ng-container *ngIf="!vm.loadingUrlData">
+													<i class="fa fa-laptop" style="width: 1.5em"></i>
+													<a [routerLink]="['/virtualmachines/detail/' + vm?.vm?.openstackid]">
+														{{vm?.vm?.name}}
+													</a>
+													<br>
+													<i class="fa fa-heartbeat" style="width: 1.5em"></i>{{vm.vm.status}}<br>
+													<i class="fa fa-link" style="width: 1.5em"></i>
+													<a href="{{vm.urlData.resenv_url}}" target="_blank" rel="noopener noreferrer">
+														{{vm.urlData.resenv_url}}
+													</a>
+												</ng-container>
+											</div>
+										</div>
+									</td>
+								</ng-container>
+							</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+
+
+		</div>
+		<div *ngIf="projects.length === 0" class="alert alert-warning" role="alert">
+			You are not a member of a project with workshop functionality.
+		</div>
+	</div>
+</div>
+
+<div bsModal #verifyDeleteModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+		 aria-labelledby="Label"
+		 aria-hidden="true"
+		 id="verify_delete_modal">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Cleanup workshop</h4>
+				<button type="button" class="close" style="cursor: pointer"
+								(click)="verifyDeleteModal.hide()"
+								aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="alert alert-warning" role="alert">
+					Are you sure you want to delete the following workshop:<br>
+					<strong>Longname: </strong>{{selectedWorkshop?.longname}}<br>
+					<strong>Shortname: </strong>{{selectedWorkshop?.shortname}}
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button class="btn  btn-success col-md-4"
+								(click)="cleanupWorkshop();verifyDeleteModal.hide();deletionStatusModal.show()"
+								id="confirm_delete_workshop_button">
+					Yes
+				</button>
+				<button class="btn  btn-danger col-md-4" type="reset"
+								(click)="verifyDeleteModal.hide();">Cancel
+				</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div bsModal #deletionStatusModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+		 aria-labelledby="Label"
+		 aria-hidden="true"
+		 id="delete_status_modal">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Cleanup workshop status</h4>
+				<button type="button" class="close" style="cursor: pointer"
+								(click)="verifyDeleteModal.hide()"
+								aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div *ngIf="deleting">
+					<div class="spinner-border text-primary"
+							 style="display:block; margin:auto;">
+					</div>
+				</div>
+				<div *ngIf="!deleting">
+					<div *ngIf="deleteSuccess">
+						Cleanup successful.
+					</div>
+					<div *ngIf="!deleteSuccess">
+						Cleanup failed.
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button class="btn  btn-danger col-md-4" type="reset"
+								(click)="deletionStatusModal.hide();">Close
+				</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

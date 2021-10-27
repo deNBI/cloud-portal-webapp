@@ -285,6 +285,15 @@ export class GroupService {
 
 	}
 
+	getWorkshopMembers(groupid: string): Observable<ProjectMember[]> {
+
+		return this.http.get<ProjectMember[]>(`${ApiSettings.getApiBaseURL()}projects/${groupid}/workshopmembers/`, {
+			withCredentials: true,
+
+		});
+
+	}
+
 	getGroupMaxDiskspace(groupid: string): Observable<IResponseTemplate> {
 		return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/approvedDiskspace/`, {
 			withCredentials: true,
@@ -330,5 +339,13 @@ export class GroupService {
 			withCredentials: true,
 		});
 	}
+	getFilteredMembersByProject(searchString: string, groupid: string | number): Observable<any> {
 
+		return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/members/filter/`, {
+			withCredentials: true,
+			params: {
+				searchString,
+			},
+		});
+	}
 }

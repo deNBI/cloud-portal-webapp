@@ -106,10 +106,14 @@
             </div>
             <div class="col-3" *ngIf="virtualMachine?.status === virtualMachineStates.staticACTIVE ||
             virtualMachine?.status === virtualMachineStates.staticSHUTOFF">
-              <button type="button" class="btn btn-danger" style="width:100%;" id="deleteVMButton"
-                      (click)="verifyModal.show();">
-                <strong>Delete VM</strong>
-              </button>
+<!--							<button type="button" class="btn btn-danger" style="width:100%;" id="deleteVMButton"-->
+<!--											(click)="verifyModal.show();">-->
+<!--								<strong>Delete VM</strong>-->
+<!--							</button>-->
+							<button type="button" class="btn btn-danger" style="width:100%;" id="deleteVMButton"
+											(click)="showDeleteModal();">
+								<strong>Delete VM</strong>
+							</button>
             </div>
             <div class="col-3" *ngIf="virtualMachine?.status === virtualMachineStates.staticSHUTOFF">
               <button type="button" class="btn btn-success" style="width:100%;" id="restartVMButton"
@@ -964,7 +968,7 @@
           <div class="container-fluid">
             <div class="row">
               <p style=" margin-bottom: 15px;">Search and add a user to your research environment by providing at least
-                four characters of his name:</p>
+                four characters of their name:</p>
             </div>
             <div class="row">
               <div class="col-md-8">
@@ -980,7 +984,7 @@
             <br>
             <div class="row">
               <div class="col-md-12">
-                <strong>Please note</strong> that if you can not find the user, he is not registered for a
+                <strong>Please note</strong> that if you can not find the user, they are not registered for a
                 a de.NBI Cloud account.
               </div>
             </div>
@@ -1012,7 +1016,7 @@
         <div class="modal-footer">
           <button type="button" (click)="filteredMembers=null; addUserModal.hide();"
                   type="reset"
-                  class="btn  btn-danger"><i class="fa fa-ban"></i> Close
+                  class="btn  btn-danger"><i class="fa fa-times"></i> Close
           </button>
         </div>
       </div><!-- /.modal-content -->

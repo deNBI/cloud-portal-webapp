@@ -185,7 +185,7 @@
 						 *ngIf="project_application | hasstatusinlist:Application_States.APPROVED">
 					<div class="row">
 						<div class="col-6">
-							<div class="callout callout-info"
+							<div class="callout callout-info" style="border-top-width: 0; border-bottom-width: 0; border-right-width: 0"
 									 title="The project has been running for {{project?.DaysRunning}} of a total of {{project?.LifetimeDays}} granted days">
 								<small class="text-muted">Project Runtime</small><br>
 								<strong class="text-muted">{{project?.DateCreated}} - {{project?.DateEnd}}
@@ -255,7 +255,8 @@
 
 					<div class="row">
 						<div class="col-6">
-							<div class="callout callout-info" *ngIf="this.resourceDataLoaded">
+							<div class="callout callout-info" *ngIf="this.resourceDataLoaded"
+									 style="border-top-width: 0; border-bottom-width: 0; border-right-width: 0">
 								<small class="text-muted">Computational Resources</small><br>
 								<strong class="text-muted" *ngIf="project?.OpenStackProject">{{maximumVMs}} VMs with a total of
 									{{project_application?.project_application_total_cores}} VCPUs and
@@ -319,7 +320,8 @@
 					</div>
 					<div class="row">
 						<div class="col-6" title="Click Contact to send a mail to the facility.">
-							<div class="callout callout-info">
+							<div class="callout callout-info"
+									 style="border-top-width: 0; border-bottom-width: 0; border-right-width: 0">
 								<small class="text-muted">Facility</small><br>
 								<strong class="text-muted">{{project?.ComputeCenter.Name}}</strong>
 							</div>
@@ -349,7 +351,8 @@
 					</div>
 					<div class="row" *ngIf="project_application?.credits_allowed">
 						<div class="col-6">
-							<div class="callout callout-info">
+							<div class="callout callout-info"
+									 style="border-top-width: 0; border-bottom-width: 0; border-right-width: 0">
 								<small class="text-muted">Credits</small><br>
 								<strong class="text-muted">
                    <span *ngIf="project?.ApprovedCredits - project?.CurrentCredits > 0">
@@ -564,7 +567,7 @@
 							<tbody>
 							<tr *ngFor="let member of project_members" [ngStyle]="{'color':isPi(member)}">
 								<td *ngIf="isAdmin || is_vo_admin">
-									<input *ngIf="userinfo?.MemberId !== member.memberId" type="checkbox" id="{{member.userId}}"
+									<input *ngIf="userinfo?.MemberId.toString() !== member.memberId.toString()" type="checkbox" id="{{member.userId}}"
 												 name="member.userId"
 												 [checked]="isMemberChecked(member.memberId)" (change)="checkUnCheckMember(member.memberId);">
 								</td>
@@ -580,12 +583,12 @@
                                                " class="btn btn-primary" type="button" style="margin: 2px">
 											<i class="fa fa-plus-circle"></i>&nbsp; Set Admin status
 										</button>
-										<button *ngIf="member.IsPi &&  userinfo?.MemberId !== member.memberId" (click)="removeAdmin( project?.Id,member.userId,member.userName);
+										<button *ngIf="member.IsPi && userinfo?.MemberId.toString() !== member.memberId.toString()" (click)="removeAdmin( project?.Id,member.userId,member.userName);
                                                 notificationModal.show();
                                                " class="btn btn-primary" type="button" style="margin: 2px">
 											<i class="fa fa-minus-circle"></i>&nbsp; Remove Admin status
 										</button>
-										<button [id]="'remove_member_' + member.userName" *ngIf=" userinfo?.MemberId !== member.memberId"
+										<button [id]="'remove_member_' + member.userName" *ngIf="userinfo?.MemberId.toString() !== member.memberId.toString()"
 														(click)="removeMember(project?.Id,member.memberId,member.userName);
                                                 notificationModal.show();
                                                " class="btn btn-danger" type="button" style="margin: 2px">
@@ -606,74 +609,6 @@
 		</div>
 
 
-	</div>
-	<div class="row"
-			 *ngIf="project && (project?.UserIsPi ||project?.UserIsAdmin) && project_application?.project_application_workshop ">
-
-		<div class="col"
-				 *ngIf="project && (project?.UserIsPi ||project?.UserIsAdmin)
-         && !(project_application | hasstatusinlist:Application_States.TERMINATED)
-         && !(project_application | hasstatusinlist:Application_States.DECLINED)
-         && !(project_application | hasstatusinlist:Application_States.SUBMITTED)
-         && !(project_application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION)">
-
-			<div class="card" id="workshioCard">
-				<div class="card-header">
-					<i class="fa fa-align-justify"></i>
-					Workshops
-				</div>
-
-				<div class="card-body" style="max-height: 800px;" *ngIf="!workshopInfosLoaded">
-
-					<div class="spinner-border text-primary" style="display:block; margin:auto;"></div>
-
-
-				</div>
-
-
-				<div class="card-body" *ngIf="workshopInfosLoaded">
-					<div class="btn-group" *ngFor="let info of workshop_infos ">
-
-						<button id="select_workshop_{{info?.shortname}}_btn"
-										[ngClass]="{'btn-outline-success': info.shortname === selected_workshop_info.shortname,
-								'btn-outline-warning' : info.shortname !== selected_workshop_info.shortname}"
-										(click)="setSelectedWorkshopInfo(info)"
-
-										type="button" style="margin-bottom:5px;margin-right:5px;"
-										class="btn">{{info.shortname}}
-						</button>
-
-
-					</div>
-					<div class="table-responsive">
-						<table class="table table-hover">
-							<thead>
-							<tr>
-								<th>User</th>
-								<th>Email</th>
-								<th>Url</th>
-							</tr>
-							</thead>
-							<tbody>
-							<tr *ngFor="let info of selected_workshop_info?.url_data ">
-
-								<td>
-
-									{{ info?.user_name }}</td>
-								<td>{{ info?.user_email }}</td>
-								<td>{{ info?.resenv_url }}</td>
-
-							</tr>
-
-
-							</tbody>
-						</table>
-					</div>
-
-				</div>
-
-			</div>
-		</div>
 	</div>
 	<div class="row">
 
@@ -752,7 +687,7 @@
 	</div>
 	<div class="row">
 		<div class="col"
-				 *ngIf="project_application.credits_allowed && ((project_application | hasstatusinlist:Application_States.APPROVED)
+				 *ngIf="project && project_application.credits_allowed && ((project_application | hasstatusinlist:Application_States.APPROVED)
            || (project_application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)
            || (project_application | hasstatusinlist:Application_States.MODIFICATION_DECLINED) )">
 			<div class="card" style=" ">
@@ -761,9 +696,12 @@
 
 
 				</div>
-				<div class="card-body" style="max-height: 800px;">
-					<div *ngIf="!creditHistoryLoaded" class="loader"
-							 style="margin-left: -42px; margin-top: -18px;"></div>
+				<div class="card-body justify-content-center align-items-center">
+					<div *ngIf="!creditHistoryLoaded" id="overlay">
+						<div class="w-100 d-flex justify-content-center align-items-center">
+							<div class="spinner"></div>
+						</div>
+					</div>
 					<canvas #creditsChart
 									id="creditsChart">
 					</canvas>
@@ -792,7 +730,7 @@
 				<div class="container-fluid">
 					<div class="row">
 						<p style=" margin-bottom: 15px;">Search and add a user to your project by providing at least
-							four characters of his name:</p>
+							four characters of their name:</p>
 					</div>
 					<div class="row">
 						<div class="col-md-8">
@@ -808,8 +746,8 @@
 					<br>
 					<div class="row">
 						<div class="col-md-12">
-							<strong>Please note</strong> that if you can not find the user, he is not registered for a
-							a de.NBI Cloud account. In that case you can invite him by sending him the following link:
+							<strong>Please note</strong> that if you can not find the user, they are not registered for a
+							a de.NBI Cloud account. In that case you can invite them by sending them the following link:
 							<br>
 							<br>
 							<ul style="list-style-type:none;">
@@ -828,7 +766,7 @@
 								</li>
 							</ul>
 							<br>
-							After the user registered for ELIXIR/de.NBI and applied for your group, you can approve his application.
+							After the user registered for ELIXIR/de.NBI and applied for your group, you can approve their application.
 							Read more about the process <a target="_blank" rel="noopener noreferrer"
 																						 href="{{WIKI_MEMBER_MANAGEMENT}}">here</a>.
 						</div>
@@ -869,7 +807,7 @@
 							Add User
 					</button> -->
 				<button id="close_add_user_modal_btn" type="button" (click)="filteredMembers=null; addUserModal.hide();"
-								class="btn  btn-danger"><i class="fa fa-ban"></i> Close
+								class="btn  btn-danger"><i class="fa fa-times"></i> Close
 				</button>
 			</div>
 		</div><!-- /.modal-content -->
@@ -992,7 +930,7 @@
 				</p>
 				<p *ngIf="!application_action_success && application_action_done && application_action_error_message"
 					 class="alert alert-danger mr-auto">
-					<strong>Failed:</strong> User didn't verify his email address yet. Please wait until the
+					<strong>Failed:</strong> User didn't verify their email address yet. Please wait until the
 					email is
 					verified.
 				</p>

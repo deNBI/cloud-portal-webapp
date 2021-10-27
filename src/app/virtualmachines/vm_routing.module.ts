@@ -9,6 +9,7 @@ import { AddClusterComponent } from './clusters/add-cluster/add-cluster.componen
 import { ClusterdetailComponent } from './clusters/clusterdetail/clusterdetail.component';
 import { ClusterOverviewComponent } from './clusters/clusteroverview/clusterOverview.component';
 import { AddWorkshopComponent } from './workshop/add-workshop/add-workshop.component';
+import { WorkshopOverviewComponent } from './workshop/workshop-overview/workshop-overview.component';
 
 const routes: Routes = [
 	{
@@ -31,7 +32,7 @@ const routes: Routes = [
 		path: 'newWorkshop',
 		component: AddWorkshopComponent,
 		data: {
-			title: 'New Workshop',
+			title: 'New Workshop VMs',
 		},
 
 	},
@@ -40,6 +41,14 @@ const routes: Routes = [
 		component: VmOverviewComponent,
 		data: {
 			title: 'VM Overview',
+		},
+
+	},
+	{
+		path: 'workshopOverview',
+		component: WorkshopOverviewComponent,
+		data: {
+			title: 'Workshop management',
 		},
 
 	},

@@ -37,7 +37,6 @@ import { ModificationRequestComponent } from './modals/modification-request/modi
 import { LifetimeRequestComponent } from './modals/lifetime-request/lifetime-request.component';
 import { DoiComponent } from './modals/doi/doi.component';
 import { CreditsRequestComponent } from './modals/credits-request/credits-request.component';
-import { WorkshopUrlInfoModel } from '../virtualmachines/workshop/workshop-urlinfo.model';
 
 /**
  * Projectoverview component.
@@ -71,8 +70,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	application_id: string;
 	project: Project;
 	credits: number = 0;
-	workshop_infos: WorkshopUrlInfoModel[];
-	selected_workshop_info: WorkshopUrlInfoModel;
 
 	errorMessage: string;
 	terminate_confirmation_given: boolean = false;
@@ -83,7 +80,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	remove_members_clicked: boolean;
 	life_time_string: string;
 	dois: Doi[];
-	workshopInfosLoaded: boolean = false;
 	disabledDoiInput: boolean = false;
 	isAdmin: boolean = false;
 	invitation_link: string;
@@ -243,6 +239,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	}
 
 	fetchCreditHistoryOfProject(): void {
+		this.creditHistoryLoaded = false;
 		if (this.project != null && this.project_application.credits_allowed) {
 			this.creditsService.getCreditsUsageHistoryOfProject(Number(this.project.Id.toString())).toPromise()
 				.then((response: {}): void => {
@@ -304,100 +301,110 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
 	getCurrentCreditsOfProject(): void {
 		if (this.project_application && this.project_application.project_application_perun_id && this.project_application.credits_allowed) {
-			this.subscription.add(this.creditsService.getCurrentCreditsOfProject(
-				this.project_application.project_application_perun_id.toString(),
-			).subscribe(
-				(credits: number): void => {
-					if (this.project != null) {
-						this.project.CurrentCredits = credits;
-					}
-				},
-				(err: Error): void => {
-					console.log(err.message);
-				},
-			));
+			this.subscription.add(
+				this.creditsService.getCurrentCreditsOfProject(this.project_application.project_application_perun_id.toString())
+					.subscribe(
+						(credits: number): void => {
+							if (this.project != null) {
+								this.project.CurrentCredits = credits;
+							}
+						},
+						(err: Error): void => {
+							console.log(err.message);
+						},
+					),
+			);
 		}
 	}
 
 	approveMemberApplication(project: number, application: number, membername: string): void {
 		this.loaded = false;
 		this.application_action_done = false;
-		this.groupService.approveGroupApplication(project, application).subscribe((tmp_application: any): void => {
-			if (tmp_application['state'] === 'APPROVED') {
-				this.application_action_success = true;
-			} else if (tmp_application['message']) {
-				this.application_action_success = false;
+		this.subscription.add(
+			this.groupService.approveGroupApplication(project, application).subscribe((tmp_application: any): void => {
+				if (tmp_application['state'] === 'APPROVED') {
+					this.application_action_success = true;
+				} else if (tmp_application['message']) {
+					this.application_action_success = false;
 
-				this.application_action_error_message = tmp_application['message'];
+					this.application_action_error_message = tmp_application['message'];
 
-			} else {
-				this.application_action_success = false;
-			}
+				} else {
+					this.application_action_success = false;
+				}
 
-			this.application_action = 'approved';
-			this.application_member_name = membername;
-			this.application_action_done = true;
-			this.getUserProjectApplications();
-			this.getMembersOfTheProject();
-			this.loaded = true;
+				this.application_action = 'approved';
+				this.application_member_name = membername;
+				this.application_action_done = true;
+				this.getUserProjectApplications();
+				this.getMembersOfTheProject();
+				this.loaded = true;
 
-		});
+			}),
+		);
 	}
 
 	getApplication(): void {
-		this.applicationsService
-			.getApplication(this.application_id)
-			.subscribe(
-				(aj: Application): void => {
-					if (aj.project_application_name === '') {
-						this.isLoaded = false;
-						this.errorMessage = 'Not found';
+		this.subscription.add(
+			this.applicationsService
+				.getApplication(this.application_id)
+				.subscribe(
+					(aj: Application): void => {
+						if (aj.project_application_name === '') {
+							this.isLoaded = false;
+							this.errorMessage = 'Not found';
 
-						return;
-					}
-
-					this.project_application = aj;
-
-					if (this.project_application) {
-
-						this.applicationsService.getApplicationPerunId(this.application_id).subscribe((id: any): void => {
-							if (id['perun_id']) {
-								this.project_id = id['perun_id'];
-								this.getProject();
-							}
-						});
-						if (this.project_application.credits_allowed && !this.project_application.credits_loop_started) {
-							this.project_application.setCreditsLoopStarted();
-							this.startUpdateCreditUsageLoop();
+							return;
 						}
 
-					}
+						this.project_application = aj;
 
-					this.isLoaded = true;
-				},
-				(error: any): void => {
-					this.isLoaded = false;
-					this.errorMessage = `Status: ${error.status.toString()},
+						if (this.project_application) {
+							this.subscription.add(
+								this.applicationsService.getApplicationPerunId(this.application_id).subscribe((id: any): void => {
+									if (id['perun_id']) {
+										this.project_id = id['perun_id'];
+										this.getProject();
+									}
+								}),
+							);
+							if (this.project_application.credits_allowed && !this.project_application.credits_loop_started) {
+								this.project_application.setCreditsLoopStarted();
+								this.startUpdateCreditUsageLoop();
+							}
+
+						}
+
+						this.isLoaded = true;
+					},
+					(error: any): void => {
+						this.isLoaded = false;
+						this.errorMessage = `Status: ${error.status.toString()},
                    StatusText: ${error.statusText.toString()},
                    Error Message: ${error.error.toString()}`;
-				},
-			);
+					},
+				),
+		);
 	}
 
 	/**
 	 * gets a list of all available Flavors from the flavorservice and puts them into the array flavorList
 	 */
 	getListOfFlavors(): void {
-		this.flavorService.getListOfFlavorsAvailable().subscribe((flavors: Flavor[]): void => {
-			this.flavorList = flavors;
-		});
+		this.subscription.add(
+			this.flavorService.getListOfFlavorsAvailable().subscribe((flavors: Flavor[]): void => {
+				this.flavorList = flavors;
+			}),
+		);
 	}
 
 	/**
 	 * gets a list of all available types of flavors from the flavorservice and uses them in the function setListOfTypes
 	 */
 	getListOfTypes(): void {
-		this.flavorService.getListOfTypesAvailable().subscribe((types: FlavorType[]): void => this.setListOfTypes(types));
+		this.subscription.add(
+			this.flavorService.getListOfTypesAvailable().subscribe((types: FlavorType[]): void => this.setListOfTypes(types)),
+		);
 	}
 
 	setLifetime(): void {
@@ -418,8 +425,11 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 			} catch (someError) {
 				// empty catch
 			}
+
 			this.subscription.unsubscribe();
 			this.subscription = new Subscription();
+			this.resourceDataLoaded = false;
+			this.creditHistoryLoaded = false;
 			this.errorMessage = null;
 			this.isLoaded = false;
 			this.project = null;
@@ -434,24 +444,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 			this.is_vo_admin = is_vo;
 
 		});
-	}
-
-	setSelectedWorkshopInfo(info: WorkshopUrlInfoModel): void {
-		this.selected_workshop_info = info;
-	}
-
-	getWorkshopUrlInfo(): void {
-		this.workshopInfosLoaded = false;
-		this.applicationsService.getWorkshopInfoUrl(this.application_id).subscribe(
-			(infos: WorkshopUrlInfoModel[]) => {
-				this.workshopInfosLoaded = true;
-				this.workshop_infos = infos;
-				if (this.workshop_infos.length > 0) {
-					this.selected_workshop_info = this.workshop_infos[0];
-				}
-
-			},
-		);
 	}
 
 	/**
@@ -477,15 +469,19 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	 * @param groupid the id of the group of the application in perun
 	 */
 	getUsedResources(groupid: string): void {
+		this.resourceDataLoaded = false;
+
 		if (!this.project?.OpenStackProject) {
-			this.groupService.getGroupResources(groupid).subscribe(
-				(res: any): void => {
-					this.vmsInUse = res['used_vms'];
-					this.maximumVMs = res['number_vms'];
-					this.coresInUse = res['cores_used'];
-					this.ramInUse = res['ram_used'];
-					this.resourceDataLoaded = true;
-				},
+			this.subscription.add(
+				this.groupService.getGroupResources(groupid).subscribe(
+					(res: any): void => {
+						this.vmsInUse = res['used_vms'];
+						this.maximumVMs = res['number_vms'];
+						this.coresInUse = res['cores_used'];
+						this.ramInUse = res['ram_used'];
+						this.resourceDataLoaded = true;
+					},
+				),
 			);
 		} else {
 			this.maximumVMs = this.calculateNumberOfVMs(this.project_application?.flavors);
@@ -522,9 +518,11 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	}
 
 	getDois(): void {
-		this.groupService.getGroupDois(this.application_id).subscribe((dois: Doi[]): void => {
-			this.dois = dois;
-		});
+		this.subscription.add(
+			this.groupService.getGroupDois(this.application_id).subscribe((dois: Doi[]): void => {
+				this.dois = dois;
+			}),
+		);
 	}
 
 	isNewDoi(): boolean {
@@ -538,9 +536,11 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	}
 
 	deleteDoi(doi: Doi): void {
-		this.groupService.deleteGroupDoi(doi.id).subscribe((dois: Doi[]): void => {
-			this.dois = dois;
-		});
+		this.subscription.add(
+			this.groupService.deleteGroupDoi(doi.id).subscribe((dois: Doi[]): void => {
+				this.dois = dois;
+			}),
+		);
 	}
 
 	toggleDoiDisabledInput(): void {
@@ -550,20 +550,22 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	addDoi(): void {
 		this.toggleDoiDisabledInput();
 		if (this.isNewDoi()) {
-			this.groupService.addGroupDoi(this.application_id, this.newDoi).subscribe(
-				(dois: Doi[]): void => {
-					this.doiError = null;
-					this.newDoi = null;
-					this.dois = dois;
-				},
-				(): void => {
-					this.doiError = `DOI ${this.newDoi} was already added by another Project!`;
-					this.toggleDoiDisabledInput();
-				},
-				(): void => {
-					this.toggleDoiDisabledInput();
-					this.newDoi = null;
-				},
+			this.subscription.add(
+				this.groupService.addGroupDoi(this.application_id, this.newDoi).subscribe(
+					(dois: Doi[]): void => {
+						this.doiError = null;
+						this.newDoi = null;
+						this.dois = dois;
+					},
+					(): void => {
+						this.doiError = `DOI ${this.newDoi} was already added by another Project!`;
+						this.toggleDoiDisabledInput();
+					},
+					(): void => {
+						this.toggleDoiDisabledInput();
+						this.newDoi = null;
+					},
+				),
 			);
 		} else {
 			this.doiError = `DOI ${this.newDoi} was already added by this Project!`;
@@ -575,12 +577,13 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	requestProjectTermination(): void {
 		this.updateNotificationModal('Waiting', 'Termination request will be submitted...', true, 'info');
 
-		this.groupService.requestProjectTermination(this.project.Id).subscribe((): void => {
-			this.fullLayout.getGroupsEnumeration();
-			this.getApplication();
-			this.updateNotificationModal('Success', 'Termination was requested!', true, 'success');
-
-		});
+		this.subscription.add(
+			this.groupService.requestProjectTermination(this.project.Id).subscribe((): void => {
+				this.fullLayout.getGroupsEnumeration();
+				this.getApplication();
+				this.updateNotificationModal('Success', 'Termination was requested!', true, 'success');
+			}),
+		);
 	}
 
 	/**
@@ -594,19 +597,21 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 		if (!this.project_application.ComputeCenter
 			&& !this.project_application.hasSubmittedStatus()
 			&& !(this.project_application.hasTerminatedStatus())) {
-			this.groupService.getFacilityByGroup(
-				this.project_application.project_application_perun_id.toString(),
-			).subscribe((res: object): void => {
+			this.subscription.add(
+				this.groupService.getFacilityByGroup(
+					this.project_application.project_application_perun_id.toString(),
+				).subscribe((res: object): void => {
 
-				const login: string = res['Login'];
-				const support: string = res['Support'];
-				const facilityname: string = res['Facility'];
-				const facilityId: number = res['FacilityId'];
-				if (facilityId) {
-					this.project_application.ComputeCenter = new ComputecenterComponent(facilityId.toString(), facilityname, login, support);
-				}
+					const login: string = res['Login'];
+					const support: string = res['Support'];
+					const facilityname: string = res['Facility'];
+					const facilityId: number = res['FacilityId'];
+					if (facilityId) {
+						this.project_application.ComputeCenter = new ComputecenterComponent(facilityId.toString(), facilityname, login, support);
+					}
 
-			});
+				}),
+			);
 		}
 
 	}
@@ -614,28 +619,29 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	rejectMemberApplication(project: number, application: number, membername: string): void {
 		this.loaded = false;
 		this.application_action_done = false;
+		this.subscription.add(
+			this.groupService.rejectGroupApplication(project, application)
+				.subscribe((tmp_application: any): void => {
+					this.project.ProjectMemberApplications = [];
 
-		this.groupService.rejectGroupApplication(project, application)
-			.subscribe((tmp_application: any): void => {
-				this.project.ProjectMemberApplications = [];
+					if (tmp_application['state'] === 'REJECTED') {
+						this.application_action_success = true;
 
-				if (tmp_application['state'] === 'REJECTED') {
-					this.application_action_success = true;
+					} else if (tmp_application['message']) {
+						this.application_action_success = false;
 
-				} else if (tmp_application['message']) {
-					this.application_action_success = false;
+						this.application_action_error_message = tmp_application['message'];
+					} else {
+						this.application_action_success = false;
+					}
+					this.application_action = 'rejected';
+					this.application_member_name = membername;
+					this.application_action_done = true;
+					this.getUserProjectApplications();
+					this.loaded = true;
 
-					this.application_action_error_message = tmp_application['message'];
-				} else {
-					this.application_action_success = false;
-				}
-				this.application_action = 'rejected';
-				this.application_member_name = membername;
-				this.application_action_done = true;
-				this.getUserProjectApplications();
-				this.loaded = true;
-
-			});
+				}),
+		);
 	}
 
 	/**
@@ -645,94 +651,90 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	 */
 	getUserProjectApplications(): void {
 		this.loaded = false;
-		this.groupService.getGroupApplications(this.project.Id).subscribe((applications: any): void => {
+		this.subscription.add(
+			this.groupService.getGroupApplications(this.project.Id).subscribe((applications: any): void => {
 
-			const newProjectApplications: ProjectMemberApplication[] = [];
-			if (applications.length === 0) {
-				this.project.ProjectMemberApplications = [];
+				const newProjectApplications: ProjectMemberApplication[] = [];
+				if (applications.length === 0) {
+					this.project.ProjectMemberApplications = [];
 
-				this.loaded = true;
+					this.loaded = true;
 
-			}
-			for (const application of applications) {
-				const dateApplicationCreated: moment.Moment = moment(application['createdAt'], 'YYYY-MM-DD HH:mm:ss.SSS');
-				const membername: string = application['displayName'];
+				}
+				for (const application of applications) {
+					const dateApplicationCreated: moment.Moment = moment(application['createdAt'], 'YYYY-MM-DD HH:mm:ss.SSS');
+					const membername: string = application['displayName'];
 
-				const newMemberApplication: ProjectMemberApplication = new ProjectMemberApplication(
-					application['id'], membername,
-					`${dateApplicationCreated.date()}.${(dateApplicationCreated.month() + 1)}.${dateApplicationCreated.year()}`,
-				);
-				newProjectApplications.push(newMemberApplication);
-				this.project.ProjectMemberApplications = newProjectApplications;
-				this.loaded = true;
+					const newMemberApplication: ProjectMemberApplication = new ProjectMemberApplication(
+						application['id'], membername,
+						`${dateApplicationCreated.date()}.${(dateApplicationCreated.month() + 1)}.${dateApplicationCreated.year()}`,
+					);
+					newProjectApplications.push(newMemberApplication);
+					this.project.ProjectMemberApplications = newProjectApplications;
+					this.loaded = true;
 
-			}
+				}
 
-		});
-
+			}),
+		);
 	}
 
 	getProject(): void {
+		this.subscription.add(
+			this.groupService.getGroupDetails(this.project_id).subscribe((group: any): void => {
+				const dateCreated: moment.Moment = group['createdAt'];
+				const dateDayDifference: number = Math.ceil(moment().diff(dateCreated, 'days', true));
+				const is_pi: boolean = group['is_pi'];
+				const groupid: string = group['id'];
+				const facility: any = group['compute_center'];
+				const shortname: string = group['shortname'];
+				const currentCredits: number = Number(group['current_credits']);
+				const approvedCredits: number = Number(group['approved_credits']);
 
-		this.groupService.getGroupDetails(this.project_id).subscribe((group: any): void => {
-			const dateCreated: moment.Moment = group['createdAt'];
-			const dateDayDifference: number = Math.ceil(moment().diff(dateCreated, 'days', true));
-			const is_pi: boolean = group['is_pi'];
-			const groupid: string = group['id'];
-			const facility: any = group['compute_center'];
-			const shortname: string = group['shortname'];
-			const currentCredits: number = Number(group['current_credits']);
-			const approvedCredits: number = Number(group['approved_credits']);
+				const realname: string = group['name'];
+				let compute_center: ComputecenterComponent = null;
 
-			const realname: string = group['name'];
-			let compute_center: ComputecenterComponent = null;
+				if (facility) {
+					compute_center = new ComputecenterComponent(
+						facility['compute_center_facility_id'], facility['compute_center_name'],
+						facility['compute_center_login'], facility['compute_center_support_mail'],
+					);
+				}
+				this.isAdmin = is_pi;
 
-			if (facility) {
-				compute_center = new ComputecenterComponent(
-					facility['compute_center_facility_id'], facility['compute_center_name'],
-					facility['compute_center_login'], facility['compute_center_support_mail'],
+				const newProject: Project = new Project(
+					groupid,
+					shortname,
+					group['description'],
+					moment(dateCreated).format('DD.MM.YYYY'),
+					dateDayDifference,
+					is_pi,
+					this.isAdmin,
+					compute_center,
+					currentCredits,
+					approvedCredits,
 				);
-			}
-			this.isAdmin = is_pi;
+				const lifetime: number | string = group['lifetime'] as number;
+				if (lifetime !== -1) {
+					const expirationDate: string = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format('DD.MM.YYYY');
+					const lifetimeDays: number = Math.abs(moment(moment(expirationDate, 'DD.MM.YYYY').toDate())
+						.diff(moment(dateCreated), 'days'));
+					newProject.DateEnd = expirationDate;
+					newProject.LifetimeDays = lifetimeDays;
 
-			const newProject: Project = new Project(
-				groupid,
-				shortname,
-				group['description'],
-				moment(dateCreated).format('DD.MM.YYYY'),
-				dateDayDifference,
-				is_pi,
-				this.isAdmin,
-				compute_center,
-				currentCredits,
-				approvedCredits,
-			);
-			const lifetime: number | string = group['lifetime'] as number;
-			if (lifetime !== -1) {
-				const expirationDate: string = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format('DD.MM.YYYY');
-				const lifetimeDays: number = Math.abs(moment(moment(expirationDate, 'DD.MM.YYYY').toDate())
-					.diff(moment(dateCreated), 'days'));
-				newProject.DateEnd = expirationDate;
-				newProject.LifetimeDays = lifetimeDays;
-
-			}
-			newProject.OpenStackProject = group['openstack_project'];
-			newProject.RealName = realname;
-			this.project = newProject;
-			this.setSupportMails(this.project);
-			this.setLifetime();
-			this.getMembersOfTheProject();
-			if (this.project_application?.project_application_perun_id) {
-				// this.startUpdateCreditUsageLoop();
-			}
-			this.getUsedResources(groupid);
-			if ((this.is_vo_admin || this.isAdmin) && this.project_application.project_application_workshop) {
-				this.getWorkshopUrlInfo();
-
-			}
-
-		});
-
+				}
+				newProject.OpenStackProject = group['openstack_project'];
+				newProject.RealName = realname;
+				this.project = newProject;
+				this.setSupportMails(this.project);
+				this.setLifetime();
+				this.getMembersOfTheProject();
+				if (this.project_application?.project_application_perun_id) {
+					// this.startUpdateCreditUsageLoop();
+				}
+				this.getUsedResources(groupid);
+			}),
+		);
 	}
 
 	setSupportMails(project: Project): void {
@@ -750,26 +752,32 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	 * @param projectName
 	 */
 	getMembersOfTheProject(): void {
-		this.groupService.getGroupMembers(this.project_id).subscribe((members: ProjectMember[]): void => {
+		this.subscription.add(
+			this.groupService.getGroupMembers(this.project_id).subscribe((members: ProjectMember[]): void => {
 
-			this.project_members = members;
+				this.project_members = members;
 
-			if (this.isAdmin) {
-				this.groupService.getGroupAdminIds(this.project_id).subscribe((result: any): void => {
-					const adminIds: any = result['adminIds'];
-					this.project_members.forEach((member: ProjectMember): void => {
-						// eslint-disable-next-line no-param-reassign
-						member.IsPi = adminIds.indexOf(member.userId) !== -1;
-					});
+				if (this.isAdmin) {
+					this.subscription.add(
+						this.groupService.getGroupAdminIds(this.project_id).subscribe((result: any): void => {
+							const adminIds: any = result['adminIds'];
+							this.project_members.forEach((member: ProjectMember): void => {
+								// eslint-disable-next-line no-param-reassign
+								member.IsPi = adminIds.indexOf(member.userId) !== -1;
+							});
 
-					this.isLoaded = true;
-					if (this.project_application && this.project_application.credits_allowed && !this.project_application.credits_loop_started) {
-						this.project_application.setCreditsLoopStarted();
-						this.startUpdateCreditUsageLoop();
-					}
-				});
-			}
-		});
+							this.isLoaded = true;
+							if (this.project_application
+								&& this.project_application.credits_allowed
+								&& !this.project_application.credits_loop_started) {
+								this.project_application.setCreditsLoopStarted();
+								this.startUpdateCreditUsageLoop();
+							}
+						}),
+					);
+				}
+			}),
+		);
 	}
 
 	setAllMembersChecked(): void {
@@ -863,9 +871,11 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	}
 
 	filterMembers(searchString: string): void {
-		this.userService.getFilteredMembersOfdeNBIVo(searchString).subscribe((result: object): void => {
-			this.filteredMembers = result;
-		});
+		this.subscription.add(
+			this.userService.getFilteredMembersOfdeNBIVo(searchString).subscribe((result: object): void => {
+				this.filteredMembers = result;
+			}),
+		);
 	}
 
 	isPi(member: ProjectMember): string {
@@ -878,83 +888,92 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	}
 
 	getUserinfo(): void {
-		this.userService.getUserInfo().subscribe((userinfo: Userinfo): void => {
-			this.userinfo = userinfo;
-		});
+		this.subscription.add(
+			this.userService.getUserInfo().subscribe((userinfo: Userinfo): void => {
+				this.userinfo = userinfo;
+			}),
+		);
 	}
 
 	public addMember(groupid: number, memberid: number, firstName: string, lastName: string): void {
-		this.groupService.addMember(groupid, memberid, this.project.ComputeCenter.FacilityId).subscribe(
-			(result: any): void => {
-				if (result.status === 200) {
-					this.updateNotificationModal('Success', `Member ${firstName} ${lastName} added.`, true, 'success');
-					this.getMembersOfTheProject();
-				} else {
+		this.subscription.add(
+			this.groupService.addMember(groupid, memberid, this.project.ComputeCenter.FacilityId).subscribe(
+				(result: any): void => {
+					if (result.status === 200) {
+						this.updateNotificationModal('Success', `Member ${firstName} ${lastName} added.`, true, 'success');
+						this.getMembersOfTheProject();
+					} else {
 
-					this.updateNotificationModal('Failed', 'Member could not be added!', true, 'danger');
-				}
-			},
-			(error: any): void => {
+						this.updateNotificationModal('Failed', 'Member could not be added!', true, 'danger');
+					}
+				},
+				(error: any): void => {
 
-				if (error['name'] === 'AlreadyMemberException') {
-					this.updateNotificationModal('Info', `${firstName} ${lastName} is already a member of the project.`, true, 'info');
-				} else {
-					this.updateNotificationModal('Failed', 'Member could not be added!', true, 'danger');
-				}
-			},
+					if (error['name'] === 'AlreadyMemberException') {
+						this.updateNotificationModal('Info', `${firstName} ${lastName} is already a member of the project.`, true, 'info');
+					} else {
+						this.updateNotificationModal('Failed', 'Member could not be added!', true, 'danger');
+					}
+				},
+			),
 		);
-
 	}
 
 	public addAdmin(groupId: number, memberId: number, userId: number, firstName: string, lastName: string): void {
-		this.groupService.addMember(groupId, memberId, this.project.ComputeCenter.FacilityId).subscribe(
-			(): void => {
-				this.groupService.addAdmin(groupId, userId, this.project.ComputeCenter.FacilityId).subscribe(
-					(result: any): void => {
+		this.subscription.add(
+			this.groupService.addMember(groupId, memberId, this.project.ComputeCenter.FacilityId).subscribe(
+				(): void => {
+					this.subscription.add(
+						this.groupService.addAdmin(groupId, userId, this.project.ComputeCenter.FacilityId).subscribe(
+							(result: any): void => {
 
-						if (result.status === 200) {
-							this.updateNotificationModal('Success', `Admin ${firstName} ${lastName} added.`, true, 'success');
-							this.getMembersOfTheProject();
-						} else {
-							this.updateNotificationModal('Failed', 'Admin could not be added!', true, 'danger');
-						}
-					},
-					(error: any): void => {
-						if (error['name'] === 'AlreadyAdminException') {
-							this.updateNotificationModal(
-								'Info', `${firstName} ${lastName} is already a admin of the project.`,
-								true, 'info',
-							);
-						} else {
-							this.updateNotificationModal('Failed', 'Admin could not be added!', true, 'danger');
-						}
-					},
-				);
-			},
-			(): void => {
-				this.groupService.addAdmin(groupId, userId, this.project.ComputeCenter.FacilityId).subscribe(
-					(result: any): void => {
+								if (result.status === 200) {
+									this.updateNotificationModal('Success', `Admin ${firstName} ${lastName} added.`, true, 'success');
+									this.getMembersOfTheProject();
+								} else {
+									this.updateNotificationModal('Failed', 'Admin could not be added!', true, 'danger');
+								}
+							},
+							(error: any): void => {
+								if (error['name'] === 'AlreadyAdminException') {
+									this.updateNotificationModal(
+										'Info', `${firstName} ${lastName} is already a admin of the project.`,
+										true, 'info',
+									);
+								} else {
+									this.updateNotificationModal('Failed', 'Admin could not be added!', true, 'danger');
+								}
+							},
+						),
+					);
+				},
+				(): void => {
+					this.subscription.add(
+						this.groupService.addAdmin(groupId, userId, this.project.ComputeCenter.FacilityId).subscribe(
+							(result: any): void => {
 
-						if (result.status === 200) {
-							this.updateNotificationModal('Success', `Admin ${firstName} ${lastName} added.`, true, 'success');
-							this.getMembersOfTheProject();
+								if (result.status === 200) {
+									this.updateNotificationModal('Success', `Admin ${firstName} ${lastName} added.`, true, 'success');
+									this.getMembersOfTheProject();
 
-						} else {
-							this.updateNotificationModal('Failed', 'Admin could not be added!', true, 'danger');
-						}
-					},
-					(error: any): void => {
-						if (error['name'] === 'AlreadyAdminException') {
-							this.updateNotificationModal(
-								'Info', `${firstName} ${lastName} is already a admin of the project.`,
-								true, 'info',
-							);
-						} else {
-							this.updateNotificationModal('Failed', 'Admin could not be added!', true, 'danger');
-						}
-					},
-				);
-			},
+								} else {
+									this.updateNotificationModal('Failed', 'Admin could not be added!', true, 'danger');
+								}
+							},
+							(error: any): void => {
+								if (error['name'] === 'AlreadyAdminException') {
+									this.updateNotificationModal(
+										'Info', `${firstName} ${lastName} is already a admin of the project.`,
+										true, 'info',
+									);
+								} else {
+									this.updateNotificationModal('Failed', 'Admin could not be added!', true, 'danger');
+								}
+							},
+						),
+					);
+				},
+			),
 		);
 	}
 
@@ -976,6 +995,9 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	}
 
 	public removeAdmin(groupid: number, userid: number, name: string): void {
+		if (this.userinfo.Id.toString() === userid.toString()) {
+			return;
+		}
 
 		this.groupService.removeAdmin(groupid, userid, this.project.ComputeCenter.FacilityId).toPromise()
 			.then((result: any): void => {
@@ -999,26 +1021,30 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	 * @param name  of the member
 	 */
 	public removeMember(groupid: number, memberid: number, name: string): void {
+		if (this.userinfo.MemberId.toString() === memberid.toString()) {
+			return;
+		}
 		const indexOf: number = this.checked_member_list.indexOf(memberid);
 		if (indexOf !== -1) {
 			this.checked_member_list.splice(indexOf, 1);
 			this.allSet = false;
 		}
+		this.subscription.add(
+			this.groupService.removeMember(groupid, memberid, this.project.ComputeCenter.FacilityId).subscribe(
+				(result: any): void => {
 
-		this.groupService.removeMember(groupid, memberid, this.project.ComputeCenter.FacilityId).subscribe(
-			(result: any): void => {
+					if (result.status === 200) {
+						this.updateNotificationModal('Success', `Member ${name}  removed from the group`, true, 'success');
+						this.getMembersOfTheProject();
 
-				if (result.status === 200) {
-					this.updateNotificationModal('Success', `Member ${name}  removed from the group`, true, 'success');
-					this.getMembersOfTheProject();
-
-				} else {
+					} else {
+						this.updateNotificationModal('Failed', `Member ${name}  could not be removed !`, true, 'danger');
+					}
+				},
+				(): void => {
 					this.updateNotificationModal('Failed', `Member ${name}  could not be removed !`, true, 'danger');
-				}
-			},
-			(): void => {
-				this.updateNotificationModal('Failed', `Member ${name}  could not be removed !`, true, 'danger');
-			},
+				},
+			),
 		);
 	}
 
@@ -1028,18 +1054,19 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	 * @param application_id
 	 */
 	public deleteApplication(): void {
-		this.applicationsService.deleteApplication(this.project_application.project_application_id).subscribe(
-			(): void => {
-				this.updateNotificationModal('Success', 'The application has been successfully removed', true, 'success');
-				this.fullLayout.getGroupsEnumeration();
-				// eslint-disable-next-line no-void
-				void this.router.navigate(['/userinfo']);
-			},
-			(): void => {
-				this.updateNotificationModal('Failed', 'Application could not be removed!', true, 'danger');
-			},
+		this.subscription.add(
+			this.applicationsService.deleteApplication(this.project_application.project_application_id).subscribe(
+				(): void => {
+					this.updateNotificationModal('Success', 'The application has been successfully removed', true, 'success');
+					this.fullLayout.getGroupsEnumeration();
+					// eslint-disable-next-line no-void
+					void this.router.navigate(['/userinfo']);
+				},
+				(): void => {
+					this.updateNotificationModal('Failed', 'Application could not be removed!', true, 'danger');
+				},
+			),
 		);
-
 	}
 
 }
