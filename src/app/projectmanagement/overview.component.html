@@ -567,7 +567,7 @@
 							<tbody>
 							<tr *ngFor="let member of project_members" [ngStyle]="{'color':isPi(member)}">
 								<td *ngIf="isAdmin || is_vo_admin">
-									<input *ngIf="userinfo?.MemberId !== member.memberId" type="checkbox" id="{{member.userId}}"
+									<input *ngIf="userinfo?.MemberId.toString() !== member.memberId.toString()" type="checkbox" id="{{member.userId}}"
 												 name="member.userId"
 												 [checked]="isMemberChecked(member.memberId)" (change)="checkUnCheckMember(member.memberId);">
 								</td>
@@ -583,12 +583,12 @@
                                                " class="btn btn-primary" type="button" style="margin: 2px">
 											<i class="fa fa-plus-circle"></i>&nbsp; Set Admin status
 										</button>
-										<button *ngIf="member.IsPi &&  userinfo?.MemberId !== member.memberId" (click)="removeAdmin( project?.Id,member.userId,member.userName);
+										<button *ngIf="member.IsPi && userinfo?.MemberId.toString() !== member.memberId.toString()" (click)="removeAdmin( project?.Id,member.userId,member.userName);
                                                 notificationModal.show();
                                                " class="btn btn-primary" type="button" style="margin: 2px">
 											<i class="fa fa-minus-circle"></i>&nbsp; Remove Admin status
 										</button>
-										<button [id]="'remove_member_' + member.userName" *ngIf=" userinfo?.MemberId !== member.memberId"
+										<button [id]="'remove_member_' + member.userName" *ngIf="userinfo?.MemberId.toString() !== member.memberId.toString()"
 														(click)="removeMember(project?.Id,member.memberId,member.userName);
                                                 notificationModal.show();
                                                " class="btn btn-danger" type="button" style="margin: 2px">
@@ -609,74 +609,6 @@
 		</div>
 
 
-	</div>
-	<div class="row"
-			 *ngIf="project && (project?.UserIsPi ||project?.UserIsAdmin) && project_application?.project_application_workshop ">
-
-		<div class="col"
-				 *ngIf="project && (project?.UserIsPi ||project?.UserIsAdmin)
-         && !(project_application | hasstatusinlist:Application_States.TERMINATED)
-         && !(project_application | hasstatusinlist:Application_States.DECLINED)
-         && !(project_application | hasstatusinlist:Application_States.SUBMITTED)
-         && !(project_application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION)">
-
-			<div class="card" id="workshioCard">
-				<div class="card-header">
-					<i class="fa fa-align-justify"></i>
-					Workshops
-				</div>
-
-				<div class="card-body" style="max-height: 800px;" *ngIf="!workshopInfosLoaded">
-
-					<div class="spinner-border text-primary" style="display:block; margin:auto;"></div>
-
-
-				</div>
-
-
-				<div class="card-body" *ngIf="workshopInfosLoaded">
-					<div class="btn-group" *ngFor="let info of workshop_infos ">
-
-						<button id="select_workshop_{{info?.shortname}}_btn"
-										[ngClass]="{'btn-outline-success': info.shortname === selected_workshop_info.shortname,
-								'btn-outline-warning' : info.shortname !== selected_workshop_info.shortname}"
-										(click)="setSelectedWorkshopInfo(info)"
-
-										type="button" style="margin-bottom:5px;margin-right:5px;"
-										class="btn">{{info.shortname}}
-						</button>
-
-
-					</div>
-					<div class="table-responsive">
-						<table class="table table-hover">
-							<thead>
-							<tr>
-								<th>User</th>
-								<th>Email</th>
-								<th>Url</th>
-							</tr>
-							</thead>
-							<tbody>
-							<tr *ngFor="let info of selected_workshop_info?.url_data ">
-
-								<td>
-
-									{{ info?.user_name }}</td>
-								<td>{{ info?.user_email }}</td>
-								<td>{{ info?.resenv_url }}</td>
-
-							</tr>
-
-
-							</tbody>
-						</table>
-					</div>
-
-				</div>
-
-			</div>
-		</div>
 	</div>
 	<div class="row">
 
@@ -798,7 +730,7 @@
 				<div class="container-fluid">
 					<div class="row">
 						<p style=" margin-bottom: 15px;">Search and add a user to your project by providing at least
-							four characters of his name:</p>
+							four characters of their name:</p>
 					</div>
 					<div class="row">
 						<div class="col-md-8">
@@ -814,8 +746,8 @@
 					<br>
 					<div class="row">
 						<div class="col-md-12">
-							<strong>Please note</strong> that if you can not find the user, he is not registered for a
-							a de.NBI Cloud account. In that case you can invite him by sending him the following link:
+							<strong>Please note</strong> that if you can not find the user, they are not registered for a
+							a de.NBI Cloud account. In that case you can invite them by sending them the following link:
 							<br>
 							<br>
 							<ul style="list-style-type:none;">

@@ -15,6 +15,7 @@ export class ProjectMember {
 	publicKeySet: boolean;
 	groupAdmin: boolean;
 	hasVM: boolean = false;
+	vm_amount: number = 0;
 
 	constructor(project_member?: Partial<ProjectMember>) {
 		Object.assign(this, project_member);
