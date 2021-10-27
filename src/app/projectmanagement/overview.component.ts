@@ -96,6 +96,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	allSet: boolean = false;
 	renderer: Renderer2;
 	supportMails: string[] = [];
+	memberNamesVisible: boolean = false;
 
 	resourceDataLoaded: boolean = false;
 	creditHistoryLoaded: boolean = false;
@@ -546,6 +547,14 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	toggleDoiDisabledInput(): void {
 		this.disabledDoiInput = !this.disabledDoiInput;
 	}
+
+	toggleMemberNameVisibility(): void {
+		this.memberNamesVisible = !this.memberNamesVisible;
+	}
+
+	// setProjectMemberVisibility(): void {
+	// 	this.project.MemberNamesVisibility = this.memberNamesVisible;
+	// }
 
 	addDoi(): void {
 		this.toggleDoiDisabledInput();
@@ -1014,7 +1023,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	}
 
 	/**
-	 * Remove an member from a group.
+	 * Remove n member from a group.
 	 *
 	 * @param groupid  of the group
 	 * @param memberid of the member

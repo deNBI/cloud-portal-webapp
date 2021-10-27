@@ -538,6 +538,22 @@
 							Member Applications
 						</button>
 
+						<button
+							*ngIf="memberNamesVisible; else memberNamesHidden"
+							type="button" style="margin-bottom:5px;"
+							(click)="toggleMemberNameVisibility();"
+							class="btn btn-outline-primary"><i class="fa fa-users" aria-hidden="true"></i>
+							Hide Member Names
+						</button>
+						<ng-template #memberNamesHidden>
+							<button
+								type="button" style="margin-bottom:5px;"
+								(click)="toggleMemberNameVisibility();"
+								class="btn btn-primary"><i class="fa fa-users" aria-hidden="true"></i>
+								Show Member Names
+							</button>
+						</ng-template>
+
 						<button (click)="removeCheckedMembers(project_application?.project_application_perun_id)" type="button"
 										style="margin-bottom:5px;" [disabled]="checked_member_list.length <= 0 || remove_members_clicked"
 										class="btn btn-outline-danger"><i class="fa fa-trash"></i>&nbsp;Remove Members
@@ -559,9 +575,10 @@
 								</th>
 								<th>User ID</th>
 								<th>Member ID</th>
-								<th>Full Name</th>
+								<th *ngIf="isAdmin || is_vo_admin || memberNamesVisible">
+									Full Name <span *ngIf="!memberNamesVisible">(hidden)</span>
+								</th>
 								<th *ngIf="isAdmin || is_vo_admin">Actions</th>
-
 							</tr>
 							</thead>
 							<tbody>
@@ -575,7 +592,7 @@
 
 									{{ member.userId }}</td>
 								<td>{{ member.memberId }}</td>
-								<td>{{ member.userName }}</td>
+								<td *ngIf="isAdmin || is_vo_admin || memberNamesVisible">{{ member.userName }}</td>
 								<td *ngIf="this.project.UserIsPi || this.project.UserIsAdmin|| is_vo_admin">
 									<div class="btn-group" role="group">
 										<button *ngIf="!member.IsPi" (click)="promoteAdmin( project?.Id,member.userId,member.userName);
