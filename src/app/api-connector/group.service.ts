@@ -339,5 +339,13 @@ export class GroupService {
 			withCredentials: true,
 		});
 	}
+	getFilteredMembersByProject(searchString: string, groupid: string | number): Observable<any> {
 
+		return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/members/filter/`, {
+			withCredentials: true,
+			params: {
+				searchString,
+			},
+		});
+	}
 }
