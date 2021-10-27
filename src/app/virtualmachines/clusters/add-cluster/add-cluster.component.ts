@@ -394,7 +394,7 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 
 	/**
 	 * Initializes the data.
-	 * Gets all groups of the user and his key.
+	 * Gets all groups of the user and their key.
 	 */
 	initializeData(): void {
 		this.subscription.add(
