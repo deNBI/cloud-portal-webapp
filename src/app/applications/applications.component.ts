@@ -81,6 +81,10 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 	numberOfProjectApplications: number = 0;
 	Application_States: typeof Application_States = Application_States;
 
+	reassignLocked: boolean = false;
+	assignLocked: boolean = false;
+	approveLocked: boolean = false;
+
 	/**
 	 * Constructor.
 	 * Loads all Applications if user is vo admin and all user_applications.
@@ -529,6 +533,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 		this.groupservice.removeGroupFromResource(application.project_application_perun_id.toString()).subscribe(
 			(): void => {
 				this.getApplication(application);
+				this.switchReassignLocked(false);
 				this.showNotificationModal('Success', 'The application was removed from the compute center', 'success');
 			},
 			(): void => {
@@ -557,10 +562,16 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 					applicationToGet.project_application_status = [];
 					this.showNotificationModal('Success', 'The new project was created', 'success');
 					this.getApplication(applicationToGet);
+					this.switchApproveLocked(false);
 
 				}
-			}, (): void => {
-				this.showNotificationModal('Failed', 'Project could not be created!', 'danger');
+			}, (error: any): void => {
+				console.log(error);
+				if ('error' in error && 'error' in error['error'] && error['error']['error'] === 'locked') {
+					this.showNotificationModal('Failed', 'Project is locked and could not be created!', 'danger');
+				} else {
+					this.showNotificationModal('Failed', 'Project could not be created!', 'danger');
+				}
 			});
 	}
 
@@ -612,6 +623,9 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 					if ('approveModification' in result) {
 						this.approveModificationRequest(result['application']);
 					}
+					if ('closed' in result) {
+						this.switchApproveLocked(false);
+					}
 
 				},
 			),
@@ -634,13 +648,18 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 						this.numberOfProjectApplications -= 1;
 						this.showNotificationModal('Success', 'The project was created!',
 							'success');
+						this.switchApproveLocked(false);
 						// this.reloadApplicationList(application_id)
 					}
 
 				},
 				(error: object): void => {
 					console.log(error);
-					this.showNotificationModal('Failed', 'Project could not be created!', 'danger');
+					if ('error' in error && 'error' in error['error'] && error['error']['error'] === 'locked') {
+						this.showNotificationModal('Failed', 'Project is locked and could not be created!', 'danger');
+					} else {
+						this.showNotificationModal('Failed', 'Project could not be created!', 'danger');
+					}
 				},
 			);
 		}
@@ -663,6 +682,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 							break;
 						}
 					}
+					this.switchAssignLocked(false);
 					this.showNotificationModal('Success', 'The  project was assigned to the facility.', 'success');
 				}, (error: object): void => {
 					console.log(error);
@@ -694,6 +714,18 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 			},
 		);
 
+	}
+
+	switchReassignLocked(check: boolean): void {
+		this.reassignLocked = check;
+	}
+
+	switchAssignLocked(check: boolean): void {
+		this.assignLocked = check;
+	}
+
+	switchApproveLocked(check: boolean): void {
+		this.approveLocked = check;
 	}
 
 }
