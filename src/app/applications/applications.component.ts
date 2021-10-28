@@ -1,25 +1,25 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { Subscription } from 'rxjs';
-import { HttpStatusCode } from '@angular/common/http';
-import { ApplicationsService } from '../api-connector/applications.service';
-import { ApiSettings } from '../api-connector/api-settings.service';
-import { Application } from './application.model/application.model';
-import { GroupService } from '../api-connector/group.service';
-import { UserService } from '../api-connector/user.service';
-import { VoService } from '../api-connector/vo.service';
-import { FacilityService } from '../api-connector/facility.service';
-import { Flavor } from '../virtualmachines/virtualmachinemodels/flavor';
-import { FlavorService } from '../api-connector/flavor.service';
-import { Client } from '../vo_manager/clients/client.model';
-import { ApplicationBaseClassComponent } from '../shared/shared_modules/baseClass/application-base-class.component';
-import { ComputecenterComponent } from '../projectmanagement/computecenter.component';
-import { is_vo } from '../shared/globalvar';
-import { Application_States } from '../shared/shared_modules/baseClass/abstract-base-class';
-import { FlavorType } from '../virtualmachines/virtualmachinemodels/flavorType';
-import { CreditsService } from '../api-connector/credits.service';
-import { ClientLimitsComponent } from '../vo_manager/clients/modals/client-limits..component';
-import { NotificationModalComponent } from '../shared/modal/notification-modal';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
+import {Subscription} from 'rxjs';
+import {HttpStatusCode} from '@angular/common/http';
+import {ApplicationsService} from '../api-connector/applications.service';
+import {ApiSettings} from '../api-connector/api-settings.service';
+import {Application} from './application.model/application.model';
+import {GroupService} from '../api-connector/group.service';
+import {UserService} from '../api-connector/user.service';
+import {VoService} from '../api-connector/vo.service';
+import {FacilityService} from '../api-connector/facility.service';
+import {Flavor} from '../virtualmachines/virtualmachinemodels/flavor';
+import {FlavorService} from '../api-connector/flavor.service';
+import {Client} from '../vo_manager/clients/client.model';
+import {ApplicationBaseClassComponent} from '../shared/shared_modules/baseClass/application-base-class.component';
+import {ComputecenterComponent} from '../projectmanagement/computecenter.component';
+import {is_vo} from '../shared/globalvar';
+import {Application_States} from '../shared/shared_modules/baseClass/abstract-base-class';
+import {FlavorType} from '../virtualmachines/virtualmachinemodels/flavorType';
+import {CreditsService} from '../api-connector/credits.service';
+import {ClientLimitsComponent} from '../vo_manager/clients/modals/client-limits..component';
+import {NotificationModalComponent} from '../shared/modal/notification-modal';
 
 // eslint-disable-next-line no-shadow
 enum TabStates {
@@ -94,7 +94,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 	 * @param creditsService
 	 */
 	constructor(applicationsService: ApplicationsService,
-		userService: UserService,
+							userService: UserService,
 							private groupservice: GroupService,
 							private modalService: BsModalService,
 							private voService: VoService,
@@ -580,22 +580,22 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 	}
 
 	showClientsLimitsModal(compute_center_id: string, application: Application, is_modification_request: boolean = false): void {
-		const initialState = { compute_center_id, application, is_modification_request };
+		const initialState = {compute_center_id, application, is_modification_request};
 
-		this.bsModalRef = this.modalService.show(ClientLimitsComponent, { initialState });
+		this.bsModalRef = this.modalService.show(ClientLimitsComponent, {initialState});
 		this.subscribeToBsModalRef();
 	}
 
 	showNotificationModal(notificationModalTitle: string,
-		notificationModalMessage: string,
-		notificationModalType: string) {
+												notificationModalMessage: string,
+												notificationModalType: string) {
 
-		const initialState = { notificationModalTitle, notificationModalType, notificationModalMessage };
+		const initialState = {notificationModalTitle, notificationModalType, notificationModalMessage};
 		if (this.bsModalRef) {
 			this.bsModalRef.hide();
 		}
 
-		this.bsModalRef = this.modalService.show(NotificationModalComponent, { initialState });
+		this.bsModalRef = this.modalService.show(NotificationModalComponent, {initialState});
 		this.bsModalRef.setClass('modal-lg');
 	}
 
@@ -623,27 +623,26 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 			'info');
 
 		const application_id: string = app.project_application_id as string;
-		if (compute_center_id && compute_center_id !== 'undefined') {
-			this.groupservice.createGroupByApplication(application_id, compute_center_id).subscribe(
-				(res: any): void => {
-					if (!res['client_available'] && !res['created']) {
-						this.showNotificationModal('Failed', `The client ${res['client_name']} has not the necessary resources left!`,
-							'danger');
-					} else {
-						this.all_applications.splice(this.all_applications.indexOf(app), 1);
-						this.numberOfProjectApplications -= 1;
-						this.showNotificationModal('Success', 'The project was created!',
-							'success');
-						// this.reloadApplicationList(application_id)
-					}
+		this.groupservice.createGroupByApplication(application_id, compute_center_id).subscribe(
+			(res: any): void => {
+				if (!res['client_available'] && !res['created']) {
+					this.showNotificationModal('Failed', `The client ${res['client_name']} has not the necessary resources left!`,
+						'danger');
+				} else {
+					this.all_applications.splice(this.all_applications.indexOf(app), 1);
+					this.numberOfProjectApplications -= 1;
+					this.showNotificationModal('Success', 'The project was created!',
+						'success');
+					// this.reloadApplicationList(application_id)
+				}
 
-				},
-				(error: object): void => {
-					console.log(error);
-					this.showNotificationModal('Failed', 'Project could not be created!', 'danger');
-				},
-			);
-		}
+			},
+			(error: object): void => {
+				console.log(error);
+				this.showNotificationModal('Failed', 'Project could not be created!', 'danger');
+			},
+		);
+
 
 	}
 
