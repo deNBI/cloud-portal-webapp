@@ -134,18 +134,18 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 		= 'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.';
 
 	constructor(private activatedRoute: ActivatedRoute,
-		private virtualmachineService: VirtualmachineService,
-		private modalService: BsModalService,
-		// public bsModalRef: BsModalRef, TODO: bsModalRef in constructor?
-		private router: Router,
-		private userService: UserService,
-		private applicationService: ApplicationsService,
-		private flavorService: FlavorService,
-		private imageService: ImageService,
-		private playbookService: PlaybookService,
-		private biocondaService: BiocondaService,
-		private clipboardService: ClipboardService,
-		private groupService: GroupService) {
+							private virtualmachineService: VirtualmachineService,
+							private modalService: BsModalService,
+							// public bsModalRef: BsModalRef, TODO: bsModalRef in constructor?
+							private router: Router,
+							private userService: UserService,
+							private applicationService: ApplicationsService,
+							private flavorService: FlavorService,
+							private imageService: ImageService,
+							private playbookService: PlaybookService,
+							private biocondaService: BiocondaService,
+							private clipboardService: ClipboardService,
+							private groupService: GroupService) {
 		super();
 	}
 
@@ -329,20 +329,20 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 				(result: any) => {
 					if ('deleteVM' in result) {
 						this.deleteVm();
-					// } else if ('stopVM' in result) {
-					// 	this.stopVM();
-					// } else if ('resumeVM' in result) {
-					// 	this.resumeVM();
-					// } else if ('resume' in result) {
-					// 	this.resumeCheckStatusTimer();
-					// 	} else if ('snapshotVM' in result) {
-					// 	this.createSnapshot(result['snapshotName'], result['description']);
-					// } else if ('attachVolume' in result) {
-					// 	this.attachVolume(result['volume']);
-					// } else if ('detachVolume' in result) {
-					// 	this.detachVolume(result['volume']);
-					// } else if ('reboot_type' in result) {
-					// 	this.rebootVM(result['reboot_type']);
+						// } else if ('stopVM' in result) {
+						// 	this.stopVM();
+						// } else if ('resumeVM' in result) {
+						// 	this.resumeVM();
+						// } else if ('resume' in result) {
+						// 	this.resumeCheckStatusTimer();
+						// 	} else if ('snapshotVM' in result) {
+						// 	this.createSnapshot(result['snapshotName'], result['description']);
+						// } else if ('attachVolume' in result) {
+						// 	this.attachVolume(result['volume']);
+						// } else if ('detachVolume' in result) {
+						// 	this.detachVolume(result['volume']);
+						// } else if ('reboot_type' in result) {
+						// 	this.rebootVM(result['reboot_type']);
 					}
 				},
 			),
@@ -725,7 +725,7 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 	}
 
 	filterMembers(searchString: string): void {
-		this.userService.getFilteredMembersOfdeNBIVo(searchString).subscribe((result: object): void => {
+		this.groupService.getFilteredMembersByProject(searchString, this.virtualMachine.projectid).subscribe((result: object): void => {
 			this.filteredMembers = result;
 		});
 	}
