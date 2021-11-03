@@ -65,7 +65,7 @@ export class Application {
 	totalModificationRequestCredits: number = 0;
 	totalCreditsExtensionCredits: number = 0;
 	totalLifetimeExtensionCredits: number = 0;
-	// memberNamesVisible: boolean = false;
+	memberNamesVisible: boolean;
 
 	constructor(aj?: Partial<Application>) {
 		this.dissemination = new ApplicationDissemination(null);

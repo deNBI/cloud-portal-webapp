@@ -96,7 +96,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	allSet: boolean = false;
 	renderer: Renderer2;
 	supportMails: string[] = [];
-	memberNamesVisible: boolean = false;
+	// memberNamesVisible: boolean;
 
 	resourceDataLoaded: boolean = false;
 	creditHistoryLoaded: boolean = false;
@@ -549,12 +549,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	}
 
 	toggleMemberNameVisibility(): void {
-		this.memberNamesVisible = !this.memberNamesVisible;
+		this.project_application.memberNamesVisible = !this.project_application.memberNamesVisible;
 	}
-
-	// setProjectMemberVisibility(): void {
-	// 	this.project.MemberNamesVisibility = this.memberNamesVisible;
-	// }
 
 	addDoi(): void {
 		this.toggleDoiDisabledInput();
