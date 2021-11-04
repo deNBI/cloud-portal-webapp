@@ -623,27 +623,25 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 			'info');
 
 		const application_id: string = app.project_application_id as string;
-		if (compute_center_id && compute_center_id !== 'undefined') {
-			this.groupservice.createGroupByApplication(application_id, compute_center_id).subscribe(
-				(res: any): void => {
-					if (!res['client_available'] && !res['created']) {
-						this.showNotificationModal('Failed', `The client ${res['client_name']} has not the necessary resources left!`,
-							'danger');
-					} else {
-						this.all_applications.splice(this.all_applications.indexOf(app), 1);
-						this.numberOfProjectApplications -= 1;
-						this.showNotificationModal('Success', 'The project was created!',
-							'success');
-						// this.reloadApplicationList(application_id)
-					}
+		this.groupservice.createGroupByApplication(application_id, compute_center_id).subscribe(
+			(res: any): void => {
+				if (!res['client_available'] && !res['created']) {
+					this.showNotificationModal('Failed', `The client ${res['client_name']} has not the necessary resources left!`,
+						'danger');
+				} else {
+					this.all_applications.splice(this.all_applications.indexOf(app), 1);
+					this.numberOfProjectApplications -= 1;
+					this.showNotificationModal('Success', 'The project was created!',
+						'success');
+					// this.reloadApplicationList(application_id)
+				}
 
-				},
-				(error: object): void => {
-					console.log(error);
-					this.showNotificationModal('Failed', 'Project could not be created!', 'danger');
-				},
-			);
-		}
+			},
+			(error: object): void => {
+				console.log(error);
+				this.showNotificationModal('Failed', 'Project could not be created!', 'danger');
+			},
+		);
 
 	}
 
