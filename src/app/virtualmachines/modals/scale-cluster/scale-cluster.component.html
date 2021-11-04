@@ -362,14 +362,14 @@
                  role="alert" style="margin-top: 20px">
                 <strong>wget -O {{SCALING_SCRIPT_NAME}} {{SCALING_SCRIPT_LINK}}</strong>
                 <button class="btn btn-outline-primary" style="float:right;"
-                        (click)="copyToClipboard('wget -O {{SCALING_SCRIPT_NAME}} {{SCALING_SCRIPT_LINK}}')">Copy Command
+                        (click)="copyToClipboard('wget -O ' + SCALING_SCRIPT_NAME + ' ' + SCALING_SCRIPT_LINK)">Copy Command
                 </button>
             </div>
             <div class="alert alert-light" style="margin-top: 20px"
                  role="alert"><strong>python3 {{SCALING_SCRIPT_NAME}} </strong>
 
                 <button class="btn btn-outline-primary" style="float:right;"
-                        (click)="copyToClipboard('python3 {{SCALING_SCRIPT_NAME}}')">Copy Command
+                        (click)="copyToClipboard('python3 ' + SCALING_SCRIPT_NAME)">Copy Command
                 </button>
                 <div class="alert alert-warning" role="alert" style="margin-top: 20px">
                     If you run this script, all own changes to the cluster configuration will be overwritten!
