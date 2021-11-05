@@ -1,27 +1,27 @@
 import {
 	Component, DoCheck, OnDestroy, OnInit, ViewChild,
 } from '@angular/core';
-import {Subscription} from 'rxjs';
-import {KeyValue} from '@angular/common';
+import { Subscription } from 'rxjs';
+import { KeyValue } from '@angular/common';
 import transliterate from '@sindresorhus/transliterate';
-import {Router} from '@angular/router';
-import {Workshop} from '../workshop.model';
-import {Userinfo} from '../../../userinfo/userinfo.model';
-import {GroupService} from '../../../api-connector/group.service';
-import {Client} from '../../../vo_manager/clients/client.model';
-import {BlockedImageTagResenv} from '../../../facility_manager/image-tag';
-import {ImageService} from '../../../api-connector/image.service';
-import {ApplicationRessourceUsage} from '../../../applications/application-ressource-usage/application-ressource-usage';
-import {Flavor} from '../../virtualmachinemodels/flavor';
-import {Image} from '../../virtualmachinemodels/image';
-import {FlavorService} from '../../../api-connector/flavor.service';
-import {UserService} from '../../../api-connector/user.service';
-import {TemplateNames} from '../../conda/template-names';
-import {ResEnvComponent} from '../../conda/res-env.component';
-import {ProjectMember} from '../../../projectmanagement/project_member.model';
-import {CLOUD_PORTAL_SUPPORT_MAIL, WIKI_WORKSHOPS} from '../../../../links/links';
-import {VirtualmachineService} from '../../../api-connector/virtualmachine.service';
-import {WorkshopService} from '../../../api-connector/workshop.service';
+import { Router } from '@angular/router';
+import { Workshop } from '../workshop.model';
+import { Userinfo } from '../../../userinfo/userinfo.model';
+import { GroupService } from '../../../api-connector/group.service';
+import { Client } from '../../../vo_manager/clients/client.model';
+import { BlockedImageTagResenv } from '../../../facility_manager/image-tag';
+import { ImageService } from '../../../api-connector/image.service';
+import { ApplicationRessourceUsage } from '../../../applications/application-ressource-usage/application-ressource-usage';
+import { Flavor } from '../../virtualmachinemodels/flavor';
+import { Image } from '../../virtualmachinemodels/image';
+import { FlavorService } from '../../../api-connector/flavor.service';
+import { UserService } from '../../../api-connector/user.service';
+import { TemplateNames } from '../../conda/template-names';
+import { ResEnvComponent } from '../../conda/res-env.component';
+import { ProjectMember } from '../../../projectmanagement/project_member.model';
+import { CLOUD_PORTAL_SUPPORT_MAIL, WIKI_WORKSHOPS } from '../../../../links/links';
+import { VirtualmachineService } from '../../../api-connector/virtualmachine.service';
+import { WorkshopService } from '../../../api-connector/workshop.service';
 
 @Component({
 	selector: 'app-add-workshop',
@@ -320,7 +320,7 @@ export class AddWorkshopComponent implements OnInit, OnDestroy, DoCheck {
 
 	has_image_resenv(): void {
 		for (const mode of this.selected_image.modes) {
-			for (let template of this.res_env_component.templates) {
+			for (const template of this.res_env_component.templates) {
 				if (template.template_name == mode.name) {
 					this.resenv_selected = true;
 					this.res_env_component.setOnlyNamespace(template);
@@ -341,8 +341,8 @@ export class AddWorkshopComponent implements OnInit, OnDestroy, DoCheck {
 		} = {};
 
 		if (this.res_env_component && this.res_env_component.selectedTemplate.template_name !== 'undefined') {
-			playbook_info[this.res_env_component.selectedTemplate.template_name] = {create_only_backend: `${this.res_env_component.getCreateOnlyBackend()}`};
-			playbook_info['user_key_url'] = {user_key_url: name};
+			playbook_info[this.res_env_component.selectedTemplate.template_name] = { create_only_backend: `${this.res_env_component.getCreateOnlyBackend()}` };
+			playbook_info['user_key_url'] = { user_key_url: name };
 		}
 
 		return JSON.stringify(playbook_info);
