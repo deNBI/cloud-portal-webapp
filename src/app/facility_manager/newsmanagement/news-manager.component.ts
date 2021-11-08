@@ -211,6 +211,11 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 				for (let i = 0; i < facilities.length; i++) {
 					this.facilityMOTDPairs[facilities[i]['id']] = facilities[i]['motd'];
 				}
+				for (let facilityNew of this.facilityNews) {
+					for (let facilityMOTDPairsKey in this.facilityMOTDPairs) {
+						facilityMOTDPairsKey
+					}
+				}
 			}),
 		);
 	}
@@ -235,6 +240,7 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 		news.facility = facilityNews['facility'];
 		news.date = facilityNews['posted_at'];
 		news.valid_till = facilityNews["valid_till"];
+		news.is_current_motd  = facilityNews["is_current_motd"]
 
 		return news;
 	}

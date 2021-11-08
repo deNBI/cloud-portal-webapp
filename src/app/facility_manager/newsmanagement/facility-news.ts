@@ -9,6 +9,7 @@ export class FacilityNews {
 	private _tags: string[];
 	private _facility: number;
 	private _valid_till: Date;
+	private _is_current_motd: boolean;
 
 	constructor(news?: FacilityNews) {
 		if (news) {
@@ -19,10 +20,19 @@ export class FacilityNews {
 			this._motd = news.motd;
 			this._tags = news.tags;
 			this._facility = news.facility;
-			this._valid_till=news.valid_till;
+			this._valid_till = news.valid_till;
+			this._is_current_motd = news.is_current_motd;
 		}
 	}
 
+
+	get is_current_motd(): boolean {
+		return this._is_current_motd;
+	}
+
+	set is_current_motd(value: boolean) {
+		this._is_current_motd = value;
+	}
 
 	get valid_till(): Date {
 		return this._valid_till;

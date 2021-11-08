@@ -35,7 +35,9 @@
 												 data-toggle="tooltip" id="{{news.id}}_header" data-placement="auto"
 												 style="color: white !important;"
 												 [ngStyle]="{'background-color': news.id === selectedFacilityNews.id ? '#005aa9' : '#00adef'}">
-											<strong>{{news.title}}</strong>
+											<strong>{{news.title}}          <span *ngIf="news.is_current_motd"
+																														class="badge badge-pill bg-dark">MOTD</span>
+											</strong>
 											<span class="badge badge-light" style="margin-left:5px;"
 														[ngStyle]="{'color': news.id === selectedFacilityNews.id ? '#005aa9' : '#00adef'}"
 
@@ -152,30 +154,30 @@ we are happy to inform..."
 									<div class="form-row">
 										<div class="col-6">
 										</div>
-										<div class=" input-group col-4"  *ngIf="facilityToSetMOTD || facilityMOTDPairs[facility['FacilityId']] === selectedFacilityNews.id && facility['FacilityId'] === facilityToPost">
+										<div class=" input-group col-4" *ngIf="facilityToSetMOTD || selectedFacilityNews?.is_current_motd">
 											<div class="input-group-prepend">
 												<div class="input-group-prepend"><span class="input-group-text">valid till</span></div>
 											</div>
-												<input
-													type="text"
-													name="valid_till"
-													class="form-control"
-													bsDatepicker
-													#dp="bsDatepicker"
-													[bsConfig]="{
+											<input
+												type="text"
+												name="valid_till"
+												class="form-control"
+												bsDatepicker
+												#dp="bsDatepicker"
+												[bsConfig]="{
 								adaptivePosition: true,
 								minDate: today,
 								dateInputFormat: 'YYYY-MM-DD',
 								containerClass: 'theme-dark-blue'}"
-													formControlName="valid_till">
-												<button class="btn input-group-append input-group-text"
-																(click)="dp.show()"
-																[attr.aria-expanded]="dp.isOpen"
-																type="button">
-													<i class="fa fa-clock"></i>
-												</button>
-											</div>
+												formControlName="valid_till">
+											<button class="btn input-group-append input-group-text"
+															(click)="dp.show()"
+															[attr.aria-expanded]="dp.isOpen"
+															type="button">
+												<i class="fa fa-clock"></i>
+											</button>
 										</div>
+									</div>
 								</ng-container>
 							</div>
 							<br>
