@@ -1,14 +1,14 @@
 import {
 	Component, OnDestroy, OnInit, ViewChild,
 } from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {BehaviorSubject, Subscription} from 'rxjs';
-import {ModalDirective} from 'ngx-bootstrap/modal';
-import {NewsService} from '../../api-connector/news.service';
-import {FacilityService} from '../../api-connector/facility.service';
-import {environment} from '../../../environments/environment';
-import {FacilityNews} from './facility-news';
-import {WIKI_MOTD} from '../../../links/links';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { BehaviorSubject, Subscription } from 'rxjs';
+import { ModalDirective } from 'ngx-bootstrap/modal';
+import { NewsService } from '../../api-connector/news.service';
+import { FacilityService } from '../../api-connector/facility.service';
+import { environment } from '../../../environments/environment';
+import { FacilityNews } from './facility-news';
+import { WIKI_MOTD } from '../../../links/links';
 
 /**
  * News-Manager Class to manage news in wordPress.
@@ -30,22 +30,22 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 	public facilityMOTDPairs: { [key: number]: number } = {}
 	facilityToPost: number;
 	returnState: number = -1;
-	@ViewChild('infoModal', {static: true}) infoModal: ModalDirective;
+	@ViewChild('infoModal', { static: true }) infoModal: ModalDirective;
 	selectedTags: string[] = [];
 	computeCenters: any[] = [];
 	facilityNews: FacilityNews[] = [];
 	newFacilityNews: FacilityNews = new FacilityNews();
 	selectedFacilityNews: FacilityNews = new FacilityNews();
-	today:Date=new Date()
+	today: Date=new Date()
 
 	newsSetAsMOTD: string[] = [];
 	selectedNewsForm: FormGroup = new FormGroup({
-		title: new FormControl({value: this.newFacilityNews.title, disabled: false},
+		title: new FormControl({ value: this.newFacilityNews.title, disabled: false },
 			Validators.required),
-		text: new FormControl({value: this.newFacilityNews.text, disabled: false},
+		text: new FormControl({ value: this.newFacilityNews.text, disabled: false },
 			Validators.required),
-		motd: new FormControl({value: this.newFacilityNews.motd, disabled: false}),
-		valid_till: new FormControl({value: this.newFacilityNews.valid_till, disabled: false})
+		motd: new FormControl({ value: this.newFacilityNews.motd, disabled: false }),
+		valid_till: new FormControl({ value: this.newFacilityNews.valid_till, disabled: false }),
 
 	});
 	allChecked: boolean = true;
@@ -87,8 +87,8 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 	}
 
 	setFacilityToSetMotd(): void {
-		 let facilit_checkbox: HTMLElement | null=document.getElementById(`news_select_${this.facilityToPost}_motd`);
-			if (facilit_checkbox && facilit_checkbox['checked']) {
+		 const facilit_checkbox: HTMLElement | null = document.getElementById(`news_select_${this.facilityToPost}_motd`);
+		if (facilit_checkbox && facilit_checkbox['checked']) {
 			this.facilityToSetMOTD = this.facilityToPost;
 		} else {
 			this.facilityToSetMOTD = null;
@@ -105,7 +105,7 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 		news.title = this.selectedNewsForm.controls['title'].value;
 		news.text = this.selectedNewsForm.controls['text'].value;
 		news.motd = this.selectedNewsForm.controls['motd'].value;
-		news.valid_till = this.selectedNewsForm.controls["valid_till"].value;
+		news.valid_till = this.selectedNewsForm.controls['valid_till'].value;
 		news.facility = this.facilityToPost;
 		if (document.getElementById(`news_select_${this.facilityToPost}_motd`)['checked']) {
 			this.facilityToSetMOTD = this.facilityToPost;
@@ -157,7 +157,7 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 		news.title = this.selectedNewsForm.controls['title'].value;
 		news.text = this.selectedNewsForm.controls['text'].value;
 		news.motd = this.selectedNewsForm.controls['motd'].value;
-		news.valid_till = this.selectedNewsForm.controls["valid_till"].value;
+		news.valid_till = this.selectedNewsForm.controls['valid_till'].value;
 		news.facility = this.facilityToPost;
 		if (document.getElementById(`news_select_${this.facilityToPost}_motd`)['checked']) {
 			this.facilityToSetMOTD = this.facilityToPost;
@@ -211,9 +211,9 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 				for (let i = 0; i < facilities.length; i++) {
 					this.facilityMOTDPairs[facilities[i]['id']] = facilities[i]['motd'];
 				}
-				for (let facilityNew of this.facilityNews) {
-					for (let facilityMOTDPairsKey in this.facilityMOTDPairs) {
-						facilityMOTDPairsKey
+				for (const facilityNew of this.facilityNews) {
+					for (const facilityMOTDPairsKey in this.facilityMOTDPairs) {
+						facilityMOTDPairsKey;
 					}
 				}
 			}),
@@ -239,8 +239,8 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 		news.motd = facilityNews['motd'];
 		news.facility = facilityNews['facility'];
 		news.date = facilityNews['posted_at'];
-		news.valid_till = facilityNews["valid_till"];
-		news.is_current_motd  = facilityNews["is_current_motd"]
+		news.valid_till = facilityNews['valid_till'];
+		news.is_current_motd = facilityNews['is_current_motd'];
 
 		return news;
 	}
@@ -340,18 +340,18 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 	setFormGroup(): void {
 		this.selectedNewsForm = new FormGroup({
 			title: new FormControl(
-				{value: this.selectedFacilityNews.title, disabled: false}, Validators.required,
+				{ value: this.selectedFacilityNews.title, disabled: false }, Validators.required,
 			),
 			text: new FormControl(
-				{value: this.selectedFacilityNews.text, disabled: false}, Validators.required,
+				{ value: this.selectedFacilityNews.text, disabled: false }, Validators.required,
 			),
 			motd: new FormControl(
-				{value: this.selectedFacilityNews.motd, disabled: false},
+				{ value: this.selectedFacilityNews.motd, disabled: false },
 			),
 			tag: new FormControl(
-				{value: this.selectedFacilityNews.tags, disabled: false},
+				{ value: this.selectedFacilityNews.tags, disabled: false },
 			),
-			valid_till: new FormControl({value: this.selectedFacilityNews.valid_till, disabled: false})
+			valid_till: new FormControl({ value: this.selectedFacilityNews.valid_till, disabled: false }),
 
 		});
 		this.subscription.add(
