@@ -9,7 +9,7 @@
 		<alert type="info" dismissible="true">
 			To learn more about workshops, please see our <a [href]="WIKI_WORKSHOPS" target="_blank" rel="noopener noreferrer">WIKI</a>.
 		</alert>
-		<div *ngIf="projects.length > 0">
+		<div *ngIf="projects.length > 0" id="projectsExisting">
 
 			<div class="row" style="margin-bottom: 5px">
 				<label class="col-2 form-label" for="projectSelect"><strong>Project*</strong></label>
@@ -75,12 +75,14 @@
 						<button class="btn btn-danger"
 										(click)="verifyDeleteModal.show()"
 										type="button"
+										id="cleanup_workshop_button_id"
 										[disabled]="deleting"
 										*ngIf="selectedWorkshop?.id"
 										style="margin-bottom:5px;margin-right:5px;">
 							Cleanup Workshop
 						</button>
 						<button class="btn btn-info" type="button"
+										id="new_workshop_button_id"
 										style="margin-bottom:5px;margin-right:5px;" (click)="blankWorkshop()">
 							New Workshop
 						</button>
@@ -125,7 +127,9 @@
 						<div class="w-100"></div>
 						<div class="col-2" style="margin-top: 10px"></div>
 						<div class="col-4">
-							<button class="btn btn-primary" (click)="createNewWorkshop()" type="button" style="margin-bottom: 15px; margin-top: 10px">
+							<button class="btn btn-primary" (click)="createNewWorkshop()"
+											id="create_workshop_button_id"
+											type="button" style="margin-bottom: 15px; margin-top: 10px">
 								Create workshop
 							</button>
 						</div>
@@ -144,7 +148,8 @@
 								<td>
 									<div class="callout callout-info"
 											 style="border-top-width: 0; border-bottom-width: 0; border-right-width: 0;">
-										<i class="fa fa-id-card" style="width: 1.5em"></i>{{member.projectMember.userName}}<br>
+										<i class="fa fa-id-card" style="width: 1.5em"
+											 id="user_name_field_prefix_{{member.projectMember.userName}}"></i>{{member.projectMember.userName}}<br>
 										<i class="fa fa-envelope" style="width: 1.5em"></i>{{member.projectMember.email}}<br>
 										<i class="fa fa-user-cog" style="width: 1.5em"></i>
 										<ng-container *ngIf="member.projectMember.groupAdmin">Admin</ng-container>

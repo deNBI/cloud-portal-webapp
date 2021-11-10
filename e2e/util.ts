@@ -21,6 +21,7 @@ export class Util {
   private static _VOLUME_VM_NAME: string = 'ProtractorVMVolume';
   private static _VOLUME_NAME: string = 'ProtractorVolume';
   private static _VOLUME_SPACE: string = '1';
+	private static _WORKSHOP_NAME: string = 'PTWS';
   private static _ONE_MINUTE_TIMEOUT: number = 60000;
   private static _timeout: number = Util._ONE_MINUTE_TIMEOUT * 2;
   private static _15_MIN_TIMEOUT: number = Util._ONE_MINUTE_TIMEOUT * 15;
@@ -100,6 +101,10 @@ export class Util {
 
   static get VOLUME_SPACE(): string {
   	return this._VOLUME_SPACE;
+  }
+
+  static get WORKSHOP_NAME(): string {
+  	return this._WORKSHOP_NAME;
   }
 
   static logInfo(text: string): void {
