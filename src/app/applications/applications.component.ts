@@ -663,7 +663,6 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 				},
 			);
 		}
-
 	}
 
 	resetApplicationPI(application: Application): void {

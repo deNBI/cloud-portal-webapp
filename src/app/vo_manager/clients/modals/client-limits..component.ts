@@ -8,9 +8,9 @@ import { Application } from '../../../applications/application.model/application
 import { FacilityService } from '../../../api-connector/facility.service';
 
 @Component({
-	           selector: 'app-client-limits',
-	           templateUrl: './client-limits.component.html',
-	           providers: [FacilityService, ClientService],
+	selector: 'app-client-limits',
+	templateUrl: './client-limits.component.html',
+	providers: [FacilityService, ClientService],
 })
 export class ClientLimitsComponent implements OnDestroy, OnInit {
 
@@ -159,25 +159,30 @@ export class ClientLimitsComponent implements OnDestroy, OnInit {
 
 	approveModification(): void {
 		this.event.emit({
-			                approveModification: true,
-			                application: this.application,
+			approveModification: true,
+			application: this.application,
 
-		                });
+		});
 		this.bsModalRef.hide();
 	}
 
 	createSimpleVM(): void {
 		this.event.emit({
-			                createSimpleVM: true,
-			                compute_center_id: this.compute_center_id,
-			                application: this.application,
-		                });
+			createSimpleVM: true,
+			compute_center_id: this.compute_center_id,
+			application: this.application,
+		});
 		this.bsModalRef.hide();
 	}
 
 	ngOnInit() {
 		if (this.client) {
 			this.getClientLimits();
+
+		} else if (this.application && !this.compute_center_id) {
+			this.message_type = 'success';
+			this.limits_message = 'Client will be scheduled via round robin!';
+
 		} else if (this.application && !this.is_modification_request) {
 			this.getComputeCenterClientLimitsAvailable();
 
