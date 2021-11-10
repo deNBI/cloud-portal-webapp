@@ -3,6 +3,7 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { CommonModule } from '@angular/common';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { FacilityProjectsOverviewComponent } from '../facility_manager/facilityprojectsoverview.component';
 import { ImageTagComponent } from '../facility_manager/imagetags.component';
 import { FacilitymanagerRoutingModule } from './facilitymanager-routing.module';
@@ -29,6 +30,8 @@ import { ProjectManagementModule } from '../projectmanagement/projectmanagement.
 		FormsModule,
 		CommonModule,
 		ModalModule.forRoot(),
+		BsDatepickerModule.forRoot(),
+
 		ApplicationsModule,
 		ReactiveFormsModule, PipeModuleModule, SharedDirectivesModule, ProjectManagementModule,
 
