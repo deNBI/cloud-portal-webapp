@@ -21,6 +21,7 @@ export class ClientLimitsComponent implements OnDestroy, OnInit {
 	approvable: boolean = true;
 	limits_message: string;
 	message_type: string;
+	submitted: boolean = false;
 	public event: EventEmitter<any> = new EventEmitter();
 
 	constructor(public bsModalRef: BsModalRef, private clientService: ClientService, private facilityService: FacilityService) {
@@ -147,6 +148,7 @@ export class ClientLimitsComponent implements OnDestroy, OnInit {
 	}
 
 	approve(): void {
+		this.submitted = true;
 		if (this.approvable && !this.is_modification_request) {
 			this.createSimpleVM();
 		}
@@ -174,8 +176,6 @@ export class ClientLimitsComponent implements OnDestroy, OnInit {
 	}
 
 	ngOnInit() {
-		console.log('init');
-
 		if (this.client) {
 			this.getClientLimits();
 
@@ -193,6 +193,12 @@ export class ClientLimitsComponent implements OnDestroy, OnInit {
 	}
 
 	ngOnDestroy(): void {
+		if (!this.submitted) {
+			this.event.emit({
+				closed: true,
+			});
+		}
+		this.bsModalRef.hide();
 	}
 
 }
