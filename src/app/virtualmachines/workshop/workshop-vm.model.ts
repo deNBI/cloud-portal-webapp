@@ -1,5 +1,5 @@
-import {VirtualMachine} from '../virtualmachinemodels/virtualmachine';
-import {UrlData} from './workshop-urlinfo.model';
+import { VirtualMachine } from '../virtualmachinemodels/virtualmachine';
+import { UrlData } from './workshop-urlinfo.model';
 
 export class WorkshopVM {
 	vm: VirtualMachine;
@@ -8,7 +8,7 @@ export class WorkshopVM {
 	urlData: UrlData;
 	email_sent: boolean = false;
 	loadingUrlData: boolean = false;
-	resenv_name:string;
+	resenv_name: string;
 
 	constructor(workshopvm?: Partial<WorkshopVM>) {
 		Object.assign(this, workshopvm);
