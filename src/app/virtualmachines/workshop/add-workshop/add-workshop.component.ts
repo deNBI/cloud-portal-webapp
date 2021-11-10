@@ -16,7 +16,6 @@ import { Flavor } from '../../virtualmachinemodels/flavor';
 import { Image } from '../../virtualmachinemodels/image';
 import { FlavorService } from '../../../api-connector/flavor.service';
 import { UserService } from '../../../api-connector/user.service';
-import { TemplateNames } from '../../conda/template-names';
 import { ResEnvComponent } from '../../conda/res-env.component';
 import { ProjectMember } from '../../../projectmanagement/project_member.model';
 import { CLOUD_PORTAL_SUPPORT_MAIL, WIKI_WORKSHOPS } from '../../../../links/links';
@@ -321,7 +320,7 @@ export class AddWorkshopComponent implements OnInit, OnDestroy, DoCheck {
 	has_image_resenv(): void {
 		for (const mode of this.selected_image.modes) {
 			for (const template of this.res_env_component.templates) {
-				if (template.template_name == mode.name) {
+				if (template.template_name === mode.name) {
 					this.resenv_selected = true;
 					this.res_env_component.setOnlyNamespace(template);
 

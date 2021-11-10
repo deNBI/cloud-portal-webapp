@@ -15,7 +15,6 @@ import { VirtualMachine } from './virtualmachinemodels/virtualmachine';
 import { BiocondaComponent } from './conda/bioconda.component';
 import { ResEnvComponent } from './conda/res-env.component';
 import { is_vo } from '../shared/globalvar';
-import { TemplateNames } from './conda/template-names';
 import { RandomNameGenerator } from '../shared/randomNameGenerator';
 import { Volume } from './volumes/volume';
 import { UserService } from '../api-connector/user.service';
@@ -683,7 +682,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 		}
 		for (const mode of this.selectedImage.modes) {
 			for (const template of this.resEnvComponent.templates) {
-				if (template.template_name == mode.name) {
+				if (template.template_name === mode.name) {
 					this.resenvSelected = true;
 					this.resEnvComponent.setOnlyNamespace(template);
 
