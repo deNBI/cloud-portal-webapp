@@ -153,8 +153,8 @@
                       <button
                         *ngIf="(application | hasstatusinlist:Application_States.CONFIRMATION_DECLINED)  || ((application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION)  && !application?.ComputeCenter?.FacilityId )"
                         style="margin: auto 2.5px"
-                        (click)="assignGroupToFacility(application?.project_application_perun_id,application?.project_application_id, selectedCenter[application.project_application_id]); "
-                        [disabled]="!selectedCenter[application.project_application_id]"
+                        (click)="assignGroupToFacility(application?.project_application_perun_id,application?.project_application_id, selectedCenter[application.project_application_id]); switchAssignLocked(true)"
+                        [disabled]="!selectedCenter[application.project_application_id] || assignLocked"
                         type="button"
                         class="btn btn-secondary">
                         <i class="fa fa-check"></i>&nbsp;
@@ -163,7 +163,8 @@
                       <button
                         *ngIf="(application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION)  && application?.ComputeCenter?.FacilityId"
                         style="margin: auto 2.5px"
-                        (click)="removeApplicationFromFacilityConfirmation(application); "
+                        (click)="removeApplicationFromFacilityConfirmation(application); switchReassignLocked(true)"
+												[disabled]="reassignLocked"
 
 
                         type="button"
@@ -174,8 +175,8 @@
                       <button
                         *ngIf="(application | hasstatusinlist:Application_States.SUBMITTED) && application?.project_application_openstack_project"
                         style="margin: auto 2.5px" [id]="'approve_'+ application?.project_application_shortname"
-                        (click)="createOpenStackProjectGroup(application, selectedCenter[application.project_application_id]); "
-                        [disabled]="!selectedCenter[application.project_application_id]"
+                        (click)="createOpenStackProjectGroup(application, selectedCenter[application.project_application_id]); switchApproveLocked(true)"
+                        [disabled]="!selectedCenter[application.project_application_id] || approveLocked"
                         type="button"
                         class="btn btn-success">
                         <i class="fa fa-check"></i>&nbsp;
@@ -185,7 +186,8 @@
                       <button
                               *ngIf="(application | hasstatusinlist:Application_States.SUBMITTED)  && !application?.project_application_openstack_project"
                               style="margin: auto 2.5px" [id]="'approve_' + application?.project_application_shortname"
-                              (click)="showClientsLimitsModal(selectedCenter[application.project_application_id],application); "
+                              (click)="showClientsLimitsModal(selectedCenter[application.project_application_id],application); switchApproveLocked(true)"
+															[disabled]="approveLocked"
 
                               type="button"
                               class="btn btn-success">
