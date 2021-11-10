@@ -27,7 +27,7 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 	public managerFacilitiesIdOnly: number[];
 	public selectedFacilities: [string, number][] = [];
 	public facilityToSetMOTD: number;
-	public facilityMOTDPairs: {[key: number]: number} = {}
+	public facilityMOTDPairs: { [key: number]: number } = {}
 	facilityToPost: number;
 	returnState: number = -1;
 	@ViewChild('infoModal', { static: true }) infoModal: ModalDirective;
@@ -36,6 +36,7 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 	facilityNews: FacilityNews[] = [];
 	newFacilityNews: FacilityNews = new FacilityNews();
 	selectedFacilityNews: FacilityNews = new FacilityNews();
+	today: Date=new Date()
 
 	newsSetAsMOTD: string[] = [];
 	selectedNewsForm: FormGroup = new FormGroup({
@@ -44,6 +45,8 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 		text: new FormControl({ value: this.newFacilityNews.text, disabled: false },
 			Validators.required),
 		motd: new FormControl({ value: this.newFacilityNews.motd, disabled: false }),
+		valid_till: new FormControl({ value: this.newFacilityNews.valid_till, disabled: false }),
+
 	});
 	allChecked: boolean = true;
 	deletionStatus: number = 0;
@@ -83,6 +86,16 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 		);
 	}
 
+	setFacilityToSetMotd(): void {
+		 const facilit_checkbox: HTMLElement | null = document.getElementById(`news_select_${this.facilityToPost}_motd`);
+		if (facilit_checkbox && facilit_checkbox['checked']) {
+			this.facilityToSetMOTD = this.facilityToPost;
+		} else {
+			this.facilityToSetMOTD = null;
+		}
+
+	}
+
 	ngOnDestroy() {
 		this.subscription.unsubscribe();
 	}
@@ -92,6 +105,7 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 		news.title = this.selectedNewsForm.controls['title'].value;
 		news.text = this.selectedNewsForm.controls['text'].value;
 		news.motd = this.selectedNewsForm.controls['motd'].value;
+		news.valid_till = this.selectedNewsForm.controls['valid_till'].value;
 		news.facility = this.facilityToPost;
 		if (document.getElementById(`news_select_${this.facilityToPost}_motd`)['checked']) {
 			this.facilityToSetMOTD = this.facilityToPost;
@@ -143,6 +157,7 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 		news.title = this.selectedNewsForm.controls['title'].value;
 		news.text = this.selectedNewsForm.controls['text'].value;
 		news.motd = this.selectedNewsForm.controls['motd'].value;
+		news.valid_till = this.selectedNewsForm.controls['valid_till'].value;
 		news.facility = this.facilityToPost;
 		if (document.getElementById(`news_select_${this.facilityToPost}_motd`)['checked']) {
 			this.facilityToSetMOTD = this.facilityToPost;
@@ -219,6 +234,8 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 		news.motd = facilityNews['motd'];
 		news.facility = facilityNews['facility'];
 		news.date = facilityNews['posted_at'];
+		news.valid_till = facilityNews['valid_till'];
+		news.is_current_motd = facilityNews['is_current_motd'];
 
 		return news;
 	}
@@ -268,6 +285,8 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 			this.selectedFacilityNews.id = null;
 		}
 		this.setFormGroup();
+		this.setFacilityToSetMotd();
+
 	}
 
 	/**
@@ -327,6 +346,8 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 			tag: new FormControl(
 				{ value: this.selectedFacilityNews.tags, disabled: false },
 			),
+			valid_till: new FormControl({ value: this.selectedFacilityNews.valid_till, disabled: false }),
+
 		});
 		this.subscription.add(
 			this.selectedNewsForm.controls['motd'].valueChanges.subscribe((value: any): void => {
