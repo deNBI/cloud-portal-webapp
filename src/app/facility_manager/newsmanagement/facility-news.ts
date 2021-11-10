@@ -1,4 +1,4 @@
-import {DatePipe} from "@angular/common";
+import { DatePipe } from '@angular/common';
 
 export class FacilityNews {
 	private _id;
@@ -24,7 +24,6 @@ export class FacilityNews {
 			this._is_current_motd = news.is_current_motd;
 		}
 	}
-
 
 	get is_current_motd(): boolean {
 		return this._is_current_motd;
