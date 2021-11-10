@@ -1,10 +1,11 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { UrlData, WorkshopUrlInfoModel } from '../virtualmachines/workshop/workshop-urlinfo.model';
-import { ApiSettings } from './api-settings.service';
-import { Workshop } from '../virtualmachines/workshop/workshop.model';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpParams} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
+import {UrlData, WorkshopUrlInfoModel} from '../virtualmachines/workshop/workshop-urlinfo.model';
+import {ApiSettings} from './api-settings.service';
+import {Workshop} from '../virtualmachines/workshop/workshop.model';
+import {WorkshopVM} from "../virtualmachines/workshop/workshop-vm.model";
 
 @Injectable()
 export class WorkshopService {
@@ -96,6 +97,20 @@ export class WorkshopService {
 			),
 		);
 	}
+
+	sendWorkshopVmEmail(workshop_id: number, openstackid: string): Observable<WorkshopVM> {
+		const params: HttpParams = new HttpParams()
+			.set('openstackid', openstackid);
+
+		return this.http.post<WorkshopVM>(`${ApiSettings.getApiBaseURL()}workshops/${workshop_id}/email/`, params,{
+			withCredentials: true,
+		}).pipe(
+			map(
+				(workshop_new: WorkshopVM): WorkshopVM => new WorkshopVM(workshop_new),
+			),
+		);
+	}
+
 
 	deleteWorkshop(workshop_id: number): Observable<boolean> {
 		return this.http.delete<boolean>(`${ApiSettings.getApiBaseURL()}workshops/${workshop_id}/`, {
