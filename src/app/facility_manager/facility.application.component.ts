@@ -69,6 +69,8 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 	TabStates: typeof TabStates = TabStates;
 	loadingApplications: boolean = false;
 
+	approveLocked: boolean = false;
+
 	constructor(userService: UserService,
 		facilityService: FacilityService, applicationsService: ApplicationsService) {
 		super(userService, applicationsService, facilityService);
@@ -108,13 +110,16 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 	}
 
 	public approveExtension(app: Application): void {
+		this.setApproveLocked(true);
 		this.applicationsService.approveAdditionalLifetime(app.project_application_id)
 			.subscribe((): void => {
+				this.setApproveLocked(false);
 				this.updateNotificationModal('Success', 'Successfully approved extension!', true, 'success');
 				this.allApplicationsToCheck.splice(this.allApplicationsToCheck.indexOf(app), 1);
 				this.numberOfExtensionRequests -= 1;
 				this.getAllApplicationsHistory(this.selectedFacility['FacilityId']);
 			}, (): void => {
+				this.setApproveLocked(false);
 				this.updateNotificationModal('Failed',
 					'The approval of the extension request has failed.',
 					true,
@@ -144,13 +149,16 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 	}
 
 	public approveModification(app: Application): void {
+		this.setApproveLocked(true);
 		this.applicationsService.approveModificationRequest(app.project_application_id)
 			.subscribe((): void => {
+				this.setApproveLocked(false);
 				this.updateNotificationModal('Success', 'Successfully approved modification!', true, 'success');
 				this.allApplicationsToCheck.splice(this.allApplicationsToCheck.indexOf(app), 1);
 				this.numberOfModificationRequests -= 1;
 				this.getAllApplicationsHistory(this.selectedFacility['FacilityId']);
 			}, (): void => {
+				this.setApproveLocked(false);
 				this.updateNotificationModal('Failed',
 					'The approval of the modification request has failed.',
 					true,
@@ -174,13 +182,16 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 	}
 
 	public approveCreditRequest(app: Application): void {
+		this.setApproveLocked(true);
 		this.applicationsService.approveAdditionalCreditsRequest(app.project_application_id)
 			.subscribe((): void => {
+				this.setApproveLocked(false);
 				this.updateNotificationModal('Success', 'Successfully approved credit extension!', true, 'success');
 				this.allApplicationsToCheck.splice(this.allApplicationsToCheck.indexOf(app), 1);
 				this.numberOfCreditRequests -= 1;
 				this.getAllApplicationsHistory(this.selectedFacility['FacilityId']);
 			}, (): void => {
+				this.setApproveLocked(false);
 				this.updateNotificationModal('Failed',
 					'The approval of the credit request has failed.',
 					true,
@@ -248,19 +259,22 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 	/**
 	 * Approves an  application.
 	 *
-	 * @param application_id
+	 * @param app: Application
 	 */
 	approveApplication(app: Application): void {
+		this.setApproveLocked(true);
 
 		this.updateNotificationModal('Approving Application', 'Waiting..', true, 'info');
 		this.facilityService.approveFacilityApplication(this.selectedFacility['FacilityId'], app.project_application_id).subscribe(
 			(): void => {
+				this.setApproveLocked(false);
 				this.updateNotificationModal('Success', 'Successfully approved the application.', true, 'success');
 				this.allApplicationsToCheck.splice(this.allApplicationsToCheck.indexOf(app), 1);
 				this.numberOfProjectApplications -= 1;
 				this.getAllApplicationsHistory(this.selectedFacility['FacilityId']);
 			},
 			(): void => {
+				this.setApproveLocked(false);
 				this.updateNotificationModal('Failed', 'Failed to approve the application.', true, 'danger');
 
 			},
@@ -405,6 +419,10 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 			// this.getFullApplications(this.selectedFacility ['FacilityId']);
 			this.getAllApplicationsHistory(this.selectedFacility['FacilityId']);
 		});
+	}
+
+	setApproveLocked(locked: boolean): void {
+		this.approveLocked = locked;
 	}
 
 }
