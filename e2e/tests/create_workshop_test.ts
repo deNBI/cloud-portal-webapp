@@ -18,10 +18,12 @@ describe('Workshop creation test', (): void => {
 		Util.logInfo('Checking if new workshop successful');
 		const workshopSuccess: boolean = await WorkshopOverviewPage.newWorkshopSuccess();
 		expect(workshopSuccess).toBeTruthy();
+		await WorkshopOverviewPage.closeCreationStatusModal();
 
 		Util.logInfo('Checking if new workshop failing');
 		const workshopError: boolean = await WorkshopOverviewPage.newWorkshopError();
 		expect(workshopError).toBeTruthy();
+		await WorkshopOverviewPage.closeCreationStatusModal();
 	});
 
 	it('Should has Users', async (): Promise<any> => {

@@ -13,6 +13,11 @@ export class WorkshopOverviewPage {
 	private static PROJECT_OPTION: string = `project_option_${Util.SIMPLE_VM_APPLICATION_NAME}`;
 	private static NEW_WORKSHOP_BUTTON: string = 'new_workshop_button_id';
 	private static CREATE_WORKSHOP_BUTTON: string = 'create_workshop_button_id';
+	private static CREATION_STATUS_MODAL: string = 'creation_status_modal';
+	private static CREATION_STATUS_MESSAGE_FIELD: string = 'creation_status_message';
+	private static SUCCESS_ALERT: string = 'creation_success';
+	private static ERROR_ALERT: string = 'creation_failure'
+	private static CLOSE_CEATION_STATUS_MODAL: string = 'close_creation_status_modal';
 	private static LONGNAME_FIELD: string = 'workshop_longname';
 	private static SHORTNAME_FIELD: string = 'workshop_shortname';
 	private static WORKSHOP_OPTION: string = `workshop_option_id_${Util.WORKSHOP_NAME}`;
@@ -21,6 +26,7 @@ export class WorkshopOverviewPage {
 	private static VERIFY_CLEANUP_MODAL: string = 'verify_cleanup_modal';
 	private static VERIFY_CLEANUP_BUTTON: string = 'confirm_delete_workshop_button';
 	private static DELETE_SUCCESS_MODAL: string = 'workshop_cleanup_success_id';
+	private static CLOSE_DELETION_STATUS_MODAL: string = 'close_deletion_status';
 
 	static async navigateToOverview(): Promise<any> {
 		Util.logInfo('Navigating to Workshop Overview Page');
@@ -56,14 +62,18 @@ export class WorkshopOverviewPage {
 
 	static async newWorkshopSuccess(): Promise<boolean> {
 		Util.logInfo(`Checking success for new Workshop ${Util.WORKSHOP_NAME}`);
+		await Util.waitForPresenceOfElementById(this.CREATION_STATUS_MODAL);
+		await Util.waitForPresenceOfElementById(this.CREATION_STATUS_MESSAGE_FIELD);
 
-		return true;
+		return Util.waitForPresenceOfElementById(this.SUCCESS_ALERT);
 	}
 
 	static async newWorkshopError(): Promise<boolean> {
 		Util.logInfo(`Checking error for new Workshop ${Util.WORKSHOP_NAME}`);
+		await Util.waitForPresenceOfElementById(this.CREATION_STATUS_MODAL);
+		await Util.waitForPresenceOfElementById(this.CREATION_STATUS_MESSAGE_FIELD);
 
-		return true;
+		return Util.waitForPresenceOfElementById(this.ERROR_ALERT);
 	}
 
 	static async workshopHasUser(): Promise<boolean> {
@@ -99,4 +109,15 @@ export class WorkshopOverviewPage {
 		await Util.clickElementById(this.WORKSHOP_OPTION);
 	}
 
+	static async closeCreationStatusModal(): Promise<any> {
+		await Util.waitForPresenceOfElementById(this.CLOSE_CEATION_STATUS_MODAL);
+		await Util.waitForElementToBeClickableById(this.CLOSE_CEATION_STATUS_MODAL);
+		await Util.clickElementById(this.CLOSE_CEATION_STATUS_MODAL);
+	}
+
+	static async closeWorkshopCleanupModal(): Promise<any> {
+		await Util.waitForPresenceOfElementById(this.CLOSE_DELETION_STATUS_MODAL);
+		await Util.waitForElementToBeClickableById(this.CLOSE_DELETION_STATUS_MODAL);
+		await Util.clickElementById(this.CLOSE_DELETION_STATUS_MODAL);
+	}
 }
