@@ -55,7 +55,7 @@
 	</div>
 	<div class="modal-footer">
 		<button class="btn  btn-success col-md-4"
-						[disabled]="selectedVolume === undefined || selectedVolume === undefined"
+						[disabled]="selectedVolume === undefined || selectedVolume === null"
 						(click)="detachVolume();">
 			Detach Volume
 		</button>
