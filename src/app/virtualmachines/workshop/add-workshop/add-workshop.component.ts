@@ -16,7 +16,6 @@ import { Flavor } from '../../virtualmachinemodels/flavor';
 import { Image } from '../../virtualmachinemodels/image';
 import { FlavorService } from '../../../api-connector/flavor.service';
 import { UserService } from '../../../api-connector/user.service';
-import { TemplateNames } from '../../conda/template-names';
 import { ResEnvComponent } from '../../conda/res-env.component';
 import { ProjectMember } from '../../../projectmanagement/project_member.model';
 import { CLOUD_PORTAL_SUPPORT_MAIL, WIKI_WORKSHOPS } from '../../../../links/links';
@@ -320,11 +319,13 @@ export class AddWorkshopComponent implements OnInit, OnDestroy, DoCheck {
 
 	has_image_resenv(): void {
 		for (const mode of this.selected_image.modes) {
-			if (TemplateNames.ALL_TEMPLATE_NAMES.indexOf(mode.name) !== -1) {
-				this.resenv_selected = true;
-				this.res_env_component.setOnlyNamespace();
+			for (const template of this.res_env_component.templates) {
+				if (template.template_name === mode.name) {
+					this.resenv_selected = true;
+					this.res_env_component.setOnlyNamespace(template);
 
-				return;
+					return;
+				}
 			}
 		}
 		this.resenv_selected = false;
@@ -363,7 +364,7 @@ export class AddWorkshopComponent implements OnInit, OnDestroy, DoCheck {
 
 	start_vms(): void {
 		this.started_machine = true;
-		const servers: {[key: string]: string}[] = [];
+		const servers: { [key: string]: string }[] = [];
 		const re: RegExp = /\+/gi;
 		const flavor_fixed: string = this.selected_flavor.name.replace(re, '%2B');
 		for (const member of this.members_to_add) {
