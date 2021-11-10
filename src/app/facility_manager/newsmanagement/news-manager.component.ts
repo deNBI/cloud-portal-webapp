@@ -211,11 +211,6 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 				for (let i = 0; i < facilities.length; i++) {
 					this.facilityMOTDPairs[facilities[i]['id']] = facilities[i]['motd'];
 				}
-				for (const facilityNew of this.facilityNews) {
-					for (const facilityMOTDPairsKey in this.facilityMOTDPairs) {
-						facilityMOTDPairsKey;
-					}
-				}
 			}),
 		);
 	}

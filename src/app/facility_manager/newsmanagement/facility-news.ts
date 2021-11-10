@@ -1,5 +1,3 @@
-import { DatePipe } from '@angular/common';
-
 export class FacilityNews {
 	private _id;
 	private _title: string;
