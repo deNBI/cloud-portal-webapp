@@ -1,14 +1,14 @@
 import {
 	Component, OnInit, OnDestroy, ViewChild,
 } from '@angular/core';
-import {Subscription} from 'rxjs';
-import {Workshop} from '../workshop.model';
-import {GroupService} from '../../../api-connector/group.service';
-import {UrlData} from '../workshop-urlinfo.model';
-import {WorkshopService} from '../../../api-connector/workshop.service';
-import {ProjectMember} from '../../../projectmanagement/project_member.model';
-import {WorkshopVM} from '../workshop-vm.model';
-import {WIKI_WORKSHOPS} from '../../../../links/links';
+import { Subscription } from 'rxjs';
+import { Workshop } from '../workshop.model';
+import { GroupService } from '../../../api-connector/group.service';
+import { UrlData } from '../workshop-urlinfo.model';
+import { WorkshopService } from '../../../api-connector/workshop.service';
+import { ProjectMember } from '../../../projectmanagement/project_member.model';
+import { WorkshopVM } from '../workshop-vm.model';
+import { WIKI_WORKSHOPS } from '../../../../links/links';
 
 interface MemberVm {
 	projectMember: ProjectMember;
@@ -48,7 +48,7 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 	invalidShortname: boolean = false;
 	invalidLongname: boolean = false;
 	newWorkshop: boolean = false;
-	workshopCreationMessage: { message: string, success: boolean } = {message: '', success: false};
+	workshopCreationMessage: { message: string, success: boolean } = { message: '', success: false };
 
 	@ViewChild('creationStatusModal') creationStatusModal: any;
 
@@ -107,7 +107,7 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 				(members: ProjectMember[]): void => {
 					for (const member of members) {
 						const workshopVmLink: { [key: number]: WorkshopVM[] } = {};
-						const membervm: MemberVm = {projectMember: member, workshopVmLink};
+						const membervm: MemberVm = { projectMember: member, workshopVmLink };
 						this.memberVms.push(membervm);
 						this.projectMembersLoading = false;
 						this.projectMembersLoaded = true;
@@ -205,7 +205,9 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 					if ('error' in error) {
 						console.log(error);
 					}
-				}));
+				},
+			),
+		);
 
 	}
 
@@ -295,7 +297,7 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 				(workshop: Workshop) => {
 					this.workshops.push(workshop);
 					this.workshopChange(workshop);
-					this.workshopCreationMessage = {message: 'Workshop created successfully!', success: true};
+					this.workshopCreationMessage = { message: 'Workshop created successfully!', success: true };
 					this.creationStatusModal.show();
 				}, (error: any) => {
 					if ('error' in error) {
@@ -306,10 +308,10 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 						if (error['error']['error'] === 'unique_constraint') {
 							this.workshopCreationMessage = {
 								message: 'Workshop name already taken! Please select another name.',
-								success: false
+								success: false,
 							};
 						} else {
-							this.workshopCreationMessage = {message: 'An error occured. Please try again!', success: false};
+							this.workshopCreationMessage = { message: 'An error occured. Please try again!', success: false };
 						}
 						this.creationStatusModal.show();
 					}
