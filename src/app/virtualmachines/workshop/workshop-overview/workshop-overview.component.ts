@@ -1,4 +1,6 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {
+	Component, OnInit, OnDestroy, ViewChild,
+} from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Workshop } from '../workshop.model';
 import { GroupService } from '../../../api-connector/group.service';
@@ -46,6 +48,9 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 	invalidShortname: boolean = false;
 	invalidLongname: boolean = false;
 	newWorkshop: boolean = false;
+	workshopCreationMessage: { message: string, success: boolean } = { message: '', success: false };
+
+	@ViewChild('creationStatusModal') creationStatusModal: any;
 
 	constructor(private workshopService: WorkshopService,
 							private groupService: GroupService) {
@@ -288,9 +293,20 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 				(workshop: Workshop) => {
 					this.workshops.push(workshop);
 					this.workshopChange(workshop);
+					this.workshopCreationMessage = { message: 'Workshop created successfully!', success: true };
+					this.creationStatusModal.show();
 				}, (error: any) => {
 					if ('error' in error) {
-						console.log(error);
+						this.selectedWorkshop.longname = '';
+						this.invalidLongname = true;
+						this.selectedWorkshop.shortname = '';
+						this.invalidShortname = true;
+						if (error['error']['error'] === 'unique_constraint') {
+							this.workshopCreationMessage = { message: 'Workshop name already taken! Please select another name.', success: false };
+						} else {
+							this.workshopCreationMessage = { message: 'An error occured. Please try again!', success: false };
+						}
+						this.creationStatusModal.show();
 					}
 				},
 			),
