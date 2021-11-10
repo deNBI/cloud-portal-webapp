@@ -6,7 +6,9 @@ export class WorkshopVM {
 	userlogin: string;
 	elixirid: string;
 	urlData: UrlData;
+	email_sent: boolean = false;
 	loadingUrlData: boolean = false;
+	resenv_name: string;
 
 	constructor(workshopvm?: Partial<WorkshopVM>) {
 		Object.assign(this, workshopvm);
