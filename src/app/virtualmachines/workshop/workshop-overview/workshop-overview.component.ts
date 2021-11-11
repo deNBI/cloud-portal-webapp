@@ -189,23 +189,7 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 	}
 
 	sendWorkshopVMEMailInfo(workshop_vm: WorkshopVM): void {
-<<<<<<< HEAD
-		this.subscription.add(this.workshopService.sendWorkshopVmEmail(this.selectedWorkshop.id, workshop_vm?.vm?.openstackid).subscribe((upd_workshop_vm: WorkshopVM) => {
-			for (const memberVm of this.memberVms) {
-				for (const wvm of memberVm.workshopVmLink[this.selectedWorkshop.id]) {
-					if (wvm == workshop_vm) {
-						const idx: number = memberVm.workshopVmLink[this.selectedWorkshop.id].indexOf(wvm);
-						memberVm.workshopVmLink[this.selectedWorkshop.id][idx].email_sent = upd_workshop_vm.email_sent;
-					}
-				}
-			}
 
-		}, (error: any) => {
-			if ('error' in error) {
-				console.log(error);
-			}
-		}));
-=======
 		this.subscription.add(this.workshopService.sendWorkshopVmEmail(this.selectedWorkshop.id, workshop_vm?.vm?.openstackid)
 			.subscribe((upd_workshop_vm: WorkshopVM) => {
 				for (const memberVm of this.memberVms) {
@@ -222,7 +206,7 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 					console.log(error);
 				}
 			}));
->>>>>>> a6a220ebd2ebc08abf30502d6575a58f4aa04d5d
+
 
 	}
 
