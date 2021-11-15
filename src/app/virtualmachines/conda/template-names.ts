@@ -8,13 +8,12 @@ export class TemplateNames {
 	private static _JUPYTERNOTEBOOK: string = 'jupyternotebook';
 	private static _CWLAB: string = 'cwlab';
 
-	private static _ALL_TEMPLATES: string[] =
-		[
-			TemplateNames._RSTUDIO,
-			TemplateNames._THEIA,
-			TemplateNames._GUACAMOLE,
-			TemplateNames._JUPYTERNOTEBOOK,
-			TemplateNames._CWLAB];
+	private static _ALL_TEMPLATES: string[] =		[
+		TemplateNames._RSTUDIO,
+		TemplateNames._THEIA,
+		TemplateNames._GUACAMOLE,
+		TemplateNames._JUPYTERNOTEBOOK,
+		TemplateNames._CWLAB];
 
 	static get RSTUDIO(): string {
 		return this._RSTUDIO;

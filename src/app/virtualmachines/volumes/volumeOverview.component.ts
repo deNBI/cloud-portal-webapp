@@ -148,7 +148,7 @@ export class VolumeOverviewComponent extends AbstractBaseClass implements OnInit
 	selected_volumes_to_detach: boolean = false;
 	VOLUME_END_STATES: string[] = [VolumeStates.AVAILABLE, VolumeStates.NOT_FOUND,
 		VolumeStates.IN_USE, VirtualMachineStates.DELETED,
-		VirtualMachineStates.DELETING_FAILED]
+		VirtualMachineStates.DELETING_FAILED];
 
 	constructor(private facilityService: FacilityService, private groupService: GroupService, private vmService: VirtualmachineService) {
 		super();
