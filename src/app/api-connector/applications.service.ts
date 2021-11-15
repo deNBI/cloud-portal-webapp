@@ -83,7 +83,7 @@ export class ApplicationsService {
 	}
 
 	/**
-	 * Checks if some client has the ressource avaiable for an application.
+	 * Checks if some client has the resource available for an application.
 	 *
 	 * @param app_id
 	 * @returns
