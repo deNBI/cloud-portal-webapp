@@ -108,7 +108,7 @@
           <div class="rTableCell "
                *ngIf="volume?.volume_virtualmachine && volume?.volume_status === VolumeStates.staticIN_USE"
                [id]="'cell_vm_id_' + volume?.volume_virtualmachine.name"><span *ngIf="volume?.volume_path">
-                <strong>Initial mounted to: </strong>/vol/{{volume?.volume_path }} <br></span>
+                <strong>Initial attached to: </strong>/vol/{{volume?.volume_path }} <br></span>
             <strong>Device: </strong>{{volume?.volume_device }}  <br><strong>VM:</strong><a class="h5 text-primary"
                                                                                            [routerLink]="['/virtualmachines/detail/' + volume?.volume_virtualmachine?.openstackid]">
               {{ volume?.volume_virtualmachine.name}}</a>
