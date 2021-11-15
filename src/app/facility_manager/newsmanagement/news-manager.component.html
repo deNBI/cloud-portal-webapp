@@ -154,7 +154,7 @@ we are happy to inform..."
 									<div class="form-row">
 										<div class="col-6">
 										</div>
-										<div class=" input-group col-4" *ngIf="facilityToSetMOTD || selectedFacilityNews?.is_current_motd">
+										<div class=" input-group col-4" *ngIf="facilityMOTDPairs[facility['FacilityId']] === selectedFacilityNews.id && facility['FacilityId'] === facilityToPost || selectedFacilityNews?.is_current_motd">
 											<div class="input-group-prepend">
 												<div class="input-group-prepend"><span class="input-group-text">valid till</span></div>
 											</div>
