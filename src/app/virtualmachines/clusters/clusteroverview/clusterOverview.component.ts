@@ -72,7 +72,7 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 	items_per_page: number = 7;
 
 	is_vo_admin: boolean;
-	flavors: Flavor[] = []
+	flavors: Flavor[] = [];
 	flavors_usable: Flavor[] = [];
 	flavors_loaded: boolean = false;
 

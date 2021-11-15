@@ -10,5 +10,5 @@ import { environment } from '../environments/environment';
 
 })
 export class ConsentInfoComponent {
-    voLoginLink: string = environment.login
+	voLoginLink: string = environment.login;
 }

@@ -12,8 +12,8 @@ import { CLOUD_PORTAL_SUPPORT_MAIL } from '../../../../links/links';
 	styleUrls: ['../../vmOverview.component.scss'],
 })
 export class VolumStatusComponent implements OnInit {
-  VolumeStates: VolumeStates = new VolumeStates();
-  CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL;
+	VolumeStates: VolumeStates = new VolumeStates();
+	CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL;
   @Input() volume: Volume;
 
   ngOnInit(): void {
