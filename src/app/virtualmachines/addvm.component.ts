@@ -214,13 +214,15 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 	@ViewChild('bioconda') biocondaComponent: BiocondaComponent;
 	@ViewChild('resEnv') resEnvComponent: ResEnvComponent;
 
-	constructor(private groupService: GroupService,
+	constructor(
+private groupService: GroupService,
 							private imageService: ImageService,
 							private flavorService: FlavorService,
 							private virtualmachineservice: VirtualmachineService,
 							private keyservice: KeyService,
 							private userService: UserService,
-							private router: Router) {
+							private router: Router,
+	) {
 		// eslint-disable-next-line no-empty-function
 	}
 
@@ -466,9 +468,18 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 			const additional_elixir_ids: string[] = this.members_to_add.map((mem: ProjectMember): string => mem.elixirId);
 			this.subscription.add(
 				this.virtualmachineservice.startVM(
-					flavor_fixed, this.selectedImage, servername,
-					project, projectid.toString(), this.http_allowed,
-					this.https_allowed, this.udp_allowed, this.volumesToMount, this.volumesToAttach, play_information, additional_elixir_ids,
+					flavor_fixed,
+					this.selectedImage,
+					servername,
+					project,
+					projectid.toString(),
+					this.http_allowed,
+					this.https_allowed,
+					this.udp_allowed,
+					this.volumesToMount,
+					this.volumesToAttach,
+					play_information,
+					additional_elixir_ids,
 				)
 					.subscribe((newVm: VirtualMachine): void => {
 						this.newVm = newVm;

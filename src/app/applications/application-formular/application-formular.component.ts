@@ -71,10 +71,12 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 	//  */
 	// public typeList: FlavorType[] = [];
 
-	constructor(private creditsService: CreditsService,
+	constructor(
+private creditsService: CreditsService,
 	private flavorService: FlavorService,
 	private fullLayout: FullLayoutComponent,
-	applicationsService: ApplicationsService) {
+	applicationsService: ApplicationsService,
+	) {
 		super(null, applicationsService, null);
 
 	}
@@ -279,30 +281,30 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 	approveApplication(form: NgForm): any {
 		this.calculateInitialCredits(form);
 		this.application_id = this.application.project_application_id;
-		this.applicationsService.validateApplicationAsPIByHash(
-			this.hash, this.application,
-		).subscribe((): void => {
-			this.fullLayout.getGroupsEnumeration();
+		this.applicationsService.validateApplicationAsPIByHash(this.hash, this.application).subscribe(
+			(): void => {
+				this.fullLayout.getGroupsEnumeration();
 
-			this.updateNotificationModal(
-				'Success',
-				'The application was successfully approved.',
-				true,
-				'success',
-			);
-			this.notificationModalStay = false;
+				this.updateNotificationModal(
+					'Success',
+					'The application was successfully approved.',
+					true,
+					'success',
+				);
+				this.notificationModalStay = false;
 
-		},
-		(): void => {
-			this.updateNotificationModal(
-				'Failed',
-				'The application was not successfully approved.',
-				true,
-				'danger',
-			);
-			this.notificationModalStay = true;
+			},
+			(): void => {
+				this.updateNotificationModal(
+					'Failed',
+					'The application was not successfully approved.',
+					true,
+					'danger',
+				);
+				this.notificationModalStay = true;
 
-		});
+			},
+		);
 	}
 
 	/**

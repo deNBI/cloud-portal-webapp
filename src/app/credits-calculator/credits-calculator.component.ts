@@ -62,10 +62,12 @@ export class CreditsCalculatorComponent implements OnInit {
 		},
 	);
 
-	constructor(private facility_service: FacilityService,
+	constructor(
+private facility_service: FacilityService,
 							private flavor_service: FlavorService,
 							private credits_service: CreditsService,
-							private group_service: GroupService) {
+							private group_service: GroupService,
+	) {
 		// eslint-disable-next-line no-empty-function
 	}
 
