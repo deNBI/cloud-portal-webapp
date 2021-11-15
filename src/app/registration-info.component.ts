@@ -10,5 +10,5 @@ import { environment } from '../environments/environment';
 
 })
 export class RegistrationInfoComponent {
-  voRegistrationLink: string = environment.voRegistrationLink;
+	voRegistrationLink: string = environment.voRegistrationLink;
 }
