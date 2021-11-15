@@ -89,10 +89,16 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 
 	filterChanged: Subject<string> = new Subject<string>();
 
-	constructor(private facilityService: FacilityService, private groupService: GroupService,
-				private imageService: ImageService, private userService: UserService,
-				private virtualmachineservice: VirtualmachineService, private fb: FormBuilder,
-				private clipboardService: ClipboardService, private flavorService: FlavorService) {
+	constructor(
+private facilityService: FacilityService,
+private groupService: GroupService,
+				private imageService: ImageService,
+private userService: UserService,
+				private virtualmachineservice: VirtualmachineService,
+private fb: FormBuilder,
+				private clipboardService: ClipboardService,
+private flavorService: FlavorService,
+	) {
 		super();
 
 	}
@@ -172,9 +178,7 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 	 */
 	getClusters(): void {
 		this.subscription.add(
-			this.virtualmachineservice.getClusters(
-				this.currentPage, this.cluster_per_site,
-			)
+			this.virtualmachineservice.getClusters(this.currentPage, this.cluster_per_site)
 				.subscribe((cluster_page: ClusterPage): void => {
 					this.prepareClusters(cluster_page);
 				}),
@@ -185,7 +189,8 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 		this.subscription.add(
 			this.facilityService.getClustersFacility(
 				this.selectedFacility['FacilityId'],
-				this.currentPage, this.cluster_per_site,
+				this.currentPage,
+				this.cluster_per_site,
 			)
 				.subscribe((cluster_page_infos: ClusterPage): void => {
 					this.prepareClusters(cluster_page_infos);

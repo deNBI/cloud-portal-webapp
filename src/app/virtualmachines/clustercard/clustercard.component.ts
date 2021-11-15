@@ -97,9 +97,11 @@ export class ClustercardComponent extends SharedModal implements OnInit, OnDestr
 	 */
 	checkStatusTimer: ReturnType<typeof setTimeout>;
 
-	constructor(private clipboardService: ClipboardService,
+	constructor(
+private clipboardService: ClipboardService,
 	            modalService: BsModalService,
-	            private virtualmachineservice: VirtualmachineService) {
+	            private virtualmachineservice: VirtualmachineService,
+	) {
 		super(modalService);
 	}
 

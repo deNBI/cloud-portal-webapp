@@ -108,9 +108,11 @@ export class ApplicationBaseClassComponent extends AbstractBaseClass {
 	 */
 	user_applications: Application[] = [];
 
-	constructor(protected userService: UserService,
+	constructor(
+protected userService: UserService,
 							protected applicationsService: ApplicationsService,
-							protected facilityService: FacilityService) {
+							protected facilityService: FacilityService,
+	) {
 		super();
 
 	}

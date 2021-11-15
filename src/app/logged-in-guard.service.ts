@@ -16,8 +16,12 @@ import { environment } from '../environments/environment';
 @Injectable()
 export class LoggedInGuard implements CanActivate {
 
-	constructor(private http: HttpClient, private cookieService: CookieService,
-              private router: Router, private userService: UserService) {
+	constructor(
+private http: HttpClient,
+private cookieService: CookieService,
+              private router: Router,
+private userService: UserService,
+	) {
 		// constructor for LoggedInGuard
 	}
 

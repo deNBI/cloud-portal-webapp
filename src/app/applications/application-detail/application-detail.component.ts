@@ -76,10 +76,12 @@ export class ApplicationDetailComponent extends ApplicationBaseClassComponent im
 		}
 	}
 
-	constructor(applicationsService: ApplicationsService,
+	constructor(
+		applicationsService: ApplicationsService,
 		userService: UserService,
 		facilityService: FacilityService,
-		creditsService: CreditsService) {
+		creditsService: CreditsService,
+	) {
 
 		super(userService, applicationsService, facilityService);
 		this.creditsService = creditsService;

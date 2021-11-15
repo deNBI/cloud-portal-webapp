@@ -283,7 +283,8 @@ export class VolumeOverviewComponent extends AbstractBaseClass implements OnInit
 		this.filterChanged
 			.pipe(
 				debounceTime(this.DEBOUNCE_TIME),
-				distinctUntilChanged(), switchMap((filter: string): any => {
+				distinctUntilChanged(),
+				switchMap((filter: string): any => {
 					this.isSearching = true;
 
 					this.filter = filter.trim();
@@ -389,9 +390,7 @@ export class VolumeOverviewComponent extends AbstractBaseClass implements OnInit
 		this.getVolumesSubscription = new Subscription();
 
 		this.getVolumesSubscription.add(
-			this.facilityService.getFacilityVolumes(
-				this.selectedFacility['FacilityId'], this.volume_page.items_per_page, this.currentPage,
-			).subscribe((volume_page: VolumePage): void => {
+			this.facilityService.getFacilityVolumes(this.selectedFacility['FacilityId'], this.volume_page.items_per_page, this.currentPage).subscribe((volume_page: VolumePage): void => {
 				this.volume_page = volume_page;
 				for (const volume of this.volume_page.volume_list) {
 					this.setCollapseStatus(volume.volume_openstackid, false);
@@ -683,8 +682,10 @@ export class VolumeOverviewComponent extends AbstractBaseClass implements OnInit
 	getSelectedVolumeStorage(): void {
 		this.setSelectedProjectByVolume(this.selected_volume);
 		this.selected_volume_data_loaded = false;
-		forkJoin(this.groupService.getGroupMaxDiskspace(this.selectedProject[1].toString()),
-			this.groupService.getGroupUsedDiskspace(this.selectedProject[1].toString()))
+		forkJoin(
+			this.groupService.getGroupMaxDiskspace(this.selectedProject[1].toString()),
+			this.groupService.getGroupUsedDiskspace(this.selectedProject[1].toString()),
+		)
 			.subscribe((result: any): void => {
 				if (result[0]['value']) {
 					this.selectedProjectDiskspaceMax = result[0]['value'];

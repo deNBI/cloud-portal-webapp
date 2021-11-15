@@ -19,8 +19,13 @@ import { setElixirId, setVO } from './shared/globalvar';
 @Injectable()
 export class MemberGuardService implements CanActivate {
 
-	constructor(private http: HttpClient, private cookieService: CookieService,
-              private router: Router, private userService: UserService, private voService: VoService) {
+	constructor(
+private http: HttpClient,
+private cookieService: CookieService,
+              private router: Router,
+private userService: UserService,
+private voService: VoService,
+	) {
 		// constructor for MemberGuardService
 	}
 
