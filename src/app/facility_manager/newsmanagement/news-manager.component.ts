@@ -27,7 +27,7 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 	public managerFacilitiesIdOnly: number[];
 	public selectedFacilities: [string, number][] = [];
 	public facilityToSetMOTD: number;
-	public facilityMOTDPairs: { [key: number]: number } = {}
+	public facilityMOTDPairs: { [key: number]: number } = {};
 	facilityToPost: number;
 	returnState: number = -1;
 	@ViewChild('infoModal', { static: true }) infoModal: ModalDirective;
@@ -36,7 +36,7 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 	facilityNews: FacilityNews[] = [];
 	newFacilityNews: FacilityNews = new FacilityNews();
 	selectedFacilityNews: FacilityNews = new FacilityNews();
-	today: Date=new Date()
+	today: Date = new Date();
 
 	newsSetAsMOTD: string[] = [];
 	selectedNewsForm: FormGroup = new FormGroup({
