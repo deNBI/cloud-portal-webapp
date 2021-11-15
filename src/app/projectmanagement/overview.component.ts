@@ -549,7 +549,9 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	}
 
 	toggleMemberNameVisibility(): void {
-		this.project_application.memberNamesVisible = !this.project_application.memberNamesVisible;
+		this.applicationsService.toggleVisibility(this.project_application).subscribe((application: Application): void => {
+			this.project_application.memberNamesVisible = application.memberNamesVisible;
+		});
 	}
 
 	addDoi(): void {
