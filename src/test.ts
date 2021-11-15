@@ -26,8 +26,8 @@ __karma__.loaded = function () {
 getTestBed().initTestEnvironment(
 	BrowserDynamicTestingModule,
 	platformBrowserDynamicTesting(), {
-    teardown: { destroyAfterEach: false }
-},
+		teardown: { destroyAfterEach: false },
+	},
 );
 // Then we find all the tests.
 const context = require.context('./', true, /\.spec\.ts$/);
