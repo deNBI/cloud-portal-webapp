@@ -45,8 +45,8 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 	projectMembersLoaded: boolean = false;
 	deleting: boolean = false;
 	deleteSuccess: boolean = false;
-	invalidShortname: boolean = false;
-	invalidLongname: boolean = false;
+	invalidShortname: boolean = true;
+	invalidLongname: boolean = true;
 	newWorkshop: boolean = false;
 	workshopCreationMessage: { message: string, success: boolean } = { message: '', success: false };
 
@@ -120,8 +120,8 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 	workshopChange(workshop: Workshop): void {
 		this.selectedWorkshop = workshop;
 		this.newWorkshop = false;
-		this.invalidShortname = false;
-		this.invalidLongname = false;
+		this.invalidShortname = true;
+		this.invalidLongname = true;
 		this.loadVmsForSelectedProject();
 	}
 
@@ -265,8 +265,8 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 		this.loadedVmsForWorkshop = [];
 
 		this.newWorkshop = false;
-		this.invalidLongname = false;
-		this.invalidShortname = false;
+		this.invalidLongname = true;
+		this.invalidShortname = true;
 	}
 
 	checkShortname(shortname: string): void {
