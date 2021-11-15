@@ -55,6 +55,7 @@ export class LifetimeRequestComponent implements OnInit, OnDestroy {
 			this.temp_project_extension = new ApplicationLifetimeExtension();
 			this.temp_project_extension.setByApp(this.project);
 		}
+		// eslint-disable-next-line no-unsafe-optional-chaining
 		const end_date_info = (this.life_time_string?.split(' - ')[1]).split('.') ?? [];
 		if (end_date_info.length === 3) {
 			this.end_date = new Date(Number(end_date_info[2]), Number(end_date_info[1]) - 1, Number(end_date_info[0]));
