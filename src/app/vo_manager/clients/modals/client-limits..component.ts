@@ -8,9 +8,9 @@ import { Application } from '../../../applications/application.model/application
 import { FacilityService } from '../../../api-connector/facility.service';
 
 @Component({
-	           selector: 'app-client-limits',
-	           templateUrl: './client-limits.component.html',
-	           providers: [FacilityService, ClientService],
+	selector: 'app-client-limits',
+	templateUrl: './client-limits.component.html',
+	providers: [FacilityService, ClientService],
 })
 export class ClientLimitsComponent implements OnDestroy, OnInit {
 
@@ -21,6 +21,7 @@ export class ClientLimitsComponent implements OnDestroy, OnInit {
 	approvable: boolean = true;
 	limits_message: string;
 	message_type: string;
+	submitted: boolean = false;
 	public event: EventEmitter<any> = new EventEmitter();
 
 	constructor(public bsModalRef: BsModalRef, private clientService: ClientService, private facilityService: FacilityService) {
@@ -147,6 +148,7 @@ export class ClientLimitsComponent implements OnDestroy, OnInit {
 	}
 
 	approve(): void {
+		this.submitted = true;
 		if (this.approvable && !this.is_modification_request) {
 			this.createSimpleVM();
 		}
@@ -157,27 +159,30 @@ export class ClientLimitsComponent implements OnDestroy, OnInit {
 
 	approveModification(): void {
 		this.event.emit({
-			                approveModification: true,
-			                application: this.application,
+			approveModification: true,
+			application: this.application,
 
-		                });
+		});
 		this.bsModalRef.hide();
 	}
 
 	createSimpleVM(): void {
 		this.event.emit({
-			                createSimpleVM: true,
-			                compute_center_id: this.compute_center_id,
-			                application: this.application,
-		                });
+			createSimpleVM: true,
+			compute_center_id: this.compute_center_id,
+			application: this.application,
+		});
 		this.bsModalRef.hide();
 	}
 
 	ngOnInit() {
-		console.log('init');
-
 		if (this.client) {
 			this.getClientLimits();
+
+		} else if (this.application && !this.compute_center_id) {
+			this.message_type = 'success';
+			this.limits_message = 'Client will be scheduled via round robin!';
+
 		} else if (this.application && !this.is_modification_request) {
 			this.getComputeCenterClientLimitsAvailable();
 
@@ -188,6 +193,12 @@ export class ClientLimitsComponent implements OnDestroy, OnInit {
 	}
 
 	ngOnDestroy(): void {
+		if (!this.submitted) {
+			this.event.emit({
+				closed: true,
+			});
+		}
+		this.bsModalRef.hide();
 	}
 
 }
