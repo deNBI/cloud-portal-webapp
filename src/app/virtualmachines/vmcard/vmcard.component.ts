@@ -101,8 +101,7 @@ export class VmCardComponent implements OnInit, OnDestroy {
 	/**
 	 * Error message to show if 409 status was returned, typically returned if vm is creating a snapshot.
 	 */
-	SNAPSHOT_CREATING_ERROR_MSG: string
-		= 'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.';
+	SNAPSHOT_CREATING_ERROR_MSG: string		= 'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.';
 
 	/**
 	 * Timeout object to control check status loop (i.e. stopping and starting check status loop).
