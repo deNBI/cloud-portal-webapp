@@ -47,7 +47,7 @@
     "@coreui/coreui": "^4.0.4",
     "@ng-bootstrap/ng-bootstrap": "^10.0.0",
     "@sindresorhus/transliterate": "1.5.0",
-    "@types/d3": "^7.0.0",
+    "@types/d3": "^7.1.0",
     "@types/jquery": "^3.5.6",
     "acorn": "^8.5.0",
     "angular-ng-autocomplete": "^2.0.5",
@@ -93,7 +93,7 @@
     "svg2pdf.js": "^2.2.0",
     "ts-helpers": "1.1.2",
     "tslib": "^2.3.1",
-    "uglify-js": "3.14.2",
+    "uglify-js": "3.14.3",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
