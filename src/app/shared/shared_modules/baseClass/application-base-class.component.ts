@@ -115,8 +115,6 @@ export class ApplicationBaseClassComponent extends AbstractBaseClass {
 
 	}
 
-
-
 	/**
 	 * Gets all available compute centers and saves them in the computeCenters attribute.
 	 */
