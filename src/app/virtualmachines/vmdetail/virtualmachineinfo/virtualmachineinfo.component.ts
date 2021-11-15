@@ -12,7 +12,7 @@ import { VirtualMachine } from '../../virtualmachinemodels/virtualmachine';
 	styleUrls: ['./virtualmachineinfo.component.scss'],
 })
 export class VirtualmachineinfoComponent {
-  VirtualMachineStates: VirtualMachineStates = new VirtualMachineStates();
+	VirtualMachineStates: VirtualMachineStates = new VirtualMachineStates();
   @Input() virtualMachine: VirtualMachine;
   @Input() cluster_machine: boolean = false;
 }
