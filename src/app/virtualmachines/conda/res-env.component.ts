@@ -133,10 +133,10 @@ export class ResEnvComponent implements OnInit, OnChanges, OnDestroy {
 		return (!this.onlyNamespace && this.selectedTemplate.template_name !== 'undefined');
 	}
 
-	setOnlyNamespace(): void {
+	setOnlyNamespace(template): void {
 		this.onlyNamespace = true;
-		this.create_only_backend = false;
-		this.setSelectedTemplate(null);
+		this.create_only_backend = true;
+		this.setSelectedTemplate(template);
 	}
 
 	unsetOnlyNamespace(): void {

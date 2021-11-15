@@ -48,7 +48,7 @@ export class CreditsCalculatorComponent implements OnInit {
 		{
 			date_picker: new FormControl(new Date()),
 		},
-	)
+	);
 
 	credits_wanted_group: FormGroup = new FormGroup(
 		{
