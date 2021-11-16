@@ -548,39 +548,6 @@
 							Member Names
 						</button>
 
-<!--						<button-->
-<!--							*ngIf="project_application?.memberNamesVisible; else memberNamesHidden"-->
-<!--							type="button" style="margin-bottom:5px;"-->
-<!--							(click)="toggleMemberNameVisibility();"-->
-<!--							class="btn btn-outline-primary"><i class="fa fa-users" aria-hidden="true"></i>-->
-<!--							&lt;!&ndash;							<span *ngIf="!memberNamesHidden">Hide </span>&ndash;&gt;-->
-<!--							&lt;!&ndash;							<span *ngIf="memberNamesHidden">Show </span>&ndash;&gt;-->
-<!--							Member Names-->
-<!--						</button>-->
-<!--&lt;!&ndash;						<button&ndash;&gt;-->
-<!--&lt;!&ndash;							*ngIf="memberNamesVisible; else memberNamesHidden"&ndash;&gt;-->
-<!--&lt;!&ndash;							type="button" style="margin-bottom:5px;"&ndash;&gt;-->
-<!--&lt;!&ndash;							(click)="toggleMemberNameVisibility();"&ndash;&gt;-->
-<!--&lt;!&ndash;							[(ngModel)]="project_application.memberNamesVisibility">&ndash;&gt;-->
-<!--&lt;!&ndash;							class="btn btn-outline-primary"><i class="fa fa-users" aria-hidden="true"></i>&ndash;&gt;-->
-<!--&lt;!&ndash;							Hide Member Names&ndash;&gt;-->
-<!--&lt;!&ndash;						</button>&ndash;&gt;-->
-<!--						<ng-template #memberNamesHidden>-->
-<!--							<button-->
-<!--								type="button" style="margin-bottom:5px;"-->
-<!--								(click)="toggleMemberNameVisibility();"-->
-<!--								class="btn btn-primary"><i class="fa fa-users" aria-hidden="true"></i>-->
-<!--								Show Member Names-->
-<!--							</button>-->
-<!--&lt;!&ndash;							<button&ndash;&gt;-->
-<!--&lt;!&ndash;								type="button" style="margin-bottom:5px;"&ndash;&gt;-->
-<!--&lt;!&ndash;								(click)="toggleMemberNameVisibility();"&ndash;&gt;-->
-<!--&lt;!&ndash;								[(ngModel)]="project_application.memberNamesVisibility">&ndash;&gt;-->
-<!--&lt;!&ndash;								class="btn btn-primary"><i class="fa fa-users" aria-hidden="true"></i>&ndash;&gt;-->
-<!--&lt;!&ndash;								Show Member Names&ndash;&gt;-->
-<!--&lt;!&ndash;							</button>&ndash;&gt;-->
-<!--						</ng-template>-->
-
 						<button (click)="removeCheckedMembers(project_application?.project_application_perun_id)" type="button"
 										style="margin-bottom:5px;" [disabled]="checked_member_list.length <= 0 || remove_members_clicked"
 										class="btn btn-outline-danger"><i class="fa fa-trash"></i>&nbsp;Remove Members
