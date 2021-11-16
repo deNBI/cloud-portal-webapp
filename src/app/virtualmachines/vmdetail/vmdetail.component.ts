@@ -230,6 +230,7 @@ private activatedRoute: ActivatedRoute,
 		});
 	}
 
+	// eslint-disable-next-line default-param-last
 	check_status_loop_vol(volume: Volume, initial_timeout: number = this.checkStatusTimeout, final_state?: string, expected_storage?: number):
 		void {
 		const created: boolean = volume.volume_created_by_user;

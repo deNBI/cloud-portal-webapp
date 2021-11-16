@@ -310,6 +310,7 @@ private groupService: GroupService,
 				return false;
 			}
 
+			// eslint-disable-next-line prefer-regex-literals
 			return new RegExp('^[\\w]+$', 'i').test(text);
 		}
 
@@ -511,6 +512,7 @@ private groupService: GroupService,
 	}
 
 	async delay(ms: number): Promise<any> {
+		// eslint-disable-next-line no-promise-executor-return
 		await new Promise((resolve: any): any => setTimeout(resolve, ms));
 	}
 

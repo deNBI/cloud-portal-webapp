@@ -20,8 +20,10 @@ export class VoGuardService implements CanActivate {
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		return new Promise((resolve: any, reject: any): any => {
 			if (is_vo) {
+				// eslint-disable-next-line no-promise-executor-return
 				return resolve(true);
 			} else {
+				// eslint-disable-next-line no-promise-executor-return
 				return resolve(false);
 			}
 		});

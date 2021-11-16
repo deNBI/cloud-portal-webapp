@@ -405,6 +405,7 @@ private group_service: GroupService,
 	}
 
 	async delay(ms: number): Promise<any> {
+		// eslint-disable-next-line no-promise-executor-return
 		await new Promise((resolve: any): any => setTimeout(resolve, ms));
 	}
 
