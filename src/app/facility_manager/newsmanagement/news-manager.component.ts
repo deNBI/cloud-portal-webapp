@@ -65,8 +65,8 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 	public motdLength: BehaviorSubject<number> = new BehaviorSubject(0);
 
 	constructor(
-private newsService: NewsService,
-							private facilityService: FacilityService,
+		private newsService: NewsService,
+		private facilityService: FacilityService,
 	) {
 		// constructor for NewsManager
 	}
@@ -93,7 +93,7 @@ private newsService: NewsService,
 	}
 
 	setFacilityToSetMotd(): void {
-		 const facilit_checkbox: HTMLElement | null = document.getElementById(`news_select_${this.facilityToPost}_motd`);
+		const facilit_checkbox: HTMLElement | null = document.getElementById(`news_select_${this.facilityToPost}_motd`);
 		if (facilit_checkbox && facilit_checkbox['checked']) {
 			this.facilityToSetMOTD = this.facilityToPost;
 		} else {
@@ -213,10 +213,10 @@ private newsService: NewsService,
 		this.facilityMOTDPairs = [];
 		this.subscription.add(
 			this.newsService.getFacilitiesFromWagtail().subscribe((facilities: any[]): void => {
-				// eslint-disable-next-line @typescript-eslint/prefer-for-of,no-plusplus
-				for (let i = 0; i < facilities.length; i++) {
-					this.facilityMOTDPairs[facilities[i]['id']] = facilities[i]['motd'];
+				for (const facility of facilities) {
+					this.facilityMOTDPairs[facility['id']] = facility['motd'];
 				}
+
 			}),
 		);
 	}
