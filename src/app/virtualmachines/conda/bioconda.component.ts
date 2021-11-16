@@ -78,7 +78,8 @@ export class BiocondaComponent implements OnInit {
 		this.filternameChanged
 			.pipe(
 				debounceTime(this.DEBOUNCE_TIME),
-				distinctUntilChanged(), switchMap((filterName: string): any => {
+				distinctUntilChanged(),
+				switchMap((filterName: string): any => {
 					this.isSearching = true;
 
 					this.filterToolName = filterName.trim();

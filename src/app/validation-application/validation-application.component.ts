@@ -36,8 +36,11 @@ export class ValidationApplicationComponent extends ApplicationBaseClassComponen
 	 */
 	public totalRAM: number = 0;
 
-	constructor(applicationsService: ApplicationsService,
-		private activatedRoute: ActivatedRoute, private changeDetector: ChangeDetectorRef) {
+	constructor(
+		applicationsService: ApplicationsService,
+		private activatedRoute: ActivatedRoute,
+private changeDetector: ChangeDetectorRef,
+	) {
 		super(null, applicationsService, null);
 
 	}

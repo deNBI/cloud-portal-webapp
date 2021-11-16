@@ -18,11 +18,16 @@ export class Dissemination {
 	allowed_informations: string[] = [];
 
 	constructor(
-		platform_denbi: boolean, platform_twitter: boolean,
-		information_title: string, information_resources: boolean,
-		information_pi_name: boolean, information_institution: boolean,
-		information_workgroup: boolean, information_project_type: boolean,
-		information_lifetime: boolean, information_project_affiliation: boolean,
+		platform_denbi: boolean,
+		platform_twitter: boolean,
+		information_title: string,
+		information_resources: boolean,
+		information_pi_name: boolean,
+		information_institution: boolean,
+		information_workgroup: boolean,
+		information_project_type: boolean,
+		information_lifetime: boolean,
+		information_project_affiliation: boolean,
 		information_description: string,
 	) {
 

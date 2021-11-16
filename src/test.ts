@@ -25,7 +25,8 @@ __karma__.loaded = function () {
 // First, initialize the Angular testing environment.
 getTestBed().initTestEnvironment(
 	BrowserDynamicTestingModule,
-	platformBrowserDynamicTesting(), {
+	platformBrowserDynamicTesting(),
+	{
 		teardown: { destroyAfterEach: false },
 	},
 );

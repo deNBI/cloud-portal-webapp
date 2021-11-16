@@ -107,13 +107,15 @@ export class AddWorkshopComponent implements OnInit, OnDestroy, DoCheck {
 	progress_bar_animated: string = 'progress-bar-animated';
 	progress_bar_width: number = 0;
 
-	constructor(private group_service: GroupService,
+	constructor(
+private group_service: GroupService,
 							private image_service: ImageService,
 							private flavor_service: FlavorService,
 							private user_service: UserService,
 							private virtual_machine_service: VirtualmachineService,
 							private workshop_service: WorkshopService,
-							private router: Router) {
+							private router: Router,
+	) {
 		// eslint-disable-next-line no-empty-function
 	}
 
@@ -382,25 +384,28 @@ export class AddWorkshopComponent implements OnInit, OnDestroy, DoCheck {
 		});
 		this.subscription.add(
 			this.virtual_machine_service.startWorkshopVMs(
-				flavor_fixed, this.selected_image, servers, this.selected_project[0], this.selected_project[1].toString(),
+				flavor_fixed,
+				this.selected_image,
+				servers,
+				this.selected_project[0],
+				this.selected_project[1].toString(),
 				this.selected_workshop.shortname,
-			).subscribe(
-				() => {
-					this.progress_bar_width = 75;
-					setTimeout(
-						(): void => {
-							void this.router.navigate(['/virtualmachines/vmOverview']).then().catch();
-						},
-						2000,
-					);
-				}, (error: any) => {
-					console.log(error);
-				},
-			),
+			).subscribe(() => {
+				this.progress_bar_width = 75;
+				setTimeout(
+					(): void => {
+						void this.router.navigate(['/virtualmachines/vmOverview']).then().catch();
+					},
+					2000,
+				);
+			}, (error: any) => {
+				console.log(error);
+			}),
 		);
 	}
 
 	async delay(ms: number): Promise<any> {
+		// eslint-disable-next-line no-promise-executor-return
 		await new Promise((resolve: any): any => setTimeout(resolve, ms));
 	}
 

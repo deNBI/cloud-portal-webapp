@@ -65,8 +65,12 @@ export class ClientOverviewComponent implements OnInit, OnDestroy {
 
 	subscription: Subscription = new Subscription();
 
-	constructor(private facilityService: FacilityService, private userService: UserService,
-	            private clientservice: ClientService, private modalService: BsModalService) {
+	constructor(
+private facilityService: FacilityService,
+private userService: UserService,
+	            private clientservice: ClientService,
+private modalService: BsModalService,
+	) {
 		this.facilityService = facilityService;
 		this.userService = userService;
 		this.facilityService = facilityService;
@@ -100,8 +104,10 @@ export class ClientOverviewComponent implements OnInit, OnDestroy {
 			this.facilityService.getComputeCenters().subscribe((result: any): void => {
 				for (const cc of result) {
 					const compute_center: ComputecenterComponent = new ComputecenterComponent(
-						cc['compute_center_facility_id'], cc['compute_center_name'],
-						cc['compute_center_login'], cc['compute_center_support_mail'],
+						cc['compute_center_facility_id'],
+						cc['compute_center_name'],
+						cc['compute_center_login'],
+						cc['compute_center_support_mail'],
 					);
 					this.computeCenters.push(compute_center);
 				}
