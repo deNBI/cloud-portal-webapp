@@ -19,7 +19,7 @@ export class ApplicationsService {
 	}
 
 	toggleVisibility(application: Application): Observable<Application> {
-		return this.http.post<Application>(`${ApiSettings.getApiBaseURL()}project_applications/toggle/`, application, {
+		return this.http.post<Application>(`${ApiSettings.getApiBaseURL()}project_applications/toggle_member_names_visibility/`, application, {
 			withCredentials: true,
 		});
 	}
