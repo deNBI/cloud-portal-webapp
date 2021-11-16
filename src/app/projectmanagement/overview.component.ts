@@ -96,7 +96,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	allSet: boolean = false;
 	renderer: Renderer2;
 	supportMails: string[] = [];
-	// memberNamesVisible: boolean;
+	toggleLocked: boolean = false;
 
 	resourceDataLoaded: boolean = false;
 	creditHistoryLoaded: boolean = false;
@@ -549,9 +549,15 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	}
 
 	toggleMemberNameVisibility(): void {
+		this.toggleLocked = true;
 		this.applicationsService.toggleVisibility(this.project_application).subscribe((application: Application): void => {
 			this.project_application.memberNamesVisible = application.memberNamesVisible;
+			this.toggleLocked = false;
 		});
+	}
+
+	switchToggleLocked(check: boolean): void {
+		this.toggleLocked = check;
 	}
 
 	addDoi(): void {
