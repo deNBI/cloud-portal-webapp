@@ -1,19 +1,19 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {forkJoin, Subject, Subscription} from 'rxjs';
-import {debounceTime, distinctUntilChanged, switchMap} from 'rxjs/operators';
-import {Volume} from './volume';
-import {VirtualmachineService} from '../../api-connector/virtualmachine.service';
-import {VirtualMachine} from '../virtualmachinemodels/virtualmachine';
-import {GroupService} from '../../api-connector/group.service';
-import {AbstractBaseClass} from '../../shared/shared_modules/baseClass/abstract-base-class';
-import {VolumeActionStates} from './volume-action-states.enum';
-import {VolumeRequestStates} from './volume-request-states.enum';
-import {IResponseTemplate} from '../../api-connector/response-template';
-import {FacilityService} from '../../api-connector/facility.service';
-import {WIKI_EXTEND_VOLUME, WIKI_VOLUME_OVERVIEW, CLOUD_PORTAL_SUPPORT_MAIL} from '../../../links/links';
-import {VolumeStates} from './volume_states';
-import {VirtualMachineStates} from '../virtualmachinemodels/virtualmachinestates';
-import {VolumePage} from './volumePage.model';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { forkJoin, Subject, Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { Volume } from './volume';
+import { VirtualmachineService } from '../../api-connector/virtualmachine.service';
+import { VirtualMachine } from '../virtualmachinemodels/virtualmachine';
+import { GroupService } from '../../api-connector/group.service';
+import { AbstractBaseClass } from '../../shared/shared_modules/baseClass/abstract-base-class';
+import { VolumeActionStates } from './volume-action-states.enum';
+import { VolumeRequestStates } from './volume-request-states.enum';
+import { IResponseTemplate } from '../../api-connector/response-template';
+import { FacilityService } from '../../api-connector/facility.service';
+import { WIKI_EXTEND_VOLUME, WIKI_VOLUME_OVERVIEW, CLOUD_PORTAL_SUPPORT_MAIL } from '../../../links/links';
+import { VolumeStates } from './volume_states';
+import { VirtualMachineStates } from '../virtualmachinemodels/virtualmachinestates';
+import { VolumePage } from './volumePage.model';
 
 /**
  * Volume overview component.
@@ -390,8 +390,7 @@ export class VolumeOverviewComponent extends AbstractBaseClass implements OnInit
 		this.getVolumesSubscription = new Subscription();
 
 		this.getVolumesSubscription.add(
-			this.facilityService.getFacilityVolumes(
-				this.selectedFacility['FacilityId'], this.volume_page.items_per_page, this.currentPage)
+			this.facilityService.getFacilityVolumes(this.selectedFacility['FacilityId'], this.volume_page.items_per_page, this.currentPage)
 				.subscribe((volume_page: VolumePage): void => {
 					this.volume_page = volume_page;
 					for (const volume of this.volume_page.volume_list) {
