@@ -97,14 +97,16 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 	 * @param flavorService
 	 * @param creditsService
 	 */
-	constructor(applicationsService: ApplicationsService,
+	constructor(
+		applicationsService: ApplicationsService,
 		userService: UserService,
 							private groupservice: GroupService,
 							private modalService: BsModalService,
 							private voService: VoService,
 							facilityService: FacilityService,
 							private flavorService: FlavorService,
-							private creditsService: CreditsService) {
+							private creditsService: CreditsService,
+	) {
 		super(userService, applicationsService, facilityService);
 	}
 
@@ -188,9 +190,11 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 		this.applicationsService.adjustApplication(this.adjustedApplication).subscribe((adjustmentResult: Application): void => {
 			const index: number = this.all_applications.indexOf(this.selectedApplication);
 			this.all_applications[index] = new Application(adjustmentResult);
-			this.showNotificationModal('Success',
+			this.showNotificationModal(
+				'Success',
 				'The resources of the application were adjusted successfully!',
-				'success');
+				'success',
+			);
 		}, (): void => {
 			this.showNotificationModal('Failed', 'The adjustment of the resources has failed!', 'danger');
 		});
@@ -597,9 +601,11 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 		this.subscribeToBsModalRef();
 	}
 
-	showNotificationModal(notificationModalTitle: string,
+	showNotificationModal(
+		notificationModalTitle: string,
 		notificationModalMessage: string,
-		notificationModalType: string) {
+		notificationModalType: string,
+	) {
 
 		const initialState = { notificationModalTitle, notificationModalType, notificationModalMessage };
 		if (this.bsModalRef) {
@@ -633,21 +639,30 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 	}
 
 	public createSimpleVmProjectGroup(app: Application, compute_center_id?: string): void {
-		this.showNotificationModal('Info', 'Creating Project...',
-			'info');
+		this.showNotificationModal(
+			'Info',
+			'Creating Project...',
+			'info',
+		);
 
 		const application_id: string = app.project_application_id as string;
 		if (compute_center_id && compute_center_id !== 'undefined') {
 			this.groupservice.createGroupByApplication(application_id, compute_center_id).subscribe(
 				(res: any): void => {
 					if (!res['client_available'] && !res['created']) {
-						this.showNotificationModal('Failed', `The client ${res['client_name']} has not the necessary resources left!`,
-							'danger');
+						this.showNotificationModal(
+							'Failed',
+							`The client ${res['client_name']} has not the necessary resources left!`,
+							'danger',
+						);
 					} else {
 						this.all_applications.splice(this.all_applications.indexOf(app), 1);
 						this.numberOfProjectApplications -= 1;
-						this.showNotificationModal('Success', 'The project was created!',
-							'success');
+						this.showNotificationModal(
+							'Success',
+							'The project was created!',
+							'success',
+						);
 						this.switchApproveLocked(false);
 						// this.reloadApplicationList(application_id)
 					}

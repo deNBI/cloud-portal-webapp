@@ -18,9 +18,11 @@ export class SharedModal {
 		}
 	}
 
-	showNotificationModal(notificationModalTitle: string,
+	showNotificationModal(
+		notificationModalTitle: string,
 	                      notificationModalMessage: string,
-	                      notificationModalType: string) {
+	                      notificationModalType: string,
+	) {
 		this.hideCurrentModal();
 
 		const initialState = { notificationModalTitle, notificationModalType, notificationModalMessage };

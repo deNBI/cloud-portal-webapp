@@ -12,7 +12,7 @@ import { CLOUD_PORTAL_SUPPORT_MAIL } from '../../../../links/links';
 	styleUrls: ['./vmstatus.component.scss'],
 })
 export class VmstatusComponent {
-  VirtualMachineStates: VirtualMachineStates = new VirtualMachineStates();
+	VirtualMachineStates: VirtualMachineStates = new VirtualMachineStates();
   @Input() vm: VirtualMachine;
   @Input() with_text: boolean = false;
   CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL;

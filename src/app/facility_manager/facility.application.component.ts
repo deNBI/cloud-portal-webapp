@@ -71,8 +71,11 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 
 	approveLocked: boolean = false;
 
-	constructor(userService: UserService,
-		facilityService: FacilityService, applicationsService: ApplicationsService) {
+	constructor(
+		userService: UserService,
+		facilityService: FacilityService,
+		applicationsService: ApplicationsService,
+	) {
 		super(userService, applicationsService, facilityService);
 	}
 
@@ -120,10 +123,12 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 				this.getAllApplicationsHistory(this.selectedFacility['FacilityId']);
 			}, (): void => {
 				this.setApproveLocked(false);
-				this.updateNotificationModal('Failed',
+				this.updateNotificationModal(
+					'Failed',
 					'The approval of the extension request has failed.',
 					true,
-					'danger');
+					'danger',
+				);
 			});
 	}
 
@@ -141,10 +146,12 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 				this.numberOfExtensionRequests -= 1;
 				this.getAllApplicationsHistory(this.selectedFacility['FacilityId']);
 			}, (): void => {
-				this.updateNotificationModal('Failed',
+				this.updateNotificationModal(
+					'Failed',
 					'The decline of the extension request has failed.',
 					true,
-					'danger');
+					'danger',
+				);
 			});
 	}
 
@@ -159,10 +166,12 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 				this.getAllApplicationsHistory(this.selectedFacility['FacilityId']);
 			}, (): void => {
 				this.setApproveLocked(false);
-				this.updateNotificationModal('Failed',
+				this.updateNotificationModal(
+					'Failed',
 					'The approval of the modification request has failed.',
 					true,
-					'danger');
+					'danger',
+				);
 			});
 	}
 
@@ -174,10 +183,12 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 				this.numberOfModificationRequests -= 1;
 				this.getAllApplicationsHistory(this.selectedFacility['FacilityId']);
 			}, (): void => {
-				this.updateNotificationModal('Failed',
+				this.updateNotificationModal(
+					'Failed',
 					'The decline of the modification request has failed.',
 					true,
-					'danger');
+					'danger',
+				);
 			});
 	}
 
@@ -192,10 +203,12 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 				this.getAllApplicationsHistory(this.selectedFacility['FacilityId']);
 			}, (): void => {
 				this.setApproveLocked(false);
-				this.updateNotificationModal('Failed',
+				this.updateNotificationModal(
+					'Failed',
 					'The approval of the credit request has failed.',
 					true,
-					'danger');
+					'danger',
+				);
 			});
 	}
 
@@ -207,10 +220,12 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 				this.numberOfCreditRequests -= 1;
 				this.getAllApplicationsHistory(this.selectedFacility['FacilityId']);
 			}, (): void => {
-				this.updateNotificationModal('Failed',
+				this.updateNotificationModal(
+					'Failed',
 					'The decline of the credit request has failed.',
 					true,
-					'danger');
+					'danger',
+				);
 			});
 	}
 
@@ -289,8 +304,10 @@ export class FacilityApplicationComponent extends ApplicationBaseClassComponent 
 	declineApplication(app: Application): void {
 		this.updateNotificationModal('Decline Application', 'Waiting..', true, 'info');
 
-		this.facilityService.declineFacilityApplication(this.selectedFacility['FacilityId'],
-			parseInt(app.project_application_id.toString(), 10))
+		this.facilityService.declineFacilityApplication(
+			this.selectedFacility['FacilityId'],
+			parseInt(app.project_application_id.toString(), 10),
+		)
 			.subscribe(
 				(): void => {
 					this.updateNotificationModal('Success', 'Successfully declined the application.', true, 'success');

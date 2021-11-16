@@ -45,15 +45,17 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 	projectMembersLoaded: boolean = false;
 	deleting: boolean = false;
 	deleteSuccess: boolean = false;
-	invalidShortname: boolean = false;
-	invalidLongname: boolean = false;
+	invalidShortname: boolean = true;
+	invalidLongname: boolean = true;
 	newWorkshop: boolean = false;
 	workshopCreationMessage: { message: string, success: boolean } = { message: '', success: false };
 
 	@ViewChild('creationStatusModal') creationStatusModal: any;
 
-	constructor(private workshopService: WorkshopService,
-							private groupService: GroupService) {
+	constructor(
+private workshopService: WorkshopService,
+							private groupService: GroupService,
+	) {
 		// eslint-disable-next-line no-empty-function
 	}
 
@@ -120,8 +122,8 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 	workshopChange(workshop: Workshop): void {
 		this.selectedWorkshop = workshop;
 		this.newWorkshop = false;
-		this.invalidShortname = false;
-		this.invalidLongname = false;
+		this.invalidShortname = true;
+		this.invalidLongname = true;
 		this.loadVmsForSelectedProject();
 	}
 
@@ -267,8 +269,8 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 		this.loadedVmsForWorkshop = [];
 
 		this.newWorkshop = false;
-		this.invalidLongname = false;
-		this.invalidShortname = false;
+		this.invalidLongname = true;
+		this.invalidShortname = true;
 	}
 
 	checkShortname(shortname: string): void {
@@ -292,30 +294,28 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 	createNewWorkshop(): void {
 		this.selectedWorkshop.shortname = this.selectedWorkshop.shortname.replace(/\s/g, '');
 		this.subscription.add(
-			this.workshopService.createWorkshop(this.selectedProject[1], this.selectedWorkshop).subscribe(
-				(workshop: Workshop) => {
-					this.workshops.push(workshop);
-					this.workshopChange(workshop);
-					this.workshopCreationMessage = { message: 'Workshop created successfully!', success: true };
-					this.creationStatusModal.show();
-				}, (error: any) => {
-					if ('error' in error) {
-						this.selectedWorkshop.longname = '';
-						this.invalidLongname = true;
-						this.selectedWorkshop.shortname = '';
-						this.invalidShortname = true;
-						if (error['error']['error'] === 'unique_constraint') {
-							this.workshopCreationMessage = {
-								message: 'Workshop name already taken! Please select another name.',
-								success: false,
-							};
-						} else {
-							this.workshopCreationMessage = { message: 'An error occured. Please try again!', success: false };
-						}
-						this.creationStatusModal.show();
+			this.workshopService.createWorkshop(this.selectedProject[1], this.selectedWorkshop).subscribe((workshop: Workshop) => {
+				this.workshops.push(workshop);
+				this.workshopChange(workshop);
+				this.workshopCreationMessage = { message: 'Workshop created successfully!', success: true };
+				this.creationStatusModal.show();
+			}, (error: any) => {
+				if ('error' in error) {
+					this.selectedWorkshop.longname = '';
+					this.invalidLongname = true;
+					this.selectedWorkshop.shortname = '';
+					this.invalidShortname = true;
+					if (error['error']['error'] === 'unique_constraint') {
+						this.workshopCreationMessage = {
+							message: 'Workshop name already taken! Please select another name.',
+							success: false,
+						};
+					} else {
+						this.workshopCreationMessage = { message: 'An error occured. Please try again!', success: false };
 					}
-				},
-			),
+					this.creationStatusModal.show();
+				}
+			}),
 		);
 	}
 

@@ -27,7 +27,7 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 	public managerFacilitiesIdOnly: number[];
 	public selectedFacilities: [string, number][] = [];
 	public facilityToSetMOTD: number;
-	public facilityMOTDPairs: { [key: number]: number } = {}
+	public facilityMOTDPairs: { [key: number]: number } = {};
 	facilityToPost: number;
 	returnState: number = -1;
 	@ViewChild('infoModal', { static: true }) infoModal: ModalDirective;
@@ -36,14 +36,18 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 	facilityNews: FacilityNews[] = [];
 	newFacilityNews: FacilityNews = new FacilityNews();
 	selectedFacilityNews: FacilityNews = new FacilityNews();
-	today: Date=new Date()
+	today: Date = new Date();
 
 	newsSetAsMOTD: string[] = [];
 	selectedNewsForm: FormGroup = new FormGroup({
-		title: new FormControl({ value: this.newFacilityNews.title, disabled: false },
-			Validators.required),
-		text: new FormControl({ value: this.newFacilityNews.text, disabled: false },
-			Validators.required),
+		title: new FormControl(
+			{ value: this.newFacilityNews.title, disabled: false },
+			Validators.required,
+		),
+		text: new FormControl(
+			{ value: this.newFacilityNews.text, disabled: false },
+			Validators.required,
+		),
 		motd: new FormControl({ value: this.newFacilityNews.motd, disabled: false }),
 		valid_till: new FormControl({ value: this.newFacilityNews.valid_till, disabled: false }),
 
@@ -60,8 +64,10 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 
 	public motdLength: BehaviorSubject<number> = new BehaviorSubject(0);
 
-	constructor(private newsService: NewsService,
-							private facilityService: FacilityService) {
+	constructor(
+private newsService: NewsService,
+							private facilityService: FacilityService,
+	) {
 		// constructor for NewsManager
 	}
 
@@ -334,12 +340,8 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 	 */
 	setFormGroup(): void {
 		this.selectedNewsForm = new FormGroup({
-			title: new FormControl(
-				{ value: this.selectedFacilityNews.title, disabled: false }, Validators.required,
-			),
-			text: new FormControl(
-				{ value: this.selectedFacilityNews.text, disabled: false }, Validators.required,
-			),
+			title: new FormControl({ value: this.selectedFacilityNews.title, disabled: false }, Validators.required),
+			text: new FormControl({ value: this.selectedFacilityNews.text, disabled: false }, Validators.required),
 			motd: new FormControl(
 				{ value: this.selectedFacilityNews.motd, disabled: false },
 			),

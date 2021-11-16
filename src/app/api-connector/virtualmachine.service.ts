@@ -34,8 +34,12 @@ export class VirtualmachineService {
 		});
 	}
 
-	startCluster(masterFlavor: string, masterImage: Image, workerBatches: WorkerBatch[],
-		project_id: string | number): Observable<any> {
+	startCluster(
+		masterFlavor: string,
+		masterImage: Image,
+		workerBatches: WorkerBatch[],
+		project_id: string | number,
+	): Observable<any> {
 		const params: HttpParams = new HttpParams()
 			.set('master_flavor', masterFlavor)
 			.set('master_image', JSON.stringify(masterImage))
@@ -126,9 +130,20 @@ export class VirtualmachineService {
 		});
 	}
 
-	startVM(flavor: string, image: Image, servername: string, project: string, projectid: string,
-	        http: boolean, https: boolean, udp: boolean, new_volumes: Volume[], attach_volumes: Volume[],
-	        playbook_information?: string, additional_elixir_ids?: string[]): Observable<any> {
+	startVM(
+		flavor: string,
+		image: Image,
+		servername: string,
+		project: string,
+		projectid: string,
+	        http: boolean,
+		https: boolean,
+		udp: boolean,
+		new_volumes: Volume[],
+		attach_volumes: Volume[],
+	        playbook_information?: string,
+		additional_elixir_ids?: string[],
+	): Observable<any> {
 
 		const params: HttpParams = new HttpParams()
 			.set('flavor', flavor)
@@ -149,8 +164,14 @@ export class VirtualmachineService {
 		});
 	}
 
-	startWorkshopVMs(flavor: string, image: Image, servers: {[key: string]: string}[],
-									 project: string, projectid: string, workshopShortname: string): Observable<any> {
+	startWorkshopVMs(
+		flavor: string,
+		image: Image,
+		servers: {[key: string]: string}[],
+									 project: string,
+		projectid: string,
+		workshopShortname: string,
+	): Observable<any> {
 		const params: HttpParams = new HttpParams()
 			.set('flavor', flavor)
 			.set('image', JSON.stringify(image))
@@ -164,9 +185,14 @@ export class VirtualmachineService {
 		});
 	}
 
-	getAllVM(page: number, vm_per_site: number, filter?: string,
-		filter_status?: string[], filter_cluster: boolean = false,
-		filter_set_for_termination: boolean = false): Observable<VirtualMachinePage> {
+	getAllVM(
+		page: number,
+		vm_per_site: number,
+		filter?: string,
+		filter_status?: string[],
+		filter_cluster: boolean = false,
+		filter_set_for_termination: boolean = false,
+	): Observable<VirtualMachinePage> {
 		let params: HttpParams = new HttpParams().set('page', page.toString()).set('vm_per_site', vm_per_site.toString());
 		if (filter) {
 			params = params.append('filter', filter);
@@ -224,9 +250,14 @@ export class VirtualmachineService {
 		);
 	}
 
-	getVmsFromLoggedInUser(page: number, vm_per_site: number, filter?: string,
-		filter_status?: string[], filter_cluster: boolean = false,
-		filter_set_for_termination: boolean = false): Observable<VirtualMachinePage> {
+	getVmsFromLoggedInUser(
+		page: number,
+		vm_per_site: number,
+		filter?: string,
+		filter_status?: string[],
+		filter_cluster: boolean = false,
+		filter_set_for_termination: boolean = false,
+	): Observable<VirtualMachinePage> {
 		let params: HttpParams = new HttpParams().set('page', page.toString()).set('vm_per_site', vm_per_site.toString());
 
 		if (filter) {
@@ -266,11 +297,15 @@ export class VirtualmachineService {
 		);
 	}
 
-	getVmsFromFacilitiesOfLoggedUser(facility_id: string | number,
-		page: number, vm_per_site: number,
-		filter?: string, filter_status?: string[],
+	getVmsFromFacilitiesOfLoggedUser(
+		facility_id: string | number,
+		page: number,
+		vm_per_site: number,
+		filter?: string,
+		filter_status?: string[],
 		filter_cluster: boolean = false,
-		filter_set_for_termination: boolean = false): Observable<VirtualMachinePage> {
+		filter_set_for_termination: boolean = false,
+	): Observable<VirtualMachinePage> {
 		let params: HttpParams = new HttpParams().set('page', page.toString()).set('vm_per_site', vm_per_site.toString());
 		if (filter) {
 			params = params.set('filter', filter);
@@ -289,11 +324,13 @@ export class VirtualmachineService {
 
 		}
 
-		return this.http.get<VirtualMachinePage>(`${ApiSettings.getApiBaseURL()}computecenters/${facility_id}/vms/`,
+		return this.http.get<VirtualMachinePage>(
+			`${ApiSettings.getApiBaseURL()}computecenters/${facility_id}/vms/`,
 			{
 				withCredentials: true,
 				params,
-			}).pipe(
+			},
+		).pipe(
 			map(
 				(vm_page: VirtualMachinePage): VirtualMachinePage => new VirtualMachinePage(vm_page),
 			),

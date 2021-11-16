@@ -292,31 +292,30 @@ export class FacilityService {
 	approveFacilityApplication(facility: number | string, application_id: number | string): Observable<any> {
 		const params: HttpParams = new HttpParams().set('action', 'approve');
 
-		return this.http.post(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/applications/${application_id}/status/`,
-			params, {
+		return this.http.post(
+			`${ApiSettings.getApiBaseURL()}computecenters/${facility}/applications/${application_id}/status/`,
+			params,
+			{
 				withCredentials: true,
 				observe: 'response',
-			});
+			},
+		);
 	}
 
 	addVolumeStorageFactor(facility: number | string, volumeStorageFactor: VolumeStorageFactor): Observable<VolumeStorageFactor[]> {
 		const params: HttpParams = new HttpParams().set('volumeStorageFactor', JSON.stringify(volumeStorageFactor));
 
-		return this.http.post<VolumeStorageFactor[]>(
-			`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/volumeStorageFactors/`, params, {
-				withCredentials: true,
-			},
-		);
+		return this.http.post<VolumeStorageFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/volumeStorageFactors/`, params, {
+			withCredentials: true,
+		});
 	}
 
 	addObjectStorageFactor(facility: number | string, objectStorageFactor: ObjectStorageFactor): Observable<ObjectStorageFactor[]> {
 		const params: HttpParams = new HttpParams().set('objectStorageFactor', JSON.stringify(objectStorageFactor));
 
-		return this.http.post<VolumeStorageFactor[]>(
-			`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/objectStorageFactors/`, params, {
-				withCredentials: true,
-			},
-		);
+		return this.http.post<VolumeStorageFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/objectStorageFactors/`, params, {
+			withCredentials: true,
+		});
 	}
 
 	/**
@@ -336,11 +335,9 @@ export class FacilityService {
 	addResourceMachine(facility: number | string, resource_machine: ResourceMachine): Observable<ResourceMachine[]> {
 		const params: HttpParams = new HttpParams().set('resource_machine', JSON.stringify(resource_machine));
 
-		return this.http.post<ResourceMachine[]>(
-			`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/resourcesMachine/`, params, {
-				withCredentials: true,
-			},
-		);
+		return this.http.post<ResourceMachine[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/resourcesMachine/`, params, {
+			withCredentials: true,
+		});
 	}
 
 	updateResourceMachine(facility: number | string, resource_machine: ResourceMachine): Observable<ResourceMachine> {
@@ -395,11 +392,9 @@ export class FacilityService {
 	addGPUSpecification(facility: number | string, gpu_specification: GPUSpecification): Observable<GPUSpecification[]> {
 		const params: HttpParams = new HttpParams().set('gpu_specification', JSON.stringify(gpu_specification));
 
-		return this.http.post<GPUSpecification[]>(
-			`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/gpuSpecification/`, params, {
-				withCredentials: true,
-			},
-		);
+		return this.http.post<GPUSpecification[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/gpuSpecification/`, params, {
+			withCredentials: true,
+		});
 	}
 
 	getVolumeStorageFactor(facility: number | string, factor_id: number | string): Observable<VolumeStorageFactor> {
@@ -476,11 +471,9 @@ export class FacilityService {
 
 	getGeneralStorageFactors(facility: number | string): Observable<GeneralStorageFactor[]> {
 
-		return this.http.get<GeneralStorageFactor[]>(
-			`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/generalStorageFactors/`, {
-				withCredentials: true,
-			},
-		);
+		return this.http.get<GeneralStorageFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/generalStorageFactors/`, {
+			withCredentials: true,
+		});
 	}
 
 	getGeneralStorageFactor(facility: number | string, factor_id: number | string): Observable<GeneralStorageFactor> {
@@ -509,11 +502,9 @@ export class FacilityService {
 	addGeneralStorageFactor(facility: number | string, generalStorageFactor: GeneralStorageFactor): Observable<GeneralStorageFactor[]> {
 		const params: HttpParams = new HttpParams().set('generalStorageFactor', JSON.stringify(generalStorageFactor));
 
-		return this.http.post<GeneralStorageFactor[]>(
-			`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/generalStorageFactors/`, params, {
-				withCredentials: true,
-			},
-		);
+		return this.http.post<GeneralStorageFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/generalStorageFactors/`, params, {
+			withCredentials: true,
+		});
 	}
 
 	/**
@@ -524,11 +515,9 @@ export class FacilityService {
 	 */
 	getVolumeStorageFactors(facility: number | string): Observable<VolumeStorageFactor[]> {
 
-		return this.http.get<VolumeStorageFactor[]>(
-			`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/volumeStorageFactors/`, {
-				withCredentials: true,
-			},
-		);
+		return this.http.get<VolumeStorageFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/volumeStorageFactors/`, {
+			withCredentials: true,
+		});
 	}
 
 	/**
@@ -539,11 +528,9 @@ export class FacilityService {
 	 */
 	getObjectStorageFactors(facility: number | string): Observable<ObjectStorageFactor[]> {
 
-		return this.http.get<ObjectStorageFactor[]>(
-			`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/objectStorageFactors/`, {
-				withCredentials: true,
-			},
-		);
+		return this.http.get<ObjectStorageFactor[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/resources/objectStorageFactors/`, {
+			withCredentials: true,
+		});
 	}
 
 	/**
@@ -575,8 +562,16 @@ export class FacilityService {
 	 * @param news_tags additional tags
 	 * @returns
 	 */
-	sendMailToFacility(facility: string, subject: string, message: string, project_type: string,
-		reply?: string, sendNews?: any, alternative_news_text?: string, tags?: string): Observable<any> {
+	sendMailToFacility(
+		facility: string,
+		subject: string,
+		message: string,
+		project_type: string,
+		reply?: string,
+		sendNews?: any,
+		alternative_news_text?: string,
+		tags?: string,
+	): Observable<any> {
 		const params: HttpParams = new HttpParams()
 			.set('subject', subject)
 			.set('facility_id', facility)

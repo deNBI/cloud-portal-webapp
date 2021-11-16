@@ -9,7 +9,7 @@ import { Component } from '@angular/core';
 })
 export class AddsimplevmComponent {
 
-  simple_vm_application: boolean = true;
-  title: string = 'New Simple Vm Application';
+	simple_vm_application: boolean = true;
+	title: string = 'New Simple Vm Application';
 
 }
