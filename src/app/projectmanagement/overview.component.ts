@@ -1036,7 +1036,7 @@ private flavorService: FlavorService,
 	}
 
 	/**
-	 * Remove n member from a group.
+	 * Remove a member from a group.
 	 *
 	 * @param groupid  of the group
 	 * @param memberid of the member
