@@ -91,10 +91,12 @@ export class GroupService {
 	}
 
 	getCreditsAllowedByPerunId(groupid: number | string): Observable<any> {
-		return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${groupid}/credits_allowed_perun/`,
+		return this.http.get(
+			`${ApiSettings.getApiBaseURL()}projects/${groupid}/credits_allowed_perun/`,
 			{
 				withCredentials: true,
-			});
+			},
+		);
 	}
 
 	getGroupAdminIds(groupid: number | string): Observable<any> {
@@ -252,20 +254,26 @@ export class GroupService {
 			.set('application_id', application_id.toString())
 			.set('compute_center_id', compute_center_id.toString());
 
-		return this.http.post(`${ApiSettings.getApiBaseURL()}projects/openStack/`, params,
+		return this.http.post(
+			`${ApiSettings.getApiBaseURL()}projects/openStack/`,
+			params,
 			{
 				withCredentials: true,
-			});
+			},
+		);
 	}
 
 	createGroupByApplication(application_id: string | number, compute_center_id?: string): Observable<any> {
 		const params: HttpParams = new HttpParams()
 			.set('application_id', application_id.toString()).set('compute_center_id', compute_center_id);
 
-		return this.http.post(`${ApiSettings.getApiBaseURL()}projects/simple_vm/`, params,
+		return this.http.post(
+			`${ApiSettings.getApiBaseURL()}projects/simple_vm/`,
+			params,
 			{
 				withCredentials: true,
-			});
+			},
+		);
 	}
 
 	getLifetime(groupid: string | number): Observable<IResponseTemplate> {

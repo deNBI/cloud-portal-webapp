@@ -62,9 +62,14 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
 	WIKI: string = WIKI;
 	WIKI_FAQ: string = WIKI_FAQ;
 
-	constructor(private voService: VoService, private groupService: GroupService, userService: UserService,
-		facilityService: FacilityService, applicationsService: ApplicationsService,
-		private virtualMachineService: VirtualmachineService) {
+	constructor(
+private voService: VoService,
+private groupService: GroupService,
+userService: UserService,
+facilityService: FacilityService,
+applicationsService: ApplicationsService,
+		private virtualMachineService: VirtualmachineService,
+	) {
 		super(userService, applicationsService, facilityService);
 	}
 

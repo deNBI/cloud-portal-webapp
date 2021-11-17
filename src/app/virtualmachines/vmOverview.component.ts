@@ -163,11 +163,14 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 	 */
 	user_perun_id: string;
 
-	constructor(private facilityService: FacilityService,
+	constructor(
+private facilityService: FacilityService,
 							private clipboardService: ClipboardService,
-							private imageService: ImageService, private userService: UserService,
+							private imageService: ImageService,
+private userService: UserService,
 							private virtualmachineservice: VirtualmachineService,
-							private groupService: GroupService) {
+							private groupService: GroupService,
+	) {
 		// eslint-disable-next-line no-empty-function
 	}
 
@@ -301,8 +304,12 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 	getVms(): void {
 		this.subscription.add(
 			this.virtualmachineservice.getVmsFromLoggedInUser(
-				this.currentPage, this.vm_page.items_per_page,
-				this.filter, this.filter_status_list, this.filter_cluster, this.filter_set_for_termination,
+				this.currentPage,
+				this.vm_page.items_per_page,
+				this.filter,
+				this.filter_status_list,
+				this.filter_cluster,
+				this.filter_set_for_termination,
 			)
 				.subscribe((vm_page: VirtualMachinePage): void => {
 					this.vm_page = vm_page;
@@ -318,8 +325,12 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 		this.subscription.add(
 			this.virtualmachineservice.getVmsFromFacilitiesOfLoggedUser(
 				this.selectedFacility['FacilityId'],
-				this.currentPage, this.vm_page.items_per_page,
-				this.filter, this.filter_status_list, this.filter_cluster, this.filter_set_for_termination,
+				this.currentPage,
+				this.vm_page.items_per_page,
+				this.filter,
+				this.filter_status_list,
+				this.filter_cluster,
+				this.filter_set_for_termination,
 			)
 				.subscribe((vm_page: VirtualMachinePage): void => {
 					this.vm_page = vm_page;
@@ -368,8 +379,14 @@ export class VmOverviewComponent implements OnInit, OnDestroy {
 	 */
 	getAllVms(): void {
 		this.subscription.add(
-			this.virtualmachineservice.getAllVM(this.currentPage, this.vm_page.items_per_page,
-				this.filter, this.filter_status_list, this.filter_cluster, this.filter_set_for_termination)
+			this.virtualmachineservice.getAllVM(
+				this.currentPage,
+				this.vm_page.items_per_page,
+				this.filter,
+				this.filter_status_list,
+				this.filter_cluster,
+				this.filter_set_for_termination,
+			)
 				.subscribe((vm_page: VirtualMachinePage): void => {
 					this.vm_page = vm_page;
 					this.prepareVMS();

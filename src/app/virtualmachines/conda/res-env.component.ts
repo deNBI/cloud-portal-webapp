@@ -31,8 +31,10 @@ export class ResEnvComponent implements OnInit, OnChanges, OnDestroy {
 
 	templates_to_block: string[] = [];
 
-	user_key_url: FormControl = new FormControl('',
-		[Validators.required, Validators.pattern('[a-zA-Z]{3,20}')]);
+	user_key_url: FormControl = new FormControl(
+		'',
+		[Validators.required, Validators.pattern('[a-zA-Z]{3,20}')],
+	);
 
 	selectedTemplate: ResearchEnvironment = null;
 
@@ -133,10 +135,10 @@ export class ResEnvComponent implements OnInit, OnChanges, OnDestroy {
 		return (!this.onlyNamespace && this.selectedTemplate.template_name !== 'undefined');
 	}
 
-	setOnlyNamespace(): void {
+	setOnlyNamespace(template): void {
 		this.onlyNamespace = true;
-		this.create_only_backend = false;
-		this.setSelectedTemplate(null);
+		this.create_only_backend = true;
+		this.setSelectedTemplate(template);
 	}
 
 	unsetOnlyNamespace(): void {

@@ -28,6 +28,9 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 	WIKI_WORKSHOPS: string = WIKI_WORKSHOPS;
 
 	subscription: Subscription = new Subscription();
+	resend_info: boolean = false;
+	sending_mails = false;
+	sending_done = false;
 	workshops: Workshop[] = [];
 	selectedWorkshop: Workshop;
 	memberVms: MemberVm[] = [];
@@ -42,15 +45,17 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 	projectMembersLoaded: boolean = false;
 	deleting: boolean = false;
 	deleteSuccess: boolean = false;
-	invalidShortname: boolean = false;
-	invalidLongname: boolean = false;
+	invalidShortname: boolean = true;
+	invalidLongname: boolean = true;
 	newWorkshop: boolean = false;
 	workshopCreationMessage: { message: string, success: boolean } = { message: '', success: false };
 
 	@ViewChild('creationStatusModal') creationStatusModal: any;
 
-	constructor(private workshopService: WorkshopService,
-							private groupService: GroupService) {
+	constructor(
+private workshopService: WorkshopService,
+							private groupService: GroupService,
+	) {
 		// eslint-disable-next-line no-empty-function
 	}
 
@@ -103,7 +108,7 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 			this.groupService.getWorkshopMembers(this.selectedProject[1].toString()).subscribe(
 				(members: ProjectMember[]): void => {
 					for (const member of members) {
-						const workshopVmLink: {[key: number]: WorkshopVM[]} = {};
+						const workshopVmLink: { [key: number]: WorkshopVM[] } = {};
 						const membervm: MemberVm = { projectMember: member, workshopVmLink };
 						this.memberVms.push(membervm);
 						this.projectMembersLoading = false;
@@ -117,8 +122,8 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 	workshopChange(workshop: Workshop): void {
 		this.selectedWorkshop = workshop;
 		this.newWorkshop = false;
-		this.invalidShortname = false;
-		this.invalidLongname = false;
+		this.invalidShortname = true;
+		this.invalidLongname = true;
 		this.loadVmsForSelectedProject();
 	}
 
@@ -154,6 +159,55 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 				}
 			}
 		}
+	}
+
+	resetSendingMails(): void {
+		this.resend_info = false;
+		this.sending_mails = false;
+		this.sending_done = false;
+	}
+
+	sendWorkshopVMsEmailInfo(): void {
+		this.sending_mails = true;
+		this.sending_done = false;
+		const vms: WorkshopVM[] = [];
+		for (const memberVm of this.memberVms) {
+			for (const wvm of memberVm.workshopVmLink[this.selectedWorkshop.id]) {
+				if (this.resend_info) {
+					vms.push(wvm);
+				} else if (!wvm.email_sent) {
+					vms.push(wvm);
+				}
+			}
+
+		}
+
+		for (const vm of vms) {
+			this.sendWorkshopVMEMailInfo(vm);
+		}
+		this.sending_done = true;
+		this.sending_mails = false;
+
+	}
+
+	sendWorkshopVMEMailInfo(workshop_vm: WorkshopVM): void {
+		this.subscription.add(this.workshopService.sendWorkshopVmEmail(this.selectedWorkshop.id, workshop_vm?.vm?.openstackid)
+			.subscribe((upd_workshop_vm: WorkshopVM) => {
+				for (const memberVm of this.memberVms) {
+					for (const wvm of memberVm.workshopVmLink[this.selectedWorkshop.id]) {
+						if (wvm === workshop_vm) {
+							const idx: number = memberVm.workshopVmLink[this.selectedWorkshop.id].indexOf(wvm);
+							memberVm.workshopVmLink[this.selectedWorkshop.id][idx].email_sent = upd_workshop_vm.email_sent;
+						}
+					}
+				}
+
+			}, (error: any) => {
+				if ('error' in error) {
+					console.log(error);
+				}
+			}));
+
 	}
 
 	getUrlDataForWorkshopVms(workshop: Workshop): void {
@@ -213,8 +267,8 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 		this.loadedVmsForWorkshop = [];
 
 		this.newWorkshop = false;
-		this.invalidLongname = false;
-		this.invalidShortname = false;
+		this.invalidLongname = true;
+		this.invalidShortname = true;
 	}
 
 	checkShortname(shortname: string): void {
@@ -238,27 +292,28 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 	createNewWorkshop(): void {
 		this.selectedWorkshop.shortname = this.selectedWorkshop.shortname.replace(/\s/g, '');
 		this.subscription.add(
-			this.workshopService.createWorkshop(this.selectedProject[1], this.selectedWorkshop).subscribe(
-				(workshop: Workshop) => {
-					this.workshops.push(workshop);
-					this.workshopChange(workshop);
-					this.workshopCreationMessage = { message: 'Workshop created successfully!', success: true };
-					this.creationStatusModal.show();
-				}, (error: any) => {
-					if ('error' in error) {
-						this.selectedWorkshop.longname = '';
-						this.invalidLongname = true;
-						this.selectedWorkshop.shortname = '';
-						this.invalidShortname = true;
-						if (error['error']['error'] === 'unique_constraint') {
-							this.workshopCreationMessage = { message: 'Workshop name already taken! Please select another name.', success: false };
-						} else {
-							this.workshopCreationMessage = { message: 'An error occured. Please try again!', success: false };
-						}
-						this.creationStatusModal.show();
+			this.workshopService.createWorkshop(this.selectedProject[1], this.selectedWorkshop).subscribe((workshop: Workshop) => {
+				this.workshops.push(workshop);
+				this.workshopChange(workshop);
+				this.workshopCreationMessage = { message: 'Workshop created successfully!', success: true };
+				this.creationStatusModal.show();
+			}, (error: any) => {
+				if ('error' in error) {
+					this.selectedWorkshop.longname = '';
+					this.invalidLongname = true;
+					this.selectedWorkshop.shortname = '';
+					this.invalidShortname = true;
+					if (error['error']['error'] === 'unique_constraint') {
+						this.workshopCreationMessage = {
+							message: 'Workshop name already taken! Please select another name.',
+							success: false,
+						};
+					} else {
+						this.workshopCreationMessage = { message: 'An error occured. Please try again!', success: false };
 					}
-				},
-			),
+					this.creationStatusModal.show();
+				}
+			}),
 		);
 	}
 

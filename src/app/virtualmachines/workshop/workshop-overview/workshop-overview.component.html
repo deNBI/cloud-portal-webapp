@@ -7,7 +7,8 @@
 <div class="animated fadeIn card" *ngIf="isLoaded">
 	<div class="card-body">
 		<alert type="info" dismissible="true">
-			To learn more about workshops, please see our <a [href]="WIKI_WORKSHOPS" target="_blank" rel="noopener noreferrer">WIKI</a>.
+			To learn more about workshops, please see our <a [href]="WIKI_WORKSHOPS" target="_blank"
+																											 rel="noopener noreferrer">WIKI</a>.
 		</alert>
 		<div *ngIf="projects.length > 0" id="projectsExisting">
 
@@ -64,7 +65,7 @@
 					<div *ngIf="!selectedWorkshop.id">
 						Please select a workshop:
 					</div>
-					<div class="btn-group">
+					<div class="btn-group col-6">
 						<button id="select_workshop_{{workshop?.shortname}}_btn" *ngFor="let workshop of workshops "
 										[ngClass]="{'btn-outline-success': workshop.shortname === selectedWorkshop?.shortname,
 								'btn-outline-secondary' : workshop.shortname !== selectedWorkshop?.shortname}"
@@ -102,7 +103,8 @@
                                 'is-valid': !invalidLongname && (longname.dirty)
                                 }">
 							<small class="form-text text-muted">
-								Your workshop longname must contain between 3 and 256 characters and may only contain letters and numbers.
+								Your workshop longname must contain between 3 and 256 characters and may only contain letters and
+								numbers.
 							</small>
 						</div>
 						<div class="w-100"></div>
@@ -127,9 +129,10 @@
 						<div class="w-100"></div>
 						<div class="col-2" style="margin-top: 10px"></div>
 						<div class="col-4">
-							<button class="btn btn-primary" (click)="createNewWorkshop()"
+							<button class="btn btn-primary" (click)="createNewWorkshop()" type="button"
 											id="create_workshop_button_id"
-											type="button" style="margin-bottom: 15px; margin-top: 10px">
+											[disabled]="invalidShortname || invalidLongname"
+											style="margin-bottom: 15px; margin-top: 10px">
 								Create workshop
 							</button>
 						</div>
@@ -140,7 +143,16 @@
 							<thead>
 							<tr>
 								<th style="width: 50%">User Info</th>
-								<th style="width: 50%">Vm Info</th>
+								<th style="width: 50%">Vm Info
+									<button class="btn btn-primary"
+													*ngIf="selectedWorkshop.id"
+													type="button"
+													[disabled]="memberVms.length < 1"
+													(click)="resetSendingMails();infoMailModal.show()"
+													style="margin-bottom:5px;margin-right:5px;float:right;">
+										Send VM Info Mails
+									</button>
+								</th>
 							</tr>
 							</thead>
 							<tbody>
@@ -185,6 +197,19 @@
 														 id="resenv_url_{{vm?.vm?.name}}">
 														{{vm.urlData.resenv_url}}
 													</a>
+													<br>
+
+													<i class="fas fa-globe" style="width: 1.5em"></i>{{vm.resenv_name | uppercase}}
+													<br>
+
+													<i class="fa fa-envelope" style="width: 1.5em"></i><i class="fa fa-check" style="width: 1.5em"
+																																								*ngIf="vm.email_sent"></i>
+													<i class="fa fa-times" style="width: 1.5em" *ngIf="!vm.email_sent"></i>
+													<button class="btn btn-secondary" [disabled]="!vm?.urlData?.resenv_url"
+																	(click)="sendWorkshopVMEMailInfo(vm)"><span *ngIf="vm.email_sent">(Re)</span>Send Mail
+													</button>
+													<br>
+
 												</ng-container>
 											</div>
 										</div>
@@ -234,6 +259,56 @@
 				</button>
 				<button class="btn  btn-danger col-md-4" type="reset"
 								(click)="verifyDeleteModal.hide();">Cancel
+				</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<div bsModal #infoMailModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+		 aria-labelledby="Label"
+		 aria-hidden="true"
+		 id="send_info_mail_modal">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Send Info Mail for VMs</h4>
+				<button type="button" class="close" style="cursor: pointer"
+								(click)="infoMailModal.hide()"
+								aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="alert alert-info" *ngIf="!sending_mails && !sending_done">
+					<strong>Also send a mail to those who have already received a mail?</strong>
+					<label style="margin-top: 7px;margin-bottom: 0px !important;">
+						<input type="checkbox" [(ngModel)]="resend_info"
+						/>
+
+					</label>
+
+				</div>
+				<div class="alert alert-info" *ngIf="sending_mails">
+					<strong>Sending mails...</strong>
+
+
+				</div>
+					<div class="alert alert-success" *ngIf="!sending_mails && sending_done">
+					<strong>Successfully sent mails</strong>
+
+
+				</div>
+
+
+			</div>
+			<div class="modal-footer">
+				<button class="btn  btn-info col-md-4" type="reset" *ngIf="!sending_done && !sending_mails"
+								(click)="sendWorkshopVMsEmailInfo();">Send
+				</button>
+				<button class="btn  btn-danger col-md-4" type="reset"
+								(click)="infoMailModal.hide();">Close
 				</button>
 			</div>
 		</div><!-- /.modal-content -->

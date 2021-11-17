@@ -73,9 +73,11 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 	private selectedTags: string[] = [];
 	projects_filtered: Project[] = [];
 
-	constructor(private groupService: GroupService,
+	constructor(
+private groupService: GroupService,
 							private facilityService: FacilityService,
-							private newsService: NewsService) {
+							private newsService: NewsService,
+	) {
 		super();
 	}
 
@@ -404,8 +406,14 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 		}
 		const chosenTags: string = this.selectedTags.toString();
 		this.facilityService.sendMailToFacility(
-			facility, encodeURIComponent(subject), encodeURIComponent(message), this.selectedProjectType,
-			encodeURIComponent(reply), send, encodeURIComponent(alternative_news_text), chosenTags,
+			facility,
+			encodeURIComponent(subject),
+			encodeURIComponent(message),
+			this.selectedProjectType,
+			encodeURIComponent(reply),
+			send,
+			encodeURIComponent(alternative_news_text),
+			chosenTags,
 		).subscribe(
 			(result: any): void => {
 				if (result.status === 201) {

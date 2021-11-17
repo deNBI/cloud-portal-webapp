@@ -11,7 +11,7 @@ export class ResearchEnvironment {
 	incompatible_versions: string[];
 	information_for_display: {
 		[key: string]: string;
-	}
+	};
 
 	constructor(resenv?: Partial<ResearchEnvironment>) {
 		Object.assign(this, resenv);

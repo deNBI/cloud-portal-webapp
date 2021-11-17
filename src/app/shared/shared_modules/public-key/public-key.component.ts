@@ -26,8 +26,10 @@ export class PublicKeyComponent extends AbstractBaseClass {
 	acknowledgement_given: boolean = false;
 	@Input() userinfo: Userinfo;
 
-	constructor(private keyService: KeyService,
-		private clipboardService: ClipboardService) {
+	constructor(
+private keyService: KeyService,
+		private clipboardService: ClipboardService,
+	) {
 		super();
 	}
 

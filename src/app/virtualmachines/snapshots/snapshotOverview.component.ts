@@ -196,14 +196,19 @@ export class SnapshotOverviewComponent implements OnInit {
 		this.filterChanged
 			.pipe(
 				debounceTime(this.DEBOUNCE_TIME),
-				distinctUntilChanged(), switchMap((filterName: string): any => {
+				distinctUntilChanged(),
+				switchMap((filterName: string): any => {
 					this.isSearching = true;
 
 					this.filter = filterName.trim();
 					if (this.showFacilities) {
 						return this.facilityService
-							.getFacilitySnapshots(this.selectedFacility['FacilityId'], this.currentPage,
-								this.snapshot_page.items_per_page, this.filter);
+							.getFacilitySnapshots(
+								this.selectedFacility['FacilityId'],
+								this.currentPage,
+								this.snapshot_page.items_per_page,
+								this.filter,
+							);
 					} else {
 						return this.imageService.getSnapshotsByUser(this.currentPage, this.snapshot_page.items_per_page, this.filter);
 					}

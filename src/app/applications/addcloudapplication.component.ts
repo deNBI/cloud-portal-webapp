@@ -10,8 +10,8 @@ import { Component } from '@angular/core';
 })
 
 export class AddcloudapplicationComponent {
-  openstack_application: boolean = true;
+	openstack_application: boolean = true;
 
-  title: string = 'New OpenStack Application';
+	title: string = 'New OpenStack Application';
 
 }

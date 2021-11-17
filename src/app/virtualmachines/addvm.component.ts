@@ -15,7 +15,6 @@ import { VirtualMachine } from './virtualmachinemodels/virtualmachine';
 import { BiocondaComponent } from './conda/bioconda.component';
 import { ResEnvComponent } from './conda/res-env.component';
 import { is_vo } from '../shared/globalvar';
-import { TemplateNames } from './conda/template-names';
 import { RandomNameGenerator } from '../shared/randomNameGenerator';
 import { Volume } from './volumes/volume';
 import { UserService } from '../api-connector/user.service';
@@ -215,13 +214,15 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 	@ViewChild('bioconda') biocondaComponent: BiocondaComponent;
 	@ViewChild('resEnv') resEnvComponent: ResEnvComponent;
 
-	constructor(private groupService: GroupService,
+	constructor(
+private groupService: GroupService,
 							private imageService: ImageService,
 							private flavorService: FlavorService,
 							private virtualmachineservice: VirtualmachineService,
 							private keyservice: KeyService,
 							private userService: UserService,
-							private router: Router) {
+							private router: Router,
+	) {
 		// eslint-disable-next-line no-empty-function
 	}
 
@@ -309,6 +310,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 				return false;
 			}
 
+			// eslint-disable-next-line prefer-regex-literals
 			return new RegExp('^[\\w]+$', 'i').test(text);
 		}
 
@@ -467,9 +469,18 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 			const additional_elixir_ids: string[] = this.members_to_add.map((mem: ProjectMember): string => mem.elixirId);
 			this.subscription.add(
 				this.virtualmachineservice.startVM(
-					flavor_fixed, this.selectedImage, servername,
-					project, projectid.toString(), this.http_allowed,
-					this.https_allowed, this.udp_allowed, this.volumesToMount, this.volumesToAttach, play_information, additional_elixir_ids,
+					flavor_fixed,
+					this.selectedImage,
+					servername,
+					project,
+					projectid.toString(),
+					this.http_allowed,
+					this.https_allowed,
+					this.udp_allowed,
+					this.volumesToMount,
+					this.volumesToAttach,
+					play_information,
+					additional_elixir_ids,
 				)
 					.subscribe((newVm: VirtualMachine): void => {
 						this.newVm = newVm;
@@ -501,6 +512,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 	}
 
 	async delay(ms: number): Promise<any> {
+		// eslint-disable-next-line no-promise-executor-return
 		await new Promise((resolve: any): any => setTimeout(resolve, ms));
 	}
 
@@ -682,12 +694,15 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 			return;
 		}
 		for (const mode of this.selectedImage.modes) {
-			if (TemplateNames.ALL_TEMPLATE_NAMES.indexOf(mode.name) !== -1) {
-				this.resenvSelected = true;
-				this.resEnvComponent.setOnlyNamespace();
+			for (const template of this.resEnvComponent.templates) {
+				if (template.template_name === mode.name) {
+					this.resenvSelected = true;
+					this.resEnvComponent.setOnlyNamespace(template);
 
-				return;
+					return;
+				}
 			}
+
 		}
 		this.resenvSelected = false;
 		if (this.resEnvComponent) {

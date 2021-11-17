@@ -29,7 +29,7 @@ export class ClustercardComponent extends SharedModal implements OnInit, OnDestr
 
 	SCALE_UP: string = 'scale_up';
 	SCALE_DOWN: string = 'scale_down';
-	SCALE_SUCCESS: string = 'scale_success'
+	SCALE_SUCCESS: string = 'scale_success';
 
 	/**
 	 * The virtual machine this card is for.
@@ -97,9 +97,11 @@ export class ClustercardComponent extends SharedModal implements OnInit, OnDestr
 	 */
 	checkStatusTimer: ReturnType<typeof setTimeout>;
 
-	constructor(private clipboardService: ClipboardService,
+	constructor(
+private clipboardService: ClipboardService,
 	            modalService: BsModalService,
-	            private virtualmachineservice: VirtualmachineService) {
+	            private virtualmachineservice: VirtualmachineService,
+	) {
 		super(modalService);
 	}
 
