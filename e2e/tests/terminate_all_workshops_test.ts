@@ -7,12 +7,13 @@ describe('Workshop deletion test', (): void => {
 
 	beforeAll(async (): Promise<any> => {
 		await browser.waitForAngularEnabled(false);
-		await LoginPage.login(browser.params.login.email_vo, browser.params.login.password_vo, browser.params.login.auth_vo, true);
+		await LoginPage.login(browser.params.login.email_user, browser.params.login.password_user, browser.params.login.auth_user, true);
 	});
 
 	it('Should delete a Workshop', async (): Promise<any> => {
 		Util.logDebug('Testing deletion of workshop');
 		await WorkshopOverviewPage.navigateToOverview();
+		await WorkshopOverviewPage.selectProject();
 		Util.logDebug('Deleting Workshop');
 		const deletionSuccess: boolean = await WorkshopOverviewPage.deleteWorkshop();
 		Util.logInfo('Checking if workshop deletion successful');

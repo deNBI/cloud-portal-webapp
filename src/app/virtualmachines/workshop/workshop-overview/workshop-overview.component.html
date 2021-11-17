@@ -21,7 +21,7 @@
 							Select
 						</option>
 						<option *ngFor="let project of projects" [ngValue]="project"
-										id="id_option_{{project[0]}}">
+										id="project_option_{{project[0]}}">
 							{{project[0]}}
 						</option>
 					</select>
@@ -149,7 +149,7 @@
 									<div class="callout callout-info"
 											 style="border-top-width: 0; border-bottom-width: 0; border-right-width: 0;">
 										<i class="fa fa-id-card" style="width: 1.5em"
-											 id="user_name_field_prefix_{{member.projectMember.userName}}"></i>{{member.projectMember.userName}}<br>
+											 id="user_name_field_prefix_{{member.projectMember.elixirId}}"></i>{{member.projectMember.userName}}<br>
 										<i class="fa fa-envelope" style="width: 1.5em"></i>{{member.projectMember.email}}<br>
 										<i class="fa fa-user-cog" style="width: 1.5em"></i>
 										<ng-container *ngIf="member.projectMember.groupAdmin">Admin</ng-container>
@@ -174,13 +174,15 @@
 												</ng-container>
 												<ng-container *ngIf="!vm.loadingUrlData">
 													<i class="fa fa-laptop" style="width: 1.5em"></i>
-													<a [routerLink]="['/virtualmachines/detail/' + vm?.vm?.openstackid]">
+													<a [routerLink]="['/virtualmachines/detail/' + vm?.vm?.openstackid]"
+														 id="vm_name_{{member.projectMember.elixirId}}">
 														{{vm?.vm?.name}}
 													</a>
 													<br>
 													<i class="fa fa-heartbeat" style="width: 1.5em"></i>{{vm.vm.status}}<br>
 													<i class="fa fa-link" style="width: 1.5em"></i>
-													<a href="{{vm.urlData.resenv_url}}" target="_blank" rel="noopener noreferrer">
+													<a href="{{vm.urlData.resenv_url}}" target="_blank" rel="noopener noreferrer"
+														 id="resenv_url_{{vm?.vm?.name}}">
 														{{vm.urlData.resenv_url}}
 													</a>
 												</ng-container>
@@ -259,10 +261,10 @@
 					</div>
 				</div>
 				<div *ngIf="!deleting">
-					<div *ngIf="deleteSuccess">
+					<div *ngIf="deleteSuccess" id="delete_success_id">
 						Cleanup successful.
 					</div>
-					<div *ngIf="!deleteSuccess">
+					<div *ngIf="!deleteSuccess" id="delete_fail_id">
 						Cleanup failed.
 					</div>
 				</div>

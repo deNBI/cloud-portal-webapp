@@ -1,5 +1,5 @@
 import {
-	browser, by, element, ElementFinder, protractor, ProtractorExpectedConditions,
+	browser, by, element, ElementArrayFinder, ElementFinder, protractor, ProtractorExpectedConditions,
 } from 'protractor';
 // tslint:disable-next-line:no-require-imports no-var-requires typedef
 // const clc = require('cli-color');
@@ -28,6 +28,7 @@ export class Util {
 	private static _30_MIN_TIMEOUT: number = Util._ONE_MINUTE_TIMEOUT * 30;
 	private static _DEFAULT_FLAVOR_TITLE: string = 'de.NBI default';
 	private static _UBUNTU_18_TITLE: string = 'Ubuntu 18.04 LTS (2021-08-05)';
+	private static _CWLAB: string = 'cwlab';
 
 	private static _VOLUME_MOUNT_PATH_STRING: string = 'path';
 
@@ -37,6 +38,18 @@ export class Util {
 	// tslint:disable-next-line:no-require-imports
 	static get PI_EMAIL(): string {
 		return this._PI_EMAIL;
+	}
+
+	static get CWLAB(): string {
+		return this._CWLAB;
+	}
+
+	static get USER_ACCOUNT_ELIXIR_ID(): string {
+		return browser.params.login.elixir_id_user;
+	}
+
+	static get VO_ACCOUNT_ELIXIR_ID(): string {
+		return browser.params.login.elixir_id_vo;
 	}
 
 	static get DEFAULT_FLAVOR_NAME(): string {
@@ -332,6 +345,23 @@ export class Util {
 		return await browser.driver.wait(until_.presenceOf(elem), timeout, `Element [${prefix}${id}] taking too long to appear in the DOM`);
 	}
 
+	static async waitForPresenceOfElementsByPrefix(prefix: string, timeout: number = this.timeout): Promise<boolean> {
+		const until_: ProtractorExpectedConditions = protractor.ExpectedConditions;
+		this.logInfo(`Waiting until page contains elements with prefix ${prefix}`);
+
+		await element.all(by.css(`[id^=${prefix}]`)).then(
+			async (elem) => {
+				// eslint-disable-next-line @typescript-eslint/prefer-for-of
+				for (let i: number = 0; i < elem.length; i += 1) {
+					// eslint-disable-next-line no-await-in-loop
+					await browser.driver.wait(until_.presenceOf(elem[i]), timeout, `Element [${prefix}] taking too long to appear in the DOM`);
+				}
+			},
+		);
+
+		return true;
+	}
+
 	static async waitForPresenceByElement(elem: any, timeout: number = this.timeout, id: string = 'Elementfinder'): Promise<boolean> {
 		const until_: ProtractorExpectedConditions = protractor.ExpectedConditions;
 		this.logInfo(`Waiting until page contains element ${id}`);
@@ -435,5 +465,31 @@ export class Util {
 		const elem: ElementFinder = element(by.css(`a[id^=${prefix}${name}]`));
 
 		return elem.getText();
+	}
+
+	static async getTextFromElementsByIdPrefix(prefix: string): Promise<string[]> {
+		await this.waitForPresenceOfElementsByPrefix(prefix);
+		// const elements: ElementArrayFinder = element.all(by.css(`[id^=${prefix}]`));
+
+		const elementsText: string[] = [];
+		await element.all(by.css(`[id^=${prefix}]`)).then(
+			async (elem) => {
+				// eslint-disable-next-line @typescript-eslint/prefer-for-of
+				for (let i: number = 0; i < elem.length; i += 1) {
+					// eslint-disable-next-line no-await-in-loop
+					elem[i].getText().then(
+						(text) => {
+							elementsText.push(text);
+						},
+					);
+				}
+			},
+		);
+
+		return elementsText;
+	}
+
+	static async getElementsByIdPrefix(prefix: string): Promise<any> {
+		return element.all(by.css(`[id^=${prefix}]`));
 	}
 }

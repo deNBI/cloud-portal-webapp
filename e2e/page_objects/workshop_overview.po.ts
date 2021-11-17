@@ -1,13 +1,11 @@
-import { browser, by, element } from 'protractor';
+import { browser } from 'protractor';
 import { Util } from '../util';
 
 /**
- * Instance Overview Page.
+ * Workshop Overview Page.
  */
 export class WorkshopOverviewPage {
-	private static WORKSHOP_OVERVIEW_URL: string = 'virtualmachines/workshops';
-	private static USER_NAME_USER: string = 'Test User';
-	private static USER_NAME_ADMIN: string = 'Test User';
+	private static WORKSHOP_OVERVIEW_URL: string = 'virtualmachines/workshopOverview';
 	private static PROJECTS_EXISTING: string = 'projectsExisting';
 	private static PROJECT_SELECT: string = 'projectSelect';
 	private static PROJECT_OPTION: string = `project_option_${Util.SIMPLE_VM_APPLICATION_NAME}`;
@@ -20,13 +18,16 @@ export class WorkshopOverviewPage {
 	private static CLOSE_CEATION_STATUS_MODAL: string = 'close_creation_status_modal';
 	private static LONGNAME_FIELD: string = 'workshop_longname';
 	private static SHORTNAME_FIELD: string = 'workshop_shortname';
-	private static WORKSHOP_OPTION: string = `workshop_option_id_${Util.WORKSHOP_NAME}`;
+	private static WORKSHOP_OPTION: string = `select_workshop_${Util.WORKSHOP_NAME}_btn`;
 	private static USER_NAME_FIELD_PREFIX: string = 'user_name_field_prefix_';
 	private static CLEANUP_WORKSHOP_BUTTON: string = 'cleanup_workshop_button_id';
-	private static VERIFY_CLEANUP_MODAL: string = 'verify_cleanup_modal';
+	private static VERIFY_CLEANUP_MODAL: string = 'verify_delete_modal';
 	private static VERIFY_CLEANUP_BUTTON: string = 'confirm_delete_workshop_button';
-	private static DELETE_SUCCESS_MODAL: string = 'workshop_cleanup_success_id';
+	private static DELETE_STATUS_MODAL: string = 'delete_status_modal';
+	private static DELETE_SUCCESS: string = 'delete_success_id';
 	private static CLOSE_DELETION_STATUS_MODAL: string = 'close_deletion_status';
+	private static VM_NAME_PREFIX: string = 'vm_name_';
+	private static RESENV_URL_PREFIX: string = 'resenv_url_';
 
 	static async navigateToOverview(): Promise<any> {
 		Util.logInfo('Navigating to Workshop Overview Page');
@@ -77,17 +78,17 @@ export class WorkshopOverviewPage {
 	}
 
 	static async workshopHasUser(): Promise<boolean> {
-		Util.logInfo(`Checking if user ${this.USER_NAME_USER} exists for Workshop ${Util.WORKSHOP_NAME}`);
+		Util.logInfo(`Checking if user ${Util.VO_ACCOUNT_ELIXIR_ID} exists for Workshop ${Util.WORKSHOP_NAME}`);
 		await this.selectWorkshop();
 
-		return Util.waitForPresenceOfElementById(`${this.USER_NAME_FIELD_PREFIX}${this.USER_NAME_USER}`);
+		return Util.waitForPresenceOfElementById(`${this.USER_NAME_FIELD_PREFIX}${Util.VO_ACCOUNT_ELIXIR_ID}`);
 	}
 
 	static async workshopHasAdmin(): Promise<boolean> {
-		Util.logInfo(`Checking if user ${this.USER_NAME_ADMIN} exists for Workshop ${Util.WORKSHOP_NAME}`);
+		Util.logInfo(`Checking if admin ${Util.USER_ACCOUNT_ELIXIR_ID} exists for Workshop ${Util.WORKSHOP_NAME}`);
 		await this.selectWorkshop();
 
-		return Util.waitForPresenceOfElementById(`${this.USER_NAME_FIELD_PREFIX}${this.USER_NAME_ADMIN}`);
+		return Util.waitForPresenceOfElementById(`${this.USER_NAME_FIELD_PREFIX}${Util.USER_ACCOUNT_ELIXIR_ID}`);
 	}
 
 	static async deleteWorkshop(): Promise<boolean> {
@@ -99,14 +100,44 @@ export class WorkshopOverviewPage {
 		await Util.waitForPresenceOfElementById(this.VERIFY_CLEANUP_MODAL);
 		await Util.waitForPresenceOfElementById(this.VERIFY_CLEANUP_BUTTON);
 		await Util.waitForElementToBeClickableById(this.VERIFY_CLEANUP_BUTTON);
+		await Util.clickElementById(this.VERIFY_CLEANUP_BUTTON);
+		await Util.waitForPresenceOfElementById(this.DELETE_STATUS_MODAL);
 
-		return Util.waitForPresenceOfElementById(this.DELETE_SUCCESS_MODAL);
+		return Util.waitForPresenceOfElementById(this.DELETE_SUCCESS);
 	}
 
 	static async selectWorkshop(): Promise<any> {
 		Util.logInfo(`Selecting Workshop ${Util.WORKSHOP_NAME}`);
 		await Util.waitForElementToBeClickableById(this.WORKSHOP_OPTION);
 		await Util.clickElementById(this.WORKSHOP_OPTION);
+	}
+
+	static async workshopHasVms(): Promise<any> {
+		const vmNames: string[] = [];
+		vmNames.push(await this.getVmOfUser(Util.USER_ACCOUNT_ELIXIR_ID));
+		vmNames.push(await this.getVmOfUser(Util.VO_ACCOUNT_ELIXIR_ID));
+
+		return vmNames;
+	}
+
+	static async getResenvUrlOfUser(): Promise<string> {
+		return this.getResEnvUrlOfVm(
+			await this.getVmOfUser(Util.VO_ACCOUNT_ELIXIR_ID),
+		);
+	}
+
+	static async getResenvUrlOfAdmin(): Promise<string> {
+		return this.getResEnvUrlOfVm(
+			await this.getVmOfUser(Util.USER_ACCOUNT_ELIXIR_ID),
+		);
+	}
+
+	static async getVmOfUser(elixirId: string): Promise<string> {
+		return Util.getElemTextById(`${this.VM_NAME_PREFIX}${elixirId}`);
+	}
+
+	static async getResEnvUrlOfVm(vmName: string): Promise<string> {
+		return Util.getElemTextById(`${this.RESENV_URL_PREFIX}${vmName}`);
 	}
 
 	static async closeCreationStatusModal(): Promise<any> {
