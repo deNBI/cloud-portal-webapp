@@ -1,4 +1,4 @@
-import { by, element } from 'protractor';
+import { browser, by, element } from 'protractor';
 import { Util } from '../util';
 
 /**
@@ -43,7 +43,7 @@ export class FacilityOverviewPage {
 		await Util.waitForPresenceOfElementById(this.TAB_STATE_TERMINATION_BUTTON);
 		await Util.clickElementById(this.TAB_STATE_TERMINATION_BUTTON);
 		await Util.waitForInvisibilityOfElementById(this.LOADING_APPLICATIONS);
-		await Util.waitForVisibilityOfElementById(this.TERMINATION_TABLE);
+		await browser.sleep(10000);
 
 		Util.logInfo('Terminate all PT projects');
 		const elements: any = await Util.getElementsByIdPrefix(this.TERMINATE_PT_APPLICATION_BTN);
