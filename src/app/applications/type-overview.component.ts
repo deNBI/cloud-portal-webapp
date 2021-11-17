@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {
-	WIKI_WORKSHOPS, OPENSTACK_LINK, PROJECT_TYPES_LINK, SIMPLE_VM_LINK
+	WIKI_WORKSHOPS, OPENSTACK_LINK, PROJECT_TYPES_LINK, SIMPLE_VM_LINK,
 } from '../../links/links';
 
 /**
