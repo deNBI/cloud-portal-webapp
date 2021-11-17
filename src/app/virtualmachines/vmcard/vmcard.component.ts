@@ -101,18 +101,19 @@ export class VmCardComponent implements OnInit, OnDestroy {
 	/**
 	 * Error message to show if 409 status was returned, typically returned if vm is creating a snapshot.
 	 */
-	SNAPSHOT_CREATING_ERROR_MSG: string
-		= 'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.';
+	SNAPSHOT_CREATING_ERROR_MSG: string		= 'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.';
 
 	/**
 	 * Timeout object to control check status loop (i.e. stopping and starting check status loop).
 	 */
 	checkStatusTimer: ReturnType<typeof setTimeout>;
 
-	constructor(private clipboardService: ClipboardService,
+	constructor(
+private clipboardService: ClipboardService,
 							private modalService: BsModalService,
 							private virtualmachineservice: VirtualmachineService,
-							private imageService: ImageService) {
+							private imageService: ImageService,
+	) {
 		// eslint-disable-next-line no-empty-function
 	}
 
@@ -447,36 +448,34 @@ export class VmCardComponent implements OnInit, OnDestroy {
 	 */
 	check_status_loop(final_state?: string, timeout: number = this.checkStatusTimeout): void {
 		this.stopCheckStatusTimer();
-		this.checkStatusTimer = setTimeout(
-			(): void => {
-				this.subscription.add(this.virtualmachineservice.checkVmStatus(this.vm.openstackid, this.vm.name)
-					.subscribe((updated_vm: VirtualMachine): void => {
-						updated_vm.cardState = this.vm.cardState;
-						if (this.vm.msg) {
-							updated_vm.setMsgWithTimeout(this.vm.msg);
+		this.checkStatusTimer = setTimeout((): void => {
+			this.subscription.add(this.virtualmachineservice.checkVmStatus(this.vm.openstackid, this.vm.name)
+				.subscribe((updated_vm: VirtualMachine): void => {
+					updated_vm.cardState = this.vm.cardState;
+					if (this.vm.msg) {
+						updated_vm.setMsgWithTimeout(this.vm.msg);
+					}
+					if (this.vm.error_msg) {
+						updated_vm.setErrorMsgWithTimeout(this.vm.error_msg);
+					}
+					this.vm = updated_vm;
+					if (final_state) {
+						if (final_state === this.vm.status) {
+							this.resumeCheckStatusTimer();
+						} else {
+							this.check_status_loop(final_state);
 						}
-						if (this.vm.error_msg) {
-							updated_vm.setErrorMsgWithTimeout(this.vm.error_msg);
-						}
-						this.vm = updated_vm;
-						if (final_state) {
-							if (final_state === this.vm.status) {
-								this.resumeCheckStatusTimer();
-							} else {
-								this.check_status_loop(final_state);
-							}
-						} else if (VirtualMachineStates.IN_PROCESS_STATES.indexOf(this.vm.status) !== -1) {
-							this.check_status_loop();
-						} else if (this.vm.status !== VirtualMachineStates.DELETED) {
-							// so not all requests are at the same time for the vms
-							const min: number = 20000;
-							const max: number = 40000;
-							this.check_status_loop(null, Math.floor(Math.random() * (max - min)) + max);
-						}
+					} else if (VirtualMachineStates.IN_PROCESS_STATES.indexOf(this.vm.status) !== -1) {
+						this.check_status_loop();
+					} else if (this.vm.status !== VirtualMachineStates.DELETED) {
+						// so not all requests are at the same time for the vms
+						const min: number = 20000;
+						const max: number = 40000;
+						this.check_status_loop(null, Math.floor(Math.random() * (max - min)) + max);
+					}
 
-					}));
-			}, timeout,
-		);
+				}));
+		}, timeout);
 	}
 
 	/**

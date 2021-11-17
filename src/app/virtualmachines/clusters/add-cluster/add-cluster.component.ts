@@ -136,14 +136,16 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 
 	@ViewChild('bioconda', { static: true }) biocondaComponent: BiocondaComponent;
 
-	constructor(private groupService: GroupService,
+	constructor(
+private groupService: GroupService,
 							private imageService: ImageService,
 							private flavorService: FlavorService,
 							private virtualmachineservice: VirtualmachineService,
 							private keyservice: KeyService,
 							private userService: UserService,
 							private voService: VoService,
-							private router: Router) {
+							private router: Router,
+	) {
 		// eslint-disable-next-line no-empty-function
 	}
 
@@ -183,7 +185,8 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 
 			this.selectedBatch.max_worker_count = this.selectedProjectRessources.calcMaxWorkerInstancesByFlavor(
 				this.selectedMasterFlavor,
-				this.selectedBatch, this.selectedWorkerBatches,
+				this.selectedBatch,
+				this.selectedWorkerBatches,
 			);
 		}
 	}
@@ -331,7 +334,8 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 			this.virtualmachineservice.startCluster(
 				masterFlavor,
 				this.selectedMasterImage,
-				this.selectedWorkerBatches, this.selectedProject[1],
+				this.selectedWorkerBatches,
+				this.selectedProject[1],
 			).subscribe(
 				(res: any): void => {
 					console.log(res);

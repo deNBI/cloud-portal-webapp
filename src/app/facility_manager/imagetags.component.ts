@@ -150,9 +150,7 @@ export class ImageTagComponent implements OnInit {
 
 	addTag(tag: string, input: HTMLInputElement): void {
 		if (input.validity.valid) {
-			this.imageService.addImageTags(
-				tag.trim(), this.checkedModes, this.selectedFacility['FacilityId'],
-			).subscribe((newTag: ImageTag): void => {
+			this.imageService.addImageTags(tag.trim(), this.checkedModes, this.selectedFacility['FacilityId']).subscribe((newTag: ImageTag): void => {
 				this.checkedModes = [];
 				this.imageTags.push(newTag);
 			});

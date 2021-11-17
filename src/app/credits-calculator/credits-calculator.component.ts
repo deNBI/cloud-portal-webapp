@@ -48,7 +48,7 @@ export class CreditsCalculatorComponent implements OnInit {
 		{
 			date_picker: new FormControl(new Date()),
 		},
-	)
+	);
 
 	credits_wanted_group: FormGroup = new FormGroup(
 		{
@@ -62,10 +62,12 @@ export class CreditsCalculatorComponent implements OnInit {
 		},
 	);
 
-	constructor(private facility_service: FacilityService,
+	constructor(
+private facility_service: FacilityService,
 							private flavor_service: FlavorService,
 							private credits_service: CreditsService,
-							private group_service: GroupService) {
+							private group_service: GroupService,
+	) {
 		// eslint-disable-next-line no-empty-function
 	}
 

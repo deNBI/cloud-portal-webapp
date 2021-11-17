@@ -36,7 +36,7 @@ export class ScaleClusterComponent implements OnDestroy, OnInit {
 	scale_down_count: number = 0;
 	scale_up_worker_count: number;
 	created_new_batch: boolean = false;
-	flavors: Flavor[] = []
+	flavors: Flavor[] = [];
 	flavors_usable: Flavor[] = [];
 	flavors_loaded: boolean = false;
 	selectedProjectRessources: ApplicationRessourceUsage;

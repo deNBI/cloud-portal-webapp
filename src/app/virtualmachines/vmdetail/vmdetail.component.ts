@@ -48,7 +48,7 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 	conda_logs: Condalog;
 	title: string = 'Instance Detail';
 	image: Image;
-	VolumeStates: VolumeStates = new VolumeStates()
+	VolumeStates: VolumeStates = new VolumeStates();
 	virtualMachineStates: VirtualMachineStates = new VirtualMachineStates();
 	virtualMachine: VirtualMachine;
 	resenvTemplate: ResenvTemplate;
@@ -60,7 +60,7 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 	extendDone: boolean = false;
 	VOLUME_END_STATES: string[] = [VolumeStates.AVAILABLE, VolumeStates.NOT_FOUND,
 		VolumeStates.IN_USE, VirtualMachineStates.DELETED,
-		VirtualMachineStates.DELETING_FAILED]
+		VirtualMachineStates.DELETING_FAILED];
 
 	is_vo_admin: boolean = is_vo;
 	WIKI_RSTUDIO_LINK: string = WIKI_RSTUDIO_LINK;
@@ -130,10 +130,10 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 	/**
 	 * Error message to show if 409 status was returned, typically returned if vm is creating a snapshot.
 	 */
-	SNAPSHOT_CREATING_ERROR_MSG: string
-		= 'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.';
+	SNAPSHOT_CREATING_ERROR_MSG: string		= 'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.';
 
-	constructor(private activatedRoute: ActivatedRoute,
+	constructor(
+private activatedRoute: ActivatedRoute,
 							private virtualmachineService: VirtualmachineService,
 							private modalService: BsModalService,
 							// public bsModalRef: BsModalRef, TODO: bsModalRef in constructor?
@@ -145,7 +145,8 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 							private playbookService: PlaybookService,
 							private biocondaService: BiocondaService,
 							private clipboardService: ClipboardService,
-							private groupService: GroupService) {
+							private groupService: GroupService,
+	) {
 		super();
 	}
 
@@ -229,6 +230,7 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 		});
 	}
 
+	// eslint-disable-next-line default-param-last
 	check_status_loop_vol(volume: Volume, initial_timeout: number = this.checkStatusTimeout, final_state?: string, expected_storage?: number):
 		void {
 		const created: boolean = volume.volume_created_by_user;
