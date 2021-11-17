@@ -28,6 +28,10 @@ export const SURVEY_LINK: string = 'https://www.surveymonkey.de/r/HQW9V7C';
 export const CLOUD_MAIL: string = 'cloud@denbi.de';
 export const CLOUD_PORTAL_SUPPORT_MAIL = 'cloud-portal-support@denbi.de';
 export const POLICY_LINK: string = 'https://cloud.denbi.de/policies/';
+export const SIMPLE_VM_LINK: string = 'https://cloud.denbi.de/about/project-types/simplevm/';
+export const OPENSTACK_LINK: string = 'https://cloud.denbi.de/about/project-types/openstack/';
+export const PROJECT_TYPES_LINK: string = 'https://cloud.denbi.de/about/project-types/';
+export const PUBLICATIONS_LINK: string = 'https://cloud.denbi.de/about/publications/'
 
 export const WIKI_LNKS: string[] = [
 	WIKI_SNAPSHOTS,
