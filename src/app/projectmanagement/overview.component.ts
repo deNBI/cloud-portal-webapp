@@ -26,7 +26,7 @@ import { FlavorService } from '../api-connector/flavor.service';
 import { CreditsService } from '../api-connector/credits.service';
 import { is_vo } from '../shared/globalvar';
 import {
-	CLOUD_MAIL, CREDITS_WIKI, WIKI_MEMBER_MANAGEMENT, WIKI_PUBLICATIONS,
+	CLOUD_MAIL, CREDITS_WIKI, WIKI_MEMBER_MANAGEMENT, WIKI_PUBLICATIONS, PUBLICATIONS_LINK, OPENSTACK_LINK, SIMPLE_VM_LINK,
 } from '../../links/links';
 import { Doi } from '../applications/doi/doi';
 import { ApiSettings } from '../api-connector/api-settings.service';
@@ -61,6 +61,9 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	WIKI_PUBLICATIONS: string = WIKI_PUBLICATIONS;
 	CREDITS_WIKI: string = CREDITS_WIKI;
 	CLOUD_MAIL: string = CLOUD_MAIL;
+	PUBLICATIONS_LINK: string = PUBLICATIONS_LINK;
+	SIMPLE_VM_LINK: string = SIMPLE_VM_LINK;
+	OPENSTACK_LINK: string = OPENSTACK_LINK;
 
 	@ViewChild(NgForm) simpleVmForm: NgForm;
 	@ViewChild('creditsChart') creditsCanvas: ElementRef;
