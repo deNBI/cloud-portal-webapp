@@ -57,11 +57,13 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
 
 	// public selectedFacility: [string, number];
 
-	constructor(private fullLayout: FullLayoutComponent,
+	constructor(
+private fullLayout: FullLayoutComponent,
 		private sanitizer: DomSanitizer,
 		private voService: VoService,
 		private groupservice: GroupService,
-		private facilityService: FacilityService) {
+		private facilityService: FacilityService,
+	) {
 		super();
 	}
 
@@ -118,9 +120,7 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
 	}
 
 	sendNewsletterToVo(subject: string, message: string, selectedProjectType: string, reply?: string): void {
-		this.voService.sendNewsletterToVo(
-			encodeURIComponent(subject), encodeURIComponent(message), selectedProjectType, encodeURIComponent(reply),
-		)
+		this.voService.sendNewsletterToVo(encodeURIComponent(subject), encodeURIComponent(message), selectedProjectType, encodeURIComponent(reply))
 			.subscribe((result: IResponseTemplate): void => {
 				if (result.value as boolean === true) {
 					this.emailStatus = 1;
@@ -254,8 +254,10 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
 		this.facilityService.getComputeCenters().subscribe((result: any): void => {
 			for (const cc of result) {
 				const compute_center: ComputecenterComponent = new ComputecenterComponent(
-					cc['compute_center_facility_id'], cc['compute_center_name'],
-					cc['compute_center_login'], cc['compute_center_support_mail'],
+					cc['compute_center_facility_id'],
+					cc['compute_center_name'],
+					cc['compute_center_login'],
+					cc['compute_center_support_mail'],
 				);
 				this.computecenters.push(compute_center);
 			}
@@ -282,9 +284,12 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
 				this.fullLayout.getGroupsEnumeration();
 				this.applyFilter();
 				if (this.selectedProject.OpenStackProject) {
-					this.updateNotificationModal('Success',
+					this.updateNotificationModal(
+						'Success',
 						'The request to terminate the project was forwarded to the facility manager.',
-						true, 'success');
+						true,
+						'success',
+					);
 				} else {
 					this.updateNotificationModal('Success', 'The  project was terminated.', true, 'success');
 				}
@@ -325,10 +330,13 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
 
 	setProtected(project: Project, set: boolean): void {
 		this.voService.setProtected(project.Id, set).subscribe((result: any): void => {
-			this.updateNotificationModal('Success',
+			this.updateNotificationModal(
+				'Success',
 				result['result'] === 'set' ? 'The project was successfully set as protected.'
 					: 'The status "Protected" was removed successfully',
-				true, 'success');
+				true,
+				'success',
+			);
 			const indexAll: number = this.projects.indexOf(project, 0);
 			this.getProjectStatus(this.projects[indexAll]);
 		}, (error: any): void => {

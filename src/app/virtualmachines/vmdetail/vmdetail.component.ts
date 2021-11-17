@@ -132,7 +132,8 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 	 */
 	SNAPSHOT_CREATING_ERROR_MSG: string		= 'Conflict detected. The virtual machine is currently creating a snapshot and must not be altered.';
 
-	constructor(private activatedRoute: ActivatedRoute,
+	constructor(
+private activatedRoute: ActivatedRoute,
 							private virtualmachineService: VirtualmachineService,
 							private modalService: BsModalService,
 							// public bsModalRef: BsModalRef, TODO: bsModalRef in constructor?
@@ -144,7 +145,8 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 							private playbookService: PlaybookService,
 							private biocondaService: BiocondaService,
 							private clipboardService: ClipboardService,
-							private groupService: GroupService) {
+							private groupService: GroupService,
+	) {
 		super();
 	}
 
@@ -228,6 +230,7 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 		});
 	}
 
+	// eslint-disable-next-line default-param-last
 	check_status_loop_vol(volume: Volume, initial_timeout: number = this.checkStatusTimeout, final_state?: string, expected_storage?: number):
 		void {
 		const created: boolean = volume.volume_created_by_user;

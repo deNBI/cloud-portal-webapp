@@ -120,7 +120,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	ExtensionRequestType: typeof ExtensionRequestType = ExtensionRequestType;
 	Application_States: typeof Application_States = Application_States;
 
-	constructor(private flavorService: FlavorService,
+	constructor(
+private flavorService: FlavorService,
 							private groupService: GroupService,
 							private modalService: BsModalService,
 							applicationsService: ApplicationsService,
@@ -130,7 +131,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 							private fullLayout: FullLayoutComponent,
 							private router: Router,
 							private creditsService: CreditsService,
-							@Inject(DOCUMENT) private document: Document) {
+							@Inject(DOCUMENT) private document: Document,
+	) {
 		super(userService, applicationsService, facilityService);
 	}
 
@@ -679,7 +681,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 					const membername: string = application['displayName'];
 
 					const newMemberApplication: ProjectMemberApplication = new ProjectMemberApplication(
-						application['id'], membername,
+						application['id'],
+						membername,
 						`${dateApplicationCreated.date()}.${(dateApplicationCreated.month() + 1)}.${dateApplicationCreated.year()}`,
 					);
 					newProjectApplications.push(newMemberApplication);
@@ -709,8 +712,10 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
 				if (facility) {
 					compute_center = new ComputecenterComponent(
-						facility['compute_center_facility_id'], facility['compute_center_name'],
-						facility['compute_center_login'], facility['compute_center_support_mail'],
+						facility['compute_center_facility_id'],
+						facility['compute_center_name'],
+						facility['compute_center_login'],
+						facility['compute_center_support_mail'],
 					);
 				}
 				this.isAdmin = is_pi;
@@ -950,8 +955,10 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 							(error: any): void => {
 								if (error['name'] === 'AlreadyAdminException') {
 									this.updateNotificationModal(
-										'Info', `${firstName} ${lastName} is already a admin of the project.`,
-										true, 'info',
+										'Info',
+										`${firstName} ${lastName} is already a admin of the project.`,
+										true,
+										'info',
 									);
 								} else {
 									this.updateNotificationModal('Failed', 'Admin could not be added!', true, 'danger');
@@ -976,8 +983,10 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 							(error: any): void => {
 								if (error['name'] === 'AlreadyAdminException') {
 									this.updateNotificationModal(
-										'Info', `${firstName} ${lastName} is already a admin of the project.`,
-										true, 'info',
+										'Info',
+										`${firstName} ${lastName} is already a admin of the project.`,
+										true,
+										'info',
 									);
 								} else {
 									this.updateNotificationModal('Failed', 'Admin could not be added!', true, 'danger');
