@@ -209,7 +209,6 @@ private workshopService: WorkshopService,
 				}
 			}));
 
-
 	}
 
 	getUrlDataForWorkshopVms(workshop: Workshop): void {
