@@ -106,10 +106,6 @@
             </div>
             <div class="col-3" *ngIf="virtualMachine?.status === virtualMachineStates.staticACTIVE ||
             virtualMachine?.status === virtualMachineStates.staticSHUTOFF">
-<!--							<button type="button" class="btn btn-danger" style="width:100%;" id="deleteVMButton"-->
-<!--											(click)="verifyModal.show();">-->
-<!--								<strong>Delete VM</strong>-->
-<!--							</button>-->
 							<button type="button" class="btn btn-danger" style="width:100%;" id="deleteVMButton"
 											(click)="showDeleteModal();">
 								<strong>Delete VM</strong>
@@ -650,6 +646,7 @@
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
   </div><!-- /.modal -->
+
 
   <div bsModal #deleteModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
        aria-labelledby="Label"

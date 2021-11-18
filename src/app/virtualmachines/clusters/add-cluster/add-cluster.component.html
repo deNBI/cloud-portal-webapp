@@ -299,8 +299,7 @@
 									 type="checkbox"
 									 id="cluster_responsibility"
 									 [(ngModel)]="cluster_responsibility"
-									 required
-						>
+									 required>
 						<label class="form-check-label" for="cluster_responsibility">
 							I hereby confirm that I am responsible for the cluster and any action performed on it.
 						</label>
@@ -311,9 +310,7 @@
 						<button style=" margin-left: auto;margin-top: 25px;
     margin-right: auto;
     width: 8em" id="startClusterButton"
-
 										type="button"
-
 										[disabled]="!cluster_responsibility || !selectedMasterFlavor || !selectedMasterImage || !selectedWorkerFlavorSet || !selectedBatch.valid_batch || !selectedBatch.worker_count || selectedBatch.worker_count === 0"
 										class="btn btn-primary  .btn-lg offset-md-8"
 										data-toggle="modal"

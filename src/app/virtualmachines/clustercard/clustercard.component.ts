@@ -19,10 +19,10 @@ import { StopClusterComponent } from '../modals/stop-cluster/stop-cluster.compon
  * Vm card component to be used by vm-overview. Holds information about a virtual machine.
  */
 @Component({
-	           selector: 'app-cluster-card',
-	           templateUrl: 'clustercard.component.html',
-	           styleUrls: ['./clustercard.component.scss'],
-	           providers: [ImageService],
+	selector: 'app-cluster-card',
+	templateUrl: 'clustercard.component.html',
+	styleUrls: ['./clustercard.component.scss'],
+	providers: [ImageService],
 })
 
 export class ClustercardComponent extends SharedModal implements OnInit, OnDestroy {
@@ -76,6 +76,8 @@ export class ClustercardComponent extends SharedModal implements OnInit, OnDestr
 	 */
 	subscription: Subscription = new Subscription();
 
+	statusSubscription: Subscription = new Subscription();
+
 	/**
 	 * Modal reference to be changed/showed/hidden depending on chosen modal.
 	 */
@@ -96,11 +98,15 @@ export class ClustercardComponent extends SharedModal implements OnInit, OnDestr
 	 * Timeout object to control check status loop (i.e. stopping and starting check status loop).
 	 */
 	checkStatusTimer: ReturnType<typeof setTimeout>;
+	/**
+	 * Timeout object to control check status loop (i.e. stopping and starting check status loop).
+	 */
+	checkWorkerStatusTimer: ReturnType<typeof setTimeout>;
 
 	constructor(
-private clipboardService: ClipboardService,
-	            modalService: BsModalService,
-	            private virtualmachineservice: VirtualmachineService,
+		private clipboardService: ClipboardService,
+		modalService: BsModalService,
+		private virtualmachineservice: VirtualmachineService,
 	) {
 		super(modalService);
 	}
@@ -111,7 +117,8 @@ private clipboardService: ClipboardService,
 
 	ngOnDestroy() {
 		this.subscription.unsubscribe();
-		this.stopCheckStatusTimer();
+		this.statusSubscription.unsubscribe();
+		this.stopAllCheckStatusTimer();
 	}
 
 	/**
@@ -121,6 +128,29 @@ private clipboardService: ClipboardService,
 		if (this.checkStatusTimer) {
 			clearTimeout(this.checkStatusTimer);
 		}
+		if (this.statusSubscription) {
+			this.statusSubscription.unsubscribe();
+		}
+	}
+
+	/**
+	 * Stop and clear the worker check status loop.
+	 */
+	stopCheckWorkerStatusTimer(): void {
+		if (this.checkWorkerStatusTimer) {
+			clearTimeout(this.checkWorkerStatusTimer);
+		}
+		if (this.statusSubscription) {
+			this.statusSubscription.unsubscribe();
+		}
+	}
+
+	/**
+	 * Stop and clear all check status loop.
+	 */
+	stopAllCheckStatusTimer(): void {
+		this.stopCheckStatusTimer();
+		this.stopCheckWorkerStatusTimer();
 	}
 
 	/**
@@ -148,7 +178,7 @@ private clipboardService: ClipboardService,
 	 * Show deletion modal
 	 */
 	showDeleteModal(): void {
-		this.stopCheckStatusTimer();
+		this.stopAllCheckStatusTimer();
 		const initialState = { cluster: this.cluster };
 
 		this.bsModalRef = this.modalService.show(DeleteClusterComponent, { initialState });
@@ -213,41 +243,34 @@ private clipboardService: ClipboardService,
 
 	}
 
-	check_status_loop(final_state?: string): void {
-
-		setTimeout(
+	check_status_loop(): void {
+		this.stopAllCheckStatusTimer();
+		this.statusSubscription = new Subscription();
+		this.checkStatusTimer = setTimeout(
 			(): void => {
-
-				this.subscription.add(this.virtualmachineservice.getClusterInfo(this.cluster.cluster_id)
-					                      .subscribe((updated_cluster: Clusterinfo): void => {
-						                      const password: string = this.cluster.password;
-						                      this.cluster = new Clusterinfo(updated_cluster);
-						                      this.cluster.password = password;
-
-						                      if (this.cluster.status !== 'Running' && this.cluster.status !== VirtualMachineStates.DELETING
-							                      && this.cluster.status !== VirtualMachineStates.DELETED) {
-							                      this.check_status_loop(final_state);
-
-						                      } else {
-
-							                      this.check_worker_count_loop();
-
-						                      }
-
-					                      }));
-
+				this.statusSubscription.add(this.virtualmachineservice.getClusterInfo(this.cluster.cluster_id)
+					.subscribe((updated_cluster: Clusterinfo): void => {
+						const password: string = this.cluster.password;
+						this.cluster = new Clusterinfo(updated_cluster);
+						this.cluster.password = password;
+						if (this.cluster.status !== 'Running' && this.cluster.status !== VirtualMachineStates.DELETING
+							&& this.cluster.status !== VirtualMachineStates.DELETED) {
+							this.check_status_loop();
+						} else {
+							this.check_worker_count_loop();
+						}
+					}));
 			},
-
 			this.checkStatusTimeout,
 		);
 	}
 
 	check_worker_count_loop(): void {
-
-		setTimeout(
+		this.stopCheckWorkerStatusTimer();
+		this.statusSubscription = new Subscription();
+		this.checkWorkerStatusTimer = setTimeout(
 			(): void => {
-
-				this.subscription.add(
+				this.statusSubscription.add(
 					this.virtualmachineservice.getClusterInfo(this.cluster.cluster_id)
 						.subscribe((updated_cluster: Clusterinfo): void => {
 							const password: string = this.cluster.password;
@@ -256,16 +279,12 @@ private clipboardService: ClipboardService,
 							for (const batch of this.cluster.worker_batches) {
 								if (batch.running_worker < batch.worker_count) {
 									this.check_worker_count_loop();
-
 									break;
 								}
 							}
-
 						}),
 				);
-
 			},
-
 			this.checkStatusTimeout,
 		);
 	}
@@ -314,7 +333,6 @@ private clipboardService: ClipboardService,
 		this.cluster.status = VirtualMachineStates.POWERING_ON;
 		this.subscription.add(this.virtualmachineservice.resumeCluster(this.cluster.cluster_id).subscribe((): void => {
 			this.check_status_loop();
-
 		}));
 	}
 
@@ -322,7 +340,6 @@ private clipboardService: ClipboardService,
 		this.cluster.status = VirtualMachineStates.POWERING_OFF;
 		this.subscription.add(this.virtualmachineservice.stopCluster(this.cluster.cluster_id).subscribe((): void => {
 			this.check_status_loop();
-
 		}));
 	}
 	/**
@@ -342,8 +359,9 @@ private clipboardService: ClipboardService,
 						this.resumeCluster();
 					} else if ('stopCluster' in result) {
 						this.stopCluster();
+					} else {
+						this.check_status_loop();
 					}
-
 				},
 			),
 		);

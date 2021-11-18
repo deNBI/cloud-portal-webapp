@@ -25,6 +25,7 @@
 </div>
 <div
 	*ngIf=" is_loaded && userinfo?.PublicKey !== 'None' && projects.length > 0"
+	id="projectsExisting"
 	class="animated fadeIn">
 
 	<div class="row">
@@ -50,7 +51,7 @@
 										Select
 									</option>
 									<option *ngFor="let project of projects" [ngValue]="project"
-													id="id_option_{{project[0]}}">
+													id="project_option_{{project[0]}}">
 										{{project[0]}}
 									</option>
 								</select>
@@ -67,6 +68,7 @@
 							</div>
 							<div class="col-3" *ngFor="let workshop of workshops">
 								<div class="card" (click)="reset_on_workshop_change(); set_selected_workshop(workshop);"
+										 id="workshop_option_{{workshop.shortname}}"
 										 style="cursor: pointer; width: 16rem; height: auto;">
 									<div class="card-header text-truncate"
 											 [ngClass]="{'bg-success': (workshop.shortname === selected_workshop?.shortname)}"
@@ -191,6 +193,7 @@
                             'icon-arrow-up': res_env_group.isOpen, 'icon-arrow-down': !res_env_group.isOpen}"></i>
 											</div>
 											<app-res-env #res_env
+																	 id="id_resenv"
 																	 [clientid]="selected_project_client.id"
 																	 [forc_url]="forc_url"
 																	 [selectedImageTags]="selected_image?.tags"
@@ -221,7 +224,9 @@
 													</thead>
 													<tbody>
 													<tr *ngFor="let member of project_members">
-														<td>{{ member.userName }} <p *ngIf="member.groupAdmin">(Group admin)</p></td>
+														<td>{{ member.userName }}
+															<p *ngIf="member.groupAdmin">(Group admin)</p>
+														</td>
 														<td>
 															<span *ngIf="member.hasVM" class="badge badge-success">
 																<span class="icon icon-check"></span>
@@ -234,6 +239,7 @@
 														<td>
 															<button *ngIf="members_to_add.indexOf(member) === -1"
 																			type="button"
+																			id="add_user_{{member.elixirId}}"
 																			class="btn btn-primary"
 																			data-toggle="modal" (click)="add_member(member)">
 																Add User
