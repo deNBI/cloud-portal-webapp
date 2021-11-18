@@ -49,6 +49,10 @@ export class VMOverviewPage {
 		return await browser.driver.sleep(10000);
 	}
 
+	static async getAllWorkshopMachines(): Promise<string[]> {
+		return Util.getTextFromElementsByIdPrefix(`detail_${Util.WORKSHOP_NAME}`);
+	}
+
 	static async logVmNames(): Promise<void> {
 		Util.logInfo(`Name_Counter: ${VMOverviewPage.name_counter}`);
 
