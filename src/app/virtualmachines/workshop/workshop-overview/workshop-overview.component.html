@@ -10,7 +10,7 @@
 			To learn more about workshops, please see our <a [href]="WIKI_WORKSHOPS" target="_blank"
 																											 rel="noopener noreferrer">WIKI</a>.
 		</alert>
-		<div *ngIf="projects.length > 0">
+		<div *ngIf="projects.length > 0" id="projectsExisting">
 
 			<div class="row" style="margin-bottom: 5px">
 				<label class="col-2 form-label" for="projectSelect"><strong>Project*</strong></label>
@@ -22,7 +22,7 @@
 							Select
 						</option>
 						<option *ngFor="let project of projects" [ngValue]="project"
-										id="id_option_{{project[0]}}">
+										id="project_option_{{project[0]}}">
 							{{project[0]}}
 						</option>
 					</select>
@@ -76,12 +76,14 @@
 						<button class="btn btn-danger"
 										(click)="verifyDeleteModal.show()"
 										type="button"
+										id="cleanup_workshop_button_id"
 										[disabled]="deleting"
 										*ngIf="selectedWorkshop?.id"
 										style="margin-bottom:5px;margin-right:5px;">
 							Cleanup Workshop
 						</button>
 						<button class="btn btn-info" type="button"
+										id="new_workshop_button_id"
 										style="margin-bottom:5px;margin-right:5px;" (click)="blankWorkshop()">
 							New Workshop
 						</button>
@@ -128,6 +130,7 @@
 						<div class="col-2" style="margin-top: 10px"></div>
 						<div class="col-4">
 							<button class="btn btn-primary" (click)="createNewWorkshop()" type="button"
+											id="create_workshop_button_id"
 											[disabled]="invalidShortname || invalidLongname"
 											style="margin-bottom: 15px; margin-top: 10px">
 								Create workshop
@@ -157,7 +160,8 @@
 								<td>
 									<div class="callout callout-info"
 											 style="border-top-width: 0; border-bottom-width: 0; border-right-width: 0;">
-										<i class="fa fa-id-card" style="width: 1.5em"></i>{{member.projectMember.userName}}<br>
+										<i class="fa fa-id-card" style="width: 1.5em"
+											 id="user_name_field_prefix_{{member.projectMember.elixirId}}"></i>{{member.projectMember.userName}}<br>
 										<i class="fa fa-envelope" style="width: 1.5em"></i>{{member.projectMember.email}}<br>
 										<i class="fa fa-user-cog" style="width: 1.5em"></i>
 										<ng-container *ngIf="member.projectMember.groupAdmin">Admin</ng-container>
@@ -182,13 +186,15 @@
 												</ng-container>
 												<ng-container *ngIf="!vm.loadingUrlData">
 													<i class="fa fa-laptop" style="width: 1.5em"></i>
-													<a [routerLink]="['/virtualmachines/detail/' + vm?.vm?.openstackid]">
+													<a [routerLink]="['/virtualmachines/detail/' + vm?.vm?.openstackid]"
+														 id="vm_name_{{member.projectMember.elixirId}}">
 														{{vm?.vm?.name}}
 													</a>
 													<br>
 													<i class="fa fa-heartbeat" style="width: 1.5em"></i>{{vm.vm.status}}<br>
 													<i class="fa fa-link" style="width: 1.5em"></i>
-													<a href="{{vm.urlData.resenv_url}}" target="_blank" rel="noopener noreferrer">
+													<a href="{{vm.urlData.resenv_url}}" target="_blank" rel="noopener noreferrer"
+														 id="resenv_url_{{vm?.vm?.name}}">
 														{{vm.urlData.resenv_url}}
 													</a>
 													<br>
@@ -263,7 +269,7 @@
 <div bsModal #infoMailModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
 		 aria-labelledby="Label"
 		 aria-hidden="true"
-		 id="delete_status_modal">
+		 id="send_info_mail_modal">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -330,16 +336,16 @@
 					</div>
 				</div>
 				<div *ngIf="!deleting">
-					<div *ngIf="deleteSuccess">
+					<div *ngIf="deleteSuccess" id="delete_success_id">
 						Cleanup successful.
 					</div>
-					<div *ngIf="!deleteSuccess">
+					<div *ngIf="!deleteSuccess" id="delete_fail_id">
 						Cleanup failed.
 					</div>
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button class="btn  btn-danger col-md-4" type="reset"
+				<button class="btn  btn-danger col-md-4" type="reset" id="close_deletion_status"
 								(click)="deletionStatusModal.hide();">Close
 				</button>
 			</div>
@@ -367,15 +373,21 @@
 						 style="display:block; margin:auto;">
 					</div>
 				</div>
-				<div *ngIf="workshopCreationMessage.message !== ''">
-					<div class="alert" [ngClass]="{'alert-danger': !workshopCreationMessage.success,
-								'alert-success' : workshopCreationMessage.success}">
+				<div *ngIf="workshopCreationMessage.message !== ''" id="creation_status_message">
+					<div class="alert alert-success"
+							 *ngIf="workshopCreationMessage.success"
+							 id="creation_success">
+						{{ workshopCreationMessage.message }}
+					</div>
+					<div class="alert alert-danger"
+							 *ngIf="!workshopCreationMessage.success"
+							 id="creation_failure">
 						{{ workshopCreationMessage.message }}
 					</div>
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button class="btn  btn-danger col-md-4" type="reset"
+				<button class="btn  btn-danger col-md-4" type="reset" id="close_creation_status_modal"
 						(click)="creationStatusModal.hide();">Close
 				</button>
 			</div>
