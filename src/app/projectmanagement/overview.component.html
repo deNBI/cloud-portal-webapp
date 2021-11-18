@@ -571,9 +571,7 @@
 												 name="member.userId"
 												 [checked]="isMemberChecked(member.memberId)" (change)="checkUnCheckMember(member.memberId);">
 								</td>
-								<td>
-
-									{{ member.userId }}</td>
+								<td>{{ member.userId }}</td>
 								<td>{{ member.memberId }}</td>
 								<td>{{ member.userName }}</td>
 								<td *ngIf="this.project.UserIsPi || this.project.UserIsAdmin|| is_vo_admin">
@@ -596,6 +594,14 @@
 											<i class="fa fa-trash"></i>&nbsp; Remove member
 										</button>
 									</div>
+
+								</td>
+								<td *ngIf="member.elixirId !== project_application.project_application_pi.elixir_id && userinfo?.MemberId.toString() === member.memberId.toString()">
+									<button class="btn btn-danger" type="button" style="margin: 2px"
+										(click)="leaveProject(project?.Id,member.memberId,project?.Name);	notificationModal.show();">
+										<i class="fas fa-sign-out-alt"></i>
+										Leave Project
+									</button>
 
 								</td>
 							</tr>

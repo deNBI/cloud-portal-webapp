@@ -1058,6 +1058,36 @@ private flavorService: FlavorService,
 	}
 
 	/**
+	 * Leave a project
+	 *
+	 * @param groupid  of the group
+	 * @param memberid of the member
+	 * @param name of the project
+	 */
+	public leaveProject(groupid: number, memberid: number, name: string): void {
+		if (this.userinfo.MemberId.toString() === memberid.toString()) {
+			this.subscription.add(
+				this.groupService.removeMember(groupid, memberid, this.project.ComputeCenter.FacilityId).subscribe(
+					(result: any): void => {
+
+						if (result.status === 200) {
+							this.updateNotificationModal('Success', `You were removed from the project ${name}`, true, 'success');
+							this.getMembersOfTheProject();
+							void this.router.navigate(['/userinfo']);
+						} else {
+							this.updateNotificationModal('Failed', `Failed to leave the project ${name}!`, true, 'danger');
+						}
+					},
+					(): void => {
+						this.updateNotificationModal('Failed', `Failed to leave the project ${name}!`, true, 'danger');
+					},
+				),
+			);
+		}
+
+	}
+
+	/**
 	 * Delete an application.
 	 *
 	 * @param application_id
