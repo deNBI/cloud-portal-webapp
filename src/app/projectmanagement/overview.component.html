@@ -14,7 +14,7 @@
 				<div class="card-header">
 					<h3>
 						<a *ngIf="project_application?.project_application_openstack_project"
-							 href="https://cloud.denbi.de/openstack/" target="_blank" rel="noopener noreferrer"
+							 href="{{ OPENSTACK_LINK }}" target="_blank" rel="noopener noreferrer"
 							 style="font-size: 2em"
 							 class="project-openstack_plain_white_redbg"
 							 data-toggle="tooltip"
@@ -24,7 +24,7 @@
 							<a class="path2"></a>
 						</a>
 						<a *ngIf="!project_application?.project_application_openstack_project"
-							 href="https://cloud.denbi.de/simplevm/" target="_blank" rel="noopener noreferrer"
+							 href="{{ SIMPLE_VM_LINK }}" target="_blank" rel="noopener noreferrer"
 							 style="font-size: 2em"
 							 class="project-simpleVM_Logo_bluebg"
 							 data-toggle="tooltip"
@@ -148,7 +148,7 @@
 
 				<div class="card-header">
 					<h3>
-						<a *ngIf="project?.OpenStackProject" href="https://cloud.denbi.de/openstack/" rel="noopener noreferrer"
+						<a *ngIf="project?.OpenStackProject" href="{{ OPENSTACK_LINK }}" rel="noopener noreferrer"
 							 target="_blank"
 							 style="font-size: 2em"
 							 class="project-openstack_plain_white_redbg"
@@ -158,7 +158,7 @@
 							<a class="path1"></a>
 							<a class="path2"></a>
 						</a>
-						<a *ngIf="!project?.OpenStackProject" href="https://cloud.denbi.de/simplevm/" rel="noopener noreferrer"
+						<a *ngIf="!project?.OpenStackProject" href="{{ SIMPLE_VM_LINK }}" rel="noopener noreferrer"
 							 target="_blank"
 							 style="font-size: 2em"
 							 class="project-simpleVM_Logo_bluebg"
@@ -685,7 +685,7 @@
 					</div>
 					<div class="alert alert-info">
 						<p>Please note that the publications entered on this page are listed publicly on
-							<a href="https://cloud.denbi.de/publications" target="_blank"
+							<a href="{{ PUBLICATIONS_LINK }}" target="_blank"
 								 rel="noopener noreferrer">this page on our website</a>.
 							We kindly ask you to list your publications which have been created
 							during your work in the de.NBI Cloud and/or this project.</p>

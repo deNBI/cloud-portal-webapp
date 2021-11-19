@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { WIKI_WORKSHOPS } from '../../links/links';
+import {
+	WIKI_WORKSHOPS, OPENSTACK_LINK, PROJECT_TYPES_LINK, SIMPLE_VM_LINK,
+} from '../../links/links';
 
 /**
  * The type overview of the different project classes.
@@ -25,6 +27,9 @@ export class TypeOverviewComponent implements OnInit {
 	static_img_folder: String = 'static/webapp/assets/img/';
 
 	WIKI_WORKSHOPS: string = WIKI_WORKSHOPS;
+	SIMPLE_VM_LINK: string = SIMPLE_VM_LINK;
+	PROJECT_TYPES_LINK: string = PROJECT_TYPES_LINK;
+	OPENSTACK_LINK: string = OPENSTACK_LINK;
 
 	ngOnInit(): any {
 		this.simpleVM_logo_link = `${this.static_img_folder}simpleVM_Logo.svg`;
