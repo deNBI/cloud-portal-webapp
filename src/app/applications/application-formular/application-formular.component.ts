@@ -15,7 +15,7 @@ import { CreditsService } from '../../api-connector/credits.service';
 import { Application } from '../application.model/application.model';
 import { is_vo } from '../../shared/globalvar';
 import {
-	CLOUD_MAIL, CREDITS_WIKI, SURVEY_LINK, POLICY_LINK, WIKI_WORKSHOPS,
+	CLOUD_MAIL, CREDITS_WIKI, SURVEY_LINK, POLICY_LINK, WIKI_WORKSHOPS, OPENSTACK_LINK, PROJECT_TYPES_LINK, SIMPLE_VM_LINK,
 } from '../../../links/links';
 
 /**
@@ -56,6 +56,9 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 	SURVEY_LINK: string = SURVEY_LINK;
 	POLICY_LINK: string = POLICY_LINK;
 	WIKI_WORKSHOPS: string = WIKI_WORKSHOPS;
+	OPENSTACK_LINK: string = OPENSTACK_LINK;
+	PROJECT_TYPES_LINK: string = PROJECT_TYPES_LINK;
+	SIMPLE_VM_LINK: string = SIMPLE_VM_LINK;
 	survey_link_visible: boolean = false;
 
 	acknowledgeModalTitle: string = 'Acknowledge';
