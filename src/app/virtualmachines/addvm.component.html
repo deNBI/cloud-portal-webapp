@@ -186,40 +186,13 @@
 								<div *ngIf="selectedProject" class="form-group row col-md-12">
 									<label class="col-md-2 form-control-label"><strong>Image*</strong></label>
 									<div class="col-md-10">
-										<div class="card">
 
-
-											<div class="card-header">
-												<ul class="nav nav-tabs card-header-tabs" style="overflow: hidden" role="tablist">
-													<li class="nav-item " style="  cursor: pointer">
-														<a class="nav-link" (click)="setSelectedImageType(imageTypes.IMAGE)"
-															 [ngClass]="{'active': selected_image_type === imageTypes.IMAGE }"
-														>Images</a>
-													</li>
-													<li class="nav-item">
-														<a class="nav-link" (click)="setSelectedImageType(imageTypes.SNAPSHOT)"
-															 [ngClass]="{'active': selected_image_type === imageTypes.SNAPSHOT }"
-														>Snapshots</a>
-													</li>
-
-
-												</ul>
-											</div>
-											<div class="card-body">
-
-
-												<div class="alert alert-primary" *ngIf="(images?.length === 0) || !images">
-													There are no images available for selection at the moment.
-													Please contact the support of the facility where your project is running.
-												</div>
-												<app-image-detail *ngIf="images?.length > 0" [selectedImage]="selectedImage"
-																					[images]="image_types[selected_image_type]"
-																					(selectedImageChange)="setSelectedImage($event)"
-																					id="id_image_detail"></app-image-detail>
-											</div>
-										</div>
-
+										<app-image-detail *ngIf="images?.length > 0" [selectedImage]="selectedImage"
+																			[images]="images"
+																			(selectedImageChange)="setSelectedImage($event)"
+																			id="id_image_detail"></app-image-detail>
 									</div>
+
 								</div>
 							</div>
 

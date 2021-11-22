@@ -1,8 +1,18 @@
 import {
 	Component, EventEmitter, HostListener, Input, OnInit, Output,
 } from '@angular/core';
-import { OwlOptions } from 'ngx-owl-carousel-o';
-import { Image } from './virtualmachinemodels/image';
+import {OwlOptions} from 'ngx-owl-carousel-o';
+import {Image, ImageTypes} from './virtualmachinemodels/image';
+import {Flavor} from "./virtualmachinemodels/flavor";
+import {GroupService} from "../api-connector/group.service";
+import {ImageService} from "../api-connector/image.service";
+import {KeyService} from "../api-connector/key.service";
+import {FlavorService} from "../api-connector/flavor.service";
+import {VirtualmachineService} from "../api-connector/virtualmachine.service";
+import {ApiSettings} from "../api-connector/api-settings.service";
+import {UserService} from "../api-connector/user.service";
+import {ApplicationsService} from "../api-connector/applications.service";
+import {Router} from "@angular/router";
 
 /**
  * Imagedetail component.
@@ -11,6 +21,7 @@ import { Image } from './virtualmachinemodels/image';
 	selector: 'app-image-detail',
 	templateUrl: 'imagedetail.component.html',
 	styleUrls: ['./imagedetail.component.scss'],
+	providers: [ImageService]
 
 })
 export class ImageDetailComponent implements OnInit {
@@ -27,6 +38,11 @@ export class ImageDetailComponent implements OnInit {
 	img_height: string = '120px';
 	img_width: string = '210px';
 	image_visible: boolean = true;
+	selected_image_type: string = ImageTypes.IMAGE;
+	image_types: { [name: string]: Image[] } = {};
+	imageTypes = ImageTypes;
+	image_selection: Image[];
+
 
 	customOptions: OwlOptions = {
 		loop: false,
@@ -55,9 +71,22 @@ export class ImageDetailComponent implements OnInit {
 		nav: true,
 	};
 
+	constructor(
+		private imageService: ImageService,
+	) {
+		// eslint-disable-next-line no-empty-function
+	}
+
 	ngOnInit(): void {
 		this.window_size = window.innerWidth;
+		this.image_types = this.imageService.sortImages(this.images);
+		this.image_selection = this.image_types[this.selected_image_type];
 
+	}
+
+	setSelectedImageType(key: string): void {
+		this.selected_image_type = key;
+		this.image_selection = this.image_types[key];
 	}
 
 	public setImageVisible(): void {
