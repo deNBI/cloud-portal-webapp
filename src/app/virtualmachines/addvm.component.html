@@ -135,39 +135,15 @@
 								<div *ngIf="selectedProject" class="form-group row col-md-12">
 									<label class="col-md-2 form-control-label"><strong>Flavor*</strong></label>
 									<div class="col-md-10">
-										<div class="card">
-											<div class="card-header">
 
 
-												<ul class="nav nav-tabs card-header-tabs" style="overflow: hidden" role="tablist">
-													<li class="nav-item " style="  cursor: pointer"
-															*ngFor="let item of flavor_types | keyvalue:unsorted"><a
-														[ngClass]="{'active': selected_flavor_type === item.key }"
-														(click)="setSelectedFlavorType(item.key)" class="nav-link">{{item.key}} </a>
-
-													</li>
+										<app-flavor-detail [selectedFlavor]="selectedFlavor" id="id_flavor_detail"
+																			 [flavors]="flavors"
+																			 [creditsAllowed]="credits_allowed"
+																			 (selectedFlavorChange)="setSelectedFlavor($event)"
+										></app-flavor-detail>
 
 
-												</ul>
-											</div>
-											<div class="card-body">
-
-												<div
-													*ngIf="flavor_types[selected_flavor_type].length >0 && flavor_types[selected_flavor_type][0]?.type?.description"
-													class="alert alert-primary">
-
-													{{flavor_types[selected_flavor_type][0].type.description}}
-												</div>
-
-
-												<app-flavor-detail [selectedFlavor]="selectedFlavor" id="id_flavor_detail"
-																					 [flavors]="flavor_types[selected_flavor_type]"
-																					 [creditsAllowed]="credits_allowed"
-																					 (selectedFlavorChange)="setSelectedFlavor($event)"
-												></app-flavor-detail>
-
-											</div>
-										</div>
 									</div>
 
 

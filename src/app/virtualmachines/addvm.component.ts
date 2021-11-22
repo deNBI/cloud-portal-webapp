@@ -5,7 +5,7 @@ import {forkJoin, Subscription} from 'rxjs';
 import {Router} from '@angular/router';
 import {WIKI_VOLUME_OVERVIEW, CLOUD_PORTAL_SUPPORT_MAIL} from 'links/links';
 import {KeyValue} from '@angular/common';
-import {Image, ImageTypes} from './virtualmachinemodels/image';
+import {Image} from './virtualmachinemodels/image';
 import {Flavor} from './virtualmachinemodels/flavor';
 import {Userinfo} from '../userinfo/userinfo.model';
 import {environment} from '../../environments/environment';
@@ -113,17 +113,14 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 	flavors: Flavor[] = [];
 	selected_flavor_types: Flavor[] = [];
 	selected_flavor_type: string = 'Standard Flavours';
-	selected_image_type: string = ImageTypes.IMAGE;
 
 	flavor_types: { [name: string]: Flavor[] } = {};
-	image_types: { [name: string]: Image[] } = {};
 
 
 	/**
 	 * Selected Image.
 	 */
 	selectedImage: Image;
-	imageTypes = ImageTypes;
 
 	/**
 	 * Selected Flavor.
@@ -239,8 +236,6 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 		this.subscription.add(
 			this.imageService.getImages(project_id).subscribe((images: Image[]): void => {
 				this.images = images;
-				this.image_types = this.imageService.sortImages(this.images);
-
 				this.image_loaded = true;
 				this.checkProjectDataLoaded();
 			}),
@@ -302,13 +297,8 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 		return false;
 	}
 
-	setSelectedFlavorType(key: string): void {
-		this.selected_flavor_type = key;
-	}
 
-	setSelectedImageType(key: string): void {
-		this.selected_image_type = key;
-	}
+
 
 	/**
 	 * Checks if the name which is entered for a new volume is valid.
