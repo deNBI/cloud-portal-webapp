@@ -17,7 +17,6 @@ export class FlavorDetailComponent implements OnInit {
 	@Input() creditsAllowed: boolean;
 	@Input() flavors: Flavor[];
 	@Output() readonly selectedFlavorChange: EventEmitter<Flavor> = new EventEmitter();
-
 	flavors_per_row: number = 4;
 	carousel_activated: boolean = true;
 	window_size: number;

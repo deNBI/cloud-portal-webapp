@@ -1,33 +1,33 @@
 import {
 	Component, DoCheck, OnDestroy, OnInit, ViewChild,
 } from '@angular/core';
-import { forkJoin, Subscription } from 'rxjs';
-import { Router } from '@angular/router';
-import { WIKI_VOLUME_OVERVIEW, CLOUD_PORTAL_SUPPORT_MAIL } from 'links/links';
-import { KeyValue } from '@angular/common';
-import { Image } from './virtualmachinemodels/image';
-import { Flavor } from './virtualmachinemodels/flavor';
-import { Userinfo } from '../userinfo/userinfo.model';
-import { environment } from '../../environments/environment';
-import { IResponseTemplate } from '../api-connector/response-template';
-import { Client } from '../vo_manager/clients/client.model';
-import { VirtualMachine } from './virtualmachinemodels/virtualmachine';
-import { BiocondaComponent } from './conda/bioconda.component';
-import { ResEnvComponent } from './conda/res-env.component';
-import { is_vo } from '../shared/globalvar';
-import { RandomNameGenerator } from '../shared/randomNameGenerator';
-import { Volume } from './volumes/volume';
-import { UserService } from '../api-connector/user.service';
-import { ImageService } from '../api-connector/image.service';
-import { GroupService } from '../api-connector/group.service';
-import { KeyService } from '../api-connector/key.service';
-import { FlavorService } from '../api-connector/flavor.service';
-import { VirtualmachineService } from '../api-connector/virtualmachine.service';
-import { ApiSettings } from '../api-connector/api-settings.service';
-import { BlockedImageTagResenv } from '../facility_manager/image-tag';
-import { ApplicationRessourceUsage } from '../applications/application-ressource-usage/application-ressource-usage';
-import { ProjectMember } from '../projectmanagement/project_member.model';
-import { ApplicationsService } from '../api-connector/applications.service';
+import {forkJoin, Subscription} from 'rxjs';
+import {Router} from '@angular/router';
+import {WIKI_VOLUME_OVERVIEW, CLOUD_PORTAL_SUPPORT_MAIL} from 'links/links';
+import {KeyValue} from '@angular/common';
+import {Image, ImageTypes} from './virtualmachinemodels/image';
+import {Flavor} from './virtualmachinemodels/flavor';
+import {Userinfo} from '../userinfo/userinfo.model';
+import {environment} from '../../environments/environment';
+import {IResponseTemplate} from '../api-connector/response-template';
+import {Client} from '../vo_manager/clients/client.model';
+import {VirtualMachine} from './virtualmachinemodels/virtualmachine';
+import {BiocondaComponent} from './conda/bioconda.component';
+import {ResEnvComponent} from './conda/res-env.component';
+import {is_vo} from '../shared/globalvar';
+import {RandomNameGenerator} from '../shared/randomNameGenerator';
+import {Volume} from './volumes/volume';
+import {UserService} from '../api-connector/user.service';
+import {ImageService} from '../api-connector/image.service';
+import {GroupService} from '../api-connector/group.service';
+import {KeyService} from '../api-connector/key.service';
+import {FlavorService} from '../api-connector/flavor.service';
+import {VirtualmachineService} from '../api-connector/virtualmachine.service';
+import {ApiSettings} from '../api-connector/api-settings.service';
+import {BlockedImageTagResenv} from '../facility_manager/image-tag';
+import {ApplicationRessourceUsage} from '../applications/application-ressource-usage/application-ressource-usage';
+import {ProjectMember} from '../projectmanagement/project_member.model';
+import {ApplicationsService} from '../api-connector/applications.service';
 
 /**
  * Start virtualmachine component.
@@ -113,13 +113,17 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 	flavors: Flavor[] = [];
 	selected_flavor_types: Flavor[] = [];
 	selected_flavor_type: string = 'Standard Flavours';
+	selected_image_type: string = ImageTypes.IMAGE;
 
 	flavor_types: { [name: string]: Flavor[] } = {};
+	image_types: { [name: string]: Image[] } = {};
+
 
 	/**
 	 * Selected Image.
 	 */
 	selectedImage: Image;
+	imageTypes = ImageTypes;
 
 	/**
 	 * Selected Flavor.
@@ -215,13 +219,13 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 	@ViewChild('resEnv') resEnvComponent: ResEnvComponent;
 
 	constructor(
-private groupService: GroupService,
-							private imageService: ImageService,
-							private flavorService: FlavorService,
-							private virtualmachineservice: VirtualmachineService,
-							private keyservice: KeyService,
-							private userService: UserService,
-							private router: Router,
+		private groupService: GroupService,
+		private imageService: ImageService,
+		private flavorService: FlavorService,
+		private virtualmachineservice: VirtualmachineService,
+		private keyservice: KeyService,
+		private userService: UserService,
+		private router: Router,
 	) {
 		// eslint-disable-next-line no-empty-function
 	}
@@ -235,7 +239,8 @@ private groupService: GroupService,
 		this.subscription.add(
 			this.imageService.getImages(project_id).subscribe((images: Image[]): void => {
 				this.images = images;
-				this.images.sort((x_cord: any, y_cord: any): number => Number(x_cord.is_snapshot) - Number(y_cord.is_snapshot));
+				this.image_types = this.imageService.sortImages(this.images);
+
 				this.image_loaded = true;
 				this.checkProjectDataLoaded();
 			}),
@@ -299,6 +304,10 @@ private groupService: GroupService,
 
 	setSelectedFlavorType(key: string): void {
 		this.selected_flavor_type = key;
+	}
+
+	setSelectedImageType(key: string): void {
+		this.selected_image_type = key;
 	}
 
 	/**
@@ -532,12 +541,12 @@ private groupService: GroupService,
 
 		if (this.resEnvComponent && this.resEnvComponent.selectedTemplate.template_name !== 'undefined'
 			&& this.resEnvComponent.user_key_url.errors === null) {
-			playbook_info[this.resEnvComponent.selectedTemplate.template_name] = { create_only_backend: `${this.resEnvComponent.getCreateOnlyBackend()}` };
-			playbook_info['user_key_url'] = { user_key_url: this.resEnvComponent.getUserKeyUrl() };
+			playbook_info[this.resEnvComponent.selectedTemplate.template_name] = {create_only_backend: `${this.resEnvComponent.getCreateOnlyBackend()}`};
+			playbook_info['user_key_url'] = {user_key_url: this.resEnvComponent.getUserKeyUrl()};
 		}
 
 		if (this.udp_allowed && this.install_mosh) {
-			playbook_info['optional'] = { mosh: 'install' };
+			playbook_info['optional'] = {mosh: 'install'};
 		}
 
 		return JSON.stringify(playbook_info);
@@ -795,4 +804,6 @@ private groupService: GroupService,
 			return storageInList;
 		}
 	}
+
+
 }

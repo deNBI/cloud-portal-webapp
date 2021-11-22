@@ -1,15 +1,15 @@
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { map } from 'rxjs/operators';
-import { Image } from '../virtualmachines/virtualmachinemodels/image';
-import { SnapshotModel } from '../virtualmachines/snapshots/snapshot.model';
-import { ApiSettings } from './api-settings.service';
-import { IResponseTemplate } from './response-template';
+import {Injectable} from '@angular/core';
+import {Observable} from 'rxjs';
+import {HttpClient, HttpParams} from '@angular/common/http';
+import {map} from 'rxjs/operators';
+import {Image, ImageTypes} from '../virtualmachines/virtualmachinemodels/image';
+import {SnapshotModel} from '../virtualmachines/snapshots/snapshot.model';
+import {ApiSettings} from './api-settings.service';
+import {IResponseTemplate} from './response-template';
 import {
 	BlockedImageTag, BlockedImageTagResenv, ImageLogo, ImageMode, ImageTag,
 } from '../facility_manager/image-tag';
-import { SnapshotPage } from '../virtualmachines/snapshots/snapshotPage.model';
+import {SnapshotPage} from '../virtualmachines/snapshots/snapshotPage.model';
 
 /**
  * Service which provides image methods.
@@ -54,7 +54,7 @@ export class ImageService {
 
 		return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}snapshots/names/`, {
 			withCredentials: true,
-			params: { snapshot_name, client_id },
+			params: {snapshot_name, client_id},
 
 		});
 
@@ -95,14 +95,14 @@ export class ImageService {
 	getBlockedImageTags(facility_id: number): Observable<any> {
 		return this.http.get(`${ApiSettings.getApiBaseURL()}blockedImageTags/`, {
 			withCredentials: true,
-			params: { facility_id: facility_id.toString() },
+			params: {facility_id: facility_id.toString()},
 		});
 	}
 
 	getBlockedImageTagsResenv(facility_id: number, is_client?: string): Observable<any> {
 		return this.http.get(`${ApiSettings.getApiBaseURL()}blockedImageTagsResenv/`, {
 			withCredentials: true,
-			params: { facility_id: facility_id.toString(), is_client },
+			params: {facility_id: facility_id.toString(), is_client},
 		});
 	}
 
@@ -258,6 +258,23 @@ export class ImageService {
 			),
 		);
 
+	}
+
+	sortImages(images: Image[]): { [name: string]: Image[] } {
+		const image_types: { [name: string]: Image[] } = {};
+		image_types[ImageTypes.IMAGE] = [];
+		image_types[ImageTypes.SNAPSHOT] = [];
+
+
+		for (const image of images) {
+			if (image.is_snapshot) {
+				image_types[ImageTypes.SNAPSHOT].push(image);
+			} else {
+				image_types[ImageTypes.IMAGE].push(image);
+			}
+		}
+
+		return image_types;
 	}
 
 }

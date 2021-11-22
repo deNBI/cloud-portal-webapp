@@ -40,7 +40,7 @@
   </div>
 
   <div *ngIf="!selectedImage" class="col-md-12"
-       style="border-style: dashed; border-color: lightgray; padding-top: 10px">
+       style=" padding-top: 10px">
     <owl-carousel-o *ngIf="carousel_activated" [options]="customOptions">
       <ng-container *ngFor="let image of images">
         <ng-template carouselSlide>
@@ -56,7 +56,7 @@
        [ngClass]="{'col-xl-9':window_size >= carousel_window_min_xl_9,
        'col-xl-6':window_size >= carousel_window_min_xl6 && window_size<carousel_window_min_xl_8,
        'col-xl-8':window_size <carousel_window_min_xl_9 && window_size>=carousel_window_min_xl_8}"
-       style="border-style: dashed; border-color: lightgray; padding-top: 10px">
+       style=" padding-top: 10px">
     <owl-carousel-o *ngIf="carousel_activated" [options]="customOptions">
       <ng-container *ngFor="let image of images">
         <ng-template carouselSlide>
