@@ -1,18 +1,18 @@
 import {
 	Component, EventEmitter, HostListener, Input, OnInit, Output,
 } from '@angular/core';
-import {OwlOptions} from 'ngx-owl-carousel-o';
-import {Flavor} from './virtualmachinemodels/flavor';
-import {GroupService} from "../api-connector/group.service";
-import {ImageService} from "../api-connector/image.service";
-import {KeyService} from "../api-connector/key.service";
-import {FlavorService} from "../api-connector/flavor.service";
-import {VirtualmachineService} from "../api-connector/virtualmachine.service";
-import {ApiSettings} from "../api-connector/api-settings.service";
-import {UserService} from "../api-connector/user.service";
-import {ApplicationsService} from "../api-connector/applications.service";
-import {Router} from "@angular/router";
-import {KeyValue} from "@angular/common";
+import { OwlOptions } from 'ngx-owl-carousel-o';
+import { Router } from '@angular/router';
+import { KeyValue } from '@angular/common';
+import { Flavor } from './virtualmachinemodels/flavor';
+import { GroupService } from '../api-connector/group.service';
+import { ImageService } from '../api-connector/image.service';
+import { KeyService } from '../api-connector/key.service';
+import { FlavorService } from '../api-connector/flavor.service';
+import { VirtualmachineService } from '../api-connector/virtualmachine.service';
+import { ApiSettings } from '../api-connector/api-settings.service';
+import { UserService } from '../api-connector/user.service';
+import { ApplicationsService } from '../api-connector/applications.service';
 
 /**
  * Flavor detail component.
@@ -87,7 +87,6 @@ export class FlavorDetailComponent implements OnInit {
 		this.flavor_types = this.flavorService.sortFlavors(this.flavors);
 		this.possible_flavors = this.flavor_types[this.selected_flavor_type];
 
-
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -112,7 +111,6 @@ export class FlavorDetailComponent implements OnInit {
 		this.selected_flavor_type = key;
 		this.possible_flavors = this.flavor_types[key];
 	}
-
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	unsorted(a: KeyValue<number, string>, b: KeyValue<number, string>): number {
