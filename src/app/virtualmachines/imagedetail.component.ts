@@ -2,9 +2,9 @@ import {
 	Component, EventEmitter, HostListener, Input, OnInit, Output,
 } from '@angular/core';
 import { OwlOptions } from 'ngx-owl-carousel-o';
-import { Image} from './virtualmachinemodels/image';
+import { Image } from './virtualmachinemodels/image';
 import { ImageService } from '../api-connector/image.service';
-import {ImageTypes} from "./virtualmachinemodels/imageTypes";
+import { ImageTypes } from './virtualmachinemodels/imageTypes';
 
 /**
  * Imagedetail component.

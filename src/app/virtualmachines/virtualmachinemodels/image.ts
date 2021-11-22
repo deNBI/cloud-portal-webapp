@@ -1,4 +1,4 @@
-import {ImageMode} from '../../facility_manager/image-tag';
+import { ImageMode } from '../../facility_manager/image-tag';
 
 /**
  * Image class.
