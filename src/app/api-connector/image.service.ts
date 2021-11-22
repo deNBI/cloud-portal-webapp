@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { map } from 'rxjs/operators';
-import { Image, ImageTypes } from '../virtualmachines/virtualmachinemodels/image';
+import { Image} from '../virtualmachines/virtualmachinemodels/image';
 import { SnapshotModel } from '../virtualmachines/snapshots/snapshot.model';
 import { ApiSettings } from './api-settings.service';
 import { IResponseTemplate } from './response-template';
@@ -10,6 +10,7 @@ import {
 	BlockedImageTag, BlockedImageTagResenv, ImageLogo, ImageMode, ImageTag,
 } from '../facility_manager/image-tag';
 import { SnapshotPage } from '../virtualmachines/snapshots/snapshotPage.model';
+import {ImageTypes} from "../virtualmachines/virtualmachinemodels/imageTypes";
 
 /**
  * Service which provides image methods.

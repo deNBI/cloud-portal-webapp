@@ -2,17 +2,9 @@ import {
 	Component, EventEmitter, HostListener, Input, OnInit, Output,
 } from '@angular/core';
 import { OwlOptions } from 'ngx-owl-carousel-o';
-import { Router } from '@angular/router';
 import { KeyValue } from '@angular/common';
 import { Flavor } from './virtualmachinemodels/flavor';
-import { GroupService } from '../api-connector/group.service';
-import { ImageService } from '../api-connector/image.service';
-import { KeyService } from '../api-connector/key.service';
 import { FlavorService } from '../api-connector/flavor.service';
-import { VirtualmachineService } from '../api-connector/virtualmachine.service';
-import { ApiSettings } from '../api-connector/api-settings.service';
-import { UserService } from '../api-connector/user.service';
-import { ApplicationsService } from '../api-connector/applications.service';
 
 /**
  * Flavor detail component.
