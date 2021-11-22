@@ -191,6 +191,7 @@ private workshopService: WorkshopService,
 	}
 
 	sendWorkshopVMEMailInfo(workshop_vm: WorkshopVM): void {
+
 		this.subscription.add(this.workshopService.sendWorkshopVmEmail(this.selectedWorkshop.id, workshop_vm?.vm?.openstackid)
 			.subscribe((upd_workshop_vm: WorkshopVM) => {
 				for (const memberVm of this.memberVms) {

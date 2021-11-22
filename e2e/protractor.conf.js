@@ -63,10 +63,12 @@ exports.config = {
     login: {
       email_user: credentials['email_user'],
       password_user: credentials['password_user'],
+			elixir_id_user: credentials['elixir_id_user'],
       email_fm: credentials['email_fm'],
       password_fm: credentials['password_fm'],
       email_vo: credentials['email_vo'],
       password_vo: credentials['password_vo'],
+			elixir_id_vo: credentials['elixir_id_vo'],
       auth_user: credentials['auth_user'],
       auth_fm: credentials['auth_fm'],
       auth_vo: credentials['auth_vo']
@@ -127,7 +129,8 @@ exports.config = {
       'tests/cloud_modification_approval_test.ts',
       'tests/terminate_all_pt_after.ts',
     ],
-    all: ['tests/terminate_all_pt.ts',
+    all: [
+			'tests/terminate_all_pt.ts',
       'tests/public_key_test.ts',
       'tests/simple_vm_application_test.ts',
       'tests/simple_vm_approval_test.ts',
@@ -143,7 +146,11 @@ exports.config = {
       'tests/cloud_modification_approval_test.ts',
       'tests/cluster_tests.ts',
       'tests/virtual_machine_tests.ts',
-      'tests/terminate_all_pt_after.ts',]
+			'tests/create_workshop_test.ts',
+			'tests/start_workshop_vms_test.ts',
+			'tests/terminate_all_workshops_test.ts',
+      'tests/terminate_all_pt_after.ts',
+		]
   },
 
   allScriptsTimeout: 11000,
