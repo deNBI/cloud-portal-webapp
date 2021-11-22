@@ -1,11 +1,11 @@
-import {ImageMode} from '../../facility_manager/image-tag';
+import { ImageMode } from '../../facility_manager/image-tag';
 
 /**
  * Image Types enum.
  */
 export enum ImageTypes {
-	IMAGE = "IMAGE",
-	SNAPSHOT = "SNAPSHOT"
+	IMAGE = 'IMAGE',
+	SNAPSHOT = 'SNAPSHOT'
 }
 
 /**

@@ -1,33 +1,33 @@
 import {
 	Component, DoCheck, OnDestroy, OnInit, ViewChild,
 } from '@angular/core';
-import {forkJoin, Subscription} from 'rxjs';
-import {Router} from '@angular/router';
-import {WIKI_VOLUME_OVERVIEW, CLOUD_PORTAL_SUPPORT_MAIL} from 'links/links';
-import {KeyValue} from '@angular/common';
-import {Image} from './virtualmachinemodels/image';
-import {Flavor} from './virtualmachinemodels/flavor';
-import {Userinfo} from '../userinfo/userinfo.model';
-import {environment} from '../../environments/environment';
-import {IResponseTemplate} from '../api-connector/response-template';
-import {Client} from '../vo_manager/clients/client.model';
-import {VirtualMachine} from './virtualmachinemodels/virtualmachine';
-import {BiocondaComponent} from './conda/bioconda.component';
-import {ResEnvComponent} from './conda/res-env.component';
-import {is_vo} from '../shared/globalvar';
-import {RandomNameGenerator} from '../shared/randomNameGenerator';
-import {Volume} from './volumes/volume';
-import {UserService} from '../api-connector/user.service';
-import {ImageService} from '../api-connector/image.service';
-import {GroupService} from '../api-connector/group.service';
-import {KeyService} from '../api-connector/key.service';
-import {FlavorService} from '../api-connector/flavor.service';
-import {VirtualmachineService} from '../api-connector/virtualmachine.service';
-import {ApiSettings} from '../api-connector/api-settings.service';
-import {BlockedImageTagResenv} from '../facility_manager/image-tag';
-import {ApplicationRessourceUsage} from '../applications/application-ressource-usage/application-ressource-usage';
-import {ProjectMember} from '../projectmanagement/project_member.model';
-import {ApplicationsService} from '../api-connector/applications.service';
+import { forkJoin, Subscription } from 'rxjs';
+import { Router } from '@angular/router';
+import { WIKI_VOLUME_OVERVIEW, CLOUD_PORTAL_SUPPORT_MAIL } from 'links/links';
+import { KeyValue } from '@angular/common';
+import { Image } from './virtualmachinemodels/image';
+import { Flavor } from './virtualmachinemodels/flavor';
+import { Userinfo } from '../userinfo/userinfo.model';
+import { environment } from '../../environments/environment';
+import { IResponseTemplate } from '../api-connector/response-template';
+import { Client } from '../vo_manager/clients/client.model';
+import { VirtualMachine } from './virtualmachinemodels/virtualmachine';
+import { BiocondaComponent } from './conda/bioconda.component';
+import { ResEnvComponent } from './conda/res-env.component';
+import { is_vo } from '../shared/globalvar';
+import { RandomNameGenerator } from '../shared/randomNameGenerator';
+import { Volume } from './volumes/volume';
+import { UserService } from '../api-connector/user.service';
+import { ImageService } from '../api-connector/image.service';
+import { GroupService } from '../api-connector/group.service';
+import { KeyService } from '../api-connector/key.service';
+import { FlavorService } from '../api-connector/flavor.service';
+import { VirtualmachineService } from '../api-connector/virtualmachine.service';
+import { ApiSettings } from '../api-connector/api-settings.service';
+import { BlockedImageTagResenv } from '../facility_manager/image-tag';
+import { ApplicationRessourceUsage } from '../applications/application-ressource-usage/application-ressource-usage';
+import { ProjectMember } from '../projectmanagement/project_member.model';
+import { ApplicationsService } from '../api-connector/applications.service';
 
 /**
  * Start virtualmachine component.
@@ -115,7 +115,6 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 	selected_flavor_type: string = 'Standard Flavours';
 
 	flavor_types: { [name: string]: Flavor[] } = {};
-
 
 	/**
 	 * Selected Image.
@@ -296,9 +295,6 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 
 		return false;
 	}
-
-
-
 
 	/**
 	 * Checks if the name which is entered for a new volume is valid.
@@ -531,12 +527,12 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 
 		if (this.resEnvComponent && this.resEnvComponent.selectedTemplate.template_name !== 'undefined'
 			&& this.resEnvComponent.user_key_url.errors === null) {
-			playbook_info[this.resEnvComponent.selectedTemplate.template_name] = {create_only_backend: `${this.resEnvComponent.getCreateOnlyBackend()}`};
-			playbook_info['user_key_url'] = {user_key_url: this.resEnvComponent.getUserKeyUrl()};
+			playbook_info[this.resEnvComponent.selectedTemplate.template_name] = { create_only_backend: `${this.resEnvComponent.getCreateOnlyBackend()}` };
+			playbook_info['user_key_url'] = { user_key_url: this.resEnvComponent.getUserKeyUrl() };
 		}
 
 		if (this.udp_allowed && this.install_mosh) {
-			playbook_info['optional'] = {mosh: 'install'};
+			playbook_info['optional'] = { mosh: 'install' };
 		}
 
 		return JSON.stringify(playbook_info);
@@ -794,6 +790,5 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 			return storageInList;
 		}
 	}
-
 
 }
