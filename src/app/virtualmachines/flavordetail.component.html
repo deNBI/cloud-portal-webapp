@@ -1,210 +1,236 @@
-<div class="row">
-  <div [hidden]="!selectedFlavor" class="col-12 col-xl-4" style="cursor: pointer; padding-top: 10px">
-    <div class="card border-success flavor-image-card">
-      <div
-        class="card-header bg-success text-truncate" data-toggle="tooltip" data-placement="top"
-        title="{{selectedFlavor?.name}}">
-        <strong>Selected: {{selectedFlavor?.name}}</strong></div>
-      <div class="card-body">
-        <div class="scroll-flavor">
+<div class="card">
+	<div class="card-header">
 
-          <div class="col">
-            <div class="row">
-              <figure class="flavor-card-icons">
-                <img src="{{RAM_ICON_PATH}}" alt="">
-              </figure>
-              {{selectedFlavor?.ram}} GB Ram
-            </div>
-          </div>
-          <div class="col"
-          >
-            <div class="row">
-              <figure class="flavor-card-icons">
-                <img src="{{CPU_ICON_PATH}}" alt="">
-              </figure>
-              {{selectedFlavor?.vcpus}} Cores
-            </div>
-          </div>
-          <div class="col"
-          >
-            <div class="row">
-              <figure class="flavor-card-icons">
-                <img src="{{STORAGE_ICON_PATH}}" alt="">
-              </figure>
-              {{selectedFlavor?.rootdisk}} GB root disk <span *ngIf="selectedFlavor?.ephemeral_disk">
+
+		<ul class="nav nav-tabs card-header-tabs" style="overflow: hidden" role="tablist">
+			<li class="nav-item " style="  cursor: pointer"
+					*ngFor="let item of flavor_types | keyvalue:unsorted"><a
+				[ngClass]="{'active': selected_flavor_type === item.key }"
+				(click)="setSelectedFlavorType(item.key)" class="nav-link">{{item.key}} </a>
+
+			</li>
+
+
+		</ul>
+	</div>
+	<div class="card-body">
+
+		<div
+			*ngIf="flavor_types[selected_flavor_type].length >0 && flavor_types[selected_flavor_type][0]?.type?.description"
+			class="alert alert-primary">
+
+			{{flavor_types[selected_flavor_type][0].type.description}}
+		</div>
+		<div class="row">
+			<div [hidden]="!selectedFlavor" class="col-12 col-xl-4" style="cursor: pointer; padding-top: 10px">
+				<div class="card border-success flavor-image-card">
+					<div
+						class="card-header bg-success text-truncate" data-toggle="tooltip" data-placement="top"
+						title="{{selectedFlavor?.name}}">
+						<strong>Selected: {{selectedFlavor?.name}}</strong></div>
+					<div class="card-body">
+						<div class="scroll-flavor">
+
+							<div class="col">
+								<div class="row">
+									<figure class="flavor-card-icons">
+										<img src="{{RAM_ICON_PATH}}" alt="">
+									</figure>
+									{{selectedFlavor?.ram}} GB Ram
+								</div>
+							</div>
+							<div class="col"
+							>
+								<div class="row">
+									<figure class="flavor-card-icons">
+										<img src="{{CPU_ICON_PATH}}" alt="">
+									</figure>
+									{{selectedFlavor?.vcpus}} Cores
+								</div>
+							</div>
+							<div class="col"
+							>
+								<div class="row">
+									<figure class="flavor-card-icons">
+										<img src="{{STORAGE_ICON_PATH}}" alt="">
+									</figure>
+									{{selectedFlavor?.rootdisk}} GB root disk <span *ngIf="selectedFlavor?.ephemeral_disk">
                     + {{selectedFlavor.ephemeral_disk}} GB ephemeral disk</span>
-            </div>
+								</div>
 
-          </div>
+							</div>
 
-          <div class="col" *ngIf="selectedFlavor?.gpu > 0">
-            <div class="row">
-              <figure class="flavor-card-icons">
-                <img src="{{GPU_ICON_PATH}}" alt="">
-              </figure>
-              {{selectedFlavor?.gpu}} <span *ngIf="selectedFlavor?.gpu === 1"> GPU</span><span
-              *ngIf="selectedFlavor?.gpu > 1"> GPUs</span>
-            </div>
-          </div>
+							<div class="col" *ngIf="selectedFlavor?.gpu > 0">
+								<div class="row">
+									<figure class="flavor-card-icons">
+										<img src="{{GPU_ICON_PATH}}" alt="">
+									</figure>
+									{{selectedFlavor?.gpu}} <span *ngIf="selectedFlavor?.gpu === 1"> GPU</span><span
+									*ngIf="selectedFlavor?.gpu > 1"> GPUs</span>
+								</div>
+							</div>
 
-          <div class="col" *ngIf="selectedFlavor?.credits_per_hour && creditsAllowed">
-            <div class="row">
-              <figure class="flavor-card-icons">
-                <img src="{{CREDITS_ICON_PATH}}" alt="">
-              </figure>
-              <span>{{selectedFlavor?.credits_per_hour}} Credits/hour</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div *ngIf="!selectedFlavor" class="col-12 "
-       style="border-style: dashed; border-color: lightgray; padding-top: 10px">
-    <owl-carousel-o [options]="customOptions">
-      <ng-container *ngFor="let flavor of flavors">
-        <ng-template carouselSlide>
-          <div (click)="setSelectedFlavor(flavor);" class="card flavor-image-card"
-               [ngClass]="{'border-success':selectedFlavor === flavor}" id="id_flavor_owl_{{flavor.name}}"
-          >
-            <div
-              class="card-header bg-info-flavor text-truncate" data-toggle="tooltip" data-placement="top"
-              title="{{flavor?.name}}"
-              [ngClass]="{'bg-success':selectedFlavor === flavor}">
-              <strong>{{flavor.name}}</strong></div>
-            <div class="card-body">
-              <div class="scroll-flavor">
+							<div class="col" *ngIf="selectedFlavor?.credits_per_hour && creditsAllowed">
+								<div class="row">
+									<figure class="flavor-card-icons">
+										<img src="{{CREDITS_ICON_PATH}}" alt="">
+									</figure>
+									<span>{{selectedFlavor?.credits_per_hour}} Credits/hour</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div *ngIf="!selectedFlavor" class="col-12 "
+					 style=" padding-top: 10px">
+				<owl-carousel-o [options]="customOptions">
+					<ng-container *ngFor="let flavor of possible_flavors">
+						<ng-template carouselSlide>
+							<div (click)="setSelectedFlavor(flavor);" class="card flavor-image-card"
+									 [ngClass]="{'border-success':selectedFlavor === flavor}" id="id_flavor_owl_{{flavor.name}}"
+							>
+								<div
+									class="card-header bg-info-flavor text-truncate" data-toggle="tooltip" data-placement="top"
+									title="{{flavor?.name}}"
+									[ngClass]="{'bg-success':selectedFlavor === flavor}">
+									<strong>{{flavor.name}}</strong></div>
+								<div class="card-body">
+									<div class="scroll-flavor">
 
-                <div class="col">
-                  <div class="row">
-                    <figure class="flavor-card-icons">
-                      <img src="{{RAM_ICON_PATH}}" alt="">
-                    </figure>
-                    {{flavor?.ram}} GB Ram
-                  </div>
-                </div>
-                <div class="col"
-                >
-                  <div class="row">
-                    <figure class="flavor-card-icons">
-                      <img src="{{CPU_ICON_PATH}}" alt="">
-                    </figure>
-                    {{flavor?.vcpus}} Cores
-                  </div>
-                </div>
-                <div class="col"
-                >
-                  <div class="row">
-                    <figure class="flavor-card-icons">
-                      <img src="{{STORAGE_ICON_PATH}}" alt="">
-                    </figure>
-                    {{flavor?.rootdisk}} GB root disk <span *ngIf="flavor?.ephemeral_disk">
+										<div class="col">
+											<div class="row">
+												<figure class="flavor-card-icons">
+													<img src="{{RAM_ICON_PATH}}" alt="">
+												</figure>
+												{{flavor?.ram}} GB Ram
+											</div>
+										</div>
+										<div class="col"
+										>
+											<div class="row">
+												<figure class="flavor-card-icons">
+													<img src="{{CPU_ICON_PATH}}" alt="">
+												</figure>
+												{{flavor?.vcpus}} Cores
+											</div>
+										</div>
+										<div class="col"
+										>
+											<div class="row">
+												<figure class="flavor-card-icons">
+													<img src="{{STORAGE_ICON_PATH}}" alt="">
+												</figure>
+												{{flavor?.rootdisk}} GB root disk <span *ngIf="flavor?.ephemeral_disk">
                     + {{flavor.ephemeral_disk}} GB ephemeral disk</span>
-                  </div>
+											</div>
 
 
-                </div>
-                <div class="col" *ngIf="flavor?.gpu > 0">
-                  <div class="row">
-                    <figure class="flavor-card-icons">
-                      <img src="{{GPU_ICON_PATH}}" alt="">
-                    </figure>
-                    {{flavor?.gpu}} <span *ngIf="flavor?.gpu === 1"> GPU</span><span *ngIf="flavor?.gpu > 1"> GPUs</span>
-                  </div>
-                </div>
+										</div>
+										<div class="col" *ngIf="flavor?.gpu > 0">
+											<div class="row">
+												<figure class="flavor-card-icons">
+													<img src="{{GPU_ICON_PATH}}" alt="">
+												</figure>
+												{{flavor?.gpu}} <span *ngIf="flavor?.gpu === 1"> GPU</span><span
+												*ngIf="flavor?.gpu > 1"> GPUs</span>
+											</div>
+										</div>
 
-                <div class="col" *ngIf="flavor?.credits_per_hour && creditsAllowed">
-                  <div class="row">
-                    <figure class="flavor-card-icons">
-                      <img src="{{CREDITS_ICON_PATH}}" alt="">
-                    </figure>
-                    <span>{{flavor?.credits_per_hour}} Credits/hour</span>
-                  </div>
-                </div>
+										<div class="col" *ngIf="flavor?.credits_per_hour && creditsAllowed">
+											<div class="row">
+												<figure class="flavor-card-icons">
+													<img src="{{CREDITS_ICON_PATH}}" alt="">
+												</figure>
+												<span>{{flavor?.credits_per_hour}} Credits/hour</span>
+											</div>
+										</div>
 
-              </div>
-            </div>
-          </div>
-        </ng-template>
-      </ng-container>
+									</div>
+								</div>
+							</div>
+						</ng-template>
+					</ng-container>
 
-    </owl-carousel-o>
-  </div>
-  <div *ngIf="selectedFlavor" class="col-lg-12"
-       [ngClass]="{'col-xl-9':window_size >= carousel_window_min_xl_9,
+				</owl-carousel-o>
+			</div>
+			<div *ngIf="selectedFlavor" class="col-lg-12"
+					 [ngClass]="{'col-xl-9':window_size >= carousel_window_min_xl_9,
        'col-xl-6':window_size >= carousel_window_min_xl6 && window_size<carousel_window_min_xl_8,
        'col-xl-8':window_size <carousel_window_min_xl_9 && window_size>=carousel_window_min_xl_8}"
-       style="border-style: dashed; border-color: lightgray; padding-top: 10px">
-    <owl-carousel-o [options]="customOptions">
-      <ng-container *ngFor="let flavor of flavors">
-        <ng-template carouselSlide>
-          <div (click)="setSelectedFlavor(flavor);" class="card flavor-image-card"
-               [ngClass]="{'border-success':selectedFlavor === flavor}" id="id_flavor_owl_{{flavor.name}}"
-          >
-            <div
-              class="card-header bg-info-flavor text-truncate" data-toggle="tooltip" data-placement="top"
-              [ngClass]="{'bg-success':selectedFlavor === flavor}"
-              title="{{flavor?.name}}">
-              <strong>{{flavor.name}}</strong></div>
-            <div class=" card-body
+					 style=" padding-top: 10px">
+				<owl-carousel-o [options]="customOptions">
+					<ng-container *ngFor="let flavor of possible_flavors">
+						<ng-template carouselSlide>
+							<div (click)="setSelectedFlavor(flavor);" class="card flavor-image-card"
+									 [ngClass]="{'border-success':selectedFlavor === flavor}" id="id_flavor_owl_{{flavor.name}}"
+							>
+								<div
+									class="card-header bg-info-flavor text-truncate" data-toggle="tooltip" data-placement="top"
+									[ngClass]="{'bg-success':selectedFlavor === flavor}"
+									title="{{flavor?.name}}">
+									<strong>{{flavor.name}}</strong></div>
+								<div class=" card-body
             ">
-              <div class="scroll-flavor">
+									<div class="scroll-flavor">
 
-                <div class="col">
-                  <div class="row">
-                    <figure class="flavor-card-icons">
-                      <img src="{{RAM_ICON_PATH}}" alt="">
-                    </figure>
-                    {{flavor?.ram}} GB Ram
-                  </div>
-                </div>
-                <div class="col"
-                >
-                  <div class="row">
-                    <figure class="flavor-card-icons">
-                      <img src="{{CPU_ICON_PATH}}" alt="">
-                    </figure>
-                    {{flavor?.vcpus}} Cores
-                  </div>
-                </div>
-                <div class="col"
-                >
-                  <div class="row">
-                    <figure class="flavor-card-icons">
-                      <img src="{{STORAGE_ICON_PATH}}" alt="">
-                    </figure>
-                    {{flavor?.rootdisk}} GB root disk <span *ngIf="flavor?.ephemeral_disk">
+										<div class="col">
+											<div class="row">
+												<figure class="flavor-card-icons">
+													<img src="{{RAM_ICON_PATH}}" alt="">
+												</figure>
+												{{flavor?.ram}} GB Ram
+											</div>
+										</div>
+										<div class="col"
+										>
+											<div class="row">
+												<figure class="flavor-card-icons">
+													<img src="{{CPU_ICON_PATH}}" alt="">
+												</figure>
+												{{flavor?.vcpus}} Cores
+											</div>
+										</div>
+										<div class="col"
+										>
+											<div class="row">
+												<figure class="flavor-card-icons">
+													<img src="{{STORAGE_ICON_PATH}}" alt="">
+												</figure>
+												{{flavor?.rootdisk}} GB root disk <span *ngIf="flavor?.ephemeral_disk">
                     + {{flavor.ephemeral_disk}} GB ephemeral disk</span>
-                  </div>
-                </div>
+											</div>
+										</div>
 
-                <div class="col" *ngIf="flavor?.gpu > 0">
-                  <div class="row">
-                    <figure class="flavor-card-icons">
-                      <img src="{{GPU_ICON_PATH}}" alt="">
-                    </figure>
-                    {{flavor?.gpu}} <span *ngIf="flavor?.gpu === 1"> GPU</span><span *ngIf="flavor?.gpu > 1"> GPUs</span>
-                  </div>
-                </div>
+										<div class="col" *ngIf="flavor?.gpu > 0">
+											<div class="row">
+												<figure class="flavor-card-icons">
+													<img src="{{GPU_ICON_PATH}}" alt="">
+												</figure>
+												{{flavor?.gpu}} <span *ngIf="flavor?.gpu === 1"> GPU</span><span
+												*ngIf="flavor?.gpu > 1"> GPUs</span>
+											</div>
+										</div>
 
-                <div class="col" *ngIf="flavor?.credits_per_hour && creditsAllowed">
-                  <div class="row">
-                    <figure class="flavor-card-icons">
-                      <img src="{{CREDITS_ICON_PATH}}" alt="">
-                    </figure>
-                    <span>{{flavor?.credits_per_hour}} Credits/hour</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </ng-template>
-      </ng-container>
+										<div class="col" *ngIf="flavor?.credits_per_hour && creditsAllowed">
+											<div class="row">
+												<figure class="flavor-card-icons">
+													<img src="{{CREDITS_ICON_PATH}}" alt="">
+												</figure>
+												<span>{{flavor?.credits_per_hour}} Credits/hour</span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</ng-template>
+					</ng-container>
 
-    </owl-carousel-o>
-  </div>
+				</owl-carousel-o>
+			</div>
+		</div>
+
+	</div>
 </div>
-
-
 
 
