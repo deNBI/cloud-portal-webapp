@@ -3,6 +3,7 @@ import {
 } from '@angular/core';
 import { forkJoin, Subscription } from 'rxjs';
 import { Router } from '@angular/router';
+import { KeyValue } from '@angular/common';
 import { GroupService } from '../../../api-connector/group.service';
 import { ImageService } from '../../../api-connector/image.service';
 import { KeyService } from '../../../api-connector/key.service';
@@ -58,6 +59,9 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 	flavors: Flavor[] = [];
 
 	flavors_usable: Flavor[] = [];
+	selected_flavor_types: Flavor[] = [];
+	selected_flavor_type: string = 'Standard Flavours';
+	flavor_types: { [name: string]: Flavor[] } = {};
 
 	cluster_id: string;
 	cluster_error: string;
@@ -137,14 +141,14 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 	@ViewChild('bioconda', { static: true }) biocondaComponent: BiocondaComponent;
 
 	constructor(
-private groupService: GroupService,
-							private imageService: ImageService,
-							private flavorService: FlavorService,
-							private virtualmachineservice: VirtualmachineService,
-							private keyservice: KeyService,
-							private userService: UserService,
-							private voService: VoService,
-							private router: Router,
+		private groupService: GroupService,
+		private imageService: ImageService,
+		private flavorService: FlavorService,
+		private virtualmachineservice: VirtualmachineService,
+		private keyservice: KeyService,
+		private userService: UserService,
+		private voService: VoService,
+		private router: Router,
 	) {
 		// eslint-disable-next-line no-empty-function
 	}
@@ -177,6 +181,8 @@ private groupService: GroupService,
 		const flavors_to_filter: Flavor[] = this.flavors.filter((flavor: Flavor): boolean => used_flavors.indexOf(flavor) < 0);
 		this.flavors_usable = flavors_to_filter.filter((flav: Flavor): boolean => this.selectedProjectRessources
 			.filterFlavorsTest(flav, flavors_to_filter, this.selectedWorkerBatches));
+		this.flavor_types = this.flavorService.sortFlavors(this.flavors_usable);
+
 		this.flavors_loaded = true;
 	}
 
@@ -189,6 +195,15 @@ private groupService: GroupService,
 				this.selectedWorkerBatches,
 			);
 		}
+	}
+
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	unsorted(a: KeyValue<number, string>, b: KeyValue<number, string>): number {
+		return 0;
+	}
+
+	setSelectedFlavorType(key: string): void {
+		this.selected_flavor_type = key;
 	}
 
 	calculateNewValues(): void {
