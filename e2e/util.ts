@@ -494,10 +494,10 @@ export class Util {
 	}
 
 	static async getElementsByIdPrefix(prefix: string): Promise<any> {
-		return element.all(by.css(`[id^=${prefix}]`));
+		return await element.all(by.css(`[id^=${prefix}]`));
 	}
 
 	static async isElementPresentById(id: string): Promise<boolean> {
-		return element(by.id(id)).isPresent();
+		return await element(by.id(id)).isPresent();
 	}
 }
