@@ -103,12 +103,13 @@
 								Your principal investigator can request more
 								resources if necessary.
 							</div>
-							<div
-								*ngIf="selectedProject && selectedProjectRessources?.used_vms < selectedProjectRessources?.number_vms &&flavors.length > 0"
-								class="form-group row col-md-12">
-								<label class="col-md-2 form-control-label"><strong>Name*</strong></label>
-								<div class="col-md-10">
+							<div *ngIf="selectedProject && selectedProjectRessources?.used_vms < selectedProjectRessources?.number_vms &&flavors.length > 0"
+									 class="form-group row col" style="padding-left: 2rem; padding-right: 2rem; margin-bottom: 25px">
+								<div class="col">
 									<div class="input-group">
+										<div class="input-group-prepend">
+											<span class="input-group-text">Name</span>
+										</div>
 										<input required id="id_instance_name" name="instance_name"
 													 class="form-control"
 													 type="text" placeholder="Instance name" [(ngModel)]="vm_name"
@@ -132,9 +133,9 @@
 								*ngIf="selectedProjectRessources?.used_vms < selectedProjectRessources?.number_vms && (flavors?.length > 0 || selectedFlavor)">
 
 
-								<div *ngIf="selectedProject" class="form-group row col-md-12">
-									<label class="col-md-2 form-control-label"><strong>Flavor*</strong></label>
-									<div class="col-md-10">
+								<div *ngIf="selectedProject" class="form-group row col-md-12"
+										 style="padding-left: 2rem; padding-right: 2rem; margin-bottom: 1rem">
+									<div class="col">
 
 
 										<app-flavor-detail [selectedFlavor]="selectedFlavor" id="id_flavor_detail"
@@ -159,9 +160,9 @@
 								</div>
 
 
-								<div *ngIf="selectedProject" class="form-group row col-md-12">
-									<label class="col-md-2 form-control-label"><strong>Image*</strong></label>
-									<div class="col-md-10">
+								<div *ngIf="selectedProject" class="form-group row col-md-12"
+										 style="padding-left: 2rem; padding-right: 2rem; margin-bottom: 25px">
+									<div class="col">
 
 										<app-image-detail *ngIf="images?.length > 0" [selectedImage]="selectedImage"
 																			[images]="images"
@@ -172,16 +173,15 @@
 								</div>
 							</div>
 
-							<div id="volumeDiv" style="margin-bottom: 25px;"
+							<div id="volumeDiv" style="margin-bottom: 25px; padding-left: 2rem; padding-right: 2rem"
 									 *ngIf="selectedProject
                    && selectedProject[1] !== FREEMIUM_ID
                    && selectedProjectRessources?.used_vms < selectedProjectRessources?.number_vms
                    && (flavors.length !== 0 || selectedFlavor)">
 								<!-- Buttons Row -->
 								<div class="from-group row col-md-12" style="margin-bottom: 25px;">
-									<label class="col-md-2"><strong>Volumes</strong></label>
 									<!-- New/Attach Buttons -->
-									<div class="col-md-10">
+									<div class="col">
 										<button class="btn btn-light" (click)="toggleShowAddVol();"
 														[disabled]="
                               ((selectedProjectRessources.used_volumes + volumesToMount?.length) >= selectedProjectRessources.volume_counter)
