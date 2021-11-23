@@ -432,9 +432,9 @@ export class Util {
 	}
 
 	static async navigateToAngularPage(url_suffix: string): Promise<any> {
-		this.logInfo(`Navigating to ${this.angular_url}/#/${url_suffix}`);
+		this.logInfo(`Navigating to ${this.angular_url}#/${url_suffix}`);
 
-		return await browser.get(`${this.angular_url}/#/${url_suffix}`);
+		return await browser.get(`${this.angular_url}#/${url_suffix}`);
 	}
 
 	static async waitForTextInUrl(text: string): Promise<any> {
