@@ -1,10 +1,12 @@
 {
   "password_user": "",
   "email_user": "",
+	"elixir_id_user": "",
   "password_fm": "",
   "email_fm": "",
   "password_vo": "",
   "email_vo": "",
+	"elixir_id_vo": "",
   "portal": "",
   "angular":"",
   "auth_user": "",
