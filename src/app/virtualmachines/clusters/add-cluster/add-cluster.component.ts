@@ -328,6 +328,7 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 		const idx: number = this.selectedWorkerBatches.indexOf(batch);
 		if (batch === this.selectedBatch) {
 
+			// eslint-disable-next-line no-plusplus
 			for (let i = idx; i < this.selectedWorkerBatches.length; i++) {
 				this.selectedWorkerBatches[i].index -= 1;
 
