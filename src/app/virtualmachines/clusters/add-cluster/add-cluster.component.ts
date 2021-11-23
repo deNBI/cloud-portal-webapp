@@ -138,336 +138,349 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 	newGpus: number = 0;
 	subscription: Subscription = new Subscription();
 
-	@ViewChild('bioconda', { static: true }) biocondaComponent: BiocondaComponent;
+    @ViewChild('bioconda', { static: true }) biocondaComponent: BiocondaComponent;
 
-	constructor(
-		private groupService: GroupService,
-		private imageService: ImageService,
-		private flavorService: FlavorService,
-		private virtualmachineservice: VirtualmachineService,
-		private keyservice: KeyService,
-		private userService: UserService,
-		private voService: VoService,
-		private router: Router,
-	) {
-		// eslint-disable-next-line no-empty-function
-	}
+    constructor(
+        private groupService: GroupService,
+        private imageService: ImageService,
+        private flavorService: FlavorService,
+        private virtualmachineservice: VirtualmachineService,
+        private keyservice: KeyService,
+        private userService: UserService,
+        private voService: VoService,
+        private router: Router,
+    ) {
+    	// eslint-disable-next-line no-empty-function
+    }
 
-	calcWorkerInstancesCount(): void {
-		let count: number = 0;
-		this.selectedWorkerBatches.forEach((batch: WorkerBatch): void => {
-			batch.valid_batch = batch.worker_count <= batch.max_worker_count && batch.worker_count > 0;
-			count += batch.worker_count;
-		});
-		this.workerInstancesCount = count;
-		this.newVms = this.workerInstancesCount + 1;
-	}
+    calcWorkerInstancesCount(): void {
+    	let count: number = 0;
+    	this.selectedWorkerBatches.forEach((batch: WorkerBatch): void => {
+    		batch.valid_batch = batch.worker_count <= batch.max_worker_count && batch.worker_count > 0;
+    		count += batch.worker_count;
+    	});
+    	this.workerInstancesCount = count;
+    	this.newVms = this.workerInstancesCount + 1;
+    }
 
-	changeCount(): void {
+    changeCount(): void {
 
-		this.calcWorkerInstancesCount();
-		this.calculateNewValues();
-	}
+    	this.calcWorkerInstancesCount();
+    	this.calculateNewValues();
+    }
 
-	checkFlavorsUsableForCluster(): void {
-		const used_flavors: Flavor[] = [];
+    checkFlavorsUsableForCluster(): void {
+    	const used_flavors: Flavor[] = [];
 
-		// tslint:disable-next-line:no-for-each-push
-		this.selectedWorkerBatches.forEach((batch: WorkerBatch): void => {
-			if (batch !== this.selectedBatch) {
-				used_flavors.push(batch.flavor);
-			}
-		});
-		const flavors_to_filter: Flavor[] = this.flavors.filter((flavor: Flavor): boolean => used_flavors.indexOf(flavor) < 0);
-		this.flavors_usable = flavors_to_filter.filter((flav: Flavor): boolean => this.selectedProjectRessources
-			.filterFlavorsTest(flav, flavors_to_filter, this.selectedWorkerBatches));
-		this.flavor_types = this.flavorService.sortFlavors(this.flavors_usable);
+    	// tslint:disable-next-line:no-for-each-push
+    	this.selectedWorkerBatches.forEach((batch: WorkerBatch): void => {
+    		if (batch !== this.selectedBatch) {
+    			used_flavors.push(batch.flavor);
+    		}
+    	});
+    	const flavors_to_filter: Flavor[] = this.flavors.filter((flavor: Flavor): boolean => used_flavors.indexOf(flavor) < 0);
+    	this.flavors_usable = flavors_to_filter.filter((flav: Flavor): boolean => this.selectedProjectRessources
+    		.filterFlavorsTest(flav, flavors_to_filter, this.selectedWorkerBatches));
+    	this.flavor_types = this.flavorService.sortFlavors(this.flavors_usable);
 
-		this.flavors_loaded = true;
-	}
+    	this.flavors_loaded = true;
+    }
 
-	calcMaxWorkerInstancesByFlavor(): void {
-		if (this.selectedBatch.flavor) {
+    calcMaxWorkerInstancesByFlavor(): void {
+    	if (this.selectedBatch.flavor) {
 
-			this.selectedBatch.max_worker_count = this.selectedProjectRessources.calcMaxWorkerInstancesByFlavor(
-				this.selectedMasterFlavor,
-				this.selectedBatch,
-				this.selectedWorkerBatches,
-			);
-		}
-	}
+    		this.selectedBatch.max_worker_count = this.selectedProjectRessources.calcMaxWorkerInstancesByFlavor(
+    			this.selectedMasterFlavor,
+    			this.selectedBatch,
+    			this.selectedWorkerBatches,
+    		);
+    	}
+    }
 
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	unsorted(a: KeyValue<number, string>, b: KeyValue<number, string>): number {
-		return 0;
-	}
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    unsorted(a: KeyValue<number, string>, b: KeyValue<number, string>): number {
+    	return 0;
+    }
 
-	setSelectedFlavorType(key: string): void {
-		this.selected_flavor_type = key;
-	}
+    setSelectedFlavorType(key: string): void {
+    	this.selected_flavor_type = key;
+    }
 
-	calculateNewValues(): void {
-		let tmp_ram: number = 0;
-		let tmp_cores: number = 0;
-		let tmp_gpus: number = 0;
-		if (this.selectedMasterFlavor) {
-			tmp_ram += this.selectedMasterFlavor.ram;
-			tmp_cores += this.selectedMasterFlavor.vcpus;
-			tmp_gpus += this.selectedMasterFlavor.gpu;
+    calculateNewValues(): void {
+    	let tmp_ram: number = 0;
+    	let tmp_cores: number = 0;
+    	let tmp_gpus: number = 0;
+    	if (this.selectedMasterFlavor) {
+    		tmp_ram += this.selectedMasterFlavor.ram;
+    		tmp_cores += this.selectedMasterFlavor.vcpus;
+    		tmp_gpus += this.selectedMasterFlavor.gpu;
 
-		}
-		if (this.selectedWorkerBatches) {
-			this.selectedWorkerBatches.forEach((batch: WorkerBatch): void => {
-				if (batch.worker_count && batch.flavor) {
-					tmp_ram += batch.flavor.ram * batch.worker_count;
-					tmp_cores += batch.flavor.vcpus * batch.worker_count;
-					tmp_gpus += batch.flavor.gpu * batch.worker_count;
-				}
+    	}
+    	if (this.selectedWorkerBatches) {
+    		this.selectedWorkerBatches.forEach((batch: WorkerBatch): void => {
+    			if (batch.worker_count && batch.flavor) {
+    				tmp_ram += batch.flavor.ram * batch.worker_count;
+    				tmp_cores += batch.flavor.vcpus * batch.worker_count;
+    				tmp_gpus += batch.flavor.gpu * batch.worker_count;
+    			}
 
-			});
-		}
+    		});
+    	}
 
-		this.newRam = tmp_ram;
-		this.newCores = tmp_cores;
-		this.newGpus = tmp_gpus;
+    	this.newRam = tmp_ram;
+    	this.newCores = tmp_cores;
+    	this.newGpus = tmp_gpus;
 
-	}
+    }
 
-	/**
-	 * Get images for the project.
-	 *
-	 * @param project_id
-	 */
-	getImages(project_id: number): void {
-		this.subscription.add(
-			this.imageService.getImages(project_id).subscribe((images: Image[]): void => {
-				this.images = images.filter((image: Image): boolean => {
-					let not_blocked: boolean = true;
-					this.CLUSTER_IMAGES_BLOCKLIST.forEach((str: string): void => {
-						if (image.name.includes(str)) {
-							not_blocked = false;
-						}
-					});
+    /**
+     * Get images for the project.
+     *
+     * @param project_id
+     */
+    getImages(project_id: number): void {
+    	this.subscription.add(
+    		this.imageService.getImages(project_id).subscribe((images: Image[]): void => {
+    			this.images = images.filter((image: Image): boolean => {
+    				let not_blocked: boolean = true;
+    				this.CLUSTER_IMAGES_BLOCKLIST.forEach((str: string): void => {
+    					if (image.name.includes(str)) {
+    						not_blocked = false;
+    					}
+    				});
 
-					return not_blocked;
-				});
-				this.images.sort((x_cord: any, y_cord: any): number => Number(x_cord.is_snapshot) - Number(y_cord.is_snapshot));
-			}),
-		);
-	}
+    				return not_blocked;
+    			});
+    			this.images.sort((x_cord: any, y_cord: any): number => Number(x_cord.is_snapshot) - Number(y_cord.is_snapshot));
+    		}),
+    	);
+    }
 
-	/**
-	 * Get flavors for the project.
-	 *
-	 * @param project_id
-	 */
-	getFlavors(project_id: number): void {
-		this.subscription.add(
-			this.flavorService.getFlavors(project_id).subscribe(
-				(flavors: Flavor[]): void => {
-					this.flavors = flavors;
-					this.checkFlavorsUsableForCluster();
-				},
-				(error: any) => {
-					console.log(error);
-					this.flavors = [];
-					this.flavors_usable = [];
-					this.flavors_loaded = true;
-				},
-			),
-		);
-	}
+    /**
+     * Get flavors for the project.
+     *
+     * @param project_id
+     */
+    getFlavors(project_id: number): void {
+    	this.subscription.add(
+    		this.flavorService.getFlavors(project_id).subscribe(
+    			(flavors: Flavor[]): void => {
+    				this.flavors = flavors;
+    				this.checkFlavorsUsableForCluster();
+    			},
+    			(error: any) => {
+    				console.log(error);
+    				this.flavors = [];
+    				this.flavors_usable = [];
+    				this.flavors_loaded = true;
+    			},
+    		),
+    	);
+    }
 
-	/**
-	 * Validate the public key of the user.
-	 */
-	validatePublicKey(): boolean {
+    /**
+     * Validate the public key of the user.
+     */
+    validatePublicKey(): boolean {
 
-		return /ssh-rsa AAAA[0-9A-Za-z+/]+[=]{0,3}( [^@]+@[^@]+)?/.test(this.userinfo.PublicKey);
+    	return /ssh-rsa AAAA[0-9A-Za-z+/]+[=]{0,3}( [^@]+@[^@]+)?/.test(this.userinfo.PublicKey);
 
-	}
+    }
 
-	resetBatches(): void {
-		this.selectedWorkerBatches = [new WorkerBatch(1)];
-		this.setBatchUsableFlavors(this.selectedWorkerBatches[0]);
-		this.selectedBatch = this.selectedWorkerBatches[0];
+    resetBatches(): void {
+    	this.selectedWorkerBatches = [new WorkerBatch(1)];
+    	this.setBatchUsableFlavors(this.selectedWorkerBatches[0]);
+    	this.selectedBatch = this.selectedWorkerBatches[0];
 
-	}
+    }
 
-	setBatchUsableFlavors(batch: WorkerBatch): void {
-		const used_flavors: Flavor[] = [];
+    setBatchUsableFlavors(batch: WorkerBatch): void {
+    	const used_flavors: Flavor[] = [];
 
-		// tslint:disable-next-line:no-for-each-push
-		this.selectedWorkerBatches.forEach((existingBatch: WorkerBatch): void => {
-			if (existingBatch !== this.selectedBatch) {
-				used_flavors.push(existingBatch.flavor);
-			}
-		});
-		const flavors_to_filter: Flavor[] = this.flavors.filter((flavor: Flavor): boolean => used_flavors.indexOf(flavor) < 0);
-		batch.usable_flavors = flavors_to_filter.filter((flav: Flavor): boolean => this.selectedProjectRessources
-			.filterFlavorsTest(flav, flavors_to_filter, this.selectedWorkerBatches, this.selectedMasterFlavor));
-	}
+    	// tslint:disable-next-line:no-for-each-push
+    	this.selectedWorkerBatches.forEach((existingBatch: WorkerBatch): void => {
+    		if (existingBatch !== this.selectedBatch) {
+    			used_flavors.push(existingBatch.flavor);
+    		}
+    	});
+    	const flavors_to_filter: Flavor[] = this.flavors.filter((flavor: Flavor): boolean => used_flavors.indexOf(flavor) < 0);
+    	batch.usable_flavors = flavors_to_filter.filter((flav: Flavor): boolean => this.selectedProjectRessources
+    		.filterFlavorsTest(flav, flavors_to_filter, this.selectedWorkerBatches, this.selectedMasterFlavor));
+    }
 
-	addBatch(): void {
-		this.selectedWorkerFlavorSet = false;
-		this.selectedBatch = null;
-		const newBatch: WorkerBatch = new WorkerBatch(this.selectedWorkerBatches[this.selectedWorkerBatches.length - 1].index + 1);
-		this.setBatchUsableFlavors(newBatch);
-		newBatch.image = this.selectedMasterImage;
-		this.maxWorkerInstances = null;
-		this.selectedWorkerBatches.push(newBatch);
-		this.selectedBatch = newBatch;
-	}
+    setSelectedBatch(batch: WorkerBatch): void {
+    	this.selectedBatch = batch;
 
-	removeBatch(batch: WorkerBatch): void {
-		const idx: number = this.selectedWorkerBatches.indexOf(batch);
-		if (batch === this.selectedBatch) {
-			if (idx !== 0) {
-				this.selectedBatch = this.selectedWorkerBatches[idx - 1];
-				this.selectedWorkerFlavorSet = true;
+    }
 
-			}
-		}
+    addBatch(): void {
+    	this.selectedWorkerFlavorSet = false;
+    	this.selectedBatch = null;
+    	const newBatch: WorkerBatch = new WorkerBatch(this.selectedWorkerBatches[this.selectedWorkerBatches.length - 1].index + 1);
+    	this.setBatchUsableFlavors(newBatch);
+    	newBatch.image = this.selectedMasterImage;
+    	this.maxWorkerInstances = null;
+    	this.selectedWorkerBatches.push(newBatch);
+    	this.selectedBatch = newBatch;
+    }
 
-		this.selectedWorkerBatches.splice(idx, 1);
+    removeBatch(batch: WorkerBatch): void {
+    	const idx: number = this.selectedWorkerBatches.indexOf(batch);
+    	if (batch === this.selectedBatch) {
 
-		this.checkFlavorsUsableForCluster();
-		this.calcWorkerInstancesCount();
-		this.calculateNewValues();
-		this.calcMaxWorkerInstancesByFlavor();
+    		for (let i = idx; i < this.selectedWorkerBatches.length; i++) {
+    			this.selectedWorkerBatches[i].index -= 1;
 
-	}
+    		}
+    		if (idx !== 0) {
+    			this.selectedBatch = this.selectedWorkerBatches[idx - 1];
+    			this.selectedWorkerFlavorSet = true;
 
-	startCluster(): void {
-		const re: RegExp = /\+/gi;
-		this.cluster_error = null;
-		this.cluster_id = null;
+    		} else if (idx === 0 && this.selectedWorkerBatches.length > 0) {
+						                  this.selectedBatch = this.selectedWorkerBatches[idx + 1];
 
-		const masterFlavor: string = this.selectedMasterFlavor.name.replace(re, '%2B');
+    		}
+    	}
 
-		this.subscription.add(
-			this.virtualmachineservice.startCluster(
-				masterFlavor,
-				this.selectedMasterImage,
-				this.selectedWorkerBatches,
-				this.selectedProject[1],
-			).subscribe(
-				(res: any): void => {
-					console.log(res);
-					if (res['status'] && res['status'] === 'mutex_locked') {
-						setTimeout(
-							(): void => {
-								this.startCluster();
-							},
-							1000,
-						);
-					} else {
-						this.cluster_id = res['id'];
-						this.cluster_started = true;
+    	this.selectedWorkerBatches.splice(idx, 1);
 
-						setTimeout(
-							(): void => {
-								void this.router.navigate(['/virtualmachines/clusterOverview']).then().catch();
-							},
-							4000,
-						);
+    	this.checkFlavorsUsableForCluster();
+    	this.calcWorkerInstancesCount();
+    	this.calculateNewValues();
+    	this.calcMaxWorkerInstancesByFlavor();
 
-					}
+    }
 
-				},
-				(error: any): void => {
-					console.log(error);
-					this.cluster_error = error;
-				},
-			),
-		);
-	}
+    startCluster(): void {
+    	const re: RegExp = /\+/gi;
+    	this.cluster_error = null;
+    	this.cluster_id = null;
 
-	/**
-	 * Get the client from the selected project.
-	 * If connected geht vm,volumes etc.
-	 */
-	getSelectedProjectClient(): void {
-		this.client_checked = false;
-		this.projectDataLoaded = false;
+    	const masterFlavor: string = this.selectedMasterFlavor.name.replace(re, '%2B');
 
-		this.subscription.unsubscribe();
-		this.subscription = new Subscription();
-		this.subscription.add(
-			this.groupService.getClientBibigrid(this.selectedProject[1].toString()).subscribe((client: Client): void => {
-				if (client.status && client.status === 'Connected') {
-					this.client_avaiable = true;
+    	this.subscription.add(
+    		this.virtualmachineservice.startCluster(
+    			masterFlavor,
+    			this.selectedMasterImage,
+    			this.selectedWorkerBatches,
+    			this.selectedProject[1],
+    		).subscribe(
+    			(res: any): void => {
+    				console.log(res);
+    				if (res['status'] && res['status'] === 'mutex_locked') {
+    					setTimeout(
+    						(): void => {
+    							this.startCluster();
+    						},
+    						1000,
+    					);
+    				} else {
+    					this.cluster_id = res['id'];
+    					this.cluster_started = true;
 
-					this.loadProjectData();
-					this.client_checked = true;
-				} else {
-					this.client_avaiable = false;
-					this.client_checked = true;
-					this.projectDataLoaded = true;
-				}
-				this.selectedProjectClient = client;
+    					setTimeout(
+    						(): void => {
+    							void this.router.navigate(['/virtualmachines/clusterOverview']).then().catch();
+    						},
+    						4000,
+    					);
 
-			}),
-		);
-	}
+    				}
 
-	/**
-	 * Initializes the data.
-	 * Gets all groups of the user and their key.
-	 */
-	initializeData(): void {
-		this.subscription.add(
-			forkJoin(this.groupService.getSimpleVmByUser(), this.userService.getUserInfo()).subscribe((result: any): void => {
-				this.userinfo = result[1];
-				this.validatePublicKey();
-				const membergroups: any = result[0];
-				for (const project of membergroups) {
-					this.projects.push(project);
+    			},
+    			(error: any): void => {
+    				console.log(error);
+    				this.cluster_error = error;
+    			},
+    		),
+    	);
+    }
 
-				}
+    /**
+     * Get the client from the selected project.
+     * If connected geht vm,volumes etc.
+     */
+    getSelectedProjectClient(): void {
+    	this.client_checked = false;
+    	this.projectDataLoaded = false;
 
-				if (this.projects.length === 1) {
-					this.selectedProject = this.projects[0];
-					this.singleProject = true;
-					this.getSelectedProjectClient();
-				}
-				this.isLoaded = true;
-			}),
-		);
-	}
+    	this.subscription.unsubscribe();
+    	this.subscription = new Subscription();
+    	this.subscription.add(
+    		this.groupService.getClientBibigrid(this.selectedProject[1].toString()).subscribe((client: Client): void => {
+    			if (client.status && client.status === 'Connected') {
+    				this.client_avaiable = true;
 
-	loadProjectData(): void {
-		this.projectDataLoaded = false;
-		this.flavors = [];
-		this.flavors_loaded = false;
-		this.images = [];
-		this.selectedImage = undefined;
-		this.selectedFlavor = undefined;
-		this.getImages(this.selectedProject[1]);
-		this.subscription.add(
-			this.groupService.getGroupResources(this.selectedProject[1].toString()).subscribe((res: ApplicationRessourceUsage): void => {
-				this.selectedProjectRessources = new ApplicationRessourceUsage(res);
-				this.getFlavors(this.selectedProject[1]);
-				this.projectDataLoaded = true;
-			}),
-		);
-	}
+    				this.loadProjectData();
+    				this.client_checked = true;
+    			} else {
+    				this.client_avaiable = false;
+    				this.client_checked = true;
+    				this.projectDataLoaded = true;
+    			}
+    			this.selectedProjectClient = client;
 
-	resizeFix(): void {
-		window.dispatchEvent(new Event('resize'));
-	}
+    		}),
+    	);
+    }
 
-	ngOnInit(): void {
-		this.initializeData();
-		this.subscription.add(
-			this.voService.isVo().subscribe((result: IResponseTemplate): void => {
-				this.is_vo = result.value as boolean;
-			}),
-		);
-	}
+    /**
+     * Initializes the data.
+     * Gets all groups of the user and their key.
+     */
+    initializeData(): void {
+    	this.subscription.add(
+    		forkJoin(this.groupService.getSimpleVmByUser(), this.userService.getUserInfo()).subscribe((result: any): void => {
+    			this.userinfo = result[1];
+    			this.validatePublicKey();
+    			const membergroups: any = result[0];
+    			for (const project of membergroups) {
+    				this.projects.push(project);
 
-	ngOnDestroy() {
-		this.subscription.unsubscribe();
-	}
+    			}
+
+    			if (this.projects.length === 1) {
+    				this.selectedProject = this.projects[0];
+    				this.singleProject = true;
+    				this.getSelectedProjectClient();
+    			}
+    			this.isLoaded = true;
+    		}),
+    	);
+    }
+
+    loadProjectData(): void {
+    	this.projectDataLoaded = false;
+    	this.flavors = [];
+    	this.flavors_loaded = false;
+    	this.images = [];
+    	this.selectedImage = undefined;
+    	this.selectedFlavor = undefined;
+    	this.getImages(this.selectedProject[1]);
+    	this.subscription.add(
+    		this.groupService.getGroupResources(this.selectedProject[1].toString()).subscribe((res: ApplicationRessourceUsage): void => {
+    			this.selectedProjectRessources = new ApplicationRessourceUsage(res);
+    			this.getFlavors(this.selectedProject[1]);
+    			this.projectDataLoaded = true;
+    		}),
+    	);
+    }
+
+    resizeFix(): void {
+    	window.dispatchEvent(new Event('resize'));
+    }
+
+    ngOnInit(): void {
+    	this.initializeData();
+    	this.subscription.add(
+    		this.voService.isVo().subscribe((result: IResponseTemplate): void => {
+    			this.is_vo = result.value as boolean;
+    		}),
+    	);
+    }
+
+    ngOnDestroy() {
+    	this.subscription.unsubscribe();
+    }
 
 }
