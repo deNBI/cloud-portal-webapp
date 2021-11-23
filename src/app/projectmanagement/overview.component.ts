@@ -749,7 +749,9 @@ private flavorService: FlavorService,
 				this.project = newProject;
 				this.setSupportMails(this.project);
 				this.setLifetime();
-				this.getMembersOfTheProject();
+				if (this.isAdmin || this.project_application.memberNamesVisible) {
+					this.getMembersOfTheProject();
+				}
 				if (this.project_application?.project_application_perun_id) {
 					// this.startUpdateCreditUsageLoop();
 				}

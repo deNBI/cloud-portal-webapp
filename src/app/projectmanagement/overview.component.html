@@ -515,7 +515,8 @@
 				 *ngIf="project && ((project_application | hasstatusinlist:Application_States.APPROVED)
          || (project_application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)
          || (project_application | hasstatusinlist:Application_States.MODIFICATION_DECLINED)
-         )">
+         )
+         && (project_application.memberNamesVisible || isAdmin || is_vo_admin)">
 
 			<div class="card" id="projectMemberDiv">
 				<div class="card-header">
