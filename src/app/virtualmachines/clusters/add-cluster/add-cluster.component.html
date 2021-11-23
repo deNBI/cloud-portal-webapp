@@ -1,198 +1,201 @@
 <div *ngIf="isLoaded && userinfo?.PublicKey === 'None'">
-  <div>
-    <div class="card" style=" ">
-      <div class="card-header">
-        <i class="fa fa-align-justify"></i> Public Key
-      </div>
+	<div>
+		<div class="card" style=" ">
+			<div class="card-header">
+				<i class="fa fa-align-justify"></i> Public Key
+			</div>
 
-      <div class="card-body">
+			<div class="card-body">
 
-        <div style="padding:5px" class="alert alert-primary"><strong>Info: </strong>
-          You need to set a valid SSH Key before you can start a machine. Please set a
-          valid key below or on
-          your <a
-            href="#/userinfo">personal data page</a>.
-        </div>
-        <div style="width: 100%" class="table-responsive">
-          <table class="table table-striped">
+				<div style="padding:5px" class="alert alert-primary"><strong>Info: </strong>
+					You need to set a valid SSH Key before you can start a machine. Please set a
+					valid key below or on
+					your <a
+						href="#/userinfo">personal data page</a>.
+				</div>
+				<div style="width: 100%" class="table-responsive">
+					<table class="table table-striped">
 
-            <tr app-public-key [userinfo]="userinfo"></tr>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
+						<tr app-public-key [userinfo]="userinfo"></tr>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 
 <div *ngIf=" !isLoaded || (singleProject && !projectDataLoaded )" class="loader"></div>
 <div *ngIf=" isLoaded && userinfo?.PublicKey !=='None' && projects.length === 0">
-  <div class="alert alert-warning" role="alert">
-    You are not a member of any Simple VM project.
-  </div>
+	<div class="alert alert-warning" role="alert">
+		You are not a member of any Simple VM project.
+	</div>
 </div>
 <div *ngIf=" isLoaded && userinfo?.PublicKey !=='None' && projects.length > 0
   && (!singleProject || (singleProject && projectDataLoaded ))"
-  class="animated fadeIn">
+		 class="animated fadeIn">
 
-  <div class="row">
-    <div class="col-md-12">
-      <div class="card" style=" ">
-        <div class="card-header">
-          <strong>New Cluster</strong>
-          <span *ngIf="singleProject" id="singleProjectNameSpan"> - <strong>{{this.selectedProject[0]}}</strong></span>
-        </div>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="card" style=" ">
+				<div class="card-header">
+					<strong>New Cluster</strong>
+					<span *ngIf="singleProject" id="singleProjectNameSpan"> - <strong>{{this.selectedProject[0]}}</strong></span>
+				</div>
 
-        <div class="card-body">
-
-
-          <form id="application_form" #f="ngForm"
-                class="form-horizontal">
-            <div class="form-group row col-md-12" *ngIf="!singleProject">
-              <label class="col-md-2 form-control-label"><strong>Project*</strong></label>
-              <span *ngIf="(client_avaiable|| selectedProject) && (!projectDataLoaded || !flavors_loaded)"
-                    class="spinner-border text-info"></span>
+				<div class="card-body">
 
 
-              <div class="col-md-8">
-                <select required class="form-control form-select" name="projectSelect"
-                        [(ngModel)]="selectedProject" id="projectSelect"
-                        (ngModelChange)="getSelectedProjectClient(); "
-                >
-                  <option value="undefined" disabled selected hidden> Please
-                    Select
-                  </option>
-                  <option *ngFor="let project of projects" [ngValue]="project"
-                          id="id_option_{{project[0]}}">
-                    {{project[0]}}
-                  </option>
-
-                </select>
+					<form id="application_form" #f="ngForm"
+								class="form-horizontal">
+						<div class="form-group row col-md-12" *ngIf="!singleProject">
+							<label class="col-md-2 form-control-label"><strong>Project*</strong></label>
+							<span *ngIf="(client_avaiable|| selectedProject) && (!projectDataLoaded || !flavors_loaded)"
+										class="spinner-border text-info"></span>
 
 
-              </div>
+							<div class="col-md-8">
+								<select required class="form-control form-select" name="projectSelect"
+												[(ngModel)]="selectedProject" id="projectSelect"
+												(ngModelChange)="getSelectedProjectClient(); "
+								>
+									<option value="undefined" disabled selected hidden> Please
+										Select
+									</option>
+									<option *ngFor="let project of projects" [ngValue]="project"
+													id="id_option_{{project[0]}}">
+										{{project[0]}}
+									</option>
 
-            </div>
-            <div class="alert alert-danger" role="alert"
-                 *ngIf="client_avaiable && !selectedProjectClient?.bibigrid_available && projectDataLoaded && flavors_loaded">
-              Starting a cluster is currently not possible!<br>
-              If you have any questions please contact <a href="mailto:{{CLOUD_PORTAL_SUPPORT_MAIL}}">{{CLOUD_PORTAL_SUPPORT_MAIL}}.</a>
-            </div>
-
-            <div
-              *ngIf="client_avaiable && selectedProjectClient?.bibigrid_available && projectDataLoaded && flavors_loaded">
-              <app-resource-overview [ressourceUsage]="selectedProjectRessources"
-                                     [newCores]="newCores" [newRam]="newRam" [newGpus]="newGpus"
-                                     [newVms]="newVms"
-                                     [showAdditionalRes]="true"></app-resource-overview>
-              <accordion class="col">
-
-                <div>
-                  <div class="alert alert-primary" role="alert"
-                       *ngIf="selectedProject && (selectedProjectRessources?.used_vms + 2 ) > selectedProjectRessources?.number_vms">
-                    The limit for virtualmachines is too low for your project to start a new cluster.
-                    Your principal
-                    investigator can request more
-                    resources if necessary.
-
-                  </div>
-                  <div class="alert alert-primary " role="alert"
-                       *ngIf="selectedProject && selectedProjectRessources?.cores_used < selectedProjectRessources?.cores_total && !(selectedProjectRessources.ram_used < selectedProjectRessources.ram_total) && flavors_loaded && flavors_usable.length === 0 && !selectedFlavor">
-                    There are too few cores available for this project to start a new machine.
-                    Your principal investigator can request more
-                    resources if necessary.
-                  </div>
-                  <div class="alert alert-primary " role="alert"
-                       *ngIf="selectedProject && !(selectedProjectRessources?.cores_used < selectedProjectRessources?.cores_total) && (selectedProjectRessources.ram_used < selectedProjectRessources.ram_total) && flavors_loaded && flavors_usable.length === 0 && !selectedFlavor">
-                    There is not enough ram available for this project to start a new machine.
-                    Your principal investigator can request more
-                    resources if necessary.
-                  </div>
-                  <div class="alert alert-primary " role="alert"
-                       *ngIf="selectedProject && selectedProjectRessources?.cores_used < selectedProjectRessources?.cores_total && selectedProjectRessources.ram_used < selectedProjectRessources.ram_total && flavors_loaded && flavors_usable.length === 0 && !selectedFlavor">
-                    There are too few cores and not enough ram available for this project to start a new machine.
-                    Your principal investigator can request more
-                    resources if necessary.
-                  </div>
-                </div>
-              </accordion>
+								</select>
 
 
-              <div>
+							</div>
+
+						</div>
+						<div class="alert alert-danger" role="alert"
+								 *ngIf="client_avaiable && !selectedProjectClient?.bibigrid_available && projectDataLoaded && flavors_loaded">
+							Starting a cluster is currently not possible!<br>
+							If you have any questions please contact <a
+							href="mailto:{{CLOUD_PORTAL_SUPPORT_MAIL}}">{{CLOUD_PORTAL_SUPPORT_MAIL}}.</a>
+						</div>
+
+						<div
+							*ngIf="client_avaiable && selectedProjectClient?.bibigrid_available && projectDataLoaded && flavors_loaded">
+							<app-resource-overview [ressourceUsage]="selectedProjectRessources"
+																		 [newCores]="newCores" [newRam]="newRam" [newGpus]="newGpus"
+																		 [newVms]="newVms"
+																		 [showAdditionalRes]="true"></app-resource-overview>
+							<accordion class="col">
+
+								<div>
+									<div class="alert alert-primary" role="alert"
+											 *ngIf="selectedProject && (selectedProjectRessources?.used_vms + 2 ) > selectedProjectRessources?.number_vms">
+										The limit for virtualmachines is too low for your project to start a new cluster.
+										Your principal
+										investigator can request more
+										resources if necessary.
+
+									</div>
+									<div class="alert alert-primary " role="alert"
+											 *ngIf="selectedProject && selectedProjectRessources?.cores_used < selectedProjectRessources?.cores_total && !(selectedProjectRessources.ram_used < selectedProjectRessources.ram_total) && flavors_loaded && flavors_usable.length === 0 && !selectedFlavor">
+										There are too few cores available for this project to start a new machine.
+										Your principal investigator can request more
+										resources if necessary.
+									</div>
+									<div class="alert alert-primary " role="alert"
+											 *ngIf="selectedProject && !(selectedProjectRessources?.cores_used < selectedProjectRessources?.cores_total) && (selectedProjectRessources.ram_used < selectedProjectRessources.ram_total) && flavors_loaded && flavors_usable.length === 0 && !selectedFlavor">
+										There is not enough ram available for this project to start a new machine.
+										Your principal investigator can request more
+										resources if necessary.
+									</div>
+									<div class="alert alert-primary " role="alert"
+											 *ngIf="selectedProject && selectedProjectRessources?.cores_used < selectedProjectRessources?.cores_total && selectedProjectRessources.ram_used < selectedProjectRessources.ram_total && flavors_loaded && flavors_usable.length === 0 && !selectedFlavor">
+										There are too few cores and not enough ram available for this project to start a new machine.
+										Your principal investigator can request more
+										resources if necessary.
+									</div>
+								</div>
+							</accordion>
 
 
-                <div class="form-group row col-md-12">
-                  <label class="col-md-2 form-control-label"><strong>Master Instance</strong></label>
-                </div>
-
-                <div class="form-group row col-md-12">
-                  <label class="col-md-2 form-control-label"><strong>Flavor*</strong></label>
-                  <div class="col-md-10">
+							<div>
 
 
-                    <app-flavor-detail [selectedFlavor]="selectedMasterFlavor"
-                                       [flavors]="flavors_usable"
-                                       (selectedFlavorChange)="selectedMasterFlavor=$event;resetBatches();calculateNewValues();"
-                                       id="master_id_flavor_detail"></app-flavor-detail>
+								<div class="form-group row col-md-12">
+									<label class="col-md-2 form-control-label"><strong>Master Instance</strong></label>
+								</div>
 
-                  </div>
-
-
-                </div>
+								<div class="form-group row col-md-12">
+									<label class="col-md-2 form-control-label"><strong>Flavor*</strong></label>
+									<div class="col-md-10">
 
 
-                <div class="form-group row col-md-12">
+										<app-flavor-detail [selectedFlavor]="selectedMasterFlavor" id="id_flavor_detail"
+																			 [flavors]="flavors"
+																			 (selectedFlavorChange)="selectedMasterFlavor=$event;resetBatches();calculateNewValues();"></app-flavor-detail>
 
-                  <label class="col-md-2 form-control-label"><strong>Image*</strong></label>
-
-                  <div class="col-md-10">
-                    <div class="alert alert-info" *ngIf="(images?.length === 0) || !images">
-                      There are no images available for selection at the moment.
-                      Please contact the support of the facility where your project is running.
-                    </div>
+									</div>
+								</div>
 
 
-                    <app-image-detail *ngIf="images?.length > 0" [selectedImage]="selectedMasterImage"
-                                      [images]="images"
-                                      (selectedImageChange)="selectedMasterImage=$event;this.selectedWorkerBatches[0].image=selectedMasterImage;"
-                                      id="master_id_image_detail"></app-image-detail>
-                    <div class="alert alert-info" *ngIf="selectedMasterImage"> This image will also be used for every worker!</div>
-                  </div>
+								<div class="form-group row col-md-12">
 
-                </div>
+									<label class="col-md-2 form-control-label"><strong>Image*</strong></label>
 
-                <accordion class="col" *ngIf="selectedProject && projectDataLoaded && (selectedProjectRessources?.used_vms +2) <= selectedProjectRessources?.number_vms && (flavors.length !== 0 || selectedFlavor) && images?.length> 0">
+									<div class="col-md-10">
+										<div class="alert alert-info" *ngIf="(images?.length === 0) || !images">
+											There are no images available for selection at the moment.
+											Please contact the support of the facility where your project is running.
+										</div>
 
-                  <div class="alert alert-primary " role="alert"
-                       *ngIf="(!selectedMasterFlavor || !selectedMasterImage) &&  (selectedProjectRessources?.used_vms + 2 ) <= selectedProjectRessources?.number_vms">
-                    Please select a master instance configuration before selecting the worker instances!
-                  </div>
-                </accordion>
 
-                <accordion class="col">
+										<app-image-detail *ngIf="images?.length > 0" [selectedImage]="selectedMasterImage"
+																			[images]="images"
+																			(selectedImageChange)="selectedMasterImage=$event;this.selectedWorkerBatches[0].image=selectedMasterImage;"
+																			id="master_id_image_detail"></app-image-detail>
+										<div class="alert alert-info" *ngIf="selectedMasterImage"> This image will also be used for every
+											worker!
+										</div>
+									</div>
 
-                  <accordion-group #workerInstancesGroup [isOpen]="!(!selectedMasterFlavor || !selectedMasterImage)" (isOpenChange)="resizeFix();"
-                                   [isDisabled]="!selectedMasterFlavor || !selectedMasterImage"
+								</div>
 
-                                   *ngIf="selectedProject && projectDataLoaded &&  (selectedProjectRessources?.used_vms + 2 ) <= selectedProjectRessources?.number_vms &&
+								<accordion class="col"
+													 *ngIf="selectedProject && projectDataLoaded && (selectedProjectRessources?.used_vms +2) <= selectedProjectRessources?.number_vms && (flavors.length !== 0 || selectedFlavor) && images?.length> 0">
+
+									<div class="alert alert-primary " role="alert"
+											 *ngIf="(!selectedMasterFlavor || !selectedMasterImage) &&  (selectedProjectRessources?.used_vms + 2 ) <= selectedProjectRessources?.number_vms">
+										Please select a master instance configuration before selecting the worker instances!
+									</div>
+								</accordion>
+
+								<accordion class="col">
+
+									<accordion-group #workerInstancesGroup [isOpen]="!(!selectedMasterFlavor || !selectedMasterImage)"
+																	 (isOpenChange)="resizeFix();"
+																	 [isDisabled]="!selectedMasterFlavor || !selectedMasterImage"
+
+																	 *ngIf="selectedProject && projectDataLoaded &&  (selectedProjectRessources?.used_vms + 2 ) <= selectedProjectRessources?.number_vms &&
                   (flavors.length !== 0 || selectedFlavor)">
-                    <div accordion-heading style="width: 100%; cursor: pointer"><strong
-                      *ngIf="!selectedMasterFlavor || !selectedMasterImage">Worker Instances [disabled] </strong>
-                      <strong *ngIf="selectedMasterFlavor && selectedMasterImage">Worker Instances </strong>
-                      <i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
+										<div accordion-heading style="width: 100%; cursor: pointer"><strong
+											*ngIf="!selectedMasterFlavor || !selectedMasterImage">Worker Instances [disabled] </strong>
+											<strong *ngIf="selectedMasterFlavor && selectedMasterImage">Worker Instances </strong>
+											<i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
                             'icon-arrow-up': workerInstancesGroup.isOpen, 'icon-arrow-down': !workerInstancesGroup.isOpen}"></i>
-                    </div>
-                    <accordion-group *ngFor="let batch of selectedWorkerBatches" [isOpen]="true"  (isOpenChange)="resizeFix();">
-                      <div accordion-heading style="width: 100%; cursor: pointer"><strong
-                        *ngIf="selectedBatch !== batch">Batch {{batch.index}} [locked] </strong>
-                        <strong *ngIf="selectedBatch === batch">Batch {{batch.index}} </strong>
+										</div>
+										<accordion-group *ngFor="let batch of selectedWorkerBatches" [isOpen]="true"
+																		 (isOpenChange)="resizeFix();">
+											<div accordion-heading style="width: 100%; cursor: pointer"><strong
+												*ngIf="selectedBatch !== batch">Batch {{batch.index}} [locked] </strong>
+												<strong *ngIf="selectedBatch === batch">Batch {{batch.index}} </strong>
 
-                      </div>
-                      <div class="alert alert-warning"
-                           *ngIf="batch.usable_flavors.length < 1 && selectedBatch === batch && !batch.flavor">Not
-                        enough resources available
-                        to start another worker batch with a different flavor!
-                      </div>
-                      <span *ngIf="batch.usable_flavors.length > 0 || selectedBatch !== batch || batch.flavor">
+											</div>
+											<div class="alert alert-warning"
+													 *ngIf="batch.usable_flavors.length < 1 && selectedBatch === batch && !batch.flavor">Not
+												enough resources available
+												to start another worker batch with a different flavor!
+											</div>
+											<span *ngIf="batch.usable_flavors.length > 0 || selectedBatch !== batch || batch.flavor">
 
                       <div class="form-group row col-md-12">
                         <label class="col-md-2 form-control-label"><strong>Flavor*</strong></label>
@@ -200,13 +203,13 @@
 
 
                           <app-flavor-detail *ngIf="selectedBatch === batch" [selectedFlavor]="batch.flavor"
-                                             [flavors]="batch.usable_flavors"
-                                               id="selected_batch_id_flavor_detail"
-                                             (selectedFlavorChange)="batch.flavor=$event;selectedWorkerFlavorSet=true;calcMaxWorkerInstancesByFlavor();"
-                          ></app-flavor-detail>
+																						 [flavors]="batch.usable_flavors"
+																						 id="selected_batch_id_flavor_detail"
+																						 (selectedFlavorChange)="batch.flavor=$event;selectedWorkerFlavorSet=true;calcMaxWorkerInstancesByFlavor();"
+													></app-flavor-detail>
                           <app-flavor-detail *ngIf="selectedBatch !== batch" [selectedFlavor]="batch.flavor"
-                                             [flavors]="[batch.flavor]"
-                          ></app-flavor-detail>
+																						 [flavors]="[batch.flavor]"
+													></app-flavor-detail>
 
                         </div>
 
@@ -220,21 +223,23 @@
                       <div class="form-group row col-md-12">
 
                         <label class="col-md-2 form-control-label"><strong>Count*
-                          <span *ngIf="selectedBatch.max_worker_count && selectedBatch === batch">(max {{selectedBatch.max_worker_count}})</span></strong></label>
+                          <span
+														*ngIf="selectedBatch.max_worker_count && selectedBatch === batch">(max {{selectedBatch.max_worker_count}}
+														)</span></strong></label>
                         <div class="col-md-10">
 
 
                           <input class="form-control" id="workerInstancesCount_{{batch.index}}"
-                                 [disabled]="!batch.flavor || selectedBatch !== batch"
-                                 name="workerInstancesCount_{{batch.index}}"
-                                 placeholder="e.g 1"
-                                 id="selected_batck_worker_count"
+																 [disabled]="!batch.flavor || selectedBatch !== batch"
+																 name="workerInstancesCount_{{batch.index}}"
+																 placeholder="e.g 1"
+																 id="selected_batck_worker_count"
 
-                                 type="number" min="1" [max]="batch.max_worker_count" step="1"
-                                 [(ngModel)]="batch.worker_count" required
-                                 appMinAmount="1" appMaxAmount="{{batch.max_worker_count}}"
-                                 appInteger (ngModelChange)="changeCount();"
-                                 [ngClass]=" {
+																 type="number" min="1" [max]="batch.max_worker_count" step="1"
+																 [(ngModel)]="batch.worker_count" required
+																 appMinAmount="1" appMaxAmount="{{batch.max_worker_count}}"
+																 appInteger (ngModelChange)="changeCount();"
+																 [ngClass]=" {
                         'is-invalid': f.controls['workerInstancesCount_' + batch.index]?.invalid &&
                         (f.controls['workerInstancesCount_' + batch.index]?.dirty || f.controls['workerInstancesCount_' + batch.index]?.touched),
                         'is-valid': f.controls['workerInstancesCount_' + batch.index]?.valid && (f.controls['workerInstancesCount_' + batch.index]?.dirty ||
@@ -243,54 +248,53 @@
                         </div>
 
                       </div></span>
-                      <button *ngIf="this.selectedWorkerBatches.length > 1"
+											<button *ngIf="this.selectedWorkerBatches.length > 1"
 
-                              type="button" style="float: right;margin-bottom: 5px;"
+															type="button" style="float: right;margin-bottom: 5px;"
 
-                              class="btn btn-primary"
-                              data-toggle="modal"
-                              (click)="removeBatch(batch)">
-                        Remove Worker Batch
-                      </button>
-                      <button *ngIf="selectedBatch === batch"
-                              [disabled]="!batch.flavor || !batch.worker_count"
+															class="btn btn-primary"
+															data-toggle="modal"
+															(click)="removeBatch(batch)">
+												Remove Worker Batch
+											</button>
+											<button *ngIf="selectedBatch === batch"
+															[disabled]="!batch.flavor || !batch.worker_count"
 
-                              type="button" style="float: left;margin-bottom: 5px;"
-
-
-                              class="btn btn-primary"
-                              data-toggle="modal"
-                              (click)="addBatch();">
-                        Add Worker Batch
-                      </button>
-                    </accordion-group>
+															type="button" style="float: left;margin-bottom: 5px;"
 
 
+															class="btn btn-primary"
+															data-toggle="modal"
+															(click)="addBatch();">
+												Add Worker Batch
+											</button>
+										</accordion-group>
 
 
-                  </accordion-group>
-                </accordion>
-              </div>
-            </div>
+									</accordion-group>
+								</accordion>
+							</div>
+						</div>
 
 
-          </form>
+					</form>
 
-          <div
-            *ngIf=" selectedProjectClient?.bibigrid_available && (selectedProjectRessources?.used_vms +2) <= selectedProjectRessources?.number_vms && (!selectedBatch.worker_count || selectedBatch.worker_count === 0  ||!selectedMasterFlavor || !selectedMasterImage || !selectedWorkerFlavorSet  ) && selectedProject && projectDataLoaded && flavors_loaded"
-            class="alert alert-danger col-md-10" role="alert" style="margin: auto;">
-            <p>Please choose the following before starting a Cluster:</p>
-            <p *ngIf="!selectedMasterFlavor">- The flavor type of your Master VM
-            </p>
-            <p *ngIf="!selectedMasterImage">- The image you want to run on your Master VM
-            </p>
-            <p *ngIf="!selectedWorkerFlavorSet">- The flavor types of your Worker Batches.
-            </p>
-            <p *ngIf="!selectedBatch.worker_count || selectedBatch.worker_count === 0">- A count greater than 0 for your workers in your batches.
-            </p>
+					<div
+						*ngIf=" selectedProjectClient?.bibigrid_available && (selectedProjectRessources?.used_vms +2) <= selectedProjectRessources?.number_vms && (!selectedBatch.worker_count || selectedBatch.worker_count === 0  ||!selectedMasterFlavor || !selectedMasterImage || !selectedWorkerFlavorSet  ) && selectedProject && projectDataLoaded && flavors_loaded"
+						class="alert alert-danger col-md-10" role="alert" style="margin: auto;">
+						<p>Please choose the following before starting a Cluster:</p>
+						<p *ngIf="!selectedMasterFlavor">- The flavor type of your Master VM
+						</p>
+						<p *ngIf="!selectedMasterImage">- The image you want to run on your Master VM
+						</p>
+						<p *ngIf="!selectedWorkerFlavorSet">- The flavor types of your Worker Batches.
+						</p>
+						<p *ngIf="!selectedBatch.worker_count || selectedBatch.worker_count === 0">- A count greater than 0 for your
+							workers in your batches.
+						</p>
 
 
-          </div>
+					</div>
 					<div
 						*ngIf="projectDataLoaded && (selectedProjectRessources?.used_vms +2) <= selectedProjectRessources?.number_vms && (flavors?.length > 0  || selectedFlavor) && selectedProjectClient?.bibigrid_available"
 						class="alert alert-warning col-md-10" role="alert" style="margin: auto;">
@@ -318,46 +322,48 @@
 							Start Cluster
 						</button>
 					</div>
-        </div>
+				</div>
 
-        <div class="alert alert-danger"
-             *ngIf="isLoaded && !client_avaiable && selectedProject && client_checked">The
-          corresponding client is currently offline.
-          If you have any questions please contact <a href="mailto:{{CLOUD_PORTAL_SUPPORT_MAIL}}">{{CLOUD_PORTAL_SUPPORT_MAIL}}</a>.
-        </div>
+				<div class="alert alert-danger"
+						 *ngIf="isLoaded && !client_avaiable && selectedProject && client_checked">The
+					corresponding client is currently offline.
+					If you have any questions please contact <a
+						href="mailto:{{CLOUD_PORTAL_SUPPORT_MAIL}}">{{CLOUD_PORTAL_SUPPORT_MAIL}}</a>.
+				</div>
 
-      </div>
+			</div>
 
-      <!--/.col-->
+			<!--/.col-->
 
-    </div>
-  </div>
-  <div class="col-md-6">
+		</div>
+	</div>
+	<div class="col-md-6">
 
-  </div>
+	</div>
 
 </div>
 
 <div bsModal #infoModal="bs-modal" class="modal fade " tabindex="-1" role="dialog"
-     aria-labelledby="myModalLabel" aria-hidden="true"
-     id="info_modal">
-  <div class="modal-dialog modal-info" role="document"
-  >
+		 aria-labelledby="myModalLabel" aria-hidden="true"
+		 id="info_modal">
+	<div class="modal-dialog modal-info" role="document"
+	>
 
-    <div class="modal-content">
-      <div class="modal-header">
-        Cluster Start
-      </div>
-      <div class="modal-body">
+		<div class="modal-content">
+			<div class="modal-header">
+				Cluster Start
+			</div>
+			<div class="modal-body">
         <span *ngIf="!cluster_started">        Starting Cluster..
 </span>
-        <span
-          *ngIf="cluster_id && cluster_started"> The ID of your new cluster is <strong id="new_cluster_id">{{cluster_id}}</strong>.</span>
-        <span *ngIf="cluster_error">  {{cluster_error}}.</span>
+				<span
+					*ngIf="cluster_id && cluster_started"> The ID of your new cluster is <strong
+					id="new_cluster_id">{{cluster_id}}</strong>.</span>
+				<span *ngIf="cluster_error">  {{cluster_error}}.</span>
 
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
 
