@@ -1,5 +1,5 @@
 import {
-	browser, by, element, ElementArrayFinder, ElementFinder, protractor, ProtractorExpectedConditions,
+	browser, by, element, ElementFinder, protractor, ProtractorExpectedConditions,
 } from 'protractor';
 // tslint:disable-next-line:no-require-imports no-var-requires typedef
 // const clc = require('cli-color');
@@ -297,9 +297,11 @@ export class Util {
 		return await element(by.id(id)).getText();
 	}
 
-	static async clickElementByElement(elem: any,
+	static async clickElementByElement(
+		elem: any,
 																		 timeout: number = this.timeout,
-																		 id: string = 'Elementfinder'): Promise<void> {
+																		 id: string = 'Elementfinder',
+	): Promise<void> {
 		await this.waitForElementToBeClickableByElement(elem, timeout, id);
 		await this.scrollToElement(elem);
 
@@ -388,9 +390,11 @@ export class Util {
 		return await browser.driver.wait(until_.visibilityOf(elem), timeout, `Element [${id}] taking too long to be visibile`);
 	}
 
-	static async waitForInvisibilityOfElementByElement(elem: any,
+	static async waitForInvisibilityOfElementByElement(
+		elem: any,
 																										 timeout: number = this.timeout,
-																										 id: string = 'Elementfinder'): Promise<boolean> {
+																										 id: string = 'Elementfinder',
+	): Promise<boolean> {
 		const until_: ProtractorExpectedConditions = protractor.ExpectedConditions;
 		this.logInfo(`Waiting until element ${id} is invisibile`);
 
@@ -491,5 +495,9 @@ export class Util {
 
 	static async getElementsByIdPrefix(prefix: string): Promise<any> {
 		return element.all(by.css(`[id^=${prefix}]`));
+	}
+
+	static async isElementPresentById(id: string): Promise<boolean> {
+		return element(by.id(id)).isPresent();
 	}
 }
