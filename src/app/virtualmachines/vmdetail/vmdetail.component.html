@@ -106,10 +106,6 @@
             </div>
             <div class="col-3" *ngIf="virtualMachine?.status === virtualMachineStates.staticACTIVE ||
             virtualMachine?.status === virtualMachineStates.staticSHUTOFF">
-<!--							<button type="button" class="btn btn-danger" style="width:100%;" id="deleteVMButton"-->
-<!--											(click)="verifyModal.show();">-->
-<!--								<strong>Delete VM</strong>-->
-<!--							</button>-->
 							<button type="button" class="btn btn-danger" style="width:100%;" id="deleteVMButton"
 											(click)="showDeleteModal();">
 								<strong>Delete VM</strong>
@@ -651,6 +647,7 @@
     </div><!-- /.modal-dialog -->
   </div><!-- /.modal -->
 
+
   <div bsModal #deleteModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
        aria-labelledby="Label"
        aria-hidden="true"
@@ -674,7 +671,7 @@
           </div>
           <div class="alert alert-success" role="alert" *ngIf="status_changed === 1"
                id="delete_success_div">
-            {{virtualMachine?.name}} was succesfully deleted.
+            {{virtualMachine?.name}} was successfully deleted.
           </div>
         </div>
         <div class="alert alert-warning" role="alert" *ngIf="status_changed === 2">
@@ -984,7 +981,7 @@
             <br>
             <div class="row">
               <div class="col-md-12">
-                <strong>Please note</strong> that if you can not find the user, they are not registered for a
+                <strong>Please note</strong> that if you can not find the user, they are not registered for
                 a de.NBI Cloud account.
               </div>
             </div>

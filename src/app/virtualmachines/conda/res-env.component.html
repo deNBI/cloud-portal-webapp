@@ -53,14 +53,14 @@
       <ng-container *ngFor="let template of templates">
 
         <div *ngIf="template.template_name !== selectedTemplate.template_name && templates_to_block.indexOf(template.template_name) === -1">
-          <div class="card flavor-image-card" id="id_template_owl_{{template.template_name}}"
+          <div class="card flavor-image-card"
                style="cursor: default;">
             <div (click)="setSelectedTemplate(template)"
                  class="card-header bg-info-flavor text-truncate" data-toggle="tooltip" data-placement="top"
                  title="{{template.title}}"
                  style="background-color: #005AA9 !important; color: white !important; cursor: pointer">
               <!-- quickfix -->
-              <button type="button" class="close">
+              <button type="button" class="close" id="id_template_owl_{{template.template_name}}">
                 <i class="fas fa-plus-circle"></i>
               </button>
               <strong *ngIf="template.title !== null">{{template.title}}</strong>

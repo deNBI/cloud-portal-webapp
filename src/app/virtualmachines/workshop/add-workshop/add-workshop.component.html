@@ -25,6 +25,7 @@
 </div>
 <div
 	*ngIf=" is_loaded && userinfo?.PublicKey !== 'None' && projects.length > 0"
+	id="projectsExisting"
 	class="animated fadeIn">
 
 	<div class="row">
@@ -50,7 +51,7 @@
 										Select
 									</option>
 									<option *ngFor="let project of projects" [ngValue]="project"
-													id="id_option_{{project[0]}}">
+													id="project_option_{{project[0]}}">
 										{{project[0]}}
 									</option>
 								</select>
@@ -67,6 +68,7 @@
 							</div>
 							<div class="col-3" *ngFor="let workshop of workshops">
 								<div class="card" (click)="reset_on_workshop_change(); set_selected_workshop(workshop);"
+										 id="workshop_option_{{workshop.shortname}}"
 										 style="cursor: pointer; width: 16rem; height: auto;">
 									<div class="card-header text-truncate"
 											 [ngClass]="{'bg-success': (workshop.shortname === selected_workshop?.shortname)}"
@@ -129,22 +131,9 @@
 								<div *ngIf="selected_workshop" class="form-group row col-md-12">
 									<label class="col-md-2 form-control-label"><strong>Flavor*</strong></label>
 									<div class="col-md-10">
-										<ul class="nav nav-pills " style="margin-bottom: 5px;">
-											<li class="nav-item " style="cursor: pointer"
-													*ngFor="let item of flavor_types | keyvalue:unsorted">
-												<a [ngClass]="{'active': selected_flavor_type === item.key }"
-													 (click)="set_selected_flavor_type(item.key)" class="nav-link">
-													{{item.key}}
-												</a>
-											</li>
-										</ul>
-										<div *ngIf="flavor_types[selected_flavor_type].length >0
-												 				&& flavor_types[selected_flavor_type][0]?.type?.description"
-												 class="alert alert-info">
-											{{flavor_types[selected_flavor_type][0].type.description}}
-										</div>
+
 										<app-flavor-detail [selectedFlavor]="selected_flavor" id="id_flavor_detail"
-																			 [flavors]="flavor_types[selected_flavor_type]"
+																			 [flavors]="flavors"
 																			 [creditsAllowed]="credits_allowed"
 																			 (selectedFlavorChange)="set_selected_flavor($event)">
 										</app-flavor-detail>
@@ -191,6 +180,7 @@
                             'icon-arrow-up': res_env_group.isOpen, 'icon-arrow-down': !res_env_group.isOpen}"></i>
 											</div>
 											<app-res-env #res_env
+																	 id="id_resenv"
 																	 [clientid]="selected_project_client.id"
 																	 [forc_url]="forc_url"
 																	 [selectedImageTags]="selected_image?.tags"
@@ -221,7 +211,9 @@
 													</thead>
 													<tbody>
 													<tr *ngFor="let member of project_members">
-														<td>{{ member.userName }} <p *ngIf="member.groupAdmin">(Group admin)</p></td>
+														<td>{{ member.userName }}
+															<p *ngIf="member.groupAdmin">(Group admin)</p>
+														</td>
 														<td>
 															<span *ngIf="member.hasVM" class="badge badge-success">
 																<span class="icon icon-check"></span>
@@ -234,6 +226,7 @@
 														<td>
 															<button *ngIf="members_to_add.indexOf(member) === -1"
 																			type="button"
+																			id="add_user_{{member.elixirId}}"
 																			class="btn btn-primary"
 																			data-toggle="modal" (click)="add_member(member)">
 																Add User
@@ -373,6 +366,7 @@
 						 *ngIf="is_loaded && !client_available && selected_project && client_checked">
 					The corresponding client is currently offline.
 					If you have any questions please contact <a href="mailto:{{CLOUD_PORTAL_SUPPORT_MAIL}}">{{CLOUD_PORTAL_SUPPORT_MAIL}}.</a>
+					Check our <a href="{{STATUS_LINK}}" target="_blank" rel="noopener noreferrer">status overview</a> to see if the site of your project is reachable.
 				</div>
 			</div>
 		</div>
