@@ -8,7 +8,7 @@ export class LoginPage {
 
 	private static timeout: number = browser.params.timeout;
 	private static TEST_RP_WARNING: string = 'testRpWarning';
-	private static TEST_RP_CONTINUE: string = 'continue'
+	private static TEST_RP_CONTINUE: string = 'continue';
 
 	static async login(email: string, psw: string, auth: string, relog: boolean = false): Promise<any> {
 		await browser.driver.get(browser.params.portal);
@@ -61,7 +61,7 @@ export class LoginPage {
 		await Util.clickElementById('identifierNext');
 		await Util.waitForPage('accounts.google.com/signin/v2/challenge');
 		await Util.waitForElementToBeClickableById('password');
-		await Util.sendTextToElementByName('password', psw, false);
+		await Util.sendTextToElementByNameWithoutLogging('password', psw);
 		await Util.clickElementById('passwordNext');
 		if (await Util.waitForPageIgnoreError(this.TEST_RP_WARNING)) {
 			await Util.clickElementByName(this.TEST_RP_CONTINUE);
