@@ -32,10 +32,15 @@
 			<div *ngIf="projectWorkshopsLoading || projectMembersLoading">
 				<div class="row" style="height: 30px; margin-bottom: 10px">
 					<strong class="col-3">Getting workshops...</strong>
-					<div class="col-2" *ngIf="projectWorkshopsLoading">
-						<div class="spinner-border text-muted">
-						</div>
+					<div class="col-5" *ngIf="!workshops || workshops.length === 0; else workshopsLoading">
+						No workshops found.
 					</div>
+					<ng-template #workshopsLoading>
+						<div class="col-2" *ngIf="projectWorkshopsLoading">
+							<div class="spinner-border text-muted">
+							</div>
+						</div>
+					</ng-template>
 					<div class="col-2" *ngIf="projectWorkshopsLoaded">
 						<i class="fa fa-check" style="color: green">
 						</i>
