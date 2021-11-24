@@ -99,6 +99,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	allSet: boolean = false;
 	renderer: Renderer2;
 	supportMails: string[] = [];
+	toggleLocked: boolean = false;
 
 	resourceDataLoaded: boolean = false;
 	creditHistoryLoaded: boolean = false;
@@ -552,6 +553,18 @@ private flavorService: FlavorService,
 		this.disabledDoiInput = !this.disabledDoiInput;
 	}
 
+	toggleMemberNameVisibility(): void {
+		this.toggleLocked = true;
+		this.applicationsService.toggleVisibility(this.project_application).subscribe((application: Application): void => {
+			this.project_application.memberNamesVisible = application.memberNamesVisible;
+			this.toggleLocked = false;
+		});
+	}
+
+	switchToggleLocked(check: boolean): void {
+		this.toggleLocked = check;
+	}
+
 	addDoi(): void {
 		this.toggleDoiDisabledInput();
 		if (this.isNewDoi()) {
@@ -736,7 +749,9 @@ private flavorService: FlavorService,
 				this.project = newProject;
 				this.setSupportMails(this.project);
 				this.setLifetime();
-				this.getMembersOfTheProject();
+				if (this.isAdmin || this.project_application.memberNamesVisible) {
+					this.getMembersOfTheProject();
+				}
 				if (this.project_application?.project_application_perun_id) {
 					// this.startUpdateCreditUsageLoop();
 				}
@@ -1026,7 +1041,7 @@ private flavorService: FlavorService,
 	}
 
 	/**
-	 * Remove an member from a group.
+	 * Remove a member from a group.
 	 *
 	 * @param groupid  of the group
 	 * @param memberid of the member
