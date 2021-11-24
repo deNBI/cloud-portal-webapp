@@ -18,7 +18,7 @@ import { FlavorService } from '../../../api-connector/flavor.service';
 import { UserService } from '../../../api-connector/user.service';
 import { ResEnvComponent } from '../../conda/res-env.component';
 import { ProjectMember } from '../../../projectmanagement/project_member.model';
-import {CLOUD_PORTAL_SUPPORT_MAIL, STATUS_LINK, WIKI_WORKSHOPS, } from '../../../../links/links';
+import { CLOUD_PORTAL_SUPPORT_MAIL, STATUS_LINK, WIKI_WORKSHOPS } from '../../../../links/links';
 import { VirtualmachineService } from '../../../api-connector/virtualmachine.service';
 import { WorkshopService } from '../../../api-connector/workshop.service';
 
