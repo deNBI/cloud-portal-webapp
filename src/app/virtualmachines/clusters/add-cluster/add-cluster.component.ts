@@ -22,7 +22,8 @@ import { Client } from '../../../vo_manager/clients/client.model';
 import { BiocondaComponent } from '../../conda/bioconda.component';
 import { ApplicationRessourceUsage } from '../../../applications/application-ressource-usage/application-ressource-usage';
 import { WorkerBatch } from '../clusterinfo';
-import { CLOUD_PORTAL_SUPPORT_MAIL } from '../../../../links/links';
+import {CLOUD_PORTAL_SUPPORT_MAIL, STATUS_LINK} from '../../../../links/links';
+
 
 /**
  * Cluster Component
@@ -38,6 +39,7 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 
 	is_vo: boolean = false;
 	CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL;
+	STATUS_LINK: string = STATUS_LINK;
 
 	client_checked: boolean = false;
 	timeout: number = 0;

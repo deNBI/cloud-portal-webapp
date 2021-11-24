@@ -326,14 +326,14 @@
 								<strong class="text-muted">{{project?.ComputeCenter.Name}}</strong>
 							</div>
 						</div>
-						<div class="col-6" *ngIf="this.supportMails?.length === 1">
+						<div class="col-6 ">
+						<div class="btn-group">
 							<a class="btn btn-outline-primary" target="_blank" rel="noopener noreferrer"
-								 href="mailto:{{project?.ComputeCenter.Support}}"
+								 href="mailto:{{project?.ComputeCenter.Support}}" *ngIf="this.supportMails?.length === 1"
 								 style="margin-top:15px;">Contact Support</a>
-						</div>
-						<div class="col-6" *ngIf="this.supportMails?.length > 1">
 
-							<div class="dropdown" dropdown style="margin-top:15px;">
+
+							<div class="dropdown" dropdown style="margin-top:15px;" *ngIf="this.supportMails?.length > 1">
 								<button class="btn btn-outline-primary dropdown-toggle" id="actionDropdownMenu" data-toggle="dropdown"
 												type="button" aria-haspopup="true" aria-expanded="false"
 												dropdownToggle>
@@ -345,8 +345,9 @@
 										 href="mailto:{{mail}}" target="_blank" rel="noopener noreferrer">Contact {{mail}}</a>
 								</div>
 							</div>
-
-
+							<a class="btn btn-outline-primary" target="_blank" rel="noopener noreferrer"
+								 href="{{STATUS_LINK}}" style="margin-top:15px;">Facility Status</a>
+					</div>
 						</div>
 					</div>
 					<div class="row" *ngIf="project_application?.credits_allowed">
