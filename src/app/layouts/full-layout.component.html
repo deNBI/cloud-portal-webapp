@@ -61,9 +61,12 @@
 
 
 			</li>
-			<ng-container class="nav-group" *ngIf="project_enumeration?.length <= 3">
+			<ng-container class="nav-group"
+										*ngIf="project_enumeration?.length <= 3">
 
-				<li class="nav-item" *ngFor="let application of project_enumeration"
+				<li class="nav-item"
+						id="project_list"
+						*ngFor="let application of project_enumeration"
 						style="width: 100% !important;"
 				>
 
@@ -133,8 +136,12 @@
 
 				</li>
 			</ng-container>
-			<li class="nav-group" [ngClass]="{'show':show_projects}" *ngIf="project_enumeration?.length > 3">
-				<a class="nav-link nav-group-toggle" (click)="toggleProjectsNav()"
+			<li class="nav-group"
+					id="project_list_folded"
+					[ngClass]="{'show':show_projects}" *ngIf="project_enumeration?.length > 3">
+				<a class="nav-link nav-group-toggle"
+					 id="project_list_folded_toogler"
+					 (click)="toggleProjectsNav()"
 				>
 					<i class="nav-icon fas fa-list"></i> Projects</a>
 				<ul class="nav-group-items">
