@@ -1,6 +1,6 @@
 import {
 	ChangeDetectorRef,
-	Component, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild,
+	Component, OnChanges, OnDestroy, OnInit, ViewChild,
 } from '@angular/core';
 import { forkJoin, Subscription } from 'rxjs';
 import { Router } from '@angular/router';
@@ -34,7 +34,7 @@ import { CLOUD_PORTAL_SUPPORT_MAIL } from '../../../../links/links';
 	providers: [GroupService, ImageService, KeyService, FlavorService, VirtualmachineService,
 		ApiSettings, KeyService, ClientService, UserService, VoService],
 })
-export class AddClusterComponent implements OnInit, OnDestroy, OnChanges {
+export class AddClusterComponent implements OnInit, OnDestroy {
 
 	is_vo: boolean = false;
 	CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL;
@@ -155,10 +155,6 @@ export class AddClusterComponent implements OnInit, OnDestroy, OnChanges {
 		// eslint-disable-next-line no-empty-function
 	}
 
-	ngOnChanges(changes: SimpleChanges) {
-		this.cdRef.detectChanges();
-	}
-
 	calcWorkerInstancesCount(): void {
 		let count: number = 0;
 		this.selectedWorkerBatches.forEach((batch: WorkerBatch): void => {
@@ -275,6 +271,7 @@ export class AddClusterComponent implements OnInit, OnDestroy, OnChanges {
 					this.checkFlavorsUsableForCluster();
 				},
 				(error: any) => {
+					console.log(error);
 					this.flavors = [];
 					this.flavors_usable = [];
 					this.flavors_loaded = true;

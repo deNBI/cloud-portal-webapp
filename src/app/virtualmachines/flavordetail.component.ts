@@ -1,5 +1,5 @@
 import {
-	Component, EventEmitter, HostListener, Input, OnChanges, OnInit, Output, SimpleChanges,
+	Component, EventEmitter, HostListener, Input, OnChanges, OnInit, Output,
 } from '@angular/core';
 import { OwlOptions } from 'ngx-owl-carousel-o';
 import { KeyValue } from '@angular/common';
