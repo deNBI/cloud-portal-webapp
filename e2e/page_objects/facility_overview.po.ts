@@ -1,4 +1,4 @@
-import { browser, by, element } from 'protractor';
+import { browser } from 'protractor';
 import { Util } from '../util';
 
 /**
@@ -18,11 +18,11 @@ export class FacilityOverviewPage {
 	private static TAB_STATE_TERMINATION_BUTTON: string = 'tab_state_button_termination_requests';
 	private static TERMINATE_PT_APPLICATION_BTN: string = 'approveTerminationButton_PT';
 	private static TERMINATE_PROJECT_BTN: string = 'terminate_project_btn';
-	private static WAS_TERMINATED: string = 'The project was terminated.'
+	private static WAS_TERMINATED: string = 'The project was terminated.';
 	private static CLOSE_NOTIFICATION_BTN: string = 'close_notification';
 	private static LOADING_APPLICATIONS: string = 'loading_applications';
 	private static TERMINATION_TABLE: string = 'termination_table';
-	private static TERMINATION_COUNTER: string = 'termination_counter'
+	private static TERMINATION_COUNTER: string = 'termination_counter';
 
 	static async navigateToFacilityOverview(): Promise<any> {
 		Util.logInfo('Navigating to facility overview');
@@ -41,6 +41,7 @@ export class FacilityOverviewPage {
 
 	static async terminatePTApplications(): Promise<any> {
 		await Util.waitForPresenceOfElementById(this.TAB_STATE_TERMINATION_BUTTON);
+		await Util.waitForInvisibilityOfElementById(this.LOADING_APPLICATIONS);
 		await Util.clickElementById(this.TAB_STATE_TERMINATION_BUTTON);
 		await Util.waitForInvisibilityOfElementById(this.LOADING_APPLICATIONS);
 		await browser.sleep(10000);
