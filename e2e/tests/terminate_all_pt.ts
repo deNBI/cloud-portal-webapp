@@ -5,7 +5,7 @@ import { VoOverviewPage } from '../page_objects/vo_overview.po';
 import { ApplicationOverviewPage } from '../page_objects/application_overview.po';
 import { FacilityOverviewPage } from '../page_objects/facility_overview.po';
 
-describe('Simple Application Test', (): void => {
+describe('Terminate all PT projects', (): void => {
 
 	beforeAll(async (): Promise<any> => {
 		await browser.waitForAngularEnabled(false);
@@ -13,7 +13,6 @@ describe('Simple Application Test', (): void => {
 	});
 
 	it('should decline all open PT Applications', async (): Promise<any> => {
-
 		await ApplicationOverviewPage.navigateToApplicationOverview();
 		await ApplicationOverviewPage.declinePTApplications();
 	});
@@ -28,7 +27,6 @@ describe('Simple Application Test', (): void => {
 
 	it('should terminate vo projects', async (): Promise<any> => {
 		await VoOverviewPage.terminateAllPTProjects();
-
 	});
 
 	it('should relog with fm', async (): Promise<any> => {

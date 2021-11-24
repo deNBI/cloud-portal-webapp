@@ -26,7 +26,7 @@ git clone -b dev git@github.com:deNBI/cloud-portal-webapp.git
 cd cloud-portal-webapp
 ~~~
 
-2. Install nodejs virtual environment as decribed [here](https://github.com/ekalinin/nodeenv#install).
+2. Install nodejs virtual environment as described [here](https://github.com/ekalinin/nodeenv#install).
 
 3. Run the Makefile
 ~~~BASH

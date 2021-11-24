@@ -27,13 +27,16 @@ export const CREDITS_WIKI: string = `${environment.WIKI_PRE}portal/credits/`;
 export const SURVEY_LINK: string = 'https://www.surveymonkey.de/r/HQW9V7C';
 export const CLOUD_MAIL: string = 'cloud@denbi.de';
 export const CLOUD_PORTAL_SUPPORT_MAIL = 'cloud-portal-support@denbi.de';
-export const POLICY_LINK: string = 'https://cloud.denbi.de/policies/';
+export const POLICY_LINK: string = 'https://cloud.denbi.de/about/policies/';
 export const SIMPLE_VM_LINK: string = 'https://cloud.denbi.de/about/project-types/simplevm/';
 export const OPENSTACK_LINK: string = 'https://cloud.denbi.de/about/project-types/openstack/';
 export const PROJECT_TYPES_LINK: string = 'https://cloud.denbi.de/about/project-types/';
 export const PUBLICATIONS_LINK: string = 'https://cloud.denbi.de/about/publications/';
+export const FACILITY_NEWS_LINK: string = 'https://cloud.denbi.de/news/facility-news/';
+export const STATUS_LINK: string = 'https://status.cloud.denbi.de/status';
+export const SUPPORT_LINK: string = 'https://cloud.denbi.de/support/';
 
-export const WIKI_LNKS: string[] = [
+export const WIKI_LINKS: string[] = [
 	WIKI_SNAPSHOTS,
 	WIKI,
 	WIKI_GENERATE_KEYS,
@@ -53,4 +56,15 @@ export const WIKI_LNKS: string[] = [
 	WIKI_MEMBER_MANAGEMENT,
 	WIKI_FAQ,
 	WIKI_MOTD,
+];
+
+export const LANDING_PAGE_LINKS: string[] = [
+	POLICY_LINK,
+	SIMPLE_VM_LINK,
+	OPENSTACK_LINK,
+	PROJECT_TYPES_LINK,
+	PUBLICATIONS_LINK,
+	FACILITY_NEWS_LINK,
+	STATUS_LINK,
+	SUPPORT_LINK,
 ];

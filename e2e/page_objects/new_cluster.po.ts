@@ -25,15 +25,14 @@ export class NewClusterPage {
 
 	static async chooseProject(): Promise<any> {
 		await Util.waitForPresenceOfElementById('application_form');
-
-		const waitElementawait: any = await Util.waitForPresenceOfElementById('singleProjectNameSpan', 15000);
-		if (!waitElementawait) {
+		await browser.sleep(15000);
+		if (await Util.isElementPresentById('singleProjectNameSpan')) {
+			Util.logInfo('Single Project automatically selected');
+		} else {
 			await Util.waitForPresenceOfElementById(this.PROJECT_SELECT_ID);
 			await Util.waitForElementToBeClickableById(this.PROJECT_SELECT_ID);
 			Util.logInfo('Getting option from select');
 			await Util.clickOptionOfSelect(this.PROJECT_NAME, this.PROJECT_SELECT_ID);
-		} else {
-			Util.logInfo('Single Project automatically selected');
 		}
 	}
 
