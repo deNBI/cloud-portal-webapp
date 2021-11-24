@@ -22,8 +22,7 @@ import { Client } from '../../../vo_manager/clients/client.model';
 import { BiocondaComponent } from '../../conda/bioconda.component';
 import { ApplicationRessourceUsage } from '../../../applications/application-ressource-usage/application-ressource-usage';
 import { WorkerBatch } from '../clusterinfo';
-import {CLOUD_PORTAL_SUPPORT_MAIL, STATUS_LINK} from '../../../../links/links';
-
+import { CLOUD_PORTAL_SUPPORT_MAIL, STATUS_LINK } from '../../../../links/links';
 
 /**
  * Cluster Component

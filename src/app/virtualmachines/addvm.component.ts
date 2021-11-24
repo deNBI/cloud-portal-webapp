@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 import { forkJoin, Subscription } from 'rxjs';
 import { Router } from '@angular/router';
-import {WIKI_VOLUME_OVERVIEW, CLOUD_PORTAL_SUPPORT_MAIL, STATUS_LINK, } from 'links/links';
+import { WIKI_VOLUME_OVERVIEW, CLOUD_PORTAL_SUPPORT_MAIL, STATUS_LINK } from 'links/links';
 import { KeyValue } from '@angular/common';
 import { Image } from './virtualmachinemodels/image';
 import { Flavor } from './virtualmachinemodels/flavor';
