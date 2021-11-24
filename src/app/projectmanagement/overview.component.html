@@ -609,16 +609,7 @@
 									</div>
 
 								</td>
-								<td *ngIf="member.elixirId !== project_application.project_application_pi.elixir_id && userinfo?.MemberId.toString() === member.memberId.toString()">
-									<button class="btn btn-danger" type="button" style="margin: 2px"
-										(click)="leaveProject(project?.Id,member.memberId,project?.Name);	notificationModal.show();">
-										<i class="fas fa-sign-out-alt"></i>
-										Leave Project
-									</button>
-
-								</td>
 							</tr>
-
 
 							</tbody>
 						</table>
@@ -626,7 +617,6 @@
 				</div>
 			</div>
 		</div>
-
 
 	</div>
 	<div class="row">
@@ -724,6 +714,27 @@
 					<canvas #creditsChart
 									id="creditsChart">
 					</canvas>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col"
+				 *ngIf="((project_application | hasstatusinlist:Application_States.APPROVED)
+           || (project_application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)
+           || (project_application | hasstatusinlist:Application_States.MODIFICATION_DECLINED) )">
+			<div class="card">
+				<div class="card-header">
+					<i class="fas fa-sign-out-alt"></i> Leave Project {{project?.Name }}
+				</div>
+				<div class="card-body justify-content-center align-items-center">
+					<div>
+						<button class="btn btn-danger" type="button" style="margin: 2px"
+										(click)="leaveProject(project?.Id, userinfo?.MemberId ,project?.Name);	notificationModal.show();"> <!-- check this -->
+							<i class="fas fa-sign-out-alt"></i>
+							Leave Project
+						</button> </div>
 				</div>
 
 			</div>
