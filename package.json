@@ -88,6 +88,7 @@
     "ngx-owl-carousel-o": "^6.0.0",
     "ngx-scrollbar": "^8.0.0",
     "ngx-smart-popover": "^1.4.0",
+    "npm": "^8.1.0",
     "pdfmake": "^0.2.4",
     "postcss-loader": "^6.1.1",
     "postcss-url": "^10.1.3",
