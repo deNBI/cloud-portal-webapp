@@ -29,7 +29,7 @@ PROJECT_TYPES=https://portal-dev.denbi.de/about/project-types/
 SIMPLE_VM=https://portal-dev.denbi.de/about/project-types/simplevm/
 OPENSTACK=https://portal-dev.denbi.de/about/project-types/openstack/
 PUBLICATIONS=https://portal-dev.denbi.de/about/publications/
-STATUS_LINK=https://status.cloud.denbi.de/
+STATUS_LINK=https://status.cloud.denbi.de
 SUPPORT_LINK=https://cloud.denbi.de/support/
 
 
