@@ -1,4 +1,5 @@
 import {
+	ChangeDetectorRef,
 	Component, OnDestroy, OnInit, ViewChild,
 } from '@angular/core';
 import { forkJoin, Subscription } from 'rxjs';
@@ -149,6 +150,7 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 		private userService: UserService,
 		private voService: VoService,
 		private router: Router,
+		private cdRef: ChangeDetectorRef,
 	) {
 		// eslint-disable-next-line no-empty-function
 	}
@@ -289,12 +291,12 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 
 	resetBatches(): void {
 		this.selectedWorkerBatches = [new WorkerBatch(1)];
-		this.setBatchUsableFlavors(this.selectedWorkerBatches[0]);
 		this.selectedBatch = this.selectedWorkerBatches[0];
+		this.setBatchUsableFlavors();
 
 	}
 
-	setBatchUsableFlavors(batch: WorkerBatch): void {
+	setBatchUsableFlavors(): void {
 		const used_flavors: Flavor[] = [];
 
 		// tslint:disable-next-line:no-for-each-push
@@ -304,27 +306,48 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 			}
 		});
 		const flavors_to_filter: Flavor[] = this.flavors.filter((flavor: Flavor): boolean => used_flavors.indexOf(flavor) < 0);
-		batch.usable_flavors = flavors_to_filter.filter((flav: Flavor): boolean => this.selectedProjectRessources
+		this.selectedBatch.usable_flavors = flavors_to_filter.filter((flav: Flavor): boolean => this.selectedProjectRessources
 			.filterFlavorsTest(flav, flavors_to_filter, this.selectedWorkerBatches, this.selectedMasterFlavor));
+
+	}
+
+	setSelectedBatch(batch: WorkerBatch): void {
+		this.selectedBatch = batch;
+		this.checkFlavorsUsableForCluster();
+		this.setBatchUsableFlavors();
+		this.calcWorkerInstancesCount();
+		this.calculateNewValues();
+		this.calcMaxWorkerInstancesByFlavor();
+		this.setBatchUsableFlavors();
+
 	}
 
 	addBatch(): void {
 		this.selectedWorkerFlavorSet = false;
 		this.selectedBatch = null;
 		const newBatch: WorkerBatch = new WorkerBatch(this.selectedWorkerBatches[this.selectedWorkerBatches.length - 1].index + 1);
-		this.setBatchUsableFlavors(newBatch);
-		newBatch.image = this.selectedMasterImage;
-		this.maxWorkerInstances = null;
-		this.selectedWorkerBatches.push(newBatch);
 		this.selectedBatch = newBatch;
+		this.selectedWorkerBatches.push(this.selectedBatch);
+		this.setBatchUsableFlavors();
+		this.selectedBatch.image = this.selectedMasterImage;
+		this.maxWorkerInstances = null;
 	}
 
 	removeBatch(batch: WorkerBatch): void {
 		const idx: number = this.selectedWorkerBatches.indexOf(batch);
 		if (batch === this.selectedBatch) {
+
+			// eslint-disable-next-line no-plusplus
+			for (let i = idx; i < this.selectedWorkerBatches.length; i++) {
+				this.selectedWorkerBatches[i].index -= 1;
+
+			}
 			if (idx !== 0) {
 				this.selectedBatch = this.selectedWorkerBatches[idx - 1];
 				this.selectedWorkerFlavorSet = true;
+
+			} else if (idx === 0 && this.selectedWorkerBatches.length > 0) {
+				this.selectedBatch = this.selectedWorkerBatches[idx + 1];
 
 			}
 		}
@@ -332,6 +355,7 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 		this.selectedWorkerBatches.splice(idx, 1);
 
 		this.checkFlavorsUsableForCluster();
+		this.setBatchUsableFlavors();
 		this.calcWorkerInstancesCount();
 		this.calculateNewValues();
 		this.calcMaxWorkerInstancesByFlavor();
