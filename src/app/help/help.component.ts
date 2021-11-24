@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { WIKI, CLOUD_MAIL, CLOUD_PORTAL_SUPPORT_MAIL, STATUS_LINK, SUPPORT_LINK, } from '../../links/links';
+import {
+	WIKI, CLOUD_MAIL, CLOUD_PORTAL_SUPPORT_MAIL, STATUS_LINK, SUPPORT_LINK,
+} from '../../links/links';
 
 /**
  * Help component.
