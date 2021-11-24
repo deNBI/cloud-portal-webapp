@@ -33,7 +33,7 @@ export const OPENSTACK_LINK: string = 'https://cloud.denbi.de/about/project-type
 export const PROJECT_TYPES_LINK: string = 'https://cloud.denbi.de/about/project-types/';
 export const PUBLICATIONS_LINK: string = 'https://cloud.denbi.de/about/publications/';
 export const FACILITY_NEWS_LINK: string = 'https://cloud.denbi.de/news/facility-news/';
-export const STATUS_LINK: string = 'https://status.cloud.denbi.de';
+export const STATUS_LINK: string = 'https://status.cloud.denbi.de/status';
 export const SUPPORT_LINK: string = 'https://cloud.denbi.de/support/';
 
 export const WIKI_LINKS: string[] = [
