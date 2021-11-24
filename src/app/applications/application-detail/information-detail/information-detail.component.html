@@ -86,6 +86,16 @@
 
   </tr>
 
+	<tr>
+		<td>Project Member Names Visibility</td>
+		<td>
+			<span *ngIf="application?.memberNamesVisible" class="badge bg-light">Visible</span>
+<!--			<span *ngIf="!application?.memberNamesVisible" class="badge bg-info">Hidden</span>-->
+			<span *ngIf="!application?.memberNamesVisible" class="badge bg-primary">Hidden</span>
+		</td>
+
+	</tr>
+
   <tr>
     <td>Comment</td>
     <td>{{
