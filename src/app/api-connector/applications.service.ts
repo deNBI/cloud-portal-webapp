@@ -18,6 +18,12 @@ export class ApplicationsService {
 		this.http = http;
 	}
 
+	toggleVisibility(application: Application): Observable<Application> {
+		return this.http.post<Application>(`${ApiSettings.getApiBaseURL()}project_applications/toggle_member_names_visibility/`, application, {
+			withCredentials: true,
+		});
+	}
+
 	adjustApplication(application: Application): Observable<Application> {
 		return this.http.post<Application>(`${ApiSettings.getApiBaseURL()}project_applications/adjust/`, application, {
 			withCredentials: true,
@@ -83,7 +89,7 @@ export class ApplicationsService {
 	}
 
 	/**
-	 * Checks if some client has the ressource avaiable for an application.
+	 * Checks if some client has the resource available for an application.
 	 *
 	 * @param app_id
 	 * @returns
