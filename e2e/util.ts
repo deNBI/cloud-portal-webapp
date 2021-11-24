@@ -198,6 +198,13 @@ export class Util {
 		return await elem.sendKeys(text);
 	}
 
+	static async sendTextToElementByNameWithoutLogging(name: string, text: string): Promise<void> {
+		this.logInfo(`Sending text [redacted] to element ${name}`);
+		const elem: ElementFinder = element(by.name(name));
+
+		return await elem.sendKeys(text);
+	}
+
 	static async sendTextToElementByElement(elem: any, text: string, show_output: boolean = true): Promise<void> {
 		if (show_output) {
 			this.logInfo(`Send text [${text}] to element  [${elem}]`);
