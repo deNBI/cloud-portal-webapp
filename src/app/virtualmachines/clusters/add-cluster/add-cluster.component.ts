@@ -1,6 +1,6 @@
 import {
 	ChangeDetectorRef,
-	Component, OnChanges, OnDestroy, OnInit, ViewChild,
+	Component, OnDestroy, OnInit, ViewChild,
 } from '@angular/core';
 import { forkJoin, Subscription } from 'rxjs';
 import { Router } from '@angular/router';
