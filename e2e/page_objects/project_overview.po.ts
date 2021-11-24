@@ -12,7 +12,7 @@ export class ProjectOverview {
 	private static INFORMATION_TAB: string = 'information_tab';
 	private static ADD_MEMBER_BTN_MODAL: string = 'add_member_btn_modal';
 	private static SEARCH_MEMBER: string = 'add_member_input';
-	private static DEFAULT_MEMBER_EMAIL: string = 'testuserdenbi'
+	private static DEFAULT_MEMBER_EMAIL: string = 'testuserdenbi';
 	private static DEFAULT_MEMBER: string = 'Test User';
 	private static ADD_MEMBER_BTN: string = 'add_member_btn';
 	private static SEARCH_MEMBER_BTN: string = 'search_member_btn';
@@ -36,7 +36,7 @@ export class ProjectOverview {
 	private static TOTAL_CORES: string = 'total_cores_label';
 	private static BIOINFORMATICS_TOPIC: string = 'topic_Bioinformatics';
 	private static SHOW_INFORMATION_BTN: string = 'show_information_btn';
-	private static SUBMITTED_SHOW_INFORMATION_BTN: string = 'submitted_show_information_btn'
+	private static SUBMITTED_SHOW_INFORMATION_BTN: string = 'submitted_show_information_btn';
 	private static DISSEMINATION_PLATFORM_LIST: string = 'dissemination_platforms';
 	private static DISSEMINATION_INFORMATION_LIST: string = 'dissemination_information';
 	// eslint-disable-next-line max-len
@@ -54,11 +54,27 @@ export class ProjectOverview {
 	private static EXTENSION_LIFETIME_INPUT: string = 'temp_project_extension_application_renewal_lifetime';
 	private static SUBMIT_EXTENSION_BUTTON: string = 'submit_extension_btn';
 	private static CONFIRM_EXTENSION_BUTTON: string = 'confirm_extension_btn';
-
+	private static PROJECT_LIST_FOLDED: string = 'project_list_folded';
+	private static PROJECT_LIST_FOLDED_TOGGLER: string = 'project_list_folded_toggler';
+	private static PROJECT_LIST: string = 'project_list';
 	private static EXTENSION_REQUEST_RESULT: string = 'extension_result_submitted';
 
 	static async navigateToSimpleProjectverview(): Promise<any> {
 		Util.logInfo('Navigating to simple project overview');
+		await browser.sleep(5000);
+		if (await Util.isElementPresentById(this.PROJECT_LIST_FOLDED)) {
+			await this.navigateToSimpleProjectoverviewByProjectsThenByClick();
+		} else {
+			await this.navigateToSimpleProjectoverviewByClick();
+		}
+	}
+
+	static async navigateToSimpleProjectoverviewByClick(): Promise<any> {
+		await Util.clickElementById(Util.SIMPLE_VM_APPLICATION_NAME);
+	}
+
+	static async navigateToSimpleProjectoverviewByProjectsThenByClick(): Promise<any> {
+		await Util.clickElementById(this.PROJECT_LIST_FOLDED_TOGGLER);
 		await Util.clickElementById(Util.SIMPLE_VM_APPLICATION_NAME);
 	}
 
@@ -77,15 +93,26 @@ export class ProjectOverview {
 		await Util.clickElementById(this.PI_USER_TAB);
 		await Util.waitForPresenceOfElementById(this.PI_EMAIL_FIELD);
 		const piMail: string = await Util.getElemTextById(this.PI_EMAIL_FIELD);
-		if (typeof (piMail) !== 'undefined' && piMail) {
-			return true;
-		} else {
-			return false;
-		}
+
+		return !!(typeof (piMail) !== 'undefined' && piMail);
 	}
 
 	static async navigateToOpenStackeProjectverview(): Promise<any> {
 		Util.logInfo('Navigating to openstack project overview');
+		await browser.sleep(5000);
+		if (await Util.isElementPresentById(this.PROJECT_LIST_FOLDED)) {
+			await this.navigateToOpenstackProjectoverviewByProjectsThenByClick();
+		} else {
+			await this.navigateToOpenstackProjectoverviewByClick();
+		}
+	}
+
+	static async navigateToOpenstackProjectoverviewByClick(): Promise<any> {
+		await Util.clickElementById(Util.OPENSTACK_APPLICATION_NAME);
+	}
+
+	static async navigateToOpenstackProjectoverviewByProjectsThenByClick(): Promise<any> {
+		await Util.clickElementById(this.PROJECT_LIST_FOLDED_TOGGLER);
 		await Util.clickElementById(Util.OPENSTACK_APPLICATION_NAME);
 	}
 
