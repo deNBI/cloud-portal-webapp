@@ -22,11 +22,11 @@ export class ApplicationOverviewPage {
 	private static MODIFICATION_REQUEST_RESULT_TEXT: string = 'The resource modification request was approved!';
 	private static EXTENSION_TAB_BUTTON: string = 'tab_state_button_extension_request';
 	private static EXTENSION_RESULT_MESSAGE_TEXT: string = 'The project has been extended!';
-	private static DECLINE_PT_OPEN_APPLICATION_PRE: string = 'btn_decline_PTOpenStack'
-	private static DECLINE_PT_SIMPLE_APPLICATION_PRE: string = 'btn_decline_PTSimpleVM'
-	private static SUCCESSFULL_DECLINED: string = 'The Application was declined'
-	private static CLOSE_NOTIFICATION_MODAL: string = 'close_notification_modal_btn'
-	private static SUBMITTED_APPLICATIONS_TAB: string = 'tab_state_button_submitted_applications'
+	private static DECLINE_PT_OPEN_APPLICATION_PRE: string = 'btn_decline_PTOpenStack';
+	private static DECLINE_PT_SIMPLE_APPLICATION_PRE: string = 'btn_decline_PTSimpleVM';
+	private static SUCCESSFULL_DECLINED: string = 'The Application was declined';
+	private static CLOSE_NOTIFICATION_MODAL: string = 'close_notification_modal_btn';
+	private static SUBMITTED_APPLICATIONS_TAB: string = 'tab_state_button_submitted_applications';
 	private static LOADING_APPLICATIONS: string = 'loading_applications';
 
 	static async navigateToApplicationOverview(): Promise<any> {

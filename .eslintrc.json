@@ -44,6 +44,7 @@
           }
         ],
         "@angular-eslint/no-forward-ref": "error",
+				"no-return-await": "off",
         "@typescript-eslint/naming-convention": "off",
         "@typescript-eslint/ban-types": "off",
         "camelcase": "off",
