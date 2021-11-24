@@ -1,5 +1,5 @@
 import {
-	browser, by, element, ElementFinder,
+	browser,
 } from 'protractor';
 import { Util } from '../util';
 
@@ -16,8 +16,8 @@ export class VoOverviewPage {
 	private static CLOSE_NOTIFICATION_BTN: string = 'close_notification';
 	private static PROJECT_TERMINATED_MESSAGE: string = 'The project was terminated.';
 	private static TERMINATE_BUTTON_TEXT: string = 'Terminate Project';
-	private static NOTIFICATION_MODAL_TITLE: string = 'notification_modal_title'
-	private static SUCCESS: string = 'Success'
+	private static NOTIFICATION_MODAL_TITLE: string = 'notification_modal_title';
+	private static SUCCESS: string = 'Success';
 
 	static async navigateToVolumeOverview(): Promise<any> {
 		Util.logInfo('Navigating to vo overview');
