@@ -173,11 +173,11 @@
 
 									<accordion-group #workerInstancesGroup [isOpen]="!(!selectedMasterFlavor || !selectedMasterImage)"
 																	 (isOpenChange)="resizeFix();"
-																	 [isDisabled]="!selectedMasterFlavor || !selectedMasterImage"
+																	 [isDisabled]="true"
 
 																	 *ngIf="selectedProject && projectDataLoaded &&  (selectedProjectRessources?.used_vms + 2 ) <= selectedProjectRessources?.number_vms &&
                   (flavors.length !== 0 || selectedFlavor)">
-										<div accordion-heading style="width: 100%; cursor: pointer;text-align: center"><strong
+										<div accordion-heading style="width: 100%;text-align: center"><strong
 											*ngIf="!selectedMasterFlavor || !selectedMasterImage">Worker Instances [disabled] </strong>
 											<strong *ngIf="selectedMasterFlavor && selectedMasterImage" style=";text-align: center">Worker Instances </strong>
 

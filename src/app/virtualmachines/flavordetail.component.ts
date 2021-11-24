@@ -1,5 +1,5 @@
 import {
-	Component, EventEmitter, HostListener, Input, OnInit, Output,
+	Component, EventEmitter, HostListener, Input, OnChanges, OnInit, Output, SimpleChanges,
 } from '@angular/core';
 import { OwlOptions } from 'ngx-owl-carousel-o';
 import { KeyValue } from '@angular/common';
@@ -15,7 +15,7 @@ import { FlavorService } from '../api-connector/flavor.service';
 	providers: [FlavorService],
 
 })
-export class FlavorDetailComponent implements OnInit {
+export class FlavorDetailComponent implements OnInit, OnChanges {
 	@Input() selectedFlavor: Flavor;
 	@Input() creditsAllowed: boolean;
 	@Input() flavors: Flavor[];
@@ -79,6 +79,11 @@ export class FlavorDetailComponent implements OnInit {
 		this.flavor_types = this.flavorService.sortFlavors(this.flavors);
 		this.possible_flavors = this.flavor_types[this.selected_flavor_type];
 
+	}
+
+	ngOnChanges() {
+		this.flavor_types = this.flavorService.sortFlavors(this.flavors);
+		this.possible_flavors = this.flavor_types[this.selected_flavor_type];
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars

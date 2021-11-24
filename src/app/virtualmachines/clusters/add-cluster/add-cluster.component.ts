@@ -1,5 +1,6 @@
 import {
-	Component, OnDestroy, OnInit, ViewChild,
+	ChangeDetectorRef,
+	Component, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild,
 } from '@angular/core';
 import { forkJoin, Subscription } from 'rxjs';
 import { Router } from '@angular/router';
@@ -33,7 +34,7 @@ import { CLOUD_PORTAL_SUPPORT_MAIL } from '../../../../links/links';
 	providers: [GroupService, ImageService, KeyService, FlavorService, VirtualmachineService,
 		ApiSettings, KeyService, ClientService, UserService, VoService],
 })
-export class AddClusterComponent implements OnInit, OnDestroy {
+export class AddClusterComponent implements OnInit, OnDestroy, OnChanges {
 
 	is_vo: boolean = false;
 	CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL;
@@ -149,8 +150,13 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 		private userService: UserService,
 		private voService: VoService,
 		private router: Router,
+		private cdRef: ChangeDetectorRef,
 	) {
 		// eslint-disable-next-line no-empty-function
+	}
+
+	ngOnChanges(changes: SimpleChanges) {
+		this.cdRef.detectChanges();
 	}
 
 	calcWorkerInstancesCount(): void {
@@ -269,7 +275,6 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 					this.checkFlavorsUsableForCluster();
 				},
 				(error: any) => {
-					console.log(error);
 					this.flavors = [];
 					this.flavors_usable = [];
 					this.flavors_loaded = true;
@@ -289,12 +294,12 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 
 	resetBatches(): void {
 		this.selectedWorkerBatches = [new WorkerBatch(1)];
-		this.setBatchUsableFlavors(this.selectedWorkerBatches[0]);
 		this.selectedBatch = this.selectedWorkerBatches[0];
+		this.setBatchUsableFlavors();
 
 	}
 
-	setBatchUsableFlavors(batch: WorkerBatch): void {
+	setBatchUsableFlavors(): void {
 		const used_flavors: Flavor[] = [];
 
 		// tslint:disable-next-line:no-for-each-push
@@ -304,12 +309,19 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 			}
 		});
 		const flavors_to_filter: Flavor[] = this.flavors.filter((flavor: Flavor): boolean => used_flavors.indexOf(flavor) < 0);
-		batch.usable_flavors = flavors_to_filter.filter((flav: Flavor): boolean => this.selectedProjectRessources
+		this.selectedBatch.usable_flavors = flavors_to_filter.filter((flav: Flavor): boolean => this.selectedProjectRessources
 			.filterFlavorsTest(flav, flavors_to_filter, this.selectedWorkerBatches, this.selectedMasterFlavor));
+
 	}
 
 	setSelectedBatch(batch: WorkerBatch): void {
 		this.selectedBatch = batch;
+		this.checkFlavorsUsableForCluster();
+		this.setBatchUsableFlavors();
+		this.calcWorkerInstancesCount();
+		this.calculateNewValues();
+		this.calcMaxWorkerInstancesByFlavor();
+		this.setBatchUsableFlavors();
 
 	}
 
@@ -317,11 +329,11 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 		this.selectedWorkerFlavorSet = false;
 		this.selectedBatch = null;
 		const newBatch: WorkerBatch = new WorkerBatch(this.selectedWorkerBatches[this.selectedWorkerBatches.length - 1].index + 1);
-		this.setBatchUsableFlavors(newBatch);
-		newBatch.image = this.selectedMasterImage;
-		this.maxWorkerInstances = null;
-		this.selectedWorkerBatches.push(newBatch);
 		this.selectedBatch = newBatch;
+		this.selectedWorkerBatches.push(this.selectedBatch);
+		this.setBatchUsableFlavors();
+		this.selectedBatch.image = this.selectedMasterImage;
+		this.maxWorkerInstances = null;
 	}
 
 	removeBatch(batch: WorkerBatch): void {
@@ -338,7 +350,7 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 				this.selectedWorkerFlavorSet = true;
 
 			} else if (idx === 0 && this.selectedWorkerBatches.length > 0) {
-										  this.selectedBatch = this.selectedWorkerBatches[idx + 1];
+				this.selectedBatch = this.selectedWorkerBatches[idx + 1];
 
 			}
 		}
@@ -346,6 +358,7 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 		this.selectedWorkerBatches.splice(idx, 1);
 
 		this.checkFlavorsUsableForCluster();
+		this.setBatchUsableFlavors();
 		this.calcWorkerInstancesCount();
 		this.calculateNewValues();
 		this.calcMaxWorkerInstancesByFlavor();
