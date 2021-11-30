@@ -12,9 +12,9 @@
 		</alert>
 		<div *ngIf="projects.length > 0" id="projectsExisting">
 
-			<div class="row" style="margin-bottom: 5px">
-				<label class="col-2 form-label" for="projectSelect"><strong>Project*</strong></label>
+			<div class="row justify-content-center" style="margin-bottom: 5px">
 				<div class="col-10">
+					<label for="projectSelect"><strong>Please select a project</strong></label>
 					<select required class="form-control form-select" name="selectedProject"
 									[(ngModel)]="selectedProject" id="projectSelect"
 									(ngModelChange)="projectChange();">
