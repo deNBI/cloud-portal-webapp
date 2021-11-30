@@ -62,7 +62,7 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 
 	flavors_usable: Flavor[] = [];
 	selected_flavor_types: Flavor[] = [];
-	selected_flavor_type: string = 'Standard Flavours';
+	selected_flavor_type: string = 'Standard Flavors';
 	flavor_types: { [name: string]: Flavor[] } = {};
 
 	cluster_id: string;
