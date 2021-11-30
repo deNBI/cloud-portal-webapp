@@ -8,9 +8,14 @@
   <div class="card" style=" ">
     <div class="card-header"><span class="font-weight-bold text-muted">Cluster: {{cluster?.cluster_id}}</span></div>
     <div class="card-body">
-     <app-clusterinfo [cluster]="cluster"></app-clusterinfo>
+     <app-clusterinfo *ngIf="!errorOnLoading" [cluster]="cluster"></app-clusterinfo>
+			<div class="alert  alert-danger">
+				The detailed cluster information cannot be loaded right now.
+				It is possible that the facility on which your cluster is running cannot be reached at the moment.
+				Please check our <a href="{{STATUS_LINK}}" target="_blank" rel="noopener noreferrer">status overview</a>
+			</div>
 
-    <div class="card-body" *ngIf="cluster?.status !== 'Deleted'">
+    <div class="card-body" *ngIf="cluster?.status !== 'Deleted' && !errorOnLoading ">
       <div class="card-title"><strong>Actions</strong></div>
       <div class="row">
         <div class="col-2">
