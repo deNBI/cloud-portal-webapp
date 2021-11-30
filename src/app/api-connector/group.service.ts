@@ -156,6 +156,24 @@ export class GroupService {
 		});
 	}
 
+	leaveGroup(group_id: number | string, member_id: number | string, facility_id?: number | string): Observable<any> {
+		const params: HttpParams = new HttpParams();
+
+		console.log("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nParameters:\n")
+		console.log(params);
+
+		if (facility_id !== null) {
+			params.set('facility_id', facility_id.toString());
+		}
+
+		return this.http.request('delete', `${ApiSettings.getApiBaseURL()}projects/${group_id}/members/${member_id}/`, {
+			withCredentials: true,
+			body: params,
+			responseType: 'text',
+			observe: 'response',
+		});
+	}
+
 	removeAdmin(group_id: number | string, user_id: number | string, facility_id?: number | string): Observable<any> {
 
 		const params: HttpParams = new HttpParams();

@@ -37,6 +37,7 @@ import { ModificationRequestComponent } from './modals/modification-request/modi
 import { LifetimeRequestComponent } from './modals/lifetime-request/lifetime-request.component';
 import { DoiComponent } from './modals/doi/doi.component';
 import { CreditsRequestComponent } from './modals/credits-request/credits-request.component';
+import {findMember} from "@angular/compiler-cli/src/ngtsc/reflection/src/typescript";
 
 /**
  * Projectoverview component.
@@ -1081,24 +1082,29 @@ private flavorService: FlavorService,
 	 *
 	 * @param groupid  of the group
 	 * @param memberid of the member
-	 * @param name of the project
+	 * @param projectname of the project
 	 */
-	public leaveProject(groupid: number, memberid: number, name: string): void {
-		if (this.userinfo.MemberId.toString() === memberid.toString()) {
+	public leaveProject(groupid: number, memberid: number, projectname: string): void {
+		if (this.project.UserIsPi) {
+			console.log("PI cannot leave a project")
+			return;
+		}
+		else {
+			console.log("removing member")
 			this.subscription.add(
-				this.groupService.removeMember(groupid, memberid, this.project.ComputeCenter.FacilityId).subscribe(
+				this.groupService.leaveGroup(groupid, memberid, this.project.ComputeCenter.FacilityId).subscribe(
 					(result: any): void => {
 
 						if (result.status === 200) {
-							this.updateNotificationModal('Success', `You were removed from the project ${name}`, true, 'success');
+							this.updateNotificationModal('Success', `You were removed from the project ${projectname}`, true, 'success');
 							this.getMembersOfTheProject();
 							void this.router.navigate(['/userinfo']);
 						} else {
-							this.updateNotificationModal('Failed', `Failed to leave the project ${name}!`, true, 'danger');
+							this.updateNotificationModal('Failed', `Failed to leave the project ${projectname}!`, true, 'danger');
 						}
 					},
 					(): void => {
-						this.updateNotificationModal('Failed', `Failed to leave the project ${name}!`, true, 'danger');
+						this.updateNotificationModal('Failed', `Failed to leave the project ${projectname}!`, true, 'danger');
 					},
 				),
 			);
