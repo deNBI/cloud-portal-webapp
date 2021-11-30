@@ -131,22 +131,9 @@
 								<div *ngIf="selected_workshop" class="form-group row col-md-12">
 									<label class="col-md-2 form-control-label"><strong>Flavor*</strong></label>
 									<div class="col-md-10">
-										<ul class="nav nav-pills " style="margin-bottom: 5px;">
-											<li class="nav-item " style="cursor: pointer"
-													*ngFor="let item of flavor_types | keyvalue:unsorted">
-												<a [ngClass]="{'active': selected_flavor_type === item.key }"
-													 (click)="set_selected_flavor_type(item.key)" class="nav-link">
-													{{item.key}}
-												</a>
-											</li>
-										</ul>
-										<div *ngIf="flavor_types[selected_flavor_type].length >0
-												 				&& flavor_types[selected_flavor_type][0]?.type?.description"
-												 class="alert alert-info">
-											{{flavor_types[selected_flavor_type][0].type.description}}
-										</div>
+
 										<app-flavor-detail [selectedFlavor]="selected_flavor" id="id_flavor_detail"
-																			 [flavors]="flavor_types[selected_flavor_type]"
+																			 [flavors]="flavors"
 																			 [creditsAllowed]="credits_allowed"
 																			 (selectedFlavorChange)="set_selected_flavor($event)">
 										</app-flavor-detail>
@@ -379,6 +366,7 @@
 						 *ngIf="is_loaded && !client_available && selected_project && client_checked">
 					The corresponding client is currently offline.
 					If you have any questions please contact <a href="mailto:{{CLOUD_PORTAL_SUPPORT_MAIL}}">{{CLOUD_PORTAL_SUPPORT_MAIL}}.</a>
+					Check our <a href="{{STATUS_LINK}}" target="_blank" rel="noopener noreferrer">status overview</a> to see if the site of your project is reachable.
 				</div>
 			</div>
 		</div>

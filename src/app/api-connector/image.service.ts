@@ -10,6 +10,7 @@ import {
 	BlockedImageTag, BlockedImageTagResenv, ImageLogo, ImageMode, ImageTag,
 } from '../facility_manager/image-tag';
 import { SnapshotPage } from '../virtualmachines/snapshots/snapshotPage.model';
+import { ImageTypes } from '../virtualmachines/virtualmachinemodels/imageTypes';
 
 /**
  * Service which provides image methods.
@@ -258,6 +259,22 @@ export class ImageService {
 			),
 		);
 
+	}
+
+	sortImages(images: Image[]): { [name: string]: Image[] } {
+		const image_types: { [name: string]: Image[] } = {};
+		image_types[ImageTypes.IMAGE] = [];
+		image_types[ImageTypes.SNAPSHOT] = [];
+
+		for (const image of images) {
+			if (image.is_snapshot) {
+				image_types[ImageTypes.SNAPSHOT].push(image);
+			} else {
+				image_types[ImageTypes.IMAGE].push(image);
+			}
+		}
+
+		return image_types;
 	}
 
 }

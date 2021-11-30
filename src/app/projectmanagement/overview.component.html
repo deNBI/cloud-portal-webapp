@@ -326,14 +326,14 @@
 								<strong class="text-muted">{{project?.ComputeCenter.Name}}</strong>
 							</div>
 						</div>
-						<div class="col-6" *ngIf="this.supportMails?.length === 1">
+						<div class="col-6 ">
+						<div class="btn-group">
 							<a class="btn btn-outline-primary" target="_blank" rel="noopener noreferrer"
-								 href="mailto:{{project?.ComputeCenter.Support}}"
+								 href="mailto:{{project?.ComputeCenter.Support}}" *ngIf="this.supportMails?.length === 1"
 								 style="margin-top:15px;">Contact Support</a>
-						</div>
-						<div class="col-6" *ngIf="this.supportMails?.length > 1">
 
-							<div class="dropdown" dropdown style="margin-top:15px;">
+
+							<div class="dropdown" dropdown style="margin-top:15px;" *ngIf="this.supportMails?.length > 1">
 								<button class="btn btn-outline-primary dropdown-toggle" id="actionDropdownMenu" data-toggle="dropdown"
 												type="button" aria-haspopup="true" aria-expanded="false"
 												dropdownToggle>
@@ -345,8 +345,9 @@
 										 href="mailto:{{mail}}" target="_blank" rel="noopener noreferrer">Contact {{mail}}</a>
 								</div>
 							</div>
-
-
+							<a class="btn btn-outline-primary" target="_blank" rel="noopener noreferrer"
+								 href="{{STATUS_LINK}}" style="margin-top:15px;">Facility Status</a>
+					</div>
 						</div>
 					</div>
 					<div class="row" *ngIf="project_application?.credits_allowed">
@@ -515,7 +516,8 @@
 				 *ngIf="project && ((project_application | hasstatusinlist:Application_States.APPROVED)
          || (project_application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)
          || (project_application | hasstatusinlist:Application_States.MODIFICATION_DECLINED)
-         )">
+         )
+         && (project_application.memberNamesVisible || isAdmin || is_vo_admin)">
 
 			<div class="card" id="projectMemberDiv">
 				<div class="card-header">
@@ -536,6 +538,16 @@
 							(click)="applicationModal.show();getUserProjectApplications();"
 							class="btn btn-outline-primary"><i class="fa fa-list-alt"></i>&nbsp;
 							Member Applications
+						</button>
+
+						<button
+							type="button" style="margin-bottom:5px;"
+							(click)="toggleMemberNameVisibility();"
+							[disabled]="toggleLocked"
+							class="btn btn-outline-primary"><i class="fa fa-users" aria-hidden="true"></i>
+							<span *ngIf="project_application?.memberNamesVisible"> Hide </span>
+							<span *ngIf="!project_application?.memberNamesVisible"> Show </span>
+							Member Names
 						</button>
 
 						<button (click)="removeCheckedMembers(project_application?.project_application_perun_id)" type="button"
@@ -559,9 +571,10 @@
 								</th>
 								<th>User ID</th>
 								<th>Member ID</th>
-								<th>Full Name</th>
+								<th *ngIf="isAdmin || is_vo_admin || project_application?.memberNamesVisible">
+									Full Name <span *ngIf="!project_application?.memberNamesVisible">(hidden)</span>
+								</th>
 								<th *ngIf="isAdmin || is_vo_admin">Actions</th>
-
 							</tr>
 							</thead>
 							<tbody>
@@ -575,7 +588,7 @@
 
 									{{ member.userId }}</td>
 								<td>{{ member.memberId }}</td>
-								<td>{{ member.userName }}</td>
+								<td *ngIf="isAdmin || is_vo_admin || project_application?.memberNamesVisible">{{ member.userName }}</td>
 								<td *ngIf="this.project.UserIsPi || this.project.UserIsAdmin|| is_vo_admin">
 									<div class="btn-group" role="group">
 										<button *ngIf="!member.IsPi" (click)="promoteAdmin( project?.Id,member.userId,member.userName);

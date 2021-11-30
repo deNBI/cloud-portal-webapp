@@ -1,8 +1,10 @@
 import {
-	Component, EventEmitter, HostListener, Input, OnInit, Output,
+	Component, EventEmitter, HostListener, Input, OnChanges, OnInit, Output,
 } from '@angular/core';
 import { OwlOptions } from 'ngx-owl-carousel-o';
+import { KeyValue } from '@angular/common';
 import { Flavor } from './virtualmachinemodels/flavor';
+import { FlavorService } from '../api-connector/flavor.service';
 
 /**
  * Flavor detail component.
@@ -10,15 +12,19 @@ import { Flavor } from './virtualmachinemodels/flavor';
 @Component({
 	selector: 'app-flavor-detail',
 	templateUrl: 'flavordetail.component.html',
+	providers: [FlavorService],
 
 })
-export class FlavorDetailComponent implements OnInit {
+export class FlavorDetailComponent implements OnInit, OnChanges {
 	@Input() selectedFlavor: Flavor;
 	@Input() creditsAllowed: boolean;
 	@Input() flavors: Flavor[];
 	@Output() readonly selectedFlavorChange: EventEmitter<Flavor> = new EventEmitter();
-
+	selected_flavor_types: Flavor[] = [];
+	selected_flavor_type: string = 'Standard Flavours';
+	flavor_types: { [name: string]: Flavor[] } = {};
 	flavors_per_row: number = 4;
+	possible_flavors: Flavor[] = [];
 	carousel_activated: boolean = true;
 	window_size: number;
 	carousel_window_min_xl_9: number = 1700;
@@ -62,9 +68,22 @@ export class FlavorDetailComponent implements OnInit {
 		nav: true,
 	};
 
+	constructor(
+		private flavorService: FlavorService,
+	) {
+		// eslint-disable-next-line no-empty-function
+	}
+
 	ngOnInit(): void {
 		this.window_size = window.innerWidth;
+		this.flavor_types = this.flavorService.sortFlavors(this.flavors);
+		this.possible_flavors = this.flavor_types[this.selected_flavor_type];
 
+	}
+
+	ngOnChanges() {
+		this.flavor_types = this.flavorService.sortFlavors(this.flavors);
+		this.possible_flavors = this.flavor_types[this.selected_flavor_type];
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -83,6 +102,16 @@ export class FlavorDetailComponent implements OnInit {
 		this.selectedFlavor = flavor;
 		this.selectedFlavorChange.emit(this.selectedFlavor);
 
+	}
+
+	setSelectedFlavorType(key: string): void {
+		this.selected_flavor_type = key;
+		this.possible_flavors = this.flavor_types[key];
+	}
+
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	unsorted(a: KeyValue<number, string>, b: KeyValue<number, string>): number {
+		return 0;
 	}
 
 }

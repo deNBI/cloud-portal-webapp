@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 import { forkJoin, Subscription } from 'rxjs';
 import { Router } from '@angular/router';
-import { WIKI_VOLUME_OVERVIEW, CLOUD_PORTAL_SUPPORT_MAIL } from 'links/links';
+import { WIKI_VOLUME_OVERVIEW, CLOUD_PORTAL_SUPPORT_MAIL, STATUS_LINK } from 'links/links';
 import { KeyValue } from '@angular/common';
 import { Image } from './virtualmachinemodels/image';
 import { Flavor } from './virtualmachinemodels/flavor';
@@ -71,6 +71,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 	has_forc: boolean = false;
 	WIKI_VOLUME_OVERVIEW: string = WIKI_VOLUME_OVERVIEW;
 	CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL;
+	STATUS_LINK: string = STATUS_LINK;
 	blockedImageTagsResenv: BlockedImageTagResenv[];
 
 	forc_url: string = '';
@@ -215,13 +216,13 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 	@ViewChild('resEnv') resEnvComponent: ResEnvComponent;
 
 	constructor(
-private groupService: GroupService,
-							private imageService: ImageService,
-							private flavorService: FlavorService,
-							private virtualmachineservice: VirtualmachineService,
-							private keyservice: KeyService,
-							private userService: UserService,
-							private router: Router,
+		private groupService: GroupService,
+		private imageService: ImageService,
+		private flavorService: FlavorService,
+		private virtualmachineservice: VirtualmachineService,
+		private keyservice: KeyService,
+		private userService: UserService,
+		private router: Router,
 	) {
 		// eslint-disable-next-line no-empty-function
 	}
@@ -235,7 +236,6 @@ private groupService: GroupService,
 		this.subscription.add(
 			this.imageService.getImages(project_id).subscribe((images: Image[]): void => {
 				this.images = images;
-				this.images.sort((x_cord: any, y_cord: any): number => Number(x_cord.is_snapshot) - Number(y_cord.is_snapshot));
 				this.image_loaded = true;
 				this.checkProjectDataLoaded();
 			}),
@@ -295,10 +295,6 @@ private groupService: GroupService,
 		}
 
 		return false;
-	}
-
-	setSelectedFlavorType(key: string): void {
-		this.selected_flavor_type = key;
 	}
 
 	/**
@@ -795,4 +791,5 @@ private groupService: GroupService,
 			return storageInList;
 		}
 	}
+
 }
