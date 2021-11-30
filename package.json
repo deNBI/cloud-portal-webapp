@@ -86,7 +86,7 @@
     "ngx-clipboard": "^15.0.0",
     "ngx-cookie-service": "^13.0.1",
     "ngx-owl-carousel-o": "^6.0.0",
-    "ngx-scrollbar": "^8.0.0",
+    "ngx-scrollbar": "^9.0.0",
     "ngx-smart-popover": "^1.4.0",
     "pdfmake": "^0.2.4",
     "postcss-loader": "^6.1.1",
