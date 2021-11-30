@@ -42,6 +42,7 @@ import { TitleHeadbarComponent } from './shared/title-headbar.component';
 import { VoService } from './api-connector/vo.service';
 import { TokenInterceptor } from './api-connector/token-interceptor';
 import { PipeModuleModule } from './pipe-module/pipe-module.module';
+import { NewsComponent } from './news/news.component';
 
 /**
  * App module.
@@ -79,6 +80,7 @@ import { PipeModuleModule } from './pipe-module/pipe-module.module';
 		MobileSidebarToggleDirective,
 		SidebarOffCanvasCloseDirective,
 		TitleHeadbarComponent,
+  NewsComponent,
 	],
 	providers: [
 		{

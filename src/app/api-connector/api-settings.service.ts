@@ -29,4 +29,8 @@ export class ApiSettings {
 	static getApiFormat(): string {
 		return 'json';
 	}
+
+	static getWagtailBase(): string {
+		return environment.wagtailBase;
+	}
 }

@@ -1,6 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { ApiSettings } from './api-settings.service';
 import { FacilityNews } from '../facility_manager/newsmanagement/facility-news';
 
@@ -25,13 +26,19 @@ export class NewsService {
 		});
 	}
 
-	getFacilityNews(facility_ids: string): Observable<Object[]> {
+	getFacilityNews(facility_ids: string): Observable<FacilityNews[]> {
 		const params: HttpParams = new HttpParams().set('facility_ids', facility_ids);
 
-		return this.http.get<Object[]>(`${ApiSettings.getApiBaseURL()}facility-news-management/`, {
+		return this.http.get<FacilityNews[]>(`${ApiSettings.getApiBaseURL()}facility-news-management/`, {
 			withCredentials: true,
 			params,
-		});
+		}).pipe(
+			map(
+				(facilityNewsArray: FacilityNews[]): FacilityNews[] => facilityNewsArray.map(
+					(facilityNew: FacilityNews): FacilityNews => new FacilityNews(facilityNew),
+				),
+			),
+		);
 	}
 
 	deleteNewsFromAPI(news_id: string): Observable<any> {
@@ -57,5 +64,9 @@ export class NewsService {
 			withCredentials: true,
 		});
 	}
+
+	getNewsByTags(tags: string[]): void {}
+
+	getNewsByTagsFilteredByFacility(tags: string[], facility: number): void {}
 
 }
