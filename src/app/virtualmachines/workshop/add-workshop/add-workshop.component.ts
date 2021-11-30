@@ -96,7 +96,7 @@ export class AddWorkshopComponent implements OnInit, OnDestroy, DoCheck {
 	image_loaded: boolean = false;
 	data_loaded: boolean = false;
 	selected_project_ressources: ApplicationRessourceUsage;
-	selected_flavor_type: string = 'Standard Flavours';
+	selected_flavor_type: string = 'Standard Flavors';
 	flavor_types: { [name: string]: Flavor[] } = {};
 	workshop_data_loaded: boolean = false;
 	members_to_add: ProjectMember[] = [];
@@ -455,7 +455,7 @@ private group_service: GroupService,
 		this.workshop_data_loaded = false;
 		this.selected_image = undefined;
 		this.selected_flavor = undefined;
-		this.selected_flavor_type = 'Standard Flavours';
+		this.selected_flavor_type = 'Standard Flavors';
 		this.members_to_add = [];
 		this.vm_responsibility = false;
 		this.started_machine = false;
