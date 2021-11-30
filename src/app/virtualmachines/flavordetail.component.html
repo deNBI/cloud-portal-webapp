@@ -1,5 +1,7 @@
-<div class="card">
-	<div class="card-header">
+<div class="card border-left-0 border-right-0 border-bottom-0 rounded-0 border-light">
+	<div class="card-header" style="text-align: center">
+		<strong>Flavor*</strong><br>
+		<span class="text-muted">Flavors specify the amount of resources for your machine.</span>
 
 
 		<ul class="nav nav-tabs card-header-tabs" style="overflow: hidden" role="tablist">
@@ -7,7 +9,6 @@
 					*ngFor="let item of flavor_types | keyvalue:unsorted"><a
 				[ngClass]="{'active': selected_flavor_type === item.key }"
 				(click)="setSelectedFlavorType(item.key)" class="nav-link">{{item.key}} </a>
-
 			</li>
 
 
