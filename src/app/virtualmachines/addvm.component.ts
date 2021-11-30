@@ -113,7 +113,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 	 */
 	flavors: Flavor[] = [];
 	selected_flavor_types: Flavor[] = [];
-	selected_flavor_type: string = 'Standard Flavours';
+	selected_flavor_type: string = 'Standard Flavors';
 
 	flavor_types: { [name: string]: Flavor[] } = {};
 
