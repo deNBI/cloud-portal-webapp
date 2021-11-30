@@ -47,13 +47,9 @@
 
 					<form id="application_form" #f="ngForm"
 								class="form-horizontal">
-						<div class="form-group row col-md-12" *ngIf="!singleProject">
-							<label class="col-md-2 form-control-label"><strong>Project*</strong></label>
-							<span *ngIf="(client_avaiable|| selectedProject) && (!projectDataLoaded || !flavors_loaded)"
-										class="spinner-border text-info"></span>
-
-
+						<div class="form-group row col-md-12 justify-content-center" *ngIf="!singleProject">
 							<div class="col-md-8">
+								<label for="projectSelect"><strong>Please select a project</strong></label>
 								<select required class="form-control form-select" name="projectSelect"
 												[(ngModel)]="selectedProject" id="projectSelect"
 												(ngModelChange)="getSelectedProjectClient(); "
@@ -65,12 +61,13 @@
 													id="id_option_{{project[0]}}">
 										{{project[0]}}
 									</option>
-
 								</select>
-
-
 							</div>
-
+						</div>
+						<div class="row justify-content-center">
+							<span *ngIf="(client_avaiable|| selectedProject) && (!projectDataLoaded || !flavors_loaded)"
+										class="spinner-border text-info">
+							</span>
 						</div>
 						<div class="alert alert-danger" role="alert"
 								 *ngIf="client_avaiable && !selectedProjectClient?.bibigrid_available && projectDataLoaded && flavors_loaded">
@@ -121,28 +118,23 @@
 							<div>
 
 
-								<div class="form-group row col-md-12">
-									<label class="col-md-2 form-control-label"><strong>Master Instance</strong></label>
+								<div class="form-group row col-md-12" style="padding-left: 3rem; padding-right: 3rem; margin-bottom: 1rem">
+									<strong>Please choose your master instance</strong><br>
+									<span class="text-muted">This will be the master node of your cluster. Please choose its resources and the image for all
+									nodes. The master node can not be changed afterwards.</span>
 								</div>
 
-								<div class="form-group row col-md-12">
-									<label class="col-md-2 form-control-label"><strong>Flavor*</strong></label>
-									<div class="col-md-10">
-
-
+								<div class="form-group row col-md-12" style="padding-left: 3rem; padding-right: 3rem; margin-bottom: 1rem">
+									<div class="col">
 										<app-flavor-detail [selectedFlavor]="selectedMasterFlavor" id="master_id_flavor_detail"
 																			 [flavors]="flavors"
 																			 (selectedFlavorChange)="selectedMasterFlavor=$event;resetBatches();calculateNewValues();"></app-flavor-detail>
-
 									</div>
 								</div>
 
 
-								<div class="form-group row col-md-12">
-
-									<label class="col-md-2 form-control-label"><strong>Image*</strong></label>
-
-									<div class="col-md-10">
+								<div class="form-group row col-md-12" style="padding-left: 3rem; padding-right: 3rem; margin-bottom: 1rem">
+									<div class="col">
 										<div class="alert alert-info" *ngIf="(images?.length === 0) || !images">
 											There are no images available for selection at the moment.
 											Please contact the support of the facility where your project is running.
@@ -153,7 +145,8 @@
 																			[images]="images"
 																			(selectedImageChange)="selectedMasterImage=$event;this.selectedWorkerBatches[0].image=selectedMasterImage;"
 																			id="master_id_image_detail"></app-image-detail>
-										<div class="alert alert-info" *ngIf="selectedMasterImage"> This image will also be used for every
+										<div class="alert alert-info" *ngIf="selectedMasterImage"
+												 style="padding-left: 3rem; padding-right: 3rem; margin-bottom: 1rem"> This image will also be used for every
 											worker!
 										</div>
 									</div>
@@ -163,13 +156,13 @@
 								<accordion class="col"
 													 *ngIf="selectedProject && projectDataLoaded && (selectedProjectRessources?.used_vms +2) <= selectedProjectRessources?.number_vms && (flavors.length !== 0 || selectedFlavor) && images?.length> 0">
 
-									<div class="alert alert-primary " role="alert"
+									<div class="alert alert-primary " role="alert" style="padding-left: 3rem; padding-right: 3rem; margin-bottom: 1rem"
 											 *ngIf="(!selectedMasterFlavor || !selectedMasterImage) &&  (selectedProjectRessources?.used_vms + 2 ) <= selectedProjectRessources?.number_vms">
 										Please select a master instance configuration before selecting the worker instances!
 									</div>
 								</accordion>
 
-								<accordion class="col">
+								<accordion class="col" style="padding-left: 3rem; padding-right: 3rem; margin-bottom: 1rem">
 
 									<accordion-group #workerInstancesGroup [isOpen]="!(!selectedMasterFlavor || !selectedMasterImage)"
 																	 (isOpenChange)="resizeFix();"
@@ -309,15 +302,17 @@
 					<div
 						*ngIf="projectDataLoaded && (selectedProjectRessources?.used_vms +2) <= selectedProjectRessources?.number_vms && (flavors?.length > 0  || selectedFlavor) && selectedProjectClient?.bibigrid_available"
 						class="alert alert-warning col-md-10" role="alert" style="margin: auto;">
-						<input class="form-check-input"
-									 name="cluster_responsibility"
-									 type="checkbox"
-									 id="cluster_responsibility"
-									 [(ngModel)]="cluster_responsibility"
-									 required>
-						<label class="form-check-label" for="cluster_responsibility">
-							I hereby confirm that I am responsible for the cluster and any action performed on it.
-						</label>
+						<div class="form-check">
+							<input class="form-check-input"
+												name="cluster_responsibility"
+												type="checkbox"
+												id="cluster_responsibility"
+												[(ngModel)]="cluster_responsibility"
+												required>
+							<label class="form-check-label" for="cluster_responsibility">
+								I hereby confirm that I am responsible for the cluster and any action performed on it.
+							</label>
+						</div>
 					</div>
 					<div class="form-group row"
 							 *ngIf="projectDataLoaded && (selectedProjectRessources?.used_vms +2) <= selectedProjectRessources?.number_vms && (flavors?.length > 0  || selectedFlavor) && selectedProjectClient?.bibigrid_available">
