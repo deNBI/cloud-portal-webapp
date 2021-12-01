@@ -23,7 +23,9 @@ import { PlaybookService } from '../../api-connector/playbook.service';
 import { BiocondaService } from '../../api-connector/bioconda.service';
 import { ResenvTemplate } from '../conda/resenvTemplate.model';
 import { elixir_id, is_vo } from '../../shared/globalvar';
-import { WIKI_GUACAMOLE_LINK, WIKI_RSTUDIO_LINK, WIKI_VOLUME_OVERVIEW } from '../../../links/links';
+import {
+	WIKI_GUACAMOLE_LINK, WIKI_RSTUDIO_LINK, WIKI_VOLUME_OVERVIEW, WIKI_CREATE_SNAPSHOT_LINK, WIKI_VOLUMES_LINK,
+} from '../../../links/links';
 import { Volume } from '../volumes/volume';
 import { VolumeStates } from '../volumes/volume_states';
 import { Condalog } from '../conda/condalog';
@@ -66,6 +68,8 @@ export class VmDetailComponent extends AbstractBaseClass implements OnInit {
 	WIKI_RSTUDIO_LINK: string = WIKI_RSTUDIO_LINK;
 	WIKI_GUACAMOLE_LINK: string = WIKI_GUACAMOLE_LINK;
 	WIKI_VOLUME_OVERVIEW: string = WIKI_VOLUME_OVERVIEW;
+	WIKI_VOLUMES_LINK: string = WIKI_VOLUMES_LINK;
+	WIKI_CREATE_SNAPSHOT_LINK: string = WIKI_CREATE_SNAPSHOT_LINK;
 	SNAPSHOT_MAX_RAM: number = SnapshotModel.MAX_RAM;
 
 	DEBOUNCE_TIME: number = 300;
