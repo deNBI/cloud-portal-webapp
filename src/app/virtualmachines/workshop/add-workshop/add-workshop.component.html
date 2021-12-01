@@ -40,10 +40,9 @@
 					</alert>
 					<form id="application_form" #f="ngForm"
 								class="form-horizontal">
-						<div class="row">
-							<label class="col-2 form-label" for="projectSelect"><strong>Project*</strong></label>
-							<span *ngIf="client_available && !project_data_loaded" class="spinner-border text-info"></span>
+						<div class="row justify-content-center" style="margin-bottom: 25px">
 							<div class="col-8">
+								<label for="projectSelect"><strong>Please select a project</strong></label>
 								<select required class="form-control form-select" name="selected_project"
 												[(ngModel)]="selected_project" id="projectSelect"
 												(ngModelChange)="reset_on_project_change(); get_workshops_for_application(); get_selected_project_client();">
@@ -57,12 +56,15 @@
 								</select>
 							</div>
 						</div>
+						<div class="row justify-content-center">
+							<span *ngIf="client_available && !project_data_loaded" class="spinner-border text-info"></span>
+						</div>
 						<div class="row justify-content-center" *ngIf="!client_available && client_checked">
 							<div class="alert alert-warning">
 								The client is currently unavailable.
 							</div>
 						</div>
-						<div class="row" *ngIf="project_data_loaded && client_available" style="margin-top: 10px">
+						<div class="row" *ngIf="project_data_loaded && client_available" style="margin-top: 10px" style="padding-right: 3rem; padding-left: 3rem; margin-bottom: 25px">
 							<div *ngIf="!workshops || workshops.length === 0" class="alert alert-warning" role="alert">
 								No workshops found. Please create a new workshop on the workshop management page.
 							</div>
@@ -128,9 +130,8 @@
 							</div>
 							<div *ngIf="selected_project_ressources?.used_vms < selected_project_ressources?.number_vms
 													&& (flavors?.length > 0 || selected_flavor)">
-								<div *ngIf="selected_workshop" class="form-group row col-md-12">
-									<label class="col-md-2 form-control-label"><strong>Flavor*</strong></label>
-									<div class="col-md-10">
+								<div *ngIf="selected_workshop" class="form-group row col-md-12" style="padding-right: 3rem; padding-left: 3rem">
+									<div class="col">
 
 										<app-flavor-detail [selectedFlavor]="selected_flavor" id="id_flavor_detail"
 																			 [flavors]="flavors"
@@ -144,14 +145,13 @@
 									<div class="col-md-10 alert alert-info">
 										<strong>Information for ephemeral flavors:</strong>
 										Ephemeral storage is not best suited for persistent data. Read more
-										<a href="https://cloud.denbi.de/wiki/simple_vm/new_instance/#information-for-ephemeral-flavors"
+										<a href="{{ WIKI_EPHEMERAL_LINK }}"
 											 target="_blank" rel="noopener noreferrer">here
 										</a>.
 									</div>
 								</div>
-								<div *ngIf="selected_workshop" class="form-group row col-md-12">
-									<label class="col-md-2 form-control-label"><strong>Image*</strong></label>
-									<div class="col-md-10">
+								<div *ngIf="selected_workshop" class="form-group row col-md-12" style="padding-right: 3rem; padding-left: 3rem">
+									<div class="col">
 										<div class="alert alert-info" *ngIf="(images?.length === 0) || !images">
 											There are no images available for selection at the moment.
 											Please contact the support of the facility where your project is running.
@@ -324,29 +324,29 @@
 								 && (flavors?.length > 0  || selected_flavor)"
 					class="alert alert-warning col-md-10" role="alert" style="margin: auto;">
 					<div class="form-check"><input class="form-check-input"
-								 name="vm_responsibility"
-								 type="checkbox"
-								 id="vm_responsibility"
-								 [(ngModel)]="vm_responsibility"
-								 required>
-					<label class="form-check-label" for="vm_responsibility">
-						I hereby confirm that I am responsible for the virtual machines and any action performed on it.
-					</label>
-				</div>
-				<div class="form-group row"
-						 *ngIf=" client_available
+																				 name="vm_responsibility"
+																				 type="checkbox"
+																				 id="vm_responsibility"
+																				 [(ngModel)]="vm_responsibility"
+																				 required>
+						<label class="form-check-label" for="vm_responsibility">
+							I hereby confirm that I am responsible for the virtual machines and any action performed on it.
+						</label>
+					</div>
+					<div class="form-group row"
+							 *ngIf=" client_available
 						 				 && project_data_loaded
 						 				 && workshop_data_loaded
 						 				 && (selected_project_ressources?.used_vms + members_to_add.length) <= selected_project_ressources?.number_vms
 						 				 && (flavors?.length > 0  || selected_flavor)">
 
-					<button style=" margin-left: auto;margin-top: 25px;
+						<button style=" margin-left: auto;margin-top: 25px;
     margin-right: auto;
     width: 8em" id="startVMButton"
 
-									type="button"
+										type="button"
 
-									[disabled]="!vm_responsibility
+										[disabled]="!vm_responsibility
 															|| started_machine
 															|| !selected_flavor
 															|| !selected_image
@@ -356,41 +356,42 @@
 															|| ((selected_project_ressources?.ram_used + (members_to_add?.length * selected_flavor?.ram)) > selected_project_ressources?.ram_total)
 															|| ((selected_project_ressources?.cores_used + (members_to_add?.length * selected_flavor?.vcpus)) > selected_project_ressources?.cores_total)
 															|| ((selected_project_ressources?.used_vms + members_to_add.length) > selected_project_ressources?.number_vms)"
-									class="btn btn-primary  .btn-lg offset-md-8"
-									data-toggle="modal"
-									(click)="start_vms();reset_all_data();redirect_modal.show()">
-						Start VM
-					</button>
-				</div>
-				<div class="alert alert-danger"
-						 *ngIf="is_loaded && !client_available && selected_project && client_checked">
-					The corresponding client is currently offline.
-					If you have any questions please contact <a href="mailto:{{CLOUD_PORTAL_SUPPORT_MAIL}}">{{CLOUD_PORTAL_SUPPORT_MAIL}}.</a>
+										class="btn btn-primary  .btn-lg offset-md-8"
+										data-toggle="modal"
+										(click)="start_vms();reset_all_data();redirect_modal.show()">
+							Start VM
+						</button>
+					</div>
+					<div class="alert alert-danger"
+							 *ngIf="is_loaded && !client_available && selected_project && client_checked">
+						The corresponding client is currently offline.
+						If you have any questions please contact <a href="mailto:{{CLOUD_PORTAL_SUPPORT_MAIL}}">{{CLOUD_PORTAL_SUPPORT_MAIL}}.</a>
+						Check our <a href="{{STATUS_LINK}}" target="_blank" rel="noopener noreferrer">status overview</a> to see if the site of your project is reachable.
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-</div>
 
-<div bsModal #redirect_modal="bs-modal" class="modal fade " tabindex="-1" role="dialog"
-		 aria-labelledby="myModalLabel" aria-hidden="true"
-		 id="redirect_modal">
-	<div class="modal-dialog modal-info" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h4 class="modal-title">Redirecting</h4>
-			</div>
-			<div class="modal-body">
-				<p>Redirecting to Instance Overview...</p>
-				<div class="progress">
-					<div class="progress-bar progress-bar-striped {{progress_bar_animated}} bg-info"
-							 role="progressbar" style="width: 0;"
-							 aria-valuemin="0"
-							 aria-valuemax="100" [style.width.%]="progress_bar_width">
+	<div bsModal #redirect_modal="bs-modal" class="modal fade " tabindex="-1" role="dialog"
+			 aria-labelledby="myModalLabel" aria-hidden="true"
+			 id="redirect_modal">
+		<div class="modal-dialog modal-info" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Redirecting</h4>
+				</div>
+				<div class="modal-body">
+					<p>Redirecting to Instance Overview...</p>
+					<div class="progress">
+						<div class="progress-bar progress-bar-striped {{progress_bar_animated}} bg-info"
+								 role="progressbar" style="width: 0;"
+								 aria-valuemin="0"
+								 aria-valuemax="100" [style.width.%]="progress_bar_width">
+						</div>
 					</div>
 				</div>
-			</div>
-		</div><!-- /.modal-content -->
-	</div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
 
