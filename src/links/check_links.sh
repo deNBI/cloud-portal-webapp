@@ -21,7 +21,7 @@ WIKI_FAQ=https://portal-dev.denbi.de/wiki/FAQ/
 WIKI_MOTD=https://portal-dev.denbi.de/wiki/cloud_admin/news_management/#message-of-the-day
 WIKI_CREATE_SNAPSHOT_LINK=https://portal-dev.denbi.de/wiki/simple_vm/snapshots/#create-snapshot
 WIKI_VOLUMES_LINK=https://portal-dev.denbi.de/wiki/simple_vm/volumes/
-WIKI_MOSH_LINK=https://portal-dev.denbi.de/wiki/Tutorials/Mosh
+WIKI_MOSH_LINK=https://portal-dev.denbi.de/wiki/Tutorials/Mosh/
 WIKI_EPHEMERAL_LINK=https://portal-dev.denbi.de/wiki/simple_vm/new_instance/#information-for-ephemeral-flavors
 SURVEY_LINK=https://www.surveymonkey.de/r/HQW9V7C
 
