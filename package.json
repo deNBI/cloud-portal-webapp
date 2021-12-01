@@ -52,7 +52,7 @@
     "@ng-bootstrap/ng-bootstrap": "^10.0.0",
     "@sindresorhus/transliterate": "1.5.0",
     "@types/d3": "^7.1.0",
-    "@types/jquery": "^3.5.8",
+    "@types/jquery": "^3.5.9",
     "acorn": "^8.5.0",
     "angular-ng-autocomplete": "^2.0.5",
     "angulartics2": "10.1.0",
