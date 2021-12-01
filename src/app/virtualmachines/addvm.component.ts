@@ -3,7 +3,13 @@ import {
 } from '@angular/core';
 import { forkJoin, Subscription } from 'rxjs';
 import { Router } from '@angular/router';
-import { WIKI_VOLUME_OVERVIEW, CLOUD_PORTAL_SUPPORT_MAIL, STATUS_LINK } from 'links/links';
+import {
+	WIKI_VOLUME_OVERVIEW,
+	CLOUD_PORTAL_SUPPORT_MAIL,
+	STATUS_LINK,
+	WIKI_EPHEMERAL_LINK,
+	WIKI_MOSH_LINK,
+} from 'links/links';
 import { KeyValue } from '@angular/common';
 import { Image } from './virtualmachinemodels/image';
 import { Flavor } from './virtualmachinemodels/flavor';
@@ -72,6 +78,8 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 	WIKI_VOLUME_OVERVIEW: string = WIKI_VOLUME_OVERVIEW;
 	CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL;
 	STATUS_LINK: string = STATUS_LINK;
+	WIKI_EPHEMERAL_LINK: string = WIKI_EPHEMERAL_LINK;
+	WIKI_MOSH_LINK: string = WIKI_MOSH_LINK;
 	blockedImageTagsResenv: BlockedImageTagResenv[];
 
 	forc_url: string = '';

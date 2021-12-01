@@ -19,8 +19,12 @@ export const WIKI_MEMBER_MANAGEMENT: string = `${environment.WIKI_PRE}portal/pro
 export const WIKI_FAQ: string = `${environment.WIKI_PRE}FAQ/`;
 export const WIKI_MOTD: string = `${environment.WIKI_PRE}cloud_admin/news_management/#message-of-the-day`;
 export const WIKI_WORKSHOPS: string = `${environment.WIKI_PRE}simple_vm/workshop/`;
+export const WIKI_CREATE_SNAPSHOT_LINK: string = `${environment.WIKI_PRE}simple_vm/snapshots/#create-snapshot`;
 export const SCALE_SCRIPT_LINK: string = 'https://raw.githubusercontent.com/deNBI/user_scripts/master/bibigrid/scaling.py';
 export const WIKI_MOUNT_VOLUME: string = `${environment.WIKI_PRE}simple_vm/volumes/#mount-a-volume`;
+export const WIKI_VOLUMES_LINK: string = `${environment.WIKI_PRE}simple_vm/volumes/`;
+export const WIKI_MOSH_LINK: string = `${environment.WIKI_PRE}Tutorials/Mosh/`;
+export const WIKI_EPHEMERAL_LINK: string = `${environment.WIKI_PRE}simple_vm/new_instance/#information-for-ephemeral-flavors`;
 export const WIKI_GROUP_INVITATIONS: string = `${environment.WIKI_PRE}simple_vm/project_overview/#inviting-members`;
 export const SCALING_UP_WIKI: string = `${environment.WIKI_PRE}simple_vm/cluster_overview/#scale-up`;
 export const CREDITS_WIKI: string = `${environment.WIKI_PRE}portal/credits/`;
@@ -56,6 +60,10 @@ export const WIKI_LINKS: string[] = [
 	WIKI_MEMBER_MANAGEMENT,
 	WIKI_FAQ,
 	WIKI_MOTD,
+	WIKI_CREATE_SNAPSHOT_LINK,
+	WIKI_VOLUMES_LINK,
+	WIKI_EPHEMERAL_LINK,
+	WIKI_MOSH_LINK,
 ];
 
 export const LANDING_PAGE_LINKS: string[] = [
