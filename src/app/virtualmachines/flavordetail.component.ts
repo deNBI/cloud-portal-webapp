@@ -21,7 +21,7 @@ export class FlavorDetailComponent implements OnInit, OnChanges {
 	@Input() flavors: Flavor[];
 	@Output() readonly selectedFlavorChange: EventEmitter<Flavor> = new EventEmitter();
 	selected_flavor_types: Flavor[] = [];
-	selected_flavor_type: string = 'Standard Flavors';
+	selected_flavor_type: string = 'Standard Flavours';
 	flavor_types: { [name: string]: Flavor[] } = {};
 	flavors_per_row: number = 4;
 	possible_flavors: Flavor[] = [];
