@@ -64,6 +64,7 @@ export class ApplicationOverviewPage {
 
 	static async approveModificationRequest(application_name: string): Promise<any> {
 		await Util.waitForPresenceOfElementById(this.MODIFICATION_TAB_BUTTON);
+		await Util.waitForInvisibilityOfElementById(this.LOADING_APPLICATIONS);
 		await Util.clickElementById(this.MODIFICATION_TAB_BUTTON);
 		await Util.waitForAbsenceOfElementById(this.LOADING_APPLICATIONS);
 

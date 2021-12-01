@@ -47,16 +47,12 @@
 
 					<form id="application_form" #f="ngForm"
 								class="form-horizontal">
-						<div class="form-group row col-md-12" *ngIf="!singleProject">
-							<label class="col-md-2 form-control-label"><strong>Project*</strong></label>
-							<span *ngIf="client_avaiable && !projectDataLoaded" class="spinner-border text-info"></span>
-
-
+						<div class="form-group row col-md-12 justify-content-center" *ngIf="!singleProject" style="padding-right: 3rem; padding-left: 3rem">
 							<div class="col-md-8">
+								<label for="projectSelect"><strong>Please select a project</strong></label>
 								<select required class="form-control form-select" name="projectSelect" *ngIf="!singleProject"
 												[(ngModel)]="selectedProject" id="projectSelect"
-												(ngModelChange)="getSelectedProjectClient(); resetChecks();"
-								>
+												(ngModelChange)="getSelectedProjectClient(); resetChecks();">
 									<option value="undefined" disabled selected hidden> Please
 										Select
 									</option>
@@ -64,20 +60,16 @@
 													id="id_option_{{project[0]}}">
 										{{project[0]}}
 									</option>
-
 								</select>
 								<label *ngIf="singleProject"><strong>{{selectedProject[0]}}</strong></label>
-
-
 							</div>
-
+						</div>
+						<div class="row justify-content-center">
+							<span *ngIf="client_avaiable && !projectDataLoaded" class="spinner-border text-info"></span>
 						</div>
 						<div *ngIf="client_avaiable && projectDataLoaded">
-							<app-resource-overview [ressourceUsage]="selectedProjectRessources"
-							>
-
+							<app-resource-overview [ressourceUsage]="selectedProjectRessources">
 							</app-resource-overview>
-
 							<div class="alert alert-primary" role="alert"
 									 *ngIf="selectedProject && selectedProjectRessources?.used_vms >= selectedProjectRessources?.number_vms && client_avaiable && client_checked">
 								The limit for virtual machines has been reached for this project.
@@ -103,11 +95,11 @@
 								Your principal investigator can request more
 								resources if necessary.
 							</div>
-							<div
-								*ngIf="selectedProject && selectedProjectRessources?.used_vms < selectedProjectRessources?.number_vms &&flavors.length > 0"
-								class="form-group row col-md-12">
-								<label class="col-md-2 form-control-label"><strong>Name*</strong></label>
-								<div class="col-md-10">
+							<div *ngIf="selectedProject && selectedProjectRessources?.used_vms < selectedProjectRessources?.number_vms &&flavors.length > 0"
+									 class="form-group row col" style="padding-left: 3rem; padding-right: 3rem; margin-bottom: 25px; margin-top: 25px">
+								<div class="col">
+									<label for="id_instance_name">Please choose a name<br>
+									</label>
 									<div class="input-group">
 										<input required id="id_instance_name" name="instance_name"
 													 class="form-control"
@@ -116,7 +108,7 @@
 													 [ngClass]="{'is-invalid':f.controls.instance_name?.invalid && (f.controls.instance_name?.dirty || f.controls.instance_name?.touched),
                              'is-valid':f.controls.instance_name?.valid}">
 										<div class="input-group-append">
-											<button class="btn btn-outline-primary" (click)="generateRandomName();">Generate</button>
+											<button class="btn btn-outline-primary" (click)="generateRandomName();">Generate a random name for me</button>
 										</div>
 									</div>
 									<div class="alert alert-danger"
@@ -124,24 +116,19 @@
 											 *ngIf="f.controls.instance_name?.errors && (f.controls.instance_name?.dirty || f.controls.instance_name?.touched)">
 										Allowed characters are upper and lower case letters (a-z A-Z) and arabic numbers (0-9).
 									</div>
-
 								</div>
 							</div>
 
-							<div
-								*ngIf="selectedProjectRessources?.used_vms < selectedProjectRessources?.number_vms && (flavors?.length > 0 || selectedFlavor)">
-
-
-								<div *ngIf="selectedProject" class="form-group row col-md-12">
-									<label class="col-md-2 form-control-label"><strong>Flavor*</strong></label>
-									<div class="col-md-10">
-
-
+							<div *ngIf="selectedProjectRessources?.used_vms < selectedProjectRessources?.number_vms
+													&& (flavors?.length > 0 || selectedFlavor)">
+								<div *ngIf="selectedProject" class="form-group row col-md-12"
+										 style="padding-left: 3rem; padding-right: 3rem; margin-bottom: 1rem">
+									<div class="col">
 										<app-flavor-detail [selectedFlavor]="selectedFlavor" id="id_flavor_detail"
 																			 [flavors]="flavors"
 																			 [creditsAllowed]="credits_allowed"
-																			 (selectedFlavorChange)="setSelectedFlavor($event)"
-										></app-flavor-detail>
+																			 (selectedFlavorChange)="setSelectedFlavor($event)">
+										</app-flavor-detail>
 
 
 									</div>
@@ -153,15 +140,15 @@
 									<div class="col-md-10 alert alert-primary">
 										<strong>Information for ephemeral flavors:</strong>
 										Ephemeral storage is not best suited for persistent data. Read more
-										<a href="https://cloud.denbi.de/wiki/simple_vm/new_instance/#information-for-ephemeral-flavors"
+										<a href="{{ WIKI_EPHEMERAL_LINK }}"
 											 target="_blank" rel="noopener noreferrer">here</a>.
 									</div>
 								</div>
 
 
-								<div *ngIf="selectedProject" class="form-group row col-md-12">
-									<label class="col-md-2 form-control-label"><strong>Image*</strong></label>
-									<div class="col-md-10">
+								<div *ngIf="selectedProject" class="form-group row col-md-12"
+										 style="padding-left: 3rem; padding-right: 3rem; margin-bottom: 25px">
+									<div class="col">
 
 										<app-image-detail *ngIf="images?.length > 0" [selectedImage]="selectedImage"
 																			[images]="images"
@@ -172,16 +159,18 @@
 								</div>
 							</div>
 
-							<div id="volumeDiv" style="margin-bottom: 25px;"
+							<div id="volumeDiv" style="margin-bottom: 25px; padding-left: 3rem; padding-right: 3rem"
 									 *ngIf="selectedProject
                    && selectedProject[1] !== FREEMIUM_ID
                    && selectedProjectRessources?.used_vms < selectedProjectRessources?.number_vms
                    && (flavors.length !== 0 || selectedFlavor)">
 								<!-- Buttons Row -->
 								<div class="from-group row col-md-12" style="margin-bottom: 25px;">
-									<label class="col-md-2"><strong>Volumes</strong></label>
+									<strong>Volumes</strong><br>
+									<span class="text-muted">Volumes offer more space for your data, comparable to an external harddrive. You may create new volumes or
+									attach existing ones.</span>
 									<!-- New/Attach Buttons -->
-									<div class="col-md-10">
+									<div class="col">
 										<button class="btn btn-light" (click)="toggleShowAddVol();"
 														[disabled]="
                               ((selectedProjectRessources.used_volumes + volumesToMount?.length) >= selectedProjectRessources.volume_counter)
@@ -464,8 +453,6 @@
 									</div>
 
 								</div>
-
-
 							</div>
 
 
@@ -545,7 +532,7 @@
 														 name="udp_allowed" [disabled]="!mosh_mode_available"
 														 [(ngModel)]="udp_allowed">
 											<label class="form-check-label"><strong>
-												<a href="https://cloud.denbi.de/wiki/Tutorials/Mosh/" rel="noopener noreferrer"
+												<a href="{{ WIKI_MOSH_LINK }}" rel="noopener noreferrer"
 													 target="_blank">Open
 													UDP ports</a>
 												<i
@@ -691,8 +678,8 @@
 				<div class="alert alert-danger"
 						 *ngIf="isLoaded && !client_avaiable && selectedProject && client_checked">The
 					corresponding client is currently offline.
-					If you have any questions please contact <a
-						href="mailto:{{CLOUD_PORTAL_SUPPORT_MAIL}}">{{CLOUD_PORTAL_SUPPORT_MAIL}}.</a>
+					If you have any questions please contact <a href="mailto:{{CLOUD_PORTAL_SUPPORT_MAIL}}">{{CLOUD_PORTAL_SUPPORT_MAIL}}.</a>
+					Check our <a href="{{STATUS_LINK}}" target="_blank" rel="noopener noreferrer">status overview</a> to see if the site of your project is reachable.
 				</div>
 
 
