@@ -17,7 +17,7 @@
 	<div class="card-body">
 
 		<div
-			*ngIf="flavor_types[selected_flavor_type].length >0 && flavor_types[selected_flavor_type][0]?.type?.description"
+			*ngIf="flavor_types[selected_flavor_type]?.length > 0 && flavor_types[selected_flavor_type][0]?.type?.description"
 			class="alert alert-primary">
 
 			{{flavor_types[selected_flavor_type][0].type.description}}
