@@ -9,7 +9,7 @@
     <div class="card-header"><span class="font-weight-bold text-muted">Cluster: {{cluster?.cluster_id}}</span></div>
     <div class="card-body">
      <app-clusterinfo *ngIf="!errorOnLoading" [cluster]="cluster"></app-clusterinfo>
-			<div class="alert  alert-danger">
+			<div class="alert alert-danger" *ngIf="errorOnLoading">
 				The detailed cluster information cannot be loaded right now.
 				It is possible that the facility on which your cluster is running cannot be reached at the moment.
 				Please check our <a href="{{STATUS_LINK}}" target="_blank" rel="noopener noreferrer">status overview</a>
