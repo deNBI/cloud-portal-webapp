@@ -14,7 +14,7 @@ import { VirtualMachineStates } from '../../virtualmachinemodels/virtualmachines
 import { GroupService } from '../../../api-connector/group.service';
 import { ClientService } from '../../../api-connector/client.service';
 import { Clusterinfo } from '../clusterinfo';
-import { CLOUD_PORTAL_SUPPORT_MAIL, SCALE_SCRIPT_LINK } from '../../../../links/links';
+import { CLOUD_PORTAL_SUPPORT_MAIL, SCALE_SCRIPT_LINK, STATUS_LINK } from '../../../../links/links';
 import { AbstractBaseClass } from '../../../shared/shared_modules/baseClass/abstract-base-class';
 import { Flavor } from '../../virtualmachinemodels/flavor';
 import { FlavorService } from '../../../api-connector/flavor.service';
@@ -47,6 +47,7 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 	FILTER_DEBOUNCE_TIME: number = 2000;
 	SCALING_SCRIPT_LINK: string = SCALE_SCRIPT_LINK;
 	CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL;
+	STATUS_LINK: string = STATUS_LINK;
 	user_elixir_id: string = elixir_id;
 
 	isSearching: boolean = true;
