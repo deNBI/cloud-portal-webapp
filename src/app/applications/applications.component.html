@@ -152,17 +152,17 @@
                     <div class="btn-group">
                       <button
                         *ngIf="(application | hasstatusinlist:Application_States.CONFIRMATION_DECLINED)  || ((application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION)  && !application?.ComputeCenter?.FacilityId )"
-                        style="margin: auto 2.5px"
+                        style="margin: 2px"
                         (click)="assignGroupToFacility(application?.project_application_perun_id,application?.project_application_id, selectedCenter[application.project_application_id]); switchAssignLocked(true)"
                         [disabled]="!selectedCenter[application.project_application_id] || assignLocked"
                         type="button"
                         class="btn btn-secondary">
                         <i class="fa fa-check"></i>&nbsp;
-                        <span class="applicationActionsButton">Assign</span>
+                        <span class="d-none">Assign</span>
                       </button>
                       <button
                         *ngIf="(application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION)  && application?.ComputeCenter?.FacilityId"
-                        style="margin: auto 2.5px"
+                        style="margin: 2px"
                         (click)="removeApplicationFromFacilityConfirmation(application); switchReassignLocked(true)"
 												[disabled]="reassignLocked"
 
@@ -170,29 +170,29 @@
                         type="button"
                         class="btn btn-secondary">
                         <i class="fa fa-check"></i>&nbsp;
-                        <span class="applicationActionsButton">Reassign</span>
+                        <span class="d-none">Reassign</span>
                       </button>
                       <button
                         *ngIf="(application | hasstatusinlist:Application_States.SUBMITTED) && application?.project_application_openstack_project"
-                        style="margin: auto 2.5px" [id]="'approve_'+ application?.project_application_shortname"
+                        style="margin: 2px" [id]="'approve_'+ application?.project_application_shortname"
                         (click)="createOpenStackProjectGroup(application, selectedCenter[application.project_application_id]); switchApproveLocked(true)"
                         [disabled]="!selectedCenter[application.project_application_id] || approveLocked"
                         type="button"
                         class="btn btn-success">
                         <i class="fa fa-check"></i>&nbsp;
-                        <span class="applicationActionsButton">Approve & Create </span>
+                        <span class="d-none">Approve & Create </span>
                       </button>
 
                       <button
                               *ngIf="(application | hasstatusinlist:Application_States.SUBMITTED)  && !application?.project_application_openstack_project"
-                              style="margin: auto 2.5px" [id]="'approve_' + application?.project_application_shortname"
+                              style="margin: 2px" [id]="'approve_' + application?.project_application_shortname"
                               (click)="showClientsLimitsModal(selectedCenter[application.project_application_id],application); switchApproveLocked(true)"
 															[disabled]="approveLocked"
 
                               type="button"
                               class="btn btn-success">
                         <i class="fa fa-check"></i>&nbsp;
-                        <span class="applicationActionsButton">Approve
+                        <span class="d-none">Approve
                           & Create </span>
                       </button>
 
@@ -200,36 +200,36 @@
                               type="button"
                               class="btn btn-danger"
                               id="btn_decline_{{application.project_application_shortname}}"
-                              style="margin: auto 2.5px"
+                              style="margin: 2px"
                               (click)="declineApplication(application); ">
                         <i class="fas fa-times"></i>&nbsp;
-                        <span class="applicationActionsButton">Decline</span>
+                        <span class="d-none">Decline</span>
                       </button>
                       <button *ngIf="application.project_application_pi_approved && (application | hasstatusinlist:Application_States.SUBMITTED) " type="button"
                               id="btn_reset_pi_{{application.project_application_shortname}}"
-                              class="btn btn-warning" style="margin: auto 2.5px"
+                              class="btn btn-warning" style="margin: 2px"
                               (click)="setApplicationToAdjust(application);unsetPiModal.show();"
                       >
                         <i class="fa fa-user-times"></i>&nbsp;
-                        <span class="applicationActionsButton"> Unset PI</span>
+                        <span class="d-none"> Unset PI</span>
                       </button>
                       <button type="button" id="btn_adjust_{{application.project_application_shortname}}"
-                              class="btn btn-primary" style="margin: auto 2.5px"
+                              class="btn btn-primary" style="margin: 2px"
                               (click)="setApplicationToAdjust(application); adjustModal.show();">
                         <i class="fa fa-pen"></i>&nbsp;
-                        <span class="applicationActionsButton"> Adjust</span>
+                        <span class="d-none"> Adjust</span>
                       </button>
                       <button
                               (click)="switchCollapseStatus('application_review-' + application?.project_application_id);  getMemberDetailsByElixirIdIfCollapsed(application,'application_review-' + application?.project_application_id);"
                               type="button"
                               class="btn btn-secondary"
-                              style="margin: auto 2.5px">
+                              style="margin: 2px">
                         <i class="fa fa-info-circle"></i>&nbsp;
-                        <span class="applicationActionsButton"
+                        <span class="d-none"
                               [hidden]="!getCollapseStatus('application_review-' + application?.project_application_id)">Show</span>
-                        <span class="applicationActionsButton"
+                        <span class="d-none"
                               [hidden]="getCollapseStatus('application_review-' + application?.project_application_id)">Hide</span>
-                        <span class="applicationActionsButton"> Information</span>
+                        <span class="d-none"> Information</span>
                       </button>
                     </div>
                   </td>
@@ -344,35 +344,35 @@
 
                         <button [id]="'modification_approval_' + application?.project_application_shortname"
                                 *ngIf="(application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  && application?.project_application_openstack_project && application?.project_modification_request"
-                                style="margin: auto 2.5px"
+                                style="margin: 2px"
                                 (click)=" approveModificationRequest(application);
                                   "
                                 type="button"
                                 class="btn btn-success">
                           <i class="fa fa-check"></i>&nbsp;
-                          <span class="applicationActionsButton">Approve Modification</span>
+                          <span class="d-none">Approve Modification</span>
                         </button>
                         <button [id]="'modification_approval_' + application?.project_application_shortname"
                                 *ngIf="(application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  && !application?.project_application_openstack_project && application?.project_modification_request"
-                                style="margin: auto 2.5px"
+                                style="margin: 2px"
                                 (click)=" showClientsLimitsModal(application.ComputeCenter.FacilityId,application,true);
                                   "
                                 type="button"
                                 class="btn btn-success">
                           <i class="fa fa-check"></i>&nbsp;
-                          <span class="applicationActionsButton">Approve Modification</span>
+                          <span class="d-none">Approve Modification</span>
                         </button>
 
                         <button
                                 *ngIf="(application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED) && application?.project_modification_request "
                                 type="button"
                                 class="btn btn-danger"
-                                style="margin: auto 2.5px"
+                                style="margin: 2px"
                                 (click)=" declineModificationRequest(application);
                                 ">
                           <i
                                   class="fa fa-times"></i>&nbsp;
-                          <span class="applicationActionsButton">Decline Modification</span>
+                          <span class="d-none">Decline Modification</span>
                         </button>
 
 
@@ -380,13 +380,13 @@
                           (click)="switchCollapseStatus('application_review-' + application?.project_application_id);  getMemberDetailsByElixirIdIfCollapsed(application,'application_review-' + application?.project_application_id);"
                           type="button"
                           class="btn btn-secondary"
-                          style="margin: auto 2.5px">
+                          style="margin: 2px">
                           <i class="fa fa-info-circle"></i>&nbsp;
-                          <span class="applicationActionsButton"
+                          <span class="d-none"
                                 [hidden]="!getCollapseStatus('application_review-' + application?.project_application_id)">Show</span>
-                          <span class="applicationActionsButton"
+                          <span class="d-none"
                                 [hidden]="getCollapseStatus('application_review-' + application?.project_application_id)">Hide</span>
-                          <span class="applicationActionsButton"> Information</span>
+                          <span class="d-none"> Information</span>
                         </button>
                       </div>
                     </td>
@@ -500,39 +500,39 @@
                       <div class="btn-group">
                         <button [id]="'extension_approval_' + application?.project_application_shortname"
                                 *ngIf="(application | hasstatusinlist:Application_States.LIFETIME_EXTENSION_REQUESTED)  && application?.project_lifetime_request"
-                                style="margin: auto 2.5px"
+                                style="margin: 2px"
                                 (click)="
                                 approveLifetimeExtension(application);
                                 "
                                 type="button"
                                 class="btn btn-success">
                           <i class="fa fa-check"></i>&nbsp;
-                          <span class="applicationActionsButton">Approve Extension</span>
+                          <span class="d-none">Approve Extension</span>
                         </button>
                         <button
                           *ngIf="(application | hasstatusinlist:Application_States.LIFETIME_EXTENSION_REQUESTED)  && application?.project_lifetime_request"
                           type="button"
                           class="btn btn-danger"
-                          style="margin: auto 2.5px"
+                          style="margin: 2px"
                           (click)="
                           declineLifetimeExtension(application);
                            ">
                           <i
                             class="fa fa-times"></i>&nbsp;
-                          <span class="applicationActionsButton">Decline Extension</span>
+                          <span class="d-none">Decline Extension</span>
                         </button>
 
                         <button
                           (click)="switchCollapseStatus('application_review-' + application?.project_application_id);  getMemberDetailsByElixirIdIfCollapsed(application,'application_review-' + application?.project_application_id);"
                           type="button"
                           class="btn btn-secondary"
-                          style="margin: auto 2.5px">
+                          style="margin: 2px">
                           <i class="fa fa-info-circle"></i>&nbsp;
-                          <span class="applicationActionsButton"
+                          <span class="d-none"
                                 [hidden]="!getCollapseStatus('application_review-' + application?.project_application_id)">Show</span>
-                          <span class="applicationActionsButton"
+                          <span class="d-none"
                                 [hidden]="getCollapseStatus('application_review-' + application?.project_application_id)">Hide</span>
-                          <span class="applicationActionsButton"> Information</span>
+                          <span class="d-none"> Information</span>
                         </button>
                       </div>
                     </td>
@@ -649,13 +649,13 @@
 
                         <button [id]="'credit_extension_approval_' + application?.project_application_shortname"
                                 *ngIf="(application | hasstatusinlist:Application_States.CREDITS_EXTENSION_REQUESTED) "
-                                style="margin: auto 2.5px"
+                                style="margin: 2px"
                                 (click)="this. this.approveCreditExtension(application);
                                   "
                                 type="button"
                                 class="btn btn-success">
                           <i class="fa fa-check"></i>&nbsp;
-                          <span class="applicationActionsButton">Approve Credits</span>
+                          <span class="d-none">Approve Credits</span>
                         </button>
 
                         <button [id]="'credit_extension_decline_' + application?.project_application_shortname"
@@ -664,22 +664,22 @@
                                  "
                                 type="button"
                                 class="btn btn-danger"
-                                style="margin: auto 2.5px">
+                                style="margin: 2px">
                           <i class="fas fa-times"></i>&nbsp;
-                          <span class="applicationActionsButton">Decline Credits</span>
+                          <span class="d-none">Decline Credits</span>
                         </button>
 
                         <button
                           (click)="switchCollapseStatus('application_review-' + application?.project_application_id);  getMemberDetailsByElixirIdIfCollapsed(application,'application_review-' + application?.project_application_id);"
                           type="button"
                           class="btn btn-secondary"
-                          style="margin: auto 2.5px">
+                          style="margin: 2px">
                           <i class="fa fa-info-circle"></i>&nbsp;
-                          <span class="applicationActionsButton"
+                          <span class="d-none"
                                 [hidden]="!getCollapseStatus('application_review-' + application?.project_application_id)">Show</span>
-                          <span class="applicationActionsButton"
+                          <span class="d-none"
                                 [hidden]="getCollapseStatus('application_review-' + application?.project_application_id)">Hide</span>
-                          <span class="applicationActionsButton"> Information</span>
+                          <span class="d-none"> Information</span>
                         </button>
                       </div>
                     </td>
