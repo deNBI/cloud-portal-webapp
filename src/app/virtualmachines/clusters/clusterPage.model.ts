@@ -6,6 +6,7 @@ export class ClusterPage {
 	total_items: number = 0;
 	items_per_page: number = 7;
 	num_pages: number = 0;
+	cluster_status_error: boolean = false;
 
 	constructor(cluster_page?: Partial<ClusterPage>) {
 		Object.assign(this, cluster_page);
@@ -20,6 +21,7 @@ export class ClusterPage {
 			if (cluster_page.total_pages) {
 				this.num_pages = cluster_page.total_pages;
 			}
+			this.cluster_status_error = cluster_page.cluster_status_error;
 		}
 	}
 }
