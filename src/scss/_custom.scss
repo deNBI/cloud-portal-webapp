@@ -279,14 +279,7 @@ $simplevmcolour: #00ADEF;
     margin-left: 0px !important;
   }
 }
-//media-query for applications-overview buttons
 
-@media (max-width: 1350px) {
-  .applicationActionsButton {
-    display: none;
-
-  }
-}
 
 .sidebar-fixed .sidebar {
   height: calc(100vh - 10.938rem);
