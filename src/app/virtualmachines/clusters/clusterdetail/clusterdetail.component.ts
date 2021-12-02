@@ -5,6 +5,7 @@ import { Clusterinfo } from '../clusterinfo';
 import { VirtualmachineService } from '../../../api-connector/virtualmachine.service';
 import { VirtualMachineStates } from '../../virtualmachinemodels/virtualmachinestates';
 import { VirtualMachine } from '../../virtualmachinemodels/virtualmachine';
+import { STATUS_LINK } from '../../../../links/links';
 
 /**
  * Clusterdetail component.
@@ -23,6 +24,8 @@ export class ClusterdetailComponent implements OnInit, OnDestroy {
 	checkStatusTimeout: number = 5000;
 	subscription: Subscription = new Subscription();
 	selectedWorker: VirtualMachine;
+	errorOnLoading = false;
+	STATUS_LINK: string = STATUS_LINK;
 
 	constructor(private activatedRoute: ActivatedRoute, private virtualmachineService: VirtualmachineService) {
 		this.activatedRoute = activatedRoute;
@@ -52,6 +55,9 @@ export class ClusterdetailComponent implements OnInit, OnDestroy {
 			this.cluster = new Clusterinfo(cluster_info);
 			this.isLoaded = true;
 			this.check_status_loop_cluster_vms();
+		}, () => {
+			this.errorOnLoading = true;
+			this.isLoaded = true;
 		});
 	}
 
