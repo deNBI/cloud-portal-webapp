@@ -166,7 +166,7 @@ export class GroupService {
 			params.set('facility_id', facility_id.toString());
 		}
 
-		return this.http.request('delete', `${ApiSettings.getApiBaseURL()}projects/${group_id}/members/${member_id}/`, {
+		return this.http.request('delete', `${ApiSettings.getApiBaseURL()}projects/${group_id}/members/${member_id}/leave/`, {
 			withCredentials: true,
 			body: params,
 			responseType: 'text',
