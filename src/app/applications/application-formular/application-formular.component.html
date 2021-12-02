@@ -19,7 +19,7 @@
 					</div>
 					<div class="alert alert-primary" *ngIf="openstack_project">
 						If you would like to learn more about Openstack,
-						<a href="https://cloud.denbi.de/openstack/"
+						<a href="{{ OPENSTACK_LINK }}"
 							 target="_blank" rel="noopener noreferrer">Click Here!
 						</a>
 					</div>
@@ -31,7 +31,7 @@
 							temporarily.
 						</div>
 						<div class="alert alert-primary">
-							If you would like to learn more about Simple VM, <a href="https://cloud.denbi.de/simplevm/"
+							If you would like to learn more about Simple VM, <a href="{{ SIMPLE_VM_LINK }}"
 																																	target="_blank" rel="noopener noreferrer">Click
 							Here!</a>
 						</div>
@@ -195,7 +195,7 @@
 							</div>
 						</div>
 
-						<div class="form-group row">
+						<div class="form-group row" *ngIf="!openstack_project">
 							<label class="col-md-4 form-control-label" for="id_project_application_workshop"><strong>Workshop* <i
 								data-balloon="Please indicate whether a workshop is to be held as part of this project."
 								data-balloon-pos="right">
@@ -376,7 +376,7 @@
 							<label class="col-md-4"></label>
 							<div class="col-md-8">
 								<div class="alert alert-primary" role="alert">
-									In case you need additional and/or special resources, which are not available in the flavour
+									In case you need additional and/or special resources, which are not available in the flavor
 									selection, use the comment field to state so. The same applies to unusually large amounts of
 									resources.
 								</div>
