@@ -1097,8 +1097,10 @@ private flavorService: FlavorService,
 
 						if (result.status === 200) {
 							this.updateNotificationModal('Success', `You were removed from the project ${projectname}`, true, 'success');
-							this.getMembersOfTheProject();
+							// this.getMembersOfTheProject();
 							void this.router.navigate(['/userinfo']);
+							this.fullLayout.getGroupsEnumeration();
+
 						} else {
 							this.updateNotificationModal('Failed', `Failed to leave the project ${projectname}!`, true, 'danger');
 						}
