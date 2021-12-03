@@ -37,7 +37,7 @@ import { ModificationRequestComponent } from './modals/modification-request/modi
 import { LifetimeRequestComponent } from './modals/lifetime-request/lifetime-request.component';
 import { DoiComponent } from './modals/doi/doi.component';
 import { CreditsRequestComponent } from './modals/credits-request/credits-request.component';
-import {findMember} from "@angular/compiler-cli/src/ngtsc/reflection/src/typescript";
+
 
 /**
  * Projectoverview component.
