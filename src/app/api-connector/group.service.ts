@@ -148,19 +148,12 @@ export class GroupService {
 
 		}
 
-		return this.http.delete(`${ApiSettings.getApiBaseURL()}projects/${group_id}/members/${member_id}/`, {
+		return this.http.request('delete', `${ApiSettings.getApiBaseURL()}projects/${group_id}/members/${member_id}/`, {
 			withCredentials: true,
 			body: params,
 			responseType: 'text',
 			observe: 'response',
 		});
-
-		// return this.http.request('delete', `${ApiSettings.getApiBaseURL()}projects/${group_id}/members/${member_id}/`, {
-		// 	withCredentials: true,
-		// 	body: params,
-		// 	responseType: 'text',
-		// 	observe: 'response',
-		// });
 	}
 
 	removeAdmin(group_id: number | string, user_id: number | string, facility_id?: number | string): Observable<any> {
