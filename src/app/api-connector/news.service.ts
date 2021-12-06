@@ -92,8 +92,6 @@ export class NewsService {
 		);
 	}
 
-	getNewsByTagsFilteredByFacility(tags: string[], facility: number): void {}
-
 	private handleError<T>(result?: T) {
 		return (error: any): Observable<T> => {
 
