@@ -38,7 +38,6 @@ import { LifetimeRequestComponent } from './modals/lifetime-request/lifetime-req
 import { DoiComponent } from './modals/doi/doi.component';
 import { CreditsRequestComponent } from './modals/credits-request/credits-request.component';
 
-
 /**
  * Projectoverview component.
  */
@@ -1086,11 +1085,10 @@ private flavorService: FlavorService,
 	 */
 	public leaveProject(groupid: number, memberid: number, projectname: string): void {
 		if (this.project.UserIsPi) {
-			console.log("PI cannot leave a project")
-			return;
-		}
-		else {
-			console.log("removing member")
+			console.log('PI cannot leave a project');
+
+		} else {
+			console.log('removing member');
 			this.subscription.add(
 				this.groupService.leaveGroup(groupid, memberid, this.project.ComputeCenter.FacilityId).subscribe(
 					(result: any): void => {
