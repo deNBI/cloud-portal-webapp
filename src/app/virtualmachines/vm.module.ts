@@ -46,16 +46,17 @@ import { ScaleClusterComponent } from './modals/scale-cluster/scale-cluster.comp
 import { DeleteClusterComponent } from './modals/delete-cluster/delete-cluster.component';
 import { AddWorkshopComponent } from './workshop/add-workshop/add-workshop.component';
 import { WorkshopOverviewComponent } from './workshop/workshop-overview/workshop-overview.component';
+import { NewsModule } from '../news/news.module';
 
 /**
  * VM module.
  */
 @NgModule({
-	          imports: [
-		          PipeModuleModule,
-		          ClickOutsideModule,
-		          PublicKeyModule,
-		          VmRoutingModule,
+	imports: [
+		PipeModuleModule,
+		ClickOutsideModule,
+		PublicKeyModule,
+		VmRoutingModule,
 		TabsModule,
 		CommonModule,
 		FormsModule,
@@ -66,7 +67,9 @@ import { WorkshopOverviewComponent } from './workshop/workshop-overview/workshop
 		AccordionModule.forRoot(),
 		SharedDirectivesModule,
 		NgbModule,
-		ReactiveFormsModule],
+		ReactiveFormsModule,
+		NewsModule,
+	],
 	          declarations: [
 		          ImageCarouselSlideComponent,
 		          ImageDetailComponent,

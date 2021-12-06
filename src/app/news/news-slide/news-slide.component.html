@@ -1,0 +1,14 @@
+<div class="card border-bottom-0 border-top-0 text-center" style="max-height: 15rem">
+	<div class="card-body overflow-auto">
+		<h6 class="card-title">
+			{{news.title}}
+		</h6>
+		<p class="card-text">{{news.short_text}}</p>
+			<small class="float-left text-muted">
+				{{news.date | date:'YYYY-MM-dd' }}
+			</small>
+			<small class="float-right">
+				<a [href]="news.url" target="_blank" rel="noopener noreferrer">See full news&nbsp;<i class="fa fa-external-link-alt"></i></a>
+			</small>
+	</div>
+</div>

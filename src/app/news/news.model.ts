@@ -1,11 +1,10 @@
 export class News {
-	id;
+	id: number;
 	title: string;
-	posted_at: string;
-	text: string;
-	tags: string[];
-	facility: number;
-	link: string;
+	date: string;
+	full_text: string;
+	short_text: string;
+	url: string;
 
 	constructor(news?: Partial<News>) {
 		Object.assign(this, news);

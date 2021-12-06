@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { Cookie } from 'ng2-cookies';
 
 /**
- * Interceptor which inserts withCredentials and csrf he                                      ader
+ * Interceptor which inserts withCredentials and csrf header
  */
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
