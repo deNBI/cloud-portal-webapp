@@ -1,6 +1,9 @@
 name: WikiLinks Online
 
-on: [pull_request]
+on: 
+    pull_request:
+    schedule:   
+        - cron: "0 1 * * *"
 
 jobs:
   wikilinks-check:
