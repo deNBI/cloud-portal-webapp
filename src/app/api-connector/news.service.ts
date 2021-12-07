@@ -95,7 +95,6 @@ export class NewsService {
 	private handleError<T>(result?: T) {
 		return (error: any): Observable<T> => {
 
-			console.log('log from handleError');
 			console.error(error); // log to console instead
 
 			// Let the app keep running by returning an empty result.
