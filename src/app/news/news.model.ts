@@ -1,4 +1,4 @@
-import {ApiSettings} from "../api-connector/api-settings.service";
+import { ApiSettings } from '../api-connector/api-settings.service';
 
 export class News {
 	id: number;
