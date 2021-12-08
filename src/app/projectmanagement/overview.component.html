@@ -553,7 +553,9 @@
 						<button type="button" style="margin-bottom:5px;"
 							(click)="toggleStartingOfMachines();"
 							[disabled]="toggleLocked"
-										class="btn btn-outline-primary"><i class="fa fa-users" aria-hidden="true"></i>
+										class="btn btn-outline-primary">
+							<i *ngIf="!project_application?.prevent_machines_starting" class="fas fa-lock"></i>
+							<i *ngIf="project_application?.prevent_machines_starting" class="fas fa-lock-open"></i>
 							<span *ngIf="project_application?.prevent_machines_starting"> Allow </span>
 							<span *ngIf="!project_application?.prevent_machines_starting"> Prevent </span>
 							starting of machines

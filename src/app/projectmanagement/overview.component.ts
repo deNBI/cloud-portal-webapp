@@ -562,7 +562,7 @@ private flavorService: FlavorService,
 		});
 	}
 
-	toggleStartingOfMachiens(): void {
+	toggleStartingOfMachines(): void {
 		this.toggleLocked = true;
 		this.applicationsService.toggleStartingMachines(this.project_application).subscribe((application: Application): void => {
 			this.project_application.prevent_machines_starting = application.prevent_machines_starting;
