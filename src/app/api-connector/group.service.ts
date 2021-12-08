@@ -159,7 +159,7 @@ export class GroupService {
 	leaveGroup(group_id: number | string, member_id: number | string, facility_id?: number | string): Observable<any> {
 		const params: HttpParams = new HttpParams();
 
-		console.log("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nParameters:\n")
+		console.log('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nParameters:\n');
 		console.log(params);
 
 		if (facility_id !== null) {
