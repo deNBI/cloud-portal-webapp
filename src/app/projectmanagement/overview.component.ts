@@ -9,6 +9,7 @@ import { AutocompleteComponent } from 'angular-ng-autocomplete';
 import { DOCUMENT } from '@angular/common';
 import { Chart } from 'chart.js';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import application from '@angular-devkit/build-angular/src/babel/presets/application';
 import { environment } from '../../environments/environment';
 import { ProjectMemberApplication } from './project_member_application';
 import { ComputecenterComponent } from './computecenter.component';
