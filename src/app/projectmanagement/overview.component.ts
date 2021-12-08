@@ -1084,7 +1084,7 @@ private flavorService: FlavorService,
 	 * @param projectname of the project
 	 */
 	public leaveProject(groupid: number, memberid: number, projectname: string): void {
-		if (this.project_application.project_application_pi.elixir_id == this.userinfo.ElixirId) {
+		if (this.project_application.project_application_pi.elixir_id === this.userinfo.ElixirId) {
 			this.updateNotificationModal(
 				'Denied',
 				'You cannot leave projects as PI.',
