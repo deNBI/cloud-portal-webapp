@@ -37,7 +37,6 @@ import { ModificationRequestComponent } from './modals/modification-request/modi
 import { LifetimeRequestComponent } from './modals/lifetime-request/lifetime-request.component';
 import { DoiComponent } from './modals/doi/doi.component';
 import { CreditsRequestComponent } from './modals/credits-request/credits-request.component';
-import application from "@angular-devkit/build-angular/src/babel/presets/application";
 
 /**
  * Projectoverview component.
