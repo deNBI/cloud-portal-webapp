@@ -38,7 +38,6 @@ import { LifetimeRequestComponent } from './modals/lifetime-request/lifetime-req
 import { DoiComponent } from './modals/doi/doi.component';
 import { CreditsRequestComponent } from './modals/credits-request/credits-request.component';
 
-
 /**
  * Projectoverview component.
  */
@@ -1088,20 +1087,20 @@ private flavorService: FlavorService,
 		if (this.project_application.project_application_pi.elixir_id == this.userinfo.ElixirId) {
 			this.updateNotificationModal(
 				'Denied',
-				`You cannot leave projects as PI.`,
+				'You cannot leave projects as PI.',
 				true,
-				'danger');
-		}
-		else if (this.project.UserIsAdmin) {
+				'danger',
+			);
+		} else if (this.project.UserIsAdmin) {
 			// TODO: Allow admins to leave project if there is at least 1 other admin
 			this.updateNotificationModal(
 				'Denied',
-				`You cannot leave projects as admin.`,
+				'You cannot leave projects as admin.',
 				true,
-				'danger');
-		}
-		else {
-			console.log("removing member")
+				'danger',
+			);
+		} else {
+			console.log('removing member');
 			this.subscription.add(
 				this.groupService.leaveGroup(groupid, memberid, this.project.ComputeCenter.FacilityId).subscribe(
 					(result: any): void => {
@@ -1111,7 +1110,8 @@ private flavorService: FlavorService,
 								'Success',
 								`You were removed from the project ${projectname}`,
 								true,
-								'success');
+								'success',
+							);
 							void this.router.navigate(['/userinfo']);
 							this.fullLayout.getGroupsEnumeration();
 
@@ -1120,7 +1120,8 @@ private flavorService: FlavorService,
 								'Failed',
 								`Failed to leave the project ${projectname}!`,
 								true,
-								'danger');
+								'danger',
+							);
 						}
 					},
 					(): void => {
@@ -1128,7 +1129,8 @@ private flavorService: FlavorService,
 							'Failed',
 							`Failed to leave the project ${projectname}!`,
 							true,
-							'danger');
+							'danger',
+						);
 					},
 				),
 			);
