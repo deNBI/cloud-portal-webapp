@@ -1,0 +1,25 @@
+<div class="card" style="margin-bottom: 10px">
+	<div class="card-header"
+			 style="text-align: center">
+		<strong>News</strong>
+	</div>
+	<div class="card-body">
+		<div *ngIf="!news_loaded" class="row justify-content-center">
+			<span class="spinner-border text-info"></span>
+		</div>
+		<owl-carousel-o *ngIf="news_loaded && news.length > 0 && !error_on_loading" [options]="custom_options">
+			<ng-container *ngFor="let single_news of news">
+				<ng-template carouselSlide>
+					<app-news-slide [news]="single_news">
+					</app-news-slide>
+				</ng-template>
+			</ng-container>
+		</owl-carousel-o>
+		<div class="card-text" *ngIf="news_loaded && news.length < 1 && !error_on_loading">
+			{{error_message}}
+		</div>
+		<div class="card-text" *ngIf="news_loaded && error_on_loading">
+			{{error_message}}
+		</div>
+	</div>
+</div>

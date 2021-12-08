@@ -23,6 +23,7 @@ import { ResourceDetailComponent } from './application-detail/resource-detail/re
 import { ModificationDetailComponent } from './application-detail/modification-detail/modification-detail.component';
 import { CreditsExtensionDetailComponent } from './application-detail/credits-extension-detail/credits-extension-detail.component';
 import { LifetimeExtensionDetailComponent } from './application-detail/lifetime-extension-detail/lifetime-extension-detail.component';
+import { NewsModule } from '../news/news.module';
 
 /**
  * Applications Module.
@@ -39,6 +40,7 @@ import { LifetimeExtensionDetailComponent } from './application-detail/lifetime-
 		AutocompleteLibModule,
 		SharedDirectivesModule,
 		PipeModuleModule,
+		NewsModule,
 	],
 	declarations: [
 		ApplicationsComponent,
