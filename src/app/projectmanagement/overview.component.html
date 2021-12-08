@@ -185,7 +185,8 @@
 						 *ngIf="project_application | hasstatusinlist:Application_States.APPROVED">
 					<div class="row">
 						<div class="col-6">
-							<div class="callout callout-info" style="border-top-width: 0; border-bottom-width: 0; border-right-width: 0"
+							<div class="callout callout-info"
+									 style="border-top-width: 0; border-bottom-width: 0; border-right-width: 0"
 									 title="The project has been running for {{project?.DaysRunning}} of a total of {{project?.LifetimeDays}} granted days">
 								<small class="text-muted">Project Runtime</small><br>
 								<strong class="text-muted">{{project?.DateCreated}} - {{project?.DateEnd}}
@@ -327,27 +328,27 @@
 							</div>
 						</div>
 						<div class="col-6 ">
-						<div class="btn-group">
-							<a class="btn btn-outline-primary" target="_blank" rel="noopener noreferrer"
-								 href="mailto:{{project?.ComputeCenter.Support}}" *ngIf="this.supportMails?.length === 1"
-								 style="margin-top:15px;">Contact Support</a>
+							<div class="btn-group">
+								<a class="btn btn-outline-primary" target="_blank" rel="noopener noreferrer"
+									 href="mailto:{{project?.ComputeCenter.Support}}" *ngIf="this.supportMails?.length === 1"
+									 style="margin-top:15px;">Contact Support</a>
 
 
-							<div class="dropdown" dropdown style="margin-top:15px;" *ngIf="this.supportMails?.length > 1">
-								<button class="btn btn-outline-primary dropdown-toggle" id="actionDropdownMenu" data-toggle="dropdown"
-												type="button" aria-haspopup="true" aria-expanded="false"
-												dropdownToggle>
-									Contact Support
-								</button>
-								<div class="dropdown-menu" aria-labelledby="dropdownMenu" role="menu"
-										 *dropdownMenu id="dropdownMenu">
-									<a *ngFor="let mail of supportMails" class="dropdown-item btn btn-outline-primary"
-										 href="mailto:{{mail}}" target="_blank" rel="noopener noreferrer">Contact {{mail}}</a>
+								<div class="dropdown" dropdown style="margin-top:15px;" *ngIf="this.supportMails?.length > 1">
+									<button class="btn btn-outline-primary dropdown-toggle" id="actionDropdownMenu" data-toggle="dropdown"
+													type="button" aria-haspopup="true" aria-expanded="false"
+													dropdownToggle>
+										Contact Support
+									</button>
+									<div class="dropdown-menu" aria-labelledby="dropdownMenu" role="menu"
+											 *dropdownMenu id="dropdownMenu">
+										<a *ngFor="let mail of supportMails" class="dropdown-item btn btn-outline-primary"
+											 href="mailto:{{mail}}" target="_blank" rel="noopener noreferrer">Contact {{mail}}</a>
+									</div>
 								</div>
+								<a class="btn btn-outline-primary" target="_blank" rel="noopener noreferrer"
+									 href="{{STATUS_LINK}}" style="margin-top:15px;">Facility Status</a>
 							</div>
-							<a class="btn btn-outline-primary" target="_blank" rel="noopener noreferrer"
-								 href="{{STATUS_LINK}}" style="margin-top:15px;">Facility Status</a>
-					</div>
 						</div>
 					</div>
 					<div class="row" *ngIf="project_application?.credits_allowed">
@@ -580,7 +581,8 @@
 							<tbody>
 							<tr *ngFor="let member of project_members" [ngStyle]="{'color':isPi(member)}">
 								<td *ngIf="isAdmin || is_vo_admin">
-									<input *ngIf="userinfo?.MemberId.toString() !== member.memberId.toString()" type="checkbox" id="{{member.userId}}"
+									<input *ngIf="userinfo?.MemberId.toString() !== member.memberId.toString()" type="checkbox"
+												 id="{{member.userId}}"
 												 name="member.userId"
 												 [checked]="isMemberChecked(member.memberId)" (change)="checkUnCheckMember(member.memberId);">
 								</td>
@@ -596,12 +598,14 @@
                                                " class="btn btn-primary" type="button" style="margin: 2px">
 											<i class="fa fa-plus-circle"></i>&nbsp; Set Admin status
 										</button>
-										<button *ngIf="member.IsPi && userinfo?.MemberId.toString() !== member.memberId.toString()" (click)="removeAdmin( project?.Id,member.userId,member.userName);
+										<button *ngIf="member.IsPi && userinfo?.MemberId.toString() !== member.memberId.toString()"
+														(click)="removeAdmin( project?.Id,member.userId,member.userName);
                                                 notificationModal.show();
                                                " class="btn btn-primary" type="button" style="margin: 2px">
 											<i class="fa fa-minus-circle"></i>&nbsp; Remove Admin status
 										</button>
-										<button [id]="'remove_member_' + member.userName" *ngIf="userinfo?.MemberId.toString() !== member.memberId.toString()"
+										<button [id]="'remove_member_' + member.userName"
+														*ngIf="userinfo?.MemberId.toString() !== member.memberId.toString()"
 														(click)="removeMember(project?.Id,member.memberId,member.userName);
                                                 notificationModal.show();
                                                " class="btn btn-danger" type="button" style="margin: 2px">
@@ -849,11 +853,11 @@
 					All used resources will be scheduled for deletion and then irreversibly terminated!
 
 				</div>
-				<div class="alert  form-check"
+				<div class="alert "
 						 [ngClass]="{'alert-danger':!terminate_confirmation_given,'alert-success':terminate_confirmation_given}"
 				>
+					<div class=" form-check">
 
-					<label class="form-check-label">
 						<input class="form-check-input"
 									 name="terminate_confirmation_given"
 									 type="checkbox"
@@ -861,9 +865,10 @@
 									 [checked]="terminate_confirmation_given"
 									 [(ngModel)]="terminate_confirmation_given"
 
-						>
+						> <label class="form-check-label">
+
 						I hereby confirm that the project shall be terminated.
-					</label>
+					</label></div>
 				</div>
 
 
