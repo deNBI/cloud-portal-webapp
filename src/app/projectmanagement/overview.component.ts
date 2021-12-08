@@ -37,6 +37,7 @@ import { ModificationRequestComponent } from './modals/modification-request/modi
 import { LifetimeRequestComponent } from './modals/lifetime-request/lifetime-request.component';
 import { DoiComponent } from './modals/doi/doi.component';
 import { CreditsRequestComponent } from './modals/credits-request/credits-request.component';
+import application from "@angular-devkit/build-angular/src/babel/presets/application";
 
 /**
  * Projectoverview component.
@@ -559,6 +560,17 @@ private flavorService: FlavorService,
 		this.applicationsService.toggleVisibility(this.project_application).subscribe((application: Application): void => {
 			this.project_application.memberNamesVisible = application.memberNamesVisible;
 			this.toggleLocked = false;
+		});
+	}
+
+	toggleStartingOfMachiens(): void {
+		this.toggleLocked = true;
+		this.applicationsService.toggleStartingMachines(this.project_application).subscribe((application: Application): void => {
+			this.project_application.prevent_machines_starting = application.prevent_machines_starting;
+			this.toggleLocked = false;
+		}, () => {
+			this.toggleLocked = false;
+			// check how to catch this part
 		});
 	}
 

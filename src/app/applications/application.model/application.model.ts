@@ -66,6 +66,7 @@ export class Application {
 	totalCreditsExtensionCredits: number = 0;
 	totalLifetimeExtensionCredits: number = 0;
 	memberNamesVisible: boolean;
+	prevent_machines_starting: boolean;
 
 	constructor(aj?: Partial<Application>) {
 		this.dissemination = new ApplicationDissemination(null);

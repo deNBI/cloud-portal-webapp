@@ -550,6 +550,14 @@
 							<span *ngIf="!project_application?.memberNamesVisible"> Show </span>
 							Member Names
 						</button>
+						<button type="button" style="margin-bottom:5px;"
+							(click)="toggleStartingOfMachines();"
+							[disabled]="toggleLocked"
+										class="btn btn-outline-primary"><i class="fa fa-users" aria-hidden="true"></i>
+							<span *ngIf="project_application?.prevent_machines_starting"> Allow </span>
+							<span *ngIf="!project_application?.prevent_machines_starting"> Prevent </span>
+							starting of machines
+						</button>
 
 						<button (click)="removeCheckedMembers(project_application?.project_application_perun_id)" type="button"
 										style="margin-bottom:5px;" [disabled]="checked_member_list.length <= 0 || remove_members_clicked"
