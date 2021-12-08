@@ -1089,7 +1089,6 @@ private flavorService: FlavorService,
 			this.updateNotificationModal(
 				'Denied',
 				`You cannot leave projects as PI.`,
-				// `You cannot leave projects while having the admin status.`,
 				true,
 				'danger');
 		}
@@ -1098,7 +1097,6 @@ private flavorService: FlavorService,
 			this.updateNotificationModal(
 				'Denied',
 				`You cannot leave projects as admin.`,
-				// `You cannot leave projects while having the admin status.`,
 				true,
 				'danger');
 		}
