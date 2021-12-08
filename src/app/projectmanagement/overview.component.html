@@ -587,7 +587,7 @@
 								<td>{{ member.userId }}</td>
 								<td>{{ member.memberId }}</td>
 								<td *ngIf="isAdmin || is_vo_admin || project_application?.memberNamesVisible">{{ member.userName }}</td>
-								<td *ngIf="this.project.UserIsPi || this.project.UserIsAdmin|| is_vo_admin">
+								<td *ngIf="this.project.UserIsPi || this.project.UserIsAdmin || is_vo_admin">
 									<div class="btn-group" role="group">
 										<button *ngIf="!member.IsPi" (click)="promoteAdmin( project?.Id,member.userId,member.userName);
                                                 notificationModal.show();
@@ -725,30 +725,15 @@
            || (project_application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)
            || (project_application | hasstatusinlist:Application_States.MODIFICATION_DECLINED) )">
 			<div class="card">
-<!--				<div class="card-header">-->
-<!--					<i class="fas fa-sign-out-alt"></i> Leave Project {{project?.Name }}-->
-<!--				</div>-->
-
 				<div class="row" style="margin-top:10px; margin-bottom: 10px;">
 					<button type="button"
 									class="btn btn-danger col-6"
 									style="margin:auto;"
-									(click)="leaveProject(project?.Id, userinfo?.MemberId ,project?.Name);	notificationModal.show();">
+									(click)="leaveProject(project?.Id, userinfo?.MemberId ,project?.Name); notificationModal.show();">
 						<i class="fas fa-sign-out-alt"></i>
 						Leave Project
 					</button>
 				</div>
-
-<!--				<div class="card-body justify-content-center align-items-center">-->
-<!--					<div>-->
-<!--						<button class="btn btn-danger" type="button" style="margin: 2px"-->
-<!--										(click)="leaveProject(project?.Id, userinfo?.MemberId ,project?.Name);	notificationModal.show();"> &lt;!&ndash; check this &ndash;&gt;-->
-<!--							<i class="fas fa-sign-out-alt"></i>-->
-<!--							Leave Project-->
-<!--						</button>-->
-<!--					</div>-->
-<!--				</div>-->
-
 			</div>
 		</div>
 	</div>
@@ -788,7 +773,7 @@
 					<br>
 					<div class="row">
 						<div class="col-md-12">
-							<strong>Please note</strong> that if you can not find the user, they are not registered for a
+							<strong>Please note</strong> that if you can not find the user, they are not registered for
 							a de.NBI Cloud account. In that case you can invite them by sending them the following link:
 							<br>
 							<br>
