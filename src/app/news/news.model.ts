@@ -11,7 +11,8 @@ export class News {
 
 	constructor(news?: Partial<News>) {
 		Object.assign(this, news);
-		this.preview_image = ApiSettings.getWagtailBase().substring(0, ApiSettings.getWagtailBase().length - 1) + this.preview_image;
-		console.log(this.preview_image);
+		if (this.preview_image) {
+			this.preview_image = ApiSettings.getWagtailBase().substring(0, ApiSettings.getWagtailBase().length - 1) + this.preview_image;
+		}
 	}
 }
