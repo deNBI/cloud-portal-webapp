@@ -8,6 +8,7 @@ import { AlertModule } from 'ngx-bootstrap/alert';
 import { UserInfoRoutingModule } from './userinfo-routing.module';
 import { UserInfoComponent } from './userinfo.component';
 import { PublicKeyModule } from '../shared/shared_modules/public-key/public-key.module';
+import { NewsModule } from '../news/news.module';
 
 /**
  * Userinfo module.
@@ -19,7 +20,7 @@ import { PublicKeyModule } from '../shared/shared_modules/public-key/public-key.
 		TabsModule,
 		CommonModule,
 		FormsModule, ModalModule.forRoot(),
-		AlertModule.forRoot(),
+		AlertModule.forRoot(), NewsModule,
 	],
 
 	declarations: [
