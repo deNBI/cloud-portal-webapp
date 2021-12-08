@@ -63,6 +63,7 @@ export class UncaughtExceptionHandler implements ErrorHandler {
 
 	handleError(error: any): any {
 		console.log('Start ------------------------------------');
+		console.error(error);
 		try {
 			console.log(`Logging error name: ${error.name}`);
 		} catch (TypeError) {
