@@ -12,6 +12,7 @@ export const environment: any = {
 	invitation_group_post: `&targetexisting=https%3A%2F%2Fperun.elixir-czech.cz%2Ffed%2Fregistrar%2F%3Fvo%3D${VO_NAME}%26group%3D`,
 	apiBaseUrl: `https://${API_HOST}/portal/api/v0/`,
 	apiBase: `https://${API_HOST}/portal/`,
+	wagtailBase: `https://${API_HOST}/`,
 	voRegistrationLink: `https://perun.elixir-czech.cz/registrar/?vo=${VO_NAME}`,
 	login: `https://${API_HOST}/portal/api/v0/loggedUser/`,
 	webapp: `https://${API_HOST}/portal/webapp/`,
