@@ -1085,9 +1085,22 @@ private flavorService: FlavorService,
 	 * @param projectname of the project
 	 */
 	public leaveProject(groupid: number, memberid: number, projectname: string): void {
-		if (this.project.UserIsPi) {
-			console.log("PI cannot leave a project")
-			return;
+		if (this.project_application.project_application_pi.elixir_id == this.userinfo.ElixirId) {
+			this.updateNotificationModal(
+				'Denied',
+				`You cannot leave projects as PI.`,
+				// `You cannot leave projects while having the admin status.`,
+				true,
+				'danger');
+		}
+		else if (this.project.UserIsAdmin) {
+			// TODO: Allow admins to leave project if there is at least 1 other admin
+			this.updateNotificationModal(
+				'Denied',
+				`You cannot leave projects as admin.`,
+				// `You cannot leave projects while having the admin status.`,
+				true,
+				'danger');
 		}
 		else {
 			console.log("removing member")
@@ -1096,17 +1109,28 @@ private flavorService: FlavorService,
 					(result: any): void => {
 
 						if (result.status === 200) {
-							this.updateNotificationModal('Success', `You were removed from the project ${projectname}`, true, 'success');
-							// this.getMembersOfTheProject();
+							this.updateNotificationModal(
+								'Success',
+								`You were removed from the project ${projectname}`,
+								true,
+								'success');
 							void this.router.navigate(['/userinfo']);
 							this.fullLayout.getGroupsEnumeration();
 
 						} else {
-							this.updateNotificationModal('Failed', `Failed to leave the project ${projectname}!`, true, 'danger');
+							this.updateNotificationModal(
+								'Failed',
+								`Failed to leave the project ${projectname}!`,
+								true,
+								'danger');
 						}
 					},
 					(): void => {
-						this.updateNotificationModal('Failed', `Failed to leave the project ${projectname}!`, true, 'danger');
+						this.updateNotificationModal(
+							'Failed',
+							`Failed to leave the project ${projectname}!`,
+							true,
+							'danger');
 					},
 				),
 			);
