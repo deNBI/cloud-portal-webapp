@@ -113,6 +113,8 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 		news.motd = this.selectedNewsForm.controls['motd'].value;
 		news.valid_till = this.selectedNewsForm.controls['valid_till'].value;
 		news.facility = this.facilityToPost;
+		news.tags = [];
+		news.tags.push(this.facilityToPost.toString(), 'Facility News');
 		if (document.getElementById(`news_select_${this.facilityToPost}_motd`)['checked']) {
 			this.facilityToSetMOTD = this.facilityToPost;
 		} else {
@@ -165,6 +167,8 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 		news.motd = this.selectedNewsForm.controls['motd'].value;
 		news.valid_till = this.selectedNewsForm.controls['valid_till'].value;
 		news.facility = this.facilityToPost;
+		news.tags = [];
+		news.tags.push(this.facilityToPost.toString(), 'Facility News');
 		if (document.getElementById(`news_select_${this.facilityToPost}_motd`)['checked']) {
 			this.facilityToSetMOTD = this.facilityToPost;
 		} else {
@@ -225,25 +229,11 @@ export class NewsManagerComponent implements OnInit, OnDestroy {
 		this.facilityNews = [];
 		const facility_ids: string[] = this.selectedFacilities.map((facility: [string, number]): string => facility['FacilityId'].toString());
 		this.subscription.add(
-			this.newsService.getFacilityNews(facility_ids.toString()).subscribe((result: Object[]): any => {
-				this.facilityNews = result.map((news: Object): any => this.createFacilityNews(news));
+			this.newsService.getFacilityNews(facility_ids.toString()).subscribe((result: FacilityNews[]): any => {
+				this.facilityNews = result;
 			}),
 		);
 		this.getFacilitiesFromWagtail();
-	}
-
-	createFacilityNews(facilityNews: Object): FacilityNews {
-		const news: FacilityNews = new FacilityNews();
-		news.id = facilityNews['id'];
-		news.title = facilityNews['title'];
-		news.text = facilityNews['text'];
-		news.motd = facilityNews['motd'];
-		news.facility = facilityNews['facility'];
-		news.date = facilityNews['posted_at'];
-		news.valid_till = facilityNews['valid_till'];
-		news.is_current_motd = facilityNews['is_current_motd'];
-
-		return news;
 	}
 
 	/**
