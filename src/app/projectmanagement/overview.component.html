@@ -550,7 +550,8 @@
 							<span *ngIf="!project_application?.memberNamesVisible"> Show </span>
 							Member Names
 						</button>
-						<button type="button" style="margin-bottom:5px;"
+						<button *ngIf="!project_application.project_application_openstack_project"
+							type="button" style="margin-bottom:5px;"
 							(click)="toggleStartingOfMachines();"
 							[disabled]="toggleLocked"
 										class="btn btn-outline-primary">
