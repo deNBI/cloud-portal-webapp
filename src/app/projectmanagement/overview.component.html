@@ -596,12 +596,10 @@
 												 name="member.userId"
 												 [checked]="isMemberChecked(member.memberId)" (change)="checkUnCheckMember(member.memberId);">
 								</td>
-								<td>
-
-									{{ member.userId }}</td>
+								<td>{{ member.userId }}</td>
 								<td>{{ member.memberId }}</td>
 								<td *ngIf="isAdmin || is_vo_admin || project_application?.memberNamesVisible">{{ member.userName }}</td>
-								<td *ngIf="this.project.UserIsPi || this.project.UserIsAdmin|| is_vo_admin">
+								<td *ngIf="this.project.UserIsPi || this.project.UserIsAdmin || is_vo_admin">
 									<div class="btn-group" role="group">
 										<button *ngIf="!member.IsPi" (click)="promoteAdmin( project?.Id,member.userId,member.userName);
                                                 notificationModal.show();
@@ -627,14 +625,12 @@
 								</td>
 							</tr>
 
-
 							</tbody>
 						</table>
 					</div>
 				</div>
 			</div>
 		</div>
-
 
 	</div>
 	<div class="row">
@@ -737,6 +733,24 @@
 			</div>
 		</div>
 	</div>
+	<div class="row">
+		<div class="col"
+				 *ngIf="((project_application | hasstatusinlist:Application_States.APPROVED)
+           || (project_application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)
+           || (project_application | hasstatusinlist:Application_States.MODIFICATION_DECLINED) )">
+			<div class="card">
+				<div class="row" style="margin-top:10px; margin-bottom: 10px;">
+					<button type="button"
+									class="btn btn-danger col-6"
+									style="margin:auto;"
+									(click)="leaveProject(project?.Id, userinfo?.MemberId ,project?.Name); notificationModal.show();">
+						<i class="fas fa-sign-out-alt"></i>
+						Leave Project
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 
 
@@ -773,7 +787,7 @@
 					<br>
 					<div class="row">
 						<div class="col-md-12">
-							<strong>Please note</strong> that if you can not find the user, they are not registered for a
+							<strong>Please note</strong> that if you can not find the user, they are not registered for
 							a de.NBI Cloud account. In that case you can invite them by sending them the following link:
 							<br>
 							<br>
@@ -948,7 +962,7 @@
 
 				<p *ngIf="application_action_success && application_action_done"
 					 class="alert alert-success mr-auto">
-					<strong>Success:</strong> Succesfully {{application_action}} the application of
+					<strong>Success:</strong> Successfully {{application_action}} the application of
 					{{application_member_name}}.
 				</p>
 				<p *ngIf="!application_action_success && application_action_done && !application_action_error_message"

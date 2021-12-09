@@ -9,7 +9,6 @@ import { AutocompleteComponent } from 'angular-ng-autocomplete';
 import { DOCUMENT } from '@angular/common';
 import { Chart } from 'chart.js';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import application from '@angular-devkit/build-angular/src/babel/presets/application';
 import { environment } from '../../environments/environment';
 import { ProjectMemberApplication } from './project_member_application';
 import { ComputecenterComponent } from './computecenter.component';
@@ -1086,6 +1085,68 @@ private flavorService: FlavorService,
 				},
 			),
 		);
+	}
+
+	/**
+	 * Leave a project
+	 *
+	 * @param groupid  of the group
+	 * @param memberid of the member
+	 * @param projectname of the project
+	 */
+	public leaveProject(groupid: number, memberid: number, projectname: string): void {
+		if (this.project_application.project_application_pi.elixir_id === this.userinfo.ElixirId) {
+			this.updateNotificationModal(
+				'Denied',
+				'You cannot leave projects as PI.',
+				true,
+				'danger',
+			);
+		} else if (this.project.UserIsAdmin) {
+			// TODO: Allow admins to leave project if there is at least 1 other admin
+			this.updateNotificationModal(
+				'Denied',
+				'You cannot leave projects as admin.',
+				true,
+				'danger',
+			);
+		} else {
+			console.log('removing member');
+			this.subscription.add(
+				this.groupService.leaveGroup(groupid, memberid, this.project.ComputeCenter.FacilityId).subscribe(
+					(result: any): void => {
+
+						if (result.status === 200) {
+							this.updateNotificationModal(
+								'Success',
+								`You were removed from the project ${projectname}`,
+								true,
+								'success',
+							);
+							void this.router.navigate(['/userinfo']);
+							this.fullLayout.getGroupsEnumeration();
+
+						} else {
+							this.updateNotificationModal(
+								'Failed',
+								`Failed to leave the project ${projectname}!`,
+								true,
+								'danger',
+							);
+						}
+					},
+					(): void => {
+						this.updateNotificationModal(
+							'Failed',
+							`Failed to leave the project ${projectname}!`,
+							true,
+							'danger',
+						);
+					},
+				),
+			);
+		}
+
 	}
 
 	/**
