@@ -522,7 +522,7 @@
 
 			<div class="card" id="projectMemberDiv">
 				<div class="card-header">
-					<i class="fa fa-align-justify"></i>Members of the Project {{ project?.Name }}
+					<i class="fa fa-align-justify"></i> Settings/Members of the Project {{ project?.Name }}
 				</div>
 
 				<div class="card-body">
@@ -568,6 +568,29 @@
 						</button>
 
 					</div>
+					<div class="col-12">
+						<ul class="list-group list-group-flush">
+							<li class="list-group-item">
+								<strong>Project settings</strong>
+							</li>
+							<li class="list-group-item">
+								Project member names visible for non-administrators
+								<span class="badge" [ngClass]="project_application.memberNamesVisible ? 'badge-success' : 'badge-danger'">
+									{{project_application.memberNamesVisible ? "Enabled" : "Disabled" }}
+								</span>
+
+							</li>
+							<li *ngIf="!project_application.project_application_openstack_project"
+									class="list-group-item">
+								Non-administrators are allowed to start machines
+								<span class="badge" [ngClass]="!project_application.prevent_machines_starting ? 'badge-success' : 'badge-danger'">
+									{{!project_application.prevent_machines_starting ? "Enabled" : "Disabled" }}
+								</span>
+							</li>
+						</ul>
+
+					</div>
+
 					<div class="col-12 alert alert-primary" *ngIf="!isAdmin && !is_vo_admin">
             <span><strong>Notice: </strong>Only project administrators are able to remove or add project members and
             change the status of members.</span>
