@@ -53,7 +53,7 @@ export class FormularPage {
 		return await Util.waitForTextPresenceInElementById(this.NOTIFICATION_MESSAGE, this.APPLICATION_SUBMITTED);
 	}
 
-	static async fillApplicationFormular(name: string, is_pi?: boolean): Promise<any> {
+	static async fillApplicationFormular(name: string, is_pi?: boolean, openstack?: boolean): Promise<any> {
 
 		// fill  Formular
 		Util.logInfo('Fill form');
@@ -61,7 +61,9 @@ export class FormularPage {
 		await Util.sendTextToElementByName('project_application_shortname', name);
 		await Util.sendTextToElementByName('project_application_description', 'ProtractorTest Description');
 		await Util.sendTextToElementByName('project_application_lifetime', '4');
-		await Util.clickElementById('id_project_application_workshop');
+		if (!openstack) {
+			await Util.clickElementById('id_project_application_workshop');
+		}
 		await Util.sendTextToElementByName('project_application_institute', 'Proctractor Institute');
 		await Util.sendTextToElementByName('project_application_workgroup', 'Proctractor Workgroup');
 		await Util.clickElementById('id_project_application_bmbf_switch');

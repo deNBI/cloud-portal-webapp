@@ -18,7 +18,7 @@ describe('Cloud Application Test', (): void => {
 	});
 
 	it('should fill cloud application form', async (): Promise<any> => {
-		await FormularPage.fillApplicationFormular(Util.OPENSTACK_APPLICATION_NAME, true);
+		await FormularPage.fillApplicationFormular(Util.OPENSTACK_APPLICATION_NAME, true, true);
 	});
 
 	it('should submit cloud application ', async (): Promise<any> => {
