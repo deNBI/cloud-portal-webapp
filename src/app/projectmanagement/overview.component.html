@@ -180,7 +180,7 @@
            || (project_application | hasstatusinlist:Application_States.MODIFICATION_DECLINED) )">
 									<button type="button"
 													class="btn btn-danger float-right"
-													(click)="leaveProject(project?.Id, userinfo?.MemberId ,project?.Name); notificationModal.show();">
+													(click)="leaveProjectModal.show();">
 										<i class="fas fa-sign-out-alt"></i>
 										Leave Project
 									</button>
@@ -1030,6 +1030,40 @@
 				</button>
 				<button class="btn  btn-danger col-md-4" type="reset"
 								(click)="deleteModal.hide()">Cancel
+				</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div bsModal #leaveProjectModal="bs-modal" class="modal fade" tabindex="-1"
+		 role="dialog" aria-labelledby="Label"
+		 aria-hidden="true"
+		 id="leave_project_modal">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Leave Project</h4>
+				<button type="button" class="close" style="cursor:pointer"
+								(click)="leaveProjectModal.hide()" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+
+				<div class="alert alert-warning" role="alert">
+					Are you sure you want to leave the project?
+				</div>
+
+			</div>
+			<div class="modal-footer">
+				<button class="btn  btn-success col-md-4" id="confirm_leave_project_button"
+								(click)="leaveProject(project?.Id, userinfo?.MemberId ,project?.Name);leaveProjectModal.hide();notificationModal.show()">
+					Yes
+				</button>
+				<button class="btn  btn-danger col-md-4" type="reset"
+								(click)="leaveProjectModal.hide()">
+					Cancel
 				</button>
 			</div>
 		</div><!-- /.modal-content -->
