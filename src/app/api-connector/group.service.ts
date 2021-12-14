@@ -239,8 +239,6 @@ export class GroupService {
 		});
 	}
 
-
-
 	getSimpleVmByUserWhereWorkshopAndAdmin(): Observable<any> {
 		return this.http.get<any>(`${ApiSettings.getApiBaseURL()}projects/simpleVmWorkshops/`, {
 			withCredentials: true,
