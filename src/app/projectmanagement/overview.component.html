@@ -147,7 +147,8 @@
 			<div class="card" id="projectInformationDiv">
 
 				<div class="card-header">
-					<h3>
+					<div class="row">
+					<div class="col"><h3>
 						<a *ngIf="project?.OpenStackProject" href="{{ OPENSTACK_LINK }}" rel="noopener noreferrer"
 							 target="_blank"
 							 style="font-size: 2em"
@@ -172,6 +173,19 @@
 						</a>
 						{{project?.Name}}
 					</h3>
+					</div>
+						<div class="col"
+								 *ngIf="((project_application | hasstatusinlist:Application_States.APPROVED)
+           || (project_application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)
+           || (project_application | hasstatusinlist:Application_States.MODIFICATION_DECLINED) )">
+									<button type="button"
+													class="btn btn-danger float-right"
+													(click)="leaveProject(project?.Id, userinfo?.MemberId ,project?.Name); notificationModal.show();">
+										<i class="fas fa-sign-out-alt"></i>
+										Leave Project
+									</button>
+						</div>
+					</div>
 				</div>
 
 				<div class="card-body" id="project_application_status_overview_further"
@@ -720,24 +734,6 @@
 					</canvas>
 				</div>
 
-			</div>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col"
-				 *ngIf="((project_application | hasstatusinlist:Application_States.APPROVED)
-           || (project_application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)
-           || (project_application | hasstatusinlist:Application_States.MODIFICATION_DECLINED) )">
-			<div class="card">
-				<div class="row" style="margin-top:10px; margin-bottom: 10px;">
-					<button type="button"
-									class="btn btn-danger col-6"
-									style="margin:auto;"
-									(click)="leaveProject(project?.Id, userinfo?.MemberId ,project?.Name); notificationModal.show();">
-						<i class="fas fa-sign-out-alt"></i>
-						Leave Project
-					</button>
-				</div>
 			</div>
 		</div>
 	</div>
