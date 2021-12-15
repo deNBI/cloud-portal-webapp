@@ -1087,20 +1087,11 @@ private flavorService: FlavorService,
 		if (this.project_application.project_application_pi.elixir_id === this.userinfo.ElixirId) {
 			this.updateNotificationModal(
 				'Denied',
-				'You cannot leave projects as PI.',
-				true,
-				'danger',
-			);
-		} else if (this.project.UserIsAdmin) {
-			// TODO: Allow admins to leave project if there is at least 1 other admin
-			this.updateNotificationModal(
-				'Denied',
-				'You cannot leave projects as admin.',
+				'You cannot leave projects as PI. Please contact cloud@denbi.de for further steps.',
 				true,
 				'danger',
 			);
 		} else {
-			console.log('removing member');
 			this.subscription.add(
 				this.groupService.leaveGroup(groupid, memberid, this.project.ComputeCenter.FacilityId).subscribe(
 					(result: any): void => {
