@@ -460,7 +460,7 @@ private flavorService: FlavorService,
 	isAbleToStart(): boolean {
 		if (this.resourceDataLoaded) {
 			if (!this.project?.OpenStackProject) {
-				if (this.vmsInUse < this.maximumVMs) {
+				if ((this.vmsInUse < this.maximumVMs) && (this.isAdmin || !this.project_application.prevent_machines_starting)) {
 					return true;
 				}
 			}
