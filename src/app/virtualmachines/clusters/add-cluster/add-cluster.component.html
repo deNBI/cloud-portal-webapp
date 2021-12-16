@@ -27,7 +27,8 @@
 <div *ngIf=" !isLoaded || (singleProject && !projectDataLoaded )" class="loader"></div>
 <div *ngIf=" isLoaded && userinfo?.PublicKey !=='None' && projects.length === 0">
 	<div class="alert alert-warning" role="alert">
-		You are not a member of any Simple VM project.
+		You are not a member of a SimpleVM project or the administrators of the projects you are a member of have prohibited non-administrators from starting machines.
+		You can see if this is the case for your projects on the overview page of the respective project.
 	</div>
 </div>
 <div *ngIf=" isLoaded && userinfo?.PublicKey !=='None' && projects.length > 0
