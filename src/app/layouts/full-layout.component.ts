@@ -14,7 +14,7 @@ import { environment } from '../../environments/environment';
 import { is_vo } from '../shared/globalvar';
 import { VirtualmachineService } from '../api-connector/virtualmachine.service';
 import { Application_States } from '../shared/shared_modules/baseClass/abstract-base-class';
-import { WIKI, WIKI_FAQ } from '../../links/links';
+import { WIKI, WIKI_FAQ, STATUS_LINK } from '../../links/links';
 
 /**
  * FullLayout component.
@@ -61,6 +61,7 @@ export class FullLayoutComponent extends ApplicationBaseClassComponent implement
 
 	WIKI: string = WIKI;
 	WIKI_FAQ: string = WIKI_FAQ;
+	STATUS_LINK: string = STATUS_LINK;
 
 	constructor(
 private voService: VoService,

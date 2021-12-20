@@ -83,10 +83,10 @@ export class CreditsRequestComponent implements OnInit, OnDestroy {
 	initExampleFlavors(): void {
 		const standardFlavors: Flavor[] = this.flavorList
 			// eslint-disable-next-line @typescript-eslint/no-unused-vars
-			.filter((fl: Flavor, nu: number, arr: Flavor[]): boolean => fl.type.long_name === 'Standard Flavours');
+			.filter((fl: Flavor, nu: number, arr: Flavor[]): boolean => fl.type.long_name === 'Standard Flavors');
 		const highMemFlavors: Flavor[] = this.flavorList
 			// eslint-disable-next-line @typescript-eslint/no-unused-vars
-			.filter((fl: Flavor, nu: number, arr: Flavor[]): boolean => fl.type.long_name === 'High Memory Flavours');
+			.filter((fl: Flavor, nu: number, arr: Flavor[]): boolean => fl.type.long_name === 'High Memory Flavors');
 		standardFlavors.sort((fl1: Flavor, fl2: Flavor): number => fl1.vcpus - fl2.vcpus);
 		highMemFlavors.sort((fl1: Flavor, fl2: Flavor): number => fl1.vcpus - fl2.vcpus);
 		if (standardFlavors.length !== 0) {

@@ -1077,6 +1077,59 @@ private flavorService: FlavorService,
 	}
 
 	/**
+	 * Leave a project
+	 *
+	 * @param groupid  of the group
+	 * @param memberid of the member
+	 * @param projectname of the project
+	 */
+	public leaveProject(groupid: number, memberid: number, projectname: string): void {
+		if (this.project_application.project_application_pi.elixir_id === this.userinfo.ElixirId) {
+			this.updateNotificationModal(
+				'Denied',
+				'You cannot leave projects as PI. Please contact cloud@denbi.de for further steps.',
+				true,
+				'danger',
+			);
+		} else {
+			this.subscription.add(
+				this.groupService.leaveGroup(groupid, memberid, this.project.ComputeCenter.FacilityId).subscribe(
+					(result: any): void => {
+
+						if (result.status === 200) {
+							this.updateNotificationModal(
+								'Success',
+								`You were removed from the project ${projectname}`,
+								true,
+								'success',
+							);
+							void this.router.navigate(['/userinfo']);
+							this.fullLayout.getGroupsEnumeration();
+
+						} else {
+							this.updateNotificationModal(
+								'Failed',
+								`Failed to leave the project ${projectname}!`,
+								true,
+								'danger',
+							);
+						}
+					},
+					(): void => {
+						this.updateNotificationModal(
+							'Failed',
+							`Failed to leave the project ${projectname}!`,
+							true,
+							'danger',
+						);
+					},
+				),
+			);
+		}
+
+	}
+
+	/**
 	 * Delete an application.
 	 *
 	 * @param application_id

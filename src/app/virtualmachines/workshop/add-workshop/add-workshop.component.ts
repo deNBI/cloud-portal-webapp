@@ -18,7 +18,9 @@ import { FlavorService } from '../../../api-connector/flavor.service';
 import { UserService } from '../../../api-connector/user.service';
 import { ResEnvComponent } from '../../conda/res-env.component';
 import { ProjectMember } from '../../../projectmanagement/project_member.model';
-import { CLOUD_PORTAL_SUPPORT_MAIL, STATUS_LINK, WIKI_WORKSHOPS } from '../../../../links/links';
+import {
+	CLOUD_PORTAL_SUPPORT_MAIL, STATUS_LINK, WIKI_WORKSHOPS, WIKI_EPHEMERAL_LINK,
+} from '../../../../links/links';
 import { VirtualmachineService } from '../../../api-connector/virtualmachine.service';
 import { WorkshopService } from '../../../api-connector/workshop.service';
 
@@ -35,6 +37,7 @@ export class AddWorkshopComponent implements OnInit, OnDestroy, DoCheck {
 
 	WIKI_WORKSHOPS: string = WIKI_WORKSHOPS;
 	STATUS_LINK: string = STATUS_LINK;
+	WIKI_EPHEMERAL_LINK: string = WIKI_EPHEMERAL_LINK;
 
 	/**
 	 * The selected workshop.
@@ -96,7 +99,7 @@ export class AddWorkshopComponent implements OnInit, OnDestroy, DoCheck {
 	image_loaded: boolean = false;
 	data_loaded: boolean = false;
 	selected_project_ressources: ApplicationRessourceUsage;
-	selected_flavor_type: string = 'Standard Flavours';
+	selected_flavor_type: string = 'Standard Flavors';
 	flavor_types: { [name: string]: Flavor[] } = {};
 	workshop_data_loaded: boolean = false;
 	members_to_add: ProjectMember[] = [];
@@ -455,7 +458,7 @@ private group_service: GroupService,
 		this.workshop_data_loaded = false;
 		this.selected_image = undefined;
 		this.selected_flavor = undefined;
-		this.selected_flavor_type = 'Standard Flavours';
+		this.selected_flavor_type = 'Standard Flavors';
 		this.members_to_add = [];
 		this.vm_responsibility = false;
 		this.started_machine = false;
