@@ -1,19 +1,19 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import * as moment from 'moment';
-import { Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { Project } from '../projectmanagement/project.model';
-import { ProjectMember } from '../projectmanagement/project_member.model';
-import { environment } from '../../environments/environment';
-import { ApiSettings } from '../api-connector/api-settings.service';
-import { GroupService } from '../api-connector/group.service';
-import { UserService } from '../api-connector/user.service';
-import { FacilityService } from '../api-connector/facility.service';
-import { NewsService } from '../api-connector/news.service';
-import { ComputecenterComponent } from '../projectmanagement/computecenter.component';
-import { FilterBaseClass } from '../shared/shared_modules/baseClass/filter-base-class';
-import { IResponseTemplate } from '../api-connector/response-template';
-import { WordPressTag } from './newsmanagement/wp-tags';
+import {Subject} from 'rxjs';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
+import {Project} from '../projectmanagement/project.model';
+import {ProjectMember} from '../projectmanagement/project_member.model';
+import {environment} from '../../environments/environment';
+import {ApiSettings} from '../api-connector/api-settings.service';
+import {GroupService} from '../api-connector/group.service';
+import {UserService} from '../api-connector/user.service';
+import {FacilityService} from '../api-connector/facility.service';
+import {NewsService} from '../api-connector/news.service';
+import {ComputecenterComponent} from '../projectmanagement/computecenter.component';
+import {FilterBaseClass} from '../shared/shared_modules/baseClass/filter-base-class';
+import {IResponseTemplate} from '../api-connector/response-template';
+import {WordPressTag} from './newsmanagement/wp-tags';
 
 /**
  * Facility Project overview component.
@@ -72,9 +72,12 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 	private availableNewsTags: WordPressTag[] = [];
 	private selectedTags: string[] = [];
 	projects_filtered: Project[] = [];
+	selectedFacilityComputeCenter: ComputecenterComponent;
+	facilitySupportMails: string = "";
+	supportMailEditing: boolean = false;
 
 	constructor(
-private groupService: GroupService,
+							private groupService: GroupService,
 							private facilityService: FacilityService,
 							private newsService: NewsService,
 	) {
@@ -481,5 +484,52 @@ private groupService: GroupService,
 		this.news_tags = '';
 		this.selectedMember = [];
 	}
+
+	getFacilitySupportMails(): void {
+		this.facilityService.getComputeCenters().subscribe((result: any): void => {
+			for (const cc of result) {
+				if (cc['compute_center_facility_id'] === this.selectedFacility['FacilityId']) {
+					this.selectedFacilityComputeCenter = new ComputecenterComponent(
+						cc['compute_center_facility_id'],
+						cc['compute_center_name'],
+						cc['compute_center_login'],
+						cc['compute_center_support_mail'],
+					);
+					this.facilitySupportMails = cc['compute_center_support_mail'];
+					//TODO: Delete if (this.facilitySupportMails === ""...
+					if (this.facilitySupportMails === "" || this.facilitySupportMails === null) {
+						this.facilitySupportMails = "example@mail1.com, example@mail2.com"
+					}
+				}
+			}
+		});
+	}
+
+	setFacilitySupportMails(supportMails: string): void {
+		let facilityId = this.selectedFacility['FacilityId']
+		this.facilityService.setSupportMails(facilityId, supportMails).subscribe((result: any): void => {
+			console.log("Result:")
+			console.log(result)
+			if (result.ok) {
+				this.updateNotificationModal(
+					"Facility support mails changed",
+					`You successfully changed the facility support mails.`,
+					true,
+					'success')
+			} else {
+				this.updateNotificationModal(
+					"Couldn't change facility support mails",
+					`An error occurred while trying to change the facility support mails.`,
+					true,
+					'danger')
+			}
+		});
+	}
+
+	toggleSupportMailEditing(): void {
+		this.supportMailEditing = !this.supportMailEditing;
+	}
+
+
 
 }
