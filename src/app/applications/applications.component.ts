@@ -1,6 +1,7 @@
+/* eslint-disable no-lonely-if */
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { Subscription } from 'rxjs';
+import {forkJoin, Subscription} from 'rxjs';
 import { HttpStatusCode } from '@angular/common/http';
 import { ApplicationsService } from '../api-connector/applications.service';
 import { ApiSettings } from '../api-connector/api-settings.service';
@@ -677,6 +678,15 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 					}
 				},
 			);
+		} else {
+			if (this.computeCenters.length > 0) {
+
+				console.log("loop");
+				// how to loop over subscriptions and wait for result to break when application was approved successfully?
+			} else {
+				this.showNotificationModal('Failed', 'Project could not be created!', 'danger');
+				this.approveLocked = false;
+			}
 		}
 	}
 
