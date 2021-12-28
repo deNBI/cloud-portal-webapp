@@ -34,6 +34,7 @@ import { BlockedImageTagResenv } from '../facility_manager/image-tag';
 import { ApplicationRessourceUsage } from '../applications/application-ressource-usage/application-ressource-usage';
 import { ProjectMember } from '../projectmanagement/project_member.model';
 import { ApplicationsService } from '../api-connector/applications.service';
+import {InAllowedPipe} from "../pipe-module/pipes/in-allowed.pipe";
 
 /**
  * Start virtualmachine component.
@@ -195,6 +196,13 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 	 * @type {any[]}
 	 */
 	projects: [string, number][] = [];
+
+	/**
+	 * All projects in which the user is allowed to start machines.
+	 *
+	 * @type {any[]}
+	 */
+	allowedProjects: [string, number][] = [];
 
 	/**
 	 * If all project data is loaded.
@@ -556,6 +564,11 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 	 * If connected geht vm,volumes etc.
 	 */
 	getSelectedProjectClient(): void {
+		console.log(this.selectedProject);
+		console.log(this.allowedProjects);
+		console.log(this.allowedProjects.indexOf(this.selectedProject) >= 0);
+		const pipe = new InAllowedPipe();
+		console.log(pipe.transform(this.allowedProjects, this.selectedProject));
 		this.subscription.unsubscribe();
 		this.subscription = new Subscription();
 		this.subscription.add(
@@ -623,13 +636,20 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 	 */
 	initializeData(): void {
 		this.subscription.add(
-			forkJoin([this.groupService.getSimpleVmAllowedByUser(), this.userService.getUserInfo()]).subscribe((result: any): void => {
-				this.userinfo = result[1];
+			forkJoin([
+				this.groupService.getSimpleVmAllowedByUser(),
+				this.groupService.getSimpleVmByUser(),
+				this.userService.getUserInfo(),
+			]).subscribe((result: any): void => {
+				this.userinfo = result[2];
 				this.validatePublicKey();
-				const membergroups: any = result[0];
-				for (const project of membergroups) {
+				const allowedMemberGroups: any = result[0];
+				const memberGroups: any = result[1];
+				for (const project of memberGroups) {
 					this.projects.push(project);
-
+				}
+				for (const project of allowedMemberGroups) {
+					this.allowedProjects.push(project);
 				}
 				if (this.projects.length === 1) {
 					this.resetChecks();
