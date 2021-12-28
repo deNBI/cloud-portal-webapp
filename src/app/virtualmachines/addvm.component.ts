@@ -564,11 +564,6 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 	 * If connected geht vm,volumes etc.
 	 */
 	getSelectedProjectClient(): void {
-		console.log(this.selectedProject);
-		console.log(this.allowedProjects);
-		console.log(this.allowedProjects.indexOf(this.selectedProject) >= 0);
-		const pipe = new InAllowedPipe();
-		console.log(pipe.transform(this.allowedProjects, this.selectedProject));
 		this.subscription.unsubscribe();
 		this.subscription = new Subscription();
 		this.subscription.add(
