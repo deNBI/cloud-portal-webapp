@@ -1,7 +1,7 @@
 /* eslint-disable no-lonely-if */
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import {forkJoin, Subscription} from 'rxjs';
+import { forkJoin, Subscription } from 'rxjs';
 import { HttpStatusCode } from '@angular/common/http';
 import { ApplicationsService } from '../api-connector/applications.service';
 import { ApiSettings } from '../api-connector/api-settings.service';
@@ -691,40 +691,38 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 
 	roundRobinCreateSimpleVmProjectGroup(application: Application, index: number): void {
 		const application_id: string = application.project_application_id as string;
-		this.groupservice.createGroupByApplication(application_id, this.computeCenters[index].FacilityId).subscribe(
-			(res: any): void => {
-				if (!res['client_available'] && !res['created']) {
-					index += 1;
-					if (index >= this.computeCenters.length) {
-						this.showNotificationModal(
-							'Failed',
-							'Project could not be created as no clients with necessary resources are available.',
-							'danger',
-						);
-						this.switchApproveLocked(false);
-					} else {
-						this.roundRobinCreateSimpleVmProjectGroup(application, index);
-					}
-				} else {
-					this.all_applications.splice(this.all_applications.indexOf(application), 1);
-					this.numberOfProjectApplications -= 1;
+		this.groupservice.createGroupByApplication(application_id, this.computeCenters[index].FacilityId).subscribe((res: any): void => {
+			if (!res['client_available'] && !res['created']) {
+				index += 1;
+				if (index >= this.computeCenters.length) {
 					this.showNotificationModal(
-						'Success',
-						`The project was created in ${this.computeCenters[index].Name} !`,
-						'success',
+						'Failed',
+						'Project could not be created as no clients with necessary resources are available.',
+						'danger',
 					);
 					this.switchApproveLocked(false);
-				}
-			}, (error: object): void => {
-				console.log(error);
-				if ('error' in error && 'error' in error['error'] && error['error']['error'] === 'locked') {
-					this.showNotificationModal('Failed', 'Project is locked and could not be created!', 'danger');
 				} else {
-					this.showNotificationModal('Failed', 'Project could not be created!', 'danger');
+					this.roundRobinCreateSimpleVmProjectGroup(application, index);
 				}
-			});
+			} else {
+				this.all_applications.splice(this.all_applications.indexOf(application), 1);
+				this.numberOfProjectApplications -= 1;
+				this.showNotificationModal(
+					'Success',
+					`The project was created in ${this.computeCenters[index].Name} !`,
+					'success',
+				);
+				this.switchApproveLocked(false);
+			}
+		}, (error: object): void => {
+			console.log(error);
+			if ('error' in error && 'error' in error['error'] && error['error']['error'] === 'locked') {
+				this.showNotificationModal('Failed', 'Project is locked and could not be created!', 'danger');
+			} else {
+				this.showNotificationModal('Failed', 'Project could not be created!', 'danger');
+			}
+		});
 	}
-
 
 	resetApplicationPI(application: Application): void {
 		this.applicationsService.resetPIValidation(application).subscribe((app: Application) => {
