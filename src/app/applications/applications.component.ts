@@ -1,7 +1,7 @@
 /* eslint-disable no-lonely-if */
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { forkJoin, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { HttpStatusCode } from '@angular/common/http';
 import { ApplicationsService } from '../api-connector/applications.service';
 import { ApiSettings } from '../api-connector/api-settings.service';
