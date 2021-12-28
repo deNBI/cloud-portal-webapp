@@ -681,14 +681,50 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 		} else {
 			if (this.computeCenters.length > 0) {
 
-				console.log("loop");
-				// how to loop over subscriptions and wait for result to break when application was approved successfully?
+				this.roundRobinCreateSimpleVmProjectGroup(app, 0);
 			} else {
 				this.showNotificationModal('Failed', 'Project could not be created!', 'danger');
 				this.approveLocked = false;
 			}
 		}
 	}
+
+	roundRobinCreateSimpleVmProjectGroup(application: Application, index: number): void {
+		const application_id: string = application.project_application_id as string;
+		this.groupservice.createGroupByApplication(application_id, this.computeCenters[index].FacilityId).subscribe(
+			(res: any): void => {
+				if (!res['client_available'] && !res['created']) {
+					index += 1;
+					if (index >= this.computeCenters.length) {
+						this.showNotificationModal(
+							'Failed',
+							'Project could not be created as no clients with necessary resources are available.',
+							'danger',
+						);
+						this.switchApproveLocked(false);
+					} else {
+						this.roundRobinCreateSimpleVmProjectGroup(application, index);
+					}
+				} else {
+					this.all_applications.splice(this.all_applications.indexOf(application), 1);
+					this.numberOfProjectApplications -= 1;
+					this.showNotificationModal(
+						'Success',
+						`The project was created in ${this.computeCenters[index].Name} !`,
+						'success',
+					);
+					this.switchApproveLocked(false);
+				}
+			}, (error: object): void => {
+				console.log(error);
+				if ('error' in error && 'error' in error['error'] && error['error']['error'] === 'locked') {
+					this.showNotificationModal('Failed', 'Project is locked and could not be created!', 'danger');
+				} else {
+					this.showNotificationModal('Failed', 'Project could not be created!', 'danger');
+				}
+			});
+	}
+
 
 	resetApplicationPI(application: Application): void {
 		this.applicationsService.resetPIValidation(application).subscribe((app: Application) => {
