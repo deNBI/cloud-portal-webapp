@@ -34,7 +34,6 @@ import { BlockedImageTagResenv } from '../facility_manager/image-tag';
 import { ApplicationRessourceUsage } from '../applications/application-ressource-usage/application-ressource-usage';
 import { ProjectMember } from '../projectmanagement/project_member.model';
 import { ApplicationsService } from '../api-connector/applications.service';
-import {InAllowedPipe} from "../pipe-module/pipes/in-allowed.pipe";
 
 /**
  * Start virtualmachine component.
