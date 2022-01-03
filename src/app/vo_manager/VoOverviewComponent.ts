@@ -84,6 +84,9 @@ private fullLayout: FullLayoutComponent,
 	}
 
 	sendEmail(subject: string, message: string, reply?: string): void {
+		if (reply) {
+			reply = reply.trim();
+		}
 		switch (this.emailType) {
 			case 0: {
 				this.sendMailToVo(subject, message, this.selectedFacility.toString(), this.selectedProjectType, reply);
