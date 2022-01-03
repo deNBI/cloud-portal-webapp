@@ -379,7 +379,7 @@
                 <input id="reply_to" name="emailReply" placeholder=""
                        class="form-control"
                        type="text" [(ngModel)]="emailReply" #emailRep="ngModel"
-                       pattern="(?!(^[.-].*|[^@]*[.-]@|.*\.{2,}.*)|^.{254}.)([a-zA-Z0-9!#$%&'*+\/=?^_`{|}~.-]+@)(?!-.*|.*-\.)([a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,15}"
+                       pattern="([ ]*)(?!(^[.-].*|[^@]*[.-]@|.*\.{2,}.*)|^.{254}.)([a-zA-Z0-9!#$%&'*+\/=?^_`{|}~.-]+@)(?!-.*|.*-\.)([a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,15}([ ]*)"
                        [ngClass]="{'is-invalid':emailRep.invalid && (emailRep.dirty || emailRep.touched),
                     'is-valid':emailRep.valid && (emailRep.dirty || emailRep.touched)
                     }">
@@ -455,7 +455,7 @@
       <div class="modal-body">
         <div class="alert alert-warning" role="alert" *ngIf="selectedFacility">
           Are you sure you want to send this email to
-          <span *ngIf="selectedProjectType === 'ALL'">all</span>
+          <span *ngIf="selectedProjectType === 'ALL'">all members of {{selectedFacility['Facility']}}?</span>
           <span *ngIf="selectedProjectType === 'USER' && selectedMember"><br>
             <span *ngFor="let member of selectedMember">
               {{member['lastName']
