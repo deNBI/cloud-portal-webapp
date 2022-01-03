@@ -1,19 +1,19 @@
-import {Component, Input, OnInit} from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import * as moment from 'moment';
-import {Subject} from 'rxjs';
-import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
-import {Project} from '../projectmanagement/project.model';
-import {ProjectMember} from '../projectmanagement/project_member.model';
-import {environment} from '../../environments/environment';
-import {ApiSettings} from '../api-connector/api-settings.service';
-import {GroupService} from '../api-connector/group.service';
-import {UserService} from '../api-connector/user.service';
-import {FacilityService} from '../api-connector/facility.service';
-import {NewsService} from '../api-connector/news.service';
-import {ComputecenterComponent} from '../projectmanagement/computecenter.component';
-import {FilterBaseClass} from '../shared/shared_modules/baseClass/filter-base-class';
-import {IResponseTemplate} from '../api-connector/response-template';
-import {WordPressTag} from './newsmanagement/wp-tags';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { Project } from '../projectmanagement/project.model';
+import { ProjectMember } from '../projectmanagement/project_member.model';
+import { environment } from '../../environments/environment';
+import { ApiSettings } from '../api-connector/api-settings.service';
+import { GroupService } from '../api-connector/group.service';
+import { UserService } from '../api-connector/user.service';
+import { FacilityService } from '../api-connector/facility.service';
+import { NewsService } from '../api-connector/news.service';
+import { ComputecenterComponent } from '../projectmanagement/computecenter.component';
+import { FilterBaseClass } from '../shared/shared_modules/baseClass/filter-base-class';
+import { IResponseTemplate } from '../api-connector/response-template';
+import { WordPressTag } from './newsmanagement/wp-tags';
 
 /**
  * Facility Project overview component.
@@ -73,7 +73,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 	private selectedTags: string[] = [];
 	projects_filtered: Project[] = [];
 	selectedFacilityComputeCenter: ComputecenterComponent;
-	facilitySupportMails: string = "";
+	facilitySupportMails: string = '';
 	supportMailEditing: boolean = false;
 
 	constructor(
@@ -496,9 +496,9 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 						cc['compute_center_support_mail'],
 					);
 					this.facilitySupportMails = cc['compute_center_support_mail'];
-					//TODO: Delete if (this.facilitySupportMails === ""...
-					if (this.facilitySupportMails === "" || this.facilitySupportMails === null) {
-						this.facilitySupportMails = "example@mail1.com, example@mail2.com"
+					// TODO: Delete if (this.facilitySupportMails === ""...
+					if (this.facilitySupportMails === '' || this.facilitySupportMails === null) {
+						this.facilitySupportMails = 'example@mail1.com, example@mail2.com';
 					}
 				}
 			}
@@ -506,22 +506,24 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 	}
 
 	setFacilitySupportMails(supportMails: string): void {
-		let facilityId = this.selectedFacility['FacilityId']
+		const facilityId = this.selectedFacility['FacilityId'];
 		this.facilityService.setSupportMails(facilityId, supportMails).subscribe((result: any): void => {
-			console.log("Result:")
-			console.log(result)
+			console.log('Result:');
+			console.log(result);
 			if (result.ok) {
 				this.updateNotificationModal(
-					"Facility support mails changed",
-					`You successfully changed the facility support mails.`,
+					'Facility support mails changed',
+					'You successfully changed the facility support mails.',
 					true,
-					'success')
+					'success',
+				);
 			} else {
 				this.updateNotificationModal(
-					"Couldn't change facility support mails",
-					`An error occurred while trying to change the facility support mails.`,
+					'Couldn\'t change facility support mails',
+					'An error occurred while trying to change the facility support mails.',
 					true,
-					'danger')
+					'danger',
+				);
 			}
 		});
 	}
@@ -529,7 +531,5 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 	toggleSupportMailEditing(): void {
 		this.supportMailEditing = !this.supportMailEditing;
 	}
-
-
 
 }
