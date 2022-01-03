@@ -174,6 +174,7 @@ export class ClustercardComponent extends SharedModal implements OnInit, OnDestr
 		this.bsModalRef.setClass('modal-lg');
 		this.subscribeToBsModalRef();
 	}
+
 	/**
 	 * Show deletion modal
 	 */
@@ -210,36 +211,20 @@ export class ClustercardComponent extends SharedModal implements OnInit, OnDestr
 		this.subscribeToBsModalRef();
 	}
 
-	scaleUpCluster(selectedBatch: WorkerBatch, created_new_batch: boolean = false): void {
+	scaleUpCluster(selectedBatch: WorkerBatch): void {
 		const scale_up_count: number = selectedBatch.upscale_count;
 		this.showNotificationModal('Upscaling Cluster', `Starting ${scale_up_count} additional workers..`, 'info');
 
-		if (!created_new_batch) {
+		this.subscription.add(
+			this.virtualmachineservice.scaleCluster(this.cluster.cluster_id, selectedBatch.flavor.name, selectedBatch.upscale_count).subscribe((res: any): void => {
+				selectedBatch.setNewScalingUpWorkerCount();
+				this.cluster.password = res['password'];
 
-			this.subscription.add(
-				this.virtualmachineservice.scaleCluster(this.cluster.cluster_id, selectedBatch).subscribe((res: any): void => {
-					selectedBatch.setNewScalingUpWorkerCount();
-					this.cluster.password = res['password'];
+				this.check_worker_count_loop();
+				this.showScaleModal(this.SCALE_SUCCESS, `The start of ${scale_up_count} workers was successfully initiated. Remember to configure your cluster after the machines are active!'`);
 
-					this.check_worker_count_loop();
-					this.showScaleModal(this.SCALE_SUCCESS, `The start of ${scale_up_count} workers was successfully initiated. Remember to configure your cluster after the machines are active!'`);
-
-				}),
-			);
-		} else {
-
-			this.subscription.add(
-				this.virtualmachineservice.scaleClusterNewBatch(this.cluster.cluster_id, selectedBatch).subscribe((res: any): void => {
-
-					selectedBatch.setNewScalingUpWorkerCount();
-					this.cluster.password = res['password'];
-
-					this.check_worker_count_loop();
-					this.showScaleModal(this.SCALE_SUCCESS, `The start of ${scale_up_count} workers was successfully initiated. Remember to configure your cluster after the machines are active!'`);
-
-				}),
-			);
-		}
+			}),
+		);
 
 	}
 
@@ -293,16 +278,16 @@ export class ClustercardComponent extends SharedModal implements OnInit, OnDestr
 		this.cluster = cluster;
 		let scale_down_count: number = 0;
 
-		const scale_down_batches: WorkerBatch[] = [];
+		const scale_down_batches: any = [];
 		this.cluster.worker_batches.forEach((batch: WorkerBatch): void => {
 			if (batch.delete_count > 0) {
-				scale_down_batches.push(batch);
+				scale_down_batches.push({ worker_flavor_name: batch.flavor.name, downscale_count: batch.delete_count });
 				scale_down_count += batch.delete_count;
 			}
 		});
 		let msg: string = 'Scaling Down Batches: ';
 		for (const batch of scale_down_batches) {
-			msg += ` \n[Batch ${batch.index} by ${batch.delete_count} instances ]`;
+			msg += ` \n[Batch with Flavor ${batch.worker_flavor_name} by ${batch.downscale_count} instances ]`;
 		}
 		this.showNotificationModal('Scaling Down', msg, 'info');
 
@@ -342,6 +327,7 @@ export class ClustercardComponent extends SharedModal implements OnInit, OnDestr
 			this.check_status_loop();
 		}));
 	}
+
 	/**
 	 * Function to listen to modal results.
 	 */
@@ -354,7 +340,7 @@ export class ClustercardComponent extends SharedModal implements OnInit, OnDestr
 					} else if ('scaleDownCluster' in result) {
 						this.scaleDownCluster(result['cluster']);
 					} else if ('scaleUpCluster' in result) {
-						this.scaleUpCluster(result['selectedBatch'], result['created_new_batch']);
+						this.scaleUpCluster(result['selectedBatch']);
 					} else if ('resumeCluster' in result) {
 						this.resumeCluster();
 					} else if ('stopCluster' in result) {
