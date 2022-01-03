@@ -147,7 +147,8 @@
 			<div class="card" id="projectInformationDiv">
 
 				<div class="card-header">
-					<h3>
+					<div class="row">
+					<div class="col"><h3>
 						<a *ngIf="project?.OpenStackProject" href="{{ OPENSTACK_LINK }}" rel="noopener noreferrer"
 							 target="_blank"
 							 style="font-size: 2em"
@@ -172,6 +173,19 @@
 						</a>
 						{{project?.Name}}
 					</h3>
+					</div>
+						<div class="col"
+								 *ngIf="((project_application | hasstatusinlist:Application_States.APPROVED)
+           || (project_application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)
+           || (project_application | hasstatusinlist:Application_States.MODIFICATION_DECLINED) )">
+									<button type="button"
+													class="btn btn-danger float-right"
+													(click)="leaveProjectModal.show();">
+										<i class="fas fa-sign-out-alt"></i>
+										Leave Project
+									</button>
+						</div>
+					</div>
 				</div>
 
 				<div class="card-body" id="project_application_status_overview_further"
@@ -522,7 +536,7 @@
 
 			<div class="card" id="projectMemberDiv">
 				<div class="card-header">
-					<i class="fa fa-align-justify"></i>Members of the Project {{ project?.Name }}
+					<i class="fa fa-align-justify"></i> Settings/Members of the Project {{ project?.Name }}
 				</div>
 
 				<div class="card-body">
@@ -550,6 +564,17 @@
 							<span *ngIf="!project_application?.memberNamesVisible"> Show </span>
 							Member Names
 						</button>
+						<button *ngIf="!project_application.project_application_openstack_project"
+							type="button" style="margin-bottom:5px;"
+							(click)="toggleStartingOfMachines();"
+							[disabled]="toggleLocked"
+										class="btn btn-outline-primary">
+							<i *ngIf="!project_application?.prevent_machines_starting" class="fas fa-lock"></i>
+							<i *ngIf="project_application?.prevent_machines_starting" class="fas fa-lock-open"></i>
+							<span *ngIf="project_application?.prevent_machines_starting"> Allow </span>
+							<span *ngIf="!project_application?.prevent_machines_starting"> Prevent </span>
+							starting of machines
+						</button>
 
 						<button (click)="removeCheckedMembers(project_application?.project_application_perun_id)" type="button"
 										style="margin-bottom:5px;" [disabled]="checked_member_list.length <= 0 || remove_members_clicked"
@@ -557,6 +582,29 @@
 						</button>
 
 					</div>
+					<div class="col-12">
+						<ul class="list-group list-group-flush">
+							<li class="list-group-item">
+								<strong>Project settings</strong>
+							</li>
+							<li class="list-group-item">
+								Project member names visible for non-administrators
+								<span class="badge" [ngClass]="project_application.memberNamesVisible ? 'badge-success' : 'badge-danger'">
+									{{project_application.memberNamesVisible ? "Enabled" : "Disabled" }}
+								</span>
+
+							</li>
+							<li *ngIf="!project_application.project_application_openstack_project"
+									class="list-group-item">
+								Non-administrators are allowed to start machines
+								<span class="badge" [ngClass]="!project_application.prevent_machines_starting ? 'badge-success' : 'badge-danger'">
+									{{!project_application.prevent_machines_starting ? "Enabled" : "Disabled" }}
+								</span>
+							</li>
+						</ul>
+
+					</div>
+
 					<div class="col-12 alert alert-primary" *ngIf="!isAdmin && !is_vo_admin">
             <span><strong>Notice: </strong>Only project administrators are able to remove or add project members and
             change the status of members.</span>
@@ -720,24 +768,6 @@
 					</canvas>
 				</div>
 
-			</div>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col"
-				 *ngIf="((project_application | hasstatusinlist:Application_States.APPROVED)
-           || (project_application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)
-           || (project_application | hasstatusinlist:Application_States.MODIFICATION_DECLINED) )">
-			<div class="card">
-				<div class="row" style="margin-top:10px; margin-bottom: 10px;">
-					<button type="button"
-									class="btn btn-danger col-6"
-									style="margin:auto;"
-									(click)="leaveProject(project?.Id, userinfo?.MemberId ,project?.Name); notificationModal.show();">
-						<i class="fas fa-sign-out-alt"></i>
-						Leave Project
-					</button>
-				</div>
 			</div>
 		</div>
 	</div>
@@ -1034,6 +1064,40 @@
 				</button>
 				<button class="btn  btn-danger col-md-4" type="reset"
 								(click)="deleteModal.hide()">Cancel
+				</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div bsModal #leaveProjectModal="bs-modal" class="modal fade" tabindex="-1"
+		 role="dialog" aria-labelledby="Label"
+		 aria-hidden="true"
+		 id="leave_project_modal">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Leave Project</h4>
+				<button type="button" class="close" style="cursor:pointer"
+								(click)="leaveProjectModal.hide()" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+
+				<div class="alert alert-warning" role="alert">
+					Are you sure you want to leave the project?
+				</div>
+
+			</div>
+			<div class="modal-footer">
+				<button class="btn  btn-success col-md-4" id="confirm_leave_project_button"
+								(click)="leaveProject(project?.Id, userinfo?.MemberId ,project?.Name);leaveProjectModal.hide();notificationModal.show()">
+					Yes
+				</button>
+				<button class="btn  btn-danger col-md-4" type="reset"
+								(click)="leaveProjectModal.hide()">
+					Cancel
 				</button>
 			</div>
 		</div><!-- /.modal-content -->

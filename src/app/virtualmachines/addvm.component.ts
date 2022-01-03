@@ -57,7 +57,6 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 	PREPARE_PLAYBOOK_STATUS: string = 'Prepare Playbook Build...';
 	ANIMATED_PROGRESS_BAR: string = 'progress-bar-animated';
 	redirectProgress: string = '0';
-
 	newVm: VirtualMachine = null;
 	members_to_add: ProjectMember[] = [];
 	progress_bar_status: string = 'Creating..';
@@ -113,6 +112,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 	image_loaded: boolean = false;
 
 	flavors_loaded: boolean = false;
+	error_starting_machine: boolean = false;
 
 	create_error: IResponseTemplate;
 
@@ -487,6 +487,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 					additional_elixir_ids,
 				)
 					.subscribe((newVm: VirtualMachine): void => {
+						this.error_starting_machine = false;
 						this.newVm = newVm;
 						this.started_machine = false;
 
@@ -505,6 +506,9 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 							this.create_error = <IResponseTemplate><any>newVm;
 						}
 
+					}, (error): void => {
+						console.log(error);
+						this.error_starting_machine = true;
 					}),
 			);
 		} else {
@@ -619,7 +623,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 	 */
 	initializeData(): void {
 		this.subscription.add(
-			forkJoin([this.groupService.getSimpleVmByUser(), this.userService.getUserInfo()]).subscribe((result: any): void => {
+			forkJoin([this.groupService.getSimpleVmAllowedByUser(), this.userService.getUserInfo()]).subscribe((result: any): void => {
 				this.userinfo = result[1];
 				this.validatePublicKey();
 				const membergroups: any = result[0];

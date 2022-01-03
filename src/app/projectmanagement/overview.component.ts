@@ -460,7 +460,7 @@ private flavorService: FlavorService,
 	isAbleToStart(): boolean {
 		if (this.resourceDataLoaded) {
 			if (!this.project?.OpenStackProject) {
-				if (this.vmsInUse < this.maximumVMs) {
+				if ((this.vmsInUse < this.maximumVMs) && (this.isAdmin || !this.project_application.prevent_machines_starting)) {
 					return true;
 				}
 			}
@@ -559,6 +559,17 @@ private flavorService: FlavorService,
 		this.applicationsService.toggleVisibility(this.project_application).subscribe((application: Application): void => {
 			this.project_application.memberNamesVisible = application.memberNamesVisible;
 			this.toggleLocked = false;
+		});
+	}
+
+	toggleStartingOfMachines(): void {
+		this.toggleLocked = true;
+		this.applicationsService.toggleStartingMachines(this.project_application).subscribe((application: Application): void => {
+			this.project_application.prevent_machines_starting = application.prevent_machines_starting;
+			this.toggleLocked = false;
+		}, () => {
+			this.toggleLocked = false;
+			// check how to catch this part
 		});
 	}
 
@@ -1087,20 +1098,11 @@ private flavorService: FlavorService,
 		if (this.project_application.project_application_pi.elixir_id === this.userinfo.ElixirId) {
 			this.updateNotificationModal(
 				'Denied',
-				'You cannot leave projects as PI.',
-				true,
-				'danger',
-			);
-		} else if (this.project.UserIsAdmin) {
-			// TODO: Allow admins to leave project if there is at least 1 other admin
-			this.updateNotificationModal(
-				'Denied',
-				'You cannot leave projects as admin.',
+				'You cannot leave projects as PI. Please contact cloud@denbi.de for further steps.',
 				true,
 				'danger',
 			);
 		} else {
-			console.log('removing member');
 			this.subscription.add(
 				this.groupService.leaveGroup(groupid, memberid, this.project.ComputeCenter.FacilityId).subscribe(
 					(result: any): void => {
