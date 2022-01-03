@@ -27,7 +27,8 @@
 <div *ngIf=" !isLoaded || (singleProject && !projectDataLoaded )" class="loader"></div>
 <div *ngIf=" isLoaded && userinfo?.PublicKey !== 'None' && projects.length === 0">
 	<div class="alert alert-warning" role="alert">
-		You are not a member of any Simple VM project.
+		You are not a member of a SimpleVM project or the administrators of the projects you are a member of have prohibited non-administrators from starting machines.
+		You can see if this is the case for your projects on the overview page of the respective project.
 	</div>
 </div>
 <div
@@ -702,9 +703,9 @@
 	<div class="modal-dialog modal-info" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h4 class="modal-title">Redirecting</h4>
+				<h4 class="modal-title">{{!error_starting_machine ? "Redirecting" : "Error starting VM" }}</h4>
 			</div>
-			<div class="modal-body">
+			<div class="modal-body" *ngIf="!error_starting_machine">
 				<p>Redirecting to Instance Overview...</p>
 				<div class="progress">
 					<div class="progress-bar progress-bar-striped {{progress_bar_animated}} bg-info"
@@ -715,6 +716,17 @@
 				</div>
 				<span [hidden]="true" *ngIf="newVm?.name" id="new_vm_name">{{newVm?.name}}</span>
 			</div>
+			<div class="modal-body" *ngIf="error_starting_machine">
+				<p>An error occurred while trying to start the machine. Please reload this page.</p>
+			</div>
+			<div class="modal-footer" *ngIf="error_starting_machine">
+				<div class="row">
+					<div class="col">
+						<button class="btn btn-danger" (click)="redirectModal.hide()">Close</button>
+					</div>
+				</div>
+			</div>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+

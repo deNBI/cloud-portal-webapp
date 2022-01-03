@@ -156,6 +156,21 @@ export class GroupService {
 		});
 	}
 
+	leaveGroup(group_id: number | string, member_id: number | string, facility_id?: number | string): Observable<any> {
+		const params: HttpParams = new HttpParams();
+
+		if (facility_id !== null) {
+			params.set('facility_id', facility_id.toString());
+		}
+
+		return this.http.request('delete', `${ApiSettings.getApiBaseURL()}projects/${group_id}/members/${member_id}/leave/`, {
+			withCredentials: true,
+			body: params,
+			responseType: 'text',
+			observe: 'response',
+		});
+	}
+
 	removeAdmin(group_id: number | string, user_id: number | string, facility_id?: number | string): Observable<any> {
 
 		const params: HttpParams = new HttpParams();
@@ -211,6 +226,14 @@ export class GroupService {
 	getSimpleVmByUser(): Observable<any> {
 
 		return this.http.get(`${ApiSettings.getApiBaseURL()}projects/simpleVm/`, {
+			withCredentials: true,
+
+		});
+	}
+
+	getSimpleVmAllowedByUser(): Observable<any> {
+
+		return this.http.get(`${ApiSettings.getApiBaseURL()}projects/simpleVmAllowed/`, {
 			withCredentials: true,
 
 		});
