@@ -462,7 +462,7 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 					this.projects.push(project);
 
 				}
-				for (const project of allowedMemberGroups){
+				for (const project of allowedMemberGroups) {
 					this.allowedProjects.push(project);
 				}
 
