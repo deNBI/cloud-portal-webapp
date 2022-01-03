@@ -128,6 +128,13 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 	projects: [string, number][] = [];
 
 	/**
+	 * All projects of the user where the user is allowed to start machines.
+	 *
+	 * @type {any[]}
+	 */
+	allowedProjects: [string, number][] = [];
+
+	/**
 	 * If all project data is loaded.
 	 *
 	 * @type {boolean}
@@ -442,13 +449,21 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 	 */
 	initializeData(): void {
 		this.subscription.add(
-			forkJoin(this.groupService.getSimpleVmAllowedByUser(), this.userService.getUserInfo()).subscribe((result: any): void => {
-				this.userinfo = result[1];
+			forkJoin([
+				this.groupService.getSimpleVmAllowedByUser(),
+				this.groupService.getSimpleVmByUser(),
+				this.userService.getUserInfo(),
+			]).subscribe((result: any): void => {
+				this.userinfo = result[2];
 				this.validatePublicKey();
-				const membergroups: any = result[0];
+				const allowedMemberGroups: any = result[0];
+				const membergroups: any = result[1];
 				for (const project of membergroups) {
 					this.projects.push(project);
 
+				}
+				for (const project of allowedMemberGroups){
+					this.allowedProjects.push(project);
 				}
 
 				if (this.projects.length === 1) {

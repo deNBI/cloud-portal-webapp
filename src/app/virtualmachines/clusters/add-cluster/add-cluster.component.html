@@ -27,8 +27,7 @@
 <div *ngIf=" !isLoaded || (singleProject && !projectDataLoaded )" class="loader"></div>
 <div *ngIf=" isLoaded && userinfo?.PublicKey !=='None' && projects.length === 0">
 	<div class="alert alert-warning" role="alert">
-		You are not a member of a SimpleVM project or the administrators of the projects you are a member of have prohibited non-administrators from starting machines.
-		You can see if this is the case for your projects on the overview page of the respective project.
+		You are not a member of a SimpleVM project.
 	</div>
 </div>
 <div *ngIf=" isLoaded && userinfo?.PublicKey !=='None' && projects.length > 0
@@ -70,6 +69,7 @@
 										class="spinner-border text-info">
 							</span>
 						</div>
+						<div *ngIf="projectDataLoaded && selectedProject && (allowedProjects | inAllowed: selectedProject)">
 						<div class="alert alert-danger" role="alert"
 								 *ngIf="client_avaiable && !selectedProjectClient?.bibigrid_available && projectDataLoaded && flavors_loaded">
 							Starting a cluster is currently not possible!<br>
@@ -281,54 +281,60 @@
 							</div>
 						</div>
 
-
-					</form>
-
-					<div
-						*ngIf=" selectedProjectClient?.bibigrid_available && (selectedProjectRessources?.used_vms +2) <= selectedProjectRessources?.number_vms && (!selectedBatch.worker_count || selectedBatch.worker_count === 0  ||!selectedMasterFlavor || !selectedMasterImage || !selectedWorkerFlavorSet  ) && selectedProject && projectDataLoaded && flavors_loaded"
-						class="alert alert-danger col-md-10" role="alert" style="margin: auto;">
-						<p>Please choose the following before starting a Cluster:</p>
-						<p *ngIf="!selectedMasterFlavor">- The flavor type of your Master VM
-						</p>
-						<p *ngIf="!selectedMasterImage">- The image you want to run on your Master VM
-						</p>
-						<p *ngIf="!selectedWorkerFlavorSet">- The flavor types of your Worker Batches.
-						</p>
-						<p *ngIf="!selectedBatch.worker_count || selectedBatch.worker_count === 0">- A count greater than 0 for your
-							workers in your batches.
-						</p>
+						<div
+							*ngIf=" selectedProjectClient?.bibigrid_available && (selectedProjectRessources?.used_vms +2) <= selectedProjectRessources?.number_vms && (!selectedBatch.worker_count || selectedBatch.worker_count === 0  ||!selectedMasterFlavor || !selectedMasterImage || !selectedWorkerFlavorSet  ) && selectedProject && projectDataLoaded && flavors_loaded"
+							class="alert alert-danger col-md-10" role="alert" style="margin: auto;">
+							<p>Please choose the following before starting a Cluster:</p>
+							<p *ngIf="!selectedMasterFlavor">- The flavor type of your Master VM
+							</p>
+							<p *ngIf="!selectedMasterImage">- The image you want to run on your Master VM
+							</p>
+							<p *ngIf="!selectedWorkerFlavorSet">- The flavor types of your Worker Batches.
+							</p>
+							<p *ngIf="!selectedBatch.worker_count || selectedBatch.worker_count === 0">- A count greater than 0 for your
+								workers in your batches.
+							</p>
 
 
-					</div>
-					<div
-						*ngIf="projectDataLoaded && (selectedProjectRessources?.used_vms +2) <= selectedProjectRessources?.number_vms && (flavors?.length > 0  || selectedFlavor) && selectedProjectClient?.bibigrid_available"
-						class="alert alert-warning col-md-10" role="alert" style="margin: auto;">
-						<div class="form-check">
-							<input class="form-check-input"
-												name="cluster_responsibility"
-												type="checkbox"
-												id="cluster_responsibility"
-												[(ngModel)]="cluster_responsibility"
-												required>
-							<label class="form-check-label" for="cluster_responsibility">
-								I hereby confirm that I am responsible for the cluster and any action performed on it.
-							</label>
 						</div>
-					</div>
-					<div class="form-group row"
-							 *ngIf="projectDataLoaded && (selectedProjectRessources?.used_vms +2) <= selectedProjectRessources?.number_vms && (flavors?.length > 0  || selectedFlavor) && selectedProjectClient?.bibigrid_available">
+						<div
+							*ngIf="projectDataLoaded && (selectedProjectRessources?.used_vms +2) <= selectedProjectRessources?.number_vms && (flavors?.length > 0  || selectedFlavor) && selectedProjectClient?.bibigrid_available"
+							class="alert alert-warning col-md-10" role="alert" style="margin: auto;">
+							<div class="form-check">
+								<input class="form-check-input"
+											 name="cluster_responsibility"
+											 type="checkbox"
+											 id="cluster_responsibility"
+											 [(ngModel)]="cluster_responsibility"
+											 required>
+								<label class="form-check-label" for="cluster_responsibility">
+									I hereby confirm that I am responsible for the cluster and any action performed on it.
+								</label>
+							</div>
+						</div>
+						<div class="form-group row"
+								 *ngIf="projectDataLoaded && (selectedProjectRessources?.used_vms +2) <= selectedProjectRessources?.number_vms && (flavors?.length > 0  || selectedFlavor) && selectedProjectClient?.bibigrid_available">
 
-						<button style=" margin-left: auto;margin-top: 25px;
+							<button style=" margin-left: auto;margin-top: 25px;
     margin-right: auto;
     width: 8em" id="startClusterButton"
-										type="button"
-										[disabled]="!cluster_responsibility || !selectedMasterFlavor || !selectedMasterImage || !selectedWorkerFlavorSet || !selectedBatch.valid_batch || !selectedBatch.worker_count || selectedBatch.worker_count === 0"
-										class="btn btn-primary  .btn-lg offset-md-8"
-										data-toggle="modal"
-										(click)="startCluster();infoModal.show()">
-							Start Cluster
-						</button>
-					</div>
+											type="button"
+											[disabled]="!cluster_responsibility || !selectedMasterFlavor || !selectedMasterImage || !selectedWorkerFlavorSet || !selectedBatch.valid_batch || !selectedBatch.worker_count || selectedBatch.worker_count === 0"
+											class="btn btn-primary  .btn-lg offset-md-8"
+											data-toggle="modal"
+											(click)="startCluster();infoModal.show()">
+								Start Cluster
+							</button>
+						</div>
+						</div>
+						<div *ngIf="projectDataLoaded && selectedProject && !(allowedProjects | inAllowed: selectedProject)">
+							<div class="alert alert-info">
+								You are not allowed to start a machine in this project, as the administrators of the project do not allow non-administrators to start machines.
+								<p *ngIf="singleProject">This is the only SimpleVm project you are a member of.</p>
+							</div>
+						</div>
+					</form>
+
 				</div>
 
 				<div class="alert alert-danger"
