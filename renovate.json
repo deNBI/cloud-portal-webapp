@@ -27,6 +27,6 @@
   "assignees": ["team:portal-dev"],
   "branchPrefix": "deps/",
   "bumpVersion": "minor",
-  "commitBodyTable" "true",
+  "commitBodyTable": "true",
   "commitMessagePrefix": "feat(Dependencies):"
 }
