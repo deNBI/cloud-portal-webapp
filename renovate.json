@@ -28,5 +28,6 @@
   "branchPrefix": "deps/",
   "bumpVersion": "minor",
   "commitBodyTable": "true",
+	"prHourlyLimit": 10, 
   "commitMessagePrefix": "feat(Dependencies):"
 }
