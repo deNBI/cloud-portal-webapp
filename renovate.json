@@ -1,7 +1,7 @@
 {
   "extends": [
     "config:base",
-     ":automergePatch",
+    ":automergePatch",
   ],
   "baseBranches": ["dev"],
   "reviewers": ["team:portal-dev"],
