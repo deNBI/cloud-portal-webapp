@@ -216,14 +216,15 @@ export class ClustercardComponent extends SharedModal implements OnInit, OnDestr
 		this.showNotificationModal('Upscaling Cluster', `Starting ${scale_up_count} additional workers..`, 'info');
 
 		this.subscription.add(
-			this.virtualmachineservice.scaleCluster(this.cluster.cluster_id, selectedBatch.flavor.name, selectedBatch.upscale_count).subscribe((res: any): void => {
-				selectedBatch.setNewScalingUpWorkerCount();
-				this.cluster.password = res['password'];
+			this.virtualmachineservice.scaleCluster(this.cluster.cluster_id, selectedBatch.flavor.name, selectedBatch.upscale_count)
+				.subscribe((res: any): void => {
+					selectedBatch.setNewScalingUpWorkerCount();
+					this.cluster.password = res['password'];
 
-				this.check_worker_count_loop();
-				this.showScaleModal(this.SCALE_SUCCESS, `The start of ${scale_up_count} workers was successfully initiated. Remember to configure your cluster after the machines are active!'`);
+					this.check_worker_count_loop();
+					this.showScaleModal(this.SCALE_SUCCESS, `The start of ${scale_up_count} workers was successfully initiated. Remember to configure your cluster after the machines are active!'`);
 
-			}),
+				}),
 		);
 
 	}
