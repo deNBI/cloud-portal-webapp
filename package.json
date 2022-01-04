@@ -1,6 +1,6 @@
 {
   "name": "@coreui/coreui-free-angular-admin-template",
-  "version": "2.12.0",
+  "version": "2.13.0",
   "description": "CoreUI Free Angular 2+ Admin Template",
   "author": {
     "name": "Łukasz Holeczek",
@@ -37,7 +37,7 @@
   "dependencies": {
     "@angular-eslint/eslint-plugin": "13.0.1",
     "@angular/animations": "13.1.1",
-    "@angular/cdk": "13.0.3",
+    "@angular/cdk": "13.0.4",
     "@angular/common": "13.0.3",
     "@angular/compiler": "13.0.3",
     "@angular/core": "13.0.3",
