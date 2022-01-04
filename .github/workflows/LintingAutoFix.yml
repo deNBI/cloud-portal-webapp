@@ -6,6 +6,7 @@ on:
       - 'staging'
       - 'dev'
       - 'master'
+      - 'deps/*'
     tags-ignore:
       - '0.1.0-beta.*'
 
