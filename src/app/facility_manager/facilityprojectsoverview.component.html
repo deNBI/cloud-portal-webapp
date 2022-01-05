@@ -546,32 +546,32 @@
 </div><!-- /.modal -->
 
 
-<!--<div bsModal #descriptionModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"-->
-<!--		 aria-labelledby="myModalLabel" aria-hidden="true">-->
-<!--	<div class="modal-dialog modal-info" role="document">-->
-<!--		<div class="modal-content">-->
-<!--			<div class="modal-header">-->
-<!--				<h4 class="modal-title">Description</h4>-->
-<!--				<button type="button" class="close" style="cursor: pointer"-->
-<!--								(click)="descriptionModal.hide()"-->
-<!--								aria-label="Close">-->
+<div bsModal #descriptionModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+		 aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-info" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Description</h4>
+				<button type="button" class="close" style="cursor: pointer"
+								(click)="descriptionModal.hide()"
+								aria-label="Close">
 
-<!--					<span aria-hidden="true">&times;</span>-->
-<!--				</button>-->
-<!--			</div>-->
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
 
-<!--			<div class="modal-body">-->
-<!--				<p>{{ selectedProject?.Description }}</p>-->
-<!--			</div>-->
-<!--			<div class="modal-footer">-->
-<!--				<button type="button" class="btn btn-primary"-->
-<!--								(click)="selectedProject=undefined;descriptionModal.hide();">-->
-<!--					Close-->
-<!--				</button>-->
-<!--			</div>-->
-<!--		</div>&lt;!&ndash; /.modal-content &ndash;&gt;-->
-<!--	</div>&lt;!&ndash; /.modal-dialog &ndash;&gt;-->
-<!--</div>-->
+			<div class="modal-body">
+				<p>{{ selectedProject?.Description }}</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary"
+								(click)="selectedProject=undefined;descriptionModal.hide();">
+					Close
+				</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div>
 
 <div bsModal #computeCenterSupportModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
 		 aria-labelledby="myModalLabel" aria-hidden="true">
