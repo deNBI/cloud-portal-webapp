@@ -289,6 +289,9 @@ private groupService: GroupService,
 			this.selectedProjectType = tempMailList.join(',');
 			console.log(this.selectedProjectType);
 		}
+		if (reply) {
+			reply = reply.trim();
+		}
 		const chosenTags: string = this.selectedTags.toString();
 		this.facilityService.sendMailToFacility(
 			facility,
