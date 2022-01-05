@@ -41,6 +41,14 @@
           </option>
 
         </select></div>
+				<div class="col-md-2">
+					<button (click)="getFacilitySupportMails(); computeCenterSupportModal.show()"
+									type="button"
+									class="btn btn-outline-primary float-right">
+						<i class="fa fa-inbox"></i>
+						Support email(s)
+					</button>
+				</div>
       </div>
       <div class="card" style=" ">
         <div class="card-header">
@@ -539,18 +547,18 @@
 
 
 <div bsModal #descriptionModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
-     aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-info" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Description</h4>
-        <button type="button" class="close" style="cursor: pointer"
-                (click)="descriptionModal.hide()"
-                aria-label="Close">
+		 aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-info" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Description</h4>
+				<button type="button" class="close" style="cursor: pointer"
+								(click)="descriptionModal.hide()"
+								aria-label="Close">
 
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
 
       <div class="modal-body">
         <p>{{ selectedProject?.project_application_description }}</p>
@@ -563,6 +571,53 @@
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
+</div>
+
+<div bsModal #computeCenterSupportModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+		 aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-info" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title"> Support email addresses </h4>
+				<button type="button" class="close" style="cursor: pointer"
+								(click)="computeCenterSupportModal.hide();"
+								aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+
+			<div class="modal-body" *ngIf="selectedFacility">
+				<p>Support e-mail address(es) of <strong>{{ selectedFacility['Facility'] }}</strong>: </p>
+				<div class="input-group mb-3">
+					<input type="text" class="form-control" placeholder="Enter support contact e-mail address(es)"
+								 aria-label="Support contact e-mail address(es)" aria-describedby="supportMailHelp"
+								 id="facilitySupportMailsInput" #facilitySupportMailsInput
+								 [readOnly]="!supportMailEditing" value="{{facilitySupportMails}}">
+					<div class="input-group-append">
+						<button *ngIf="!supportMailEditing" type="button"
+										(click)="toggleSupportMailEditing();" class="btn btn-primary">
+							Edit
+						</button>
+						<button *ngIf="supportMailEditing" type="button"
+										(click)="setFacilitySupportMails(facilitySupportMailsInput.value); toggleSupportMailEditing(); notificationModal.show()"
+										class="btn btn-primary">
+							Submit
+						</button>
+					</div>
+				</div>
+				<small id="supportMailHelp" class="form-text text-muted">
+					Enter the e-mail addresses users can contact for support.
+					Separate them with a comma in-between each e-mail address.
+				</small>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary"
+								(click)="computeCenterSupportModal.hide();">
+					Close
+				</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
 </div>
 
 <div bsModal #infoModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
