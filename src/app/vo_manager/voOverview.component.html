@@ -1,748 +1,752 @@
 <div *ngIf="isLoaded === false" class="loader"></div>
 
 <div *ngIf="isLoaded" class="animated fadeIn" ng-app>
-  <div class="row">
-    <!--/.col-->
+	<div class="row">
+		<!--/.col-->
 
-    <div class="col-lg-12">
+		<div class="col-lg-12">
 
-       <button  (click)="sendTestBug()"
-              class="btn btn-outline-danger"
-              style="margin-bottom: auto;margin-left:auto; margin-top: auto"><i
-        class="icon-envelope-letter"></i>
-        Test Error
-      </button>
-
-
-
-      <button (click)="setEmailType(1);emailModal.show();" type="button "
-              class="btn btn-outline-primary"
-              style="margin-bottom: auto;margin-left:auto; margin-top: auto"><i
-        class="icon-envelope-letter"></i>
-        Send newsletter ({{newsletterSubscriptionCounter}})
-      </button>
-
-      <button (click)="setEmailType(0);emailModal.show();" type="button "
-              class="btn btn-outline-primary"
-              style="margin-bottom: auto;margin-left: 5px; margin-top: auto"><i
-        class="icon-envelope-letter"></i>
-        Send email
-      </button>
-
-      <button (click)="getApplicationInfos()" type="button "
-              class="btn btn-outline-primary"
-              style="margin-bottom: auto;margin-left: 5px; margin-top: auto"><i
-        class="icon-info"></i>
-        Get JSON
-      </button>
-
-      <div class="card" style=" ">
-        <div class="card-header">
-          <i class="fa fa-align-justify"></i> Projects
-        </div>
-
-        <div class="card-body">
-          <div class="table-responsive">
-            <table class="table table-hover">
-              <thead>
-              <tr>
-                <th></th>
-                <th>Facility</th>
-                <th>Project ID</th>
-                <th>Project Name</th>
-                <th>Details</th>
-                <th>Status</th>
-                <th>Credits</th>
-                <th>Actions</th>
-              </tr>
-              </thead>
-              <tbody>
-              <td></td>
-              <td><input style="width: 110px;" type="text" placeholder="Filter" class="form-control"
-                         name="filterFacilityName"
-                         [(ngModel)]="filterFacilityName"
-                         (ngModelChange)="applyFilter();">
-              </td>
-              <td><input style="width: 110px;" type="text" placeholder="Filter" class="form-control"
-                         name="filterProjectId"
-                         [(ngModel)]="filterProjectId"
-                         (ngModelChange)="applyFilter();">
-              </td>
-              <td><input style="width: 110px;" type="text" placeholder="Filter" class="form-control"
-                         name="filterProjectName" id="filter_project_name"
-                         [(ngModel)]="filterProjectName"
-                         (ngModelChange)="applyFilter();">
-              </td>
-              <td></td>
-              <td>
-                <div>
-                  <div class="checkbox col-sm">
-                    <label>
-                      <input type="checkbox"
-                             (change)="changeFilterStatus(project_states[project_states.ACTIVE]);applyFilter();"
-                             [checked]="filterstatus_list[project_states[project_states.ACTIVE]]"/>
-                      <span style="margin-left: 5px"
-                            class="badge bg-success">{{project_states[project_states.ACTIVE]}} </span>
-
-                    </label>
-                  </div>
-                  <div class="checkbox col-sm">
-                    <label>
-                      <input type="checkbox"
-                             (change)="changeFilterStatus(project_states[project_states.SUSPENDED]);applyFilter();"
-                             [checked]="filterstatus_list[project_states[project_states.SUSPENDED]]"/>
-                      <span style="margin-left: 5px"
-                            class="badge bg-warning">{{project_states[project_states.SUSPENDED]}} </span>
-                    </label>
-                  </div>
-
-                  <div class="checkbox col-sm">
-                    <label>
-                      <input type="checkbox"
-                             (change)="changeFilterStatus(lifetime_states[lifetime_states.EXPIRED]);applyFilter();"
-                             [checked]="filterstatus_list[lifetime_states[lifetime_states.EXPIRED]]"
-                      />
-                      <span style="margin-left: 5px"
-                            class="badge bg-danger">{{lifetime_states[lifetime_states.EXPIRED]}}</span>
-
-                    </label>
-                  </div>
-                  <div class="checkbox col-sm">
-                    <label>
-                      <input type="checkbox"
-                             (change)="changeFilterStatus(lifetime_states[lifetime_states.EXPIRES_SOON]);applyFilter();"
-                             [checked]="filterstatus_list[lifetime_states[lifetime_states.EXPIRES_SOON]]"
+			<button (click)="sendTestBug()"
+							class="btn btn-outline-danger"
+							style="margin-bottom: auto;margin-left:auto; margin-top: auto"><i
+				class="icon-envelope-letter"></i>
+				Test Error
+			</button>
 
 
-                      />
-                      <span style="margin-left: 5px"
-                            class="badge bg-warning">{{lifetime_states[lifetime_states.EXPIRES_SOON]}}</span>
-                    </label>
-                  </div>
+			<button (click)="setEmailType(1);emailModal.show();" class="btn btn-outline-primary"
+							style="margin-bottom: auto;margin-left:auto; margin-top: auto"
+							type="button "><i
+				class="icon-envelope-letter"></i>
+				Send newsletter ({{newsletterSubscriptionCounter}})
+			</button>
+
+			<button (click)="setEmailType(0);emailModal.show();" class="btn btn-outline-primary"
+							style="margin-bottom: auto;margin-left: 5px; margin-top: auto"
+							type="button "><i
+				class="icon-envelope-letter"></i>
+				Send email
+			</button>
+
+			<button (click)="getApplicationInfos()" class="btn btn-outline-primary"
+							style="margin-bottom: auto;margin-left: 5px; margin-top: auto"
+							type="button "><i
+				class="icon-info"></i>
+				Get JSON
+			</button>
+
+			<div class="card" style=" ">
+				<div class="card-header">
+					<i class="fa fa-align-justify"></i> Projects
+				</div>
+
+				<div class="card-body">
+					<div class="table-responsive">
+						<table class="table table-hover">
+							<thead>
+							<tr>
+								<th></th>
+								<th>Facility</th>
+								<th>Project ID</th>
+								<th>Project Name</th>
+								<th>Details</th>
+								<th>Status</th>
+								<th>Credits</th>
+								<th>Actions</th>
+							</tr>
+							</thead>
+							<tbody>
+							<td></td>
+							<td><input [(ngModel)]="filterFacilityName" class="form-control" name="filterFacilityName"
+												 placeholder="Filter"
+												 style="width: 110px;"
+												 (ngModelChange)="applyFilter();"
+												 type="text">
+							</td>
+							<td><input [(ngModel)]="filterProjectId" class="form-control" name="filterProjectId"
+												 placeholder="Filter"
+												 style="width: 110px;"
+												 (ngModelChange)="applyFilter();"
+												 type="text">
+							</td>
+							<td><input [(ngModel)]="filterProjectName" class="form-control" id="filter_project_name"
+												 name="filterProjectName" placeholder="Filter"
+												 style="width: 110px;"
+												 (ngModelChange)="applyFilter();"
+												 type="text">
+							</td>
+							<td></td>
+							<td>
+								<div>
+									<div class="checkbox col-sm">
+										<label>
+											<input (change)="changeFilterStatus(project_states[project_states.ACTIVE]);applyFilter();"
+														 [checked]="filterstatus_list[project_states[project_states.ACTIVE]]"
+														 type="checkbox"/>
+											<span class="badge bg-success"
+														style="margin-left: 5px">{{project_states[project_states.ACTIVE]}} </span>
+
+										</label>
+									</div>
+									<div class="checkbox col-sm">
+										<label>
+											<input (change)="changeFilterStatus(project_states[project_states.SUSPENDED]);applyFilter();"
+														 [checked]="filterstatus_list[project_states[project_states.SUSPENDED]]"
+														 type="checkbox"/>
+											<span class="badge bg-warning"
+														style="margin-left: 5px">{{project_states[project_states.SUSPENDED]}} </span>
+										</label>
+									</div>
+
+									<div class="checkbox col-sm">
+										<label>
+											<input (change)="changeFilterStatus(lifetime_states[lifetime_states.EXPIRED]);applyFilter();"
+														 [checked]="filterstatus_list[lifetime_states[lifetime_states.EXPIRED]]"
+														 type="checkbox"
+											/>
+											<span class="badge bg-danger"
+														style="margin-left: 5px">{{lifetime_states[lifetime_states.EXPIRED]}}</span>
+
+										</label>
+									</div>
+									<div class="checkbox col-sm">
+										<label>
+											<input (change)="changeFilterStatus(lifetime_states[lifetime_states.EXPIRES_SOON]);applyFilter();"
+														 [checked]="filterstatus_list[lifetime_states[lifetime_states.EXPIRES_SOON]]"
+														 type="checkbox"
 
 
-                  <div class="checkbox col-sm">
-                    <label>
-                      <input type="checkbox"
-                             (change)="changeFilterStatus(application_states[application_states.WAIT_FOR_CONFIRMATION]);applyFilter();"
-                             [checked]="filterstatus_list[application_states[application_states.WAIT_FOR_CONFIRMATION]]"
-                      />
+											/>
+											<span class="badge bg-warning"
+														style="margin-left: 5px">{{lifetime_states[lifetime_states.EXPIRES_SOON]}}</span>
+										</label>
+									</div>
 
 
-                      <span style="margin-left: 5px"
-                            class="badge bg-info">{{application_states[application_states.WAIT_FOR_CONFIRMATION]}}</span>
-                    </label>
-                  </div>
-                  <div class="checkbox col-sm">
-                    <label>
-                      <input type="checkbox"
-                             (change)="changeFilterStatus(application_states[application_states.TERMINATION_REQUESTED]);applyFilter();"
-                             [checked]="filterstatus_list[application_states[application_states.TERMINATION_REQUESTED]]"
+									<div class="checkbox col-sm">
+										<label>
+											<input (change)="changeFilterStatus(application_states[application_states.WAIT_FOR_CONFIRMATION]);applyFilter();"
+														 [checked]="filterstatus_list[application_states[application_states.WAIT_FOR_CONFIRMATION]]"
+														 type="checkbox"
+											/>
 
-                      />
-                      <span style="margin-left: 5px"
-                            class="badge bg-dark">{{application_states[application_states.TERMINATION_REQUESTED]}}</span>
-                    </label>
-                  </div>
-                  <div class="checkbox col-sm">
-                    <label>
-                      <input type="checkbox"
-                             (change)="changeFilterStatus(application_states[application_states.WAIT_FOR_TERMINATION_FM]);applyFilter();"
-                             [checked]="filterstatus_list[application_states[application_states.WAIT_FOR_TERMINATION_FM]]"
 
-                      />
-                      <span style="margin-left: 5px"
-                            class="badge bg-dark">{{application_states[application_states.WAIT_FOR_TERMINATION_FM]}}</span>
-                    </label>
-                  </div>
-                </div>
+											<span class="badge bg-info"
+														style="margin-left: 5px">{{application_states[application_states.WAIT_FOR_CONFIRMATION]}}</span>
+										</label>
+									</div>
+									<div class="checkbox col-sm">
+										<label>
+											<input (change)="changeFilterStatus(application_states[application_states.TERMINATION_REQUESTED]);applyFilter();"
+														 [checked]="filterstatus_list[application_states[application_states.TERMINATION_REQUESTED]]"
+														 type="checkbox"
 
-              </td>
-              <tr *ngFor="let project of projects_filtered">
-                <td>
-                                     <span *ngIf="project?.OpenStackProject"
-                                           style="font-size: 20px"
-                                           class="project-openstack_plain_white_redbg"
-                                           data-toggle="tooltip"
-                                           title="This is an Openstack project">
+											/>
+											<span class="badge bg-dark"
+														style="margin-left: 5px">{{application_states[application_states.TERMINATION_REQUESTED]}}</span>
+										</label>
+									</div>
+									<div class="checkbox col-sm">
+										<label>
+											<input (change)="changeFilterStatus(application_states[application_states.WAIT_FOR_TERMINATION_FM]);applyFilter();"
+														 [checked]="filterstatus_list[application_states[application_states.WAIT_FOR_TERMINATION_FM]]"
+														 type="checkbox"
+
+											/>
+											<span class="badge bg-dark"
+														style="margin-left: 5px">{{application_states[application_states.WAIT_FOR_TERMINATION_FM]}}</span>
+										</label>
+									</div>
+								</div>
+
+							</td>
+							<tr *ngFor="let project of projects_filtered">
+								<td>
+                                     <span *ngIf="project?.project_application_openstack_project"
+																					 class="project-openstack_plain_white_redbg"
+																					 data-toggle="tooltip"
+																					 style="font-size: 20px"
+																					 title="This is an Openstack project">
                                                 <span class="path1"></span>
                                                 <span class="path2"></span>
                                   </span>
-                  <span *ngIf="!project?.OpenStackProject"
-                        style="font-size: 20px"
-                        class="project-simpleVM_Logo_bluebg"
-                        data-toggle="tooltip"
-                        title="This is a Simple VM project">
+									<span *ngIf="!project?.project_application_openstack_project"
+												class="project-simpleVM_Logo_bluebg"
+												data-toggle="tooltip"
+												style="font-size: 20px"
+												title="This is a Simple VM project">
                       <span class="path1"></span>
                       <span class="path2"></span>
                       <span class="path3"></span>
                       <span class="path4"></span>
                       <span class="path5"></span>
                     </span>
-                </td>
-                <td>{{project?.ComputeCenter?.Name}}</td>
-                <td>{{ project.Id }}</td>
-                <td>{{ project.Name }}
-                </td>
+								</td>
+								<td>{{project?.project_application_compute_center?.Name}}</td>
+								<td>{{ project.project_application_perun_id }}</td>
+								<td>{{ project.perun_name }}
+								</td>
 
-                <td>
-                  <button class="btn btn-secondary"
-                          (click)="selectedProject=project;infoModal.show();">
-                    Show Details
-                  </button>
-                </td>
-                <td>  <span *ngIf="project | hasstatusinlist:project_states.ACTIVE"
-                            style="margin-left: 5px"
-                            class="badge bg-success">{{project_states[project_states.ACTIVE]}} </span>
-                  <span *ngIf="(project?.LifetimeReached | hasStatus:lifetime_states.EXPIRED) && !(project | hasstatusinlist: application_states.WAIT_FOR_CONFIRMATION)"
-                        style="margin-left: 5px"
-                        class="badge bg-danger">{{lifetime_states[lifetime_states.EXPIRED]}} </span>
-                  <span *ngIf="project?.LifetimeReached | hasStatus:lifetime_states.EXPIRES_SOON"
-                        style="margin-left: 5px"
-                        class="badge bg-warning">{{lifetime_states[lifetime_states.EXPIRES_SOON]}}</span>
-                  <span *ngIf="project| hasstatusinlist: project_states.SUSPENDED"
-                        style="margin-left: 5px"
-                        class="badge bg-warning">{{project_states[project_states.SUSPENDED]}} </span>
-                  <span
-                    *ngIf="project | hasstatusinlist:application_states.WAIT_FOR_CONFIRMATION"
-                    style="margin-left: 5px"
-                    class="badge bg-info">WAIT FOR CONFIRMATION </span>
-                  <span
-                    *ngIf="project | hasstatusinlist: application_states.TERMINATION_REQUESTED"
-                    style="margin-left: 5px"
-                    class="badge bg-dark">TERMINATION REQUESTED </span>
-                  <span
-                    *ngIf="project | hasstatusinlist: application_states.WAIT_FOR_TERMINATION_FM"
-                    style="margin-left: 5px"
-                    class="badge bg-dark">WAIT FOR TERMINATION BY FM </span>
-                  <span
-                    *ngIf="project | hasstatusinlist: application_states.PROTECTED"
-                    style="margin-left: 5px"
-                    class="badge bg-secondary">PROTECTED </span>
+								<td>
+									<button (click)="selectedProject=project;infoModal.show();"
+													class="btn btn-secondary">
+										Show Details
+									</button>
+								</td>
+								<td>  <span *ngIf="project | hasstatusinlist:project_states.ACTIVE"
+														class="badge bg-success"
+														style="margin-left: 5px">{{project_states[project_states.ACTIVE]}} </span>
+									<span
+										*ngIf="(project?.lifetime_reached | hasStatus:lifetime_states.EXPIRED) && !(project | hasstatusinlist: application_states.WAIT_FOR_CONFIRMATION)"
+										class="badge bg-danger"
+										style="margin-left: 5px">{{lifetime_states[lifetime_states.EXPIRED]}} </span>
+									<span *ngIf="project?.lifetime_reached | hasStatus:lifetime_states.EXPIRES_SOON"
+												class="badge bg-warning"
+												style="margin-left: 5px">{{lifetime_states[lifetime_states.EXPIRES_SOON]}}</span>
+									<span *ngIf="project| hasstatusinlist: project_states.SUSPENDED"
+												class="badge bg-warning"
+												style="margin-left: 5px">{{project_states[project_states.SUSPENDED]}} </span>
+									<span
+										*ngIf="project | hasstatusinlist:application_states.WAIT_FOR_CONFIRMATION"
+										class="badge bg-info"
+										style="margin-left: 5px">WAIT FOR CONFIRMATION </span>
+									<span
+										*ngIf="project | hasstatusinlist: application_states.TERMINATION_REQUESTED"
+										class="badge bg-dark"
+										style="margin-left: 5px">TERMINATION REQUESTED </span>
+									<span
+										*ngIf="project | hasstatusinlist: application_states.WAIT_FOR_TERMINATION_FM"
+										class="badge bg-dark"
+										style="margin-left: 5px">WAIT FOR TERMINATION BY FM </span>
+									<span
+										*ngIf="project | hasstatusinlist: application_states.PROTECTED"
+										class="badge bg-secondary"
+										style="margin-left: 5px">PROTECTED </span>
 
-                </td>
+								</td>
 
-                <td>
-                  {{project.CurrentCredits}}/{{project.ApprovedCredits}}
-                </td>
+								<td>
+									{{project.project_application_current_credits}}/{{project.project_application_initial_credits}}
+								</td>
 
-                <td>
-                  <div class="btn-group-vertical btn-group-xs">
-                    <button type="button" class="btn btn-info" style="margin-left: 5px;margin-bottom: 5px;"
-                            data-toggle="modal"
-                            (click)="showMembersOfTheProject(project.Id, project.Name); usersModal.show(); "
+								<td>
+									<div class="btn-group-vertical btn-group-xs">
+										<button (click)="showMembersOfTheProject(project.project_application_perun_id, project.perun_name); usersModal.show(); " class="btn btn-info" data-toggle="modal"
+														style="margin-left: 5px;margin-bottom: 5px;"
+														type="button"
 
-                    >
-                      <i class="fa fa-users"></i>&nbsp;Show Members
-                    </button>
-                    <button *ngIf="project | hasstatusinlist: project_states.ACTIVE"
-                            style="margin-left: 5px;margin-bottom: 5px"
-                            type="button"
-                            class="btn btn-warning"
-                            (click)="selectedProject = project;suspendModal.show();"
+										>
+											<i class="fa fa-users"></i>&nbsp;Show Members
+										</button>
+										<button (click)="selectedProject = project;suspendModal.show();"
+														*ngIf="project | hasstatusinlist: project_states.ACTIVE"
+														class="btn btn-warning"
+														style="margin-left: 5px;margin-bottom: 5px"
+														type="button"
 
-                    >
-                      <i class="fa fa-pause"></i>&nbsp;Suspend Project
-                    </button>
+										>
+											<i class="fa fa-pause"></i>&nbsp;Suspend Project
+										</button>
 
-                    <button *ngIf="project | hasstatusinlist: project_states.SUSPENDED" style="margin-left: 5px"
-                            type="button"
-                            class="btn btn-success"
-                            (click)="selectedProject = project;resumeModal.show();"
+										<button (click)="selectedProject = project;resumeModal.show();" *ngIf="project | hasstatusinlist: project_states.SUSPENDED"
+														class="btn btn-success"
+														style="margin-left: 5px"
+														type="button"
 
-                    >
-                      <i class="fa fa-play"></i>&nbsp;Resume Project
-                    </button>
-                    <button
-                      style="margin-left: 5px"
-                      type="button"
-                      class="btn btn-danger" [id]="'show_terminate_' + project?.Id"
-                      (click)="selectedProject = project;terminateModal.show();"
-                      *ngIf="!(project | hasstatusinlist: application_states.WAIT_FOR_TERMINATION_FM)">
-                      <i class="fa fa-trash"></i>&nbsp;Terminate Project
-                    </button>
-                    <button
-                      style="margin-left: 5px" type="button" disabled
-                      class="btn btn-warning" [id]="'show_terminate_' + project?.Id"
-                      (click)="selectedProject = project;terminateModal.show();"
-                      *ngIf="project | hasstatusinlist: application_states.WAIT_FOR_TERMINATION_FM">
-                      Processed by FM
-                    </button>
-                    <button
-                      style="margin-left: 5px"
-                      type="button"
-                      class="btn btn-info" [id]="'set_protected_' + project?.Id"
-                      (click)="setProtected(project, true); notificationModal.show();"
-                      *ngIf="!(project | hasstatusinlist: application_states.PROTECTED)">
-                      <i class="fa fa-trash"></i>&nbsp;Set Protected
-                    </button>
-                    <button
-                      style="margin-left: 5px"
-                      type="button"
-                      class="btn btn-info" [id]="'set_unprotected_' + project?.Id"
-                      (click)="setProtected(project, false); notificationModal.show();"
-                      *ngIf="(project | hasstatusinlist: application_states.PROTECTED)">
-                      <i class="fa fa-trash"></i>&nbsp;Set Unprotected
-                    </button>
-                  </div>
-                </td>
-              </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!--/.col-->
-  </div>
+										>
+											<i class="fa fa-play"></i>&nbsp;Resume Project
+										</button>
+										<button
+											(click)="selectedProject = project;terminateModal.show();"
+											*ngIf="!(project | hasstatusinlist: application_states.WAIT_FOR_TERMINATION_FM)"
+											[id]="'show_terminate_' + project?.project_application_perun_id" class="btn btn-danger"
+											style="margin-left: 5px"
+											type="button">
+											<i class="fa fa-trash"></i>&nbsp;Terminate Project
+										</button>
+										<button
+											(click)="selectedProject = project;terminateModal.show();" *ngIf="project | hasstatusinlist: application_states.WAIT_FOR_TERMINATION_FM" [id]="'show_terminate_' + project?.project_application_perun_id"
+											class="btn btn-warning" disabled
+											style="margin-left: 5px"
+											type="button">
+											Processed by FM
+										</button>
+										<button
+											(click)="setProtected(project, true); notificationModal.show();"
+											*ngIf="!(project | hasstatusinlist: application_states.PROTECTED)"
+											[id]="'set_protected_' + project?.project_application_perun_id" class="btn btn-info"
+											style="margin-left: 5px"
+											type="button">
+											<i class="fa fa-trash"></i>&nbsp;Set Protected
+										</button>
+										<button
+											(click)="setProtected(project, false); notificationModal.show();"
+											*ngIf="(project | hasstatusinlist: application_states.PROTECTED)"
+											[id]="'set_unprotected_' + project?.project_application_perun_id" class="btn btn-info"
+											style="margin-left: 5px"
+											type="button">
+											<i class="fa fa-trash"></i>&nbsp;Set Unprotected
+										</button>
+									</div>
+								</td>
+							</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--/.col-->
+	</div>
 </div>
 
 
-<div bsModal #usersModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
-     aria-labelledby="Label"
-     aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Members of the Project {{ usersModalProjectID }}
-          ({{ usersModalProjectName }})</h4>
-        <button type="button" class="close" style="cursor: pointer"
-                (click)="usersModal.hide()"
-                aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="table-responsive">
-          <table class="table table-hover" style="word-wrap: break-word;table-layout: fixed">
-            <thead>
-            <tr>
-              <th>User ID</th>
-              <th>Member ID</th>
-              <th>Elixir ID</th>
-              <th>Email</th>
-              <th>Full Name</th>
+<div #usersModal="bs-modal" aria-hidden="true" aria-labelledby="Label" bsModal class="modal fade"
+		 role="dialog"
+		 tabindex="-1">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Members of the Project {{ usersModalProjectID }}
+					({{ usersModalProjectName }})</h4>
+				<button (click)="usersModal.hide()" aria-label="Close" class="close"
+								style="cursor: pointer"
+								type="button">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="table-responsive">
+					<table class="table table-hover" style="word-wrap: break-word;table-layout: fixed">
+						<thead>
+						<tr>
+							<th>User ID</th>
+							<th>Member ID</th>
+							<th>Elixir ID</th>
+							<th>Email</th>
+							<th>Full Name</th>
 
-            </tr>
-            </thead>
-            <tbody>
-            <tr *ngFor="let member of usersModalProjectMembers">
-              <td>{{ member.userId }}</td>
-              <td>{{ member.memberId }}</td>
-              <td>{{ member.elixirId}}</td>
-              <td>{{member.email}}</td>
-              <td>{{ member.userName }}</td>
-            </tr>
+						</tr>
+						</thead>
+						<tbody>
+						<tr *ngFor="let member of usersModalProjectMembers">
+							<td>{{ member.userId }}</td>
+							<td>{{ member.memberId }}</td>
+							<td>{{ member.elixirId}}</td>
+							<td>{{member.email}}</td>
+							<td>{{ member.userName }}</td>
+						</tr>
 
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="usersModal.hide()">Close
-        </button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button (click)="usersModal.hide()" class="btn btn-secondary" type="button">Close
+				</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
 
-<div bsModal #emailModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
-     aria-labelledby="Label"
-     aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title"> {{emailHeader}}</h4>
-        <button type="button" class="close" style="cursor: pointer;"
-                (click)="emailModal.hide()"
-                aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form class="form-horizontal" id="email_form" #f="ngForm">
+<div #emailModal="bs-modal" aria-hidden="true" aria-labelledby="Label" bsModal class="modal fade"
+		 role="dialog"
+		 tabindex="-1">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title"> {{emailHeader}}</h4>
+				<button (click)="emailModal.hide()" aria-label="Close" class="close"
+								style="cursor: pointer;"
+								type="button">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form #f="ngForm" class="form-horizontal" id="email_form">
 
 
-          <div class="form-group row" *ngIf="emailType === 0">
-            <label
-              class="col-md-12 control-label"><strong>Which facility should receive the email?</strong></label>
-            <div class="col-md-12">
-              <select class="form-control form-select" [(ngModel)]="selectedFacility"
-                      name="selectedFacility" id="selectedFacility">
-                <option value="ALL"> All
-                <option *ngFor="let cc of computecenters" [ngValue]="cc.FacilityId">
-                  {{cc.Name}}
-                </option>
+					<div *ngIf="emailType === 0" class="form-group row">
+						<label
+							class="col-md-12 control-label"><strong>Which facility should receive the email?</strong></label>
+						<div class="col-md-12">
+							<select [(ngModel)]="selectedFacility" class="form-control form-select"
+											id="selectedFacility" name="selectedFacility">
+								<option value="ALL"> All
+								<option *ngFor="let cc of computecenters" [ngValue]="cc.FacilityId">
+									{{cc.Name}}
+								</option>
 
-              </select></div>
-          </div>
+							</select></div>
+					</div>
 
-          <div class="form-group row">
-            <label
-              class="col-md-12 control-label"><strong>Which project members should receive the email?</strong></label>
-            <div class="col-md-12">
-              <select class="form-control form-select" [(ngModel)]="selectedProjectType"
-                      name="selectedProjectType" id="selectedProjectType">
-                <option value="ALL" selected> All
-                </option>
-                <option value="ALL_GM">
-                  All active Group Members
-                </option>
-                <option value="SVP">
-                  Simple VM
-                </option>
-                <option value="OVP">
-                  OpenStack
-                </option>
+					<div class="form-group row">
+						<label
+							class="col-md-12 control-label"><strong>Which project members should receive the email?</strong></label>
+						<div class="col-md-12">
+							<select [(ngModel)]="selectedProjectType" class="form-control form-select"
+											id="selectedProjectType" name="selectedProjectType">
+								<option selected value="ALL"> All
+								</option>
+								<option value="ALL_GM">
+									All active Group Members
+								</option>
+								<option value="SVP">
+									Simple VM
+								</option>
+								<option value="OVP">
+									OpenStack
+								</option>
 
-              </select></div>
-          </div>
-          <div class="form-group row"
-               [ngClass]="{'has-danger':emailSub.invalid && (emailSub.dirty || emailSub.touched),
+							</select></div>
+					</div>
+					<div [ngClass]="{'has-danger':emailSub.invalid && (emailSub.dirty || emailSub.touched),
                     'has-success':emailSub.valid && (emailSub.dirty || emailSub.touched)
-                    }">
-            <label class="col-md-12 control-label"><strong>Email
-              subject*</strong></label>
-            <div class="col-md-12">
-              <input required id="emailSubject" name="emailSub" placeholder="Subject"
-                     class="form-control"
-                     type="text" [(ngModel)]="emailSubject" minlength="1"
-                     #emailSub="ngModel"
-                     [ngClass]="{'is-invalid':emailSub.invalid && (emailSub.dirty || emailSub.touched),
+                    }"
+							 class="form-group row">
+						<label class="col-md-12 control-label"><strong>Email
+							subject*</strong></label>
+						<div class="col-md-12">
+							<input #emailSub="ngModel" [(ngModel)]="emailSubject" [ngClass]="{'is-invalid':emailSub.invalid && (emailSub.dirty || emailSub.touched),
                     'is-valid':emailSub.valid && (emailSub.dirty || emailSub.touched)
-                    }">
+                    }" class="form-control"
+										 id="emailSubject"
+										 minlength="1" name="emailSub" placeholder="Subject"
+										 required
+										 type="text">
 
-            </div>
-          </div>
+						</div>
+					</div>
 
-          <div class="form-group row">
-            <label class="col-md-12 control-label"><strong>Reply to (optional)</strong></label>
-            <div class="col-md-12">
-              <input id="reply_to" name="emailReply" placeholder=""
-                     class="form-control"
-                     type="text" [(ngModel)]="emailReply" #emailRep="ngModel"
-                     pattern="(?!(^[.-].*|[^@]*[.-]@|.*\.{2,}.*)|^.{254}.)([a-zA-Z0-9!#$%&'*+\/=?^_`{|}~.-]+@)(?!-.*|.*-\.)([a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,15}"
-                     [ngClass]="{'is-invalid':emailRep.invalid && (emailRep.dirty || emailRep.touched),
+					<div class="form-group row">
+						<label class="col-md-12 control-label"><strong>Reply to (optional)</strong></label>
+						<div class="col-md-12">
+							<input #emailRep="ngModel" [(ngModel)]="emailReply" [ngClass]="{'is-invalid':emailRep.invalid && (emailRep.dirty || emailRep.touched),
                     'is-valid':emailRep.valid && (emailRep.dirty || emailRep.touched)
-                    }">
+                    }"
+										 class="form-control"
+										 id="reply_to" name="emailReply" pattern="(?!(^[.-].*|[^@]*[.-]@|.*\.{2,}.*)|^.{254}.)([a-zA-Z0-9!#$%&'*+\/=?^_`{|}~.-]+@)(?!-.*|.*-\.)([a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,15}"
+										 placeholder=""
+										 type="text">
 
-            </div>
-          </div>
-          <!-- Textarea -->
-          <div class="form-group row">
-            <label class="col-md-12 control-label"><strong>Email text*</strong></label>
-            <div class="col-md-12">
-                            <textarea minlength="1" required class="form-control" id="emailText"
-                                      name="emailText"
-                                      [(ngModel)]="emailText"
-                                      type="text" #emailT="ngModel"
-                                      [ngClass]="{'is-invalid':emailT.invalid && (emailT.dirty || emailT.touched),
+						</div>
+					</div>
+					<!-- Textarea -->
+					<div class="form-group row">
+						<label class="col-md-12 control-label"><strong>Email text*</strong></label>
+						<div class="col-md-12">
+                            <textarea #emailT="ngModel" [(ngModel)]="emailText" [ngClass]="{'is-invalid':emailT.invalid && (emailT.dirty || emailT.touched),
                     'is-valid':emailT.valid && (emailT.dirty || emailT.touched)
-                    }"></textarea>
-            </div>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" [disabled]="f.invalid" class="btn btn-primary"
-                (click)="emailModal.hide(); verifyModal.show()">Send email
-        </button>
-        <button type="button" class="btn btn-secondary"
-                (click)="emailModal.hide();resetEmailModal()">Close
-        </button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
+                    }" class="form-control"
+																			id="emailText"
+																			minlength="1"
+																			name="emailText" required
+																			type="text"></textarea>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button (click)="emailModal.hide(); verifyModal.show()" [disabled]="f.invalid" class="btn btn-primary"
+								type="button">Send email
+				</button>
+				<button (click)="emailModal.hide();resetEmailModal()" class="btn btn-secondary"
+								type="button">Close
+				</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-<div bsModal #verifyModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
-     aria-labelledby="Label"
-     aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Send email</h4>
-        <button type="button" class="close" style="cursor:pointer"
-                (click)="verifyModal.hide()"
-                aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
+<div #verifyModal="bs-modal" aria-hidden="true" aria-labelledby="Label" bsModal class="modal fade"
+		 role="dialog"
+		 tabindex="-1">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Send email</h4>
+				<button (click)="verifyModal.hide()" aria-label="Close" class="close"
+								style="cursor:pointer"
+								type="button">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
 
-        <div class="alert alert-warning" role="alert">
-          {{emailVerify}}
-        </div>
+				<div class="alert alert-warning" role="alert">
+					{{emailVerify}}
+				</div>
 
-      </div>
-      <div class="modal-footer">
-        <button class="btn  btn-success col-md-4"
-                (click)="sendEmail(emailSubject,emailText,emailReply);verifyModal.hide();f.reset();resetEmailModal();successModal.show()">
-          Yes
-        </button>
-        <button class="btn  btn-danger col-md-4" type="reset"
-                (click)="verifyModal.hide();emailModal.show()">Cancel
-        </button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
+			</div>
+			<div class="modal-footer">
+				<button (click)="sendEmail(emailSubject,emailText,emailReply);verifyModal.hide();f.reset();resetEmailModal();successModal.show()"
+								class="btn  btn-success col-md-4">
+					Yes
+				</button>
+				<button (click)="verifyModal.hide();emailModal.show()" class="btn  btn-danger col-md-4"
+								type="reset">Cancel
+				</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-<div bsModal #suspendModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
-     aria-labelledby="Label"
-     aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Suspend Project {{selectedProject?.Name}}</h4>
-        <button type="button" class="close" style="cursor:pointer"
-                (click)="suspendModal.hide()"
-                aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
+<div #suspendModal="bs-modal" aria-hidden="true" aria-labelledby="Label" bsModal class="modal fade"
+		 role="dialog"
+		 tabindex="-1">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Suspend Project {{selectedProject?.perun_name}}</h4>
+				<button (click)="suspendModal.hide()" aria-label="Close" class="close"
+								style="cursor:pointer"
+								type="button">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
 
-        Are you sure you want to suspend {{selectedProject?.Name}} ?
+				Are you sure you want to suspend {{selectedProject?.perun_name}} ?
 
-      </div>
-      <div class="modal-footer">
-        <button class="btn  btn-success col-md-4"
-                (click)="suspendProject(selectedProject);suspendModal.hide()">
-          Yes
-        </button>
-        <button class="btn  btn-danger col-md-4" type="reset"
-                (click)="suspendModal.hide();">Cancel
-        </button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-
-
-<div bsModal #resumeModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
-     aria-labelledby="Label"
-     aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Resume Project {{selectedProject?.Name}}</h4>
-        <button type="button" class="close" style="cursor:pointer"
-                (click)="resumeModal.hide()"
-                aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-
-        Are you sure you want to resume {{selectedProject?.Name}} ?
-
-      </div>
-      <div class="modal-footer">
-        <button class="btn  btn-success col-md-4"
-                (click)="resumeProject(selectedProject);resumeModal.hide()">
-          Yes
-        </button>
-        <button class="btn  btn-danger col-md-4" type="reset"
-                (click)="resumeModal.hide();">Cancel
-        </button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-
-<div bsModal #successModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
-     aria-labelledby="Label"
-     aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title" *ngIf="emailStatus === 0"> Waiting </h4>
-        <h4 class="modal-title" *ngIf="emailStatus === 1"> Success </h4>
-        <h4 class="modal-title" *ngIf="emailStatus === 2"> Error </h4>
-        <button type="button" class="close" style="cursor:pointer"
-                (click)="successModal.hide()"
-                aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="alert alert-primary" role="alert" *ngIf="emailStatus === 0">
-          Sending the email. <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
-        </div>
-        <div class="alert alert-success" role="alert" *ngIf="emailStatus === 1">
-          The email has been send successfully.
-        </div>
-      </div>
-      <div class="alert alert-warning" role="alert" *ngIf="emailStatus === 2">
-        when sending the email an error has occurred.
-      </div>
-
-
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="successModal.hide()">
-          Close
-        </button>
-      </div>
-
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
+			</div>
+			<div class="modal-footer">
+				<button (click)="suspendProject(selectedProject);suspendModal.hide()"
+								class="btn  btn-success col-md-4">
+					Yes
+				</button>
+				<button (click)="suspendModal.hide();" class="btn  btn-danger col-md-4"
+								type="reset">Cancel
+				</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
 
-<div bsModal #descriptionModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
-     aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-info" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Description</h4>
-        <button type="button" class="close" style="cursor: pointer"
-                (click)="descriptionModal.hide()"
-                aria-label="Close">
+<div #resumeModal="bs-modal" aria-hidden="true" aria-labelledby="Label" bsModal class="modal fade"
+		 role="dialog"
+		 tabindex="-1">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Resume Project {{selectedProject?.perun_name}}</h4>
+				<button (click)="resumeModal.hide()" aria-label="Close" class="close"
+								style="cursor:pointer"
+								type="button">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
 
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
+				Are you sure you want to resume {{selectedProject?.perun_name}} ?
 
-      <div class="modal-body">
-        <p>{{ selectedProject?.Description }}</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary"
-                (click)="selectedProject=undefined;descriptionModal.hide();">
-          Close
-        </button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
+			</div>
+			<div class="modal-footer">
+				<button (click)="resumeProject(selectedProject);resumeModal.hide()"
+								class="btn  btn-success col-md-4">
+					Yes
+				</button>
+				<button (click)="resumeModal.hide();" class="btn  btn-danger col-md-4"
+								type="reset">Cancel
+				</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div #successModal="bs-modal" aria-hidden="true" aria-labelledby="Label" bsModal class="modal fade"
+		 role="dialog"
+		 tabindex="-1">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 *ngIf="emailStatus === 0" class="modal-title"> Waiting </h4>
+				<h4 *ngIf="emailStatus === 1" class="modal-title"> Success </h4>
+				<h4 *ngIf="emailStatus === 2" class="modal-title"> Error </h4>
+				<button (click)="successModal.hide()" aria-label="Close" class="close"
+								style="cursor:pointer"
+								type="button">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div *ngIf="emailStatus === 0" class="alert alert-primary" role="alert">
+					Sending the email. <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
+				</div>
+				<div *ngIf="emailStatus === 1" class="alert alert-success" role="alert">
+					The email has been send successfully.
+				</div>
+			</div>
+			<div *ngIf="emailStatus === 2" class="alert alert-warning" role="alert">
+				when sending the email an error has occurred.
+			</div>
+
+
+			<div class="modal-footer">
+				<button (click)="successModal.hide()" class="btn btn-secondary" type="button">
+					Close
+				</button>
+			</div>
+
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<div #descriptionModal="bs-modal" aria-hidden="true" aria-labelledby="myModalLabel" bsModal class="modal fade"
+		 role="dialog" tabindex="-1">
+	<div class="modal-dialog modal-info" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Description</h4>
+				<button (click)="descriptionModal.hide()" aria-label="Close" class="close"
+								style="cursor: pointer"
+								type="button">
+
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+
+			<div class="modal-body">
+				<p>{{ selectedProject?.project_application_description }}</p>
+			</div>
+			<div class="modal-footer">
+				<button (click)="selectedProject=undefined;descriptionModal.hide();" class="btn btn-primary"
+								type="button">
+					Close
+				</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
 </div>
 
-<div bsModal #infoModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
-     aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-info modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Details</h4>
-        <button type="button" class="close" style="cursor: pointer"
-                (click)="infoModal.hide()"
-                aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
+<div #infoModal="bs-modal" aria-hidden="true" aria-labelledby="myModalLabel" bsModal class="modal fade"
+		 role="dialog" tabindex="-1">
+	<div class="modal-dialog modal-info modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Details</h4>
+				<button (click)="infoModal.hide()" aria-label="Close" class="close"
+								style="cursor: pointer"
+								type="button">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
 
-      <div class="modal-body">
+			<div class="modal-body">
 
-        <div class="table-responsive">
-          <table class="table table-hover">
-            <thead>
-            <th>Description</th>
-            <th>Date created (d/m/y)</th>
-            <th>Expiration Date (d/m/y)</th>
-            <th>Days running</th>
-            <th>Lifetime in Days</th>
-            </thead>
-            <tbody>
-            <td>
-              <button class="btn btn-secondary"
-                      (click)="infoModal.hide();descriptionModal.show();">Show
-                Description
-              </button>
-            </td>
+				<div class="table-responsive">
+					<table class="table table-hover">
+						<thead>
+						<th>Description</th>
+						<th>Date created (d/m/y)</th>
+						<th>Expiration Date (d/m/y)</th>
+						<th>Days running</th>
+						<th>Lifetime in Days</th>
+						</thead>
+						<tbody>
+						<td>
+							<button (click)="infoModal.hide();descriptionModal.show();"
+											class="btn btn-secondary">Show
+								Description
+							</button>
+						</td>
 
-            <td>
-              <span *ngIf="selectedProject?.DateCreated">{{selectedProject?.DateCreated}}</span>
-              <span *ngIf="!selectedProject?.DateCreated">No creation date available</span>
-            </td>
-            <td>
-              <span *ngIf="selectedProject?.DateEnd">{{selectedProject?.DateEnd}}</span>
-              <span *ngIf="!selectedProject?.DateEnd">No end date available</span>
-            </td>
-            <td>
-              <span *ngIf="selectedProject?.DaysRunning">{{selectedProject?.DaysRunning}}</span>
-              <span *ngIf="!selectedProject?.DaysRunning">No runtime available</span>
-            <td>
-              <span *ngIf="selectedProject?.LifetimeDays">{{selectedProject?.LifetimeDays}}</span>
-              <span *ngIf="!selectedProject?.LifetimeDays">No lifetime available</span>
-            </td>
+						<td>
+							<span
+								*ngIf="selectedProject?.project_application_date_approved">{{selectedProject?.project_application_date_approved}}</span>
+							<span *ngIf="!selectedProject?.project_application_date_approved">No creation date available</span>
+						</td>
+						<td>
+							<span *ngIf="selectedProject?.date_end">{{selectedProject?.date_end}}</span>
+							<span *ngIf="!selectedProject?.date_end">No end date available</span>
+						</td>
+						<td>
+							<span *ngIf="selectedProject?.DaysRunning">{{selectedProject?.DaysRunning}}</span>
+							<span *ngIf="!selectedProject?.DaysRunning">No runtime available</span>
+						<td>
+							<span *ngIf="selectedProject?.lifetime_days">{{selectedProject?.lifetime_days}}</span>
+							<span *ngIf="!selectedProject?.lifetime_days">No lifetime available</span>
+						</td>
 
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary"
-                (click)="selectedProject=undefined;infoModal.hide();">
-          Close
-        </button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button (click)="selectedProject=undefined;infoModal.hide();" class="btn btn-primary"
+								type="button">
+					Close
+				</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
 </div>
 
 
-<div bsModal #terminateModal="bs-modal" class="modal fade" tabindex="-1"
-     role="dialog" aria-labelledby="Label"
-     aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Terminate Project</h4>
-        <button type="button" class="close" style="cursor:pointer"
-                (click)="terminateModal.hide()" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
+<div #terminateModal="bs-modal" aria-hidden="true" aria-labelledby="Label" bsModal
+		 class="modal fade" role="dialog"
+		 tabindex="-1">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Terminate Project</h4>
+				<button (click)="terminateModal.hide()" aria-label="Close" class="close"
+								style="cursor:pointer" type="button">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
 
-        <div class="alert alert-warning" role="alert">
-          Are you sure you want to terminate this project?
-        </div>
-        <app-project-os-details *ngIf="selectedProject" [project]="selectedProject"></app-project-os-details>
-      </div>
-      <div class="modal-footer">
-        <button class="btn  btn-success col-md-4" id="terminate_project_btn"
-                (click)="terminateProject();terminateModal.hide();notificationModal.show();;">
-          Yes
-        </button>
-        <button class="btn  btn-danger col-md-4" type="reset"
-                (click)="terminateModal.hide()">Cancel
-        </button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
+				<div class="alert alert-warning" role="alert">
+					Are you sure you want to terminate this project?
+				</div>
+				<app-project-os-details *ngIf="selectedProject" [project]="selectedProject"></app-project-os-details>
+			</div>
+			<div class="modal-footer">
+				<button (click)="terminateProject();terminateModal.hide();notificationModal.show();;" class="btn  btn-success col-md-4"
+								id="terminate_project_btn">
+					Yes
+				</button>
+				<button (click)="terminateModal.hide()" class="btn  btn-danger col-md-4"
+								type="reset">Cancel
+				</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
 
-<div bsModal #notificationModal="bs-modal" class="modal" tabindex="-1" role="dialog"
-     aria-labelledby="Label"
-     aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title" id="notification_modal_title">{{ notificationModalTitle }}</h4>
-        <button type="button" class="close" style="cursor:pointer"
-                (click)="notificationModal.hide()"
-                aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="alert alert-{{ notificationModalType }}" id="notification_message" role="alert">
-          {{ notificationModalMessage }}
+<div #notificationModal="bs-modal" aria-hidden="true" aria-labelledby="Label" bsModal class="modal"
+		 role="dialog"
+		 tabindex="-1">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="notification_modal_title">{{ notificationModalTitle }}</h4>
+				<button (click)="notificationModal.hide()" aria-label="Close" class="close"
+								style="cursor:pointer"
+								type="button">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="alert alert-{{ notificationModalType }}" id="notification_message" role="alert">
+					{{ notificationModalMessage }}
 
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button id="close_notification"
-                type="button"
-                (click)="notificationModal.hide();resetNotificationModal();removeModalOpen();"
-                class="btn  btn-secondary"> Close
-        </button>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button (click)="notificationModal.hide();resetNotificationModal();removeModalOpen();"
+								class="btn  btn-secondary"
+								id="close_notification"
+								type="button"> Close
+				</button>
 
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
 

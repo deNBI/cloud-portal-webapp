@@ -9,7 +9,7 @@
           </button>
         </div>
         <div class="col-md-8" style="margin-bottom: 10px;"><select [(ngModel)]="selectedFacility"
-                                                                   (ngModelChange)="onChangeSelectedFacility($event)"
+                                                                   (ngModelChange)="onChangeSelectedFacility()"
                                                                    class="form-control form-select" name="selectedFacility">
           <option *ngFor="  let facility of managerFacilities" [ngValue]="facility">
             {{facility['Facility']}}
@@ -34,7 +34,7 @@
           </button>
         </div>
         <div class="col-md-8" style="margin-bottom: 10px;"><select [(ngModel)]="selectedFacility"
-                                                                   (ngModelChange)="onChangeSelectedFacility($event)"
+                                                                   (ngModelChange)="onChangeSelectedFacility()"
                                                                    class="form-control form-select" name="selectedFacility">
           <option *ngFor="  let facility of managerFacilities" [ngValue]="facility">
             {{facility['Facility']}}
@@ -112,7 +112,7 @@
               <tr *ngFor="let project of projects_filtered">
 
                 <td>
-                                     <span *ngIf="project?.OpenStackProject"
+                                     <span *ngIf="project?.project_application_openstack_project"
                                            style="font-size: 20px"
                                            class="project-openstack_plain_white_redbg"
                                            data-toggle="tooltip"
@@ -120,7 +120,7 @@
                                                 <span class="path1"></span>
                                                 <span class="path2"></span>
                                   </span>
-                  <span *ngIf="!project?.OpenStackProject"
+                  <span *ngIf="!project?.project_application_openstack_project"
                         style="font-size: 20px"
                         class="project-simpleVM_Logo_bluebg"
                         data-toggle="tooltip"
@@ -132,18 +132,18 @@
                       <span class="path5"></span>
                     </span>
                 </td>
-                <td class="col-md-1">{{ project.Id }}</td>
-                <td class="col-md-2">{{ project.Name }}
+                <td class="col-md-1">{{ project.project_application_perun_id }}</td>
+                <td class="col-md-2">{{ project.perun_name }}
                 </td>
-                <td class="col-md-4"><span style="word-break: break-all">{{ project.RealName}}</span>
+                <td class="col-md-4"><span style="word-break: break-all">{{ project.project_application_name}}</span>
                 </td>
                 <td>  <span *ngIf="project | hasstatusinlist:project_states.ACTIVE"
                             style="margin-left: 5px"
                             class="badge bg-success">{{project_states[project_states.ACTIVE]}} </span>
-                  <span *ngIf="project?.LifetimeReached | hasStatus:lifetime_states.EXPIRED"
+                  <span *ngIf="project?.lifetime_reached | hasStatus:lifetime_states.EXPIRED"
                         style="margin-left: 5px"
                         class="badge bg-danger">{{lifetime_states[lifetime_states.EXPIRED]}} </span>
-                  <span *ngIf="project?.LifetimeReached |hasStatus:lifetime_states.EXPIRES_SOON"
+                  <span *ngIf="project?.lifetime_reached |hasStatus:lifetime_states.EXPIRES_SOON"
                         style="margin-left: 5px"
                         class="badge bg-warning">{{lifetime_states[lifetime_states.EXPIRES_SOON]}}</span>
                   <span *ngIf="project | hasstatusinlist: application_states.WAIT_FOR_TERMINATION_FM "
@@ -151,7 +151,7 @@
                         class="badge bg-warning">{{application_states[application_states.WAIT_FOR_TERMINATION_FM]}}</span>
                 <td class="col-md-2">
                   <button class="btn btn-secondary"
-                          (click)="getProjectLifetime(project);selectedProject=project;infoModal.show();">
+                          (click)="getProjectLifetime();selectedProject=project;infoModal.show();">
                     Show Details
                   </button>
                 </td>
@@ -164,7 +164,7 @@
                 <td class="col-md-2">
                     <button type="button" class="btn btn-secondary"
                             data-toggle="modal"
-                            (click)="showMembersOfTheProject(project.Id, project.Name); usersModal.show();">
+                            (click)="showMembersOfTheProject(project.project_application_perun_id, project.perun_name); usersModal.show();">
                       <i class="fa fa-users"></i>&nbsp;Show Members
                     </button>
                 </td>
@@ -258,8 +258,8 @@
                   <option value="OVP">OpenStack</option>
                   <option value="SVP">Simple VM</option>
                   <option value="USER" selected>Specific User</option>
-                  <option *ngFor="let project of projects " value="{{project?.Id}}">
-                    {{project?.Name}} ({{project?.Id}})
+                  <option *ngFor="let project of projects " value="{{project?.project_application_perun_id}}">
+                    {{project?.perun_name}} ({{project?.project_application_perun_id}})
                   </option>
 
 
@@ -553,7 +553,7 @@
       </div>
 
       <div class="modal-body">
-        <p>{{ selectedProject?.Description }}</p>
+        <p>{{ selectedProject?.project_application_description }}</p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary"
@@ -600,10 +600,10 @@
               </button>
             </td>
 
-            <td>{{ selectedProject?.DateCreated }}</td>
-            <td>{{selectedProject?.DateEnd}}</td>
+            <td>{{ selectedProject?.project_application_date_approved }}</td>
+            <td>{{selectedProject?.date_end}}</td>
             <td>{{ selectedProject?.DaysRunning }}</td>
-            <td>{{selectedProject?.LifetimeDays}}</td>
+            <td>{{selectedProject?.lifetime_days}}</td>
             <td>
             </tbody>
           </table>

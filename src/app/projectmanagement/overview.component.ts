@@ -1,17 +1,15 @@
 import {
-	Component, ElementRef, Inject, Input, OnDestroy, OnInit, Renderer2, ViewChild,
+	Component, ElementRef, Inject, OnDestroy, OnInit, Renderer2, ViewChild,
 } from '@angular/core';
 import * as moment from 'moment';
 import { forkJoin, Observable, Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NgForm } from '@angular/forms';
 import { AutocompleteComponent } from 'angular-ng-autocomplete';
 import { DOCUMENT } from '@angular/common';
 import { Chart } from 'chart.js';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { environment } from '../../environments/environment';
 import { ProjectMemberApplication } from './project_member_application';
-import { ComputecenterComponent } from './computecenter.component';
 import { Userinfo } from '../userinfo/userinfo.model';
 import { UserService } from '../api-connector/user.service';
 import { Application } from '../applications/application.model/application.model';
@@ -26,13 +24,19 @@ import { FlavorService } from '../api-connector/flavor.service';
 import { CreditsService } from '../api-connector/credits.service';
 import { is_vo } from '../shared/globalvar';
 import {
-	CLOUD_MAIL, CREDITS_WIKI, WIKI_MEMBER_MANAGEMENT, WIKI_PUBLICATIONS, PUBLICATIONS_LINK, OPENSTACK_LINK, SIMPLE_VM_LINK, STATUS_LINK,
+	CLOUD_MAIL,
+	CREDITS_WIKI,
+	OPENSTACK_LINK,
+	PUBLICATIONS_LINK,
+	SIMPLE_VM_LINK,
+	STATUS_LINK,
+	WIKI_MEMBER_MANAGEMENT,
+	WIKI_PUBLICATIONS,
 } from '../../links/links';
 import { Doi } from '../applications/doi/doi';
 import { ApiSettings } from '../api-connector/api-settings.service';
 import { Application_States, ExtensionRequestType } from '../shared/shared_modules/baseClass/abstract-base-class';
 import { ProjectMember } from './project_member.model';
-import { Project } from './project.model';
 import { ModificationRequestComponent } from './modals/modification-request/modification-request.component';
 import { LifetimeRequestComponent } from './modals/lifetime-request/lifetime-request.component';
 import { DoiComponent } from './modals/doi/doi.component';
@@ -54,9 +58,9 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	lifetimeExtensionDisabled: boolean = false;
 	creditsExtensionDisabled: boolean = false;
 
-	@Input() invitation_group_post: string = environment.invitation_group_post;
-	@Input() voRegistrationLink: string = environment.voRegistrationLink;
-	@Input() invitation_group_pre: string = environment.invitation_group_pre;
+	invitation_group_post: string = environment.invitation_group_post;
+	voRegistrationLink: string = environment.voRegistrationLink;
+	invitation_group_pre: string = environment.invitation_group_pre;
 	WIKI_MEMBER_MANAGEMENT: string = WIKI_MEMBER_MANAGEMENT;
 	WIKI_PUBLICATIONS: string = WIKI_PUBLICATIONS;
 	CREDITS_WIKI: string = CREDITS_WIKI;
@@ -65,27 +69,18 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	SIMPLE_VM_LINK: string = SIMPLE_VM_LINK;
 	OPENSTACK_LINK: string = OPENSTACK_LINK;
 	STATUS_LINK: string = STATUS_LINK;
-
-	@ViewChild(NgForm) simpleVmForm: NgForm;
 	@ViewChild('creditsChart') creditsCanvas: ElementRef;
-	private subscription: Subscription = new Subscription();
-
 	project_id: string;
 	application_id: string;
-	project: Project;
 	credits: number = 0;
-
 	errorMessage: string;
 	terminate_confirmation_given: boolean = false;
-
 	showInformationCollapse: boolean = false;
 	newDoi: string;
 	doiError: string;
 	remove_members_clicked: boolean;
-	life_time_string: string;
 	dois: Doi[];
 	disabledDoiInput: boolean = false;
-	isAdmin: boolean = false;
 	invitation_link: string;
 	filteredMembers: any = null;
 	project_application: Application;
@@ -94,48 +89,44 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	application_action_done: boolean = false;
 	application_action_success: boolean;
 	application_action_error_message: boolean;
-	projects: Project[] = [];
 	loaded: boolean = true;
 	userinfo: Userinfo;
 	allSet: boolean = false;
 	renderer: Renderer2;
 	supportMails: string[] = [];
 	toggleLocked: boolean = false;
-
 	resourceDataLoaded: boolean = false;
 	creditHistoryLoaded: boolean = false;
 	vmsInUse: number;
 	maximumVMs: number;
 	coresInUse: number;
 	ramInUse: number;
-
 	title: string = 'Project Overview';
 	@ViewChild('edam_ontology') edam_ontology: AutocompleteComponent;
-
 	checked_member_list: number[] = [];
-
 	// modal variables for User list
 	public project_members: ProjectMember[] = [];
 	public isLoaded: boolean = false;
 	public showLink: boolean = true;
-	private updateCreditsUsedIntervals: ReturnType<typeof setTimeout>;
-	private updateCreditsHistoryIntervals: ReturnType<typeof setTimeout>;
 	creditsChart: any;
 	ExtensionRequestType: typeof ExtensionRequestType = ExtensionRequestType;
 	Application_States: typeof Application_States = Application_States;
+	private subscription: Subscription = new Subscription();
+	private updateCreditsUsedIntervals: ReturnType<typeof setTimeout>;
+	private updateCreditsHistoryIntervals: ReturnType<typeof setTimeout>;
 
 	constructor(
-private flavorService: FlavorService,
-							private groupService: GroupService,
-							private modalService: BsModalService,
-							applicationsService: ApplicationsService,
-							facilityService: FacilityService,
-							userService: UserService,
-							private activatedRoute: ActivatedRoute,
-							private fullLayout: FullLayoutComponent,
-							private router: Router,
-							private creditsService: CreditsService,
-							@Inject(DOCUMENT) private document: Document,
+		private flavorService: FlavorService,
+		private groupService: GroupService,
+		private modalService: BsModalService,
+		applicationsService: ApplicationsService,
+		facilityService: FacilityService,
+		userService: UserService,
+		private activatedRoute: ActivatedRoute,
+		private fullLayout: FullLayoutComponent,
+		private router: Router,
+		private creditsService: CreditsService,
+		@Inject(DOCUMENT) private document: Document,
 	) {
 		super(userService, applicationsService, facilityService);
 	}
@@ -149,6 +140,128 @@ private flavorService: FlavorService,
 		return new Promise((resolve: any) => {
 			setTimeout(resolve, ms);
 		});
+	}
+
+	ngOnInit(): void {
+		this.activatedRoute.params.subscribe((paramsId: any): void => {
+			try {
+				if (this.updateCreditsUsedIntervals) {
+					clearInterval(this.updateCreditsUsedIntervals);
+				}
+				if (this.updateCreditsHistoryIntervals) {
+					clearInterval(this.updateCreditsHistoryIntervals);
+					this.creditHistoryLoaded = false;
+				}
+			} catch (someError) {
+				// empty catch
+			}
+
+			this.subscription.unsubscribe();
+			this.subscription = new Subscription();
+			this.resourceDataLoaded = false;
+			this.creditHistoryLoaded = false;
+			this.errorMessage = null;
+			this.isLoaded = false;
+			this.project_application = null;
+			this.project_members = [];
+			this.application_id = paramsId.id;
+			this.getApplication();
+			this.getUserinfo();
+			this.getListOfFlavors();
+			this.getListOfTypes();
+			this.getDois();
+			this.is_vo_admin = is_vo;
+
+		});
+	}
+
+	ngOnDestroy(): void {
+		this.subscription.unsubscribe();
+		try {
+			if (this.updateCreditsUsedIntervals) {
+				clearInterval(this.updateCreditsUsedIntervals);
+			}
+			if (this.updateCreditsHistoryIntervals) {
+				clearInterval(this.updateCreditsHistoryIntervals);
+			}
+		} catch (someError) {
+			// empty catch
+		}
+	}
+
+	getApplication(): void {
+		this.subscription.add(
+			this.applicationsService
+				.getFullApplicationByUserPermissions(this.application_id)
+				.subscribe(
+					(aj: Application): void => {
+						if (aj.project_application_name === '') {
+							this.isLoaded = false;
+							this.errorMessage = 'Not found';
+
+							return;
+						}
+
+						this.project_application = aj;
+						this.setSupportMails(this.project_application);
+
+						if (this.project_application.project_application_perun_id) {
+							this.getUsedResources();
+							if (this.project_application.user_is_admin || this.project_application.memberNamesVisible) {
+								this.getMembersOfTheProject();
+							}
+							if (this.project_application.credits_allowed && !this.project_application.credits_loop_started) {
+								this.project_application.setCreditsLoopStarted();
+								this.startUpdateCreditUsageLoop();
+							}
+						}
+
+						this.isLoaded = true;
+					},
+					(error: any): void => {
+						this.isLoaded = false;
+						this.errorMessage = `Status: ${error.status.toString()},
+                   StatusText: ${error.statusText.toString()},
+                   Error Message: ${error.error.toString()}`;
+					},
+				),
+		);
+	}
+
+	getUserinfo(): void {
+		this.subscription.add(
+			this.userService.getUserInfo().subscribe((userinfo: Userinfo): void => {
+				this.userinfo = userinfo;
+			}),
+		);
+	}
+
+	/**
+	 * gets a list of all available Flavors from the flavorservice and puts them into the array flavorList
+	 */
+	getListOfFlavors(): void {
+		this.subscription.add(
+			this.flavorService.getListOfFlavorsAvailable().subscribe((flavors: Flavor[]): void => {
+				this.flavorList = flavors;
+			}),
+		);
+	}
+
+	/**
+	 * gets a list of all available types of flavors from the flavorservice and uses them in the function setListOfTypes
+	 */
+	getListOfTypes(): void {
+		this.subscription.add(
+			this.flavorService.getListOfTypesAvailable().subscribe((types: FlavorType[]): void => this.setListOfTypes(types)),
+		);
+	}
+
+	getDois(): void {
+		this.subscription.add(
+			this.groupService.getGroupDois(this.application_id).subscribe((dois: Doi[]): void => {
+				this.dois = dois;
+			}),
+		);
 	}
 
 	showResourceModal(): void {
@@ -196,7 +309,7 @@ private flavorService: FlavorService,
 
 		const initialState = {
 			project: this.project_application,
-			life_time_string: `${this.project.DateCreated} - ${this.project.DateEnd}`,
+			life_time_string: `${this.project_application.project_application_date_approved} - ${this.project_application.date_end}`,
 		};
 		this.bsModalRef = this.modalService.show(LifetimeRequestComponent, { initialState });
 		this.bsModalRef.setClass('modal-lg');
@@ -247,8 +360,8 @@ private flavorService: FlavorService,
 
 	fetchCreditHistoryOfProject(): void {
 		this.creditHistoryLoaded = false;
-		if (this.project != null && this.project_application.credits_allowed) {
-			this.creditsService.getCreditsUsageHistoryOfProject(Number(this.project.Id.toString())).toPromise()
+		if (this.project_application != null && this.project_application.credits_allowed) {
+			this.creditsService.getCreditsUsageHistoryOfProject(Number(this.project_application.project_application_perun_id.toString())).toPromise()
 				.then((response: {}): void => {
 					if (response['data_points'] !== undefined) {
 						const data_points: number[] = response['data_points'];
@@ -312,8 +425,8 @@ private flavorService: FlavorService,
 				this.creditsService.getCurrentCreditsOfProject(this.project_application.project_application_perun_id.toString())
 					.subscribe(
 						(credits: number): void => {
-							if (this.project != null) {
-								this.project.CurrentCredits = credits;
+							if (this.project_application != null) {
+								this.project_application.project_application_current_credits = credits;
 							}
 						},
 						(err: Error): void => {
@@ -324,133 +437,32 @@ private flavorService: FlavorService,
 		}
 	}
 
-	approveMemberApplication(project: number, application: number, membername: string): void {
+	approveMemberApplication(application: number, membername: string): void {
 		this.loaded = false;
 		this.application_action_done = false;
 		this.subscription.add(
-			this.groupService.approveGroupApplication(project, application).subscribe((tmp_application: any): void => {
-				if (tmp_application['state'] === 'APPROVED') {
-					this.application_action_success = true;
-				} else if (tmp_application['message']) {
-					this.application_action_success = false;
+			this.groupService.approveGroupApplication(Number(this.project_application.project_application_perun_id), application)
+				.subscribe((tmp_application: any): void => {
+					if (tmp_application['state'] === 'APPROVED') {
+						this.application_action_success = true;
+					} else if (tmp_application['message']) {
+						this.application_action_success = false;
 
-					this.application_action_error_message = tmp_application['message'];
+						this.application_action_error_message = tmp_application['message'];
 
-				} else {
-					this.application_action_success = false;
-				}
+					} else {
+						this.application_action_success = false;
+					}
 
-				this.application_action = 'approved';
-				this.application_member_name = membername;
-				this.application_action_done = true;
-				this.getUserProjectApplications();
-				this.getMembersOfTheProject();
-				this.loaded = true;
+					this.application_action = 'approved';
+					this.application_member_name = membername;
+					this.application_action_done = true;
+					this.getUserProjectApplications();
+					this.getMembersOfTheProject();
+					this.loaded = true;
 
-			}),
+				}),
 		);
-	}
-
-	getApplication(): void {
-		this.subscription.add(
-			this.applicationsService
-				.getApplication(this.application_id)
-				.subscribe(
-					(aj: Application): void => {
-						if (aj.project_application_name === '') {
-							this.isLoaded = false;
-							this.errorMessage = 'Not found';
-
-							return;
-						}
-
-						this.project_application = aj;
-
-						if (this.project_application) {
-							this.subscription.add(
-								this.applicationsService.getApplicationPerunId(this.application_id).subscribe((id: any): void => {
-									if (id['perun_id']) {
-										this.project_id = id['perun_id'];
-										this.getProject();
-									}
-								}),
-							);
-							if (this.project_application.credits_allowed && !this.project_application.credits_loop_started) {
-								this.project_application.setCreditsLoopStarted();
-								this.startUpdateCreditUsageLoop();
-							}
-
-						}
-
-						this.isLoaded = true;
-					},
-					(error: any): void => {
-						this.isLoaded = false;
-						this.errorMessage = `Status: ${error.status.toString()},
-                   StatusText: ${error.statusText.toString()},
-                   Error Message: ${error.error.toString()}`;
-					},
-				),
-		);
-	}
-
-	/**
-	 * gets a list of all available Flavors from the flavorservice and puts them into the array flavorList
-	 */
-	getListOfFlavors(): void {
-		this.subscription.add(
-			this.flavorService.getListOfFlavorsAvailable().subscribe((flavors: Flavor[]): void => {
-				this.flavorList = flavors;
-			}),
-		);
-	}
-
-	/**
-	 * gets a list of all available types of flavors from the flavorservice and uses them in the function setListOfTypes
-	 */
-	getListOfTypes(): void {
-		this.subscription.add(
-			this.flavorService.getListOfTypesAvailable().subscribe((types: FlavorType[]): void => this.setListOfTypes(types)),
-		);
-	}
-
-	setLifetime(): void {
-		// tslint:disable-next-line:max-line-length
-		this.life_time_string = `${this.project.DateCreated} -  ${this.project.DateEnd}`;
-	}
-
-	ngOnInit(): void {
-		this.activatedRoute.params.subscribe((paramsId: any): void => {
-			try {
-				if (this.updateCreditsUsedIntervals) {
-					clearInterval(this.updateCreditsUsedIntervals);
-				}
-				if (this.updateCreditsHistoryIntervals) {
-					clearInterval(this.updateCreditsHistoryIntervals);
-					this.creditHistoryLoaded = false;
-				}
-			} catch (someError) {
-				// empty catch
-			}
-
-			this.subscription.unsubscribe();
-			this.subscription = new Subscription();
-			this.resourceDataLoaded = false;
-			this.creditHistoryLoaded = false;
-			this.errorMessage = null;
-			this.isLoaded = false;
-			this.project = null;
-			this.project_application = null;
-			this.project_members = [];
-			this.application_id = paramsId.id;
-			this.getApplication();
-			this.getUserinfo();
-			this.getListOfFlavors();
-			this.getListOfTypes();
-			this.getDois();
-			this.is_vo_admin = is_vo;
-
-		});
 	}
 
 	/**
@@ -459,8 +471,9 @@ private flavorService: FlavorService,
 	 */
 	isAbleToStart(): boolean {
 		if (this.resourceDataLoaded) {
-			if (!this.project?.OpenStackProject) {
-				if ((this.vmsInUse < this.maximumVMs) && (this.isAdmin || !this.project_application.prevent_machines_starting)) {
+			if (!this.project_application?.project_application_openstack_project) {
+				if ((this.vmsInUse < this.maximumVMs)
+					&& (this.project_application.user_is_admin || !this.project_application.prevent_machines_starting)) {
 					return true;
 				}
 			}
@@ -472,15 +485,13 @@ private flavorService: FlavorService,
 	/**
 	 * If the application is an openstack application, the requested/approved resources will be set for maximum VMs.
 	 * For SimpleVM also the VMs in use are set.
-	 *
-	 * @param groupid the id of the group of the application in perun
 	 */
-	getUsedResources(groupid: string): void {
+	getUsedResources(): void {
 		this.resourceDataLoaded = false;
 
-		if (!this.project?.OpenStackProject) {
+		if (!this.project_application?.project_application_openstack_project) {
 			this.subscription.add(
-				this.groupService.getGroupResources(groupid).subscribe(
+				this.groupService.getGroupResources(this.project_application.project_application_perun_id.toString()).subscribe(
 					(res: any): void => {
 						this.vmsInUse = res['used_vms'];
 						this.maximumVMs = res['number_vms'];
@@ -508,28 +519,6 @@ private flavorService: FlavorService,
 		});
 
 		return numberOfVMs;
-	}
-
-	ngOnDestroy(): void {
-		this.subscription.unsubscribe();
-		try {
-			if (this.updateCreditsUsedIntervals) {
-				clearInterval(this.updateCreditsUsedIntervals);
-			}
-			if (this.updateCreditsHistoryIntervals) {
-				clearInterval(this.updateCreditsHistoryIntervals);
-			}
-		} catch (someError) {
-			// empty catch
-		}
-	}
-
-	getDois(): void {
-		this.subscription.add(
-			this.groupService.getGroupDois(this.application_id).subscribe((dois: Doi[]): void => {
-				this.dois = dois;
-			}),
-		);
 	}
 
 	isNewDoi(): boolean {
@@ -608,7 +597,7 @@ private flavorService: FlavorService,
 		this.updateNotificationModal('Waiting', 'Termination request will be submitted...', true, 'info');
 
 		this.subscription.add(
-			this.groupService.requestProjectTermination(this.project.Id).subscribe((): void => {
+			this.groupService.requestProjectTermination(this.project_application.project_application_perun_id).subscribe((): void => {
 				this.fullLayout.getGroupsEnumeration();
 				this.getApplication();
 				this.updateNotificationModal('Success', 'Termination was requested!', true, 'success');
@@ -616,43 +605,13 @@ private flavorService: FlavorService,
 		);
 	}
 
-	/**
-	 * Get the facility of an application.
-	 *
-	 * @param app
-	 */
-	getFacilityProject():
-		void {
-
-		if (!this.project_application.ComputeCenter
-			&& !this.project_application.hasSubmittedStatus()
-			&& !(this.project_application.hasTerminatedStatus())) {
-			this.subscription.add(
-				this.groupService.getFacilityByGroup(
-					this.project_application.project_application_perun_id.toString(),
-				).subscribe((res: object): void => {
-
-					const login: string = res['Login'];
-					const support: string = res['Support'];
-					const facilityname: string = res['Facility'];
-					const facilityId: number = res['FacilityId'];
-					if (facilityId) {
-						this.project_application.ComputeCenter = new ComputecenterComponent(facilityId.toString(), facilityname, login, support);
-					}
-
-				}),
-			);
-		}
-
-	}
-
-	rejectMemberApplication(project: number, application: number, membername: string): void {
+	rejectMemberApplication(application: number, membername: string): void {
 		this.loaded = false;
 		this.application_action_done = false;
 		this.subscription.add(
-			this.groupService.rejectGroupApplication(project, application)
+			this.groupService.rejectGroupApplication(Number(this.project_application.project_application_perun_id), application)
 				.subscribe((tmp_application: any): void => {
-					this.project.ProjectMemberApplications = [];
+					this.project_application.project_application_member_applications = [];
 
 					if (tmp_application['state'] === 'REJECTED') {
 						this.application_action_success = true;
@@ -676,17 +635,15 @@ private flavorService: FlavorService,
 
 	/**
 	 * Get all user applications for a project.
-	 *
-	 * @param projectId id of the project
 	 */
 	getUserProjectApplications(): void {
 		this.loaded = false;
 		this.subscription.add(
-			this.groupService.getGroupApplications(this.project.Id).subscribe((applications: any): void => {
+			this.groupService.getGroupApplications(this.project_application.project_application_perun_id).subscribe((applications: any): void => {
 
 				const newProjectApplications: ProjectMemberApplication[] = [];
 				if (applications.length === 0) {
-					this.project.ProjectMemberApplications = [];
+					this.project_application.project_application_member_applications = [];
 
 					this.loaded = true;
 
@@ -701,7 +658,7 @@ private flavorService: FlavorService,
 						`${dateApplicationCreated.date()}.${(dateApplicationCreated.month() + 1)}.${dateApplicationCreated.year()}`,
 					);
 					newProjectApplications.push(newMemberApplication);
-					this.project.ProjectMemberApplications = newProjectApplications;
+					this.project_application.project_application_member_applications = newProjectApplications;
 					this.loaded = true;
 
 				}
@@ -710,71 +667,10 @@ private flavorService: FlavorService,
 		);
 	}
 
-	getProject(): void {
-		this.subscription.add(
-			this.groupService.getGroupDetails(this.project_id).subscribe((group: any): void => {
-				const dateCreated: moment.Moment = group['createdAt'];
-				const dateDayDifference: number = Math.ceil(moment().diff(dateCreated, 'days', true));
-				const is_pi: boolean = group['is_pi'];
-				const groupid: string = group['id'];
-				const facility: any = group['compute_center'];
-				const shortname: string = group['shortname'];
-				const currentCredits: number = Number(group['current_credits']);
-				const approvedCredits: number = Number(group['approved_credits']);
-
-				const realname: string = group['name'];
-				let compute_center: ComputecenterComponent = null;
-
-				if (facility) {
-					compute_center = new ComputecenterComponent(
-						facility['compute_center_facility_id'],
-						facility['compute_center_name'],
-						facility['compute_center_login'],
-						facility['compute_center_support_mail'],
-					);
-				}
-				this.isAdmin = is_pi;
-
-				const newProject: Project = new Project(
-					groupid,
-					shortname,
-					group['description'],
-					moment(dateCreated).format('DD.MM.YYYY'),
-					dateDayDifference,
-					is_pi,
-					this.isAdmin,
-					compute_center,
-					currentCredits,
-					approvedCredits,
-				);
-				const lifetime: number | string = group['lifetime'] as number;
-				if (lifetime !== -1) {
-					const expirationDate: string = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format('DD.MM.YYYY');
-					const lifetimeDays: number = Math.abs(moment(moment(expirationDate, 'DD.MM.YYYY').toDate())
-						.diff(moment(dateCreated), 'days'));
-					newProject.DateEnd = expirationDate;
-					newProject.LifetimeDays = lifetimeDays;
-
-				}
-				newProject.OpenStackProject = group['openstack_project'];
-				newProject.RealName = realname;
-				this.project = newProject;
-				this.setSupportMails(this.project);
-				this.setLifetime();
-				if (this.isAdmin || this.project_application.memberNamesVisible) {
-					this.getMembersOfTheProject();
-				}
-				if (this.project_application?.project_application_perun_id) {
-					// this.startUpdateCreditUsageLoop();
-				}
-				this.getUsedResources(groupid);
-			}),
-		);
-	}
-
-	setSupportMails(project: Project): void {
-		if (typeof (project.ComputeCenter?.Support) !== 'undefined' && project.ComputeCenter?.Support) {
-			this.supportMails = project.ComputeCenter.Support.toString().split(',');
+	setSupportMails(project: Application): void {
+		if (typeof (project.project_application_compute_center?.Support) !== 'undefined'
+			&& project.project_application_compute_center?.Support) {
+			this.supportMails = project.project_application_compute_center.Support.toString().split(',');
 		} else {
 			this.supportMails = [];
 		}
@@ -782,36 +678,34 @@ private flavorService: FlavorService,
 
 	/**
 	 * Get all members of a project.
-	 *
-	 * @param projectId id of the project
-	 * @param projectName
 	 */
 	getMembersOfTheProject(): void {
 		this.subscription.add(
-			this.groupService.getGroupMembers(this.project_id).subscribe((members: ProjectMember[]): void => {
+			this.groupService.getGroupMembers(this.project_application.project_application_perun_id.toString())
+				.subscribe((members: ProjectMember[]): void => {
+					this.project_members = members;
 
-				this.project_members = members;
+					if (this.project_application.user_is_admin) {
+						this.subscription.add(
+							this.groupService.getGroupAdminIds(this.project_application.project_application_perun_id.toString())
+								.subscribe((result: any): void => {
+									const adminIds: any = result['adminIds'];
+									this.project_members.forEach((member: ProjectMember): void => {
+										// eslint-disable-next-line no-param-reassign
+										member.IsPi = adminIds.indexOf(member.userId) !== -1;
+									});
 
-				if (this.isAdmin) {
-					this.subscription.add(
-						this.groupService.getGroupAdminIds(this.project_id).subscribe((result: any): void => {
-							const adminIds: any = result['adminIds'];
-							this.project_members.forEach((member: ProjectMember): void => {
-								// eslint-disable-next-line no-param-reassign
-								member.IsPi = adminIds.indexOf(member.userId) !== -1;
-							});
-
-							this.isLoaded = true;
-							if (this.project_application
-								&& this.project_application.credits_allowed
-								&& !this.project_application.credits_loop_started) {
-								this.project_application.setCreditsLoopStarted();
-								this.startUpdateCreditUsageLoop();
-							}
-						}),
-					);
-				}
-			}),
+									this.isLoaded = true;
+									if (this.project_application
+										&& this.project_application.credits_allowed
+										&& !this.project_application.credits_loop_started) {
+										this.project_application.setCreditsLoopStarted();
+										this.startUpdateCreditUsageLoop();
+									}
+								}),
+						);
+					}
+				}),
 		);
 	}
 
@@ -862,7 +756,7 @@ private flavorService: FlavorService,
 
 	}
 
-	removeCheckedMembers(groupId: number | string):
+	removeCheckedMembers():
 		void {
 		this.remove_members_clicked = true;
 
@@ -870,7 +764,11 @@ private flavorService: FlavorService,
 			ProjectMember[] = [];
 
 		const observables: Observable<number>[] = this.checked_member_list
-			.map((id: number): Observable<any> => this.groupService.removeMember(groupId, id, this.project.ComputeCenter.FacilityId));
+			.map((id: number): Observable<any> => this.groupService.removeMember(
+				Number(this.project_application.project_application_perun_id),
+				id,
+				this.project_application.project_application_compute_center.FacilityId,
+			));
 		forkJoin(observables).subscribe((): void => {
 
 			this.project_members.forEach((member: ProjectMember): void => {
@@ -891,9 +789,9 @@ private flavorService: FlavorService,
 	}
 
 	setAddUserInvitationLink(): void {
-		const uri: string = this.invitation_group_pre + this.project.RealName + this.invitation_group_post + this.project.RealName;
+		const uri: string = this.invitation_group_pre + this.project_application.perun_name
+			+ this.invitation_group_post + this.project_application.perun_name;
 		this.invitation_link = uri;
-
 	}
 
 	copyToClipboard(text: string): void {
@@ -922,17 +820,13 @@ private flavorService: FlavorService,
 
 	}
 
-	getUserinfo(): void {
+	public addMember(memberid: number, firstName: string, lastName: string): void {
 		this.subscription.add(
-			this.userService.getUserInfo().subscribe((userinfo: Userinfo): void => {
-				this.userinfo = userinfo;
-			}),
-		);
-	}
-
-	public addMember(groupid: number, memberid: number, firstName: string, lastName: string): void {
-		this.subscription.add(
-			this.groupService.addMember(groupid, memberid, this.project.ComputeCenter.FacilityId).subscribe(
+			this.groupService.addMember(
+				this.project_application.project_application_perun_id,
+				memberid,
+				this.project_application.project_application_compute_center.FacilityId,
+			).subscribe(
 				(result: any): void => {
 					if (result.status === 200) {
 						this.updateNotificationModal('Success', `Member ${firstName} ${lastName} added.`, true, 'success');
@@ -954,12 +848,20 @@ private flavorService: FlavorService,
 		);
 	}
 
-	public addAdmin(groupId: number, memberId: number, userId: number, firstName: string, lastName: string): void {
+	public addAdmin(memberId: number, userId: number, firstName: string, lastName: string): void {
 		this.subscription.add(
-			this.groupService.addMember(groupId, memberId, this.project.ComputeCenter.FacilityId).subscribe(
+			this.groupService.addMember(
+				this.project_application.project_application_perun_id,
+				memberId,
+				this.project_application.project_application_compute_center.FacilityId,
+			).subscribe(
 				(): void => {
 					this.subscription.add(
-						this.groupService.addAdmin(groupId, userId, this.project.ComputeCenter.FacilityId).subscribe(
+						this.groupService.addAdmin(
+							this.project_application.project_application_perun_id,
+							userId,
+							this.project_application.project_application_compute_center.FacilityId,
+						).subscribe(
 							(result: any): void => {
 
 								if (result.status === 200) {
@@ -986,7 +888,11 @@ private flavorService: FlavorService,
 				},
 				(): void => {
 					this.subscription.add(
-						this.groupService.addAdmin(groupId, userId, this.project.ComputeCenter.FacilityId).subscribe(
+						this.groupService.addAdmin(
+							this.project_application.project_application_perun_id,
+							userId,
+							this.project_application.project_application_compute_center.FacilityId,
+						).subscribe(
 							(result: any): void => {
 
 								if (result.status === 200) {
@@ -1016,9 +922,12 @@ private flavorService: FlavorService,
 		);
 	}
 
-	public promoteAdmin(groupid: number, userid: number, username: string): void {
-
-		this.groupService.addAdmin(groupid, userid, this.project.ComputeCenter.FacilityId).toPromise()
+	public promoteAdmin(userid: number, username: string): void {
+		this.groupService.addAdmin(
+			this.project_application.project_application_perun_id,
+			userid,
+			this.project_application.project_application_compute_center.FacilityId,
+		).toPromise()
 			.then((result: any): void => {
 
 				if (result.status === 200) {
@@ -1033,12 +942,16 @@ private flavorService: FlavorService,
 			});
 	}
 
-	public removeAdmin(groupid: number, userid: number, name: string): void {
+	public removeAdmin(userid: number, name: string): void {
 		if (this.userinfo.Id.toString() === userid.toString()) {
 			return;
 		}
 
-		this.groupService.removeAdmin(groupid, userid, this.project.ComputeCenter.FacilityId).toPromise()
+		this.groupService.removeAdmin(
+			this.project_application.project_application_perun_id,
+			userid,
+			this.project_application.project_application_compute_center.FacilityId,
+		).toPromise()
 			.then((result: any): void => {
 
 				if (result.status === 200) {
@@ -1055,11 +968,10 @@ private flavorService: FlavorService,
 	/**
 	 * Remove a member from a group.
 	 *
-	 * @param groupid  of the group
 	 * @param memberid of the member
 	 * @param name  of the member
 	 */
-	public removeMember(groupid: number, memberid: number, name: string): void {
+	public removeMember(memberid: number, name: string): void {
 		if (this.userinfo.MemberId.toString() === memberid.toString()) {
 			return;
 		}
@@ -1069,7 +981,11 @@ private flavorService: FlavorService,
 			this.allSet = false;
 		}
 		this.subscription.add(
-			this.groupService.removeMember(groupid, memberid, this.project.ComputeCenter.FacilityId).subscribe(
+			this.groupService.removeMember(
+				this.project_application.project_application_perun_id,
+				memberid,
+				this.project_application.project_application_compute_center.FacilityId,
+			).subscribe(
 				(result: any): void => {
 
 					if (result.status === 200) {
@@ -1090,11 +1006,10 @@ private flavorService: FlavorService,
 	/**
 	 * Leave a project
 	 *
-	 * @param groupid  of the group
 	 * @param memberid of the member
 	 * @param projectname of the project
 	 */
-	public leaveProject(groupid: number, memberid: number, projectname: string): void {
+	public leaveProject(memberid: number, projectname: string): void {
 		if (this.project_application.project_application_pi.elixir_id === this.userinfo.ElixirId) {
 			this.updateNotificationModal(
 				'Denied',
@@ -1104,7 +1019,11 @@ private flavorService: FlavorService,
 			);
 		} else {
 			this.subscription.add(
-				this.groupService.leaveGroup(groupid, memberid, this.project.ComputeCenter.FacilityId).subscribe(
+				this.groupService.leaveGroup(
+					this.project_application.project_application_perun_id,
+					memberid,
+					this.project_application.project_application_compute_center.FacilityId,
+				).subscribe(
 					(result: any): void => {
 
 						if (result.status === 200) {
@@ -1142,8 +1061,6 @@ private flavorService: FlavorService,
 
 	/**
 	 * Delete an application.
-	 *
-	 * @param application_id
 	 */
 	public deleteApplication(): void {
 		this.subscription.add(

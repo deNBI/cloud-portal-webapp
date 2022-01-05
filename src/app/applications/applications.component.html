@@ -130,8 +130,8 @@
                   <td>{{application?.project_application_institute}}</td>
 
                   <td>
-                    <!-- into select: [style.display]=" ((application | hasstatusinlist:Application_States.SUBMITTED)  || (application | hasstatusinlist:Application_States.CONFIRMATION_DECLINED) || (!application?.ComputeCenter?.FacilityId ))? 'inherit' :'none'"-->
-                    <select *ngIf="(application | hasstatusinlist:Application_States.SUBMITTED) || (application | hasstatusinlist:Application_States.CONFIRMATION_DECLINED)  || ((application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION)  && !application?.ComputeCenter?.FacilityId )"
+                    <!-- into select: [style.display]=" ((application | hasstatusinlist:Application_States.SUBMITTED)  || (application | hasstatusinlist:Application_States.CONFIRMATION_DECLINED) || (!application?.project_application_compute_center?.FacilityId ))? 'inherit' :'none'"-->
+                    <select *ngIf="(application | hasstatusinlist:Application_States.SUBMITTED) || (application | hasstatusinlist:Application_States.CONFIRMATION_DECLINED)  || ((application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION)  && !application?.project_application_compute_center?.FacilityId )"
                             [(ngModel)]="selectedCenter[application.project_application_id]"
                       class="form-select" [id]="'id_compute_center_option_' + application?.project_application_name"
                       #selectedComputeCenter>
@@ -144,14 +144,14 @@
                       </option>
                     </select>
                     <span
-                      *ngIf="(application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION) ">{{application?.ComputeCenter?.Name}}</span>
+                      *ngIf="(application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION) ">{{application?.project_application_compute_center?.Name}}</span>
                   </td>
 
 
                   <td>
                     <div class="btn-group">
                       <button
-                        *ngIf="(application | hasstatusinlist:Application_States.CONFIRMATION_DECLINED)  || ((application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION)  && !application?.ComputeCenter?.FacilityId )"
+                        *ngIf="(application | hasstatusinlist:Application_States.CONFIRMATION_DECLINED)  || ((application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION)  && !application?.project_application_compute_center?.FacilityId )"
                         style="margin: 2px"
                         (click)="assignGroupToFacility(application?.project_application_perun_id,application?.project_application_id, selectedCenter[application.project_application_id]); switchAssignLocked(true)"
                         [disabled]="!selectedCenter[application.project_application_id] || assignLocked"
@@ -161,7 +161,7 @@
                         <span class="d-none">Assign</span>
                       </button>
                       <button
-                        *ngIf="(application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION)  && application?.ComputeCenter?.FacilityId"
+                        *ngIf="(application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION)  && application?.project_application_compute_center?.FacilityId"
                         style="margin: 2px"
                         (click)="removeApplicationFromFacilityConfirmation(application); switchReassignLocked(true)"
 												[disabled]="reassignLocked"
@@ -334,7 +334,7 @@
                     <td>{{application?.project_application_institute}}</td>
 
                     <td>
-                      <span>{{application?.ComputeCenter?.Name}}</span>
+                      <span>{{application?.project_application_compute_center?.Name}}</span>
                     </td>
 
 
@@ -355,7 +355,7 @@
                         <button [id]="'modification_approval_' + application?.project_application_shortname"
                                 *ngIf="(application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  && !application?.project_application_openstack_project && application?.project_modification_request"
                                 style="margin: 2px"
-                                (click)=" showClientsLimitsModal(application.ComputeCenter.FacilityId,application,true);
+                                (click)=" showClientsLimitsModal(application.project_application_compute_center.FacilityId,application,true);
                                   "
                                 type="button"
                                 class="btn btn-success">
@@ -492,7 +492,7 @@
 
                     <td>
                       <span
-                        *ngIf="application?.ComputeCenter">{{application?.ComputeCenter?.Name}}</span>
+                        *ngIf="application?.project_application_compute_center">{{application?.project_application_compute_center?.Name}}</span>
                     </td>
 
 
@@ -640,7 +640,7 @@
                     <td>
 
                       <span
-                        *ngIf="application?.ComputeCenter">{{application?.ComputeCenter?.Name}}</span>
+                        *ngIf="application?.project_application_compute_center">{{application?.project_application_compute_center?.Name}}</span>
                     </td>
 
 
@@ -650,8 +650,7 @@
                         <button [id]="'credit_extension_approval_' + application?.project_application_shortname"
                                 *ngIf="(application | hasstatusinlist:Application_States.CREDITS_EXTENSION_REQUESTED) "
                                 style="margin: 2px"
-                                (click)="this. this.approveCreditExtension(application);
-                                  "
+                                (click)="approveCreditExtension(application);"
                                 type="button"
                                 class="btn btn-success">
                           <i class="fa fa-check"></i>&nbsp;
@@ -660,8 +659,7 @@
 
                         <button [id]="'credit_extension_decline_' + application?.project_application_shortname"
                                 *ngIf="(application | hasstatusinlist:Application_States.CREDITS_EXTENSION_REQUESTED) "
-                                (click)="this. this.declineCreditExtension(application);
-                                 "
+                                (click)="declineCreditExtension(application);"
                                 type="button"
                                 class="btn btn-danger"
                                 style="margin: 2px">

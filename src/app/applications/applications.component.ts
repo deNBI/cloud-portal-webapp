@@ -92,6 +92,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 	 * @param applicationsService
 	 * @param userService
 	 * @param groupservice
+	 * @param modalService
 	 * @param voService
 	 * @param facilityService
 	 * @param flavorService
@@ -100,12 +101,12 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 	constructor(
 		applicationsService: ApplicationsService,
 		userService: UserService,
-							private groupservice: GroupService,
-							private modalService: BsModalService,
-							private voService: VoService,
-							facilityService: FacilityService,
-							private flavorService: FlavorService,
-							private creditsService: CreditsService,
+		private groupservice: GroupService,
+		private modalService: BsModalService,
+		private voService: VoService,
+		facilityService: FacilityService,
+		private flavorService: FlavorService,
+		private creditsService: CreditsService,
 	) {
 		super(userService, applicationsService, facilityService);
 	}
@@ -245,7 +246,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 	 * @param app
 	 */
 	getFacilityProject(app: Application): void {
-		if (!app.ComputeCenter && !app.hasSubmittedStatus() && !app.hasTerminatedStatus()) {
+		if (!app.project_application_compute_center && !app.hasSubmittedStatus() && !app.hasTerminatedStatus()) {
 			this.groupservice.getFacilityByGroup(app.project_application_perun_id.toString()).subscribe((res: object): void => {
 				const login: string = res['Login'];
 				const suport: string = res['Support'];
@@ -253,7 +254,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 				const facilityId: number = res['FacilityId'];
 				if (facilityId) {
 					// eslint-disable-next-line no-param-reassign
-					app.ComputeCenter = new ComputecenterComponent(facilityId.toString(), facilityname, login, suport);
+					app.project_application_compute_center = new ComputecenterComponent(facilityId.toString(), facilityname, login, suport);
 				}
 
 			});
@@ -550,10 +551,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 	/**
 	 * Create a new Group in perun with the specific attributes.
 	 *
-	 * @param name
-	 * @param description
-	 * @param manager_elixir_id
-	 * @param application_id
+	 * @param application
 	 * @param compute_center
 	 */
 	public createOpenStackProjectGroup(application: Application, compute_center: string): void {
@@ -711,7 +709,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 	/**
 	 * Decline an application.
 	 *
-	 * @param application_id
+	 * @param app
 	 */
 
 	public declineApplication(app: Application): void {

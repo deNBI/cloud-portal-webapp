@@ -1,18 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import * as moment from 'moment';
 import { DomSanitizer } from '@angular/platform-browser';
 import { VoService } from '../api-connector/vo.service';
-import { Project } from '../projectmanagement/project.model';
 import { ProjectMember } from '../projectmanagement/project_member.model';
 import { GroupService } from '../api-connector/group.service';
 import { ComputecenterComponent } from '../projectmanagement/computecenter.component';
 import { FilterBaseClass } from '../shared/shared_modules/baseClass/filter-base-class';
 import { IResponseTemplate } from '../api-connector/response-template';
 import { FacilityService } from '../api-connector/facility.service';
-import { VirtualMachine } from '../virtualmachines/virtualmachinemodels/virtualmachine';
-import { Volume } from '../virtualmachines/volumes/volume';
 import { FullLayoutComponent } from '../layouts/full-layout.component';
-import { SnapshotModel } from '../virtualmachines/snapshots/snapshot.model';
+import { Application } from '../applications/application.model/application.model';
 
 /**
  * Vo Overview component.
@@ -34,10 +30,7 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
 	public emailHeader: string;
 	public emailVerify: string;
 	public emailType: number;
-	public selectedProject: Project;
-	public selectedProjectVms: VirtualMachine[] = [];
-	public selectedProjectVolumes: Volume[] = [];
-	public selectedProjectSnapshots: SnapshotModel[] = [];
+	public selectedProject: Application;
 	computecenters: ComputecenterComponent[] = [];
 
 	selectedProjectType: string = 'ALL';
@@ -46,8 +39,8 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
 	public newsletterSubscriptionCounter: number;
 	isLoaded: boolean = false;
 	member_id: number;
-	projects: Project[] = [];
-	projects_filtered: Project[] = [];
+	projects: Application[] = [];
+	projects_filtered: Application[] = [];
 
 	// modal variables for User list
 	public usersModalProjectMembers: ProjectMember[] = [];
@@ -58,7 +51,7 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
 	// public selectedFacility: [string, number];
 
 	constructor(
-private fullLayout: FullLayoutComponent,
+		private fullLayout: FullLayoutComponent,
 		private sanitizer: DomSanitizer,
 		private voService: VoService,
 		private groupservice: GroupService,
@@ -103,19 +96,19 @@ private fullLayout: FullLayoutComponent,
 	}
 
 	applyFilter(): void {
-		this.projects_filtered = this.projects.filter((project: Project): boolean => this.checkFilter(project));
+		this.projects_filtered = this.projects.filter((project: Application): boolean => this.checkFilter(project));
 	}
 
-	checkFilter(project: Project): boolean {
+	checkFilter(project: Application): boolean {
 		let facNameFilter: boolean = true;
-		if (project.ComputeCenter) {
-			facNameFilter = this.isFilterFacilityName(project.ComputeCenter.Name);
+		if (project.project_application_compute_center) {
+			facNameFilter = this.isFilterFacilityName(project.project_application_compute_center.Name.toLowerCase());
 		}
 
 		return facNameFilter
-			&& this.isFilterProjectStatus(project.project_application_status, project.LifetimeReached)
-			&& this.isFilterProjectName(project.Name)
-			&& this.isFilterProjectId(project.Id.toString());
+			&& this.isFilterProjectStatus(project.project_application_status, project.lifetime_reached)
+			&& this.isFilterProjectName(project.perun_name)
+			&& this.isFilterProjectId(project.project_application_perun_id.toString());
 
 	}
 
@@ -165,71 +158,20 @@ private fullLayout: FullLayoutComponent,
 
 	getVoProjects(): void {
 		this.projects = [];
-		this.voService.getAllGroupsWithDetails().subscribe((result: any): void => {
-			const vo_projects: any = result;
-			for (const group of vo_projects) {
-				const dateCreated: moment.Moment = group['createdAt'];
-				const dateDayDifference: number = Math.ceil(moment().diff(dateCreated, 'days', true));
-				const is_pi: boolean = group['is_pi'];
-				const lifetime: number = group['lifetime'];
-				const currentCredits: number = Number(group['current_credits']);
-				const approvedCredits: number = Number(group['approved_credits']);
-				const groupid: number = group['id'];
-				const facility: any = group['compute_center'];
-				let shortname: string = group['shortname'];
-				if (!shortname) {
-					shortname = group['name'];
+		this.voService.getAllGroupsWithDetails().subscribe((applications: Application[]): void => {
+			for (const application of applications) {
+				if (application.project_application_lifetime > 0) {
+					application.lifetime_reached = this.lifeTimeReached(application.lifetime_days, application.DaysRunning);
 				}
-				let compute_center: ComputecenterComponent = null;
-				if (facility) {
-
-					compute_center = new ComputecenterComponent(
-						facility['compute_center_facility_id'],
-						facility['compute_center_name'],
-						facility['compute_center_login'],
-						facility['compute_center_support_mail'],
-					);
-				}
-
-				const newProject: Project = new Project(
-					Number(groupid),
-					shortname,
-					group['description'],
-					moment(dateCreated).format('DD.MM.YYYY'),
-					dateDayDifference,
-					is_pi,
-					true,
-					compute_center,
-					currentCredits,
-					approvedCredits,
-				);
-				newProject.Lifetime = lifetime;
-				newProject.project_application_status = group['status'];
-				newProject.OpenStackProject = group['openstack_project'];
-
-				let expirationDate: string = '';
-				if (lifetime !== -1) {
-					expirationDate = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format('DD.MM.YYYY');
-					const lifetimeDays: number = Math.abs(moment(moment(expirationDate, 'DD.MM.YYYY').toDate())
-						.diff(moment(dateCreated), 'days'));
-
-					newProject.LifetimeDays = lifetimeDays;
-					newProject.DateEnd = expirationDate;
-					newProject.LifetimeReached = this.lifeTimeReached(lifetimeDays, dateDayDifference);
-				}
-
-				this.projects.push(newProject);
+				this.projects.push(application);
 			}
 			this.applyFilter();
-
 			this.isLoaded = true;
-
 		});
 
 	}
 
 	resetEmailModal(): void {
-
 		this.emailHeader = null;
 		this.emailSubject = null;
 		this.emailText = null;
@@ -273,17 +215,17 @@ private fullLayout: FullLayoutComponent,
 	}
 
 	public terminateProject(): void {
-		this.voService.terminateProject(this.selectedProject.Id)
+		this.voService.terminateProject(this.selectedProject.project_application_perun_id)
 			.subscribe((): void => {
 				const indexAll: number = this.projects.indexOf(this.selectedProject, 0);
-				if (!this.selectedProject.OpenStackProject) {
+				if (!this.selectedProject.project_application_openstack_project) {
 					this.projects.splice(indexAll, 1);
 				} else {
 					this.getProjectStatus(this.projects[indexAll]);
 				}
 				this.fullLayout.getGroupsEnumeration();
 				this.applyFilter();
-				if (this.selectedProject.OpenStackProject) {
+				if (this.selectedProject.project_application_openstack_project) {
 					this.updateNotificationModal(
 						'Success',
 						'The request to terminate the project was forwarded to the facility manager.',
@@ -307,29 +249,29 @@ private fullLayout: FullLayoutComponent,
 			});
 	}
 
-	getProjectStatus(project: Project): void {
-		this.voService.getProjectStatus(project.Id).subscribe((res: any): void => {
+	getProjectStatus(project: Application): void {
+		this.voService.getProjectStatus(project.project_application_perun_id).subscribe((res: any): void => {
 			project.project_application_status = res['status'];
 		});
 	}
 
-	suspendProject(project: Project): void {
-		this.voService.removeResourceFromGroup(project.Id).subscribe((): void => {
+	suspendProject(project: Application): void {
+		this.voService.removeResourceFromGroup(project.project_application_perun_id).subscribe((): void => {
 			this.getProjectStatus(project);
-			project.ComputeCenter = null;
+			project.project_application_compute_center = null;
 		});
 
 	}
 
-	resumeProject(project: Project): void {
-		this.voService.resumeProject(project.Id).subscribe((): void => {
+	resumeProject(project: Application): void {
+		this.voService.resumeProject(project.project_application_perun_id).subscribe((): void => {
 			this.getVoProjects();
 		});
 
 	}
 
-	setProtected(project: Project, set: boolean): void {
-		this.voService.setProtected(project.Id, set).subscribe((result: any): void => {
+	setProtected(project: Application, set: boolean): void {
+		this.voService.setProtected(project.project_application_perun_id, set).subscribe((result: any): void => {
 			this.updateNotificationModal(
 				'Success',
 				result['result'] === 'set' ? 'The project was successfully set as protected.'

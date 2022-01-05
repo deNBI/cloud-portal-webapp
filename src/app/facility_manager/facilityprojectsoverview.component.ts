@@ -1,8 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import * as moment from 'moment';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { Project } from '../projectmanagement/project.model';
 import { ProjectMember } from '../projectmanagement/project_member.model';
 import { environment } from '../../environments/environment';
 import { ApiSettings } from '../api-connector/api-settings.service';
@@ -10,10 +8,9 @@ import { GroupService } from '../api-connector/group.service';
 import { UserService } from '../api-connector/user.service';
 import { FacilityService } from '../api-connector/facility.service';
 import { NewsService } from '../api-connector/news.service';
-import { ComputecenterComponent } from '../projectmanagement/computecenter.component';
 import { FilterBaseClass } from '../shared/shared_modules/baseClass/filter-base-class';
-import { IResponseTemplate } from '../api-connector/response-template';
 import { WordPressTag } from './newsmanagement/wp-tags';
+import { Application } from '../applications/application.model/application.model';
 
 /**
  * Facility Project overview component.
@@ -38,7 +35,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 
 	filterChanged: Subject<string> = new Subject<string>();
 	isLoaded: boolean = false;
-	projects: Project[] = [];
+	projects: Application[] = [];
 	details_loaded: boolean = false;
 	/**
 	 * Approved group status.
@@ -50,12 +47,12 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 	selectedProjectType: string = 'ALL';
 
 	// modal variables for User list
-	public selectedProjectForSearch: Project;
+	public selectedProjectForSearch: Application;
 	public usersModalProjectMembers: ProjectMember[] = [];
 	allFacilityMembers: object[] = [];
 	public usersModalProjectID: number;
 	public usersModalProjectName: string;
-	public selectedProject: Project;
+	public selectedProject: Application;
 	public userSearchValue: string;
 
 	public emailSubject: string;
@@ -71,7 +68,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 	public selectedFacility: [string, number];
 	private availableNewsTags: WordPressTag[] = [];
 	private selectedTags: string[] = [];
-	projects_filtered: Project[] = [];
+	projects_filtered: Application[] = [];
 
 	constructor(
 private groupService: GroupService,
@@ -97,9 +94,11 @@ private groupService: GroupService,
 				break;
 			default:
 				// eslint-disable-next-line no-case-declarations
-				const pro: Project = this.projects.find((project: Project): boolean => project.Id.toString() === this.selectedProjectType.toString());
+				const pro: Application = this.projects.find(
+					(project: Application): boolean => project.project_application_perun_id.toString() === this.selectedProjectType.toString(),
+				);
 				if (pro) {
-					this.emailSubject = `[${this.selectedFacility['Facility']}: ${pro.Name}]`;
+					this.emailSubject = `[${this.selectedFacility['Facility']}: ${pro.perun_name}]`;
 				} else {
 					this.emailSubject = `[${this.selectedFacility['Facility']}]`;
 
@@ -159,58 +158,13 @@ private groupService: GroupService,
 	getProjectsByMemberElixirId(): void {
 		// tslint:disable-next-line:max-line-length
 		this.facilityService.getFacilityGroupsByMemberElixirId(this.managerFacilities[0]['FacilityId'], this.filter)
-			.subscribe((result: any): void => {
+			.subscribe((applications: Application[]): void => {
 				this.projects_filtered = [];
-				const facility_projects: any = result;
-				const is_pi: boolean = false;
-				const is_admin: boolean = false;
-				for (const group of facility_projects) {
-					const dateCreated: moment.Moment = group['createdAt'];
-					const dateDayDifference: number = Math.ceil(moment().diff(dateCreated, 'days', true));
-					const groupid: string = group['id'];
-					const currentCredits: number = Number(group['current_credits']);
-					const approvedCredits: number = Number(group['approved_credits']);
-					const tmp_facility: any = group['compute_center'];
-					let shortname: string = group['shortname'];
-					let compute_center: ComputecenterComponent = null;
-					const lifetime: number = group['lifetime'];
-					if (!shortname) {
-						shortname = group['name'];
+				for (const group of applications) {
+					if (group.project_application_lifetime > 0) {
+						group.lifetime_reached = this.lifeTimeReached(group.lifetime_days, group.DaysRunning);
 					}
-					if (tmp_facility) {
-						compute_center = new ComputecenterComponent(
-							tmp_facility['compute_center_facility_id'],
-							tmp_facility['compute_center_name'],
-							tmp_facility['compute_center_login'],
-							tmp_facility['compute_center_support_mail'],
-						);
-					}
-					const newProject: Project = new Project(
-						Number(groupid),
-						shortname,
-						group['description'],
-						moment(dateCreated).format('DD.MM.YYYY'),
-						dateDayDifference,
-						is_pi,
-						is_admin,
-						compute_center,
-						currentCredits,
-						approvedCredits,
-					);
-					newProject.project_application_status = group['status'];
-					if (lifetime !== -1) {
-						const expirationDate: string = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format('DD.MM.YYYY');
-						const lifetimeDays: number = Math.abs(moment(moment(expirationDate, 'DD.MM.YYYY')
-							.toDate()).diff(moment(dateCreated), 'days'));
-
-						newProject.LifetimeDays = lifetimeDays;
-						newProject.DateEnd = expirationDate;
-						newProject.LifetimeReached = this.lifeTimeReached(lifetimeDays, dateDayDifference);
-					}
-					newProject.RealName = group['name'];
-					newProject.Lifetime = lifetime;
-					newProject.OpenStackProject = group['openstack_project'];
-					this.projects_filtered.push(newProject);
+					this.projects_filtered.push(group);
 				}
 			});
 	}
@@ -224,18 +178,18 @@ private groupService: GroupService,
 
 		}
 
-		this.projects_filtered = this.projects.filter((project: Project): boolean => this.checkFilter(project));
+		this.projects_filtered = this.projects.filter((project: Application): boolean => this.checkFilter(project));
 
 	}
 
-	checkFilter(project: Project): boolean {
+	checkFilter(project: Application): boolean {
 		if (this.filter === '' || !this.filter) {
-			return this.isFilterProjectStatus(project.project_application_status, project.LifetimeReached);
+			return this.isFilterProjectStatus(project.project_application_status, project.lifetime_reached);
 		} else {
-			return (this.isFilterLongProjectName(project.RealName, this.filter)
-				|| this.isFilterProjectId(project.Id.toString(), this.filter))
-				|| (this.isFilterProjectName(project.Name, this.filter)
-					&& this.isFilterProjectStatus(project.project_application_status, project.LifetimeReached));
+			return (this.isFilterLongProjectName(project.project_application_name, this.filter)
+				|| this.isFilterProjectId(project.project_application_perun_id.toString(), this.filter))
+				|| (this.isFilterProjectName(project.perun_name, this.filter)
+					&& this.isFilterProjectStatus(project.project_application_status, project.lifetime_reached));
 		}
 	}
 
@@ -247,30 +201,8 @@ private groupService: GroupService,
 		this.emailSubject = `[${this.selectedFacility['Facility']}]`;
 	}
 
-	getProjectLifetime(project: Project): void {
-		this.details_loaded = false;
-		if (!project.Lifetime) {
-			this.groupService.getLifetime(project.Id).subscribe((time: IResponseTemplate): void => {
-				const lifetime: number = time.value as number;
-				const dateCreated: Date = moment(project.DateCreated, 'DD.MM.YYYY').toDate();
-
-				if (lifetime !== -1) {
-					const expirationDate: string = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format('DD.MM.YYYY');
-					const lifetimeDays: number = Math.abs(
-						moment(moment(expirationDate, 'DD.MM.YYYY').toDate()).diff(moment(dateCreated), 'days'),
-					);
-
-					/*  eslint-disable */
-					project.LifetimeDays = lifetimeDays;
-					project.DateEnd = expirationDate;
-				}
-				project.Lifetime = lifetime;
-				this.details_loaded = true;
-				/* eslint-enable */
-			});
-		} else {
-			this.details_loaded = true;
-		}
+	getProjectLifetime(): void {
+		this.details_loaded = true;
 	}
 
 	/**
@@ -281,9 +213,11 @@ private groupService: GroupService,
 		if (!id) {
 			return 'NOT_FOUND';
 		}
-		const project: Project = this.projects.find((element: Project): boolean => element.Id.toString() === id.toString());
+		const project: Application = this.projects.find(
+			(element: Application): boolean => element.project_application_perun_id.toString() === id.toString(),
+		);
 		if (project) {
-			return project.Name;
+			return project.perun_name;
 		}
 
 		return 'NOT_FOUND';
@@ -293,68 +227,19 @@ private groupService: GroupService,
 		this.projects = [];
 
 		// tslint:disable-next-line:max-line-length
-		this.facilityService.getFacilityAllowedGroupsWithDetailsAndSpecificStatus(facility, this.STATUS_APPROVED).subscribe((result: any): void => {
-			const facility_projects: any = result;
-			const is_pi: boolean = false;
-			const is_admin: boolean = false;
-			for (const group of facility_projects) {
-				const dateCreated: moment.Moment = group['createdAt'];
-				const dateDayDifference: number = Math.ceil(moment().diff(dateCreated, 'days', true));
-				const groupid: string = group['id'];
-
-				const currentCredits: number = Number(group['current_credits']);
-				const approvedCredits: number = Number(group['approved_credits']);
-				const tmp_facility: any = group['compute_center'];
-				let shortname: string = group['shortname'];
-				let compute_center: ComputecenterComponent = null;
-				const lifetime: number = group['lifetime'];
-
-				if (!shortname) {
-					shortname = group['name'];
+		this.facilityService.getFacilityAllowedGroupsWithDetailsAndSpecificStatus(facility, this.STATUS_APPROVED).subscribe(
+			(applications: Application[]): void => {
+				for (const group of applications) {
+					if (group.project_application_lifetime > 0) {
+						group.lifetime_reached = this.lifeTimeReached(group.lifetime_days, group.DaysRunning);
+					}
+					this.projects.push(group);
 				}
-				if (tmp_facility) {
-					compute_center = new ComputecenterComponent(
-						tmp_facility['compute_center_facility_id'],
-						tmp_facility['compute_center_name'],
-						tmp_facility['compute_center_login'],
-						tmp_facility['compute_center_support_mail'],
-					);
-				}
+				this.applyFilter();
+				this.isLoaded = true;
 
-				const newProject: Project = new Project(
-					Number(groupid),
-					shortname,
-					group['description'],
-					moment(dateCreated).format('DD.MM.YYYY'),
-					dateDayDifference,
-					is_pi,
-					is_admin,
-					compute_center,
-					currentCredits,
-					approvedCredits,
-				);
-				newProject.project_application_status = group['status'];
-
-				if (lifetime !== -1) {
-					const expirationDate: string = moment(moment(dateCreated).add(lifetime, 'months').toDate()).format('DD.MM.YYYY');
-					const lifetimeDays: number = Math.abs(moment(moment(expirationDate, 'DD.MM.YYYY')
-						.toDate()).diff(moment(dateCreated), 'days'));
-
-					newProject.LifetimeDays = lifetimeDays;
-					newProject.DateEnd = expirationDate;
-					newProject.LifetimeReached = this.lifeTimeReached(lifetimeDays, dateDayDifference);
-
-				}
-				newProject.RealName = group['name'];
-				newProject.Lifetime = lifetime;
-				newProject.OpenStackProject = group['openstack_project'];
-
-				this.projects.push(newProject);
-			}
-			this.applyFilter();
-			this.isLoaded = true;
-
-		});
+			},
+		);
 		this.facilityService.getAllMembersOfFacility(facility, this.STATUS_APPROVED).subscribe(
 			(result: any[]): void => {
 				this.membersLoaded = true;

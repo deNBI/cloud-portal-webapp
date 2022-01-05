@@ -1,11 +1,11 @@
 import {
 	Component, Input, OnChanges, OnInit, SimpleChanges,
 } from '@angular/core';
-import { Project } from '../project.model';
 import { VirtualMachine } from '../../virtualmachines/virtualmachinemodels/virtualmachine';
 import { Volume } from '../../virtualmachines/volumes/volume';
 import { SnapshotModel } from '../../virtualmachines/snapshots/snapshot.model';
 import { GroupService } from '../../api-connector/group.service';
+import { Application } from '../../applications/application.model/application.model';
 
 /**
  * Project OpenStack Details Component.
@@ -18,7 +18,7 @@ import { GroupService } from '../../api-connector/group.service';
 })
 export class ProjectOsDetailsComponent implements OnInit, OnChanges {
 
-	@Input() project: Project;
+	@Input() project: Application;
 	selectedProjectVms: VirtualMachine[] = [];
 	selectedProjectVolumes: Volume[] = [];
 	selectedProjectSnapshots: SnapshotModel[] = [];
@@ -40,7 +40,7 @@ export class ProjectOsDetailsComponent implements OnInit, OnChanges {
 	}
 
 	getProjectDetails(): void {
-		this.groupService.getProjectOSDetails(this.project.Id).subscribe((res: any): void => {
+		this.groupService.getProjectOSDetails(this.project.project_application_id).subscribe((res: any): void => {
 			this.selectedProjectVms = res['vms'];
 			this.selectedProjectVolumes = res['volumes'];
 			this.selectedProjectSnapshots = res['snapshots'];

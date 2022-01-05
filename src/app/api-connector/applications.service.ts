@@ -67,6 +67,16 @@ export class ApplicationsService {
 		);
 	}
 
+	getFullApplicationByUserPermissions(app_id: string): Observable<Application> {
+		return this.http.get<Application>(`${ApiSettings.getApiBaseURL()}project_applications/${app_id}/byPermission/`, {
+			withCredentials: true,
+		}).pipe(
+			map(
+				(app: Application) => new Application(app),
+			),
+		);
+	}
+
 	getApplicationPerunId(app_id: string): Observable<any> {
 		return this.http.get(`${ApiSettings.getApiBaseURL()}project_applications/${app_id}/perun/`, {
 			withCredentials: true,
