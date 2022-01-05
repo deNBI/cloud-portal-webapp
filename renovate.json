@@ -29,5 +29,6 @@
   "bumpVersion": "minor",
   "commitBodyTable": "true",
 	"prHourlyLimit": 10, 
+	"rebaseWhen": "behind-base-branch",
   "commitMessagePrefix": "feat(Dependencies):"
 }
