@@ -1,6 +1,6 @@
 {
-  "name": "@coreui/coreui-free-angular-admin-template",
-  "version": "2.17.0",
+  "name": "@coreui/angular",
+  "version": "4.0.0-alpha.3",
   "description": "CoreUI Free Angular 2+ Admin Template",
   "author": {
     "name": "Łukasz Holeczek",
