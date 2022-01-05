@@ -495,7 +495,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">Suspend Project {{selectedProject?.Name}}</h4>
+        <h4 class="modal-title">Suspend Project {{selectedProject?.perun_name}}</h4>
         <button type="button" class="close" style="cursor:pointer"
                 (click)="suspendModal.hide()"
                 aria-label="Close">
@@ -504,7 +504,7 @@
       </div>
       <div class="modal-body">
 
-        Are you sure you want to suspend {{selectedProject?.Name}} ?
+        Are you sure you want to suspend {{selectedProject?.perun_name}} ?
 
       </div>
       <div class="modal-footer">
@@ -527,7 +527,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">Resume Project {{selectedProject?.Name}}</h4>
+        <h4 class="modal-title">Resume Project {{selectedProject?.perun_name}}</h4>
         <button type="button" class="close" style="cursor:pointer"
                 (click)="resumeModal.hide()"
                 aria-label="Close">
@@ -536,7 +536,7 @@
       </div>
       <div class="modal-body">
 
-        Are you sure you want to resume {{selectedProject?.Name}} ?
+        Are you sure you want to resume {{selectedProject?.perun_name}} ?
 
       </div>
       <div class="modal-footer">
@@ -606,7 +606,7 @@
       </div>
 
       <div class="modal-body">
-        <p>{{ selectedProject?.Description }}</p>
+        <p>{{ selectedProject?.project_application_description}}</p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary"
@@ -651,19 +651,19 @@
             </td>
 
             <td>
-              <span *ngIf="selectedProject?.DateCreated">{{selectedProject?.DateCreated}}</span>
-              <span *ngIf="!selectedProject?.DateCreated">No creation date available</span>
+              <span *ngIf="selectedProject?.project_application_date_approved">{{selectedProject?.project_application_date_approved}}</span>
+              <span *ngIf="!selectedProject?.project_application_date_approved">No creation date available</span>
             </td>
             <td>
-              <span *ngIf="selectedProject?.DateEnd">{{selectedProject?.DateEnd}}</span>
-              <span *ngIf="!selectedProject?.DateEnd">No end date available</span>
+              <span *ngIf="selectedProject?.date_end">{{selectedProject?.date_end}}</span>
+              <span *ngIf="!selectedProject?.date_end">No end date available</span>
             </td>
             <td>
               <span *ngIf="selectedProject?.DaysRunning">{{selectedProject?.DaysRunning}}</span>
               <span *ngIf="!selectedProject?.DaysRunning">No runtime available</span>
             <td>
-              <span *ngIf="selectedProject?.LifetimeDays">{{selectedProject?.LifetimeDays}}</span>
-              <span *ngIf="!selectedProject?.LifetimeDays">No lifetime available</span>
+              <span *ngIf="selectedProject?.lifetime_days">{{selectedProject?.lifetime_days}}</span>
+              <span *ngIf="!selectedProject?.lifetime_days">No lifetime available</span>
             </td>
 
             </tbody>
