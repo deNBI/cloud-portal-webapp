@@ -72,9 +72,11 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 	private availableNewsTags: WordPressTag[] = [];
 	private selectedTags: string[] = [];
 	projects_filtered: Project[] = [];
+	facilitySupportMails: string = '';
+	supportMailEditing: boolean = false;
 
 	constructor(
-private groupService: GroupService,
+							private groupService: GroupService,
 							private facilityService: FacilityService,
 							private newsService: NewsService,
 	) {
@@ -483,6 +485,44 @@ private groupService: GroupService,
 		this.alternative_emailText = '';
 		this.news_tags = '';
 		this.selectedMember = [];
+	}
+
+	getFacilitySupportMails(): void {
+		this.facilityService.getSupportMails(this.selectedFacility['FacilityId']).subscribe(
+			(result: any) => {
+				this.facilitySupportMails = result['body'];
+				if (this.facilitySupportMails === '' || this.facilitySupportMails === null) {
+					this.facilitySupportMails = 'example@mail1.com, example@mail2.com';
+				}
+			},
+		);
+	}
+
+	setFacilitySupportMails(supportMails: string): void {
+		const facilityId = this.selectedFacility['FacilityId'];
+		this.facilityService.setSupportMails(facilityId, supportMails).subscribe((result: any): void => {
+			console.log('Result:');
+			console.log(result);
+			if (result.ok) {
+				this.updateNotificationModal(
+					'Facility support mails changed',
+					'You successfully changed the facility support mails.',
+					true,
+					'success',
+				);
+			} else {
+				this.updateNotificationModal(
+					'Couldn\'t change facility support mails',
+					'An error occurred while trying to change the facility support mails.',
+					true,
+					'danger',
+				);
+			}
+		});
+	}
+
+	toggleSupportMailEditing(): void {
+		this.supportMailEditing = !this.supportMailEditing;
 	}
 
 }
