@@ -51,6 +51,19 @@ export class FacilityService {
 		);
 	}
 
+	/**
+	 * Get support e-mail addresses for computecenter.
+	 */
+	getSupportMails(facilityId: string): Observable<any> {
+		return this.http.get(
+			`${ApiSettings.getApiBaseURL()}computecenters/${facilityId}/supportMails/`,
+			{
+				withCredentials: true,
+				observe: 'response',
+			},
+		);
+	}
+
 	getWfcSubmittedApplications(facility_id: number | string): Observable<Application[]> {
 		return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility_id}/wfc/submitted/`, {
 			withCredentials: true,

@@ -586,7 +586,7 @@
 				</button>
 			</div>
 
-			<div class="modal-body">
+			<div class="modal-body" *ngIf="selectedFacility">
 				<p>Support e-mail address(es) of <strong>{{ selectedFacility['Facility'] }}</strong>: </p>
 				<div class="input-group mb-3">
 					<input type="text" class="form-control" placeholder="Enter support contact e-mail address(es)"

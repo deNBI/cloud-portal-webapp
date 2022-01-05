@@ -72,7 +72,6 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 	private availableNewsTags: WordPressTag[] = [];
 	private selectedTags: string[] = [];
 	projects_filtered: Project[] = [];
-	selectedFacilityComputeCenter: ComputecenterComponent;
 	facilitySupportMails: string = '';
 	supportMailEditing: boolean = false;
 
@@ -486,23 +485,14 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 	}
 
 	getFacilitySupportMails(): void {
-		this.facilityService.getComputeCenters().subscribe((result: any): void => {
-			for (const cc of result) {
-				if (cc['compute_center_facility_id'] === this.selectedFacility['FacilityId']) {
-					this.selectedFacilityComputeCenter = new ComputecenterComponent(
-						cc['compute_center_facility_id'],
-						cc['compute_center_name'],
-						cc['compute_center_login'],
-						cc['compute_center_support_mail'],
-					);
-					this.facilitySupportMails = cc['compute_center_support_mail'];
-					// TODO: Delete if (this.facilitySupportMails === ""...
-					if (this.facilitySupportMails === '' || this.facilitySupportMails === null) {
-						this.facilitySupportMails = 'example@mail1.com, example@mail2.com';
-					}
+		this.facilityService.getSupportMails(this.selectedFacility['FacilityId']).subscribe(
+			(result: any) => {
+				this.facilitySupportMails = result['body'];
+				if (this.facilitySupportMails === '' || this.facilitySupportMails === null) {
+					this.facilitySupportMails = 'example@mail1.com, example@mail2.com';
 				}
-			}
-		});
+			},
+		);
 	}
 
 	setFacilitySupportMails(supportMails: string): void {
