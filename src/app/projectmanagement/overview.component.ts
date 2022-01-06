@@ -460,7 +460,7 @@ private flavorService: FlavorService,
 	isAbleToStart(): boolean {
 		if (this.resourceDataLoaded) {
 			if (!this.project?.OpenStackProject) {
-				if (this.vmsInUse < this.maximumVMs) {
+				if ((this.vmsInUse < this.maximumVMs) && (this.isAdmin || !this.project_application.prevent_machines_starting)) {
 					return true;
 				}
 			}
@@ -559,6 +559,17 @@ private flavorService: FlavorService,
 		this.applicationsService.toggleVisibility(this.project_application).subscribe((application: Application): void => {
 			this.project_application.memberNamesVisible = application.memberNamesVisible;
 			this.toggleLocked = false;
+		});
+	}
+
+	toggleStartingOfMachines(): void {
+		this.toggleLocked = true;
+		this.applicationsService.toggleStartingMachines(this.project_application).subscribe((application: Application): void => {
+			this.project_application.prevent_machines_starting = application.prevent_machines_starting;
+			this.toggleLocked = false;
+		}, () => {
+			this.toggleLocked = false;
+			// check how to catch this part
 		});
 	}
 

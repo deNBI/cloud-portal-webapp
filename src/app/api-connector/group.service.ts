@@ -231,6 +231,14 @@ export class GroupService {
 		});
 	}
 
+	getSimpleVmAllowedByUser(): Observable<any> {
+
+		return this.http.get(`${ApiSettings.getApiBaseURL()}projects/simpleVmAllowed/`, {
+			withCredentials: true,
+
+		});
+	}
+
 	getSimpleVmByUserWhereWorkshopAndAdmin(): Observable<any> {
 		return this.http.get<any>(`${ApiSettings.getApiBaseURL()}projects/simpleVmWorkshops/`, {
 			withCredentials: true,
