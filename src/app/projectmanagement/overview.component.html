@@ -560,10 +560,11 @@
 			<div class="card" id="projectMemberDiv">
 				<div class="card-header">
 					<i class="fa fa-align-justify"></i> Settings/Members of the
-					Project {{ project_application?.project_application_shortname }}
+					Project {{ project_application?.project_application_shortname }} 				<span *ngIf="!project_members_loaded" class="spinner-border text-primary" style="display:block; margin:auto;"></span>
+
 				</div>
 
-				<div class="card-body">
+				<div class="card-body" *ngIf="project_members_loaded">
 					<div *ngIf="project_application.user_is_admin || is_vo_admin" class="btn-group col-12">
 						<button (click)="setAddUserInvitationLink(); addUserModal.show();"
 										class="btn btn-outline-success"
@@ -654,7 +655,7 @@
 							</tr>
 							</thead>
 							<tbody>
-							<tr *ngFor="let member of project_members" [ngStyle]="{'color':isPi(member)}">
+							<tr *ngFor="let member of project_members" [ngStyle]="{'color':member.isAdmin ? '#005AA9' : 'black'}">
 								<td *ngIf="project_application.user_is_admin || is_vo_admin">
 									<input (change)="checkUnCheckMember(member.memberId);"
 												 *ngIf="userinfo?.MemberId.toString() !== member.memberId.toString()"
@@ -665,19 +666,23 @@
 								<td>{{ member.userId }}</td>
 								<td>{{ member.memberId }}</td>
 								<td
-									*ngIf="project_application.user_is_admin || is_vo_admin || project_application?.memberNamesVisible">{{ member.userName }}</td>
+									*ngIf="project_application.user_is_admin || is_vo_admin || project_application?.memberNamesVisible">{{ member.userName }}
+									<span *ngIf="member.isAdmin " class="badge badge-pill bg-info-blue">ADMIN</span>
+									<span *ngIf="member.isPi " class="badge badge-pill bg-danger">PI</span>
+									<span *ngIf="!member.isPi && !member.isAdmin   " class="badge badge-pill bg-warning">MEMBER</span>
+								</td>
 								<td *ngIf="project_application.user_is_pi || project_application.user_is_admin || is_vo_admin">
 									<div class="btn-group" role="group">
 										<button (click)="promoteAdmin(member.userId,member.userName);
                                                 notificationModal.show();
-                                               " *ngIf="!member.IsPi" class="btn btn-primary" style="margin: 2px"
+                                               " *ngIf="!member.isAdmin" class="btn btn-primary" style="margin: 2px"
 														type="button">
 											<i class="fa fa-plus-circle"></i>&nbsp; Set Admin status
 										</button>
 										<button (click)="removeAdmin(member.userId,member.userName);
                                                 notificationModal.show();
                                                "
-														*ngIf="member.IsPi && userinfo?.MemberId.toString() !== member.memberId.toString()"
+														*ngIf="member.isAdmin && userinfo?.MemberId.toString() !== member.memberId.toString() && !member.isPi"
 														class="btn btn-primary" style="margin: 2px" type="button">
 											<i class="fa fa-minus-circle"></i>&nbsp; Remove Admin status
 										</button>

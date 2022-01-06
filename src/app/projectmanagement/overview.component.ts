@@ -97,6 +97,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	toggleLocked: boolean = false;
 	resourceDataLoaded: boolean = false;
 	creditHistoryLoaded: boolean = false;
+	project_members_loaded: boolean = false;
 	vmsInUse: number;
 	maximumVMs: number;
 	coresInUse: number;
@@ -160,6 +161,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 			this.subscription = new Subscription();
 			this.resourceDataLoaded = false;
 			this.creditHistoryLoaded = false;
+			this.project_members_loaded = false;
 			this.errorMessage = null;
 			this.isLoaded = false;
 			this.project_application = null;
@@ -203,6 +205,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 						}
 
 						this.project_application = aj;
+
 						this.setSupportMails(this.project_application);
 
 						if (this.project_application.project_application_perun_id) {
@@ -680,6 +683,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	 * Get all members of a project.
 	 */
 	getMembersOfTheProject(): void {
+		this.project_members_loaded = false;
 		this.subscription.add(
 			this.groupService.getGroupMembers(this.project_application.project_application_perun_id.toString())
 				.subscribe((members: ProjectMember[]): void => {
@@ -692,9 +696,10 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 									const adminIds: any = result['adminIds'];
 									this.project_members.forEach((member: ProjectMember): void => {
 										// eslint-disable-next-line no-param-reassign
-										member.IsPi = adminIds.indexOf(member.userId) !== -1;
+										member.isAdmin = adminIds.indexOf(member.userId) !== -1;
+										member.isPi = this.project_application.project_application_pi.elixir_id === member.elixirId;
 									});
-
+									this.project_members_loaded = true;
 									this.isLoaded = true;
 									if (this.project_application
 										&& this.project_application.credits_allowed
@@ -809,15 +814,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 				this.filteredMembers = result;
 			}),
 		);
-	}
-
-	isPi(member: ProjectMember): string {
-		if (member.IsPi) {
-			return '#005AA9';
-		} else {
-			return 'black';
-		}
-
 	}
 
 	public addMember(memberid: number, firstName: string, lastName: string): void {
