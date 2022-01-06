@@ -688,30 +688,20 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 			this.groupService.getGroupMembers(this.project_application.project_application_perun_id.toString())
 				.subscribe((members: ProjectMember[]): void => {
 					this.project_members = members;
-
 					if (this.project_application.user_is_admin) {
-						this.subscription.add(
-							this.groupService.getGroupAdminIds(this.project_application.project_application_perun_id.toString())
-								.subscribe((result: any): void => {
-									const adminIds: any = result['adminIds'];
-									this.project_members.forEach((member: ProjectMember): void => {
-										// eslint-disable-next-line no-param-reassign
-										member.isAdmin = adminIds.indexOf(member.userId) !== -1;
-										member.isPi = this.project_application.project_application_pi.elixir_id === member.elixirId;
-									});
-									this.project_members_loaded = true;
-									this.isLoaded = true;
-									if (this.project_application
-										&& this.project_application.credits_allowed
-										&& !this.project_application.credits_loop_started) {
-										this.project_application.setCreditsLoopStarted();
-										this.startUpdateCreditUsageLoop();
-									}
-								}),
-						);
+
+						if (this.project_application
+							&& this.project_application.credits_allowed
+							&& !this.project_application.credits_loop_started) {
+							this.project_application.setCreditsLoopStarted();
+							this.startUpdateCreditUsageLoop();
+						}
 					}
+					this.project_members_loaded = true;
+					this.isLoaded = true;
 				}),
 		);
+
 	}
 
 	setAllMembersChecked(): void {
