@@ -5,6 +5,7 @@ import { OwlOptions } from 'ngx-owl-carousel-o';
 import { Image } from './virtualmachinemodels/image';
 import { ImageService } from '../api-connector/image.service';
 import { ImageTypes } from './virtualmachinemodels/imageTypes';
+import { Flavor } from './virtualmachinemodels/flavor';
 
 /**
  * Imagedetail component.
@@ -19,6 +20,7 @@ import { ImageTypes } from './virtualmachinemodels/imageTypes';
 export class ImageDetailComponent implements OnInit {
 	@Input() selectedImage: Image;
 	@Input() images: Image[];
+	@Input() selectedFlavor: Flavor;
 	@Output() readonly selectedImageChange: EventEmitter<Image> = new EventEmitter();
 
 	carousel_activated: boolean = true;
