@@ -894,6 +894,15 @@ header {
 	max-height: 18px;
 }
 
+.not-allowed-cursor {
+	cursor: not-allowed;
+
+}
+
+.inactive-image-card {
+	pointer-events: none;
+}
+
 .image-card-icons img {
 	margin: 0px 5px 10px 0px;
 	width: 40px;;

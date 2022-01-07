@@ -1,64 +1,68 @@
-<div *ngIf="image !== selectedImage" (click)="selectedImageChange.emit(image);" class="card flavor-image-card"
-		 id="id_image_owl_{{image?.name}}"
->
-	<div
-		[ngClass]="{'bg-info-image':!image?.is_snapshot,'bg-warning':image?.is_snapshot}"
+<div class="not-allowed-cursor"
+		 [ngClass]="{'not-allowed-cursor':(selectedFlavor?.rootdisk < image?.min_disk && image?.min_disk > 0) || (selectedFlavor?.ram < image?.min_ram && image?.min_ram >0)}">
+	<div *ngIf="image !== selectedImage" (click)="selectedImageChange.emit(image);"
+			 class="card flavor-image-card inactive-image-card "
+			 id="id_image_owl_{{image?.name}}"
+			 [ngClass]="{'inactive-image-card':(selectedFlavor?.rootdisk < image?.min_disk && image?.min_disk > 0) || (selectedFlavor?.ram < image?.min_ram && image?.min_ram >0)}"
+	>
+		<div
+			[ngClass]="{'bg-info-image':!image?.is_snapshot,'bg-warning':image?.is_snapshot}"
 
-		class="card-header  text-truncate" data-toggle="tooltip" data-placement="top"
-		title="{{image?.name}}"><i *ngIf="image?.is_snapshot"
-															 class="fa fa-camera" aria-hidden="true"></i>
-		<strong>{{image.name}}</strong></div>
-	<div class="card-body" style="color:#58595B;" tabindex="-1">
-		<div class="scroll-image" tabindex="-1">
-			<div *ngIf="!image?.logo_url || !image_visible" class="col" tabindex="-1"
-					 (mouseleave)="setImageVisible()">
-				{{image?.description}}
-			</div>
-			<div *ngIf=" image?.logo_url && image_visible" (mouseenter)="setImageVisible()" tabindex="-1"><img
-				src="{{image?.logo_url}}" tabindex="-1"
-				[ngStyle]="{'width':img_width,'height':img_height}"
-				alt="{{image?.description}}">
+			class="card-header  text-truncate" data-toggle="tooltip" data-placement="top"
+			title="{{image?.name}}"><i *ngIf="image?.is_snapshot"
+																 class="fa fa-camera" aria-hidden="true"></i>
+			<strong>{{image.name}}</strong></div>
+		<div class="card-body" style="color:#58595B;" tabindex="-1">
+			<div class="scroll-image" tabindex="-1">
+				<div *ngIf="!image?.logo_url || !image_visible" class="col" tabindex="-1"
+						 (mouseleave)="setImageVisible()">
+					{{image?.description}}
+				</div>
+				<div *ngIf=" image?.logo_url && image_visible" (mouseenter)="setImageVisible()" tabindex="-1"><img
+					src="{{image?.logo_url}}" tabindex="-1"
+					[ngStyle]="{'width':img_width,'height':img_height}"
+					alt="{{image?.description}}">
+				</div>
 			</div>
 		</div>
-	</div>
-	<div class="card-footer text-muted" *ngIf="image?.min_ram >0 || image?.min_disk >0 ">
-		Requirements:
-		<div class="scroll-flavor">
+		<div class="card-footer text-muted" *ngIf="image?.min_ram >0 || image?.min_disk >0 ">
+			Requirements:
+			<div class="scroll-flavor">
 
-			<div class="row" *ngIf="image?.min_ram > 0">
-				<div class="col-2">
+				<div class="row" *ngIf="image?.min_ram > 0">
+					<div class="col-2">
 
-					<figure class="image-card-icons">
-						<img src="{{RAM_ICON_PATH}}" alt="">
-					</figure>
+						<figure class="image-card-icons">
+							<img src="{{RAM_ICON_PATH}}" alt="">
+						</figure>
+					</div>
+					<div class="col-10">
+
+						{{image?.min_ram}} GB min Ram <i *ngIf="selectedFlavor?.ram < image?.min_ram" class="fas fa-times"
+																						 style="color: red !important;"></i>&nbsp;
+						<i *ngIf="selectedFlavor?.ram >= image?.min_ram" class="fa fa-check"
+							 style="color: green !important;"></i>&nbsp;
+					</div>
 				</div>
-				<div class="col-8">
+				<div class="row" *ngIf="image?.min_disk > 0">
+					<div class="col-2">
+						<i class="image-card-icons">
+							<img src="{{STORAGE_ICON_PATH}}" alt="">
+						</i></div>
+					<div class="col-10">
 
-					{{image?.min_ram}} GB min Ram <i *ngIf="selectedFlavor?.ram < image?.min_ram" class="fas fa-times"
-																					 style="color: red !important;"></i>&nbsp;
-					<i *ngIf="selectedFlavor?.ram >= image?.min_ram" class="fa fa-check"
-						 style="color: green !important;"></i>&nbsp;
-				</div>
-			</div>
-			<div class="row" *ngIf="image?.min_disk > 0">
-				<div class="col-2">
-					<i class="image-card-icons">
-						<img src="{{STORAGE_ICON_PATH}}" alt="">
-					</i></div>
-				<div class="col-8">
+						{{image?.min_disk}}
+						GB min root Disk <i *ngIf="selectedFlavor?.rootdisk < image?.min_disk" class="fas fa-times"
+																style="color: red !important;"></i>&nbsp;
+						<i *ngIf="selectedFlavor?.rootdisk >= image?.min_disk" class="fa fa-check"
+							 style="color: green !important;"></i>&nbsp;
 
-					{{image?.min_disk}}
-					GB min root Disk <i *ngIf="selectedFlavor?.rootdisk < image?.min_disk" class="fas fa-times"
-												 style="color: red !important;"></i>&nbsp;
-					<i *ngIf="selectedFlavor?.rootdisk >= image?.min_disk" class="fa fa-check"
-						 style="color: green !important;"></i>&nbsp;
-
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
-
 <div *ngIf="image === selectedImage" class="card border-success flavor-image-card"
 >
 	<div
@@ -112,7 +116,7 @@
 
 					{{image?.min_disk}}
 					GB min root Disk <i *ngIf="selectedFlavor?.rootdisk < image?.min_disk" class="fas fa-times"
-												 style="color: red !important;"></i>&nbsp;
+															style="color: red !important;"></i>&nbsp;
 					<i *ngIf="selectedFlavor?.rootdisk >= image?.min_disk" class="fa fa-check"
 						 style="color: green !important;"></i>&nbsp;
 
