@@ -31,7 +31,8 @@
     "preinstall": "npx npm-force-resolutions"
   },
   "resolutions": {
-    "postcss-preset-env": "^7.0.0"
+    "postcss-preset-env": "^7.0.0",
+		"postcss": "8.4.5"
   },
   "private": true,
   "dependencies": {
