@@ -18,8 +18,7 @@
   "resolutions": {
     "postcss-preset-env": "^7.0.0",
     "postcss": "8.4.5",
-		"colors": "1.4.0"
-
+    "colors": "1.4.0"
   },
   "private": true,
   "dependencies": {
@@ -43,6 +42,7 @@
     "@types/jquery": "3.5.11",
     "acorn": "8.7.0",
     "ajv-formats": "2.1.1",
+    "ajv-keywords": "^5.1.0",
     "angular-ng-autocomplete": "2.0.5",
     "angulartics2": "10.1.0",
     "bootstrap": "4.6.1",
