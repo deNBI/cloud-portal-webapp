@@ -40,7 +40,7 @@ export class ProjectOsDetailsComponent implements OnInit, OnChanges {
 	}
 
 	getProjectDetails(): void {
-		this.groupService.getProjectOSDetails(this.project.project_application_id).subscribe((res: any): void => {
+		this.groupService.getProjectOSDetails(this.project.project_application_perun_id).subscribe((res: any): void => {
 			this.selectedProjectVms = res['vms'];
 			this.selectedProjectVolumes = res['volumes'];
 			this.selectedProjectSnapshots = res['snapshots'];
