@@ -1,6 +1,6 @@
 {
   "name": "@coreui/angular",
-  "version": "4.17.0",
+  "version": "4.18.0",
   "description": "CoreUI Free Angular 2+ Admin Template",
   "author": {
     "name": "Łukasz Holeczek",
@@ -62,7 +62,7 @@
     "chart.js": "2.9.4",
     "chromedriver": "97.0.0",
     "cli-color": "2.0.1",
-    "colors": "1.4.0",
+    "colors": "1.4.2",
     "core-js": "3.20.2",
     "css-loader": "6.5.1",
     "cssnano": "5.0.14",
