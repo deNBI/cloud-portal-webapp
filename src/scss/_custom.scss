@@ -1041,6 +1041,11 @@ select option:hover, select option:focus, select option:target {
     background-color: $deNBI_lightgrey;
   }
 
+	.bg-info-blue{
+    background-color: $deNBI_cyan;
+
+	}
+
   .bg-info-image {
     background-color: $deNBI_lightgrey;
     color: $deNBI_white;
