@@ -11582,7 +11582,7 @@
     "y18n" "^5.0.5"
     "yargs-parser" "^21.0.0"
 
-"yarn-audit-fix@^9.0.5":
+"yarn-audit-fix@9.0.5":
   "integrity" "sha512-ZDrmStPZISaMEENL7dNU7pfvmQ2ozVOqH43gBgk6SKfsWizcRojYDnQpLvF1ZE4VlvJPjPYGwNhIYYVInCGiHQ=="
   "resolved" "https://registry.npmjs.org/yarn-audit-fix/-/yarn-audit-fix-9.0.5.tgz"
   "version" "9.0.5"
