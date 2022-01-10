@@ -36,6 +36,9 @@ export class ImageDetailComponent implements OnInit {
 	image_types: { [name: string]: Image[] } = {};
 	imageTypes = ImageTypes;
 	image_selection: Image[];
+	STATIC_IMG_FOLDER: String = 'static/webapp/assets/img/';
+	RAM_ICON_PATH: string = `${this.STATIC_IMG_FOLDER}/new_instance/ram_icon.svg`;
+	STORAGE_ICON_PATH: string = `${this.STATIC_IMG_FOLDER}/new_instance/storage_icon.svg`;
 
 	customOptions: OwlOptions = {
 		loop: false,
