@@ -1,22 +1,7 @@
 {
-  "name": "@coreui/angular",
+  "name": "@denbi/cloud-portal-webapp",
   "version": "4.20.0",
-  "description": "CoreUI Free Angular 2+ Admin Template",
-  "author": {
-    "name": "Łukasz Holeczek",
-    "url": "http://holeczek.pl",
-    "github": "https://github.com/mrholek",
-    "twitter": "https://twitter.com/lukaszholeczek"
-  },
-  "contributors": [
-    {
-      "name": "Andrzej Kopański",
-      "url": "https://github.com/xidedix"
-    }
-  ],
-  "homepage": "https://coreui.io/angular",
-  "copyright": "Copyright 2018 creativeLabs Łukasz Holeczek",
-  "license": "MIT",
+  "description": "de.NBI Cloud Portal",
   "scripts": {
     "ng": "ng serve",
     "start": "webpack-dev-server --port=4200",
@@ -32,7 +17,9 @@
   },
   "resolutions": {
     "postcss-preset-env": "^7.0.0",
-    "postcss": "8.4.5"
+    "postcss": "8.4.5",
+		"colors": "1.4.0"
+
   },
   "private": true,
   "dependencies": {
