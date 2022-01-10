@@ -1,26 +1,26 @@
 /* eslint-disable no-lonely-if */
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
-import {Subscription} from 'rxjs';
-import {HttpStatusCode} from '@angular/common/http';
-import {ApplicationsService} from '../api-connector/applications.service';
-import {ApiSettings} from '../api-connector/api-settings.service';
-import {Application} from './application.model/application.model';
-import {GroupService} from '../api-connector/group.service';
-import {UserService} from '../api-connector/user.service';
-import {VoService} from '../api-connector/vo.service';
-import {FacilityService} from '../api-connector/facility.service';
-import {Flavor} from '../virtualmachines/virtualmachinemodels/flavor';
-import {FlavorService} from '../api-connector/flavor.service';
-import {Client} from '../vo_manager/clients/client.model';
-import {ApplicationBaseClassComponent} from '../shared/shared_modules/baseClass/application-base-class.component';
-import {ComputecenterComponent} from '../projectmanagement/computecenter.component';
-import {is_vo} from '../shared/globalvar';
-import {Application_States} from '../shared/shared_modules/baseClass/abstract-base-class';
-import {FlavorType} from '../virtualmachines/virtualmachinemodels/flavorType';
-import {CreditsService} from '../api-connector/credits.service';
-import {ClientLimitsComponent} from '../vo_manager/clients/modals/client-limits..component';
-import {NotificationModalComponent} from '../shared/modal/notification-modal';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { Subscription } from 'rxjs';
+import { HttpStatusCode } from '@angular/common/http';
+import { ApplicationsService } from '../api-connector/applications.service';
+import { ApiSettings } from '../api-connector/api-settings.service';
+import { Application } from './application.model/application.model';
+import { GroupService } from '../api-connector/group.service';
+import { UserService } from '../api-connector/user.service';
+import { VoService } from '../api-connector/vo.service';
+import { FacilityService } from '../api-connector/facility.service';
+import { Flavor } from '../virtualmachines/virtualmachinemodels/flavor';
+import { FlavorService } from '../api-connector/flavor.service';
+import { Client } from '../vo_manager/clients/client.model';
+import { ApplicationBaseClassComponent } from '../shared/shared_modules/baseClass/application-base-class.component';
+import { ComputecenterComponent } from '../projectmanagement/computecenter.component';
+import { is_vo } from '../shared/globalvar';
+import { Application_States } from '../shared/shared_modules/baseClass/abstract-base-class';
+import { FlavorType } from '../virtualmachines/virtualmachinemodels/flavorType';
+import { CreditsService } from '../api-connector/credits.service';
+import { ClientLimitsComponent } from '../vo_manager/clients/modals/client-limits..component';
+import { NotificationModalComponent } from '../shared/modal/notification-modal';
 
 // eslint-disable-next-line no-shadow
 enum TabStates {
