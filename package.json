@@ -1,8 +1,22 @@
 {
-  "name": "@denbi/cloud-portal-webapp",
-  "version": "4.16.0",
-  "description": "de.NBI Cloud Portal",
-  "homepage": "https://cloud.denbi.de",
+  "name": "@coreui/angular",
+  "version": "4.18.0",
+  "description": "CoreUI Free Angular 2+ Admin Template",
+  "author": {
+    "name": "Łukasz Holeczek",
+    "url": "http://holeczek.pl",
+    "github": "https://github.com/mrholek",
+    "twitter": "https://twitter.com/lukaszholeczek"
+  },
+  "contributors": [
+    {
+      "name": "Andrzej Kopański",
+      "url": "https://github.com/xidedix"
+    }
+  ],
+  "homepage": "https://coreui.io/angular",
+  "copyright": "Copyright 2018 creativeLabs Łukasz Holeczek",
+  "license": "MIT",
   "scripts": {
     "ng": "ng serve",
     "start": "webpack-dev-server --port=4200",
@@ -51,7 +65,7 @@
     "cli-color": "2.0.1",
     "core-js": "3.20.2",
     "css-loader": "6.5.1",
-    "cssnano": "5.0.14",
+    "cssnano": "5.0.15",
     "d3": "7.2.1",
     "eslint": "8.6.0",
     "export-to-csv": "0.2.1",
@@ -101,7 +115,7 @@
     "@typescript-eslint/eslint-plugin": "5.9.0",
     "@typescript-eslint/parser": "5.9.0",
     "audit-ci": "5.1.2",
-    "autoprefixer": "10.4.1",
+    "autoprefixer": "10.4.2",
     "codelyzer": "6.0.2",
     "eslint": "8.6.0",
     "eslint-config-airbnb-base": "15.0.0",
