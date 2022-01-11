@@ -34,7 +34,7 @@ jobs:
           npx ng lint cloud-webapp --fix --force
       - name: Check for modified files
         id: git-check
-        run: echo ::set-output name=modified::$(if git diff-index --quiet HEAD -- ':(exclude)package-lock.json'; then echo "false"; else echo "true"; fi)
+        run: echo ::set-output name=modified::$(if git diff-index --quiet HEAD -- '*.ts'; then echo "false"; else echo "true"; fi)
       - name: Create Pull Request
         if: steps.git-check.outputs.modified == 'true'
         id: cpr

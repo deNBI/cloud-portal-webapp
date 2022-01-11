@@ -30,7 +30,7 @@
 
 		<div *ngIf="!carousel_activated || images.length <=images_per_row-1" class="row">
 			<div *ngFor="  let image of image_selection" style="cursor: pointer;">
-				<app-image-slide [image]="image" [selectedImage]="selectedImage"
+				<app-image-slide [image]="image" [selectedImage]="selectedImage" [selectedFlavor]="selectedFlavor"
 												 (selectedImageChange)=" selectedImageChange.emit(image);"
 				></app-image-slide>
 			</div>
@@ -66,7 +66,44 @@
 							</div>
 						</div>
 					</div>
+					<div class="card-footer text-muted" *ngIf="selectedImage?.min_ram >0 || selectedImage?.min_disk >0 ">
+						Requirements:
+						<div class="scroll-flavor">
+
+							<div class="row" *ngIf="selectedImage?.min_ram > 0">
+								<div class="col-2">
+
+									<figure class="image-card-icons">
+										<img src="{{RAM_ICON_PATH}}" alt="">
+									</figure>
+								</div>
+								<div class="col-10">
+
+									{{selectedImage?.min_ram}} GB min Ram <i *ngIf="selectedFlavor?.ram < selectedImage?.min_ram" class="fas fa-times"
+																													 style="color: red !important;"></i>&nbsp;
+									<i *ngIf="selectedFlavor?.ram >= selectedImage?.min_ram" class="fa fa-check"
+										 style="color: green !important;"></i>&nbsp;
+								</div>
+							</div>
+							<div class="row" *ngIf="selectedImage?.min_disk > 0">
+								<div class="col-2">
+									<i class="image-card-icons">
+										<img src="{{STORAGE_ICON_PATH}}" alt="">
+									</i></div>
+								<div class="col-10">
+
+									{{selectedImage?.min_disk}}
+									GB min root Disk <i *ngIf="selectedFlavor?.rootdisk < selectedImage?.min_disk" class="fas fa-times"
+																			style="color: red !important;"></i>&nbsp;
+									<i *ngIf="selectedFlavor?.rootdisk >= selectedImage?.min_disk" class="fa fa-check"
+										 style="color: green !important;"></i>&nbsp;
+
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
+
 			</div>
 
 			<div *ngIf="!selectedImage" class="col-md-12"
@@ -74,7 +111,7 @@
 				<owl-carousel-o *ngIf="carousel_activated" [options]="customOptions">
 					<ng-container *ngFor="let image of image_selection">
 						<ng-template carouselSlide>
-							<app-image-slide [selectedImage]="selectedImage" [image]="image"
+							<app-image-slide [selectedImage]="selectedImage" [image]="image" [selectedFlavor]="selectedFlavor"
 															 (selectedImageChange)="selectedImageChange.emit(image);"></app-image-slide>
 
 						</ng-template>
@@ -90,7 +127,7 @@
 				<owl-carousel-o *ngIf="carousel_activated" [options]="customOptions">
 					<ng-container *ngFor="let image of image_selection">
 						<ng-template carouselSlide>
-							<app-image-slide [selectedImage]="selectedImage" [image]="image"
+							<app-image-slide [selectedImage]="selectedImage" [image]="image" [selectedFlavor]="selectedFlavor"
 															 (selectedImageChange)="    selectedImageChange.emit(image);"
 							></app-image-slide>
 						</ng-template>
