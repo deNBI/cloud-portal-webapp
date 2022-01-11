@@ -25,16 +25,15 @@ jobs:
         with:
           node-version: '16.13.0'
       - run: git status
-      - run: npm install -g npm@8.1.0
+      - run: npm install -g yarn
       - name: Prepare
-        run: npm ci
+        run:  yarn install --check-files
       - name: Lint
         run: |
-          npm i
           npx ng lint cloud-webapp --fix --force
       - name: Check for modified files
         id: git-check
-        run: echo ::set-output name=modified::$(if git diff-index --quiet HEAD -- ':(exclude)package-lock.json'; then echo "false"; else echo "true"; fi)
+        run: echo ::set-output name=modified::$(if git diff-index --quiet HEAD -- '*.ts'; then echo "false"; else echo "true"; fi)
       - name: Create Pull Request
         if: steps.git-check.outputs.modified == 'true'
         id: cpr
