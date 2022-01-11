@@ -25,12 +25,11 @@ jobs:
         with:
           node-version: '16.13.0'
       - run: git status
-      - run: npm install -g npm@8.1.0
+      - run: npm install -g yarn
       - name: Prepare
-        run: npm ci
+        run:  yarn install --check-files
       - name: Lint
         run: |
-          npm i
           npx ng lint cloud-webapp --fix --force
       - name: Check for modified files
         id: git-check
