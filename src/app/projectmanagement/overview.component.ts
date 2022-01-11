@@ -468,12 +468,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 		);
 	}
 
-
-	setLifetime(): void {
-		// tslint:disable-next-line:max-line-length
-		this.life_time_string = `${this.project.DateCreated} -  ${this.project.DateEnd}`;
-
-
 	ngOnInit(): void {
 		this.activatedRoute.params.subscribe((paramsId: any): void => {
 			try {
@@ -490,7 +484,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
 			this.subscription.unsubscribe();
 			this.subscription = new Subscription();
-			this.isAdmin = false;
 			this.modificationRequestDisabled = false;
 			this.lifetimeExtensionDisabled = false;
 			this.creditsExtensionDisabled = false;
@@ -501,7 +494,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 			this.isLoaded = false;
 			this.creditHistoryLoaded = false;
 			this.resourceDataLoaded = false;
-			this.project = null;
 			this.project_application = null;
 			this.project_members = [];
 			this.application_id = paramsId.id;
