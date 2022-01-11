@@ -807,8 +807,25 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
 	filterMembers(searchString: string): void {
 		this.subscription.add(
-			this.userService.getFilteredMembersOfdeNBIVo(searchString).subscribe((result: object): void => {
-				this.filteredMembers = result;
+			this.userService.getFilteredMembersOfdeNBIVo(searchString).subscribe((result: any): void => {
+				this.filteredMembers = [];
+				for (const entry of result) {
+					let member_exist: boolean = false;
+
+					for (const projectMember of this.project_members) {
+						if (projectMember.memberId === entry.member_id) {
+							member_exist = true;
+							break;
+
+						}
+
+					}
+					if (!member_exist) {
+						this.filteredMembers.push(entry);
+
+					}
+
+				}
 			}),
 		);
 	}
