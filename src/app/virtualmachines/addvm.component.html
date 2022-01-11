@@ -152,7 +152,7 @@
 									<div class="col">
 
 										<app-image-detail *ngIf="images?.length > 0" [selectedImage]="selectedImage"
-																			[images]="images"
+																			[images]="images" [selectedFlavor]="selectedFlavor"
 																			(selectedImageChange)="setSelectedImage($event)"
 																			id="id_image_detail"></app-image-detail>
 									</div>
