@@ -143,7 +143,7 @@
 
 
 										<app-image-detail *ngIf="images?.length > 0" [selectedImage]="selectedMasterImage"
-																			[images]="images"
+																			[images]="images" [selectedFlavor]="selectedFlavor"
 																			(selectedImageChange)="selectedMasterImage=$event;this.selectedWorkerBatches[0].image=selectedMasterImage;"
 																			id="master_id_image_detail"></app-image-detail>
 										<div class="alert alert-info" *ngIf="selectedMasterImage"

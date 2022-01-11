@@ -12,6 +12,8 @@ export class Image {
 	description: string;
 	is_snapshot: boolean;
 	logo_url: string;
+	min_ram: number;
+	min_disk: number;
 	modes: ImageMode[];
 
 	constructor(image?: Partial<Image>) {
