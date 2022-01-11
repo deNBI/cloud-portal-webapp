@@ -163,7 +163,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 	/**
 	 * If the client for a project is viable.
 	 */
-	client_avaiable: boolean = false;
+	client_available: boolean = false;
 	showAttachVol: boolean = false;
 	credits_allowed: boolean = false;
 
@@ -582,12 +582,12 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 				this.loadProjectData();
 
 				if (client.status && client.status === 'Connected' && client.activated) {
-					this.client_avaiable = true;
+					this.client_available = true;
 
 					this.client_checked = true;
 					this.getForc(client.id);
 				} else {
-					this.client_avaiable = false;
+					this.client_available = false;
 					this.client_checked = true;
 
 				}

@@ -111,7 +111,7 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 	/**
 	 * If the client for a project is viable.
 	 */
-	client_avaiable: boolean = false;
+	client_available: boolean = false;
 
 	/**
 	 * If the data for the site is initialized.
@@ -409,7 +409,17 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 				},
 				(error: any): void => {
 					console.log(error);
-					this.cluster_error = error;
+					if (error['error']['error']) {
+						this.cluster_error = error['error']['error'];
+					} else {
+						this.cluster_error = error;
+					}
+					setTimeout(
+						(): void => {
+							void this.router.navigate(['/virtualmachines/clusterOverview']).then().catch();
+						},
+						4000,
+					);
 				},
 			),
 		);
@@ -428,12 +438,12 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 		this.subscription.add(
 			this.groupService.getClientBibigrid(this.selectedProject[1].toString()).subscribe((client: Client): void => {
 				if (client.status && client.status === 'Connected') {
-					this.client_avaiable = true;
+					this.client_available = true;
 
 					this.loadProjectData();
 					this.client_checked = true;
 				} else {
-					this.client_avaiable = false;
+					this.client_available = false;
 					this.client_checked = true;
 					this.projectDataLoaded = true;
 				}

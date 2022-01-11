@@ -65,20 +65,20 @@
 							</div>
 						</div>
 						<div class="row justify-content-center">
-							<span *ngIf="(client_avaiable|| selectedProject) && (!projectDataLoaded || !flavors_loaded)"
+							<span *ngIf="(client_available|| selectedProject) && (!projectDataLoaded || !flavors_loaded)"
 										class="spinner-border text-info">
 							</span>
 						</div>
 						<div *ngIf="projectDataLoaded && selectedProject && (allowedProjects | inAllowed: selectedProject)">
 						<div class="alert alert-danger" role="alert"
-								 *ngIf="client_avaiable && !selectedProjectClient?.bibigrid_available && projectDataLoaded && flavors_loaded">
+								 *ngIf="client_available && !selectedProjectClient?.bibigrid_available && projectDataLoaded && flavors_loaded">
 							Starting a cluster is currently not possible!<br>
 							If you have any questions please contact <a href="mailto:{{CLOUD_PORTAL_SUPPORT_MAIL}}">{{CLOUD_PORTAL_SUPPORT_MAIL}}.</a>
 							Check our <a href="{{STATUS_LINK}}" target="_blank" rel="noopener noreferrer">status overview</a> to see if the site of your project is reachable.
 						</div>
 
 						<div
-							*ngIf="client_avaiable && selectedProjectClient?.bibigrid_available && projectDataLoaded && flavors_loaded">
+							*ngIf="client_available && selectedProjectClient?.bibigrid_available && projectDataLoaded && flavors_loaded">
 							<app-resource-overview [ressourceUsage]="selectedProjectRessources"
 																		 [newCores]="newCores" [newRam]="newRam" [newGpus]="newGpus"
 																		 [newVms]="newVms"
@@ -327,7 +327,7 @@
 							</button>
 						</div>
 						</div>
-						<div *ngIf="projectDataLoaded && selectedProject && !(allowedProjects | inAllowed: selectedProject)">
+						<div *ngIf="(projectDataLoaded && (flavors_loaded || !client_available)) && selectedProject && !(allowedProjects | inAllowed: selectedProject)">
 							<div class="alert alert-info">
 								You are not allowed to start a machine in this project, as the administrators of the project do not allow non-administrators to start machines.
 								<p *ngIf="singleProject">This is the only SimpleVm project you are a member of.</p>
@@ -338,7 +338,7 @@
 				</div>
 
 				<div class="alert alert-danger"
-						 *ngIf="isLoaded && !client_avaiable && selectedProject && client_checked">The
+						 *ngIf="isLoaded && !client_available && selectedProject && client_checked">The
 					corresponding client is currently offline.
 					If you have any questions please contact <a
 						href="mailto:{{CLOUD_PORTAL_SUPPORT_MAIL}}">{{CLOUD_PORTAL_SUPPORT_MAIL}}</a>.
@@ -364,16 +364,23 @@
 
 		<div class="modal-content">
 			<div class="modal-header">
-				Cluster Start
+				<h4>{{!cluster_error ? 'Cluster Start' : 'Error while starting cluster'}}</h4>
 			</div>
 			<div class="modal-body">
-        <span *ngIf="!cluster_started">        Starting Cluster..
+        <span *ngIf="!cluster_started && !cluster_error">        Starting Cluster..
 </span>
 				<span
-					*ngIf="cluster_id && cluster_started"> The ID of your new cluster is <strong
+					*ngIf="cluster_id && cluster_started && !cluster_error"> The ID of your new cluster is <strong
 					id="new_cluster_id">{{cluster_id}}</strong>.</span>
-				<span *ngIf="cluster_error">  {{cluster_error}}.</span>
+				<span *ngIf="cluster_error">{{cluster_error}}</span>
 
+			</div>
+			<div class="modal-footer">
+				<div class="row">
+					<button *ngIf="cluster_error" class="btn btn-info"
+									(click)="infoModal.hide();">
+						Close</button>
+				</div>
 			</div>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->
