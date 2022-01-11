@@ -17,7 +17,7 @@ import { ClusterPage } from '../virtualmachines/clusters/clusterPage.model';
  * Service which provides vm methods.
  */
 @Injectable({
-	            providedIn: 'root',
+	providedIn: 'root',
 })
 export class VirtualmachineService {
 
@@ -61,9 +61,10 @@ export class VirtualmachineService {
 		);
 	}
 
-	scaleCluster(cluster_id: string, worker_batch: WorkerBatch): Observable<any> {
+	scaleCluster(cluster_id: string, worker_flavor_name: string, upscale_count: number): Observable<any> {
 		const params: HttpParams = new HttpParams()
-			.set('worker_batch', encodeURIComponent(JSON.stringify(worker_batch)));
+			.set('worker_flavor_name', worker_flavor_name)
+			.set('upscale_count', upscale_count);
 
 		return this.http.post(`${ApiSettings.getApiBaseURL()}clusters/${cluster_id}/scale-up/`, params, {
 			withCredentials: true,
@@ -76,18 +77,9 @@ export class VirtualmachineService {
 		});
 	}
 
-	scaleClusterNewBatch(cluster_id: string, worker_batch: WorkerBatch): Observable<any> {
+	scaleDownCluster(cluster_id: string, downscale_list: any): Observable<any> {
 		const params: HttpParams = new HttpParams()
-			.set('worker_batch', encodeURIComponent(JSON.stringify(worker_batch)));
-
-		return this.http.post(`${ApiSettings.getApiBaseURL()}clusters/${cluster_id}/scale-up/new/`, params, {
-			withCredentials: true,
-		});
-	}
-
-	scaleDownCluster(cluster_id: string, worker_batches: WorkerBatch[]): Observable<any> {
-		const params: HttpParams = new HttpParams()
-			.set('worker_batches', encodeURIComponent(JSON.stringify(worker_batches)));
+			.set('downscale_list', JSON.stringify(downscale_list));
 
 		return this.http.post(`${ApiSettings.getApiBaseURL()}clusters/${cluster_id}/scale-down/`, params, {
 			withCredentials: true,
@@ -136,12 +128,12 @@ export class VirtualmachineService {
 		servername: string,
 		project: string,
 		projectid: string,
-	        http: boolean,
+		http: boolean,
 		https: boolean,
 		udp: boolean,
 		new_volumes: Volume[],
 		attach_volumes: Volume[],
-	        playbook_information?: string,
+		playbook_information?: string,
 		additional_elixir_ids?: string[],
 	): Observable<any> {
 
@@ -167,8 +159,8 @@ export class VirtualmachineService {
 	startWorkshopVMs(
 		flavor: string,
 		image: Image,
-		servers: {[key: string]: string}[],
-									 project: string,
+		servers: { [key: string]: string }[],
+		project: string,
 		projectid: string,
 		workshopShortname: string,
 	): Observable<any> {
