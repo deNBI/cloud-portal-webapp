@@ -159,7 +159,14 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
 			this.subscription.unsubscribe();
 			this.subscription = new Subscription();
+			this.modificationRequestDisabled = false;
+			this.lifetimeExtensionDisabled = false;
+			this.creditsExtensionDisabled = false;
+			this.disabledDoiInput = false;
 			this.resourceDataLoaded = false;
+			this.creditHistoryLoaded = false;
+			this.errorMessage = null;
+			this.isLoaded = false;
 			this.creditHistoryLoaded = false;
 			this.project_members_loaded = false;
 			this.errorMessage = null;
@@ -466,45 +473,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
 				}),
 		);
-	}
-
-	ngOnInit(): void {
-		this.activatedRoute.params.subscribe((paramsId: any): void => {
-			try {
-				if (this.updateCreditsUsedIntervals) {
-					clearInterval(this.updateCreditsUsedIntervals);
-				}
-				if (this.updateCreditsHistoryIntervals) {
-					clearInterval(this.updateCreditsHistoryIntervals);
-					this.creditHistoryLoaded = false;
-				}
-			} catch (someError) {
-				// empty catch
-			}
-
-			this.subscription.unsubscribe();
-			this.subscription = new Subscription();
-			this.modificationRequestDisabled = false;
-			this.lifetimeExtensionDisabled = false;
-			this.creditsExtensionDisabled = false;
-			this.disabledDoiInput = false;
-			this.resourceDataLoaded = false;
-			this.creditHistoryLoaded = false;
-			this.errorMessage = null;
-			this.isLoaded = false;
-			this.creditHistoryLoaded = false;
-			this.resourceDataLoaded = false;
-			this.project_application = null;
-			this.project_members = [];
-			this.application_id = paramsId.id;
-			this.getApplication();
-			this.getUserinfo();
-			this.getListOfFlavors();
-			this.getListOfTypes();
-			this.getDois();
-			this.is_vo_admin = is_vo;
-
-		});
 	}
 
 	/**
