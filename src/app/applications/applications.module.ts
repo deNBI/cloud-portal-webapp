@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { ClickOutsideModule } from 'ng4-click-outside';
-import { AutocompleteLibModule } from 'angular-ng-autocomplete';
+import { NgSelectModule } from '@ng-select/ng-select';
 import { ApplicationsComponent } from './applications.component';
 import { ApplicationsRoutingModule } from './applications-routing.module';
 import { AddsimplevmComponent } from './addsimplevm.component';
@@ -37,10 +37,10 @@ import { NewsModule } from '../news/news.module';
 		CommonModule,
 		FormsModule,
 		ModalModule.forRoot(),
-		AutocompleteLibModule,
 		SharedDirectivesModule,
 		PipeModuleModule,
 		NewsModule,
+		NgSelectModule,
 	],
 	declarations: [
 		ApplicationsComponent,

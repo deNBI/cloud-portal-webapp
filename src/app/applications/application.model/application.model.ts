@@ -128,6 +128,7 @@ export class Application {
 	}
 
 	public removeEdamTerm(term: EdamOntologyTerm): void {
+		console.log('remove');
 		const idx: number = this.project_application_edam_terms.indexOf(term);
 		if (idx !== -1) {
 			this.project_application_edam_terms.splice(idx, 1);

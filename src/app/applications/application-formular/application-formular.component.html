@@ -43,7 +43,7 @@
 										(click)="sendTestApplication(test_name);notificationModal.show();">Test
 							Application
 						</button>
-						<input name="test_name" placeholder="TestAppName" [(ngModel)]="test_name" >
+						<input name="test_name" placeholder="TestAppName" [(ngModel)]="test_name">
 					</div>
 
 					<form id="application_form" #form="ngForm"
@@ -433,42 +433,32 @@
 						</div>
 						<div class="form-group row">
 							<label class="col-md-4 form-control-label"><strong>Research Topics* </strong></label>
-							<div class="col-md-8" style="  z-index: 999;" >
+							<div class="col-md-8" style="  z-index: 999;">
 								<div [ngClass]="{
                                 'danger-border': application?.project_application_edam_terms?.length <=0
                                 || application?.project_application_edam_terms?.length >10,
                                 'success-border':application?.project_application_edam_terms?.length >0
                                 && application?.project_application_edam_terms?.length <=10
                                 }">
-									<ng-autocomplete #edam_ontology id="edam_input"
-																	 [data]="edam_ontology_terms"
-																	 [searchKeyword]="ontology_search_keyword"
-																	 (selected)='selectEvent($event);edam_ontology.clear();edam_ontology.focus();'
-																	 placeHolder="Please add your research topics"
+									<ng-select #edam_ontology id="edam_input"
+														 [items]="edam_ontology_terms"
+														 [multiple]="true"
+														 bindLabel="term"
+														 maxSelectedItems="10"
+														 placeholder="Please select at least one topic"
+														 dropdownPosition="bottom"
+														 [(ngModel)]="application.project_application_edam_terms"
+														 name="selected_edam_terms"
 
-																	 [itemTemplate]="itemTemplate"
-																	 [notFoundTemplate]="notFoundTemplate">
-									</ng-autocomplete>
 
-									<ng-template #itemTemplate let-item>
-										<a [id]="item.term" [innerHTML]="item.term"></a>
-									</ng-template>
+									>
+									</ng-select>
 
-									<ng-template #notFoundTemplate let-notFound>
-										<div [innerHTML]="notFound"></div>
-									</ng-template>
 
 								</div>
-								<h5><span
 
-									*ngFor="let term of application?.project_application_edam_terms"
-									style="margin-right: 5px; "
-									class="badge bg-info"> {{term.term}}
-									<span class="badge" style="cursor: pointer;"
-												(click)="application.removeEdamTerm(term)">&#10060;</span>
- </span>
-								</h5>
-								<div *ngIf="application?.project_application_edam_terms?.length>10" class="alert alert-warning" role="alert">
+								<div *ngIf="application?.project_application_edam_terms?.length>10" class="alert alert-warning"
+										 role="alert">
 									You can at most choose 10 research topics for your project.
 								</div>
 							</div>
@@ -484,7 +474,8 @@
 														 id="id_project_application_sensitive_data"
 														 name="project_application_sensitive_data"
 														 [(ngModel)]="application.project_application_sensitive_data">
-											<label class="form-check-label">According to our usage policy it is not allowed to process person related data in the de.NBI Cloud
+											<label class="form-check-label">According to our usage policy it is not allowed to process person
+												related data in the de.NBI Cloud
 												with
 												the exception that an additional agreement is made with the corresponding cloud site operator.
 												If you want to process person related data please click on the checkbox!</label>
@@ -505,7 +496,8 @@
 														 id="id_project_application_openstack_basic_introduction"
 														 name="project_application_openstack_basic_introduction"
 														 [(ngModel)]="application.project_application_openstack_basic_introduction">
-											<label class="form-check-label">Are you interested in a short OpenStack introduction workshop? You and your project members will be
+											<label class="form-check-label">Are you interested in a short OpenStack introduction workshop? You
+												and your project members will be
 												notified as soon as a workshop is organized.</label>
 										</div>
 									</div>
@@ -625,7 +617,8 @@
 							</div>
 						</div>
 						<div class="form-group row">
-							<label class="col-md-4 form-control-label" for="id_project_application_dfg_switch"><strong>DFG</strong></label>
+							<label class="col-md-4 form-control-label"
+										 for="id_project_application_dfg_switch"><strong>DFG</strong></label>
 							<div class="col-md-8">
 								<div class="form-check">
 									<input class="form-check-input" type="checkbox"
@@ -999,13 +992,15 @@
 					<div *ngIf="is_validation" class="row">
 						<div class="col-4"></div>
 						<div class="col-8 alert-warning">
-							If you do not approve of this application, please contact <a href="mailto:{{CLOUD_MAIL}}">{{CLOUD_MAIL}}</a>
+							If you do not approve of this application, please contact <a
+							href="mailto:{{CLOUD_MAIL}}">{{CLOUD_MAIL}}</a>
 						</div>
 					</div>
 				</div>
 				<div class="card-footer">
 
-					<div *ngIf="application?.flavors.length === 0 && !application?.project_application_openstack_project" class="form-group row alert alert-danger">
+					<div *ngIf="application?.flavors.length === 0 && !application?.project_application_openstack_project"
+							 class="form-group row alert alert-danger">
 						Please select at least one flavor.
 					</div>
 					<div
@@ -1016,7 +1011,8 @@
 					</div>
 					<div class="form-group row" *ngIf="!is_validation">
 						<p class="col-md-12 form-control-label">
-							By submitting this application you agree to the <a [href]="POLICY_LINK" target="_blank">cloud usage policy</a>.</p>
+							By submitting this application you agree to the <a [href]="POLICY_LINK" target="_blank">cloud usage
+							policy</a>.</p>
 					</div>
 					<div *ngIf="is_validation " class="form-group row">
 						<label class="col-md-4 form-control-label" for="project_application_responsibility">
@@ -1087,7 +1083,8 @@
 
 				</div>
 				<div class="alert alert-primary" id="survey" role="alert" *ngIf="survey_link_visible">
-					We are very interested in making the application process understandable, clear and easy to complete, so we would appreciate it if you would fill out this short anonymous survey:<br>
+					We are very interested in making the application process understandable, clear and easy to complete, so we
+					would appreciate it if you would fill out this short anonymous survey:<br>
 					<a [href]="SURVEY_LINK" target="_blank">Application Process Survey</a>
 
 
@@ -1179,67 +1176,120 @@
 				</div>
 				<div class="table-responsive">
 					<table class="table table-striped">
-						<tr><td><strong>Project Information</strong></td></tr>
-						<tr><td>Shortname: {{application?.project_application_shortname}}</td></tr>
-						<tr><td>Description: {{application?.project_application_description}}</td></tr>
-						<tr><td>Lifetime: {{application?.project_application_lifetime}} <span *ngIf="application?.project_application_lifetime === 1">month</span><span *ngIf="application?.project_application_lifetime > 1">months</span></td></tr>
-						<tr><td>Institute: {{application?.project_application_institute}}</td></tr>
-						<tr><td>Workgroup: {{application?.project_application_workgroup}}</td></tr>
-						<tr><td>Research Topics: <span *ngFor="let topic of application?.project_application_edam_terms" class="badge bg-info" style="margin: 2px;">{{topic.term}}</span></td></tr>
-						<tr><td>Workshop planed: <span *ngIf="application?.project_application_workshop">Yes</span><span *ngIf="!application?.project_application_workshop">No</span></td></tr>
+						<tr>
+							<td><strong>Project Information</strong></td>
+						</tr>
+						<tr>
+							<td>Shortname: {{application?.project_application_shortname}}</td>
+						</tr>
+						<tr>
+							<td>Description: {{application?.project_application_description}}</td>
+						</tr>
+						<tr>
+							<td>Lifetime: {{application?.project_application_lifetime}} <span
+								*ngIf="application?.project_application_lifetime === 1">month</span><span
+								*ngIf="application?.project_application_lifetime > 1">months</span></td>
+						</tr>
+						<tr>
+							<td>Institute: {{application?.project_application_institute}}</td>
+						</tr>
+						<tr>
+							<td>Workgroup: {{application?.project_application_workgroup}}</td>
+						</tr>
+						<tr>
+							<td>Research Topics: <span *ngFor="let topic of application?.project_application_edam_terms"
+																				 class="badge bg-info" style="margin: 2px;">{{topic.term}}</span></td>
+						</tr>
+						<tr>
+							<td>Workshop planed: <span *ngIf="application?.project_application_workshop">Yes</span><span
+								*ngIf="!application?.project_application_workshop">No</span></td>
+						</tr>
 						<ng-container *ngIf="application?.project_application_openstack_project">
-							<tr><td>Service: <span *ngIf="application?.project_application_cloud_service && !application?.project_application_cloud_service_develop">Existing: {{application?.project_application_cloud_service_user_number}} unique users per month</span>
-								<span *ngIf="application?.project_application_cloud_service && application?.project_application_cloud_service_develop">In development</span>
-							</td></tr>
+							<tr>
+								<td>Service: <span
+									*ngIf="application?.project_application_cloud_service && !application?.project_application_cloud_service_develop">Existing: {{application?.project_application_cloud_service_user_number}}
+									unique users per month</span>
+									<span
+										*ngIf="application?.project_application_cloud_service && application?.project_application_cloud_service_develop">In development</span>
+								</td>
+							</tr>
 						</ng-container>
-						<tr *ngIf="application?.project_application_openstack_project"><td>OpenStack Basic Introduction:
-							<span *ngIf="application?.project_application_openstack_basic_introduction">Yes</span>
-							<span *ngIf="!application?.project_application_openstack_basic_introduction">No</span>
-						</td></tr>
+						<tr *ngIf="application?.project_application_openstack_project">
+							<td>OpenStack Basic Introduction:
+								<span *ngIf="application?.project_application_openstack_basic_introduction">Yes</span>
+								<span *ngIf="!application?.project_application_openstack_basic_introduction">No</span>
+							</td>
+						</tr>
 
-						<tr><td>Dissemination Allowed: <span *ngIf="application?.dissemination?.someAllowed()">Yes</span><span *ngIf="!application?.dissemination.someAllowed()">No</span></td></tr>
+						<tr>
+							<td>Dissemination Allowed: <span *ngIf="application?.dissemination?.someAllowed()">Yes</span><span
+								*ngIf="!application?.dissemination.someAllowed()">No</span></td>
+						</tr>
 						<tr *ngIf="application?.dissemination.someAllowed()">
 							<td> - for:
-								<span class="badge bg-info" style="margin: 2px;" *ngFor="let information of application?.dissemination.allowed_informations">{{information}}</span></td></tr>
+								<span class="badge bg-info" style="margin: 2px;"
+											*ngFor="let information of application?.dissemination.allowed_informations">{{information}}</span>
+							</td>
+						</tr>
 						<tr *ngIf="application?.dissemination.someAllowed()">
 							<td> - on:
-								<span class="badge bg-info" style="margin: 2px;" *ngFor="let platform of application?.dissemination.allowed_platforms">{{platform}}</span></td>
+								<span class="badge bg-info" style="margin: 2px;"
+											*ngFor="let platform of application?.dissemination.allowed_platforms">{{platform}}</span></td>
 						</tr>
-						<tr *ngIf="application?.project_application_comment"><td>Comment: {{application?.project_application_comment}}</td></tr>
-						<tr><td *ngIf="application?.project_application_sensitive_data">Sensitive Data: Yes</td><td *ngIf="!application?.project_application_sensitive_data">Sensitive Data: No</td></tr>
+						<tr *ngIf="application?.project_application_comment">
+							<td>Comment: {{application?.project_application_comment}}</td>
+						</tr>
+						<tr>
+							<td *ngIf="application?.project_application_sensitive_data">Sensitive Data: Yes</td>
+							<td *ngIf="!application?.project_application_sensitive_data">Sensitive Data: No</td>
+						</tr>
 						<ng-container *ngIf="application?.project_application_horizon2020 || application?.project_application_elixir_project
                 || application?.project_application_bmbf_project || application?.project_application_nfdi">
-							<tr><td>Project Affiliations:
-								<span class="badge bg-info" style="margin: 2px;" *ngIf="application?.project_application_horizon2020">
+							<tr>
+								<td>Project Affiliations:
+									<span class="badge bg-info" style="margin: 2px;" *ngIf="application?.project_application_horizon2020">
                 Horizon 2020: {{application?.project_application_horizon2020}}</span>
-								<span class="badge bg-info" style="margin: 2px;" *ngIf="application?.project_application_elixir_project">
+									<span class="badge bg-info" style="margin: 2px;"
+												*ngIf="application?.project_application_elixir_project">
                 Elixir Project: {{application?.project_application_elixir_project}}</span>
-								<span class="badge bg-info" style="margin: 2px;" *ngIf="application?.project_application_bmbf_project">
+									<span class="badge bg-info" style="margin: 2px;"
+												*ngIf="application?.project_application_bmbf_project">
                 BMBF Project: {{application?.project_application_bmbf_project}}</span>
-								<span class="badge bg-info" style="margin: 2px;" *ngIf="application?.project_application_nfdi">
+									<span class="badge bg-info" style="margin: 2px;" *ngIf="application?.project_application_nfdi">
                 NFDI Project: {{application?.project_application_nfdi}}</span>
-							</td></tr>
+								</td>
+							</tr>
 						</ng-container>
 
-						<tr><td><strong>Resources</strong></td></tr>
+						<tr>
+							<td><strong>Resources</strong></td>
+						</tr>
 						<ng-container *ngFor="let flavor of application?.flavors">
-							<tr *ngIf="flavor.counter > 0"><td>{{flavor.name}}: {{flavor.counter}}</td></tr>
+							<tr *ngIf="flavor.counter > 0">
+								<td>{{flavor.name}}: {{flavor.counter}}</td>
+							</tr>
 						</ng-container>
-						<tr><td>Volumes: {{application?.project_application_volume_counter}}</td></tr>
+						<tr>
+							<td>Volumes: {{application?.project_application_volume_counter}}</td>
+						</tr>
 						<tr *ngIf="application?.project_application_volume_counter > 0">
 							<td>Volume Total Limit: {{application?.project_application_volume_limit}} GBs</td>
 						</tr>
-						<tr *ngIf="application?.project_application_openstack_project"><td>Object Storage: {{application?.project_application_object_storage}} GBs</td></tr>
+						<tr *ngIf="application?.project_application_openstack_project">
+							<td>Object Storage: {{application?.project_application_object_storage}} GBs</td>
+						</tr>
 						<tr>
 							<td><strong>Initial Cloud Credits:
 								{{application?.project_application_initial_credits.toString()}}</strong>
 								<br>
 								<div class="alert alert-primary">
 									We are slowly rolling out the implementation of Cloud Credits which assist in tracking resource usage.
-									We show the initial Cloud Credits to all new project applications but will track the used Cloud Credits
+									We show the initial Cloud Credits to all new project applications but will track the used Cloud
+									Credits
 									only for a few selected projects. If your project is one of the few selected projects, you will get an
 									E-Mail notification which will contain more information on the goals, the implementation and
-									the usage of Cloud Credits. In the case that you are already interested in learning more about Cloud Credits,
+									the usage of Cloud Credits. In the case that you are already interested in learning more about Cloud
+									Credits,
 									please visit <a href="{{CREDITS_WIKI}}"
 																	target="_blank" rel="noopener noreferrer">our Wiki page</a>.<br>
 									This value is only an approximation. The final value may differ because some flavors have a
@@ -1256,9 +1306,11 @@
 							</td>
 						</tr>
 						<tr *ngIf="!application?.project_application_pi_approved && !is_validation
-              && application?.project_application_pi?.email"><td>
-							Principal Investigator Mail: {{application?.project_application_pi?.email}}
-						</td></tr>
+              && application?.project_application_pi?.email">
+							<td>
+								Principal Investigator Mail: {{application?.project_application_pi?.email}}
+							</td>
+						</tr>
 
 					</table>
 				</div>
