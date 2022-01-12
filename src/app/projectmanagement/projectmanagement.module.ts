@@ -4,10 +4,10 @@ import { CommonModule } from '@angular/common';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { FormsModule } from '@angular/forms';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
-import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 import { ChartsModule } from 'ng2-charts';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { AlertModule } from 'ngx-bootstrap/alert';
+import { NgSelectModule } from '@ng-select/ng-select';
 import { ApplicationsModule } from '../applications/applications.module';
 import { SharedDirectivesModule } from '../shared/shared_modules/shared_directives.module';
 import { ProjectOsDetailsComponent } from './project-os-details/project-os-details.component';
@@ -35,10 +35,10 @@ import { ResultComponent } from './modals/result/result.component';
 		ApplicationsModule,
 		SharedDirectivesModule,
 		ChartsModule,
-		AutocompleteLibModule,
 		PipeModuleModule,
 		BsDropdownModule,
 		AlertModule,
+		NgSelectModule,
 	],
 	declarations: [
 		OverviewComponent,

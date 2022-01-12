@@ -63,23 +63,19 @@
                                 'success-border':selected_ontology_terms.length >0
                                 && selected_ontology_terms?.length <=10
                                 }">
-					<ng-autocomplete #edam_ontology id="edam_input"
-													 [data]="edam_ontology_terms"
-													 [searchKeyword]="ontology_search_keyword"
-													 (selected)='selectEvent($event)'
-													 placeHolder="Please add your research topics"
+									<ng-select #edam_ontology id="edam_input"
+														 [items]="edam_ontology_terms"
+														 [multiple]="true"
+														 bindLabel="term"
+														 maxSelectedItems="10"
+														 placeholder="Please select at least one topic"
+														 dropdownPosition="bottom"
+														 [(ngModel)]="project.project_application_edam_terms"
+														 name="selected_edam_terms"
 
-													 [itemTemplate]="itemTemplate"
-													 [notFoundTemplate]="notFoundTemplate">
-					</ng-autocomplete>
 
-					<ng-template #itemTemplate let-item>
-						<a [id]="item.term" [innerHTML]="item.term"></a>
-					</ng-template>
-
-					<ng-template #notFoundTemplate let-notFound>
-						<div [innerHTML]="notFound"></div>
-					</ng-template>
+									>
+									</ng-select>
 
 				</div>
 				<h5><span

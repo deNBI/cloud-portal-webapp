@@ -3,7 +3,6 @@ import {
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { AutocompleteComponent } from 'angular-ng-autocomplete';
 import { Application } from '../../../applications/application.model/application.model';
 import { ApplicationLifetimeExtension } from '../../../applications/application_extension.model';
 import { CreditsService } from '../../../api-connector/credits.service';
@@ -29,7 +28,6 @@ export class LifetimeRequestComponent implements OnInit, OnDestroy {
 	selected_ontology_terms: EdamOntologyTerm[] = [];
 	edam_ontology_terms: EdamOntologyTerm[];
 	ontology_search_keyword: string = 'term';
-	@ViewChild('edam_ontology') edam_ontology: AutocompleteComponent;
 
 	private subscription: Subscription = new Subscription();
 	public event: EventEmitter<any> = new EventEmitter();
@@ -104,13 +102,6 @@ export class LifetimeRequestComponent implements OnInit, OnDestroy {
 	removeEDAMterm(term: EdamOntologyTerm): void {
 		const indexOf: number = this.selected_ontology_terms.indexOf(term);
 		this.selected_ontology_terms.splice(indexOf, 1);
-	}
-
-	selectEvent(item: any): void {
-		if (this.selected_ontology_terms.indexOf(item) === -1) {
-			this.selected_ontology_terms.push(item);
-		}
-		this.edam_ontology.clear();
 	}
 
 	showSubmitModal(): void {

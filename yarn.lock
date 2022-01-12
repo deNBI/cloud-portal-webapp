@@ -1612,6 +1612,13 @@
   dependencies:
     tslib "^2.3.0"
 
+"@ng-select/ng-select@^8.1.1":
+  version "8.1.1"
+  resolved "https://registry.yarnpkg.com/@ng-select/ng-select/-/ng-select-8.1.1.tgz#1697d554970b99fc238255709655fb4dd45d1ab1"
+  integrity sha512-CP9Pve3L1aGqej38T9utdd6Waobbybwe9QIEObwicBI5fiIMAXwKT6lFT3fDLTUK/79y5nebiGtwTBfMm71Psg==
+  dependencies:
+    tslib "^2.3.1"
+
 "@ngtools/webpack@13.1.2":
   version "13.1.2"
   resolved "https://registry.npmjs.org/@ngtools/webpack/-/webpack-13.1.2.tgz"

@@ -16,6 +16,7 @@ import { Angulartics2Module } from 'angulartics2';
 import { CookieService } from 'ngx-cookie-service';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { NgSelectModule } from '@ng-select/ng-select';
 import { AppComponent } from './app.component';
 
 import { ApiSettings } from './api-connector/api-settings.service';
@@ -61,6 +62,7 @@ import { PipeModuleModule } from './pipe-module/pipe-module.module';
 		PaginationModule.forRoot(),
 		SharedModuleModule,
 		Angulartics2Module.forRoot(),
+		NgSelectModule,
 		BrowserAnimationsModule,
 		ClipboardModule,
 		PipeModuleModule,
