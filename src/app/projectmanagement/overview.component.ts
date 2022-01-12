@@ -5,7 +5,6 @@ import * as moment from 'moment';
 import { forkJoin, Observable, Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
-import { AutocompleteComponent } from 'angular-ng-autocomplete';
 import { DOCUMENT } from '@angular/common';
 import { Chart } from 'chart.js';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
@@ -117,7 +116,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	ramInUse: number;
 
 	title: string = 'Project Overview';
-	@ViewChild('edam_ontology') edam_ontology: AutocompleteComponent;
 
 	checked_member_list: number[] = [];
 
