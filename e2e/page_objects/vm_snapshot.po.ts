@@ -17,7 +17,7 @@ export class SnapshotOverviewPage {
   private static CONFIRM_DELETE: string = 'confirm_delete_button';
 
   static async navigateToSnapshotOverview(): Promise<any> {
-    Util.logMethodCall('Navigating to Snapshot Overview Page');
+    Util.logInfo('Navigating to Snapshot Overview Page');
     await Util.navigateToAngularPage(this.SNAPSHOT_OVERVIEW_URL);
     await Util.waitForPage(this.SNAPSHOT_OVERVIEW_URL);
 
@@ -25,7 +25,7 @@ export class SnapshotOverviewPage {
   }
 
   static async isSnapshotDeleted(name: string): Promise<boolean> {
-    Util.logMethodCall(`Checking if snapshot ${name} is absent`);
+    Util.logInfo(`Checking if snapshot ${name} is absent`);
     await Util.waitForPresenceOfElementById(this.TABLE_ID, 10000);
 
     return await Util.waitForAbsenceOfElementById(name);
@@ -36,7 +36,7 @@ export class SnapshotOverviewPage {
   }
 
   static async isSnapshotPresent(name: string): Promise<boolean> {
-    Util.logMethodCall(`Checking if snapshot ${name} is present`);
+    Util.logInfo(`Checking if snapshot ${name} is present`);
     await Util.waitForPresenceOfElementById(this.TABLE_ID, 10000);
 
     return await Util.waitForPresenceOfElementById(name);
@@ -47,10 +47,10 @@ export class SnapshotOverviewPage {
   }
 
   static async isSnapshotActive(name: string): Promise<boolean> {
-    Util.logMethodCall(`Checking if snapshot ${name} is active`);
+    Util.logInfo(`Checking if snapshot ${name} is active`);
     await Util.waitForPresenceOfElementById(this.TABLE_ID, 1000000);
 
-    return await Util.waitForPresenceOfElementById(`${this.SNAPSHOT_ACTIVE_PREFIX}${name}`, Util.LONG_TIMEOUT);
+    return await Util.waitForPresenceOfElementById(`${this.SNAPSHOT_ACTIVE_PREFIX}${name}`, Util.MIN_TIMEOUT_15);
   }
 
   static async isBasicSnapshotActive(): Promise<boolean> {
@@ -58,7 +58,7 @@ export class SnapshotOverviewPage {
   }
 
   static async deleteSnapshot(name: string): Promise<any> {
-    Util.logMethodCall(`Deleting snapshot ${name}`);
+    Util.logInfo(`Deleting snapshot ${name}`);
     await Util.waitForPresenceOfElementById(this.TABLE_ID);
     await Util.clickElementById(`${this.DELETE_BUTTON_PREFIX}${name}`);
     await Util.waitForPresenceOfElementById(this.VERIFY_MODAL);

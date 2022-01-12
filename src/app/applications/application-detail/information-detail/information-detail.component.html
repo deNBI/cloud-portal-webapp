@@ -3,7 +3,7 @@
   <td>Research Topics</td>
   <td><h5><span *ngFor="let term of application?.project_application_edam_terms"
                 style="margin-left: 5px; "
-                class="badge badge-info"><span id="topic_{{term}}">{{term}}</span>
+                class="badge bg-info"><span id="topic_{{term}}">{{term}}</span>
  </span>
 
   </h5></td>
@@ -11,16 +11,16 @@
   <tr>
     <td>Workshop</td>
     <td>
-      <span *ngIf="application?.project_application_workshop" class="badge badge-success">Yes</span>
-      <span *ngIf="!application?.project_application_workshop" class="badge badge-danger">No</span>
+      <span *ngIf="application?.project_application_workshop" class="badge bg-success">Yes</span>
+      <span *ngIf="!application?.project_application_workshop" class="badge bg-danger">No</span>
     </td>
 
   </tr>
   <tr *ngIf="application?.project_application_openstack_project">
     <td>Service</td>
     <td>
-      <span *ngIf="application?.project_application_cloud_service" class="badge badge-success">Yes</span>
-      <span *ngIf="!application?.project_application_cloud_service" class="badge badge-danger">No</span>
+      <span *ngIf="application?.project_application_cloud_service" class="badge bg-success">Yes</span>
+      <span *ngIf="!application?.project_application_cloud_service" class="badge bg-danger">No</span>
     </td>
 
   </tr>
@@ -28,16 +28,16 @@
     <td>Service status</td>
     <td>
       <span *ngIf="application?.project_application_cloud_service_develop"
-            class="badge badge-success">In development</span>
+            class="badge bg-success">In development</span>
       <span *ngIf="!application?.project_application_cloud_service_develop"
-            class="badge badge-danger">Existing</span>
+            class="badge bg-danger">Existing</span>
     </td>
   </tr>
-  <tr *ngIf="!application?.project_application_cloud_service_develop">
+  <tr *ngIf="!application?.project_application_cloud_service_develop && application?.project_application_cloud_service">
     <td>Number of unique users per month</td>
     <td>{{application?.project_application_cloud_service_user_number}}</td>
   </tr>
-  
+
   <tr>
     <td>Description
     </td>
@@ -86,6 +86,16 @@
 
   </tr>
 
+	<tr>
+		<td>Project Member Names Visibility</td>
+		<td>
+			<span *ngIf="application?.memberNamesVisible" class="badge bg-light">Visible</span>
+<!--			<span *ngIf="!application?.memberNamesVisible" class="badge bg-info">Hidden</span>-->
+			<span *ngIf="!application?.memberNamesVisible" class="badge bg-primary">Hidden</span>
+		</td>
+
+	</tr>
+
   <tr>
     <td>Comment</td>
     <td>{{
@@ -116,9 +126,11 @@
     </td>
 
   </tr>
-  <tr *ngIf="application?.project_application_hash && is_vo">
+  <tr
+    *ngIf="application?.project_application_hash ">
     <td>Validation Hash</td>
-    <td><a id="validation_hash" href="#/applications/validation/{{application?.project_application_hash}}"> {{application?.project_application_hash}}</a>
+    <td><a id="validation_hash"
+           href="#/applications/validation/{{application?.project_application_hash}}"> {{application?.project_application_hash}}</a>
 
     </td>
 

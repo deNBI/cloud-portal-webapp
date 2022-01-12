@@ -25,9 +25,9 @@
     <td>Service status</td>
     <td>
         <span *ngIf="application?.project_modification_request?.cloud_service_develop"
-              class="badge badge-success">In development</span>
+              class="badge bg-success">In development</span>
       <span *ngIf="!application?.project_modification_request?.cloud_service_develop"
-            class="badge badge-danger">Existing</span>
+            class="badge bg-danger">Existing</span>
     </td>
   </tr>
   <tr>
@@ -41,7 +41,7 @@
   </tr>
   <ng-container
     *ngFor="let flavor of application?.project_modification_request?.flavors  ">
-    <tr>
+    <tr *ngIf="flavor.counter > 0">
       <td>Flavor: {{flavor.name}}</td>
       <td>{{application?.project_modification_request | flavorCounter:flavor}}</td>
     </tr>
@@ -59,6 +59,13 @@
       {{application?.project_modification_request?.total_ram}} GB
     </td>
   </tr>
+  <tr>
+    <td>Total GPUs</td>
+    <td>
+      {{application?.project_modification_request?.total_gpu}}
+    </td>
+  </tr>
+
   <tr *ngIf="is_vo_admin">
     <td>Extra Credits</td>
 

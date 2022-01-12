@@ -22,11 +22,11 @@ You can find current releases on GitHub.
 
 1. Clone the cloud-portal-webapp repository.
 ~~~BASH
-git clone -b dev https://github.com/deNBI/cloud-portal-webapp.git
+git clone -b dev git@github.com:deNBI/cloud-portal-webapp.git
 cd cloud-portal-webapp
 ~~~
 
-2. Install nodejs virtual environment as decribed [here](https://github.com/ekalinin/nodeenv#install).
+2. Install nodejs virtual environment as described [here](https://github.com/ekalinin/nodeenv#install).
 
 3. Run the Makefile
 ~~~BASH
@@ -120,3 +120,12 @@ npm run compodoc
 ~~~BASH
 firefox documentation/overview.html
 ~~~
+
+### Linting
+
+### Tool: ESLint
+
+We currently use the [ESLint](https://eslint.org) tool for linting the web app.
+The current configuration is based on the standard ESLint rules combined with the [Airbnb Style Guide](https://github.com/airbnb/javascript).
+This style guide is designed for plain javascript, so some adjustments have been made due to the use of TypeScript, as well as project-specific circumstances.
+The adapted rules can be found in the [configuration file](https://github.com/deNBI/cloud-portal-webapp/blob/master/.eslintrc.json).

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<div *ngIf="isLoaded==false" class="loader"></div>
+<div *ngIf="isLoaded === false" class="loader"></div>
 
 <div *ngIf="isLoaded" class="animated fadeIn" ng-app>
 
@@ -14,7 +14,7 @@
           <i class="fa fa-align-justify"></i> Image Tags
         </div>
         <div>
-          <select [(ngModel)]="selectedFacility" class="form-control " (ngModelChange)="reloadData() ;"
+          <select [(ngModel)]="selectedFacility" class="form-control form-select" (ngModelChange)="reloadData() ;"
                   name="selectedFacility">
             <option *ngFor="  let facility of managerFacilities" [ngValue]="facility">
               {{facility['Facility']}}
@@ -64,7 +64,7 @@
 
 
         <div class="card-body">
-          <div class="alert alert-info">Suggested modes:<br>
+          <div class="alert alert-primary">Suggested modes:<br>
             <ng-container *ngFor="let mode of suggestedModes">
               <ng-container *ngIf="!resenvModeAdded(mode)">
                 {{mode}}

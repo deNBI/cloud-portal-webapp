@@ -1,17 +1,13 @@
 <div class="card border-success" id="new_machine_card" style="margin:5px;">
   <div class="card-body">
     <h5 class="card-title">New Machine</h5>
-    <div class="row">
-      <div class="col-2">
+    <div class="row" [formGroup]="newMachineFormGroup">
+      <div class="col-1">
         <div class="text-muted"><small>Actions</small></div>
         <div class="btn-group-vertical" role="group">
           <button style="cursor: pointer;"
                   (click)="addResourceMachine();"
-                  [disabled]="!newResourceMachine.name
-                  || !newResourceMachine.ram
-                   || !newResourceMachine.cores
-                   || !newResourceMachine.public_count
-                    || !newResourceMachine.private_count"
+                  [disabled]="this.newMachineFormGroup.invalid"
                   class="btn btn-success">Save
           </button>
         </div>
@@ -21,8 +17,9 @@
         <div class="form-group row">
           <label for="new_machine_ram">Amount</label>
           <div class="input-group mb-3">
-            <input class="form-control" type="number" id="new_machine_ram"
-                   [(ngModel)]="newResourceMachine.ram" min="1">
+            <input class="form-control" type="number" id="new_machine_ram" formControlName="new_machine_ram"
+                   [ngClass]="{'is-invalid': newMachineFormGroup.controls['new_machine_ram'].invalid && newMachineFormGroup.controls['new_machine_ram'].dirty,
+                   'is-valid': newMachineFormGroup.controls['new_machine_ram'].valid}" min="0">
             <div class="input-group-append">
               <span class="input-group-text">GB</span>
             </div>
@@ -30,13 +27,17 @@
         </div>
         <div class="form-group row">
           <label for="new_machine_ram_private_factor">Private Factor</label>
-          <input class="form-control" type="text" id="new_machine_ram_private_factor"
-                 [(ngModel)]="newResourceMachine.ram_private_factor" pattern="[0-9]+(\.[0-9]+)?">
+          <input class="form-control" type="number" id="new_machine_ram_private_factor" name="new_machine_ram_private_factor"
+                 formControlName="new_machine_ram_private_factor"
+                 [ngClass]="{'is-invalid': newMachineFormGroup.controls['new_machine_ram_private_factor'].invalid && newMachineFormGroup.controls['new_machine_ram_private_factor'].dirty,
+                   'is-valid': newMachineFormGroup.controls['new_machine_ram_private_factor'].valid}" min="0" step="0.1">
         </div>
         <div class="form-group row">
           <label for="new_machine_ram_public_factor">Public Factor</label>
-          <input class="form-control" type="text" id="new_machine_ram_public_factor"
-                 [(ngModel)]="newResourceMachine.ram_public_factor" pattern="[0-9]+(\.[0-9]+)?">
+          <input class="form-control" type="number" id="new_machine_ram_public_factor"
+                 formControlName="new_machine_ram_public_factor"
+                 [ngClass]="{'is-invalid': newMachineFormGroup.controls['new_machine_ram_public_factor'].invalid && newMachineFormGroup.controls['new_machine_ram_public_factor'].dirty,
+                   'is-valid': newMachineFormGroup.controls['new_machine_ram_public_factor'].valid}" min="0" step="0.1">
         </div>
       </div>
       <div class="col-2 card card-body" style="margin:5px;">
@@ -45,7 +46,9 @@
           <label for="new_machine_cores">Amount</label>
           <div class="input-group mb-3">
             <input class="form-control" type="number" id="new_machine_cores"
-                   [(ngModel)]="newResourceMachine.cores" min="1">
+                   formControlName="new_machine_cores"
+                   [ngClass]="{'is-invalid': newMachineFormGroup.controls['new_machine_cores'].invalid && newMachineFormGroup.controls['new_machine_cores'].dirty,
+                   'is-valid': newMachineFormGroup.controls['new_machine_cores'].valid}" min="0">
             <div class="input-group-append">
               <span class="input-group-text">cores</span>
             </div>
@@ -53,43 +56,86 @@
         </div>
         <div class="form-group row">
           <label for="new_machine_cores_private_factor">Private Factor</label>
-          <input class="form-control" type="text" id="new_machine_cores_private_factor"
-                 [(ngModel)]="newResourceMachine.cores_private_factor" pattern="[0-9]+(\.[0-9]+)?">
+          <input class="form-control" type="number" id="new_machine_cores_private_factor"
+                 formControlName="new_machine_cores_private_factor"
+                 [ngClass]="{'is-invalid': newMachineFormGroup.controls['new_machine_cores_private_factor'].invalid && newMachineFormGroup.controls['new_machine_cores_private_factor'].dirty,
+                   'is-valid': newMachineFormGroup.controls['new_machine_cores_private_factor'].valid}" min="0" step="0.1">
         </div>
         <div class="form-group row">
           <label for="new_machine_cores_public_factor">Public Factor</label>
-          <input class="form-control" type="text" id="new_machine_cores_public_factor"
-                 [(ngModel)]="newResourceMachine.cores_public_factor" pattern="[0-9]+(\.[0-9]+)?">
+          <input class="form-control" type="number" id="new_machine_cores_public_factor"
+                 formControlName="new_machine_cores_public_factor"
+                 [ngClass]="{'is-invalid': newMachineFormGroup.controls['new_machine_cores_public_factor'].invalid && newMachineFormGroup.controls['new_machine_cores_public_factor'].dirty,
+                   'is-valid': newMachineFormGroup.controls['new_machine_cores_public_factor'].valid}" min="0" step="0.1">
         </div>
       </div>
       <div class="col-2 card card-body" style="margin:5px;">
-        <div class="text-muted"><small>GPUs</small></div>
+        <div class="text-muted"><small>GPU Slots</small></div>
         <div class="form-group row">
           <label for="new_machine_gpus">Amount</label>
           <div class="input-group  mb-3">
             <input class="form-control" type="number" id="new_machine_gpus"
-                   [(ngModel)]="newResourceMachine.gpus" min="0">
+            formControlName="new_machine_gpus"
+                   [ngClass]="{'is-invalid': newMachineFormGroup.controls['new_machine_gpus'].invalid && newMachineFormGroup.controls['new_machine_gpus'].dirty,
+                   'is-valid': newMachineFormGroup.controls['new_machine_gpus'].valid}" min="0">
             <div class="input-group-append">
               <span class="input-group-text">GPUs</span>
             </div>
           </div>
         </div>
-        <div class="form-group row">
-          <label for="new_machine_gpus_type">Type</label>
-          <input class="form-control" type="text" id="new_machine_gpus_type"
-                 [(ngModel)]="newResourceMachine.gpu_type">
+        <div class="form-group row" *ngIf="newResourceMachine.gpu_slots > 0">
+          <label>Types</label>
+          <ng-container *ngFor="let gpu of newResourceMachine.gpu_used; let i = index">
+
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text">Slot {{i + 1 }}</span>
+              </div>
+              <select class="form-control form-select" [ngModelOptions]="{standalone: true}" [(ngModel)]="this.newResourceMachine.gpu_used[i]"
+              name="new_machine_gpu_{{i}}" ngDefaultControl>
+                <option [ngValue]="emptySpec">
+                  UNUSED
+                </option>
+                <option *ngFor="let spec of gpu_types " [ngValue]="spec">
+                  <span *ngIf="spec !== null">{{spec.type + ': ' + spec.cores}}</span>
+                </option>
+              </select>
+            </div>
+          </ng-container>
         </div>
       </div>
-      <div class="col-3 card card-body" style="margin:5px;">
+      <div class="col-2 card card-body" style="margin:5px;">
+        <div class="text-muted"><small>Local Disk Storage</small></div>
+        <div class="form-group row">
+          <label for="{{newResourceMachine?.name + '_local_disk_storage'}}">Amount</label>
+          <div class="input-group mb-3">
+            <input class="form-control" type="number" min="0" id="{{newResourceMachine?.name + '_local_disk_storage'}}"
+                   formControlName="new_machine_local_disk_storage"
+                   [ngClass]="{'is-invalid': newMachineFormGroup.controls['new_machine_local_disk_storage'].invalid && newMachineFormGroup.controls['new_machine_local_disk_storage'].dirty,
+                   'is-valid': newMachineFormGroup.controls['new_machine_local_disk_storage'].valid}">
+            <div class="input-group-append">
+              <span class="input-group-text">GB</span>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="{{newResourceMachine?.name + '_local_disk_encrypted'}}">Encrypted</label>
+          <input type="checkbox" formControlName="new_machine_local_disk_encrypted"
+                 id="{{newResourceMachine?.name + '_local_disk_encrypted'}}">
+        </div>
+      </div>
+      <div class="col-2 card card-body" style="margin:5px;">
         <div class="text-muted"><small>Information</small></div>
         <div class="form-group row">
           <label for="new_machine_name">Name</label>
-          <input class="form-control" type="text" id="new_machine_name"
-                 [(ngModel)]="newResourceMachine.name">
+          <input class="form-control" type="text" id="new_machine_name" formControlName="new_machine_name"
+                 [ngClass]="{'is-invalid': newMachineFormGroup.controls['new_machine_name'].invalid && newMachineFormGroup.controls['new_machine_name'].dirty,
+                   'is-valid': newMachineFormGroup.controls['new_machine_name'].valid}">
         </div>
         <div class="form-group row">
           <label for="new_machine_type">Type</label>
-          <select class="form-control" [(ngModel)]="newResourceMachine.type" id="new_machine_type">
+          <select class="form-control form-select" formControlName="new_machine_type" id="new_machine_type" ngDefaultControl>
+            <option selected disabled [ngValue]="null">---</option>
             <option *ngFor="  let type of factor_types" [ngValue]="type">
               {{type}}
             </option>
@@ -97,35 +143,39 @@
         </div>
         <div class="form-group row">
           <label for="new_machine_private_count">Private count</label>
-          <input class="form-control" type="number" id="new_machine_private_count"
-                 [(ngModel)]="newResourceMachine.private_count" min="0">
+          <input class="form-control" type="number" id="new_machine_private_count" formControlName="new_machine_private_count"
+                 [ngClass]="{'is-invalid': newMachineFormGroup.controls['new_machine_private_count'].invalid && newMachineFormGroup.controls['new_machine_private_count'].dirty,
+                   'is-valid': newMachineFormGroup.controls['new_machine_private_count'].valid}" min="0">
         </div>
         <div class="form-group row">
           <label for="new_machine_public_count">Public count</label>
-          <input class="form-control" type="number" id="new_machine_public_count"
-                 [(ngModel)]="newResourceMachine.public_count" min="0">
+          <input class="form-control" type="number" id="new_machine_public_count" formControlName="new_machine_public_count"
+                 [ngClass]="{'is-invalid': newMachineFormGroup.controls['new_machine_public_count'].invalid && newMachineFormGroup.controls['new_machine_public_count'].dirty,
+                   'is-valid': newMachineFormGroup.controls['new_machine_public_count'].valid}" min="0">
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<div class="card" id="{{machine?.name + '_card'}}" *ngFor="let machine of resourceMachines"
+<div class="card" id="{{machine?.name + '_card'}}" *ngFor="let machine of resourceMachines;"
      style="margin:5px;" [ngClass]="this.resourceMachineUpdateList[machine.id] ? 'border-warning' : 'border-primary'">
   <div class="card-body">
     <h5 class="card-title">{{machine?.name}}</h5>
     <p class="card-text"><small class="text-muted">{{machine?.compute_center?.Name}}</small></p>
-    <div class="row">
-      <div class="col-2" style="margin:5px;">
+    <div class="row" [formGroup]="machinesFormGroups[machine.id]">
+      <div class="col-1" style="margin:5px;">
         <div class="text-muted"><small>Actions</small></div>
         <div class="btn-group-vertical" role="group">
           <button (click)="deleteResourceMachine(machine.id)" class="btn btn-danger"
                   *ngIf="!this.resourceMachineUpdateList[machine.id]">Remove
           </button>
           <button class="btn btn-warning" (click)="changeResourceMachineToUpdate(machine)"
-                  *ngIf="!this.resourceMachineUpdateList[machine.id]">Update</button>
+                  *ngIf="!this.resourceMachineUpdateList[machine.id]">Update
+          </button>
           <button (click)="updateResourceMachine(machine);changeResourceMachineToUpdate(machine);"
-                  class="btn btn-success" *ngIf="this.resourceMachineUpdateList[machine.id]">Save
+                  class="btn btn-success" *ngIf="this.resourceMachineUpdateList[machine.id]"
+                  [disabled]="this.machinesFormGroups[machine.id].invalid">Save
           </button>
           <button class="btn btn-info" *ngIf="this.resourceMachineUpdateList[machine.id]"
                   (click)="reloadResourceMachine(machine);changeResourceMachineToUpdate(machine);">Cancel
@@ -137,8 +187,7 @@
         <div class="form-group row">
           <label for="{{machine?.name + '_ram'}}">Amount</label>
           <div class="input-group mb-3">
-            <input class="form-control" type="number" min="1" [disabled]="!this.resourceMachineUpdateList[machine.id]"
-                   [(ngModel)]="machine.ram" id="{{machine?.name + '_ram'}}">
+            <input class="form-control" type="number" min="0" id="{{machine?.name + '_ram'}}" formControlName="{{machine.id}}_ram">
             <div class="input-group-append">
               <span class="input-group-text">GB</span>
             </div>
@@ -146,15 +195,13 @@
         </div>
         <div class="form-group row">
           <label for="{{machine?.name + '_ram_private_factor'}}">Private Factor</label>
-          <input class="form-control" type="text" [disabled]="!this.resourceMachineUpdateList[machine.id]"
-                 [(ngModel)]="machine.ram_private_factor" id="{{machine?.name + '_ram_private_factor'}}"
-                 pattern="[0-9]+(\.[0-9]+)?">
+          <input class="form-control" type="number" id="{{machine?.name + '_ram_private_factor'}}"
+                 formControlName="{{machine.id}}_ram_private_factor" min="0" step="0.1">
         </div>
         <div class="form-group row">
           <label for="{{machine?.name + '_ram_public_factor'}}">Public Factor</label>
-          <input class="form-control" type="text" [disabled]="!this.resourceMachineUpdateList[machine.id]"
-                 [(ngModel)]="machine.ram_public_factor" id="{{machine?.name + '_ram_public_factor'}}"
-                 pattern="[0-9]+(\.[0-9]+)?">
+          <input class="form-control" type="number" id="{{machine?.name + '_ram_public_factor'}}"
+                 formControlName="{{machine.id}}_ram_public_factor" min="0" step="0.1">
         </div>
       </div>
       <div class="col-2 card card-body" style="margin:5px;">
@@ -162,8 +209,8 @@
         <div class="form-group row">
           <label for="{{machine?.name + '_cores'}}">Amount</label>
           <div class="input-group mb-3">
-            <input class="form-control" type="number" min="1" [disabled]="!this.resourceMachineUpdateList[machine.id]"
-                   [(ngModel)]="machine.cores" id="{{machine?.name + '_cores'}}">
+            <input class="form-control" type="number" formControlName="{{machine.id}}_cores"
+                   id="{{machine?.name + '_cores'}}" name="{{machine.id}}_cores" min="0">
             <div class="input-group-append">
               <span class="input-group-text">cores</span>
             </div>
@@ -171,58 +218,98 @@
         </div>
         <div class="form-group row">
           <label for="{{machine?.name + '_cores_private_factor'}}">Private Factor</label>
-          <input class="form-control" type="text" [disabled]="!this.resourceMachineUpdateList[machine.id]"
-                 [(ngModel)]="machine.cores_private_factor" id="{{machine?.name + '_cores_private_factor'}}"
-                 pattern="[0-9]+(\.[0-9]+)?">
+          <input class="form-control" type="number"
+                 formControlName="{{machine.id}}_cores_private_factor" id="{{machine?.name + '_cores_private_factor'}}"
+                 name="{{machine.id}}_cores_private_factor" min="0" step="0.1">
         </div>
         <div class="form-group row">
-          <label for="{{machine?.name + '_cores_private_factor'}}">Public Factor</label>
-          <input class="form-control" type="text" [disabled]="!this.resourceMachineUpdateList[machine.id]"
-                 [(ngModel)]="machine.cores_public_factor" id="{{machine?.name + '_cores_public_factor'}}"
-                 pattern="[0-9]+(\.[0-9]+)?">
+          <label for="{{machine?.name + '_cores_public_factor'}}">Public Factor</label>
+          <input class="form-control" type="number" id="{{machine?.name + '_cores_public_factor'}}" name="{{machine.id}}_cores_public_factor"
+                 formControlName="{{machine.id}}_cores_public_factor" min="0" step="0.1">
         </div>
       </div>
       <div class="col-2 card card-body" style="margin:5px;">
-        <div class="text-muted"><small>GPUs</small></div>
+        <div class="text-muted"><small>GPU slots</small></div>
         <div class="form-group row">
           <label for="{{machine?.name + '_gpus'}}">Amount</label>
           <div class="input-group mb-3">
-            <input class="form-control" type="number" [disabled]="!this.resourceMachineUpdateList[machine.id]"
-                   [(ngModel)]="machine.gpus" id="{{machine?.name + '_gpus'}}" min="0">
+            <input class="form-control" type="number" id="{{machine?.name + '_gpus'}}" name="{{machine.id}}_gpus"
+                   formControlName="{{machine.id}}_gpus" min="0">
             <div class="input-group-append">
               <span class="input-group-text">GPUs</span>
             </div>
           </div>
         </div>
-        <div class="form-group row">
-          <label for="{{machine?.name + '_gpus_type'}}">Type</label>
-          <input class="form-control" type="text" [disabled]="!this.resourceMachineUpdateList[machine.id]"
-                 [(ngModel)]="machine.gpu_type" id="{{machine?.name + '_gpus_type'}}">
+        <div class="form-group row" *ngIf="machine.gpu_slots > 0">
+          <label>Types</label>
+
+          <ng-container *ngFor="let gpu of machine.gpu_used; let i = index;">
+            <div class="input-group mb-3">
+
+
+              <select class="form-control form-select" [disabled]="!resourceMachineUpdateList[machine.id]"
+                      [(ngModel)]="machine.gpu_used[i]" [ngModelOptions]="{standalone:true}">
+                <option [ngValue]="machine.gpu_used[i]" selected>{{machine.gpu_used[i].type}}</option>
+                <option [ngValue]="emptySpec">
+                  UNUSED
+                </option>
+                <option *ngFor="let spec of gpu_types" [ngValue]="spec">
+                  <span *ngIf="spec !== null">{{spec.type + ': ' + spec.cores}}</span>
+                </option>
+              </select>
+              <div class="input-group-append">
+                <span class="input-group-text">Slot {{i + 1 }}</span>
+              </div>
+            </div>
+          </ng-container>
+
+
         </div>
       </div>
-      <div class="col-3 card card-body" style="margin:5px;">
+      <div class="col-2 card card-body" style="margin:5px;">
+        <div class="text-muted"><small>Local Disk Storage</small></div>
+        <div class="form-group row">
+          <label for="{{machine?.name + '_local_disk_storage'}}">Amount</label>
+          <div class="input-group mb-3">
+            <input class="form-control" type="number" formControlName="{{machine.id}}_local_disk_storage" id="{{machine?.name + '_local_disk_storage'}}"
+                   name="{{machine.id}}_local_disk_storage" min="0">
+            <div class="input-group-append">
+              <span class="input-group-text">GB</span>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="{{machine?.name + '_local_disk_encrypted'}}">Encrypted</label>
+          <input type="checkbox"
+                 formControlName="{{machine.id}}_local_disk_encrypted" id="{{machine?.name + '_local_disk_encrypted'}}"
+                 name="{{machine.id}}_local_disk_encrypted">
+
+        </div>
+      </div>
+      <div class="col-2 card card-body" style="margin:5px;">
         <div class="text-muted"><small>Information</small></div>
         <div class="form-group row">
           <label for="{{machine?.name + '_name'}}">Name</label>
-          <input class="form-control" type="text" id="{{machine?.name + '_name'}}"
-                 [(ngModel)]="machine.name" [disabled]="!this.resourceMachineUpdateList[machine.id]">
+          <input class="form-control" type="text" id="{{machine?.name + '_name'}}" name="{{machine.id}}_name"
+                 formControlName="{{machine.id}}_name">
         </div>
         <div class="form-group row">
           <label for="{{machine?.name + '_type'}}">Machine Type</label>
-          <select [(ngModel)]="machine.type" [disabled]="!this.resourceMachineUpdateList[machine.id]"
-                  class="form-control" selected id="{{machine?.name + '_type'}}">
+          <select  ngDefaultControl
+                  class="form-control form-select" formControlName="{{machine?.id}}_type" name="{{machine.id}}_type"
+                  selected id="{{machine?.name + '_type'}}">
             <option *ngFor="let type of factor_types" [ngValue]="type">{{type}}</option>
           </select>
         </div>
         <div class="form-group row">
           <label for="{{machine?.name + '_private_count'}}">Private count</label>
-          <input class="form-control" type="number" min="0" [disabled]="!this.resourceMachineUpdateList[machine.id]"
-                 [(ngModel)]="machine.private_count" id="{{machine?.name + '_private_count'}}">
+          <input class="form-control" type="number" id="{{machine?.name + '_private_count'}}"
+                 formControlName="{{machine.id}}_private_count" name="{{machine.id}}_private_count" min="0">
         </div>
         <div class="form-group row">
           <label for="{{machine?.name + '_public_count'}}">Public count</label>
-          <input class="form-control" type="number" min="0" [disabled]="!this.resourceMachineUpdateList[machine.id]"
-                 [(ngModel)]="machine.public_count" id="{{machine?.name + '_public_count'}}">
+          <input class="form-control" type="number" id="{{machine?.name + '_public_count'}}"
+                 formControlName="{{machine.id}}_public_count" name="{{machine.id}}_public_count" min="0">
         </div>
       </div>
     </div>

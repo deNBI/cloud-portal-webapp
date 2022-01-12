@@ -1,0 +1,27 @@
+<div class="modal-header">
+	<h4 class="modal-title">Stop VM</h4>
+	<button type="button" class="close" style="cursor: pointer"
+					(click)="bsModalRef.hide()"
+					aria-label="Close">
+		<span aria-hidden="true">&times;</span>
+	</button>
+</div>
+<div class="modal-body" id="submitStopVmModal">
+	<div class="alert alert-warning" role="alert">
+		Are you sure you want to stop {{cluster?.cluster_id}}?
+	</div>
+	<div class="alert alert-info" role="alert">
+		This will stop the master and all worker machines!
+	</div>
+
+</div>
+<div class="modal-footer">
+	<button class="btn  btn-success col-md-4"
+					(click)="stopCluster()"
+					[id]="'verifyStopButton'">
+		Yes
+	</button>
+	<button class="btn  btn-danger col-md-4" type="reset" [id]="'verifyStopCancelButton'"
+					(click)="bsModalRef.hide();">Cancel
+	</button>
+</div>

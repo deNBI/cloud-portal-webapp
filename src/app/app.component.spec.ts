@@ -1,6 +1,6 @@
 import { TestBed, waitForAsync } from '@angular/core/testing';
-import {AppComponent} from './app.component';
-// tslint:disable
+import { AppComponent } from './app.component';
+/* eslint-disable */
 
 describe('AppComponent', () => {
   beforeEach(() => {
@@ -31,3 +31,5 @@ describe('AppComponent', () => {
     expect(compiled.querySelector('h1').textContent).toContain('app works!');
   }));
 });
+
+/* eslint-enable */

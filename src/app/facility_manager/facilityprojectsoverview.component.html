@@ -10,7 +10,7 @@
         </div>
         <div class="col-md-8" style="margin-bottom: 10px;"><select [(ngModel)]="selectedFacility"
                                                                    (ngModelChange)="onChangeSelectedFacility($event)"
-                                                                   class="form-control" name="selectedFacility">
+                                                                   class="form-control form-select" name="selectedFacility">
           <option *ngFor="  let facility of managerFacilities" [ngValue]="facility">
             {{facility['Facility']}}
           </option>
@@ -35,12 +35,20 @@
         </div>
         <div class="col-md-8" style="margin-bottom: 10px;"><select [(ngModel)]="selectedFacility"
                                                                    (ngModelChange)="onChangeSelectedFacility($event)"
-                                                                   class="form-control" name="selectedFacility">
+                                                                   class="form-control form-select" name="selectedFacility">
           <option *ngFor="  let facility of managerFacilities" [ngValue]="facility">
             {{facility['Facility']}}
           </option>
 
         </select></div>
+				<div class="col-md-2">
+					<button (click)="getFacilitySupportMails(); computeCenterSupportModal.show()"
+									type="button"
+									class="btn btn-outline-primary float-right">
+						<i class="fa fa-inbox"></i>
+						Support email(s)
+					</button>
+				</div>
       </div>
       <div class="card" style=" ">
         <div class="card-header">
@@ -52,7 +60,7 @@
         <div class="card-body" style="overflow-x: visible; overflow-y: visible">
           <div class="row">
             <div class="col-3">
-              <input type="text" placeholder="member-elixir_id,id,name" name="filter"
+              <input type="text" class="form-control"  id="filter_project_name" placeholder="member-elixir_id,id,name" name="filter"
                      [(ngModel)]="filter" (ngModelChange)="filterChanged.next($event)" style="width:100%;">
             </div>
             <div class="col-3">
@@ -62,7 +70,7 @@
                          (change)="changeFilterStatus(project_states[project_states.ACTIVE]);applyFilter();"
                          checked/>
                   <span style="margin-left: 5px; bottom: 5px; position: relative;"
-                        class="badge badge-success">{{project_states[project_states.ACTIVE]}}  </span>
+                        class="badge bg-success">{{project_states[project_states.ACTIVE]}}  </span>
 
                 </label>
               </div>
@@ -76,7 +84,7 @@
                          (change)="changeFilterStatus(lifetime_states[lifetime_states.EXPIRES_SOON]);applyFilter();"
                          checked/>
                   <span style="margin-left: 5px; bottom: 5px; position: relative;"
-                        class="badge badge-warning">{{lifetime_states[lifetime_states.EXPIRES_SOON]}}</span>
+                        class="badge bg-warning">{{lifetime_states[lifetime_states.EXPIRES_SOON]}}</span>
                 </label>
               </div>
             </div>
@@ -88,7 +96,7 @@
                          (change)="changeFilterStatus(lifetime_states[lifetime_states.EXPIRED]);applyFilter();"
                   />
                   <span style="margin-left: 5px; bottom: 5px; position: relative;"
-                        class="badge badge-danger">{{lifetime_states[lifetime_states.EXPIRED]}}</span>
+                        class="badge bg-danger">{{lifetime_states[lifetime_states.EXPIRED]}}</span>
                 </label>
               </div>
             </div>
@@ -139,13 +147,16 @@
                 </td>
                 <td>  <span *ngIf="project | hasstatusinlist:project_states.ACTIVE"
                             style="margin-left: 5px"
-                            class="badge badge-success">{{project_states[project_states.ACTIVE]}} </span>
+                            class="badge bg-success">{{project_states[project_states.ACTIVE]}} </span>
                   <span *ngIf="project?.LifetimeReached | hasStatus:lifetime_states.EXPIRED"
                         style="margin-left: 5px"
-                        class="badge badge-danger">{{lifetime_states[lifetime_states.EXPIRED]}} </span>
+                        class="badge bg-danger">{{lifetime_states[lifetime_states.EXPIRED]}} </span>
                   <span *ngIf="project?.LifetimeReached |hasStatus:lifetime_states.EXPIRES_SOON"
                         style="margin-left: 5px"
-                        class="badge badge-warning">{{lifetime_states[lifetime_states.EXPIRES_SOON]}}</span>
+                        class="badge bg-warning">{{lifetime_states[lifetime_states.EXPIRES_SOON]}}</span>
+                  <span *ngIf="project | hasstatusinlist: application_states.WAIT_FOR_TERMINATION_FM "
+                        style="margin-left: 5px"
+                        class="badge bg-warning">{{application_states[application_states.WAIT_FOR_TERMINATION_FM]}}</span>
                 <td class="col-md-2">
                   <button class="btn btn-secondary"
                           (click)="getProjectLifetime(project);selectedProject=project;infoModal.show();">
@@ -159,13 +170,11 @@
                 <!--td>{{ project.DaysRunning }}</td>-->
                 <!--td>{{project.LifetimeDays}}</td-->
                 <td class="col-md-2">
-                  <button type="button" class="btn btn-secondary"
-                          data-toggle="modal"
-                          (click)="showMembersOfTheProject(project.Id, project.Name); usersModal.show(); "
-
-                  >
-                    <i class="fa fa-users"></i>&nbsp;Show Members
-                  </button>
+                    <button type="button" class="btn btn-secondary"
+                            data-toggle="modal"
+                            (click)="showMembersOfTheProject(project.Id, project.Name); usersModal.show();">
+                      <i class="fa fa-users"></i>&nbsp;Show Members
+                    </button>
                 </td>
               </tr>
               </tbody>
@@ -212,7 +221,7 @@
               <td>{{ member.userId }}</td>
               <td>{{ member.memberId }}</td>
               <td>{{ member.elixirId}}</td>
-              <td>{{member.Email}}</td>
+              <td>{{member.email}}</td>
               <td>{{ member.userName }}</td>
             </tr>
 
@@ -251,7 +260,7 @@
               <label
                 class="col-md-12 control-label"><strong>Which project members should receive the email?</strong></label>
               <div class="col-md-12">
-                <select class="form-control" [(ngModel)]="selectedProjectType"
+                <select class="form-control form-select" [(ngModel)]="selectedProjectType" (ngModelChange)="setEmailSubject()"
                         name="selectedProjectType" id="selectedProjectType">
                   <option value="ALL" selected>All</option>
                   <option value="OVP">OpenStack</option>
@@ -264,7 +273,7 @@
 
                 </select></div>
             </div>
-            <div *ngIf="selectedProjectType == 'ALL'">
+            <div *ngIf="selectedProjectType === 'ALL'">
               <div class="col">
                 <label id="id_send_to_news_allowed_label"
                        class="switch switch-label switch-outline-primary-alt">
@@ -282,7 +291,8 @@
             <div *ngIf="selectedProjectType === 'USER'">
               <div class="container-fluid" *ngIf="membersLoaded">
                 <div class="row">
-                  <p style=" margin-bottom: 15px;">Search for a user to your project by entering a part of his name, email or elixir-ID:</p>
+                  <p style=" margin-bottom: 15px;">Search for a user to your project by entering a part of
+										their name, email or elixir-ID:</p>
                 </div>
                 <div class="row">
                   <div class="col-md-8">
@@ -349,7 +359,7 @@
               </div>
               <div class="container-fluid" *ngIf="!membersLoaded">
                 <div class="row">
-                  <div class="alert alert-info">Loading facility members...</div>
+                  <div class="alert alert-primary">Loading facility members...</div>
                 </div>
               </div>
             </div>
@@ -374,10 +384,10 @@
               <label class="col-md-12 control-label"><strong>Reply to
                 (optional)</strong></label>
               <div class="col-md-12">
-                <input id="Reply to" name="emailReply" placeholder=""
+                <input id="reply_to" name="emailReply" placeholder=""
                        class="form-control"
                        type="text" [(ngModel)]="emailReply" #emailRep="ngModel"
-                       pattern="(?!(^[.-].*|[^@]*[.-]@|.*\.{2,}.*)|^.{254}.)([a-zA-Z0-9!#$%&'*+\/=?^_`{|}~.-]+@)(?!-.*|.*-\.)([a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,15}"
+                       pattern="([ ]*)(?!(^[.-].*|[^@]*[.-]@|.*\.{2,}.*)|^.{254}.)([a-zA-Z0-9!#$%&'*+\/=?^_`{|}~.-]+@)(?!-.*|.*-\.)([a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,15}([ ]*)"
                        [ngClass]="{'is-invalid':emailRep.invalid && (emailRep.dirty || emailRep.touched),
                     'is-valid':emailRep.valid && (emailRep.dirty || emailRep.touched)
                     }">
@@ -398,7 +408,7 @@
                     }"></textarea>
               </div>
             </div>
-            <div *ngIf="selectedProjectType == 'ALL' && sendNews" class="form-group row">
+            <div *ngIf="selectedProjectType === 'ALL' && sendNews" class="form-group row">
               <label class="col-md-12 control-label"><strong>Alternative newstext (optional)</strong></label>
               <div class="col-md-12">
                             <textarea class="form-control" id="alternative_emailText"
@@ -407,7 +417,7 @@
                                       type="text"></textarea>
               </div>
             </div>
-            <div *ngIf="selectedProjectType == 'ALL' && sendNews" class="form-group row">
+            <div *ngIf="selectedProjectType === 'ALL' && sendNews" class="form-group row">
               <label class="col-md-12 control-label"><strong>Tags:</strong></label>
               <div class="form-check" id="tags_check">
                 <div *ngFor="let tag of availableNewsTags">
@@ -425,7 +435,7 @@
         <div class="modal-footer">
           <button type="button" [disabled]="f.invalid ||
 
-            (selectedProjectType == 'USER' && (selectedMember?.length == 0))"
+            (selectedProjectType === 'USER' && (selectedMember?.length === 0))"
                   class="btn btn-primary" (click)="emailModal.hide(); verifyModal.show()">Send email
           </button>
           <button type="button" class="btn btn-secondary"
@@ -453,35 +463,35 @@
       <div class="modal-body">
         <div class="alert alert-warning" role="alert" *ngIf="selectedFacility">
           Are you sure you want to send this email to
-          <span *ngIf="selectedProjectType == 'ALL'">all</span>
-          <span *ngIf="selectedProjectType == 'USER' && selectedMember"><br>
+          <span *ngIf="selectedProjectType === 'ALL'">all members of {{selectedFacility['Facility']}}?</span>
+          <span *ngIf="selectedProjectType === 'USER' && selectedMember"><br>
             <span *ngFor="let member of selectedMember">
               {{member['lastName']
                 .concat(', ', member['firstName'],': ' , member['email'])}}<br></span>
           </span>
-          <span *ngIf="selectedProjectType == 'SVP'">
+          <span *ngIf="selectedProjectType === 'SVP'">
             the Simple Vm members of the {{selectedFacility['Facility']}}?
           </span>
-          <span *ngIf="selectedProjectType == 'OVP'">
+          <span *ngIf="selectedProjectType === 'OVP'">
             the OpenStack Project members of the{{selectedFacility['Facility']}}?
           </span>
-          <span *ngIf="selectedProjectType != 'ALL' && selectedProjectType != 'SVP'
-             && selectedProjectType != 'OVP' && selectedProjectType != 'USER'">
+          <span *ngIf="selectedProjectType !== 'ALL' && selectedProjectType !== 'SVP'
+             && selectedProjectType !== 'OVP' && selectedProjectType !== 'USER'">
             the members of the {{getProjectNameBySelectedProjectTypeAsId()}} project?
           </span>
         </div>
 
       </div>
       <div class="modal-footer">
-        <button class="btn  btn-success col-md-4" *ngIf="selectedProjectType != 'USER'"
-                (click)="sendMailToFacility(selectedFacility['FacilityId'], emailSubject, emailText, emailReply, sendNews, alternative_emailText, null);
+        <button class="btn  btn-success col-md-4" *ngIf="selectedProjectType !== 'USER'"
+                (click)="sendMailToFacility(selectedFacility['FacilityId'], emailSubject, emailText, emailReply, sendNews, alternative_emailText);
                 verifyModal.hide();
                 resetEmailModal();
                 successModal.show()">
           Yes
         </button>
         <button class="btn  btn-success col-md-4" *ngIf="selectedProjectType === 'USER'"
-                (click)="sendMailToFacility(selectedFacility['FacilityId'], emailSubject, emailText, emailReply, sendNews, alternative_emailText, selectedMember);
+                (click)="sendMailToFacility(selectedFacility['FacilityId'], emailSubject, emailText, emailReply, sendNews, alternative_emailText);
                 verifyModal.hide();
                 resetEmailModal();
                 successModal.show()">
@@ -503,9 +513,9 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title" *ngIf="emailStatus == 0"> Waiting </h4>
-        <h4 class="modal-title" *ngIf="emailStatus == 1"> Success </h4>
-        <h4 class="modal-title" *ngIf="emailStatus == 2"> Error </h4>
+        <h4 class="modal-title" *ngIf="emailStatus === 0"> Waiting </h4>
+        <h4 class="modal-title" *ngIf="emailStatus === 1"> Success </h4>
+        <h4 class="modal-title" *ngIf="emailStatus === 2"> Error </h4>
         <button type="button" class="close" style="cursor:pointer"
                 (click)="successModal.hide()"
                 aria-label="Close">
@@ -513,14 +523,14 @@
         </button>
       </div>
       <div class="modal-body">
-        <div class="alert alert-info" role="alert" *ngIf="emailStatus == 0">
+        <div class="alert alert-primary" role="alert" *ngIf="emailStatus === 0">
           Sending the email. <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
         </div>
-        <div class="alert alert-success" role="alert" *ngIf="emailStatus == 1">
+        <div class="alert alert-success" role="alert" *ngIf="emailStatus === 1">
           The email has been send successfully.
         </div>
       </div>
-      <div class="alert alert-warning" role="alert" *ngIf="emailStatus == 2">
+      <div class="alert alert-warning" role="alert" *ngIf="emailStatus === 2">
         When sending the email an error has occurred.
       </div>
 
@@ -537,30 +547,77 @@
 
 
 <div bsModal #descriptionModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
-     aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-info" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Description</h4>
-        <button type="button" class="close" style="cursor: pointer"
-                (click)="descriptionModal.hide()"
-                aria-label="Close">
+		 aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-info" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Description</h4>
+				<button type="button" class="close" style="cursor: pointer"
+								(click)="descriptionModal.hide()"
+								aria-label="Close">
 
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
 
-      <div class="modal-body">
-        <p>{{ selectedProject?.Description }}</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary"
-                (click)="selectedProject=undefined;descriptionModal.hide();">
-          Close
-        </button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
+			<div class="modal-body">
+				<p>{{ selectedProject?.Description }}</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary"
+								(click)="selectedProject=undefined;descriptionModal.hide();">
+					Close
+				</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div>
+
+<div bsModal #computeCenterSupportModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+		 aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-info" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title"> Support email addresses </h4>
+				<button type="button" class="close" style="cursor: pointer"
+								(click)="computeCenterSupportModal.hide();"
+								aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+
+			<div class="modal-body" *ngIf="selectedFacility">
+				<p>Support e-mail address(es) of <strong>{{ selectedFacility['Facility'] }}</strong>: </p>
+				<div class="input-group mb-3">
+					<input type="text" class="form-control" placeholder="Enter support contact e-mail address(es)"
+								 aria-label="Support contact e-mail address(es)" aria-describedby="supportMailHelp"
+								 id="facilitySupportMailsInput" #facilitySupportMailsInput
+								 [readOnly]="!supportMailEditing" value="{{facilitySupportMails}}">
+					<div class="input-group-append">
+						<button *ngIf="!supportMailEditing" type="button"
+										(click)="toggleSupportMailEditing();" class="btn btn-primary">
+							Edit
+						</button>
+						<button *ngIf="supportMailEditing" type="button"
+										(click)="setFacilitySupportMails(facilitySupportMailsInput.value); toggleSupportMailEditing(); notificationModal.show()"
+										class="btn btn-primary">
+							Submit
+						</button>
+					</div>
+				</div>
+				<small id="supportMailHelp" class="form-text text-muted">
+					Enter the e-mail addresses users can contact for support.
+					Separate them with a comma in-between each e-mail address.
+				</small>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary"
+								(click)="computeCenterSupportModal.hide();">
+					Close
+				</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
 </div>
 
 <div bsModal #infoModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
@@ -616,3 +673,67 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div>
+
+
+<div bsModal #notificationModal="bs-modal" class="modal" tabindex="-1" role="dialog"
+     aria-labelledby="Label"
+     aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="notification_modal_title">{{ notificationModalTitle }}</h4>
+        <button type="button" class="close" style="cursor:pointer"
+                (click)="notificationModal.hide()"
+                aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-{{ notificationModalType }}" id="notification_message" role="alert">
+          {{ notificationModalMessage }}
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="close_notification"
+                type="button"
+                (click)="notificationModal.hide();resetNotificationModal();"
+                class="btn  btn-secondary"> Close
+        </button>
+
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<div bsModal #notificationModal="bs-modal" class="modal" tabindex="-1" role="dialog"
+     aria-labelledby="Label"
+     aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">{{ notificationModalTitle }}</h4>
+        <button type="button" class="close" style="cursor:pointer"
+                (click)="notificationModal.hide()"
+                aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-{{ notificationModalType }}" id="notification_message" role="alert">
+          {{ notificationModalMessage }}
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="close_notification"
+                type="button"
+                (click)="notificationModal.hide();resetNotificationModal();"
+                class="btn  btn-secondary"> Close
+        </button>
+
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

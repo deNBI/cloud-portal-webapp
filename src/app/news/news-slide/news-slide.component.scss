@@ -1,0 +1,12 @@
+.card {
+	border-style: none;
+	box-shadow: rgb(153, 153, 153) 10px 10px 20px -10px;
+	max-height: 18rem;
+	min-height: 18rem;
+	transition: 1s ease-in-out;
+	max-width: 500px;
+}
+
+.card:hover {
+	box-shadow: rgb(87, 87, 87) 10px 10px 20px -10px;
+}

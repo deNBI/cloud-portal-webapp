@@ -1,4 +1,4 @@
-<div *ngIf="isLoaded==false" class="loader"></div>
+<div *ngIf="isLoaded === false" class="loader"></div>
 
 <div *ngIf="isLoaded" class="animated fadeIn" ng-app>
     <div>
@@ -7,7 +7,7 @@
                 <i class="fa fa-align-justify"></i> Resources
 
             </div>
-            <div id="resourcesTable" class="card-body" style="width: 100%">
+            <div #resourcesTable id="resourcesTable" class="card-body" style="width: 100%">
 
 
                 <div class="table-responsive">
@@ -115,7 +115,7 @@
 
             </div>
             <div>
-                <button (click)="tableToPDF()">Download PDF</button>
+               <!-- <button (click)="tableToPDF()">Download PDF</button> -->
                 <button (click)="tableToCSV()">Download CSV</button>
             </div>
             <!-- DivTable.com -->

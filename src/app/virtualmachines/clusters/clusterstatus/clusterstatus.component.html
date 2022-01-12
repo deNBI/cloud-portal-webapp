@@ -1,23 +1,39 @@
   <ng-container [ngSwitch]="cluster?.status">
-    <div *ngSwitchCase="'Running'" [id]="'running_badge_' + cluster?.cluster_id"
-         class="dot-colorless bg-success pulseAnim" style="width: 15px; height: 15px;">
-    </div>
-    <div *ngSwitchCase="'Creating'" [id]="'creating_badge_' + cluster?.cluster_id"
-         class="dot-colorless bg-warning" style="width: 15px; height: 15px">
+      <div *ngSwitchCase="'Running'" [id]="'running_badge_' + cluster?.cluster_id"
+           class="dot-colorless bg-success pulseAnim" style="width: 15px; height: 15px;">
+      </div>
+      <div *ngSwitchCase="VirtualMachineStates.staticSHUTOFF" [id]="'running_badge_' + cluster?.cluster_id"
+           class="dot-colorless bg-warning" style="width: 15px; height: 15px;">
+      </div>
+      <div *ngSwitchCase="VirtualMachineStates.staticPOWERING_ON" [id]="'powering_on_badge_' + cluster?.cluster_id"
+           class="dot-colorless bg-warning pulseAnim" style="width: 15px; height: 15px;">
+      </div>
+       <div *ngSwitchCase="VirtualMachineStates.staticPOWERING_OFF" [id]="'powering_off_badge_' + cluster?.cluster_id"
+           class="dot-colorless bg-warning pulseAnim" style="width: 15px; height: 15px;">
+      </div>
+      <div *ngSwitchCase="VirtualMachineStates.staticDELETING" [id]="'deleting_badge_' + cluster?.cluster_id"
+           class="dot-colorless bg-warning pulseAnim" style="width: 15px; height: 15px;">
+      </div>
+      <div *ngSwitchCase="'Creating'" [id]="'creating_badge_' + cluster?.cluster_id"
+           class="dot-colorless bg-warning" style="width: 15px; height: 15px">
 
-    </div>
-    <div *ngSwitchCase="'Configuring'" [id]="'configuring_badge_' + cluster?.cluster_id"
-         class="dot-colorless bg-info" style="width: 15px; height: 15px">
+      </div>
 
-    </div>
-    <div *ngSwitchCase="'Deleted'" [id]="'deleted_badge_' + cluster?.cluster_id"
-         class="dot-colorless bg-danger" style="width: 15px; height: 15px">
-    </div>
+      <div *ngSwitchCase="'Configuring'" [id]="'configuring_badge_' + cluster?.cluster_id"
+           class="dot-colorless bg-info" style="width: 15px; height: 15px">
+
+      </div>
+      <div *ngSwitchCase="VirtualMachineStates.staticDELETED" [id]="'deleted_badge_' + cluster?.cluster_id"
+           class="dot-colorless bg-danger" style="width: 15px; height: 15px">
+      </div>
+       <div *ngSwitchCase="'Error'" [id]="'error_badge_' + cluster?.cluster_id"
+           class="dot-colorless bg-dark" style="width: 15px; height: 15px">
+      </div>
     <div *ngSwitchDefault
          [id]="'default_badge_' + cluster?.cluster_id"
          class="dot-colorless bg-info" style="width: 15px; height: 15px">
     </div>
-    <span style="margin-left:15px;" class="text-muted font-weight-bold">Status: {{cluster?.status}}</span>
-    <i *ngIf="cluster?.status== 'Configuring' || cluster?.status == 'Creating' || cluster?.status== 'Deleting'"
+    <span style="margin-left:15px;" *ngIf="show_text_status" class="text-muted font-weight-bold">Status: {{cluster?.status}}</span>
+    <i *ngIf="cluster?.status=== 'Configuring' || cluster?.status === 'Creating' || cluster?.status=== 'Deleting'"
        class="fa fa-spinner fa-spin"></i>
   </ng-container>

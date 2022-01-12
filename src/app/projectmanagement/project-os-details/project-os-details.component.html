@@ -32,11 +32,14 @@
       <th>Id</th>
       <th>Name</th>
     </tr>
-    <tr *ngFor="let volume of selectedProjectVolumes">
-      <td>{{volume?.volume_openstackid}}</td>
-      <td>{{volume?.volume_name}}</td>
+    <ng-container *ngFor="let volume of selectedProjectVolumes">
+      <tr *ngIf="volume?.volume_status !== 'DELETED'">
+        <td>{{volume?.volume_openstackid}}</td>
+        <td>{{volume?.volume_name}}</td>
+      </tr>
+    </ng-container>
 
-    </tr>
+
 
     </tbody>
   </table>

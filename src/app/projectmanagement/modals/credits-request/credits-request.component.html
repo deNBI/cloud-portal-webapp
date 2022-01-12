@@ -1,0 +1,113 @@
+<div class="modal-header">
+	<h4>Extra credits request for {{project?.project_application_shortname}}</h4>
+	<button type="button" class="close" style="cursor: pointer"
+					(click)="bsModalRef.hide()" aria-label="Close">
+		<span aria-hidden="true">&times;</span>
+	</button>
+</div>
+<div class="modal-body">
+	<form id="credits_application_form" #f2="ngForm"
+				class="form-horizontal">
+
+		<div class="form-group row">
+			<label class="col-md-4 form-control-label"
+						 for="project_application_extra_credits_comment"><strong>Reasons for Extension</strong>
+			</label>
+			<div class="col-md-8">
+				<textarea required type="text" id="project_application_extra_credits_comment"
+									name="project_application_extra_credits_comment" class="form-control"
+									maxlength="8192"
+									placeholder=''
+									[(ngModel)]="temp_credits_extension.comment" minlength="10"
+									[ngClass]="{
+                  	'is-invalid': f2.controls.project_application_extra_credits_comment?.invalid && (f2.controls.project_application_extra_credits_comment?.dirty || f2.controls.project_application_extra_credits_comment?.touched),
+                    'is-valid': f2.controls.project_application_extra_credits_comment?.valid && (f2.controls.project_application_extra_credits_comment?.dirty || f2.controls.project_application_extra_credits_comment?.touched)
+                  }">
+
+				</textarea>
+				<span class="help-block">Please state why you need extra credits.</span>
+				<div class="alert alert-primary">
+					As more credits are requested we require a more detailed description of the reasons!
+				</div>
+			</div>
+		</div>
+		<div class="form-group row">
+			<label class="col-md-4 form-control-label" for="project_application_extra_credits">
+				<strong>Amount of extra credits needed</strong>
+			</label>
+			<div class="col-md-8">
+				<div class="input-group">
+					<input required class="form-control"
+								 id="project_application_extra_credits"
+								 name="project_application_extra_credits"
+								 placeholder="e.g. 5000"
+								 (change)="updateExampleCredits(temp_credits_extension.extra_credits);"
+								 [(ngModel)]="temp_credits_extension.extra_credits" min="100" step="100" type="number"
+								 appInteger appMinAmount="100"
+								 [ngClass]="{
+                 	'is-invalid': f2.controls.project_application_extra_credits?.invalid && (f2.controls.project_application_extra_credits?.dirty || f2.controls.project_application_extra_credits?.touched),
+                  'is-valid': f2.controls.project_application_extra_credits?.valid && (f2.controls.project_application_extra_credits?.dirty || f2.controls.project_application_extra_credits?.touched)
+                 }">
+					<div class="input-group-append">
+						<span class="input-group-text">
+							Credits
+            </span>
+					</div>
+				</div>
+				<span class="help-block">How many credits do you need for your project? You need 1 credit for 1 cpu core per hour
+					and 0.28 credits for 1 GB of ram per hour.</span>
+			</div>
+		</div>
+		<div class="form-group row">
+			<label class="col-md-4 form-control-label">
+				<strong>Example</strong>
+			</label>
+			<div class="col-md-8">
+				<div>
+					<strong>
+						Runtime of exemplary VMs with the entered credits.
+					</strong>
+				</div>
+				<div *ngIf="temp_credits_extension.extra_credits < 100">
+					Please select more than 100 extra Credits.
+				</div>
+				<div *ngIf="temp_credits_extension.extra_credits > 0">
+					Enough Credits to run 4 {{smallExampleFlavor?.name}} for {{smallExamplePossibleHours}} hours
+					(i.e. {{smallExamplePossibleDays}}) <strong>non-stop</strong>
+				</div>
+				<div *ngIf="temp_credits_extension.extra_credits > 0">
+					Enough Credits to run 1 {{largeExampleFlavor?.name}} for {{largeExamplePossibleHours}} hours
+					(i.e. {{largeExamplePossibleDays}}) <strong>non-stop</strong>
+				</div>
+			</div>
+		</div>
+	</form>
+	<div *ngIf="f2.invalid" class="alert alert-warning" role="alert">
+		<p>Some required fields are incorrect or not filled in yet.
+			Please check if all required (*) fields are filled in correctly.</p>
+		<p *ngIf="temp_credits_extension.comment.length <10">
+			- No reason specified (at least 10 characters)
+		</p>
+		<p *ngIf="temp_credits_extension.extra_credits < 1">
+			- Number of extra credits not specified
+		</p>
+	</div>
+
+
+	<div class="modal-footer">
+		<div class="label">
+			By submitting this application you agree to the cloud usage policy.
+		</div>
+		<button type="button" class="btn  btn-primary"
+						form="credits_application_form" id="submit_extra_credits_btn"
+						(click)="bsModalRef.hide(); showSubmitModal()" [disabled]="f2.invalid"><i class="fa fa-dot-circle-o"></i>
+			Submit
+		</button>
+		<button type="button" class="btn btn-danger"
+						(click)="bsModalRef.hide();">
+			Close
+		</button>
+
+	</div>
+
+</div><!-- /.modal-content -->

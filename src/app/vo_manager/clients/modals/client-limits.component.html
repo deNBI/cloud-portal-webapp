@@ -1,0 +1,98 @@
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header" *ngIf="limits_message">
+            <div class="alert alert-{{ message_type }}"
+                 role="alert" id="notification_message">
+                {{ limits_message }}
+            </div>
+            <button type="button" class="close" style="cursor:pointer"
+                    (click)="bsModalRef.hide();" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body" *ngIf="compute_center_id">
+
+            <div>
+                <div *ngIf="!client && !request_failed"
+                     class="spinner-border text-primary" style="display:block; margin:auto;"></div>
+
+                <div class="table-responsive" *ngIf="client">
+                    <br>
+                    <p>Client: {{client.location}}</p>
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <td></td>
+                            <td>Current Used Ressources</td>
+                            <td>Assigned Ressources</td>
+                            <td>Max Ressources</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>VMs</td>
+                            <td>{{client.currentUsedVms}}
+                            </td>
+                            <td>{{client.assignedVMs}}  <span *ngIf="client.newVms"
+                                                              [ngStyle]="{'color':client.assignedVMs + client.newVms <= client.maxVMs? 'green':'red'}"> + {{client.newVms}}</span>
+                            </td>
+                            <td>{{client.maxVMs}} </td>
+                        </tr>
+                        <tr>
+                            <td>Cores</td>
+                            <td>{{client.currentUsedCores}}
+                            </td>
+                            <td>{{client.assignedCores}}<span *ngIf="client.newCores"
+                                                              [ngStyle]="{'color':client.assignedCores + client.newCores <= client.maxCores? 'green':'red'}"> + {{client.newCores}}</span>
+                            </td>
+                            <td>{{client.maxCores}} </td>
+                        </tr>
+                        <tr>
+                            <td>Ram [GB]</td>
+                            <td>{{client.currentUsedRam}}
+                            </td>
+                            <td>{{client.assignedRam}}<span *ngIf="client.newRam"
+                                                            [ngStyle]="{'color':client.assignedRam + client.newRam <= client.maxRam? 'green':'red'}"> + {{client.newRam}}</span>
+                            </td>
+                            <td>{{client.maxRam}} </td>
+                        </tr>
+
+                        <tr>
+                            <td>Volumes</td>
+                            <td>{{client.currentUsedVolumes}}
+                            </td>
+                            <td>{{client.assignedVolumes}} <span *ngIf="client.newVolumes"
+                                                                 [ngStyle]="{'color':client.assignedVolumes + client.newVolumes <= client.maxVolumes? 'green':'red'}"> + {{client.newVolumes}}</span>
+                            </td>
+                            <td>{{client.maxVolumes}}</td>
+                        </tr>
+                        <tr>
+                            <td>Volume Storage [GB]</td>
+                            <td>{{client.currentUsedVolumeStorage}}
+                            </td>
+                            <td>{{client.assignedVolumesStorage}} <span *ngIf="client.newVolumeLimit"
+                                                                        [ngStyle]="{'color':client.assignedVolumesStorage + client.newVolumeLimit <= client.maxVolumeLimit? 'green':'red'}"> + {{client.newVolumeLimit}}</span>
+                            </td>
+                            <td>{{client.maxVolumeLimit}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+
+                </div>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button id="approve_client_limit_{{application?.project_application_shortname}}"
+                    [disabled]="!approvable"
+                    type="reset" (click)="approve();"
+                    class="btn  btn-success"> Approve
+            </button>
+            <button id="close_notification_modal_btn"
+                    type="reset" (click)="bsModalRef.hide();"
+                    class="btn  btn-secondary"> Close
+            </button>
+        </div>
+    </div>
+</div>

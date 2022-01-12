@@ -1,0 +1,406 @@
+<div class="modal-header">
+	<h4>Resource Modification request for {{project.project_application_shortname}}</h4>
+	<button type="button" class="close" style="cursor: pointer"
+					(click)="bsModalRef.hide();" aria-label="Close">
+		<span aria-hidden="true">&times;</span>
+	</button>
+</div>
+<div class="modal-body">
+
+	<div class="alert alert-primary">
+		<strong>Please be aware:</strong>
+		The number of flavors, GBs of storage and storage volumes which you enter within
+		this request will be the numbers you will actually get.
+		These numbers <strong>will not be added</strong> to your current numbers, but
+		will <strong>replace them</strong>.
+	</div>
+	<form id="resource_modification_application_form" #modificationForm="ngForm"
+				class="form-horizontal">
+
+		<div class="form-group row">
+			<h6 class="col-md-8 form-control-label">Resources*
+				<i data-balloon="Select the number of Virtual Machines you want to run of each specific flavor"
+					 data-balloon-pos="down">
+					<i class="icon-question"></i></i>
+			</h6>
+		</div>
+
+		<accordion>
+			<ng-container *ngFor="let flavorType of flavorTypes, first as isFirst">
+				<accordion-group *ngIf="project?.project_application_openstack_project
+																		|| shown_flavors[flavorType.long_name]"
+												 [isOpen]="isFirst" #groupval>
+					<div accordion-heading
+							 style="width: 100%; cursor: pointer">
+						{{flavorType.long_name}}
+						<i class="pull-right float-right" style="font-size: 25px"
+							 [ngClass]="{'icon-arrow-up': groupval.isOpen, 'icon-arrow-down': !groupval.isOpen}">
+						</i>
+					</div>
+					<div *ngFor="let flavor of shown_flavors[flavorType.long_name]">
+						<div *ngIf="flavor.disabled" class="form-group row" style="margin-bottom: 0;">
+							<label class="col-6 text-muted" for="{{flavor.name}}_old">
+								<strong>{{flavor.name}}</strong>
+								<br>
+								Number of cores: <span id="{{flavor.name}}_old_cores">{{flavor.vcpus}}</span>
+								<br>
+								RAM: <span id="{{flavor.name}}_old_ram">{{flavor.ram}}</span> GB
+								<span *ngIf="project?.credits_allowed">
+															 <br>
+															Credits per hour: <span id="{{flavor.name}}_old_cph">{{flavor.credits_per_hour}}</span> CCs/h
+														</span>
+							</label>
+							<div class="col-6">
+								<div class="input-group">
+									<input class="form-control"
+												 name="flavor.name + '_old'"
+												 id="{{flavor.name}}_old"
+												 type="text"
+												 value="{{project | flavorCounter:flavor}}"
+												 placeholder="0" [disabled]="flavor.disabled"
+												 aria-describedby="{{flavor.name}}_old_help">
+									<div class="input-group-append">
+										<span class="input-group-text"> VMs</span>
+									</div>
+								</div>
+								<div id="{{flavor.name}}_old_help" class="form-text text-muted">Currently approved of this flavor</div>
+							</div>
+						</div>
+						<div *ngIf="!flavor.disabled" class="form-group row">
+							<label class="col-6" for="{{flavor.name}}">
+								<strong>{{flavor.name}}</strong>
+								<br>
+								Number of cores: <span id="{{flavor.name}}_cores">{{flavor.vcpus}}</span>
+								<br>
+								RAM: <span id="{{flavor.name}}_ram">{{flavor.ram}}</span> GB
+								<span *ngIf="project?.credits_allowed">
+															<br>
+															Credits per hour: <span id="{{flavor.name}}_cph">{{flavor.credits_per_hour}}</span> CCs/h
+														</span>
+							</label>
+							<div class="col-6">
+								<div class="input-group">
+									<input class="form-control"
+												 [name]="flavor.name"
+												 id="{{flavor.name}}"
+												 type="number" min="0" step="1"
+												 placeholder="e.g 1"
+												 [ngModel]="temp_project_modification | flavorCounter:flavor"
+												 #name="ngModel"
+												 (change)="checkFlavorPairs(flavor, $event)"
+												 appMinAmount="0" appInteger
+												 value="{{temp_project_modification | flavorCounter:flavor}}"
+												 [disabled]="flavor.disabled"
+												 aria-describedby="{{flavor.name}}_help"
+												 [ngClass]="{
+						                                'is-invalid': name?.invalid,
+						                                'is-valid': name?.valid
+						                                }">
+									<div class="input-group-append">
+										<span class="input-group-text"> VMs</span>
+									</div>
+								</div>
+								<div id="{{flavor.name}}_help" class="form-text text-muted">Number of VMs you would like to run in the future</div>
+							</div>
+						</div>
+					</div>
+				</accordion-group>
+			</ng-container>
+		</accordion>
+
+		<div class="form-group row">
+			<label class="col-md-4 form-control-label" for="project_application_volume_counter"><strong>Number
+				of storage
+				volumes*
+				<i
+					data-balloon="Number of volumes allowed to create. The sum of the volumes size equals the value provided in the storage limit field."
+					data-balloon-pos="down" data-balloon-length="large"><i
+					class="icon-question"
+					style="cursor: pointer;"></i></i></strong></label>
+			<div class="col">
+				<div class="input-group">
+					<input required class="form-control"
+								 name="project_application_volume_counter"
+								 id="project_application_volume_counter"
+								 placeholder="NA"
+								 value="{{project?.project_application_volume_counter}}"
+								 type="text" disabled>
+				</div>
+				<span class="help-block">Current number of storage volumes</span>
+			</div>
+
+			<div class="col">
+				<div class="input-group">
+					<input required class="form-control"
+								 id="id_project_application_renewal_volume_counter"
+								 name="project_application_renewal_volume_counter"
+								 placeholder="e.g. 20"
+								 type="number" min="0" step="1"
+								 [(ngModel)]="temp_project_modification.volume_counter"
+								 appMinAmount="0" appInteger
+								 [ngClass]="{
+                                'is-invalid': modificationForm.controls.project_application_renewal_volume_counter?.invalid,
+                                'is-valid': modificationForm.controls.project_application_renewal_volume_counter?.valid
+                                }">
+				</div>
+				<label for="id_project_application_renewal_volume_counter"
+							 class="help-block">How many storage volumes do you need in the future?</label>
+			</div>
+		</div>
+		<div class="form-group row">
+			<label class="col-md-4 form-control-label" for="project_application_volume_limit"><strong>Storage Total
+				Limit*
+				<i
+					data-balloon="Storage limit is the sum of extra storage provided by volumes."
+					data-balloon-pos="down" data-balloon-length="medium"><i
+					class="icon-question"
+					style="cursor: pointer;"></i></i></strong></label>
+			<div class="col">
+				<div class="input-group">
+					<input class="form-control"
+								 name="project_application_volume_limit"
+								 id="project_application_volume_limit"
+								 value="{{project?.project_application_volume_limit}}"
+								 placeholder="NA"
+								 type="text" disabled>
+					<div class="input-group-append"><span class="input-group-text"> GB
+                                    </span></div>
+				</div>
+				<span class="help-block">Current extra storage</span>
+			</div>
+			<div class="col">
+				<div class="input-group">
+					<input class="form-control"
+								 id="id_project_application_renewal_volume_limit"
+								 name="project_application_renewal_volume_limit"
+								 placeholder="e.g. 20"
+								 type="number" min="1" step="1"
+								 [(ngModel)]="temp_project_modification.volume_limit"
+								 appMinAmount="1" appInteger
+								 [ngClass]="{
+                                'is-invalid': modificationForm.controls.project_application_renewal_volume_limit?.invalid,
+                                'is-valid': modificationForm.controls.project_application_renewal_volume_limit?.valid
+                                }"
+								 [disabled]="modificationForm.controls.project_application_renewal_volume_counter?.value === 0">
+					<div class="input-group-append"><span class="input-group-text"> GB
+                                    </span></div>
+				</div>
+				<label for="id_project_application_renewal_volume_limit" class="help-block">How much total extra storage do you need in the future?</label>
+			</div>
+		</div>
+
+
+		<div *ngIf="project?.project_application_openstack_project" class="form-group row">
+			<label class="col-md-4 form-control-label" for="project_application_object_storage"><strong>Object
+				Storage* </strong><i
+				data-balloon="Object storage is a method of storing data that does not use a directory tree internally. Object storage combines files with metadata and places it in a flat structure."
+				data-balloon-pos="down" data-balloon-length="large"><i
+				class="icon-question"
+				style="cursor: pointer;"></i></i></label>
+
+			<div class="col">
+				<div class="input-group">
+					<input class="form-control"
+								 name="project_application_object_storage"
+								 id="project_application_object_storage"
+								 placeholder="NA"
+								 value="{{project?.project_application_object_storage}}"
+								 type="text" disabled>
+					<div class="input-group-append"><span class="input-group-text"> GB
+                                    </span></div>
+				</div>
+				<span class="help-block">Current Object Storage capacity</span>
+			</div>
+
+			<div *ngIf="project?.project_application_openstack_project" class="col">
+				<div class="input-group">
+					<input class="form-control"
+								 id="id_project_application_renewal_object_storage"
+								 name="project_application_renewal_object_storage"
+								 placeholder="e.g. 8"
+								 [(ngModel)]="temp_project_modification.object_storage"
+								 type="number" min="0" step="1"
+								 appInteger appMinAmount="0" required
+								 [ngClass]="{
+                                'is-invalid': modificationForm.controls.project_application_renewal_object_storage?.invalid ,
+                                'is-valid': modificationForm.controls.project_application_renewal_object_storage?.valid
+                                }">
+					<div class="input-group-append"><span class="input-group-text"> GB
+                                    </span></div>
+				</div>
+				<label for="id_project_application_renewal_object_storage"
+							 class="help-block">How much Object Storage do you need in the future?</label>
+			</div>
+		</div>
+		<div
+			*ngIf="project?.project_application_openstack_project
+					&& project?.project_application_cloud_service
+					&& project?.project_application_cloud_service_develop"
+			class="form-group row">
+			<label class="col-md-4 form-control-label"><strong>Service status </strong><i
+				data-balloon="Status of your service."
+				data-balloon-pos="down" data-balloon-length="large"><i
+				class="icon-question"
+				style="cursor: pointer;"></i></i></label>
+
+			<div class="col">
+			</div>
+
+			<div
+				*ngIf="project?.project_application_openstack_project
+						&& project?.project_application_cloud_service
+						&& project?.project_application_cloud_service_develop"
+				class="col">
+				<div class="input-group">
+					<label id="id_project_application_renewal_cloud_service_develop"
+								 class="switch switch-label switch-outline-primary-alt">
+						<input type="checkbox" class="switch-input"
+									 name="project_application_renewal_cloud_service_develop"
+									 [defaultChecked]="project?.project_application_cloud_service_develop"
+									 [(ngModel)]="temp_project_modification.cloud_service_develop"
+						>
+						<span class="switch-slider" data-checked="Yes" data-unchecked="No"></span>
+						<span class="switch-handle"></span></label>
+				</div>
+				<span class="help-block">Is your service still in development?</span>
+			</div>
+		</div>
+
+		<div
+			*ngIf="project?.project_application_openstack_project
+					&& project?.project_application_cloud_service
+					&& (!project?.project_application_cloud_service_develop)"
+			class="form-group row">
+			<label class="col-md-4 form-control-label" for="project_application_cloud_service_user_number"><strong>Cloud Service user
+				number </strong><i
+				data-balloon="Number of user using your service."
+				data-balloon-pos="down" data-balloon-length="large"><i
+				class="icon-question"
+				style="cursor: pointer;"></i></i></label>
+
+			<div class="col">
+				<div class="input-group">
+					<input class="form-control"
+								 name="project_application_cloud_service_user_number"
+								 id="project_application_cloud_service_user_number"
+								 placeholder="NA"
+								 value="{{project?.project_application_cloud_service_user_number}}"
+								 type="text" disabled>
+				</div>
+				<span class="help-block">Current number of users</span>
+			</div>
+
+			<div
+				*ngIf="project?.project_application_openstack_project
+						&& project?.project_application_cloud_service
+						&& !project?.project_application_cloud_service_develop"
+				class="col">
+				<div class="input-group">
+					<input class="form-control"
+								 id="id_project_application_renewal_cloud_service_user_number"
+								 name="project_application_renewal_cloud_service_user_number"
+								 placeholder="e.g. 200"
+								 [(ngModel)]="temp_project_modification.cloud_service_user_number"
+								 type="number" min="0" step="1"
+								 appInteger appMinAmount="0" required
+								 [ngClass]="{
+                                'is-invalid': modificationForm.controls.project_application_renewal_cloud_service_user_number?.invalid ,
+                                'is-valid': modificationForm.controls.project_application_renewal_cloud_service_user_number?.valid
+                                }">
+				</div>
+				<label for="id_project_application_renewal_cloud_service_user_number"
+							 class="help-block">How many users are using your service?
+					<br>
+					<strong>Note:</strong> we define service users as <strong>unique users per month.</strong></label>
+			</div>
+		</div>
+
+		<div class="form-group row">
+			<label class="col-md-4 form-control-label"
+						 for="id_project_application_renewal_comment"><strong>Comment</strong></label>
+			<div class="col-md-8">
+                <textarea type="text" id="id_project_application_renewal_comment"
+													name="project_application_renewal_comment" class="form-control"
+													maxlength="8192"
+													placeholder=''
+													[(ngModel)]="temp_project_modification.comment"></textarea>
+				<span class="help-block">Additional information you want to share?</span>
+			</div>
+		</div>
+		<div class="form-group row">
+			<label class="col-md-4"></label>
+			<div class="col-md-8">
+				<div class="alert alert-primary" role="alert">
+					In case you need additional and/or special resources, which are not available in the flavor selection,
+					use the comment field to state so. The same applies to unusually large amounts of resources.
+				</div>
+			</div>
+		</div>
+
+
+		<div *ngIf="project?.credits_allowed" class="form-group row">
+			<label id="creditnumber" class="col">
+				<strong>Expected total credits: {{project?.project_application_initial_credits}} + <span
+					id="modification_credits">({{temp_project_modification?.extra_credits}}) = {{expected_total_credits}}
+                </span></strong></label>
+		</div>
+		<div class="alert alert-primary" role="alert" *ngIf="project?.credits_allowed">
+			This is the expected number of extra credits that you get for your project. It accounts for an increase
+			or decrease in requested resources for your remaining project lifetime.<br>
+			<strong *ngIf="expected_total_credits === 0 && project?.flavors?.length > 0">
+				Your expected credits are lower or equal to zero.
+				Please submit a Credits Extension or contact us at <a href="mailto:{{CLOUD_MAIL}}">{{CLOUD_MAIL}}</a>,
+				so we may calculate and set the correct amount for your project.
+			</strong>
+		</div>
+		<div class="form-group row">
+			<label id="total_cores_label" class="col-md-8">
+				<strong>Total number of cores (old | new):
+					{{project.project_application_total_cores}} | {{temp_project_modification.total_cores}}</strong>
+			</label>
+		</div>
+		<div class="form-group row">
+			<label id="total_ram_label" class="col-md-8">
+				<strong>Total amount of RAM (old | new):
+					{{project.project_application_total_ram}} | {{temp_project_modification.total_ram}} GB</strong>
+			</label>
+		</div>
+	</form>
+
+	<div *ngIf="modificationForm.invalid || !min_vm" class="alert alert-warning" role="alert">
+		<p>Some required fields are incorrect or not filled in yet.
+			Please check if all required (*) fields are filled in correctly.</p>
+		<p *ngIf="modificationForm.controls.project_application_renewal_volume_counter?.invalid">
+			- Number of storage volumes missing
+		</p>
+		<p *ngIf="modificationForm.controls.project_application_renewal_volume_limit?.invalid">
+			- Storage Limit missing
+		</p>
+		<p *ngIf="modificationForm.controls.project_application_renewal_object_storage?.invalid">
+			- Object Storage missing
+		</p>
+		<p *ngIf="!min_vm">
+			- Select at least one Flavor
+		</p>
+
+	</div>
+
+
+	<div class="modal-footer">
+		<div class="label">
+			By submitting this application you agree to the cloud usage policy.
+		</div>
+		<button type="button" class="btn  btn-primary"
+						form="resource_modification_application_form" id="submit_modification_btn"
+						(click)="bsModalRef.hide(); showSubmitModal();"
+						[disabled]="modificationForm.invalid || !min_vm"><i class="fa fa-dot-circle-o"></i>
+			Submit
+		</button>
+		<button type="button" class="btn btn-danger"
+						(click)=bsModalRef.hide()>
+			Close
+		</button>
+
+	</div>
+
+</div><!-- /.modal-content -->

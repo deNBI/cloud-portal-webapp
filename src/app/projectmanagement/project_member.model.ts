@@ -3,15 +3,22 @@
  */
 export class ProjectMember {
 
-  userId: number | string;
-  memberId: number | string;
-  userName: string;
-  firstName: string;
-  lastName: string;
+	userId: number | string;
+	memberId: number | string;
+	userName: string;
+	firstName: string;
+	lastName: string;
 
-  IsPi: boolean;
-  elixirId: string;
-  Email: string;
-  publicKeySet: boolean
+	IsPi: boolean;
+	elixirId: string;
+	email: string;
+	publicKeySet: boolean;
+	groupAdmin: boolean;
+	hasVM: boolean = false;
+	vm_amount: number = 0;
+
+	constructor(project_member?: Partial<ProjectMember>) {
+		Object.assign(this, project_member);
+	}
 
 }

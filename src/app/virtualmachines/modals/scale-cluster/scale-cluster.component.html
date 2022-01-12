@@ -1,0 +1,402 @@
+<ng-container *ngIf="scale_down">
+
+	<div class="modal-header">
+		<h4 class="modal-title">Scale-Down Cluster {{cluster?.cluster_id}}</h4>
+		<button type="button" class="close" style="cursor: pointer"
+						(click)="bsModalRef.hide()"
+						aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
+	</div>
+	<div class="modal-body">
+		<div class="alert alert-warning" role="alert">
+			<p>From which batch do you want to delete how many workers?</p></div>
+
+		<div class="table-responsive">
+			<table class="table table-hover" style="word-wrap: break-word;table-layout: fixed">
+				<thead>
+				<tr>
+					<th>Batch Index</th>
+					<th>Flavor</th>
+					<th>Actual Workers</th>
+					<th>Deletion count</th>
+
+				</tr>
+				</thead>
+				<tbody>
+				<tr *ngFor="let batch of cluster?.worker_batches">
+					<td>{{ batch?.index }}</td>
+					<td>
+						<div style="font-size: small">
+							<strong>{{batch?.flavor?.name}}</strong><br> {{batch?.flavor?.vcpus + ' VCPUs ' }}
+							<br>{{batch?.flavor?.ram + ' GB RAM  '}}<br>{{batch?.flavor?.rootdisk + ' GB root disk'}}
+						</div>
+					</td>
+					<td>{{batch?.worker_count}}</td>
+					<td>
+						<div class="input-group">
+
+
+							<input style="width: 50%"
+										 name="delCount_{{batch.index}}"
+
+										 type="number" min="0" [max]="batch.worker_count" step="1"
+										 [(ngModel)]="batch.delete_count"
+										 appMinAmount="0" appMaxAmount="{{batch.worker_count}}"
+										 (change)="checkDelCount(batch);"
+										 appInteger placeholder="e.g 1" pattern="[0-9]+">
+							<div class="input-group-append">
+								<span class="input-group-text">max {{batch?.worker_count}}</span>
+							</div>
+
+						</div>
+
+
+					</td>
+
+				</tr>
+
+				</tbody>
+			</table>
+		</div>
+
+	</div>
+	<div class="modal-footer">
+		<div class="alert col-md-12"
+				 [ngClass]="{'alert-danger':!scaling_warning_read,'alert-success':scaling_warning_read}">
+			<p> This will only delete machines in the batches. Once the machine(s) have been deleted, you will be shown the
+				commands for configuring the cluster.
+				Execute these commands to configure the cluster correctly!</p>
+
+
+			<div class="alert alert-info"
+					 role="alert">Selected for scaling down:<br>
+				<span *ngFor="let batch of cluster?.worker_batches">
+                      <strong *ngIf="batch?.delete_count > 0">Deleting {{batch?.delete_count}} machine<span
+												*ngIf="batch.delete_count > 1">s</span> from Batch {{batch?.index}}
+                        </strong>
+                    </span>
+			</div>
+
+			<div class="form-check">
+				<input class="form-check-input" name="sclae_down_acknowledgement_checkbox" type="checkbox"
+							 id="public_key_acknowledgement_checkbox" [(ngModel)]="scaling_warning_read">
+				<label class="form-check-label">
+					Read and acknowledged
+				</label>
+			</div>
+		</div>
+
+
+		<button class="btn  btn-success col-md-4"
+						(click)="scaleDownCluster();"
+						[disabled]="!scaling_warning_read || scale_down_count < 1"
+						id="confirm-scale_down">
+			Scale Down Batches
+		</button>
+
+		<button class="btn  btn-danger col-md-4" type="reset"
+						(click)="bsModalRef.hide()">Cancel
+		</button>
+	</div>
+</ng-container>
+
+<ng-container *ngIf="scale_up">
+	<div class="modal-header">
+		<h4 class="modal-title">Scale-Up Cluster {{cluster?.cluster_id}}</h4>
+		<button type="button" class="close" style="cursor: pointer"
+						(click)="bsModalRef.hide()"
+						aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
+	</div>
+	<div class="modal-body">
+		<div class="alert alert-info " role="alert" *ngIf="!max_scale_up_count_loaded"><strong> Calculating maximum
+			additional
+			workers..
+			<i
+				class="fa fa-spinner fa-spin" style="font-size:24px"></i></strong></div>
+
+		<div *ngIf="max_scale_up_count_loaded">
+			<app-resource-overview [ressourceUsage]="selectedProjectRessources"
+			>
+
+			</app-resource-overview>
+			<div class="alert alert-warning" role="alert" *ngIf="!created_new_batch">
+				<p>Which batch should be scaled up (only one batch at a time is possible)?</p></div>
+
+			<div class="table-responsive" *ngIf="!created_new_batch">
+				<table class="table table-hover" style="word-wrap: break-word;table-layout: fixed">
+					<thead>
+					<tr>
+						<th>Selected</th>
+
+						<th>Batch Index</th>
+						<th>Flavor</th>
+						<th>Actual Workers</th>
+						<th>Upscaling count</th>
+
+					</tr>
+					</thead>
+					<tbody>
+					<tr *ngFor="let batch of cluster?.worker_batches">
+						<td>
+							<div class="checkbox col-sm" *ngIf="batch?.max_scale_up_count >0 ">
+								<label>
+									<input type="checkbox"
+												 (change)="setSelectedBatch(batch)"
+												 [checked]="selectedBatch === batch">
+
+
+								</label>
+							</div>
+						</td>
+
+						<td>{{ batch?.index }}</td>
+						<td>
+							<div style="font-size: small">
+								<strong>{{batch?.flavor?.name}}</strong><br> {{batch?.flavor?.vcpus + ' VCPUs ' }}
+								<br>{{batch?.flavor?.ram + ' GB RAM  '}}<br>{{batch?.flavor?.rootdisk + ' GB root disk'}}
+							</div>
+						</td>
+						<td>{{batch?.worker_count}}</td>
+						<td>
+							<div class="input-group" *ngIf="batch?.max_scale_up_count > 0">
+
+
+								<input style="width: 50%"
+											 [disabled]="batch?.max_scale_up_count <1 || selectedBatch !== batch"
+											 name="upCount_{{batch.index}}"
+
+											 type="number" min="0" [max]="batch.max_scale_up_count" step="1"
+											 [(ngModel)]="batch.upscale_count"
+											 appMinAmount="0" appMaxAmount="{{batch.max_scale_up_count}}"
+											 (change)="checkUpCount(batch);"
+											 appInteger placeholder="e.g 1" pattern="[0-9]+">
+								<div class="input-group-append">
+									<span class="input-group-text">max {{batch?.max_scale_up_count}}</span>
+								</div>
+
+							</div>
+							<div class="alert alert-warning" role="alert" *ngIf="batch?.max_scale_up_count === 0"> Not enough
+								resources left to upscale this batch!
+							</div>
+
+						</td>
+
+					</tr>
+
+					</tbody>
+				</table>
+				<div>
+					<button
+
+						type="button" style="float: left;margin-bottom: 5px;"
+
+
+						class="btn btn-primary"
+						(click)="createNewBatchSelectedCluster();">
+						Add new Worker Batch
+					</button>
+				</div>
+			</div>
+			<div class="alert alert-info" role="alert" *ngIf="created_new_batch && (!projectDataLoaded || !flavors_loaded)">
+				<strong> Get more possible flavors..
+					<i
+						class="fa fa-spinner fa-spin" style="font-size:24px"></i></strong></div>
+			<accordion *ngIf="created_new_batch && projectDataLoaded && flavors_loaded">
+
+				<accordion-group [isOpen]="true" (isOpenChange)="resizeFix()">
+					<div accordion-heading style="width: 100%; cursor: pointer"><strong
+					>Batch {{selectedBatch.index}} </strong>
+
+					</div>
+					<div class="alert alert-warning"
+							 *ngIf="flavors_usable.length < 1 && !selectedBatch.flavor">Not
+						enough resources available
+						to start another worker batch with a different flavor!
+					</div>
+					<span *ngIf="flavors_usable.length > 0 || selectedBatch.flavor">
+
+                      <div class="form-group row col-md-12">
+                        <label class="col-md-2 form-control-label"><strong>Flavor*</strong></label>
+                        <div class="col-md-10">
+
+
+                          <app-flavor-detail [selectedFlavor]="selectedBatch.flavor"
+																						 [flavors]="flavors_usable"
+																						 (selectedFlavorChange)="selectedBatch.flavor=$event;calcMaxWorkerInstancesByFlavor();"
+													></app-flavor-detail>
+
+
+                        </div>
+
+
+                      </div>
+
+
+                      <div class="alert alert-danger" role="alert" *ngIf="!selectedBatch.flavor">
+                        Please first select a worker flavor before you can set the number of workers.
+                      </div>
+                      <div class="form-group row col-md-12">
+
+                        <label class="col-md-2 form-control-label"><strong>Count*
+                          <span *ngIf="selectedBatch.max_worker_count ">(max {{selectedBatch.max_worker_count}})</span></strong></label>
+                        <div class="col-md-10">
+
+
+                          <input class="form-control" id="workerInstancesCount_{{selectedBatch.index}}"
+																 [disabled]="!selectedBatch.flavor"
+																 name="workerInstancesCount_{{selectedBatch.index}}"
+																 placeholder="e.g 1"
+
+																 type="number" min="1" [max]="selectedBatch.max_worker_count" step="1"
+																 [(ngModel)]="selectedBatch.upscale_count" required
+																 appMinAmount="1" appMaxAmount="{{selectedBatch.max_worker_count}}"
+																 appInteger>
+                        </div>
+
+                      </div></span>
+					<button
+
+						type="button" style="float: left;margin-bottom: 5px;"
+						(click)="removeNewBatchSelectedCluster()"
+
+
+						class="btn btn-danger"
+					>
+						Cancel
+					</button>
+
+
+				</accordion-group>
+
+
+			</accordion>
+		</div>
+
+	</div>
+
+	<div class="modal-footer">
+		<div class="alert col-md-12"
+				 *ngIf="max_scale_up_count_loaded && !created_new_batch ||(created_new_batch && projectDataLoaded && flavors_loaded)"
+				 [ngClass]="{'alert-danger':!scaling_warning_read,'alert-success':scaling_warning_read}">
+			<p> This will only start the number of selected machines with suitable settings.
+				After initiating the startup of the new machines wait until they are active, you can follow
+				the
+				status
+				of the new workers on the cluster
+				<a class="h5 text-primary" style="margin-left: 10px"
+					 target="_blank" rel="noopener noreferrer"
+					 [routerLink]="['/virtualmachines/cluster/' + cluster?.cluster_id]">
+					details </a>page.
+				Once the machine is started, you will be shown the commands for configuring the cluster.
+				Execute these commands to configure the cluster correctly.</p>
+
+			<div class="alert alert-info"
+					 role="alert">Selected for scaling up:<br>
+				<strong *ngIf="selectedBatch?.upscale_count > 0"> Starting {{selectedBatch?.upscale_count}}
+					machine<span *ngIf="selectedBatch.upscale_count > 1">s</span> in Batch {{selectedBatch?.index}}
+				</strong>
+			</div>
+
+			<div class="form-check">
+				<input class="form-check-input" name="sclae_up_acknowledgement_checkbox" type="checkbox"
+							 [(ngModel)]="scaling_warning_read">
+				<label class="form-check-label">
+					Read and acknowledged
+				</label>
+			</div>
+		</div>
+
+		<button class="btn  btn-success col-md-4" *ngIf="max_scale_up_count_loaded"
+						(click)="scaleUpCluster();"
+						[disabled]=" !scaling_warning_read || selectedBatch?.upscale_count <= 0"
+						id="confirm_scale_up">
+			Start {{scale_up_worker_count}} VMs!
+		</button>
+
+
+		<button class="btn  btn-danger col-md-4" type="reset"
+						(click)="bsModalRef.hide()">Cancel
+		</button>
+	</div>
+
+</ng-container>
+
+<ng-container *ngIf="scale_success">
+    <div class="modal-header">
+        <h4 class="modal-title">Scaling successful {{cluster?.cluster_id}}</h4>
+        <button type="button" class="close" style="cursor: pointer"
+                (click)="bsModalRef.hide()"
+                aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="alert alert-info" role="alert">
+            {{ msg }}
+        </div>
+
+        <div class="alert alert-warning">
+            <div class="alert alert-light" role="alert">
+                <strong>Connect to your master instance:</strong>
+                <div class="row" *ngFor="let mode of cluster?.master_instance?.modes">
+                    <div class="col-md-1">
+                        <span class="font-weight-bold font-xs btn-block text-muted">{{mode.name}}:</span>
+                    </div>
+                    <div class="col-md-9">
+                        <span class="font-weight-bold font-xs btn-block text-muted"
+                              [innerHTML]="mode.description"></span>
+                    </div>
+
+                    <div class="col-md-2" style="margin: auto" *ngIf="mode.copy_field && mode.copy_field !== ''">
+                        <button class="btn btn-outline-secondary " style="float:right"
+                             (click)="copyToClipboard(mode.copy_field)">Copy command
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+            <div class="alert alert-light"
+                 role="alert" style="margin-top: 20px">
+                <strong>wget -O {{SCALING_SCRIPT_NAME}} {{SCALING_SCRIPT_LINK}}</strong>
+                <button class="btn btn-outline-primary" style="float:right;"
+                        (click)="copyToClipboard('wget -O ' + SCALING_SCRIPT_NAME + ' ' + SCALING_SCRIPT_LINK)">Copy Command
+                </button>
+            </div>
+            <div class="alert alert-light" style="margin-top: 20px"
+                 role="alert"><strong>python3 {{SCALING_SCRIPT_NAME}} </strong>
+
+                <button class="btn btn-outline-primary" style="float:right;"
+                        (click)="copyToClipboard('python3 ' + SCALING_SCRIPT_NAME)">Copy Command
+                </button>
+                <div class="alert alert-warning" role="alert" style="margin-top: 20px">
+                    If you run this script, all own changes to the cluster configuration will be overwritten!
+                </div>
+                <div class="alert alert-info" role="alert" style="margin-top: 20px">
+                    The following password is requested by the script:
+                    <div class="alert alert-light" role="alert"> {{cluster?.password}}
+                        <button class="btn btn-outline-primary" style="float:right;"
+                                (click)="copyToClipboard(cluster?.password)">Copy
+                        </button>
+                    </div>
+                    However, a new password can also be generated in the cluster overview
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal-footer">
+
+        <button class="btn  btn-danger col-md-4" type="reset"
+                (click)="bsModalRef.hide()">Close
+        </button>
+    </div>
+
+
+</ng-container>
+
+

@@ -1,4 +1,4 @@
-<div *ngIf="isLoaded==false" class="loader"></div>
+<div *ngIf="isLoaded === false" class="loader"></div>
 
 <div *ngIf="isLoaded" class="animated fadeIn" ng-app style="width: 100%">
 
@@ -9,7 +9,7 @@
       <div class="card-header">
 
           <i class="fa fa-align-justify"></i> Resources
-          <div class="row">
+
 
             <button style="margin: 5px"
                     class="btn"
@@ -30,24 +30,21 @@
             </button>
 
             <button style="margin: 5px;" class="btn btn-outline-primary" (click)="setAllTabsFalse();MACHINE_DEFINITION_TAB_ACTIVE=true;factorModal.show()">Modify
-              Limits
+              Resources
             </button>
             <div style="margin:5px;"><select [(ngModel)]="selectedFacility"
-                         (ngModelChange)="isLoaded=false;onChangeSelectedFacility($event);"
-                         class="form-control" name="selectedFacility">
+                                             (ngModelChange)="isLoaded=false;onChangeSelectedFacility($event);"
+                                             class="form-control form-select" name="selectedFacility">
               <option *ngFor="  let facility of managerFacilities" [ngValue]="facility">
                 {{facility['Facility']}}
               </option>
 
             </select></div>
-          </div>
-
-
 
 
       </div>
 
-        <div class="card-body" style="width: 100%" id="contentToConvert">
+        <div class="card-body" style="width: 100%" id="contentToConvert" #contentToConvert>
 
 
           <div class="table-responsive">
@@ -145,7 +142,7 @@
               <td *ngFor="let r of visible_resources">{{r.totalObjectStorage}}</td>
 
             </tr>
-            <tr>
+             <tr>
               <th>GPU</th>
               <td *ngFor="let r of visible_resources">{{r.totalGPU}}</td>
 
@@ -156,7 +153,7 @@
         </div>
       </div>
       <div>
-        <button (click)="tableToPDF()">Download PDF</button>
+        <!-- <button (click)="tableToPDF()">Download PDF</button> -->
         <button (click)="tableToCSV()">Download CSV</button>
       </div>            <!-- DivTable.com -->
     </div>
@@ -187,11 +184,10 @@
             <li class="nav-item"><a class="nav-link" id="storage_tab"
                                     [ngClass]="{'active': STORAGE_TAB_ACTIVE}"
                                     (click)="setTab(STORAGE_TAB)">Storage <b>[{{generalStorageFactors.length + objectStorageFactors.length + volumeStorageFactors.length}}]</b></a></li>
-
-
+            <li class="nav-item"><a class="nav-link" id="gpu_tab"
+                                    [ngClass]="{'active': GPU_TAB_ACTIVE}"
+                                    (click)="setTab(GPU_TAB)">Graphic Processing Units<b>[{{gpuSpecifications.length}}]</b></a></li>
           </ul>
-
-
         </div>
 
         <div class="tab-content">
@@ -201,7 +197,7 @@
               [facility_id]="selectedFacility['FacilityId']"></app-resourcemachine-overview>
           </div>
           <div *ngIf="STORAGE_TAB_ACTIVE && selectedFacility">
-            <div class="alert alert-info">
+            <div class="alert alert-primary">
               You can <b>either</b> define general storage <b>or</b> specify object and volume storage separately.<br>
               If one of the two is defined, the other is disabled as long as the other is defined.
             </div>
@@ -211,7 +207,6 @@
 
                                         [ngClass]="{'active': GENERAL_STORAGE_TAB_ACTIVE,'disabled': objectStorageFactors.length > 0 || volumeStorageFactors.length > 0}"
                                         (click)="setTab(GENERAL_STORAGE_TAB)">General Storage <b>[{{generalStorageFactors.length}}]</b></a></li>
-
                 <li class="nav-item"><a class="nav-link" id="object_storage_tab"
                                         [ngClass]="{'active': OBJECT_STORAGE_TAB_ACTIVE,'disabled': generalStorageFactors.length > 0 }"
                                         (click)="setTab(OBJECT_STORAGE_TAB)">Object Storage <b>[{{objectStorageFactors.length}}]</b></a></li>
@@ -242,10 +237,11 @@
 
 
             </div>
-
-
           </div>
-
+          <div *ngIf="GPU_TAB_ACTIVE && selectedFacility">
+            <app-gpu-specification-overview [facility_id]="selectedFacility['FacilityId']"></app-gpu-specification-overview>
+          </div>
+        </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary"
                   (click)="factorModal.hide()">

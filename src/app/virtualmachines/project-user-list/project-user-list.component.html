@@ -1,4 +1,4 @@
-<div class="alert alert-info">
+<div class="alert alert-primary">
   If you want to give other members of your project access to the new machine, add the user here. Their public key will
   then also be added to the new machine.
   <p><strong>The members must already have set their public key for this function!</strong></p>
@@ -32,7 +32,7 @@
 
           </td>
           <td>
-            <button *ngIf="members_to_add.indexOf(member) ==-1"
+            <button *ngIf="members_to_add.indexOf(member) === -1"
 
                     type="button"
                     [disabled]="!member.publicKeySet"
@@ -42,7 +42,7 @@
             >
               Add User
             </button>
-            <button *ngIf="members_to_add.indexOf(member) !=-1"
+            <button *ngIf="members_to_add.indexOf(member) !== -1"
 
                     type="button"
                     [disabled]="!member.publicKeySet"

@@ -72,16 +72,16 @@
                       class="dot-colorless bg-danger" style="width: 10px; height: 10px">
                 </span>
                 <strong> {{VolumeStates.staticNOT_FOUND| lowercase}}</strong><br>
-                <p class="alert alert-danger" role="alert"> Please contact <a href="mailto:cloud@denbi.de">cloud@denbi.de</a>.</p>
+                <p class="alert alert-danger" role="alert"> Please contact <a href="mailto:{{CLOUD_PORTAL_SUPPORT_MAIL}}">{{CLOUD_PORTAL_SUPPORT_MAIL}}</a>.</p>
 
               </ng-container>
             <ng-container *ngSwitchCase="VolumeStates.staticERROR">
                 <span [id]="'not_found_badge_' + volume?.volume_name"
                       class="dot-colorless bg-danger" style="width: 10px; height: 10px">
                 </span>
-              <strong> {{VolumeStates.staticERROR}| lowercase}</strong><br>
+              <strong> {{VolumeStates.staticERROR| lowercase}}</strong><br>
               <p class="alert alert-danger" role="alert"> Please contact <a
-                href="mailto:cloud@denbi.de">cloud@denbi.de</a>.</p>
+                href="mailto:{{CLOUD_PORTAL_SUPPORT_MAIL}}">{{CLOUD_PORTAL_SUPPORT_MAIL}}</a>.</p>
 
             </ng-container>
             <i *ngIf="VolumeStates.staticNOT_IN_PROCESS_STATE.indexOf(volume?.volume_status) === -1"

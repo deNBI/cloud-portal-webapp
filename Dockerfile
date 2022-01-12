@@ -1,10 +1,8 @@
 ### STAGE 1: Build ###
 
 # We label our stage as 'builder'
-FROM node:14-alpine3.10 as builder
+FROM node:16-alpine3.15 as builder
 
-ARG ANGULAR_MODE
-ENV ANGULAR_MODE=${ANGULAR_MODE}
 
 COPY package.json  ./
 
@@ -19,10 +17,10 @@ WORKDIR /ng-app
 COPY . .
 
 ## Build the angular app in production mode and store the artifacts in dist folder
-RUN $(npm bin)/ng build --configuration=${ANGULAR_MODE}   --prod --build-optimizer
+RUN $(npm bin)/ng build --configuration=custom   --build-optimizer
 
 ### STAGE 2: Setup ###
-FROM nginx:1.19.6-alpine
+FROM nginx:1.21.5-alpine
 
 ## Copy our default nginx config
 COPY nginx/default.conf /etc/nginx/conf.d/
@@ -34,4 +32,4 @@ RUN mkdir -p /usr/share/nginx/html/portal/webapp
 ## From 'builder' stage copy over the artifacts in dist folder to default nginx public folder
 COPY --from=builder /ng-app/dist /usr/share/nginx/html/portal/webapp
 
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["/bin/sh",  "-c",  "envsubst < /usr/share/nginx/html/portal/webapp/static/webapp/assets/environment/env.template.js> /usr/share/nginx/html/portal/webapp/static/webapp/assets/environment/env.js && exec nginx -g 'daemon off;'"]

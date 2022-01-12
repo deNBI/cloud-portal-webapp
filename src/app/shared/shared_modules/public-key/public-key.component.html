@@ -20,7 +20,8 @@
       id="setPublicKeyButton">Set Key
       </button>
       <button class="btn btn-primary" style="float: right; margin: 2px" type="button" (click)="copyToClipboard(userinfo?.PublicKey)"
-              *ngIf="public_key != '' || (pubKeyModal.isShown && userinfo?.PublicKey != 'None')"
+
+              *ngIf="userinfo?.PublicKey !== 'None'"
               id="copyPublicKeyButton">Copy Key
       </button>
       </div>
@@ -33,18 +34,18 @@
   </div>
 </th>
 <td class="col-9" style="width: 75%">
-  <span *ngIf="userinfo.PublicKey == 'None'"> No public key is set</span>
-  <span *ngIf="userinfo.PublicKey != 'None'"
+  <span *ngIf="userinfo.PublicKey === 'None'"> No public key is set</span>
+  <span *ngIf="userinfo.PublicKey !== 'None'"
         style="word-wrap: break-word; max-width: 80px; white-space: normal">
 
-            <div style="word-break: break-all">{{userinfo?.PublicKey}}</div></span>
+            <div style="word-break: break-all" id="user_public_key">{{userinfo?.PublicKey}}</div></span>
 </td>
 <td></td>
 
 
 <div bsModal #generateKeyModal="bs-modal" class="modal fade" tabindex="-1"
      role="dialog" aria-labelledby="Label"
-     aria-hidden="true">
+     aria-hidden="true" id="generate_key_modal">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -59,7 +60,9 @@
 
 
         <alert type="danger">
-          <span *ngIf="public_key?.length !=0 ">
+
+          <span *ngIf="userinfo?.PublicKey !== 'None'">
+
             <strong>Warning!</strong>
             By replacing the current key, all machines started in the future can only be accessed with the new key.
 Already running or created machines remain accessible with the old (and hereby replaced) key.
@@ -87,15 +90,15 @@ In case you lose your private key, it is lost permanently!</alert>
 
 
         <button [disabled]="!acknowledgement_given"
-                class="btn btn-success col-md4" type="button"
+                class="btn btn-success col-md4" type="button" id="set_new_ssh_key_button"
                 (click)="generateKey();generateKeyModal.hide();">Set
         </button>
         <button class="btn  btn-primary col-md-4" type="reset"
-                (click)="public_key = userinfo.PublicKey ;generateKeyModal.hide();">Cancel
+                (click)="generateKeyModal.hide();">Cancel
         </button>
 
       </div>
-    </div><!-- /.modal-content -->L
+    </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
@@ -114,7 +117,7 @@ In case you lose your private key, it is lost permanently!</alert>
 
       </div>
       <div class="modal-body">
-        <alert type="info" *ngIf="public_key?.length ==0 ">
+        <alert type="info" *ngIf="public_key?.length === 0 ">
           <strong>Info: </strong> Please enter a valid public key!
 
         </alert>
@@ -126,7 +129,10 @@ In case you lose your private key, it is lost permanently!</alert>
         <alert type="danger" *ngIf="!validatePublicKey() && public_key?.length >0">
           <strong>Warning</strong> This is not a valid public key!
         </alert>
-        <textarea rows="8" type="text" class="form-control input-lg"
+				<alert type="info">
+					Currently supported public key formats are RSA and ECDSA (SHA2, NIST P256, P384 or P521).
+				</alert>
+        <textarea rows="8" type="text" class="form-control input-lg" id="public_key_enter_area"
                   placeholder="Please enter a new valid public key." name="public_key" [(ngModel)]="public_key"
                   #publickey></textarea>
 
@@ -151,10 +157,10 @@ In case you lose your private key, it is lost permanently!</alert>
 
 
         <button [disabled]="!validatePublicKey() || !acknowledgement_given"
-                class="btn btn-success col-md4" type="button"
+                class="btn btn-success col-md4" type="button" id="set_new_public_key_button"
                 (click)="importKey(publickey.value);pubKeyModal.hide();">Set
         </button>
-        <button class="btn  btn-primary col-md-4" type="reset" (click)="public_key = userinfo.PublicKey ;pubKeyModal.hide();">Cancel
+        <button class="btn  btn-primary col-md-4" type="reset" (click)="pubKeyModal.hide()">Cancel
         </button>
 
       </div>

@@ -1,27 +1,28 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import {ValidationApplicationComponent} from './validation-application.component';
+import { ValidationApplicationComponent } from './validation-application.component';
 
-// tslint:disable
+/* eslint-disable */
 
 describe('ValidationApplicationComponent', () => {
-  let component: ValidationApplicationComponent;
-  let fixture: ComponentFixture<ValidationApplicationComponent>;
+	let component: ValidationApplicationComponent;
+	let fixture: ComponentFixture<ValidationApplicationComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-                                     declarations: [ValidationApplicationComponent]
-                                   })
-      .compileComponents();
-  }));
+	beforeEach(waitForAsync(() => {
+		void TestBed.configureTestingModule({
+			declarations: [ValidationApplicationComponent],
+		})
+			.compileComponents();
+	}));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(ValidationApplicationComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+	beforeEach(() => {
+		fixture = TestBed.createComponent(ValidationApplicationComponent);
+		component = fixture.componentInstance;
+		fixture.detectChanges();
+	});
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+	it('should create', () => {
+		expect(component).toBeTruthy();
+	});
 });
+/* eslint-enable */

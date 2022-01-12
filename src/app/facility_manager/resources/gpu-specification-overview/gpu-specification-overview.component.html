@@ -1,0 +1,114 @@
+<div class="card border-success" id="new_GPU_card" style="margin:5px;">
+  <div class="card-body">
+    <h5 class="card-title">New GPU</h5>
+    <div class="row" [formGroup]="newGPUFormGroup">
+      <div class="col-2">
+        <div class="text-muted"><small>Actions</small></div>
+        <div class="btn-group-vertical" role="group">
+          <button style="cursor: pointer;"
+                  (click)="addGPUSpecification();"
+                  [disabled]="!newGPUSpecification.type || !newGPUSpecification.cores || newGPUSpecification.type === 'UNUSED'"
+                  class="btn btn-success">Save
+          </button>
+        </div>
+      </div>
+      <div class="col-4" style="margin:5px;">
+        <div class="text-muted"><small>Type</small></div>
+        <div class="form-group row">
+          <label for="new_GPU_type">Name</label>
+          <div class="input-group mb-3">
+            <input class="form-control" type="text" id="new_GPU_type" formControlName="new_gpu_type"
+                   [ngClass]="{'is-invalid': newGPUFormGroup.controls['new_gpu_type'].invalid && newGPUFormGroup.controls['new_gpu_type'].dirty,
+                   'is-valid': newGPUFormGroup.controls['new_gpu_type'].valid}">
+          </div>
+        </div>
+      </div>
+      <div class="col-2" style="margin:5px;">
+        <div class="text-muted"><small>Cores</small></div>
+        <div class="form-group row">
+          <label for="new_GPU_ram">Amount</label>
+          <div class="input-group mb-3">
+            <input class="form-control" type="number" id="new_GPU_cores" formControlName="new_gpu_cores"
+                   [ngClass]="{'is-invalid': newGPUFormGroup.controls['new_gpu_cores'].invalid && newGPUFormGroup.controls['new_gpu_cores'].dirty,
+                   'is-valid': newGPUFormGroup.controls['new_gpu_cores'].valid}" min="0" step="1">
+            <div class="input-group-append">
+              <span class="input-group-text">cores</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-2" style="margin:5px;">
+        <div class="text-muted"><small>RAM</small></div>
+        <div class="form-group row">
+          <label for="new_GPU_ram">Amount</label>
+          <div class="input-group mb-3">
+            <input class="form-control" type="number" id="new_GPU_ram" formControlName="new_gpu_ram"
+                   [ngClass]="{'is-invalid': newGPUFormGroup.controls['new_gpu_ram'].invalid && newGPUFormGroup.controls['new_gpu_ram'].dirty,
+                   'is-valid': newGPUFormGroup.controls['new_gpu_ram'].valid}" min="0" step="1">
+            <div class="input-group-append">
+              <span class="input-group-text">GB</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card" id="{{gpu?.id + '_card'}}" *ngFor="let gpu of gpuSpecifications"
+     style="margin:5px;" [ngClass]="this.gpuSpecificationUpdateList[gpu.id] ? 'border-warning' : 'border-primary'">
+  <div class="card-body">
+    <h5 class="card-title">{{gpu?.type}}</h5>
+    <div class="row" [formGroup]="gpuFormGroups[gpu.id]">
+      <div class="col-2" style="margin:5px;">
+        <div class="text-muted"><small>Actions</small></div>
+        <div class="btn-group-vertical" role="group">
+          <button (click)="deleteGPUSpecification(gpu.id)" class="btn btn-danger"
+                  *ngIf="!this.gpuSpecificationUpdateList[gpu.id]">Remove
+          </button>
+          <button class="btn btn-warning" (click)="changeGPUSpecificationToUpdate(gpu)"
+                  *ngIf="!this.gpuSpecificationUpdateList[gpu.id]">Update</button>
+          <button (click)="updateGPUSpecification(gpu);changeGPUSpecificationToUpdate(gpu);"
+                  class="btn btn-success" *ngIf="this.gpuSpecificationUpdateList[gpu.id]">Save
+          </button>
+          <button class="btn btn-info" *ngIf="this.gpuSpecificationUpdateList[gpu.id]"
+                  (click)="reloadGPUSpecification(gpu);changeGPUSpecificationToUpdate(gpu);">Cancel
+          </button>
+        </div>
+      </div>
+      <div class="col-4" style="margin:5px;">
+        <div class="text-muted"><small>Type</small></div>
+        <div class="form-group row">
+          <label for="{{gpu?.id + '_type'}}">Name</label>
+          <div class="input-group mb-3">
+            <input class="form-control" type="text" formControlName="{{gpu?.id}}_type" id="{{gpu?.id + '_type'}}">
+          </div>
+        </div>
+      </div>
+      <div class="col-2" style="margin:5px;">
+        <div class="text-muted"><small>Cores</small></div>
+        <div class="form-group row">
+          <label for="{{gpu?.id + '_cores'}}">Amount</label>
+          <div class="input-group mb-3">
+            <input class="form-control" type="number" min="0" step="1" formControlName="{{gpu.id}}_cores" id="{{gpu?.id + '_cores'}}">
+            <div class="input-group-append">
+              <span class="input-group-text">cores</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-2" style="margin:5px;">
+        <div class="text-muted"><small>RAM</small></div>
+        <div class="form-group row">
+          <label for="{{gpu?.id + '_ram'}}">Amount</label>
+          <div class="input-group mb-3">
+            <input class="form-control" type="number" min="0" step="1" formControlName="{{gpu.id}}_ram" id="{{gpu?.id + '_ram'}}">
+            <div class="input-group-append">
+              <span class="input-group-text">GB</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

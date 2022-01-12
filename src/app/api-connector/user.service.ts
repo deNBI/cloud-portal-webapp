@@ -1,159 +1,176 @@
-import {Injectable} from '@angular/core';
-import {ApiSettings} from './api-settings.service';
-import {Observable} from 'rxjs';
-import {HttpClient, HttpParams} from '@angular/common/http';
-import {IResponseTemplate} from './response-template';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { map } from 'rxjs/operators';
+import { ApiSettings } from './api-settings.service';
+import { IResponseTemplate } from './response-template';
+import { Userinfo } from '../userinfo/userinfo.model';
 
 /**
  * Service which provides user methods.
  */
 @Injectable()
 export class UserService {
-  constructor(private http: HttpClient) {
-  }
+	constructor(private http: HttpClient) {
+		this.http = http;
+	}
 
-  getLoginElixirName(): Observable<IResponseTemplate> {
+	getLoginElixirName(): Observable<IResponseTemplate> {
 
-    return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}users/current/logins/`, {
-      withCredentials: true
-    })
-  }
+		return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}users/current/logins/`, {
+			withCredentials: true,
+		});
+	}
 
-  getPreferredMailUser(): Observable<IResponseTemplate> {
+	getPreferredMailUser(): Observable<IResponseTemplate> {
 
-    return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}users/current/preferredEmail/`, {
-      withCredentials: true
-    })
-  }
+		return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}users/current/preferredEmail/`, {
+			withCredentials: true,
+		});
+	}
 
-  requestChangePreferredMailUser(email: string): Observable<any> {
-    const params: HttpParams = new HttpParams().set('newPreferredEmail', email);
+	requestChangePreferredMailUser(email: string): Observable<any> {
+		const params: HttpParams = new HttpParams().set('newPreferredEmail', email);
 
-    return this.http.post(`${ApiSettings.getApiBaseURL()}users/current/preferredEmail/`, params, {
-      withCredentials: true
-    })
-  }
+		return this.http.post(`${ApiSettings.getApiBaseURL()}users/current/preferredEmail/`, params, {
+			withCredentials: true,
+		});
+	}
 
-  logoutUser(): Observable<any> {
+	logoutUser(): Observable<any> {
 
-    return this.http.post(`${ApiSettings.getApiBaseURL()}users/current/logout/`, null, {
-      withCredentials: true
-    })
-  }
+		return this.http.post(`${ApiSettings.getApiBaseURL()}users/current/logout/`, null, {
+			withCredentials: true,
+		});
+	}
 
-  getPendingPreferredMailUser(): Observable<IResponseTemplate> {
+	getPendingPreferredMailUser(): Observable<IResponseTemplate> {
 
-    return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}users/current/pendingPreferredEmails/`, {
-      withCredentials: true
-    })
-  }
+		return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}users/current/pendingPreferredEmails/`, {
+			withCredentials: true,
+		});
+	}
 
-  getMemberDetailsByElixirId(elixir_id: string): Observable<any> {
-    elixir_id = elixir_id.substring(0, elixir_id.indexOf('@'));
+	getMemberDetailsByElixirId(elixir_id_param: string): Observable<any> {
+		const elixir_id: string = elixir_id_param.substring(0, elixir_id_param.indexOf('@'));
 
-    return this.http.get(`${ApiSettings.getApiBaseURL()}users/${elixir_id}/member/`, {
-      withCredentials: true
+		return this.http.get(`${ApiSettings.getApiBaseURL()}users/${elixir_id}/member/`, {
+			withCredentials: true,
 
-    })
+		});
 
-  }
+	}
 
-  getUserInfo(): Observable<any> {
+	getUserInfo(): Observable<Userinfo> {
 
-    return this.http.get<any>(`${ApiSettings.getApiBaseURL()}users/current/userInfo/`, {
-      withCredentials: true
+		return this.http.get<Userinfo>(`${ApiSettings.getApiBaseURL()}users/current/userInfo/`, {
+			withCredentials: true,
+		}).pipe(
+			map(
+				(userinfo: Userinfo): Userinfo => new Userinfo(userinfo),
+			),
+		);
+	}
 
-    })
-  }
+	getLoggedUserElixirId(): Observable<any> {
 
-  getLoggedUser(): Observable<any> {
-    const params: HttpParams = new HttpParams().set('redirect_after_login', 'redirect');
+		return this.http.get<any>(`${ApiSettings.getApiBaseURL()}users/current/elixir_id/`, {
+			withCredentials: true,
 
-    return this.http.get(`${ApiSettings.getApiBaseURL()}users/current/`, {
-      withCredentials: true,
-      params: params
+		});
+	}
 
-    })
-  }
+	getLoggedUser(): Observable<any> {
+		const params: HttpParams = new HttpParams().set('redirect_after_login', 'redirect');
 
-  getOnlyLoggedUserWithRedirect(redirect?: string): Observable<any> {
-    if (redirect && redirect !== '/userinfo' && redirect !== 'redirect') {
-      const params: HttpParams = new HttpParams().set('redirect_after_login', redirect);
+		return this.http.get(`${ApiSettings.getApiBaseURL()}users/current/`, {
+			withCredentials: true,
+			params,
 
-      return this.http.get(`${ApiSettings.getApiBase()}loggedUser/`, {
-        withCredentials: true,
-        params: params
+		});
+	}
 
-      })
-    } else {
-      return this.http.get(`${ApiSettings.getApiBase()}loggedUser/`, {
-        withCredentials: true
+	getOnlyLoggedUserWithRedirect(redirect?: string): Observable<any> {
+		let skip_header: HttpHeaders = new HttpHeaders();
+		skip_header = skip_header.append('skip-x-requested-with', 'true');
 
-      })
-    }
+		if (redirect && redirect !== '/userinfo' && redirect !== 'redirect') {
+			const params: HttpParams = new HttpParams().set('redirect_after_login', redirect);
 
-  }
+			return this.http.get(`${ApiSettings.getApiBase()}loggedUser/`, {
+				withCredentials: true,
+				params,
+				headers: skip_header,
+			});
+		} else {
+			return this.http.get(`${ApiSettings.getApiBase()}loggedUser/`, {
+				withCredentials: true,
+				headers: skip_header,
+			});
+		}
 
-  getMemberByUser(): Observable<any> {
+	}
 
-    return this.http.get(`${ApiSettings.getApiBaseURL()}users/current/member/`, {
-      withCredentials: true
-    })
-  }
+	getMemberByUser(): Observable<any> {
 
-  getMemberByExtSourceNameAndExtLogin(ext_login: string): Observable<any> {
+		return this.http.get(`${ApiSettings.getApiBaseURL()}users/current/member/`, {
+			withCredentials: true,
+		});
+	}
 
-    return this.http.get(`${ApiSettings.getApiBaseURL()}users/current/extLogin/member/`, {
-      withCredentials: true,
-      params: {
-        extLogin: ext_login
-      }
-    })
-  }
+	getMemberByExtSourceNameAndExtLogin(ext_login: string): Observable<any> {
 
-  setNewsletterSubscriptionWhenSubscribed(): Observable<IResponseTemplate> {
-    const params: HttpParams = new HttpParams().set('subscribed', true.toString());
+		return this.http.get(`${ApiSettings.getApiBaseURL()}users/current/extLogin/member/`, {
+			withCredentials: true,
+			params: {
+				extLogin: ext_login,
+			},
+		});
+	}
 
-    return this.http.post<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}newsletter/subscription/`, params, {
-      withCredentials: true
-    })
+	setNewsletterSubscriptionWhenSubscribed(): Observable<IResponseTemplate> {
+		const params: HttpParams = new HttpParams().set('subscribed', true.toString());
 
-  }
+		return this.http.post<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}newsletter/subscription/`, params, {
+			withCredentials: true,
+		});
 
-  setNewsletterSubscriptionWhenNotSubscribed(): Observable<IResponseTemplate> {
-    const params: HttpParams = new HttpParams().set('subscribed', false.toString());
+	}
 
-    return this.http.post<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}newsletter/subscription/`, params, {
-      withCredentials: true
-    })
+	setNewsletterSubscriptionWhenNotSubscribed(): Observable<IResponseTemplate> {
+		const params: HttpParams = new HttpParams().set('subscribed', false.toString());
 
-  }
+		return this.http.post<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}newsletter/subscription/`, params, {
+			withCredentials: true,
+		});
 
-  getNewsletterSubscription(): Observable<IResponseTemplate> {
+	}
 
-    return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}newsletter/subscription/`, {
-      withCredentials: true
-    })
+	getNewsletterSubscription(): Observable<IResponseTemplate> {
 
-  }
+		return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}newsletter/subscription/`, {
+			withCredentials: true,
+		});
 
-  sendHelpMail(subject: string, message: string, reply: string): Observable<IResponseTemplate> {
+	}
 
-    const params: HttpParams = new HttpParams().set('subject', subject).set('message', message).set('reply', reply);
+	sendHelpMail(subject: string, message: string, reply: string): Observable<IResponseTemplate> {
 
-    return this.http.post<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}users/current/helpMail/`, params, {
-      withCredentials: true
-    })
-  }
+		const params: HttpParams = new HttpParams().set('subject', subject).set('message', message).set('reply', reply);
 
-  getFilteredMembersOfdeNBIVo(searchString: string): Observable<any> {
+		return this.http.post<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}users/current/helpMail/`, params, {
+			withCredentials: true,
+		});
+	}
 
-    return this.http.get(`${ApiSettings.getApiBaseURL()}users/filter/`, {
-      withCredentials: true,
-      params: {
-        searchString: searchString
-      }
-    });
-  }
+	getFilteredMembersOfdeNBIVo(searchString: string): Observable<any> {
+
+		return this.http.get(`${ApiSettings.getApiBaseURL()}users/filter/`, {
+			withCredentials: true,
+			params: {
+				searchString,
+			},
+		});
+	}
 
 }

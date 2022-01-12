@@ -11,10 +11,12 @@
 
   </tr>
 
-  <tr *ngFor="let flavor of application?.flavors">
-    <td>Flavor: {{flavor.name}}</td>
-    <td>{{flavor.counter}}</td>
-  </tr>
+  <ng-container *ngFor="let flavor of application?.flavors">
+    <tr *ngIf="flavor.counter > 0">
+      <td>Flavor: {{flavor.name}}</td>
+      <td>{{flavor.counter}}</td>
+    </tr>
+  </ng-container>
 
 
   <tr>
@@ -32,6 +34,13 @@
     <td>Total RAM</td>
     <td>{{
       application?.project_application_total_ram}} GB
+    </td>
+
+  </tr>
+  <tr>
+    <td>Total GPUs</td>
+    <td>{{
+      application?.project_application_total_gpu}}
     </td>
 
   </tr>

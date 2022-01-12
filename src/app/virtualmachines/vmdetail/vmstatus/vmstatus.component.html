@@ -1,134 +1,133 @@
 <span *ngIf="with_text" class="text-muted font-weight-bold" style="margin-left: 15px">Status: </span>
 <ng-container [ngSwitch]="vm?.status">
 
-                  <ng-container *ngSwitchCase="VirtualMachineStates.staticACTIVE">
-                    <div [id]="'active_badge_' + vm?.name"
-                         class="dot-colorless bg-success pulseAnim" style="width: 10px; height: 10px"
-                    title="{{VirtualMachineStates.staticACTIVE}}">
-                    </div>
-                    <!--{{VirtualMachineStates.staticACTIVE}}-->
-                  </ng-container>
-                  <ng-container *ngSwitchCase="VirtualMachineStates.staticSHUTOFF" >
-                    <div [id]="'shutoff_badge_' + vm?.name" class="dot-colorless bg-warning" style="width: 10px; height: 10px">
-                    </div>
-                    {{VirtualMachineStates.staticSHUTOFF}}
-                  </ng-container>
-                  <ng-container *ngSwitchCase="VirtualMachineStates.staticDELETED">
-                    <div [id]="'deleted_badge_' + vm?.name"
-                         class="dot-colorless bg-danger" style="width: 10px; height: 10px">
-                    </div>
-                    {{VirtualMachineStates.staticDELETED}}
-                  </ng-container>
-  <ng-container *ngSwitchCase="VirtualMachineStates.staticBUILD">
-    <div [id]="'build_badge_' + vm?.name"
-         class="dot-colorless pulseAnimProcess">
-    </div>
-    {{VirtualMachineStates.staticBUILD}}
-  </ng-container>
-  <ng-container *ngSwitchCase="VirtualMachineStates.staticSCHEDULING">
-    <div [id]="'scheduling_badge_' + vm?.name"
-         class="dot-colorless pulseAnimProcess">
-    </div>
-    {{VirtualMachineStates.staticSCHEDULING}}
-  </ng-container>
-  <ng-container *ngSwitchCase="VirtualMachineStates.staticSPAWNING">
-    <div [id]="'spawning_badge_' + vm?.name"
-         class="dot-colorless pulseAnimProcess">
-    </div>
-    {{VirtualMachineStates.staticSPAWNING}}
-  </ng-container>
-  <ng-container *ngSwitchCase="VirtualMachineStates.staticPREPARE_PLAYBOOK_BUILD">
-    <div [id]="'ppb_badge_' + vm?.name"
-         class="dot-colorless pulseAnimProcess">
-    </div>
-    {{VirtualMachineStates.staticBUILD}}
-  </ng-container>
-  <ng-container *ngSwitchCase="VirtualMachineStates.staticNOT_FOUND">
-    <div [id]="'not_found_badge_' + vm?.name"
-         class="dot-colorless bg-dark">
-    </div>
-                    {{VirtualMachineStates.staticNOT_FOUND}}
-                      <div class="alert alert-warning" role="alert"> Please contact <a href="mailto:cloud@denbi.de">cloud@denbi.de</a></div>
+	<ng-container *ngSwitchCase="VirtualMachineStates.staticACTIVE">
+		<div [id]="'active_badge_' + vm?.name"
+				 class="dot-colorless bg-success pulseAnim" style="width: 10px; height: 10px"
+				 title="{{VirtualMachineStates.staticACTIVE}}">
+		</div>
+	</ng-container>
+	<ng-container *ngSwitchCase="VirtualMachineStates.staticSHUTOFF" >
+		<div [id]="'shutoff_badge_' + vm?.name" class="dot-colorless bg-warning" style="width: 10px; height: 10px">
+		</div>
+		{{VirtualMachineStates.staticSHUTOFF}}
+	</ng-container>
+	<ng-container *ngSwitchCase="VirtualMachineStates.staticDELETED">
+		<div [id]="'deleted_badge_' + vm?.name"
+				 class="dot-colorless bg-danger" style="width: 10px; height: 10px">
+		</div>
+		{{VirtualMachineStates.staticDELETED}}
+	</ng-container>
+	<ng-container *ngSwitchCase="VirtualMachineStates.staticBUILD">
+		<div [id]="'build_badge_' + vm?.name"
+				 class="dot-colorless pulseAnimProcess">
+		</div>
+		{{VirtualMachineStates.staticBUILD}}
+	</ng-container>
+	<ng-container *ngSwitchCase="VirtualMachineStates.staticSCHEDULING">
+		<div [id]="'scheduling_badge_' + vm?.name"
+				 class="dot-colorless pulseAnimProcess">
+		</div>
+		{{VirtualMachineStates.staticSCHEDULING}}
+	</ng-container>
+	<ng-container *ngSwitchCase="VirtualMachineStates.staticSPAWNING">
+		<div [id]="'spawning_badge_' + vm?.name"
+				 class="dot-colorless pulseAnimProcess">
+		</div>
+		{{VirtualMachineStates.staticSPAWNING}}
+	</ng-container>
+	<ng-container *ngSwitchCase="VirtualMachineStates.staticPREPARE_PLAYBOOK_BUILD">
+		<div [id]="'ppb_badge_' + vm?.name"
+				 class="dot-colorless pulseAnimProcess">
+		</div>
+		{{VirtualMachineStates.staticBUILD}}
+	</ng-container>
+	<ng-container *ngSwitchCase="VirtualMachineStates.staticNOT_FOUND">
+		<div [id]="'not_found_badge_' + vm?.name"
+				 class="dot-colorless bg-dark">
+		</div>
+		{{VirtualMachineStates.staticNOT_FOUND}}
+		<div class="alert alert-warning" role="alert"> Please contact <a href="mailto:{{CLOUD_PORTAL_SUPPORT_MAIL}}">{{CLOUD_PORTAL_SUPPORT_MAIL}}</a></div>
 
 
-                  </ng-container>
-                  <ng-container *ngSwitchCase="VirtualMachineStates.staticERROR">
-                    <div [id]="'error_badge_' + vm?.name"
-                         class="dot-colorless bg-danger">
-                    </div>
-                    {{VirtualMachineStates.staticERROR}}
-                  </ng-container>
-  <ng-container *ngSwitchCase="VirtualMachineStates.staticBUILD_PLAYBOOK">
-    <div [id]="'build_playbook_badge_' + vm?.name"
-         class="dot-colorless pulseAnimProcess">
-    </div>
-    {{VirtualMachineStates.staticBUILD_PLAYBOOK}}
-  </ng-container>
-  <ng-container *ngSwitchCase="VirtualMachineStates.staticDELETING">
-    <div [id]="'deleting_badge_' + vm?.name"
-         class="dot-colorless pulseAnimProcess">
-    </div>
-    {{VirtualMachineStates.staticDELETING}}
-  </ng-container>
-  <ng-container *ngSwitchCase="VirtualMachineStates.staticDELETING_FAILED">
-    <div [id]="'deleting_badge_' + vm?.name"
-         class="dot-colorless bg-warning">
-    </div>
-    {{VirtualMachineStates.staticDELETING}}
-  </ng-container>
-  <ng-container *ngSwitchCase="VirtualMachineStates.staticIMAGE_PENDING_UPLOAD">
-    <div [id]="'image_pending_upload_badge_' + vm?.name"
-         class="dot-colorless pulseAnimProcess">
-    </div>
-    {{VirtualMachineStates.staticIMAGE_PENDING_UPLOAD}}
-  </ng-container>
-  <ng-container *ngSwitchCase="VirtualMachineStates.staticIMAGE_UPLOADING">
-    <div [id]="'image_upload_badge_' + vm?.name"
-         class="dot-colorless pulseAnimProcess">
-    </div>
-    {{VirtualMachineStates.staticIMAGE_UPLOADING}}
-  </ng-container>
+	</ng-container>
+	<ng-container *ngSwitchCase="VirtualMachineStates.staticERROR">
+		<div [id]="'error_badge_' + vm?.name"
+				 class="dot-colorless bg-danger">
+		</div>
+		{{VirtualMachineStates.staticERROR}}
+	</ng-container>
+	<ng-container *ngSwitchCase="VirtualMachineStates.staticBUILD_PLAYBOOK">
+		<div [id]="'build_playbook_badge_' + vm?.name"
+				 class="dot-colorless pulseAnimProcess">
+		</div>
+		{{VirtualMachineStates.staticBUILD_PLAYBOOK}}
+	</ng-container>
+	<ng-container *ngSwitchCase="VirtualMachineStates.staticDELETING">
+		<div [id]="'deleting_badge_' + vm?.name"
+				 class="dot-colorless pulseAnimProcess">
+		</div>
+		{{VirtualMachineStates.staticDELETING}}
+	</ng-container>
+	<ng-container *ngSwitchCase="VirtualMachineStates.staticDELETING_FAILED">
+		<div [id]="'deleting_badge_' + vm?.name"
+				 class="dot-colorless bg-warning">
+		</div>
+		{{VirtualMachineStates.staticDELETING}}
+	</ng-container>
+	<ng-container *ngSwitchCase="VirtualMachineStates.staticIMAGE_PENDING_UPLOAD">
+		<div [id]="'image_pending_upload_badge_' + vm?.name"
+				 class="dot-colorless pulseAnimProcess">
+		</div>
+		{{VirtualMachineStates.staticIMAGE_PENDING_UPLOAD}}
+	</ng-container>
+	<ng-container *ngSwitchCase="VirtualMachineStates.staticIMAGE_UPLOADING">
+		<div [id]="'image_upload_badge_' + vm?.name"
+				 class="dot-colorless pulseAnimProcess">
+		</div>
+		{{VirtualMachineStates.staticIMAGE_UPLOADING}}
+	</ng-container>
 
-  <ng-container *ngSwitchCase="VirtualMachineStates.staticREBOOTING">
-    <div [id]="'rebooting_badge_' + vm?.name"
-         class="dot-colorless pulseAnimProcess">
-    </div>
-    {{VirtualMachineStates.staticREBOOTING}}
-  </ng-container>
-  <ng-container *ngSwitchCase="VirtualMachineStates.staticREBOOTING_HARD">
-    <div [id]="'rebooting_hard_badge_' + vm?.name"
-         class="dot-colorless pulseAnimProcess">
-    </div>
-    {{VirtualMachineStates.staticREBOOTING_HARD}}
-  </ng-container>
-  <ng-container *ngSwitchCase="VirtualMachineStates.staticPOWERING_OFF">
-    <div [id]="'powering_off_badge_' + vm?.name"
-         class="dot-colorless pulseAnimProcess">
-    </div>
-    {{VirtualMachineStates.staticPOWERING_OFF}}
-  </ng-container>
-  <ng-container *ngSwitchCase="VirtualMachineStates.staticPOWERING_ON">
-    <div [id]="'powering_on_badge_' + vm?.name"
-         class="dot-colorless pulseAnimProcess">
-    </div>
-    {{VirtualMachineStates.staticPOWERING_ON}}
-  </ng-container>
-  <ng-container *ngSwitchCase="VirtualMachineStates.staticPORT_CLOSED">
-    <div [id]="'powering_off_badge_' + vm?.name"
-         class="dot-colorless bg-info pulseAnimProcess">
-    </div>
-    {{VirtualMachineStates.staticCHECKING_CONNECTION}}
-  </ng-container>
-  <ng-container *ngSwitchCase="VirtualMachineStates.staticCLIENT_OFFLINE">
-    <div [id]="'client_offline_badge_' + vm?.name"
-         class="dot-colorless bg-danger" style="width: 10px; height: 10px">
-    </div>
-    {{VirtualMachineStates.staticCLIENT_OFFLINE}}
-  </ng-container>
-  <ng-container *ngSwitchDefault>
-    <div [id]="'default_badge_' + vm?.name"
-         class="dot-colorless pulseAnimProcess" style="width: 10px; height: 10px">
-    </div>
-    {{VirtualMachineStates.staticGETTING_STATUS}}
-  </ng-container>
+	<ng-container *ngSwitchCase="VirtualMachineStates.staticREBOOTING">
+		<div [id]="'rebooting_badge_' + vm?.name"
+				 class="dot-colorless pulseAnimProcess">
+		</div>
+		{{VirtualMachineStates.staticREBOOTING}}
+	</ng-container>
+	<ng-container *ngSwitchCase="VirtualMachineStates.staticREBOOTING_HARD">
+		<div [id]="'rebooting_hard_badge_' + vm?.name"
+				 class="dot-colorless pulseAnimProcess">
+		</div>
+		{{VirtualMachineStates.staticREBOOTING_HARD}}
+	</ng-container>
+	<ng-container *ngSwitchCase="VirtualMachineStates.staticPOWERING_OFF">
+		<div [id]="'powering_off_badge_' + vm?.name"
+				 class="dot-colorless pulseAnimProcess">
+		</div>
+		{{VirtualMachineStates.staticPOWERING_OFF}}
+	</ng-container>
+	<ng-container *ngSwitchCase="VirtualMachineStates.staticPOWERING_ON">
+		<div [id]="'powering_on_badge_' + vm?.name"
+				 class="dot-colorless pulseAnimProcess">
+		</div>
+		{{VirtualMachineStates.staticPOWERING_ON}}
+	</ng-container>
+	<ng-container *ngSwitchCase="VirtualMachineStates.staticPORT_CLOSED">
+		<div [id]="'powering_off_badge_' + vm?.name"
+				 class="dot-colorless bg-info pulseAnimProcess">
+		</div>
+		{{VirtualMachineStates.staticCHECKING_CONNECTION}}
+	</ng-container>
+	<ng-container *ngSwitchCase="VirtualMachineStates.staticCLIENT_OFFLINE">
+		<div [id]="'client_offline_badge_' + vm?.name"
+				 class="dot-colorless bg-danger" style="width: 10px; height: 10px">
+		</div>
+		{{VirtualMachineStates.staticCLIENT_OFFLINE}}
+	</ng-container>
+	<ng-container *ngSwitchDefault>
+		<div [id]="'default_badge_' + vm?.name"
+				 class="dot-colorless pulseAnimProcess" style="width: 10px; height: 10px">
+		</div>
+		{{VirtualMachineStates.staticGETTING_STATUS}}
+	</ng-container>
 </ng-container>

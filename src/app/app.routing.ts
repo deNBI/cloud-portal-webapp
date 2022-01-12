@@ -1,4 +1,4 @@
-/* tslint:disable */
+/* eslint-disable */
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 // Layouts
@@ -7,6 +7,7 @@ import {FullLayoutComponent} from './layouts/full-layout.component';
 import {MemberGuardService} from './member-guard.service';
 import {RegistrationInfoComponent} from './registration-info.component';
 import {LoggedInGuard} from './logged-in-guard.service';
+import {CreditsCalculatorComponent} from "./credits-calculator/credits-calculator.component";
 
 export const routes: Routes = [
   {
@@ -36,12 +37,14 @@ export const routes: Routes = [
         path: 'userinfo',
         canActivate: [LoggedInGuard],
 
+        // eslint-disable-next-line @typescript-eslint/promise-function-async
         loadChildren: () => import('./userinfo/userinfo.module').then(m => m.UserinfoModule)
       },
       {
         path: 'help',
         canActivate: [LoggedInGuard],
 
+        // eslint-disable-next-line @typescript-eslint/promise-function-async
         loadChildren: () => import('./help/help.module').then(m => m.HelpModule)
 
       },
@@ -78,7 +81,14 @@ export const routes: Routes = [
         canActivate: [LoggedInGuard],
 
         loadChildren: () => import('./facility_manager/facilitymanager.module').then(m => m.FacilitymanagerModule)
-      }
+      },
+			{
+				path: 'credits-calculator',
+				canActivate: [LoggedInGuard],
+				component: CreditsCalculatorComponent,
+
+				loadChildren: () => import('./credits-calculator/credits-calculator.module').then(m => m.CreditsCalculatorModule)
+			}
 
     ]
   }
@@ -94,3 +104,5 @@ export const routes: Routes = [
 })
 export class AppRoutingModule {
 }
+
+/* eslint-enable */

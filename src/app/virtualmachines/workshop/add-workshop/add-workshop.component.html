@@ -1,0 +1,397 @@
+<div *ngIf="is_loaded && userinfo?.PublicKey === 'None'">
+	<div class="card">
+		<div class="card-header">
+			<i class="fa fa-align-justify"></i> Public Key
+		</div>
+		<div class="card-body">
+			<div style="padding:5px" class="alert alert-info"><strong>Info: </strong>
+				You need to set a valid SSH Key before you can start machines for your workshop. Please set a
+				valid key below or on your <a href="#/userinfo">personal data page</a>.
+			</div>
+			<div style="width: 100%" class="table-responsive">
+				<table class="table table-striped">
+					<tr app-public-key [userinfo]="userinfo"></tr>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div *ngIf=" !is_loaded" class="loader"></div>
+<div *ngIf=" is_loaded && userinfo?.PublicKey !== 'None' && projects.length === 0">
+	<div class="alert alert-warning" role="alert">
+		You are not an admin of any Simple VM project with workshop enabled.
+	</div>
+</div>
+<div
+	*ngIf=" is_loaded && userinfo?.PublicKey !== 'None' && projects.length > 0"
+	id="projectsExisting"
+	class="animated fadeIn">
+
+	<div class="row">
+		<div class="col-md-12">
+			<div class="card">
+				<div class="card-header">
+					<strong>Add workshop VMs</strong>
+				</div>
+				<div class="card-body">
+					<alert type="info" dismissible="true">
+						To learn more about workshops, please see our <a [href]="WIKI_WORKSHOPS" target="_blank" rel="noopener noreferrer">WIKI</a>.
+					</alert>
+					<form id="application_form" #f="ngForm"
+								class="form-horizontal">
+						<div class="row justify-content-center" style="margin-bottom: 25px">
+							<div class="col-8">
+								<label for="projectSelect"><strong>Please select a project</strong></label>
+								<select required class="form-control form-select" name="selected_project"
+												[(ngModel)]="selected_project" id="projectSelect"
+												(ngModelChange)="reset_on_project_change(); get_workshops_for_application(); get_selected_project_client();">
+									<option value="undefined" disabled selected hidden> Please
+										Select
+									</option>
+									<option *ngFor="let project of projects" [ngValue]="project"
+													id="project_option_{{project[0]}}">
+										{{project[0]}}
+									</option>
+								</select>
+							</div>
+						</div>
+						<div class="row justify-content-center">
+							<span *ngIf="client_available && !project_data_loaded" class="spinner-border text-info"></span>
+						</div>
+						<div class="row justify-content-center" *ngIf="!client_available && client_checked">
+							<div class="alert alert-warning">
+								The client is currently unavailable.
+							</div>
+						</div>
+						<div class="row" *ngIf="project_data_loaded && client_available" style="margin-top: 10px" style="padding-right: 3rem; padding-left: 3rem; margin-bottom: 25px">
+							<div *ngIf="!workshops || workshops.length === 0" class="alert alert-warning" role="alert">
+								No workshops found. Please create a new workshop on the workshop management page.
+							</div>
+							<div class="col-3" *ngFor="let workshop of workshops">
+								<div class="card" (click)="reset_on_workshop_change(); set_selected_workshop(workshop);"
+										 id="workshop_option_{{workshop.shortname}}"
+										 style="cursor: pointer; width: 16rem; height: auto;">
+									<div class="card-header text-truncate"
+											 [ngClass]="{'bg-success': (workshop.shortname === selected_workshop?.shortname)}"
+											 data-toggle="tooltip" data-placement="top">
+										{{workshop.shortname}} - {{workshop.longname}}
+									</div>
+									<div class="card-body">
+										VMs: {{workshop.vm_list.length}}
+									</div>
+								</div>
+							</div>
+						</div>
+						<div *ngIf="project_data_loaded && client_available && workshop_data_loaded">
+							<app-resource-overview [ressourceUsage]="selected_project_ressources">
+							</app-resource-overview>
+							<div class="alert alert-primary" role="alert"
+									 *ngIf="selected_workshop
+									 				&& (selected_project_ressources?.used_vms) >= selected_project_ressources?.number_vms
+									 				&& client_available
+									 				&& client_checked">
+								The limit for virtual machines has been reached for this project.
+								Your principal investigator can request more
+								resources if necessary.
+							</div>
+							<div class="alert alert-primary " role="alert"
+									 *ngIf="selected_workshop
+									 				&& selected_project_ressources?.cores_used < selected_project_ressources?.cores_total
+									 				&& !(selected_project_ressources?.ram_used < selected_project_ressources?.ram_total)
+									 				&& flavors_loaded
+									 				&& flavors.length === 0
+									 				&& !selected_flavor">
+								There is not enough ram available for this project to start a new machine.
+								Your principal investigator can request more
+								resources if necessary.
+							</div>
+							<div class="alert alert-primary " role="alert"
+									 *ngIf="selected_workshop
+									 				&& !(selected_project_ressources?.cores_used < selected_project_ressources?.cores_total)
+									 				&& (selected_project_ressources?.ram_used < selected_project_ressources?.ram_total)
+									 				&& flavors_loaded
+									 				&& flavors.length === 0
+									 				&& !selected_flavor">
+								There are too few cores available for this project to start a new machine.
+								Your principal investigator can request more
+								resources if necessary.
+							</div>
+							<div class="alert alert-primary" role="alert"
+									 *ngIf="selected_workshop
+									 				&& selected_project_ressources?.cores_used < selected_project_ressources?.cores_total
+									 				&& selected_project_ressources?.ram_used < selected_project_ressources?.ram_total
+									 				&& flavors_loaded
+									 				&& flavors.length === 0
+									 				&& !selected_flavor">
+								There are too few cores and not enough ram available for this project to start a new machine.
+								Your principal investigator can request more
+								resources if necessary.
+							</div>
+							<div *ngIf="selected_project_ressources?.used_vms < selected_project_ressources?.number_vms
+													&& (flavors?.length > 0 || selected_flavor)">
+								<div *ngIf="selected_workshop" class="form-group row col-md-12" style="padding-right: 3rem; padding-left: 3rem">
+									<div class="col">
+
+										<app-flavor-detail [selectedFlavor]="selected_flavor" id="id_flavor_detail"
+																			 [flavors]="flavors"
+																			 [creditsAllowed]="credits_allowed"
+																			 (selectedFlavorChange)="set_selected_flavor($event)">
+										</app-flavor-detail>
+									</div>
+								</div>
+								<div class="row col-md-12" *ngIf="selected_flavor?.ephemeral_disk > 0">
+									<div class="col-md-2"></div>
+									<div class="col-md-10 alert alert-info">
+										<strong>Information for ephemeral flavors:</strong>
+										Ephemeral storage is not best suited for persistent data. Read more
+										<a href="{{ WIKI_EPHEMERAL_LINK }}"
+											 target="_blank" rel="noopener noreferrer">here
+										</a>.
+									</div>
+								</div>
+								<div *ngIf="selected_workshop" class="form-group row col-md-12" style="padding-right: 3rem; padding-left: 3rem">
+									<div class="col">
+										<div class="alert alert-info" *ngIf="(images?.length === 0) || !images">
+											There are no images available for selection at the moment.
+											Please contact the support of the facility where your project is running.
+										</div>
+										<app-image-detail *ngIf="images?.length > 0" [selectedImage]="selected_image"
+																			[images]="images" [selectedFlavor]="selectedFlavor"
+																			(selectedImageChange)="set_selected_image($event)"
+																			id="id_image_detail">
+										</app-image-detail>
+									</div>
+								</div>
+								<div *ngIf="selected_workshop">
+									<accordion class="col-12">
+										<accordion-group #res_env_group
+																		 *ngIf="has_forc
+																		 				&& (selected_workshop
+																		 				&& workshop_data_loaded
+																		 				&& selected_project_ressources?.used_vms < selected_project_ressources?.number_vms
+																		 				&& (flavors?.length > 0 || selected_flavor))"
+																		 [isOpen]="true">
+											<div accordion-heading style="width: 100%; cursor: pointer">
+												<strong>Browser-based Research Environments</strong>
+												(e.g. RStudio, Apache Guacamole, Theia IDE)
+												<span class="badge badge-primary">BETA</span>
+												<i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
+                            'icon-arrow-up': res_env_group.isOpen, 'icon-arrow-down': !res_env_group.isOpen}"></i>
+											</div>
+											<app-res-env #res_env
+																	 id="id_resenv"
+																	 [clientid]="selected_project_client.id"
+																	 [forc_url]="forc_url"
+																	 [selectedImageTags]="selected_image?.tags"
+																	 [blockedImageTagsResenv]="blocked_image_tags_resenv"
+																	 [onlyNamespace]="resenv_selected"
+																	 [workshopMode]="true">
+											</app-res-env>
+										</accordion-group>
+										<accordion-group #userAccess
+																		 [isOpen]="true"
+																		 *ngIf="selected_workshop
+																		 				&& workshop_data_loaded
+																		 				&& selected_project_ressources?.used_vms < selected_project_ressources?.number_vms
+																		 				&& (flavors?.length > 0 || selected_flavor)">
+											<div accordion-heading style="width: 100%; cursor: pointer">
+												<strong>Choose project members of <em>{{selected_project[0]}}</em> you want to start a vm for</strong>
+												<i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
+                            'icon-arrow-up': userAccess.isOpen, 'icon-arrow-down': !userAccess.isOpen}"></i>
+											</div>
+											<div class="table-responsive">
+												<table class="table table-hover">
+													<thead>
+													<tr>
+														<th>Full Name</th>
+														<th>Vm started for this user in this workshop</th>
+														<th>Action</th>
+													</tr>
+													</thead>
+													<tbody>
+													<tr *ngFor="let member of project_members">
+														<td>{{ member.userName }}
+															<p *ngIf="member.groupAdmin">(Group admin)</p>
+														</td>
+														<td>
+															<span *ngIf="member.hasVM" class="badge badge-success">
+																<span class="icon icon-check"></span>
+																{{member.vm_amount}} VMs started in this workshop for this user
+															</span>
+															<span *ngIf="!member.hasVM" class="badge badge-danger">
+																<span class="icon icon-close"></span>
+															</span>
+														</td>
+														<td>
+															<button *ngIf="members_to_add.indexOf(member) === -1"
+																			type="button"
+																			id="add_user_{{member.elixirId}}"
+																			class="btn btn-primary"
+																			data-toggle="modal" (click)="add_member(member)">
+																Add User
+															</button>
+															<button *ngIf="members_to_add.indexOf(member) !== -1"
+																			type="button"
+																			class="btn btn-danger"
+																			data-toggle="modal" (click)="remove_member(member)">
+																Remove User
+															</button>
+														</td>
+													</tr>
+													</tbody>
+												</table>
+											</div>
+										</accordion-group>
+									</accordion>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div *ngIf="res_env_okay_needed && workshop_data_loaded" class="row alert" style="margin: 15px"
+						 [ngClass]="{
+                                'alert-danger': !gave_okay,
+                                'alert-success': gave_okay
+                                }">
+					<div class="form-check col">
+						<input class="form-check-input"
+									 name="res_env_okay_needed"
+									 type="checkbox"
+									 id="ansible_need_okay"
+									 [(ngModel)]="gave_okay"
+									 #respCheck
+									 required>
+						<label class="form-check-label" for="ansible_need_okay">
+							I hereby confirm that I read and acknowledge the following:<br>
+							To set up your virtual machine with your chosen options, we generate a new rsa-keypair which we use
+							to log into your virtual machine.<br>
+							<strong>At the end of the installation process we will remove the temporary key from your machine and
+								copy your public key, the public keys of the other admins of the project onto it, regardless of whether
+								the installation of your selections will succeed or fail.</strong><br><br>
+						</label>
+					</div>
+				</div>
+				<div
+					*ngIf=" ( (!gave_okay && res_env_okay_needed)
+            				|| (!res_env_valid && res_env_component)
+            				|| !selected_image
+            				|| (!selected_flavor && flavors.length !== 0)
+            				|| members_to_add.length < 1 )
+          					&& flavors.length > 0
+          					&& project_data_loaded
+          					&& workshop_data_loaded
+          					&& flavors_loaded
+          					&& client_available
+          					&& (selected_project_ressources?.used_vms < selected_project_ressources?.number_vms)"
+					class="alert alert-danger col-md-10" role="alert" style="margin: auto;">
+					<p>The following is missing before starting a VM:</p>
+					<p *ngIf="!selected_flavor">- The flavor type of your VM
+					</p>
+					<p *ngIf="!selected_image">- The image you want to run on your VM
+					</p>
+					<p *ngIf="!gave_okay && res_env_okay_needed">- Give your okay to the automated
+						install process
+					</p>
+					<p *ngIf="res_env_needs_template">- A Research-Environment template
+					</p>
+					<p *ngIf="members_to_add.length < 1">
+						- At least one member
+					</p>
+				</div>
+				<div *ngIf="((selected_project_ressources?.ram_used + (members_to_add?.length * selected_flavor?.ram)) > selected_project_ressources?.ram_total)
+										|| ((selected_project_ressources?.cores_used + (members_to_add?.length * selected_flavor?.vcpus)) > selected_project_ressources?.cores_total)
+										|| ((selected_project_ressources?.used_vms + members_to_add.length) > selected_project_ressources?.number_vms)
+										&& selected_workshop
+										&& workshop_data_loaded"
+						 class="alert alert-danger col-md-10" role="alert" style="margin: auto;">
+					<p>You do not have enough resources to start that amount of VMs. Missing resources:</p>
+					<p *ngIf="((selected_project_ressources?.ram_used + (members_to_add?.length * selected_flavor?.ram)) > selected_project_ressources?.ram_total)">
+						- RAM
+					</p>
+					<p *ngIf="((selected_project_ressources?.cores_used + (members_to_add?.length * selected_flavor?.vcpus)) > selected_project_ressources?.cores_total)">
+						- Cores
+					</p>
+					<p *ngIf="((selected_project_ressources?.used_vms + members_to_add.length) > selected_project_ressources?.number_vms)">
+						- Amount of VMs
+					</p>
+				</div>
+				<div
+					*ngIf="client_available
+								 && project_data_loaded
+								 && workshop_data_loaded
+								 && (selected_project_ressources?.used_vms + members_to_add.length) <= selected_project_ressources?.number_vms
+								 && (flavors?.length > 0  || selected_flavor)"
+					class="alert alert-warning col-md-10" role="alert" style="margin: auto;">
+					<div class="form-check"><input class="form-check-input"
+																				 name="vm_responsibility"
+																				 type="checkbox"
+																				 id="vm_responsibility"
+																				 [(ngModel)]="vm_responsibility"
+																				 required>
+						<label class="form-check-label" for="vm_responsibility">
+							I hereby confirm that I am responsible for the virtual machines and any action performed on it.
+						</label>
+					</div>
+					<div class="form-group row"
+							 *ngIf=" client_available
+						 				 && project_data_loaded
+						 				 && workshop_data_loaded
+						 				 && (selected_project_ressources?.used_vms + members_to_add.length) <= selected_project_ressources?.number_vms
+						 				 && (flavors?.length > 0  || selected_flavor)">
+
+						<button style=" margin-left: auto;margin-top: 25px;
+    margin-right: auto;
+    width: 8em" id="startVMButton"
+
+										type="button"
+
+										[disabled]="!vm_responsibility
+															|| started_machine
+															|| !selected_flavor
+															|| !selected_image
+															|| (!gave_okay && res_env_okay_needed)
+															|| (!res_env_valid && res_env_component)
+															|| members_to_add.length < 1
+															|| ((selected_project_ressources?.ram_used + (members_to_add?.length * selected_flavor?.ram)) > selected_project_ressources?.ram_total)
+															|| ((selected_project_ressources?.cores_used + (members_to_add?.length * selected_flavor?.vcpus)) > selected_project_ressources?.cores_total)
+															|| ((selected_project_ressources?.used_vms + members_to_add.length) > selected_project_ressources?.number_vms)"
+										class="btn btn-primary  .btn-lg offset-md-8"
+										data-toggle="modal"
+										(click)="start_vms();reset_all_data();redirect_modal.show()">
+							Start VM
+						</button>
+					</div>
+					<div class="alert alert-danger"
+							 *ngIf="is_loaded && !client_available && selected_project && client_checked">
+						The corresponding client is currently offline.
+						If you have any questions please contact <a href="mailto:{{CLOUD_PORTAL_SUPPORT_MAIL}}">{{CLOUD_PORTAL_SUPPORT_MAIL}}.</a>
+						Check our <a href="{{STATUS_LINK}}" target="_blank" rel="noopener noreferrer">status overview</a> to see if the site of your project is reachable.
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div bsModal #redirect_modal="bs-modal" class="modal fade " tabindex="-1" role="dialog"
+			 aria-labelledby="myModalLabel" aria-hidden="true"
+			 id="redirect_modal">
+		<div class="modal-dialog modal-info" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Redirecting</h4>
+				</div>
+				<div class="modal-body">
+					<p>Redirecting to Instance Overview...</p>
+					<div class="progress">
+						<div class="progress-bar progress-bar-striped {{progress_bar_animated}} bg-info"
+								 role="progressbar" style="width: 0;"
+								 aria-valuemin="0"
+								 aria-valuemax="100" [style.width.%]="progress_bar_width">
+						</div>
+					</div>
+				</div>
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+

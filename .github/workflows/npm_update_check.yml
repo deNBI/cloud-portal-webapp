@@ -1,0 +1,26 @@
+name: Check Package
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 8 * * 5' # every friday AM 8:0
+jobs:
+  npm:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - run: npm install
+    - uses: MeilCli/npm-update-check-action@v4
+      id: outdated
+
+    - name: Rocket.Chat Notification
+      uses: RocketChat/Rocket.Chat.GitHub.Action.Notification@master
+      if:  steps.outdated.outputs.has_npm_update == 'false'
+      with:
+          type: "failure"
+          job_name: ''
+          mention_if: 'always'
+          mention: ${{ steps.outdated.outputs.npm_update_text }}
+          url: ${{ secrets.ROCKETCHAT_WEBHOOK }}
+          token: ${{secrets.GITHUB_TOKEN}}
+

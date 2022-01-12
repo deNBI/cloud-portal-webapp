@@ -1,6 +1,7 @@
 /**
  * Enum of all possible volume action statuses.
  */
+// eslint-disable-next-line no-shadow
 export enum VolumeActionStates {
     WAITING = 0,
     SUCCESS = 1,

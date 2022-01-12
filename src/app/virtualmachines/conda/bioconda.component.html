@@ -43,13 +43,11 @@
           </div>
           <div class="rTableCell"
                style="width: auto">
-            <a *ngIf="tool.home != 'NA'; else noHomeBlock" href="{{tool.home}}"rel="noopener noreferrer"  target="_blank">{{tool.name}}</a>
+            <a *ngIf="tool.home !== 'NA'; else noHomeBlock" href="{{tool.home}}"rel="noopener noreferrer"  target="_blank">{{tool.name}}</a>
             <ng-template #noHomeBlock >{{tool.name}}</ng-template>
           </div>
           <div class="rTableCell"><select #toolVersion (change)="onChange($event.target.value)"
-
-                                          class="form-control">
-
+                                          class="form-control form-select">
             <option *ngFor=" let item of tool.versions|keyvalue">
               {{item.key}}
             </option>
@@ -58,7 +56,7 @@
 
 
           </div>
-          <div class="rTableCell"><select #toolBuild class="form-control">
+          <div class="rTableCell"><select #toolBuild class="form-control form-select">
             <ng-container *ngFor=" let build of getBuildsByVersion(tool,toolVersion.value)">
               <option >
                 {{build}}

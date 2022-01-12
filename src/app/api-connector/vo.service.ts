@@ -1,138 +1,152 @@
-import {Injectable} from '@angular/core';
-import {ApiSettings} from './api-settings.service';
-import {Observable} from 'rxjs';
-import {HttpClient, HttpParams} from '@angular/common/http';
-import {IResponseTemplate} from './response-template';
-import {Resources} from '../vo_manager/resources/resources';
-import {ProjectMember} from '../projectmanagement/project_member.model';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { ApiSettings } from './api-settings.service';
+import { IResponseTemplate } from './response-template';
+import { Resources } from '../vo_manager/resources/resources';
+import { ProjectMember } from '../projectmanagement/project_member.model';
 
 /**
  * Service which provides vo methods.
  */
 @Injectable()
 export class VoService {
-  constructor(private http: HttpClient) {
-  }
+	constructor(private http: HttpClient) {
+		this.http = http;
+	}
 
-   sendTestError(): Observable<IResponseTemplate> {
+	sendTestError(): Observable<IResponseTemplate> {
 
-    return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}voManagers/test_bug/`, {
-      withCredentials: true
-    })
-  }
+		return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}voManagers/test_bug/`, {
+			withCredentials: true,
+		});
+	}
 
-  isVo(): Observable<IResponseTemplate> {
+	isVo(): Observable<IResponseTemplate> {
 
-    return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}voManagers/current/status/`, {
-      withCredentials: true
-    })
-  }
+		return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}voManagers/current/status/`, {
+			withCredentials: true,
+		});
+	}
 
-  getNewsletterSubscriptionCounter(): Observable<IResponseTemplate> {
+	getNewsletterSubscriptionCounter(): Observable<IResponseTemplate> {
 
-    return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}newsletter/subscription/counter/`, {
-      withCredentials: true
+		return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}newsletter/subscription/counter/`, {
+			withCredentials: true,
 
-    })
-  }
+		});
+	}
 
-  terminateProject(groupId: number | string): Observable<object> {
-    return this.http.delete(`${ApiSettings.getApiBaseURL()}vo/projects/${groupId}/`, {
-      withCredentials: true
-    })
+	terminateProject(groupId: number | string): Observable<object> {
+		return this.http.delete(`${ApiSettings.getApiBaseURL()}vo/projects/${groupId}/`, {
+			withCredentials: true,
+		});
 
-  }
+	}
 
-  removeResourceFromGroup(groupid: number | string): Observable<object> {
-    return this.http.delete(`${ApiSettings.getApiBaseURL()}vo/projects/${groupid}/resource/`, {
-      withCredentials: true
-    })
+	removeResourceFromGroup(groupid: number | string): Observable<object> {
+		return this.http.delete(`${ApiSettings.getApiBaseURL()}vo/projects/${groupid}/resource/`, {
+			withCredentials: true,
+		});
 
-  }
+	}
 
-  resumeProject(groupid: number | string): Observable<object> {
-    return this.http.post(`${ApiSettings.getApiBaseURL()}vo/projects/${groupid}/resource/`, null, {
-      withCredentials: true
-    })
+	resumeProject(groupid: number | string): Observable<object> {
+		return this.http.post(`${ApiSettings.getApiBaseURL()}vo/projects/${groupid}/resource/`, null, {
+			withCredentials: true,
+		});
 
-  }
+	}
 
-  getAllGroupsWithDetails(): Observable<any> {
+	getAllGroupsWithDetails(): Observable<any> {
 
-    return this.http.get(`${ApiSettings.getApiBaseURL()}vo/projects/details/`, {
-      withCredentials: true
-    })
+		return this.http.get(`${ApiSettings.getApiBaseURL()}vo/projects/details/`, {
+			withCredentials: true,
+		});
 
-  }
+	}
 
-  getProjectStatus(groupid: number | string): Observable<IResponseTemplate> {
-    return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}vo/projects/${groupid}/status/`, {
-      withCredentials: true
-    })
-  }
+	getProjectStatus(groupid: number | string): Observable<IResponseTemplate> {
+		return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}vo/projects/${groupid}/status/`, {
+			withCredentials: true,
+		});
+	}
 
-  getVoProjectResources(): Observable<Resources[]> {
-    return this.http.get<Resources[]>(`${ApiSettings.getApiBaseURL()}vo/projects/resources/`, {
-      withCredentials: true
-    })
-  }
+	getVoProjectResources(): Observable<Resources[]> {
+		return this.http.get<Resources[]>(`${ApiSettings.getApiBaseURL()}vo/projects/resources/`, {
+			withCredentials: true,
+		});
+	}
 
-  getVoProjectResourcesTimeframes(): Observable<Resources[]> {
-    return this.http.get<Resources[]>(`${ApiSettings.getApiBaseURL()}vo/projects/resources/timeFrames/`, {
-      withCredentials: true
-    })
-  }
+	getVoProjectResourcesTimeframes(): Observable<Resources[]> {
+		return this.http.get<Resources[]>(`${ApiSettings.getApiBaseURL()}vo/projects/resources/timeFrames/`, {
+			withCredentials: true,
+		});
+	}
 
-  getVoProjectDates(): Observable<Resources[]> {
-    return this.http.get<Resources[]>(`${ApiSettings.getApiBaseURL()}vo/projects/dates/`, {
-      withCredentials: true
-    })
-  }
+	getVoProjectDates(): Observable<Resources[]> {
+		return this.http.get<Resources[]>(`${ApiSettings.getApiBaseURL()}vo/projects/dates/`, {
+			withCredentials: true,
+		});
+	}
 
-  getVoProjectCounter(): Observable<Resources[]> {
-    return this.http.get<Resources[]>(`${ApiSettings.getApiBaseURL()}vo/projects/counter/`, {
-      withCredentials: true
-    })
-  }
+	getVoProjectCounter(): Observable<Resources[]> {
+		return this.http.get<Resources[]>(`${ApiSettings.getApiBaseURL()}vo/projects/counter/`, {
+			withCredentials: true,
+		});
+	}
 
-  setProjectStatus(groupid: number | string, status: number): Observable<any> {
-    const params: HttpParams = new HttpParams().set('status', status.toString());
+	setProjectStatus(groupid: number | string, status: number): Observable<any> {
+		const params: HttpParams = new HttpParams().set('status', status.toString());
 
-    return this.http.post(`${ApiSettings.getApiBaseURL()}vo/projects/${groupid}/status/`, params, {
-      withCredentials: true
-    })
-  }
+		return this.http.post(`${ApiSettings.getApiBaseURL()}vo/projects/${groupid}/status/`, params, {
+			withCredentials: true,
+		});
+	}
 
-  sendNewsletterToVo(subject: string, message: string, type: string, reply?: string): Observable<IResponseTemplate> {
+	sendNewsletterToVo(subject: string, message: string, type: string, reply?: string): Observable<IResponseTemplate> {
 
-    const params: HttpParams = new HttpParams().set('subject', subject).set('message', message).set('reply', reply).set('type', type);
+		const params: HttpParams = new HttpParams().set('subject', subject).set('message', message).set('reply', reply)
+			.set('type', type);
 
-    return this.http.post<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}voManagers/current/newsletter/`, params, {
-      withCredentials: true
-    })
+		return this.http.post<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}voManagers/current/newsletter/`, params, {
+			withCredentials: true,
+		});
 
-  }
+	}
 
-  sendMailToVo(subject: string, message: string, facility: string, type: string, reply?: string): Observable<any> {
-    const params: HttpParams = new HttpParams()
-      .set('subject', subject).set('message', message)
-      .set('reply', reply).set('facility', facility).set('type', type);
+	sendMailToVo(subject: string, message: string, facility: string, type: string, reply?: string): Observable<any> {
+		const params: HttpParams = new HttpParams()
+			.set('subject', subject).set('message', message)
+			.set('reply', reply)
+			.set('facility', facility)
+			.set('type', type);
 
-    return this.http.post<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}voManagers/current/voMail/`, params, {
-      withCredentials: true
-    })
+		return this.http.post<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}voManagers/current/voMail/`, params, {
+			withCredentials: true,
+		});
 
-  }
+	}
 
-  /**
-   * Get members of a project with emails.
-   * @param {number} groupid id of the the group
-   * @returns {Observable<any>}
-   */
-  getVoGroupRichMembers(groupid: number | string): Observable<ProjectMember[]> {
-    return this.http.get<ProjectMember[]>(`${ApiSettings.getApiBaseURL()}vo/projects/${groupid}/members/`, {
-      withCredentials: true
-    })
-  }
+	/**
+	 * Get members of a project with emails.
+	 *
+	 * @param groupid id of the the group
+	 * @returns
+	 */
+	getVoGroupRichMembers(groupid: number | string): Observable<ProjectMember[]> {
+		return this.http.get<ProjectMember[]>(`${ApiSettings.getApiBaseURL()}vo/projects/${groupid}/members/`, {
+			withCredentials: true,
+		});
+	}
+
+	setProtected(groupid: number | string, set: boolean): Observable<any> {
+		const parameters: HttpParams = new HttpParams().set('action', set ? 'set' : 'unset');
+
+		return this.http.get(`${ApiSettings.getApiBaseURL()}vo/projects/${groupid}/protected/`, {
+			withCredentials: true,
+			params: parameters,
+		});
+	}
 
 }

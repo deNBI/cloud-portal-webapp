@@ -1,4 +1,4 @@
-<div *ngIf="isLoaded==false" class="loader"></div>
+<div *ngIf="isLoaded === false" class="loader"></div>
 <div class="">
   <div *ngIf="isLoaded">
     <a style="margin-bottom: 5px"  target="_blank" rel="noopener noreferrer" class="btn btn-secondary" href="{{WIKI_SNAPSHOTS}}"
@@ -24,24 +24,24 @@
     </div>
     <div class="card-body">
     <div class="row justify-content-end">
-        <div class="col" *ngIf="total_pages > 1">
+        <div class="col" *ngIf="snapshot_page.num_pages > 1">
           <pagination
-            [totalItems]="total_items" [itemsPerPage]="items_per_page"
+            [totalItems]="snapshot_page.total_items" [itemsPerPage]="snapshot_page.items_per_page"
             (pageChanged)="pageChanged($event)" [(ngModel)]="currentPage"
             [boundaryLinks]="true" [maxSize]="5" [rotate]="false" #pagination>
           </pagination>
         </div>
         <div class="col">
-          <input type="text" placeholder="name,project,openstackid"
+          <input type="text" placeholder="name,project,openstackid" class="form-control"
                  name="filter" (ngModelChange)='changedFilter($event)'
                  [ngModel]="filter" (keydown.enter)="$event.preventDefault();">
         </div>
       <div class="input-group col-3">
-        <input id="vm_per_site" class="form-control"
-               name="vm_per_site" placeholder="e.g 3"
+        <input id="items_per_page" class="form-control"
+               name="items_per_page" placeholder="e.g 3"
                type="number" min="1" max="10" step="1"
                appMinAmount="1" appMaxAmount="10" appInteger
-               pattern="^([1-9]|1[012])$" [(ngModel)]="items_per_page"
+               pattern="^([1-9]|1[012])$" [(ngModel)]="snapshot_page.items_per_page"
                (ngModelChange)="snapshotsPerPageChange.next($event)">
         <div class="input-group-append mb-3 "><span class="input-group-text"> Snapshots per page
                                     </span></div>
@@ -56,7 +56,7 @@
           </button>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu" role="menu"
                *dropdownMenu id="dropdownMenu">
-            <button [disabled]="checked_snapshots?.length == 0" class="dropdown-item btn btn-secondary"
+            <button [disabled]="checked_snapshots?.length === 0" class="dropdown-item btn btn-secondary"
                     id="deleteAllSelectedVolumesButton" (click)="deleteSelectedModal.show()"
             >
               Delete selected Snapshots
@@ -87,7 +87,7 @@
 
             </div>
 
-            <div class="rTableRow" *ngFor="let snapshot of snapshots">
+            <div class="rTableRow" *ngFor="let snapshot of snapshot_page.snapshot_list">
               <div class="rTableCell " id="{{snapshot?.snapshot_name}}">{{snapshot?.snapshot_name}}</div>
               <div class="rTableCell ">{{snapshot?.snapshot_project}}</div>
               <div class="rTableCell ">
@@ -98,12 +98,12 @@
                   Delete Snapshot
                 </button>
               </div>
-              <div class="rTableCell "> <span *ngIf="snapshot?.snapshot_status == 'active'"
+              <div class="rTableCell "> <span *ngIf="snapshot?.snapshot_status === 'active'"
                                               style="margin-left: 5px" id="snapshot_active_{{snapshot?.snapshot_name}}"
-                                              class="badge badge-success"> {{snapshot?.snapshot_status | uppercase}} </span>
-                <span *ngIf="snapshot?.snapshot_status != 'active'"
+                                              class="badge bg-success"> {{snapshot?.snapshot_status | uppercase}} </span>
+                <span *ngIf="snapshot?.snapshot_status !== 'active'"
                       style="margin-left: 5px"
-                      class="badge badge-info"> {{snapshot?.snapshot_status | uppercase}} </span>
+                      class="badge bg-info"> {{snapshot?.snapshot_status | uppercase}} </span>
               </div>
 
               <!-- td>{{volume.volume_client.host}} : {{volume.volume_client.port}}</td-->
@@ -120,7 +120,7 @@
       </div>
     </div>
   </div>
-  <div *ngIf="snapshots.length == 0 && isLoaded && !isSearching">
+  <div *ngIf="snapshot_page.snapshot_list.length === 0 && isLoaded && !isSearching">
     <div class="alert alert-primary">No snapshots available. Click
       this <a class="alert-link" href="{{WIKI_SNAPSHOTS}}">link</a> to see how to use and
       create a snapshot.
@@ -136,32 +136,32 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title" *ngIf="delete_status == delete_statuses.WAITING ">
+        <h4 class="modal-title" *ngIf="delete_status === delete_statuses.WAITING ">
           Waiting </h4>
-        <h4 class="modal-title" *ngIf="delete_status == delete_statuses.SUCCESS">
+        <h4 class="modal-title" *ngIf="delete_status === delete_statuses.SUCCESS">
           Success </h4>
-        <h4 class="modal-title" *ngIf="delete_status == delete_statuses.ERROR"> Error </h4>
+        <h4 class="modal-title" *ngIf="delete_status === delete_statuses.ERROR"> Error </h4>
         <button type="button" class="close" style="cursor:pointer"
                 (click)="deleteModal.hide()" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <div class="alert alert-info" role="alert" *ngIf="delete_status == 0">
+        <div class="alert alert-primary" role="alert" *ngIf="delete_status === 0">
           Deleting {{selected_snapshot?.snapshot_name}}... <i
           class="fa fa-spinner fa-spin" style="font-size:24px"></i>
         </div>
-        <div class="alert alert-success" role="alert" *ngIf="delete_status == 1" id="delete_success">
+        <div class="alert alert-success" role="alert" *ngIf="delete_status === 1" id="delete_success">
           {{selected_snapshot?.snapshot_name}} was succesfully deleted.
         </div>
       </div>
-      <div class="alert alert-warning" role="alert" *ngIf="delete_status == 2">
+      <div class="alert alert-warning" role="alert" *ngIf="delete_status === 2">
         When deleting {{selected_snapshot?.snapshot_name}} an error occured.
       </div>
-      <div class="alert alert-warning" role="alert" *ngIf="delete_status == 3">
+      <div class="alert alert-warning" role="alert" *ngIf="delete_status === 3">
         Could not delete <strong>{{selected_snapshot?.snapshot_name}} </strong> because the
         Client is offline.
-        Please contact <a href="mailto:cloud@denbi.de">cloud@denbi.de</a> if you got any questions.
+        Please contact <a href="mailto:{{CLOUD_PORTAL_SUPPORT_MAIL}}">{{CLOUD_PORTAL_SUPPORT_MAIL}}</a> if you got any questions.
       </div>
 
 

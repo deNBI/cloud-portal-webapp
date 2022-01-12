@@ -33,7 +33,7 @@ export class VolumeOverviewPage {
   private static VERIFY_CA_BUTTON: string = 'verify_create_attach_button';
 
   static async navigateToVolumeOverview(): Promise<any> {
-    Util.logMethodCall('Navigating to volume overview');
+    Util.logInfo('Navigating to volume overview');
     await Util.navigateToAngularPage(this.VOLUME_OVERVIEW_URL);
   }
 
@@ -42,23 +42,23 @@ export class VolumeOverviewPage {
   }
 
   static async deleteVolume(): Promise<any> {
-    Util.logMethodCall('Deleting Volume');
+    Util.logInfo('Deleting Volume');
     await Util.clickElementById(this.DELETE_BUTTON_PREFIX + Util.VOLUME_NAME);
     await Util.waitForVisibilityOfElementById(this.VERIFY_MODAL);
     await Util.clickElementById(this.VERIFY_DELETION_BUTTON);
   }
 
   static async createAndAttachVolumeToProjectVm(vm: string): Promise<any> {
-    Util.logMethodCall(` creating and attach volume to project: ${Util.SIMPLE_VM_APPLICATION_NAME} vm: ${vm}`);
+    Util.logInfo(` creating and attach volume to project: ${Util.SIMPLE_VM_APPLICATION_NAME} vm: ${vm}`);
 
     await Util.clickElementById(this.CREATE_ATTACH_BUTTON);
     await Util.waitForVisibilityOfElementById(this.CREATE_MODAL);
     await Util.clickOptionOfSelect(`${this.OPTION_PROJECT_PREFIX}${Util.SIMPLE_VM_APPLICATION_NAME}`, this.PROJECT_SELECT_ID);
-    browser.sleep(2000).then().catch();
+    await browser.sleep(2000).then().catch();
     await Util.waitForPresenceOfElementById(this.VM_SELECT_ID);
     await Util.clickOptionOfSelect(`${this.OPTION_VM_PREFIX}${vm}`, this.VM_SELECT_ID);
-    await Util.sendTextToElementById(this.NAME_INPUT_ID, Util.VOLUME_NAME);
-    await Util.sendTextToElementById(this.SPACE_INPUT_ID, Util.VOLUME_SPACE);
+    await Util.sendTextToElementByIdUnsecure(this.NAME_INPUT_ID, Util.VOLUME_NAME);
+    await Util.sendTextToElementByIdUnsecure(this.SPACE_INPUT_ID, Util.VOLUME_SPACE);
     await Util.clickElementById(this.VERIFY_CA_BUTTON);
 
     Util.logInfo(' creating and attaching probably successful');
@@ -72,13 +72,13 @@ export class VolumeOverviewPage {
   }
 
   static async isVolumeAttachedToVM(name: string): Promise<boolean> {
-    Util.logMethodCall(` checking if volume attached to ${name}`);
+    Util.logInfo(` checking if volume attached to ${name}`);
 
     return await Util.waitForPresenceOfElementById(`${this.VM_NAME_CELL_ID_PREFIX}${name}`);
   }
 
   static async isVolumeFree(): Promise<boolean> {
-    Util.logMethodCall(` checking if volume is free`);
+    Util.logInfo(` checking if volume is free`);
 
     return await Util.waitForPresenceOfElementById(`available_${Util.VOLUME_NAME}`);
 

@@ -1,69 +1,85 @@
-import {Component, OnInit} from '@angular/core';
-import {VoService} from '../../api-connector/vo.service';
-import { jsPDF } from 'jspdf';
-import {Resources} from './resources';
-import html2canvas from 'html2canvas';
-import {ExportAsConfig, ExportAsService} from 'ngx-export-as'
+import {
+	Component, ElementRef, OnInit, ViewChild,
+} from '@angular/core';
+
+/* import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+import htmlToPdfmake from 'html-to-pdfmake'; */
+import { ExportToCsv } from 'export-to-csv';
+import { VoService } from '../../api-connector/vo.service';
+import { Resources } from './resources';
+
+// pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 /**
  * Resource component.
  */
 @Component({
-             selector: 'app-resources',
-             templateUrl: './resources.component.html',
-             styleUrls: ['./resources.component.scss'],
-             providers: [VoService, ExportAsService]
-           })
+	selector: 'app-resources',
+	templateUrl: './resources.component.html',
+	styleUrls: ['./resources.component.scss'],
+	providers: [VoService],
+})
 export class ResourcesComponent implements OnInit {
 
-  title: string = 'VO Overview: Resources';
+	title: string = 'VO Overview: Resources';
+	@ViewChild('resourcesTable') pdfTable: ElementRef;
 
-  isLoaded: boolean = false;
-  voResources: Resources[] = [];
-  fileName: string = 'VoResources';
-  tableId: string = 'resourcesTable';
-  today: number = Date.now();
+	isLoaded: boolean = false;
+	voResources: Resources[] = [];
+	fileName: string = 'VoResources';
+	tableId: string = 'resourcesTable';
+	today: number = Date.now();
 
-  exportAsConfigCSV: ExportAsConfig = {
-    type: 'csv',
-    // elementId: this.tableId
-    elementIdOrContent: this.tableId
-  };
+	constructor(private voservice: VoService) {
+		this.getVoProjectResources();
 
-  constructor(private voservice: VoService, private exportAsService: ExportAsService) {
-    this.getVoProjectResources()
+	}
 
-  }
+	public getVoProjectResources(): void {
+		this.voservice.getVoProjectResources().subscribe((res: Resources[]): void => {
+			this.voResources = res;
+			this.isLoaded = true;
+		});
 
-  public tableToCSV(): void {
-    this.exportAsService.save(this.exportAsConfigCSV, this.fileName);
+	}
 
-  }
+	public tableToCSV(): void {
+		console.log('to csv');
+		const options = {
+			fieldSeparator: ',',
+			quoteStrings: '"',
+			decimalSeparator: '.',
+			showLabels: true,
+			showTitle: false,
+			// title: `${this.selectedFacility['Facility']} Resources`,
+			filename: 'vo_resources.csv',
+			useTextFile: false,
+			useBom: true,
+			useKeysAsHeaders: true,
+			// headers: ['Column 1', 'Column 2', etc...] <-- Won't work with useKeysAsHeaders present!
+		};
 
-  public getVoProjectResources(): void {
-    this.voservice.getVoProjectResources().subscribe((res: Resources[]): void => {
-      this.voResources = res;
-      this.isLoaded = true;
-    })
+		const csvExporter = new ExportToCsv(options);
 
-  }
+		csvExporter.generateCsv(this.voResources);
 
-  public tableToPDF(): void {
-    html2canvas(document.getElementById(this.tableId)).then((canvas: HTMLCanvasElement): void => {
-      // Few necessary setting options
-      const imgWidth: number = 208;
-      const imgHeight: number = canvas.height * imgWidth / canvas.width;
-      const contentDataURL: string = canvas.toDataURL('image/png');
-      const pdf: jsPDF = new jsPDF('p', 'mm', 'a4'); // A4 size page of PDF
-      const position: number = 0;
-      pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
-      pdf.save('VoResources.pdf'); // Generated PDF
-    }).catch((): void => {
-      console.log('failed to convert to pdf')
-    });
-  }
+	}
 
-  ngOnInit(): void {
-  }
+	/* public tableToPDF(): void {
+		// const doc = new jsPDF();
+		const pdfTable = this.pdfTable.nativeElement;
+		const html = htmlToPdfmake(pdfTable.innerHTML);
+		const documentDefinition = {
+			content: html,
+			pageOrientation: 'portrait',
+			pageSize: { width: pdfTable.offsetWidth, height: pdfTable.offsetHeight },
+		};
+		pdfMake.createPdf(documentDefinition).download('vo_resources.pdf');
+
+	} */
+
+	ngOnInit(): void {
+	}
 
 }

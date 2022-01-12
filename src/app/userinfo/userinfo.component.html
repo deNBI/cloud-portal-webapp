@@ -1,8 +1,8 @@
-<div *ngIf="isLoaded==false" class="loader"></div>
+<div *ngIf="isLoaded === false" class="loader"></div>
 <div *ngIf="isLoaded" class="animated fadeIn">
 
-
-
+<app-news>
+</app-news>
   <div class="card" style=" ">
     <div class="card-header">
       <i class="fa fa-align-justify"></i> Profile Information
@@ -10,10 +10,11 @@
     <div class="card-body container-fluid">
       <div class="table-responsive">
         <table class="table table-hover">
+          <tbody>
           <tr style="border-top-style: none;">
             <td class="col-3" style="border-top-style:none;">
                 <strong>Elixir Login</strong>
-              <div class="alert alert-info" style="margin-top:5px; margin-bottom: 0px;">
+              <div class="alert alert-primary" style="margin-top:5px; margin-bottom: 0px;">
                 <strong>
                   Read more about linking accounts <a target="_blank"  rel="noopener noreferrer" class="alert-link"
                                                       href="{{WIKI_LINK_ACCOUNTS}}">here.</a>
@@ -51,8 +52,12 @@
                 request. Please check inbox of: {{pendingEmail}} for validation email.
               </div>
             </td>
-            <td class="col-3"><button class="btn btn-primary" (click)="emailChangeModal.show()" type="button">Change</button></td>
+            <td class="col-3">
+              <button class="btn btn-primary" (click)="emailChangeModal.show()" type="button">Change</button>
+            </td>
           </tr>
+
+
           <tr app-public-key [userinfo]="userInfo"></tr>
 
           <tr>
@@ -65,7 +70,7 @@
                   class="switch switch-label switch-outline-primary-alt">
                   <input type="checkbox" class="switch-input"
                          [(ngModel)]="newsletterSubscribed"
-                         (change)="setNewsletterSubscription($event)">
+                         (change)="setNewsletterSubscription()">
                   <span class="switch-slider" data-checked="On" data-unchecked="Off"></span>
                   <!--<span class="switch-handle"></span>-->
                 </label></div>
@@ -79,66 +84,13 @@
             </td>
             <td class="col-1"></td>
           </tr>
+          </tbody>
         </table>
       </div>
     </div>
   </div>
 </div>
 
-
-<div bsModal #pubKeyModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
-     aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Change public key</h4>
-        <button type="button" class="close" style="cursor: pointer;" (click)="pubKeyModal.hide()"
-                data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-
-      </div>
-      <div class="modal-body">
-        <alert type="info" *ngIf="newPublicKey?.length ==0 ">
-          <strong>Info: </strong> Please enter a valid public key!
-
-        </alert>
-
-
-        <alert type="success" *ngIf="validatePublicKey()">
-          <strong>Info: </strong> This is a valid public key!
-        </alert>
-        <alert type="danger" *ngIf="!validatePublicKey() && newPublicKey?.length >0">
-          <strong>Warning</strong> This is not a valid public key!
-        </alert>
-        <textarea rows="8" type="text" class="form-control input-lg"
-                  placeholder="Please enter a new valid public key." name="public_key" [(ngModel)]="newPublicKey"
-                  #publickey></textarea>
-
-        <br>
-
-
-        <alert *ngIf="validatePublicKey()" type="danger">
-          <strong>Warning!</strong> Replacing your current public key with a different one will probably
-          render all your currently running machines inaccessible.
-        </alert>
-      </div>
-
-
-      <div class="modal-footer">
-
-
-        <button [disabled]="!validatePublicKey()"
-                class="btn btn-success col-md4" type="button"
-                (click)="importKey(publickey.value);pubKeyModal.hide();">Set
-        </button>
-        <button class="btn  btn-primary col-md-4" type="reset" (click)="pubKeyModal.hide();">Cancel
-        </button>
-
-      </div>
-    </div><!-- /.modal-content -->L
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
 
 <div bsModal #freemiummodal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Label"
      aria-hidden="true">

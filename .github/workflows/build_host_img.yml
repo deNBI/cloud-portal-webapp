@@ -1,0 +1,43 @@
+name: Publish Docker for Custom Host
+on:
+  workflow_dispatch:
+    inputs:
+      host:
+        required: true
+        description: 'Host used in the environment and as tag'
+      branch:
+        required: true
+        description: 'Branch to Build'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Workflow run cleanup action
+      uses: rokroskar/workflow-run-cleanup-action@v0.3.3
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - uses: actions/checkout@master
+      with:
+        repository: deNBI/cloud-portal-webapp
+        ref: ${{ github.event.inputs.branch }}
+    - name: Set tag
+      run: sed 's/\//-/g'  <<< "::set-output name=TAG::${{ github.event.inputs.branch }}-${{ github.event.inputs.host }}"
+      id: tag
+    - name: Get tag
+      run: echo "The selected tag is ${{ steps.tag.outputs.TAG }}"
+    - name: Run replace host command
+      run: |
+         sed -i '/const API_HOST/c\const API_HOST: string = \x27${{ github.event.inputs.host }}\x27;' src/environments/environment.kubernetes.ts
+    - name: Print Env
+      run: cat src/environments/environment.kubernetes.ts
+    - name: Publish to Registry
+      uses: elgohr/Publish-Docker-Github-Action@master
+      env:
+          ANGULAR_MODE: kubernetes
+      with:
+        name: denbicloud/cloud-portal-webapp
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+        dockerfile: Dockerfile
+        buildargs: ANGULAR_MODE
+        tags: ${{ steps.tag.outputs.TAG }}

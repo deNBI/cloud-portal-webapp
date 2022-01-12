@@ -17,31 +17,31 @@
               'btn-primary': tab_state === TabStates.SUBMITTED}"
               id="tab_state_button_submitted_applications">
         <i class="fas fa-envelope"></i> Submitted Applications
-        <span class="badge badge-pill badge-dark">{{this.numberOfProjectApplications}}</span>
+        <span class="badge badge-pill bg-dark">{{this.numberOfProjectApplications}}</span>
       </button>
       <button class="btn" (click)="changeTabState(TabStates.CREDITS_EXTENSION);"
               [ngClass]="{'btn-light': !(tab_state === TabStates.CREDITS_EXTENSION),
               'btn-primary': tab_state === TabStates.CREDITS_EXTENSION}"
               id="tab_state_button_credit_request">
         <i class="fas fa-coins"></i> Credit Extension Requests
-        <span class="badge badge-pill badge-dark">{{this.numberOfCreditRequests}}</span>
+        <span class="badge badge-pill bg-dark">{{this.numberOfCreditRequests}}</span>
       </button>
       <button class="btn" (click)="changeTabState(TabStates.LIFETIME_EXTENSION);"
               [ngClass]="{'btn-light': !(tab_state === TabStates.LIFETIME_EXTENSION),
               'btn-primary': tab_state === TabStates.LIFETIME_EXTENSION}"
               id="tab_state_button_extension_request">
         <i class="fas fa-clock"></i> Lifetime Extension Requests
-        <span class="badge badge-pill badge-dark">{{this.numberOfExtensionRequests}}</span>
+        <span class="badge badge-pill bg-dark">{{this.numberOfExtensionRequests}}</span>
       </button>
       <button class="btn" (click)="changeTabState(TabStates.MODIFICATION_EXTENSION);"
               [ngClass]="{'btn-light': !(tab_state === TabStates.MODIFICATION_EXTENSION),
               'btn-primary': tab_state === TabStates.MODIFICATION_EXTENSION}"
               id="tab_state_button_modification_request">
         <i class="fas fa-memory"></i> Resource Modification Requests
-        <span class="badge badge-pill badge-dark">{{this.numberOfModificationRequests}}</span>
+        <span class="badge badge-pill bg-dark">{{this.numberOfModificationRequests}}</span>
       </button>
     </div>
-    <div class="card-body" *ngIf="loading_applications">
+    <div class="card-body" *ngIf="loading_applications" id="loading_applications">
       <div class="alert alert-success">
         <strong>Loading applications/requests ...</strong>
       </div>
@@ -133,13 +133,13 @@
                     <!-- into select: [style.display]=" ((application | hasstatusinlist:Application_States.SUBMITTED)  || (application | hasstatusinlist:Application_States.CONFIRMATION_DECLINED) || (!application?.ComputeCenter?.FacilityId ))? 'inherit' :'none'"-->
                     <select *ngIf="(application | hasstatusinlist:Application_States.SUBMITTED) || (application | hasstatusinlist:Application_States.CONFIRMATION_DECLINED)  || ((application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION)  && !application?.ComputeCenter?.FacilityId )"
                             [(ngModel)]="selectedCenter[application.project_application_id]"
-                      class="form-control" [id]="'id_compute_center_option_' + application?.project_application_name"
+                      class="form-select" [id]="'id_compute_center_option_' + application?.project_application_name"
                       #selectedComputeCenter>
 
-                      <option value="undefined" selected> no center selected
+                      <option [ngValue]="undefined" selected> no center selected
                       </option>
                       <option *ngFor="let computeCenter of computeCenters"
-                              value="{{computeCenter.FacilityId}}" [id]="computeCenter.Name">
+                              [ngValue]="computeCenter.FacilityId" [id]="computeCenter.Name">
                         {{computeCenter.Name}}
                       </option>
                     </select>
@@ -152,69 +152,84 @@
                     <div class="btn-group">
                       <button
                         *ngIf="(application | hasstatusinlist:Application_States.CONFIRMATION_DECLINED)  || ((application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION)  && !application?.ComputeCenter?.FacilityId )"
-                        style="margin: auto 2.5px"
-                        (click)="resetNotificationModal();assignGroupToFacility(application?.project_application_perun_id,application?.project_application_id, selectedCenter[application.project_application_id]); notificationModal.show();"
-
-
+                        style="margin: 2px"
+                        (click)="assignGroupToFacility(application?.project_application_perun_id,application?.project_application_id, selectedCenter[application.project_application_id]); switchAssignLocked(true)"
+                        [disabled]="!selectedCenter[application.project_application_id] || assignLocked"
                         type="button"
                         class="btn btn-secondary">
                         <i class="fa fa-check"></i>&nbsp;
-                        <span class="applicationActionsButton">Assign</span>
+                        <span class="d-none">Assign</span>
                       </button>
                       <button
                         *ngIf="(application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION)  && application?.ComputeCenter?.FacilityId"
-                        style="margin: auto 2.5px"
-                        (click)="resetNotificationModal();removeApplicationFromFacilityConfirmation(application); notificationModal.show();"
+                        style="margin: 2px"
+                        (click)="removeApplicationFromFacilityConfirmation(application); switchReassignLocked(true)"
+												[disabled]="reassignLocked"
 
 
                         type="button"
                         class="btn btn-secondary">
                         <i class="fa fa-check"></i>&nbsp;
-                        <span class="applicationActionsButton">Reassign</span>
+                        <span class="d-none">Reassign</span>
                       </button>
                       <button
                         *ngIf="(application | hasstatusinlist:Application_States.SUBMITTED) && application?.project_application_openstack_project"
-                        style="margin: auto 2.5px" [id]="'approve_'+ application?.project_application_shortname"
-                        (click)="resetNotificationModal();createOpenStackProjectGroup(application, selectedCenter[application.project_application_id]); notificationModal.show();"
-
+                        style="margin: 2px" [id]="'approve_'+ application?.project_application_shortname"
+                        (click)="createOpenStackProjectGroup(application, selectedCenter[application.project_application_id]); switchApproveLocked(true)"
+                        [disabled]="!selectedCenter[application.project_application_id] || approveLocked"
                         type="button"
                         class="btn btn-success">
                         <i class="fa fa-check"></i>&nbsp;
-                        <span class="applicationActionsButton">Approve & Create </span>
+                        <span class="d-none">Approve & Create </span>
                       </button>
 
                       <button
-                        *ngIf="(application | hasstatusinlist:Application_States.SUBMITTED)  && !application?.project_application_openstack_project"
-                        style="margin: auto 2.5px" [id]="'approve_' + application?.project_application_shortname"
-                        (click)="resetNotificationModal();createSimpleVmProjectGroup(application,selectedCenter[application.project_application_id]); notificationModal.show();"
+                              *ngIf="(application | hasstatusinlist:Application_States.SUBMITTED)  && !application?.project_application_openstack_project"
+                              style="margin: 2px" [id]="'approve_' + application?.project_application_shortname"
+                              (click)="showClientsLimitsModal(selectedCenter[application.project_application_id],application); switchApproveLocked(true)"
+															[disabled]="approveLocked"
 
-                        type="button"
-                        class="btn btn-success">
+                              type="button"
+                              class="btn btn-success">
                         <i class="fa fa-check"></i>&nbsp;
-                        <span class="applicationActionsButton">Approve
+                        <span class="d-none">Approve
                           & Create </span>
                       </button>
 
                       <button *ngIf="(application | hasstatusinlist:Application_States.SUBMITTED) "
                               type="button"
                               class="btn btn-danger"
-                              style="margin: auto 2.5px"
-                              (click)="resetNotificationModal();declineApplication(application); notificationModal.show();">
+                              id="btn_decline_{{application.project_application_shortname}}"
+                              style="margin: 2px"
+                              (click)="declineApplication(application); ">
                         <i class="fas fa-times"></i>&nbsp;
-                        <span class="applicationActionsButton">Decline</span>
+                        <span class="d-none">Decline</span>
                       </button>
-
+                      <button *ngIf="application.project_application_pi_approved && (application | hasstatusinlist:Application_States.SUBMITTED) " type="button"
+                              id="btn_reset_pi_{{application.project_application_shortname}}"
+                              class="btn btn-warning" style="margin: 2px"
+                              (click)="setApplicationToAdjust(application);unsetPiModal.show();"
+                      >
+                        <i class="fa fa-user-times"></i>&nbsp;
+                        <span class="d-none"> Unset PI</span>
+                      </button>
+                      <button type="button" id="btn_adjust_{{application.project_application_shortname}}"
+                              class="btn btn-primary" style="margin: 2px"
+                              (click)="setApplicationToAdjust(application); adjustModal.show();">
+                        <i class="fa fa-pen"></i>&nbsp;
+                        <span class="d-none"> Adjust</span>
+                      </button>
                       <button
-                        (click)="switchCollapseStatus('application_review-' + application?.project_application_id);  getMemberDetailsByElixirIdIfCollapsed(application,'application_review-' + application?.project_application_id);"
-                        type="button"
-                        class="btn btn-secondary"
-                        style="margin: auto 2.5px">
+                              (click)="switchCollapseStatus('application_review-' + application?.project_application_id);  getMemberDetailsByElixirIdIfCollapsed(application,'application_review-' + application?.project_application_id);"
+                              type="button"
+                              class="btn btn-secondary"
+                              style="margin: 2px">
                         <i class="fa fa-info-circle"></i>&nbsp;
-                        <span class="applicationActionsButton"
-                          [hidden]="!getCollapseStatus('application_review-' + application?.project_application_id)">Show</span>
-                        <span class="applicationActionsButton"
-                        [hidden]="getCollapseStatus('application_review-' + application?.project_application_id)">Hide</span>
-                        <span class="applicationActionsButton"> Information</span>
+                        <span class="d-none"
+                              [hidden]="!getCollapseStatus('application_review-' + application?.project_application_id)">Show</span>
+                        <span class="d-none"
+                              [hidden]="getCollapseStatus('application_review-' + application?.project_application_id)">Hide</span>
+                        <span class="d-none"> Information</span>
                       </button>
                     </div>
                   </td>
@@ -328,26 +343,36 @@
 
 
                         <button [id]="'modification_approval_' + application?.project_application_shortname"
-                                *ngIf="(application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  && application?.project_modification_request"
-                                style="margin: auto 2.5px"
-                                (click)="this.resetNotificationModal(); this.approveModificationRequest(application);
-                                  this.notificationModal.show();"
+                                *ngIf="(application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  && application?.project_application_openstack_project && application?.project_modification_request"
+                                style="margin: 2px"
+                                (click)=" approveModificationRequest(application);
+                                  "
                                 type="button"
                                 class="btn btn-success">
                           <i class="fa fa-check"></i>&nbsp;
-                          <span class="applicationActionsButton">Approve Modification</span>
+                          <span class="d-none">Approve Modification</span>
+                        </button>
+                        <button [id]="'modification_approval_' + application?.project_application_shortname"
+                                *ngIf="(application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)  && !application?.project_application_openstack_project && application?.project_modification_request"
+                                style="margin: 2px"
+                                (click)=" showClientsLimitsModal(application.ComputeCenter.FacilityId,application,true);
+                                  "
+                                type="button"
+                                class="btn btn-success">
+                          <i class="fa fa-check"></i>&nbsp;
+                          <span class="d-none">Approve Modification</span>
                         </button>
 
                         <button
-                          *ngIf="(application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED) && application?.project_modification_request "
-                          type="button"
-                          class="btn btn-danger"
-                          style="margin: auto 2.5px"
-                          (click)="this.resetNotificationModal(); this.declineModificationRequest(application);
-                                this.notificationModal.show();">
+                                *ngIf="(application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED) && application?.project_modification_request "
+                                type="button"
+                                class="btn btn-danger"
+                                style="margin: 2px"
+                                (click)=" declineModificationRequest(application);
+                                ">
                           <i
-                            class="fa fa-times"></i>&nbsp;
-                          <span class="applicationActionsButton">Decline Modification</span>
+                                  class="fa fa-times"></i>&nbsp;
+                          <span class="d-none">Decline Modification</span>
                         </button>
 
 
@@ -355,13 +380,13 @@
                           (click)="switchCollapseStatus('application_review-' + application?.project_application_id);  getMemberDetailsByElixirIdIfCollapsed(application,'application_review-' + application?.project_application_id);"
                           type="button"
                           class="btn btn-secondary"
-                          style="margin: auto 2.5px">
+                          style="margin: 2px">
                           <i class="fa fa-info-circle"></i>&nbsp;
-                          <span class="applicationActionsButton"
+                          <span class="d-none"
                                 [hidden]="!getCollapseStatus('application_review-' + application?.project_application_id)">Show</span>
-                          <span class="applicationActionsButton"
+                          <span class="d-none"
                                 [hidden]="getCollapseStatus('application_review-' + application?.project_application_id)">Hide</span>
-                          <span class="applicationActionsButton"> Information</span>
+                          <span class="d-none"> Information</span>
                         </button>
                       </div>
                     </td>
@@ -475,39 +500,39 @@
                       <div class="btn-group">
                         <button [id]="'extension_approval_' + application?.project_application_shortname"
                                 *ngIf="(application | hasstatusinlist:Application_States.LIFETIME_EXTENSION_REQUESTED)  && application?.project_lifetime_request"
-                                style="margin: auto 2.5px"
-                                (click)="resetNotificationModal();
+                                style="margin: 2px"
+                                (click)="
                                 approveLifetimeExtension(application);
-                                notificationModal.show();"
+                                "
                                 type="button"
                                 class="btn btn-success">
                           <i class="fa fa-check"></i>&nbsp;
-                          <span class="applicationActionsButton">Approve Extension</span>
+                          <span class="d-none">Approve Extension</span>
                         </button>
                         <button
                           *ngIf="(application | hasstatusinlist:Application_States.LIFETIME_EXTENSION_REQUESTED)  && application?.project_lifetime_request"
                           type="button"
                           class="btn btn-danger"
-                          style="margin: auto 2.5px"
-                          (click)="resetNotificationModal();
+                          style="margin: 2px"
+                          (click)="
                           declineLifetimeExtension(application);
-                           notificationModal.show();">
+                           ">
                           <i
                             class="fa fa-times"></i>&nbsp;
-                          <span class="applicationActionsButton">Decline Extension</span>
+                          <span class="d-none">Decline Extension</span>
                         </button>
 
                         <button
                           (click)="switchCollapseStatus('application_review-' + application?.project_application_id);  getMemberDetailsByElixirIdIfCollapsed(application,'application_review-' + application?.project_application_id);"
                           type="button"
                           class="btn btn-secondary"
-                          style="margin: auto 2.5px">
+                          style="margin: 2px">
                           <i class="fa fa-info-circle"></i>&nbsp;
-                          <span class="applicationActionsButton"
+                          <span class="d-none"
                                 [hidden]="!getCollapseStatus('application_review-' + application?.project_application_id)">Show</span>
-                          <span class="applicationActionsButton"
+                          <span class="d-none"
                                 [hidden]="getCollapseStatus('application_review-' + application?.project_application_id)">Hide</span>
-                          <span class="applicationActionsButton"> Information</span>
+                          <span class="d-none"> Information</span>
                         </button>
                       </div>
                     </td>
@@ -624,37 +649,37 @@
 
                         <button [id]="'credit_extension_approval_' + application?.project_application_shortname"
                                 *ngIf="(application | hasstatusinlist:Application_States.CREDITS_EXTENSION_REQUESTED) "
-                                style="margin: auto 2.5px"
-                                (click)="this.resetNotificationModal(); this.approveCreditExtension(application);
-                                  notificationModal.show();"
+                                style="margin: 2px"
+                                (click)="this. this.approveCreditExtension(application);
+                                  "
                                 type="button"
                                 class="btn btn-success">
                           <i class="fa fa-check"></i>&nbsp;
-                          <span class="applicationActionsButton">Approve Credits</span>
+                          <span class="d-none">Approve Credits</span>
                         </button>
 
                         <button [id]="'credit_extension_decline_' + application?.project_application_shortname"
                                 *ngIf="(application | hasstatusinlist:Application_States.CREDITS_EXTENSION_REQUESTED) "
-                                (click)="this.resetNotificationModal(); this.declineCreditExtension(application);
-                                 notificationModal.show();"
+                                (click)="this. this.declineCreditExtension(application);
+                                 "
                                 type="button"
                                 class="btn btn-danger"
-                                style="margin: auto 2.5px">
+                                style="margin: 2px">
                           <i class="fas fa-times"></i>&nbsp;
-                          <span class="applicationActionsButton">Decline Credits</span>
+                          <span class="d-none">Decline Credits</span>
                         </button>
 
                         <button
                           (click)="switchCollapseStatus('application_review-' + application?.project_application_id);  getMemberDetailsByElixirIdIfCollapsed(application,'application_review-' + application?.project_application_id);"
                           type="button"
                           class="btn btn-secondary"
-                          style="margin: auto 2.5px">
+                          style="margin: 2px">
                           <i class="fa fa-info-circle"></i>&nbsp;
-                          <span class="applicationActionsButton"
+                          <span class="d-none"
                                 [hidden]="!getCollapseStatus('application_review-' + application?.project_application_id)">Show</span>
-                          <span class="applicationActionsButton"
+                          <span class="d-none"
                                 [hidden]="getCollapseStatus('application_review-' + application?.project_application_id)">Hide</span>
-                          <span class="applicationActionsButton"> Information</span>
+                          <span class="d-none"> Information</span>
                         </button>
                       </div>
                     </td>
@@ -687,7 +712,7 @@
     <div class="card-header">
       <i class="fa fa-align-justify"></i> Applications history
     </div>
-    <div class="card-body" *ngIf="this.applications_history?.length == 0">
+    <div class="card-body" *ngIf="this.applications_history?.length === 0">
       <div class="alert alert-success" role="alert">
         <strong>No submitted Applications</strong> There are no applications at all.
       </div>
@@ -781,79 +806,306 @@
 
     </div>
 
+  </div>
 </div>
 
-<div bsModal #notificationModal="bs-modal" class="modal fade" tabindex="-1"
-     role="dialog" aria-labelledby="Label"
-     aria-hidden="true">
-  <div class="modal-dialog" role="document"
-       [ngClass]="notificationClientInfo.length > 0 ? 'modal-lg':''">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">{{ notificationModalTitle }}</h4>
-        <button type="button" class="close" style="cursor:pointer"
-                (click)="notificationModal.hide()" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="alert alert-{{ notificationModalType }}"
-             role="alert" id="notification_message">
-          {{ notificationModalMessage }}
-        </div>
-        <div *ngIf="notificationClientInfo.length > 0">
-          <div *ngFor="let c of notificationClientInfo" class="table-responsive">
-            <br>
-            <p>Client: {{c.location}}</p>
-            <table class="table table-hover">
-              <thead>
-              <tr>
-                <td></td>
-                <td>Assigned Ressources</td>
-                <td>Max Ressources</td>
-              </tr>
-              </thead>
-              <tbody>
-              <tr>
-                <td>VMs</td>
-                <td>{{c.assignedVMs}}<span *ngIf="c.newVms"
-                                           [ngStyle]="{'color':c.assignedVMs + c.newVms <= c.maxVMs? 'green':'red'}"> + {{c.newVms}}</span>
-                </td>
-                <td>{{c.maxVMs}} </td>
-              </tr>
-              <tr>
-                <td>Volumes</td>
-                <td>{{c.assignedVolumes}} <span *ngIf="c.newVolumes"
-                                                [ngStyle]="{'color':c.assignedVolumes + c.newVolumes <= c.maxVolumes? 'green':'red'}"> + {{c.newVolumes}}</span>
-                </td>
-                <td>{{c.maxVolumes}}</td>
-              </tr>
-              <tr>
-                <td>Volume Storage</td>
-                <td>{{c.assignedVolumesStorage}} <span *ngIf="c.newVolumeLimit"
-                                                       [ngStyle]="{'color':c.assignedVolumesStorage + c.newVolumeLimit <= c.maxVolumeLimit? 'green':'red'}"> + {{c.newVolumeLimit}}</span>
-                </td>
-                <td>{{c.maxVolumeLimit}}</td>
-              </tr>
-              </tbody>
-            </table>
 
+  <div bsModal #unsetPiModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+       aria-labelledby="Label"
+       aria-hidden="true"
+       id="unsetPiModal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title"> Unset PI </h4>
+
+        </div>
+        <div class="modal-body">
+          <div class="alert alert-primary">
+          Do you really want to unset the PI from the project {{selectedApplication?.project_application_shortname}}?</div>
+
+        </div>
+
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success"
+                  (click)="resetApplicationPI(selectedApplication);unsetPiModal.hide();"
+                  id="unset_pi">Unset PI
+          </button>
+          <button type="button" class="btn btn-danger"
+                  (click)="unsetPiModal.hide()"
+                  id="close_unset_pi_modal">Close
+          </button>
+        </div>
+
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
+
+
+<div bsModal #adjustModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+       aria-labelledby="Label"
+       aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4>Adjust resources for {{selectedApplication?.project_application_shortname}}</h4>
+          <button type="button" class="close" style="cursor: pointer"
+                  (click)="adjustModal.hide();" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" *ngIf="selectedApplication">
+          <form id="resource_adjustment_form" #resourceAdjustmentForm="ngForm"
+                class="form-horizontal">
+
+                      <div class="form-group row">
+              <label class="col-md-4 form-control-label"><strong>Project Type</strong></label>
+              <div class="col-md-8">
+
+                <label id="adjusted_project_type_switch"
+                       class="switch switch-label" >
+                  <input type="checkbox" class="switch-input"
+                                                [ngModelOptions]="{standalone: true}"
+
+                         [(ngModel)]="adjustedApplication.project_application_openstack_project"
+                         >
+                  <span class="switch-slider" data-checked="OS" data-unchecked="SV"  [ngStyle]="{'background-color': adjustedApplication.project_application_openstack_project ? '#FF0000':'#00adef'}"></span>
+                  </label>
+                <p>Is this project an openstack project (OS) or a simple vm project (SV) ?</p>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <h6 class="col-md-8 form-control-label">Resources*
+                <i data-balloon="Select the number of Virtual Machines you want to grant."
+                   data-balloon-pos="down">
+                  <i class="icon-question"></i></i>
+              </h6>
+            </div>
+
+
+            <accordion>
+              <ng-container *ngFor="let t of typeList, first as isFirst">
+                <accordion-group *ngIf="selectedApplication?.project_application_openstack_project || checkIfTypeGotSimpleVmFlavor(t)"
+                                 [isOpen]="isFirst" #groupval>
+                  <div accordion-heading style="width: 100%; cursor: pointer">
+                    {{t.long_name}}
+                    <i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
+                            'icon-arrow-up': groupval.isOpen, 'icon-arrow-down': !groupval.isOpen}"></i>
+                  </div>
+                  <div *ngFor="let fl of flavorList" class="form-group row">
+                    <div
+                      *ngIf="fl.type.shortcut === t.shortcut && (fl.simple_vm || selectedApplication?.project_application_openstack_project)"
+                      class="form-group row">
+                      <label class="col-md-4 form-control-label"><strong>{{fl.name}}</strong><br>
+                        Number of cores: <span
+                          id="{{fl.name}}_cores">{{fl.vcpus}}</span><br>
+                        RAM: <span id="{{fl.name}}_ram">{{fl.ram}}</span> GB</label>
+                      <div class="col">
+                        <div class="input-group">
+                          <input class="form-control"
+                                 name="{{fl.name}}_requested"
+                                 id="{{fl.name}}_requested"
+                                 type="text"
+                                 value="{{selectedApplication | flavorCounter:fl}}"
+                                 placeholder="0" disabled>
+                          <div class="input-group-append"><span class="input-group-text"> VMs</span></div>
+                        </div>
+                        <span class="help-block">Initially requested of this type </span>
+                      </div>
+                      <div class="col">
+                        <div class="input-group">
+                          <input class="form-control"
+                                 (change)="valuesChanged(fl,name?.value); calculateRamCores();"
+                                 id="{{fl.name}}_granted"
+                                 name="{{fl.name}}_granted"
+                                 type="number" min="0" step="1"
+                                 placeholder="e.g 1"
+                                 (ngModelChange)="onChangeFlavor(fl,$event)"
+                                 [ngModel]="adjustedApplication | flavorCounter:fl"
+                                 #name="ngModel"
+                                 appMinAmount="0" appIntegerOrNull
+                                 [ngClass]="{
+                                'is-invalid': name?.invalid,
+                                'is-valid': name?.valid
+                                }">
+                          <div class="input-group-append"><span class="input-group-text"> VMs</span></div>
+                        </div>
+                        <span class="help-block">Number of VMs you want to actually grant.</span>
+                      </div>
+                    </div>
+
+                  </div>
+                </accordion-group>
+              </ng-container>
+            </accordion>
+            <div class="form-group row">
+              <label class="col-md-4 form-control-label" for="requested_volume_counter"><strong>Number of storage volumes*
+                <i
+                  data-balloon="Number of volumes allowed to create. The sum of the volumes size equals the value provided in the storage limit field."
+                  data-balloon-pos="down" data-balloon-length="large"><i
+                  class="icon-question"
+                  style="cursor: pointer;"></i></i></strong></label>
+              <div class="col">
+                <div class="input-group">
+                  <input required class="form-control"
+                         name="requested_volume_counter"
+                         id="requested_volume_counter"
+                         placeholder="NA"
+                         value="{{selectedApplication?.project_application_volume_counter}}"
+                         type="text" disabled>
+                </div>
+                <span class="help-block">Requested number of storage volumes</span>
+              </div>
+
+              <div class="col">
+                <div class="input-group">
+                  <input required class="form-control"
+                         id="granted_volume_counter"
+                         name="granted_volume_counter"
+                         placeholder="e.g. 20"
+                         type="number" min="0" step="1"
+                         [(ngModel)]="adjustedApplication.project_application_volume_counter"
+                         appMinAmount="0" appInteger
+                         [ngClass]="{
+                                'is-invalid': resourceAdjustmentForm.controls.granted_volume_counter?.invalid,
+                                'is-valid': resourceAdjustmentForm.controls.grated_volume_counter?.valid
+                                }">
+                </div>
+                <span class="help-block">Number of storage volumes you want to grant</span>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-md-4 form-control-label" for="requested_volume_limit"><strong>Storage
+                Limit*
+                <i
+                  data-balloon="Storage limit is the sum of extra storage provided by volumes."
+                  data-balloon-pos="down" data-balloon-length="medium"><i
+                  class="icon-question"
+                  style="cursor: pointer;"></i></i></strong></label>
+              <div class="col">
+                <div class="input-group">
+                  <input class="form-control"
+                         name="requested_volume_limit"
+                         id="requested_volume_limit"
+                         value="{{selectedApplication?.project_application_volume_limit}}"
+                         placeholder="NA"
+                         type="text" disabled>
+                  <div class="input-group-append"><span class="input-group-text"> GB
+                                    </span></div>
+                </div>
+                <span class="help-block">Requested extra storage</span>
+              </div>
+              <div class="col">
+                <div class="input-group">
+                  <input class="form-control"
+                         id="granted_volume_limit"
+                         name="granted_volume_limit"
+                         placeholder="e.g. 20"
+                         type="number" min="1" step="1"
+                         [(ngModel)]="adjustedApplication.project_application_volume_limit"
+                         appMinAmount="1" appInteger
+                         [ngClass]="{
+                                'is-invalid': resourceAdjustmentForm.controls.granted_volume_limit?.invalid,
+                                'is-valid': resourceAdjustmentForm.controls.granted_volume_limit?.valid
+                                }"
+                         [disabled]="resourceAdjustmentForm.controls.granted_volume_counter?.value === 0">
+                  <div class="input-group-append"><span class="input-group-text"> GB
+                                    </span></div>
+                </div>
+                <span class="help-block">Amount of extra storage you want to grant</span>
+              </div>
+            </div>
+
+
+            <div *ngIf="selectedApplication?.project_application_openstack_project" class="form-group row">
+              <label class="col-md-4 form-control-label" for="requested_object_storage"><strong>Object
+                Storage* </strong><i
+                data-balloon="Object storage is a method of storing data that does not use a directory tree internally. Object storage combines files with metadata and places it in a flat structure."
+                data-balloon-pos="down" data-balloon-length="large"><i
+                class="icon-question"
+                style="cursor: pointer;"></i></i></label>
+
+              <div class="col">
+                <div class="input-group">
+                  <input class="form-control"
+                         name="requested_object_storage"
+                         id="requested_object_storage"
+                         placeholder="NA"
+                         value="{{selectedApplication?.project_application_object_storage}}"
+                         type="text" disabled>
+                  <div class="input-group-append"><span class="input-group-text"> GB
+                                    </span></div>
+                </div>
+                <span class="help-block">Requested Object storage</span>
+              </div>
+
+              <div *ngIf="selectedApplication?.project_application_openstack_project" class="col">
+                <div class="input-group">
+                  <input class="form-control"
+                         id="granted_object_storage"
+                         name="granted_object_storage"
+                         placeholder="e.g. 8"
+                         [(ngModel)]="adjustedApplication.project_application_object_storage"
+                         type="number" min="0" step="1"
+                         appInteger appMinAmount="0" required
+                         [ngClass]="{
+                                'is-invalid': resourceAdjustmentForm.controls.granted_object_storage?.invalid ,
+                                'is-valid': resourceAdjustmentForm.controls.granted_object_storage?.valid
+                                }">
+                  <div class="input-group-append"><span class="input-group-text"> GB
+                                    </span></div>
+                </div>
+                <span class="help-block">How much Object Storage do you need in the future?</span>
+              </div>
+            </div>
+
+          </form>
+
+          <div *ngIf="resourceAdjustmentForm.invalid" class="alert alert-warning" role="alert">
+            <p>Some required fields are incorrect or not filled in yet.
+              Please check if all required (*) fields are filled in correctly.</p>
+            <p *ngIf="resourceAdjustmentForm.controls.granted_volume_counter?.invalid">
+              - Number of storage volumes missing
+            </p>
+            <p *ngIf="resourceAdjustmentForm.controls.granted_volume_limit?.invalid">
+              - Storage Limit missing
+            </p>
+            <p *ngIf="resourceAdjustmentForm.controls.granted_object_storage?.invalid">
+              - Object Storage missing
+            </p>
+            <p *ngIf="!atLeastOneVM">
+              - Please select at least one Flavor
+            </p>
+          </div>
+
+
+          <div class="modal-footer">
+            <div class="label">
+              The application values will be adjusted. The adjusted values still need to be approved separately.
+            </div>
+            <div>
+              New initial credits: {{adjustedApplication?.project_application_initial_credits}}
+            </div>
+            <button type="button" class="btn  btn-primary"
+                    form="resource_adjustment_form" id="submitAdjustmentButton"
+                    (click)="adjustModal.hide();   adjustApplication();"
+                    [disabled]="resourceAdjustmentForm.invalid || !atLeastOneVM"><i class="fa fa-dot-circle-o"></i>
+              Adjust
+            </button>
+            <button type="button" class="btn btn-danger"
+                    (click)="adjustModal.hide();">
+              Discard
+            </button>
 
           </div>
-        </div>
 
-      </div>
-      <div class="modal-footer">
-        <button *ngIf="notificationModalIsClosable == true"
-                type="button"
-                (click)="resetNotificationModal();notificationModal.hide();" type="reset"
-                class="btn  btn-secondary"> Close
-        </button>
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+  </div>
 
 <div bsModal #resultModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
      aria-labelledby="Label"
@@ -861,10 +1113,10 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title" *ngIf="extension_status == 0">
+        <h4 class="modal-title" *ngIf="extension_status === 0">
           Waiting </h4>
-        <h4 class="modal-title" *ngIf="extension_status == 1"> Success </h4>
-        <h4 class="modal-title" *ngIf="extension_status == 2"> Error </h4>
+        <h4 class="modal-title" *ngIf="extension_status === 1"> Success </h4>
+        <h4 class="modal-title" *ngIf="extension_status === 2"> Error </h4>
         <button type="button" class="close" style="cursor: pointer"
                 (click)="resultModal.hide();extension_status= 0;removeModalOpen();"
                 aria-label="Close">
@@ -873,27 +1125,27 @@
       </div>
 
       <div class="modal-body">
-        <div class="alert alert-info" role="alert" *ngIf="extension_status==0" id="extension_result">
+        <div class="alert alert-primary" role="alert" *ngIf="extension_status === 0" id="extension_result">
           Waiting... <i class="fa fa-spinner fa-spin"
                         style="font-size:24px"></i>
         </div>
 
 
-        <div class="alert alert-success" role="alert" *ngIf="extension_status == 1" id="extension_result">
+        <div class="alert alert-success" role="alert" *ngIf="extension_status === 1" id="extension_result">
 
           Modify request successfully submitted!
         </div>
-        <div class="alert alert-success" role="alert" *ngIf="extension_status == 3" id="extension_result">
+        <div class="alert alert-success" role="alert" *ngIf="extension_status === 3" id="extension_result">
           Modify request successfully approved!
         </div>
-        <div class="alert alert-success" role="alert" *ngIf="extension_status == 4" id="extension_result">
+        <div class="alert alert-success" role="alert" *ngIf="extension_status === 4" id="extension_result">
           Modify request successfully declined!
         </div>
-        <div class="alert alert-success" role="alert" *ngIf="extension_status == 5" id="extension_result">
+        <div class="alert alert-success" role="alert" *ngIf="extension_status === 5" id="extension_result">
           Modify request successfully approved and forwarded to facility!
         </div>
 
-        <div class="alert alert-warning" role="alert" *ngIf="extension_status == 2" id="extension_result">
+        <div class="alert alert-warning" role="alert" *ngIf="extension_status === 2" id="extension_result">
           An error occured.
 
         </div>
@@ -910,3 +1162,4 @@
     </div><!-- /.modal-dialog -->
   </div><!-- /.modal -->
 </div>
+
