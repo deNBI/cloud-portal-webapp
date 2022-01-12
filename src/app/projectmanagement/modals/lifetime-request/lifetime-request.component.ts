@@ -1,9 +1,8 @@
 import {
-	Component, EventEmitter, OnDestroy, OnInit, ViewChild,
+	Component, EventEmitter, OnDestroy, OnInit,
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { AutocompleteComponent } from 'angular-ng-autocomplete';
 import { Application } from '../../../applications/application.model/application.model';
 import { ApplicationLifetimeExtension } from '../../../applications/application_extension.model';
 import { CreditsService } from '../../../api-connector/credits.service';
@@ -21,6 +20,7 @@ export class LifetimeRequestComponent implements OnInit, OnDestroy {
 
 	project: Application;
 	temp_project_extension: ApplicationLifetimeExtension;
+	initial_number_of_edam_terms: number = 0;
 
 	life_time_string: string;
 	end_date: Date;
@@ -29,7 +29,6 @@ export class LifetimeRequestComponent implements OnInit, OnDestroy {
 	selected_ontology_terms: EdamOntologyTerm[] = [];
 	edam_ontology_terms: EdamOntologyTerm[];
 	ontology_search_keyword: string = 'term';
-	@ViewChild('edam_ontology') edam_ontology: AutocompleteComponent;
 
 	private subscription: Subscription = new Subscription();
 	public event: EventEmitter<any> = new EventEmitter();
@@ -41,7 +40,8 @@ export class LifetimeRequestComponent implements OnInit, OnDestroy {
 		private creditsService: CreditsService,
 		private applicationsService: ApplicationsService,
 		// eslint-disable-next-line no-empty-function
-	) {}
+	) {
+	}
 
 	ngOnInit(): void {
 		this.applicationsService.getEdamOntologyTerms().subscribe((terms: EdamOntologyTerm[]): void => {
@@ -60,6 +60,7 @@ export class LifetimeRequestComponent implements OnInit, OnDestroy {
 		if (end_date_info.length === 3) {
 			this.end_date = new Date(Number(end_date_info[2]), Number(end_date_info[1]) - 1, Number(end_date_info[0]));
 		}
+		this.initial_number_of_edam_terms = this.project.project_application_edam_terms.length;
 	}
 
 	ngOnDestroy() {
@@ -104,13 +105,6 @@ export class LifetimeRequestComponent implements OnInit, OnDestroy {
 	removeEDAMterm(term: EdamOntologyTerm): void {
 		const indexOf: number = this.selected_ontology_terms.indexOf(term);
 		this.selected_ontology_terms.splice(indexOf, 1);
-	}
-
-	selectEvent(item: any): void {
-		if (this.selected_ontology_terms.indexOf(item) === -1) {
-			this.selected_ontology_terms.push(item);
-		}
-		this.edam_ontology.clear();
 	}
 
 	showSubmitModal(): void {

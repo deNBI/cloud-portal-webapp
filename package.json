@@ -1,6 +1,6 @@
 {
   "name": "@denbi/cloud-portal-webapp",
-  "version": "4.29.0",
+  "version": "4.30.0",
   "description": "de.NBI Cloud Portal",
   "scripts": {
     "ng": "ng serve",
@@ -16,8 +16,6 @@
     "preinstall": "npx npm-force-resolutions"
   },
   "resolutions": {
-    "postcss-preset-env": "^7.0.0",
-    "postcss": "8.4.5",
     "colors": "1.4.0"
   },
   "private": true,
@@ -37,16 +35,16 @@
     "@angular/upgrade": "13.1.1",
     "@coreui/coreui": "4.1.0",
     "@ng-bootstrap/ng-bootstrap": "11.0.0",
+    "@ng-select/ng-select": "8.1.1",
     "@sindresorhus/transliterate": "1.5.0",
     "@types/d3": "7.1.0",
     "@types/jquery": "3.5.13",
     "acorn": "8.7.0",
     "ajv-formats": "2.1.1",
-    "angular-ng-autocomplete": "2.0.5",
     "angulartics2": "12.0.0",
     "bootstrap": "4.6.1",
     "c3": "0.7.20",
-    "chart.js": "2.9.4",
+    "chart.js": "3.7.0",
     "chromedriver": "97.0.0",
     "cli-color": "2.0.1",
     "core-js": "3.20.2",
@@ -66,7 +64,7 @@
     "log4js": "6.3.0",
     "log4js-protractor-appender": "1.1.2",
     "moment": "2.29.1",
-    "ng2-charts": "2.4.3",
+    "ng2-charts": "3.0.6",
     "ng2-cookies": "1.0.12",
     "ng4-click-outside": "1.0.1",
     "ngx-bootstrap": "8.0.0-RC.8",
