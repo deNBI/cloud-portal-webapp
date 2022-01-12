@@ -2,7 +2,7 @@ import {
 	AfterViewInit, ApplicationRef, Component, OnInit, ViewChild,
 } from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap/modal';
-import { Angulartics2Matomo } from 'angulartics2/matomo';
+import { Angulartics2Matomo } from 'angulartics2';
 import { VoService } from './api-connector/vo.service';
 
 /**
