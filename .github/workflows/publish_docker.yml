@@ -5,6 +5,7 @@ on:
     branches:
       - 'staging'
       - 'dev'
+      - 'decoi'
       - 'hotfix/**'
 jobs:
   build:
