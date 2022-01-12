@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { FormsModule } from '@angular/forms';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
-import { ChartsModule } from 'ng2-charts';
+import { NgChartsModule } from 'ng2-charts';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -34,7 +34,7 @@ import { ResultComponent } from './modals/result/result.component';
 		ModalModule.forRoot(),
 		ApplicationsModule,
 		SharedDirectivesModule,
-		ChartsModule,
+		NgChartsModule,
 		PipeModuleModule,
 		BsDropdownModule,
 		AlertModule,
