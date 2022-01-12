@@ -1,5 +1,5 @@
 import {
-	Component, EventEmitter, OnDestroy, OnInit, ViewChild,
+	Component, EventEmitter, OnDestroy, OnInit,
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
@@ -20,6 +20,7 @@ export class LifetimeRequestComponent implements OnInit, OnDestroy {
 
 	project: Application;
 	temp_project_extension: ApplicationLifetimeExtension;
+	initial_number_of_edam_terms: number = 0;
 
 	life_time_string: string;
 	end_date: Date;
@@ -39,7 +40,8 @@ export class LifetimeRequestComponent implements OnInit, OnDestroy {
 		private creditsService: CreditsService,
 		private applicationsService: ApplicationsService,
 		// eslint-disable-next-line no-empty-function
-	) {}
+	) {
+	}
 
 	ngOnInit(): void {
 		this.applicationsService.getEdamOntologyTerms().subscribe((terms: EdamOntologyTerm[]): void => {
@@ -58,6 +60,7 @@ export class LifetimeRequestComponent implements OnInit, OnDestroy {
 		if (end_date_info.length === 3) {
 			this.end_date = new Date(Number(end_date_info[2]), Number(end_date_info[1]) - 1, Number(end_date_info[0]));
 		}
+		this.initial_number_of_edam_terms = this.project.project_application_edam_terms.length;
 	}
 
 	ngOnDestroy() {
