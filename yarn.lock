@@ -11447,10 +11447,10 @@ yargs@^17.2.1:
     y18n "^5.0.5"
     yargs-parser "^21.0.0"
 
-yarn-audit-fix@9.0.5:
-  version "9.0.5"
-  resolved "https://registry.npmjs.org/yarn-audit-fix/-/yarn-audit-fix-9.0.5.tgz"
-  integrity sha512-ZDrmStPZISaMEENL7dNU7pfvmQ2ozVOqH43gBgk6SKfsWizcRojYDnQpLvF1ZE4VlvJPjPYGwNhIYYVInCGiHQ==
+yarn-audit-fix@9.0.6:
+  version "9.0.6"
+  resolved "https://registry.yarnpkg.com/yarn-audit-fix/-/yarn-audit-fix-9.0.6.tgz#b939c0443306222aac424b04d62a79a8f2abc5d6"
+  integrity sha512-m++F/xiFfMShD1sp9gUXn+Rm3PjYri2aqqbZAcaFo9uUDsjoKHT60qHSgOirQOM3vAC49pNHPMcCJCpylhr4kg==
   dependencies:
     "@types/find-cache-dir" "^3.2.1"
     "@types/fs-extra" "^9.0.13"
