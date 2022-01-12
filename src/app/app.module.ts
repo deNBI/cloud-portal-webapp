@@ -5,7 +5,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { ChartsModule } from 'ng2-charts';
+import { NgChartsModule } from 'ng2-charts';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ClipboardModule } from 'ngx-clipboard';
@@ -16,6 +16,7 @@ import { Angulartics2Module } from 'angulartics2';
 import { CookieService } from 'ngx-cookie-service';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { NgSelectModule } from '@ng-select/ng-select';
 import { AppComponent } from './app.component';
 
 import { ApiSettings } from './api-connector/api-settings.service';
@@ -56,11 +57,12 @@ import { PipeModuleModule } from './pipe-module/pipe-module.module';
 		CommonModule,
 		BsDropdownModule.forRoot(),
 		TabsModule.forRoot(),
-		ChartsModule,
+		NgChartsModule,
 		ModalModule.forRoot(),
 		PaginationModule.forRoot(),
 		SharedModuleModule,
 		Angulartics2Module.forRoot(),
+		NgSelectModule,
 		BrowserAnimationsModule,
 		ClipboardModule,
 		PipeModuleModule,

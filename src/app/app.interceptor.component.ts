@@ -3,7 +3,7 @@ import {
 	HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse,
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/internal/operators';
+import { tap } from 'rxjs/operators';
 import { environment } from '../environments/environment';
 
 /**

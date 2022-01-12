@@ -5,7 +5,6 @@ import * as moment from 'moment';
 import { forkJoin, Observable, Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
-import { AutocompleteComponent } from 'angular-ng-autocomplete';
 import { DOCUMENT } from '@angular/common';
 import { Chart } from 'chart.js';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
@@ -26,7 +25,14 @@ import { FlavorService } from '../api-connector/flavor.service';
 import { CreditsService } from '../api-connector/credits.service';
 import { is_vo } from '../shared/globalvar';
 import {
-	CLOUD_MAIL, CREDITS_WIKI, WIKI_MEMBER_MANAGEMENT, WIKI_PUBLICATIONS, PUBLICATIONS_LINK, OPENSTACK_LINK, SIMPLE_VM_LINK, STATUS_LINK,
+	CLOUD_MAIL,
+	CREDITS_WIKI,
+	WIKI_MEMBER_MANAGEMENT,
+	WIKI_PUBLICATIONS,
+	PUBLICATIONS_LINK,
+	OPENSTACK_LINK,
+	SIMPLE_VM_LINK,
+	STATUS_LINK,
 } from '../../links/links';
 import { Doi } from '../applications/doi/doi';
 import { ApiSettings } from '../api-connector/api-settings.service';
@@ -110,7 +116,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	ramInUse: number;
 
 	title: string = 'Project Overview';
-	@ViewChild('edam_ontology') edam_ontology: AutocompleteComponent;
 
 	checked_member_list: number[] = [];
 
@@ -125,17 +130,17 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	Application_States: typeof Application_States = Application_States;
 
 	constructor(
-private flavorService: FlavorService,
-							private groupService: GroupService,
-							private modalService: BsModalService,
-							applicationsService: ApplicationsService,
-							facilityService: FacilityService,
-							userService: UserService,
-							private activatedRoute: ActivatedRoute,
-							private fullLayout: FullLayoutComponent,
-							private router: Router,
-							private creditsService: CreditsService,
-							@Inject(DOCUMENT) private document: Document,
+		private flavorService: FlavorService,
+		private groupService: GroupService,
+		private modalService: BsModalService,
+		applicationsService: ApplicationsService,
+		facilityService: FacilityService,
+		userService: UserService,
+		private activatedRoute: ActivatedRoute,
+		private fullLayout: FullLayoutComponent,
+		private router: Router,
+		private creditsService: CreditsService,
+		@Inject(DOCUMENT) private document: Document,
 	) {
 		super(userService, applicationsService, facilityService);
 	}
@@ -435,10 +440,17 @@ private flavorService: FlavorService,
 
 			this.subscription.unsubscribe();
 			this.subscription = new Subscription();
+			this.isAdmin = false;
+			this.modificationRequestDisabled = false;
+			this.lifetimeExtensionDisabled = false;
+			this.creditsExtensionDisabled = false;
+			this.disabledDoiInput = false;
 			this.resourceDataLoaded = false;
 			this.creditHistoryLoaded = false;
 			this.errorMessage = null;
 			this.isLoaded = false;
+			this.creditHistoryLoaded = false;
+			this.resourceDataLoaded = false;
 			this.project = null;
 			this.project_application = null;
 			this.project_members = [];

@@ -2,6 +2,7 @@ import {
 	Component, EventEmitter, Input, OnInit, Output,
 } from '@angular/core';
 import { Image } from './virtualmachinemodels/image';
+import { Flavor } from './virtualmachinemodels/flavor';
 
 /**
  * Image carousel slide.
@@ -14,11 +15,16 @@ import { Image } from './virtualmachinemodels/image';
 export class ImageCarouselSlideComponent implements OnInit {
 	@Input() image: Image;
 	@Input() selectedImage: Image;
+	@Input() selectedFlavor: Flavor;
 	@Output() readonly selectedImageChange: EventEmitter<Image> = new EventEmitter();
 	window_size: number;
 	img_height: string = '120px';
 	img_width: string = '210px';
 	image_visible: boolean = true;
+	STATIC_IMG_FOLDER: String = 'static/webapp/assets/img/';
+
+	RAM_ICON_PATH: string = `${this.STATIC_IMG_FOLDER}/new_instance/ram_icon.svg`;
+	STORAGE_ICON_PATH: string = `${this.STATIC_IMG_FOLDER}/new_instance/storage_icon.svg`;
 
 	ngOnInit(): void {
 		this.window_size = window.innerWidth;

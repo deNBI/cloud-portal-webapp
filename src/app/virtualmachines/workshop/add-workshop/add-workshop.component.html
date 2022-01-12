@@ -157,7 +157,7 @@
 											Please contact the support of the facility where your project is running.
 										</div>
 										<app-image-detail *ngIf="images?.length > 0" [selectedImage]="selected_image"
-																			[images]="images"
+																			[images]="images" [selectedFlavor]="selectedFlavor"
 																			(selectedImageChange)="set_selected_image($event)"
 																			id="id_image_detail">
 										</app-image-detail>

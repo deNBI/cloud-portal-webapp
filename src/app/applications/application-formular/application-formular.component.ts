@@ -2,7 +2,6 @@ import {
 	Component, Input, OnInit, ViewChild,
 } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { AutocompleteComponent } from 'angular-ng-autocomplete';
 import { Flavor } from '../../virtualmachines/virtualmachinemodels/flavor';
 import { FlavorService } from '../../api-connector/flavor.service';
 import { FlavorType } from '../../virtualmachines/virtualmachinemodels/flavorType';
@@ -66,7 +65,6 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 
 	application_id: string | number;
 	ontology_search_keyword: string = 'term';
-	@ViewChild('edam_ontology', { static: true }) edam_ontology: AutocompleteComponent;
 	@ViewChild(NgForm, { static: true }) application_form: NgForm;
 
 	// /**
