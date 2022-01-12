@@ -4,7 +4,6 @@ import {
 import * as moment from 'moment';
 import { forkJoin, Observable, Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NgForm } from '@angular/forms';
 import { DOCUMENT } from '@angular/common';
 import { Chart } from 'chart.js';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
