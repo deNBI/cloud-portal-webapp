@@ -1,3 +1,4 @@
+import * as moment from 'moment';
 import { ApplicationLifetimeExtension } from '../application_extension.model';
 import { ComputecenterComponent } from '../../projectmanagement/computecenter.component';
 import { ApplicationDissemination } from '../application-dissemination';
@@ -7,6 +8,7 @@ import { Application_States } from '../../shared/shared_modules/baseClass/abstra
 import { ApplicationModification } from '../application_modification.model';
 import { ApplicationCreditRequest } from '../application_credit_request';
 import { User } from './user.model';
+import { ProjectMemberApplication } from '../../projectmanagement/project_member_application';
 
 /**
  * Application class.
@@ -17,6 +19,7 @@ export class Application {
 	project_application_report_allowed: boolean = false;
 	project_application_name: string;
 	project_application_shortname: string;
+	perun_name: string;
 	project_application_institute: string;
 	project_application_workgroup: string;
 	project_application_lifetime: number;
@@ -32,11 +35,16 @@ export class Application {
 	project_application_user: User;
 	project_application_pi: User = new User();
 	project_application_status: number[] = [];
-	ComputeCenter: ComputecenterComponent;
+	project_application_compute_center: ComputecenterComponent;
 	project_application_openstack_project: boolean;
 	project_application_total_gpu: number = 0;
 
 	DaysRunning: number;
+	date_end: string;
+	lifetime_days: number;
+	user_is_admin: boolean;
+	user_is_pi: boolean;
+	lifetime_reached: number;
 	project_lifetime_request: ApplicationLifetimeExtension;
 	project_modification_request: ApplicationModification;
 	project_credit_request: ApplicationCreditRequest = null;
@@ -44,6 +52,7 @@ export class Application {
 	project_application_total_cores: number;
 	project_application_total_ram: number;
 	project_application_initial_credits: number = 0;
+	project_application_current_credits: number = 0;
 	project_application_date_approved: string;
 	project_application_openstack_basic_introduction: boolean;
 	project_application_horizon2020: string;
@@ -67,6 +76,7 @@ export class Application {
 	totalLifetimeExtensionCredits: number = 0;
 	memberNamesVisible: boolean;
 	prevent_machines_starting: boolean;
+	project_application_member_applications: ProjectMemberApplication[];
 
 	constructor(aj?: Partial<Application>) {
 		this.dissemination = new ApplicationDissemination(null);
@@ -77,6 +87,7 @@ export class Application {
 				this.project_application_report_allowed = this.dissemination.someAllowed();
 			}
 			this.setDaysRunning();
+			this.setDates();
 
 			if (aj.project_lifetime_request) {
 				this.project_lifetime_request = new ApplicationLifetimeExtension(aj.project_lifetime_request);
@@ -100,6 +111,15 @@ export class Application {
 				}
 			}
 
+			if (aj.project_application_compute_center) {
+				this.project_application_compute_center = new ComputecenterComponent(
+					aj.project_application_compute_center['compute_center_facility_id'],
+					aj.project_application_compute_center['compute_center_name'],
+					aj.project_application_compute_center['compute_center_login'],
+					aj.project_application_compute_center['compute_center_support_mail'],
+				);
+			}
+
 			this.project_application_initial_credits = Number(aj.project_application_initial_credits);
 		}
 	}
@@ -110,15 +130,6 @@ export class Application {
 
 	public hasTerminatedStatus(): boolean {
 		return this.project_application_status?.includes(Application_States.TERMINATED);
-	}
-
-	private setDaysRunning(): void {
-		if (this.project_application_status != null) {
-			if (this.project_application_status.includes(Application_States.APPROVED)) {
-				this.DaysRunning = Math
-					.ceil((Math.abs(Date.now() - new Date(this.project_application_date_approved).getTime())) / (1000 * 3600 * 24));
-			}
-		}
 	}
 
 	public addEdamTerm(term: EdamOntologyTerm): void {
@@ -201,6 +212,25 @@ export class Application {
 
 	public setCreditsLoopStarted(): void {
 		this.credits_loop_started = true;
+	}
+
+	private setDaysRunning(): void {
+		if (this.project_application_status != null) {
+			if (this.project_application_status.includes(Application_States.APPROVED)) {
+				this.DaysRunning = Math
+					.ceil((Math.abs(Date.now() - new Date(this.project_application_date_approved).getTime())) / (1000 * 3600 * 24));
+			}
+		}
+	}
+
+	private setDates(): void {
+		if (this.project_application_lifetime && this.project_application_lifetime > 0) {
+			this.date_end = moment(moment(this.project_application_date_approved)
+				.add(this.project_application_lifetime, 'months').toDate()).format('DD.MM.YYYY');
+			this.lifetime_days = Math.abs(moment(moment(this.date_end, 'DD.MM.YYYY').toDate())
+				.diff(moment(this.project_application_date_approved), 'days'));
+			this.project_application_date_approved = moment(this.project_application_date_approved).format('DD.MM.YYYY');
+		}
 	}
 
 }

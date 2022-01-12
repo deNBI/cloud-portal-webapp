@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { map } from 'rxjs/operators';
 import { ApiSettings } from './api-settings.service';
 import { IResponseTemplate } from './response-template';
 import { Resources } from '../vo_manager/resources/resources';
 import { ProjectMember } from '../projectmanagement/project_member.model';
+import { Application } from '../applications/application.model/application.model';
 
 /**
  * Service which provides vo methods.
@@ -58,11 +60,17 @@ export class VoService {
 
 	}
 
-	getAllGroupsWithDetails(): Observable<any> {
+	getAllGroupsWithDetails(): Observable<Application[]> {
 
-		return this.http.get(`${ApiSettings.getApiBaseURL()}vo/projects/details/`, {
+		return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}vo/projects/details/`, {
 			withCredentials: true,
-		});
+		}).pipe(
+			map(
+				(applications: Application[]): Application[] => applications.map(
+					(application: Application): Application => new Application(application),
+				),
+			),
+		);
 
 	}
 

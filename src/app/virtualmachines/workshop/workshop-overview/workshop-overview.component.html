@@ -169,8 +169,8 @@
 											 id="user_name_field_prefix_{{member.projectMember.elixirId}}"></i>{{member.projectMember.userName}}<br>
 										<i class="fa fa-envelope" style="width: 1.5em"></i>{{member.projectMember.email}}<br>
 										<i class="fa fa-user-cog" style="width: 1.5em"></i>
-										<ng-container *ngIf="member.projectMember.groupAdmin">Admin</ng-container>
-										<ng-container *ngIf="!member.projectMember.groupAdmin">Participant</ng-container>
+										<ng-container *ngIf="member.projectMember.isAdmin">Admin</ng-container>
+										<ng-container *ngIf="!member.projectMember.isAdmin">Participant</ng-container>
 									</div>
 								</td>
 								<ng-container *ngIf="!selectedWorkshop.id">
