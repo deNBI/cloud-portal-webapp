@@ -1,3 +1,4 @@
+/* eslint-disable no-lonely-if */
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Subscription } from 'rxjs';
@@ -100,12 +101,12 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 	constructor(
 		applicationsService: ApplicationsService,
 		userService: UserService,
-							private groupservice: GroupService,
-							private modalService: BsModalService,
-							private voService: VoService,
-							facilityService: FacilityService,
-							private flavorService: FlavorService,
-							private creditsService: CreditsService,
+		private groupservice: GroupService,
+		private modalService: BsModalService,
+		private voService: VoService,
+		facilityService: FacilityService,
+		private flavorService: FlavorService,
+		private creditsService: CreditsService,
 	) {
 		super(userService, applicationsService, facilityService);
 	}
@@ -677,7 +678,44 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 					}
 				},
 			);
+		} else {
+			if (this.computeCenters.length > 0) {
+
+				this.roundRobinCreateSimpleVmProjectGroup(app);
+			} else {
+				this.showNotificationModal('Failed', 'Project could not be created!', 'danger');
+				this.approveLocked = false;
+			}
 		}
+	}
+
+	roundRobinCreateSimpleVmProjectGroup(application: Application): void {
+		const application_id: string = application.project_application_id as string;
+		this.groupservice.createGroupByApplication(application_id, undefined).subscribe((res: any): void => {
+			if (!res['client_available'] && !res['created']) {
+				this.showNotificationModal(
+					'Failed',
+					'Project could not be created as no clients with necessary resources are available.',
+					'danger',
+				);
+				this.switchApproveLocked(false);
+			} else {
+				this.showNotificationModal(
+					'Success',
+					`The project was created in ${res['client']} !`,
+					'success',
+				);
+				this.switchApproveLocked(false);
+			}
+			this.getAllApplications();
+		}, (error: object): void => {
+			console.log(error);
+			if ('error' in error && 'error' in error['error'] && error['error']['error'] === 'locked') {
+				this.showNotificationModal('Failed', 'Project is locked and could not be created!', 'danger');
+			} else {
+				this.showNotificationModal('Failed', 'Project could not be created!', 'danger');
+			}
+		});
 	}
 
 	resetApplicationPI(application: Application): void {
