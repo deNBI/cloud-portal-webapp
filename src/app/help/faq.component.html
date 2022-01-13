@@ -1,10 +1,33 @@
 <div class="animated fadeIn">
 	<div class="card" >
-		<div class="card-body">
-			<div class="row" *ngIf="is_vo_admin">
+		<div class="card-body" *ngIf="is_vo_admin">
+			<div class="row">
 				<div class="col-auto">
 					<button class="btn btn-info" (click)="modifyFaqModal.show()">Manage FAQs</button>
 				</div>
+			</div>
+			<div class="card-body" *ngIf="data_loaded && questions.length === 0">
+				<div class="alert alert-info">
+					<p>Take a look at <a href="{{ WIKI_FAQ }}" target="_blank" rel="noopener norefferer">FAQ section</a> in our Wiki.</p>
+				</div>
+			</div>
+			<div class="card-body" *ngIf="data_loaded && questions.length > 0">
+				<ngb-accordion #acc="ngbAccordion">
+					<ng-container *ngFor="let question of questions; index as i">
+						<ngb-panel title="{{ question.asked }}">
+							<ng-template ngbPanelContent>
+								<p>{{ question.answer }}</p>
+								<div *ngIf="question.links?.length > 0">
+									<p><strong>Helpful links:</strong></p>
+									<p *ngFor="let link of question.links">
+										<a href="{{ link[0] }}" target="_blank" rel="noopener norefferer">{{ link[1] }}</a>
+									</p>
+								</div>
+							</ng-template>
+					</ngb-panel>
+					</ng-container>
+
+				</ngb-accordion>
 			</div>
 		</div>
 	</div>

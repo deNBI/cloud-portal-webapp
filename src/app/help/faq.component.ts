@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {
-	WIKI, CLOUD_MAIL, CLOUD_PORTAL_SUPPORT_MAIL, STATUS_LINK, SUPPORT_LINK,
-} from '../../links/links';
+import { WIKI_FAQ } from '../../links/links';
 import { is_vo } from '../shared/globalvar';
+import { Question } from './question.model/question.model';
+
 
 /**
  *FAQ component.
@@ -16,15 +16,23 @@ import { is_vo } from '../shared/globalvar';
 
 export class FaqComponent implements OnInit {
 
-	WIKI: string = WIKI;
-	CLOUD_MAIL: string = CLOUD_MAIL;
-	CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL;
-	STATUS_LINK: string = STATUS_LINK;
-	SUPPORT_LINK: string = SUPPORT_LINK;
+	WIKI_FAQ: string = WIKI_FAQ;
 	title: string = 'Frequently asked questions';
 	is_vo_admin: boolean = false;
+	data_loaded: boolean = false;
+	questions: Question[] = [];
 
 	ngOnInit(): void {
 		this.is_vo_admin = is_vo;
+		let ques1: Question = new Question();
+		let ques2: Question = new Question();
+		ques1.asked = "First question";
+		ques2.asked = "Second Question";
+		ques1.answer = "Easy peasy answer with not a long text.";
+		ques2.answer = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet."
+		ques2.links = [['https://google.com', 'TestLink'], ['https://google.com', 'TestLink2']]
+		this.questions.push(ques1);
+		this.questions.push(ques2);
+		this.data_loaded = true;
 	}
 }
