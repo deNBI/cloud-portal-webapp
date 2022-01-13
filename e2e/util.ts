@@ -27,7 +27,7 @@ export class Util {
 	private static _15_MIN_TIMEOUT: number = Util._ONE_MINUTE_TIMEOUT * 15;
 	private static _30_MIN_TIMEOUT: number = Util._ONE_MINUTE_TIMEOUT * 30;
 	private static _DEFAULT_FLAVOR_TITLE: string = 'de.NBI default';
-	private static _UBUNTU_18_TITLE: string = 'Ubuntu 18.04 LTS (2021-08-05)';
+	private static _UBUNTU_18_TITLE: string = 'Ubuntu 18.04 LTS (2021-12-13)';
 	private static _CWLAB: string = 'cwlab';
 
 	private static _VOLUME_MOUNT_PATH_STRING: string = 'path';

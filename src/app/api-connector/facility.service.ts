@@ -181,13 +181,18 @@ export class FacilityService {
 	 * @param status
 	 * @returns
 	 */
-	getFacilityAllowedGroupsWithDetailsAndSpecificStatus(facility: number | string, status: number): Observable<any> {
+	getFacilityAllowedGroupsWithDetailsAndSpecificStatus(facility: number | string, status: number): Observable<Application[]> {
 
-		return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/projects/`, {
+		return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/projects/`, {
 			withCredentials: true,
 			params: { status: status.toString() },
-
-		});
+		}).pipe(
+			map(
+				(applications: Application[]): Application[] => applications.map(
+					(application: Application): Application => new Application(application),
+				),
+			),
+		);
 	}
 
 	/**
@@ -196,12 +201,18 @@ export class FacilityService {
 	 * @param facility the facility
 	 * @param elixir_id the id of the member
 	 */
-	getFacilityGroupsByMemberElixirId(facility: number | string, elixir_id: string): Observable<any> {
+	getFacilityGroupsByMemberElixirId(facility: number | string, elixir_id: string): Observable<Application[]> {
 
-		return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/projects/filter/`, {
+		return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/projects/filter/`, {
 			withCredentials: true,
 			params: { elixir_id: elixir_id.toString() },
-		});
+		}).pipe(
+			map(
+				(applications: Application[]): Application[] => applications.map(
+					(application: Application): Application => new Application(application),
+				),
+			),
+		);
 	}
 
 	/**

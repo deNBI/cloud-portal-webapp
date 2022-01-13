@@ -3,18 +3,14 @@
  */
 export class ComputecenterComponent {
 
-	private _FacilityId: string;
-	private _Name: string;
-	private _Login: string;
-	private _Support: string;
-
 	constructor(FacilityId: string, Name: string, Login: string, Support: string) {
 		this._FacilityId = FacilityId;
 		this._Name = Name;
 		this._Login = Login;
 		this._Support = Support;
-
 	}
+
+	private _FacilityId: string;
 
 	get FacilityId(): string {
 		return this._FacilityId;
@@ -24,6 +20,8 @@ export class ComputecenterComponent {
 		this._FacilityId = value;
 	}
 
+	private _Name: string;
+
 	get Name(): string {
 		return this._Name;
 	}
@@ -32,6 +30,8 @@ export class ComputecenterComponent {
 		this._Name = value;
 	}
 
+	private _Login: string;
+
 	get Login(): string {
 		return this._Login;
 	}
@@ -39,6 +39,8 @@ export class ComputecenterComponent {
 	set Login(value: string) {
 		this._Login = value;
 	}
+
+	private _Support: string;
 
 	get Support(): string {
 		return this._Support;

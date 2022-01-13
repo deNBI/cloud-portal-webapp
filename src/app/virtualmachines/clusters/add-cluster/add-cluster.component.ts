@@ -111,7 +111,7 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 	/**
 	 * If the client for a project is viable.
 	 */
-	client_avaiable: boolean = false;
+	client_available: boolean = false;
 
 	/**
 	 * If the data for the site is initialized.
@@ -126,6 +126,13 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 	 * @type {any[]}
 	 */
 	projects: [string, number][] = [];
+
+	/**
+	 * All projects of the user where the user is allowed to start machines.
+	 *
+	 * @type {any[]}
+	 */
+	allowedProjects: [string, number][] = [];
 
 	/**
 	 * If all project data is loaded.
@@ -402,7 +409,17 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 				},
 				(error: any): void => {
 					console.log(error);
-					this.cluster_error = error;
+					if (error['error']['error']) {
+						this.cluster_error = error['error']['error'];
+					} else {
+						this.cluster_error = error;
+					}
+					setTimeout(
+						(): void => {
+							void this.router.navigate(['/virtualmachines/clusterOverview']).then().catch();
+						},
+						4000,
+					);
 				},
 			),
 		);
@@ -421,12 +438,12 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 		this.subscription.add(
 			this.groupService.getClientBibigrid(this.selectedProject[1].toString()).subscribe((client: Client): void => {
 				if (client.status && client.status === 'Connected') {
-					this.client_avaiable = true;
+					this.client_available = true;
 
 					this.loadProjectData();
 					this.client_checked = true;
 				} else {
-					this.client_avaiable = false;
+					this.client_available = false;
 					this.client_checked = true;
 					this.projectDataLoaded = true;
 				}
@@ -442,13 +459,21 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 	 */
 	initializeData(): void {
 		this.subscription.add(
-			forkJoin(this.groupService.getSimpleVmAllowedByUser(), this.userService.getUserInfo()).subscribe((result: any): void => {
-				this.userinfo = result[1];
+			forkJoin([
+				this.groupService.getSimpleVmAllowedByUser(),
+				this.groupService.getSimpleVmByUser(),
+				this.userService.getUserInfo(),
+			]).subscribe((result: any): void => {
+				this.userinfo = result[2];
 				this.validatePublicKey();
-				const membergroups: any = result[0];
+				const allowedMemberGroups: any = result[0];
+				const membergroups: any = result[1];
 				for (const project of membergroups) {
 					this.projects.push(project);
 
+				}
+				for (const project of allowedMemberGroups) {
+					this.allowedProjects.push(project);
 				}
 
 				if (this.projects.length === 1) {
