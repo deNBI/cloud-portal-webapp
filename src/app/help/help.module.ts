@@ -6,6 +6,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { HelpRoutingModule } from './help-routing.module';
 import { HelpComponent } from '../help/help.component';
+import { FaqComponent } from './faq.component';
 
 /**
  * Help module.
@@ -21,6 +22,7 @@ import { HelpComponent } from '../help/help.component';
 
 	declarations: [
 		HelpComponent,
+		FaqComponent
 	],
 })
 export class HelpModule {

@@ -1,0 +1,29 @@
+<div class="animated fadeIn">
+	<div class="card" >
+		<div class="card-body">
+			<div class="row" *ngIf="is_vo_admin">
+				<div class="col-auto">
+					<button class="btn btn-info" (click)="modifyFaqModal.show()">Manage FAQs</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div bsModal #modifyFaqModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
+		 aria-labelledby="Label"
+		 aria-hidden="true">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title"> Modify FAQs </h4>
+			</div>
+			<div class="modal-body"></div>
+			<div class="modal-footer">
+				<div class="row">
+					<button class="btn btn-info" (click)="modifyFaqModal.hide()">Close</button>
+				</div>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

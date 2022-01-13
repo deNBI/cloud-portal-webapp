@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HelpComponent } from './help.component';
+import { FaqComponent } from './faq.component';
 
 const routes: Routes = [
 	{
@@ -10,6 +11,13 @@ const routes: Routes = [
 			title: 'Help',
 		},
 
+	},
+	{
+		path: 'faq',
+		component: FaqComponent,
+		data: {
+			title: 'FAQ',
+		},
 	},
 ];
 
