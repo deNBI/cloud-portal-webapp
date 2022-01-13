@@ -4,26 +4,26 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { AlertModule } from 'ngx-bootstrap/alert';
+import { NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap';
 import { HelpRoutingModule } from './help-routing.module';
 import { HelpComponent } from '../help/help.component';
 import { FaqComponent } from './faq.component';
-import {NgbAccordionModule} from "@ng-bootstrap/ng-bootstrap";
 
 /**
  * Help module.
  */
 @NgModule({
-    imports: [
-        HelpRoutingModule,
-        TabsModule,
-        CommonModule,
-        FormsModule, ModalModule.forRoot(),
-        AlertModule.forRoot(), NgbAccordionModule,
-    ],
+	imports: [
+		HelpRoutingModule,
+		TabsModule,
+		CommonModule,
+		FormsModule, ModalModule.forRoot(),
+		AlertModule.forRoot(), NgbAccordionModule,
+	],
 
 	declarations: [
 		HelpComponent,
-		FaqComponent
+		FaqComponent,
 	],
 })
 export class HelpModule {
