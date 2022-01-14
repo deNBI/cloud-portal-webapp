@@ -27,8 +27,7 @@
 <div *ngIf=" !isLoaded || (singleProject && !projectDataLoaded )" class="loader"></div>
 <div *ngIf=" isLoaded && userinfo?.PublicKey !== 'None' && projects.length === 0">
 	<div class="alert alert-warning" role="alert">
-		You are not a member of a SimpleVM project or the administrators of the projects you are a member of have prohibited non-administrators from starting machines.
-		You can see if this is the case for your projects on the overview page of the respective project.
+		You are not a member of a SimpleVM project.
 	</div>
 </div>
 <div
@@ -66,13 +65,14 @@
 							</div>
 						</div>
 						<div class="row justify-content-center">
-							<span *ngIf="client_avaiable && !projectDataLoaded" class="spinner-border text-info"></span>
+							<span *ngIf="client_available && !projectDataLoaded" class="spinner-border text-info"></span>
 						</div>
-						<div *ngIf="client_avaiable && projectDataLoaded">
+						<div *ngIf="selectedProject && (allowedProjects | inAllowed: selectedProject)">
+							<div *ngIf="client_available && projectDataLoaded">
 							<app-resource-overview [ressourceUsage]="selectedProjectRessources">
 							</app-resource-overview>
 							<div class="alert alert-primary" role="alert"
-									 *ngIf="selectedProject && selectedProjectRessources?.used_vms >= selectedProjectRessources?.number_vms && client_avaiable && client_checked">
+									 *ngIf="selectedProject && selectedProjectRessources?.used_vms >= selectedProjectRessources?.number_vms && client_available && client_checked">
 								The limit for virtual machines has been reached for this project.
 								Your principal investigator can request more
 								resources if necessary.
@@ -573,43 +573,39 @@
 									</div>
 								</accordion-group>
 							</accordion>
-						</div>
-					</form>
-
-				</div>
-
-				<div *ngIf="hasTools || install_mosh || resEnvOkayNeeded" class="row alert" style="margin: 15px"
-						 [ngClass]="{
+							<div>
+								<div *ngIf="hasTools || install_mosh || resEnvOkayNeeded" class="row alert" style="margin: 15px"
+										 [ngClass]="{
                                 'alert-danger': !gaveOkay,
                                 'alert-success': gaveOkay
                                 }">
-					<div class="form-check col">
-						<input class="form-check-input"
-									 name="gaveOkay"
-									 type="checkbox"
-									 id="ansible_need_okay"
-									 [(ngModel)]="gaveOkay"
-									 #respCheck
-									 required>
-						<label class="form-check-label" for="ansible_need_okay">
-							I hereby confirm that I read and acknowledge the following:<br>
-							To set up your virtual machine with your chosen options, we generate a new rsa-keypair which we use
-							to log into your virtual machine.<br>
-							<strong>At the end of the installation process we will remove the temporary key from your machine and
-								copy your public key onto it, regardless of whether the installation of your selections will succeed
-								or fail.</strong><br><br>
-							<div *ngIf="hasTools"><strong>Conda specifics:</strong><br>
-								We install Miniconda3, create a conda environment called 'denbi' and install your chosen
-								tools.<br>
-								For you convenience we initialize the .bashrc and set an alias, so that you are able to load the
-								environment simply by typing 'denbi'.<br></div>
-						</label>
-					</div>
-				</div>
+									<div class="form-check col">
+										<input class="form-check-input"
+													 name="gaveOkay"
+													 type="checkbox"
+													 id="ansible_need_okay"
+													 [(ngModel)]="gaveOkay"
+													 #respCheck
+													 required>
+										<label class="form-check-label" for="ansible_need_okay">
+											I hereby confirm that I read and acknowledge the following:<br>
+											To set up your virtual machine with your chosen options, we generate a new rsa-keypair which we use
+											to log into your virtual machine.<br>
+											<strong>At the end of the installation process we will remove the temporary key from your machine and
+												copy your public key onto it, regardless of whether the installation of your selections will succeed
+												or fail.</strong><br><br>
+											<div *ngIf="hasTools"><strong>Conda specifics:</strong><br>
+												We install Miniconda3, create a conda environment called 'denbi' and install your chosen
+												tools.<br>
+												For you convenience we initialize the .bashrc and set an alias, so that you are able to load the
+												environment simply by typing 'denbi'.<br></div>
+										</label>
+									</div>
+								</div>
 
 
-				<div
-					*ngIf="
+								<div
+									*ngIf="
           ( !vm_name
             || (!gaveOkay && (hasTools || install_mosh || resEnvOkayNeeded))
             || (!resEnvValid && resEnvComponent)
@@ -620,64 +616,78 @@
           && flavors.length > 0
           && projectDataLoaded
           && flavors_loaded
-          && client_avaiable
+          && client_available
           && (selectedProjectRessources?.used_vms < selectedProjectRessources?.number_vms)"
-					class="alert alert-danger col-md-10" role="alert" style="margin: auto;">
-					<p>The following is missing before starting a VM:</p>
-					<p *ngIf="!vm_name">- A name for your instance
-					</p>
-					<p *ngIf="!selectedFlavor">- The flavor type of your VM
-					</p>
-					<p *ngIf="!selectedImage">- The image you want to run on your VM
-					</p>
-					<p *ngIf="!gaveOkay && (hasTools || install_mosh || resEnvOkayNeeded)">- Give your okay to the automated
-						install process
-					</p>
-					<p *ngIf="resEnvNeedsName">- An url name for your Research-Environment
-					</p>
-					<p *ngIf="resEnvNeedsTemplate">- A Research-Environment template
-					</p>
+									class="alert alert-danger col-md-10" role="alert" style="margin: auto;">
+									<p>The following is missing before starting a VM:</p>
+									<p *ngIf="!vm_name">- A name for your instance
+									</p>
+									<p *ngIf="!selectedFlavor">- The flavor type of your VM
+									</p>
+									<p *ngIf="!selectedImage">- The image you want to run on your VM
+									</p>
+									<p *ngIf="!gaveOkay && (hasTools || install_mosh || resEnvOkayNeeded)">- Give your okay to the automated
+										install process
+									</p>
+									<p *ngIf="resEnvNeedsName">- An url name for your Research-Environment
+									</p>
+									<p *ngIf="resEnvNeedsTemplate">- A Research-Environment template
+									</p>
 
-				</div>
-				<div
-					*ngIf="client_avaiable && projectDataLoaded && selectedProjectRessources?.used_vms < selectedProjectRessources?.number_vms && (flavors?.length > 0  || selectedFlavor)"
-					class="alert alert-warning col-md-10" role="alert" style="margin: auto;">
-					<div class="form-check"><input class="form-check-input"
-																				 name="vm_responsibility"
-																				 type="checkbox"
-																				 id="vm_responsibility"
-																				 [(ngModel)]="vm_responsibility"
-																				 required>
-						<label class="form-check-label" for="vm_responsibility">
-							I hereby confirm that I am responsible for the virtual machine and any action performed on it.
-						</label></div>
+								</div>
+								<div
+									*ngIf="client_available && projectDataLoaded && selectedProjectRessources?.used_vms < selectedProjectRessources?.number_vms && (flavors?.length > 0  || selectedFlavor)"
+									class="alert alert-warning col-md-10" role="alert" style="margin: auto;">
+									<div class="form-check"><input class="form-check-input"
+																								 name="vm_responsibility"
+																								 type="checkbox"
+																								 id="vm_responsibility"
+																								 [(ngModel)]="vm_responsibility"
+																								 required>
+										<label class="form-check-label" for="vm_responsibility">
+											I hereby confirm that I am responsible for the virtual machine and any action performed on it.
+										</label></div>
 
-				</div>
-				<div class="form-group row"
-						 *ngIf=" client_avaiable && projectDataLoaded && selectedProjectRessources?.used_vms < selectedProjectRessources?.number_vms && (flavors?.length > 0  || selectedFlavor)">
+								</div>
+								<div class="form-group row"
+										 *ngIf=" client_available && projectDataLoaded && selectedProjectRessources?.used_vms < selectedProjectRessources?.number_vms && (flavors?.length > 0  || selectedFlavor)">
 
-					<button style=" margin-left: auto;margin-top: 25px;
+									<button style=" margin-left: auto;margin-top: 25px;
     margin-right: auto;
     width: 8em" id="startVMButton"
 
-									type="button"
+													type="button"
 
-									[disabled]="!vm_responsibility ||!vm_name ||
+													[disabled]="!vm_responsibility ||!vm_name ||
                   started_machine ||
                   !selectedFlavor ||
                   !selectedImage||
                   (!gaveOkay && (hasTools || install_mosh || resEnvOkayNeeded)) ||
                   (!resEnvValid && resEnvComponent)"
-									class="btn btn-primary  .btn-lg offset-md-8"
-									data-toggle="modal"
-									(click)="startVM(selectedFlavor.name,f.controls.instance_name.value,selectedProject[0],selectedProject[1]);resetData();redirectModal.show()">
-						Start VM
-					</button>
+													class="btn btn-primary  .btn-lg offset-md-8"
+													data-toggle="modal"
+													(click)="startVM(selectedFlavor.name,f.controls.instance_name.value,selectedProject[0],selectedProject[1]);resetData();redirectModal.show()">
+										Start VM
+									</button>
+								</div>
+							</div>
+						</div>
+						</div>
+						<div *ngIf="projectDataLoaded && selectedProject && !(allowedProjects | inAllowed: selectedProject)">
+							<div class="alert alert-info">
+								You are not allowed to start a machine in this project, as the administrators of the project do not allow non-administrators to start machines.
+								<p *ngIf="singleProject">This is the only SimpleVm project you are a member of.</p>
+							</div>
+						</div>
+					</form>
+
 				</div>
 
 
+
+
 				<div class="alert alert-danger"
-						 *ngIf="isLoaded && !client_avaiable && selectedProject && client_checked">The
+						 *ngIf="isLoaded && !client_available && selectedProject && client_checked">The
 					corresponding client is currently offline.
 					If you have any questions please contact <a href="mailto:{{CLOUD_PORTAL_SUPPORT_MAIL}}">{{CLOUD_PORTAL_SUPPORT_MAIL}}.</a>
 					Check our <a href="{{STATUS_LINK}}" target="_blank" rel="noopener noreferrer">status overview</a> to see if the site of your project is reachable.

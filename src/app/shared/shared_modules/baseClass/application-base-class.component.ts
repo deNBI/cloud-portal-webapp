@@ -109,9 +109,9 @@ export class ApplicationBaseClassComponent extends AbstractBaseClass {
 	user_applications: Application[] = [];
 
 	constructor(
-protected userService: UserService,
-							protected applicationsService: ApplicationsService,
-							protected facilityService: FacilityService,
+		protected userService: UserService,
+		protected applicationsService: ApplicationsService,
+		protected facilityService: FacilityService,
 	) {
 		super();
 
@@ -157,7 +157,7 @@ protected userService: UserService,
 	/**
 	 * Get details of member like name and email by elixir.
 	 *
-	 * @param elixir_id
+	 * @param application
 	 * @param collapse_id
 	 */
 	public getMemberDetailsByElixirIdIfCollapsed(application: Application, collapse_id: string): void {
@@ -167,6 +167,9 @@ protected userService: UserService,
 	}
 
 	public getMemberDetailsByElixirId(application: Application): void {
+		if (!application.project_application_user) {
+			return;
+		}
 		this.userService.getMemberDetailsByElixirId(application.project_application_user.elixir_id).subscribe(
 			(result: { [key: string]: string }): void => {
 

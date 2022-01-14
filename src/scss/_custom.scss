@@ -1075,6 +1075,15 @@ a.btn-outline-success:visited {
 	color: rgb(46, 184, 92);
 }
 
+	.bg-info-blue{
+    background-color: $deNBI_cyan;}
+
+
+
+  .bg-info-image {
+    background-color: $deNBI_lightgrey;
+    color: $deNBI_white;
+  }
 .btn-outline-success:hover, a.btn-outline-success:visited:hover {
 
 	color: white;

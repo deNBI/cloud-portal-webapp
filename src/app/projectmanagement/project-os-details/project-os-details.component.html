@@ -1,66 +1,65 @@
-<div *ngIf="!project?.OpenStackProject && !details_loaded">
-  <div class="spinner-border text-primary" style="display:block; margin:auto;"></div>
+<div *ngIf="!project?.project_application_openstack_project && !details_loaded">
+	<div class="spinner-border text-primary" style="display:block; margin:auto;"></div>
 </div>
-<div *ngIf="!project?.OpenStackProject && details_loaded" role="alert">
-  <table *ngIf="selectedProjectVms.length > 0" class="table table-striped table-bordered">
+<div *ngIf="!project?.project_application_openstack_project && details_loaded" role="alert">
+	<table *ngIf="selectedProjectVms.length > 0" class="table table-striped table-bordered">
 
-    <tbody>
-    <tr>
-      <th colspan="3">Virtual Machines</th>
+		<tbody>
+		<tr>
+			<th colspan="3">Virtual Machines</th>
 
-    </tr>
-    <tr>
-      <th>Id</th>
-      <th>Name</th>
-    </tr>
-    <tr *ngFor="let vm of selectedProjectVms">
-      <td>{{vm?.openstackid}}</td>
-      <td>{{vm?.name}}</td>
+		</tr>
+		<tr>
+			<th>Id</th>
+			<th>Name</th>
+		</tr>
+		<tr *ngFor="let vm of selectedProjectVms">
+			<td>{{vm?.openstackid}}</td>
+			<td>{{vm?.name}}</td>
 
-    </tr>
-    </tbody>
-  </table>
-  <table *ngIf="selectedProjectVolumes.length > 0" class="table table-striped table-bordered">
-    <tbody>
-
-
-    <tr>
-      <th colspan="3">Volumes</th>
-
-    </tr>
-    <tr>
-      <th>Id</th>
-      <th>Name</th>
-    </tr>
-    <ng-container *ngFor="let volume of selectedProjectVolumes">
-      <tr *ngIf="volume?.volume_status !== 'DELETED'">
-        <td>{{volume?.volume_openstackid}}</td>
-        <td>{{volume?.volume_name}}</td>
-      </tr>
-    </ng-container>
+		</tr>
+		</tbody>
+	</table>
+	<table *ngIf="selectedProjectVolumes.length > 0" class="table table-striped table-bordered">
+		<tbody>
 
 
+		<tr>
+			<th colspan="3">Volumes</th>
 
-    </tbody>
-  </table>
-  <table *ngIf="selectedProjectSnapshots.length > 0" class="table table-striped table-bordered">
-    <tbody>
+		</tr>
+		<tr>
+			<th>Id</th>
+			<th>Name</th>
+		</tr>
+		<ng-container *ngFor="let volume of selectedProjectVolumes">
+			<tr *ngIf="volume?.volume_status !== 'DELETED'">
+				<td>{{volume?.volume_openstackid}}</td>
+				<td>{{volume?.volume_name}}</td>
+			</tr>
+		</ng-container>
 
 
-    <tr>
-      <th colspan="3">Snapshots</th>
+		</tbody>
+	</table>
+	<table *ngIf="selectedProjectSnapshots.length > 0" class="table table-striped table-bordered">
+		<tbody>
 
-    </tr>
-    <tr>
-      <th>Id</th>
-      <th>Name</th>
-    </tr>
-    <tr *ngFor="let snapshot of selectedProjectSnapshots">
-      <td>{{snapshot?.snapshot_openstackid}}</td>
-      <td>{{snapshot?.snapshot_name}}</td>
 
-    </tr>
+		<tr>
+			<th colspan="3">Snapshots</th>
 
-    </tbody>
-          </table>
-        </div>
+		</tr>
+		<tr>
+			<th>Id</th>
+			<th>Name</th>
+		</tr>
+		<tr *ngFor="let snapshot of selectedProjectSnapshots">
+			<td>{{snapshot?.snapshot_openstackid}}</td>
+			<td>{{snapshot?.snapshot_name}}</td>
+
+		</tr>
+
+		</tbody>
+	</table>
+</div>

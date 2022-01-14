@@ -6,6 +6,7 @@ import { InListPipe } from './pipes/in-list.pipe';
 import { HasStatusPipe, StatusInProcessPipe } from './pipes/has-status.pipe';
 import { IsPiApprovedPipe } from './pipes/is-pi-approved';
 import { FloorIntegerPipe } from './pipes/floor-integer.pipe';
+import { InAllowedPipe } from './pipes/in-allowed.pipe';
 
 /**
  * Pipemodule
@@ -19,6 +20,7 @@ import { FloorIntegerPipe } from './pipes/floor-integer.pipe';
 		StatusInProcessPipe,
 		IsPiApprovedPipe,
 		FloorIntegerPipe,
+		InAllowedPipe,
 	],
 	exports: [
 		FlavorCounterPipe,
@@ -28,6 +30,7 @@ import { FloorIntegerPipe } from './pipes/floor-integer.pipe';
 		StatusInProcessPipe,
 		IsPiApprovedPipe,
 		FloorIntegerPipe,
+		InAllowedPipe,
 	],
 	imports: [
 		CommonModule,
