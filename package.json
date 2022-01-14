@@ -16,7 +16,9 @@
     "preinstall": "npx npm-force-resolutions"
   },
   "resolutions": {
-    "colors": "1.4.0"
+    "colors": "1.4.0",
+		"follow-redirects": "1.14.7"
+
   },
   "private": true,
   "dependencies": {
