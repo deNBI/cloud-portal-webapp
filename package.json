@@ -1,6 +1,6 @@
 {
   "name": "@denbi/cloud-portal-webapp",
-  "version": "4.32.0",
+  "version": "4.35.0",
   "description": "de.NBI Cloud Portal",
   "scripts": {
     "ng": "ng serve",
@@ -16,7 +16,10 @@
     "preinstall": "npx npm-force-resolutions"
   },
   "resolutions": {
-    "colors": "1.4.0"
+    "colors": "1.4.0",
+		"follow-redirects": "1.14.7",
+		"engine.io": "6.1.1"
+
   },
   "private": true,
   "dependencies": {
@@ -64,10 +67,10 @@
     "log4js": "6.3.0",
     "log4js-protractor-appender": "1.1.2",
     "moment": "2.29.1",
-    "ng2-charts": "3.0.6",
+    "ng2-charts": "3.0.7",
     "ng2-cookies": "1.0.12",
     "ng4-click-outside": "1.0.1",
-    "ngx-bootstrap": "8.0.0-RC.8",
+    "ngx-bootstrap": "8.0.0",
     "ngx-clipboard": "15.0.1",
     "ngx-cookie-service": "13.1.2",
     "ngx-owl-carousel-o": "7.0.1",
@@ -113,7 +116,7 @@
     "jasmine-core": "4.0.0",
     "jasmine-spec-reporter": "7.0.0",
     "json-loader": "0.5.7",
-    "karma": "6.3.10",
+    "karma": "6.3.11",
     "karma-chrome-launcher": "3.1.0",
     "karma-coverage-istanbul-reporter": "3.0.3",
     "karma-jasmine": "4.0.1",
