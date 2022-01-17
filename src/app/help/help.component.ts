@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {
-	WIKI, CLOUD_MAIL, CLOUD_PORTAL_SUPPORT_MAIL, STATUS_LINK, SUPPORT_LINK,
+	WIKI, CLOUD_MAIL, CLOUD_PORTAL_SUPPORT_MAIL, STATUS_LINK, SUPPORT_LINK, ZAMMAD_HELPDESK_LINK,
 } from '../../links/links';
 
 /**
@@ -20,6 +20,7 @@ export class HelpComponent {
 	CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL;
 	STATUS_LINK: string = STATUS_LINK;
 	SUPPORT_LINK: string = SUPPORT_LINK;
+	ZAMMAD_HELPDESK_LINK: string = ZAMMAD_HELPDESK_LINK;
 	title: string = 'Help';
 
 }
