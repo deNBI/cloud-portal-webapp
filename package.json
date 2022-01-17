@@ -18,7 +18,8 @@
   "resolutions": {
     "colors": "1.4.0",
 		"follow-redirects": "1.14.7",
-		"engine.io": "6.1.1"
+		"engine.io": "6.1.1",
+		"node-forge": "1.2.1"
 
   },
   "private": true,
