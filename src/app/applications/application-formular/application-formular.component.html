@@ -180,9 +180,9 @@
 								<div class="input-group">
 									<input class="form-control" id="id_project_application_lifetime"
 												 name="project_application_lifetime" placeholder="e.g 3"
-												 [(ngModel)]="application.project_application_lifetime" max="12" min="1" required step="1"
+												 [(ngModel)]="application.project_application_lifetime" max="6" min="1" required step="1"
 												 type="number"
-												 appMinAmount="1" appMaxAmount="12" appInteger
+												 appMinAmount="1" appMaxAmount="6" appInteger
 												 pattern="^([1-9]|1[012])$"
 												 [ngClass]="{
                                 'is-invalid': form.controls.project_application_lifetime?.invalid && (form.controls.project_application_lifetime?.dirty || form.controls.project_application_lifetime?.touched),
