@@ -39,8 +39,8 @@
 								 name="temp_project_extension_application_renewal_lifetime"
 								 placeholder="e.g. 3"
 								 [(ngModel)]="temp_project_extension.extra_lifetime"
-								 type="number" min="1" max="12" step="1" required
-								 appInteger appMinAmount="1" appMaxAmount="12"
+								 type="number" min="1" max="6" step="1" required
+								 appInteger appMinAmount="1" appMaxAmount="6"
 								 [ngClass]="{
                                 'is-invalid': extensionForm.controls.temp_project_extension_application_renewal_lifetime?.invalid
                                 && (extensionForm.controls.temp_project_extension_application_renewal_lifetime?.dirty
