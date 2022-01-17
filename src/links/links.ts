@@ -39,7 +39,7 @@ export const PUBLICATIONS_LINK: string = 'https://cloud.denbi.de/about/publicati
 export const FACILITY_NEWS_LINK: string = 'https://cloud.denbi.de/news/facility-news/';
 export const STATUS_LINK: string = 'https://status.cloud.denbi.de/status';
 export const SUPPORT_LINK: string = 'https://cloud.denbi.de/support/';
-export const ZAMMAD_HELPDESK_LINK = 'https://heldesk.cloud.denbi.de';
+export const ZAMMAD_HELPDESK_LINK = 'https://helpdesk.cloud.denbi.de';
 
 export const WIKI_LINKS: string[] = [
 	WIKI_SNAPSHOTS,
