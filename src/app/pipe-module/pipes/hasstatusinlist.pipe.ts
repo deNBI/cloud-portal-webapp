@@ -1,7 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { Application } from '../../applications/application.model/application.model';
 import { ProjectEnumeration } from '../../projectmanagement/project-enumeration';
-import { Project } from '../../projectmanagement/project.model';
 
 /**
  * Pipe which checks if status is in list.
@@ -12,7 +11,7 @@ import { Project } from '../../projectmanagement/project.model';
 })
 export class HasstatusinlistPipe implements PipeTransform {
 
-	transform(appl: Application|ProjectEnumeration|Project, status: number): boolean {
+	transform(appl: Application | ProjectEnumeration, status: number): boolean {
 		if (appl === undefined) {
 			return false;
 		}

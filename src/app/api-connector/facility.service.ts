@@ -35,6 +35,35 @@ export class FacilityService {
 		});
 	}
 
+	/**
+	 * Sets support e-mail addresses for computecenter.
+	 */
+	setSupportMails(facilityId: string, supportMails: string): Observable<any> {
+		const params: HttpParams = new HttpParams().set('mails', supportMails);
+
+		return this.http.post(
+			`${ApiSettings.getApiBaseURL()}computecenters/${facilityId}/supportMails/`,
+			params,
+			{
+				withCredentials: true,
+				observe: 'response',
+			},
+		);
+	}
+
+	/**
+	 * Get support e-mail addresses for computecenter.
+	 */
+	getSupportMails(facilityId: string): Observable<any> {
+		return this.http.get(
+			`${ApiSettings.getApiBaseURL()}computecenters/${facilityId}/supportMails/`,
+			{
+				withCredentials: true,
+				observe: 'response',
+			},
+		);
+	}
+
 	getWfcSubmittedApplications(facility_id: number | string): Observable<Application[]> {
 		return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility_id}/wfc/submitted/`, {
 			withCredentials: true,
@@ -152,13 +181,18 @@ export class FacilityService {
 	 * @param status
 	 * @returns
 	 */
-	getFacilityAllowedGroupsWithDetailsAndSpecificStatus(facility: number | string, status: number): Observable<any> {
+	getFacilityAllowedGroupsWithDetailsAndSpecificStatus(facility: number | string, status: number): Observable<Application[]> {
 
-		return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/projects/`, {
+		return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/projects/`, {
 			withCredentials: true,
 			params: { status: status.toString() },
-
-		});
+		}).pipe(
+			map(
+				(applications: Application[]): Application[] => applications.map(
+					(application: Application): Application => new Application(application),
+				),
+			),
+		);
 	}
 
 	/**
@@ -167,12 +201,18 @@ export class FacilityService {
 	 * @param facility the facility
 	 * @param elixir_id the id of the member
 	 */
-	getFacilityGroupsByMemberElixirId(facility: number | string, elixir_id: string): Observable<any> {
+	getFacilityGroupsByMemberElixirId(facility: number | string, elixir_id: string): Observable<Application[]> {
 
-		return this.http.get(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/projects/filter/`, {
+		return this.http.get<Application[]>(`${ApiSettings.getApiBaseURL()}computecenters/${facility}/projects/filter/`, {
 			withCredentials: true,
 			params: { elixir_id: elixir_id.toString() },
-		});
+		}).pipe(
+			map(
+				(applications: Application[]): Application[] => applications.map(
+					(application: Application): Application => new Application(application),
+				),
+			),
+		);
 	}
 
 	/**

@@ -44,7 +44,7 @@ export class CreditsRequestComponent implements OnInit, OnDestroy {
 
 	ngOnInit(): void {
 		if (this.project.project_credit_request) {
-			this.temp_credits_extension = new ApplicationCreditRequest(this.project.project_modification_request);
+			this.temp_credits_extension = new ApplicationCreditRequest(this.project.project_credit_request);
 		} else {
 			this.temp_credits_extension = new ApplicationCreditRequest();
 			this.temp_credits_extension.setByApp(this.project);

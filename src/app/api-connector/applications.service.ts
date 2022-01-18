@@ -24,6 +24,12 @@ export class ApplicationsService {
 		});
 	}
 
+	toggleStartingMachines(application: Application): Observable<Application> {
+		return this.http.post<Application>(`${ApiSettings.getApiBaseURL()}project_applications/toggle_starting_machines/`, application, {
+			withCredentials: true,
+		});
+	}
+
 	adjustApplication(application: Application): Observable<Application> {
 		return this.http.post<Application>(`${ApiSettings.getApiBaseURL()}project_applications/adjust/`, application, {
 			withCredentials: true,
@@ -53,6 +59,16 @@ export class ApplicationsService {
 
 	getApplication(app_id: string): Observable<Application> {
 		return this.http.get<Application>(`${ApiSettings.getApiBaseURL()}project_applications/${app_id}/`, {
+			withCredentials: true,
+		}).pipe(
+			map(
+				(app: Application) => new Application(app),
+			),
+		);
+	}
+
+	getFullApplicationByUserPermissions(app_id: string): Observable<Application> {
+		return this.http.get<Application>(`${ApiSettings.getApiBaseURL()}project_applications/${app_id}/byPermission/`, {
 			withCredentials: true,
 		}).pipe(
 			map(

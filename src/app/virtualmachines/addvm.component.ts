@@ -57,7 +57,6 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 	PREPARE_PLAYBOOK_STATUS: string = 'Prepare Playbook Build...';
 	ANIMATED_PROGRESS_BAR: string = 'progress-bar-animated';
 	redirectProgress: string = '0';
-
 	newVm: VirtualMachine = null;
 	members_to_add: ProjectMember[] = [];
 	progress_bar_status: string = 'Creating..';
@@ -113,6 +112,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 	image_loaded: boolean = false;
 
 	flavors_loaded: boolean = false;
+	error_starting_machine: boolean = false;
 
 	create_error: IResponseTemplate;
 
@@ -163,7 +163,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 	/**
 	 * If the client for a project is viable.
 	 */
-	client_avaiable: boolean = false;
+	client_available: boolean = false;
 	showAttachVol: boolean = false;
 	credits_allowed: boolean = false;
 
@@ -195,6 +195,13 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 	 * @type {any[]}
 	 */
 	projects: [string, number][] = [];
+
+	/**
+	 * All projects in which the user is allowed to start machines.
+	 *
+	 * @type {any[]}
+	 */
+	allowedProjects: [string, number][] = [];
 
 	/**
 	 * If all project data is loaded.
@@ -487,6 +494,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 					additional_elixir_ids,
 				)
 					.subscribe((newVm: VirtualMachine): void => {
+						this.error_starting_machine = false;
 						this.newVm = newVm;
 						this.started_machine = false;
 
@@ -505,6 +513,9 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 							this.create_error = <IResponseTemplate><any>newVm;
 						}
 
+					}, (error): void => {
+						console.log(error);
+						this.error_starting_machine = true;
 					}),
 			);
 		} else {
@@ -571,12 +582,12 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 				this.loadProjectData();
 
 				if (client.status && client.status === 'Connected' && client.activated) {
-					this.client_avaiable = true;
+					this.client_available = true;
 
 					this.client_checked = true;
 					this.getForc(client.id);
 				} else {
-					this.client_avaiable = false;
+					this.client_available = false;
 					this.client_checked = true;
 
 				}
@@ -619,13 +630,20 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 	 */
 	initializeData(): void {
 		this.subscription.add(
-			forkJoin([this.groupService.getSimpleVmByUser(), this.userService.getUserInfo()]).subscribe((result: any): void => {
-				this.userinfo = result[1];
+			forkJoin([
+				this.groupService.getSimpleVmAllowedByUser(),
+				this.groupService.getSimpleVmByUser(),
+				this.userService.getUserInfo(),
+			]).subscribe((result: any): void => {
+				this.userinfo = result[2];
 				this.validatePublicKey();
-				const membergroups: any = result[0];
-				for (const project of membergroups) {
+				const allowedMemberGroups: any = result[0];
+				const memberGroups: any = result[1];
+				for (const project of memberGroups) {
 					this.projects.push(project);
-
+				}
+				for (const project of allowedMemberGroups) {
+					this.allowedProjects.push(project);
 				}
 				if (this.projects.length === 1) {
 					this.resetChecks();

@@ -160,7 +160,7 @@
               </td>
               <tr *ngFor="let project of projects_filtered">
                 <td>
-                                     <span *ngIf="project?.OpenStackProject"
+                                     <span *ngIf="project?.project_application_openstack_project"
                                            style="font-size: 20px"
                                            class="project-openstack_plain_white_redbg"
                                            data-toggle="tooltip"
@@ -168,7 +168,7 @@
                                                 <span class="path1"></span>
                                                 <span class="path2"></span>
                                   </span>
-                  <span *ngIf="!project?.OpenStackProject"
+                  <span *ngIf="!project?.project_application_openstack_project"
                         style="font-size: 20px"
                         class="project-simpleVM_Logo_bluebg"
                         data-toggle="tooltip"
@@ -180,9 +180,9 @@
                       <span class="path5"></span>
                     </span>
                 </td>
-                <td>{{project?.ComputeCenter?.Name}}</td>
-                <td>{{ project.Id }}</td>
-                <td>{{ project.Name }}
+                <td>{{project?.project_application_compute_center?.Name}}</td>
+                <td>{{ project.project_application_perun_id }}</td>
+                <td>{{ project.perun_name }}
                 </td>
 
                 <td>
@@ -194,10 +194,10 @@
                 <td>  <span *ngIf="project | hasstatusinlist:project_states.ACTIVE"
                             style="margin-left: 5px"
                             class="badge bg-success">{{project_states[project_states.ACTIVE]}} </span>
-                  <span *ngIf="(project?.LifetimeReached | hasStatus:lifetime_states.EXPIRED) && !(project | hasstatusinlist: application_states.WAIT_FOR_CONFIRMATION)"
+                  <span *ngIf="(project?.lifetime_reached | hasStatus:lifetime_states.EXPIRED) && !(project | hasstatusinlist: application_states.WAIT_FOR_CONFIRMATION)"
                         style="margin-left: 5px"
                         class="badge bg-danger">{{lifetime_states[lifetime_states.EXPIRED]}} </span>
-                  <span *ngIf="project?.LifetimeReached | hasStatus:lifetime_states.EXPIRES_SOON"
+                  <span *ngIf="project?.lifetime_reached | hasStatus:lifetime_states.EXPIRES_SOON"
                         style="margin-left: 5px"
                         class="badge bg-warning">{{lifetime_states[lifetime_states.EXPIRES_SOON]}}</span>
                   <span *ngIf="project| hasstatusinlist: project_states.SUSPENDED"
@@ -223,14 +223,14 @@
                 </td>
 
                 <td>
-                  {{project.CurrentCredits}}/{{project.ApprovedCredits}}
+                  {{project.project_application_current_credits}}/{{project.project_application_initial_credits}}
                 </td>
 
                 <td>
                   <div class="btn-group-vertical btn-group-xs">
                     <button type="button" class="btn btn-info" style="margin-left: 5px;margin-bottom: 5px;"
                             data-toggle="modal"
-                            (click)="showMembersOfTheProject(project.Id, project.Name); usersModal.show(); "
+                            (click)="showMembersOfTheProject(project.project_application_perun_id, project.perun_name); usersModal.show(); "
 
                     >
                       <i class="fa fa-users"></i>&nbsp;Show Members
@@ -422,7 +422,7 @@
               <input id="reply_to" name="emailReply" placeholder=""
                      class="form-control"
                      type="text" [(ngModel)]="emailReply" #emailRep="ngModel"
-                     pattern="(?!(^[.-].*|[^@]*[.-]@|.*\.{2,}.*)|^.{254}.)([a-zA-Z0-9!#$%&'*+\/=?^_`{|}~.-]+@)(?!-.*|.*-\.)([a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,15}"
+                     pattern="([ ]*)(?!(^[.-].*|[^@]*[.-]@|.*\.{2,}.*)|^.{254}.)([a-zA-Z0-9!#$%&'*+\/=?^_`{|}~.-]+@)(?!-.*|.*-\.)([a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,15}([ ]*)"
                      [ngClass]="{'is-invalid':emailRep.invalid && (emailRep.dirty || emailRep.touched),
                     'is-valid':emailRep.valid && (emailRep.dirty || emailRep.touched)
                     }">
@@ -495,7 +495,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">Suspend Project {{selectedProject?.Name}}</h4>
+        <h4 class="modal-title">Suspend Project {{selectedProject?.perun_name}}</h4>
         <button type="button" class="close" style="cursor:pointer"
                 (click)="suspendModal.hide()"
                 aria-label="Close">
@@ -504,7 +504,7 @@
       </div>
       <div class="modal-body">
 
-        Are you sure you want to suspend {{selectedProject?.Name}} ?
+        Are you sure you want to suspend {{selectedProject?.perun_name}} ?
 
       </div>
       <div class="modal-footer">
@@ -527,7 +527,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">Resume Project {{selectedProject?.Name}}</h4>
+        <h4 class="modal-title">Resume Project {{selectedProject?.perun_name}}</h4>
         <button type="button" class="close" style="cursor:pointer"
                 (click)="resumeModal.hide()"
                 aria-label="Close">
@@ -536,7 +536,7 @@
       </div>
       <div class="modal-body">
 
-        Are you sure you want to resume {{selectedProject?.Name}} ?
+        Are you sure you want to resume {{selectedProject?.perun_name}} ?
 
       </div>
       <div class="modal-footer">
@@ -606,7 +606,7 @@
       </div>
 
       <div class="modal-body">
-        <p>{{ selectedProject?.Description }}</p>
+        <p>{{ selectedProject?.project_application_description}}</p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary"
@@ -651,19 +651,19 @@
             </td>
 
             <td>
-              <span *ngIf="selectedProject?.DateCreated">{{selectedProject?.DateCreated}}</span>
-              <span *ngIf="!selectedProject?.DateCreated">No creation date available</span>
+              <span *ngIf="selectedProject?.project_application_date_approved">{{selectedProject?.project_application_date_approved}}</span>
+              <span *ngIf="!selectedProject?.project_application_date_approved">No creation date available</span>
             </td>
             <td>
-              <span *ngIf="selectedProject?.DateEnd">{{selectedProject?.DateEnd}}</span>
-              <span *ngIf="!selectedProject?.DateEnd">No end date available</span>
+              <span *ngIf="selectedProject?.date_end">{{selectedProject?.date_end}}</span>
+              <span *ngIf="!selectedProject?.date_end">No end date available</span>
             </td>
             <td>
               <span *ngIf="selectedProject?.DaysRunning">{{selectedProject?.DaysRunning}}</span>
               <span *ngIf="!selectedProject?.DaysRunning">No runtime available</span>
             <td>
-              <span *ngIf="selectedProject?.LifetimeDays">{{selectedProject?.LifetimeDays}}</span>
-              <span *ngIf="!selectedProject?.LifetimeDays">No lifetime available</span>
+              <span *ngIf="selectedProject?.lifetime_days">{{selectedProject?.lifetime_days}}</span>
+              <span *ngIf="!selectedProject?.lifetime_days">No lifetime available</span>
             </td>
 
             </tbody>

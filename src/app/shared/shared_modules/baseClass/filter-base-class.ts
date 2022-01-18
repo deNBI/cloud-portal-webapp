@@ -39,11 +39,7 @@ export abstract class FilterBaseClass extends AbstractBaseClass {
 	isFilterFacilityName(name: string): boolean {
 		if (!this.filterFacilityName) {
 			return true;
-		} else if (name.indexOf(this.filterFacilityName) === 0) {
-			return true;
-		} else {
-			return false;
-		}
+		} else return name.includes(this.filterFacilityName.toLowerCase());
 	}
 
 	isFilterLongProjectName(name: string, filter?: string): boolean {

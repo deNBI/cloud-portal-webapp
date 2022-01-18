@@ -9,11 +9,11 @@ export class ProjectMember {
 	firstName: string;
 	lastName: string;
 
-	IsPi: boolean;
+	isAdmin: boolean;
+	isPi: boolean;
 	elixirId: string;
 	email: string;
 	publicKeySet: boolean;
-	groupAdmin: boolean;
 	hasVM: boolean = false;
 	vm_amount: number = 0;
 
