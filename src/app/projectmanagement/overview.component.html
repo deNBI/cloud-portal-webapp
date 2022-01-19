@@ -55,26 +55,21 @@
 					class="card-body">
 					<div class="row">
 						<div class="btn-group col-12">
-
-						</div>
-					</div>
-					<div class="row">
-						<button (click)="deleteModal.show();"
-										*ngIf="(project_application | hasstatusinlist:Application_States.SUBMITTED)
+							<button (click)="deleteModal.show();"
+											*ngIf="(project_application | hasstatusinlist:Application_States.SUBMITTED)
                         || (project_application | hasstatusinlist:Application_States.DECLINED) "
-										class="btn btn-outline-danger col-6" id="remove_application_button" style="margin:auto;"
-										type="button">
-							Remove Application
-						</button>
-					</div>
-					<div class="row btn" style="margin-top:10px;">
-						<button (click)="this.showInformationCollapse = !this.showInformationCollapse;"
-										class="btn btn-outline-primary col-6"
-										id="submitted_show_information_btn" style="margin:auto;" type="button">
-							<i class="fa fa-info-circle"></i>&nbsp;
-							<span *ngIf="this.showInformationCollapse">Hide information</span>
-							<span *ngIf="!this.showInformationCollapse">Show more information</span>
-						</button>
+											class="btn btn-outline-danger col-6" id="remove_application_button" style="margin:auto;"
+											type="button">
+								Remove Application
+							</button>
+							<button (click)="this.showInformationCollapse = !this.showInformationCollapse;"
+											class="btn btn-outline-primary col-6"
+											id="submitted_show_information_btn" style="margin:auto;" type="button">
+								<i class="fa fa-info-circle"></i>&nbsp;
+								<span *ngIf="this.showInformationCollapse">Hide information</span>
+								<span *ngIf="!this.showInformationCollapse">Show more information</span>
+							</button>
+						</div>
 					</div>
 				</div>
 
