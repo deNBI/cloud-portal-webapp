@@ -67,7 +67,7 @@
 							Remove Application
 						</button>
 					</div>
-					<div class="row" style="margin-top:10px;">
+					<div class="row btn" style="margin-top:10px;">
 						<button (click)="this.showInformationCollapse = !this.showInformationCollapse;"
 										class="btn btn-outline-primary col-6"
 										id="submitted_show_information_btn" style="margin:auto;" type="button">
@@ -467,18 +467,39 @@
 					<div class="row">
 						<div class="btn-group col-12">
 
-
 						</div>
 					</div>
 					<div class="row">
 						<div class="btn-group col-12">
-							<button (click)="this.showInformationCollapse = !this.showInformationCollapse;"
-											class="btn btn-outline-primary col-6"
+							<button
+								(click)="this.showInformationCollapse = !this.showInformationCollapse;"
+											class="btn btn-outline-primary"
 											id="show_information_btn" style="margin:auto;" type="button">
 
 								<i class="fa fa-info-circle"></i>&nbsp;
 								<span *ngIf="this.showInformationCollapse">Hide information</span>
 								<span *ngIf="!this.showInformationCollapse">Show more information</span>
+							</button>
+							<button
+								(click)="toggleMemberNameVisibility();" [disabled]="toggleLocked"
+								class="btn btn-outline-primary"
+								style="margin: auto;"
+								type="button"><i aria-hidden="true" class="fa fa-users"></i>
+								<span *ngIf="project_application?.memberNamesVisible"> Hide </span>
+								<span *ngIf="!project_application?.memberNamesVisible"> Show </span>
+								Member Names
+							</button>
+							<button
+											(click)="toggleStartingOfMachines();"
+											*ngIf="!project_application.project_application_openstack_project" [disabled]="toggleLocked"
+											class="btn btn-outline-primary"
+											style="margin: auto;"
+											type="button">
+								<i *ngIf="!project_application?.prevent_machines_starting" class="fas fa-lock"></i>
+								<i *ngIf="project_application?.prevent_machines_starting" class="fas fa-lock-open"></i>
+								<span *ngIf="project_application?.prevent_machines_starting"> Allow </span>
+								<span *ngIf="!project_application?.prevent_machines_starting"> Prevent </span>
+								starting of machines
 							</button>
 						</div>
 					</div>
@@ -550,64 +571,15 @@
 
 
 	<div class="row">
-		<div *ngIf="project_application && ((project_application | hasstatusinlist:Application_States.APPROVED)
+		<div class="col">
+			<div class="card" id="projectSettingsCard" *ngIf="project_application && ((project_application | hasstatusinlist:Application_States.APPROVED)
          || (project_application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)
-         || (project_application | hasstatusinlist:Application_States.MODIFICATION_DECLINED)
-         )
-         && (project_application.memberNamesVisible || project_application.user_is_admin || is_vo_admin)"
-				 class="col">
-
-			<div class="card" id="projectMemberDiv">
+         || (project_application | hasstatusinlist:Application_States.MODIFICATION_DECLINED))">
 				<div class="card-header">
-					<i class="fa fa-align-justify"></i> Settings/Members of the
-					Project {{ project_application?.project_application_shortname }} 				<span *ngIf="!project_members_loaded" class="spinner-border text-primary" style="display:block; margin:auto;"></span>
-
+					<i class="fas fa-cogs"></i> Project Settings
 				</div>
-
-				<div class="card-body" *ngIf="project_members_loaded">
-					<div *ngIf="project_application.user_is_admin || is_vo_admin" class="btn-group col-12">
-						<button (click)="setAddUserInvitationLink(); addUserModal.show();"
-										class="btn btn-outline-success"
-
-										id="add_member_btn_modal" style="margin-bottom:5px;"
-										type="button"><i class="fa fa-plus"></i>&nbsp; Add Member
-						</button>
-
-						<button
-							(click)="applicationModal.show();getUserProjectApplications();" class="btn btn-outline-primary"
-							style="margin-bottom:5px;"
-							type="button"><i class="fa fa-list-alt"></i>&nbsp;
-							Member Applications
-						</button>
-
-						<button
-							(click)="toggleMemberNameVisibility();" [disabled]="toggleLocked"
-							class="btn btn-outline-primary"
-							style="margin-bottom:5px;"
-							type="button"><i aria-hidden="true" class="fa fa-users"></i>
-							<span *ngIf="project_application?.memberNamesVisible"> Hide </span>
-							<span *ngIf="!project_application?.memberNamesVisible"> Show </span>
-							Member Names
-						</button>
-						<button (click)="toggleStartingOfMachines();"
-										*ngIf="!project_application.project_application_openstack_project" [disabled]="toggleLocked"
-										class="btn btn-outline-primary"
-										style="margin-bottom:5px;"
-										type="button">
-							<i *ngIf="!project_application?.prevent_machines_starting" class="fas fa-lock"></i>
-							<i *ngIf="project_application?.prevent_machines_starting" class="fas fa-lock-open"></i>
-							<span *ngIf="project_application?.prevent_machines_starting"> Allow </span>
-							<span *ngIf="!project_application?.prevent_machines_starting"> Prevent </span>
-							starting of machines
-						</button>
-
-						<button (click)="removeCheckedMembers()"
-										[disabled]="checked_member_list.length <= 0 || remove_members_clicked"
-										class="btn btn-outline-danger" style="margin-bottom:5px;"
-										type="button"><i class="fa fa-trash"></i>&nbsp;Remove Members
-						</button>
-
-					</div>
+				<span *ngIf="!isLoaded" class="spinner-border text-primary" style="display:block; margin:auto;"></span>
+				<div class="card-body" >
 					<div class="col-12">
 						<ul class="list-group list-group-flush">
 							<li class="list-group-item">
@@ -630,6 +602,47 @@
 								</span>
 							</li>
 						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div *ngIf="project_application && ((project_application | hasstatusinlist:Application_States.APPROVED)
+         || (project_application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)
+         || (project_application | hasstatusinlist:Application_States.MODIFICATION_DECLINED)
+         )
+         && (project_application.memberNamesVisible || project_application.user_is_admin || is_vo_admin)"
+				 class="col">
+
+			<div class="card" id="projectMemberDiv">
+				<div class="card-header">
+					<i class="fa fa-users"></i> Project members for {{ project_application?.project_application_shortname }}
+					<span *ngIf="!project_members_loaded" class="spinner-border text-primary" style="display:block; margin:auto;"></span>
+
+				</div>
+
+				<div class="card-body" *ngIf="project_members_loaded">
+					<div *ngIf="project_application.user_is_admin || is_vo_admin" class="btn-group col-12">
+						<button (click)="setAddUserInvitationLink(); addUserModal.show();"
+										class="btn btn-outline-success"
+
+										id="add_member_btn_modal" style="margin-bottom:5px;"
+										type="button"><i class="fa fa-plus"></i>&nbsp; Add Member
+						</button>
+
+						<button
+							(click)="applicationModal.show();getUserProjectApplications();" class="btn btn-outline-primary"
+							style="margin-bottom:5px;"
+							type="button"><i class="fa fa-list-alt"></i>&nbsp;
+							Member Applications
+						</button>
+
+						<button (click)="removeCheckedMembers()"
+										[disabled]="checked_member_list.length <= 0 || remove_members_clicked"
+										class="btn btn-outline-danger" style="margin-bottom:5px;"
+										type="button"><i class="fa fa-trash"></i>&nbsp;Remove Members
+						</button>
 
 					</div>
 
