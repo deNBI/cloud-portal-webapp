@@ -189,8 +189,7 @@
 								<!-- Error messages -->
 								<div class="row col" *ngIf="(this.selectedProjectRessources.used_volumes  + this.volumesToMount?.length)
                     >= this.selectedProjectRessources.volume_counter">
-									<div class="col-2"></div>
-									<div class="col-10">
+									<div class="col">
 										<div class="alert alert-primary">You can't create a new volume, because you have
 											reached
 											the maximum number of volumes available
@@ -200,8 +199,7 @@
 								</div>
 								<div class="row col"
 										 *ngIf="(this.selectedProjectRessources.used_volume_storage + getStorageInList()) >= this.selectedProjectRessources.max_volume_storage">
-									<div class="col-2"></div>
-									<div class="col-10">
+									<div class="col">
 										<div class="alert alert-primary">
 											You can't create a new volume, because you have reached the maximum amount of storage (in
 											GB)
@@ -212,8 +210,7 @@
 								</div>
 								<!-- New/Attach volume -->
 								<div class=" form-group row col-md-12">
-									<div class="col-md-2"></div>
-									<div class="col-md-10">
+									<div class="col">
 										<div id="addVolumeDiv" *ngIf="showAddVol">
 											<div class="form-group row">
 												<div class="col-md-2"><strong>Name</strong></div>
@@ -325,8 +322,7 @@
 
 
 									<div class=" form-group col-md-12 row" *ngIf="showAddVol || showAttachVol">
-										<div class="col-md-2"></div>
-										<div class="btn-toolbar col-md-10" role="group" *ngIf="showAddVol">
+										<div class="btn-toolbar col" role="group" *ngIf="showAddVol">
 											<button class="btn btn-danger col-md-4"
 															(click)="toggleShowAddVol();"
 															type="button">Discard <span class="fa fa-times"></span></button>
@@ -335,7 +331,7 @@
 															[disabled]="!checkVolumeValidity()" id="addVolumeConfirmationButton"
 															type="button">Add Volume <span class="fa fa-check"></span></button>
 										</div>
-										<div class="col-md-10" role="group" *ngIf="showAttachVol">
+										<div class="col" role="group" *ngIf="showAttachVol">
 											<button class="btn btn-danger col-md-4"
 															(click)="toggleShowAttachVol();"
 															type="button">Close selection <span class="fa fa-times"></span></button>
