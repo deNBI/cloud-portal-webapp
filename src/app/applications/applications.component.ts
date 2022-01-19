@@ -703,9 +703,13 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 					`The project was created in ${res['client']} !`,
 					'success',
 				);
+				this.all_applications = [];
+				this.getSubmittedApplications();
+				this.applicationsService.getExtensionRequestsCounter().subscribe((result: any): void => {
+					this.numberOfProjectApplications = result['applications_submitted_vo'];
+				});
 				this.switchApproveLocked(false);
 			}
-			this.getAllApplications();
 		}, (error: object): void => {
 			console.log(error);
 			if ('error' in error && 'error' in error['error'] && error['error']['error'] === 'locked') {
