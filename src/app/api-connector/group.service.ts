@@ -299,6 +299,13 @@ export class GroupService {
 		);
 	}
 
+	testMemberStuff(group_id: string | number, member_id: string | number): Observable<any> {
+		return this.http.get(`${ApiSettings.getApiBaseURL()}projects/${group_id}/members/${member_id}/getUser/`, {
+			withCredentials: true,
+		});
+	}
+
+
 	getLifetime(groupid: string | number): Observable<IResponseTemplate> {
 
 		return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/lifetime/`, {

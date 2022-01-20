@@ -1013,6 +1013,17 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	}
 
 	/**
+	 * test memberstuff
+	 */
+	public testMember(): void {
+		const member_id: number = 123;
+		this.groupService.testMemberStuff(this.project_application.project_application_perun_id, member_id)
+			.subscribe((result: any): void => {
+				console.log(result);
+			});
+	}
+
+	/**
 	 * Leave a project
 	 *
 	 * @param memberid of the member
