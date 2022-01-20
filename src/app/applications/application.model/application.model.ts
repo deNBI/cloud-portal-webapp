@@ -68,7 +68,7 @@ export class Application {
 	project_application_cloud_service_develop: boolean;
 	project_application_cloud_service_user_number: number;
 	flavors: Flavor[] = [];
-	project_application_workshop: boolean;
+	project_application_workshop: boolean = false;
 	credits_allowed: boolean = false;
 	credits_loop_started: boolean = false;
 	totalModificationRequestCredits: number = 0;
