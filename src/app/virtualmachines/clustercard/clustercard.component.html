@@ -1,5 +1,5 @@
 <div class="card instance-card" style="margin-bottom:15px;" [id]="'clusterCard_' + cluster?.cluster_id">
-     
+
       <div class="card-block" >
               <div class="row" style="margin-top: 5px">
                 <div class="col-6" style="margin: auto;">
@@ -35,6 +35,13 @@
                     active</span>
                   </div>
                 </div>
+								<div class="col-12" style="margin-left: 10px" *ngIf="!all_worker_loaded">
+									<div style="font-size: small">
+										<strong>Checking worker count: </strong>
+										<span class="spinner-border text-info spinner-border-sm">
+										</span>
+									</div>
+								</div>
                 <div class="col-12" style="margin-left: 10px" *ngIf="cluster.status !== VirtualMachineStates.staticDELETED ">
                   <div style="font-size: small">
                     <strong *ngIf="cluster?.public_ip">Public IP:</strong> {{cluster?.public_ip}}
@@ -137,5 +144,5 @@
 
               </div>
             </div>
-	  
+
 	  </div>

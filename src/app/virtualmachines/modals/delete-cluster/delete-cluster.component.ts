@@ -1,6 +1,4 @@
-import {
-	Component, EventEmitter, OnDestroy,
-} from '@angular/core';
+import { Component, EventEmitter, OnDestroy } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Clusterinfo } from '../../clusters/clusterinfo';
 import { VirtualMachineStates } from '../../virtualmachinemodels/virtualmachinestates';
@@ -17,6 +15,7 @@ export class DeleteClusterComponent implements OnDestroy {
 	VirtualMachineStates: VirtualMachineStates = new VirtualMachineStates();
 
 	cluster: Clusterinfo;
+	all_loaded: boolean = true;
 	public event: EventEmitter<any> = new EventEmitter();
 	private submitted: boolean = false;
 
