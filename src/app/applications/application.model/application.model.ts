@@ -74,7 +74,7 @@ export class Application {
 	totalModificationRequestCredits: number = 0;
 	totalCreditsExtensionCredits: number = 0;
 	totalLifetimeExtensionCredits: number = 0;
-	memberNamesVisible: boolean;
+	show_member_names: boolean;
 	prevent_machines_starting: boolean;
 	project_application_member_applications: ProjectMemberApplication[];
 
