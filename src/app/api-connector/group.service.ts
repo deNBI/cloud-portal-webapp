@@ -305,7 +305,6 @@ export class GroupService {
 		});
 	}
 
-
 	getLifetime(groupid: string | number): Observable<IResponseTemplate> {
 
 		return this.http.get<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}projects/${groupid}/attributes/lifetime/`, {
