@@ -103,6 +103,8 @@ export class ClustercardComponent extends SharedModal implements OnInit, OnDestr
 	 */
 	checkWorkerStatusTimer: ReturnType<typeof setTimeout>;
 
+	all_worker_loaded: boolean = false;
+
 	constructor(
 		private clipboardService: ClipboardService,
 		modalService: BsModalService,
@@ -180,7 +182,8 @@ export class ClustercardComponent extends SharedModal implements OnInit, OnDestr
 	 */
 	showDeleteModal(): void {
 		this.stopAllCheckStatusTimer();
-		const initialState = { cluster: this.cluster };
+		const all_loaded: boolean = this.get_all_batches_loaded();
+		const initialState = { cluster: this.cluster, all_loaded };
 
 		this.bsModalRef = this.modalService.show(DeleteClusterComponent, { initialState });
 		this.bsModalRef.setClass('modal-lg');
@@ -220,6 +223,7 @@ export class ClustercardComponent extends SharedModal implements OnInit, OnDestr
 				.subscribe((res: any): void => {
 					selectedBatch.setNewScalingUpWorkerCount();
 					this.cluster.password = res['password'];
+					this.all_worker_loaded = this.get_all_batches_loaded();
 
 					this.check_worker_count_loop();
 					this.showScaleModal(this.SCALE_SUCCESS, `The start of ${scale_up_count} workers was successfully initiated. Remember to configure your cluster after the machines are active!'`);
@@ -229,7 +233,17 @@ export class ClustercardComponent extends SharedModal implements OnInit, OnDestr
 
 	}
 
+	get_all_batches_loaded(): boolean {
+		let worker_amount: number = 0;
+		for (const worker_batch of this.cluster.worker_batches) {
+			worker_amount += worker_batch.worker_count;
+		}
+
+		return this.cluster.worker_instances.length === worker_amount;
+	}
+
 	check_status_loop(): void {
+		this.all_worker_loaded = this.get_all_batches_loaded();
 		this.stopAllCheckStatusTimer();
 		this.statusSubscription = new Subscription();
 		this.checkStatusTimer = setTimeout(
@@ -262,6 +276,7 @@ export class ClustercardComponent extends SharedModal implements OnInit, OnDestr
 							const password: string = this.cluster.password;
 							this.cluster = new Clusterinfo(updated_cluster);
 							this.cluster.password = password;
+							this.all_worker_loaded = this.get_all_batches_loaded();
 							for (const batch of this.cluster.worker_batches) {
 								if (batch.running_worker < batch.worker_count) {
 									this.check_worker_count_loop();
@@ -299,6 +314,7 @@ export class ClustercardComponent extends SharedModal implements OnInit, OnDestr
 				this.cluster.setScaleDownBatchesCount();
 
 				this.cluster.instances_count -= scale_down_count;
+				this.all_worker_loaded = this.get_all_batches_loaded();
 				this.showScaleModal(this.SCALE_SUCCESS, 'Successfully Scaled Down!');
 
 			}),

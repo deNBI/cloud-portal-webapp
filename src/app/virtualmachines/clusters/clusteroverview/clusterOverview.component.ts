@@ -27,8 +27,8 @@ export const SCALING_SCRIPT_NAME: string = 'scaling.py';
  */
 @Component({
 
-	           selector: 'app-cluster-overview',
-	           templateUrl: './clusterOverview.component.html',
+	selector: 'app-cluster-overview',
+	templateUrl: './clusterOverview.component.html',
 	styleUrls: ['../../vmOverview.component.scss'],
 	providers: [FacilityService, ImageService, UserService,
 		VirtualmachineService, FullLayoutComponent, GroupService, ClientService, GroupService, FlavorService],
@@ -91,14 +91,14 @@ export class ClusterOverviewComponent extends AbstractBaseClass implements OnIni
 	filterChanged: Subject<string> = new Subject<string>();
 
 	constructor(
-private facilityService: FacilityService,
-private groupService: GroupService,
-				private imageService: ImageService,
-private userService: UserService,
-				private virtualmachineservice: VirtualmachineService,
-private fb: FormBuilder,
-				private clipboardService: ClipboardService,
-private flavorService: FlavorService,
+		private facilityService: FacilityService,
+		private groupService: GroupService,
+		private imageService: ImageService,
+		private userService: UserService,
+		private virtualmachineservice: VirtualmachineService,
+		private fb: FormBuilder,
+		private clipboardService: ClipboardService,
+		private flavorService: FlavorService,
 	) {
 		super();
 

@@ -25,6 +25,7 @@ export class LifetimeRequestComponent implements OnInit, OnDestroy {
 	life_time_string: string;
 	end_date: Date;
 	new_end_date: Date;
+	max_lifetime: number = 6;
 
 	selected_ontology_terms: EdamOntologyTerm[] = [];
 	edam_ontology_terms: EdamOntologyTerm[];
