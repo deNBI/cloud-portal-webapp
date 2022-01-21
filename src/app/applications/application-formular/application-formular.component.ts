@@ -14,7 +14,14 @@ import { CreditsService } from '../../api-connector/credits.service';
 import { Application } from '../application.model/application.model';
 import { is_vo } from '../../shared/globalvar';
 import {
-	CLOUD_MAIL, CREDITS_WIKI, SURVEY_LINK, POLICY_LINK, WIKI_WORKSHOPS, OPENSTACK_LINK, PROJECT_TYPES_LINK, SIMPLE_VM_LINK,
+	CLOUD_MAIL,
+	CREDITS_WIKI,
+	OPENSTACK_LINK,
+	POLICY_LINK,
+	PROJECT_TYPES_LINK,
+	SIMPLE_VM_LINK,
+	SURVEY_LINK,
+	WIKI_WORKSHOPS,
 } from '../../../links/links';
 
 /**
@@ -59,6 +66,7 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 	PROJECT_TYPES_LINK: string = PROJECT_TYPES_LINK;
 	SIMPLE_VM_LINK: string = SIMPLE_VM_LINK;
 	survey_link_visible: boolean = false;
+	max_lifetime: number = 6;
 
 	acknowledgeModalTitle: string = 'Acknowledge';
 	acknowledgeModalType: string = 'info';

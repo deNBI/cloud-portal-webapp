@@ -12,7 +12,7 @@
 		<div class="form-group row">
 			<label class="col-md-4 form-control-label">
 				<strong>Lifetime* <i class="icon-question" data-toggle="tooltip"
-														 title="Current timespan of your project. You can extend your project by a maximum of 12 months">
+														 title="Current timespan of your project. You can extend your project by a maximum of {{max_lifetime}} months">
 				</i>
 				</strong>
 			</label>
@@ -39,8 +39,8 @@
 								 name="temp_project_extension_application_renewal_lifetime"
 								 placeholder="e.g. 3"
 								 [(ngModel)]="temp_project_extension.extra_lifetime"
-								 type="number" min="1" max="6" step="1" required
-								 appInteger appMinAmount="1" appMaxAmount="6"
+								 type="number" min="1" max={{max_lifetime}} step="1" required
+								 appInteger appMinAmount="1" appMaxAmount={{max_lifetime}}
 								 [ngClass]="{
                                 'is-invalid': extensionForm.controls.temp_project_extension_application_renewal_lifetime?.invalid
                                 && (extensionForm.controls.temp_project_extension_application_renewal_lifetime?.dirty
@@ -52,7 +52,7 @@
 						<span class="input-group-text" style="padding: 0 !important;"> months</span>
 					</div>
 				</div>
-				<span class="help-block">Number of months you want to extend the project </span>
+				<span class="help-block">Number of months you want to extend the project (up to a maximum of 6 months).</span>
 			</div>
 		</div>
 		<div class="form-group row" *ngIf="initial_number_of_edam_terms=== 0 ">
