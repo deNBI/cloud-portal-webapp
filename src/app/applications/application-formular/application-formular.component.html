@@ -180,9 +180,9 @@
 								<div class="input-group">
 									<input class="form-control" id="id_project_application_lifetime"
 												 name="project_application_lifetime" placeholder="e.g 3"
-												 [(ngModel)]="application.project_application_lifetime" max="6" min="1" required step="1"
+												 [(ngModel)]="application.project_application_lifetime" max={{max_lifetime}} min="1" required step="1"
 												 type="number"
-												 appMinAmount="1" appMaxAmount="6" appInteger
+												 appMinAmount="1" appMaxAmount={{max_lifetime}} appInteger
 												 pattern="^([1-9]|1[012])$"
 												 [ngClass]="{
                                 'is-invalid': form.controls.project_application_lifetime?.invalid && (form.controls.project_application_lifetime?.dirty || form.controls.project_application_lifetime?.touched),
@@ -191,7 +191,7 @@
 									<div class="input-group-append"><span class="input-group-text"> months
                                     </span></div>
 								</div>
-								<span class="help-block">How long would you like to run this project (12 month is maximum)?</span>
+								<span class="help-block">How long would you like to run this project ({{max_lifetime}} months is maximum)?</span>
 							</div>
 						</div>
 

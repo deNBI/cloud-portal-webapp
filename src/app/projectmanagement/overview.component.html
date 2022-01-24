@@ -480,8 +480,8 @@
 								class="btn btn-outline-primary"
 								style="margin: auto;"
 								type="button"><i aria-hidden="true" class="fa fa-users"></i>
-								<span *ngIf="project_application?.memberNamesVisible"> Hide </span>
-								<span *ngIf="!project_application?.memberNamesVisible"> Show </span>
+								<span *ngIf="project_application?.show_member_names"> Hide </span>
+								<span *ngIf="!project_application?.show_member_names"> Show </span>
 								Member Names
 							</button>
 							<button
@@ -582,9 +582,9 @@
 							</li>
 							<li class="list-group-item">
 								Project member names visible for non-administrators
-								<span [ngClass]="project_application.memberNamesVisible ? 'badge-success' : 'badge-danger'"
+								<span [ngClass]="project_application.show_member_names ? 'badge-success' : 'badge-danger'"
 											class="badge">
-									{{project_application.memberNamesVisible ? "Enabled" : "Disabled" }}
+									{{project_application.show_member_names ? "Enabled" : "Disabled" }}
 								</span>
 
 							</li>
@@ -607,7 +607,7 @@
          || (project_application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)
          || (project_application | hasstatusinlist:Application_States.MODIFICATION_DECLINED)
          )
-         && (project_application.memberNamesVisible || project_application.user_is_admin || is_vo_admin)"
+         && (project_application.show_member_names || project_application.user_is_admin || is_vo_admin)"
 				 class="col">
 
 			<div class="card" id="projectMemberDiv">
@@ -656,8 +656,8 @@
 								</th>
 								<th>User ID</th>
 								<th>Member ID</th>
-								<th *ngIf="project_application.user_is_admin || is_vo_admin || project_application?.memberNamesVisible">
-									Full Name <span *ngIf="!project_application?.memberNamesVisible">(hidden)</span>
+								<th *ngIf="project_application.user_is_admin || is_vo_admin || project_application?.show_member_names">
+									Full Name <span *ngIf="!project_application?.show_member_names">(hidden)</span>
 								</th>
 								<th *ngIf="project_application.user_is_admin || is_vo_admin">Actions</th>
 							</tr>
@@ -674,7 +674,7 @@
 								<td>{{ member.userId }}</td>
 								<td>{{ member.memberId }}</td>
 								<td
-									*ngIf="project_application.user_is_admin || is_vo_admin || project_application?.memberNamesVisible">{{ member.userName }}
+									*ngIf="project_application.user_is_admin || is_vo_admin || project_application?.show_member_names">{{ member.userName }}
 									<span *ngIf="member.isAdmin " class="badge badge-pill bg-info-blue">ADMIN</span>
 									<span *ngIf="member.isPi " class="badge badge-pill bg-danger">PI</span>
 									<span *ngIf="!member.isPi && !member.isAdmin   " class="badge badge-pill bg-warning">MEMBER</span>

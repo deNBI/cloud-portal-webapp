@@ -12,6 +12,10 @@
 		<p>Are you sure you want to delete <strong>{{cluster?.cluster_id}}</strong>? </p>
         This will also delete the virtual machines:
         <p><strong>{{cluster?.master_instance.name}}</strong></p>
+			<p *ngIf="!all_loaded">
+				The worker count is not yet fully loaded and therefore the following list of worker instances is probably not correct.
+				For a correct list of worker instances please wait until all instances reached their targeted status.
+			</p>
         <p *ngFor="let vm of cluster?.worker_instances"><span
                 *ngIf="vm.status !== VirtualMachineStates.staticDELETED && vm.status !== VirtualMachineStates.staticNOT_FOUND"><strong>{{vm.name}}</strong></span>
         </p>
