@@ -66,11 +66,11 @@
 							</div>
 						</div>
 					</div>
-					<div class="card-footer text-muted" *ngIf="selectedImage?.min_ram >0 || selectedImage?.min_disk >0 ">
+					<div class="card-footer text-muted" *ngIf="selectedImage?.min_disk >0 ">
 						Requirements:
 						<div class="scroll-flavor">
 
-							<div class="row" *ngIf="selectedImage?.min_ram > 0">
+							<!-- min ram quickfix <div class="row" *ngIf="selectedImage?.min_ram > 0">
 								<div class="col-2">
 
 									<figure class="image-card-icons">
@@ -84,7 +84,7 @@
 									<i *ngIf="selectedFlavor?.ram >= selectedImage?.min_ram" class="fa fa-check"
 										 style="color: green !important;"></i>&nbsp;
 								</div>
-							</div>
+							</div> -->
 							<div class="row" *ngIf="selectedImage?.min_disk > 0">
 								<div class="col-2">
 									<i class="image-card-icons">
