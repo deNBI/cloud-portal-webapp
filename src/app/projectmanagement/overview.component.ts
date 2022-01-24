@@ -558,7 +558,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 			this.project_application.show_member_names = application.show_member_names;
 			this.toggleLocked = false;
 		}, () => {
-			this.toggleLocked = false
+			this.toggleLocked = false;
 		});
 	}
 
