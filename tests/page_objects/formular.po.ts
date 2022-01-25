@@ -8,8 +8,8 @@ export class FormularPage {
 	private SIDEBAR_NEW_PROJECT: string = 'sidebar_new_project';
 	private NEW_SVM_BTN: string = 'newSimpleVMBtn';
 	private NEW_OPENSTACK_BTN: string = 'newOpenStackBtn';
-	private SUBMIT_BTN: string = 'submit_btn';
-	private VERIFICATION_BTN: string = 'verification_btn';
+	private SUBMIT_BTN: string = 'submit_application_btn';
+	private VERIFICATION_BTN: string = 'verification_application_btn';
 	private ACKNOWLEDGE_BTN: string = 'acknowledge_approve_btn';
 	private APPLICATION_SUBMITTED: string = 'The application was submitted';
 	private NOTIFICATION_MESSAGE: string = 'notification_message';
@@ -36,15 +36,15 @@ export class FormularPage {
 
 	async goToNewSimpleVMProject() {
 		await this.goto();
-		await this.page.locator(`[data-test-id=${this.NEW_SVM_BTN}]`).click();
+		await this.page.locator(Util.by_data_test_id_str(this.NEW_SVM_BTN)).click();
 		await this.page.waitForURL('**/applications/newSimpleVmApplication');
 
 	}
 
 	async goToNewOpenStackApplication() {
 		await this.goto();
-		await this.page.waitForSelector(`[data-test-id=${this.NEW_OPENSTACK_BTN}]`);
-		await this.page.locator(`[data-test-id=${this.NEW_OPENSTACK_BTN}]`).click();
+		await this.page.waitForSelector(Util.by_data_test_id_str(this.NEW_OPENSTACK_BTN));
+		await this.page.locator(Util.by_data_test_id_str(this.NEW_OPENSTACK_BTN)).click();
 
 		await this.page.waitForURL('**/applications/newCloudApplication');
 	}
@@ -52,9 +52,10 @@ export class FormularPage {
 	async submitApplication(): Promise<any> {
 		console.log('Submit Application');
 
-		await this.page.locator(`[data-test-id=${this.SUBMIT_BTN}]`).click();
-		await this.page.locator(`[data-test-id=${this.VERIFICATION_BTN}]`).click();
-		await this.page.locator(`[data-test-id=${this.ACKNOWLEDGE_BTN}]`).click();
+		await this.page.locator(Util.by_data_test_id_str(this.SUBMIT_BTN)).click();
+		await this.page.locator(Util.by_data_test_id_str(this.VERIFICATION_BTN)).click();
+		await this.page.locator(Util.by_data_test_id_str(this.ACKNOWLEDGE_BTN)).click();
+		await this.page.waitForSelector(`data-test-id=${this.NOTIFICATION_MESSAGE} >> text=${this.APPLICATION_SUBMITTED}`);
 		console.log('Submitted Application');
 	}
 
@@ -62,45 +63,46 @@ export class FormularPage {
 
 		// fill  Formular
 		console.log('Fill form');
-		await this.page.fill('[data-test-id=project_application_name_input]', name);
-		await this.page.fill('[data-test-id=project_application_shortname_input]', name);
-		await this.page.fill('[data-test-id=project_application_description_input]', 'ProtractorTest Description');
-		await this.page.fill('[data-test-id=project_application_lifetime_input]', '4');
+		await this.page.fill(Util.by_data_test_id_str('project_application_name_input'), name);
+		await this.page.fill(Util.by_data_test_id_str('project_application_shortname_input'), name);
+		await this.page.fill(Util.by_data_test_id_str('project_application_description_input'), 'ProtractorTest Description');
+		await this.page.fill(Util.by_data_test_id_str('project_application_lifetime_input'), '4');
 		if (!openstack) {
-			await this.page.locator('[data-test-id=project_application_workshop_input]').click();
+			await this.page.locator(Util.by_data_test_id_str('project_application_workshop_input')).click();
 		}
-		await this.page.fill('[data-test-id=project_application_institute_input]', 'Proctractor Institute');
-		await this.page.fill('[data-test-id=project_application_workgroup_input]', 'Proctractor Workgroup');
-		await this.page.locator('[data-test-id=project_application_bmbf_switch]').click();
-		await this.page.fill('[data-test-id=project_application_bmbf_project-input]', 'BMBF Project');
-		await this.page.locator('[data-test-id=project_application_elixir_switch]').click();
-		await this.page.fill('[data-test-id=project_application_elixir_project_input]', 'Elixir Project');
-		await this.page.fill('[data-test-id=de.NBI default]', this.NUMBER_FLAVORS);
-		await this.page.type('[data-test-id=edam_input]', 'Bioinformatics');
-		await this.page.locator('ng-option-label >> text=Bioinformatics').click();
-		await this.page.locator('[data-test-id=project_application_horizon_switch]').click();
-		await this.page.fill('[data-test-id=project_application_horizon2020_input]', 'Horizon2020Project');
-		await this.page.fill('[data-test-id=project_application_volume_limit_input]', '2');
-		await this.page.locator('[data-test-id=project_application_report_allowed_switch]').click();
-		await this.page.locator('[data-test-id=project_application_sensitive_data_switch]').click();
-		await this.page.fill('[data-test-id=information_public_title_input]', 'A Public Title');
-		await this.page.locator('[data-test-id=public_description_enabled_switch]').click();
-		await this.page.fill('[data-test-id=information_description_input]', 'A Public Description');
-		await this.page.locator('[data-test-id=information_resources_checkbox]').click();
-		await this.page.locator('[data-test-id=information_lifetime_checkbox]').click();
-		await this.page.locator('[data-test-id=information_project_type_checkbox]').click();
-		await this.page.locator('[data-test-id=information_pi_name_checkbox]').click();
-		await this.page.locator('[data-test-id=information_institution_checkbox]').click();
-		await this.page.locator('[data-test-id=information_workgroup_checkbox]').click();
-		await this.page.locator('[data-test-id=information_project_affiliation_checkbox]').click();
-		await this.page.locator('[data-test-id=platform_denbi_checkbox]').click();
-		await this.page.locator('[data-test-id=platform_twitter_checkbox]').click();
+		await this.page.fill(Util.by_data_test_id_str('project_application_institute_input'), 'Proctractor Institute');
+		await this.page.fill(Util.by_data_test_id_str('project_application_workgroup_input'), 'Proctractor Workgroup');
+		await this.page.locator(Util.by_data_test_id_str('project_application_bmbf_switch')).click();
+		await this.page.fill(Util.by_data_test_id_str('project_application_bmbf_project-input'), 'BMBF Project');
+		await this.page.locator(Util.by_data_test_id_str('project_application_elixir_switch')).click();
+		await this.page.fill(Util.by_data_test_id_str('project_application_elixir_project_input'), 'Elixir Project');
+		await this.page.fill(Util.by_data_test_id_str('std_0'), this.NUMBER_FLAVORS);
+		await this.page.locator(Util.by_data_test_id_str('edam_input')).click();
+		await this.page.fill('[aria-autocomplete=list]', 'Bioinformatics');
+		await this.page.locator('[role=option]').click();
+		await this.page.locator(Util.by_data_test_id_str('project_application_horizon_switch')).click();
+		await this.page.fill(Util.by_data_test_id_str('project_application_horizon2020_input'), 'Horizon2020Project');
+		await this.page.fill(Util.by_data_test_id_str('project_application_volume_limit_input'), '2');
+		await this.page.locator(Util.by_data_test_id_str('project_application_report_allowed_switch')).click();
+		await this.page.locator(Util.by_data_test_id_str('project_application_sensitive_data_switch')).click();
+		await this.page.fill(Util.by_data_test_id_str('information_public_title_input'), 'A Public Title');
+		await this.page.locator(Util.by_data_test_id_str('public_description_enabled_switch')).click();
+		await this.page.fill(Util.by_data_test_id_str('information_description_input'), 'A Public Description');
+		await this.page.locator(Util.by_data_test_id_str('information_resources_checkbox')).click();
+		await this.page.locator(Util.by_data_test_id_str('information_lifetime_checkbox')).click();
+		await this.page.locator(Util.by_data_test_id_str('information_project_type_checkbox')).click();
+		await this.page.locator(Util.by_data_test_id_str('information_pi_name_checkbox')).click();
+		await this.page.locator(Util.by_data_test_id_str('information_institution_checkbox')).click();
+		await this.page.locator(Util.by_data_test_id_str('information_workgroup_checkbox')).click();
+		await this.page.locator(Util.by_data_test_id_str('information_project_affiliation_checkbox')).click();
+		await this.page.locator(Util.by_data_test_id_str('platform_denbi_checkbox')).click();
+		await this.page.locator(Util.by_data_test_id_str('platform_twitter_checkbox')).click();
 
 		if (is_pi) {
-			await this.page.locator('[data-test-id=project_application_pi_approved_checkbox]').click();
-			await this.page.locator('[data-test-id=project_application_responsibility_checkbox]').click();
+			await this.page.locator(Util.by_data_test_id_str('project_application_pi_approved_checkbox')).click();
+			await this.page.locator(Util.by_data_test_id_str('project_application_responsibility_checkbox')).click();
 		} else {
-			await this.page.fill('[data-test-id=project_application_pi_email_input]', Util.PI_EMAIL);
+			await this.page.fill(Util.by_data_test_id_str('project_application_pi_email_input'), Util.PI_EMAIL);
 		}
 	}
 }

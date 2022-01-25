@@ -242,7 +242,7 @@
 										However, your selection will determine how many machines, how many cores and how much RAM will be
 										available for your project.
 									</div>
-									<div *ngFor="let f of flavorList">
+									<div *ngFor="let f of flavorList;let i =index">
 										<div *ngIf="f.type.shortcut === t.shortcut && f.simple_vm"
 												 class="form-group row">
 
@@ -259,7 +259,7 @@
 													<input class="form-control"
 																 id="{{f.name}}"
 																 name="{{f.name}}"
-																 data-test-id="{{f.name}}"
+																 attr.data-test-id="{{f.type.shortcut + '_' + i}}"
 																 type="number" min="0" step="1"
 																 placeholder="0"
 																 [ngModel]="application?.getFlavorCounter(f)"
@@ -830,7 +830,8 @@
 										<label class="col-md-4 form-control-label">Project Type</label>
 										<div class="col-md-4">
 											<div class="form-check">
-												<input type="checkbox" class="form-check-input" name="information_project_type" data-test-id="information_project_type_checkbox"
+												<input type="checkbox" class="form-check-input" name="information_project_type"
+															 data-test-id="information_project_type_checkbox"
 															 id="information_project_type_checkbox"
 															 [(ngModel)]="application.dissemination.information_project_type">
 											</div>
@@ -877,7 +878,8 @@
 										<div class="col-md-4">
 											<div class="form-check">
 												<input type="checkbox" class="form-check-input" name="information_project_affiliation"
-															 id="information_project_affiliation_checkbox" data-test-id="information_project_affiliation_checkbox"
+															 id="information_project_affiliation_checkbox"
+															 data-test-id="information_project_affiliation_checkbox"
 															 [(ngModel)]="application.dissemination.information_project_affiliation">
 											</div>
 										</div>
@@ -936,7 +938,8 @@
 							<div class="col-md-8">
 								<div class="form-check">
 									<input type="checkbox" class="form-check-input"
-												 id="project_application_pi_approved_checkbox" data-test-id="project_application_pi_approved_checkbox"
+												 id="project_application_pi_approved_checkbox"
+												 data-test-id="project_application_pi_approved_checkbox"
 												 [(ngModel)]="application.project_application_pi_approved"
 												 name="project_application_pi_approved">
 									<span class="help-block"> Are you a principal investigator?</span>
@@ -955,7 +958,8 @@
                                 }">
 								<div class="form-check">
 									<input class="form-check-input"
-												 name="project_application_responsibility" data-test-id="project_application_responsibility_checkbox"
+												 name="project_application_responsibility"
+												 data-test-id="project_application_responsibility_checkbox"
 												 type="checkbox"
 												 id="project_application_responsibility"
 												 ngModel
@@ -1063,7 +1067,7 @@
 					<div>
 						<button *ngIf="!is_validation"
 										(click)="calculateInitialCredits(form); submitModal.show();"
-										id="submit_btn"
+										id="submit_btn" data-test-id="submit_application_btn"
 										[disabled]="submitting || form.invalid  ||application?.project_application_edam_terms.length === 0 || application?.project_application_edam_terms.length > 10 || (application?.flavors.length === 0  && !application?.project_application_openstack_project) || (!application?.dissemination?.isPlatformSelected()  && application?.project_application_report_allowed)"
 										class="btn btn-sm btn-success"
 										type="button"><i
@@ -1093,7 +1097,7 @@
 				</button>
 			</div>
 			<div class="modal-body">
-				<div class="alert alert-{{ notificationModalType }}" id="notification_message" role="alert">
+				<div class="alert alert-{{ notificationModalType }}" id="notification_message" data-test-id="notification_message" role="alert">
 					{{ notificationModalMessage }}
 
 				</div>
@@ -1151,7 +1155,7 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button id="acknowledge_approve_btn" type="button"
+				<button id="acknowledge_approve_btn" type="button" data-test-id="acknowledge_approve_btn"
 								(click)="acknowledgemodal.hide(); onSubmit(); notificationModal.show();"
 								class="btn  btn-success" name="_save" form="application_form">
 					Accept
@@ -1336,6 +1340,7 @@
 
 
 				<button class="btn btn-success col-md4" type="button" id="verification_btn"
+								data-test-id="verification_application_btn"
 								(click)="acknowledgemodal.show(); submitModal.hide();">Confirm Application
 				</button>
 				<button class="btn  btn-warning col-md-4" type="reset"

@@ -14,10 +14,10 @@
     <div class="col-12">
       <div class="btn-group" role="group" aria-label="publicKeyButtonGroup">
          <button class="btn btn-primary" style="float: left; margin: 2px" type="button" (click)="generateKeyModal.show()"
-      id="generateSShKey">Generate Key
+      id="generateSShKey" data-test-id="generateSShKey">Generate Key
       </button>
       <button class="btn btn-primary" style="float: left; margin: 2px" type="button" (click)="public_key='';pubKeyModal.show()"
-      id="setPublicKeyButton">Set Key
+      id="setPublicKeyButton" data-test-id="setPublicKeyButton">Set Key
       </button>
       <button class="btn btn-primary" style="float: right; margin: 2px" type="button" (click)="copyToClipboard(userinfo?.PublicKey)"
 
@@ -45,7 +45,7 @@
 
 <div bsModal #generateKeyModal="bs-modal" class="modal fade" tabindex="-1"
      role="dialog" aria-labelledby="Label"
-     aria-hidden="true" id="generate_key_modal">
+     aria-hidden="true" id="generate_key_modal" data-test-id="generate_key_modal">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -77,7 +77,7 @@ We do not store the private key anywhere!<br>
 In case you lose your private key, it is lost permanently!</alert>
           <div class="form-check">
             <input class="form-check-input" name="public_key_acknowledgement_checkbox" type="checkbox"
-                   id="generate_checkbox" [(ngModel)]="acknowledgement_given">
+                   id="generate_checkbox" [(ngModel)]="acknowledgement_given" data-test-id="generate_checkbox">
             <label class="form-check-label" for="public_key_acknowledgement_checkbox">
               I hereby confirm that I am aware of the effects of generating a new SSH-key.
             </label>
@@ -90,7 +90,7 @@ In case you lose your private key, it is lost permanently!</alert>
 
 
         <button [disabled]="!acknowledgement_given"
-                class="btn btn-success col-md4" type="button" id="set_new_ssh_key_button"
+                class="btn btn-success col-md4" type="button" id="set_new_ssh_key_button" data-test-id="set_new_ssh_key_button"
                 (click)="generateKey();generateKeyModal.hide();">Set
         </button>
         <button class="btn  btn-primary col-md-4" type="reset"
@@ -132,7 +132,7 @@ In case you lose your private key, it is lost permanently!</alert>
 				<alert type="info">
 					Currently supported public key formats are RSA and ECDSA (SHA2, NIST P256, P384 or P521).
 				</alert>
-        <textarea rows="8" type="text" class="form-control input-lg" id="public_key_enter_area"
+        <textarea rows="8" type="text" class="form-control input-lg" id="public_key_enter_area" data-test-id="public_key_enter_area"
                   placeholder="Please enter a new valid public key." name="public_key" [(ngModel)]="public_key"
                   #publickey></textarea>
 
@@ -144,7 +144,7 @@ In case you lose your private key, it is lost permanently!</alert>
           render all your currently running machines inaccessible.
           <div class="form-check">
             <input class="form-check-input" name="public_key_acknowledgement_checkbox" type="checkbox"
-                   id="public_key_acknowledgement_checkbox" [(ngModel)]="acknowledgement_given">
+                   id="public_key_acknowledgement_checkbox" data-test-id="public_key_acknowledgement_checkbox" [(ngModel)]="acknowledgement_given">
             <label class="form-check-label" for="public_key_acknowledgement_checkbox">
               I hereby confirm that I am aware of the effects of entering a new SSH-key.
             </label>
@@ -157,7 +157,7 @@ In case you lose your private key, it is lost permanently!</alert>
 
 
         <button [disabled]="!validatePublicKey() || !acknowledgement_given"
-                class="btn btn-success col-md4" type="button" id="set_new_public_key_button"
+                class="btn btn-success col-md4" type="button" id="set_new_public_key_button" data-test-id="set_new_public_key_button"
                 (click)="importKey(publickey.value);pubKeyModal.hide();">Set
         </button>
         <button class="btn  btn-primary col-md-4" type="reset" (click)="pubKeyModal.hide()">Cancel

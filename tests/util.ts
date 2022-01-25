@@ -105,4 +105,8 @@ export class Util {
 		return this._WORKSHOP_NAME;
 	}
 
+	static by_data_test_id_str(data_test_id: string): string {
+		return `[data-test-id=${data_test_id}]`;
+	}
+
 }

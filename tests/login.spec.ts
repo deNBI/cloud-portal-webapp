@@ -2,7 +2,7 @@ import {
 	test,
 } from '@playwright/test';
 import { FACILITY_MANAGER_STORAGE, MEMBER_STORAGE, VO_MANAGER_STORAGE } from './global-setup';
-import { ProfilePage } from './page_objects./profile.po';
+import { ProfilePage } from './page_objects/profile.po';
 
 test.describe('Vo login', () => {
 	test.use({ storageState: VO_MANAGER_STORAGE });

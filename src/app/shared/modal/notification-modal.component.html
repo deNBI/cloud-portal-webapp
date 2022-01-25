@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <h4 class="modal-title">{{ notificationModalTitle }}</h4>
+    <h4 class="modal-title" data-test-id="notification_modal_title">{{ notificationModalTitle }}</h4>
     <button type="button" class="close" style="cursor: pointer"
             (click)="bsModalRef.hide()"
             aria-label="Close">
@@ -7,7 +7,7 @@
     </button>
 </div>
 <div class="modal-body">
-    <div class="alert alert-{{ notificationModalType }}" role="alert" id="notification_modal_message">
+    <div class="alert alert-{{ notificationModalType }}" data-test-id="notification_modal_message" role="alert" id="notification_modal_message">
         {{ notificationModalMessage }}
     </div>
 </div>

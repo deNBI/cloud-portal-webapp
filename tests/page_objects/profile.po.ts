@@ -34,20 +34,20 @@ export class ProfilePage {
 	async generateNewKeyPair(): Promise<any> {
 		await this.goto();
 		console.log('Opening the Generate Key modal');
-		await this.page.locator(`id=${this.OPEN_GENERATE_KEY_BUTTON}`).click();
+		await this.page.locator(Util.by_data_test_id_str(this.OPEN_GENERATE_KEY_BUTTON)).click();
 		console.log('Confirming effects of generating a new Key');
-		await this.page.locator(`id=${this.GENERATE_KEY_CHECKBOX}`).click();
+		await this.page.locator(Util.by_data_test_id_str(this.GENERATE_KEY_CHECKBOX)).click();
 
 		console.log('Clicking on Set-Button');
 
 		await Promise.all([
 			this.page.waitForResponse(response => response.status() === 200),
-			this.page.locator(`id=${this.GENERATE_KEY_BUTTON}`).click(),
+			this.page.locator(Util.by_data_test_id_str(this.GENERATE_KEY_BUTTON)).click(),
 
 		]);
-		await this.page.waitForSelector(`id=${this.USER_PUBLIC_KEY_FIELD} >> text=ecdsa`);
+		await this.page.waitForSelector(`data-test-id=${this.USER_PUBLIC_KEY_FIELD} >> text=ecdsa`);
 
-		const new_key = await this.page.innerText(`id=${this.USER_PUBLIC_KEY_FIELD}`);
+		const new_key = await this.page.innerText(Util.by_data_test_id_str(this.USER_PUBLIC_KEY_FIELD));
 		expect(new_key).toContain('ecdsa');
 
 		// eslint-disable-next-line no-return-await
@@ -57,17 +57,17 @@ export class ProfilePage {
 		await this.goto();
 
 		console.log('Opening the Set Key modal.');
-		await this.page.locator(`id=${this.OPEN_SET_KEY_BUTTON}`).click();
+		await this.page.locator(Util.by_data_test_id_str(this.OPEN_SET_KEY_BUTTON)).click();
 		console.log('Copying public key into textfield.');
-		await this.page.fill(`id=${this.ENTER_PUBLIC_KEY_AREA}`, this.TEST_PUBLIC_KEY);
-		await this.page.locator(`id=${this.PUBLIC_KEY_ACKNOWLEDGE_CHECKBOX}`).click();
+		await this.page.fill(Util.by_data_test_id_str(this.ENTER_PUBLIC_KEY_AREA), this.TEST_PUBLIC_KEY);
+		await this.page.locator(Util.by_data_test_id_str(this.PUBLIC_KEY_ACKNOWLEDGE_CHECKBOX)).click();
 		console.log('Clicking on Set-Button');
 		await Promise.all([
 			this.page.waitForResponse(response => response.status() === 200),
-			this.page.locator(`id=${this.SET_NEW_PUBLIC_KEY_BUTTON}`).click(),
+			this.page.locator(Util.by_data_test_id_str(this.SET_NEW_PUBLIC_KEY_BUTTON)).click(),
 		]);
-		await this.page.waitForSelector(`id=${this.USER_PUBLIC_KEY_FIELD} >> text=${this.TEST_PUBLIC_KEY}`);
-		const new_key = await this.page.innerText(`id=${this.USER_PUBLIC_KEY_FIELD}`);
+		await this.page.waitForSelector(`[data-test-id=${this.USER_PUBLIC_KEY_FIELD}] >> text=${this.TEST_PUBLIC_KEY}`);
+		const new_key = await this.page.innerText(Util.by_data_test_id_str(this.USER_PUBLIC_KEY_FIELD));
 		expect(new_key).toEqual(this.TEST_PUBLIC_KEY);
 
 	}
