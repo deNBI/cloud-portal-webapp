@@ -758,7 +758,12 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 		const idx: number = this.all_applications.indexOf(app);
 		this.applicationsService.declineApplication(app.project_application_id).subscribe(
 			(): void => {
-				this.showNotificationModal('Success', 'The Application was declined', 'success');
+				let message: string = 'The Application was declined.';
+				if (app.project_application_openstack_project && app.project_application_perun_id) {
+					message = `The Application was declined. The perun id was ${app.project_application_perun_id},
+					please remember to delete the perun group.`;
+				}
+				this.showNotificationModal('Success', message, 'success');
 				this.all_applications.splice(idx, 1);
 				this.numberOfProjectApplications -= 1;
 			},
