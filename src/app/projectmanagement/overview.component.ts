@@ -557,6 +557,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 		this.applicationsService.toggleVisibility(this.project_application).subscribe((application: Application): void => {
 			this.project_application.show_member_names = application.show_member_names;
 			this.toggleLocked = false;
+		}, () => {
+			this.toggleLocked = false;
 		});
 	}
 
