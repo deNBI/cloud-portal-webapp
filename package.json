@@ -65,8 +65,6 @@
     "jsnlog": "2.30.0",
     "jspdf": "2.5.0",
     "keypairs": "1.2.14",
-    "log4js": "6.4.0",
-    "log4js-protractor-appender": "1.1.2",
     "moment": "2.29.1",
     "ng2-charts": "3.0.8",
     "ng2-cookies": "1.0.12",

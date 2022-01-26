@@ -9,7 +9,7 @@ import { ApplicationOverviewPage } from './page_objects/application_overview.po'
 import { VoOverviewPage } from './page_objects/vo_overview.po';
 import { FacilityApplicationOverviewPage } from './page_objects/facility_application_overview.po';
 
-test.describe.serial('Should delete old openstack applications - VO @openstack_application', () => {
+test.describe.serial('Should delete old openstack applications - VO @openstack_application @all', () => {
 
 	test.describe('Should delete old openstack applications - VO @openstack_application', () => {
 		test.use({ storageState: VO_MANAGER_STORAGE });
