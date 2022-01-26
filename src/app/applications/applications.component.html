@@ -49,14 +49,15 @@
 		<ng-container [ngSwitch]="tab_state">
 			<ng-container *ngSwitchCase="TabStates.SUBMITTED">
 
-				<div class="card-body" *ngIf="all_applications.length <= 0 && !loading_applications">
+				<div class="card-body" *ngIf="all_applications.length <= 0 && !loading_applications"
+						 data-test-id="submitted_applications_container">
 					<div class="alert alert-success" role="alert">
 						<strong>No new Applications!</strong> There are no new project applications for review.
 					</div>
 				</div>
 
 				<div *ngIf="all_applications.length > 0"
-						 class="card-body">
+						 class="card-body" data-test-id="submitted_applications_container">
 					<div class="table-responsive">
 						<table class="table table-striped">
 							<thead>
@@ -206,6 +207,7 @@
 																type="button"
 																class="btn btn-danger"
 																id="btn_decline_{{application.project_application_shortname}}"
+																[attr.data-test-id]="'btn_decline_'+application.project_application_shortname"
 																style="margin: 2px"
 																(click)="declineApplication(application); ">
 													<i class="fas fa-times"></i>&nbsp;
@@ -264,13 +266,13 @@
 			<ng-container *ngSwitchCase="TabStates.MODIFICATION_EXTENSION">
 
 				<div class="card-body" *ngIf="all_applications.length <= 0 && !loading_applications">
-					<div class="alert alert-success" role="alert">
+					<div class="alert alert-success" role="alert" data-test-id="modification_requests_applications_container">
 						<strong>No new Resource Modification Requests!</strong>
 					</div>
 				</div>
 
 				<div *ngIf="all_applications.length > 0"
-						 class="card-body">
+						 class="card-body" data-test-id="modification_requests_applications_container">
 					<div class="table-responsive">
 						<table class="table table-striped">
 							<thead>
@@ -424,13 +426,13 @@
 			<ng-container *ngSwitchCase="TabStates.LIFETIME_EXTENSION">
 
 				<div class="card-body" *ngIf="all_applications.length <= 0 && !loading_applications">
-					<div class="alert alert-success" role="alert">
+					<div class="alert alert-success" role="alert" data-test-id="lifetime_requests_applications_container">
 						<strong>No new Project Extension Requests!</strong>
 					</div>
 				</div>
 
 				<div *ngIf="all_applications.length > 0"
-						 class="card-body">
+						 class="card-body" data-test-id="lifetime_requests_applications_container">
 					<div class="table-responsive">
 						<table class="table table-striped">
 							<thead>
@@ -570,7 +572,7 @@
 					</div>
 				</div>
 			</ng-container>
-			<ng-container *ngSwitchCase="TabStates.CREDITS_EXTENSION">
+			<ng-container *ngSwitchCase="TabStates.CREDITS_EXTENSION" data-test-id="credit_requests_applications_container">
 
 				<div class="card-body" *ngIf="all_applications.length <= 0 && !loading_applications">
 					<div class="alert alert-success" role="alert">

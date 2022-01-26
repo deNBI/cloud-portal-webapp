@@ -563,7 +563,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 				} else {
 					const applicationToGet: Application = application;
 					applicationToGet.project_application_status = [];
-					this.showNotificationModal('Success', 'The new project was created', 'success');
+					this.showNotificationModal('Success', 'The  project was assigned to the facility.', 'success');
 					this.getApplication(applicationToGet);
 					this.switchApproveLocked(false);
 

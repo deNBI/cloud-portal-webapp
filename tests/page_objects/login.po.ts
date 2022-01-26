@@ -18,6 +18,14 @@ export class LoginPagePlaywright {
 
 	}
 
+	async login(email: string, psw: string, auth_type: string) {
+		if (auth_type === 'orcid') {
+			await this.useOrcid(email, psw);
+		} else if (auth_type === 'google') {
+			await this.useGoogle(email, psw);
+		}
+	}
+
 	async useGoogle(email: string, psw: string): Promise<any> {
 		console.log('Using Google Login');
 
@@ -25,9 +33,9 @@ export class LoginPagePlaywright {
 		await this.page.locator('strong:has-text("Google")').locator('visible=true').click();
 		await this.page.type('input[type="email"]', email);
 		await this.page.click('#identifierNext');
-		await this.page.waitForSelector('input[type="password"]', { visible: true });
+		await this.page.waitForSelector('input[type="password"]', { state: 'visible' });
 		await this.page.type('input[type="password"]', psw);
-		await this.page.waitForSelector('#passwordNext', { visible: true });
+		await this.page.waitForSelector('#passwordNext', { state: 'visible' });
 		await this.page.click('#passwordNext');
 		await this.skipElixirTestWarning();
 		await this.page.waitForNavigation({ url: '**/userinfo' });

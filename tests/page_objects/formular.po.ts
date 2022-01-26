@@ -7,7 +7,7 @@ import { Util } from '../util';
 export class FormularPage {
 	private SIDEBAR_NEW_PROJECT: string = 'sidebar_new_project';
 	private NEW_SVM_BTN: string = 'newSimpleVMBtn';
-	private NEW_OPENSTACK_BTN: string = 'newOpenStackBtn';
+	private NEW_OPENSTACK_BTN: string = 'newOpenstackBtn';
 	private SUBMIT_BTN: string = 'submit_application_btn';
 	private VERIFICATION_BTN: string = 'verification_application_btn';
 	private ACKNOWLEDGE_BTN: string = 'acknowledge_approve_btn';
@@ -28,7 +28,7 @@ export class FormularPage {
 
 	async goto() {
 		console.log('Goto Type-Overview Page');
-		await this.page.goto('/#/applications/type-overview');
+		await this.page.goto('/#/applications/type-overview', { waitUntil: 'networkidle' });
 
 		expect(this.page.url()).toContain('/#/applications/type-overview');
 
@@ -43,9 +43,7 @@ export class FormularPage {
 
 	async goToNewOpenStackApplication() {
 		await this.goto();
-		await this.page.waitForSelector(Util.by_data_test_id_str(this.NEW_OPENSTACK_BTN));
 		await this.page.locator(Util.by_data_test_id_str(this.NEW_OPENSTACK_BTN)).click();
-
 		await this.page.waitForURL('**/applications/newCloudApplication');
 	}
 

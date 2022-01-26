@@ -26,7 +26,7 @@ export class ProfilePage {
 
 	async goto() {
 		console.log('Goto Profile Page');
-		await this.page.goto('/userinfo');
+		await this.page.goto('/userinfo', { waitUntil: 'networkidle' });
 		expect(this.page.url()).toContain('/userinfo');
 
 	}

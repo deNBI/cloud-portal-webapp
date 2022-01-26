@@ -73,3 +73,12 @@ npm-debug.log
 *.log
 *.stackdump
 **/env/
+test-results/
+playwright-report/
+
+
+#playwright
+facilityManagerStorageState.json
+memberStorageState.json
+voManagerState.json
+*tests/environment.json

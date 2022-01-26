@@ -1,4 +1,3 @@
-import { by, element, ElementFinder } from 'protractor';
 import { expect, Page } from '@playwright/test';
 import { Util } from '../util';
 
@@ -10,6 +9,8 @@ export class ApplicationOverviewPage {
 	private EXTENSION_RESULT: string = 'notification_message';
 	private EXTENSION_SV_SUCCESSFULLY_APPROVED: string = 'Modify request successfully approved!';
 	private EXTENSION_OP_SUCCESFULLY_APPROVED: string = 'Modify request successfully approved and forwarded to facility!';
+	private PROJECT_FACILITY_ASSIGNED: string = 'The project was assigned to the facility.';
+
 	private EXTENSION_APPROVAL_BTN_PREFIX: string = 'extension_approval_';
 	private COMPUTE_CENTER_SELECTION_PREFIX: string = 'id_compute_center_option_';
 	private DEFAULT_DENBI_COMPUTE_CENTER: string = 'de.NBI Cloud Portal - Development';
@@ -30,8 +31,8 @@ export class ApplicationOverviewPage {
 	private CLOSE_NOTIFICATION_MODAL: string = 'close_notification_modal_btn';
 	private SUBMITTED_APPLICATIONS_TAB: string = 'tab_state_button_submitted_applications';
 	private LOADING_APPLICATIONS: string = 'loading_applications';
+	private APPLICATIONS_CONTAINER: string = 'applications_container';
 	private SITE_LOADER: string = 'site-loader';
-	private BIELEFELD_DEV_FACILITY_ID = '3385';
 
 	readonly page: Page;
 	readonly baseURL: string;
@@ -43,56 +44,76 @@ export class ApplicationOverviewPage {
 
 	async goto() {
 		console.log('Goto Application overview Page');
-		await this.page.goto('/#/applications');
+		await this.page.goto('/#/applications', { waitUntil: 'networkidle' });
 		expect(this.page.url()).toContain('/applications');
-		await this.page.waitForSelector(Util.by_data_test_id_str(this.SITE_LOADER), { visible: false });
+		await this.page.waitForSelector(Util.by_data_test_id_str(this.SITE_LOADER), { state: 'hidden' });
 
 	}
 
 	async goToSubmittedApplication() {
 		await this.goto();
 		await this.page.locator(Util.by_data_test_id_str('submitted_applications_tab')).click();
-		await this.page.waitForSelector(Util.by_data_test_id_str(this.LOADING_APPLICATIONS), { visible: false });
+		await this.page.waitForSelector(Util.by_data_test_id_str(this.LOADING_APPLICATIONS), { state: 'hidden' });
+		await this.page.waitForSelector(Util.by_data_test_id_str('submitted_applications_container'), {
+			state: 'visible',
+		});
 	}
 
 	async goToLifetimeRequests() {
 		await this.goto();
 		await this.page.locator(Util.by_data_test_id_str('extension_requests_applications_tab')).click();
-		await this.page.waitForSelector(Util.by_data_test_id_str(this.LOADING_APPLICATIONS), { visible: false });
+		await this.page.waitForSelector(Util.by_data_test_id_str(this.LOADING_APPLICATIONS), { state: 'hidden' });
+		await this.page.waitForSelector(Util.by_data_test_id_str('lifetime_requests_applications_container'), { state: 'visible' });
+
 	}
 
 	async goToModificationRequests() {
 		await this.goto();
 		await this.page.locator(Util.by_data_test_id_str('modification_requests_applications_tab')).click();
-		await this.page.waitForSelector(Util.by_data_test_id_str(this.LOADING_APPLICATIONS), { visible: false });
+		await this.page.waitForSelector(Util.by_data_test_id_str(this.LOADING_APPLICATIONS), { state: 'hidden' });
+		await this.page.waitForSelector(Util.by_data_test_id_str('modification_requests_applications_container'), { state: 'visible' });
+
 	}
 
-	/* async declinePTApplications(): Promise<any> {
-		console.log('Decline all PT applications');
-		await Util.waitForPresenceOfElementById(this.SUBMITTED_APPLICATIONS_TAB);
-		console.log('Decline open PT OpenStack applications');
+	async declineSimpleVmApplications(): Promise<void> {
 
-		let openstack_ele: ElementFinder = element(by.id(this.DECLINE_PT_OPEN_APPLICATION_PRE));
-
-		while (await openstack_ele.isPresent()) {
-			await Util.clickElementByElement(openstack_ele);
-			await Util.waitForTextPresenceInElementById(this.NOTIFICATION_MESSAGE, this.SUCCESSFULL_DECLINED);
-			await Util.clickElementById(this.CLOSE_NOTIFICATION_MODAL);
-			openstack_ele = element(by.id(this.DECLINE_PT_OPEN_APPLICATION_PRE));
-
-		}
+		await this.goToSubmittedApplication();
 		console.log('Decline open PT SimpleVM applications');
 
-		let simple_ele: ElementFinder = element(by.id(this.DECLINE_PT_SIMPLE_APPLICATION_PRE));
-		while (await simple_ele.isPresent()) {
-			await Util.clickElementByElement(simple_ele);
-			await Util.waitForTextPresenceInElementById(this.NOTIFICATION_MESSAGE, this.SUCCESSFULL_DECLINED);
-			await Util.clickElementById(this.CLOSE_NOTIFICATION_MODAL);
-			simple_ele = element(by.id(this.DECLINE_PT_SIMPLE_APPLICATION_PRE));
+		const simple_vm_count: number = await this.page.locator(Util.by_data_test_id_str(this.DECLINE_PT_SIMPLE_APPLICATION_PRE)).count();
+		console.log(simple_vm_count);
+		// eslint-disable-next-line no-plusplus
+		for (let i = 0; i < simple_vm_count; i++) {
+			// eslint-disable-next-line no-await-in-loop
+			await this.page.locator(`data-test-id=${this.DECLINE_PT_SIMPLE_APPLICATION_PRE}`).first().click();
+			// eslint-disable-next-line no-await-in-loop
+			await this.page.waitForSelector(`data-test-id=${this.NOTIFICATION_MESSAGE} >> text=${this.SUCCESSFULL_DECLINED}`);
+			// eslint-disable-next-line no-await-in-loop
+			await this.page.locator(Util.by_data_test_id_str(this.CLOSE_NOTIFICATION_MODAL)).click();
 
 		}
 
-	} */
+	}
+
+	async declineOpenStackApplications(): Promise<void> {
+		await this.goToSubmittedApplication();
+		console.log('Decline open PT OpenStack applications');
+		const openstack_count: number = await this.page.locator(Util.by_data_test_id_str(this.DECLINE_PT_OPEN_APPLICATION_PRE)).count();
+		for (let i = 0; i < openstack_count; i++) {
+			await this.page.locator(`data-test-id=${this.DECLINE_PT_OPEN_APPLICATION_PRE}`).first().click();
+			await this.page.waitForSelector(`data-test-id=${this.NOTIFICATION_MESSAGE} >> text=${this.SUCCESSFULL_DECLINED}`);
+			await this.page.locator(Util.by_data_test_id_str(this.CLOSE_NOTIFICATION_MODAL)).click();
+
+		}
+
+	}
+
+	async declinePTApplications(): Promise<any> {
+		console.log('Decline all PT applications');
+		await this.declinePTApplications();
+		await this.declineSimpleVmApplications();
+
+	}
 
 	async approveOpenStackModificationRequest(application_name: string): Promise<any> {
 		await this.goToModificationRequests();
@@ -114,19 +135,10 @@ export class ApplicationOverviewPage {
 
 	}
 
-	/* async isApplicationRequestPresent(application_name: string): Promise<boolean> {
-		await this.goto();
-
-		await Util.waitForPresenceOfElementById(this.OWN_APPLICATION_ID);
-		const elm: any = element(by.id(application_name));
-
-		return await elm.isPresent();
-	} */
-
 	async approveSimpleVm(application_name: string): Promise<any> {
 		console.log('Approve Simple VM');
 		await this.goToSubmittedApplication();
-		await this.page.waitForSelector(Util.by_data_test_id_str(this.COMPUTE_CENTER_SELECTION_PREFIX + application_name), { visible: true });
+		await this.page.waitForSelector(Util.by_data_test_id_str(this.COMPUTE_CENTER_SELECTION_PREFIX + application_name), { state: 'visible' });
 		await this.page.selectOption(Util.by_data_test_id_str(this.COMPUTE_CENTER_SELECTION_PREFIX + application_name), { label: this.DEFAULT_DENBI_COMPUTE_CENTER });
 		await this.page.locator(Util.by_data_test_id_str(this.APPROVAL_PREFIX + application_name)).click();
 		await this.page.locator(Util.by_data_test_id_str(this.APPROVAL_CLIENT_LIMIT_PREFIX + application_name)).click();
@@ -134,16 +146,16 @@ export class ApplicationOverviewPage {
 
 	}
 
-	async approveCloudApplication(application_name: string): Promise<any> {
+	async approveOpenStackApplication(application_name: string): Promise<any> {
+		console.log('Approve Openstack');
 		await this.goToSubmittedApplication();
-		await this.page.waitForSelector(Util.by_data_test_id_str(this.COMPUTE_CENTER_SELECTION_PREFIX + application_name), { visible: true });
-		await this.page.selectOption(Util.by_data_test_id_str(this.COMPUTE_CENTER_SELECTION_PREFIX + application_name), { 'data-test-id': this.BIELEFELD_DEV_FACILITY_ID });
+		await this.page.waitForSelector(Util.by_data_test_id_str(this.COMPUTE_CENTER_SELECTION_PREFIX + application_name), { state: 'visible' });
+		await this.page.selectOption(Util.by_data_test_id_str(this.COMPUTE_CENTER_SELECTION_PREFIX + application_name), { label: this.DEFAULT_DENBI_COMPUTE_CENTER });
 		await this.page.locator(Util.by_data_test_id_str(this.APPROVAL_PREFIX + application_name)).click();
-		await this.page.waitForSelector(Util.by_data_test_id_str(this.NOTIFICATION_MESSAGE), { visible: true });
+		await this.page.waitForSelector(Util.by_data_test_id_str(this.NOTIFICATION_MESSAGE), { state: 'visible' });
 		await this.page.waitForSelector(`data-test-id=${this.NOTIFICATION_MODAL_TITLE} >> text=Success`);
 		const approval_response: string = await this.page.innerText(Util.by_data_test_id_str(this.NOTIFICATION_MESSAGE));
-
-		expect(approval_response).toContain(this.SIMPLE_VM_CREATED);
+		expect(approval_response).toContain(this.PROJECT_FACILITY_ASSIGNED);
 
 	}
 }
