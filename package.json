@@ -76,7 +76,6 @@
     "pdfmake": "0.2.4",
     "postcss-loader": "6.2.1",
     "postcss-url": "10.1.3",
-    "protractor-stop-describe-on-failure": "1.0.4",
     "rxjs": "7.5.2",
     "save-svg-as-png": "1.4.17",
     "svg2pdf.js": "2.2.0",
