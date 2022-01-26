@@ -6,7 +6,7 @@ on:
       - 'staging'
       - 'dev'
       - 'hotfix/**'
-      - 'feat/playwright'
+      - 'feat/playwrigth'
 jobs:
   build:
     runs-on: ubuntu-latest
