@@ -17,7 +17,7 @@
   },
   "resolutions": {
     "colors": "1.4.0",
-  	"nanoid": "3.2.0"
+    "nanoid": "3.2.0"
   },
   "private": true,
   "dependencies": {
@@ -55,6 +55,7 @@
     "eslint": "8.7.0",
     "export-to-csv": "0.2.1",
     "file-saver": "2.0.5",
+    "globby": "^13.1.0",
     "html-to-pdfmake": "2.3.8",
     "html2canvas": "1.4.0",
     "http-server": "14.1.0",
