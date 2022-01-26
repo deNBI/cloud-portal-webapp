@@ -17,10 +17,7 @@
   },
   "resolutions": {
     "colors": "1.4.0",
-    "follow-redirects": "1.14.7",
-    "engine.io": "6.1.2",
-    "node-forge": "1.2.1",
-    "marked": "4.0.10"
+  	"nanoid": "3.2.0"
   },
   "private": true,
   "dependencies": {
