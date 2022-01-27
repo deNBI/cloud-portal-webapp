@@ -1,5 +1,4 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars,import/no-extraneous-dependencies
-import { browser, by, element } from 'protractor';
 import { Page, expect } from '@playwright/test';
 import { Util } from '../util';
 

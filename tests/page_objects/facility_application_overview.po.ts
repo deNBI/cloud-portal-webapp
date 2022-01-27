@@ -1,4 +1,3 @@
-import { browser } from 'protractor';
 import { expect, Page } from '@playwright/test';
 import { Util } from '../util';
 
