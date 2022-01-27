@@ -18,7 +18,6 @@ export class ApplicationsService {
 		this.http = http;
 	}
 
-
 	adjustApplication(application: Application): Observable<Application> {
 		return this.http.post<Application>(`${ApiSettings.getApiBaseURL()}project_applications/adjust/`, application, {
 			withCredentials: true,
