@@ -20,9 +20,9 @@
 		"follow-redirects": "1.14.7",
 		"engine.io": "6.1.2",
 		"node-forge": "1.2.1",
-		"marked":  "4.0.10"
-
-  },
+		"marked":  "4.0.10",
+		"nanoid": "3.2.0"
+	},
   "private": true,
   "dependencies": {
     "@angular-eslint/eslint-plugin": "13.0.1",
