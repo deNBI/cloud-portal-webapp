@@ -39,11 +39,9 @@ export class FacilityApplicationOverviewPage {
 	private readonly MODIFICATION_REQUESTS_APPLICATIONS_CONTAINER = 'modification_requests_applications_container';
 
 	private readonly page: Page;
-	private readonly baseUrl: string;
 
-	constructor(page: Page, baseURL) {
+	constructor(page: Page) {
 		this.page = page;
-		this.baseUrl = baseURL;
 
 	}
 

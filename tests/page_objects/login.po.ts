@@ -10,11 +10,11 @@ export class LoginPagePlaywright {
 	TEST_RP_WARNING: string = 'testRpWarning';
 	TEST_RP_CONTINUE: string = 'Continue';
 	readonly page: Page;
-	readonly baseUrl: string;
+	readonly baseURL: string;
 
 	constructor(page: Page, baseURL) {
 		this.page = page;
-		this.baseUrl = baseURL;
+		this.baseURL = baseURL;
 
 	}
 
@@ -29,7 +29,7 @@ export class LoginPagePlaywright {
 	async useGoogle(email: string, psw: string): Promise<any> {
 		console.log('Using Google Login');
 
-		await this.page.goto(this.baseUrl);
+		await this.page.goto(this.baseURL);
 		await this.page.locator('strong:has-text("Google")').locator('visible=true').click();
 		await this.page.type('input[type="email"]', email);
 		await this.page.click('#identifierNext');
@@ -43,7 +43,7 @@ export class LoginPagePlaywright {
 
 	async useOrcid(email: string, psw: string): Promise<any> {
 		console.log('Using Orcid Login');
-		await this.page.goto(this.baseUrl);
+		await this.page.goto(this.baseURL);
 		await this.page.locator('strong:has-text("Orcid")').locator('visible=true').click();
 		await this.page.waitForNavigation('https://orcid.org/signin');
 		await this.page.type('id=username', email);

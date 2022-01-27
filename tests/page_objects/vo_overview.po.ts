@@ -20,12 +20,10 @@ export class VoOverviewPage {
 	private SUCCESS: string = 'Success';
 	private SITE_LOADER: string = 'site-loader';
 
-	readonly baseURL: string;
 	readonly page: Page;
 
-	constructor(page: Page, baseURL: string) {
+	constructor(page: Page) {
 		this.page = page;
-		this.baseURL = baseURL;
 	}
 
 	async goto() {

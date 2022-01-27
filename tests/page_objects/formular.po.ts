@@ -18,11 +18,9 @@ export class FormularPage {
 	private PI_RESPONSIBILITY: string = 'project_application_responsibility';
 	private PI_APPROVAL_BUTTON: string = 'approveApplicationButtonPI';
 	readonly page: Page;
-	readonly baseURL: string;
 
-	constructor(page: Page, baseURL: string) {
+	constructor(page: Page) {
 		this.page = page;
-		this.baseURL = baseURL;
 
 	}
 
