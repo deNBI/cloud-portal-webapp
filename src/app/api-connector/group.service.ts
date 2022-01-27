@@ -8,6 +8,7 @@ import { ProjectEnumeration } from '../projectmanagement/project-enumeration';
 import { Doi } from '../applications/doi/doi';
 import { ApplicationRessourceUsage } from '../applications/application-ressource-usage/application-ressource-usage';
 import { ProjectMember } from '../projectmanagement/project_member.model';
+import {	Application	} from '../applications/application.model/application.model';
 
 /**
  * Service which provides Group methods.
@@ -17,6 +18,18 @@ export class GroupService {
 
 	constructor(private http: HttpClient) {
 		this.http = http;
+	}
+
+	toggleVisibility(groupId: string | number): Observable<Application> {
+		return this.http.post<Application>(`${ApiSettings.getApiBaseURL()}projects/${groupId}/toggle_member_names_visibility/`, {
+			withCredentials: true,
+		});
+	}
+
+	toggleStartingMachines(groupId: string | number): Observable<Application> {
+		return this.http.post<Application>(`${ApiSettings.getApiBaseURL()}projects/${groupId}/toggle_starting_machines/`, {
+			withCredentials: true,
+		});
 	}
 
 	getProjectOSDetails(groupId: number | string): Observable<object> {
