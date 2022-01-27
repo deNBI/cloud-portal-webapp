@@ -33,6 +33,9 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
 	public selectedProject: Application;
 	computecenters: ComputecenterComponent[] = [];
 
+	show_openstack_projects: boolean = true;
+	show_simple_vm_projects: boolean = true;
+
 	selectedProjectType: string = 'ALL';
 	selectedFacility: string | number = 'ALL';
 
@@ -67,6 +70,14 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
 			this.newsletterSubscriptionCounter = result.value as number;
 
 		});
+	}
+
+	switchShowSimpleVmProjects(): void {
+		this.show_simple_vm_projects = !this.show_simple_vm_projects;
+	}
+
+	switchOpenStackVmProjects(): void {
+		this.show_openstack_projects = !this.show_openstack_projects;
 	}
 
 	getApplicationInfos(): void {
@@ -111,7 +122,9 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
 		return facNameFilter
 			&& this.isFilterProjectStatus(project.project_application_status, project.lifetime_reached)
 			&& this.isFilterProjectName(project.perun_name)
-			&& this.isFilterProjectId(project.project_application_perun_id.toString());
+			&& this.isFilterProjectId(project.project_application_perun_id.toString())
+			&& ((project.project_application_openstack_project && this.show_openstack_projects)
+				|| (!project.project_application_openstack_project && this.show_simple_vm_projects));
 
 	}
 
