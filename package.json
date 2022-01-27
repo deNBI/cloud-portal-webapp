@@ -1,6 +1,6 @@
 {
   "name": "@denbi/cloud-portal-webapp",
-  "version": "4.58.0",
+  "version": "4.59.0",
   "description": "de.NBI Cloud Portal",
   "scripts": {
     "ng": "ng serve",
@@ -20,7 +20,7 @@
 		"follow-redirects": "1.14.7",
 		"engine.io": "6.1.2",
 		"node-forge": "1.2.1",
-		"marked":  "4.0.10",
+		"marked":  "4.0.12",
 		"nanoid": "3.2.0",
 		"log4js": "6.4.1"
 	},
