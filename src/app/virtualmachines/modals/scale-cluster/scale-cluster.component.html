@@ -30,6 +30,9 @@
 						<div style="font-size: small">
 							<strong>{{batch?.flavor?.name}}</strong><br> {{batch?.flavor?.vcpus + ' VCPUs ' }}
 							<br>{{batch?.flavor?.ram + ' GB RAM  '}}<br>{{batch?.flavor?.rootdisk + ' GB root disk'}}
+							<br>
+							<span *ngIf="batch?.flavor?.ephemeral_disk">{{batch.flavor.ephemeral_disk + ' GB ephemeral disk'}}</span><br>
+							<span *ngIf="batch?.flavor?.gpu > 0">{{batch.flavor.gpu + ' GPUs'}}</span>
 						</div>
 					</td>
 					<td>{{batch?.worker_count}}</td>
@@ -157,6 +160,9 @@
 							<div style="font-size: small">
 								<strong>{{batch?.flavor?.name}}</strong><br> {{batch?.flavor?.vcpus + ' VCPUs ' }}
 								<br>{{batch?.flavor?.ram + ' GB RAM  '}}<br>{{batch?.flavor?.rootdisk + ' GB root disk'}}
+								<br>
+								<span *ngIf="batch?.flavor?.ephemeral_disk">{{batch.flavor.ephemeral_disk + ' GB ephemeral disk'}}</span><br>
+								<span *ngIf="batch?.flavor?.gpu > 0">{{batch.flavor.gpu + ' GPUs'}}</span>
 							</div>
 						</td>
 						<td>{{batch?.worker_count}}</td>
