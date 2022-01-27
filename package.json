@@ -1,6 +1,6 @@
 {
   "name": "@denbi/cloud-portal-webapp",
-  "version": "4.56.0",
+  "version": "4.57.0",
   "description": "de.NBI Cloud Portal",
   "scripts": {
     "ng": "ng serve",
@@ -61,7 +61,7 @@
     "export-to-csv": "0.2.1",
     "file-saver": "2.0.5",
     "html-to-pdfmake": "2.3.8",
-    "html2canvas": "1.4.0",
+    "html2canvas": "1.4.1",
     "http-server": "14.1.0",
     "is-promise": "4.0.0",
     "jsnlog": "2.30.0",
