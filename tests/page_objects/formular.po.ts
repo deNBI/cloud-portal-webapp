@@ -18,15 +18,18 @@ export class FormularPage {
 	private PI_RESPONSIBILITY: string = 'project_application_responsibility';
 	private PI_APPROVAL_BUTTON: string = 'approveApplicationButtonPI';
 	readonly page: Page;
+	readonly baseURL: string;
 
-	constructor(page: Page) {
+	constructor(page: Page, baseURL) {
 		this.page = page;
+		this.baseURL = baseURL;
 
 	}
 
 	async goto() {
 		console.log('Goto Type-Overview Page');
-		await this.page.goto('/#/applications/type-overview', { waitUntil: 'networkidle' });
+		await this.page.goto(`${this.baseURL}/#/applications/type-overview`, { waitUntil: 'networkidle' });
+		console.log(this.page.url());
 
 		expect(this.page.url()).toContain('/#/applications/type-overview');
 

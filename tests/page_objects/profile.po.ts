@@ -17,15 +17,18 @@ export class ProfilePage {
 	// eslint-disable-next-line max-len
 	private TEST_PUBLIC_KEY: string = 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCnkSQ+DSg1Ro6Nk56L6nEzYwTbRzH//8dJOVDFDV1ZKMKDMphOOdYVqcm4JjVmvTqFKAdWldMbdJVa5vGysjiyfad86o+thsSQ7I5aFF5vr3+YaK5NJPssqMi/ElV4pjH0e3Z/r+Y61ZT/9in8jY5z4uWk/sMyW8Q5F2qXcd5IcDUWNMHndDl5jCMgL275HUfAGrimSTukSTPkkVY3UqSo9NppagK31fXLsR2Cajg+NGlmYqZa6ySkp0ydJV9sVDKHMFDty1TLuNMtnT4XMeIwtA+nTvPUU2akx1OsM4HeQq7nQ2r5GKRt/6K9sypEuX/zkmzMhm9IIF7etqBoV8kfNlO7hijjvmbEOxd6C53yOF7xpT4XzZzYF35TC7Gk+GMOIvrnRqrATkDBV9hLRYzQKUUfAGrIo4jH7m2DadppjRVAF679UhSWtksPx3vtTNVV/Dh/WnJmHgniDEAr6IBvMeaUVFvEdCD5506VYpIXj5ckObVJyTaTkQSf1+PxE+E=';
 	readonly page: Page;
+	readonly baseURL: string;
 
-	constructor(page: Page) {
+	constructor(page: Page, baseURL) {
 		this.page = page;
+		this.baseURL = baseURL;
 
 	}
 
 	async goto() {
 		console.log('Goto Profile Page');
-		await this.page.goto('/userinfo', { waitUntil: 'networkidle' });
+		await this.page.goto(`${this.baseURL}/#/userinfo`, { waitUntil: 'networkidle' });
+		console.log(this.page.url());
 		expect(this.page.url()).toContain('/userinfo');
 
 	}

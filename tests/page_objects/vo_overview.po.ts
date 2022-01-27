@@ -21,14 +21,19 @@ export class VoOverviewPage {
 	private SITE_LOADER: string = 'site-loader';
 
 	readonly page: Page;
+	readonly baseURL: string;
 
-	constructor(page: Page) {
+	constructor(page: Page, baseURL) {
 		this.page = page;
+		this.baseURL = baseURL;
+
 	}
 
 	async goto() {
 		console.log('Goto vo manager overview Page');
-		await this.page.goto(this.VO_OVERVIEW_URL, { waitUntil: 'networkidle' });
+		await this.page.goto(this.baseURL + this.VO_OVERVIEW_URL, { waitUntil: 'networkidle' });
+		console.log(this.page.url());
+
 		expect(this.page.url()).toContain(this.VO_OVERVIEW_URL);
 		await this.page.waitForSelector(Util.by_data_test_id_str(this.SITE_LOADER), { state: 'hidden' });
 

@@ -13,12 +13,12 @@ test.describe.serial('Should delete old openstack applications - VO @openstack_a
 	test.describe('Should delete old openstack applications - VO @openstack_application', () => {
 		test.use({ storageState: VO_MANAGER_STORAGE });
 
-		test('Should cleanup old applications - VO', async ({ page }) => {
+		test('Should cleanup old applications - VO', async ({ page, baseURL }) => {
 
 			test.setTimeout(60 * 1000);
-			const applicationPage = new ApplicationOverviewPage(page);
+			const applicationPage = new ApplicationOverviewPage(page, baseURL);
 			await applicationPage.declineOpenStackApplications();
-			const voOverviewPage = new VoOverviewPage(page);
+			const voOverviewPage = new VoOverviewPage(page, baseURL);
 			await voOverviewPage.terminateAllOpenStackPTPRojects();
 
 		});
@@ -28,11 +28,11 @@ test.describe.serial('Should delete old openstack applications - VO @openstack_a
 	test.describe('Should delete old openstack applications - FM @openstack_application', () => {
 		test.use({ storageState: FACILITY_MANAGER_STORAGE });
 
-		test('Should cleanup old applications - FM', async ({ page }) => {
+		test('Should cleanup old applications - FM', async ({ page, baseURL }) => {
 
 			test.setTimeout(60 * 1000);
 
-			const facilityApplicationOverviewPage = new FacilityApplicationOverviewPage(page);
+			const facilityApplicationOverviewPage = new FacilityApplicationOverviewPage(page, baseURL);
 			await facilityApplicationOverviewPage.terminatePTApplications();
 
 		});
@@ -41,8 +41,8 @@ test.describe.serial('Should delete old openstack applications - VO @openstack_a
 
 	test.describe('Should request an openstack application - Member @openstack_application', () => {
 		test.use({ storageState: MEMBER_STORAGE });
-		test('Should request a new openstack application', async ({ page }) => {
-			const formularPage = new FormularPage(page);
+		test('Should request a new openstack application', async ({ page, baseURL }) => {
+			const formularPage = new FormularPage(page, baseURL);
 			await formularPage.goToNewOpenStackApplication();
 			await formularPage.fillApplicationFormular(Util.OPENSTACK_APPLICATION_NAME, true, true);
 			await formularPage.submitApplication();
@@ -51,8 +51,8 @@ test.describe.serial('Should delete old openstack applications - VO @openstack_a
 	});
 	test.describe('Should approve an openstack application - VO @openstack_application', () => {
 		test.use({ storageState: VO_MANAGER_STORAGE });
-		test('Should approve openstack application', async ({ page }) => {
-			const applicationPage = new ApplicationOverviewPage(page);
+		test('Should approve openstack application', async ({ page, baseURL }) => {
+			const applicationPage = new ApplicationOverviewPage(page, baseURL);
 			await applicationPage.approveOpenStackApplication(Util.OPENSTACK_APPLICATION_NAME);
 
 		});
@@ -60,9 +60,9 @@ test.describe.serial('Should delete old openstack applications - VO @openstack_a
 	});
 	test.describe('Should approve an openstack application - FM @openstack_application', () => {
 		test.use({ storageState: FACILITY_MANAGER_STORAGE });
-		test('Should approve openstack application', async ({ page }) => {
+		test('Should approve openstack application', async ({ page, baseURL }) => {
 
-			const facilityApplicationOverviewPage = new FacilityApplicationOverviewPage(page);
+			const facilityApplicationOverviewPage = new FacilityApplicationOverviewPage(page, baseURL);
 			await facilityApplicationOverviewPage.approveApplication(Util.OPENSTACK_APPLICATION_NAME);
 
 		});
@@ -71,12 +71,12 @@ test.describe.serial('Should delete old openstack applications - VO @openstack_a
 	test.describe('Aftercare - Should delete old openstack applications - VO @openstack_application', () => {
 		test.use({ storageState: VO_MANAGER_STORAGE });
 
-		test('Should cleanup old applications - VO', async ({ page }) => {
+		test('Should cleanup old applications - VO', async ({ page, baseURL }) => {
 
 			test.setTimeout(60 * 1000);
-			const applicationPage = new ApplicationOverviewPage(page);
+			const applicationPage = new ApplicationOverviewPage(page, baseURL);
 			await applicationPage.declineOpenStackApplications();
-			const voOverviewPage = new VoOverviewPage(page);
+			const voOverviewPage = new VoOverviewPage(page, baseURL);
 			await voOverviewPage.terminateAllOpenStackPTPRojects();
 
 		});
@@ -86,11 +86,11 @@ test.describe.serial('Should delete old openstack applications - VO @openstack_a
 	test.describe('Aftercare - Should delete old openstack applications - FM @openstack_application', () => {
 		test.use({ storageState: FACILITY_MANAGER_STORAGE });
 
-		test('Should cleanup old applications - FM', async ({ page }) => {
+		test('Should cleanup old applications - FM', async ({ page, baseURL }) => {
 
 			test.setTimeout(60 * 1000);
 
-			const facilityApplicationOverviewPage = new FacilityApplicationOverviewPage(page);
+			const facilityApplicationOverviewPage = new FacilityApplicationOverviewPage(page, baseURL);
 			await facilityApplicationOverviewPage.terminatePTApplications();
 
 		});

@@ -35,14 +35,18 @@ export class ApplicationOverviewPage {
 	private SITE_LOADER: string = 'site-loader';
 
 	readonly page: Page;
+	readonly baseURL: string;
 
-	constructor(page: Page) {
+	constructor(page: Page, baseURL) {
 		this.page = page;
+		this.baseURL = baseURL;
+
 	}
 
 	async goto() {
 		console.log('Goto Application overview Page');
-		await this.page.goto('/#/applications', { waitUntil: 'networkidle' });
+		await this.page.goto(`${this.baseURL}/#/applications`, { waitUntil: 'networkidle' });
+		console.log(this.page.url());
 		expect(this.page.url()).toContain('/applications');
 		await this.page.waitForSelector(Util.by_data_test_id_str(this.SITE_LOADER), { state: 'hidden' });
 

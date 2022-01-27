@@ -6,8 +6,8 @@ import { ProfilePage } from './page_objects/profile.po';
 
 test.describe('Vo login', () => {
 	test.use({ storageState: VO_MANAGER_STORAGE });
-	test('vo should be logged in', async ({ page }) => {
-		const profile = new ProfilePage(page);
+	test('vo should be logged in', async ({ page, baseURL }) => {
+		const profile = new ProfilePage(page, baseURL);
 		await profile.goto();
 
 	});
@@ -16,9 +16,9 @@ test.describe('Vo login', () => {
 
 test.describe('Facility Manager Login', () => {
 	test.use({ storageState: FACILITY_MANAGER_STORAGE });
-	test('facility manager should be logged in', async ({ page }) => {
+	test('facility manager should be logged in', async ({ page, baseURL }) => {
 
-		const profile = new ProfilePage(page);
+		const profile = new ProfilePage(page, baseURL);
 		await profile.goto();
 
 	});
@@ -27,8 +27,8 @@ test.describe('Facility Manager Login', () => {
 
 test.describe('Member Login', () => {
 	test.use({ storageState: MEMBER_STORAGE });
-	test('member should be logged in', async ({ page }) => {
-		const profile = new ProfilePage(page);
+	test('member should be logged in', async ({ page, baseURL }) => {
+		const profile = new ProfilePage(page, baseURL);
 		await profile.goto();
 
 	});
