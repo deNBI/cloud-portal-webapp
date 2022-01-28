@@ -8,7 +8,6 @@ import { ProjectEnumeration } from '../projectmanagement/project-enumeration';
 import { Doi } from '../applications/doi/doi';
 import { ApplicationRessourceUsage } from '../applications/application-ressource-usage/application-ressource-usage';
 import { ProjectMember } from '../projectmanagement/project_member.model';
-import {	Application	} from '../applications/application.model/application.model';
 
 /**
  * Service which provides Group methods.
