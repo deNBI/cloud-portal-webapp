@@ -20,14 +20,14 @@ export class GroupService {
 		this.http = http;
 	}
 
-	toggleVisibility(groupId: string | number): Observable<Application> {
-		return this.http.post<Application>(`${ApiSettings.getApiBaseURL()}projects/${groupId}/toggle_member_names_visibility/`, {
+	toggleVisibility(groupId: string | number): Observable<Object> {
+		return this.http.post<Object>(`${ApiSettings.getApiBaseURL()}projects/${groupId}/toggle_member_names_visibility/`, {
 			withCredentials: true,
 		});
 	}
 
-	toggleStartingMachines(groupId: string | number): Observable<Application> {
-		return this.http.post<Application>(`${ApiSettings.getApiBaseURL()}projects/${groupId}/toggle_starting_machines/`, {
+	toggleStartingMachines(groupId: string | number): Observable<Object> {
+		return this.http.post<Object>(`${ApiSettings.getApiBaseURL()}projects/${groupId}/toggle_starting_machines/`, {
 			withCredentials: true,
 		});
 	}

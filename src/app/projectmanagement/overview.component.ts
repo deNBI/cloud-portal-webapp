@@ -555,8 +555,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	toggleMemberNameVisibility(): void {
 		this.toggleLocked = true;
 		this.groupService.toggleVisibility(this.project_application.project_application_perun_id)
-			.subscribe((application: Application): void => {
-				this.project_application.show_member_names = application.show_member_names;
+			.subscribe((res: any): void => {
+				this.project_application.show_member_names = res['show_member_names'];
 				this.toggleLocked = false;
 			}, () => {
 				this.toggleLocked = false;
@@ -566,8 +566,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	toggleStartingOfMachines(): void {
 		this.toggleLocked = true;
 		this.groupService.toggleStartingMachines(this.project_application.project_application_perun_id)
-			.subscribe((application: Application): void => {
-				this.project_application.prevent_machines_starting = application.prevent_machines_starting;
+			.subscribe((res: any): void => {
+				this.project_application.prevent_machines_starting = res['prevent_starting'];
 				this.toggleLocked = false;
 			}, () => {
 				this.toggleLocked = false;
