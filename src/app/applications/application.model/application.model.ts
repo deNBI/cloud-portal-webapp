@@ -68,13 +68,13 @@ export class Application {
 	project_application_cloud_service_develop: boolean;
 	project_application_cloud_service_user_number: number;
 	flavors: Flavor[] = [];
-	project_application_workshop: boolean;
+	project_application_workshop: boolean = false;
 	credits_allowed: boolean = false;
 	credits_loop_started: boolean = false;
 	totalModificationRequestCredits: number = 0;
 	totalCreditsExtensionCredits: number = 0;
 	totalLifetimeExtensionCredits: number = 0;
-	memberNamesVisible: boolean;
+	show_member_names: boolean;
 	prevent_machines_starting: boolean;
 	project_application_member_applications: ProjectMemberApplication[];
 	project_application_manager_comment: string;
