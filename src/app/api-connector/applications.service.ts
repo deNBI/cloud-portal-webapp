@@ -18,18 +18,6 @@ export class ApplicationsService {
 		this.http = http;
 	}
 
-	toggleVisibility(application: Application): Observable<Application> {
-		return this.http.post<Application>(`${ApiSettings.getApiBaseURL()}project_applications/toggle_member_names_visibility/`, application, {
-			withCredentials: true,
-		});
-	}
-
-	toggleStartingMachines(application: Application): Observable<Application> {
-		return this.http.post<Application>(`${ApiSettings.getApiBaseURL()}project_applications/toggle_starting_machines/`, application, {
-			withCredentials: true,
-		});
-	}
-
 	adjustApplication(application: Application): Observable<Application> {
 		return this.http.post<Application>(`${ApiSettings.getApiBaseURL()}project_applications/adjust/`, application, {
 			withCredentials: true,
