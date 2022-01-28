@@ -1,6 +1,6 @@
 {
   "name": "@denbi/cloud-portal-webapp",
-  "version": "4.62.0",
+  "version": "4.63.0",
   "description": "de.NBI Cloud Portal",
   "scripts": {
     "ng": "ng serve",
@@ -65,7 +65,7 @@
     "http-server": "14.1.0",
     "is-promise": "4.0.0",
     "jsnlog": "2.30.0",
-    "jspdf": "2.5.0",
+    "jspdf": "2.5.1",
     "keypairs": "1.2.14",
     "log4js": "6.4.0",
     "log4js-protractor-appender": "1.1.2",
