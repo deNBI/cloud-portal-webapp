@@ -77,6 +77,7 @@ export class Application {
 	memberNamesVisible: boolean;
 	prevent_machines_starting: boolean;
 	project_application_member_applications: ProjectMemberApplication[];
+	project_application_manager_comment: string;
 
 	constructor(aj?: Partial<Application>) {
 		this.dissemination = new ApplicationDissemination(null);
