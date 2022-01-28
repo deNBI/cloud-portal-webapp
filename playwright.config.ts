@@ -41,6 +41,8 @@ const config: PlaywrightTestConfig = {
 		trace: 'on-first-retry',
 		baseURL: environment.portal,
 		screenshot: 'on',
+		video: 'on',
+		trace: 'on'
 
 	},
 
