@@ -461,40 +461,18 @@
 					class="card-body">
 					<div class="row">
 						<div class="btn-group col-12">
-
 						</div>
 					</div>
 					<div class="row">
 						<div class="btn-group col-12">
 							<button
 								(click)="this.showInformationCollapse = !this.showInformationCollapse;"
-											class="btn btn-outline-primary"
+											class="btn btn-outline-primary col-6"
 											id="show_information_btn" style="margin:auto;" type="button">
 
 								<i class="fa fa-info-circle"></i>&nbsp;
 								<span *ngIf="this.showInformationCollapse">Hide information</span>
 								<span *ngIf="!this.showInformationCollapse">Show more information</span>
-							</button>
-							<button
-								(click)="toggleMemberNameVisibility();" [disabled]="toggleLocked"
-								class="btn btn-outline-primary"
-								style="margin: auto;"
-								type="button"><i aria-hidden="true" class="fa fa-users"></i>
-								<span *ngIf="project_application?.show_member_names"> Hide </span>
-								<span *ngIf="!project_application?.show_member_names"> Show </span>
-								Member Names
-							</button>
-							<button
-											(click)="toggleStartingOfMachines();"
-											*ngIf="!project_application.project_application_openstack_project" [disabled]="toggleLocked"
-											class="btn btn-outline-primary"
-											style="margin: auto;"
-											type="button">
-								<i *ngIf="!project_application?.prevent_machines_starting" class="fas fa-lock"></i>
-								<i *ngIf="project_application?.prevent_machines_starting" class="fas fa-lock-open"></i>
-								<span *ngIf="project_application?.prevent_machines_starting"> Allow </span>
-								<span *ngIf="!project_application?.prevent_machines_starting"> Prevent </span>
-								starting of machines
 							</button>
 						</div>
 					</div>
@@ -557,8 +535,6 @@
 
 					</div>
 				</div>
-
-
 			</div>
 		</div>
 		<!--/.col-->
@@ -586,6 +562,14 @@
 											class="badge">
 									{{project_application.show_member_names ? "Enabled" : "Disabled" }}
 								</span>
+								<button
+									*ngIf="project_application?.user_is_pi || project_application?.user_is_admin"
+									(click)="toggleMemberNameVisibility();" [disabled]="toggleLocked"
+									class="btn btn-outline-primary float-right"
+									style="margin: auto;"
+									type="button"><i aria-hidden="true" class="fa fa-users" style="width: 20px"></i>
+									Toggle setting
+								</button>
 
 							</li>
 							<li *ngIf="!project_application.project_application_openstack_project"
@@ -595,6 +579,16 @@
 											class="badge">
 									{{!project_application.prevent_machines_starting ? "Enabled" : "Disabled" }}
 								</span>
+								<button
+									(click)="toggleStartingOfMachines();"
+									*ngIf="!project_application.project_application_openstack_project && (project_application?.user_is_pi || project_application?.user_is_admin)" [disabled]="toggleLocked"
+									class="btn btn-outline-primary float-right"
+									style="margin: auto;"
+									type="button">
+									<i *ngIf="!project_application?.prevent_machines_starting" class="fas fa-lock" style="width: 20px"></i>
+									<i *ngIf="project_application?.prevent_machines_starting" class="fas fa-lock-open" style="width: 20px"></i>
+									Toggle setting
+								</button>
 							</li>
 						</ul>
 					</div>
