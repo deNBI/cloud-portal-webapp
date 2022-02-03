@@ -25,12 +25,14 @@ export class ApplicationDetailComponent extends ApplicationBaseClassComponent im
 	CREDITS_TAB: number = 3;
 	MODIFICATION_TAB: number = 4;
 	EXTENSION_TAB: number = 5;
+	COMMENT_TAB: number = 6;
 	PI_USER_TAB_ACTIVE: boolean = true;
 	INFORMATION_TAB_ACTIVE: boolean = false;
 	RESOURCE_TAB_ACTIVE: boolean = false;
 	CREDITS_TAB_ACTIVE: boolean = false;
 	MODIFICATION_TAB_ACTIVE: boolean = false;
 	EXTENSION_TAB_ACTIVE: boolean = false;
+	COMMENT_TAB_ACTIVE: boolean = false;
 
 	@Input() application: Application;
 	@Input() default_tab: number = this.PI_USER_TAB;
@@ -47,6 +49,7 @@ export class ApplicationDetailComponent extends ApplicationBaseClassComponent im
 		this.CREDITS_TAB_ACTIVE = false;
 		this.MODIFICATION_TAB_ACTIVE = false;
 		this.EXTENSION_TAB_ACTIVE = false;
+		this.COMMENT_TAB_ACTIVE = false;
 	}
 
 	setTab(tab_num: number): void {
@@ -71,6 +74,9 @@ export class ApplicationDetailComponent extends ApplicationBaseClassComponent im
 			case this.EXTENSION_TAB:
 				this.EXTENSION_TAB_ACTIVE = true;
 				break;
+			case this.COMMENT_TAB:
+				this.COMMENT_TAB_ACTIVE = true;
+				break;
 			default:
 				break;
 		}
@@ -90,6 +96,7 @@ export class ApplicationDetailComponent extends ApplicationBaseClassComponent im
 
 	ngOnInit(): void {
 		this.setTab(this.default_tab);
+		console.log(this.application);
 
 		this.getMemberDetailsByElixirId(this.application);
 		if (this.application.credits_allowed) {
