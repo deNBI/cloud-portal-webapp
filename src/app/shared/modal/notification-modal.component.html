@@ -1,18 +1,19 @@
 <div class="modal-header">
-    <h4 class="modal-title">{{ notificationModalTitle }}</h4>
-    <button type="button" class="close" style="cursor: pointer"
-            (click)="bsModalRef.hide()"
-            aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
+	<h4 class="modal-title" data-test-id="notification_modal_title">{{ notificationModalTitle }}</h4>
+	<button type="button" class="close" style="cursor: pointer"
+					(click)="bsModalRef.hide()"
+					aria-label="Close">
+		<span aria-hidden="true">&times;</span>
+	</button>
 </div>
 <div class="modal-body">
-    <div class="alert alert-{{ notificationModalType }}" role="alert" id="notification_modal_message">
-        {{ notificationModalMessage }}
-    </div>
+	<div class="alert alert-{{ notificationModalType }}" data-test-id="notification_modal_message" role="alert"
+			 id="notification_modal_message">
+		{{ notificationModalMessage }}
+	</div>
 </div>
 <div class="modal-footer">
-    <button class="btn  btn-danger col-md-4" type="reset"
-            (click)="bsModalRef.hide()">Close
-    </button>
+	<button class="btn  btn-danger col-md-4" type="reset" data-test-id="close_notification_modal_btn"
+					(click)="bsModalRef.hide()">Close
+	</button>
 </div>
