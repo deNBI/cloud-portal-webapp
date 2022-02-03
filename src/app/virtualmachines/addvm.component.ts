@@ -4,11 +4,11 @@ import {
 import { forkJoin, Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import {
-	WIKI_VOLUME_OVERVIEW,
 	CLOUD_PORTAL_SUPPORT_MAIL,
 	STATUS_LINK,
 	WIKI_EPHEMERAL_LINK,
 	WIKI_MOSH_LINK,
+	WIKI_VOLUME_OVERVIEW,
 } from 'links/links';
 import { KeyValue } from '@angular/common';
 import { Image } from './virtualmachinemodels/image';
@@ -699,6 +699,16 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 
 	}
 
+	checkImageAgain(): void {
+		if (this.selectedImage !== undefined) {
+			if (this.selectedImage.min_disk > 0) {
+				if (this.selectedFlavor.rootdisk < this.selectedImage.min_disk) {
+					this.selectedImage = undefined;
+				}
+			}
+		}
+	}
+
 	isMoshModeAvailable(): void {
 		for (const mode of this.selectedImage.modes) {
 			if (mode.name === 'MOSH') {
@@ -738,6 +748,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 		this.newCores = this.selectedFlavor.vcpus;
 		this.newRam = this.selectedFlavor.ram;
 		this.newGpus = this.selectedFlavor.gpu;
+		this.checkImageAgain();
 	}
 
 	ngOnInit(): void {
