@@ -19,6 +19,7 @@ import { ApplicationFormularComponent } from './application-formular/application
 import { PipeModuleModule } from '../pipe-module/pipe-module.module';
 import { ApplicationPiDetailComponent } from './application-detail/application-pi-detail/application-pi-detail.component';
 import { InformationDetailComponent } from './application-detail/information-detail/information-detail.component';
+import { AdjustmentDetailComponent } from './application-detail/adjustment-detail/adjustment-detail.component';
 import { ResourceDetailComponent } from './application-detail/resource-detail/resource-detail.component';
 import { ModificationDetailComponent } from './application-detail/modification-detail/modification-detail.component';
 import { CreditsExtensionDetailComponent } from './application-detail/credits-extension-detail/credits-extension-detail.component';
@@ -56,6 +57,7 @@ import { NewsModule } from '../news/news.module';
 		ModificationDetailComponent,
 		CreditsExtensionDetailComponent,
 		LifetimeExtensionDetailComponent,
+		AdjustmentDetailComponent,
 	],
 	exports: [ApplicationDetailComponent],
 })
