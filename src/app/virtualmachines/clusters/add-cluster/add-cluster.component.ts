@@ -387,7 +387,6 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 				this.selectedProject[1],
 			).subscribe(
 				(res: any): void => {
-					console.log(res);
 					if (res['status'] && res['status'] === 'mutex_locked') {
 						setTimeout(
 							(): void => {
