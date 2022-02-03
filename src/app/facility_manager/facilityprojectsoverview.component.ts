@@ -313,7 +313,6 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 				tempMailList.push(member['email']);
 			});
 			this.selectedProjectType = tempMailList.join(',');
-			console.log(this.selectedProjectType);
 		}
 		if (reply) {
 			reply = reply.trim();
@@ -410,8 +409,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 	setFacilitySupportMails(supportMails: string): void {
 		const facilityId = this.selectedFacility['FacilityId'];
 		this.facilityService.setSupportMails(facilityId, supportMails).subscribe((result: any): void => {
-			console.log('Result:');
-			console.log(result);
+
 			if (result.ok) {
 				this.updateNotificationModal(
 					'Facility support mails changed',
