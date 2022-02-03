@@ -96,7 +96,7 @@ export class ApplicationDetailComponent extends ApplicationBaseClassComponent im
 
 	ngOnInit(): void {
 		this.setTab(this.default_tab);
-		console.log(this.application)
+		console.log(this.application);
 
 		this.getMemberDetailsByElixirId(this.application);
 		if (this.application.credits_allowed) {
