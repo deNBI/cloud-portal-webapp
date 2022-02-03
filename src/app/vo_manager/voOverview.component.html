@@ -1,4 +1,4 @@
-<div *ngIf="isLoaded === false" class="loader"></div>
+<div *ngIf="isLoaded === false" class="loader" data-test-it="site-loader"></div>
 
 <div *ngIf="isLoaded" class="animated fadeIn" ng-app>
 	<div class="row">
@@ -68,40 +68,13 @@
 												 (ngModelChange)="applyFilter();">
 							</td>
 							<td><input style="width: 110px;" type="text" placeholder="Filter" class="form-control"
-												 name="filterProjectName" id="filter_project_name"
+												 name="filterProjectName" id="filter_project_name" data-test-id="filter_project_name"
 												 [(ngModel)]="filterProjectName"
 												 (ngModelChange)="applyFilter();">
 							</td>
 							<td></td>
 							<td>
 								<div>
-									<div class="checkbox col-sm">
-										<div class="checkbox">
-											<label style="margin-top: 7px;margin-bottom: 0px !important;">
-												<input type="checkbox"
-															 (ngModelChange)="switchShowSimpleVmProjects();applyFilter()"
-															 [(ngModel)]="show_simple_vm_projects"/>
-												<span style="margin-left: 5px; bottom: 5px; position: relative;"
-															class="badge bg-info-blue">SimpleVM</span>
-
-											</label>
-										</div>
-									</div>
-									<div class="checkbox col-sm">
-										<div class="checkbox">
-											<label style="margin-top: 7px;margin-bottom: 0px !important;">
-												<input type="checkbox"
-															 (ngModelChange)="switchOpenStackVmProjects();applyFilter()"
-
-
-															 [(ngModel)]="show_openstack_projects"/>
-												<span style="margin-left: 5px; bottom: 5px; position: relative;"
-															class="badge bg-danger">OpenStack  </span>
-
-											</label>
-										</div>
-
-									</div>
 									<div class="checkbox col-sm">
 										<label>
 											<input type="checkbox"
@@ -283,14 +256,16 @@
 										<button
 											style="margin-left: 5px"
 											type="button"
-											class="btn btn-danger" [id]="'show_terminate_' + project?.Id"
+											class="btn btn-danger" [id]="'show_terminate_' + project?.project_application_id"
+											[attr.data-test-id]="'show_terminate_' + project?.perun_name"
 											(click)="selectedProject = project;terminateModal.show();"
 											*ngIf="!(project | hasstatusinlist: application_states.WAIT_FOR_TERMINATION_FM)">
 											<i class="fa fa-trash"></i>&nbsp;Terminate Project
 										</button>
 										<button
 											style="margin-left: 5px" type="button" disabled
-											class="btn btn-warning" [id]="'show_terminate_' + project?.Id"
+											class="btn btn-warning" [id]="'show_terminate_' + project?.project_application_id"
+											[attr.data-test-id]="'show_terminate_' + project?.project_application_id"
 											(click)="selectedProject = project;terminateModal.show();"
 											*ngIf="project | hasstatusinlist: application_states.WAIT_FOR_TERMINATION_FM">
 											Processed by FM
@@ -729,7 +704,7 @@
 				<app-project-os-details *ngIf="selectedProject" [project]="selectedProject"></app-project-os-details>
 			</div>
 			<div class="modal-footer">
-				<button class="btn  btn-success col-md-4" id="terminate_project_btn"
+				<button class="btn  btn-success col-md-4" id="terminate_project_btn" data-test-id="approve_terminate_project_btn"
 								(click)="terminateProject();terminateModal.hide();notificationModal.show();;">
 					Yes
 				</button>
@@ -748,7 +723,7 @@
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h4 class="modal-title" id="notification_modal_title">{{ notificationModalTitle }}</h4>
+				<h4 class="modal-title" id="notification_modal_title" data-test-id="notification_modal_title">{{ notificationModalTitle }}</h4>
 				<button type="button" class="close" style="cursor:pointer"
 								(click)="notificationModal.hide()"
 								aria-label="Close">
@@ -756,13 +731,13 @@
 				</button>
 			</div>
 			<div class="modal-body">
-				<div class="alert alert-{{ notificationModalType }}" id="notification_message" role="alert">
+				<div class="alert alert-{{ notificationModalType }}" id="notification_message" role="alert" data-test-id="notification_message">
 					{{ notificationModalMessage }}
 
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button id="close_notification"
+				<button id="close_notification" data-test-id="close_notification_modal_btn"
 								type="button"
 								(click)="notificationModal.hide();resetNotificationModal();removeModalOpen();"
 								class="btn  btn-secondary"> Close
