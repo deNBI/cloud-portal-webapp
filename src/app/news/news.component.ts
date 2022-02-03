@@ -76,7 +76,7 @@ export class NewsComponent implements OnInit, OnDestroy {
 					this.news = news;
 					this.news_loaded = true;
 				},
-				(error: any) => {
+				() => {
 					this.news_loaded = true;
 					this.error_on_loading = true;
 				},
