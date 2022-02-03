@@ -1,9 +1,9 @@
-<div class="not-allowed-cursor"
-		 [ngClass]="{'not-allowed-cursor':(selectedFlavor?.rootdisk < image?.min_disk && image?.min_disk > 0)}">
+<div class=""
+		 [ngClass]="{'not-allowed-cursor':(selectedFlavor?.rootdisk < image?.min_disk) && image?.min_disk > 0}">
 	<div *ngIf="image !== selectedImage" (click)="selectedImageChange.emit(image);"
-			 class="card flavor-image-card inactive-image-card "
+			 class="card flavor-image-card"
 			 id="id_image_owl_{{image?.name}}"
-			 [ngClass]="{'inactive-image-card':(selectedFlavor?.rootdisk < image?.min_disk && image?.min_disk > 0)}"
+			 [ngClass]="{'inactive-image-card':(selectedFlavor?.rootdisk < image?.min_disk) && image?.min_disk > 0}"
 	>
 		<div
 			[ngClass]="{'bg-info-image':!image?.is_snapshot,'bg-warning':image?.is_snapshot}"

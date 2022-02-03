@@ -101,7 +101,7 @@
 									 				&& !(selected_project_ressources?.ram_used < selected_project_ressources?.ram_total)
 									 				&& flavors_loaded
 									 				&& flavors.length === 0
-									 				&& !selected_flavor">
+									 				&& !selectedFlavor">
 								There is not enough ram available for this project to start a new machine.
 								Your principal investigator can request more
 								resources if necessary.
@@ -112,7 +112,7 @@
 									 				&& (selected_project_ressources?.ram_used < selected_project_ressources?.ram_total)
 									 				&& flavors_loaded
 									 				&& flavors.length === 0
-									 				&& !selected_flavor">
+									 				&& !selectedFlavor">
 								There are too few cores available for this project to start a new machine.
 								Your principal investigator can request more
 								resources if necessary.
@@ -123,24 +123,24 @@
 									 				&& selected_project_ressources?.ram_used < selected_project_ressources?.ram_total
 									 				&& flavors_loaded
 									 				&& flavors.length === 0
-									 				&& !selected_flavor">
+									 				&& !selectedFlavor">
 								There are too few cores and not enough ram available for this project to start a new machine.
 								Your principal investigator can request more
 								resources if necessary.
 							</div>
 							<div *ngIf="selected_project_ressources?.used_vms < selected_project_ressources?.number_vms
-													&& (flavors?.length > 0 || selected_flavor)">
+													&& (flavors?.length > 0 || selectedFlavor)">
 								<div *ngIf="selected_workshop" class="form-group row col-md-12" style="padding-right: 3rem; padding-left: 3rem">
 									<div class="col">
 
-										<app-flavor-detail [selectedFlavor]="selected_flavor" id="id_flavor_detail"
+										<app-flavor-detail [selectedFlavor]="selectedFlavor" id="id_flavor_detail"
 																			 [flavors]="flavors"
 																			 [creditsAllowed]="credits_allowed"
 																			 (selectedFlavorChange)="set_selected_flavor($event)">
 										</app-flavor-detail>
 									</div>
 								</div>
-								<div class="row col-md-12" *ngIf="selected_flavor?.ephemeral_disk > 0">
+								<div class="row col-md-12" *ngIf="selectedFlavor?.ephemeral_disk > 0">
 									<div class="col-md-2"></div>
 									<div class="col-md-10 alert alert-info">
 										<strong>Information for ephemeral flavors:</strong>
@@ -170,7 +170,7 @@
 																		 				&& (selected_workshop
 																		 				&& workshop_data_loaded
 																		 				&& selected_project_ressources?.used_vms < selected_project_ressources?.number_vms
-																		 				&& (flavors?.length > 0 || selected_flavor))"
+																		 				&& (flavors?.length > 0 || selectedFlavor))"
 																		 [isOpen]="true">
 											<div accordion-heading style="width: 100%; cursor: pointer">
 												<strong>Browser-based Research Environments</strong>
@@ -194,7 +194,7 @@
 																		 *ngIf="selected_workshop
 																		 				&& workshop_data_loaded
 																		 				&& selected_project_ressources?.used_vms < selected_project_ressources?.number_vms
-																		 				&& (flavors?.length > 0 || selected_flavor)">
+																		 				&& (flavors?.length > 0 || selectedFlavor)">
 											<div accordion-heading style="width: 100%; cursor: pointer">
 												<strong>Choose project members of <em>{{selected_project[0]}}</em> you want to start a vm for</strong>
 												<i class="pull-right float-right" style="font-size: 25px" [ngClass]="{
@@ -276,7 +276,7 @@
 					*ngIf=" ( (!gave_okay && res_env_okay_needed)
             				|| (!res_env_valid && res_env_component)
             				|| !selected_image
-            				|| (!selected_flavor && flavors.length !== 0)
+            				|| (!selectedFlavor && flavors.length !== 0)
             				|| members_to_add.length < 1 )
           					&& flavors.length > 0
           					&& project_data_loaded
@@ -286,7 +286,7 @@
           					&& (selected_project_ressources?.used_vms < selected_project_ressources?.number_vms)"
 					class="alert alert-danger col-md-10" role="alert" style="margin: auto;">
 					<p>The following is missing before starting a VM:</p>
-					<p *ngIf="!selected_flavor">- The flavor type of your VM
+					<p *ngIf="!selectedFlavor">- The flavor type of your VM
 					</p>
 					<p *ngIf="!selected_image">- The image you want to run on your VM
 					</p>
@@ -299,17 +299,17 @@
 						- At least one member
 					</p>
 				</div>
-				<div *ngIf="((selected_project_ressources?.ram_used + (members_to_add?.length * selected_flavor?.ram)) > selected_project_ressources?.ram_total)
-										|| ((selected_project_ressources?.cores_used + (members_to_add?.length * selected_flavor?.vcpus)) > selected_project_ressources?.cores_total)
+				<div *ngIf="((selected_project_ressources?.ram_used + (members_to_add?.length * selectedFlavor?.ram)) > selected_project_ressources?.ram_total)
+										|| ((selected_project_ressources?.cores_used + (members_to_add?.length * selectedFlavor?.vcpus)) > selected_project_ressources?.cores_total)
 										|| ((selected_project_ressources?.used_vms + members_to_add.length) > selected_project_ressources?.number_vms)
 										&& selected_workshop
 										&& workshop_data_loaded"
 						 class="alert alert-danger col-md-10" role="alert" style="margin: auto;">
 					<p>You do not have enough resources to start that amount of VMs. Missing resources:</p>
-					<p *ngIf="((selected_project_ressources?.ram_used + (members_to_add?.length * selected_flavor?.ram)) > selected_project_ressources?.ram_total)">
+					<p *ngIf="((selected_project_ressources?.ram_used + (members_to_add?.length * selectedFlavor?.ram)) > selected_project_ressources?.ram_total)">
 						- RAM
 					</p>
-					<p *ngIf="((selected_project_ressources?.cores_used + (members_to_add?.length * selected_flavor?.vcpus)) > selected_project_ressources?.cores_total)">
+					<p *ngIf="((selected_project_ressources?.cores_used + (members_to_add?.length * selectedFlavor?.vcpus)) > selected_project_ressources?.cores_total)">
 						- Cores
 					</p>
 					<p *ngIf="((selected_project_ressources?.used_vms + members_to_add.length) > selected_project_ressources?.number_vms)">
@@ -321,7 +321,7 @@
 								 && project_data_loaded
 								 && workshop_data_loaded
 								 && (selected_project_ressources?.used_vms + members_to_add.length) <= selected_project_ressources?.number_vms
-								 && (flavors?.length > 0  || selected_flavor)"
+								 && (flavors?.length > 0  || selectedFlavor)"
 					class="alert alert-warning col-md-10" role="alert" style="margin: auto;">
 					<div class="form-check"><input class="form-check-input"
 																				 name="vm_responsibility"
@@ -338,7 +338,7 @@
 						 				 && project_data_loaded
 						 				 && workshop_data_loaded
 						 				 && (selected_project_ressources?.used_vms + members_to_add.length) <= selected_project_ressources?.number_vms
-						 				 && (flavors?.length > 0  || selected_flavor)">
+						 				 && (flavors?.length > 0  || selectedFlavor)">
 
 						<button style=" margin-left: auto;margin-top: 25px;
     margin-right: auto;
@@ -348,13 +348,13 @@
 
 										[disabled]="!vm_responsibility
 															|| started_machine
-															|| !selected_flavor
+															|| !selectedFlavor
 															|| !selected_image
 															|| (!gave_okay && res_env_okay_needed)
 															|| (!res_env_valid && res_env_component)
 															|| members_to_add.length < 1
-															|| ((selected_project_ressources?.ram_used + (members_to_add?.length * selected_flavor?.ram)) > selected_project_ressources?.ram_total)
-															|| ((selected_project_ressources?.cores_used + (members_to_add?.length * selected_flavor?.vcpus)) > selected_project_ressources?.cores_total)
+															|| ((selected_project_ressources?.ram_used + (members_to_add?.length * selectedFlavor?.ram)) > selected_project_ressources?.ram_total)
+															|| ((selected_project_ressources?.cores_used + (members_to_add?.length * selectedFlavor?.vcpus)) > selected_project_ressources?.cores_total)
 															|| ((selected_project_ressources?.used_vms + members_to_add.length) > selected_project_ressources?.number_vms)"
 										class="btn btn-primary  .btn-lg offset-md-8"
 										data-toggle="modal"

@@ -92,7 +92,7 @@ export class AddWorkshopComponent implements OnInit, OnDestroy, DoCheck {
 	has_forc: boolean = false;
 	forc_url: string = '';
 	flavors: Flavor[] = [];
-	selected_flavor: Flavor = undefined;
+	selectedFlavor: Flavor = undefined;
 	flavors_loaded: boolean = false;
 	images: Image[] = [];
 	selected_image: Image = undefined;
@@ -312,10 +312,10 @@ private group_service: GroupService,
 	}
 
 	set_selected_flavor(flavor: Flavor): void {
-		this.selected_flavor = flavor;
-		this.new_cores = this.selected_flavor.vcpus;
-		this.new_ram = this.selected_flavor.ram;
-		this.new_gpus = this.selected_flavor.gpu;
+		this.selectedFlavor = flavor;
+		this.new_cores = this.selectedFlavor.vcpus;
+		this.new_ram = this.selectedFlavor.ram;
+		this.new_gpus = this.selectedFlavor.gpu;
 	}
 
 	set_selected_image(image: Image): void {
@@ -372,7 +372,7 @@ private group_service: GroupService,
 		this.started_machine = true;
 		const servers: { [key: string]: string }[] = [];
 		const re: RegExp = /\+/gi;
-		const flavor_fixed: string = this.selected_flavor.name.replace(re, '%2B');
+		const flavor_fixed: string = this.selectedFlavor.name.replace(re, '%2B');
 		for (const member of this.members_to_add) {
 			const name: string = this.create_name(`${member.lastName}${member.firstName}`);
 
@@ -457,7 +457,7 @@ private group_service: GroupService,
 		this.new_vms = 0;
 		this.workshop_data_loaded = false;
 		this.selected_image = undefined;
-		this.selected_flavor = undefined;
+		this.selectedFlavor = undefined;
 		this.selected_flavor_type = 'Standard Flavors';
 		this.members_to_add = [];
 		this.vm_responsibility = false;
