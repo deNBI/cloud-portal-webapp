@@ -20,6 +20,9 @@
     || (application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_EXTENSION)"
                             [ngClass]="{'active': EXTENSION_TAB_ACTIVE }"
                             (click)="setTab(EXTENSION_TAB)">Lifetime Extension</a></li>
+		<li class="nav-item"
+		><a class="nav-link" id="comment_tab"  *ngIf="application?.project_application_manager_comment" [ngClass]="{'active': COMMENT_TAB_ACTIVE }"
+			(click)="setTab(COMMENT_TAB)">Application Adjustment</a></li>
 
   </ul>
 
@@ -57,8 +60,12 @@
     || (application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_EXTENSION)) " class="table-responsive">
       <app-lifetime-extension-detail
         [application]="application"></app-lifetime-extension-detail>
-
-
     </div>
+
+		<div *ngIf="COMMENT_TAB_ACTIVE" class="table-responsive">
+			<app-adjustment-detail
+				[application]="application"></app-adjustment-detail>
+		</div>
+
   </div>
 </div>

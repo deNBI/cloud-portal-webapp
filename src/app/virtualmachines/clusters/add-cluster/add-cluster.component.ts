@@ -387,7 +387,6 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 				this.selectedProject[1],
 			).subscribe(
 				(res: any): void => {
-					console.log(res);
 					if (res['status'] && res['status'] === 'mutex_locked') {
 						setTimeout(
 							(): void => {
@@ -531,6 +530,21 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 
 	ngOnDestroy() {
 		this.subscription.unsubscribe();
+	}
+
+	setMasterFlavor(flavor: Flavor): void {
+		this.selectedMasterFlavor = flavor;
+		this.checkImageAgain();
+	}
+
+	checkImageAgain(): void {
+		if (this.selectedMasterImage !== undefined) {
+			if (this.selectedMasterImage.min_disk > 0) {
+				if (this.selectedMasterFlavor.rootdisk < this.selectedMasterImage.min_disk) {
+					this.selectedMasterImage = undefined;
+				}
+			}
+		}
 	}
 
 }

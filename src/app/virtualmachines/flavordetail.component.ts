@@ -5,6 +5,7 @@ import { OwlOptions } from 'ngx-owl-carousel-o';
 import { KeyValue } from '@angular/common';
 import { Flavor } from './virtualmachinemodels/flavor';
 import { FlavorService } from '../api-connector/flavor.service';
+import { Image } from './virtualmachinemodels/image';
 
 /**
  * Flavor detail component.
@@ -17,6 +18,7 @@ import { FlavorService } from '../api-connector/flavor.service';
 })
 export class FlavorDetailComponent implements OnInit, OnChanges {
 	@Input() selectedFlavor: Flavor;
+	@Input() selectedImage: Image;
 	@Input() creditsAllowed: boolean;
 	@Input() flavors: Flavor[];
 	@Output() readonly selectedFlavorChange: EventEmitter<Flavor> = new EventEmitter();

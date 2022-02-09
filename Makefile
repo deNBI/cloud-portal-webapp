@@ -12,7 +12,7 @@ new_env_and_node: clean_env clean_node_modules default ## Same as default, but r
 
 serve: default ng_serve ## Same as default, but serves the webapp in the end.
 
-check_nodeenv: # Checks if a version of nodeenv is installed by calling nodeenv --version and asserting that a version number exists
+check_nodeenv: ## Checks if a version of nodeenv is installed by calling nodeenv --version and asserting that a version number exists
 	@echo ---Checking your Nodeenv version:
 ifeq ($(NODEENV_VERSION),)
 	$(warning Nodeenv was not found.)
@@ -24,7 +24,7 @@ else
 	fi
 endif
 
-env: check_nodeenv .nodeenvrc # Creates an env folder if not already existing. Also removes and creates a new env folder if
+env: check_nodeenv .nodeenvrc ## Creates an env folder if not already existing. Also removes and creates a new env folder if
 	@echo ---Checking for env folder and version:; \
 	if ! test -d env; \
 	then echo Env folder does not exist. Creating env folder.; \
@@ -58,16 +58,19 @@ clean_node_modules: ## Removes the node_modules folder without asking. Make sure
 	rm -R node_modules; \
 	echo Node modules folder removed.
 
-node_modules: package.json # Activates the virtual environment and creates node_modules/ installs packages from package.json
+node_modules: package.json ## Activates the virtual environment and creates node_modules/ installs packages from package.json
 	@echo ---Installing dependencies from package.json:; \
 	. env/bin/activate && \
 	npm install && \
 	npm install -g @angular/cli
 
-ng_serve: # Activates the env environment and serves the angular webapp
+ng_serve: ## Activates the env environment and serves the angular webapp
 	@ echo ---Starting Webapp; \
 	. env/bin/activate && \
 	ng serve
+
+check_deps: ## Checks dependencies and devDependencies of package.json with a dev-package.json
+	python3 compare_two_package_json.py package.json dev-package.json
 
 .PHONY: default new_environment new_node_modules new_env_and_node serve check_nodeenv clean_env clean_node_modules ng_serve
 

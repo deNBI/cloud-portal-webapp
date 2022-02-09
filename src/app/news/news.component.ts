@@ -73,12 +73,10 @@ export class NewsComponent implements OnInit, OnDestroy {
 		this.subscription.add(
 			this.news_service.getNewsByTags(this.max_news_amount, this.tags).subscribe(
 				(news: News[]) => {
-					console.log(news);
 					this.news = news;
 					this.news_loaded = true;
 				},
-				(error: any) => {
-					console.log(error);
+				() => {
 					this.news_loaded = true;
 					this.error_on_loading = true;
 				},

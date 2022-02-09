@@ -274,7 +274,6 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 					this.showNotificationModal('Success', 'The project has been extended!', 'success');
 				}
 				if (!application.project_application_openstack_project) {
-					console.log(res.status, HttpStatusCode.Accepted);
 					if (res.status === HttpStatusCode.Accepted) {
 						this.numberOfExtensionRequests -= 1;
 						this.all_applications.splice(this.all_applications.indexOf(application), 1);
@@ -563,7 +562,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 				} else {
 					const applicationToGet: Application = application;
 					applicationToGet.project_application_status = [];
-					this.showNotificationModal('Success', 'The new project was created', 'success');
+					this.showNotificationModal('Success', 'The  project was assigned to the facility.', 'success');
 					this.getApplication(applicationToGet);
 					this.switchApproveLocked(false);
 
