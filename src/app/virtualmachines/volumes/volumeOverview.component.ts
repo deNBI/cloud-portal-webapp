@@ -457,7 +457,7 @@ export class VolumeOverviewComponent extends AbstractBaseClass implements OnInit
 			} else {
 				this.volume_action_status = this.volumeActionStates.ERROR;
 			}
-		}, (error: any): void => {
+		}, (): void => {
 			this.errorModal.show();
 		});
 
