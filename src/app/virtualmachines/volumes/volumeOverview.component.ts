@@ -1,4 +1,6 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+	Component, OnDestroy, OnInit, ViewChild,
+} from '@angular/core';
 import { forkJoin, Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { Volume } from './volume';
@@ -422,43 +424,42 @@ export class VolumeOverviewComponent extends AbstractBaseClass implements OnInit
 	 */
 	createAndAttachvolume(volume_name: string, diskspace: number, instance_id: string): void {
 		this.volume_action_status = 7;
-		this.vmService.createVolume(volume_name, diskspace.toString(), instance_id).subscribe(
-			(newVolume: Volume): void => {
-				newVolume.volume_created_by_user = true;
+		this.vmService.createVolume(volume_name, diskspace.toString(), instance_id).subscribe((newVolume: Volume): void => {
+			newVolume.volume_created_by_user = true;
 
-				if (newVolume.volume_openstackid) {
-					newVolume.volume_status = VolumeStates.ATTACHING;
-					this.volume_page.volume_list.push(newVolume);
+			if (newVolume.volume_openstackid) {
+				newVolume.volume_status = VolumeStates.ATTACHING;
+				this.volume_page.volume_list.push(newVolume);
 
-					this.volume_action_status = this.volumeActionStates.ATTACHING;
+				this.volume_action_status = this.volumeActionStates.ATTACHING;
 
-					this.vmService.attachVolumetoServer(newVolume.volume_openstackid, instance_id).subscribe(
-						(res: IResponseTemplate): void => {
+				this.vmService.attachVolumetoServer(newVolume.volume_openstackid, instance_id).subscribe(
+					(res: IResponseTemplate): void => {
 
-							if (res.value === 'attached') {
-								this.volume_action_status = this.volumeActionStates.SUCCESSFULLY_CREATED_ATTACHED;
-							} else {
-								this.volume_action_status = this.volumeActionStates.ERROR;
-							}
-							this.check_status_loop(newVolume, 0);
-						},
-						(error: any): void => {
-							if (error['error']['error'] === '409') {
-								newVolume.error_msg = 'Conflict detected. '
+						if (res.value === 'attached') {
+							this.volume_action_status = this.volumeActionStates.SUCCESSFULLY_CREATED_ATTACHED;
+						} else {
+							this.volume_action_status = this.volumeActionStates.ERROR;
+						}
+						this.check_status_loop(newVolume, 0);
+					},
+					(error: any): void => {
+						if (error['error']['error'] === '409') {
+							newVolume.error_msg = 'Conflict detected. '
 									+ 'The virtual machine is currently creating a snapshot and must not be altered.';
-								setTimeout((): void => {
-									newVolume.error_msg = null;
-								}, 5000);
-							}
-							this.check_status_loop(newVolume, 0);
-						},
-					);
-				} else {
-					this.volume_action_status = this.volumeActionStates.ERROR;
-				}
-			}, (error: any): void => {
-				this.errorModal.show();
-			});
+							setTimeout((): void => {
+								newVolume.error_msg = null;
+							}, 5000);
+						}
+						this.check_status_loop(newVolume, 0);
+					},
+				);
+			} else {
+				this.volume_action_status = this.volumeActionStates.ERROR;
+			}
+		}, (error: any): void => {
+			this.errorModal.show();
+		});
 
 	}
 
