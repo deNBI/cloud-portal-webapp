@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { forkJoin, Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { Volume } from './volume';
@@ -28,6 +28,8 @@ import { VolumePage } from './volumePage.model';
 })
 
 export class VolumeOverviewComponent extends AbstractBaseClass implements OnInit, OnDestroy {
+
+	@ViewChild('errorModal') errorModal: any;
 
 	volume_page: VolumePage = new VolumePage();
 
@@ -454,8 +456,9 @@ export class VolumeOverviewComponent extends AbstractBaseClass implements OnInit
 				} else {
 					this.volume_action_status = this.volumeActionStates.ERROR;
 				}
-			},
-		);
+			}, (error: any): void => {
+				this.errorModal.show();
+			});
 
 	}
 

@@ -720,6 +720,7 @@
 				<h4 class="modal-title">{{!error_starting_machine ? "Redirecting" : "Error starting VM" }}</h4>
 			</div>
 			<div class="modal-body" *ngIf="!error_starting_machine">
+				<p>{{progress_bar_status}}</p>
 				<p>Redirecting to Instance Overview...</p>
 				<div class="progress">
 					<div class="progress-bar progress-bar-striped {{progress_bar_animated}} bg-info"

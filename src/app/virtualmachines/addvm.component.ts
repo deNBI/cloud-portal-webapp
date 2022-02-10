@@ -499,14 +499,25 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 						this.started_machine = false;
 
 						if (newVm.status) {
-							this.progress_bar_width = 75;
-							setTimeout(
-								(): void => {
-									void this.router.navigate(['/virtualmachines/vmOverview']).then().catch();
-								},
-								2000,
-							);
-
+							if (newVm['volume_error']) {
+								this.progress_bar_width = 50;
+								// eslint-disable-next-line max-len
+								this.progress_bar_status = 'At least 1 volume could not be created due to invalid naming. This will not stop the machine creation process.';
+								setTimeout(
+									(): void => {
+										void this.router.navigate(['/virtualmachines/vmOverview']).then().catch();
+									},
+									15000,
+								);
+							} else {
+								this.progress_bar_width = 75;
+								setTimeout(
+									(): void => {
+										void this.router.navigate(['/virtualmachines/vmOverview']).then().catch();
+									},
+									2000,
+								);
+							}
 						} else {
 							this.loadProjectData();
 							// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
