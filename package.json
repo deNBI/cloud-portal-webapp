@@ -138,12 +138,12 @@
 	"lint-staged": {
 		"*.{js,jsx,ts}": [
 			"prettier --write",
-			"ng lint --fix"
+			"eslint --fix"
 		],
 		"*.{html,css,less,ejs}": [
 			"prettier --write"
 		],
-		"*.js": "ng lint --fix",
+		"*.js": "eslint --cache --fix",
 		"*.{js,css,md}": "prettier --write"
 	}
 }
