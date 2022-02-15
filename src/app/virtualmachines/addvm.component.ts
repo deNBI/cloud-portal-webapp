@@ -41,12 +41,20 @@ import { ApplicationsService } from '../api-connector/applications.service';
 @Component({
 	selector: 'app-new-vm',
 	templateUrl: 'addvm.component.html',
-	providers: [GroupService, ImageService, KeyService, FlavorService, VirtualmachineService,
-		ApiSettings, UserService, ApplicationsService],
+	providers: [
+		GroupService,
+		ImageService,
+		KeyService,
+		FlavorService,
+		VirtualmachineService,
+		ApiSettings,
+		UserService,
+		ApplicationsService,
+	],
 })
 export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
-
 	SIXTY_SIX_PERCENT: number = 66;
+
 	SEVENTY_FIVE: number = 75;
 	ACTIVE: string = 'ACTIVE';
 	DELETED: string = 'DELETED';
@@ -284,11 +292,11 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 
 	getDetachedVolumesByProject(): void {
 		this.subscription.add(
-			this.virtualmachineservice.getDetachedVolumesByProject(this.selectedProject[1]).subscribe(
-				(detached_volumes: Volume[]): void => {
+			this.virtualmachineservice
+				.getDetachedVolumesByProject(this.selectedProject[1])
+				.subscribe((detached_volumes: Volume[]): void => {
 					this.detached_project_volumes = detached_volumes;
-				},
-			),
+				}),
 		);
 	}
 
@@ -337,7 +345,12 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 		if (!(this.volumeStorage > 0)) {
 			return false;
 			// eslint-disable-next-line max-len
-		} else return (this.selectedProjectRessources.used_volume_storage + this.getStorageInList() + this.volumeStorage) <= this.selectedProjectRessources.max_volume_storage;
+		} else {
+			return (
+				this.selectedProjectRessources.used_volume_storage + this.getStorageInList() + this.volumeStorage
+				<= this.selectedProjectRessources.max_volume_storage
+			);
+		}
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -350,10 +363,12 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 	 * A new volume can only be added to the list, if this function returns true.
 	 */
 	checkVolumeValidity(): boolean {
-		return (this.checkStorageNumber()
+		return (
+			this.checkStorageNumber()
 			&& this.checkIfMountPathIsUsable(this.volumeMountPath)
 			&& this.checkInputVolumeString(this.volumeMountPath)
-			&& this.checkInputVolumeString(this.volumeName));
+			&& this.checkInputVolumeString(this.volumeName)
+		);
 	}
 
 	/**
@@ -374,7 +389,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 	addAttachVolume(vol: Volume): void {
 		this.selected_detached_vol = this.undefined_detached_vol;
 		this.volumesToAttach.push(vol);
-		this.detached_project_volumes = this.detached_project_volumes.filter((volume: Volume): any => (vol !== volume));
+		this.detached_project_volumes = this.detached_project_volumes.filter((volume: Volume): any => vol !== volume);
 		if (this.detached_project_volumes.length === 0) {
 			this.toggleShowAttachVol();
 		}
@@ -473,68 +488,64 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 			if (!this.mosh_mode_available) {
 				this.udp_allowed = false;
 			}
-			this.delay(500).then((): any => {
-				this.progress_bar_width = 50;
-			}).catch((): any => {
-			});
+			this.delay(500)
+				.then((): any => {
+					this.progress_bar_width = 50;
+				})
+				.catch((): any => {});
 			const additional_elixir_ids: string[] = this.members_to_add.map((mem: ProjectMember): string => mem.elixirId);
 			this.subscription.add(
-				this.virtualmachineservice.startVM(
-					flavor_fixed,
-					this.selectedImage,
-					servername,
-					project,
-					projectid.toString(),
-					this.http_allowed,
-					this.https_allowed,
-					this.udp_allowed,
-					this.volumesToMount,
-					this.volumesToAttach,
-					play_information,
-					additional_elixir_ids,
-				)
-					.subscribe((newVm: VirtualMachine): void => {
-						this.error_starting_machine = false;
-						this.newVm = newVm;
-						this.started_machine = false;
+				this.virtualmachineservice
+					.startVM(
+						flavor_fixed,
+						this.selectedImage,
+						servername,
+						project,
+						projectid.toString(),
+						this.http_allowed,
+						this.https_allowed,
+						this.udp_allowed,
+						this.volumesToMount,
+						this.volumesToAttach,
+						play_information,
+						additional_elixir_ids,
+					)
+					.subscribe(
+						(newVm: VirtualMachine): void => {
+							this.error_starting_machine = false;
+							this.newVm = newVm;
+							this.started_machine = false;
 
-						if (newVm.status) {
-							if (newVm['volume_error']) {
-								this.progress_bar_width = 50;
-								// eslint-disable-next-line max-len
-								this.progress_bar_status = 'At least 1 volume could not be created due to invalid naming. This will not stop the machine creation process.';
-								setTimeout(
-									(): void => {
+							if (newVm.status) {
+								if (newVm['volume_error']) {
+									this.progress_bar_width = 50;
+									// eslint-disable-next-line max-len
+									this.progress_bar_status =										'At least 1 volume could not be created due to invalid naming. This will not stop the machine creation process.';
+									setTimeout((): void => {
 										void this.router.navigate(['/virtualmachines/vmOverview']).then().catch();
-									},
-									15000,
-								);
+									}, 15000);
+								} else {
+									this.progress_bar_width = 75;
+									setTimeout((): void => {
+										void this.router.navigate(['/virtualmachines/vmOverview']).then().catch();
+									}, 2000);
+								}
 							} else {
-								this.progress_bar_width = 75;
-								setTimeout(
-									(): void => {
-										void this.router.navigate(['/virtualmachines/vmOverview']).then().catch();
-									},
-									2000,
-								);
+								this.loadProjectData();
+								// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+								this.create_error = <IResponseTemplate>(<any>newVm);
 							}
-						} else {
-							this.loadProjectData();
-							// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-							this.create_error = <IResponseTemplate><any>newVm;
-						}
-
-					}, (error): void => {
-						console.log(error);
-						this.error_starting_machine = true;
-					}),
+						},
+						(error): void => {
+							console.log(error);
+							this.error_starting_machine = true;
+						},
+					),
 			);
 		} else {
 			this.progress_bar_status = this.CREATING_STATUS;
 			this.newVm = null;
-
 		}
-
 	}
 
 	async delay(ms: number): Promise<any> {
@@ -556,9 +567,14 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 			this.timeout += this.biocondaComponent.getTimeout();
 		}
 
-		if (this.resEnvComponent && this.resEnvComponent.selectedTemplate.template_name !== 'undefined'
-			&& this.resEnvComponent.user_key_url.errors === null) {
-			playbook_info[this.resEnvComponent.selectedTemplate.template_name] = { create_only_backend: `${this.resEnvComponent.getCreateOnlyBackend()}` };
+		if (
+			this.resEnvComponent
+			&& this.resEnvComponent.selectedTemplate.template_name !== 'undefined'
+			&& this.resEnvComponent.user_key_url.errors === null
+		) {
+			playbook_info[this.resEnvComponent.selectedTemplate.template_name] = {
+				create_only_backend: `${this.resEnvComponent.getCreateOnlyBackend()}`,
+			};
 			playbook_info['user_key_url'] = { user_key_url: this.resEnvComponent.getUserKeyUrl() };
 		}
 
@@ -600,11 +616,11 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 				} else {
 					this.client_available = false;
 					this.client_checked = true;
-
 				}
 				this.selectedProjectClient = client;
 				this.subscription.add(
-					this.imageService.getBlockedImageTagsResenv(Number(this.selectedProjectClient.id), 'true')
+					this.imageService
+						.getBlockedImageTagsResenv(Number(this.selectedProjectClient.id), 'true')
 						.subscribe((tags: BlockedImageTagResenv[]): void => {
 							this.blockedImageTagsResenv = tags;
 						}),
@@ -686,16 +702,17 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 		this.selectedFlavor = undefined;
 		this.getDetachedVolumesByProject();
 		this.subscription.add(
-			this.groupService.getGroupResources(this.selectedProject[1].toString()).subscribe((res: ApplicationRessourceUsage): void => {
-				this.selectedProjectRessources = new ApplicationRessourceUsage(res);
-				this.data_loaded = true;
-				this.checkProjectDataLoaded();
-			}),
+			this.groupService
+				.getGroupResources(this.selectedProject[1].toString())
+				.subscribe((res: ApplicationRessourceUsage): void => {
+					this.selectedProjectRessources = new ApplicationRessourceUsage(res);
+					this.data_loaded = true;
+					this.checkProjectDataLoaded();
+				}),
 		);
 
 		this.getImages(this.selectedProject[1]);
 		this.getFlavors(this.selectedProject[1]);
-
 	}
 
 	generateRandomName(): void {
@@ -707,7 +724,6 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 		this.selectedImage = image;
 		this.isMoshModeAvailable();
 		this.hasImageResenv();
-
 	}
 
 	checkImageAgain(): void {
@@ -729,7 +745,6 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 			}
 		}
 		this.mosh_mode_available = false;
-
 	}
 
 	hasImageResenv(): void {
@@ -745,13 +760,11 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 					return;
 				}
 			}
-
 		}
 		this.resenvSelected = false;
 		if (this.resEnvComponent) {
 			this.resEnvComponent.unsetOnlyNamespace();
 		}
-
 	}
 
 	setSelectedFlavor(flavor: Flavor): void {
@@ -839,5 +852,4 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 			return storageInList;
 		}
 	}
-
 }
