@@ -42,10 +42,7 @@ export class WorkerBatch {
 
 	public setMaxWorkerCount(ressource_usage: ApplicationRessourceUsage): void {
 		if (this.flavor) {
-
-			this.max_worker_count = ressource_usage.calcMaxScaleUpWorkerInstancesByFlavor(
-				this.flavor,
-			);
+			this.max_worker_count = ressource_usage.calcMaxScaleUpWorkerInstancesByFlavor(this.flavor);
 		}
 	}
 
@@ -58,9 +55,7 @@ export class WorkerBatch {
 	public setNewScalingUpWorkerCount(): void {
 		this.worker_count += this.upscale_count;
 		this.upscale_count = 0;
-
 	}
-
 }
 
 /**
@@ -110,17 +105,14 @@ export class Clusterinfo {
 			}
 			if (cl.launch_date) {
 				const dt = new Date(cl.launch_date);
-				this.launch_date = dt.toLocaleDateString(
-					'en-US',
-					{
-						year: 'numeric',
-						month: 'numeric',
-						day: 'numeric',
-						hour: 'numeric',
-						minute: '2-digit',
-						hour12: false,
-					},
-				);
+				this.launch_date = dt.toLocaleDateString('en-US', {
+					year: 'numeric',
+					month: 'numeric',
+					day: 'numeric',
+					hour: 'numeric',
+					minute: '2-digit',
+					hour12: false,
+				});
 			}
 			this.sortWorkerByStatus();
 		}
@@ -133,9 +125,7 @@ export class Clusterinfo {
 				this.worker_batches.splice(this.worker_batches.indexOf(batch));
 				this.setScaleDownBatchesCount();
 			}
-
 		});
-
 	}
 
 	public create_new_batch(): void {
@@ -151,7 +141,6 @@ export class Clusterinfo {
 		if (this.worker_batches.indexOf(batch) !== -1) {
 			this.worker_batches.splice(idx, 1);
 		}
-
 	}
 
 	private set_worker_batches(workerBatches: WorkerBatch[]): void {
@@ -168,9 +157,6 @@ export class Clusterinfo {
 	}
 
 	private sortWorkerByStatus(): void {
-		this.worker_instances.sort(
-			(w1: VirtualMachine, w2: VirtualMachine): any => ((w1.status > w2.status) ? 1 : ((w2.status > w1.status) ? -1 : 0)),
-		);
+		this.worker_instances.sort((w1: VirtualMachine, w2: VirtualMachine): any => (w1.status > w2.status ? 1 : w2.status > w1.status ? -1 : 0));
 	}
-
 }
