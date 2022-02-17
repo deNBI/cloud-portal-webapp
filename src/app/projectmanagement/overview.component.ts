@@ -216,7 +216,7 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
 						if (this.project_application.project_application_perun_id) {
 							this.getUsedResources();
-							if (this.project_application.user_is_admin || this.project_application.memberNamesVisible) {
+							if (this.project_application.user_is_admin || this.project_application.show_member_names) {
 								this.getMembersOfTheProject();
 							}
 							if (this.project_application.credits_allowed && !this.project_application.credits_loop_started) {
@@ -554,21 +554,24 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
 	toggleMemberNameVisibility(): void {
 		this.toggleLocked = true;
-		this.applicationsService.toggleVisibility(this.project_application).subscribe((application: Application): void => {
-			this.project_application.memberNamesVisible = application.memberNamesVisible;
-			this.toggleLocked = false;
-		});
+		this.groupService.toggleVisibility(this.project_application.project_application_perun_id)
+			.subscribe((res: any): void => {
+				this.project_application.show_member_names = res['show_member_names'];
+				this.toggleLocked = false;
+			}, () => {
+				this.toggleLocked = false;
+			});
 	}
 
 	toggleStartingOfMachines(): void {
 		this.toggleLocked = true;
-		this.applicationsService.toggleStartingMachines(this.project_application).subscribe((application: Application): void => {
-			this.project_application.prevent_machines_starting = application.prevent_machines_starting;
-			this.toggleLocked = false;
-		}, () => {
-			this.toggleLocked = false;
-			// check how to catch this part
-		});
+		this.groupService.toggleStartingMachines(this.project_application.project_application_perun_id)
+			.subscribe((res: any): void => {
+				this.project_application.prevent_machines_starting = res['prevent_starting'];
+				this.toggleLocked = false;
+			}, () => {
+				this.toggleLocked = false;
+			});
 	}
 
 	switchToggleLocked(check: boolean): void {

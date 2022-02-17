@@ -36,6 +36,8 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 	filterChanged: Subject<string> = new Subject<string>();
 	isLoaded: boolean = false;
 	projects: Application[] = [];
+	show_openstack_projects: boolean = true;
+	show_simple_vm_projects: boolean = true;
 	details_loaded: boolean = false;
 	/**
 	 * Approved group status.
@@ -73,11 +75,19 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 	supportMailEditing: boolean = false;
 
 	constructor(
-							private groupService: GroupService,
-							private facilityService: FacilityService,
-							private newsService: NewsService,
+		private groupService: GroupService,
+		private facilityService: FacilityService,
+		private newsService: NewsService,
 	) {
 		super();
+	}
+
+	switchShowSimpleVmProjects(): void {
+		this.show_simple_vm_projects = !this.show_simple_vm_projects;
+	}
+
+	switchOpenStackVmProjects(): void {
+		this.show_openstack_projects = !this.show_openstack_projects;
 	}
 
 	setEmailSubject(): void {
@@ -119,6 +129,8 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 
 		});
 		this.sendNews = true;
+		this.show_openstack_projects = true;
+		this.show_simple_vm_projects = true;
 
 		this.filterChanged
 			.pipe(
@@ -179,19 +191,31 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 			this.getProjectsByMemberElixirId();
 
 		}
-
 		this.projects_filtered = this.projects.filter((project: Application): boolean => this.checkFilter(project));
 
 	}
 
 	checkFilter(project: Application): boolean {
+
 		if (this.filter === '' || !this.filter) {
-			return this.isFilterProjectStatus(project.project_application_status, project.lifetime_reached);
+			if ((project.project_application_openstack_project && this.show_openstack_projects)
+				|| (!project.project_application_openstack_project && this.show_simple_vm_projects)) {
+				return this.isFilterProjectStatus(project.project_application_status, project.lifetime_reached);
+			}
+
+			return false;
+
 		} else {
-			return (this.isFilterLongProjectName(project.project_application_name, this.filter)
-				|| this.isFilterProjectId(project.project_application_perun_id.toString(), this.filter))
-				|| (this.isFilterProjectName(project.perun_name, this.filter)
-					&& this.isFilterProjectStatus(project.project_application_status, project.lifetime_reached));
+			if ((project.project_application_openstack_project && this.show_openstack_projects)
+				|| (!project.project_application_openstack_project && this.show_simple_vm_projects)) {
+
+				return (this.isFilterLongProjectName(project.project_application_name, this.filter)
+						|| this.isFilterProjectId(project.project_application_perun_id.toString(), this.filter))
+					|| (this.isFilterProjectName(project.perun_name, this.filter)
+						&& this.isFilterProjectStatus(project.project_application_status, project.lifetime_reached));
+			}
+
+			return false;
 		}
 	}
 
@@ -289,7 +313,6 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 				tempMailList.push(member['email']);
 			});
 			this.selectedProjectType = tempMailList.join(',');
-			console.log(this.selectedProjectType);
 		}
 		if (reply) {
 			reply = reply.trim();
@@ -386,8 +409,7 @@ export class FacilityProjectsOverviewComponent extends FilterBaseClass implement
 	setFacilitySupportMails(supportMails: string): void {
 		const facilityId = this.selectedFacility['FacilityId'];
 		this.facilityService.setSupportMails(facilityId, supportMails).subscribe((result: any): void => {
-			console.log('Result:');
-			console.log(result);
+
 			if (result.ok) {
 				this.updateNotificationModal(
 					'Facility support mails changed',

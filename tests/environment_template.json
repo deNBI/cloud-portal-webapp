@@ -1,0 +1,17 @@
+{
+  "password_user": "",
+  "email_user": "",
+	"elixir_id_user": "",
+  "password_fm": "",
+  "email_fm": "",
+  "password_vo": "",
+  "email_vo": "",
+	"elixir_id_vo": "",
+  "portal": "",
+  "angular":"",
+  "auth_user": "",
+  "auth_fm": "",
+  "auth_vo": "",
+  "browser_h": 1080,
+  "browser_w": 1920
+}

@@ -1,6 +1,5 @@
 import {
-	ChangeDetectorRef,
-	Component, OnDestroy, OnInit, ViewChild,
+	ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild,
 } from '@angular/core';
 import { forkJoin, Subscription } from 'rxjs';
 import { Router } from '@angular/router';
@@ -64,6 +63,9 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 	selected_flavor_types: Flavor[] = [];
 	selected_flavor_type: string = 'Standard Flavors';
 	flavor_types: { [name: string]: Flavor[] } = {};
+	vm_limit_reached: boolean = false;
+	cores_limit_reached: boolean = false;
+	ram_limit_reached: boolean = false;
 
 	cluster_id: string;
 	cluster_error: string;
@@ -385,7 +387,6 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 				this.selectedProject[1],
 			).subscribe(
 				(res: any): void => {
-					console.log(res);
 					if (res['status'] && res['status'] === 'mutex_locked') {
 						setTimeout(
 							(): void => {
@@ -498,9 +499,20 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 			this.groupService.getGroupResources(this.selectedProject[1].toString()).subscribe((res: ApplicationRessourceUsage): void => {
 				this.selectedProjectRessources = new ApplicationRessourceUsage(res);
 				this.getFlavors(this.selectedProject[1]);
+				this.checkResources();
 				this.projectDataLoaded = true;
 			}),
 		);
+	}
+
+	checkResources(): void {
+		this.newCores = 0;
+		this.newRam = 0;
+		this.newVms = 2;
+		this.newGpus = 0;
+		this.vm_limit_reached = (this.selectedProjectRessources.used_vms + 2) > this.selectedProjectRessources.number_vms;
+		this.cores_limit_reached = this.selectedProjectRessources.cores_used >= this.selectedProjectRessources.cores_total;
+		this.ram_limit_reached = this.selectedProjectRessources.ram_used >= this.selectedProjectRessources.ram_total;
 	}
 
 	resizeFix(): void {
@@ -518,6 +530,21 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 
 	ngOnDestroy() {
 		this.subscription.unsubscribe();
+	}
+
+	setMasterFlavor(flavor: Flavor): void {
+		this.selectedMasterFlavor = flavor;
+		this.checkImageAgain();
+	}
+
+	checkImageAgain(): void {
+		if (this.selectedMasterImage !== undefined) {
+			if (this.selectedMasterImage.min_disk > 0) {
+				if (this.selectedMasterFlavor.rootdisk < this.selectedMasterImage.min_disk) {
+					this.selectedMasterImage = undefined;
+				}
+			}
+		}
 	}
 
 }

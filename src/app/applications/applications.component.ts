@@ -274,7 +274,6 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 					this.showNotificationModal('Success', 'The project has been extended!', 'success');
 				}
 				if (!application.project_application_openstack_project) {
-					console.log(res.status, HttpStatusCode.Accepted);
 					if (res.status === HttpStatusCode.Accepted) {
 						this.numberOfExtensionRequests -= 1;
 						this.all_applications.splice(this.all_applications.indexOf(application), 1);
@@ -563,7 +562,7 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 				} else {
 					const applicationToGet: Application = application;
 					applicationToGet.project_application_status = [];
-					this.showNotificationModal('Success', 'The new project was created', 'success');
+					this.showNotificationModal('Success', 'The  project was assigned to the facility.', 'success');
 					this.getApplication(applicationToGet);
 					this.switchApproveLocked(false);
 
@@ -703,9 +702,13 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 					`The project was created in ${res['client']} !`,
 					'success',
 				);
+				this.all_applications = [];
+				this.getSubmittedApplications();
+				this.applicationsService.getExtensionRequestsCounter().subscribe((result: any): void => {
+					this.numberOfProjectApplications = result['applications_submitted_vo'];
+				});
 				this.switchApproveLocked(false);
 			}
-			this.getAllApplications();
 		}, (error: object): void => {
 			console.log(error);
 			if ('error' in error && 'error' in error['error'] && error['error']['error'] === 'locked') {
@@ -754,7 +757,12 @@ export class ApplicationsComponent extends ApplicationBaseClassComponent impleme
 		const idx: number = this.all_applications.indexOf(app);
 		this.applicationsService.declineApplication(app.project_application_id).subscribe(
 			(): void => {
-				this.showNotificationModal('Success', 'The Application was declined', 'success');
+				let message: string = 'The Application was declined.';
+				if (app.project_application_openstack_project && app.project_application_perun_id) {
+					message = `The Application was declined. The perun id was ${app.project_application_perun_id},
+					please remember to delete the perun group.`;
+				}
+				this.showNotificationModal('Success', message, 'success');
 				this.all_applications.splice(idx, 1);
 				this.numberOfProjectApplications -= 1;
 			},

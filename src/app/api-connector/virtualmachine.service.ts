@@ -79,7 +79,7 @@ export class VirtualmachineService {
 
 	scaleDownCluster(cluster_id: string, downscale_list: any): Observable<any> {
 		const params: HttpParams = new HttpParams()
-			.set('downscale_list', JSON.stringify(downscale_list));
+			.set('downscale_list', encodeURIComponent(JSON.stringify(downscale_list)));
 
 		return this.http.post(`${ApiSettings.getApiBaseURL()}clusters/${cluster_id}/scale-down/`, params, {
 			withCredentials: true,

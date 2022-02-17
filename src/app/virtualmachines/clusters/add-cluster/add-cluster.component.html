@@ -87,7 +87,7 @@
 
 								<div>
 									<div class="alert alert-primary" role="alert"
-											 *ngIf="selectedProject && (selectedProjectRessources?.used_vms + 2 ) > selectedProjectRessources?.number_vms">
+											 *ngIf="selectedProject && vm_limit_reached">
 										The limit for virtualmachines is too low for your project to start a new cluster.
 										Your principal
 										investigator can request more
@@ -95,19 +95,19 @@
 
 									</div>
 									<div class="alert alert-primary " role="alert"
-											 *ngIf="selectedProject && selectedProjectRessources?.cores_used < selectedProjectRessources?.cores_total && !(selectedProjectRessources.ram_used < selectedProjectRessources.ram_total) && flavors_loaded && flavors_usable.length === 0 && !selectedFlavor">
+											 *ngIf="selectedProject && cores_limit_reached && !ram_limit_reached && flavors_loaded && flavors_usable.length === 0 && !selectedFlavor">
 										There are too few cores available for this project to start a new machine.
 										Your principal investigator can request more
 										resources if necessary.
 									</div>
 									<div class="alert alert-primary " role="alert"
-											 *ngIf="selectedProject && !(selectedProjectRessources?.cores_used < selectedProjectRessources?.cores_total) && (selectedProjectRessources.ram_used < selectedProjectRessources.ram_total) && flavors_loaded && flavors_usable.length === 0 && !selectedFlavor">
+											 *ngIf="selectedProject && !cores_limit_reached && ram_limit_reached && flavors_loaded && flavors_usable.length === 0 && !selectedFlavor">
 										There is not enough ram available for this project to start a new machine.
 										Your principal investigator can request more
 										resources if necessary.
 									</div>
 									<div class="alert alert-primary " role="alert"
-											 *ngIf="selectedProject && selectedProjectRessources?.cores_used < selectedProjectRessources?.cores_total && selectedProjectRessources.ram_used < selectedProjectRessources.ram_total && flavors_loaded && flavors_usable.length === 0 && !selectedFlavor">
+											 *ngIf="selectedProject && cores_limit_reached && ram_limit_reached && flavors_loaded && flavors_usable.length === 0 && !selectedFlavor">
 										There are too few cores and not enough ram available for this project to start a new machine.
 										Your principal investigator can request more
 										resources if necessary.
@@ -116,7 +116,7 @@
 							</accordion>
 
 
-							<div>
+							<div *ngIf="projectDataLoaded && flavors_loaded && flavors_usable.length > 0 && !vm_limit_reached">
 
 
 								<div class="form-group row col-md-12" style="padding-left: 3rem; padding-right: 3rem; margin-bottom: 1rem">
@@ -129,7 +129,7 @@
 									<div class="col">
 										<app-flavor-detail [selectedFlavor]="selectedMasterFlavor" id="master_id_flavor_detail"
 																			 [flavors]="flavors"
-																			 (selectedFlavorChange)="selectedMasterFlavor=$event;resetBatches();calculateNewValues();"></app-flavor-detail>
+																			 (selectedFlavorChange)="setMasterFlavor($event);resetBatches();calculateNewValues();"></app-flavor-detail>
 									</div>
 								</div>
 
@@ -143,7 +143,7 @@
 
 
 										<app-image-detail *ngIf="images?.length > 0" [selectedImage]="selectedMasterImage"
-																			[images]="images" [selectedFlavor]="selectedFlavor"
+																			[images]="images" [selectedFlavor]="selectedMasterFlavor"
 																			(selectedImageChange)="selectedMasterImage=$event;this.selectedWorkerBatches[0].image=selectedMasterImage;"
 																			id="master_id_image_detail"></app-image-detail>
 										<div class="alert alert-info" *ngIf="selectedMasterImage"
@@ -201,6 +201,7 @@
 
 
                           <app-flavor-detail [selectedFlavor]="selectedBatch.flavor"
+																						 [selectedImage]="selectedMasterImage"
 																						 [flavors]="selectedBatch.usable_flavors"
 																						 id="selected_batch_id_flavor_detail"
 																						 (selectedFlavorChange)="selectedBatch.flavor=$event;selectedWorkerFlavorSet=true;calcMaxWorkerInstancesByFlavor();"
@@ -282,7 +283,7 @@
 						</div>
 
 						<div
-							*ngIf=" selectedProjectClient?.bibigrid_available && (selectedProjectRessources?.used_vms +2) <= selectedProjectRessources?.number_vms && (!selectedBatch.worker_count || selectedBatch.worker_count === 0  ||!selectedMasterFlavor || !selectedMasterImage || !selectedWorkerFlavorSet  ) && selectedProject && projectDataLoaded && flavors_loaded"
+							*ngIf=" selectedProjectClient?.bibigrid_available && flavors_usable.length > 0 && (selectedProjectRessources?.used_vms +2) <= selectedProjectRessources?.number_vms && (!selectedBatch.worker_count || selectedBatch.worker_count === 0  ||!selectedMasterFlavor || !selectedMasterImage || !selectedWorkerFlavorSet  ) && selectedProject && projectDataLoaded && flavors_loaded"
 							class="alert alert-danger col-md-10" role="alert" style="margin: auto;">
 							<p>Please choose the following before starting a Cluster:</p>
 							<p *ngIf="!selectedMasterFlavor">- The flavor type of your Master VM
