@@ -18,7 +18,7 @@
 	},
 	"resolutions": {
 		"colors": "1.4.0",
-		"nanoid": "3.3.1",
+		"nanoid": "3.2.0",
 		"source-map-support": "0.5.21",
 		"follow-redirects": "1.14.8",
 		"engine.io": "6.1.2",
