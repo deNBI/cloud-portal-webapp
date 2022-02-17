@@ -99,7 +99,7 @@
 		"@angular/cli": "13.2.3",
 		"@angular/compiler-cli": "13.2.2",
 		"@compodoc/compodoc": "1.1.18",
-		"@playwright/test": "1.18.1",
+		"@playwright/test": "1.19.1",
 		"@types/jasmine": "3.10.3",
 		"@types/node": "16.11.25",
 		"@typescript-eslint/eslint-plugin": "5.11.0",
