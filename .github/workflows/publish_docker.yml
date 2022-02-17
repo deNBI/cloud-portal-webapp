@@ -5,6 +5,7 @@ on:
     branches:
       - 'staging'
       - 'dev'
+      - 'decoi'
       - 'hotfix/**'
       - 'feat/playwrigth'
 jobs:

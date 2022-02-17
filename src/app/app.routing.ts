@@ -67,6 +67,12 @@ export const routes: Routes = [
         loadChildren: () => import('./virtualmachines/vm.module').then(m => m.VmModule)
       },
       {
+        path: 'decoi-upload',
+        canActivate: [LoggedInGuard],
+
+        loadChildren: () => import('./decoi/decoi.module').then(m => m.DecoiModule)
+      },
+      {
         path: 'vo-manager',
         loadChildren: () => import('./vo_manager/VoManager.module').then(m => m.VoManagerModule)
       },

@@ -1,0 +1,25 @@
+name: Publish Docker
+on:
+  push:
+    branches:
+      - 'decoi'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Workflow run cleanup action
+      uses: rokroskar/workflow-run-cleanup-action@v0.2.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - uses: actions/checkout@master
+    - name: Publish to Registry
+      uses: elgohr/Publish-Docker-Github-Action@master
+      env:
+          ANGULAR_MODE: stage
+      with:
+        name: denbicloud/cloud-portal-webapp
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+        dockerfile: Dockerfile
+        buildargs: ANGULAR_MODE
+        tags: "decoi-staging"

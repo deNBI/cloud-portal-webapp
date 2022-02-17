@@ -85,6 +85,7 @@
 		"save-svg-as-png": "1.4.17",
 		"svg2pdf.js": "2.2.0",
 		"ts-helpers": "1.1.2",
+		"ts-md5": "^1.2.11",
 		"tslib": "2.3.1",
 		"uglify-js": "3.15.1",
 		"zone.js": "0.11.4"

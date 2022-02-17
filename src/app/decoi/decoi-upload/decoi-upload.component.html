@@ -1,0 +1,90 @@
+<div class="card">
+  <div class="card-header">
+    <strong>DeCoi</strong>
+    –Upload
+  </div>
+  <div>
+    <button (click)="download_csv_sample()">download sample</button>
+    <div class="alert alert-info"><strong>Please select a suitable metadata file with the following structure  - accepted formats {{accepted_extensions}}:</strong>
+      <br>
+
+      <div class="rTableHeading">
+        <div class="rTableHead col-1">IMS_ID</div>
+        <div class="rTableHead col-1 ">SENDING_LAB</div>
+        <div class="rTableHead col-1 ">DATE_DRAW</div>
+        <div class="rTableHead col-1">SEQ_TYPE</div>
+        <div class="rTableHead col-1">SEQ_REASON</div>
+        <div class="rTableHead col-1">SAMPLE_TYPE</div>
+        <div class="rTableHead col-1">PUBLICATION_STATUS</div>
+        <div class="rTableHead col-1">OWN_FASTA_ID</div>
+        <div class="rTableHead col-1">FILE_NAME</div>
+
+
+      </div>
+    </div>
+
+
+    <input type="file" [accept]="accepted_extensions" [disabled]="(upload_started && !upload_stopped)" (change)="load_metadata($event.target)" #metadata>
+
+    <button [disabled]="!chosen_metadata || metadata_faulty || (upload_started && !upload_stopped)" (click)="uploadMetadata();metadata.value=null;">Send Metadata</button>
+  </div>
+  <div *ngIf="chosen_metadata_error.length > 0">
+    <div class="alert alert-danger" *ngFor="let error of chosen_metadata_error">{{error}}</div>
+
+  </div>
+  <div *ngIf="metadata_entries.length > 0" class="rTable" id="metadata_entrys_table">
+    <div class="rTableHeading">
+      <div class="rTableHead col-2 ">IMS_ID</div>
+      <div class="rTableHead col-2 ">FILE_NAME</div>
+      <div class="rTableHead col-2 ">File Selected</div>
+      <div class="rTableHead col-2">Status</div>
+      <div class="rTableHead col-2">Upload</div>
+
+
+    </div>
+    <div class="rTableRow" *ngFor="let metadata of metadata_entries">
+      <div class="rTableCell">{{metadata.IMS_ID}}</div>
+      <div class="rTableCell ">{{metadata.FILE_NAME}}</div>
+      <div class="rTableCell "><span *ngIf="metadata.upload"><i class="fa fa-check"
+                                                                style="color: green"></i></span>
+        <span *ngIf="!metadata.upload">                               <i class="fas fa-times"
+                                                                         style="color: red"></i>
+
+</span></div>
+
+      <div class="rTableCell ">{{metadata?.upload?.msg}}</div>
+
+      <div class="rTableCell ">
+        <div class="progress">
+          <div class="progress-bar progress-bar-striped bg-info"
+               role="progressbar"
+               aria-valuemin="0"
+               aria-valuemax="100"
+               [ngClass]="{'progress-bar-animated': metadata?.upload?.percent_completed < 100}"
+               [style.width.%]="metadata?.upload?.percent_completed">
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+
+  </div>
+  <div *ngIf="metadata_entries.length > 0" class="alert alert-info"><strong>Please select the specified files</strong>
+  </div>
+
+
+  <div *ngIf="metadata_entries.length > 0">
+    <div><input type="file" [disabled]="(upload_started && !upload_stopped)" [multiple]="true" (change)="load_files($event.target)"></div>
+
+
+    <button
+      [disabled]="metadata_entries.length == 0 || upload_completed|| (upload_started && !upload_stopped)"
+      (click)="upload_files();">
+      Start Upload
+    </button>
+    <button [disabled]="upload_completed || upload_stopped || !upload_started" (click)="stop_upload()">Pause Upload
+    </button>
+
+  </div>
+</div>
