@@ -351,6 +351,7 @@
 									"
 									class="btn btn-outline-danger"
 									id="show_termination_modal_button"
+									data-test-id="open_termination_request_button"
 								>
 									Request termination
 								</button>
@@ -1263,6 +1264,7 @@
 							[checked]="terminate_confirmation_given"
 							class="form-check-input"
 							id="terminate_confirmation_given"
+							data-test-id="confirm_termination_request_input"
 							name="terminate_confirmation_given"
 							type="checkbox"
 						/>
@@ -1276,6 +1278,7 @@
 					[disabled]="!terminate_confirmation_given"
 					class="btn btn-success col-md-4"
 					id="terminate_project_btn"
+					data-test-id="confirm_termination_request_button"
 				>
 					Yes
 				</button>
@@ -1408,7 +1411,8 @@
 				</button>
 			</div>
 			<div class="modal-body">
-				<div class="alert alert-{{ notificationModalType }}" role="alert">
+				<div class="alert alert-{{ notificationModalType }}" role="alert"
+				data-test-id="termination_request_result_div">
 					{{ notificationModalMessage }}
 				</div>
 			</div>

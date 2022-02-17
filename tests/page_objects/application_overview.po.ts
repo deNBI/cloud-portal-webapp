@@ -24,7 +24,8 @@ export class ApplicationOverviewPage {
 	private MODIFICATION_APPROVAL_BTN_PREFIX: string = 'modification_approval_';
 	private MODIFICATION_REQUEST_RESULT_TEXT: string = 'The resource modification request was approved!';
 	private EXTENSION_TAB_BUTTON: string = 'tab_state_button_extension_request';
-	private EXTENSION_RESULT_MESSAGE_TEXT: string = 'The project has been extended!';
+	private EXTENSION_RESULT_SIMPLEVM_TEXT: string = 'The project has been extended!';
+	private EXTENSION_RESULT_OPENSTACK_TEXT: string = 'The request has been sent to the facility manager.';
 	private DECLINE_PT_OPEN_APPLICATION_PRE: string = 'btn_decline_PTOpenStack';
 	private DECLINE_PT_SIMPLE_APPLICATION_PRE: string = 'btn_decline_PTSimpleVM';
 	private SUCCESSFULL_DECLINED: string = 'The Application was declined';
@@ -130,10 +131,16 @@ export class ApplicationOverviewPage {
 		await this.page.waitForSelector(`data-test-id=${this.NOTIFICATION_MESSAGE} >> text=${this.MODIFICATION_REQUEST_RESULT_TEXT}`);
 	}
 
-	async approveExtensionRequest(application_name: string): Promise<any> {
+	async approveSimpleVMExtensionRequest(application_name: string): Promise<any> {
 		await this.goToLifetimeRequests();
 		await this.page.locator(Util.by_data_test_id_str(this.EXTENSION_APPROVAL_BTN_PREFIX + application_name)).click();
-		await this.page.waitForSelector(`data-test-id=${this.NOTIFICATION_MESSAGE} >> text=${this.EXTENSION_RESULT_MESSAGE_TEXT}`);
+		await this.page.waitForSelector(`data-test-id=${this.NOTIFICATION_MESSAGE} >> text=${this.EXTENSION_RESULT_SIMPLEVM_TEXT}`);
+	}
+
+	async approveOpenStackExtensionRequest(application_name: string): Promise<any> {
+		await this.goToLifetimeRequests();
+		await this.page.locator(Util.by_data_test_id_str(this.EXTENSION_APPROVAL_BTN_PREFIX + application_name)).click();
+		await this.page.waitForSelector(`data-test-id=${this.NOTIFICATION_MESSAGE} >> text=${this.EXTENSION_RESULT_OPENSTACK_TEXT}`);
 
 	}
 

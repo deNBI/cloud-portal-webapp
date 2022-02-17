@@ -34,20 +34,49 @@ test.describe.serial('Should delete old simple_vm applications - VO @simple_vm_a
 			const applicationPage = new ApplicationOverviewPage(page, baseURL);
 			await applicationPage.approveSimpleVm(Util.SIMPLE_VM_APPLICATION_NAME);
 		});
-
-		test.describe('Should request a project extension for SimpleVM - Member @simple_vm_application', () => {
-			test.use({ storageState: MEMBER_STORAGE });
-			test('Should request a project extension for SimpleVM', async ({ page, baseURL }) => {
-				const projectOverviewPage = new ProjectOverViewPage(page, baseURL);
-				await projectOverviewPage.goToSimpleVMProjectOverview();
-				await projectOverviewPage.requestProjectExtension(true);
-			});
+	});
+	test.describe('Should request a project extension for SimpleVM - Member @simple_vm_application', () => {
+		test.use({ storageState: MEMBER_STORAGE });
+		test('Should request a project extension for SimpleVM', async ({ page, baseURL }) => {
+			const projectOverviewPage = new ProjectOverViewPage(page, baseURL);
+			await projectOverviewPage.goToSimpleVMProjectOverview();
+			await projectOverviewPage.requestProjectExtension(true);
 		});
 	});
-	test.describe('Aftercare - Should delete old osimple_vm_application - VO @simple_vm_application', () => {
+	test.describe('Should request a modification request for SimpleVM - Member @simple_vm_application', () => {
+		test.use({ storageState: MEMBER_STORAGE });
+		test('Should request a project modification for SimpleVM', async ({ page, baseURL }) => {
+			const projectOverviewPage = new ProjectOverViewPage(page, baseURL);
+			await projectOverviewPage.goToSimpleVMProjectOverview();
+			await projectOverviewPage.requestProjectModification(true);
+		});
+	});
+	test.describe('Should approve a project extension for SimpleVM - VO @simple_vm_application', () => {
+		test.use({ storageState: VO_MANAGER_STORAGE });
+		test('Should approve a project extension for SimpleVM', async ({ page, baseURL }) => {
+			const applicationPage = new ApplicationOverviewPage(page, baseURL);
+			await applicationPage.approveSimpleVMExtensionRequest(Util.SIMPLE_VM_APPLICATION_NAME);
+		});
+	});
+	test.describe('Should approve a project modification for SimpleVM - VO @simple_vm_application', () => {
+		test.use({ storageState: VO_MANAGER_STORAGE });
+		test('Should approve a project modification for SimpleVM', async ({ page, baseURL }) => {
+			const applicationPage = new ApplicationOverviewPage(page, baseURL);
+			await applicationPage.approveSimpleVMModificationRequest(Util.SIMPLE_VM_APPLICATION_NAME);
+		});
+	});
+	test.describe('Should request a termination request for SimpleVM - Member @simple_vm_application', () => {
+		test.use({ storageState: MEMBER_STORAGE });
+		test('Should request a project termination for SimpleVM', async ({ page, baseURL }) => {
+			const projectOverviewPage = new ProjectOverViewPage(page, baseURL);
+			await projectOverviewPage.goToSimpleVMProjectOverview();
+			await projectOverviewPage.requestTermination();
+		});
+	});
+	test.describe('Aftercare - Should delete old simple_vm_application - VO @simple_vm_application', () => {
 		test.use({ storageState: VO_MANAGER_STORAGE });
 
-		test('Should cleanup simple_vm_application- VO', async ({ page, baseURL }) => {
+		test('Should cleanup simple_vm_application - VO', async ({ page, baseURL }) => {
 			test.setTimeout(60 * 1000);
 			const applicationPage = new ApplicationOverviewPage(page, baseURL);
 			await applicationPage.declineSimpleVmApplications();
