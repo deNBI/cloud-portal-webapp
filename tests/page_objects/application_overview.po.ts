@@ -64,6 +64,8 @@ export class ApplicationOverviewPage {
 
 	async goToLifetimeRequests() {
 		await this.goto();
+		await this.page.waitForSelector(Util.by_data_test_id_str(this.LOADING_APPLICATIONS), { state: 'hidden' });
+		await this.page.waitForTimeout(5000);
 		await this.page.locator(Util.by_data_test_id_str('extension_requests_applications_tab')).click();
 		await this.page.waitForSelector(Util.by_data_test_id_str(this.LOADING_APPLICATIONS), { state: 'hidden' });
 		await this.page.waitForSelector(Util.by_data_test_id_str('lifetime_requests_applications_container'), { state: 'visible' });
@@ -72,6 +74,8 @@ export class ApplicationOverviewPage {
 
 	async goToModificationRequests() {
 		await this.goto();
+		await this.page.waitForSelector(Util.by_data_test_id_str(this.LOADING_APPLICATIONS), { state: 'hidden' });
+		await this.page.waitForTimeout(5000);
 		await this.page.locator(Util.by_data_test_id_str('modification_requests_applications_tab')).click();
 		await this.page.waitForSelector(Util.by_data_test_id_str(this.LOADING_APPLICATIONS), { state: 'hidden' });
 		await this.page.waitForSelector(Util.by_data_test_id_str('modification_requests_applications_container'), { state: 'visible' });

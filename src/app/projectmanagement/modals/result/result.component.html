@@ -108,6 +108,7 @@
 			id="confirm_modification_btn"
 			class="btn btn-success col-md-4"
 			type="button"
+			data-test-id="confirm_modification_request_button"
 			*ngIf="modificationExtension"
 			(click)="submitModificationRequest()"
 		>
@@ -117,6 +118,7 @@
 			id="confirm_credits_btn"
 			class="btn btn-success col-md-4"
 			type="button"
+			data-test-id="confirm_credits_request_button"
 			*ngIf="creditsExtension"
 			(click)="submitCreditsModification()"
 		>

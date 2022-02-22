@@ -67,6 +67,8 @@ export class FacilityApplicationOverviewPage {
 
 	async goToLifetimeRequests() {
 		await this.goto();
+		await this.page.waitForSelector(Util.by_data_test_id_str(this.LOADING_APPLICATIONS), { state: 'hidden' });
+		await this.page.waitForTimeout(5000);
 		await this.page.locator(Util.by_data_test_id_str(this.EXTENSION_REQUESTS_APPLICATIONS_TAB)).click();
 		await this.page.waitForSelector(Util.by_data_test_id_str(this.LOADING_APPLICATIONS), { state: 'hidden' });
 		await this.page.waitForSelector(Util.by_data_test_id_str(this.LIFETIME_REQUESTS_APPLICATIONS_CONTAINER), { state: 'visible' });
@@ -75,6 +77,8 @@ export class FacilityApplicationOverviewPage {
 
 	async goToModificationRequests() {
 		await this.goto();
+		await this.page.waitForSelector(Util.by_data_test_id_str(this.LOADING_APPLICATIONS), { state: 'hidden' });
+		await this.page.waitForTimeout(5000);
 		await this.page.locator(Util.by_data_test_id_str(this.MODIFICATION_REQUESTS_APPLICATIONS_TAB)).click();
 		await this.page.waitForSelector(Util.by_data_test_id_str(this.LOADING_APPLICATIONS), { state: 'hidden' });
 		await this.page.waitForSelector(Util.by_data_test_id_str(this.MODIFICATION_REQUESTS_APPLICATIONS_CONTAINER), { state: 'visible' });
@@ -84,9 +88,10 @@ export class FacilityApplicationOverviewPage {
 	async goToTerminationRequests() {
 		await this.goto();
 		console.log('Click Termination Request Tab');
+		await this.page.waitForSelector(Util.by_data_test_id_str(this.LOADING_APPLICATIONS), { state: 'hidden' });
+		await this.page.waitForTimeout(5000);
 		await this.page.locator(Util.by_data_test_id_str(this.TERMINATE_REQUESTS_APPLICATIONS_TAB)).click();
 		console.log('Wait for loader gone');
-
 		await this.page.waitForSelector(Util.by_data_test_id_str(this.LOADING_APPLICATIONS), { state: 'hidden' });
 		console.log('Wait for loaded applications');
 		await this.page.waitForSelector(Util.by_data_test_id_str(this.TERMINATION_REQUESTS_APPLICATIONS_CONTAINER), { state: 'visible' });
@@ -119,7 +124,6 @@ export class FacilityApplicationOverviewPage {
 		await this.goToTerminationRequests();
 
 		console.log('Terminate all PT projects');
-		console.log('Decline open PT SimpleVM applications');
 
 		const project_count: number = await this.page.locator(Util.by_data_test_id_str(this.TERMINATE_PROJECT_BTN)).count();
 		console.log(project_count);

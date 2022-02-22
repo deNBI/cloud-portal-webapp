@@ -5,8 +5,7 @@ import { Util } from '../util';
  * Project overview page object.
  */
 export class ProjectOverViewPage {
-	private SIMPLE_VM_PROJECT_OVERVIEW_BUTTON_PREFIX: string = 'simple_vm_project_overview_';
-	private OPENSTACK_PROJECT_OVERVIEW_BUTTON_PREFIX: string = 'openstack_project_overview_';
+	private PROJECT_OVERVIEW_BUTTON_PREFIX: string = 'project_overview_';
 	private OPEN_EXTENSION_REQUEST_BUTTON: string = 'open_extension_request_button';
 	private OPEN_MODIFICATION_REQUEST_BUTTON: string = 'open_modification_request_button';
 	private OPEN_TERMINATION_REQUEST_BUTTON: string = 'open_termination_request_button';
@@ -30,8 +29,8 @@ export class ProjectOverViewPage {
 	private MODIFICATION_REQUEST_VOLUME_LIMIT_INPUT: string = 'modification_request_volume_limit_input';
 	private MODIFICATION_REQUEST_OBJECT_STORAGE_INPUT: string = 'modification_request_object_storage_input';
 
-
 	private SITE_LOADER: string = 'site-loader';
+	private PROFILE_LOADER: string = 'div .loader';
 
 	readonly page: Page;
 	readonly baseURL: string;
@@ -41,31 +40,36 @@ export class ProjectOverViewPage {
 		this.baseURL = baseURL;
 	}
 
+	async gotoProfilePage() {
+		console.log('Goto Profile Page');
+		await this.page.goto(`${this.baseURL}/#/userinfo`, { waitUntil: 'networkidle' });
+		expect(this.page.url()).toContain('/userinfo');
+		await this.page.locator('text=Profile Information').waitFor();
+	}
+
 	async goToOpenStackProjectOverview() {
+		await this.gotoProfilePage();
 		console.log('Goto Project overview Page for OpenStack Project');
-		await this.page.waitForSelector(
-			`data-test-id=${this.OPENSTACK_PROJECT_OVERVIEW_BUTTON_PREFIX + Util.OPENSTACK_APPLICATION_NAME}`,
-		);
-		await this.page
-			.locator(
-				Util.by_data_test_id_str(this.SIMPLE_VM_PROJECT_OVERVIEW_BUTTON_PREFIX + Util.OPENSTACK_APPLICATION_NAME),
-			)
-			.click();
+		await Promise.all([
+			this.page.waitForNavigation(),
+			this.page.locator(
+				Util.by_data_test_id_str(this.PROJECT_OVERVIEW_BUTTON_PREFIX + Util.OPENSTACK_APPLICATION_NAME),
+			).click(),
+		]);
 		console.log(this.page.url());
 		expect(this.page.url()).toContain('/project-management');
 		await this.page.waitForSelector(Util.by_data_test_id_str(this.SITE_LOADER), { state: 'hidden' });
 	}
 
 	async goToSimpleVMProjectOverview() {
+		await this.gotoProfilePage();
 		console.log('Goto Project overview Page for Simple VM Project');
-		await this.page.waitForSelector(
-			`data-test-id=${this.SIMPLE_VM_PROJECT_OVERVIEW_BUTTON_PREFIX + Util.SIMPLE_VM_APPLICATION_NAME}`,
-		);
-		await this.page
-			.locator(
-				Util.by_data_test_id_str(this.SIMPLE_VM_PROJECT_OVERVIEW_BUTTON_PREFIX + Util.SIMPLE_VM_APPLICATION_NAME),
-			)
-			.click();
+		await Promise.all([
+			this.page.waitForNavigation(),
+			this.page.locator(
+				Util.by_data_test_id_str(this.PROJECT_OVERVIEW_BUTTON_PREFIX + Util.SIMPLE_VM_APPLICATION_NAME),
+			).click(),
+		]);
 		console.log(this.page.url());
 		expect(this.page.url()).toContain('/project-management');
 		await this.page.waitForSelector(Util.by_data_test_id_str(this.SITE_LOADER), { state: 'hidden' });
