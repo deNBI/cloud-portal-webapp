@@ -557,43 +557,25 @@
 								<strong>Project settings</strong>
 							</li>
 							<li class="list-group-item">
-								Project member names visible for non-administrators
-								<span [ngClass]="project_application.show_member_names ? 'badge-success' : 'badge-danger'"
-											class="badge">
-									{{project_application.show_member_names ? "Enabled" : "Disabled" }}
-								</span>
-								<button
-									*ngIf="project_application?.user_is_pi || project_application?.user_is_admin"
-									(click)="toggleMemberNameVisibility();" [disabled]="toggleLocked"
-									class="btn btn-outline-primary float-right"
-									style="margin: auto;"
-									type="button"><i aria-hidden="true" class="fa fa-users" style="width: 20px"></i>
-									Toggle setting
-								</button>
-								<!-- Dummy Bootstrap Toggle switch -->
-								<label class="switch">
-									<input type="checkbox">
-									<span class="slider"></span>
-								</label>
-								<!-- End -->
+								<div class="form-check form-switch">
+									<input class="form-check-input" type="checkbox" id="toggle_member_name_visibility"
+												 [(ngModel)]="project_application.show_member_names"
+												 *ngIf="project_application?.user_is_pi || project_application?.user_is_admin"
+												 (click)="toggleMemberNameVisibility();" [disabled]="toggleLocked">
+									<label class="form-check-label" style="vertical-align: middle"
+												 for="toggle_member_name_visibility">Project member names visible for non-administrators</label>
+								</div>
 							</li>
 							<li *ngIf="!project_application.project_application_openstack_project"
 									class="list-group-item">
-								Non-administrators are allowed to start machines
-								<span [ngClass]="!project_application.prevent_machines_starting ? 'badge-success' : 'badge-danger'"
-											class="badge">
-									{{!project_application.prevent_machines_starting ? "Enabled" : "Disabled" }}
-								</span>
-								<button
-									(click)="toggleStartingOfMachines();"
-									*ngIf="!project_application.project_application_openstack_project && (project_application?.user_is_pi || project_application?.user_is_admin)" [disabled]="toggleLocked"
-									class="btn btn-outline-primary float-right"
-									style="margin: auto;"
-									type="button">
-									<i *ngIf="!project_application?.prevent_machines_starting" class="fas fa-lock" style="width: 20px"></i>
-									<i *ngIf="project_application?.prevent_machines_starting" class="fas fa-lock-open" style="width: 20px"></i>
-									Toggle setting
-								</button>
+								<div class="form-check form-switch">
+									<input class="form-check-input" type="checkbox" id="toggle_starting_of_machines"
+												 [(ngModel)]="project_application.prevent_machines_starting"
+												 *ngIf="!project_application.project_application_openstack_project && (project_application?.user_is_pi || project_application?.user_is_admin)"
+												 (click)="toggleStartingOfMachines();" [disabled]="toggleLocked">
+									<label class="form-check-label" style="vertical-align: middle"
+												 for="toggle_starting_of_machines">Non-administrators are allowed to start machines</label>
+								</div>
 							</li>
 						</ul>
 					</div>
