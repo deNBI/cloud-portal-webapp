@@ -199,7 +199,9 @@ private creditsService: CreditsService,
 	 */
 	getListOfFlavors(): void {
 		// eslint-disable-next-line no-return-assign
-		this.flavorService.getListOfFlavorsAvailable().subscribe((flavors: Flavor[]): Flavor[] => this.flavorList = flavors);
+		this.flavorService.getListOfFlavorsAvailable().subscribe((flavors: Flavor[]): void => {
+			this.flavorList = flavors;
+		});
 	}
 
 	/**
