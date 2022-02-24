@@ -317,8 +317,7 @@
 				</div>
 			</ng-container>
 			<ng-container *ngSwitchCase="TabStates.CREDITS_EXTENSION">
-				<div class="card-body" *ngIf="allApplicationsToCheck.length <= 0 && !loadingApplications"
-						 data-test-id="modification_requests_applications_container">
+				<div class="card-body" *ngIf="allApplicationsToCheck.length <= 0 && !loadingApplications">
 					<div class="alert alert-success" role="alert">
 						<strong>No new Credit Requests!</strong> There are no new additional credits requests for review.
 					</div>
@@ -443,7 +442,8 @@
 				</div>
 			</ng-container>
 			<ng-container *ngSwitchCase="TabStates.MODIFICATION_EXTENSION">
-				<div class="card-body" *ngIf="allApplicationsToCheck.length <= 0 && !loadingApplications">
+				<div class="card-body" *ngIf="allApplicationsToCheck.length <= 0 && !loadingApplications"
+						 data-test-id="modification_requests_applications_container">
 					<div class="alert alert-success" role="alert">
 						<strong>No new Modification Requests!</strong> There are no new modification requests for review.
 					</div>

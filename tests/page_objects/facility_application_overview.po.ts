@@ -12,7 +12,7 @@ export class FacilityApplicationOverviewPage {
 	private readonly NOTIFICATION_MESSAGE: string = 'notification_message';
 	private readonly EXTENSION_APPROVAL_BTN_PREFIX: string = 'extension_approval_';
 	private readonly MODIFICATION_APPROVAL_BTN_PREFIX: string = 'approveModificationButton_';
-	private readonly EXTENSION_SUCCESSFULLY: string = 'Successfully approved the application modification.';
+	private readonly EXTENSION_SUCCESSFULLY: string = 'Successfully approved extension!';
 	private readonly MODIFICATION_EXTENSION_SUCCESS_TEXT: string = 'Successfully approved modification!';
 	private readonly TAB_STATE_MODIFICATION_BUTTON: string = 'tab_state_button_modification_requests';
 	private readonly TAB_STATE_TERMINATION_BUTTON: string = 'tab_state_button_termination_requests';
@@ -111,7 +111,7 @@ export class FacilityApplicationOverviewPage {
 	async approveApplicationExtension(application_name: string): Promise<any> {
 		await this.goToLifetimeRequests();
 		console.log(`Approve Application${application_name} Extension`);
-		await this.page.locator(Util.by_data_test_id_str(this.APPLICATION_APPROVAL_BTN_PREFIX + application_name)).click();
+		await this.page.locator(Util.by_data_test_id_str(this.EXTENSION_APPROVAL_BTN_PREFIX + application_name)).click();
 		await this.page.waitForSelector(`data-test-id=${this.NOTIFICATION_MODAL_TITLE} >> text=Success`);
 
 		const approval_response: string = await this.page.innerText(Util.by_data_test_id_str(this.NOTIFICATION_MESSAGE));

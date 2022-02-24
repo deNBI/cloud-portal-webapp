@@ -35,6 +35,7 @@ export class ApplicationOverviewPage {
 	private APPLICATIONS_CONTAINER: string = 'applications_container';
 	private SITE_LOADER: string = 'site-loader';
 
+
 	readonly page: Page;
 	readonly baseURL: string;
 
@@ -131,10 +132,11 @@ export class ApplicationOverviewPage {
 	async approveSimpleVMModificationRequest(application_name: string): Promise<any> {
 		await this.goToModificationRequests();
 		await this.page.locator(Util.by_data_test_id_str(this.MODIFICATION_APPROVAL_BTN_PREFIX + application_name)).click();
+		await this.page.waitForSelector(Util.by_data_test_id_str(this.APPROVAL_CLIENT_LIMIT_PREFIX + application_name), { state: 'visible' });
 		await this.page.locator(Util.by_data_test_id_str(this.APPROVAL_CLIENT_LIMIT_PREFIX + application_name)).click();
 		await this.page.waitForSelector(`data-test-id=${this.NOTIFICATION_MESSAGE} >> text=${this.MODIFICATION_REQUEST_RESULT_TEXT}`);
 	}
-
+	
 	async approveSimpleVMExtensionRequest(application_name: string): Promise<any> {
 		await this.goToLifetimeRequests();
 		await this.page.locator(Util.by_data_test_id_str(this.EXTENSION_APPROVAL_BTN_PREFIX + application_name)).click();
