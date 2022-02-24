@@ -1,5 +1,5 @@
 import {
-	Component, Input, OnInit, ViewChild,
+	Component, Input, OnInit, ViewChild
 } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Flavor } from '../../virtualmachines/virtualmachinemodels/flavor';
@@ -74,7 +74,6 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 	application_id: string | number;
 	ontology_search_keyword: string = 'term';
 	@ViewChild(NgForm, { static: true }) application_form: NgForm;
-
 	// /**
 	//  * List of flavor types.
 	//  */
@@ -402,6 +401,40 @@ private creditsService: CreditsService,
 
 		}
 
+	}
+
+	togglePersonalDataType(checked: boolean, data_type: string){
+		switch (data_type) {
+			case 'person_related': {
+				if (!checked) {
+					this.application.project_application_no_personal_data = false;
+					this.application.project_application_nonsensitive_data = false;
+					this.application.project_application_sensitive_data = false;
+				}
+				break;
+			}
+			case 'no_personal_data': {
+				if (checked) {
+					this.application.project_application_nonsensitive_data = false;
+					this.application.project_application_sensitive_data = false;
+				}
+				break;
+			}
+			case 'nonsensitive': {
+				if (checked) {
+					this.application.project_application_no_personal_data = false;
+				}
+				break;
+			}
+			case 'sensitive': {
+				if (checked) {
+					this.application.project_application_no_personal_data = false;
+				}
+				break;
+			}
+			default:
+				break;
+		}
 	}
 
 }
