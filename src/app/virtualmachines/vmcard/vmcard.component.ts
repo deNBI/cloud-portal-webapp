@@ -459,6 +459,16 @@ private clipboardService: ClipboardService,
 						updated_vm.setErrorMsgWithTimeout(this.vm.error_msg);
 					}
 					this.vm = updated_vm;
+					if (this.vm.status === VirtualMachineStates.ACTIVE) {
+						if (this.vm.volumes?.length > 0) {
+							const volumeIds: string[] = [];
+							for (const vol of this.vm.volumes) {
+								volumeIds.push(vol.volume_openstackid);
+							}
+							this.virtualmachineservice.triggerVolumeUpdate(volumeIds).subscribe((): void => {
+							});
+						}
+					}
 					if (final_state) {
 						if (final_state === this.vm.status) {
 							this.resumeCheckStatusTimer();
