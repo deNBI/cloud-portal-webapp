@@ -34,7 +34,6 @@ import {
 	providers: [FlavorService, ApplicationsService, CreditsService],
 })
 export class ApplicationFormularComponent extends ApplicationBaseClassComponent implements OnInit {
-
 	@Input() openstack_project: boolean = false;
 	@Input() simple_vm_project: boolean = false;
 	@Input() title: string;
@@ -74,20 +73,18 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 	application_id: string | number;
 	ontology_search_keyword: string = 'term';
 	@ViewChild(NgForm, { static: true }) application_form: NgForm;
-
 	// /**
 	//  * List of flavor types.
 	//  */
 	// public typeList: FlavorType[] = [];
 
 	constructor(
-private creditsService: CreditsService,
-	private flavorService: FlavorService,
-	private fullLayout: FullLayoutComponent,
-	applicationsService: ApplicationsService,
+		private creditsService: CreditsService,
+		private flavorService: FlavorService,
+		private fullLayout: FullLayoutComponent,
+		applicationsService: ApplicationsService,
 	) {
 		super(null, applicationsService, null);
-
 	}
 
 	ngOnInit(): void {
@@ -131,7 +128,6 @@ private creditsService: CreditsService,
 
 			if (this.application.dissemination.someAllowed()) {
 				this.project_application_report_allowed = true;
-
 			}
 			if (this.simple_vm_project) {
 				this.simple_vm_min_vm = this.application.flavors.length > 0;
@@ -200,7 +196,9 @@ private creditsService: CreditsService,
 	 */
 	getListOfFlavors(): void {
 		// eslint-disable-next-line no-return-assign
-		this.flavorService.getListOfFlavorsAvailable().subscribe((flavors: Flavor[]): Flavor[] => this.flavorList = flavors);
+		this.flavorService.getListOfFlavorsAvailable().subscribe((flavors: Flavor[]): void => {
+			this.flavorList = flavors;
+		});
 	}
 
 	/**
@@ -214,7 +212,6 @@ private creditsService: CreditsService,
 
 	checkIfMinVmIsSelected(): void {
 		this.simple_vm_min_vm = this.application.flavors.length > 0;
-
 	}
 
 	searchTermsInEdamTerms(): void {
@@ -226,7 +223,6 @@ private creditsService: CreditsService,
 			// tslint:disable-next-line:typedef
 			const td = this.edam_ontology_terms.find(term => term.term === ele);
 			tmp.push(td);
-
 		});
 		this.application.project_application_edam_terms = tmp;
 	}
@@ -234,7 +230,10 @@ private creditsService: CreditsService,
 	onSubmit(): void {
 		this.error = null;
 		this.submitting = true;
-		if (this.application.project_application_volume_counter <= 0 || this.application.project_application_volume_counter == null) {
+		if (
+			this.application.project_application_volume_counter <= 0
+			|| this.application.project_application_volume_counter == null
+		) {
 			this.application.project_application_volume_limit = 0;
 		}
 
@@ -257,7 +256,6 @@ private creditsService: CreditsService,
 				this.error = [];
 				for (const key of Object.keys(error_json)) {
 					this.error.push(key.split('_')[2]);
-
 				}
 
 				this.updateNotificationModal(
@@ -269,7 +267,6 @@ private creditsService: CreditsService,
 				this.notificationModalStay = true;
 			},
 		);
-
 	}
 
 	/**
@@ -277,14 +274,13 @@ private creditsService: CreditsService,
 	 */
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	calculateInitialCredits(form: NgForm): void {
-		this.creditsService.getCreditsForApplication(
-			this.application.flavors,
-			this.application.project_application_lifetime,
-		).toPromise()
+		this.creditsService
+			.getCreditsForApplication(this.application.flavors, this.application.project_application_lifetime)
+			.toPromise()
 			.then((credits: number): void => {
 				this.application.project_application_initial_credits = credits;
-			}).catch((err: any): void => console.log(err));
-
+			})
+			.catch((err: any): void => console.log(err));
 	}
 
 	approveApplication(form: NgForm): any {
@@ -294,24 +290,12 @@ private creditsService: CreditsService,
 			(): void => {
 				this.fullLayout.getGroupsEnumeration();
 
-				this.updateNotificationModal(
-					'Success',
-					'The application was successfully approved.',
-					true,
-					'success',
-				);
+				this.updateNotificationModal('Success', 'The application was successfully approved.', true, 'success');
 				this.notificationModalStay = false;
-
 			},
 			(): void => {
-				this.updateNotificationModal(
-					'Failed',
-					'The application was not successfully approved.',
-					true,
-					'danger',
-				);
+				this.updateNotificationModal('Failed', 'The application was not successfully approved.', true, 'danger');
 				this.notificationModalStay = true;
-
 			},
 		);
 	}
@@ -355,7 +339,6 @@ private creditsService: CreditsService,
 				this.error = [];
 				for (const key of Object.keys(error_json)) {
 					this.error.push(key.split('_')[2]);
-
 				}
 
 				this.updateNotificationModal(
@@ -367,7 +350,6 @@ private creditsService: CreditsService,
 				this.notificationModalStay = true;
 			},
 		);
-
 	}
 
 	toggleProjectPart(checked: boolean, project_part: string): void {
@@ -399,9 +381,40 @@ private creditsService: CreditsService,
 			default: {
 				break;
 			}
-
 		}
-
 	}
 
+	togglePersonalDataType(checked: boolean, data_type: string) {
+		switch (data_type) {
+			case 'person_related': {
+				if (!checked) {
+					this.application.project_application_no_personal_data = false;
+					this.application.project_application_nonsensitive_data = false;
+					this.application.project_application_sensitive_data = false;
+				}
+				break;
+			}
+			case 'no_personal_data': {
+				if (checked) {
+					this.application.project_application_nonsensitive_data = false;
+					this.application.project_application_sensitive_data = false;
+				}
+				break;
+			}
+			case 'nonsensitive': {
+				if (checked) {
+					this.application.project_application_no_personal_data = false;
+				}
+				break;
+			}
+			case 'sensitive': {
+				if (checked) {
+					this.application.project_application_no_personal_data = false;
+				}
+				break;
+			}
+			default:
+				break;
+		}
+	}
 }
