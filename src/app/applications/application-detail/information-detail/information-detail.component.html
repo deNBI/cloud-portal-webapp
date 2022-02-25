@@ -113,12 +113,29 @@
 
   </tr>
   <tr>
-    <td>Sensitive Data</td>
-    <td><p *ngIf="application?.project_application_sensitive_data"> Yes</p>
-      <p *ngIf="!application?.project_application_sensitive_data"> No</p>
+    <td>Person Related Data</td>
+    <td><p *ngIf="application?.project_application_person_related_data"> Yes</p>
+      <p *ngIf="!application?.project_application_person_related_data"> No</p>
     </td>
-
   </tr>
+	<tr *ngIf="application?.project_application_person_related_data">
+		<td>No Personal Data (Anonymous)</td>
+		<td><p *ngIf="application?.project_application_no_personal_data"> Yes</p>
+			<p *ngIf="!application?.project_application_no_personal_data"> No</p>
+		</td>
+	</tr>
+	<tr *ngIf="application?.project_application_person_related_data">
+		<td>Nonsensitive Data</td>
+		<td><p *ngIf="application?.project_application_nonsensitive_data"> Yes</p>
+			<p *ngIf="!application?.project_application_nonsensitive_data"> No</p>
+		</td>
+	</tr>
+	<tr *ngIf="application?.project_application_person_related_data">
+		<td>Sensitive Data</td>
+		<td><p *ngIf="application?.project_application_sensitive_data"> Yes</p>
+			<p *ngIf="!application?.project_application_sensitive_data"> No</p>
+		</td>
+	</tr>
   <tr *ngIf="application?.project_application_openstack_project">
     <td>Training</td>
     <td><p *ngIf="application?.project_application_openstack_basic_introduction"> Yes</p>
