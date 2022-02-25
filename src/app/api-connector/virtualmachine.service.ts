@@ -34,6 +34,15 @@ export class VirtualmachineService {
 		});
 	}
 
+	triggerVolumeUpdate(volumeIds: string[]): Observable<any> {
+		const params: HttpParams = new HttpParams().set('volume_ids', volumeIds.join());
+
+		return this.http.get(`${ApiSettings.getApiBaseURL()}volumes/trigger_update/`, {
+			withCredentials: true,
+			params,
+		});
+	}
+
 	startCluster(
 		masterFlavor: string,
 		masterImage: Image,
