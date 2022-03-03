@@ -51,13 +51,13 @@
 							<div class="col-md-8">
 								<label for="projectSelect"><strong>Please select a project</strong></label>
 								<select required class="form-control form-select" name="projectSelect" *ngIf="!singleProject"
-												[(ngModel)]="selectedProject" id="projectSelect"
+												[(ngModel)]="selectedProject" id="projectSelect" data-test-id="project_selection_dropdown"
 												(ngModelChange)="getSelectedProjectClient(); resetChecks();">
 									<option value="undefined" disabled selected hidden> Please
 										Select
 									</option>
 									<option *ngFor="let project of projects" [ngValue]="project"
-													id="id_option_{{project[0]}}">
+													id="id_option_{{project[0]}}" [attr.data-test-id]="'project_option_' + project[0]">
 										{{project[0]}}
 									</option>
 								</select>
@@ -106,6 +106,7 @@
 													 class="form-control"
 													 type="text" placeholder="Instance name" [(ngModel)]="vm_name"
 													 pattern="[a-zA-Z0-9]+"
+													 data-test-id="instance_name_input_field"
 													 [ngClass]="{'is-invalid':f.controls.instance_name?.invalid && (f.controls.instance_name?.dirty || f.controls.instance_name?.touched),
                              'is-valid':f.controls.instance_name?.valid}">
 										<div class="input-group-append">
@@ -177,7 +178,7 @@
 															style="cursor: pointer">
 														<a [ngClass]="{'active': showAddVol, 'disabled': ((selectedProjectRessources.used_volumes + volumesToMount?.length) >= selectedProjectRessources.volume_counter)
 													|| (selectedProjectRessources.used_volume_storage + getStorageInList() >= selectedProjectRessources.max_volume_storage) }"
-															 id="openAddVolumeFormButton"
+															 id="openAddVolumeFormButton" data-test-id="add_new_volume_tab"
 															 (click)="toggleShowAddVol();" class="nav-link">New Volume <span class="fa fa-plus-circle"></span></a>
 													</li>
 													<li class="nav-item" style="cursor: pointer">
@@ -221,6 +222,7 @@
 																<div class="col-md-10" style="width:100%">
 																	<input type="text" placeholder="Enter a name here..."
 																				 id="volume_name" class="form-control" name="volume_name"
+																				 data-test-id="new_volume_name_input"
 																				 [(ngModel)]="volumeName"
 
 																				 [ngClass]="{'is-invalid':!this.checkInputVolumeString(volumeName),
@@ -236,6 +238,7 @@
 																	</div>
 																	<input type="text" placeholder="path"
 																				 id="volume_mount_path" class="form-control" name="volume_mount_path"
+																				 data-test-id="new_volume_mount_path_input"
 																				 [(ngModel)]="volumeMountPath"
 																				 [ngClass]="{'is-invalid':!this.checkInputVolumeString(volumeMountPath)  ||  !this.checkIfMountPathIsUsable(volumeMountPath),
                              'is-valid':this.checkInputVolumeString(volumeMountPath) && this.checkIfMountPathIsUsable(volumeMountPath)}">
@@ -247,6 +250,7 @@
 																<div class="col-md-2"><strong>Storage</strong></div>
 																<div class="input-group col-md-10" style="width:100%">
 																	<input min="0" step="1" [(ngModel)]="volumeStorage"
+																				 data-test-id="new_volume_storage_input"
 																				 style="height: auto"
 																				 id="volume_space" name="vm_volume_storage"
 																				 class="form-control"
@@ -333,6 +337,7 @@
 															<button *ngIf="showAddVol" class="btn btn-success col-md-4"
 																			(click)="this.addVolumeToList(); toggleShowAddVol();"
 																			[disabled]="!checkVolumeValidity()" id="addVolumeConfirmationButton"
+																			data-test-id="add_volume_confirmation_button"
 																			type="button">Add Volume <span class="fa fa-check"></span></button>
 														</div>
 														<div class="col" role="group" *ngIf="showAttachVol">
@@ -646,6 +651,7 @@
 																								 name="vm_responsibility"
 																								 type="checkbox"
 																								 id="vm_responsibility"
+																								 data-test-id="vm_responsibility_input"
 																								 [(ngModel)]="vm_responsibility"
 																								 required>
 										<label class="form-check-label" for="vm_responsibility">
