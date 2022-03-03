@@ -3,7 +3,7 @@
 	<div *ngIf="image !== selectedImage" (click)="selectedImageChange.emit(image);"
 			 class="card flavor-image-card inactive-image-card "
 			 id="id_image_owl_{{image?.name}}"
-			 [attr.data-test-id]="'image_' + image?.name"
+			 [attr.data-test-id]="'image_' + image?.name.replace(regexp_data_test_id, '_')"
 			 [ngClass]="{'inactive-image-card':(selectedFlavor?.rootdisk < image?.min_disk && image?.min_disk > 0)}"
 	>
 		<div

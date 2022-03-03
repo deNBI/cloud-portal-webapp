@@ -3,7 +3,7 @@ import { Page, expect } from '@playwright/test';
 import { Util } from '../util';
 
 /**
- * New Instance Page.
+ * Instance Overview Page.
  */
 export class NewInstancePage {
 	private PROJECT_SELECTION_DROPDOWN: string = 'project_selection_dropdown';
@@ -32,14 +32,14 @@ export class NewInstancePage {
 	}
 
 	async goto() {
-		console.log('Goto New Instance Page');
-		await this.page.goto(`${this.baseURL}/#/virtualmachines/newVM`, { waitUntil: 'networkidle' });
+		console.log('Goto Instance Overviw Page');
+		await this.page.goto(`${this.baseURL}/#/virtualmachines/vmOverview`, { waitUntil: 'networkidle' });
 		console.log(this.page.url());
-		expect(this.page.url()).toContain('/newVM');
+		expect(this.page.url()).toContain('/vmOverview');
 
 	}
 
-	async selectProject(application_name: string): Promise<any> {
+	async waitForInstanceToBeActive(application_name: string): Promise<any> {
 		console.log('Selecting project');
 		const dropdown = await this.page.locator(Util.by_data_test_id_str(this.PROJECT_SELECTION_DROPDOWN)).isVisible();
 		if (dropdown) {
@@ -55,31 +55,6 @@ export class NewInstancePage {
 
 	}
 
-	async startNormalVM(application_name: string, with_volume: boolean = false): Promise<any> {
-		console.log('Fill name');
-		await this.page.fill(Util.by_data_test_id_str(this.INSTANCE_NAME_INPUT_FIELD), application_name);
-		console.log('Choose flavor');
-		await this.page.click(Util.by_data_test_id_str(this.FLAVOR_SELECTION_PREFIX + this.NORMAL_FLAVOR_TO_SELECT));
-		// eslint-disable-next-line @typescript-eslint/await-thenable
-		await this.page.locator(Util.by_data_test_id_str(this.FLAVOR_SELECTION_PREFIX + this.NORMAL_FLAVOR_TO_SELECT + this.FLAVOR_IMAGE_SELECTED_SUFFIX)).isVisible();
-		console.log('Flavor chosen');
-		console.log('Choose image');
-		await this.page.click(Util.by_data_test_id_str(this.IMAGE_SELECTION_PREFIX + this.NORMAL_IMAGE_TO_SELECT));
-		// eslint-disable-next-line @typescript-eslint/await-thenable
-		await this.page.locator(Util.by_data_test_id_str(this.IMAGE_SELECTION_PREFIX + this.NORMAL_IMAGE_TO_SELECT + this.FLAVOR_IMAGE_SELECTED_SUFFIX)).isVisible();
-		console.log('Image chosen');
-		if (with_volume) {
-			console.log('Adding volume');
-			await this.page.click(Util.by_data_test_id_str(this.ADD_NEW_VOLUME_TAB));
-			await this.page.fill(Util.by_data_test_id_str(this.NEW_VOLUME_NAME_INPUT), `volume_${application_name}`);
-			await this.page.fill(Util.by_data_test_id_str(this.NEW_VOLUME_MOUNT_PATH_INPUT), 'test');
-			await this.page.fill(Util.by_data_test_id_str(this.NEW_VOLUME_STORAGE_INPUT), '5');
-			await this.page.click(Util.by_data_test_id_str(this.NEW_VOLUME_CONFIRMATION_BUTTON));
-			console.log('Volume added');
-		}
-		await this.page.click(Util.by_data_test_id_str(this.VM_RESPONSIBILITY_CHECKBOX));
-		await this.page.click(Util.by_data_test_id_str(this.START_VM_BUTTON));
-	}
 
 
 

@@ -44,7 +44,7 @@
        'col-xl-6':window_size >= carousel_window_min_xl6 && window_size<carousel_window_min_xl_8,
        'col-xl-4':window_size <carousel_window_min_xl_9 && window_size>=carousel_window_min_xl_8}">
 				<div class="card border-success flavor-image-card"
-						 [attr.data-test-id]="'image_' + selectedImage?.name + '_selected'"
+						 [attr.data-test-id]="'image_' + selectedImage?.name.replace(regexp_data_test_id, '_') + '_selected'"
 				>
 					<div
 						class="card-header bg-success text-truncate" data-toggle="tooltip" data-placement="top"
