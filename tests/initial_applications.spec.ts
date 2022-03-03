@@ -46,13 +46,21 @@ test.describe.serial('@openstack_application', () => {
 		});
 	});
 
+	test.describe('Should approve an openstack application', () => {
+		test.use({ storageState: FACILITY_MANAGER_STORAGE });
+		test('FM @openstack_application', async ({ page, baseURL }) => {
+			const applicationPage = new FacilityApplicationOverviewPage(page, baseURL);
+			await applicationPage.approveApplication(Util.OPENSTACK_APPLICATION_NAME);
+		});
+	});
+
 });
 
 test.describe.serial('@simple_vm_application', () => {
 
 	test.describe('Should delete old simple_vm applications', () => {
-		test.use({storageState: VO_MANAGER_STORAGE});
-		test('VO @simple_vm_application', async ({page, baseURL}) => {
+		test.use({ storageState: VO_MANAGER_STORAGE });
+		test('VO @simple_vm_application', async ({ page, baseURL }) => {
 			test.setTimeout(60 * 1000);
 			const applicationPage = new ApplicationOverviewPage(page, baseURL);
 			await applicationPage.declineSimpleVmApplications();
@@ -62,8 +70,8 @@ test.describe.serial('@simple_vm_application', () => {
 	});
 
 	test.describe('Should request an simple_vm_application', () => {
-		test.use({storageState: MEMBER_STORAGE});
-		test('Member @simple_vm_application', async ({page, baseURL}) => {
+		test.use({ storageState: MEMBER_STORAGE });
+		test('Member @simple_vm_application', async ({ page, baseURL }) => {
 			const formularPage = new FormularPage(page, baseURL);
 			await formularPage.goToNewSimpleVMProject();
 			await formularPage.fillApplicationFormular(Util.SIMPLE_VM_APPLICATION_NAME, true, false);
@@ -72,8 +80,8 @@ test.describe.serial('@simple_vm_application', () => {
 	});
 
 	test.describe('Should approve an simple_vm_application', () => {
-		test.use({storageState: VO_MANAGER_STORAGE});
-		test('VO @simple_vm_application', async ({page, baseURL}) => {
+		test.use({ storageState: VO_MANAGER_STORAGE });
+		test('VO @simple_vm_application', async ({ page, baseURL }) => {
 			const applicationPage = new ApplicationOverviewPage(page, baseURL);
 			await applicationPage.approveSimpleVm(Util.SIMPLE_VM_APPLICATION_NAME);
 		});
