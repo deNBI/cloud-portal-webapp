@@ -57,7 +57,7 @@ export class NewInstancePage {
 
 	async startNormalVM(application_name: string, with_volume: boolean = false): Promise<any> {
 		console.log('Fill name');
-		await this.page.fill(Util.by_data_test_id_str(this.INSTANCE_NAME_INPUT_FIELD), application_name);
+		await this.page.fill(Util.by_data_test_id_str(this.INSTANCE_NAME_INPUT_FIELD), `${application_name}normal`);
 		console.log('Choose flavor');
 		await this.page.click(Util.by_data_test_id_str(this.FLAVOR_SELECTION_PREFIX + this.NORMAL_FLAVOR_TO_SELECT));
 		// eslint-disable-next-line @typescript-eslint/await-thenable

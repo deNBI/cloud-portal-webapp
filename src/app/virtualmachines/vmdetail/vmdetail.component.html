@@ -9,7 +9,8 @@
   <div class="row">
     <div class="col-12">
       <div class="card" >
-        <div class="card-header"><span class="font-weight-bold text-muted">{{virtualMachine?.name}}</span> <app-vmstatus [with_text]="true" [vm]="virtualMachine"></app-vmstatus></div>
+        <div class="card-header"><span class="font-weight-bold text-muted"
+					>{{virtualMachine?.name}}</span> <app-vmstatus [with_text]="true" [vm]="virtualMachine"></app-vmstatus></div>
         <div class="card-body" *ngIf="virtualMachine?.still_used_confirmation_requested && virtualMachine?.elixir_id === user_elixir_id">
           <div class="alert alert-danger">
             <strong>This machine has been consuming resources for {{virtualMachine?.days_running}} days!<br> Please confirm that you still
