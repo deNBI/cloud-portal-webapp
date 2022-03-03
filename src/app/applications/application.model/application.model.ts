@@ -60,7 +60,10 @@ export class Application {
 	project_application_bmbf_project: string;
 	project_application_nfdi: string;
 	project_application_edam_terms: EdamOntologyTerm[] = [];
-	project_application_sensitive_data: boolean;
+	project_application_person_related_data: boolean = false;
+	project_application_no_personal_data: boolean = false;
+	project_application_nonsensitive_data: boolean = false;
+	project_application_sensitive_data: boolean = false;
 	project_application_elixir_project: string;
 	dissemination: ApplicationDissemination;
 	project_application_pi_approved: boolean;
