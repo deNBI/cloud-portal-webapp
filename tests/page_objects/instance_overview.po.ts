@@ -24,7 +24,7 @@ export class InstanceOverviewPage {
 
 	}
 
-	async waitForNormalInstanceToBeActive(): Promise<any> {
+	/*async waitForNormalInstanceToBeActive(): Promise<any> {
 		await this.page.waitForTimeout(60000);
 		await this.page.reload({ waitUntil: 'networkidle' });
 		console.log('Waiting for VM to be shown as active');
@@ -34,16 +34,8 @@ export class InstanceOverviewPage {
 	}
 
 	async waitForVolumeInstanceToBeActive(): Promise<any> {
-		// TODO: check how to get volume information
-		await this.page.waitForTimeout(30000);
-		await this.page.reload({ waitUntil: 'networkidle' });
-		console.log('Waiting for VM with volume to be shown as active');
-		const test_elem = await this.page.locator('div:has(.pulseAnim) >> has-text("PTSimpleVMvolume")');
-		const second_test_elem = this.page.$('div:has(.pulseAnim) >> has-text("PTSimpleVMvolume")');
-		console.log(test_elem)
-		console.log(second_test_elem);
-
-	}
+		// TODO: After normal instance gets checked
+	} */
 
 
 
