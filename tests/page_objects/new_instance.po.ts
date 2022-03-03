@@ -20,6 +20,7 @@ export class ProfilePage {
 	private NEW_VOLUME_STORAGE_INPUT: string = 'new_volume_storage_input';
 	private NEW_VOLUME_CONFIRMATION_BUTTON: string = 'add_volume_confirmation_button';
 	private VM_RESPONSIBILITY_CHECKBOX: string = 'vm_responsibility_input';
+	private START_VM_BUTTON: string = 'start_vm_button';
 
 	readonly page: Page;
 	readonly baseURL: string;
@@ -66,8 +67,10 @@ export class ProfilePage {
 			await this.page.fill(Util.by_data_test_id_str(this.NEW_VOLUME_MOUNT_PATH_INPUT), 'test');
 			await this.page.fill(Util.by_data_test_id_str(this.NEW_VOLUME_STORAGE_INPUT), '5');
 			await this.page.click(Util.by_data_test_id_str(this.NEW_VOLUME_CONFIRMATION_BUTTON));
-			await this.page.click(Util.by_data_test_id_str(this.VM_RESPONSIBILITY_CHECKBOX));
 		}
+		await this.page.click(Util.by_data_test_id_str(this.VM_RESPONSIBILITY_CHECKBOX));
+		await this.page.click(Util.by_data_test_id_str(this.START_VM_BUTTON));
+
 
 	}
 

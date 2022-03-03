@@ -29,6 +29,9 @@ const config: PlaywrightTestConfig = {
 	/* Opt out of parallel tests on CI. */
 	workers: process.env.CI ? 1 : undefined,
 
+	/* order of tests */
+	testMatch: 'test.list.ts',
+
 	/* Reporter to use. See https://playwright.dev/docs/test-reporters */
 	reporter: 'html',
 
@@ -42,7 +45,7 @@ const config: PlaywrightTestConfig = {
 		baseURL: environment.portal,
 		screenshot: 'on',
 		video: 'on',
-		trace: 'on'
+		trace: 'on',
 
 	},
 
