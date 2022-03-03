@@ -5,7 +5,7 @@ import { Util } from '../util';
 /**
  * New Instance Page.
  */
-export class ProfilePage {
+export class NewInstancePage {
 	private PROJECT_SELECTION_DROPDOWN: string = 'project_selection_dropdown';
 	private PROJECT_SELECTION_PREFIX: string = 'project_option_';
 	private INSTANCE_NAME_INPUT_FIELD: string = 'instance_name_input_field';
@@ -70,8 +70,6 @@ export class ProfilePage {
 		}
 		await this.page.click(Util.by_data_test_id_str(this.VM_RESPONSIBILITY_CHECKBOX));
 		await this.page.click(Util.by_data_test_id_str(this.START_VM_BUTTON));
-
-
 	}
 
 
