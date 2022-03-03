@@ -1,7 +1,7 @@
 {
 	"name": "@denbi/cloud-portal-webapp",
 	"type": "module",
-	"version": "4.127.0",
+	"version": "4.128.0",
 	"description": "de.NBI Cloud Portal",
 	"scripts": {
 		"ng": "ng serve",
@@ -19,7 +19,7 @@
 	},
 	"resolutions": {
 		"colors": "1.4.0",
-		"nanoid": "3.2.0",
+		"nanoid": "3.3.1",
 		"source-map-support": "0.5.21",
 		"follow-redirects": "1.14.9",
 		"engine.io": "6.1.3",
