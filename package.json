@@ -1,6 +1,5 @@
 {
 	"name": "@denbi/cloud-portal-webapp",
-	"type": "module",
 	"version": "4.127.0",
 	"description": "de.NBI Cloud Portal",
 	"scripts": {

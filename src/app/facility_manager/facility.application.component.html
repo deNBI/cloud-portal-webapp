@@ -443,13 +443,13 @@
 			</ng-container>
 			<ng-container *ngSwitchCase="TabStates.MODIFICATION_EXTENSION">
 				<div class="card-body" *ngIf="allApplicationsToCheck.length <= 0 && !loadingApplications"
-						 data-test-id="modification_requests_applications_container">
+						 data-test-id="termination_requests_applications_container">
 					<div class="alert alert-success" role="alert">
 						<strong>No new Modification Requests!</strong> There are no new modification requests for review.
 					</div>
 				</div>
 
-				<div class="card-body" *ngIf="allApplicationsToCheck.length > 0">
+				<div class="card-body" *ngIf="allApplicationsToCheck.length > 0" data-test-id="modification_requests_applications_container">
 					<!-- work in progress -->
 
 					<div class="table-responsive">
@@ -513,7 +513,7 @@
 										<td>
 											<div class="btn-group">
 												<button [id]="'approveModificationButton_' + application?.project_application_shortname"
-																style="margin: 2px" type="button" class="btn btn-success" data-test-id="'approveModificationButton_' + application?.project_application_shortname"
+																style="margin: 2px" type="button" class="btn btn-success" [attr.data-test-id]="'approveModificationButton_' + application?.project_application_shortname"
 																[disabled]="approveLocked"
 																(click)="resetNotificationModal(); approveModification(application); notificationModal.show();">
 													<i class="fa fa-check"></i>&nbsp;
