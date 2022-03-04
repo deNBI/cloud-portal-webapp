@@ -5,6 +5,8 @@ import { Util } from '../util';
  * Project overview page object.
  */
 export class ProjectOverViewPage {
+	private PROJECT_LIST: string = 'project_list';
+	private PROJECT_LIST_TOGGLER: string = 'project_list_folded_toggler';
 	private PROJECT_OVERVIEW_BUTTON_PREFIX: string = 'project_overview_';
 	private OPEN_EXTENSION_REQUEST_BUTTON: string = 'open_extension_request_button';
 	private OPEN_MODIFICATION_REQUEST_BUTTON: string = 'open_modification_request_button';
@@ -47,13 +49,17 @@ export class ProjectOverViewPage {
 		await this.page.locator('text=Profile Information').waitFor();
 	}
 
-	async goToOpenStackProjectOverview() {
+	async goToProjectOverview(project_name: string) {
 		await this.gotoProfilePage();
-		console.log('Goto Project overview Page for OpenStack Project');
+		console.log(`Goto Project overview Page for Project ${project_name}`);
+		const project_list = this.page.locator(Util.by_data_test_id_str(this.PROJECT_LIST));
+		if (!project_list) {
+			await this.page.locator(Util.by_data_test_id_str(this.PROJECT_LIST_TOGGLER)).click();
+		}
 		await Promise.all([
 			this.page.waitForNavigation(),
 			this.page.locator(
-				Util.by_data_test_id_str(this.PROJECT_OVERVIEW_BUTTON_PREFIX + Util.OPENSTACK_APPLICATION_NAME),
+				Util.by_data_test_id_str(this.PROJECT_OVERVIEW_BUTTON_PREFIX + project_name),
 			).click(),
 		]);
 		console.log(this.page.url());
@@ -61,18 +67,12 @@ export class ProjectOverViewPage {
 		await this.page.waitForSelector(Util.by_data_test_id_str(this.SITE_LOADER), { state: 'hidden' });
 	}
 
+	async goToOpenStackProjectOverview() {
+		await this.goToProjectOverview(Util.OPENSTACK_APPLICATION_NAME);
+	}
+
 	async goToSimpleVMProjectOverview() {
-		await this.gotoProfilePage();
-		console.log('Goto Project overview Page for Simple VM Project');
-		await Promise.all([
-			this.page.waitForNavigation(),
-			this.page.locator(
-				Util.by_data_test_id_str(this.PROJECT_OVERVIEW_BUTTON_PREFIX + Util.SIMPLE_VM_APPLICATION_NAME),
-			).click(),
-		]);
-		console.log(this.page.url());
-		expect(this.page.url()).toContain('/project-management');
-		await this.page.waitForSelector(Util.by_data_test_id_str(this.SITE_LOADER), { state: 'hidden' });
+		await this.goToProjectOverview(Util.SIMPLE_VM_APPLICATION_NAME);
 	}
 
 	async requestProjectExtension(simpleVM: boolean) {
