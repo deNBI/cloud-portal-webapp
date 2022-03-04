@@ -16,12 +16,12 @@ test.describe.serial('@start_simpleVM', () => {
 		});
 	});
 
-	/*test.describe('Should see active VM in instance overview', () => {
+	test.describe('Should see active VM in instance overview', () => {
 		test.use({storageState: MEMBER_STORAGE});
 		test('Member @start_simpleVM', async ({ page, baseURL }) => {
 			const vmOverviewPage = new InstanceOverviewPage(page, baseURL);
 			await vmOverviewPage.goto();
 			await vmOverviewPage.waitForNormalInstanceToBeActive();
 		});
-	}); */
+	});
 });

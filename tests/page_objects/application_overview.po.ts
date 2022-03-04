@@ -20,17 +20,17 @@ export class ApplicationOverviewPage {
 	private NOTIFICATION_MODAL_TITLE: string = 'notification_modal_title';
 	private APPROVAL_PREFIX: string = 'approve_';
 	private APPROVAL_CLIENT_LIMIT_PREFIX: string = 'approve_client_limit_';
-	private MODIFICATION_TAB_BUTTON: string = 'tab_state_button_modification_request';
+	private MODIFICATION_TAB_BUTTON: string = 'modification_requests_applications_tab';
 	private MODIFICATION_APPROVAL_BTN_PREFIX: string = 'modification_approval_';
 	private MODIFICATION_REQUEST_RESULT_TEXT: string = 'The resource modification request was approved!';
-	private EXTENSION_TAB_BUTTON: string = 'tab_state_button_extension_request';
+	private EXTENSION_TAB_BUTTON: string = 'extension_requests_applications_tab';
 	private EXTENSION_RESULT_SIMPLEVM_TEXT: string = 'The project has been extended!';
 	private EXTENSION_RESULT_OPENSTACK_TEXT: string = 'The request has been sent to the facility manager.';
 	private DECLINE_PT_OPEN_APPLICATION_PRE: string = 'btn_decline_PTOpenStack';
 	private DECLINE_PT_SIMPLE_APPLICATION_PRE: string = 'btn_decline_PTSimpleVM';
 	private SUCCESSFULL_DECLINED: string = 'The Application was declined';
 	private CLOSE_NOTIFICATION_MODAL: string = 'close_notification_modal_btn';
-	private SUBMITTED_APPLICATIONS_TAB: string = 'tab_state_button_submitted_applications';
+	private SUBMITTED_APPLICATIONS_TAB: string = 'submitted_applications_tab';
 	private LOADING_APPLICATIONS: string = 'loading_applications';
 	private APPLICATIONS_CONTAINER: string = 'applications_container';
 	private SITE_LOADER: string = 'site-loader';
@@ -56,7 +56,7 @@ export class ApplicationOverviewPage {
 
 	async goToSubmittedApplication() {
 		await this.goto();
-		await this.page.locator(Util.by_data_test_id_str('submitted_applications_tab')).click();
+		await this.page.locator(Util.by_data_test_id_str(this.SUBMITTED_APPLICATIONS_TAB)).click();
 		await this.page.waitForSelector(Util.by_data_test_id_str(this.LOADING_APPLICATIONS), { state: 'hidden' });
 		await this.page.waitForSelector(Util.by_data_test_id_str('submitted_applications_container'), {
 			state: 'visible',
@@ -67,7 +67,7 @@ export class ApplicationOverviewPage {
 		await this.goto();
 		await this.page.waitForSelector(Util.by_data_test_id_str(this.LOADING_APPLICATIONS), { state: 'hidden' });
 		await this.page.waitForTimeout(5000);
-		await this.page.locator(Util.by_data_test_id_str('extension_requests_applications_tab')).click();
+		await this.page.locator(Util.by_data_test_id_str(this.EXTENSION_TAB_BUTTON)).click();
 		await this.page.waitForSelector(Util.by_data_test_id_str(this.LOADING_APPLICATIONS), { state: 'hidden' });
 		await this.page.waitForSelector(Util.by_data_test_id_str('lifetime_requests_applications_container'), { state: 'visible' });
 
@@ -77,7 +77,7 @@ export class ApplicationOverviewPage {
 		await this.goto();
 		await this.page.waitForSelector(Util.by_data_test_id_str(this.LOADING_APPLICATIONS), { state: 'hidden' });
 		await this.page.waitForTimeout(5000);
-		await this.page.locator(Util.by_data_test_id_str('modification_requests_applications_tab')).click();
+		await this.page.locator(Util.by_data_test_id_str(this.MODIFICATION_TAB_BUTTON)).click();
 		await this.page.waitForSelector(Util.by_data_test_id_str(this.LOADING_APPLICATIONS), { state: 'hidden' });
 		await this.page.waitForSelector(Util.by_data_test_id_str('modification_requests_applications_container'), { state: 'visible' });
 
@@ -136,7 +136,7 @@ export class ApplicationOverviewPage {
 		await this.page.locator(Util.by_data_test_id_str(this.APPROVAL_CLIENT_LIMIT_PREFIX + application_name)).click();
 		await this.page.waitForSelector(`data-test-id=${this.NOTIFICATION_MESSAGE} >> text=${this.MODIFICATION_REQUEST_RESULT_TEXT}`);
 	}
-	
+
 	async approveSimpleVMExtensionRequest(application_name: string): Promise<any> {
 		await this.goToLifetimeRequests();
 		await this.page.locator(Util.by_data_test_id_str(this.EXTENSION_APPROVAL_BTN_PREFIX + application_name)).click();
@@ -166,6 +166,8 @@ export class ApplicationOverviewPage {
 		await this.goToSubmittedApplication();
 		await this.page.waitForSelector(Util.by_data_test_id_str(this.COMPUTE_CENTER_SELECTION_PREFIX + application_name), { state: 'visible' });
 		await this.page.selectOption(Util.by_data_test_id_str(this.COMPUTE_CENTER_SELECTION_PREFIX + application_name), { label: this.DEFAULT_DENBI_COMPUTE_CENTER });
+		await this.page.waitForTimeout(10000);
+		await this.page.locator(Util.by_data_test_id_str(this.APPROVAL_PREFIX + application_name)).isEnabled();
 		await this.page.locator(Util.by_data_test_id_str(this.APPROVAL_PREFIX + application_name)).click();
 		await this.page.waitForSelector(Util.by_data_test_id_str(this.NOTIFICATION_MESSAGE), { state: 'visible' });
 		await this.page.waitForSelector(`data-test-id=${this.NOTIFICATION_MODAL_TITLE} >> text=Success`);

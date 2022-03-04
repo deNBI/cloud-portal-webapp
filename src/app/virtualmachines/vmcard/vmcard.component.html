@@ -7,7 +7,9 @@
                      || (vm?.status |hasStatus:VirtualMachineStates.staticSHUTOFF);
                       else statusElseBlock"
 					 class="h5 text-primary" style="margin-left: 10px; padding-right: 5px" id="detail_{{vm.name}}"
-					 [routerLink]="['/virtualmachines/detail/' + vm?.openstackid]">
+					 [routerLink]="['/virtualmachines/detail/' + vm?.openstackid]"
+					 [ngClass]="(vm?.status |hasStatus:VirtualMachineStates.staticACTIVE) ? 'active-machine': ''"
+				>
 					<i *ngIf="vm?.still_used_confirmation_requested" class="fas fa-exclamation-triangle"
 						 style="color:red;">
 					</i>  {{vm?.name}}

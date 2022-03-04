@@ -24,21 +24,12 @@ export class InstanceOverviewPage {
 
 	}
 
-	/*async waitForNormalInstanceToBeActive(): Promise<any> {
+	async waitForNormalInstanceToBeActive(): Promise<any> {
 		await this.page.waitForTimeout(60000);
 		await this.page.reload({ waitUntil: 'networkidle' });
 		console.log('Waiting for VM to be shown as active');
 		await this.page.waitForTimeout(10000);
-		await this.page.locator('div:has(.pulseAnim) >> has-text("PTSimpleVMnormal")').isVisible();
+		await this.page.locator('.active-machine:has-text("PTSimpleVMnormal")').isVisible();
 		console.log('VM active');
 	}
-
-	async waitForVolumeInstanceToBeActive(): Promise<any> {
-		// TODO: After normal instance gets checked
-	} */
-
-
-
-
-
 }
