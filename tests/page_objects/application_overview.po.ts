@@ -131,6 +131,7 @@ export class ApplicationOverviewPage {
 
 	async approveSimpleVMModificationRequest(application_name: string): Promise<any> {
 		await this.goToModificationRequests();
+		await this.page.waitForTimeout(10000);
 		await this.page.locator(Util.by_data_test_id_str(this.MODIFICATION_APPROVAL_BTN_PREFIX + application_name)).click();
 		await this.page.waitForSelector(Util.by_data_test_id_str(this.APPROVAL_CLIENT_LIMIT_PREFIX + application_name), { state: 'visible' });
 		await this.page.locator(Util.by_data_test_id_str(this.APPROVAL_CLIENT_LIMIT_PREFIX + application_name)).click();
