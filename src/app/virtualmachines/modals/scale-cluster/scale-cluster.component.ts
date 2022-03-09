@@ -13,12 +13,11 @@ import { FlavorService } from '../../../api-connector/flavor.service';
 import { GroupService } from '../../../api-connector/group.service';
 
 @Component({
-	           selector: 'app-scale-cluster',
-	           templateUrl: './scale-cluster.component.html',
-	           providers: [FlavorService, GroupService],
+	selector: 'app-scale-cluster',
+	templateUrl: './scale-cluster.component.html',
+	providers: [FlavorService, GroupService],
 })
 export class ScaleClusterComponent implements OnDestroy, OnInit {
-
 	/**
 	 * Possible virtual machine states.
 	 */
@@ -51,22 +50,24 @@ export class ScaleClusterComponent implements OnDestroy, OnInit {
 	private submitted: boolean = false;
 
 	// eslint-disable-next-line max-len
-	constructor(public bsModalRef: BsModalRef, private clipboardService: ClipboardService, private flavorService: FlavorService, private groupService: GroupService) {
+	constructor(
+		public bsModalRef: BsModalRef,
+		private clipboardService: ClipboardService,
+		private flavorService: FlavorService,
+		private groupService: GroupService,
+	) {
 		// eslint-disable-next-line no-empty-function
 	}
 
 	ngOnInit(): void {
 		if (this.mode === 'scale_up') {
-
 			this.scale_up = true;
 			this.calcRess();
-
 		} else if (this.mode === 'scale_down') {
 			this.scale_down = true;
 		} else if (this.mode === 'scale_success') {
 			this.scale_success = true;
 		}
-
 	}
 
 	/**
@@ -88,12 +89,13 @@ export class ScaleClusterComponent implements OnDestroy, OnInit {
 			if (bat.delete_count > 0) {
 				this.scale_down_count += bat.delete_count;
 			}
-
 		});
 	}
 
 	loadProjectRessource(): void {
 		this.projectDataLoaded = false;
+		this.flavors_loaded = false;
+
 		this.flavors = [];
 		this.subscription.add(
 			this.groupService.getGroupResources(this.cluster.project_id).subscribe((res: ApplicationRessourceUsage): void => {
@@ -108,7 +110,6 @@ export class ScaleClusterComponent implements OnDestroy, OnInit {
 		if (batch.upscale_count > batch.max_scale_up_count) {
 			batch.upscale_count = batch.max_scale_up_count;
 		}
-
 	}
 
 	calcRess(): void {
@@ -116,11 +117,14 @@ export class ScaleClusterComponent implements OnDestroy, OnInit {
 
 		// tslint:disable-next-line:max-line-length
 		this.subscription.add(
-			this.groupService.getGroupResources(this.cluster.master_instance.projectid.toString())
+			this.groupService
+				.getGroupResources(this.cluster.master_instance.projectid.toString())
 				.subscribe((res: ApplicationRessourceUsage): void => {
 					this.selectedProjectRessources = new ApplicationRessourceUsage(res);
 					for (const workerBatch of this.cluster.worker_batches) {
-						workerBatch.max_scale_up_count = this.selectedProjectRessources.calcMaxScaleUpWorkerInstancesByFlavor(workerBatch.flavor);
+						workerBatch.max_scale_up_count = this.selectedProjectRessources.calcMaxScaleUpWorkerInstancesByFlavor(
+							workerBatch.flavor,
+						);
 					}
 					this.max_scale_up_count_loaded = true;
 				}),
@@ -128,7 +132,6 @@ export class ScaleClusterComponent implements OnDestroy, OnInit {
 	}
 
 	setSelectedBatch(batch: WorkerBatch): void {
-
 		this.selectedBatch = batch;
 	}
 	resizeFix(): void {
@@ -172,6 +175,7 @@ export class ScaleClusterComponent implements OnDestroy, OnInit {
 	}
 
 	checkFlavorsUsableForCluster(): void {
+		this.flavors_usable = [];
 		const used_flavors: Flavor[] = [];
 		let flavors_to_filter: Flavor[] = [];
 
@@ -180,14 +184,12 @@ export class ScaleClusterComponent implements OnDestroy, OnInit {
 			if (batch.flavor) {
 				used_flavors.push(batch.flavor);
 			}
-
 		});
 		if (used_flavors.length > 0) {
 			flavors_to_filter = this.flavors.filter((flavor: Flavor): boolean => {
 				let not_used: boolean = true;
 
 				used_flavors.forEach((used_flavor: Flavor): void => {
-
 					if (flavor.name === used_flavor.name) {
 						not_used = false;
 					}
@@ -198,11 +200,9 @@ export class ScaleClusterComponent implements OnDestroy, OnInit {
 		} else {
 			flavors_to_filter = this.flavors;
 		}
-		this.flavors_usable = flavors_to_filter.filter((flav: Flavor): boolean => this.selectedProjectRessources
-			.filterFlavorsTest(flav, flavors_to_filter, this.cluster.worker_batches));
+		this.flavors_usable = flavors_to_filter.filter((flav: Flavor): boolean => this.selectedProjectRessources.filterFlavorsTest(flav, flavors_to_filter, this.cluster.worker_batches));
 
 		this.flavors_loaded = true;
-
 	}
 
 	scaleDownCluster(): void {
@@ -214,7 +214,11 @@ export class ScaleClusterComponent implements OnDestroy, OnInit {
 
 	scaleUpCluster(): void {
 		this.submitted = true;
-		this.event.emit({ scaleUpCluster: true, selectedBatch: this.selectedBatch, created_new_batch: this.created_new_batch });
+		this.event.emit({
+			scaleUpCluster: true,
+			selectedBatch: this.selectedBatch,
+			created_new_batch: this.created_new_batch,
+		});
 
 		this.bsModalRef.hide();
 	}
@@ -235,5 +239,4 @@ export class ScaleClusterComponent implements OnDestroy, OnInit {
 			this.event.emit({ resume: true });
 		}
 	}
-
 }
