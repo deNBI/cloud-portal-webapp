@@ -123,6 +123,7 @@
         ],
         "comma-dangle": "error",
         "default-case": "warn",
+        "default-param-last": "off",
         "id-blacklist": "off",
         "id-match": "off",
         "import/no-default-export": "off",
