@@ -58,21 +58,11 @@ export class ProjectOverViewPage {
 		}
 		await Promise.all([
 			this.page.waitForNavigation(),
-			this.page.locator(
-				Util.by_data_test_id_str(this.PROJECT_OVERVIEW_BUTTON_PREFIX + project_name),
-			).click(),
+			this.page.locator(Util.by_data_test_id_str(this.PROJECT_OVERVIEW_BUTTON_PREFIX + project_name)).click(),
 		]);
 		console.log(this.page.url());
 		expect(this.page.url()).toContain('/project-management');
 		await this.page.waitForSelector(Util.by_data_test_id_str(this.SITE_LOADER), { state: 'hidden' });
-	}
-
-	async goToOpenStackProjectOverview() {
-		await this.goToProjectOverview(Util.OPENSTACK_APPLICATION_NAME);
-	}
-
-	async goToSimpleVMProjectOverview() {
-		await this.goToProjectOverview(Util.SIMPLE_VM_APPLICATION_NAME);
 	}
 
 	async requestProjectExtension(simpleVM: boolean) {
