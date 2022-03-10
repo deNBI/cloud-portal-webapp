@@ -17,16 +17,14 @@ import { Application } from '../applications/application.model/application.model
 	selector: 'app-vo-overview',
 	templateUrl: 'voOverview.component.html',
 	providers: [VoService, GroupService, FacilityService],
-
 })
-
 export class VoOverviewComponent extends FilterBaseClass implements OnInit {
-
 	title: string = 'VO Overview';
 	public emailSubject: string;
 	public emailReply: string = '';
 	public emailText: string;
 	public emailStatus: number = 0;
+
 	public emailHeader: string;
 	public emailVerify: string;
 	public emailType: number;
@@ -64,11 +62,9 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
 	}
 
 	ngOnInit(): void {
-
 		this.getVoProjects();
 		this.voService.getNewsletterSubscriptionCounter().subscribe((result: IResponseTemplate): void => {
 			this.newsletterSubscriptionCounter = result.value as number;
-
 		});
 	}
 
@@ -101,7 +97,6 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
 				break;
 			}
 			default:
-
 		}
 	}
 
@@ -119,31 +114,38 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
 			facNameFilter = this.isFilterFacilityName(project.project_application_compute_center.Name.toLowerCase());
 		}
 
-		return facNameFilter
+		return (
+			facNameFilter
 			&& this.isFilterProjectStatus(project.project_application_status, project.lifetime_reached)
 			&& this.isFilterProjectName(project.perun_name)
 			&& this.isFilterProjectId(project.project_application_perun_id.toString())
 			&& ((project.project_application_openstack_project && this.show_openstack_projects)
-				|| (!project.project_application_openstack_project && this.show_simple_vm_projects));
-
+				|| (!project.project_application_openstack_project && this.show_simple_vm_projects))
+		);
 	}
 
 	sendNewsletterToVo(subject: string, message: string, selectedProjectType: string, reply?: string): void {
-		this.voService.sendNewsletterToVo(encodeURIComponent(subject), encodeURIComponent(message), selectedProjectType, encodeURIComponent(reply))
+		this.voService
+			.sendNewsletterToVo(
+				encodeURIComponent(subject),
+				encodeURIComponent(message),
+				selectedProjectType,
+				encodeURIComponent(reply),
+			)
 			.subscribe((result: IResponseTemplate): void => {
-				if (result.value as boolean === true) {
+				if ((result.value as boolean) === true) {
 					this.emailStatus = 1;
 				} else {
 					this.emailStatus = 2;
 				}
 			});
-
 	}
 
 	sendMailToVo(subject: string, message: string, facility: string, type: string, reply?: string): void {
-		this.voService.sendMailToVo(encodeURIComponent(subject), encodeURIComponent(message), facility, type, encodeURIComponent(reply))
+		this.voService
+			.sendMailToVo(encodeURIComponent(subject), encodeURIComponent(message), facility, type, encodeURIComponent(reply))
 			.subscribe((result: IResponseTemplate): void => {
-				if (result.value as boolean === true) {
+				if ((result.value as boolean) === true) {
 					this.emailStatus = 1;
 				} else {
 					this.emailStatus = 2;
@@ -151,7 +153,6 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
 				this.selectedProjectType = 'ALL';
 				this.selectedFacility = 'ALL';
 			});
-
 	}
 
 	setEmailType(type: number): void {
@@ -168,7 +169,6 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
 				break;
 			}
 			default:
-
 		}
 	}
 
@@ -184,7 +184,6 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
 			this.applyFilter();
 			this.isLoaded = true;
 		});
-
 	}
 
 	resetEmailModal(): void {
@@ -195,7 +194,6 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
 		this.emailVerify = null;
 		this.emailReply = '';
 		this.emailStatus = 0;
-
 	}
 
 	public resetNotificationModal(): void {
@@ -219,7 +217,6 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
 				);
 				this.computecenters.push(compute_center);
 			}
-
 		});
 	}
 
@@ -231,8 +228,8 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
 	}
 
 	public terminateProject(): void {
-		this.voService.terminateProject(this.selectedProject.project_application_perun_id)
-			.subscribe((): void => {
+		this.voService.terminateProject(this.selectedProject.project_application_perun_id).subscribe(
+			(): void => {
 				const indexAll: number = this.projects.indexOf(this.selectedProject, 0);
 				if (!this.selectedProject.project_application_openstack_project) {
 					this.projects.splice(indexAll, 1);
@@ -251,7 +248,8 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
 				} else {
 					this.updateNotificationModal('Success', 'The  project was terminated.', true, 'success');
 				}
-			}, (error: any): void => {
+			},
+			(error: any): void => {
 				if (error['status'] === 409) {
 					this.updateNotificationModal(
 						'Failed',
@@ -262,7 +260,8 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
 				} else {
 					this.updateNotificationModal('Failed', 'The project could not be terminated.', true, 'danger');
 				}
-			});
+			},
+		);
 	}
 
 	getProjectStatus(project: Application): void {
@@ -276,47 +275,45 @@ export class VoOverviewComponent extends FilterBaseClass implements OnInit {
 			this.getProjectStatus(project);
 			project.project_application_compute_center = null;
 		});
-
 	}
 
 	resumeProject(project: Application): void {
 		this.voService.resumeProject(project.project_application_perun_id).subscribe((): void => {
 			this.getVoProjects();
 		});
-
 	}
 
 	setProtected(project: Application, set: boolean): void {
-		this.voService.setProtected(project.project_application_perun_id, set).subscribe((result: any): void => {
-			this.updateNotificationModal(
-				'Success',
-				result['result'] === 'set' ? 'The project was successfully set as protected.'
-					: 'The status "Protected" was removed successfully',
-				true,
-				'success',
-			);
-			const indexAll: number = this.projects.indexOf(project, 0);
-			this.getProjectStatus(this.projects[indexAll]);
-		}, (error: any): void => {
-			if (error['status'] === 500) {
-				this.updateNotificationModal('Failed', 'The status change was not successful.', true, 'danger');
-			}
-		});
+		this.voService.setProtected(project.project_application_perun_id, set).subscribe(
+			(result: any): void => {
+				this.updateNotificationModal(
+					'Success',
+					result['result'] === 'set'
+						? 'The project was successfully set as protected.'
+						: 'The status "Protected" was removed successfully',
+					true,
+					'success',
+				);
+				const indexAll: number = this.projects.indexOf(project, 0);
+				this.getProjectStatus(this.projects[indexAll]);
+			},
+			(error: any): void => {
+				if (error['status'] === 500) {
+					this.updateNotificationModal('Failed', 'The status change was not successful.', true, 'danger');
+				}
+			},
+		);
 	}
 
 	getMembersOfTheProject(projectid: number, projectname: string): void {
-		this.voService.getVoGroupRichMembers(projectid)
-			.subscribe((members: ProjectMember[]): void => {
-				this.usersModalProjectID = projectid;
-				this.usersModalProjectName = projectname;
-				this.usersModalProjectMembers = members;
-
-			});
+		this.voService.getVoGroupRichMembers(projectid).subscribe((members: ProjectMember[]): void => {
+			this.usersModalProjectID = projectid;
+			this.usersModalProjectName = projectname;
+			this.usersModalProjectMembers = members;
+		});
 	}
 
 	showMembersOfTheProject(projectid: number, projectname: string): void {
 		this.getMembersOfTheProject(projectid, projectname);
-
 	}
-
 }

@@ -33,7 +33,12 @@ export class ApplicationRessourceUsage {
 		this.gpus_used = usage.gpus_used;
 	}
 
-	filterFlavorsTest(flavor: Flavor, possible_flavors: Flavor[], worker_batches: WorkerBatch[], master_flavor?: Flavor): boolean {
+	filterFlavorsTest(
+		flavor: Flavor,
+		possible_flavors: Flavor[],
+		worker_batches: WorkerBatch[],
+		master_flavor?: Flavor,
+	): boolean {
 		let batches_ram: number = 0;
 		let batches_cpu: number = 0;
 		let batches_gpus: number = 0;
@@ -46,7 +51,7 @@ export class ApplicationRessourceUsage {
 
 		worker_batches.forEach((batch: WorkerBatch): void => {
 			if (batch.flavor) {
-				batches_ram += (batch.flavor.ram * batch.worker_count);
+				batches_ram += batch.flavor.ram * batch.worker_count;
 				batches_cpu += batch.flavor.vcpus * batch.worker_count;
 				batches_gpus += batch.flavor.gpu * batch.worker_count;
 			}
@@ -64,14 +69,20 @@ export class ApplicationRessourceUsage {
 		return tmp_flavors.length > 0;
 	}
 
-	filterFlavors(new_cores: number, new_ram: number, new_gpus: number, possible_flavors: Flavor[], worker_batches: WorkerBatch[]): Flavor[] {
+	filterFlavors(
+		new_cores: number,
+		new_ram: number,
+		new_gpus: number,
+		possible_flavors: Flavor[],
+		worker_batches: WorkerBatch[],
+	): Flavor[] {
 		let batches_ram: number = 0;
 		let batches_cpu: number = 0;
 		let batches_gpus: number = 0;
 
 		worker_batches.forEach((batch: WorkerBatch): void => {
 			if (batch.flavor) {
-				batches_ram += (batch.flavor.ram * batch.worker_count);
+				batches_ram += batch.flavor.ram * batch.worker_count;
 				batches_cpu += batch.flavor.vcpus * batch.worker_count;
 				batches_gpus += batch.flavor.gpu * batch.worker_count;
 			}
@@ -89,33 +100,49 @@ export class ApplicationRessourceUsage {
 		return tmp_flavors;
 	}
 
-	calcMaxWorkerInstancesByFlavor(master_flavor: Flavor, selectedBatch: WorkerBatch, worker_batches: WorkerBatch[]): number {
+	calcMaxWorkerInstancesByFlavor(
+		master_flavor: Flavor,
+		selectedBatch: WorkerBatch,
+		worker_batches: WorkerBatch[],
+	): number {
 		let batches_ram: number = 0;
 		let batches_cpu: number = 0;
 		let batches_vms: number = 0;
+		let batches_gpus: number = 0;
 
 		worker_batches.forEach((batch: WorkerBatch): void => {
 			if (batch.flavor && batch !== selectedBatch) {
 				batches_ram += Math.ceil(batch.flavor.ram * batch.worker_count);
 				batches_cpu += batch.flavor.vcpus * batch.worker_count;
 				batches_vms += batch.worker_count;
+				batches_gpus += batch.worker_count * batch.flavor.gpu;
 			}
 		});
-		const ram_max_vms: number = (this.ram_total - this.ram_used - master_flavor.ram - batches_ram)
-			/ selectedBatch.flavor.ram;
-		const cpu_max_vms: number = (this.cores_total - this.cores_used - master_flavor.vcpus - batches_cpu)
-			/ selectedBatch.flavor.vcpus;
+		const ram_max_vms: number =			(this.ram_total - this.ram_used - master_flavor.ram - batches_ram) / selectedBatch.flavor.ram;
 
-		return Math.floor(Math.min(ram_max_vms, cpu_max_vms, this.number_vms - this.used_vms - 1 - batches_vms));
+		// just set to ram max if gpu will be zero
+		let gpu_max_vms: number = ram_max_vms;
+
+		const cpu_max_vms: number =			(this.cores_total - this.cores_used - master_flavor.vcpus - batches_cpu) / selectedBatch.flavor.vcpus;
+		if (selectedBatch.flavor.gpu > 0) {
+			gpu_max_vms = (this.gpus_max - this.gpus_used - master_flavor.gpu - batches_gpus) / selectedBatch.flavor.gpu;
+		}
+
+		return Math.floor(
+			Math.min(ram_max_vms, cpu_max_vms, gpu_max_vms, this.number_vms - this.used_vms - 1 - batches_vms),
+		);
 	}
 
 	calcMaxScaleUpWorkerInstancesByFlavor(worker_flavor: Flavor): number {
-		const ram_max_vms: number = (this.ram_total - this.ram_used)
-			/ worker_flavor.ram;
-		const cpu_max_vms: number = (this.cores_total - this.cores_used)
-			/ worker_flavor.vcpus;
+		const ram_max_vms: number = (this.ram_total - this.ram_used) / worker_flavor.ram;
+		const cpu_max_vms: number = (this.cores_total - this.cores_used) / worker_flavor.vcpus;
+		// just set to ram max if gpu will be zero
 
-		return Math.floor(Math.min(ram_max_vms, cpu_max_vms, this.number_vms - this.used_vms));
+		let gpu_max_vms: number = ram_max_vms;
+		if (worker_flavor.gpu > 0) {
+			gpu_max_vms = (this.gpus_max - this.gpus_used) / worker_flavor.gpu;
+		}
+
+		return Math.floor(Math.min(ram_max_vms, cpu_max_vms, gpu_max_vms, this.number_vms - this.used_vms));
 	}
-
 }
