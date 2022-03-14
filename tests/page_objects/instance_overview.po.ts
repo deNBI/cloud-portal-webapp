@@ -9,6 +9,10 @@ export class InstanceOverviewPage {
 	private VOLUMES_COUNT_PREFIX: string = 'volumes_count_';
 	private RESENV_VISIBLE_PREFIX: string = 'resenv_visible_';
 	private RESENV_URL_LINK_PREFIX: string = 'https://proxy-dev.bi.denbi.de/';
+	private SHOW_ACTIONS_PREFIX: string = 'showActionsButton_';
+	private HIDE_ACTIONS_PREFIX: string = 'hideActionsButton_';
+	private STOP_VM_BUTTON_PREFIX: string = 'stopVMButton_';
+	private VERIFY_VM_STOP_BUTTON: string = 'verifyStopButton';
 
 	readonly page: Page;
 	readonly baseURL: string;
@@ -34,6 +38,15 @@ export class InstanceOverviewPage {
 		console.log(`VM ${vm_name} active`);
 	}
 
+	async waitForInstanceToBeShutoff(vm_name: string, timeout: number = 10000): Promise<any> {
+		await this.page.waitForTimeout(timeout);
+		// await this.page.reload({ waitUntil: 'networkidle' });
+		console.log(`Waiting for VM ${vm_name} to be shown as shutoff`);
+		await this.page.waitForTimeout(timeout);
+		await this.page.locator(`.shutoff-machine:has-text("${vm_name}")`).isVisible();
+		console.log(`VM ${vm_name} shutoff`);
+	}
+
 	async waitForInstanceToHaveVolumeAttached(vm_name: string): Promise<void> {
 		console.log(`Check if ${vm_name} has one volume attached`);
 		const locator = this.page.locator(Util.by_data_test_id_str_prefix(`${this.VOLUMES_COUNT_PREFIX}${vm_name}`));
@@ -44,5 +57,21 @@ export class InstanceOverviewPage {
 		console.log(`Check if ${vm_name} has resenv`);
 		const locator = this.page.locator(Util.by_data_test_id_str_prefix(`${this.RESENV_VISIBLE_PREFIX}${vm_name}`));
 		await expect(locator).toBeVisible();
+	}
+
+	async stopVirtualMachine(vm_name: string, timeout: number = 10000): Promise<void> {
+		await this.page.waitForTimeout(timeout);
+		console.log(`Stopping active basic vm ${vm_name} on instance overview page`);
+		const locator_show = this.page.locator(`.active-machine:has-text("${this.SHOW_ACTIONS_PREFIX}{${vm_name}")`);
+		await expect(locator_show).toBeVisible();
+		await locator_show.click();
+		const locator_hide = this.page.locator(`.active-machine:has-text("${this.HIDE_ACTIONS_PREFIX}${vm_name}")`);
+		await expect(locator_hide).toBeVisible();
+		const locator_stop = this.page.locator(`.active-machine:has-text("${this.STOP_VM_BUTTON_PREFIX}${vm_name}")`);
+		await expect(locator_hide).toBeVisible();
+		await locator_stop.click();
+		await this.page.click(Util.by_data_test_id_str(this.VERIFY_VM_STOP_BUTTON));
+		await this.waitForInstanceToBeShutoff(vm_name);
+
 	}
 }

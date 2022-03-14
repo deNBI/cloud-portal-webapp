@@ -12,8 +12,8 @@
 					style="margin-left: 10px; padding-right: 5px"
 					id="detail_{{ vm.name }}"
 					[routerLink]="['/virtualmachines/detail/' + vm?.openstackid]"
-					[ngClass]="(vm?.status | hasStatus: VirtualMachineStates.staticACTIVE) ? 'active-machine' : ''"
-				>
+					[ngClass]="{'active-machine': (vm?.status | hasStatus: VirtualMachineStates.staticACTIVE),
+										 'shutoff-machine' : (vm?.status | hasStatus: VirtualMachineStates.staticSHUTOFF)}">
 					<i *ngIf="vm?.still_used_confirmation_requested" class="fas fa-exclamation-triangle" style="color: red"> </i>
 					{{ vm?.name }}
 				</a>
