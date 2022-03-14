@@ -103,7 +103,7 @@ export class InstanceOverviewPage {
 		await this.page.waitForTimeout(timeout);
 		console.log(`Rebooting active basic vm ${vm_name} on instance overview page`);
 		await this.openVMActionsArea(vm_name);
-		const locator_reboot = this.page.locator(`.active-machine:has-text("${this.REBOOT_VM_BUTTON_PREFIX}${vm_name}")`);
+		const locator_reboot = this.page.locator(`.btn-primary:has-text("${this.REBOOT_VM_BUTTON_PREFIX}${vm_name}")`);
 		await expect(locator_reboot).toBeVisible();
 		await locator_reboot.click();
 		const locator_soft = this.page.locator(`.btn-primary:has-text("${this.CHOOSE_SOFT_REBOOT_BUTTON_PREFIX}${vm_name}")`);
@@ -114,7 +114,6 @@ export class InstanceOverviewPage {
 		await this.page.locator(Util.by_data_test_id_str(this.VERIFY_REBOOT_BUTTON)).isVisible();
 		await this.page.click(Util.by_data_test_id_str(this.VERIFY_REBOOT_BUTTON));
 		await this.waitForInstanceToBeActive(vm_name, 60000);
-
 	}
 
 	async deleteVirtualMachine(vm_name: string, timeout: number = 10000): Promise<void> {
@@ -134,7 +133,13 @@ export class InstanceOverviewPage {
 		await locator_checkbox.click();
 		await locator_apply.click();
 		await this.waitForInstanceToBeDeleted(vm_name, 5000);
+	}
 
+	async detachVolume(vm_name: string, timeout: number = 10000): Promise<void> {
+		await this.page.waitForTimeout(timeout);
+		console.log(`Detaching volume from vm ${vm_name} on instance overview page`);
+		await this.openVMActionsArea(vm_name);
+		// TODO: check locators for actions, as these are not .active-machine
 	}
 
 	async openVMActionsArea(vm_name: string): Promise<void> {
