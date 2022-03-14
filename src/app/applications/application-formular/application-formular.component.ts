@@ -22,7 +22,8 @@ import {
 	SIMPLE_VM_LINK,
 	SURVEY_LINK,
 	WIKI_WORKSHOPS,
-	WIKI,
+	WIKI_PERSONAL_DATA,
+	GDPR_LINK,
 } from '../../../links/links';
 
 /**
@@ -65,8 +66,8 @@ export class ApplicationFormularComponent extends ApplicationBaseClassComponent 
 	OPENSTACK_LINK: string = OPENSTACK_LINK;
 	PROJECT_TYPES_LINK: string = PROJECT_TYPES_LINK;
 	SIMPLE_VM_LINK: string = SIMPLE_VM_LINK;
-	WIKI: string = WIKI;
-	GDPR_link: string = "https://gdpr.eu/article-9-processing-special-categories-of-personal-data-prohibited/";
+	WIKI_PERSONAL_DATA: string = WIKI_PERSONAL_DATA;
+	GDPR_LINK: string = GDPR_LINK;
 	survey_link_visible: boolean = false;
 	max_lifetime: number = 6;
 
