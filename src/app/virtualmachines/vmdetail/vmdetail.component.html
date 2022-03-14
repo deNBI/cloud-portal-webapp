@@ -543,7 +543,8 @@
         </div>
         <div class="modal-footer">
           <button class="btn  btn-success col-md-4"
-                  (click)="rebootVm(reboot_type);rebootModal.hide();rebootResultModal.show()">
+                  (click)="rebootVm(reboot_type);rebootModal.hide();rebootResultModal.show()"
+								data-test-id="verifyRebootButton">
             Yes
           </button>
           <button class="btn  btn-danger col-md-4" type="reset"

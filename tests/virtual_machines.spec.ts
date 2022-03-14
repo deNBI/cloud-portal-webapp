@@ -107,6 +107,15 @@ test.describe.serial('@instances', () => {
 		});
 	});
 
+	test.describe('Should resume basic active VM', () => {
+		test.use({ storageState: MEMBER_STORAGE });
+		test('Member @instances', async ({ page, baseURL }) => {
+			const vmOverviewPage = new InstanceOverviewPage(page, baseURL);
+			await vmOverviewPage.goto();
+			await vmOverviewPage.waitForInstanceToBeShutoff(Util.RESENV_VM_NAME, 60000 * 1);
+			await vmOverviewPage.resumeVirtualMachine(Util.BASIC_VM_NAME);
+		});
+	});
 
 	test.describe('Aftercare - Should delete old simple_vm_instances applications', () => {
 		test.use({ storageState: VO_MANAGER_STORAGE });
@@ -116,6 +125,7 @@ test.describe.serial('@instances', () => {
 			await applicationPage.declineApplications(Util.INSTANCES_PROJECT_NAME);
 			const voOverviewPage = new VoOverviewPage(page, baseURL);
 			await voOverviewPage.terminateSimpleVMProjects(Util.INSTANCES_PROJECT_NAME);
+
 		});
 	});
 });

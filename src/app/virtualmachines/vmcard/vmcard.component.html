@@ -18,7 +18,7 @@
 					{{ vm?.name }}
 				</a>
 				<ng-template #statusElseBlock>
-					<span class="h5 text-primary" id="detail_{{ vm.name }}" style="margin-left: 10px; padding-right: 5px">
+					<span class="h5 text-primary deleted-machine" id="detail_{{ vm.name }}" style="margin-left: 10px; padding-right: 5px">
 						<i *ngIf="vm?.still_used_confirmation_requested" class="fas fa-exclamation-triangle" style="color: red">
 						</i>
 						{{ vm?.name }}
