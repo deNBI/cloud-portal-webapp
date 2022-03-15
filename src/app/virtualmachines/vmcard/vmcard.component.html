@@ -229,7 +229,7 @@
 			</div>
 			<div *ngIf="vm?.msg !== '' && vm?.msg !== undefined && vm?.msg !== null" class="col-12" style="margin-left: 10px">
 				<div class="alert alert-info" role="alert" style="font-size: small">
-					<strong>Info: <span [innerHTML]="vm?.msg"></span></strong>
+					<strong>Info: <span data-test-id="vm-message-alert" [innerHTML]="vm?.msg"></span></strong>
 				</div>
 			</div>
 			<div *ngIf="vm?.cluster?.cluster_id" class="col-12" style="margin-left: 10px">
