@@ -32,22 +32,34 @@ export class InstanceOverviewPage {
 
 	async waitForInstanceToBeActive(vm_name: string, timeout: number = 10000): Promise<any> {
 		console.log(`Waiting for VM ${vm_name} to be shown as active`);
-		await this.page.waitForTimeout(timeout);
-		await this.page.locator(`.active-machine:has-text("${vm_name}")`).isVisible();
+		await this.page.waitForSelector(
+			`.active-machine:has-text("${vm_name}")`,
+			{
+				state: 'visible', timeout,
+			},
+		);
 		console.log(`VM ${vm_name} active`);
 	}
 
 	async waitForInstanceToBeShutoff(vm_name: string, timeout: number = 10000): Promise<any> {
 		console.log(`Waiting for VM ${vm_name} to be shown as shutoff`);
-		await this.page.waitForTimeout(timeout);
-		await this.page.locator(`.shutoff-machine:has-text("${vm_name}")`).isVisible();
+		await this.page.waitForSelector(
+			`.shutoff-machine:has-text("${vm_name}")`,
+			{
+				state: 'visible', timeout,
+			},
+		);
 		console.log(`VM ${vm_name} shutoff`);
 	}
 
 	async waitForInstanceToBeDeleted(vm_name: string, timeout: number = 10000): Promise<any> {
 		console.log(`Waiting for VM ${vm_name} to be shown as deleted`);
-		await this.page.waitForTimeout(timeout);
-		await this.page.locator(`.deleted-machine:has-text("${vm_name}")`).isVisible();
+		await this.page.waitForSelector(
+			`.deleted-machine:has-text("${vm_name}")`,
+			{
+				state: 'visible', timeout,
+			},
+		);
 		console.log(`VM ${vm_name} deleted`);
 	}
 
@@ -129,8 +141,7 @@ export class InstanceOverviewPage {
 		await locator_delete.click();
 		await this.page.locator(Util.by_data_test_id_str(this.VERIFY_DELETE_BUTTON)).isVisible();
 		await this.page.click(Util.by_data_test_id_str(this.VERIFY_DELETE_BUTTON));
-		await this.page.waitForTimeout(30000);
-		await this.waitForInstanceToBeDeleted(vm_name, 5000);
+		await this.waitForInstanceToBeDeleted(vm_name, timeout);
 	}
 
 	async detachVolume(vm_name: string, timeout: number = 10000): Promise<void> {
@@ -141,6 +152,12 @@ export class InstanceOverviewPage {
 	}
 
 	async openVMActionsArea(vm_name: string): Promise<Locator> {
+		await this.page.waitForSelector(
+			`.instance-card:has(.card-block:has(.active-machine:has-text("${vm_name}"))), .instance-card:has(.card-block:has(.shutoff-machine:has-text("${vm_name}")))`,
+			{
+				state: 'visible', timeout: 30000,
+			},
+		);
 		const locator_instance = this.page.locator(`.instance-card:has(.card-block:has(.active-machine:has-text("${vm_name}"))), .instance-card:has(.card-block:has(.shutoff-machine:has-text("${vm_name}")))`);
 		const locator_card_body = locator_instance.locator('.card-body');
 		const locator_card_row = locator_card_body.locator('.row');

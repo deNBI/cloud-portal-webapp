@@ -71,10 +71,11 @@ import { FormularPage } from './page_objects/formular.po';
 
 	test.describe('Should see basic VM as active in instance overview', () => {
 		test.use({ storageState: MEMBER_STORAGE });
+		test.setTimeout(60000 * 5);
 		test('Member @instances', async ({ page, baseURL }) => {
 			const vmOverviewPage = new InstanceOverviewPage(page, baseURL);
 			await vmOverviewPage.goto();
-			await vmOverviewPage.waitForInstanceToBeActive(Util.BASIC_VM_NAME);
+			await vmOverviewPage.waitForInstanceToBeActive(Util.BASIC_VM_NAME, 12 * 10000);
 		});
 	});
 
@@ -140,7 +141,7 @@ import { FormularPage } from './page_objects/formular.po';
 			 const vmOverviewPage = new InstanceOverviewPage(page, baseURL);
 			 await vmOverviewPage.goto();
 			 await vmOverviewPage.waitForInstanceToBeActive(Util.BASIC_VM_NAME, 20000);
-			 await vmOverviewPage.deleteVirtualMachine(Util.BASIC_VM_NAME);
+			 await vmOverviewPage.deleteVirtualMachine(Util.BASIC_VM_NAME, 30000);
 		 });
 	 });
 
