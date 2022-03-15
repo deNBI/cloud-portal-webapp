@@ -9,8 +9,8 @@ export class Flavor {
 	vcpus: number;
 	ram: number;
 	rootdisk: number;
-	gpu: number;
-	ephemeral_disk: number;
+	gpu: number = 0;
+	ephemeral_disk: number = 0;
 	type: FlavorType;
 	simple_vm: boolean;
 	comment: string;

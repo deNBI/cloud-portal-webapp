@@ -18,10 +18,10 @@ jobs:
         uses: rokroskar/workflow-run-cleanup-action@v0.3.3
         env:
                 GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           ref: ${{ github.event.pull_request.head.sha }}
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v3
         with:
           node-version: '16.13.0'
       - run: git status
@@ -37,7 +37,7 @@ jobs:
       - name: Create Pull Request
         if: steps.git-check.outputs.modified == 'true'
         id: cpr
-        uses: peter-evans/create-pull-request@v3.12.1
+        uses: peter-evans/create-pull-request@v3.14.0
         with:
            token: ${{ secrets.GITHUB_TOKEN }}
            commit-message: fix(Linting):blacked code
