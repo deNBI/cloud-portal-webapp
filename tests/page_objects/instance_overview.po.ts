@@ -76,7 +76,6 @@ export class InstanceOverviewPage {
 	}
 
 	async stopVirtualMachine(vm_name: string, timeout: number = 10000): Promise<void> {
-		await this.page.waitForTimeout(timeout);
 		console.log(`Stopping active basic vm ${vm_name} on instance overview page`);
 		let locator_actions;
 		await this.openVMActionsArea(vm_name).then(result => {
@@ -88,7 +87,7 @@ export class InstanceOverviewPage {
 		await locator_stop.click();
 		await this.page.locator(Util.by_data_test_id_str(this.VERIFY_VM_STOP_BUTTON)).isVisible();
 		await this.page.click(Util.by_data_test_id_str(this.VERIFY_VM_STOP_BUTTON));
-		await this.waitForInstanceToBeShutoff(vm_name, 2 * 60000);
+		await this.waitForInstanceToBeShutoff(vm_name, timeout);
 
 	}
 
@@ -104,7 +103,7 @@ export class InstanceOverviewPage {
 		await locator_resume.click();
 		await this.page.locator(Util.by_data_test_id_str(this.VERIFY_VM_RESUME_BUTTON)).isVisible();
 		await this.page.click(Util.by_data_test_id_str(this.VERIFY_VM_RESUME_BUTTON));
-		await this.waitForInstanceToBeActive(vm_name, 12 * timeout);
+		await this.waitForInstanceToBeActive(vm_name, timeout);
 
 	}
 
@@ -122,11 +121,16 @@ export class InstanceOverviewPage {
 		await locator_soft_reboot.click();
 		await this.page.locator(Util.by_data_test_id_str(this.VERIFY_REBOOT_BUTTON)).isVisible();
 		await this.page.click(Util.by_data_test_id_str(this.VERIFY_REBOOT_BUTTON));
-		await this.page.waitForSelector(Util.by_data_test_id_str(this.VM_MESSAGE_ALERT));
+		await this.page.waitForSelector(
+			Util.by_data_test_id_str(this.VM_MESSAGE_ALERT),
+			{
+				state: 'visible', timeout,
+			},
+		);
 		const vm_message_alert_locator = this.page.locator(Util.by_data_test_id_str(this.VM_MESSAGE_ALERT));
 		await expect(vm_message_alert_locator).toContainText('Reboot');
 		console.log(`Rebooting message for vm ${vm_name} was shown.`);
-		await this.waitForInstanceToBeActive(vm_name, 3 * timeout);
+		await this.waitForInstanceToBeActive(vm_name, timeout);
 	}
 
 	async deleteVirtualMachine(vm_name: string, timeout: number = 10000): Promise<void> {
