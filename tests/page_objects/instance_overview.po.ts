@@ -1,6 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars,import/no-extraneous-dependencies
-import {expect, Locator, Page} from '@playwright/test';
+import { expect, Locator, Page } from '@playwright/test';
 import { Util } from '../util';
+
 
 /**
  * Instance Overview Page.
@@ -14,6 +15,10 @@ export class InstanceOverviewPage {
 	private VERIFY_REBOOT_BUTTON: string = 'verifyRebootButton';
 	private VERIFY_DELETE_BUTTON: string = 'verifyDeleteButton';
 	private VM_MESSAGE_ALERT: string = 'vm-message-alert';
+	private VOLUME_DETACHMENT_DROPDOWN: string = 'volume_detachment_dropdown';
+	private VOLUME_ATTACHMENT_DROPDOWN: string = 'volume_attachment_dropdown';
+	private DETACH_VOLUME_BUTTON: string = 'detachVolumeButton';
+	private ATTACH_VOLUME_BUTTON: string = 'attachVolumeButton';
 
 	readonly page: Page;
 	readonly baseURL: string;
@@ -149,10 +154,71 @@ export class InstanceOverviewPage {
 	}
 
 	async detachVolume(vm_name: string, timeout: number = 10000): Promise<void> {
-		await this.page.waitForTimeout(timeout);
 		console.log(`Detaching volume from vm ${vm_name} on instance overview page`);
-		await this.openVMActionsArea(vm_name);
-		// TODO: check locators for actions, as these are not .active-machine
+		let locator_actions;
+		await this.openVMActionsArea(vm_name).then(result => {
+			locator_actions = result;
+		});
+		const locator_detach_col = locator_actions.locator('.col-md-2:has(.btn-outline-secondary:has-text("Detach Volume"))');
+		const locator_detach = locator_detach_col.locator('.btn-outline-secondary:has-text("Detach Volume")');
+		await expect(locator_detach).toBeVisible({ timeout });
+		await locator_detach.click();
+		await this.page.waitForSelector(
+			Util.by_data_test_id_str(this.VOLUME_DETACHMENT_DROPDOWN),
+			{
+				state: 'visible', timeout,
+			},
+		);
+		await this.page.selectOption(
+			Util.by_data_test_id_str(this.VOLUME_DETACHMENT_DROPDOWN),
+			{ index: 1 },
+		);
+		const locator_detach_button = this.page.locator(Util.by_data_test_id_str(this.DETACH_VOLUME_BUTTON));
+		await expect(locator_detach_button).toBeEnabled({ timeout: 1000 });
+		await locator_detach_button.click();
+		await this.page.waitForSelector(
+			Util.by_data_test_id_str(this.VM_MESSAGE_ALERT),
+			{
+				state: 'visible', timeout,
+			},
+		);
+		const vm_message_alert_locator = this.page.locator(Util.by_data_test_id_str(this.VM_MESSAGE_ALERT));
+		await expect(vm_message_alert_locator).toContainText('detached', { timeout: 1000 });
+		console.log(`Detachment message for volume from vm ${vm_name} was shown.`);
+	}
+
+	async attachVolume(vm_name: string, timeout: number = 10000): Promise<void> {
+		console.log(`Attach volume from vm ${vm_name} on instance overview page`);
+		let locator_actions;
+		await this.openVMActionsArea(vm_name).then(result => {
+			locator_actions = result;
+		});
+		const locator_attach_col = locator_actions.locator('.col-md-2:has(.btn-outline-secondary:has-text("Attach Volume"))');
+		const locator_attach = locator_attach_col.locator('.btn-outline-secondary:has-text("Attach Volume")');
+		await expect(locator_attach).toBeVisible();
+		await locator_attach.click();
+		await this.page.waitForSelector(
+			Util.by_data_test_id_str(this.VOLUME_ATTACHMENT_DROPDOWN),
+			{
+				state: 'visible', timeout,
+			},
+		);
+		await this.page.selectOption(
+			Util.by_data_test_id_str(this.VOLUME_ATTACHMENT_DROPDOWN),
+			{ index: 1 },
+		);
+		const locator_attach_button = this.page.locator(Util.by_data_test_id_str(this.ATTACH_VOLUME_BUTTON));
+		await expect(locator_attach_button).toBeEnabled({ timeout: 1000 });
+		await locator_attach_button.click();
+		await this.page.waitForSelector(
+			Util.by_data_test_id_str(this.VM_MESSAGE_ALERT),
+			{
+				state: 'visible', timeout,
+			},
+		);
+		const vm_message_alert_locator = this.page.locator(Util.by_data_test_id_str(this.VM_MESSAGE_ALERT));
+		await expect(vm_message_alert_locator).toContainText('attached', { timeout: 1000 });
+		console.log(`Attachment message for volume from vm ${vm_name} was shown.`);
 	}
 
 	async openVMActionsArea(vm_name: string): Promise<Locator> {

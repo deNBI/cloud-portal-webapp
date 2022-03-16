@@ -7,9 +7,9 @@ import { ApplicationOverviewPage } from './page_objects/application_overview.po'
 import { VoOverviewPage } from './page_objects/vo_overview.po';
 import { FormularPage } from './page_objects/formular.po';
 
- test.describe.serial('@instances', () => {
+test.describe.serial('@instances', () => {
 
-	test.describe('Should delete old simple_vm_instances applications', () => {
+	 test.describe('Should delete old simple_vm_instances applications', () => {
 		test.use({ storageState: VO_MANAGER_STORAGE });
 		test('VO @instances', async ({ page, baseURL }) => {
 			test.setTimeout(60 * 1000);
@@ -38,8 +38,7 @@ import { FormularPage } from './page_objects/formular.po';
 		});
 	});
 
-
-	 test.describe('Should start a VM without volume', () => {
+	test.describe('Should start a VM without volume', () => {
 		test.use({ storageState: MEMBER_STORAGE });
 		test('Member @instances', async ({ page, baseURL }) => {
 			const addVMPage = new NewInstancePage(page, baseURL);
@@ -48,7 +47,6 @@ import { FormularPage } from './page_objects/formular.po';
 			await addVMPage.startNormalVM(Util.INSTANCES_PROJECT_NAME, Util.BASIC_VM_NAME, false);
 		});
 	});
-
 
 	test.describe('Should start a VM with volume', () => {
 		test.use({ storageState: MEMBER_STORAGE });
@@ -81,7 +79,6 @@ import { FormularPage } from './page_objects/formular.po';
 		});
 	});
 
-
 	test.describe('Should see volume VM as active with volume attached in instance overview', () => {
 		test.use({ storageState: MEMBER_STORAGE });
 		test.setTimeout(Util.MIN_TIMEOUT_1 * 5);
@@ -94,11 +91,36 @@ import { FormularPage } from './page_objects/formular.po';
 		});
 	});
 
+	test.describe('Should detach volume from volume VM in instance overview', () => {
+		test.use({ storageState: MEMBER_STORAGE });
+		test.setTimeout(Util.MIN_TIMEOUT_1 * 5);
+		test('Member @instances', async ({ page, baseURL }) => {
+			await page.waitForTimeout(5000);
+			const vmOverviewPage = new InstanceOverviewPage(page, baseURL);
+			await vmOverviewPage.goto();
+			await vmOverviewPage.waitForInstanceToBeActive(Util.VOLUME_VM_NAME, 2 * Util.MIN_TIMEOUT_1);
+			await vmOverviewPage.detachVolume(Util.VOLUME_VM_NAME, Util.MIN_TIMEOUT_1);
+		});
+	});
+
+	test.describe('Should attach volume to volume VM in instance overview', () => {
+		test.use({ storageState: MEMBER_STORAGE });
+		test.setTimeout(Util.MIN_TIMEOUT_1 * 5);
+		test('Member @instances', async ({ page, baseURL }) => {
+			await page.waitForTimeout(5000);
+			const vmOverviewPage = new InstanceOverviewPage(page, baseURL);
+			await vmOverviewPage.goto();
+			await vmOverviewPage.waitForInstanceToBeActive(Util.VOLUME_VM_NAME, 2 * Util.MIN_TIMEOUT_1);
+			await vmOverviewPage.attachVolume(Util.VOLUME_VM_NAME, Util.MIN_TIMEOUT_1);
+			await vmOverviewPage.waitForInstanceToHaveVolumeAttached(Util.VOLUME_VM_NAME);
+		});
+	});
 
 	test.describe('Should see resenv VM as active with resenv in instance overview', () => {
 		test.use({ storageState: MEMBER_STORAGE });
 		test.setTimeout(Util.MIN_TIMEOUT_15);
 		test('Member @instances', async ({ page, baseURL }) => {
+			await page.waitForTimeout(5000);
 			const vmOverviewPage = new InstanceOverviewPage(page, baseURL);
 			await vmOverviewPage.goto();
 			await vmOverviewPage.waitForInstanceToBeActive(Util.RESENV_VM_NAME, 60000 * 3);
