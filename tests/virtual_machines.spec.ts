@@ -136,7 +136,7 @@ test.describe.serial('@instances', () => {
 			const vmOverviewPage = new InstanceOverviewPage(page, baseURL);
 			await vmOverviewPage.goto();
 			await vmOverviewPage.waitForInstanceToBeActive(Util.BASIC_VM_NAME, 2 * Util.MIN_TIMEOUT_1);
-			await vmOverviewPage.stopVirtualMachine(Util.BASIC_VM_NAME, Util.MIN_TIMEOUT_1);
+			await vmOverviewPage.stopVirtualMachine(Util.BASIC_VM_NAME, 2 * Util.MIN_TIMEOUT_1);
 		});
 	});
 
@@ -147,8 +147,8 @@ test.describe.serial('@instances', () => {
 			await page.waitForTimeout(5000);
 			const vmOverviewPage = new InstanceOverviewPage(page, baseURL);
 			await vmOverviewPage.goto();
-			await vmOverviewPage.waitForInstanceToBeShutoff(Util.BASIC_VM_NAME, 20000);
-			await vmOverviewPage.resumeVirtualMachine(Util.BASIC_VM_NAME, Util.MIN_TIMEOUT_1);
+			await vmOverviewPage.waitForInstanceToBeShutoff(Util.BASIC_VM_NAME, 2 * Util.MIN_TIMEOUT_1);
+			await vmOverviewPage.resumeVirtualMachine(Util.BASIC_VM_NAME, 2 * Util.MIN_TIMEOUT_1);
 		});
 	});
 
@@ -159,20 +159,20 @@ test.describe.serial('@instances', () => {
 			await page.waitForTimeout(5000);
 			const vmOverviewPage = new InstanceOverviewPage(page, baseURL);
 			await vmOverviewPage.goto();
-			await vmOverviewPage.waitForInstanceToBeActive(Util.BASIC_VM_NAME, 20000);
+			await vmOverviewPage.waitForInstanceToBeActive(Util.BASIC_VM_NAME, 2 * Util.MIN_TIMEOUT_1);
 			await vmOverviewPage.rebootVirtualMachine(Util.BASIC_VM_NAME, 2 * Util.MIN_TIMEOUT_1);
 		});
 	});
 
 	test.describe('Should delete basic active VM', () => {
 		 test.use({ storageState: MEMBER_STORAGE });
-		 test.setTimeout(Util.MIN_TIMEOUT_1 * 2);
+		 test.setTimeout(Util.MIN_TIMEOUT_1 * 5);
 		 test('Member @instances', async ({ page, baseURL }) => {
 			 await page.waitForTimeout(5000);
 			 const vmOverviewPage = new InstanceOverviewPage(page, baseURL);
 			 await vmOverviewPage.goto();
-			 await vmOverviewPage.waitForInstanceToBeActive(Util.BASIC_VM_NAME, 20000);
-			 await vmOverviewPage.deleteVirtualMachine(Util.BASIC_VM_NAME, Util.MIN_TIMEOUT_1);
+			 await vmOverviewPage.waitForInstanceToBeActive(Util.BASIC_VM_NAME, 2 * Util.MIN_TIMEOUT_1);
+			 await vmOverviewPage.deleteVirtualMachine(Util.BASIC_VM_NAME, 2 * Util.MIN_TIMEOUT_1);
 		 });
 	 });
 
