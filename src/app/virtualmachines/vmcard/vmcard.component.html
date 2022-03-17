@@ -12,13 +12,20 @@
 					style="margin-left: 10px; padding-right: 5px"
 					id="detail_{{ vm.name }}"
 					[routerLink]="['/virtualmachines/detail/' + vm?.openstackid]"
-					[ngClass]="{'active-machine': (vm?.status | hasStatus: VirtualMachineStates.staticACTIVE),
-										 'shutoff-machine' : (vm?.status | hasStatus: VirtualMachineStates.staticSHUTOFF)}">
+					[ngClass]="{
+						'active-machine': (vm?.status | hasStatus: VirtualMachineStates.staticACTIVE),
+						'shutoff-machine': (vm?.status | hasStatus: VirtualMachineStates.staticSHUTOFF)
+					}"
+				>
 					<i *ngIf="vm?.still_used_confirmation_requested" class="fas fa-exclamation-triangle" style="color: red"> </i>
 					{{ vm?.name }}
 				</a>
 				<ng-template #statusElseBlock>
-					<span class="h5 text-primary deleted-machine" id="detail_{{ vm.name }}" style="margin-left: 10px; padding-right: 5px">
+					<span
+						class="h5 text-primary deleted-machine"
+						id="detail_{{ vm.name }}"
+						style="margin-left: 10px; padding-right: 5px"
+					>
 						<i *ngIf="vm?.still_used_confirmation_requested" class="fas fa-exclamation-triangle" style="color: red">
 						</i>
 						{{ vm?.name }}
@@ -286,8 +293,8 @@
 					*ngIf="vm.cardState !== 2 && (vm.elixir_id === user_elixir_id || is_vo_admin || is_vm_admin)"
 					[disabled]="
 						((vm?.status | statusInProcess: VirtualMachineStates.staticIN_PROCESS_STATE) &&
-							!(vm?.status | hasStatus: VirtualMachineStates.staticPORT_CLOSED) &&
-							!(vm?.status | hasStatus: VirtualMachineStates.staticCHECKING_CONNECTION)) ||
+							!(vm?.status | hasStatus: VirtualMachineStates.staticCHECKING_CONNECTION) &&
+							!(vm?.status | hasStatus: VirtualMachineStates.staticPORT_CLOSED)) ||
 						(vm?.status | hasStatus: VirtualMachineStates.staticNOT_FOUND) ||
 						(vm?.status | hasStatus: VirtualMachineStates.staticDELETED)
 					"
@@ -473,7 +480,8 @@
 					*ngIf="
 						(vm?.status | hasStatus: VirtualMachineStates.staticACTIVE) ||
 						(vm?.status | hasStatus: VirtualMachineStates.staticSHUTOFF) ||
-						(vm?.status | hasStatus: VirtualMachineStates.staticERROR)
+						(vm?.status | hasStatus: VirtualMachineStates.staticERROR) ||
+						(vm?.status | hasStatus: VirtualMachineStates.staticPORT_CLOSED)
 					"
 				>
 					<div
