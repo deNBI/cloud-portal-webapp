@@ -82,3 +82,4 @@ facilityManagerStorageState.json
 memberStorageState.json
 voManagerState.json
 *tests/environment.json
+yarn.lock
