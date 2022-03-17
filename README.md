@@ -77,10 +77,22 @@ Run `ng generate component component-name` to generate a new component. You can 
 
 Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-### Running end-to-end tests
+### Running end-to-end test with Playwright
+[Playwright](https://playwright.dev) is used to run end-to-end tests.
+As Playwright is part of the packages from the repository's `package.json` it is available when sourcing your virtual
+environment also used for serving the web-app locally. In case you encounter any problems, install it by hand as described 
+[here](https://playwright.dev/docs/intro#manually).
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+
 Before running the tests make sure you are serving the app via `ng serve`.
+Run `npx playwright test` in the projects root directory to execute all end-to-end tests.
+By default, the tests run in the background, use the `--headed` flag to observe the tests in your browser.
+To run single test files or a set of tests files, just add the corresponding file-paths to the command, e.g. `npx playwright test tests/simple_vm_application_spec.ts`.
+
+For writing tests the [documentation](https://playwright.dev/docs/intro) provided by Playwright is helpful, especially the guides on 
+[selectors](https://playwright.dev/docs/selectors) and [locators](https://playwright.dev/docs/locators).
+
+After the tests finished, a test summary is shown in your web browser.
 
 ### Further help
 
