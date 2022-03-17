@@ -109,7 +109,7 @@
 		"eslint": "8.10.0",
 		"eslint-config-airbnb-base": "15.0.0",
 		"eslint-plugin-import": "2.25.4",
-		"eslint-plugin-jsdoc": "37.9.7",
+		"eslint-plugin-jsdoc": "38.0.4",
 		"eslint-plugin-no-null": "latest",
 		"eslint-plugin-prefer-arrow": "1.2.3",
 		"exports-loader": "3.1.0",
