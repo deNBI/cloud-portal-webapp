@@ -47,7 +47,7 @@ export class NewInstancePage {
 		if (dropdown) {
 			await this.page.selectOption(
 				Util.by_data_test_id_str(this.PROJECT_SELECTION_DROPDOWN),
-				Util.by_data_test_id_str(this.PROJECT_SELECTION_PREFIX + application_name),
+				{ label: application_name },
 			);
 			await this.page.locator(Util.by_data_test_id_str(this.INSTANCE_NAME_INPUT_FIELD)).isVisible();
 		} else {

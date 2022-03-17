@@ -13,7 +13,7 @@
 			after attaching to use it.
 		</div>
 		<strong>Which volume should be attached?</strong>
-		<select class="form-control form-select col-md-6" name="selected_vm"
+		<select class="form-control form-select col-md-6" name="selected_vm" data-test-id="volume_attachment_dropdown"
 						[(ngModel)]="selectedVolume">
 			<option value="undefined" disabled selected hidden> Please Select</option>
 			<option *ngFor="let vol of detached_project_volumes" [ngValue]="vol"> {{vol.volume_name}}
@@ -24,7 +24,8 @@
 	<div class="modal-footer">
 		<button class="btn  btn-success col-md-4"
 						[disabled]="selectedVolume === undefined || selectedVolume === null"
-						(click)="attachVolume()">
+						(click)="attachVolume()"
+						data-test-id="attachVolumeButton">
 			Attach Volume
 		</button>
 
@@ -45,7 +46,7 @@
 	</div>
 	<div class="modal-body">
 		<strong>Which volume should be detached from {{virtualMachine?.name}}?</strong>
-		<select class="form-control form-select col-md-6" name="virtualMachine"
+		<select class="form-control form-select col-md-6" name="virtualMachine" data-test-id="volume_detachment_dropdown"
 						[(ngModel)]="selectedVolume">
 			<option value="undefined" disabled selected hidden> Please Select</option>
 			<option *ngFor="let vol of virtualMachine?.volumes" [ngValue]="vol">
@@ -56,7 +57,7 @@
 	<div class="modal-footer">
 		<button class="btn  btn-success col-md-4"
 						[disabled]="selectedVolume === undefined || selectedVolume === null"
-						(click)="detachVolume();">
+						(click)="detachVolume();" data-test-id="detachVolumeButton">
 			Detach Volume
 		</button>
 		<button class="btn  btn-danger col-md-4" type="reset"
