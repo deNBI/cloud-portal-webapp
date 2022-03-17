@@ -1,70 +1,94 @@
-<div *ngIf="errorMessage !== null">
-	An Error has occurred. {{errorMessage}}
-</div>
+<div *ngIf="errorMessage !== null">An Error has occurred. {{ errorMessage }}</div>
 
 <div *ngIf="!isLoaded && errorMessage === null" class="loader"></div>
 
-
 <div *ngIf="isLoaded" class="animated fadeIn">
 	<div class="row">
-		<div *ngIf="(project_application | hasstatusinlist: Application_States.SUBMITTED)
-    || (project_application | hasstatusinlist: Application_States.DECLINED)" class="col-12">
+		<div
+			*ngIf="
+				(project_application | hasstatusinlist: Application_States.SUBMITTED) ||
+				(project_application | hasstatusinlist: Application_States.DECLINED)
+			"
+			class="col-12"
+		>
 			<div class="card" id="submittedProjectInfoDiv">
-
 				<div class="card-header">
 					<h3>
-						<a *ngIf="project_application?.project_application_openstack_project"
-							 class="project-openstack_plain_white_redbg" data-toggle="tooltip" href="{{ OPENSTACK_LINK }}"
-							 rel="noopener noreferrer"
-							 style="font-size: 2em"
-							 target="_blank"
-							 title="This is an Openstack project"
+						<a
+							*ngIf="project_application?.project_application_openstack_project"
+							class="project-openstack_plain_white_redbg"
+							data-toggle="tooltip"
+							href="{{ OPENSTACK_LINK }}"
+							rel="noopener noreferrer"
+							style="font-size: 2em"
+							target="_blank"
+							title="This is an Openstack project"
 						>
 							<a class="path1"></a>
 							<a class="path2"></a>
 						</a>
-						<a *ngIf="!project_application?.project_application_openstack_project"
-							 class="project-simpleVM_Logo_bluebg" data-toggle="tooltip" href="{{ SIMPLE_VM_LINK }}"
-							 rel="noopener noreferrer"
-							 style="font-size: 2em"
-							 target="_blank"
-							 title="This is a Simple VM project">
+						<a
+							*ngIf="!project_application?.project_application_openstack_project"
+							class="project-simpleVM_Logo_bluebg"
+							data-toggle="tooltip"
+							href="{{ SIMPLE_VM_LINK }}"
+							rel="noopener noreferrer"
+							style="font-size: 2em"
+							target="_blank"
+							title="This is a Simple VM project"
+						>
 							<a class="path1"></a>
 							<a class="path2"></a>
 							<a class="path3"></a>
 							<a class="path4"></a>
 							<a class="path5"></a>
 						</a>
-						{{project_application?.project_application_name}}
+						{{ project_application?.project_application_name }}
 					</h3>
 				</div>
 
-
-				<div *ngIf="!(project_application | hasstatusinlist: Application_States.APPROVED)
-                    && !(project_application | hasstatusinlist: Application_States.TERMINATED)
-                    && !(project_application | hasstatusinlist: Application_States.DECLINED)" class="card-body"
-						 id="project_application_status_overview">
+				<div
+					*ngIf="
+						!(project_application | hasstatusinlist: Application_States.APPROVED) &&
+						!(project_application | hasstatusinlist: Application_States.TERMINATED) &&
+						!(project_application | hasstatusinlist: Application_States.DECLINED)
+					"
+					class="card-body"
+					id="project_application_status_overview"
+				>
 					<!-- <i class="fas fa-tasks"></i> -->
 					<app-application-progress [application]="project_application"></app-application-progress>
-
 				</div>
 
-
 				<div
-					*ngIf="project_application && (project_application?.user_is_pi ||project_application?.user_is_admin  || !project_application)"
-					class="card-body">
+					*ngIf="
+						project_application &&
+						(project_application?.user_is_pi || project_application?.user_is_admin || !project_application)
+					"
+					class="card-body"
+				>
 					<div class="row">
 						<div class="btn-group col-12">
-							<button (click)="deleteModal.show();"
-											*ngIf="(project_application | hasstatusinlist:Application_States.SUBMITTED)
-                        || (project_application | hasstatusinlist:Application_States.DECLINED) "
-											class="btn btn-outline-danger col-6" id="remove_application_button" style="margin:auto;"
-											type="button">
+							<button
+								(click)="deleteModal.show()"
+								*ngIf="
+									(project_application | hasstatusinlist: Application_States.SUBMITTED) ||
+									(project_application | hasstatusinlist: Application_States.DECLINED)
+								"
+								class="btn btn-outline-danger col-6"
+								id="remove_application_button"
+								style="margin: auto"
+								type="button"
+							>
 								Remove Application
 							</button>
-							<button (click)="this.showInformationCollapse = !this.showInformationCollapse;"
-											class="btn btn-outline-primary col-6"
-											id="submitted_show_information_btn" style="margin:auto;" type="button">
+							<button
+								(click)="this.showInformationCollapse = !this.showInformationCollapse"
+								class="btn btn-outline-primary col-6"
+								id="submitted_show_information_btn"
+								style="margin: auto"
+								type="button"
+							>
 								<i class="fa fa-info-circle"></i>&nbsp;
 								<span *ngIf="this.showInformationCollapse">Hide information</span>
 								<span *ngIf="!this.showInformationCollapse">Show more information</span>
@@ -73,113 +97,123 @@
 					</div>
 				</div>
 
-				<div [ngClass]="{'show': showInformationCollapse}" class="collapse">
+				<div [ngClass]="{ show: showInformationCollapse }" class="collapse">
 					<div class="table-responsive">
 						<table class="table table-hover">
 							<thead>
-							<tr>
-								<th></th>
-								<th>Project Name</th>
-								<th>Short Name</th>
-								<th>Lifetime</th>
-								<th>Date submitted</th>
-								<th>Status</th>
-							</tr>
+								<tr>
+									<th></th>
+									<th>Project Name</th>
+									<th>Short Name</th>
+									<th>Lifetime</th>
+									<th>Date submitted</th>
+									<th>Status</th>
+								</tr>
 							</thead>
 							<tbody>
-							<ng-container>
-								<tr>
-									<td>  <span *ngIf="project_application?.project_application_openstack_project"
-															class="project-openstack_plain_white_redbg"
-															data-toggle="tooltip"
-															style="font-size: 20px"
-															title="This is an Openstack project">
-                                                <span class="path1"></span>
-                                                <span class="path2"></span>
-                                  </span>
-										<span *ngIf="!project_application?.project_application_openstack_project"
-													class="project-simpleVM_Logo_bluebg"
-													data-toggle="tooltip"
-													style="font-size: 20px"
-													title="This is a Simple VM project">
-                      <span class="path1"></span>
-                      <span class="path2"></span>
-                      <span class="path3"></span>
-                      <span class="path4"></span>
-                      <span class="path5"></span>
-                    </span></td>
-									<td>{{ project_application?.project_application_name }}
-									</td>
-									<td>{{project_application?.project_application_shortname}}</td>
-									<td>{{ project_application?.project_application_lifetime }} months</td>
-									<td>{{ project_application?.project_application_date_submitted }}</td>
-									<td>
-										<ng-container *ngFor="let st of project_application?.project_application_status">
-                      <span *ngIf="st !== 19" class="badge bg-primary" style="margin-left: 3px; margin-right: 3px">
-                        {{getStatusById(st)}}
-                      </span>
-										</ng-container>
-									</td>
-								</tr>
-
-
-							</ng-container>
+								<ng-container>
+									<tr>
+										<td>
+											<span
+												*ngIf="project_application?.project_application_openstack_project"
+												class="project-openstack_plain_white_redbg"
+												data-toggle="tooltip"
+												style="font-size: 20px"
+												title="This is an Openstack project"
+											>
+												<span class="path1"></span>
+												<span class="path2"></span>
+											</span>
+											<span
+												*ngIf="!project_application?.project_application_openstack_project"
+												class="project-simpleVM_Logo_bluebg"
+												data-toggle="tooltip"
+												style="font-size: 20px"
+												title="This is a Simple VM project"
+											>
+												<span class="path1"></span>
+												<span class="path2"></span>
+												<span class="path3"></span>
+												<span class="path4"></span>
+												<span class="path5"></span>
+											</span>
+										</td>
+										<td>{{ project_application?.project_application_name }}</td>
+										<td>{{ project_application?.project_application_shortname }}</td>
+										<td>{{ project_application?.project_application_lifetime }} months</td>
+										<td>{{ project_application?.project_application_date_submitted }}</td>
+										<td>
+											<ng-container *ngFor="let st of project_application?.project_application_status">
+												<span *ngIf="st !== 19" class="badge bg-primary" style="margin-left: 3px; margin-right: 3px">
+													{{ getStatusById(st) }}
+												</span>
+											</ng-container>
+										</td>
+									</tr>
+								</ng-container>
 							</tbody>
 						</table>
 						<app-application-detail [application]="project_application"></app-application-detail>
-
 					</div>
 				</div>
-
-
 			</div>
 		</div>
 
-
-		<div *ngIf="project_application && !(project_application | hasstatusinlist:Application_States.TERMINATED)
-         && !(project_application | hasstatusinlist:Application_States.DECLINED)
-         && !(project_application | hasstatusinlist:Application_States.SUBMITTED)"
-				 class="col-12">
-
+		<div
+			*ngIf="
+				project_application &&
+				!(project_application | hasstatusinlist: Application_States.TERMINATED) &&
+				!(project_application | hasstatusinlist: Application_States.DECLINED) &&
+				!(project_application | hasstatusinlist: Application_States.SUBMITTED)
+			"
+			class="col-12"
+		>
 			<div class="card" id="projectInformationDiv">
-
 				<div class="card-header">
 					<div class="row">
-						<div class="col"><h3>
-							<a *ngIf="project_application?.project_application_openstack_project"
-								 class="project-openstack_plain_white_redbg" data-toggle="tooltip"
-								 href="{{ OPENSTACK_LINK }}"
-								 rel="noopener noreferrer"
-								 style="font-size: 2em"
-								 target="_blank"
-								 title="This is an Openstack project"
-							>
-								<a class="path1"></a>
-								<a class="path2"></a>
-							</a>
-							<a *ngIf="!project_application?.project_application_openstack_project"
-								 class="project-simpleVM_Logo_bluebg" data-toggle="tooltip"
-								 href="{{ SIMPLE_VM_LINK }}"
-								 rel="noopener noreferrer"
-								 style="font-size: 2em"
-								 target="_blank"
-								 title="This is a Simple VM project">
-								<a class="path1"></a>
-								<a class="path2"></a>
-								<a class="path3"></a>
-								<a class="path4"></a>
-								<a class="path5"></a>
-							</a>
-							{{project_application?.perun_name}}
-						</h3>
+						<div class="col">
+							<h3>
+								<a
+									*ngIf="project_application?.project_application_openstack_project"
+									class="project-openstack_plain_white_redbg"
+									data-toggle="tooltip"
+									href="{{ OPENSTACK_LINK }}"
+									rel="noopener noreferrer"
+									style="font-size: 2em"
+									target="_blank"
+									title="This is an Openstack project"
+								>
+									<a class="path1"></a>
+									<a class="path2"></a>
+								</a>
+								<a
+									*ngIf="!project_application?.project_application_openstack_project"
+									class="project-simpleVM_Logo_bluebg"
+									data-toggle="tooltip"
+									href="{{ SIMPLE_VM_LINK }}"
+									rel="noopener noreferrer"
+									style="font-size: 2em"
+									target="_blank"
+									title="This is a Simple VM project"
+								>
+									<a class="path1"></a>
+									<a class="path2"></a>
+									<a class="path3"></a>
+									<a class="path4"></a>
+									<a class="path5"></a>
+								</a>
+								{{ project_application?.perun_name }}
+							</h3>
 						</div>
-						<div *ngIf="((project_application | hasstatusinlist:Application_States.APPROVED)
-           || (project_application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)
-           || (project_application | hasstatusinlist:Application_States.MODIFICATION_DECLINED) )"
-								 class="col">
-							<button (click)="leaveProjectModal.show();"
-											class="btn btn-danger float-right"
-											type="button">
+						<div
+							*ngIf="
+								(project_application | hasstatusinlist: Application_States.APPROVED) ||
+								(project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED) ||
+								(project_application | hasstatusinlist: Application_States.MODIFICATION_DECLINED)
+							"
+							class="col"
+						>
+							<button (click)="leaveProjectModal.show()" class="btn btn-danger float-right" type="button">
 								<i class="fas fa-sign-out-alt"></i>
 								Leave Project
 							</button>
@@ -187,85 +221,151 @@
 					</div>
 				</div>
 
-				<div *ngIf="!project_application?.project_application_status?.includes(Application_States.APPROVED)"
-						 class="card-body"
-						 id="project_application_status_overview_further">
+				<div
+					*ngIf="!project_application?.project_application_status?.includes(Application_States.APPROVED)"
+					class="card-body"
+					id="project_application_status_overview_further"
+				>
 					<!-- <i class="fas fa-tasks"></i> -->
 
 					<app-application-progress [application]="project_application"></app-application-progress>
 				</div>
 
-				<div *ngIf="project_application | hasstatusinlist:Application_States.APPROVED" class="card-body"
-						 id="projectMainInformationDiv">
+				<div
+					*ngIf="project_application | hasstatusinlist: Application_States.APPROVED"
+					class="card-body"
+					id="projectMainInformationDiv"
+				>
 					<div class="row">
 						<div class="col-6">
-							<div class="callout callout-info"
-									 style="border-top-width: 0; border-bottom-width: 0; border-right-width: 0"
-									 title="The project has been running for {{project_application?.DaysRunning}} of a total of {{project_application?.lifetime_days}} granted days">
-								<small class="text-muted">Project Runtime</small><br>
-								<strong class="text-muted">{{project_application?.project_application_date_approved}}
-									- {{project_application?.date_end}}
-									<span *ngIf="((project_application | hasstatusinlist: Application_States.LIFETIME_EXTENSION_REQUESTED)
-                  || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_EXTENSION))">
-                     - Extension by {{project_application?.project_lifetime_request?.extra_lifetime}} months requested on
-										{{project_application?.project_lifetime_request?.date_submitted}}
-                  </span>
-								</strong><br>
-								<div class="progress" style="height: 2px;">
+							<div
+								class="callout callout-info"
+								style="border-top-width: 0; border-bottom-width: 0; border-right-width: 0"
+								title="The project has been running for {{ project_application?.DaysRunning }} of a total of {{
+									project_application?.lifetime_days
+								}} granted days"
+							>
+								<small class="text-muted">Project Runtime</small><br />
+								<strong class="text-muted"
+									>{{ project_application?.project_application_date_approved }} - {{ project_application?.date_end }}
+									<span
+										*ngIf="
+											(project_application | hasstatusinlist: Application_States.LIFETIME_EXTENSION_REQUESTED) ||
+											(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_EXTENSION)
+										"
+									>
+										- Extension by {{ project_application?.project_lifetime_request?.extra_lifetime }} months requested
+										on
+										{{ project_application?.project_lifetime_request?.date_submitted }}
+									</span> </strong
+								><br />
+								<div class="progress" style="height: 2px">
 									<div
-										[ngStyle]="{'width.%': (calculateProgressBar(project_application?.DaysRunning / project_application?.lifetime_days))}"
+										[ngStyle]="{
+											'width.%': calculateProgressBar(
+												project_application?.DaysRunning / project_application?.lifetime_days
+											)
+										}"
 										aria-valuemax="100"
 										aria-valuemin="0"
-										class="progress-bar bg-info" role="progressbar"></div>
+										class="progress-bar bg-info"
+										role="progressbar"
+									></div>
 								</div>
 							</div>
 						</div>
 						<div class="col-6">
-							<div class="btn-group" style="margin-top:15px;">
-								<ng-container *ngIf="!project_application.user_is_admin &&!((project_application | hasstatusinlist: Application_States.LIFETIME_EXTENSION_REQUESTED)
-                  || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_EXTENSION)
-                  || lifetimeExtensionDisabled)">
-                  <span class="d-inline-block" data-toggle="tooltip" tabindex="0"
-												title="Only project administators are able to request project extensions.">
-                    <button class="btn btn-outline-primary" disabled>
-                      Request extension</button>
-                  </span>
+							<div class="btn-group" style="margin-top: 15px">
+								<ng-container
+									*ngIf="
+										!project_application.user_is_admin &&
+										!(
+											(project_application | hasstatusinlist: Application_States.LIFETIME_EXTENSION_REQUESTED) ||
+											(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_EXTENSION) ||
+											lifetimeExtensionDisabled
+										)
+									"
+								>
+									<span
+										class="d-inline-block"
+										data-toggle="tooltip"
+										tabindex="0"
+										title="Only project administators are able to request project extensions."
+									>
+										<button class="btn btn-outline-primary" disabled>Request extension</button>
+									</span>
 								</ng-container>
-								<button (click)="showDoiModal()" *ngIf="project_application.user_is_admin &&!((project_application | hasstatusinlist: Application_States.LIFETIME_EXTENSION_REQUESTED)
-                  || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_EXTENSION)
-                  || lifetimeExtensionDisabled)"
-												class="btn btn-outline-primary"
-												id="show_doi_question_modal">
+								<button
+									(click)="showDoiModal()"
+									*ngIf="
+										project_application.user_is_admin &&
+										!(
+											(project_application | hasstatusinlist: Application_States.LIFETIME_EXTENSION_REQUESTED) ||
+											(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_EXTENSION) ||
+											lifetimeExtensionDisabled
+										)
+									"
+									class="btn btn-outline-primary"
+									id="show_doi_question_modal"
+									data-test-id="open_extension_request_button"
+								>
 									Request extension
 								</button>
-								<button *ngIf="((project_application | hasstatusinlist: Application_States.LIFETIME_EXTENSION_REQUESTED)
-                  || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_EXTENSION)
-                  || lifetimeExtensionDisabled)" class="btn btn-outline-secondary" disabled
-												id="show_doi_question_modal_disabled">
+								<button
+									*ngIf="
+										(project_application | hasstatusinlist: Application_States.LIFETIME_EXTENSION_REQUESTED) ||
+										(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_EXTENSION) ||
+										lifetimeExtensionDisabled
+									"
+									class="btn btn-outline-secondary"
+									disabled
+									id="show_doi_question_modal_disabled"
+								>
 									Extension requested
 								</button>
 
-								<ng-container *ngIf="!project_application.user_is_admin && (project_application | hasstatusinlist:Application_States.APPROVED)
-                        && !(project_application | hasstatusinlist:Application_States.TERMINATION_REQUESTED)
-                        && !(project_application | hasstatusinlist:Application_States.WAIT_FOR_TERMINATION_FM)">
-
-                  <span class="d-inline-block" data-toggle="tooltip" tabindex="0"
-												title="Only project administators are able to request project terminations.">
-                    <button class="btn btn-outline-danger" disabled>
-                      Request termination</button>
-                  </span>
+								<ng-container
+									*ngIf="
+										!project_application.user_is_admin &&
+										(project_application | hasstatusinlist: Application_States.APPROVED) &&
+										!(project_application | hasstatusinlist: Application_States.TERMINATION_REQUESTED) &&
+										!(project_application | hasstatusinlist: Application_States.WAIT_FOR_TERMINATION_FM)
+									"
+								>
+									<span
+										class="d-inline-block"
+										data-toggle="tooltip"
+										tabindex="0"
+										title="Only project administators are able to request project terminations."
+									>
+										<button class="btn btn-outline-danger" disabled>Request termination</button>
+									</span>
 								</ng-container>
-								<button (click)="terminateModal.show()"
-												*ngIf="project_application.user_is_admin && (project_application | hasstatusinlist:Application_States.APPROVED)
-                        && !(project_application | hasstatusinlist:Application_States.TERMINATION_REQUESTED)
-                        && !(project_application | hasstatusinlist:Application_States.WAIT_FOR_TERMINATION_FM)"
-												class="btn btn-outline-danger" id="show_termination_modal_button">Request termination
+								<button
+									(click)="terminateModal.show()"
+									*ngIf="
+										project_application.user_is_admin &&
+										(project_application | hasstatusinlist: Application_States.APPROVED) &&
+										!(project_application | hasstatusinlist: Application_States.TERMINATION_REQUESTED) &&
+										!(project_application | hasstatusinlist: Application_States.WAIT_FOR_TERMINATION_FM)
+									"
+									class="btn btn-outline-danger"
+									id="show_termination_modal_button"
+									data-test-id="open_termination_request_button"
+								>
+									Request termination
 								</button>
-								<button (click)="terminateModal.show()" *ngIf="(project_application | hasstatusinlist:Application_States.TERMINATION_REQUESTED)
-                        || (project_application | hasstatusinlist:Application_States.WAIT_FOR_TERMINATION_FM)"
-												class="btn btn-outline-secondary"
-												disabled id="show_termination_modal_button_disabled">Termination
-									Requested
+								<button
+									(click)="terminateModal.show()"
+									*ngIf="
+										(project_application | hasstatusinlist: Application_States.TERMINATION_REQUESTED) ||
+										(project_application | hasstatusinlist: Application_States.WAIT_FOR_TERMINATION_FM)
+									"
+									class="btn btn-outline-secondary"
+									disabled
+									id="show_termination_modal_button_disabled"
+								>
+									Termination Requested
 								</button>
 							</div>
 						</div>
@@ -273,203 +373,326 @@
 
 					<div class="row">
 						<div class="col-6">
-							<div *ngIf="this.resourceDataLoaded" class="callout callout-info"
-									 style="border-top-width: 0; border-bottom-width: 0; border-right-width: 0">
-								<small class="text-muted">Computational Resources</small><br>
-								<strong *ngIf="project_application?.project_application_openstack_project"
-												class="text-muted">{{maximumVMs}} VMs with a total of
-									{{project_application?.project_application_total_cores}} VCPUs and
-									{{project_application?.project_application_total_ram}} GBs of RAM
-									<span *ngIf="((project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED)
-                  || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION))">
-                     - Resource modification requested on
-										{{project_application?.project_modification_request?.date_submitted}}
-                  </span>
+							<div
+								*ngIf="this.resourceDataLoaded"
+								class="callout callout-info"
+								style="border-top-width: 0; border-bottom-width: 0; border-right-width: 0"
+							>
+								<small class="text-muted">Computational Resources</small><br />
+								<strong *ngIf="project_application?.project_application_openstack_project" class="text-muted"
+									>{{ maximumVMs }} VMs with a total of {{ project_application?.project_application_total_cores }} VCPUs
+									and {{ project_application?.project_application_total_ram }} GBs of RAM
+									<span
+										*ngIf="
+											(project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED) ||
+											(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION)
+										"
+									>
+										- Resource modification requested on
+										{{ project_application?.project_modification_request?.date_submitted }}
+									</span>
 								</strong>
-								<strong *ngIf="!project_application?.project_application_openstack_project"
-												class="text-muted">{{vmsInUse}} of {{maximumVMs}} VMS,
-									{{coresInUse}} of {{project_application?.project_application_total_cores}} VCPUs and
-									{{ramInUse}} of {{project_application?.project_application_total_ram}} GBs RAM in use
-									<span *ngIf="((project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED)
-                  || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION))">
-                     - Resource modification requested on
-										{{project_application?.project_modification_request?.date_submitted}}
-                  </span>
-								</strong><br>
-								<div *ngIf="!project_application?.project_application_openstack_project" class="progress"
-										 style="height: 2px;">
-									<div [ngStyle]="{'width.%': calculateProgressBar(vmsInUse / maximumVMs)}" aria-valuemax="100"
-											 aria-valuemin="0"
-											 class="progress-bar bg-info" role="progressbar"></div>
+								<strong *ngIf="!project_application?.project_application_openstack_project" class="text-muted"
+									>{{ vmsInUse }} of {{ maximumVMs }} VMS, {{ coresInUse }} of
+									{{ project_application?.project_application_total_cores }} VCPUs and {{ ramInUse }} of
+									{{ project_application?.project_application_total_ram }} GBs RAM in use
+									<span
+										*ngIf="
+											(project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED) ||
+											(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION)
+										"
+									>
+										- Resource modification requested on
+										{{ project_application?.project_modification_request?.date_submitted }}
+									</span> </strong
+								><br />
+								<div
+									*ngIf="!project_application?.project_application_openstack_project"
+									class="progress"
+									style="height: 2px"
+								>
+									<div
+										[ngStyle]="{ 'width.%': calculateProgressBar(vmsInUse / maximumVMs) }"
+										aria-valuemax="100"
+										aria-valuemin="0"
+										class="progress-bar bg-info"
+										role="progressbar"
+									></div>
 								</div>
 							</div>
-
-
 						</div>
 						<div class="col-6">
-							<div class="btn-group" style="margin-top:15px;">
-								<ng-container *ngIf="!project_application.user_is_admin && (project_application | hasstatusinlist:Application_States.APPROVED)
-                        && !((project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED)
-                  || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION)
-                  || modificationRequestDisabled)">
-                  <span class="d-inline-block" data-toggle="tooltip" tabindex="0"
-												title="Only project administators are able to request resource modifications.">
-                    <button class="btn btn-outline-primary" disabled>
-                      Request resource modification</button>
-                  </span>
+							<div class="btn-group" style="margin-top: 15px">
+								<ng-container
+									*ngIf="
+										!project_application.user_is_admin &&
+										(project_application | hasstatusinlist: Application_States.APPROVED) &&
+										!(
+											(project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED) ||
+											(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION) ||
+											modificationRequestDisabled
+										)
+									"
+								>
+									<span
+										class="d-inline-block"
+										data-toggle="tooltip"
+										tabindex="0"
+										title="Only project administators are able to request resource modifications."
+									>
+										<button class="btn btn-outline-primary" disabled>Request resource modification</button>
+									</span>
 								</ng-container>
-								<button (click)="showResourceModal();" *ngIf="project_application.user_is_admin && !((project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED)
-                  || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION)
-                  || modificationRequestDisabled)"
-												class="btn btn-outline-primary"
-
-												id="show_modification_extension_button">Request resource modification
+								<button
+									(click)="showResourceModal()"
+									*ngIf="
+										project_application.user_is_admin &&
+										!(
+											(project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED) ||
+											(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION) ||
+											modificationRequestDisabled
+										)
+									"
+									class="btn btn-outline-primary"
+									data-test-id="open_modification_request_button"
+									id="show_modification_extension_button"
+								>
+									Request resource modification
 								</button>
-								<button *ngIf="((project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED)
-                  || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION)
-                  || modificationRequestDisabled)" class="btn btn-outline-secondary" disabled
-												id="show_modification_extension_button_disabled">
+								<button
+									*ngIf="
+										(project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED) ||
+										(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_MODIFICATION) ||
+										modificationRequestDisabled
+									"
+									class="btn btn-outline-secondary"
+									disabled
+									id="show_modification_extension_button_disabled"
+								>
 									Resource modification requested
 								</button>
-								<a *ngIf="!project_application?.project_application_openstack_project && isAbleToStart()"
-									 class="btn btn-outline-success"
-									 href="#/virtualmachines/newVM">Start a VM</a>
-								<a *ngIf="project_application?.project_application_openstack_project" class="btn btn-outline-success"
-									 href="{{project_application?.project_application_compute_center.Login}}"
-									 rel="noopener noreferrer"
-									 target="_blank">Login to OpenStack</a>
+								<a
+									*ngIf="!project_application?.project_application_openstack_project && isAbleToStart()"
+									class="btn btn-outline-success"
+									href="#/virtualmachines/newVM"
+									>Start a VM</a
+								>
+								<a
+									*ngIf="project_application?.project_application_openstack_project"
+									class="btn btn-outline-success"
+									href="{{ project_application?.project_application_compute_center.Login }}"
+									rel="noopener noreferrer"
+									target="_blank"
+									>Login to OpenStack</a
+								>
 							</div>
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-6" title="Click Contact to send a mail to the facility.">
-							<div class="callout callout-info"
-									 style="border-top-width: 0; border-bottom-width: 0; border-right-width: 0">
-								<small class="text-muted">Facility</small><br>
-								<strong class="text-muted">{{project_application?.project_application_compute_center.Name}}</strong>
+							<div
+								class="callout callout-info"
+								style="border-top-width: 0; border-bottom-width: 0; border-right-width: 0"
+							>
+								<small class="text-muted">Facility</small><br />
+								<strong class="text-muted">{{ project_application?.project_application_compute_center.Name }}</strong>
 							</div>
 						</div>
-						<div class="col-6 ">
+						<div class="col-6">
 							<div class="btn-group">
-								<a *ngIf="this.supportMails?.length === 1" class="btn btn-outline-primary"
-									 href="mailto:{{project_application?.project_application_compute_center.Support}}"
-									 rel="noopener noreferrer" style="margin-top:15px;"
-									 target="_blank">Contact Support</a>
+								<a
+									*ngIf="this.supportMails?.length === 1"
+									class="btn btn-outline-primary"
+									href="mailto:{{ project_application?.project_application_compute_center.Support }}"
+									rel="noopener noreferrer"
+									style="margin-top: 15px"
+									target="_blank"
+									>Contact Support</a
+								>
 
-
-								<div *ngIf="this.supportMails?.length > 1" class="dropdown" dropdown style="margin-top:15px;">
-									<button aria-expanded="false" aria-haspopup="true" class="btn btn-outline-primary dropdown-toggle"
-													data-toggle="dropdown" dropdownToggle id="actionDropdownMenu"
-													type="button">
+								<div *ngIf="this.supportMails?.length > 1" class="dropdown" dropdown style="margin-top: 15px">
+									<button
+										aria-expanded="false"
+										aria-haspopup="true"
+										class="btn btn-outline-primary dropdown-toggle"
+										data-toggle="dropdown"
+										dropdownToggle
+										id="actionDropdownMenu"
+										type="button"
+									>
 										Contact Support
 									</button>
-									<div *dropdownMenu aria-labelledby="dropdownMenu" class="dropdown-menu"
-											 id="dropdownMenu" role="menu">
-										<a *ngFor="let mail of supportMails" class="dropdown-item btn btn-outline-primary"
-											 href="mailto:{{mail}}" rel="noopener noreferrer" target="_blank">Contact {{mail}}</a>
+									<div *dropdownMenu aria-labelledby="dropdownMenu" class="dropdown-menu" id="dropdownMenu" role="menu">
+										<a
+											*ngFor="let mail of supportMails"
+											class="dropdown-item btn btn-outline-primary"
+											href="mailto:{{ mail }}"
+											rel="noopener noreferrer"
+											target="_blank"
+											>Contact {{ mail }}</a
+										>
 									</div>
 								</div>
-								<a class="btn btn-outline-primary" href="{{STATUS_LINK}}" rel="noopener noreferrer"
-									 style="margin-top:15px;" target="_blank">Facility Status</a>
+								<a
+									class="btn btn-outline-primary"
+									href="{{ STATUS_LINK }}"
+									rel="noopener noreferrer"
+									style="margin-top: 15px"
+									target="_blank"
+									>Facility Status</a
+								>
 							</div>
 						</div>
 					</div>
 					<div *ngIf="project_application?.credits_allowed" class="row">
 						<div class="col-6">
-							<div class="callout callout-info"
-									 style="border-top-width: 0; border-bottom-width: 0; border-right-width: 0">
-								<small class="text-muted">Credits</small><br>
+							<div
+								class="callout callout-info"
+								style="border-top-width: 0; border-bottom-width: 0; border-right-width: 0"
+							>
+								<small class="text-muted">Credits</small><br />
 								<strong class="text-muted">
-                   <span
-										 *ngIf="project_application?.project_application_initial_credits - project_application?.project_application_current_credits > 0">
-                  Used {{project_application?.project_application_current_credits }}
-										 of {{project_application?.project_application_initial_credits}} credits <br>
-										 {{(project_application?.project_application_initial_credits - project_application?.project_application_current_credits) }}
-										 credits left</span>
 									<span
-										*ngIf="project_application?.project_application_initial_credits - project_application?.project_application_current_credits <= 0">
-                     Used {{project_application?.project_application_initial_credits }}
-										of {{project_application?.project_application_initial_credits}} credits
-                    <br>No credits left!</span>
-									<span *ngIf="((project_application | hasstatusinlist: Application_States.CREDITS_EXTENSION_REQUESTED)
-                      || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_CREDITS))">
-                     - {{project_application?.project_credit_request?.extra_credits }} additional credits requested on
-										{{project_application?.project_credit_request?.date_submitted}}
-                  </span>
+										*ngIf="
+											project_application?.project_application_initial_credits -
+												project_application?.project_application_current_credits >
+											0
+										"
+									>
+										Used {{ project_application?.project_application_current_credits }} of
+										{{ project_application?.project_application_initial_credits }} credits <br />
+										{{
+											project_application?.project_application_initial_credits -
+												project_application?.project_application_current_credits
+										}}
+										credits left</span
+									>
+									<span
+										*ngIf="
+											project_application?.project_application_initial_credits -
+												project_application?.project_application_current_credits <=
+											0
+										"
+									>
+										Used {{ project_application?.project_application_initial_credits }} of
+										{{ project_application?.project_application_initial_credits }} credits <br />No credits left!</span
+									>
+									<span
+										*ngIf="
+											(project_application | hasstatusinlist: Application_States.CREDITS_EXTENSION_REQUESTED) ||
+											(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_CREDITS)
+										"
+									>
+										- {{ project_application?.project_credit_request?.extra_credits }} additional credits requested on
+										{{ project_application?.project_credit_request?.date_submitted }}
+									</span>
 								</strong>
-								<br>
-								<div class="progress" style="height: 2px;">
+								<br />
+								<div class="progress" style="height: 2px">
 									<div
-										[ngStyle]="{'width.%': (calculateProgressBar(project_application?.project_application_current_credits / project_application?.project_application_initial_credits))}"
+										[ngStyle]="{
+											'width.%': calculateProgressBar(
+												project_application?.project_application_current_credits /
+													project_application?.project_application_initial_credits
+											)
+										}"
 										aria-valuemax="100"
 										aria-valuemin="0"
-										class="progress-bar bg-info" role="progressbar"></div>
-
+										class="progress-bar bg-info"
+										role="progressbar"
+									></div>
 								</div>
-								<br>
+								<br />
 								<strong class="text-muted">Why do I see this?</strong>
-								<br>
-								<div class="text-muted">We selected your project as one of the few project where we track the resource
-									usage with Cloud
-									Credits usage.
-									You should have received an E-Mail with information about Cloud Credits, if this is not the case,
-									please message
-									us at <a href="mailto:{{CLOUD_MAIL}}">{{CLOUD_MAIL}}</a>. For general information about Cloud Credits
-									please visit:<br>
-									- <a href="{{CREDITS_WIKI}}" rel="noopener noreferrer" target="_blank">Cloud Credits Wiki page</a>
+								<br />
+								<div class="text-muted">
+									We selected your project as one of the few project where we track the resource usage with Cloud
+									Credits usage. You should have received an E-Mail with information about Cloud Credits, if this is not
+									the case, please message us at <a href="mailto:{{ CLOUD_MAIL }}">{{ CLOUD_MAIL }}</a
+									>. For general information about Cloud Credits please visit:<br />
+									- <a href="{{ CREDITS_WIKI }}" rel="noopener noreferrer" target="_blank">Cloud Credits Wiki page</a>
 								</div>
 							</div>
 						</div>
-						<div class="col-6" style="margin-top:15px;">
-							<ng-container *ngIf="!project_application.user_is_admin && !((project_application | hasstatusinlist: Application_States.CREDITS_EXTENSION_REQUESTED)
-                  || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_CREDITS)
-                  || creditsExtensionDisabled)">
-                  <span class="d-inline-block" data-toggle="tooltip" tabindex="0"
-												title="Only project administators are able to request more credits.">
-                    <button class="btn btn-outline-success" disabled>
-                      Request more credits</button>
-                  </span>
+						<div class="col-6" style="margin-top: 15px">
+							<ng-container
+								*ngIf="
+									!project_application.user_is_admin &&
+									!(
+										(project_application | hasstatusinlist: Application_States.CREDITS_EXTENSION_REQUESTED) ||
+										(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_CREDITS) ||
+										creditsExtensionDisabled
+									)
+								"
+							>
+								<span
+									class="d-inline-block"
+									data-toggle="tooltip"
+									tabindex="0"
+									title="Only project administators are able to request more credits."
+								>
+									<button class="btn btn-outline-success" disabled>Request more credits</button>
+								</span>
 							</ng-container>
-							<button (click)="showCreditsExtensionModal();"
-											*ngIf="project_application.user_is_admin && !((project_application | hasstatusinlist: Application_States.CREDITS_EXTENSION_REQUESTED)
-                  || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_CREDITS)
-                  || creditsExtensionDisabled)"
-											class="btn btn-outline-success"
-											id="show_credits_extension_modal"
-											type="button">Request more credits
+							<button
+								(click)="showCreditsExtensionModal()"
+								*ngIf="
+									project_application.user_is_admin &&
+									!(
+										(project_application | hasstatusinlist: Application_States.CREDITS_EXTENSION_REQUESTED) ||
+										(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_CREDITS) ||
+										creditsExtensionDisabled
+									)
+								"
+								class="btn btn-outline-success"
+								id="show_credits_extension_modal"
+								type="button"
+							>
+								Request more credits
 							</button>
-							<button *ngIf="((project_application | hasstatusinlist: Application_States.CREDITS_EXTENSION_REQUESTED)
-                      || (project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_CREDITS)
-                      || creditsExtensionDisabled)" class="btn btn-outline-secondary" disabled
-											id="show_credits_extension_modal_disabled"
-											type="button">More credits requested
+							<button
+								*ngIf="
+									(project_application | hasstatusinlist: Application_States.CREDITS_EXTENSION_REQUESTED) ||
+									(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION_CREDITS) ||
+									creditsExtensionDisabled
+								"
+								class="btn btn-outline-secondary"
+								disabled
+								id="show_credits_extension_modal_disabled"
+								type="button"
+							>
+								More credits requested
 							</button>
 						</div>
 						<div class="col-6">
 							<div *ngIf="project_application?.project_application_initial_credits === 0" class="alert alert-primary">
-								Your approved credits are lower or equal to zero.
-								Please submit a Credits Extension or contact us at <a href="mailto:{{CLOUD_MAIL}}">{{CLOUD_MAIL}}</a>,
-								so we may calculate and set the correct amount for your
-								project.
+								Your approved credits are lower or equal to zero. Please submit a Credits Extension or contact us at
+								<a href="mailto:{{ CLOUD_MAIL }}">{{ CLOUD_MAIL }}</a
+								>, so we may calculate and set the correct amount for your project.
 							</div>
 						</div>
 					</div>
 				</div>
 
 				<div
-					*ngIf="project_application && (project_application?.user_is_pi ||project_application?.user_is_admin  || !project_application)"
-					class="card-body">
+					*ngIf="
+						project_application &&
+						(project_application?.user_is_pi || project_application?.user_is_admin || !project_application)
+					"
+					class="card-body"
+				>
 					<div class="row">
-						<div class="btn-group col-12">
-						</div>
+						<div class="btn-group col-12"></div>
 					</div>
 					<div class="row">
 						<div class="btn-group col-12">
 							<button
-								(click)="this.showInformationCollapse = !this.showInformationCollapse;"
-											class="btn btn-outline-primary col-6"
-											id="show_information_btn" style="margin:auto;" type="button">
-
+								(click)="this.showInformationCollapse = !this.showInformationCollapse"
+								class="btn btn-outline-primary col-6"
+								id="show_information_btn"
+								style="margin: auto"
+								type="button"
+							>
 								<i class="fa fa-info-circle"></i>&nbsp;
 								<span *ngIf="this.showInformationCollapse">Hide information</span>
 								<span *ngIf="!this.showInformationCollapse">Show more information</span>
@@ -478,61 +701,63 @@
 					</div>
 				</div>
 				<!-- check collapse animation possibility -->
-				<div [ngClass]="{'show': showInformationCollapse}" class="collapse">
+				<div [ngClass]="{ show: showInformationCollapse }" class="collapse">
 					<div class="table-responsive">
 						<table class="table table-hover">
 							<thead>
-							<tr>
-								<th></th>
-								<th>Project Name</th>
-								<th>Short Name</th>
-								<th>Lifetime</th>
-								<th>Date submitted</th>
-								<th>Status</th>
-							</tr>
+								<tr>
+									<th></th>
+									<th>Project Name</th>
+									<th>Short Name</th>
+									<th>Lifetime</th>
+									<th>Date submitted</th>
+									<th>Status</th>
+								</tr>
 							</thead>
 							<tbody>
-							<ng-container>
-								<tr>
-									<td>  <span *ngIf="project_application?.project_application_openstack_project"
-															class="project-openstack_plain_white_redbg"
-															data-toggle="tooltip"
-															style="font-size: 20px"
-															title="This is an Openstack project">
-                                                <span class="path1"></span>
-                                                <span class="path2"></span>
-                                  </span>
-										<span *ngIf="!project_application?.project_application_openstack_project"
-													class="project-simpleVM_Logo_bluebg"
-													data-toggle="tooltip"
-													style="font-size: 20px"
-													title="This is a Simple VM project">
-                      <span class="path1"></span>
-                      <span class="path2"></span>
-                      <span class="path3"></span>
-                      <span class="path4"></span>
-                      <span class="path5"></span>
-                    </span></td>
-									<td>{{ project_application?.project_application_name }}
-									</td>
-									<td>{{project_application?.project_application_shortname}}</td>
-									<td>{{ project_application?.project_application_lifetime }} months</td>
-									<td>{{ project_application?.project_application_date_submitted }}</td>
-									<td>
-										<ng-container *ngFor="let st of project_application?.project_application_status">
-                      <span *ngIf="st !== 19" class="badge bg-primary" style="margin-left: 3px; margin-right: 3px">
-                        {{getStatusById(st)}}
-                      </span>
-										</ng-container>
-									</td>
-								</tr>
-
-
-							</ng-container>
+								<ng-container>
+									<tr>
+										<td>
+											<span
+												*ngIf="project_application?.project_application_openstack_project"
+												class="project-openstack_plain_white_redbg"
+												data-toggle="tooltip"
+												style="font-size: 20px"
+												title="This is an Openstack project"
+											>
+												<span class="path1"></span>
+												<span class="path2"></span>
+											</span>
+											<span
+												*ngIf="!project_application?.project_application_openstack_project"
+												class="project-simpleVM_Logo_bluebg"
+												data-toggle="tooltip"
+												style="font-size: 20px"
+												title="This is a Simple VM project"
+											>
+												<span class="path1"></span>
+												<span class="path2"></span>
+												<span class="path3"></span>
+												<span class="path4"></span>
+												<span class="path5"></span>
+											</span>
+										</td>
+										<td>{{ project_application?.project_application_name }}</td>
+										<td>{{ project_application?.project_application_shortname }}</td>
+										<td>{{ project_application?.project_application_lifetime }} months</td>
+										<td>{{ project_application?.project_application_date_submitted }}</td>
+										<td>
+											<ng-container *ngFor="let st of project_application?.project_application_status">
+												<span *ngIf="st !== 19" class="badge bg-primary" style="margin-left: 3px; margin-right: 3px">
+													{{ getStatusById(st) }}
+												</span>
+											</ng-container>
+										</td>
+									</tr>
+								</ng-container>
 							</tbody>
 						</table>
 						<app-application-detail [application]="project_application"></app-application-detail>
-
 					</div>
 				</div>
 			</div>
@@ -540,23 +765,28 @@
 		<!--/.col-->
 	</div>
 
-
 	<div class="row">
 		<div class="col">
-			<div class="card" id="projectSettingsCard" *ngIf="project_application && ((project_application | hasstatusinlist:Application_States.APPROVED)
-         || (project_application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)
-         || (project_application | hasstatusinlist:Application_States.MODIFICATION_DECLINED))">
-				<div class="card-header">
-					<i class="fas fa-cogs"></i> Project Settings
-				</div>
-				<span *ngIf="!isLoaded" class="spinner-border text-primary" style="display:block; margin:auto;"></span>
-				<div class="card-body" >
+			<div
+				class="card"
+				id="projectSettingsCard"
+				*ngIf="
+					project_application &&
+					((project_application | hasstatusinlist: Application_States.APPROVED) ||
+						(project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED) ||
+						(project_application | hasstatusinlist: Application_States.MODIFICATION_DECLINED))
+				"
+			>
+				<div class="card-header"><i class="fas fa-cogs"></i> Project Settings</div>
+				<span *ngIf="!isLoaded" class="spinner-border text-primary" style="display: block; margin: auto"></span>
+				<div class="card-body">
 					<div class="col-12">
 						<ul class="list-group list-group-flush">
 							<li class="list-group-item">
 								<strong>Project settings</strong>
 							</li>
 							<li class="list-group-item">
+
 								<div class="form-check form-switch">
 									<input class="form-check-input" type="checkbox" id="toggle_member_name_visibility"
 												 [(ngModel)]="project_application.show_member_names"
@@ -584,205 +814,247 @@
 		</div>
 	</div>
 	<div class="row">
-		<div *ngIf="project_application && ((project_application | hasstatusinlist:Application_States.APPROVED)
-         || (project_application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)
-         || (project_application | hasstatusinlist:Application_States.MODIFICATION_DECLINED)
-         )
-         && (project_application.show_member_names || project_application.user_is_admin || is_vo_admin)"
-				 class="col">
-
+		<div
+			*ngIf="
+				project_application &&
+				((project_application | hasstatusinlist: Application_States.APPROVED) ||
+					(project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED) ||
+					(project_application | hasstatusinlist: Application_States.MODIFICATION_DECLINED)) &&
+				(project_application.show_member_names || project_application.user_is_admin || is_vo_admin)
+			"
+			class="col"
+		>
 			<div class="card" id="projectMemberDiv">
 				<div class="card-header">
 					<i class="fa fa-users"></i> Project members for {{ project_application?.project_application_shortname }}
-					<span *ngIf="!project_members_loaded" class="spinner-border text-primary" style="display:block; margin:auto;"></span>
-
+					<span
+						*ngIf="!project_members_loaded"
+						class="spinner-border text-primary"
+						style="display: block; margin: auto"
+					></span>
 				</div>
 
 				<div class="card-body" *ngIf="project_members_loaded">
 					<div *ngIf="project_application.user_is_admin || is_vo_admin" class="btn-group col-12">
-						<button (click)="setAddUserInvitationLink(); addUserModal.show();"
-										class="btn btn-outline-success"
-
-										id="add_member_btn_modal" style="margin-bottom:5px;"
-										type="button"><i class="fa fa-plus"></i>&nbsp; Add Member
+						<button
+							(click)="setAddUserInvitationLink(); addUserModal.show()"
+							class="btn btn-outline-success"
+							id="add_member_btn_modal"
+							style="margin-bottom: 5px"
+							type="button"
+						>
+							<i class="fa fa-plus"></i>&nbsp; Add Member
 						</button>
 
 						<button
-							(click)="applicationModal.show();getUserProjectApplications();" class="btn btn-outline-primary"
-							style="margin-bottom:5px;"
-							type="button"><i class="fa fa-list-alt"></i>&nbsp;
-							Member Applications
+							(click)="applicationModal.show(); getUserProjectApplications()"
+							class="btn btn-outline-primary"
+							style="margin-bottom: 5px"
+							type="button"
+						>
+							<i class="fa fa-list-alt"></i>&nbsp; Member Applications
 						</button>
 
-						<button (click)="removeCheckedMembers()"
-										[disabled]="checked_member_list.length <= 0 || remove_members_clicked"
-										class="btn btn-outline-danger" style="margin-bottom:5px;"
-										type="button"><i class="fa fa-trash"></i>&nbsp;Remove Members
+						<button
+							(click)="removeCheckedMembers()"
+							[disabled]="checked_member_list.length <= 0 || remove_members_clicked"
+							class="btn btn-outline-danger"
+							style="margin-bottom: 5px"
+							type="button"
+						>
+							<i class="fa fa-trash"></i>&nbsp;Remove Members
 						</button>
-
 					</div>
 
 					<div *ngIf="!project_application.user_is_admin && !is_vo_admin" class="col-12 alert alert-primary">
-            <span><strong>Notice: </strong>Only project administrators are able to remove or add project members and
-            change the status of members.</span>
+						<span
+							><strong>Notice: </strong>Only project administrators are able to remove or add project members and change
+							the status of members.</span
+						>
 					</div>
 					<div class="table-responsive">
 						<table class="table table-hover">
 							<thead>
-							<tr>
-								<th *ngIf="project_application.user_is_admin || is_vo_admin">
-									<input (change)="setAllMembersChecked();" [checked]="allSet" id="selectAll"
-												 name="selectAll"
-												 type="checkbox">
-								</th>
-								<th>User ID</th>
-								<th>Member ID</th>
-								<th *ngIf="project_application.user_is_admin || is_vo_admin || project_application?.show_member_names">
-									Full Name <span *ngIf="!project_application?.show_member_names">(hidden)</span>
-								</th>
-								<th *ngIf="project_application.user_is_admin || is_vo_admin">Actions</th>
-							</tr>
+								<tr>
+									<th *ngIf="project_application.user_is_admin || is_vo_admin">
+										<input
+											(change)="setAllMembersChecked()"
+											[checked]="allSet"
+											id="selectAll"
+											name="selectAll"
+											type="checkbox"
+										/>
+									</th>
+									<th>User ID</th>
+									<th>Member ID</th>
+									<th
+										*ngIf="project_application.user_is_admin || is_vo_admin || project_application?.show_member_names"
+									>
+										Full Name <span *ngIf="!project_application?.show_member_names">(hidden)</span>
+									</th>
+									<th *ngIf="project_application.user_is_admin || is_vo_admin">Actions</th>
+								</tr>
 							</thead>
 							<tbody>
-							<tr *ngFor="let member of project_members" [ngStyle]="{'color':member.isAdmin ? '#005AA9' : 'black'}">
-								<td *ngIf="project_application.user_is_admin || is_vo_admin">
-									<input (change)="checkUnCheckMember(member.memberId);"
-												 *ngIf="userinfo?.MemberId.toString() !== member.memberId.toString()"
-												 [checked]="isMemberChecked(member.memberId)"
-												 id="{{member.userId}}"
-												 name="member.userId" type="checkbox">
-								</td>
-								<td>{{ member.userId }}</td>
-								<td>{{ member.memberId }}</td>
-								<td
-									*ngIf="project_application.user_is_admin || is_vo_admin || project_application?.show_member_names">{{ member.userName }}
-									<span *ngIf="member.isAdmin " class="badge badge-pill bg-info-blue">ADMIN</span>
-									<span *ngIf="member.isPi " class="badge badge-pill bg-danger">PI</span>
-									<span *ngIf="!member.isPi && !member.isAdmin   " class="badge badge-pill bg-warning">MEMBER</span>
-								</td>
-								<td *ngIf="project_application.user_is_pi || project_application.user_is_admin || is_vo_admin">
-									<div class="btn-group" role="group">
-										<button (click)="promoteAdmin(member.userId,member.userName);
-                                                notificationModal.show();
-                                               " *ngIf="!member.isAdmin" class="btn btn-primary" style="margin: 2px"
-														type="button">
-											<i class="fa fa-plus-circle"></i>&nbsp; Set Admin status
-										</button>
-										<button (click)="removeAdmin(member.userId,member.userName);
-                                                notificationModal.show();
-                                               "
-														*ngIf="member.isAdmin && userinfo?.MemberId.toString() !== member.memberId.toString() && !member.isPi"
-														class="btn btn-primary" style="margin: 2px" type="button">
-											<i class="fa fa-minus-circle"></i>&nbsp; Remove Admin status
-										</button>
-										<button (click)="removeMember(member.memberId,member.userName);
-                                                notificationModal.show();
-                                               "
-														*ngIf="userinfo?.MemberId.toString() !== member.memberId.toString()"
-														[id]="'remove_member_' + member.userName" class="btn btn-danger" style="margin: 2px"
-														type="button">
-
-											<i class="fa fa-trash"></i>&nbsp; Remove member
-										</button>
-									</div>
-
-								</td>
-							</tr>
-
+								<tr *ngFor="let member of project_members" [ngStyle]="{ color: member.isAdmin ? '#005AA9' : 'black' }">
+									<td *ngIf="project_application.user_is_admin || is_vo_admin">
+										<input
+											(change)="checkUnCheckMember(member.memberId)"
+											*ngIf="userinfo?.MemberId.toString() !== member.memberId.toString()"
+											[checked]="isMemberChecked(member.memberId)"
+											id="{{ member.userId }}"
+											name="member.userId"
+											type="checkbox"
+										/>
+									</td>
+									<td>{{ member.userId }}</td>
+									<td>{{ member.memberId }}</td>
+									<td
+										*ngIf="project_application.user_is_admin || is_vo_admin || project_application?.show_member_names"
+									>
+										{{ member.userName }}
+										<span *ngIf="member.isAdmin" class="badge badge-pill bg-info-blue">ADMIN</span>
+										<span *ngIf="member.isPi" class="badge badge-pill bg-danger">PI</span>
+										<span *ngIf="!member.isPi && !member.isAdmin" class="badge badge-pill bg-warning">MEMBER</span>
+									</td>
+									<td *ngIf="project_application.user_is_pi || project_application.user_is_admin || is_vo_admin">
+										<div class="btn-group" role="group">
+											<button
+												(click)="promoteAdmin(member.userId, member.userName); notificationModal.show()"
+												*ngIf="!member.isAdmin"
+												class="btn btn-primary"
+												style="margin: 2px"
+												type="button"
+											>
+												<i class="fa fa-plus-circle"></i>&nbsp; Set Admin status
+											</button>
+											<button
+												(click)="removeAdmin(member.userId, member.userName); notificationModal.show()"
+												*ngIf="
+													member.isAdmin && userinfo?.MemberId.toString() !== member.memberId.toString() && !member.isPi
+												"
+												class="btn btn-primary"
+												style="margin: 2px"
+												type="button"
+											>
+												<i class="fa fa-minus-circle"></i>&nbsp; Remove Admin status
+											</button>
+											<button
+												(click)="removeMember(member.memberId, member.userName); notificationModal.show()"
+												*ngIf="userinfo?.MemberId.toString() !== member.memberId.toString()"
+												[id]="'remove_member_' + member.userName"
+												class="btn btn-danger"
+												style="margin: 2px"
+												type="button"
+											>
+												<i class="fa fa-trash"></i>&nbsp; Remove member
+											</button>
+										</div>
+									</td>
+								</tr>
 							</tbody>
 						</table>
 					</div>
 				</div>
 			</div>
 		</div>
-
 	</div>
 	<div class="row">
-
-		<div *ngIf="project_application && (project_application?.user_is_pi ||project_application?.user_is_admin)
-         && !(project_application | hasstatusinlist:Application_States.TERMINATED)
-         && !(project_application | hasstatusinlist:Application_States.DECLINED)
-         && !(project_application | hasstatusinlist:Application_States.SUBMITTED)
-         && !(project_application | hasstatusinlist:Application_States.WAIT_FOR_CONFIRMATION)"
-				 class="col">
-
+		<div
+			*ngIf="
+				project_application &&
+				(project_application?.user_is_pi || project_application?.user_is_admin) &&
+				!(project_application | hasstatusinlist: Application_States.TERMINATED) &&
+				!(project_application | hasstatusinlist: Application_States.DECLINED) &&
+				!(project_application | hasstatusinlist: Application_States.SUBMITTED) &&
+				!(project_application | hasstatusinlist: Application_States.WAIT_FOR_CONFIRMATION)
+			"
+			class="col"
+		>
 			<div class="card" id="doiCard">
 				<div class="card-header">
 					<i class="fa fa-align-justify"></i>
-					<a href="{{WIKI_PUBLICATIONS}}"
-						 rel="noopener noreferrer" target="_blank">Digital object identifier (DOI)</a>
+					<a href="{{ WIKI_PUBLICATIONS }}" rel="noopener noreferrer" target="_blank"
+						>Digital object identifier (DOI)</a
+					>
 				</div>
 
-
 				<div class="card-body">
-					<div *ngIf="doiError" class="alert alert-danger">{{doiError}}</div>
+					<div *ngIf="doiError" class="alert alert-danger">{{ doiError }}</div>
 					<div class="table-responsive">
-						<table class="table ">
-
+						<table class="table">
 							<tbody>
-							<ng-container
-								*ngFor="let doi of dois">
-								<tr>
-									<td><a [href]="'https://doi.org/' + doi.identifier" rel="noopener noreferrer"
-												 target="_blank">{{doi.identifier}}</a>
-									</td>
+								<ng-container *ngFor="let doi of dois">
+									<tr>
+										<td>
+											<a [href]="'https://doi.org/' + doi.identifier" rel="noopener noreferrer" target="_blank">{{
+												doi.identifier
+											}}</a>
+										</td>
 
+										<td>
+											<button (click)="deleteDoi(doi)" class="btn btn-danger" type="button">
+												<i class="fa fa-trash"></i>&nbsp;
+											</button>
+										</td>
+									</tr>
+								</ng-container>
+
+								<tr>
+									<td>
+										<input
+											#doiInput
+											[(ngModel)]="newDoi"
+											[disabled]="disabledDoiInput"
+											id="doi_input_field"
+											pattern="10.\d{4,9}\/[-._;()\/:a-zA-Z0-9]+"
+											placeholder="e.g. 10.1000/182"
+											style="width: 100%"
+											type="text"
+										/>
+									</td>
 									<td>
 										<button
-											(click)="deleteDoi(doi);" class="btn btn-danger" type="button">
-
-											<i class="fa fa-trash"></i>&nbsp;
+											(click)="addDoi()"
+											[disabled]="!doiInput.validity.valid || disabledDoiInput"
+											class="btn btn-success"
+											id="add_doi_btn"
+											type="button"
+										>
+											<i class="fa fa-plus"></i>&nbsp;
 										</button>
 									</td>
-
 								</tr>
-							</ng-container>
-
-							<tr>
-								<td>
-									<input #doiInput [(ngModel)]="newDoi" [disabled]="disabledDoiInput"
-												 id="doi_input_field"
-												 pattern="10.\d{4,9}\/[-._;()\/:a-zA-Z0-9]+"
-												 placeholder="e.g. 10.1000/182" style="width: 100%"
-												 type="text"></td>
-								<td>
-									<button (click)="addDoi();"
-													[disabled]="!doiInput.validity.valid || disabledDoiInput"
-													class="btn btn-success"
-													id="add_doi_btn"
-													type="button"><i class="fa fa-plus"></i>&nbsp;
-									</button>
-								</td>
-
-							</tr>
 							</tbody>
 						</table>
-
 					</div>
 					<div class="alert alert-info">
-						<p>Please note that the publications entered on this page are listed publicly on
-							<a href="{{ PUBLICATIONS_LINK }}" rel="noopener noreferrer"
-								 target="_blank">this page on our website</a>.
-							We kindly ask you to list your publications which have been created
-							during your work in the de.NBI Cloud and/or this project.</p>
+						<p>
+							Please note that the publications entered on this page are listed publicly on
+							<a href="{{ PUBLICATIONS_LINK }}" rel="noopener noreferrer" target="_blank">this page on our website</a>.
+							We kindly ask you to list your publications which have been created during your work in the de.NBI Cloud
+							and/or this project.
+						</p>
 					</div>
 				</div>
 			</div>
-
 		</div>
-
 	</div>
 	<div class="row">
-		<div *ngIf="project_application && project_application.credits_allowed && ((project_application | hasstatusinlist:Application_States.APPROVED)
-           || (project_application | hasstatusinlist:Application_States.MODIFICATION_REQUESTED)
-           || (project_application | hasstatusinlist:Application_States.MODIFICATION_DECLINED) )"
-				 class="col">
-			<div class="card" style=" ">
+		<div
+			*ngIf="
+				project_application &&
+				project_application.credits_allowed &&
+				((project_application | hasstatusinlist: Application_States.APPROVED) ||
+					(project_application | hasstatusinlist: Application_States.MODIFICATION_REQUESTED) ||
+					(project_application | hasstatusinlist: Application_States.MODIFICATION_DECLINED))
+			"
+			class="col"
+		>
+			<div class="card" style="">
 				<div class="card-header">
-					<i class="fa fa-align-justify"></i> Credit Usage history
-					of {{project_application?.project_application_shortname }}
-
-
+					<i class="fa fa-align-justify"></i> Credit Usage history of
+					{{ project_application?.project_application_shortname }}
 				</div>
 				<div class="card-body justify-content-center align-items-center">
 					<div *ngIf="!creditHistoryLoaded" id="overlay">
@@ -790,101 +1062,118 @@
 							<div class="spinner"></div>
 						</div>
 					</div>
-					<canvas #creditsChart
-									id="creditsChart">
-					</canvas>
+					<canvas #creditsChart id="creditsChart"> </canvas>
 				</div>
-
 			</div>
 		</div>
 	</div>
 </div>
 
-
-<div #addUserModal="bs-modal" aria-hidden="true" aria-labelledby="Label" bsModal class="modal fade" role="dialog"
-		 tabindex="-1">
+<div
+	#addUserModal="bs-modal"
+	aria-hidden="true"
+	aria-labelledby="Label"
+	bsModal
+	class="modal fade"
+	role="dialog"
+	tabindex="-1"
+>
 	<div class="modal-dialog modal-lg" role="document">
-		<div class="modal-content ">
+		<div class="modal-content">
 			<div class="modal-header">
-				<h4 class="modal-title">Add member to the project {{project_application?.project_application_shortname }}
-				</h4>
-				<button (click)="addUserModal.hide()" aria-label="Close" class="close" style="cursor:pointer"
-								type="button">
+				<h4 class="modal-title">Add member to the project {{ project_application?.project_application_shortname }}</h4>
+				<button (click)="addUserModal.hide()" aria-label="Close" class="close" style="cursor: pointer" type="button">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
 			<div class="modal-body">
-
 				<div class="container-fluid">
 					<div class="row">
-						<p style=" margin-bottom: 15px;">Search and add a user to your project by providing at least
-							four characters of their name:</p>
+						<p style="margin-bottom: 15px">
+							Search and add a user to your project by providing at least four characters of their name:
+						</p>
 					</div>
 					<div class="row">
 						<div class="col-md-8">
-							<input #searchString id="add_member_input" placeholder="" style="width: 100%">
+							<input #searchString id="add_member_input" placeholder="" style="width: 100%" />
 						</div>
 						<div class="col-md-4">
-							<button (click)="filterMembers(searchString.value )" class="btn btn-primary" id="search_member_btn"
-											type="button"><i
-								class="fa fa-search"></i> Search Member
+							<button
+								(click)="filterMembers(searchString.value)"
+								class="btn btn-primary"
+								id="search_member_btn"
+								type="button"
+							>
+								<i class="fa fa-search"></i> Search Member
 							</button>
 						</div>
 					</div>
-					<br>
+					<br />
 					<div class="row">
 						<div class="col-md-12">
-							<strong>Please note</strong> that if you can not find the user, they are not registered for
-							a de.NBI Cloud account. In that case you can invite them by sending them the following link:
-							<br>
-							<br>
-							<ul style="list-style-type:none;">
-
+							<strong>Please note</strong> that if you can not find the user, they are not registered for a de.NBI Cloud
+							account. In that case you can invite them by sending them the following link:
+							<br />
+							<br />
+							<ul style="list-style-type: none">
 								<li>
-									<pre [hidden]="showLink">{{invitation_link}}</pre>
+									<pre [hidden]="showLink">{{ invitation_link }}</pre>
 									<div class="btn-group-vertical">
 										<button (click)="showLink = !showLink" class="btn btn-primary" style="margin-bottom: 5px">
 											<span [hidden]="!showLink">Show</span>
 											<span [hidden]="showLink">Hide</span>
 											link
 										</button>
-										<button (click)="copyToClipboard(invitation_link)" class="btn btn-success">Copy link
-										</button>
+										<button (click)="copyToClipboard(invitation_link)" class="btn btn-success">Copy link</button>
 									</div>
 								</li>
 							</ul>
-							<br>
+							<br />
 							After the user registered for ELIXIR/de.NBI and applied for your group, you can approve their application.
-							Read more about the process <a href="{{WIKI_MEMBER_MANAGEMENT}}" rel="noopener noreferrer"
-																						 target="_blank">here</a>.
+							Read more about the process
+							<a href="{{ WIKI_MEMBER_MANAGEMENT }}" rel="noopener noreferrer" target="_blank">here</a>.
 						</div>
 					</div>
 
 					<div class="table-responsive">
-						<table *ngIf="filteredMembers!==null" class="table table-bordered table-striped table-sm">
+						<table *ngIf="filteredMembers !== null" class="table table-bordered table-striped table-sm">
 							<thead>
-
-							<th></th>
-							<th>First Name</th>
-							<th>Last Name</th>
-							<th>Email</th>
+								<th></th>
+								<th>First Name</th>
+								<th>Last Name</th>
+								<th>Email</th>
 							</thead>
-							<tbody *ngFor="  let member of filteredMembers">
-							<td>
-								<button
-									(click)="resetNotificationModal();addMember(member['member_id'],member['firstName'],member['lastName']);filteredMembers=null; notificationModal.show();"
-									class="btn btn-success"
-									id="add_member_btn" style="padding: 5px; margin: 5px"><i class="fa fa-plus"></i> Add Member
-								</button>
-								<button
-									(click)="resetNotificationModal();addAdmin(member['member_id'],member['user_id'],member['firstName'],member['lastName']);filteredMembers=null; notificationModal.show();"
-									class="btn btn-primary"
-									style="padding: 5px; margin: 5px"><i class="fa fa-plus"></i> Add Admin
-								</button>
-							</td>
-							<td>{{member['firstName']}}</td>
-							<td>{{member['lastName']}}</td>
-							<td>{{member['mail']}}</td>
+							<tbody *ngFor="let member of filteredMembers">
+								<td>
+									<button
+										(click)="
+											resetNotificationModal();
+											addMember(member['member_id'], member['firstName'], member['lastName']);
+											filteredMembers = null;
+											notificationModal.show()
+										"
+										class="btn btn-success"
+										id="add_member_btn"
+										style="padding: 5px; margin: 5px"
+									>
+										<i class="fa fa-plus"></i> Add Member
+									</button>
+									<button
+										(click)="
+											resetNotificationModal();
+											addAdmin(member['member_id'], member['user_id'], member['firstName'], member['lastName']);
+											filteredMembers = null;
+											notificationModal.show()
+										"
+										class="btn btn-primary"
+										style="padding: 5px; margin: 5px"
+									>
+										<i class="fa fa-plus"></i> Add Admin
+									</button>
+								</td>
+								<td>{{ member['firstName'] }}</td>
+								<td>{{ member['lastName'] }}</td>
+								<td>{{ member['mail'] }}</td>
 							</tbody>
 						</table>
 					</div>
@@ -896,249 +1185,308 @@
 																					addMember(addUserModalProjectID, addMemberID.value)" class="btn btn-success"><i class="fa fa-dot-circle-o"></i>
 							Add User
 					</button> -->
-				<button (click)="filteredMembers=null; addUserModal.hide();" class="btn  btn-danger"
-								id="close_add_user_modal_btn"
-								type="button"><i class="fa fa-times"></i> Close
+				<button
+					(click)="filteredMembers = null; addUserModal.hide()"
+					class="btn btn-danger"
+					id="close_add_user_modal_btn"
+					type="button"
+				>
+					<i class="fa fa-times"></i> Close
 				</button>
 			</div>
-		</div><!-- /.modal-content -->
-	</div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
 
-<div #terminateModal="bs-modal" aria-hidden="true" aria-labelledby="Label" bsModal
-		 class="modal fade" role="dialog"
-		 tabindex="-1">
+<div
+	#terminateModal="bs-modal"
+	aria-hidden="true"
+	aria-labelledby="Label"
+	bsModal
+	class="modal fade"
+	role="dialog"
+	tabindex="-1"
+>
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h4 class="modal-title">Terminate Project</h4>
-				<button (click)="terminateModal.hide()" aria-label="Close" class="close"
-								style="cursor:pointer" type="button">
+				<button (click)="terminateModal.hide()" aria-label="Close" class="close" style="cursor: pointer" type="button">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
 			<div class="modal-body">
-
-				<div class="alert alert-warning" role="alert">
-					Are you sure you want to terminate this project?
-				</div>
+				<div class="alert alert-warning" role="alert">Are you sure you want to terminate this project?</div>
 				<app-project-os-details *ngIf="project_application" [project]="project_application"></app-project-os-details>
 				<div class="alert alert-danger" role="alert">
 					All used resources will be scheduled for deletion and then irreversibly terminated!
-
 				</div>
-				<div [ngClass]="{'alert-danger':!terminate_confirmation_given,'alert-success':terminate_confirmation_given}"
-						 class="alert "
+				<div
+					[ngClass]="{ 'alert-danger': !terminate_confirmation_given, 'alert-success': terminate_confirmation_given }"
+					class="alert"
 				>
-					<div class=" form-check">
-
-						<input [(ngModel)]="terminate_confirmation_given"
-									 [checked]="terminate_confirmation_given"
-									 class="form-check-input"
-									 id="terminate_confirmation_given"
-									 name="terminate_confirmation_given"
-									 type="checkbox"
-
-						> <label class="form-check-label">
-
-						I hereby confirm that the project shall be terminated.
-					</label></div>
+					<div class="form-check">
+						<input
+							[(ngModel)]="terminate_confirmation_given"
+							[checked]="terminate_confirmation_given"
+							class="form-check-input"
+							id="terminate_confirmation_given"
+							data-test-id="confirm_termination_request_input"
+							name="terminate_confirmation_given"
+							type="checkbox"
+						/>
+						<label class="form-check-label"> I hereby confirm that the project shall be terminated. </label>
+					</div>
 				</div>
-
-
 			</div>
 			<div class="modal-footer">
-				<button (click)="terminateModal.hide();notificationModal.show();requestProjectTermination();"
-								[disabled]="!terminate_confirmation_given"
-								class="btn  btn-success col-md-4"
-								id="terminate_project_btn">
+				<button
+					(click)="terminateModal.hide(); notificationModal.show(); requestProjectTermination()"
+					[disabled]="!terminate_confirmation_given"
+					class="btn btn-success col-md-4"
+					id="terminate_project_btn"
+					data-test-id="confirm_termination_request_button"
+				>
 					Yes
 				</button>
-				<button (click)="terminateModal.hide()" class="btn  btn-danger col-md-4"
-								type="reset">Cancel
-				</button>
+				<button (click)="terminateModal.hide()" class="btn btn-danger col-md-4" type="reset">Cancel</button>
 			</div>
-		</div><!-- /.modal-content -->
-	</div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
 
-<div #applicationModal="bs-modal" aria-hidden="true" aria-labelledby="myModalLabel" bsModal class="modal fade"
-		 role="dialog" tabindex="-1">
+<div
+	#applicationModal="bs-modal"
+	aria-hidden="true"
+	aria-labelledby="myModalLabel"
+	bsModal
+	class="modal fade"
+	role="dialog"
+	tabindex="-1"
+>
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h4 class="modal-title">Applications for {{project_application?.project_application_shortname}}</h4>
-				<button (click)="applicationModal.hide()" aria-label="Close" class="close"
-								style="cursor: pointer;"
-								type="button">
+				<h4 class="modal-title">Applications for {{ project_application?.project_application_shortname }}</h4>
+				<button
+					(click)="applicationModal.hide()"
+					aria-label="Close"
+					class="close"
+					style="cursor: pointer"
+					type="button"
+				>
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
 			<div class="modal-body">
-
-				<div *ngIf="!loaded" style="text-align: center"><i class="fa fa-spinner fa-spin"
-																													 style="font-size:100px; margin: auto;margin-left: auto;margin-right: auto"></i>
+				<div *ngIf="!loaded" style="text-align: center">
+					<i
+						class="fa fa-spinner fa-spin"
+						style="font-size: 100px; margin: auto; margin-left: auto; margin-right: auto"
+					></i>
 				</div>
 
 				<div *ngIf="loaded" class="table-responsive">
 					<table class="table table-bordered table-striped table-sm">
 						<thead>
-
-						<th>Name</th>
-						<th>Date Submitted</th>
-						<th>Actions</th>
+							<th>Name</th>
+							<th>Date Submitted</th>
+							<th>Actions</th>
 						</thead>
 						<tbody *ngFor="let application of project_application?.project_application_member_applications">
+							<td>{{ application?.Name }}</td>
+							<td>{{ application?.DateCreated }}</td>
 
-						<td>{{application?.Name}}</td>
-						<td>{{application?.DateCreated}}</td>
-
-						<td>
-							<button
-								(click)="approveMemberApplication(application.Id, application.Name);"
-								class="btn btn-success"><i class="fa fa-check"></i> Approve
-							</button>
-							<button (click)="application_action='rejected';
-															 application_member_name=application.Name;
-															 rejectMemberApplication(application.Id, application.Name);"
-											class="btn btn-danger"
-											style="margin-left: 10px"><i class="fa fa-times"></i> Reject
-							</button>
-						</td>
+							<td>
+								<button (click)="approveMemberApplication(application.Id, application.Name)" class="btn btn-success">
+									<i class="fa fa-check"></i> Approve
+								</button>
+								<button
+									(click)="
+										application_action = 'rejected';
+										application_member_name = application.Name;
+										rejectMemberApplication(application.Id, application.Name)
+									"
+									class="btn btn-danger"
+									style="margin-left: 10px"
+								>
+									<i class="fa fa-times"></i> Reject
+								</button>
+							</td>
 						</tbody>
 					</table>
 				</div>
 			</div>
 
-
 			<div class="modal-footer">
-
-				<p *ngIf="application_action_success && application_action_done"
-					 class="alert alert-success mr-auto">
-					<strong>Success:</strong> Successfully {{application_action}} the application of
-					{{application_member_name}}.
+				<p *ngIf="application_action_success && application_action_done" class="alert alert-success mr-auto">
+					<strong>Success:</strong> Successfully {{ application_action }} the application of
+					{{ application_member_name }}.
 				</p>
-				<p *ngIf="!application_action_success && application_action_done && !application_action_error_message"
-					 class="alert alert-danger mr-auto">
-					<strong>Failed:</strong> The application of {{application_member_name}} could not be
-					{{application_action}} .
+				<p
+					*ngIf="!application_action_success && application_action_done && !application_action_error_message"
+					class="alert alert-danger mr-auto"
+				>
+					<strong>Failed:</strong> The application of {{ application_member_name }} could not be
+					{{ application_action }} .
 				</p>
-				<p *ngIf="!application_action_success && application_action_done && application_action_error_message"
-					 class="alert alert-danger mr-auto">
-					<strong>Failed:</strong> User didn't verify their email address yet. Please wait until the
-					email is
-					verified.
+				<p
+					*ngIf="!application_action_success && application_action_done && application_action_error_message"
+					class="alert alert-danger mr-auto"
+				>
+					<strong>Failed:</strong> User didn't verify their email address yet. Please wait until the email is verified.
 				</p>
-				<button (click)="getUserProjectApplications()" class="btn btn-primary"
-								type="button">
-					Refresh
-				</button>
-				<button (click)="application_action_error_message=null;;applicationModal.hide();" class="btn btn-secondary"
-								type="button">
+				<button (click)="getUserProjectApplications()" class="btn btn-primary" type="button">Refresh</button>
+				<button
+					(click)="application_action_error_message = null; applicationModal.hide()"
+					class="btn btn-secondary"
+					type="button"
+				>
 					Close
 				</button>
 			</div>
-		</div><!-- /.modal-content -->
-	</div><!-- /.modal-dialog -->
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
 </div>
 
-<div #notificationModal="bs-modal" aria-hidden="true" aria-labelledby="Label" bsModal class="modal fade"
-		 role="dialog"
-		 tabindex="-1">
+<div
+	#notificationModal="bs-modal"
+	aria-hidden="true"
+	aria-labelledby="Label"
+	bsModal
+	class="modal fade"
+	role="dialog"
+	tabindex="-1"
+>
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h4 class="modal-title" id="notification_title">{{ notificationModalTitle }}</h4>
-				<button (click)="notificationModal.hide()" aria-label="Close" class="close"
-								style="cursor:pointer"
-								type="button">
+				<button
+					(click)="notificationModal.hide()"
+					aria-label="Close"
+					class="close"
+					style="cursor: pointer"
+					type="button"
+				>
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
 			<div class="modal-body">
-				<div class="alert alert-{{ notificationModalType }}" role="alert">
+				<div class="alert alert-{{ notificationModalType }}" role="alert"
+				data-test-id="termination_request_result_div">
 					{{ notificationModalMessage }}
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button (click)="resetNotificationModal(); notificationModal.hide();"
-								*ngIf="notificationModalIsClosable === true"
-								class="btn  btn-secondary" id="close_notification"
-								type="button" type="reset"> Close
+				<button
+					(click)="resetNotificationModal(); notificationModal.hide()"
+					*ngIf="notificationModalIsClosable === true"
+					class="btn btn-secondary"
+					id="close_notification"
+					type="button"
+					type="reset"
+				>
+					Close
 				</button>
 			</div>
-		</div><!-- /.modal-content -->
-	</div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
 
-<div #deleteModal="bs-modal" aria-hidden="true" aria-labelledby="Label" bsModal
-		 class="modal fade" id="remove_application_modal"
-		 role="dialog"
-		 tabindex="-1">
+<div
+	#deleteModal="bs-modal"
+	aria-hidden="true"
+	aria-labelledby="Label"
+	bsModal
+	class="modal fade"
+	id="remove_application_modal"
+	role="dialog"
+	tabindex="-1"
+>
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h4 class="modal-title">Delete Application</h4>
-				<button (click)="deleteModal.hide()" aria-label="Close" class="close"
-								style="cursor:pointer" type="button">
+				<button (click)="deleteModal.hide()" aria-label="Close" class="close" style="cursor: pointer" type="button">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
 			<div class="modal-body">
-
-				<div class="alert alert-warning" role="alert">
-					Are you sure you want to remove this application?
-				</div>
-
+				<div class="alert alert-warning" role="alert">Are you sure you want to remove this application?</div>
 			</div>
 			<div class="modal-footer">
-				<button (click)="deleteApplication();deleteModal.hide();notificationModal.show()"
-								class="btn  btn-success col-md-4"
-								id="confirm_remove_application_button">
+				<button
+					(click)="deleteApplication(); deleteModal.hide(); notificationModal.show()"
+					class="btn btn-success col-md-4"
+					id="confirm_remove_application_button"
+				>
 					Yes
 				</button>
-				<button (click)="deleteModal.hide()" class="btn  btn-danger col-md-4"
-								type="reset">Cancel
-				</button>
+				<button (click)="deleteModal.hide()" class="btn btn-danger col-md-4" type="reset">Cancel</button>
 			</div>
-		</div><!-- /.modal-content -->
-	</div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
 
-<div #leaveProjectModal="bs-modal" aria-hidden="true" aria-labelledby="Label" bsModal
-		 class="modal fade" id="leave_project_modal"
-		 role="dialog"
-		 tabindex="-1">
+<div
+	#leaveProjectModal="bs-modal"
+	aria-hidden="true"
+	aria-labelledby="Label"
+	bsModal
+	class="modal fade"
+	id="leave_project_modal"
+	role="dialog"
+	tabindex="-1"
+>
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h4 class="modal-title">Leave Project</h4>
-				<button (click)="leaveProjectModal.hide()" aria-label="Close" class="close"
-								style="cursor:pointer" type="button">
+				<button
+					(click)="leaveProjectModal.hide()"
+					aria-label="Close"
+					class="close"
+					style="cursor: pointer"
+					type="button"
+				>
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
 			<div class="modal-body">
-
-				<div class="alert alert-warning" role="alert">
-					Are you sure you want to leave the project?
-				</div>
-
+				<div class="alert alert-warning" role="alert">Are you sure you want to leave the project?</div>
 			</div>
 			<div class="modal-footer">
-				<button (click)="leaveProject(userinfo?.MemberId ,project_application?.project_application_shortname);
-												 leaveProjectModal.hide();
-												 notificationModal.show()"
-								class="btn  btn-success col-md-4"
-								id="confirm_leave_project_button">
+				<button
+					(click)="
+						leaveProject(userinfo?.MemberId, project_application?.project_application_shortname);
+						leaveProjectModal.hide();
+						notificationModal.show()
+					"
+					class="btn btn-success col-md-4"
+					id="confirm_leave_project_button"
+				>
 					Yes
 				</button>
-				<button (click)="leaveProjectModal.hide()" class="btn  btn-danger col-md-4"
-								type="reset">
-					Cancel
-				</button>
+				<button (click)="leaveProjectModal.hide()" class="btn btn-danger col-md-4" type="reset">Cancel</button>
 			</div>
-		</div><!-- /.modal-content -->
-	</div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

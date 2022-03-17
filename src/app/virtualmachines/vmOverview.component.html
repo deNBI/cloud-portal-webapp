@@ -84,6 +84,7 @@
 						</div>
 						<div class="input-group-text">
 							<input type="checkbox" style="margin:2px;"
+										 data-test-id="deleteFilterCheckbox"
 										 (change)="changeFilterStatus(VirtualMachineStates.staticDELETED)">
 							<span class="badge badge-danger">{{VirtualMachineStates.staticDELETED}}</span>
 						</div>
@@ -93,7 +94,10 @@
 									 [(ngModel)]="filter">
 					</div>
 					<div class="input-group-append">
-						<button class="btn btn-outline-primary" (click)="applyFilter()">Filter</button>
+						<button class="btn btn-outline-primary"
+										(click)="applyFilter()"
+										data-test-id="applyVMFilterButton"
+						>Filter</button>
 					</div>
 
 				</div>

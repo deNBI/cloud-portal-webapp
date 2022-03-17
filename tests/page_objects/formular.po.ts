@@ -83,7 +83,8 @@ export class FormularPage {
 		await this.page.fill(Util.by_data_test_id_str('project_application_horizon2020_input'), 'Horizon2020Project');
 		await this.page.fill(Util.by_data_test_id_str('project_application_volume_limit_input'), '2');
 		await this.page.locator(Util.by_data_test_id_str('project_application_report_allowed_switch')).click();
-		await this.page.locator(Util.by_data_test_id_str('project_application_sensitive_data_switch')).click();
+		await this.page.locator(Util.by_data_test_id_str('project_application_person_related_data_switch')).click();
+		await this.page.locator(Util.by_data_test_id_str('project_application_no_personal_data_switch')).click();
 		await this.page.fill(Util.by_data_test_id_str('information_public_title_input'), 'A Public Title');
 		await this.page.locator(Util.by_data_test_id_str('public_description_enabled_switch')).click();
 		await this.page.fill(Util.by_data_test_id_str('information_description_input'), 'A Public Description');
