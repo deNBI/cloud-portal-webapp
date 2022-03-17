@@ -83,3 +83,4 @@ memberStorageState.json
 memberStorageState
 voManagerState.json
 *tests/environment.json
+yarn.lock
