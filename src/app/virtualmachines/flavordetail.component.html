@@ -24,7 +24,8 @@
 		</div>
 		<div class="row">
 			<div [hidden]="!selectedFlavor" class="col-12 col-xl-4" style="cursor: pointer; padding-top: 10px">
-				<div class="card border-success flavor-image-card">
+				<div class="card border-success flavor-image-card"
+						 [attr.data-test-id]="'flavor_' + selectedFlavor?.name.replace(regexp_data_test_id, '_') + '_selected'">
 					<div
 						class="card-header bg-success text-truncate" data-toggle="tooltip" data-placement="top"
 						title="{{selectedFlavor?.name}}">
@@ -96,7 +97,7 @@
 								>
 									<div
 										class="card-header bg-info-flavor text-truncate" data-toggle="tooltip" data-placement="top"
-										title="{{flavor?.name}}"
+										title="{{flavor?.name}}" [attr.data-test-id]="'flavor_' + flavor?.name.replace(regexp_data_test_id, '_')"
 										[ngClass]="{'bg-success':selectedFlavor === flavor}">
 										<strong>{{flavor.name}}</strong></div>
 									<div class="card-body">

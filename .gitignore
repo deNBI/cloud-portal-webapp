@@ -80,6 +80,7 @@ playwright-report/
 #playwright
 facilityManagerStorageState.json
 memberStorageState.json
+memberStorageState
 voManagerState.json
 *tests/environment.json
 yarn.lock

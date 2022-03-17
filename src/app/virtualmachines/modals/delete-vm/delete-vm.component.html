@@ -35,7 +35,8 @@
 		<button class="btn  btn-success col-md-4"
 						*ngIf="user_elixir_id === virtualMachine?.elixir_id; else notVMowner"
 						(click)="deleteVM();"
-						id="confirm_delete_button">
+						id="confirm_delete_button"
+						data-test-id="verifyDeleteButton">
 			Yes
 		</button>
 		<ng-template #notVMowner>

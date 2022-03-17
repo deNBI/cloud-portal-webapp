@@ -21,6 +21,7 @@ export class ImageCarouselSlideComponent implements OnInit {
 	img_height: string = '120px';
 	img_width: string = '210px';
 	image_visible: boolean = true;
+	regexp_data_test_id: RegExp = /[ ().]/g;
 	STATIC_IMG_FOLDER: String = 'static/webapp/assets/img/';
 
 	RAM_ICON_PATH: string = `${this.STATIC_IMG_FOLDER}/new_instance/ram_icon.svg`;
