@@ -8,11 +8,11 @@ import { UrlData } from '../workshop-urlinfo.model';
 import { WorkshopService } from '../../../api-connector/workshop.service';
 import { ProjectMember } from '../../../projectmanagement/project_member.model';
 import { WorkshopVM } from '../workshop-vm.model';
-import { WIKI_WORKSHOPS } from '../../../../links/links';
+import { WIKI_WORKSHOPS, CLOUD_PORTAL_SUPPORT_MAIL } from '../../../../links/links';
 
 interface MemberVm {
-	projectMember: ProjectMember;
-	workshopVmLink: { [key: number]: WorkshopVM[] };
+	projectMember: ProjectMember
+	workshopVmLink: { [key: number]: WorkshopVM[] }
 }
 
 @Component({
@@ -22,10 +22,10 @@ interface MemberVm {
 	providers: [GroupService, WorkshopService],
 })
 export class WorkshopOverviewComponent implements OnInit, OnDestroy {
-
 	title: string = 'Workshop management';
 
 	WIKI_WORKSHOPS: string = WIKI_WORKSHOPS;
+	CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL;
 
 	subscription: Subscription = new Subscription();
 	resend_info: boolean = false;
@@ -48,14 +48,11 @@ export class WorkshopOverviewComponent implements OnInit, OnDestroy {
 	invalidShortname: boolean = true;
 	invalidLongname: boolean = true;
 	newWorkshop: boolean = false;
-	workshopCreationMessage: { message: string, success: boolean } = { message: '', success: false };
+	workshopCreationMessage: { message: string; success: boolean } = { message: '', success: false };
 
 	@ViewChild('creationStatusModal') creationStatusModal: any;
 
-	constructor(
-private workshopService: WorkshopService,
-							private groupService: GroupService,
-	) {
+	constructor(private workshopService: WorkshopService, private groupService: GroupService) {
 		// eslint-disable-next-line no-empty-function
 	}
 
@@ -70,14 +67,12 @@ private workshopService: WorkshopService,
 	getProjects(): void {
 		this.projects = [];
 		this.subscription.add(
-			this.groupService.getSimpleVmByUserWhereWorkshopAndAdmin().subscribe(
-				(projects: any) => {
-					for (const project of projects) {
-						this.projects.push(project);
-					}
-					this.isLoaded = true;
-				},
-			),
+			this.groupService.getSimpleVmByUserWhereWorkshopAndAdmin().subscribe((projects: any) => {
+				for (const project of projects) {
+					this.projects.push(project);
+				}
+				this.isLoaded = true;
+			}),
 		);
 	}
 
@@ -90,14 +85,12 @@ private workshopService: WorkshopService,
 	getWorkshopsForProject(): void {
 		this.projectWorkshopsLoading = true;
 		this.subscription.add(
-			this.workshopService.getWorkshops(this.selectedProject[1]).subscribe(
-				(workshops: Workshop[]) => {
-					this.workshops = workshops;
-					this.selectedWorkshop = new Workshop();
-					this.projectWorkshopsLoading = false;
-					this.projectWorkshopsLoaded = true;
-				},
-			),
+			this.workshopService.getWorkshops(this.selectedProject[1]).subscribe((workshops: Workshop[]) => {
+				this.workshops = workshops;
+				this.selectedWorkshop = new Workshop();
+				this.projectWorkshopsLoading = false;
+				this.projectWorkshopsLoaded = true;
+			}),
 		);
 	}
 
@@ -105,8 +98,9 @@ private workshopService: WorkshopService,
 		this.projectMembersLoading = true;
 		this.memberVms = [];
 		this.subscription.add(
-			this.groupService.getWorkshopMembers(this.selectedProject[1].toString()).subscribe(
-				(members: ProjectMember[]): void => {
+			this.groupService
+				.getWorkshopMembers(this.selectedProject[1].toString())
+				.subscribe((members: ProjectMember[]): void => {
 					for (const member of members) {
 						const workshopVmLink: { [key: number]: WorkshopVM[] } = {};
 						const membervm: MemberVm = { projectMember: member, workshopVmLink };
@@ -114,8 +108,7 @@ private workshopService: WorkshopService,
 						this.projectMembersLoading = false;
 						this.projectMembersLoaded = true;
 					}
-				},
-			),
+				}),
 		);
 	}
 
@@ -133,18 +126,16 @@ private workshopService: WorkshopService,
 		}
 
 		this.subscription.add(
-			this.workshopService.loadWorkshopWithVms(this.selectedWorkshop.id).subscribe(
-				(workshopIncoming: Workshop) => {
-					for (let workshop of this.workshops) {
-						if (workshop.id === workshopIncoming.id) {
-							workshop = workshopIncoming;
-							this.loadedVmsForWorkshop.push(workshop.id);
-							this.addVmsToProjectMembers(workshop);
-							this.getUrlDataForWorkshopVms(workshop);
-						}
+			this.workshopService.loadWorkshopWithVms(this.selectedWorkshop.id).subscribe((workshopIncoming: Workshop) => {
+				for (let workshop of this.workshops) {
+					if (workshop.id === workshopIncoming.id) {
+						workshop = workshopIncoming;
+						this.loadedVmsForWorkshop.push(workshop.id);
+						this.addVmsToProjectMembers(workshop);
+						this.getUrlDataForWorkshopVms(workshop);
 					}
-				},
-			),
+				}
+			}),
 		);
 	}
 
@@ -179,7 +170,6 @@ private workshopService: WorkshopService,
 					vms.push(wvm);
 				}
 			}
-
 		}
 
 		for (const vm of vms) {
@@ -187,28 +177,28 @@ private workshopService: WorkshopService,
 		}
 		this.sending_done = true;
 		this.sending_mails = false;
-
 	}
 
 	sendWorkshopVMEMailInfo(workshop_vm: WorkshopVM): void {
-
-		this.subscription.add(this.workshopService.sendWorkshopVmEmail(this.selectedWorkshop.id, workshop_vm?.vm?.openstackid)
-			.subscribe((upd_workshop_vm: WorkshopVM) => {
-				for (const memberVm of this.memberVms) {
-					for (const wvm of memberVm.workshopVmLink[this.selectedWorkshop.id]) {
-						if (wvm === workshop_vm) {
-							const idx: number = memberVm.workshopVmLink[this.selectedWorkshop.id].indexOf(wvm);
-							memberVm.workshopVmLink[this.selectedWorkshop.id][idx].email_sent = upd_workshop_vm.email_sent;
+		this.subscription.add(
+			this.workshopService.sendWorkshopVmEmail(this.selectedWorkshop.id, workshop_vm?.vm?.openstackid).subscribe(
+				(upd_workshop_vm: WorkshopVM) => {
+					for (const memberVm of this.memberVms) {
+						for (const wvm of memberVm.workshopVmLink[this.selectedWorkshop.id]) {
+							if (wvm === workshop_vm) {
+								const idx: number = memberVm.workshopVmLink[this.selectedWorkshop.id].indexOf(wvm);
+								memberVm.workshopVmLink[this.selectedWorkshop.id][idx].email_sent = upd_workshop_vm.email_sent;
+							}
 						}
 					}
-				}
-
-			}, (error: any) => {
-				if ('error' in error) {
-					console.log(error);
-				}
-			}));
-
+				},
+				(error: any) => {
+					if ('error' in error) {
+						console.log(error);
+					}
+				},
+			),
+		);
 	}
 
 	getUrlDataForWorkshopVms(workshop: Workshop): void {
@@ -220,13 +210,12 @@ private workshopService: WorkshopService,
 				if (vm.vm.openstackid && vm.vm.openstackid !== '') {
 					vm.setLoadingUrlData(true);
 					this.subscription.add(
-						this.workshopService.getResenvUrlForWorkshopVm(workshop.id, vm.vm.openstackid)
-							.subscribe(
-								(urlData: UrlData) => {
-									vm.setLoadingUrlData(false);
-									vm.setUrlData(urlData);
-								},
-							),
+						this.workshopService
+							.getResenvUrlForWorkshopVm(workshop.id, vm.vm.openstackid)
+							.subscribe((urlData: UrlData) => {
+								vm.setLoadingUrlData(false);
+								vm.setUrlData(urlData);
+							}),
 					);
 				}
 			}
@@ -238,21 +227,19 @@ private workshopService: WorkshopService,
 		this.selectedWorkshop = new Workshop();
 		this.deleting = true;
 		this.subscription.add(
-			this.workshopService.deleteWorkshop(selectedId).subscribe(
-				(result: boolean) => {
-					this.deleting = false;
-					if (result) {
-						this.deleteSuccess = true;
-						for (const workshop of this.workshops) {
-							if (workshop.id === selectedId) {
-								this.workshops.splice(this.workshops.indexOf(workshop), 1);
-							}
+			this.workshopService.deleteWorkshop(selectedId).subscribe((result: boolean) => {
+				this.deleting = false;
+				if (result) {
+					this.deleteSuccess = true;
+					for (const workshop of this.workshops) {
+						if (workshop.id === selectedId) {
+							this.workshops.splice(this.workshops.indexOf(workshop), 1);
 						}
-					} else {
-						this.deleteSuccess = false;
 					}
-				},
-			),
+				} else {
+					this.deleteSuccess = false;
+				}
+			}),
 		);
 	}
 
@@ -293,29 +280,31 @@ private workshopService: WorkshopService,
 	createNewWorkshop(): void {
 		this.selectedWorkshop.shortname = this.selectedWorkshop.shortname.replace(/\s/g, '');
 		this.subscription.add(
-			this.workshopService.createWorkshop(this.selectedProject[1], this.selectedWorkshop).subscribe((workshop: Workshop) => {
-				this.workshops.push(workshop);
-				this.workshopChange(workshop);
-				this.workshopCreationMessage = { message: 'Workshop created successfully!', success: true };
-				this.creationStatusModal.show();
-			}, (error: any) => {
-				if ('error' in error) {
-					this.selectedWorkshop.longname = '';
-					this.invalidLongname = true;
-					this.selectedWorkshop.shortname = '';
-					this.invalidShortname = true;
-					if (error['error']['error'] === 'unique_constraint') {
-						this.workshopCreationMessage = {
-							message: 'Workshop name already taken! Please select another name.',
-							success: false,
-						};
-					} else {
-						this.workshopCreationMessage = { message: 'An error occured. Please try again!', success: false };
-					}
+			this.workshopService.createWorkshop(this.selectedProject[1], this.selectedWorkshop).subscribe(
+				(workshop: Workshop) => {
+					this.workshops.push(workshop);
+					this.workshopChange(workshop);
+					this.workshopCreationMessage = { message: 'Workshop created successfully!', success: true };
 					this.creationStatusModal.show();
-				}
-			}),
+				},
+				(error: any) => {
+					if ('error' in error) {
+						this.selectedWorkshop.longname = '';
+						this.invalidLongname = true;
+						this.selectedWorkshop.shortname = '';
+						this.invalidShortname = true;
+						if (error['error']['error'] === 'unique_constraint') {
+							this.workshopCreationMessage = {
+								message: 'Workshop name already taken! Please select another name.',
+								success: false,
+							};
+						} else {
+							this.workshopCreationMessage = { message: 'An error occured. Please try again!', success: false };
+						}
+						this.creationStatusModal.show();
+					}
+				},
+			),
 		);
 	}
-
 }
