@@ -118,12 +118,12 @@ test.describe.serial('@instances', () => {
 
 	test.describe('Should see resenv VM as active with resenv in instance overview', () => {
 		test.use({ storageState: MEMBER_STORAGE });
-		test.setTimeout(Util.MIN_TIMEOUT_15);
+		test.setTimeout(Util.MIN_TIMEOUT_30);
 		test('Member @instances', async ({ page, baseURL }) => {
 			await page.waitForTimeout(5000);
 			const vmOverviewPage = new InstanceOverviewPage(page, baseURL);
 			await vmOverviewPage.goto();
-			await vmOverviewPage.waitForInstanceToBeActive(Util.RESENV_VM_NAME, 60000 * 3);
+			await vmOverviewPage.waitForInstanceToBeActive(Util.RESENV_VM_NAME, Util.MIN_TIMEOUT_30);
 			await vmOverviewPage.waitForInstanceToHaveResenv(Util.RESENV_VM_NAME);
 		});
 	});

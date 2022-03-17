@@ -77,7 +77,7 @@ export class Util {
 		return this._15_MIN_TIMEOUT;
 	}
 
-	static get MIN_TIMOEUT_30(): number {
+	static get MIN_TIMEOUT_30(): number {
 		return this._30_MIN_TIMEOUT;
 	}
 
