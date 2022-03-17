@@ -1,92 +1,91 @@
 <ng-container *ngIf="submit">
 	<div class="modal-header">
-		<h4 class="modal-title">{{project?.project_application_shortname}}</h4>
-		<button type="button" class="close" style="cursor: pointer;"
-						(click)="bsModalRef.hide();"
-						data-dismiss="modal" aria-label="Close">
+		<h4 class="modal-title">{{ project?.project_application_shortname }}</h4>
+		<button
+			type="button"
+			class="close"
+			style="cursor: pointer"
+			(click)="bsModalRef.hide()"
+			data-dismiss="modal"
+			aria-label="Close"
+		>
 			<span aria-hidden="true">&times;</span>
 		</button>
 	</div>
 
 	<div class="modal-body">
 		<div class="alert alert-primary">
-			<strong>
-				Please check the data you have entered and confirm your application
-				below.
-			</strong>
-			<br>
-			If the entered data mismatches with your requirements cancel this confirmation
-			and take changes.
+			<strong> Please check the data you have entered and confirm your application below. </strong>
+			<br />
+			If the entered data mismatches with your requirements cancel this confirmation and take changes.
 		</div>
 		<div class="table-responsive">
 			<table class="table table-striped">
 				<ng-container *ngIf="modificationExtension">
 					<tr *ngFor="let flav of extension.flavors">
-						<td>{{flav.name + ': ' + flav.counter + ' VMs'}}</td>
+						<td>{{ flav.name + ': ' + flav.counter + ' VMs' }}</td>
 					</tr>
 					<tr *ngIf="extension.volume_counter > 0">
-						<td>Number of storage volumes: {{extension.volume_counter}}</td>
+						<td>Number of storage volumes: {{ extension.volume_counter }}</td>
 					</tr>
-					<tr *ngIf="(extension.volume_counter > 0) && (extension.volume_limit > 0)">
-						<td>Amount of storage space: {{extension.volume_limit}} GBs</td>
+					<tr *ngIf="extension.volume_counter > 0 && extension.volume_limit > 0">
+						<td>Amount of storage space: {{ extension.volume_limit }} GBs</td>
 					</tr>
 
-					<tr *ngIf="project.project_application_openstack_project
-            && extension.object_storage > 0">
-						<td>Amount of object storage: {{extension.object_storage}} GB</td>
+					<tr *ngIf="project.project_application_openstack_project && extension.object_storage > 0">
+						<td>Amount of object storage: {{ extension.object_storage }} GB</td>
 					</tr>
 				</ng-container>
 
 				<tr *ngIf="selected_ontology_terms?.length > 0">
-					<td>Selected Terms:
-						<span *ngFor="let term of selected_ontology_terms" class="badge bg-info">{{term.term}}</span></td>
+					<td>
+						Selected Terms:
+						<span *ngFor="let term of selected_ontology_terms" class="badge bg-info">{{ term.term }}</span>
+					</td>
 				</tr>
 
-				<tr *ngIf="(modificationExtension || lifetimeExtension || creditsExtension)
-            && extension.comment?.length > 0">
-					<td>Comment : {{extension.comment}}</td>
+				<tr *ngIf="(modificationExtension || lifetimeExtension || creditsExtension) && extension.comment?.length > 0">
+					<td>Comment : {{ extension.comment }}</td>
 				</tr>
 
 				<tr *ngIf="modificationExtension">
-					<td><strong>Number of cores in total:
-						{{extension?.total_cores}}</strong>
+					<td>
+						<strong>Number of cores in total: {{ extension?.total_cores }}</strong>
 					</td>
 				</tr>
 				<tr *ngIf="modificationExtension">
 					<td>
-						<strong>Value of RAM in total: {{extension?.total_ram}}  GBs</strong>
+						<strong>Value of RAM in total: {{ extension?.total_ram }} GBs</strong>
 					</td>
 				</tr>
 				<tr *ngIf="modificationExtension">
 					<td>
-						<strong>Number of GPUs in total: {{extension?.total_gpu}}</strong>
+						<strong>Number of GPUs in total: {{ extension?.total_gpu }}</strong>
 					</td>
 				</tr>
 				<tr *ngIf="lifetimeExtension">
 					<td>
-						<strong>Additional lifetime in months: {{extension?.extra_lifetime}}</strong>
+						<strong>Additional lifetime in months: {{ extension?.extra_lifetime }}</strong>
 					</td>
 				</tr>
 				<tr *ngIf="creditsExtension">
-					<td>Amount of requested extra credits: {{extension?.extra_credits}}</td>
+					<td>Amount of requested extra credits: {{ extension?.extra_credits }}</td>
 				</tr>
-				<tr *ngIf="(project?.credits_allowed) && !creditsExtension">
+				<tr *ngIf="project?.credits_allowed && !creditsExtension">
 					<td *ngIf="modificationExtension || lifetimeExtension">
-						<strong>Approximate number of extra credits:{{extension?.extra_credits}}</strong>
-						<br>
-						<strong>Approximate number of total credits:{{expectedTotalCredits}}</strong>
-						<br>
+						<strong>Approximate number of extra credits:{{ extension?.extra_credits }}</strong>
+						<br />
+						<strong>Approximate number of total credits:{{ expectedTotalCredits }}</strong>
+						<br />
 						<alert type="info" *ngIf="modificationExtension">
 							Please note, that the approximate credits amounts shown here are calculated for the currently approved
-							remaining
-							lifetime of this project. This amount will be calculated anew at extension approval and may therefore
-							vary.
+							remaining lifetime of this project. This amount will be calculated anew at extension approval and may
+							therefore vary.
 						</alert>
 						<alert type="info" *ngIf="lifetimeExtension">
 							Please note, that the approximate credits amounts shown here are calculated for the currently approved
-							resource
-							configuration of this project. This amount will be calculated anew at extension approval and may therefore
-							vary.
+							resource configuration of this project. This amount will be calculated anew at extension approval and may
+							therefore vary.
 						</alert>
 					</td>
 				</tr>
@@ -95,69 +94,73 @@
 	</div>
 
 	<div class="modal-footer">
-		<button id="confirm_extension_btn" class="btn btn-success col-md-4" type="button"
-						*ngIf="lifetimeExtension"
-						(click)="submitLifetimeExtensionRequest();">
+		<button
+			id="confirm_extension_btn"
+			class="btn btn-success col-md-4"
+			type="button"
+			data-test-id="confirm_extension_request_button"
+			*ngIf="lifetimeExtension"
+			(click)="submitLifetimeExtensionRequest()"
+		>
 			Confirm
 		</button>
-		<button id="confirm_modification_btn" class="btn btn-success col-md-4" type="button"
-						*ngIf="modificationExtension"
-						(click)="submitModificationRequest();">
+		<button
+			id="confirm_modification_btn"
+			class="btn btn-success col-md-4"
+			type="button"
+			data-test-id="confirm_modification_request_button"
+			*ngIf="modificationExtension"
+			(click)="submitModificationRequest()"
+		>
 			Confirm
 		</button>
-		<button id="confirm_credits_btn" class="btn btn-success col-md-4" type="button"
-						*ngIf="creditsExtension"
-						(click)="submitCreditsModification();">
+		<button
+			id="confirm_credits_btn"
+			class="btn btn-success col-md-4"
+			type="button"
+			data-test-id="confirm_credits_request_button"
+			*ngIf="creditsExtension"
+			(click)="submitCreditsModification()"
+		>
 			Confirm
 		</button>
-		<button class="btn btn-primary col-md-4" type="reset"
-						(click)="bsModalRef.hide();">
-			Cancel
-		</button>
+		<button class="btn btn-primary col-md-4" type="reset" (click)="bsModalRef.hide()">Cancel</button>
 	</div>
 </ng-container>
 
 <ng-container *ngIf="result">
 	<div class="modal-header">
-		<h4 class="modal-title" *ngIf="extensionStatus === 0">
-			Waiting </h4>
-		<h4 class="modal-title" *ngIf="extensionStatus === 1"> Success </h4>
-		<h4 class="modal-title" *ngIf="extensionStatus === 2"> Error </h4>
-		<button type="button" class="close" style="cursor: pointer"
-						(click)="bsModalRef.hide();"
-						aria-label="Close">
+		<h4 class="modal-title" *ngIf="extensionStatus === 0">Waiting</h4>
+		<h4 class="modal-title" *ngIf="extensionStatus === 1">Success</h4>
+		<h4 class="modal-title" *ngIf="extensionStatus === 2">Error</h4>
+		<button type="button" class="close" style="cursor: pointer" (click)="bsModalRef.hide()" aria-label="Close">
 			<span aria-hidden="true">&times;</span>
 		</button>
 	</div>
 
 	<div class="modal-body">
-		<div class="alert alert-primary" role="alert"
-				 *ngIf="extensionStatus === 0">
+		<div class="alert alert-primary" role="alert" *ngIf="extensionStatus === 0">
 			Waiting...
-			<i class="fa fa-spinner fa-spin"
-				 style="font-size:24px">
-			</i>
+			<i class="fa fa-spinner fa-spin" style="font-size: 24px"> </i>
 		</div>
 		<div id="extension_result_submitted" class="alert alert-success" role="alert" *ngIf="extensionStatus === 1">
-			<div *ngIf="modificationExtension">
+			<div *ngIf="modificationExtension" data-test-id="modification_request_result_div">
 				Modification request successfully submitted!
 			</div>
-			<div *ngIf="lifetimeExtension">
+			<div *ngIf="lifetimeExtension" data-test-id="extension_request_result_div">
 				Lifetime extension request successfully submitted!
 			</div>
-			<div *ngIf="creditsExtension">
+			<div *ngIf="creditsExtension" data-test-id="credit_request_result_div">
 				Credits extension request successfully submitted!
 			</div>
 		</div>
 		<div id="extension_result_error" class="alert alert-warning" role="alert" *ngIf="extensionStatus === 2">
-			An error occured:<br>
-			{{errorMessage}}
+			An error occured:<br />
+			{{ errorMessage }}
 		</div>
 		<div class="modal-footer">
-			<button type="button" class="btn btn-secondary"
-							(click)="bsModalRef.hide();">
-				Close
-			</button>
+			<button type="button" class="btn btn-secondary" (click)="bsModalRef.hide()">Close</button>
 		</div>
-	</div><!-- /.modal-content -->
+	</div>
+	<!-- /.modal-content -->
 </ng-container>

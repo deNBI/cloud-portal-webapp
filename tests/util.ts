@@ -6,29 +6,37 @@
  * Util test class.
  */
 export class Util {
+	// SIMPLEVM VARIABLES
 	private static _SIMPLE_VM_APPLICATION_NAME_NO_PI: string = 'PTSimpleVMNoPi';
-	private static _OPENSTACK_APPLICATION_NAME: string = 'PTOpenStack';
 	private static _SIMPLE_VM_APPLICATION_NAME: string = 'PTSimpleVM';
-	private static _PI_EMAIL: string = 'test@test.com';
-	private static _BASIC_VM_NAME: string = 'PTSIMPLEVM';
-	private static _VOLUME_VM_NAME: string = 'ProtractorVMVolume';
+
+	// OPENSTACK VARIABLES
+	private static _OPENSTACK_APPLICATION_NAME: string = 'PTOpenStack';
+
+	// INSTANCES VARIABLES
+	private static _INSTANCES_PROJECT_NAME: string = 'PTInstances';
+	private static _BASIC_VM_NAME: string = 'PTBasic';
+	private static _VOLUME_VM_NAME: string = 'PTVolume';
 	private static _VOLUME_NAME: string = 'ProtractorVolume';
 	private static _VOLUME_SPACE: string = '1';
+	private static _DEFAULT_FLAVOR_TITLE: string = 'de.NBI default';
+	private static _UBUNTU_18_TITLE: string = 'Ubuntu 18.04 LTS (2021-12-13)';
+	private static _CWLAB: string = 'cwlab';
+	private static _VOLUME_MOUNT_PATH_STRING: string = 'path';
+	private static _BASIC_SNAPSHOT_NAME: string = 'PTSnap';
+	private static _ALTERNATIVE_SNAPSHOT_NAME: string = 'PTSnapTwo';
+	private static _RESENV_URL: string = 'PTResenvUrl';
+	private static _RESENV_VM_NAME: string = 'PTResenv';
+
+	// GENERAL VARIABLES
+	private static _PI_EMAIL: string = 'test@test.com';
 	private static _WORKSHOP_NAME: string = 'PTWS';
 	private static _ONE_MINUTE_TIMEOUT: number = 60000;
 	private static _timeout: number = Util._ONE_MINUTE_TIMEOUT * 2;
 	private static _15_MIN_TIMEOUT: number = Util._ONE_MINUTE_TIMEOUT * 15;
 	private static _30_MIN_TIMEOUT: number = Util._ONE_MINUTE_TIMEOUT * 30;
-	private static _DEFAULT_FLAVOR_TITLE: string = 'de.NBI default';
-	private static _UBUNTU_18_TITLE: string = 'Ubuntu 18.04 LTS (2021-12-13)';
-	private static _CWLAB: string = 'cwlab';
 
-	private static _VOLUME_MOUNT_PATH_STRING: string = 'path';
-
-	private static _BASIC_SNAPSHOT_NAME: string = 'PTSnap';
-	private static _ALTERNATIVE_SNAPSHOT_NAME: string = 'PTSnapTwo';
-
-	// tslint:disable-next-line:no-require-imports
+	//  VARIABLE GETTERS
 	static get PI_EMAIL(): string {
 		return this._PI_EMAIL;
 	}
@@ -69,7 +77,7 @@ export class Util {
 		return this._15_MIN_TIMEOUT;
 	}
 
-	static get MIN_TIMOEUT_30(): number {
+	static get MIN_TIMEOUT_30(): number {
 		return this._30_MIN_TIMEOUT;
 	}
 
@@ -105,8 +113,23 @@ export class Util {
 		return this._WORKSHOP_NAME;
 	}
 
+	static get INSTANCES_PROJECT_NAME(): string {
+		return this._INSTANCES_PROJECT_NAME;
+	}
+
+	static get RESENV_URL(): string {
+		return this._RESENV_URL;
+	}
+
+	static get RESENV_VM_NAME(): string {
+		return this._RESENV_VM_NAME;
+	}
+
 	static by_data_test_id_str(data_test_id: string): string {
 		return `[data-test-id=${data_test_id}]`;
 	}
 
+	static by_data_test_id_str_prefix(data_test_id: string): string {
+		return `[data-test-id ^=${data_test_id}]`;
+	}
 }

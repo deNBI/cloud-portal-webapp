@@ -313,7 +313,7 @@ private clipboardService: ClipboardService,
 				(result: IResponseTemplate): void => {
 					this.vm.cardState = 0;
 					if (result.value as boolean) {
-						this.vm.setMsgWithTimeout('Reboot initiated', 2000);
+						this.vm.setMsgWithTimeout('Reboot initiated', 5000);
 						this.resumeCheckStatusTimer();
 					} else {
 						this.check_status_loop(VirtualMachineStates.ACTIVE);

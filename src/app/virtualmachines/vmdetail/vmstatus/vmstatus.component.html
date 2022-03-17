@@ -3,6 +3,7 @@
 	<ng-container *ngSwitchCase="VirtualMachineStates.staticACTIVE">
 		<div
 			[id]="'active_badge_' + vm?.name"
+			[attr.data-test-id]="vm?.name + '_active'"
 			class="dot-colorless bg-success pulseAnim"
 			style="width: 10px; height: 10px"
 			title="{{ VirtualMachineStates.staticACTIVE }}"

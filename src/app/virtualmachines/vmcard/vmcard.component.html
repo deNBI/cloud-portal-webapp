@@ -1,180 +1,251 @@
-<div class="card instance-card" style="margin-bottom:15px;" [id]="'instanceCard_' + vm?.name">
-
+<div class="card instance-card" style="margin-bottom: 15px" [id]="'instanceCard_' + vm?.name">
 	<div class="card-block">
 		<div class="row" style="margin-top: 5px">
-			<div class="col-5" style="margin: auto;">
-				<a *ngIf="(vm?.status |hasStatus:VirtualMachineStates.staticACTIVE)
-                     || (vm?.status |hasStatus:VirtualMachineStates.staticSHUTOFF);
-                      else statusElseBlock"
-					 class="h5 text-primary" style="margin-left: 10px; padding-right: 5px" id="detail_{{vm.name}}"
-					 [routerLink]="['/virtualmachines/detail/' + vm?.openstackid]">
-					<i *ngIf="vm?.still_used_confirmation_requested" class="fas fa-exclamation-triangle"
-						 style="color:red;">
-					</i>  {{vm?.name}}
+			<div class="col-5" style="margin: auto">
+				<a
+					*ngIf="
+						(vm?.status | hasStatus: VirtualMachineStates.staticACTIVE) ||
+							(vm?.status | hasStatus: VirtualMachineStates.staticSHUTOFF);
+						else statusElseBlock
+					"
+					class="h5 text-primary"
+					style="margin-left: 10px; padding-right: 5px"
+					id="detail_{{ vm.name }}"
+					[routerLink]="['/virtualmachines/detail/' + vm?.openstackid]"
+					[ngClass]="{
+						'active-machine': (vm?.status | hasStatus: VirtualMachineStates.staticACTIVE),
+						'shutoff-machine': (vm?.status | hasStatus: VirtualMachineStates.staticSHUTOFF)
+					}"
+				>
+					<i *ngIf="vm?.still_used_confirmation_requested" class="fas fa-exclamation-triangle" style="color: red"> </i>
+					{{ vm?.name }}
 				</a>
 				<ng-template #statusElseBlock>
-					<span class="h5 text-primary" id="detail_{{vm.name}}"
-								style="margin-left: 10px; padding-right: 5px">
-						<i *ngIf="vm?.still_used_confirmation_requested" class="fas fa-exclamation-triangle"
-							 style="color:red;">
-						</i>  {{vm?.name}}
+					<span
+						class="h5 text-primary deleted-machine"
+						id="detail_{{ vm.name }}"
+						style="margin-left: 10px; padding-right: 5px"
+					>
+						<i *ngIf="vm?.still_used_confirmation_requested" class="fas fa-exclamation-triangle" style="color: red">
+						</i>
+						{{ vm?.name }}
 					</span>
 				</ng-template>
-				<app-vmstatus [vm]="vm">
-				</app-vmstatus>
+				<app-vmstatus [vm]="vm"> </app-vmstatus>
 			</div>
 
 			<div class="col-3" style="margin: auto; text-align: center">
-				<a [routerLink]="['/project-management/' + vm?.application_id]"
-					 target="_blank" rel="noopener noreferrer">
-					<strong>{{vm?.project}}</strong>
+				<a [routerLink]="['/project-management/' + vm?.application_id]" target="_blank" rel="noopener noreferrer">
+					<strong>{{ vm?.project }}</strong>
 				</a>
 			</div>
 			<div class="col-2" style="margin: auto; text-align: center">
-				{{vm?.userlogin}}
-				<br>
-				{{vm?.created_at_date}}
+				{{ vm?.userlogin }}
+				<br />
+				{{ vm?.created_at_date }}
 			</div>
 			<div class="col-1">
 				<div class="form-check">
-					<input type="checkbox" *ngIf="(vm?.status | hasStatus:VirtualMachineStates.staticACTIVE)
-					|| (vm?.status | hasStatus:VirtualMachineStates.staticSHUTOFF)" [checked]="is_checked" (click)="toggleChecked();">
+					<input
+						type="checkbox"
+						*ngIf="
+							(vm?.status | hasStatus: VirtualMachineStates.staticACTIVE) ||
+							(vm?.status | hasStatus: VirtualMachineStates.staticSHUTOFF)
+						"
+						[checked]="is_checked"
+						(click)="toggleChecked()"
+					/>
 				</div>
 			</div>
-			<div class="col-1" style="text-align: center">
-			</div>
+			<div class="col-1" style="text-align: center"></div>
 		</div>
-		<div *ngIf="vm?.still_used_confirmation_requested" class="alert alert-danger"
-				 style="margin: auto;" role="alert">
+		<div *ngIf="vm?.still_used_confirmation_requested" class="alert alert-danger" style="margin: auto" role="alert">
 			Confirm in the
-			<a style="margin-left:2px;margin-right:2px;" [routerLink]="['/virtualmachines/detail/' + vm?.openstackid]"> detailed overview </a>
-			of the machine that it is still in use, otherwise it will be
-			marked for deletion starting from
-			<strong
-				style="margin-left: 2px"> {{vm?.getTerminationStartDateString()}}
-			</strong>.
+			<a style="margin-left: 2px; margin-right: 2px" [routerLink]="['/virtualmachines/detail/' + vm?.openstackid]">
+				detailed overview
+			</a>
+			of the machine that it is still in use, otherwise it will be marked for deletion starting from
+			<strong style="margin-left: 2px"> {{ vm?.getTerminationStartDateString() }} </strong>.
 		</div>
-		<div style="margin-top: 10px; margin-bottom:5px;">
+		<div style="margin-top: 10px; margin-bottom: 5px">
 			<div class="row" style="margin-left: 10px; font-size: 18px; line-height: 27px; height: 27px">
 				<div *ngIf="vm.volumes?.length > 0" class="col-md-1">
-                      <span class="fas fa-hdd" style="font-size: 18px;"
-														data-toggle="tooltip" data-placement="right"
-														title="{{'Volumes attached: ' + vm?.volumes?.length}}">
-                        <span class="badge badge-pill badge-secondary"
-															style="font-size: 10px; position: relative; top: -12px; left: -10px;">
-                          {{vm?.volumes.length}}
-												</span>
-                      </span>
+					<span
+						class="fas fa-hdd"
+						style="font-size: 18px"
+						data-toggle="tooltip"
+						data-placement="right"
+						title="{{ 'Volumes attached: ' + vm?.volumes?.length }}"
+					>
+						<span
+							class="badge badge-pill badge-secondary"
+							[attr.data-test-id]="'volumes_count_' + vm?.name"
+							style="font-size: 10px; position: relative; top: -12px; left: -10px"
+						>
+							{{ vm?.volumes.length }}
+						</span>
+					</span>
 				</div>
-				<div *ngIf="vm?.res_env_url &&  vm.backend && vm.backend.playbook_successful === 0 " class="col-md-1">
-                      <span class="fas fa-globe" style="font-size: 18px; cursor: pointer;" data-toggle="tooltip"
-														data-placement="right"
-														title="{{'Research Environment installed: ' + vm?.backend?.template}}"
-														(click)="this.copyToClipboard(vm?.res_env_url); this.showCopiedMessage(vm.name);">
-                          <span class="badge badge-pill badge-secondary" id="{{vm.name + 'resenvSpan'}}"
-																style="font-size: 10px; position: relative; top: -12px; left: -10px;">
-                            <i class="fas fa-check"
-															 *ngIf="(vm?.status | hasStatus:VirtualMachineStates.staticACTIVE) ">
-														</i>
-                            <i class="fas fa-times"
-															 *ngIf="(vm?.status | hasStatus:VirtualMachineStates.staticSHUTOFF)">
-														</i>
-                          </span>
-											</span>
+				<div *ngIf="vm?.res_env_url && vm.backend && vm.backend.playbook_successful === 0" class="col-md-1">
+					<span
+						class="fas fa-globe"
+						style="font-size: 18px; cursor: pointer"
+						data-toggle="tooltip"
+						data-placement="right"
+						[attr.data-test-id]="'resenv_visible_' + vm?.name"
+						title="{{ 'Research Environment installed: ' + vm?.backend?.template }}"
+						(click)="this.copyToClipboard(vm?.res_env_url); this.showCopiedMessage(vm.name)"
+					>
+						<span
+							class="badge badge-pill badge-secondary"
+							id="{{ vm.name + 'resenvSpan' }}"
+							style="font-size: 10px; position: relative; top: -12px; left: -10px"
+						>
+							<i class="fas fa-check" *ngIf="vm?.status | hasStatus: VirtualMachineStates.staticACTIVE"> </i>
+							<i class="fas fa-times" *ngIf="vm?.status | hasStatus: VirtualMachineStates.staticSHUTOFF"> </i>
+						</span>
+					</span>
 				</div>
-				<div *ngIf="vm?.res_env_url && vm.backend && vm.backend.playbook_successful !== 0
-				&& (vm?.status |hasStatus:VirtualMachineStates.staticACTIVE)" class="col-md-1">
-                      <span class="fas fa-globe" style="font-size: 18px; cursor: pointer;" data-toggle="tooltip"
-														data-placement="right"
-														title="{{'Research Environment failed to install: ' + vm?.backend?.template}}"
-														(click)="this.copyToClipboard(vm?.res_env_url); this.showCopiedMessage(vm.name);">
-                          <span class="badge badge-pill badge-secondary" id="{{vm.name + 'resenvFailedSpan'}}"
-																style="font-size: 10px; position: relative; top: -12px; left: -10px;">
-                                <i class="fas fa-times" style="color: red">
-																</i>
-                          </span>
-                      </span>
+				<div
+					*ngIf="
+						vm?.res_env_url &&
+						vm.backend &&
+						vm.backend.playbook_successful !== 0 &&
+						(vm?.status | hasStatus: VirtualMachineStates.staticACTIVE)
+					"
+					class="col-md-1"
+				>
+					<span
+						class="fas fa-globe"
+						style="font-size: 18px; cursor: pointer"
+						data-toggle="tooltip"
+						data-placement="right"
+						title="{{ 'Research Environment failed to install: ' + vm?.backend?.template }}"
+						(click)="this.copyToClipboard(vm?.res_env_url); this.showCopiedMessage(vm.name)"
+					>
+						<span
+							class="badge badge-pill badge-secondary"
+							id="{{ vm.name + 'resenvFailedSpan' }}"
+							style="font-size: 10px; position: relative; top: -12px; left: -10px"
+						>
+							<i class="fas fa-times" style="color: red"> </i>
+						</span>
+					</span>
 				</div>
 				<div *ngIf="vm?.conda_packages" class="col-md-1">
-					<span class="fas fa-box" style="font-size: 18px;" data-toggle="tooltip" data-placement="right"
-														title="One installed Conda-Package" *ngIf="vm?.conda_packages?.length === 1">
-                          <span class="badge badge-pill badge-secondary"
-																style="font-size: 10px; position: relative; top: -12px; left: -10px;">
-                          {{vm?.conda_packages?.length.toString()}}
-														<i *ngIf="vm?.playbook_successful === null" class="fa-spinner fa-spin">
-														</i>
-                            <i *ngIf="!vm?.playbook_successful && vm?.playbook_successful !== undefined" class="fas fa-times" style="color: red">
-														</i>
-                            <i  *ngIf="vm?.playbook_successful" class="fas fa-check" style="color: green">
-														</i>
-                          </span>
-                      </span>
-					<span class="fas fa-boxes" style="font-size: 18px;" data-toggle="tooltip" data-placement="right"
-								title="{{'Number of Conda Packages installed: ' + vm?.conda_packages?.length.toString()}}"
-								*ngIf="vm?.conda_packages?.length > 1">
-                          <span class="badge badge-pill badge-secondary"
-																style="font-size: 10px; position: relative; top: -12px; left: -10px;">
-                          {{vm?.conda_packages?.length.toString()}}
-														<i *ngIf="vm?.playbook_successful === null" class="fa-spinner fa-spin">
-														</i>
-														<i  *ngIf="!vm?.playbook_successful &&  vm?.playbook_successful !== undefined" class="fas fa-times" style="color: red">
-														</i>
-														<i *ngIf="vm?.playbook_successful" class="fas fa-check" style="color: green">
-														</i>
-                          </span>
-                      </span>
+					<span
+						class="fas fa-box"
+						style="font-size: 18px"
+						data-toggle="tooltip"
+						data-placement="right"
+						title="One installed Conda-Package"
+						*ngIf="vm?.conda_packages?.length === 1"
+					>
+						<span
+							class="badge badge-pill badge-secondary"
+							style="font-size: 10px; position: relative; top: -12px; left: -10px"
+						>
+							{{ vm?.conda_packages?.length.toString() }}
+							<i *ngIf="vm?.playbook_successful === null" class="fa-spinner fa-spin"> </i>
+							<i
+								*ngIf="!vm?.playbook_successful && vm?.playbook_successful !== undefined"
+								class="fas fa-times"
+								style="color: red"
+							>
+							</i>
+							<i *ngIf="vm?.playbook_successful" class="fas fa-check" style="color: green"> </i>
+						</span>
+					</span>
+					<span
+						class="fas fa-boxes"
+						style="font-size: 18px"
+						data-toggle="tooltip"
+						data-placement="right"
+						title="{{ 'Number of Conda Packages installed: ' + vm?.conda_packages?.length.toString() }}"
+						*ngIf="vm?.conda_packages?.length > 1"
+					>
+						<span
+							class="badge badge-pill badge-secondary"
+							style="font-size: 10px; position: relative; top: -12px; left: -10px"
+						>
+							{{ vm?.conda_packages?.length.toString() }}
+							<i *ngIf="vm?.playbook_successful === null" class="fa-spinner fa-spin"> </i>
+							<i
+								*ngIf="!vm?.playbook_successful && vm?.playbook_successful !== undefined"
+								class="fas fa-times"
+								style="color: red"
+							>
+							</i>
+							<i *ngIf="vm?.playbook_successful" class="fas fa-check" style="color: green"> </i>
+						</span>
+					</span>
 				</div>
 				<div *ngIf="vm?.cluster.cluster_id" class="col-md-1">
-                      <span class="fas fa-network-wired" style="font-size: 18px;" data-toggle="tooltip" data-placement="right"
-														title="{{'Master node of cluster with ' + (vm?.cluster.instances_count) + ' slaves'}}"
-														(click)="this.copyToClipboard(vm?.res_env_url)">
-                          <span class="badge badge-pill badge-secondary"
-																style="font-size: 10px; position: relative; top: -12px; left: -10px;">
-                            {{vm?.cluster.instances_count}}
-                          </span>
-                      </span>
+					<span
+						class="fas fa-network-wired"
+						style="font-size: 18px"
+						data-toggle="tooltip"
+						data-placement="right"
+						title="{{ 'Master node of cluster with ' + vm?.cluster.instances_count + ' slaves' }}"
+						(click)="this.copyToClipboard(vm?.res_env_url)"
+					>
+						<span
+							class="badge badge-pill badge-secondary"
+							style="font-size: 10px; position: relative; top: -12px; left: -10px"
+						>
+							{{ vm?.cluster.instances_count }}
+						</span>
+					</span>
 				</div>
 			</div>
-			<div class="col-1">
+			<div class="col-1"></div>
+			<div
+				class="alert alert-danger col-5"
+				style="margin-left: 10px"
+				role="alert"
+				*ngIf="
+					vm?.res_env_url &&
+					vm.backend &&
+					vm.backend.playbook_successful &&
+					vm.backend.playbook_successful !== 0 &&
+					(vm?.status | hasStatus: VirtualMachineStates.staticACTIVE)
+				"
+			>
+				The installation of your Playbook has failed, you can download the playbook logs on the detailed overview of the
+				vm!
 			</div>
-			<div class="alert alert-danger col-5" style="margin-left: 10px" role="alert"
-					 *ngIf="vm?.res_env_url && vm.backend && vm.backend.playbook_successful
-					 && vm.backend.playbook_successful !== 0 && (vm?.status |hasStatus:VirtualMachineStates.staticACTIVE)">
-				The installation of your Playbook has failed, you can download the playbook logs on the
-				detailed overview of the vm!
-			</div>
-			<div class="col-1">
-			</div>
+			<div class="col-1"></div>
 			<div class="col-11" style="margin-left: 10px">
 				<div style="font-size: small">
-					<strong>{{vm?.flavor?.name}}</strong>:
-					{{vm?.flavor?.vcpus + ' VCPUs - ' }}{{vm?.flavor?.ram + ' GB RAM - '}}{{vm?.flavor?.rootdisk + ' GB root disk'}}
+					<strong>{{ vm?.flavor?.name }}</strong
+					>: {{ vm?.flavor?.vcpus + ' VCPUs - ' }}{{ vm?.flavor?.ram + ' GB RAM - '
+					}}{{ vm?.flavor?.rootdisk + ' GB root disk' }}
 				</div>
 			</div>
 			<div class="col-12" style="margin-left: 10px">
-				<div style="font-size: small">
-					<strong>Image</strong>: {{vm?.image}}
-				</div>
+				<div style="font-size: small"><strong>Image</strong>: {{ vm?.image }}</div>
 			</div>
-			<div *ngIf="vm?.error_msg !== '' && vm?.error_msg !== undefined && vm?.error_msg !== null" class="col-12" style="margin-left: 10px">
+			<div
+				*ngIf="vm?.error_msg !== '' && vm?.error_msg !== undefined && vm?.error_msg !== null"
+				class="col-12"
+				style="margin-left: 10px"
+			>
 				<div class="alert alert-danger" role="alert" style="font-size: small">
 					<strong>Error: <span [innerHTML]="vm?.error_msg"></span></strong>
 				</div>
 			</div>
 			<div *ngIf="vm?.msg !== '' && vm?.msg !== undefined && vm?.msg !== null" class="col-12" style="margin-left: 10px">
 				<div class="alert alert-info" role="alert" style="font-size: small">
-					<strong>Info: <span [innerHTML]="vm?.msg"></span></strong>
+					<strong>Info: <span data-test-id="vm-message-alert" [innerHTML]="vm?.msg"></span></strong>
 				</div>
 			</div>
-			<div *ngIf="vm?.cluster?.cluster_id" class="col-12" style="margin-left: 10px" >
+			<div *ngIf="vm?.cluster?.cluster_id" class="col-12" style="margin-left: 10px">
 				<div style="font-size: small">
 					<strong>Cluster</strong>:
-					<a style="margin-left: 10px"
-						 [routerLink]="['/virtualmachines/cluster/' + vm?.cluster.cluster_id]">
-						{{vm?.cluster.cluster_id}}
+					<a style="margin-left: 10px" [routerLink]="['/virtualmachines/cluster/' + vm?.cluster.cluster_id]">
+						{{ vm?.cluster.cluster_id }}
 					</a>
-					                  <app-clusterstatus [show_text_status]="false" [cluster]="vm?.cluster"></app-clusterstatus>
-
+					<app-clusterstatus [show_text_status]="false" [cluster]="vm?.cluster"></app-clusterstatus>
 				</div>
 			</div>
 		</div>
@@ -183,159 +254,241 @@
 	<div class="card-body p-x-1 py-h">
 		<div class="row">
 			<div class="col-4">
-				<button class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
-								[id]="'showDetailsButton_'+vm?.name"
-								*ngIf="vm.elixir_id === user_elixir_id || is_vo_admin || is_vm_admin"
-								[disabled]="!(vm?.status |hasStatus:VirtualMachineStates.staticACTIVE)
-                          && !(vm?.status |hasStatus:VirtualMachineStates.staticSHUTOFF)
-                          && !(vm?.status |hasStatus:VirtualMachineStates.staticDELETED)"
-								[routerLink]="['/virtualmachines/detail/' + vm?.openstackid]">Show VM details/logs</button>
+				<button
+					class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+					[id]="'showDetailsButton_' + vm?.name"
+					*ngIf="vm.elixir_id === user_elixir_id || is_vo_admin || is_vm_admin"
+					[disabled]="
+						!(vm?.status | hasStatus: VirtualMachineStates.staticACTIVE) &&
+						!(vm?.status | hasStatus: VirtualMachineStates.staticSHUTOFF) &&
+						!(vm?.status | hasStatus: VirtualMachineStates.staticDELETED)
+					"
+					[routerLink]="['/virtualmachines/detail/' + vm?.openstackid]"
+				>
+					Show VM details/logs
+				</button>
 			</div>
 			<div class="col-4">
-				<button class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
-								*ngIf="vm.cardState !== 1" [disabled]="!(vm?.status |hasStatus:VirtualMachineStates.staticACTIVE)"
-								[id]="'showHowToConnectButton_'+vm?.name"
-								(click)="vm.cardState=1" >
+				<button
+					class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+					*ngIf="vm.cardState !== 1"
+					[disabled]="!(vm?.status | hasStatus: VirtualMachineStates.staticACTIVE)"
+					[id]="'showHowToConnectButton_' + vm?.name"
+					(click)="vm.cardState = 1"
+				>
 					How to connect ...
 				</button>
-				<button class="font-weight-bold font-xs btn-block btn btn-secondary" *ngIf="vm.cardState === 1"
-								[id]="'hideHowToConnectButton_'+vm?.name"
-								(click)="vm.cardState=0;" >
+				<button
+					class="font-weight-bold font-xs btn-block btn btn-secondary"
+					*ngIf="vm.cardState === 1"
+					[id]="'hideHowToConnectButton_' + vm?.name"
+					(click)="vm.cardState = 0"
+				>
 					... Hide information
 				</button>
 			</div>
 			<div class="col-4">
-				<button class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
-								*ngIf="vm.cardState !== 2 && (vm.elixir_id === user_elixir_id || is_vo_admin || is_vm_admin)"
-								[disabled]="(vm?.status | statusInProcess:VirtualMachineStates.staticIN_PROCESS_STATE)
-                         && !(vm?.status | hasStatus:VirtualMachineStates.staticPORT_CLOSED )
-                         && !(vm?.status | hasStatus:VirtualMachineStates.staticCHECKING_CONNECTION)
-                         || (vm?.status | hasStatus:VirtualMachineStates.staticNOT_FOUND)
-												 || (vm?.status | hasStatus:VirtualMachineStates.staticDELETED)"
-								[id]="'showActionsButton_'+vm?.name"
-								(click)="vm.cardState=2;">
+				<button
+					class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+					*ngIf="vm.cardState !== 2 && (vm.elixir_id === user_elixir_id || is_vo_admin || is_vm_admin)"
+					[disabled]="
+						((vm?.status | statusInProcess: VirtualMachineStates.staticIN_PROCESS_STATE) &&
+							!(vm?.status | hasStatus: VirtualMachineStates.staticCHECKING_CONNECTION) &&
+							!(vm?.status | hasStatus: VirtualMachineStates.staticPORT_CLOSED)) ||
+						(vm?.status | hasStatus: VirtualMachineStates.staticNOT_FOUND) ||
+						(vm?.status | hasStatus: VirtualMachineStates.staticDELETED)
+					"
+					[id]="'showActionsButton_' + vm?.name"
+					(click)="vm.cardState = 2"
+				>
 					Show actions ...
 				</button>
-				<button class="font-weight-bold font-xs btn-block btn btn-secondary" *ngIf="vm.cardState === 2"
-								[id]="'hideActionsButton_'+vm?.name"
-								(click)="vm.cardState=0;">
-					... Hide actions</button>
+				<button
+					class="font-weight-bold font-xs btn-block btn btn-secondary"
+					*ngIf="vm.cardState === 2"
+					[id]="'hideActionsButton_' + vm?.name"
+					(click)="vm.cardState = 0"
+				>
+					... Hide actions
+				</button>
 			</div>
 		</div>
 	</div>
 
-	<div class="card-footer p-x-1 py-h"
-			 *ngIf="((vm?.status |hasStatus:VirtualMachineStates.staticACTIVE)
-			 || (vm?.status |hasStatus:VirtualMachineStates.staticCHECKING_CONNECTION)
-			 || (vm?.status |hasStatus:VirtualMachineStates.staticPORT_CLOSED)
-			 || (vm?.status |hasStatus:VirtualMachineStates.staticERROR)
-			 || (vm?.status |hasStatus:VirtualMachineStates.staticSHUTOFF))
-			 && vm?.cardState !== 0">
+	<div
+		class="card-footer p-x-1 py-h"
+		*ngIf="
+			((vm?.status | hasStatus: VirtualMachineStates.staticACTIVE) ||
+				(vm?.status | hasStatus: VirtualMachineStates.staticCHECKING_CONNECTION) ||
+				(vm?.status | hasStatus: VirtualMachineStates.staticPORT_CLOSED) ||
+				(vm?.status | hasStatus: VirtualMachineStates.staticERROR) ||
+				(vm?.status | hasStatus: VirtualMachineStates.staticSHUTOFF)) &&
+			vm?.cardState !== 0
+		"
+	>
 		<div *ngIf="vm?.cardState === 1">
 			<div class="row" *ngFor="let mode of vm?.modes">
 				<div class="col-md-1">
-					<span class="font-weight-bold font-xs btn-block text-muted">{{mode.name}}:</span>
+					<span class="font-weight-bold font-xs btn-block text-muted">{{ mode.name }}:</span>
 				</div>
 				<div class="col-md-9">
 					<span class="font-weight-bold font-xs btn-block text-muted" [innerHTML]="mode.description"></span>
 				</div>
 				<div class="col-md-2" style="margin: auto" *ngIf="mode.copy_field && mode.copy_field !== ''">
-					<div class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
-							 (click)="copyToClipboard(mode.copy_field)">Copy command</div>
+					<div
+						class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+						(click)="copyToClipboard(mode.copy_field)"
+					>
+						Copy command
+					</div>
 				</div>
 			</div>
 
-			<div class="row" *ngIf="vm?.res_env_url !== '' && vm?.res_env_url !== null && vm?.res_env_url !== undefined && resenv_by_play(vm)">
+			<div
+				class="row"
+				*ngIf="
+					vm?.res_env_url !== '' && vm?.res_env_url !== null && vm?.res_env_url !== undefined && resenv_by_play(vm)
+				"
+			>
 				<div class="col-md-1">
 					<span class="font-weight-bold font-xs btn-block text-muted">Research Environment:</span>
 				</div>
 				<div class="col-md-11 font-weight-bold font-xs btn-block text-muted">
-					<a href="{{vm?.res_env_url}}" target="_blank" rel="noopener noreferrer">{{vm?.res_env_url}}</a>
-					<br>
+					<a href="{{ vm?.res_env_url }}" target="_blank" rel="noopener noreferrer">{{ vm?.res_env_url }}</a>
+					<br />
 					For RStudio credentials please visit:
-					<a href="{{WIKI_RSTUDIO_LINK}}" rel="noopener noreferrer" target="_blank">{{WIKI_RSTUDIO_LINK}}
-					</a>
-					<br>
+					<a href="{{ WIKI_RSTUDIO_LINK }}" rel="noopener noreferrer" target="_blank">{{ WIKI_RSTUDIO_LINK }} </a>
+					<br />
 					For Apache Guacamole credentials please visit:
-					<a href="{{WIKI_GUACAMOLE_LINK}}" rel="noopener noreferrer" target="_blank">{{WIKI_GUACAMOLE_LINK}}
-					</a>
+					<a href="{{ WIKI_GUACAMOLE_LINK }}" rel="noopener noreferrer" target="_blank">{{ WIKI_GUACAMOLE_LINK }} </a>
 				</div>
 			</div>
 		</div>
 
 		<div *ngIf="vm?.cardState === 2">
 			<div class="row">
-				<div class="col-md-2" *ngIf="(vm?.status |hasStatus:VirtualMachineStates.staticACTIVE) ">
-					<div class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
-							 [id]="'attachVolume' + vm?.name"
-							 (click)="showVolumeModal('attach')">
+				<div class="col-md-2" *ngIf="vm?.status | hasStatus: VirtualMachineStates.staticACTIVE">
+					<div
+						class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+						[id]="'attachVolume' + vm?.name"
+						(click)="showVolumeModal('attach')"
+					>
 						Attach Volume
 					</div>
 				</div>
-				<div class="col-md-2"
-					 *ngIf="(vm?.status |hasStatus:VirtualMachineStates.staticSHUTOFF)  && vm?.volumes.length > 0">
-					<span class="d-inline-block" tabindex="0" data-toggle="tooltip" style="width:100%;"
-						  title="Start the virtual machine to attach volumes">
-						<button class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
-							 [id]="'attachVolume' + vm?.name" disabled
-							 (click)="showVolumeModal('attach')">
-						Attach Volume
+				<div
+					class="col-md-2"
+					*ngIf="(vm?.status | hasStatus: VirtualMachineStates.staticSHUTOFF) && vm?.volumes.length > 0"
+				>
+					<span
+						class="d-inline-block"
+						tabindex="0"
+						data-toggle="tooltip"
+						style="width: 100%"
+						title="Start the virtual machine to attach volumes"
+					>
+						<button
+							class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+							[id]="'attachVolume' + vm?.name"
+							disabled
+							(click)="showVolumeModal('attach')"
+						>
+							Attach Volume
 						</button>
 					</span>
 				</div>
-				<div class="col-md-2"
-						 *ngIf="(vm?.status |hasStatus:VirtualMachineStates.staticACTIVE)  && vm?.volumes.length > 0">
-					<div class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
-							 [id]="'attachVolume' + vm?.name"
-							 (click)="showVolumeModal('detach')">
+				<div
+					class="col-md-2"
+					*ngIf="(vm?.status | hasStatus: VirtualMachineStates.staticACTIVE) && vm?.volumes.length > 0"
+				>
+					<div
+						class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+						[id]="'attachVolume' + vm?.name"
+						(click)="showVolumeModal('detach')"
+					>
 						Detach Volume
 					</div>
 				</div>
-				<div class="col-md-2"
-					 *ngIf="(vm?.status |hasStatus:VirtualMachineStates.staticSHUTOFF)  && vm?.volumes.length > 0">
-					<span class="d-inline-block" tabindex="0" data-toggle="tooltip" style="width:100%;"
-						title="Start the virtual machine to detach volumes">
-						<button class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
-							   [id]="'attachVolume' + vm?.name" disabled
-							   (click)="showVolumeModal('detach')">
-						Detach Volume
+				<div
+					class="col-md-2"
+					*ngIf="(vm?.status | hasStatus: VirtualMachineStates.staticSHUTOFF) && vm?.volumes.length > 0"
+				>
+					<span
+						class="d-inline-block"
+						tabindex="0"
+						data-toggle="tooltip"
+						style="width: 100%"
+						title="Start the virtual machine to detach volumes"
+					>
+						<button
+							class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+							[id]="'attachVolume' + vm?.name"
+							disabled
+							(click)="showVolumeModal('detach')"
+						>
+							Detach Volume
 						</button>
 					</span>
 				</div>
-				<div class="col-md-2" *ngIf="(vm?.status |hasStatus:VirtualMachineStates.staticACTIVE) ">
-					<div class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
-							 [id]="'stopVMButton_' + vm?.name" (click)="showStopModal();">
+				<div class="col-md-2" *ngIf="vm?.status | hasStatus: VirtualMachineStates.staticACTIVE">
+					<div
+						class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+						[id]="'stopVMButton_' + vm?.name"
+						(click)="showStopModal()"
+					>
 						Stop VM
 					</div>
 				</div>
-				<div class="col-md-2" *ngIf="(vm?.status |hasStatus:VirtualMachineStates.staticSHUTOFF) ">
-					<div class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
-							 [id]="'restartVMButton_' + vm?.name" (click)="showRestartModal();">
+				<div class="col-md-2" *ngIf="vm?.status | hasStatus: VirtualMachineStates.staticSHUTOFF">
+					<div
+						class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+						[id]="'restartVMButton_' + vm?.name"
+						(click)="showRestartModal()"
+					>
 						Start VM
 					</div>
 				</div>
-				<div class="col-md-2"
-						 *ngIf="vm.client.features['VM_REBOOT'] && !(vm?.status |hasStatus:VirtualMachineStates.staticDELETED)">
-					<div class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
-							 [id]="'chooseRebootVMButton_' + vm?.name"
-							 (click)="showRebootModal();">
+				<div
+					class="col-md-2"
+					*ngIf="vm.client.features['VM_REBOOT'] && !(vm?.status | hasStatus: VirtualMachineStates.staticDELETED)"
+				>
+					<div
+						class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+						[id]="'chooseRebootVMButton_' + vm?.name"
+						(click)="showRebootModal()"
+					>
 						Reboot VM
 					</div>
 				</div>
-				<div class="col-md-2"
-						 *ngIf="(vm?.status |hasStatus:VirtualMachineStates.staticACTIVE)
-						 || (vm?.status |hasStatus:VirtualMachineStates.staticSHUTOFF)">
-					<div class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
-							 [id]="'createSnapshotVMButton_' + vm?.name"
-							 (click)="showSnapshotModal()">
+				<div
+					class="col-md-2"
+					*ngIf="
+						(vm?.status | hasStatus: VirtualMachineStates.staticACTIVE) ||
+						(vm?.status | hasStatus: VirtualMachineStates.staticSHUTOFF)
+					"
+				>
+					<div
+						class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+						[id]="'createSnapshotVMButton_' + vm?.name"
+						(click)="showSnapshotModal()"
+					>
 						Create Snapshot
 					</div>
 				</div>
-				<div class="col-md-2" *ngIf="(vm?.status |hasStatus:VirtualMachineStates.staticACTIVE)
-																		 || (vm?.status |hasStatus:VirtualMachineStates.staticSHUTOFF)
-																		 || (vm?.status |hasStatus:VirtualMachineStates.staticERROR)">
-					<div class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
-							 [id]="'deleteVMButton_' + vm?.name" (click)="showDeleteModal();">
+				<div
+					class="col-md-2"
+					*ngIf="
+						(vm?.status | hasStatus: VirtualMachineStates.staticACTIVE) ||
+						(vm?.status | hasStatus: VirtualMachineStates.staticSHUTOFF) ||
+						(vm?.status | hasStatus: VirtualMachineStates.staticERROR) ||
+						(vm?.status | hasStatus: VirtualMachineStates.staticPORT_CLOSED)
+					"
+				>
+					<div
+						class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+						[id]="'deleteVMButton_' + vm?.name"
+						(click)="showDeleteModal()"
+					>
 						Delete VM
 					</div>
 				</div>
