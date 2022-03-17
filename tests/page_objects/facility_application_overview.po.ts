@@ -5,14 +5,13 @@ import { Util } from '../util';
  * Facilityoverivew page.
  */
 export class FacilityApplicationOverviewPage {
-
 	private readonly FACILITY_OVERVIEW_URL: string = 'facility-manager/facilityApplications';
 	private readonly APPLICATION_APPROVAL_BTN_PREFIX: string = 'approval_';
 	private readonly SUCCESSFULLY_APPROVED_APPL: string = 'Successfully approved the application.';
 	private readonly NOTIFICATION_MESSAGE: string = 'notification_message';
 	private readonly EXTENSION_APPROVAL_BTN_PREFIX: string = 'extension_approval_';
 	private readonly MODIFICATION_APPROVAL_BTN_PREFIX: string = 'approveModificationButton_';
-	private readonly EXTENSION_SUCCESSFULLY: string = 'Successfully approved the application modification.';
+	private readonly EXTENSION_SUCCESSFULLY: string = 'Successfully approved extension!';
 	private readonly MODIFICATION_EXTENSION_SUCCESS_TEXT: string = 'Successfully approved modification!';
 	private readonly TAB_STATE_MODIFICATION_BUTTON: string = 'tab_state_button_modification_requests';
 	private readonly TAB_STATE_TERMINATION_BUTTON: string = 'tab_state_button_termination_requests';
@@ -44,7 +43,6 @@ export class FacilityApplicationOverviewPage {
 	constructor(page: Page, baseURL) {
 		this.page = page;
 		this.baseURL = baseURL;
-
 	}
 
 	async goto() {
@@ -53,7 +51,6 @@ export class FacilityApplicationOverviewPage {
 		console.log(this.page.url());
 
 		expect(this.page.url()).toContain('/#/facility-manager/facilityApplications');
-
 	}
 
 	async goToSubmittedApplication() {
@@ -67,30 +64,38 @@ export class FacilityApplicationOverviewPage {
 
 	async goToLifetimeRequests() {
 		await this.goto();
+		await this.page.waitForSelector(Util.by_data_test_id_str(this.LOADING_APPLICATIONS), { state: 'hidden' });
+		await this.page.waitForTimeout(5000);
 		await this.page.locator(Util.by_data_test_id_str(this.EXTENSION_REQUESTS_APPLICATIONS_TAB)).click();
 		await this.page.waitForSelector(Util.by_data_test_id_str(this.LOADING_APPLICATIONS), { state: 'hidden' });
-		await this.page.waitForSelector(Util.by_data_test_id_str(this.LIFETIME_REQUESTS_APPLICATIONS_CONTAINER), { state: 'visible' });
-
+		await this.page.waitForSelector(Util.by_data_test_id_str(this.LIFETIME_REQUESTS_APPLICATIONS_CONTAINER), {
+			state: 'visible',
+		});
 	}
 
 	async goToModificationRequests() {
 		await this.goto();
+		await this.page.waitForSelector(Util.by_data_test_id_str(this.LOADING_APPLICATIONS), { state: 'hidden' });
+		await this.page.waitForTimeout(5000);
 		await this.page.locator(Util.by_data_test_id_str(this.MODIFICATION_REQUESTS_APPLICATIONS_TAB)).click();
 		await this.page.waitForSelector(Util.by_data_test_id_str(this.LOADING_APPLICATIONS), { state: 'hidden' });
-		await this.page.waitForSelector(Util.by_data_test_id_str(this.MODIFICATION_REQUESTS_APPLICATIONS_CONTAINER), { state: 'visible' });
-
+		await this.page.waitForSelector(Util.by_data_test_id_str(this.MODIFICATION_REQUESTS_APPLICATIONS_CONTAINER), {
+			state: 'visible',
+		});
 	}
 
 	async goToTerminationRequests() {
 		await this.goto();
 		console.log('Click Termination Request Tab');
+		await this.page.waitForSelector(Util.by_data_test_id_str(this.LOADING_APPLICATIONS), { state: 'hidden' });
+		await this.page.waitForTimeout(5000);
 		await this.page.locator(Util.by_data_test_id_str(this.TERMINATE_REQUESTS_APPLICATIONS_TAB)).click();
 		console.log('Wait for loader gone');
-
 		await this.page.waitForSelector(Util.by_data_test_id_str(this.LOADING_APPLICATIONS), { state: 'hidden' });
 		console.log('Wait for loaded applications');
-		await this.page.waitForSelector(Util.by_data_test_id_str(this.TERMINATION_REQUESTS_APPLICATIONS_CONTAINER), { state: 'visible' });
-
+		await this.page.waitForSelector(Util.by_data_test_id_str(this.TERMINATION_REQUESTS_APPLICATIONS_CONTAINER), {
+			state: 'visible',
+		});
 	}
 
 	async approveApplication(application_name: string): Promise<any> {
@@ -106,37 +111,30 @@ export class FacilityApplicationOverviewPage {
 	async approveApplicationExtension(application_name: string): Promise<any> {
 		await this.goToLifetimeRequests();
 		console.log(`Approve Application${application_name} Extension`);
-		await this.page.locator(Util.by_data_test_id_str(this.APPLICATION_APPROVAL_BTN_PREFIX + application_name)).click();
+		await this.page.locator(Util.by_data_test_id_str(this.EXTENSION_APPROVAL_BTN_PREFIX + application_name)).click();
 		await this.page.waitForSelector(`data-test-id=${this.NOTIFICATION_MODAL_TITLE} >> text=Success`);
 
 		const approval_response: string = await this.page.innerText(Util.by_data_test_id_str(this.NOTIFICATION_MESSAGE));
 		expect(approval_response).toContain(this.EXTENSION_SUCCESSFULLY);
 		await this.page.locator(Util.by_data_test_id_str(this.CLOSE_NOTIFICATION_MODAL)).click();
-
 	}
 
-	async terminatePTApplications(): Promise<any> {
+	async terminateApplications(project_name: string): Promise<any> {
 		await this.goToTerminationRequests();
-
-		console.log('Terminate all PT projects');
-		console.log('Decline open PT SimpleVM applications');
-
+		console.log(`Terminate all openstack projects with name ${project_name}`);
 		const project_count: number = await this.page.locator(Util.by_data_test_id_str(this.TERMINATE_PROJECT_BTN)).count();
-		console.log(project_count);
+		console.log(`Terminating ${project_count} openstack projects with name ${project_name}`);
 		// eslint-disable-next-line no-plusplus
 		for (let i = 0; i < project_count; i++) {
 			// eslint-disable-next-line no-await-in-loop
 			await this.page.locator(Util.by_data_test_id_str(this.TERMINATE_PROJECT_BTN)).first().click();
 			// eslint-disable-next-line no-await-in-loop
 			await this.page.locator(Util.by_data_test_id_str(this.APPROVE_TERMINATION_PT_APPLICATION_BTN)).first().click();
-
 			// eslint-disable-next-line no-await-in-loop
 			await this.page.waitForSelector(`data-test-id=${this.NOTIFICATION_MESSAGE} >> text=${this.WAS_TERMINATED}`);
 			// eslint-disable-next-line no-await-in-loop
 			await this.page.locator(Util.by_data_test_id_str(this.CLOSE_NOTIFICATION_BTN)).click();
-
 		}
-
 	}
 
 	async approveApplicationModification(application_name: string): Promise<any> {
@@ -147,7 +145,5 @@ export class FacilityApplicationOverviewPage {
 		const approval_response: string = await this.page.innerText(Util.by_data_test_id_str(this.NOTIFICATION_MESSAGE));
 		expect(approval_response).toContain(this.MODIFICATION_EXTENSION_SUCCESS_TEXT);
 		await this.page.locator(Util.by_data_test_id_str(this.CLOSE_NOTIFICATION_MODAL)).click();
-
 	}
-
 }

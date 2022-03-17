@@ -23,6 +23,7 @@ export class ImageDetailComponent implements OnInit {
 	@Input() selectedFlavor: Flavor;
 	@Output() readonly selectedImageChange: EventEmitter<Image> = new EventEmitter();
 
+	regexp_data_test_id: RegExp = /[ ().]/g;
 	carousel_activated: boolean = true;
 	images_per_row: number = 4;
 	window_size: number;

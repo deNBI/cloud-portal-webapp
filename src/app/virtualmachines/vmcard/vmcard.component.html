@@ -12,12 +12,20 @@
 					style="margin-left: 10px; padding-right: 5px"
 					id="detail_{{ vm.name }}"
 					[routerLink]="['/virtualmachines/detail/' + vm?.openstackid]"
+					[ngClass]="{
+						'active-machine': (vm?.status | hasStatus: VirtualMachineStates.staticACTIVE),
+						'shutoff-machine': (vm?.status | hasStatus: VirtualMachineStates.staticSHUTOFF)
+					}"
 				>
 					<i *ngIf="vm?.still_used_confirmation_requested" class="fas fa-exclamation-triangle" style="color: red"> </i>
 					{{ vm?.name }}
 				</a>
 				<ng-template #statusElseBlock>
-					<span class="h5 text-primary" id="detail_{{ vm.name }}" style="margin-left: 10px; padding-right: 5px">
+					<span
+						class="h5 text-primary deleted-machine"
+						id="detail_{{ vm.name }}"
+						style="margin-left: 10px; padding-right: 5px"
+					>
 						<i *ngIf="vm?.still_used_confirmation_requested" class="fas fa-exclamation-triangle" style="color: red">
 						</i>
 						{{ vm?.name }}
@@ -71,6 +79,7 @@
 					>
 						<span
 							class="badge badge-pill badge-secondary"
+							[attr.data-test-id]="'volumes_count_' + vm?.name"
 							style="font-size: 10px; position: relative; top: -12px; left: -10px"
 						>
 							{{ vm?.volumes.length }}
@@ -83,6 +92,7 @@
 						style="font-size: 18px; cursor: pointer"
 						data-toggle="tooltip"
 						data-placement="right"
+						[attr.data-test-id]="'resenv_visible_' + vm?.name"
 						title="{{ 'Research Environment installed: ' + vm?.backend?.template }}"
 						(click)="this.copyToClipboard(vm?.res_env_url); this.showCopiedMessage(vm.name)"
 					>
@@ -226,7 +236,7 @@
 			</div>
 			<div *ngIf="vm?.msg !== '' && vm?.msg !== undefined && vm?.msg !== null" class="col-12" style="margin-left: 10px">
 				<div class="alert alert-info" role="alert" style="font-size: small">
-					<strong>Info: <span [innerHTML]="vm?.msg"></span></strong>
+					<strong>Info: <span data-test-id="vm-message-alert" [innerHTML]="vm?.msg"></span></strong>
 				</div>
 			</div>
 			<div *ngIf="vm?.cluster?.cluster_id" class="col-12" style="margin-left: 10px">

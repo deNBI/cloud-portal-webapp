@@ -1,121 +1,148 @@
 <div class="modal-header">
-	<h4>Extension request for {{project?.project_application_shortname}}</h4>
-	<button type="button" class="close" style="cursor: pointer"
-					(click)="bsModalRef.hide()" aria-label="Close">
+	<h4>Extension request for {{ project?.project_application_shortname }}</h4>
+	<button type="button" class="close" style="cursor: pointer" (click)="bsModalRef.hide()" aria-label="Close">
 		<span aria-hidden="true">&times;</span>
 	</button>
 </div>
 <div class="modal-body">
-
-	<form id="extension_application_form" #extensionForm="ngForm"
-				class="form-horizontal">
+	<form id="extension_application_form" #extensionForm="ngForm" class="form-horizontal">
 		<div class="form-group row">
 			<label class="col-md-4 form-control-label">
-				<strong>Lifetime* <i class="icon-question" data-toggle="tooltip"
-														 title="Current timespan of your project. You can extend your project by a maximum of {{max_lifetime}} months">
-				</i>
+				<strong
+					>Lifetime*
+					<i
+						class="icon-question"
+						data-toggle="tooltip"
+						title="Current timespan of your project. You can extend your project by a maximum of {{
+							max_lifetime
+						}} months"
+					>
+					</i>
 				</strong>
 			</label>
 
-
 			<div class="col">
 				<div class="input-group">
-					<input class="form-control"
-								 name="project_application_lifetime" placeholder="NA"
-								 type="text" value="{{life_time_string}}"
-								 disabled>
+					<input
+						class="form-control"
+						name="project_application_lifetime"
+						placeholder="NA"
+						type="text"
+						value="{{ life_time_string }}"
+						disabled
+					/>
 				</div>
 				<div class="help-block">Current lifetime</div>
 				<div class="help-block" style="color: green" *ngIf="temp_project_extension.extra_lifetime > 0">
-					New end date: {{new_end_date?.getDate()}}.{{new_end_date?.getMonth() + 1}}
-					.{{new_end_date?.getFullYear()}}</div>
+					New end date: {{ new_end_date?.getDate() }}.{{ new_end_date?.getMonth() + 1 }} .{{
+						new_end_date?.getFullYear()
+					}}
+				</div>
 			</div>
 
 			<div class="col">
 				<div class="input-group">
-					<input class="form-control"
-								 (change)="calculateNewEndDate(); calculateCreditsLifetime();"
-								 id="temp_project_extension_application_renewal_lifetime"
-								 name="temp_project_extension_application_renewal_lifetime"
-								 placeholder="e.g. 3"
-								 [(ngModel)]="temp_project_extension.extra_lifetime"
-								 type="number" min="1" max={{max_lifetime}} step="1" required
-								 appInteger appMinAmount="1" appMaxAmount={{max_lifetime}}
-								 [ngClass]="{
-                                'is-invalid': extensionForm.controls.temp_project_extension_application_renewal_lifetime?.invalid
-                                && (extensionForm.controls.temp_project_extension_application_renewal_lifetime?.dirty
-                                || extensionForm.controls.temp_project_extension_application_renewal_lifetime?.touched),
-                                'is-valid': extensionForm.controls.temp_project_extension_application_renewal_lifetime?.valid
-                                && (extensionForm.controls.temp_project_extension_application_renewal_lifetime?.dirty
-                                || extensionForm.controls.temp_project_extension_application_renewal_lifetime?.touched)}">
+					<input
+						class="form-control"
+						(change)="calculateNewEndDate(); calculateCreditsLifetime()"
+						id="temp_project_extension_application_renewal_lifetime"
+						data-test-id="project_extension_months_input"
+						name="temp_project_extension_application_renewal_lifetime"
+						placeholder="e.g. 3"
+						[(ngModel)]="temp_project_extension.extra_lifetime"
+						type="number"
+						min="1"
+						max="{{ max_lifetime }}"
+						step="1"
+						required
+						appInteger
+						appMinAmount="1"
+						appMaxAmount="{{ max_lifetime }}"
+						[ngClass]="{
+							'is-invalid':
+								extensionForm.controls.temp_project_extension_application_renewal_lifetime?.invalid &&
+								(extensionForm.controls.temp_project_extension_application_renewal_lifetime?.dirty ||
+									extensionForm.controls.temp_project_extension_application_renewal_lifetime?.touched),
+							'is-valid':
+								extensionForm.controls.temp_project_extension_application_renewal_lifetime?.valid &&
+								(extensionForm.controls.temp_project_extension_application_renewal_lifetime?.dirty ||
+									extensionForm.controls.temp_project_extension_application_renewal_lifetime?.touched)
+						}"
+					/>
 					<div class="input-group-append">
-						<span class="input-group-text" style="padding: 0 !important;"> months</span>
+						<span class="input-group-text" style="padding: 0 !important"> months</span>
 					</div>
 				</div>
 				<span class="help-block">Number of months you want to extend the project (up to a maximum of 6 months).</span>
 			</div>
 		</div>
-		<div class="form-group row" *ngIf="initial_number_of_edam_terms=== 0 ">
+		<div class="form-group row" *ngIf="initial_number_of_edam_terms === 0">
 			<label class="col-md-4 form-control-label"><strong>Research Topics* </strong></label>
 			<div class="col-md-8">
-				<div [ngClass]="{
-                                'danger-border': selected_ontology_terms.length <=0
-                                || selected_ontology_terms.length >10,
-                                'success-border':selected_ontology_terms.length >0
-                                && selected_ontology_terms?.length <=10
-                                }">
-					<ng-select #edam_ontology id="edam_input"
-										 [items]="edam_ontology_terms"
-										 [multiple]="true"
-										 bindLabel="term"
-										 maxSelectedItems="10"
-										 placeholder="Please select at least one topic"
-										 dropdownPosition="bottom"
-										 [(ngModel)]="selected_ontology_terms"
-										 name="selected_edam_terms"
-
-
+				<div
+					[ngClass]="{
+						'danger-border': selected_ontology_terms.length <= 0 || selected_ontology_terms.length > 10,
+						'success-border': selected_ontology_terms.length > 0 && selected_ontology_terms?.length <= 10
+					}"
+				>
+					<ng-select
+						#edam_ontology
+						id="edam_input"
+						[items]="edam_ontology_terms"
+						[multiple]="true"
+						bindLabel="term"
+						maxSelectedItems="10"
+						placeholder="Please select at least one topic"
+						dropdownPosition="bottom"
+						[(ngModel)]="selected_ontology_terms"
+						name="selected_edam_terms"
 					>
 					</ng-select>
-
 				</div>
 
-				<div *ngIf="selected_ontology_terms.length>10" class="alert alert-warning" role="alert">
+				<div *ngIf="selected_ontology_terms.length > 10" class="alert alert-warning" role="alert">
 					You can at most choose 10 research topics for your project.
 				</div>
 			</div>
 		</div>
 
-
 		<div class="form-group row">
-			<label class="col-md-4 form-control-label"
-						 for="temp_project_extension_application_renewal_comment"><strong>Comment</strong></label>
+			<label class="col-md-4 form-control-label" for="temp_project_extension_application_renewal_comment"
+				><strong>Comment</strong></label
+			>
 			<div class="col-md-8">
-                <textarea type="text" id="temp_project_extension_application_renewal_comment"
-													name="project_application_renewal_comment" class="form-control"
-													maxlength="8192"
-													placeholder=''
-													[(ngModel)]="temp_project_extension.comment"></textarea>
+				<textarea
+					type="text"
+					id="temp_project_extension_application_renewal_comment"
+					name="project_application_renewal_comment"
+					class="form-control"
+					maxlength="8192"
+					placeholder=""
+					[(ngModel)]="temp_project_extension.comment"
+				></textarea>
 				<span class="help-block">Additional information you want to share?</span>
 			</div>
 		</div>
 
-
 		<div *ngIf="project?.credits_allowed" class="form-group row">
 			<label id="creditnumber_extension" class="col">
-				<strong>Expected number of extra credits: <span
-					id="extension_credits">{{temp_project_extension.extra_credits}}</span></strong>
+				<strong
+					>Expected number of extra credits:
+					<span id="extension_credits">{{ temp_project_extension.extra_credits }}</span></strong
+				>
 			</label>
 		</div>
 		<div class="alert alert-primary" role="alert">
-			This is the expected number of extra credits that you get for your project and your current resources.
-			It accounts for an increase in requested project lifetime.
+			This is the expected number of extra credits that you get for your project and your current resources. It accounts
+			for an increase in requested project lifetime.
 		</div>
 	</form>
 
 	<div *ngIf="extensionForm.invalid" class="alert alert-warning" role="alert">
-		<p>Some required fields are incorrect or not filled in yet.
-			Please check if all required (*) fields are filled in correctly.</p>
+		<p>
+			Some required fields are incorrect or not filled in yet. Please check if all required (*) fields are filled in
+			correctly.
+		</p>
 		<p *ngIf="extensionForm.controls.temp_project_extension_application_renewal_lifetime?.invalid">
 			- Lifetime missing
 		</p>
@@ -125,22 +152,24 @@
 		</p>
 	</div>
 
-
 	<div class="modal-footer">
-		<div class="label">
-			By submitting this extension application you agree to the cloud usage policy.
-		</div>
-		<button type="button" class="btn  btn-primary"
-						form="extension_application_form" id="submit_extension_btn"
-						(click)="bsModalRef.hide(); calculateCreditsLifetime(); showSubmitModal();"
-						[disabled]="extensionForm.invalid || (((project?.project_application_edam_terms?.length === 0)
-                  || !project?.project_application_edam_terms) && selected_ontology_terms.length < 1)">
+		<div class="label">By submitting this extension application you agree to the cloud usage policy.</div>
+		<button
+			type="button"
+			class="btn btn-primary"
+			form="extension_application_form"
+			id="submit_extension_btn"
+			data-test-id="submit_extension_request_button"
+			(click)="bsModalRef.hide(); calculateCreditsLifetime(); showSubmitModal()"
+			[disabled]="
+				extensionForm.invalid ||
+				((project?.project_application_edam_terms?.length === 0 || !project?.project_application_edam_terms) &&
+					selected_ontology_terms.length < 1)
+			"
+		>
 			<i class="fa fa-dot-circle-o"></i>
 			Submit
 		</button>
-		<button type="button" class="btn btn-danger"
-						(click)="bsModalRef.hide()">
-			Close
-		</button>
+		<button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">Close</button>
 	</div>
 </div>
