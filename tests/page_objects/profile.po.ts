@@ -3,7 +3,7 @@ import { Page, expect } from '@playwright/test';
 import { Util } from '../util';
 
 /**
- * New Instance Page.
+ * Profile Page.
  */
 export class ProfilePage {
 	private OPEN_GENERATE_KEY_BUTTON: string = 'generateSShKey';

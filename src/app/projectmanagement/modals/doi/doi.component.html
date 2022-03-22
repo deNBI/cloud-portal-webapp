@@ -1,92 +1,135 @@
 <div *ngIf="doiQuestionModal">
 	<div class="modal-header">
 		<h4 class="modal-title">Publications</h4>
-		<button type="button" class="close" style="cursor: pointer;"
-						(click)="bsModalRef.hide();"
-						data-dismiss="modal" aria-label="Close">
+		<button
+			type="button"
+			class="close"
+			style="cursor: pointer"
+			(click)="bsModalRef.hide()"
+			data-dismiss="modal"
+			aria-label="Close"
+		>
 			<span aria-hidden="true">&times;</span>
 		</button>
 	</div>
 	<div class="modal-body">
 		<div>
-			<p><strong>Do you have any new publications that were made during your work with the de.NBI Cloud or
-				in which the de.NBI Cloud is mentioned?</strong></p>
+			<p>
+				<strong
+					>Do you have any new publications that were made during your work with the de.NBI Cloud or in which the de.NBI
+					Cloud is mentioned?</strong
+				>
+			</p>
 		</div>
 		<div class="modal-footer">
-			<div class="row" style="margin:auto">
+			<div class="row" style="margin: auto">
 				<div class="col-6">
-					<button id="new_dois_btn" class="btn btn-success" type="button"
-									(click)="setDoiModalState()">Yes
-					</button>
+					<button id="new_dois_btn" class="btn btn-success" type="button" (click)="setDoiModalState()">Yes</button>
 				</div>
 				<div class="col-6">
-					<button id="no_new_dois_btn" class="btn btn-primary" type="reset"
-									(click)="bsModalRef.hide();">No
+					<button
+						id="no_new_dois_btn"
+						class="btn btn-primary"
+						type="reset"
+						data-test-id="decline_publication_button"
+						(click)="bsModalRef.hide()"
+					>
+						No
 					</button>
 				</div>
 			</div>
 		</div>
-	</div><!-- /.modal-content -->
+	</div>
+	<!-- /.modal-content -->
 </div>
 
 <div *ngIf="doiModal">
 	<div class="modal-header">
 		<h4 class="modal-title">Digital object identifier (DOI)</h4>
-		<button type="button" class="close" style="cursor: pointer;"
-						(click)="bsModalRef.hide();"
-						data-dismiss="modal" aria-label="Close">
+		<button
+			type="button"
+			class="close"
+			style="cursor: pointer"
+			(click)="bsModalRef.hide()"
+			data-dismiss="modal"
+			aria-label="Close"
+		>
 			<span aria-hidden="true">&times;</span>
 		</button>
 	</div>
 	<div class="modal-body">
 		<div class="alert alert-primary">
-			<p>Please add the DOIs of new publications in this form. For more information on DOIs, please look <a
-				href="{{WIKI_PUBLICATIONS}}"
-				target="_blank" rel="noopener noreferrer">here</a>.
-				You can also add the publications at a later date on the project overview page.</p>
-			<p><strong>The addition or non-addition of publications/DOIs does not affect the renewal request procedure!</strong></p>
+			<p>
+				Please add the DOIs of new publications in this form. For more information on DOIs, please look
+				<a href="{{ WIKI_PUBLICATIONS }}" target="_blank" rel="noopener noreferrer">here</a>. You can also add the
+				publications at a later date on the project overview page.
+			</p>
+			<p>
+				<strong
+					>The addition or non-addition of publications/DOIs does not affect the renewal request procedure!</strong
+				>
+			</p>
 		</div>
 		<div class="table-responsive">
-			<table class="table ">
+			<table class="table">
 				<tbody>
-				<ng-container
-					*ngFor="let doi of dois">
+					<ng-container *ngFor="let doi of dois">
+						<tr>
+							<td>
+								<a target="_blank" rel="noopener noreferrer" [href]="'https://doi.org/' + doi.identifier">{{
+									doi.identifier
+								}}</a>
+							</td>
+							<td>
+								<button class="btn btn-danger" type="button" (click)="deleteDoi(doi)">
+									<i class="fa fa-trash"></i>&nbsp;
+								</button>
+							</td>
+						</tr>
+					</ng-container>
+
 					<tr>
 						<td>
-							<a target="_blank" rel="noopener noreferrer" [href]="'https://doi.org/' + doi.identifier">{{doi.identifier}}</a>
+							<input
+								style="width: 100%"
+								type="text"
+								required
+								placeholder="e.g. 10.1000/182"
+								id="modal_doi_input_field"
+								[disabled]="disableInput"
+								class="form-control"
+								pattern="10.\d{4,9}\/[-._;()\/:a-zA-Z0-9]+"
+								[(ngModel)]="newDoi"
+								#doiInput
+							/>
 						</td>
 						<td>
 							<button
-								class="btn btn-danger" type="button" (click)="deleteDoi(doi);">
-								<i class="fa fa-trash"></i>&nbsp;
+								id="add_doi_btn_in_modal"
+								(click)="addDoi()"
+								[disabled]="!doiInput.validity.valid || disableInput"
+								type="button"
+								class="btn btn-success"
+							>
+								<i class="fa fa-plus"></i>&nbsp;
 							</button>
 						</td>
 					</tr>
-				</ng-container>
-
-				<tr>
-					<td>
-						<input style="width: 100%" type="text" required placeholder="e.g. 10.1000/182" id="modal_doi_input_field"
-									 [disabled]="disableInput" class="form-control"
-									 pattern="10.\d{4,9}\/[-._;()\/:a-zA-Z0-9]+" [(ngModel)]="newDoi" #doiInput></td>
-					<td>
-						<button id="add_doi_btn_in_modal"
-										(click)="addDoi();"
-										[disabled]="!doiInput.validity.valid || disableInput"
-										type="button"
-										class="btn btn-success"><i class="fa fa-plus"></i>&nbsp;
-						</button>
-					</td>
-
-				</tr>
 				</tbody>
 			</table>
 		</div>
 
-		<div class="modal-footer" style="text-align:center;">
-			<button id="doi_continue_btn" class="btn btn-success col-md-6" type="button"
-							style="margin:auto;" (click)="bsModalRef.hide();">Continue
+		<div class="modal-footer" style="text-align: center">
+			<button
+				id="doi_continue_btn"
+				class="btn btn-success col-md-6"
+				type="button"
+				style="margin: auto"
+				(click)="bsModalRef.hide()"
+			>
+				Continue
 			</button>
 		</div>
-	</div><!-- /.modal-content -->L
+	</div>
+	<!-- /.modal-content -->L
 </div>
