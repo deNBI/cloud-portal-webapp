@@ -1,6 +1,6 @@
 {
 	"name": "@denbi/cloud-portal-webapp",
-	"version": "4.180.0",
+	"version": "4.181.0",
 	"description": "de.NBI Cloud Portal",
 	"scripts": {
 		"ng": "ng serve",
@@ -98,7 +98,7 @@
 		"@angular/compiler-cli": "13.3.0",
 		"@compodoc/compodoc": "1.1.19",
 		"@playwright/test": "1.20.1",
-		"@types/jasmine": "4.0.0",
+		"@types/jasmine": "4.0.1",
 		"@types/node": "16.11.26",
 		"@typescript-eslint/eslint-plugin": "5.16.0",
 		"@typescript-eslint/parser": "5.16.0",
