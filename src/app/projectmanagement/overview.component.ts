@@ -47,11 +47,17 @@ import { CreditsRequestComponent } from './modals/credits-request/credits-reques
 @Component({
 	selector: 'app-project-overview',
 	templateUrl: 'overview.component.html',
-	providers: [FlavorService, ApplicationsService,
-		FacilityService, UserService, GroupService, ApiSettings, CreditsService],
+	providers: [
+		FlavorService,
+		ApplicationsService,
+		FacilityService,
+		UserService,
+		GroupService,
+		ApiSettings,
+		CreditsService,
+	],
 })
 export class OverviewComponent extends ApplicationBaseClassComponent implements OnInit, OnDestroy {
-
 	bsModalRef: BsModalRef;
 	modificationRequestDisabled: boolean = false;
 	lifetimeExtensionDisabled: boolean = false;
@@ -179,7 +185,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 			this.getListOfTypes();
 			this.getDois();
 			this.is_vo_admin = is_vo;
-
 		});
 	}
 
@@ -199,41 +204,39 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
 	getApplication(): void {
 		this.subscription.add(
-			this.applicationsService
-				.getFullApplicationByUserPermissions(this.application_id)
-				.subscribe(
-					(aj: Application): void => {
-						if (aj.project_application_name === '') {
-							this.isLoaded = false;
-							this.errorMessage = 'Not found';
-
-							return;
-						}
-
-						this.project_application = aj;
-
-						this.setSupportMails(this.project_application);
-
-						if (this.project_application.project_application_perun_id) {
-							this.getUsedResources();
-							if (this.project_application.user_is_admin || this.project_application.show_member_names) {
-								this.getMembersOfTheProject();
-							}
-							if (this.project_application.credits_allowed && !this.project_application.credits_loop_started) {
-								this.project_application.setCreditsLoopStarted();
-								this.startUpdateCreditUsageLoop();
-							}
-						}
-
-						this.isLoaded = true;
-					},
-					(error: any): void => {
+			this.applicationsService.getFullApplicationByUserPermissions(this.application_id).subscribe(
+				(aj: Application): void => {
+					if (aj.project_application_name === '') {
 						this.isLoaded = false;
-						this.errorMessage = `Status: ${error.status.toString()},
+						this.errorMessage = 'Not found';
+
+						return;
+					}
+
+					this.project_application = aj;
+
+					this.setSupportMails(this.project_application);
+
+					if (this.project_application.project_application_perun_id) {
+						this.getUsedResources();
+						if (this.project_application.user_is_admin || this.project_application.show_member_names) {
+							this.getMembersOfTheProject();
+						}
+						if (this.project_application.credits_allowed && !this.project_application.credits_loop_started) {
+							this.project_application.setCreditsLoopStarted();
+							this.startUpdateCreditUsageLoop();
+						}
+					}
+
+					this.isLoaded = true;
+				},
+				(error: any): void => {
+					this.isLoaded = false;
+					this.errorMessage = `Status: ${error.status.toString()},
                    StatusText: ${error.statusText.toString()},
                    Error Message: ${error.error.toString()}`;
-					},
-				),
+				},
+			),
 		);
 	}
 
@@ -297,15 +300,13 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 		this.bsModalRef = this.modalService.show(DoiComponent, { initialState });
 		this.bsModalRef.setClass('modal-lg');
 		this.subscription.add(
-			this.bsModalRef.content.event.subscribe(
-				(result: any) => {
-					if ('reloadDoi' in result && result['reloadDoi']) {
-						this.getDois();
-					} else if ('reloadDoi' in result && !result['reloadDoi']) {
-						this.showLifetimeExtensionModal();
-					}
-				},
-			),
+			this.bsModalRef.content.event.subscribe((result: any) => {
+				if ('reloadDoi' in result && result['reloadDoi']) {
+					this.getDois();
+				} else if ('reloadDoi' in result && !result['reloadDoi']) {
+					this.showLifetimeExtensionModal();
+				}
+			}),
 		);
 	}
 
@@ -343,95 +344,105 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
 	subscribeForExtensionResult(type: ExtensionRequestType): void {
 		this.subscription.add(
-			this.bsModalRef.content.event.subscribe(
-				(result: any) => {
-					if ('reload' in result && result['reload']) {
-						if (type === this.ExtensionRequestType.EXTENSION) {
-							this.lifetimeExtensionDisabled = true;
-						} else if (type === this.ExtensionRequestType.MODIFICATION) {
-							this.modificationRequestDisabled = true;
-						} else if (type === this.ExtensionRequestType.CREDIT) {
-							this.creditsExtensionDisabled = true;
-						}
-						this.fullLayout.getGroupsEnumeration();
-						this.getApplication();
-					} else if (type === this.ExtensionRequestType.EXTENSION) {
-						this.lifetimeExtensionDisabled = false;
+			this.bsModalRef.content.event.subscribe((result: any) => {
+				if ('reload' in result && result['reload']) {
+					if (type === this.ExtensionRequestType.EXTENSION) {
+						this.lifetimeExtensionDisabled = true;
 					} else if (type === this.ExtensionRequestType.MODIFICATION) {
-						this.modificationRequestDisabled = false;
+						this.modificationRequestDisabled = true;
 					} else if (type === this.ExtensionRequestType.CREDIT) {
-						this.creditsExtensionDisabled = false;
+						this.creditsExtensionDisabled = true;
 					}
-				},
-			),
+					this.fullLayout.getGroupsEnumeration();
+					this.getApplication();
+				} else if (type === this.ExtensionRequestType.EXTENSION) {
+					this.lifetimeExtensionDisabled = false;
+				} else if (type === this.ExtensionRequestType.MODIFICATION) {
+					this.modificationRequestDisabled = false;
+				} else if (type === this.ExtensionRequestType.CREDIT) {
+					this.creditsExtensionDisabled = false;
+				}
+			}),
 		);
 	}
 
 	fetchCreditHistoryOfProject(): void {
 		this.creditHistoryLoaded = false;
 		if (this.project_application != null && this.project_application.credits_allowed) {
-			this.creditsService.getCreditsUsageHistoryOfProject(Number(this.project_application.project_application_perun_id.toString())).toPromise()
+			this.creditsService
+				.getCreditsUsageHistoryOfProject(Number(this.project_application.project_application_perun_id.toString()))
+				.toPromise()
 				.then((response: {}): void => {
 					if (response['data_points'] !== undefined) {
 						const data_points: number[] = response['data_points'];
-
-						this.creditsChart = new Chart(this.creditsCanvas.nativeElement, {
-							type: 'line',
-							data: {
-								labels: response['time_points'],
-								datasets: [{
-									label: 'Credit Usage',
-									data: data_points,
-									borderColor: 'rgba(54, 162, 235, 1)',
-									backgroundColor: 'rgba(54, 162, 235, 0.2)',
-								}],
-							},
-							options: {
-								animation: {
-									duration: 0,
+						if (this.creditsChart !== undefined) {
+							this.creditsChart.data.labels = response['time_points'];
+							this.creditsChart.data.datasets[0].data = data_points;
+							this.creditsChart.update();
+						} else {
+							this.creditsChart = new Chart(this.creditsCanvas.nativeElement, {
+								type: 'line',
+								data: {
+									labels: response['time_points'],
+									datasets: [
+										{
+											label: 'Credit Usage',
+											data: data_points,
+											borderColor: 'rgba(54, 162, 235, 1)',
+											backgroundColor: 'rgba(54, 162, 235, 0.2)',
+										},
+									],
 								},
-								layout: {
-									padding: {
-										left: 25,
-										right: 25,
-										top: 25,
-										bottom: 50,
+								options: {
+									animation: {
+										duration: 0,
 									},
+									layout: {
+										padding: {
+											left: 25,
+											right: 25,
+											top: 25,
+											bottom: 50,
+										},
+									},
+									responsive: true,
 								},
-								responsive: true,
-							},
-						});
+							});
+						}
 					}
 					if (!this.creditHistoryLoaded) {
 						this.creditHistoryLoaded = true;
 					}
-				}).catch((err: Error): void => console.log(err.message));
+				})
+				.catch((err: Error): void => console.log(err.message));
 		}
 	}
 
 	startUpdateCreditUsageLoop(): void {
-		if (!this.project_application.credits_allowed || !this.project_application || !this.project_application.project_application_perun_id) {
+		if (
+			!this.project_application.credits_allowed
+			|| !this.project_application
+			|| !this.project_application.project_application_perun_id
+		) {
 			return;
 		}
 		this.getCurrentCreditsOfProject();
 		this.fetchCreditHistoryOfProject();
 
-		this.updateCreditsUsedIntervals = setInterval(
-			(): any => this.getCurrentCreditsOfProject(),
-			10000,
-		);
+		this.updateCreditsUsedIntervals = setInterval((): any => this.getCurrentCreditsOfProject(), 10000);
 
-		this.updateCreditsHistoryIntervals = setInterval(
-			(): any => this.fetchCreditHistoryOfProject(),
-			30000,
-		);
-
+		this.updateCreditsHistoryIntervals = setInterval((): any => this.fetchCreditHistoryOfProject(), 30000);
 	}
 
 	getCurrentCreditsOfProject(): void {
-		if (this.project_application && this.project_application.project_application_perun_id && this.project_application.credits_allowed) {
+		if (
+			this.project_application
+			&& this.project_application.project_application_perun_id
+			&& this.project_application.credits_allowed
+		) {
 			this.subscription.add(
-				this.creditsService.getCurrentCreditsOfProject(this.project_application.project_application_perun_id.toString())
+				this.creditsService
+					.getCurrentCreditsOfProject(this.project_application.project_application_perun_id.toString())
 					.subscribe(
 						(credits: number): void => {
 							if (this.project_application != null) {
@@ -450,7 +461,8 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 		this.loaded = false;
 		this.application_action_done = false;
 		this.subscription.add(
-			this.groupService.approveGroupApplication(Number(this.project_application.project_application_perun_id), application)
+			this.groupService
+				.approveGroupApplication(Number(this.project_application.project_application_perun_id), application)
 				.subscribe((tmp_application: any): void => {
 					if (tmp_application['state'] === 'APPROVED') {
 						this.application_action_success = true;
@@ -458,7 +470,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 						this.application_action_success = false;
 
 						this.application_action_error_message = tmp_application['message'];
-
 					} else {
 						this.application_action_success = false;
 					}
@@ -469,7 +480,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 					this.getUserProjectApplications();
 					this.getMembersOfTheProject();
 					this.loaded = true;
-
 				}),
 		);
 	}
@@ -481,8 +491,10 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	isAbleToStart(): boolean {
 		if (this.resourceDataLoaded) {
 			if (!this.project_application?.project_application_openstack_project) {
-				if ((this.vmsInUse < this.maximumVMs)
-					&& (this.project_application.user_is_admin || !this.project_application.prevent_machines_starting)) {
+				if (
+					this.vmsInUse < this.maximumVMs
+					&& (this.project_application.user_is_admin || !this.project_application.prevent_machines_starting)
+				) {
 					return true;
 				}
 			}
@@ -500,15 +512,15 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
 		if (!this.project_application?.project_application_openstack_project) {
 			this.subscription.add(
-				this.groupService.getGroupResources(this.project_application.project_application_perun_id.toString()).subscribe(
-					(res: any): void => {
+				this.groupService
+					.getGroupResources(this.project_application.project_application_perun_id.toString())
+					.subscribe((res: any): void => {
 						this.vmsInUse = res['used_vms'];
 						this.maximumVMs = res['number_vms'];
 						this.coresInUse = res['cores_used'];
 						this.ramInUse = res['ram_used'];
 						this.resourceDataLoaded = true;
-					},
-				),
+					}),
 			);
 		} else {
 			this.maximumVMs = this.calculateNumberOfVMs(this.project_application?.flavors);
@@ -554,24 +566,28 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
 	toggleMemberNameVisibility(): void {
 		this.toggleLocked = true;
-		this.groupService.toggleVisibility(this.project_application.project_application_perun_id)
-			.subscribe((res: any): void => {
+		this.groupService.toggleVisibility(this.project_application.project_application_perun_id).subscribe(
+			(res: any): void => {
 				this.project_application.show_member_names = res['show_member_names'];
 				this.toggleLocked = false;
-			}, () => {
+			},
+			() => {
 				this.toggleLocked = false;
-			});
+			},
+		);
 	}
 
 	toggleStartingOfMachines(): void {
 		this.toggleLocked = true;
-		this.groupService.toggleStartingMachines(this.project_application.project_application_perun_id)
-			.subscribe((res: any): void => {
+		this.groupService.toggleStartingMachines(this.project_application.project_application_perun_id).subscribe(
+			(res: any): void => {
 				this.project_application.prevent_machines_starting = res['prevent_starting'];
 				this.toggleLocked = false;
-			}, () => {
+			},
+			() => {
 				this.toggleLocked = false;
-			});
+			},
+		);
 	}
 
 	switchToggleLocked(check: boolean): void {
@@ -609,11 +625,13 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 		this.updateNotificationModal('Waiting', 'Termination request will be submitted...', true, 'info');
 
 		this.subscription.add(
-			this.groupService.requestProjectTermination(this.project_application.project_application_perun_id).subscribe((): void => {
-				this.fullLayout.getGroupsEnumeration();
-				this.getApplication();
-				this.updateNotificationModal('Success', 'Termination was requested!', true, 'success');
-			}),
+			this.groupService
+				.requestProjectTermination(this.project_application.project_application_perun_id)
+				.subscribe((): void => {
+					this.fullLayout.getGroupsEnumeration();
+					this.getApplication();
+					this.updateNotificationModal('Success', 'Termination was requested!', true, 'success');
+				}),
 		);
 	}
 
@@ -621,13 +639,13 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 		this.loaded = false;
 		this.application_action_done = false;
 		this.subscription.add(
-			this.groupService.rejectGroupApplication(Number(this.project_application.project_application_perun_id), application)
+			this.groupService
+				.rejectGroupApplication(Number(this.project_application.project_application_perun_id), application)
 				.subscribe((tmp_application: any): void => {
 					this.project_application.project_application_member_applications = [];
 
 					if (tmp_application['state'] === 'REJECTED') {
 						this.application_action_success = true;
-
 					} else if (tmp_application['message']) {
 						this.application_action_success = false;
 
@@ -640,7 +658,6 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 					this.application_action_done = true;
 					this.getUserProjectApplications();
 					this.loaded = true;
-
 				}),
 		);
 	}
@@ -651,37 +668,37 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	getUserProjectApplications(): void {
 		this.loaded = false;
 		this.subscription.add(
-			this.groupService.getGroupApplications(this.project_application.project_application_perun_id).subscribe((applications: any): void => {
+			this.groupService
+				.getGroupApplications(this.project_application.project_application_perun_id)
+				.subscribe((applications: any): void => {
+					const newProjectApplications: ProjectMemberApplication[] = [];
+					if (applications.length === 0) {
+						this.project_application.project_application_member_applications = [];
 
-				const newProjectApplications: ProjectMemberApplication[] = [];
-				if (applications.length === 0) {
-					this.project_application.project_application_member_applications = [];
+						this.loaded = true;
+					}
+					for (const application of applications) {
+						const dateApplicationCreated: moment.Moment = moment(application['createdAt'], 'YYYY-MM-DD HH:mm:ss.SSS');
+						const membername: string = application['displayName'];
 
-					this.loaded = true;
-
-				}
-				for (const application of applications) {
-					const dateApplicationCreated: moment.Moment = moment(application['createdAt'], 'YYYY-MM-DD HH:mm:ss.SSS');
-					const membername: string = application['displayName'];
-
-					const newMemberApplication: ProjectMemberApplication = new ProjectMemberApplication(
-						application['id'],
-						membername,
-						`${dateApplicationCreated.date()}.${(dateApplicationCreated.month() + 1)}.${dateApplicationCreated.year()}`,
-					);
-					newProjectApplications.push(newMemberApplication);
-					this.project_application.project_application_member_applications = newProjectApplications;
-					this.loaded = true;
-
-				}
-
-			}),
+						const newMemberApplication: ProjectMemberApplication = new ProjectMemberApplication(
+							application['id'],
+							membername,
+							`${dateApplicationCreated.date()}.${dateApplicationCreated.month() + 1}.${dateApplicationCreated.year()}`,
+						);
+						newProjectApplications.push(newMemberApplication);
+						this.project_application.project_application_member_applications = newProjectApplications;
+						this.loaded = true;
+					}
+				}),
 		);
 	}
 
 	setSupportMails(project: Application): void {
-		if (typeof (project.project_application_compute_center?.Support) !== 'undefined'
-			&& project.project_application_compute_center?.Support) {
+		if (
+			typeof project.project_application_compute_center?.Support !== 'undefined'
+			&& project.project_application_compute_center?.Support
+		) {
 			this.supportMails = project.project_application_compute_center.Support.toString().split(',');
 		} else {
 			this.supportMails = [];
@@ -694,14 +711,16 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 	getMembersOfTheProject(): void {
 		this.project_members_loaded = false;
 		this.subscription.add(
-			this.groupService.getGroupMembers(this.project_application.project_application_perun_id.toString())
+			this.groupService
+				.getGroupMembers(this.project_application.project_application_perun_id.toString())
 				.subscribe((members: ProjectMember[]): void => {
 					this.project_members = members;
 					if (this.project_application.user_is_admin) {
-
-						if (this.project_application
+						if (
+							this.project_application
 							&& this.project_application.credits_allowed
-							&& !this.project_application.credits_loop_started) {
+							&& !this.project_application.credits_loop_started
+						) {
 							this.project_application.setCreditsLoopStarted();
 							this.startUpdateCreditUsageLoop();
 						}
@@ -710,14 +729,15 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 					this.isLoaded = true;
 				}),
 		);
-
 	}
 
 	setAllMembersChecked(): void {
 		if (!this.allSet) {
 			this.project_members.forEach((member: ProjectMember): void => {
-				if (!this.isMemberChecked(parseInt(member.memberId.toString(), 10))
-					&& this.userinfo.MemberId.toString() !== member.memberId.toString()) {
+				if (
+					!this.isMemberChecked(parseInt(member.memberId.toString(), 10))
+					&& this.userinfo.MemberId.toString() !== member.memberId.toString()
+				) {
 					this.checked_member_list.push(parseInt(member.memberId.toString(), 10));
 				}
 			});
@@ -730,20 +750,20 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
 	isMemberChecked(id: number): boolean {
 		return this.checked_member_list.indexOf(id) > -1;
-
 	}
 
 	checkIfAllMembersChecked(): void {
 		let all_set: boolean = true;
 		this.project_members.forEach((member: ProjectMember): void => {
-			if (!this.isMemberChecked(parseInt(member.memberId.toString(), 10)) && this.userinfo.MemberId !== member.memberId) {
+			if (
+				!this.isMemberChecked(parseInt(member.memberId.toString(), 10))
+				&& this.userinfo.MemberId !== member.memberId
+			) {
 				all_set = false;
-
 			}
 		});
 
 		this.allSet = all_set;
-
 	}
 
 	checkUnCheckMember(id: number): void {
@@ -751,56 +771,49 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 		if (indexOf !== -1) {
 			this.checked_member_list.splice(indexOf, 1);
 			this.allSet = false;
-
 		} else {
 			this.checked_member_list.push(id);
 			this.checkIfAllMembersChecked();
-
 		}
-
 	}
 
-	removeCheckedMembers():
-		void {
+	removeCheckedMembers(): void {
 		this.remove_members_clicked = true;
 
-		const members_in:
-			ProjectMember[] = [];
+		const members_in: ProjectMember[] = [];
 
-		const observables: Observable<number>[] = this.checked_member_list
-			.map((id: number): Observable<any> => this.groupService.removeMember(
+		const observables: Observable<number>[] = this.checked_member_list.map(
+			(id: number): Observable<any> => this.groupService.removeMember(
 				Number(this.project_application.project_application_perun_id),
 				id,
 				this.project_application.project_application_compute_center.FacilityId,
-			));
+			),
+		);
 		forkJoin(observables).subscribe((): void => {
-
 			this.project_members.forEach((member: ProjectMember): void => {
-
 				if (!this.isMemberChecked(parseInt(member.memberId.toString(), 10))) {
 					members_in.push(member);
-
 				}
-
 			});
 			this.project_members = members_in;
 			this.checked_member_list = [];
 			this.allSet = false;
 			this.remove_members_clicked = false;
-
 		});
 		this.allSet = false;
 	}
 
 	setAddUserInvitationLink(): void {
-		const uri: string = this.invitation_group_pre + this.project_application.perun_name
-			+ this.invitation_group_post + this.project_application.perun_name;
+		const uri: string =			this.invitation_group_pre
+			+ this.project_application.perun_name
+			+ this.invitation_group_post
+			+ this.project_application.perun_name;
 		this.invitation_link = uri;
 	}
 
 	copyToClipboard(text: string): void {
 		document.addEventListener('copy', (clipEvent: ClipboardEvent): void => {
-			clipEvent.clipboardData.setData('text/plain', (text));
+			clipEvent.clipboardData.setData('text/plain', text);
 			clipEvent.preventDefault();
 			document.removeEventListener('copy', null);
 		});
@@ -818,15 +831,11 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 						if (projectMember.memberId === entry.member_id) {
 							member_exist = true;
 							break;
-
 						}
-
 					}
 					if (!member_exist) {
 						this.filteredMembers.push(entry);
-
 					}
-
 				}
 			}),
 		);
@@ -834,122 +843,131 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 
 	public addMember(memberid: number, firstName: string, lastName: string): void {
 		this.subscription.add(
-			this.groupService.addMember(
-				this.project_application.project_application_perun_id,
-				memberid,
-				this.project_application.project_application_compute_center.FacilityId,
-			).subscribe(
-				(result: any): void => {
-					if (result.status === 200) {
-						this.updateNotificationModal('Success', `Member ${firstName} ${lastName} added.`, true, 'success');
-						this.getMembersOfTheProject();
-					} else {
-
-						this.updateNotificationModal('Failed', 'Member could not be added!', true, 'danger');
-					}
-				},
-				(error: any): void => {
-
-					if (error['name'] === 'AlreadyMemberException') {
-						this.updateNotificationModal('Info', `${firstName} ${lastName} is already a member of the project.`, true, 'info');
-					} else {
-						this.updateNotificationModal('Failed', 'Member could not be added!', true, 'danger');
-					}
-				},
-			),
+			this.groupService
+				.addMember(
+					this.project_application.project_application_perun_id,
+					memberid,
+					this.project_application.project_application_compute_center.FacilityId,
+				)
+				.subscribe(
+					(result: any): void => {
+						if (result.status === 200) {
+							this.updateNotificationModal('Success', `Member ${firstName} ${lastName} added.`, true, 'success');
+							this.getMembersOfTheProject();
+						} else {
+							this.updateNotificationModal('Failed', 'Member could not be added!', true, 'danger');
+						}
+					},
+					(error: any): void => {
+						if (error['name'] === 'AlreadyMemberException') {
+							this.updateNotificationModal(
+								'Info',
+								`${firstName} ${lastName} is already a member of the project.`,
+								true,
+								'info',
+							);
+						} else {
+							this.updateNotificationModal('Failed', 'Member could not be added!', true, 'danger');
+						}
+					},
+				),
 		);
 	}
 
 	public addAdmin(memberId: number, userId: number, firstName: string, lastName: string): void {
 		this.subscription.add(
-			this.groupService.addMember(
-				this.project_application.project_application_perun_id,
-				memberId,
-				this.project_application.project_application_compute_center.FacilityId,
-			).subscribe(
-				(): void => {
-					this.subscription.add(
-						this.groupService.addAdmin(
-							this.project_application.project_application_perun_id,
-							userId,
-							this.project_application.project_application_compute_center.FacilityId,
-						).subscribe(
-							(result: any): void => {
-
-								if (result.status === 200) {
-									this.updateNotificationModal('Success', `Admin ${firstName} ${lastName} added.`, true, 'success');
-									this.getMembersOfTheProject();
-								} else {
-									this.updateNotificationModal('Failed', 'Admin could not be added!', true, 'danger');
-								}
-							},
-							(error: any): void => {
-								if (error['name'] === 'AlreadyAdminException') {
-									this.updateNotificationModal(
-										'Info',
-										`${firstName} ${lastName} is already a admin of the project.`,
-										true,
-										'info',
-									);
-								} else {
-									this.updateNotificationModal('Failed', 'Admin could not be added!', true, 'danger');
-								}
-							},
-						),
-					);
-				},
-				(): void => {
-					this.subscription.add(
-						this.groupService.addAdmin(
-							this.project_application.project_application_perun_id,
-							userId,
-							this.project_application.project_application_compute_center.FacilityId,
-						).subscribe(
-							(result: any): void => {
-
-								if (result.status === 200) {
-									this.updateNotificationModal('Success', `Admin ${firstName} ${lastName} added.`, true, 'success');
-									this.getMembersOfTheProject();
-
-								} else {
-									this.updateNotificationModal('Failed', 'Admin could not be added!', true, 'danger');
-								}
-							},
-							(error: any): void => {
-								if (error['name'] === 'AlreadyAdminException') {
-									this.updateNotificationModal(
-										'Info',
-										`${firstName} ${lastName} is already a admin of the project.`,
-										true,
-										'info',
-									);
-								} else {
-									this.updateNotificationModal('Failed', 'Admin could not be added!', true, 'danger');
-								}
-							},
-						),
-					);
-				},
-			),
+			this.groupService
+				.addMember(
+					this.project_application.project_application_perun_id,
+					memberId,
+					this.project_application.project_application_compute_center.FacilityId,
+				)
+				.subscribe(
+					(): void => {
+						this.subscription.add(
+							this.groupService
+								.addAdmin(
+									this.project_application.project_application_perun_id,
+									userId,
+									this.project_application.project_application_compute_center.FacilityId,
+								)
+								.subscribe(
+									(result: any): void => {
+										if (result.status === 200) {
+											this.updateNotificationModal('Success', `Admin ${firstName} ${lastName} added.`, true, 'success');
+											this.getMembersOfTheProject();
+										} else {
+											this.updateNotificationModal('Failed', 'Admin could not be added!', true, 'danger');
+										}
+									},
+									(error: any): void => {
+										if (error['name'] === 'AlreadyAdminException') {
+											this.updateNotificationModal(
+												'Info',
+												`${firstName} ${lastName} is already a admin of the project.`,
+												true,
+												'info',
+											);
+										} else {
+											this.updateNotificationModal('Failed', 'Admin could not be added!', true, 'danger');
+										}
+									},
+								),
+						);
+					},
+					(): void => {
+						this.subscription.add(
+							this.groupService
+								.addAdmin(
+									this.project_application.project_application_perun_id,
+									userId,
+									this.project_application.project_application_compute_center.FacilityId,
+								)
+								.subscribe(
+									(result: any): void => {
+										if (result.status === 200) {
+											this.updateNotificationModal('Success', `Admin ${firstName} ${lastName} added.`, true, 'success');
+											this.getMembersOfTheProject();
+										} else {
+											this.updateNotificationModal('Failed', 'Admin could not be added!', true, 'danger');
+										}
+									},
+									(error: any): void => {
+										if (error['name'] === 'AlreadyAdminException') {
+											this.updateNotificationModal(
+												'Info',
+												`${firstName} ${lastName} is already a admin of the project.`,
+												true,
+												'info',
+											);
+										} else {
+											this.updateNotificationModal('Failed', 'Admin could not be added!', true, 'danger');
+										}
+									},
+								),
+						);
+					},
+				),
 		);
 	}
 
 	public promoteAdmin(userid: number, username: string): void {
-		this.groupService.addAdmin(
-			this.project_application.project_application_perun_id,
-			userid,
-			this.project_application.project_application_compute_center.FacilityId,
-		).toPromise()
+		this.groupService
+			.addAdmin(
+				this.project_application.project_application_perun_id,
+				userid,
+				this.project_application.project_application_compute_center.FacilityId,
+			)
+			.toPromise()
 			.then((result: any): void => {
-
 				if (result.status === 200) {
 					this.updateNotificationModal('Success', `${username} promoted to Admin`, true, 'success');
 					this.getMembersOfTheProject();
-
 				} else {
 					this.updateNotificationModal('Failed', `${username} could not be promoted to Admin!`, true, 'danger');
 				}
-			}).catch((): void => {
+			})
+			.catch((): void => {
 				this.updateNotificationModal('Failed', `${username} could not be promoted to Admin!`, true, 'danger');
 			});
 	}
@@ -959,20 +977,22 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 			return;
 		}
 
-		this.groupService.removeAdmin(
-			this.project_application.project_application_perun_id,
-			userid,
-			this.project_application.project_application_compute_center.FacilityId,
-		).toPromise()
+		this.groupService
+			.removeAdmin(
+				this.project_application.project_application_perun_id,
+				userid,
+				this.project_application.project_application_compute_center.FacilityId,
+			)
+			.toPromise()
 			.then((result: any): void => {
-
 				if (result.status === 200) {
 					this.updateNotificationModal('Success', `${name} was removed as Admin`, true, 'success');
 					this.getMembersOfTheProject();
 				} else {
 					this.updateNotificationModal('Failed', `${name} could not be removed as Admin!`, true, 'danger');
 				}
-			}).catch((): void => {
+			})
+			.catch((): void => {
 				this.updateNotificationModal('Failed', `${name} could not be removed as Admin!`, true, 'danger');
 			});
 	}
@@ -993,25 +1013,25 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 			this.allSet = false;
 		}
 		this.subscription.add(
-			this.groupService.removeMember(
-				this.project_application.project_application_perun_id,
-				memberid,
-				this.project_application.project_application_compute_center.FacilityId,
-			).subscribe(
-				(result: any): void => {
-
-					if (result.status === 200) {
-						this.updateNotificationModal('Success', `Member ${name}  removed from the group`, true, 'success');
-						this.getMembersOfTheProject();
-
-					} else {
+			this.groupService
+				.removeMember(
+					this.project_application.project_application_perun_id,
+					memberid,
+					this.project_application.project_application_compute_center.FacilityId,
+				)
+				.subscribe(
+					(result: any): void => {
+						if (result.status === 200) {
+							this.updateNotificationModal('Success', `Member ${name}  removed from the group`, true, 'success');
+							this.getMembersOfTheProject();
+						} else {
+							this.updateNotificationModal('Failed', `Member ${name}  could not be removed !`, true, 'danger');
+						}
+					},
+					(): void => {
 						this.updateNotificationModal('Failed', `Member ${name}  could not be removed !`, true, 'danger');
-					}
-				},
-				(): void => {
-					this.updateNotificationModal('Failed', `Member ${name}  could not be removed !`, true, 'danger');
-				},
-			),
+					},
+				),
 		);
 	}
 
@@ -1031,44 +1051,33 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 			);
 		} else {
 			this.subscription.add(
-				this.groupService.leaveGroup(
-					this.project_application.project_application_perun_id,
-					memberid,
-					this.project_application.project_application_compute_center.FacilityId,
-				).subscribe(
-					(result: any): void => {
-
-						if (result.status === 200) {
-							this.updateNotificationModal(
-								'Success',
-								`You were removed from the project ${projectname}`,
-								true,
-								'success',
-							);
-							void this.router.navigate(['/userinfo']);
-							this.fullLayout.getGroupsEnumeration();
-
-						} else {
-							this.updateNotificationModal(
-								'Failed',
-								`Failed to leave the project ${projectname}!`,
-								true,
-								'danger',
-							);
-						}
-					},
-					(): void => {
-						this.updateNotificationModal(
-							'Failed',
-							`Failed to leave the project ${projectname}!`,
-							true,
-							'danger',
-						);
-					},
-				),
+				this.groupService
+					.leaveGroup(
+						this.project_application.project_application_perun_id,
+						memberid,
+						this.project_application.project_application_compute_center.FacilityId,
+					)
+					.subscribe(
+						(result: any): void => {
+							if (result.status === 200) {
+								this.updateNotificationModal(
+									'Success',
+									`You were removed from the project ${projectname}`,
+									true,
+									'success',
+								);
+								void this.router.navigate(['/userinfo']);
+								this.fullLayout.getGroupsEnumeration();
+							} else {
+								this.updateNotificationModal('Failed', `Failed to leave the project ${projectname}!`, true, 'danger');
+							}
+						},
+						(): void => {
+							this.updateNotificationModal('Failed', `Failed to leave the project ${projectname}!`, true, 'danger');
+						},
+					),
 			);
 		}
-
 	}
 
 	/**
@@ -1089,5 +1098,4 @@ export class OverviewComponent extends ApplicationBaseClassComponent implements 
 			),
 		);
 	}
-
 }
