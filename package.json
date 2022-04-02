@@ -1,6 +1,6 @@
 {
 	"name": "@denbi/cloud-portal-webapp",
-	"version": "4.192.0",
+	"version": "4.193.0",
 	"description": "de.NBI Cloud Portal",
 	"scripts": {
 		"ng": "ng serve",
@@ -121,7 +121,7 @@
 		"lint-staged": "11.2.6",
 		"ngx-spec": "2.1.5",
 		"npm-run-all": "4.1.5",
-		"prettier": "2.6.1",
+		"prettier": "2.6.2",
 		"raw-loader": "4.0.2",
 		"sass-loader": "12.6.0",
 		"script-loader": "0.7.2",
