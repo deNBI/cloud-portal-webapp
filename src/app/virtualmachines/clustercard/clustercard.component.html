@@ -57,7 +57,7 @@
 		</div>
 		<div class="card-body p-x-1 py-h">
 			<div class="row">
-				<div class="col-2" *ngIf="cluster?.status === 'Running'">
+				<div class="col-md-auto" *ngIf="cluster?.status === 'Running'">
 					<a
 						*ngIf="!show_connection_info"
 						class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
@@ -77,7 +77,7 @@
 					>
 				</div>
 				<div
-					class="col-2"
+					class="col-md-auto"
 					*ngIf="
 						cluster?.status !== VirtualMachineStates.staticDELETED &&
 						cluster?.status !== VirtualMachineStates.staticDELETING &&
@@ -93,7 +93,7 @@
 					>
 				</div>
 				<div
-					class="col-2"
+					class="col-md-auto"
 					*ngIf="
 						cluster?.status !== VirtualMachineStates.staticDELETED &&
 						cluster?.status !== VirtualMachineStates.staticDELETING &&
@@ -109,7 +109,7 @@
 					>
 				</div>
 				<div
-					class="col-2"
+					class="col-md-auto"
 					*ngIf="
 						cluster?.status !== VirtualMachineStates.staticDELETED &&
 						cluster?.status !== VirtualMachineStates.staticDELETING &&
@@ -125,7 +125,7 @@
 					>
 				</div>
 				<div
-					class="col-2"
+					class="col-md-auto"
 					*ngIf="
 						cluster?.status !== VirtualMachineStates.staticDELETED &&
 						cluster?.status !== VirtualMachineStates.staticDELETING &&
@@ -142,7 +142,7 @@
 					>
 				</div>
 				<div
-					class="col-1"
+					class="col-md-auto"
 					*ngIf="
 						cluster?.status !== VirtualMachineStates.staticDELETED &&
 						cluster?.status !== VirtualMachineStates.staticNOT_FOUND &&
@@ -159,7 +159,7 @@
 					>
 				</div>
 				<div
-					class="col-1"
+					class="col-md-auto"
 					*ngIf="
 						cluster?.status !== VirtualMachineStates.staticDELETED &&
 						cluster?.status !== VirtualMachineStates.staticNOT_FOUND &&
@@ -175,7 +175,7 @@
 						Delete</a
 					>
 				</div>
-				<div class="col-1" *ngIf="cluster?.status === VirtualMachineStates.staticSHUTOFF">
+				<div class="col-md-auto" *ngIf="cluster?.status === VirtualMachineStates.staticSHUTOFF">
 					<a
 						class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
 						[id]="'restart_' + cluster?.cluster_id"
