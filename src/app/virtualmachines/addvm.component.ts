@@ -8,6 +8,7 @@ import {
 	STATUS_LINK,
 	WIKI_EPHEMERAL_LINK,
 	WIKI_MOSH_LINK,
+	WIKI_PERSISTENT_TERMINAL_LINK,
 	WIKI_VOLUME_OVERVIEW,
 } from 'links/links';
 import { KeyValue } from '@angular/common';
@@ -87,6 +88,7 @@ export class VirtualMachineComponent implements OnInit, DoCheck, OnDestroy {
 	STATUS_LINK: string = STATUS_LINK;
 	WIKI_EPHEMERAL_LINK: string = WIKI_EPHEMERAL_LINK;
 	WIKI_MOSH_LINK: string = WIKI_MOSH_LINK;
+	WIKI_PERSISTENT_TERMINAL_LINK = WIKI_PERSISTENT_TERMINAL_LINK;
 	blockedImageTagsResenv: BlockedImageTagResenv[];
 
 	forc_url: string = '';

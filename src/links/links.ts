@@ -42,6 +42,7 @@ export const STATUS_LINK: string = 'https://status.cloud.denbi.de/status';
 export const SUPPORT_LINK: string = 'https://cloud.denbi.de/support/';
 export const ZAMMAD_HELPDESK_LINK = 'https://helpdesk.cloud.denbi.de';
 export const GDPR_LINK = 'https://gdpr.eu/article-9-processing-special-categories-of-personal-data-prohibited/';
+export const WIKI_PERSISTENT_TERMINAL_LINK = `${environment.WIKI_PRE}Tutorials/Persistent_SSH_Sessions/`;
 
 export const WIKI_LINKS: string[] = [
 	WIKI_SNAPSHOTS,

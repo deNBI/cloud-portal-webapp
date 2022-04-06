@@ -327,19 +327,29 @@
 		"
 	>
 		<div *ngIf="vm?.cardState === 1">
-			<div class="row" *ngFor="let mode of vm?.modes">
-				<div class="col-md-1">
-					<span class="font-weight-bold font-xs btn-block text-muted">{{ mode.name }}:</span>
+			<div *ngFor="let mode of vm?.modes">
+				<div class="row">
+					<div class="col-md-1">
+						<span class="font-weight-bold font-xs btn-block text-muted">{{ mode.name }}:</span>
+					</div>
+					<div class="col-md-9">
+						<span class="font-weight-bold font-xs btn-block text-muted" [innerHTML]="mode.description"></span>
+					</div>
+					<div class="col-md-2" style="margin: auto" *ngIf="mode.copy_field && mode.copy_field !== ''">
+						<div
+							class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+							(click)="copyToClipboard(mode.copy_field)"
+						>
+							Copy command
+						</div>
+					</div>
 				</div>
-				<div class="col-md-9">
-					<span class="font-weight-bold font-xs btn-block text-muted" [innerHTML]="mode.description"></span>
-				</div>
-				<div class="col-md-2" style="margin: auto" *ngIf="mode.copy_field && mode.copy_field !== ''">
-					<div
-						class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
-						(click)="copyToClipboard(mode.copy_field)"
-					>
-						Copy command
+				<div class="row" *ngIf="mode.name === 'ssh'">
+					<div class="col-md-auto">
+						<p class="font-weight-bold font-xs text-muted">
+							Learn more about persistent terminal sessions when using ssh:
+							<a href="{{ WIKI_PERSISTENT_TERMINAL_LINK }}" target="_blank" rel="noopener noreferrer">Tutorial</a>
+						</p>
 					</div>
 				</div>
 			</div>

@@ -66,7 +66,7 @@
 										[ngValue]="project"
 										id="id_option_{{ project[0] }}"
 										[attr.data-test-id]="'project_option_' + project[0]"
-										label="{{project[0]}}"
+										label="{{ project[0] }}"
 									>
 										{{ project[0] }}
 									</option>
@@ -639,9 +639,9 @@
 										*ngIf="
 											has_forc &&
 											selectedProject &&
-												projectDataLoaded &&
-												selectedProjectRessources?.used_vms < selectedProjectRessources?.number_vms &&
-												(flavors?.length > 0 || selectedFlavor)
+											projectDataLoaded &&
+											selectedProjectRessources?.used_vms < selectedProjectRessources?.number_vms &&
+											(flavors?.length > 0 || selectedFlavor)
 										"
 										[isOpen]="resenvSelected"
 									>
@@ -964,6 +964,10 @@
 			<div class="modal-body" *ngIf="!error_starting_machine">
 				<p>{{ progress_bar_status }}</p>
 				<p>Redirecting to Instance Overview...</p>
+				<p>
+					<br />Learn about persistent terminal sessions in our
+					<a href="{{ WIKI_PERSISTENT_TERMINAL_LINK }}" target="_blank" rel="noopener noreferrer">Wiki</a>.
+				</p>
 				<div class="progress">
 					<div
 						class="progress-bar progress-bar-striped {{ progress_bar_animated }} bg-info"
