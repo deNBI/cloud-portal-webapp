@@ -1,148 +1,215 @@
-<div class="card instance-card" style="margin-bottom:15px;" [id]="'clusterCard_' + cluster?.cluster_id">
+<div class="card instance-card" style="margin-bottom: 15px" [id]="'clusterCard_' + cluster?.cluster_id">
+	<div class="card-block">
+		<div class="row" style="margin-top: 5px">
+			<div class="col-6" style="margin: auto">
+				<a
+					class="h5 text-primary"
+					style="margin-left: 10px"
+					[routerLink]="['/virtualmachines/cluster/' + cluster?.cluster_id]"
+					>{{ cluster?.name }}
+				</a>
 
-      <div class="card-block" >
-              <div class="row" style="margin-top: 5px">
-                <div class="col-6" style="margin: auto;">
+				<app-clusterstatus [cluster]="cluster"></app-clusterstatus>
+			</div>
+			<div class="col-3" style="margin: auto; text-align: center">
+				<a [routerLink]="['/project-management/' + cluster?.application_id]" rel="noopener noreferrer" target="_blank"
+					><strong>{{ cluster?.project }}</strong></a
+				>
+			</div>
+			<div class="col-3" style="margin: auto; text-align: center">
+				{{ cluster?.userlogin }}
+				<br />
+				{{ cluster?.launch_date }}
+			</div>
+		</div>
+		<div
+			class="row"
+			style="margin-top: 10px; margin-bottom: 5px"
+			*ngIf="cluster.status !== VirtualMachineStates.staticDELETED"
+		>
+			<div class="col-12" style="margin-left: 10px">
+				<div style="font-size: small"><strong *ngIf="cluster.cluster_id">ID:</strong> {{ cluster.cluster_id }}</div>
+			</div>
+			<div class="col-12" style="margin-left: 10px">
+				<div style="font-size: small">
+					<strong *ngIf="cluster.instances_count > 0">Inst:</strong> {{ cluster.instances_count }}
+				</div>
+			</div>
+			<div class="col-12" style="margin-left: 10px" *ngIf="cluster.status !== VirtualMachineStates.staticDELETED">
+				<div *ngFor="let batch of cluster.worker_batches" style="font-size: small">
+					<span *ngIf="batch.worker_count > 0">
+						<strong>Batch {{ batch.index }}: </strong> {{ batch.running_worker }}/{{ batch.worker_count }} VMs
+						active</span
+					>
+				</div>
+			</div>
+			<div class="col-12" style="margin-left: 10px" *ngIf="!all_worker_loaded">
+				<div style="font-size: small">
+					<strong>Checking worker count: </strong>
+					<span class="spinner-border text-info spinner-border-sm"> </span>
+				</div>
+			</div>
+			<div class="col-12" style="margin-left: 10px" *ngIf="cluster.status !== VirtualMachineStates.staticDELETED">
+				<div style="font-size: small">
+					<strong *ngIf="cluster?.public_ip">Public IP:</strong> {{ cluster?.public_ip }}
+				</div>
+			</div>
+		</div>
+		<div class="card-body p-x-1 py-h">
+			<div class="row">
+				<div class="col-md-auto" *ngIf="cluster?.status === 'Running'">
+					<a
+						*ngIf="!show_connection_info"
+						class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+						[id]="'showHowToConnectButton_' + cluster?.cluster_id"
+						(click)="show_connection_info = true"
+					>
+						How to connect ...</a
+					>
 
+					<a
+						*ngIf="show_connection_info"
+						class="font-weight-bold font-xs btn-block btn btn-secondary"
+						[id]="'hideHowToConnectButton_' + cluster?.cluster_id"
+						(click)="show_connection_info = false"
+					>
+						... Hide information</a
+					>
+				</div>
+				<div
+					class="col-md-auto"
+					*ngIf="
+						cluster?.status !== VirtualMachineStates.staticDELETED &&
+						cluster?.status !== VirtualMachineStates.staticDELETING &&
+						cluster?.status === 'Running'
+					"
+				>
+					<a
+						class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+						[id]="'scale_up_' + cluster?.cluster_id"
+						(click)="showScaleModal(SCALE_UP)"
+					>
+						Scale-Up</a
+					>
+				</div>
+				<div
+					class="col-md-auto"
+					*ngIf="
+						cluster?.status !== VirtualMachineStates.staticDELETED &&
+						cluster?.status !== VirtualMachineStates.staticDELETING &&
+						cluster?.status === 'Running'
+					"
+				>
+					<a
+						class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+						[id]="'scale_down_' + cluster?.cluster_id"
+						(click)="showScaleModal(SCALE_DOWN)"
+					>
+						Scale-Down</a
+					>
+				</div>
+				<div
+					class="col-md-auto"
+					*ngIf="
+						cluster?.status !== VirtualMachineStates.staticDELETED &&
+						cluster?.status !== VirtualMachineStates.staticDELETING &&
+						cluster?.status === 'Running'
+					"
+				>
+					<a
+						class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+						[id]="'generate_password_' + cluster?.cluster_id"
+						(click)="showPasswordModal()"
+					>
+						Generate Password</a
+					>
+				</div>
+				<div
+					class="col-md-auto"
+					*ngIf="
+						cluster?.status !== VirtualMachineStates.staticDELETED &&
+						cluster?.status !== VirtualMachineStates.staticDELETING &&
+						cluster?.status === 'Running'
+					"
+				>
+					<a
+						class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+						[id]="'stop_' + cluster?.cluster_id"
+						(click)="showStopModal()"
+						onClick="return false;"
+					>
+						Stop</a
+					>
+				</div>
+				<div
+					class="col-md-auto"
+					*ngIf="
+						cluster?.status !== VirtualMachineStates.staticDELETED &&
+						cluster?.status !== VirtualMachineStates.staticNOT_FOUND &&
+						cluster?.status !== VirtualMachineStates.staticDELETING
+					"
+				>
+					<a
+						class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+						[id]="'rename_' + cluster?.cluster_id"
+						(click)="showRenameModal()"
+						onClick="return false;"
+					>
+						Rename</a
+					>
+				</div>
+				<div
+					class="col-md-auto"
+					*ngIf="
+						cluster?.status !== VirtualMachineStates.staticDELETED &&
+						cluster?.status !== VirtualMachineStates.staticNOT_FOUND &&
+						cluster?.status !== VirtualMachineStates.staticDELETING
+					"
+				>
+					<a
+						class="font-weight-bold font-xs btn-block text-muted btn btn-outline-danger"
+						[id]="'delete_' + cluster?.cluster_id"
+						(click)="showDeleteModal()"
+						onClick="return false;"
+					>
+						Delete</a
+					>
+				</div>
+				<div class="col-md-auto" *ngIf="cluster?.status === VirtualMachineStates.staticSHUTOFF">
+					<a
+						class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+						[id]="'restart_' + cluster?.cluster_id"
+						(click)="showResumeModal()"
+						onClick="return false;"
+					>
+						Start</a
+					>
+				</div>
+				<div *ngIf="cluster?.status === VirtualMachineStates.staticNOT_FOUND" class="alert alert-warning" role="alert">
+					Please contact <a href="mailto:{{ CLOUD_PORTAL_SUPPORT_MAIL }}">{{ CLOUD_PORTAL_SUPPORT_MAIL }}</a>
+				</div>
+			</div>
+		</div>
+		<div class="card-footer p-x-1 py-h" *ngIf="show_connection_info">
+			<div>
+				<div class="row" *ngFor="let mode of cluster?.master_instance?.modes">
+					<div class="col-md-1">
+						<span class="font-weight-bold font-xs btn-block text-muted">{{ mode.name }}:</span>
+					</div>
+					<div class="col-md-9">
+						<span class="font-weight-bold font-xs btn-block text-muted" [innerHTML]="mode.description"></span>
+					</div>
 
-                  <a class="h5 text-primary" style="margin-left: 10px"
-
-                     [routerLink]="['/virtualmachines/cluster/' + cluster?.cluster_id]">{{cluster?.cluster_id}}  </a>
-
-                  <app-clusterstatus [cluster]="cluster"></app-clusterstatus>
-
-                </div>
-                <div class="col-3" style="margin: auto; text-align: center">
-                  <a [routerLink]="['/project-management/' + cluster?.application_id]" rel="noopener noreferrer"
-                     target="_blank"><strong>{{cluster?.project}}</strong></a>
-                </div>
-                <div class="col-3" style="margin: auto; text-align: center">
-                  {{cluster?.userlogin}}
-                  <br>
-                  {{cluster?.launch_date}}
-                </div>
-              </div>
-              <div class="row" style="margin-top: 10px; margin-bottom:5px;" *ngIf="cluster.status !== VirtualMachineStates.staticDELETED">
-                <div class="col-12" style="margin-left: 10px">
-                  <div style="font-size: small">
-                    <strong *ngIf="cluster.instances_count > 0">Inst:</strong> {{cluster.instances_count}}
-                  </div>
-                </div>
-                <div class="col-12" style="margin-left: 10px" *ngIf="cluster.status !== VirtualMachineStates.staticDELETED">
-                  <div *ngFor="let batch of cluster.worker_batches" style="font-size: small">
-                    <span *ngIf="batch.worker_count > 0">
-                    <strong>Batch {{batch.index}}: </strong>    {{batch.running_worker}}/{{batch.worker_count}} VMs
-                    active</span>
-                  </div>
-                </div>
-								<div class="col-12" style="margin-left: 10px" *ngIf="!all_worker_loaded">
-									<div style="font-size: small">
-										<strong>Checking worker count: </strong>
-										<span class="spinner-border text-info spinner-border-sm">
-										</span>
-									</div>
-								</div>
-                <div class="col-12" style="margin-left: 10px" *ngIf="cluster.status !== VirtualMachineStates.staticDELETED ">
-                  <div style="font-size: small">
-                    <strong *ngIf="cluster?.public_ip">Public IP:</strong> {{cluster?.public_ip}}
-                  </div>
-                </div>
-              </div>
-              <div class="card-body p-x-1 py-h">
-                <div class="row">
-                  <div class="col-2"
-                       *ngIf="cluster?.status === 'Running' ">
-                    <a *ngIf="!show_connection_info"
-                       class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
-                       [id]="'showHowToConnectButton_'+cluster?.cluster_id"
-                       (click)="show_connection_info=true; ">
-                      How to connect ...</a>
-
-                    <a *ngIf="show_connection_info" class="font-weight-bold font-xs btn-block btn btn-secondary"
-                       [id]="'hideHowToConnectButton_'+cluster?.cluster_id"
-                       (click)="show_connection_info=false; ">
-                      ... Hide information</a>
-                  </div>
-                  <div class="col-2"
-                       *ngIf="cluster?.status !== VirtualMachineStates.staticDELETED && cluster?.status !== VirtualMachineStates.staticDELETING && cluster?.status === 'Running' ">
-                    <a class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
-                       [id]="'scale_up_'+cluster?.cluster_id"
-                       (click)="showScaleModal(SCALE_UP)">
-                      Scale-Up</a>
-
-
-                  </div>
-                  <div class="col-2"
-                       *ngIf="cluster?.status !== VirtualMachineStates.staticDELETED && cluster?.status !== VirtualMachineStates.staticDELETING && cluster?.status === 'Running' ">
-                    <a class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
-                       [id]="'scale_down_'+cluster?.cluster_id"
-                       (click)="showScaleModal(SCALE_DOWN)">
-                      Scale-Down</a>
-
-
-                  </div>
-                   <div class="col-2"
-                       *ngIf="cluster?.status !== VirtualMachineStates.staticDELETED && cluster?.status !== VirtualMachineStates.staticDELETING && cluster?.status === 'Running' ">
-                    <a class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
-                       [id]="'generate_password_'+cluster?.cluster_id"
-                       (click)="showPasswordModal()">
-                      Generate Password</a>
-
-
-                  </div>
-                  <div class="col-2"
-                       *ngIf="cluster?.status !== VirtualMachineStates.staticDELETED && cluster?.status !== VirtualMachineStates.staticDELETING && cluster?.status === 'Running' ">
-                    <a class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
-                       [id]="'stop_'+cluster?.cluster_id"
-                       (click)="showStopModal()" onClick="return false;">
-                      Stop</a>
-
-
-                  </div>
-                  <div class="col-2"
-                       *ngIf="cluster?.status !== VirtualMachineStates.staticDELETED && cluster?.status !== VirtualMachineStates.staticNOT_FOUND && cluster?.status !== VirtualMachineStates.staticDELETING">
-                    <a class="font-weight-bold font-xs btn-block text-muted btn btn-outline-danger"
-                       [id]="'delete_'+cluster?.cluster_id"
-                       (click)="showDeleteModal()" onClick="return false;">
-                      Delete</a>
-
-
-                  </div>
-                   <div class="col-2"
-                       *ngIf="cluster?.status === VirtualMachineStates.staticSHUTOFF">
-                    <a class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
-                       [id]="'restart_'+cluster?.cluster_id"
-                       (click)="showResumeModal()" onClick="return false;">
-                      Start</a>
-
-
-                  </div>
-                                        <div *ngIf="cluster?.status === VirtualMachineStates.staticNOT_FOUND " class="alert alert-warning" role="alert"> Please contact <a href="mailto:{{CLOUD_PORTAL_SUPPORT_MAIL}}">{{CLOUD_PORTAL_SUPPORT_MAIL}}</a></div>
-
-
-
-                </div>
-              </div>
-              <div class="card-footer p-x-1 py-h" *ngIf="show_connection_info"
-              >
-                <div>
-                  <div class="row" *ngFor="let mode of cluster?.master_instance?.modes">
-                    <div class="col-md-1">
-                      <span class="font-weight-bold font-xs btn-block text-muted">{{mode.name}}:</span>
-                    </div>
-                    <div class="col-md-9">
-                      <span class="font-weight-bold font-xs btn-block text-muted" [innerHTML]="mode.description"></span>
-                    </div>
-
-                    <div class="col-md-2" style="margin: auto" *ngIf="mode.copy_field && mode.copy_field !== ''">
-                      <div class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
-                           (click)="copyToClipboard(mode.copy_field)">Copy command</div>
-                    </div>
-                  </div>
-
-                </div>
-
-              </div>
-            </div>
-
-	  </div>
+					<div class="col-md-2" style="margin: auto" *ngIf="mode.copy_field && mode.copy_field !== ''">
+						<div
+							class="font-weight-bold font-xs btn-block text-muted btn btn-outline-secondary"
+							(click)="copyToClipboard(mode.copy_field)"
+						>
+							Copy command
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
