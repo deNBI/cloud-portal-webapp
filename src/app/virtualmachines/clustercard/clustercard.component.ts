@@ -14,6 +14,8 @@ import { ScaleClusterComponent } from '../modals/scale-cluster/scale-cluster.com
 import { SharedModal } from '../../shared/shared_modules/baseClass/shared-modal';
 import { ResumeClusterComponent } from '../modals/resume-cluster/resume-cluster.component';
 import { StopClusterComponent } from '../modals/stop-cluster/stop-cluster.component';
+import { CLOUD_PORTAL_SUPPORT_MAIL } from '../../../links/links';
+import { RenameClusterComponent } from '../modals/rename-cluster/rename-cluster.component';
 
 /**
  * Vm card component to be used by vm-overview. Holds information about a virtual machine.
@@ -24,9 +26,8 @@ import { StopClusterComponent } from '../modals/stop-cluster/stop-cluster.compon
 	styleUrls: ['./clustercard.component.scss'],
 	providers: [ImageService],
 })
-
 export class ClustercardComponent extends SharedModal implements OnInit, OnDestroy {
-
+	CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL;
 	SCALE_UP: string = 'scale_up';
 	SCALE_DOWN: string = 'scale_down';
 	SCALE_SUCCESS: string = 'scale_success';
@@ -191,6 +192,19 @@ export class ClustercardComponent extends SharedModal implements OnInit, OnDestr
 	}
 
 	/**
+	 * Show rename modal
+	 */
+	showRenameModal(): void {
+		this.stopAllCheckStatusTimer();
+		const all_loaded: boolean = this.get_all_batches_loaded();
+		const initialState = { cluster: this.cluster, all_loaded };
+
+		this.bsModalRef = this.modalService.show(RenameClusterComponent, { initialState });
+		this.bsModalRef.setClass('modal-lg');
+		this.subscribeToBsModalRef();
+	}
+
+	/**
 	 * Show password modal
 	 */
 	showPasswordModal(): void {
@@ -219,22 +233,24 @@ export class ClustercardComponent extends SharedModal implements OnInit, OnDestr
 		this.showNotificationModal('Upscaling Cluster', `Starting ${scale_up_count} additional workers..`, 'info');
 
 		this.subscription.add(
-			this.virtualmachineservice.scaleCluster(
-				this.cluster.cluster_id,
-				encodeURIComponent(selectedBatch.flavor.name),
-				selectedBatch.upscale_count,
-			)
+			this.virtualmachineservice
+				.scaleCluster(
+					this.cluster.cluster_id,
+					encodeURIComponent(selectedBatch.flavor.name),
+					selectedBatch.upscale_count,
+				)
 				.subscribe((res: any): void => {
 					selectedBatch.setNewScalingUpWorkerCount();
 					this.cluster.password = res['password'];
 					this.all_worker_loaded = this.get_all_batches_loaded();
 
 					this.check_worker_count_loop();
-					this.showScaleModal(this.SCALE_SUCCESS, `The start of ${scale_up_count} workers was successfully initiated. Remember to configure your cluster after the machines are active!'`);
-
+					this.showScaleModal(
+						this.SCALE_SUCCESS,
+						`The start of ${scale_up_count} workers was successfully initiated. Remember to configure your cluster after the machines are active!'`,
+					);
 				}),
 		);
-
 	}
 
 	get_all_batches_loaded(): boolean {
@@ -250,48 +266,49 @@ export class ClustercardComponent extends SharedModal implements OnInit, OnDestr
 		this.all_worker_loaded = this.get_all_batches_loaded();
 		this.stopAllCheckStatusTimer();
 		this.statusSubscription = new Subscription();
-		this.checkStatusTimer = setTimeout(
-			(): void => {
-				this.statusSubscription.add(this.virtualmachineservice.getClusterInfo(this.cluster.cluster_id)
+		this.checkStatusTimer = setTimeout((): void => {
+			this.statusSubscription.add(
+				this.virtualmachineservice
+					.getClusterInfo(this.cluster.cluster_id)
 					.subscribe((updated_cluster: Clusterinfo): void => {
 						const password: string = this.cluster.password;
 						this.cluster = new Clusterinfo(updated_cluster);
 						this.cluster.password = password;
-						if (this.cluster.status !== 'Running' && this.cluster.status !== VirtualMachineStates.DELETING
-							&& this.cluster.status !== VirtualMachineStates.DELETED) {
+						if (
+							this.cluster.status !== 'Running'
+							&& this.cluster.status !== VirtualMachineStates.DELETING
+							&& this.cluster.status !== VirtualMachineStates.DELETED
+						) {
 							this.check_status_loop();
 						} else {
 							this.check_worker_count_loop();
 						}
-					}));
-			},
-			this.checkStatusTimeout,
-		);
+					}),
+			);
+		}, this.checkStatusTimeout);
 	}
 
 	check_worker_count_loop(): void {
 		this.stopCheckWorkerStatusTimer();
 		this.statusSubscription = new Subscription();
-		this.checkWorkerStatusTimer = setTimeout(
-			(): void => {
-				this.statusSubscription.add(
-					this.virtualmachineservice.getClusterInfo(this.cluster.cluster_id)
-						.subscribe((updated_cluster: Clusterinfo): void => {
-							const password: string = this.cluster.password;
-							this.cluster = new Clusterinfo(updated_cluster);
-							this.cluster.password = password;
-							this.all_worker_loaded = this.get_all_batches_loaded();
-							for (const batch of this.cluster.worker_batches) {
-								if (batch.running_worker < batch.worker_count) {
-									this.check_worker_count_loop();
-									break;
-								}
+		this.checkWorkerStatusTimer = setTimeout((): void => {
+			this.statusSubscription.add(
+				this.virtualmachineservice
+					.getClusterInfo(this.cluster.cluster_id)
+					.subscribe((updated_cluster: Clusterinfo): void => {
+						const password: string = this.cluster.password;
+						this.cluster = new Clusterinfo(updated_cluster);
+						this.cluster.password = password;
+						this.all_worker_loaded = this.get_all_batches_loaded();
+						for (const batch of this.cluster.worker_batches) {
+							if (batch.running_worker < batch.worker_count) {
+								this.check_worker_count_loop();
+								break;
 							}
-						}),
-				);
-			},
-			this.checkStatusTimeout,
-		);
+						}
+					}),
+			);
+		}, this.checkStatusTimeout);
 	}
 
 	scaleDownCluster(cluster: Clusterinfo): void {
@@ -312,16 +329,17 @@ export class ClustercardComponent extends SharedModal implements OnInit, OnDestr
 		this.showNotificationModal('Scaling Down', msg, 'info');
 
 		this.subscription.add(
-			this.virtualmachineservice.scaleDownCluster(this.cluster.cluster_id, scale_down_batches).subscribe((res: any): void => {
-				this.cluster.password = res['password'];
+			this.virtualmachineservice
+				.scaleDownCluster(this.cluster.cluster_id, scale_down_batches)
+				.subscribe((res: any): void => {
+					this.cluster.password = res['password'];
 
-				this.cluster.setScaleDownBatchesCount();
+					this.cluster.setScaleDownBatchesCount();
 
-				this.cluster.instances_count -= scale_down_count;
-				this.all_worker_loaded = this.get_all_batches_loaded();
-				this.showScaleModal(this.SCALE_SUCCESS, 'Successfully Scaled Down!');
-
-			}),
+					this.cluster.instances_count -= scale_down_count;
+					this.all_worker_loaded = this.get_all_batches_loaded();
+					this.showScaleModal(this.SCALE_SUCCESS, 'Successfully Scaled Down!');
+				}),
 		);
 	}
 
@@ -330,23 +348,38 @@ export class ClustercardComponent extends SharedModal implements OnInit, OnDestr
 	 */
 	deleteCluster(): void {
 		this.cluster.status = VirtualMachineStates.DELETING;
-		this.subscription.add(this.virtualmachineservice.deleteCluster(this.cluster.cluster_id).subscribe((): void => {
-			this.cluster.status = VirtualMachineStates.DELETED;
-		}));
+		this.subscription.add(
+			this.virtualmachineservice.deleteCluster(this.cluster.cluster_id).subscribe((): void => {
+				this.cluster.status = VirtualMachineStates.DELETED;
+			}),
+		);
 	}
 
 	resumeCluster(): void {
 		this.cluster.status = VirtualMachineStates.POWERING_ON;
-		this.subscription.add(this.virtualmachineservice.resumeCluster(this.cluster.cluster_id).subscribe((): void => {
-			this.check_status_loop();
-		}));
+		this.subscription.add(
+			this.virtualmachineservice.resumeCluster(this.cluster.cluster_id).subscribe((): void => {
+				this.check_status_loop();
+			}),
+		);
 	}
 
 	stopCluster(): void {
 		this.cluster.status = VirtualMachineStates.POWERING_OFF;
-		this.subscription.add(this.virtualmachineservice.stopCluster(this.cluster.cluster_id).subscribe((): void => {
-			this.check_status_loop();
-		}));
+		this.subscription.add(
+			this.virtualmachineservice.stopCluster(this.cluster.cluster_id).subscribe((): void => {
+				this.check_status_loop();
+			}),
+		);
+	}
+
+	renameCluster(name: string): void {
+		this.subscription.add(
+			this.virtualmachineservice.renameCluster(this.cluster.cluster_id, name).subscribe((cl: Clusterinfo): void => {
+				this.cluster.name = cl.name;
+				this.check_status_loop();
+			}),
+		);
 	}
 
 	/**
@@ -354,23 +387,23 @@ export class ClustercardComponent extends SharedModal implements OnInit, OnDestr
 	 */
 	subscribeToBsModalRef(): void {
 		this.subscription.add(
-			this.bsModalRef.content.event.subscribe(
-				(result: any) => {
-					if ('deleteCluster' in result) {
-						this.deleteCluster();
-					} else if ('scaleDownCluster' in result) {
-						this.scaleDownCluster(result['cluster']);
-					} else if ('scaleUpCluster' in result) {
-						this.scaleUpCluster(result['selectedBatch']);
-					} else if ('resumeCluster' in result) {
-						this.resumeCluster();
-					} else if ('stopCluster' in result) {
-						this.stopCluster();
-					} else {
-						this.check_status_loop();
-					}
-				},
-			),
+			this.bsModalRef.content.event.subscribe((result: any) => {
+				if ('new_name' in result) {
+					this.renameCluster(result['new_name']);
+				} else if ('deleteCluster' in result) {
+					this.deleteCluster();
+				} else if ('scaleDownCluster' in result) {
+					this.scaleDownCluster(result['cluster']);
+				} else if ('scaleUpCluster' in result) {
+					this.scaleUpCluster(result['selectedBatch']);
+				} else if ('resumeCluster' in result) {
+					this.resumeCluster();
+				} else if ('stopCluster' in result) {
+					this.stopCluster();
+				} else {
+					this.check_status_loop();
+				}
+			}),
 		);
 	}
 
@@ -394,5 +427,4 @@ export class ClustercardComponent extends SharedModal implements OnInit, OnDestr
 			document.getElementById(span_id).innerHTML = innerHTML;
 		}, 1000);
 	}
-
 }

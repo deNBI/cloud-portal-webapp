@@ -22,6 +22,7 @@ import { BiocondaComponent } from '../../conda/bioconda.component';
 import { ApplicationRessourceUsage } from '../../../applications/application-ressource-usage/application-ressource-usage';
 import { WorkerBatch } from '../clusterinfo';
 import { CLOUD_PORTAL_SUPPORT_MAIL, STATUS_LINK } from '../../../../links/links';
+import { RandomNameGenerator } from '../../../shared/randomNameGenerator';
 
 /**
  * Cluster Component
@@ -30,11 +31,20 @@ import { CLOUD_PORTAL_SUPPORT_MAIL, STATUS_LINK } from '../../../../links/links'
 	selector: 'app-add-cluster',
 	templateUrl: './add-cluster.component.html',
 	styleUrls: ['./add-cluster.component.scss'],
-	providers: [GroupService, ImageService, KeyService, FlavorService, VirtualmachineService,
-		ApiSettings, KeyService, ClientService, UserService, VoService],
+	providers: [
+		GroupService,
+		ImageService,
+		KeyService,
+		FlavorService,
+		VirtualmachineService,
+		ApiSettings,
+		KeyService,
+		ClientService,
+		UserService,
+		VoService,
+	],
 })
 export class AddClusterComponent implements OnInit, OnDestroy {
-
 	is_vo: boolean = false;
 	CLOUD_PORTAL_SUPPORT_MAIL: string = CLOUD_PORTAL_SUPPORT_MAIL;
 	STATUS_LINK: string = STATUS_LINK;
@@ -83,6 +93,7 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 	maxWorkerInstances: number;
 
 	singleProject: boolean = false;
+	cluster_name: string = '';
 
 	/**
 	 * Selected Flavor.
@@ -176,7 +187,6 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 	}
 
 	changeCount(): void {
-
 		this.calcWorkerInstancesCount();
 		this.calculateNewValues();
 	}
@@ -190,9 +200,10 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 				used_flavors.push(batch.flavor);
 			}
 		});
-		const flavors_to_filter: Flavor[] = this.flavors.filter((flavor: Flavor): boolean => used_flavors.indexOf(flavor) < 0);
-		this.flavors_usable = flavors_to_filter.filter((flav: Flavor): boolean => this.selectedProjectRessources
-			.filterFlavorsTest(flav, flavors_to_filter, this.selectedWorkerBatches));
+		const flavors_to_filter: Flavor[] = this.flavors.filter(
+			(flavor: Flavor): boolean => used_flavors.indexOf(flavor) < 0,
+		);
+		this.flavors_usable = flavors_to_filter.filter((flav: Flavor): boolean => this.selectedProjectRessources.filterFlavorsTest(flav, flavors_to_filter, this.selectedWorkerBatches));
 		this.flavor_types = this.flavorService.sortFlavors(this.flavors_usable);
 
 		this.flavors_loaded = true;
@@ -200,7 +211,6 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 
 	calcMaxWorkerInstancesByFlavor(): void {
 		if (this.selectedBatch.flavor) {
-
 			this.selectedBatch.max_worker_count = this.selectedProjectRessources.calcMaxWorkerInstancesByFlavor(
 				this.selectedMasterFlavor,
 				this.selectedBatch,
@@ -226,7 +236,6 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 			tmp_ram += this.selectedMasterFlavor.ram;
 			tmp_cores += this.selectedMasterFlavor.vcpus;
 			tmp_gpus += this.selectedMasterFlavor.gpu;
-
 		}
 		if (this.selectedWorkerBatches) {
 			this.selectedWorkerBatches.forEach((batch: WorkerBatch): void => {
@@ -235,14 +244,17 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 					tmp_cores += batch.flavor.vcpus * batch.worker_count;
 					tmp_gpus += batch.flavor.gpu * batch.worker_count;
 				}
-
 			});
 		}
 
 		this.newRam = tmp_ram;
 		this.newCores = tmp_cores;
 		this.newGpus = tmp_gpus;
+	}
 
+	generateRandomName(): void {
+		const rng: RandomNameGenerator = new RandomNameGenerator();
+		this.cluster_name = `${rng.randomName()}Cluster`;
 	}
 
 	/**
@@ -294,16 +306,13 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 	 * Validate the public key of the user.
 	 */
 	validatePublicKey(): boolean {
-
 		return /ssh-rsa AAAA[0-9A-Za-z+/]+[=]{0,3}( [^@]+@[^@]+)?/.test(this.userinfo.PublicKey);
-
 	}
 
 	resetBatches(): void {
 		this.selectedWorkerBatches = [new WorkerBatch(1)];
 		this.selectedBatch = this.selectedWorkerBatches[0];
 		this.setBatchUsableFlavors();
-
 	}
 
 	setBatchUsableFlavors(): void {
@@ -315,10 +324,15 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 				used_flavors.push(existingBatch.flavor);
 			}
 		});
-		const flavors_to_filter: Flavor[] = this.flavors.filter((flavor: Flavor): boolean => used_flavors.indexOf(flavor) < 0);
-		this.selectedBatch.usable_flavors = flavors_to_filter.filter((flav: Flavor): boolean => this.selectedProjectRessources
-			.filterFlavorsTest(flav, flavors_to_filter, this.selectedWorkerBatches, this.selectedMasterFlavor));
-
+		const flavors_to_filter: Flavor[] = this.flavors.filter(
+			(flavor: Flavor): boolean => used_flavors.indexOf(flavor) < 0,
+		);
+		this.selectedBatch.usable_flavors = flavors_to_filter.filter((flav: Flavor): boolean => this.selectedProjectRessources.filterFlavorsTest(
+			flav,
+			flavors_to_filter,
+			this.selectedWorkerBatches,
+			this.selectedMasterFlavor,
+		));
 	}
 
 	setSelectedBatch(batch: WorkerBatch): void {
@@ -329,13 +343,14 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 		this.calculateNewValues();
 		this.calcMaxWorkerInstancesByFlavor();
 		this.setBatchUsableFlavors();
-
 	}
 
 	addBatch(): void {
 		this.selectedWorkerFlavorSet = false;
 		this.selectedBatch = null;
-		const newBatch: WorkerBatch = new WorkerBatch(this.selectedWorkerBatches[this.selectedWorkerBatches.length - 1].index + 1);
+		const newBatch: WorkerBatch = new WorkerBatch(
+			this.selectedWorkerBatches[this.selectedWorkerBatches.length - 1].index + 1,
+		);
 		this.selectedBatch = newBatch;
 		this.selectedWorkerBatches.push(this.selectedBatch);
 		this.setBatchUsableFlavors();
@@ -346,19 +361,15 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 	removeBatch(batch: WorkerBatch): void {
 		const idx: number = this.selectedWorkerBatches.indexOf(batch);
 		if (batch === this.selectedBatch) {
-
 			// eslint-disable-next-line no-plusplus
 			for (let i = idx; i < this.selectedWorkerBatches.length; i++) {
 				this.selectedWorkerBatches[i].index -= 1;
-
 			}
 			if (idx !== 0) {
 				this.selectedBatch = this.selectedWorkerBatches[idx - 1];
 				this.selectedWorkerFlavorSet = true;
-
 			} else if (idx === 0 && this.selectedWorkerBatches.length > 0) {
 				this.selectedBatch = this.selectedWorkerBatches[idx + 1];
-
 			}
 		}
 
@@ -369,7 +380,6 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 		this.calcWorkerInstancesCount();
 		this.calculateNewValues();
 		this.calcMaxWorkerInstancesByFlavor();
-
 	}
 
 	startCluster(): void {
@@ -380,49 +390,41 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 		const masterFlavor: string = this.selectedMasterFlavor.name.replace(re, '%2B');
 
 		this.subscription.add(
-			this.virtualmachineservice.startCluster(
-				masterFlavor,
-				this.selectedMasterImage,
-				this.selectedWorkerBatches,
-				this.selectedProject[1],
-			).subscribe(
-				(res: any): void => {
-					if (res['status'] && res['status'] === 'mutex_locked') {
-						setTimeout(
-							(): void => {
+			this.virtualmachineservice
+				.startCluster(
+					masterFlavor,
+					this.selectedMasterImage,
+					this.selectedWorkerBatches,
+					this.selectedProject[1],
+					this.cluster_name,
+				)
+				.subscribe(
+					(res: any): void => {
+						if (res['status'] && res['status'] === 'mutex_locked') {
+							setTimeout((): void => {
 								this.startCluster();
-							},
-							1000,
-						);
-					} else {
-						this.cluster_id = res['id'];
-						this.cluster_started = true;
+							}, 1000);
+						} else {
+							this.cluster_id = res['id'];
+							this.cluster_started = true;
 
-						setTimeout(
-							(): void => {
+							setTimeout((): void => {
 								void this.router.navigate(['/virtualmachines/clusterOverview']).then().catch();
-							},
-							4000,
-						);
-
-					}
-
-				},
-				(error: any): void => {
-					console.log(error);
-					if (error['error']['error']) {
-						this.cluster_error = error['error']['error'];
-					} else {
-						this.cluster_error = error;
-					}
-					setTimeout(
-						(): void => {
+							}, 4000);
+						}
+					},
+					(error: any): void => {
+						console.log(error);
+						if (error['error']['error']) {
+							this.cluster_error = error['error']['error'];
+						} else {
+							this.cluster_error = error;
+						}
+						setTimeout((): void => {
 							void this.router.navigate(['/virtualmachines/clusterOverview']).then().catch();
-						},
-						4000,
-					);
-				},
-			),
+						}, 4000);
+					},
+				),
 		);
 	}
 
@@ -449,7 +451,6 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 					this.projectDataLoaded = true;
 				}
 				this.selectedProjectClient = client;
-
 			}),
 		);
 	}
@@ -471,7 +472,6 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 				const membergroups: any = result[1];
 				for (const project of membergroups) {
 					this.projects.push(project);
-
 				}
 				for (const project of allowedMemberGroups) {
 					this.allowedProjects.push(project);
@@ -496,12 +496,14 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 		this.selectedFlavor = undefined;
 		this.getImages(this.selectedProject[1]);
 		this.subscription.add(
-			this.groupService.getGroupResources(this.selectedProject[1].toString()).subscribe((res: ApplicationRessourceUsage): void => {
-				this.selectedProjectRessources = new ApplicationRessourceUsage(res);
-				this.getFlavors(this.selectedProject[1]);
-				this.checkResources();
-				this.projectDataLoaded = true;
-			}),
+			this.groupService
+				.getGroupResources(this.selectedProject[1].toString())
+				.subscribe((res: ApplicationRessourceUsage): void => {
+					this.selectedProjectRessources = new ApplicationRessourceUsage(res);
+					this.getFlavors(this.selectedProject[1]);
+					this.checkResources();
+					this.projectDataLoaded = true;
+				}),
 		);
 	}
 
@@ -510,7 +512,7 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 		this.newRam = 0;
 		this.newVms = 2;
 		this.newGpus = 0;
-		this.vm_limit_reached = (this.selectedProjectRessources.used_vms + 2) > this.selectedProjectRessources.number_vms;
+		this.vm_limit_reached = this.selectedProjectRessources.used_vms + 2 > this.selectedProjectRessources.number_vms;
 		this.cores_limit_reached = this.selectedProjectRessources.cores_used >= this.selectedProjectRessources.cores_total;
 		this.ram_limit_reached = this.selectedProjectRessources.ram_used >= this.selectedProjectRessources.ram_total;
 	}
@@ -521,6 +523,7 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 
 	ngOnInit(): void {
 		this.initializeData();
+		this.generateRandomName();
 		this.subscription.add(
 			this.voService.isVo().subscribe((result: IResponseTemplate): void => {
 				this.is_vo = result.value as boolean;
@@ -546,5 +549,4 @@ export class AddClusterComponent implements OnInit, OnDestroy {
 			}
 		}
 	}
-
 }
