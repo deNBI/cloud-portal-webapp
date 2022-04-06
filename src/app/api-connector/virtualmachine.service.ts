@@ -20,7 +20,6 @@ import { ClusterPage } from '../virtualmachines/clusters/clusterPage.model';
 	providedIn: 'root',
 })
 export class VirtualmachineService {
-
 	data: string;
 	baseVmUrl: string = `${ApiSettings.getApiBaseURL()}vms/`;
 
@@ -48,12 +47,14 @@ export class VirtualmachineService {
 		masterImage: Image,
 		workerBatches: WorkerBatch[],
 		project_id: string | number,
+		name: string,
 	): Observable<any> {
 		const params: HttpParams = new HttpParams()
 			.set('master_flavor', masterFlavor)
 			.set('master_image', JSON.stringify(masterImage))
 			.set('worker_batches', encodeURIComponent(JSON.stringify(workerBatches)))
-			.set('project_id', project_id.toString());
+			.set('project_id', project_id.toString())
+			.set('name', name);
 
 		return this.http.post(`${ApiSettings.getApiBaseURL()}clusters/`, params, {
 			withCredentials: true,
@@ -61,13 +62,19 @@ export class VirtualmachineService {
 	}
 
 	getClusterInfo(cluster_id: string): Observable<Clusterinfo> {
-		return this.http.get<Clusterinfo>(`${ApiSettings.getApiBaseURL()}clusters/${cluster_id}/`, {
+		return this.http
+			.get<Clusterinfo>(`${ApiSettings.getApiBaseURL()}clusters/${cluster_id}/`, {
+				withCredentials: true,
+			})
+			.pipe(map((clusterinfo: Clusterinfo): Clusterinfo => new Clusterinfo(clusterinfo)));
+	}
+
+	renameCluster(cluster_id: string, name: string): Observable<Clusterinfo> {
+		const params: HttpParams = new HttpParams().set('name', name);
+
+		return this.http.post<Clusterinfo>(`${ApiSettings.getApiBaseURL()}clusters/${cluster_id}/name/`, params, {
 			withCredentials: true,
-		}).pipe(
-			map(
-				(clusterinfo: Clusterinfo): Clusterinfo => new Clusterinfo(clusterinfo),
-			),
-		);
+		});
 	}
 
 	scaleCluster(cluster_id: string, worker_flavor_name: string, upscale_count: number): Observable<any> {
@@ -87,8 +94,10 @@ export class VirtualmachineService {
 	}
 
 	scaleDownCluster(cluster_id: string, downscale_list: any): Observable<any> {
-		const params: HttpParams = new HttpParams()
-			.set('downscale_list', encodeURIComponent(JSON.stringify(downscale_list)));
+		const params: HttpParams = new HttpParams().set(
+			'downscale_list',
+			encodeURIComponent(JSON.stringify(downscale_list)),
+		);
 
 		return this.http.post(`${ApiSettings.getApiBaseURL()}clusters/${cluster_id}/scale-down/`, params, {
 			withCredentials: true,
@@ -96,21 +105,20 @@ export class VirtualmachineService {
 	}
 
 	getClusters(page: number, cluster_per_site: number, filter?: string): Observable<ClusterPage> {
-		let params: HttpParams = new HttpParams().set('page', page.toString()).set('cluster_per_site', cluster_per_site.toString());
+		let params: HttpParams = new HttpParams()
+			.set('page', page.toString())
+			.set('cluster_per_site', cluster_per_site.toString());
 
 		if (filter) {
 			params = params.set('filter', filter);
-
 		}
 
-		return this.http.get<ClusterPage>(`${ApiSettings.getApiBaseURL()}clusters/`, {
-			withCredentials: true,
-			params,
-		}).pipe(
-			map(
-				(clusters: ClusterPage): ClusterPage => new ClusterPage(clusters),
-			),
-		);
+		return this.http
+			.get<ClusterPage>(`${ApiSettings.getApiBaseURL()}clusters/`, {
+				withCredentials: true,
+				params,
+			})
+			.pipe(map((clusters: ClusterPage): ClusterPage => new ClusterPage(clusters)));
 	}
 
 	deleteCluster(cluster_id: string): Observable<void> {
@@ -145,7 +153,6 @@ export class VirtualmachineService {
 		playbook_information?: string,
 		additional_elixir_ids?: string[],
 	): Observable<any> {
-
 		const params: HttpParams = new HttpParams()
 			.set('flavor', flavor)
 			.set('image', JSON.stringify(image))
@@ -197,58 +204,48 @@ export class VirtualmachineService {
 		let params: HttpParams = new HttpParams().set('page', page.toString()).set('vm_per_site', vm_per_site.toString());
 		if (filter) {
 			params = params.append('filter', filter);
-
 		}
 		if (filter_status) {
 			params = params.append('filter_status', JSON.stringify(filter_status));
-
 		}
 		if (filter_cluster) {
 			params = params.append('filter_cluster', 'true');
-
 		}
 		if (filter_set_for_termination) {
 			params = params.append('filter_set_for_termination', 'true');
-
 		}
 
-		return this.http.get<VirtualMachinePage>(`${ApiSettings.getApiBaseURL()}voManager/vms/`, {
-			withCredentials: true,
-			params,
-		}).pipe(
-			map(
-				(vm_page: VirtualMachinePage): VirtualMachinePage => new VirtualMachinePage(vm_page),
-			),
-		);
+		return this.http
+			.get<VirtualMachinePage>(`${ApiSettings.getApiBaseURL()}voManager/vms/`, {
+				withCredentials: true,
+				params,
+			})
+			.pipe(map((vm_page: VirtualMachinePage): VirtualMachinePage => new VirtualMachinePage(vm_page)));
 	}
 
 	getAllClusters(page: number, vm_per_site: number, filter?: string): Observable<ClusterPage> {
-		let params: HttpParams = new HttpParams().set('page', page.toString()).set('cluster_per_site', vm_per_site.toString());
+		let params: HttpParams = new HttpParams()
+			.set('page', page.toString())
+			.set('cluster_per_site', vm_per_site.toString());
 
 		if (filter) {
 			params = params.set('filter', filter);
-
 		}
 
-		return this.http.get<ClusterPage>(`${ApiSettings.getApiBaseURL()}voManager/vms/clusters/`, {
-			withCredentials: true,
-			params,
-		}).pipe(
-			map(
-				(clusters: ClusterPage): ClusterPage => new ClusterPage(clusters),
-			),
-		);
+		return this.http
+			.get<ClusterPage>(`${ApiSettings.getApiBaseURL()}voManager/vms/clusters/`, {
+				withCredentials: true,
+				params,
+			})
+			.pipe(map((clusters: ClusterPage): ClusterPage => new ClusterPage(clusters)));
 	}
 
 	getVmById(openstackId: string): Observable<VirtualMachine> {
-
-		return this.http.get<VirtualMachine>(`${this.baseVmUrl}${openstackId}/details/`, {
-			withCredentials: true,
-		}).pipe(
-			map(
-				(vm: VirtualMachine): VirtualMachine => new VirtualMachine(vm),
-			),
-		);
+		return this.http
+			.get<VirtualMachine>(`${this.baseVmUrl}${openstackId}/details/`, {
+				withCredentials: true,
+			})
+			.pipe(map((vm: VirtualMachine): VirtualMachine => new VirtualMachine(vm)));
 	}
 
 	getVmsFromLoggedInUser(
@@ -263,39 +260,31 @@ export class VirtualmachineService {
 
 		if (filter) {
 			params = params.set('filter', filter);
-
 		}
 		if (filter_status) {
 			params = params.append('filter_status', JSON.stringify(filter_status));
-
 		}
 		if (filter_cluster) {
 			params = params.append('filter_cluster', 'true');
-
 		}
 		if (filter_set_for_termination) {
 			params = params.append('filter_set_for_termination', 'true');
-
 		}
 
-		return this.http.get<VirtualMachinePage>(this.baseVmUrl, {
-			withCredentials: true,
-			params,
-		}).pipe(
-			map(
-				(vm_page: VirtualMachinePage) => new VirtualMachinePage(vm_page),
-			),
-		);
+		return this.http
+			.get<VirtualMachinePage>(this.baseVmUrl, {
+				withCredentials: true,
+				params,
+			})
+			.pipe(map((vm_page: VirtualMachinePage) => new VirtualMachinePage(vm_page)));
 	}
 
 	getCondaLogs(openstack_id: string): Observable<Condalog> {
-		return this.http.post<Condalog>(`${this.baseVmUrl}${openstack_id}/logs/`, null, {
-			withCredentials: true,
-		}).pipe(
-			map(
-				(condaLog: Condalog): Condalog => new Condalog(condaLog),
-			),
-		);
+		return this.http
+			.post<Condalog>(`${this.baseVmUrl}${openstack_id}/logs/`, null, {
+				withCredentials: true,
+			})
+			.pipe(map((condaLog: Condalog): Condalog => new Condalog(condaLog)));
 	}
 
 	getVmsFromFacilitiesOfLoggedUser(
@@ -310,64 +299,48 @@ export class VirtualmachineService {
 		let params: HttpParams = new HttpParams().set('page', page.toString()).set('vm_per_site', vm_per_site.toString());
 		if (filter) {
 			params = params.set('filter', filter);
-
 		}
 		if (filter_status) {
 			params = params.append('filter_status', JSON.stringify(filter_status));
-
 		}
 		if (filter_cluster) {
 			params = params.append('filter_cluster', 'true');
-
 		}
 		if (filter_set_for_termination) {
 			params = params.append('filter_set_for_termination', 'true');
-
 		}
 
-		return this.http.get<VirtualMachinePage>(
-			`${ApiSettings.getApiBaseURL()}computecenters/${facility_id}/vms/`,
-			{
+		return this.http
+			.get<VirtualMachinePage>(`${ApiSettings.getApiBaseURL()}computecenters/${facility_id}/vms/`, {
 				withCredentials: true,
 				params,
-			},
-		).pipe(
-			map(
-				(vm_page: VirtualMachinePage): VirtualMachinePage => new VirtualMachinePage(vm_page),
-			),
-		);
+			})
+			.pipe(map((vm_page: VirtualMachinePage): VirtualMachinePage => new VirtualMachinePage(vm_page)));
 	}
 
 	getActiveVmsByProject(groupid: string): Observable<VirtualMachine[]> {
-
-		return this.http.get<VirtualMachine[]>(`${ApiSettings.getApiBaseURL()}projects/${groupid}/vms/`, {
-			withCredentials: true,
-		}).pipe(
-			map(
-				(vms: VirtualMachine[]): VirtualMachine[] => vms.map(
-					(vm: VirtualMachine): VirtualMachine => new VirtualMachine(vm),
-				),
-			),
-		);
+		return this.http
+			.get<VirtualMachine[]>(`${ApiSettings.getApiBaseURL()}projects/${groupid}/vms/`, {
+				withCredentials: true,
+			})
+			.pipe(
+				map((vms: VirtualMachine[]): VirtualMachine[] => vms.map((vm: VirtualMachine): VirtualMachine => new VirtualMachine(vm))),
+			);
 	}
 
 	checkVmStatus(openstack_id: string, name?: string): Observable<VirtualMachine> {
 		if (openstack_id) {
-			return this.http.post<VirtualMachine>(`${this.baseVmUrl}${openstack_id}/status/`, null, {
-				withCredentials: true,
-			}).pipe(
-				map(
-					(vm: VirtualMachine): VirtualMachine => new VirtualMachine(vm),
-				),
-			);
+			return this.http
+				.post<VirtualMachine>(`${this.baseVmUrl}${openstack_id}/status/`, null, {
+					withCredentials: true,
+				})
+				.pipe(map((vm: VirtualMachine): VirtualMachine => new VirtualMachine(vm)));
 		} else if (name) {
-			return this.http.post<VirtualMachine>(`${this.baseVmUrl}${name}/status/`, null, {
-				withCredentials: true,
-			}).pipe(
-				map(
-					(vm: VirtualMachine): VirtualMachine => new VirtualMachine(vm),
-				),
-			);
+			return this.http
+				.post<VirtualMachine>(`${this.baseVmUrl}${name}/status/`, null, {
+					withCredentials: true,
+				})
+				.pipe(map((vm: VirtualMachine): VirtualMachine => new VirtualMachine(vm)));
 		} else {
 			return null;
 		}
@@ -390,15 +363,11 @@ export class VirtualmachineService {
 	}
 
 	deleteVM(openstack_id: string): Observable<VirtualMachine> {
-
-		return this.http.delete<VirtualMachine>(`${this.baseVmUrl}${openstack_id}/`, {
-			withCredentials: true,
-		}).pipe(
-			map(
-				(vm: VirtualMachine): VirtualMachine => new VirtualMachine(vm),
-			),
-		);
-
+		return this.http
+			.delete<VirtualMachine>(`${this.baseVmUrl}${openstack_id}/`, {
+				withCredentials: true,
+			})
+			.pipe(map((vm: VirtualMachine): VirtualMachine => new VirtualMachine(vm)));
 	}
 
 	setVmNeeded(openstack_id: string): Observable<any> {
@@ -410,13 +379,11 @@ export class VirtualmachineService {
 	stopVM(openstack_id: string): Observable<VirtualMachine> {
 		const params: HttpParams = new HttpParams().set('os_action', 'stop');
 
-		return this.http.post<VirtualMachine>(`${this.baseVmUrl}${openstack_id}/action/`, params, {
-			withCredentials: true,
-		}).pipe(
-			map(
-				(vm: VirtualMachine): VirtualMachine => new VirtualMachine(vm),
-			),
-		);
+		return this.http
+			.post<VirtualMachine>(`${this.baseVmUrl}${openstack_id}/action/`, params, {
+				withCredentials: true,
+			})
+			.pipe(map((vm: VirtualMachine): VirtualMachine => new VirtualMachine(vm)));
 	}
 
 	rebootVM(openstack_id: string, reboot_type: string): Observable<IResponseTemplate> {
@@ -428,124 +395,98 @@ export class VirtualmachineService {
 	}
 
 	resumeVM(openstack_id: string): Observable<VirtualMachine> {
-
 		const params: HttpParams = new HttpParams().set('os_action', 'resume');
 
-		return this.http.post<VirtualMachine>(`${this.baseVmUrl}${openstack_id}/action/`, params, {
-			withCredentials: true,
-		}).pipe(
-			map(
-				(vm: VirtualMachine): VirtualMachine => new VirtualMachine(vm),
-			),
-		);
-
+		return this.http
+			.post<VirtualMachine>(`${this.baseVmUrl}${openstack_id}/action/`, params, {
+				withCredentials: true,
+			})
+			.pipe(map((vm: VirtualMachine): VirtualMachine => new VirtualMachine(vm)));
 	}
 
 	getDetachedVolumesByProject(project_id: string | number): Observable<Volume[]> {
-
-		return this.http.get<Volume[]>(`${ApiSettings.getApiBaseURL()}volumes/project/${project_id}/`, {
-			withCredentials: true,
-		}).pipe(
-			map(
-				(volumes: Volume[]): Volume[] => volumes.map(
-					(volume: Volume): Volume => new Volume(volume),
-				),
-			),
-		);
-
+		return this.http
+			.get<Volume[]>(`${ApiSettings.getApiBaseURL()}volumes/project/${project_id}/`, {
+				withCredentials: true,
+			})
+			.pipe(map((volumes: Volume[]): Volume[] => volumes.map((volume: Volume): Volume => new Volume(volume))));
 	}
 
 	getVolumesByUser(items_per_page: number, current_page: number, filter?: string): Observable<VolumePage> {
-		let params: HttpParams = new HttpParams().set('items_per_page', items_per_page.toString()).set('page', current_page.toString());
+		let params: HttpParams = new HttpParams()
+			.set('items_per_page', items_per_page.toString())
+			.set('page', current_page.toString());
 		if (filter) {
 			params = params.set('filter', filter);
-
 		}
 
-		return this.http.get<VolumePage>(`${ApiSettings.getApiBaseURL()}volumes/`, {
-			withCredentials: true,
-			params,
-		}).pipe(
-			map(
-				(volume_page: VolumePage): VolumePage => new VolumePage(volume_page),
-			),
-		);
+		return this.http
+			.get<VolumePage>(`${ApiSettings.getApiBaseURL()}volumes/`, {
+				withCredentials: true,
+				params,
+			})
+			.pipe(map((volume_page: VolumePage): VolumePage => new VolumePage(volume_page)));
 	}
 
 	getVolumeById(id: string): Observable<Volume> {
-		return this.http.get<Volume>(`${ApiSettings.getApiBaseURL()}volumes/${id}/`, {
-			withCredentials: true,
-		}).pipe(
-			map(
-				(volume: Volume): Volume => new Volume(volume),
-			),
-		);
-
+		return this.http
+			.get<Volume>(`${ApiSettings.getApiBaseURL()}volumes/${id}/`, {
+				withCredentials: true,
+			})
+			.pipe(map((volume: Volume): Volume => new Volume(volume)));
 	}
 
 	getVolumeByNameAndVmName(volume_name: string, virtualmachine_name: string): Observable<Volume> {
 		const params: HttpParams = new HttpParams().set('volume_name', volume_name);
 
-		return this.http.get<Volume>(`${ApiSettings.getApiBaseURL()}volumes/vms/${virtualmachine_name}/`, {
-			withCredentials: true,
-			params,
-		}).pipe(
-			map(
-				(volume: Volume): Volume => new Volume(volume),
-			),
-		);
-
+		return this.http
+			.get<Volume>(`${ApiSettings.getApiBaseURL()}volumes/vms/${virtualmachine_name}/`, {
+				withCredentials: true,
+				params,
+			})
+			.pipe(map((volume: Volume): Volume => new Volume(volume)));
 	}
 
 	createVolume(volume_name: string, volume_storage: string, vm_openstackid: string): Observable<Volume> {
-		const params: HttpParams = new HttpParams().set('volume_name', volume_name)
+		const params: HttpParams = new HttpParams()
+			.set('volume_name', volume_name)
 			.set('volume_storage', volume_storage)
 			.set('vm_openstackid', vm_openstackid);
 
-		return this.http.post<Volume>(`${ApiSettings.getApiBaseURL()}volumes/`, params, {
-			withCredentials: true,
-		}).pipe(
-			map(
-				(volume: Volume): Volume => new Volume(volume),
-			),
-		);
+		return this.http
+			.post<Volume>(`${ApiSettings.getApiBaseURL()}volumes/`, params, {
+				withCredentials: true,
+			})
+			.pipe(map((volume: Volume): Volume => new Volume(volume)));
 	}
 
 	extendVolume(volume_id: string, new_size: string): Observable<IResponseTemplate> {
-
 		const params: HttpParams = new HttpParams().set('os_action', 'extend').set('new_size', new_size);
 
 		return this.http.post<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}volumes/${volume_id}/action/`, params, {
 			withCredentials: true,
 		});
-
 	}
 
 	attachVolumetoServer(volume_id: string, instance_id: string): Observable<IResponseTemplate> {
-
 		const params: HttpParams = new HttpParams().set('instance_id', instance_id).set('os_action', 'attach');
 
 		return this.http.post<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}volumes/${volume_id}/action/`, params, {
 			withCredentials: true,
 		});
-
 	}
 
 	renameVolume(volume_id: string, new_volume_name: string): Observable<Volume> {
 		const params: HttpParams = new HttpParams().set('new_volume_name', new_volume_name);
 
-		return this.http.patch<Volume>(`${ApiSettings.getApiBaseURL()}volumes/${volume_id}/`, params, {
-			withCredentials: true,
-		}).pipe(
-			map(
-				(volume: Volume): Volume => new Volume(volume),
-			),
-		);
-
+		return this.http
+			.patch<Volume>(`${ApiSettings.getApiBaseURL()}volumes/${volume_id}/`, params, {
+				withCredentials: true,
+			})
+			.pipe(map((volume: Volume): Volume => new Volume(volume)));
 	}
 
 	deleteVolume(volume_id: string): Observable<IResponseTemplate> {
-
 		return this.http.delete<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}volumes/${volume_id}/`, {
 			withCredentials: true,
 		});
@@ -560,7 +501,6 @@ export class VirtualmachineService {
 	}
 
 	deleteVolumeAttachment(volume_id: string, instance_id: string): Observable<IResponseTemplate> {
-
 		const params: HttpParams = new HttpParams().set('instance_id', instance_id).set('os_action', 'detach');
 
 		return this.http.post<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}volumes/${volume_id}/action/`, params, {
@@ -569,7 +509,6 @@ export class VirtualmachineService {
 	}
 
 	deleteVolumeAttachments(volume_ids: string[]): Observable<IResponseTemplate> {
-
 		const params: HttpParams = new HttpParams().set('volume_ids', JSON.stringify(volume_ids));
 
 		return this.http.post<IResponseTemplate>(`${ApiSettings.getApiBaseURL()}volumes/attachments/delete/`, params, {
